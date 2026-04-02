@@ -3,15 +3,21 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { navigation } from "@/data/navigation";
 import { cn } from "@/lib/utils";
+
+const navLinks = [
+  { label: "Services", href: "/services" },
+  { label: "Why Automation?", href: "/why-automation" },
+  { label: "About", href: "/about" },
+  { label: "Resources", href: "/roi-calculator" },
+];
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
 
   const handleScroll = useCallback(() => {
-    setIsScrolled(window.scrollY > 50);
+    setIsScrolled(window.scrollY > 40);
   }, []);
 
   useEffect(() => {
@@ -31,76 +37,111 @@ export function Header() {
     return () => document.body.classList.remove("nav-open");
   }, [navOpen]);
 
-  // Last nav link is the CTA pill
-  const navLinks = navigation.links.slice(0, -1);
-  const ctaLink = navigation.links[navigation.links.length - 1];
-
   return (
-    <header
-      className={cn("ps-header", isScrolled && "scrolled", navOpen && "nav-open")}
-      aria-label="Site header"
-    >
-      <div className="ps-header-inner">
-        {/* Logo */}
-        <Link
-          href="/"
-          className="logo-link"
-          onClick={handleLinkClick}
-          aria-label="Preisser Solutions — Home"
-        >
-          <Image
-            src="/images/LOGO.png"
-            alt="Preisser Solutions"
-            width={200}
-            height={40}
-            className="ps-logo"
-            priority
-          />
-        </Link>
+    <>
+      <header
+        className={cn("ps-header", isScrolled && "scrolled")}
+        aria-label="Site header"
+      >
+        <div className="ps-header-inner">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="logo-link"
+            onClick={handleLinkClick}
+            aria-label="Preisser Solutions — Home"
+          >
+            <Image
+              src="/images/LOGO.png"
+              alt="Preisser Solutions"
+              width={180}
+              height={36}
+              className="ps-logo"
+              priority
+            />
+          </Link>
 
-        {/* Desktop nav */}
-        <nav
-          className="ps-primary-nav"
-          id="primary-navigation"
-          aria-label="Primary navigation"
-        >
-          <div className="ps-header-buttons">
-            {navLinks.map((link) => (
+          {/* Desktop nav */}
+          <nav
+            className="ps-primary-nav"
+            id="primary-navigation"
+            aria-label="Primary navigation"
+          >
+            <div className="ps-header-buttons">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="ps-header-link"
+                  onClick={handleLinkClick}
+                >
+                  {link.label}
+                </Link>
+              ))}
               <Link
-                key={link.href}
-                href={link.href}
-                id={link.id}
+                href="/contact"
                 className="ps-header-link"
                 onClick={handleLinkClick}
               >
-                {link.label}
+                Contact sales
               </Link>
-            ))}
-            <Link
-              href={ctaLink.href}
-              id={ctaLink.id}
-              className="ps-header-cta"
-              onClick={handleLinkClick}
-            >
-              {ctaLink.label}
-            </Link>
-          </div>
-        </nav>
+              <Link
+                href="/contact"
+                className="ps-header-cta"
+                onClick={handleLinkClick}
+              >
+                Start now
+              </Link>
+            </div>
+          </nav>
 
-        {/* Hamburger (mobile only) */}
-        <button
-          className="ps-hamburger"
-          aria-controls="primary-navigation"
-          aria-expanded={navOpen}
-          aria-label={navOpen ? "Close menu" : "Open menu"}
-          onClick={() => setNavOpen((prev) => !prev)}
+          {/* Hamburger — mobile */}
+          <button
+            className="ps-hamburger"
+            aria-controls="primary-navigation"
+            aria-expanded={navOpen}
+            aria-label={navOpen ? "Close menu" : "Open menu"}
+            onClick={() => setNavOpen((prev) => !prev)}
+          >
+            <span className="ps-sr-only">Menu</span>
+            <span className="ps-hamburger-bar" />
+            <span className="ps-hamburger-bar" />
+            <span className="ps-hamburger-bar" />
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile drawer */}
+      <nav
+        className={cn("ps-mobile-nav", navOpen && "open")}
+        id="primary-navigation"
+        aria-label="Mobile navigation"
+      >
+        {navLinks.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className="ps-mobile-nav-link"
+            onClick={handleLinkClick}
+          >
+            {link.label}
+          </Link>
+        ))}
+        <Link
+          href="/contact"
+          className="ps-mobile-nav-link"
+          onClick={handleLinkClick}
         >
-          <span className="ps-sr-only">Menu</span>
-          <span className="ps-hamburger-bar" />
-          <span className="ps-hamburger-bar" />
-          <span className="ps-hamburger-bar" />
-        </button>
-      </div>
-    </header>
+          Contact sales
+        </Link>
+        <Link
+          href="/contact"
+          className="ps-mobile-nav-cta"
+          onClick={handleLinkClick}
+        >
+          Start now
+        </Link>
+      </nav>
+    </>
   );
 }

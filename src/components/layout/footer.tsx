@@ -47,8 +47,8 @@ export function Footer() {
             <Image
               src="/images/LOGO.png"
               alt="Preisser Solutions"
-              width={180}
-              height={36}
+              width={160}
+              height={32}
               className="ps-footer-logo"
             />
             <p>
@@ -59,14 +59,12 @@ export function Footer() {
               href={`mailto:${siteConfig.contact.email}`}
               className="ps-footer-contact-link"
             >
-              <span aria-hidden="true">✉</span>
               {siteConfig.contact.email}
             </a>
             <a
               href={`tel:${siteConfig.contact.phone}`}
               className="ps-footer-contact-link"
             >
-              <span aria-hidden="true">☎</span>
               {siteConfig.contact.phone}
             </a>
           </div>
@@ -94,7 +92,7 @@ export function Footer() {
           <p className="ps-footer-copy">
             &copy; {year}{" "}
             <Link href="/">{siteConfig.name}</Link>
-            . All Rights Reserved.
+            . All rights reserved.
           </p>
           <p className="ps-footer-tagline">{siteConfig.tagline}</p>
         </div>

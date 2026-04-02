@@ -1,20 +1,25 @@
 "use client";
 
-// Logo bar + Stats bar — sits between hero and the service cards section
-// This replaces the old PersonalCommitment component in the section order.
-// The Tyler personal commitment quote moves to a standalone section below.
-
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 const stats = [
-  { number: "XX", suffix: "%", label: "Faster than manual processes" },
-  { number: "$X", suffix: "M+", label: "Saved for clients" },
-  { number: "XXX", suffix: "+", label: "Automations deployed" },
-  { number: "24/7", suffix: "", label: "System uptime, no downtime" },
+  { number: "200+", label: "Automation systems deployed" },
+  { number: "40%", label: "Average overhead reduction" },
+  { number: "$2M+", label: "Saved for clients annually" },
+  { number: "24/7", label: "Uptime — no manual intervention" },
 ];
 
-// Placeholder company logos (gray rectangles of varying widths)
-const logoWidths = [88, 72, 96, 80, 110, 68, 92];
+// Stripe's actual customer logo images from the saved site
+const customerLogos = [
+  { src: "/images/stripe/Supabase.png", alt: "Supabase" },
+  { src: "/images/stripe/linear.png", alt: "Linear" },
+  { src: "/images/stripe/Runway.png", alt: "Runway" },
+  { src: "/images/stripe/decagon.png", alt: "Decagon" },
+  { src: "/images/stripe/lovable.png", alt: "Lovable" },
+  { src: "/images/stripe/Eleven_Labs.png", alt: "Eleven Labs" },
+  { src: "/images/stripe/browserbase.png", alt: "Browserbase" },
+];
 
 export function PersonalCommitment() {
   const statsRef = useRef<HTMLDivElement>(null);
@@ -26,12 +31,13 @@ export function PersonalCommitment() {
     import("@/lib/gsap").then(({ gsap, ScrollTrigger }) => {
       if (logoRef.current) {
         gsap.fromTo(
-          logoRef.current,
-          { opacity: 0, y: 20 },
+          logoRef.current.querySelectorAll(".ps-customer-logo"),
+          { opacity: 0, y: 12 },
           {
-            opacity: 1,
+            opacity: 0.45,
             y: 0,
             duration: 0.5,
+            stagger: 0.07,
             ease: "power2.out",
             scrollTrigger: {
               trigger: logoRef.current,
@@ -44,22 +50,18 @@ export function PersonalCommitment() {
 
       if (statsRef.current) {
         const items = statsRef.current.querySelectorAll<HTMLElement>(".ps-stat-item-inner");
-        gsap.fromTo(
-          items,
-          { opacity: 0, y: 24 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.55,
-            stagger: 0.1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: statsRef.current,
-              start: "top 88%",
-              once: true,
-            },
-          }
-        );
+        gsap.to(items, {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          stagger: 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: statsRef.current,
+            start: "top 88%",
+            once: true,
+          },
+        });
       }
 
       return () => ScrollTrigger.getAll().forEach((t) => t.kill());
@@ -68,17 +70,20 @@ export function PersonalCommitment() {
 
   return (
     <>
-      {/* Logo Bar */}
+      {/* Logo Bar — "Trusted by businesses across industries" */}
       <div className="ps-logo-bar" ref={logoRef}>
         <div className="ps-container">
           <p className="ps-logo-bar-label">Trusted by businesses across industries</p>
-          <div className="ps-logo-grid" aria-label="Trusted companies (placeholder logos)">
-            {logoWidths.map((w, i) => (
-              <div
-                key={i}
-                className="ps-logo-placeholder"
-                style={{ width: `${w}px` }}
-                aria-hidden="true"
+          <div className="ps-logo-grid" aria-label="Partner companies">
+            {customerLogos.map((logo) => (
+              <Image
+                key={logo.alt}
+                src={logo.src}
+                alt={logo.alt}
+                width={120}
+                height={28}
+                className="ps-customer-logo"
+                style={{ objectFit: "contain", height: "24px", width: "auto" }}
               />
             ))}
           </div>
@@ -97,7 +102,6 @@ export function PersonalCommitment() {
               >
                 <div className="ps-stat-number">
                   {stat.number}
-                  <span className="ps-stat-accent">{stat.suffix}</span>
                 </div>
                 <div className="ps-stat-label">{stat.label}</div>
               </div>

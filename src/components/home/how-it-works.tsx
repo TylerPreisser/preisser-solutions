@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
-// Feature showcase section — dark bg, text left / visual right
 export function HowItWorks() {
   const sectionRef = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -21,7 +21,7 @@ export function HowItWorks() {
 
       gsap.fromTo(
         textRef.current,
-        { opacity: 0, x: -32 },
+        { opacity: 0, x: -28 },
         {
           opacity: 1,
           x: 0,
@@ -37,7 +37,7 @@ export function HowItWorks() {
 
       gsap.fromTo(
         visualRef.current,
-        { opacity: 0, x: 32 },
+        { opacity: 0, x: 28 },
         {
           opacity: 1,
           x: 0,
@@ -63,90 +63,73 @@ export function HowItWorks() {
       id="how-it-works"
       aria-labelledby="feature-1-heading"
     >
+      {/* Subtle gradient */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "radial-gradient(ellipse 80% 60% at 0% 50%, rgba(99,91,255,0.12) 0%, transparent 60%)",
+          pointerEvents: "none",
+        }}
+        aria-hidden="true"
+      />
+
       <div className="ps-container">
-        <div className="ps-feature-split">
-          {/* Text column */}
-          <div ref={textRef} className="ps-feature-text on-dark">
-            <span className="ps-eyebrow">How It Works</span>
-            <h2 id="feature-1-heading">
-              Built for Your Business,<br />Not a Template
-            </h2>
-            <p>
-              [Feature description — explain the custom-built approach. How Preisser
-              Solutions dives deep into the business, understands the workflows,
-              and builds automation specifically for them.]
-            </p>
+        <div className="ps-section-inner">
+          <div className="ps-feature-split">
+            {/* Text column */}
+            <div ref={textRef} className="ps-feature-text on-dark">
+              <span className="ps-eyebrow" style={{ color: "rgba(255,255,255,0.5)" }}>
+                How It Works
+              </span>
+              <h2 id="feature-1-heading">
+                Built for your business,<br />not a template
+              </h2>
+              <p>
+                We spend time inside your operation before writing a single line of code.
+                Every workflow we automate is mapped against how your business actually runs —
+                not how a software vendor thinks it should run.
+              </p>
 
-            <ul className="ps-feature-list" aria-label="Key differentiators">
-              {[
-                "[Differentiator one — specific, outcome-focused]",
-                "[Differentiator two — specific, outcome-focused]",
-                "[Differentiator three — specific, outcome-focused]",
-              ].map((item, i) => (
-                <li key={i} className="ps-feature-list-item on-dark">
-                  <span className="ps-feature-check on-dark" aria-hidden="true">✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
+              <ul className="ps-feature-list" aria-label="Key differentiators">
+                {[
+                  "Deep discovery: we document every manual process first",
+                  "Custom-built systems — no off-the-shelf automation tools",
+                  "Fully handed off with training, docs, and ongoing support",
+                ].map((item, i) => (
+                  <li key={i} className="ps-feature-list-item on-dark">
+                    <span className="ps-feature-check on-dark" aria-hidden="true">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
 
-            <Link href="/why-automation" className="ps-btn-link" style={{ color: "var(--color-accent-cyan)" }}>
-              Why automation works
-              <span className="ps-btn-arrow" aria-hidden="true">→</span>
-            </Link>
-          </div>
+              <Link href="/why-automation" className="ps-btn-link on-dark">
+                Why automation works
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
 
-          {/* Visual column — placeholder for screenshot/illustration */}
-          <div ref={visualRef} className="ps-feature-visual">
-            <div
-              style={{
-                width: "100%",
-                aspectRatio: "4/3",
-                background: "linear-gradient(135deg, rgba(13,149,232,0.12) 0%, rgba(99,91,255,0.12) 50%, rgba(0,72,229,0.08) 100%)",
-                borderRadius: "var(--radius-md)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "column",
-                gap: "16px",
-              }}
-              aria-hidden="true"
-            >
-              {/* Placeholder visual — mockup/screenshot goes here */}
+            {/* Visual column — Stripe bento terminal screenshot */}
+            <div ref={visualRef} className="ps-feature-visual">
               <div
                 style={{
-                  width: "80%",
-                  height: "12px",
-                  background: "rgba(255,255,255,0.08)",
-                  borderRadius: "6px",
-                }}
-              />
-              <div
-                style={{
-                  width: "65%",
-                  height: "12px",
-                  background: "rgba(255,255,255,0.05)",
-                  borderRadius: "6px",
-                }}
-              />
-              <div
-                style={{
-                  width: "72%",
-                  height: "12px",
-                  background: "rgba(255,255,255,0.06)",
-                  borderRadius: "6px",
-                }}
-              />
-              <div
-                style={{
-                  marginTop: "8px",
-                  fontSize: "12px",
-                  color: "var(--color-text-on-dark-muted)",
-                  letterSpacing: "0.05em",
+                  borderRadius: "var(--hds-space-core-radius-md)",
+                  overflow: "hidden",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  boxShadow: "0 40px 80px rgba(0,0,0,0.4)",
                 }}
               >
-                [Feature screenshot / illustration]
+                <Image
+                  src="/images/stripe/bento-terminal.png"
+                  alt="Automation workflow dashboard"
+                  width={600}
+                  height={450}
+                  style={{ width: "100%", height: "auto", display: "block" }}
+                />
               </div>
             </div>
           </div>

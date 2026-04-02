@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
-// Second feature section — light bg, visual left / text right
 export function ServicesOverview() {
   const sectionRef = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -21,7 +21,7 @@ export function ServicesOverview() {
 
       gsap.fromTo(
         visualRef.current,
-        { opacity: 0, x: -32 },
+        { opacity: 0, x: -28 },
         {
           opacity: 1,
           x: 0,
@@ -37,7 +37,7 @@ export function ServicesOverview() {
 
       gsap.fromTo(
         textRef.current,
-        { opacity: 0, x: 32 },
+        { opacity: 0, x: 28 },
         {
           opacity: 1,
           x: 0,
@@ -59,96 +59,63 @@ export function ServicesOverview() {
   return (
     <section
       ref={sectionRef}
-      className="ps-section ps-section-white"
+      className="ps-section ps-section-light"
       id="results"
       aria-labelledby="feature-2-heading"
     >
       <div className="ps-container">
-        <div className="ps-feature-split reversed">
-          {/* Text column (order 2 on desktop via CSS) */}
-          <div ref={textRef} className="ps-feature-text">
-            <span className="ps-eyebrow-light">Real Results</span>
-            <h2 id="feature-2-heading">
-              Measurable Outcomes<br />From Day One
-            </h2>
-            <p>
-              [Feature description — speak to the ROI, time savings, and operational
-              improvements clients see after implementing Preisser Solutions automation.]
-            </p>
+        <div className="ps-section-inner">
+          <div className="ps-feature-split reversed">
+            {/* Text column */}
+            <div ref={textRef} className="ps-feature-text">
+              <span className="ps-eyebrow-light">Real Results</span>
+              <h2 id="feature-2-heading">
+                Measurable outcomes<br />from day one
+              </h2>
+              <p>
+                From Fortune 500-quality efficiency to small business agility —
+                companies use Preisser Solutions to eliminate the manual work
+                that slows their teams down and see results in the first 30 days.
+              </p>
 
-            <ul className="ps-feature-list" aria-label="Result highlights">
-              {[
-                "[Result one — specific metric, e.g. XX% reduction in manual tasks]",
-                "[Result two — specific metric, e.g. X hours saved per week]",
-                "[Result three — specific outcome, e.g. zero missed follow-ups]",
-              ].map((item, i) => (
-                <li key={i} className="ps-feature-list-item">
-                  <span className="ps-feature-check" aria-hidden="true">✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
+              <ul className="ps-feature-list" aria-label="Result highlights">
+                {[
+                  "40%+ average reduction in administrative overhead",
+                  "10+ hours saved per employee per week",
+                  "Zero missed follow-ups — every lead is contacted automatically",
+                ].map((item, i) => (
+                  <li key={i} className="ps-feature-list-item">
+                    <span className="ps-feature-check" aria-hidden="true">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
 
-            <Link href="/roi-calculator" className="ps-btn-primary">
-              Estimate your ROI
-              <span className="ps-btn-arrow" aria-hidden="true">→</span>
-            </Link>
-          </div>
+              <Link href="/roi-calculator" className="ps-btn-primary">
+                Estimate your ROI
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
 
-          {/* Visual column (order 1 on desktop via CSS) */}
-          <div ref={visualRef} className="ps-feature-visual">
-            <div
-              style={{
-                width: "100%",
-                aspectRatio: "4/3",
-                background: "linear-gradient(135deg, var(--color-light) 0%, rgba(13,149,232,0.06) 50%, var(--color-light) 100%)",
-                borderRadius: "var(--radius-md)",
-                border: "1px solid var(--color-border-light)",
-                boxShadow: "var(--shadow-lg)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "column",
-                gap: "16px",
-              }}
-              aria-hidden="true"
-            >
-              {/* Placeholder for results dashboard screenshot */}
+            {/* Visual column */}
+            <div ref={visualRef} className="ps-feature-visual">
               <div
                 style={{
-                  width: "80%",
-                  height: "12px",
-                  background: "var(--color-border-light)",
-                  borderRadius: "6px",
-                }}
-              />
-              <div
-                style={{
-                  width: "65%",
-                  height: "12px",
-                  background: "var(--color-border-light)",
-                  borderRadius: "6px",
-                  opacity: 0.7,
-                }}
-              />
-              <div
-                style={{
-                  width: "72%",
-                  height: "12px",
-                  background: "var(--color-border-light)",
-                  borderRadius: "6px",
-                  opacity: 0.5,
-                }}
-              />
-              <div
-                style={{
-                  marginTop: "8px",
-                  fontSize: "12px",
-                  color: "var(--color-text-muted)",
-                  letterSpacing: "0.05em",
+                  borderRadius: "var(--hds-space-core-radius-md)",
+                  overflow: "hidden",
+                  border: "1px solid var(--hds-color-surface-border-quiet)",
+                  boxShadow: "var(--shadow-lg)",
                 }}
               >
-                [Results dashboard / screenshot]
+                <Image
+                  src="/images/stripe/DatavizStatic3x.png"
+                  alt="Business metrics dashboard showing automation results"
+                  width={600}
+                  height={450}
+                  style={{ width: "100%", height: "auto", display: "block" }}
+                />
               </div>
             </div>
           </div>

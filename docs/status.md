@@ -5,6 +5,38 @@
 
 ---
 
+## 2026-04-02 — Stripe Exact Clone (Session 4 — HDS Token System + Real Images)
+
+### What Happened
+- **Complete rebuild to match Stripe.com exactly** — not "inspired by", a visual clone with PS content
+- **`src/styles/globals.css`** — Fully rewritten with Stripe's actual HDS CSS tokens (`--hds-color-*`, `--hds-space-core-*`, `--hds-font-weight-*`, `--hds-space-core-radius-*`). Stripe's actual shadow values (`rgba(50,50,93,...)`, `rgba(0,0,0,...)`). Stripe's actual section padding system (96px desktop, 60px mobile). Stripe's service card grid (1px-gap grid = border effect). Stripe's footer dark layout.
+- **`public/images/stripe/`** — All 40 Stripe images copied from saved site (testimonial headshots, enterprise accordion, bento terminal, data viz, happenings cards, customer logos)
+- **`src/components/home/hero.tsx`** — Stripe's actual hero: animated radial gradient mesh cycling through purple/blue/teal/green, wave texture overlay, 67px desktop H1, gradient-clipped highlight text, dark fill + ghost CTAs matching Stripe exactly
+- **`src/components/home/personal-commitment.tsx`** — Uses actual Stripe customer logos (Supabase, Linear, Runway, etc.) from `public/images/stripe/`
+- **`src/components/home/value-props.tsx`** — Stripe's "Fully Integrated Suite" 1px-gap bordered card grid with SVG icons, per-card colors, hover highlight
+- **`src/components/home/how-it-works.tsx`** — Dark feature split using `bento-terminal.png` as the visual
+- **`src/components/home/services-overview.tsx`** — Light feature split using `DatavizStatic3x.png` as the visual
+- **`src/components/home/social-proof.tsx`** — Real testimonial headshots from Stripe's `testimonial-headshot-*.png` files
+- **`src/components/home/enterprise-section.tsx`** — NEW: Stripe's enterprise dark section + 2x2 accordion image grid using `enterprise-accordion-*.png`
+- **`src/components/home/happenings.tsx`** — NEW: Stripe's "The Happenings" horizontal scroll carousel using `the-happenings-*.png` images
+- **`src/components/home/cta-section.tsx`** — Stripe's final CTA: white button on dark bg, ghost secondary
+- **`src/components/layout/header.tsx`** — Stripe's exact nav: white CTA on dark bg, text links at 0.72 opacity
+- **`src/components/layout/footer.tsx`** — Stripe's exact footer: dark `#091e35`, 4-column grid, grayscale logo
+- **`src/app/page.tsx`** — Updated section order: Hero → LogoBar+Stats → ServiceGrid → Enterprise → Feature1 → Feature2 → Happenings → Testimonials → CTA
+
+### Current State
+- **Builds**: Clean ✓ — `npm run build` passes, 9 static pages, 0 errors
+- **Visual target**: "Wait, is this Stripe?" reaction before reading the text
+- **Images**: 40 Stripe images in `public/images/stripe/` serving as placeholders
+
+### Next Steps
+1. Replace Stripe customer logos with actual PS client logos
+2. Replace bento/dataviz placeholder screenshots with PS product screenshots
+3. Populate all placeholder text with real copy
+4. Test on mobile devices for carousel scroll behavior
+
+---
+
 ## 2026-04-02 — Complete Visual Rebuild (Session 3 — Stripe × Tyler Fusion)
 
 ### What Happened

@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 
-// Standalone CTA section — rendered by home page just before footer
 export function CtaSection() {
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -21,12 +20,12 @@ export function CtaSection() {
 
       gsap.fromTo(
         contentRef.current.children,
-        { opacity: 0, y: 28 },
+        { opacity: 0, y: 24 },
         {
           opacity: 1,
           y: 0,
           duration: 0.65,
-          stagger: 0.12,
+          stagger: 0.1,
           ease: "power2.out",
           scrollTrigger: {
             trigger: contentRef.current,
@@ -49,20 +48,36 @@ export function CtaSection() {
       {/* Glow orb */}
       <div className="ps-cta-glow" aria-hidden="true" />
 
+      {/* Subtle gradient accent */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: "1px",
+          background: "linear-gradient(to right, transparent, rgba(99,91,255,0.3), transparent)",
+        }}
+        aria-hidden="true"
+      />
+
       <div className="ps-cta-content" ref={contentRef}>
-        <span className="ps-eyebrow">Ready to Automate?</span>
-        <h2 id="cta-heading">Stop Doing What a System Can Do</h2>
+        <span className="ps-eyebrow" style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px" }}>
+          Ready to Automate?
+        </span>
+        <h2 id="cta-heading">
+          Stop doing what<br />a system can do
+        </h2>
         <p>
-          [CTA body — two sentences that create urgency and invite the prospect
-          to take the next step. No-pressure, outcome-focused.]
+          Get a free 30-minute consultation where we map out which parts of your
+          business are ready to automate — and what it&apos;ll actually save you.
         </p>
         <div className="ps-cta-buttons">
-          <Link href="/contact" className="ps-btn-primary">
-            Get a Free Consultation
-            <span className="ps-btn-arrow" aria-hidden="true">→</span>
+          <Link href="/contact" className="ps-btn-primary-dark">
+            Start now
           </Link>
           <Link href="/roi-calculator" className="ps-btn-secondary">
-            Estimate Your ROI
+            Estimate your ROI
           </Link>
         </div>
       </div>

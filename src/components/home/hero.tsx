@@ -14,8 +14,10 @@ export function Hero() {
     const prefersReduced =
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    const els = [eyebrowRef, headlineRef, subtitleRef, ctasRef, scrollRef];
+
     if (prefersReduced) {
-      [eyebrowRef, headlineRef, subtitleRef, ctasRef, scrollRef].forEach((r) => {
+      els.forEach((r) => {
         if (r.current) {
           r.current.style.opacity = "1";
           r.current.style.transform = "none";
@@ -25,69 +27,69 @@ export function Hero() {
     }
 
     import("@/lib/gsap").then(({ gsap }) => {
-      const tl = gsap.timeline({ delay: 0.1 });
+      const tl = gsap.timeline({ delay: 0.15 });
       tl
         .to(eyebrowRef.current, {
           opacity: 1,
           y: 0,
-          duration: 0.5,
+          duration: 0.55,
           ease: "power2.out",
         })
         .to(
           headlineRef.current,
-          { opacity: 1, y: 0, duration: 0.65, ease: "power3.out" },
-          "-=0.25"
+          { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" },
+          "-=0.3"
         )
         .to(
           subtitleRef.current,
+          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+          "-=0.35"
+        )
+        .to(
+          ctasRef.current,
           { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" },
           "-=0.3"
         )
         .to(
-          ctasRef.current,
-          { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-          "-=0.25"
-        )
-        .to(
           scrollRef.current,
-          { opacity: 1, duration: 0.4, ease: "power1.out" },
-          "-=0.05"
+          { opacity: 1, duration: 0.5, ease: "power1.out" },
+          "-=0.1"
         );
     });
   }, []);
 
   return (
     <section className="ps-hero" aria-label="Hero — Preisser Solutions">
-      {/* Animated gradient mesh */}
+      {/* Animated gradient mesh — Stripe signature */}
       <div className="ps-hero-bg" aria-hidden="true" />
 
-      {/* Central glow */}
-      <div className="ps-hero-glow" aria-hidden="true" />
+      {/* Wave texture overlay */}
+      <div className="ps-hero-wave" aria-hidden="true" />
 
       {/* Content */}
       <div className="ps-hero-content">
         <div ref={eyebrowRef} className="ps-hero-eyebrow">
           <span className="ps-hero-dot" aria-hidden="true" />
-          Business Automation Solutions
+          Business Automation Infrastructure
         </div>
 
         <h1 ref={headlineRef} className="ps-hero-headline">
-          Automate What{" "}
-          <span className="ps-highlight">Slows&nbsp;You&nbsp;Down</span>
+          Automation infrastructure to{" "}
+          <span className="ps-highlight">grow your business</span>
         </h1>
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
-          [Hero tagline — one or two sentences describing the core value proposition
-          of the business automation services. Bold, outcome-focused.]
+          Join the businesses of all sizes that use Preisser Solutions to
+          eliminate manual work, embed AI into operations, power custom
+          workflows, and build a more profitable company.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
-          <Link href="/contact" className="ps-btn-primary">
-            Get a Free Consultation
-            <span className="ps-btn-arrow" aria-hidden="true">→</span>
+          <Link href="/contact" className="ps-btn-primary-dark">
+            Start now
           </Link>
-          <Link href="/roi-calculator" className="ps-btn-secondary">
-            Estimate Your ROI
+          <Link href="/contact" className="ps-btn-secondary">
+            Contact sales
           </Link>
         </div>
       </div>
