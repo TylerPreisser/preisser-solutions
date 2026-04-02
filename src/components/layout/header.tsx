@@ -31,7 +31,7 @@ export function Header() {
     return () => document.body.classList.remove("nav-open");
   }, [navOpen]);
 
-  // Separate the "Inquiry" link (last one — pill CTA) from the nav links
+  // Last nav link is the CTA pill
   const navLinks = navigation.links.slice(0, -1);
   const ctaLink = navigation.links[navigation.links.length - 1];
 
@@ -50,29 +50,15 @@ export function Header() {
         >
           <Image
             src="/images/LOGO.png"
-            alt="Preisser Solutions Logo"
-            width={220}
-            height={44}
+            alt="Preisser Solutions"
+            width={200}
+            height={40}
             className="ps-logo"
             priority
           />
         </Link>
 
-        {/* Hamburger (mobile) */}
-        <button
-          className="ps-hamburger"
-          aria-controls="primary-navigation"
-          aria-expanded={navOpen}
-          aria-label={navOpen ? "Close menu" : "Open menu"}
-          onClick={() => setNavOpen((prev) => !prev)}
-        >
-          <span className="ps-sr-only">Menu</span>
-          <span className="ps-hamburger-bar" />
-          <span className="ps-hamburger-bar" />
-          <span className="ps-hamburger-bar" />
-        </button>
-
-        {/* Navigation */}
+        {/* Desktop nav */}
         <nav
           className="ps-primary-nav"
           id="primary-navigation"
@@ -90,7 +76,6 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
-            {/* CTA pill */}
             <Link
               href={ctaLink.href}
               id={ctaLink.id}
@@ -101,6 +86,20 @@ export function Header() {
             </Link>
           </div>
         </nav>
+
+        {/* Hamburger (mobile only) */}
+        <button
+          className="ps-hamburger"
+          aria-controls="primary-navigation"
+          aria-expanded={navOpen}
+          aria-label={navOpen ? "Close menu" : "Open menu"}
+          onClick={() => setNavOpen((prev) => !prev)}
+        >
+          <span className="ps-sr-only">Menu</span>
+          <span className="ps-hamburger-bar" />
+          <span className="ps-hamburger-bar" />
+          <span className="ps-hamburger-bar" />
+        </button>
       </div>
     </header>
   );

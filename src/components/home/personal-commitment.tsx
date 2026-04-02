@@ -1,89 +1,110 @@
 "use client";
 
+// Logo bar + Stats bar — sits between hero and the service cards section
+// This replaces the old PersonalCommitment component in the section order.
+// The Tyler personal commitment quote moves to a standalone section below.
+
 import { useEffect, useRef } from "react";
-import Image from "next/image";
+
+const stats = [
+  { number: "XX", suffix: "%", label: "Faster than manual processes" },
+  { number: "$X", suffix: "M+", label: "Saved for clients" },
+  { number: "XXX", suffix: "+", label: "Automations deployed" },
+  { number: "24/7", suffix: "", label: "System uptime, no downtime" },
+];
+
+// Placeholder company logos (gray rectangles of varying widths)
+const logoWidths = [88, 72, 96, 80, 110, 68, 92];
 
 export function PersonalCommitment() {
-  const sectionRef = useRef<HTMLElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     import("@/lib/gsap").then(({ gsap, ScrollTrigger }) => {
-      if (!sectionRef.current) return;
+      if (logoRef.current) {
+        gsap.fromTo(
+          logoRef.current,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: logoRef.current,
+              start: "top 90%",
+              once: true,
+            },
+          }
+        );
+      }
 
-      const heading = sectionRef.current.querySelector(".ps-commitment-header");
-      const subtitle = sectionRef.current.querySelector(".ps-commitment-subtitle");
-      const text = sectionRef.current.querySelector(".ps-commitment-text");
-      const visual = sectionRef.current.querySelector(".ps-commitment-visual");
+      if (statsRef.current) {
+        const items = statsRef.current.querySelectorAll<HTMLElement>(".ps-stat-item-inner");
+        gsap.fromTo(
+          items,
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.55,
+            stagger: 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: statsRef.current,
+              start: "top 88%",
+              once: true,
+            },
+          }
+        );
+      }
 
-      const targets = [heading, subtitle, text, visual].filter(Boolean);
-
-      gsap.fromTo(
-        targets,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          stagger: 0.15,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            once: true,
-          },
-        }
-      );
-
-      return () => {
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-      };
+      return () => ScrollTrigger.getAll().forEach((t) => t.kill());
     });
   }, []);
 
   return (
-    <section
-      id="personal-commitment"
-      className="ps-commitment-section"
-      ref={sectionRef}
-    >
-      <div className="ps-container">
-        <h2 className="ps-commitment-header">
-          Beyond Software: Your Dedicated Automation Experts
-        </h2>
-        <p className="ps-commitment-subtitle">Why wouldn&apos;t I just contract it out?</p>
-
-        <div className="ps-commitment-content">
-          <div className="ps-commitment-text">
-            <div className="ps-commitment-text-quote">
-              <p>
-                &ldquo;You hire a firm to complete a specific task, you and your team still have to
-                support and facilitate all of that outside help. At Preisser Solutions, we personally
-                dive deep to understand your unique business&mdash;its specific bottlenecks, strengths
-                and struggles. We then design and build custom solutions and automated systems tailored
-                precisely to your business and industry. You&apos;re not just getting a service;
-                you&apos;re getting a custom internal solution developed only for you. Part of our
-                service is the upkeep and adaptation of our systems as long as we are your solution.
-                This ensures all solutions we come up with fit seamlessly and deliver maximum efficiency
-                without unnecessary disruptions.&rdquo;
-              </p>
-            </div>
-            <p className="signature">— Tyler Preisser</p>
-          </div>
-
-          <div className="ps-commitment-visual">
-            <Image
-              src="/images/Tyler Portait.jpeg"
-              alt="Tyler Preisser — Founder, Preisser Solutions"
-              width={320}
-              height={320}
-              className="ps-tyler-photo"
-              loading="lazy"
-            />
+    <>
+      {/* Logo Bar */}
+      <div className="ps-logo-bar" ref={logoRef}>
+        <div className="ps-container">
+          <p className="ps-logo-bar-label">Trusted by businesses across industries</p>
+          <div className="ps-logo-grid" aria-label="Trusted companies (placeholder logos)">
+            {logoWidths.map((w, i) => (
+              <div
+                key={i}
+                className="ps-logo-placeholder"
+                style={{ width: `${w}px` }}
+                aria-hidden="true"
+              />
+            ))}
           </div>
         </div>
       </div>
-    </section>
+
+      {/* Stats Bar */}
+      <div className="ps-stats-bar">
+        <div className="ps-container">
+          <div className="ps-stats-grid" ref={statsRef} role="list" aria-label="Key statistics">
+            {stats.map((stat, i) => (
+              <div
+                key={i}
+                className={`ps-stat-item-inner${i < stats.length - 1 ? " ps-stat-divider" : ""}`}
+                role="listitem"
+              >
+                <div className="ps-stat-number">
+                  {stat.number}
+                  <span className="ps-stat-accent">{stat.suffix}</span>
+                </div>
+                <div className="ps-stat-label">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
