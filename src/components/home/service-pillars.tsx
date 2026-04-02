@@ -1,417 +1,387 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
+
+/* ─────────────────────────────────────────────────────────────
+   SERVICE DATA
+   ───────────────────────────────────────────────────────────── */
 
 interface ServicePillar {
   title: string;
   description: string;
-  colors: [string, string, string];
   href: string;
-  animationType: "nodes" | "gears" | "wires" | "bars" | "pulses";
+  visual: React.ReactNode;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   VISUAL 1 — Websites & Applications
+   Mini browser chrome + simplified site layout
+   ───────────────────────────────────────────────────────────── */
+function WebsiteVisual() {
+  return (
+    <div className="ps-visual-website" aria-hidden="true">
+      {/* Browser chrome bar */}
+      <div className="ps-browser-chrome">
+        <div className="ps-browser-dots">
+          <span style={{ background: "#FF5F57" }} />
+          <span style={{ background: "#FEBC2E" }} />
+          <span style={{ background: "#28C840" }} />
+        </div>
+        <div className="ps-browser-url">
+          <span className="ps-browser-url-lock">
+            <svg width="8" height="9" viewBox="0 0 8 9" fill="none">
+              <rect x="1" y="4" width="6" height="4" rx="1" fill="#94A3B8" />
+              <path d="M2.5 4V2.5a1.5 1.5 0 013 0V4" stroke="#94A3B8" strokeWidth="1" fill="none" />
+            </svg>
+          </span>
+          yourcompany.com
+        </div>
+      </div>
+
+      {/* Simulated website layout */}
+      <div className="ps-site-layout">
+        {/* Dark nav */}
+        <div className="ps-site-nav">
+          <div className="ps-site-nav-logo" />
+          <div className="ps-site-nav-dots">
+            <span /><span /><span />
+          </div>
+        </div>
+
+        {/* Hero */}
+        <div className="ps-site-hero">
+          <div className="ps-site-hero-heading" />
+          <div className="ps-site-hero-sub" />
+          <div className="ps-site-hero-sub ps-site-hero-sub--short" />
+        </div>
+
+        {/* 3-column card row */}
+        <div className="ps-site-cards">
+          <div className="ps-site-card">
+            <div className="ps-site-card-icon" />
+            <div className="ps-site-card-line" />
+            <div className="ps-site-card-line ps-site-card-line--short" />
+          </div>
+          <div className="ps-site-card">
+            <div className="ps-site-card-icon" style={{ background: "rgba(99,91,255,0.5)" }} />
+            <div className="ps-site-card-line" />
+            <div className="ps-site-card-line ps-site-card-line--short" />
+          </div>
+          <div className="ps-site-card">
+            <div className="ps-site-card-icon" style={{ background: "rgba(128,233,255,0.4)" }} />
+            <div className="ps-site-card-line" />
+            <div className="ps-site-card-line ps-site-card-line--short" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VISUAL 2 — Automation Systems
+   Left-to-right workflow nodes with animated dashed paths
+   ───────────────────────────────────────────────────────────── */
+function AutomationVisual() {
+  const nodes = [
+    { label: "Trigger", icon: "⚡", color: "#635BFF" },
+    { label: "Process", icon: "⚙", color: "#8B5CF6" },
+    { label: "AI", icon: "◈", color: "#A855F7" },
+    { label: "Output", icon: "✓", color: "#C084FC" },
+  ];
+
+  return (
+    <div className="ps-visual-automation" aria-hidden="true">
+      <div className="ps-flow-container">
+        {nodes.map((node, i) => (
+          <div key={node.label} className="ps-flow-step">
+            {/* Node */}
+            <div className="ps-flow-node" style={{ borderColor: node.color + "60", boxShadow: `0 0 12px ${node.color}22` }}>
+              <div className="ps-flow-node-icon" style={{ color: node.color }}>
+                {node.icon}
+              </div>
+              <div className="ps-flow-node-label">{node.label}</div>
+            </div>
+            {/* Connector arrow — not after last node */}
+            {i < nodes.length - 1 && (
+              <div className="ps-flow-connector">
+                <svg
+                  width="40"
+                  height="16"
+                  viewBox="0 0 40 16"
+                  fill="none"
+                  className="ps-flow-connector-svg"
+                >
+                  <line
+                    x1="0"
+                    y1="8"
+                    x2="34"
+                    y2="8"
+                    stroke={node.color}
+                    strokeWidth="1.5"
+                    strokeDasharray="4 3"
+                    className={`ps-dash-flow ps-dash-flow--${i}`}
+                  />
+                  <polyline
+                    points="30,4 36,8 30,12"
+                    stroke={node.color}
+                    strokeWidth="1.5"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Animated pulse dot that travels across the entire flow */}
+      <div className="ps-flow-pulse-track">
+        <div className="ps-flow-pulse-dot" />
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VISUAL 3 — System Fixes & Efficiency
+   Disconnected apps on left → unified dashboard on right
+   with animated data flow lines
+   ───────────────────────────────────────────────────────────── */
+function SystemFixesVisual() {
+  const sources = [
+    { label: "CRM", color: "#0D95E8" },
+    { label: "Acctg", color: "#00D4AA" },
+    { label: "Sched", color: "#34d399" },
+  ];
+
+  return (
+    <div className="ps-visual-systems" aria-hidden="true">
+      {/* Source apps — left */}
+      <div className="ps-sys-sources">
+        {sources.map((src, i) => (
+          <div
+            key={src.label}
+            className={`ps-sys-source ps-sys-source--${i}`}
+            style={{ borderColor: src.color + "50", boxShadow: `0 0 8px ${src.color}20` }}
+          >
+            <div className="ps-sys-source-dot" style={{ background: src.color }} />
+            <span className="ps-sys-source-label">{src.label}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Animated connection lines — SVG */}
+      <div className="ps-sys-connections">
+        <svg width="100%" height="100%" viewBox="0 0 80 120" preserveAspectRatio="none">
+          {/* Lines from each source to the center of the dashboard */}
+          {[0, 1, 2].map((i) => {
+            const y1 = 20 + i * 40; // source midpoints at y=20, 60, 100
+            const colors = ["#0D95E8", "#00D4AA", "#34d399"];
+            return (
+              <line
+                key={i}
+                x1="0"
+                y1={y1}
+                x2="80"
+                y2="60"
+                stroke={colors[i]}
+                strokeWidth="1.5"
+                strokeDasharray="5 4"
+                className={`ps-sys-line ps-sys-line--${i}`}
+              />
+            );
+          })}
+        </svg>
+      </div>
+
+      {/* Unified dashboard — right */}
+      <div className="ps-sys-dashboard">
+        <div className="ps-sys-dashboard-header">
+          <div className="ps-sys-dashboard-dot ps-sys-dashboard-dot--green" />
+          <span>Unified</span>
+        </div>
+        <div className="ps-sys-dashboard-bars">
+          <div className="ps-sys-bar ps-sys-bar--1" />
+          <div className="ps-sys-bar ps-sys-bar--2" />
+          <div className="ps-sys-bar ps-sys-bar--3" />
+          <div className="ps-sys-bar ps-sys-bar--4" />
+        </div>
+        <div className="ps-sys-metric">
+          <span className="ps-sys-metric-value" style={{ color: "#00D4AA" }}>+34%</span>
+          <span className="ps-sys-metric-label">efficiency</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VISUAL 4 — Dashboards & Business Intelligence
+   Bar chart + animated SVG line graph + metric chips
+   ───────────────────────────────────────────────────────────── */
+function DashboardVisual() {
+  // Bar heights as percentages
+  const bars = [45, 70, 55, 85, 60, 90];
+
+  return (
+    <div className="ps-visual-dashboard" aria-hidden="true">
+      {/* Header row with metric chips */}
+      <div className="ps-dash-header">
+        <div className="ps-dash-metric">
+          <span className="ps-dash-metric-num" style={{ color: "#F59E0B" }}>$2.4M</span>
+          <span className="ps-dash-metric-label">Revenue</span>
+        </div>
+        <div className="ps-dash-metric">
+          <span className="ps-dash-metric-num" style={{ color: "#34d399" }}>↑ 18%</span>
+          <span className="ps-dash-metric-label">Growth</span>
+        </div>
+        <div className="ps-dash-metric">
+          <span className="ps-dash-metric-num" style={{ color: "#0D95E8" }}>94%</span>
+          <span className="ps-dash-metric-label">Retention</span>
+        </div>
+      </div>
+
+      {/* Bar chart */}
+      <div className="ps-dash-bars">
+        {bars.map((h, i) => (
+          <div key={i} className="ps-dash-bar-wrap">
+            <div
+              className={`ps-dash-bar ps-dash-bar--${i}`}
+              style={{ height: `${h}%` }}
+            />
+          </div>
+        ))}
+      </div>
+      <div className="ps-dash-baseline" />
+
+      {/* Animated SVG line graph */}
+      <div className="ps-dash-line-graph">
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 200 50"
+          preserveAspectRatio="none"
+          className="ps-dash-line-svg"
+        >
+          <defs>
+            <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#F59E0B" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          {/* Fill area under the line */}
+          <path
+            d="M0,40 L30,32 L60,26 L90,20 L120,14 L150,10 L180,6 L200,4 L200,50 L0,50 Z"
+            fill="url(#lineGrad)"
+          />
+          {/* The line itself — animated draw */}
+          <path
+            d="M0,40 L30,32 L60,26 L90,20 L120,14 L150,10 L180,6 L200,4"
+            stroke="#F59E0B"
+            strokeWidth="1.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="ps-line-draw"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VISUAL 5 — Revenue Growth Engines
+   Funnel with falling dots and stage labels
+   ───────────────────────────────────────────────────────────── */
+function RevenueVisual() {
+  return (
+    <div className="ps-visual-revenue" aria-hidden="true">
+      {/* Funnel shape built from divs */}
+      <div className="ps-funnel">
+        {/* Falling dots layer — rendered above funnel via z-index */}
+        <div className="ps-funnel-drops">
+          {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className={`ps-drop ps-drop--${i}`} />
+          ))}
+        </div>
+
+        <div className="ps-funnel-stage ps-funnel-stage--top">
+          <div className="ps-funnel-label">Leads</div>
+          <div className="ps-funnel-bar" style={{ width: "100%", background: "rgba(34,197,94,0.15)", borderColor: "rgba(34,197,94,0.3)" }} />
+        </div>
+        <div className="ps-funnel-stage ps-funnel-stage--mid">
+          <div className="ps-funnel-label">Engaged</div>
+          <div className="ps-funnel-bar" style={{ width: "68%", background: "rgba(34,197,94,0.22)", borderColor: "rgba(34,197,94,0.4)" }} />
+        </div>
+        <div className="ps-funnel-stage ps-funnel-stage--bottom">
+          <div className="ps-funnel-label">Converted</div>
+          <div className="ps-funnel-bar" style={{ width: "36%", background: "rgba(34,197,94,0.35)", borderColor: "rgba(34,197,94,0.6)" }} />
+        </div>
+
+        {/* Revenue output */}
+        <div className="ps-funnel-output">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ display: "inline" }}>
+            <circle cx="8" cy="8" r="7" fill="rgba(34,197,94,0.2)" stroke="#22C55E" strokeWidth="1" />
+            <path d="M5 8l2 2 4-4" stroke="#22C55E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span className="ps-funnel-output-text">Revenue</span>
+          <span className="ps-funnel-output-num">+247%</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SERVICE DATA
+   ───────────────────────────────────────────────────────────── */
 
 const services: ServicePillar[] = [
   {
     title: "Websites & Applications",
     description:
       "Professional sites, custom apps, client portals, e-commerce — built from scratch, built to perform.",
-    colors: ["#0D95E8", "#635BFF", "#80E9FF"],
-    animationType: "nodes",
     href: "/services",
+    visual: <WebsiteVisual />,
   },
   {
     title: "Automation Systems",
     description:
       "AI-powered engines that handle your repetitive work — invoicing, outreach, document processing, you name it.",
-    colors: ["#635BFF", "#a855f7", "#c084fc"],
-    animationType: "gears",
     href: "/services",
+    visual: <AutomationVisual />,
   },
   {
     title: "System Fixes & Efficiency",
     description:
       "Something's slow, broken, or redundant? We find it and fix it with better tech.",
-    colors: ["#00D4AA", "#0D95E8", "#34d399"],
-    animationType: "wires",
     href: "/services",
+    visual: <SystemFixesVisual />,
   },
   {
     title: "Dashboards & Business Intelligence",
     description:
       "See your business clearly. Real-time data, live reporting, actionable insight.",
-    colors: ["#F59E0B", "#EF4444", "#fbbf24"],
-    animationType: "bars",
     href: "/services",
+    visual: <DashboardVisual />,
   },
   {
-    title: "Marketing & Growth Engines",
+    title: "Revenue Growth Engines",
     description:
-      "Automated content, email, SMS, SEO — lead generation systems that run without you.",
-    colors: ["#EF4444", "#635BFF", "#f87171"],
-    animationType: "pulses",
+      "Automated lead generation, content engines, and conversion systems that drive revenue while you focus on running your business.",
     href: "/services",
+    visual: <RevenueVisual />,
   },
 ];
 
-// Each animation draws onto its own canvas
-function animateNodes(
-  ctx: CanvasRenderingContext2D,
-  w: number,
-  h: number,
-  t: number,
-  colors: string[]
-) {
-  // Floating connected nodes — represents interconnected systems
-  const nodeCount = 12;
-  ctx.clearRect(0, 0, w, h);
-
-  const nodes: { x: number; y: number }[] = [];
-  for (let i = 0; i < nodeCount; i++) {
-    const angle = (i / nodeCount) * Math.PI * 2 + t * 0.3;
-    const rx = w * 0.3 + Math.sin(t * 0.5 + i * 0.8) * w * 0.12;
-    const ry = h * 0.3 + Math.cos(t * 0.4 + i * 1.1) * h * 0.1;
-    nodes.push({
-      x: w / 2 + Math.cos(angle) * rx,
-      y: h / 2 + Math.sin(angle) * ry,
-    });
-  }
-
-  // Draw connections
-  for (let i = 0; i < nodes.length; i++) {
-    for (let j = i + 1; j < nodes.length; j++) {
-      const dx = nodes[i].x - nodes[j].x;
-      const dy = nodes[i].y - nodes[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < w * 0.4) {
-        const alpha = (1 - dist / (w * 0.4)) * 0.3;
-        ctx.strokeStyle = `${colors[0]}${Math.round(alpha * 255).toString(16).padStart(2, "0")}`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(nodes[i].x, nodes[i].y);
-        ctx.lineTo(nodes[j].x, nodes[j].y);
-        ctx.stroke();
-      }
-    }
-  }
-
-  // Draw nodes
-  for (let i = 0; i < nodes.length; i++) {
-    const pulse = 1 + Math.sin(t * 2 + i) * 0.3;
-    const r = 4 * pulse;
-    const grd = ctx.createRadialGradient(
-      nodes[i].x, nodes[i].y, 0,
-      nodes[i].x, nodes[i].y, r * 3
-    );
-    grd.addColorStop(0, colors[i % 3]);
-    grd.addColorStop(1, "transparent");
-    ctx.fillStyle = grd;
-    ctx.beginPath();
-    ctx.arc(nodes[i].x, nodes[i].y, r * 3, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = colors[i % 3];
-    ctx.beginPath();
-    ctx.arc(nodes[i].x, nodes[i].y, r, 0, Math.PI * 2);
-    ctx.fill();
-  }
-}
-
-function animateGears(
-  ctx: CanvasRenderingContext2D,
-  w: number,
-  h: number,
-  t: number,
-  colors: string[]
-) {
-  // Interlocking circles rotating — represents automation
-  ctx.clearRect(0, 0, w, h);
-
-  const gears = [
-    { x: w * 0.35, y: h * 0.4, r: w * 0.18, speed: 1, teeth: 8 },
-    { x: w * 0.65, y: h * 0.45, r: w * 0.14, speed: -1.3, teeth: 6 },
-    { x: w * 0.5, y: h * 0.7, r: w * 0.1, speed: 1.8, teeth: 5 },
-  ];
-
-  gears.forEach((gear, gi) => {
-    const angle = t * gear.speed * 0.5;
-    ctx.save();
-    ctx.translate(gear.x, gear.y);
-    ctx.rotate(angle);
-
-    // Outer ring
-    ctx.strokeStyle = `${colors[gi]}60`;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(0, 0, gear.r, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // Teeth
-    for (let i = 0; i < gear.teeth; i++) {
-      const a = (i / gear.teeth) * Math.PI * 2;
-      const x1 = Math.cos(a) * gear.r;
-      const y1 = Math.sin(a) * gear.r;
-      const x2 = Math.cos(a) * (gear.r + 8);
-      const y2 = Math.sin(a) * (gear.r + 8);
-      ctx.strokeStyle = `${colors[gi]}80`;
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x2, y2);
-      ctx.stroke();
-    }
-
-    // Inner glow
-    const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, gear.r);
-    grd.addColorStop(0, `${colors[gi]}18`);
-    grd.addColorStop(1, "transparent");
-    ctx.fillStyle = grd;
-    ctx.beginPath();
-    ctx.arc(0, 0, gear.r, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Center dot
-    ctx.fillStyle = colors[gi];
-    ctx.beginPath();
-    ctx.arc(0, 0, 4, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.restore();
-  });
-}
-
-function animateWires(
-  ctx: CanvasRenderingContext2D,
-  w: number,
-  h: number,
-  t: number,
-  colors: string[]
-) {
-  // Flowing data lines — represents system connections
-  ctx.clearRect(0, 0, w, h);
-
-  for (let i = 0; i < 8; i++) {
-    const y = (h / 9) * (i + 1);
-    const offset = t * 60 + i * 40;
-
-    ctx.strokeStyle = `${colors[i % 3]}30`;
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-
-    for (let x = 0; x < w; x += 4) {
-      const wave = Math.sin((x + offset) * 0.02 + i) * 8;
-      ctx.lineTo(x, y + wave);
-    }
-    ctx.stroke();
-
-    // Traveling pulse dot
-    const pulseX = ((t * 80 + i * 120) % (w + 100)) - 50;
-    const pulseY = y + Math.sin((pulseX + offset) * 0.02 + i) * 8;
-
-    const grd = ctx.createRadialGradient(pulseX, pulseY, 0, pulseX, pulseY, 12);
-    grd.addColorStop(0, colors[i % 3]);
-    grd.addColorStop(1, "transparent");
-    ctx.fillStyle = grd;
-    ctx.beginPath();
-    ctx.arc(pulseX, pulseY, 12, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = colors[i % 3];
-    ctx.beginPath();
-    ctx.arc(pulseX, pulseY, 3, 0, Math.PI * 2);
-    ctx.fill();
-  }
-}
-
-function animateBars(
-  ctx: CanvasRenderingContext2D,
-  w: number,
-  h: number,
-  t: number,
-  colors: string[]
-) {
-  // Animated bar chart — represents data/dashboards
-  ctx.clearRect(0, 0, w, h);
-
-  const barCount = 10;
-  const barW = (w - 40) / barCount - 4;
-  const maxH = h * 0.7;
-
-  for (let i = 0; i < barCount; i++) {
-    const x = 20 + i * (barW + 4);
-    const barH =
-      maxH * (0.3 + 0.7 * Math.abs(Math.sin(t * 0.8 + i * 0.6)));
-    const y = h - 20 - barH;
-
-    const grd = ctx.createLinearGradient(x, y, x, h - 20);
-    grd.addColorStop(0, colors[i % 3]);
-    grd.addColorStop(1, `${colors[i % 3]}40`);
-    ctx.fillStyle = grd;
-
-    // Rounded top
-    const r = Math.min(barW / 2, 4);
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + barW - r, y);
-    ctx.quadraticCurveTo(x + barW, y, x + barW, y + r);
-    ctx.lineTo(x + barW, h - 20);
-    ctx.lineTo(x, h - 20);
-    ctx.lineTo(x, y + r);
-    ctx.quadraticCurveTo(x, y, x + r, y);
-    ctx.fill();
-  }
-
-  // Baseline
-  ctx.strokeStyle = `${colors[0]}30`;
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(16, h - 20);
-  ctx.lineTo(w - 16, h - 20);
-  ctx.stroke();
-}
-
-function animatePulses(
-  ctx: CanvasRenderingContext2D,
-  w: number,
-  h: number,
-  t: number,
-  colors: string[]
-) {
-  // Radiating signal pulses — represents marketing/outreach
-  ctx.clearRect(0, 0, w, h);
-
-  const cx = w / 2;
-  const cy = h / 2;
-
-  // Radiating rings
-  for (let i = 0; i < 5; i++) {
-    const phase = (t * 0.8 + i * 1.2) % 4;
-    const r = phase * w * 0.15;
-    const alpha = Math.max(0, 1 - phase / 4) * 0.4;
-
-    ctx.strokeStyle = `${colors[i % 3]}${Math.round(alpha * 255).toString(16).padStart(2, "0")}`;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.stroke();
-  }
-
-  // Orbiting dots — signals being sent
-  for (let i = 0; i < 6; i++) {
-    const angle = t * (0.5 + i * 0.15) + (i * Math.PI * 2) / 6;
-    const dist = 30 + i * 15 + Math.sin(t + i) * 10;
-    const x = cx + Math.cos(angle) * dist;
-    const y = cy + Math.sin(angle) * dist;
-
-    const grd = ctx.createRadialGradient(x, y, 0, x, y, 8);
-    grd.addColorStop(0, colors[i % 3]);
-    grd.addColorStop(1, "transparent");
-    ctx.fillStyle = grd;
-    ctx.beginPath();
-    ctx.arc(x, y, 8, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = colors[i % 3];
-    ctx.beginPath();
-    ctx.arc(x, y, 2.5, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  // Center dot
-  const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 20);
-  grd.addColorStop(0, colors[0]);
-  grd.addColorStop(1, "transparent");
-  ctx.fillStyle = grd;
-  ctx.beginPath();
-  ctx.arc(cx, cy, 20, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.fillStyle = "#fff";
-  ctx.beginPath();
-  ctx.arc(cx, cy, 4, 0, Math.PI * 2);
-  ctx.fill();
-}
-
-const animationFns = {
-  nodes: animateNodes,
-  gears: animateGears,
-  wires: animateWires,
-  bars: animateBars,
-  pulses: animatePulses,
-};
-
-function CardCanvas({
-  colors,
-  animationType,
-}: {
-  colors: [string, string, string];
-  animationType: ServicePillar["animationType"];
-}) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const startAnimation = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const prefersReduced =
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    let animId = 0;
-    let t = 0;
-
-    function resize() {
-      if (!canvas) return;
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
-
-    const drawFn = animationFns[animationType];
-
-    if (prefersReduced) {
-      const rect = canvas.getBoundingClientRect();
-      drawFn(ctx, rect.width, rect.height, 1, colors);
-      return () => ro.disconnect();
-    }
-
-    function loop() {
-      if (!canvas || !ctx) return;
-      t += 0.016;
-      const rect = canvas.getBoundingClientRect();
-      drawFn(ctx, rect.width, rect.height, t, colors);
-      animId = requestAnimationFrame(loop);
-    }
-
-    loop();
-
-    return () => {
-      cancelAnimationFrame(animId);
-      ro.disconnect();
-    };
-  }, [colors, animationType]);
-
-  useEffect(() => {
-    const cleanup = startAnimation();
-    return cleanup;
-  }, [startAnimation]);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="ps-bento-canvas"
-      aria-hidden="true"
-    />
-  );
-}
+/* ─────────────────────────────────────────────────────────────
+   MAIN EXPORT
+   ───────────────────────────────────────────────────────────── */
 
 export function ServicePillars() {
   const gridRef = useRef<HTMLDivElement>(null);
@@ -481,10 +451,7 @@ export function ServicePillars() {
             className={`ps-bento-card ${i === 0 ? "ps-bento-card--large" : ""}`}
           >
             <div className="ps-bento-card-visual" aria-hidden="true">
-              <CardCanvas
-                colors={service.colors}
-                animationType={service.animationType}
-              />
+              {service.visual}
             </div>
             <div className="ps-bento-card-content">
               <h3 className="ps-bento-card-title">{service.title}</h3>
