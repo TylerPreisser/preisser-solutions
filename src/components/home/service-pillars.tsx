@@ -17,62 +17,105 @@ interface ServicePillar {
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 1 — Websites & Applications
-   Mini browser chrome + simplified site layout
+   Browser chrome + phone mockup side by side
    ───────────────────────────────────────────────────────────── */
 function WebsiteVisual() {
   return (
     <div className="ps-visual-website" aria-hidden="true">
-      {/* Browser chrome bar */}
-      <div className="ps-browser-chrome">
-        <div className="ps-browser-dots">
-          <span style={{ background: "#FF5F57" }} />
-          <span style={{ background: "#FEBC2E" }} />
-          <span style={{ background: "#28C840" }} />
+      {/* LEFT: Browser window (scaled down) */}
+      <div className="ps-wb-browser">
+        <div className="ps-browser-chrome">
+          <div className="ps-browser-dots">
+            <span style={{ background: "#FF5F57" }} />
+            <span style={{ background: "#FEBC2E" }} />
+            <span style={{ background: "#28C840" }} />
+          </div>
+          <div className="ps-browser-url">
+            <span className="ps-browser-url-lock">
+              <svg width="8" height="9" viewBox="0 0 8 9" fill="none">
+                <rect x="1" y="4" width="6" height="4" rx="1" fill="#94A3B8" />
+                <path d="M2.5 4V2.5a1.5 1.5 0 013 0V4" stroke="#94A3B8" strokeWidth="1" fill="none" />
+              </svg>
+            </span>
+            yourcompany.com
+          </div>
         </div>
-        <div className="ps-browser-url">
-          <span className="ps-browser-url-lock">
-            <svg width="8" height="9" viewBox="0 0 8 9" fill="none">
-              <rect x="1" y="4" width="6" height="4" rx="1" fill="#94A3B8" />
-              <path d="M2.5 4V2.5a1.5 1.5 0 013 0V4" stroke="#94A3B8" strokeWidth="1" fill="none" />
-            </svg>
-          </span>
-          yourcompany.com
+        <div className="ps-site-layout">
+          <div className="ps-site-nav">
+            <div className="ps-site-nav-logo" />
+            <div className="ps-site-nav-dots">
+              <span /><span /><span />
+            </div>
+          </div>
+          <div className="ps-site-hero">
+            <div className="ps-site-hero-heading" />
+            <div className="ps-site-hero-sub" />
+            <div className="ps-site-hero-sub ps-site-hero-sub--short" />
+          </div>
+          <div className="ps-site-cards">
+            <div className="ps-site-card">
+              <div className="ps-site-card-icon" />
+              <div className="ps-site-card-line" />
+              <div className="ps-site-card-line ps-site-card-line--short" />
+            </div>
+            <div className="ps-site-card">
+              <div className="ps-site-card-icon" style={{ background: "rgba(99,91,255,0.5)" }} />
+              <div className="ps-site-card-line" />
+              <div className="ps-site-card-line ps-site-card-line--short" />
+            </div>
+            <div className="ps-site-card">
+              <div className="ps-site-card-icon" style={{ background: "rgba(128,233,255,0.4)" }} />
+              <div className="ps-site-card-line" />
+              <div className="ps-site-card-line ps-site-card-line--short" />
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Simulated website layout */}
-      <div className="ps-site-layout">
-        {/* Dark nav */}
-        <div className="ps-site-nav">
-          <div className="ps-site-nav-logo" />
-          <div className="ps-site-nav-dots">
-            <span /><span /><span />
-          </div>
-        </div>
-
-        {/* Hero */}
-        <div className="ps-site-hero">
-          <div className="ps-site-hero-heading" />
-          <div className="ps-site-hero-sub" />
-          <div className="ps-site-hero-sub ps-site-hero-sub--short" />
-        </div>
-
-        {/* 3-column card row */}
-        <div className="ps-site-cards">
-          <div className="ps-site-card">
-            <div className="ps-site-card-icon" />
-            <div className="ps-site-card-line" />
-            <div className="ps-site-card-line ps-site-card-line--short" />
-          </div>
-          <div className="ps-site-card">
-            <div className="ps-site-card-icon" style={{ background: "rgba(99,91,255,0.5)" }} />
-            <div className="ps-site-card-line" />
-            <div className="ps-site-card-line ps-site-card-line--short" />
-          </div>
-          <div className="ps-site-card">
-            <div className="ps-site-card-icon" style={{ background: "rgba(128,233,255,0.4)" }} />
-            <div className="ps-site-card-line" />
-            <div className="ps-site-card-line ps-site-card-line--short" />
+      {/* RIGHT: Phone mockup */}
+      <div className="ps-wb-phone">
+        {/* Phone frame */}
+        <div className="ps-phone-frame">
+          {/* Notch */}
+          <div className="ps-phone-notch" />
+          {/* Screen */}
+          <div className="ps-phone-screen">
+            {/* Dark header */}
+            <div className="ps-phone-header">
+              <div className="ps-phone-header-logo" />
+              <div className="ps-phone-header-icon" />
+            </div>
+            {/* Content blocks */}
+            <div className="ps-phone-content">
+              <div className="ps-phone-hero-block">
+                <div className="ps-phone-line ps-phone-line--title" />
+                <div className="ps-phone-line ps-phone-line--sub" />
+                <div className="ps-phone-cta-btn" />
+              </div>
+              <div className="ps-phone-cards">
+                <div className="ps-phone-card">
+                  <div className="ps-phone-card-dot" style={{ background: "rgba(13,149,232,0.8)" }} />
+                  <div className="ps-phone-card-lines">
+                    <div className="ps-phone-line ps-phone-line--sm" />
+                    <div className="ps-phone-line ps-phone-line--xs" />
+                  </div>
+                </div>
+                <div className="ps-phone-card">
+                  <div className="ps-phone-card-dot" style={{ background: "rgba(139,92,246,0.8)" }} />
+                  <div className="ps-phone-card-lines">
+                    <div className="ps-phone-line ps-phone-line--sm" />
+                    <div className="ps-phone-line ps-phone-line--xs" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Bottom tab bar */}
+            <div className="ps-phone-tabbar">
+              <div className="ps-phone-tab ps-phone-tab--active" />
+              <div className="ps-phone-tab" />
+              <div className="ps-phone-tab" />
+              <div className="ps-phone-tab" />
+            </div>
           </div>
         </div>
       </div>
@@ -149,9 +192,9 @@ function AutomationVisual() {
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 3 — System Fixes & Efficiency
-   Animated assembly: 5 tool icons scatter → assemble into
-   organized grid, SVG connection lines draw in, progress bar
-   fills, green ripple confirms "connected".
+   Chaos state (messy overlapping app boxes, red dotted connectors)
+   transitions to ordered grid (solid green connectors) +
+   completion checkmark.
    ───────────────────────────────────────────────────────────── */
 function SystemFixesVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -185,85 +228,92 @@ function SystemFixesVisual() {
     return () => observer.disconnect();
   }, []);
 
-  const tools = [
-    { label: "CRM",   color: "#0D95E8", scatterX: "-22px", scatterY: "-18px", scatterR: "-12deg" },
-    { label: "Email", color: "#8B5CF6", scatterX: "20px",  scatterY: "-14px", scatterR: "10deg"  },
-    { label: "Sched", color: "#00D4AA", scatterX: "-18px", scatterY: "16px",  scatterR: "-8deg"  },
-    { label: "Acctg", color: "#F59E0B", scatterX: "24px",  scatterY: "20px",  scatterR: "14deg"  },
-    { label: "Data",  color: "#EC4899", scatterX: "0px",   scatterY: "24px",  scatterR: "-6deg"  },
+  const apps = [
+    { label: "CRM",   color: "#0D95E8" },
+    { label: "Email", color: "#8B5CF6" },
+    { label: "Sched", color: "#00D4AA" },
+    { label: "Acctg", color: "#F59E0B" },
   ];
 
   return (
     <div
       ref={containerRef}
-      className="ps-sf-root"
+      className="ps-sf2-root"
       aria-hidden="true"
     >
-      {/* Tool icon grid — 2 top, 1 center, 2 bottom */}
-      <div className="ps-sf-icons">
-        {tools.map((tool, i) => (
+      {/* Label: before / after */}
+      <div className="ps-sf2-labels">
+        <span className="ps-sf2-label ps-sf2-label--before">Before</span>
+        <span className="ps-sf2-label ps-sf2-label--after">After</span>
+      </div>
+
+      {/* The two states share the same DOM — CSS transitions between them */}
+      <div className="ps-sf2-stage">
+        {/* Chaos connectors (red dashed, tangled) — hidden when in-view */}
+        <svg className="ps-sf2-chaos-lines" viewBox="0 0 200 120" fill="none" aria-hidden="true">
+          <line x1="50"  y1="30"  x2="150" y2="90"  stroke="#EF4444" strokeWidth="1.2" strokeDasharray="4 3" className="ps-sf2-chaos-line" />
+          <line x1="150" y1="30"  x2="40"  y2="85"  stroke="#EF4444" strokeWidth="1.2" strokeDasharray="4 3" className="ps-sf2-chaos-line" />
+          <line x1="50"  y1="30"  x2="150" y2="30"  stroke="#EF4444" strokeWidth="1"   strokeDasharray="4 3" className="ps-sf2-chaos-line" />
+          <line x1="45"  y1="85"  x2="155" y2="90"  stroke="#EF4444" strokeWidth="1"   strokeDasharray="4 3" className="ps-sf2-chaos-line" />
+        </svg>
+
+        {/* Order connectors (green solid) — drawn when in-view */}
+        <svg className="ps-sf2-order-lines" viewBox="0 0 200 120" fill="none" aria-hidden="true">
+          {/* Horizontal */}
+          <line x1="80"  y1="35"  x2="120" y2="35"  stroke="#10B981" strokeWidth="1.5" className="ps-sf2-order-line ps-sf2-order-line--0" />
+          <line x1="80"  y1="85"  x2="120" y2="85"  stroke="#10B981" strokeWidth="1.5" className="ps-sf2-order-line ps-sf2-order-line--1" />
+          {/* Vertical */}
+          <line x1="50"  y1="55"  x2="50"  y2="65"  stroke="#10B981" strokeWidth="1.5" className="ps-sf2-order-line ps-sf2-order-line--2" />
+          <line x1="150" y1="55"  x2="150" y2="65"  stroke="#10B981" strokeWidth="1.5" className="ps-sf2-order-line ps-sf2-order-line--3" />
+        </svg>
+
+        {/* App boxes — chaos positions → ordered 2x2 grid */}
+        {apps.map((app, i) => (
           <div
-            key={tool.label}
-            className={`ps-sf-icon ps-sf-icon--${i}`}
-            style={{
-              "--scatter-x": tool.scatterX,
-              "--scatter-y": tool.scatterY,
-              "--scatter-r": tool.scatterR,
-              "--icon-color": tool.color,
-            } as React.CSSProperties}
+            key={app.label}
+            className={`ps-sf2-app ps-sf2-app--${i}`}
+            style={{ "--app-color": app.color } as React.CSSProperties}
           >
-            <span className="ps-sf-icon-dot" style={{ background: tool.color }} />
-            <span className="ps-sf-icon-label">{tool.label}</span>
+            <div className="ps-sf2-app-dot" style={{ background: app.color }} />
+            <span className="ps-sf2-app-label">{app.label}</span>
           </div>
         ))}
+
+        {/* Completion checkmark — fades in last */}
+        <div className="ps-sf2-check" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <circle cx="9" cy="9" r="8.5" stroke="#10B981" strokeWidth="1" />
+            <path
+              className="ps-sf2-check-path"
+              d="M5 9.5L7.5 12L13 6.5"
+              stroke="#10B981"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <span className="ps-sf2-check-label">Systems connected</span>
+        </div>
       </div>
 
-      {/* SVG connection lines between icons — drawn on .in-view */}
-      <svg className="ps-sf-lines" viewBox="0 0 160 120" fill="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="sfLineGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#0D95E8" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#00D4AA" stopOpacity="0.6" />
-          </linearGradient>
-        </defs>
-        {/* Lines connecting grid positions roughly: top-left, top-right, center, bottom-left, bottom-right */}
-        <line className="ps-sf-line ps-sf-line--0" x1="32" y1="28" x2="80" y2="60" stroke="url(#sfLineGrad)" strokeWidth="1" />
-        <line className="ps-sf-line ps-sf-line--1" x1="128" y1="28" x2="80" y2="60" stroke="url(#sfLineGrad)" strokeWidth="1" />
-        <line className="ps-sf-line ps-sf-line--2" x1="32" y1="92" x2="80" y2="60" stroke="url(#sfLineGrad)" strokeWidth="1" />
-        <line className="ps-sf-line ps-sf-line--3" x1="128" y1="92" x2="80" y2="60" stroke="url(#sfLineGrad)" strokeWidth="1" />
-        {/* Hub circle */}
-        <circle className="ps-sf-hub" cx="80" cy="60" r="6" fill="none" stroke="#00D4AA" strokeWidth="1.5" />
-        <circle className="ps-sf-hub-inner" cx="80" cy="60" r="3" fill="#00D4AA" />
-      </svg>
-
-      {/* Progress bar — fills after icons assemble */}
-      <div className="ps-sf-bar-track">
-        <div className="ps-sf-bar-fill" />
-        <span className="ps-sf-bar-label">Efficiency</span>
-        <span className="ps-sf-bar-value">+92%</span>
+      {/* Progress bar */}
+      <div className="ps-sf2-bar-track">
+        <div className="ps-sf2-bar-fill" />
+        <span className="ps-sf2-bar-label">Efficiency</span>
+        <span className="ps-sf2-bar-value">+92%</span>
       </div>
-
-      {/* Center pulse ripple — fires after bar fills */}
-      <div className="ps-sf-ripple" aria-hidden="true" />
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 4 — Dashboards & Business Intelligence
-   Mini dashboard mockup: glassmorphism frame, LIVE indicator,
-   3 KPI tiles with counting numbers, SVG line chart that draws
-   itself with gradient fill + glowing tip, 4 bar columns that
-   grow from 0 with staggered overshoot.
+   Cycling bento grid: 4 tiles rotate positions every 3s.
+   Tile types: bar chart, line chart, donut chart, metric number.
    ───────────────────────────────────────────────────────────── */
 function DashboardVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const kpis = [
-    { target: 2.4, prefix: "$", suffix: "M", label: "Revenue", color: "#F59E0B" },
-    { target: 18,  prefix: "+", suffix: "%", label: "Growth",  color: "#34D399" },
-    { target: 94,  prefix: "",  suffix: "%", label: "Retain",  color: "#0D95E8" },
-  ];
+  const [cycle, setCycle] = useState(0);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -273,32 +323,8 @@ function DashboardVisual() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    function runCounters() {
-      kpis.forEach((kpi, i) => {
-        const spanEl = el!.querySelector<HTMLElement>(`.ps-db2-kpi-num[data-idx="${i}"]`);
-        if (!spanEl) return;
-        const duration = 1600;
-        const delay = i * 120;
-        const start = performance.now() + delay;
-        const captured = spanEl;
-        function update(now: number) {
-          if (now < start) { requestAnimationFrame(update); return; }
-          const progress = Math.min((now - start) / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          const val = eased * kpi.target;
-          captured.textContent = kpi.prefix + (kpi.target < 10 ? val.toFixed(1) : Math.floor(val).toString()) + kpi.suffix;
-          if (progress < 1) requestAnimationFrame(update);
-        }
-        requestAnimationFrame(update);
-      });
-    }
-
     if (prefersReduced) {
       el.classList.add("in-view");
-      kpis.forEach((kpi, i) => {
-        const span = el.querySelector<HTMLElement>(`.ps-db2-kpi-num[data-idx="${i}"]`);
-        if (span) span.textContent = kpi.prefix + kpi.target + kpi.suffix;
-      });
       return;
     }
 
@@ -307,114 +333,159 @@ function DashboardVisual() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             el.classList.add("in-view");
-            runCounters();
             observer.unobserve(el);
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.25 }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Cycle tiles every 3s once in view
+  useEffect(() => {
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
+    const id = setInterval(() => {
+      setCycle((c) => (c + 1) % 4);
+    }, 3000);
+    return () => clearInterval(id);
+  }, []);
+
+  // 4 tile order configurations (each config shifts what's in each quadrant)
+  // positions: [topLeft, topRight, bottomLeft, bottomRight] as tile indices
+  const orders: [number, number, number, number][] = [
+    [0, 1, 2, 3],
+    [3, 0, 1, 2],
+    [2, 3, 0, 1],
+    [1, 2, 3, 0],
+  ];
+  const currentOrder = orders[cycle];
 
   return (
     <div
       ref={containerRef}
-      className="ps-db2-root"
+      className="ps-dbc-root"
       aria-hidden="true"
     >
-      {/* Glassmorphism dashboard frame */}
-      <div className="ps-db2-frame">
-        {/* Frame chrome top bar */}
-        <div className="ps-db2-chrome">
-          <div className="ps-db2-chrome-dots">
-            <span style={{ background: "#FF5F57" }} />
-            <span style={{ background: "#FEBC2E" }} />
-            <span style={{ background: "#28C840" }} />
-          </div>
-          <span className="ps-db2-chrome-title">Analytics</span>
-          {/* LIVE indicator */}
-          <div className="ps-db2-live">
-            <span className="ps-db2-live-dot" />
-            <span className="ps-db2-live-label">LIVE</span>
-          </div>
+      {/* Top chrome bar */}
+      <div className="ps-dbc-chrome">
+        <div className="ps-dbc-chrome-dots">
+          <span style={{ background: "#FF5F57" }} />
+          <span style={{ background: "#FEBC2E" }} />
+          <span style={{ background: "#28C840" }} />
         </div>
-
-        {/* KPI tiles row */}
-        <div className="ps-db2-kpis">
-          {kpis.map((kpi, i) => (
-            <div key={kpi.label} className="ps-db2-kpi-tile" style={{ "--kpi-delay": `${i * 0.1}s` } as React.CSSProperties}>
-              <span
-                className="ps-db2-kpi-num"
-                data-idx={i}
-                style={{ color: kpi.color }}
-              >
-                {kpi.prefix}0{kpi.suffix}
-              </span>
-              <span className="ps-db2-kpi-label">{kpi.label}</span>
-            </div>
-          ))}
+        <span className="ps-dbc-chrome-title">Analytics Dashboard</span>
+        <div className="ps-dbc-live">
+          <span className="ps-dbc-live-dot" />
+          <span className="ps-dbc-live-label">LIVE</span>
         </div>
+      </div>
 
-        {/* SVG line chart */}
-        <div className="ps-db2-chart-wrap">
-          <svg
-            className="ps-db2-chart-svg"
-            viewBox="0 0 200 70"
-            preserveAspectRatio="none"
-            fill="none"
+      {/* Bento 2x2 grid */}
+      <div className="ps-dbc-grid">
+        {currentOrder.map((tileIdx, position) => (
+          <div
+            key={`pos-${position}-tile-${tileIdx}-cycle-${cycle}`}
+            className={`ps-dbc-tile ps-dbc-tile--${position} ps-dbc-tile-enter`}
           >
-            <defs>
-              <linearGradient id="db2LineGrad" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#0D95E8" />
-                <stop offset="100%" stopColor="#8B5CF6" />
-              </linearGradient>
-              <linearGradient id="db2AreaGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#0D95E8" stopOpacity="0.25" />
-                <stop offset="100%" stopColor="#0D95E8" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            {/* Grid lines */}
-            <line x1="0" y1="70" x2="200" y2="70" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-            <line x1="0" y1="46" x2="200" y2="46" stroke="rgba(255,255,255,0.04)" strokeWidth="1" strokeDasharray="3 3" />
-            <line x1="0" y1="23" x2="200" y2="23" stroke="rgba(255,255,255,0.04)" strokeWidth="1" strokeDasharray="3 3" />
-            {/* Area fill — fades in after line draws */}
-            <path
-              className="ps-db2-chart-area"
-              d="M0,62 C30,56 60,48 90,38 C120,28 150,16 180,10 L200,6 L200,70 L0,70 Z"
-              fill="url(#db2AreaGrad)"
-            />
-            {/* Main line — draws via stroke-dashoffset */}
-            <path
-              className="ps-db2-chart-line"
-              d="M0,62 C30,56 60,48 90,38 C120,28 150,16 180,10 L200,6"
-              stroke="url(#db2LineGrad)"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            {/* Glowing tip dot */}
-            <circle className="ps-db2-tip-dot" cx="200" cy="6" r="3" fill="#8B5CF6" />
-            <circle className="ps-db2-tip-ring" cx="200" cy="6" r="6" fill="#8B5CF6" fillOpacity="0.2" />
-          </svg>
-        </div>
-
-        {/* Bar chart row */}
-        <div className="ps-db2-bars">
-          {[0.55, 0.75, 1.0, 0.65].map((h, i) => (
-            <div key={i} className="ps-db2-bar-col">
-              <div
-                className="ps-db2-bar"
-                style={{
-                  "--bar-scale": h,
-                  "--bar-delay": `${0.3 + i * 0.1}s`,
-                } as React.CSSProperties}
-              />
-            </div>
-          ))}
-        </div>
+            {tileIdx === 0 && (
+              /* Tile 0: Bar chart */
+              <div className="ps-dbc-tile-inner">
+                <div className="ps-dbc-tile-label">Q4 Revenue</div>
+                <div className="ps-dbc-bars">
+                  {([0.45, 0.72, 0.58, 0.9, 0.65] as number[]).map((h, i) => (
+                    <div key={i} className="ps-dbc-bar-wrap">
+                      <div
+                        className="ps-dbc-bar"
+                        style={{
+                          "--bar-h": h,
+                          "--bar-delay": `${i * 0.07}s`,
+                        } as React.CSSProperties}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {tileIdx === 1 && (
+              /* Tile 1: Line chart */
+              <div className="ps-dbc-tile-inner">
+                <div className="ps-dbc-tile-label">Growth Trend</div>
+                <svg className="ps-dbc-line-svg" viewBox="0 0 100 55" fill="none" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="dbcLineGrad" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#0D95E8" />
+                      <stop offset="100%" stopColor="#8B5CF6" />
+                    </linearGradient>
+                    <linearGradient id="dbcAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#0D95E8" stopOpacity="0.2" />
+                      <stop offset="100%" stopColor="#0D95E8" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(255,255,255,0.06)" strokeWidth="0.75" />
+                  <line x1="0" y1="30" x2="100" y2="30" stroke="rgba(255,255,255,0.04)" strokeWidth="0.75" strokeDasharray="2 2" />
+                  <path
+                    d="M0,48 C15,44 30,38 45,28 C60,18 75,10 100,4 L100,50 L0,50 Z"
+                    fill="url(#dbcAreaGrad)"
+                    opacity="0.8"
+                  />
+                  <path
+                    className="ps-dbc-line-path"
+                    d="M0,48 C15,44 30,38 45,28 C60,18 75,10 100,4"
+                    stroke="url(#dbcLineGrad)"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                  />
+                  <circle cx="100" cy="4" r="2.5" fill="#8B5CF6" className="ps-dbc-tip-dot" />
+                </svg>
+              </div>
+            )}
+            {tileIdx === 2 && (
+              /* Tile 2: Donut chart */
+              <div className="ps-dbc-tile-inner ps-dbc-tile-inner--center">
+                <div className="ps-dbc-tile-label">Retention</div>
+                <div className="ps-dbc-donut-wrap">
+                  <svg className="ps-dbc-donut-svg" viewBox="0 0 64 64" fill="none">
+                    <circle cx="32" cy="32" r="24" stroke="rgba(255,255,255,0.07)" strokeWidth="7" />
+                    <circle
+                      className="ps-dbc-donut-ring"
+                      cx="32"
+                      cy="32"
+                      r="24"
+                      stroke="#0D95E8"
+                      strokeWidth="7"
+                      strokeLinecap="round"
+                      strokeDasharray="150.8"
+                      transform="rotate(-90 32 32)"
+                    />
+                  </svg>
+                  <div className="ps-dbc-donut-center">
+                    <span className="ps-dbc-donut-pct">94%</span>
+                  </div>
+                </div>
+              </div>
+            )}
+            {tileIdx === 3 && (
+              /* Tile 3: Big metric */
+              <div className="ps-dbc-tile-inner ps-dbc-tile-inner--metric">
+                <div className="ps-dbc-tile-label">Monthly Revenue</div>
+                <div className="ps-dbc-metric-num">$2.4M</div>
+                <div className="ps-dbc-metric-badge">
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                    <path d="M4 7V1M1 4l3-3 3 3" stroke="#10B981" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  +18% vs last quarter
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -422,18 +493,11 @@ function DashboardVisual() {
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 5 — Revenue Growth Engines
-   Left: funnel (3 stages narrowing). Right: SVG growth curve
-   that draws itself. Floating badges pop in with overshoot.
-   Revenue counter ticks up at bottom-right.
+   Top: horizontal funnel with 3 stages + flowing dot particles.
+   Bottom: upward trending line chart that draws itself + counter.
    ───────────────────────────────────────────────────────────── */
 function RevenueVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const badges = [
-    { label: "+$12K", delay: "1.0s", top: "52%", left: "52%" },
-    { label: "+$28K", delay: "1.7s", top: "30%", left: "62%" },
-    { label: "+$45K", delay: "2.3s", top: "12%", left: "72%" },
-  ];
 
   useEffect(() => {
     const el = containerRef.current;
@@ -444,31 +508,30 @@ function RevenueVisual() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     function runRevenueCounter() {
-      const counterEl = el!.querySelector<HTMLElement>(".ps-rev2-counter-num");
+      const counterEl = el!.querySelector<HTMLElement>(".ps-rv3-counter-num");
       if (!counterEl) return;
       const captured = counterEl;
       const target = 85000;
-      const duration = 2200;
-      const start = performance.now() + 500;
+      const duration = 2400;
+      const start = performance.now() + 600;
       function update(now: number) {
         if (now < start) { requestAnimationFrame(update); return; }
         const progress = Math.min((now - start) / duration, 1);
-        // easeInOutCubic
         const eased = progress < 0.5
           ? 4 * progress * progress * progress
           : 1 - Math.pow(-2 * progress + 2, 3) / 2;
         const value = Math.floor(eased * target);
         captured.textContent = "$" + value.toLocaleString();
         if (progress < 1) requestAnimationFrame(update);
-        else captured.textContent = "$85,000+";
+        else captured.textContent = "$85K+";
       }
       requestAnimationFrame(update);
     }
 
     if (prefersReduced) {
       el.classList.add("in-view");
-      const counterEl = el.querySelector<HTMLElement>(".ps-rev2-counter-num");
-      if (counterEl) counterEl.textContent = "$85,000+";
+      const counterEl = el.querySelector<HTMLElement>(".ps-rv3-counter-num");
+      if (counterEl) counterEl.textContent = "$85K+";
       return;
     }
 
@@ -489,97 +552,93 @@ function RevenueVisual() {
     return () => observer.disconnect();
   }, []);
 
+  const funnelStages = [
+    { label: "Visitors", width: "100%", color: "rgba(59,130,246,0.25)", border: "rgba(59,130,246,0.5)", dots: [0, 1, 2] },
+    { label: "Leads",    width: "65%",  color: "rgba(99,180,246,0.28)", border: "rgba(99,180,246,0.55)", dots: [3, 4] },
+    { label: "Customers",width: "36%",  color: "rgba(16,185,129,0.35)", border: "rgba(16,185,129,0.65)", dots: [5] },
+  ];
+
   return (
     <div
       ref={containerRef}
-      className="ps-rev2-root"
+      className="ps-rv3-root"
       aria-hidden="true"
     >
-      {/* LEFT: Funnel */}
-      <div className="ps-rev2-funnel">
-        <div className="ps-rev2-funnel-label">Awareness</div>
-        <div
-          className="ps-rev2-funnel-bar ps-rev2-funnel-bar--0"
-          style={{ "--funnel-delay": "0s" } as React.CSSProperties}
-        />
-        <div className="ps-rev2-funnel-label">Engagement</div>
-        <div
-          className="ps-rev2-funnel-bar ps-rev2-funnel-bar--1"
-          style={{ "--funnel-delay": "0.12s" } as React.CSSProperties}
-        />
-        <div className="ps-rev2-funnel-label">Conversion</div>
-        <div
-          className="ps-rev2-funnel-bar ps-rev2-funnel-bar--2"
-          style={{ "--funnel-delay": "0.24s" } as React.CSSProperties}
-        />
-        {/* Upward particles near funnel bottom */}
-        <div className="ps-rev2-particles" aria-hidden="true">
-          {[0, 1, 2, 3, 4].map((i) => (
-            <div key={i} className={`ps-rev2-particle ps-rev2-particle--${i}`} />
-          ))}
-        </div>
+      {/* TOP: Horizontal funnel */}
+      <div className="ps-rv3-funnel">
+        {funnelStages.map((stage, si) => (
+          <div key={stage.label} className="ps-rv3-stage-wrap">
+            <div className="ps-rv3-stage-label">{stage.label}</div>
+            <div
+              className={`ps-rv3-stage-bar ps-rv3-stage-bar--${si}`}
+              style={{
+                "--stage-width": stage.width,
+                "--stage-bg": stage.color,
+                "--stage-border": stage.border,
+                "--stage-delay": `${si * 0.15}s`,
+              } as React.CSSProperties}
+            >
+              {/* Flowing dots */}
+              {stage.dots.map((dotIdx) => (
+                <div
+                  key={dotIdx}
+                  className={`ps-rv3-dot ps-rv3-dot--${dotIdx}`}
+                  style={{ "--dot-delay": `${dotIdx * 0.55}s` } as React.CSSProperties}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* RIGHT: Growth curve + badges + counter */}
-      <div className="ps-rev2-chart">
+      {/* Conversion arrow between funnel and chart */}
+      <div className="ps-rv3-divider">
+        <div className="ps-rv3-divider-line" />
+      </div>
+
+      {/* BOTTOM: Growth line chart + counter */}
+      <div className="ps-rv3-chart">
         <svg
-          className="ps-rev2-growth-svg"
-          viewBox="0 0 140 110"
+          className="ps-rv3-line-svg"
+          viewBox="0 0 220 80"
           fill="none"
+          preserveAspectRatio="none"
           aria-hidden="true"
         >
           <defs>
-            <linearGradient id="rev2LineGrad" x1="0" y1="0" x2="1" y2="0">
+            <linearGradient id="rv3LineGrad" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="#3B82F6" />
               <stop offset="100%" stopColor="#10B981" />
             </linearGradient>
-            <linearGradient id="rev2AreaGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#10B981" stopOpacity="0.2" />
+            <linearGradient id="rv3AreaGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#10B981" stopOpacity="0.22" />
               <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
             </linearGradient>
           </defs>
-          {/* Grid */}
-          <line x1="0" y1="100" x2="140" y2="100" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-          <line x1="0" y1="68"  x2="140" y2="68"  stroke="rgba(255,255,255,0.04)" strokeWidth="1" strokeDasharray="3 3" />
-          <line x1="0" y1="36"  x2="140" y2="36"  stroke="rgba(255,255,255,0.04)" strokeWidth="1" strokeDasharray="3 3" />
-          {/* Area fill */}
+          <line x1="0" y1="75" x2="220" y2="75" stroke="rgba(255,255,255,0.07)" strokeWidth="0.75" />
+          <line x1="0" y1="50" x2="220" y2="50" stroke="rgba(255,255,255,0.04)" strokeWidth="0.75" strokeDasharray="3 3" />
+          <line x1="0" y1="26" x2="220" y2="26" stroke="rgba(255,255,255,0.04)" strokeWidth="0.75" strokeDasharray="3 3" />
           <path
-            className="ps-rev2-area"
-            d="M10,90 C30,84 50,78 70,65 C90,52 110,30 130,12 L130,100 L10,100 Z"
-            fill="url(#rev2AreaGrad)"
+            className="ps-rv3-area"
+            d="M0,72 C30,68 60,62 90,52 C120,42 155,24 200,8 L220,4 L220,75 L0,75 Z"
+            fill="url(#rv3AreaGrad)"
           />
-          {/* Growth curve */}
           <path
-            className="ps-rev2-line"
-            d="M10,90 C30,84 50,78 70,65 C90,52 110,30 130,12"
-            stroke="url(#rev2LineGrad)"
-            strokeWidth="2.5"
+            className="ps-rv3-line"
+            d="M0,72 C30,68 60,62 90,52 C120,42 155,24 200,8 L220,4"
+            stroke="url(#rv3LineGrad)"
+            strokeWidth="2"
             strokeLinecap="round"
           />
-          {/* Glowing endpoint */}
-          <circle className="ps-rev2-tip-dot"  cx="130" cy="12" r="3.5" fill="#10B981" />
-          <circle className="ps-rev2-tip-ring" cx="130" cy="12" r="7"   fill="#10B981" fillOpacity="0.2" />
+          <circle className="ps-rv3-tip-dot"  cx="220" cy="4" r="3"   fill="#10B981" />
+          <circle className="ps-rv3-tip-ring" cx="220" cy="4" r="6.5" fill="#10B981" fillOpacity="0.2" />
         </svg>
 
-        {/* Floating revenue badges */}
-        {badges.map((badge) => (
-          <div
-            key={badge.label}
-            className="ps-rev2-badge"
-            style={{
-              "--badge-delay": badge.delay,
-              top: badge.top,
-              left: badge.left,
-            } as React.CSSProperties}
-          >
-            {badge.label}
-          </div>
-        ))}
-
-        {/* Revenue counter at bottom-right */}
-        <div className="ps-rev2-counter">
-          <span className="ps-rev2-counter-label">Revenue Added</span>
-          <span className="ps-rev2-counter-num">$0</span>
+        {/* Counter overlaid bottom-right */}
+        <div className="ps-rv3-counter">
+          <span className="ps-rv3-counter-label">Monthly Revenue</span>
+          <span className="ps-rv3-counter-num">$0</span>
+          <span className="ps-rv3-counter-sub">/ mo automated</span>
         </div>
       </div>
     </div>
