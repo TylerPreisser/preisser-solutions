@@ -818,15 +818,11 @@ button {
 
 .ps-bento-card {
   position: relative;
-  background-color: var(--color-white);
   border-radius: var(--radius-card);
   overflow: hidden;
-  border: 1px solid var(--color-border-light);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: inherit;
+  cursor: pointer;
   transition:
     transform 300ms var(--ease-standard),
     box-shadow 300ms var(--ease-standard),
@@ -834,12 +830,14 @@ button {
   will-change: transform;
   opacity: 0;
   transform: translateY(24px);
+  /* Cards need an explicit height so the visual can fill via height: 100% */
+  min-height: 280px;
 }
 
 .ps-bento-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-xl);
-  border-color: rgba(13, 149, 232, 0.3);
+  border-color: rgba(13, 149, 232, 0.35);
 }
 
 /* First card spans 2 columns for visual hierarchy */
@@ -847,10 +845,10 @@ button {
   grid-column: span 2;
 }
 
+/* Visual fills the entire card */
 .ps-bento-card-visual {
-  flex: 1;
-  min-height: 180px;
-  position: relative;
+  position: absolute;
+  inset: 0;
   background: #0A1628;
   overflow: hidden;
 }
@@ -861,6 +859,68 @@ button {
   height: 100%;
   position: absolute;
   inset: 0;
+}
+
+/* Gradient overlay at top — ensures white title text is readable */
+.ps-bento-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.2) 40%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Title row — floats over the visual, top of card */
+.ps-bento-card-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 18px 18px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 2;
+}
+
+.ps-bento-card-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  flex: 1;
+}
+
+/* Expand / close icon button */
+.ps-card-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  flex-shrink: 0;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: background 200ms ease, border-color 200ms ease;
+  cursor: pointer;
+}
+
+.ps-bento-card:hover .ps-card-icon-btn,
+.ps-card-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 /* ── @keyframes: Card animations ───────────────────────────── */
@@ -1179,280 +1239,225 @@ button {
   animation-duration: 0.6s;
 }
 
-/* Pulse dot that travels across the whole flow */
-.ps-flow-pulse-track {
-  position: absolute;
-  bottom: 18px;
-  left: 0;
-  right: 0;
-  height: 8px;
-  pointer-events: none;
-}
-
-.ps-flow-pulse-dot {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #A855F7;
-  box-shadow: 0 0 8px #A855F7;
-  top: 0;
-  animation: ps-flow-pulse 2.4s ease-in-out infinite;
-}
-
-.ps-bento-card:hover .ps-flow-pulse-dot {
-  animation-duration: 1.2s;
-  background: #C084FC;
-  box-shadow: 0 0 12px #C084FC;
-}
-
-/* ── VISUAL 3: System Fixes & Efficiency ────────────────────── */
+/* ── VISUAL 3: System Fixes & Efficiency — Before/After ─────── */
 .ps-visual-systems {
   display: flex;
   align-items: center;
+  justify-content: center;
   background: #071520;
-  padding: 16px;
-  gap: 0;
+  padding: 20px 16px;
+  gap: 8px;
   position: relative;
 }
 
-.ps-sys-sources {
+/* Before and After panels */
+.ps-sys-panel {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex-shrink: 0;
-  width: 60px;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  position: relative;
 }
 
-.ps-sys-source {
+.ps-sys-panel-label {
+  font-size: 7px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(239, 68, 68, 0.7);
+  align-self: flex-start;
+  padding-left: 2px;
+}
+
+.ps-sys-panel-label--after {
+  color: rgba(0, 212, 170, 0.8);
+}
+
+.ps-sys-nodes {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.ps-sys-node {
   display: flex;
   align-items: center;
   gap: 5px;
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid;
-  border-radius: 7px;
-  padding: 6px 7px;
+  border-radius: 6px;
+  padding: 5px 7px;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   transition: background 300ms ease;
 }
 
-.ps-bento-card:hover .ps-sys-source {
-  background: rgba(255,255,255,0.07);
+.ps-bento-card:hover .ps-sys-node {
+  background: rgba(255, 255, 255, 0.06);
 }
 
-.ps-sys-source-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.ps-sys-source-label {
-  font-size: 8px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.55);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-/* Connection line SVG container */
-.ps-sys-connections {
-  flex: 1;
-  height: 120px;
-  position: relative;
-  overflow: visible;
-}
-
-.ps-sys-line {
-  animation: ps-dash-flow 1.4s linear infinite;
-}
-.ps-sys-line--0 { animation-delay: 0s; stroke: #0D95E8; }
-.ps-sys-line--1 { animation-delay: -0.46s; stroke: #00D4AA; }
-.ps-sys-line--2 { animation-delay: -0.92s; stroke: #34d399; }
-
-.ps-bento-card:hover .ps-sys-line {
-  animation-duration: 0.7s;
-}
-
-/* Unified dashboard box */
-.ps-sys-dashboard {
-  flex-shrink: 0;
-  width: 70px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(0,212,170,0.3);
-  border-radius: 10px;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  box-shadow: 0 0 16px rgba(0,212,170,0.1);
-  transition: box-shadow 300ms ease;
-}
-
-.ps-bento-card:hover .ps-sys-dashboard {
-  box-shadow: 0 0 24px rgba(0,212,170,0.2);
-}
-
-.ps-sys-dashboard-header {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 7px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.5);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.ps-sys-dashboard-dot {
+.ps-sys-node-dot {
+  display: block;
   width: 5px;
   height: 5px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-.ps-sys-dashboard-dot--green {
-  background: #00D4AA;
-  box-shadow: 0 0 4px #00D4AA;
+/* Tangled SVG lines (before state) */
+.ps-sys-tangle {
+  position: absolute;
+  right: -8px;
+  top: 20px;
+  width: 60px;
+  height: 80px;
+  overflow: visible;
+  pointer-events: none;
 }
 
-.ps-sys-dashboard-bars {
+/* Clean SVG lines (after state) */
+.ps-sys-clean {
+  position: absolute;
+  left: -8px;
+  top: 20px;
+  width: 60px;
+  height: 80px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.ps-sys-tangle-line {
+  animation: ps-dash-flow 2s linear infinite reverse;
+  opacity: 0.7;
+}
+
+.ps-sys-clean-line {
+  animation: ps-dash-flow 1.4s linear infinite;
+}
+
+.ps-bento-card:hover .ps-sys-clean-line {
+  animation-duration: 0.7s;
+}
+
+/* Center arrow */
+.ps-sys-arrow {
+  flex-shrink: 0;
   display: flex;
-  align-items: flex-end;
-  gap: 2px;
-  height: 28px;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
 }
 
-.ps-sys-bar {
-  flex: 1;
-  border-radius: 2px;
-  background: rgba(0,212,170,0.5);
-  animation: ps-sys-bar-pulse 2s ease-in-out infinite;
-}
-
-.ps-sys-bar--1 { height: 50%; animation-delay: -0.5s; }
-.ps-sys-bar--2 { height: 80%; animation-delay: -1s; }
-.ps-sys-bar--3 { height: 65%; animation-delay: -1.5s; }
-.ps-sys-bar--4 { height: 90%; animation-delay: 0s; }
-
-.ps-sys-metric {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.ps-sys-metric-value {
-  font-size: 11px;
+/* Efficiency badge on after panel */
+.ps-sys-efficiency {
+  font-size: 12px;
   font-weight: 800;
-  line-height: 1;
-}
-
-.ps-sys-metric-label {
-  font-size: 7px;
-  color: rgba(255,255,255,0.35);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  color: #00D4AA;
+  letter-spacing: -0.02em;
+  background: rgba(0, 212, 170, 0.1);
+  border: 1px solid rgba(0, 212, 170, 0.25);
+  border-radius: 20px;
+  padding: 3px 8px;
+  margin-top: 2px;
 }
 
 /* ── VISUAL 4: Dashboards & Business Intelligence ───────────── */
 .ps-visual-dashboard {
   display: flex;
   flex-direction: column;
-  background: #0A0F1E;
-  padding: 14px 14px 10px;
-  gap: 8px;
+  background: #080D1A;
+  padding: 14px 14px 0;
+  gap: 10px;
 }
 
-.ps-dash-header {
+/* Metric tiles row */
+.ps-dash-tiles {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
-.ps-dash-metric {
+.ps-dash-tile {
   flex: 1;
-  background: rgba(255,255,255,0.04);
-  border-radius: 7px;
-  padding: 6px 7px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  padding: 8px 8px 7px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  border: 1px solid rgba(255,255,255,0.06);
+  gap: 3px;
+  transition: background 300ms ease, border-color 300ms ease;
 }
 
-.ps-dash-metric-num {
-  font-size: 11px;
+.ps-bento-card:hover .ps-dash-tile {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.ps-dash-tile-num {
+  font-size: 12px;
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.02em;
 }
 
-.ps-dash-metric-label {
+.ps-dash-tile-label {
   font-size: 7px;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255, 255, 255, 0.35);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
 
-/* Bar chart area */
-.ps-dash-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 4px;
+/* SVG area chart */
+.ps-dash-chart {
   flex: 1;
-  padding: 0 2px;
-  min-height: 50px;
-}
-
-.ps-dash-bar-wrap {
-  flex: 1;
-  display: flex;
-  align-items: flex-end;
-  height: 100%;
-}
-
-.ps-dash-bar {
-  width: 100%;
-  border-radius: 3px 3px 0 0;
-  background: linear-gradient(180deg, #F59E0B 0%, rgba(245,158,11,0.3) 100%);
-}
-
-.ps-dash-bar--0 { animation: ps-bar-breathe-0 3.2s ease-in-out infinite; }
-.ps-dash-bar--1 { animation: ps-bar-breathe-1 3.8s ease-in-out infinite; }
-.ps-dash-bar--2 { animation: ps-bar-breathe-2 2.9s ease-in-out infinite; }
-.ps-dash-bar--3 { animation: ps-bar-breathe-3 4.1s ease-in-out infinite; }
-.ps-dash-bar--4 { animation: ps-bar-breathe-4 3.5s ease-in-out infinite; }
-.ps-dash-bar--5 { animation: ps-bar-breathe-5 2.7s ease-in-out infinite; }
-
-.ps-bento-card:hover .ps-dash-bar {
-  animation-duration: 1.5s !important;
-}
-
-.ps-dash-baseline {
-  height: 1px;
-  background: rgba(245,158,11,0.2);
-  flex-shrink: 0;
-}
-
-/* Line graph area */
-.ps-dash-line-graph {
-  height: 40px;
-  flex-shrink: 0;
   position: relative;
+  min-height: 80px;
 }
 
-.ps-dash-line-svg {
+.ps-dash-chart-svg {
+  display: block;
   width: 100%;
   height: 100%;
 }
 
-.ps-line-draw {
-  stroke-dasharray: 400;
-  stroke-dashoffset: 0;
-  animation: ps-line-draw 2s ease-out forwards, ps-dash-flow 3s linear 2s infinite;
+/* Area chart line draw animation */
+.ps-dash-area-line {
+  stroke-dasharray: 350;
+  stroke-dashoffset: 350;
+  animation: ps-area-draw 2.2s ease-out forwards;
 }
 
-.ps-bento-card:hover .ps-line-draw {
-  animation: ps-line-draw 1s ease-out forwards, ps-dash-flow 1.5s linear 1s infinite;
+@keyframes ps-area-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.ps-bento-card:hover .ps-dash-area-line {
+  animation-duration: 1s;
+}
+
+/* Pulsing data point dot */
+@keyframes ps-dot-pulse {
+  0%, 100% { r: 3; opacity: 1; }
+  50%       { r: 4; opacity: 0.7; }
+}
+
+@keyframes ps-ring-pulse {
+  0%   { r: 4; opacity: 0.4; }
+  100% { r: 9; opacity: 0; }
+}
+
+.ps-dash-dot-pulse {
+  animation: ps-dot-pulse 2s ease-in-out infinite;
+}
+
+.ps-dash-dot-ring {
+  animation: ps-ring-pulse 1.8s ease-out infinite;
 }
 
 /* ── VISUAL 5: Revenue Growth Engines ───────────────────────── */
@@ -1568,81 +1573,175 @@ button {
 /* ── Reduced motion overrides ───────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .ps-dash-flow,
-  .ps-flow-pulse-dot,
-  .ps-sys-line,
-  .ps-sys-bar,
-  .ps-dash-bar,
-  .ps-line-draw,
+  .ps-sys-tangle-line,
+  .ps-sys-clean-line,
+  .ps-dash-area-line,
+  .ps-dash-dot-pulse,
+  .ps-dash-dot-ring,
   .ps-drop {
     animation: none !important;
   }
 
-  .ps-dash-bar--0 { height: 45%; }
-  .ps-dash-bar--1 { height: 70%; }
-  .ps-dash-bar--2 { height: 55%; }
-  .ps-dash-bar--3 { height: 85%; }
-  .ps-dash-bar--4 { height: 60%; }
-  .ps-dash-bar--5 { height: 90%; }
+  /* Lock area chart line to fully drawn state */
+  .ps-dash-area-line {
+    stroke-dashoffset: 0 !important;
+  }
 
-  .ps-sys-bar--1 { height: 50%; }
-  .ps-sys-bar--2 { height: 80%; }
-  .ps-sys-bar--3 { height: 65%; }
-  .ps-sys-bar--4 { height: 90%; }
+  .ps-drop--0 { top: 60px; opacity: 0; }
 }
 
-.ps-bento-card-content {
+/* ── Modal overlay ──────────────────────────────────────────── */
+.ps-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 12, 28, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: ps-modal-in 220ms var(--ease-standard) forwards;
+}
+
+@keyframes ps-modal-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.ps-modal-card {
+  background: #0A1628;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  width: 100%;
+  max-width: 560px;
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255,255,255,0.05);
+  animation: ps-modal-card-in 240ms var(--ease-standard) forwards;
+}
+
+@keyframes ps-modal-card-in {
+  from { opacity: 0; transform: scale(0.96) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Modal visual area (taller than card thumbnail) */
+.ps-modal-visual {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+  background: #0A1628;
+}
+
+/* Make the visual component fill the modal visual area */
+.ps-modal-visual > * {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ps-modal-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ps-modal-title-row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 20px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 2;
+}
+
+.ps-modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+.ps-modal-content {
   padding: 24px 28px 28px;
 }
 
-.ps-bento-card-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--color-text-light-primary);
-  margin-bottom: 8px;
-  letter-spacing: -0.02em;
+.ps-modal-desc {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 20px;
 }
 
-.ps-bento-card-desc {
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--color-text-light-secondary);
-  margin-bottom: 16px;
-}
-
-.ps-bento-card-link {
+.ps-modal-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--color-primary);
+  text-decoration: none;
   transition: gap 200ms ease;
 }
 
-.ps-bento-card:hover .ps-bento-card-link {
+.ps-modal-link:hover {
   gap: 10px;
 }
 
 @media (max-width: 900px) {
   .ps-bento-grid {
     grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: minmax(280px, auto);
+    grid-auto-rows: minmax(260px, auto);
   }
   .ps-bento-card--large {
     grid-column: span 2;
+  }
+  .ps-bento-card {
+    min-height: 260px;
   }
 }
 
 @media (max-width: 580px) {
   .ps-bento-grid {
     grid-template-columns: 1fr;
-    grid-auto-rows: minmax(260px, auto);
+    grid-auto-rows: minmax(240px, auto);
   }
   .ps-bento-card--large {
     grid-column: span 1;
   }
+  .ps-bento-card {
+    min-height: 240px;
+  }
   .ps-services {
     padding: var(--section-py-mobile) 0;
+  }
+  .ps-modal-backdrop {
+    padding: 16px;
+    align-items: flex-end;
+  }
+  .ps-modal-card {
+    max-width: 100%;
+    border-radius: 16px 16px 0 0;
+  }
+  .ps-modal-visual {
+    height: 200px;
   }
 }
 
