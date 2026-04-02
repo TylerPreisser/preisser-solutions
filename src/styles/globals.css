@@ -2175,119 +2175,262 @@ button {
   .ps-rv3-tip-ring { animation: none !important; }
 }
 
-/* ── Modal overlay ──────────────────────────────────────────── */
-.ps-modal-backdrop {
+/* ── Bottom-Sheet Dialog (Stripe-pattern) ───────────────────── */
+
+/* Overlay: light semi-transparent, Stripe blue-white */
+.ps-dialog-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(5, 12, 28, 0.75);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  animation: ps-modal-in 220ms var(--ease-standard) forwards;
+  background: rgba(229, 237, 245, 0.9);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 400ms ease;
+  /* Allow clicks through overlay to reach the dismiss handler */
+  cursor: pointer;
 }
 
-@keyframes ps-modal-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+.ps-dialog-overlay.ps-dialog-overlay--open {
+  opacity: 1;
 }
 
-.ps-modal-card {
-  background: #0A1628;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-card);
-  overflow: hidden;
+/* Panel: slides up from bottom */
+.ps-dialog-panel {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
   width: 100%;
-  max-width: 560px;
-  box-shadow:
-    0 32px 80px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255,255,255,0.05);
-  animation: ps-modal-card-in 240ms var(--ease-standard) forwards;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.15), 0 -1px 0 rgba(0, 0, 0, 0.05);
+  z-index: 1001;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: default;
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.12) transparent;
 }
 
-@keyframes ps-modal-card-in {
-  from { opacity: 0; transform: scale(0.96) translateY(12px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
+.ps-dialog-panel::-webkit-scrollbar {
+  width: 4px;
+}
+.ps-dialog-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.ps-dialog-panel::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
 }
 
-/* Modal visual area (taller than card thumbnail) */
-.ps-modal-visual {
+.ps-dialog-panel.ps-dialog-panel--open {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Visual area inside the dialog — large, dark background */
+.ps-dialog-visual {
   position: relative;
-  height: 260px;
-  overflow: hidden;
+  height: 400px;
   background: #0A1628;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
 }
 
-/* Make the visual component fill the modal visual area */
-.ps-modal-visual > * {
+/* Scale the visual component to fill the dialog visual area */
+.ps-dialog-visual > .ps-bento-card-visual,
+.ps-dialog-visual > * {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.ps-modal-visual-overlay {
+/* Close button — top-right corner of the panel */
+.ps-dialog-close-btn {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.6) 0%,
-    rgba(0, 0, 0, 0.1) 50%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  pointer-events: none;
-  z-index: 1;
-}
-
-.ps-modal-title-row {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  padding: 20px 20px 16px;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  z-index: 2;
-}
-
-.ps-modal-title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: #ffffff;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  cursor: pointer;
+  transition: background 200ms ease, border-color 200ms ease;
 }
 
-.ps-modal-content {
-  padding: 24px 28px 28px;
+.ps-dialog-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
-.ps-modal-desc {
-  font-size: 1rem;
-  line-height: 1.65;
-  color: rgba(255, 255, 255, 0.72);
-  margin-bottom: 20px;
+/* Content area below the visual */
+.ps-dialog-content {
+  padding: 36px 40px 48px;
 }
 
-.ps-modal-link {
+/* Staggered reveal: each child starts hidden and fades/rises in */
+.ps-dialog-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ps-dialog-panel--open .ps-dialog-reveal:nth-child(1) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0ms;
+}
+.ps-dialog-panel--open .ps-dialog-reveal:nth-child(2) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 100ms;
+}
+.ps-dialog-panel--open .ps-dialog-reveal:nth-child(3) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 200ms;
+}
+.ps-dialog-panel--open .ps-dialog-reveal:nth-child(4) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 300ms;
+}
+
+/* Title inside the dialog */
+.ps-dialog-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--color-text-light-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+/* Description paragraph */
+.ps-dialog-desc {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--color-text-light-secondary);
+  margin-bottom: 24px;
+}
+
+/* Bullet list of inclusions */
+.ps-dialog-bullets {
+  list-style: none;
+  margin: 0 0 32px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 24px;
+}
+
+.ps-dialog-bullet {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9375rem;
+  color: var(--color-text-light-secondary);
+  line-height: 1.4;
+}
+
+.ps-dialog-bullet::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
+
+/* CTA button */
+.ps-dialog-cta {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.9375rem;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 1rem;
   font-weight: 600;
-  color: var(--color-primary);
+  border-radius: var(--radius-btn);
   text-decoration: none;
-  transition: gap 200ms ease;
+  transition:
+    background-color 200ms ease,
+    transform 200ms ease,
+    box-shadow 200ms ease;
 }
 
-.ps-modal-link:hover {
-  gap: 10px;
+.ps-dialog-cta:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(13, 149, 232, 0.35);
+}
+
+.ps-dialog-cta-arrow {
+  transition: transform 200ms ease;
+}
+
+.ps-dialog-cta:hover .ps-dialog-cta-arrow {
+  transform: translateX(4px);
+}
+
+/* ── Mouse-Tracking Gradient Border on Cards ─────────────────── */
+
+/* The card needs isolation to contain the ::after pseudo-element */
+.ps-bento-card {
+  isolation: isolate;
+}
+
+/* Gradient spot that follows the cursor — inside the card edge */
+.ps-bento-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    300px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(13, 149, 232, 0.22),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.ps-bento-card:hover::after {
+  opacity: 1;
+}
+
+/* ── Responsive: dialog panel adjustments ───────────────────── */
+@media (max-width: 768px) {
+  .ps-dialog-visual {
+    height: 280px;
+  }
+  .ps-dialog-content {
+    padding: 28px 24px 40px;
+  }
+  .ps-dialog-bullets {
+    grid-template-columns: 1fr;
+  }
+  .ps-dialog-title {
+    font-size: 1.375rem;
+  }
 }
 
 @media (max-width: 900px) {
@@ -2317,17 +2460,6 @@ button {
   }
   .ps-services {
     padding: var(--section-py-mobile) 0;
-  }
-  .ps-modal-backdrop {
-    padding: 16px;
-    align-items: flex-end;
-  }
-  .ps-modal-card {
-    max-width: 100%;
-    border-radius: 16px 16px 0 0;
-  }
-  .ps-modal-visual {
-    height: 200px;
   }
 }
 

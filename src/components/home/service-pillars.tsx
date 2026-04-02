@@ -13,6 +13,7 @@ interface ServicePillar {
   description: string;
   href: string;
   visual: React.ReactNode;
+  bullets: string[];
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -687,105 +688,186 @@ const services: ServicePillar[] = [
   {
     title: "Websites & Applications",
     description:
-      "Professional sites, custom apps, client portals, e-commerce — built from scratch, built to perform.",
-    href: "/services",
+      "Professional sites, custom apps, client portals, e-commerce — built from scratch, built to perform. Every pixel is intentional, every page is fast, and every experience is designed to convert visitors into customers.",
+    href: "/contact",
     visual: <WebsiteVisual />,
+    bullets: [
+      "Custom responsive design for all devices",
+      "SEO-optimized structure and performance",
+      "CMS integration for easy content updates",
+      "Ongoing maintenance and support",
+    ],
   },
   {
     title: "Automation Systems",
     description:
-      "AI-powered engines that handle your repetitive work — invoicing, outreach, document processing, you name it.",
-    href: "/services",
+      "AI-powered engines that handle your repetitive work — invoicing, outreach, document processing, you name it. Stop paying people to do what software can do better and faster.",
+    href: "/contact",
     visual: <AutomationVisual />,
+    bullets: [
+      "End-to-end workflow automation",
+      "AI document and data processing",
+      "CRM and email sequence automation",
+      "Custom integrations between any tools",
+    ],
   },
   {
     title: "System Fixes & Efficiency",
     description:
-      "Something's slow, broken, or redundant? We find it and fix it with better tech.",
-    href: "/services",
+      "Something's slow, broken, or redundant? We find it and fix it with better tech. We audit your stack, eliminate waste, and rebuild the pieces that are holding your team back.",
+    href: "/contact",
     visual: <SystemFixesVisual />,
+    bullets: [
+      "Full technology stack audit",
+      "Tool consolidation and cost reduction",
+      "Process redesign for maximum efficiency",
+      "Team training and adoption support",
+    ],
   },
   {
     title: "Dashboards & Business Intelligence",
     description:
-      "See your business clearly. Real-time data, live reporting, actionable insight.",
-    href: "/services",
+      "See your business clearly. Real-time data, live reporting, actionable insight. Stop making decisions based on gut feel — know exactly what's working, what's not, and where the money is.",
+    href: "/contact",
     visual: <DashboardVisual />,
+    bullets: [
+      "Real-time KPI and revenue dashboards",
+      "Custom reporting for any data source",
+      "Automated alerts and anomaly detection",
+      "Executive-ready presentation views",
+    ],
   },
   {
     title: "Revenue Growth Engines",
     description:
-      "Automated lead generation, content engines, and conversion systems that drive revenue while you focus on running your business.",
-    href: "/services",
+      "Automated lead generation, content engines, and conversion systems that drive revenue while you focus on running your business. Built to scale without adding headcount.",
+    href: "/contact",
     visual: <RevenueVisual />,
+    bullets: [
+      "Automated lead generation pipelines",
+      "Content and outreach at scale",
+      "Landing pages and conversion optimization",
+      "Follow-up sequences that close deals",
+    ],
   },
 ];
 
 /* ─────────────────────────────────────────────────────────────
-   EXPANDED CARD MODAL
-   Rendered via portal at document.body
+   BOTTOM-SHEET DIALOG
+   Stripe-style: slides up from bottom, light overlay, staggered
+   content reveal, scroll-lock with scrollbar compensation.
    ───────────────────────────────────────────────────────────── */
-interface ExpandedModalProps {
+interface BottomSheetDialogProps {
   service: ServicePillar;
   onClose: () => void;
 }
 
-function ExpandedModal({ service, onClose }: ExpandedModalProps) {
-  // Close on Escape key
+function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // Mount → next frame → add open class (drives CSS transitions)
   useEffect(() => {
-    function handleKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
-    }
-    document.addEventListener("keydown", handleKey);
-    // Prevent body scroll while open — compensate for scrollbar width to prevent layout shift
+    // Compensate for scrollbar width before locking scroll
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = "hidden";
     document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+    // Defer open to next paint so the initial transform is rendered first
+    const raf = requestAnimationFrame(() => {
+      setIsOpen(true);
+    });
+
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") handleClose();
+    }
+    document.addEventListener("keydown", handleKey);
+
     return () => {
+      cancelAnimationFrame(raf);
       document.removeEventListener("keydown", handleKey);
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
     };
-  }, [onClose]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Animate out, then call onClose after transition completes
+  function handleClose() {
+    setIsOpen(false);
+    // Wait for panel slide-down (700ms) + overlay fade (400ms); use the longer one
+    setTimeout(onClose, 720);
+  }
+
+  // Focus the panel on open for accessibility
+  useEffect(() => {
+    if (isOpen && panelRef.current) {
+      panelRef.current.focus();
+    }
+  }, [isOpen]);
 
   return createPortal(
-    <div
-      className="ps-modal-backdrop"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label={service.title}
-    >
+    <>
+      {/* Overlay — light Stripe blue-white */}
       <div
-        className="ps-modal-card"
-        onClick={(e) => e.stopPropagation()}
+        className={`ps-dialog-overlay${isOpen ? " ps-dialog-overlay--open" : ""}`}
+        onClick={handleClose}
+        aria-hidden="true"
+      />
+
+      {/* Panel */}
+      <div
+        ref={panelRef}
+        className={`ps-dialog-panel${isOpen ? " ps-dialog-panel--open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label={service.title}
+        tabIndex={-1}
       >
-        {/* Visual fills the top portion of the modal */}
-        <div className="ps-modal-visual">
+        {/* Visual area — large animated preview */}
+        <div className="ps-dialog-visual" aria-hidden="true">
           {service.visual}
 
-          {/* Gradient overlay so title is readable */}
-          <div className="ps-modal-visual-overlay" />
-
-          {/* Title overlay */}
-          <div className="ps-modal-title-row">
-            <h3 className="ps-modal-title">{service.title}</h3>
-            <button
-              className="ps-card-icon-btn"
-              onClick={onClose}
-              aria-label="Close"
-            >
-              <CloseIcon />
-            </button>
-          </div>
+          {/* Close button floats over the visual */}
+          <button
+            className="ps-dialog-close-btn"
+            onClick={handleClose}
+            aria-label="Close"
+          >
+            <CloseIcon />
+          </button>
         </div>
 
-        {/* Description content below the visual */}
-        <div className="ps-modal-content">
-          <p className="ps-modal-desc">{service.description}</p>
-          <Link href={service.href} className="ps-modal-link" onClick={onClose}>
-            Learn more
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        {/* Content area — staggered reveal */}
+        <div className="ps-dialog-content">
+          {/* Child 1 */}
+          <h3 className="ps-dialog-title ps-dialog-reveal">{service.title}</h3>
+
+          {/* Child 2 */}
+          <p className="ps-dialog-desc ps-dialog-reveal">{service.description}</p>
+
+          {/* Child 3 */}
+          <ul className="ps-dialog-bullets ps-dialog-reveal" aria-label="What's included">
+            {service.bullets.map((bullet) => (
+              <li key={bullet} className="ps-dialog-bullet">{bullet}</li>
+            ))}
+          </ul>
+
+          {/* Child 4 */}
+          <Link
+            href={service.href}
+            className="ps-dialog-cta ps-dialog-reveal"
+            onClick={handleClose}
+          >
+            Get Started
+            <svg
+              className="ps-dialog-cta-arrow"
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+              aria-hidden="true"
+            >
               <path
                 d="M1 7h12M8 2l5 5-5 5"
                 stroke="currentColor"
@@ -797,7 +879,7 @@ function ExpandedModal({ service, onClose }: ExpandedModalProps) {
           </Link>
         </div>
       </div>
-    </div>,
+    </>,
     document.body
   );
 }
@@ -890,6 +972,13 @@ export function ServicePillars() {
                 handleExpand(i);
               }
             }}
+            onMouseMove={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
+              e.currentTarget.style.setProperty("--mouse-x", `${x}px`);
+              e.currentTarget.style.setProperty("--mouse-y", `${y}px`);
+            }}
           >
             {/* Visual fills the entire card */}
             <div className="ps-bento-card-visual" aria-hidden="true">
@@ -910,9 +999,9 @@ export function ServicePillars() {
         ))}
       </div>
 
-      {/* Modal portal */}
+      {/* Bottom-sheet dialog portal */}
       {expandedIndex !== null && (
-        <ExpandedModal
+        <BottomSheetDialog
           service={services[expandedIndex]}
           onClose={handleClose}
         />
