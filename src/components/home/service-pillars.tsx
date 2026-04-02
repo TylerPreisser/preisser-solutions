@@ -4,52 +4,46 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 
 interface ServicePillar {
-  icon: string;
   title: string;
   description: string;
-  accentColor: string;
+  gradient: string;
   href: string;
 }
 
 const services: ServicePillar[] = [
   {
-    icon: "WA",
     title: "Websites & Applications",
     description:
       "Professional sites, custom apps, client portals, e-commerce — built from scratch, built to perform.",
-    accentColor: "#0D95E8",
+    gradient: "linear-gradient(135deg, #0D95E8 0%, #635BFF 100%)",
     href: "/services",
   },
   {
-    icon: "AS",
     title: "Automation Systems",
     description:
       "AI-powered engines that handle your repetitive work — invoicing, outreach, document processing, you name it.",
-    accentColor: "#635BFF",
+    gradient: "linear-gradient(135deg, #635BFF 0%, #a855f7 100%)",
     href: "/services",
   },
   {
-    icon: "SF",
     title: "System Fixes & Efficiency",
     description:
       "Something's slow, broken, or redundant? We find it and fix it with better tech.",
-    accentColor: "#00D4AA",
+    gradient: "linear-gradient(135deg, #00D4AA 0%, #0D95E8 100%)",
     href: "/services",
   },
   {
-    icon: "BI",
     title: "Dashboards & Business Intelligence",
     description:
       "See your business clearly. Real-time data, live reporting, actionable insight.",
-    accentColor: "#F59E0B",
+    gradient: "linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)",
     href: "/services",
   },
   {
-    icon: "MG",
     title: "Marketing & Growth Engines",
     description:
       "Automated content, email, SMS, SEO — lead generation systems that run without you.",
-    accentColor: "#EF4444",
+    gradient: "linear-gradient(135deg, #EF4444 0%, #635BFF 100%)",
     href: "/services",
   },
 ];
@@ -114,38 +108,43 @@ export function ServicePillars() {
         </h2>
       </div>
 
-      <div className="ps-services-grid" ref={gridRef}>
-        {services.map((service) => (
-          <article key={service.title} className="ps-service-card">
+      <div className="ps-bento-grid" ref={gridRef}>
+        {services.map((service, i) => (
+          <Link
+            key={service.title}
+            href={service.href}
+            className={`ps-bento-card ${i === 0 ? "ps-bento-card--large" : ""}`}
+          >
+            {/* Gradient visual area */}
             <div
-              className="ps-service-card-accent"
-              style={{ background: service.accentColor }}
+              className="ps-bento-card-visual"
+              style={{ background: service.gradient }}
               aria-hidden="true"
             />
-            <div className="ps-service-card-icon" aria-hidden="true">
-              {service.icon}
+            {/* Content area */}
+            <div className="ps-bento-card-content">
+              <h3 className="ps-bento-card-title">{service.title}</h3>
+              <p className="ps-bento-card-desc">{service.description}</p>
+              <span className="ps-bento-card-link">
+                Learn more
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M1 7h12M8 2l5 5-5 5"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
             </div>
-            <h3 className="ps-service-card-title">{service.title}</h3>
-            <p className="ps-service-card-desc">{service.description}</p>
-            <Link href={service.href} className="ps-service-card-link">
-              Learn more
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 14 14"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M1 7h12M8 2l5 5-5 5"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Link>
-          </article>
+          </Link>
         ))}
       </div>
     </section>

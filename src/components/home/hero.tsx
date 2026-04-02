@@ -47,12 +47,14 @@ export function Hero() {
     window.addEventListener("resize", resize);
 
     // Blob definitions — large soft circles with brand colors
+    // Bigger, brighter, more visible movement
     const blobs = [
-      { x: 0.2, y: 0.3, r: 0.45, color: "rgba(13,149,232,0.18)", sx: 0.3, sy: 0.2, px: 0, py: 0 },
-      { x: 0.75, y: 0.2, r: 0.4, color: "rgba(99,91,255,0.14)", sx: 0.25, sy: 0.35, px: 1.5, py: 0.8 },
-      { x: 0.5, y: 0.7, r: 0.5, color: "rgba(128,233,255,0.12)", sx: 0.2, sy: 0.25, px: 3, py: 2 },
-      { x: 0.8, y: 0.75, r: 0.35, color: "rgba(0,212,170,0.10)", sx: 0.35, sy: 0.3, px: 4.5, py: 1.2 },
-      { x: 0.15, y: 0.7, r: 0.3, color: "rgba(13,149,232,0.10)", sx: 0.28, sy: 0.22, px: 2.5, py: 3.5 },
+      { x: 0.15, y: 0.25, r: 0.55, color: "rgba(13,149,232,0.30)", sx: 0.6, sy: 0.4, px: 0, py: 0 },
+      { x: 0.8, y: 0.15, r: 0.5, color: "rgba(99,91,255,0.25)", sx: 0.5, sy: 0.7, px: 1.5, py: 0.8 },
+      { x: 0.5, y: 0.65, r: 0.6, color: "rgba(128,233,255,0.20)", sx: 0.4, sy: 0.5, px: 3, py: 2 },
+      { x: 0.85, y: 0.7, r: 0.45, color: "rgba(0,212,170,0.18)", sx: 0.7, sy: 0.6, px: 4.5, py: 1.2 },
+      { x: 0.1, y: 0.75, r: 0.4, color: "rgba(13,149,232,0.15)", sx: 0.55, sy: 0.45, px: 2.5, py: 3.5 },
+      { x: 0.5, y: 0.3, r: 0.35, color: "rgba(99,91,255,0.12)", sx: 0.8, sy: 0.3, px: 5, py: 4 },
     ];
 
     let t = 0;
@@ -65,10 +67,10 @@ export function Hero() {
       ctx.fillStyle = "#0A1628";
       ctx.fillRect(0, 0, w, h);
 
-      // Draw each blob as a radial gradient with slow drift
+      // Draw each blob — big amplitude movement so it's clearly animating
       for (const b of blobs) {
-        const cx = (b.x + Math.sin(t * b.sx + b.px) * 0.08) * w;
-        const cy = (b.y + Math.cos(t * b.sy + b.py) * 0.06) * h;
+        const cx = (b.x + Math.sin(t * b.sx + b.px) * 0.2) * w;
+        const cy = (b.y + Math.cos(t * b.sy + b.py) * 0.15) * h;
         const radius = b.r * Math.max(w, h);
 
         const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
@@ -109,7 +111,7 @@ export function Hero() {
         animId = requestAnimationFrame(loop);
         return;
       }
-      t += 0.004;
+      t += 0.012;
       draw();
       animId = requestAnimationFrame(loop);
     }

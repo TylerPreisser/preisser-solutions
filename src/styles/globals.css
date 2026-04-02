@@ -805,96 +805,111 @@ button {
   margin-bottom: 64px;
 }
 
-.ps-services-grid {
+/* ── Bento Grid (Stripe-inspired service cards) ─────────── */
+.ps-bento-grid {
   max-width: var(--container-max);
   margin: 0 auto;
   padding: 0 var(--container-padding);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-auto-rows: minmax(320px, auto);
+  gap: 16px;
 }
 
-.ps-service-card {
+.ps-bento-card {
+  position: relative;
   background-color: var(--color-white);
   border-radius: var(--radius-card);
-  padding: 32px;
-  box-shadow: var(--shadow-md);
+  overflow: hidden;
   border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
   transition:
-    transform 250ms var(--ease-standard),
-    box-shadow 250ms var(--ease-standard);
+    transform 300ms var(--ease-standard),
+    box-shadow 300ms var(--ease-standard),
+    border-color 300ms ease;
   will-change: transform;
   opacity: 0;
   transform: translateY(24px);
-  display: flex;
-  flex-direction: column;
 }
 
-.ps-service-card:hover {
+.ps-bento-card:hover {
   transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-xl);
+  border-color: rgba(13, 149, 232, 0.3);
 }
 
-.ps-service-card-accent {
-  height: 4px;
-  border-radius: 4px;
-  margin-bottom: 28px;
+/* First card spans 2 columns for visual hierarchy */
+.ps-bento-card--large {
+  grid-column: span 2;
 }
 
-.ps-service-card-icon {
-  font-size: 2rem;
-  margin-bottom: 16px;
+.ps-bento-card-visual {
+  flex: 1;
+  min-height: 180px;
+  position: relative;
+  opacity: 0.85;
+  transition: opacity 300ms ease;
 }
 
-.ps-service-card-title {
-  font-size: 1.1875rem;
+.ps-bento-card:hover .ps-bento-card-visual {
+  opacity: 1;
+}
+
+.ps-bento-card-content {
+  padding: 24px 28px 28px;
+}
+
+.ps-bento-card-title {
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--color-text-light-primary);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   letter-spacing: -0.02em;
 }
 
-.ps-service-card-desc {
+.ps-bento-card-desc {
   font-size: 0.9375rem;
-  line-height: 1.65;
+  line-height: 1.6;
   color: var(--color-text-light-secondary);
-  flex: 1;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
-.ps-service-card-link {
+.ps-bento-card-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-primary);
   transition: gap 200ms ease;
-  margin-top: auto;
 }
 
-.ps-service-card-link:hover {
+.ps-bento-card:hover .ps-bento-card-link {
   gap: 10px;
 }
 
-/* Last 2 cards centered in row when 5 total in 3-col grid */
-@media (min-width: 901px) {
-  .ps-services-grid {
-    /* First 3 fill normally; last 2 use auto placement */
-  }
-}
-
 @media (max-width: 900px) {
-  .ps-services-grid {
+  .ps-bento-grid {
     grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(280px, auto);
+  }
+  .ps-bento-card--large {
+    grid-column: span 2;
   }
 }
 
 @media (max-width: 580px) {
-  .ps-services-grid {
+  .ps-bento-grid {
     grid-template-columns: 1fr;
+    grid-auto-rows: minmax(260px, auto);
   }
-
+  .ps-bento-card--large {
+    grid-column: span 1;
+  }
   .ps-services {
     padding: var(--section-py-mobile) 0;
   }
@@ -983,51 +998,82 @@ button {
   margin-bottom: 64px;
 }
 
-.ps-stats-row {
+/* ── Results Cards Grid ───────────────────────────────────── */
+.ps-results-grid {
   max-width: var(--container-max);
   margin: 0 auto;
   padding: 0 var(--container-padding);
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
-.ps-stat {
-  text-align: center;
-  padding: 32px 16px;
+.ps-result-card {
+  position: relative;
+  padding: 28px 28px 28px 32px;
   background-color: var(--color-white);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border-light);
   opacity: 0;
   transform: translateY(24px);
+  transition:
+    transform 250ms var(--ease-standard),
+    box-shadow 250ms var(--ease-standard);
 }
 
-.ps-stat-number {
-  font-size: clamp(2.5rem, 4vw, 3.5rem);
-  font-weight: 800;
-  color: var(--color-primary);
-  line-height: 1;
-  letter-spacing: -0.04em;
+.ps-result-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.ps-result-card-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 4px 0 0 4px;
+}
+
+.ps-result-card-kpi {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text-light-primary);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.ps-result-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 12px;
 }
 
-.ps-stat-label {
+.ps-result-card-client {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.ps-result-card-industry {
+  font-size: 0.75rem;
+  color: var(--color-text-light-muted);
+  padding: 2px 10px;
+  background: var(--color-light);
+  border-radius: 100px;
+}
+
+.ps-result-card-desc {
   font-size: 0.875rem;
-  line-height: 1.55;
+  line-height: 1.65;
   color: var(--color-text-light-secondary);
-  font-weight: 500;
 }
 
-@media (max-width: 900px) {
-  .ps-stats-row {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
-  .ps-stats-row {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 768px) {
+  .ps-results-grid {
+    grid-template-columns: 1fr;
   }
 
   .ps-results {

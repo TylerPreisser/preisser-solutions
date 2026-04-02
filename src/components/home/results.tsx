@@ -2,61 +2,63 @@
 
 import { useEffect, useRef } from "react";
 
-interface Stat {
-  number: string;
-  numericValue: number;
-  suffix: string;
-  label: string;
+interface ResultCard {
+  kpi: string;
+  client: string;
+  industry: string;
+  description: string;
+  accentColor: string;
 }
 
-const stats: Stat[] = [
+const resultCards: ResultCard[] = [
   {
-    number: "5x",
-    numericValue: 5,
-    suffix: "x",
-    label: "organic reach in 30 days (John C Cassidy HVAC)",
+    kpi: "Social media fully automated",
+    client: "John C Cassidy HVAC",
+    industry: "HVAC / Home Services",
+    description:
+      "100% hands-off daily content creation and posting. Organic reach increased dramatically within the first month.",
+    accentColor: "#0D95E8",
   },
   {
-    number: "95%",
-    numericValue: 95,
-    suffix: "%",
-    label: "reduction in back-office inventory time (HG Oil Holdings)",
+    kpi: "Dormant customers reactivated",
+    client: "John C Cassidy HVAC",
+    industry: "HVAC / Home Services",
+    description:
+      "AI-powered SMS and email outreach reactivated the majority of inactive clients within 6 weeks. Booking conversions jumped significantly.",
+    accentColor: "#635BFF",
   },
   {
-    number: "60%+",
-    numericValue: 60,
-    suffix: "%+",
-    label: "reactivation of dormant customer lists",
+    kpi: "Inventory turned profitable",
+    client: "HG Oil Holdings",
+    industry: "Oil & Gas Operations",
+    description:
+      "Centralized inventory system eliminated manual tracking and converted a cost center into a profit center. Staff freed up across multiple roles.",
+    accentColor: "#00D4AA",
   },
   {
-    number: "75%",
-    numericValue: 75,
-    suffix: "%",
-    label: "decrease in manual invoice processing time",
-  },
-  {
-    number: "10+",
-    numericValue: 10,
-    suffix: "+",
-    label: "hours/week freed per project",
+    kpi: "Invoice processing automated",
+    client: "HG Oil Holdings",
+    industry: "Oil & Gas Operations",
+    description:
+      "AI invoicing assistant replaced 40+ hours/week of manual reading and categorization. Eliminated the need for additional hires.",
+    accentColor: "#F59E0B",
   },
 ];
 
 export function Results() {
-  const statsRef = useRef<HTMLDivElement>(null);
-  const hasAnimated = useRef(false);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const prefersReduced =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (!statsRef.current) return;
+    if (!gridRef.current) return;
 
-    const statEls = Array.from(statsRef.current.children) as HTMLElement[];
+    const cards = Array.from(gridRef.current.children) as HTMLElement[];
 
     if (prefersReduced) {
-      statEls.forEach((el) => {
+      cards.forEach((el) => {
         el.style.opacity = "1";
         el.style.transform = "none";
       });
@@ -64,47 +66,21 @@ export function Results() {
     }
 
     import("@/lib/gsap").then(({ gsap, ScrollTrigger }) => {
-      if (!statsRef.current || hasAnimated.current) return;
+      if (!gridRef.current) return;
 
-      // Reveal animation
       gsap.fromTo(
-        statEls,
+        cards,
         { opacity: 0, y: 28 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.6,
-          stagger: 0.1,
+          duration: 0.65,
+          stagger: 0.12,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: statsRef.current,
+            trigger: gridRef.current,
             start: "top 82%",
             once: true,
-            onEnter: () => {
-              if (hasAnimated.current) return;
-              hasAnimated.current = true;
-
-              // Count-up animation for each stat number
-              statEls.forEach((statEl, index) => {
-                const numberEl = statEl.querySelector(".ps-stat-number");
-                if (!numberEl) return;
-
-                const stat = stats[index];
-                gsap.fromTo(
-                  { val: 0 },
-                  { val: stat.numericValue },
-                  {
-                    duration: 1.8,
-                    ease: "power2.out",
-                    delay: index * 0.1,
-                    onUpdate: function () {
-                      const current = Math.round(this.targets()[0].val);
-                      numberEl.textContent = `${current}${stat.suffix}`;
-                    },
-                  }
-                );
-              });
-            },
           },
         }
       );
@@ -129,13 +105,20 @@ export function Results() {
         </h2>
       </div>
 
-      <div className="ps-stats-row" ref={statsRef}>
-        {stats.map((stat) => (
-          <div key={stat.label} className="ps-stat">
-            <div className="ps-stat-number" aria-label={`${stat.number} — ${stat.label}`}>
-              {stat.number}
+      <div className="ps-results-grid" ref={gridRef}>
+        {resultCards.map((card) => (
+          <div key={card.kpi} className="ps-result-card">
+            <div
+              className="ps-result-card-accent"
+              style={{ background: card.accentColor }}
+              aria-hidden="true"
+            />
+            <div className="ps-result-card-kpi">{card.kpi}</div>
+            <div className="ps-result-card-meta">
+              <span className="ps-result-card-client">{card.client}</span>
+              <span className="ps-result-card-industry">{card.industry}</span>
             </div>
-            <p className="ps-stat-label">{stat.label}</p>
+            <p className="ps-result-card-desc">{card.description}</p>
           </div>
         ))}
       </div>
