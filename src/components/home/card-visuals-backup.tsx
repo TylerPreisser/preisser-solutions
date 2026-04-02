@@ -146,137 +146,134 @@ export function WebsiteVisual() {
 export function AutomationVisual() {
   return (
     <div className="ps-visual-automation" aria-hidden="true">
-      {/* SVG connector lines behind nodes */}
-      <svg className="ps-auto-svg" viewBox="0 0 280 200" fill="none">
-        {/* Trigger → Process (top branch) */}
-        <path
-          d="M58,60 C90,60 100,50 122,50"
-          stroke="#635BFF"
-          strokeWidth="1.8"
-          strokeDasharray="5 3"
-          className="ps-dash-flow ps-dash-flow--0"
-          fill="none"
-        />
-        {/* Trigger → Filter (bottom branch) */}
-        <path
-          d="M58,60 C90,60 100,110 122,110"
-          stroke="#8B5CF6"
-          strokeWidth="1.8"
-          strokeDasharray="5 3"
-          className="ps-dash-flow ps-dash-flow--1"
-          fill="none"
-        />
-        {/* Process → AI */}
-        <path
-          d="M178,50 C200,50 210,80 222,80"
-          stroke="#A855F7"
-          strokeWidth="1.8"
-          strokeDasharray="5 3"
-          className="ps-dash-flow ps-dash-flow--2"
-          fill="none"
-        />
-        {/* Filter → AI */}
-        <path
-          d="M178,110 C200,110 210,80 222,80"
-          stroke="#A855F7"
-          strokeWidth="1.8"
-          strokeDasharray="5 3"
-          className="ps-dash-flow ps-dash-flow--0"
-          fill="none"
-        />
-        {/* AI → Output (top) */}
-        <path
-          d="M278,80 C296,80 296,40 310,40"
-          stroke="#10B981"
-          strokeWidth="1.8"
-          strokeDasharray="5 3"
-          className="ps-dash-flow ps-dash-flow--1"
-          fill="none"
-        />
-        {/* AI → Alert (bottom) */}
-        <path
-          d="M278,80 C296,80 296,120 310,120"
-          stroke="#10B981"
-          strokeWidth="1.8"
-          strokeDasharray="5 3"
-          className="ps-dash-flow ps-dash-flow--2"
-          fill="none"
-        />
-      </svg>
+      <div className="ps-auto-flow">
+        <svg className="ps-auto-svg" viewBox="0 0 320 220" fill="none">
+          <path
+            d="M80 110 C100 110, 104 72, 126 72"
+            stroke="#635BFF"
+            strokeWidth="2"
+            strokeDasharray="6 4"
+            className="ps-dash-flow ps-dash-flow--0"
+            fill="none"
+          />
+          <path
+            d="M80 110 C100 110, 104 148, 126 148"
+            stroke="#8B5CF6"
+            strokeWidth="2"
+            strokeDasharray="6 4"
+            className="ps-dash-flow ps-dash-flow--1"
+            fill="none"
+          />
+          <path
+            d="M154 72 C176 72, 178 110, 198 110"
+            stroke="#A855F7"
+            strokeWidth="2"
+            strokeDasharray="6 4"
+            className="ps-dash-flow ps-dash-flow--2"
+            fill="none"
+          />
+          <path
+            d="M154 148 C176 148, 178 110, 198 110"
+            stroke="#A855F7"
+            strokeWidth="2"
+            strokeDasharray="6 4"
+            className="ps-dash-flow ps-dash-flow--0"
+            fill="none"
+          />
+          <path
+            d="M232 110 C252 110, 254 72, 274 72"
+            stroke="#10B981"
+            strokeWidth="2"
+            strokeDasharray="6 4"
+            className="ps-dash-flow ps-dash-flow--1"
+            fill="none"
+          />
+          <path
+            d="M232 110 C252 110, 254 148, 274 148"
+            stroke="#F59E0B"
+            strokeWidth="2"
+            strokeDasharray="6 4"
+            className="ps-dash-flow ps-dash-flow--2"
+            fill="none"
+          />
+        </svg>
 
-      {/* COLUMN 1: Trigger */}
-      <div className="ps-auto-col ps-auto-col--1">
-        <div
-          className="ps-auto-node"
-          style={{ borderColor: "#635BFF60", boxShadow: "0 0 14px #635BFF22" }}
-        >
-          <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#635BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-          </svg>
-          <div className="ps-auto-node-label" style={{ color: "#635BFF" }}>Trigger</div>
+        <div className="ps-auto-node-wrap ps-auto-node-wrap--trigger">
+          <div
+            className="ps-auto-node"
+            style={{ borderColor: "#635BFF60", boxShadow: "0 0 14px #635BFF22" }}
+          >
+            <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#635BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+            </svg>
+            <div className="ps-auto-node-label" style={{ color: "#635BFF" }}>Trigger</div>
+          </div>
         </div>
-      </div>
 
-      {/* COLUMN 2: Process + Filter (branched) */}
-      <div className="ps-auto-col ps-auto-col--2">
-        <div
-          className="ps-auto-node"
-          style={{ borderColor: "#8B5CF660", boxShadow: "0 0 14px #8B5CF622" }}
-        >
-          <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="3" />
-            <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" />
-          </svg>
-          <div className="ps-auto-node-label" style={{ color: "#8B5CF6" }}>Process</div>
+        <div className="ps-auto-node-wrap ps-auto-node-wrap--process">
+          <div
+            className="ps-auto-node"
+            style={{ borderColor: "#8B5CF660", boxShadow: "0 0 14px #8B5CF622" }}
+          >
+            <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" />
+            </svg>
+            <div className="ps-auto-node-label" style={{ color: "#8B5CF6" }}>Process</div>
+          </div>
         </div>
-        <div
-          className="ps-auto-node"
-          style={{ borderColor: "#6366F160", boxShadow: "0 0 14px #6366F122" }}
-        >
-          <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#6366F1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-          </svg>
-          <div className="ps-auto-node-label" style={{ color: "#6366F1" }}>Filter</div>
-        </div>
-      </div>
 
-      {/* COLUMN 3: AI (merge) */}
-      <div className="ps-auto-col ps-auto-col--3">
-        <div
-          className="ps-auto-node ps-auto-node--large"
-          style={{ borderColor: "#A855F760", boxShadow: "0 0 18px #A855F733" }}
-        >
-          <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9.5 2A2.5 2.5 0 0112 4.5v15a2.5 2.5 0 01-5 0v-15A2.5 2.5 0 019.5 2z" />
-            <path d="M14.5 2A2.5 2.5 0 0117 4.5v15a2.5 2.5 0 01-5 0v-15A2.5 2.5 0 0114.5 2z" />
-            <line x1="4" y1="8.5" x2="9" y2="8.5" />
-            <line x1="15" y1="8.5" x2="20" y2="8.5" />
-            <line x1="4" y1="15.5" x2="9" y2="15.5" />
-            <line x1="15" y1="15.5" x2="20" y2="15.5" />
-          </svg>
-          <div className="ps-auto-node-label" style={{ color: "#A855F7" }}>AI Engine</div>
+        <div className="ps-auto-node-wrap ps-auto-node-wrap--filter">
+          <div
+            className="ps-auto-node"
+            style={{ borderColor: "#6366F160", boxShadow: "0 0 14px #6366F122" }}
+          >
+            <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#6366F1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+            </svg>
+            <div className="ps-auto-node-label" style={{ color: "#6366F1" }}>Filter</div>
+          </div>
         </div>
-      </div>
 
-      {/* COLUMN 4: Output + Alert */}
-      <div className="ps-auto-col ps-auto-col--4">
-        <div
-          className="ps-auto-node"
-          style={{ borderColor: "#10B98160", boxShadow: "0 0 14px #10B98122" }}
-        >
-          <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
-          <div className="ps-auto-node-label" style={{ color: "#10B981" }}>Output</div>
+        <div className="ps-auto-node-wrap ps-auto-node-wrap--engine">
+          <div
+            className="ps-auto-node ps-auto-node--large"
+            style={{ borderColor: "#A855F760", boxShadow: "0 0 18px #A855F733" }}
+          >
+            <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9.5 2A2.5 2.5 0 0112 4.5v15a2.5 2.5 0 01-5 0v-15A2.5 2.5 0 019.5 2z" />
+              <path d="M14.5 2A2.5 2.5 0 0117 4.5v15a2.5 2.5 0 01-5 0v-15A2.5 2.5 0 0114.5 2z" />
+              <line x1="4" y1="8.5" x2="9" y2="8.5" />
+              <line x1="15" y1="8.5" x2="20" y2="8.5" />
+              <line x1="4" y1="15.5" x2="9" y2="15.5" />
+              <line x1="15" y1="15.5" x2="20" y2="15.5" />
+            </svg>
+            <div className="ps-auto-node-label" style={{ color: "#A855F7" }}>AI Engine</div>
+          </div>
         </div>
-        <div
-          className="ps-auto-node"
-          style={{ borderColor: "#F59E0B60", boxShadow: "0 0 14px #F59E0B22" }}
-        >
-          <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
-          </svg>
-          <div className="ps-auto-node-label" style={{ color: "#F59E0B" }}>Alert</div>
+
+        <div className="ps-auto-node-wrap ps-auto-node-wrap--output">
+          <div
+            className="ps-auto-node"
+            style={{ borderColor: "#10B98160", boxShadow: "0 0 14px #10B98122" }}
+          >
+            <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <div className="ps-auto-node-label" style={{ color: "#10B981" }}>Output</div>
+          </div>
+        </div>
+
+        <div className="ps-auto-node-wrap ps-auto-node-wrap--alert">
+          <div
+            className="ps-auto-node"
+            style={{ borderColor: "#F59E0B60", boxShadow: "0 0 14px #F59E0B22" }}
+          >
+            <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
+            </svg>
+            <div className="ps-auto-node-label" style={{ color: "#F59E0B" }}>Alert</div>
+          </div>
         </div>
       </div>
     </div>
@@ -419,7 +416,13 @@ const heatmapCells: number[][] = Array.from({ length: HEATMAP_ROWS }, (_, r) =>
 
 export function DashboardVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0); // which tile index is in the "wide" (top) slot
+  const [tileOrder, setTileOrder] = useState([0, 1, 2, 3]);
+  const slotNames = [
+    "featured",
+    "bottom-left",
+    "bottom-middle",
+    "bottom-right",
+  ] as const;
 
   useEffect(() => {
     const el = containerRef.current;
@@ -450,7 +453,8 @@ export function DashboardVisual() {
     return () => observer.disconnect();
   }, []);
 
-  // Advance the "featured" tile every 3.5s
+  // Move each persistent tile through the four slots:
+  // featured -> bottom-left -> bottom-middle -> bottom-right -> featured.
   useEffect(() => {
     const prefersReduced =
       typeof window !== "undefined" &&
@@ -458,13 +462,15 @@ export function DashboardVisual() {
     if (prefersReduced) return;
 
     const id = setInterval(() => {
-      setActive((a) => (a + 1) % 4);
+      setTileOrder(([featured, bottomLeft, bottomMiddle, bottomRight]) => [
+        bottomRight,
+        featured,
+        bottomLeft,
+        bottomMiddle,
+      ]);
     }, 3500);
     return () => clearInterval(id);
   }, []);
-
-  // The 3 bottom slots show the tiles NOT currently featured
-  const bottomTiles = [0, 1, 2, 3].filter((t) => t !== active);
 
   return (
     <div
@@ -486,20 +492,22 @@ export function DashboardVisual() {
         </div>
       </div>
 
-      {/* Asymmetric layout: wide featured tile on top, 3 small below */}
+      {/* Asymmetric layout: one featured slot and a 3-tile conveyor row */}
       <div className="ps-dbc-layout">
-        {/* FEATURED (wide top tile) */}
-        <div className="ps-dbc-featured" key={`featured-${active}`}>
-          <DashTile tileIdx={active} featured />
-        </div>
+        <div className="ps-dbc-stage">
+          {tileOrder.map((tileIdx, slotIndex) => {
+            const slotName = slotNames[slotIndex];
+            const isFeatured = slotName === "featured";
 
-        {/* BOTTOM ROW: 3 small tiles */}
-        <div className="ps-dbc-bottom-row">
-          {bottomTiles.map((tileIdx) => (
-            <div key={`bottom-${tileIdx}-${active}`} className="ps-dbc-small-tile">
-              <DashTile tileIdx={tileIdx} featured={false} />
-            </div>
-          ))}
+            return (
+              <div
+                key={tileIdx}
+                className={`ps-dbc-tile-shell ps-dbc-slot--${slotName}`}
+              >
+                <DashTile tileIdx={tileIdx} featured={isFeatured} />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -653,72 +661,13 @@ export function RevenueVisual() {
     return () => observer.disconnect();
   }, []);
 
-  const inputs = [
-    { label: "Content", delay: 0 },
-    { label: "Ads",     delay: 1 },
-    { label: "SEO",     delay: 2 },
-    { label: "Email",   delay: 3 },
-  ];
-
-  const outputs = [
-    { label: "Leads",   delay: 0 },
-    { label: "Revenue", delay: 1 },
-    { label: "$$$",     delay: 2 },
-  ];
-
   return (
     <div
       ref={containerRef}
       className="ps-ge-root"
       aria-hidden="true"
     >
-      {/* TOP: Engine visualization */}
-      <div className="ps-ge-engine-row">
-        {/* Left: inputs flowing in */}
-        <div className="ps-ge-inputs">
-          {inputs.map((inp) => (
-            <div
-              key={inp.label}
-              className="ps-ge-input-item"
-              style={{ "--ge-delay": `${inp.delay * 0.15}s` } as React.CSSProperties}
-            >
-              <div className="ps-ge-input-dot" />
-              <span className="ps-ge-input-label">{inp.label}</span>
-              <div className="ps-ge-input-arrow" />
-            </div>
-          ))}
-        </div>
-
-        {/* Center: engine core */}
-        <div className="ps-ge-core">
-          {/* Outer rotating ring */}
-          <div className="ps-ge-ring ps-ge-ring--outer" />
-          {/* Inner rotating ring (opposite direction) */}
-          <div className="ps-ge-ring ps-ge-ring--inner" />
-          {/* Pulsing core dot */}
-          <div className="ps-ge-core-dot">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 2.5L9.5 6.5H13.5L10.5 9L11.5 13L8 10.5L4.5 13L5.5 9L2.5 6.5H6.5L8 2.5Z" fill="#0D95E8" opacity="0.9" />
-            </svg>
-          </div>
-        </div>
-
-        {/* Right: outputs flowing out */}
-        <div className="ps-ge-outputs">
-          {outputs.map((out) => (
-            <div
-              key={out.label}
-              className="ps-ge-output-item"
-              style={{ "--ge-delay": `${out.delay * 0.18 + 0.3}s` } as React.CSSProperties}
-            >
-              <div className="ps-ge-output-arrow" />
-              <span className="ps-ge-output-label">{out.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* BOTTOM: Growth line chart */}
+      {/* Growth line chart */}
       <div className="ps-ge-chart">
         <svg
           className="ps-ge-line-svg"
