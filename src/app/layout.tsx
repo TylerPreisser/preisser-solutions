@@ -8,35 +8,35 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "Preisser Solutions | Your Ai Business Experts",
+    default: "Preisser Solutions | AI-Powered Business Technology for Kansas Businesses",
     template: "%s | Preisser Solutions",
   },
   description:
-    "Preisser Solutions builds custom internal ecosystems to eliminate business headaches, reduce overhead, and streamline operations—remotely, 24/7, directly at your site.",
+    "Preisser Solutions builds, fixes, and automates business technology for companies across Kansas. Custom AI automation, system integration, web development, and more. Work directly with Tyler Preisser.",
   metadataBase: new URL("https://preissersolutions.com"),
   keywords:
-    "custom automation systems, AI-powered solutions, automated assistants, back office automation, administrative automation, business process optimization, workflow automation, Kansas business automation",
-  authors: [{ name: "Preisser Solutions" }],
+    "AI automation Kansas, business automation Hays Kansas, system integration, custom web development Kansas, digital marketing automation, Tyler Preisser",
+  authors: [{ name: "Tyler Preisser" }],
   robots: "index, follow",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://preissersolutions.com",
     siteName: "Preisser Solutions",
-    title: "Preisser Solutions | Your Ai Business Experts",
+    title: "Preisser Solutions | AI-Powered Business Technology for Kansas Businesses",
     description:
-      "Custom internal ecosystems that eliminate manual processes, deliver real-time visibility, and free leadership to grow—remotely, 24/7.",
+      "Preisser Solutions builds, fixes, and automates business technology for companies across Kansas. Work directly with Tyler Preisser.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Solutions | Your Ai Business Experts",
+    title: "Preisser Solutions | AI-Powered Business Technology",
     description:
-      "Streamline operations, automate invoices, and gain real-time visibility—so you can scale without the stress.",
+      "Custom AI automation, system integration, and web development for Kansas businesses. Work directly with Tyler Preisser.",
   },
 };
 
@@ -47,6 +47,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body>
         <Header />
         <main>{children}</main>

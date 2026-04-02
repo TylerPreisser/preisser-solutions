@@ -1,87 +1,82 @@
 import Link from "next/link";
-import Image from "next/image";
 import { siteConfig } from "@/data/site-config";
 
-const footerCols = [
-  {
-    heading: "Services",
-    links: [
-      { label: "Workflow Automation", href: "/services" },
-      { label: "Back Office Automation", href: "/services" },
-      { label: "Custom AI Assistants", href: "/services" },
-      { label: "AI-Powered Outreach", href: "/services" },
-      { label: "Digital Presence", href: "/services" },
-      { label: "Website Development", href: "/services" },
-    ],
-  },
-  {
-    heading: "Company",
-    links: [
-      { label: "About", href: "/about" },
-      { label: "Why Automation?", href: "/why-automation" },
-      { label: "ROI Calculator", href: "/roi-calculator" },
-      { label: "Contact", href: "/contact" },
-    ],
-  },
-  {
-    heading: "Resources",
-    links: [
-      { label: "How It Works", href: "/#how-it-works" },
-      { label: "Client Results", href: "/#testimonials" },
-      { label: "Free Consultation", href: "/contact" },
-      { label: "Privacy Policy", href: "#" },
-    ],
-  },
+const serviceLinks = [
+  { label: "Systems & Integration", href: "/services" },
+  { label: "AI-Powered Automation", href: "/services" },
+  { label: "Web & App Development", href: "/services" },
+  { label: "Data & Intelligence", href: "/services" },
+  { label: "Marketing & Growth", href: "/services" },
+];
+
+const companyLinks = [
+  { label: "About", href: "/about" },
+  { label: "Work", href: "/#case-studies" },
+  { label: "Contact", href: "/contact" },
+  { label: "Free Consultation", href: "/contact" },
 ];
 
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer id="footer" className="ps-footer">
+    <footer id="footer" className="ps-footer" aria-label="Site footer">
       <div className="ps-container">
         {/* Main grid */}
         <div className="ps-footer-grid">
           {/* Brand column */}
           <div className="ps-footer-brand">
-            <Image
-              src="/images/LOGO.png"
-              alt="Preisser Solutions"
-              width={160}
-              height={32}
-              className="ps-footer-logo"
-            />
-            <p>
-              Custom automation systems that eliminate manual work, reduce overhead,
-              and let your best people focus on what grows the business.
+            <Link href="/" className="ps-footer-logo-text" aria-label="Preisser Solutions — Home">
+              Preisser Solutions
+            </Link>
+            <p className="ps-footer-tagline">
+              AI-powered business technology for Kansas businesses.
+              Build it. Ship it. Grow.
             </p>
-            <a
-              href={`mailto:${siteConfig.contact.email}`}
-              className="ps-footer-contact-link"
-            >
-              {siteConfig.contact.email}
-            </a>
-            <a
-              href={`tel:${siteConfig.contact.phone}`}
-              className="ps-footer-contact-link"
-            >
-              {siteConfig.contact.phone}
-            </a>
+            <div className="ps-footer-contact">
+              <a
+                href={`mailto:${siteConfig.contact.email}`}
+                className="ps-footer-contact-link"
+                aria-label={`Email us at ${siteConfig.contact.email}`}
+              >
+                {siteConfig.contact.email}
+              </a>
+              <a
+                href={`tel:${siteConfig.contact.phone}`}
+                className="ps-footer-contact-link"
+                aria-label={`Call us at ${siteConfig.contact.phone}`}
+              >
+                {siteConfig.contact.phone}
+              </a>
+              <span className="ps-footer-contact-link" style={{ cursor: "default" }}>
+                {siteConfig.contact.location}
+              </span>
+            </div>
           </div>
 
-          {/* Link columns */}
-          {footerCols.map((col) => (
-            <div key={col.heading} className="ps-footer-col">
-              <h4>{col.heading}</h4>
-              <ul className="ps-footer-links">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    <Link href={link.href}>{link.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Services column */}
+          <div className="ps-footer-col">
+            <h4>Services</h4>
+            <ul className="ps-footer-links">
+              {serviceLinks.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href}>{link.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company column */}
+          <div className="ps-footer-col">
+            <h4>Company</h4>
+            <ul className="ps-footer-links">
+              {companyLinks.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href}>{link.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* Divider */}
@@ -92,9 +87,30 @@ export function Footer() {
           <p className="ps-footer-copy">
             &copy; {year}{" "}
             <Link href="/">{siteConfig.name}</Link>
-            . All rights reserved.
+            . All Rights Reserved.
           </p>
-          <p className="ps-footer-tagline">{siteConfig.tagline}</p>
+          <div className="ps-footer-social" aria-label="Social links">
+            {siteConfig.social.linkedin && (
+              <a
+                href={siteConfig.social.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Preisser Solutions on LinkedIn"
+              >
+                LinkedIn
+              </a>
+            )}
+            {siteConfig.social.facebook && (
+              <a
+                href={siteConfig.social.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Preisser Solutions on Facebook"
+              >
+                Facebook
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </footer>

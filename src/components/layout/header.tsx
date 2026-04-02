@@ -2,14 +2,13 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
   { label: "Services", href: "/services" },
-  { label: "Why Automation?", href: "/why-automation" },
+  { label: "Work", href: "/#case-studies" },
   { label: "About", href: "/about" },
-  { label: "Resources", href: "/roi-calculator" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function Header() {
@@ -47,18 +46,11 @@ export function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="logo-link"
+            className="ps-logo-text"
             onClick={handleLinkClick}
             aria-label="Preisser Solutions — Home"
           >
-            <Image
-              src="/images/LOGO.png"
-              alt="Preisser Solutions"
-              width={180}
-              height={36}
-              className="ps-logo"
-              priority
-            />
+            Preisser Solutions
           </Link>
 
           {/* Desktop nav */}
@@ -67,7 +59,7 @@ export function Header() {
             id="primary-navigation"
             aria-label="Primary navigation"
           >
-            <div className="ps-header-buttons">
+            <div className="ps-header-links">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
@@ -80,17 +72,27 @@ export function Header() {
               ))}
               <Link
                 href="/contact"
-                className="ps-header-link"
-                onClick={handleLinkClick}
-              >
-                Contact sales
-              </Link>
-              <Link
-                href="/contact"
                 className="ps-header-cta"
                 onClick={handleLinkClick}
+                aria-label="Talk to Tyler — schedule a free consultation"
               >
-                Start now
+                Talk to Tyler
+                <svg
+                  className="ps-header-cta-arrow"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M1 7h12M8 2l5 5-5 5"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </Link>
             </div>
           </nav>
@@ -98,7 +100,7 @@ export function Header() {
           {/* Hamburger — mobile */}
           <button
             className="ps-hamburger"
-            aria-controls="primary-navigation"
+            aria-controls="mobile-navigation"
             aria-expanded={navOpen}
             aria-label={navOpen ? "Close menu" : "Open menu"}
             onClick={() => setNavOpen((prev) => !prev)}
@@ -114,8 +116,9 @@ export function Header() {
       {/* Mobile drawer */}
       <nav
         className={cn("ps-mobile-nav", navOpen && "open")}
-        id="primary-navigation"
+        id="mobile-navigation"
         aria-label="Mobile navigation"
+        aria-hidden={!navOpen}
       >
         {navLinks.map((link) => (
           <Link
@@ -129,17 +132,10 @@ export function Header() {
         ))}
         <Link
           href="/contact"
-          className="ps-mobile-nav-link"
-          onClick={handleLinkClick}
-        >
-          Contact sales
-        </Link>
-        <Link
-          href="/contact"
           className="ps-mobile-nav-cta"
           onClick={handleLinkClick}
         >
-          Start now
+          Talk to Tyler →
         </Link>
       </nav>
     </>

@@ -4,20 +4,39 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 
 export function Hero() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const eyebrowRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctasRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Load hero canvas animation
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    const script = document.createElement("script");
+    script.src = "/ps-hero-animation.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
+
+  // GSAP entrance timeline
   useEffect(() => {
     const prefersReduced =
+      typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const els = [eyebrowRef, headlineRef, subtitleRef, ctasRef, scrollRef];
+    const targets = [eyebrowRef, headlineRef, subtitleRef, ctasRef, scrollRef];
 
     if (prefersReduced) {
-      els.forEach((r) => {
+      targets.forEach((r) => {
         if (r.current) {
           r.current.style.opacity = "1";
           r.current.style.transform = "none";
@@ -27,28 +46,28 @@ export function Hero() {
     }
 
     import("@/lib/gsap").then(({ gsap }) => {
-      const tl = gsap.timeline({ delay: 0.15 });
+      const tl = gsap.timeline({ delay: 0.2 });
       tl
         .to(eyebrowRef.current, {
           opacity: 1,
           y: 0,
-          duration: 0.55,
-          ease: "power2.out",
+          duration: 0.6,
+          ease: "power3.out",
         })
         .to(
           headlineRef.current,
-          { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" },
+          { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" },
           "-=0.3"
         )
         .to(
           subtitleRef.current,
-          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-          "-=0.35"
+          { opacity: 1, y: 0, duration: 0.65, ease: "power2.out" },
+          "-=0.4"
         )
         .to(
           ctasRef.current,
-          { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" },
-          "-=0.3"
+          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+          "-=0.35"
         )
         .to(
           scrollRef.current,
@@ -60,44 +79,74 @@ export function Hero() {
 
   return (
     <section className="ps-hero" aria-label="Hero — Preisser Solutions">
-      {/* Animated gradient mesh — Stripe signature */}
-      <div className="ps-hero-bg" aria-hidden="true" />
+      {/* Animated canvas background */}
+      <canvas
+        ref={canvasRef}
+        id="ps-hero-canvas"
+        aria-hidden="true"
+      />
 
-      {/* Wave texture overlay */}
-      <div className="ps-hero-wave" aria-hidden="true" />
+      {/* Overlay for readability */}
+      <div className="ps-hero-overlay" aria-hidden="true" />
 
-      {/* Content */}
+      {/* Hero content */}
       <div className="ps-hero-content">
         <div ref={eyebrowRef} className="ps-hero-eyebrow">
           <span className="ps-hero-dot" aria-hidden="true" />
-          Business Automation Infrastructure
+          AI-Powered Business Technology
         </div>
 
         <h1 ref={headlineRef} className="ps-hero-headline">
-          Automation infrastructure to{" "}
-          <span className="ps-highlight">grow your business</span>
+          Your Business Runs on Systems.
+          <br />
+          We Make Them Work.
         </h1>
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
-          Join the businesses of all sizes that use Preisser Solutions to
-          eliminate manual work, embed AI into operations, power custom
-          workflows, and build a more profitable company.
+          Preisser Solutions builds, fixes, and automates the technology behind
+          your business — so your team stops fighting their tools and starts
+          using them.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
-          <Link href="/contact" className="ps-btn-primary-dark">
-            Start now
+          <Link href="/contact" className="ps-btn ps-btn-primary-dark">
+            Talk to Tyler
+            <svg
+              className="ps-btn-arrow"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M1 8h14M9 2l6 6-6 6"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </Link>
-          <Link href="/contact" className="ps-btn-secondary">
-            Contact sales
+          <Link href="/#services" className="ps-btn ps-btn-secondary">
+            See What We Build
           </Link>
         </div>
       </div>
 
       {/* Scroll indicator */}
       <div ref={scrollRef} className="ps-scroll-indicator" aria-hidden="true">
-        <span className="ps-scroll-indicator-text">Scroll</span>
-        <span className="ps-scroll-indicator-line" />
+        <svg
+          className="ps-scroll-chevron"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
       </div>
     </section>
   );
