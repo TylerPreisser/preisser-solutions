@@ -18,12 +18,12 @@ interface ServicePillar {
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 1 — Websites & Applications
-   Browser chrome + phone mockup side by side
+   Browser chrome + real iPhone mockup, both vertically centered
    ───────────────────────────────────────────────────────────── */
 function WebsiteVisual() {
   return (
     <div className="ps-visual-website" aria-hidden="true">
-      {/* LEFT: Browser window (scaled down) */}
+      {/* LEFT: Browser window */}
       <div className="ps-wb-browser">
         <div className="ps-browser-chrome">
           <div className="ps-browser-dots">
@@ -73,50 +73,66 @@ function WebsiteVisual() {
         </div>
       </div>
 
-      {/* RIGHT: Phone mockup */}
+      {/* RIGHT: iPhone mockup — narrow, tall, proper proportions */}
       <div className="ps-wb-phone">
-        {/* Phone frame */}
-        <div className="ps-phone-frame">
-          {/* Notch */}
-          <div className="ps-phone-notch" />
+        <div className="ps-iphone-frame">
+          {/* Dynamic island */}
+          <div className="ps-iphone-island" />
           {/* Screen */}
-          <div className="ps-phone-screen">
-            {/* Dark header */}
-            <div className="ps-phone-header">
-              <div className="ps-phone-header-logo" />
-              <div className="ps-phone-header-icon" />
-            </div>
-            {/* Content blocks */}
-            <div className="ps-phone-content">
-              <div className="ps-phone-hero-block">
-                <div className="ps-phone-line ps-phone-line--title" />
-                <div className="ps-phone-line ps-phone-line--sub" />
-                <div className="ps-phone-cta-btn" />
-              </div>
-              <div className="ps-phone-cards">
-                <div className="ps-phone-card">
-                  <div className="ps-phone-card-dot" style={{ background: "rgba(13,149,232,0.8)" }} />
-                  <div className="ps-phone-card-lines">
-                    <div className="ps-phone-line ps-phone-line--sm" />
-                    <div className="ps-phone-line ps-phone-line--xs" />
-                  </div>
-                </div>
-                <div className="ps-phone-card">
-                  <div className="ps-phone-card-dot" style={{ background: "rgba(139,92,246,0.8)" }} />
-                  <div className="ps-phone-card-lines">
-                    <div className="ps-phone-line ps-phone-line--sm" />
-                    <div className="ps-phone-line ps-phone-line--xs" />
-                  </div>
-                </div>
+          <div className="ps-iphone-screen">
+            {/* Status bar */}
+            <div className="ps-iphone-status">
+              <span className="ps-iphone-time">9:41</span>
+              <div className="ps-iphone-status-icons">
+                <div className="ps-iphone-signal" />
+                <div className="ps-iphone-battery" />
               </div>
             </div>
-            {/* Bottom tab bar */}
-            <div className="ps-phone-tabbar">
-              <div className="ps-phone-tab ps-phone-tab--active" />
-              <div className="ps-phone-tab" />
-              <div className="ps-phone-tab" />
-              <div className="ps-phone-tab" />
+            {/* App header */}
+            <div className="ps-iphone-app-header">
+              <div className="ps-iphone-app-logo" />
+              <div className="ps-iphone-app-avatar" />
             </div>
+            {/* Hero block */}
+            <div className="ps-iphone-hero-block">
+              <div className="ps-iphone-line ps-iphone-line--title" />
+              <div className="ps-iphone-line ps-iphone-line--sub" />
+              <div className="ps-iphone-cta" />
+            </div>
+            {/* Cards */}
+            <div className="ps-iphone-cards">
+              <div className="ps-iphone-card">
+                <div className="ps-iphone-card-dot" style={{ background: "rgba(13,149,232,0.85)" }} />
+                <div className="ps-iphone-card-body">
+                  <div className="ps-iphone-line ps-iphone-line--sm" />
+                  <div className="ps-iphone-line ps-iphone-line--xs" />
+                </div>
+              </div>
+              <div className="ps-iphone-card">
+                <div className="ps-iphone-card-dot" style={{ background: "rgba(139,92,246,0.85)" }} />
+                <div className="ps-iphone-card-body">
+                  <div className="ps-iphone-line ps-iphone-line--sm" />
+                  <div className="ps-iphone-line ps-iphone-line--xs" />
+                </div>
+              </div>
+              <div className="ps-iphone-card">
+                <div className="ps-iphone-card-dot" style={{ background: "rgba(0,212,170,0.85)" }} />
+                <div className="ps-iphone-card-body">
+                  <div className="ps-iphone-line ps-iphone-line--sm" />
+                  <div className="ps-iphone-line ps-iphone-line--xs" />
+                </div>
+              </div>
+            </div>
+            {/* Tab bar */}
+            <div className="ps-iphone-tabbar">
+              <div className="ps-iphone-tab ps-iphone-tab--active" />
+              <div className="ps-iphone-tab" />
+              <div className="ps-iphone-tab" />
+              <div className="ps-iphone-tab" />
+              <div className="ps-iphone-tab" />
+            </div>
+            {/* Home indicator */}
+            <div className="ps-iphone-home-indicator" />
           </div>
         </div>
       </div>
@@ -126,66 +142,144 @@ function WebsiteVisual() {
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 2 — Automation Systems
-   Left-to-right workflow nodes with animated dashed paths
-   Pulse dot removed per spec.
+   Branching workflow: Trigger → [Process, Filter] → AI → [Output, Alert]
+   SVG paths connect the nodes with animated dashes.
    ───────────────────────────────────────────────────────────── */
 function AutomationVisual() {
-  const nodes = [
-    { label: "Trigger", icon: "⚡", color: "#635BFF" },
-    { label: "Process", icon: "⚙", color: "#8B5CF6" },
-    { label: "AI",      icon: "◈", color: "#A855F7" },
-    { label: "Output",  icon: "✓", color: "#C084FC" },
-  ];
-
   return (
     <div className="ps-visual-automation" aria-hidden="true">
-      <div className="ps-flow-container">
-        {nodes.map((node, i) => (
-          <div key={node.label} className="ps-flow-step">
-            <div
-              className="ps-flow-node"
-              style={{
-                borderColor: node.color + "60",
-                boxShadow: `0 0 12px ${node.color}22`,
-              }}
-            >
-              <div className="ps-flow-node-icon" style={{ color: node.color }}>
-                {node.icon}
-              </div>
-              <div className="ps-flow-node-label">{node.label}</div>
-            </div>
-            {i < nodes.length - 1 && (
-              <div className="ps-flow-connector">
-                <svg
-                  width="40"
-                  height="16"
-                  viewBox="0 0 40 16"
-                  fill="none"
-                  className="ps-flow-connector-svg"
-                >
-                  <line
-                    x1="0"
-                    y1="8"
-                    x2="34"
-                    y2="8"
-                    stroke={node.color}
-                    strokeWidth="1.5"
-                    strokeDasharray="4 3"
-                    className={`ps-dash-flow ps-dash-flow--${i}`}
-                  />
-                  <polyline
-                    points="30,4 36,8 30,12"
-                    stroke={node.color}
-                    strokeWidth="1.5"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-            )}
-          </div>
-        ))}
+      {/* SVG connector lines behind nodes */}
+      <svg className="ps-auto-svg" viewBox="0 0 280 200" fill="none">
+        {/* Trigger → Process (top branch) */}
+        <path
+          d="M58,60 C90,60 100,50 122,50"
+          stroke="#635BFF"
+          strokeWidth="1.8"
+          strokeDasharray="5 3"
+          className="ps-dash-flow ps-dash-flow--0"
+          fill="none"
+        />
+        {/* Trigger → Filter (bottom branch) */}
+        <path
+          d="M58,60 C90,60 100,110 122,110"
+          stroke="#8B5CF6"
+          strokeWidth="1.8"
+          strokeDasharray="5 3"
+          className="ps-dash-flow ps-dash-flow--1"
+          fill="none"
+        />
+        {/* Process → AI */}
+        <path
+          d="M178,50 C200,50 210,80 222,80"
+          stroke="#A855F7"
+          strokeWidth="1.8"
+          strokeDasharray="5 3"
+          className="ps-dash-flow ps-dash-flow--2"
+          fill="none"
+        />
+        {/* Filter → AI */}
+        <path
+          d="M178,110 C200,110 210,80 222,80"
+          stroke="#A855F7"
+          strokeWidth="1.8"
+          strokeDasharray="5 3"
+          className="ps-dash-flow ps-dash-flow--0"
+          fill="none"
+        />
+        {/* AI → Output (top) */}
+        <path
+          d="M278,80 C296,80 296,40 310,40"
+          stroke="#10B981"
+          strokeWidth="1.8"
+          strokeDasharray="5 3"
+          className="ps-dash-flow ps-dash-flow--1"
+          fill="none"
+        />
+        {/* AI → Alert (bottom) */}
+        <path
+          d="M278,80 C296,80 296,120 310,120"
+          stroke="#10B981"
+          strokeWidth="1.8"
+          strokeDasharray="5 3"
+          className="ps-dash-flow ps-dash-flow--2"
+          fill="none"
+        />
+      </svg>
+
+      {/* COLUMN 1: Trigger */}
+      <div className="ps-auto-col ps-auto-col--1">
+        <div
+          className="ps-auto-node"
+          style={{ borderColor: "#635BFF60", boxShadow: "0 0 14px #635BFF22" }}
+        >
+          <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#635BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+          </svg>
+          <div className="ps-auto-node-label" style={{ color: "#635BFF" }}>Trigger</div>
+        </div>
+      </div>
+
+      {/* COLUMN 2: Process + Filter (branched) */}
+      <div className="ps-auto-col ps-auto-col--2">
+        <div
+          className="ps-auto-node"
+          style={{ borderColor: "#8B5CF660", boxShadow: "0 0 14px #8B5CF622" }}
+        >
+          <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" />
+          </svg>
+          <div className="ps-auto-node-label" style={{ color: "#8B5CF6" }}>Process</div>
+        </div>
+        <div
+          className="ps-auto-node"
+          style={{ borderColor: "#6366F160", boxShadow: "0 0 14px #6366F122" }}
+        >
+          <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#6366F1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+          </svg>
+          <div className="ps-auto-node-label" style={{ color: "#6366F1" }}>Filter</div>
+        </div>
+      </div>
+
+      {/* COLUMN 3: AI (merge) */}
+      <div className="ps-auto-col ps-auto-col--3">
+        <div
+          className="ps-auto-node ps-auto-node--large"
+          style={{ borderColor: "#A855F760", boxShadow: "0 0 18px #A855F733" }}
+        >
+          <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9.5 2A2.5 2.5 0 0112 4.5v15a2.5 2.5 0 01-5 0v-15A2.5 2.5 0 019.5 2z" />
+            <path d="M14.5 2A2.5 2.5 0 0117 4.5v15a2.5 2.5 0 01-5 0v-15A2.5 2.5 0 0114.5 2z" />
+            <line x1="4" y1="8.5" x2="9" y2="8.5" />
+            <line x1="15" y1="8.5" x2="20" y2="8.5" />
+            <line x1="4" y1="15.5" x2="9" y2="15.5" />
+            <line x1="15" y1="15.5" x2="20" y2="15.5" />
+          </svg>
+          <div className="ps-auto-node-label" style={{ color: "#A855F7" }}>AI Engine</div>
+        </div>
+      </div>
+
+      {/* COLUMN 4: Output + Alert */}
+      <div className="ps-auto-col ps-auto-col--4">
+        <div
+          className="ps-auto-node"
+          style={{ borderColor: "#10B98160", boxShadow: "0 0 14px #10B98122" }}
+        >
+          <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          <div className="ps-auto-node-label" style={{ color: "#10B981" }}>Output</div>
+        </div>
+        <div
+          className="ps-auto-node"
+          style={{ borderColor: "#F59E0B60", boxShadow: "0 0 14px #F59E0B22" }}
+        >
+          <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
+          </svg>
+          <div className="ps-auto-node-label" style={{ color: "#F59E0B" }}>Alert</div>
+        </div>
       </div>
     </div>
   );
@@ -193,9 +287,8 @@ function AutomationVisual() {
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 3 — System Fixes & Efficiency
-   Chaos state (messy overlapping app boxes, red dotted connectors)
-   transitions to ordered grid (solid green connectors) +
-   completion checkmark.
+   Real-time health monitor: 6 service rows animate from red/broken
+   to green/healthy on scroll into view.
    ───────────────────────────────────────────────────────────── */
 function SystemFixesVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -229,79 +322,81 @@ function SystemFixesVisual() {
     return () => observer.disconnect();
   }, []);
 
-  const apps = [
-    { label: "CRM",   color: "#0D95E8" },
-    { label: "Email", color: "#8B5CF6" },
-    { label: "Sched", color: "#00D4AA" },
-    { label: "Acctg", color: "#F59E0B" },
+  const services = [
+    { name: "CRM Sync",       before: "34%",   after: "99%",  barW: 34,  delay: 0 },
+    { name: "Data Pipeline",  before: "12%",   after: "98%",  barW: 12,  delay: 1 },
+    { name: "Email Server",   before: "61%",   after: "100%", barW: 61,  delay: 2 },
+    { name: "API Gateway",    before: "0%",    after: "99%",  barW: 0,   delay: 3 },
+    { name: "Backup System",  before: "45%",   after: "97%",  barW: 45,  delay: 4 },
+    { name: "Analytics",      before: "28%",   after: "99%",  barW: 28,  delay: 5 },
   ];
 
   return (
     <div
       ref={containerRef}
-      className="ps-sf2-root"
+      className="ps-hm-root"
       aria-hidden="true"
     >
-      {/* Label: before / after */}
-      <div className="ps-sf2-labels">
-        <span className="ps-sf2-label ps-sf2-label--before">Before</span>
-        <span className="ps-sf2-label ps-sf2-label--after">After</span>
-      </div>
-
-      {/* The two states share the same DOM — CSS transitions between them */}
-      <div className="ps-sf2-stage">
-        {/* Chaos connectors (red dashed, tangled) — hidden when in-view */}
-        <svg className="ps-sf2-chaos-lines" viewBox="0 0 200 120" fill="none" aria-hidden="true">
-          <line x1="50"  y1="30"  x2="150" y2="90"  stroke="#EF4444" strokeWidth="1.2" strokeDasharray="4 3" className="ps-sf2-chaos-line" />
-          <line x1="150" y1="30"  x2="40"  y2="85"  stroke="#EF4444" strokeWidth="1.2" strokeDasharray="4 3" className="ps-sf2-chaos-line" />
-          <line x1="50"  y1="30"  x2="150" y2="30"  stroke="#EF4444" strokeWidth="1"   strokeDasharray="4 3" className="ps-sf2-chaos-line" />
-          <line x1="45"  y1="85"  x2="155" y2="90"  stroke="#EF4444" strokeWidth="1"   strokeDasharray="4 3" className="ps-sf2-chaos-line" />
-        </svg>
-
-        {/* Order connectors (green solid) — drawn when in-view */}
-        <svg className="ps-sf2-order-lines" viewBox="0 0 200 120" fill="none" aria-hidden="true">
-          {/* Horizontal */}
-          <line x1="80"  y1="35"  x2="120" y2="35"  stroke="#10B981" strokeWidth="1.5" className="ps-sf2-order-line ps-sf2-order-line--0" />
-          <line x1="80"  y1="85"  x2="120" y2="85"  stroke="#10B981" strokeWidth="1.5" className="ps-sf2-order-line ps-sf2-order-line--1" />
-          {/* Vertical */}
-          <line x1="50"  y1="55"  x2="50"  y2="65"  stroke="#10B981" strokeWidth="1.5" className="ps-sf2-order-line ps-sf2-order-line--2" />
-          <line x1="150" y1="55"  x2="150" y2="65"  stroke="#10B981" strokeWidth="1.5" className="ps-sf2-order-line ps-sf2-order-line--3" />
-        </svg>
-
-        {/* App boxes — chaos positions → ordered 2x2 grid */}
-        {apps.map((app, i) => (
-          <div
-            key={app.label}
-            className={`ps-sf2-app ps-sf2-app--${i}`}
-            style={{ "--app-color": app.color } as React.CSSProperties}
-          >
-            <div className="ps-sf2-app-dot" style={{ background: app.color }} />
-            <span className="ps-sf2-app-label">{app.label}</span>
-          </div>
-        ))}
-
-        {/* Completion checkmark — fades in last */}
-        <div className="ps-sf2-check" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <circle cx="9" cy="9" r="8.5" stroke="#10B981" strokeWidth="1" />
-            <path
-              className="ps-sf2-check-path"
-              d="M5 9.5L7.5 12L13 6.5"
-              stroke="#10B981"
-              strokeWidth="1.75"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="ps-sf2-check-label">Systems connected</span>
+      {/* Header bar */}
+      <div className="ps-hm-header">
+        <span className="ps-hm-header-title">System Health Monitor</span>
+        <div className="ps-hm-header-status">
+          <div className="ps-hm-live-dot" />
+          <span className="ps-hm-live-label">LIVE</span>
         </div>
       </div>
 
-      {/* Progress bar */}
-      <div className="ps-sf2-bar-track">
-        <div className="ps-sf2-bar-fill" />
-        <span className="ps-sf2-bar-label">Efficiency</span>
-        <span className="ps-sf2-bar-value">+92%</span>
+      {/* Service rows */}
+      <div className="ps-hm-rows">
+        {services.map((svc, i) => (
+          <div
+            key={svc.name}
+            className="ps-hm-row"
+            style={{ "--hm-delay": `${i * 0.12}s` } as React.CSSProperties}
+          >
+            {/* Status icon: X → checkmark */}
+            <div className="ps-hm-status-icon">
+              <svg className="ps-hm-icon-x" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 2l6 6M8 2l-6 6" stroke="#EF4444" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+              <svg className="ps-hm-icon-check" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <polyline points="2,5 4.5,7.5 8,3" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+
+            {/* Service name */}
+            <span className="ps-hm-name">{svc.name}</span>
+
+            {/* Status bar track */}
+            <div className="ps-hm-bar-track">
+              {/* Before bar (red, short) */}
+              <div
+                className="ps-hm-bar-before"
+                style={{ width: `${svc.barW}%` }}
+              />
+              {/* After bar (green, full) — slides in on in-view */}
+              <div
+                className="ps-hm-bar-after"
+                style={{ "--hm-bar-delay": `${i * 0.12 + 0.1}s` } as React.CSSProperties}
+              />
+            </div>
+
+            {/* Percentage readout */}
+            <span className="ps-hm-pct">
+              <span className="ps-hm-pct-before">{svc.before}</span>
+              <span className="ps-hm-pct-after">{svc.after}</span>
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Footer summary */}
+      <div className="ps-hm-footer">
+        <span className="ps-hm-footer-label">Overall Efficiency</span>
+        <div className="ps-hm-footer-bar-track">
+          <div className="ps-hm-footer-bar" />
+        </div>
+        <span className="ps-hm-footer-value">+92%</span>
       </div>
     </div>
   );
@@ -309,12 +404,24 @@ function SystemFixesVisual() {
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 4 — Dashboards & Business Intelligence
-   Cycling bento grid: 4 tiles rotate positions every 3s.
-   Tile types: bar chart, line chart, donut chart, metric number.
+   Conveyor-belt cycling: tiles push left as new one slides in
+   from the right. Tiles: bar chart (wide), line chart, big donut,
+   heatmap grid. Layout is asymmetric (one wide tile on top).
    ───────────────────────────────────────────────────────────── */
+
+// Heatmap cell data — static, looks like a contribution graph
+const HEATMAP_ROWS = 5;
+const HEATMAP_COLS = 9;
+const HEATMAP_LEVELS = [0, 1, 1, 2, 2, 2, 3, 3, 4]; // weighted toward mid/high
+const heatmapCells: number[][] = Array.from({ length: HEATMAP_ROWS }, (_, r) =>
+  Array.from({ length: HEATMAP_COLS }, (_, c) =>
+    HEATMAP_LEVELS[(r * HEATMAP_COLS + c * 3 + r * 2) % HEATMAP_LEVELS.length]
+  )
+);
+
 function DashboardVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [cycle, setCycle] = useState(0);
+  const [active, setActive] = useState(0); // which tile index is in the "wide" (top) slot
 
   useEffect(() => {
     const el = containerRef.current;
@@ -345,7 +452,7 @@ function DashboardVisual() {
     return () => observer.disconnect();
   }, []);
 
-  // Cycle tiles every 3s once in view
+  // Advance the "featured" tile every 3.5s
   useEffect(() => {
     const prefersReduced =
       typeof window !== "undefined" &&
@@ -353,20 +460,13 @@ function DashboardVisual() {
     if (prefersReduced) return;
 
     const id = setInterval(() => {
-      setCycle((c) => (c + 1) % 4);
-    }, 3000);
+      setActive((a) => (a + 1) % 4);
+    }, 3500);
     return () => clearInterval(id);
   }, []);
 
-  // 4 tile order configurations (each config shifts what's in each quadrant)
-  // positions: [topLeft, topRight, bottomLeft, bottomRight] as tile indices
-  const orders: [number, number, number, number][] = [
-    [0, 1, 2, 3],
-    [3, 0, 1, 2],
-    [2, 3, 0, 1],
-    [1, 2, 3, 0],
-  ];
-  const currentOrder = orders[cycle];
+  // The 3 bottom slots show the tiles NOT currently featured
+  const bottomTiles = [0, 1, 2, 3].filter((t) => t !== active);
 
   return (
     <div
@@ -374,7 +474,7 @@ function DashboardVisual() {
       className="ps-dbc-root"
       aria-hidden="true"
     >
-      {/* Top chrome bar */}
+      {/* Chrome bar */}
       <div className="ps-dbc-chrome">
         <div className="ps-dbc-chrome-dots">
           <span style={{ background: "#FF5F57" }} />
@@ -388,103 +488,126 @@ function DashboardVisual() {
         </div>
       </div>
 
-      {/* Bento 2x2 grid */}
-      <div className="ps-dbc-grid">
-        {currentOrder.map((tileIdx, position) => (
-          <div
-            key={`pos-${position}-tile-${tileIdx}-cycle-${cycle}`}
-            className={`ps-dbc-tile ps-dbc-tile--${position} ps-dbc-tile-enter`}
-          >
-            {tileIdx === 0 && (
-              /* Tile 0: Bar chart */
-              <div className="ps-dbc-tile-inner">
-                <div className="ps-dbc-tile-label">Q4 Revenue</div>
-                <div className="ps-dbc-bars">
-                  {([0.45, 0.72, 0.58, 0.9, 0.65] as number[]).map((h, i) => (
-                    <div key={i} className="ps-dbc-bar-wrap">
-                      <div
-                        className="ps-dbc-bar"
-                        style={{
-                          "--bar-h": h,
-                          "--bar-delay": `${i * 0.07}s`,
-                        } as React.CSSProperties}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            {tileIdx === 1 && (
-              /* Tile 1: Line chart */
-              <div className="ps-dbc-tile-inner">
-                <div className="ps-dbc-tile-label">Growth Trend</div>
-                <svg className="ps-dbc-line-svg" viewBox="0 0 100 55" fill="none" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="dbcLineGrad" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#0D95E8" />
-                      <stop offset="100%" stopColor="#8B5CF6" />
-                    </linearGradient>
-                    <linearGradient id="dbcAreaGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#0D95E8" stopOpacity="0.2" />
-                      <stop offset="100%" stopColor="#0D95E8" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                  <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(255,255,255,0.06)" strokeWidth="0.75" />
-                  <line x1="0" y1="30" x2="100" y2="30" stroke="rgba(255,255,255,0.04)" strokeWidth="0.75" strokeDasharray="2 2" />
-                  <path
-                    d="M0,48 C15,44 30,38 45,28 C60,18 75,10 100,4 L100,50 L0,50 Z"
-                    fill="url(#dbcAreaGrad)"
-                    opacity="0.8"
-                  />
-                  <path
-                    className="ps-dbc-line-path"
-                    d="M0,48 C15,44 30,38 45,28 C60,18 75,10 100,4"
-                    stroke="url(#dbcLineGrad)"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                  />
-                  <circle cx="100" cy="4" r="2.5" fill="#8B5CF6" className="ps-dbc-tip-dot" />
-                </svg>
-              </div>
-            )}
-            {tileIdx === 2 && (
-              /* Tile 2: Donut chart */
-              <div className="ps-dbc-tile-inner ps-dbc-tile-inner--center">
-                <div className="ps-dbc-tile-label">Retention</div>
-                <div className="ps-dbc-donut-wrap">
-                  <svg className="ps-dbc-donut-svg" viewBox="0 0 64 64" fill="none">
-                    <circle cx="32" cy="32" r="24" stroke="rgba(255,255,255,0.07)" strokeWidth="7" />
-                    <circle
-                      className="ps-dbc-donut-ring"
-                      cx="32"
-                      cy="32"
-                      r="24"
-                      stroke="#0D95E8"
-                      strokeWidth="7"
-                      strokeLinecap="round"
-                      strokeDasharray="150.8"
-                      transform="rotate(-90 32 32)"
-                    />
-                  </svg>
-                  <div className="ps-dbc-donut-center">
-                    <span className="ps-dbc-donut-pct">94%</span>
-                  </div>
-                </div>
-              </div>
-            )}
-            {tileIdx === 3 && (
-              /* Tile 3: Big metric */
-              <div className="ps-dbc-tile-inner ps-dbc-tile-inner--metric">
-                <div className="ps-dbc-tile-label">Monthly Revenue</div>
-                <div className="ps-dbc-metric-num">$2.4M</div>
-                <div className="ps-dbc-metric-badge">
-                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                    <path d="M4 7V1M1 4l3-3 3 3" stroke="#10B981" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  +18% vs last quarter
-                </div>
-              </div>
-            )}
+      {/* Asymmetric layout: wide featured tile on top, 3 small below */}
+      <div className="ps-dbc-layout">
+        {/* FEATURED (wide top tile) */}
+        <div className="ps-dbc-featured" key={`featured-${active}`}>
+          <DashTile tileIdx={active} featured />
+        </div>
+
+        {/* BOTTOM ROW: 3 small tiles */}
+        <div className="ps-dbc-bottom-row">
+          {bottomTiles.map((tileIdx, pos) => (
+            <div key={`bottom-${tileIdx}-${active}`} className="ps-dbc-small-tile">
+              <DashTile tileIdx={tileIdx} featured={false} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* Sub-component: renders a single dashboard tile by index */
+function DashTile({ tileIdx, featured }: { tileIdx: number; featured: boolean }) {
+  if (tileIdx === 0) {
+    /* Bar chart */
+    return (
+      <div className="ps-dbc-tile-inner">
+        <div className="ps-dbc-tile-label">Q4 Revenue</div>
+        <div className="ps-dbc-bars">
+          {([0.42, 0.68, 0.55, 0.88, 0.61, 0.75, 0.95] as number[]).map((h, i) => (
+            <div key={i} className="ps-dbc-bar-wrap">
+              <div
+                className="ps-dbc-bar"
+                style={{
+                  "--bar-h": h,
+                  "--bar-delay": `${i * 0.06}s`,
+                } as React.CSSProperties}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  if (tileIdx === 1) {
+    /* Line chart */
+    return (
+      <div className="ps-dbc-tile-inner">
+        <div className="ps-dbc-tile-label">Growth Trend</div>
+        <svg className="ps-dbc-line-svg" viewBox="0 0 100 55" fill="none" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="dbcLineGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#0D95E8" />
+              <stop offset="100%" stopColor="#8B5CF6" />
+            </linearGradient>
+            <linearGradient id="dbcAreaGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#0D95E8" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="#0D95E8" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(255,255,255,0.06)" strokeWidth="0.75" />
+          <line x1="0" y1="28" x2="100" y2="28" stroke="rgba(255,255,255,0.04)" strokeWidth="0.75" strokeDasharray="2 2" />
+          <path
+            d="M0,48 C15,44 30,38 45,28 C60,18 75,10 100,4 L100,50 L0,50 Z"
+            fill="url(#dbcAreaGrad)"
+            opacity="0.8"
+          />
+          <path
+            className="ps-dbc-line-path"
+            d="M0,48 C15,44 30,38 45,28 C60,18 75,10 100,4"
+            stroke="url(#dbcLineGrad)"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+          <circle cx="100" cy="4" r="2.5" fill="#8B5CF6" className="ps-dbc-tip-dot" />
+        </svg>
+      </div>
+    );
+  }
+  if (tileIdx === 2) {
+    /* Large donut */
+    return (
+      <div className="ps-dbc-tile-inner ps-dbc-tile-inner--center">
+        <div className="ps-dbc-tile-label">Customer Retention</div>
+        <div className={featured ? "ps-dbc-donut-wrap ps-dbc-donut-wrap--lg" : "ps-dbc-donut-wrap"}>
+          <svg className="ps-dbc-donut-svg" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="30" stroke="rgba(255,255,255,0.07)" strokeWidth={featured ? 9 : 7} />
+            <circle
+              className="ps-dbc-donut-ring"
+              cx="40"
+              cy="40"
+              r="30"
+              stroke="#0D95E8"
+              strokeWidth={featured ? 9 : 7}
+              strokeLinecap="round"
+              strokeDasharray="188.5"
+              transform="rotate(-90 40 40)"
+            />
+          </svg>
+          <div className="ps-dbc-donut-center">
+            <span className="ps-dbc-donut-pct">94%</span>
+            {featured && <span className="ps-dbc-donut-sub">retained</span>}
+          </div>
+        </div>
+      </div>
+    );
+  }
+  /* Tile 3: Heatmap */
+  return (
+    <div className="ps-dbc-tile-inner">
+      <div className="ps-dbc-tile-label">Activity Heatmap</div>
+      <div className="ps-dbc-heatmap">
+        {heatmapCells.map((row, r) => (
+          <div key={r} className="ps-dbc-heatmap-row">
+            {row.map((level, c) => (
+              <div
+                key={c}
+                className={`ps-dbc-heatmap-cell ps-dbc-heatmap-cell--${level}`}
+                style={{ "--hm-cell-delay": `${(r * HEATMAP_COLS + c) * 0.015}s` } as React.CSSProperties}
+              />
+            ))}
           </div>
         ))}
       </div>
@@ -494,8 +617,11 @@ function DashboardVisual() {
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 5 — Revenue Growth Engines
-   Top: horizontal funnel with 3 stages + flowing dot particles.
-   Bottom: upward trending line chart that draws itself + counter.
+   Growth engine metaphor:
+   - Left: input labels slide in (Content, Ads, SEO, Email)
+   - Center: pulsing engine core with rotating ring
+   - Right: output labels slide out larger & green (Leads, Revenue, $$$)
+   - Bottom: upward trending line chart draws on scroll
    ───────────────────────────────────────────────────────────── */
 function RevenueVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -508,31 +634,8 @@ function RevenueVisual() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    function runRevenueCounter() {
-      const counterEl = el!.querySelector<HTMLElement>(".ps-rv3-counter-num");
-      if (!counterEl) return;
-      const captured = counterEl;
-      const target = 85000;
-      const duration = 2400;
-      const start = performance.now() + 600;
-      function update(now: number) {
-        if (now < start) { requestAnimationFrame(update); return; }
-        const progress = Math.min((now - start) / duration, 1);
-        const eased = progress < 0.5
-          ? 4 * progress * progress * progress
-          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-        const value = Math.floor(eased * target);
-        captured.textContent = "$" + value.toLocaleString();
-        if (progress < 1) requestAnimationFrame(update);
-        else captured.textContent = "$85K+";
-      }
-      requestAnimationFrame(update);
-    }
-
     if (prefersReduced) {
       el.classList.add("in-view");
-      const counterEl = el.querySelector<HTMLElement>(".ps-rv3-counter-num");
-      if (counterEl) counterEl.textContent = "$85K+";
       return;
     }
 
@@ -541,7 +644,6 @@ function RevenueVisual() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             el.classList.add("in-view");
-            runRevenueCounter();
             observer.unobserve(el);
           }
         });
@@ -553,93 +655,112 @@ function RevenueVisual() {
     return () => observer.disconnect();
   }, []);
 
-  const funnelStages = [
-    { label: "Visitors", width: "100%", color: "rgba(59,130,246,0.25)", border: "rgba(59,130,246,0.5)", dots: [0, 1, 2] },
-    { label: "Leads",    width: "65%",  color: "rgba(99,180,246,0.28)", border: "rgba(99,180,246,0.55)", dots: [3, 4] },
-    { label: "Customers",width: "36%",  color: "rgba(16,185,129,0.35)", border: "rgba(16,185,129,0.65)", dots: [5] },
+  const inputs = [
+    { label: "Content", delay: 0 },
+    { label: "Ads",     delay: 1 },
+    { label: "SEO",     delay: 2 },
+    { label: "Email",   delay: 3 },
+  ];
+
+  const outputs = [
+    { label: "Leads",   delay: 0 },
+    { label: "Revenue", delay: 1 },
+    { label: "$$$",     delay: 2 },
   ];
 
   return (
     <div
       ref={containerRef}
-      className="ps-rv3-root"
+      className="ps-ge-root"
       aria-hidden="true"
     >
-      {/* TOP: Horizontal funnel */}
-      <div className="ps-rv3-funnel">
-        {funnelStages.map((stage, si) => (
-          <div key={stage.label} className="ps-rv3-stage-wrap">
-            <div className="ps-rv3-stage-label">{stage.label}</div>
+      {/* TOP: Engine visualization */}
+      <div className="ps-ge-engine-row">
+        {/* Left: inputs flowing in */}
+        <div className="ps-ge-inputs">
+          {inputs.map((inp) => (
             <div
-              className={`ps-rv3-stage-bar ps-rv3-stage-bar--${si}`}
-              style={{
-                "--stage-width": stage.width,
-                "--stage-bg": stage.color,
-                "--stage-border": stage.border,
-                "--stage-delay": `${si * 0.15}s`,
-              } as React.CSSProperties}
+              key={inp.label}
+              className="ps-ge-input-item"
+              style={{ "--ge-delay": `${inp.delay * 0.15}s` } as React.CSSProperties}
             >
-              {/* Flowing dots */}
-              {stage.dots.map((dotIdx) => (
-                <div
-                  key={dotIdx}
-                  className={`ps-rv3-dot ps-rv3-dot--${dotIdx}`}
-                  style={{ "--dot-delay": `${dotIdx * 0.55}s` } as React.CSSProperties}
-                />
-              ))}
+              <div className="ps-ge-input-dot" />
+              <span className="ps-ge-input-label">{inp.label}</span>
+              <div className="ps-ge-input-arrow" />
             </div>
+          ))}
+        </div>
+
+        {/* Center: engine core */}
+        <div className="ps-ge-core">
+          {/* Outer rotating ring */}
+          <div className="ps-ge-ring ps-ge-ring--outer" />
+          {/* Inner rotating ring (opposite direction) */}
+          <div className="ps-ge-ring ps-ge-ring--inner" />
+          {/* Pulsing core dot */}
+          <div className="ps-ge-core-dot">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2.5L9.5 6.5H13.5L10.5 9L11.5 13L8 10.5L4.5 13L5.5 9L2.5 6.5H6.5L8 2.5Z" fill="#0D95E8" opacity="0.9" />
+            </svg>
           </div>
-        ))}
+        </div>
+
+        {/* Right: outputs flowing out */}
+        <div className="ps-ge-outputs">
+          {outputs.map((out) => (
+            <div
+              key={out.label}
+              className="ps-ge-output-item"
+              style={{ "--ge-delay": `${out.delay * 0.18 + 0.3}s` } as React.CSSProperties}
+            >
+              <div className="ps-ge-output-arrow" />
+              <span className="ps-ge-output-label">{out.label}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Conversion arrow between funnel and chart */}
-      <div className="ps-rv3-divider">
-        <div className="ps-rv3-divider-line" />
-      </div>
-
-      {/* BOTTOM: Growth line chart + counter */}
-      <div className="ps-rv3-chart">
+      {/* BOTTOM: Growth line chart */}
+      <div className="ps-ge-chart">
         <svg
-          className="ps-rv3-line-svg"
-          viewBox="0 0 220 80"
+          className="ps-ge-line-svg"
+          viewBox="0 0 220 65"
           fill="none"
           preserveAspectRatio="none"
-          aria-hidden="true"
         >
           <defs>
-            <linearGradient id="rv3LineGrad" x1="0" y1="0" x2="1" y2="0">
+            <linearGradient id="geLineGrad" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="#3B82F6" />
               <stop offset="100%" stopColor="#10B981" />
             </linearGradient>
-            <linearGradient id="rv3AreaGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#10B981" stopOpacity="0.22" />
+            <linearGradient id="geAreaGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#10B981" stopOpacity="0.2" />
               <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
             </linearGradient>
           </defs>
-          <line x1="0" y1="75" x2="220" y2="75" stroke="rgba(255,255,255,0.07)" strokeWidth="0.75" />
-          <line x1="0" y1="50" x2="220" y2="50" stroke="rgba(255,255,255,0.04)" strokeWidth="0.75" strokeDasharray="3 3" />
-          <line x1="0" y1="26" x2="220" y2="26" stroke="rgba(255,255,255,0.04)" strokeWidth="0.75" strokeDasharray="3 3" />
+          <line x1="0" y1="60" x2="220" y2="60" stroke="rgba(255,255,255,0.07)" strokeWidth="0.75" />
+          <line x1="0" y1="40" x2="220" y2="40" stroke="rgba(255,255,255,0.04)" strokeWidth="0.75" strokeDasharray="3 3" />
+          <line x1="0" y1="20" x2="220" y2="20" stroke="rgba(255,255,255,0.04)" strokeWidth="0.75" strokeDasharray="3 3" />
           <path
-            className="ps-rv3-area"
-            d="M0,72 C30,68 60,62 90,52 C120,42 155,24 200,8 L220,4 L220,75 L0,75 Z"
-            fill="url(#rv3AreaGrad)"
+            className="ps-ge-area"
+            d="M0,58 C30,55 60,50 90,42 C120,34 155,18 200,6 L220,3 L220,60 L0,60 Z"
+            fill="url(#geAreaGrad)"
           />
           <path
-            className="ps-rv3-line"
-            d="M0,72 C30,68 60,62 90,52 C120,42 155,24 200,8 L220,4"
-            stroke="url(#rv3LineGrad)"
+            className="ps-ge-line"
+            d="M0,58 C30,55 60,50 90,42 C120,34 155,18 200,6 L220,3"
+            stroke="url(#geLineGrad)"
             strokeWidth="2"
             strokeLinecap="round"
           />
-          <circle className="ps-rv3-tip-dot"  cx="220" cy="4" r="3"   fill="#10B981" />
-          <circle className="ps-rv3-tip-ring" cx="220" cy="4" r="6.5" fill="#10B981" fillOpacity="0.2" />
+          <circle className="ps-ge-tip-dot"  cx="220" cy="3" r="3"   fill="#10B981" />
+          <circle className="ps-ge-tip-ring" cx="220" cy="3" r="6.5" fill="#10B981" fillOpacity="0.2" />
         </svg>
-
-        {/* Counter overlaid bottom-right */}
-        <div className="ps-rv3-counter">
-          <span className="ps-rv3-counter-label">Monthly Revenue</span>
-          <span className="ps-rv3-counter-num">$0</span>
-          <span className="ps-rv3-counter-sub">/ mo automated</span>
+        <div className="ps-ge-chart-labels">
+          <span className="ps-ge-chart-label">Jan</span>
+          <span className="ps-ge-chart-label">Apr</span>
+          <span className="ps-ge-chart-label">Jul</span>
+          <span className="ps-ge-chart-label">Now</span>
         </div>
       </div>
     </div>
