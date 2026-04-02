@@ -5,6 +5,49 @@
 
 ---
 
+## 2026-04-02 — First Draft Visual Implementation (Session 2)
+
+### What Happened
+- Complete visual overhaul of `src/styles/globals.css` — full design system token replacement using exact values from `docs/design-system.md`. All `ps-` component classes rebuilt from scratch with Stripe shadow system, pill buttons, dark/light card variants.
+- **src/app/layout.tsx** — Added Inter font via `next/font/google`, CSS variable wiring.
+- **src/components/layout/header.tsx** — Restyled: transparent hero / solid scrolled dark navy, logo filter for dark bg, nav links as ghost, "Inquiry" as pill CTA. Mobile hamburger X animation.
+- **src/components/layout/footer.tsx** — Dark footer with CTA block, divider, bottom row with copyright/tagline.
+- **src/components/home/hero.tsx** — Full viewport dark hero with gradient mesh, eyebrow pill badge, subtitle, dual CTAs (primary + ghost). GSAP entrance timeline. Preserved floating quotes system.
+- **src/components/home/value-props.tsx** — Light section, card grid with icon, top accent strip on hover, GSAP stagger reveal.
+- **src/components/home/personal-commitment.tsx** — 2-column grid, left-border quote, circular Tyler portrait with glow, GSAP reveal.
+- **src/components/home/services-overview.tsx** — Light section grid, accordion collapse on mobile, GSAP stagger, proper ARIA attributes.
+- **src/components/home/social-proof.tsx** — Dark section, card-dark styling, client badge pill, results with checkmarks, "Your Company!" accent card. GSAP stagger.
+- **src/app/why-automation/page.tsx** — NEW. Dark page with numbered benefit cards, GSAP reveal, dual CTA footer.
+- **src/app/roi-calculator/page.tsx** — NEW. Working calculator with checkbox role selection, live inputs, results panel with formatted currency.
+- **src/app/contact/page.tsx** — Full contact form with grid layout, success state, mailto fallback.
+
+### What Changed
+- `globals.css` completely rewritten (~1100 lines) — all design tokens updated to match design-system.md exactly
+- Removed old stale color tokens (#1A202C dark, #FAFAFA light) replaced with correct #0A1628 and #F6F9FC
+- Button shape changed from `border-radius: 8px` to `border-radius: 50px` (pill — Stripe signature)
+- Case studies section switched from horizontal scrolling white cards to dark section with card-dark
+- Header now properly separates nav links from CTA pill (Inquiry)
+
+### Current State
+- **Phase**: First draft complete — fully styled, production-ready components
+- **Builds**: `npm run build` passes clean ✓ (9 static pages generated)
+- **Content**: All data files populated
+- **Styling**: Full design system applied, responsive, hover states, animations
+- **Animations**: GSAP scroll reveals on all sections, hero entrance, staggered cards
+- **Remaining**: Services/About pages still have TODO placeholders (scaffolds only)
+
+### Blockers
+- None for current deliverable
+
+### Next Steps
+1. Review first draft visually in browser (`npm run dev`)
+2. Build out `/services` page with full service detail sections
+3. Build out `/about` page with Tyler bio, mission, values
+4. Add real form submission (Formspree or similar)
+5. Push to GitHub → verify Cloudflare Pages deployment
+
+---
+
 ## 2026-04-02 — Project Scaffolding
 
 ### What Happened

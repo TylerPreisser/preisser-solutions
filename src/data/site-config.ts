@@ -8,11 +8,17 @@ export const siteConfig = {
     location: "Hays, Kansas",
   },
   social: {
-    linkedin: "", // TODO: Add LinkedIn URL
-    facebook: "", // TODO: Add Facebook URL
+    linkedin: "https://www.linkedin.com/company/preissersolutions",
+    facebook: "https://www.facebook.com/preissersolutions",
   },
   founder: {
     name: "Tyler Preisser",
     title: "Founder & Owner",
+  },
+  meta: {
+    title: "Preisser Solutions | Your Ai Business Experts",
+    description:
+      "Preisser Solutions builds custom internal ecosystems to eliminate business headaches, reduce overhead, and streamline operations—remotely, 24/7, directly at your site.",
+    themeColor: "#0D95E8",
   },
 } as const;

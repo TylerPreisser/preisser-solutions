@@ -8,30 +8,35 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "Preisser Solutions — Custom Business Automation",
+    default: "Preisser Solutions | Your Ai Business Experts",
     template: "%s | Preisser Solutions",
   },
   description:
-    "Your partner in custom business automation. We build tailored systems that boost productivity, enhance accuracy, and scale with your business.",
+    "Preisser Solutions builds custom internal ecosystems to eliminate business headaches, reduce overhead, and streamline operations—remotely, 24/7, directly at your site.",
   metadataBase: new URL("https://preissersolutions.com"),
+  keywords:
+    "custom automation systems, AI-powered solutions, automated assistants, back office automation, administrative automation, business process optimization, workflow automation, Kansas business automation",
+  authors: [{ name: "Preisser Solutions" }],
+  robots: "index, follow",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://preissersolutions.com",
     siteName: "Preisser Solutions",
-    title: "Preisser Solutions — Custom Business Automation",
+    title: "Preisser Solutions | Your Ai Business Experts",
     description:
-      "Your partner in custom business automation. We build tailored systems that boost productivity, enhance accuracy, and scale with your business.",
+      "Custom internal ecosystems that eliminate manual processes, deliver real-time visibility, and free leadership to grow—remotely, 24/7.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Solutions — Custom Business Automation",
+    title: "Preisser Solutions | Your Ai Business Experts",
     description:
-      "Your partner in custom business automation. We build tailored systems that boost productivity, enhance accuracy, and scale with your business.",
+      "Streamline operations, automate invoices, and gain real-time visibility—so you can scale without the stress.",
   },
 };
 

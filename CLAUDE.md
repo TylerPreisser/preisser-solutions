@@ -9,10 +9,11 @@
 
 ### On Session Start (MANDATORY)
 1. Read this entire file
-2. Read `docs/status.md` for current project state
-3. Read `docs/plans/current-plan.md` if one exists
-4. Read `docs/decisions.md` for past architectural decisions
-5. Understand where the project is before touching anything
+2. Read `docs/design-system.md` for ALL visual design decisions (colors, typography, spacing, components, animations)
+3. Read `docs/status.md` for current project state
+4. Read `docs/plans/current-plan.md` if one exists
+5. Read `docs/decisions.md` for past architectural decisions
+6. Understand where the project is before touching anything
 
 ### On Session End (MANDATORY)
 1. Update `docs/status.md` with what you did, what changed, what broke, what's next
@@ -149,13 +150,16 @@ All content lives in `src/data/` files. Components import data — **never hardc
 
 ## Design System
 
-### Colors
+> **Full design system lives in `docs/design-system.md`** — colors, typography, spacing, shadows, components, animations, everything.
+> That file is the visual bible. Below is the quick reference.
+
+### Colors (Quick Ref)
 | Token | Value | Usage |
 |-------|-------|-------|
 | `primary` | #0D95E8 | Brand blue, CTAs, links |
 | `primary-hover` | #0B7BC0 | Hover states |
-| `dark` | #0A0A0F | Hero/nav backgrounds |
-| `dark-surface` | #111117 | Dark section cards |
+| `dark` | #0A1628 | Hero/nav/dark sections (Stripe navy) |
+| `dark-surface` | #0F1D30 | Cards on dark backgrounds |
 | `light` | #FAFAFA | Content section backgrounds |
 | `light-alt` | #F5F5F5 | Alternating sections |
 | `text-primary` | #1A1A1A | Body text on light |
@@ -218,8 +222,10 @@ npm run preview      # Preview static build locally
 
 | Doc | Purpose | Update Frequency |
 |-----|---------|-----------------|
+| `docs/design-system.md` | **Visual bible** — all colors, typography, spacing, shadows, components, animations | When design changes |
 | `docs/status.md` | Current state, session log, blockers, next steps | Every session |
 | `docs/plans/current-plan.md` | Active implementation plan with checkboxes | Every session |
 | `docs/decisions.md` | Architectural decisions with rationale | When decisions are made |
 | `docs/superpowers/specs/2026-04-02-*-design.md` | Original design spec | Never (reference only) |
 | `archive/` | Old site snapshot | Never (reference only) |
+| `~/Desktop/site-research/` | Raw Stripe + Tyler site analysis (research source files) | Never (reference only) |
