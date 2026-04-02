@@ -70,34 +70,30 @@ export function ProblemSection() {
             id="problem-heading"
             className="ps-section-heading ps-section-heading--light"
           >
-            Your Technology Should Be Working for You — Not the Other Way Around
+            You Know What Your Business Needs. You Just Need Someone Who Can Build It.
           </h2>
           <div className="ps-problem-body">
             <p>
-              Every business runs on systems. Your CRM. Your scheduling tool.
-              Your invoicing. Your website. Your marketing.
+              Every business hits a point where the technology can&apos;t keep
+              up. Your website&apos;s outdated. Your systems don&apos;t talk to
+              each other. Your team is buried in manual work that should&apos;ve
+              been automated years ago. You need a custom tool and nothing on
+              the market fits. You need something built &mdash; and you need
+              someone who can actually do it.
             </p>
             <p>
-              And most of the time, those systems don&apos;t talk to each other.
-              Data gets entered twice. Someone&apos;s running reports by hand.
-              Your staff is doing work a machine should be doing. You hired
-              software to save time, and now your team spends half their day
-              managing it.
+              That&apos;s what Preisser Solutions is. We&apos;re builders. You
+              bring us the problem, we build the solution. Websites.
+              Applications. Automation systems. Dashboards. Integrations. If it
+              involves technology, we can design it and build it &mdash; from
+              concept to deployment.
             </p>
             <p>
-              <strong>That&apos;s where we come in.</strong>
-            </p>
-            <p>
-              Preisser Solutions gets inside your operation, finds what&apos;s
-              broken or slow, and builds the exact solution your business needs
-              — whether that&apos;s connecting your systems, automating a
-              process, or building something from scratch.
-            </p>
-            <p>
-              Everything we build uses AI-first methodology. That means faster
-              delivery, smarter systems, and outcomes that would have taken a
-              traditional shop months.{" "}
-              <strong>We do it in weeks.</strong>
+              The difference? We build with AI at the core of everything we do.
+              Not as a gimmick. As a method. It means we can do in two weeks
+              what a traditional dev shop quotes you three months for. Same
+              quality. Fraction of the time. Because the tools we use to build
+              are a generation ahead of everyone else in this space.
             </p>
           </div>
         </div>

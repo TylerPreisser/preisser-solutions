@@ -13,42 +13,42 @@ interface ServicePillar {
 
 const services: ServicePillar[] = [
   {
-    icon: "SI",
-    title: "Systems & Integration",
+    icon: "WA",
+    title: "Websites & Applications",
     description:
-      "Your tools don't talk to each other. We fix that — connecting your CRM, accounting, scheduling, and operations into one seamless flow.",
+      "Professional sites, custom apps, client portals, e-commerce — built from scratch, built to perform.",
     accentColor: "#0D95E8",
     href: "/services",
   },
   {
-    icon: "AI",
-    title: "AI-Powered Automation",
+    icon: "AS",
+    title: "Automation Systems",
     description:
-      "Stop paying people to do what a machine does better. Custom AI systems that handle invoices, outreach, monitoring, and operations 24/7.",
+      "AI-powered engines that handle your repetitive work — invoicing, outreach, document processing, you name it.",
     accentColor: "#635BFF",
     href: "/services",
   },
   {
-    icon: "WD",
-    title: "Web & Application Development",
+    icon: "SF",
+    title: "System Fixes & Efficiency",
     description:
-      "Professional, high-performance sites and apps — built to convert. No templates. Professionally coded. Built to rank and generate business.",
+      "Something's slow, broken, or redundant? We find it and fix it with better tech.",
     accentColor: "#00D4AA",
     href: "/services",
   },
   {
     icon: "BI",
-    title: "Data & Business Intelligence",
+    title: "Dashboards & Business Intelligence",
     description:
-      "See your business clearly. Real-time dashboards, automated reports, and analytics that drive decisions — not gut instinct.",
+      "See your business clearly. Real-time data, live reporting, actionable insight.",
     accentColor: "#F59E0B",
     href: "/services",
   },
   {
     icon: "MG",
-    title: "Digital Marketing & Growth Engines",
+    title: "Marketing & Growth Engines",
     description:
-      "Automated marketing systems that generate leads while you sleep. Social content, email outreach, SEO, and full-funnel lead capture.",
+      "Automated content, email, SMS, SEO — lead generation systems that run without you.",
     accentColor: "#EF4444",
     href: "/services",
   },

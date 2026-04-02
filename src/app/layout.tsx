@@ -13,14 +13,14 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Preisser Solutions | AI-Powered Business Technology for Kansas Businesses",
+    default: "Preisser Solutions | We Build Websites, Apps & Automations for Kansas Businesses",
     template: "%s | Preisser Solutions",
   },
   description:
-    "Preisser Solutions builds, fixes, and automates business technology for companies across Kansas. Custom AI automation, system integration, web development, and more. Work directly with Tyler Preisser.",
+    "Preisser Solutions builds websites, applications, automation systems, dashboards, and more for businesses across Kansas. Custom-built. AI-powered speed. Work directly with Tyler Preisser.",
   metadataBase: new URL("https://preissersolutions.com"),
   keywords:
-    "AI automation Kansas, business automation Hays Kansas, system integration, custom web development Kansas, digital marketing automation, Tyler Preisser",
+    "websites Kansas, custom applications, business automation Hays Kansas, automation systems, web development Kansas, digital marketing automation, Tyler Preisser",
   authors: [{ name: "Tyler Preisser" }],
   robots: "index, follow",
   openGraph: {
@@ -28,15 +28,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://preissersolutions.com",
     siteName: "Preisser Solutions",
-    title: "Preisser Solutions | AI-Powered Business Technology for Kansas Businesses",
+    title: "Preisser Solutions | We Build Websites, Apps & Automations for Kansas Businesses",
     description:
-      "Preisser Solutions builds, fixes, and automates business technology for companies across Kansas. Work directly with Tyler Preisser.",
+      "Preisser Solutions builds websites, applications, automation systems, dashboards, and more for businesses across Kansas. Work directly with Tyler Preisser.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Solutions | AI-Powered Business Technology",
+    title: "Preisser Solutions | We Build Websites, Apps & Automations for Kansas Businesses",
     description:
-      "Custom AI automation, system integration, and web development for Kansas businesses. Work directly with Tyler Preisser.",
+      "Custom-built websites, apps, and automation systems for Kansas businesses. Work directly with Tyler Preisser.",
   },
 };
 

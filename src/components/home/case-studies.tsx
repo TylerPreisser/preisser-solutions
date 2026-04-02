@@ -13,7 +13,7 @@ interface CaseStudyCard {
 
 const caseStudyCards: CaseStudyCard[] = [
   {
-    client: "Cassidy HVAC",
+    client: "John C Cassidy HVAC",
     industry: "HVAC / Home Services",
     resultHighlight: "5x organic reach increase in 30 days",
     results: [
@@ -24,7 +24,7 @@ const caseStudyCards: CaseStudyCard[] = [
     href: "/contact",
   },
   {
-    client: "Cassidy HVAC",
+    client: "John C Cassidy HVAC",
     industry: "HVAC / Home Services",
     resultHighlight: "60%+ dormant customer reactivation in 6 weeks",
     results: [

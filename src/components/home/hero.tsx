@@ -206,24 +206,22 @@ export function Hero() {
       <div className="ps-hero-content">
         <div ref={eyebrowRef} className="ps-hero-eyebrow">
           <span className="ps-hero-dot" aria-hidden="true" />
-          AI-Powered Business Technology
+          AI-Accelerated Builders
         </div>
 
         <h1 ref={headlineRef} className="ps-hero-headline">
-          Your Business Runs on Systems.
-          <br />
-          We Make Them Work.
+          We Build What Your Business Needs.
         </h1>
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
-          Preisser Solutions builds, fixes, and automates the technology behind
-          your business — so your team stops fighting their tools and starts
-          using them.
+          Websites. Applications. Automations. Dashboards. Integrations.
+          Whatever technology problem you&apos;ve got &mdash; Preisser Solutions
+          builds the solution. From scratch. For you.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
           <Link href="/contact" className="ps-btn ps-btn-primary-dark">
-            Talk to Tyler
+            Tell Us What You Need
             <svg
               className="ps-btn-arrow"
               width="16"

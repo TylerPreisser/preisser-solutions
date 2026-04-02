@@ -2,10 +2,10 @@ import Link from "next/link";
 import { siteConfig } from "@/data/site-config";
 
 const serviceLinks = [
-  { label: "Systems & Integration", href: "/services" },
-  { label: "AI-Powered Automation", href: "/services" },
-  { label: "Web & App Development", href: "/services" },
-  { label: "Data & Intelligence", href: "/services" },
+  { label: "Websites & Apps", href: "/services" },
+  { label: "Automation Systems", href: "/services" },
+  { label: "System Fixes & Efficiency", href: "/services" },
+  { label: "Dashboards & Intelligence", href: "/services" },
   { label: "Marketing & Growth", href: "/services" },
 ];
 
@@ -30,8 +30,7 @@ export function Footer() {
               Preisser Solutions
             </Link>
             <p className="ps-footer-tagline">
-              AI-powered business technology for Kansas businesses.
-              Build it. Ship it. Grow.
+              We Build What Your Business Needs.
             </p>
             <div className="ps-footer-contact">
               <a

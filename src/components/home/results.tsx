@@ -14,31 +14,31 @@ const stats: Stat[] = [
     number: "5x",
     numericValue: 5,
     suffix: "x",
-    label: "organic reach increase in 30 days",
+    label: "organic reach in 30 days (John C Cassidy HVAC)",
   },
   {
     number: "95%",
     numericValue: 95,
     suffix: "%",
-    label: "reduction in inventory tracking time",
+    label: "reduction in back-office inventory time (HG Oil Holdings)",
   },
   {
     number: "60%+",
     numericValue: 60,
     suffix: "%+",
-    label: "dormant customer reactivation",
+    label: "reactivation of dormant customer lists",
   },
   {
     number: "75%",
     numericValue: 75,
     suffix: "%",
-    label: "decrease in invoice processing time",
+    label: "decrease in manual invoice processing time",
   },
   {
     number: "10+",
     numericValue: 10,
     suffix: "+",
-    label: "hours per week freed per engagement",
+    label: "hours/week freed per project",
   },
 ];
 

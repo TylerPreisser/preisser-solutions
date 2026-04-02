@@ -10,28 +10,28 @@ interface WhyBlock {
 
 const whyBlocks: WhyBlock[] = [
   {
-    icon: "📞",
-    title: "Direct Access",
+    icon: "01",
+    title: "We Build Everything In-House.",
     description:
-      "You don't get handed off to a junior dev or an account manager. Tyler Preisser builds your system, manages your project, and picks up the phone when you call. That's it.",
+      "No subcontractors. No offshore teams. No white-labeled templates. Tyler Preisser designs it, builds it, and supports it. When you call, you talk to the person who wrote the code.",
   },
   {
-    icon: "⚡",
-    title: "AI-Native Speed",
+    icon: "02",
+    title: "AI Makes Us Dangerously Fast.",
     description:
-      "We use artificial intelligence at every stage — from analysis to build to deployment. What used to take agencies months, we ship in weeks. Not because we cut corners. Because we work smarter.",
+      "We use AI at every stage of our process — research, design, development, testing. It's not a marketing buzzword. It's why we deliver in weeks what traditional shops take months to finish. You get the same (or better) quality at a fraction of the timeline.",
   },
   {
-    icon: "🎯",
-    title: "Built for Your Business",
+    icon: "03",
+    title: "Built for Your Business. Not a Template.",
     description:
-      "We don't resell templates. We study your operation, identify what's costing you time and money, and build a custom solution that fits like it was always supposed to be there.",
+      "We don't plug you into a pre-built platform and call it custom. We study your operation, understand your workflows, and build a solution that fits your business specifically. It works the way you work — not the other way around.",
   },
   {
-    icon: "🤝",
-    title: "Ongoing Partnership",
+    icon: "04",
+    title: "We Stay With It.",
     description:
-      "Every system we build comes with support. As long as you're our client, we maintain, adapt, and improve what we've built — because your business doesn't stop evolving, and neither should your technology.",
+      "Every system we build comes with ongoing support. If something breaks, we fix it. If your business changes, we adapt the system. As long as you're our client, we're in it with you.",
   },
 ];
 
@@ -91,7 +91,7 @@ export function WhyUs() {
           id="why-heading"
           className="ps-section-heading ps-section-heading--dark"
         >
-          Why Work with Us
+          We Don&apos;t Outsource. We Don&apos;t Resell. We Build.
         </h2>
       </div>
 

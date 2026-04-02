@@ -5,23 +5,23 @@ import { useEffect, useRef } from "react";
 const valueItems = [
   {
     icon: "//",
-    strong: "AI-first approach",
-    text: "5x faster than traditional dev shops",
+    strong: "We build websites, apps, automations,",
+    text: " and everything in between",
   },
   {
     icon: "->",
-    strong: "Built for Kansas businesses",
-    text: "Not Silicon Valley startups",
+    strong: "AI-first methodology —",
+    text: " we ship in weeks, not months",
   },
   {
     icon: "<>",
-    strong: "Work directly with Tyler",
-    text: "The person who builds it",
+    strong: "Built for Kansas businesses,",
+    text: " not Silicon Valley startups",
   },
   {
     icon: ">>",
-    strong: "No retainers required",
-    text: "Scope it. Build it. Ship it.",
+    strong: "You work directly with",
+    text: " the person who builds it",
   },
 ];
 

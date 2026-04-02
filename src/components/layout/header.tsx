@@ -74,9 +74,9 @@ export function Header() {
                 href="/contact"
                 className="ps-header-cta"
                 onClick={handleLinkClick}
-                aria-label="Talk to Tyler — schedule a free consultation"
+                aria-label="Tell Us What You Need — start a conversation"
               >
-                Talk to Tyler
+                Tell Us What You Need
                 <svg
                   className="ps-header-cta-arrow"
                   width="14"
@@ -135,7 +135,7 @@ export function Header() {
           className="ps-mobile-nav-cta"
           onClick={handleLinkClick}
         >
-          Talk to Tyler →
+          Tell Us What You Need →
         </Link>
       </nav>
     </>

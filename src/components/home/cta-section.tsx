@@ -59,15 +59,16 @@ export function CtaSection() {
       <div className="ps-cta-content" ref={contentRef}>
         <div className="ps-eyebrow">Free Consultation</div>
         <h2 id="cta-heading" className="ps-cta-heading">
-          Your Technology Shouldn&apos;t Hold You Back.
+          You&apos;ve Got the Problem. We&apos;ll Build the Fix.
         </h2>
         <p className="ps-cta-body">
-          Whether you need one broken process fixed or your entire operation
-          overhauled, it starts with a conversation.
+          Whether it&apos;s a website, an app, an automation, or something you
+          haven&apos;t even figured out how to describe yet &mdash; it starts
+          with a conversation.
         </p>
         <div className="ps-cta-buttons">
           <Link href="/contact" className="ps-btn ps-btn-primary-dark">
-            Schedule a Free Consultation
+            Tell Us What You Need
             <svg
               className="ps-btn-arrow"
               width="16"
