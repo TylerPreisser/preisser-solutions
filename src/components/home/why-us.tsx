@@ -52,7 +52,7 @@ const whyFeatures: WhyFeature[] = [
       "Every website, app, dashboard, and automation is designed to fit together so your business actually runs better after launch.",
     image: "/images/stripe/DatavizStatic3x.png",
     alt: "Placeholder image for connected systems thinking",
-    href: "/#results",
+    href: "/#case-studies",
     cta: "See the outcomes",
   },
   {
