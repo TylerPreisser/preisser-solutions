@@ -13,7 +13,7 @@ interface ServicePillar {
 
 const services: ServicePillar[] = [
   {
-    icon: "🔗",
+    icon: "SI",
     title: "Systems & Integration",
     description:
       "Your tools don't talk to each other. We fix that — connecting your CRM, accounting, scheduling, and operations into one seamless flow.",
@@ -21,7 +21,7 @@ const services: ServicePillar[] = [
     href: "/services",
   },
   {
-    icon: "🤖",
+    icon: "AI",
     title: "AI-Powered Automation",
     description:
       "Stop paying people to do what a machine does better. Custom AI systems that handle invoices, outreach, monitoring, and operations 24/7.",
@@ -29,7 +29,7 @@ const services: ServicePillar[] = [
     href: "/services",
   },
   {
-    icon: "💻",
+    icon: "WD",
     title: "Web & Application Development",
     description:
       "Professional, high-performance sites and apps — built to convert. No templates. Professionally coded. Built to rank and generate business.",
@@ -37,7 +37,7 @@ const services: ServicePillar[] = [
     href: "/services",
   },
   {
-    icon: "📊",
+    icon: "BI",
     title: "Data & Business Intelligence",
     description:
       "See your business clearly. Real-time dashboards, automated reports, and analytics that drive decisions — not gut instinct.",
@@ -45,7 +45,7 @@ const services: ServicePillar[] = [
     href: "/services",
   },
   {
-    icon: "📈",
+    icon: "MG",
     title: "Digital Marketing & Growth Engines",
     description:
       "Automated marketing systems that generate leads while you sleep. Social content, email outreach, SEO, and full-funnel lead capture.",

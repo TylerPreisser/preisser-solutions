@@ -4,26 +4,143 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 
 export function Hero() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const eyebrowRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctasRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Load hero canvas animation
+  // Animated gradient blobs — inline canvas
   useEffect(() => {
-    if (!canvasRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const script = document.createElement("script");
-    script.src = "/ps-hero-animation.js";
-    script.async = true;
-    document.body.appendChild(script);
+    const canvas = document.createElement("canvas");
+    canvas.style.cssText =
+      "position:absolute;inset:0;width:100%;height:100%;z-index:0;";
+    canvas.setAttribute("aria-hidden", "true");
+    container.prepend(canvas);
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const prefersReduced =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let w = 0;
+    let h = 0;
+    let animId = 0;
+    let paused = false;
+
+    function resize() {
+      const rect = container!.getBoundingClientRect();
+      w = rect.width;
+      h = rect.height;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    resize();
+    window.addEventListener("resize", resize);
+
+    // Blob definitions — large soft circles with brand colors
+    const blobs = [
+      { x: 0.2, y: 0.3, r: 0.45, color: "rgba(13,149,232,0.18)", sx: 0.3, sy: 0.2, px: 0, py: 0 },
+      { x: 0.75, y: 0.2, r: 0.4, color: "rgba(99,91,255,0.14)", sx: 0.25, sy: 0.35, px: 1.5, py: 0.8 },
+      { x: 0.5, y: 0.7, r: 0.5, color: "rgba(128,233,255,0.12)", sx: 0.2, sy: 0.25, px: 3, py: 2 },
+      { x: 0.8, y: 0.75, r: 0.35, color: "rgba(0,212,170,0.10)", sx: 0.35, sy: 0.3, px: 4.5, py: 1.2 },
+      { x: 0.15, y: 0.7, r: 0.3, color: "rgba(13,149,232,0.10)", sx: 0.28, sy: 0.22, px: 2.5, py: 3.5 },
+    ];
+
+    let t = 0;
+
+    function draw() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, w, h);
+
+      // Dark base
+      ctx.fillStyle = "#0A1628";
+      ctx.fillRect(0, 0, w, h);
+
+      // Draw each blob as a radial gradient with slow drift
+      for (const b of blobs) {
+        const cx = (b.x + Math.sin(t * b.sx + b.px) * 0.08) * w;
+        const cy = (b.y + Math.cos(t * b.sy + b.py) * 0.06) * h;
+        const radius = b.r * Math.max(w, h);
+
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+        grad.addColorStop(0, b.color);
+        grad.addColorStop(0.6, b.color.replace(/[\d.]+\)$/, "0.04)"));
+        grad.addColorStop(1, "transparent");
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      // Soft blur effect via second pass with lower opacity blobs offset
+      ctx.globalCompositeOperation = "screen";
+      for (const b of blobs) {
+        const cx = (b.x + Math.sin(t * b.sx * 0.7 + b.px + 1) * 0.12) * w;
+        const cy = (b.y + Math.cos(t * b.sy * 0.7 + b.py + 1) * 0.09) * h;
+        const radius = b.r * 1.2 * Math.max(w, h);
+
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+        grad.addColorStop(0, b.color.replace(/[\d.]+\)$/, "0.06)"));
+        grad.addColorStop(1, "transparent");
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+      }
+      ctx.globalCompositeOperation = "source-over";
+
+      // Vignette
+      const vign = ctx.createRadialGradient(w / 2, h / 2, w * 0.2, w / 2, h / 2, w * 0.8);
+      vign.addColorStop(0, "transparent");
+      vign.addColorStop(1, "rgba(10,22,40,0.5)");
+      ctx.fillStyle = vign;
+      ctx.fillRect(0, 0, w, h);
+    }
+
+    function loop() {
+      if (paused) {
+        animId = requestAnimationFrame(loop);
+        return;
+      }
+      t += 0.004;
+      draw();
+      animId = requestAnimationFrame(loop);
+    }
+
+    if (prefersReduced) {
+      t = 1;
+      draw();
+    } else {
+      // Intersection observer — pause when off screen
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          paused = !entry.isIntersecting;
+        },
+        { threshold: 0 }
+      );
+      io.observe(container);
+
+      loop();
+
+      return () => {
+        cancelAnimationFrame(animId);
+        window.removeEventListener("resize", resize);
+        io.disconnect();
+        if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
+      };
+    }
 
     return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", resize);
+      if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
     };
   }, []);
 
@@ -47,13 +164,12 @@ export function Hero() {
 
     import("@/lib/gsap").then(({ gsap }) => {
       const tl = gsap.timeline({ delay: 0.2 });
-      tl
-        .to(eyebrowRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: "power3.out",
-        })
+      tl.to(eyebrowRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power3.out",
+      })
         .to(
           headlineRef.current,
           { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" },
@@ -78,15 +194,12 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="ps-hero" aria-label="Hero — Preisser Solutions">
-      {/* Animated canvas background */}
-      <canvas
-        ref={canvasRef}
-        id="ps-hero-canvas"
-        aria-hidden="true"
-      />
-
-      {/* Overlay for readability */}
+    <section
+      ref={containerRef}
+      className="ps-hero"
+      aria-label="Hero"
+    >
+      {/* Overlay for text readability */}
       <div className="ps-hero-overlay" aria-hidden="true" />
 
       {/* Hero content */}

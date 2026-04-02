@@ -4,22 +4,22 @@ import { useEffect, useRef } from "react";
 
 const valueItems = [
   {
-    icon: "⚡",
+    icon: "//",
     strong: "AI-first approach",
     text: "5x faster than traditional dev shops",
   },
   {
-    icon: "📍",
+    icon: "->",
     strong: "Built for Kansas businesses",
     text: "Not Silicon Valley startups",
   },
   {
-    icon: "🤝",
+    icon: "<>",
     strong: "Work directly with Tyler",
     text: "The person who builds it",
   },
   {
-    icon: "✓",
+    icon: ">>",
     strong: "No retainers required",
     text: "Scope it. Build it. Ship it.",
   },
