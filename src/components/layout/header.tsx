@@ -60,9 +60,22 @@ export function Header() {
   }, [handleScroll]);
 
   // Read the theme that the anti-flash script already set on <html>
+  // Also listen for system preference changes (if user hasn't manually toggled)
   useEffect(() => {
     const current = document.documentElement.getAttribute("data-theme");
     setTheme(current === "light" ? "light" : "dark");
+
+    // If no saved preference, follow system changes live
+    const mq = window.matchMedia("(prefers-color-scheme: light)");
+    function onSystemChange(e: MediaQueryListEvent) {
+      const saved = localStorage.getItem("ps-theme");
+      if (saved) return; // User manually chose — don't override
+      const next = e.matches ? "light" : "dark";
+      setTheme(next);
+      document.documentElement.setAttribute("data-theme", next);
+    }
+    mq.addEventListener("change", onSystemChange);
+    return () => mq.removeEventListener("change", onSystemChange);
   }, []);
 
   const toggleTheme = useCallback(() => {
