@@ -531,8 +531,6 @@ export function SystemFixesVisual() {
         </div>
 
         <div className="ps-fix-center">
-          <div className="ps-fix-center-line" />
-          <div className="ps-fix-center-line ps-fix-center-line--two" />
           <div className="ps-fix-center-arrow">
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
               <path d="M7 14h14M16 9l5 5-5 5" stroke="#40D9AC" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />

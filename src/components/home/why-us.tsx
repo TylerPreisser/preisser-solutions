@@ -522,12 +522,8 @@ export function WhyUs() {
                 id="why-heading"
                 className="ps-section-heading ps-section-heading--light events-section__header-title"
               >
-                We Don&apos;t Outsource. We Don&apos;t Resell. We Build.
+                Why Us
               </h2>
-              <p className="events-section__header-subtitle">
-                No subcontractors, no white-labeled templates, and no bloated process.
-                You bring the problem. We build the fix.
-              </p>
             </div>
 
             <div
