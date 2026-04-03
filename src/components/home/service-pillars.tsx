@@ -508,23 +508,20 @@ interface BentoCardProps {
 function BentoCard({ service, onClick }: BentoCardProps) {
   const cardRef = useRef<HTMLButtonElement>(null);
 
-  // Set CSS vars for grow/shift amounts based on card dimensions
+  // Set CSS vars for grow/shift amounts — equal on all sides so
+  // the breathe animation expands uniformly from the card center.
   useEffect(() => {
     const card = cardRef.current;
     if (!card) return;
 
-    const expandAmount = 12;
+    const grow = 6; // px — same on all sides
 
     function updateGrow() {
       if (!card) return;
-      const { offsetWidth: w, offsetHeight: h } = card;
-      if (h === 0) return;
-      const growY = expandAmount / 2;
-      const growX = (w / h) * growY;
-      card.style.setProperty("--card-shift-x", `${-growX}px`);
-      card.style.setProperty("--card-shift-y", `${-growY}px`);
-      card.style.setProperty("--card-grow-x", `${growX}px`);
-      card.style.setProperty("--card-grow-y", `${growY}px`);
+      card.style.setProperty("--card-shift-x", `${-grow}px`);
+      card.style.setProperty("--card-shift-y", `${-grow}px`);
+      card.style.setProperty("--card-grow-x", `${grow}px`);
+      card.style.setProperty("--card-grow-y", `${grow}px`);
     }
 
     updateGrow();
@@ -554,9 +551,9 @@ function BentoCard({ service, onClick }: BentoCardProps) {
       style={{
         "--card-mouse-x": "0px",
         "--card-mouse-y": "0px",
-        "--card-grow-x": "8px",
+        "--card-grow-x": "6px",
         "--card-grow-y": "6px",
-        "--card-shift-x": "-8px",
+        "--card-shift-x": "-6px",
         "--card-shift-y": "-6px",
         "--card-radius": "12px",
         "--card-duration": "800ms",

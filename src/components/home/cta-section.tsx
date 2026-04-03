@@ -57,7 +57,7 @@ export function CtaSection() {
       <div className="ps-cta-glow" aria-hidden="true" />
 
       <div className="ps-cta-content" ref={contentRef}>
-        <div className="ps-eyebrow">Tell Us What You Need</div>
+        <div className="ps-eyebrow">Get in Touch</div>
         <h2 id="cta-heading" className="ps-cta-heading">
           You&apos;ve Got the Problem. We&apos;ll Build the Fix.
         </h2>
@@ -68,7 +68,7 @@ export function CtaSection() {
         </p>
         <div className="ps-cta-buttons">
           <Link href="/contact" className="ps-btn ps-btn-primary-dark">
-            Tell Us What You Need
+            Get in Touch
             <svg
               className="ps-btn-arrow"
               width="16"

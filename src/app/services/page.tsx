@@ -65,7 +65,7 @@ export default function ServicesPage() {
       <div className="ps-cta-section">
         <div className="ps-cta-glow" aria-hidden="true" />
         <div className="ps-cta-content">
-          <span className="ps-eyebrow">Tell Us What You Need</span>
+          <span className="ps-eyebrow">Get in Touch</span>
           <h2>You Know What Your Business Needs. You Just Need Someone Who Can Build It.</h2>
           <p>
             You don&apos;t need a consultant to tell you it&apos;s a problem. You need
@@ -73,7 +73,7 @@ export default function ServicesPage() {
           </p>
           <div className="ps-cta-buttons">
             <Link href="/contact" className="ps-btn-primary">
-              Tell Us What You Need
+              Get in Touch
               <span className="ps-btn-arrow" aria-hidden="true">→</span>
             </Link>
           </div>

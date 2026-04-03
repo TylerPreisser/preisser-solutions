@@ -4,13 +4,6 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-const navLinks = [
-  { label: "Services", href: "/services" },
-  { label: "Work", href: "/#case-studies" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
-
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
@@ -53,30 +46,27 @@ export function Header() {
             Preisser Solutions
           </Link>
 
-          {/* Desktop nav */}
+          {/* Desktop nav — minimal Stripe-style: contact link + CTA only */}
           <nav
             className="ps-primary-nav"
             id="primary-navigation"
             aria-label="Primary navigation"
           >
             <div className="ps-header-links">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="ps-header-link"
-                  onClick={handleLinkClick}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              <Link
+                href="/contact"
+                className="ps-header-link"
+                onClick={handleLinkClick}
+              >
+                Contact
+              </Link>
               <Link
                 href="/contact"
                 className="ps-header-cta"
                 onClick={handleLinkClick}
-                aria-label="Tell Us What You Need — start a conversation"
+                aria-label="Get in Touch — start a conversation"
               >
-                Tell Us What You Need
+                Get in Touch
                 <svg
                   className="ps-header-cta-arrow"
                   width="14"
@@ -120,22 +110,19 @@ export function Header() {
         aria-label="Mobile navigation"
         aria-hidden={!navOpen}
       >
-        {navLinks.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className="ps-mobile-nav-link"
-            onClick={handleLinkClick}
-          >
-            {link.label}
-          </Link>
-        ))}
+        <Link
+          href="/contact"
+          className="ps-mobile-nav-link"
+          onClick={handleLinkClick}
+        >
+          Contact
+        </Link>
         <Link
           href="/contact"
           className="ps-mobile-nav-cta"
           onClick={handleLinkClick}
         >
-          Tell Us What You Need →
+          Get in Touch →
         </Link>
       </nav>
     </>

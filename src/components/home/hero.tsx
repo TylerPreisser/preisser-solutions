@@ -223,7 +223,7 @@ export function Hero() {
 
         <div ref={ctasRef} className="ps-hero-ctas">
           <Link href="/contact" className="ps-btn ps-btn-primary-dark">
-            Tell Us What You Need
+            Get in Touch
             <svg
               className="ps-btn-arrow"
               width="16"

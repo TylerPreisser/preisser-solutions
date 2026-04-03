@@ -919,17 +919,27 @@ button {
 }
 
 /* ── Card Inner: clip-path breathe animation ───────────────── */
+/*
+  The inner element is oversized by the grow amount on all sides.
+  At rest it's clipped back to the card's exact bounds using an
+  equal inset on all four sides — so the breathe expands uniformly
+  from the center in every direction. On hover the inset collapses
+  to 0, revealing the oversized area equally on all sides.
+*/
 .ps-bento-card__inner {
   position: absolute;
-  inset: calc(-1 * var(--card-grow-y, 6px)) calc(-1 * var(--card-grow-x, 8px));
+  /* Overhang equally on all sides using the same grow value */
+  inset: calc(-1 * var(--card-grow-y, 6px));
   border-radius: 0;
   overflow: hidden;
   z-index: 0;
 
-  /* Default: clipped back to card bounds */
+  /* Default: clipped back to card bounds — equal on all sides */
   clip-path: inset(
-    var(--card-grow-y, 6px) var(--card-grow-x, 8px)
-    var(--card-grow-y, 6px) var(--card-grow-x, 8px)
+    var(--card-grow-y, 6px)
+    var(--card-grow-y, 6px)
+    var(--card-grow-y, 6px)
+    var(--card-grow-y, 6px)
     round calc(var(--card-radius, 12px) - 1px)
   );
 }
@@ -941,7 +951,7 @@ button {
   }
 }
 
-/* Hover: expand clip outward — card appears to "grow" */
+/* Hover: expand clip outward equally on all sides */
 .ps-bento-card:hover .ps-bento-card__inner {
   clip-path: inset(0 round calc(var(--card-radius, 12px) - 1px));
 }
@@ -1069,15 +1079,16 @@ button {
 /* ── Card Expand Icon: top-right frosted glass circle ─────── */
 .ps-bento-card__expand {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 16px;
+  right: 16px;
   z-index: 3;
 
+  /* Equal 16px from both edges; icon centered inside its circle */
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
 
   /* Frosted glass */
@@ -1094,8 +1105,10 @@ button {
 }
 
 .ps-bento-card__expand svg {
-  width: 16px;
-  height: 16px;
+  display: block;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 .ps-bento-card:hover .ps-bento-card__expand {
