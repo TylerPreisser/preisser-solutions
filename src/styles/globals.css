@@ -219,8 +219,10 @@ button {
   color: var(--color-text-dark-primary);
 }
 
+/* --light variant: used in theme-switchable sections */
 .ps-section-heading--light {
-  color: var(--color-text-light-primary);
+  color: var(--theme-text-primary);
+  transition: color 300ms ease;
 }
 
 .ps-body-text {
@@ -230,7 +232,8 @@ button {
 }
 
 .ps-body-text--light {
-  color: var(--color-text-light-secondary);
+  color: var(--theme-text-secondary);
+  transition: color 300ms ease;
 }
 
 /* ── Buttons ───────────────────────────────────────────────── */
@@ -2502,16 +2505,16 @@ button {
 
 /* ── Bottom-Sheet Dialog (Stripe-pattern) ───────────────────── */
 
-/* Overlay: light semi-transparent, Stripe blue-white */
+/* Overlay: responds to theme */
 .ps-dialog-overlay {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: rgba(229, 237, 245, 0.9);
+  background: var(--theme-dialog-overlay);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   opacity: 0;
-  transition: opacity 400ms ease;
+  transition: opacity 400ms ease, background-color 300ms ease;
   /* Allow clicks through overlay to reach the dismiss handler */
   cursor: pointer;
 }
@@ -3000,10 +3003,12 @@ button {
 }
 
 /* ── Why Us Section ────────────────────────────────────────── */
+/* Always uses theme-switchable background — transitions smoothly */
 .ps-why {
-  background: linear-gradient(180deg, #FFFFFF 0%, var(--color-light) 100%);
+  background: linear-gradient(180deg, var(--theme-section-switchable) 0%, var(--theme-section-alt) 100%);
   padding: var(--section-py-desktop) 0;
   overflow: hidden;
+  transition: background 300ms ease;
 }
 
 .events-section-container {
@@ -3034,7 +3039,8 @@ button {
 .events-section__header-subtitle {
   font-size: 1.125rem;
   line-height: 1.65;
-  color: var(--color-text-light-secondary);
+  color: var(--theme-text-secondary);
+  transition: color 300ms ease;
 }
 
 .events-section__controls {
@@ -3120,9 +3126,10 @@ button {
 
 .squeezy-carousel__itemDescription {
   display: block;
-  color: var(--color-text-light-secondary);
+  color: var(--theme-text-secondary);
   font-size: 1rem;
   line-height: 1.65;
+  transition: color 300ms ease;
 }
 
 .ps-events-detail__cta {
@@ -3138,15 +3145,17 @@ button {
   font-weight: 600;
   line-height: 1.12;
   letter-spacing: -0.03em;
-  color: var(--color-text-light-primary);
+  color: var(--theme-text-primary);
   text-wrap: pretty;
+  transition: color 300ms ease;
 }
 
 .ps-events-detail__description {
   max-width: 70ch;
   font-size: 1.125rem;
   line-height: 1.65;
-  color: var(--color-text-light-secondary);
+  color: var(--theme-text-secondary);
+  transition: color 300ms ease;
 }
 
 .mobile-carousel {
@@ -3222,7 +3231,8 @@ button {
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.03em;
-  color: var(--color-text-light-primary);
+  color: var(--theme-text-primary);
+  transition: color 300ms ease;
 }
 
 .events-mobile-carousel-card__link {
@@ -3871,8 +3881,9 @@ button {
 
 /* ── Results Section ───────────────────────────────────────── */
 .ps-results {
-  background-color: var(--color-light);
+  background-color: var(--theme-section-alt);
   padding: var(--section-py-desktop) 0;
+  transition: background-color 300ms ease;
 }
 
 .ps-results-header {
@@ -3896,15 +3907,17 @@ button {
 .ps-result-card {
   position: relative;
   padding: 28px 28px 28px 32px;
-  background-color: var(--color-white);
+  background-color: var(--theme-result-card-bg);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-border-light);
+  border: 1px solid var(--theme-result-card-border);
   opacity: 0;
   transform: translateY(24px);
   transition:
     transform 250ms var(--ease-standard),
-    box-shadow 250ms var(--ease-standard);
+    box-shadow 250ms var(--ease-standard),
+    background-color 300ms ease,
+    border-color 300ms ease;
 }
 
 .ps-result-card:hover {
@@ -3924,9 +3937,10 @@ button {
 .ps-result-card-kpi {
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--color-text-light-primary);
+  color: var(--theme-text-primary);
   margin-bottom: 12px;
   letter-spacing: -0.01em;
+  transition: color 300ms ease;
 }
 
 .ps-result-card-meta {
@@ -3944,16 +3958,18 @@ button {
 
 .ps-result-card-industry {
   font-size: 0.75rem;
-  color: var(--color-text-light-muted);
+  color: var(--theme-text-muted);
   padding: 2px 10px;
-  background: var(--color-light);
+  background: var(--theme-result-card-industry-bg);
   border-radius: 100px;
+  transition: color 300ms ease, background-color 300ms ease;
 }
 
 .ps-result-card-desc {
   font-size: 0.875rem;
   line-height: 1.65;
-  color: var(--color-text-light-secondary);
+  color: var(--theme-text-secondary);
+  transition: color 300ms ease;
 }
 
 @media (max-width: 768px) {
