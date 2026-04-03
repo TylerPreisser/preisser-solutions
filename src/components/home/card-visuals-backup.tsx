@@ -404,9 +404,11 @@ export function SystemFixesVisual() {
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 4 — Dashboards & Business Intelligence
-   Four persistent dashboard modules rotate through fixed slots:
-   featured -> bottom-left -> bottom-middle -> bottom-right -> featured.
-   No remounting, no chrome, just sliding panel movement.
+   Fixed dashboard layout:
+   - wide revenue mix chart on top
+   - activity panel bottom-left
+   - KPI ring grid bottom-right
+   Animates on scroll into view or direct user interaction only.
    ───────────────────────────────────────────────────────────── */
 
 const HEATMAP_ROWS = 5;
@@ -418,10 +420,26 @@ const heatmapCells: number[][] = Array.from({ length: HEATMAP_ROWS }, (_, r) =>
   )
 );
 
+const dashboardBars = [0.38, 0.66, 0.53, 0.84, 0.61, 0.74, 0.92];
+const dashboardMetrics = [
+  { label: "Retention", value: 94, tone: "blue" },
+  { label: "Close Rate", value: 72, tone: "cyan" },
+  { label: "NPS", value: 88, tone: "violet" },
+  { label: "Forecast", value: 81, tone: "green" },
+] as const;
+
 export function DashboardVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [tileOrder, setTileOrder] = useState([0, 1, 2, 3]);
-  const slotNames = ["featured", "bottom-left", "bottom-middle", "bottom-right"] as const;
+  const [playToken, setPlayToken] = useState(0);
+  const hasPlayedInView = useRef(false);
+  const lastTriggerAt = useRef(0);
+
+  function triggerPlay() {
+    const now = Date.now();
+    if (now - lastTriggerAt.current < 450) return;
+    lastTriggerAt.current = now;
+    setPlayToken((current) => current + 1);
+  }
 
   useEffect(() => {
     const el = containerRef.current;
@@ -432,15 +450,16 @@ export function DashboardVisual() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (prefersReduced) {
-      el.classList.add("in-view");
+      setPlayToken(1);
       return;
     }
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            el.classList.add("in-view");
+          if (entry.isIntersecting && !hasPlayedInView.current) {
+            hasPlayedInView.current = true;
+            triggerPlay();
             observer.unobserve(el);
           }
         });
@@ -452,148 +471,100 @@ export function DashboardVisual() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
-
-    const id = setInterval(() => {
-      setTileOrder(([featured, bottomLeft, bottomMiddle, bottomRight]) => [
-        bottomRight,
-        featured,
-        bottomLeft,
-        bottomMiddle,
-      ]);
-    }, 3200);
-
-    return () => clearInterval(id);
-  }, []);
-
   return (
-    <div ref={containerRef} className="ps-dbc-root" aria-hidden="true">
+    <div
+      ref={containerRef}
+      className="ps-dbc-root"
+      aria-hidden="true"
+      onMouseEnter={triggerPlay}
+      onPointerDown={triggerPlay}
+      onTouchStart={triggerPlay}
+    >
       <div className="ps-dbc-layout">
-        <div className="ps-dbc-stage">
-          {tileOrder.map((tileIdx, slotIndex) => {
-            const slotName = slotNames[slotIndex];
-            const isFeatured = slotName === "featured";
-
-            return (
-              <div
-                key={tileIdx}
-                className={`ps-dbc-tile-shell ps-dbc-slot--${slotName}`}
-              >
-                <DashTile tileIdx={tileIdx} featured={isFeatured} />
-              </div>
-            );
-          })}
-        </div>
+        <DashboardScene key={playToken} animated={playToken > 0} />
       </div>
     </div>
   );
 }
 
-function DashTile({ tileIdx, featured }: { tileIdx: number; featured: boolean }) {
-  if (tileIdx === 0) {
-    return (
-      <div className="ps-dbc-tile-inner">
+function DashboardScene({ animated }: { animated: boolean }) {
+  return (
+    <div className={`ps-dbc-stage${animated ? " ps-dbc-stage--play" : ""}`}>
+      <section className="ps-dbc-panel ps-dbc-panel--revenue">
         <div className="ps-dbc-tile-label">Revenue Mix</div>
         <div className="ps-dbc-bars">
-          {([0.36, 0.64, 0.52, 0.82, 0.6, 0.72, 0.9] as number[]).map((h, i) => (
-            <div key={i} className="ps-dbc-bar-wrap">
+          {dashboardBars.map((height, index) => (
+            <div key={index} className="ps-dbc-bar-wrap">
               <div
                 className="ps-dbc-bar"
                 style={{
-                  "--bar-h": h,
-                  "--bar-delay": `${i * 0.08}s`,
+                  "--bar-h": height,
+                  "--bar-delay": `${index * 0.08}s`,
                 } as React.CSSProperties}
               />
             </div>
           ))}
         </div>
-      </div>
-    );
-  }
+      </section>
 
-  if (tileIdx === 1) {
-    return (
-      <div className="ps-dbc-tile-inner">
-        <div className="ps-dbc-tile-label">Growth Trend</div>
-        <svg className="ps-dbc-line-svg" viewBox="0 0 100 55" fill="none" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="dbcLineGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#0D95E8" />
-              <stop offset="100%" stopColor="#8B5CF6" />
-            </linearGradient>
-            <linearGradient id="dbcAreaGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#0D95E8" stopOpacity="0.22" />
-              <stop offset="100%" stopColor="#0D95E8" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(255,255,255,0.06)" strokeWidth="0.75" />
-          <line x1="0" y1="28" x2="100" y2="28" stroke="rgba(255,255,255,0.04)" strokeWidth="0.75" strokeDasharray="2 2" />
-          <path
-            d="M0,48 C15,44 30,38 45,28 C60,18 75,10 100,4 L100,50 L0,50 Z"
-            fill="url(#dbcAreaGrad)"
-            opacity="0.85"
-          />
-          <path
-            className="ps-dbc-line-path"
-            d="M0,48 C15,44 30,38 45,28 C60,18 75,10 100,4"
-            stroke="url(#dbcLineGrad)"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-          <circle cx="100" cy="4" r="2.5" fill="#8B5CF6" className="ps-dbc-tip-dot" />
-        </svg>
-      </div>
-    );
-  }
-
-  if (tileIdx === 2) {
-    return (
-      <div className="ps-dbc-tile-inner ps-dbc-tile-inner--center">
-        <div className="ps-dbc-tile-label">Retention</div>
-        <div className={featured ? "ps-dbc-donut-wrap ps-dbc-donut-wrap--lg" : "ps-dbc-donut-wrap"}>
-          <svg className="ps-dbc-donut-svg" viewBox="0 0 80 80" fill="none">
-            <circle cx="40" cy="40" r="30" stroke="rgba(255,255,255,0.07)" strokeWidth={featured ? 9 : 7} />
-            <circle
-              className="ps-dbc-donut-ring"
-              cx="40"
-              cy="40"
-              r="30"
-              stroke="#0D95E8"
-              strokeWidth={featured ? 9 : 7}
-              strokeLinecap="round"
-              strokeDasharray="188.5"
-              transform="rotate(-90 40 40)"
-            />
-          </svg>
-          <div className="ps-dbc-donut-center">
-            <span className="ps-dbc-donut-pct">94%</span>
-            {featured ? <span className="ps-dbc-donut-sub">retained</span> : null}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="ps-dbc-tile-inner">
-      <div className="ps-dbc-tile-label">Activity</div>
-      <div className="ps-dbc-heatmap">
-        {heatmapCells.map((row, r) => (
-          <div key={r} className="ps-dbc-heatmap-row">
-            {row.map((level, c) => (
-              <div
-                key={c}
-                className={`ps-dbc-heatmap-cell ps-dbc-heatmap-cell--${level}`}
-                style={{ "--hm-cell-delay": `${(r * HEATMAP_COLS + c) * 0.015}s` } as React.CSSProperties}
-              />
+      <section className="ps-dbc-panel ps-dbc-panel--activity">
+        <div className="ps-dbc-tile-inner">
+          <div className="ps-dbc-tile-label">Activity</div>
+          <div className="ps-dbc-heatmap">
+            {heatmapCells.map((row, r) => (
+              <div key={r} className="ps-dbc-heatmap-row">
+                {row.map((level, c) => (
+                  <div
+                    key={c}
+                    className={`ps-dbc-heatmap-cell ps-dbc-heatmap-cell--${level}`}
+                    style={{ "--hm-cell-delay": `${(r * HEATMAP_COLS + c) * 0.015}s` } as React.CSSProperties}
+                  />
+                ))}
+              </div>
             ))}
           </div>
-        ))}
-      </div>
+        </div>
+      </section>
+
+      <section className="ps-dbc-panel ps-dbc-panel--kpis">
+        <div className="ps-dbc-tile-label">Key Metrics</div>
+        <div className="ps-dbc-kpi-grid">
+          {dashboardMetrics.map((metric, index) => (
+            <div
+              key={metric.label}
+              className={`ps-dbc-kpi-card ps-dbc-kpi-card--${metric.tone}`}
+              style={{ "--metric-delay": `${0.18 + index * 0.1}s` } as React.CSSProperties}
+            >
+              <div className="ps-dbc-kpi-ring-wrap">
+                <svg className="ps-dbc-kpi-ring-svg" viewBox="0 0 72 72" fill="none">
+                  <circle
+                    cx="36"
+                    cy="36"
+                    r="26"
+                    stroke="rgba(255,255,255,0.07)"
+                    strokeWidth="6"
+                  />
+                  <circle
+                    className="ps-dbc-kpi-ring"
+                    cx="36"
+                    cy="36"
+                    r="26"
+                    strokeWidth="6"
+                    strokeLinecap="round"
+                    strokeDasharray="163.36"
+                    transform="rotate(-90 36 36)"
+                    style={{
+                      "--ring-offset": `${163.36 * (1 - metric.value / 100)}`,
+                    } as React.CSSProperties}
+                  />
+                </svg>
+                <div className="ps-dbc-kpi-value">{metric.value}%</div>
+              </div>
+              <div className="ps-dbc-kpi-label">{metric.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
