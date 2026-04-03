@@ -825,7 +825,35 @@ button {
 
 /* ── Problem section: light mode override ───────────────────── */
 [data-theme="light"] .ps-problem-visual {
-  background: linear-gradient(135deg, #E0E7FF 0%, #DBEAFE 100%);
+  background: transparent;
+}
+
+[data-theme="light"] .ps-problem-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
+}
+
+[data-theme="light"] .ps-problem-card-title {
+  color: #0D95E8;
+}
+
+[data-theme="light"] .ps-problem-list-text {
+  color: #475569;
+  transition: color 300ms ease;
+}
+
+[data-theme="light"] .ps-problem-list-dot {
+  background-color: #0D95E8;
+}
+
+[data-theme="light"] .ps-problem-divider {
+  background: #E2E8F0;
+}
+
+[data-theme="light"] .ps-problem-resolution {
+  color: #059669;
 }
 
 /* ── Value Strip ───────────────────────────────────────────── */
@@ -4425,6 +4453,131 @@ button {
     align-items: flex-start;
     gap: 12px;
   }
+}
+
+/* ── Case Studies: light mode overrides ────────────────────── */
+[data-theme="light"] .ps-case-studies {
+  background-color: #F8FAFC;
+}
+
+[data-theme="light"] .ps-case-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  transition:
+    background-color 300ms ease,
+    border-color 250ms ease,
+    box-shadow 250ms ease;
+}
+
+[data-theme="light"] .ps-case-card:hover {
+  border-color: #0D95E8;
+  box-shadow: 0 0 0 1px #0D95E8, 0 0 20px rgba(13, 149, 232, 0.12);
+}
+
+[data-theme="light"] .ps-case-card-client {
+  color: #0D95E8;
+}
+
+[data-theme="light"] .ps-case-card-tag {
+  background-color: #F1F5F9;
+  color: #475569;
+}
+
+[data-theme="light"] .ps-case-card-result {
+  color: #0A1628;
+  transition: color 300ms ease;
+}
+
+[data-theme="light"] .ps-case-card-result-item {
+  color: #475569;
+  transition: color 300ms ease;
+}
+
+[data-theme="light"] .ps-case-card-result-item::before {
+  background-color: #0D95E8;
+}
+
+/* ── CTA Section: light mode overrides ─────────────────────── */
+[data-theme="light"] .ps-cta-section {
+  background-color: #F0F4F8;
+  transition: background-color 300ms ease;
+}
+
+[data-theme="light"] .ps-cta-glow {
+  background: radial-gradient(
+    circle,
+    rgba(13, 149, 232, 0.08) 0%,
+    transparent 70%
+  );
+}
+
+[data-theme="light"] .ps-cta-heading {
+  color: #0A1628;
+  transition: color 300ms ease;
+}
+
+[data-theme="light"] .ps-cta-body {
+  color: #475569;
+  transition: color 300ms ease;
+}
+
+/* ── Footer: light mode overrides ──────────────────────────── */
+[data-theme="light"] .ps-footer {
+  background-color: #F8FAFC;
+  border-top: 1px solid #E2E8F0;
+  transition: background-color 300ms ease, border-color 300ms ease;
+}
+
+[data-theme="light"] .ps-footer-logo-text {
+  color: #0A1628;
+  transition: color 300ms ease;
+}
+
+[data-theme="light"] .ps-footer-tagline {
+  color: #475569;
+  transition: color 300ms ease;
+}
+
+[data-theme="light"] .ps-footer-contact-link {
+  color: #475569;
+  transition: color 150ms ease;
+}
+
+[data-theme="light"] .ps-footer-col h4 {
+  color: rgba(10, 22, 40, 0.45);
+  transition: color 300ms ease;
+}
+
+[data-theme="light"] .ps-footer-links a {
+  color: #64748B;
+  transition: color 150ms ease;
+}
+
+[data-theme="light"] .ps-footer-links a:hover {
+  color: #0D95E8;
+}
+
+[data-theme="light"] .ps-footer-divider {
+  border-color: #E2E8F0;
+  transition: border-color 300ms ease;
+}
+
+[data-theme="light"] .ps-footer-copy {
+  color: #94A3B8;
+  transition: color 300ms ease;
+}
+
+[data-theme="light"] .ps-footer-copy a:hover {
+  color: #475569;
+}
+
+[data-theme="light"] .ps-footer-social a {
+  color: #64748B;
+  transition: color 150ms ease;
+}
+
+[data-theme="light"] .ps-footer-social a:hover {
+  color: #0D95E8;
 }
 
 /* ── Reduced Motion ────────────────────────────────────────── */

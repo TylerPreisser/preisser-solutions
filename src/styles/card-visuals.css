@@ -90,7 +90,7 @@
   height: 10px;
   background: #000;
   border-radius: 20px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 /* Screen — dark area filling the rest */
@@ -102,7 +102,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 8px 6px 4px;
+  padding: 4px 6px 4px;
 }
 
 /* Header bar */
