@@ -149,7 +149,7 @@ export function AutomationVisual() {
       <div className="ps-auto-flow">
         <svg className="ps-auto-svg" viewBox="0 0 520 260" fill="none">
           <path
-            d="M98 130 C126 130, 138 94, 174 86"
+            d="M106 130 C120 130, 128 98, 139 75"
             stroke="#635BFF"
             strokeWidth="3"
             strokeDasharray="9 7"
@@ -157,7 +157,7 @@ export function AutomationVisual() {
             fill="none"
           />
           <path
-            d="M98 130 C126 130, 138 166, 174 174"
+            d="M106 130 C120 130, 128 162, 139 185"
             stroke="#8B5CF6"
             strokeWidth="3"
             strokeDasharray="9 7"
@@ -165,7 +165,7 @@ export function AutomationVisual() {
             fill="none"
           />
           <path
-            d="M226 86 C254 86, 266 130, 296 130"
+            d="M215 75 C232 79, 238 108, 247 124"
             stroke="#A855F7"
             strokeWidth="3"
             strokeDasharray="9 7"
@@ -173,7 +173,7 @@ export function AutomationVisual() {
             fill="none"
           />
           <path
-            d="M226 174 C254 174, 266 130, 296 130"
+            d="M215 185 C232 181, 238 152, 247 136"
             stroke="#A855F7"
             strokeWidth="3"
             strokeDasharray="9 7"
@@ -181,7 +181,7 @@ export function AutomationVisual() {
             fill="none"
           />
           <path
-            d="M360 130 C392 130, 404 90, 438 82"
+            d="M346 130 C362 130, 378 92, 399 70"
             stroke="#10B981"
             strokeWidth="3"
             strokeDasharray="9 7"
@@ -189,7 +189,7 @@ export function AutomationVisual() {
             fill="none"
           />
           <path
-            d="M360 130 C392 130, 404 170, 438 178"
+            d="M346 130 C362 130, 378 168, 399 190"
             stroke="#F59E0B"
             strokeWidth="3"
             strokeDasharray="9 7"
@@ -197,8 +197,8 @@ export function AutomationVisual() {
             fill="none"
           />
 
-          <circle cx="98" cy="130" r="4" fill="#7C6CFF" opacity="0.9" />
-          <circle cx="360" cy="130" r="4" fill="#F59E0B" opacity="0.9" />
+          <circle cx="106" cy="130" r="4" fill="#7C6CFF" opacity="0.9" />
+          <circle cx="346" cy="130" r="4" fill="#F59E0B" opacity="0.9" />
         </svg>
 
         <div className="ps-auto-node-wrap ps-auto-node-wrap--trigger">
@@ -397,14 +397,6 @@ export function SystemFixesVisual() {
             ))}
           </div>
         </div>
-      </div>
-
-      <div className="ps-fix-footer">
-        <span className="ps-fix-footer-label">Efficiency gain</span>
-        <div className="ps-fix-footer-track">
-          <div className="ps-fix-footer-bar" />
-        </div>
-        <span className="ps-fix-footer-value">+92%</span>
       </div>
     </div>
   );

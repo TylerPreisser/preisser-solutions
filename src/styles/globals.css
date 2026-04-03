@@ -3099,7 +3099,7 @@ button {
   grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr);
   align-items: center;
   gap: 10px;
-  padding: 18px 18px 12px;
+  padding: 18px;
 }
 
 .ps-fix-column {
