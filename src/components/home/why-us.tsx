@@ -304,18 +304,8 @@ export function WhyUs() {
       context.font = "600 18px var(--font-sans, Inter, system-ui, sans-serif)";
       context.textBaseline = "alphabetic";
       context.fillText(ACTIVE_CARD_LABEL, rect.x + 28, rect.y + rect.height - 28);
-    } else if (rect.width > 52) {
-      context.fillStyle = "#031323";
-      context.font = rect.width > 96
-        ? "500 12px var(--font-sans, Inter, system-ui, sans-serif)"
-        : "500 11px var(--font-sans, Inter, system-ui, sans-serif)";
-      context.textBaseline = "top";
-
-      const lines = wrapText(context, item.shortLabel, rect.width - 22, rect.width > 90 ? 3 : 4);
-      lines.forEach((line, lineIndex) => {
-        context.fillText(line, rect.x + 12, rect.y + 14 + lineIndex * 14);
-      });
     }
+    // No text on non-active (compressed) cards
 
     context.restore();
 
