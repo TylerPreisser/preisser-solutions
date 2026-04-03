@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 // Sun icon — shown in dark mode (click to switch to light)
@@ -108,11 +109,18 @@ export function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="ps-logo-text"
+            className="ps-logo-link"
             onClick={handleLinkClick}
             aria-label="Preisser Solutions — Home"
           >
-            Preisser Solutions
+            <Image
+              src="/images/ps-logo.webp"
+              alt="Preisser Solutions"
+              className="ps-logo-img"
+              width={140}
+              height={40}
+              priority
+            />
           </Link>
 
           {/* Desktop nav — minimal Stripe-style: theme toggle + CTA */}
