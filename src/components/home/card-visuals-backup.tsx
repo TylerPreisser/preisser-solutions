@@ -147,55 +147,58 @@ export function AutomationVisual() {
   return (
     <div className="ps-visual-automation" aria-hidden="true">
       <div className="ps-auto-flow">
-        <svg className="ps-auto-svg" viewBox="0 0 320 220" fill="none">
+        <svg className="ps-auto-svg" viewBox="0 0 520 260" fill="none">
           <path
-            d="M80 110 C100 110, 104 72, 126 72"
+            d="M98 130 C126 130, 138 94, 174 86"
             stroke="#635BFF"
-            strokeWidth="2"
-            strokeDasharray="6 4"
+            strokeWidth="3"
+            strokeDasharray="9 7"
             className="ps-dash-flow ps-dash-flow--0"
             fill="none"
           />
           <path
-            d="M80 110 C100 110, 104 148, 126 148"
+            d="M98 130 C126 130, 138 166, 174 174"
             stroke="#8B5CF6"
-            strokeWidth="2"
-            strokeDasharray="6 4"
+            strokeWidth="3"
+            strokeDasharray="9 7"
             className="ps-dash-flow ps-dash-flow--1"
             fill="none"
           />
           <path
-            d="M154 72 C176 72, 178 110, 198 110"
+            d="M226 86 C254 86, 266 130, 296 130"
             stroke="#A855F7"
-            strokeWidth="2"
-            strokeDasharray="6 4"
+            strokeWidth="3"
+            strokeDasharray="9 7"
             className="ps-dash-flow ps-dash-flow--2"
             fill="none"
           />
           <path
-            d="M154 148 C176 148, 178 110, 198 110"
+            d="M226 174 C254 174, 266 130, 296 130"
             stroke="#A855F7"
-            strokeWidth="2"
-            strokeDasharray="6 4"
+            strokeWidth="3"
+            strokeDasharray="9 7"
             className="ps-dash-flow ps-dash-flow--0"
             fill="none"
           />
           <path
-            d="M232 110 C252 110, 254 72, 274 72"
+            d="M360 130 C392 130, 404 90, 438 82"
             stroke="#10B981"
-            strokeWidth="2"
-            strokeDasharray="6 4"
+            strokeWidth="3"
+            strokeDasharray="9 7"
             className="ps-dash-flow ps-dash-flow--1"
             fill="none"
           />
           <path
-            d="M232 110 C252 110, 254 148, 274 148"
+            d="M360 130 C392 130, 404 170, 438 178"
             stroke="#F59E0B"
-            strokeWidth="2"
-            strokeDasharray="6 4"
+            strokeWidth="3"
+            strokeDasharray="9 7"
             className="ps-dash-flow ps-dash-flow--2"
             fill="none"
           />
+
+          <circle cx="98" cy="130" r="4" fill="#7C6CFF" opacity="0.9" />
+          <circle cx="360" cy="130" r="4" fill="#F59E0B" opacity="0.9" />
         </svg>
 
         <div className="ps-auto-node-wrap ps-auto-node-wrap--trigger">
@@ -317,81 +320,91 @@ export function SystemFixesVisual() {
     return () => observer.disconnect();
   }, []);
 
-  const services = [
-    { name: "CRM Sync",       before: "34%",   after: "99%",  barW: 34,  delay: 0 },
-    { name: "Data Pipeline",  before: "12%",   after: "98%",  barW: 12,  delay: 1 },
-    { name: "Email Server",   before: "61%",   after: "100%", barW: 61,  delay: 2 },
-    { name: "API Gateway",    before: "0%",    after: "99%",  barW: 0,   delay: 3 },
-    { name: "Backup System",  before: "45%",   after: "97%",  barW: 45,  delay: 4 },
-    { name: "Analytics",      before: "28%",   after: "99%",  barW: 28,  delay: 5 },
+  const problems = [
+    { tag: "Lag", title: "Manual handoff", tone: "orange" },
+    { tag: "Break", title: "Duplicate tools", tone: "red" },
+    { tag: "Waste", title: "Approval bottleneck", tone: "amber" },
+  ];
+
+  const fixes = [
+    { title: "Unified workflow", metric: "1 source of truth" },
+    { title: "Automated routing", metric: "94% faster" },
+    { title: "Clean reporting", metric: "Live visibility" },
   ];
 
   return (
     <div
       ref={containerRef}
-      className="ps-hm-root"
+      className="ps-fix-root"
       aria-hidden="true"
     >
-      {/* Header bar */}
-      <div className="ps-hm-header">
-        <span className="ps-hm-header-title">System Health Monitor</span>
-        <div className="ps-hm-header-status">
-          <div className="ps-hm-live-dot" />
-          <span className="ps-hm-live-label">LIVE</span>
-        </div>
-      </div>
-
-      {/* Service rows */}
-      <div className="ps-hm-rows">
-        {services.map((svc, i) => (
-          <div
-            key={svc.name}
-            className="ps-hm-row"
-            style={{ "--hm-delay": `${i * 0.12}s` } as React.CSSProperties}
-          >
-            {/* Status icon: X → checkmark */}
-            <div className="ps-hm-status-icon">
-              <svg className="ps-hm-icon-x" width="10" height="10" viewBox="0 0 10 10" fill="none">
-                <path d="M2 2l6 6M8 2l-6 6" stroke="#EF4444" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-              <svg className="ps-hm-icon-check" width="10" height="10" viewBox="0 0 10 10" fill="none">
-                <polyline points="2,5 4.5,7.5 8,3" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-
-            {/* Service name */}
-            <span className="ps-hm-name">{svc.name}</span>
-
-            {/* Status bar track */}
-            <div className="ps-hm-bar-track">
-              {/* Before bar (red, short) */}
+      <div className="ps-fix-board">
+        <div className="ps-fix-column ps-fix-column--before">
+          <div className="ps-fix-column-label">Before</div>
+          <div className="ps-fix-problem-stack">
+            {problems.map((problem, index) => (
               <div
-                className="ps-hm-bar-before"
-                style={{ width: `${svc.barW}%` }}
-              />
-              {/* After bar (green, full) — slides in on in-view */}
-              <div
-                className="ps-hm-bar-after"
-                style={{ "--hm-bar-delay": `${i * 0.12 + 0.1}s` } as React.CSSProperties}
-              />
-            </div>
-
-            {/* Percentage readout */}
-            <span className="ps-hm-pct">
-              <span className="ps-hm-pct-before">{svc.before}</span>
-              <span className="ps-hm-pct-after">{svc.after}</span>
-            </span>
+                key={problem.title}
+                className={`ps-fix-problem-card ps-fix-problem-card--${problem.tone}`}
+                style={{ "--fix-delay": `${index * 0.12}s` } as React.CSSProperties}
+              >
+                <div className="ps-fix-problem-top">
+                  <span className="ps-fix-problem-badge">{problem.tag}</span>
+                  <span className="ps-fix-problem-dot" />
+                </div>
+                <div className="ps-fix-problem-title">{problem.title}</div>
+                <div className="ps-fix-problem-lines">
+                  <span />
+                  <span />
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        <div className="ps-fix-center">
+          <div className="ps-fix-center-line" />
+          <div className="ps-fix-center-line ps-fix-center-line--two" />
+          <div className="ps-fix-center-arrow">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <path d="M7 14h14M16 9l5 5-5 5" stroke="#40D9AC" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        </div>
+
+        <div className="ps-fix-column ps-fix-column--after">
+          <div className="ps-fix-column-label">After</div>
+          <div className="ps-fix-solution-stack">
+            {fixes.map((fix, index) => (
+              <div
+                key={fix.title}
+                className="ps-fix-solution-card"
+                style={{ "--fix-delay": `${0.18 + index * 0.14}s` } as React.CSSProperties}
+              >
+                <div className="ps-fix-solution-top">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path d="M2.4 6.3 4.8 8.6 9.6 3.8" stroke="#40D9AC" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <span className="ps-fix-solution-metric">{fix.metric}</span>
+                </div>
+                <div className="ps-fix-solution-title">{fix.title}</div>
+                <div className="ps-fix-solution-bars">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Footer summary */}
-      <div className="ps-hm-footer">
-        <span className="ps-hm-footer-label">Overall Efficiency</span>
-        <div className="ps-hm-footer-bar-track">
-          <div className="ps-hm-footer-bar" />
+      <div className="ps-fix-footer">
+        <span className="ps-fix-footer-label">Efficiency gain</span>
+        <div className="ps-fix-footer-track">
+          <div className="ps-fix-footer-bar" />
         </div>
-        <span className="ps-hm-footer-value">+92%</span>
+        <span className="ps-fix-footer-value">+92%</span>
       </div>
     </div>
   );
@@ -399,15 +412,14 @@ export function SystemFixesVisual() {
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 4 — Dashboards & Business Intelligence
-   Conveyor-belt cycling: tiles push left as new one slides in
-   from the right. Tiles: bar chart (wide), line chart, big donut,
-   heatmap grid. Layout is asymmetric (one wide tile on top).
+   Four persistent dashboard modules rotate through fixed slots:
+   featured -> bottom-left -> bottom-middle -> bottom-right -> featured.
+   No remounting, no chrome, just sliding panel movement.
    ───────────────────────────────────────────────────────────── */
 
-// Heatmap cell data — static, looks like a contribution graph
 const HEATMAP_ROWS = 5;
 const HEATMAP_COLS = 9;
-const HEATMAP_LEVELS = [0, 1, 1, 2, 2, 2, 3, 3, 4]; // weighted toward mid/high
+const HEATMAP_LEVELS = [0, 1, 1, 2, 2, 2, 3, 3, 4];
 const heatmapCells: number[][] = Array.from({ length: HEATMAP_ROWS }, (_, r) =>
   Array.from({ length: HEATMAP_COLS }, (_, c) =>
     HEATMAP_LEVELS[(r * HEATMAP_COLS + c * 3 + r * 2) % HEATMAP_LEVELS.length]
@@ -417,12 +429,7 @@ const heatmapCells: number[][] = Array.from({ length: HEATMAP_ROWS }, (_, r) =>
 export function DashboardVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [tileOrder, setTileOrder] = useState([0, 1, 2, 3]);
-  const slotNames = [
-    "featured",
-    "bottom-left",
-    "bottom-middle",
-    "bottom-right",
-  ] as const;
+  const slotNames = ["featured", "bottom-left", "bottom-middle", "bottom-right"] as const;
 
   useEffect(() => {
     const el = containerRef.current;
@@ -453,8 +460,6 @@ export function DashboardVisual() {
     return () => observer.disconnect();
   }, []);
 
-  // Move each persistent tile through the four slots:
-  // featured -> bottom-left -> bottom-middle -> bottom-right -> featured.
   useEffect(() => {
     const prefersReduced =
       typeof window !== "undefined" &&
@@ -468,31 +473,13 @@ export function DashboardVisual() {
         bottomLeft,
         bottomMiddle,
       ]);
-    }, 3500);
+    }, 3200);
+
     return () => clearInterval(id);
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="ps-dbc-root"
-      aria-hidden="true"
-    >
-      {/* Chrome bar */}
-      <div className="ps-dbc-chrome">
-        <div className="ps-dbc-chrome-dots">
-          <span style={{ background: "#FF5F57" }} />
-          <span style={{ background: "#FEBC2E" }} />
-          <span style={{ background: "#28C840" }} />
-        </div>
-        <span className="ps-dbc-chrome-title">Analytics Dashboard</span>
-        <div className="ps-dbc-live">
-          <span className="ps-dbc-live-dot" />
-          <span className="ps-dbc-live-label">LIVE</span>
-        </div>
-      </div>
-
-      {/* Asymmetric layout: one featured slot and a 3-tile conveyor row */}
+    <div ref={containerRef} className="ps-dbc-root" aria-hidden="true">
       <div className="ps-dbc-layout">
         <div className="ps-dbc-stage">
           {tileOrder.map((tileIdx, slotIndex) => {
@@ -514,21 +501,19 @@ export function DashboardVisual() {
   );
 }
 
-/* Sub-component: renders a single dashboard tile by index */
 function DashTile({ tileIdx, featured }: { tileIdx: number; featured: boolean }) {
   if (tileIdx === 0) {
-    /* Bar chart */
     return (
       <div className="ps-dbc-tile-inner">
-        <div className="ps-dbc-tile-label">Q4 Revenue</div>
+        <div className="ps-dbc-tile-label">Revenue Mix</div>
         <div className="ps-dbc-bars">
-          {([0.42, 0.68, 0.55, 0.88, 0.61, 0.75, 0.95] as number[]).map((h, i) => (
+          {([0.36, 0.64, 0.52, 0.82, 0.6, 0.72, 0.9] as number[]).map((h, i) => (
             <div key={i} className="ps-dbc-bar-wrap">
               <div
                 className="ps-dbc-bar"
                 style={{
                   "--bar-h": h,
-                  "--bar-delay": `${i * 0.06}s`,
+                  "--bar-delay": `${i * 0.08}s`,
                 } as React.CSSProperties}
               />
             </div>
@@ -537,8 +522,8 @@ function DashTile({ tileIdx, featured }: { tileIdx: number; featured: boolean })
       </div>
     );
   }
+
   if (tileIdx === 1) {
-    /* Line chart */
     return (
       <div className="ps-dbc-tile-inner">
         <div className="ps-dbc-tile-label">Growth Trend</div>
@@ -558,7 +543,7 @@ function DashTile({ tileIdx, featured }: { tileIdx: number; featured: boolean })
           <path
             d="M0,48 C15,44 30,38 45,28 C60,18 75,10 100,4 L100,50 L0,50 Z"
             fill="url(#dbcAreaGrad)"
-            opacity="0.8"
+            opacity="0.85"
           />
           <path
             className="ps-dbc-line-path"
@@ -572,11 +557,11 @@ function DashTile({ tileIdx, featured }: { tileIdx: number; featured: boolean })
       </div>
     );
   }
+
   if (tileIdx === 2) {
-    /* Large donut */
     return (
       <div className="ps-dbc-tile-inner ps-dbc-tile-inner--center">
-        <div className="ps-dbc-tile-label">Customer Retention</div>
+        <div className="ps-dbc-tile-label">Retention</div>
         <div className={featured ? "ps-dbc-donut-wrap ps-dbc-donut-wrap--lg" : "ps-dbc-donut-wrap"}>
           <svg className="ps-dbc-donut-svg" viewBox="0 0 80 80" fill="none">
             <circle cx="40" cy="40" r="30" stroke="rgba(255,255,255,0.07)" strokeWidth={featured ? 9 : 7} />
@@ -594,16 +579,16 @@ function DashTile({ tileIdx, featured }: { tileIdx: number; featured: boolean })
           </svg>
           <div className="ps-dbc-donut-center">
             <span className="ps-dbc-donut-pct">94%</span>
-            {featured && <span className="ps-dbc-donut-sub">retained</span>}
+            {featured ? <span className="ps-dbc-donut-sub">retained</span> : null}
           </div>
         </div>
       </div>
     );
   }
-  /* Tile 3: Heatmap */
+
   return (
     <div className="ps-dbc-tile-inner">
-      <div className="ps-dbc-tile-label">Activity Heatmap</div>
+      <div className="ps-dbc-tile-label">Activity</div>
       <div className="ps-dbc-heatmap">
         {heatmapCells.map((row, r) => (
           <div key={r} className="ps-dbc-heatmap-row">

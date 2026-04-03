@@ -71,20 +71,6 @@ const services: ServicePillar[] = [
     ],
   },
   {
-    type: "dashboards",
-    title: "Dashboards & Business Intelligence",
-    description:
-      "See your business clearly. Real-time data, live reporting, actionable insight. Stop making decisions based on gut feel — know exactly what's working, what's not, and where the money is.",
-    href: "/contact",
-    visual: <DashboardVisual />,
-    bullets: [
-      "Real-time KPI and revenue dashboards",
-      "Custom reporting for any data source",
-      "Automated alerts and anomaly detection",
-      "Executive-ready presentation views",
-    ],
-  },
-  {
     type: "revenue",
     title: "Revenue Growth Engines",
     description:
@@ -96,6 +82,20 @@ const services: ServicePillar[] = [
       "Content and outreach at scale",
       "Landing pages and conversion optimization",
       "Follow-up sequences that close deals",
+    ],
+  },
+  {
+    type: "dashboards",
+    title: "Dashboards & Business Intelligence",
+    description:
+      "See your business clearly. Real-time data, live reporting, actionable insight. Stop making decisions based on gut feel — know exactly what's working, what's not, and where the money is.",
+    href: "/contact",
+    visual: <DashboardVisual />,
+    bullets: [
+      "Real-time KPI and revenue dashboards",
+      "Custom reporting for any data source",
+      "Automated alerts and anomaly detection",
+      "Executive-ready presentation views",
     ],
   },
 ];
@@ -158,11 +158,10 @@ function CloseIcon() {
 
 interface BentoCardProps {
   service: ServicePillar;
-  isLarge: boolean;
   onClick: () => void;
 }
 
-function BentoCard({ service, isLarge, onClick }: BentoCardProps) {
+function BentoCard({ service, onClick }: BentoCardProps) {
   const cardRef = useRef<HTMLButtonElement>(null);
 
   // Set CSS vars for grow/shift amounts based on card dimensions
@@ -204,7 +203,7 @@ function BentoCard({ service, isLarge, onClick }: BentoCardProps) {
   return (
     <button
       ref={cardRef}
-      className={`ps-bento-card ps-bento-card--${service.type}${isLarge ? " ps-bento-card--large" : ""}`}
+      className={`ps-bento-card ps-bento-card--${service.type}`}
       aria-labelledby={`bento-card-${service.type}-title`}
       onClick={onClick}
       onMouseMove={handleMouseMove}
@@ -447,7 +446,6 @@ export function ServicePillars() {
           <BentoCard
             key={service.type}
             service={service}
-            isLarge={i === 0}
             onClick={() => handleExpand(i)}
           />
         ))}
