@@ -40,14 +40,31 @@ export const metadata: Metadata = {
   },
 };
 
+// Inline script: runs synchronously before first paint to prevent theme flash.
+// Reads localStorage preference, falls back to system prefers-color-scheme,
+// defaults to dark if neither is set. Sets data-theme on <html>.
+const themeInitScript = `(function(){
+  try {
+    var stored = localStorage.getItem('ps-theme');
+    if (stored === 'light' || stored === 'dark') {
+      document.documentElement.setAttribute('data-theme', stored);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+    // Default: no attribute = dark mode (CSS :root = dark)
+  } catch(e) {}
+})();`;
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
+        {/* Anti-flash script: must be first in <head>, runs sync before paint */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <link
           rel="preconnect"
           href="https://fonts.googleapis.com"
@@ -58,7 +75,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <Header />
         <main>{children}</main>
         <Footer />

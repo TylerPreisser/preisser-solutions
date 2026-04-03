@@ -63,6 +63,67 @@
   /* Easing */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* ── Themeable tokens — dark mode (default) ────────────────
+     These drive all sections that switch with the theme.
+     Sections that are always dark (hero, footer, why-us,
+     case-studies, CTA) use --color-dark/* directly.        */
+  --theme-bg-primary:   #0A1628;
+  --theme-bg-secondary: #0F1D30;
+  --theme-bg-surface:   #F6F9FC;
+  --theme-bg-card:      rgba(255,255,255,0.05);
+  --theme-text-primary:   #FFFFFF;
+  --theme-text-secondary: #94A3B8;
+  --theme-text-muted:     #64748B;
+  --theme-border:         rgba(255, 255, 255, 0.08);
+  --theme-nav-bg:         rgba(10, 22, 40, 0.95);
+  --theme-nav-shadow:
+    0 30px 60px -50px rgba(0, 0, 0, 0.1),
+    0 30px 60px -10px rgba(50, 50, 93, 0.25);
+  --theme-section-switchable: #0A1628;
+  --theme-section-alt:        #0F1D30;
+  --theme-card-bg:       rgba(255, 255, 255, 0.03);
+  --theme-card-border:   rgba(255, 255, 255, 0.08);
+  --theme-result-card-bg: #0F1D30;
+  --theme-result-card-border: rgba(255,255,255,0.08);
+  --theme-result-card-industry-bg: rgba(255,255,255,0.06);
+  --theme-dialog-bg:     #0F1D30;
+  --theme-dialog-stat-bg: rgba(255,255,255,0.04);
+  --theme-dialog-stat-border: rgba(255,255,255,0.07);
+  --theme-dialog-overlay: rgba(10, 22, 40, 0.85);
+  --theme-carousel-btn-bg: rgba(255,255,255,0.08);
+  --theme-carousel-btn-border: rgba(255,255,255,0.12);
+  --theme-carousel-btn-color: rgba(255,255,255,0.8);
+}
+
+/* ── Light mode overrides ──────────────────────────────────── */
+[data-theme="light"] {
+  --theme-bg-primary:   #FFFFFF;
+  --theme-bg-secondary: #F6F9FC;
+  --theme-bg-surface:   #0A1628;
+  --theme-bg-card:      #FFFFFF;
+  --theme-text-primary:   #0A1628;
+  --theme-text-secondary: #475569;
+  --theme-text-muted:     #94A3B8;
+  --theme-border:         #E2E8F0;
+  --theme-nav-bg:         rgba(255, 255, 255, 0.95);
+  --theme-nav-shadow:
+    0 2px 24px rgba(0, 0, 0, 0.06),
+    0 1px 4px rgba(0, 0, 0, 0.04);
+  --theme-section-switchable: #FFFFFF;
+  --theme-section-alt:        #F6F9FC;
+  --theme-card-bg:       #FFFFFF;
+  --theme-card-border:   #E2E8F0;
+  --theme-result-card-bg: #FFFFFF;
+  --theme-result-card-border: #E2E8F0;
+  --theme-result-card-industry-bg: #F6F9FC;
+  --theme-dialog-bg:     #FFFFFF;
+  --theme-dialog-stat-bg: #F6F9FC;
+  --theme-dialog-stat-border: rgba(0, 0, 0, 0.07);
+  --theme-dialog-overlay: rgba(229, 237, 245, 0.9);
+  --theme-carousel-btn-bg: #FFFFFF;
+  --theme-carousel-btn-border: rgba(0,0,0,0.12);
+  --theme-carousel-btn-color: #0A1628;
 }
 
 /* ── Reset & Base ──────────────────────────────────────────── */
@@ -279,12 +340,13 @@ button {
   position: absolute;
   inset: 6px 12px;
   border-radius: 12px;
-  background-color: rgba(10, 22, 40, 0.95);
-  box-shadow:
-    0 30px 60px -50px rgba(0, 0, 0, 0.1),
-    0 30px 60px -10px rgba(50, 50, 93, 0.25);
+  background-color: var(--theme-nav-bg);
+  box-shadow: var(--theme-nav-shadow);
   opacity: 0;
-  transition: opacity 240ms cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  transition:
+    opacity 240ms cubic-bezier(0.45, 0.05, 0.55, 0.95),
+    background-color 300ms ease,
+    box-shadow 300ms ease;
   z-index: -1;
   pointer-events: none;
 }
@@ -308,10 +370,10 @@ button {
 .ps-logo-text {
   font-size: 0.9375rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--theme-text-primary);
   letter-spacing: -0.01em;
   white-space: nowrap;
-  transition: opacity 200ms ease;
+  transition: opacity 200ms ease, color 300ms ease;
 }
 
 .ps-logo-text:hover {
@@ -378,6 +440,61 @@ button {
   transform: translateX(3px);
 }
 
+/* Theme toggle button — 36px circle, before CTA */
+.ps-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--theme-border);
+  background: var(--theme-bg-card);
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease,
+    transform 200ms ease;
+}
+
+.ps-theme-toggle:hover {
+  background: var(--theme-nav-bg);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: scale(1.08);
+}
+
+.ps-theme-toggle:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Mobile theme toggle — row inside mobile nav */
+.ps-mobile-theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 150ms ease, background-color 150ms ease;
+  text-align: left;
+}
+
+.ps-mobile-theme-toggle:hover {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
 /* Hamburger */
 .ps-hamburger {
   display: none;
@@ -399,9 +516,9 @@ button {
   display: block;
   width: 22px;
   height: 2px;
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: var(--theme-text-primary);
   border-radius: 2px;
-  transition: transform 250ms ease, opacity 250ms ease;
+  transition: transform 250ms ease, opacity 250ms ease, background-color 300ms ease;
 }
 
 .ps-sr-only {
@@ -623,10 +740,11 @@ button {
 
 /* ── Value Strip ───────────────────────────────────────────── */
 .ps-value-strip {
-  background-color: var(--color-white);
-  border-top: 1px solid var(--color-border-light);
-  border-bottom: 1px solid var(--color-border-light);
+  background-color: var(--theme-section-switchable);
+  border-top: 1px solid var(--theme-border);
+  border-bottom: 1px solid var(--theme-border);
   padding: 28px 0;
+  transition: background-color 300ms ease, border-color 300ms ease;
 }
 
 .ps-value-strip-inner {
@@ -657,15 +775,17 @@ button {
 .ps-value-text {
   font-size: 0.9375rem;
   font-weight: 500;
-  color: var(--color-text-light-primary);
+  color: var(--theme-text-primary);
   line-height: 1.45;
+  transition: color 300ms ease;
 }
 
 .ps-value-text strong {
   display: block;
   font-weight: 700;
-  color: var(--color-text-light-primary);
+  color: var(--theme-text-primary);
   margin-bottom: 2px;
+  transition: color 300ms ease;
 }
 
 @media (max-width: 900px) {
@@ -682,8 +802,9 @@ button {
 
 /* ── Problem Section ───────────────────────────────────────── */
 .ps-problem {
-  background-color: var(--color-white);
+  background-color: var(--theme-section-switchable);
   padding: var(--section-py-desktop) 0;
+  transition: background-color 300ms ease;
 }
 
 .ps-problem-inner {
@@ -711,12 +832,14 @@ button {
 .ps-problem-body p {
   font-size: 1.0625rem;
   line-height: 1.75;
-  color: var(--color-text-light-secondary);
+  color: var(--theme-text-secondary);
+  transition: color 300ms ease;
 }
 
 .ps-problem-body p strong {
-  color: var(--color-text-light-primary);
+  color: var(--theme-text-primary);
   font-weight: 600;
+  transition: color 300ms ease;
 }
 
 .ps-problem-visual {
@@ -802,8 +925,9 @@ button {
 
 /* ── Service Pillars ───────────────────────────────────────── */
 .ps-services {
-  background-color: var(--color-light);
+  background-color: var(--theme-section-alt);
   padding: var(--section-py-desktop) 0;
+  transition: background-color 300ms ease;
 }
 
 @media (max-width: 768px) {

@@ -56,262 +56,164 @@
   z-index: 1;
 }
 
-/* Phone portion (right, larger overlap and more realistic pose) */
-.ps-wb-phone {
+/* Phone container — positioned right of browser */
+.ps-phone {
   flex: 0 0 auto;
-  width: 134px;
-  margin-left: -22px;
+  width: 120px;
+  margin-left: -18px;
   z-index: 2;
-  transform: rotate(5.5deg) translateY(8px);
-  filter: drop-shadow(0 22px 36px rgba(0,0,0,0.48));
+  transform: rotate(5deg);
+  transition: transform 300ms ease;
 }
 
 /* Hover: lift phone slightly */
-.ps-bento-card:hover .ps-wb-phone {
-  transform: rotate(5.5deg) translateY(2px);
-  transition: transform 300ms var(--ease-standard);
+.ps-bento-card:hover .ps-phone {
+  transform: rotate(5deg) translateY(-6px);
 }
 
-/* Real iPhone frame */
-.ps-iphone-frame {
+/* Phone body — the actual device frame */
+.ps-phone-body {
   width: 100%;
-  /* 375:812 ratio ≈ 0.462, so height = width / 0.462 */
-  aspect-ratio: 375 / 812;
-  background:
-    linear-gradient(155deg, #2a2d33 0%, #15181d 20%, #050608 52%, #22262c 100%);
-  border-radius: 42px;
-  border: 2px solid #1a1d22;
-  box-shadow:
-    0 28px 70px rgba(0,0,0,0.7),
-    0 6px 16px rgba(0,0,0,0.45);
+  aspect-ratio: 9 / 19.5;
+  background: #1a1d22;
+  border-radius: 28px;
+  padding: 8px 4px 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px 4px 10px;
-  overflow: hidden;
-  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
 }
 
-/* Removed phone pill glare and inner border line */
-
-/* Dynamic island */
-.ps-iphone-island {
-  width: 34%;
-  height: 12px;
+/* Dynamic island — simple black pill */
+.ps-phone-island {
+  width: 30%;
+  height: 10px;
   background: #000;
   border-radius: 20px;
-  flex-shrink: 0;
-  margin-bottom: 7px;
-  z-index: 2;
-  box-shadow: none;
+  margin-bottom: 4px;
 }
 
-/* Screen fills remaining space */
-.ps-iphone-screen {
+/* Screen — dark area filling the rest */
+.ps-phone-screen {
   flex: 1;
   width: 100%;
-  background: linear-gradient(180deg, #09111f 0%, #050913 100%);
-  border-radius: 28px;
+  background: #0a0e17;
+  border-radius: 22px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(255,255,255,0.04);
+  padding: 8px 6px 4px;
 }
 
-/* Status bar */
-.ps-iphone-status {
+/* Header bar */
+.ps-phone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.ps-phone-header-bar {
+  width: 40%;
+  height: 4px;
+  background: #0D95E8;
+  border-radius: 2px;
+}
+
+.ps-phone-header-dot {
+  width: 8px;
+  height: 8px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+}
+
+/* Content blocks */
+.ps-phone-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ps-phone-content-block {
+  height: 6px;
+  border-radius: 3px;
+}
+
+.ps-phone-block--blue {
+  background: #0D95E8;
+  width: 70%;
+}
+
+.ps-phone-block--gray {
+  background: rgba(255,255,255,0.12);
+  width: 90%;
+}
+
+/* List items */
+.ps-phone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.ps-phone-list-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 5px 9px 4px;
+  gap: 5px;
+  padding: 5px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 6px;
+}
+
+.ps-phone-list-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
   flex-shrink: 0;
 }
 
-.ps-iphone-time {
-  font-size: 6.5px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.85);
-  font-family: 'Fira Code', monospace;
-  letter-spacing: -0.02em;
-}
-
-.ps-iphone-status-icons {
+.ps-phone-list-lines {
+  flex: 1;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 3px;
 }
 
-.ps-iphone-signal {
-  width: 8px;
-  height: 5px;
-  border-radius: 1px;
-  background: linear-gradient(to right,
-    rgba(255,255,255,0.8) 25%,
-    rgba(255,255,255,0.5) 50%,
-    rgba(255,255,255,0.3) 75%,
-    rgba(255,255,255,0.15) 100%
-  );
-}
-
-.ps-iphone-battery {
-  width: 9px;
-  height: 5px;
-  border: 1px solid rgba(255,255,255,0.4);
-  border-radius: 1.5px;
-  position: relative;
-}
-
-.ps-iphone-battery::after {
-  content: '';
-  position: absolute;
-  left: 1px;
-  top: 1px;
-  bottom: 1px;
-  width: 55%;
-  background: rgba(255,255,255,0.7);
-  border-radius: 0.5px;
-}
-
-/* App header */
-.ps-iphone-app-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(180deg, #10213a 0%, #0d1a2d 100%);
-  padding: 6px 8px;
-  flex-shrink: 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.ps-iphone-app-logo {
-  width: 30px;
-  height: 4px;
-  background: rgba(13,149,232,0.85);
-  border-radius: 2px;
-  box-shadow: 0 0 12px rgba(13,149,232,0.35);
-}
-
-.ps-iphone-app-avatar {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.14);
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-/* Hero block inside phone */
-.ps-iphone-hero-block {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 7px 7px 8px;
-  background: linear-gradient(160deg, #0A1628 0%, #0f2040 100%);
-  flex-shrink: 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.ps-iphone-line {
-  border-radius: 2px;
-  background: rgba(255,255,255,0.12);
-}
-
-.ps-iphone-line--title {
-  height: 5px;
-  width: 82%;
-  background: rgba(255,255,255,0.8);
-}
-
-.ps-iphone-line--sub {
+.ps-phone-list-lines span:first-child {
+  display: block;
   height: 3px;
-  width: 60%;
-}
-
-.ps-iphone-line--sm {
-  height: 3px;
-  width: 82%;
-  background: rgba(255,255,255,0.45);
-}
-
-.ps-iphone-line--xs {
-  height: 2.5px;
-  width: 58%;
   background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  width: 80%;
 }
 
-.ps-iphone-cta {
-  margin-top: 3px;
-  height: 8px;
-  width: 46%;
-  border-radius: 3px;
-  background: rgba(13,149,232,0.8);
-}
-
-/* Cards */
-.ps-iphone-cards {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 7px 6px;
-  overflow: hidden;
-}
-
-.ps-iphone-card {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
-  border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 5px;
-  padding: 5px 6px;
-  flex-shrink: 0;
-}
-
-.ps-iphone-card-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-  flex-shrink: 0;
-  box-shadow: 0 0 10px currentColor;
-}
-
-.ps-iphone-card-body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.ps-phone-list-lines span:last-child {
+  display: block;
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  width: 55%;
 }
 
 /* Tab bar */
-.ps-iphone-tabbar {
+.ps-phone-tabs {
   display: flex;
-  align-items: center;
   justify-content: space-around;
-  background: rgba(15,29,48,0.96);
-  border-top: 1px solid rgba(255,255,255,0.07);
-  padding: 6px 5px 4px;
-  flex-shrink: 0;
+  padding: 5px 0 2px;
+  margin-top: auto;
 }
 
-.ps-iphone-tab {
-  width: 13px;
-  height: 13px;
-  border-radius: 3px;
-  background: rgba(255,255,255,0.14);
+.ps-phone-tab {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
 }
 
-.ps-iphone-tab--active {
-  background: rgba(13,149,232,0.75);
-}
-
-/* Home indicator */
-.ps-iphone-home-indicator {
-  width: 32%;
-  height: 3px;
-  background: rgba(255,255,255,0.25);
-  border-radius: 2px;
-  margin: 4px auto 2px;
-  flex-shrink: 0;
+.ps-phone-tab--active {
+  background: #0D95E8;
 }
 
 /* Browser chrome */

@@ -71,66 +71,45 @@ export function WebsiteVisual() {
         </div>
       </div>
 
-      {/* RIGHT: iPhone mockup — narrow, tall, proper proportions */}
-      <div className="ps-wb-phone">
-        <div className="ps-iphone-frame">
+      {/* RIGHT: iPhone 15 Pro mockup — clean rebuild, no artifacts */}
+      <div className="ps-phone">
+        <div className="ps-phone-body">
           {/* Dynamic island */}
-          <div className="ps-iphone-island" />
-          {/* Screen */}
-          <div className="ps-iphone-screen">
-            {/* Status bar */}
-            <div className="ps-iphone-status">
-              <span className="ps-iphone-time">9:41</span>
-              <div className="ps-iphone-status-icons">
-                <div className="ps-iphone-signal" />
-                <div className="ps-iphone-battery" />
-              </div>
+          <div className="ps-phone-island" />
+          {/* Screen content */}
+          <div className="ps-phone-screen">
+            {/* Header */}
+            <div className="ps-phone-header">
+              <div className="ps-phone-header-bar" />
+              <div className="ps-phone-header-dot" />
             </div>
-            {/* App header */}
-            <div className="ps-iphone-app-header">
-              <div className="ps-iphone-app-logo" />
-              <div className="ps-iphone-app-avatar" />
-            </div>
-            {/* Hero block */}
-            <div className="ps-iphone-hero-block">
-              <div className="ps-iphone-line ps-iphone-line--title" />
-              <div className="ps-iphone-line ps-iphone-line--sub" />
-              <div className="ps-iphone-cta" />
-            </div>
-            {/* Cards */}
-            <div className="ps-iphone-cards">
-              <div className="ps-iphone-card">
-                <div className="ps-iphone-card-dot" style={{ background: "rgba(13,149,232,0.85)" }} />
-                <div className="ps-iphone-card-body">
-                  <div className="ps-iphone-line ps-iphone-line--sm" />
-                  <div className="ps-iphone-line ps-iphone-line--xs" />
+            {/* Content */}
+            <div className="ps-phone-content">
+              <div className="ps-phone-content-block ps-phone-block--blue" />
+              <div className="ps-phone-content-block ps-phone-block--gray" />
+              <div className="ps-phone-content-block ps-phone-block--blue" />
+              <div className="ps-phone-list">
+                <div className="ps-phone-list-item">
+                  <div className="ps-phone-list-dot" style={{ background: "#0D95E8" }} />
+                  <div className="ps-phone-list-lines"><span /><span /></div>
                 </div>
-              </div>
-              <div className="ps-iphone-card">
-                <div className="ps-iphone-card-dot" style={{ background: "rgba(139,92,246,0.85)" }} />
-                <div className="ps-iphone-card-body">
-                  <div className="ps-iphone-line ps-iphone-line--sm" />
-                  <div className="ps-iphone-line ps-iphone-line--xs" />
+                <div className="ps-phone-list-item">
+                  <div className="ps-phone-list-dot" style={{ background: "#8B5CF6" }} />
+                  <div className="ps-phone-list-lines"><span /><span /></div>
                 </div>
-              </div>
-              <div className="ps-iphone-card">
-                <div className="ps-iphone-card-dot" style={{ background: "rgba(0,212,170,0.85)" }} />
-                <div className="ps-iphone-card-body">
-                  <div className="ps-iphone-line ps-iphone-line--sm" />
-                  <div className="ps-iphone-line ps-iphone-line--xs" />
+                <div className="ps-phone-list-item">
+                  <div className="ps-phone-list-dot" style={{ background: "#00D4AA" }} />
+                  <div className="ps-phone-list-lines"><span /><span /></div>
                 </div>
               </div>
             </div>
-            {/* Tab bar */}
-            <div className="ps-iphone-tabbar">
-              <div className="ps-iphone-tab ps-iphone-tab--active" />
-              <div className="ps-iphone-tab" />
-              <div className="ps-iphone-tab" />
-              <div className="ps-iphone-tab" />
-              <div className="ps-iphone-tab" />
+            {/* Bottom tab bar */}
+            <div className="ps-phone-tabs">
+              <div className="ps-phone-tab ps-phone-tab--active" />
+              <div className="ps-phone-tab" />
+              <div className="ps-phone-tab" />
+              <div className="ps-phone-tab" />
             </div>
-            {/* Home indicator */}
-            <div className="ps-iphone-home-indicator" />
           </div>
         </div>
       </div>

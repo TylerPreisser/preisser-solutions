@@ -802,7 +802,12 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
             ))}
           </div>
 
-          {/* Child 3 — Pain Points */}
+          {/* Child 3 — Service Tiles Carousel */}
+          <div className="ps-dialog-section ps-dialog-reveal">
+            <ServiceCarousel tiles={service.serviceTiles} />
+          </div>
+
+          {/* Child 4 — Pain Points (moved below What We Deliver) */}
           <div className="ps-dialog-section ps-dialog-reveal">
             <h4 className="ps-dialog-section-heading">Sound familiar?</h4>
             <div className="ps-dialog-pains">
@@ -812,11 +817,6 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Child 4 — Service Tiles Carousel */}
-          <div className="ps-dialog-section ps-dialog-reveal">
-            <ServiceCarousel tiles={service.serviceTiles} />
           </div>
 
           {/* Child 5 — Differentiators */}

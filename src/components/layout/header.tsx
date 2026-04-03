@@ -4,9 +4,50 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
+// Sun icon — shown in dark mode (click to switch to light)
+function SunIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+    </svg>
+  );
+}
+
+// Moon icon — shown in light mode (click to switch to dark)
+function MoonIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  );
+}
+
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
+  // null = not yet read from DOM (avoids hydration mismatch)
+  const [theme, setTheme] = useState<"dark" | "light" | null>(null);
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 40);
@@ -17,6 +58,21 @@ export function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
+
+  // Read the theme that the anti-flash script already set on <html>
+  useEffect(() => {
+    const current = document.documentElement.getAttribute("data-theme");
+    setTheme(current === "light" ? "light" : "dark");
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    const next = theme === "light" ? "dark" : "light";
+    setTheme(next);
+    document.documentElement.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("ps-theme", next);
+    } catch (_) {}
+  }, [theme]);
 
   const handleLinkClick = () => setNavOpen(false);
 
@@ -46,13 +102,33 @@ export function Header() {
             Preisser Solutions
           </Link>
 
-          {/* Desktop nav — minimal Stripe-style: contact link + CTA only */}
+          {/* Desktop nav — minimal Stripe-style: theme toggle + CTA */}
           <nav
             className="ps-primary-nav"
             id="primary-navigation"
             aria-label="Primary navigation"
           >
             <div className="ps-header-links">
+              {/* Theme toggle — only render after mount to avoid hydration mismatch */}
+              {theme !== null && (
+                <button
+                  className="ps-theme-toggle"
+                  onClick={toggleTheme}
+                  aria-label={
+                    theme === "dark"
+                      ? "Switch to light mode"
+                      : "Switch to dark mode"
+                  }
+                  title={
+                    theme === "dark"
+                      ? "Switch to light mode"
+                      : "Switch to dark mode"
+                  }
+                >
+                  {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+                </button>
+              )}
+
               <Link
                 href="/contact"
                 className="ps-header-cta"
@@ -103,6 +179,19 @@ export function Header() {
         aria-label="Mobile navigation"
         aria-hidden={!navOpen}
       >
+        {/* Mobile theme toggle */}
+        {theme !== null && (
+          <button
+            className="ps-mobile-theme-toggle"
+            onClick={toggleTheme}
+            aria-label={
+              theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+            }
+          >
+            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+            <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
+          </button>
+        )}
         <Link
           href="/contact"
           className="ps-mobile-nav-cta"
