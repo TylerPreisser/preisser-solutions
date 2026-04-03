@@ -4114,7 +4114,7 @@ button {
 
 /* ── Case Studies ──────────────────────────────────────────── */
 .ps-case-studies {
-  background-color: var(--color-white);
+  background-color: var(--color-dark);
   padding: var(--section-py-desktop) 0;
 }
 

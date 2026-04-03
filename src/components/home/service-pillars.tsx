@@ -819,20 +819,7 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
             </div>
           </div>
 
-          {/* Child 5 — Differentiators */}
-          <div className="ps-dialog-section ps-dialog-reveal">
-            <h4 className="ps-dialog-section-heading">What Makes Us Different</h4>
-            <div className="ps-dialog-diffs">
-              {service.differentiators.map((diff) => (
-                <div key={diff.lead} className="ps-dialog-diff">
-                  <span className="ps-dialog-diff__lead">{diff.lead}</span>
-                  {" "}{diff.body}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Child 6 — CTA */}
+          {/* CTA */}
           <div className="ps-dialog-cta ps-dialog-reveal">
             <a href="/contact" className="ps-dialog-cta-btn">
               This sound like you? Let&rsquo;s talk.
