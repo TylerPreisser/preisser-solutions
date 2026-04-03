@@ -117,9 +117,10 @@ export function Header() {
               src="/images/ps-logo.webp"
               alt="Preisser Solutions"
               className="ps-logo-img"
-              width={140}
-              height={40}
+              width={36}
+              height={36}
               priority
+              unoptimized
             />
           </Link>
 
