@@ -2412,20 +2412,13 @@ button {
   z-index: 1001;
   transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
   cursor: default;
-  /* Custom scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.12) transparent;
+  /* Hide scrollbar entirely */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .ps-dialog-panel::-webkit-scrollbar {
-  width: 4px;
-}
-.ps-dialog-panel::-webkit-scrollbar-track {
-  background: transparent;
-}
-.ps-dialog-panel::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.12);
-  border-radius: 2px;
+  display: none;
 }
 
 .ps-dialog-panel.ps-dialog-panel--open {
@@ -2468,32 +2461,9 @@ button {
   z-index: 1;
 }
 
-/* Close button — pinned inside the top-left of the panel */
+/* Close button — hidden, click overlay to dismiss */
 .ps-dialog-close-btn {
-  position: absolute;
-  top: 18px;
-  left: 18px;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #ffffff;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  cursor: pointer;
-  transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
-}
-
-.ps-dialog-close-btn:hover {
-  background: rgba(255, 255, 255, 0.22);
-  border-color: rgba(255, 255, 255, 0.34);
-  transform: translateY(-1px);
+  display: none;
 }
 
 /* Content area below the visual */
