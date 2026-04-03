@@ -800,6 +800,18 @@ button {
 
 [data-theme="light"] .ps-bento-card__title {
   color: #0A1628;
+  text-shadow: none;
+}
+
+[data-theme="light"] .ps-bento-card__expand {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #0A1628;
+}
+
+[data-theme="light"] .ps-bento-card:hover .ps-bento-card__expand {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.15);
 }
 
 [data-theme="light"] .ps-bento-card__text {

@@ -1132,18 +1132,55 @@
   background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(241,245,249,1));
 }
 
-/* Phone */
+/* Phone — keep frame dark (real phones have dark bezels), make screen white */
 [data-theme="light"] .ps-phone-body {
-  background: #CBD5E1;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-}
-
-[data-theme="light"] .ps-phone-screen {
-  background: #F8FAFC;
+  background: #1E293B;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
 }
 
 [data-theme="light"] .ps-phone-island {
+  background: #0F172A;
+}
+
+[data-theme="light"] .ps-phone-screen {
+  background: #FFFFFF;
+}
+
+[data-theme="light"] .ps-phone-header-bar {
+  background: #0D95E8;
+}
+
+[data-theme="light"] .ps-phone-header-dot {
+  background: #E2E8F0;
+}
+
+[data-theme="light"] .ps-phone-content-block.ps-phone-block--blue {
+  background: #0D95E8;
+}
+
+[data-theme="light"] .ps-phone-content-block.ps-phone-block--gray {
+  background: #E2E8F0;
+}
+
+[data-theme="light"] .ps-phone-list-item {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+}
+
+[data-theme="light"] .ps-phone-list-lines span:first-child {
   background: #94A3B8;
+}
+
+[data-theme="light"] .ps-phone-list-lines span:last-child {
+  background: #CBD5E1;
+}
+
+[data-theme="light"] .ps-phone-tab {
+  background: #E2E8F0;
+}
+
+[data-theme="light"] .ps-phone-tab--active {
+  background: #0D95E8;
 }
 
 /* iPhone frame light mode */
@@ -1281,6 +1318,43 @@
 [data-theme="light"] .ps-fix-solution-card {
   background: #F0FDF4;
   border-color: #BBF7D0;
+}
+
+[data-theme="light"] .ps-fix-column-label {
+  color: #475569;
+}
+
+[data-theme="light"] .ps-fix-problem-title {
+  color: #1E293B;
+}
+
+[data-theme="light"] .ps-fix-problem-badge {
+  color: #DC2626;
+  background: rgba(220,38,38,0.1);
+}
+
+[data-theme="light"] .ps-fix-problem-lines span {
+  background: #CBD5E1;
+}
+
+[data-theme="light"] .ps-fix-solution-title {
+  color: #1E293B;
+}
+
+[data-theme="light"] .ps-fix-solution-metric {
+  color: #059669;
+}
+
+[data-theme="light"] .ps-fix-solution-bars span {
+  background: #0D95E8;
+}
+
+[data-theme="light"] .ps-fix-progress-label {
+  color: #475569;
+}
+
+[data-theme="light"] .ps-fix-progress-value {
+  color: #059669;
 }
 
 /* Revenue growth engine */
