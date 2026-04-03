@@ -142,11 +142,12 @@ body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 1.125rem;
   line-height: 1.7;
-  color: var(--color-text-light-primary);
-  background-color: var(--color-white);
+  color: var(--theme-text-primary);
+  background-color: var(--theme-section-switchable);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  transition: color 300ms ease, background-color 300ms ease;
 }
 
 body.nav-open {
@@ -512,7 +513,7 @@ button {
 }
 
 .ps-hamburger:hover {
-  background-color: rgba(255, 255, 255, 0.07);
+  background-color: var(--theme-bg-card);
 }
 
 .ps-hamburger-bar {
@@ -2533,11 +2534,11 @@ button {
   max-width: 900px;
   max-height: 90vh;
   overflow-y: auto;
-  background: #ffffff;
+  background: var(--theme-dialog-bg);
   border-radius: 20px 20px 0 0;
   box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.15), 0 -1px 0 rgba(0, 0, 0, 0.05);
   z-index: 1001;
-  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms ease;
   cursor: default;
   /* Hide scrollbar entirely */
   scrollbar-width: none;
@@ -2568,15 +2569,16 @@ button {
   right: 0;
   bottom: 0;
   height: 120px;
+  /* Uses a CSS variable trick: we layer the fade atop the dark visual.
+     In dark mode it fades to the dark dialog bg; in light mode to white. */
   background: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.15) 35%,
-    rgba(255, 255, 255, 0.72) 72%,
-    #ffffff 100%
+    rgba(0, 0, 0, 0) 0%,
+    var(--theme-dialog-bg) 100%
   );
   pointer-events: none;
   z-index: 2;
+  transition: background 300ms ease;
 }
 
 /* Scale the visual component to fill the dialog visual area */
@@ -2599,7 +2601,8 @@ button {
   z-index: 3;
   padding: 20px 40px 48px;
   margin-top: -18px;
-  background: #ffffff;
+  background: var(--theme-dialog-bg);
+  transition: background-color 300ms ease;
 }
 
 /* Staggered reveal: each child starts hidden and fades/rises in */
@@ -2646,18 +2649,20 @@ button {
 .ps-dialog-title {
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
-  color: var(--color-text-light-primary);
+  color: var(--theme-text-primary);
   letter-spacing: -0.03em;
   line-height: 1.15;
   margin-bottom: 16px;
+  transition: color 300ms ease;
 }
 
 /* Description paragraph */
 .ps-dialog-desc {
   font-size: 1.0625rem;
   line-height: 1.7;
-  color: var(--color-text-light-secondary);
+  color: var(--theme-text-secondary);
   margin-bottom: 24px;
+  transition: color 300ms ease;
 }
 
 /* Bullet list of inclusions */
@@ -2675,8 +2680,9 @@ button {
   align-items: center;
   gap: 10px;
   font-size: 0.9375rem;
-  color: var(--color-text-light-secondary);
+  color: var(--theme-text-secondary);
   line-height: 1.4;
+  transition: color 300ms ease;
 }
 
 .ps-dialog-bullet::before {
@@ -2722,7 +2728,8 @@ button {
   margin-bottom: 36px;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.07);
+  border: 1px solid var(--theme-dialog-stat-border);
+  transition: border-color 300ms ease;
 }
 
 .ps-dialog-stat {
@@ -2732,8 +2739,9 @@ button {
   align-items: center;
   text-align: center;
   padding: 20px 16px;
-  background: #f8fafc;
-  border-right: 1px solid rgba(0, 0, 0, 0.07);
+  background: var(--theme-dialog-stat-bg);
+  border-right: 1px solid var(--theme-dialog-stat-border);
+  transition: background-color 300ms ease, border-color 300ms ease;
 }
 
 .ps-dialog-stat:last-child {
@@ -2754,8 +2762,9 @@ button {
   display: block;
   font-size: 0.75rem;
   line-height: 1.4;
-  color: var(--color-text-light-secondary);
+  color: var(--theme-text-secondary);
   max-width: 140px;
+  transition: color 300ms ease;
 }
 
 /* Section wrapper with heading */
@@ -2768,8 +2777,9 @@ button {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--theme-text-muted);
   margin-bottom: 14px;
+  transition: color 300ms ease;
 }
 
 /* Pain Points grid */
@@ -2806,8 +2816,9 @@ button {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-text-light-secondary);
+  color: var(--theme-text-secondary);
   margin: 0;
+  transition: color 300ms ease;
 }
 
 .ps-carousel-nav {
@@ -2823,9 +2834,9 @@ button {
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  border: 1.5px solid rgba(0, 0, 0, 0.12);
-  background: #ffffff;
-  color: var(--color-text-light-primary);
+  border: 1.5px solid var(--theme-carousel-btn-border);
+  background: var(--theme-carousel-btn-bg);
+  color: var(--theme-carousel-btn-color);
   cursor: pointer;
   flex-shrink: 0;
   transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
@@ -2920,21 +2931,24 @@ button {
 .ps-dialog-diff {
   font-size: 0.9375rem;
   line-height: 1.6;
-  color: var(--color-text-light-secondary);
+  color: var(--theme-text-secondary);
   padding-left: 14px;
   border-left: 3px solid var(--color-primary);
+  transition: color 300ms ease;
 }
 
 .ps-dialog-diff__lead {
   font-weight: 700;
-  color: var(--color-text-light-primary);
+  color: var(--theme-text-primary);
+  transition: color 300ms ease;
 }
 
 /* CTA */
 .ps-dialog-cta {
   margin-top: 8px;
   padding-top: 32px;
-  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  border-top: 1px solid var(--theme-dialog-stat-border);
+  transition: border-color 300ms ease;
 }
 
 .ps-dialog-cta-btn {
@@ -4389,22 +4403,25 @@ button {
 
 /* Section backgrounds */
 .ps-section-light {
-  background-color: var(--color-light);
+  background-color: var(--theme-section-alt);
   padding: var(--section-py-desktop) 0;
+  transition: background-color 300ms ease;
 }
 
 .ps-section-white {
-  background-color: var(--color-white);
+  background-color: var(--theme-section-switchable);
   padding: var(--section-py-desktop) 0;
+  transition: background-color 300ms ease;
 }
 
 /* Card base */
 .ps-card {
-  background-color: var(--color-white);
+  background-color: var(--theme-result-card-bg);
   border-radius: var(--radius-card);
   padding: 32px;
   box-shadow: var(--shadow-md);
-  border: 1px solid var(--color-border-light);
+  border: 1px solid var(--theme-result-card-border);
+  transition: background-color 300ms ease, border-color 300ms ease;
 }
 
 /* Service icon in service card (inner pages) */
