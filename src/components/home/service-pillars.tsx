@@ -495,6 +495,113 @@ function CloseIcon() {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   CAROUSEL GRADIENT PALETTE
+   Each index maps to a unique gradient so the carousel is
+   visually rich regardless of how many tiles a service has.
+   ───────────────────────────────────────────────────────────── */
+
+const CARD_GRADIENTS = [
+  "linear-gradient(135deg, #0D95E8, #635BFF)",
+  "linear-gradient(135deg, #635BFF, #a855f7)",
+  "linear-gradient(135deg, #00D4AA, #0D95E8)",
+  "linear-gradient(135deg, #F59E0B, #EF4444)",
+  "linear-gradient(135deg, #0D95E8, #00D4AA)",
+  "linear-gradient(135deg, #a855f7, #EF4444)",
+  "linear-gradient(135deg, #EF4444, #F59E0B)",
+  "linear-gradient(135deg, #00D4AA, #635BFF)",
+];
+
+/* ─────────────────────────────────────────────────────────────
+   SERVICE CAROUSEL
+   Horizontal scroll snap carousel with arrow navigation.
+   ───────────────────────────────────────────────────────────── */
+
+interface ServiceCarouselProps {
+  tiles: ServiceTile[];
+}
+
+function ChevronLeftIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M10 12L6 8L10 4"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ChevronRightIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M6 4L10 8L6 12"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ServiceCarousel({ tiles }: ServiceCarouselProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  function scrollLeft() {
+    trackRef.current?.scrollBy({ left: -296, behavior: "smooth" });
+  }
+
+  function scrollRight() {
+    trackRef.current?.scrollBy({ left: 296, behavior: "smooth" });
+  }
+
+  return (
+    <div className="ps-carousel">
+      <div className="ps-carousel-header">
+        <h4>What We Deliver</h4>
+        <div className="ps-carousel-nav">
+          <button
+            className="ps-carousel-btn"
+            onClick={scrollLeft}
+            aria-label="Scroll left"
+            type="button"
+          >
+            <ChevronLeftIcon />
+          </button>
+          <button
+            className="ps-carousel-btn"
+            onClick={scrollRight}
+            aria-label="Scroll right"
+            type="button"
+          >
+            <ChevronRightIcon />
+          </button>
+        </div>
+      </div>
+
+      <div className="ps-carousel-track" ref={trackRef}>
+        {tiles.map((tile, i) => (
+          <div key={tile.title} className="ps-carousel-card">
+            <div
+              className="ps-carousel-card-visual"
+              style={{ background: CARD_GRADIENTS[i % CARD_GRADIENTS.length] }}
+            />
+            <div className="ps-carousel-card-overlay">
+              <p className="ps-carousel-card-overlay-title">{tile.title}</p>
+              <p className="ps-carousel-card-overlay-desc">{tile.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
    BENTO CARD
    Exact Stripe nesting: expand icon (top-right), title (bottom-left),
    gradient border, clip-path breathe inner, visual content.
@@ -707,17 +814,9 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
             </div>
           </div>
 
-          {/* Child 4 — Service Tiles */}
+          {/* Child 4 — Service Tiles Carousel */}
           <div className="ps-dialog-section ps-dialog-reveal">
-            <h4 className="ps-dialog-section-heading">What We Deliver</h4>
-            <div className="ps-dialog-services">
-              {service.serviceTiles.map((tile) => (
-                <div key={tile.title} className="ps-dialog-service">
-                  <p className="ps-dialog-service__title">{tile.title}</p>
-                  <p className="ps-dialog-service__desc">{tile.description}</p>
-                </div>
-              ))}
-            </div>
+            <ServiceCarousel tiles={service.serviceTiles} />
           </div>
 
           {/* Child 5 — Differentiators */}

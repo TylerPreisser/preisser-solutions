@@ -2662,32 +2662,124 @@ button {
   font-style: italic;
 }
 
-/* Service Tiles grid */
-.ps-dialog-services {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+/* ── Service Carousel (replaces 2-col grid) ─────────────────── */
+.ps-carousel {
+  width: 100%;
 }
 
-.ps-dialog-service {
-  background: #f8fafc;
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  border-radius: 10px;
-  padding: 16px 18px;
+.ps-carousel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
-.ps-dialog-service__title {
-  font-size: 0.875rem;
+.ps-carousel-header h4 {
+  font-size: 0.6875rem;
   font-weight: 700;
-  color: var(--color-text-light-primary);
-  margin-bottom: 6px;
-  line-height: 1.3;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-light-secondary);
+  margin: 0;
 }
 
-.ps-dialog-service__desc {
+.ps-carousel-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ps-carousel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  background: #ffffff;
+  color: var(--color-text-light-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
+}
+
+.ps-carousel-btn:hover {
+  border-color: var(--color-primary);
+  background: #f0f8fe;
+  color: var(--color-primary);
+}
+
+.ps-carousel-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.ps-carousel-btn svg {
+  display: block;
+}
+
+.ps-carousel-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.ps-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.ps-carousel-card {
+  flex-shrink: 0;
+  width: 280px;
+  aspect-ratio: 280 / 378;
+  border-radius: 16px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  position: relative;
+}
+
+.ps-carousel-card-visual {
+  position: absolute;
+  inset: 0;
+}
+
+.ps-carousel-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.ps-carousel-card:hover .ps-carousel-card-overlay,
+.ps-carousel-card:focus-within .ps-carousel-card-overlay {
+  opacity: 1;
+}
+
+.ps-carousel-card-overlay-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+
+.ps-carousel-card-overlay-desc {
   font-size: 0.8125rem;
-  line-height: 1.6;
-  color: var(--color-text-light-secondary);
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  line-height: 1.55;
   margin: 0;
 }
 
@@ -2767,10 +2859,6 @@ button {
 
   .ps-dialog-pains {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .ps-dialog-services {
-    grid-template-columns: 1fr;
   }
 
   .ps-dialog-cta-btn {
