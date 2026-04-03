@@ -742,6 +742,80 @@ button {
   50%       { transform: translateY(6px); opacity: 0.8; }
 }
 
+/* ── Hero: light mode overrides ────────────────────────────── */
+[data-theme="light"] .ps-hero {
+  background: #F6F9FC;
+}
+
+[data-theme="light"] .ps-hero-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(246,249,252,0.3) 0%,
+    rgba(246,249,252,0.15) 30%,
+    rgba(246,249,252,0.0) 50%,
+    rgba(246,249,252,0.4) 80%,
+    rgba(246,249,252,0.65) 100%
+  );
+}
+
+[data-theme="light"] .ps-hero-headline {
+  color: #0A1628;
+}
+
+[data-theme="light"] .ps-hero-subtitle {
+  color: #475569;
+}
+
+[data-theme="light"] .ps-hero-eyebrow {
+  color: #0D95E8;
+  border-color: rgba(13,149,232,0.2);
+  background: rgba(13,149,232,0.08);
+  padding: 5px 12px;
+  border-radius: 100px;
+  border: 1px solid rgba(13,149,232,0.2);
+}
+
+[data-theme="light"] .ps-hero-dot {
+  background: #0D95E8;
+}
+
+[data-theme="light"] .ps-btn-secondary {
+  color: #0A1628;
+  border-color: rgba(10,22,40,0.2);
+}
+
+[data-theme="light"] .ps-btn-secondary:hover {
+  background: rgba(10,22,40,0.05);
+  border-color: rgba(10,22,40,0.35);
+}
+
+/* ── Bento card: light mode overrides ──────────────────────── */
+[data-theme="light"] .ps-bento-card__border-color {
+  background-color: rgba(0,0,0,0.06);
+}
+
+[data-theme="light"] .ps-bento-card__content {
+  background: #E8EDF3;
+}
+
+[data-theme="light"] .ps-bento-card__title {
+  color: #0A1628;
+}
+
+[data-theme="light"] .ps-bento-card__text {
+  background: linear-gradient(
+    to top,
+    rgba(246,249,252,0.9) 0%,
+    rgba(246,249,252,0.5) 60%,
+    transparent 100%
+  );
+}
+
+/* ── Problem section: light mode override ───────────────────── */
+[data-theme="light"] .ps-problem-visual {
+  background: linear-gradient(135deg, #E0E7FF 0%, #DBEAFE 100%);
+}
+
 /* ── Value Strip ───────────────────────────────────────────── */
 .ps-value-strip {
   background-color: var(--theme-section-switchable);
@@ -1176,7 +1250,8 @@ button {
 .ps-bento-card__text {
   position: relative;
   z-index: 2;
-  padding: 28px 28px 24px;
+  /* Increase left and bottom padding so labels never crowd the edge */
+  padding: 28px 28px 20px 24px;
   padding-top: 0;
   pointer-events: none;
 
@@ -1187,6 +1262,7 @@ button {
     rgba(10, 22, 40, 0.4) 60%,
     transparent 100%
   );
+  transition: background 300ms ease;
 }
 
 .ps-bento-card__title {

@@ -11,7 +11,7 @@ export function Hero() {
   const ctasRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Animated gradient blobs — inline canvas
+  // Animated gradient blobs — inline canvas, theme-aware
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -34,6 +34,9 @@ export function Hero() {
     let animId = 0;
     let paused = false;
 
+    // Track the current theme so draw() always uses live value
+    let isLight = document.documentElement.getAttribute("data-theme") === "light";
+
     function resize() {
       const rect = container!.getBoundingClientRect();
       w = rect.width;
@@ -46,9 +49,8 @@ export function Hero() {
     resize();
     window.addEventListener("resize", resize);
 
-    // Blob definitions — large soft circles with brand colors
-    // Bigger, brighter, more visible movement
-    const blobs = [
+    // Blob definitions — two sets: dark (vivid) and light (soft, reduced opacity)
+    const darkBlobs = [
       { x: 0.15, y: 0.25, r: 0.55, color: "rgba(13,149,232,0.30)", sx: 0.6, sy: 0.4, px: 0, py: 0 },
       { x: 0.8, y: 0.15, r: 0.5, color: "rgba(99,91,255,0.25)", sx: 0.5, sy: 0.7, px: 1.5, py: 0.8 },
       { x: 0.5, y: 0.65, r: 0.6, color: "rgba(128,233,255,0.20)", sx: 0.4, sy: 0.5, px: 3, py: 2 },
@@ -57,17 +59,32 @@ export function Hero() {
       { x: 0.5, y: 0.3, r: 0.35, color: "rgba(99,91,255,0.12)", sx: 0.8, sy: 0.3, px: 5, py: 4 },
     ];
 
+    const lightBlobs = [
+      { x: 0.15, y: 0.25, r: 0.55, color: "rgba(13,149,232,0.12)", sx: 0.6, sy: 0.4, px: 0, py: 0 },
+      { x: 0.8, y: 0.15, r: 0.5, color: "rgba(99,91,255,0.08)", sx: 0.5, sy: 0.7, px: 1.5, py: 0.8 },
+      { x: 0.5, y: 0.65, r: 0.6, color: "rgba(128,233,255,0.10)", sx: 0.4, sy: 0.5, px: 3, py: 2 },
+      { x: 0.85, y: 0.7, r: 0.45, color: "rgba(0,212,170,0.07)", sx: 0.7, sy: 0.6, px: 4.5, py: 1.2 },
+      { x: 0.1, y: 0.75, r: 0.4, color: "rgba(13,149,232,0.06)", sx: 0.55, sy: 0.45, px: 2.5, py: 3.5 },
+      { x: 0.5, y: 0.3, r: 0.35, color: "rgba(99,91,255,0.05)", sx: 0.8, sy: 0.3, px: 5, py: 4 },
+    ];
+
     let t = 0;
 
     function draw() {
       if (!ctx) return;
       ctx.clearRect(0, 0, w, h);
 
-      // Dark base
-      ctx.fillStyle = "#0A1628";
+      const blobs = isLight ? lightBlobs : darkBlobs;
+      const baseFill = isLight ? "#F6F9FC" : "#0A1628";
+      const vignetteColor = isLight
+        ? "rgba(230,238,248,0.4)"
+        : "rgba(10,22,40,0.5)";
+
+      // Base fill
+      ctx.fillStyle = baseFill;
       ctx.fillRect(0, 0, w, h);
 
-      // Draw each blob — big amplitude movement so it's clearly animating
+      // Draw each blob
       for (const b of blobs) {
         const cx = (b.x + Math.sin(t * b.sx + b.px) * 0.2) * w;
         const cy = (b.y + Math.cos(t * b.sy + b.py) * 0.15) * h;
@@ -75,22 +92,22 @@ export function Hero() {
 
         const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
         grad.addColorStop(0, b.color);
-        grad.addColorStop(0.6, b.color.replace(/[\d.]+\)$/, "0.04)"));
+        grad.addColorStop(0.6, b.color.replace(/[\d.]+\)$/, "0.02)"));
         grad.addColorStop(1, "transparent");
 
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, w, h);
       }
 
-      // Soft blur effect via second pass with lower opacity blobs offset
-      ctx.globalCompositeOperation = "screen";
+      // Soft secondary pass
+      ctx.globalCompositeOperation = isLight ? "multiply" : "screen";
       for (const b of blobs) {
         const cx = (b.x + Math.sin(t * b.sx * 0.7 + b.px + 1) * 0.12) * w;
         const cy = (b.y + Math.cos(t * b.sy * 0.7 + b.py + 1) * 0.09) * h;
         const radius = b.r * 1.2 * Math.max(w, h);
 
         const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-        grad.addColorStop(0, b.color.replace(/[\d.]+\)$/, "0.06)"));
+        grad.addColorStop(0, b.color.replace(/[\d.]+\)$/, isLight ? "0.03)" : "0.06)"));
         grad.addColorStop(1, "transparent");
 
         ctx.fillStyle = grad;
@@ -101,7 +118,7 @@ export function Hero() {
       // Vignette
       const vign = ctx.createRadialGradient(w / 2, h / 2, w * 0.2, w / 2, h / 2, w * 0.8);
       vign.addColorStop(0, "transparent");
-      vign.addColorStop(1, "rgba(10,22,40,0.5)");
+      vign.addColorStop(1, vignetteColor);
       ctx.fillStyle = vign;
       ctx.fillRect(0, 0, w, h);
     }
@@ -115,6 +132,18 @@ export function Hero() {
       draw();
       animId = requestAnimationFrame(loop);
     }
+
+    // Watch for theme changes on <html> and update canvas base color live
+    const themeObserver = new MutationObserver(() => {
+      isLight = document.documentElement.getAttribute("data-theme") === "light";
+      if (prefersReduced) {
+        draw();
+      }
+    });
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
 
     if (prefersReduced) {
       t = 1;
@@ -135,6 +164,7 @@ export function Hero() {
         cancelAnimationFrame(animId);
         window.removeEventListener("resize", resize);
         io.disconnect();
+        themeObserver.disconnect();
         if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
       };
     }
@@ -142,6 +172,7 @@ export function Hero() {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", resize);
+      themeObserver.disconnect();
       if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
     };
   }, []);
