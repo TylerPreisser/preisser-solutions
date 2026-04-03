@@ -247,19 +247,8 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div ref={scrollRef} className="ps-scroll-indicator" aria-hidden="true">
-        <svg
-          className="ps-scroll-chevron"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M6 9l6 6 6-6" />
-        </svg>
+      {/* Scroll indicator removed */}
+      <div ref={scrollRef} style={{ display: "none" }}>
       </div>
     </section>
   );

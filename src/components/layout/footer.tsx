@@ -6,14 +6,13 @@ const serviceLinks = [
   { label: "Automation Systems", href: "/services" },
   { label: "System Fixes & Efficiency", href: "/services" },
   { label: "Dashboards & Intelligence", href: "/services" },
-  { label: "Marketing & Growth", href: "/services" },
+  { label: "Revenue Growth Engines", href: "/services" },
 ];
 
 const companyLinks = [
   { label: "About", href: "/about" },
   { label: "Work", href: "/#case-studies" },
   { label: "Contact", href: "/contact" },
-  { label: "Get in Touch", href: "/contact" },
 ];
 
 export function Footer() {
@@ -39,13 +38,6 @@ export function Footer() {
                 aria-label={`Email us at ${siteConfig.contact.email}`}
               >
                 {siteConfig.contact.email}
-              </a>
-              <a
-                href={`tel:${siteConfig.contact.phone}`}
-                className="ps-footer-contact-link"
-                aria-label={`Call us at ${siteConfig.contact.phone}`}
-              >
-                {siteConfig.contact.phone}
               </a>
               <span className="ps-footer-contact-link" style={{ cursor: "default" }}>
                 {siteConfig.contact.location}

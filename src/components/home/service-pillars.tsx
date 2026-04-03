@@ -293,7 +293,7 @@ const services: ServicePillar[] = [
   },
   {
     type: "revenue",
-    title: "Marketing & Growth Engines",
+    title: "Revenue Growth Engines",
     description:
       "Automated content, email, SMS, and lead generation systems that keep marketing moving without constant babysitting.",
     href: "/contact",

@@ -95,29 +95,7 @@
   position: relative;
 }
 
-.ps-iphone-frame::before,
-.ps-iphone-frame::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-.ps-iphone-frame::before {
-  top: 6px;
-  width: 64%;
-  height: 14px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
-  opacity: 0.7;
-}
-
-.ps-iphone-frame::after {
-  inset: 1px;
-  border-radius: 40px;
-  border: 1px solid rgba(255,255,255,0.06);
-}
+/* Removed phone pill glare and inner border line */
 
 /* Dynamic island */
 .ps-iphone-island {
@@ -879,8 +857,8 @@
   background:
     radial-gradient(circle at 18% 12%, rgba(13,149,232,0.14) 0%, rgba(13,149,232,0) 30%),
     linear-gradient(180deg, #0A0C13 0%, #06080F 100%);
-  /* Uniform 16px padding on all sides — content must fit within */
-  padding: 16px;
+  /* Uniform padding — extra on bottom to prevent label cutoff */
+  padding: 16px 16px 24px 16px;
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -1120,12 +1098,15 @@
 }
 
 .ps-dbc-kpi-label {
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 700;
   color: rgba(255,255,255,0.7);
   text-align: center;
   letter-spacing: -0.01em;
   line-height: 1.1;
+  white-space: nowrap;
+  overflow: visible;
+  padding-bottom: 4px;
 }
 
 /* ── VISUAL 5: Revenue Growth Engine ───────────────────────── */

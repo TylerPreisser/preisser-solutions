@@ -55,13 +55,6 @@ export function Header() {
             <div className="ps-header-links">
               <Link
                 href="/contact"
-                className="ps-header-link"
-                onClick={handleLinkClick}
-              >
-                Contact
-              </Link>
-              <Link
-                href="/contact"
                 className="ps-header-cta"
                 onClick={handleLinkClick}
                 aria-label="Get in Touch — start a conversation"
@@ -110,13 +103,6 @@ export function Header() {
         aria-label="Mobile navigation"
         aria-hidden={!navOpen}
       >
-        <Link
-          href="/contact"
-          className="ps-mobile-nav-link"
-          onClick={handleLinkClick}
-        >
-          Contact
-        </Link>
         <Link
           href="/contact"
           className="ps-mobile-nav-cta"
