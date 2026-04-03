@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Preisser Solutions",
-  tagline: "Your Partner in Custom Business Automation",
+  tagline: "We Build What Your Business Needs.",
   url: "https://preissersolutions.com",
   contact: {
     email: "sales@preissersolutions.com",
@@ -16,9 +16,9 @@ export const siteConfig = {
     title: "Founder & Owner",
   },
   meta: {
-    title: "Preisser Solutions | Your Ai Business Experts",
+    title: "Preisser Solutions | We Build Websites, Apps & Automations for Kansas Businesses",
     description:
-      "Preisser Solutions builds custom internal ecosystems to eliminate business headaches, reduce overhead, and streamline operations—remotely, 24/7, directly at your site.",
+      "Preisser Solutions builds websites, applications, automation systems, dashboards, and more for businesses across Kansas. Custom-built. AI-powered speed. Work directly with Tyler Preisser.",
     themeColor: "#0D95E8",
   },
 } as const;

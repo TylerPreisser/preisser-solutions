@@ -12,7 +12,7 @@
  * Extracted: 2026-04-02
  */
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 1 — Websites & Applications
@@ -140,144 +140,312 @@ export function WebsiteVisual() {
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 2 — Automation Systems
-   Branching workflow: Trigger → [Process, Filter] → AI → [Output, Alert]
-   SVG paths connect the nodes with animated dashes.
+   Three n8n-style workflow diagrams that cycle every 4 seconds.
+   Triggered on scroll into view (IntersectionObserver).
+
+   Architecture: Entire diagram rendered as a single SVG so that
+   node boxes, connection lines, and dots all share one coordinate
+   system — eliminating the mixed HTML/SVG scaling mismatch.
+
+   ViewBox: 412 × 200
+   Node sizes (in SVG units):
+     Regular: 52×52, half=26
+     Large AI: 72×72, half=36
+   Connection dots: r=3.5
    ───────────────────────────────────────────────────────────── */
-export function AutomationVisual() {
+
+/* ── SVG icon path data for each node type ─── */
+const ICON_PATHS = {
+  email:      "M2 7l10 7 10-7M2 4h20a2 2 0 012 2v12a2 2 0 01-2 2H2a2 2 0 01-2-2V6a2 2 0 012-2z",
+  file:       "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8",
+  brain:      "M9.5 2A2.5 2.5 0 0112 4.5V7h-1a7 7 0 00-7 7v1a1 1 0 000 2h1v1a2 2 0 002 2h10a2 2 0 002-2v-1h1a1 1 0 000-2v-1a7 7 0 00-7-7h-1V4.5A2.5 2.5 0 0114.5 2",
+  check:      "M20 6L9 17l-5-5",
+  flag:       "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7",
+  user:       "M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 3a4 4 0 110 8 4 4 0 010-8zM19 8v6M22 11h-6",
+  phone:      "M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z",
+  monitor:    "M2 3h20a2 2 0 012 2v12a2 2 0 01-2 2H2a2 2 0 01-2-2V5a2 2 0 012-2zM8 21h8M12 17v4",
+  database:   "M12 2C7.03 2 3 3.34 3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5c0-1.66-4.03-3-9-3zM3 5c0 1.66 4.03 3 9 3s9-1.34 9-3M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3",
+  calendar:   "M3 4h18a2 2 0 012 2v14a2 2 0 01-2 2H3a2 2 0 01-2-2V6a2 2 0 012-2zM16 2v4M8 2v4M1 10h22",
+  clock:      "M12 2a10 10 0 100 20A10 10 0 0012 2zM12 6v6l4 2",
+  pen:        "M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4 12.5-12.5z",
+  search:     "M11 3a8 8 0 100 16A8 8 0 0011 3zM21 21l-4.35-4.35M8 11h6M11 8v6",
+  upload:     "M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12",
+  bars:       "M18 20V10M12 20V4M6 20v-6",
+} as const;
+
+type IconKey = keyof typeof ICON_PATHS;
+
+interface SvgNode {
+  id: string;
+  cx: number;
+  cy: number;
+  label: string;
+  color: string;
+  large?: boolean;
+  iconKey: IconKey;
+}
+
+interface SvgConn {
+  from: string;
+  to: string;
+  color: string;
+}
+
+interface SvgFlow {
+  id: string;
+  title: string;
+  nodes: SvgNode[];
+  connections: SvgConn[];
+}
+
+const REG_HALF = 26; // half of 52px regular node
+const LG_HALF = 36;  // half of 72px large node
+
+const N8N_FLOWS: SvgFlow[] = [
+  {
+    id: "invoice",
+    title: "Invoice Processing",
+    nodes: [
+      { id: "email",   cx: 54,  cy: 100, label: "Email",    color: "#635BFF", iconKey: "email" },
+      { id: "extract", cx: 160, cy: 100, label: "Extract",  color: "#8B5CF6", iconKey: "file" },
+      { id: "ai",      cx: 265, cy: 100, label: "AI Process", color: "#A855F7", large: true, iconKey: "brain" },
+      { id: "approve", cx: 358, cy: 58,  label: "Approve",  color: "#10B981", iconKey: "check" },
+      { id: "flag",    cx: 358, cy: 142, label: "Flag",     color: "#F59E0B", iconKey: "flag" },
+    ],
+    connections: [
+      { from: "email",   to: "extract", color: "#635BFF" },
+      { from: "extract", to: "ai",      color: "#8B5CF6" },
+      { from: "ai",      to: "approve", color: "#10B981" },
+      { from: "ai",      to: "flag",    color: "#F59E0B" },
+    ],
+  },
+  {
+    id: "onboarding",
+    title: "Customer Onboarding",
+    nodes: [
+      { id: "signup",  cx: 54,  cy: 100, label: "Signup",    color: "#0EA5E9", iconKey: "user" },
+      { id: "welcome", cx: 160, cy: 100, label: "Welcome",   color: "#6366F1", iconKey: "phone" },
+      { id: "account", cx: 265, cy: 100, label: "Create Acct", color: "#8B5CF6", large: true, iconKey: "monitor" },
+      { id: "crm",     cx: 358, cy: 58,  label: "Add to CRM", color: "#10B981", iconKey: "database" },
+      { id: "demo",    cx: 358, cy: 142, label: "Schedule",  color: "#F97316", iconKey: "calendar" },
+    ],
+    connections: [
+      { from: "signup",  to: "welcome", color: "#0EA5E9" },
+      { from: "welcome", to: "account", color: "#6366F1" },
+      { from: "account", to: "crm",     color: "#10B981" },
+      { from: "account", to: "demo",    color: "#F97316" },
+    ],
+  },
+  {
+    id: "content",
+    title: "Content Pipeline",
+    nodes: [
+      { id: "schedule", cx: 54,  cy: 100, label: "Schedule", color: "#06B6D4", iconKey: "clock" },
+      { id: "generate", cx: 160, cy: 100, label: "Generate", color: "#8B5CF6", iconKey: "pen" },
+      { id: "review",   cx: 265, cy: 100, label: "AI Review", color: "#A855F7", large: true, iconKey: "search" },
+      { id: "publish",  cx: 358, cy: 58,  label: "Publish",  color: "#10B981", iconKey: "upload" },
+      { id: "analytics",cx: 358, cy: 142, label: "Analytics",color: "#F59E0B", iconKey: "bars" },
+    ],
+    connections: [
+      { from: "schedule", to: "generate", color: "#06B6D4" },
+      { from: "generate", to: "review",   color: "#8B5CF6" },
+      { from: "review",   to: "publish",  color: "#10B981" },
+      { from: "review",   to: "analytics",color: "#F59E0B" },
+    ],
+  },
+];
+
+function getEdge(node: SvgNode, side: "left" | "right") {
+  const half = node.large ? LG_HALF : REG_HALF;
+  return { x: side === "right" ? node.cx + half : node.cx - half, y: node.cy };
+}
+
+function FlowSvg({ flow }: { flow: SvgFlow }) {
+  const nodeMap = new Map(flow.nodes.map((n) => [n.id, n]));
+
   return (
-    <div className="ps-visual-automation" aria-hidden="true">
-      <div className="ps-auto-flow">
-        <svg className="ps-auto-svg" viewBox="0 0 520 260" fill="none">
-          <path
-            d="M106 130 C120 130, 128 98, 139 75"
-            stroke="#635BFF"
-            strokeWidth="3"
-            strokeDasharray="9 7"
-            className="ps-dash-flow ps-dash-flow--0"
-            fill="none"
-          />
-          <path
-            d="M106 130 C120 130, 128 162, 139 185"
-            stroke="#8B5CF6"
-            strokeWidth="3"
-            strokeDasharray="9 7"
-            className="ps-dash-flow ps-dash-flow--1"
-            fill="none"
-          />
-          <path
-            d="M215 75 C232 79, 238 108, 247 124"
-            stroke="#A855F7"
-            strokeWidth="3"
-            strokeDasharray="9 7"
-            className="ps-dash-flow ps-dash-flow--2"
-            fill="none"
-          />
-          <path
-            d="M215 185 C232 181, 238 152, 247 136"
-            stroke="#A855F7"
-            strokeWidth="3"
-            strokeDasharray="9 7"
-            className="ps-dash-flow ps-dash-flow--0"
-            fill="none"
-          />
-          <path
-            d="M346 130 C362 130, 378 92, 399 70"
-            stroke="#10B981"
-            strokeWidth="3"
-            strokeDasharray="9 7"
-            className="ps-dash-flow ps-dash-flow--1"
-            fill="none"
-          />
-          <path
-            d="M346 130 C362 130, 378 168, 399 190"
-            stroke="#F59E0B"
-            strokeWidth="3"
-            strokeDasharray="9 7"
-            className="ps-dash-flow ps-dash-flow--2"
-            fill="none"
-          />
+    <svg
+      className="ps-n8n-svg"
+      viewBox="0 0 412 200"
+      fill="none"
+      preserveAspectRatio="xMidYMid meet"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* Connection lines drawn first so they appear behind nodes */}
+      {flow.connections.map((conn) => {
+        const src = nodeMap.get(conn.from);
+        const dst = nodeMap.get(conn.to);
+        if (!src || !dst) return null;
 
-          <circle cx="106" cy="130" r="4" fill="#7C6CFF" opacity="0.9" />
-          <circle cx="346" cy="130" r="4" fill="#F59E0B" opacity="0.9" />
-        </svg>
+        const start = getEdge(src, "right");
+        const end = getEdge(dst, "left");
+        const dx = Math.abs(end.x - start.x);
+        const cp = Math.min(dx * 0.42, 52);
+        const d = `M${start.x},${start.y} C${start.x + cp},${start.y} ${end.x - cp},${end.y} ${end.x},${end.y}`;
 
-        <div className="ps-auto-node-wrap ps-auto-node-wrap--trigger">
+        return (
+          <g key={`conn-${conn.from}-${conn.to}`}>
+            <path d={d} stroke={conn.color} strokeWidth="1.5" strokeOpacity="0.45" />
+            <circle cx={start.x} cy={start.y} r="3.5" fill={conn.color} opacity="0.75" />
+            <circle cx={end.x}   cy={end.y}   r="3.5" fill={conn.color} opacity="0.75" />
+          </g>
+        );
+      })}
+
+      {/* Nodes rendered on top of connections */}
+      {flow.nodes.map((node) => {
+        const half = node.large ? LG_HALF : REG_HALF;
+        const size = half * 2;
+        const x = node.cx - half;
+        const y = node.cy - half;
+
+        // Icon scale: map 0-24 to iconSize px, centered in node
+        const iconSize = node.large ? 18 : 14;
+        const iconX = node.cx - iconSize / 2;
+        const iconY = node.cy - iconSize / 2 - 4; // shift up slightly to make room for label
+
+        return (
+          <g key={node.id}>
+            {/* Node background rect */}
+            <rect
+              x={x}
+              y={y}
+              width={size}
+              height={size}
+              rx={node.large ? 14 : 12}
+              fill="rgba(255,255,255,0.04)"
+              stroke={node.color}
+              strokeWidth="1"
+              strokeOpacity="0.35"
+            />
+            {/* Subtle glow for large node — extra rect with blur */}
+            {node.large && (
+              <rect
+                x={x - 4}
+                y={y - 4}
+                width={size + 8}
+                height={size + 8}
+                rx={18}
+                fill="none"
+                stroke={node.color}
+                strokeWidth="1"
+                strokeOpacity="0.15"
+              />
+            )}
+            {/* Icon — SVG path scaled via transform */}
+            <g transform={`translate(${iconX}, ${iconY}) scale(${iconSize / 24})`}>
+              <path
+                d={ICON_PATHS[node.iconKey]}
+                stroke={node.color}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+                opacity="0.9"
+              />
+            </g>
+            {/* Label text below icon */}
+            <text
+              x={node.cx}
+              y={node.cy + half - 7}
+              textAnchor="middle"
+              fontSize={node.large ? 7 : 6.5}
+              fontWeight="700"
+              fontFamily="Inter, system-ui, sans-serif"
+              letterSpacing="0.04em"
+              fill={node.color}
+              opacity="0.85"
+              style={{ textTransform: "uppercase" } as React.CSSProperties}
+            >
+              {node.label}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+export function AutomationVisual() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeFlow, setActiveFlow] = useState(0);
+  const [prevFlow, setPrevFlow] = useState<number | null>(null);
+  const hasStarted = useRef(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced) {
+      hasStarted.current = true;
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasStarted.current) {
+            hasStarted.current = true;
+            observer.unobserve(el);
+
+            intervalRef.current = setInterval(() => {
+              setActiveFlow((current) => {
+                const next = (current + 1) % N8N_FLOWS.length;
+                setPrevFlow(current);
+                return next;
+              });
+            }, 4000);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="ps-visual-automation"
+      aria-hidden="true"
+    >
+      {/* Flow title */}
+      <div className="ps-n8n-label">{N8N_FLOWS[activeFlow].title}</div>
+
+      {/* Sliding stage */}
+      <div className="ps-n8n-stage">
+        {N8N_FLOWS.map((flow, index) => {
+          const isActive = index === activeFlow;
+          const isPrev = index === prevFlow;
+          return (
+            <div
+              key={flow.id}
+              className={`ps-n8n-slide${isActive ? " ps-n8n-slide--active" : ""}${isPrev ? " ps-n8n-slide--exit" : ""}`}
+            >
+              <FlowSvg flow={flow} />
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Dot indicators */}
+      <div className="ps-n8n-dots">
+        {N8N_FLOWS.map((flow, index) => (
           <div
-            className="ps-auto-node"
-            style={{ borderColor: "#635BFF60", boxShadow: "0 0 14px #635BFF22" }}
-          >
-            <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#635BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-            </svg>
-            <div className="ps-auto-node-label" style={{ color: "#635BFF" }}>Trigger</div>
-          </div>
-        </div>
-
-        <div className="ps-auto-node-wrap ps-auto-node-wrap--process">
-          <div
-            className="ps-auto-node"
-            style={{ borderColor: "#8B5CF660", boxShadow: "0 0 14px #8B5CF622" }}
-          >
-            <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="3" />
-              <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" />
-            </svg>
-            <div className="ps-auto-node-label" style={{ color: "#8B5CF6" }}>Process</div>
-          </div>
-        </div>
-
-        <div className="ps-auto-node-wrap ps-auto-node-wrap--filter">
-          <div
-            className="ps-auto-node"
-            style={{ borderColor: "#6366F160", boxShadow: "0 0 14px #6366F122" }}
-          >
-            <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#6366F1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-            </svg>
-            <div className="ps-auto-node-label" style={{ color: "#6366F1" }}>Filter</div>
-          </div>
-        </div>
-
-        <div className="ps-auto-node-wrap ps-auto-node-wrap--engine">
-          <div
-            className="ps-auto-node ps-auto-node--large"
-            style={{ borderColor: "#A855F760", boxShadow: "0 0 18px #A855F733" }}
-          >
-            <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#A855F7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9.5 2A2.5 2.5 0 0112 4.5v15a2.5 2.5 0 01-5 0v-15A2.5 2.5 0 019.5 2z" />
-              <path d="M14.5 2A2.5 2.5 0 0117 4.5v15a2.5 2.5 0 01-5 0v-15A2.5 2.5 0 0114.5 2z" />
-              <line x1="4" y1="8.5" x2="9" y2="8.5" />
-              <line x1="15" y1="8.5" x2="20" y2="8.5" />
-              <line x1="4" y1="15.5" x2="9" y2="15.5" />
-              <line x1="15" y1="15.5" x2="20" y2="15.5" />
-            </svg>
-            <div className="ps-auto-node-label" style={{ color: "#A855F7" }}>AI Engine</div>
-          </div>
-        </div>
-
-        <div className="ps-auto-node-wrap ps-auto-node-wrap--output">
-          <div
-            className="ps-auto-node"
-            style={{ borderColor: "#10B98160", boxShadow: "0 0 14px #10B98122" }}
-          >
-            <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
-            <div className="ps-auto-node-label" style={{ color: "#10B981" }}>Output</div>
-          </div>
-        </div>
-
-        <div className="ps-auto-node-wrap ps-auto-node-wrap--alert">
-          <div
-            className="ps-auto-node"
-            style={{ borderColor: "#F59E0B60", boxShadow: "0 0 14px #F59E0B22" }}
-          >
-            <svg className="ps-auto-node-icon" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
-            </svg>
-            <div className="ps-auto-node-label" style={{ color: "#F59E0B" }}>Alert</div>
-          </div>
-        </div>
+            key={flow.id}
+            className={`ps-n8n-dot${index === activeFlow ? " ps-n8n-dot--active" : ""}`}
+          />
+        ))}
       </div>
     </div>
   );
@@ -432,14 +600,6 @@ export function DashboardVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [playToken, setPlayToken] = useState(0);
   const hasPlayedInView = useRef(false);
-  const lastTriggerAt = useRef(0);
-
-  function triggerPlay() {
-    const now = Date.now();
-    if (now - lastTriggerAt.current < 450) return;
-    lastTriggerAt.current = now;
-    setPlayToken((current) => current + 1);
-  }
 
   useEffect(() => {
     const el = containerRef.current;
@@ -459,7 +619,7 @@ export function DashboardVisual() {
         entries.forEach((entry) => {
           if (entry.isIntersecting && !hasPlayedInView.current) {
             hasPlayedInView.current = true;
-            triggerPlay();
+            setPlayToken(1);
             observer.unobserve(el);
           }
         });
@@ -476,9 +636,6 @@ export function DashboardVisual() {
       ref={containerRef}
       className="ps-dbc-root"
       aria-hidden="true"
-      onMouseEnter={triggerPlay}
-      onPointerDown={triggerPlay}
-      onTouchStart={triggerPlay}
     >
       <div className="ps-dbc-layout">
         <DashboardScene key={playToken} animated={playToken > 0} />

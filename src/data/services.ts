@@ -55,34 +55,29 @@ export const valueProps: ValueProp[] = [
 
 export const services: Service[] = [
   {
-    title: "Efficiency & Bottleneck Analysis",
+    title: "Websites & Applications",
     description:
-      "I personally conduct thorough deep dives into your current workflows to pinpoint critical bottlenecks and identify key areas for significant improvement and cost savings through automation.",
+      "Professional sites, custom apps, client portals, e-commerce, and internal tools built from scratch to perform.",
   },
   {
-    title: "Custom Automation Systems",
+    title: "Automation Systems",
     description:
-      "Forget generic software. I design and build bespoke automation systems—from simple task automators to more complex workflow solutions—all tailored to your specific operational needs and personally managed by me.",
+      "AI-powered automation systems for repetitive work like invoicing, document processing, outreach, routing, and monitoring.",
   },
   {
-    title: "Back Office Automation Excellence",
+    title: "System Fixes & Efficiency",
     description:
-      "Is your team bogged down by daily administrative duties? We automate essential back-office operations—from financial tasks and data organization to routine communications and reporting—freeing your skilled team to focus on core business growth and exceptional client service.",
+      "If something is slow, broken, disconnected, or redundant, we figure out why and fix it with better systems.",
   },
   {
-    title: "Custom-Engineered Automated Assistants",
+    title: "Dashboards & Business Intelligence",
     description:
-      "Imagine a digital assistant, engineered by me specifically for your business. These automated 'experts' can handle complex customer support inquiries, provide instant internal data retrieval, or manage and monitor key processes 24/7 with precision. (Everything we design is easy for anyone to use.)",
+      "Real-time dashboards, reporting, forecasting, and data integration that show you what is actually happening in the business.",
   },
   {
-    title: "Online/Digital Presence & Optimization",
+    title: "Marketing & Growth Engines",
     description:
-      "Ensure your business not only shows up online, but truly stands out and delivers results. We optimize your complete digital ecosystem—including your website's performance, targeted SEO optimization, automated social media engagement, and streamlined email marketing funnels—using custom-built systems to convert your online presence into a consistent engine for growth and client acquisition.",
-  },
-  {
-    title: "Professional Website Development",
-    description:
-      "Need a new website or an upgrade to truly reflect your business? I build professional, responsive, and effective websites designed to capture leads and clearly communicate your value, all managed with the same personal attention to detail.",
+      "Automated social media, email, SMS, SEO, and lead generation systems built to create demand without constant babysitting.",
   },
 ];
 
@@ -204,12 +199,11 @@ export const roiJobRoles: RoiJobRole[] = [
 
 export const contactInterests = [
   "General Inquiry",
-  "Efficiency & Bottleneck Analysis",
-  "Custom Automation Systems",
-  "Back Office Automation",
-  "Custom-Engineered AI Assistants",
-  "Online/Digital Presence & Optimization",
-  "Professional Website Development",
+  "Websites & Applications",
+  "Automation Systems",
+  "System Fixes & Efficiency",
+  "Dashboards & Business Intelligence",
+  "Marketing & Growth Engines",
   "ROI Consultation",
   "Partnership / Referral",
   "Pricing & Packages",

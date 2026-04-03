@@ -32,22 +32,22 @@ const ACTIVE_CARD_LABEL = "Preisser Solutions";
 const whyFeatures: WhyFeature[] = [
   {
     id: 0,
-    shortLabel: "custom-built systems",
-    title: "Built for Your Business. Not a Template.",
+    shortLabel: "we build in-house",
+    title: "We Build Everything In-House.",
     description:
-      "We shape the product around your workflow, your customers, and your edge cases instead of forcing you into recycled software.",
+      "No subcontractors. No offshore teams. No white-labeled templates. Tyler Preisser designs it, builds it, and supports it.",
     image: "/images/stripe/browserbase.png",
     mobileImage: "/images/stripe/browserbase.png",
     alt: "Custom software interface placeholder",
-    href: "/services",
-    cta: "Explore our services",
+    href: "/contact",
+    cta: "Tell us what you need",
   },
   {
     id: 1,
-    shortLabel: "systems thinking",
-    title: "We Think in Systems, Not One-Off Deliverables.",
+    shortLabel: "AI makes us fast",
+    title: "AI Makes Us Dangerously Fast.",
     description:
-      "Websites, automations, dashboards, and internal tools are designed to work together so the business runs better after launch.",
+      "We use AI at every stage of the process — research, design, development, and testing — so we deliver in weeks, not months.",
     image: "/images/stripe/DatavizStatic3x.png",
     mobileImage: "/images/stripe/the-happenings-tidemark-mobile.png",
     alt: "Analytics and systems placeholder",
@@ -56,49 +56,49 @@ const whyFeatures: WhyFeature[] = [
   },
   {
     id: 2,
-    shortLabel: "ongoing partnership",
-    title: "We Stay With It.",
+    shortLabel: "not a template",
+    title: "Built for Your Business. Not a Template.",
     description:
-      "Launch is the start, not the finish line. When your business changes, we can keep refining the system with you.",
+      "We study your operation, understand your workflows, and build a solution that fits your business specifically.",
     image: "/images/Tyler Portait.jpeg",
     mobileImage: "/images/Tyler Portait.jpeg",
-    alt: "Portrait placeholder for long-term partnership",
+    alt: "Portrait placeholder for custom-fit systems",
+    href: "/services",
+    cta: "Explore our services",
+  },
+  {
+    id: 3,
+    shortLabel: "we stay with it",
+    title: "We Stay With It.",
+    description:
+      "Every system we build comes with ongoing support. If something breaks, we fix it. If your business changes, we adapt the system.",
+    image: "/images/stripe/the-happenings-agentic-mobile.png",
+    mobileImage: "/images/stripe/the-happenings-agentic-mobile.png",
+    alt: "Ongoing support placeholder graphic",
     href: "/contact",
     cta: "Talk with Tyler",
   },
   {
-    id: 3,
-    shortLabel: "AI for in-house delivery",
-    title: "AI Makes Us Dangerously Fast.",
-    description:
-      "We use AI across research, design, engineering, and QA so you get serious speed without the usual agency drag.",
-    image: "/images/stripe/the-happenings-agentic-mobile.png",
-    mobileImage: "/images/stripe/the-happenings-agentic-mobile.png",
-    alt: "AI delivery placeholder graphic",
-    href: "/contact",
-    cta: "See what we can build",
-  },
-  {
     id: 4,
-    shortLabel: "senior attention",
-    title: "Senior-Level Execution Without the Agency Bloat.",
+    shortLabel: "you work direct",
+    title: "You Work Directly With the Builder.",
     description:
-      "No layers of project managers, junior handoffs, or mystery subcontractors. You work directly with the person doing the work.",
+      "No handoffs. No junior developers. No account managers. When you reach out, you talk to the person writing the code.",
     image: "/images/stripe/annual-letter-mobile.png",
     mobileImage: "/images/stripe/annual-letter-mobile.png",
-    alt: "Senior attention placeholder graphic",
+    alt: "Direct access placeholder graphic",
     href: "/about",
     cta: "Meet Tyler",
   },
   {
     id: 5,
-    shortLabel: "clear ownership",
-    title: "One Partner Who Owns the Whole Thing.",
+    shortLabel: "Kansas built",
+    title: "Built for Kansas Businesses.",
     description:
-      "Strategy, design, engineering, fixes, and automation stay connected, which means fewer gaps and much faster decision-making.",
+      "Based in Hays, Kansas and built for local and regional businesses that need real systems, not startup theater.",
     image: "/images/stripe/wave_crop.jpg",
     mobileImage: "/images/stripe/the-happenings-cheeky-pint-mobile.png",
-    alt: "Ownership placeholder image",
+    alt: "Kansas-built placeholder image",
     href: "/contact",
     cta: "Start the conversation",
   },
@@ -522,11 +522,11 @@ export function WhyUs() {
                 id="why-heading"
                 className="ps-section-heading ps-section-heading--light events-section__header-title"
               >
-                See what makes Preisser Solutions different.
+                We Don&apos;t Outsource. We Don&apos;t Resell. We Build.
               </h2>
               <p className="events-section__header-subtitle">
-                A closer look at how we work: custom systems, senior execution,
-                clear ownership, and long-term follow-through.
+                No subcontractors, no white-labeled templates, and no bloated process.
+                You bring the problem. We build the fix.
               </p>
             </div>
 

@@ -3,10 +3,10 @@
 import { useEffect, useRef } from "react";
 
 const problemItems = [
-  "Your CRM doesn't talk to your accounting software",
-  "Data gets entered twice — sometimes three times",
-  "Staff running reports by hand every week",
-  "You hired software to save time; now you manage it",
+  "Your website is outdated and not pulling its weight",
+  "Your systems don't talk to each other",
+  "Your team is buried in manual work that should've been automated years ago",
+  "You need something custom and nothing on the market fits",
 ];
 
 export function ProblemSection() {
@@ -112,8 +112,7 @@ export function ProblemSection() {
             </ul>
             <div className="ps-problem-divider" />
             <p className="ps-problem-resolution">
-              → These aren&apos;t permanent problems. They&apos;re engineering
-              problems. And every one of them is fixable.
+              → You bring us the problem, and we build the solution.
             </p>
           </div>
         </div>

@@ -20,11 +20,11 @@ export interface CaseStudy {
 export const caseStudies: CaseStudy[] = [
   {
     id: "cassidy-social",
-    client: "John C Cassidy HVAC",
+    client: "Cassidy HVAC",
     title:
-      "John C Cassidy HVAC | 100% Automated Organic Social Media Content Production/Managment",
+      "Cassidy HVAC | Automated Social Media Engine",
     subTitle: "Social Media Automation",
-    customHeader: "Fully Automated Social Media Content Engine",
+    customHeader: "Automated Social Media Engine",
     challenge:
       "Cassidy HVAC was struggling with consistent outreach on social media. Their internal team had no time to plan, create, or post content regularly. Engagement was flat, brand visibility was declining, and no system existed to capitalize on trends or keep up with competitors — all while customers were active online and being captured elsewhere.",
     solution:
@@ -53,11 +53,11 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "cassidy-sms",
-    client: "John C Cassidy HVAC",
+    client: "Cassidy HVAC",
     title:
-      "John C Cassidy HVAC | Hyper Personalized Ai Automated SMS & Email Marketing Outreach",
+      "Cassidy HVAC | AI-Driven Customer Reactivation",
     subTitle: "Automated SMS & Email Outreach",
-    customHeader: "Hyper-Personalized AI Outreach Engine",
+    customHeader: "AI-Driven Customer Reactivation",
     challenge:
       "John C Cassidy was sitting on a large, inactive patient list — missing opportunities to re-engage past clients, promote services, and fill slow days. Office staff were manually sending reminders or offers, often inconsistently, and had no unified system to track replies, clicks, or conversions.",
     solution:
@@ -87,7 +87,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "hg-oil-inventory",
     client: "HG Oil Holdings",
-    title: "HG Oil Holdings | Automated Inventory Managment System",
+    title: "HG Oil Holdings | Automated Inventory Management",
     subTitle: "Inventory Management System",
     customHeader:
       "Live, Automated, User Friendly, Inventory Management System",
@@ -112,8 +112,8 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "hg-oil-invoicing",
-    client: "HG Holdings",
-    title: "HG Holdings | Ai Invoicing assistant",
+    client: "HG Oil Holdings",
+    title: "HG Oil Holdings | AI Invoicing Assistant",
     subTitle: "AI Invoicing Assistant",
     customHeader: "AI-Powered Invoice Processing & Data Extraction",
     challenge:

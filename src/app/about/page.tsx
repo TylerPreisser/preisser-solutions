@@ -4,9 +4,9 @@ import Image from "next/image";
 import { siteConfig } from "@/data/site-config";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About Tyler Preisser",
   description:
-    "Meet Tyler Preisser and learn about the mission behind Preisser Solutions.",
+    "Tyler Preisser builds custom AI and automation solutions for Kansas businesses. Direct access, real expertise, measurable results.",
 };
 
 export default function AboutPage() {
@@ -17,9 +17,9 @@ export default function AboutPage() {
         <div className="ps-container">
           <div className="ps-page-hero-content">
             <span className="ps-eyebrow">About</span>
-            <h1>Meet {siteConfig.founder.name}</h1>
+            <h1>We Build Things. That&apos;s What We Do.</h1>
             <p>
-              The founder and driving force behind Preisser Solutions.
+              Direct access to the person designing, building, and standing behind the work.
             </p>
           </div>
         </div>
@@ -71,8 +71,11 @@ export default function AboutPage() {
                   marginBottom: "20px",
                 }}
               >
-                [Bio paragraph one — Tyler's background, why he started Preisser Solutions,
-                what problem he saw in the market that he wanted to solve.]
+                Preisser Solutions exists because I got tired of watching businesses
+                struggle with technology they shouldn&apos;t have to struggle with.
+                Outdated websites. Systems that don&apos;t connect. Manual work that
+                should have been automated five years ago. Tools that were supposed
+                to make life easier but somehow made it harder.
               </p>
               <p
                 style={{
@@ -82,8 +85,13 @@ export default function AboutPage() {
                   marginBottom: "32px",
                 }}
               >
-                [Bio paragraph two — his approach, personal philosophy, what makes
-                working with Preisser Solutions different from hiring a firm or buying software.]
+                I&apos;m Tyler Preisser. I&apos;m a builder. I&apos;ve been building things
+                my entire life — from physical machines and patented inventions to AI
+                systems that process millions in transaction volume. I&apos;ve managed
+                field operations, led large-scale technology projects, and built
+                automation systems that replaced entire manual workflows. When you work
+                with Preisser Solutions, you work with me — the person who designs it,
+                builds it, and stands behind it.
               </p>
               <Link href="/contact" className="ps-btn-primary">
                 Work with Tyler
@@ -100,13 +108,22 @@ export default function AboutPage() {
           <div className="ps-section-header">
             <span className="ps-eyebrow-light">Values</span>
             <h2>How We Work</h2>
-            <p>[Section subtitle — brief description of operating principles.]</p>
+            <p>How the work gets done, and what that means for the businesses we build for.</p>
           </div>
           <div className="ps-placeholder-grid">
             {[
-              { title: "[Value One]", body: "[Description of this operating principle and what it means for clients.]" },
-              { title: "[Value Two]", body: "[Description of this operating principle and what it means for clients.]" },
-              { title: "[Value Three]", body: "[Description of this operating principle and what it means for clients.]" },
+              {
+                title: "Build it right.",
+                body: "No shortcuts. No duct tape. Systems that work today and scale tomorrow.",
+              },
+              {
+                title: "Speed is a feature.",
+                body: "AI-first methodology means we deliver in weeks, not months. Your business can&apos;t wait, and it shouldn&apos;t have to.",
+              },
+              {
+                title: "Honesty over agreement.",
+                body: "If your idea won&apos;t work, I&apos;ll tell you. If there&apos;s a better way, I&apos;ll show you.",
+              },
             ].map((v, i) => (
               <div key={i} className="ps-placeholder-box">
                 <h3>{v.title}</h3>

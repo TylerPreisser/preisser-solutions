@@ -5,7 +5,7 @@ import { services } from "@/data/services";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Custom business automation services — from efficiency analysis to fully engineered automation systems.",
+    "Professional website development, automation systems, dashboards, system fixes, and growth engines built for Kansas businesses.",
 };
 
 const iconColors = [
@@ -27,9 +27,10 @@ export default function ServicesPage() {
         <div className="ps-container">
           <div className="ps-page-hero-content">
             <span className="ps-eyebrow">Services</span>
-            <h1>Everything We Build</h1>
+            <h1>What We Build</h1>
             <p>
-              Custom automation systems tailored to your business — not off-the-shelf software.
+              Websites. Applications. Automations. Dashboards. Integrations. If your
+              business needs it, we can design it and build it.
             </p>
           </div>
         </div>
@@ -51,7 +52,7 @@ export default function ServicesPage() {
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
                 <Link href="/contact" className="ps-btn-link">
-                  Get started
+                  Tell us what you need
                   <span className="ps-btn-arrow" aria-hidden="true">→</span>
                 </Link>
               </div>
@@ -64,15 +65,15 @@ export default function ServicesPage() {
       <div className="ps-cta-section">
         <div className="ps-cta-glow" aria-hidden="true" />
         <div className="ps-cta-content">
-          <span className="ps-eyebrow">Get Started</span>
-          <h2>Not Sure Where to Start?</h2>
+          <span className="ps-eyebrow">Tell Us What You Need</span>
+          <h2>You Know What Your Business Needs. You Just Need Someone Who Can Build It.</h2>
           <p>
-            Let&apos;s have a conversation about your business and find the highest-value
-            automation opportunity together.
+            You don&apos;t need a consultant to tell you it&apos;s a problem. You need
+            someone who can build the fix.
           </p>
           <div className="ps-cta-buttons">
             <Link href="/contact" className="ps-btn-primary">
-              Book a Free Consultation
+              Tell Us What You Need
               <span className="ps-btn-arrow" aria-hidden="true">→</span>
             </Link>
           </div>

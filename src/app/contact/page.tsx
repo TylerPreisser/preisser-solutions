@@ -62,12 +62,13 @@ export default function ContactPage() {
             className="ps-eyebrow-dark"
             style={{ display: "block", textAlign: "center", marginBottom: "16px" }}
           >
-            Let&apos;s Talk
+            Contact
           </span>
-          <h1>Let&apos;s Discuss Your Goals</h1>
+          <h1>Tell Us What You Need Built.</h1>
           <p className="ps-contact-subtitle">
-            Tell us a little about your business and what you&apos;re looking to solve.
-            No hard pitches — just a real conversation about where we can help.
+            Every project starts with a conversation. Tell me what&apos;s not working
+            — or what you wish existed — and I&apos;ll tell you exactly how we&apos;d build it.
+            No commitment. No sales pitch. No pressure.
           </p>
         </div>
 
@@ -185,7 +186,7 @@ export default function ContactPage() {
                     name="message"
                     value={form.message}
                     onChange={handleChange}
-                    placeholder="What processes are eating up your team's time? What would you love to automate? Any context you can share helps us prepare a more relevant response."
+                    placeholder="What do you need built, fixed, or improved?"
                     required
                     rows={5}
                   />
@@ -211,8 +212,7 @@ export default function ContactPage() {
                 </button>
 
                 <p className="ps-form-note">
-                  By submitting, you agree to be contacted by Preisser Solutions regarding your inquiry.
-                  We never share your information. You can opt out at any time.
+                  Based in Hays, Kansas. Serving businesses locally and across the state.
                   <br />
                   Or reach us directly:{" "}
                   <a

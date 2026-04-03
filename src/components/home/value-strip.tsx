@@ -20,8 +20,8 @@ const valueItems = [
   },
   {
     icon: ">>",
-    strong: "You work directly with",
-    text: " the person who builds it",
+    strong: "You work directly with the person",
+    text: " who builds it",
   },
 ];
 

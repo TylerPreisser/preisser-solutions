@@ -208,7 +208,7 @@ export function Hero() {
       <div className="ps-hero-content">
         <div ref={eyebrowRef} className="ps-hero-eyebrow">
           <span className="ps-hero-dot" aria-hidden="true" />
-          AI-Accelerated Builders
+          AI-First Builders
         </div>
 
         <h1 ref={headlineRef} className="ps-hero-headline">
@@ -217,8 +217,8 @@ export function Hero() {
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
           Websites. Applications. Automations. Dashboards. Integrations.
-          Whatever technology problem you&apos;ve got &mdash; Preisser Solutions
-          builds the solution. From scratch. For you.
+          Whatever technology problem you&apos;ve got &mdash; Preisser Solutions builds
+          the solution. From scratch. For you.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">

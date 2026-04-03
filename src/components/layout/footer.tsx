@@ -13,7 +13,7 @@ const companyLinks = [
   { label: "About", href: "/about" },
   { label: "Work", href: "/#case-studies" },
   { label: "Contact", href: "/contact" },
-  { label: "Free Consultation", href: "/contact" },
+  { label: "Tell Us What You Need", href: "/contact" },
 ];
 
 export function Footer() {

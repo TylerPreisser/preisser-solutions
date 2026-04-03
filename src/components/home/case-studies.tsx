@@ -13,18 +13,18 @@ interface CaseStudyCard {
 
 const caseStudyCards: CaseStudyCard[] = [
   {
-    client: "John C Cassidy HVAC",
+    client: "Cassidy HVAC",
     industry: "HVAC / Home Services",
     resultHighlight: "5x organic reach increase in 30 days",
     results: [
-      "100% hands-off daily content creation",
-      "Eliminated outsourced marketing staff",
-      "Generated inbound customer inquiries",
+      "100% hands-off daily content creation and posting",
+      "Eliminated outsourced marketing or additional staff",
+      "Generated inbound customer inquiries directly from social content",
     ],
     href: "/contact",
   },
   {
-    client: "John C Cassidy HVAC",
+    client: "Cassidy HVAC",
     industry: "HVAC / Home Services",
     resultHighlight: "60%+ dormant customer reactivation in 6 weeks",
     results: [
@@ -40,8 +40,8 @@ const caseStudyCards: CaseStudyCard[] = [
     resultHighlight: "95% reduction in back-office inventory time",
     results: [
       "75%+ improvement in inventory accuracy",
-      "Converted a loss center into a profit center",
-      "10+ staff hours freed per week",
+      "Converted a loss-generating operation into a profitable unit",
+      "Freed 10+ staff hours per week across multiple roles",
     ],
     href: "/contact",
   },

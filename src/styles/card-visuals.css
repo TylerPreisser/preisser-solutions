@@ -499,91 +499,100 @@
   transition: transform 300ms var(--ease-standard);
 }
 
-/* ── VISUAL 2: Automation Systems ───────────────────────────── */
+/* ── VISUAL 2: Automation Systems — n8n-style cycling flows ─── */
+
+/*
+  Container: fills the card visual area.
+  Stage: fixed-height area that holds the slides.
+  Each slide is position:absolute inset-0, transitions opacity+translateX.
+  Diagram: position:relative with explicit pixel height matching the SVG viewBox (200px).
+  Nodes: position:absolute, placed by (left, top) set in JSX from cx/cy.
+  SVG: position:absolute inset-0, same coordinate space as nodes (viewBox 0 0 412 200).
+*/
+
 .ps-visual-automation {
-  background: #0D0B1E;
+  background: linear-gradient(160deg, #0a0b1a 0%, #080b18 60%, #060810 100%);
   position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 12px 10px;
+  gap: 8px;
+}
+
+/* Flow title label top-left */
+.ps-n8n-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: rgba(255,255,255,0.28);
+  flex-shrink: 0;
+  transition: opacity 300ms ease;
+  min-height: 11px;
+}
+
+/* Stage: the sliding viewport */
+.ps-n8n-stage {
+  flex: 1;
+  position: relative;
+  min-height: 0;
   overflow: hidden;
 }
 
-.ps-auto-flow {
-  position: absolute;
-  inset: 18px 14px 88px;
-}
-
-/* SVG connector overlay */
-.ps-auto-svg {
+/* Each slide is stacked absolutely, transitions in/out */
+.ps-n8n-slide {
   position: absolute;
   inset: 0;
+  opacity: 0;
+  transform: translateX(28px);
+  pointer-events: none;
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+
+.ps-n8n-slide--active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.ps-n8n-slide--exit {
+  opacity: 0;
+  transform: translateX(-28px);
+  pointer-events: none;
+}
+
+/* SVG fills the entire slide — single coordinate system for nodes + connections */
+.ps-n8n-svg {
+  display: block;
   width: 100%;
   height: 100%;
-  pointer-events: none;
-  z-index: 0;
+  overflow: visible;
 }
 
-.ps-auto-node-wrap {
-  position: absolute;
-  z-index: 1;
-  transform: translate(-50%, -50%);
-}
-
-.ps-auto-node-wrap--trigger { left: 14%; top: 50%; }
-.ps-auto-node-wrap--process { left: 36.5%; top: 31%; }
-.ps-auto-node-wrap--filter { left: 36.5%; top: 69%; }
-.ps-auto-node-wrap--engine { left: 64%; top: 50%; }
-.ps-auto-node-wrap--output { left: 86.5%; top: 31%; }
-.ps-auto-node-wrap--alert { left: 86.5%; top: 69%; }
-
-/* Each node box */
-.ps-auto-node {
+/* Dot indicator row at bottom */
+.ps-n8n-dots {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
   gap: 5px;
-  width: 56px;
-  height: 56px;
-  border-radius: 12px;
-  border: 1px solid;
-  background: rgba(255,255,255,0.03);
   flex-shrink: 0;
-  transition: box-shadow 300ms ease, background 300ms ease, transform 300ms ease;
+  padding-bottom: 2px;
 }
 
-.ps-auto-node--large {
-  width: 68px;
-  height: 68px;
-  border-radius: 14px;
+.ps-n8n-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  transition: background 400ms ease, transform 400ms ease;
 }
 
-.ps-bento-card:hover .ps-auto-node {
-  background: rgba(255,255,255,0.06);
-  transform: translateY(-1px);
+.ps-n8n-dot--active {
+  background: rgba(255,255,255,0.6);
+  transform: scale(1.2);
 }
 
-/* Icon inside node — SVG sized */
-.ps-auto-node-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-.ps-auto-node--large .ps-auto-node-icon {
-  width: 22px;
-  height: 22px;
-}
-
-/* Label below icon */
-.ps-auto-node-label {
-  font-size: 7.5px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-/* Dashed line animation — each dash group has its own offset for variety */
+/* Keep @keyframes and .ps-dash-flow for reduced-motion fallback */
 .ps-dash-flow {
   animation: ps-dash-flow 1.4s linear infinite;
   stroke-linecap: round;
@@ -593,10 +602,6 @@
 .ps-dash-flow--0 { animation-delay: 0s; }
 .ps-dash-flow--1 { animation-delay: -0.47s; }
 .ps-dash-flow--2 { animation-delay: -0.94s; }
-
-.ps-bento-card:hover .ps-dash-flow {
-  animation-duration: 0.7s;
-}
 
 /* ── VISUAL 3: System Health Monitor ────────────────────────── */
 .ps-hm-root {
@@ -1198,9 +1203,23 @@
 
 /* ── Reduced motion overrides ───────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  /* Automation — stop dashed line animation */
+  /* Automation — stop dashed line animation and slide transitions */
   .ps-dash-flow {
     animation: none !important;
+  }
+
+  .ps-n8n-slide {
+    transition: none !important;
+    opacity: 0 !important;
+    transform: none !important;
+  }
+
+  .ps-n8n-slide--active {
+    opacity: 1 !important;
+  }
+
+  .ps-n8n-slide--exit {
+    opacity: 0 !important;
   }
 
   /* Revenue engine — stop gear spin */
