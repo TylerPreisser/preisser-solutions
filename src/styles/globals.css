@@ -4215,7 +4215,7 @@ button {
 /* ── Case Studies / Work Carousel ─────────────────────────── */
 .ps-work {
   background-color: var(--color-dark);
-  padding: var(--section-py-desktop) 0;
+  padding: var(--section-py-desktop) 24px;
   overflow: hidden;
 }
 
@@ -5213,4 +5213,299 @@ button {
   .ps-tech-partners-header {
     margin-bottom: 24px;
   }
+}
+
+/* =============================================================
+   MOBILE OPTIMIZATION — Comprehensive pass 2026-04-04
+   Targets: 320px–768px, iOS Safari, Android Chrome
+   All changes are additive/override; no desktop rules removed.
+   ============================================================= */
+
+/* ── Header: reduce horizontal padding and ensure 44px tap targets ── */
+@media (max-width: 768px) {
+  .ps-header-inner {
+    /* Reduce from 32px to 16px so logo + CTA fit on 320px screens */
+    padding: 0 16px;
+    gap: 12px;
+  }
+
+  /* Ensure theme toggle meets 44x44px minimum touch target */
+  .ps-theme-toggle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+  }
+
+  /* Ensure hamburger meets 44x44px minimum touch target */
+  .ps-hamburger {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Tighten CTA button padding so it does not crowd the logo */
+  .ps-header-cta {
+    padding: 10px 14px;
+    font-size: 0.8125rem;
+  }
+}
+
+/* ── Hero: reduce excessive bottom padding on small screens ── */
+@media (max-width: 768px) {
+  .ps-hero-content {
+    padding-top: 24px;
+    /* Reduce bottom padding from 100px to 60px on mobile */
+    padding-bottom: 60px;
+  }
+
+  .ps-hero-headline {
+    /* Safety: prevent overflow on 320px viewport */
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .ps-hero-ctas {
+    /* Stack buttons vertically on small screens */
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ps-hero-ctas .ps-btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+/* ── Problem Section: reduce card padding on mobile ── */
+@media (max-width: 768px) {
+  .ps-problem-card {
+    /* Reduce from 40px to 24px padding on mobile */
+    padding: 24px;
+  }
+
+  .ps-problem-body p {
+    font-size: 1rem;
+  }
+}
+
+/* ── Services Header: reduce bottom margin on mobile ── */
+@media (max-width: 768px) {
+  .ps-services-header {
+    margin-bottom: 40px;
+  }
+}
+
+/* ── Bento Cards: expand touch target for expand icon on mobile ── */
+@media (max-width: 768px) {
+  /* Expand icon: increase to 44px touch target */
+  .ps-bento-card__expand {
+    width: 44px;
+    height: 44px;
+    top: 12px;
+    right: 12px;
+  }
+
+  .ps-bento-card__expand svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Bento card title: slightly smaller on mobile */
+  .ps-bento-card__title {
+    font-size: 1rem;
+    max-width: 220px;
+  }
+}
+
+/* ── Dialog / Bottom Sheet: dvh fix + show close button on mobile ── */
+@media (max-width: 768px) {
+  .ps-dialog-panel {
+    /* Use dvh for iOS Safari correct viewport height (100vh bug fix) */
+    max-height: 92dvh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .ps-dialog-visual {
+    height: 240px;
+  }
+
+  /* Show close button on mobile — users need a visible dismiss target */
+  .ps-dialog-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #ffffff;
+    z-index: 10;
+    cursor: pointer;
+    border: none;
+    /* iOS Safari: force GPU layer to prevent backdrop-filter flicker */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+
+/* ── Dialog content: reduce padding on very small screens ── */
+@media (max-width: 480px) {
+  .ps-dialog-content {
+    padding: 16px 16px 40px;
+  }
+
+  .ps-dialog-title {
+    font-size: 1.25rem;
+  }
+
+  .ps-dialog-stat {
+    padding: 12px 10px;
+  }
+
+  .ps-dialog-stat__number {
+    font-size: 1.375rem;
+  }
+}
+
+/* ── Service carousel inside dialog: sneak-peek next card ── */
+@media (max-width: 768px) {
+  /* Slightly narrower cards so partial next card is visible */
+  .ps-carousel-card {
+    width: calc(100vw - 80px);
+    max-width: 280px;
+  }
+
+  /* Increase carousel nav button tap targets to 44px */
+  .ps-carousel-btn {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ── Case Studies: always-visible overlay on touch devices ── */
+@media (max-width: 768px) {
+  /* On touch devices, hover does not fire reliably.
+     Show the overlay content always so cards are informative on tap. */
+  .ps-work-card-overlay {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  /* Hide the client-name label since the overlay already covers it */
+  .ps-work-card-client {
+    opacity: 0;
+  }
+
+  /* Slightly smaller cards for better 320px viewport fit */
+  .ps-work-card {
+    width: 240px;
+  }
+
+  /* Work nav buttons: ensure 44px tap targets */
+  .ps-work-nav-btn {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ── CTA Section: stack buttons on narrow screens ── */
+@media (max-width: 640px) {
+  .ps-cta-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ps-cta-buttons .ps-btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+/* ── Footer: increase link tap target height for touch ── */
+@media (max-width: 768px) {
+  .ps-footer-links a {
+    display: block;
+    padding: 8px 0;
+    line-height: 1.5;
+  }
+
+  .ps-footer-social a {
+    padding: 8px 0;
+    line-height: 1.5;
+  }
+
+  .ps-footer {
+    padding: 60px 0 32px;
+  }
+}
+
+/* ── Why Us mobile carousel: fix on very narrow screens ── */
+@media (max-width: 639px) {
+  /* Prevent item width from causing horizontal overflow on 320px */
+  .mobile-carousel__item {
+    width: min(calc(100vw - 32px), 480px);
+  }
+
+  /* Reduce image aspect ratio so cards are not too tall on narrow screens */
+  .events-mobile-carousel-card__media {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* Full-width CTA inside mobile carousel cards */
+  .events-mobile-carousel-card__link {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── Tech Partners: narrow fade mask on very small screens ── */
+@media (max-width: 480px) {
+  /* Reduce fade edges from 80px to 32px so more pills are visible.
+     At 320px viewport, 80px masks eat 50% of the visible area. */
+  .ps-tech-partners-viewport {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 32px,
+      #000 calc(100% - 32px),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 32px,
+      #000 calc(100% - 32px),
+      transparent 100%
+    );
+  }
+}
+
+/* ── Prevent horizontal overflow on all sections ── */
+@media (max-width: 768px) {
+  .ps-problem-inner,
+  .ps-services,
+  .ps-why,
+  .ps-work,
+  .ps-cta-section,
+  .ps-footer {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+}
+
+/* ── Tighten container padding on very narrow viewports ── */
+@media (max-width: 360px) {
+  :root {
+    --container-padding: 16px;
+  }
+}
+
+/* ── iOS Safari: prevent horizontal rubber-band scroll ── */
+/* Ensures horizontal swipe does not expose overflow content */
+body {
+  overscroll-behavior-x: none;
 }
