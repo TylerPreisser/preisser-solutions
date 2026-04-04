@@ -5,8 +5,8 @@ import { useEffect, useRef } from "react";
 const valueItems = [
   {
     icon: "//",
-    strong: "We build websites, apps, automations,",
-    text: " and everything in between",
+    strong: "Websites, apps, automations,",
+    text: " dashboards, and integrations",
   },
   {
     icon: "->",

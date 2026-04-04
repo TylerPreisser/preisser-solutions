@@ -11,9 +11,9 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <TechPartners />
       <ValueStrip />
       <ProblemSection />
+      <TechPartners />
       <ServicePillars />
       <WhyUs />
       <CaseStudies />
