@@ -100,11 +100,6 @@ const services: ServicePillar[] = [
           "Client portals, booking systems, internal tools, intake forms, calculators. If you need more than a website, we build it.",
       },
       {
-        title: "Form Routing & Smart Contact Systems",
-        description:
-          "Forms that categorize inquiries by type and auto-route to the right person. AI auto-responses for common questions.",
-      },
-      {
         title: "UI/UX Redesign",
         description:
           "Your current site works but looks outdated. We redesign for modern aesthetics and higher conversion without rebuilding from scratch.",
@@ -160,42 +155,52 @@ const services: ServicePillar[] = [
       {
         title: "AI Document Processing",
         description:
-          "Upload an invoice, contract, or form. AI reads it, extracts the data, categorizes it, and routes it. Seconds, not hours.",
+          "Upload invoices, contracts, or forms. AI reads, extracts data, categorizes, and routes it to your systems. Seconds, not hours.",
       },
       {
         title: "Automated Scheduling & Reminders",
         description:
-          "Confirmations, reminders, follow-ups, reschedules via SMS and email. No-shows drop. Staff gets their time back.",
+          "Confirmations, reminders, follow-ups, and reschedules via SMS and email. No-shows drop. Staff gets their time back.",
       },
       {
-        title: "Customer Reactivation Engines",
+        title: "AI Customer Reactivation",
         description:
-          "AI outreach that re-engages dormant customers with personalized messages. Proven 60%+ reactivation rates.",
+          "Dormant customer lists turned into revenue. AI crafts personalized outreach that reactivates 60%+ of inactive clients.",
       },
       {
-        title: "Lead Routing & Auto-Response",
+        title: "Smart Lead Routing & Auto-Response",
         description:
-          "New lead captured, auto-responded to in under 60 seconds, routed to the right person. No more missed inquiries.",
+          "New inquiry captured, auto-responded in under 60 seconds, categorized, and routed to the right person. Nothing falls through.",
+      },
+      {
+        title: "Form Routing & Intake Automation",
+        description:
+          "Incoming form submissions categorized by type, auto-triaged, and routed with AI responses for common questions.",
+      },
+      {
+        title: "Inventory Management Systems",
+        description:
+          "Live tracking, automated reorder alerts, inter-site transfers, and cost formulas. From spreadsheets to a real system.",
       },
       {
         title: "Employee Onboarding Automation",
         description:
-          "Document collection, form signing, tax paperwork, equipment tracking — all automated.",
-      },
-      {
-        title: "Inventory Monitoring & Reorder Alerts",
-        description:
-          "Real-time stock tracking with automated alerts or auto-reorder when inventory hits threshold.",
+          "Document collection, form signing, tax paperwork, equipment tracking — all automated before day one.",
       },
       {
         title: "Custom AI Assistants",
         description:
-          "A digital team member that knows your business. Handles inquiries and routine tasks 24/7.",
+          "A digital team member that knows your business. Handles inquiries, pulls data, and manages routine tasks 24/7.",
       },
       {
-        title: "Process Standardization",
+        title: "After-Hours Call & Text Triage",
         description:
-          "Your team does the same task five different ways. We build a workflow that enforces the right process every time.",
+          "Every after-hours inquiry received, assessed by AI, auto-responded via SMS, logged, and routed by urgency.",
+      },
+      {
+        title: "Process Standardization & Compliance",
+        description:
+          "Your team does the same task five different ways. We build AI-enforced workflows that ensure consistency and compliance every time.",
       },
     ],
     differentiators: [
@@ -248,32 +253,32 @@ const services: ServicePillar[] = [
       {
         title: "Platform Integration",
         description:
-          "CRM doesn't talk to accounting. Scheduling disconnected from customer database. We wire your tools together.",
+          "CRM doesn't talk to accounting. Scheduling disconnected from customer database. We wire your tools together so data flows once.",
       },
       {
         title: "Tool Stack Audit & Consolidation",
         description:
-          "Paying for 8+ overlapping subscriptions? We audit, consolidate, migrate. Typical savings: $500–$1,500/month.",
+          "Paying for 8+ overlapping subscriptions? We audit, consolidate, and migrate. Typical savings: $500-$1,500/month.",
       },
       {
         title: "System Diagnostics & Fixes",
         description:
-          "Something's off. We diagnose root cause and fix it properly. Not a patch. A real fix.",
+          "Something's slow, clunky, or breaking at the worst time. We diagnose root cause and fix it properly.",
       },
       {
         title: "Spreadsheet to Real System Migration",
         description:
-          "Still tracking in Excel? We move you to modern tools without losing data.",
+          "Still tracking in Excel? We move you to modern tools without losing data and set it up right from day one.",
       },
       {
-        title: "Communication & Intake Routing",
+        title: "AI-Powered Compliance & Documentation",
         description:
-          "Messages from everywhere, nothing centralized. We build unified intake that routes and tracks everything.",
+          "Processes that live in people's heads get documented, systematized, and enforced by AI — so knowledge never walks out the door.",
       },
       {
-        title: "Process Documentation & Systematization",
+        title: "Data Pipeline & API Integration",
         description:
-          "Best processes live in people's heads. We document them, then build systems around them.",
+          "Custom connections between any systems via APIs, middleware, or automation layers. Your data flows where it needs to go.",
       },
     ],
     differentiators: [
@@ -319,39 +324,49 @@ const services: ServicePillar[] = [
     ],
     serviceTiles: [
       {
-        title: "Automated Social Media Engine",
+        title: "AI-Powered Customer Segmentation",
         description:
-          "Generates, designs, and publishes content daily. Optional approval or fully autonomous. 5x reach increase in 30 days (proven).",
+          "AI analyzes your customer data and segments by behavior, value, and likelihood to convert. Target the right people with the right message.",
       },
       {
-        title: "Email & SMS Customer Reactivation",
+        title: "Individualized AI Marketing",
         description:
-          "AI identifies dormant customers, crafts personalized messages, sends optimized outreach. 60%+ reactivation.",
+          "Hyper-personalized outreach crafted by AI for each customer based on their history, preferences, and engagement patterns.",
       },
       {
-        title: "SEO & AI Search Optimization",
+        title: "AI-Powered Advertising Management",
         description:
-          "Found on Google AND in AI search results. Show up everywhere people search.",
-      },
-      {
-        title: "Automated Review Generation",
-        description:
-          "Post-service SMS review requests. Target: 50+ reviews in 90 days.",
-      },
-      {
-        title: "Lead Capture & Nurture Funnels",
-        description:
-          "Landing pages, lead magnets, email capture, automated nurture, CRM integration.",
+          "Google Ads, Facebook Ads, managed and optimized by AI. Budget allocation, bid strategy, and creative testing on autopilot.",
       },
       {
         title: "Speed-to-Lead Auto Response",
         description:
-          "New inquiry, personalized response in under 60 seconds, captured in CRM, right person notified.",
+          "New inquiry, personalized response in under 60 seconds, captured in CRM, right person notified. First response wins the customer.",
+      },
+      {
+        title: "Digital Presence Overhaul",
+        description:
+          "Full audit and rebuild of your online footprint — website, Google Business Profile, social accounts, review systems, local SEO.",
+      },
+      {
+        title: "SEO & AI Search Optimization",
+        description:
+          "Found on Google AND in AI search results. Content architecture for traditional SEO and AI citations.",
+      },
+      {
+        title: "Automated Review Generation",
+        description:
+          "Post-service SMS review requests that make it effortless. Target: 50+ reviews in 90 days.",
+      },
+      {
+        title: "Lead Capture & Nurture Funnels",
+        description:
+          "Landing pages, lead magnets, email capture, automated nurture sequences, CRM integration. Every lead followed up for 90 days.",
       },
       {
         title: "Marketing Performance Dashboard",
         description:
-          "See exactly which channels drive leads and revenue. Connected to ads, social, email, CRM.",
+          "See exactly which channels drive leads and revenue. Connected to ads, social, email, and CRM.",
       },
     ],
     differentiators: [
@@ -397,34 +412,39 @@ const services: ServicePillar[] = [
     ],
     serviceTiles: [
       {
-        title: "Owner Dashboard",
+        title: "Executive Dashboard",
         description:
-          "One screen. Revenue, expenses, KPIs, cash flow, and trends — updated automatically from your systems.",
+          "One screen, three-second status of your entire business. Revenue, expenses, KPIs, cash flow — updated in real time.",
+      },
+      {
+        title: "AI-Powered Business Insights",
+        description:
+          "Ask your dashboard questions in plain English. 'Why is revenue down this month?' 'Which service is most profitable?' AI answers from your real data.",
       },
       {
         title: "Financial Health Dashboard",
         description:
-          "Live connection to QuickBooks, bank, and invoicing. AR aging, cash position, revenue vs. forecast.",
+          "Live connection to QuickBooks, your bank, and invoicing. AR aging, cash position, revenue vs. forecast — always current.",
       },
       {
-        title: "Employee / Technician Productivity",
+        title: "Employee & Technician Productivity",
         description:
           "Revenue per tech, avg ticket, utilization, callbacks — pulled from your service platform automatically.",
       },
       {
         title: "Marketing ROI Tracker",
         description:
-          "One view connecting Google Ads, website analytics, social, and Google Business Profile.",
+          "One view connecting Google Ads, website analytics, social, and Google Business Profile. Know exactly what's working.",
       },
       {
         title: "Automated KPI & Trend Reporting",
         description:
-          "Reports delivered to your inbox. Revenue trends, seasonal patterns, capacity forecasts. Zero effort.",
+          "Reports delivered to your inbox on whatever cadence you need. Zero effort from you.",
       },
       {
-        title: "Data Cleanup & Consolidation",
+        title: "AI System Integration Dashboard",
         description:
-          "Data scattered and inconsistent. We consolidate, clean, and connect into one source of truth.",
+          "All your tools, all your data, one unified view. AI monitors for anomalies and alerts you before problems escalate.",
       },
     ],
     differentiators: [
