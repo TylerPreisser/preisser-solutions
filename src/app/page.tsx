@@ -1,4 +1,5 @@
 import { Hero } from "@/components/home/hero";
+import { TechPartners } from "@/components/home/tech-partners";
 import { ValueStrip } from "@/components/home/value-strip";
 import { ProblemSection } from "@/components/home/problem-section";
 import { ServicePillars } from "@/components/home/service-pillars";
@@ -10,6 +11,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <TechPartners />
       <ValueStrip />
       <ProblemSection />
       <ServicePillars />

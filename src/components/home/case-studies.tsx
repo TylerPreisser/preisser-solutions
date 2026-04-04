@@ -244,9 +244,6 @@ export function CaseStudies() {
             <div className="ps-work-card-overlay" aria-label={`${study.title} case study details`}>
               <span className="ps-work-card-tag">{study.tags}</span>
               <p className="ps-work-card-result">{study.description}</p>
-              <span className="ps-work-card-link">
-                View project <span aria-hidden="true">&gt;</span>
-              </span>
             </div>
           </article>
         ))}
