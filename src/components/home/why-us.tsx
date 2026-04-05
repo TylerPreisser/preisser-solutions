@@ -41,7 +41,7 @@ const whyFeatures: WhyFeature[] = [
     mobileImage: "/images/stripe/the-happenings-tidemark-mobile.png",
     alt: "Analytics and systems placeholder",
     href: "/#case-studies",
-    cta: "See the outcomes",
+    cta: "Get in Touch",
   },
   {
     id: 2,
@@ -49,11 +49,11 @@ const whyFeatures: WhyFeature[] = [
     title: "Built for Your Business. Not a Template.",
     description:
       "We study your operation, understand your workflows, and build a solution that fits your business specifically.",
-    image: "/images/Tyler Portait.jpeg",
-    mobileImage: "/images/Tyler Portait.jpeg",
-    alt: "Portrait placeholder for custom-fit systems",
-    href: "/services",
-    cta: "Explore our services",
+    image: "/images/why-us/not-a-template.webp",
+    mobileImage: "/images/why-us/not-a-template.webp",
+    alt: "Custom-built technology solutions, not templates",
+    href: "/contact",
+    cta: "Get in Touch",
   },
   {
     id: 3,
@@ -61,11 +61,11 @@ const whyFeatures: WhyFeature[] = [
     title: "We Stay With It.",
     description:
       "Every system we build comes with ongoing support. If something breaks, we fix it. If your business changes, we adapt the system.",
-    image: "/images/stripe/the-happenings-agentic-mobile.png",
-    mobileImage: "/images/stripe/the-happenings-agentic-mobile.png",
-    alt: "Ongoing support placeholder graphic",
+    image: "/images/why-us/we-stay-with-it.webp",
+    mobileImage: "/images/why-us/we-stay-with-it.webp",
+    alt: "Ongoing support and system maintenance",
     href: "/contact",
-    cta: "Talk with Tyler",
+    cta: "Get in Touch",
   },
   {
     id: 4,
@@ -73,11 +73,11 @@ const whyFeatures: WhyFeature[] = [
     title: "You Work Directly With the Builder.",
     description:
       "No handoffs. No junior developers. No account managers. When you reach out, you talk to the person writing the code.",
-    image: "/images/stripe/annual-letter-mobile.png",
-    mobileImage: "/images/stripe/annual-letter-mobile.png",
-    alt: "Direct access placeholder graphic",
-    href: "/about",
-    cta: "Meet Tyler",
+    image: "/images/why-us/work-direct.webp",
+    mobileImage: "/images/why-us/work-direct.webp",
+    alt: "Work directly with the builder",
+    href: "/contact",
+    cta: "Get in Touch",
   },
   {
     id: 5,
@@ -85,11 +85,11 @@ const whyFeatures: WhyFeature[] = [
     title: "Built for Kansas Businesses.",
     description:
       "Based in Hays, Kansas and built for local and regional businesses that need real systems, not startup theater.",
-    image: "/images/stripe/wave_crop.jpg",
-    mobileImage: "/images/stripe/the-happenings-cheeky-pint-mobile.png",
-    alt: "Kansas-built placeholder image",
+    image: "/images/why-us/kansas-built.webp",
+    mobileImage: "/images/why-us/kansas-built.webp",
+    alt: "Built for Kansas businesses",
     href: "/contact",
-    cta: "Start the conversation",
+    cta: "Get in Touch",
   },
 ];
 
