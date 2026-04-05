@@ -34,8 +34,8 @@ const caseStudyCards: CaseStudyCard[] = [
     tags: "Portfolio | GEO/SEO | AI Search Optimization",
     description:
       "Professional portfolio structured to be cited by ChatGPT, Perplexity, and Google AI Overviews. Fixed a critical JS rendering issue blocking crawlers.",
-    gradient: "linear-gradient(135deg, #C4B49A 0%, #A89880 100%)",
-    image: "tyler-headshot.webp",
+    gradient: "linear-gradient(135deg, #0D95E8 0%, #0A1628 100%)",
+    image: "tyler-headshot-nobg.webp",
   },
   {
     title: "Wife Supply Co",
@@ -98,7 +98,7 @@ const caseStudyCards: CaseStudyCard[] = [
     description:
       "Centralized inventory platform with live tracking, inter-site transfers, automated cost formulas, and real-time reporting for insurance audits and compliance.",
     gradient: "linear-gradient(135deg, #f0f4f8 0%, #dce8f0 100%)",
-    image: "hg-oil.webp",
+    image: "hg-oil-icon.webp",
     lightCard: true,
   },
   {
