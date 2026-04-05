@@ -25,9 +25,9 @@ const whyFeatures: WhyFeature[] = [
     title: "We Build Everything In-House.",
     description:
       "No subcontractors. No offshore teams. No white-labeled templates. Tyler Preisser designs it, builds it, and supports it.",
-    image: "/images/stripe/browserbase.png",
-    mobileImage: "/images/stripe/browserbase.png",
-    alt: "Custom software interface placeholder",
+    image: "/images/ps-logo.webp",
+    mobileImage: "/images/ps-logo.webp",
+    alt: "Preisser Solutions logo — we build everything in-house",
     href: "/contact",
     cta: "Tell us what you need",
   },
@@ -180,7 +180,7 @@ export function WhyUs() {
                 return (
                   <div
                     key={item.id}
-                    className={`ps-squeeze-card${isActive ? " ps-squeeze-card--active" : ""}`}
+                    className={`ps-squeeze-card${isActive ? " ps-squeeze-card--active" : ""}${i === 0 ? " ps-squeeze-card--logo" : ""}`}
                     onClick={() => !isActive && setActiveIndex(i)}
                     role={isActive ? undefined : "button"}
                     tabIndex={isActive ? -1 : 0}
