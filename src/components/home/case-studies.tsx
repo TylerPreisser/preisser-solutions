@@ -52,7 +52,7 @@ const caseStudyCards: CaseStudyCard[] = [
     description:
       "AI-powered SMS and email outreach that reactivated 60%+ of dormant customers. 45% increase in booking conversions.",
     gradient: "linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%)",
-    image: "cassidy-hvac.webp",
+    image: "cassidy-hvac-nobg.webp",
     lightCard: true,
   },
   {
