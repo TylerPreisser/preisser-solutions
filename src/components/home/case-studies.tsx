@@ -509,6 +509,51 @@ const caseStudyCards: CaseStudyCard[] = [
     gradient: "linear-gradient(135deg, #0A1628 0%, #1a1040 50%, #0A1628 100%)",
     image: "r-squared.webp",
   },
+  {
+    title: "Same Battles",
+    tags: "Website Build | Bible Study Resource | Content Platform",
+    description:
+      "Bible study resource website for hosting verses, devotional content, and weekly men's study materials. Built from scratch with a clean, purpose-driven design.",
+    gradient: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+    image: "same-battles.webp",
+  },
+  {
+    title: "Church iOS Application",
+    tags: "iOS App | SwiftUI | Liquid Glass UI",
+    description:
+      "Modern iOS application built with Apple's latest liquid glass design language and SwiftUI. Cutting-edge mobile experience for community engagement and church operations.",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #1E3A5F 50%, #0D95E8 100%)",
+    svgIcon: (
+      <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="church-glass" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#80E9FF" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#0D95E8" stopOpacity="0.6" />
+          </linearGradient>
+          <radialGradient id="church-glow" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stopColor="#0D95E8" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#0D95E8" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <circle cx="60" cy="60" r="50" fill="url(#church-glow)" />
+        {/* iPhone outline */}
+        <rect x="35" y="12" width="50" height="96" rx="12" stroke="#80E9FF" strokeWidth="1.5" strokeOpacity="0.5" />
+        {/* Notch */}
+        <rect x="50" y="16" width="20" height="5" rx="2.5" fill="#0D95E8" fillOpacity="0.3" />
+        {/* Glass effect panels */}
+        <rect x="40" y="28" width="40" height="20" rx="6" fill="url(#church-glass)" stroke="#80E9FF" strokeWidth="0.5" strokeOpacity="0.3" />
+        <rect x="40" y="52" width="40" height="14" rx="6" fill="url(#church-glass)" stroke="#80E9FF" strokeWidth="0.5" strokeOpacity="0.3" />
+        <rect x="40" y="70" width="40" height="14" rx="6" fill="url(#church-glass)" stroke="#80E9FF" strokeWidth="0.5" strokeOpacity="0.3" />
+        {/* Tab bar */}
+        <rect x="40" y="90" width="40" height="10" rx="5" fill="#0D95E8" fillOpacity="0.15" />
+        <circle cx="50" cy="95" r="2" fill="#0D95E8" fillOpacity="0.6" />
+        <circle cx="60" cy="95" r="2" fill="#80E9FF" />
+        <circle cx="70" cy="95" r="2" fill="#0D95E8" fillOpacity="0.6" />
+        {/* Apple-style glow at top */}
+        <ellipse cx="60" cy="35" rx="15" ry="8" fill="#80E9FF" fillOpacity="0.08" />
+      </svg>
+    ),
+  },
 ];
 
 export function CaseStudies() {
