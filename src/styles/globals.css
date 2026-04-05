@@ -4325,6 +4325,13 @@ button {
   transition: opacity 280ms ease;
 }
 
+/* Headshot card — larger image, no drop shadow so it blends with gradient */
+.ps-work-card-logo--headshot {
+  max-width: 75%;
+  max-height: 65%;
+  filter: none;
+}
+
 .ps-work-card:hover .ps-work-card-logo,
 .ps-work-card:focus-within .ps-work-card-logo {
   opacity: 0;
@@ -4336,8 +4343,8 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -60%);
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   z-index: 1;
   color: rgba(255, 255, 255, 0.7);
   pointer-events: none;
@@ -4368,6 +4375,11 @@ button {
   z-index: 2;
   pointer-events: none;
   transition: opacity 280ms ease;
+}
+
+/* Light card variant — dark text for cream/white backgrounds */
+.ps-work-card--light .ps-work-card-client {
+  color: #1E293B;
 }
 
 .ps-work-card:hover .ps-work-card-client,
@@ -4447,6 +4459,29 @@ button {
   .ps-work-card {
     width: 260px;
   }
+}
+
+/* "See more" text link below the carousel */
+.ps-work-see-more {
+  max-width: var(--container-max);
+  margin: 24px auto 0;
+  padding: 0 var(--container-padding);
+  text-align: right;
+}
+
+.ps-work-see-more a {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: gap 200ms ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ps-work-see-more a:hover {
+  gap: 8px;
 }
 
 /* ── CTA Section ───────────────────────────────────────────── */
