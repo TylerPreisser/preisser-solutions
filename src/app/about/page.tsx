@@ -6,7 +6,16 @@ import { siteConfig } from "@/data/site-config";
 export const metadata: Metadata = {
   title: "About Tyler Preisser",
   description:
-    "Tyler Preisser builds custom AI and automation solutions for Kansas businesses. Direct access, real expertise, measurable results.",
+    "Tyler Preisser is a builder — patented inventions, AI systems, and automation tools for Kansas businesses. Direct access to the person who designs, builds, and stands behind the work.",
+  alternates: {
+    canonical: "https://preissersolutions.com/about",
+  },
+  openGraph: {
+    title: "About Tyler Preisser | Preisser Solutions",
+    description:
+      "Tyler Preisser is a builder — patented inventions, AI systems, and automation tools for Kansas businesses. Direct access to the person who designs, builds, and stands behind the work.",
+    url: "https://preissersolutions.com/about",
+  },
 };
 
 export default function AboutPage() {

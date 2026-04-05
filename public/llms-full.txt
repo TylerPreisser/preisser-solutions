@@ -1,0 +1,553 @@
+# Preisser Solutions — Full Site Content
+
+> Complete content reference for Preisser Solutions (preissersolutions.com). AI-first technology services company based in Hays, Kansas. Founded and operated by Tyler Preisser.
+
+---
+
+## Site Metadata
+
+- **Company**: Preisser Solutions
+- **Domain**: preissersolutions.com
+- **Owner/Founder**: Tyler Preisser
+- **Location**: Hays, Kansas
+- **Email**: sales@preissersolutions.com
+- **Phone**: +1-620-352-3296
+- **Description**: Preisser Solutions builds websites, applications, automation systems, dashboards, and more for businesses across Kansas. Custom-built. AI-powered speed. Work directly with Tyler Preisser.
+
+---
+
+## Homepage
+
+### Hero Section
+
+**Eyebrow**: AI-First Builders
+
+**Headline**: We Build What Your Business Needs.
+
+**Subheadline**: Websites. Applications. Automations. Dashboards. Integrations. Whatever technology problem you've got — Preisser Solutions builds the solution. From scratch. For you.
+
+**Primary CTA**: Get in Touch → /contact
+**Secondary CTA**: See What We Build → /#services
+
+---
+
+### Key Advantages (Value Strip)
+
+1. **Websites, apps, automations,** dashboards, and integrations
+2. **AI-first methodology —** we ship in weeks, not months
+3. **Built for Kansas businesses,** not Silicon Valley startups
+4. **You work directly with the person** who builds it
+
+---
+
+### The Problem Section
+
+**Eyebrow**: The Problem
+
+**Heading**: You Know What Your Business Needs. You Just Need Someone Who Can Build It.
+
+**Body**:
+
+Every business hits a point where the technology can't keep up. Your website's outdated. Your systems don't talk to each other. Your team is buried in manual work that should've been automated years ago. You need a custom tool and nothing on the market fits. You need something built — and you need someone who can actually do it.
+
+That's what Preisser Solutions is. We're builders. You bring us the problem, we build the solution. Websites. Applications. Automation systems. Dashboards. Integrations. If it involves technology, we can design it and build it — from concept to deployment.
+
+The difference? We build with AI at the core of everything we do. Not as a gimmick. As a method. It means we can do in two weeks what a traditional dev shop quotes you three months for. Same quality. Fraction of the time. Because the tools we use to build are a generation ahead of everyone else in this space.
+
+**What We Find In Every Business**:
+- Your website is outdated and not pulling its weight
+- Your systems don't talk to each other
+- Your team is buried in manual work that should've been automated years ago
+- You need something custom and nothing on the market fits
+
+**Resolution**: You bring us the problem, and we build the solution.
+
+---
+
+### Technology Stack
+
+**Heading**: Built With the Best Tools in the Industry
+
+Technologies: OpenAI, Anthropic, Google Gemini, Cursor, Cloudflare, Google Workspace, Next.js, React, Tailwind CSS, n8n, Zapier, Make, Vercel, GitHub, TypeScript, Node.js, Python, GSAP, Figma, Stripe
+
+---
+
+### Services (What We Build)
+
+#### 1. Websites & Applications
+
+**Description**: Professional sites, custom apps, client portals, and e-commerce systems — built from scratch, built to perform.
+
+**Key Stats**:
+- 81% of consumers research online before buying
+- 3 in 4 Americans now search with AI weekly
+- 70%+ of businesses see revenue increase after site launch
+
+**Common Pain Points**:
+- "I don't even have a website"
+- "My site looks like it was made in 2010"
+- "Nobody finds me on Google"
+- "I don't show up when people ask ChatGPT for recommendations"
+- "People visit my site but never contact me"
+- "I have 6 Google reviews from 3 years ago"
+
+**Specific Services**:
+- **Professional Website Builds**: Custom-coded, fast-loading, mobile-optimized websites. No templates, no page builders. Built to rank and convert.
+- **AI Search Optimization (GEO)**: Your site optimized for ChatGPT, Perplexity, Google AI Overviews. 900M people use ChatGPT weekly. If you're not in those answers, your competitor is.
+- **Google Business Profile & Review Systems**: Full profile optimization plus automated review request systems. Top-ranking local businesses average 47 reviews.
+- **SEO & Local Search**: Site structure, content, and technical performance built to rank for the searches that matter in your market.
+- **Custom Web Applications**: Client portals, booking systems, internal tools, intake forms, calculators. If you need more than a website, we build it.
+- **UI/UX Redesign**: Your current site works but looks outdated. We redesign for modern aesthetics and higher conversion without rebuilding from scratch.
+- **E-Commerce & Online Sales**: Product catalogs, payments, inventory sync, automated orders. A real store, not a template.
+
+**Why Preisser Solutions**:
+- AI search is our edge. We build for ChatGPT, Perplexity, and AI Overviews — not just Google. Almost nobody locally does this yet.
+- You own everything. Your code. Your domain. Your data. No proprietary lock-in.
+- Sites that generate business. Not digital brochures. Lead machines with tracking, forms, and conversion optimization built in.
+
+---
+
+#### 2. Automation Systems
+
+**Description**: AI-powered engines that handle your repetitive work — invoicing, outreach, document processing, you name it.
+
+**Key Stats**:
+- 240% average ROI, typically paid back in 6-9 months
+- 70–90% time reduction in document processing with AI
+- $46K/yr average savings from fewer errors and less manual work
+
+**Common Pain Points**:
+- "My staff spends hours every week on data entry"
+- "Invoices pile up and nobody processes them fast enough"
+- "We forget to follow up with customers"
+- "I can't afford another hire but we're drowning"
+- "Scheduling and reminders are all manual"
+- "Our process is different every time depending on who does it"
+
+**Specific Services**:
+- **AI Document Processing**: Upload invoices, contracts, or forms. AI reads, extracts data, categorizes, and routes it to your systems. Seconds, not hours.
+- **Automated Scheduling & Reminders**: Confirmations, reminders, follow-ups, and reschedules via SMS and email. No-shows drop. Staff gets their time back.
+- **AI Customer Reactivation**: Dormant customer lists turned into revenue. AI crafts personalized outreach that reactivates 60%+ of inactive clients.
+- **Smart Lead Routing & Auto-Response**: New inquiry captured, auto-responded in under 60 seconds, categorized, and routed to the right person. Nothing falls through.
+- **Form Routing & Intake Automation**: Incoming form submissions categorized by type, auto-triaged, and routed with AI responses for common questions.
+- **Inventory Management Systems**: Live tracking, automated reorder alerts, inter-site transfers, and cost formulas. From spreadsheets to a real system.
+- **Employee Onboarding Automation**: Document collection, form signing, tax paperwork, equipment tracking — all automated before day one.
+- **Custom AI Assistants**: A digital team member that knows your business. Handles inquiries, pulls data, and manages routine tasks 24/7.
+- **After-Hours Call & Text Triage**: Every after-hours inquiry received, assessed by AI, auto-responded via SMS, logged, and routed by urgency.
+- **Process Standardization & Compliance**: Your team does the same task five different ways. We build AI-enforced workflows that ensure consistency and compliance every time.
+
+**Why Preisser Solutions**:
+- Custom-built, not off-the-shelf. No generic Zapier chains. Every automation engineered for your specific workflow.
+- AI-first means smarter. Our automations read documents, understand context, and make intelligent decisions — not just follow rules.
+- Proven numbers. 75% reduction in invoice handling. 60%+ customer reactivation. 95% reduction in inventory tracking time.
+
+---
+
+#### 3. System Fixes & Efficiency
+
+**Description**: Something's slow, broken, or redundant? We find it and fix it with better tech.
+
+**Key Stats**:
+- 22% average cost reduction within 3 years of streamlining tech
+- 90% of manual data entry errors eliminated through automation
+- 10–50% cost savings from consolidating redundant tools
+
+**Common Pain Points**:
+- "We enter the same data in three different systems"
+- "I'm paying for 8 tools and none of them talk to each other"
+- "We have workarounds for everything"
+- "We're still running on spreadsheets for critical stuff"
+- "Our software is slow and everyone hates it"
+- "Every time someone quits their knowledge walks out the door"
+
+**Specific Services**:
+- **Workflow Efficiency Overhaul**: We walk through how your team actually works. Find the bottlenecks and eliminate them with a working solution.
+- **Platform Integration**: CRM doesn't talk to accounting. Scheduling disconnected from customer database. We wire your tools together so data flows once.
+- **Tool Stack Audit & Consolidation**: Paying for 8+ overlapping subscriptions? We audit, consolidate, and migrate. Typical savings: $500–$1,500/month.
+- **System Diagnostics & Fixes**: Something's slow, clunky, or breaking at the worst time. We diagnose root cause and fix it properly.
+- **Spreadsheet to Real System Migration**: Still tracking in Excel? We move you to modern tools without losing data and set it up right from day one.
+- **AI-Powered Compliance & Documentation**: Processes that live in people's heads get documented, systematized, and enforced by AI — so knowledge never walks out the door.
+- **Data Pipeline & API Integration**: Custom connections between any systems via APIs, middleware, or automation layers. Your data flows where it needs to go.
+
+**Why Preisser Solutions**:
+- Fixers, not consultants. No reports about your problems. We find what's broken and build the fix.
+- We know small business tech. QuickBooks. ServiceTitan. Square. Jobber. HubSpot. We've integrated them all.
+- Fixes that pay for themselves. Every improvement measured in time saved, errors eliminated, money recovered.
+
+---
+
+#### 4. Revenue Growth Engines
+
+**Description**: Automated content, email, SMS, and lead generation systems that keep marketing moving without constant babysitting.
+
+**Key Stats**:
+- 5x organic reach increase in 30 days with automated social (proven)
+- 60%+ dormant customer reactivation with AI outreach (proven)
+- 88% of customers read Google reviews before choosing local business
+
+**Common Pain Points**:
+- "I know I should post on social media but nobody has time"
+- "I have a huge customer list and we never contact them"
+- "I tried a marketing agency and it was a waste of money"
+- "My competitors show up before me everywhere"
+- "I get leads but nobody follows up fast enough"
+- "I have no idea what's working and what's not"
+
+**Specific Services**:
+- **AI-Powered Customer Segmentation**: AI analyzes your customer data and segments by behavior, value, and likelihood to convert. Target the right people with the right message.
+- **Individualized AI Marketing**: Hyper-personalized outreach crafted by AI for each customer based on their history, preferences, and engagement patterns.
+- **AI-Powered Advertising Management**: Google Ads, Facebook Ads, managed and optimized by AI. Budget allocation, bid strategy, and creative testing on autopilot.
+- **Speed-to-Lead Auto Response**: New inquiry, personalized response in under 60 seconds, captured in CRM, right person notified. First response wins the customer.
+- **Digital Presence Overhaul**: Full audit and rebuild of your online footprint — website, Google Business Profile, social accounts, review systems, local SEO.
+- **SEO & AI Search Optimization**: Found on Google AND in AI search results. Content architecture for traditional SEO and AI citations.
+- **Automated Review Generation**: Post-service SMS review requests that make it effortless. Target: 50+ reviews in 90 days.
+- **Lead Capture & Nurture Funnels**: Landing pages, lead magnets, email capture, automated nurture sequences, CRM integration. Every lead followed up for 90 days.
+- **Marketing Performance Dashboard**: See exactly which channels drive leads and revenue. Connected to ads, social, email, and CRM.
+
+**Why Preisser Solutions**:
+- Systems, not services. We build a marketing engine you own that runs automatically.
+- Proven, not projected. 5x reach. 60%+ reactivation. 45% conversion increase. Real numbers from real clients.
+- Full funnel. Not just ads or social — the entire pipeline from discovery to conversion to re-engagement.
+
+---
+
+#### 5. Dashboards & Business Intelligence
+
+**Description**: See your business clearly. Real-time data, live reporting, actionable insight.
+
+**Key Stats**:
+- 73% of business data goes completely unused for decisions
+- 23x more likely to acquire customers with data-driven decisions
+- 65% of small businesses are profitable but can't tell you where
+
+**Common Pain Points**:
+- "I don't know which services are actually profitable"
+- "I run reports end of month and by then it's too late"
+- "My team gives me different numbers depending on who I ask"
+- "I have QuickBooks but I never really look at it"
+- "I can't see trends — I'm too busy running the business"
+- "I have no idea if my marketing is working"
+
+**Specific Services**:
+- **Executive Dashboard**: One screen, three-second status of your entire business. Revenue, expenses, KPIs, cash flow — updated in real time.
+- **AI-Powered Business Insights**: Ask your dashboard questions in plain English. "Why is revenue down this month?" "Which service is most profitable?" AI answers from your real data.
+- **Financial Health Dashboard**: Live connection to QuickBooks, your bank, and invoicing. AR aging, cash position, revenue vs. forecast — always current.
+- **Employee & Technician Productivity**: Revenue per tech, avg ticket, utilization, callbacks — pulled from your service platform automatically.
+- **Marketing ROI Tracker**: One view connecting Google Ads, website analytics, social, and Google Business Profile. Know exactly what's working.
+- **Automated KPI & Trend Reporting**: Reports delivered to your inbox on whatever cadence you need. Zero effort from you.
+- **AI System Integration Dashboard**: All your tools, all your data, one unified view. AI monitors for anomalies and alerts you before problems escalate.
+
+**Why Preisser Solutions**:
+- Dashboards you want to look at. Clean, visual, built for business owners — not analysts.
+- Connected to your real systems. Live data from QuickBooks, ServiceTitan, Square, your CRM.
+- Decisions, not data dumps. Built around the questions you actually need answered.
+
+---
+
+### Why Us Section
+
+**Six reasons businesses choose Preisser Solutions:**
+
+1. **We Build Everything In-House.**
+   No subcontractors. No offshore teams. No white-labeled templates. Tyler Preisser designs it, builds it, and supports it.
+
+2. **AI Makes Us Dangerously Fast.**
+   We use AI at every stage of the process — research, design, development, and testing — so we deliver in weeks, not months.
+
+3. **Built for Your Business. Not a Template.**
+   We study your operation, understand your workflows, and build a solution that fits your business specifically.
+
+4. **We Stay With It.**
+   Every system we build comes with ongoing support. If something breaks, we fix it. If your business changes, we adapt the system.
+
+5. **You Work Directly With the Builder.**
+   No handoffs. No junior developers. No account managers. When you reach out, you talk to the person writing the code.
+
+6. **Built for Kansas Businesses.**
+   Based in Hays, Kansas and built for local and regional businesses that need real systems, not startup theater.
+
+---
+
+### Case Studies / Our Work (22 Projects)
+
+**Heading**: 22 Projects. Real Results.
+
+1. **The Iron and Oak Podcast** — Website Build | Brand Identity | AI Search
+   Built from zero — website, logo, full brand identity, podcast distribution across all major networks, and AI search optimization.
+
+2. **PreisserSolutions.com** — Custom Website | Lead Pipeline | Local SEO
+   Custom-coded, mobile-first website with integrated ROI calculator, case studies, and a contact pipeline that routes inquiries directly.
+
+3. **TylerPreisser.com** — Portfolio | GEO/SEO | AI Search Optimization
+   Professional portfolio structured to be cited by ChatGPT, Perplexity, and Google AI Overviews. Fixed a critical JS rendering issue blocking crawlers.
+
+4. **Wife Supply Co** — AI Application | Product Build | Full Deployment
+   AI-powered gifting platform where users describe preferences and get personalized recommendations in real time. Concept to live deployment.
+
+5. **Automated Social Media Engine** — AI Marketing | Content Production | Growth
+   Fully autonomous AI system that generates content, creates visuals, and publishes daily. 5x organic reach increase in 30 days.
+
+6. **AI Customer Reactivation Engine** — AI Outreach | Data Cleanup | Revenue Recovery
+   AI-powered SMS and email outreach that reactivated 60%+ of dormant customers. 45% increase in booking conversions.
+
+7. **After-Hours Call Triage** — AI Automation | Lead Capture | Routing
+   Agentic system that receives after-hours inquiries, assesses urgency with AI, auto-responds via SMS, and routes to the right person.
+
+8. **AI Invoice Processing** — Document Processing | Data Extraction | Automation
+   AI reads invoices, extracts data, categorizes expenses, flags anomalies, and routes for approval. 75% reduction in processing time.
+
+9. **Automated Inventory System** — Custom App | Live Tracking | Operations
+   Centralized inventory platform with live counts, inter-site transfers, and automated cost tracking. 95% reduction in tracking time.
+
+10. **AI Document Analysis** — AI Automation | Workflow Integration | Efficiency
+    Automation that ingests any document, extracts structured data, categorizes it, and forwards to downstream systems automatically.
+
+11. **Custom AI Fitness Agent** — Custom AI Agent | Personalization | Data
+    AI agent that produces fully personalized fitness regimens based on body data, goals, and current research from across the internet.
+
+12. **AI Email Digest System** — AI Automation | Email Management | Productivity
+    Scans 24 hours of email, summarizes each in 1-3 sentences, categorizes into actionable buckets, outputs a clean briefing digest.
+
+13. **Hiring Pipeline & AI Screener** — Google Workspace | Apps Script | AI Agent
+    Complete hiring infrastructure with candidate tracking, automated outreach, and an AI pre-screener that ranks applicants automatically.
+
+14. **Contact Form to CRM Pipeline** — Integration | Lead Automation | No-Code
+    End-to-end automated lead pipeline: form capture, CRM logging, AI qualification, Slack notification. Zero manual steps.
+
+15. **Alpha Matrix — Multi-Agent AI** — AI Architecture | Multi-Agent | Autonomous
+    Six specialized AI agents working in sequence with self-evolving intelligence. Enterprise-grade autonomous analysis system.
+
+16. **Preisser Media — 300K+ Followers** — Social Media | Systems | Audience Building
+    Built 300K+ followers and 30M+ views across TikTok, Instagram, Facebook, YouTube with repeatable systems and processes.
+
+17. **SkySprayers — Drone Docking Station** — Invention | Engineering | Prototype
+    Autonomous agricultural spray-drone docking station. Concept through CAD to working prototype. 2nd Place Kansas Startup Competition.
+
+18. **BIA — Hydroelectric Filtration** — Invention | Engineering | Problem-Solving
+    Hydroelectric livestock water purification using pre-existing water pressure for UV-C filtration. No external electricity required.
+
+19. **Electromagnetic Pulsation Motor** — Invention | Engineering | Prototype
+    Novel electromagnetic motor designed and prototyped from theory through engineering to working model.
+
+20. **Roof Truss Optimization** — Engineering | Cost Reduction | Efficiency
+    Truss design system achieving 9% lumber cost reduction while maintaining structural integrity. Applied at Truss Craft Structural Components.
+
+21. **Car Bubble — Vehicle Shelter** — Invention | Prototyping | Product
+    Collapsible protective vehicle shelter taken from initial idea through multiple working prototypes.
+
+22. **Custom Jewelry CAD Design** — Precision Engineering | CAD | Design
+    Bespoke engagement rings and fine jewelry designed in Autodesk Inventor and SOLIDWORKS with sub-millimeter precision.
+
+---
+
+### Real Results for Real Businesses
+
+**Client: John C Cassidy HVAC (HVAC / Home Services)**
+
+- **Social media fully automated**: 100% hands-off daily content creation and posting. Organic reach increased dramatically within the first month.
+- **Dormant customers reactivated**: AI-powered SMS and email outreach reactivated the majority of inactive clients within 6 weeks. Booking conversions jumped significantly.
+
+**Client: HG Oil Holdings (Oil & Gas Operations)**
+
+- **Inventory turned profitable**: Centralized inventory system eliminated manual tracking and converted a cost center into a profit center. Staff freed up across multiple roles.
+- **Invoice processing automated**: AI invoicing assistant replaced 40+ hours/week of manual reading and categorization. Eliminated the need for additional hires.
+
+---
+
+### Final CTA Section
+
+**Heading**: You've Got the Problem. We'll Build the Fix.
+
+**Body**: Whether it's a website, an app, an automation, or something you haven't even figured out how to describe yet — it starts with a conversation.
+
+**CTAs**: Get in Touch → /contact | See What We Build → /services
+
+---
+
+## About Page
+
+**Page Title**: We Build Things. That's What We Do.
+
+**Subheadline**: Direct access to the person designing, building, and standing behind the work.
+
+### Tyler Preisser — Founder & Owner
+
+Preisser Solutions exists because I got tired of watching businesses struggle with technology they shouldn't have to struggle with. Outdated websites. Systems that don't connect. Manual work that should have been automated five years ago. Tools that were supposed to make life easier but somehow made it harder.
+
+I'm Tyler Preisser. I'm a builder. I've been building things my entire life — from physical machines and patented inventions to AI systems that process millions in transaction volume. I've managed field operations, led large-scale technology projects, and built automation systems that replaced entire manual workflows. When you work with Preisser Solutions, you work with me — the person who designs it, builds it, and stands behind it.
+
+### Values — How We Work
+
+**Build it right.**
+No shortcuts. No duct tape. Systems that work today and scale tomorrow.
+
+**Speed is a feature.**
+AI-first methodology means we deliver in weeks, not months. Your business can't wait, and it shouldn't have to.
+
+**Honesty over agreement.**
+If your idea won't work, I'll tell you. If there's a better way, I'll show you.
+
+---
+
+## Services Page
+
+**Page Title**: What We Build
+
+**Subheadline**: Websites. Applications. Automations. Dashboards. Integrations. If your business needs it, we can design it and build it.
+
+Services listed (see full details in Services section above):
+1. Websites & Applications
+2. Automation Systems
+3. System Fixes & Efficiency
+4. Revenue Growth Engines
+5. Dashboards & Business Intelligence
+
+**CTA**: You Know What Your Business Needs. You Just Need Someone Who Can Build It. You don't need a consultant to tell you it's a problem. You need someone who can build the fix.
+
+---
+
+## Contact Page
+
+**Page Title**: Tell Us What You Need Built.
+
+**Subheadline**: Every project starts with a conversation. Tell me what's not working — or what you wish existed — and I'll tell you exactly how we'd build it. No commitment. No sales pitch. No pressure.
+
+**Contact Form Fields**:
+- Your Name (required)
+- Email Address (required)
+- Company Name (optional)
+- Phone Number (optional)
+- Area of interest (select)
+- Tell Us About Your Situation (required)
+
+**Direct Contact**:
+- Email: sales@preissersolutions.com
+- Phone: +1-620-352-3296
+- Location: Based in Hays, Kansas. Serving businesses locally and across the state.
+
+---
+
+## FAQ
+
+### General
+
+**Q: What does Preisser Solutions do?**
+A: Preisser Solutions builds custom technology solutions for businesses — including professional websites, web applications, AI-powered automation systems, business intelligence dashboards, and marketing engines. Everything is built in-house by Tyler Preisser, with no subcontractors or templates.
+
+**Q: Where is Preisser Solutions located?**
+A: Based in Hays, Kansas. We serve businesses locally and across the state of Kansas, and work with businesses nationally when the project is a strong fit.
+
+**Q: Who will I be working with?**
+A: You work directly with Tyler Preisser — the founder, designer, and builder. No handoffs, no account managers, no junior developers. When you reach out, you talk to the person writing the code.
+
+**Q: How fast do you deliver?**
+A: AI-first methodology means most projects deliver in weeks, not months. A project that a traditional dev shop would quote 3 months for typically takes 2-4 weeks at Preisser Solutions. The tools used to build are a generation ahead of standard agencies.
+
+**Q: Do you work with businesses outside of Kansas?**
+A: Yes. While Preisser Solutions is built for Kansas businesses specifically, we work with businesses nationally when the project is the right fit. Contact us to discuss your situation.
+
+**Q: What is your minimum project size?**
+A: There is no minimum project size. We work with businesses of all sizes, from single-owner operations to larger regional companies.
+
+---
+
+### Websites & Applications
+
+**Q: Do you use templates or page builders?**
+A: No. Every website is custom-coded from scratch. No WordPress templates, no Wix, no Squarespace. Custom code means better performance, better security, better SEO, and you own everything outright.
+
+**Q: What is AI Search Optimization (GEO)?**
+A: Generative Engine Optimization (GEO) is the process of optimizing your website to appear in answers from AI tools like ChatGPT, Perplexity, and Google AI Overviews. With 900M+ people using ChatGPT weekly, appearing in AI-generated answers is now as important as ranking on Google. Almost no local agencies offer this yet.
+
+**Q: Will I own my website after it's built?**
+A: Yes. Your code, your domain, your data — all of it belongs to you. No proprietary platforms, no lock-in, no monthly fees to keep your site live (beyond standard hosting costs).
+
+**Q: Do you handle hosting?**
+A: Yes. We can set up and manage hosting on your behalf, typically on Cloudflare Pages or Vercel. Hosting costs are minimal and billed directly to you.
+
+**Q: Can you redesign an existing website instead of rebuilding from scratch?**
+A: Yes. If your site works but looks outdated, we can redesign the front end for modern aesthetics and higher conversion without a full rebuild. We assess each situation individually and recommend the most cost-effective path.
+
+**Q: Do you build e-commerce stores?**
+A: Yes. Product catalogs, payment integration (Stripe, etc.), inventory sync, and automated order flows. A real store built for performance, not a template.
+
+---
+
+### Automation Systems
+
+**Q: What kinds of tasks can you automate?**
+A: Invoice processing, document extraction and routing, customer outreach (SMS/email), scheduling and reminders, lead routing and auto-response, form intake triage, inventory management, employee onboarding, after-hours call handling, social media content creation and publishing, and more. If the task is repetitive and rule-based (or can be made intelligent with AI), it can be automated.
+
+**Q: How is this different from using Zapier or Make?**
+A: Generic automation tools like Zapier follow simple if-then rules. Preisser Solutions builds AI-native automations that read documents, understand context, and make intelligent decisions — not just trigger actions based on preset conditions. Every automation is custom-engineered for your specific workflow, not assembled from off-the-shelf building blocks.
+
+**Q: What ROI can I expect from automation?**
+A: Industry data shows an average 240% ROI on business automation, typically paid back in 6-9 months. Specific results from Preisser Solutions clients include 75% reduction in invoice processing time, 95% reduction in inventory tracking time, and 60%+ customer reactivation rates. Every project is measured in time saved, errors eliminated, and revenue recovered.
+
+**Q: How long does it take to implement an automation system?**
+A: Typically 1-4 weeks depending on complexity. Simple document processing automations can be live in a week. Complex multi-system integrations with AI components take 3-4 weeks. You'll have a working timeline before any work begins.
+
+**Q: Will automation replace my staff?**
+A: Automation replaces manual tasks, not people. The goal is to free your staff from repetitive, low-value work so they can focus on higher-value activities. In most cases, businesses avoid needing to hire additional staff rather than reducing their current team.
+
+---
+
+### System Fixes & Efficiency
+
+**Q: How do you diagnose what's wrong with our systems?**
+A: We start with a workflow walkthrough — understanding how your team actually works, not how you think they work. From there we identify bottlenecks, redundancies, and disconnected tools. We deliver a clear diagnosis with a recommended fix, not a vague report.
+
+**Q: Can you connect systems that weren't designed to work together?**
+A: Yes. We build custom API integrations, middleware connections, and automation layers between virtually any modern business software. Common integrations include QuickBooks, ServiceTitan, Square, Jobber, HubSpot, Salesforce, Google Workspace, and more.
+
+**Q: We're paying for too many software subscriptions. Can you help?**
+A: Yes. Tool stack audits are one of our most common engagements. We assess every subscription, identify overlap, recommend consolidation, and handle migration. Typical savings are $500-$1,500/month.
+
+**Q: We still run everything on spreadsheets. Is that a problem?**
+A: Not a problem — it's an opportunity. Spreadsheet-to-system migrations are something we do regularly. We move your data into proper tools without losing anything, and set up the new system correctly from day one.
+
+---
+
+### Dashboards & Business Intelligence
+
+**Q: What systems can you connect dashboards to?**
+A: QuickBooks, ServiceTitan, Square, Jobber, HubSpot, Salesforce, Google Ads, Google Analytics, Facebook Ads, Google Business Profile, most CRMs and field service platforms. If it has an API or data export, we can pull from it.
+
+**Q: How is this different from just looking at QuickBooks?**
+A: QuickBooks shows you transactions. An executive dashboard shows you your business — revenue by service line, profitability by job type, technician performance, marketing ROI, cash forecast — all on one screen, updated automatically, without requiring you to run reports. You get answers in seconds, not hours.
+
+**Q: Can I ask the dashboard questions in plain English?**
+A: Yes. With AI-powered dashboard features, you can ask questions like "Why is revenue down this month?" or "Which service is most profitable?" and get answers from your real data — not guesswork.
+
+**Q: How often is the data updated?**
+A: Typically in real time or near-real time, depending on what systems are connected. Financial dashboards connected to QuickBooks can update as transactions occur. Reporting dashboards can be configured for hourly, daily, or weekly refresh.
+
+---
+
+### Revenue Growth Engines
+
+**Q: How is this different from hiring a marketing agency?**
+A: Marketing agencies charge retainers to do work for you each month. Preisser Solutions builds automated systems that do the work themselves — permanently. You own the system. It runs without ongoing agency fees. The cost is a one-time build, not a monthly retainer for work that stops when you stop paying.
+
+**Q: What kind of results can I expect from automated social media?**
+A: For one HVAC client, the automated social media engine achieved 5x organic reach increase within 30 days of launch. The system generates content, creates visuals, and publishes daily without any manual input.
+
+**Q: How does AI customer reactivation work?**
+A: Your customer database is analyzed by AI to identify dormant contacts. AI crafts personalized outreach via SMS and email based on each customer's history and likely needs. For one client, this reactivated 60%+ of dormant customers and increased booking conversions by 45%.
+
+**Q: How do you generate more Google reviews?**
+A: We build automated post-service SMS review requests that make it effortless for satisfied customers to leave reviews. The goal is 50+ reviews in 90 days. Top-ranking local businesses average 47+ reviews — this system gets you there systematically.
+
+**Q: Can you manage our Google Ads and Facebook Ads?**
+A: Yes. AI-powered advertising management handles budget allocation, bid strategy, audience targeting, and creative testing on autopilot — continuously optimizing based on what's working.
+
+---
+
+## Contact
+
+**Email**: sales@preissersolutions.com
+**Phone**: +1-620-352-3296
+**Location**: Hays, Kansas
+**Contact Form**: https://preissersolutions.com/contact
+
+Every project starts with a conversation. No commitment. No sales pitch. No pressure.

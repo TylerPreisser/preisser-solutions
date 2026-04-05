@@ -47,7 +47,7 @@ export function Footer() {
 
           {/* Services column */}
           <div className="ps-footer-col">
-            <h4>Services</h4>
+            <h3>Services</h3>
             <ul className="ps-footer-links">
               {serviceLinks.map((link) => (
                 <li key={link.label}>
@@ -59,7 +59,7 @@ export function Footer() {
 
           {/* Company column */}
           <div className="ps-footer-col">
-            <h4>Company</h4>
+            <h3>Company</h3>
             <ul className="ps-footer-links">
               {companyLinks.map((link) => (
                 <li key={link.label}>

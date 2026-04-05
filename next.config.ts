@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_BASE_PATH: prefix,
   },
+  compiler: {
+    // Strip all console.* calls from production bundles
+    removeConsole: isProd ? { exclude: ["error", "warn"] } : false,
+  },
 };
 
 export default nextConfig;

@@ -5,7 +5,16 @@ import { services } from "@/data/services";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Professional website development, automation systems, dashboards, system fixes, and growth engines built for Kansas businesses.",
+    "Websites, applications, automation systems, dashboards, and integrations built for Kansas businesses. Custom-designed by Tyler Preisser — no agencies, no middlemen.",
+  alternates: {
+    canonical: "https://preissersolutions.com/services",
+  },
+  openGraph: {
+    title: "Services | Preisser Solutions",
+    description:
+      "Websites, applications, automation systems, dashboards, and integrations built for Kansas businesses. Custom-designed by Tyler Preisser — no agencies, no middlemen.",
+    url: "https://preissersolutions.com/services",
+  },
 };
 
 const iconColors = [

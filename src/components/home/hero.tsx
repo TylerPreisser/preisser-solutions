@@ -47,7 +47,7 @@ export function Hero() {
     }
 
     resize();
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize", resize, { passive: true });
 
     // Wave definitions — each wave has two sine components for natural, non-repeating motion
     const darkWaves = [

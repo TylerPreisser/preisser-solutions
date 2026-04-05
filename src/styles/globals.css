@@ -4517,7 +4517,7 @@ button {
   color: var(--color-primary);
 }
 
-.ps-footer-col h4 {
+.ps-footer-col h3 {
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -4663,7 +4663,7 @@ button {
   transition: color 150ms ease;
 }
 
-[data-theme="light"] .ps-footer-col h4 {
+[data-theme="light"] .ps-footer-col h3 {
   color: rgba(10, 22, 40, 0.45);
   transition: color 300ms ease;
 }
@@ -4713,6 +4713,29 @@ button {
   #ps-hero-canvas {
     opacity: 0.85;
   }
+}
+
+/* ── Skip navigation link ──────────────────────────────────── */
+/* Visually hidden until focused by keyboard users */
+.ps-skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 10000;
+  padding: 12px 20px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+
+.ps-skip-link:focus {
+  top: 16px;
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
 }
 
 /* ── Utility ───────────────────────────────────────────────── */
