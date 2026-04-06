@@ -4460,8 +4460,8 @@ button {
 /* Portrait card */
 .ps-work-card {
   position: relative;
-  width: 260px;
-  aspect-ratio: 5 / 8;
+  width: 300px;
+  aspect-ratio: 332 / 448;
   border-radius: 12px;
   overflow: hidden;
   flex-shrink: 0;
@@ -6159,13 +6159,13 @@ html, body {
   background-color: #F6F9FC !important;
 }
 
-/* ── Case study cards: bigger on mobile with larger text ── */
+/* ── Case study cards: taller and narrower on mobile ── */
 @media (max-width: 768px) {
   .ps-work-card {
-    width: 82vw !important;
-    min-width: 82vw !important;
-    aspect-ratio: auto !important;
-    min-height: 480px !important;
+    width: 65vw !important;
+    min-width: 65vw !important;
+    aspect-ratio: 5 / 8 !important;
+    min-height: auto !important;
   }
   .ps-work-card-overlay {
     padding: 20px 18px 18px !important;
@@ -6201,7 +6201,7 @@ html, body {
 /* ── Case study cards: better text sizing on mobile ── */
 @media (max-width: 768px) {
   .ps-work-card {
-    min-height: 400px !important;
+    min-height: auto !important;
   }
   .ps-work-card-overlay {
     justify-content: center !important;
