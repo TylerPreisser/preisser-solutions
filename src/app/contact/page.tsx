@@ -79,11 +79,11 @@ export default function ContactPage() {
           >
             Contact
           </span>
-          <h1>Show Us the Problem.</h1>
+          <h1>Let&apos;s Build Something.</h1>
           <p className="ps-contact-subtitle">
-            Tell us what&apos;s not working — or what you wish existed. We&apos;ll tell you
-            exactly how we&apos;d build it. No commitment. No sales pitch. Just a
-            straight conversation.
+            Tell us what you have in mind — a new website, an app, automation,
+            AI, or something you haven&apos;t fully figured out yet. We&apos;ll take it
+            from there. No commitment. No sales pitch. Just a straight conversation.
           </p>
         </div>
 
