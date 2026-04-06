@@ -32,9 +32,9 @@ const whyFeatures: WhyFeature[] = [
   {
     id: 1,
     shortLabel: "AI with guardrails",
-    title: "AI Makes Us Dangerously Fast.",
+    title: "AI, Harnessed and Under Control.",
     description:
-      "A project that takes a traditional firm three months? We deliver it in three weeks. Not by cutting corners \u2014 by using AI with the right guardrails, safety protocols, and quality controls at every stage. The speed is real, and so is the precision. Your timeline shrinks. Your cost shrinks. The quality doesn\u2019t.",
+      "We\u2019ve built the guardrails, safety protocols, and quality controls that let us use AI at every stage of development \u2014 without sacrificing precision. A project that takes a traditional firm three months, we finish in three weeks. Your timeline shrinks. Your cost shrinks. The quality stays exactly where it should be.",
     image: "/images/stripe/DatavizStatic3x.png",
     mobileImage: "/images/stripe/the-happenings-tidemark-mobile.png",
     alt: "AI-accelerated development with proper guardrails",
