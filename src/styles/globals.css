@@ -355,9 +355,6 @@ button {
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   box-shadow: var(--theme-nav-shadow);
-  will-change: backdrop-filter;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
   transition:
     background-color 300ms ease,
     box-shadow 300ms ease;
@@ -1311,7 +1308,6 @@ button {
 
   transform: translate3d(var(--card-mouse-x, 0px), var(--card-mouse-y, 0px), 0);
   transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform;
 }
 
 @media (min-width: 940px) and (prefers-reduced-motion: no-preference) {
@@ -5586,7 +5582,6 @@ button {
   gap: 12px;
   width: max-content;
   animation: ps-scroll-logos 40s linear infinite;
-  will-change: transform;
 }
 
 /* Pause on hover */

@@ -71,8 +71,8 @@ const whyFeatures: WhyFeature[] = [
     title: "Built for Kansas Businesses.",
     description:
       "Born and raised in Kansas. Based in Hays. We understand the businesses here because we grew up around them. Local and regional companies that need real technology \u2014 not startup theater, not Silicon Valley pricing, not consultants who\u2019ve never set foot on a job site.",
-    image: "/images/why-us/kansas-built.webp",
-    mobileImage: "/images/why-us/kansas-built.webp",
+    image: "/images/why-us/kansas-v2.webp",
+    mobileImage: "/images/why-us/kansas-v2.webp",
     alt: "Built for Kansas businesses",
     href: "/contact",
     cta: "Get in Touch",
