@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { contactInterests, type ContactInterest } from "@/data/services";
 import { siteConfig } from "@/data/site-config";
 
@@ -26,6 +26,10 @@ export default function ContactPage() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  // Honeypot — bots fill this, humans never see it
+  const [honeypot, setHoneypot] = useState("");
+  // Track when the form was rendered to catch instant-submit bots
+  const loadTime = useRef(Date.now());
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -36,18 +40,30 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Spam gate 1: honeypot field was filled — silent discard
+    if (honeypot) {
+      setSubmitted(true);
+      return;
+    }
+
+    // Spam gate 2: form submitted in under 3 seconds — bot behaviour
+    if (Date.now() - loadTime.current < 3000) {
+      setSubmitted(true);
+      return;
+    }
+
     setSubmitting(true);
 
-    // Formspree or mailto fallback — just open mailto for now
     const subject = encodeURIComponent(
-      `Inquiry from ${form.name}${form.company ? ` — ${form.company}` : ""}`
+      `New Inquiry: ${form.name}${form.company ? ` — ${form.company}` : ""}`
     );
     const body = encodeURIComponent(
       `Name: ${form.name}\nEmail: ${form.email}\nCompany: ${form.company}\nPhone: ${form.phone}\nInterest: ${form.interest}\n\nMessage:\n${form.message}`
     );
 
-    // Simulate a brief delay then open mailto
-    await new Promise((res) => setTimeout(res, 400));
+    // Brief delay so the "Sending…" state is visible, then open mailto
+    await new Promise((res) => setTimeout(res, 500));
     window.location.href = `mailto:${siteConfig.contact.email}?subject=${subject}&body=${body}`;
     setSubmitted(true);
     setSubmitting(false);
@@ -101,6 +117,23 @@ export default function ContactPage() {
             </div>
           ) : (
             <>
+              {/* Honeypot — visually hidden, only bots fill this */}
+              <div
+                style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }}
+                aria-hidden="true"
+              >
+                <label htmlFor="contact-website">Website</label>
+                <input
+                  type="text"
+                  id="contact-website"
+                  name="website"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               <div className="ps-form-grid">
                 {/* Name */}
                 <div className="ps-form-group">

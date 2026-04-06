@@ -9,7 +9,6 @@ export function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctasRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLAnchorElement>(null);
 
   // Animated flowing wave mesh — inline canvas, theme-aware
   useEffect(() => {
@@ -195,7 +194,7 @@ export function Hero() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const targets = [eyebrowRef, headlineRef, subtitleRef, ctasRef, scrollRef];
+    const targets = [eyebrowRef, headlineRef, subtitleRef, ctasRef];
 
     if (prefersReduced) {
       targets.forEach((r) => {
@@ -229,11 +228,6 @@ export function Hero() {
           ctasRef.current,
           { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
           "-=0.35"
-        )
-        .to(
-          scrollRef.current,
-          { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-          "-=0.1"
         );
     });
   }, []);
@@ -285,15 +279,6 @@ export function Hero() {
             </svg>
           </Link>
         </div>
-        <a
-          ref={scrollRef}
-          href="https://tylerpreisser.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ps-hero-portfolio-link"
-        >
-          See more projects at TylerPreisser.com
-        </a>
       </div>
     </section>
   );

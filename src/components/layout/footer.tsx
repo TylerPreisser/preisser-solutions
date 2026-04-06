@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { siteConfig } from "@/data/site-config";
 
@@ -8,10 +8,27 @@ export function Footer() {
   const year = new Date().getFullYear();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  // Honeypot — bots fill this, humans never see it
+  const [honeypot, setHoneypot] = useState("");
+  // Track when the footer rendered to catch instant-submit bots
+  const loadTime = useRef(Date.now());
 
   function handleSubscribe(e: React.FormEvent) {
     e.preventDefault();
     if (!email) return;
+
+    // Spam gate 1: honeypot field was filled — silent discard
+    if (honeypot) {
+      setSubscribed(true);
+      return;
+    }
+
+    // Spam gate 2: submitted in under 3 seconds — bot behaviour
+    if (Date.now() - loadTime.current < 3000) {
+      setSubscribed(true);
+      return;
+    }
+
     // Mailto fallback: sends a notification email to sales with the subscriber address
     window.location.href = `mailto:sales@preissersolutions.com?subject=New%20Newsletter%20Subscriber&body=New%20subscriber%3A%20${encodeURIComponent(email)}`;
     setSubscribed(true);
@@ -49,6 +66,22 @@ export function Footer() {
                 className="ps-footer-signup-form"
                 onSubmit={handleSubscribe}
               >
+                {/* Honeypot — visually hidden, only bots fill this */}
+                <div
+                  style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }}
+                  aria-hidden="true"
+                >
+                  <label htmlFor="footer-website">Website</label>
+                  <input
+                    type="text"
+                    id="footer-website"
+                    name="website"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
                 <input
                   type="email"
                   placeholder="Enter your email"
