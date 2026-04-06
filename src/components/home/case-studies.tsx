@@ -333,7 +333,7 @@ export function CaseStudies() {
 
       <div className="ps-work-see-more">
         <a href="https://tylerpreisser.com" target="_blank" rel="noopener noreferrer">
-          See more of what I&apos;ve built at TylerPreisser.com
+          See more projects at TylerPreisser.com
           <svg
             width="16"
             height="16"

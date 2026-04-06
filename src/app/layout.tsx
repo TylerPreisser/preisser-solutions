@@ -92,12 +92,16 @@ export const metadata: Metadata = {
 const themeInitScript = `(function(){
   try {
     var stored = localStorage.getItem('ps-theme');
+    var theme;
     if (stored === 'light' || stored === 'dark') {
-      document.documentElement.setAttribute('data-theme', stored);
+      theme = stored;
     } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      document.documentElement.setAttribute('data-theme', 'light');
+      theme = 'light';
+    } else {
+      theme = 'dark';
     }
-    // Default: no attribute = dark mode (CSS :root = dark)
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.style.backgroundColor = theme === 'light' ? '#F6F9FC' : '#0A1628';
   } catch(e) {}
 })();`;
 

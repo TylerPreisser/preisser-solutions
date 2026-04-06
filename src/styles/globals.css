@@ -5936,3 +5936,57 @@ body {
     gap: 3px !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   FINAL MOBILE OVERRIDES — April 6 batch
+   ═══════════════════════════════════════════════════════════ */
+
+/* System Fixes bento card — increase height on mobile so the
+   before/after visual is fully visible, not cropped */
+@media (max-width: 768px) {
+  .ps-bento-card:has(.ps-fix-root) {
+    min-height: 420px !important;
+  }
+  .ps-fix-board {
+    grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr) !important;
+    gap: 8px !important;
+    padding: 16px !important;
+  }
+  .ps-fix-problem-card,
+  .ps-fix-solution-card {
+    padding: 8px 10px !important;
+  }
+}
+
+/* Why Us mobile carousel — shrink cards and force center */
+@media (max-width: 639px) {
+  .mobile-carousel__item {
+    width: 85vw !important;
+    min-width: 85vw !important;
+    max-width: 85vw !important;
+    scroll-snap-align: center !important;
+  }
+  .mobile-carousel__scroller {
+    display: flex;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 7.5vw !important;
+  }
+  .events-mobile-carousel-card__media {
+    aspect-ratio: 16/10 !important;
+  }
+}
+
+/* Hero — eliminate gray bar on theme switch */
+.ps-hero {
+  min-height: 100dvh !important;
+  min-height: 100vh;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+html, body {
+  background-color: var(--theme-bg-primary, #0A1628) !important;
+}
+[data-theme="light"] body {
+  background-color: #F6F9FC !important;
+}
