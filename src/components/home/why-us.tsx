@@ -34,7 +34,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "AI with guardrails",
     title: "AI Makes Us Dangerously Fast.",
     description:
-      "We harness AI at every stage \u2014 research, design, development, testing, and deployment. But speed without control is just chaos. We\u2019ve built the guardrails, procedures, and safety protocols that make AI extremely productive while keeping every output precise and reliable. That\u2019s how we deliver in weeks what others take months to finish.",
+      "A project that takes a traditional firm three months? We deliver it in three weeks. Not by cutting corners \u2014 by using AI with the right guardrails, safety protocols, and quality controls at every stage. The speed is real, and so is the precision. Your timeline shrinks. Your cost shrinks. The quality doesn\u2019t.",
     image: "/images/stripe/DatavizStatic3x.png",
     mobileImage: "/images/stripe/the-happenings-tidemark-mobile.png",
     alt: "AI-accelerated development with proper guardrails",
@@ -46,7 +46,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "we stay with it",
     title: "We Stay With It.",
     description:
-      "If your business chooses ongoing support, we\u2019re there. New systems, acquisitions, integrations, staff changes \u2014 whatever shifts in your operation, we adapt what we\u2019ve built to match. You\u2019re not left with a finished product and a \u201Cgood luck\u201D email. We stay in it as long as you need us.",
+      "We don\u2019t build you a system and disappear. If you acquire a company, change platforms, add staff, or need something adjusted six months down the road \u2014 we\u2019re still here. You\u2019re not handed a finished product and left to figure it out alone. We stay with it for as long as you need us.",
     image: "/images/why-us/we-stay-with-it.webp",
     mobileImage: "/images/why-us/we-stay-with-it.webp",
     alt: "Ongoing support and system adaptation",
@@ -58,7 +58,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "you work direct",
     title: "You Work Directly With the Builder.",
     description:
-      "No handoffs. No junior developers. No account managers. When you call, you talk to the person who designed it, wrote the code, and knows your system inside and out. That\u2019s how things get done right and get done fast.",
+      "Most companies hand you off to a salesman, then a project manager, then a developer you\u2019ll never meet. Here, you talk to the person who designed it, built it, and can fix it on the phone right now. No layers. No runaround. The guy doing the work is the guy you\u2019re talking to.",
     image: "/images/why-us/work-direct.webp",
     mobileImage: "/images/why-us/work-direct.webp",
     alt: "Work directly with the builder",
