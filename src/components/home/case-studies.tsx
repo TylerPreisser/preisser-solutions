@@ -17,7 +17,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "The Iron and Oak Podcast",
     tags: "Website Build | AI Search Optimization",
     description:
-      "Custom podcast website built from scratch — professional design, fast-loading, optimized for both Google and AI search platforms.",
+      "We built an entire media brand from nothing — website, visual identity, podcast distribution across every major platform, and AI search optimization so it actually gets found. If you have a concept but no idea how to turn it into a professional, discoverable brand, this is what that process looks like.",
     gradient: "linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0f2010 100%)",
     image: "iron-oak.webp",
   },
@@ -25,7 +25,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "PreisserSolutions.com",
     tags: "Custom Website | Lead Pipeline | Local SEO",
     description:
-      "Custom-coded, mobile-first website with integrated ROI calculator, case studies, and a contact pipeline that routes inquiries directly.",
+      "This is our own site, and we built it the same way we build yours — custom-coded, integrated lead pipeline, and an ROI calculator that qualifies prospects before they ever hit our calendar. No templates. No page builders. A website that actually works as a sales tool.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #0F1D30 100%)",
     image: "preisser-solutions.webp",
   },
@@ -33,7 +33,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "TylerPreisser.com",
     tags: "Portfolio | GEO/SEO | AI Search Optimization",
     description:
-      "Professional portfolio structured to be cited by ChatGPT, Perplexity, and Google AI Overviews. Fixed a critical JS rendering issue blocking crawlers.",
+      "A professional portfolio engineered to rank in both traditional search and AI-powered search tools like ChatGPT and Perplexity. If your competitors show up when someone asks AI for a recommendation in your industry and you don't, you're already behind.",
     gradient: "linear-gradient(135deg, #0D95E8 0%, #0A1628 100%)",
     image: "tyler-headshot-nobg.webp",
   },
@@ -41,7 +41,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Wife Supply Co",
     tags: "AI Application | Product Build | Full Deployment",
     description:
-      "AI-powered gifting platform where users describe preferences and get personalized recommendations in real time. Concept to live deployment.",
+      "A client came to us with an app idea and no technical background. We took it from concept to a fully functional AI-powered gifting platform — product design, development, and launch. You don't need to know how to build it. You just need to know what problem it solves.",
     gradient: "linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%)",
     image: "wife-supply.webp",
     lightCard: true,
@@ -68,7 +68,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "AI Customer Reactivation Engine",
     tags: "AI Outreach | John C Cassidy HVAC | Revenue Recovery",
     description:
-      "AI-powered SMS and email outreach that reactivated 60%+ of dormant customers. 45% increase in booking conversions.",
+      "Cassidy HVAC had thousands of past customers sitting untouched in their system. We deployed an AI reactivation campaign that re-engaged over 60% of dormant accounts and drove them back into the service pipeline — revenue that was already earned once and just needed a second conversation.",
     gradient: "linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%)",
     image: "cassidy-hvac-nobg.webp",
     lightCard: true,
@@ -77,7 +77,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "After-Hours Call Triage",
     tags: "AI Automation | Lead Capture | Routing",
     description:
-      "Agentic system that receives after-hours inquiries, assesses urgency with AI, auto-responds via SMS, and routes to the right person.",
+      "Every call that goes to voicemail after 5 PM is a customer choosing your competitor by 8 AM. This system answers calls, handles texts, qualifies urgency, and routes the right ones to you — so you stop losing jobs while you sleep.",
     gradient: "linear-gradient(135deg, #0D95E8 0%, #00D4AA 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -95,7 +95,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "AI Invoice Processing",
     tags: "Document Processing | Data Extraction | Automation",
     description:
-      "AI reads invoices, extracts data, categorizes expenses, flags anomalies, and routes for approval. 75% reduction in processing time.",
+      "A 75% reduction in time spent processing invoices. No more manual data entry, no more chasing down approvals, no more paying someone to do what a system handles in seconds. Your back office runs whether your team is at their desks or not.",
     gradient: "linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -114,7 +114,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Automated Inventory System",
     tags: "Custom App | HG Oil Holdings | Live Tracking",
     description:
-      "Centralized inventory platform with live tracking, inter-site transfers, automated cost formulas, and real-time reporting for insurance audits and compliance.",
+      "HG Oil cut inventory tracking time by 95%. If your team is still counting stock by hand, updating spreadsheets from memory, or guessing what's on the truck — this is what it looks like when that problem disappears.",
     gradient: "linear-gradient(135deg, #f0f4f8 0%, #dce8f0 100%)",
     image: "hg-oil-icon.webp",
     lightCard: true,
@@ -123,7 +123,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "AI Document Analysis",
     tags: "AI Automation | Workflow Integration | Efficiency",
     description:
-      "Automation that ingests any document, extracts structured data, categorizes it, and forwards to downstream systems automatically.",
+      "This system reads contracts, invoices, permits, and any other document your team currently re-types by hand — then extracts the data and puts it exactly where it needs to go. Stop paying skilled people to do copy-paste work.",
     gradient: "linear-gradient(135deg, #1E293B 0%, #334155 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -142,7 +142,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Custom AI Fitness Agent",
     tags: "Custom AI Agent | Personalization | Data",
     description:
-      "AI agent that produces fully personalized fitness regimens based on body data, goals, and current research from across the internet.",
+      "We built an AI agent that generates personalized fitness and nutrition regimens — work that previously required a human expert for every client. This is a proof of concept for any business where expert knowledge gets repeated hundreds of times a day.",
     gradient: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -162,7 +162,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "AI Email Digest System",
     tags: "AI Automation | Email Management | Productivity",
     description:
-      "Scans 24 hours of email, summarizes each in 1-3 sentences, categorizes into actionable buckets, outputs a clean briefing digest.",
+      "One briefing. Every morning. Every important email from the last 24 hours — summarized, prioritized, and ready for decisions. Built for the business owner who loses their first productive hour to an inbox full of noise.",
     gradient: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -179,7 +179,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Hiring Pipeline & AI Screener",
     tags: "Google Workspace | Apps Script | AI Agent",
     description:
-      "Complete hiring infrastructure with candidate tracking, automated outreach, and an AI pre-screener that ranks applicants automatically.",
+      "Applications come in, the AI ranks and screens them against your criteria, and qualified candidates surface to the top — automatically. No more spreadsheet tracking, no more \"I think we already called that one,\" no more losing good applicants because nobody followed up fast enough.",
     gradient: "linear-gradient(135deg, #0EA5E9 0%, #2563EB 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -197,7 +197,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Contact Form to CRM Pipeline",
     tags: "Integration | Lead Automation | R Squared AI",
     description:
-      "End-to-end automated lead pipeline: form capture, CRM logging, AI qualification, Slack notification. Zero manual steps.",
+      "From the moment a lead fills out a form to the moment they're tagged, scored, and assigned in the CRM — zero manual steps. No inbox monitoring. No copy-pasting into spreadsheets. Leads move through your pipeline whether your team is watching or not.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #0F1D30 100%)",
     image: "r-squared.webp",
   },
@@ -205,7 +205,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Alpha Matrix — Multi-Agent AI",
     tags: "AI Architecture | R Squared AI | Autonomous",
     description:
-      "Six specialized AI agents working in sequence with self-evolving intelligence. Enterprise-grade autonomous analysis system.",
+      "Six autonomous AI agents running in parallel — scanning, analyzing, scoring, and producing strategic output without human intervention. This is the ceiling of what business AI can do today, and we built it from scratch.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #1a1040 50%, #0A1628 100%)",
     image: "r-squared.webp",
   },

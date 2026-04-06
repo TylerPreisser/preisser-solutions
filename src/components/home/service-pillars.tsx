@@ -66,12 +66,12 @@ const services: ServicePillar[] = [
       { number: "70%+", label: "of businesses see revenue increase after site launch" },
     ],
     painPoints: [
-      "I don't even have a website",
-      "My site looks like it was made in 2010",
-      "Nobody finds me on Google",
-      "I don't show up when people ask ChatGPT for recommendations",
-      "People visit my site but never contact me",
-      "I have 6 Google reviews from 3 years ago",
+      "Our website exists, but it's never once brought in a customer.",
+      "I'm embarrassed to send people to our site when they ask for a link.",
+      "We paid a developer two years ago and haven't been able to update it since.",
+      "Our competitors' sites look like real companies. Ours looks like an afterthought.",
+      "I know we need to show up in search results, but I have no idea where to start.",
+      "We have an idea for a tool or app that would help our customers, but no way to build it.",
     ],
     serviceTiles: [
       {
@@ -144,12 +144,12 @@ const services: ServicePillar[] = [
       { number: "$46K/yr", label: "average savings from fewer errors and less manual work" },
     ],
     painPoints: [
-      "My staff spends hours every week on data entry",
-      "Invoices pile up and nobody processes them fast enough",
-      "We forget to follow up with customers",
-      "I can't afford another hire but we're drowning",
-      "Scheduling and reminders are all manual",
-      "Our process is different every time depending on who does it",
+      "We have three people doing work that should take zero people.",
+      "Every time someone quits, half our processes walk out the door with them.",
+      "We're still copying data between systems by hand — in 2026.",
+      "I know there's a faster way to do this, but nobody has time to figure it out.",
+      "Our best employees are buried in busywork instead of the jobs I hired them for.",
+      "We keep hiring to keep up with volume instead of fixing the process that causes it.",
     ],
     serviceTiles: [
       {
@@ -237,12 +237,12 @@ const services: ServicePillar[] = [
       { number: "10–50%", label: "cost savings from consolidating redundant tools" },
     ],
     painPoints: [
-      "We enter the same data in three different systems",
-      "I'm paying for 8 tools and none of them talk to each other",
-      "We have workarounds for everything",
-      "We're still running on spreadsheets for critical stuff",
-      "Our software is slow and everyone hates it",
-      "Every time someone quits their knowledge walks out the door",
+      "We use six different tools and none of them talk to each other.",
+      "Half our processes are held together with workarounds nobody documented.",
+      "We bought software that was supposed to fix everything. Now it's another problem.",
+      "If one person is out sick, nobody knows how to run their system.",
+      "We've outgrown our current setup but migrating feels impossible.",
+      "Every month something breaks and we spend a week patching it instead of growing.",
     ],
     serviceTiles: [
       {
@@ -315,12 +315,12 @@ const services: ServicePillar[] = [
       { number: "88%", label: "of customers read Google reviews before choosing local business" },
     ],
     painPoints: [
-      "I know I should post on social media but nobody has time",
-      "I have a huge customer list and we never contact them",
-      "I tried a marketing agency and it was a waste of money",
-      "My competitors show up before me everywhere",
-      "I get leads but nobody follows up fast enough",
-      "I have no idea what's working and what's not",
+      "We do good work but rely almost entirely on word-of-mouth to get new customers.",
+      "We've spent money on marketing before. I couldn't tell you what it actually did.",
+      "Leads come in, but nobody follows up fast enough and they go cold.",
+      "We have years of past customers we've never reached back out to.",
+      "Our competitors are everywhere online. We're invisible.",
+      "I know we're leaving money on the table. I just don't know where.",
     ],
     serviceTiles: [
       {
@@ -403,12 +403,12 @@ const services: ServicePillar[] = [
       { number: "65%", label: "of small businesses are profitable but can't tell you where" },
     ],
     painPoints: [
-      "I don't know which services are actually profitable",
-      "I run reports end of month and by then it's too late",
-      "My team gives me different numbers depending on who I ask",
-      "I have QuickBooks but I never really look at it",
-      "I can't see trends — I'm too busy running the business",
-      "I have no idea if my marketing is working",
+      "I make most decisions based on gut feeling because I don't have the numbers in front of me.",
+      "By the time I get a report, the information is already two weeks old.",
+      "Our data lives in five different places and nobody has a complete picture.",
+      "I couldn't tell you our most profitable service line without digging through spreadsheets.",
+      "My team spends hours building reports that I glance at for thirty seconds.",
+      "I know the data exists somewhere in our systems — I just can't get to it.",
     ],
     serviceTiles: [
       {
