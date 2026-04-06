@@ -3052,9 +3052,14 @@ button {
   transition: opacity 250ms ease;
 }
 
-/* Fade out graphic when overlay appears */
-.ps-carousel-card:hover .ps-carousel-card-graphic,
-.ps-carousel-card:focus-within .ps-carousel-card-graphic,
+/* Fade out graphic when overlay appears — desktop hover only */
+@media (min-width: 769px) {
+  .ps-carousel-card:hover .ps-carousel-card-graphic,
+  .ps-carousel-card:focus-within .ps-carousel-card-graphic {
+    opacity: 0;
+  }
+}
+/* Mobile: only fade on explicit tap */
 .ps-carousel-card.tapped .ps-carousel-card-graphic {
   opacity: 0;
 }
@@ -6161,4 +6166,29 @@ html, body {
 }
 [data-theme="light"] .ps-cta-portfolio-link:hover {
   color: var(--color-primary);
+}
+
+/* ── Our Work: swipe hint (replaces see-more link) ── */
+.ps-work-swipe-hint {
+  text-align: center;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.35);
+  margin-top: 20px;
+  animation: ps-swipe-hint-fade 2.5s ease-in-out infinite;
+}
+
+@keyframes ps-swipe-hint-fade {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.7; }
+}
+
+/* Hide on desktop — only show on mobile */
+@media (min-width: 769px) {
+  .ps-work-swipe-hint {
+    display: none;
+  }
+}
+
+[data-theme="light"] .ps-work-swipe-hint {
+  color: rgba(0,0,0,0.3);
 }

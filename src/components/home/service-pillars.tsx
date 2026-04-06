@@ -1517,9 +1517,14 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
   }
 
   function handleTouchMove(e: React.TouchEvent) {
+    // Only allow swipe-to-dismiss when panel is scrolled to top
+    const panel = panelRef.current;
+    if (!panel || panel.scrollTop > 5) return;
+
     touchCurrentY.current = e.touches[0].clientY;
     const diff = touchCurrentY.current - touchStartY.current;
-    if (diff > 80) {
+    // Require a deliberate 120px downward drag to dismiss
+    if (diff > 120) {
       handleClose();
     }
   }

@@ -389,27 +389,25 @@ export function CaseStudies() {
         })}
       </div>
 
-      <div className="ps-work-see-more">
-        <a href="https://tylerpreisser.com" target="_blank" rel="noopener noreferrer">
-          See more projects at TylerPreisser.com
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-            style={{ display: "inline-block", verticalAlign: "middle", marginLeft: "6px" }}
-          >
-            <path
-              d="M1 8h14M9 2l6 6-6 6"
-              stroke="currentColor"
-              strokeWidth="1.75"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </a>
-      </div>
+      <p className="ps-work-swipe-hint" aria-hidden="true">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          aria-hidden="true"
+          style={{ display: "inline-block", verticalAlign: "middle", marginRight: "4px" }}
+        >
+          <path
+            d="M1 8h14M9 2l6 6-6 6"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        Swipe to explore
+      </p>
     </section>
   );
 }
