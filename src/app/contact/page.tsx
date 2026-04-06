@@ -81,9 +81,8 @@ export default function ContactPage() {
           </span>
           <h1>Let&apos;s Build Something.</h1>
           <p className="ps-contact-subtitle">
-            Tell us what you have in mind — a new website, an app, automation,
-            AI, or something you haven&apos;t fully figured out yet. We&apos;ll take it
-            from there. No commitment. No sales pitch. Just a straight conversation.
+            Whether you know exactly what you need or you&apos;re still figuring it out
+            — start here. Tell us a little about your business and we&apos;ll go from there.
           </p>
         </div>
 
