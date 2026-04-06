@@ -5024,6 +5024,24 @@ button {
   color: #0D95E8;
 }
 
+[data-theme="light"] .ps-footer-signup-heading {
+  color: #4A5568;
+}
+
+[data-theme="light"] .ps-footer-signup-input {
+  background: #FFFFFF;
+  border-color: #D1D5DB;
+  color: #1A1A1A;
+}
+
+[data-theme="light"] .ps-footer-signup-input::placeholder {
+  color: #9CA3AF;
+}
+
+[data-theme="light"] .ps-footer-signup-input:focus {
+  border-color: var(--color-primary);
+}
+
 /* ── Reduced Motion ────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,

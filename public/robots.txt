@@ -1,18 +1,42 @@
-# Preisser Solutions — AI Crawler Welcome Mat
-# We want every search engine and AI system to crawl and index this site.
+# Preisser Solutions — Crawler Configuration
+# Homepage is the single source of truth. All content lives there.
+# Sub-routes are blocked to concentrate crawl budget and indexing on the homepage.
 
 # === DEFAULT ===
 User-agent: *
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 Disallow: /_next/
 Disallow: /api/
+Disallow: /about
+Disallow: /services
+Disallow: /contact
+Disallow: /roi-calculator
+Disallow: /why-automation
 
 # === SEARCH ENGINES ===
 User-agent: Googlebot
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Disallow: /_next/
+Disallow: /about
+Disallow: /services
+Disallow: /contact
+Disallow: /roi-calculator
+Disallow: /why-automation
 
 User-agent: Bingbot
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Disallow: /_next/
+Disallow: /about
+Disallow: /services
+Disallow: /contact
+Disallow: /roi-calculator
+Disallow: /why-automation
 
 User-agent: Slurp
 Allow: /

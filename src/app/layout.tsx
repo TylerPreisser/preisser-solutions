@@ -13,11 +13,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Preisser Solutions | We Build Websites, Apps & Automations for Kansas Businesses",
+    default: "Preisser Solutions | Custom Websites, Apps, AI Automation & Dashboards | Hays, Kansas",
     template: "%s | Preisser Solutions",
   },
   description:
-    "Preisser Solutions builds websites, applications, automation systems, dashboards, and more for businesses across Kansas. Custom-built. AI-powered speed. Work directly with Tyler Preisser.",
+    "Preisser Solutions designs and builds custom websites, web applications, AI-powered automation systems, business intelligence dashboards, and marketing engines for businesses across Kansas and the Great Plains. 22+ projects delivered. Built from scratch by Tyler Preisser in Hays, KS. No templates, no subcontractors. AI-first development delivers in weeks, not months.",
   metadataBase: new URL("https://preissersolutions.com"),
   keywords: [
     "business automation Kansas",
@@ -64,9 +64,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://preissersolutions.com",
     siteName: "Preisser Solutions",
-    title: "Preisser Solutions | We Build Websites, Apps & Automations for Kansas Businesses",
+    title: "Preisser Solutions | Custom Websites, Apps, AI Automation & Dashboards | Hays, Kansas",
     description:
-      "Preisser Solutions builds websites, applications, automation systems, dashboards, and more for businesses across Kansas. Work directly with Tyler Preisser.",
+      "Custom websites, web applications, AI automation systems, dashboards, and marketing engines for Kansas businesses. 22+ projects. Built from scratch by Tyler Preisser in Hays, KS.",
     images: [
       {
         url: "/images/og-image.jpg",
@@ -78,9 +78,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Solutions | We Build Websites, Apps & Automations for Kansas Businesses",
+    title: "Preisser Solutions | Custom Websites, Apps, AI Automation & Dashboards | Hays, Kansas",
     description:
-      "Custom-built websites, apps, and automation systems for Kansas businesses. Work directly with Tyler Preisser.",
+      "Custom websites, AI automation, dashboards, and marketing engines for Kansas businesses. 22+ projects delivered from Hays, KS by Tyler Preisser.",
     images: ["/images/og-image.jpg"],
     creator: "@tylerpreisser",
   },
