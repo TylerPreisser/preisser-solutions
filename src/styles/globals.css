@@ -6029,3 +6029,63 @@ html, body {
     height: 100px !important;
   }
 }
+
+/* ── Case study cards: better text sizing on mobile ── */
+@media (max-width: 768px) {
+  .ps-work-card {
+    min-height: 400px !important;
+  }
+  .ps-work-card-overlay {
+    padding: 16px 16px 16px !important;
+    padding-top: 15% !important;
+    gap: 10px !important;
+  }
+  .ps-work-card-result {
+    font-size: 0.8125rem !important;
+    font-weight: 400 !important;
+    line-height: 1.6 !important;
+    color: rgba(255,255,255,0.88) !important;
+  }
+  .ps-work-card-tag {
+    font-size: 0.625rem !important;
+    margin-bottom: 6px !important;
+  }
+
+  /* Add swipe hint to Our Work section */
+  .ps-work-track::after {
+    content: "Swipe to explore →";
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .ps-work {
+    position: relative;
+    padding-bottom: 80px !important;
+  }
+}
+
+/* ── Hero portfolio link ── */
+.ps-hero-portfolio-link {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  transition: color 200ms ease;
+  opacity: 0;
+  transform: translateY(16px);
+}
+.ps-hero-portfolio-link:hover {
+  color: var(--color-primary);
+}
+[data-theme="light"] .ps-hero-portfolio-link {
+  color: rgba(10,22,40,0.45);
+}
+[data-theme="light"] .ps-hero-portfolio-link:hover {
+  color: var(--color-primary);
+}

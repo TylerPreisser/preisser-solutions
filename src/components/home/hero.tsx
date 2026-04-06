@@ -284,14 +284,16 @@ export function Hero() {
               />
             </svg>
           </Link>
-          <Link href="/#services" className="ps-btn ps-btn-secondary">
-            See What We Build
-          </Link>
         </div>
-      </div>
-
-      {/* Scroll indicator removed */}
-      <div ref={scrollRef} style={{ display: "none" }}>
+        <a
+          ref={scrollRef}
+          href="https://tylerpreisser.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ps-hero-portfolio-link"
+        >
+          See more projects at TylerPreisser.com
+        </a>
       </div>
     </section>
   );
