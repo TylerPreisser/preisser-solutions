@@ -352,8 +352,8 @@ button {
   inset: 6px 12px;
   border-radius: 12px;
   background-color: rgba(10, 22, 40, 0.85);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
   box-shadow: var(--theme-nav-shadow);
   /* iOS Safari: force GPU compositing to prevent backdrop-filter flicker */
   -webkit-backface-visibility: hidden;
@@ -4406,9 +4406,11 @@ button {
   filter: none;
 }
 
-.ps-work-card:hover .ps-work-card-logo,
-.ps-work-card:focus-within .ps-work-card-logo {
-  opacity: 0;
+@media (min-width: 769px) {
+  .ps-work-card:hover .ps-work-card-logo,
+  .ps-work-card:focus-within .ps-work-card-logo {
+    opacity: 0;
+  }
 }
 
 /* SVG icon for cards without real images */
@@ -4425,9 +4427,11 @@ button {
   transition: opacity 280ms ease;
 }
 
-.ps-work-card:hover .ps-work-card-icon,
-.ps-work-card:focus-within .ps-work-card-icon {
-  opacity: 0;
+@media (min-width: 769px) {
+  .ps-work-card:hover .ps-work-card-icon,
+  .ps-work-card:focus-within .ps-work-card-icon {
+    opacity: 0;
+  }
 }
 
 .ps-work-card-icon svg {
@@ -4498,13 +4502,25 @@ button {
   .ps-work-card--tapped .ps-work-card-label-group {
     opacity: 0;
   }
+  /* Logos always visible on mobile — never fade from scroll-triggered hover states */
+  .ps-work-card-logo,
+  .ps-work-card-icon {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+  /* Only hide logo when card is explicitly tapped (JS class) */
+  .ps-work-card--tapped .ps-work-card-logo,
+  .ps-work-card--tapped .ps-work-card-icon {
+    opacity: 0 !important;
+  }
+  /* Remove line-clamp on mobile; use smaller text so description fits */
   .ps-work-card-result {
-    font-size: 0.75rem;
-    -webkit-line-clamp: 5;
-    line-height: 1.5;
+    -webkit-line-clamp: unset !important;
+    font-size: 0.6875rem !important;
+    line-height: 1.45 !important;
   }
   .ps-work-card-tag {
-    font-size: 0.6rem;
+    font-size: 0.5625rem !important;
   }
 }
 
@@ -5867,7 +5883,16 @@ body {
     display: block !important;
   }
   .mobile-carousel__items-container {
-    padding: 0 16px;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .mobile-carousel__item {
+    width: calc(100vw - 32px) !important;
+    min-width: calc(100vw - 32px) !important;
+    scroll-snap-align: center !important;
+  }
+  .mobile-carousel__scroller {
+    scroll-padding-inline: 16px !important;
   }
   .events-mobile-carousel-card__link {
     display: none !important;
@@ -5877,11 +5902,21 @@ body {
   }
 }
 
-/* ── System Fixes card: scale proportionally on mobile ── */
-@media (max-width: 639px) {
-  .ps-fix-root {
-    transform: scale(0.75);
-    transform-origin: top center;
+/* ── System Fixes card: no scale on mobile — keep desktop layout, let card clip naturally ── */
+
+/* ── Hero: fill entire screen regardless of theme ── */
+.ps-hero {
+  min-height: 100dvh !important;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+/* Compensate: push hero content below the fixed nav header */
+.ps-hero .ps-hero-content {
+  padding-top: calc(var(--nav-height) + 40px) !important;
+}
+@media (max-width: 768px) {
+  .ps-hero .ps-hero-content {
+    padding-top: calc(var(--nav-height) + 24px) !important;
   }
 }
 

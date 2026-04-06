@@ -13,6 +13,7 @@ interface CaseStudyCard {
 }
 
 const caseStudyCards: CaseStudyCard[] = [
+  // 1
   {
     title: "The Iron and Oak Podcast",
     tags: "Website Build | AI Search Optimization",
@@ -21,22 +22,7 @@ const caseStudyCards: CaseStudyCard[] = [
     gradient: "linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0f2010 100%)",
     image: "iron-oak.webp",
   },
-  {
-    title: "PreisserSolutions.com",
-    tags: "Custom Website | Lead Pipeline | Local SEO",
-    description:
-      "This is our own site, and we built it the same way we build yours — custom-coded, integrated lead pipeline, and an ROI calculator that qualifies prospects before they ever hit our calendar. No templates. No page builders. A website that actually works as a sales tool.",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #0F1D30 100%)",
-    image: "preisser-solutions.webp",
-  },
-  {
-    title: "TylerPreisser.com",
-    tags: "Portfolio | GEO/SEO | AI Search Optimization",
-    description:
-      "A professional portfolio engineered to rank in both traditional search and AI-powered search tools like ChatGPT and Perplexity. If your competitors show up when someone asks AI for a recommendation in your industry and you don't, you're already behind.",
-    gradient: "linear-gradient(135deg, #0D95E8 0%, #0A1628 100%)",
-    image: "tyler-headshot-nobg.webp",
-  },
+  // 2
   {
     title: "Wife Supply Co",
     tags: "AI Application | Product Build | Full Deployment",
@@ -46,24 +32,16 @@ const caseStudyCards: CaseStudyCard[] = [
     image: "wife-supply.webp",
     lightCard: true,
   },
+  // 3
   {
-    title: "iOS Application",
-    tags: "Mobile App | iOS Development | Full Build",
+    title: "PreisserSolutions.com",
+    tags: "Custom Website | Lead Pipeline | Local SEO",
     description:
-      "Native iOS application with sermon streaming, events calendar, reading plans, push notifications, and community features. Full design and development.",
-    gradient: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)",
-    svgIcon: (
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <rect x="12" y="4" width="24" height="40" rx="4" strokeOpacity="0.7" />
-        <path d="M20 8h8" strokeOpacity="0.4" />
-        <circle cx="24" cy="40" r="1.5" fill="currentColor" stroke="none" fillOpacity="0.5" />
-        <rect x="16" y="14" width="16" height="8" rx="2" strokeOpacity="0.4" fill="currentColor" fillOpacity="0.08" />
-        <rect x="16" y="26" width="7" height="6" rx="1.5" strokeOpacity="0.3" fill="currentColor" fillOpacity="0.06" />
-        <rect x="25" y="26" width="7" height="6" rx="1.5" strokeOpacity="0.3" fill="currentColor" fillOpacity="0.06" />
-        <path d="M16 36h16" strokeOpacity="0.2" />
-      </svg>
-    ),
+      "This is our own site, and we built it the same way we build yours — custom-coded, integrated lead pipeline, and an ROI calculator that qualifies prospects before they ever hit our calendar. No templates. No page builders. A website that actually works as a sales tool.",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #0F1D30 100%)",
+    image: "preisser-solutions.webp",
   },
+  // 4
   {
     title: "AI Customer Reactivation Engine",
     tags: "AI Outreach | John C Cassidy HVAC | Revenue Recovery",
@@ -73,6 +51,44 @@ const caseStudyCards: CaseStudyCard[] = [
     image: "cassidy-hvac-nobg.webp",
     lightCard: true,
   },
+  // 5
+  {
+    title: "Automated Inventory System",
+    tags: "Custom App | HG Oil Holdings | Live Tracking",
+    description:
+      "HG Oil cut inventory tracking time by 95%. If your team is still counting stock by hand, updating spreadsheets from memory, or guessing what's on the truck — this is what it looks like when that problem disappears.",
+    gradient: "linear-gradient(135deg, #f0f4f8 0%, #dce8f0 100%)",
+    image: "hg-oil-icon.webp",
+    lightCard: true,
+  },
+  // 6
+  {
+    title: "Contact Form to CRM Pipeline",
+    tags: "Integration | Lead Automation | R Squared AI",
+    description:
+      "From the moment a lead fills out a form to the moment they're tagged, scored, and assigned in the CRM — zero manual steps. No inbox monitoring. No copy-pasting into spreadsheets. Leads move through your pipeline whether your team is watching or not.",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #0F1D30 100%)",
+    image: "r-squared.webp",
+  },
+  // 7
+  {
+    title: "Alpha Matrix — Multi-Agent AI",
+    tags: "AI Architecture | R Squared AI | Autonomous",
+    description:
+      "Six autonomous AI agents running in parallel — scanning, analyzing, scoring, and producing strategic output without human intervention. This is the ceiling of what business AI can do today, and we built it from scratch.",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #1a1040 50%, #0A1628 100%)",
+    image: "r-squared.webp",
+  },
+  // 8
+  {
+    title: "TylerPreisser.com",
+    tags: "Portfolio | GEO/SEO | AI Search Optimization",
+    description:
+      "A professional portfolio engineered to rank in both traditional search and AI-powered search tools like ChatGPT and Perplexity. If your competitors show up when someone asks AI for a recommendation in your industry and you don't, you're already behind.",
+    gradient: "linear-gradient(135deg, #0D95E8 0%, #0A1628 100%)",
+    image: "tyler-headshot-nobg.webp",
+  },
+  // 9
   {
     title: "After-Hours Call Triage",
     tags: "AI Automation | Lead Capture | Routing",
@@ -91,6 +107,7 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
+  // 10
   {
     title: "AI Invoice Processing",
     tags: "Document Processing | Data Extraction | Automation",
@@ -110,15 +127,7 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
-  {
-    title: "Automated Inventory System",
-    tags: "Custom App | HG Oil Holdings | Live Tracking",
-    description:
-      "HG Oil cut inventory tracking time by 95%. If your team is still counting stock by hand, updating spreadsheets from memory, or guessing what's on the truck — this is what it looks like when that problem disappears.",
-    gradient: "linear-gradient(135deg, #f0f4f8 0%, #dce8f0 100%)",
-    image: "hg-oil-icon.webp",
-    lightCard: true,
-  },
+  // 11
   {
     title: "AI Document Analysis",
     tags: "AI Automation | Workflow Integration | Efficiency",
@@ -138,6 +147,7 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
+  // 12
   {
     title: "Custom AI Fitness Agent",
     tags: "Custom AI Agent | Personalization | Data",
@@ -158,6 +168,7 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
+  // 13
   {
     title: "AI Email Digest System",
     tags: "AI Automation | Email Management | Productivity",
@@ -175,6 +186,7 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
+  // 14
   {
     title: "Hiring Pipeline & AI Screener",
     tags: "Google Workspace | Apps Script | AI Agent",
@@ -192,22 +204,6 @@ const caseStudyCards: CaseStudyCard[] = [
         <path d="M28 10c0-2.2 1.8-4 4-4s4 1.8 4 4" strokeOpacity="0.5" />
       </svg>
     ),
-  },
-  {
-    title: "Contact Form to CRM Pipeline",
-    tags: "Integration | Lead Automation | R Squared AI",
-    description:
-      "From the moment a lead fills out a form to the moment they're tagged, scored, and assigned in the CRM — zero manual steps. No inbox monitoring. No copy-pasting into spreadsheets. Leads move through your pipeline whether your team is watching or not.",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #0F1D30 100%)",
-    image: "r-squared.webp",
-  },
-  {
-    title: "Alpha Matrix — Multi-Agent AI",
-    tags: "AI Architecture | R Squared AI | Autonomous",
-    description:
-      "Six autonomous AI agents running in parallel — scanning, analyzing, scoring, and producing strategic output without human intervention. This is the ceiling of what business AI can do today, and we built it from scratch.",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #1a1040 50%, #0A1628 100%)",
-    image: "r-squared.webp",
   },
 ];
 
