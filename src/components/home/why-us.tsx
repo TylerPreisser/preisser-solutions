@@ -16,8 +16,6 @@ interface WhyFeature {
   cta: string;
 }
 
-const ACTIVE_CARD_LABEL = "Preisser Solutions";
-
 const whyFeatures: WhyFeature[] = [
   {
     id: 0,
@@ -95,11 +93,11 @@ const whyFeatures: WhyFeature[] = [
 
 function ArrowLeftIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
       <path
-        d="M11.25 4.5L6.75 9l4.5 4.5"
+        d="M10 12L6 8L10 4"
         stroke="currentColor"
-        strokeWidth="1.8"
+        strokeWidth="1.75"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -109,11 +107,11 @@ function ArrowLeftIcon() {
 
 function ArrowRightIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
       <path
-        d="M6.75 4.5L11.25 9l-4.5 4.5"
+        d="M6 4L10 8L6 12"
         stroke="currentColor"
-        strokeWidth="1.8"
+        strokeWidth="1.75"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -203,12 +201,6 @@ export function WhyUs() {
                     {/* Gradient overlay — always rendered, stronger on inactive */}
                     <div className={`ps-squeeze-card-overlay${isActive ? " ps-squeeze-card-overlay--active" : ""}`} aria-hidden="true" />
 
-                    {/* Brand label: only visible on active card */}
-                    {isActive && (
-                      <span className="ps-squeeze-label" aria-hidden="true">
-                        {ACTIVE_CARD_LABEL}
-                      </span>
-                    )}
                   </div>
                 );
               })}
@@ -236,9 +228,22 @@ export function WhyUs() {
 
                     <Link href={item.href} className="ps-btn ps-btn-primary ps-events-detail__cta">
                       {item.cta}
-                      <span className="ps-btn-arrow" aria-hidden="true">
-                        →
-                      </span>
+                      <svg
+                        className="ps-btn-arrow"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M1 8h14M9 2l6 6-6 6"
+                          stroke="currentColor"
+                          strokeWidth="1.75"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
                     </Link>
                   </article>
                 );
@@ -289,9 +294,22 @@ export function WhyUs() {
                               className="ps-btn ps-btn-primary events-mobile-carousel-card__link"
                             >
                               {item.cta}
-                              <span className="ps-btn-arrow" aria-hidden="true">
-                                →
-                              </span>
+                              <svg
+                                className="ps-btn-arrow"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                fill="none"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  d="M1 8h14M9 2l6 6-6 6"
+                                  stroke="currentColor"
+                                  strokeWidth="1.75"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
                             </Link>
                           </article>
                         </div>

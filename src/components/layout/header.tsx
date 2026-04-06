@@ -157,14 +157,14 @@ export function Header() {
                 Get in Touch
                 <svg
                   className="ps-header-cta-arrow"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
                   fill="none"
                   aria-hidden="true"
                 >
                   <path
-                    d="M1 7h12M8 2l5 5-5 5"
+                    d="M1 8h14M9 2l6 6-6 6"
                     stroke="currentColor"
                     strokeWidth="1.75"
                     strokeLinecap="round"
@@ -216,7 +216,23 @@ export function Header() {
           className="ps-mobile-nav-cta"
           onClick={handleLinkClick}
         >
-          Get in Touch →
+          Get in Touch
+          <svg
+            className="ps-header-cta-arrow"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M1 8h14M9 2l6 6-6 6"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </Link>
       </nav>
     </>

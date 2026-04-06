@@ -240,9 +240,9 @@ export function CaseStudies() {
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path
-                d="M10 3L5 8l5 5"
+                d="M10 12L6 8L10 4"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="1.75"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
@@ -255,9 +255,9 @@ export function CaseStudies() {
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path
-                d="M6 3l5 5-5 5"
+                d="M6 4L10 8L6 12"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="1.75"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
@@ -306,7 +306,23 @@ export function CaseStudies() {
 
       <div className="ps-work-see-more">
         <a href="https://tylerpreisser.com" target="_blank" rel="noopener noreferrer">
-          See more of what we&apos;ve built at TylerPreisser.com →
+          See more of what we&apos;ve built at TylerPreisser.com
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+            style={{ display: "inline-block", verticalAlign: "middle", marginLeft: "6px" }}
+          >
+            <path
+              d="M1 8h14M9 2l6 6-6 6"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </a>
       </div>
     </section>
