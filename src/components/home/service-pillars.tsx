@@ -67,7 +67,7 @@ const services: ServicePillar[] = [
     ],
     painPoints: [
       "Our website exists, but it's never once brought in a customer.",
-      "I'm embarrassed to send people to our site when they ask for a link.",
+      "Our website hasn't generated a single lead in the time we've had it.",
       "We paid a developer two years ago and haven't been able to update it since.",
       "Our competitors' sites look like real companies. Ours looks like an afterthought.",
       "I know we need to show up in search results, but I have no idea where to start.",

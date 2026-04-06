@@ -97,6 +97,11 @@
 }
 
 /* ── Light mode overrides ──────────────────────────────────── */
+/* Light mode: nav pill uses translucent white so backdrop-filter shows through */
+[data-theme="light"] .ps-header::before {
+  background-color: rgba(255, 255, 255, 0.88);
+}
+
 [data-theme="light"] {
   --theme-bg-primary:   #FFFFFF;
   --theme-bg-secondary: #F6F9FC;
@@ -338,14 +343,21 @@ button {
   padding: 6px 0;
 }
 
-/* Background pill — inset with rounded corners, fades in on scroll */
+/* Background pill — inset with rounded corners, fades in on scroll.
+   backdrop-filter blurs the page content behind the nav pill.
+   -webkit-backdrop-filter required for Safari (iOS + macOS). */
 .ps-header::before {
   content: "";
   position: absolute;
   inset: 6px 12px;
   border-radius: 12px;
-  background-color: var(--theme-nav-bg);
+  background-color: rgba(10, 22, 40, 0.85);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
   box-shadow: var(--theme-nav-shadow);
+  /* iOS Safari: force GPU compositing to prevent backdrop-filter flicker */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   opacity: 0;
   transition:
     opacity 240ms cubic-bezier(0.45, 0.05, 0.55, 0.95),
@@ -599,15 +611,30 @@ button {
   background-color: var(--color-primary-hover);
 }
 
+/* Mobile: show nav inline (only 2 items — theme toggle + CTA — no hamburger needed) */
 @media (max-width: 768px) {
-  .ps-primary-nav {
-    display: none;
+  .ps-header-inner {
+    padding: 0 16px;
+    gap: 12px;
   }
-  .ps-hamburger {
-    display: flex;
+
+  /* Shrink logo slightly on small screens */
+  .ps-logo-img {
+    height: 36px;
   }
-  .ps-mobile-nav {
-    display: flex;
+
+  /* CTA pill: smaller padding and font on mobile */
+  .ps-header-cta {
+    padding: 9px 14px;
+    font-size: 0.8125rem;
+    gap: 4px;
+  }
+
+  /* Hide the arrow on very small screens (<360px) to prevent overflow */
+  @media (max-width: 359px) {
+    .ps-header-cta-arrow {
+      display: none;
+    }
   }
 }
 
@@ -5530,18 +5557,28 @@ button {
   }
 }
 
-/* ── Case Studies: always-visible overlay on touch devices ── */
+/* ── Case Studies: mobile tap-to-reveal overlay ── */
 @media (max-width: 768px) {
-  /* On touch devices, hover does not fire reliably.
-     Show the overlay content always so cards are informative on tap. */
+  /* Default state on mobile: overlay hidden, title + tap hint visible */
   .ps-work-card-overlay {
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
   }
 
-  /* Hide the client-name label since the overlay already covers it */
-  .ps-work-card-client {
+  /* Overlay only appears when the card has been tapped (.ps-work-card--tapped added by JS) */
+  .ps-work-card--tapped .ps-work-card-overlay {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.72);
+  }
+
+  /* Hide the client label when overlay is active on tapped card */
+  .ps-work-card--tapped .ps-work-card-client,
+  .ps-work-card--tapped .ps-work-card-tap-hint {
     opacity: 0;
+  }
+
+  /* Prevent description text from overflowing card bounds */
+  .ps-work-card-overlay {
+    overflow: hidden;
   }
 
   /* Slightly smaller cards for better 320px viewport fit */
@@ -5549,11 +5586,78 @@ button {
     width: 240px;
   }
 
-  /* Work nav buttons: ensure 44px tap targets */
-  .ps-work-nav-btn {
-    width: 44px;
-    height: 44px;
+  /* Hide nav arrow buttons on mobile — touch scrolling is native */
+  .ps-work-nav {
+    display: none;
   }
+}
+
+/* ── Work card: label group (title + tap hint) ── */
+/* Wraps the static client name and "Tap for details" hint on mobile */
+.ps-work-card-label-group {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: opacity 280ms ease;
+}
+
+/* Keep the client name styling identical via the group */
+.ps-work-card-label-group .ps-work-card-client {
+  position: static; /* override absolute positioning — now in flow inside group */
+  bottom: auto;
+  left: auto;
+  right: auto;
+}
+
+/* Light card variant — dark text */
+.ps-work-card--light .ps-work-card-label-group .ps-work-card-client {
+  color: #1E293B;
+}
+
+/* Tap hint — only visible on mobile, hidden on desktop */
+.ps-work-card-tap-hint {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.04em;
+  display: none; /* hidden by default, shown on mobile below */
+}
+
+.ps-work-card--light .ps-work-card-tap-hint {
+  color: rgba(30, 41, 59, 0.5);
+}
+
+@media (max-width: 768px) {
+  .ps-work-card-tap-hint {
+    display: block;
+  }
+}
+
+/* Desktop: hide the group wrapper approach — keep original absolute positioning behavior
+   by hiding group and using original client class (which the group now wraps). */
+@media (min-width: 769px) {
+  .ps-work-card-label-group {
+    /* On desktop, hover still hides the label group like it did before */
+  }
+
+  .ps-work-card:hover .ps-work-card-label-group,
+  .ps-work-card:focus-within .ps-work-card-label-group {
+    opacity: 0;
+  }
+}
+
+/* Fix description overflow inside the card overlay */
+.ps-work-card-result {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ── CTA Section: stack buttons on narrow screens ── */

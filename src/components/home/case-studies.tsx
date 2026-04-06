@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 interface CaseStudyCard {
   title: string;
@@ -213,6 +213,8 @@ const caseStudyCards: CaseStudyCard[] = [
 
 export function CaseStudies() {
   const trackRef = useRef<HTMLDivElement>(null);
+  // Track which card is tapped on mobile (null = none active)
+  const [activeMobileCard, setActiveMobileCard] = useState<number | null>(null);
 
   function scrollTrack(direction: "left" | "right") {
     if (!trackRef.current) return;
@@ -221,6 +223,11 @@ export function CaseStudies() {
       left: direction === "right" ? scrollAmount : -scrollAmount,
       behavior: "smooth",
     });
+  }
+
+  function handleCardTap(index: number) {
+    // Toggle: tap same card again to close, tap new card to switch
+    setActiveMobileCard((prev) => (prev === index ? null : index));
   }
 
   return (
@@ -232,6 +239,7 @@ export function CaseStudies() {
             Real Projects. Real Results.
           </h2>
         </div>
+        {/* Nav arrows — hidden on mobile via CSS (touch scroll is native) */}
         <div className="ps-work-nav" aria-label="Scroll case studies">
           <button
             className="ps-work-nav-btn"
@@ -267,46 +275,62 @@ export function CaseStudies() {
       </div>
 
       <div className="ps-work-track" ref={trackRef} role="list">
-        {caseStudyCards.map((study, index) => (
-          <article
-            key={`${study.title}-${index}`}
-            className={`ps-work-card${study.lightCard ? " ps-work-card--light" : ""}`}
-            role="listitem"
-          >
-            {/* Gradient background layer */}
-            <div
-              className="ps-work-card-bg"
-              style={{ background: study.gradient }}
-              aria-hidden="true"
-            />
-
-            {/* Logo/image centered on the card */}
-            {study.image ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/cases/${study.image}`}
-                alt={study.title}
-                className={`ps-work-card-logo${study.title === "TylerPreisser.com" ? " ps-work-card-logo--headshot" : ""}`}
+        {caseStudyCards.map((study, index) => {
+          const isMobileActive = activeMobileCard === index;
+          return (
+            <article
+              key={`${study.title}-${index}`}
+              className={[
+                "ps-work-card",
+                study.lightCard ? "ps-work-card--light" : "",
+                isMobileActive ? "ps-work-card--tapped" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              role="listitem"
+              onClick={() => handleCardTap(index)}
+            >
+              {/* Gradient background layer */}
+              <div
+                className="ps-work-card-bg"
+                style={{ background: study.gradient }}
+                aria-hidden="true"
               />
-            ) : study.svgIcon ? (
-              <div className="ps-work-card-icon" aria-hidden="true">{study.svgIcon}</div>
-            ) : null}
 
-            {/* Static label at bottom-left */}
-            <span className="ps-work-card-client">{study.title}</span>
+              {/* Logo/image centered on the card */}
+              {study.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/cases/${study.image}`}
+                  alt={study.title}
+                  className={`ps-work-card-logo${study.title === "TylerPreisser.com" ? " ps-work-card-logo--headshot" : ""}`}
+                />
+              ) : study.svgIcon ? (
+                <div className="ps-work-card-icon" aria-hidden="true">{study.svgIcon}</div>
+              ) : null}
 
-            {/* Hover overlay with full details */}
-            <div className="ps-work-card-overlay" aria-label={`${study.title} case study details`}>
-              <span className="ps-work-card-tag">{study.tags}</span>
-              <p className="ps-work-card-result">{study.description}</p>
-            </div>
-          </article>
-        ))}
+              {/* Static label + tap hint at bottom-left (mobile default state) */}
+              <div className="ps-work-card-label-group">
+                <span className="ps-work-card-client">{study.title}</span>
+                <span className="ps-work-card-tap-hint" aria-hidden="true">Tap for details</span>
+              </div>
+
+              {/* Overlay with full details — hover on desktop, tap on mobile */}
+              <div
+                className="ps-work-card-overlay"
+                aria-label={`${study.title} case study details`}
+              >
+                <span className="ps-work-card-tag">{study.tags}</span>
+                <p className="ps-work-card-result">{study.description}</p>
+              </div>
+            </article>
+          );
+        })}
       </div>
 
       <div className="ps-work-see-more">
         <a href="https://tylerpreisser.com" target="_blank" rel="noopener noreferrer">
-          See more of what we&apos;ve built at TylerPreisser.com
+          See more of what I&apos;ve built at TylerPreisser.com
           <svg
             width="16"
             height="16"

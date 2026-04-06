@@ -11,8 +11,8 @@ export default function HomePage() {
     <>
       <Hero />
       <ValueStrip />
-      <TechPartners />
       <ServicePillars />
+      <TechPartners />
       <WhyUs />
       <CaseStudies />
       <CtaSection />

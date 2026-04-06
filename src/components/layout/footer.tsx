@@ -12,7 +12,8 @@ export function Footer() {
   function handleSubscribe(e: React.FormEvent) {
     e.preventDefault();
     if (!email) return;
-    // TODO: Wire to email service (Mailchimp, ConvertKit, etc.)
+    // Mailto fallback: sends a notification email to sales with the subscriber address
+    window.location.href = `mailto:sales@preissersolutions.com?subject=New%20Newsletter%20Subscriber&body=New%20subscriber%3A%20${encodeURIComponent(email)}`;
     setSubscribed(true);
   }
 

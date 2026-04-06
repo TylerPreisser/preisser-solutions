@@ -2,8 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
 
 // Sun icon — shown in dark mode (click to switch to light)
 function SunIcon() {
@@ -46,7 +44,6 @@ function MoonIcon() {
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [navOpen, setNavOpen] = useState(false);
   // null = not yet read from DOM (avoids hydration mismatch)
   const [theme, setTheme] = useState<"dark" | "light" | null>(null);
 
@@ -88,21 +85,10 @@ export function Header() {
     } catch (_) {}
   }, [theme]);
 
-  const handleLinkClick = () => setNavOpen(false);
-
-  useEffect(() => {
-    if (navOpen) {
-      document.body.classList.add("nav-open");
-    } else {
-      document.body.classList.remove("nav-open");
-    }
-    return () => document.body.classList.remove("nav-open");
-  }, [navOpen]);
-
   return (
     <>
       <header
-        className={cn("ps-header", isScrolled && "scrolled")}
+        className={`ps-header${isScrolled ? " scrolled" : ""}`}
         aria-label="Site header"
       >
         <div className="ps-header-inner">
@@ -110,7 +96,7 @@ export function Header() {
           <Link
             href="/"
             className="ps-logo-link"
-            onClick={handleLinkClick}
+            onClick={() => {}}
             aria-label="Preisser Solutions — Home"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -151,7 +137,7 @@ export function Header() {
               <Link
                 href="/contact"
                 className="ps-header-cta"
-                onClick={handleLinkClick}
+                onClick={() => {}}
                 aria-label="Get in Touch — start a conversation"
               >
                 Get in Touch
@@ -175,66 +161,8 @@ export function Header() {
             </div>
           </nav>
 
-          {/* Hamburger — mobile */}
-          <button
-            className="ps-hamburger"
-            aria-controls="mobile-navigation"
-            aria-expanded={navOpen}
-            aria-label={navOpen ? "Close menu" : "Open menu"}
-            onClick={() => setNavOpen((prev) => !prev)}
-          >
-            <span className="ps-sr-only">Menu</span>
-            <span className="ps-hamburger-bar" />
-            <span className="ps-hamburger-bar" />
-            <span className="ps-hamburger-bar" />
-          </button>
         </div>
       </header>
-
-      {/* Mobile drawer */}
-      <nav
-        className={cn("ps-mobile-nav", navOpen && "open")}
-        id="mobile-navigation"
-        aria-label="Mobile navigation"
-        aria-hidden={!navOpen}
-      >
-        {/* Mobile theme toggle */}
-        {theme !== null && (
-          <button
-            className="ps-mobile-theme-toggle"
-            onClick={toggleTheme}
-            aria-label={
-              theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
-            }
-          >
-            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-            <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
-          </button>
-        )}
-        <Link
-          href="/contact"
-          className="ps-mobile-nav-cta"
-          onClick={handleLinkClick}
-        >
-          Get in Touch
-          <svg
-            className="ps-header-cta-arrow"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M1 8h14M9 2l6 6-6 6"
-              stroke="currentColor"
-              strokeWidth="1.75"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
-      </nav>
     </>
   );
 }

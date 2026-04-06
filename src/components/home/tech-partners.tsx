@@ -1,26 +1,43 @@
 "use client";
 
 const techPartners = [
+  // AI & Development
   "OpenAI",
   "Anthropic",
+  "Claude Code",
   "Google Gemini",
   "Cursor",
-  "Cloudflare",
-  "Google Workspace",
+  "Codex",
+  "Xcode",
+  "Swift",
+  "SwiftUI",
+  // Web & Cloud
   "Next.js",
   "React",
   "Tailwind CSS",
-  "n8n",
-  "Zapier",
-  "Make",
-  "Vercel",
-  "GitHub",
   "TypeScript",
   "Node.js",
   "Python",
-  "GSAP",
+  "Cloudflare",
+  "Vercel",
+  "GitHub",
+  "Docker",
+  // Automation & Integration
+  "n8n",
+  "Zapier",
+  "Make",
+  // Design & Productivity
   "Figma",
+  "Google Workspace",
+  "Notion",
+  // Data & Analytics
+  "PostgreSQL",
+  "Supabase",
+  "MongoDB",
+  // Payment & Commerce
   "Stripe",
+  // Animation & UI
+  "GSAP",
 ];
 
 export function TechPartners() {
