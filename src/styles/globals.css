@@ -3050,6 +3050,14 @@ button {
   color: rgba(255, 255, 255, 0.6);
   z-index: 1;
   pointer-events: none;
+  transition: opacity 250ms ease;
+}
+
+/* Fade out graphic when overlay appears */
+.ps-carousel-card:hover .ps-carousel-card-graphic,
+.ps-carousel-card:focus-within .ps-carousel-card-graphic,
+.ps-carousel-card.tapped .ps-carousel-card-graphic {
+  opacity: 0;
 }
 
 .ps-carousel-card-graphic svg {
@@ -3076,17 +3084,18 @@ button {
 }
 
 .ps-carousel-card-overlay-title {
-  font-size: 0.9375rem;
-  font-weight: 700;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: #ffffff;
   text-align: center;
   line-height: 1.35;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .ps-carousel-card-overlay-desc {
-  font-size: 0.8125rem;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.82);
   text-align: center;
   line-height: 1.55;
   margin: 0;
@@ -4601,12 +4610,12 @@ button {
 }
 
 .ps-work-card-result {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 1.35;
-  letter-spacing: -0.01em;
-  margin-bottom: 16px;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.6;
+  letter-spacing: 0;
+  margin-bottom: 0;
 }
 
 .ps-work-card-link {
@@ -5801,11 +5810,8 @@ button {
   }
 }
 
-/* Fix description overflow inside the card overlay */
+/* Case study card description — no clamp, let it flow */
 .ps-work-card-result {
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
