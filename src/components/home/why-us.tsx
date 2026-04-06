@@ -35,8 +35,8 @@ const whyFeatures: WhyFeature[] = [
     title: "AI, Harnessed and Under Control.",
     description:
       "We\u2019ve built the guardrails, safety protocols, and quality controls that let us use AI at every stage of development \u2014 without sacrificing precision. A project that takes a traditional firm three months, we finish in three weeks. Your timeline shrinks. Your cost shrinks. The quality stays exactly where it should be.",
-    image: "/images/stripe/DatavizStatic3x.png",
-    mobileImage: "/images/stripe/the-happenings-tidemark-mobile.png",
+    image: "/images/why-us/ai-harnessed.webp",
+    mobileImage: "/images/why-us/ai-harnessed.webp",
     alt: "AI-accelerated development with proper guardrails",
     href: "/contact",
     cta: "Get in Touch",
@@ -47,8 +47,8 @@ const whyFeatures: WhyFeature[] = [
     title: "We Stay With It.",
     description:
       "We don\u2019t build you a system and disappear. If you acquire a company, change platforms, add staff, or need something adjusted six months down the road \u2014 we\u2019re still here. You\u2019re not handed a finished product and left to figure it out alone. We stay with it for as long as you need us.",
-    image: "/images/why-us/we-stay-with-it.webp",
-    mobileImage: "/images/why-us/we-stay-with-it.webp",
+    image: "/images/why-us/we-stay-with-it-new.webp",
+    mobileImage: "/images/why-us/we-stay-with-it-new.webp",
     alt: "Ongoing support and system adaptation",
     href: "/contact",
     cta: "Get in Touch",
@@ -59,8 +59,8 @@ const whyFeatures: WhyFeature[] = [
     title: "You Work Directly With the Builder.",
     description:
       "Most companies hand you off to a salesman, then a project manager, then a developer you\u2019ll never meet. Here, you talk to the person who designed it, built it, and can fix it on the phone right now. No layers. No runaround. The guy doing the work is the guy you\u2019re talking to.",
-    image: "/images/why-us/work-direct.webp",
-    mobileImage: "/images/why-us/work-direct.webp",
+    image: "/images/why-us/work-direct-new.webp",
+    mobileImage: "/images/why-us/work-direct-new.webp",
     alt: "Work directly with the builder",
     href: "/contact",
     cta: "Get in Touch",

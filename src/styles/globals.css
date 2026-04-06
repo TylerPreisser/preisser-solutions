@@ -99,7 +99,7 @@
 /* ── Light mode overrides ──────────────────────────────────── */
 /* Light mode: nav pill uses translucent white so backdrop-filter shows through */
 [data-theme="light"] .ps-header::before {
-  background-color: rgba(255, 255, 255, 0.88);
+  background-color: rgba(255, 255, 255, 0.55);
 }
 
 [data-theme="light"] {
@@ -351,9 +351,9 @@ button {
   position: absolute;
   inset: 6px 12px;
   border-radius: 12px;
-  background-color: rgba(10, 22, 40, 0.85);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(10, 22, 40, 0.55);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   box-shadow: var(--theme-nav-shadow);
   /* iOS Safari: force GPU compositing to prevent backdrop-filter flicker */
   -webkit-backface-visibility: hidden;
@@ -3375,7 +3375,7 @@ button {
 
 .ps-squeeze-card--logo .ps-squeeze-card-img {
   object-fit: contain;
-  padding: 18%;
+  padding: 9%;
 }
 
 /* Inactive: zoom in slightly so the narrow strip shows the image center */
