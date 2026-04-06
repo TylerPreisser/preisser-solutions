@@ -92,6 +92,8 @@ export function Header() {
         className={`ps-header${isScrolled ? " scrolled" : ""}`}
         aria-label="Site header"
       >
+        {/* Blur layer — real DOM element so backdrop-filter works */}
+        <div className="ps-header-blur" aria-hidden="true" />
         <div className="ps-header-inner">
           {/* Logo */}
           <Link
