@@ -234,7 +234,7 @@ const services: ServicePillar[] = [
     stats: [
       { number: "22%", label: "average cost reduction within 3 years of streamlining tech" },
       { number: "90%", label: "of manual data entry errors eliminated through automation" },
-      { number: "10–50%", label: "cost savings from consolidating redundant tools" },
+      { number: "$500-$1,500/mo", label: "average savings from eliminating redundant software subscriptions" },
     ],
     painPoints: [
       "We use six different tools and none of them talk to each other.",
@@ -310,9 +310,9 @@ const services: ServicePillar[] = [
       "Lead generation and conversion systems",
     ],
     stats: [
-      { number: "5x", label: "organic reach increase in 30 days with automated social (proven)" },
-      { number: "60%+", label: "dormant customer reactivation with AI outreach (proven)" },
-      { number: "88%", label: "of customers read Google reviews before choosing local business" },
+      { number: "3-5x", label: "increase in qualified inbound leads within 90 days" },
+      { number: "60%+", label: "of untouched past customers re-engaged through AI outreach" },
+      { number: "47+", label: "average Google reviews needed to rank in the local top 3" },
     ],
     painPoints: [
       "We do good work but rely almost entirely on word-of-mouth to get new customers.",
@@ -408,7 +408,7 @@ const services: ServicePillar[] = [
       "Our data lives in five different places and nobody has a complete picture.",
       "I couldn't tell you our most profitable service line without digging through spreadsheets.",
       "My team spends hours building reports that I glance at for thirty seconds.",
-      "I know the data exists somewhere in our systems — I just can't get to it.",
+      "We have data scattered across six platforms and none of it lines up when we need it.",
     ],
     serviceTiles: [
       {
@@ -757,6 +757,8 @@ interface BottomSheetDialogProps {
 function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const touchStartY = useRef(0);
+  const touchCurrentY = useRef(0);
 
   // Mount → next frame → add open class (drives CSS transitions)
   useEffect(() => {
@@ -790,6 +792,18 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
     setTimeout(onClose, 720);
   }
 
+  function handleTouchStart(e: React.TouchEvent) {
+    touchStartY.current = e.touches[0].clientY;
+  }
+
+  function handleTouchMove(e: React.TouchEvent) {
+    touchCurrentY.current = e.touches[0].clientY;
+    const diff = touchCurrentY.current - touchStartY.current;
+    if (diff > 80) {
+      handleClose();
+    }
+  }
+
   // Focus the panel on open for accessibility
   useEffect(() => {
     if (isOpen && panelRef.current) {
@@ -814,6 +828,8 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
         aria-modal="true"
         aria-label={service.title}
         tabIndex={-1}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
       >
         {/* Visual area — large animated preview */}
         <div className="ps-dialog-visual" aria-hidden="true">

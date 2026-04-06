@@ -6068,18 +6068,18 @@ html, body {
     min-height: 400px !important;
   }
   .ps-work-card-overlay {
-    padding: 16px 16px 16px !important;
-    padding-top: 15% !important;
-    gap: 10px !important;
+    justify-content: center !important;
+    padding: 24px 20px !important;
+    gap: 12px !important;
   }
   .ps-work-card-result {
-    font-size: 0.8125rem !important;
+    font-size: 0.9375rem !important;
+    line-height: 1.65 !important;
     font-weight: 400 !important;
-    line-height: 1.6 !important;
     color: rgba(255,255,255,0.88) !important;
   }
   .ps-work-card-tag {
-    font-size: 0.625rem !important;
+    font-size: 0.6875rem !important;
     margin-bottom: 6px !important;
   }
 
