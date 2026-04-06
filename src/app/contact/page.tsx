@@ -193,13 +193,13 @@ export default function ContactPage() {
 
                 {/* Message */}
                 <div className="ps-form-group full-width">
-                  <label htmlFor="contact-message">Tell Us About Your Situation *</label>
+                  <label htmlFor="contact-message">Tell Us What You Have in Mind *</label>
                   <textarea
                     id="contact-message"
                     name="message"
                     value={form.message}
                     onChange={handleChange}
-                    placeholder="What do you need built, fixed, or improved?"
+                    placeholder="What can we build for you?"
                     required
                     rows={5}
                   />
