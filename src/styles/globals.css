@@ -5408,10 +5408,89 @@ button {
   text-align: center;
 }
 
+/* Contact success state */
+.ps-contact-success {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.ps-contact-success-check {
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: #00D4AA;
+  font-weight: 700;
+}
+
+.ps-contact-success h2 {
+  color: var(--color-text-light-primary);
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.ps-contact-success p {
+  color: var(--color-text-light-secondary);
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
 @media (max-width: 640px) {
   .ps-form-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ── Contact page: dark mode ────────────────────────────────── */
+[data-theme="dark"] .ps-contact-page-wrapper {
+  background-color: var(--theme-bg-primary);
+}
+
+[data-theme="dark"] .ps-contact-hero h1 {
+  color: #F0F0F0;
+}
+
+[data-theme="dark"] .ps-contact-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] .ps-form-group label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] .ps-form-group input,
+[data-theme="dark"] .ps-form-group select,
+[data-theme="dark"] .ps-form-group textarea {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #F0F0F0;
+}
+
+[data-theme="dark"] .ps-form-group input::placeholder,
+[data-theme="dark"] .ps-form-group textarea::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="dark"] .ps-form-group select option {
+  background-color: #0F1D30;
+  color: #F0F0F0;
+}
+
+[data-theme="dark"] .ps-form-group input:focus,
+[data-theme="dark"] .ps-form-group select:focus,
+[data-theme="dark"] .ps-form-group textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(13, 149, 232, 0.2);
+}
+
+[data-theme="dark"] .ps-form-note {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+[data-theme="dark"] .ps-contact-success h2 {
+  color: #F0F0F0;
+}
+
+[data-theme="dark"] .ps-contact-success p {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ROI Calculator page compatibility */

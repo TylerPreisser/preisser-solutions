@@ -202,11 +202,9 @@ export const contactInterests = [
   "Websites & Applications",
   "Automation Systems",
   "System Fixes & Efficiency",
-  "Dashboards & Business Intelligence",
+  "Dashboards & Visualizations",
   "Marketing & Growth Engines",
-  "ROI Consultation",
   "Partnership / Referral",
-  "Pricing & Packages",
   "Other",
 ] as const;
 

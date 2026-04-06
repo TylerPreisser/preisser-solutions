@@ -2,7 +2,6 @@
 
 import { useState, useRef } from "react";
 import { contactInterests, type ContactInterest } from "@/data/services";
-import { siteConfig } from "@/data/site-config";
 
 interface FormState {
   name: string;
@@ -64,7 +63,7 @@ export default function ContactPage() {
 
     // Brief delay so the "Sending…" state is visible, then open mailto
     await new Promise((res) => setTimeout(res, 500));
-    window.location.href = `mailto:${siteConfig.contact.email}?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:sales@preissersolutions.com?subject=${subject}&body=${body}`;
     setSubmitted(true);
     setSubmitting(false);
   };
@@ -80,40 +79,21 @@ export default function ContactPage() {
           >
             Contact
           </span>
-          <h1>Tell Us What You Need Built.</h1>
+          <h1>Show Us the Problem.</h1>
           <p className="ps-contact-subtitle">
-            Every project starts with a conversation. Tell me what&apos;s not working
-            — or what you wish existed — and I&apos;ll tell you exactly how we&apos;d build it.
-            No commitment. No sales pitch. No pressure.
+            Tell us what&apos;s not working — or what you wish existed. We&apos;ll tell you
+            exactly how we&apos;d build it. No commitment. No sales pitch. Just a
+            straight conversation.
           </p>
         </div>
 
         {/* Form */}
         <form id="inquiryForm" onSubmit={handleSubmit} noValidate>
           {submitted ? (
-            <div style={{ textAlign: "center", padding: "40px 0" }}>
-              <div
-                style={{
-                  fontSize: "48px",
-                  marginBottom: "20px",
-                  color: "#00D4AA",
-                  fontWeight: "700",
-                }}
-              >
-                ✓
-              </div>
-              <h2
-                style={{
-                  color: "#0A1628",
-                  fontSize: "24px",
-                  marginBottom: "12px",
-                }}
-              >
-                Message on Its Way!
-              </h2>
-              <p style={{ color: "#425466", fontSize: "16px", marginBottom: "0" }}>
-                Thanks for reaching out. Tyler will be in touch with you shortly.
-              </p>
+            <div className="ps-contact-success">
+              <div className="ps-contact-success-check">✓</div>
+              <h2>Message on Its Way!</h2>
+              <p>Thanks for reaching out. Tyler will be in touch with you shortly.</p>
             </div>
           ) : (
             <>
@@ -245,22 +225,7 @@ export default function ContactPage() {
                 </button>
 
                 <p className="ps-form-note">
-                  Based in Hays, Kansas. Serving businesses locally and across the state.
-                  <br />
-                  Or reach us directly:{" "}
-                  <a
-                    href={`mailto:${siteConfig.contact.email}`}
-                    style={{ color: "#0D95E8" }}
-                  >
-                    {siteConfig.contact.email}
-                  </a>{" "}
-                  &middot;{" "}
-                  <a
-                    href={`tel:${siteConfig.contact.phone}`}
-                    style={{ color: "#0D95E8" }}
-                  >
-                    {siteConfig.contact.phone}
-                  </a>
+                  Based in Hays, Kansas. Serving businesses locally and across the country.
                 </p>
               </div>
             </>
