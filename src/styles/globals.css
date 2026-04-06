@@ -99,7 +99,7 @@
 /* ── Light mode overrides ──────────────────────────────────── */
 /* Light mode: nav pill uses translucent white so backdrop-filter shows through */
 [data-theme="light"] .ps-header-blur {
-  background-color: rgba(255, 255, 255, 0.40);
+  background-color: rgba(255, 255, 255, 0.35);
 }
 
 [data-theme="light"] {
@@ -343,28 +343,30 @@ button {
   padding: 6px 0;
 }
 
-/* Blur container — sits inside the header, behind nav content.
-   backdrop-filter MUST be on a real element (not ::before) to blur
-   page content that scrolls underneath. */
+/* Blur layer — must be a real child element, not ::before.
+   Positioned to create the inset pill shape with rounded corners.
+   backdrop-filter blurs page content scrolling underneath. */
 .ps-header-blur {
   position: absolute;
   inset: 6px 12px;
+  z-index: 0;
   border-radius: 12px;
-  background-color: rgba(10, 22, 40, 0.40);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  background-color: rgba(10, 22, 40, 0.35);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   box-shadow: var(--theme-nav-shadow);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+  will-change: backdrop-filter;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
   transition:
     background-color 300ms ease,
     box-shadow 300ms ease;
   pointer-events: none;
 }
 
-/* Remove the old ::before — no longer needed */
+/* Kill the old ::before completely */
 .ps-header::before {
-  display: none;
+  content: none;
 }
 
 .ps-header:hover .ps-header-blur,
