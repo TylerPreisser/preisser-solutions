@@ -82,7 +82,7 @@ export default function ContactPage() {
           <h1>Let&apos;s Build Something.</h1>
           <p className="ps-contact-subtitle">
             Whether you know exactly what you need or you&apos;re still figuring it out
-            — start here. Tell us a little about your business and we&apos;ll go from there.
+            — start here. Tell us what you can and we&apos;ll go from there.
           </p>
         </div>
 
