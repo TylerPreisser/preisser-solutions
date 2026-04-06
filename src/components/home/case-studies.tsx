@@ -205,6 +205,64 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
+  // 15
+  {
+    title: "Agentic AI Coding Specialists",
+    tags: "AI Architecture | Agentic Coding | Claude Code",
+    description:
+      "Built specialized agentic coding models \u2014 AI systems that don\u2019t just generate code, they architect, debug, and ship entire projects autonomously. Each agent is tuned for a specific domain: web development, automation pipelines, data analysis. This is the toolset behind our speed.",
+    gradient: "linear-gradient(135deg, #7C3AED 0%, #2563EB 50%, #0D95E8 100%)",
+    svgIcon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect x="6" y="8" width="36" height="28" rx="3" strokeOpacity="0.7" />
+        <path d="M16 18l-5 5 5 5" strokeOpacity="0.9" />
+        <path d="M32 18l5 5-5 5" strokeOpacity="0.9" />
+        <path d="M27 16l-6 16" strokeOpacity="0.6" />
+        <circle cx="24" cy="42" r="2" fill="currentColor" fillOpacity="0.5" stroke="none" />
+        <path d="M20 44h8" strokeOpacity="0.4" />
+      </svg>
+    ),
+  },
+  // 16
+  {
+    title: "Custom Local AI Models",
+    tags: "AI Engineering | Local Deployment | Custom Training",
+    description:
+      "Designed and deployed custom AI models that run locally \u2014 no cloud dependency, no data leaving your network. Tuned for specific business operations with proprietary logic built in. When off-the-shelf AI doesn\u2019t fit the problem, we build one that does.",
+    gradient: "linear-gradient(135deg, #0F172A 0%, #1E293B 40%, #7C3AED 100%)",
+    svgIcon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect x="10" y="14" width="28" height="22" rx="2" strokeOpacity="0.7" />
+        <path d="M10 20h28" strokeOpacity="0.4" />
+        <circle cx="24" cy="30" r="4" strokeOpacity="0.8" />
+        <path d="M24 26v-6" strokeOpacity="0.5" />
+        <path d="M18 8h12" strokeOpacity="0.4" />
+        <path d="M22 8v6" strokeOpacity="0.4" />
+        <path d="M26 8v6" strokeOpacity="0.4" />
+        <circle cx="15" cy="17" r="1" fill="currentColor" fillOpacity="0.6" stroke="none" />
+        <circle cx="19" cy="17" r="1" fill="currentColor" fillOpacity="0.4" stroke="none" />
+      </svg>
+    ),
+  },
+  // 17
+  {
+    title: "AI Trend & Behavioral Analysis",
+    tags: "AI Research | Predictive Modeling | Economics",
+    description:
+      "Built AI models that calculate economic trends and map psychological behavior patterns \u2014 systems that process market signals, consumer data, and behavioral indicators to surface insights no spreadsheet or manual analysis can produce.",
+    gradient: "linear-gradient(135deg, #0D95E8 0%, #6366F1 50%, #EC4899 100%)",
+    svgIcon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M6 38l10-12 8 6 8-14 10-6" strokeOpacity="0.9" />
+        <circle cx="16" cy="26" r="2" strokeOpacity="0.6" fill="currentColor" fillOpacity="0.15" />
+        <circle cx="24" cy="32" r="2" strokeOpacity="0.6" fill="currentColor" fillOpacity="0.15" />
+        <circle cx="32" cy="18" r="2" strokeOpacity="0.6" fill="currentColor" fillOpacity="0.15" />
+        <circle cx="42" cy="12" r="2" strokeOpacity="0.6" fill="currentColor" fillOpacity="0.15" />
+        <path d="M6 42h36" strokeOpacity="0.3" />
+        <path d="M6 42V6" strokeOpacity="0.3" />
+      </svg>
+    ),
+  },
 ];
 
 export function CaseStudies() {
