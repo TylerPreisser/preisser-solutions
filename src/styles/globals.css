@@ -2863,10 +2863,7 @@ button {
     font-size: 1.375rem;
   }
   .ps-dialog-close-btn {
-    top: 14px;
-    left: 14px;
-    width: 36px;
-    height: 36px;
+    display: none !important;
   }
 }
 
@@ -3076,6 +3073,57 @@ button {
   text-align: center;
   line-height: 1.55;
   margin: 0;
+}
+
+/* Carousel card label — always-visible title + tap hint at bottom */
+.ps-carousel-card-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  transition: opacity 200ms ease;
+}
+
+.ps-carousel-card-title-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.35;
+}
+
+.ps-carousel-card-hint {
+  font-size: 0.6875rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Desktop: hide hint; hide label when overlay is shown on hover */
+@media (min-width: 769px) {
+  .ps-carousel-card-hint {
+    display: none;
+  }
+  .ps-carousel-card:hover .ps-carousel-card-label,
+  .ps-carousel-card:focus-within .ps-carousel-card-label {
+    opacity: 0;
+  }
+}
+
+/* Mobile: overlay only on tap — hide by default, show on .tapped class */
+@media (max-width: 768px) {
+  .ps-carousel-card-overlay {
+    opacity: 0 !important;
+  }
+  .ps-carousel-card.tapped .ps-carousel-card-overlay {
+    opacity: 1 !important;
+  }
+  .ps-carousel-card.tapped .ps-carousel-card-label {
+    opacity: 0;
+  }
 }
 
 /* Differentiators */
@@ -5597,30 +5645,12 @@ button {
 
   /* Reduce visual height on mobile so content is not cut off at top */
   .ps-dialog-visual {
-    height: 200px;
+    height: 280px;
   }
 
-  /* Show close button on mobile — users need a visible dismiss target */
+  /* Close button stays hidden on mobile — tap overlay to dismiss */
   .ps-dialog-close-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.18);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    color: #ffffff;
-    z-index: 10;
-    cursor: pointer;
-    border: none;
-    /* iOS Safari: force GPU layer to prevent backdrop-filter flicker */
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+    display: none !important;
   }
 }
 
@@ -5871,8 +5901,8 @@ body {
     border-radius: 16px 16px 0 0 !important;
   }
   .ps-dialog-visual {
-    height: 180px !important;
-    min-height: 180px;
+    height: 280px !important;
+    min-height: 280px;
   }
 }
 
@@ -6089,5 +6119,24 @@ html, body {
   color: rgba(10,22,40,0.45);
 }
 [data-theme="light"] .ps-hero-portfolio-link:hover {
+  color: var(--color-primary);
+}
+
+/* ── CTA section portfolio link ── */
+.ps-cta-portfolio-link {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+.ps-cta-portfolio-link:hover {
+  color: var(--color-primary);
+}
+[data-theme="light"] .ps-cta-portfolio-link {
+  color: rgba(10, 22, 40, 0.4);
+}
+[data-theme="light"] .ps-cta-portfolio-link:hover {
   color: var(--color-primary);
 }

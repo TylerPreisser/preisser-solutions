@@ -9,7 +9,7 @@ export function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctasRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLAnchorElement>(null);
 
   // Animated flowing wave mesh — inline canvas, theme-aware
   useEffect(() => {
@@ -232,7 +232,7 @@ export function Hero() {
         )
         .to(
           scrollRef.current,
-          { opacity: 1, duration: 0.5, ease: "power1.out" },
+          { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
           "-=0.1"
         );
     });

@@ -86,10 +86,15 @@ export function CtaSection() {
               />
             </svg>
           </Link>
-          <Link href="/services" className="ps-btn ps-btn-secondary">
-            See What We Build
-          </Link>
         </div>
+        <a
+          href="https://tylerpreisser.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ps-cta-portfolio-link"
+        >
+          See more projects at TylerPreisser.com
+        </a>
       </div>
     </section>
   );

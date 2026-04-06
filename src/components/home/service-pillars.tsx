@@ -570,6 +570,7 @@ function ChevronRightIcon() {
 
 function ServiceCarousel({ tiles }: ServiceCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const [tappedIndex, setTappedIndex] = useState<number | null>(null);
 
   function scrollLeft() {
     trackRef.current?.scrollBy({ left: -296, behavior: "smooth" });
@@ -578,6 +579,11 @@ function ServiceCarousel({ tiles }: ServiceCarouselProps) {
   function scrollRight() {
     trackRef.current?.scrollBy({ left: 296, behavior: "smooth" });
   }
+
+  // Toggle tapped state on mobile tap; untap when tapping elsewhere
+  const handleCardClick = useCallback((i: number) => {
+    setTappedIndex((prev) => (prev === i ? null : i));
+  }, []);
 
   return (
     <div className="ps-carousel">
@@ -605,11 +611,27 @@ function ServiceCarousel({ tiles }: ServiceCarouselProps) {
 
       <div className="ps-carousel-track" ref={trackRef}>
         {tiles.map((tile, i) => (
-          <div key={tile.title} className="ps-carousel-card">
+          <div
+            key={tile.title}
+            className={`ps-carousel-card${tappedIndex === i ? " tapped" : ""}`}
+            onClick={() => handleCardClick(i)}
+            role="button"
+            tabIndex={0}
+            aria-label={tile.title}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") handleCardClick(i);
+            }}
+          >
             <div
               className="ps-carousel-card-visual"
               style={{ background: CARD_GRADIENTS[i % CARD_GRADIENTS.length] }}
             />
+            {/* Title always visible at bottom-left */}
+            <div className="ps-carousel-card-label">
+              <span className="ps-carousel-card-title-text">{tile.title}</span>
+              <span className="ps-carousel-card-hint">Tap for details</span>
+            </div>
+            {/* Overlay with description — hover on desktop, tap on mobile */}
             <div className="ps-carousel-card-overlay">
               <p className="ps-carousel-card-overlay-title">{tile.title}</p>
               <p className="ps-carousel-card-overlay-desc">{tile.description}</p>
