@@ -4477,9 +4477,35 @@ button {
   z-index: 3;
 }
 
-.ps-work-card:hover .ps-work-card-overlay,
-.ps-work-card:focus-within .ps-work-card-overlay {
-  opacity: 1;
+/* Desktop only: hover shows overlay */
+@media (min-width: 769px) {
+  .ps-work-card:hover .ps-work-card-overlay,
+  .ps-work-card:focus-within .ps-work-card-overlay {
+    opacity: 1;
+  }
+}
+
+/* Mobile: overlay controlled ONLY by .ps-work-card--tapped class (JS) */
+@media (max-width: 768px) {
+  .ps-work-card-overlay {
+    opacity: 0 !important;
+    transition: opacity 200ms ease;
+  }
+  .ps-work-card--tapped .ps-work-card-overlay {
+    opacity: 1 !important;
+    background: rgba(0, 0, 0, 0.8);
+  }
+  .ps-work-card--tapped .ps-work-card-label-group {
+    opacity: 0;
+  }
+  .ps-work-card-result {
+    font-size: 0.75rem;
+    -webkit-line-clamp: 5;
+    line-height: 1.5;
+  }
+  .ps-work-card-tag {
+    font-size: 0.6rem;
+  }
 }
 
 .ps-work-card-tag {
@@ -5814,4 +5840,64 @@ button {
 /* Ensures horizontal swipe does not expose overflow content */
 body {
   overscroll-behavior-x: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CRITICAL MOBILE OVERRIDES (must be last to win specificity)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Bento dialog: don't cut off top visual on mobile ── */
+@media (max-width: 768px) {
+  .ps-dialog-panel {
+    max-height: 92dvh !important;
+    border-radius: 16px 16px 0 0 !important;
+  }
+  .ps-dialog-visual {
+    height: 180px !important;
+    min-height: 180px;
+  }
+}
+
+/* ── Why Us: center cards, hide CTA button, fix cutoff ── */
+@media (max-width: 639px) {
+  .ps-squeeze-carousel {
+    display: none !important;
+  }
+  .events-mobile-carousel {
+    display: block !important;
+  }
+  .mobile-carousel__items-container {
+    padding: 0 16px;
+  }
+  .events-mobile-carousel-card__link {
+    display: none !important;
+  }
+  .ps-events-detail__cta {
+    display: none !important;
+  }
+}
+
+/* ── System Fixes card: scale proportionally on mobile ── */
+@media (max-width: 639px) {
+  .ps-fix-root {
+    transform: scale(0.75);
+    transform-origin: top center;
+  }
+}
+
+/* ── Dashboard KPI: shrink on mobile ── */
+@media (max-width: 639px) {
+  .ps-dbc-kpi-ring-wrap {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .ps-dbc-kpi-value {
+    font-size: 8px !important;
+  }
+  .ps-dbc-kpi-label {
+    font-size: 7px !important;
+  }
+  .ps-dbc-kpi-grid {
+    gap: 3px !important;
+  }
 }

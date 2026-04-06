@@ -226,8 +226,15 @@ export function CaseStudies() {
   }
 
   function handleCardTap(index: number) {
-    // Toggle: tap same card again to close, tap new card to switch
+    // Toggle: tap same card to close, tap different card to switch
     setActiveMobileCard((prev) => (prev === index ? null : index));
+  }
+
+  // Close overlay when user scrolls the track (they're moving on)
+  function handleTrackScroll() {
+    if (activeMobileCard !== null) {
+      setActiveMobileCard(null);
+    }
   }
 
   return (
@@ -274,7 +281,7 @@ export function CaseStudies() {
         </div>
       </div>
 
-      <div className="ps-work-track" ref={trackRef} role="list">
+      <div className="ps-work-track" ref={trackRef} role="list" onScroll={handleTrackScroll}>
         {caseStudyCards.map((study, index) => {
           const isMobileActive = activeMobileCard === index;
           return (
