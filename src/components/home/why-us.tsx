@@ -289,9 +289,10 @@ export function WhyUs() {
                               </span>
                             </div>
 
+                            {/* CTA hidden on mobile via CSS — header always has Get in Touch */}
                             <Link
                               href={item.href}
-                              className="ps-btn ps-btn-primary events-mobile-carousel-card__link"
+                              className="ps-btn ps-btn-primary events-mobile-carousel-card__link ps-why-mobile-cta"
                             >
                               {item.cta}
                               <svg
@@ -319,6 +320,27 @@ export function WhyUs() {
                 </div>
               </div>
             </div>
+
+            {/* Swipe hint — only visible on mobile */}
+            <p className="ps-why-swipe-hint" aria-hidden="true">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+                style={{ display: "inline-block", verticalAlign: "middle", marginRight: "4px" }}
+              >
+                <path
+                  d="M1 8h14M9 2l6 6-6 6"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Swipe to explore
+            </p>
           </div>
         </div>
       </div>

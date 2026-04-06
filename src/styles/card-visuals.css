@@ -1441,3 +1441,67 @@
   .ps-ge-tip-dot,
   .ps-ge-tip-ring { animation: none !important; }
 }
+
+/* ── Mobile responsive overrides for card visuals ───────────── */
+
+/*
+  Fix #3: System Fixes bento card (ps-fix-board)
+  On mobile the 3-column grid (1fr 72px 1fr) is too wide for bento cards.
+  Reduce the center arrow column and card padding to maintain the before/after
+  layout proportionally instead of breaking to column.
+*/
+@media (max-width: 639px) {
+  .ps-fix-board {
+    grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr);
+    gap: 6px;
+    padding: 12px;
+  }
+
+  .ps-fix-problem-card,
+  .ps-fix-solution-card {
+    padding: 7px 8px;
+    border-radius: 10px;
+  }
+
+  .ps-fix-column-label {
+    font-size: 6px;
+  }
+
+  .ps-fix-center-arrow svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/*
+  Fix #4: Dashboard bento card — KPI dials cut off on 375px screens.
+  Reduce ring size from 44px to 32px and tighten grid gap.
+*/
+@media (max-width: 639px) {
+  .ps-dbc-kpi-grid {
+    gap: 4px;
+  }
+
+  .ps-dbc-kpi-card {
+    padding: 4px 2px;
+    gap: 3px;
+    border-radius: 8px;
+  }
+
+  .ps-dbc-kpi-ring-wrap {
+    /* Shrink KPI ring from 44px to 30px so all 4 dials fit on 375px screens */
+    width: 30px;
+    height: 30px;
+  }
+
+  .ps-dbc-kpi-label {
+    font-size: 7px;
+    white-space: normal;
+    line-height: 1.0;
+    padding-bottom: 2px;
+  }
+
+  .ps-dbc-kpi-value {
+    font-size: 8px;
+  }
+}
