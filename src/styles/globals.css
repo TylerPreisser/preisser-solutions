@@ -358,9 +358,8 @@ button {
   /* iOS Safari: force GPU compositing to prevent backdrop-filter flicker */
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  opacity: 0;
+  opacity: 1;
   transition:
-    opacity 240ms cubic-bezier(0.45, 0.05, 0.55, 0.95),
     background-color 300ms ease,
     box-shadow 300ms ease;
   z-index: -1;
