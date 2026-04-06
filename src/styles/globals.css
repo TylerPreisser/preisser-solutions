@@ -99,7 +99,7 @@
 /* ── Light mode overrides ──────────────────────────────────── */
 /* Light mode: nav pill uses translucent white so backdrop-filter shows through */
 [data-theme="light"] .ps-header::before {
-  background-color: rgba(255, 255, 255, 0.55);
+  background-color: rgba(255, 255, 255, 0.45);
 }
 
 [data-theme="light"] {
@@ -343,17 +343,17 @@ button {
   padding: 6px 0;
 }
 
-/* Background pill — inset with rounded corners, fades in on scroll.
-   backdrop-filter blurs the page content behind the nav pill.
-   -webkit-backdrop-filter required for Safari (iOS + macOS). */
+/* Background pill — inset with rounded corners.
+   The blur lives on a real child element (not ::before with z-index:-1)
+   so backdrop-filter actually blurs page content underneath. */
 .ps-header::before {
   content: "";
   position: absolute;
   inset: 6px 12px;
   border-radius: 12px;
-  background-color: rgba(10, 22, 40, 0.55);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(10, 22, 40, 0.45);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   box-shadow: var(--theme-nav-shadow);
   /* iOS Safari: force GPU compositing to prevent backdrop-filter flicker */
   -webkit-backface-visibility: hidden;
@@ -362,7 +362,7 @@ button {
   transition:
     background-color 300ms ease,
     box-shadow 300ms ease;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
 }
 
@@ -372,6 +372,8 @@ button {
 }
 
 .ps-header-inner {
+  position: relative;
+  z-index: 1;
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 32px;
