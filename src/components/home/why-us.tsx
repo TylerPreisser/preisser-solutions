@@ -258,13 +258,13 @@ export function WhyUs() {
                       >
                         <div className="mobile-carousel__inner">
                           <article className="events-mobile-carousel-card">
-                            <div className="events-mobile-carousel-card__media">
+                            <div className={`events-mobile-carousel-card__media${itemIndex === 0 ? " events-mobile-carousel-card__media--logo" : ""}`}>
                               <Image
                                 src={item.mobileImage}
                                 alt={item.alt}
                                 fill
                                 sizes="(max-width: 639px) calc(100vw - 32px), 336px"
-                                className="events-mobile-carousel-card__image"
+                                className={`events-mobile-carousel-card__image${itemIndex === 0 ? " events-mobile-carousel-card__image--logo" : ""}`}
                               />
                             </div>
 

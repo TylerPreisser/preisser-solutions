@@ -3567,6 +3567,16 @@ button {
   object-fit: cover;
 }
 
+/* Logo card on mobile — small centered logo on dark bg */
+.events-mobile-carousel-card__media--logo {
+  background: #0A1628;
+}
+
+.events-mobile-carousel-card__image--logo {
+  object-fit: contain !important;
+  padding: 30% !important;
+}
+
 .events-mobile-carousel-card__title {
   display: flex;
   flex-direction: column;
@@ -4450,8 +4460,8 @@ button {
 /* Portrait card */
 .ps-work-card {
   position: relative;
-  width: 300px;
-  aspect-ratio: 332 / 448;
+  width: 260px;
+  aspect-ratio: 5 / 8;
   border-radius: 12px;
   overflow: hidden;
   flex-shrink: 0;

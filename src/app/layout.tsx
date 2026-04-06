@@ -91,7 +91,7 @@ export const metadata: Metadata = {
 // defaults to dark if neither is set. Sets data-theme on <html>.
 const themeInitScript = `(function(){
   try {
-    var stored = localStorage.getItem('ps-theme');
+    var stored = sessionStorage.getItem('ps-theme');
     var theme;
     if (stored === 'light' || stored === 'dark') {
       theme = stored;

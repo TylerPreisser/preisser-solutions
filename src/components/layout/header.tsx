@@ -66,8 +66,8 @@ export function Header() {
     // If no saved preference, follow system changes live
     const mq = window.matchMedia("(prefers-color-scheme: light)");
     function onSystemChange(e: MediaQueryListEvent) {
-      const saved = localStorage.getItem("ps-theme");
-      if (saved) return; // User manually chose — don't override
+      const saved = sessionStorage.getItem("ps-theme");
+      if (saved) return; // User manually chose this session — don't override
       const next = e.matches ? "light" : "dark";
       setTheme(next);
       document.documentElement.setAttribute("data-theme", next);
@@ -80,8 +80,9 @@ export function Header() {
     const next = theme === "light" ? "dark" : "light";
     setTheme(next);
     document.documentElement.setAttribute("data-theme", next);
+    document.documentElement.style.backgroundColor = next === "light" ? "#F6F9FC" : "#0A1628";
     try {
-      localStorage.setItem("ps-theme", next);
+      sessionStorage.setItem("ps-theme", next);
     } catch (_) {}
   }, [theme]);
 
