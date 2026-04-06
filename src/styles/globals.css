@@ -5990,3 +5990,42 @@ html, body {
 [data-theme="light"] body {
   background-color: #F6F9FC !important;
 }
+
+/* ── Case study cards: bigger on mobile with larger text ── */
+@media (max-width: 768px) {
+  .ps-work-card {
+    width: 82vw !important;
+    min-width: 82vw !important;
+    aspect-ratio: auto !important;
+    min-height: 480px !important;
+  }
+  .ps-work-card-overlay {
+    padding: 20px 18px 18px !important;
+    justify-content: flex-start !important;
+    padding-top: 30% !important;
+  }
+  .ps-work-card-tag {
+    font-size: 0.75rem !important;
+    letter-spacing: 0.06em !important;
+    margin-bottom: 12px !important;
+  }
+  .ps-work-card-result {
+    font-size: 0.9375rem !important;
+    line-height: 1.55 !important;
+    -webkit-line-clamp: unset !important;
+  }
+  .ps-work-card-client {
+    font-size: 1.125rem !important;
+  }
+  .ps-work-card-tap-hint {
+    font-size: 0.75rem !important;
+  }
+  .ps-work-card-logo {
+    max-width: 55% !important;
+    max-height: 40% !important;
+  }
+  .ps-work-card-icon {
+    width: 100px !important;
+    height: 100px !important;
+  }
+}
