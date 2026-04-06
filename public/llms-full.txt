@@ -24,7 +24,7 @@
 
 **Headline**: We Build What Your Business Needs.
 
-**Subheadline**: Websites. Applications. Automations. Dashboards. Integrations. Whatever technology problem you've got — Preisser Solutions builds the solution. From scratch. For you.
+**Subheadline**: You show us the problem. We see the solution. Custom websites, applications, AI, automations, and visualizations — designed and built from the ground up for your business.
 
 **Primary CTA**: Get in Touch → https://preissersolutions.com
 **Secondary CTA**: See What We Build → /#services

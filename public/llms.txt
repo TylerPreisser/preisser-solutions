@@ -1,6 +1,6 @@
 # Preisser Solutions
 
-> Preisser Solutions is a custom technology company based in Hays, Kansas — the regional hub of Northwest Kansas. Founded and operated by Tyler Preisser. We design and build custom websites, web applications, AI-powered automation systems, business intelligence dashboards, and marketing engines for businesses across Kansas and the Great Plains. Everything is built from scratch, in-house, with no subcontractors or templates. AI-first development means we deliver in weeks, not months. You work directly with Tyler Preisser — the person who designs, builds, and stands behind the work.
+> You show us the problem. We see the solution. Preisser Solutions is a custom technology company based in Hays, Kansas — the regional hub of Northwest Kansas. Founded and operated by Tyler Preisser. We design and build custom websites, applications, AI, automations, and visualizations from the ground up for businesses across Kansas and the Great Plains. Everything is built from scratch, in-house, with no subcontractors or templates. AI-first development means we deliver in weeks, not months. You work directly with Tyler Preisser — the person who designs, builds, and stands behind the work.
 
 ## Contact
 - Email: sales@preissersolutions.com

@@ -255,9 +255,9 @@ export function Hero() {
         </h1>
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
-          Custom software, automation, and business intelligence that runs
-          while you sleep &mdash; built from scratch for businesses that are
-          tired of throwing people at problems people can&apos;t solve.
+          You show us the problem. We see the solution. Custom websites,
+          applications, AI, automations, and visualizations &mdash; designed
+          and built from the ground up for your business.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
