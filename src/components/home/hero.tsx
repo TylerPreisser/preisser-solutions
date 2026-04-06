@@ -249,13 +249,19 @@ export function Hero() {
         </div>
 
         <h1 ref={headlineRef} className="ps-hero-headline">
-          We Build What Your Business Needs.
+          World-Class Technology.
+          <br />
+          Built in Kansas.
         </h1>
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
-          Websites. Applications. Automations. Dashboards. Integrations.
-          Whatever technology problem you&apos;ve got &mdash; Preisser Solutions builds
-          the solution. From scratch. For you.
+          The systems that Fortune 500 companies pay seven figures for &mdash; custom
+          software, intelligent automation, real-time business intelligence &mdash; used
+          to require offices in major metros, teams of 50, and 18-month timelines.
+          AI changed what&apos;s possible. The same caliber of work that powers the biggest
+          operations in the country is now built right here in Northwest Kansas &mdash;
+          not a scaled-down version, the real thing. Faster, leaner, and available to
+          the businesses that actually need it most.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
