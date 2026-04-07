@@ -55,7 +55,7 @@ export default function ContactPage() {
     setSubmitting(true);
 
     try {
-      const res = await fetch("https://hooks.zapier.com/hooks/catch/21721728/u7hhmth/", {
+      await fetch("https://hooks.zapier.com/hooks/catch/21721728/u7hhmth/", {
         method: "POST",
         body: JSON.stringify({
           name: form.name,
@@ -66,22 +66,11 @@ export default function ContactPage() {
           message: form.message,
         }),
       });
-
-      if (!res.ok) throw new Error("Failed");
-      setSubmitted(true);
     } catch {
-      // Fallback: open mailto if webhook fails
-      const subject = encodeURIComponent(
-        `New Inquiry: ${form.name}${form.company ? ` — ${form.company}` : ""}`
-      );
-      const body = encodeURIComponent(
-        `Name: ${form.name}\nEmail: ${form.email}\nCompany: ${form.company}\nPhone: ${form.phone}\nInterest: ${form.interest}\n\nMessage:\n${form.message}`
-      );
-      window.location.href = `mailto:hello@preissersolutions.com?subject=${subject}&body=${body}`;
-      setSubmitted(true);
-    } finally {
-      setSubmitting(false);
+      // Zapier webhook is fire-and-forget — still show success
     }
+    setSubmitted(true);
+    setSubmitting(false);
   };
 
   return (
