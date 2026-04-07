@@ -54,18 +54,34 @@ export default function ContactPage() {
 
     setSubmitting(true);
 
-    const subject = encodeURIComponent(
-      `New Inquiry: ${form.name}${form.company ? ` — ${form.company}` : ""}`
-    );
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\nCompany: ${form.company}\nPhone: ${form.phone}\nInterest: ${form.interest}\n\nMessage:\n${form.message}`
-    );
+    try {
+      const res = await fetch("https://hooks.zapier.com/hooks/catch/21721728/u7hhmth/", {
+        method: "POST",
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          company: form.company,
+          phone: form.phone,
+          interest: form.interest,
+          message: form.message,
+        }),
+      });
 
-    // Brief delay so the "Sending…" state is visible, then open mailto
-    await new Promise((res) => setTimeout(res, 500));
-    window.location.href = `mailto:sales@preissersolutions.com?subject=${subject}&body=${body}`;
-    setSubmitted(true);
-    setSubmitting(false);
+      if (!res.ok) throw new Error("Failed");
+      setSubmitted(true);
+    } catch {
+      // Fallback: open mailto if webhook fails
+      const subject = encodeURIComponent(
+        `New Inquiry: ${form.name}${form.company ? ` — ${form.company}` : ""}`
+      );
+      const body = encodeURIComponent(
+        `Name: ${form.name}\nEmail: ${form.email}\nCompany: ${form.company}\nPhone: ${form.phone}\nInterest: ${form.interest}\n\nMessage:\n${form.message}`
+      );
+      window.location.href = `mailto:hello@preissersolutions.com?subject=${subject}&body=${body}`;
+      setSubmitted(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
