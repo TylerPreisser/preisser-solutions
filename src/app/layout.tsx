@@ -64,10 +64,16 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://preissersolutions.com",
     siteName: "Preisser Solutions",
-    title: "Preisser Solutions | Custom Websites, Apps, AI Automation & Dashboards | Hays, Kansas",
+    title: "Preisser Solutions",
     description:
-      "You show us the problem. We see the solution. Custom websites, applications, AI, automations, and visualizations — built from the ground up for your business by Tyler Preisser in Hays, KS.",
+      "Custom websites, apps & AI automation — built from the ground up for your business.",
     images: [
+      {
+        url: "/images/og-image-square.jpg",
+        width: 1200,
+        height: 1200,
+        alt: "Preisser Solutions",
+      },
       {
         url: "/images/og-image.jpg",
         width: 1200,
@@ -78,9 +84,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Solutions | Custom Websites, Apps, AI Automation & Dashboards | Hays, Kansas",
+    title: "Preisser Solutions",
     description:
-      "You show us the problem. We see the solution. Custom websites, applications, AI, automations, and visualizations from the ground up. 22+ projects. Hays, KS.",
+      "Custom websites, apps & AI automation — built from the ground up for your business.",
     images: ["/images/og-image.jpg"],
     creator: "@tylerpreisser",
   },
