@@ -1,9 +1,9 @@
 export const siteConfig = {
-  name: "Preisser Solutions",
+  name: "Preisser Technology",
   tagline: "We Build What Your Business Needs.",
-  url: "https://preissersolutions.com",
+  url: "https://preissertech.com",
   contact: {
-    email: "sales@preissersolutions.com",
+    email: "sales@preissertech.com",
     phone: "+1-620-352-3296",
     location: "Hays, Kansas",
   },
@@ -16,7 +16,7 @@ export const siteConfig = {
     title: "Founder & Owner",
   },
   meta: {
-    title: "Preisser Solutions",
+    title: "Preisser Technology",
     description: "World-class tech for your business.",
     themeColor: "#0D95E8",
   },

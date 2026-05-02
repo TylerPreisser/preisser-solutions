@@ -25,7 +25,7 @@ const whyFeatures: WhyFeature[] = [
       "We don\u2019t rebrand cheap templates that have been around for 30 years and plug them in as our own. Everything we deliver is designed, engineered, and built specifically for your operation. Real code. Real systems. Built to work the way your business works.",
     image: "/images/ps-logo.webp",
     mobileImage: "/images/ps-logo.webp",
-    alt: "Preisser Solutions logo \u2014 everything built from scratch",
+    alt: "Preisser Technology logo \u2014 everything built from scratch",
     href: "/contact",
     cta: "Get in Touch",
   },
@@ -129,7 +129,7 @@ export function WhyUs() {
               <div className="ps-eyebrow ps-eyebrow--light">Why Us</div>
               {/* Intentionally no h2 heading text per user request */}
               <h2 id="why-heading" className="sr-only">
-                Why Preisser Solutions
+                Why Preisser Technology
               </h2>
             </div>
 
@@ -158,7 +158,7 @@ export function WhyUs() {
           </header>
 
           {/* ── Desktop: squeeze carousel ────────────────────────── */}
-          <div className="ps-squeeze-carousel" aria-label="Why Preisser Solutions carousel">
+          <div className="ps-squeeze-carousel" aria-label="Why Preisser Technology carousel">
             {/* Track: flex row of cards */}
             <div className="ps-squeeze-track">
               {whyFeatures.map((item, i) => {

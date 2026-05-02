@@ -34,12 +34,12 @@ const caseStudyCards: CaseStudyCard[] = [
   },
   // 3
   {
-    title: "PreisserSolutions.com",
+    title: "PreisserTech.com",
     tags: "Custom Website | Lead Pipeline | Local SEO",
     description:
       "This is our own site, and we built it the same way we build yours — custom-coded, integrated lead pipeline, and an ROI calculator that qualifies prospects before they ever hit our calendar. No templates. No page builders. A website that actually works as a sales tool.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #0F1D30 100%)",
-    image: "preisser-solutions.webp",
+    image: "preisser-tech.webp",
   },
   // 4
   {

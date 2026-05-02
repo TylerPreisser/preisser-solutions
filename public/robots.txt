@@ -1,4 +1,4 @@
-# Preisser Solutions — Crawler Configuration
+# Preisser Technology — Crawler Configuration
 # Homepage is the single source of truth. All content lives there.
 # Sub-routes are blocked to concentrate crawl budget and indexing on the homepage.
 
@@ -149,4 +149,4 @@ Disallow: /
 User-agent: DotBot
 Disallow: /
 
-Sitemap: https://preissersolutions.com/sitemap.xml
+Sitemap: https://preissertech.com/sitemap.xml

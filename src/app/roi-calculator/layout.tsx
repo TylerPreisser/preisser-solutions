@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   description:
     "Estimate how much time and money business automation could save your Kansas company each year. Select your roles, adjust headcount and compensation, and see your potential savings.",
   alternates: {
-    canonical: "https://preissersolutions.com/roi-calculator",
+    canonical: "https://preissertech.com/roi-calculator",
   },
   openGraph: {
-    title: "ROI Calculator | Preisser Solutions",
+    title: "ROI Calculator | Preisser Technology",
     description:
       "Estimate how much time and money business automation could save your Kansas company each year. Select your roles, adjust headcount and compensation, and see your potential savings.",
-    url: "https://preissersolutions.com/roi-calculator",
+    url: "https://preissertech.com/roi-calculator",
   },
 };
 

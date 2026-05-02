@@ -4,61 +4,61 @@
   xmlns:content="http://purl.org/rss/1.0/modules/content/">
 
   <channel>
-    <title>Preisser Solutions</title>
-    <link>https://preissersolutions.com</link>
-    <description>Preisser Solutions builds websites, applications, automation systems, dashboards, and more for businesses across Kansas. Custom-built. AI-powered speed. Work directly with Tyler Preisser.</description>
+    <title>Preisser Technology</title>
+    <link>https://preissertech.com</link>
+    <description>Preisser Technology builds websites, applications, automation systems, dashboards, and more for businesses across Kansas. Custom-built. AI-powered speed. Work directly with Tyler Preisser.</description>
     <language>en-us</language>
-    <managingEditor>sales@preissersolutions.com (Tyler Preisser)</managingEditor>
-    <webMaster>sales@preissersolutions.com (Tyler Preisser)</webMaster>
+    <managingEditor>sales@preissertech.com (Tyler Preisser)</managingEditor>
+    <webMaster>sales@preissertech.com (Tyler Preisser)</webMaster>
     <lastBuildDate>Sat, 04 Apr 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://preissersolutions.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="https://preissertech.com/feed.xml" rel="self" type="application/rss+xml"/>
 
     <!-- About -->
     <item>
-      <title>About Preisser Solutions — We Build Things. That's What We Do.</title>
-      <link>https://preissersolutions.com/about</link>
-      <guid isPermaLink="true">https://preissersolutions.com/about</guid>
+      <title>About Preisser Technology — We Build Things. That's What We Do.</title>
+      <link>https://preissertech.com/about</link>
+      <guid isPermaLink="true">https://preissertech.com/about</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
-      <description>Direct access to the person designing, building, and standing behind the work. Tyler Preisser is a builder — from physical machines and patented inventions to AI systems that process millions in transaction volume. Preisser Solutions exists because too many businesses struggle with technology they shouldn't have to: outdated websites, systems that don't connect, and manual work that should have been automated years ago. When you work with Preisser Solutions, you work with Tyler — the person who designs it, builds it, and stands behind it.</description>
+      <description>Direct access to the person designing, building, and standing behind the work. Tyler Preisser is a builder — from physical machines and patented inventions to AI systems that process millions in transaction volume. Preisser Technology exists because too many businesses struggle with technology they shouldn't have to: outdated websites, systems that don't connect, and manual work that should have been automated years ago. When you work with Preisser Technology, you work with Tyler — the person who designs it, builds it, and stands behind it.</description>
     </item>
 
     <!-- Services -->
     <item>
       <title>Service: Websites &amp; Applications</title>
-      <link>https://preissersolutions.com/services</link>
-      <guid isPermaLink="false">https://preissersolutions.com/services#websites-applications</guid>
+      <link>https://preissertech.com/services</link>
+      <guid isPermaLink="false">https://preissertech.com/services#websites-applications</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
       <description>Professional sites, custom apps, client portals, e-commerce, and internal tools built from scratch to perform. Every project is custom-coded for your business — not a template, not a page builder. Mobile-first, fast-loading, and built to convert.</description>
     </item>
 
     <item>
       <title>Service: Automation Systems</title>
-      <link>https://preissersolutions.com/services</link>
-      <guid isPermaLink="false">https://preissersolutions.com/services#automation-systems</guid>
+      <link>https://preissertech.com/services</link>
+      <guid isPermaLink="false">https://preissertech.com/services#automation-systems</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
       <description>AI-powered automation systems for repetitive work like invoicing, document processing, outreach, routing, and monitoring. Automated systems work 24/7 — nights, weekends, holidays — processing tasks and delivering results without interruption or overtime pay. Done right, every time, with zero training required from your team.</description>
     </item>
 
     <item>
       <title>Service: System Fixes &amp; Efficiency</title>
-      <link>https://preissersolutions.com/services</link>
-      <guid isPermaLink="false">https://preissersolutions.com/services#system-fixes-efficiency</guid>
+      <link>https://preissertech.com/services</link>
+      <guid isPermaLink="false">https://preissertech.com/services#system-fixes-efficiency</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
       <description>If something is slow, broken, disconnected, or redundant, we figure out why and fix it with better systems. Whether it's a workflow that has too many manual steps, software that doesn't talk to other software, or a process that bottlenecks your team — we diagnose it and build the solution.</description>
     </item>
 
     <item>
       <title>Service: Dashboards &amp; Business Intelligence</title>
-      <link>https://preissersolutions.com/services</link>
-      <guid isPermaLink="false">https://preissersolutions.com/services#dashboards-business-intelligence</guid>
+      <link>https://preissertech.com/services</link>
+      <guid isPermaLink="false">https://preissertech.com/services#dashboards-business-intelligence</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
       <description>Real-time dashboards, reporting, forecasting, and data integration that show you what is actually happening in the business. Stop guessing. Get the numbers you need, surfaced automatically, in a format your team can actually act on.</description>
     </item>
 
     <item>
       <title>Service: Marketing &amp; Growth Engines</title>
-      <link>https://preissersolutions.com/services</link>
-      <guid isPermaLink="false">https://preissersolutions.com/services#marketing-growth-engines</guid>
+      <link>https://preissertech.com/services</link>
+      <guid isPermaLink="false">https://preissertech.com/services#marketing-growth-engines</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
       <description>Automated social media, email, SMS, SEO, and lead generation systems built to create demand without constant babysitting. These aren't scheduling tools — they're fully autonomous engines that generate content, personalize outreach, and publish without requiring daily input from your team.</description>
     </item>
@@ -66,42 +66,42 @@
     <!-- Case Studies -->
     <item>
       <title>Case Study: Automated Social Media Engine — Cassidy HVAC</title>
-      <link>https://preissersolutions.com/#case-studies</link>
-      <guid isPermaLink="false">https://preissersolutions.com/case-studies/automated-social-media-engine</guid>
+      <link>https://preissertech.com/#case-studies</link>
+      <guid isPermaLink="false">https://preissertech.com/case-studies/automated-social-media-engine</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
-      <description>Cassidy HVAC was struggling with consistent outreach on social media. Their internal team had no time to plan, create, or post content regularly — engagement was flat, brand visibility was declining, and customers were being captured by competitors. We deployed the Preisser Solutions Proprietary Organic Marketing Automation system: a fully hands-free AI engine that scrapes trending content, applies persuasive psychological frameworks, auto-generates custom marketing visuals, and posts to Facebook and Instagram without requiring daily staff input. Result: 100% hands-off daily content creation, 5x increase in organic reach within the first 30 days, and a complete replacement of outsourced or in-house marketing staff.</description>
+      <description>Cassidy HVAC was struggling with consistent outreach on social media. Their internal team had no time to plan, create, or post content regularly — engagement was flat, brand visibility was declining, and customers were being captured by competitors. We deployed the Preisser Technology Proprietary Organic Marketing Automation system: a fully hands-free AI engine that scrapes trending content, applies persuasive psychological frameworks, auto-generates custom marketing visuals, and posts to Facebook and Instagram without requiring daily staff input. Result: 100% hands-off daily content creation, 5x increase in organic reach within the first 30 days, and a complete replacement of outsourced or in-house marketing staff.</description>
     </item>
 
     <item>
       <title>Case Study: AI-Driven Customer Reactivation — Cassidy HVAC</title>
-      <link>https://preissersolutions.com/#case-studies</link>
-      <guid isPermaLink="false">https://preissersolutions.com/case-studies/customer-reactivation</guid>
+      <link>https://preissertech.com/#case-studies</link>
+      <guid isPermaLink="false">https://preissertech.com/case-studies/customer-reactivation</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
       <description>Cassidy HVAC was sitting on a large, inactive customer list with no unified system to re-engage past clients or fill slow days. Office staff were manually sending reminders inconsistently and had no way to track replies, clicks, or conversions. We implemented a fully automated SMS and email outreach engine that identifies outreach opportunities, uses AI to hyper-personalize each message, and sends based on behavioral triggers — integrating with their CRM and running daily without input. Result: 60%+ reactivation of dormant customers within 6 weeks, 100% automation of promotional and reminder messages, 10+ hours per week saved in follow-ups, and over a 45% increase in booking conversion rate.</description>
     </item>
 
     <item>
       <title>Case Study: AI-Powered Invoice Processing — HG Oil Holdings</title>
-      <link>https://preissersolutions.com/#case-studies</link>
-      <guid isPermaLink="false">https://preissersolutions.com/case-studies/invoice-processing</guid>
+      <link>https://preissertech.com/#case-studies</link>
+      <guid isPermaLink="false">https://preissertech.com/case-studies/invoice-processing</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
       <description>Office staff at HG Oil Holdings were overwhelmed, spending 40+ hours a week handling, dispersing, analyzing, and approving invoices — on top of their other responsibilities. We trained an AI assistant with all necessary business data that allows employees to upload invoices and receive the exact needed information within seconds. Result: 75% decrease in time spent on manual invoice handling, elimination of manual invoice review, freed-up office staff for higher-value tasks, and no need to hire additional staff.</description>
     </item>
 
     <item>
       <title>Case Study: Automated Inventory Management System — HG Oil Holdings</title>
-      <link>https://preissersolutions.com/#case-studies</link>
-      <guid isPermaLink="false">https://preissersolutions.com/case-studies/inventory-system</guid>
+      <link>https://preissertech.com/#case-studies</link>
+      <guid isPermaLink="false">https://preissertech.com/case-studies/inventory-system</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
       <description>HG Oil Holdings had no ability to view live inventory or track counts, leading to excessive man-hours spent locating materials and ongoing losses from transportation and reconditioning costs. We developed an automated, easy-to-use centralized platform to record new materials, provide a live inventory view, and handle inventory transfers — with built-in formulas to track and mark up values, turning a liability into a profit center. Result: 95% reduction in time spent tracking parts, over 75% improvement in accuracy, 10+ hours per week freed across positions, and a transformed cost center into a profitable business unit.</description>
     </item>
 
     <item>
       <title>Case Study: Alpha Matrix — Six-Agent Autonomous AI Analysis System</title>
-      <link>https://preissersolutions.com/#case-studies</link>
-      <guid isPermaLink="false">https://preissersolutions.com/case-studies/alpha-matrix</guid>
+      <link>https://preissertech.com/#case-studies</link>
+      <guid isPermaLink="false">https://preissertech.com/case-studies/alpha-matrix</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
-      <description>Alpha Matrix is a self-evolving multi-agent AI architecture where six specialized agents work in sequence to perform enterprise-grade autonomous analysis at scale. The system scans data across multiple passes, analyzes findings through independent agent perspectives, applies a weighted conviction matrix, and produces structured output — all while rewriting its own knowledge and learning files based on outcomes. This is not a chatbot or a workflow tool. It is a fully autonomous AI architecture that evolves with every run. Built by Preisser Solutions as a demonstration of what multi-agent AI systems can accomplish when designed with rigor, honesty about accuracy, and real-world feedback loops.</description>
+      <description>Alpha Matrix is a self-evolving multi-agent AI architecture where six specialized agents work in sequence to perform enterprise-grade autonomous analysis at scale. The system scans data across multiple passes, analyzes findings through independent agent perspectives, applies a weighted conviction matrix, and produces structured output — all while rewriting its own knowledge and learning files based on outcomes. This is not a chatbot or a workflow tool. It is a fully autonomous AI architecture that evolves with every run. Built by Preisser Technology as a demonstration of what multi-agent AI systems can accomplish when designed with rigor, honesty about accuracy, and real-world feedback loops.</description>
     </item>
 
   </channel>

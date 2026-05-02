@@ -1,4 +1,4 @@
-# Content Rewrite — Preisser Solutions Website
+# Content Rewrite — Preisser Technology Website
 
 ---
 
@@ -11,7 +11,7 @@ Each description appears on hover. 2-3 sentences. Speaks to the pain, shows the 
 ### 1. The Iron and Oak Podcast
 We built an entire media brand from nothing — website, visual identity, podcast distribution across every major platform, and AI search optimization so it actually gets found. If you have a concept but no idea how to turn it into a professional, discoverable brand, this is what that process looks like.
 
-### 2. PreisserSolutions.com
+### 2. PreisserTech.com
 This is our own site, and we built it the same way we build yours — custom-coded, integrated lead pipeline, and an ROI calculator that qualifies prospects before they ever hit our calendar. No templates. No page builders. A website that actually works as a sales tool.
 
 ### 3. TylerPreisser.com

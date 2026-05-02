@@ -72,7 +72,7 @@
 - [ ] SEO verification (meta tags, Open Graph, schema.org)
 - [ ] Image optimization (WebP, proper sizes/srcset)
 - [ ] Final content review with Tyler
-- [ ] Production deploy to preissersolutions.com
+- [ ] Production deploy to preissertech.com
 
 ---
 

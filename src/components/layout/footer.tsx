@@ -30,7 +30,7 @@ export function Footer() {
     }
 
     // Mailto fallback: sends a notification email to sales with the subscriber address
-    window.location.href = `mailto:sales@preissersolutions.com?subject=New%20Newsletter%20Subscriber&body=New%20subscriber%3A%20${encodeURIComponent(email)}`;
+    window.location.href = `mailto:sales@preissertech.com?subject=New%20Newsletter%20Subscriber&body=New%20subscriber%3A%20${encodeURIComponent(email)}`;
     setSubscribed(true);
   }
 
@@ -43,7 +43,7 @@ export function Footer() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/ps-logo.webp`}
-              alt="Preisser Solutions"
+              alt="Preisser Technology"
               className="ps-footer-logo-img"
             />
             <p className="ps-footer-tagline">
@@ -115,7 +115,7 @@ export function Footer() {
                 href={siteConfig.social.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Preisser Solutions on LinkedIn"
+                aria-label="Preisser Technology on LinkedIn"
               >
                 LinkedIn
               </a>

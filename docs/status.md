@@ -58,7 +58,7 @@
 
 ### What Changed
 - Home page component roles completely reassigned — old `PersonalCommitment` → Logo/Stats bar; old `ServicesOverview`/`HowItWorks` → Feature Showcase sections
-- All content is placeholder text as requested (no old preissersolutions.com copy)
+- All content is placeholder text as requested (no old preissertech.com copy)
 - Footer no longer contains the big CTA block (moved to `CtaSection` component in page.tsx)
 - Hero no longer has floating pain-point quotes system (removed per rebuild brief)
 - `globals.css` grew from ~1100 to ~1900 lines to cover all new patterns

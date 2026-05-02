@@ -1,5 +1,5 @@
 const KEY = "cd9d2166e08f09a44331c911b5dace2d";
-const HOST = "preissersolutions.com";
+const HOST = "preissertech.com";
 const KEY_LOCATION = `https://${HOST}/${KEY}.txt`;
 
 const URL_LIST = [
@@ -11,6 +11,7 @@ const URL_LIST = [
   `https://${HOST}/why-automation`,
   `https://${HOST}/llms.txt`,
   `https://${HOST}/feed.xml`,
+  `https://${HOST}/sitemap.xml`,
 ];
 
 const payload = {

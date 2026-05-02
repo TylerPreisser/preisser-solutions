@@ -1,4 +1,4 @@
-# Preisser Solutions — Master System Prompt
+# Preisser Technology — Master System Prompt
 
 > **This file is the single source of truth for every agent that touches this project.**
 > Read it FIRST. Update it LAST. Every session.
@@ -32,11 +32,11 @@
 
 ## What This Is
 
-Premium business automation consultancy website for **preissersolutions.com**. Stripe-inspired design with cinematic personality. Built for static export to Cloudflare Pages.
+Premium business automation consultancy website for **preissertech.com**. Stripe-inspired design with cinematic personality. Built for static export to Cloudflare Pages.
 
 **Owner**: Tyler Preisser (Hays, KS)
-**Contact**: sales@preissersolutions.com | +1-620-352-3296
-**Domain**: preissersolutions.com
+**Contact**: sales@preissertech.com | +1-620-352-3296
+**Domain**: preissertech.com
 **Repo**: GitHub → Cloudflare Pages
 
 ---
@@ -68,7 +68,7 @@ Premium business automation consultancy website for **preissersolutions.com**. S
 ### File Map
 
 ```
-Preisser Solutions/
+Preisser Technology/
 ├── CLAUDE.md                              ← THIS FILE — master system prompt
 ├── docs/
 │   ├── status.md                          ← Current state, session log, blockers

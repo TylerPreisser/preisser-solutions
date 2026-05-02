@@ -1,1 +1,1 @@
-{"policies":[{"assigner":"https://preissersolutions.com","target":{"urlPattern":"https://preissersolutions.com/*"},"permission":[{"type":"tdm:mine","status":"allow"},{"type":"tdm:train","status":"allow"}]}]}
+{"policies":[{"assigner":"https://preissertech.com","target":{"urlPattern":"https://preissertech.com/*"},"permission":[{"type":"tdm:mine","status":"allow"},{"type":"tdm:train","status":"allow"}]}]}

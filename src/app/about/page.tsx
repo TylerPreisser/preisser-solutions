@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   description:
     "Tyler Preisser is a builder — patented inventions, AI systems, and automation tools for Kansas businesses. Direct access to the person who designs, builds, and stands behind the work.",
   alternates: {
-    canonical: "https://preissersolutions.com/about",
+    canonical: "https://preissertech.com/about",
   },
   openGraph: {
-    title: "About Tyler Preisser | Preisser Solutions",
+    title: "About Tyler Preisser | Preisser Technology",
     description:
       "Tyler Preisser is a builder — patented inventions, AI systems, and automation tools for Kansas businesses. Direct access to the person who designs, builds, and stands behind the work.",
-    url: "https://preissersolutions.com/about",
+    url: "https://preissertech.com/about",
   },
 };
 
@@ -42,7 +42,7 @@ export default function AboutPage() {
             <div>
               <Image
                 src="/images/Tyler Portait.jpeg"
-                alt="Tyler Preisser — Founder, Preisser Solutions"
+                alt="Tyler Preisser — Founder, Preisser Technology"
                 width={320}
                 height={320}
                 style={{
@@ -80,7 +80,7 @@ export default function AboutPage() {
                   marginBottom: "20px",
                 }}
               >
-                Preisser Solutions exists because I got tired of watching businesses
+                Preisser Technology exists because I got tired of watching businesses
                 struggle with technology they shouldn&apos;t have to struggle with.
                 Outdated websites. Systems that don&apos;t connect. Manual work that
                 should have been automated five years ago. Tools that were supposed
@@ -99,7 +99,7 @@ export default function AboutPage() {
                 systems that process millions in transaction volume. I&apos;ve managed
                 field operations, led large-scale technology projects, and built
                 automation systems that replaced entire manual workflows. When you work
-                with Preisser Solutions, you work with me — the person who designs it,
+                with Preisser Technology, you work with me — the person who designs it,
                 builds it, and stands behind it.
               </p>
               <Link href="/contact" className="ps-btn-primary">
