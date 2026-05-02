@@ -97,10 +97,7 @@
 }
 
 /* ── Light mode overrides ──────────────────────────────────── */
-/* Light mode: nav pill uses translucent white so backdrop-filter shows through */
-[data-theme="light"] .ps-header-blur {
-  background-color: rgba(255, 255, 255, 0.35);
-}
+/* (Nav pill light-mode override lives next to the main .ps-header-blur rule below) */
 
 [data-theme="light"] {
   --theme-bg-primary:   #FFFFFF;
@@ -345,20 +342,36 @@ button {
 
 /* Blur layer — must be a real child element, not ::before.
    Positioned to create the inset pill shape with rounded corners.
-   backdrop-filter blurs page content scrolling underneath. */
+   backdrop-filter blurs page content scrolling underneath.
+
+   GPU compositing hints (transform + will-change) are applied to THIS
+   element only — not the parent .ps-header — so we get reliable
+   backdrop-filter rendering in Safari/Chrome without re-introducing the
+   Safari scroll jank that came from will-change on the fixed parent. */
 .ps-header-blur {
   position: absolute;
   inset: 6px 12px;
   z-index: 0;
-  border-radius: 12px;
-  background-color: rgba(10, 22, 40, 0.35);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 14px;
+  background-color: rgba(10, 22, 40, 0.55);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   box-shadow: var(--theme-nav-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transform: translateZ(0);
+  will-change: backdrop-filter;
+  isolation: isolate;
   transition:
     background-color 300ms ease,
-    box-shadow 300ms ease;
+    box-shadow 300ms ease,
+    border-color 300ms ease;
   pointer-events: none;
+}
+
+/* Light mode pill: translucent white so backdrop-filter shows page color through */
+[data-theme="light"] .ps-header-blur {
+  background-color: rgba(255, 255, 255, 0.55);
+  border-color: rgba(0, 0, 0, 0.06);
 }
 
 /* Kill the old ::before completely */
@@ -366,9 +379,13 @@ button {
   content: none;
 }
 
-.ps-header:hover .ps-header-blur,
+/* Slightly more opaque pill once user has scrolled past the hero, so the nav
+   stays legible against light content sections. */
 .ps-header.scrolled .ps-header-blur {
-  opacity: 1;
+  background-color: rgba(10, 22, 40, 0.72);
+}
+[data-theme="light"] .ps-header.scrolled .ps-header-blur {
+  background-color: rgba(255, 255, 255, 0.72);
 }
 
 .ps-header-inner {

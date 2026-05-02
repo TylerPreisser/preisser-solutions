@@ -13,11 +13,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Preisser Solutions | Custom Websites, Apps, AI Automation & Dashboards | Hays, Kansas",
+    default: "Preisser Solutions",
     template: "%s | Preisser Solutions",
   },
-  description:
-    "You show us the problem. We see the solution. Preisser Solutions designs and builds custom websites, applications, AI, automations, and visualizations from the ground up for your business. 22+ projects delivered from Hays, Kansas by Tyler Preisser. No templates, no subcontractors.",
+  description: "World-class tech for your business.",
   metadataBase: new URL("https://preissersolutions.com"),
   keywords: [
     "business automation Kansas",
@@ -65,29 +64,27 @@ export const metadata: Metadata = {
     url: "https://preissersolutions.com",
     siteName: "Preisser Solutions",
     title: "Preisser Solutions",
-    description:
-      "Custom websites, apps & AI automation — built from the ground up for your business.",
+    description: "World-class tech for your business.",
     images: [
       {
-        url: "/images/og-image-square.jpg",
+        url: "/images/og-image-v2.jpg",
         width: 1200,
-        height: 1200,
+        height: 630,
         alt: "Preisser Solutions",
       },
       {
-        url: "/images/og-image.jpg",
+        url: "/images/og-image-square-v2.jpg",
         width: 1200,
-        height: 630,
-        alt: "Preisser Solutions — Custom Websites, Apps & Automations for Kansas Businesses",
+        height: 1200,
+        alt: "Preisser Solutions",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Preisser Solutions",
-    description:
-      "Custom websites, apps & AI automation — built from the ground up for your business.",
-    images: ["/images/og-image.jpg"],
+    description: "World-class tech for your business.",
+    images: ["/images/og-image-v2.jpg"],
     creator: "@tylerpreisser",
   },
 };

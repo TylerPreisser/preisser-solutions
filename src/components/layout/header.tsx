@@ -92,8 +92,20 @@ export function Header() {
         className={`ps-header${isScrolled ? " scrolled" : ""}`}
         aria-label="Site header"
       >
-        {/* Blur layer — real DOM element so backdrop-filter works */}
-        <div className="ps-header-blur" aria-hidden="true" />
+        {/* Blur layer — real DOM element so backdrop-filter works.
+            backdrop-filter is set INLINE because Tailwind v4's Lightning CSS
+            minifier strips the unprefixed property when both versions appear
+            in source CSS, leaving only -webkit- (Safari only). Inline style
+            bypasses the minifier and lands directly on the DOM element, so
+            Chrome / Firefox / Edge all get the blur. */}
+        <div
+          className="ps-header-blur"
+          aria-hidden="true"
+          style={{
+            backdropFilter: "blur(24px) saturate(180%)",
+            WebkitBackdropFilter: "blur(24px) saturate(180%)",
+          }}
+        />
         <div className="ps-header-inner">
           {/* Logo */}
           <Link

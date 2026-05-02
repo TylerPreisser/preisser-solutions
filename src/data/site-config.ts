@@ -16,9 +16,8 @@ export const siteConfig = {
     title: "Founder & Owner",
   },
   meta: {
-    title: "Preisser Solutions | We Build Websites, Apps & Automations for Kansas Businesses",
-    description:
-      "Preisser Solutions builds websites, applications, automation systems, dashboards, and more for businesses across Kansas. Custom-built. AI-powered speed. Work directly with Tyler Preisser.",
+    title: "Preisser Solutions",
+    description: "World-class tech for your business.",
     themeColor: "#0D95E8",
   },
 } as const;
