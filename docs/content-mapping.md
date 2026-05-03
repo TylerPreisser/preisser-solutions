@@ -1,6 +1,6 @@
-# Stripe-to-Preisser Technology Content Mapping
+# Stripe-to-Preisser Tech Content Mapping
 
-> **Purpose:** Exhaustive find/replace mapping for transforming saved Stripe homepage HTML into Preisser Technology website.
+> **Purpose:** Exhaustive find/replace mapping for transforming saved Stripe homepage HTML into Preisser Tech website.
 > **Source HTML:** `/Users/tylerpreisser/Desktop/stripe.com/stripe.com/index.html`
 > **Content Source:** `/Users/tylerpreisser/Downloads/preisser-solutions-website-content.md`
 > **Generated:** 2026-04-02
@@ -20,13 +20,13 @@
 
 ```
 FIND: Stripe | Financial Infrastructure to Grow Your Revenue
-REPLACE: Preisser Technology | AI-Powered Business Technology for Kansas Businesses
+REPLACE: Preisser Tech | AI-Powered Business Technology for Kansas Businesses
 ```
 > Appears 3x: `<title>`, `og:title`, `twitter:title`. Use global replace.
 
 ```
 FIND: Stripe is a financial services platform that helps all types of businesses accept payments, build flexible billing models, and manage money movement.
-REPLACE: Preisser Technology builds, fixes, and automates business technology for companies across Kansas. Custom AI automation, system integration, web development, and more. Work directly with Tyler Preisser.
+REPLACE: Preisser Tech builds, fixes, and automates business technology for companies across Kansas. Custom AI automation, system integration, web development, and more. Work directly with Tyler Preisser.
 ```
 > Appears 2x: `meta description`, `og:description`. Use global replace.
 
@@ -81,7 +81,7 @@ REPLACE: Your Business Runs on Systems. We Make Them Work.
 
 ```
 FIND: Accept payments, offer financial services, and implement custom revenue models—from your first transaction to your billionth.
-REPLACE: Preisser Technology builds, fixes, and automates the technology behind your business — so your team stops fighting their tools and starts using them.
+REPLACE: Preisser Tech builds, fixes, and automates the technology behind your business — so your team stops fighting their tools and starts using them.
 ```
 
 ---
@@ -235,7 +235,7 @@ REPLACE: Your Technology Should Be Working for You — Not the Other Way Around
 
 ```
 FIND: Stripe for enterprises
-REPLACE: The Preisser Technology Difference
+REPLACE: The Preisser Tech Difference
 ```
 
 ```
@@ -282,7 +282,7 @@ REPLACE: Built by Someone Who Understands Your Business
 
 ```
 FIND: Stripe for startups
-REPLACE: About Preisser Technology
+REPLACE: About Preisser Tech
 ```
 
 ```
@@ -420,7 +420,7 @@ REPLACE: Every system comes with ongoing support. We maintain, adapt, and improv
 
 ```
 FIND: With Stripe, we have a global technology partner to help our customers—from Canadian yoga studios to British boxing classes—keep growing and evolving in a new wellness world.
-REPLACE: Preisser Technology didn't sell us another tool. They got inside our operation, found what was broken, and built the exact solution we needed.
+REPLACE: Preisser Tech didn't sell us another tool. They got inside our operation, found what was broken, and built the exact solution we needed.
 ```
 
 ```
@@ -728,7 +728,7 @@ REPLACE: Your Technology Shouldn't Hold You Back.
 
 ```
 FIND: >Stripe Press<
-REPLACE: >Preisser Technology<
+REPLACE: >Preisser Tech<
 ```
 
 ```
@@ -893,7 +893,7 @@ REPLACE: >Hays, Kansas<
 
 ```
 FIND: Stripe, LLC.
-REPLACE: Preisser Technology. All Rights Reserved.
+REPLACE: Preisser Tech. All Rights Reserved.
 ```
 
 ---
@@ -904,7 +904,7 @@ REPLACE: Preisser Technology. All Rights Reserved.
 
 ```
 FIND: Stripe
-REPLACE: Preisser Technology
+REPLACE: Preisser Tech
 ```
 > WARNING: This is a global catch-all. Run AFTER all specific replacements above. Be careful not to break URLs, CSS class names, or asset paths that contain "stripe" or "Stripe". Only replace in visible text contexts (between `>` and `<`), in `content="..."` attributes, and in `alt="..."` attributes. DO NOT replace in `href`, `src`, `class`, or `id` attributes.
 
@@ -1102,12 +1102,12 @@ The HTML contains JSON-LD structured data in a `<script type="application/ld+jso
 
 ```
 FIND: "name":"Stripe"
-REPLACE: "name":"Preisser Technology"
+REPLACE: "name":"Preisser Tech"
 ```
 
 ```
 FIND: "legalName":"Stripe, LLC"
-REPLACE: "legalName":"Preisser Technology, LLC"
+REPLACE: "legalName":"Preisser Tech, LLC"
 ```
 
 ```
@@ -1117,7 +1117,7 @@ REPLACE: "url":"https://preissertech.com/"
 
 ```
 FIND: "description":"Stripe powers online and in-person payment processing and financial solutions for businesses of all sizes."
-REPLACE: "description":"Preisser Technology builds, fixes, and automates business technology for companies across Kansas."
+REPLACE: "description":"Preisser Tech builds, fixes, and automates business technology for companies across Kansas."
 ```
 
 ```
@@ -1153,8 +1153,8 @@ After all replacements, search the output for these terms to verify completeness
 - [ ] No remaining "Financial infrastructure" text
 - [ ] No remaining "payments" in hero/headline contexts
 - [ ] All CTAs say "Talk to Tyler", "Get started", or "Schedule a Free Consultation"
-- [ ] Footer says "Preisser Technology" and "Hays, Kansas"
-- [ ] Title tag reads "Preisser Technology | AI-Powered Business Technology for Kansas Businesses"
+- [ ] Footer says "Preisser Tech" and "Hays, Kansas"
+- [ ] Title tag reads "Preisser Tech | AI-Powered Business Technology for Kansas Businesses"
 - [ ] All 5 service pillars appear in the service section
 - [ ] All 4 case study stats appear (5x, 95%, 60%+, 75%)
 - [ ] Sessions conference banner is gone

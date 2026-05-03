@@ -82,7 +82,7 @@ export function ProblemSection() {
               someone who can actually do it.
             </p>
             <p>
-              That&apos;s what Preisser Technology is. We&apos;re builders. You
+              That&apos;s what Preisser Tech is. We&apos;re builders. You
               bring us the problem, we build the solution. Websites.
               Applications. Automation systems. Dashboards. Integrations. If it
               involves technology, we can design it and build it &mdash; from

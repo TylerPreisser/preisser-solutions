@@ -112,12 +112,12 @@ export function Header() {
             href="/"
             className="ps-logo-link"
             onClick={() => {}}
-            aria-label="Preisser Technology — Home"
+            aria-label="Preisser Tech — Home"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/ps-logo.webp`}
-              alt="Preisser Technology"
+              alt="Preisser Tech"
               className="ps-logo-img"
             />
           </Link>

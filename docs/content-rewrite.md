@@ -1,4 +1,4 @@
-# Content Rewrite — Preisser Technology Website
+# Content Rewrite — Preisser Tech Website
 
 ---
 

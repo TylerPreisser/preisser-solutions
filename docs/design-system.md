@@ -1,4 +1,4 @@
-# Preisser Technology — Design System (Stripe x Tyler Fusion)
+# Preisser Tech — Design System (Stripe x Tyler Fusion)
 
 > **This is the single source of truth for all visual design decisions.**
 > Every agent building UI reads this file. If you change a design pattern, update this file.
@@ -11,7 +11,7 @@
 
 **tylerpreisser.com** provides: Cinematic personality, warm accent colors, GSAP scroll animations with stagger, bold display fonts, gradient blends, glowing hover states, spark/particle energy, dark-mode-first aesthetic.
 
-**Preisser Technology blend**: Stripe's structural precision and enterprise trust, infused with Tyler's warm personality and animated energy. Professional but not sterile. Polished but not generic.
+**Preisser Tech blend**: Stripe's structural precision and enterprise trust, infused with Tyler's warm personality and animated energy. Professional but not sterile. Polished but not generic.
 
 ---
 

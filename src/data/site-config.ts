@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "Preisser Technology",
+  name: "Preisser Tech",
   tagline: "We Build What Your Business Needs.",
   url: "https://preissertech.com",
   contact: {
@@ -16,7 +16,7 @@ export const siteConfig = {
     title: "Founder & Owner",
   },
   meta: {
-    title: "Preisser Technology",
+    title: "Preisser Tech",
     description: "World-class tech for your business.",
     themeColor: "#0D95E8",
   },

@@ -1,4 +1,4 @@
-# Preisser Technology — Master System Prompt
+# Preisser Tech — Master System Prompt
 
 > **This file is the single source of truth for every agent that touches this project.**
 > Read it FIRST. Update it LAST. Every session.
@@ -68,7 +68,7 @@ Premium business automation consultancy website for **preissertech.com**. Stripe
 ### File Map
 
 ```
-Preisser Technology/
+Preisser Tech/
 ├── CLAUDE.md                              ← THIS FILE — master system prompt
 ├── docs/
 │   ├── status.md                          ← Current state, session log, blockers

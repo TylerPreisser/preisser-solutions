@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     canonical: "https://preissertech.com/services",
   },
   openGraph: {
-    title: "Services | Preisser Technology",
+    title: "Services | Preisser Tech",
     description:
       "Websites, applications, automation systems, dashboards, and integrations built for Kansas businesses. Custom-designed by Tyler Preisser — no agencies, no middlemen.",
     url: "https://preissertech.com/services",

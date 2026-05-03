@@ -43,7 +43,7 @@ export function Footer() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/ps-logo.webp`}
-              alt="Preisser Technology"
+              alt="Preisser Tech"
               className="ps-footer-logo-img"
             />
             <p className="ps-footer-tagline">
@@ -115,7 +115,7 @@ export function Footer() {
                 href={siteConfig.social.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Preisser Technology on LinkedIn"
+                aria-label="Preisser Tech on LinkedIn"
               >
                 LinkedIn
               </a>

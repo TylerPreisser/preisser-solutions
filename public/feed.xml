@@ -4,9 +4,9 @@
   xmlns:content="http://purl.org/rss/1.0/modules/content/">
 
   <channel>
-    <title>Preisser Technology</title>
+    <title>Preisser Tech</title>
     <link>https://preissertech.com</link>
-    <description>Preisser Technology builds websites, applications, automation systems, dashboards, and more for businesses across Kansas. Custom-built. AI-powered speed. Work directly with Tyler Preisser.</description>
+    <description>Preisser Tech builds websites, applications, automation systems, dashboards, and more for businesses across Kansas. Custom-built. AI-powered speed. Work directly with Tyler Preisser.</description>
     <language>en-us</language>
     <managingEditor>sales@preissertech.com (Tyler Preisser)</managingEditor>
     <webMaster>sales@preissertech.com (Tyler Preisser)</webMaster>
@@ -15,11 +15,11 @@
 
     <!-- About -->
     <item>
-      <title>About Preisser Technology — We Build Things. That's What We Do.</title>
+      <title>About Preisser Tech — We Build Things. That's What We Do.</title>
       <link>https://preissertech.com/about</link>
       <guid isPermaLink="true">https://preissertech.com/about</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
-      <description>Direct access to the person designing, building, and standing behind the work. Tyler Preisser is a builder — from physical machines and patented inventions to AI systems that process millions in transaction volume. Preisser Technology exists because too many businesses struggle with technology they shouldn't have to: outdated websites, systems that don't connect, and manual work that should have been automated years ago. When you work with Preisser Technology, you work with Tyler — the person who designs it, builds it, and stands behind it.</description>
+      <description>Direct access to the person designing, building, and standing behind the work. Tyler Preisser is a builder — from physical machines and patented inventions to AI systems that process millions in transaction volume. Preisser Tech exists because too many businesses struggle with technology they shouldn't have to: outdated websites, systems that don't connect, and manual work that should have been automated years ago. When you work with Preisser Tech, you work with Tyler — the person who designs it, builds it, and stands behind it.</description>
     </item>
 
     <!-- Services -->
@@ -69,7 +69,7 @@
       <link>https://preissertech.com/#case-studies</link>
       <guid isPermaLink="false">https://preissertech.com/case-studies/automated-social-media-engine</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
-      <description>Cassidy HVAC was struggling with consistent outreach on social media. Their internal team had no time to plan, create, or post content regularly — engagement was flat, brand visibility was declining, and customers were being captured by competitors. We deployed the Preisser Technology Proprietary Organic Marketing Automation system: a fully hands-free AI engine that scrapes trending content, applies persuasive psychological frameworks, auto-generates custom marketing visuals, and posts to Facebook and Instagram without requiring daily staff input. Result: 100% hands-off daily content creation, 5x increase in organic reach within the first 30 days, and a complete replacement of outsourced or in-house marketing staff.</description>
+      <description>Cassidy HVAC was struggling with consistent outreach on social media. Their internal team had no time to plan, create, or post content regularly — engagement was flat, brand visibility was declining, and customers were being captured by competitors. We deployed the Preisser Tech Proprietary Organic Marketing Automation system: a fully hands-free AI engine that scrapes trending content, applies persuasive psychological frameworks, auto-generates custom marketing visuals, and posts to Facebook and Instagram without requiring daily staff input. Result: 100% hands-off daily content creation, 5x increase in organic reach within the first 30 days, and a complete replacement of outsourced or in-house marketing staff.</description>
     </item>
 
     <item>
@@ -101,7 +101,7 @@
       <link>https://preissertech.com/#case-studies</link>
       <guid isPermaLink="false">https://preissertech.com/case-studies/alpha-matrix</guid>
       <pubDate>Sat, 04 Apr 2026 00:00:00 +0000</pubDate>
-      <description>Alpha Matrix is a self-evolving multi-agent AI architecture where six specialized agents work in sequence to perform enterprise-grade autonomous analysis at scale. The system scans data across multiple passes, analyzes findings through independent agent perspectives, applies a weighted conviction matrix, and produces structured output — all while rewriting its own knowledge and learning files based on outcomes. This is not a chatbot or a workflow tool. It is a fully autonomous AI architecture that evolves with every run. Built by Preisser Technology as a demonstration of what multi-agent AI systems can accomplish when designed with rigor, honesty about accuracy, and real-world feedback loops.</description>
+      <description>Alpha Matrix is a self-evolving multi-agent AI architecture where six specialized agents work in sequence to perform enterprise-grade autonomous analysis at scale. The system scans data across multiple passes, analyzes findings through independent agent perspectives, applies a weighted conviction matrix, and produces structured output — all while rewriting its own knowledge and learning files based on outcomes. This is not a chatbot or a workflow tool. It is a fully autonomous AI architecture that evolves with every run. Built by Preisser Tech as a demonstration of what multi-agent AI systems can accomplish when designed with rigor, honesty about accuracy, and real-world feedback loops.</description>
     </item>
 
   </channel>

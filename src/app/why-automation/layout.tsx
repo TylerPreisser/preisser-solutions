@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     canonical: "https://preissertech.com/why-automation",
   },
   openGraph: {
-    title: "Why Automate Your Business | Preisser Technology",
+    title: "Why Automate Your Business | Preisser Tech",
     description:
       "Discover why Kansas businesses are automating repetitive work — reduce errors, free your team, and scale without adding headcount. The case for business automation, explained.",
     url: "https://preissertech.com/why-automation",

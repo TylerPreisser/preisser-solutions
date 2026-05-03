@@ -28,7 +28,7 @@ export const caseStudies: CaseStudy[] = [
     challenge:
       "Cassidy HVAC was struggling with consistent outreach on social media. Their internal team had no time to plan, create, or post content regularly. Engagement was flat, brand visibility was declining, and no system existed to capitalize on trends or keep up with competitors — all while customers were active online and being captured elsewhere.",
     solution:
-      "We deployed the Preisser Technology Proprietary Organic Marketing Automation system — a fully hands-free AI engine that automates daily social media content tailored to Cassidy HVAC's audience and goals. The system scrapes trending content, applies all of the top persuasive psychological concepts, auto-generates custom marketing visuals, and posts to Facebook and Instagram without requiring daily staff input. Everything routes through an optional email-based approval system — or can run fully autonomously.",
+      "We deployed the Preisser Tech Proprietary Organic Marketing Automation system — a fully hands-free AI engine that automates daily social media content tailored to Cassidy HVAC's audience and goals. The system scrapes trending content, applies all of the top persuasive psychological concepts, auto-generates custom marketing visuals, and posts to Facebook and Instagram without requiring daily staff input. Everything routes through an optional email-based approval system — or can run fully autonomously.",
     results: [
       { highlight: "100% hands-off", text: "daily content creation & posting" },
       {

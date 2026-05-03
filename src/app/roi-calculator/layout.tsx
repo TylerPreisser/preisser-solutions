@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     canonical: "https://preissertech.com/roi-calculator",
   },
   openGraph: {
-    title: "ROI Calculator | Preisser Technology",
+    title: "ROI Calculator | Preisser Tech",
     description:
       "Estimate how much time and money business automation could save your Kansas company each year. Select your roles, adjust headcount and compensation, and see your potential savings.",
     url: "https://preissertech.com/roi-calculator",
