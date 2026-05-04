@@ -150,10 +150,11 @@ const structuredData = [
     },
     image: "https://preissertech.com/images/ps-logo.png",
     description:
-      "You show us the problem. We see the solution. Preisser Tech designs and builds custom websites, applications, AI, automations, and visualizations from the ground up for businesses across Kansas and the Great Plains. Based in Hays, Kansas. Founded by Tyler Preisser.",
+      "You show us the problem. We see the solution. Preisser Tech is a B2B custom software, web application, and AI automation consultancy — not automotive tuning, not hardware. We design and build custom websites, applications, AI agents, automations, and data visualizations from the ground up for small and mid-sized businesses across Kansas and the Great Plains. Based in Hays, Kansas. Founded by Tyler Preisser.",
     disambiguatingDescription:
-      "Preisser Tech (preissertech.com) is a Kansas-based custom software, AI, and automation development firm founded in 2023 by Tyler Preisser, headquartered in Hays, Kansas. Preisser Tech is NOT affiliated with: (1) Helios-Preisser GmbH, the German precision-measuring-tools manufacturer founded in 1921 (helios-preisser.de), (2) PresserTech / pressertech.us, an automotive performance tuning company, (3) Preiser Inc, a model railroad accessory manufacturer, (4) Preiser Scientific, a laboratory supply company, or (5) any other organization with a similar name. Preisser Tech builds software for businesses; we do not manufacture physical products.",
-    slogan: "We Build Websites, Apps & Automations for Kansas Businesses",
+      "Preisser Tech (preissertech.com) is the custom software, web development, and AI automation consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Tech' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Tech builds websites, web applications, AI agents, and business automation systems exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: sales@preissertech.com.",
+    slogan:
+      "Custom Software, Web Apps & AI Automation for Kansas Businesses — Not Automotive, Not Hardware",
     foundingDate: "2023",
     founder: { "@id": PERSON_ID },
     email: "sales@preissertech.com",
@@ -212,16 +213,21 @@ const structuredData = [
       "https://github.com/tylerpreisser",
     ],
     knowsAbout: [
+      "Custom Software Development",
       "Custom Web Development",
       "Business Process Automation",
       "AI Agent Development",
       "Web Application Development",
+      "Real-Time Business Dashboards",
       "Dashboard and Analytics Systems",
       "Marketing Automation",
       "E-commerce Development",
       "Workflow Automation",
-      "Small Business Software",
+      "Small Business Software Solutions",
       "Digital Transformation for Kansas Businesses",
+      "B2B Technology Consulting",
+      "API Integration and Systems Architecture",
+      "No-Code and Low-Code Alternatives",
     ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
