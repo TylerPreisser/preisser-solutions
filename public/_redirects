@@ -4,7 +4,7 @@
 # Host-level canonicalization is handled in Cloudflare Pages middleware.
 # Pages _redirects only supports path-based rules.
 
-# Legacy .html URL rules — handles Google-indexed pre-Next.js paths from old preissersolutions.com site
+# Legacy .html URL rules — handles Google-indexed pre-Next.js paths from the old domain
 # Must be specific rules because Cloudflare Pages _redirects cannot strip .html via splat pattern
 /contact.html /contact 301
 /services.html /services 301
@@ -15,3 +15,7 @@
 /pricing.html /pricing 301
 /process.html /process 301
 /faq.html /faq 301
+
+# Former brand-defense page — deleted 2026-05-04, now silently 301 to homepage
+/preisser-solutions / 301
+/preisser-solutions/* / 301

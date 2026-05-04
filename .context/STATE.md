@@ -309,21 +309,29 @@ GSC globe icon is a normal crawl-delay artifact for a 2-day-old domain. All tech
 
 ## Brand State Audit
 
-### "Preisser Solutions" References (REMAINING)
-These should be systematically removed or updated:
+### "Preisser Solutions" References — PRODUCTION CODE STATUS (updated 2026-05-04 night)
+
+**ALL production-facing references RESOLVED.** Zero "Preisser Solutions" / "preissersolutions" in compiled output.
 
 | Location | Context | Status |
 |----------|---------|--------|
 | `package.json` | `"name": "preisser-solutions"` | RESOLVED 2026-05-04 — changed to `"preisser-tech"` |
-| `package-lock.json` | Multiple internal references | Artifact, will auto-resolve on next `npm install` |
-| `wrangler.toml` | `name = "preisser-solutions"` | PENDING — see CHANGELOG 2026-05-04 for reasoning (Cloudflare dashboard coordination required) |
-| `next.config.ts` | GitHub Pages path prefix `"/preisser-solutions"` | RESOLVED 2026-05-04 — changed to `"/preisser-tech"` |
-| `public/ps-hero-animation.js` | Comment `"Preisser Solutions — Hero Canvas Animation"` | RESOLVED 2026-05-04 — updated to `"Preisser Tech"` |
-| `docs/superpowers/specs/2026-04-02-preisser-solutions-rework-design.md` | Filename and headings | Historical reference doc, OK to leave as-is |
-| `docs/content-mapping.md` | Path reference to old downloaded content | Historical reference, OK to leave |
-| `src/app/layout.tsx` | `alternateName: ["Preisser Technology", "Preisser Solutions"]` | COMMITTED + PUSHED 2026-05-04 (commit `9bb846b`) — changed to `["Preisser Technology", "Preisser Tech"]`. **CAVEAT**: Cloudflare Pages redeploy must be confirmed by Tyler (see NEEDS_TYLER.md items #0 + #9). GitHub Pages deploy auto-triggered. |
-| `src/app/layout.tsx` | `sameAs` array — LinkedIn/Facebook/GitHub social URLs contain `preissersolutions` | PENDING — see CHANGELOG 2026-05-04 for reasoning (internet-investigator must confirm `/preissertech` pages exist) |
-| `src/data/site-config.ts` | Social links point to `.../company/preissersolutions` | PENDING — see CHANGELOG 2026-05-04 for reasoning (internet-investigator must confirm `/preissertech` pages exist) |
+| `package-lock.json` | Multiple internal references | ARTIFACT — cosmetic only, not served to crawlers. Auto-resolves on next `npm install`. |
+| `wrangler.toml` | `name = "preisser-solutions"` | PENDING (NEEDS TYLER) — Cloudflare dashboard project rename required. Cosmetic only, `preisser-solutions.pages.dev` has `x-robots-tag: noindex`. |
+| `src/app/layout.tsx` | `alternateName` array | RESOLVED 2026-05-04 night — "Preisser Solutions" removed. Now `["Preisser Technology","Preisser Tech"]`. |
+| `src/app/layout.tsx` | `disambiguatingDescription` | RESOLVED 2026-05-04 night — "Preisser Solutions was the firm's former..." sentence removed. |
+| `src/app/layout.tsx` | `verification.yandex` | RESTORED 2026-05-04 (late night) — orchestrator misread user intent. Yandex remains (`"9f19081f7abbbb70"`). Google + Bing env-var placeholders added alongside it. |
+| `src/app/layout.tsx` | Facebook comment mentioning `/preissersolutions` | RESOLVED 2026-05-04 night — comment rewritten. |
+| `src/data/aeo/preisser-solutions.ts` | Entire file | DELETED 2026-05-04 night. |
+| `src/app/preisser-solutions/page.tsx` | Entire page | DELETED 2026-05-04 night. `/preisser-solutions → /` 301 added to `public/_redirects`. |
+| `src/data/aeo/preisser-technology.ts` | "Former name" content block + FAQ + relatedLink | RESOLVED 2026-05-04 night — all three removed. |
+| `src/styles/globals.css` | Comment header | RESOLVED 2026-05-04 night — changed to `PREISSER TECH — GLOBAL CSS`. |
+| `src/data/site-config.ts` | Comment mentioning `/preissersolutions` | RESOLVED 2026-05-04 night — comment cleaned. |
+| `public/llms.txt` | "Former brand: Preisser Solutions" + "Legacy domain: https://preissersolutions.com" | RESOLVED 2026-05-04 night — both lines removed. |
+| `public/llms-full.txt` | "Former Brand: Preisser Solutions" + "Legacy Domain: preissersolutions.com" | RESOLVED 2026-05-04 night — both lines removed. |
+| `public/yandex_9f19081f7abbbb70.html` | Yandex verification file | RESTORED 2026-05-04 (late night) — deletion was an orchestrator error. File is live and copied to `out/` on build. |
+| `functions/_middleware.ts` | `LEGACY_HOSTS` and `DUPLICATE_HOSTS` sets contain old domain strings | INTENTIONAL — this is redirect infrastructure logic, not brand text. Remains. |
+| `docs/`, `archive/`, `.context/` | Historical documents | Out of scope — remain as historical record. |
 
 ### "Preisser Tech" References (CORRECT)
 - CLAUDE.md — correctly references preissertech.com ✓

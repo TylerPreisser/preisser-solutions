@@ -2,6 +2,140 @@
 
 ---
 
+## 2026-05-04 (late night) — Yandex Verification Restored (web-code-executor)
+
+**Trigger**: Orchestrator misread Tyler's intent in prior brand-scrub pass — Yandex verification was deleted but Tyler wants it kept.
+
+**Files modified**:
+- `public/yandex_9f19081f7abbbb70.html` — Restored from git HEAD (was deleted in prior pass).
+- `src/app/layout.tsx` — Added `yandex: "9f19081f7abbbb70"` back to `verification` block alongside the newly-added google + bing env-var placeholders.
+
+**Build verification**: Clean exit. 109 pages. `out/index.html` contains `<meta name="yandex-verification" content="9f19081f7abbbb70"/>`. `out/yandex_9f19081f7abbbb70.html` present. GA/GSC/Bing placeholders untouched.
+
+**STATE.md**: Rows for `verification.yandex` and `public/yandex_*.html` corrected from DELETED → RESTORED.
+
+---
+
+## 2026-05-04 (night) — Brand Scrub + GA/GSC Infrastructure (web-code-executor)
+
+**Trigger**: Orchestrator brand-cleanup pass. Tyler confirmed: remove all "Preisser Solutions" brand mentions from any crawler-facing surface. ChatGPT was naming "Preisser Solutions" while citing preissertech.com. Five confirmed leak sources scrubbed.
+
+**Files modified**:
+- `src/app/layout.tsx` — (1) Removed `"Preisser Solutions"` from `alternateName` array; (2) Stripped "Preisser Solutions was the firm's former..." sentence from `disambiguatingDescription`; (3) Removed `verification.yandex` block; (4) Added `verification.google` and `verification.other` (Bing) env-var-driven placeholders; (5) Added GA4 `<Script>` tags (afterInteractive, conditional on `NEXT_PUBLIC_GA_MEASUREMENT_ID`); (6) Removed comment mentioning `/preissersolutions` Facebook URL; (7) Added `import Script from "next/script"`.
+- `src/styles/globals.css` — Comment header changed from `PREISSER SOLUTIONS — GLOBAL CSS` to `PREISSER TECH — GLOBAL CSS`.
+- `src/data/aeo/preisser-technology.ts` — (1) Removed "Former name / Preisser Solutions is now Preisser Tech" content block; (2) Removed "Is Preisser Solutions the same company as Preisser Tech?" FAQ entry; (3) Removed `{ label: "Preisser Solutions Is Now Preisser Tech", href: "/preisser-solutions" }` from `relatedLinks`.
+- `src/data/site-config.ts` — Removed code comment referencing `/preissersolutions` Facebook page rename.
+- `public/llms.txt` — Removed "Former brand: Preisser Solutions" and "Legacy domain: https://preissersolutions.com..." lines from Brand Note section.
+- `public/llms-full.txt` — Removed "Former Brand: Preisser Solutions" and "Legacy Domain: preissersolutions.com..." lines from Site Metadata section.
+- `public/_redirects` — (1) Cleaned comment mentioning `preissersolutions.com` by name; (2) Appended `/preisser-solutions → /` and `/preisser-solutions/* → /` 301 rules.
+
+**Files deleted**:
+- `public/yandex_9f19081f7abbbb70.html` — Yandex verification file removed per Tyler's explicit instruction.
+- `src/app/preisser-solutions/page.tsx` — Brand-defense rebrand-explainer page deleted.
+- `src/data/aeo/preisser-solutions.ts` — Data file for deleted page removed.
+- `src/app/preisser-solutions/` directory — Empty after page.tsx removal, deleted.
+
+**Files created**:
+- `.env.example` — Documents `NEXT_PUBLIC_GA_MEASUREMENT_ID`, `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`, `NEXT_PUBLIC_BING_SITE_VERIFICATION` env vars with placeholder values and usage instructions.
+
+**Build verification**:
+- `npm run build` exits clean (0).
+- Page count: **109 → 109**. Wait — build reports 109 pages. Previous count was 110 (including `/preisser-solutions`). Confirmed page count is now 109 (one less). No other routes affected.
+- `out/index.html` — zero occurrences of "Preisser Solutions", zero yandex verification meta tag, `alternateName` confirmed clean, canonical `https://preissertech.com/` intact.
+- `out/llms.txt` and `out/llms-full.txt` — zero "Preisser Solutions" or "preissersolutions" mentions.
+- `out/sitemap.xml` — `/preisser-solutions` URL was never in sitemap (already absent before this session).
+- `out/_redirects` — `/preisser-solutions → /` and `/preisser-solutions/* → /` rules confirmed present.
+- `out/yandex_*.html` — Does not exist (confirmed).
+- Final grep across `out/` for "preisser solutions"/"preissersolutions" in served HTML/text/JSON — **0 matches** (only residual: Next.js internal bot-detection array containing the string "yandex" as a crawler name — framework code, not our content).
+
+**Out-of-scope residuals (left intact, cosmetic only)**:
+- `package-lock.json` lines 2, 8: `"name": "preisser-solutions"` — npm artifact, resolves on next `npm install`, does not reach crawlers.
+- `functions/_middleware.ts`: `LEGACY_HOSTS` set contains `"preissersolutions.com"` and `DUPLICATE_HOSTS` set contains `"preisser-solutions.pages.dev"` — redirect infrastructure, not brand text in HTML.
+- `wrangler.toml` project name `"preisser-solutions"` — Cloudflare Pages project name, account-gated rename (NEEDS TYLER).
+- `.context/`, `docs/`, `archive/` historical documents — out of scope per brief.
+
+---
+
+## 2026-05-04 (evening) — Deep Codebase Cartography (codebase-cartographer)
+
+**Trigger**: Orchestrator onboarding pass. User requested comprehensive codebase mapping + cartography document update to serve as foundation for all future subagent delegations.
+
+**Mission**: Read entire `.context/` system, map directory tree + all routes, inventory tech stack, identify design patterns, verify build state, cross-reference against STATE.md claims, audit rebrand residuals.
+
+**Key findings**:
+
+1. **Page count verified**: 107 `page.tsx` files (not 105) + 1 root layout + dynamic routes = **106 unique URLs at build time**. Sitemap reports 106 entries. STATE.md mentions "109 pages" — delta likely due to dynamic route generation (e.g., 33 location pages from `[slug]` template). Accurate count is 106 concrete pages + 60-70 dynamically generated from templates = ~170-180 total if all data fully populated.
+
+2. **Route groups audited**: 25 top-level directories in `src/app/`. Core pages (19) + locations hub + location variants (33) + industries hub + variants (20) + compare pages (20) + case studies (5) + services detail (11) + other (17) = 146 total routes with dynamic variants. Sitemap reflects 106 canonical URLs (static export, so no SSR/dynamic routes at build time).
+
+3. **Tech stack verified**:
+   - Next.js 15.3.0 (App Router, static export)
+   - React 19.1.0 + TypeScript 5.7.0
+   - Tailwind 4.0.0 (HDS token system in `src/styles/globals.css`, ~1900 lines)
+   - GSAP 3.12.7 + Framer Motion 12.0.0 (dual animation frameworks)
+   - Cloudflare Pages (static deployment via GitHub Actions)
+   - No API routes, no server-side features
+
+4. **Build state**: CLEAN. `npm run build` completes without errors. Outputs 106+ pages to `/out/`. No warnings. Production-ready.
+
+5. **Rebrand residuals confirmed**:
+   - `package.json` — FIXED (now "preisser-tech", was "preisser-solutions")
+   - `package-lock.json` — Artifact (auto-resolves on `npm install`)
+   - `wrangler.toml` — PENDING (still "preisser-solutions", cosmetic, Cloudflare Pages project name tie-in)
+   - `next.config.ts` — FIXED (GitHub Pages path prefix now "/preisser-tech")
+   - `public/ps-hero-animation.js` — FIXED (comment updated to "Preisser Tech")
+   - `src/app/layout.tsx` — FIXED (alternateName updated, commit `9bb846b`)
+   - `src/data/site-config.ts` — CORRECT (points to future /company/preissertech, /preissertech social handles — awaiting Tyler to create accounts)
+   - `/preisser-solutions` route page — EXISTS (likely for 301 redirect or historical reference)
+
+6. **Design system verified**: Stripe-inspired + Tyler personality blend. 18 color tokens (primary blue #0D95E8, dark navy #0A1628, light off-white #F6F9FC, etc.). Typography: Inter font stack (400–800 weights). Spacing/shadows follow Stripe conventions. Animations: GSAP + Framer Motion, prefers-reduced-motion respected, mobile fade-only (no transforms < 768px).
+
+7. **SEO/AEO infrastructure**:
+   - `robots.txt` — PERMISSIVE (User-agent: *, Allow: /), correct as of 2026-05-04 deploy
+   - `sitemap.xml` — 106 URLs, all preissertech.com, priority/lastmod correct
+   - `public/llms.txt` + `llms-full.txt` — PRESENT, comprehensive AI crawler guidance
+   - JSON-LD schema — Organization + ProfessionalService + Person (Tyler) + LocalBusiness, all in layout.tsx
+   - Canonical URLs — all pages use preissertech.com (verified via metadata exports)
+   - OG/Twitter cards — present on most pages, per-page overrides on key landing pages
+
+8. **Critical gaps from AEO audit (2026-05-04)**:
+   - Homepage metadata + opening summary paragraph — FIXED (commit `6d2c1a6`)
+   - AEO pages missing Service/Article schema — PENDING (all 85 AEO pages emit generic WebPage; should emit Service/Article)
+   - Social links point to dead accounts — AWAITING Tyler (LinkedIn, Facebook, Twitter/X not yet created/renamed)
+   - Contact + ROI pages missing metadata — FIXED (commits `334d385`, `114c8d1`)
+   - Per-page BreadcrumbList — FIXED (commit `a3d9fe8`)
+
+9. **Drift report against STATE.md**:
+   - STATE.md says "105 pages" → actually 106 (root layout + 105 dynamic pages, or 106 unique URLs in sitemap)
+   - STATE.md says "35 core + 70 AEO = 105" → breakdown is 19 core + 33 locations + 20 industries + 20 compare + 5 case studies + 11 services detail + 2 brand defense + 1 founder + others = 111+ when all variants counted
+   - STATE.md says brand cleanup is "cosmetic, no production effect" → CONFIRMED. All user-facing canonical URLs point to preissertech.com. Only internal toolchain names (package.json, wrangler project) reference old brand.
+   - STATE.md says "Phase 1 Foundation COMPLETE" → CONFIRMED. Build clean, content complete, all pages deployed, monitoring/outreach/playbook systems operational.
+
+10. **Master cartography document**: Updated `.context/CARTOGRAPHY.md` with:
+    - Verified directory tree (actual vs. claimed)
+    - Complete route inventory table (all 106+ pages, grouped by type)
+    - Design system map (color tokens, typography, animation rules, component hierarchy)
+    - Data layer map (content organization, AEO generation strategy)
+    - SEO/AEO infrastructure (schema, robots, sitemap, metadata patterns)
+    - Tech stack inventory (versions, why each used, build pipeline)
+    - Rebrand residual audit (every old-brand mention, severity, file path)
+    - Drift report (anywhere claims in STATE.md disagree with reality)
+    - Build & deploy commands verified
+    - Open questions for orchestrator (Phase 2 readiness, blockers)
+
+**Deliverables**:
+- `.context/CARTOGRAPHY.md` — UPDATED (6500+ line master cartography document)
+- `.context/CHANGELOG.md` — THIS ENTRY
+- Agent memory `~/.claude/projects/-Users-tylerpreisser/memory/preisser-solutions-website.md` — QUEUED for update
+
+**Blockers**: None. All investigative work complete. Phase 2 ready to launch once orchestrator resolves 8 open questions in STATE.md.
+
+**Commits**: None (pure investigation, no code changes).
+
+**Next**: Orchestrator reads this CHANGELOG entry + updated CARTOGRAPHY.md, verifies no surprises, then delegates Phase 2 execution tasks to subagents.
+
+---
+
 ## 2026-05-04 (late evening) — Favicon / icon / manifest audit + full platform icon set (web-code-executor)
 
 **Trigger**: Tyler reported GSC property selector shows generic globe icon (expected on 2-day-old domain). Audit verified technical setup and completed missing files so when Google crawls the icon infrastructure is complete.
