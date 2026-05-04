@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { services } from "@/data/services";
+import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -28,8 +29,17 @@ const iconColors = [
 
 const icons = ["🔍", "⚙️", "📋", "🤖", "🌐", "✏️"];
 
+const breadcrumbSchema = buildBreadcrumbs([
+  { name: "Services", url: "https://preissertech.com/services" },
+]);
+
 export default function ServicesPage() {
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
     <div className="ps-page-wrapper">
       {/* Page hero */}
       <div className="ps-page-hero">
@@ -89,5 +99,6 @@ export default function ServicesPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

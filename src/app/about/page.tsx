@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { siteConfig } from "@/data/site-config";
+import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 
 export const metadata: Metadata = {
   title: "About Tyler Preisser",
@@ -18,8 +19,17 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumbSchema = buildBreadcrumbs([
+  { name: "About", url: "https://preissertech.com/about" },
+]);
+
 export default function AboutPage() {
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
     <div className="ps-page-wrapper">
       {/* Page hero */}
       <div className="ps-page-hero">
@@ -143,5 +153,6 @@ export default function AboutPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
