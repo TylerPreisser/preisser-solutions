@@ -199,10 +199,17 @@ const structuredData = [
         areaServed: "US",
       },
     ],
+    // NOTE: LinkedIn and Facebook pages do not exist yet at these canonical URLs.
+    // Set in advance — once Tyler creates/renames the pages, the Knowledge Graph
+    // entity will link correctly without a redeploy.
+    // LinkedIn: create /company/preissertech from scratch
+    // Facebook: rename existing /preissersolutions → preissertech via Page Settings
+    // Twitter/X: claim @preissertech at x.com before squatters do
     sameAs: [
-      "https://www.linkedin.com/company/preissersolutions",
-      "https://www.facebook.com/preissersolutions",
-      "https://github.com/preissersolutions",
+      "https://www.linkedin.com/company/preissertech",
+      "https://www.facebook.com/preissertech",
+      "https://x.com/preissertech",
+      "https://github.com/tylerpreisser",
     ],
     knowsAbout: [
       "Custom Web Development",
