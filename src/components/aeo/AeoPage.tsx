@@ -21,17 +21,70 @@ export function AeoPage({ data }: { data: AeoPageData }) {
   // below covers it. Otherwise we'd emit two FAQPage blocks per Google's
   // structured-data validator.
   const pageSchemaType = data.schemaType === "FAQPage" ? "WebPage" : data.schemaType;
-  const pageSchema: Record<string, unknown> = {
+
+  // Base fields shared across all schema types
+  const pageSchemaBase: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": pageSchemaType,
     "@id": `${url}#main`,
     url,
     name: data.h1,
-    headline: data.h1,
     description: data.metaDescription,
-    isPartOf: { "@id": "https://preissertech.com/#website" },
-    about: { "@id": "https://preissertech.com/#organization" },
     inLanguage: "en-US",
+  };
+
+  // Service-specific enrichment: provider, serviceType, areaServed
+  // Per Schema.org + AI Agent Behavior Reference: Service schema requires
+  // provider (linked to Organization), serviceType, and areaServed for
+  // Perplexity and Google AI Overviews to cite confidently.
+  const serviceFields: Record<string, unknown> =
+    pageSchemaType === "Service"
+      ? {
+          provider: { "@id": "https://preissertech.com/#organization" },
+          serviceType: data.h1,
+          areaServed: [
+            { "@type": "State", name: "Kansas" },
+            { "@type": "AdministrativeArea", name: "Great Plains, United States" },
+          ],
+          audience: {
+            "@type": "BusinessAudience",
+            audienceType: "Small and mid-sized businesses",
+          },
+          isRelatedTo: { "@id": "https://preissertech.com/#organization" },
+        }
+      : {};
+
+  // Article-specific enrichment: author, datePublished, publisher, headline
+  // Required for Google AI Overviews to cite Article-type pages with E-E-A-T signals.
+  const articleFields: Record<string, unknown> =
+    pageSchemaType === "Article"
+      ? {
+          headline: data.h1,
+          author: { "@id": "https://preissertech.com/#tyler-preisser" },
+          publisher: { "@id": "https://preissertech.com/#organization" },
+          datePublished: "2026-05-04",
+          dateModified: "2026-05-04",
+          mainEntityOfPage: { "@type": "WebPage", "@id": url },
+          isPartOf: { "@id": "https://preissertech.com/#website" },
+          about: { "@id": "https://preissertech.com/#organization" },
+        }
+      : {};
+
+  // WebPage-specific enrichment
+  const webPageFields: Record<string, unknown> =
+    pageSchemaType !== "Service" && pageSchemaType !== "Article"
+      ? {
+          headline: data.h1,
+          isPartOf: { "@id": "https://preissertech.com/#website" },
+          about: { "@id": "https://preissertech.com/#organization" },
+        }
+      : {};
+
+  const pageSchema: Record<string, unknown> = {
+    ...pageSchemaBase,
+    ...serviceFields,
+    ...articleFields,
+    ...webPageFields,
   };
 
   const faqSchema = {
