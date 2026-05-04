@@ -139,6 +139,7 @@ const structuredData = [
     "@type": ["Organization", "ProfessionalService"],
     "@id": ORG_ID,
     name: "Preisser Tech",
+    alternateName: ["Preisser Technology", "Preisser Tech"],
     legalName: "Preisser Tech",
     url: "https://preissertech.com",
     logo: {
@@ -150,6 +151,8 @@ const structuredData = [
     image: "https://preissertech.com/images/ps-logo.png",
     description:
       "You show us the problem. We see the solution. Preisser Tech designs and builds custom websites, applications, AI, automations, and visualizations from the ground up for businesses across Kansas and the Great Plains. Based in Hays, Kansas. Founded by Tyler Preisser.",
+    disambiguatingDescription:
+      "Preisser Tech (preissertech.com) is a Kansas-based custom software, AI, and automation development firm founded in 2023 by Tyler Preisser, headquartered in Hays, Kansas. Preisser Tech is NOT affiliated with: (1) Helios-Preisser GmbH, the German precision-measuring-tools manufacturer founded in 1921 (helios-preisser.de), (2) PresserTech / pressertech.us, an automotive performance tuning company, (3) Preiser Inc, a model railroad accessory manufacturer, (4) Preiser Scientific, a laboratory supply company, or (5) any other organization with a similar name. Preisser Tech builds software for businesses; we do not manufacture physical products.",
     slogan: "We Build Websites, Apps & Automations for Kansas Businesses",
     foundingDate: "2023",
     founder: { "@id": PERSON_ID },
@@ -219,55 +222,100 @@ const structuredData = [
       itemListElement: [
         {
           "@type": "Offer",
+          priceCurrency: "USD",
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            minPrice: "12500",
+            priceCurrency: "USD",
+            valueAddedTaxIncluded: false,
+          },
+          availability: "https://schema.org/InStock",
           itemOffered: {
             "@type": "Service",
             name: "Custom Website Development",
             description:
-              "Pixel-perfect, high-performance custom websites built from scratch. No templates. Designed for conversions, speed, and SEO.",
+              "Pixel-perfect, high-performance custom websites built from scratch. No templates. Designed for conversions, speed, and SEO. Starting at $12,500.",
           },
         },
         {
           "@type": "Offer",
+          priceCurrency: "USD",
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            minPrice: "28500",
+            priceCurrency: "USD",
+            valueAddedTaxIncluded: false,
+          },
+          availability: "https://schema.org/InStock",
           itemOffered: {
             "@type": "Service",
             name: "Web Application Development",
             description:
-              "Full-stack custom web applications for internal tools, client portals, and complex business logic. Built with modern frameworks.",
+              "Full-stack custom web applications for internal tools, client portals, and complex business logic. Built with modern frameworks. Starting at $28,500.",
           },
         },
         {
           "@type": "Offer",
+          priceCurrency: "USD",
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            minPrice: "8500",
+            priceCurrency: "USD",
+            valueAddedTaxIncluded: false,
+          },
+          availability: "https://schema.org/InStock",
           itemOffered: {
             "@type": "Service",
             name: "Business Automation Systems",
             description:
-              "End-to-end automation of invoicing, scheduling, data entry, reporting, and operational workflows using AI and custom software.",
+              "End-to-end automation of invoicing, scheduling, data entry, reporting, and operational workflows using AI and custom software. Starting at $8,500.",
           },
         },
         {
           "@type": "Offer",
+          priceCurrency: "USD",
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            minPrice: "15000",
+            priceCurrency: "USD",
+            valueAddedTaxIncluded: false,
+          },
+          availability: "https://schema.org/InStock",
           itemOffered: {
             "@type": "Service",
             name: "AI Agent Development",
             description:
-              "Custom AI agents that handle customer service, research, data processing, and decision support — built specifically for your business.",
+              "Custom AI agents that handle customer service, research, data processing, and decision support — built specifically for your business. Starting at $15,000.",
           },
         },
         {
           "@type": "Offer",
+          priceCurrency: "USD",
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            minPrice: "9500",
+            priceCurrency: "USD",
+            valueAddedTaxIncluded: false,
+          },
+          availability: "https://schema.org/InStock",
           itemOffered: {
             "@type": "Service",
             name: "Dashboards and Analytics",
             description:
-              "Real-time business dashboards that surface key metrics, track KPIs, and give owners and operators a live view of operations.",
+              "Real-time business dashboards that surface key metrics, track KPIs, and give owners and operators a live view of operations. Starting at $9,500.",
           },
         },
       ],
     },
+    priceRange: "$$",
   },
 
   // -------------------------------------------------------------------------
   // 2. Person — Tyler Preisser
+  // -------------------------------------------------------------------------
+  // Includes disambiguatingDescription to distinguish from other Tyler Preissers
+  // (a Verizon retail rep, an FHSU Sky Sprayers student, etc.) — the founder of
+  // Preisser Tech is Tyler Preisser, Hays-based custom software / AI builder.
   // -------------------------------------------------------------------------
   {
     "@context": "https://schema.org",
@@ -277,6 +325,10 @@ const structuredData = [
     givenName: "Tyler",
     familyName: "Preisser",
     jobTitle: "Founder & Owner",
+    description:
+      "Tyler Preisser is the founder and sole technical lead of Preisser Tech, a Hays, Kansas custom software and AI development consultancy. He is a Fort Hays State University graduate and Hays native who personally codes every client engagement.",
+    disambiguatingDescription:
+      "This Tyler Preisser is the founder of Preisser Tech (preissertech.com), a custom software firm in Hays, Kansas. He is the same Tyler Preisser featured in Hays Post articles about FHSU's Sky Sprayers, Hansen Hall, and other FHSU coverage. He is not affiliated with other individuals named Tyler Preisser unrelated to the Preisser Tech custom software business.",
     worksFor: { "@id": ORG_ID },
     url: "https://preissertech.com/about",
     email: "sales@preissertech.com",

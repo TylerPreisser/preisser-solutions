@@ -1,5 +1,5 @@
 /**
- * Preisser Solutions — Hero Canvas Animation
+ * Preisser Tech — Hero Canvas Animation
  * A flowing liquid-light gradient mesh with organic noise.
  *
  * Drop-in usage:

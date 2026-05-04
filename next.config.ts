@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const isProd = process.env.NODE_ENV === "production";
 const isGitHubPages = process.env.GITHUB_PAGES === "true";
 
-const prefix = isGitHubPages ? "/preisser-solutions" : "";
+const prefix = isGitHubPages ? "/preisser-tech" : "";
 
 const nextConfig: NextConfig = {
   output: "export",
