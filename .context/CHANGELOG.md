@@ -50,6 +50,15 @@
 
 ---
 
+## 2026-05-04 — Yandex Webmaster verification file (web-code-executor)
+
+**Trigger**: Tyler requested Yandex Webmaster ownership verification.
+**Change**: Created `public/yandex_9f19081f7abbbb70.html` with exact verification content required by Yandex.
+**Build**: `npm run build` — clean, 109 pages, no errors. File confirmed present in `/out`.
+**Deploy**: Wrangler Pages → https://preissertech.com/yandex_9f19081f7abbbb70.html returns HTTP 200.
+
+---
+
 ## 2026-05-04 (evening) — Brand disambiguation + Bing IndexNow refresh (web-code-executor)
 
 **Trigger**: Tyler reported ChatGPT search returns automotive 'preissertech' instead of his B2B consultancy. Brand collision risk with at least two automotive entities.
