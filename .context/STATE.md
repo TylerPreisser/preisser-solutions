@@ -239,6 +239,24 @@ The rebrand launched May 2, 2026. The website is fully built, deployed, and traf
 
 ---
 
+## Brand Disambiguation State (2026-05-04 evening, post-automotive-collision fix)
+
+**Trigger**: ChatGPT was returning an automotive tuning site for "preissertech" instead of the B2B consultancy.
+
+**Status**: STRENGTHENED. Organization JSON-LD `disambiguatingDescription` now explicitly names automotive tuning as collision item (1). `description` opens with B2B software framing and "not automotive tuning, not hardware." `slogan` reinforces non-automotive. `knowsAbout` expanded to 15 domain signals. 109 URLs re-submitted to Bing via IndexNow (200 OK). Deployed `e72b04d`.
+
+**Entity collision map** (documented in JSON-LD):
+1. Automotive tuning / vehicle performance company using "Preisser Tech" name — PRIMARY COLLISION (ChatGPT conflict)
+2. Helios-Preisser GmbH — German precision-measuring instruments (helios-preisser.de)
+3. PresserTech / pressertech.us — automotive aftermarket
+4. Preiser Inc — model railroad accessories
+5. Preiser Scientific — laboratory supplies
+6. Any other Preisser-named business (catch-all)
+
+**Residual risk**: AI knowledge graphs (ChatGPT/Perplexity) typically take 2-8 weeks to re-crawl and re-weight entity disambiguation signals after a schema update. Until then, the automotive result may still surface for some users. Natural resolution as Bing and Google re-index the updated schema.
+
+---
+
 ## AEO Posture (2026-05-04 evening, post-gap-execution)
 
 **Status**: ALL ENGINEERING GAPS CLOSED. Schema is now AI-agent-optimal. One critical Tyler action remains blocking full AI crawler access.
@@ -261,6 +279,31 @@ All 7 code-level gaps from AEO_AUDIT_2026-05-04.md have been executed and shippe
 - Twitter/X `@preissertech` must be claimed ASAP — currently unclaimed 404, squattable
 
 See `.context/AEO_AUDIT_2026-05-04.md` for full gap analysis, schema coverage table, and per-dimension findings.
+
+---
+
+## Favicon / Icon / Manifest State (2026-05-04 late evening — COMPLETE)
+
+All platform icon infrastructure is now in place and verified live on preissertech.com:
+
+| Asset | Status |
+|-------|--------|
+| favicon.ico (16/32/48/64/128/256 multi-size) | LIVE 200 |
+| favicon-16x16.png, favicon-32x32.png, favicon-96x96.png | LIVE 200 |
+| apple-touch-icon.png (180x180) | LIVE 200 |
+| android-chrome-192x192.png | LIVE 200 (NEW) |
+| android-chrome-512x512.png | LIVE 200 (NEW) |
+| icon-192.png (maskable), icon-512.png (maskable) | LIVE 200 |
+| mstile-150x150.png | LIVE 200 (NEW) |
+| safari-pinned-tab.svg | LIVE 200 (NEW) |
+| site.webmanifest | LIVE 200 (UPDATED) |
+| browserconfig.xml | LIVE 200 (NEW) |
+| theme-color meta (#0D95E8) | LIVE in HTML |
+| msapplication-TileColor/TileImage/config meta | LIVE in HTML |
+| mask-icon rel link | LIVE in HTML |
+| JSON-LD logo ImageObject (@id, contentUrl, 1024x1024, caption) | LIVE in JSON-LD |
+
+GSC globe icon is a normal crawl-delay artifact for a 2-day-old domain. All technical prerequisites are now met.
 
 ---
 

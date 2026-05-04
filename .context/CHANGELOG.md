@@ -2,6 +2,82 @@
 
 ---
 
+## 2026-05-04 (late evening) — Favicon / icon / manifest audit + full platform icon set (web-code-executor)
+
+**Trigger**: Tyler reported GSC property selector shows generic globe icon (expected on 2-day-old domain). Audit verified technical setup and completed missing files so when Google crawls the icon infrastructure is complete.
+
+**Audit findings**:
+- favicon.ico: PRESENT, multi-size (16, 32, 48, 64, 128, 256) — correct
+- favicon-16x16.png, favicon-32x32.png, favicon-96x96.png: PRESENT with real logo content
+- apple-touch-icon.png (180x180): PRESENT — confirmed real content (brand blue, 32400 filled pixels)
+- icon-192.png, icon-512.png: PRESENT with real logo content
+- site.webmanifest: PRESENT but `purpose` not split (any vs maskable)
+- JSON-LD logo: PRESENT as ImageObject but missing `@id`, `contentUrl`, `caption`, `name`; width/height incorrect (said 512, actual source is 1024)
+- MISSING: android-chrome-192x192.png, android-chrome-512x512.png, mstile-150x150.png, browserconfig.xml, safari-pinned-tab.svg, theme-color meta, msapplication meta tags
+
+**Fixes applied**:
+- Generated `android-chrome-192x192.png` (192x192) from `public/images/ps-logo.png` (1024x1024 source)
+- Generated `android-chrome-512x512.png` (512x512) from same source
+- Generated `mstile-150x150.png` (150x150) for Windows tiles
+- Created `safari-pinned-tab.svg` — monochrome PT lettermark on black circle, per Safari requirements
+- Created `browserconfig.xml` referencing mstile + dark navy tile color
+- Updated `site.webmanifest` — separated `any` and `maskable` purpose entries correctly; added android-chrome filenames
+- Updated `src/app/layout.tsx`:
+  - Added android-chrome-192/512 to `metadata.icons.icon` array
+  - Added `mask-icon` rel entry pointing to safari-pinned-tab.svg with #0D95E8 color
+  - Added `<meta name="theme-color" content="#0D95E8">` to `<head>`
+  - Added `msapplication-TileColor`, `msapplication-TileImage`, `msapplication-config` meta tags
+  - Upgraded Organization JSON-LD `logo` ImageObject: added `@id`, `contentUrl`, corrected dimensions to 1024x1024, added `caption` and `name`
+
+**Build**: `npm run build` — clean, 109 pages, no errors.
+
+**Post-deploy curl results** (all 200):
+- `/favicon.ico` — 200 (35112 bytes, image/vnd.microsoft.icon)
+- `/apple-touch-icon.png` — 200 (8764 bytes, image/png)
+- `/site.webmanifest` — 200 (application/manifest+json)
+- `/android-chrome-192x192.png` — 200 (12922 bytes)
+- `/android-chrome-512x512.png` — 200 (86784 bytes)
+- `/mstile-150x150.png` — 200 (8812 bytes)
+- `/browserconfig.xml` — 200 (application/xml)
+- `/safari-pinned-tab.svg` — 200 (464 bytes, image/svg+xml)
+- `/manifest.json` — 404 (expected — file is named site.webmanifest; layout.tsx refs /site.webmanifest)
+- Live HTML: all `<link rel="icon|apple-touch-icon|manifest|mask-icon">` tags confirmed present
+- Live HTML: `theme-color`, `msapplication-*` meta tags confirmed present
+- Live JSON-LD: logo `@id`, `contentUrl`, correct dimensions confirmed in live response
+
+**Commits**: `7cca615` (icons), `7d78d5b` (seo/layout)
+**Deploy**: https://d14de503.preisser-solutions.pages.dev → https://preissertech.com/
+
+---
+
+## 2026-05-04 (evening) — Brand disambiguation + Bing IndexNow refresh (web-code-executor)
+
+**Trigger**: Tyler reported ChatGPT search returns automotive 'preissertech' instead of his B2B consultancy. Brand collision risk with at least two automotive entities.
+
+**Task 1 — Organization JSON-LD disambiguation strengthened**:
+- `disambiguatingDescription`: Rewritten to lead with automotive tuning collision as item (1) — explicitly states "we do not tune, modify, or service vehicles." Retained all prior entity defenses (Helios-Preisser, PresserTech/pressertech.us, Preiser Inc, Preiser Scientific). Added item (6) catch-all for any other Preisser-named business. Added contact email at end for AI agent extraction.
+- `description`: Added B2B software framing upfront; explicit "not automotive tuning, not hardware" signal in first sentence.
+- `slogan`: Updated to reinforce non-automotive: "Custom Software, Web Apps & AI Automation for Kansas Businesses — Not Automotive, Not Hardware"
+- `knowsAbout`: Expanded from 10 to 15 domain signals. Added: Custom Software Development, Real-Time Business Dashboards, B2B Technology Consulting, API Integration and Systems Architecture, No-Code and Low-Code Alternatives.
+- All other fields (`url`, `sameAs`, `mainEntityOfPage` via `@id`, `knowsAbout`) confirmed present and correct.
+
+**Task 2 — Bing Webmaster API / IndexNow**:
+- Bing Webmaster API auth: ABSENT. No env vars, no `~/.bing/`, no `.bingwebmaster/`, no project `.env*` files with Bing credentials.
+- IndexNow ping (`scripts/indexnow-ping.mjs`): executed. 109 URLs submitted to `api.indexnow.org`. Response: HTTP 200 OK. Key file `public/cd9d2166e08f09a44331c911b5dace2d.txt` confirmed present and matching script.
+
+**Task 3 — Build + Deploy**:
+- `npm run build`: clean. 109 pages. No errors.
+- `out/index.html` verified: new `disambiguatingDescription` confirmed in output.
+- Commit: `e72b04d` — `feat(seo): strengthen Organization disambiguation against same-name entities`
+- Push: `git push origin main` — succeeded.
+- Wrangler deploy: `wrangler pages deploy out --project-name=preisser-solutions --branch=main` — deployment `28935be6.preisser-solutions.pages.dev` — success.
+- Post-deploy curl: live site at `preissertech.com/` returns new disambiguation text confirmed.
+
+**Commits**: `e72b04d`
+**Deploy**: https://28935be6.preisser-solutions.pages.dev → https://preissertech.com/
+
+---
+
 ## 2026-05-04 (evening) — AEO Audit Execution — All 7 Engineering Fixes (web-code-executor)
 
 **Trigger**: Tyler requested all code-level gaps from AEO_AUDIT_2026-05-04.md executed in one coordinated push.
