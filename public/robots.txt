@@ -1,12 +1,16 @@
 # Preisser Tech — Crawler Configuration
 # All pages are indexable. GSC Change of Address requires crawlable destination URLs.
 # Deep-path Disallows removed 2026-05-04 to unblock SEO equity transfer from preissersolutions.com.
+# /_next/static/ explicitly allowed for Googlebot/Bingbot (2026-05-04 second pass) so they can
+# fetch JS chunks, CSS, and fonts during render. Without this, GSC URL Inspection reports
+# "Page resources couldn't be loaded" and the page can't render correctly for indexing.
 
 # === DEFAULT ===
 User-agent: *
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
+Allow: /_next/static/
 Disallow: /_next/
 Disallow: /api/
 
@@ -15,12 +19,14 @@ User-agent: Googlebot
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
+Allow: /_next/static/
 Disallow: /_next/
 
 User-agent: Bingbot
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
+Allow: /_next/static/
 Disallow: /_next/
 
 User-agent: Slurp
