@@ -57,6 +57,8 @@ export const metadata: Metadata = {
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+      { url: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
@@ -64,6 +66,13 @@ export const metadata: Metadata = {
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
     shortcut: "/favicon.ico",
+    other: [
+      {
+        rel: "mask-icon",
+        url: "/safari-pinned-tab.svg",
+        color: "#0D95E8",
+      },
+    ],
   },
   manifest: "/site.webmanifest",
   openGraph: {
@@ -144,9 +153,13 @@ const structuredData = [
     url: "https://preissertech.com",
     logo: {
       "@type": "ImageObject",
+      "@id": "https://preissertech.com/#logo",
       url: "https://preissertech.com/images/ps-logo.png",
-      width: 512,
-      height: 512,
+      contentUrl: "https://preissertech.com/images/ps-logo.png",
+      width: 1024,
+      height: 1024,
+      caption: "Preisser Tech logo — custom software, web apps, and AI automation in Hays, Kansas",
+      name: "Preisser Tech Logo",
     },
     image: "https://preissertech.com/images/ps-logo.png",
     description:
@@ -510,6 +523,12 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        {/* Browser chrome / PWA colors */}
+        <meta name="theme-color" content="#0D95E8" />
+        {/* Windows tile / IE11 */}
+        <meta name="msapplication-TileColor" content="#0A1628" />
+        <meta name="msapplication-TileImage" content="/mstile-150x150.png" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
         {/* Geographic targeting */}
         <meta name="geo.region" content="US-KS" />
         <meta name="geo.placename" content="Hays, Kansas" />
