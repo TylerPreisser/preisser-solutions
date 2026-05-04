@@ -8,11 +8,17 @@ Allow: /
 Sitemap: https://preissertech.com/sitemap.xml
 `;
 
-function redirectToCanonical(url: URL) {
+function redirectToCanonical(url: URL, extraHeaders?: HeadersInit) {
   const destination = new URL(url.toString());
   destination.protocol = "https:";
   destination.hostname = CANONICAL_HOST;
-  return Response.redirect(destination.toString(), 301);
+  return new Response(null, {
+    status: 301,
+    headers: {
+      location: destination.toString(),
+      ...extraHeaders,
+    },
+  });
 }
 
 type MiddlewareContext = {
@@ -36,7 +42,9 @@ export const onRequest = async (context: MiddlewareContext) => {
       });
     }
 
-    return redirectToCanonical(url);
+    return redirectToCanonical(url, {
+      "x-robots-tag": "noindex, nofollow",
+    });
   }
 
   if (DUPLICATE_HOSTS.has(host)) {

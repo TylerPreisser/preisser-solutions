@@ -8,6 +8,12 @@
 - Location: Hays, Kansas 67601
 - Website: https://preissertech.com
 
+## Brand Note
+- Current brand: Preisser Tech
+- Former brand: Preisser Solutions
+- Canonical domain: https://preissertech.com
+- Legacy domain: https://preissersolutions.com now redirects to Preisser Tech
+
 ## What We Build
 - **Custom Websites**: Pixel-perfect, high-performance sites built from scratch. No templates, no page builders. Optimized for Google, ChatGPT, Perplexity, and AI Overviews.
 - **Web Applications**: Full-stack custom apps — client portals, booking systems, internal tools, e-commerce, intake forms, calculators.

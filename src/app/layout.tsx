@@ -151,7 +151,7 @@ const structuredData = [
     "@type": ["Organization", "ProfessionalService"],
     "@id": ORG_ID,
     name: "Preisser Tech",
-    alternateName: ["Preisser Technology", "Preisser Tech"],
+    alternateName: ["Preisser Technology", "Preisser Tech", "Preisser Solutions"],
     legalName: "Preisser Tech",
     url: "https://preissertech.com",
     logo: {
@@ -168,7 +168,7 @@ const structuredData = [
     description:
       "You show us the problem. We see the solution. Preisser Tech is a B2B custom software, web application, and AI automation consultancy — not automotive tuning, not hardware. We design and build custom websites, applications, AI agents, automations, and data visualizations from the ground up for small and mid-sized businesses across Kansas and the Great Plains. Based in Hays, Kansas. Founded by Tyler Preisser.",
     disambiguatingDescription:
-      "Preisser Tech (preissertech.com) is the custom software, web development, and AI automation consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Tech' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Tech builds websites, web applications, AI agents, and business automation systems exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: sales@preissertech.com.",
+      "Preisser Tech (preissertech.com) is the custom software, web development, and AI automation consultancy founded by Tyler Preisser in Hays, Kansas. Preisser Solutions was the firm's former public-facing brand name; Preisser Tech is the current operating brand and canonical web identity. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Tech' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Tech builds websites, web applications, AI agents, and business automation systems exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: sales@preissertech.com.",
     slogan:
       "Custom Software, Web Apps & AI Automation for Kansas Businesses — Not Automotive, Not Hardware",
     foundingDate: "2023",

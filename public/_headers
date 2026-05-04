@@ -48,3 +48,9 @@
 
 https://:project.pages.dev/*
   X-Robots-Tag: noindex, nofollow
+
+https://preissersolutions.com/*
+  X-Robots-Tag: noindex, nofollow
+
+https://www.preissersolutions.com/*
+  X-Robots-Tag: noindex, nofollow

@@ -7,7 +7,9 @@
 ## Site Metadata
 
 - **Company**: Preisser Tech
+- **Former Brand**: Preisser Solutions
 - **Domain**: preissertech.com
+- **Legacy Domain**: preissersolutions.com (redirects to preissertech.com)
 - **Owner/Founder**: Tyler Preisser
 - **Location**: Hays, Kansas 67601
 - **Email**: sales@preissertech.com
