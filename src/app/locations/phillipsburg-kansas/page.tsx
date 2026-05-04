@@ -3,7 +3,7 @@ import { AeoPage } from "@/components/aeo/AeoPage";
 import { pageData } from "@/data/aeo/locations/phillipsburg-kansas";
 
 export const metadata: Metadata = {
-  title: pageData.metaTitle,
+  title: pageData.metaTitle.includes("Preisser Tech") ? { absolute: pageData.metaTitle } : pageData.metaTitle,
   description: pageData.metaDescription,
   alternates: { canonical: `https://preissertech.com/${pageData.slug}` },
   openGraph: {
