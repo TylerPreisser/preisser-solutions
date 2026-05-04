@@ -703,6 +703,9 @@ button {
   text-align: center;
   padding-top: 40px;
   padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .ps-hero-eyebrow {
@@ -753,6 +756,26 @@ button {
   color: var(--color-text-dark-secondary);
   max-width: 640px;
   margin: 0 auto 40px;
+}
+
+/* AI-citation summary paragraph — visible to users and crawlers.
+   Semantically first in DOM (so agents cite it), visually positioned
+   below the animated headline via order: 99. Styled subtly so it reads
+   as supporting body copy beneath the hero CTA area. */
+.ps-hero-summary {
+  order: 99;
+  font-size: clamp(0.8125rem, 1.2vw, 0.9375rem);
+  line-height: 1.6;
+  color: var(--color-text-dark-secondary);
+  max-width: 600px;
+  margin: 32px auto 0;
+  opacity: 0.7;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+[data-theme="light"] .ps-hero-summary {
+  color: var(--color-text-light-secondary);
 }
 
 .ps-hero-ctas {

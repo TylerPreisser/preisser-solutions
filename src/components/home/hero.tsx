@@ -243,6 +243,20 @@ export function Hero() {
 
       {/* Hero content */}
       <div className="ps-hero-content">
+        {/*
+          AI-citation summary paragraph — server-rendered, semantically visible.
+          Answers "What is Preisser Tech?" in plain prose for AI agents that extract
+          the first paragraph of a page for citations. Positioned visually below the
+          animated headline via CSS order, but first in the DOM for crawlers.
+        */}
+        <p className="ps-hero-summary">
+          Preisser Tech is a custom software and AI automation consultancy in Hays,
+          Kansas. We design and build websites, web applications, AI-powered workflows,
+          and real-time business dashboards for small and mid-sized companies &mdash;
+          every project built from scratch with no templates, working directly with
+          founder Tyler Preisser.
+        </p>
+
         <div ref={eyebrowRef} className="ps-hero-eyebrow">
           <span className="ps-hero-dot" aria-hidden="true" />
           AI-First Builders
