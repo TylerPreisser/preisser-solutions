@@ -2,3 +2,15 @@ https://www.preissersolutions.com/* https://preissersolutions.com/:splat 301
 /index.html / 301
 /home / 301
 https://tylerpreisser.github.io/preisser-solutions/* https://preissersolutions.com/:splat 301
+
+# Legacy .html URL rules — handles Google-indexed pre-Next.js paths from old preissersolutions.com site
+# Must be specific rules because Cloudflare Pages _redirects cannot strip .html via splat pattern
+/contact.html /contact 301
+/services.html /services 301
+/about.html /about 301
+/why-automation.html /why-automation 301
+/roi-calculator.html /roi-calculator 301
+/index.html / 301
+/pricing.html /pricing 301
+/process.html /process 301
+/faq.html /faq 301
