@@ -16,9 +16,14 @@ export function AeoPage({ data }: { data: AeoPageData }) {
   const url = `https://preissertech.com/${data.slug}`;
 
   // ---- JSON-LD: WebPage / Service / Article + FAQPage --------------
+  // If the page itself is schemaType=FAQPage (e.g. /faq), don't emit a
+  // separate WebPage-style block with @type=FAQPage — the dedicated faqSchema
+  // below covers it. Otherwise we'd emit two FAQPage blocks per Google's
+  // structured-data validator.
+  const pageSchemaType = data.schemaType === "FAQPage" ? "WebPage" : data.schemaType;
   const pageSchema: Record<string, unknown> = {
     "@context": "https://schema.org",
-    "@type": data.schemaType,
+    "@type": pageSchemaType,
     "@id": `${url}#main`,
     url,
     name: data.h1,

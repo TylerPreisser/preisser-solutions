@@ -467,134 +467,15 @@ const structuredData = [
   },
 
   // -------------------------------------------------------------------------
-  // 6. FAQPage — 15 questions covering key buyer intent searches
+  // FAQPage removed from global structured data (2026-05-04)
   // -------------------------------------------------------------------------
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "What does Preisser Tech do?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Preisser Tech is a custom software and business automation consultancy based in Hays, Kansas. We design and build custom websites, web applications, AI-powered automation systems, real-time business dashboards, and marketing automation pipelines for small and mid-sized businesses across Kansas. Every project is built from scratch — no page builders, no templates — and you work directly with Tyler Preisser, the founder, throughout the entire engagement.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "How much does a custom website cost in Kansas?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Custom website pricing at Preisser Tech depends on scope and complexity. A professional marketing site for a Kansas small business typically starts in the low thousands and scales based on the number of pages, custom features, and integrations required. Unlike agencies that charge for project managers and overhead, Preisser Tech keeps costs efficient because you work directly with Tyler — the person doing the actual work. Contact us at sales@preissertech.com for a free project estimate tailored to your specific needs.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Can AI automate my business invoicing?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes. Preisser Tech builds custom AI automation systems that handle invoicing, payment reminders, purchase order processing, and accounts receivable workflows without manual intervention. For Kansas businesses that currently spend hours each week generating and tracking invoices, these systems can reduce that time to near zero. We integrate with your existing accounting tools or build a new system from scratch — whichever fits your operation better. Reach out to discuss your specific invoicing workflow.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "How long does it take to build a custom web application?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Timeline for a custom web application at Preisser Tech varies based on complexity. A focused internal tool or client portal can often be delivered in four to eight weeks. More complex applications with custom databases, third-party integrations, and multi-role user systems typically run eight to sixteen weeks. Because Tyler Preisser handles development directly without layers of project handoffs, Preisser Tech moves significantly faster than traditional agencies for comparable quality and scope.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What is business automation and how can it help my company?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Business automation is the use of software and AI to perform repetitive tasks — scheduling, data entry, report generation, follow-up emails, inventory tracking, and more — without a human doing them manually. Preisser Tech specializes in designing and building these systems for Kansas businesses of all sizes. The result is fewer errors, faster operations, and hours returned to your team every week. Most clients see their automation investment pay for itself within the first year through labor savings and reduced mistakes.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Do you build AI agents for businesses?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes. Preisser Tech builds custom AI agents tailored to specific business needs — customer service bots that handle inquiries around the clock, research agents that compile competitive intelligence, data processing agents that extract and structure information from documents, and decision-support agents that surface recommendations based on your business data. Every AI agent we build is trained on your specific context and integrated directly into your existing workflows, not a generic off-the-shelf chatbot.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What is the difference between a template website and a custom website?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "A template website is built on a pre-made design — tools like Squarespace, Wix, or a WordPress theme — where every business looks similar and you are constrained by what the template allows. A custom website built by Preisser Tech is designed and coded from scratch to match your brand, your goals, and your audience. Custom sites load faster, rank better in Google, convert visitors at higher rates, and can include any feature or integration your business requires. For Kansas businesses that compete seriously in their market, custom is the right investment.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "How can dashboards improve my business operations?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "A real-time business dashboard built by Preisser Tech gives you a live view of the metrics that matter most — revenue, leads, inventory, production rates, employee performance, or anything else specific to your operation. Instead of pulling reports manually or waiting for end-of-week summaries, you see what is happening right now. Kansas business owners who use dashboards make faster decisions, catch problems earlier, and spend less time compiling data. We build dashboards that connect to your existing data sources and update automatically.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What marketing automation does Preisser Tech offer?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Preisser Tech builds marketing automation systems that handle lead capture, follow-up email sequences, SMS campaigns, CRM updates, and reporting — all running automatically based on triggers you define. For Kansas businesses, this means your marketing keeps working even when you are focused on operations. We integrate with common platforms like HubSpot, Mailchimp, and ActiveCampaign, or build fully custom pipelines if your needs go beyond what those tools offer. Automated marketing consistently drives more revenue per marketing dollar than manual campaigns.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Do you work with businesses outside of Kansas?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes. While Preisser Tech is based in Hays, Kansas, we work with businesses throughout the United States. All engagements are conducted remotely — video calls, shared project management, and direct communication with Tyler Preisser. Our roots are in the Kansas business community and we have deep familiarity with the challenges and opportunities facing Great Plains businesses, but our services and capabilities extend to any market across the country.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What makes AI-first development faster than traditional development?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "AI-first development at Preisser Tech means using AI tools to accelerate code generation, testing, debugging, and documentation — without sacrificing quality or introducing technical debt. Tyler Preisser applies AI as a force multiplier across every stage of the build process, which compresses timelines by thirty to fifty percent compared to traditional development approaches. Kansas businesses get production-quality software in weeks rather than months, and the savings in development time are passed through as more competitive project pricing.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "How do I know if I need custom software or if an off-the-shelf tool will work?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Off-the-shelf software is a great starting point for generic needs. The signal that you need custom software is when you find yourself working around the tool — using spreadsheets to compensate for what it cannot do, paying for features you do not need, or watching your team waste time on manual steps the tool should handle automatically. Preisser Tech offers free consultations to help Kansas business owners evaluate whether a custom build is actually the right investment, or whether a better-configured existing tool solves the problem at lower cost.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Can you fix or rebuild my existing broken website?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes. Preisser Tech regularly takes over broken, outdated, or underperforming websites from Kansas businesses. We start by auditing what exists — performance issues, SEO problems, broken functionality, outdated design — and then recommend either a targeted repair or a full rebuild depending on the root cause. If your current site is costing you leads because of slow load times, poor mobile experience, or a design that no longer reflects your business, we can fix that. Contact us at sales@preissertech.com for a free site audit.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What industries does Preisser Tech work with?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Preisser Tech works across a wide range of industries common in Kansas and the Great Plains — agriculture, construction, aviation, oil and gas, retail, professional services, healthcare, and more. Tyler Preisser's background spans farming operations, aviation services, and technology startups, which gives Preisser Tech practical fluency with the operational realities of diverse industries. We adapt our technical approach to the specific workflows, compliance needs, and customer expectations of each sector we work in.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "How do I get started with Preisser Tech?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Getting started with Preisser Tech is straightforward. Reach out via email at sales@preissertech.com or call +1-620-352-3296. Tyler Preisser will personally respond to schedule a free discovery call where you describe what you are trying to build or fix. From there, we scope the project, align on timeline and budget, and send a proposal. There is no obligation and no sales pressure — just a direct conversation about whether Preisser Tech is the right fit for your project.",
-        },
-      },
-    ],
-  },
+  // Per Google guidelines and Schema.org spec, a single page must contain at
+  // most one FAQPage block describing the FAQs ON THAT PAGE. The /faq page
+  // and AEO sub-routes (ai-agents, custom-websites, etc.) emit their own
+  // FAQPage via AeoPage.tsx with page-specific Q&A. Emitting a global block
+  // on every page produced a duplicate FAQPage that GSC flagged as a critical
+  // structured-data error and disqualified pages from FAQ rich results.
+  // -------------------------------------------------------------------------
 ];
 
 export default function RootLayout({
@@ -628,7 +509,7 @@ export default function RootLayout({
           title="Preisser Tech"
           href="/feed.xml"
         />
-        {/* JSON-LD Structured Data — Organization, Person, WebSite, WebPage, LocalBusiness, FAQPage */}
+        {/* JSON-LD Structured Data — Organization, Person, WebSite, WebPage, LocalBusiness. FAQPage emitted per-page via AeoPage to avoid duplicates. */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
