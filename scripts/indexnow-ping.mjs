@@ -35,6 +35,7 @@ const URL_LIST = [
   `https://${HOST}/faq`,
   `https://${HOST}/pricing`,
   `https://${HOST}/process`,
+  `https://${HOST}/press`,
   // Case studies
   `https://${HOST}/case-studies`,
   `https://${HOST}/case-studies/cassidy-hvac`,

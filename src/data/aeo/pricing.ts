@@ -11,15 +11,15 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "pricing",
   tier: "trust_faq",
-  metaTitle: "Pricing Approach | Preisser Tech — Honest Ranges",
+  metaTitle: "Pricing | Preisser Tech — Custom Websites from $12,500",
   metaDescription:
-    "How Preisser Tech prices custom software, AI, and automation engagements. Honest ranges per service line, fixed-price proposals, and the scoping process explained.",
+    "Custom websites from $12,500. Web applications $28,500+. Business automation $8,500+. AI agents $15,000+. Dashboards $9,500+. Premium boutique pricing from Tyler Preisser.",
   eyebrow: "Pricing & Investment",
-  h1: "Pricing — Fixed-Price, Founder-Led, No Hidden Markup",
+  h1: "Pricing — Premium Custom Software Starting at $8,500",
   subheadline:
-    "How Preisser Tech actually prices work — honest ranges, the scoping process, and why founder-led pricing differs from typical agency markup.",
+    "Researched, defensible starting prices for every service. Fixed-price proposals after a free scoping call. Premium boutique tier — above template shops, below enterprise agency markup.",
   answerParagraph:
-    "Preisser Tech prices every engagement as a fixed-price project after a free scoping call with founder Tyler Preisser. There's no published rate card because every project's scope is different — but pricing follows clear, honest ranges per service line. Custom websites typically start in the low thousands and scale with complexity. Web applications, AI agents, automation systems, and dashboards are scoped per project. Because Tyler delivers the work directly without agency overhead, project managers, or subcontractor markup, pricing is significantly more efficient than comparable boutique agencies. This page explains the ranges, the scoping process, and the honest economics.",
+    "Preisser Tech publishes researched starting prices anchored to 2026 premium boutique market rates: custom websites start at $12,500, business automation systems start at $8,500, dashboards start at $9,500, AI agents start at $15,000, and custom web applications start at $28,500. Every engagement is a fixed-price project priced after a free 30-60 minute scoping call with founder Tyler Preisser personally. These starting numbers position Preisser Tech in the premium boutique tier — above template shops and freelancer marketplaces, below enterprise agency rates that assume multi-person teams. Because Tyler delivers every project personally without agency overhead, project managers, or subcontractor markup, the work is significantly more efficient than comparable boutique agencies in Kansas City or Wichita. Reference clients include Cassidy HVAC and HG Oil Holdings.",
   sections: [
     {
       eyebrow: "How pricing works",
@@ -31,42 +31,59 @@ export const pageData: AeoPageData = {
       ],
     },
     {
-      eyebrow: "Honest ranges by service line",
-      heading: "What different engagements actually cost",
+      eyebrow: "Starting prices",
+      heading: "Visible starting prices for every service line",
       body: [
-        "Pricing varies with scope, but these are honest ranges from real recent engagements. Use them as ballpark — the scoping call dials in the actual number.",
+        "These are real starting prices from recent engagements. Final pricing depends on scope and is set in the fixed-price proposal after the free scoping call.",
       ],
       subsections: [
         {
-          heading: "Custom websites",
+          heading: "Custom Websites — Starting at $12,500",
           body: [
-            "Marketing sites for Kansas small businesses typically start in the low thousands and scale based on page count, custom features, integrations, and content depth. A focused 5-10 page custom-coded marketing site with full schema.org structured data, AI engine optimization, and a custom design system is the typical starting engagement. Larger marketing sites with extensive content, complex layouts, blog architecture, or unique interactive elements scale up from there.",
+            "A focused 5-10 page custom-coded marketing site starts at $12,500. Custom-coded in modern frameworks (Next.js, React, TypeScript) with a unique design system, full schema.org structured data, engineered AI search optimization (first-paragraph quote-bait + FAQPage schema), comprehensive technical SEO (sitemap, robots, IndexNow), accessibility compliance, and 30 days of post-launch support. This price positions Preisser Tech above Kansas template-shop competitors (Toucan, Pluto, Lost Highway, MKS) and below KC enterprise agency floors ($30K-$50K) — the premium boutique sweet spot for businesses serious about their online presence.",
           ],
         },
         {
-          heading: "Web applications",
+          heading: "Web Applications — Starting at $28,500",
           body: [
-            "Custom web applications are scoped per project because complexity varies widely. A focused internal tool or client portal — login, a few core workflows, integrations with one or two existing systems — typically lands in the mid four-figure to low five-figure range. Complex applications with substantial business logic, multiple user roles, real-time features, and several integrations scale up significantly.",
+            "A focused custom web application — internal tool, client portal, custom CRM, or AI-powered platform — starts at $28,500. Includes user authentication, core workflows, integration with one or two existing systems (QuickBooks, ServiceTitan, HubSpot, etc.), responsive design, secure deployment to edge infrastructure, and 30 days of post-launch support. Complex applications with multi-role user systems, real-time features, deep AI integration, or extensive third-party integrations scale up significantly. Recent example: HG Oil Holdings inventory management system (95% reduction in tracking time, turned a loss center into a profit center).",
           ],
         },
         {
-          heading: "Business automation systems",
+          heading: "Business Automation Systems — Starting at $8,500",
           body: [
-            "Business process automation engagements depend on the number of systems being wired together and the complexity of the logic between them. A focused automation — wiring CRM to email outreach with AI personalization, for instance — typically delivers in the mid four-figure range. Larger automation systems involving multiple integrations, AI decision-making, and custom logic scale up. The Cassidy HVAC reactivation engine and HG Oil inventory system are examples of substantial automation builds.",
+            "A focused single-workflow automation starts at $8,500. Examples: AI invoice processing automation, customer reactivation campaigns, social media content generation, multi-system data sync. Includes integration design, custom code, monitoring, and 30 days of post-launch support. Multi-system orchestration projects with several integrated business tools scale from there. Recent examples: Cassidy HVAC AI marketing engine (5x organic reach in 30 days, 100% hands-off operation) and HG Oil AI invoicing assistant (75% reduction in manual handling time).",
           ],
         },
         {
-          heading: "Custom AI agents",
+          heading: "Custom AI Agents — Starting at $15,000",
           body: [
-            "Custom AI agent development depends on the agent's purpose and depth of training. A focused single-purpose agent — invoice processing, customer service, research support — typically lands in the mid four-figure range. More complex multi-step agents with deep domain training, integration into multiple systems, and ongoing learning scale up.",
+            "A focused single-purpose AI agent starts at $15,000. This price intentionally sits at the top of the published 'basic AI agent' market band — signaling that even Preisser Tech's entry-tier agent represents real engineering, not a Fiverr-style GPT wrapper. Examples: invoice processing agent (HG Oil scope), customer service agent, research/content generation agent, decision support agent. Built on Anthropic Claude or OpenAI GPT depending on the use case, with retrieval-augmented generation (RAG), proper guardrails, monitoring, and audit logging. More complex multi-agent systems with deep domain training and ongoing tuning scale up.",
           ],
         },
         {
-          heading: "Dashboards & analytics",
+          heading: "Dashboards & Analytics — Starting at $9,500",
           body: [
-            "Custom real-time dashboards are scoped based on the data sources being integrated, the metrics being surfaced, and the visualization complexity. A focused single-team dashboard with a handful of integrations typically lands in the mid four-figure range. Comprehensive multi-team dashboards with deep analytics, custom drill-downs, and forecasting capabilities scale up.",
+            "A focused single-system dashboard pulling from QuickBooks, ServiceTitan, OGsys, or another core business system starts at $9,500. Includes data integration, custom KPI design, responsive web app deployment, secure authentication, automated data refresh, and 30 days of post-launch support. Multi-system dashboards combining 4-8 data sources with calculated metrics, role-based access, and mobile-optimized views scale up. This price keeps Preisser Tech out of the Fiverr 'Power BI gig' tier while remaining the natural first analytics project for a Kansas SMB.",
           ],
         },
+      ],
+    },
+    {
+      eyebrow: "What's always included",
+      heading: "Every engagement, no matter the price tier",
+      body: [
+        "Some firms charge extra for what should be standard. Preisser Tech includes all of this in every engagement at no additional cost:",
+      ],
+      bullets: [
+        "Free scoping call with Tyler personally — usually 30-60 minutes",
+        "Fixed-price written proposal — no hidden surprises, no scope-creep upcharges",
+        "Direct work with Tyler — no account managers, project managers, or subcontractors",
+        "30 days of post-launch support included",
+        "Full source code ownership — no licensing fees, no platform lock-in",
+        "Schema.org structured data on every site or application",
+        "AI search optimization built into every project",
+        "Privacy-respecting analytics (no Google Analytics required)",
       ],
     },
     {
