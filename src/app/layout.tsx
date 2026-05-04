@@ -98,6 +98,9 @@ export const metadata: Metadata = {
     images: ["/images/og-image-v2.jpg"],
     creator: "@tylerpreisser",
   },
+  verification: {
+    yandex: "9f19081f7abbbb70",
+  },
 };
 
 // Inline script: runs synchronously before first paint to prevent theme flash.

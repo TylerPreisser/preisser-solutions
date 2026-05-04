@@ -547,3 +547,12 @@ curl -I https://preissersolutions.com/robots.txt
 4. Monitor with Loop A + Loop E (mention/ranking tracking)
 
 ---
+
+## 2026-05-04 — Yandex Webmaster meta verification tag (web-code-executor)
+
+**Trigger**: HTML file verification failed (Cloudflare Pages 308 redirect strips .html; Yandex verifier doesn't follow redirects). Switched to meta tag method.
+**Change**: Added `verification: { yandex: '9f19081f7abbbb70' }` to `metadata` export in `src/app/layout.tsx`. Next.js renders this as `<meta name="yandex-verification" content="9f19081f7abbbb70"/>` on every page.
+**Build**: Clean (109 pages). Meta tag confirmed in `out/index.html`.
+**Note**: `public/yandex_9f19081f7abbbb70.html` retained (harmless, belt-and-suspenders).
+
+---
