@@ -1,6 +1,6 @@
 # Preisser Tech — Crawler Configuration
-# Homepage is the single source of truth. All content lives there.
-# Sub-routes are blocked to concentrate crawl budget and indexing on the homepage.
+# All pages are indexable. GSC Change of Address requires crawlable destination URLs.
+# Deep-path Disallows removed 2026-05-04 to unblock SEO equity transfer from preissersolutions.com.
 
 # === DEFAULT ===
 User-agent: *
@@ -9,11 +9,6 @@ Allow: /llms.txt
 Allow: /llms-full.txt
 Disallow: /_next/
 Disallow: /api/
-Disallow: /about
-Disallow: /services
-Disallow: /contact
-Disallow: /roi-calculator
-Disallow: /why-automation
 
 # === SEARCH ENGINES ===
 User-agent: Googlebot
@@ -21,22 +16,12 @@ Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
 Disallow: /_next/
-Disallow: /about
-Disallow: /services
-Disallow: /contact
-Disallow: /roi-calculator
-Disallow: /why-automation
 
 User-agent: Bingbot
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
 Disallow: /_next/
-Disallow: /about
-Disallow: /services
-Disallow: /contact
-Disallow: /roi-calculator
-Disallow: /why-automation
 
 User-agent: Slurp
 Allow: /
