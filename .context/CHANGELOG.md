@@ -62,6 +62,30 @@
 
 ---
 
+## 2026-05-05 (deploy) — Homepage Copy Refresh Deployed to Production (web-code-executor)
+
+**Commit deployed**: `985d47e` — "Homepage copy refresh: hero, service pillars, why us, case studies"
+
+**Wrangler auth**: Tylerpreisser@gmail.com's Account (OAuth, pages:write confirmed)
+
+**Deploy URL (unique)**: https://e26ffde7.preisser-solutions.pages.dev
+**Production alias**: https://preissertech.com
+**Files uploaded**: 214 new + 244 cached
+
+**Smoke tests (live site https://preissertech.com/)**:
+- `grep -ic "from scratch"` → 0 ✓
+- `grep -ic "from the ground up"` → 0 ✓
+- `grep -ic "built specifically for your business"` → 1 ✓
+- `grep -ic "proven results"` → 1 ✓
+- `grep -ic "preisser solutions"` → 0 ✓
+- `grep -c "yandex-verification"` → 2 ✓
+- `curl -sI /preisser-solutions` → HTTP 301 ✓
+- `curl -sI /` → HTTP 200 ✓
+
+All eight checks green.
+
+---
+
 ## 2026-05-04 (late night) — Yandex Verification Restored (web-code-executor)
 
 **Trigger**: Orchestrator misread Tyler's intent in prior brand-scrub pass — Yandex verification was deleted but Tyler wants it kept.
