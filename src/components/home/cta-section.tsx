@@ -93,7 +93,7 @@ export function CtaSection() {
           rel="noopener noreferrer"
           className="ps-cta-portfolio-link"
         >
-          See more projects at TylerPreisser.com
+          More of our founder&apos;s projects &rarr;
         </a>
       </div>
     </section>

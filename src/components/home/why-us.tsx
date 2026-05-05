@@ -55,18 +55,6 @@ const whyFeatures: WhyFeature[] = [
   },
   {
     id: 3,
-    shortLabel: "you work direct",
-    title: "You Work Directly With the Builder.",
-    description:
-      "No salesmen. No project managers. No developers you\u2019ll never meet. You talk to the person who designs it, builds it, and fixes it. The person doing the work is the person you\u2019re talking to.",
-    image: "/images/why-us/work-direct-new.webp",
-    mobileImage: "/images/why-us/work-direct-new.webp",
-    alt: "Work directly with the builder",
-    href: "/contact",
-    cta: "Get in Touch",
-  },
-  {
-    id: 4,
     shortLabel: "proven results",
     title: "Proven Results. Real Numbers.",
     description:

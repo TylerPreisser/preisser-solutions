@@ -2,6 +2,23 @@
 
 ---
 
+## 2026-05-04 — Drop "Work Directly With Builder" card; rename projects CTA (web-code-executor)
+
+**Files modified** (2 total):
+
+- `src/components/home/why-us.tsx` — Removed card id=3 ("You Work Directly With the Builder.") entirely. Renumbered "Proven Results" from id=4 to id=3. Why-us section now has 4 cards: Custom / AI Harnessed / Stay With It / Proven Results. Carousel is data-driven so no layout changes needed.
+- `src/components/home/cta-section.tsx` — Changed bottom CTA text from "See more projects at TylerPreisser.com" to "More of our founder's projects →". Link target (https://tylerpreisser.com) unchanged.
+
+**Build**: `npm run build` — exit 0, 109 pages, 0 errors.
+
+**Verification (out/index.html)**:
+- `grep -ic "you work directly with the builder"` → 0 ✓
+- `grep -ic "more of our founder"` → 1 ✓
+- `grep -ic "see more projects"` → 0 ✓
+- `grep -ic "proven results"` → 1 ✓
+
+---
+
 ## 2026-05-04 (image-fix) — Swap leftover Kansas image on Proven Results card (web-code-executor)
 
 **Trigger**: "Proven Results. Real Numbers." card copy was updated in a prior session but `kansas-v2.webp` was never swapped. Image no longer matched the card theme.
