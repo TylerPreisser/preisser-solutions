@@ -67,12 +67,12 @@ const services: ServicePillar[] = [
       { number: "70%+", label: "of businesses see revenue increase after site launch" },
     ],
     painPoints: [
-      "Our website exists, but it's never once brought in a customer.",
-      "Our website hasn't generated a single lead in the time we've had it.",
-      "We paid a developer two years ago and haven't been able to update it since.",
-      "Our competitors' sites look like real companies. Ours looks like an afterthought.",
-      "I know we need to show up in search results, but I have no idea where to start.",
-      "We have an idea for a tool or app that would help our customers, but no way to build it.",
+      "We have a website, but I don't know if it's ever brought in a lead.",
+      "If we search our company or what we do, we don't show up on Google.",
+      "When customers ask ChatGPT or Perplexity about our industry, our competitor shows up — we don't.",
+      "Our website is hard to use.",
+      "Our website doesn't connect to our email, our forms, or anything else we use.",
+      "We paid someone to build our site years ago and we haven't been able to update it since.",
     ],
     serviceTiles: [
       {
@@ -152,11 +152,11 @@ const services: ServicePillar[] = [
       { number: "$46K/yr", label: "average savings from fewer errors and less manual work" },
     ],
     painPoints: [
-      "We have three people doing work that should take zero people.",
+      "We have three people doing work that shouldn't take any.",
       "Every time someone quits, half our processes walk out the door with them.",
-      "We're still copying data between systems by hand — in 2026.",
-      "I know there's a faster way to do this, but nobody has time to figure it out.",
-      "Our best employees are buried in busywork instead of the jobs I hired them for.",
+      "We're still copying data between systems by hand.",
+      "There's a faster way to do this. Nobody on our team has time to figure it out.",
+      "Our best people are buried in busywork instead of the work we hired them for.",
       "We keep hiring to keep up with volume instead of fixing the process that causes it.",
     ],
     serviceTiles: [
@@ -258,8 +258,8 @@ const services: ServicePillar[] = [
       "We use six different tools and none of them talk to each other.",
       "Half our processes are held together with workarounds nobody documented.",
       "We bought software that was supposed to fix everything. Now it's another problem.",
-      "If one person is out sick, nobody knows how to run their system.",
-      "We've outgrown our current setup but migrating feels impossible.",
+      "If one person is out sick, nobody else knows how to run their system.",
+      "We've outgrown our current setup and migrating feels impossible.",
       "Every month something breaks and we spend a week patching it instead of growing.",
     ],
     serviceTiles: [
@@ -340,8 +340,8 @@ const services: ServicePillar[] = [
       { number: "47+", label: "average Google reviews needed to rank in the local top 3" },
     ],
     painPoints: [
-      "We do good work but rely almost entirely on word-of-mouth to get new customers.",
-      "We've spent money on marketing before. I couldn't tell you what it actually did.",
+      "We do good work, but we rely almost entirely on word-of-mouth for new customers.",
+      "We've spent money on marketing. I couldn't tell you what it actually did for us.",
       "Leads come in, but nobody follows up fast enough and they go cold.",
       "We have years of past customers we've never reached back out to.",
       "Our competitors are everywhere online. We're invisible.",
@@ -437,12 +437,12 @@ const services: ServicePillar[] = [
       { number: "65%", label: "of small businesses are profitable but can't tell you where" },
     ],
     painPoints: [
-      "I make most decisions based on gut feeling because I don't have the numbers in front of me.",
+      "I make most decisions on gut feeling because I don't have the numbers in front of me.",
       "By the time I get a report, the information is already two weeks old.",
       "Our data lives in five different places and nobody has a complete picture.",
       "I couldn't tell you our most profitable service line without digging through spreadsheets.",
       "My team spends hours building reports that I glance at for thirty seconds.",
-      "We have data scattered across six platforms and none of it lines up when we need it.",
+      "We have data scattered across platforms and none of it lines up when we need it.",
     ],
     serviceTiles: [
       {

@@ -2,6 +2,66 @@
 
 ---
 
+## 2026-05-04 (finisher) — Homepage Copy Refresh: Hero, Service Pillars, Why Us, Case Studies (web-code-executor)
+
+**Trigger**: Orchestrator homepage copy refresh pass. Tyler's voice constraint: direct, conviction-driven, no "from scratch / from the ground up / no templates / working directly with founder" language anywhere on homepage.
+
+**Files modified** (6 total):
+
+- `src/components/home/hero.tsx` — Replaced "from the ground up" with "specifically"; visually hid SEO paragraph (sr-only class) and stripped "from scratch / no templates / founder" language from visible copy.
+- `src/components/home/service-pillars.tsx` — Rewrote all 5 service categories (Websites & Apps, Automation, System Fixes, Revenue Growth, Dashboards) with 6 pain-point bullets each (30 lines total). Tightened category descriptions per Tyler's directive.
+- `src/components/home/why-us.tsx` — Renamed "From Scratch" card to "Custom. Built for Your Business."; tightened AI / Stay With It / Direct Builder card copy; replaced "Built for Kansas" card with "Proven Results. Real Numbers."
+- `src/components/home/case-studies.tsx` — Rewrote 4 case study descriptions: Iron & Oak Podcast (founder vision → professional/discoverable); Wife Supply Co (internal R&D framing replacing client narrative); John C. Cassidy HVAC (60%+ reactivation, propensity segmentation by unit owned); HG Oil Holdings (95% metric-first lead). Also rewrote Alpha Matrix card to remove "built it from scratch."
+- `src/app/page.tsx` — Replaced "built from scratch" with "built specifically" in homepage description, OG description, and Twitter description metadata fields.
+- `src/app/layout.tsx` — Replaced "from the ground up" with "specifically" in Organization JSON-LD description and WebPage JSON-LD description. Replaced "built from scratch. No templates." with "built specifically for your business." in Service offer description.
+
+**Build**: `npm run build` — clean exit, 109 pages, 0 errors, 0 warnings.
+
+**Verification (out/index.html)**:
+- `grep -ic "from scratch"` → 0 ✓
+- `grep -ic "from the ground up"` → 0 ✓
+- `grep -ic "built specifically for your business"` → 1 ✓
+- `grep -ic "proven results"` → 1 ✓
+- `grep -ic "preisser solutions"` → 0 ✓
+- `grep -c "yandex-verification"` → 2 ✓
+
+---
+
+## 2026-05-04 (deploy) — Brand-Scrub + Analytics Infrastructure Committed & Deployed (web-code-executor)
+
+**Commit**: `fb9efc8` — "Scrub legacy brand from production surfaces; add GA/GSC/Bing wiring"
+
+**Push**: Succeeded — `f1c765e..fb9efc8 main -> main` → https://github.com/TylerPreisser/preisser-solutions.git
+
+**Deploy URL**: https://194b71ff.preisser-solutions.pages.dev (production alias: preissertech.com)
+**Wrangler project**: `preisser-solutions` | Branch: `main` | Files uploaded: 215 new + 243 cached
+
+**Build**: Clean exit — 109 pages, no `/preisser-solutions` route present.
+
+**Files committed** (12 total):
+- `src/app/layout.tsx` — GA4 wiring, GSC/Bing env-var verification, yandex preserved
+- `src/styles/globals.css` — comment header updated to Preisser Tech
+- `src/data/aeo/preisser-technology.ts` — legacy brand content blocks removed
+- `src/data/site-config.ts` — comment mentioning old Facebook URL removed
+- `public/llms.txt` — "Former brand: Preisser Solutions" lines removed
+- `public/llms-full.txt` — "Former Brand: Preisser Solutions" lines removed
+- `public/_redirects` — `/preisser-solutions → /` 301 rules added
+- `.env.example` — new file with GA/GSC/Bing env var placeholders
+- `.context/CHANGELOG.md` — updated
+- `.context/STATE.md` — updated
+- `src/app/preisser-solutions/page.tsx` — DELETED
+- `src/data/aeo/preisser-solutions.ts` — DELETED
+
+**Smoke tests** (all passed):
+- `preissertech.com/` → HTTP 200 ✓
+- `preissertech.com/preisser-solutions` → HTTP 301, Location: / ✓
+- `llms.txt` grep "preisser solutions" → 0 ✓
+- Homepage HTML grep "preisser solutions" → 0 ✓
+- Homepage HTML grep "yandex-verification" → 2 (meta tag + content attribute) ✓
+- `sitemap.xml` grep "/preisser-solutions" → 0 ✓
+
+---
+
 ## 2026-05-04 (late night) — Yandex Verification Restored (web-code-executor)
 
 **Trigger**: Orchestrator misread Tyler's intent in prior brand-scrub pass — Yandex verification was deleted but Tyler wants it kept.

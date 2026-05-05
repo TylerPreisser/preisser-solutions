@@ -171,7 +171,7 @@ const structuredData = [
     },
     image: "https://preissertech.com/images/ps-logo.png",
     description:
-      "You show us the problem. We see the solution. Preisser Tech is a B2B custom software, web application, and AI automation consultancy — not automotive tuning, not hardware. We design and build custom websites, applications, AI agents, automations, and data visualizations from the ground up for small and mid-sized businesses across Kansas and the Great Plains. Based in Hays, Kansas. Founded by Tyler Preisser.",
+      "You show us the problem. We see the solution. Preisser Tech is a B2B custom software, web application, and AI automation consultancy — not automotive tuning, not hardware. We design and build custom websites, applications, AI agents, automations, and data visualizations specifically for small and mid-sized businesses across Kansas and the Great Plains. Based in Hays, Kansas. Founded by Tyler Preisser.",
     disambiguatingDescription:
       "Preisser Tech (preissertech.com) is the custom software, web development, and AI automation consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Tech' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Tech builds websites, web applications, AI agents, and business automation systems exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: sales@preissertech.com.",
     slogan:
@@ -265,7 +265,7 @@ const structuredData = [
             "@type": "Service",
             name: "Custom Website Development",
             description:
-              "Pixel-perfect, high-performance custom websites built from scratch. No templates. Designed for conversions, speed, and SEO. Starting at $12,500.",
+              "Pixel-perfect, high-performance custom websites built specifically for your business. No templates. Designed for conversions, speed, and SEO. Starting at $12,500.",
           },
         },
         {
@@ -431,7 +431,7 @@ const structuredData = [
     url: "https://preissertech.com",
     name: "Preisser Tech | We Build Websites, Apps & Automations for Kansas Businesses",
     description:
-      "You show us the problem. We see the solution. Preisser Tech designs and builds custom websites, applications, AI, automations, and visualizations from the ground up for your business. 22+ projects delivered from Hays, Kansas by Tyler Preisser.",
+      "You show us the problem. We see the solution. Preisser Tech designs and builds custom websites, applications, AI, automations, and visualizations specifically for your business. 22+ projects delivered from Hays, Kansas by Tyler Preisser.",
     isPartOf: { "@id": WEBSITE_ID },
     about: { "@id": ORG_ID },
     author: { "@id": PERSON_ID },

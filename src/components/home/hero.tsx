@@ -249,12 +249,11 @@ export function Hero() {
           the first paragraph of a page for citations. Positioned visually below the
           animated headline via CSS order, but first in the DOM for crawlers.
         */}
-        <p className="ps-hero-summary">
+        <p className="ps-hero-summary sr-only">
           Preisser Tech is a custom software and AI automation consultancy in Hays,
           Kansas. We design and build websites, web applications, AI-powered workflows,
-          and real-time business dashboards for small and mid-sized companies &mdash;
-          every project built from scratch with no templates, working directly with
-          founder Tyler Preisser.
+          and real-time business dashboards for small and mid-sized companies.
+          Founded by Tyler Preisser, Hays, KS.
         </p>
 
         <div ref={eyebrowRef} className="ps-hero-eyebrow">
@@ -270,8 +269,8 @@ export function Hero() {
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
           You show us the problem. We see the solution. Custom websites,
-          applications, AI, automations, and visualizations &mdash; designed
-          and built from the ground up for your business.
+          applications, AI, automations, and visualizations &mdash; built
+          specifically for your business.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">

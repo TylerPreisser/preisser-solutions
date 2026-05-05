@@ -19,13 +19,13 @@ interface WhyFeature {
 const whyFeatures: WhyFeature[] = [
   {
     id: 0,
-    shortLabel: "built from scratch",
-    title: "We Build Everything From Scratch.",
+    shortLabel: "built for your business",
+    title: "Custom. Built for Your Business.",
     description:
-      "We don\u2019t rebrand cheap templates that have been around for 30 years and plug them in as our own. Everything we deliver is designed, engineered, and built specifically for your operation. Real code. Real systems. Built to work the way your business works.",
+      "Everything we build is designed and engineered specifically for how your business works. We\u2019re not rebranding templates. Real code. Real systems. Built the way you need them.",
     image: "/images/ps-logo.webp",
     mobileImage: "/images/ps-logo.webp",
-    alt: "Preisser Tech logo \u2014 everything built from scratch",
+    alt: "Preisser Tech logo \u2014 custom built for your business",
     href: "/contact",
     cta: "Get in Touch",
   },
@@ -34,7 +34,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "AI with guardrails",
     title: "AI, Harnessed and Under Control.",
     description:
-      "We\u2019ve built the guardrails, safety protocols, and quality controls that let us use AI at every stage of development \u2014 without sacrificing precision. A project that takes a traditional firm three months, we finish in three weeks. Your timeline shrinks. Your cost shrinks. The quality stays exactly where it should be.",
+      "AI accelerates our work without cutting corners. We built guardrails, safety protocols, and quality controls so we can use AI at every stage and still deliver R&D-grade precision. Three weeks instead of three months. Your timeline shrinks. Your cost shrinks. The quality never does.",
     image: "/images/why-us/ai-harnessed.webp",
     mobileImage: "/images/why-us/ai-harnessed.webp",
     alt: "AI-accelerated development with proper guardrails",
@@ -46,7 +46,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "we stay with it",
     title: "We Stay With It.",
     description:
-      "We don\u2019t build you a system and disappear. If you acquire a company, change platforms, add staff, or need something adjusted six months down the road \u2014 we\u2019re still here. You\u2019re not handed a finished product and left to figure it out alone. We stay with it for as long as you need us.",
+      "We don\u2019t hand you a finished product and disappear. AI shifts. Search engines shift. Competitors shift. When you acquire a company, hire new staff, or need something updated six months later \u2014 we\u2019re still here. We stay with it.",
     image: "/images/why-us/we-stay-with-it-new.webp",
     mobileImage: "/images/why-us/we-stay-with-it-new.webp",
     alt: "Ongoing support and system adaptation",
@@ -58,7 +58,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "you work direct",
     title: "You Work Directly With the Builder.",
     description:
-      "Most companies hand you off to a salesman, then a project manager, then a developer you\u2019ll never meet. Here, you talk to the person who designed it, built it, and can fix it on the phone right now. No layers. No runaround. The guy doing the work is the guy you\u2019re talking to.",
+      "No salesmen. No project managers. No developers you\u2019ll never meet. You talk to the person who designs it, builds it, and fixes it. The person doing the work is the person you\u2019re talking to.",
     image: "/images/why-us/work-direct-new.webp",
     mobileImage: "/images/why-us/work-direct-new.webp",
     alt: "Work directly with the builder",
@@ -67,13 +67,13 @@ const whyFeatures: WhyFeature[] = [
   },
   {
     id: 4,
-    shortLabel: "born and raised here",
-    title: "Built for Kansas Businesses.",
+    shortLabel: "proven results",
+    title: "Proven Results. Real Numbers.",
     description:
-      "Born and raised in Kansas. Based in Hays. We understand the businesses here because we grew up around them. Local and regional companies that need real technology \u2014 not startup theater, not Silicon Valley pricing, not consultants who\u2019ve never set foot on a job site.",
+      "We don\u2019t trade in vague promises. 60%+ customer reactivation. 95% inventory time reduction. Measured outcomes, not vibes. If we can\u2019t measure it, we won\u2019t sell it to you.",
     image: "/images/why-us/kansas-v2.webp",
     mobileImage: "/images/why-us/kansas-v2.webp",
-    alt: "Built for Kansas businesses",
+    alt: "Proven results and real numbers",
     href: "/contact",
     cta: "Get in Touch",
   },

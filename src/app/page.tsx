@@ -14,14 +14,14 @@ export const metadata: Metadata = {
     absolute: "Preisser Tech | Custom Software & AI Automation, Kansas",
   },
   description:
-    "Custom websites, web applications, AI automation, and real-time business dashboards built from scratch for small and mid-sized companies in Kansas. Founded by Tyler Preisser, Hays, KS.",
+    "Custom websites, web applications, AI automation, and real-time business dashboards built specifically for small and mid-sized companies in Kansas. Founded by Tyler Preisser, Hays, KS.",
   alternates: {
     canonical: "https://preissertech.com/",
   },
   openGraph: {
     title: "Preisser Tech | Custom Software & AI Automation, Kansas",
     description:
-      "Custom websites, web applications, AI automation, and real-time business dashboards built from scratch for small and mid-sized companies in Kansas. Founded by Tyler Preisser, Hays, KS.",
+      "Custom websites, web applications, AI automation, and real-time business dashboards built specifically for small and mid-sized companies in Kansas. Founded by Tyler Preisser, Hays, KS.",
     url: "https://preissertech.com/",
     type: "website",
     images: [
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Preisser Tech | Custom Software & AI Automation, Kansas",
     description:
-      "Custom websites, web applications, AI automation, and real-time business dashboards built from scratch for small and mid-sized companies in Kansas. Founded by Tyler Preisser, Hays, KS.",
+      "Custom websites, web applications, AI automation, and real-time business dashboards built specifically for small and mid-sized companies in Kansas. Founded by Tyler Preisser, Hays, KS.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@preissertech",
   },

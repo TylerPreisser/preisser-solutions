@@ -18,7 +18,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "The Iron and Oak Podcast",
     tags: "Website Build | AI Search Optimization",
     description:
-      "We built an entire media brand from nothing — website, visual identity, podcast distribution across every major platform, and AI search optimization so it actually gets found. If you have a concept but no idea how to turn it into a professional, discoverable brand, this is what that process looks like.",
+      "We built the entire online presence from a founder's vision — website, theme, logos, AI search optimization, Google optimization, distribution across every platform. A concept turned into something professional and discoverable.",
     gradient: "linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0f2010 100%)",
     image: "iron-oak.webp",
   },
@@ -27,7 +27,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Wife Supply Co",
     tags: "AI Application | Product Build | Full Deployment",
     description:
-      "A client came to us with an app idea and no technical background. We took it from concept to a fully functional AI-powered gifting platform — product design, development, and launch. You don't need to know how to build it. You just need to know what problem it solves.",
+      "An AI model psychologically trained to help men buy gifts for their wives. The system reads the buyer's profile and the wife's preferences, then returns perfectly tailored product recommendations. Internal Preisser Tech R&D build.",
     gradient: "linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%)",
     image: "wife-supply.webp",
     lightCard: true,
@@ -46,7 +46,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "AI Customer Reactivation Engine",
     tags: "AI Outreach | John C Cassidy HVAC | Revenue Recovery",
     description:
-      "Cassidy HVAC had thousands of past customers sitting untouched in their system. We deployed an AI reactivation campaign that re-engaged over 60% of dormant accounts and drove them back into the service pipeline — revenue that was already earned once and just needed a second conversation.",
+      "Re-engaged 60%+ of past customers and dropped them back into the service pipeline. We used AI to intelligently segment them by propensity — based on the HVAC units they owned — then sent personalized messaging to each segment. Revenue already earned once, just needed a second conversation.",
     gradient: "linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%)",
     image: "cassidy-hvac-nobg.webp",
     lightCard: true,
@@ -56,7 +56,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Automated Inventory System",
     tags: "Custom App | HG Oil Holdings | Live Tracking",
     description:
-      "HG Oil cut inventory tracking time by 95%. If your team is still counting stock by hand, updating spreadsheets from memory, or guessing what's on the truck — this is what it looks like when that problem disappears.",
+      "95% reduction in inventory tracking time. If your team is still counting stock by hand, updating spreadsheets from memory, or guessing what's on the truck — this is what it looks like when that problem disappears.",
     gradient: "linear-gradient(135deg, #f0f4f8 0%, #dce8f0 100%)",
     image: "hg-oil-icon.webp",
     lightCard: true,
@@ -75,7 +75,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Alpha Matrix — Multi-Agent AI",
     tags: "AI Architecture | R Squared AI | Autonomous",
     description:
-      "Six autonomous AI agents running in parallel — scanning, analyzing, scoring, and producing strategic output without human intervention. This is the ceiling of what business AI can do today, and we built it from scratch.",
+      "Six autonomous AI agents running in parallel — scanning, analyzing, scoring, and producing strategic output without human intervention. This is the ceiling of what business AI can do today, and we built it specifically for this use case.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #1a1040 50%, #0A1628 100%)",
     image: "r-squared.webp",
   },
