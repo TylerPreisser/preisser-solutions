@@ -71,9 +71,9 @@ const whyFeatures: WhyFeature[] = [
     title: "Proven Results. Real Numbers.",
     description:
       "We don\u2019t trade in vague promises. 60%+ customer reactivation. 95% inventory time reduction. Measured outcomes, not vibes. If we can\u2019t measure it, we won\u2019t sell it to you.",
-    image: "/images/why-us/kansas-v2.webp",
-    mobileImage: "/images/why-us/kansas-v2.webp",
-    alt: "Proven results and real numbers",
+    image: "/images/why-us/proven-results.webp",
+    mobileImage: "/images/why-us/proven-results.webp",
+    alt: "Rising bar chart showing measurable results and real numbers",
     href: "/contact",
     cta: "Get in Touch",
   },

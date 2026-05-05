@@ -2,6 +2,24 @@
 
 ---
 
+## 2026-05-04 (image-fix) — Swap leftover Kansas image on Proven Results card (web-code-executor)
+
+**Trigger**: "Proven Results. Real Numbers." card copy was updated in a prior session but `kansas-v2.webp` was never swapped. Image no longer matched the card theme.
+
+**Files modified** (2 total):
+
+- `src/components/home/why-us.tsx` — Changed `image` and `mobileImage` fields on card id=4 from `kansas-v2.webp` to `proven-results.webp`. Updated alt text to describe bar chart content.
+- `public/images/why-us/proven-results.webp` — New image: dark navy background, rising blue bar chart with trend line, +95% callout. Generated from SVG → PNG → webp via cwebp at 2652x1326 (same dimensions as all other why-us cards).
+
+**Build**: `npm run build` — clean exit, 109 pages, 0 errors.
+
+**Verification (out/index.html)**:
+- `grep -ic "proven results"` → 1 ✓
+- `grep -ic "kansas-v2"` → 0 ✓
+- `grep -c "proven-results.webp"` → 2 ✓ (desktop + mobile)
+
+---
+
 ## 2026-05-04 (finisher) — Homepage Copy Refresh: Hero, Service Pillars, Why Us, Case Studies (web-code-executor)
 
 **Trigger**: Orchestrator homepage copy refresh pass. Tyler's voice constraint: direct, conviction-driven, no "from scratch / from the ground up / no templates / working directly with founder" language anywhere on homepage.
