@@ -8,6 +8,7 @@ Preisser Tech publishes agent-readable discovery resources so AI agents can unde
 - OpenAPI description: `https://preissertech.com/openapi.json`
 - OAuth protected resource metadata: `https://preissertech.com/.well-known/oauth-protected-resource`
 - MCP server card: `https://preissertech.com/.well-known/mcp/server-card.json`
+- A2A agent card: `https://preissertech.com/.well-known/agent-card.json`
 - Agent skills index: `https://preissertech.com/.well-known/agent-skills/index.json`
 - Agent summary: `https://preissertech.com/llms.txt`
 - Full agent context: `https://preissertech.com/llms-full.txt`

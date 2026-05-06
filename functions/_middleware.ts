@@ -26,6 +26,7 @@ const AGENT_DISCOVERY_LINKS = [
   '</docs/agent-api.md>; rel="service-doc"; type="text/markdown"',
   '</.well-known/oauth-protected-resource>; rel="oauth-protected-resource"; type="application/json"',
   '</.well-known/mcp/server-card.json>; rel="mcp-server-card"; type="application/json"',
+  '</.well-known/agent-card.json>; rel="agent-card"; type="application/json"',
   '</.well-known/agent-skills/index.json>; rel="agent-skills"; type="application/json"',
   '</llms.txt>; rel="alternate"; type="text/markdown"',
 ].join(", ");

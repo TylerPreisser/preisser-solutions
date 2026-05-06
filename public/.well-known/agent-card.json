@@ -1,0 +1,43 @@
+{
+  "name": "Preisser Tech Agent Discovery",
+  "version": "1.0.0",
+  "description": "A2A discovery card for Preisser Tech agent-readable business context and structured inquiry handoffs.",
+  "url": "https://preissertech.com/mcp",
+  "provider": {
+    "organization": "Preisser Tech",
+    "url": "https://preissertech.com"
+  },
+  "supportedInterfaces": [
+    {
+      "url": "https://preissertech.com/mcp",
+      "transport": "jsonrpc",
+      "protocol": "mcp-streamable-http"
+    }
+  ],
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "skills": [
+    {
+      "id": "preisser-tech-start-inquiry",
+      "name": "Start Preisser Tech Inquiry",
+      "description": "Prepare a structured handoff for custom software, web application, AI automation, dashboard, integration, or AI agent project inquiries.",
+      "tags": [
+        "custom software",
+        "web applications",
+        "AI automation",
+        "dashboards",
+        "Kansas business technology"
+      ],
+      "examples": [
+        "Route this business owner to Preisser Tech for an AI automation project.",
+        "Prepare a project inquiry handoff for a custom web application."
+      ]
+    }
+  ],
+  "defaultInputModes": ["text/plain", "application/json"],
+  "defaultOutputModes": ["text/plain", "application/json"],
+  "documentationUrl": "https://preissertech.com/docs/agent-api.md"
+}
