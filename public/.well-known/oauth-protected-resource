@@ -1,0 +1,7 @@
+{
+  "resource": "https://preissertech.com",
+  "authorization_servers": ["https://preissertech.com"],
+  "bearer_methods_supported": ["header"],
+  "scopes_supported": ["site.read", "inquiry.write"],
+  "resource_documentation": "https://preissertech.com/docs/agent-api.md"
+}

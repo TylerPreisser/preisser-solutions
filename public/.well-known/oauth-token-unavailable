@@ -1,0 +1,4 @@
+{
+  "error": "manual_approval_required",
+  "error_description": "Preisser Tech does not issue automated public OAuth tokens. Agents should use the public discovery resources or direct qualified project inquiries to https://preissertech.com/contact."
+}

@@ -1,0 +1,28 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://preissertech.com/mcp",
+      "service-desc": [
+        {
+          "href": "https://preissertech.com/openapi.json",
+          "type": "application/openapi+json",
+          "title": "Preisser Tech agent discovery OpenAPI description"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://preissertech.com/docs/agent-api.md",
+          "type": "text/markdown",
+          "title": "Preisser Tech agent API documentation"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://preissertech.com/.well-known/agent-status.json",
+          "type": "application/json",
+          "title": "Preisser Tech agent endpoint status"
+        }
+      ]
+    }
+  ]
+}

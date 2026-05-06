@@ -1,0 +1,111 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Preisser Tech Agent Discovery API",
+    "version": "1.0.0",
+    "description": "Machine-readable discovery endpoints for agents evaluating Preisser Tech services and preparing project inquiry handoffs."
+  },
+  "servers": [
+    {
+      "url": "https://preissertech.com"
+    }
+  ],
+  "paths": {
+    "/.well-known/api-catalog": {
+      "get": {
+        "summary": "API catalog",
+        "responses": {
+          "200": {
+            "description": "RFC 9727 linkset catalog.",
+            "content": {
+              "application/linkset+json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/.well-known/oauth-protected-resource": {
+      "get": {
+        "summary": "OAuth protected resource metadata",
+        "responses": {
+          "200": {
+            "description": "RFC 9728 protected resource metadata.",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/.well-known/mcp/server-card.json": {
+      "get": {
+        "summary": "MCP server card",
+        "responses": {
+          "200": {
+            "description": "MCP server discovery card.",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/.well-known/agent-skills/index.json": {
+      "get": {
+        "summary": "Agent skills index",
+        "responses": {
+          "200": {
+            "description": "Agent Skills Discovery v0.2.0 index.",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mcp": {
+      "get": {
+        "summary": "MCP discovery summary",
+        "responses": {
+          "200": {
+            "description": "Server information and available tools.",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "MCP JSON-RPC endpoint",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "type": "object" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "JSON-RPC response.",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -20,6 +20,16 @@ Allow: /
 Sitemap: https://preissertech.com/sitemap.xml
 `;
 
+const AGENT_DISCOVERY_LINKS = [
+  '</.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json"',
+  '</openapi.json>; rel="service-desc"; type="application/openapi+json"',
+  '</docs/agent-api.md>; rel="service-doc"; type="text/markdown"',
+  '</.well-known/oauth-protected-resource>; rel="oauth-protected-resource"; type="application/json"',
+  '</.well-known/mcp/server-card.json>; rel="mcp-server-card"; type="application/json"',
+  '</.well-known/agent-skills/index.json>; rel="agent-skills"; type="application/json"',
+  '</llms.txt>; rel="alternate"; type="text/markdown"',
+].join(", ");
+
 function redirectToCanonical(url: URL, extraHeaders?: HeadersInit) {
   const destination = new URL(url.toString());
   destination.protocol = "https:";
@@ -49,8 +59,65 @@ function redirectToCanonicalPath(url: URL, pathname: string, extraHeaders?: Head
 
 type MiddlewareContext = {
   request: Request;
+  env?: {
+    ASSETS?: {
+      fetch: (request: Request) => Promise<Response>;
+    };
+  };
   next: () => Promise<Response>;
 };
+
+function acceptsMarkdown(request: Request) {
+  const accept = request.headers.get("accept") || "";
+  return accept.toLowerCase().includes("text/markdown");
+}
+
+function isPageRequest(pathname: string) {
+  const lastSegment = pathname.split("/").pop() || "";
+  return pathname === "/" || !lastSegment.includes(".") || pathname.endsWith(".html");
+}
+
+function shouldNoindex(pathname: string) {
+  return isPageRequest(pathname) && pathname !== "/" && pathname !== "/index.html";
+}
+
+function estimateMarkdownTokens(markdown: string) {
+  return Math.max(1, Math.ceil(markdown.trim().split(/\s+/).length * 1.35));
+}
+
+async function serveMarkdownForAgents(context: MiddlewareContext, url: URL) {
+  const assetUrl = new URL("/llms.txt", url.origin);
+  const assetRequest = new Request(assetUrl.toString(), {
+    headers: { accept: "text/markdown" },
+  });
+  const assetResponse = context.env?.ASSETS
+    ? await context.env.ASSETS.fetch(assetRequest)
+    : await fetch(assetRequest);
+
+  if (!assetResponse.ok) {
+    return context.next();
+  }
+
+  const markdown = await assetResponse.text();
+  const headers: Record<string, string> = {
+    "content-type": "text/markdown; charset=utf-8",
+    "cache-control": "public, max-age=3600",
+    "content-location": "/llms.txt",
+    "vary": "Accept",
+    "x-markdown-tokens": String(estimateMarkdownTokens(markdown)),
+    "content-signal": "ai-train=yes, search=yes, ai-input=yes",
+    "link": AGENT_DISCOVERY_LINKS,
+  };
+
+  if (shouldNoindex(url.pathname)) {
+    headers["x-robots-tag"] = "noindex, follow";
+  }
+
+  return new Response(markdown, {
+    status: 200,
+    headers,
+  });
+}
 
 export const onRequest = async (context: MiddlewareContext) => {
   const url = new URL(context.request.url);
@@ -79,5 +146,33 @@ export const onRequest = async (context: MiddlewareContext) => {
     return redirectToCanonical(url);
   }
 
-  return context.next();
+  if (acceptsMarkdown(context.request) && isPageRequest(url.pathname)) {
+    return serveMarkdownForAgents(context, url);
+  }
+
+  const response = await context.next();
+  if (shouldNoindex(url.pathname)) {
+    const headers = new Headers(response.headers);
+    headers.set("x-robots-tag", "noindex, follow");
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
+  }
+
+  if (url.pathname === "/" || url.pathname === "/index.html") {
+    const headers = new Headers(response.headers);
+    if (!headers.get("link")?.includes('rel="api-catalog"')) {
+      headers.append("link", AGENT_DISCOVERY_LINKS);
+    }
+    headers.append("vary", "Accept");
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
+  }
+
+  return response;
 };

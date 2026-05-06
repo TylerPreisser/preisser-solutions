@@ -1,0 +1,23 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/mcp-server-card/v1.json",
+  "protocolVersion": "2025-06-18",
+  "serverInfo": {
+    "name": "Preisser Tech Agent Discovery",
+    "version": "1.0.0"
+  },
+  "description": "Discovery endpoint for Preisser Tech services, agent-readable site context, and structured inquiry handoffs.",
+  "transport": {
+    "type": "streamable-http",
+    "url": "https://preissertech.com/mcp"
+  },
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    },
+    "resources": {
+      "subscribe": false,
+      "listChanged": false
+    }
+  },
+  "documentation": "https://preissertech.com/docs/agent-api.md"
+}

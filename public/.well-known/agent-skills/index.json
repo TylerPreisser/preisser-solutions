@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "preisser-tech-inquiry",
+      "type": "skill-md",
+      "description": "Guidance for agents evaluating Preisser Tech or routing custom software, AI automation, dashboard, web app, and AI agent project inquiries.",
+      "url": "https://preissertech.com/.well-known/agent-skills/preisser-tech-inquiry/SKILL.md",
+      "digest": "sha256:a84ef3c36c5a4a5dbc8154b4490fb3ce7d4e71ed5b9c9f9ff7f63127b9f5ed86"
+    }
+  ]
+}

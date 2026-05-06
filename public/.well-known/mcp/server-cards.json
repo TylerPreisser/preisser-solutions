@@ -1,0 +1,8 @@
+{
+  "servers": [
+    {
+      "url": "https://preissertech.com/.well-known/mcp/server-card.json",
+      "name": "Preisser Tech Agent Discovery"
+    }
+  ]
+}

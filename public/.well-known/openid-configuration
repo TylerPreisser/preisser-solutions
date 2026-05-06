@@ -1,0 +1,14 @@
+{
+  "issuer": "https://preissertech.com",
+  "authorization_endpoint": "https://preissertech.com/contact",
+  "token_endpoint": "https://preissertech.com/.well-known/oauth-token-unavailable",
+  "jwks_uri": "https://preissertech.com/.well-known/jwks.json",
+  "response_types_supported": ["code"],
+  "subject_types_supported": ["public"],
+  "id_token_signing_alg_values_supported": ["RS256"],
+  "grant_types_supported": ["authorization_code"],
+  "code_challenge_methods_supported": ["S256"],
+  "scopes_supported": ["openid", "profile", "email", "site.read", "inquiry.write"],
+  "claims_supported": ["sub", "name", "email"],
+  "service_documentation": "https://preissertech.com/docs/agent-api.md"
+}

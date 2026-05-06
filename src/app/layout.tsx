@@ -559,6 +559,7 @@ export default function RootLayout({
         <Header />
         <main id="main-content">{children}</main>
         <Footer />
+        <Script src="/agent-tools.js" strategy="afterInteractive" />
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <>
             <Script
