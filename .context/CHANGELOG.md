@@ -2,6 +2,26 @@
 
 ---
 
+## 2026-05-08 — Drop "Proven Results. Real Numbers." card; Why Us back to 3 cards (web-code-executor)
+
+**Files modified** (2 total):
+
+- `src/components/home/why-us.tsx` — Removed card id=3 ("Proven Results. Real Numbers.") entirely. Why-us section now has 3 cards: Custom Built / AI Harnessed / We Stay With It. Carousel is data-driven so no layout changes needed.
+- `public/images/why-us/proven-results.webp` — Deleted (image was not landing per Tyler).
+
+**Build**: `npm run build` — exit 0, 109 pages, 0 errors.
+
+**Verification (out/index.html)**:
+- `grep -ic "proven results"` → 0 ✓
+- `grep -ic "real numbers"` → 0 ✓
+- `grep -ic "we stay with it"` → 1 ✓
+- `grep -ic "custom.*built for your business"` → 1 ✓
+- `grep -ic "ai, harnessed"` → 1 ✓
+- `grep -ic "preisser solutions"` → 0 ✓
+- `grep -ic "from scratch"` → 0 ✓
+
+---
+
 ## 2026-05-04 — Drop "Work Directly With Builder" card; rename projects CTA (web-code-executor)
 
 **Files modified** (2 total):
