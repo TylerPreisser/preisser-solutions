@@ -14,11 +14,6 @@ import {
    TYPES
    ───────────────────────────────────────────────────────────── */
 
-interface StatItem {
-  number: string;
-  label: string;
-}
-
 interface ServiceTile {
   title: string;
   description: string;
@@ -37,7 +32,6 @@ interface ServicePillar {
   href: string;
   visual: React.ReactNode;
   bullets: string[];
-  stats: StatItem[];
   painPoints: string[];
   serviceTiles: ServiceTile[];
   differentiators: Differentiator[];
@@ -60,11 +54,6 @@ const services: ServicePillar[] = [
       "Custom web applications",
       "E-commerce and online sales systems",
       "Ongoing maintenance and performance support",
-    ],
-    stats: [
-      { number: "1 build", label: "website, forms, tracking, content, and AI-readable structure connected" },
-      { number: "100%", label: "your domain, code, analytics access, and customer data stay yours" },
-      { number: "24/7", label: "your site keeps explaining, qualifying, and routing interest after hours" },
     ],
     painPoints: [
       "We have a website, but I don't know if it's ever brought in a lead.",
@@ -145,11 +134,6 @@ const services: ServicePillar[] = [
       "Email and SMS outreach engines",
       "SEO and AI search optimization",
       "Lead generation and conversion systems",
-    ],
-    stats: [
-      { number: "1 view", label: "website, ads, reviews, social, follow-up, and customer history connected" },
-      { number: "Every lead", label: "captured, routed, followed up, and tied back to the channel that produced it" },
-      { number: "Past buyers", label: "segmented for relevant reactivation instead of sitting untouched in a list" },
     ],
     painPoints: [
       "We do good work, but we rely almost entirely on word-of-mouth for new customers.",
@@ -249,11 +233,6 @@ const services: ServicePillar[] = [
       "Custom AI assistants",
       "Intelligent alerts and monitoring",
     ],
-    stats: [
-      { number: "60 sec", label: "new inquiries can be acknowledged, logged, and routed immediately" },
-      { number: "0 copy-paste", label: "routine handoffs move between systems without manual re-entry" },
-      { number: "24/7", label: "intake, document routing, reminders, and triage keep moving after hours" },
-    ],
     painPoints: [
       "We have three people doing work that shouldn't take any.",
       "Every time someone quits, half our processes walk out the door with them.",
@@ -352,11 +331,6 @@ const services: ServicePillar[] = [
       "Data integration and cleanup",
       "Forecasting and trend analysis",
     ],
-    stats: [
-      { number: "1 view", label: "revenue, cost, pipeline, operations, and exceptions in one place" },
-      { number: "Live KPIs", label: "the numbers owners actually ask for without waiting on a report" },
-      { number: "No guessing", label: "decisions tied to current business data instead of scattered spreadsheets" },
-    ],
     painPoints: [
       "I make most decisions on gut feeling because I don't have the numbers in front of me.",
       "By the time I get a report, the information is already two weeks old.",
@@ -412,11 +386,6 @@ const services: ServicePillar[] = [
       "Platform integration",
       "System fixes and upgrades",
       "Modernization",
-    ],
-    stats: [
-      { number: "1 source", label: "customer, job, payment, and operational data stop living in disconnected places" },
-      { number: "Fewer tools", label: "duplicate subscriptions and overlapping workflows get consolidated where possible" },
-      { number: "Clean handoffs", label: "the right information moves to the right system without another workaround" },
     ],
     painPoints: [
       "We use six different tools and none of them talk to each other.",
@@ -1559,17 +1528,7 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
           {/* Child 1 — Title */}
           <h3 className="ps-dialog-title ps-dialog-reveal">{service.title}</h3>
 
-          {/* Child 2 — Stat Bar */}
-          <div className="ps-dialog-stats ps-dialog-reveal" aria-label="Key statistics">
-            {service.stats.map((stat) => (
-              <div key={stat.label} className="ps-dialog-stat">
-                <span className="ps-dialog-stat__number">{stat.number}</span>
-                <span className="ps-dialog-stat__label">{stat.label}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Child 3 — Service Tiles Carousel */}
+          {/* Child 2 — Service Tiles Carousel */}
           <div className="ps-dialog-section ps-dialog-reveal">
             <ServiceCarousel tiles={service.serviceTiles} />
           </div>
