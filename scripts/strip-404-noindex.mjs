@@ -4,7 +4,8 @@
  *
  * Postbuild step: removes the Next.js-injected
  *   <meta name="robots" content="noindex"/>
- * tag from the static 404 page (`out/404.html`).
+ * tag from the static 404 page (`out/404.html`), including the copy Next
+ * embeds in the serialized React metadata payload.
  *
  * Why this exists:
  *   Next.js 15's App Router hardcodes a `noindex` meta tag into the head of
@@ -20,9 +21,10 @@
  *
  * What it does:
  *   - Reads `out/404.html`
- *   - Removes the FIRST `<meta name="robots" content="noindex"/>` tag found
- *     (the framework-injected one; we leave any subsequent `index, follow`
- *     tag emitted by our `metadata` export intact)
+ *   - Removes the FIRST literal `<meta name="robots" content="noindex"/>`
+ *     tag found, when present.
+ *   - Removes the serialized React payload entry for the same noindex meta.
+ *     (The custom `index, follow` tag emitted by our metadata export remains.)
  *   - Writes the file back
  *
  * Safe to re-run. No-op if the noindex tag isn't found.
@@ -33,6 +35,8 @@ import path from "node:path";
 
 const FILE = path.resolve("out/404.html");
 const NOINDEX_RE = /<meta\s+name="robots"\s+content="noindex"\s*\/?>/i;
+const SERIALIZED_NOINDEX_RE =
+  /\[\\"\$\\",\\"meta\\",null,\{\\"name\\":\\"robots\\",\\"content\\":\\"noindex\\"\}\],?/g;
 
 async function main() {
   let html;
@@ -46,14 +50,19 @@ async function main() {
     throw err;
   }
 
-  if (!NOINDEX_RE.test(html)) {
-    console.log("[strip-404-noindex] No <meta name=\"robots\" content=\"noindex\"> in out/404.html — nothing to strip.");
+  const hasLiteralNoindex = NOINDEX_RE.test(html);
+  const hasSerializedNoindex = SERIALIZED_NOINDEX_RE.test(html);
+
+  if (!hasLiteralNoindex && !hasSerializedNoindex) {
+    console.log("[strip-404-noindex] No 404 noindex markers found — nothing to strip.");
     return;
   }
 
-  const stripped = html.replace(NOINDEX_RE, "");
+  const stripped = html
+    .replace(NOINDEX_RE, "")
+    .replace(SERIALIZED_NOINDEX_RE, "");
   await writeFile(FILE, stripped, "utf8");
-  console.log("[strip-404-noindex] Removed Next.js-injected noindex meta from out/404.html.");
+  console.log("[strip-404-noindex] Removed Next.js-injected noindex markers from out/404.html.");
 }
 
 main().catch((err) => {

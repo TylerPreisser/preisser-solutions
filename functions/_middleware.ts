@@ -20,6 +20,64 @@ Allow: /
 Sitemap: https://preissertech.com/sitemap.xml
 `;
 
+const OPEN_ROBOTS_TXT = `# Preisser Tech — maximum-permissive crawler policy
+# Search indexing, AI retrieval, and AI training are allowed.
+
+User-agent: *
+Allow: /
+Content-Signal: search=yes,ai-train=yes,ai-input=yes
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: bingbot
+Allow: /
+
+Sitemap: https://preissertech.com/sitemap.xml
+`;
+
 const AGENT_DISCOVERY_LINKS = [
   '</.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json"',
   '</openapi.json>; rel="service-desc"; type="application/openapi+json"',
@@ -132,17 +190,19 @@ export const onRequest = async (context: MiddlewareContext) => {
   const url = new URL(context.request.url);
   const host = url.hostname.toLowerCase();
 
-  if (LEGACY_HOSTS.has(host)) {
-    if (url.pathname === "/robots.txt") {
-      return new Response(LEGACY_ROBOTS_TXT, {
-        status: 200,
-        headers: {
-          "content-type": "text/plain; charset=utf-8",
-          "cache-control": "public, max-age=3600",
-        },
-      });
-    }
+  if (url.pathname === "/robots.txt") {
+    return new Response(host === CANONICAL_HOST ? OPEN_ROBOTS_TXT : LEGACY_ROBOTS_TXT, {
+      status: 200,
+      headers: {
+        "content-type": "text/plain; charset=utf-8",
+        "cache-control": "public, max-age=300, must-revalidate",
+        "content-signal": "ai-train=yes, search=yes, ai-input=yes",
+        "x-robots-tag": OPEN_ROBOTS_TAG,
+      },
+    });
+  }
 
+  if (LEGACY_HOSTS.has(host)) {
     const mappedPath = LEGACY_PATH_REDIRECTS.get(url.pathname);
     if (mappedPath) {
       return redirectToCanonicalPath(url, mappedPath);
