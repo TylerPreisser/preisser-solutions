@@ -5,22 +5,22 @@ import { useEffect, useRef } from "react";
 const valueItems = [
   {
     icon: "<>",
-    strong: "Websites, marketing, automation, and custom AI",
+    strong: "Websites",
     text: "",
   },
   {
     icon: "->",
-    strong: "We ship in weeks, not months",
+    strong: "Visibility",
     text: "",
   },
   {
     icon: "//",
-    strong: "Built for businesses ranging from local to enterprise",
+    strong: "Ads",
     text: "",
   },
   {
     icon: ">>",
-    strong: "You work directly with the founder",
+    strong: "Automation",
     text: "",
   },
 ];

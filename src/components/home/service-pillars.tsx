@@ -1671,8 +1671,8 @@ export function ServicePillars() {
           What We Build
         </h2>
         <p className="ps-services-intro">
-          Custom-coded. AI-native. Ongoing service relationship. Enterprise
-          quality — built for Kansas businesses.
+          Websites, visibility, ads, and automation built with an enterprise
+          standard and brought home to Kansas.
         </p>
       </div>
 

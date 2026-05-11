@@ -1226,6 +1226,32 @@ a {
   isolation: isolate;
 }
 
+@media (max-width: 639px) {
+  .ps-value-strip {
+    display: none;
+  }
+
+  .ps-bento-card--websites {
+    order: 1;
+  }
+
+  .ps-bento-card--revenue {
+    order: 2;
+  }
+
+  .ps-bento-card--automation {
+    order: 3;
+  }
+
+  .ps-bento-card--dashboards {
+    order: 4;
+  }
+
+  .ps-bento-card--systems {
+    order: 5;
+  }
+}
+
 @media (min-width: 640px) {
   .ps-bento-card {
     min-height: 380px;

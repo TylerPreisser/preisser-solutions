@@ -14,11 +14,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Preisser Tech | Custom Websites, Marketing & AI",
+    default: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
     template: "%s | Preisser Tech",
   },
   description:
-    "Custom websites, marketing systems, and AI — built for businesses including Alliant Insurance Services, Astrus Insurance Solutions, Sunrise Transportation, John C. Cassidy HVAC, and Salesforce. Founded by Tyler Preisser in Hays, Kansas.",
+    "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
   metadataBase: new URL("https://preissertech.com"),
   keywords: [
     "business automation Kansas",
@@ -82,9 +82,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://preissertech.com",
     siteName: "Preisser Tech",
-    title: "Preisser Tech | Custom Websites, Marketing & AI",
+    title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
     description:
-      "Custom websites, marketing systems, and AI — built for businesses including Alliant Insurance Services, Astrus Insurance Solutions, Sunrise Transportation, John C. Cassidy HVAC, and Salesforce. Founded by Tyler Preisser in Hays, Kansas.",
+      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
     images: [
       {
         url: "/images/og-image-v2.jpg",
@@ -96,9 +96,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Tech | Custom Websites, Marketing & AI",
+    title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
     description:
-      "Custom websites, marketing systems, and AI — built for businesses including Alliant Insurance Services, Astrus Insurance Solutions, Sunrise Transportation, John C. Cassidy HVAC, and Salesforce. Founded by Tyler Preisser in Hays, Kansas.",
+      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@tylerpreisser",
   },
@@ -174,11 +174,11 @@ const structuredData = [
     },
     image: "https://preissertech.com/images/ps-logo.png",
     description:
-      "Preisser Tech builds custom-coded marketing systems, websites, AI automation, and business intelligence tools for small and mid-sized companies. Google Ads, Meta Ads, AI search optimization, lead automation, and MarCommand — our AI marketing intelligence platform that scores every channel by real dollar ROI. Based in Hays, Kansas. Founded by Tyler Preisser. Not automotive tuning, not hardware.",
+      "Preisser Tech builds websites, visibility, ads, and automation with an enterprise standard brought home to Kansas. Based in Hays, Kansas. Founded by Tyler Preisser. Not automotive tuning, not hardware.",
     disambiguatingDescription:
       "Preisser Tech (preissertech.com) is the custom software, web development, and AI automation consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Tech' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Tech builds websites, web applications, AI agents, and business automation systems exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: sales@preissertech.com.",
     slogan:
-      "Custom Software, Web Apps & AI Automation for Kansas Businesses — Not Automotive, Not Hardware",
+      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
     foundingDate: "2023",
     founder: { "@id": PERSON_ID },
     email: "sales@preissertech.com",
@@ -424,7 +424,7 @@ const structuredData = [
     url: "https://preissertech.com",
     name: "Preisser Tech",
     description:
-      "Custom websites, web applications, AI automation systems, and dashboards for businesses across Kansas.",
+      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
     publisher: { "@id": ORG_ID },
     inLanguage: "en-US",
     potentialAction: {
@@ -445,9 +445,9 @@ const structuredData = [
     "@type": "WebPage",
     "@id": WEBPAGE_ID,
     url: "https://preissertech.com",
-    name: "Preisser Tech | Custom Websites, Marketing & AI",
+    name: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
     description:
-      "Custom websites, marketing systems, and AI — built for businesses including Alliant Insurance Services, Astrus Insurance Solutions, Sunrise Transportation, John C. Cassidy HVAC, and Salesforce. Founded by Tyler Preisser in Hays, Kansas.",
+      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
     isPartOf: { "@id": WEBSITE_ID },
     about: { "@id": ORG_ID },
     author: { "@id": PERSON_ID },
