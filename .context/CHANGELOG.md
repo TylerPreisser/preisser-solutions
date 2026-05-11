@@ -2,6 +2,45 @@
 
 ---
 
+## 2026-05-11 — CRITICAL SEO BUG FIXED: every non-homepage was serving `x-robots-tag: noindex, follow` (web-code-debug)
+
+**Symptom**: GSC flagged preissertech.com with "Excluded by 'noindex' tag". Investigation confirmed every page on preissertech.com except `/` was serving an HTTP response header `x-robots-tag: noindex, follow` from the Cloudflare Pages edge function. Verified live via `curl -I` on `/about`, `/services`, `/contact`, `/pricing`, `/locations/hays-kansas`, `/compare/wix-vs-custom`, `/case-studies`, `/industries/agriculture`, `/preisser-technology`, `/tyler-preisser`, `/press` — ALL returned `x-robots-tag: noindex, follow`. Only `/` (homepage) was clean.
+
+**Root cause**: `functions/_middleware.ts` (commit `d717db1`, 2026-05-06, "Improve agent readiness and search indexing"). The commit added `shouldNoindex(pathname)` to deindex the **markdown alternate** (`text/markdown` response served via `serveMarkdownForAgents`) — which is correct, those duplicate-content markdown variants should not be indexed. But the same `shouldNoindex` check was ALSO wired into the **HTML response path** (`onRequest` after `context.next()`), which forced `x-robots-tag: noindex, follow` onto every HTML page where `pathname !== "/"` and `pathname !== "/index.html"`. This silently deindexed ~108 of 109 pages at the edge regardless of the `<meta name="robots" content="index, follow"/>` tags Next.js correctly emits in the HTML.
+
+The HTML output in `out/*.html` was always correct — `<meta name="robots" content="index, follow">` on every page except `404.html` (which correctly has `noindex`). The bug was purely in the edge function header layer overriding the meta.
+
+**Impact (affected URLs)**: every indexable URL except `/` — about 108 pages. Includes all marketing pages (`/services`, `/about`, `/contact`, `/pricing`, `/process`, `/faq`, `/why-automation`, `/case-studies`, `/press`, `/roi-calculator`, `/tyler-preisser`, `/preisser-technology`, `/custom-websites`, `/business-automation`, `/ai-agents`, `/dashboards-and-analytics`, `/premium-web-development-kansas`, `/web-applications`), all 11 services, all 27 locations, all 20 industries, all 16 compare pages, all 5 case studies.
+
+**Legitimate noindex pages (unaffected, intentional)**:
+- `404.html` — has `<meta name="robots" content="noindex">` in Next.js-built output (correct; Google guidance is 404s should not be indexed)
+- `preisser-solutions.pages.dev` subdomain — handled separately via `DUPLICATE_HOSTS` 301 redirect to canonical host (and a `_headers` pages.dev rule, though that rule's syntax is invalid for Cloudflare Pages and silently ignored — left alone as the 301 redirect makes it moot)
+
+**Fix applied**:
+- `functions/_middleware.ts` — removed the 10-line block that set `x-robots-tag: noindex, follow` on HTML responses for non-`/` paths. The block was the entire `if (shouldNoindex(url.pathname)) { ... }` after `const response = await context.next();`. The `shouldNoindex` helper and the markdown-variant noindex inside `serveMarkdownForAgents` are kept — markdown alternates SHOULD remain noindex to prevent duplicate-content issues. Added a comment block explaining the historical mistake so it doesn't get reintroduced.
+
+**Build status**: PASS — `npm run build` clean, 109 pages, 0 errors, 0 warnings.
+
+**Production verification after deploy** (orchestrator will push + deploy):
+```bash
+for path in /about /services /contact /pricing /locations/hays-kansas /tyler-preisser /press; do
+  curl -sI "https://preissertech.com$path" | grep -i "x-robots"
+done
+```
+Should return ZERO `x-robots-tag` lines (header should disappear entirely from HTML responses). Currently every one of those returns `x-robots-tag: noindex, follow` — that is what must vanish.
+
+**GSC validation steps for Tyler (after deploy)**:
+1. Confirm fix on production by hand: open Chrome DevTools → Network tab → load `https://preissertech.com/about` → click the document request → "Headers" → confirm `x-robots-tag` is absent. Repeat for `/services` and `/tyler-preisser`.
+2. Go to Search Console → preissertech.com property → left nav → **Indexing → Pages**.
+3. Click the row labeled **"Excluded by 'noindex' tag"** to expand the list of affected URLs.
+4. Click **"Validate Fix"** at the top right of the issue panel. This triggers Google to re-crawl a sample of the affected URLs. Validation usually completes in 1–14 days; status will show as "Validation: Passed" or "Validation: Failed".
+5. While waiting, also submit the top 10 affected URLs for priority recrawl: Search Console → **URL Inspection** (top search bar) → paste URL → click **"Request indexing"**. Do this for `/`, `/services`, `/about`, `/contact`, `/pricing`, `/tyler-preisser`, `/locations/hays-kansas`, `/press`, `/case-studies`, `/preisser-technology`. (Daily quota: 10–12 requests across all properties.)
+6. Re-submit the sitemap (Indexing → Sitemaps → `sitemap.xml` → "Submit") to nudge Google to re-evaluate the full URL set with the now-clean headers.
+
+**Files changed**: `functions/_middleware.ts`, `.context/CHANGELOG.md` (this entry).
+
+---
+
 ## 2026-05-11 — Tyler Preisser official headshot added to public/images/ + Person schema (web-code-executor)
 
 - Copied + optimized source PNG to `public/images/tyler-preisser-headshot.jpg` (161KB, 1200×1200) and `public/images/tyler-preisser-headshot.png` (source copy)

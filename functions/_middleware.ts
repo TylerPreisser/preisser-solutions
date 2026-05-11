@@ -152,15 +152,14 @@ export const onRequest = async (context: MiddlewareContext) => {
   }
 
   const response = await context.next();
-  if (shouldNoindex(url.pathname)) {
-    const headers = new Headers(response.headers);
-    headers.set("x-robots-tag", "noindex, follow");
-    return new Response(response.body, {
-      status: response.status,
-      statusText: response.statusText,
-      headers,
-    });
-  }
+
+  // NOTE: HTML page responses MUST NOT get x-robots-tag: noindex.
+  // The shouldNoindex() helper is intentionally scoped to the markdown
+  // variant served via serveMarkdownForAgents() above — markdown
+  // alternates are duplicate content and should not be indexed by Google,
+  // but the canonical HTML pages must be indexable.
+  // (Earlier revision applied shouldNoindex to HTML here, which deindexed
+  // the entire site below /. Fixed 2026-05-11.)
 
   if (url.pathname === "/" || url.pathname === "/index.html") {
     const headers = new Headers(response.headers);
