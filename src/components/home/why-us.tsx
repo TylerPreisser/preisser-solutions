@@ -22,7 +22,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "built for your business",
     title: "Custom. Built for Your Business.",
     description:
-      "Everything we build is designed and engineered specifically for how your business works. We're not rebranding templates. Real code. Real systems. Built the way you need them.",
+      "We build around how your business actually works: your customers, your services, your follow-up, your tools, and the details that make the difference. It is not a generic SaaS package dropped into your business. It is shaped around your business so it can start helping faster.",
     image: "/images/ps-logo.webp",
     mobileImage: "/images/ps-logo.webp",
     alt: "Preisser Tech logo \u2014 custom built for your business",

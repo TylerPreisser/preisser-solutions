@@ -42,26 +42,7 @@ const caseStudyCards: CaseStudyCard[] = [
     gradient: "linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0f2010 100%)",
     image: "iron-oak.webp",
   },
-  // 2
-  {
-    title: "Wife Supply Co",
-    tags: "AI Application | Product Build | Full Deployment",
-    description:
-      "An AI model psychologically trained to help men buy gifts for their wives. The system reads the buyer's profile and the wife's preferences, then returns perfectly tailored product recommendations. Internal Preisser Tech R&D build.",
-    gradient: "linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%)",
-    image: "wife-supply.webp",
-    lightCard: true,
-  },
-  // 3
-  {
-    title: "PreisserTech.com",
-    tags: "Custom Website | Lead Pipeline | Local SEO",
-    description:
-      "This is our own site, and we built it the same way we build yours — custom-coded, integrated lead pipeline, and an ROI calculator that qualifies prospects before they ever hit our calendar. No templates. No page builders. A website that actually works as a sales tool.",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #0F1D30 100%)",
-    image: "preisser-tech.webp",
-  },
-  // 4
+  // 4 — John C. Cassidy HVAC
   {
     title: "AI Customer Reactivation Engine",
     tags: "AI Outreach | John C Cassidy HVAC | Revenue Recovery",
@@ -71,7 +52,17 @@ const caseStudyCards: CaseStudyCard[] = [
     image: "cassidy-hvac-nobg.webp",
     lightCard: true,
   },
-  // 5
+  // 5 — John C. Cassidy HVAC / MarCommand
+  {
+    title: "MarCommand for John C Cassidy HVAC",
+    tags: "MarCommand | AI Marketing Intelligence | HVAC",
+    description:
+      "Deployed MarCommand around Cassidy's real business data, customer behavior, service history, and channel performance. The marketing work now has context from the actual business instead of relying on generic campaign metrics.",
+    gradient: "linear-gradient(135deg, #F8FAFC 0%, #DBEAFE 55%, #BAE6FD 100%)",
+    image: "cassidy-hvac-nobg.webp",
+    lightCard: true,
+  },
+  // 6
   {
     title: "Automated Inventory System",
     tags: "Custom App | HG Oil Holdings | Live Tracking",
@@ -81,7 +72,26 @@ const caseStudyCards: CaseStudyCard[] = [
     image: "hg-oil-icon.webp",
     lightCard: true,
   },
-  // 6
+  // 7
+  {
+    title: "Wife Supply Co",
+    tags: "AI Application | Product Build | Full Deployment",
+    description:
+      "An AI model psychologically trained to help men buy gifts for their wives. The system reads the buyer's profile and the wife's preferences, then returns perfectly tailored product recommendations. Internal Preisser Tech R&D build.",
+    gradient: "linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%)",
+    image: "wife-supply.webp",
+    lightCard: true,
+  },
+  // 8
+  {
+    title: "PreisserTech.com",
+    tags: "Custom Website | Lead Pipeline | Local SEO",
+    description:
+      "This is our own site, and we built it the same way we build yours: custom-coded, connected to the lead pipeline, and paired with an ROI calculator that qualifies prospects before they ever hit the calendar. A website built to work as a sales tool.",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #0F1D30 100%)",
+    image: "preisser-tech.webp",
+  },
+  // 9
   {
     title: "Contact Form to CRM Pipeline",
     tags: "Integration | Lead Automation | R Squared AI",
@@ -91,7 +101,7 @@ const caseStudyCards: CaseStudyCard[] = [
     image: "r-squared.webp",
     href: "https://3124f78d.r2-solutions.pages.dev/",
   },
-  // 7
+  // 10
   {
     title: "Alpha Matrix — Multi-Agent AI",
     tags: "AI Architecture | R Squared AI | Autonomous",
@@ -101,7 +111,7 @@ const caseStudyCards: CaseStudyCard[] = [
     image: "r-squared.webp",
     href: "https://3124f78d.r2-solutions.pages.dev/",
   },
-  // 8
+  // 11
   {
     title: "After-Hours Call Triage",
     tags: "AI Automation | Lead Capture | Routing",
