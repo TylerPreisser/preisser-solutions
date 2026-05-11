@@ -390,7 +390,15 @@ const structuredData = [
         addressCountry: "US",
       },
     },
+    image: {
+      "@type": "ImageObject",
+      url: "https://preissertech.com/images/tyler-preisser-headshot.jpg",
+      width: 1200,
+      height: 1200,
+      caption: "Tyler Preisser, founder of Preisser Tech",
+    },
     sameAs: [
+      "https://preissertech.com/tyler-preisser",
       "https://www.linkedin.com/in/tylerpreisser",
       "https://github.com/tylerpreisser",
     ],

@@ -10,13 +10,13 @@ export const metadata: Metadata = {
     title: pageData.metaTitle,
     description: pageData.metaDescription,
     url: `https://preissertech.com/${pageData.slug}`,
-    type: "website",
+    type: "profile",
     images: [
       {
-        url: "/images/og-image-v2.jpg",
+        url: "https://preissertech.com/images/tyler-preisser-headshot.jpg",
         width: 1200,
-        height: 630,
-        alt: "Preisser Tech",
+        height: 1200,
+        alt: "Tyler Preisser, founder of Preisser Tech",
       },
     ],
   },
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: pageData.metaTitle,
     description: pageData.metaDescription,
-    images: ["/images/og-image-v2.jpg"],
+    images: ["https://preissertech.com/images/tyler-preisser-headshot.jpg"],
   },
 };
 

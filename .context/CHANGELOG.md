@@ -2,6 +2,17 @@
 
 ---
 
+## 2026-05-11 — Tyler Preisser official headshot added to public/images/ + Person schema (web-code-executor)
+
+- Copied + optimized source PNG to `public/images/tyler-preisser-headshot.jpg` (161KB, 1200×1200) and `public/images/tyler-preisser-headshot.png` (source copy)
+- Updated `src/app/layout.tsx` — Person JSON-LD `image` property upgraded to structured `ImageObject` with absolute URL; `/tyler-preisser` added to `sameAs` array
+- Updated `src/app/tyler-preisser/page.tsx` — OG/Twitter images now reference headshot URL (1200×1200, type: "profile")
+- Updated `src/data/aeo/types.ts` — added optional `headshot` field to `AeoPageData` interface
+- Updated `src/data/aeo/tyler-preisser.ts` — `headshot` field populated with headshot path, alt text, and dimensions
+- Updated `src/components/aeo/AeoPage.tsx` — hero renders circular headshot beside H1 when `data.headshot` present; responsive (stacks on mobile <600px)
+
+---
+
 ## 2026-05-11 — MarCommand interactive dashboard mockup integrated into homepage callout (web-code-executor)
 
 - Created `src/components/home/marcommand-dashboard.tsx` — full React/TSX conversion of the mc3 HTML mockup with IntersectionObserver-gated counter animation, prefers-reduced-motion support, RAF cleanup on unmount, and type-safe data-attribute access
@@ -977,3 +988,9 @@ curl -I https://preissersolutions.com/robots.txt
 - Commit `7914367` pushed to `origin/main`
 - Cloudflare Pages deploy: https://228a2acf.preisser-solutions.pages.dev
 - Verified live on https://preissertech.com — "Stop Renting Attention" present, MarCommand mentioned 22x
+
+## 2026-05-11 (later) — Dashboard mockup deploy
+- Commit `9922af4` pushed to `origin/main`
+- Cloudflare Pages deploy: https://888e8c6e.preisser-solutions.pages.dev
+- Live on preissertech.com — all mc3-* selectors rendering (header, channels grid, panels, pending cards, ROI trend SVG)
+- Mobile fixes applied: 4-col channel collapse @ 640px, 44px tap targets, GPU layer hints for iOS Safari pulse

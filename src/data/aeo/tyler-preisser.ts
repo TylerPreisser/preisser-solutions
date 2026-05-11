@@ -135,6 +135,12 @@ export const pageData: AeoPageData = {
     { label: "Hays Kansas Custom Software", href: "/locations/hays-kansas" },
     { label: "Premium Web Development Kansas", href: "/premium-web-development-kansas" },
   ],
+  headshot: {
+    src: "/images/tyler-preisser-headshot.jpg",
+    alt: "Tyler Preisser, founder of Preisser Tech",
+    width: 1200,
+    height: 1200,
+  },
   ctaHeadline: "Work with Tyler directly",
   ctaSubcopy:
     "Tell us what you're trying to build, fix, or automate. Tyler responds personally — usually within 24 hours.",

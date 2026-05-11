@@ -71,4 +71,14 @@ export interface AeoPageData {
   ctaSubcopy: string;
   /** Tier label for organization */
   tier: "brand_defense" | "service_detail" | "industry" | "location" | "comparison" | "aeo_seo" | "trust_faq";
+  /**
+   * Optional headshot displayed in the hero section beside the H1/subheadline.
+   * When set, the hero renders a two-column layout (text + photo).
+   */
+  headshot?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+  };
 }

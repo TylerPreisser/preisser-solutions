@@ -116,6 +116,22 @@ export function AeoPage({ data }: { data: AeoPageData }) {
         }}
       />
 
+      {/* Responsive style for hero layout — only needed when headshot is present */}
+      {data.headshot && (
+        <style>{`
+          @media (max-width: 600px) {
+            .aeo-hero-inner {
+              flex-direction: column-reverse !important;
+              align-items: flex-start !important;
+            }
+            .aeo-hero-headshot {
+              width: clamp(96px, 28vw, 140px) !important;
+              height: clamp(96px, 28vw, 140px) !important;
+            }
+          }
+        `}</style>
+      )}
+
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section
         style={{
@@ -125,42 +141,84 @@ export function AeoPage({ data }: { data: AeoPageData }) {
           position: "relative",
         }}
       >
-        <div style={{ maxWidth: 960, margin: "0 auto" }}>
-          <div
-            style={{
-              fontSize: 14,
-              fontWeight: 600,
-              letterSpacing: "0.05em",
-              textTransform: "uppercase",
-              color: "var(--color-cyan, #80E9FF)",
-              marginBottom: 16,
-            }}
-          >
-            {data.eyebrow}
+        <div
+          className="aeo-hero-inner"
+          style={{
+            maxWidth: 960,
+            margin: "0 auto",
+            display: "flex",
+            alignItems: "center",
+            gap: "clamp(40px, 6vw, 80px)",
+          }}
+        >
+          {/* Text column */}
+          <div style={{ flex: "1 1 0", minWidth: 0 }}>
+            <div
+              style={{
+                fontSize: 14,
+                fontWeight: 600,
+                letterSpacing: "0.05em",
+                textTransform: "uppercase",
+                color: "var(--color-cyan, #80E9FF)",
+                marginBottom: 16,
+              }}
+            >
+              {data.eyebrow}
+            </div>
+            <h1
+              style={{
+                fontSize: "clamp(2.25rem, 5vw, 3.75rem)",
+                fontWeight: 700,
+                lineHeight: 1.08,
+                letterSpacing: "-0.03em",
+                margin: "0 0 24px",
+                color: "#FFFFFF",
+              }}
+            >
+              {data.h1}
+            </h1>
+            <p
+              style={{
+                fontSize: "clamp(1.125rem, 2vw, 1.3125rem)",
+                lineHeight: 1.5,
+                color: "var(--color-text-dark-secondary, #94A3B8)",
+                maxWidth: 720,
+                margin: 0,
+              }}
+            >
+              {data.subheadline}
+            </p>
           </div>
-          <h1
-            style={{
-              fontSize: "clamp(2.25rem, 5vw, 3.75rem)",
-              fontWeight: 700,
-              lineHeight: 1.08,
-              letterSpacing: "-0.03em",
-              margin: "0 0 24px",
-              color: "#FFFFFF",
-            }}
-          >
-            {data.h1}
-          </h1>
-          <p
-            style={{
-              fontSize: "clamp(1.125rem, 2vw, 1.3125rem)",
-              lineHeight: 1.5,
-              color: "var(--color-text-dark-secondary, #94A3B8)",
-              maxWidth: 720,
-              margin: 0,
-            }}
-          >
-            {data.subheadline}
-          </p>
+
+          {/* Headshot — only rendered when data.headshot is present */}
+          {data.headshot && (
+            <div
+              className="aeo-hero-headshot"
+              style={{
+                flexShrink: 0,
+                width: "clamp(160px, 20vw, 260px)",
+                height: "clamp(160px, 20vw, 260px)",
+              }}
+            >
+              <img
+                src={data.headshot.src}
+                alt={data.headshot.alt}
+                width={data.headshot.width}
+                height={data.headshot.height}
+                loading="eager"
+                decoding="async"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "50%",
+                  border: "3px solid rgba(13, 149, 232, 0.5)",
+                  boxShadow: "0 0 0 6px rgba(13, 149, 232, 0.12), 0 20px 60px rgba(0, 0, 0, 0.5)",
+                  display: "block",
+                }}
+              />
+            </div>
+          )}
         </div>
       </section>
 
