@@ -22,9 +22,9 @@
 
 **Eyebrow**: AI-First Builders
 
-**Headline**: We Build What Your Business Needs.
+**Headline**: World-Class AI-Powered Marketing. For Kansas.
 
-**Subheadline**: You show us the problem. We see the solution. Custom websites, applications, AI, automations, and visualizations — designed and built from the ground up for your business.
+**Subheadline**: Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.
 
 **Primary CTA**: Get in Touch → https://preissertech.com
 **Secondary CTA**: See What We Build → /#services
@@ -44,7 +44,7 @@
 
 **Eyebrow**: The Problem
 
-**Heading**: You Know What Your Business Needs. You Just Need Someone Who Can Build It.
+**Heading**: Websites, visibility, ads, and automation built for Kansas.
 
 **Body**:
 
@@ -393,7 +393,7 @@ If your idea won't work, I'll tell you. If there's a better way, I'll show you.
 
 **Page Title**: What We Build
 
-**Subheadline**: Websites. Applications. Automations. Dashboards. Integrations. If your business needs it, we can design it and build it.
+**Subheadline**: Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.
 
 Services listed (see full details in Services section above):
 1. Websites & Applications
@@ -402,7 +402,7 @@ Services listed (see full details in Services section above):
 4. Revenue Growth Engines
 5. Dashboards & Business Intelligence
 
-**CTA**: You Know What Your Business Needs. You Just Need Someone Who Can Build It. You don't need a consultant to tell you it's a problem. You need someone who can build the fix.
+**CTA**: Websites, visibility, ads, and automation built for Kansas. Built with an enterprise standard and brought home by Preisser Tech.
 
 ---
 

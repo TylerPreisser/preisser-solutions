@@ -47,7 +47,7 @@ export function Footer() {
               className="ps-footer-logo-img"
             />
             <p className="ps-footer-tagline">
-              We Build What Your Business Needs.
+              {siteConfig.tagline}
             </p>
             <p className="ps-footer-location">
               {siteConfig.contact.location}

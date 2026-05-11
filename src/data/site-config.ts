@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Preisser Tech",
-  tagline: "We Build What Your Business Needs.",
+  tagline: "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
   url: "https://preissertech.com",
   contact: {
     email: "sales@preissertech.com",
@@ -20,7 +20,7 @@ export const siteConfig = {
   },
   meta: {
     title: "Preisser Tech",
-    description: "World-class tech for your business.",
+    description: "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
     themeColor: "#0D95E8",
   },
 } as const;

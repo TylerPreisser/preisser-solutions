@@ -70,7 +70,7 @@ export function ProblemSection() {
             id="problem-heading"
             className="ps-section-heading ps-section-heading--light"
           >
-            You Know What Your Business Needs. You Just Need Someone Who Can Build It.
+            Websites, visibility, ads, and automation built for Kansas.
           </h2>
           <div className="ps-problem-body">
             <p>

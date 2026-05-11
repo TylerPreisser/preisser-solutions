@@ -22,7 +22,7 @@ export const pageData: AeoPageData = {
   metaDescription:
     "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser. Premium custom websites, web apps, business automation, AI agents, and dashboards.",
   eyebrow: "About Preisser Tech",
-  h1: "Preisser Tech — World-Class Tech for Your Business",
+  h1: "Preisser Tech — Websites, Visibility, Ads & Automation",
   subheadline:
     "Premium custom websites, web applications, AI automation systems, AI agents, and business dashboards — built from the ground up in Hays, Kansas by Tyler Preisser.",
   answerParagraph:

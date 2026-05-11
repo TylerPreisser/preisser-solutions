@@ -6,14 +6,14 @@ import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Websites, applications, automation systems, dashboards, and integrations built for Kansas businesses. Custom-designed by Tyler Preisser — no agencies, no middlemen.",
+    "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
   alternates: {
     canonical: "https://preissertech.com/services",
   },
   openGraph: {
     title: "Services | Preisser Tech",
     description:
-      "Websites, applications, automation systems, dashboards, and integrations built for Kansas businesses. Custom-designed by Tyler Preisser — no agencies, no middlemen.",
+      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
     url: "https://preissertech.com/services",
   },
 };
@@ -48,8 +48,8 @@ export default function ServicesPage() {
             <span className="ps-eyebrow">Services</span>
             <h1>What We Build</h1>
             <p>
-              Websites. Applications. Automations. Dashboards. Integrations. If your
-              business needs it, we can design it and build it.
+              Websites, visibility, ads, and automation built with an enterprise
+              standard and brought home to Kansas.
             </p>
           </div>
         </div>
@@ -85,10 +85,9 @@ export default function ServicesPage() {
         <div className="ps-cta-glow" aria-hidden="true" />
         <div className="ps-cta-content">
           <span className="ps-eyebrow">Get in Touch</span>
-          <h2>You Know What Your Business Needs. You Just Need Someone Who Can Build It.</h2>
+          <h2>Websites, visibility, ads, and automation built for Kansas.</h2>
           <p>
-            You don&apos;t need a consultant to tell you it&apos;s a problem. You need
-            someone who can build the fix.
+            Built with an enterprise standard and brought home by Preisser Tech.
           </p>
           <div className="ps-cta-buttons">
             <Link href="/contact" className="ps-btn-primary">
