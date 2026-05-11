@@ -175,6 +175,15 @@ button {
   border: none;
   background: none;
   font-family: inherit;
+  /* iOS Safari: eliminate 300ms tap delay and default blue highlight */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  /* iOS Safari: eliminate 300ms tap delay and default blue highlight on links */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ── Container ─────────────────────────────────────────────── */
@@ -1132,6 +1141,15 @@ button {
   padding: 0 var(--container-padding);
   text-align: center;
   margin-bottom: 64px;
+}
+
+.ps-services-intro {
+  max-width: 640px;
+  margin: 16px auto 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--theme-text-secondary);
+  transition: color 300ms ease;
 }
 
 /* ── Bento Grid — Stripe-exact pattern ───────────────────── */
@@ -4797,6 +4815,178 @@ button {
 @media (max-width: 768px) {
   .ps-cta-section {
     padding: var(--section-py-mobile) 0;
+  }
+}
+
+/* ── MarCommand Callout ─────────────────────────────────────── */
+
+.ps-marcommand {
+  position: relative;
+  background-color: var(--color-dark-alt);
+  border-top: 1px solid var(--color-border-dark);
+  border-bottom: 1px solid var(--color-border-dark);
+  padding: var(--section-py-desktop) 0;
+  overflow: hidden;
+}
+
+.ps-marcommand-glow {
+  position: absolute;
+  top: -120px;
+  left: -120px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(13, 149, 232, 0.12) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.ps-marcommand-inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+/* Left column */
+.ps-marcommand-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ps-eyebrow--brand {
+  color: var(--color-primary);
+}
+
+.ps-marcommand-heading {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--color-text-dark-primary);
+  margin: 0;
+}
+
+.ps-marcommand-body {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text-dark-secondary);
+  margin: 0;
+}
+
+.ps-marcommand-closer {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text-dark-secondary);
+  margin: 0;
+}
+
+.ps-marcommand-cta {
+  margin-top: 8px;
+}
+
+/* Right column */
+.ps-marcommand-right {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Pull-quote block */
+.ps-marcommand-quote-wrap {
+  background: rgba(13, 149, 232, 0.07);
+  border: 1px solid rgba(13, 149, 232, 0.2);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-card);
+  padding: 28px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ps-marcommand-quote-icon {
+  color: var(--color-primary);
+  line-height: 0;
+}
+
+.ps-marcommand-quote {
+  font-size: 1.0625rem;
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--color-text-dark-primary);
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.ps-marcommand-quote-source {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+/* Feature list */
+.ps-marcommand-features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ps-marcommand-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-text-dark-secondary);
+}
+
+.ps-marcommand-feature-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  margin-top: 7px;
+}
+
+/* Responsive — collapse to single column on mobile */
+@media (max-width: 900px) {
+  .ps-marcommand-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ps-marcommand {
+    padding: var(--section-py-mobile) 0;
+  }
+
+  /* Reduce quote-wrap padding on mobile so blockquote has more breathing room */
+  .ps-marcommand-quote-wrap {
+    padding: 20px 20px 18px;
+  }
+
+  /* Safety: prevent long channel/brand names from breaking layout */
+  .ps-marcommand-quote {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Ensure MarCommand CTA button wraps gracefully if viewport is very narrow */
+  .ps-marcommand-cta .ps-btn {
+    white-space: normal;
+    text-align: center;
   }
 }
 

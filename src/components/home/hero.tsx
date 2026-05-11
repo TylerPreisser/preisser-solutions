@@ -250,10 +250,11 @@ export function Hero() {
           animated headline via CSS order, but first in the DOM for crawlers.
         */}
         <p className="ps-hero-summary sr-only">
-          Preisser Tech is a custom software and AI automation consultancy in Hays,
-          Kansas. We design and build websites, web applications, AI-powered workflows,
-          and real-time business dashboards for small and mid-sized companies.
-          Founded by Tyler Preisser, Hays, KS.
+          Preisser Tech builds custom-coded marketing systems, websites, AI automation,
+          and business intelligence for small and mid-sized companies in Kansas. Google
+          Ads, Meta Ads, AI search optimization, lead automation, and MarCommand — our
+          AI marketing intelligence platform that scores every channel by real dollar ROI.
+          Built in Hays, Kansas by Tyler Preisser.
         </p>
 
         <div ref={eyebrowRef} className="ps-hero-eyebrow">
@@ -262,20 +263,21 @@ export function Hero() {
         </div>
 
         <h1 ref={headlineRef} className="ps-hero-headline">
-          World-Class Technology.
+          Stop Renting Attention.
           <br />
-          Built in Kansas.
+          Start Owning It.
         </h1>
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
-          You show us the problem. We see the solution. Custom websites,
-          applications, AI, automations, and visualizations &mdash; built
-          specifically for your business.
+          We build the marketing engine — custom site, AI search visibility,
+          Google and Meta ads, lead automation — and you own every layer forever.
+          Powered by MarCommand, our AI brain that scores every channel by real
+          dollar ROI and tells you where to move the money next. Built in Hays, Kansas.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
           <Link href="/contact" className="ps-btn ps-btn-primary-dark">
-            Get in Touch
+            Start Building
             <svg
               className="ps-btn-arrow"
               width="16"

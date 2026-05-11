@@ -14,10 +14,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Preisser Tech",
+    default: "Preisser Tech | Marketing & AI Systems Built in Kansas",
     template: "%s | Preisser Tech",
   },
-  description: "World-class tech for your business.",
+  description:
+    "Custom-coded marketing systems that drive revenue. Google Ads, Meta Ads, AI search, and MarCommand AI ad intelligence. Built in Hays, Kansas — owned by you.",
   metadataBase: new URL("https://preissertech.com"),
   keywords: [
     "business automation Kansas",
@@ -81,8 +82,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://preissertech.com",
     siteName: "Preisser Tech",
-    title: "Preisser Tech",
-    description: "World-class tech for your business.",
+    title: "Preisser Tech | Marketing & AI Systems Built in Kansas",
+    description:
+      "Custom-coded marketing systems that drive revenue. Google Ads, Meta Ads, AI search, and MarCommand AI ad intelligence. Built in Hays, Kansas — owned by you.",
     images: [
       {
         url: "/images/og-image-v2.jpg",
@@ -94,8 +96,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Tech",
-    description: "World-class tech for your business.",
+    title: "Preisser Tech | Marketing & AI Systems Built in Kansas",
+    description:
+      "Custom-coded marketing systems that drive revenue. Google Ads, Meta Ads, AI search, and MarCommand AI ad intelligence. Built in Hays, Kansas — owned by you.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@tylerpreisser",
   },
@@ -171,7 +174,7 @@ const structuredData = [
     },
     image: "https://preissertech.com/images/ps-logo.png",
     description:
-      "You show us the problem. We see the solution. Preisser Tech is a B2B custom software, web application, and AI automation consultancy — not automotive tuning, not hardware. We design and build custom websites, applications, AI agents, automations, and data visualizations specifically for small and mid-sized businesses across Kansas and the Great Plains. Based in Hays, Kansas. Founded by Tyler Preisser.",
+      "Preisser Tech builds custom-coded marketing systems, websites, AI automation, and business intelligence tools for small and mid-sized companies. Google Ads, Meta Ads, AI search optimization, lead automation, and MarCommand — our AI marketing intelligence platform that scores every channel by real dollar ROI. Based in Hays, Kansas. Founded by Tyler Preisser. Not automotive tuning, not hardware.",
     disambiguatingDescription:
       "Preisser Tech (preissertech.com) is the custom software, web development, and AI automation consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Tech' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Tech builds websites, web applications, AI agents, and business automation systems exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: sales@preissertech.com.",
     slogan:
@@ -231,9 +234,14 @@ const structuredData = [
       "https://github.com/tylerpreisser",
     ],
     knowsAbout: [
+      "Google Ads Management",
+      "Meta Ads Management",
+      "AI Search Optimization (AEO/GEO)",
+      "MarCommand AI Marketing Intelligence",
       "Custom Software Development",
       "Custom Web Development",
       "Business Process Automation",
+      "Lead Capture and Automation",
       "AI Agent Development",
       "Web Application Development",
       "Real-Time Business Dashboards",
@@ -429,9 +437,9 @@ const structuredData = [
     "@type": "WebPage",
     "@id": WEBPAGE_ID,
     url: "https://preissertech.com",
-    name: "Preisser Tech | We Build Websites, Apps & Automations for Kansas Businesses",
+    name: "Preisser Tech | Marketing & AI Systems Built in Kansas",
     description:
-      "You show us the problem. We see the solution. Preisser Tech designs and builds custom websites, applications, AI, automations, and visualizations specifically for your business. 22+ projects delivered from Hays, Kansas by Tyler Preisser.",
+      "Stop renting attention. Start owning it. Preisser Tech builds the marketing engine — custom site, AI search visibility, Google and Meta ads, lead automation — and you own every layer forever. Powered by MarCommand, our AI brain that scores every channel by real dollar ROI. Built in Hays, Kansas.",
     isPartOf: { "@id": WEBSITE_ID },
     about: { "@id": ORG_ID },
     author: { "@id": PERSON_ID },

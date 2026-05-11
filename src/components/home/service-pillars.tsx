@@ -49,10 +49,113 @@ interface ServicePillar {
 
 const services: ServicePillar[] = [
   {
+    type: "revenue",
+    title: "Marketing & Growth Engines",
+    description:
+      "Google Ads, Meta Ads, AI search optimization (AEO/GEO), lead capture, customer reactivation, content systems. Built to compound — not rented from a monthly retainer.",
+    href: "/contact",
+    visual: <RevenueVisual />,
+    bullets: [
+      "Automated social media content",
+      "Email and SMS outreach engines",
+      "SEO and search optimization",
+      "Lead generation and conversion systems",
+    ],
+    stats: [
+      { number: "3-5x", label: "increase in qualified inbound leads within 90 days" },
+      { number: "60%+", label: "of untouched past customers re-engaged through AI outreach" },
+      { number: "47+", label: "average Google reviews needed to rank in the local top 3" },
+    ],
+    painPoints: [
+      "We do good work, but we rely almost entirely on word-of-mouth for new customers.",
+      "We've spent money on marketing. I couldn't tell you what it actually did for us.",
+      "Leads come in, but nobody follows up fast enough and they go cold.",
+      "We have years of past customers we've never reached back out to.",
+      "Our competitors are everywhere online. We're invisible.",
+      "I know we're leaving money on the table. I just don't know where.",
+    ],
+    serviceTiles: [
+      {
+        title: "MarCommand — AI Marketing Intelligence",
+        description:
+          "Our flagship AI platform. Ingests live data from every channel you run — Google, Meta, TikTok, YouTube, LinkedIn, email, LSAs, geofencing, organic — and scores each by actual dollar ROI. Daily reallocation recommendations with projected lift. Custom dashboard, private login, yours forever.",
+        icon: <IconMarketingDashboard />,
+      },
+      {
+        title: "AI-Powered Customer Segmentation",
+        description:
+          "AI analyzes your customer data and segments by behavior, value, and likelihood to convert. Target the right people with the right message.",
+        icon: <IconCustomerSegmentation />,
+      },
+      {
+        title: "Individualized AI Marketing",
+        description:
+          "Hyper-personalized outreach crafted by AI for each customer based on their history, preferences, and engagement patterns.",
+        icon: <IconIndividualizedMarketing />,
+      },
+      {
+        title: "AI-Powered Advertising Management",
+        description:
+          "Google Ads, Facebook Ads, managed and optimized by AI. Budget allocation, bid strategy, and creative testing on autopilot.",
+        icon: <IconAdvertisingManagement />,
+      },
+      {
+        title: "Speed-to-Lead Auto Response",
+        description:
+          "New inquiry, personalized response in under 60 seconds, captured in CRM, right person notified. First response wins the customer.",
+        icon: <IconSpeedToLead />,
+      },
+      {
+        title: "Digital Presence Overhaul",
+        description:
+          "Full audit and rebuild of your online footprint — website, Google Business Profile, social accounts, review systems, local SEO.",
+        icon: <IconDigitalPresence />,
+      },
+      {
+        title: "SEO & AI Search Optimization",
+        description:
+          "Found on Google AND in AI search results. Content architecture for traditional SEO and AI citations.",
+        icon: <IconSEOAIOptimization />,
+      },
+      {
+        title: "Automated Review Generation",
+        description:
+          "Post-service SMS review requests that make it effortless. Target: 50+ reviews in 90 days.",
+        icon: <IconAutomatedReviews />,
+      },
+      {
+        title: "Lead Capture & Nurture Funnels",
+        description:
+          "Landing pages, lead magnets, email capture, automated nurture sequences, CRM integration. Every lead followed up for 90 days.",
+        icon: <IconLeadNurtureFunnel />,
+      },
+      {
+        title: "Marketing Performance Dashboard",
+        description:
+          "See exactly which channels drive leads and revenue. Connected to ads, social, email, and CRM.",
+        icon: <IconMarketingDashboard />,
+      },
+    ],
+    differentiators: [
+      {
+        lead: "Systems, not services.",
+        body: "We build a marketing engine you own that runs automatically.",
+      },
+      {
+        lead: "Proven, not projected.",
+        body: "5x reach. 60%+ reactivation. 45% conversion increase. Real numbers from real clients.",
+      },
+      {
+        lead: "Full funnel.",
+        body: "Not just ads or social — the entire pipeline from discovery to conversion to re-engagement.",
+      },
+    ],
+  },
+  {
     type: "websites",
     title: "Websites & Applications",
     description:
-      "Professional sites, custom apps, client portals, and e-commerce systems — built from scratch, built to perform.",
+      "Custom-coded sites and web apps built for conversion, speed, and AI discoverability. Not templates. Not rebranded themes. Real code, built to rank in Google and get cited by ChatGPT, Claude, Perplexity, and Gemini.",
     href: "/contact",
     visual: <WebsiteVisual />,
     bullets: [
@@ -137,7 +240,7 @@ const services: ServicePillar[] = [
     type: "automation",
     title: "Automation Systems",
     description:
-      "AI-powered engines that handle your repetitive work — invoicing, outreach, document processing, you name it.",
+      "Lead follow-up, customer reactivation, review collection, internal workflows. Runs whether anyone's watching the inbox. Cassidy HVAC saw 60%+ reactivation of dormant customers and a 45% lift in booking conversion.",
     href: "/contact",
     visual: <AutomationVisual />,
     bullets: [
@@ -240,7 +343,7 @@ const services: ServicePillar[] = [
     type: "systems",
     title: "System Fixes & Efficiency",
     description:
-      "Something's slow, broken, or redundant? We find it and fix it with better tech.",
+      "Slow software, broken integrations, manual handoffs eating an hour a day. We fix the technical bottlenecks costing you time and revenue — and connect the tools you already pay for (QuickBooks, ServiceTitan, HubSpot, Salesforce, Square, Stripe).",
     href: "/contact",
     visual: <SystemFixesVisual />,
     bullets: [
@@ -322,107 +425,10 @@ const services: ServicePillar[] = [
     ],
   },
   {
-    type: "revenue",
-    title: "Revenue Growth Engines",
-    description:
-      "Automated content, email, SMS, and lead generation systems that keep marketing moving without constant babysitting.",
-    href: "/contact",
-    visual: <RevenueVisual />,
-    bullets: [
-      "Automated social media content",
-      "Email and SMS outreach engines",
-      "SEO and search optimization",
-      "Lead generation and conversion systems",
-    ],
-    stats: [
-      { number: "3-5x", label: "increase in qualified inbound leads within 90 days" },
-      { number: "60%+", label: "of untouched past customers re-engaged through AI outreach" },
-      { number: "47+", label: "average Google reviews needed to rank in the local top 3" },
-    ],
-    painPoints: [
-      "We do good work, but we rely almost entirely on word-of-mouth for new customers.",
-      "We've spent money on marketing. I couldn't tell you what it actually did for us.",
-      "Leads come in, but nobody follows up fast enough and they go cold.",
-      "We have years of past customers we've never reached back out to.",
-      "Our competitors are everywhere online. We're invisible.",
-      "I know we're leaving money on the table. I just don't know where.",
-    ],
-    serviceTiles: [
-      {
-        title: "AI-Powered Customer Segmentation",
-        description:
-          "AI analyzes your customer data and segments by behavior, value, and likelihood to convert. Target the right people with the right message.",
-        icon: <IconCustomerSegmentation />,
-      },
-      {
-        title: "Individualized AI Marketing",
-        description:
-          "Hyper-personalized outreach crafted by AI for each customer based on their history, preferences, and engagement patterns.",
-        icon: <IconIndividualizedMarketing />,
-      },
-      {
-        title: "AI-Powered Advertising Management",
-        description:
-          "Google Ads, Facebook Ads, managed and optimized by AI. Budget allocation, bid strategy, and creative testing on autopilot.",
-        icon: <IconAdvertisingManagement />,
-      },
-      {
-        title: "Speed-to-Lead Auto Response",
-        description:
-          "New inquiry, personalized response in under 60 seconds, captured in CRM, right person notified. First response wins the customer.",
-        icon: <IconSpeedToLead />,
-      },
-      {
-        title: "Digital Presence Overhaul",
-        description:
-          "Full audit and rebuild of your online footprint — website, Google Business Profile, social accounts, review systems, local SEO.",
-        icon: <IconDigitalPresence />,
-      },
-      {
-        title: "SEO & AI Search Optimization",
-        description:
-          "Found on Google AND in AI search results. Content architecture for traditional SEO and AI citations.",
-        icon: <IconSEOAIOptimization />,
-      },
-      {
-        title: "Automated Review Generation",
-        description:
-          "Post-service SMS review requests that make it effortless. Target: 50+ reviews in 90 days.",
-        icon: <IconAutomatedReviews />,
-      },
-      {
-        title: "Lead Capture & Nurture Funnels",
-        description:
-          "Landing pages, lead magnets, email capture, automated nurture sequences, CRM integration. Every lead followed up for 90 days.",
-        icon: <IconLeadNurtureFunnel />,
-      },
-      {
-        title: "Marketing Performance Dashboard",
-        description:
-          "See exactly which channels drive leads and revenue. Connected to ads, social, email, and CRM.",
-        icon: <IconMarketingDashboard />,
-      },
-    ],
-    differentiators: [
-      {
-        lead: "Systems, not services.",
-        body: "We build a marketing engine you own that runs automatically.",
-      },
-      {
-        lead: "Proven, not projected.",
-        body: "5x reach. 60%+ reactivation. 45% conversion increase. Real numbers from real clients.",
-      },
-      {
-        lead: "Full funnel.",
-        body: "Not just ads or social — the entire pipeline from discovery to conversion to re-engagement.",
-      },
-    ],
-  },
-  {
     type: "dashboards",
     title: "Dashboards & Business Intelligence",
     description:
-      "See your business clearly. Real-time data, live reporting, actionable insight.",
+      "Real-time views of the numbers that actually run your business. Built for owners, not analysts. If you can use your phone, you can use this.",
     href: "/contact",
     visual: <DashboardVisual />,
     bullets: [
@@ -1693,6 +1699,11 @@ export function ServicePillars() {
         >
           What We Build
         </h2>
+        <p className="ps-services-intro">
+          We build the systems that drive your revenue, and the technical depth
+          that keeps them running long after the work ships. Five pillars.
+          All custom-coded. All yours forever.
+        </p>
       </div>
 
       <div className="ps-bento-grid" ref={gridRef}>

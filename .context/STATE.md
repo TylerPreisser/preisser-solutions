@@ -72,6 +72,27 @@ The rebrand launched May 2, 2026. The website is fully built, deployed, and traf
 
 **Critical blocker — STILL OPEN (2026-05-04 late afternoon)**: Cloudflare-managed robots.txt is prepending Disallow rules for ClaudeBot, GPTBot, Google-Extended, Amazonbot, CCBot, Applebot-Extended, Bytespider, meta-externalagent — overriding Tyler's explicit Allow rules. API fix attempted and blocked by token scope (`zone:read` only). Tyler must toggle OFF in Cloudflare dashboard: dash.cloudflare.com → each zone → Security → Settings → "Instruct AI bot traffic with robots.txt". Do this for BOTH `preissertech.com` and `preissersolutions.com`.
 
+### Phase 1.5: Messaging Reframe (COMPLETE — 2026-05-11)
+
+**Positioning is live** in production-ready build. All changes build clean (109 pages, 0 errors).
+
+Updated:
+- Page title → `Preisser Tech | Marketing & AI Systems Built in Kansas`
+- Meta description → MarCommand + Google/Meta Ads + owned systems framing
+- Hero headline → `Stop Renting Attention. Start Owning It.`
+- Hero subheadline → full marketing engine + MarCommand intro
+- Hero CTA → `Start Building` (was "Get in Touch")
+- Value strip (4 items) → Google/Meta/AI search | MarCommand ROI | custom code | builder direct
+- "What We Build" intro paragraph added
+- Services reordered: Marketing & Growth Engines now first (was 4th)
+- All 5 service descriptions rewritten per builder-voice brief
+- MarCommand as featured sub-tile in Marketing & Growth Engines
+- New `MarCommandCallout` section added to homepage (below services grid)
+- JSON-LD WebPage name/description + Organization description updated
+- `knowsAbout` in JSON-LD expanded (Google Ads, Meta Ads, MarCommand, AEO/GEO added)
+- "world-class" eliminated from all changed copy
+- "You show us the problem" eliminated from all changed copy
+
 ### Phase 1: Foundation (COMPLETE)
 - Website built and deployed to Cloudflare Pages ✓
 - Domain switched to preissertech.com ✓

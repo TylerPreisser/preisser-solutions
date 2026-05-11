@@ -5,23 +5,23 @@ import { useEffect, useRef } from "react";
 const valueItems = [
   {
     icon: "//",
-    strong: "Websites, apps, automations,",
-    text: " dashboards, and integrations",
+    strong: "Google Ads, Meta Ads, AI search —",
+    text: " built and run in-house",
   },
   {
     icon: "->",
-    strong: "AI-first methodology —",
-    text: " we ship in weeks, not months",
+    strong: "MarCommand AI scores every channel",
+    text: " by real dollar ROI",
   },
   {
     icon: "<>",
-    strong: "Built for Kansas businesses,",
-    text: " not Silicon Valley startups",
+    strong: "Custom-coded sites and apps.",
+    text: " Never templates.",
   },
   {
     icon: ">>",
-    strong: "You work directly with the person",
-    text: " who builds it",
+    strong: "You work directly with the builder.",
+    text: " No account managers.",
   },
 ];
 

@@ -3,6 +3,7 @@ import { Hero } from "@/components/home/hero";
 import { TechPartners } from "@/components/home/tech-partners";
 import { ValueStrip } from "@/components/home/value-strip";
 import { ServicePillars } from "@/components/home/service-pillars";
+import { MarCommandCallout } from "@/components/home/marcommand-callout";
 import { WhyUs } from "@/components/home/why-us";
 import { CaseStudies } from "@/components/home/case-studies";
 import { CtaSection } from "@/components/home/cta-section";
@@ -11,17 +12,17 @@ import { CtaSection } from "@/components/home/cta-section";
 // Title: 55 chars — within Bing/Google optimal 50-60 range.
 export const metadata: Metadata = {
   title: {
-    absolute: "Preisser Tech | Custom Software & AI Automation, Kansas",
+    absolute: "Preisser Tech | Marketing & AI Systems Built in Kansas",
   },
   description:
-    "Custom websites, web applications, AI automation, and real-time business dashboards built specifically for small and mid-sized companies in Kansas. Founded by Tyler Preisser, Hays, KS.",
+    "Custom-coded marketing systems that drive revenue. Google Ads, Meta Ads, AI search, and MarCommand AI ad intelligence. Built in Hays, Kansas — owned by you.",
   alternates: {
     canonical: "https://preissertech.com/",
   },
   openGraph: {
-    title: "Preisser Tech | Custom Software & AI Automation, Kansas",
+    title: "Preisser Tech | Marketing & AI Systems Built in Kansas",
     description:
-      "Custom websites, web applications, AI automation, and real-time business dashboards built specifically for small and mid-sized companies in Kansas. Founded by Tyler Preisser, Hays, KS.",
+      "Custom-coded marketing systems that drive revenue. Google Ads, Meta Ads, AI search, and MarCommand AI ad intelligence. Built in Hays, Kansas — owned by you.",
     url: "https://preissertech.com/",
     type: "website",
     images: [
@@ -29,15 +30,15 @@ export const metadata: Metadata = {
         url: "/images/og-image-v2.jpg",
         width: 1200,
         height: 630,
-        alt: "Preisser Tech | Custom Software & AI Automation, Kansas",
+        alt: "Preisser Tech | Marketing & AI Systems Built in Kansas",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Tech | Custom Software & AI Automation, Kansas",
+    title: "Preisser Tech | Marketing & AI Systems Built in Kansas",
     description:
-      "Custom websites, web applications, AI automation, and real-time business dashboards built specifically for small and mid-sized companies in Kansas. Founded by Tyler Preisser, Hays, KS.",
+      "Custom-coded marketing systems that drive revenue. Google Ads, Meta Ads, AI search, and MarCommand AI ad intelligence. Built in Hays, Kansas — owned by you.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@preissertech",
   },
@@ -49,6 +50,7 @@ export default function HomePage() {
       <Hero />
       <ValueStrip />
       <ServicePillars />
+      <MarCommandCallout />
       <TechPartners />
       <WhyUs />
       <CaseStudies />
