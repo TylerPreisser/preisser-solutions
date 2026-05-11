@@ -66,8 +66,7 @@
 
   /* ── Themeable tokens — dark mode (default) ────────────────
      These drive all sections that switch with the theme.
-     Sections that are always dark (hero, footer, why-us,
-     case-studies, CTA) use --color-dark/* directly.        */
+     Sections that switch with the theme use these tokens. */
   --theme-bg-primary:   #0A1628;
   --theme-bg-secondary: #0F1D30;
   --theme-bg-surface:   #F6F9FC;
@@ -2807,6 +2806,10 @@ a {
   transform: translateX(-50%) translateY(0);
 }
 
+.ps-dialog-drag-handle {
+  display: none;
+}
+
 /* Visual area inside the dialog — large, dark background */
 .ps-dialog-visual {
   position: relative;
@@ -2951,8 +2954,22 @@ a {
 
 /* ── Responsive: dialog panel adjustments ───────────────────── */
 @media (max-width: 768px) {
+  .ps-dialog-drag-handle {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    width: 48px;
+    height: 5px;
+    margin: 10px auto 8px;
+    border-radius: 999px;
+    background: var(--theme-text-muted);
+    opacity: 0.45;
+  }
+
   .ps-dialog-visual {
     height: 280px;
+    border-radius: 0;
   }
   .ps-dialog-content {
     padding: 18px 24px 40px;
@@ -3361,7 +3378,7 @@ a {
 /* ── Why Us Section ────────────────────────────────────────── */
 /* Always uses theme-switchable background — transitions smoothly */
 .ps-why {
-  background: linear-gradient(180deg, #0B1E35 0%, var(--theme-section-alt) 100%);
+  background: linear-gradient(180deg, var(--theme-bg-secondary) 0%, var(--theme-section-alt) 100%);
   padding: var(--section-py-desktop) 0 72px;
   overflow: hidden;
   transition: background 300ms ease;
@@ -4493,9 +4510,10 @@ a {
 
 /* ── Case Studies / Work Carousel ─────────────────────────── */
 .ps-work {
-  background: linear-gradient(180deg, var(--theme-section-alt) 0%, var(--color-dark) 96px, var(--color-dark) 100%);
+  background: linear-gradient(180deg, var(--theme-section-alt) 0%, var(--theme-bg-primary) 96px, var(--theme-bg-primary) 100%);
   padding: 72px 24px var(--section-py-desktop);
   overflow: hidden;
+  transition: background 300ms ease;
 }
 
 .ps-work-header {
@@ -4887,11 +4905,12 @@ a {
 
 .ps-marcommand {
   position: relative;
-  background: #0B1E35;
+  background: var(--theme-bg-secondary);
   color: inherit;
   padding: var(--section-py-desktop) 0;
   margin-top: -1px;
   overflow: hidden;
+  transition: background-color 300ms ease;
 }
 
 .ps-marcommand-glow {
@@ -4955,15 +4974,17 @@ a {
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.03em;
-  color: #FFFFFF;
+  color: var(--theme-text-primary);
   margin: 0;
+  transition: color 300ms ease;
 }
 
 .ps-marcommand-body {
   font-size: 1rem;
   line-height: 1.7;
-  color: #94A3B8;
+  color: var(--theme-text-secondary);
   margin: 0;
+  transition: color 300ms ease;
 }
 
 .ps-marcommand-closer {
@@ -5762,6 +5783,74 @@ a {
   font-weight: 600;
 }
 
+[data-theme="light"] .mc3 {
+  background: #FFFFFF;
+  color: #0A1628;
+  border-color: rgba(13, 149, 232, 0.14);
+  box-shadow: 0 20px 60px rgba(10, 22, 40, 0.08);
+}
+
+[data-theme="light"] .mc3-metric,
+[data-theme="light"] .mc3-channels,
+[data-theme="light"] .mc3-panel,
+[data-theme="light"] .mc3-trend {
+  background: #F8FAFC;
+  border-color: #E2E8F0;
+}
+
+[data-theme="light"] .mc3-ch:hover {
+  background: rgba(13, 149, 232, 0.06);
+}
+
+[data-theme="light"] .mc3-m-label,
+[data-theme="light"] .mc3-sec-t,
+[data-theme="light"] .mc3-ch-head,
+[data-theme="light"] .mc3-panel-t,
+[data-theme="light"] .mc3-seg-since,
+[data-theme="light"] .mc3-pending-c {
+  color: #64748B;
+}
+
+[data-theme="light"] .mc3-sec-m,
+[data-theme="light"] .mc3-num,
+[data-theme="light"] .mc3-seg-pct,
+[data-theme="light"] .mc3-window {
+  color: #475569;
+}
+
+[data-theme="light"] .mc3-name,
+[data-theme="light"] .mc3-m-val,
+[data-theme="light"] .mc3-num.lit,
+[data-theme="light"] .mc3-fmt-v,
+[data-theme="light"] .mc3-seg-name,
+[data-theme="light"] .mc3-pcard-body {
+  color: #0A1628;
+}
+
+[data-theme="light"] .mc3-bar,
+[data-theme="light"] .mc3-fmt-bar,
+[data-theme="light"] .mc3-seg-bar {
+  background: #E2E8F0;
+}
+
+[data-theme="light"] .mc3-seg {
+  border-top-color: #E2E8F0;
+}
+
+[data-theme="light"] .mc3-trend-svg line {
+  stroke: rgba(10, 22, 40, 0.08);
+}
+
+[data-theme="light"] .mc3-pcard {
+  background: #EFF6FF;
+  border-color: rgba(13, 149, 232, 0.24);
+}
+
+[data-theme="light"] .mc3-pbtn {
+  background: #FFFFFF;
+  border-color: rgba(13, 149, 232, 0.28);
+}
+
 /* Responsive: 720px — stack bottom grid */
 @media (max-width: 720px) {
   .mc3-grid {
@@ -5769,6 +5858,16 @@ a {
   }
   .mc3-pending-grid {
     grid-template-columns: 1fr;
+  }
+  .mc3-pending-c {
+    font-size: 0;
+  }
+  .mc3-pending-c::after {
+    content: "· 1 recommendation awaiting approval";
+    font-size: 11px;
+  }
+  .mc3-pcard:nth-child(n + 2) {
+    display: none;
   }
   /* Prevent long segment names/microcopy from overflowing single-column panel */
   .mc3-seg-name,
@@ -6005,7 +6104,7 @@ a {
 
 /* ── Work Carousel: light mode overrides ───────────────────── */
 [data-theme="light"] .ps-work {
-  background-color: #F8FAFC;
+  background: linear-gradient(180deg, var(--theme-section-alt) 0%, var(--theme-bg-primary) 96px, var(--theme-bg-primary) 100%);
 }
 
 /* Cards always use their gradient bg — no light mode override needed */

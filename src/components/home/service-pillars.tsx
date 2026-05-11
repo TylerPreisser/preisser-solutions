@@ -147,9 +147,9 @@ const services: ServicePillar[] = [
       "Lead generation and conversion systems",
     ],
     stats: [
-      { number: "3-5x", label: "increase in qualified inbound leads within 90 days" },
-      { number: "60%+", label: "of untouched past customers re-engaged through AI outreach" },
-      { number: "47+", label: "average Google reviews needed to rank in the local top 3" },
+      { number: "800M+", label: "people use ChatGPT weekly; AI discovery is mainstream" },
+      { number: "3 signals", label: "Google local ranking: relevance, distance, and prominence" },
+      { number: "7x", label: "higher qualification odds when leads are contacted within 5 minutes vs. 1 hour" },
     ],
     painPoints: [
       "We do good work, but we rely almost entirely on word-of-mouth for new customers.",
@@ -163,7 +163,7 @@ const services: ServicePillar[] = [
       {
         title: "MarCommand",
         description:
-          "Preisser Tech's proprietary AI agent system. A custom agent built for each business — to understand your business, to start understanding, learning, and training itself on your audience, your business, your social media's real content, your channels, your products, and all of that. Inquire about packaging by getting in touch.",
+          "Preisser Tech's proprietary AI agent system. A custom agent built for each business to learn your audience, services, customers, channels, products, and real marketing data. Inquire about packaging by getting in touch.",
         icon: <IconMarketingDashboard />,
       },
       {
@@ -227,8 +227,8 @@ const services: ServicePillar[] = [
         body: "We build a marketing engine you own that runs automatically.",
       },
       {
-        lead: "Proven, not projected.",
-        body: "5x reach. 60%+ reactivation. 45% conversion increase. Real numbers from real clients.",
+        lead: "Measured, not guessed.",
+        body: "MarCommand connects channels, reviews, content, ads, and follow-up back to the actual business context.",
       },
       {
         lead: "Full funnel.",
@@ -1538,6 +1538,8 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
       >
+        <div className="ps-dialog-drag-handle" aria-hidden="true" />
+
         {/* Visual area — large animated preview */}
         <div className="ps-dialog-visual" aria-hidden="true">
           {service.visual}
