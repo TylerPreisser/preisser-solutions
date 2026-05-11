@@ -1124,9 +1124,14 @@ a {
 
 /* ── Service Pillars ───────────────────────────────────────── */
 .ps-services {
-  background-color: var(--theme-section-alt);
+  background: linear-gradient(
+    180deg,
+    var(--theme-section-alt) 0%,
+    var(--theme-section-alt) calc(100% - 160px),
+    var(--theme-section-switchable) 100%
+  );
   padding: var(--section-py-desktop) 0;
-  transition: background-color 300ms ease;
+  transition: background 300ms ease;
 }
 
 @media (max-width: 768px) {
@@ -3317,7 +3322,7 @@ a {
 /* ── Why Us Section ────────────────────────────────────────── */
 /* Always uses theme-switchable background — transitions smoothly */
 .ps-why {
-  background: linear-gradient(180deg, var(--theme-section-switchable) 0%, var(--theme-section-alt) 100%);
+  background: linear-gradient(180deg, #0B1E35 0%, var(--theme-section-alt) 100%);
   padding: var(--section-py-desktop) 0 72px;
   overflow: hidden;
   transition: background 300ms ease;
@@ -4449,7 +4454,7 @@ a {
 
 /* ── Case Studies / Work Carousel ─────────────────────────── */
 .ps-work {
-  background-color: var(--color-dark);
+  background: linear-gradient(180deg, var(--theme-section-alt) 0%, var(--color-dark) 96px, var(--color-dark) 100%);
   padding: 72px 24px var(--section-py-desktop);
   overflow: hidden;
 }
@@ -4843,7 +4848,7 @@ a {
 
 .ps-marcommand {
   position: relative;
-  background: linear-gradient(180deg, #0A1628 0%, #0B1E35 72px, #0B1E35 100%);
+  background: #0B1E35;
   color: inherit;
   padding: var(--section-py-desktop) 0;
   margin-top: -1px;
@@ -6531,10 +6536,10 @@ a {
 
 /* ── Tech Partners / Logo Banner ───────────────────────────── */
 .ps-tech-partners {
-  background-color: var(--theme-section-switchable);
+  background: linear-gradient(180deg, var(--theme-section-switchable) 0%, #0B1E35 100%);
   padding: 48px 0;
   overflow: hidden;
-  transition: background-color 300ms ease;
+  transition: background 300ms ease;
 }
 
 .ps-tech-partners-header {

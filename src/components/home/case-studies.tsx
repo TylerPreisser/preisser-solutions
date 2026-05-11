@@ -33,25 +33,7 @@ const caseStudyCards: CaseStudyCard[] = [
     gradient: "linear-gradient(135deg, #0F2744 0%, #1a3a6e 100%)",
     caseLogo: "/images/case-studies/sunrise-transportation-logo.svg",
   },
-  // 3 — Enterprise: Alliant Insurance Services
-  {
-    title: "Alliant Insurance Services",
-    tags: "Enterprise | Insurance Brokerage | Integration",
-    description:
-      "Built systems for Alliant Insurance Services, one of the largest national insurance brokerages in the United States. Replaced a failed prior vendor on a six-figure retainer engagement. Work delivered through R Squared AI.",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #0D3160 50%, #0A1628 100%)",
-    caseLogo: "/images/case-studies/alliant-logo.svg",
-  },
-  // 4 — Salesforce
-  {
-    title: "Salesforce",
-    tags: "Enterprise | Platform | Integration",
-    description:
-      "Built integration and automation work alongside enterprise teams operating on the Salesforce platform. Work delivered through R Squared AI.",
-    gradient: "linear-gradient(135deg, #061526 0%, #0A2744 55%, #0A1628 100%)",
-    caseLogo: "/images/case-studies/salesforce-logo.svg",
-  },
-  // 5
+  // 3
   {
     title: "The Iron and Oak Podcast",
     tags: "Website Build | AI Search Optimization",
