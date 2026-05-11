@@ -8,74 +8,48 @@ interface CaseStudyCard {
   description: string;
   gradient: string;
   image?: string;
+  caseLogo?: string;
   svgIcon?: React.ReactNode;
   lightCard?: boolean;
+  href?: string;
 }
 
 const caseStudyCards: CaseStudyCard[] = [
-  // 1 — Enterprise: Alliant Insurance
+  // 1 — Enterprise: Astrus Insurance Solutions
   {
-    title: "Alliant Insurance",
-    tags: "Enterprise Client | Custom Systems | Data Architecture",
+    title: "Astrus Insurance Solutions",
+    tags: "Enterprise | Construction MGU | Insurance",
     description:
-      "Built for one of the largest insurance brokerage firms in the United States. Enterprise-grade custom systems — the same approach, the same quality, available to your business. [Tyler to fill in project specifics]",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #0D3160 50%, #0A1628 100%)",
-    image: "preisser-tech.webp",
+      "Built systems for Astrus Insurance Solutions, the nation's premier construction-focused Managing General Underwriter. An Alliant family company based in Pasadena, California, Astrus serves specialty trade contractors, general contractors, and large construction projects nationwide.",
+    gradient: "linear-gradient(135deg, #0a1f3c 0%, #0D95E8 100%)",
+    caseLogo: "/images/case-studies/astrus-logo.png",
   },
   // 2 — Enterprise: Sunrise Transportation
   {
     title: "Sunrise Transportation",
-    tags: "Power BI Dashboards | Chicago Logistics | $50M+ Company",
+    tags: "Enterprise | Power BI | Operations Data",
     description:
-      "Built Power BI dashboards for a $50M+ Chicago logistics operation. Live operational data, executive visibility, and decision-making at scale. Same approach available for your business.",
+      "Built Power BI dashboards and operational data infrastructure for Sunrise Transportation, a Chicago/Naperville-based specialty K-12 transportation provider. Sunrise has been featured on Fox News for its AI innovations in school bus safety; we contributed to the data and intelligence layer behind their fleet.",
     gradient: "linear-gradient(135deg, #0F2744 0%, #1a3a6e 100%)",
-    svgIcon: (
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        {/* Truck silhouette */}
-        <rect x="4" y="16" width="28" height="20" rx="2" strokeOpacity="0.7" />
-        <path d="M32 20h6l6 8v8h-12V20z" strokeOpacity="0.8" />
-        <circle cx="12" cy="38" r="3" stroke="currentColor" />
-        <circle cx="22" cy="38" r="3" stroke="currentColor" />
-        <circle cx="38" cy="38" r="3" stroke="currentColor" />
-        {/* Dashboard lines */}
-        <path d="M8 22h16" strokeOpacity="0.4" />
-        <path d="M8 26h12" strokeOpacity="0.3" />
-      </svg>
-    ),
+    caseLogo: "/images/case-studies/sunrise-transportation-logo.svg",
   },
-  // 3 — Enterprise: Astris Insurance
+  // 3 — Enterprise: Alliant Insurance Services
   {
-    title: "Astris Insurance",
-    tags: "Enterprise Client | Custom Systems",
+    title: "Alliant Insurance Services",
+    tags: "Enterprise | Insurance Brokerage | Integration",
     description:
-      "Enterprise-grade custom systems built for Astris Insurance. The same caliber of work we bring to every client — regardless of their size. [Tyler to fill in project specifics]",
-    gradient: "linear-gradient(135deg, #0a1f3c 0%, #0D95E8 100%)",
-    svgIcon: (
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        {/* Shield */}
-        <path d="M24 4L8 10v14c0 8.8 7 17 16 20 9-3 16-11.2 16-20V10L24 4z" strokeOpacity="0.8" />
-        <path d="M17 24l5 5 9-10" strokeOpacity="0.9" />
-      </svg>
-    ),
+      "Built systems for Alliant Insurance Services, one of the largest national insurance brokerages in the United States. Replaced a failed prior vendor on a six-figure retainer engagement.",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #0D3160 50%, #0A1628 100%)",
+    caseLogo: "/images/case-studies/alliant-logo.svg",
   },
   // 4 — Salesforce
   {
     title: "Salesforce",
-    tags: "Enterprise Work | Custom Integration",
+    tags: "Enterprise | Platform | Integration",
     description:
-      "Built custom systems for Salesforce engagements. Enterprise-caliber work — the standard we hold ourselves to on every project, for every client. [Tyler to fill in project specifics]",
+      "Built integration and automation work alongside enterprise teams operating on the Salesforce platform.",
     gradient: "linear-gradient(135deg, #00A1E0 0%, #0070D2 100%)",
-    svgIcon: (
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        {/* Cloud */}
-        <path d="M34 28c3.3 0 6-2.7 6-6 0-3-2.2-5.5-5.1-5.9C34.1 12.6 30.7 10 26.7 10c-3.7 0-6.9 2.3-8.3 5.6-.4-.1-.8-.1-1.2-.1-3.9 0-7 3.1-7 7s3.1 7 7 7H34z" strokeOpacity="0.8" />
-        {/* Connection nodes */}
-        <circle cx="20" cy="36" r="2.5" fill="currentColor" fillOpacity="0.6" stroke="none" />
-        <circle cx="28" cy="36" r="2.5" fill="currentColor" fillOpacity="0.6" stroke="none" />
-        <circle cx="24" cy="42" r="2.5" fill="currentColor" fillOpacity="0.6" stroke="none" />
-        <path d="M20 36l4 6M28 36l-4 6" strokeOpacity="0.4" />
-      </svg>
-    ),
+    caseLogo: "/images/case-studies/salesforce-logo.svg",
   },
   // 5
   {
@@ -133,6 +107,7 @@ const caseStudyCards: CaseStudyCard[] = [
       "From the moment a lead fills out a form to the moment they're tagged, scored, and assigned in the CRM — zero manual steps. No inbox monitoring. No copy-pasting into spreadsheets. Leads move through your pipeline whether your team is watching or not.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #0F1D30 100%)",
     image: "r-squared.webp",
+    href: "https://3124f78d.r2-solutions.pages.dev/",
   },
   // 7
   {
@@ -142,6 +117,7 @@ const caseStudyCards: CaseStudyCard[] = [
       "Six autonomous AI agents running in parallel — scanning, analyzing, scoring, and producing strategic output without human intervention. This is the ceiling of what business AI can do today, and we built it specifically for this use case.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #1a1040 50%, #0A1628 100%)",
     image: "r-squared.webp",
+    href: "https://3124f78d.r2-solutions.pages.dev/",
   },
   // 8
   {
@@ -402,19 +378,8 @@ export function CaseStudies() {
       <div className="ps-work-track" ref={trackRef} role="list" onScroll={handleTrackScroll}>
         {caseStudyCards.map((study, index) => {
           const isMobileActive = activeMobileCard === index;
-          return (
-            <article
-              key={`${study.title}-${index}`}
-              className={[
-                "ps-work-card",
-                study.lightCard ? "ps-work-card--light" : "",
-                isMobileActive ? "ps-work-card--tapped" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              role="listitem"
-              onClick={() => handleCardTap(index)}
-            >
+          const cardContent = (
+            <>
               {/* Gradient background layer */}
               <div
                 className="ps-work-card-bg"
@@ -423,7 +388,14 @@ export function CaseStudies() {
               />
 
               {/* Logo/image centered on the card */}
-              {study.image ? (
+              {study.caseLogo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}${study.caseLogo}`}
+                  alt={study.title}
+                  className="ps-work-card-logo ps-work-card-logo--company"
+                />
+              ) : study.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/cases/${study.image}`}
@@ -448,6 +420,45 @@ export function CaseStudies() {
                 <span className="ps-work-card-tag">{study.tags}</span>
                 <p className="ps-work-card-result">{study.description}</p>
               </div>
+            </>
+          );
+
+          if (study.href) {
+            return (
+              <a
+                key={`${study.title}-${index}`}
+                href={study.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={[
+                  "ps-work-card",
+                  study.lightCard ? "ps-work-card--light" : "",
+                  isMobileActive ? "ps-work-card--tapped" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                role="listitem"
+                onClick={() => handleCardTap(index)}
+              >
+                {cardContent}
+              </a>
+            );
+          }
+
+          return (
+            <article
+              key={`${study.title}-${index}`}
+              className={[
+                "ps-work-card",
+                study.lightCard ? "ps-work-card--light" : "",
+                isMobileActive ? "ps-work-card--tapped" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              role="listitem"
+              onClick={() => handleCardTap(index)}
+            >
+              {cardContent}
             </article>
           );
         })}

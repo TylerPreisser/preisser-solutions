@@ -4524,6 +4524,9 @@ a {
   flex-shrink: 0;
   scroll-snap-align: start;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
 /* Gradient fill layer */
@@ -4552,6 +4555,17 @@ a {
 .ps-work-card-logo--headshot {
   max-width: 75%;
   max-height: 65%;
+  filter: none;
+}
+
+/* Company logo — contained, with subtle white background pill for legibility on dark gradients */
+.ps-work-card-logo--company {
+  max-width: 65%;
+  max-height: 40%;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 8px;
+  object-fit: contain;
   filter: none;
 }
 

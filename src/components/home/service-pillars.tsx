@@ -49,111 +49,8 @@ interface ServicePillar {
 
 const services: ServicePillar[] = [
   {
-    type: "revenue",
-    title: "AI-Native Marketing & Growth",
-    description:
-      "Hyper-personalized, psychologically targeted campaigns. We use AI to organically maximize your AI presence — your business shows up where AI is looking. Powered by MarCommand, our internal AI agent. Nobody else in Kansas is doing this.",
-    href: "/contact",
-    visual: <RevenueVisual />,
-    bullets: [
-      "Automated social media content",
-      "Email and SMS outreach engines",
-      "SEO and AI search optimization",
-      "Lead generation and conversion systems",
-    ],
-    stats: [
-      { number: "3-5x", label: "increase in qualified inbound leads within 90 days" },
-      { number: "60%+", label: "of untouched past customers re-engaged through AI outreach" },
-      { number: "47+", label: "average Google reviews needed to rank in the local top 3" },
-    ],
-    painPoints: [
-      "We do good work, but we rely almost entirely on word-of-mouth for new customers.",
-      "We've spent money on marketing. I couldn't tell you what it actually did for us.",
-      "Leads come in, but nobody follows up fast enough and they go cold.",
-      "We have years of past customers we've never reached back out to.",
-      "Our competitors are everywhere online. We're invisible.",
-      "I know we're leaving money on the table. I just don't know where.",
-    ],
-    serviceTiles: [
-      {
-        title: "MarCommand — Our Internal AI Agent",
-        description:
-          "With our MarCommand package, it comes with a custom agent built for each business — to understand your business, your audience, your social media's real content, your channels, your products. This is how granular we're getting. Clients never see it, never operate it. They get the results.",
-        icon: <IconMarketingDashboard />,
-      },
-      {
-        title: "AI-Powered Customer Segmentation",
-        description:
-          "AI analyzes your customer data and segments by behavior, value, and likelihood to convert. Target the right people with the right message.",
-        icon: <IconCustomerSegmentation />,
-      },
-      {
-        title: "Individualized AI Marketing",
-        description:
-          "Hyper-personalized outreach crafted by AI for each customer based on their history, preferences, and engagement patterns.",
-        icon: <IconIndividualizedMarketing />,
-      },
-      {
-        title: "AI-Powered Advertising Management",
-        description:
-          "Google Ads, Facebook Ads, managed and optimized by AI. Budget allocation, bid strategy, and creative testing on autopilot.",
-        icon: <IconAdvertisingManagement />,
-      },
-      {
-        title: "Speed-to-Lead Auto Response",
-        description:
-          "New inquiry, personalized response in under 60 seconds, captured in CRM, right person notified. First response wins the customer.",
-        icon: <IconSpeedToLead />,
-      },
-      {
-        title: "Digital Presence Overhaul",
-        description:
-          "Full audit and rebuild of your online footprint — website, Google Business Profile, social accounts, review systems, local SEO.",
-        icon: <IconDigitalPresence />,
-      },
-      {
-        title: "SEO & AI Search Optimization",
-        description:
-          "Found on Google AND in AI search results. Content architecture for traditional SEO and AI citations.",
-        icon: <IconSEOAIOptimization />,
-      },
-      {
-        title: "Automated Review Generation",
-        description:
-          "Post-service SMS review requests that make it effortless. Target: 50+ reviews in 90 days.",
-        icon: <IconAutomatedReviews />,
-      },
-      {
-        title: "Lead Capture & Nurture Funnels",
-        description:
-          "Landing pages, lead magnets, email capture, automated nurture sequences, CRM integration. Every lead followed up for 90 days.",
-        icon: <IconLeadNurtureFunnel />,
-      },
-      {
-        title: "Marketing Performance Dashboard",
-        description:
-          "See exactly which channels drive leads and revenue. Connected to ads, social, email, and CRM.",
-        icon: <IconMarketingDashboard />,
-      },
-    ],
-    differentiators: [
-      {
-        lead: "Systems, not services.",
-        body: "We build a marketing engine you own that runs automatically.",
-      },
-      {
-        lead: "Proven, not projected.",
-        body: "5x reach. 60%+ reactivation. 45% conversion increase. Real numbers from real clients.",
-      },
-      {
-        lead: "Full funnel.",
-        body: "Not just ads or social — the entire pipeline from discovery to conversion to re-engagement.",
-      },
-    ],
-  },
-  {
     type: "websites",
-    title: "AI-Native Websites & Applications",
+    title: "Websites & Applications",
     description:
       "Custom-coded onto servers designed for AI agents. Indexed on every AI registry. Structured so AI gets exactly what it needs when it crawls. We frame the messaging so AI picks you first.",
     href: "/contact",
@@ -233,6 +130,109 @@ const services: ServicePillar[] = [
       {
         lead: "Sites that generate business.",
         body: "Not digital brochures. Lead machines with tracking, forms, and conversion optimization built in.",
+      },
+    ],
+  },
+  {
+    type: "revenue",
+    title: "Revenue Growth Engines",
+    description:
+      "Hyper-personalized, psychologically targeted campaigns. We use AI to organically maximize your AI presence — your business shows up where AI is looking. Powered by MarCommand, our internal AI agent. Nobody else in Kansas is doing this.",
+    href: "/contact",
+    visual: <RevenueVisual />,
+    bullets: [
+      "Automated social media content",
+      "Email and SMS outreach engines",
+      "SEO and AI search optimization",
+      "Lead generation and conversion systems",
+    ],
+    stats: [
+      { number: "3-5x", label: "increase in qualified inbound leads within 90 days" },
+      { number: "60%+", label: "of untouched past customers re-engaged through AI outreach" },
+      { number: "47+", label: "average Google reviews needed to rank in the local top 3" },
+    ],
+    painPoints: [
+      "We do good work, but we rely almost entirely on word-of-mouth for new customers.",
+      "We've spent money on marketing. I couldn't tell you what it actually did for us.",
+      "Leads come in, but nobody follows up fast enough and they go cold.",
+      "We have years of past customers we've never reached back out to.",
+      "Our competitors are everywhere online. We're invisible.",
+      "I know we're leaving money on the table. I just don't know where.",
+    ],
+    serviceTiles: [
+      {
+        title: "MarCommand",
+        description:
+          "Preisser Tech's proprietary AI agent system. A custom agent built for each business — to understand your business, to start understanding, learning, and training itself on your audience, your business, your social media's real content, your channels, your products, and all of that. Inquire about packaging by getting in touch.",
+        icon: <IconMarketingDashboard />,
+      },
+      {
+        title: "AI-Powered Customer Segmentation",
+        description:
+          "AI analyzes your customer data and segments by behavior, value, and likelihood to convert. Target the right people with the right message.",
+        icon: <IconCustomerSegmentation />,
+      },
+      {
+        title: "Individualized AI Marketing",
+        description:
+          "Hyper-personalized outreach crafted by AI for each customer based on their history, preferences, and engagement patterns.",
+        icon: <IconIndividualizedMarketing />,
+      },
+      {
+        title: "AI-Powered Advertising Management",
+        description:
+          "Google Ads, Facebook Ads, managed and optimized by AI. Budget allocation, bid strategy, and creative testing on autopilot.",
+        icon: <IconAdvertisingManagement />,
+      },
+      {
+        title: "Speed-to-Lead Auto Response",
+        description:
+          "New inquiry, personalized response in under 60 seconds, captured in CRM, right person notified. First response wins the customer.",
+        icon: <IconSpeedToLead />,
+      },
+      {
+        title: "Digital Presence Overhaul",
+        description:
+          "Full audit and rebuild of your online footprint — website, Google Business Profile, social accounts, review systems, local SEO.",
+        icon: <IconDigitalPresence />,
+      },
+      {
+        title: "SEO & AI Search Optimization",
+        description:
+          "Found on Google AND in AI search results. Content architecture for traditional SEO and AI citations.",
+        icon: <IconSEOAIOptimization />,
+      },
+      {
+        title: "Automated Review Generation",
+        description:
+          "Post-service SMS review requests that make it effortless. Target: 50+ reviews in 90 days.",
+        icon: <IconAutomatedReviews />,
+      },
+      {
+        title: "Lead Capture & Nurture Funnels",
+        description:
+          "Landing pages, lead magnets, email capture, automated nurture sequences, CRM integration. Every lead followed up for 90 days.",
+        icon: <IconLeadNurtureFunnel />,
+      },
+      {
+        title: "Marketing Performance Dashboard",
+        description:
+          "See exactly which channels drive leads and revenue. Connected to ads, social, email, and CRM.",
+        icon: <IconMarketingDashboard />,
+      },
+    ],
+    differentiators: [
+      {
+        lead: "Systems, not services.",
+        body: "We build a marketing engine you own that runs automatically.",
+      },
+      {
+        lead: "Proven, not projected.",
+        body: "5x reach. 60%+ reactivation. 45% conversion increase. Real numbers from real clients.",
+      },
+      {
+        lead: "Full funnel.",
+        body: "Not just ads or social — the entire pipeline from discovery to conversion to re-engagement.",
       },
     ],
   },
@@ -340,6 +340,67 @@ const services: ServicePillar[] = [
     ],
   },
   {
+    type: "dashboards",
+    title: "Dashboards & Business Intelligence",
+    description:
+      "Real-time views of the numbers that actually run your business. Built for owners, not analysts. If you can use your phone, you can use this.",
+    href: "/contact",
+    visual: <DashboardVisual />,
+    bullets: [
+      "Custom dashboards",
+      "Financial and operational reporting",
+      "Data integration and cleanup",
+      "Forecasting and trend analysis",
+    ],
+    stats: [
+      { number: "73%", label: "of business data goes completely unused for decisions" },
+      { number: "23x", label: "more likely to acquire customers with data-driven decisions" },
+      { number: "65%", label: "of small businesses are profitable but can't tell you where" },
+    ],
+    painPoints: [
+      "I make most decisions on gut feeling because I don't have the numbers in front of me.",
+      "By the time I get a report, the information is already two weeks old.",
+      "Our data lives in five different places and nobody has a complete picture.",
+      "I couldn't tell you our most profitable service line without digging through spreadsheets.",
+      "My team spends hours building reports that I glance at for thirty seconds.",
+      "We have data scattered across platforms and none of it lines up when we need it.",
+    ],
+    serviceTiles: [
+      {
+        title: "Executive Dashboard",
+        description:
+          "One screen, three-second status of your entire business. Revenue, expenses, KPIs, cash flow — updated in real time.",
+        icon: <IconExecutiveDashboard />,
+      },
+      {
+        title: "AI-Powered Business Insights",
+        description:
+          "Ask your dashboard questions in plain English. 'Why is revenue down this month?' 'Which service is most profitable?' AI answers from your real data.",
+        icon: <IconAIBusinessInsights />,
+      },
+      {
+        title: "Financial Health Dashboard",
+        description:
+          "Live connection to QuickBooks, your bank, and invoicing. AR aging, cash position, revenue vs. forecast — always current.",
+        icon: <IconFinancialHealth />,
+      },
+    ],
+    differentiators: [
+      {
+        lead: "Dashboards you want to look at.",
+        body: "Clean, visual, built for business owners — not analysts.",
+      },
+      {
+        lead: "Connected to your real systems.",
+        body: "Live data from QuickBooks, ServiceTitan, Square, your CRM.",
+      },
+      {
+        lead: "Decisions, not data dumps.",
+        body: "Built around the questions you actually need answered.",
+      },
+    ],
+  },
+  {
     type: "systems",
     title: "System Fixes & Efficiency",
     description:
@@ -421,91 +482,6 @@ const services: ServicePillar[] = [
       {
         lead: "Fixes that pay for themselves.",
         body: "Every improvement measured in time saved, errors eliminated, money recovered.",
-      },
-    ],
-  },
-  {
-    type: "dashboards",
-    title: "Dashboards & Business Intelligence",
-    description:
-      "Real-time views of the numbers that actually run your business. Built for owners, not analysts. If you can use your phone, you can use this.",
-    href: "/contact",
-    visual: <DashboardVisual />,
-    bullets: [
-      "Custom dashboards",
-      "Financial and operational reporting",
-      "Data integration and cleanup",
-      "Forecasting and trend analysis",
-    ],
-    stats: [
-      { number: "73%", label: "of business data goes completely unused for decisions" },
-      { number: "23x", label: "more likely to acquire customers with data-driven decisions" },
-      { number: "65%", label: "of small businesses are profitable but can't tell you where" },
-    ],
-    painPoints: [
-      "I make most decisions on gut feeling because I don't have the numbers in front of me.",
-      "By the time I get a report, the information is already two weeks old.",
-      "Our data lives in five different places and nobody has a complete picture.",
-      "I couldn't tell you our most profitable service line without digging through spreadsheets.",
-      "My team spends hours building reports that I glance at for thirty seconds.",
-      "We have data scattered across platforms and none of it lines up when we need it.",
-    ],
-    serviceTiles: [
-      {
-        title: "Executive Dashboard",
-        description:
-          "One screen, three-second status of your entire business. Revenue, expenses, KPIs, cash flow — updated in real time.",
-        icon: <IconExecutiveDashboard />,
-      },
-      {
-        title: "AI-Powered Business Insights",
-        description:
-          "Ask your dashboard questions in plain English. 'Why is revenue down this month?' 'Which service is most profitable?' AI answers from your real data.",
-        icon: <IconAIBusinessInsights />,
-      },
-      {
-        title: "Financial Health Dashboard",
-        description:
-          "Live connection to QuickBooks, your bank, and invoicing. AR aging, cash position, revenue vs. forecast — always current.",
-        icon: <IconFinancialHealth />,
-      },
-      {
-        title: "Employee & Technician Productivity",
-        description:
-          "Revenue per tech, avg ticket, utilization, callbacks — pulled from your service platform automatically.",
-        icon: <IconEmployeeProductivity />,
-      },
-      {
-        title: "Marketing ROI Tracker",
-        description:
-          "One view connecting Google Ads, website analytics, social, and Google Business Profile. Know exactly what's working.",
-        icon: <IconMarketingROI />,
-      },
-      {
-        title: "Automated KPI & Trend Reporting",
-        description:
-          "Reports delivered to your inbox on whatever cadence you need. Zero effort from you.",
-        icon: <IconKPIReporting />,
-      },
-      {
-        title: "AI System Integration Dashboard",
-        description:
-          "All your tools, all your data, one unified view. AI monitors for anomalies and alerts you before problems escalate.",
-        icon: <IconSystemIntegrationDashboard />,
-      },
-    ],
-    differentiators: [
-      {
-        lead: "Dashboards you want to look at.",
-        body: "Clean, visual, built for business owners — not analysts.",
-      },
-      {
-        lead: "Connected to your real systems.",
-        body: "Live data from QuickBooks, ServiceTitan, Square, your CRM.",
-      },
-      {
-        lead: "Decisions, not data dumps.",
-        body: "Built around the questions you actually need answered.",
       },
     ],
   },

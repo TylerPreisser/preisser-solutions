@@ -107,18 +107,6 @@ export function MarCommandCallout() {
           <MarCommandDashboard />
         </div>
 
-        {/* Below-dashboard framing — Tyler's verbatim positioning */}
-        <div className="ps-marcommand-footer-copy">
-          <p className="ps-marcommand-footer-body">
-            MarCommand is our internal tool. It&apos;s something I have that
-            others don&apos;t. It gives me an edge.
-          </p>
-          <p className="ps-marcommand-footer-body">
-            Clients never see it. Never operate it. Never have to. They&apos;re
-            paying for the service. We take care of all of it. They get the
-            results.
-          </p>
-        </div>
 
       </div>
     </section>

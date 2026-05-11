@@ -46,7 +46,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "we stay with it",
     title: "We Stay With It.",
     description:
-      "Ongoing service relationship. We\u2019re not handing you a finished product and disappearing. AI shifts, search shifts, competitors shift \u2014 we shift with you. Month after month. The kind of relationship where you just tell us what you need and we take care of it.",
+      "We don\u2019t hand you a finished product and disappear. AI shifts. Search engines shift. Competitors shift. Preisser Tech operates on an ongoing monthly service relationship \u2014 when you need an update six months later, we\u2019re already in it with you. We stay with it.",
     image: "/images/why-us/we-stay-with-it-new.webp",
     mobileImage: "/images/why-us/we-stay-with-it-new.webp",
     alt: "Ongoing support and system adaptation",

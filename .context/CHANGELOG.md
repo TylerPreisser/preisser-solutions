@@ -2,6 +2,43 @@
 
 ---
 
+## 2026-05-11 — SURGICAL HOMEPAGE COPY & STRUCTURE PASS (web-code-executor)
+
+**Directive**: Tyler's surgical edit spec — 12 precise edits to homepage metadata, hero, value strip, service pillars, why-us, marcommand callout, dashboard, and case studies.
+
+**Files modified**:
+
+- `src/app/layout.tsx` — Updated `metadata.title.default`, `openGraph.title`, `twitter.title` to `Preisser Tech | Custom Websites, Marketing & AI`. Updated all 3 description fields (metadata, OG, Twitter) to the enterprise-client-list copy. Updated JSON-LD WebPage `name` and `description` to match.
+- `src/app/page.tsx` — Updated `metadata.title.absolute`, `openGraph.title`, `twitter.title`, all descriptions, OG image alt. All now match the final spec strings.
+- `src/components/home/hero.tsx` — Restored H1 to `World-Class Technology. / Built in Kansas.` with TODO comment above it. Updated subheadline to the enterprise client list. Updated eyebrow to "Built in Kansas." Updated sr-only summary paragraph.
+- `src/components/home/value-strip.tsx` — Replaced all 4 value strip items with the 4 exact strings specified.
+- `src/components/home/service-pillars.tsx` — Renamed "AI-Native Marketing & Growth" → "Revenue Growth Engines", "AI-Native Websites & Applications" → "Websites & Applications". Reordered array: Websites → Revenue Growth → Automation → Dashboards → System Fixes. Trimmed Dashboards serviceTiles from 7 to 3 (Executive Dashboard, AI-Powered Business Insights, Financial Health Dashboard). Updated MarCommand serviceTile copy to exact spec.
+- `src/components/home/card-visuals-backup.tsx` — Trimmed `dashboardMetrics` from 4 KPI ring cards to 3 (removed "Forecast") to match visual density of WebsiteVisual (3 cards).
+- `src/components/home/why-us.tsx` — Updated "We Stay With It" description to exact spec copy. Cards 1 & 2 untouched (already at original text).
+- `src/components/home/marcommand-callout.tsx` — Removed `ps-marcommand-footer-copy` block (2 paragraphs below dashboard). Copy above dashboard preserved.
+- `src/components/home/marcommand-dashboard.tsx` — Removed `mc3-header` div (MarCommand wordmark + Live indicator). Dashboard now starts directly with `mc3-metrics` row.
+- `src/components/home/case-studies.tsx` — Replaced 4 placeholder enterprise cards (Alliant Insurance, Sunrise Transportation, Astris Insurance, Salesforce) with real cards using exact copy. Added `caseLogo` field to interface. Added `href` field; R Squared AI cards (Contact Form to CRM Pipeline, Alpha Matrix) now link to `https://3124f78d.r2-solutions.pages.dev/` with `target="_blank" rel="noopener noreferrer"`. Updated render logic to handle `caseLogo` and `href`.
+- `src/styles/globals.css` — Added `.ps-work-card-logo--company` modifier (white pill background for legibility on dark card gradients). Added `text-decoration: none; color: inherit; display: block` to `.ps-work-card` base for `<a>` tag compatibility.
+
+**Files created**:
+
+- `public/images/case-studies/astrus-logo.png` — from `https://astrusins.com/media/1003/astrus-logo.png`
+- `public/images/case-studies/sunrise-transportation-logo.svg` — from Tambourine CDN (official site header logo)
+- `public/images/case-studies/alliant-logo.svg` — from `https://www.alliant.com/media/v4qlw2dm/243655-alliant-website-logo.svg`
+- `public/images/case-studies/salesforce-logo.svg` — from Wikimedia Commons (official Salesforce cloud logo)
+
+**Dashboards card uniformity finding**: `DashboardVisual` had 4 KPI ring cards in the `ps-dbc-kpi-grid` panel vs. `WebsiteVisual` having 3 feature cards in `ps-site-cards`. The 4th ring ("Forecast") was trimmed to match. `serviceTiles` array for Dashboards was also trimmed from 7 to 3 entries to reduce modal density.
+
+**MarCommand dashboard header**: `mc3-header` div was present and has been removed. Dashboard now starts with `mc3-metrics` (3 KPI tiles).
+
+**Below-dashboard copy**: `ps-marcommand-footer-copy` block (2 paragraphs) confirmed removed.
+
+**Why cards 1 & 2**: "Custom. Built for Your Business." and "AI, Harnessed and Under Control." were already at original text — no revert needed.
+
+**Build status**: PASS — clean production build, all 105+ pages prerendered.
+
+---
+
 ## 2026-05-11 — MAXIMUM AI CRAWLER PERMISSIVENESS — every residual noindex removed, explicit "yes, index everything" headers added site-wide (web-code-debug)
 
 **Directive (Tyler, 2026-05-11)**: "I want maximum agent AI crawler visibility on my entire website and everything they can view, look at, and change. I want zero restrictions for agents or crawlers. It needs to be the easiest possible thing to access anywhere."

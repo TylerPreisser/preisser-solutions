@@ -87,21 +87,6 @@ export function MarCommandDashboard() {
       role="img"
       aria-label="MarCommand dashboard mockup showing live channel performance data"
     >
-      {/* Header */}
-      <div className="mc3-header">
-        <div className="mc3-brand">
-          <div className="mc3-mark">M</div>
-          <div className="mc3-name">MarCommand</div>
-        </div>
-        <div className="mc3-meta">
-          <div className="mc3-live">
-            <span className="mc3-pulse" />
-            {" "}Live
-          </div>
-          <div className="mc3-window">Apr 2026 · 30d</div>
-        </div>
-      </div>
-
       {/* Top metrics */}
       <div className="mc3-metrics">
         <div className="mc3-metric">

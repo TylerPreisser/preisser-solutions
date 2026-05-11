@@ -570,7 +570,6 @@ const dashboardMetrics = [
   { label: "Retention", value: 94, tone: "blue" },
   { label: "Close Rate", value: 72, tone: "cyan" },
   { label: "NPS", value: 88, tone: "violet" },
-  { label: "Forecast", value: 81, tone: "green" },
 ] as const;
 
 export function DashboardVisual() {

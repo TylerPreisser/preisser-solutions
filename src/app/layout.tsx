@@ -14,11 +14,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Preisser Tech | AI Picks You First. Built in Kansas.",
+    default: "Preisser Tech | Custom Websites, Marketing & AI",
     template: "%s | Preisser Tech",
   },
   description:
-    "We custom-code your website onto servers designed for AI agents, get you indexed on every AI registry, and use AI to organically maximize your AI presence. Nobody else in Kansas is doing this. Built in Hays, Kansas by Tyler Preisser.",
+    "Custom websites, marketing systems, and AI — built for businesses including Alliant Insurance Services, Astrus Insurance Solutions, Sunrise Transportation, John C. Cassidy HVAC, and Salesforce. Founded by Tyler Preisser in Hays, Kansas.",
   metadataBase: new URL("https://preissertech.com"),
   keywords: [
     "business automation Kansas",
@@ -82,9 +82,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://preissertech.com",
     siteName: "Preisser Tech",
-    title: "Preisser Tech | AI Picks You First. Built in Kansas.",
+    title: "Preisser Tech | Custom Websites, Marketing & AI",
     description:
-      "We custom-code your website onto servers designed for AI agents, get you indexed on every AI registry, and use AI to organically maximize your AI presence. Nobody else in Kansas is doing this. Built in Hays, Kansas by Tyler Preisser.",
+      "Custom websites, marketing systems, and AI — built for businesses including Alliant Insurance Services, Astrus Insurance Solutions, Sunrise Transportation, John C. Cassidy HVAC, and Salesforce. Founded by Tyler Preisser in Hays, Kansas.",
     images: [
       {
         url: "/images/og-image-v2.jpg",
@@ -96,9 +96,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Tech | AI Picks You First. Built in Kansas.",
+    title: "Preisser Tech | Custom Websites, Marketing & AI",
     description:
-      "We custom-code your website onto servers designed for AI agents, get you indexed on every AI registry, and use AI to organically maximize your AI presence. Nobody else in Kansas is doing this. Built in Hays, Kansas by Tyler Preisser.",
+      "Custom websites, marketing systems, and AI — built for businesses including Alliant Insurance Services, Astrus Insurance Solutions, Sunrise Transportation, John C. Cassidy HVAC, and Salesforce. Founded by Tyler Preisser in Hays, Kansas.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@tylerpreisser",
   },
@@ -445,9 +445,9 @@ const structuredData = [
     "@type": "WebPage",
     "@id": WEBPAGE_ID,
     url: "https://preissertech.com",
-    name: "Preisser Tech | AI Picks You First. Built in Kansas.",
+    name: "Preisser Tech | Custom Websites, Marketing & AI",
     description:
-      "Preisser Tech custom-codes websites onto servers designed for AI agents, gets Kansas businesses indexed on every AI registry, and uses AI to organically maximize their AI presence. Same enterprise quality delivered to Alliant Insurance, Salesforce, and Sunrise Transportation. Nobody else in Kansas is doing this. Built in Hays, Kansas by Tyler Preisser.",
+      "Custom websites, marketing systems, and AI — built for businesses including Alliant Insurance Services, Astrus Insurance Solutions, Sunrise Transportation, John C. Cassidy HVAC, and Salesforce. Founded by Tyler Preisser in Hays, Kansas.",
     isPartOf: { "@id": WEBSITE_ID },
     about: { "@id": ORG_ID },
     author: { "@id": PERSON_ID },

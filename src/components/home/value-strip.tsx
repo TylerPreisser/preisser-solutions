@@ -5,23 +5,23 @@ import { useEffect, useRef } from "react";
 const valueItems = [
   {
     icon: "<>",
-    strong: "Custom-coded onto servers designed for AI agents.",
-    text: " Not shared hosting. Not templates.",
+    strong: "Websites, marketing, automation, and custom AI",
+    text: "",
   },
   {
     icon: "->",
-    strong: "Indexed on every AI registry.",
-    text: " Structured so AI gets exactly what it needs when it crawls.",
+    strong: "We ship in weeks, not months",
+    text: "",
   },
   {
     icon: "//",
-    strong: "Enterprise work from Alliant, Salesforce, Sunrise —",
-    text: " now serving Kansas businesses.",
+    strong: "Built for businesses ranging from local to enterprise",
+    text: "",
   },
   {
     icon: ">>",
-    strong: "You work directly with the builder.",
-    text: " No account managers.",
+    strong: "You work directly with the founder",
+    text: "",
   },
 ];
 

@@ -250,30 +250,28 @@ export function Hero() {
           animated headline via CSS order, but first in the DOM for crawlers.
         */}
         <p className="ps-hero-summary sr-only">
-          Preisser Tech custom-codes websites onto servers designed for AI agents,
-          gets Kansas businesses indexed on every AI registry, and uses AI to organically
-          maximize their online presence. Same enterprise quality delivered to Alliant
-          Insurance, Salesforce, and Sunrise Transportation — now serving businesses
-          across Kansas. Nobody else in Kansas is doing this. Built in Hays, Kansas by
-          Tyler Preisser.
+          Preisser Tech builds custom websites, marketing systems, and AI for
+          businesses including Alliant Insurance Services, Astrus Insurance Solutions,
+          Sunrise Transportation, John C. Cassidy HVAC, and Salesforce. Founded by
+          Tyler Preisser in Hays, Kansas.
         </p>
 
         <div ref={eyebrowRef} className="ps-hero-eyebrow">
           <span className="ps-hero-dot" aria-hidden="true" />
-          AI-Native. Built in Kansas.
+          Built in Kansas.
         </div>
 
+        {/* TODO: replace hero H1 once Tyler locks the new headline */}
         <h1 ref={headlineRef} className="ps-hero-headline">
-          AI picks you first.
+          World-Class Technology.
           <br />
           Built in Kansas.
         </h1>
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
-          We custom-code your website onto servers designed for AI agents, get you
-          indexed on every AI registry, and use AI to organically maximize your AI
-          presence. Same enterprise quality we delivered to Alliant Insurance,
-          Salesforce, and Sunrise Transportation. Nobody else in Kansas is doing this.
+          Custom websites, marketing systems, and AI — built for businesses
+          including Alliant Insurance Services, Astrus Insurance Solutions,
+          Sunrise Transportation, John C. Cassidy HVAC, and Salesforce.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
