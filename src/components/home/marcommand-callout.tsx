@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { MarCommandDashboard } from "@/components/home/marcommand-dashboard";
 
 export function MarCommandCallout() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -56,10 +57,10 @@ export function MarCommandCallout() {
       {/* Decorative glow — top left */}
       <div className="ps-marcommand-glow" aria-hidden="true" />
 
-      <div className="ps-marcommand-inner" ref={contentRef}>
+      <div className="ps-marcommand-inner ps-marcommand-inner--stacked" ref={contentRef}>
 
-        {/* Left: heading + body + CTA */}
-        <div className="ps-marcommand-left">
+        {/* Copy block: heading + body + closer + CTA */}
+        <div className="ps-marcommand-copy">
           <div className="ps-eyebrow ps-eyebrow--brand">MarCommand</div>
           <h2
             id="marcommand-heading"
@@ -105,42 +106,9 @@ export function MarCommandCallout() {
           </div>
         </div>
 
-        {/* Right: pull-quote */}
-        <div className="ps-marcommand-right">
-          <div className="ps-marcommand-quote-wrap" aria-label="Sample MarCommand recommendation">
-            <div className="ps-marcommand-quote-icon" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 14c0-4.4 3.6-8 8-8v4c-2.2 0-4 1.8-4 4v1h4v8H6v-9zm14 0c0-4.4 3.6-8 8-8v4c-2.2 0-4 1.8-4 4v1h4v8h-8v-9z" fill="currentColor" fillOpacity="0.6" />
-              </svg>
-            </div>
-            <blockquote className="ps-marcommand-quote">
-              This LinkedIn campaign is outperforming your geofencing spend
-              4.2x. Recommend shifting $1,800 from geofencing to LinkedIn next
-              cycle.
-            </blockquote>
-            <div className="ps-marcommand-quote-source">
-              MarCommand — daily recommendation
-            </div>
-          </div>
-
-          <div className="ps-marcommand-features">
-            <div className="ps-marcommand-feature">
-              <span className="ps-marcommand-feature-dot" aria-hidden="true" />
-              Live data from every channel you run
-            </div>
-            <div className="ps-marcommand-feature">
-              <span className="ps-marcommand-feature-dot" aria-hidden="true" />
-              Scored by actual dollar ROI — not vanity metrics
-            </div>
-            <div className="ps-marcommand-feature">
-              <span className="ps-marcommand-feature-dot" aria-hidden="true" />
-              Daily reallocation recommendations with projected lift
-            </div>
-            <div className="ps-marcommand-feature">
-              <span className="ps-marcommand-feature-dot" aria-hidden="true" />
-              Custom dashboard, private login, yours forever
-            </div>
-          </div>
+        {/* Dashboard mockup — full-width visual anchor */}
+        <div className="ps-marcommand-dashboard-wrap">
+          <MarCommandDashboard />
         </div>
 
       </div>

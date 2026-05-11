@@ -4854,7 +4854,27 @@ a {
   align-items: start;
 }
 
-/* Left column */
+/* Stacked variant: copy on top, full-width dashboard below */
+.ps-marcommand-inner--stacked {
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Copy block inside stacked layout */
+.ps-marcommand-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 780px;
+}
+
+/* Dashboard wrapper — slight outer ring so the mc3 card "floats" */
+.ps-marcommand-dashboard-wrap {
+  width: 100%;
+}
+
+/* Left column (legacy — kept for reference, no longer rendered) */
 .ps-marcommand-left {
   display: flex;
   flex-direction: column;
@@ -4987,6 +5007,721 @@ a {
   .ps-marcommand-cta .ps-btn {
     white-space: normal;
     text-align: center;
+  }
+}
+
+/* ── MarCommand Dashboard Mockup (mc3-*) ───────────────────────
+   All classes are prefixed mc3- to guarantee zero collisions with
+   the existing ps-marcommand-* system.
+   ──────────────────────────────────────────────────────────────*/
+
+.mc3 {
+  background: #0A1628;
+  color: #F1F5F9;
+  padding: 26px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.06);
+  font-feature-settings: "tnum";
+  font-family: var(--font-inter, 'Inter', system-ui, -apple-system, sans-serif);
+}
+
+.mc3 *, .mc3 *::before, .mc3 *::after {
+  box-sizing: border-box;
+}
+
+.mc3-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mc3-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mc3-mark {
+  width: 34px;
+  height: 34px;
+  background: #0D95E8;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #0A1628;
+  font-size: 16px;
+  letter-spacing: -0.04em;
+}
+
+.mc3-name {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.mc3-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mc3-live {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #94A3B8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.mc3-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10D070;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.mc3-pulse::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: #10D070;
+  opacity: 0.5;
+  /* iOS Safari: promote to own compositing layer to prevent scale() flicker */
+  will-change: transform, opacity;
+  /* Fallback: force GPU layer on older WebKit */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mc3-pulse::after {
+    animation: mc3pulse 1.8s ease-out infinite;
+  }
+}
+
+@keyframes mc3pulse {
+  0%   { transform: scale(0.4); opacity: 0.7; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.mc3-window {
+  font-size: 11px;
+  color: #94A3B8;
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+}
+
+/* Metrics row */
+.mc3-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.mc3-metric {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 16px 18px;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mc3-metric {
+    opacity: 0;
+    animation: mc3up 0.7s cubic-bezier(.16,1,.3,1) forwards;
+  }
+  .mc3-metric:nth-child(1) { animation-delay: 0.08s; }
+  .mc3-metric:nth-child(2) { animation-delay: 0.16s; }
+  .mc3-metric:nth-child(3) { animation-delay: 0.24s; }
+}
+
+@keyframes mc3up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.mc3-m-label {
+  font-size: 10px;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.mc3-m-val {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.mc3-m-delta {
+  font-size: 11px;
+  margin-top: 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+.mc3-m-delta.up   { color: #10D070; }
+.mc3-m-delta.down { color: #EF4444; }
+
+/* Section sub-headers */
+.mc3-sec {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.mc3-sec-t {
+  font-size: 10px;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+
+.mc3-sec-m {
+  font-size: 11px;
+  color: #94A3B8;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.mc3-api-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10D070;
+  box-shadow: 0 0 8px rgba(16,208,112,0.6);
+  flex-shrink: 0;
+}
+
+/* Channel table */
+.mc3-channels {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 6px;
+  margin-bottom: 16px;
+}
+
+.mc3-ch-head {
+  display: grid;
+  grid-template-columns: 32px minmax(150px, 1.5fr) 80px 50px 90px minmax(120px, 1.2fr);
+  gap: 12px;
+  padding: 10px 14px 4px;
+  font-size: 9px;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.mc3-ch-head > div:nth-child(3),
+.mc3-ch-head > div:nth-child(4),
+.mc3-ch-head > div:nth-child(5) {
+  text-align: right;
+}
+
+.mc3-ch {
+  display: grid;
+  grid-template-columns: 32px minmax(150px, 1.5fr) 80px 50px 90px minmax(120px, 1.2fr);
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 8px;
+  opacity: 1;
+  transition: background 0.2s;
+}
+
+.mc3-ch:hover {
+  background: rgba(255,255,255,0.02);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mc3-ch {
+    opacity: 0;
+    animation: mc3row 0.55s cubic-bezier(.16,1,.3,1) forwards;
+  }
+  .mc3-ch:nth-of-type(1) { animation-delay: 0.30s; }
+  .mc3-ch:nth-of-type(2) { animation-delay: 0.37s; }
+  .mc3-ch:nth-of-type(3) { animation-delay: 0.44s; }
+  .mc3-ch:nth-of-type(4) { animation-delay: 0.51s; }
+  .mc3-ch:nth-of-type(5) { animation-delay: 0.58s; }
+  .mc3-ch:nth-of-type(6) { animation-delay: 0.65s; }
+}
+
+@keyframes mc3row {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.mc3-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mc3-cn {
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.25;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  min-width: 0; /* Prevent flex item from overflowing grid cell */
+}
+
+.mc3-num {
+  font-size: 13px;
+  color: #94A3B8;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.mc3-num.lit {
+  color: #F1F5F9;
+  font-weight: 500;
+}
+
+.mc3-roi {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mc3-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.mc3-fill {
+  height: 100%;
+  border-radius: 3px;
+  transform-origin: left center;
+  transform: scaleX(var(--w, 0.5));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mc3-fill {
+    transform: scaleX(0);
+    animation: mc3fill 1.1s 0.55s cubic-bezier(.16,1,.3,1) forwards;
+  }
+}
+
+@keyframes mc3fill {
+  to { transform: scaleX(var(--w, 0.5)); }
+}
+
+.mc3-roi-v {
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 42px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.mc3-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+/* Bottom 2-col grid */
+.mc3-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.mc3-panel {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 15px 18px;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mc3-panel {
+    opacity: 0;
+    animation: mc3up 0.7s 0.7s cubic-bezier(.16,1,.3,1) forwards;
+  }
+}
+
+.mc3-panel-t {
+  font-size: 10px;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mc3-panel-m {
+  color: #4FB7F0;
+  font-weight: 600;
+}
+
+/* Post format bars */
+.mc3-fmt {
+  display: grid;
+  grid-template-columns: 1fr 60px 36px;
+  gap: 12px;
+  align-items: center;
+  padding: 7px 0;
+  font-size: 13px;
+}
+
+.mc3-fmt-bar {
+  height: 5px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.mc3-fmt-fill {
+  height: 100%;
+  border-radius: 2px;
+  transform-origin: left;
+  transform: scaleX(var(--w, 0.5));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mc3-fmt-fill {
+    transform: scaleX(0);
+    animation: mc3fill 1s 1s cubic-bezier(.16,1,.3,1) forwards;
+  }
+}
+
+.mc3-fmt-v {
+  color: #F1F5F9;
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+}
+
+/* Audience segments */
+.mc3-seg {
+  padding: 9px 0;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+.mc3-seg:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.mc3-seg-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+  gap: 10px;
+}
+
+.mc3-seg-name {
+  font-size: 13px;
+  color: #F1F5F9;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.mc3-seg-since {
+  font-size: 10px;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+
+.mc3-seg-pct {
+  font-size: 13px;
+  color: #94A3B8;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.mc3-seg-bar {
+  height: 5px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.mc3-seg-fill {
+  height: 100%;
+  background: #0D95E8;
+  border-radius: 2px;
+  transform-origin: left;
+  transform: scaleX(var(--w, 0.5));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mc3-seg-fill {
+    transform: scaleX(0);
+    animation: mc3fill 1.1s 1.2s cubic-bezier(.16,1,.3,1) forwards;
+  }
+}
+
+/* Trend chart */
+.mc3-trend {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 14px 18px 12px;
+  margin-bottom: 16px;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mc3-trend {
+    opacity: 0;
+    animation: mc3up 0.7s 1s cubic-bezier(.16,1,.3,1) forwards;
+  }
+}
+
+.mc3-trend-svg {
+  width: 100%;
+  height: 70px;
+  display: block;
+}
+
+@keyframes mc3draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes mc3fade {
+  to { opacity: 1; }
+}
+
+@keyframes mc3ping {
+  0%   { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+/* iOS Safari: promote SVG ping circle to GPU layer to prevent scale() flicker */
+.mc3-ping-circle {
+  will-change: transform, opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Pending recommendations */
+.mc3-pending-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 11px;
+}
+
+.mc3-pending-t {
+  font-size: 10px;
+  color: #4FB7F0;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+
+.mc3-pending-c {
+  font-size: 11px;
+  color: #64748B;
+}
+
+.mc3-pending-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.mc3-pcard {
+  background: rgba(13,149,232,0.06);
+  border: 1px solid rgba(13,149,232,0.28);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mc3-pcard {
+    opacity: 0;
+    animation: mc3up 0.8s cubic-bezier(.16,1,.3,1) forwards;
+  }
+  .mc3-pcard:nth-of-type(1) { animation-delay: 1.50s; }
+  .mc3-pcard:nth-of-type(2) { animation-delay: 1.62s; }
+  .mc3-pcard:nth-of-type(3) { animation-delay: 1.74s; }
+}
+
+.mc3-pcard-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mc3-pcard-ic {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(13,149,232,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mc3-pcard-cat {
+  font-size: 10px;
+  color: #4FB7F0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.mc3-pcard-body {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #F1F5F9;
+  min-height: 38px;
+}
+
+.mc3-pcard-body b {
+  color: #4FB7F0;
+  font-weight: 600;
+}
+
+.mc3-pcard-lift {
+  font-size: 11.5px;
+  color: #10D070;
+  font-weight: 600;
+}
+
+.mc3-pcard-act {
+  display: flex;
+  gap: 7px;
+}
+
+.mc3-pbtn {
+  flex: 1;
+  font-size: 11px;
+  /* min-height 44px meets Apple HIG touch target spec even though buttons are decorative */
+  padding: 7px 8px;
+  min-height: 44px;
+  border-radius: 6px;
+  border: 1px solid rgba(13,149,232,0.4);
+  background: rgba(13,149,232,0.1);
+  color: #4FB7F0;
+  font-weight: 500;
+  cursor: default;
+  font-family: inherit;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mc3-pbtn.p {
+  background: #0D95E8;
+  border-color: #0D95E8;
+  color: #0A1628;
+  font-weight: 600;
+}
+
+/* Responsive: 720px — stack bottom grid */
+@media (max-width: 720px) {
+  .mc3-grid {
+    grid-template-columns: 1fr;
+  }
+  .mc3-pending-grid {
+    grid-template-columns: 1fr;
+  }
+  /* Prevent long segment names/microcopy from overflowing single-column panel */
+  .mc3-seg-name,
+  .mc3-seg-since {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+}
+
+/* Responsive: 640px — simplify channel table */
+@media (max-width: 640px) {
+  .mc3 {
+    padding: 18px;
+  }
+  .mc3-metrics {
+    grid-template-columns: 1fr;
+  }
+  /* 4-column table: icon | channel | spend | roi-value
+     Keep ROI value chip visible; hide Leads/Revenue columns and the bar only.
+     Without this, the 6th grid child (ROI cell) wraps to the next row
+     because display:none removes items from grid flow — iOS Safari confirmed. */
+  .mc3-ch-head,
+  .mc3-ch {
+    grid-template-columns: 32px 1fr 72px auto;
+  }
+  .mc3-ch-head > div:nth-child(4),
+  .mc3-ch-head > div:nth-child(5),
+  .mc3-ch > div:nth-child(4),
+  .mc3-ch > div:nth-child(5) {
+    display: none;
+  }
+  /* Hide bar inside the ROI cell; the mc3-roi-v chip remains visible */
+  .mc3-bar {
+    display: none;
+  }
+  /* ROI cell: just the value chip, no flex gap needed */
+  .mc3-roi {
+    gap: 0;
+  }
+  .mc3-roi-v {
+    min-width: unset;
+    text-align: left;
+  }
+  /* Channel name: tighten font so long names don't squeeze spend column */
+  .mc3-cn {
+    font-size: 12px;
   }
 }
 

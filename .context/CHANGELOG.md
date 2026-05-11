@@ -2,6 +2,15 @@
 
 ---
 
+## 2026-05-11 — MarCommand interactive dashboard mockup integrated into homepage callout (web-code-executor)
+
+- Created `src/components/home/marcommand-dashboard.tsx` — full React/TSX conversion of the mc3 HTML mockup with IntersectionObserver-gated counter animation, prefers-reduced-motion support, RAF cleanup on unmount, and type-safe data-attribute access
+- Added ~400 lines of `mc3-*` scoped CSS to `src/styles/globals.css` — all keyframe animations wrapped in `@media (prefers-reduced-motion: no-preference)`, static fallback values set for reduced-motion
+- Updated `src/components/home/marcommand-callout.tsx` — removed pull-quote + feature list, added stacked single-column layout (copy above, full-width dashboard below) using new `.ps-marcommand-inner--stacked` and `.ps-marcommand-copy` classes
+- Build result: 109 pages, 0 errors, 0 type errors
+
+---
+
 ## 2026-05-11 — Mobile audit of messaging reframe: 3 CSS fixes applied (ui-mobile)
 
 **Agent**: ui-mobile
@@ -963,3 +972,8 @@ curl -I https://preissersolutions.com/robots.txt
 **Note**: `public/yandex_9f19081f7abbbb70.html` retained (harmless, belt-and-suspenders).
 
 ---
+
+## 2026-05-11 — Production Deploy
+- Commit `7914367` pushed to `origin/main`
+- Cloudflare Pages deploy: https://228a2acf.preisser-solutions.pages.dev
+- Verified live on https://preissertech.com — "Stop Renting Attention" present, MarCommand mentioned 22x
