@@ -66,26 +66,22 @@ export function MarCommandCallout() {
             id="marcommand-heading"
             className="ps-marcommand-heading"
           >
-            The AI Brain Behind Your Ad Spend
+            MarCommand
           </h2>
           <p className="ps-marcommand-body">
-            Every agency in the region runs your ads and emails you a PDF once
-            a month. MarCommand is different. It&apos;s a custom AI marketing
-            intelligence platform — your own private dashboard — that ingests
-            live data from every channel you run (Google Ads, Meta, TikTok,
-            YouTube, LinkedIn, email, LSAs, geofencing, organic, retail partner
-            referrals) and scores each one by actual dollar ROI. Every day, it
-            tells you exactly where to move the money next.
+            With our MarCommand package, it comes with a custom agent built for
+            each business — to understand your business, to start understanding,
+            learning, and training itself on your audience, your business, your
+            social media&apos;s real content, your channels, your products, and
+            all of that.
           </p>
           <p className="ps-marcommand-closer">
-            Set guardrails and let MarCommand execute automatically, or stay
-            in the loop on every recommendation. Either way, you own the
-            dashboard forever — even if you fire us. Nobody else in Kansas is
-            building this for local and regional businesses. That&apos;s the moat.
+            This is how granular we&apos;re getting. This is how much of an
+            understanding we have.
           </p>
           <div className="ps-marcommand-cta">
             <Link href="/contact" className="ps-btn ps-btn-primary-dark">
-              Build My MarCommand
+              Inquire about packaging
               <svg
                 className="ps-btn-arrow"
                 width="16"
@@ -106,9 +102,22 @@ export function MarCommandCallout() {
           </div>
         </div>
 
-        {/* Dashboard mockup — full-width visual anchor */}
+        {/* Dashboard mockup — full-width visual anchor. FROZEN — do not modify MarCommandDashboard. */}
         <div className="ps-marcommand-dashboard-wrap">
           <MarCommandDashboard />
+        </div>
+
+        {/* Below-dashboard framing — Tyler's verbatim positioning */}
+        <div className="ps-marcommand-footer-copy">
+          <p className="ps-marcommand-footer-body">
+            MarCommand is our internal tool. It&apos;s something I have that
+            others don&apos;t. It gives me an edge.
+          </p>
+          <p className="ps-marcommand-footer-body">
+            Clients never see it. Never operate it. Never have to. They&apos;re
+            paying for the service. We take care of all of it. They get the
+            results.
+          </p>
         </div>
 
       </div>

@@ -1,5 +1,25 @@
 "use client";
 
+/*
+ * REVIEW NEEDED — Tools that may imply false partnership or affiliation:
+ *
+ * - "Salesforce" — Tyler worked WITH Salesforce on client engagements, not as
+ *   a formal Salesforce partner or reseller. May imply a partnership tier that
+ *   doesn't exist. Tyler to decide: keep as "tools we work with" or remove.
+ *
+ * - "Anthropic" / "Claude Code" — Using Anthropic's API and Claude Code CLI is
+ *   not a partnership. No affiliation, reseller agreement, or partner program.
+ *   Tyler to decide: keep as "tools we use" framing or remove.
+ *
+ * - "OpenAI" / "Codex" — Same as above. Paying API customer, not a partner.
+ *   Tyler to decide.
+ *
+ * - "Google Gemini" / "Google NotebookLM" — Google API usage, not a Google
+ *   Partner designation. Tyler to decide.
+ *
+ * None of these are removed automatically — Tyler reviews and makes the call.
+ */
+
 const techPartners = [
   // AI & Agent Tools
   "OpenAI",

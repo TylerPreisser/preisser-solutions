@@ -4,19 +4,19 @@ import { useEffect, useRef } from "react";
 
 const valueItems = [
   {
-    icon: "//",
-    strong: "Google Ads, Meta Ads, AI search —",
-    text: " built and run in-house",
+    icon: "<>",
+    strong: "Custom-coded onto servers designed for AI agents.",
+    text: " Not shared hosting. Not templates.",
   },
   {
     icon: "->",
-    strong: "MarCommand AI scores every channel",
-    text: " by real dollar ROI",
+    strong: "Indexed on every AI registry.",
+    text: " Structured so AI gets exactly what it needs when it crawls.",
   },
   {
-    icon: "<>",
-    strong: "Custom-coded sites and apps.",
-    text: " Never templates.",
+    icon: "//",
+    strong: "Enterprise work from Alliant, Salesforce, Sunrise —",
+    text: " now serving Kansas businesses.",
   },
   {
     icon: ">>",

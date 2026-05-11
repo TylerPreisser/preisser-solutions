@@ -50,15 +50,15 @@ interface ServicePillar {
 const services: ServicePillar[] = [
   {
     type: "revenue",
-    title: "Marketing & Growth Engines",
+    title: "AI-Native Marketing & Growth",
     description:
-      "Google Ads, Meta Ads, AI search optimization (AEO/GEO), lead capture, customer reactivation, content systems. Built to compound — not rented from a monthly retainer.",
+      "Hyper-personalized, psychologically targeted campaigns. We use AI to organically maximize your AI presence — your business shows up where AI is looking. Powered by MarCommand, our internal AI agent. Nobody else in Kansas is doing this.",
     href: "/contact",
     visual: <RevenueVisual />,
     bullets: [
       "Automated social media content",
       "Email and SMS outreach engines",
-      "SEO and search optimization",
+      "SEO and AI search optimization",
       "Lead generation and conversion systems",
     ],
     stats: [
@@ -76,9 +76,9 @@ const services: ServicePillar[] = [
     ],
     serviceTiles: [
       {
-        title: "MarCommand — AI Marketing Intelligence",
+        title: "MarCommand — Our Internal AI Agent",
         description:
-          "Our flagship AI platform. Ingests live data from every channel you run — Google, Meta, TikTok, YouTube, LinkedIn, email, LSAs, geofencing, organic — and scores each by actual dollar ROI. Daily reallocation recommendations with projected lift. Custom dashboard, private login, yours forever.",
+          "With our MarCommand package, it comes with a custom agent built for each business — to understand your business, your audience, your social media's real content, your channels, your products. This is how granular we're getting. Clients never see it, never operate it. They get the results.",
         icon: <IconMarketingDashboard />,
       },
       {
@@ -153,9 +153,9 @@ const services: ServicePillar[] = [
   },
   {
     type: "websites",
-    title: "Websites & Applications",
+    title: "AI-Native Websites & Applications",
     description:
-      "Custom-coded sites and web apps built for conversion, speed, and AI discoverability. Not templates. Not rebranded themes. Real code, built to rank in Google and get cited by ChatGPT, Claude, Perplexity, and Gemini.",
+      "Custom-coded onto servers designed for AI agents. Indexed on every AI registry. Structured so AI gets exactly what it needs when it crawls. We frame the messaging so AI picks you first.",
     href: "/contact",
     visual: <WebsiteVisual />,
     bullets: [
@@ -1700,9 +1700,9 @@ export function ServicePillars() {
           What We Build
         </h2>
         <p className="ps-services-intro">
-          We build the systems that drive your revenue, and the technical depth
-          that keeps them running long after the work ships. Five pillars.
-          All custom-coded. All yours forever.
+          Custom-coded. AI-native. Ongoing service relationship. Same enterprise
+          quality we delivered to Alliant Insurance, Salesforce, and Sunrise
+          Transportation — built for Kansas businesses.
         </p>
       </div>
 

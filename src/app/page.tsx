@@ -9,20 +9,20 @@ import { CaseStudies } from "@/components/home/case-studies";
 import { CtaSection } from "@/components/home/cta-section";
 
 // Homepage metadata — bypasses the layout title template to avoid duplication.
-// Title: 55 chars — within Bing/Google optimal 50-60 range.
+// Title: 52 chars — within Bing/Google optimal 50-60 range.
 export const metadata: Metadata = {
   title: {
-    absolute: "Preisser Tech | Marketing & AI Systems Built in Kansas",
+    absolute: "Preisser Tech | AI Picks You First. Built in Kansas.",
   },
   description:
-    "Custom-coded marketing systems that drive revenue. Google Ads, Meta Ads, AI search, and MarCommand AI ad intelligence. Built in Hays, Kansas — owned by you.",
+    "We custom-code your website onto servers designed for AI agents, get you indexed on every AI registry, and use AI to organically maximize your AI presence. Nobody else in Kansas is doing this. Built in Hays, Kansas by Tyler Preisser.",
   alternates: {
     canonical: "https://preissertech.com/",
   },
   openGraph: {
-    title: "Preisser Tech | Marketing & AI Systems Built in Kansas",
+    title: "Preisser Tech | AI Picks You First. Built in Kansas.",
     description:
-      "Custom-coded marketing systems that drive revenue. Google Ads, Meta Ads, AI search, and MarCommand AI ad intelligence. Built in Hays, Kansas — owned by you.",
+      "We custom-code your website onto servers designed for AI agents, get you indexed on every AI registry, and use AI to organically maximize your AI presence. Nobody else in Kansas is doing this. Built in Hays, Kansas by Tyler Preisser.",
     url: "https://preissertech.com/",
     type: "website",
     images: [
@@ -30,15 +30,15 @@ export const metadata: Metadata = {
         url: "/images/og-image-v2.jpg",
         width: 1200,
         height: 630,
-        alt: "Preisser Tech | Marketing & AI Systems Built in Kansas",
+        alt: "Preisser Tech | AI Picks You First. Built in Kansas.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Tech | Marketing & AI Systems Built in Kansas",
+    title: "Preisser Tech | AI Picks You First. Built in Kansas.",
     description:
-      "Custom-coded marketing systems that drive revenue. Google Ads, Meta Ads, AI search, and MarCommand AI ad intelligence. Built in Hays, Kansas — owned by you.",
+      "We custom-code your website onto servers designed for AI agents, get you indexed on every AI registry, and use AI to organically maximize your AI presence. Nobody else in Kansas is doing this. Built in Hays, Kansas by Tyler Preisser.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@preissertech",
   },

@@ -22,7 +22,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "built for your business",
     title: "Custom. Built for Your Business.",
     description:
-      "Everything we build is designed and engineered specifically for how your business works. We\u2019re not rebranding templates. Real code. Real systems. Built the way you need them.",
+      "Same approach we used for Alliant Insurance, Salesforce, and Sunrise Transportation \u2014 custom-coded for your business. Not rebranded templates. Real code. Real systems. Enterprise quality, built for a Kansas business.",
     image: "/images/ps-logo.webp",
     mobileImage: "/images/ps-logo.webp",
     alt: "Preisser Tech logo \u2014 custom built for your business",
@@ -34,7 +34,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "AI with guardrails",
     title: "AI, Harnessed and Under Control.",
     description:
-      "AI accelerates our work without cutting corners. We built guardrails, safety protocols, and quality controls so we can use AI at every stage and still deliver R&D-grade precision. Three weeks instead of three months. Your timeline shrinks. Your cost shrinks. The quality never does.",
+      "I leverage AI so much. I really know what I’m doing with AI. We use it to organically maximize your online presence — your AI presence. Nobody else in Kansas is doing this yet. The result: your business shows up where AI is looking, and your competitors don’t.",
     image: "/images/why-us/ai-harnessed.webp",
     mobileImage: "/images/why-us/ai-harnessed.webp",
     alt: "AI-accelerated development with proper guardrails",
@@ -46,7 +46,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "we stay with it",
     title: "We Stay With It.",
     description:
-      "We don\u2019t hand you a finished product and disappear. AI shifts. Search engines shift. Competitors shift. When you acquire a company, hire new staff, or need something updated six months later \u2014 we\u2019re still here. We stay with it.",
+      "Ongoing service relationship. We\u2019re not handing you a finished product and disappearing. AI shifts, search shifts, competitors shift \u2014 we shift with you. Month after month. The kind of relationship where you just tell us what you need and we take care of it.",
     image: "/images/why-us/we-stay-with-it-new.webp",
     mobileImage: "/images/why-us/we-stay-with-it-new.webp",
     alt: "Ongoing support and system adaptation",

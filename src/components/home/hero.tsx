@@ -250,34 +250,35 @@ export function Hero() {
           animated headline via CSS order, but first in the DOM for crawlers.
         */}
         <p className="ps-hero-summary sr-only">
-          Preisser Tech builds custom-coded marketing systems, websites, AI automation,
-          and business intelligence for small and mid-sized companies in Kansas. Google
-          Ads, Meta Ads, AI search optimization, lead automation, and MarCommand — our
-          AI marketing intelligence platform that scores every channel by real dollar ROI.
-          Built in Hays, Kansas by Tyler Preisser.
+          Preisser Tech custom-codes websites onto servers designed for AI agents,
+          gets Kansas businesses indexed on every AI registry, and uses AI to organically
+          maximize their online presence. Same enterprise quality delivered to Alliant
+          Insurance, Salesforce, and Sunrise Transportation — now serving businesses
+          across Kansas. Nobody else in Kansas is doing this. Built in Hays, Kansas by
+          Tyler Preisser.
         </p>
 
         <div ref={eyebrowRef} className="ps-hero-eyebrow">
           <span className="ps-hero-dot" aria-hidden="true" />
-          AI-First Builders
+          AI-Native. Built in Kansas.
         </div>
 
         <h1 ref={headlineRef} className="ps-hero-headline">
-          Stop Renting Attention.
+          AI picks you first.
           <br />
-          Start Owning It.
+          Built in Kansas.
         </h1>
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
-          We build the marketing engine — custom site, AI search visibility,
-          Google and Meta ads, lead automation — and you own every layer forever.
-          Powered by MarCommand, our AI brain that scores every channel by real
-          dollar ROI and tells you where to move the money next. Built in Hays, Kansas.
+          We custom-code your website onto servers designed for AI agents, get you
+          indexed on every AI registry, and use AI to organically maximize your AI
+          presence. Same enterprise quality we delivered to Alliant Insurance,
+          Salesforce, and Sunrise Transportation. Nobody else in Kansas is doing this.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
           <Link href="/contact" className="ps-btn ps-btn-primary-dark">
-            Start Building
+            Get in Touch
             <svg
               className="ps-btn-arrow"
               width="16"

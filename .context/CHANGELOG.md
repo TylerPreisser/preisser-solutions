@@ -2,6 +2,78 @@
 
 ---
 
+## 2026-05-11 — MAXIMUM AI CRAWLER PERMISSIVENESS — every residual noindex removed, explicit "yes, index everything" headers added site-wide (web-code-debug)
+
+**Directive (Tyler, 2026-05-11)**: "I want maximum agent AI crawler visibility on my entire website and everything they can view, look at, and change. I want zero restrictions for agents or crawlers. It needs to be the easiest possible thing to access anywhere."
+
+**Earlier same-day fix (commit `ab4358c`)**: removed the `shouldNoindex` gate from the HTML response path in `functions/_middleware.ts` — that fixed the bulk-deindex regression on ~108 non-homepage URLs. This entry covers the SECOND-pass cleanup that eliminates every remaining noindex signal across the codebase and adds explicit affirmative open-crawler headers.
+
+**Residual restrictions found and removed**:
+
+1. `functions/_middleware.ts` — the `serveMarkdownForAgents` path was still calling `shouldNoindex()` and stamping `x-robots-tag: noindex, follow` on the `Accept: text/markdown` variant served to AI agents. **Removed.** That response now carries `x-robots-tag: index, follow, archive, snippet, max-snippet:-1, max-image-preview:large, max-video-preview:-1`. The now-unreferenced `shouldNoindex()` helper was also deleted.
+2. `public/_headers` — the legacy `https://:project.pages.dev/* → X-Robots-Tag: noindex, nofollow` rule that suppressed the duplicate `preisser-solutions.pages.dev` host was **removed**. The middleware already 301-redirects that host to canonical, so the noindex was redundant and conflicted with the "zero restrictions" directive.
+3. `src/app/not-found.tsx` (NEW FILE) — Next.js 15 ships a default 404 page that hardcodes `<meta name="robots" content="noindex">` into the head. Created a custom `not-found.tsx` that exports `metadata.robots = { index: true, follow: true, googleBot: { ... } }`. Next.js still emits BOTH meta tags (its hardcoded `noindex` + our `index, follow`), and Google's most-restrictive-wins rule means `noindex` would still apply — so:
+4. `scripts/strip-404-noindex.mjs` (NEW FILE) — postbuild script that strips the Next.js-injected `<meta name="robots" content="noindex"/>` line out of `out/404.html` after `next build`. Wired into the `build` npm script: `"build": "next build && node scripts/strip-404-noindex.mjs"`. Verified: `out/404.html` now contains ONLY `<meta name="robots" content="index, follow"/>`.
+
+**Affirmative open-crawler signals added**:
+
+1. `public/_headers` — added `X-Robots-Tag: index, follow, archive, snippet, max-snippet:-1, max-image-preview:large, max-video-preview:-1` and `Content-Signal: ai-train=yes, search=yes, ai-input=yes` to the catch-all `/*` rule. Every response from Cloudflare Pages now carries an explicit "yes, take everything" signal at the edge.
+2. `functions/_middleware.ts` — homepage response (and the markdown alternate) explicitly stamps the same `X-Robots-Tag` value as belt-and-suspenders. Defined as the `OPEN_ROBOTS_TAG` constant for reuse.
+3. `public/robots.txt` — expanded from the bare `User-agent: * / Allow: /` to an explicit per-bot allowlist for every major AI / answer-engine crawler: GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-Web, ClaudeBot-User, anthropic-ai, PerplexityBot, Perplexity-User, Googlebot, Google-Extended, GoogleOther, CCBot, Bytespider, Amazonbot, Applebot, Applebot-Extended, cohere-ai, cohere-training-data-crawler, Diffbot, FacebookBot, meta-externalagent, meta-externalfetcher, DuckAssistBot, DuckDuckBot, bingbot, MSNBot, omgilibot, omgili, YouBot, AI2Bot, AI2Bot-Dolma, ImagesiftBot, img2dataset, MistralAI-User, xAI-Bot, MojeekBot, BraveBot, Kagibot, PetalBot, YandexBot. Each has `Allow: /`.
+4. `public/llms.txt` — added an "AI Agent Policy" section (training/search/RAG/citation all ALLOWED) and a comprehensive "URL Index" with every canonical route grouped by category (Core, Services, Locations, Industries, Comparisons, Machine-readable endpoints). 221 lines total.
+
+**Files modified / created**:
+
+- `functions/_middleware.ts` — MODIFIED: removed `shouldNoindex` helper + usage; added `OPEN_ROBOTS_TAG` constant; markdown alt and homepage both stamp open robots header.
+- `public/_headers` — MODIFIED: added `X-Robots-Tag` + `Content-Signal` to `/*` catch-all; removed legacy pages.dev noindex rule.
+- `public/robots.txt` — MODIFIED: expanded to ~40 per-bot Allow: / blocks plus the wildcard.
+- `public/llms.txt` — MODIFIED: added AI Agent Policy section and full URL Index.
+- `src/app/not-found.tsx` — CREATED: custom 404 with `robots: { index: true, follow: true }` and friendly nav back to canonical pages.
+- `scripts/strip-404-noindex.mjs` — CREATED: postbuild script that strips Next.js-injected `<meta name="robots" content="noindex">` from `out/404.html`.
+- `package.json` — MODIFIED: wired postbuild step into `build` script; added `strip-404-noindex` standalone script.
+
+**Build status**: PASS. Clean build verified end-to-end. `out/404.html` confirmed clean of `noindex`. Zero `<meta name="robots" content="noindex">` tags in any `out/*.html` file.
+
+**Live verification plan** (orchestrator should run after deploy):
+
+```bash
+# 1. Every HTML page should now carry the open X-Robots-Tag at the edge.
+for path in / /about /services /contact /pricing /tyler-preisser /case-studies \
+            /locations/hays-kansas /industries/agriculture /compare/wix-vs-custom \
+            /press /faq /process /why-automation /custom-websites /web-applications \
+            /ai-agents /business-automation /dashboards-and-analytics /404.html; do
+  echo "=== $path ==="
+  curl -sI "https://preissertech.com$path" | grep -iE 'x-robots-tag|content-signal|^HTTP/'
+done
+# Expected: every path returns
+#   X-Robots-Tag: index, follow, archive, snippet, max-snippet:-1, max-image-preview:large, max-video-preview:-1
+#   Content-Signal: ai-train=yes, search=yes, ai-input=yes
+# Zero "noindex" or "nofollow" anywhere.
+
+# 2. Markdown alternate for AI agents should also be open.
+curl -sI -H "Accept: text/markdown" https://preissertech.com/services | grep -iE 'x-robots-tag|content-type|content-signal'
+# Expected: text/markdown content-type, open x-robots-tag, ai-train=yes.
+
+# 3. 404 page meta tag should be ONLY index,follow.
+curl -s https://preissertech.com/this-path-does-not-exist | grep -oE '<meta name="robots"[^>]*>'
+# Expected: <meta name="robots" content="index, follow"/>  (one line only).
+
+# 4. robots.txt and llms.txt sanity.
+curl -s https://preissertech.com/robots.txt | head -20
+curl -s https://preissertech.com/llms.txt | head -10
+
+# 5. GSC: re-submit sitemap and request indexing on previously-affected URLs.
+```
+
+**Known remaining limitation (not blocking)**:
+
+- `out/sitemap.xml` only lists `/` — the rest of the 109-page inventory is not enumerated. This is a separate, pre-existing gap unrelated to the indexing-permissiveness directive — orchestrator should flag it for a follow-up "sitemap completeness" pass. The new `llms.txt` URL Index partially compensates for AI agents, but Google's bulk discovery would still benefit from a real sitemap.
+- The Next.js framework will continue to inject `<meta name="robots" content="noindex">` into `out/404.html` on every build. Our `scripts/strip-404-noindex.mjs` postbuild step neutralizes this deterministically. The fix is durable but requires the postbuild step to keep running. If a future Next.js upgrade respects `metadata.robots` on `not-found.tsx` natively, the script can be deleted.
+
+**No other restrictions remain in the production codebase.** `docs/proposal-system/*` retains `robots: { index: false, follow: false }` in its template instructions — these apply only to client-private proposal pages generated case-by-case (currently zero exist), and those pages SHOULD remain noindex since they're confidential client proposals. They are not part of the public preissertech.com surface.
+
+---
+
 ## 2026-05-11 — CRITICAL SEO BUG FIXED: every non-homepage was serving `x-robots-tag: noindex, follow` (web-code-debug)
 
 **Symptom**: GSC flagged preissertech.com with "Excluded by 'noindex' tag". Investigation confirmed every page on preissertech.com except `/` was serving an HTTP response header `x-robots-tag: noindex, follow` from the Cloudflare Pages edge function. Verified live via `curl -I` on `/about`, `/services`, `/contact`, `/pricing`, `/locations/hays-kansas`, `/compare/wix-vs-custom`, `/case-studies`, `/industries/agriculture`, `/preisser-technology`, `/tyler-preisser`, `/press` — ALL returned `x-robots-tag: noindex, follow`. Only `/` (homepage) was clean.
@@ -1033,3 +1105,34 @@ curl -I https://preissersolutions.com/robots.txt
 - Cloudflare Pages deploy: https://888e8c6e.preisser-solutions.pages.dev
 - Live on preissertech.com — all mc3-* selectors rendering (header, channels grid, panels, pending cards, ROI trend SVG)
 - Mobile fixes applied: 4-col channel collapse @ 640px, 44px tap targets, GPU layer hints for iOS Safari pulse
+
+## 2026-05-11 — Homepage messaging restructure: Tyler's voice, AI-native positioning (web-code-executor)
+
+**Directive (Tyler, 2026-05-11)**: Kill all marketing-agency copy from today's earlier session. Rewrite every homepage messaging layer with Tyler's verbatim quotes as source of truth. Voice fidelity is the deciding factor.
+
+**Killed phrases removed**:
+- "Stop Renting Attention. Start Owning It." (hero headline)
+- "The AI Brain Behind Your Ad Spend" (MarCommand heading)
+- "Start Building" (hero CTA → reverted to "Get in Touch")
+- "Build My MarCommand" (MarCommand CTA → "Inquire about packaging")
+- "We build the marketing engine" framing throughout
+
+**Files modified**:
+
+- `src/components/home/hero.tsx` — Full headline/subhead/CTA rewrite. New headline: "AI picks you first. / Built in Kansas." Subhead draws directly from Tyler's AI-native wedge quote (servers designed for AI agents, AI registries, enterprise clients named). CTA reverted from "Start Building" to "Get in Touch".
+- `src/components/home/value-strip.tsx` — All 4 value items rewritten: (1) "Custom-coded onto servers designed for AI agents." (2) "Indexed on every AI registry. Structured for AI to crawl." (3) "Enterprise work from Alliant, Salesforce, Sunrise — now serving Kansas." (4) "You work directly with the builder. No account managers." (kept).
+- `src/components/home/service-pillars.tsx` — (A) "Marketing & Growth Engines" renamed to "AI-Native Marketing & Growth"; (B) "Websites & Applications" renamed to "AI-Native Websites & Applications"; (C) Both pillar descriptions rewritten in builder voice from Tyler's quotes; (D) MarCommand serviceTile description rewritten with Tyler's verbatim "custom agent built for each business" quote; (E) Services intro copy rewritten. Order unchanged (already correct: Marketing → Websites → Automation → Systems → Dashboards). All 5 BentoCards use identical component — structural uniformity confirmed. Dashboards kept as its own pillar (no fold needed, grid handles layout).
+- `src/components/home/why-us.tsx` — All 3 card descriptions rewritten: Card 1 adds Alliant/Salesforce/Sunrise enterprise-to-Kansas frame; Card 2 uses Tyler's "I leverage AI so much. I really know what I'm doing with AI" voice + nobody else in Kansas framing; Card 3 adds ongoing service relationship signal.
+- `src/components/home/marcommand-callout.tsx` — (A) Heading changed from "The AI Brain Behind Your Ad Spend" to just "MarCommand"; (B) Body replaced with Tyler's verbatim "custom agent built for each business" quote; (C) Closer replaced with "This is how granular we're getting." (D) Added new `ps-marcommand-footer-copy` block after dashboard with Tyler's "internal tool / it gives me an edge / clients never see it" quotes; (E) CTA changed from "Build My MarCommand" → "Inquire about packaging". MarCommandDashboard component inside is FROZEN — untouched.
+- `src/components/home/case-studies.tsx` — Added 4 enterprise client cards: Alliant Insurance, Sunrise Transportation (Power BI / Chicago logistics), Astris Insurance, Salesforce. Cards match existing `CaseStudyCard` shape exactly. Cassidy HVAC cards preserved. Placeholder language added for Tyler to fill in project specifics on Alliant/Astris/Salesforce.
+- `src/app/page.tsx` — Page title: "Preisser Tech | AI Picks You First. Built in Kansas." Meta description rewritten from Tyler's AI-native wedge quote.
+- `src/app/layout.tsx` — Default title, OG title, Twitter title, OG description, Twitter description, and WebPage structured data description all updated to match AI-native positioning. "Stop renting attention" removed from JSON-LD.
+- `src/styles/globals.css` — Added `.ps-marcommand-footer-copy` and `.ps-marcommand-footer-body` CSS classes for new below-dashboard copy block.
+- `src/components/home/tech-partners.tsx` — Added code comment flagging tools that may imply false partnership (Salesforce, Anthropic, OpenAI, Google) for Tyler's review. No tools removed.
+
+**Build status**: PASS. 108 pages, 0 errors, `✓ Compiled successfully`.
+
+**Decisions**:
+- Dashboards kept as standalone pillar (not folded). The 5-card bento grid visually distinguishes all pillars and Dashboards has distinct enterprise credibility (Sunrise Power BI). Folding it would lose that signal.
+- MarCommand heading is just "MarCommand" per instruction — the product name carries the weight without a tagline.
+- Tyler placeholder text added in 3 enterprise case study cards (Alliant, Astris, Salesforce) — Tyler needs to fill in project specifics.

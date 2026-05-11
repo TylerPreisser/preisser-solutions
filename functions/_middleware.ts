@@ -78,9 +78,15 @@ function isPageRequest(pathname: string) {
   return pathname === "/" || !lastSegment.includes(".") || pathname.endsWith(".html");
 }
 
-function shouldNoindex(pathname: string) {
-  return isPageRequest(pathname) && pathname !== "/" && pathname !== "/index.html";
-}
+// Explicit maximum-permissive robots signal. Applied to every response that
+// flows through this middleware so AI agents and crawlers see an affirmative
+// "yes, index everything, take everything" header in addition to the open
+// `<meta name="robots" content="index, follow">` baked into every HTML page.
+//
+// Tyler's directive (2026-05-11): ZERO restrictions on AI crawlers and agents.
+// Every page, every path. Maximum visibility, maximum discoverability.
+const OPEN_ROBOTS_TAG =
+  "index, follow, archive, snippet, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
 
 function estimateMarkdownTokens(markdown: string) {
   return Math.max(1, Math.ceil(markdown.trim().split(/\s+/).length * 1.35));
@@ -100,6 +106,11 @@ async function serveMarkdownForAgents(context: MiddlewareContext, url: URL) {
   }
 
   const markdown = await assetResponse.text();
+  // Markdown variant for AI agents is FULLY indexable.
+  // Tyler's directive (2026-05-11): zero restrictions for AI agents/crawlers
+  // on any path, any variant. The previous `shouldNoindex()` gate on this
+  // response was removed so AI agents requesting `Accept: text/markdown`
+  // get an affirmative `X-Robots-Tag: index, follow, ...` signal too.
   const headers: Record<string, string> = {
     "content-type": "text/markdown; charset=utf-8",
     "cache-control": "public, max-age=3600",
@@ -107,12 +118,9 @@ async function serveMarkdownForAgents(context: MiddlewareContext, url: URL) {
     "vary": "Accept",
     "x-markdown-tokens": String(estimateMarkdownTokens(markdown)),
     "content-signal": "ai-train=yes, search=yes, ai-input=yes",
+    "x-robots-tag": OPEN_ROBOTS_TAG,
     "link": AGENT_DISCOVERY_LINKS,
   };
-
-  if (shouldNoindex(url.pathname)) {
-    headers["x-robots-tag"] = "noindex, follow";
-  }
 
   return new Response(markdown, {
     status: 200,
@@ -153,13 +161,20 @@ export const onRequest = async (context: MiddlewareContext) => {
 
   const response = await context.next();
 
-  // NOTE: HTML page responses MUST NOT get x-robots-tag: noindex.
-  // The shouldNoindex() helper is intentionally scoped to the markdown
-  // variant served via serveMarkdownForAgents() above — markdown
-  // alternates are duplicate content and should not be indexed by Google,
-  // but the canonical HTML pages must be indexable.
-  // (Earlier revision applied shouldNoindex to HTML here, which deindexed
-  // the entire site below /. Fixed 2026-05-11.)
+  // Tyler's directive (2026-05-11): ZERO restrictions on AI crawlers and
+  // agents across preissertech.com. Every page, every path.
+  //
+  // The universal `X-Robots-Tag: index, follow, archive, snippet, ...` header
+  // is set on every response by `public/_headers` at the Cloudflare Pages
+  // edge — that handles all static assets and HTML routes uniformly. This
+  // middleware only re-wraps HTML page responses where we additionally need
+  // to inject the agent-discovery `Link` headers (currently only the homepage,
+  // to avoid the per-request overhead of cloning every response body).
+  //
+  // (Earlier revision applied `noindex` here for every non-root HTML page,
+  // which deindexed the entire site below /. Removed 2026-05-11 — Tyler
+  // wants zero restrictions, so the previous gate is now replaced by the
+  // open `X-Robots-Tag` already emitted by `_headers`.)
 
   if (url.pathname === "/" || url.pathname === "/index.html") {
     const headers = new Headers(response.headers);
@@ -167,6 +182,11 @@ export const onRequest = async (context: MiddlewareContext) => {
       headers.append("link", AGENT_DISCOVERY_LINKS);
     }
     headers.append("vary", "Accept");
+    // Belt-and-suspenders: also stamp the open robots header here so the
+    // homepage response carries it even if `_headers` somehow doesn't apply.
+    if (!headers.get("x-robots-tag")) {
+      headers.set("x-robots-tag", OPEN_ROBOTS_TAG);
+    }
     return new Response(response.body, {
       status: response.status,
       statusText: response.statusText,

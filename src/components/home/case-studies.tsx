@@ -13,7 +13,71 @@ interface CaseStudyCard {
 }
 
 const caseStudyCards: CaseStudyCard[] = [
-  // 1
+  // 1 — Enterprise: Alliant Insurance
+  {
+    title: "Alliant Insurance",
+    tags: "Enterprise Client | Custom Systems | Data Architecture",
+    description:
+      "Built for one of the largest insurance brokerage firms in the United States. Enterprise-grade custom systems — the same approach, the same quality, available to your business. [Tyler to fill in project specifics]",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #0D3160 50%, #0A1628 100%)",
+    image: "preisser-tech.webp",
+  },
+  // 2 — Enterprise: Sunrise Transportation
+  {
+    title: "Sunrise Transportation",
+    tags: "Power BI Dashboards | Chicago Logistics | $50M+ Company",
+    description:
+      "Built Power BI dashboards for a $50M+ Chicago logistics operation. Live operational data, executive visibility, and decision-making at scale. Same approach available for your business.",
+    gradient: "linear-gradient(135deg, #0F2744 0%, #1a3a6e 100%)",
+    svgIcon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        {/* Truck silhouette */}
+        <rect x="4" y="16" width="28" height="20" rx="2" strokeOpacity="0.7" />
+        <path d="M32 20h6l6 8v8h-12V20z" strokeOpacity="0.8" />
+        <circle cx="12" cy="38" r="3" stroke="currentColor" />
+        <circle cx="22" cy="38" r="3" stroke="currentColor" />
+        <circle cx="38" cy="38" r="3" stroke="currentColor" />
+        {/* Dashboard lines */}
+        <path d="M8 22h16" strokeOpacity="0.4" />
+        <path d="M8 26h12" strokeOpacity="0.3" />
+      </svg>
+    ),
+  },
+  // 3 — Enterprise: Astris Insurance
+  {
+    title: "Astris Insurance",
+    tags: "Enterprise Client | Custom Systems",
+    description:
+      "Enterprise-grade custom systems built for Astris Insurance. The same caliber of work we bring to every client — regardless of their size. [Tyler to fill in project specifics]",
+    gradient: "linear-gradient(135deg, #0a1f3c 0%, #0D95E8 100%)",
+    svgIcon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        {/* Shield */}
+        <path d="M24 4L8 10v14c0 8.8 7 17 16 20 9-3 16-11.2 16-20V10L24 4z" strokeOpacity="0.8" />
+        <path d="M17 24l5 5 9-10" strokeOpacity="0.9" />
+      </svg>
+    ),
+  },
+  // 4 — Salesforce
+  {
+    title: "Salesforce",
+    tags: "Enterprise Work | Custom Integration",
+    description:
+      "Built custom systems for Salesforce engagements. Enterprise-caliber work — the standard we hold ourselves to on every project, for every client. [Tyler to fill in project specifics]",
+    gradient: "linear-gradient(135deg, #00A1E0 0%, #0070D2 100%)",
+    svgIcon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        {/* Cloud */}
+        <path d="M34 28c3.3 0 6-2.7 6-6 0-3-2.2-5.5-5.1-5.9C34.1 12.6 30.7 10 26.7 10c-3.7 0-6.9 2.3-8.3 5.6-.4-.1-.8-.1-1.2-.1-3.9 0-7 3.1-7 7s3.1 7 7 7H34z" strokeOpacity="0.8" />
+        {/* Connection nodes */}
+        <circle cx="20" cy="36" r="2.5" fill="currentColor" fillOpacity="0.6" stroke="none" />
+        <circle cx="28" cy="36" r="2.5" fill="currentColor" fillOpacity="0.6" stroke="none" />
+        <circle cx="24" cy="42" r="2.5" fill="currentColor" fillOpacity="0.6" stroke="none" />
+        <path d="M20 36l4 6M28 36l-4 6" strokeOpacity="0.4" />
+      </svg>
+    ),
+  },
+  // 5
   {
     title: "The Iron and Oak Podcast",
     tags: "Website Build | AI Search Optimization",

@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && node scripts/strip-404-noindex.mjs",
     "start": "next start",
     "lint": "next lint",
     "preview": "npx serve out",
-    "indexnow": "node scripts/indexnow-ping.mjs"
+    "indexnow": "node scripts/indexnow-ping.mjs",
+    "strip-404-noindex": "node scripts/strip-404-noindex.mjs"
   },
   "dependencies": {
     "next": "^15.3.0",
