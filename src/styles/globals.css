@@ -3243,11 +3243,15 @@ a {
   padding-top: 32px;
   border-top: 1px solid var(--theme-dialog-stat-border);
   transition: border-color 300ms ease;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 }
 
 .ps-dialog-cta-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   background: var(--color-primary);
   color: #ffffff;
@@ -4566,6 +4570,12 @@ a {
   filter: brightness(0) invert(1);
 }
 
+.ps-work-card-logo--salesforce {
+  max-width: 70%;
+  max-height: 48%;
+  filter: none;
+}
+
 @media (min-width: 769px) {
   .ps-work-card:hover .ps-work-card-logo,
   .ps-work-card:focus-within .ps-work-card-logo {
@@ -4833,9 +4843,10 @@ a {
 
 .ps-marcommand {
   position: relative;
-  background-color: #0B1E35;
+  background: linear-gradient(180deg, #0A1628 0%, #0B1E35 72px, #0B1E35 100%);
   color: inherit;
   padding: var(--section-py-desktop) 0;
+  margin-top: -1px;
   overflow: hidden;
 }
 

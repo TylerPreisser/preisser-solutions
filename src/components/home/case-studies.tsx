@@ -48,7 +48,7 @@ const caseStudyCards: CaseStudyCard[] = [
     tags: "Enterprise | Platform | Integration",
     description:
       "Built integration and automation work alongside enterprise teams operating on the Salesforce platform. Work delivered through R Squared AI.",
-    gradient: "linear-gradient(135deg, #00A1E0 0%, #0070D2 100%)",
+    gradient: "linear-gradient(135deg, #061526 0%, #0A2744 55%, #0A1628 100%)",
     caseLogo: "/images/case-studies/salesforce-logo.svg",
   },
   // 5
@@ -393,7 +393,13 @@ export function CaseStudies() {
                 <img
                   src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}${study.caseLogo}`}
                   alt={study.title}
-                  className="ps-work-card-logo ps-work-card-logo--company"
+                  className={[
+                    "ps-work-card-logo",
+                    "ps-work-card-logo--company",
+                    study.title === "Salesforce" ? "ps-work-card-logo--salesforce" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
                 />
               ) : study.image ? (
                 // eslint-disable-next-line @next/next/no-img-element

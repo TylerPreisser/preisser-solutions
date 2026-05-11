@@ -1575,7 +1575,7 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
           {/* CTA */}
           <div className="ps-dialog-cta ps-dialog-reveal">
             <a href="/contact" className="ps-dialog-cta-btn">
-              This sound like you? Let&rsquo;s talk.
+              Interested? Let&rsquo;s talk
             </a>
           </div>
         </div>
