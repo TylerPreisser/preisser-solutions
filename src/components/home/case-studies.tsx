@@ -93,16 +93,6 @@ const caseStudyCards: CaseStudyCard[] = [
   },
   // 9
   {
-    title: "Contact Form to CRM Pipeline",
-    tags: "Integration | Lead Automation | R Squared AI",
-    description:
-      "From the moment a lead fills out a form to the moment they're tagged, scored, and assigned in the CRM — zero manual steps. No inbox monitoring. No copy-pasting into spreadsheets. Leads move through your pipeline whether your team is watching or not.",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #0F1D30 100%)",
-    image: "r-squared.webp",
-    href: "https://3124f78d.r2-solutions.pages.dev/",
-  },
-  // 10
-  {
     title: "Alpha Matrix — Multi-Agent AI",
     tags: "AI Architecture | R Squared AI | Autonomous",
     description:
@@ -111,7 +101,7 @@ const caseStudyCards: CaseStudyCard[] = [
     image: "r-squared.webp",
     href: "https://3124f78d.r2-solutions.pages.dev/",
   },
-  // 11
+  // 10
   {
     title: "After-Hours Call Triage",
     tags: "AI Automation | Lead Capture | Routing",
