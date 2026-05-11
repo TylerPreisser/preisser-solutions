@@ -72,9 +72,6 @@ export function TechPartners() {
     <section className="ps-tech-partners" aria-label="Technologies and platforms we work with">
       <div className="ps-tech-partners-header">
         <p className="ps-tech-partners-label" aria-hidden="true">// stack</p>
-        <h2 className="ps-tech-partners-heading">
-          Built With the Best Tools in the Industry
-        </h2>
       </div>
 
       {/* Scrolling track — items duplicated for seamless loop */}

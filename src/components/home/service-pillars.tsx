@@ -240,7 +240,7 @@ const services: ServicePillar[] = [
     type: "automation",
     title: "Automation Systems",
     description:
-      "Lead follow-up, customer reactivation, review collection, internal workflows. Runs whether anyone's watching the inbox. Cassidy HVAC saw 60%+ reactivation of dormant customers and a 45% lift in booking conversion.",
+      "Lead follow-up, customer reactivation, review collection, internal workflows. Runs whether anyone's watching the inbox. 60%+ reactivation of dormant customers. 45% lift in booking conversion.",
     href: "/contact",
     visual: <AutomationVisual />,
     bullets: [
@@ -1572,18 +1572,6 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
             <ServiceCarousel tiles={service.serviceTiles} />
           </div>
 
-          {/* Child 4 — Pain Points (moved below What We Deliver) */}
-          <div className="ps-dialog-section ps-dialog-reveal">
-            <h4 className="ps-dialog-section-heading">Sound familiar?</h4>
-            <div className="ps-dialog-pains">
-              {service.painPoints.map((pain) => (
-                <div key={pain} className="ps-dialog-pain">
-                  &ldquo;{pain}&rdquo;
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* CTA */}
           <div className="ps-dialog-cta ps-dialog-reveal">
             <a href="/contact" className="ps-dialog-cta-btn">
@@ -1676,9 +1664,8 @@ export function ServicePillars() {
           What We Build
         </h2>
         <p className="ps-services-intro">
-          Custom-coded. AI-native. Ongoing service relationship. Same enterprise
-          quality we delivered to Alliant Insurance, Salesforce, and Sunrise
-          Transportation — built for Kansas businesses.
+          Custom-coded. AI-native. Ongoing service relationship. Enterprise
+          quality — built for Kansas businesses.
         </p>
       </div>
 

@@ -2,6 +2,24 @@
 
 ---
 
+## 2026-05-11 — PUNCH LIST PASS: COPY, STRUCTURE, ENTERPRISE REFS (web-code-executor)
+
+**Directive**: Tyler's 12-item punch list — surgical copy, structure, and visual fixes to homepage.
+
+**Files modified**:
+
+- `src/components/home/marcommand-callout.tsx` — Updated body copy to exact "MarCommand packet" sentence. Removed `ps-marcommand-closer` paragraph ("This is how granular we're getting...").
+- `src/styles/globals.css` — Removed `border-top` and `border-bottom` from `.ps-marcommand` (eliminates hard visual break between MarCommand and What We Build). Hardcoded MarCommand colors (`#0B1E35` bg, `#FFFFFF` heading, `#94A3B8` body) so section never flips with light mode theme toggle. Updated `.ps-work-card-logo--company` to remove white background box (was `rgba(255,255,255,0.92)` + padding); replaced with `filter: brightness(0) invert(1)` for logo readability on dark card gradients.
+- `src/components/home/tech-partners.tsx` — Deleted the `<h2>Built With the Best Tools in the Industry</h2>` heading entirely. `// stack` label and scrolling pill track remain.
+- `src/components/home/why-us.tsx` — Restored "Custom. Built for Your Business." description (removed enterprise client names Alliant/Salesforce/Sunrise). Restored "AI, Harnessed and Under Control." to original polished guardrails copy (removed "I leverage AI so much" language).
+- `src/components/home/service-pillars.tsx` — Removed "Sound familiar?" block + all painPoints rendering from bento modal popups. Removed Cassidy HVAC client name from automation description (kept stats as anonymous). Removed enterprise client names from "What We Build" intro paragraph.
+- `src/components/home/hero.tsx` — Removed eyebrow tag ("Built in Kansas." pill) and `eyebrowRef`. Updated H1 to "Custom Websites, Marketing & AI. / Built in Kansas." (removed TODO comment). Updated subtitle to "Custom-coded websites, marketing systems, and AI — built by the founder for your business." (removed enterprise client list). Updated sr-only summary paragraph. Simplified GSAP entrance timeline (starts from headline, no eyebrow).
+- `src/components/home/case-studies.tsx` — Updated all 4 enterprise card descriptions with R Squared AI lineage framing per Tyler's exact spec.
+
+**Build status**: PASS — clean production build, all 109 pages prerendered.
+
+---
+
 ## 2026-05-11 — SURGICAL HOMEPAGE COPY & STRUCTURE PASS (web-code-executor)
 
 **Directive**: Tyler's surgical edit spec — 12 precise edits to homepage metadata, hero, value strip, service pillars, why-us, marcommand callout, dashboard, and case studies.

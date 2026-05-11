@@ -5,7 +5,6 @@ import Link from "next/link";
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const eyebrowRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctasRef = useRef<HTMLDivElement>(null);
@@ -194,7 +193,7 @@ export function Hero() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const targets = [eyebrowRef, headlineRef, subtitleRef, ctasRef];
+    const targets = [headlineRef, subtitleRef, ctasRef];
 
     if (prefersReduced) {
       targets.forEach((r) => {
@@ -208,16 +207,9 @@ export function Hero() {
 
     import("@/lib/gsap").then(({ gsap }) => {
       const tl = gsap.timeline({ delay: 0.2 });
-      tl.to(eyebrowRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: "power3.out",
-      })
-        .to(
+      tl.to(
           headlineRef.current,
-          { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" },
-          "-=0.3"
+          { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" }
         )
         .to(
           subtitleRef.current,
@@ -251,27 +243,19 @@ export function Hero() {
         */}
         <p className="ps-hero-summary sr-only">
           Preisser Tech builds custom websites, marketing systems, and AI for
-          businesses including Alliant Insurance Services, Astrus Insurance Solutions,
-          Sunrise Transportation, John C. Cassidy HVAC, and Salesforce. Founded by
-          Tyler Preisser in Hays, Kansas.
+          businesses ranging from local to enterprise. Founded by Tyler Preisser
+          in Hays, Kansas.
         </p>
 
-        <div ref={eyebrowRef} className="ps-hero-eyebrow">
-          <span className="ps-hero-dot" aria-hidden="true" />
-          Built in Kansas.
-        </div>
-
-        {/* TODO: replace hero H1 once Tyler locks the new headline */}
         <h1 ref={headlineRef} className="ps-hero-headline">
-          World-Class Technology.
+          Custom Websites, Marketing &amp; AI.
           <br />
           Built in Kansas.
         </h1>
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
-          Custom websites, marketing systems, and AI — built for businesses
-          including Alliant Insurance Services, Astrus Insurance Solutions,
-          Sunrise Transportation, John C. Cassidy HVAC, and Salesforce.
+          Custom-coded websites, marketing systems, and AI — built by the
+          founder for your business.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">

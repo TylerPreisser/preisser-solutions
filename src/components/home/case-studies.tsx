@@ -20,7 +20,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Astrus Insurance Solutions",
     tags: "Enterprise | Construction MGU | Insurance",
     description:
-      "Built systems for Astrus Insurance Solutions, the nation's premier construction-focused Managing General Underwriter. An Alliant family company based in Pasadena, California, Astrus serves specialty trade contractors, general contractors, and large construction projects nationwide.",
+      "Built systems for Astrus Insurance Solutions, the nation's premier construction-focused Managing General Underwriter and an Alliant family company based in Pasadena, California. Astrus serves specialty trade contractors, general contractors, and large construction projects nationwide. Work delivered through R Squared AI.",
     gradient: "linear-gradient(135deg, #0a1f3c 0%, #0D95E8 100%)",
     caseLogo: "/images/case-studies/astrus-logo.png",
   },
@@ -29,7 +29,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Sunrise Transportation",
     tags: "Enterprise | Power BI | Operations Data",
     description:
-      "Built Power BI dashboards and operational data infrastructure for Sunrise Transportation, a Chicago/Naperville-based specialty K-12 transportation provider. Sunrise has been featured on Fox News for its AI innovations in school bus safety; we contributed to the data and intelligence layer behind their fleet.",
+      "Built Power BI dashboards and operational data infrastructure for Sunrise Transportation, a Chicago/Naperville-based specialty K-12 transportation provider featured on Fox News for AI innovations in school bus safety. Work delivered through R Squared AI.",
     gradient: "linear-gradient(135deg, #0F2744 0%, #1a3a6e 100%)",
     caseLogo: "/images/case-studies/sunrise-transportation-logo.svg",
   },
@@ -38,7 +38,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Alliant Insurance Services",
     tags: "Enterprise | Insurance Brokerage | Integration",
     description:
-      "Built systems for Alliant Insurance Services, one of the largest national insurance brokerages in the United States. Replaced a failed prior vendor on a six-figure retainer engagement.",
+      "Built systems for Alliant Insurance Services, one of the largest national insurance brokerages in the United States. Replaced a failed prior vendor on a six-figure retainer engagement. Work delivered through R Squared AI.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #0D3160 50%, #0A1628 100%)",
     caseLogo: "/images/case-studies/alliant-logo.svg",
   },
@@ -47,7 +47,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Salesforce",
     tags: "Enterprise | Platform | Integration",
     description:
-      "Built integration and automation work alongside enterprise teams operating on the Salesforce platform.",
+      "Built integration and automation work alongside enterprise teams operating on the Salesforce platform. Work delivered through R Squared AI.",
     gradient: "linear-gradient(135deg, #00A1E0 0%, #0070D2 100%)",
     caseLogo: "/images/case-studies/salesforce-logo.svg",
   },

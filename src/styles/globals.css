@@ -4558,15 +4558,12 @@ a {
   filter: none;
 }
 
-/* Company logo — contained, with subtle white background pill for legibility on dark gradients */
+/* Company logo — contained, directly on card gradient, no background box */
 .ps-work-card-logo--company {
   max-width: 65%;
   max-height: 40%;
-  padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.92);
-  border-radius: 8px;
   object-fit: contain;
-  filter: none;
+  filter: brightness(0) invert(1);
 }
 
 @media (min-width: 769px) {
@@ -4836,9 +4833,8 @@ a {
 
 .ps-marcommand {
   position: relative;
-  background-color: var(--color-dark-alt);
-  border-top: 1px solid var(--color-border-dark);
-  border-bottom: 1px solid var(--color-border-dark);
+  background-color: #0B1E35;
+  color: inherit;
   padding: var(--section-py-desktop) 0;
   overflow: hidden;
 }
@@ -4904,21 +4900,21 @@ a {
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.03em;
-  color: var(--color-text-dark-primary);
+  color: #FFFFFF;
   margin: 0;
 }
 
 .ps-marcommand-body {
   font-size: 1rem;
   line-height: 1.7;
-  color: var(--color-text-dark-secondary);
+  color: #94A3B8;
   margin: 0;
 }
 
 .ps-marcommand-closer {
   font-size: 1rem;
   line-height: 1.7;
-  color: var(--color-text-dark-secondary);
+  color: #94A3B8;
   margin: 0;
 }
 

@@ -22,7 +22,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "built for your business",
     title: "Custom. Built for Your Business.",
     description:
-      "Same approach we used for Alliant Insurance, Salesforce, and Sunrise Transportation \u2014 custom-coded for your business. Not rebranded templates. Real code. Real systems. Enterprise quality, built for a Kansas business.",
+      "Everything we build is designed and engineered specifically for how your business works. We're not rebranding templates. Real code. Real systems. Built the way you need them.",
     image: "/images/ps-logo.webp",
     mobileImage: "/images/ps-logo.webp",
     alt: "Preisser Tech logo \u2014 custom built for your business",
@@ -34,7 +34,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "AI with guardrails",
     title: "AI, Harnessed and Under Control.",
     description:
-      "I leverage AI so much. I really know what I’m doing with AI. We use it to organically maximize your online presence — your AI presence. Nobody else in Kansas is doing this yet. The result: your business shows up where AI is looking, and your competitors don’t.",
+      "AI accelerates our work without cutting corners. We built guardrails, safety protocols, and quality controls so we can use AI at every stage and still deliver R&D-grade precision. Three weeks instead of three months. Your timeline shrinks. Your cost shrinks. The quality never does.",
     image: "/images/why-us/ai-harnessed.webp",
     mobileImage: "/images/why-us/ai-harnessed.webp",
     alt: "AI-accelerated development with proper guardrails",
