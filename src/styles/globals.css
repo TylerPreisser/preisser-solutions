@@ -49,7 +49,7 @@
   --shadow-glow: 0 0 40px rgba(13, 149, 232, 0.2);
 
   /* Layout */
-  --nav-height:        72px;
+  --nav-height:        88px;
   --container-max:     1200px;
   --container-padding: 24px;
   --section-py-desktop: 100px;
@@ -345,8 +345,8 @@ a {
   left: 0;
   right: 0;
   z-index: 100;
-  height: 76px;
-  padding: 6px 0;
+  height: 88px;
+  padding: 8px 0;
 }
 
 /* Blur layer — must be a real child element, not ::before.
@@ -359,7 +359,7 @@ a {
    Safari scroll jank that came from will-change on the fixed parent. */
 .ps-header-blur {
   position: absolute;
-  inset: 6px 12px;
+  inset: 8px 14px;
   z-index: 0;
   border-radius: 14px;
   background-color: rgba(10, 22, 40, 0.55);
@@ -422,7 +422,7 @@ a {
 }
 
 .ps-logo-img {
-  height: 44px;
+  height: 56px;
   width: auto;
   object-fit: contain;
 }
@@ -640,6 +640,19 @@ a {
 
 /* Mobile: show nav inline (only 2 items — theme toggle + CTA — no hamburger needed) */
 @media (max-width: 768px) {
+  :root {
+    --nav-height: 78px;
+  }
+
+  .ps-header {
+    height: 80px;
+    padding: 6px 0;
+  }
+
+  .ps-header-blur {
+    inset: 6px 10px;
+  }
+
   .ps-header-inner {
     padding: 0 16px;
     gap: 12px;
@@ -647,7 +660,7 @@ a {
 
   /* Shrink logo slightly on small screens */
   .ps-logo-img {
-    height: 36px;
+    height: 40px;
   }
 
   /* CTA pill: smaller padding and font on mobile */

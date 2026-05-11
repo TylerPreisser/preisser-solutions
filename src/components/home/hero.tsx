@@ -254,9 +254,8 @@ export function Hero() {
         </h1>
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
-          Premium websites, AI-powered marketing, automation, and dashboards
-          built to help your business get found, earn trust, and see what is
-          working.
+          Websites, visibility, ads, and automation built with an enterprise
+          standard and brought home to Kansas.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
