@@ -69,7 +69,7 @@ export function MarCommandCallout() {
             MarCommand
           </h2>
           <p className="ps-marcommand-body">
-            With our MarCommand packet, your business gets a custom AI agent
+            With our MarCommand package, your business gets a custom AI agent
             that learns and understands and trains on your business to start
             understanding, learning, and training itself on your audience, your
             business, your social media content, your channels, your products.

@@ -1226,7 +1226,7 @@ a {
 
 @media (min-width: 640px) {
   .ps-bento-card--websites,
-  .ps-bento-card--automation,
+  .ps-bento-card--revenue,
   .ps-bento-card--dashboards {
     grid-column: span 2;
   }
@@ -1242,7 +1242,7 @@ a {
     min-height: 430px;
   }
 
-  .ps-bento-card--automation {
+  .ps-bento-card--revenue {
     grid-column: span 2;
     min-height: 420px;
   }
@@ -1253,7 +1253,7 @@ a {
   }
 
   .ps-bento-card--systems,
-  .ps-bento-card--revenue {
+  .ps-bento-card--automation {
     min-height: 320px;
   }
 }
