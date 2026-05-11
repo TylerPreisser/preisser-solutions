@@ -18,18 +18,18 @@ const caseStudyCards: CaseStudyCard[] = [
   // 1 — Enterprise: Astrus Insurance Solutions
   {
     title: "Astrus Insurance Solutions",
-    tags: "Enterprise | Construction MGU | Insurance",
+    tags: "Enterprise | Insurance Submissions | AI Agent",
     description:
-      "Built systems for Astrus Insurance Solutions, the nation's premier construction-focused Managing General Underwriter and an Alliant family company based in Pasadena, California. Astrus serves specialty trade contractors, general contractors, and large construction projects nationwide. Work delivered through R Squared AI.",
+      "Built an AI-powered submission-ingesting agentic solution for Astrus Insurance Solutions. The system analyzes insurance submissions, routes and prepares them for review, and saves underwriters significant time. Work delivered through R Squared AI.",
     gradient: "linear-gradient(135deg, #0a1f3c 0%, #0D95E8 100%)",
     caseLogo: "/images/case-studies/astrus-logo.png",
   },
   // 2 — Enterprise: Sunrise Transportation
   {
     title: "Sunrise Transportation",
-    tags: "Enterprise | Power BI | Operations Data",
+    tags: "Enterprise | Data Visibility | Dashboards",
     description:
-      "Built Power BI dashboards and operational data infrastructure for Sunrise Transportation, a Chicago/Naperville-based specialty K-12 transportation provider featured on Fox News for AI innovations in school bus safety. Work delivered through R Squared AI.",
+      "Used AI to work through Sunrise Transportation's database and piece together broken data sources across Excel sheets and internal systems. Built visibility and dashboards around clear KPIs including revenue and EBITDA. Work delivered through R Squared AI.",
     gradient: "linear-gradient(135deg, #0F2744 0%, #1a3a6e 100%)",
     caseLogo: "/images/case-studies/sunrise-transportation-logo.svg",
   },

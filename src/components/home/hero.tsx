@@ -242,9 +242,9 @@ export function Hero() {
           animated headline via CSS order, but first in the DOM for crawlers.
         */}
         <p className="ps-hero-summary sr-only">
-          Preisser Tech builds world-class AI-powered marketing, websites,
-          applications, automation, and dashboards for Kansas businesses.
-          Founded by Tyler Preisser in Hays, Kansas.
+          Preisser Tech builds world-class AI-powered marketing, premium
+          websites, automation, and dashboards for Kansas businesses. Founded
+          by Tyler Preisser in Hays, Kansas.
         </p>
 
         <h1 ref={headlineRef} className="ps-hero-headline">
@@ -254,7 +254,7 @@ export function Hero() {
         </h1>
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
-          Websites, applications, AI visibility, organic reach, automation, and
+          Premium-built websites, AI-powered marketing, automation, and
           dashboards built to help your business get found, win better
           customers, and run with clearer control.
         </p>

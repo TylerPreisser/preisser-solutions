@@ -1592,6 +1592,13 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
 export function ServicePillars() {
   const gridRef = useRef<HTMLDivElement>(null);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const displayedServices = [
+    services[0],
+    services[2],
+    services[1],
+    services[3],
+    services[4],
+  ];
 
   const handleExpand = useCallback((index: number) => {
     setExpandedIndex(index);
@@ -1670,7 +1677,7 @@ export function ServicePillars() {
       </div>
 
       <div className="ps-bento-grid" ref={gridRef}>
-        {services.map((service, i) => (
+        {displayedServices.map((service, i) => (
           <BentoCard
             key={service.type}
             service={service}
@@ -1682,7 +1689,7 @@ export function ServicePillars() {
       {/* Bottom-sheet dialog portal */}
       {expandedIndex !== null && (
         <BottomSheetDialog
-          service={services[expandedIndex]}
+          service={displayedServices[expandedIndex]}
           onClose={handleClose}
         />
       )}
