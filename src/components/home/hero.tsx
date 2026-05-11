@@ -243,20 +243,20 @@ export function Hero() {
         */}
         <p className="ps-hero-summary sr-only">
           Preisser Tech builds world-class AI-powered marketing, premium
-          websites, automation, and dashboards for Kansas businesses. Founded
-          by Tyler Preisser in Hays, Kansas.
+          websites, automation, and dashboards for Kansas. Founded by Tyler
+          Preisser in Hays, Kansas.
         </p>
 
         <h1 ref={headlineRef} className="ps-hero-headline">
           World-Class AI-Powered Marketing.
           <br />
-          For Kansas Businesses.
+          For Kansas.
         </h1>
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
-          Premium-built websites, AI-powered marketing, automation, and
-          dashboards built to help your business get found, win better
-          customers, and run with clearer control.
+          Premium websites, AI-powered marketing, automation, and dashboards
+          built to help your business get found, earn trust, and see what is
+          working.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">

@@ -50,8 +50,8 @@ export default function HomePage() {
       <Hero />
       <ValueStrip />
       <ServicePillars />
-      <MarCommandCallout />
       <TechPartners />
+      <MarCommandCallout />
       <WhyUs />
       <CaseStudies />
       <CtaSection />

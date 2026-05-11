@@ -121,15 +121,6 @@ const caseStudyCards: CaseStudyCard[] = [
   },
   // 8
   {
-    title: "TylerPreisser.com",
-    tags: "Portfolio | GEO/SEO | AI Search Optimization",
-    description:
-      "A professional portfolio engineered to rank in both traditional search and AI-powered search tools like ChatGPT and Perplexity. If your competitors show up when someone asks AI for a recommendation in your industry and you don't, you're already behind.",
-    gradient: "linear-gradient(135deg, #0D95E8 0%, #0A1628 100%)",
-    image: "tyler-headshot-nobg.webp",
-  },
-  // 9
-  {
     title: "After-Hours Call Triage",
     tags: "AI Automation | Lead Capture | Routing",
     description:

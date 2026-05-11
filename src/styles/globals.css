@@ -3318,7 +3318,7 @@ a {
 /* Always uses theme-switchable background — transitions smoothly */
 .ps-why {
   background: linear-gradient(180deg, var(--theme-section-switchable) 0%, var(--theme-section-alt) 100%);
-  padding: var(--section-py-desktop) 0;
+  padding: var(--section-py-desktop) 0 72px;
   overflow: hidden;
   transition: background 300ms ease;
 }
@@ -4450,7 +4450,7 @@ a {
 /* ── Case Studies / Work Carousel ─────────────────────────── */
 .ps-work {
   background-color: var(--color-dark);
-  padding: var(--section-py-desktop) 24px;
+  padding: 72px 24px var(--section-py-desktop);
   overflow: hidden;
 }
 
@@ -6532,11 +6532,9 @@ a {
 /* ── Tech Partners / Logo Banner ───────────────────────────── */
 .ps-tech-partners {
   background-color: var(--theme-section-switchable);
-  border-top: 1px solid var(--theme-border);
-  border-bottom: 1px solid var(--theme-border);
   padding: 48px 0;
   overflow: hidden;
-  transition: background-color 300ms ease, border-color 300ms ease;
+  transition: background-color 300ms ease;
 }
 
 .ps-tech-partners-header {
