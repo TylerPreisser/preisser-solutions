@@ -4837,10 +4837,11 @@ a {
 /* ── CTA Section ───────────────────────────────────────────── */
 .ps-cta-section {
   position: relative;
-  background-color: var(--color-dark);
+  background: var(--theme-bg-primary);
   padding: 120px 0;
   text-align: center;
   overflow: hidden;
+  transition: background 300ms ease;
 }
 
 .ps-cta-glow {
@@ -4876,15 +4877,17 @@ a {
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.03em;
-  color: var(--color-text-dark-primary);
+  color: var(--theme-text-primary);
   margin-bottom: 20px;
+  transition: color 300ms ease;
 }
 
 .ps-cta-body {
   font-size: 1.125rem;
   line-height: 1.65;
-  color: var(--color-text-dark-secondary);
+  color: var(--theme-text-secondary);
   margin-bottom: 40px;
+  transition: color 300ms ease;
 }
 
 .ps-cta-buttons {
@@ -6111,8 +6114,7 @@ a {
 
 /* ── CTA Section: light mode overrides ─────────────────────── */
 [data-theme="light"] .ps-cta-section {
-  background-color: #F0F4F8;
-  transition: background-color 300ms ease;
+  background: var(--theme-bg-primary);
 }
 
 [data-theme="light"] .ps-cta-glow {
@@ -6121,16 +6123,6 @@ a {
     rgba(13, 149, 232, 0.08) 0%,
     transparent 70%
   );
-}
-
-[data-theme="light"] .ps-cta-heading {
-  color: #0A1628;
-  transition: color 300ms ease;
-}
-
-[data-theme="light"] .ps-cta-body {
-  color: #475569;
-  transition: color 300ms ease;
 }
 
 /* ── Footer: light mode overrides ──────────────────────────── */
@@ -6674,7 +6666,7 @@ a {
 
 /* ── Tech Partners / Logo Banner ───────────────────────────── */
 .ps-tech-partners {
-  background: linear-gradient(180deg, var(--theme-section-switchable) 0%, #0B1E35 100%);
+  background: linear-gradient(180deg, var(--theme-bg-primary) 0%, var(--theme-bg-secondary) 100%);
   padding: 48px 0;
   overflow: hidden;
   transition: background 300ms ease;

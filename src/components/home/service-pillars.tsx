@@ -62,9 +62,9 @@ const services: ServicePillar[] = [
       "Ongoing maintenance and performance support",
     ],
     stats: [
-      { number: "81%", label: "of consumers research online before buying" },
-      { number: "3 in 4", label: "Americans now search with AI weekly" },
-      { number: "70%+", label: "of businesses see revenue increase after site launch" },
+      { number: "1 build", label: "website, forms, tracking, content, and AI-readable structure connected" },
+      { number: "100%", label: "your domain, code, analytics access, and customer data stay yours" },
+      { number: "24/7", label: "your site keeps explaining, qualifying, and routing interest after hours" },
     ],
     painPoints: [
       "We have a website, but I don't know if it's ever brought in a lead.",
@@ -84,13 +84,13 @@ const services: ServicePillar[] = [
       {
         title: "AI Search Optimization (GEO)",
         description:
-          "Your site optimized for ChatGPT, Perplexity, Google AI Overviews. 900M people use ChatGPT weekly. If you're not in those answers, your competitor is.",
+          "Your site structured so AI systems can understand who you are, what you do, where you serve, and why you should be cited.",
         icon: <IconAISearch />,
       },
       {
         title: "Google Business Profile & Review Systems",
         description:
-          "Full profile optimization plus automated review request systems. Top-ranking local businesses average 47 reviews.",
+          "Profile cleanup, service-area clarity, review request flows, and local trust signals that support how customers actually find you.",
         icon: <IconGoogleBusiness />,
       },
       {
@@ -147,9 +147,9 @@ const services: ServicePillar[] = [
       "Lead generation and conversion systems",
     ],
     stats: [
-      { number: "800M+", label: "people use ChatGPT weekly; AI discovery is mainstream" },
-      { number: "3 signals", label: "Google local ranking: relevance, distance, and prominence" },
-      { number: "7x", label: "higher qualification odds when leads are contacted within 5 minutes vs. 1 hour" },
+      { number: "1 view", label: "website, ads, reviews, social, follow-up, and customer history connected" },
+      { number: "Every lead", label: "captured, routed, followed up, and tied back to the channel that produced it" },
+      { number: "Past buyers", label: "segmented for relevant reactivation instead of sitting untouched in a list" },
     ],
     painPoints: [
       "We do good work, but we rely almost entirely on word-of-mouth for new customers.",
@@ -205,13 +205,13 @@ const services: ServicePillar[] = [
       {
         title: "Automated Review Generation",
         description:
-          "Post-service SMS review requests that make it effortless. Target: 50+ reviews in 90 days.",
+          "Post-service review requests that make it easier for satisfied customers to leave public proof.",
         icon: <IconAutomatedReviews />,
       },
       {
         title: "Lead Capture & Nurture Funnels",
         description:
-          "Landing pages, lead magnets, email capture, automated nurture sequences, CRM integration. Every lead followed up for 90 days.",
+          "Landing pages, forms, email capture, automated nurture, and CRM integration so leads do not disappear after the first touch.",
         icon: <IconLeadNurtureFunnel />,
       },
       {
@@ -224,7 +224,7 @@ const services: ServicePillar[] = [
     differentiators: [
       {
         lead: "Systems, not services.",
-        body: "We build a marketing engine you own that runs automatically.",
+        body: "We connect the public-facing pieces of your business so marketing has memory, context, and follow-through.",
       },
       {
         lead: "Measured, not guessed.",
@@ -240,7 +240,7 @@ const services: ServicePillar[] = [
     type: "automation",
     title: "Automation Systems",
     description:
-      "Lead follow-up, customer reactivation, review collection, internal workflows. Runs whether anyone's watching the inbox. 60%+ reactivation of dormant customers. 45% lift in booking conversion.",
+      "Lead follow-up, customer reactivation, review collection, internal workflows. The routine work keeps moving whether anyone is watching the inbox or not.",
     href: "/contact",
     visual: <AutomationVisual />,
     bullets: [
@@ -250,9 +250,9 @@ const services: ServicePillar[] = [
       "Intelligent alerts and monitoring",
     ],
     stats: [
-      { number: "240%", label: "average ROI, typically paid back in 6-9 months" },
-      { number: "70–90%", label: "time reduction in document processing with AI" },
-      { number: "$46K/yr", label: "average savings from fewer errors and less manual work" },
+      { number: "60 sec", label: "new inquiries can be acknowledged, logged, and routed immediately" },
+      { number: "0 copy-paste", label: "routine handoffs move between systems without manual re-entry" },
+      { number: "24/7", label: "intake, document routing, reminders, and triage keep moving after hours" },
     ],
     painPoints: [
       "We have three people doing work that shouldn't take any.",
@@ -278,7 +278,7 @@ const services: ServicePillar[] = [
       {
         title: "AI Customer Reactivation",
         description:
-          "Dormant customer lists turned into revenue. AI crafts personalized outreach that reactivates 60%+ of inactive clients.",
+          "Dormant customer lists organized into meaningful segments so outreach is relevant to what they own, bought, or need next.",
         icon: <IconCustomerReactivation />,
       },
       {
@@ -334,8 +334,8 @@ const services: ServicePillar[] = [
         body: "Our automations read documents, understand context, and make intelligent decisions — not just follow rules.",
       },
       {
-        lead: "Proven numbers.",
-        body: "75% reduction in invoice handling. 60%+ customer reactivation. 95% reduction in inventory tracking time.",
+        lead: "Less drag.",
+        body: "The goal is not to add software. The goal is to remove the manual steps that slow the business down.",
       },
     ],
   },
@@ -353,9 +353,9 @@ const services: ServicePillar[] = [
       "Forecasting and trend analysis",
     ],
     stats: [
-      { number: "73%", label: "of business data goes completely unused for decisions" },
-      { number: "23x", label: "more likely to acquire customers with data-driven decisions" },
-      { number: "65%", label: "of small businesses are profitable but can't tell you where" },
+      { number: "1 view", label: "revenue, cost, pipeline, operations, and exceptions in one place" },
+      { number: "Live KPIs", label: "the numbers owners actually ask for without waiting on a report" },
+      { number: "No guessing", label: "decisions tied to current business data instead of scattered spreadsheets" },
     ],
     painPoints: [
       "I make most decisions on gut feeling because I don't have the numbers in front of me.",
@@ -414,9 +414,9 @@ const services: ServicePillar[] = [
       "Modernization",
     ],
     stats: [
-      { number: "22%", label: "average cost reduction within 3 years of streamlining tech" },
-      { number: "90%", label: "of manual data entry errors eliminated through automation" },
-      { number: "$500-$1,500/mo", label: "average savings from eliminating redundant software subscriptions" },
+      { number: "1 source", label: "customer, job, payment, and operational data stop living in disconnected places" },
+      { number: "Fewer tools", label: "duplicate subscriptions and overlapping workflows get consolidated where possible" },
+      { number: "Clean handoffs", label: "the right information moves to the right system without another workaround" },
     ],
     painPoints: [
       "We use six different tools and none of them talk to each other.",
@@ -442,7 +442,7 @@ const services: ServicePillar[] = [
       {
         title: "Tool Stack Audit & Consolidation",
         description:
-          "Paying for 8+ overlapping subscriptions? We audit, consolidate, and migrate. Typical savings: $500-$1,500/month.",
+          "Paying for overlapping subscriptions? We audit, consolidate where it makes sense, and migrate without breaking the business.",
         icon: <IconToolStackAudit />,
       },
       {
