@@ -254,8 +254,8 @@ export function Hero() {
         </h1>
 
         <p ref={subtitleRef} className="ps-hero-subtitle">
-          AI-powered marketing for Kansas businesses that need sharper websites,
-          stronger local visibility, accountable ads, and practical automation.
+          Websites, visibility, ads, and automation built with an enterprise
+          standard and brought home to Kansas.
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
