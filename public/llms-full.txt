@@ -24,19 +24,23 @@
 
 **Headline**: World-Class AI-Powered Marketing. For Kansas.
 
-**Subheadline**: Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.
+**Subheadline**: AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.
 
 **Primary CTA**: Get in Touch → https://preissertech.com
 **Secondary CTA**: See What We Build → /#services
 
 ---
 
-### Key Advantages (Value Strip)
+### Services Strip
 
-1. **Websites, apps, automations,** dashboards, and integrations
-2. **AI-first methodology —** we ship in weeks, not months
-3. **Built for Kansas businesses,** not Silicon Valley startups
-4. **You work directly with the person** who builds it
+1. **Websites that convert**: Modern sites built to earn trust and bring in leads.
+2. **Local SEO**: Kansas search visibility across Google and AI answers.
+3. **Paid ads**: Accountable campaigns for real service inquiries.
+4. **AI follow-up**: Practical automation that keeps prospects moving.
+5. **CRM systems**: Cleaner pipelines, quoting, and customer records.
+6. **Client portals**: A better way for customers and teams to stay aligned.
+7. **Conversion strategy**: Sharper pages, offers, and forms for higher intent.
+8. **Dashboards**: Marketing and operations reporting you can actually use.
 
 ---
 
@@ -44,7 +48,7 @@
 
 **Eyebrow**: The Problem
 
-**Heading**: Websites, visibility, ads, and automation built for Kansas.
+**Heading**: AI-powered marketing for Kansas businesses.
 
 **Body**:
 
@@ -356,11 +360,11 @@ Technologies: OpenAI, Anthropic, Google Gemini, Cursor, Cloudflare, Google Works
 
 ### Final CTA Section
 
-**Heading**: You've Got the Problem. We'll Build the Fix.
+**Heading**: Ready to improve how customers find and choose your business?
 
-**Body**: Whether it's a website, an app, an automation, or something you haven't even figured out how to describe yet — it starts with a conversation.
+**Body**: Hire Preisser Tech for a better website, stronger local visibility, accountable ad campaigns, and practical AI automation that helps your team follow up faster.
 
-**CTAs**: Get in Touch → https://preissertech.com | See What We Build → https://preissertech.com
+**CTAs**: Start the conversation → https://preissertech.com/contact
 
 ---
 
@@ -393,7 +397,7 @@ If your idea won't work, I'll tell you. If there's a better way, I'll show you.
 
 **Page Title**: What We Build
 
-**Subheadline**: Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.
+**Subheadline**: AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.
 
 Services listed (see full details in Services section above):
 1. Websites & Applications
@@ -402,7 +406,7 @@ Services listed (see full details in Services section above):
 4. Revenue Growth Engines
 5. Dashboards & Business Intelligence
 
-**CTA**: Websites, visibility, ads, and automation built for Kansas. Built with an enterprise standard and brought home by Preisser Tech.
+**CTA**: Ready to improve how customers find and choose your business? Hire Preisser Tech for a better website, stronger local visibility, accountable ad campaigns, and practical AI automation.
 
 ---
 

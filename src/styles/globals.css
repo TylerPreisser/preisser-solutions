@@ -954,39 +954,36 @@ a {
   background-color: var(--theme-section-switchable);
   border-top: 1px solid var(--theme-border);
   border-bottom: 1px solid var(--theme-border);
-  padding: 28px 0;
+  padding: 22px 0;
+  overflow: hidden;
   transition: background-color 300ms ease, border-color 300ms ease;
 }
 
-.ps-value-strip-inner {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: 0 var(--container-padding);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+.ps-value-strip-track {
+  display: flex;
+  width: max-content;
+  gap: 14px;
+  padding-left: var(--container-padding);
+  animation: ps-service-marquee 42s linear infinite;
+  will-change: transform;
 }
 
 .ps-value-item {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 16px 20px;
-  border-radius: 12px;
-  opacity: 0;
-  transform: translateY(16px);
-}
-
-.ps-value-icon {
-  font-size: 1.375rem;
-  flex-shrink: 0;
-  margin-top: 2px;
+  align-items: center;
+  width: clamp(260px, 24vw, 360px);
+  min-height: 92px;
+  padding: 18px 22px;
+  border: 1px solid var(--theme-border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--theme-bg-primary) 78%, transparent);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
 }
 
 .ps-value-text {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  color: var(--theme-text-primary);
+  color: var(--theme-text-secondary);
   line-height: 1.45;
   transition: color 300ms ease;
 }
@@ -995,19 +992,28 @@ a {
   display: block;
   font-weight: 700;
   color: var(--theme-text-primary);
-  margin-bottom: 2px;
+  margin-bottom: 6px;
+  font-size: 0.98rem;
   transition: color 300ms ease;
 }
 
-@media (max-width: 900px) {
-  .ps-value-strip-inner {
-    grid-template-columns: repeat(2, 1fr);
+@keyframes ps-service-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - 7px));
   }
 }
 
-@media (max-width: 480px) {
-  .ps-value-strip-inner {
-    grid-template-columns: 1fr;
+@media (prefers-reduced-motion: reduce) {
+  .ps-value-strip {
+    overflow-x: auto;
+  }
+
+  .ps-value-strip-track {
+    animation: none;
+    padding-right: var(--container-padding);
   }
 }
 

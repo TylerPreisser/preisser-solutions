@@ -6,14 +6,14 @@ import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
+    "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
   alternates: {
     canonical: "https://preissertech.com/services",
   },
   openGraph: {
     title: "Services | Preisser Tech",
     description:
-      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
+      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
     url: "https://preissertech.com/services",
   },
 };
@@ -48,8 +48,9 @@ export default function ServicesPage() {
             <span className="ps-eyebrow">Services</span>
             <h1>What We Build</h1>
             <p>
-              Websites, visibility, ads, and automation built with an enterprise
-              standard and brought home to Kansas.
+              AI-powered marketing for Kansas businesses that need sharper
+              websites, stronger local visibility, accountable ads, and
+              practical automation.
             </p>
           </div>
         </div>
@@ -85,9 +86,10 @@ export default function ServicesPage() {
         <div className="ps-cta-glow" aria-hidden="true" />
         <div className="ps-cta-content">
           <span className="ps-eyebrow">Get in Touch</span>
-          <h2>Websites, visibility, ads, and automation built for Kansas.</h2>
+          <h2>Ready to improve how customers find and choose your business?</h2>
           <p>
-            Built with an enterprise standard and brought home by Preisser Tech.
+            Hire Preisser Tech for a better website, stronger local visibility,
+            accountable ad campaigns, and practical AI automation.
           </p>
           <div className="ps-cta-buttons">
             <Link href="/contact" className="ps-btn-primary">

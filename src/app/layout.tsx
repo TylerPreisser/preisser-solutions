@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: "%s | Preisser Tech",
   },
   description:
-    "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
+    "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
   metadataBase: new URL("https://preissertech.com"),
   keywords: [
     "business automation Kansas",
@@ -84,7 +84,7 @@ export const metadata: Metadata = {
     siteName: "Preisser Tech",
     title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
     description:
-      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
+      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
     images: [
       {
         url: "/images/og-image-v2.jpg",
@@ -98,7 +98,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
     description:
-      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
+      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@tylerpreisser",
   },
@@ -174,11 +174,11 @@ const structuredData = [
     },
     image: "https://preissertech.com/images/ps-logo.png",
     description:
-      "Preisser Tech builds websites, visibility, ads, and automation with an enterprise standard brought home to Kansas. Based in Hays, Kansas. Founded by Tyler Preisser. Not automotive tuning, not hardware.",
+      "Preisser Tech provides AI-powered marketing for Kansas businesses, including websites, local visibility, paid ads, and practical automation. Based in Hays, Kansas. Founded by Tyler Preisser. Not automotive tuning, not hardware.",
     disambiguatingDescription:
       "Preisser Tech (preissertech.com) is the custom software, web development, and AI automation consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Tech' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Tech builds websites, web applications, AI agents, and business automation systems exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: sales@preissertech.com.",
     slogan:
-      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
+      "AI-powered marketing for Kansas",
     foundingDate: "2023",
     founder: { "@id": PERSON_ID },
     email: "sales@preissertech.com",
@@ -424,7 +424,7 @@ const structuredData = [
     url: "https://preissertech.com",
     name: "Preisser Tech",
     description:
-      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
+      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
     publisher: { "@id": ORG_ID },
     inLanguage: "en-US",
     potentialAction: {
@@ -447,7 +447,7 @@ const structuredData = [
     url: "https://preissertech.com",
     name: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
     description:
-      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
+      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
     isPartOf: { "@id": WEBSITE_ID },
     about: { "@id": ORG_ID },
     author: { "@id": PERSON_ID },

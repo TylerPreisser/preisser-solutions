@@ -1,85 +1,55 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-
 const valueItems = [
   {
-    icon: "<>",
-    strong: "Websites",
-    text: "",
+    strong: "Websites that convert",
+    text: "Modern sites built to earn trust and bring in leads.",
   },
   {
-    icon: "->",
-    strong: "Visibility",
-    text: "",
+    strong: "Local SEO",
+    text: "Kansas search visibility across Google and AI answers.",
   },
   {
-    icon: "//",
-    strong: "Ads",
-    text: "",
+    strong: "Paid ads",
+    text: "Accountable campaigns for real service inquiries.",
   },
   {
-    icon: ">>",
-    strong: "Automation",
-    text: "",
+    strong: "AI follow-up",
+    text: "Practical automation that keeps prospects moving.",
+  },
+  {
+    strong: "CRM systems",
+    text: "Cleaner pipelines, quoting, and customer records.",
+  },
+  {
+    strong: "Client portals",
+    text: "A better way for customers and teams to stay aligned.",
+  },
+  {
+    strong: "Conversion strategy",
+    text: "Sharper pages, offers, and forms for higher intent.",
+  },
+  {
+    strong: "Dashboards",
+    text: "Marketing and operations reporting you can actually use.",
   },
 ];
 
 export function ValueStrip() {
-  const itemsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (!itemsRef.current) return;
-
-    const children = Array.from(itemsRef.current.children) as HTMLElement[];
-
-    if (prefersReduced) {
-      children.forEach((el) => {
-        el.style.opacity = "1";
-        el.style.transform = "none";
-      });
-      return;
-    }
-
-    import("@/lib/gsap").then(({ gsap, ScrollTrigger }) => {
-      if (!itemsRef.current) return;
-
-      gsap.fromTo(
-        children,
-        { opacity: 0, y: 16 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.55,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: itemsRef.current,
-            start: "top 88%",
-            once: true,
-          },
-        }
-      );
-
-      return () => ScrollTrigger.getAll().forEach((t) => t.kill());
-    });
-  }, []);
-
   return (
-    <section className="ps-value-strip" aria-label="Key advantages">
-      <div className="ps-value-strip-inner" ref={itemsRef}>
+    <section className="ps-value-strip" aria-label="Preisser Tech services">
+      <div className="ps-value-strip-track">
         {valueItems.map((item) => (
           <div key={item.strong} className="ps-value-item">
-            <span className="ps-value-icon" aria-hidden="true">
-              {item.icon}
-            </span>
             <p className="ps-value-text">
               <strong>{item.strong}</strong>
-              {item.text}
+              <span>{item.text}</span>
+            </p>
+          </div>
+        ))}
+        {valueItems.map((item) => (
+          <div key={`${item.strong}-duplicate`} className="ps-value-item" aria-hidden="true">
+            <p className="ps-value-text">
+              <strong>{item.strong}</strong>
+              <span>{item.text}</span>
             </p>
           </div>
         ))}

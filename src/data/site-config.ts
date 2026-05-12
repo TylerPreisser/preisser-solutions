@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Preisser Tech",
-  tagline: "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
+  tagline: "AI-powered marketing for Kansas",
   url: "https://preissertech.com",
   contact: {
     email: "sales@preissertech.com",
@@ -20,7 +20,7 @@ export const siteConfig = {
   },
   meta: {
     title: "Preisser Tech",
-    description: "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
+    description: "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
     themeColor: "#0D95E8",
   },
 } as const;

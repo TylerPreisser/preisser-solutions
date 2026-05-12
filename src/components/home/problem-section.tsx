@@ -70,7 +70,7 @@ export function ProblemSection() {
             id="problem-heading"
             className="ps-section-heading ps-section-heading--light"
           >
-            Websites, visibility, ads, and automation built for Kansas.
+            AI-powered marketing for Kansas businesses.
           </h2>
           <div className="ps-problem-body">
             <p>

@@ -59,16 +59,16 @@ export function CtaSection() {
       <div className="ps-cta-content" ref={contentRef}>
         <div className="ps-eyebrow">Get in Touch</div>
         <h2 id="cta-heading" className="ps-cta-heading">
-          You&apos;ve Got the Problem. We&apos;ll Build the Fix.
+          Ready to improve how customers find and choose your business?
         </h2>
         <p className="ps-cta-body">
-          Whether it&apos;s a website, an app, an automation, or something you
-          haven&apos;t even figured out how to describe yet &mdash; it starts
-          with a conversation.
+          Hire Preisser Tech for a better website, stronger local visibility,
+          accountable ad campaigns, and practical AI automation that helps your
+          team follow up faster.
         </p>
         <div className="ps-cta-buttons">
           <Link href="/contact" className="ps-btn ps-btn-primary-dark">
-            Get in Touch
+            Start the conversation
             <svg
               className="ps-btn-arrow"
               width="16"

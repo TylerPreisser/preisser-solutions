@@ -15,14 +15,14 @@ export const metadata: Metadata = {
     absolute: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
   },
   description:
-    "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
+    "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
   alternates: {
     canonical: "https://preissertech.com/",
   },
   openGraph: {
     title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
     description:
-      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
+      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
     url: "https://preissertech.com/",
     type: "website",
     images: [
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
     description:
-      "Websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.",
+      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@preissertech",
   },

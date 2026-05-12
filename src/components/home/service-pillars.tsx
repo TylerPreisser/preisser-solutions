@@ -1632,8 +1632,9 @@ export function ServicePillars() {
           What We Build
         </h2>
         <p className="ps-services-intro">
-          Websites, visibility, ads, and automation built with an enterprise
-          standard and brought home to Kansas.
+          Hire Preisser Tech for the pieces that make modern local marketing
+          work together: a stronger site, better search visibility, focused ads,
+          and automation that supports follow-up.
         </p>
       </div>
 
