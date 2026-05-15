@@ -61,54 +61,9 @@ const AGENT_DISCOVERY_LINKS = [
   '</llms.txt>; rel="alternate"; type="text/markdown"',
 ].join(", ");
 
-const INDEXABLE_LOCATION_PATHS = new Set(["/locations", "/locations/hays-kansas"]);
-const INDEXABLE_INDUSTRY_PATHS = new Set([
-  "/industries",
-  "/industries/contractors",
-  "/industries/restaurants",
-  "/industries/professional-services",
-]);
-const INDEXABLE_SERVICE_PATHS = new Set([
-  "/services",
-  "/services/local-seo-hays-ks",
-  "/services/google-business-profile-optimization-hays-ks",
-  "/services/google-ads-hays-ks",
-  "/services/web-design-hays-ks",
-  "/services/social-media-marketing-hays-ks",
-  "/services/ai-automation-hays-ks",
-]);
-const REDIRECTED_URL_PATHS = new Set([
-  "/custom-websites",
-  "/preisser-technology",
-  "/premium-web-development-kansas",
-  "/business-automation",
-  "/ai-agents",
-  "/services/ai-search-optimization",
-  "/dashboards-and-analytics",
-  "/web-applications",
-]);
-const LEGACY_NOINDEX_URL_PATHS = new Set([
-  "/faq",
-  "/pricing",
-  "/process",
-  "/why-automation",
-  "/roi-calculator",
-]);
-
 function normalizePath(pathname: string) {
   if (pathname !== "/" && pathname.endsWith("/")) return pathname.slice(0, -1);
   return pathname;
-}
-
-function shouldNoindexLegacyPath(pathname: string) {
-  const normalized = normalizePath(pathname);
-  if (REDIRECTED_URL_PATHS.has(normalized)) return true;
-  if (LEGACY_NOINDEX_URL_PATHS.has(normalized)) return true;
-  if (normalized.startsWith("/compare/")) return true;
-  if (normalized.startsWith("/locations/") && !INDEXABLE_LOCATION_PATHS.has(normalized)) return true;
-  if (normalized.startsWith("/industries/") && !INDEXABLE_INDUSTRY_PATHS.has(normalized)) return true;
-  if (normalized.startsWith("/services/") && !INDEXABLE_SERVICE_PATHS.has(normalized)) return true;
-  return false;
 }
 
 function getPathRedirect(pathname: string) {
@@ -179,7 +134,6 @@ export const onRequest = async (context: MiddlewareContext) => {
   }
 
   const response = await context.next();
-  const shouldNoindex = shouldNoindexLegacyPath(url.pathname);
 
   if (url.pathname === "/" || url.pathname === "/index.html") {
     const headers = new Headers(response.headers);
@@ -187,17 +141,6 @@ export const onRequest = async (context: MiddlewareContext) => {
       headers.append("link", AGENT_DISCOVERY_LINKS);
     }
     headers.append("vary", "Accept");
-    if (shouldNoindex) headers.set("x-robots-tag", "noindex, follow");
-    return new Response(response.body, {
-      status: response.status,
-      statusText: response.statusText,
-      headers,
-    });
-  }
-
-  if (shouldNoindex) {
-    const headers = new Headers(response.headers);
-    headers.set("x-robots-tag", "noindex, follow");
     return new Response(response.body, {
       status: response.status,
       statusText: response.statusText,

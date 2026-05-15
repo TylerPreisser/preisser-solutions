@@ -21,30 +21,6 @@ const REDIRECTED_URL_PATHS = new Set([
   "/dashboards-and-analytics",
   "/web-applications",
 ]);
-const LEGACY_NOINDEX_URL_PATHS = new Set([
-  "/faq",
-  "/pricing",
-  "/process",
-  "/why-automation",
-  "/roi-calculator",
-]);
-
-const INDEXABLE_LOCATION_PATHS = new Set(["/locations", "/locations/hays-kansas"]);
-const INDEXABLE_INDUSTRY_PATHS = new Set([
-  "/industries",
-  "/industries/contractors",
-  "/industries/restaurants",
-  "/industries/professional-services",
-]);
-const INDEXABLE_SERVICE_PATHS = new Set([
-  "/services",
-  "/services/local-seo-hays-ks",
-  "/services/google-business-profile-optimization-hays-ks",
-  "/services/google-ads-hays-ks",
-  "/services/web-design-hays-ks",
-  "/services/social-media-marketing-hays-ks",
-  "/services/ai-automation-hays-ks",
-]);
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -68,11 +44,6 @@ function htmlPathToUrl(filePath) {
   if (relative === "/index.html") return "/";
   const urlPath = relative.replace(/\.html$/, "");
   if (REDIRECTED_URL_PATHS.has(urlPath)) return null;
-  if (LEGACY_NOINDEX_URL_PATHS.has(urlPath)) return null;
-  if (urlPath.startsWith("/compare/")) return null;
-  if (urlPath.startsWith("/locations/") && !INDEXABLE_LOCATION_PATHS.has(urlPath)) return null;
-  if (urlPath.startsWith("/industries/") && !INDEXABLE_INDUSTRY_PATHS.has(urlPath)) return null;
-  if (urlPath.startsWith("/services/") && !INDEXABLE_SERVICE_PATHS.has(urlPath)) return null;
   return urlPath;
 }
 
