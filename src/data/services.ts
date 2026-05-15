@@ -1,9 +1,3 @@
-export interface ValueProp {
-  title: string;
-  description: string;
-  icon: string; // image filename in /public/images/
-}
-
 export interface Service {
   title: string;
   description: string;
@@ -14,70 +8,36 @@ export interface AutomationBenefit {
   description: string;
 }
 
-export const valueProps: ValueProp[] = [
-  {
-    title: "Boost Team Productivity",
-    description:
-      "Free your skilled employees from repetitive work to focus on high-value activities that grow your business.",
-    icon: "Boost Productivity.png",
-  },
-  {
-    title: "Reduce Operational Costs",
-    description:
-      "Significantly lower the expense of manual tasks with efficient, custom automation.",
-    icon: "Reduce Operational.png",
-  },
-  {
-    title: "Scalable & Reliable",
-    description:
-      "Automated systems that can handle growing workloads reliably without proportional cost increases.",
-    icon: "Scalable & Reliable.png",
-  },
-  {
-    title: "Personalized Expert Service",
-    description:
-      "Direct access, ongoing support, and system management from me, your dedicated automation partner.",
-    icon: "Personalized.png",
-  },
-  {
-    title: "Truly Tailored Solutions",
-    description:
-      "Automation systems custom-built for your exact needs and workflows, not one-size-fits-all.",
-    icon: "Truly Tailored.png",
-  },
-  {
-    title: "Enhance Accuracy & Consistency",
-    description:
-      "Eliminate costly human errors in critical processes with systems that work perfectly, 24/7.",
-    icon: "Enhance Accuracy.png",
-  },
-];
-
 export const services: Service[] = [
   {
-    title: "Websites & Applications",
+    title: "Local SEO in Hays, KS",
     description:
-      "Professional sites, custom apps, client portals, e-commerce, and internal tools built from scratch to perform.",
+      "Service pages, technical cleanup, internal links, and Google visibility fundamentals for Hays and Northwest Kansas businesses.",
   },
   {
-    title: "Automation Systems",
+    title: "Google Business Profile Optimization",
     description:
-      "AI-powered automation systems for repetitive work like invoicing, document processing, outreach, routing, and monitoring.",
+      "Accurate categories, services, photos, posts, service-area language, and compliant review request systems.",
   },
   {
-    title: "System Fixes & Efficiency",
+    title: "Google Ads Management",
     description:
-      "If something is slow, broken, disconnected, or redundant, we figure out why and fix it with better systems.",
+      "Search campaigns mapped to specific landing pages, tracked calls, form fills, budgets, and negative keywords.",
   },
   {
-    title: "Dashboards & Business Intelligence",
+    title: "Web Design & Landing Pages",
     description:
-      "Real-time dashboards, reporting, forecasting, and data integration that show you what is actually happening in the business.",
+      "Fast, credible websites and landing pages built to turn visitors into calls, quote requests, bookings, and tracked leads.",
   },
   {
-    title: "Marketing & Growth Engines",
+    title: "Social Media Marketing",
     description:
-      "Automated social media, email, SMS, SEO, and lead generation systems built to create demand without constant babysitting.",
+      "Practical posting, offer, and review-support workflows that keep local businesses visible without pretending social alone fixes lead flow.",
+  },
+  {
+    title: "AI Follow-Up Automation",
+    description:
+      "Missed-call text-back, speed-to-lead replies, CRM tasks, lead routing, reminders, and visibility dashboards.",
   },
 ];
 
@@ -198,12 +158,15 @@ export const roiJobRoles: RoiJobRole[] = [
 ];
 
 export const contactInterests = [
-  "General Inquiry",
-  "Websites & Applications",
-  "Automation Systems",
-  "System Fixes & Efficiency",
-  "Dashboards & Visualizations",
-  "Marketing & Growth Engines",
+  "Hays Visibility Audit",
+  "Local SEO",
+  "Google Business Profile Optimization",
+  "Google Ads",
+  "Web Design / Landing Page",
+  "Social Media Marketing",
+  "AI Automation / Follow-Up",
+  "Review Request System",
+  "Lead Tracking Dashboard",
   "Partnership / Referral",
   "Other",
 ] as const;

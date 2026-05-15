@@ -16,6 +16,21 @@
 /process.html /process 301
 /faq.html /faq 301
 
+# Canonical local-intent aliases
+/about-tyler-preisser /tyler-preisser 301
+/services/local-seo /services/local-seo-hays-ks 301
+/industries/construction /industries/contractors 301
+/custom-websites /services/web-design-hays-ks 301
+/premium-web-development-kansas /services/web-design-hays-ks 301
+/business-automation /services/ai-automation-hays-ks 301
+/ai-agents /services/ai-automation-hays-ks 301
+/dashboards-and-analytics /services/ai-automation-hays-ks 301
+/web-applications /services/web-design-hays-ks 301
+/case-studies/cassidy-hvac /case-studies 301
+/case-studies/hg-oil-holdings /case-studies 301
+/case-studies/iron-and-oak-podcast /case-studies 301
+/case-studies/wife-supply-co /case-studies 301
+
 # Former brand-defense page — deleted 2026-05-04, now silently 301 to homepage
 /preisser-solutions / 301
 /preisser-solutions/* / 301

@@ -9,7 +9,7 @@
  *   <script
  *     type="application/ld+json"
  *     dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbs([
- *       { name: "Services", url: "https://preissertech.com/services" },
+ *       { name: "Services", url: "https://preissersolutions.com/services" },
  *     ])) }}
  *   />
  *
@@ -18,7 +18,7 @@
  * AEO pages already emit BreadcrumbList via AeoPage.tsx — do not double-emit.
  */
 
-const BASE_URL = "https://preissertech.com";
+const BASE_URL = "https://preissersolutions.com";
 
 export interface BreadcrumbItem {
   name: string;

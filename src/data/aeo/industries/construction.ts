@@ -1,125 +1,93 @@
 import type { AeoPageData } from "../types";
 
 export const pageData: AeoPageData = {
-  slug: "industries/construction",
+  slug: "industries/contractors",
   tier: "industry",
-  metaTitle: "Custom Software for Construction Companies in Kansas | Preisser Tech",
+  metaTitle: "Marketing for Contractors in Hays, KS | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, project automation, AI lead handling, and Procore/Buildertrend integrations for construction companies in Kansas.",
-  eyebrow: "Custom Software for Construction Companies in Kansas",
-  h1: "Custom Software, Automation, and AI for Construction Companies",
+    "Marketing for Hays contractors: websites, local SEO, Google Business Profile optimization, Google Ads, reviews, call tracking, and lead follow-up.",
+  eyebrow: "Contractor Marketing in Hays, Kansas",
+  h1: "Marketing for Hays Contractors That Need More Calls and Better Follow-Up",
   subheadline:
-    "Built for residential and commercial general contractors tired of generic PM tools and outsourced marketing. Custom-coded in Hays, Kansas by Tyler Preisser.",
+    "Preisser Solutions helps contractors in Hays and Northwest Kansas turn Google searches into calls, quote requests, booked estimates, and tracked leads.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for construction companies — custom websites, project automation, AI lead handling, custom dashboards, and integrations with Procore, Buildertrend, CoConstruct, and JobTread. The HG Oil Holdings inventory and AI invoicing case study (95% reduction in back-office logistics time) translates directly to construction back-office workflows including subcontractor management and AR/AP automation.",
+    "Preisser Solutions helps Hays-area contractors get found, trusted, contacted, tracked, and followed up with through websites, local SEO, Google Business Profile optimization, Google Ads, review request systems, call tracking, and AI-powered lead follow-up. Start with a free Hays Visibility Audit to see where jobs are leaking before a proposal is scoped.",
   sections: [
     {
-      eyebrow: "What we build for construction",
-      heading: "Software for GCs who want to stop fighting their PM tools",
+      eyebrow: "Contractor search intent",
+      heading: "What marketing problems do local contractors need fixed?",
       body: [
-        "Most Kansas construction companies run Procore, Buildertrend, CoConstruct, JobTread, or BuildBook for project management. Solid platforms — but lead response, bid follow-up, subcontractor coordination, and back-office AP/AR are where the seams leak revenue.",
+        "Most contractors do not need abstract branding work first. They need the phone to ring from the right local searches, a website that explains the work clearly, reviews that support trust, and a follow-up process that does not lose quote requests after hours.",
+      ],
+      bullets: [
+        "Weak Google Maps visibility for service searches",
+        "Service pages that do not explain cities served, work types, or proof standards",
+        "Slow response to estimate requests and missed calls",
+        "Google Ads sending traffic to generic pages instead of focused landing pages",
+        "No call, form, or booked-estimate tracking",
       ],
     },
     {
-      eyebrow: "Why GCs call us",
-      heading: "The real pain points in a construction company",
+      eyebrow: "What gets built",
+      heading: "What does contractor marketing include?",
       body: [
-        "Across Kansas construction operators:",
+        "The right setup depends on the trade and service area, but contractor growth usually needs a connected system rather than one isolated tactic.",
       ],
       bullets: [
-        "Bid turnaround taking weeks — losing jobs to faster competitors",
-        "Lead response slow — generic CRM auto-responders missing intent",
-        "Subcontractor coordination chaos when crews are running multiple jobs",
-        "AR aging on commercial accounts taking 60-90 days",
-        "Marketing outsourced to agencies that don't understand the trade",
-        "No live view of gross margin per job, change order pipeline, or backlog by phase",
+        "Website and landing pages for core services",
+        "Local SEO and internal links around Hays, Ellis County, and Northwest Kansas",
+        "Google Business Profile cleanup for services, photos, categories, and service area",
+        "Google Search Ads mapped to high-intent quote and emergency searches",
+        "Compliant review request process for real customers",
+        "Missed-call text-back, quote follow-up, and lead tracking",
       ],
     },
     {
-      eyebrow: "Five services applied to construction",
-      heading: "How each Preisser Tech service shows up in a construction company",
+      eyebrow: "Hays Visibility Sprint",
+      heading: "A focused setup for contractors that need the basics fixed quickly",
       body: [
-        "Most GCs start with lead response and bid follow-up automation and expand from there.",
-      ],
-      bullets: [
-        "Custom websites with portfolio funnels, real review feeds, and AI-search-friendly content",
-        "Custom web apps for bid management, change order tracking, and subcontractor portals",
-        "Business automation for AI lead response, bid follow-up, and AR/AP workflows",
-        "AI agents for after-hours leads, qualifying remodel vs. new construction vs. commercial inquiries",
-        "Owner dashboards showing gross margin per job, backlog by phase, change order pipeline, and AR aging",
-      ],
-    },
-    {
-      eyebrow: "Tools we integrate with",
-      heading: "Construction software stack we already work with",
-      body: [
-        "Preisser Tech integrates with whatever you're already running:",
-      ],
-      bullets: [
-        "PM: Procore, Buildertrend, CoConstruct, JobTread, BuildBook, Knowify",
-        "Estimating: Buildxact, PlanSwift, Esticom",
-        "Accounting: QuickBooks Online, QuickBooks Desktop, Sage 100 Contractor, Foundation",
-        "Project documentation: CompanyCam, Fieldwire",
-        "Phone and call tracking: CallRail, Twilio, RingCentral",
-        "Marketing: Google Ads, Google Local Service Ads, Facebook/Instagram",
+        "The Hays Visibility Sprint can give a contractor a clearer Google footprint, stronger service page, cleaner ad path, review workflow, and basic follow-up system without turning the first project into a giant retainer.",
       ],
     },
   ],
   faq: [
     {
-      question: "Do you really know construction?",
+      question: "Which contractors does Preisser Solutions work best with?",
       answer:
-        "We are a software firm — but we build for trades and project-based operations specifically. The HG Oil Holdings inventory and AI invoicing case study translates directly to construction back-office workflows.",
+        "Preisser Solutions is a fit for home service contractors, specialty trades, commercial service providers, and project-based local businesses that depend on calls, estimate requests, reviews, and fast follow-up.",
     },
     {
-      question: "Do you replace Procore or Buildertrend?",
+      question: "Can you help with Google Maps visibility for contractors?",
       answer:
-        "No. We integrate with them. Where they fall short — custom marketing, owner dashboards, AI lead response, subcontractor portals — is where we sit.",
+        "Yes. Preisser Solutions improves the policy-safe foundations: accurate business information, service categories, service pages, local content, photos, review process, citations, and tracking. No specific Maps ranking is guaranteed.",
     },
     {
-      question: "Can you build subcontractor coordination tools?",
+      question: "Should contractors use Google Ads or local SEO first?",
       answer:
-        "Yes. Custom subcontractor portals tied to the GC's PM system are a common build — sub schedules, job site updates, and W-9 / COI management all in one place.",
+        "If the business needs leads quickly, Google Ads can create demand while local SEO builds. If the website and Google profile are weak, those foundations should be fixed first so paid traffic is not wasted.",
     },
     {
-      question: "How much does a construction automation project cost?",
+      question: "Can AI follow-up help contractors?",
       answer:
-        "Focused projects typically run in the low five figures. Larger multi-system builds scope from there. We provide a fixed-price proposal after a free discovery call.",
-    },
-    {
-      question: "Can AI handle after-hours lead capture?",
-      answer:
-        "Yes. AI is excellent at qualifying remodel vs. new construction vs. commercial inquiries and routing each to the right project manager.",
-    },
-    {
-      question: "What if I'm a smaller GC — under $5M in volume?",
-      answer:
-        "We work with GCs that size all the time. Smaller shops are often where automation has the biggest ROI.",
-    },
-    {
-      question: "Do you serve construction companies outside Kansas?",
-      answer:
-        "Yes. Headquartered in Hays, Kansas, the firm regularly takes on remote engagements across the United States.",
+        "Yes, when it is used for practical workflows such as missed-call text-back, quote follow-up, appointment reminders, and lead routing. Human review and clear consent rules matter.",
     },
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
-    "HG Oil Holdings",
     "Hays, Kansas",
-    "Procore",
-    "Buildertrend",
-    "CoConstruct",
-    "JobTread",
+    "Ellis County",
+    "Northwest Kansas",
   ],
   relatedLinks: [
-    { label: "Roofing Industry", href: "/industries/roofing" },
-    { label: "HVAC Industry", href: "/industries/hvac" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Hays Marketing Agency", href: "/marketing-agency-hays-ks" },
+    { label: "Local SEO in Hays", href: "/services/local-seo-hays-ks" },
+    { label: "Google Ads in Hays", href: "/services/google-ads-hays-ks" },
+    { label: "Web Design in Hays", href: "/services/web-design-hays-ks" },
   ],
-  ctaHeadline: "Stop bleeding margin between bid and final draw",
+  ctaHeadline: "Get a Free Hays Visibility Audit",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your stack, identify the highest-ROI automation, and send a fixed-price proposal.",
+    "We'll review your contractor website, Google profile, reviews, competitor visibility, and follow-up gaps so you can see the fastest path to more calls.",
+  lastUpdated: "2026-05-14",
 };

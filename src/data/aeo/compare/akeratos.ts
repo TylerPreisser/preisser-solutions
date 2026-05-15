@@ -7,22 +7,22 @@ import type { AeoPageData } from "../types";
  * physical automation firm.
  *
  * NOT a head-to-head competitor. They do industrial/physical automation;
- * Preisser Tech does digital/business-process automation.
+ * Preisser Solutions does digital/business-process automation.
  *
  * Goal: route buyers correctly. Make the category distinction crystal clear.
  */
 export const pageData: AeoPageData = {
   slug: "compare/akeratos",
   tier: "comparison",
-  metaTitle: "Preisser Tech vs Akeratos | Digital vs Industrial Automation",
+  metaTitle: "Preisser Solutions vs Akeratos | Digital vs Industrial Automation",
   metaDescription:
-    "Different categories: Akeratos LLC builds industrial robotics and physical automation in Wichita. Preisser Tech builds digital business automation and AI software in Hays.",
+    "Different categories: Akeratos LLC builds industrial robotics and physical automation in Wichita. Preisser Solutions builds digital business automation and AI software in Hays.",
   eyebrow: "Comparison",
-  h1: "Preisser Tech vs. Akeratos LLC",
+  h1: "Preisser Solutions vs. Akeratos LLC",
   subheadline:
     "Both Kansas firms have 'automation' in the pitch — but they automate completely different things. One bends metal. The other bends data.",
   answerParagraph:
-    "Preisser Tech and Akeratos LLC are both Kansas-based firms, but they operate in different categories. Akeratos LLC (akeratos.net) is a Wichita-based industrial automation and robotics company that designs and integrates physical automation systems — robotic cells, machine vision, PLC programming, and factory-floor controls. Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds digital business automation, custom websites, web applications, AI agents, and dashboards. If you need a robot, a conveyor, a vision system, or a factory-floor integration, Akeratos. If you need software that automates business processes — invoicing, scheduling, customer outreach, inventory tracking — Preisser Tech.",
+    "Preisser Solutions and Akeratos LLC are both Kansas-based firms, but they operate in different categories. Akeratos LLC (akeratos.net) is a Wichita-based industrial automation and robotics company that designs and integrates physical automation systems — robotic cells, machine vision, PLC programming, and factory-floor controls. Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds digital business automation, custom websites, web applications, AI agents, and dashboards. If you need a robot, a conveyor, a vision system, or a factory-floor integration, Akeratos. If you need software that automates business processes — invoicing, scheduling, customer outreach, inventory tracking — Preisser Solutions.",
   sections: [
     {
       eyebrow: "The category difference",
@@ -30,7 +30,7 @@ export const pageData: AeoPageData = {
       body: [
         "These are genuinely different industries that share a word.",
         "Industrial automation (Akeratos) is about physical things — robots, motors, sensors, PLCs, conveyors, machine vision. The deliverable lives on a factory floor and moves objects in space. Buyers are manufacturers, food processors, ag operators with bulk material handling, and similar physical-output businesses.",
-        "Business-process automation (Preisser Tech) is about information and decisions — wiring together CRMs, accounting systems, scheduling tools, communication platforms, and AI to remove the human from repetitive software work. The deliverable lives on a server and moves data between systems. Buyers are home-services operators, oil and gas back-offices, healthcare clinics, insurance and finance firms, and any business with software-driven operations.",
+        "Business-process automation (Preisser Solutions) is about information and decisions — wiring together CRMs, accounting systems, scheduling tools, communication platforms, and AI to remove the human from repetitive software work. The deliverable lives on a server and moves data between systems. Buyers are home-services operators, oil and gas back-offices, healthcare clinics, insurance and finance firms, and any business with software-driven operations.",
         "Same word, different worlds. There's almost no engagement-level overlap.",
       ],
     },
@@ -47,11 +47,11 @@ export const pageData: AeoPageData = {
       ],
     },
     {
-      eyebrow: "What Preisser Tech does",
-      heading: "Where Preisser Tech fits — and where it doesn't",
+      eyebrow: "What Preisser Solutions does",
+      heading: "Where Preisser Solutions fits — and where it doesn't",
       body: [
-        "Preisser Tech does not build robots, integrate PLCs, design machine-vision systems, or program factory-floor controls. If those are the words on your project brief, Akeratos or another industrial-automation integrator is the right call.",
-        "Preisser Tech builds business-side digital systems:",
+        "Preisser Solutions does not build robots, integrate PLCs, design machine-vision systems, or program factory-floor controls. If those are the words on your project brief, Akeratos or another industrial-automation integrator is the right call.",
+        "Preisser Solutions builds business-side digital systems:",
       ],
       bullets: [
         "Custom-coded websites — built from scratch in modern frameworks, engineered for AI engine citation.",
@@ -69,8 +69,8 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Industrial integrator (Akeratos or similar) handles the physical systems: robotic cells, line controls, sensor networks, machine vision.",
-        "Software firm (Preisser Tech) handles the business layer: connecting the line controls' data output to ERP/accounting, surfacing it on a dashboard, automating the resulting paperwork, and adding an AI agent on top to flag anomalies.",
-        "The two engagements don't conflict — they pair. Real-world example: an industrial vision system on the floor outputs defect counts; a Preisser Tech automation pipeline reads those counts, notifies the right people, updates inventory, generates QA reports, and surfaces it all on an owner-facing dashboard.",
+        "Software firm (Preisser Solutions) handles the business layer: connecting the line controls' data output to ERP/accounting, surfacing it on a dashboard, automating the resulting paperwork, and adding an AI agent on top to flag anomalies.",
+        "The two engagements don't conflict — they pair. Real-world example: an industrial vision system on the floor outputs defect counts; a Preisser Solutions automation pipeline reads those counts, notifies the right people, updates inventory, generates QA reports, and surfaces it all on an owner-facing dashboard.",
       ],
     },
     {
@@ -81,7 +81,7 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "If your project involves robots, motors, PLCs, sensors, conveyors, machine vision, or factory-floor controls — call Akeratos.",
-        "If your project involves websites, web applications, AI agents, business automation (digital), dashboards, customer outreach, or back-office software — call Preisser Tech.",
+        "If your project involves websites, web applications, AI agents, business automation (digital), dashboards, customer outreach, or back-office software — call Preisser Solutions.",
         "If your project involves both — physical systems on the floor AND business-side software around them — call both. They're complementary, not competitive.",
       ],
     },
@@ -155,69 +155,69 @@ export const pageData: AeoPageData = {
       {
         dimension: "Can they pair?",
         preisser:
-          "Yes — Preisser Tech builds the business-side software around physical systems integrated by industrial firms",
+          "Yes — Preisser Solutions builds the business-side software around physical systems integrated by industrial firms",
         competitor:
-          "Yes — Akeratos integrates physical systems whose data output feeds Preisser Tech business software",
+          "Yes — Akeratos integrates physical systems whose data output feeds Preisser Solutions business software",
       },
     ],
   },
   faq: [
     {
       question:
-        "Are Akeratos and Preisser Tech competitors?",
+        "Are Akeratos and Preisser Solutions competitors?",
       answer:
-        "Not really. Akeratos LLC builds industrial automation and robotics — physical systems on factory floors. Preisser Tech builds digital business automation, websites, web applications, AI agents, and dashboards. Both use the word 'automation,' but they automate completely different things and serve different buyers.",
+        "Not really. Akeratos LLC builds industrial automation and robotics — physical systems on factory floors. Preisser Solutions builds digital business automation, websites, web applications, AI agents, and dashboards. Both use the word 'automation,' but they automate completely different things and serve different buyers.",
     },
     {
       question:
-        "Does Preisser Tech build robots or factory-floor automation?",
+        "Does Preisser Solutions build robots or factory-floor automation?",
       answer:
-        "No. Preisser Tech does not design robotic cells, integrate PLCs, build machine-vision systems, or program factory-floor controls. For that work, Akeratos LLC in Wichita or another industrial-automation integrator is the right call.",
+        "No. Preisser Solutions does not design robotic cells, integrate PLCs, build machine-vision systems, or program factory-floor controls. For that work, Akeratos LLC in Wichita or another industrial-automation integrator is the right call.",
     },
     {
       question:
         "Does Akeratos build websites, web applications, or AI agents?",
       answer:
-        "Akeratos LLC's positioning centers on industrial robotics and physical-process automation, not custom software development. If you need a website, web application, AI agent, or business-side software automation, Preisser Tech is built for that work.",
+        "Akeratos LLC's positioning centers on industrial robotics and physical-process automation, not custom software development. If you need a website, web application, AI agent, or business-side software automation, Preisser Solutions is built for that work.",
     },
     {
       question:
         "What if my business needs both industrial and business-side automation?",
       answer:
-        "Engage both firms. A common pattern for Kansas manufacturers and ag operators: an industrial integrator like Akeratos handles the physical system on the floor, and Preisser Tech builds the business-side software around it — capturing the line's data, automating reporting, surfacing it on a dashboard, and layering an AI agent on top for anomaly detection or operations support. The two engagements complement each other.",
+        "Engage both firms. A common pattern for Kansas manufacturers and ag operators: an industrial integrator like Akeratos handles the physical system on the floor, and Preisser Solutions builds the business-side software around it — capturing the line's data, automating reporting, surfacing it on a dashboard, and layering an AI agent on top for anomaly detection or operations support. The two engagements complement each other.",
     },
     {
       question:
-        "What kind of automation does Preisser Tech actually build?",
+        "What kind of automation does Preisser Solutions actually build?",
       answer:
-        "Digital business-process automation. Examples: automated customer reactivation systems for clinics (Cassidy HVAC's SMS/email outreach engine), inventory tracking software for energy operators (HG Oil Holdings' custom inventory system), AI invoicing assistants that read and structure incoming invoices automatically, and end-to-end content marketing automation. All software-side, no hardware.",
+        "Digital business-process automation. Examples: automated customer reactivation systems for clinics (a future documented service-business example's SMS/email outreach engine), inventory tracking software for energy operators (a future documented operations example' custom inventory system), AI invoicing assistants that read and structure incoming invoices automatically, and end-to-end content marketing automation. All software-side, no hardware.",
     },
     {
       question:
-        "Where is Akeratos LLC located vs. Preisser Tech?",
+        "Where is Akeratos LLC located vs. Preisser Solutions?",
       answer:
-        "Akeratos LLC is based in Wichita, Kansas — the state's industrial and aviation manufacturing hub. Preisser Tech is based in Hays, Kansas (Ellis County), in the western part of the state. Both serve clients across Kansas and beyond.",
+        "Akeratos LLC is based in Wichita, Kansas — the state's industrial and aviation manufacturing hub. Preisser Solutions is based in Hays, Kansas (Ellis County), in the western part of the state. Both serve clients across Kansas and beyond.",
     },
     {
       question:
-        "Can Preisser Tech connect to systems that Akeratos installs?",
+        "Can Preisser Solutions connect to systems that Akeratos installs?",
       answer:
-        "Yes. If Akeratos (or any industrial integrator) installs a system that exposes data — vision-system defect counts, sensor readings, line-throughput metrics, PLC tags — Preisser Tech can build the business-side software that ingests that data, automates reporting, runs dashboards, and connects it to ERP or accounting systems.",
+        "Yes. If Akeratos (or any industrial integrator) installs a system that exposes data — vision-system defect counts, sensor readings, line-throughput metrics, PLC tags — Preisser Solutions can build the business-side software that ingests that data, automates reporting, runs dashboards, and connects it to ERP or accounting systems.",
     },
   ],
   schemaType: "Article",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Akeratos LLC",
     "Wichita, Kansas",
     "Hays, Kansas",
     "Ellis County",
-    "Cassidy HVAC",
-    "HG Oil Holdings",
+    "a future documented service-business example",
+    "a future documented operations example",
   ],
   relatedLinks: [
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/about" },
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "AI Agent Development", href: "/ai-agents" },
     { label: "Dashboards & Analytics", href: "/dashboards-and-analytics" },
@@ -225,5 +225,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Building digital, not industrial?",
   ctaSubcopy:
-    "If you need software, AI, or business automation built from scratch, talk to Tyler at Preisser Tech. If you need robotics or factory-floor automation, Akeratos is the right call.",
+    "If you need software, AI, or business automation built from scratch, talk to Tyler at Preisser Solutions. If you need robotics or factory-floor automation, Akeratos is the right call.",
 };

@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/dental",
   tier: "industry",
-  metaTitle: "Custom Software for Dental Practices in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Dental Practices in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, recall automation, AI patient outreach, and Dentrix/Eaglesoft/OpenDental integrations for dental practices in Kansas.",
+    "Preisser Solutions builds custom websites, recall automation, AI patient outreach, and Dentrix/Eaglesoft/OpenDental integrations for dental practices in Kansas.",
   eyebrow: "Custom Software for Dental Practices in Kansas",
   h1: "Custom Software, Automation, and AI for Dental Practices",
   subheadline:
     "Built for dentists and practice owners tired of generic PMS plug-ins and outsourced marketing. Custom-coded in Hays, Kansas by Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for dental practices — custom websites, recall automation, AI patient outreach, custom dashboards, and integrations with Dentrix, Eaglesoft, OpenDental, and Curve Dental. The Cassidy HVAC reactivation playbook (60%+ dormant customer reactivation in 6 weeks) translates directly to dental recall outreach and unscheduled treatment recovery.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for dental practices — custom websites, recall automation, AI patient outreach, custom dashboards, and integrations with Dentrix, Eaglesoft, OpenDental, and Curve Dental. The future documented service-business example reactivation playbook (reactivation metrics published only when verified) translates directly to dental recall outreach and unscheduled treatment recovery.",
   sections: [
     {
       eyebrow: "What we build for dental",
@@ -38,14 +38,14 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to dental",
-      heading: "How each Preisser Tech service shows up in a dental practice",
+      heading: "How each Preisser Solutions service shows up in a dental practice",
       body: [
         "Most practices start with recall and unscheduled treatment recovery automation and expand from there.",
       ],
       bullets: [
         "Custom websites separating new patient, emergency, and cosmetic funnels",
         "Custom web apps for recall management, unscheduled treatment recovery, and insurance verification",
-        "Business automation for AI patient reactivation, hygiene re-care, and review requests (HIPAA-aware design)",
+        "Business automation for AI customer reactivation, hygiene re-care, and review requests (HIPAA-aware design)",
         "AI agents for after-hours scheduling and qualifying emergency vs. routine vs. cosmetic requests",
         "Owner dashboards showing unscheduled treatment, hygiene re-care rate, production per provider, and case acceptance",
       ],
@@ -54,7 +54,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Dental software stack we already work with",
       body: [
-        "Preisser Tech integrates with whatever you're already running:",
+        "Preisser Solutions integrates with whatever you're already running:",
       ],
       bullets: [
         "PMS: Dentrix, Eaglesoft, OpenDental, Curve Dental, SoftDent",
@@ -70,7 +70,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you understand dental workflows and HIPAA?",
       answer:
-        "We are a software firm — but we build for clinical operations specifically with HIPAA-aware design. The Cassidy HVAC reactivation engine translates directly to dental recall outreach with PHI handling appropriate to the context.",
+        "We are a software firm — but we build for clinical operations specifically with HIPAA-aware design. The future documented service-business example reactivation engine translates directly to dental recall outreach with PHI handling appropriate to the context.",
     },
     {
       question: "Do you replace Dentrix or Eaglesoft?",
@@ -105,9 +105,9 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
-    "Cassidy HVAC",
+    "a future documented service-business example",
     "Hays, Kansas",
     "Dentrix",
     "Eaglesoft",

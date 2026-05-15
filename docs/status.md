@@ -5,6 +5,97 @@
 
 ---
 
+## 2026-05-14 — Cloudflare Production Path Tightening
+
+### What Happened
+- Converted the GitHub Pages workflow into build-only CI so the repo no longer publishes a second `/preisser-solutions` base-path version of the site.
+- Removed the GitHub Pages base-path branch from `next.config.ts`; static exports now build for the canonical Cloudflare host.
+- Added a `deploy:cloudflare` npm script for the known production deployment path.
+- Checked Cloudflare Pages production secrets with Wrangler; no production secrets were listed.
+- Deployed the fixed static export to Cloudflare Pages and removed two stale Worker routes on the `preissersolutions.com` zone that were intercepting the canonical host before Pages middleware could run.
+- Reworked `/about` into the indexed Preisser Solutions company page, added footer/internal links to it, and redirected stale `/preisser-technology` to `/about`.
+- Added the social media service to the canonical services grid and footer links.
+- Submitted the refreshed 25-URL canonical set to IndexNow after deploy.
+
+### Current State
+- **Production target**: Cloudflare Pages project `preisser-solutions`.
+- **Manual deploy command**: `npm run deploy:cloudflare`.
+- **Lead forwarding**: blocked until `ZAPIER_LEAD_WEBHOOK_URL` is added to Cloudflare Pages.
+- **Custom domain redirect loop**: fixed; `preissersolutions.com` now serves 200, `www`, `preissertech.com`, and `preisser-solutions.pages.dev` redirect to it.
+- **Sitemap**: 23 canonical HTML URLs; `/preisser-technology` is no longer listed and now 301s to `/about`.
+
+### Next Steps
+- Add `ZAPIER_LEAD_WEBHOOK_URL` to Cloudflare Pages production secrets.
+- Add verified Google Business Profile URL, CID, Place ID, and direct review link after GBP verification.
+
+## 2026-05-14 — Edge Safety, Agent Discovery, and Conversion Cleanup
+
+### What Happened
+- Fixed a critical Cloudflare Pages middleware self-redirect risk by removing the canonical host from the legacy host set and adding `preissertech.com`, `www`, and Pages duplicate host handling.
+- Moved important canonical path redirects into middleware so legacy aliases and removed proof pages do not depend only on `_redirects` while Pages Functions are active.
+- Fixed Cloudflare Pages Function `OPTIONS` responses for `/api/lead` and `/mcp` so they return empty 204 responses instead of JSON bodies.
+- Removed a silent contact-form fast-submit success state; real users now see a short wait state instead of a fake success.
+- Aligned service-dialog, 404, proof, and agent-discovery copy with the Hays Visibility Audit/local-growth positioning.
+- Replaced internal links from indexed pages to excluded/noindexed pages where found.
+
+### Current State
+- **Primary CTA** remains `Get a Free Hays Visibility Audit`.
+- **Indexing strategy** remains narrow: canonical Hays/local-growth pages in sitemap; legacy long-tail pages excluded/noindexed or redirected.
+- **Verification** pending for this pass.
+
+### Next Steps
+- Run TypeScript/build verification and inspect middleware redirect behavior.
+- Confirm the Cloudflare deployment after the build-only workflow change.
+
+## 2026-05-14 — Hays Local Growth SEO Pass
+
+### What Happened
+- Repositioned the site around Preisser Solutions as a Hays, Kansas marketing, websites, local SEO, Google Ads, review systems, social media, lead tracking, and AI automation company.
+- Added compliant local-growth pages for Hays marketing, GBP optimization, Google Ads, web design, social media, AI automation, contractors, restaurants, professional services, review requests, resources, privacy, and service areas.
+- Consolidated risky legacy proof: removed unsupported child case-study pages, redirected old case-study URLs to the proof hub, and deleted unused legacy case-study data.
+- Repaired global schema, robots, sitemap generation, Cloudflare middleware noindex handling, and lead form flow.
+
+### Current State
+- **Primary CTA**: Get a Free Hays Visibility Audit.
+- **Builds**: Pending final verification for this pass.
+- **Indexing**: Canonical Hays/local-growth pages stay in sitemap; legacy compare, non-Hays city, non-core industry, and old service pages are noindexed/excluded.
+
+### Next Steps
+- Add real GBP/review/profile URLs, booking URL if desired, and verified proof only when available and permitted.
+- Editorially rewrite or remove remaining noindexed legacy long-tail pages before reindexing any of them.
+
+## 2026-05-14 — Directory cleanup and source pruning
+
+### What Happened
+- Removed ignored local build/output artifacts: `.DS_Store`, `.next/`, `out/`, `.wrangler/tmp/`, and generated `next-env.d.ts`.
+- Removed the duplicate root logo file `A0427592-A370-4409-B1F0-4EB5D9B9F46B.png`; it was byte-identical to `public/images/ps-logo.png`.
+- Moved unused root-level Gemini image files into `archive/raw-assets/` so source/reference images are organized out of the project root.
+- Deleted unused scaffold components/hooks/lib files that had no live imports: old section/ui wrappers, unused contact/about/service components, retired AIPage layout, unused hooks, and unused animation presets.
+- Removed old unreferenced public assets: standalone `ps-hero-*` files, Stripe placeholder image directory, and unused legacy value-prop/public logo assets.
+- Removed the unused `valueProps` export from `src/data/services.ts`.
+- Updated `CLAUDE.md` file map to reflect the current app structure.
+- Updated `docs/design-system.md` image asset notes to match the current live assets.
+
+### Current State
+- **Builds**: Clean — `npm run build` passes, Next generated 109 static routes, and `scripts/generate-sitemap.mjs` wrote 106 canonical URLs.
+- **Repo hygiene**: Root directory is clearer; generated artifacts were removed again after verification and will be recreated by `npm run build` when needed.
+
+### Next Steps
+- Review whether the remaining historical CSS classes for retired sections should be removed in a focused CSS pass.
+
+## 2026-05-12 — Homepage/services CTA copy cleanup
+
+### What Happened
+- Removed the homepage services intro paragraph under `Services` / `What We Build`.
+- Removed the bottom CTA subheader paragraph from the homepage CTA.
+- Removed the duplicate `Hire Preisser Solutions...` CTA paragraph from the `/services` page.
+
+### Current State
+- **Builds**: Clean — `npm run build` passes and generated 109 static pages.
+
+### Next Steps
+- Review homepage and `/services` visually if additional spacing tweaks are desired now that the subcopy is gone.
+
 ## 2026-04-02 — Stripe Exact Clone (Session 4 — HDS Token System + Real Images)
 
 ### What Happened
@@ -58,7 +149,7 @@
 
 ### What Changed
 - Home page component roles completely reassigned — old `PersonalCommitment` → Logo/Stats bar; old `ServicesOverview`/`HowItWorks` → Feature Showcase sections
-- All content is placeholder text as requested (no old preissertech.com copy)
+- All content is placeholder text as requested (no old preissersolutions.com copy)
 - Footer no longer contains the big CTA block (moved to `CtaSection` component in page.tsx)
 - Hero no longer has floating pain-point quotes system (removed per rebuild brief)
 - `globals.css` grew from ~1100 to ~1900 lines to cover all new patterns

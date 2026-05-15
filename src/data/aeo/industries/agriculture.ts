@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/agriculture",
   tier: "industry",
-  metaTitle: "Custom Software for Agriculture & Farming in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Agriculture & Farming in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, automation, AI tools, and John Deere/Climate FieldView integrations for ag operations in Kansas.",
+    "Preisser Solutions builds custom websites, automation, AI tools, and John Deere/Climate FieldView integrations for ag operations in Kansas.",
   eyebrow: "Custom Software for Agriculture in Kansas",
   h1: "Custom Software, Automation, and AI for Agriculture",
   subheadline:
     "Built for ag operators, custom harvesters, ag retail, and equipment dealers tired of generic farm management software. Custom-coded in Hays, Kansas by Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for agriculture operations — custom websites, ag retail tools, custom dashboards, AI document handling, and integrations with John Deere Operations Center, Climate FieldView, FBN, and Granular. Tyler is a Kansas native and understands ag rhythms — wheat harvest, milo, calving season, and the operational realities that coastal agencies cannot fake.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for agriculture operations — custom websites, ag retail tools, custom dashboards, AI document handling, and integrations with John Deere Operations Center, Climate FieldView, FBN, and Granular. Tyler is a Kansas native and understands ag rhythms — wheat harvest, milo, calving season, and the operational realities that coastal agencies cannot fake.",
   sections: [
     {
       eyebrow: "What we build for agriculture",
@@ -37,7 +37,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to agriculture",
-      heading: "How each Preisser Tech service shows up in ag",
+      heading: "How each Preisser Solutions service shows up in ag",
       body: [
         "Most ag businesses start with one capability and expand from there.",
       ],
@@ -53,7 +53,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Agriculture software stack we already work with",
       body: [
-        "Preisser Tech integrates with whatever you're already running:",
+        "Preisser Solutions integrates with whatever you're already running:",
       ],
       bullets: [
         "Farm management: John Deere Operations Center, Climate FieldView, FBN, Granular, Conservis",
@@ -68,7 +68,7 @@ export const pageData: AeoPageData = {
       heading: "Why a Kansas-native firm fits ag",
       body: [
         "Tyler Preisser is a Kansas native and Fort Hays State University graduate. He understands wheat harvest, custom harvesting crews running 14-hour days, calving season, and the operational reality of family farms in a way coastal agencies cannot fake.",
-        "The HG Oil Holdings AI invoicing case study (75% decrease in manual invoice handling) translates directly to ag retail and farm AP workflows — same back-office pain, different industry.",
+        "The future documented operations example AI invoicing case study (invoice handling metrics published only when verified) translates directly to ag retail and farm AP workflows — same back-office pain, different industry.",
       ],
     },
   ],
@@ -76,7 +76,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you really know agriculture?",
       answer:
-        "Tyler Preisser is a Kansas native who grew up around ag. The firm regularly works with ag retail, custom harvesters, equipment dealers, and family farms across the state. The HG Oil Holdings AI invoicing build translates directly to ag back-office workflows.",
+        "Tyler Preisser is a Kansas native who grew up around ag. The firm regularly works with ag retail, custom harvesters, equipment dealers, and family farms across the state. The future documented operations example AI invoicing build translates directly to ag back-office workflows.",
     },
     {
       question: "Do you replace John Deere Operations Center?",
@@ -86,7 +86,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can you build AI invoice handling for fuel, parts, and feed bills?",
       answer:
-        "Yes. The HG Oil Holdings AI invoice assistant is the direct case study — extracts and structures invoice data instantly. Same approach works for ag retail and farm AP workflows.",
+        "Yes. The future documented operations example AI invoice assistant is the direct case study — extracts and structures invoice data instantly. Same approach works for ag retail and farm AP workflows.",
     },
     {
       question: "How much does an ag automation project cost?",
@@ -111,9 +111,9 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
-    "HG Oil Holdings",
+    "a future documented operations example",
     "Hays, Kansas",
     "John Deere Operations Center",
     "Climate FieldView",

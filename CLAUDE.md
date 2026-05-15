@@ -1,4 +1,4 @@
-# Preisser Tech — Master System Prompt
+# Preisser Solutions — Master System Prompt
 
 > **This file is the single source of truth for every agent that touches this project.**
 > Read it FIRST. Update it LAST. Every session.
@@ -32,11 +32,11 @@
 
 ## What This Is
 
-Premium business automation consultancy website for **preissertech.com**. Stripe-inspired design with cinematic personality. Built for static export to Cloudflare Pages.
+Premium business automation consultancy website for **preissersolutions.com**. Stripe-inspired design with cinematic personality. Built for static export to Cloudflare Pages.
 
 **Owner**: Tyler Preisser (Hays, KS)
-**Contact**: sales@preissertech.com | +1-620-352-3296
-**Domain**: preissertech.com
+**Contact**: sales@preissersolutions.com | +1-620-352-3296
+**Domain**: preissersolutions.com
 **Repo**: GitHub → Cloudflare Pages
 
 ---
@@ -51,7 +51,7 @@ Premium business automation consultancy website for **preissertech.com**. Stripe
 | Animation (scroll) | GSAP + ScrollTrigger | All imports through `src/lib/gsap.ts` |
 | Animation (transitions) | Framer Motion | Page transitions, micro-interactions |
 | Deploy | Cloudflare Pages | Static `/out` directory |
-| CI/CD | GitHub Actions | `.github/workflows/deploy.yml` |
+| CI | GitHub Actions | `.github/workflows/build.yml` runs build checks only |
 
 ---
 
@@ -60,27 +60,32 @@ Premium business automation consultancy website for **preissertech.com**. Stripe
 ### Pages
 | Route | Purpose | Status |
 |-------|---------|--------|
-| `/` | Home — hero, value props, how it works, services overview, social proof, personal commitment, CTA | Scaffolded |
-| `/services` | Detailed service breakdowns | Scaffolded |
-| `/about` | Tyler's story, mission, values | Scaffolded |
-| `/contact` | Contact form, booking | Scaffolded |
+| `/` | Home — Hays visibility audit, services, proof standards, CTA | Live |
+| `/services` | Local marketing service breakdowns | Live |
+| `/about` | Preisser Solutions company page | Live |
+| `/contact` | Hays Visibility Audit contact form | Live |
 
 ### File Map
 
 ```
-Preisser Tech/
+Preisser Solutions/
 ├── CLAUDE.md                              ← THIS FILE — master system prompt
 ├── docs/
 │   ├── status.md                          ← Current state, session log, blockers
 │   ├── decisions.md                       ← Architectural decisions with rationale
 │   ├── plans/
 │   │   └── current-plan.md               ← Active implementation plan (checked off as completed)
+│   ├── proposal-system/                   ← Proposal generation instructions/reference
 │   └── superpowers/specs/
 │       └── 2026-04-02-...design.md       ← Original design spec (reference, don't modify)
-├── archive/                               ← Old site snapshot (reference only, don't modify)
+├── .context/                              ← Strategic/AEO/rebrand operating notes
+├── archive/                               ← Old site snapshot and raw/reference assets
 ├── public/
 │   ├── images/                            ← Optimized images
-│   └── fonts/                             ← Self-hosted fonts (if any)
+│   ├── .well-known/                       ← Agent discovery, MCP, OAuth, and policy files
+│   ├── docs/                              ← Public agent API docs
+│   ├── llms.txt                           ← AI-agent summary context
+│   └── llms-full.txt                      ← Full AI-agent content corpus
 ├── src/
 │   ├── app/
 │   │   ├── layout.tsx                     ← Root layout (nav, footer, fonts, metadata)
@@ -92,48 +97,43 @@ Preisser Tech/
 │   │   ├── layout/
 │   │   │   ├── header.tsx                 ← Fixed nav (scroll detection)
 │   │   │   ├── footer.tsx                 ← Site footer
-│   │   │   └── section.tsx                ← Reusable section wrapper
-│   │   ├── ui/
-│   │   │   ├── button.tsx                 ← Button variants (primary/secondary/ghost)
-│   │   │   ├── card.tsx                   ← Elevated card
-│   │   │   ├── badge.tsx                  ← Tags/labels
-│   │   │   └── input.tsx                  ← Form input
 │   │   ├── home/
-│   │   │   ├── hero.tsx                   ← Home hero (GSAP SplitText, gradient mesh)
-│   │   │   ├── value-props.tsx            ← Value proposition cards
-│   │   │   ├── how-it-works.tsx           ← Process visualization
-│   │   │   ├── services-overview.tsx      ← Services card grid
-│   │   │   ├── social-proof.tsx           ← Testimonials/metrics
-│   │   │   ├── personal-commitment.tsx    ← Tyler's personal section
+│   │   │   ├── hero.tsx                   ← Canvas wave hero + primary CTA
+│   │   │   ├── value-strip.tsx            ← Four-part value strip
+│   │   │   ├── service-pillars.tsx        ← Main bento services/modal system
+│   │   │   ├── tech-partners.tsx          ← Tool/stack ticker
+│   │   │   ├── marcommand-callout.tsx     ← MarCommand feature section
+│   │   │   ├── marcommand-dashboard.tsx   ← MarCommand dashboard mockup
+│   │   │   ├── why-us.tsx                 ← Differentiator cards
+│   │   │   ├── case-studies.tsx           ← Project/case-study cards
 │   │   │   └── cta-section.tsx            ← Call-to-action
-│   │   ├── services/
-│   │   │   └── service-detail.tsx         ← Individual service section
-│   │   ├── about/
-│   │   │   └── bio-section.tsx            ← Tyler bio component
+│   │   ├── aeo/
+│   │   │   └── AeoPage.tsx                ← Shared AEO page renderer/schema
+│   │   ├── roi/
+│   │   │   └── RoiCalculatorPageClient.tsx ← Interactive ROI calculator
 │   │   └── contact/
-│   │       └── contact-form.tsx           ← Contact form
+│   │       └── ContactPageClient.tsx      ← Contact page and Zapier-backed form
 │   ├── data/
 │   │   ├── site-config.ts                 ← Site metadata, URLs, branding
 │   │   ├── navigation.ts                  ← Nav links
-│   │   ├── services.ts                    ← Service + value prop definitions
-│   │   └── case-studies.ts                ← Case study/testimonial data
+│   │   ├── services.ts                    ← Service definitions and legacy automation-support data
+│   │   └── aeo/                           ← Page data for services, locations, industries, comparisons
 │   ├── lib/
 │   │   ├── gsap.ts                        ← GSAP plugin registration (ONE place)
-│   │   ├── animations.ts                  ← Shared animation presets
+│   │   ├── breadcrumbs.ts                 ← Breadcrumb JSON-LD helpers
 │   │   └── utils.ts                       ← Utility functions (cn, etc.)
-│   ├── hooks/
-│   │   ├── use-scroll-position.ts         ← Scroll tracking for nav
-│   │   ├── use-media-query.ts             ← Responsive hooks
-│   │   └── use-reduced-motion.ts          ← Motion preference detection
 │   └── styles/
 │       └── globals.css                    ← Tailwind imports, CSS tokens, base styles
+├── functions/                             ← Cloudflare Pages Functions/middleware
+├── workers/                               ← Standalone legacy redirect worker
+├── scripts/                               ← Postbuild sitemap/indexing/404 scripts
 ├── next.config.ts                         ← Static export config
 ├── tsconfig.json                          ← TypeScript config
 ├── postcss.config.mjs                     ← Tailwind v4 PostCSS
 ├── package.json                           ← Dependencies
 ├── wrangler.toml                          ← Cloudflare Pages config
 ├── .gitignore
-└── .github/workflows/deploy.yml           ← CI/CD pipeline
+└── .github/workflows/build.yml            ← Build-only CI
 ```
 
 > **If you add, remove, or rename a file — update this map.**
@@ -143,8 +143,9 @@ All content lives in `src/data/` files. Components import data — **never hardc
 
 ### Static Export
 - `output: 'export'` in next.config.ts
-- No API routes, no middleware, no server-side features
 - Build outputs to `/out` → deploy to Cloudflare Pages
+- Cloudflare Pages Functions handle middleware, redirects, MCP, and `/api/lead`
+- GitHub Actions is build-only CI; production deploy is Cloudflare Pages / Wrangler
 
 ---
 

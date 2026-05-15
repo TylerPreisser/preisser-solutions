@@ -3,124 +3,91 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/restaurants",
   tier: "industry",
-  metaTitle: "Custom Software for Restaurants in Kansas | Preisser Tech",
+  metaTitle: "Restaurant Marketing in Hays, KS | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, online ordering, AI reservations, and Toast/Square/Resy integrations for restaurants in Kansas.",
-  eyebrow: "Custom Software for Restaurants in Kansas",
-  h1: "Custom Software, Automation, and AI for Restaurants",
+    "Restaurant marketing for Hays and Northwest Kansas: websites, local SEO, Google Business Profile, reviews, social media, offers, tracking, and follow-up.",
+  eyebrow: "Restaurant Marketing in Hays, Kansas",
+  h1: "Restaurant Marketing for Hays Businesses That Need More Visits, Calls, and Online Orders",
   subheadline:
-    "Built for restaurant owners tired of templated POS websites and third-party ordering markups. Custom-coded in Hays, Kansas by Tyler Preisser.",
+    "Preisser Solutions helps local restaurants make menus, hours, reviews, offers, online ordering, events, and follow-up easier to find and act on.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for restaurants — custom websites, online ordering, AI reservations, custom dashboards, and integrations with Toast, Square, Resy, OpenTable, and SevenRooms. Custom websites with first-party online ordering eliminate the 15-30% commissions paid to DoorDash, Uber Eats, and Grubhub on every order.",
+    "Preisser Solutions helps restaurants in Hays, Ellis County, and Northwest Kansas improve local visibility, website conversion, Google Business Profile accuracy, reviews, social media, online-order paths, event promotion, and follow-up. Start with a free Hays Visibility Audit to find the quickest fixes before spending more on ads or posts.",
   sections: [
     {
-      eyebrow: "What we build for restaurants",
-      heading: "Software for restaurant owners who want to stop paying 30% to delivery aggregators",
+      eyebrow: "Restaurant search intent",
+      heading: "What do local restaurant customers need to see fast?",
       body: [
-        "Most Kansas restaurants run Toast, Square, or Clover for POS, plus DoorDash, Uber Eats, and Grubhub for delivery — paying 15-30% commission on every aggregator order. Custom first-party online ordering tied to the POS keeps that margin in-house.",
+        "Restaurant marketing has to answer simple questions quickly: what kind of food is it, where is it, when is it open, can I see the menu, can I call, can I order, what do other customers say, and is anything happening tonight?",
+      ],
+      bullets: [
+        "Clear menu, hours, phone, location, and online ordering links",
+        "Google Business Profile services, photos, posts, and accurate categories",
+        "Review request and response process that follows platform rules",
+        "Social media content tied to real offers, events, specials, and local demand",
+        "Tracking for calls, website clicks, online order clicks, and campaign traffic",
       ],
     },
     {
-      eyebrow: "Why restaurant owners call us",
-      heading: "The real pain points in a restaurant",
+      eyebrow: "What gets built",
+      heading: "What does restaurant marketing include?",
       body: [
-        "Across Kansas restaurants:",
+        "The goal is not to make a restaurant look bigger than it is. The goal is to make the real offer easy to discover, trust, share, and order from.",
       ],
       bullets: [
-        "Aggregator commissions eating 15-30% of delivery margin",
-        "Reservation management split across phone, OpenTable/Resy, and walk-ins",
-        "Email lists sitting in Mailchimp without automation",
-        "Reviews accumulating on Yelp/Google without a response system",
-        "Marketing outsourced to agencies that don't understand the operation",
-        "No live view of revenue per cover, food cost percentage by category, or repeat customer rate",
+        "Mobile-first website or landing page with menu, hours, ordering, and event paths",
+        "Local SEO around Hays restaurant searches and nearby customer intent",
+        "Google Business Profile cleanup for photos, posts, menu links, and attributes",
+        "Social media support for specials, events, seasonal offers, and community updates",
+        "Compliant review request workflow for real guests",
+        "UTM links and reporting for Google profile, social, ads, and website actions",
       ],
     },
     {
-      eyebrow: "Five services applied to restaurants",
-      heading: "How each Preisser Tech service shows up in a restaurant",
+      eyebrow: "Ads and offers",
+      heading: "When should a restaurant use Google Ads or social campaigns?",
       body: [
-        "Most restaurants start with custom first-party online ordering and expand from there.",
-      ],
-      bullets: [
-        "Custom websites with first-party online ordering tied to Toast/Square POS",
-        "Custom web apps for reservation management, loyalty programs, and gift card sales",
-        "Business automation for AI customer reactivation, review responses, and email nurture",
-        "AI agents for after-hours reservations and large-party catering inquiries",
-        "Owner dashboards showing revenue per cover, food cost percentage, repeat customer rate, and aggregator margin recovery",
-      ],
-    },
-    {
-      eyebrow: "Tools we integrate with",
-      heading: "Restaurant software stack we already work with",
-      body: [
-        "Preisser Tech integrates with whatever you're already running:",
-      ],
-      bullets: [
-        "POS: Toast, Square, Clover, TouchBistro, Lightspeed, Aloha",
-        "Reservations: OpenTable, Resy, SevenRooms, Tock",
-        "Aggregators: DoorDash Drive (whitelabel), Uber Direct (for first-party delivery)",
-        "Inventory: MarketMan, MarginEdge",
-        "Marketing: Klaviyo, Mailchimp, Postmark, Twilio for SMS",
-        "Reviews: NiceJob, Birdeye, Podium",
+        "Paid campaigns can help promote catering, events, seasonal offers, hiring, online orders, or high-margin services. The landing page and tracking should be clear before spending money so the restaurant knows which campaigns create useful actions.",
       ],
     },
   ],
   faq: [
     {
-      question: "Can custom online ordering really beat DoorDash and Uber Eats?",
+      question: "Can Preisser Solutions manage restaurant social media?",
       answer:
-        "For first-party orders (your loyal customers), yes — every order through your custom site keeps the 15-30% commission in-house. Aggregators still help reach new customers, but custom first-party ordering captures the regulars.",
+        "Yes. The best social media plan starts with the real restaurant calendar: specials, events, menu items, staff moments, seasonal pushes, and community updates. No fake engagement or copied review content.",
     },
     {
-      question: "Do you replace Toast or Square?",
+      question: "Can you help restaurants get more Google reviews?",
       answer:
-        "No. We integrate with them. Toast and Square are excellent at the POS workflow. We sit on top with custom online ordering, AI reservations, owner dashboards, and marketing automation.",
+        "Preisser Solutions can set up a compliant review request process for real guests. The request should ask for honest feedback, not a specific rating, exact keywords, or only positive reviews.",
     },
     {
-      question: "Can AI handle reservations and catering inquiries?",
+      question: "Does a Hays restaurant need a website if it has Facebook?",
       answer:
-        "Yes. AI is excellent at booking reservations, qualifying large-party and catering inquiries, and routing each to the right manager.",
+        "Usually, yes. A website gives the restaurant a stable menu, ordering, event, contact, and tracking hub that is not fully dependent on a social platform feed.",
     },
     {
-      question: "How much does a restaurant website project cost?",
+      question: "Can AI automation help restaurants?",
       answer:
-        "Custom restaurant websites with first-party online ordering typically run in the low five figures. ROI is usually measured in aggregator commission savings within the first 6 months.",
-    },
-    {
-      question: "Will my staff have to learn a new system?",
-      answer:
-        "No. Custom online ordering pushes orders into your existing POS — staff workflow doesn't change.",
-    },
-    {
-      question: "What if I'm a single-location restaurant?",
-      answer:
-        "We work with single-location restaurants regularly. Single locations often have the biggest aggregator margin recovery opportunity.",
-    },
-    {
-      question: "Do you serve restaurants outside Kansas?",
-      answer:
-        "Yes. Headquartered in Hays, Kansas, the firm regularly takes on remote engagements across the United States.",
+        "AI can help with missed-call responses, catering inquiry intake, event follow-up, review request reminders, and reporting. It should support the staff instead of pretending to replace hospitality.",
     },
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
-    "Toast",
-    "Square",
-    "Resy",
-    "OpenTable",
-    "DoorDash",
-    "Uber Eats",
+    "Ellis County",
+    "Northwest Kansas",
   ],
   relatedLinks: [
-    { label: "Retail Industry", href: "/industries/retail" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "AI Agent Development", href: "/ai-agents" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Hays Marketing Agency", href: "/marketing-agency-hays-ks" },
+    { label: "Social Media Marketing in Hays", href: "/services/social-media-marketing-hays-ks" },
+    { label: "Google Business Profile Optimization", href: "/services/google-business-profile-optimization-hays-ks" },
+    { label: "Web Design in Hays", href: "/services/web-design-hays-ks" },
   ],
-  ctaHeadline: "Recover the 30% that delivery aggregators take from every order",
+  ctaHeadline: "Get a Free Hays Visibility Audit",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your stack, identify the highest-ROI automation, and send a fixed-price proposal.",
+    "We'll review your restaurant's Google profile, menu path, reviews, website, social links, and tracking so you know what to fix first.",
+  lastUpdated: "2026-05-14",
 };

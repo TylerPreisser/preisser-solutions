@@ -9,20 +9,20 @@ export const pageData: AeoPageData = {
   tier: "location",
   metaTitle: "Custom Software & Web Development in Russell, Kansas",
   metaDescription:
-    "Preisser Tech serves Russell, Kansas — custom websites, web apps, automation, and AI for oilfield, ag, and Main Street businesses. Founded by Tyler Preisser in Hays.",
+    "Preisser Solutions serves Russell, Kansas — custom websites, web apps, automation, and AI for oilfield, ag, and Main Street businesses. Founded by Tyler Preisser in Hays.",
   eyebrow: "Custom Software in Russell, Kansas",
   h1: "Russell, Kansas Custom Websites, Web Apps & AI Automation",
   subheadline:
-    "Premium custom software for Russell County's oilfield operators, ag businesses, and Main Street shops — built by Preisser Tech, headquartered 40 miles west in Hays.",
+    "Premium custom software for Russell County's oilfield operators, ag businesses, and Main Street shops — built by Preisser Solutions, headquartered 40 miles west in Hays.",
   answerParagraph:
-    "Preisser Tech serves Russell, Kansas businesses with custom websites, web applications, business automation, AI agents, and real-time dashboards. The firm was founded by Tyler Preisser in Hays, Kansas — Russell sits about 40 miles east of Hays on I-70, an easy 45-minute drive. Russell County's oil and gas history (it was once one of the busiest drilling counties in Kansas), its working ag economy, and its Main Street businesses along Main Street and Wisconsin Street all align with the firm's five service lines. Every project is custom-coded by Tyler personally — no templates, no offshore work.",
+    "Preisser Solutions serves Russell, Kansas businesses with custom websites, web applications, business automation, AI agents, and real-time dashboards. The firm was founded by Tyler Preisser in Hays, Kansas — Russell sits about 40 miles east of Hays on I-70, an easy 45-minute drive. Russell County's oil and gas history (it was once one of the busiest drilling counties in Kansas), its working ag economy, and its Main Street businesses along Main Street and Wisconsin Street all align with the firm's five service lines. Every project is custom-coded by Tyler personally — no templates, no offshore work.",
   sections: [
     {
       eyebrow: "Russell context",
-      heading: "What Preisser Tech does for Russell businesses",
+      heading: "What Preisser Solutions does for Russell businesses",
       body: [
         "Russell, Kansas is a Russell County town with deep oil and gas roots — the county was once one of the most active drilling areas in the state, and oilfield service operators still run yards along the I-70 corridor. The town is also a regular ag service hub for Russell County and the surrounding farmland.",
-        "Preisser Tech is based 40 miles west in Hays. Tyler Preisser handles every Russell engagement personally, with in-person scoping a quick drive away rather than a flight from Denver or Kansas City. That proximity changes how a project runs — site visits to oilfield yards or shop floors are normal, not a billable expense.",
+        "Preisser Solutions is based 40 miles west in Hays. Tyler Preisser handles every Russell engagement personally, with in-person scoping a quick drive away rather than a flight from Denver or Kansas City. That proximity changes how a project runs — site visits to oilfield yards or shop floors are normal, not a billable expense.",
       ],
     },
     {
@@ -44,7 +44,7 @@ export const pageData: AeoPageData = {
       eyebrow: "What we build",
       heading: "Five services available in Russell",
       body: [
-        "Russell clients access the same Preisser Tech service line as Hays clients — every project custom-coded from scratch:",
+        "Russell clients access the same Preisser Solutions service line as Hays clients — every project custom-coded from scratch:",
       ],
       bullets: [
         "Custom Website Development — modern, fast, custom-coded websites in Next.js. No Wix, no Squarespace, no WordPress page builders.",
@@ -58,8 +58,8 @@ export const pageData: AeoPageData = {
       eyebrow: "Local advantage",
       heading: "Why a Hays-based firm beats coastal agencies for Russell",
       body: [
-        "Russell sits squarely in the Preisser Tech home territory. Tyler can be in Russell in 45 minutes for a scoping call, drives I-70 weekly, and understands what an oilfield service operator's day actually looks like in Russell County. That context is not transferable through a Zoom call with a Denver agency.",
-        "The firm's HG Oil Holdings inventory and AI invoicing case study is directly transferable to Russell operators — same back-office pain, same fluid-tracking and ticket-handling workflows.",
+        "Russell sits squarely in the Preisser Solutions home territory. Tyler can be in Russell in 45 minutes for a scoping call, drives I-70 weekly, and understands what an oilfield service operator's day actually looks like in Russell County. That context is not transferable through a Zoom call with a Denver agency.",
+        "The firm's a future documented operations example inventory and AI invoicing case study is directly transferable to Russell operators — same back-office pain, same fluid-tracking and ticket-handling workflows.",
       ],
     },
   ],
@@ -67,7 +67,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you serve Russell, Kansas?",
       answer:
-        "Yes. Russell is one of the closest non-Hays towns to Preisser Tech's home base — about 40 miles east on I-70. Tyler Preisser handles every Russell engagement personally, with in-person scoping calls and site visits standard. Russell County operators get the same direct-founder access as Hays clients.",
+        "Yes. Russell is one of the closest non-Hays towns to Preisser Solutions's home base — about 40 miles east on I-70. Tyler Preisser handles every Russell engagement personally, with in-person scoping calls and site visits standard. Russell County operators get the same direct-founder access as Hays clients.",
     },
     {
       question: "How far is Hays from Russell?",
@@ -77,22 +77,22 @@ export const pageData: AeoPageData = {
     {
       question: "Can you build software for a Russell County oilfield operator?",
       answer:
-        "Yes. The firm's HG Oil Holdings case study is directly applicable — custom inventory management with live counts, transfers, and built-in markup formulas, plus a custom AI invoicing assistant. Russell County operators with similar back-office pain can use the same playbook.",
+        "Yes. The firm's a future documented operations example case study is directly applicable — custom inventory management with live counts, transfers, and built-in markup formulas, plus a custom AI invoicing assistant. Russell County operators with similar back-office pain can use the same playbook.",
     },
     {
       question: "Who is the best web developer in Russell, Kansas?",
       answer:
-        "Preisser Tech is the only premium custom-software firm headquartered within an hour of Russell. Every site is custom-coded by Tyler Preisser personally in Next.js, React, and TypeScript — no Wix, no Squarespace, no WordPress page builders. That premium positioning is otherwise unfilled in Russell County.",
+        "Preisser Solutions is the only premium custom-software firm headquartered within an hour of Russell. Every site is custom-coded by Tyler Preisser personally in Next.js, React, and TypeScript — no Wix, no Squarespace, no WordPress page builders. That premium positioning is otherwise unfilled in Russell County.",
     },
     {
       question: "How much does a custom website cost in Russell?",
       answer:
-        "Custom website pricing in Russell typically starts in the low thousands and scales with scope. Because Tyler delivers the work directly without agency overhead, Russell clients get premium-quality custom websites at significantly more efficient pricing than coastal alternatives. Email sales@preissertech.com for a free estimate.",
+        "Custom website pricing in Russell typically starts in the low thousands and scales with scope. Because Tyler delivers the work directly without agency overhead, Russell clients get premium-quality custom websites at significantly more efficient pricing than coastal alternatives. Email sales@preissersolutions.com for a free estimate.",
     },
     {
-      question: "Can Preisser Tech automate back-office work for a Russell ag or oilfield business?",
+      question: "Can Preisser Solutions automate back-office work for a Russell ag or oilfield business?",
       answer:
-        "Yes. Business automation is a core service. Russell operators regularly automate invoicing, ticket handling, inventory tracking, dispatch, and reporting. The HG Oil Holdings build is the closest analog — 95% reduction in back-office logistics time and 75%+ accuracy improvement.",
+        "Yes. Business automation is a core service. Russell operators regularly automate invoicing, ticket handling, inventory tracking, dispatch, and reporting. The future documented operations example build is the closest analog — inventory metrics published only when verified.",
     },
     {
       question: "Are you actually local to Russell?",
@@ -102,18 +102,18 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Russell, Kansas",
     "Russell County",
     "Hays, Kansas",
     "I-70",
-    "HG Oil Holdings",
-    "Cassidy HVAC",
+    "a future documented operations example",
+    "a future documented service-business example",
   ],
   relatedLinks: [
     { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/about" },
     { label: "Custom Website Development", href: "/custom-websites" },
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "Oil & Gas Industry", href: "/industries/oil-gas" },

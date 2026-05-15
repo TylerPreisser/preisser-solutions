@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/wordpress-vs-custom",
   tier: "comparison",
-  metaTitle: "WordPress vs Custom Website | Preisser Tech",
+  metaTitle: "WordPress vs Custom Website | Preisser Solutions",
   metaDescription:
-    "Honest comparison: WordPress vs custom-coded websites by Preisser Tech. Speed, security, SEO, maintenance burden, and total cost compared.",
+    "Honest comparison: WordPress vs custom-coded websites by Preisser Solutions. Speed, security, SEO, maintenance burden, and total cost compared.",
   eyebrow: "Comparison",
   h1: "WordPress vs. Custom Website",
   subheadline:
     "WordPress runs 40%+ of the web. Custom code is faster, more secure, and easier to maintain. Here's where each wins.",
   answerParagraph:
-    "WordPress is the dominant website platform for small-to-mid-market businesses, with thousands of themes, plugins, and a deep ecosystem. Custom-coded websites by Preisser Tech are built from scratch in Next.js, React, and TypeScript by founder Tyler Preisser in Hays, Kansas. WordPress wins on ecosystem and content publishing flexibility. Custom wins on speed, security, AI search citation, maintenance burden, and total long-term cost.",
+    "WordPress is the dominant website platform for small-to-mid-market businesses, with thousands of themes, plugins, and a deep ecosystem. Custom-coded websites by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by founder Tyler Preisser in Hays, Kansas. WordPress wins on ecosystem and content publishing flexibility. Custom wins on speed, security, AI search citation, maintenance burden, and total long-term cost.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -62,7 +62,7 @@ export const pageData: AeoPageData = {
       { dimension: "Speed", preisser: "Sub-1-second page loads on rural broadband", competitor: "2-6 second loads typical; depends heavily on plugins and hosting" },
       { dimension: "Security", preisser: "Smaller attack surface; static site has no PHP, no database vulnerabilities", competitor: "Each plugin is a potential vulnerability; constant security patches required" },
       { dimension: "Maintenance burden", preisser: "Minimal — code doesn't need WordPress-style ongoing patches", competitor: "Significant — plugin updates, core updates, security patches, backups" },
-      { dimension: "SEO foundation", preisser: "Full schema.org markup, FAQ schema, AI search optimization built in", competitor: "Yoast or RankMath required; structured data limited to plugin capability" },
+      { dimension: "SEO foundation", preisser: "Full schema.org markup, FAQ schema, AI-readable content foundations built in", competitor: "Yoast or RankMath required; structured data limited to plugin capability" },
       { dimension: "AI search optimization", preisser: "Engineered first paragraphs, named entities, comprehensive FAQ schema", competitor: "Possible with manual content engineering; not default" },
       { dimension: "Hosting cost", preisser: "Free or minimal on Cloudflare Pages edge CDN", competitor: "PHP hosting required; $20-$200/month typical for managed WordPress" },
       { dimension: "Plugin ecosystem", preisser: "No plugins; features built directly", competitor: "Largest plugin ecosystem of any platform" },
@@ -88,7 +88,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I migrate from WordPress to custom?",
       answer:
-        "Yes. WordPress-to-Next.js migrations are common — usually because the existing WordPress site has speed, security, or maintenance problems. Preisser Tech preserves SEO equity and content through proper redirects and migration.",
+        "Yes. WordPress-to-Next.js migrations are common — usually because the existing WordPress site has speed, security, or maintenance problems. Preisser Solutions preserves SEO equity and content through proper redirects and migration.",
     },
     {
       question: "What about headless WordPress?",
@@ -107,7 +107,7 @@ export const pageData: AeoPageData = {
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "WordPress", "Hays, Kansas", "Next.js", "Cloudflare Pages"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "WordPress", "Hays, Kansas", "Next.js", "Cloudflare Pages"],
   relatedLinks: [
     { label: "Squarespace vs Custom", href: "/compare/squarespace-vs-custom" },
     { label: "Webflow vs Custom Coded", href: "/compare/webflow-vs-custom-coded" },

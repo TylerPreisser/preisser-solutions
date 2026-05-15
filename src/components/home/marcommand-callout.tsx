@@ -69,14 +69,13 @@ export function MarCommandCallout() {
             MarCommand
           </h2>
           <p className="ps-marcommand-body">
-            With our MarCommand package, your business gets a custom AI agent
-            that learns and understands and trains on your business to start
-            understanding, learning, and training itself on your audience, your
-            business, your social media content, your channels, your products.
+            MarCommand is Preisser Solutions&apos;s internal marketing intelligence workflow
+            for organizing your services, audiences, channels, competitors, content,
+            ads, reviews, and follow-up into one practical visibility plan.
           </p>
           <div className="ps-marcommand-cta">
-            <Link href="/contact" className="ps-btn ps-btn-primary-dark">
-              Inquire about packaging
+            <Link href="/contact?offer=hays-visibility-audit" className="ps-btn ps-btn-primary-dark">
+              Get a Free Hays Visibility Audit
               <svg
                 className="ps-btn-arrow"
                 width="16"
@@ -99,6 +98,7 @@ export function MarCommandCallout() {
 
         {/* Dashboard mockup — full-width visual anchor. FROZEN — do not modify MarCommandDashboard. */}
         <div className="ps-marcommand-dashboard-wrap">
+          <p className="sr-only">Dashboard values shown are sample data for interface demonstration.</p>
           <MarCommandDashboard />
         </div>
 

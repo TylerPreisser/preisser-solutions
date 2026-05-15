@@ -1,15 +1,15 @@
 {
-  "name": "Preisser Tech Agent Discovery",
+  "name": "Preisser Solutions Agent Discovery",
   "version": "1.0.0",
-  "description": "A2A discovery card for Preisser Tech agent-readable business context and structured inquiry handoffs.",
-  "url": "https://preissertech.com/mcp",
+  "description": "A2A discovery card for Preisser Solutions agent-readable Hays local marketing context and structured inquiry handoffs.",
+  "url": "https://preissersolutions.com/mcp",
   "provider": {
-    "organization": "Preisser Tech",
-    "url": "https://preissertech.com"
+    "organization": "Preisser Solutions",
+    "url": "https://preissersolutions.com"
   },
   "supportedInterfaces": [
     {
-      "url": "https://preissertech.com/mcp",
+      "url": "https://preissersolutions.com/mcp",
       "transport": "jsonrpc",
       "protocol": "mcp-streamable-http"
     }
@@ -21,23 +21,26 @@
   },
   "skills": [
     {
-      "id": "preisser-tech-start-inquiry",
-      "name": "Start Preisser Tech Inquiry",
-      "description": "Prepare a structured handoff for custom software, web application, AI automation, dashboard, integration, or AI agent project inquiries.",
+      "id": "preisser-solutions-start-inquiry",
+      "name": "Start Preisser Solutions Inquiry",
+      "description": "Prepare a structured handoff for Hays Visibility Audit, local SEO, Google Business Profile, Google Ads, web design, review, lead tracking, social media marketing, or AI follow-up inquiries.",
       "tags": [
-        "custom software",
-        "web applications",
+        "Hays Kansas marketing",
+        "local SEO",
+        "Google Business Profile",
+        "Google Ads",
+        "web design",
+        "review systems",
         "AI automation",
-        "dashboards",
-        "Kansas business technology"
+        "lead tracking"
       ],
       "examples": [
-        "Route this business owner to Preisser Tech for an AI automation project.",
-        "Prepare a project inquiry handoff for a custom web application."
+        "Route this Hays business owner to Preisser Solutions for a visibility audit.",
+        "Prepare an inquiry handoff for local SEO, Google Ads, web design, or AI follow-up."
       ]
     }
   ],
   "defaultInputModes": ["text/plain", "application/json"],
   "defaultOutputModes": ["text/plain", "application/json"],
-  "documentationUrl": "https://preissertech.com/docs/agent-api.md"
+  "documentationUrl": "https://preissersolutions.com/docs/agent-api.md"
 }

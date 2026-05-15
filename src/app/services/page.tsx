@@ -4,17 +4,17 @@ import { services } from "@/data/services";
 import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Services",
+  title: "Marketing Services in Hays, KS",
   description:
-    "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
+    "Preisser Solutions services for Hays businesses: local SEO, Google Business Profile optimization, Google Ads, web design, social media, and AI automation.",
   alternates: {
-    canonical: "https://preissertech.com/services",
+    canonical: "https://preissersolutions.com/services",
   },
   openGraph: {
-    title: "Services | Preisser Tech",
+    title: "Marketing Services in Hays, KS | Preisser Solutions",
     description:
-      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
-    url: "https://preissertech.com/services",
+      "Preisser Solutions services for Hays businesses: local SEO, Google Business Profile optimization, Google Ads, web design, social media, and AI automation.",
+    url: "https://preissersolutions.com/services",
   },
 };
 
@@ -27,10 +27,19 @@ const iconColors = [
   { bg: "rgba(239, 68, 68, 0.12)", color: "#EF4444" },
 ];
 
-const icons = ["🔍", "⚙️", "📋", "🤖", "🌐", "✏️"];
+const icons = ["🔍", "📍", "📣", "🌐", "💬", "🤖"];
+
+const serviceHrefs = [
+  "/services/local-seo-hays-ks",
+  "/services/google-business-profile-optimization-hays-ks",
+  "/services/google-ads-hays-ks",
+  "/services/web-design-hays-ks",
+  "/services/social-media-marketing-hays-ks",
+  "/services/ai-automation-hays-ks",
+];
 
 const breadcrumbSchema = buildBreadcrumbs([
-  { name: "Services", url: "https://preissertech.com/services" },
+  { name: "Services", url: "https://preissersolutions.com/services" },
 ]);
 
 export default function ServicesPage() {
@@ -46,11 +55,11 @@ export default function ServicesPage() {
         <div className="ps-container">
           <div className="ps-page-hero-content">
             <span className="ps-eyebrow">Services</span>
-            <h1>What We Build</h1>
+            <h1>Marketing Services for Hays Businesses</h1>
             <p>
-              AI-powered marketing for Kansas businesses that need sharper
-              websites, stronger local visibility, accountable ads, and
-              practical automation.
+              Websites, local SEO, Google Business Profile optimization,
+              Google Ads, social media, review systems, lead tracking, and AI
+              automation built around calls, booked work, and measurable follow-up.
             </p>
           </div>
         </div>
@@ -71,8 +80,8 @@ export default function ServicesPage() {
                 </div>
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
-                <Link href="/contact" className="ps-btn-link">
-                  Tell us what you need
+                <Link href={serviceHrefs[i] || "/contact?offer=hays-visibility-audit"} className="ps-btn-link">
+                  View service
                   <span className="ps-btn-arrow" aria-hidden="true">→</span>
                 </Link>
               </div>
@@ -85,15 +94,11 @@ export default function ServicesPage() {
       <div className="ps-cta-section">
         <div className="ps-cta-glow" aria-hidden="true" />
         <div className="ps-cta-content">
-          <span className="ps-eyebrow">Get in Touch</span>
+          <span className="ps-eyebrow">Free Audit</span>
           <h2>Ready to improve how customers find and choose your business?</h2>
-          <p>
-            Hire Preisser Tech for a better website, stronger local visibility,
-            accountable ad campaigns, and practical AI automation.
-          </p>
           <div className="ps-cta-buttons">
-            <Link href="/contact" className="ps-btn-primary">
-              Get in Touch
+            <Link href="/contact?offer=hays-visibility-audit" className="ps-btn-primary">
+              Get a Free Hays Visibility Audit
               <span className="ps-btn-arrow" aria-hidden="true">→</span>
             </Link>
           </div>

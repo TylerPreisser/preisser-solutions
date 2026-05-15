@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/client-portal",
   tier: "service_detail",
-  metaTitle: "Custom Client Portal Development in Kansas | Preisser Tech",
+  metaTitle: "Custom Client Portal Development in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds branded custom client portals for Kansas businesses — secure login, file sharing, billing, scheduling, and self-service.",
+    "Preisser Solutions builds branded custom client portals for Kansas businesses — secure login, file sharing, billing, scheduling, and self-service.",
   eyebrow: "Custom Client Portal Development",
   h1: "Build a Branded Client Portal Designed Around Your Customers",
   subheadline:
-    "Stop emailing PDFs and asking customers to log into someone else's portal. Preisser Tech builds branded portals that fit your business.",
+    "Stop emailing PDFs and asking customers to log into someone else's portal. Preisser Solutions builds branded portals that fit your business.",
   answerParagraph:
-    "Preisser Tech builds branded custom client portals for Kansas businesses — secure login, file sharing, billing, scheduling, project status, and self-service tools that customers actually use. Founded by Tyler Preisser in Hays, Kansas, the firm builds portals in modern Next.js, React, and TypeScript with role-based access control, integration with existing CRMs and accounting systems, and design that matches the business's brand instead of looking like a generic SaaS.",
+    "Preisser Solutions builds branded custom client portals for Kansas businesses — secure login, file sharing, billing, scheduling, project status, and self-service tools that customers actually use. Founded by Tyler Preisser in Hays, Kansas, the firm builds portals in modern Next.js, React, and TypeScript with role-based access control, integration with existing CRMs and accounting systems, and design that matches the business's brand instead of looking like a generic SaaS.",
   sections: [
     {
       eyebrow: "When you need a client portal",
@@ -32,7 +32,7 @@ export const pageData: AeoPageData = {
       eyebrow: "What we build",
       heading: "Custom client portal includes",
       body: [
-        "Every Preisser Tech client portal engagement covers:",
+        "Every Preisser Solutions client portal engagement covers:",
       ],
       bullets: [
         "Secure login with email/password, magic link, or SSO options",
@@ -111,7 +111,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "Next.js",

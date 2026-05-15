@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/trucking-logistics",
   tier: "industry",
-  metaTitle: "Custom Software for Trucking & Logistics in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Trucking & Logistics in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, dispatch automation, AI back-office, and McLeod/TMW/Samsara integrations for trucking fleets in Kansas.",
+    "Preisser Solutions builds custom websites, dispatch automation, AI back-office, and McLeod/TMW/Samsara integrations for trucking fleets in Kansas.",
   eyebrow: "Custom Software for Trucking & Logistics in Kansas",
   h1: "Custom Software, Automation, and AI for Trucking & Logistics",
   subheadline:
     "Built for fleet owners and dispatchers tired of generic TMS plug-ins and slow back-office workflows. Custom-coded in Hays, Kansas by Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for trucking and logistics operations — custom websites, dispatch automation, AI invoicing, custom dashboards, and integrations with McLeod, TMW Suite, JJ Keller, Samsara, and KeepTruckin/Motive. The HG Oil Holdings AI invoicing case study (75% decrease in manual invoice handling) translates directly to fleet billing and BOL workflows.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for trucking and logistics operations — custom websites, dispatch automation, AI invoicing, custom dashboards, and integrations with McLeod, TMW Suite, JJ Keller, Samsara, and KeepTruckin/Motive. The future documented operations example AI invoicing case study (invoice handling metrics published only when verified) translates directly to fleet billing and BOL workflows.",
   sections: [
     {
       eyebrow: "What we build for trucking",
@@ -37,7 +37,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to trucking",
-      heading: "How each Preisser Tech service shows up in a trucking company",
+      heading: "How each Preisser Solutions service shows up in a trucking company",
       body: [
         "Most fleets start with AI invoicing and BOL automation and expand from there.",
       ],
@@ -53,7 +53,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Trucking software stack we already work with",
       body: [
-        "Preisser Tech integrates with whatever you're already running:",
+        "Preisser Solutions integrates with whatever you're already running:",
       ],
       bullets: [
         "TMS: McLeod LoadMaster, TMW Suite, Truckmate, AscendTMS",
@@ -69,7 +69,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you really know trucking?",
       answer:
-        "We are a software firm — but we build for transportation operations specifically. The HG Oil Holdings AI invoicing case study (75% decrease in manual invoice handling) translates directly to fleet billing workflows.",
+        "We are a software firm — but we build for transportation operations specifically. The future documented operations example AI invoicing case study (invoice handling metrics published only when verified) translates directly to fleet billing workflows.",
     },
     {
       question: "Do you replace McLeod or TMW Suite?",
@@ -79,7 +79,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can you build AI invoicing for BOLs?",
       answer:
-        "Yes. AI invoicing is one of our anchor case studies. The HG Oil Holdings AI invoice assistant extracts and structures invoice data instantly — same approach works for BOL handling.",
+        "Yes. AI invoicing is one of our anchor case studies. The future documented operations example AI invoice assistant extracts and structures invoice data instantly — same approach works for BOL handling.",
     },
     {
       question: "How much does a trucking automation project cost?",
@@ -104,9 +104,9 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
-    "HG Oil Holdings",
+    "a future documented operations example",
     "Hays, Kansas",
     "McLeod",
     "TMW Suite",

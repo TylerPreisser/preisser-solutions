@@ -9,6 +9,7 @@ import {
   DashboardVisual,
   RevenueVisual,
 } from "@/components/home/card-visuals-backup";
+import { trackEvent } from "@/lib/analytics";
 
 /* ─────────────────────────────────────────────────────────────
    TYPES
@@ -44,10 +45,10 @@ interface ServicePillar {
 const services: ServicePillar[] = [
   {
     type: "websites",
-    title: "Websites & Applications",
+    title: "Web Design & Landing Pages",
     description:
-      "Custom-coded onto servers designed for AI agents. Indexed on every AI registry. Structured so AI gets exactly what it needs when it crawls. We frame the messaging so AI picks you first.",
-    href: "/contact",
+      "Fast, credible websites and landing pages for Hays-area businesses that need phone calls, booked appointments, form fills, and clear tracking.",
+    href: "/services/web-design-hays-ks",
     visual: <WebsiteVisual />,
     bullets: [
       "Professional website development",
@@ -67,19 +68,19 @@ const services: ServicePillar[] = [
       {
         title: "Professional Website Builds",
         description:
-          "Custom-coded, fast-loading, mobile-optimized websites. No templates, no page builders. Built to rank and convert.",
+          "Fast-loading, mobile-friendly websites with clear service pages, trust signals, calls to action, and local search fundamentals.",
         icon: <IconProfessionalWebsite />,
       },
       {
         title: "AI Search Optimization (GEO)",
         description:
-          "Your site structured so AI systems can understand who you are, what you do, where you serve, and why you should be cited.",
+          "Clear HTML, schema, FAQs, internal links, and plain-language answers that make your services easier for search engines and AI tools to understand.",
         icon: <IconAISearch />,
       },
       {
         title: "Google Business Profile & Review Systems",
         description:
-          "Profile cleanup, service-area clarity, review request flows, and local trust signals that support how customers actually find you.",
+          "Accurate categories, services, photos, service-area language, and compliant review request flows for real customer feedback.",
         icon: <IconGoogleBusiness />,
       },
       {
@@ -109,8 +110,8 @@ const services: ServicePillar[] = [
     ],
     differentiators: [
       {
-        lead: "AI search is our edge.",
-        body: "We build for ChatGPT, Perplexity, and AI Overviews — not just Google. Almost nobody locally does this yet.",
+        lead: "Crawlable and clear.",
+        body: "Pages are structured so people, Google, Bing, and AI answer engines can understand who you help, where you serve, and what action to take.",
       },
       {
         lead: "You own everything.",
@@ -118,16 +119,16 @@ const services: ServicePillar[] = [
       },
       {
         lead: "Sites that generate business.",
-        body: "Not digital brochures. Lead machines with tracking, forms, and conversion optimization built in.",
+        body: "Not digital brochures. Service pages, forms, calls, tracking, and conversion copy are built into the first version.",
       },
     ],
   },
   {
     type: "revenue",
-    title: "Revenue Growth Engines",
+    title: "Local Marketing Growth Systems",
     description:
-      "Hyper-personalized, psychologically targeted campaigns. We use AI to organically maximize your AI presence — your business shows up where AI is looking. Powered by MarCommand, our internal AI agent. Nobody else in Kansas is doing this.",
-    href: "/contact",
+      "Local SEO, Google Business Profile support, Google Ads, review systems, social media, and lead tracking connected around calls and booked work.",
+    href: "/marketing-agency-hays-ks",
     visual: <RevenueVisual />,
     bullets: [
       "Automated social media content",
@@ -147,7 +148,7 @@ const services: ServicePillar[] = [
       {
         title: "MarCommand",
         description:
-          "Preisser Tech's proprietary AI agent system. A custom agent built for each business to learn your audience, services, customers, channels, products, and real marketing data. Inquire about packaging by getting in touch.",
+          "Preisser Solutions's internal marketing intelligence workflow for organizing services, audiences, channels, competitors, and lead sources into one action plan.",
         icon: <IconMarketingDashboard />,
       },
       {
@@ -165,7 +166,7 @@ const services: ServicePillar[] = [
       {
         title: "AI-Powered Advertising Management",
         description:
-          "Google Ads, Facebook Ads, managed and optimized by AI. Budget allocation, bid strategy, and creative testing on autopilot.",
+          "Google Ads and paid social planning with landing-page mapping, conversion tracking, negative keywords, and practical budget controls.",
         icon: <IconAdvertisingManagement />,
       },
       {
@@ -189,7 +190,7 @@ const services: ServicePillar[] = [
       {
         title: "Automated Review Generation",
         description:
-          "Post-service review requests that make it easier for satisfied customers to leave public proof.",
+          "Post-service review requests that ask real customers for honest feedback without incentives, ratings pressure, or keyword coaching.",
         icon: <IconAutomatedReviews />,
       },
       {
@@ -212,7 +213,7 @@ const services: ServicePillar[] = [
       },
       {
         lead: "Measured, not guessed.",
-        body: "MarCommand connects channels, reviews, content, ads, and follow-up back to the actual business context.",
+        body: "Channels, reviews, content, ads, and follow-up are tied back to actual calls, form fills, and booked audits where tracking is available.",
       },
       {
         lead: "Full funnel.",
@@ -441,16 +442,16 @@ const services: ServicePillar[] = [
     ],
     differentiators: [
       {
-        lead: "Fixers, not consultants.",
-        body: "No reports about your problems. We find what's broken and build the fix.",
+        lead: "We diagnose before we prescribe.",
+        body: "Full system audit of your tools, data flow, and bottlenecks — then a clear fix plan with costs and timelines before any work starts.",
       },
       {
-        lead: "We know small business tech.",
-        body: "QuickBooks. ServiceTitan. Square. Jobber. HubSpot. We've integrated them all.",
+        lead: "Every platform your business runs on.",
+        body: "QuickBooks, ServiceTitan, Square, Jobber, HubSpot, Salesforce, custom databases — we've integrated, migrated, and repaired them all.",
       },
       {
-        lead: "Fixes that pay for themselves.",
-        body: "Every improvement measured in time saved, errors eliminated, money recovered.",
+        lead: "Measured in money, not metrics.",
+        body: "Every fix tracked by hours recovered, errors eliminated, and revenue recaptured. If it doesn't pay for itself, we don't ship it.",
       },
     ],
   },
@@ -1535,8 +1536,18 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
 
           {/* CTA */}
           <div className="ps-dialog-cta ps-dialog-reveal">
-            <a href="/contact" className="ps-dialog-cta-btn">
-              Interested? Let&rsquo;s talk
+            <a
+              href={`/contact?offer=hays-visibility-audit&source=homepage-service-${service.type}`}
+              className="ps-dialog-cta-btn"
+              onClick={() =>
+                trackEvent("cta_click", {
+                  location: "homepage_service_dialog",
+                  service_type: service.type,
+                  link_text: "Get a Free Hays Visibility Audit",
+                })
+              }
+            >
+              Get a Free Hays Visibility Audit
             </a>
           </div>
         </div>
@@ -1629,12 +1640,10 @@ export function ServicePillars() {
           id="services-heading"
           className="ps-section-heading ps-section-heading--light"
         >
-          What We Build
+          What We Build for Kansas Businesses
         </h2>
-        <p className="ps-services-intro">
-          Hire Preisser Tech for the pieces that make modern local marketing
-          work together: a stronger site, better search visibility, focused ads,
-          and automation that supports follow-up.
+        <p className="ps-section-subtitle" style={{ maxWidth: '720px', margin: '0 auto', color: 'var(--hds-color-text-secondary)', fontSize: '1.125rem', lineHeight: '1.7', marginTop: '1rem' }}>
+          Websites that convert. Marketing systems that fill your pipeline. Automation that eliminates busywork. Dashboards that show exactly what&apos;s working. And when your tech stack is broken, we fix it. Everything built to enterprise standards — deployed for local businesses.
         </p>
       </div>
 

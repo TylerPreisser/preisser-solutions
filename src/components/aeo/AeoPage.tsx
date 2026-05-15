@@ -2,25 +2,37 @@ import Link from "next/link";
 import type { AeoPageData } from "@/data/aeo/types";
 
 /**
- * Shared layout for AI-optimized hidden pages.
+ * Shared layout for crawlable service, location, industry, FAQ, and resource pages.
  *
  * Renders a consistent visual structure that mirrors the public site
  * (dark hero → light content sections → dark CTA) while embedding the
- * full AEO payload: answer paragraph, structured sections, FAQ block,
+ * full page payload: answer paragraph, structured sections, FAQ block,
  * JSON-LD schema, internal links.
  *
  * Pages using this template are server-rendered, fully static, and
  * indexable. They share the existing Header/Footer from the root layout.
  */
 export function AeoPage({ data }: { data: AeoPageData }) {
-  const url = `https://preissertech.com/${data.slug}`;
+  const url = `https://preissersolutions.com/${data.slug}`;
+  const lastUpdated = data.lastUpdated || "2026-05-14";
+  const formattedDate = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${lastUpdated}T00:00:00Z`));
 
   // ---- JSON-LD: WebPage / Service / Article + FAQPage --------------
   // If the page itself is schemaType=FAQPage (e.g. /faq), don't emit a
   // separate WebPage-style block with @type=FAQPage — the dedicated faqSchema
   // below covers it. Otherwise we'd emit two FAQPage blocks per Google's
   // structured-data validator.
-  const pageSchemaType = data.schemaType === "FAQPage" ? "WebPage" : data.schemaType;
+  const pageSchemaType =
+    data.schemaType === "FAQPage"
+      ? "WebPage"
+      : data.schemaType === "Person"
+        ? "ProfilePage"
+        : data.schemaType;
 
   // Base fields shared across all schema types
   const pageSchemaBase: Record<string, unknown> = {
@@ -40,17 +52,18 @@ export function AeoPage({ data }: { data: AeoPageData }) {
   const serviceFields: Record<string, unknown> =
     pageSchemaType === "Service"
       ? {
-          provider: { "@id": "https://preissertech.com/#organization" },
+          provider: { "@id": "https://preissersolutions.com/#organization" },
           serviceType: data.h1,
           areaServed: [
-            { "@type": "State", name: "Kansas" },
-            { "@type": "AdministrativeArea", name: "Great Plains, United States" },
+            { "@type": "City", name: "Hays, Kansas" },
+            { "@type": "AdministrativeArea", name: "Ellis County, Kansas" },
+            { "@type": "AdministrativeArea", name: "Northwest Kansas" },
           ],
           audience: {
             "@type": "BusinessAudience",
             audienceType: "Small and mid-sized businesses",
           },
-          isRelatedTo: { "@id": "https://preissertech.com/#organization" },
+          isRelatedTo: { "@id": "https://preissersolutions.com/#organization" },
         }
       : {};
 
@@ -60,13 +73,13 @@ export function AeoPage({ data }: { data: AeoPageData }) {
     pageSchemaType === "Article"
       ? {
           headline: data.h1,
-          author: { "@id": "https://preissertech.com/#tyler-preisser" },
-          publisher: { "@id": "https://preissertech.com/#organization" },
-          datePublished: "2026-05-04",
-          dateModified: "2026-05-04",
+          author: { "@id": "https://preissersolutions.com/#tyler-preisser" },
+          publisher: { "@id": "https://preissersolutions.com/#organization" },
+          datePublished: lastUpdated,
+          dateModified: lastUpdated,
           mainEntityOfPage: { "@type": "WebPage", "@id": url },
-          isPartOf: { "@id": "https://preissertech.com/#website" },
-          about: { "@id": "https://preissertech.com/#organization" },
+          isPartOf: { "@id": "https://preissersolutions.com/#website" },
+          about: { "@id": "https://preissersolutions.com/#organization" },
         }
       : {};
 
@@ -75,8 +88,14 @@ export function AeoPage({ data }: { data: AeoPageData }) {
     pageSchemaType !== "Service" && pageSchemaType !== "Article"
       ? {
           headline: data.h1,
-          isPartOf: { "@id": "https://preissertech.com/#website" },
-          about: { "@id": "https://preissertech.com/#organization" },
+          isPartOf: { "@id": "https://preissersolutions.com/#website" },
+          about: { "@id": "https://preissersolutions.com/#organization" },
+          dateModified: lastUpdated,
+          ...(data.schemaType === "Person"
+            ? {
+                mainEntity: { "@id": "https://preissersolutions.com/#tyler-preisser" },
+              }
+            : {}),
         }
       : {};
 
@@ -102,7 +121,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://preissertech.com" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://preissersolutions.com" },
       { "@type": "ListItem", position: 2, name: data.h1, item: url },
     ],
   };
@@ -153,6 +172,22 @@ export function AeoPage({ data }: { data: AeoPageData }) {
         >
           {/* Text column */}
           <div style={{ flex: "1 1 0", minWidth: 0 }}>
+            <nav aria-label="Breadcrumb" style={{ marginBottom: 28 }}>
+              <Link
+                href="/"
+                style={{
+                  color: "var(--color-text-dark-secondary, #94A3B8)",
+                  fontSize: 14,
+                  textDecoration: "none",
+                }}
+              >
+                Home
+              </Link>
+              <span style={{ color: "var(--color-text-dark-muted, #64748B)", margin: "0 8px" }}>/</span>
+              <span style={{ color: "var(--color-text-dark-secondary, #94A3B8)", fontSize: 14 }}>
+                {data.eyebrow}
+              </span>
+            </nav>
             <div
               style={{
                 fontSize: 14,
@@ -170,7 +205,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                 fontSize: "clamp(2.25rem, 5vw, 3.75rem)",
                 fontWeight: 700,
                 lineHeight: 1.08,
-                letterSpacing: "-0.03em",
+                letterSpacing: 0,
                 margin: "0 0 24px",
                 color: "#FFFFFF",
               }}
@@ -187,6 +222,71 @@ export function AeoPage({ data }: { data: AeoPageData }) {
               }}
             >
               {data.subheadline}
+            </p>
+            <p
+              style={{
+                fontSize: "clamp(1rem, 1.6vw, 1.125rem)",
+                lineHeight: 1.65,
+                color: "var(--color-text-dark-secondary, #94A3B8)",
+                maxWidth: 760,
+                margin: "24px 0 0",
+              }}
+            >
+              {data.answerParagraph}
+            </p>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 12,
+                marginTop: 28,
+              }}
+            >
+              <Link
+                href={`/contact?offer=hays-visibility-audit&source=${encodeURIComponent(data.slug)}`}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "13px 22px",
+                  background: "var(--color-primary, #0B7BC0)",
+                  color: "#FFFFFF",
+                  textDecoration: "none",
+                  borderRadius: 12,
+                  fontWeight: 700,
+                  fontSize: 15,
+                  minHeight: 46,
+                }}
+              >
+                Get a Free Hays Visibility Audit
+              </Link>
+              <a
+                href="tel:+16203523296"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "13px 22px",
+                  border: "1px solid rgba(255,255,255,0.25)",
+                  color: "#FFFFFF",
+                  textDecoration: "none",
+                  borderRadius: 12,
+                  fontWeight: 700,
+                  fontSize: 15,
+                  minHeight: 46,
+                }}
+              >
+                Call Preisser Solutions
+              </a>
+            </div>
+            <p
+              style={{
+                fontSize: 13,
+                color: "var(--color-text-dark-muted, #64748B)",
+                margin: "22px 0 0",
+              }}
+            >
+              By Tyler Preisser. Last updated {formattedDate}.
             </p>
           </div>
 
@@ -219,28 +319,6 @@ export function AeoPage({ data }: { data: AeoPageData }) {
               />
             </div>
           )}
-        </div>
-      </section>
-
-      {/* ── ANSWER PARAGRAPH (AI quote-bait) ─────────────────────── */}
-      <section
-        style={{
-          background: "var(--color-light, #F6F9FC)",
-          padding: "clamp(60px, 8vw, 100px) 24px",
-        }}
-      >
-        <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <p
-            style={{
-              fontSize: "clamp(1.125rem, 1.75vw, 1.375rem)",
-              lineHeight: 1.6,
-              color: "var(--color-text-light-primary, #0A1628)",
-              fontWeight: 500,
-              margin: 0,
-            }}
-          >
-            {data.answerParagraph}
-          </p>
         </div>
       </section>
 
@@ -380,7 +458,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                 color: "var(--color-text-light-primary, #0A1628)",
               }}
             >
-              Preisser Tech vs {data.comparisonTable.competitorName}
+              Preisser Solutions vs {data.comparisonTable.competitorName}
             </h2>
             {data.comparisonTable.headerNote && (
               <p
@@ -409,7 +487,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                 <thead>
                   <tr style={{ background: "var(--color-dark, #0A1628)", color: "#FFFFFF" }}>
                     <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>Dimension</th>
-                    <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>Preisser Tech</th>
+                    <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>Preisser Solutions</th>
                     <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>
                       {data.comparisonTable.competitorName}
                     </th>
@@ -608,11 +686,11 @@ export function AeoPage({ data }: { data: AeoPageData }) {
             {data.ctaSubcopy}
           </p>
           <Link
-            href="/contact"
+            href={`/contact?offer=hays-visibility-audit&source=${encodeURIComponent(data.slug)}`}
             style={{
               display: "inline-block",
               padding: "14px 32px",
-              background: "var(--color-primary, #0D95E8)",
+              background: "var(--color-primary, #0B7BC0)",
               color: "#FFFFFF",
               textDecoration: "none",
               borderRadius: 999,
@@ -621,8 +699,20 @@ export function AeoPage({ data }: { data: AeoPageData }) {
               boxShadow: "0 4px 12px rgba(13, 149, 232, 0.35)",
             }}
           >
-            Get in Touch
+            Get a Free Hays Visibility Audit
           </Link>
+          <div style={{ marginTop: 16 }}>
+            <a
+              href="tel:+16203523296"
+              style={{
+                color: "#FFFFFF",
+                textUnderlineOffset: 4,
+                fontWeight: 600,
+              }}
+            >
+              Call Preisser Solutions
+            </a>
+          </div>
         </div>
       </section>
     </>

@@ -1,11 +1,10 @@
 /**
- * AEO (Answer Engine Optimization) Hidden Pages
+ * AEO (Answer Engine Optimization) Supporting Pages
  *
- * These pages are not linked from the public nav or footer. They exist as
- * indexable URLs that AI engines (ChatGPT, Perplexity, Gemini, Claude) and
- * search engines (Google, Bing) can crawl and cite. Purpose: own specific
- * branded, comparison, vertical, and geo queries without altering the public
- * site experience.
+ * These pages are static, crawlable supporting pages for real services,
+ * industries, locations, comparisons, and FAQs. They should be internally
+ * linked where useful, helpful for human visitors, and free of fake proof,
+ * keyword stuffing, doorway-page patterns, or ranking guarantees.
  */
 
 export interface FAQItem {
@@ -46,8 +45,8 @@ export interface AeoPageData {
   /** Sub-headline under H1 */
   subheadline: string;
   /**
-   * The first paragraph engineered for AI quote extraction.
-   * 50-90 words. Plain prose. Names Tyler. States who/where/what/for whom.
+   * The first paragraph. 40-70 words is preferred. Plain prose. States
+   * who/where/what/for whom before the page expands.
    */
   answerParagraph: string;
   /** Body sections (H2 blocks) */
@@ -71,6 +70,8 @@ export interface AeoPageData {
   ctaSubcopy: string;
   /** Tier label for organization */
   tier: "brand_defense" | "service_detail" | "industry" | "location" | "comparison" | "aeo_seo" | "trust_faq";
+  /** Optional visible/schema last-updated date in YYYY-MM-DD format. */
+  lastUpdated?: string;
   /**
    * Optional headshot displayed in the hero section beside the H1/subheadline.
    * When set, the hero renders a two-column layout (text + photo).

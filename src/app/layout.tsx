@@ -14,34 +14,29 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
-    template: "%s | Preisser Tech",
+    default: "Preisser Solutions | Hays KS Marketing, Websites, SEO & AI Automation",
+    template: "%s | Preisser Solutions",
   },
   description:
-    "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
-  metadataBase: new URL("https://preissertech.com"),
+    "Preisser Solutions helps Hays and Northwest Kansas businesses get more calls, bookings, and customers through websites, local SEO, Google Ads, review systems, and AI automation.",
+  metadataBase: new URL("https://preissersolutions.com"),
   keywords: [
-    "business automation Kansas",
-    "custom websites Kansas",
-    "web development Hays Kansas",
-    "automation systems small business",
-    "AI-powered business tools",
-    "custom applications Kansas",
-    "workflow automation",
+    "marketing agency Hays KS",
+    "digital marketing Hays KS",
+    "local SEO Hays KS",
+    "Google Business Profile optimization Hays KS",
+    "web design Hays KS",
+    "Google Ads Hays KS",
+    "AI automation Hays KS",
     "Tyler Preisser",
-    "Preisser Tech",
-    "digital transformation Kansas",
-    "custom software development",
-    "business dashboards",
-    "ROI automation calculator",
-    "Hays Kansas web developer",
-    "small business technology solutions",
+    "Preisser Solutions",
+    "Northwest Kansas marketing",
   ],
-  authors: [{ name: "Tyler Preisser", url: "https://preissertech.com/about" }],
+  authors: [{ name: "Tyler Preisser", url: "https://preissersolutions.com/tyler-preisser" }],
   creator: "Tyler Preisser",
-  publisher: "Preisser Tech",
+  publisher: "Preisser Solutions",
   alternates: {
-    canonical: "https://preissertech.com",
+    canonical: "https://preissersolutions.com",
   },
   robots: {
     index: true,
@@ -80,25 +75,25 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://preissertech.com",
-    siteName: "Preisser Tech",
-    title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
+    url: "https://preissersolutions.com",
+    siteName: "Preisser Solutions",
+    title: "Preisser Solutions | Hays KS Marketing, Websites, SEO & AI Automation",
     description:
-      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
+      "Preisser Solutions helps Hays and Northwest Kansas businesses get more calls, bookings, and customers through websites, local SEO, Google Ads, review systems, and AI automation.",
     images: [
       {
         url: "/images/og-image-v2.jpg",
         width: 1200,
         height: 630,
-        alt: "Preisser Tech",
+        alt: "Preisser Solutions",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
+    title: "Preisser Solutions | Hays KS Marketing, Websites, SEO & AI Automation",
     description:
-      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
+      "Preisser Solutions helps Hays and Northwest Kansas businesses get more calls, bookings, and customers through websites, local SEO, Google Ads, review systems, and AI automation.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@tylerpreisser",
   },
@@ -134,228 +129,85 @@ const themeInitScript = `(function(){
 // JSON-LD Structured Data
 // ---------------------------------------------------------------------------
 // All entities are cross-linked via @id references so search engines can
-// construct a complete knowledge graph for Preisser Tech.
+// construct a complete knowledge graph for Preisser Solutions.
 //
 // Entity IDs:
 //   ORG_ID       — Organization / ProfessionalService
 //   PERSON_ID    — Tyler Preisser (Person)
 //   WEBSITE_ID   — WebSite
-//   WEBPAGE_ID   — WebPage (homepage)
-//   LOCAL_BIZ_ID — LocalBusiness
 // ---------------------------------------------------------------------------
 
-const ORG_ID = "https://preissertech.com/#organization";
-const PERSON_ID = "https://preissertech.com/#tyler-preisser";
-const WEBSITE_ID = "https://preissertech.com/#website";
-const WEBPAGE_ID = "https://preissertech.com/#webpage-home";
-const LOCAL_BIZ_ID = "https://preissertech.com/#local-business";
+const ORG_ID = "https://preissersolutions.com/#organization";
+const PERSON_ID = "https://preissersolutions.com/#tyler-preisser";
+const WEBSITE_ID = "https://preissersolutions.com/#website";
 
 const structuredData = [
-  // -------------------------------------------------------------------------
-  // 1. Organization + ProfessionalService
-  // -------------------------------------------------------------------------
   {
     "@context": "https://schema.org",
     "@type": ["Organization", "ProfessionalService"],
     "@id": ORG_ID,
-    name: "Preisser Tech",
-    alternateName: ["Preisser Technology", "Preisser Tech"],
-    legalName: "Preisser Tech",
-    url: "https://preissertech.com",
+    name: "Preisser Solutions",
+    legalName: "Preisser Solutions",
+    url: "https://preissersolutions.com",
     logo: {
       "@type": "ImageObject",
-      "@id": "https://preissertech.com/#logo",
-      url: "https://preissertech.com/images/ps-logo.png",
-      contentUrl: "https://preissertech.com/images/ps-logo.png",
+      "@id": "https://preissersolutions.com/#logo",
+      url: "https://preissersolutions.com/images/ps-logo.png",
+      contentUrl: "https://preissersolutions.com/images/ps-logo.png",
       width: 1024,
       height: 1024,
-      caption: "Preisser Tech logo — custom software, web apps, and AI automation in Hays, Kansas",
-      name: "Preisser Tech Logo",
+      caption: "Preisser Solutions logo",
+      name: "Preisser Solutions Logo",
     },
-    image: "https://preissertech.com/images/ps-logo.png",
+    image: "https://preissersolutions.com/images/ps-logo.png",
     description:
-      "Preisser Tech provides AI-powered marketing for Kansas businesses, including websites, local visibility, paid ads, and practical automation. Based in Hays, Kansas. Founded by Tyler Preisser. Not automotive tuning, not hardware.",
+      "Preisser Solutions helps Hays and Northwest Kansas businesses get more calls, bookings, and customers through websites, local SEO, Google Ads, review systems, social media marketing, and AI automation.",
     disambiguatingDescription:
-      "Preisser Tech (preissertech.com) is the custom software, web development, and AI automation consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Tech' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Tech builds websites, web applications, AI agents, and business automation systems exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: sales@preissertech.com.",
-    slogan:
-      "AI-powered marketing for Kansas",
+      "Preisser Solutions is a Hays, Kansas marketing, website, local SEO, Google Ads, and AI automation company owned by Tyler Preisser. It is not an automotive tuning, hardware, measuring-instrument, model railroad, or laboratory supply company.",
+    slogan: "Hays KS marketing, websites, SEO, Google Ads, and AI automation",
     foundingDate: "2023",
     founder: { "@id": PERSON_ID },
-    email: "sales@preissertech.com",
+    email: "sales@preissersolutions.com",
     telephone: "+16203523296",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Hays",
       addressLocality: "Hays",
       addressRegion: "KS",
       postalCode: "67601",
       addressCountry: "US",
     },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: 38.8794,
-      longitude: -99.3268,
-    },
     areaServed: [
-      {
-        "@type": "State",
-        name: "Kansas",
-      },
-      {
-        "@type": "AdministrativeArea",
-        name: "Great Plains, United States",
-      },
+      { "@type": "City", name: "Hays, Kansas" },
+      { "@type": "AdministrativeArea", name: "Ellis County, Kansas" },
+      { "@type": "AdministrativeArea", name: "Northwest Kansas" },
     ],
     contactPoint: [
       {
         "@type": "ContactPoint",
         telephone: "+16203523296",
-        email: "sales@preissertech.com",
+        email: "sales@preissersolutions.com",
         contactType: "sales",
         availableLanguage: "English",
-        areaServed: "US",
+        areaServed: ["Hays, Kansas", "Ellis County, Kansas", "Northwest Kansas"],
       },
-      {
-        "@type": "ContactPoint",
-        telephone: "+16203523296",
-        email: "sales@preissertech.com",
-        contactType: "customer support",
-        availableLanguage: "English",
-        areaServed: "US",
-      },
-    ],
-    // NOTE: LinkedIn, Facebook, and X pages are set in advance — once Tyler
-    // creates or renames the pages, the Knowledge Graph entity will link
-    // correctly without a redeploy.
-    sameAs: [
-      "https://www.linkedin.com/company/preissertech",
-      "https://www.facebook.com/preissertech",
-      "https://x.com/preissertech",
-      "https://github.com/tylerpreisser",
     ],
     knowsAbout: [
+      "Marketing Strategy for Local Businesses",
+      "Local SEO",
+      "Google Business Profile Optimization",
       "Google Ads Management",
-      "Meta Ads Management",
-      "AI Search Optimization (AEO/GEO)",
-      "MarCommand AI Marketing Intelligence",
-      "Custom Software Development",
-      "Custom Web Development",
-      "Business Process Automation",
-      "Lead Capture and Automation",
-      "AI Agent Development",
-      "Web Application Development",
-      "Real-Time Business Dashboards",
-      "Dashboard and Analytics Systems",
-      "Marketing Automation",
-      "E-commerce Development",
-      "Workflow Automation",
-      "Small Business Software Solutions",
-      "Digital Transformation for Kansas Businesses",
-      "B2B Technology Consulting",
-      "API Integration and Systems Architecture",
-      "No-Code and Low-Code Alternatives",
+      "Web Design",
+      "Landing Page Design",
+      "Review Generation Systems",
+      "Social Media Marketing",
+      "AI Automation",
+      "Missed-Call Text-Back",
+      "Lead Follow-Up Automation",
+      "CRM Workflow Automation",
+      "Conversion Tracking",
     ],
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Preisser Tech Service Catalog",
-      itemListElement: [
-        {
-          "@type": "Offer",
-          priceCurrency: "USD",
-          priceSpecification: {
-            "@type": "PriceSpecification",
-            minPrice: "12500",
-            priceCurrency: "USD",
-            valueAddedTaxIncluded: false,
-          },
-          availability: "https://schema.org/InStock",
-          itemOffered: {
-            "@type": "Service",
-            name: "Custom Website Development",
-            description:
-              "Pixel-perfect, high-performance custom websites built specifically for your business. No templates. Designed for conversions, speed, and SEO. Starting at $12,500.",
-          },
-        },
-        {
-          "@type": "Offer",
-          priceCurrency: "USD",
-          priceSpecification: {
-            "@type": "PriceSpecification",
-            minPrice: "28500",
-            priceCurrency: "USD",
-            valueAddedTaxIncluded: false,
-          },
-          availability: "https://schema.org/InStock",
-          itemOffered: {
-            "@type": "Service",
-            name: "Web Application Development",
-            description:
-              "Full-stack custom web applications for internal tools, client portals, and complex business logic. Built with modern frameworks. Starting at $28,500.",
-          },
-        },
-        {
-          "@type": "Offer",
-          priceCurrency: "USD",
-          priceSpecification: {
-            "@type": "PriceSpecification",
-            minPrice: "8500",
-            priceCurrency: "USD",
-            valueAddedTaxIncluded: false,
-          },
-          availability: "https://schema.org/InStock",
-          itemOffered: {
-            "@type": "Service",
-            name: "Business Automation Systems",
-            description:
-              "End-to-end automation of invoicing, scheduling, data entry, reporting, and operational workflows using AI and custom software. Starting at $8,500.",
-          },
-        },
-        {
-          "@type": "Offer",
-          priceCurrency: "USD",
-          priceSpecification: {
-            "@type": "PriceSpecification",
-            minPrice: "15000",
-            priceCurrency: "USD",
-            valueAddedTaxIncluded: false,
-          },
-          availability: "https://schema.org/InStock",
-          itemOffered: {
-            "@type": "Service",
-            name: "AI Agent Development",
-            description:
-              "Custom AI agents that handle customer service, research, data processing, and decision support — built specifically for your business. Starting at $15,000.",
-          },
-        },
-        {
-          "@type": "Offer",
-          priceCurrency: "USD",
-          priceSpecification: {
-            "@type": "PriceSpecification",
-            minPrice: "9500",
-            priceCurrency: "USD",
-            valueAddedTaxIncluded: false,
-          },
-          availability: "https://schema.org/InStock",
-          itemOffered: {
-            "@type": "Service",
-            name: "Dashboards and Analytics",
-            description:
-              "Real-time business dashboards that surface key metrics, track KPIs, and give owners and operators a live view of operations. Starting at $9,500.",
-          },
-        },
-      ],
-    },
     priceRange: "$$",
   },
-
-  // -------------------------------------------------------------------------
-  // 2. Person — Tyler Preisser
-  // -------------------------------------------------------------------------
-  // Includes disambiguatingDescription to distinguish from other Tyler Preissers
-  // (a Verizon retail rep, an FHSU Sky Sprayers student, etc.) — the founder of
-  // Preisser Tech is Tyler Preisser, Hays-based custom software / AI builder.
-  // -------------------------------------------------------------------------
   {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -365,12 +217,10 @@ const structuredData = [
     familyName: "Preisser",
     jobTitle: "Founder & Owner",
     description:
-      "Tyler Preisser is the founder and sole technical lead of Preisser Tech, a Hays, Kansas custom software and AI development consultancy. He is a Fort Hays State University graduate and Hays native who personally codes every client engagement.",
-    disambiguatingDescription:
-      "This Tyler Preisser is the founder of Preisser Tech (preissertech.com), a custom software firm in Hays, Kansas. He is the same Tyler Preisser featured in Hays Post articles about FHSU's Sky Sprayers, Hansen Hall, and other FHSU coverage. He is not affiliated with other individuals named Tyler Preisser unrelated to the Preisser Tech custom software business.",
+      "Tyler Preisser is the founder and owner of Preisser Solutions, a Hays, Kansas company helping local businesses improve websites, Google visibility, lead tracking, and AI-powered follow-up.",
     worksFor: { "@id": ORG_ID },
-    url: "https://preissertech.com/about",
-    email: "sales@preissertech.com",
+    url: "https://preissersolutions.com/tyler-preisser",
+    email: "sales@preissersolutions.com",
     telephone: "+16203523296",
     address: {
       "@type": "PostalAddress",
@@ -392,137 +242,38 @@ const structuredData = [
     },
     image: {
       "@type": "ImageObject",
-      url: "https://preissertech.com/images/tyler-preisser-headshot.jpg",
+      url: "https://preissersolutions.com/images/tyler-preisser-headshot.jpg",
       width: 1200,
       height: 1200,
-      caption: "Tyler Preisser, founder of Preisser Tech",
+      caption: "Tyler Preisser, founder of Preisser Solutions",
     },
     sameAs: [
-      "https://preissertech.com/tyler-preisser",
+      "https://preissersolutions.com/tyler-preisser",
       "https://www.linkedin.com/in/tylerpreisser",
       "https://github.com/tylerpreisser",
     ],
     knowsAbout: [
-      "Custom Software Development",
-      "Business Automation",
-      "AI Agent Development",
-      "Web Application Architecture",
-      "Product Management",
-      "Small Business Operations",
-      "Digital Marketing Automation",
+      "Local SEO",
+      "Google Business Profile Optimization",
+      "Google Ads",
+      "Web Design",
+      "AI Automation",
+      "CRM Workflow Automation",
+      "Conversion Tracking",
       "Kansas Business Ecosystem",
     ],
   },
-
-  // -------------------------------------------------------------------------
-  // 3. WebSite
-  // -------------------------------------------------------------------------
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": WEBSITE_ID,
-    url: "https://preissertech.com",
-    name: "Preisser Tech",
+    url: "https://preissersolutions.com",
+    name: "Preisser Solutions",
     description:
-      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
+      "Preisser Solutions helps Hays and Northwest Kansas businesses get more calls, bookings, and customers through websites, local SEO, Google Ads, review systems, and AI automation.",
     publisher: { "@id": ORG_ID },
     inLanguage: "en-US",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: "https://preissertech.com/?q={search_term_string}",
-      },
-      "query-input": "required name=search_term_string",
-    },
   },
-
-  // -------------------------------------------------------------------------
-  // 4. WebPage — Homepage
-  // -------------------------------------------------------------------------
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": WEBPAGE_ID,
-    url: "https://preissertech.com",
-    name: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
-    description:
-      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
-    isPartOf: { "@id": WEBSITE_ID },
-    about: { "@id": ORG_ID },
-    author: { "@id": PERSON_ID },
-    publisher: { "@id": ORG_ID },
-    inLanguage: "en-US",
-    breadcrumb: {
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Home",
-          item: "https://preissertech.com",
-        },
-      ],
-    },
-  },
-
-  // -------------------------------------------------------------------------
-  // 5. LocalBusiness
-  // -------------------------------------------------------------------------
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": LOCAL_BIZ_ID,
-    name: "Preisser Tech",
-    image: "https://preissertech.com/images/ps-logo.png",
-    url: "https://preissertech.com",
-    telephone: "+16203523296",
-    email: "sales@preissertech.com",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Hays",
-      addressLocality: "Hays",
-      addressRegion: "KS",
-      postalCode: "67601",
-      addressCountry: "US",
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: 38.8794,
-      longitude: -99.3268,
-    },
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-        ],
-        opens: "08:00",
-        closes: "18:00",
-      },
-    ],
-    priceRange: "$$",
-    areaServed: {
-      "@type": "State",
-      name: "Kansas",
-    },
-    sameAs: { "@id": ORG_ID },
-  },
-
-  // -------------------------------------------------------------------------
-  // FAQPage removed from global structured data (2026-05-04)
-  // -------------------------------------------------------------------------
-  // Per Google guidelines and Schema.org spec, a single page must contain at
-  // most one FAQPage block describing the FAQs ON THAT PAGE. The /faq page
-  // and AEO sub-routes (ai-agents, custom-websites, etc.) emit their own
-  // FAQPage via AeoPage.tsx with page-specific Q&A. Emitting a global block
-  // on every page produced a duplicate FAQPage that GSC flagged as a critical
-  // structured-data error and disqualified pages from FAQ rich results.
-  // -------------------------------------------------------------------------
 ];
 
 export default function RootLayout({
@@ -545,7 +296,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         {/* Browser chrome / PWA colors */}
-        <meta name="theme-color" content="#0D95E8" />
+        <meta name="theme-color" content="#0B7BC0" />
         {/* Windows tile / IE11 */}
         <meta name="msapplication-TileColor" content="#0A1628" />
         <meta name="msapplication-TileImage" content="/mstile-150x150.png" />
@@ -559,10 +310,10 @@ export default function RootLayout({
         <link
           rel="alternate"
           type="application/rss+xml"
-          title="Preisser Tech"
+          title="Preisser Solutions"
           href="/feed.xml"
         />
-        {/* JSON-LD Structured Data — Organization, Person, WebSite, WebPage, LocalBusiness. FAQPage emitted per-page via AeoPage to avoid duplicates. */}
+        {/* JSON-LD Structured Data — Organization/ProfessionalService, Person, and WebSite. Page-specific schema is emitted by each route. */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

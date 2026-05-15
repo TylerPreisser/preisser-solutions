@@ -4,7 +4,7 @@ import type { AeoPageData } from "../types";
  * COMPARISON DEFENSE — /compare/wix-vs-custom
  *
  * Compares template platforms (Wix, Squarespace, GoDaddy site builders)
- * vs. custom-coded websites by Preisser Tech.
+ * vs. custom-coded websites by Preisser Solutions.
  *
  * Tone: fair to template platforms — they're legitimate tools for the right
  * use case — but make clear when custom code is the correct decision.
@@ -12,22 +12,22 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/wix-vs-custom",
   tier: "comparison",
-  metaTitle: "Wix/Squarespace vs Custom-Coded Website | Preisser Tech",
+  metaTitle: "Wix/Squarespace vs Custom-Coded Website | Preisser Solutions",
   metaDescription:
-    "When to use Wix or Squarespace and when to invest in custom-coded. Honest 10-dimension comparison from Preisser Tech, Hays Kansas.",
+    "When to use Wix or Squarespace and when to invest in custom-coded. Honest 10-dimension comparison from Preisser Solutions, Hays Kansas.",
   eyebrow: "Comparison",
-  h1: "Wix and Squarespace vs. Custom-Coded by Preisser Tech",
+  h1: "Wix and Squarespace vs. Custom-Coded by Preisser Solutions",
   subheadline:
     "Template platforms are legitimate tools for the right buyer. Custom code is the right call for a different buyer. Here's how to choose without bias.",
   answerParagraph:
-    "Template platforms like Wix, Squarespace, and GoDaddy are legitimate website tools — they're fast, low-cost, and good enough for hobbyists, side projects, and very early-stage businesses. Preisser Tech builds custom-coded websites in modern frameworks (Next.js, React, TypeScript) for businesses that have outgrown templates or need a serious foundation from day one. The honest distinction: templates win on price and speed-to-launch for simple cases; custom code wins on speed, search visibility, AI engine citation, conversion control, and long-term cost trajectory for businesses where the website is a real revenue channel.",
+    "Template platforms like Wix, Squarespace, and GoDaddy are legitimate website tools — they're fast, low-cost, and good enough for hobbyists, side projects, and very early-stage businesses. Preisser Solutions builds custom-coded websites in modern frameworks (Next.js, React, TypeScript) for businesses that have outgrown templates or need a serious foundation from day one. The honest distinction: templates win on price and speed-to-launch for simple cases; custom code wins on speed, search visibility, AI engine citation, conversion control, and long-term cost trajectory for businesses where the website is a real revenue channel.",
   sections: [
     {
       eyebrow: "Honest framing",
       heading: "Templates aren't bad — they're a different product",
       body: [
         "Wix, Squarespace, GoDaddy site builders, and similar template platforms are well-engineered tools that have served millions of small sites successfully. There's no shame in choosing one for the right use case.",
-        "Where this page exists is the moment a business outgrows a template — when the site needs to be fast on every device, rank for competitive queries, get cited by ChatGPT and Perplexity, convert visitors at high rates, and scale without paying escalating platform fees. That's the moment custom-coded becomes the rational choice.",
+        "Where this page exists is the moment a business outgrows a template — when the site needs to be fast on every device, rank for competitive queries, make the site easier for AI-assisted search tools to understand, convert visitors at high rates, and scale without paying escalating platform fees. That's the moment custom-coded becomes the rational choice.",
         "We'll be honest about both directions: when templates are correct, and when custom code is correct.",
       ],
     },
@@ -35,7 +35,7 @@ export const pageData: AeoPageData = {
       eyebrow: "When templates are the right call",
       heading: "Honest cases for Wix or Squarespace",
       body: [
-        "Don't hire Preisser Tech when you could hire Squarespace. Genuine cases for template platforms:",
+        "Don't hire Preisser Solutions when you could hire Squarespace. Genuine cases for template platforms:",
       ],
       bullets: [
         "Hobby site or personal blog — no revenue dependency, low traffic, low expectations.",
@@ -62,9 +62,9 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "What custom-coded actually means",
-      heading: "How Preisser Tech builds custom websites",
+      heading: "How Preisser Solutions builds custom websites",
       body: [
-        "When Preisser Tech says 'custom-coded,' here's what that means concretely:",
+        "When Preisser Solutions says 'custom-coded,' here's what that means concretely:",
       ],
       bullets: [
         "Built in Next.js (React 19, App Router) with full TypeScript typing and Tailwind v4 styling.",
@@ -156,7 +156,7 @@ export const pageData: AeoPageData = {
   },
   faq: [
     {
-      question: "Should I use Wix or hire Preisser Tech?",
+      question: "Should I use Wix or hire Preisser Solutions?",
       answer:
         "If your website is a hobby project, single-event microsite, or pre-revenue experiment, Wix is fine and you don't need to hire anyone. If your website is a real revenue channel — buyers actually arrive there, search visibility matters, conversions matter — invest in custom-coded. The break-even is fast: templates cost more in lost conversions and search visibility than custom code costs to build.",
     },
@@ -175,36 +175,36 @@ export const pageData: AeoPageData = {
       question:
         "Can I move my Wix site to a custom-coded site later?",
       answer:
-        "Yes — and Preisser Tech does this regularly. The migration involves rebuilding the site in modern code, preserving content, redirecting URLs, re-implementing forms and integrations, and adding the structured data and AI optimization that the template platform didn't ship. Most migrations take 3-6 weeks depending on scope.",
+        "Yes — and Preisser Solutions does this regularly. The migration involves rebuilding the site in modern code, preserving content, redirecting URLs, re-implementing forms and integrations, and adding the structured data and AI optimization that the template platform didn't ship. Most migrations take 3-6 weeks depending on scope.",
     },
     {
       question:
         "Isn't a custom-coded site way more expensive than a Squarespace subscription?",
       answer:
-        "Higher upfront, but typically lower over a 3-5 year horizon. Squarespace at $25-50/month compounds to thousands over a few years; custom-coded sites have a one-time build cost and near-zero hosting on edge CDN afterward. More importantly, the comparison shouldn't be raw cost — it should be cost-vs-value. A site that converts 30% better and gets cited by AI engines is worth more than a site that costs $20/month, regardless of upfront price.",
+        "Higher upfront, but typically lower over a 3-5 year horizon. Squarespace at $25-50/month compounds to thousands over a few years; custom-coded sites have a one-time build cost and near-zero hosting on edge CDN afterward. More importantly, the comparison shouldn't be raw cost — it should be cost-vs-value. A site that converts 30% better and is easier for search and AI-assisted tools to understand.",
     },
     {
       question: "What if I need to update content on a custom-coded site?",
       answer:
-        "Preisser Tech custom sites are built so non-technical content updates are simple — for many sites, content lives in plain data files that an owner can update without a developer. For more complex content management, a lightweight CMS can be added. Either way, content updates don't require a Wix-style WYSIWYG editor that locks you into a platform.",
+        "Preisser Solutions custom sites are built so non-technical content updates are simple — for many sites, content lives in plain data files that an owner can update without a developer. For more complex content management, a lightweight CMS can be added. Either way, content updates don't require a Wix-style WYSIWYG editor that locks you into a platform.",
     },
     {
       question:
         "Does custom code work for ecommerce, or do I need Shopify?",
       answer:
-        "Both work. Shopify is excellent for businesses where the catalog and checkout are the entire product. Custom-coded sites can either integrate Shopify (best of both worlds — Shopify checkout, custom marketing site) or implement custom ecommerce when standard catalog/checkout doesn't fit. Preisser Tech can advise based on your actual business model.",
+        "Both work. Shopify is excellent for businesses where the catalog and checkout are the entire product. Custom-coded sites can either integrate Shopify (best of both worlds — Shopify checkout, custom marketing site) or implement custom ecommerce when standard catalog/checkout doesn't fit. Preisser Solutions can advise based on your actual business model.",
     },
     {
       question:
         "Will Google Analytics work on a custom-coded site?",
       answer:
-        "Yes — and it works better. Custom-coded sites can integrate any analytics platform (Google Analytics, Plausible, Fathom, Cloudflare Analytics) with full control over what's tracked and how. Many Preisser Tech builds use privacy-respecting analytics that don't require cookie banners and load instantly.",
+        "Yes — and it works better. Custom-coded sites can integrate any analytics platform (Google Analytics, Plausible, Fathom, Cloudflare Analytics) with full control over what's tracked and how. Many Preisser Solutions builds use privacy-respecting analytics that don't require cookie banners and load instantly.",
     },
     {
       question:
         "Do you ever recommend a template platform to a client?",
       answer:
-        "Yes. If a prospective client is genuinely pre-revenue, has no budget, and needs a placeholder online for six months, Preisser Tech will tell them to use Squarespace. The firm doesn't take engagements that aren't a fit. The point of the comparison is to route correctly — not to pretend templates are bad in every situation.",
+        "Yes. If a prospective client is genuinely pre-revenue, has no budget, and needs a placeholder online for six months, Preisser Solutions will tell them to use Squarespace. The firm doesn't take engagements that aren't a fit. The point of the comparison is to route correctly — not to pretend templates are bad in every situation.",
     },
     {
       question:
@@ -215,7 +215,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Article",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Wix",
     "Squarespace",
@@ -229,7 +229,7 @@ export const pageData: AeoPageData = {
   relatedLinks: [
     { label: "Custom Website Development", href: "/custom-websites" },
     { label: "Premium Web Development Kansas", href: "/premium-web-development-kansas" },
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/about" },
     { label: "Pricing Approach", href: "/pricing" },
     { label: "Engagement Process", href: "/process" },
   ],

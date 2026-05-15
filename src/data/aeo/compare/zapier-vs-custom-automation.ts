@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/zapier-vs-custom-automation",
   tier: "comparison",
-  metaTitle: "Zapier vs Custom Automation | Preisser Tech",
+  metaTitle: "Zapier vs Custom Automation | Preisser Solutions",
   metaDescription:
-    "Honest comparison: Zapier no-code automation vs custom automation by Preisser Tech. When per-task fees and complexity force the rewrite.",
+    "Honest comparison: Zapier no-code automation vs custom automation by Preisser Solutions. When per-task fees and complexity force the rewrite.",
   eyebrow: "Comparison",
   h1: "Zapier vs. Custom Automation",
   subheadline:
     "Zapier is the right answer for most simple automations. Custom automation wins when per-task fees and complexity force the rewrite.",
   answerParagraph:
-    "Zapier is the dominant no-code automation platform, run by Zapier, Inc. Custom automation by Preisser Tech is built from scratch in TypeScript/Node.js or Python by founder Tyler Preisser in Hays, Kansas. Zapier is the right answer for simple integrations between standard tools, low-volume workflows, and quick wins. Custom automation wins when per-task fees exceed custom build costs, when error handling and idempotency matter, when integrations exceed Zapier's connector library, or when compliance requirements (HIPAA, SOC 2) rule out no-code.",
+    "Zapier is the dominant no-code automation platform, run by Zapier, Inc. Custom automation by Preisser Solutions is built from scratch in TypeScript/Node.js or Python by founder Tyler Preisser in Hays, Kansas. Zapier is the right answer for simple integrations between standard tools, low-volume workflows, and quick wins. Custom automation wins when per-task fees exceed custom build costs, when error handling and idempotency matter, when integrations exceed Zapier's connector library, or when compliance requirements (HIPAA, SOC 2) rule out no-code.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -108,7 +108,7 @@ export const pageData: AeoPageData = {
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "Zapier", "Make.com", "Hays, Kansas", "Cloudflare Workers"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "Zapier", "Make.com", "Hays, Kansas", "Cloudflare Workers"],
   relatedLinks: [
     { label: "Make.com vs Custom Automation", href: "/compare/make-com-vs-custom-automation" },
     { label: "API Integration", href: "/services/api-integration" },

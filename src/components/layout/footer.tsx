@@ -1,113 +1,96 @@
-"use client";
-
-import { useState, useRef } from "react";
-import Image from "next/image";
+import Link from "next/link";
 import { siteConfig } from "@/data/site-config";
+
+const footerGroups = [
+  {
+    title: "Services",
+    links: [
+      { href: "/services/local-seo-hays-ks", label: "Local SEO" },
+      { href: "/services/google-business-profile-optimization-hays-ks", label: "Google Business Profile" },
+      { href: "/services/google-ads-hays-ks", label: "Google Ads" },
+      { href: "/services/web-design-hays-ks", label: "Web design" },
+      { href: "/services/social-media-marketing-hays-ks", label: "Social media" },
+      { href: "/services/ai-automation-hays-ks", label: "AI automation" },
+    ],
+  },
+  {
+    title: "Markets",
+    links: [
+      { href: "/marketing-agency-hays-ks", label: "Marketing agency in Hays" },
+      { href: "/locations/hays-kansas", label: "Hays, Kansas" },
+      { href: "/industries/contractors", label: "Contractors" },
+      { href: "/industries/restaurants", label: "Restaurants" },
+      { href: "/industries/professional-services", label: "Professional services" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { href: "/about", label: "About Preisser Solutions" },
+      { href: "/tyler-preisser", label: "About Tyler" },
+      { href: "/case-studies", label: "Proof hub" },
+      { href: "/resources", label: "Resources" },
+      { href: "/review", label: "Leave honest feedback" },
+      { href: "/privacy", label: "Privacy" },
+    ],
+  },
+];
 
 export function Footer() {
   const year = new Date().getFullYear();
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
-  // Honeypot — bots fill this, humans never see it
-  const [honeypot, setHoneypot] = useState("");
-  // Track when the footer rendered to catch instant-submit bots
-  const loadTime = useRef(Date.now());
-
-  function handleSubscribe(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email) return;
-
-    // Spam gate 1: honeypot field was filled — silent discard
-    if (honeypot) {
-      setSubscribed(true);
-      return;
-    }
-
-    // Spam gate 2: submitted in under 3 seconds — bot behaviour
-    if (Date.now() - loadTime.current < 3000) {
-      setSubscribed(true);
-      return;
-    }
-
-    // Mailto fallback: sends a notification email to sales with the subscriber address
-    window.location.href = `mailto:sales@preissertech.com?subject=New%20Newsletter%20Subscriber&body=New%20subscriber%3A%20${encodeURIComponent(email)}`;
-    setSubscribed(true);
-  }
 
   return (
     <footer id="footer" className="ps-footer" aria-label="Site footer">
       <div className="ps-container">
-        <div className="ps-footer-main">
-          {/* Left: logo + tagline + location */}
+        <div className="ps-footer-main ps-footer-grid">
           <div className="ps-footer-brand">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/ps-logo.webp`}
-              alt="Preisser Tech"
+              alt="Preisser Solutions"
               className="ps-footer-logo-img"
             />
-            <p className="ps-footer-tagline">
-              {siteConfig.tagline}
-            </p>
-            <p className="ps-footer-location">
+            <p className="ps-footer-tagline">{siteConfig.tagline}</p>
+            <address className="ps-footer-location">
+              <strong>{siteConfig.name}</strong>
+              <br />
+              <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
+              <br />
+              <a href={siteConfig.contact.phoneHref}>{siteConfig.contact.phone}</a>
+              <br />
               {siteConfig.contact.location}
-            </p>
+              <br />
+              {siteConfig.contact.serviceArea}
+            </address>
+            <div className="ps-footer-actions">
+              <Link href="/contact?offer=hays-visibility-audit" className="ps-btn ps-btn-primary-dark">
+                Get a Free Hays Visibility Audit
+              </Link>
+              <a href={siteConfig.contact.phoneHref} className="ps-btn ps-btn-secondary">
+                Call Preisser Solutions
+              </a>
+            </div>
           </div>
 
-          {/* Right: email signup */}
-          <div className="ps-footer-signup">
-            <h3 className="ps-footer-signup-heading">Stay up to date</h3>
-            {subscribed ? (
-              <p className="ps-footer-signup-success">
-                Thanks for subscribing.
-              </p>
-            ) : (
-              <form
-                className="ps-footer-signup-form"
-                onSubmit={handleSubscribe}
-              >
-                {/* Honeypot — visually hidden, only bots fill this */}
-                <div
-                  style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }}
-                  aria-hidden="true"
-                >
-                  <label htmlFor="footer-website">Website</label>
-                  <input
-                    type="text"
-                    id="footer-website"
-                    name="website"
-                    value={honeypot}
-                    onChange={(e) => setHoneypot(e.target.value)}
-                    tabIndex={-1}
-                    autoComplete="off"
-                  />
-                </div>
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="ps-footer-signup-input"
-                  required
-                  aria-label="Email address for newsletter"
-                />
-                <button
-                  type="submit"
-                  className="ps-footer-signup-btn"
-                  aria-label="Subscribe to newsletter"
-                >
-                  Subscribe
-                </button>
-              </form>
-            )}
-          </div>
+          {footerGroups.map((group) => (
+            <nav key={group.title} className="ps-footer-col" aria-label={group.title}>
+              <h3>{group.title}</h3>
+              <ul className="ps-footer-links">
+                {group.links.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href}>{link.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
 
         <hr className="ps-footer-divider" />
 
         <div className="ps-footer-bottom">
           <p className="ps-footer-copy">
-            &copy; {year} {siteConfig.name}. All Rights Reserved.
+            &copy; {year} {siteConfig.name}. All rights reserved.
           </p>
           <div className="ps-footer-social" aria-label="Social links">
             {siteConfig.social.linkedin && (
@@ -115,7 +98,7 @@ export function Footer() {
                 href={siteConfig.social.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Preisser Tech on LinkedIn"
+                aria-label="Tyler Preisser on LinkedIn"
               >
                 LinkedIn
               </a>

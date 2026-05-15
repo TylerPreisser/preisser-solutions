@@ -12,41 +12,72 @@ import { CtaSection } from "@/components/home/cta-section";
 // Title: 52 chars — within Bing/Google optimal 50-60 range.
 export const metadata: Metadata = {
   title: {
-    absolute: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
+    absolute: "Preisser Solutions | Hays KS Marketing, Websites, SEO & AI Automation",
   },
   description:
-    "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
+    "Preisser Solutions helps Hays and Northwest Kansas businesses get more calls, bookings, and customers through websites, local SEO, Google Ads, review systems, and AI automation.",
   alternates: {
-    canonical: "https://preissertech.com/",
+    canonical: "https://preissersolutions.com/",
   },
   openGraph: {
-    title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
+    title: "Preisser Solutions | Hays KS Marketing, Websites, SEO & AI Automation",
     description:
-      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
-    url: "https://preissertech.com/",
+      "Preisser Solutions helps Hays and Northwest Kansas businesses get more calls, bookings, and customers through websites, local SEO, Google Ads, review systems, and AI automation.",
+    url: "https://preissersolutions.com/",
     type: "website",
     images: [
       {
         url: "/images/og-image-v2.jpg",
         width: 1200,
         height: 630,
-        alt: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
+        alt: "Preisser Solutions | Hays KS Marketing, Websites, SEO & AI Automation",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
+    title: "Preisser Solutions | Hays KS Marketing, Websites, SEO & AI Automation",
     description:
-      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
+      "Preisser Solutions helps Hays and Northwest Kansas businesses get more calls, bookings, and customers through websites, local SEO, Google Ads, review systems, and AI automation.",
     images: ["/images/og-image-v2.jpg"],
-    creator: "@preissertech",
+    creator: "Tyler Preisser",
+  },
+};
+
+const homepageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://preissersolutions.com/#webpage-home",
+  url: "https://preissersolutions.com/",
+  name: "Preisser Solutions | Hays KS Marketing, Websites, SEO & AI Automation",
+  description:
+    "Preisser Solutions helps Hays and Northwest Kansas businesses get more calls, bookings, and customers through websites, local SEO, Google Ads, review systems, and AI automation.",
+  isPartOf: { "@id": "https://preissersolutions.com/#website" },
+  about: { "@id": "https://preissersolutions.com/#organization" },
+  author: { "@id": "https://preissersolutions.com/#tyler-preisser" },
+  publisher: { "@id": "https://preissersolutions.com/#organization" },
+  inLanguage: "en-US",
+  dateModified: "2026-05-14",
+  breadcrumb: {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://preissersolutions.com/",
+      },
+    ],
   },
 };
 
 export default function HomePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSchema) }}
+      />
       <Hero />
       <ValueStrip />
       <ServicePillars />

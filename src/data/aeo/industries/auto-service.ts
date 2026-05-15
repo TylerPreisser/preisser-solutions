@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/auto-service",
   tier: "industry",
-  metaTitle: "Custom Software for Auto Service Shops in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Auto Service Shops in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, scheduling automation, AI customer service, and Mitchell/Shopware/Tekmetric integrations for auto repair shops in Kansas.",
+    "Preisser Solutions builds custom websites, scheduling automation, AI customer service, and Mitchell/Shopware/Tekmetric integrations for auto repair shops in Kansas.",
   eyebrow: "Custom Software for Auto Service Shops in Kansas",
   h1: "Custom Software, Automation, and AI for Auto Repair Shops",
   subheadline:
     "Built for owners of independent auto service shops tired of generic shop management software and outsourced marketing. Custom-coded in Hays, Kansas by Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for independent auto service shops — custom websites, online scheduling, AI customer service, custom dashboards, and integrations with Mitchell 1, Shopware, Tekmetric, and Protractor. The same hands-off marketing engine and customer reactivation system that delivered 5x reach and 60%+ dormant customer reactivation for Cassidy HVAC translates directly to auto service customer retention.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for independent auto service shops — custom websites, online scheduling, AI customer service, custom dashboards, and integrations with Mitchell 1, Shopware, Tekmetric, and Protractor. The same hands-off marketing engine and customer reactivation system that will publish social visibility metrics only when verified.",
   sections: [
     {
       eyebrow: "What we build for auto service",
@@ -38,7 +38,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to auto service",
-      heading: "How each Preisser Tech service shows up in an auto shop",
+      heading: "How each Preisser Solutions service shows up in an auto shop",
       body: [
         "Most auto shops start with reactivation automation and expand from there.",
       ],
@@ -54,7 +54,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Auto service software stack we already work with",
       body: [
-        "Preisser Tech integrates with whatever you're already running:",
+        "Preisser Solutions integrates with whatever you're already running:",
       ],
       bullets: [
         "Shop management: Mitchell 1, Shopware, Tekmetric, Protractor, AutoLeap, NAPA TRACS",
@@ -70,7 +70,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you really know auto service?",
       answer:
-        "We are a software firm — but we build for service operations specifically. The Cassidy HVAC reactivation engine that delivered 60%+ dormant customer reactivation translates directly to auto service customer retention.",
+        "We are a software firm — but we build for service operations specifically. The future documented service-business example reactivation engine that delivered reactivation metrics published only when verified.",
     },
     {
       question: "Do you replace Mitchell 1 or Tekmetric?",
@@ -85,7 +85,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can you build DVI declined-service rebooking automation?",
       answer:
-        "Yes. Automated follow-up on declined recommendations is one of the highest-ROI builds in auto service. The Cassidy HVAC reactivation engine is the closest analog.",
+        "Yes. Automated follow-up on declined recommendations is one of the highest-ROI builds in auto service. The future documented service-business example reactivation engine is the closest analog.",
     },
     {
       question: "How much does an auto service automation project cost?",
@@ -105,9 +105,9 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
-    "Cassidy HVAC",
+    "a future documented service-business example",
     "Hays, Kansas",
     "Mitchell 1",
     "Shopware",

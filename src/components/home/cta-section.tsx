@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { trackEvent } from "@/lib/analytics";
 
 export function CtaSection() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -57,18 +58,26 @@ export function CtaSection() {
       <div className="ps-cta-glow" aria-hidden="true" />
 
       <div className="ps-cta-content" ref={contentRef}>
-        <div className="ps-eyebrow">Get in Touch</div>
+        <div className="ps-eyebrow">Hays Visibility Sprint</div>
         <h2 id="cta-heading" className="ps-cta-heading">
-          Ready to improve how customers find and choose your business?
+          Ready to see where your business is losing Google visibility, calls, and follow-up?
         </h2>
-        <p className="ps-cta-body">
-          Hire Preisser Tech for a better website, stronger local visibility,
-          accountable ad campaigns, and practical AI automation that helps your
-          team follow up faster.
+        <p className="ps-cta-subcopy">
+          We&apos;ll review your Google visibility, website conversion path, review gap,
+          competitor signals, and lead follow-up, then give you a practical 30-day action plan.
         </p>
         <div className="ps-cta-buttons">
-          <Link href="/contact" className="ps-btn ps-btn-primary-dark">
-            Start the conversation
+          <Link
+            href="/contact?offer=hays-visibility-audit"
+            className="ps-btn ps-btn-primary-dark"
+            onClick={() =>
+              trackEvent("cta_click", {
+                location: "homepage_final_cta",
+                link_text: "Get a Free Hays Visibility Audit",
+              })
+            }
+          >
+            Get a Free Hays Visibility Audit
             <svg
               className="ps-btn-arrow"
               width="16"
@@ -86,15 +95,25 @@ export function CtaSection() {
               />
             </svg>
           </Link>
+          <a
+            href="tel:+16203523296"
+            className="ps-btn ps-btn-secondary"
+            onClick={() =>
+              trackEvent("phone_call_click", {
+                location: "homepage_final_cta",
+                link_text: "Call Preisser Solutions",
+              })
+            }
+          >
+            Call Preisser Solutions
+          </a>
         </div>
-        <a
-          href="https://tylerpreisser.com"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          href="/case-studies"
           className="ps-cta-portfolio-link"
         >
-          More of our founder&apos;s projects &rarr;
-        </a>
+          See proof standards and resources &rarr;
+        </Link>
       </div>
     </section>
   );

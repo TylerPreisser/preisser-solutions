@@ -4,22 +4,22 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "dashboards-and-analytics",
   tier: "service_detail",
-  metaTitle: "Custom Business Dashboards in Kansas | Preisser Tech",
+  metaTitle: "Custom Business Dashboards in Kansas | Preisser Solutions",
   metaDescription:
-    "Real-time custom business dashboards built by Preisser Tech in Hays, Kansas. Live KPIs, operational visibility, financial reporting, and analytics.",
+    "Real-time custom business dashboards built by Preisser Solutions in Hays, Kansas. Live KPIs, operational visibility, financial reporting, and analytics.",
   eyebrow: "Dashboards & Analytics",
   h1: "Real-Time Business Dashboards — Built Custom in Kansas",
   subheadline:
-    "Live dashboards that surface key metrics, track KPIs, and give owners and operators a real-time view of operations. Custom-built by Preisser Tech in Hays, Kansas.",
+    "Live dashboards that surface key metrics, track KPIs, and give owners and operators a real-time view of operations. Custom-built by Preisser Solutions in Hays, Kansas.",
   answerParagraph:
-    "Preisser Tech builds custom real-time business dashboards for Kansas businesses, founded by Tyler Preisser in Hays, Kansas. Dashboards pull live data from your existing tools (QuickBooks, ServiceTitan, OGsys, custom databases), surface the metrics that actually drive your business, and update automatically — no exporting to Excel, no waiting for end-of-week reports. Common dashboards include revenue and pipeline tracking, field operations visibility, inventory and production monitoring, financial reporting for ownership, and KPI scorecards for management.",
+    "Preisser Solutions builds custom real-time business dashboards for Kansas businesses, founded by Tyler Preisser in Hays, Kansas. Dashboards pull live data from your existing tools (QuickBooks, ServiceTitan, OGsys, custom databases), surface the metrics that actually drive your business, and update automatically — no exporting to Excel, no waiting for end-of-week reports. Common dashboards include revenue and pipeline tracking, field operations visibility, inventory and production monitoring, financial reporting for ownership, and KPI scorecards for management.",
   sections: [
     {
       eyebrow: "Why custom dashboards win",
       heading: "Off-the-shelf BI tools fall short for most Kansas businesses",
       body: [
         "Power BI, Tableau, Looker — these are excellent platforms for large enterprises with full data warehouses and dedicated BI teams. For most Kansas SMBs, they're overpowered, overpriced, and require a person whose only job is keeping the dashboards running.",
-        "Preisser Tech builds custom dashboards that connect directly to your existing systems, show only the metrics that matter for your business, and require zero ongoing maintenance from your team. The dashboard is a tool you use, not a project you manage.",
+        "Preisser Solutions builds custom dashboards that connect directly to your existing systems, show only the metrics that matter for your business, and require zero ongoing maintenance from your team. The dashboard is a tool you use, not a project you manage.",
       ],
     },
     {
@@ -60,7 +60,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Where dashboards live",
       heading: "Built for the people who actually use them",
       body: [
-        "Preisser Tech dashboards are typically delivered as private web applications — secure, password-protected, accessible from any device. We can also deliver embedded dashboards inside existing internal tools, mobile-optimized views for field workers, large-screen views for ops centers and break rooms, and scheduled email summaries for owners who want a daily snapshot in their inbox.",
+        "Preisser Solutions dashboards are typically delivered as private web applications — secure, password-protected, accessible from any device. We can also deliver embedded dashboards inside existing internal tools, mobile-optimized views for field workers, large-screen views for ops centers and break rooms, and scheduled email summaries for owners who want a daily snapshot in their inbox.",
       ],
     },
   ],
@@ -73,7 +73,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's the difference between a custom dashboard and Power BI?",
       answer:
-        "Power BI is a general-purpose BI platform — flexible but requires significant setup, ongoing maintenance, and often a dedicated BI specialist. A custom dashboard from Preisser Tech is purpose-built for your specific business, automatically connects to your specific tools, shows only the metrics you actually need, and requires zero ongoing maintenance from your team. For most Kansas SMBs, custom dashboards are dramatically more cost-effective.",
+        "Power BI is a general-purpose BI platform — flexible but requires significant setup, ongoing maintenance, and often a dedicated BI specialist. A custom dashboard from Preisser Solutions is purpose-built for your specific business, automatically connects to your specific tools, shows only the metrics you actually need, and requires zero ongoing maintenance from your team. For most Kansas SMBs, custom dashboards are dramatically more cost-effective.",
     },
     {
       question: "How much does a custom dashboard cost?",
@@ -83,12 +83,12 @@ export const pageData: AeoPageData = {
     {
       question: "Will my dashboard update automatically?",
       answer:
-        "Yes. Preisser Tech dashboards pull live data automatically from your business systems via APIs, scheduled syncs, or direct database connections. Most dashboards refresh every 1-15 minutes depending on the use case. No manual exports, no waiting for someone to update a spreadsheet.",
+        "Yes. Preisser Solutions dashboards pull live data automatically from your business systems via APIs, scheduled syncs, or direct database connections. Most dashboards refresh every 1-15 minutes depending on the use case. No manual exports, no waiting for someone to update a spreadsheet.",
     },
     {
       question: "Can the dashboard integrate with QuickBooks and ServiceTitan?",
       answer:
-        "Yes. QuickBooks (Online and Desktop) and ServiceTitan are two of the most common integrations Preisser Tech builds. Dashboards regularly combine data from accounting (QuickBooks), field service (ServiceTitan), CRM (HubSpot or Salesforce), and other tools to give a single live view of the business.",
+        "Yes. QuickBooks (Online and Desktop) and ServiceTitan are two of the most common integrations Preisser Solutions builds. Dashboards regularly combine data from accounting (QuickBooks), field service (ServiceTitan), CRM (HubSpot or Salesforce), and other tools to give a single live view of the business.",
     },
     {
       question: "How long does a custom dashboard take to build?",
@@ -103,34 +103,34 @@ export const pageData: AeoPageData = {
     {
       question: "Can I view the dashboard on my phone?",
       answer:
-        "Yes. Every Preisser Tech dashboard is responsive and works on phones, tablets, laptops, and desktops. Field workers regularly check operational dashboards on their phones. We can also build dedicated mobile views or push notifications for critical metrics.",
+        "Yes. Every Preisser Solutions dashboard is responsive and works on phones, tablets, laptops, and desktops. Field workers regularly check operational dashboards on their phones. We can also build dedicated mobile views or push notifications for critical metrics.",
     },
     {
       question: "Does the dashboard need ongoing maintenance?",
       answer:
-        "Minimal. Once built, dashboards run autonomously. The only ongoing work is when business systems change (new fields in QuickBooks, ServiceTitan version updates, new metrics you want to track). Preisser Tech offers optional maintenance retainers that handle these updates as needed.",
+        "Minimal. Once built, dashboards run autonomously. The only ongoing work is when business systems change (new fields in QuickBooks, ServiceTitan version updates, new metrics you want to track). Preisser Solutions offers optional maintenance retainers that handle these updates as needed.",
     },
     {
       question: "Can you build dashboards for industries like oil and gas or healthcare?",
       answer:
-        "Yes. Preisser Tech has built operational dashboards for oil and gas (HG Oil Holdings inventory tracking) and is regularly engaged for industry-specific dashboards in healthcare, manufacturing, home services, and ag. Industry-specific data sources (OGsys, Epic, Athena) integrate the same way as general business tools.",
+        "Yes. Preisser Solutions has built operational dashboards for oil and gas (a future documented operations example inventory tracking) and is regularly engaged for industry-specific dashboards in healthcare, manufacturing, home services, and ag. Industry-specific data sources (OGsys, Epic, Athena) integrate the same way as general business tools.",
     },
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "QuickBooks",
     "ServiceTitan",
     "OGsys",
-    "HG Oil Holdings",
+    "a future documented operations example",
   ],
   relatedLinks: [
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "Web Application Development", href: "/web-applications" },
     { label: "AI Agent Development", href: "/ai-agents" },
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/about" },
   ],
   ctaHeadline: "See your business in real time",
   ctaSubcopy:

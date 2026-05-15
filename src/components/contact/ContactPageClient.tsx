@@ -1,13 +1,17 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { contactInterests, type ContactInterest } from "@/data/services";
+import { siteConfig } from "@/data/site-config";
+import { trackEvent } from "@/lib/analytics";
 
 interface FormState {
   name: string;
   email: string;
   company: string;
   phone: string;
+  website: string;
+  city: string;
   interest: ContactInterest | "";
   message: string;
 }
@@ -17,18 +21,72 @@ const initialForm: FormState = {
   email: "",
   company: "",
   phone: "",
-  interest: "",
+  website: "",
+  city: "",
+  interest: "Hays Visibility Audit",
   message: "",
 };
+
+const attributionKeys = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_term",
+  "utm_content",
+  "gclid",
+  "gbraid",
+  "wbraid",
+  "msclkid",
+] as const;
+
+function getAttribution() {
+  if (typeof window === "undefined") return {};
+
+  const params = new URLSearchParams(window.location.search);
+  const attribution: Record<string, string> = {
+    landing_page: window.location.href,
+    page_path: window.location.pathname,
+    referrer: document.referrer,
+  };
+
+  attributionKeys.forEach((key) => {
+    const value = params.get(key);
+    if (value) attribution[key] = value;
+  });
+
+  return attribution;
+}
 
 export function ContactPageClient() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  // Honeypot — bots fill this, humans never see it
+  const [formReady, setFormReady] = useState(false);
+  const [error, setError] = useState("");
   const [honeypot, setHoneypot] = useState("");
-  // Track when the form was rendered to catch instant-submit bots
   const loadTime = useRef(Date.now());
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const interest = params.get("interest") || params.get("offer");
+    const message = params.get("message");
+
+    setForm((prev) => ({
+      ...prev,
+      interest:
+        interest === "hays-visibility-audit" || interest === "Hays Visibility Audit"
+          ? "Hays Visibility Audit"
+          : contactInterests.includes(interest as ContactInterest)
+            ? (interest as ContactInterest)
+            : prev.interest,
+      message: message ? message.slice(0, 1200) : prev.message,
+    }));
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setFormReady(true), 3000);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -37,80 +95,106 @@ export function ContactPageClient() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
 
-    // Spam gate 1: honeypot field was filled — silent discard
+    if (!e.currentTarget.checkValidity()) {
+      e.currentTarget.reportValidity();
+      return;
+    }
+
     if (honeypot) {
       setSubmitted(true);
       return;
     }
 
-    // Spam gate 2: form submitted in under 3 seconds — bot behaviour
-    if (Date.now() - loadTime.current < 3000) {
-      setSubmitted(true);
+    if (!formReady || Date.now() - loadTime.current < 3000) {
+      setError("Give the form one more second, then try again.");
       return;
     }
 
     setSubmitting(true);
 
+    const eventId =
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
     try {
-      await fetch("https://hooks.zapier.com/hooks/catch/21721728/u7hhmth/", {
+      const response = await fetch("/api/lead", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          company: form.company,
-          phone: form.phone,
-          interest: form.interest,
-          message: form.message,
+          ...form,
+          lead_type: "hays_visibility_audit",
+          event_id: eventId,
+          attribution: getAttribution(),
         }),
       });
+
+      if (!response.ok) {
+        throw new Error("Lead delivery failed");
+      }
+
+      trackEvent("generate_lead", {
+        event_id: eventId,
+        lead_type: "hays_visibility_audit",
+        interest: form.interest || "Hays Visibility Audit",
+      });
+      setSubmitted(true);
     } catch {
-      // Zapier webhook is fire-and-forget — still show success
+      setError(
+        "The form could not send right now. Please call Preisser Solutions or email sales@preissersolutions.com."
+      );
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitted(true);
-    setSubmitting(false);
   };
 
   return (
     <div className="ps-contact-page-wrapper">
       <div className="ps-container">
-        {/* Hero */}
         <div className="ps-contact-hero">
           <span
             className="ps-eyebrow-dark"
             style={{ display: "block", textAlign: "center", marginBottom: "16px" }}
           >
-            Contact
+            Free Hays Visibility Audit
           </span>
-          <h1>Let&apos;s Build Something.</h1>
+          <h1>Get a Free Hays Visibility Audit</h1>
           <p className="ps-contact-subtitle">
-            Whether you know exactly what you need or you&apos;re still figuring it out
-            — start here. Tell us what you can and we&apos;ll go from there.
+            Tell us about your business, website, Google visibility, and follow-up process.
+            Tyler will review where leads may be getting lost and send a practical next step.
           </p>
+          <div className="ps-contact-direct">
+            <a href={siteConfig.contact.phoneHref}>Call Preisser Solutions</a>
+            <span aria-hidden="true">/</span>
+            <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
+          </div>
         </div>
 
-        {/* Form */}
-        <form id="inquiryForm" onSubmit={handleSubmit} noValidate>
+        <form id="inquiryForm" onSubmit={handleSubmit}>
           {submitted ? (
             <div className="ps-contact-success">
               <div className="ps-contact-success-check">✓</div>
-              <h2>Message on Its Way!</h2>
-              <p>Thanks for reaching out. Tyler will be in touch with you shortly.</p>
+              <h2>Audit request received</h2>
+              <p>
+                Thanks. Tyler will review your details and reply within one business day.
+                You can also call Preisser Solutions at {siteConfig.contact.phone}.
+              </p>
             </div>
           ) : (
             <>
-              {/* Honeypot — visually hidden, only bots fill this */}
               <div
                 style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }}
                 aria-hidden="true"
               >
-                <label htmlFor="contact-website">Website</label>
+                <label htmlFor="contact-website-hidden">Website</label>
                 <input
                   type="text"
-                  id="contact-website"
-                  name="website"
+                  id="contact-website-hidden"
+                  name="website_hidden"
                   value={honeypot}
                   onChange={(e) => setHoneypot(e.target.value)}
                   tabIndex={-1}
@@ -119,9 +203,8 @@ export function ContactPageClient() {
               </div>
 
               <div className="ps-form-grid">
-                {/* Name */}
                 <div className="ps-form-group">
-                  <label htmlFor="contact-name">Your Name *</label>
+                  <label htmlFor="contact-name">Your name *</label>
                   <input
                     type="text"
                     id="contact-name"
@@ -134,9 +217,8 @@ export function ContactPageClient() {
                   />
                 </div>
 
-                {/* Email */}
                 <div className="ps-form-group">
-                  <label htmlFor="contact-email">Email Address *</label>
+                  <label htmlFor="contact-email">Email address *</label>
                   <input
                     type="email"
                     id="contact-email"
@@ -149,23 +231,22 @@ export function ContactPageClient() {
                   />
                 </div>
 
-                {/* Company */}
                 <div className="ps-form-group">
-                  <label htmlFor="contact-company">Company Name</label>
+                  <label htmlFor="contact-company">Business name *</label>
                   <input
                     type="text"
                     id="contact-company"
                     name="company"
                     value={form.company}
                     onChange={handleChange}
-                    placeholder="Acme Corp"
+                    placeholder="Company or organization"
+                    required
                     autoComplete="organization"
                   />
                 </div>
 
-                {/* Phone */}
                 <div className="ps-form-group">
-                  <label htmlFor="contact-phone">Phone Number</label>
+                  <label htmlFor="contact-phone">Phone number</label>
                   <input
                     type="tel"
                     id="contact-phone"
@@ -177,16 +258,41 @@ export function ContactPageClient() {
                   />
                 </div>
 
-                {/* Interest */}
+                <div className="ps-form-group">
+                  <label htmlFor="contact-city">City / service area *</label>
+                  <input
+                    type="text"
+                    id="contact-city"
+                    name="city"
+                    value={form.city}
+                    onChange={handleChange}
+                    placeholder="Hays, Ellis County, Northwest Kansas"
+                    required
+                    autoComplete="address-level2"
+                  />
+                </div>
+
+                <div className="ps-form-group">
+                  <label htmlFor="contact-website">Website or Google Business Profile URL</label>
+                  <input
+                    type="url"
+                    id="contact-website"
+                    name="website"
+                    value={form.website}
+                    onChange={handleChange}
+                    placeholder="https://example.com"
+                    inputMode="url"
+                  />
+                </div>
+
                 <div className="ps-form-group full-width">
-                  <label htmlFor="contact-interest">What are you interested in?</label>
+                  <label htmlFor="contact-interest">What should we review first?</label>
                   <select
                     id="contact-interest"
                     name="interest"
                     value={form.interest}
                     onChange={handleChange}
                   >
-                    <option value="">Select an area of interest…</option>
                     {contactInterests.map((interest) => (
                       <option key={interest} value={interest}>
                         {interest}
@@ -195,15 +301,14 @@ export function ContactPageClient() {
                   </select>
                 </div>
 
-                {/* Message */}
                 <div className="ps-form-group full-width">
-                  <label htmlFor="contact-message">Tell Us What You Have in Mind *</label>
+                  <label htmlFor="contact-message">What should Tyler review first? *</label>
                   <textarea
                     id="contact-message"
                     name="message"
                     value={form.message}
                     onChange={handleChange}
-                    placeholder="What can we build for you?"
+                    placeholder="For example: We need more calls from Google, our website is not converting, leads are not being followed up with fast enough, or ads are wasting budget."
                     required
                     rows={5}
                   />
@@ -211,25 +316,32 @@ export function ContactPageClient() {
               </div>
 
               <div className="ps-form-actions">
+                {error && (
+                  <p className="ps-form-error" role="alert">
+                    {error}
+                  </p>
+                )}
                 <button
                   type="submit"
                   className="ps-btn-primary"
-                  disabled={submitting}
+                  disabled={submitting || !formReady}
                   style={{
                     width: "100%",
                     justifyContent: "center",
                     padding: "16px",
                     fontSize: "16px",
-                    opacity: submitting ? 0.7 : 1,
-                    cursor: submitting ? "wait" : "pointer",
+                    opacity: submitting || !formReady ? 0.7 : 1,
+                    cursor: submitting || !formReady ? "wait" : "pointer",
                   }}
                 >
-                  {submitting ? "Sending…" : "Send Inquiry"}
-                  {!submitting && <span className="ps-btn-arrow" aria-hidden="true">→</span>}
+                  {!formReady ? "One moment..." : submitting ? "Sending..." : "Get a Free Hays Visibility Audit"}
+                  {formReady && !submitting && <span className="ps-btn-arrow" aria-hidden="true">→</span>}
                 </button>
 
                 <p className="ps-form-note">
-                  Based in Hays, Kansas. Serving businesses locally and across the country.
+                  {siteConfig.name} is based in {siteConfig.contact.location}. {siteConfig.contact.serviceArea}
+                  Honest reviews, real business details, and accurate tracking matter here. No fake rankings,
+                  fake reviews, or guaranteed Google/AI placement.
                 </p>
               </div>
             </>

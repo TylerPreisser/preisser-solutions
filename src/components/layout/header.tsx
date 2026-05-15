@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { siteConfig } from "@/data/site-config";
+import { trackEvent } from "@/lib/analytics";
 
 // Sun icon — shown in dark mode (click to switch to light)
 function SunIcon() {
@@ -112,23 +114,57 @@ export function Header() {
             href="/"
             className="ps-logo-link"
             onClick={() => {}}
-            aria-label="Preisser Tech — Home"
+            aria-label="Preisser Solutions — Home"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/ps-logo.webp`}
-              alt="Preisser Tech"
+              alt="Preisser Solutions"
               className="ps-logo-img"
             />
           </Link>
 
-          {/* Desktop nav — minimal Stripe-style: theme toggle + CTA */}
+          {/* Desktop nav */}
           <nav
             className="ps-primary-nav"
             id="primary-navigation"
             aria-label="Primary navigation"
           >
             <div className="ps-header-links">
+              <Link href="/marketing-agency-hays-ks" className="ps-header-link">
+                Hays Marketing
+              </Link>
+              <Link href="/services" className="ps-header-link">
+                Services
+              </Link>
+              <Link href="/resources" className="ps-header-link">
+                Resources
+              </Link>
+              <a
+                href={siteConfig.contact.phoneHref}
+                className="ps-header-link ps-header-phone"
+                onClick={() =>
+                  trackEvent("phone_call_click", {
+                    location: "header",
+                    link_text: "Call Preisser Solutions",
+                  })
+                }
+              >
+                Call Preisser Solutions
+              </a>
+              <a
+                href={siteConfig.contact.phoneHref}
+                className="ps-header-call-compact"
+                onClick={() =>
+                  trackEvent("phone_call_click", {
+                    location: "mobile_header",
+                    link_text: "Call",
+                  })
+                }
+                aria-label="Call Preisser Solutions"
+              >
+                Call
+              </a>
               {/* Theme toggle — only render after mount to avoid hydration mismatch */}
               {theme !== null && (
                 <button
@@ -150,12 +186,18 @@ export function Header() {
               )}
 
               <Link
-                href="/contact"
+                href="/contact?offer=hays-visibility-audit"
                 className="ps-header-cta"
-                onClick={() => {}}
-                aria-label="Get in Touch — start a conversation"
+                onClick={() =>
+                  trackEvent("cta_click", {
+                    location: "header",
+                    link_text: "Get a Free Hays Visibility Audit",
+                  })
+                }
+                aria-label="Get a Free Hays Visibility Audit"
               >
-                Get in Touch
+                <span className="ps-header-cta-full">Get a Free Hays Visibility Audit</span>
+                <span className="ps-header-cta-short">Free Audit</span>
                 <svg
                   className="ps-header-cta-arrow"
                   width="16"

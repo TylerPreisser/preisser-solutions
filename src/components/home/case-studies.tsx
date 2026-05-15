@@ -77,14 +77,14 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Wife Supply Co",
     tags: "AI Application | Product Build | Full Deployment",
     description:
-      "An AI model psychologically trained to help men buy gifts for their wives. The system reads the buyer's profile and the wife's preferences, then returns perfectly tailored product recommendations. Internal Preisser Tech R&D build.",
+      "An AI model psychologically trained to help men buy gifts for their wives. The system reads the buyer's profile and the wife's preferences, then returns perfectly tailored product recommendations. Internal Preisser Solutions R&D build.",
     gradient: "linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%)",
     image: "wife-supply.webp",
     lightCard: true,
   },
   // 8
   {
-    title: "PreisserTech.com",
+    title: "PreisserSolutions.com",
     tags: "Custom Website | Lead Pipeline | Local SEO",
     description:
       "This is our own site, and we built it the same way we build yours: custom-coded, connected to the lead pipeline, and paired with an ROI calculator that qualifies prospects before they ever hit the calendar. A website built to work as a sales tool.",

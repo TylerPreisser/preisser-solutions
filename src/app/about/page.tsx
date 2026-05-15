@@ -5,22 +5,22 @@ import { siteConfig } from "@/data/site-config";
 import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "About Tyler Preisser",
+  title: "About Preisser Solutions | Hays Marketing & AI Automation",
   description:
-    "Tyler Preisser is a builder — patented inventions, AI systems, and automation tools for Kansas businesses. Direct access to the person who designs, builds, and stands behind the work.",
+    "About Preisser Solutions, a Hays, Kansas marketing, website, local SEO, Google Ads, review, lead tracking, and AI automation company owned by Tyler Preisser.",
   alternates: {
-    canonical: "https://preissertech.com/about",
+    canonical: "https://preissersolutions.com/about",
   },
   openGraph: {
-    title: "About Tyler Preisser | Preisser Tech",
+    title: "About Preisser Solutions | Hays Marketing & AI Automation",
     description:
-      "Tyler Preisser is a builder — patented inventions, AI systems, and automation tools for Kansas businesses. Direct access to the person who designs, builds, and stands behind the work.",
-    url: "https://preissertech.com/about",
+      "Preisser Solutions helps Hays and Northwest Kansas businesses improve websites, local SEO, Google visibility, ads, reviews, lead tracking, and AI-powered follow-up.",
+    url: "https://preissersolutions.com/about",
   },
 };
 
 const breadcrumbSchema = buildBreadcrumbs([
-  { name: "About", url: "https://preissertech.com/about" },
+  { name: "About", url: "https://preissersolutions.com/about" },
 ]);
 
 export default function AboutPage() {
@@ -35,10 +35,11 @@ export default function AboutPage() {
       <div className="ps-page-hero">
         <div className="ps-container">
           <div className="ps-page-hero-content">
-            <span className="ps-eyebrow">About</span>
-            <h1>We Build Things. That&apos;s What We Do.</h1>
+            <span className="ps-eyebrow">About Preisser Solutions</span>
+            <h1>Hays marketing, websites, SEO, ads, and AI automation.</h1>
             <p>
-              Direct access to the person designing, building, and standing behind the work.
+              Preisser Solutions helps local businesses get found, trusted,
+              contacted, tracked, and followed up with.
             </p>
           </div>
         </div>
@@ -52,7 +53,7 @@ export default function AboutPage() {
             <div>
               <Image
                 src="/images/Tyler Portait.jpeg"
-                alt="Tyler Preisser — Founder, Preisser Tech"
+                alt="Tyler Preisser — Founder, Preisser Solutions"
                 width={320}
                 height={320}
                 style={{
@@ -90,11 +91,10 @@ export default function AboutPage() {
                   marginBottom: "20px",
                 }}
               >
-                Preisser Tech exists because I got tired of watching businesses
-                struggle with technology they shouldn&apos;t have to struggle with.
-                Outdated websites. Systems that don&apos;t connect. Manual work that
-                should have been automated five years ago. Tools that were supposed
-                to make life easier but somehow made it harder.
+                Preisser Solutions is a Hays, Kansas company owned by Tyler
+                Preisser. The work is built for local business owners who need
+                more calls, booked appointments, Google visibility, honest
+                reviews, clearer tracking, and faster lead follow-up.
               </p>
               <p
                 style={{
@@ -104,16 +104,14 @@ export default function AboutPage() {
                   marginBottom: "32px",
                 }}
               >
-                I&apos;m Tyler Preisser. I&apos;m a builder. I&apos;ve been building things
-                my entire life — from physical machines and patented inventions to AI
-                systems that process millions in transaction volume. I&apos;ve managed
-                field operations, led large-scale technology projects, and built
-                automation systems that replaced entire manual workflows. When you work
-                with Preisser Tech, you work with me — the person who designs it,
-                builds it, and stands behind it.
+                I&apos;m Tyler Preisser. When you work with Preisser Solutions, you
+                work directly with me from the first audit through the actual
+                build. That matters because local growth problems are usually
+                connected: the website, Google Business Profile, ads, reviews,
+                tracking, and follow-up all affect whether a customer chooses you.
               </p>
-              <Link href="/contact" className="ps-btn-primary">
-                Work with Tyler
+              <Link href="/contact?offer=hays-visibility-audit" className="ps-btn-primary">
+                Get a Free Hays Visibility Audit
                 <span className="ps-btn-arrow" aria-hidden="true">→</span>
               </Link>
             </div>
@@ -125,23 +123,23 @@ export default function AboutPage() {
       <div className="ps-section ps-section-light">
         <div className="ps-container">
           <div className="ps-section-header">
-            <span className="ps-eyebrow-light">Values</span>
-            <h2>How We Work</h2>
-            <p>How the work gets done, and what that means for the businesses we build for.</p>
+            <span className="ps-eyebrow-light">How We Work</span>
+            <h2>Practical local growth, without fake proof.</h2>
+            <p>Every recommendation should tie back to visibility, trust, calls, booked work, or follow-up.</p>
           </div>
           <div className="ps-placeholder-grid">
             {[
               {
-                title: "Build it right.",
-                body: "No shortcuts. No duct tape. Systems that work today and scale tomorrow.",
+                title: "Start with the audit.",
+                body: "Before selling a large project, we look for the highest-leverage gaps in your website, Google visibility, reviews, tracking, and follow-up.",
               },
               {
-                title: "Speed is a feature.",
-                body: "AI-first methodology means we deliver in weeks, not months. Your business can&apos;t wait, and it shouldn&apos;t have to.",
+                title: "Make the next step obvious.",
+                body: "Pages, ads, listings, and automation should make it easier for a real customer to call, request help, book, or get a timely response.",
               },
               {
-                title: "Honesty over agreement.",
-                body: "If your idea won&apos;t work, I&apos;ll tell you. If there&apos;s a better way, I&apos;ll show you.",
+                title: "Use real proof only.",
+                body: "No invented testimonials, fake reviews, unsupported rankings, or inflated claims. Case studies wait until metrics and permission are verified.",
               },
             ].map((v, i) => (
               <div key={i} className="ps-placeholder-box">

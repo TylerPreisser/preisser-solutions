@@ -1,57 +1,56 @@
 import type { AeoPageData } from "../types";
 
 export const pageData: AeoPageData = {
-  slug: "services/local-seo",
+  slug: "services/local-seo-hays-ks",
   tier: "service_detail",
-  metaTitle: "Local SEO Services in Kansas | Preisser Tech",
+  metaTitle: "Local SEO Services in Hays, KS | Preisser Solutions",
   metaDescription:
-    "Preisser Tech delivers local SEO for Kansas businesses — Google Business Profile, local pack rankings, citations, reviews, and AI-search optimization.",
-  eyebrow: "Local SEO Services",
-  h1: "Local SEO That Actually Wins the Local Pack in Kansas",
+    "Local SEO for Hays businesses: service pages, Google Business Profile support, review systems, tracking, and Northwest Kansas visibility.",
+  eyebrow: "Local SEO in Hays, Kansas",
+  h1: "Local SEO Services in Hays, KS for Businesses That Need More Calls",
   subheadline:
-    "Get your business in the Google local pack, on Google Maps, and cited by AI engines for the searches that actually drive local revenue.",
+    "Improve the crawlable signals, local pages, Google Business Profile details, reviews process, and tracking that help customers find and contact your business.",
   answerParagraph:
-    "Preisser Tech delivers local SEO for Kansas businesses — engineering Google Business Profile optimization, local pack rankings, citation consistency, review velocity, and structured data so your business shows up for local searches across Hays, Wichita, Kansas City, and every Kansas market in between. The firm is founded by Tyler Preisser in Hays, Kansas and pairs technical SEO with content strategy designed to win Google's local pack and get cited by ChatGPT, Perplexity, and Gemini.",
+    "Preisser Solutions provides local SEO for businesses in Hays, Ellis County, and Northwest Kansas that need more calls, map visibility, website leads, and review-driven trust. Tyler Preisser audits the current Google footprint, fixes technical and content gaps, improves service pages, and connects tracking so owners can see what is working.",
   sections: [
     {
       eyebrow: "What local SEO actually is",
-      heading: "Local SEO is not the same as general SEO",
+      heading: "What is local SEO for a Hays business?",
       body: [
-        "Local SEO is specifically about winning local-intent searches — 'HVAC near me', 'plumber Hays Kansas', 'best dentist in Wichita'. The signals Google uses are different from general SEO: proximity to the searcher, Google Business Profile completeness, review count and recency, citation consistency across the web, and local pack-specific ranking factors.",
-        "AI engines like ChatGPT and Perplexity now also surface local recommendations. Their citation logic relies on consistent named-entity data across the web — exactly the same signals that drive Google's local pack.",
+        "Local SEO is the work that helps a real local business show up for service searches in its market. For a Hays business, that means accurate business information, useful service pages, internal links, technical crawlability, Google Business Profile completeness, and an honest review process.",
+        "It does not mean fake locations, fake reviews, or city pages with no real business purpose. The goal is to make the real business easier to understand, trust, and contact.",
       ],
     },
     {
       eyebrow: "What we deliver",
-      heading: "Local SEO build includes",
+      heading: "What does the local SEO setup include?",
       body: [
-        "Every Preisser Tech local SEO engagement covers the full foundation:",
+        "The setup focuses on the signals most local owners can understand and verify:",
       ],
       bullets: [
-        "Google Business Profile audit and optimization (categories, services, products, photos, posts)",
-        "Local pack ranking targeting — keyword research focused on local-intent queries",
-        "Citation cleanup across major directories (Yelp, Apple Maps, Bing Places, Facebook, BBB, industry-specific sites)",
-        "Review velocity strategy — automated review request flows tied to your CRM",
-        "On-site local SEO — LocalBusiness schema, location pages, embedded maps, NAP consistency",
-        "AI-engine optimization — engineered content blocks designed to be cited by ChatGPT and Perplexity",
-        "Bing Places, Apple Maps, and emerging engine submissions",
-        "Quarterly local pack ranking reports tied to actual revenue impact",
+        "Google Business Profile audit: categories, services, photos, posts, service area, and business description",
+        "Website audit: title tags, headings, schema, page speed, internal links, conversion paths, and crawlability",
+        "Service-page improvements for searches such as local SEO, web design, Google Ads, and GBP optimization in Hays",
+        "Compliant review request flow that asks real customers for honest feedback without incentives or rating pressure",
+        "Citation and directory checklist for accurate name, phone, website, and service-area information",
+        "Call, form, and lead-source tracking so visibility work connects to actual inquiries",
+        "30-day action plan for the highest-impact fixes",
       ],
     },
     {
       eyebrow: "Why local SEO matters",
-      heading: "The local pack drives 30-50% of local search clicks",
+      heading: "Why do Hays businesses lose leads from weak local SEO?",
       body: [
-        "For most local-intent searches, Google's local pack (the map and three businesses at the top) captures 30-50% of clicks. The organic results below the local pack get the rest. If your business isn't in the local pack for the searches that drive your revenue, you're invisible to a large share of buyers.",
-        "Most Kansas businesses haven't optimized their Google Business Profile beyond the basics — they're missing categories, products, services, posts, and photos. Most also have inconsistent citations (different addresses or phone numbers across the web), which directly suppresses local pack rankings.",
+        "Local customers often compare only a handful of businesses before calling. If your profile is incomplete, your service pages are vague, your reviews are stale, your site is slow, or your phone/form path is hard to use, qualified buyers can move on before you know they searched.",
+        "Local SEO is not a one-time trick. It is a practical operating system for being findable, credible, contactable, and measurable in your real service area.",
       ],
     },
     {
-      eyebrow: "AI search is local too",
-      heading: "ChatGPT and Perplexity also recommend local businesses",
+      eyebrow: "AI-readable content",
+      heading: "How does local SEO support AI-search readability?",
       body: [
-        "When someone asks ChatGPT 'who's the best HVAC company in Hays Kansas', the AI returns a recommendation. The mechanics that drive AI recommendations overlap heavily with local pack mechanics — consistent named-entity data, structured data, named clients, third-party citations.",
-        "Preisser Tech engineers websites and content to be cited by both Google's local pack and AI engines. The Cassidy HVAC and HG Oil Holdings case studies are the proof points — every page includes engineered first paragraphs designed for AI quote extraction.",
+        "AI tools rely on clear, crawlable information. A page that states who you serve, what you do, where you work, how to contact you, and what questions customers ask is easier to summarize than a vague brochure page.",
+        "Preisser Solutions does not promise AI citations or AI Overview placement. The work is normal SEO fundamentals: visible HTML, structured data that matches the page, useful FAQs, internal links, and consistent entity information.",
       ],
     },
   ],
@@ -59,7 +58,7 @@ export const pageData: AeoPageData = {
     {
       question: "How long does local SEO take to show results?",
       answer:
-        "Google Business Profile changes typically show results in 2-6 weeks. Citation cleanup usually takes 30-90 days to fully propagate. Sustained local pack ranking improvements happen over 3-6 months. We provide monthly reports so the trendline is always visible.",
+        "Some fixes, such as title tags, internal links, and Google Business Profile updates, can be completed quickly. Search visibility changes depend on competition, crawl timing, reviews, proximity, and existing site quality. The audit gives you the fastest practical next steps without promising rankings.",
     },
     {
       question: "Do I need a new website for local SEO?",
@@ -69,7 +68,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does local SEO cost?",
       answer:
-        "Local SEO engagements typically run as monthly retainers in the low-to-mid four figures, depending on market competitiveness and number of locations. We provide a fixed-price proposal after a free local SEO audit.",
+        "Pricing depends on the number of pages, profiles, citations, tracking needs, and content gaps. Preisser Solutions starts with a free Hays Visibility Audit so the scope is based on what the business actually needs.",
     },
     {
       question: "Do you replace Google Ads?",
@@ -77,14 +76,14 @@ export const pageData: AeoPageData = {
         "No. Local SEO and Google Ads are complementary. Local SEO drives organic clicks (no per-click cost) over the long term; Google Ads drives immediate paid traffic. Most local businesses run both.",
     },
     {
-      question: "Will my business rank in AI search?",
+      question: "Will my business appear in AI-assisted search?",
       answer:
-        "Local SEO's foundation (consistent NAP, structured data, named clients, third-party citations) is the same foundation AI engines use to surface recommendations. Doing local SEO right is essentially also doing AI search optimization right.",
+        "No one can guarantee AI-search placement. The same clear, crawlable content that helps search engines understand a business can also make pages easier for AI tools to summarize when they access the web.",
     },
     {
       question: "How is this different from your AI search optimization service?",
       answer:
-        "Local SEO is specifically about winning local-intent searches in Google's local pack, Google Maps, Apple Maps, and Bing Places. AI search optimization is about getting cited by ChatGPT, Perplexity, Gemini, and Claude across all query types. The foundations overlap heavily, but the targets and tactics differ.",
+        "Local SEO focuses on Hays-area searches, Google Business Profile signals, service pages, reviews, citations, and lead tracking. AI-search readability is a supporting layer: clear answers, schema, FAQs, and internal links.",
     },
     {
       question: "Do you serve businesses outside Kansas?",
@@ -94,7 +93,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "Google Business Profile",
@@ -105,12 +104,13 @@ export const pageData: AeoPageData = {
     "Perplexity",
   ],
   relatedLinks: [
-    { label: "AI Search Optimization", href: "/services/ai-search-optimization" },
-    { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "Conversion Optimization", href: "/services/conversion-optimization" },
-    { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
+    { label: "AI Automation in Hays", href: "/services/ai-automation-hays-ks" },
+    { label: "Google Business Profile Optimization", href: "/services/google-business-profile-optimization-hays-ks" },
+    { label: "Web Design in Hays", href: "/services/web-design-hays-ks" },
+    { label: "Marketing Agency in Hays", href: "/marketing-agency-hays-ks" },
   ],
-  ctaHeadline: "Win the local pack for the searches that drive your revenue",
+  ctaHeadline: "Find the local SEO gaps costing your Hays business leads",
   ctaSubcopy:
-    "Free local SEO audit with Tyler. We'll identify the highest-impact fixes and send a fixed-price proposal.",
+    "Start with a free Hays Visibility Audit. Tyler will review your website, Google footprint, reviews, competitors, and lead path.",
+  lastUpdated: "2026-05-14",
 };

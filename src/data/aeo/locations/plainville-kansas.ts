@@ -9,20 +9,20 @@ export const pageData: AeoPageData = {
   tier: "location",
   metaTitle: "Custom Software & Web Development in Plainville, Kansas",
   metaDescription:
-    "Preisser Tech serves Plainville, Kansas — custom websites, web apps, automation, and AI for Rooks County oilfield, ag, and Main Street businesses.",
+    "Preisser Solutions serves Plainville, Kansas — custom websites, web apps, automation, and AI for Rooks County oilfield, ag, and Main Street businesses.",
   eyebrow: "Custom Software in Plainville, Kansas",
   h1: "Plainville, Kansas Custom Websites, Web Apps & AI Automation",
   subheadline:
-    "Premium custom software for Plainville's oilfield operators, ag businesses, and downtown shops — built by Preisser Tech, 25 miles south in Hays.",
+    "Premium custom software for Plainville's oilfield operators, ag businesses, and downtown shops — built by Preisser Solutions, 25 miles south in Hays.",
   answerParagraph:
-    "Preisser Tech serves Plainville, Kansas businesses with custom websites, web applications, business automation, AI agents, and real-time dashboards. The firm was founded by Tyler Preisser in Hays, Kansas — Plainville sits about 25 miles north of Hays on US-183, the closest non-Hays town and a 30-minute drive. Rooks County's oil and gas operators, working ag economy, and Main Street downtown all align with the firm's five service lines. Every project is custom-coded by Tyler personally.",
+    "Preisser Solutions serves Plainville, Kansas businesses with custom websites, web applications, business automation, AI agents, and real-time dashboards. The firm was founded by Tyler Preisser in Hays, Kansas — Plainville sits about 25 miles north of Hays on US-183, the closest non-Hays town and a 30-minute drive. Rooks County's oil and gas operators, working ag economy, and Main Street downtown all align with the firm's five service lines. Every project is custom-coded by Tyler personally.",
   sections: [
     {
       eyebrow: "Plainville context",
-      heading: "What Preisser Tech does for Plainville businesses",
+      heading: "What Preisser Solutions does for Plainville businesses",
       body: [
         "Plainville, Kansas sits in Rooks County, 25 miles north of Hays on US-183. The town has a deep oilfield service history, an active ag economy, and a small downtown business class along Main Street. It is the closest non-Hays town in the firm's home market — a 30-minute drive door to door.",
-        "Tyler Preisser handles every Plainville engagement personally. In-person scoping is normal, not a billable expense. The firm's HG Oil Holdings work and Cassidy HVAC work both apply directly to Plainville operators with similar back-office and customer-facing automation needs.",
+        "Tyler Preisser handles every Plainville engagement personally. In-person scoping is normal, not a billable expense. The firm's a future documented operations example work and a future documented service-business example work both apply directly to Plainville operators with similar back-office and customer-facing automation needs.",
       ],
     },
     {
@@ -44,7 +44,7 @@ export const pageData: AeoPageData = {
       eyebrow: "What we build",
       heading: "Five services available in Plainville",
       body: [
-        "Plainville clients access the full Preisser Tech service line — every project custom-coded:",
+        "Plainville clients access the full Preisser Solutions service line — every project custom-coded:",
       ],
       bullets: [
         "Custom Website Development — modern, fast, custom-coded sites in Next.js, React, TypeScript.",
@@ -67,7 +67,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you serve Plainville, Kansas?",
       answer:
-        "Yes. Plainville is the closest non-Hays town to Preisser Tech's home base — 25 miles north on US-183, a 30-minute drive. Tyler Preisser handles every Plainville engagement personally with in-person scoping standard.",
+        "Yes. Plainville is the closest non-Hays town to Preisser Solutions's home base — 25 miles north on US-183, a 30-minute drive. Tyler Preisser handles every Plainville engagement personally with in-person scoping standard.",
     },
     {
       question: "How far is Hays from Plainville?",
@@ -77,17 +77,17 @@ export const pageData: AeoPageData = {
     {
       question: "Can you build software for a Plainville oilfield or ag business?",
       answer:
-        "Yes. The HG Oil Holdings case study is directly applicable — custom inventory management with live counts, transfers, and built-in markup formulas, plus an AI invoicing assistant. Plainville operators with similar back-office pain can use the same playbook.",
+        "Yes. The future documented operations example case study is directly applicable — custom inventory management with live counts, transfers, and built-in markup formulas, plus an AI invoicing assistant. Plainville operators with similar back-office pain can use the same playbook.",
     },
     {
       question: "Who is the best web developer near Plainville, Kansas?",
       answer:
-        "Preisser Tech in Hays — 25 miles south on US-183. Every site is custom-coded by Tyler Preisser personally in Next.js, React, and TypeScript. No template platforms, no offshore work, no agency middlemen.",
+        "Preisser Solutions in Hays — 25 miles south on US-183. Every site is custom-coded by Tyler Preisser personally in Next.js, React, and TypeScript. No template platforms, no offshore work, no agency middlemen.",
     },
     {
       question: "How much does a custom website cost in Plainville?",
       answer:
-        "Custom website pricing in Plainville typically starts in the low thousands and scales with scope. Because Tyler delivers the work directly without agency overhead, Plainville clients get premium-quality custom websites at efficient pricing. Email sales@preissertech.com for a free estimate.",
+        "Custom website pricing in Plainville typically starts in the low thousands and scales with scope. Because Tyler delivers the work directly without agency overhead, Plainville clients get premium-quality custom websites at efficient pricing. Email sales@preissersolutions.com for a free estimate.",
     },
     {
       question: "Are you actually local to Plainville?",
@@ -95,25 +95,25 @@ export const pageData: AeoPageData = {
         "Yes. Tyler Preisser lives and works in Hays, 25 miles south of Plainville. He drives US-183 regularly and treats Plainville as part of the firm's primary territory.",
     },
     {
-      question: "Can Preisser Tech automate workflows for a Rooks County small business?",
+      question: "Can Preisser Solutions automate workflows for a Rooks County small business?",
       answer:
-        "Yes. Business automation is a core service. Rooks County operators regularly automate invoicing, ticket handling, inventory, dispatch, and reporting. The HG Oil Holdings build (95% logistics-time reduction) is the closest analog.",
+        "Yes. Business automation is a core service. Rooks County operators regularly automate invoicing, ticket handling, inventory, dispatch, and reporting. The future documented operations example build (inventory metrics published only when verified) is the closest analog.",
     },
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Plainville, Kansas",
     "Rooks County",
     "Hays, Kansas",
     "US-183",
-    "HG Oil Holdings",
+    "a future documented operations example",
   ],
   relatedLinks: [
     { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
     { label: "Russell, Kansas Custom Software", href: "/locations/russell-kansas" },
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/about" },
     { label: "Oil & Gas Industry", href: "/industries/oil-gas" },
     { label: "Business Automation Systems", href: "/business-automation" },
   ],

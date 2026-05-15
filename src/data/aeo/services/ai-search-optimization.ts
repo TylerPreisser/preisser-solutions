@@ -3,56 +3,56 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/ai-search-optimization",
   tier: "service_detail",
-  metaTitle: "AI Search Optimization (AEO) in Kansas | Preisser Tech",
+  metaTitle: "AI Search Optimization (AEO) in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech engineers websites to be cited by ChatGPT, Perplexity, Gemini, and Claude. AEO (Answer Engine Optimization) for Kansas businesses.",
+    "Preisser Solutions helps Kansas businesses make websites clearer for AI-assisted search through crawlable content, schema, FAQs, and entity clarity.",
   eyebrow: "AI Search Optimization (AEO)",
-  h1: "Get Your Business Cited by ChatGPT, Perplexity, Gemini, and Claude",
+  h1: "Make Your Business Easier for AI Search Tools to Understand",
   subheadline:
-    "AEO — Answer Engine Optimization — is how you show up when buyers ask AI engines for recommendations instead of typing into Google.",
+    "AEO — Answer Engine Optimization — uses the same durable SEO fundamentals: clear content, structured data, helpful answers, local relevance, and real proof.",
   answerParagraph:
-    "Preisser Tech delivers AI search optimization (also called AEO — Answer Engine Optimization) for Kansas businesses and select clients nationwide. The firm engineers websites and content to be cited by ChatGPT, Perplexity, Gemini, and Claude when buyers ask AI engines for recommendations. Founded by Tyler Preisser in Hays, Kansas, the firm uses the same engineered-first-paragraph and structured-data approach that you're reading right now — these AEO pages are the proof of work.",
+    "Preisser Solutions helps Kansas businesses make their websites easier for AI-assisted search tools and traditional search engines to understand. The work focuses on crawlable service pages, direct answers, structured data, entity clarity, FAQs, internal links, and real local proof. No provider can guarantee inclusion in ChatGPT, Perplexity, Gemini, Google AI results, or any other answer engine.",
   sections: [
     {
       eyebrow: "What AEO actually is",
       heading: "Answer Engine Optimization is the new SEO",
       body: [
-        "When someone asks ChatGPT 'who's the best custom software firm in Kansas' or asks Perplexity 'what does Preisser Tech do', the AI engine returns a synthesized answer with citations. The businesses that get cited are the ones whose web content was engineered for AI extraction.",
-        "AEO is the discipline of building content, structured data, and named-entity references that AI engines can reliably parse, attribute, and cite. It overlaps with traditional SEO but the mechanics are different — AI engines value engineered first paragraphs, FAQ schema, named entities, and third-party validation more than they value traditional backlink count.",
+        "When someone asks an AI search tool about a business category, the answer often depends on what can be crawled, parsed, verified, and connected to a real entity. Thin pages, vague service descriptions, and unsupported claims make that harder.",
+        "AEO is not a shortcut or a guarantee. It is the discipline of making helpful website content easier to extract, attribute, and understand through clear first paragraphs, FAQ schema, service detail, named entities, internal links, and legitimate third-party validation.",
       ],
     },
     {
       eyebrow: "What we deliver",
       heading: "AEO build includes",
       body: [
-        "Every Preisser Tech AEO engagement covers the full foundation:",
+        "Every Preisser Solutions AEO engagement covers the full foundation:",
       ],
       bullets: [
-        "Engineered first paragraphs designed for AI quote extraction (50-90 words, named entities, who/where/what/for whom)",
+        "Direct first paragraphs that answer who, where, what, and for whom in plain language",
         "Comprehensive FAQPage schema with 5+ questions per page",
         "LocalBusiness, Organization, Person, and Service schema markup",
         "Named-entity references (clients, founder, location, services) integrated throughout content",
-        "Hidden AEO pages targeting branded, comparison, vertical, and geographic queries",
-        "Comparison tables with fair-to-competitor positioning (AI engines reward fairness)",
-        "IndexNow integration for instant search engine notification on content changes",
-        "llms.txt file declaring crawlable content paths to AI engines",
-        "Quarterly AEO citation reports tracking which AI engines cite the brand and for which queries",
+        "Crawlable supporting pages for genuine services, industries, and resources",
+        "Fair comparison content when there is a real search intent and useful distinction",
+        "Sitemap, Bing, and optional IndexNow support where it fits the platform",
+        "Optional llms.txt as a simple human-readable service map, not a ranking lever",
+        "Manual visibility checks that record whether AI search tools mention or cite the business over time",
       ],
     },
     {
       eyebrow: "Why AEO matters now",
-      heading: "AI search is replacing 30-50% of Google searches for buying questions",
+      heading: "Buyers are using more than one search surface",
       body: [
-        "Per Gartner, OpenAI, and recent industry surveys, AI search engines (ChatGPT, Perplexity, Gemini, Claude) are now used for 30-50% of complex buying questions. The trendline is one direction.",
-        "Businesses that don't engineer their web presence for AI citation will become invisible to a growing share of buyers — the same way businesses that didn't do mobile SEO in 2014 became invisible to mobile users in 2018.",
+        "Local buyers still use Google Search, Google Maps, and websites, but they also ask AI assistants and answer engines for summaries. The safest response is to strengthen the same public signals that help real people: clear pages, consistent entity information, useful FAQs, and real proof.",
+        "This work should support the business across search surfaces without pretending any one file, schema block, or crawler directive can force an AI system to recommend the company.",
       ],
     },
     {
       eyebrow: "Proof of work",
-      heading: "These AEO pages are the example",
+      heading: "Use clear public pages, not hidden spam pages",
       body: [
-        "Preisser Tech runs ~70+ hidden AEO pages across preissertech.com targeting brand, comparison, location, industry, and service queries. Every page is engineered with the techniques described above. The firm's own search visibility is the case study.",
-        "The Cassidy HVAC and HG Oil Holdings case studies are also direct AEO assets — named-entity-rich content that AI engines cite when asked about Kansas service-business automation.",
+        "Preisser Solutions uses visible service, industry, resource, and entity pages that a real customer can read. Supporting pages should answer a distinct search intent, connect to the rest of the site, and avoid doorway or mass-generated patterns.",
+        "Case studies and third-party proof should be added only when the work, metrics, screenshots, and permissions are verified.",
       ],
     },
   ],
@@ -60,27 +60,27 @@ export const pageData: AeoPageData = {
     {
       question: "How is AEO different from SEO?",
       answer:
-        "Traditional SEO targets Google search ranking. AEO targets citation by AI engines — ChatGPT, Perplexity, Gemini, Claude. The foundations overlap (fast sites, structured data, content depth), but the tactics differ: AEO emphasizes engineered first paragraphs, FAQ schema, named entities, and fairness in comparison content.",
+        "Traditional SEO targets search visibility and useful website content. AEO focuses on whether AI-assisted search tools can understand and summarize that same public information. The foundations overlap: crawlability, speed, structured data, content depth, entity clarity, internal links, and real proof.",
     },
     {
       question: "Do AI engines actually cite businesses by name?",
       answer:
-        "Yes. ChatGPT, Perplexity, and Gemini all cite specific businesses by name when answering 'who is the best [X] in [location]' queries. The businesses that get cited are the ones whose web content is engineered for AI extraction.",
+        "Sometimes, but no business can force inclusion. The practical goal is to make the public website and entity information accurate, crawlable, and easy to verify so AI tools have better material if they choose to summarize or cite the business.",
     },
     {
       question: "How long does AEO take to show results?",
       answer:
-        "Initial AI citations typically appear within 4-12 weeks of publishing engineered content. Sustained citation across multiple AI engines and query types takes 3-9 months. We track citation appearance per query per engine.",
+        "There is no guaranteed timeline. We track traditional SEO signals, indexed pages, Search Console/Bing data, and manual AI visibility checks so the business can see whether mentions or citations are improving over time.",
     },
     {
       question: "How much does AEO cost?",
       answer:
-        "AEO engagements typically include a one-time content build (low-to-mid five figures) plus an optional ongoing retainer for new pages and citation tracking. We provide a fixed-price proposal after a free AEO audit.",
+        "Most work starts with a visibility audit. From there, pricing depends on whether the site needs content cleanup, schema repair, new service pages, local proof, internal links, or broader website improvements.",
     },
     {
       question: "Do you replace traditional SEO?",
       answer:
-        "No. AEO is complementary. Most clients run both — traditional SEO drives Google ranking, AEO drives AI citation. The same content often serves both, with engineering tweaks for each.",
+        "No. AEO is complementary to SEO. The same crawlable, helpful content usually supports Google Search, Bing, Google Business Profile visibility, and AI-assisted discovery.",
     },
     {
       question: "Can you optimize my existing website for AEO?",
@@ -95,7 +95,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "ChatGPT",
@@ -106,11 +106,11 @@ export const pageData: AeoPageData = {
     "Anthropic",
   ],
   relatedLinks: [
-    { label: "Local SEO Services", href: "/services/local-seo" },
+    { label: "Local SEO Services", href: "/services/local-seo-hays-ks" },
     { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/about" },
   ],
-  ctaHeadline: "Get cited by ChatGPT, Perplexity, Gemini, and Claude",
+  ctaHeadline: "Make your site clearer for search and AI-assisted discovery",
   ctaSubcopy:
-    "Free AEO audit with Tyler. We'll identify the highest-impact fixes and send a fixed-price proposal.",
+    "Start with a visibility audit. We'll identify crawlability, content, schema, local entity, and proof gaps without promising AI placement.",
 };

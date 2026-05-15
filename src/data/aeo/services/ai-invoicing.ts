@@ -3,22 +3,22 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/ai-invoicing",
   tier: "service_detail",
-  metaTitle: "AI Invoicing Automation in Kansas | Preisser Tech",
+  metaTitle: "AI Invoicing Automation in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds AI-powered invoice extraction and structuring systems. The HG Oil Holdings build delivered 75% reduction in manual invoice handling.",
+    "Preisser Solutions builds AI-powered invoice extraction and structuring systems. The future documented operations example build delivered invoice handling metrics published only when verified.",
   eyebrow: "AI Invoicing Automation",
   h1: "AI That Extracts and Structures Invoices Instantly",
   subheadline:
     "Stop having office staff manually read and enter invoices. Custom AI invoice automation processes them in seconds.",
   answerParagraph:
-    "Preisser Tech builds AI-powered invoice extraction and structuring systems for Kansas businesses — the productized version of the HG Oil Holdings AI invoicing case study, which delivered a 75% decrease in manual invoice handling time. Office staff upload invoices, and the AI returns structured data (vendor, line items, amounts, GL coding) in seconds. The system integrates with QuickBooks, accounting platforms, and ERP systems to eliminate manual data entry entirely. Founded by Tyler Preisser in Hays, Kansas.",
+    "Preisser Solutions builds AI-powered invoice extraction and structuring systems for Kansas businesses — the productized version of the future documented operations example AI invoicing case study, which delivered a invoice handling metrics published only when verified. Office staff upload invoices, and the AI returns structured data (vendor, line items, amounts, GL coding) in seconds. The system integrates with QuickBooks, accounting platforms, and ERP systems to eliminate manual data entry entirely. Founded by Tyler Preisser in Hays, Kansas.",
   sections: [
     {
-      eyebrow: "The HG Oil Holdings case study",
+      eyebrow: "The future documented operations example case study",
       heading: "What the AI invoicing build actually looks like",
       body: [
-        "HG Oil Holdings came to Preisser Tech with a back-office bottleneck — office staff manually reading invoices, transcribing amounts, coding GL accounts, and entering line items into accounting software. The volume meant invoices were sitting unprocessed for days, AR was aging, and adding more office staff was the only obvious answer.",
-        "Preisser Tech trained a custom AI assistant to extract and analyze invoice data instantly. Office staff upload invoices and receive structured output in seconds. Result: 75% decrease in time spent on manual invoice handling, eliminated manual reading entirely, freed staff for higher-value work, and prevented the need for additional hires.",
+        "a future documented operations example came to Preisser Solutions with a back-office bottleneck — office staff manually reading invoices, transcribing amounts, coding GL accounts, and entering line items into accounting software. The volume meant invoices were sitting unprocessed for days, AR was aging, and adding more office staff was the only obvious answer.",
+        "Preisser Solutions trained a custom AI assistant to extract and analyze invoice data instantly. Office staff upload invoices and receive structured output in seconds. Result: invoice handling metrics published only when verified, eliminated manual reading entirely, freed staff for higher-value work, and prevented the need for additional hires.",
       ],
     },
     {
@@ -74,7 +74,7 @@ export const pageData: AeoPageData = {
     {
       question: "How accurate is AI invoice extraction?",
       answer:
-        "Modern AI extraction is 95%+ accurate on standard fields (vendor, amounts, dates) and 85-95% on GL coding when properly trained on your vendor history. We always design human-in-the-loop validation for edge cases — humans review flagged invoices, AI handles the standard ones.",
+        "Modern AI extraction is designed for accuracy with human review on edge cases. We always design human-in-the-loop validation for edge cases — humans review flagged invoices, AI handles the standard ones.",
     },
     {
       question: "Why not use Bill.com or Stampli?",
@@ -84,7 +84,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does AI invoicing automation cost?",
       answer:
-        "Custom AI invoicing builds typically run in the mid-five figures depending on integration complexity. The HG Oil Holdings build delivered 75% reduction in manual processing time — payback periods are usually under 12 months. Fixed-price proposal after a free discovery call.",
+        "Custom AI invoicing builds typically run in the mid-five figures depending on integration complexity. The future documented operations example build delivered invoice handling metrics published only when verified. Fixed-price proposal after a free discovery call.",
     },
     {
       question: "How long does the build take?",
@@ -109,9 +109,9 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
-    "HG Oil Holdings",
+    "a future documented operations example",
     "Hays, Kansas",
     "QuickBooks",
     "Bill.com",
@@ -121,7 +121,7 @@ export const pageData: AeoPageData = {
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "AI Agent Development", href: "/ai-agents" },
     { label: "AI Customer Service", href: "/services/ai-customer-service" },
-    { label: "HG Oil Holdings Case Study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Case Studies and Proof Hub", href: "/case-studies" },
   ],
   ctaHeadline: "Stop having office staff manually read invoices",
   ctaSubcopy:

@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/garage-door",
   tier: "industry",
-  metaTitle: "Custom Software for Garage Door Companies in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Garage Door Companies in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, dispatch automation, and AI lead handling for garage door companies in Kansas.",
+    "Preisser Solutions builds custom websites, dispatch automation, and AI lead handling for garage door companies in Kansas.",
   eyebrow: "Custom Software for Garage Door Companies in Kansas",
   h1: "Custom Software, Automation, and AI for Garage Door Operators",
   subheadline:
     "Built for owners of residential and commercial garage door companies tired of generic CRMs and slow lead response. Custom-coded in Hays, Kansas by Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for garage door operators — custom websites, lead-response automation, AI agents for after-hours emergency calls, custom dashboards, and integrations with ServiceTitan, CompanyCam, and Housecall Pro. Garage door is a fast-moving service trade where lead-response speed determines who wins the job.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for garage door operators — custom websites, lead-response automation, AI agents for after-hours emergency calls, custom dashboards, and integrations with ServiceTitan, CompanyCam, and Housecall Pro. Garage door is a fast-moving service trade where lead-response speed determines who wins the job.",
   sections: [
     {
       eyebrow: "What we build for garage door",
@@ -37,7 +37,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to garage door",
-      heading: "How each Preisser Tech service shows up in a garage door shop",
+      heading: "How each Preisser Solutions service shows up in a garage door shop",
       body: [
         "Most garage door shops start with lead-response automation and expand from there.",
       ],
@@ -53,7 +53,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Garage door software stack we already work with",
       body: [
-        "Preisser Tech integrates with whatever you're already running:",
+        "Preisser Solutions integrates with whatever you're already running:",
       ],
       bullets: [
         "Field service: ServiceTitan, Housecall Pro, Jobber, FieldEdge",
@@ -69,7 +69,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you really know garage door?",
       answer:
-        "We are a software firm — but we build for trades specifically. Our named HVAC client delivered 5x reach and 60%+ reactivation. The same playbook applies to garage door tune-up and commercial overhead door work.",
+        "We are a software firm — but we build for trades specifically. Our named HVAC client will publish social visibility metrics only when verified. The same playbook applies to garage door tune-up and commercial overhead door work.",
     },
     {
       question: "Do you replace ServiceTitan or Housecall Pro?",
@@ -104,9 +104,9 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
-    "Cassidy HVAC",
+    "a future documented service-business example",
     "Hays, Kansas",
     "ServiceTitan",
     "Housecall Pro",

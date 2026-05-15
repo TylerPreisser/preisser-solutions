@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/flutterflow-vs-custom-coded",
   tier: "comparison",
-  metaTitle: "FlutterFlow vs Custom-Coded Mobile App | Preisser Tech",
+  metaTitle: "FlutterFlow vs Custom-Coded Mobile App | Preisser Solutions",
   metaDescription:
-    "Honest comparison: FlutterFlow no-code mobile builder vs custom-coded mobile apps by Preisser Tech. When no-code mobile stops scaling.",
+    "Honest comparison: FlutterFlow no-code mobile builder vs custom-coded mobile apps by Preisser Solutions. When no-code mobile stops scaling.",
   eyebrow: "Comparison",
   h1: "FlutterFlow vs. Custom-Coded Mobile App",
   subheadline:
     "FlutterFlow is the strongest no-code mobile builder. Custom code wins for production apps. Here's where each fits.",
   answerParagraph:
-    "FlutterFlow is the leading no-code mobile app builder, generating Flutter code from a visual designer. Custom-coded mobile apps by Preisser Tech are built from scratch in React Native, Flutter, Swift, or Kotlin by founder Tyler Preisser in Hays, Kansas. FlutterFlow is the right answer for MVPs, internal tools, and simple apps where speed-to-market matters. Custom code wins for production apps, complex business logic, performance-critical workloads, and apps that will be maintained for years.",
+    "FlutterFlow is the leading no-code mobile app builder, generating Flutter code from a visual designer. Custom-coded mobile apps by Preisser Solutions are built from scratch in React Native, Flutter, Swift, or Kotlin by founder Tyler Preisser in Hays, Kansas. FlutterFlow is the right answer for MVPs, internal tools, and simple apps where speed-to-market matters. Custom code wins for production apps, complex business logic, performance-critical workloads, and apps that will be maintained for years.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -108,7 +108,7 @@ export const pageData: AeoPageData = {
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "FlutterFlow", "Flutter", "React Native", "Hays, Kansas"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "FlutterFlow", "Flutter", "React Native", "Hays, Kansas"],
   relatedLinks: [
     { label: "Bubble vs Custom Coded", href: "/compare/bubble-vs-custom-coded" },
     { label: "Web Application Development", href: "/web-applications" },

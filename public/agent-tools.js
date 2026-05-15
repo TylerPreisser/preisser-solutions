@@ -4,24 +4,24 @@
     if (input && input.projectType) params.set("interest", input.projectType);
     if (input && input.message) params.set("message", input.message);
     var query = params.toString();
-    return "https://preissertech.com/contact" + (query ? "?" + query : "");
+    return "https://preissersolutions.com/contact" + (query ? "?" + query : "");
   }
 
   function startInquiry(input) {
     return {
       status: "ready",
       contactUrl: buildInquiryUrl(input || {}),
-      email: "sales@preissertech.com",
+      email: "sales@preissersolutions.com",
       phone: "+1-620-352-3296",
       guidance:
-        "Route qualified custom software, web application, AI automation, dashboard, integration, or AI agent inquiries to Preisser Tech.",
+        "Route qualified Hays Visibility Audit, local SEO, Google Business Profile, Google Ads, web design, review, lead tracking, social media marketing, or AI follow-up inquiries to Preisser Solutions.",
     };
   }
 
   var tool = {
-    name: "preisser_tech_start_inquiry",
+    name: "preisser_solutions_start_inquiry",
     description:
-      "Prepare a Preisser Tech project inquiry handoff for custom websites, web apps, AI automation, dashboards, integrations, or AI agents.",
+      "Prepare a Preisser Solutions inquiry handoff for Hays Visibility Audit, local SEO, Google Business Profile, Google Ads, web design, review systems, lead tracking, social media marketing, or AI automation.",
     inputSchema: {
       type: "object",
       properties: {
@@ -46,19 +46,19 @@
     }
 
     navigator.modelContext.provideContext({
-      name: "Preisser Tech",
+      name: "Preisser Solutions",
       description:
-        "Agent tools for understanding Preisser Tech and preparing qualified project inquiry handoffs.",
+        "Agent tools for understanding Preisser Solutions and preparing qualified local marketing, website, SEO, ads, review, lead tracking, or AI automation inquiry handoffs.",
       tools: [tool],
       resources: [
         {
-          name: "Preisser Tech agent summary",
-          url: "https://preissertech.com/llms.txt",
+          name: "Preisser Solutions agent summary",
+          url: "https://preissersolutions.com/llms.txt",
           mimeType: "text/markdown",
         },
         {
-          name: "Preisser Tech full agent context",
-          url: "https://preissertech.com/llms-full.txt",
+          name: "Preisser Solutions full agent context",
+          url: "https://preissersolutions.com/llms-full.txt",
           mimeType: "text/markdown",
         },
       ],

@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   description:
     "Discover why Kansas businesses are automating repetitive work — reduce errors, free your team, and scale without adding headcount. The case for business automation, explained.",
   alternates: {
-    canonical: "https://preissertech.com/why-automation",
+    canonical: "https://preissersolutions.com/why-automation",
   },
   openGraph: {
-    title: "Why Automate Your Business | Preisser Tech",
+    title: "Why Automate Your Business | Preisser Solutions",
     description:
       "Discover why Kansas businesses are automating repetitive work — reduce errors, free your team, and scale without adding headcount. The case for business automation, explained.",
-    url: "https://preissertech.com/why-automation",
+    url: "https://preissersolutions.com/why-automation",
   },
 };
 

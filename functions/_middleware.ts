@@ -1,6 +1,10 @@
-const CANONICAL_HOST = "preissertech.com";
-const LEGACY_HOSTS = new Set(["preissersolutions.com", "www.preissersolutions.com"]);
-const DUPLICATE_HOSTS = new Set(["www.preissertech.com", "preisser-solutions.pages.dev"]);
+const CANONICAL_HOST = "preissersolutions.com";
+const LEGACY_HOSTS = new Set(["preissertech.com", "www.preissertech.com"]);
+const DUPLICATE_HOSTS = new Set([
+  "www.preissersolutions.com",
+  "preisser-solutions.pages.dev",
+  "preissersolutions.pages.dev",
+]);
 const LEGACY_PATH_REDIRECTS = new Map([
   ["/index.html", "/"],
   ["/home", "/"],
@@ -14,68 +18,36 @@ const LEGACY_PATH_REDIRECTS = new Map([
   ["/faq.html", "/faq"],
 ]);
 
+const CANONICAL_PATH_REDIRECTS = new Map([
+  ...LEGACY_PATH_REDIRECTS,
+  ["/about-tyler-preisser", "/tyler-preisser"],
+  ["/preisser-technology", "/about"],
+  ["/services/local-seo", "/services/local-seo-hays-ks"],
+  ["/industries/construction", "/industries/contractors"],
+  ["/custom-websites", "/services/web-design-hays-ks"],
+  ["/premium-web-development-kansas", "/services/web-design-hays-ks"],
+  ["/business-automation", "/services/ai-automation-hays-ks"],
+  ["/ai-agents", "/services/ai-automation-hays-ks"],
+  ["/services/ai-search-optimization", "/services/ai-automation-hays-ks"],
+  ["/dashboards-and-analytics", "/services/ai-automation-hays-ks"],
+  ["/web-applications", "/services/web-design-hays-ks"],
+  ["/case-studies/cassidy-hvac", "/case-studies"],
+  ["/case-studies/hg-oil-holdings", "/case-studies"],
+  ["/case-studies/iron-and-oak-podcast", "/case-studies"],
+  ["/case-studies/wife-supply-co", "/case-studies"],
+  ["/preisser-solutions", "/"],
+]);
+
 const LEGACY_ROBOTS_TXT = `User-agent: *
 Allow: /
 
-Sitemap: https://preissertech.com/sitemap.xml
+Sitemap: https://preissersolutions.com/sitemap.xml
 `;
 
-const OPEN_ROBOTS_TXT = `# Preisser Tech — maximum-permissive crawler policy
-# Search indexing, AI retrieval, and AI training are allowed.
-
-User-agent: *
-Allow: /
-Content-Signal: search=yes,ai-train=yes,ai-input=yes
-
-User-agent: GPTBot
+const OPEN_ROBOTS_TXT = `User-agent: *
 Allow: /
 
-User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Googlebot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: CCBot
-Allow: /
-
-User-agent: Bytespider
-Allow: /
-
-User-agent: Amazonbot
-Allow: /
-
-User-agent: Applebot
-Allow: /
-
-User-agent: Applebot-Extended
-Allow: /
-
-User-agent: meta-externalagent
-Allow: /
-
-User-agent: bingbot
-Allow: /
-
-Sitemap: https://preissertech.com/sitemap.xml
+Sitemap: https://preissersolutions.com/sitemap.xml
 `;
 
 const AGENT_DISCOVERY_LINKS = [
@@ -88,6 +60,62 @@ const AGENT_DISCOVERY_LINKS = [
   '</.well-known/agent-skills/index.json>; rel="agent-skills"; type="application/json"',
   '</llms.txt>; rel="alternate"; type="text/markdown"',
 ].join(", ");
+
+const INDEXABLE_LOCATION_PATHS = new Set(["/locations", "/locations/hays-kansas"]);
+const INDEXABLE_INDUSTRY_PATHS = new Set([
+  "/industries",
+  "/industries/contractors",
+  "/industries/restaurants",
+  "/industries/professional-services",
+]);
+const INDEXABLE_SERVICE_PATHS = new Set([
+  "/services",
+  "/services/local-seo-hays-ks",
+  "/services/google-business-profile-optimization-hays-ks",
+  "/services/google-ads-hays-ks",
+  "/services/web-design-hays-ks",
+  "/services/social-media-marketing-hays-ks",
+  "/services/ai-automation-hays-ks",
+]);
+const REDIRECTED_URL_PATHS = new Set([
+  "/custom-websites",
+  "/preisser-technology",
+  "/premium-web-development-kansas",
+  "/business-automation",
+  "/ai-agents",
+  "/services/ai-search-optimization",
+  "/dashboards-and-analytics",
+  "/web-applications",
+]);
+const LEGACY_NOINDEX_URL_PATHS = new Set([
+  "/faq",
+  "/pricing",
+  "/process",
+  "/why-automation",
+  "/roi-calculator",
+]);
+
+function normalizePath(pathname: string) {
+  if (pathname !== "/" && pathname.endsWith("/")) return pathname.slice(0, -1);
+  return pathname;
+}
+
+function shouldNoindexLegacyPath(pathname: string) {
+  const normalized = normalizePath(pathname);
+  if (REDIRECTED_URL_PATHS.has(normalized)) return true;
+  if (LEGACY_NOINDEX_URL_PATHS.has(normalized)) return true;
+  if (normalized.startsWith("/compare/")) return true;
+  if (normalized.startsWith("/locations/") && !INDEXABLE_LOCATION_PATHS.has(normalized)) return true;
+  if (normalized.startsWith("/industries/") && !INDEXABLE_INDUSTRY_PATHS.has(normalized)) return true;
+  if (normalized.startsWith("/services/") && !INDEXABLE_SERVICE_PATHS.has(normalized)) return true;
+  return false;
+}
+
+function getPathRedirect(pathname: string) {
+  const normalized = normalizePath(pathname);
+  if (normalized.startsWith("/preisser-solutions/")) return "/";
+  return CANONICAL_PATH_REDIRECTS.get(normalized);
+}
 
 function redirectToCanonical(url: URL, extraHeaders?: HeadersInit) {
   const destination = new URL(url.toString());
@@ -126,66 +154,6 @@ type MiddlewareContext = {
   next: () => Promise<Response>;
 };
 
-function acceptsMarkdown(request: Request) {
-  const accept = request.headers.get("accept") || "";
-  return accept.toLowerCase().includes("text/markdown");
-}
-
-function isPageRequest(pathname: string) {
-  const lastSegment = pathname.split("/").pop() || "";
-  return pathname === "/" || !lastSegment.includes(".") || pathname.endsWith(".html");
-}
-
-// Explicit maximum-permissive robots signal. Applied to every response that
-// flows through this middleware so AI agents and crawlers see an affirmative
-// "yes, index everything, take everything" header in addition to the open
-// `<meta name="robots" content="index, follow">` baked into every HTML page.
-//
-// Tyler's directive (2026-05-11): ZERO restrictions on AI crawlers and agents.
-// Every page, every path. Maximum visibility, maximum discoverability.
-const OPEN_ROBOTS_TAG =
-  "index, follow, archive, snippet, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
-
-function estimateMarkdownTokens(markdown: string) {
-  return Math.max(1, Math.ceil(markdown.trim().split(/\s+/).length * 1.35));
-}
-
-async function serveMarkdownForAgents(context: MiddlewareContext, url: URL) {
-  const assetUrl = new URL("/llms.txt", url.origin);
-  const assetRequest = new Request(assetUrl.toString(), {
-    headers: { accept: "text/markdown" },
-  });
-  const assetResponse = context.env?.ASSETS
-    ? await context.env.ASSETS.fetch(assetRequest)
-    : await fetch(assetRequest);
-
-  if (!assetResponse.ok) {
-    return context.next();
-  }
-
-  const markdown = await assetResponse.text();
-  // Markdown variant for AI agents is FULLY indexable.
-  // Tyler's directive (2026-05-11): zero restrictions for AI agents/crawlers
-  // on any path, any variant. The previous `shouldNoindex()` gate on this
-  // response was removed so AI agents requesting `Accept: text/markdown`
-  // get an affirmative `X-Robots-Tag: index, follow, ...` signal too.
-  const headers: Record<string, string> = {
-    "content-type": "text/markdown; charset=utf-8",
-    "cache-control": "public, max-age=3600",
-    "content-location": "/llms.txt",
-    "vary": "Accept",
-    "x-markdown-tokens": String(estimateMarkdownTokens(markdown)),
-    "content-signal": "ai-train=yes, search=yes, ai-input=yes",
-    "x-robots-tag": OPEN_ROBOTS_TAG,
-    "link": AGENT_DISCOVERY_LINKS,
-  };
-
-  return new Response(markdown, {
-    status: 200,
-    headers,
-  });
-}
-
 export const onRequest = async (context: MiddlewareContext) => {
   const url = new URL(context.request.url);
   const host = url.hostname.toLowerCase();
@@ -196,45 +164,22 @@ export const onRequest = async (context: MiddlewareContext) => {
       headers: {
         "content-type": "text/plain; charset=utf-8",
         "cache-control": "public, max-age=300, must-revalidate",
-        "content-signal": "ai-train=yes, search=yes, ai-input=yes",
-        "x-robots-tag": OPEN_ROBOTS_TAG,
       },
     });
   }
 
-  if (LEGACY_HOSTS.has(host)) {
-    const mappedPath = LEGACY_PATH_REDIRECTS.get(url.pathname);
-    if (mappedPath) {
-      return redirectToCanonicalPath(url, mappedPath);
-    }
+  const mappedPath = getPathRedirect(url.pathname);
 
-    return redirectToCanonical(url);
+  if (LEGACY_HOSTS.has(host) || DUPLICATE_HOSTS.has(host)) {
+    return mappedPath ? redirectToCanonicalPath(url, mappedPath) : redirectToCanonical(url);
   }
 
-  if (DUPLICATE_HOSTS.has(host)) {
-    return redirectToCanonical(url);
-  }
-
-  if (acceptsMarkdown(context.request) && isPageRequest(url.pathname)) {
-    return serveMarkdownForAgents(context, url);
+  if (mappedPath) {
+    return redirectToCanonicalPath(url, mappedPath);
   }
 
   const response = await context.next();
-
-  // Tyler's directive (2026-05-11): ZERO restrictions on AI crawlers and
-  // agents across preissertech.com. Every page, every path.
-  //
-  // The universal `X-Robots-Tag: index, follow, archive, snippet, ...` header
-  // is set on every response by `public/_headers` at the Cloudflare Pages
-  // edge — that handles all static assets and HTML routes uniformly. This
-  // middleware only re-wraps HTML page responses where we additionally need
-  // to inject the agent-discovery `Link` headers (currently only the homepage,
-  // to avoid the per-request overhead of cloning every response body).
-  //
-  // (Earlier revision applied `noindex` here for every non-root HTML page,
-  // which deindexed the entire site below /. Removed 2026-05-11 — Tyler
-  // wants zero restrictions, so the previous gate is now replaced by the
-  // open `X-Robots-Tag` already emitted by `_headers`.)
+  const shouldNoindex = shouldNoindexLegacyPath(url.pathname);
 
   if (url.pathname === "/" || url.pathname === "/index.html") {
     const headers = new Headers(response.headers);
@@ -242,11 +187,17 @@ export const onRequest = async (context: MiddlewareContext) => {
       headers.append("link", AGENT_DISCOVERY_LINKS);
     }
     headers.append("vary", "Accept");
-    // Belt-and-suspenders: also stamp the open robots header here so the
-    // homepage response carries it even if `_headers` somehow doesn't apply.
-    if (!headers.get("x-robots-tag")) {
-      headers.set("x-robots-tag", OPEN_ROBOTS_TAG);
-    }
+    if (shouldNoindex) headers.set("x-robots-tag", "noindex, follow");
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
+  }
+
+  if (shouldNoindex) {
+    const headers = new Headers(response.headers);
+    headers.set("x-robots-tag", "noindex, follow");
     return new Response(response.body, {
       status: response.status,
       statusText: response.statusText,

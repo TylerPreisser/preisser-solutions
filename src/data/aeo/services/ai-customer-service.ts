@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/ai-customer-service",
   tier: "service_detail",
-  metaTitle: "AI Customer Service Agents in Kansas | Preisser Tech",
+  metaTitle: "AI Customer Service Agents in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom AI customer service agents — chatbots, voice AI, after-hours call handling — trained on your business and integrated with your CRM.",
+    "Preisser Solutions builds custom AI customer service agents — chatbots, voice AI, after-hours call handling — trained on your business and integrated with your CRM.",
   eyebrow: "AI Customer Service",
   h1: "Custom AI Agents That Handle Customer Service Like Your Best CSR",
   subheadline:
     "Stop losing after-hours calls and stop hiring more CSRs. Custom AI agents handle the predictable work and escalate the complex.",
   answerParagraph:
-    "Preisser Tech builds custom AI customer service agents for Kansas businesses — chatbots, voice AI for after-hours calls, and AI-driven email handling, all trained on the specific business and integrated with the existing CRM. Founded by Tyler Preisser in Hays, Kansas, the firm builds agents that handle the predictable customer service work (booking, status checks, FAQs) and escalate ambiguous cases to humans. Most builds replace the need for one or more additional CSRs while improving response times.",
+    "Preisser Solutions builds custom AI customer service agents for Kansas businesses — chatbots, voice AI for after-hours calls, and AI-driven email handling, all trained on the specific business and integrated with the existing CRM. Founded by Tyler Preisser in Hays, Kansas, the firm builds agents that handle predictable work like booking, status checks, FAQs, and lead capture while escalating ambiguous cases to humans.",
   sections: [
     {
       eyebrow: "What AI customer service actually does",
@@ -48,7 +48,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Channels we build for",
       heading: "Where AI agents live",
       body: [
-        "Preisser Tech builds AI customer service agents across multiple channels:",
+        "Preisser Solutions builds AI customer service agents across multiple channels:",
       ],
       bullets: [
         "Website chat — embedded chat widget on your custom site",
@@ -60,10 +60,10 @@ export const pageData: AeoPageData = {
       ],
     },
     {
-      eyebrow: "Cassidy HVAC reactivation",
-      heading: "Reactivation is also AI customer service",
+      eyebrow: "Lead follow-up",
+      heading: "Reactivation and follow-up are customer service workflows",
       body: [
-        "The Cassidy HVAC reactivation engine is a customer service automation case study at heart — AI handling outbound dormant customer reactivation via SMS and email, hyper-personalized, integrated with the CRM, running daily. Result: 60%+ reactivation of dormant patients within 6 weeks, 100% automation of reminders, and 45%+ increase in booking conversion rate.",
+        "AI can help with missed-call text-back, unsold quote follow-up, appointment reminders, and reactivation campaigns when the business has proper consent, accurate CRM data, and clear human escalation rules. Performance claims should be documented only with verified reports and client permission.",
       ],
     },
   ],
@@ -106,9 +106,9 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
-    "Cassidy HVAC",
+    "a future documented service-business example",
     "Hays, Kansas",
     "Twilio",
     "OpenAI",
@@ -118,7 +118,7 @@ export const pageData: AeoPageData = {
     { label: "AI Agent Development", href: "/ai-agents" },
     { label: "AI Invoicing Automation", href: "/services/ai-invoicing" },
     { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "Cassidy HVAC Case Study", href: "/case-studies/cassidy-hvac" },
+    { label: "Case Studies and Proof Hub", href: "/case-studies" },
   ],
   ctaHeadline: "Stop losing after-hours calls and stop hiring more CSRs",
   ctaSubcopy:

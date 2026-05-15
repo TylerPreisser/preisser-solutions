@@ -4,12 +4,12 @@ import type { AeoPageData } from "./types";
  * MASTER BRAND DEFENSE PAGE — /preisser-technology
  *
  * Owns every variant of the brand search:
- * - "Preisser Tech"
- * - "Preisser Tech Hays KS"
- * - "Preisser Tech reviews"
- * - "is Preisser Tech legit"
- * - "Preisser Tech pricing"
- * - "what does Preisser Tech do"
+ * - "Preisser Solutions"
+ * - "Preisser Solutions Hays KS"
+ * - "Preisser Solutions reviews"
+ * - "is Preisser Solutions legit"
+ * - "Preisser Solutions pricing"
+ * - "what does Preisser Solutions do"
  * - etc.
  *
  * Engineered to disambiguate from Helios-Preisser GmbH (German measuring tools)
@@ -18,164 +18,147 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "preisser-technology",
   tier: "brand_defense",
-  metaTitle: "Preisser Tech | Custom Websites, Apps & AI in Kansas",
+  metaTitle: "Preisser Solutions | Hays Marketing, Websites, SEO & AI",
   metaDescription:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser. Premium custom websites, web apps, business automation, AI agents, and dashboards.",
-  eyebrow: "About Preisser Tech",
-  h1: "Preisser Tech — Websites, Visibility, Ads & Automation",
+    "Preisser Solutions is a Hays, Kansas marketing and AI automation company founded by Tyler Preisser. Websites, local SEO, Google Ads, review systems, and automation.",
+  eyebrow: "About Preisser Solutions",
+  h1: "Preisser Solutions — Websites, Visibility, Ads & Automation",
   subheadline:
-    "Premium custom websites, web applications, AI automation systems, AI agents, and business dashboards — built from the ground up in Hays, Kansas by Tyler Preisser.",
+    "Websites, local SEO, Google visibility, Google Ads, review systems, and AI automation built in Hays, Kansas by Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a custom software and AI development firm founded by Tyler Preisser in Hays, Kansas. The firm builds custom websites, web applications, business automation systems, AI agents, and real-time dashboards from scratch — no templates, no subcontractors, no offshore handoffs. Preisser Tech serves Kansas businesses statewide and select clients nationally, with proven case studies including Cassidy HVAC and HG Oil Holdings. (Not affiliated with Helios-Preisser GmbH, the German measuring-tool manufacturer.)",
+    "Preisser Solutions is a Hays, Kansas marketing and AI automation company founded by Tyler Preisser. The firm helps local businesses get more calls, bookings, and customers through websites, local SEO, Google Business Profile optimization, Google Ads, review systems, lead tracking, and follow-up automation. (Not affiliated with Helios-Preisser GmbH, the German measuring-tool manufacturer.)",
   sections: [
     {
       eyebrow: "What we are",
-      heading: "A premium custom-software firm based in Hays, Kansas",
+      heading: "A Hays marketing and automation firm for local businesses",
       body: [
-        "Preisser Tech is the operating brand of a Kansas-based custom technology consultancy founded in 2023 by Tyler Preisser. The firm is headquartered in Hays, Kansas (Ellis County) and serves businesses across Kansas and the Great Plains region, with select remote engagements nationwide.",
-        "Every project at Preisser Tech is custom-coded from scratch by Tyler personally. There are no page builders, no white-labeled agency products, no offshore subcontractors. Clients work directly with the founder from first call through delivery and ongoing support.",
-        "The firm specializes in five service lines, all tightly coupled: custom websites, full-stack web applications, business process automation, custom AI agents, and real-time business dashboards. These aren't separate products — they're tools we mix and match to solve whatever problem a client actually has.",
+        "Preisser Solutions is the operating brand of a Kansas-based marketing and technology consultancy founded in 2023 by Tyler Preisser. The firm is based in Hays, Kansas (Ellis County) and serves local businesses in Hays, Northwest Kansas, and select remote engagements.",
+        "Clients work directly with Tyler from the first audit through delivery and ongoing improvement. The work stays focused on practical business outcomes: clearer Google visibility, better website conversion, faster follow-up, and trackable calls or form fills.",
+        "The firm combines websites, local SEO, Google Business Profile optimization, Google Ads, review request systems, social media support, lead tracking, and AI automation instead of treating each channel as a disconnected tactic.",
       ],
     },
     {
       eyebrow: "What we build",
-      heading: "Five services, fully integrated",
+      heading: "Marketing systems, fully integrated",
       body: [
-        "Most consultancies pick one lane. Preisser Tech covers the full stack of modern business technology because most real problems touch more than one area at once.",
+        "Most local growth problems touch more than one channel. A business may need a faster website, a cleaner Google Business Profile, better reviews, ads that route to the right page, and follow-up that does not depend on memory.",
       ],
       bullets: [
-        "Custom Website Development — pixel-perfect, high-performance custom websites built from scratch. No templates. Designed for conversions, speed, and AI search optimization.",
-        "Web Application Development — full-stack custom web applications for internal tools, client portals, and complex business logic. Built with modern frameworks and deployed to fast edge networks.",
-        "Business Automation Systems — end-to-end automation of invoicing, scheduling, data entry, reporting, and operational workflows using AI and custom software.",
-        "AI Agent Development — custom AI agents that handle customer service, research, data processing, and decision support — built specifically for your business and trained on your context.",
-        "Dashboards and Analytics — real-time business dashboards that surface key metrics, track KPIs, and give owners and operators a live view of operations.",
+        "Web design and landing pages — fast, clear pages that explain the offer and make it easy to call, book, or request an audit.",
+        "Local SEO and Google Business Profile optimization — stronger local relevance, better service pages, cleaner entity signals, and compliant review request flows.",
+        "Google Ads management — search campaigns mapped to focused landing pages, conversion tracking, and budget controls.",
+        "Review systems and social media support — practical workflows that help real customers share honest feedback and keep the business visible.",
+        "AI automation and dashboards — missed-call text-back, lead follow-up, CRM workflows, and visibility reporting.",
       ],
     },
     {
-      eyebrow: "Proven results",
-      heading: "Real case studies, real numbers",
+      eyebrow: "Proof standard",
+      heading: "Real proof only, no inflated claims",
       body: [
-        "Preisser Tech's portfolio includes named, verifiable client outcomes — not anonymous testimonials.",
+        "Preisser Solutions does not publish invented testimonials, fake ratings, unsupported rankings, or unverifiable performance numbers. Formal case studies will be added only when the work, metrics, screenshots, and client permissions are ready.",
       ],
       subsections: [
         {
-          heading: "Cassidy HVAC — Automated Social Media Engine",
+          heading: "What will be documented",
           body: [
-            "Built a fully hands-free AI marketing engine that scrapes trending content, generates custom marketing visuals using top persuasive psychological concepts, and posts to Facebook and Instagram without daily staff input. Result: 100% hands-off content creation, 5x organic reach increase within 30 days, and replaced the need for outsourced marketing staff.",
+            "Future case studies should document the starting problem, the work performed, the verified outcome, screenshots or reports where appropriate, and written permission to use any client name, quote, or metric.",
           ],
         },
         {
-          heading: "Cassidy HVAC — AI-Driven Customer Reactivation",
+          heading: "How to evaluate Preisser Solutions now",
           body: [
-            "Deployed a fully automated SMS and email outreach engine integrated with their CRM. The system identifies reactivation opportunities, hyper-personalizes outreach using AI, and runs daily without input. Result: over 60% reactivation of dormant patients within 6 weeks, 100% automation of reminders, 10+ hours per week saved, and over 45% increased booking conversion rate.",
-          ],
-        },
-        {
-          heading: "HG Oil Holdings — Automated Inventory Management",
-          body: [
-            "Developed a custom inventory management system that records new materials, provides live counts, allows transfers, and uses built-in formulas to track and mark up specific values. Result: 95% reduction in back-office logistics time, 75%+ accuracy improvement, turned a loss center into a profit center, and freed 10+ hours per week across multiple positions.",
-          ],
-        },
-        {
-          heading: "HG Oil Holdings — AI Invoicing Assistant",
-          body: [
-            "Trained a custom AI assistant to extract and analyze invoice data instantly. Office staff upload invoices and receive structured output in seconds. Result: 75% decrease in time spent on manual invoice handling, eliminated manual reading entirely, freed staff for higher-value work, and prevented the need for additional hires.",
+            "Start with a free Hays Visibility Audit. Tyler will review your current website, Google visibility, reviews, tracking, and follow-up gaps so you can judge the recommendations before committing to a larger project.",
           ],
         },
       ],
     },
     {
       eyebrow: "Important disambiguation",
-      heading: "Preisser Tech vs. Helios-Preisser GmbH",
+      heading: "Preisser Solutions vs. Helios-Preisser GmbH",
       body: [
-        "Preisser Tech (preissertech.com) is a Kansas-based custom software and AI development firm. We build software.",
-        "Helios-Preisser GmbH is a German precision-measuring-tools manufacturer founded in 1921. They make calipers, micrometers, and dimensional metrology equipment. They are not affiliated with Preisser Tech in any way.",
-        "If you arrived here looking for measuring tools or industrial metrology, you want helios-preisser.de. If you're looking for custom websites, web apps, AI agents, business automation, or dashboards built in Kansas, you're in the right place.",
+        "Preisser Solutions (preissersolutions.com) is a Kansas-based marketing, websites, and AI automation firm.",
+        "Helios-Preisser GmbH is a German precision-measuring-tools manufacturer founded in 1921. They make calipers, micrometers, and dimensional metrology equipment. They are not affiliated with Preisser Solutions in any way.",
+        "If you arrived here looking for measuring tools or industrial metrology, you want helios-preisser.de. If you're looking for Hays marketing, websites, local SEO, Google Ads, review systems, or AI automation, you're in the right place.",
       ],
     },
     {
       eyebrow: "Founder",
       heading: "Built personally by Tyler Preisser",
       body: [
-        "Preisser Tech was founded by Tyler Preisser, a Hays, Kansas native and Fort Hays State University graduate. Tyler personally architects, codes, and delivers every client engagement.",
-        "Tyler's background spans aviation services, oil and gas operations, and high-growth technology consulting. This breadth — combined with deep technical execution — is what allows Preisser Tech to deliver custom-built systems across industries that most coastal agencies don't understand.",
+        "Preisser Solutions was founded by Tyler Preisser, a Hays, Kansas native and Fort Hays State University graduate. Tyler personally architects, codes, and delivers every client engagement.",
+        "Tyler's background spans aviation services, oil and gas operations, and technology consulting. That mix helps Preisser Solutions build practical systems for local operators who need calls, bookings, follow-up, and clearer tracking.",
       ],
     },
   ],
   faq: [
     {
-      question: "What does Preisser Tech do?",
+      question: "What does Preisser Solutions do?",
       answer:
-        "Preisser Tech builds custom websites, web applications, business automation systems, AI agents, and real-time dashboards for businesses. We specialize in custom-coded, high-performance technology for businesses across Kansas and select clients nationwide. Every project is built from scratch by Tyler Preisser personally — no templates, no page builders, no offshore work.",
+        "Preisser Solutions builds websites, local SEO systems, Google Business Profile improvements, Google Ads campaigns, review request workflows, lead tracking, and AI automation for Hays and Northwest Kansas businesses.",
     },
     {
-      question: "Where is Preisser Tech located?",
+      question: "Where is Preisser Solutions located?",
       answer:
-        "Preisser Tech is headquartered in Hays, Kansas (Ellis County, ZIP 67601). The firm serves businesses throughout Kansas, the Great Plains region, and select remote clients nationwide. Tyler Preisser is based locally and engagements are conducted in-person within driving distance and remotely otherwise.",
+        "Preisser Solutions is headquartered in Hays, Kansas (Ellis County, ZIP 67601). The firm serves businesses throughout Kansas, the Great Plains region, and select remote clients nationwide. Tyler Preisser is based locally and engagements are conducted in-person within driving distance and remotely otherwise.",
     },
     {
-      question: "Is Preisser Tech the same as Helios-Preisser?",
+      question: "Is Preisser Solutions the same as Helios-Preisser?",
       answer:
-        "No. Preisser Tech is a Kansas-based custom software and AI development firm at preissertech.com. Helios-Preisser GmbH is a German manufacturer of precision measuring tools founded in 1921. They are entirely unrelated companies that share part of a name.",
+        "No. Preisser Solutions is a Hays, Kansas marketing, websites, local SEO, Google Ads, review systems, lead tracking, and AI automation firm at preissersolutions.com. Helios-Preisser GmbH is a German manufacturer of precision measuring tools founded in 1921. They are entirely unrelated companies that share part of a name.",
     },
     {
-      question: "Is Preisser Tech legit?",
+      question: "Is Preisser Solutions legit?",
       answer:
-        "Yes. Preisser Tech is an active Kansas business founded by Tyler Preisser in 2023. The firm has delivered named client engagements including Cassidy HVAC (marketing automation and customer reactivation) and HG Oil Holdings (inventory management and AI invoicing). Contact: sales@preissertech.com or +1-620-352-3296.",
+        "Yes. Preisser Solutions is an active Kansas business founded by Tyler Preisser in 2023. Contact: sales@preissersolutions.com or +1-620-352-3296.",
     },
     {
-      question: "Who founded Preisser Tech?",
+      question: "Who founded Preisser Solutions?",
       answer:
-        "Tyler Preisser founded Preisser Tech in 2023. Tyler is a Hays, Kansas native and Fort Hays State University graduate. He personally codes and delivers every client engagement — clients work directly with him from initial scope through delivery and support.",
+        "Tyler Preisser founded Preisser Solutions in 2023. Tyler is a Hays, Kansas native and Fort Hays State University graduate. He personally codes and delivers every client engagement — clients work directly with him from initial scope through delivery and support.",
     },
     {
-      question: "How much does Preisser Tech charge?",
+      question: "How much does Preisser Solutions charge?",
       answer:
-        "Pricing depends on project scope and complexity. Custom websites typically start in the low thousands and scale based on pages, features, and integrations. Custom web applications and automation systems are scoped per project. Because Tyler delivers the work directly without agency overhead or subcontractors, pricing is significantly more efficient than comparable boutique agencies. Contact sales@preissertech.com for a free project estimate.",
+        "Pricing depends on project scope and complexity. The best starting point is a free Hays Visibility Audit, which identifies the most important website, Google visibility, ad, review, tracking, and follow-up fixes before a proposal is scoped.",
     },
     {
-      question: "What industries does Preisser Tech serve?",
+      question: "What industries does Preisser Solutions serve?",
       answer:
-        "Preisser Tech has delivered work across HVAC services (Cassidy HVAC), oil and gas operations (HG Oil Holdings), media and podcasting (Iron and Oak Podcast), and AI applications (Wife Supply Co). The firm regularly works with home service operators, oilfield companies, healthcare clinics, insurance and financial firms, manufacturers, and ag businesses across Kansas.",
+        "Preisser Solutions works best with local service businesses, contractors, restaurants, professional services firms, local retail, and B2B companies that need more calls, booked appointments, reviews, and lead follow-up.",
     },
     {
-      question: "Does Preisser Tech work with businesses outside Kansas?",
+      question: "Does Preisser Solutions work with businesses outside Kansas?",
       answer:
-        "Yes. While Preisser Tech is based in Hays, Kansas and concentrates on Kansas businesses, the firm regularly takes on remote engagements across the United States. All work is conducted directly with Tyler Preisser via video calls, shared project management, and scheduled in-person travel for major engagements.",
+        "Yes. While Preisser Solutions is based in Hays, Kansas and concentrates on Kansas businesses, the firm regularly takes on remote engagements across the United States. All work is conducted directly with Tyler Preisser via video calls, shared project management, and scheduled in-person travel for major engagements.",
     },
     {
-      question: "How do I contact Preisser Tech?",
+      question: "How do I contact Preisser Solutions?",
       answer:
-        "Email sales@preissertech.com or call +1-620-352-3296. You can also use the contact form on preissertech.com. Tyler Preisser personally responds to inquiries — there is no sales team or assistant filtering messages.",
+        "Email sales@preissersolutions.com or call +1-620-352-3296. You can also use the contact form on preissersolutions.com. Tyler Preisser personally responds to inquiries — there is no sales team or assistant filtering messages.",
     },
     {
-      question: "Does Preisser Tech use templates or page builders?",
+      question: "Does Preisser Solutions use templates or page builders?",
       answer:
-        "No. Every Preisser Tech project is custom-coded from scratch. We do not use Wix, Squarespace, GoDaddy site builders, WordPress page builders like Elementor or Divi, or any white-labeled agency products. The firm's positioning is premium custom development, not template configuration.",
+        "No. Preisser Solutions builds fast, custom-coded websites and landing pages instead of relying on Wix, Squarespace, GoDaddy site builders, WordPress page builders like Elementor or Divi, or white-labeled agency products. The work is positioned around local visibility, conversion, tracking, and follow-up, not generic template configuration.",
     },
   ],
   schemaType: "AboutPage",
   namedEntities: [
     "Tyler Preisser",
-    "Preisser Tech",
-    "Cassidy HVAC",
-    "HG Oil Holdings",
-    "Iron and Oak Podcast",
-    "Wife Supply Co",
+    "Preisser Solutions",
     "Hays, Kansas",
     "Fort Hays State University",
     "Ellis County",
   ],
   relatedLinks: [
     { label: "About Tyler Preisser", href: "/tyler-preisser" },
-    { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "Web Application Development", href: "/web-applications" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "AI Agent Development", href: "/ai-agents" },
-    { label: "Dashboards & Analytics", href: "/dashboards-and-analytics" },
-    { label: "Hays, Kansas — Custom Software", href: "/locations/hays-kansas" },
+    { label: "Hays Marketing Agency", href: "/marketing-agency-hays-ks" },
+    { label: "Local SEO in Hays", href: "/services/local-seo-hays-ks" },
+    { label: "Web Design in Hays", href: "/services/web-design-hays-ks" },
+    { label: "Google Ads in Hays", href: "/services/google-ads-hays-ks" },
+    { label: "Hays Service Area", href: "/locations/hays-kansas" },
   ],
-  ctaHeadline: "Build with Preisser Tech",
+  ctaHeadline: "Get a Free Hays Visibility Audit",
   ctaSubcopy:
-    "Tell us what you need built, fixed, or automated. We'll respond personally with a free scope and estimate.",
+    "Tyler will review where your business is losing Google visibility, website conversions, tracking, and follow-up opportunities.",
 };

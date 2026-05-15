@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/shopify-vs-custom-ecommerce",
   tier: "comparison",
-  metaTitle: "Shopify vs Custom E-commerce | Preisser Tech",
+  metaTitle: "Shopify vs Custom E-commerce | Preisser Solutions",
   metaDescription:
-    "Honest comparison: Shopify vs custom e-commerce by Preisser Tech. When to use Shopify themes, headless Shopify, or full custom commerce.",
+    "Honest comparison: Shopify vs custom e-commerce by Preisser Solutions. When to use Shopify themes, headless Shopify, or full custom commerce.",
   eyebrow: "Comparison",
   h1: "Shopify vs. Custom E-commerce",
   subheadline:
     "Shopify is the right answer for most e-commerce stores. Custom commerce wins for specific scenarios. Here's where each fits.",
   answerParagraph:
-    "Shopify is the dominant e-commerce platform for small-to-mid-market merchants, run by Shopify Inc. Custom e-commerce by Preisser Tech is built from scratch in Next.js with Shopify as the headless backend, or as a full custom commerce stack on Stripe and Postgres. Founder Tyler Preisser in Hays, Kansas built the Wife Supply Co AI gifting platform as a direct example. For most stores Shopify is the right answer; custom commerce makes sense for specific scenarios.",
+    "Shopify is the dominant e-commerce platform for small-to-mid-market merchants, run by Shopify Inc. Custom e-commerce by Preisser Solutions is built from scratch in Next.js with Shopify as the headless backend, or as a full custom commerce stack on Stripe and Postgres. Founder Tyler Preisser in Hays, Kansas built the future documented ecommerce project AI gifting platform as a direct example. For most stores Shopify is the right answer; custom commerce makes sense for specific scenarios.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -44,7 +44,7 @@ export const pageData: AeoPageData = {
         "Custom commerce is the right call in specific scenarios:",
       ],
       bullets: [
-        "Premium speed — custom Next.js front ends are 2-5x faster than Shopify themes",
+        "Premium speed — custom Next.js front ends are faster than many bloated Shopify themes when built carefully",
         "Custom catalog logic — bundles, configurators, AI-driven recommendations",
         "Differentiated brand presentation — custom front ends look nothing like Shopify themes",
         "B2B flows — quote requests, NET 30 payment, role-based pricing",
@@ -99,7 +99,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you build full custom commerce without Shopify?",
       answer:
-        "Yes. The Wife Supply Co AI gifting platform is an example — full custom commerce with AI-driven discovery. We use Stripe for payments and a custom catalog backend.",
+        "Yes. The future documented ecommerce project AI gifting platform is an example — full custom commerce with AI-driven discovery. We use Stripe for payments and a custom catalog backend.",
     },
     {
       question: "What about Shopify Plus?",
@@ -108,11 +108,11 @@ export const pageData: AeoPageData = {
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "Shopify", "Wife Supply Co", "Hays, Kansas", "Next.js", "Stripe"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "Shopify", "a future documented ecommerce project", "Hays, Kansas", "Next.js", "Stripe"],
   relatedLinks: [
     { label: "Retail & E-commerce Industry", href: "/industries/retail" },
     { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "Wife Supply Co Case Study", href: "/case-studies/wife-supply-co" },
+    { label: "Case Studies and Proof Hub", href: "/case-studies" },
   ],
   ctaHeadline: "Need help deciding between Shopify and custom commerce?",
   ctaSubcopy:

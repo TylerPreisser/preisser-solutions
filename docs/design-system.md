@@ -1,4 +1,4 @@
-# Preisser Tech — Design System (Stripe x Tyler Fusion)
+# Preisser Solutions — Design System (Stripe x Tyler Fusion)
 
 > **This is the single source of truth for all visual design decisions.**
 > Every agent building UI reads this file. If you change a design pattern, update this file.
@@ -11,7 +11,7 @@
 
 **tylerpreisser.com** provides: Cinematic personality, warm accent colors, GSAP scroll animations with stagger, bold display fonts, gradient blends, glowing hover states, spark/particle energy, dark-mode-first aesthetic.
 
-**Preisser Tech blend**: Stripe's structural precision and enterprise trust, infused with Tyler's warm personality and animated energy. Professional but not sterile. Polished but not generic.
+**Preisser Solutions blend**: Stripe's structural precision and enterprise trust, infused with Tyler's warm personality and animated energy. Professional but not sterile. Polished but not generic.
 
 ---
 
@@ -522,17 +522,13 @@ tl.from(".hero-eyebrow", { opacity: 0, y: 20, duration: 0.5 })
 
 ## 10. Image Treatments
 
-### Current Brand Assets (in archive/ and public/images/)
-- `LOGO.png` — Company logo
-- `Tyler Portait.jpeg` — Tyler Preisser photo
-- `Boost Productivity.png` — Value prop icon
-- `Reduce Operational.png` — Value prop icon
-- `Scalable & Reliable.png` — Value prop icon
-- `Personalized.png` — Value prop icon
-- `Truly Tailored.png` — Value prop icon
-- `Enhance Accuracy.png` — Value prop icon
+### Current Brand Assets
+- `public/images/ps-logo.webp` — Header/footer logo used by the live site.
+- `public/images/ps-logo.png` — Canonical PNG logo for schema and press use.
+- `public/images/tyler-preisser-headshot.jpg` — Founder image used by Person schema and `/tyler-preisser`.
+- `public/images/Tyler Portait.jpeg` — About-page portrait asset retained for the live `/about` page.
+- `archive/` — Old Preisser Solutions assets and raw/generated reference imagery.
 
 ### Image Style Rules
-- Icons: 65px height, auto width, consistent style
 - Portrait: Rounded or circular crop, professional
 - All images: Lazy load below fold, optimized WebP where possible

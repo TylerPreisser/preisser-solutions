@@ -2,6 +2,65 @@
 
 ---
 
+## 2026-05-14 — Hays Local Growth SEO and Compliance System
+
+**Trigger**: Tyler asked for an autonomous growth engineering, SEO, local search, conversion, Cloudflare, analytics, compliance, and repo-preservation pass for the Preisser Solutions website.
+
+**Implemented**:
+- Rebuilt public positioning around Hays marketing, websites, SEO, Google Business Profile optimization, Google Ads, reviews, social media, lead tracking, and AI automation.
+- Added/updated canonical commercial pages, industry pages, service-area hub, resources, privacy, contact, and compliant review page.
+- Repaired schema to avoid fake address/social/proof signals and removed duplicate global WebPage/LocalBusiness-style schema blocks.
+- Added Cloudflare Pages Function lead handling, form validation, attribution capture, and GA4 event hooks without hard-coded tracking IDs.
+- Simplified robots.txt, removed AI-training permission headers, made sitemap generation write both `out` and `public`, and excluded/noindexed legacy risky page groups.
+- Removed unsupported child case-study pages and unused legacy case-study data; old URLs now redirect to the safe proof hub.
+- Added `AGENTS.md` plus GBP, measurement, content roadmap, offsite authority, and Google Ads launch docs.
+
+**Notes**:
+- Legacy long-tail AEO/location/compare pages were retained for preservation but are noindexed/excluded unless they are canonical Hays/local-growth pages.
+- No production deploy was run.
+
+## 2026-05-14 — DIRECTORY CLEANUP: generated artifacts removed, root assets organized, unused scaffolds pruned
+
+**Directive**: Tyler asked to intelligently clean up the entire Preisser Solutions website directory.
+
+**Cleanup performed**:
+
+- Removed ignored/generated local artifacts: `.DS_Store`, `.next/`, `out/`, `.wrangler/tmp/`, and `next-env.d.ts`.
+- Removed tracked root duplicate `A0427592-A370-4409-B1F0-4EB5D9B9F46B.png`; SHA-256 matched `public/images/ps-logo.png` exactly.
+- Moved loose tracked root image drafts into `archive/raw-assets/`:
+  - `Gemini_Generated_Image_4g1l8n4g1l8n4g1l.jpeg`
+  - `Gemini_Generated_Image_699su7699su7699s.jpeg`
+  - `Gemini_Generated_Image_9fv3l59fv3l59fv3.jpeg`
+  - `Gemini_Generated_Image_tc44m1tc44m1tc44.jpeg`
+- Deleted unused scaffolds with no live imports:
+  - `src/components/about/bio-section.tsx`
+  - `src/components/contact/contact-form.tsx`
+  - `src/components/home/problem-section.tsx`
+  - `src/components/home/results.tsx`
+  - `src/components/ai-pages/AIPageLayout.tsx`
+  - `src/components/ai-pages/StructuredData.tsx`
+  - `src/data/ai-pages/types.ts`
+  - `src/components/services/service-detail.tsx`
+  - `src/components/layout/section.tsx`
+  - `src/components/ui/{badge,button,card,input}.tsx`
+  - `src/hooks/{use-media-query,use-reduced-motion,use-scroll-position}.ts`
+  - `src/lib/animations.ts`
+- Removed unreferenced public assets:
+  - `public/ps-hero-style.css`
+  - `public/ps-hero-animation.js`
+  - `public/images/stripe/`
+  - legacy public value-prop icons and `public/images/LOGO.png`
+- Removed unused `valueProps` data from `src/data/services.ts`.
+- Removed empty directories left by the deleted scaffolds.
+- Updated `CLAUDE.md`, `docs/design-system.md`, `docs/status.md`, and `docs/plans/current-plan.md` to match the current file map and cleanup state.
+
+**Known follow-up**:
+- CSS still contains some historical `.ps-problem*`, `.ps-results*`, and `.ps-ai-*` selectors. They are harmless but can be removed in a focused CSS cleanup pass after build verification.
+
+**Build status**: PASS — `npm run build` completed cleanly. Next generated 109 static routes; `scripts/generate-sitemap.mjs` wrote 106 canonical URLs. Ignored build artifacts were removed again afterward to keep the working directory clean.
+
+---
+
 ## 2026-05-11 — PUNCH LIST PASS: COPY, STRUCTURE, ENTERPRISE REFS (web-code-executor)
 
 **Directive**: Tyler's 12-item punch list — surgical copy, structure, and visual fixes to homepage.
@@ -26,7 +85,7 @@
 
 **Files modified**:
 
-- `src/app/layout.tsx` — Updated `metadata.title.default`, `openGraph.title`, `twitter.title` to `Preisser Tech | Custom Websites, Marketing & AI`. Updated all 3 description fields (metadata, OG, Twitter) to the enterprise-client-list copy. Updated JSON-LD WebPage `name` and `description` to match.
+- `src/app/layout.tsx` — Updated `metadata.title.default`, `openGraph.title`, `twitter.title` to `Preisser Solutions | Custom Websites, Marketing & AI`. Updated all 3 description fields (metadata, OG, Twitter) to the enterprise-client-list copy. Updated JSON-LD WebPage `name` and `description` to match.
 - `src/app/page.tsx` — Updated `metadata.title.absolute`, `openGraph.title`, `twitter.title`, all descriptions, OG image alt. All now match the final spec strings.
 - `src/components/home/hero.tsx` — Restored H1 to `World-Class Technology. / Built in Kansas.` with TODO comment above it. Updated subheadline to the enterprise client list. Updated eyebrow to "Built in Kansas." Updated sr-only summary paragraph.
 - `src/components/home/value-strip.tsx` — Replaced all 4 value strip items with the 4 exact strings specified.
@@ -98,7 +157,7 @@ for path in / /about /services /contact /pricing /tyler-preisser /case-studies \
             /press /faq /process /why-automation /custom-websites /web-applications \
             /ai-agents /business-automation /dashboards-and-analytics /404.html; do
   echo "=== $path ==="
-  curl -sI "https://preissertech.com$path" | grep -iE 'x-robots-tag|content-signal|^HTTP/'
+  curl -sI "https://preissersolutions.com$path" | grep -iE 'x-robots-tag|content-signal|^HTTP/'
 done
 # Expected: every path returns
 #   X-Robots-Tag: index, follow, archive, snippet, max-snippet:-1, max-image-preview:large, max-video-preview:-1
@@ -106,16 +165,16 @@ done
 # Zero "noindex" or "nofollow" anywhere.
 
 # 2. Markdown alternate for AI agents should also be open.
-curl -sI -H "Accept: text/markdown" https://preissertech.com/services | grep -iE 'x-robots-tag|content-type|content-signal'
+curl -sI -H "Accept: text/markdown" https://preissersolutions.com/services | grep -iE 'x-robots-tag|content-type|content-signal'
 # Expected: text/markdown content-type, open x-robots-tag, ai-train=yes.
 
 # 3. 404 page meta tag should be ONLY index,follow.
-curl -s https://preissertech.com/this-path-does-not-exist | grep -oE '<meta name="robots"[^>]*>'
+curl -s https://preissersolutions.com/this-path-does-not-exist | grep -oE '<meta name="robots"[^>]*>'
 # Expected: <meta name="robots" content="index, follow"/>  (one line only).
 
 # 4. robots.txt and llms.txt sanity.
-curl -s https://preissertech.com/robots.txt | head -20
-curl -s https://preissertech.com/llms.txt | head -10
+curl -s https://preissersolutions.com/robots.txt | head -20
+curl -s https://preissersolutions.com/llms.txt | head -10
 
 # 5. GSC: re-submit sitemap and request indexing on previously-affected URLs.
 ```
@@ -125,19 +184,19 @@ curl -s https://preissertech.com/llms.txt | head -10
 - `out/sitemap.xml` only lists `/` — the rest of the 109-page inventory is not enumerated. This is a separate, pre-existing gap unrelated to the indexing-permissiveness directive — orchestrator should flag it for a follow-up "sitemap completeness" pass. The new `llms.txt` URL Index partially compensates for AI agents, but Google's bulk discovery would still benefit from a real sitemap.
 - The Next.js framework will continue to inject `<meta name="robots" content="noindex">` into `out/404.html` on every build. Our `scripts/strip-404-noindex.mjs` postbuild step neutralizes this deterministically. The fix is durable but requires the postbuild step to keep running. If a future Next.js upgrade respects `metadata.robots` on `not-found.tsx` natively, the script can be deleted.
 
-**No other restrictions remain in the production codebase.** `docs/proposal-system/*` retains `robots: { index: false, follow: false }` in its template instructions — these apply only to client-private proposal pages generated case-by-case (currently zero exist), and those pages SHOULD remain noindex since they're confidential client proposals. They are not part of the public preissertech.com surface.
+**No other restrictions remain in the production codebase.** `docs/proposal-system/*` retains `robots: { index: false, follow: false }` in its template instructions — these apply only to client-private proposal pages generated case-by-case (currently zero exist), and those pages SHOULD remain noindex since they're confidential client proposals. They are not part of the public preissersolutions.com surface.
 
 ---
 
 ## 2026-05-11 — CRITICAL SEO BUG FIXED: every non-homepage was serving `x-robots-tag: noindex, follow` (web-code-debug)
 
-**Symptom**: GSC flagged preissertech.com with "Excluded by 'noindex' tag". Investigation confirmed every page on preissertech.com except `/` was serving an HTTP response header `x-robots-tag: noindex, follow` from the Cloudflare Pages edge function. Verified live via `curl -I` on `/about`, `/services`, `/contact`, `/pricing`, `/locations/hays-kansas`, `/compare/wix-vs-custom`, `/case-studies`, `/industries/agriculture`, `/preisser-technology`, `/tyler-preisser`, `/press` — ALL returned `x-robots-tag: noindex, follow`. Only `/` (homepage) was clean.
+**Symptom**: GSC flagged preissersolutions.com with "Excluded by 'noindex' tag". Investigation confirmed every page on preissersolutions.com except `/` was serving an HTTP response header `x-robots-tag: noindex, follow` from the Cloudflare Pages edge function. Verified live via `curl -I` on `/about`, `/services`, `/contact`, `/pricing`, `/locations/hays-kansas`, `/compare/wix-vs-custom`, `/case-studies`, `/industries/agriculture`, `/preisser-solutionsnology`, `/tyler-preisser`, `/press` — ALL returned `x-robots-tag: noindex, follow`. Only `/` (homepage) was clean.
 
 **Root cause**: `functions/_middleware.ts` (commit `d717db1`, 2026-05-06, "Improve agent readiness and search indexing"). The commit added `shouldNoindex(pathname)` to deindex the **markdown alternate** (`text/markdown` response served via `serveMarkdownForAgents`) — which is correct, those duplicate-content markdown variants should not be indexed. But the same `shouldNoindex` check was ALSO wired into the **HTML response path** (`onRequest` after `context.next()`), which forced `x-robots-tag: noindex, follow` onto every HTML page where `pathname !== "/"` and `pathname !== "/index.html"`. This silently deindexed ~108 of 109 pages at the edge regardless of the `<meta name="robots" content="index, follow"/>` tags Next.js correctly emits in the HTML.
 
 The HTML output in `out/*.html` was always correct — `<meta name="robots" content="index, follow">` on every page except `404.html` (which correctly has `noindex`). The bug was purely in the edge function header layer overriding the meta.
 
-**Impact (affected URLs)**: every indexable URL except `/` — about 108 pages. Includes all marketing pages (`/services`, `/about`, `/contact`, `/pricing`, `/process`, `/faq`, `/why-automation`, `/case-studies`, `/press`, `/roi-calculator`, `/tyler-preisser`, `/preisser-technology`, `/custom-websites`, `/business-automation`, `/ai-agents`, `/dashboards-and-analytics`, `/premium-web-development-kansas`, `/web-applications`), all 11 services, all 27 locations, all 20 industries, all 16 compare pages, all 5 case studies.
+**Impact (affected URLs)**: every indexable URL except `/` — about 108 pages. Includes all marketing pages (`/services`, `/about`, `/contact`, `/pricing`, `/process`, `/faq`, `/why-automation`, `/case-studies`, `/press`, `/roi-calculator`, `/tyler-preisser`, `/preisser-solutionsnology`, `/custom-websites`, `/business-automation`, `/ai-agents`, `/dashboards-and-analytics`, `/premium-web-development-kansas`, `/web-applications`), all 11 services, all 27 locations, all 20 industries, all 16 compare pages, all 5 case studies.
 
 **Legitimate noindex pages (unaffected, intentional)**:
 - `404.html` — has `<meta name="robots" content="noindex">` in Next.js-built output (correct; Google guidance is 404s should not be indexed)
@@ -151,17 +210,17 @@ The HTML output in `out/*.html` was always correct — `<meta name="robots" cont
 **Production verification after deploy** (orchestrator will push + deploy):
 ```bash
 for path in /about /services /contact /pricing /locations/hays-kansas /tyler-preisser /press; do
-  curl -sI "https://preissertech.com$path" | grep -i "x-robots"
+  curl -sI "https://preissersolutions.com$path" | grep -i "x-robots"
 done
 ```
 Should return ZERO `x-robots-tag` lines (header should disappear entirely from HTML responses). Currently every one of those returns `x-robots-tag: noindex, follow` — that is what must vanish.
 
 **GSC validation steps for Tyler (after deploy)**:
-1. Confirm fix on production by hand: open Chrome DevTools → Network tab → load `https://preissertech.com/about` → click the document request → "Headers" → confirm `x-robots-tag` is absent. Repeat for `/services` and `/tyler-preisser`.
-2. Go to Search Console → preissertech.com property → left nav → **Indexing → Pages**.
+1. Confirm fix on production by hand: open Chrome DevTools → Network tab → load `https://preissersolutions.com/about` → click the document request → "Headers" → confirm `x-robots-tag` is absent. Repeat for `/services` and `/tyler-preisser`.
+2. Go to Search Console → preissersolutions.com property → left nav → **Indexing → Pages**.
 3. Click the row labeled **"Excluded by 'noindex' tag"** to expand the list of affected URLs.
 4. Click **"Validate Fix"** at the top right of the issue panel. This triggers Google to re-crawl a sample of the affected URLs. Validation usually completes in 1–14 days; status will show as "Validation: Passed" or "Validation: Failed".
-5. While waiting, also submit the top 10 affected URLs for priority recrawl: Search Console → **URL Inspection** (top search bar) → paste URL → click **"Request indexing"**. Do this for `/`, `/services`, `/about`, `/contact`, `/pricing`, `/tyler-preisser`, `/locations/hays-kansas`, `/press`, `/case-studies`, `/preisser-technology`. (Daily quota: 10–12 requests across all properties.)
+5. While waiting, also submit the top 10 affected URLs for priority recrawl: Search Console → **URL Inspection** (top search bar) → paste URL → click **"Request indexing"**. Do this for `/`, `/services`, `/about`, `/contact`, `/pricing`, `/tyler-preisser`, `/locations/hays-kansas`, `/press`, `/case-studies`, `/preisser-solutionsnology`. (Daily quota: 10–12 requests across all properties.)
 6. Re-submit the sitemap (Indexing → Sitemaps → `sitemap.xml` → "Submit") to nudge Google to re-evaluate the full URL set with the now-clean headers.
 
 **Files changed**: `functions/_middleware.ts`, `.context/CHANGELOG.md` (this entry).
@@ -241,10 +300,10 @@ Should return ZERO `x-robots-tag` lines (header should disappear entirely from H
 
 **Findings — PASS**:
 - Built `index.html` contains "Stop Renting Attention. Start Owning It." and 22 MarCommand mentions across hero summary, hero subhead, value strip, services tile, MarCommand section, and JSON-LD `knowsAbout`.
-- Old strings "World-Class Technology", "world-class", "You show us the problem" — ZERO occurrences in built homepage. Only legitimate residue is `src/data/aeo/preisser-technology.ts` line 25 (brand-defense H1 — intentional, separate page).
+- Old strings "World-Class Technology", "world-class", "You show us the problem" — ZERO occurrences in built homepage. Only legitimate residue is `src/data/aeo/preisser-solutionsnology.ts` line 25 (brand-defense H1 — intentional, separate page).
 - JSON-LD: 1 `<script type="application/ld+json">` block in homepage `<head>`. Valid JSON, array of 5 entities: `[Organization,ProfessionalService]`, `Person`, `WebSite`, `WebPage`, `LocalBusiness`. No duplicate FAQPage. `knowsAbout` array expansion (4 new entries: Google Ads, Meta Ads, AEO/GEO, MarCommand) is schema.org-compliant.
-- Metadata cascade: page title resolves to `Preisser Tech | Marketing & AI Systems Built in Kansas` (via `title.absolute` override, bypasses template stack — correct). Description, canonical (`https://preissertech.com`), OG image (`/images/og-image-v2.jpg`), Twitter `summary_large_image` all coherent.
-- `alternateName` array in Organization is `["Preisser Technology", "Preisser Tech"]` — no "Preisser Solutions" residue.
+- Metadata cascade: page title resolves to `Preisser Solutions | Marketing & AI Systems Built in Kansas` (via `title.absolute` override, bypasses template stack — correct). Description, canonical (`https://preissersolutions.com`), OG image (`/images/og-image-v2.jpg`), Twitter `summary_large_image` all coherent.
+- `alternateName` array in Organization is `["Preisser Solutionsnology", "Preisser Solutions"]` — no "Preisser Solutions" residue.
 - `MarCommandCallout` is correctly `"use client"`, imports GSAP via the canonical `@/lib/gsap` shim (matches project convention), guards with `prefers-reduced-motion`, kills ScrollTriggers on cleanup. No hydration mismatch surface.
 - CTA buttons: hero "Start Building" → `/contact`; MarCommand "Build My MarCommand" → `/contact`. Both hrefs intact.
 - Banned buzzwords (`leverage`, `synergy`, `empower`, `unleash`, `holistic`, `partner with you`): zero in `src/components/home/`. One `ecosystem` in `layout.tsx` (line 405 inside Tyler's `knowsAbout`: "Kansas Business Ecosystem" — pre-existing, not new copy). One `transform` in CSS-style contexts only (no marketing copy).
@@ -257,7 +316,7 @@ Should return ZERO `x-robots-tag` lines (header should disappear entirely from H
 3. `MarCommandCallout` registers its own `ScrollTrigger.getAll().forEach(t => t.kill())` cleanup — this kills *every* ScrollTrigger globally, not just this component's. Pre-existing pattern in `value-strip.tsx`, `cta-section.tsx`, etc., so not new — but worth flagging because each new client component using this pattern adds another race-condition surface on unmount across navigations.
 
 **Findings — OUT-OF-SCOPE FLAGS (not the debugger's job to fix)**:
-- `src/data/aeo/preisser-technology.ts` line 25 (`h1: "Preisser Tech — World-Class Tech for Your Business"`) and line 27 (`subheadline: "Premium custom websites, web applications, AI automation systems, AI agents, and business dashboards — built from the ground up in Hays, Kansas by Tyler Preisser"`) — the brand-defense page still leads with the old custom-software positioning. Now that the homepage is messaging marketing-first, the brand-defense page's H1 and subheadline diverge. AEO geo/vertical pages (`/services/web-development`, etc.) likely have similar divergence; not audited file-by-file because Tyler scoped this as out-of-scope. Decision needed: rewrite AEO master + variants to match new positioning, or accept the brand-defense page as a deliberate disambiguation surface keeping the old framing.
+- `src/data/aeo/preisser-solutionsnology.ts` line 25 (`h1: "Preisser Solutions — World-Class Tech for Your Business"`) and line 27 (`subheadline: "Premium custom websites, web applications, AI automation systems, AI agents, and business dashboards — built from the ground up in Hays, Kansas by Tyler Preisser"`) — the brand-defense page still leads with the old custom-software positioning. Now that the homepage is messaging marketing-first, the brand-defense page's H1 and subheadline diverge. AEO geo/vertical pages (`/services/web-development`, etc.) likely have similar divergence; not audited file-by-file because Tyler scoped this as out-of-scope. Decision needed: rewrite AEO master + variants to match new positioning, or accept the brand-defense page as a deliberate disambiguation surface keeping the old framing.
 - Navigation: header has no nav labels referencing old positioning — only a "Get in Touch" CTA. Footer copyright + LinkedIn link only. No nav/footer regression.
 
 **Findings — REGRESSIONS**: NONE. Nothing fixed.
@@ -408,15 +467,15 @@ Should return ZERO `x-robots-tag` lines (header should disappear entirely from H
 
 **Push**: Succeeded — `f1c765e..fb9efc8 main -> main` → https://github.com/TylerPreisser/preisser-solutions.git
 
-**Deploy URL**: https://194b71ff.preisser-solutions.pages.dev (production alias: preissertech.com)
+**Deploy URL**: https://194b71ff.preisser-solutions.pages.dev (production alias: preissersolutions.com)
 **Wrangler project**: `preisser-solutions` | Branch: `main` | Files uploaded: 215 new + 243 cached
 
 **Build**: Clean exit — 109 pages, no `/preisser-solutions` route present.
 
 **Files committed** (12 total):
 - `src/app/layout.tsx` — GA4 wiring, GSC/Bing env-var verification, yandex preserved
-- `src/styles/globals.css` — comment header updated to Preisser Tech
-- `src/data/aeo/preisser-technology.ts` — legacy brand content blocks removed
+- `src/styles/globals.css` — comment header updated to Preisser Solutions
+- `src/data/aeo/preisser-solutionsnology.ts` — legacy brand content blocks removed
 - `src/data/site-config.ts` — comment mentioning old Facebook URL removed
 - `public/llms.txt` — "Former brand: Preisser Solutions" lines removed
 - `public/llms-full.txt` — "Former Brand: Preisser Solutions" lines removed
@@ -428,8 +487,8 @@ Should return ZERO `x-robots-tag` lines (header should disappear entirely from H
 - `src/data/aeo/preisser-solutions.ts` — DELETED
 
 **Smoke tests** (all passed):
-- `preissertech.com/` → HTTP 200 ✓
-- `preissertech.com/preisser-solutions` → HTTP 301, Location: / ✓
+- `preissersolutions.com/` → HTTP 200 ✓
+- `preissersolutions.com/preisser-solutions` → HTTP 301, Location: / ✓
 - `llms.txt` grep "preisser solutions" → 0 ✓
 - Homepage HTML grep "preisser solutions" → 0 ✓
 - Homepage HTML grep "yandex-verification" → 2 (meta tag + content attribute) ✓
@@ -444,10 +503,10 @@ Should return ZERO `x-robots-tag` lines (header should disappear entirely from H
 **Wrangler auth**: Tylerpreisser@gmail.com's Account (OAuth, pages:write confirmed)
 
 **Deploy URL (unique)**: https://e26ffde7.preisser-solutions.pages.dev
-**Production alias**: https://preissertech.com
+**Production alias**: https://preissersolutions.com
 **Files uploaded**: 214 new + 244 cached
 
-**Smoke tests (live site https://preissertech.com/)**:
+**Smoke tests (live site https://preissersolutions.com/)**:
 - `grep -ic "from scratch"` → 0 ✓
 - `grep -ic "from the ground up"` → 0 ✓
 - `grep -ic "built specifically for your business"` → 1 ✓
@@ -477,12 +536,12 @@ All eight checks green.
 
 ## 2026-05-04 (night) — Brand Scrub + GA/GSC Infrastructure (web-code-executor)
 
-**Trigger**: Orchestrator brand-cleanup pass. Tyler confirmed: remove all "Preisser Solutions" brand mentions from any crawler-facing surface. ChatGPT was naming "Preisser Solutions" while citing preissertech.com. Five confirmed leak sources scrubbed.
+**Trigger**: Orchestrator brand-cleanup pass. Tyler confirmed: remove all "Preisser Solutions" brand mentions from any crawler-facing surface. ChatGPT was naming "Preisser Solutions" while citing preissersolutions.com. Five confirmed leak sources scrubbed.
 
 **Files modified**:
 - `src/app/layout.tsx` — (1) Removed `"Preisser Solutions"` from `alternateName` array; (2) Stripped "Preisser Solutions was the firm's former..." sentence from `disambiguatingDescription`; (3) Removed `verification.yandex` block; (4) Added `verification.google` and `verification.other` (Bing) env-var-driven placeholders; (5) Added GA4 `<Script>` tags (afterInteractive, conditional on `NEXT_PUBLIC_GA_MEASUREMENT_ID`); (6) Removed comment mentioning `/preissersolutions` Facebook URL; (7) Added `import Script from "next/script"`.
 - `src/styles/globals.css` — Comment header changed from `PREISSER SOLUTIONS — GLOBAL CSS` to `PREISSER TECH — GLOBAL CSS`.
-- `src/data/aeo/preisser-technology.ts` — (1) Removed "Former name / Preisser Solutions is now Preisser Tech" content block; (2) Removed "Is Preisser Solutions the same company as Preisser Tech?" FAQ entry; (3) Removed `{ label: "Preisser Solutions Is Now Preisser Tech", href: "/preisser-solutions" }` from `relatedLinks`.
+- `src/data/aeo/preisser-solutionsnology.ts` — (1) Removed "Former name / Preisser Solutions is now Preisser Solutions" content block; (2) Removed "Is Preisser Solutions the same company as Preisser Solutions?" FAQ entry; (3) Removed `{ label: "Preisser Solutions Is Now Preisser Solutions", href: "/preisser-solutions" }` from `relatedLinks`.
 - `src/data/site-config.ts` — Removed code comment referencing `/preissersolutions` Facebook page rename.
 - `public/llms.txt` — Removed "Former brand: Preisser Solutions" and "Legacy domain: https://preissersolutions.com..." lines from Brand Note section.
 - `public/llms-full.txt` — Removed "Former Brand: Preisser Solutions" and "Legacy Domain: preissersolutions.com..." lines from Site Metadata section.
@@ -500,7 +559,7 @@ All eight checks green.
 **Build verification**:
 - `npm run build` exits clean (0).
 - Page count: **109 → 109**. Wait — build reports 109 pages. Previous count was 110 (including `/preisser-solutions`). Confirmed page count is now 109 (one less). No other routes affected.
-- `out/index.html` — zero occurrences of "Preisser Solutions", zero yandex verification meta tag, `alternateName` confirmed clean, canonical `https://preissertech.com/` intact.
+- `out/index.html` — zero occurrences of "Preisser Solutions", zero yandex verification meta tag, `alternateName` confirmed clean, canonical `https://preissersolutions.com/` intact.
 - `out/llms.txt` and `out/llms-full.txt` — zero "Preisser Solutions" or "preissersolutions" mentions.
 - `out/sitemap.xml` — `/preisser-solutions` URL was never in sitemap (already absent before this session).
 - `out/_redirects` — `/preisser-solutions → /` and `/preisser-solutions/* → /` rules confirmed present.
@@ -538,23 +597,23 @@ All eight checks green.
 4. **Build state**: CLEAN. `npm run build` completes without errors. Outputs 106+ pages to `/out/`. No warnings. Production-ready.
 
 5. **Rebrand residuals confirmed**:
-   - `package.json` — FIXED (now "preisser-tech", was "preisser-solutions")
+   - `package.json` — FIXED (now "preisser-solutions", was "preisser-solutions")
    - `package-lock.json` — Artifact (auto-resolves on `npm install`)
    - `wrangler.toml` — PENDING (still "preisser-solutions", cosmetic, Cloudflare Pages project name tie-in)
-   - `next.config.ts` — FIXED (GitHub Pages path prefix now "/preisser-tech")
-   - `public/ps-hero-animation.js` — FIXED (comment updated to "Preisser Tech")
+   - `next.config.ts` — FIXED (GitHub Pages path prefix now "/preisser-solutions")
+   - `public/ps-hero-animation.js` — FIXED (comment updated to "Preisser Solutions")
    - `src/app/layout.tsx` — FIXED (alternateName updated, commit `9bb846b`)
-   - `src/data/site-config.ts` — CORRECT (points to future /company/preissertech, /preissertech social handles — awaiting Tyler to create accounts)
+   - `src/data/site-config.ts` — CORRECT (points to future /company/preissersolutions, /preissersolutions social handles — awaiting Tyler to create accounts)
    - `/preisser-solutions` route page — EXISTS (likely for 301 redirect or historical reference)
 
 6. **Design system verified**: Stripe-inspired + Tyler personality blend. 18 color tokens (primary blue #0D95E8, dark navy #0A1628, light off-white #F6F9FC, etc.). Typography: Inter font stack (400–800 weights). Spacing/shadows follow Stripe conventions. Animations: GSAP + Framer Motion, prefers-reduced-motion respected, mobile fade-only (no transforms < 768px).
 
 7. **SEO/AEO infrastructure**:
    - `robots.txt` — PERMISSIVE (User-agent: *, Allow: /), correct as of 2026-05-04 deploy
-   - `sitemap.xml` — 106 URLs, all preissertech.com, priority/lastmod correct
+   - `sitemap.xml` — 106 URLs, all preissersolutions.com, priority/lastmod correct
    - `public/llms.txt` + `llms-full.txt` — PRESENT, comprehensive AI crawler guidance
    - JSON-LD schema — Organization + ProfessionalService + Person (Tyler) + LocalBusiness, all in layout.tsx
-   - Canonical URLs — all pages use preissertech.com (verified via metadata exports)
+   - Canonical URLs — all pages use preissersolutions.com (verified via metadata exports)
    - OG/Twitter cards — present on most pages, per-page overrides on key landing pages
 
 8. **Critical gaps from AEO audit (2026-05-04)**:
@@ -567,7 +626,7 @@ All eight checks green.
 9. **Drift report against STATE.md**:
    - STATE.md says "105 pages" → actually 106 (root layout + 105 dynamic pages, or 106 unique URLs in sitemap)
    - STATE.md says "35 core + 70 AEO = 105" → breakdown is 19 core + 33 locations + 20 industries + 20 compare + 5 case studies + 11 services detail + 2 brand defense + 1 founder + others = 111+ when all variants counted
-   - STATE.md says brand cleanup is "cosmetic, no production effect" → CONFIRMED. All user-facing canonical URLs point to preissertech.com. Only internal toolchain names (package.json, wrangler project) reference old brand.
+   - STATE.md says brand cleanup is "cosmetic, no production effect" → CONFIRMED. All user-facing canonical URLs point to preissersolutions.com. Only internal toolchain names (package.json, wrangler project) reference old brand.
    - STATE.md says "Phase 1 Foundation COMPLETE" → CONFIRMED. Build clean, content complete, all pages deployed, monitoring/outreach/playbook systems operational.
 
 10. **Master cartography document**: Updated `.context/CARTOGRAPHY.md` with:
@@ -639,7 +698,7 @@ All eight checks green.
 - Live JSON-LD: logo `@id`, `contentUrl`, correct dimensions confirmed in live response
 
 **Commits**: `7cca615` (icons), `7d78d5b` (seo/layout)
-**Deploy**: https://d14de503.preisser-solutions.pages.dev → https://preissertech.com/
+**Deploy**: https://d14de503.preisser-solutions.pages.dev → https://preissersolutions.com/
 
 ---
 
@@ -648,13 +707,13 @@ All eight checks green.
 **Trigger**: Tyler requested Yandex Webmaster ownership verification.
 **Change**: Created `public/yandex_9f19081f7abbbb70.html` with exact verification content required by Yandex.
 **Build**: `npm run build` — clean, 109 pages, no errors. File confirmed present in `/out`.
-**Deploy**: Wrangler Pages → https://preissertech.com/yandex_9f19081f7abbbb70.html returns HTTP 200.
+**Deploy**: Wrangler Pages → https://preissersolutions.com/yandex_9f19081f7abbbb70.html returns HTTP 200.
 
 ---
 
 ## 2026-05-04 (evening) — Brand disambiguation + Bing IndexNow refresh (web-code-executor)
 
-**Trigger**: Tyler reported ChatGPT search returns automotive 'preissertech' instead of his B2B consultancy. Brand collision risk with at least two automotive entities.
+**Trigger**: Tyler reported ChatGPT search returns automotive 'preissersolutions' instead of his B2B consultancy. Brand collision risk with at least two automotive entities.
 
 **Task 1 — Organization JSON-LD disambiguation strengthened**:
 - `disambiguatingDescription`: Rewritten to lead with automotive tuning collision as item (1) — explicitly states "we do not tune, modify, or service vehicles." Retained all prior entity defenses (Helios-Preisser, PresserTech/pressertech.us, Preiser Inc, Preiser Scientific). Added item (6) catch-all for any other Preisser-named business. Added contact email at end for AI agent extraction.
@@ -673,10 +732,10 @@ All eight checks green.
 - Commit: `e72b04d` — `feat(seo): strengthen Organization disambiguation against same-name entities`
 - Push: `git push origin main` — succeeded.
 - Wrangler deploy: `wrangler pages deploy out --project-name=preisser-solutions --branch=main` — deployment `28935be6.preisser-solutions.pages.dev` — success.
-- Post-deploy curl: live site at `preissertech.com/` returns new disambiguation text confirmed.
+- Post-deploy curl: live site at `preissersolutions.com/` returns new disambiguation text confirmed.
 
 **Commits**: `e72b04d`
-**Deploy**: https://28935be6.preisser-solutions.pages.dev → https://preissertech.com/
+**Deploy**: https://28935be6.preisser-solutions.pages.dev → https://preissersolutions.com/
 
 ---
 
@@ -687,7 +746,7 @@ All eight checks green.
 **Fixes delivered**:
 
 ### Fix 1 — Homepage metadata + summary paragraph
-- `src/app/page.tsx`: Added `export const metadata: Metadata` with `title: { absolute: "Preisser Tech | Custom Software & AI Automation, Kansas" }` (55 chars, bypasses layout template), 185-char description, canonical `https://preissertech.com/`, OG + Twitter card with `creator: "@preissertech"`.
+- `src/app/page.tsx`: Added `export const metadata: Metadata` with `title: { absolute: "Preisser Solutions | Custom Software & AI Automation, Kansas" }` (55 chars, bypasses layout template), 185-char description, canonical `https://preissersolutions.com/`, OG + Twitter card with `creator: "@preissersolutions"`.
 - `src/components/home/hero.tsx`: Added `.ps-hero-summary` `<p>` element as first child of hero content div (first in DOM for AI citation extraction), visually ordered last via flexbox `order: 99`.
 - `src/styles/globals.css`: Added `.ps-hero-summary` CSS + converted `.ps-hero-content` to `display: flex; flex-direction: column; align-items: center` to support `order` property.
 - **Commit**: `6d2c1a6`
@@ -696,8 +755,8 @@ All eight checks green.
 - Both pages were `"use client"` — can't export Next.js Metadata from client components. Split each into server `page.tsx` (exports Metadata, renders client component) + `*Client.tsx` (interactive logic).
 - `src/app/contact/page.tsx` → server wrapper. `src/components/contact/ContactPageClient.tsx` → full client page (exact copy of original logic).
 - `src/app/roi-calculator/page.tsx` → server wrapper. `src/components/roi/RoiCalculatorPageClient.tsx` → full client page.
-- Contact title: "Contact Us — Start Your Kansas Tech Project | Preisser Tech" = 59 chars ✓
-- ROI title: "Estimate Automation ROI for Your Business | Preisser Tech" = 57 chars ✓
+- Contact title: "Contact Us — Start Your Kansas Tech Project | Preisser Solutions" = 59 chars ✓
+- ROI title: "Estimate Automation ROI for Your Business | Preisser Solutions" = 57 chars ✓
 - **Commit**: `334d385`
 
 ### Fix 3 — AEO pages: conditional Service/Article schema
@@ -718,7 +777,7 @@ All eight checks green.
 - No code change required. Noted in Fix 3 commit.
 
 ### Fix 6 — Social link updates
-- `src/data/site-config.ts`: Updated social links: LinkedIn `/company/preissersolutions` → `/company/preissertech`, Facebook `/preissersolutions` → `/preissertech`, added `twitter: "https://x.com/preissertech"`. Code comments explain these URLs are set in advance — accounts don't exist yet.
+- `src/data/site-config.ts`: Updated social links: LinkedIn `/company/preissersolutions` → `/company/preissersolutions`, Facebook `/preissersolutions` → `/preissersolutions`, added `twitter: "https://x.com/preissersolutions"`. Code comments explain these URLs are set in advance — accounts don't exist yet.
 - `src/app/layout.tsx`: Updated `sameAs` array — same LinkedIn/Facebook/Twitter updates + corrected GitHub from `/preissersolutions` to `/tylerpreisser` (correct personal profile).
 - **Commit**: `114c8d1`
 
@@ -734,9 +793,9 @@ All eight checks green.
 **Commits**: `6d2c1a6`, `334d385`, `7d4120a`, `a3d9fe8`, `114c8d1`
 
 **Tyler blockers (still pending)**:
-- LinkedIn company page `/company/preissertech` must be created from scratch
-- Facebook page `/preissersolutions` must be renamed to `preissertech` via Page Settings
-- Twitter/X `@preissertech` must be claimed before squatters
+- LinkedIn company page `/company/preissersolutions` must be created from scratch
+- Facebook page `/preissersolutions` must be renamed to `preissersolutions` via Page Settings
+- Twitter/X `@preissersolutions` must be claimed before squatters
 - Cloudflare managed robots.txt override still active (CRITICAL — kills AI crawler access)
 
 ---
@@ -745,15 +804,15 @@ All eight checks green.
 
 **Trigger**: Tyler said do everything via API, no more checklists.
 
-**Objective A — disable managed robots.txt on preissertech.com + preissersolutions.com**: FAILED — auth scope insufficient.
+**Objective A — disable managed robots.txt on preissersolutions.com + preissersolutions.com**: FAILED — auth scope insufficient.
 - wrangler OAuth token has `zone:read` only. `PUT /zones/{id}/bot_management` returns HTTP 405 ("Method not allowed for this authentication scheme"). The feature field is `is_robots_txt_managed: false` via the bot_management endpoint. No other API token or key found on the system.
-- **One action required**: Go to https://dash.cloudflare.com → preissertech.com → Security → Settings → "Instruct AI bot traffic with robots.txt" → toggle OFF. Repeat for preissersolutions.com.
+- **One action required**: Go to https://dash.cloudflare.com → preissersolutions.com → Security → Settings → "Instruct AI bot traffic with robots.txt" → toggle OFF. Repeat for preissersolutions.com.
 
 **Objective B — recreate redirect rule on preissersolutions.com**: FAILED — same auth scope block.
 - `POST /zones/{id}/rulesets/phases/http_request_dynamic_redirect/entrypoint/rules` returns HTTP 405 for the wrangler OAuth token. Requires `zone:edit` or `Zone Rulesets:Edit` scope.
-- **One action required**: Go to https://dash.cloudflare.com → preissersolutions.com → Rules → Redirect Rules → Create rule with: name "Redirect to preissertech.com", expression `(http.request.uri.path ne "/robots.txt")`, action Dynamic 301 → `concat("https://preissertech.com",http.request.uri.path)`, preserve query string ON, place first.
+- **One action required**: Go to https://dash.cloudflare.com → preissersolutions.com → Rules → Redirect Rules → Create rule with: name "Redirect to preissersolutions.com", expression `(http.request.uri.path ne "/robots.txt")`, action Dynamic 301 → `concat("https://preissersolutions.com",http.request.uri.path)`, preserve query string ON, place first.
 
-**Auth scope discovery**: wrangler OAuth token (stored at `~/Library/Preferences/.wrangler/config/default.toml`) has `zone:read` + `pages:write` but NOT `zone:write`. Zone IDs confirmed: `preissertech.com` = `f5e4e45f8b37d37f0ebf9e11c33e9bab`, `preissersolutions.com` = `ddb420a34855c4e25b0782b8ce862234`. For future API ops requiring zone mutations, Tyler must either re-scope the wrangler token or create a separate API token at dash.cloudflare.com/profile/api-tokens with `Zone:Zone Settings:Edit` + `Zone:Zone:Edit` scopes.
+**Auth scope discovery**: wrangler OAuth token (stored at `~/Library/Preferences/.wrangler/config/default.toml`) has `zone:read` + `pages:write` but NOT `zone:write`. Zone IDs confirmed: `preissersolutions.com` = `f5e4e45f8b37d37f0ebf9e11c33e9bab`, `preissersolutions.com` = `ddb420a34855c4e25b0782b8ce862234`. For future API ops requiring zone mutations, Tyler must either re-scope the wrangler token or create a separate API token at dash.cloudflare.com/profile/api-tokens with `Zone:Zone Settings:Edit` + `Zone:Zone:Edit` scopes.
 
 **NEEDS_TYLER.md**: DELETED per Tyler's instruction — that pattern is retired.
 
@@ -790,7 +849,7 @@ All eight checks green.
 
 **Verification**:
 - Deploy URL (uncached): `curl https://de7cb892.preisser-solutions.pages.dev/robots.txt` → 0 Disallow lines ✓
-- Live preissertech.com (CDN cache, max-age 14400): still serving old file — will propagate within ~4 hours of deploy
+- Live preissersolutions.com (CDN cache, max-age 14400): still serving old file — will propagate within ~4 hours of deploy
 - CF Managed block: still present (2 "Cloudflare Managed" matches) — requires Tyler dashboard action
 
 **Two side findings**:
@@ -817,21 +876,21 @@ All eight checks green.
 - `public/robots.txt` — added `Allow: /_next/static/` for `*`, Googlebot, Bingbot
 
 **Commits**: `7438d6b` (FAQPage dedup), `3793139` (robots _next/static allow). Pushed to origin/main.
-**Deploy**: Cloudflare Pages wrangler deploy → `https://6cc72ce7.preisser-solutions.pages.dev`, propagated to `https://preissertech.com`.
+**Deploy**: Cloudflare Pages wrangler deploy → `https://6cc72ce7.preisser-solutions.pages.dev`, propagated to `https://preissersolutions.com`.
 **Verification**:
 - Build clean (`npm run build` — all routes prerendered, zero errors).
 - Post-build grep across `out/**/*.html`: 0 pages with >1 FAQPage block.
-- Live curl `https://preissertech.com/ai-agents` → 1 FAQPage block (was 2).
-- Live curl `https://preissertech.com/custom-websites` → 1 FAQPage block (was 2).
-- Live curl `https://preissertech.com/faq` → 1 FAQPage block (was 3).
-- Live curl `https://preissertech.com/` → 0 FAQPage blocks (home does not have a dedicated FAQ; rich result lives at /faq, ai-agents, custom-websites, etc.).
-- Live curl `https://preissertech.com/robots.txt` → `Allow: /_next/static/` present under `*`, Googlebot, Bingbot.
+- Live curl `https://preissersolutions.com/ai-agents` → 1 FAQPage block (was 2).
+- Live curl `https://preissersolutions.com/custom-websites` → 1 FAQPage block (was 2).
+- Live curl `https://preissersolutions.com/faq` → 1 FAQPage block (was 3).
+- Live curl `https://preissersolutions.com/` → 0 FAQPage blocks (home does not have a dedicated FAQ; rich result lives at /faq, ai-agents, custom-websites, etc.).
+- Live curl `https://preissersolutions.com/robots.txt` → `Allow: /_next/static/` present under `*`, Googlebot, Bingbot.
 
 ---
 
 ## 2026-05-04 (~16:00 UTC) — DNS / Cloudflare deep diagnostic for Bing "DNS could not connect" (internet-investigator)
 
-**Trigger**: Bing's crawler returned a DNS connection failure on `https://preissertech.com/`. Tyler insisted real Cloudflare misconfig, not stale cache. Demanded exhaustive verification.
+**Trigger**: Bing's crawler returned a DNS connection failure on `https://preissersolutions.com/`. Tyler insisted real Cloudflare misconfig, not stale cache. Demanded exhaustive verification.
 
 **Result**: **No live misconfiguration found at any layer** — DNS, TLS, HTTP, Cloudflare edge, robots.txt all check out clean. Most likely root cause is Bing-side stale cache from the initial propagation window (domain is **only 2 days old**, created 2026-05-02T16:15:27Z, still in ICANN "addperiod" grace status).
 
@@ -846,7 +905,7 @@ All eight checks green.
 - DNSSEC: zone is unsigned (intentional, not broken — Bing does not require it; Verisign analyzer's "FAIL" = "no DNSSEC enabled," not "broken DNSSEC")
 - WHOIS: `Domain Status: addperiod` confirms domain is within ICANN 5-day post-registration grace
 
-**Single action recommended for Tyler**: In Bing Webmaster Tools, do a "URL Inspection → Live URL Test" on `preissertech.com/`. If that succeeds (it should), click "Submit URL" / "Request Indexing" to force Bing to discard the cached failure. If it ALSO fails live, that's actionable evidence to open a Bing Webmasters support ticket.
+**Single action recommended for Tyler**: In Bing Webmaster Tools, do a "URL Inspection → Live URL Test" on `preissersolutions.com/`. If that succeeds (it should), click "Submit URL" / "Request Indexing" to force Bing to discard the cached failure. If it ALSO fails live, that's actionable evidence to open a Bing Webmasters support ticket.
 
 **Files updated**:
 - `.context/DNS_DIAGNOSTIC_2026-05-04.md` (NEW — full report, ~250 lines, all stages)
@@ -861,9 +920,9 @@ All eight checks green.
 
 **Stage 1 — IndexNow blast**: 109 URLs submitted to `api.indexnow.org` — **HTTP 200 OK**. Full list covers homepage, core pages, all AEO service/location/industry/comparison pages, plus sitemap.xml/llms.txt/feed.xml. Bing/Yandex network notified of all URLs simultaneously.
 
-**Stage 2 — Sitemap verification**: `https://preissertech.com/sitemap.xml` returns HTTP 200, 17,397 bytes. `grep -c "<url>"` = **106** (sitemap has 106 `<url>` elements vs 109 IndexNow list — the 3-URL delta is `llms.txt`, `feed.xml`, `sitemap.xml` which are in IndexNow but not in the sitemap XML, which is correct — non-page resources don't belong in sitemaps). All URLs use `https://preissertech.com/...` format. No `preissersolutions.com` URLs found. Clean.
+**Stage 2 — Sitemap verification**: `https://preissersolutions.com/sitemap.xml` returns HTTP 200, 17,397 bytes. `grep -c "<url>"` = **106** (sitemap has 106 `<url>` elements vs 109 IndexNow list — the 3-URL delta is `llms.txt`, `feed.xml`, `sitemap.xml` which are in IndexNow but not in the sitemap XML, which is correct — non-page resources don't belong in sitemaps). All URLs use `https://preissersolutions.com/...` format. No `preissersolutions.com` URLs found. Clean.
 
-**Stage 3 — Cloudflare robots.txt diagnosis**: Confirmed **same Cloudflare-managed block exists on `preissertech.com`**. Live robots.txt starts with a `# BEGIN Cloudflare Managed content` preamble that Disallows: ClaudeBot, GPTBot, Google-Extended, Amazonbot, CCBot, Applebot-Extended, Bytespider, meta-externalagent, CloudflareBrowserRenderingCrawler. These appear BEFORE Tyler's `Allow: /` rules for those same agents. First-match-wins = all those bots are blocked. This is a critical AEO/AI Domination blocker. Fix path: **Cloudflare Dashboard → zone → Security → Settings → scroll to "Crawler Hints" / "Manage your robots.txt" → Disable managed content**. Repeat for both `preissertech.com` and `preissersolutions.com` zones.
+**Stage 3 — Cloudflare robots.txt diagnosis**: Confirmed **same Cloudflare-managed block exists on `preissersolutions.com`**. Live robots.txt starts with a `# BEGIN Cloudflare Managed content` preamble that Disallows: ClaudeBot, GPTBot, Google-Extended, Amazonbot, CCBot, Applebot-Extended, Bytespider, meta-externalagent, CloudflareBrowserRenderingCrawler. These appear BEFORE Tyler's `Allow: /` rules for those same agents. First-match-wins = all those bots are blocked. This is a critical AEO/AI Domination blocker. Fix path: **Cloudflare Dashboard → zone → Security → Settings → scroll to "Crawler Hints" / "Manage your robots.txt" → Disable managed content**. Repeat for both `preissersolutions.com` and `preissersolutions.com` zones.
 
 **Stage 4 — NEEDS_TYLER.md**: Fully rewritten. Previous GSC CoA diagnostic sections replaced with clean numbered checklist (10 items). Reflects current state.
 
@@ -884,13 +943,13 @@ All eight checks green.
 
 **Trigger**: GSC Change of Address still failing on `http://preissersolutions.com/` after Tyler verified Bot Fight Mode OFF, AI Labyrinth OFF, BIC OFF, Always-Use-HTTPS ON, full cache purge. All 4 deploys live. Tyler explicitly directed: stop suggesting things he's already done; find what's NEW.
 
-**Root cause identified**: `https://preissersolutions.com/robots.txt` returns `HTTP/2 301 → https://preissertech.com/robots.txt` (HTTP variant same). GSC's Change of Address validator requires the OLD domain to serve a directly-fetched 200 OK robots.txt. Per Google's documented robots.txt handling, a 3xx on robots.txt is treated as "robots.txt unavailable" for the migration probe (NOT followed like normal crawling). This is why every other test passes and only the validator fails.
+**Root cause identified**: `https://preissersolutions.com/robots.txt` returns `HTTP/2 301 → https://preissersolutions.com/robots.txt` (HTTP variant same). GSC's Change of Address validator requires the OLD domain to serve a directly-fetched 200 OK robots.txt. Per Google's documented robots.txt handling, a 3xx on robots.txt is treated as "robots.txt unavailable" for the migration probe (NOT followed like normal crawling). This is why every other test passes and only the validator fails.
 
 **Why this is new**: Every prior diagnosis focused on the page redirect (working) and Cloudflare security (off). No one tested `/robots.txt` as its own URL. The robots.txt request is being caught by the Cloudflare Bulk Redirect rule on `preissersolutions.com` zone — that rule is path-preserving wildcard, so `/robots.txt` gets redirected just like `/contact` does.
 
 **Evidence collected** (~15:14 UTC, all CF-RAY ORD edge, no `cf-mitigated`, no challenge headers):
-- `curl -I http://preissersolutions.com/` → 301 → `https://preissertech.com/`. WORKS.
-- `curl -I http://preissersolutions.com/robots.txt` → **301 → https://preissertech.com/robots.txt. FAILS validator.**
+- `curl -I http://preissersolutions.com/` → 301 → `https://preissersolutions.com/`. WORKS.
+- `curl -I http://preissersolutions.com/robots.txt` → **301 → https://preissersolutions.com/robots.txt. FAILS validator.**
 - `curl -I http://preissersolutions.com/sitemap.xml` → 301 (less critical; GSC tolerates sitemap redirects).
 - Final destination 200 OK, 137,844 bytes, real HTML. Googlebot UA = same response. NOT a destination issue.
 - 5 sequential PoP tests all hit ORD, no rate-limit / mitigation header. NOT a CF abuse-prevention issue.
@@ -902,7 +961,7 @@ All eight checks green.
 Carve `/robots.txt` out of the Bulk Redirect catch on `preissersolutions.com`. Three viable paths:
 
 - **Path A** (preferred): CF → `preissersolutions.com` zone → Rules → Redirect Rules → edit the active Bulk Redirect → add a precondition `Path is not /robots.txt`. Save. Next fetch returns 200 with the Cloudflare-managed robots.txt body.
-- **Path B** (faster): Add a higher-priority Single Redirect / Snippet rule: `if path = /robots.txt → respond 200 with body "User-agent: *\nAllow: /\nSitemap: https://preissertech.com/sitemap.xml"`.
+- **Path B** (faster): Add a higher-priority Single Redirect / Snippet rule: `if path = /robots.txt → respond 200 with body "User-agent: *\nAllow: /\nSitemap: https://preissersolutions.com/sitemap.xml"`.
 - **Path C** (depending on UI): The "Manage your robots.txt" feature may have a single toggle to override redirects for `/robots.txt`. Check that toggle first.
 
 **Verification after fix** (must return 200, not 301):
@@ -915,7 +974,7 @@ curl -I https://preissersolutions.com/robots.txt
 
 **Backup hypothesis (medium confidence)**: If robots.txt fix doesn't unstick GSC immediately, GSC may have a stale 24-hour negative cache from repeated failed validations. Wait 24 hours after fix and retry. The robots.txt 301 is a sufficient cause on its own — this fix should work.
 
-**Fallback path if GSC validation continues to fail after this fix**: Skip Change of Address entirely. The 301s are doing their job. Submit `https://preissertech.com/sitemap.xml` to GSC as a sitemap, request indexing on the 10 priority URLs from the playbook, and let natural recrawl handle the migration over 2-6 weeks. Equity transfer is structurally identical, just slower.
+**Fallback path if GSC validation continues to fail after this fix**: Skip Change of Address entirely. The 301s are doing their job. Submit `https://preissersolutions.com/sitemap.xml` to GSC as a sitemap, request indexing on the 10 priority URLs from the playbook, and let natural recrawl handle the migration over 2-6 weeks. Equity transfer is structurally identical, just slower.
 
 **Files updated**: `.context/CHANGELOG.md` (this entry), `.context/NEEDS_TYLER.md` (GSC section rewritten with new diagnosis at top).
 
@@ -925,13 +984,13 @@ curl -I https://preissersolutions.com/robots.txt
 
 **Trigger**: GSC validation showing www works but apex fails after Tyler toggled security settings (Bot Fight JS Detections OFF). Latest deploy `ce5a7317`.
 
-**Diagnosis**: There is NO actual gap. All 12 URL variants tested (apex/www × http/https × root/services/contact.html/why-automation.html/index.html, with default AND Googlebot UA) return clean `301` responses with `cf-ray` headers and resolve to `200` at `preissertech.com`. Apex chain = 1 hop, www chain = 1 hop, .html paths = 2 hops (Bulk Redirect → Pages `_redirects`) — all under 700ms total. `cf-cache-status: DYNAMIC` on every redirect (no stale cache). No `cf-mitigated`, no challenge headers, no Server-side error. The `out/_redirects` file is identical to `public/_redirects` (deployed correctly). The "Couldn't fetch" errors in the GSC screenshot are GSC validation infrastructure flakes, NOT a Cloudflare or redirect misconfiguration. Tyler's toggle of Bot Fight Mode JS Detections OFF already removed the only plausible blocker.
+**Diagnosis**: There is NO actual gap. All 12 URL variants tested (apex/www × http/https × root/services/contact.html/why-automation.html/index.html, with default AND Googlebot UA) return clean `301` responses with `cf-ray` headers and resolve to `200` at `preissersolutions.com`. Apex chain = 1 hop, www chain = 1 hop, .html paths = 2 hops (Bulk Redirect → Pages `_redirects`) — all under 700ms total. `cf-cache-status: DYNAMIC` on every redirect (no stale cache). No `cf-mitigated`, no challenge headers, no Server-side error. The `out/_redirects` file is identical to `public/_redirects` (deployed correctly). The "Couldn't fetch" errors in the GSC screenshot are GSC validation infrastructure flakes, NOT a Cloudflare or redirect misconfiguration. Tyler's toggle of Bot Fight Mode JS Detections OFF already removed the only plausible blocker.
 
 **Evidence**:
-- `curl -sI http://preissersolutions.com/` → `HTTP/1.1 301 Location: https://preissertech.com/` (Server: cloudflare, CF-RAY present, no challenge)
-- `curl -sI -A "Googlebot/2.1" https://preissersolutions.com/services` → `HTTP/2 301 → https://preissertech.com/services` (chain resolves to 200, identical to default UA)
+- `curl -sI http://preissersolutions.com/` → `HTTP/1.1 301 Location: https://preissersolutions.com/` (Server: cloudflare, CF-RAY present, no challenge)
+- `curl -sI -A "Googlebot/2.1" https://preissersolutions.com/services` → `HTTP/2 301 → https://preissersolutions.com/services` (chain resolves to 200, identical to default UA)
 - `curl -L -w "%{num_redirects}" https://preissersolutions.com/` → `1` (single hop, 0.69s total)
-- `curl -L -w "%{num_redirects}" https://www.preissersolutions.com/contact.html` → `2` (two hops as expected, resolves to `https://preissertech.com/contact`)
+- `curl -L -w "%{num_redirects}" https://www.preissersolutions.com/contact.html` → `2` (two hops as expected, resolves to `https://preissersolutions.com/contact`)
 
 **Recommended fix**: NO code change needed. Tyler should (1) verify "Always Use HTTPS" is ON in Cloudflare → preissersolutions.com → SSL/TLS → Edge Certificates, (2) verify Browser Integrity Check is OFF in Security → Settings, (3) drop Security Level to "Essentially Off" temporarily, (4) purge Cloudflare cache (Caching → Configuration → Purge Everything) to ensure no stale challenge responses are cached for Googlebot IPs, (5) wait 5 min, (6) retry GSC Change of Address. If it still fails, this is a GSC infrastructure issue — open a GSC support ticket; the redirects are demonstrably correct.
 
@@ -943,23 +1002,23 @@ curl -I https://preissersolutions.com/robots.txt
 **Trigger**: Tyler shared GSC screenshot showing Change of Address validation failed: ❌ `http://preissersolutions.com/` — "Couldn't fetch the page", plus sample page warnings on legacy `.html` URLs (contact.html, why-automation.html, services.html).
 
 **Stage 1 — Diagnosis**:
-- **HTTP behavior**: `curl -sI http://preissersolutions.com/` returns `HTTP/1.1 301 → https://preissertech.com/`. Working at network level. "Couldn't fetch the page" is Cloudflare Bot Fight Mode / Security Level challenging the GSC validation crawler BEFORE the 301 response fires. Not a redirect misconfiguration.
-- **HTTPS behavior**: `curl -sI https://preissersolutions.com/` returns `HTTP/2 301 → https://preissertech.com/`. Working correctly. Googlebot UA also returns 301.
-- **`.html` path behavior**: All `.html` paths (contact.html, why-automation.html, services.html, about.html, index.html) return `301 → https://preissertech.com/<same-path>.html` (Cloudflare Bulk Redirect is path-preserving). On the preissertech.com side, Next.js was returning `308 → /<clean-path>`. Two-hop chain with a 308 second leg — GSC validation can mishandle this.
+- **HTTP behavior**: `curl -sI http://preissersolutions.com/` returns `HTTP/1.1 301 → https://preissersolutions.com/`. Working at network level. "Couldn't fetch the page" is Cloudflare Bot Fight Mode / Security Level challenging the GSC validation crawler BEFORE the 301 response fires. Not a redirect misconfiguration.
+- **HTTPS behavior**: `curl -sI https://preissersolutions.com/` returns `HTTP/2 301 → https://preissersolutions.com/`. Working correctly. Googlebot UA also returns 301.
+- **`.html` path behavior**: All `.html` paths (contact.html, why-automation.html, services.html, about.html, index.html) return `301 → https://preissersolutions.com/<same-path>.html` (Cloudflare Bulk Redirect is path-preserving). On the preissersolutions.com side, Next.js was returning `308 → /<clean-path>`. Two-hop chain with a 308 second leg — GSC validation can mishandle this.
 
 **Stage 2 — Redirect mechanism**:
-- `wrangler pages project list` confirms `preissersolutions.com` is bound as a custom domain on the `preisser-solutions` Pages project (same project as `preissertech.com`).
-- The apex `preissersolutions.com` → `preissertech.com` redirect is handled by **Cloudflare Bulk Redirects** at the zone level (not `_redirects` file) — inferred from path-preserving 301 with no Pages-side `_redirects` rule for it.
-- The `_redirects` file applies to `preissertech.com` (Pages project). The `.html` rules added here fire for the second hop.
+- `wrangler pages project list` confirms `preissersolutions.com` is bound as a custom domain on the `preisser-solutions` Pages project (same project as `preissersolutions.com`).
+- The apex `preissersolutions.com` → `preissersolutions.com` redirect is handled by **Cloudflare Bulk Redirects** at the zone level (not `_redirects` file) — inferred from path-preserving 301 with no Pages-side `_redirects` rule for it.
+- The `_redirects` file applies to `preissersolutions.com` (Pages project). The `.html` rules added here fire for the second hop.
 
 **Stage 3 — Code fixes**:
-- `public/_redirects`: added explicit `301` rules for 9 legacy `.html` paths (`/contact.html`, `/services.html`, `/about.html`, `/why-automation.html`, `/roi-calculator.html`, `/index.html`, `/pricing.html`, `/process.html`, `/faq.html`) all pointing to clean URL equivalents on `preissertech.com`. These fire on the second hop after Bulk Redirect delivers request to the Pages project.
+- `public/_redirects`: added explicit `301` rules for 9 legacy `.html` paths (`/contact.html`, `/services.html`, `/about.html`, `/why-automation.html`, `/roi-calculator.html`, `/index.html`, `/pricing.html`, `/process.html`, `/faq.html`) all pointing to clean URL equivalents on `preissersolutions.com`. These fire on the second hop after Bulk Redirect delivers request to the Pages project.
 - Build: `npm run build` — CLEAN, 109 pages, 0 errors. `out/_redirects` confirmed identical to `public/_redirects`.
 
 **Stage 4 — Deploy**:
 - Command: `wrangler pages deploy out --project-name=preisser-solutions --branch=main`
 - Deployment ID: `ce5a7317`
-- Post-deploy verified: `https://preissertech.com/contact.html` → `301 → https://preissertech.com/contact` (clean 301, not 308). Same for why-automation.html and services.html.
+- Post-deploy verified: `https://preissersolutions.com/contact.html` → `301 → https://preissersolutions.com/contact` (clean 301, not 308). Same for why-automation.html and services.html.
 - Commit: `0e9006d`, pushed to `origin/main`.
 
 **Stage 5 — NEEDS_TYLER.md updated** with new section "GSC Change of Address — Validation Failure Diagnosis (2026-05-04 late evening)" covering: verbatim GSC error, curl evidence for both HTTP and .html failures, what was fixed in code with commit hash, and the two required Cloudflare dashboard actions (Always Use HTTPS + Security Level Essentially Off) with specific paths and step-by-step GSC retry instructions.
@@ -979,9 +1038,9 @@ curl -I https://preissersolutions.com/robots.txt
 **Mission**: Diagnose GSC Change of Address failure, deploy pending brand cleanup to Cloudflare, commit prior-session SEO work.
 
 **Stage 1 — Production state**:
-- Live HTML at `preissertech.com` STILL contained `"Preisser Solutions"` in JSON-LD `alternateName` despite commit `9bb846b` being on GitHub. Root cause confirmed: Cloudflare Pages auto-deploy did NOT trigger from the `9bb846b` push. Most recent Cloudflare deployment was `7cea41f3` built from source `150962e` (55 min old), skipping the latest commit entirely.
+- Live HTML at `preissersolutions.com` STILL contained `"Preisser Solutions"` in JSON-LD `alternateName` despite commit `9bb846b` being on GitHub. Root cause confirmed: Cloudflare Pages auto-deploy did NOT trigger from the `9bb846b` push. Most recent Cloudflare deployment was `7cea41f3` built from source `150962e` (55 min old), skipping the latest commit entirely.
 - Live robots.txt: Cloudflare prepends its own managed block (disallowing ClaudeBot, GPTBot, etc.), then appends the source robots.txt — which had Disallow entries for `/about`, `/services`, `/contact`, `/roi-calculator`, `/why-automation` for Googlebot/Bingbot.
-- `preissertech.com/services` returns 200. `preissersolutions.com/services` returns 301 → `preissertech.com/services`. Redirect layer healthy.
+- `preissersolutions.com/services` returns 200. `preissersolutions.com/services` returns 301 → `preissersolutions.com/services`. Redirect layer healthy.
 
 **Stage 2 — GSC blocker diagnosis**:
 - Primary blocker: Cloudflare Pages auto-deploy silently failing — `9bb846b` never got deployed to production.
@@ -1000,8 +1059,8 @@ curl -I https://preissersolutions.com/robots.txt
 - Deploy path: wrangler CLI (NOT GitHub auto-deploy, which was silently failing).
 - Command: `wrangler pages deploy out --project-name=preisser-solutions --branch=main`
 - Deploy URL: `https://7025ed47.preisser-solutions.pages.dev`
-- Post-deploy verification: `curl https://preissertech.com/ | grep -c "Preisser Solutions"` = **0**. JSON-LD leak confirmed closed.
-- robots.txt new version confirmed at deploy URL. Live `preissertech.com/robots.txt` serving cached old version (cf-cache-status: HIT, age: 1124s, max-age: 14400). Will propagate within ~4 hours.
+- Post-deploy verification: `curl https://preissersolutions.com/ | grep -c "Preisser Solutions"` = **0**. JSON-LD leak confirmed closed.
+- robots.txt new version confirmed at deploy URL. Live `preissersolutions.com/robots.txt` serving cached old version (cf-cache-status: HIT, age: 1124s, max-age: 14400). Will propagate within ~4 hours.
 
 **Stage 5 — NEEDS_TYLER.md updated** with "GSC Change of Address — Diagnosed Blocker" section including root cause, fix status, step-by-step GSC retry instructions, Bing Webmaster Tools Site Move steps, and failure escalation paths.
 
@@ -1028,8 +1087,8 @@ curl -I https://preissersolutions.com/robots.txt
 
 **Stage 1 findings**:
 - Git repo: YES — `origin` = `https://github.com/TylerPreisser/preisser-solutions.git`, tracking `main`.
-- Deploy mechanism: `.github/workflows/pages.yml` deploys to **GitHub Pages** (`TylerPreisser.github.io/preisser-tech`), NOT Cloudflare Pages. Sets `GITHUB_PAGES=true` which activates the basePath. Cloudflare Pages has a SEPARATE deploy trigger (native GitHub integration likely, but unconfirmed — NEEDS TYLER to verify).
-- basePath verdict: SAFE. `next.config.ts` basePath is gated behind `process.env.GITHUB_PAGES === "true"`. When building for Cloudflare Pages (without that env var), basePath resolves to `""`. The change from `/preisser-solutions` to `/preisser-tech` only affects GitHub Pages deploy — Cloudflare production is unaffected.
+- Deploy mechanism: `.github/workflows/pages.yml` deploys to **GitHub Pages** (`TylerPreisser.github.io/preisser-solutions`), NOT Cloudflare Pages. Sets `GITHUB_PAGES=true` which activates the basePath. Cloudflare Pages has a SEPARATE deploy trigger (native GitHub integration likely, but unconfirmed — NEEDS TYLER to verify).
+- basePath verdict: SAFE. `next.config.ts` basePath is gated behind `process.env.GITHUB_PAGES === "true"`. When building for Cloudflare Pages (without that env var), basePath resolves to `""`. The change from `/preisser-solutions` to `/preisser-solutions` only affects GitHub Pages deploy — Cloudflare production is unaffected.
 - Staged diff: 4 brand-cleanup files staged (package.json, src/app/layout.tsx, next.config.ts, public/ps-hero-animation.js). 3 other modified files (public/sitemap.xml, scripts/indexnow-ping.mjs, src/data/aeo/pricing.ts) left unstaged — NOT part of this commit. 4 untracked files also left unstaged (.context/, docs/pricing-research-2026-05-03.md, src/app/press/, src/data/aeo/press.ts).
 
 **Stage 2 path taken**: Path A (SAFE TO PUSH)
@@ -1050,17 +1109,17 @@ curl -I https://preissersolutions.com/robots.txt
 ## 2026-05-04 — External State Investigation
 
 **Agent**: internet-investigator
-**Mission**: Verify domain redirects, Cloudflare Pages exposure, social pages, search index state for preissertech.com vs preissersolutions.com.
+**Mission**: Verify domain redirects, Cloudflare Pages exposure, social pages, search index state for preissersolutions.com vs preissersolutions.com.
 
 **Key findings**:
-- 301 redirects from preissersolutions.com (apex + www + 5/5 sampled deep paths) to preissertech.com are LIVE and path-preserving via Cloudflare edge. Migration redirect layer is healthy.
+- 301 redirects from preissersolutions.com (apex + www + 5/5 sampled deep paths) to preissersolutions.com are LIVE and path-preserving via Cloudflare edge. Migration redirect layer is healthy.
 - `preisser-solutions.pages.dev` is HTTP 200 LIVE serving the full site. Has `x-robots-tag: noindex, nofollow` so search engines should not index it. Stems from `wrangler.toml` project name.
-- `preisser-tech.pages.dev` and `preissertech.pages.dev` are NXDOMAIN (do not exist).
-- LinkedIn `/company/preissertech` AND `/company/preissersolutions` BOTH return HTTP 404 — neither company page has ever existed. The site-config.ts LinkedIn link is dead today.
-- Facebook `/preissersolutions` is HTTP 200 LIVE (30 likes, "Ai Efficiency Consultants", recent 2025 photo). Tyler-controlled but never renamed. `/preissertech` does not exist.
-- Instagram `/preissersolutions` is HTTP 200 LIVE (real account). `/preissertech` does not exist.
-- X / Twitter `/preissertech` returns HTTP 404 on both `x.com` and `twitter.com` — handle is unclaimed.
-- Live preissertech.com HTML (homepage + 3 deep pages) still embeds `"Preisser Solutions"` in JSON-LD `alternateName`, despite the 2026-05-04 brand-cleanup commit having corrected it. Production has not redeployed since the code change.
+- `preisser-solutions.pages.dev` and `preissersolutions.pages.dev` are NXDOMAIN (do not exist).
+- LinkedIn `/company/preissersolutions` AND `/company/preissersolutions` BOTH return HTTP 404 — neither company page has ever existed. The site-config.ts LinkedIn link is dead today.
+- Facebook `/preissersolutions` is HTTP 200 LIVE (30 likes, "Ai Efficiency Consultants", recent 2025 photo). Tyler-controlled but never renamed. `/preissersolutions` does not exist.
+- Instagram `/preissersolutions` is HTTP 200 LIVE (real account). `/preissersolutions` does not exist.
+- X / Twitter `/preissersolutions` returns HTTP 404 on both `x.com` and `twitter.com` — handle is unclaimed.
+- Live preissersolutions.com HTML (homepage + 3 deep pages) still embeds `"Preisser Solutions"` in JSON-LD `alternateName`, despite the 2026-05-04 brand-cleanup commit having corrected it. Production has not redeployed since the code change.
 - robots.txt actively Disallows Googlebot/Bingbot from `/about`, `/services`, `/contact`, `/roi-calculator`, `/why-automation` — meaning the well-formed 301 redirects from old deep paths land on URLs the new site explicitly tells search engines NOT to index. Partial SEO equity loss is structural under current strategy.
 - Google `site:preissersolutions.com` still returns the old "Preisser Solutions - Your Partner in Custom Business Automation" cached SERP snippet despite the live 301 — strong evidence GSC "Change of Address" has NOT been submitted yet.
 - No Wikidata entry exists for either brand. No external backlinks of substance found via public search; brand has minimal external citation footprint.
@@ -1071,7 +1130,7 @@ curl -I https://preissersolutions.com/robots.txt
 **Recommendations for orchestrator**:
 - Trigger a production redeploy (or push a no-op commit) to ship the already-merged `alternateName` cleanup. Highest-leverage 1-line fix on the list.
 - Dispatch web-code-executor to update `src/data/site-config.ts` social URLs only AFTER (a) Tyler renames Facebook/Instagram handles, and (b) Tyler creates a LinkedIn company page. Until then, the dead LinkedIn link is the most user-facing leak.
-- Open a NEEDS-TYLER ticket for: GSC verification + "Change of Address" submission, Bing Webmaster Tools "Site Move", FB page rename, IG username change, claim X handle `@preissertech`, create LinkedIn company page, decide on robots.txt deep-path strategy, decide on `wrangler.toml` project rename (with Cloudflare Pages dashboard rename in lockstep).
+- Open a NEEDS-TYLER ticket for: GSC verification + "Change of Address" submission, Bing Webmaster Tools "Site Move", FB page rename, IG username change, claim X handle `@preissersolutions`, create LinkedIn company page, decide on robots.txt deep-path strategy, decide on `wrangler.toml` project rename (with Cloudflare Pages dashboard rename in lockstep).
 - Defer the `preisser-solutions.pages.dev` cleanup until Tyler can rename the Cloudflare Pages project — currently low risk because of `x-robots-tag: noindex, nofollow` and zero current Google index presence, but cosmetic brand leak remains.
 - Begin Phase 2 outreach (LinkedIn posts, press, Reddit) BEFORE GSC Change of Address — outbound citation building helps Google associate the new domain with the brand and accelerates the equity transfer beyond what 301s alone deliver.
 
@@ -1083,14 +1142,14 @@ curl -I https://preissersolutions.com/robots.txt
 **Scope**: Surgical removal of residual "Preisser Solutions" references in user-visible code/metadata.
 
 **Changes**:
-- `package.json` line 2: `"name": "preisser-solutions"` → `"name": "preisser-tech"`
-- `src/app/layout.tsx` line 142: `alternateName: ["Preisser Technology", "Preisser Solutions"]` → `["Preisser Technology", "Preisser Tech"]` — drops the wrong entity association, adds the correct short-form brand name
-- `next.config.ts` line 6: GitHub Pages path prefix `"/preisser-solutions"` → `"/preisser-tech"` — this is user-visible infrastructure (asset URLs when deployed to GitHub Pages)
-- `public/ps-hero-animation.js` line 2: comment `"Preisser Solutions — Hero Canvas Animation"` → `"Preisser Tech — Hero Canvas Animation"`
+- `package.json` line 2: `"name": "preisser-solutions"` → `"name": "preisser-solutions"`
+- `src/app/layout.tsx` line 142: `alternateName: ["Preisser Solutionsnology", "Preisser Solutions"]` → `["Preisser Solutionsnology", "Preisser Solutions"]` — drops the wrong entity association, adds the correct short-form brand name
+- `next.config.ts` line 6: GitHub Pages path prefix `"/preisser-solutions"` → `"/preisser-solutions"` — this is user-visible infrastructure (asset URLs when deployed to GitHub Pages)
+- `public/ps-hero-animation.js` line 2: comment `"Preisser Solutions — Hero Canvas Animation"` → `"Preisser Solutions — Hero Canvas Animation"`
 
 **Skipped (require coordinated work)**:
 - `wrangler.toml` `name = "preisser-solutions"` — Cloudflare Pages project identifier. Renaming this without dashboard coordination would orphan the live deployment to a new project URL. PENDING — needs Cloudflare dashboard rename first.
-- `src/data/site-config.ts` and `src/app/layout.tsx` `sameAs` social URLs (`/company/preissersolutions`, `/preissersolutions`, `/preissersolutions` GitHub) — waiting on internet-investigator to confirm `/preissertech` social pages exist before updating.
+- `src/data/site-config.ts` and `src/app/layout.tsx` `sameAs` social URLs (`/company/preissersolutions`, `/preissersolutions`, `/preissersolutions` GitHub) — waiting on internet-investigator to confirm `/preissersolutions` social pages exist before updating.
 - `package-lock.json` `name` field — will regenerate naturally on next `npm install`.
 - `public/_redirects` — contains historical GitHub Pages → old domain redirect. Old-domain redirect infrastructure, leave as-is.
 - `archive/` — historical snapshot, excluded per charter.
@@ -1126,7 +1185,7 @@ curl -I https://preissersolutions.com/robots.txt
 
 **Key Findings**:
 1. **Website Status**: 105 pages (35 core + 70 AEO), all building clean, Cloudflare Pages live
-2. **Brand State**: "Preisser Tech" correctly implemented across all production URLs; minor cosmetic cleanup needed (package.json, wrangler.toml old name references)
+2. **Brand State**: "Preisser Solutions" correctly implemented across all production URLs; minor cosmetic cleanup needed (package.json, wrangler.toml old name references)
 3. **Monitoring Live**: Daily mention/backlink tracker operational since 2026-05-03
 4. **Outreach Ready**: 50+ press/social assets ready to deploy
 5. **Query Dominance**: 10-tier SEO strategy generated with 115 queries, 17 personas, 25+ content gaps
@@ -1153,12 +1212,12 @@ curl -I https://preissersolutions.com/robots.txt
 ## 2026-05-11 — Production Deploy
 - Commit `7914367` pushed to `origin/main`
 - Cloudflare Pages deploy: https://228a2acf.preisser-solutions.pages.dev
-- Verified live on https://preissertech.com — "Stop Renting Attention" present, MarCommand mentioned 22x
+- Verified live on https://preissersolutions.com — "Stop Renting Attention" present, MarCommand mentioned 22x
 
 ## 2026-05-11 (later) — Dashboard mockup deploy
 - Commit `9922af4` pushed to `origin/main`
 - Cloudflare Pages deploy: https://888e8c6e.preisser-solutions.pages.dev
-- Live on preissertech.com — all mc3-* selectors rendering (header, channels grid, panels, pending cards, ROI trend SVG)
+- Live on preissersolutions.com — all mc3-* selectors rendering (header, channels grid, panels, pending cards, ROI trend SVG)
 - Mobile fixes applied: 4-col channel collapse @ 640px, 44px tap targets, GPU layer hints for iOS Safari pulse
 
 ## 2026-05-11 — Homepage messaging restructure: Tyler's voice, AI-native positioning (web-code-executor)
@@ -1180,7 +1239,7 @@ curl -I https://preissersolutions.com/robots.txt
 - `src/components/home/why-us.tsx` — All 3 card descriptions rewritten: Card 1 adds Alliant/Salesforce/Sunrise enterprise-to-Kansas frame; Card 2 uses Tyler's "I leverage AI so much. I really know what I'm doing with AI" voice + nobody else in Kansas framing; Card 3 adds ongoing service relationship signal.
 - `src/components/home/marcommand-callout.tsx` — (A) Heading changed from "The AI Brain Behind Your Ad Spend" to just "MarCommand"; (B) Body replaced with Tyler's verbatim "custom agent built for each business" quote; (C) Closer replaced with "This is how granular we're getting." (D) Added new `ps-marcommand-footer-copy` block after dashboard with Tyler's "internal tool / it gives me an edge / clients never see it" quotes; (E) CTA changed from "Build My MarCommand" → "Inquire about packaging". MarCommandDashboard component inside is FROZEN — untouched.
 - `src/components/home/case-studies.tsx` — Added 4 enterprise client cards: Alliant Insurance, Sunrise Transportation (Power BI / Chicago logistics), Astris Insurance, Salesforce. Cards match existing `CaseStudyCard` shape exactly. Cassidy HVAC cards preserved. Placeholder language added for Tyler to fill in project specifics on Alliant/Astris/Salesforce.
-- `src/app/page.tsx` — Page title: "Preisser Tech | AI Picks You First. Built in Kansas." Meta description rewritten from Tyler's AI-native wedge quote.
+- `src/app/page.tsx` — Page title: "Preisser Solutions | AI Picks You First. Built in Kansas." Meta description rewritten from Tyler's AI-native wedge quote.
 - `src/app/layout.tsx` — Default title, OG title, Twitter title, OG description, Twitter description, and WebPage structured data description all updated to match AI-native positioning. "Stop renting attention" removed from JSON-LD.
 - `src/styles/globals.css` — Added `.ps-marcommand-footer-copy` and `.ps-marcommand-footer-body` CSS classes for new below-dashboard copy block.
 - `src/components/home/tech-partners.tsx` — Added code comment flagging tools that may imply false partnership (Salesforce, Anthropic, OpenAI, Google) for Tyler's review. No tools removed.

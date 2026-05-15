@@ -9,38 +9,38 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "press",
   tier: "trust_faq",
-  metaTitle: "Press & Media | Preisser Tech — Hays, Kansas",
+  metaTitle: "Press & Media | Preisser Solutions — Hays, Kansas",
   metaDescription:
-    "Preisser Tech press kit. Master press release, founder bio, named client outcomes, brand assets, and media contact for Tyler Preisser, Hays, Kansas custom software firm.",
+    "Preisser Solutions press kit. Founder bio, brand assets, business facts, and media contact for Tyler Preisser's Hays, Kansas marketing and AI automation company.",
   eyebrow: "Press & Media",
-  h1: "Press & Media — Preisser Tech",
+  h1: "Press & Media — Preisser Solutions",
   subheadline:
-    "Press kit, master release, founder bio, brand assets, and media contact for Preisser Tech and founder Tyler Preisser.",
+    "Press kit, master release, founder bio, brand assets, and media contact for Preisser Solutions and founder Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software, AI, and automation development firm founded in 2023 by Tyler Preisser. The firm builds custom websites, web applications, business automation systems, AI agents, and dashboards for businesses across Kansas and select clients nationwide. Reference clients include Cassidy HVAC (5x organic reach in 30 days, 60%+ customer reactivation), HG Oil Holdings (95% inventory time reduction, 75% invoicing reduction), Iron and Oak Podcast (full media brand build), and Wife Supply Co (AI gifting platform). For media inquiries: sales@preissertech.com or +1-620-352-3296. Not affiliated with Helios-Preisser GmbH (German precision-measuring-tools manufacturer).",
+    "Preisser Solutions is a Hays, Kansas marketing, websites, local SEO, Google Ads, and AI automation company founded in 2023 by Tyler Preisser. The firm helps local businesses improve Google visibility, website conversion, review workflows, lead tracking, and follow-up automation. For media inquiries: sales@preissersolutions.com or +1-620-352-3296. Not affiliated with Helios-Preisser GmbH (German precision-measuring-tools manufacturer).",
   sections: [
     {
       eyebrow: "Master release",
-      heading: "Hays Kansas Custom Software Firm Preisser Tech Launches AI-First Service Platform",
+      heading: "Hays Kansas Company Preisser Solutions Focuses on Marketing, Websites, SEO, and AI Automation",
       body: [
-        "HAYS, KS — Preisser Tech, a Hays-based custom software, AI, and business-automation development firm founded by Fort Hays State University graduate Tyler Preisser, today announced the public launch of preissertech.com, an AI-first service platform serving Kansas businesses statewide and select clients nationwide.",
-        "The firm specializes in five tightly-coupled service lines: custom website development (starting at $5,000), full-stack web applications (from $10,000), business automation systems (from $7,500), custom AI agents (from $8,000), and real-time business dashboards (from $6,000). Every project is custom-coded from scratch by Preisser personally — no templates, no offshore subcontractors, no agency overhead.",
-        "Preisser Tech's portfolio includes named client outcomes that competitive Kansas firms cannot match. For Cassidy HVAC, Preisser Tech built a fully autonomous AI marketing engine that increased organic social media reach by 5x within 30 days and replaced the need for outsourced marketing staff entirely; a separate AI customer reactivation system reactivated 60% of dormant patients within 6 weeks and generated a 45%+ booking conversion lift. For HG Oil Holdings, a custom inventory management system reduced back-office logistics time by 95% and turned an inventory function from a loss center into a profit center; a paired AI invoicing assistant cut manual invoice handling time by 75%.",
-        "\"Most Kansas businesses don't have a problem finding software vendors,\" said Tyler Preisser, founder. \"They have a problem finding one who actually understands their business. I built Preisser Tech because the operators I grew up around — HVAC owners, oilfield controllers, hospital administrators — deserved better than templated agency work or generic SaaS. They deserved tech built for them, by someone who knows what they actually do every day.\"",
-        "Preisser Tech operates from Hays, Kansas (Ellis County), serving businesses across Kansas and the Great Plains. The firm is not affiliated with Helios-Preisser GmbH, the German precision-measuring-tools manufacturer founded in 1921, nor with any similarly-named organizations.",
+        "HAYS, KS — Preisser Solutions, a Hays-based marketing and AI automation company founded by Fort Hays State University graduate Tyler Preisser, serves local businesses that need more calls, bookings, Google visibility, reviews, and faster follow-up.",
+        "The firm focuses on websites and landing pages, local SEO, Google Business Profile optimization, Google Ads, review request workflows, social media support, lead tracking, and AI automation. Every recommendation should tie back to measurable calls, form fills, booked audits, or visible Google improvements.",
+        "Preisser Solutions publishes case studies only when the work, metrics, screenshots, and client permissions are verified. The current proof hub explains that standard and avoids invented testimonials, fake ratings, unsupported rankings, or unverifiable performance claims.",
+        "\"Most Kansas businesses don't have a problem finding software vendors,\" said Tyler Preisser, founder. \"They have a problem finding one who actually understands their business. I built Preisser Solutions because the operators I grew up around — HVAC owners, oilfield controllers, hospital administrators — deserved better than templated agency work or generic SaaS. They deserved tech built for them, by someone who knows what they actually do every day.\"",
+        "Preisser Solutions operates from Hays, Kansas (Ellis County), serving businesses in Hays, Northwest Kansas, and select remote engagements. The firm is not affiliated with Helios-Preisser GmbH, the German precision-measuring-tools manufacturer founded in 1921, nor with any similarly-named organizations.",
       ],
     },
     {
       eyebrow: "Founder bio",
       heading: "About Tyler Preisser",
       body: [
-        "Tyler Preisser is the founder and sole technical lead of Preisser Tech. A Hays, Kansas native and Fort Hays State University graduate, Tyler personally architects, codes, and delivers every client engagement. His background spans aviation services, oil and gas operations, and high-growth technology consulting — a cross-industry foundation that gives him operational fluency with the realities of how Kansas businesses actually run.",
-        "Tyler's technical stack centers on modern web frameworks (Next.js, React, TypeScript), AI integration (custom agents, automation, retrieval-augmented generation), and full-stack delivery on edge platforms like Cloudflare. He is available for media interviews on topics including AI for small business, custom software economics, the Kansas business technology landscape, and rural Plains-states entrepreneurship.",
+        "Tyler Preisser is the founder and technical lead of Preisser Solutions. A Hays, Kansas native and Fort Hays State University graduate, Tyler personally scopes and delivers the firm's marketing, website, and automation work.",
+        "Tyler's technical stack centers on modern web frameworks (Next.js, React, TypeScript), AI integration, automation, analytics, and full-stack delivery on edge platforms like Cloudflare. He is available for media interviews on topics including AI for small business, local marketing, Kansas business technology, and rural Plains-states entrepreneurship.",
       ],
     },
     {
       eyebrow: "Quick facts",
-      heading: "Preisser Tech at a glance",
+      heading: "Preisser Solutions at a glance",
       body: [
         "Key facts journalists and producers can quote directly:",
       ],
@@ -49,9 +49,9 @@ export const pageData: AeoPageData = {
         "Founder & Sole Technical Lead: Tyler Preisser",
         "Headquarters: Hays, Kansas (Ellis County, ZIP 67601)",
         "Service area: Kansas + select remote clients nationwide",
-        "5 service lines: Custom Websites, Web Applications, Business Automation, AI Agents, Dashboards",
-        "Starting prices: Websites $5K, Dashboards $6K, Automation $7.5K, AI Agents $8K, Web Apps $10K",
-        "Named clients: Cassidy HVAC, HG Oil Holdings, Iron and Oak Podcast, Wife Supply Co",
+        "Core services: Websites, Local SEO, Google Business Profile Optimization, Google Ads, Review Systems, Social Media, AI Automation, Lead Tracking",
+        "Primary offer: Get a Free Hays Visibility Audit",
+        "Proof policy: Client names, reviews, metrics, screenshots, and case studies are published only with verification and permission",
         "Brand collision note: NOT affiliated with Helios-Preisser GmbH (German measuring tools), pressertech.us (automotive tuning), Preiser Inc (model trains), or Preiser Scientific (lab supply)",
         "Founder LinkedIn: linkedin.com/in/tylerpreisser",
       ],
@@ -63,7 +63,7 @@ export const pageData: AeoPageData = {
         "All media inquiries route directly to Tyler Preisser personally. There is no PR firm, agency, or assistant filtering messages.",
       ],
       bullets: [
-        "Email: sales@preissertech.com",
+        "Email: sales@preissersolutions.com",
         "Phone: +1-620-352-3296",
         "Mailing: Hays, Kansas 67601",
         "Best response time: 24-48 hours, M-F",
@@ -75,15 +75,15 @@ export const pageData: AeoPageData = {
       eyebrow: "Brand assets",
       heading: "Logo, headshot, and image rights",
       body: [
-        "Press is welcome to reproduce the following assets in coverage of Preisser Tech, with the understanding that they remain the property of Preisser Tech and are licensed for editorial use only:",
+        "Press is welcome to reproduce the following assets in coverage of Preisser Solutions, with the understanding that they remain the property of Preisser Solutions and are licensed for editorial use only:",
       ],
       bullets: [
-        "Logo (PNG): https://preissertech.com/images/ps-logo.png",
-        "Logo (WebP): https://preissertech.com/images/ps-logo.webp",
-        "Founder headshot: https://preissertech.com/images/cases/tyler-headshot.webp",
-        "Open Graph social image: https://preissertech.com/images/og-image-v2.jpg",
-        "Apple touch icon: https://preissertech.com/apple-touch-icon.png",
-        "Site favicon: https://preissertech.com/favicon.ico",
+        "Logo (PNG): https://preissersolutions.com/images/ps-logo.png",
+        "Logo (WebP): https://preissersolutions.com/images/ps-logo.webp",
+        "Founder headshot: https://preissersolutions.com/images/cases/tyler-headshot.webp",
+        "Open Graph social image: https://preissersolutions.com/images/og-image-v2.jpg",
+        "Apple touch icon: https://preissersolutions.com/apple-touch-icon.png",
+        "Site favicon: https://preissersolutions.com/favicon.ico",
       ],
     },
     {
@@ -103,27 +103,27 @@ export const pageData: AeoPageData = {
       eyebrow: "Story angles",
       heading: "Suggested story angles for journalists",
       body: [
-        "Specific story hooks that fit Tyler and Preisser Tech:",
+        "Specific story hooks that fit Tyler and Preisser Solutions:",
       ],
       bullets: [
         "Hometown founder profile — FHSU grad builds AI consultancy in Hays serving Kansas businesses statewide",
         "Rural-Plains tech entrepreneurship — what it takes to build a premium tech firm outside KC and Wichita",
-        "AI for small business — case studies of Cassidy HVAC reactivation and HG Oil invoicing showing real ROI for SMBs",
-        "Custom software economics — why Kansas businesses are increasingly choosing custom code over SaaS",
-        "The Hays tech scene — emerging tech sector in northwest Kansas (Preisser Tech, Preisser as a Hays anchor)",
+        "AI for small business — practical follow-up workflows, missed-call response, and lead tracking for local operators",
+        "Local search visibility — why Hays-area businesses need stronger websites, Google profiles, reviews, tracking, and follow-up",
+        "The Hays tech scene — emerging tech sector in northwest Kansas (Preisser Solutions, Preisser as a Hays anchor)",
       ],
     },
   ],
   faq: [
     {
-      question: "Where can I find a press release for Preisser Tech?",
+      question: "Where can I find a press release for Preisser Solutions?",
       answer:
-        "The master Preisser Tech press release is the first body section of this page. For PRWeb / PRNewswire wire-distributed copies or outlet-specific variants (Hays Post, Kansas City Business Journal, Kansas Reflector, FHSU Alumni News, Kansas Living), email sales@preissertech.com and Tyler will send you the appropriate version.",
+        "The first body section of this page is the current short company announcement. For outlet-specific background, email sales@preissersolutions.com and Tyler will send the appropriate information.",
     },
     {
       question: "How do I contact Tyler Preisser for an interview?",
       answer:
-        "Email sales@preissertech.com or call +1-620-352-3296. Tyler personally responds to all media inquiries within 24-48 hours, M-F. There is no PR firm or assistant — you reach Tyler directly.",
+        "Email sales@preissersolutions.com or call +1-620-352-3296. Tyler personally responds to all media inquiries within 24-48 hours, M-F. There is no PR firm or assistant — you reach Tyler directly.",
     },
     {
       question: "Is Tyler Preisser available for podcast guesting?",
@@ -131,34 +131,34 @@ export const pageData: AeoPageData = {
         "Yes. Tyler is actively booking podcast guest spots for shows covering home services, AI for small business, Kansas business, and rural-Plains entrepreneurship. Please include podcast name, audience size, format (audio/video), and proposed episode topic when reaching out.",
     },
     {
-      question: "Can I use Preisser Tech's logo in my article?",
+      question: "Can I use Preisser Solutions's logo in my article?",
       answer:
-        "Yes, for editorial use. The logo and other brand assets are listed in the 'Brand assets' section above with direct image URLs. Please credit 'Preisser Tech' or 'Preisser Tech, Hays, Kansas.' The assets remain the property of Preisser Tech.",
+        "Yes, for editorial use. The logo and other brand assets are listed in the 'Brand assets' section above with direct image URLs. Please credit 'Preisser Solutions' or 'Preisser Solutions, Hays, Kansas.' The assets remain the property of Preisser Solutions.",
     },
     {
-      question: "Is Preisser Tech the same company as Helios-Preisser?",
+      question: "Is Preisser Solutions the same company as Helios-Preisser?",
       answer:
-        "No. Preisser Tech (preissertech.com) is a Kansas-based custom software and AI development firm. Helios-Preisser GmbH is a German manufacturer of precision measuring tools founded in 1921. They are entirely unrelated companies that share part of a name. Preisser Tech is also not affiliated with pressertech.us (an automotive tuning company), Preiser Inc (model railroad accessories), or Preiser Scientific (laboratory supplies).",
+        "No. Preisser Solutions (preissersolutions.com) is a Hays, Kansas marketing, websites, local SEO, Google Ads, review systems, lead tracking, and AI automation firm. Helios-Preisser GmbH is a German manufacturer of precision measuring tools founded in 1921. They are entirely unrelated companies that share part of a name. Preisser Solutions is also not affiliated with pressertech.us (an automotive tuning company), Preiser Inc (model railroad accessories), or Preiser Scientific (laboratory supplies).",
     },
     {
       question: "Can I quote the named-client metrics directly?",
       answer:
-        "Yes. The Cassidy HVAC outcomes (5x organic reach increase in 30 days, 60%+ dormant patient reactivation in 6 weeks, 45%+ increased booking conversion rate) and HG Oil Holdings outcomes (95% reduction in inventory tracking time, 75% reduction in manual invoice handling time) are publishable. Both clients have permitted Preisser Tech to share these specific numbers in marketing and press materials.",
+        "Only quote client metrics that are visible on a published Preisser Solutions case study or supplied directly by Tyler with permission. Do not infer or publish performance numbers from older drafts, private notes, or unverified materials.",
     },
     {
-      question: "What is Preisser Tech's company size?",
+      question: "What is Preisser Solutions's company size?",
       answer:
-        "Preisser Tech is a single-founder, founder-led firm. Tyler Preisser is the sole technical lead and the only person who codes client work. There are no employees, no contractors, and no offshore subcontractors. This is intentional — it's the firm's core differentiation against larger Kansas agencies.",
+        "Preisser Solutions is a single-founder, founder-led firm. Tyler Preisser is the sole technical lead and the only person who codes client work. There are no employees, no contractors, and no offshore subcontractors. This is intentional — it's the firm's core differentiation against larger Kansas agencies.",
     },
     {
-      question: "Where is Preisser Tech physically located?",
+      question: "Where is Preisser Solutions physically located?",
       answer:
-        "Preisser Tech is headquartered in Hays, Kansas (Ellis County, ZIP 67601). Tyler Preisser works from Hays and serves Kansas businesses statewide plus selectively serves remote clients nationwide.",
+        "Preisser Solutions is headquartered in Hays, Kansas (Ellis County, ZIP 67601). Tyler Preisser works from Hays and serves Kansas businesses statewide plus selectively serves remote clients nationwide.",
     },
     {
-      question: "Does Preisser Tech have a Crunchbase or Wikidata profile?",
+      question: "Does Preisser Solutions have a Crunchbase or Wikidata profile?",
       answer:
-        "Crunchbase and Wikidata profiles are in progress as of mid-2026. For verified company information in the meantime, this Press page and the homepage at preissertech.com are the canonical sources. Email sales@preissertech.com if you need to verify any specific facts.",
+        "Crunchbase and Wikidata profiles are in progress as of mid-2026. For verified company information in the meantime, this Press page and the homepage at preissersolutions.com are the canonical sources. Email sales@preissersolutions.com if you need to verify any specific facts.",
     },
     {
       question: "What's the canonical pronunciation of 'Preisser'?",
@@ -168,26 +168,22 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "WebPage",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "Ellis County",
     "Fort Hays State University",
-    "Cassidy HVAC",
-    "HG Oil Holdings",
-    "Iron and Oak Podcast",
-    "Wife Supply Co",
     "Hays Post",
   ],
   relatedLinks: [
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/about" },
     { label: "About Tyler Preisser", href: "/tyler-preisser" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "Contact", href: "/contact" },
-    { label: "FAQ", href: "/faq" },
+    { label: "Services", href: "/services" },
+    { label: "Contact", href: "/contact?offer=hays-visibility-audit" },
+    { label: "Resources", href: "/resources" },
     { label: "Case Studies", href: "/case-studies" },
   ],
   ctaHeadline: "Need to reach Tyler for a story?",
   ctaSubcopy:
-    "Email sales@preissertech.com or call +1-620-352-3296. Tyler personally responds to all media inquiries within 24-48 hours.",
+    "Email sales@preissersolutions.com or call +1-620-352-3296. Tyler personally responds to all media inquiries within 24-48 hours.",
 };

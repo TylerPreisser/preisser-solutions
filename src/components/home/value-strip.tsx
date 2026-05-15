@@ -1,19 +1,19 @@
 const valueItems = [
   {
-    strong: "Websites that convert",
-    text: "Modern sites built to earn trust and bring in leads.",
+    strong: "Hays Visibility Sprint",
+    text: "A focused setup to get found, trusted, contacted, tracked, and followed up with.",
   },
   {
     strong: "Local SEO",
-    text: "Kansas search visibility across Google and AI answers.",
+    text: "Hays and Northwest Kansas pages, technical cleanup, and Google visibility basics.",
   },
   {
-    strong: "Paid ads",
-    text: "Accountable campaigns for real service inquiries.",
+    strong: "Google Ads",
+    text: "Search campaigns tied to calls, forms, and service-specific landing pages.",
   },
   {
     strong: "AI follow-up",
-    text: "Practical automation that keeps prospects moving.",
+    text: "Missed-call text-back, speed-to-lead, and CRM reminders that reduce lost leads.",
   },
   {
     strong: "CRM systems",
@@ -35,7 +35,7 @@ const valueItems = [
 
 export function ValueStrip() {
   return (
-    <section className="ps-value-strip" aria-label="Preisser Tech services">
+    <section className="ps-value-strip" aria-label="Preisser Solutions services">
       <div className="ps-value-strip-track">
         {valueItems.map((item) => (
           <div key={item.strong} className="ps-value-item">

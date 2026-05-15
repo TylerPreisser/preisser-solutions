@@ -4,12 +4,46 @@ import { readdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const OUT_DIR = path.resolve("out");
-const SITE_ORIGIN = "https://preissertech.com";
+const PUBLIC_SITEMAP = path.resolve("public/sitemap.xml");
+const SITE_ORIGIN = "https://preissersolutions.com";
 const TODAY = new Date().toISOString().slice(0, 10);
 
 const EXCLUDED_HTML = new Set([
   "/404.html",
   "/yandex_9f19081f7abbbb70.html",
+]);
+const REDIRECTED_URL_PATHS = new Set([
+  "/custom-websites",
+  "/preisser-technology",
+  "/premium-web-development-kansas",
+  "/business-automation",
+  "/ai-agents",
+  "/dashboards-and-analytics",
+  "/web-applications",
+]);
+const LEGACY_NOINDEX_URL_PATHS = new Set([
+  "/faq",
+  "/pricing",
+  "/process",
+  "/why-automation",
+  "/roi-calculator",
+]);
+
+const INDEXABLE_LOCATION_PATHS = new Set(["/locations", "/locations/hays-kansas"]);
+const INDEXABLE_INDUSTRY_PATHS = new Set([
+  "/industries",
+  "/industries/contractors",
+  "/industries/restaurants",
+  "/industries/professional-services",
+]);
+const INDEXABLE_SERVICE_PATHS = new Set([
+  "/services",
+  "/services/local-seo-hays-ks",
+  "/services/google-business-profile-optimization-hays-ks",
+  "/services/google-ads-hays-ks",
+  "/services/web-design-hays-ks",
+  "/services/social-media-marketing-hays-ks",
+  "/services/ai-automation-hays-ks",
 ]);
 
 async function walk(dir) {
@@ -32,7 +66,14 @@ function htmlPathToUrl(filePath) {
   const relative = `/${path.relative(OUT_DIR, filePath).replaceAll(path.sep, "/")}`;
   if (EXCLUDED_HTML.has(relative)) return null;
   if (relative === "/index.html") return "/";
-  return relative.replace(/\.html$/, "");
+  const urlPath = relative.replace(/\.html$/, "");
+  if (REDIRECTED_URL_PATHS.has(urlPath)) return null;
+  if (LEGACY_NOINDEX_URL_PATHS.has(urlPath)) return null;
+  if (urlPath.startsWith("/compare/")) return null;
+  if (urlPath.startsWith("/locations/") && !INDEXABLE_LOCATION_PATHS.has(urlPath)) return null;
+  if (urlPath.startsWith("/industries/") && !INDEXABLE_INDUSTRY_PATHS.has(urlPath)) return null;
+  if (urlPath.startsWith("/services/") && !INDEXABLE_SERVICE_PATHS.has(urlPath)) return null;
+  return urlPath;
 }
 
 function escapeXml(value) {
@@ -71,4 +112,5 @@ ${urls
 
 await stat(OUT_DIR);
 await writeFile(path.join(OUT_DIR, "sitemap.xml"), xml, "utf8");
-console.log(`[generate-sitemap] Wrote ${urls.length} URLs to out/sitemap.xml.`);
+await writeFile(PUBLIC_SITEMAP, xml, "utf8");
+console.log(`[generate-sitemap] Wrote ${urls.length} URLs to out/sitemap.xml and public/sitemap.xml.`);

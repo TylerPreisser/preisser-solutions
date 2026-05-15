@@ -1,26 +1,24 @@
 export const siteConfig = {
-  name: "Preisser Tech",
-  tagline: "AI-powered marketing for Kansas",
-  url: "https://preissertech.com",
+  name: "Preisser Solutions",
+  tagline: "Hays KS marketing, websites, SEO, Google Ads, and AI automation",
+  url: "https://preissersolutions.com",
   contact: {
-    email: "sales@preissertech.com",
+    email: "sales@preissersolutions.com",
     phone: "+1-620-352-3296",
-    location: "Hays, Kansas",
+    phoneHref: "tel:+16203523296",
+    location: "Hays, KS 67601",
+    serviceArea: "Serving Hays, Ellis County, and Northwest Kansas by appointment, client-site visits, and remote work.",
   },
   social: {
-    // NOTE: URLs set in advance to canonical handles — once pages are created/renamed,
-    // the JSON-LD sameAs array is immediately correct without a code deploy.
-    linkedin: "https://www.linkedin.com/company/preissertech",
-    facebook: "https://www.facebook.com/preissertech",
-    twitter: "https://x.com/preissertech",
+    linkedin: "https://www.linkedin.com/in/tylerpreisser",
   },
   founder: {
     name: "Tyler Preisser",
     title: "Founder & Owner",
   },
   meta: {
-    title: "Preisser Tech",
-    description: "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
-    themeColor: "#0D95E8",
+    title: "Preisser Solutions",
+    description: "Preisser Solutions helps Hays and Northwest Kansas businesses get more calls, bookings, and customers through websites, local SEO, Google Ads, review systems, and AI automation.",
+    themeColor: "#0B7BC0",
   },
 } as const;

@@ -18,8 +18,8 @@
 - [x] Write design spec
 - [x] Set up CI/CD pipeline
 - [x] Set up self-updating documentation system
-- [ ] Run `npm install` and validate build compiles
-- [ ] Initialize GitHub repo and push
+- [x] Run `npm install` and validate build compiles
+- [x] Initialize GitHub repo and push
 - [ ] Verify Cloudflare Pages deployment
 
 ## Phase 2: Content
@@ -72,7 +72,7 @@
 - [ ] SEO verification (meta tags, Open Graph, schema.org)
 - [ ] Image optimization (WebP, proper sizes/srcset)
 - [ ] Final content review with Tyler
-- [ ] Production deploy to preissertech.com
+- [ ] Production deploy to preissersolutions.com
 
 ---
 
@@ -80,6 +80,27 @@
 
 > Items added during implementation that weren't in the original plan.
 > (Append here as things come up)
+
+- [x] 2026-05-14: Remove ignored generated artifacts and root-level duplicate/loose assets.
+- [x] 2026-05-14: Prune unused scaffold components, hooks, AI-page prototype files, and animation presets.
+- [x] 2026-05-14: Remove unreferenced public Stripe placeholders, old standalone hero files, and legacy value-prop assets.
+- [x] 2026-05-14: Rework canonical Hays local SEO/conversion pages around the Hays Visibility Audit.
+- [x] 2026-05-14: Remove unsupported proof pages and redirect old case-study URLs to the proof hub.
+- [x] 2026-05-14: Exclude/noindex legacy doorway-prone or duplicate-intent pages from sitemap/indexing.
+- [x] 2026-05-14: Add GBP, measurement, content roadmap, offsite authority, and Google Ads operating docs.
+- [x] 2026-05-14: Fix Cloudflare middleware canonical-host self-redirect risk and move critical path redirects into middleware.
+- [x] 2026-05-14: Fix Cloudflare Function 204 OPTIONS responses for lead and MCP endpoints.
+- [x] 2026-05-14: Align agent-discovery surfaces with Hays/local-growth positioning.
+- [x] 2026-05-14: Tighten contact-form fast-submit behavior and homepage conversion CTAs.
+- [x] 2026-05-14: Convert GitHub Pages workflow into build-only CI so Cloudflare Pages is the single production target.
+- [x] 2026-05-14: Check Cloudflare Pages production secrets with Wrangler; no secrets were listed.
+- [x] 2026-05-14: Deploy fixed Cloudflare Pages export and remove stale Worker routes intercepting `preissersolutions.com`.
+- [x] 2026-05-14: Rework `/about` for the current Hays local-growth positioning and redirect stale `/preisser-technology`.
+- [x] 2026-05-14: Add social media marketing to canonical services grid and footer links.
+- [ ] 2026-05-14: Optional CSS cleanup pass for retired `.ps-problem*`, `.ps-results*`, and old AI-page classes.
+- [ ] 2026-05-14: Editorially rewrite or remove remaining noindexed legacy long-tail pages before reindexing any of them.
+- [ ] 2026-05-14: Add `ZAPIER_LEAD_WEBHOOK_URL` in Cloudflare Pages production secrets.
+- [ ] 2026-05-14: Add verified Google Business Profile review URL, CID, and Place ID after GBP verification.
 
 ---
 
@@ -89,6 +110,5 @@
 
 | Item | Blocked By | Date Logged |
 |------|-----------|-------------|
-| Phase 2 (all content) | Tyler's content prompt | 2026-04-02 |
-| Service illustrations | Need to decide: custom illustrations, icons, or stock? | 2026-04-02 |
-| Form submission | Need to choose backend: Formspree, Cloudflare Workers, or other | 2026-04-02 |
+| Lead forwarding | Add `ZAPIER_LEAD_WEBHOOK_URL` to Cloudflare Pages production secrets | 2026-05-14 |
+| Google review CTA | Verify Google Business Profile and add real review URL/CID/Place ID | 2026-05-14 |

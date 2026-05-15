@@ -1,4 +1,4 @@
-const CANONICAL_HOST = "preissertech.com";
+const CANONICAL_HOST = "preissersolutions.com";
 
 const LEGACY_PATH_REDIRECTS = new Map([
   ["/index.html", "/"],
@@ -16,7 +16,7 @@ const LEGACY_PATH_REDIRECTS = new Map([
 const LEGACY_ROBOTS_TXT = `User-agent: *
 Allow: /
 
-Sitemap: https://preissertech.com/sitemap.xml
+Sitemap: https://preissersolutions.com/sitemap.xml
 `;
 
 function buildDestination(url: URL) {

@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/website-redesign",
   tier: "service_detail",
-  metaTitle: "Website Redesign Services in Kansas | Preisser Tech",
+  metaTitle: "Website Redesign Services in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech redesigns and rebuilds outdated business websites — taking over Wix, Squarespace, WordPress, and old custom sites with modern Next.js builds.",
+    "Preisser Solutions redesigns and rebuilds outdated business websites — taking over Wix, Squarespace, WordPress, and old custom sites with modern Next.js builds.",
   eyebrow: "Website Redesign",
   h1: "Take Over Your Outdated Website With a Modern Custom Rebuild",
   subheadline:
-    "Existing site too slow, ugly, or broken to fix? Preisser Tech rebuilds it from scratch in modern code without losing your SEO.",
+    "Existing site too slow, ugly, or broken to fix? Preisser Solutions rebuilds it from scratch in modern code without losing your SEO.",
   answerParagraph:
-    "Preisser Tech delivers website redesigns for Kansas businesses with outdated, slow, or underperforming sites. The firm takes over existing websites — Wix, Squarespace, WordPress, GoDaddy, or old custom builds — and rebuilds them from scratch in modern Next.js, React, and TypeScript. Founded by Tyler Preisser in Hays, Kansas, the firm preserves SEO equity through proper redirects, content migration, and search engine notification while delivering a faster, better-looking, higher-converting site.",
+    "Preisser Solutions delivers website redesigns for Kansas businesses with outdated, slow, or underperforming sites. The firm takes over existing websites — Wix, Squarespace, WordPress, GoDaddy, or old custom builds — and rebuilds them from scratch in modern Next.js, React, and TypeScript. Founded by Tyler Preisser in Hays, Kansas, the firm preserves SEO equity through proper redirects, content migration, and search engine notification while delivering a faster, better-looking, higher-converting site.",
   sections: [
     {
       eyebrow: "Signs you need a redesign",
@@ -35,14 +35,14 @@ export const pageData: AeoPageData = {
       heading: "Redesign vs. starting from scratch",
       body: [
         "A redesign is not the same as a brand-new website. The difference is preserving what's working — SEO equity, content that ranks, named clients, photo libraries — while throwing out what isn't.",
-        "Preisser Tech audits the existing site first, identifies content and rankings worth preserving, designs the new site to inherit and improve those signals, and migrates carefully with proper 301 redirects and search engine notification.",
+        "Preisser Solutions audits the existing site first, identifies content and rankings worth preserving, designs the new site to inherit and improve those signals, and migrates carefully with proper 301 redirects and search engine notification.",
       ],
     },
     {
       eyebrow: "What we deliver",
       heading: "Website redesign engagement includes",
       body: [
-        "Every Preisser Tech redesign engagement covers:",
+        "Every Preisser Solutions redesign engagement covers:",
       ],
       bullets: [
         "Full audit of existing site (performance, SEO, content, conversion)",
@@ -77,7 +77,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will I lose my Google rankings during a redesign?",
       answer:
-        "Not if it's done right. Preisser Tech preserves SEO equity through proper 301 redirect mapping, content migration, sitemap submission, and search engine notification. Most clients see ranking improvements after launch because the new site is faster and has better structured data.",
+        "Not if it's done right. Preisser Solutions preserves SEO equity through proper 301 redirect mapping, content migration, sitemap submission, and search engine notification. Most clients see ranking improvements after launch because the new site is faster and has better structured data.",
     },
     {
       question: "How long does a redesign take?",
@@ -112,7 +112,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "Next.js",
@@ -127,7 +127,7 @@ export const pageData: AeoPageData = {
     { label: "Custom Website Development", href: "/custom-websites" },
     { label: "Website Migration", href: "/services/website-migration" },
     { label: "Conversion Optimization", href: "/services/conversion-optimization" },
-    { label: "AI Search Optimization", href: "/services/ai-search-optimization" },
+    { label: "AI Automation in Hays", href: "/services/ai-automation-hays-ks" },
   ],
   ctaHeadline: "Take over your outdated site without losing rankings",
   ctaSubcopy:

@@ -1,15 +1,15 @@
 {
-  "name": "preisser-tech",
+  "name": "preisser-solutions",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/strip-404-noindex.mjs && node scripts/generate-sitemap.mjs",
+    "build": "next build && node scripts/generate-sitemap.mjs",
     "start": "next start",
     "lint": "next lint",
     "preview": "npx serve out",
-    "indexnow": "node scripts/indexnow-ping.mjs",
-    "strip-404-noindex": "node scripts/strip-404-noindex.mjs"
+    "deploy:cloudflare": "npm run build && npx wrangler pages deploy out --project-name=preisser-solutions --branch=main",
+    "indexnow": "node scripts/indexnow-ping.mjs"
   },
   "dependencies": {
     "next": "^15.3.0",
