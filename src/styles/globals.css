@@ -7556,3 +7556,40 @@ html, body {
 [data-theme="dark"] .ps-ai-cta { background: var(--color-dark-surface, #0F1D30); border-color: var(--color-border-dark, rgba(255,255,255,0.08)); }
 [data-theme="dark"] .ps-ai-related a { background: var(--color-dark-surface, #0F1D30); border-color: var(--color-border-dark, rgba(255,255,255,0.08)); color: var(--theme-text-primary, #F1F5F9); }
 [data-theme="dark"] .ps-ai-faq { border-color: var(--color-border-dark, rgba(255,255,255,0.08)); }
+
+/* ── Internal link block (server-rendered link cluster) ──────── */
+.ps-link-block {
+  margin: 48px 0;
+}
+.ps-link-block__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 24px;
+  color: var(--theme-text-primary);
+}
+.ps-link-block__item {
+  display: block;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--theme-border);
+  background: var(--theme-card-bg);
+  transition: background-color 200ms ease, border-color 200ms ease, transform 200ms ease;
+}
+.ps-link-block__item:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+.ps-link-block__label {
+  display: block;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--theme-text-primary);
+}
+.ps-link-block__desc {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--theme-text-secondary);
+}

@@ -84,7 +84,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom website cost in Overland Park?",
       answer:
-        "Custom website pricing in Overland Park typically starts in the low thousands and scales with scope. Tyler delivers the work directly without agency overhead. Email sales@preissersolutions.com for a free estimate.",
+        "Custom website pricing in Overland Park typically starts in the low thousands and scales with scope. Tyler delivers the work directly without agency overhead. Email tyler@preissertech.com for a free estimate.",
     },
     {
       question: "Are you actually local to Overland Park?",

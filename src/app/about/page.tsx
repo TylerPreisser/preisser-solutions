@@ -75,27 +75,18 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Section 6: H2 + Quick Answer for AI quote extraction */}
+        {/* Lead intro — engineered for AI quote extraction. Visually-hidden H2
+            preserves semantic structure without competing with the main H1 above. */}
         <div className="ps-section ps-section-white">
           <div className="ps-container">
             <div style={{ maxWidth: 820, margin: "0 auto" }}>
-              <h2
-                style={{
-                  fontSize: "clamp(1.5rem, 2.6vw, 2rem)",
-                  fontWeight: 700,
-                  letterSpacing: "-0.02em",
-                  color: "var(--color-text-dark)",
-                  marginBottom: 16,
-                  lineHeight: 1.2,
-                }}
-              >
+              <h2 className="ps-visually-hidden">
                 Tyler Preisser — Hays, Kansas AI Builder and Web Developer
               </h2>
               <p
                 style={{
                   fontSize: 18,
                   lineHeight: 1.6,
-                  color: "var(--color-text-body)",
                   margin: 0,
                   fontWeight: 500,
                 }}

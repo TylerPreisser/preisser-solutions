@@ -22,8 +22,7 @@ Pulled from `src/data/site-config.ts`. Any drift between this and a directory li
 
 - **Name:** Preisser Solutions
 - **Address:** Hays, Kansas 67601
-- **Phone:** +1-620-352-3296
-- **Email:** sales@preissersolutions.com
+- **Email:** tyler@preissertech.com
 - **URL:** https://preissersolutions.com
 - **Hours:** By appointment (consulting model)
 
@@ -47,7 +46,7 @@ photos, and posts every month.
   > Don't pick `Computer Repair Service` or similar — wrong intent, drags rankings toward consumer queries.
 - [ ] **Service area:** Hays, Great Bend, Salina, Russell, WaKeeney, Colby, Dodge City, Garden City,
       Wichita, Kansas City, and "Western Kansas" as a region. Add up to 20 cities.
-- [ ] **Phone:** `+1 620-352-3296` (GBP displays this; must match every directory).
+- [ ] **Phone:** `+1 ` (GBP displays this; must match every directory).
 - [ ] **Website:** `https://preissersolutions.com` (NO UTM parameters; UTMs break canonical signals).
 - [ ] **Appointment URL:** `https://preissersolutions.com/contact`
 - [ ] **Description (750 chars max):** Lead with the entity statement from `src/app/layout.tsx`:

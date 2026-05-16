@@ -73,7 +73,6 @@ export function organizationSchema() {
     foundingDate: "2023",
     founder: { "@id": PERSON_ID },
     email: seoSite.email,
-    telephone: seoSite.phone,
     address: {
       "@type": "PostalAddress",
       streetAddress: seoSite.city,
@@ -95,7 +94,6 @@ export function organizationSchema() {
     contactPoint: [
       {
         "@type": "ContactPoint",
-        telephone: seoSite.phone,
         email: seoSite.email,
         contactType: "sales",
         availableLanguage: "English",
@@ -103,7 +101,6 @@ export function organizationSchema() {
       },
       {
         "@type": "ContactPoint",
-        telephone: seoSite.phone,
         email: seoSite.email,
         contactType: "customer support",
         availableLanguage: "English",
@@ -185,7 +182,6 @@ export function localBusinessSchema() {
     name: seoSite.name,
     image: `${URL}/images/ps-logo.png`,
     url: seoSite.url,
-    telephone: seoSite.phone,
     email: seoSite.email,
     description: seoSite.shortDescription,
     address: {
@@ -275,7 +271,6 @@ export function personSchema() {
     },
     url: `${URL}/about`,
     email: seoSite.email,
-    telephone: seoSite.phone,
     address: {
       "@type": "PostalAddress",
       addressLocality: seoSite.city,

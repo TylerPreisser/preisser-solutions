@@ -129,7 +129,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a similar build for my media brand?",
       answer:
-        "Email sales@preissersolutions.com or call +1-620-352-3296. Free 30-minute scoping call with Tyler personally.",
+ "Email tyler@preissertech.com. Free 30-minute scoping call with Tyler personally.",
     },
   ],
   schemaType: "Article",

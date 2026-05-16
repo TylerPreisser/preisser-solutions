@@ -27,7 +27,6 @@ Thanks for the trust on this one.
 
 Tyler
 Preisser Solutions
-+1-620-352-3296
 
 ---
 
@@ -47,7 +46,7 @@ If you mention the speed of how we went from first call to live, or the fact tha
 
 Tyler
 Preisser Solutions
-sales@preissersolutions.com
+tyler@preissertech.com
 
 ---
 

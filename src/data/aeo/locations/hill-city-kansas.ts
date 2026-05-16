@@ -83,7 +83,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom website cost in Hill City?",
       answer:
-        "Custom website pricing in Hill City typically starts in the low thousands and scales with scope. Email sales@preissersolutions.com for a free estimate.",
+        "Custom website pricing in Hill City typically starts in the low thousands and scales with scope. Email tyler@preissertech.com for a free estimate.",
     },
     {
       question: "Are you actually local to Hill City?",

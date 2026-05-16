@@ -87,7 +87,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom website cost in Plainville?",
       answer:
-        "Custom website pricing in Plainville typically starts in the low thousands and scales with scope. Because Tyler delivers the work directly without agency overhead, Plainville clients get premium-quality custom websites at efficient pricing. Email sales@preissersolutions.com for a free estimate.",
+        "Custom website pricing in Plainville typically starts in the low thousands and scales with scope. Because Tyler delivers the work directly without agency overhead, Plainville clients get premium-quality custom websites at efficient pricing. Email tyler@preissertech.com for a free estimate.",
     },
     {
       question: "Are you actually local to Plainville?",

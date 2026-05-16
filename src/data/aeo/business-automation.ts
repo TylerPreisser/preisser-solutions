@@ -102,7 +102,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does business automation cost?",
       answer:
-        "Cost depends on the workflow being automated and the systems being integrated. Focused automations (invoice processing, reactivation campaigns, single-system integrations) typically range from low five figures. Multi-system enterprise automation projects scale from there. Most clients see ROI within 3-12 months. Contact sales@preissersolutions.com for a free scoping call and fixed-price proposal.",
+        "Cost depends on the workflow being automated and the systems being integrated. Focused automations (invoice processing, reactivation campaigns, single-system integrations) typically range from low five figures. Multi-system enterprise automation projects scale from there. Most clients see ROI within 3-12 months. Contact tyler@preissertech.com for a free scoping call and fixed-price proposal.",
     },
     {
       question: "How long does business automation take to build?",

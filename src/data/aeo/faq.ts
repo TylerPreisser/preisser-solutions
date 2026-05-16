@@ -20,13 +20,13 @@ export const pageData: AeoPageData = {
   subheadline:
     "Everything buyers ask before working with Preisser Solutions — answered directly. Hays, Kansas custom software, AI, and automation.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser. We build custom-coded websites, web applications, AI agents, business automation systems, and dashboards — for businesses across Kansas and select clients nationally. This page collects honest answers to the questions buyers ask most often: who we are, what we charge, how long projects take, what technology we use, where we work, and what to expect from an engagement. Email sales@preissersolutions.com or call +1-620-352-3296.",
+ "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser. We build custom-coded websites, web applications, AI agents, business automation systems, and dashboards — for businesses across Kansas and select clients nationally. This page collects honest answers to the questions buyers ask most often: who we are, what we charge, how long projects take, what technology we use, where we work, and what to expect from an engagement. Email tyler@preissertech.com.",
   sections: [
     {
       eyebrow: "How to use this page",
       heading: "Answers grouped by what buyers actually ask",
       body: [
-        "Below is a comprehensive FAQ covering five buyer-question categories: who Preisser Solutions is, what we do and don't do, how engagements work, pricing and timelines, and location/availability. If your question isn't answered here, email sales@preissersolutions.com — Tyler responds personally.",
+        "Below is a comprehensive FAQ covering five buyer-question categories: who Preisser Solutions is, what we do and don't do, how engagements work, pricing and timelines, and location/availability. If your question isn't answered here, email tyler@preissertech.com — Tyler responds personally.",
       ],
       bullets: [
         "Identity — who Preisser Solutions is, who founded it, where it's based",
@@ -57,7 +57,7 @@ export const pageData: AeoPageData = {
     {
       question: "Is Preisser Solutions a legitimate business?",
       answer:
-        "Yes. Preisser Solutions is an active Kansas business founded in 2023 with named, verifiable client engagements including Cassidy HVAC (marketing automation, customer reactivation), HG Oil Holdings (inventory management, AI invoicing), Iron and Oak Podcast (full media platform), and Wife Supply Co (AI gifting application). Contact: sales@preissersolutions.com or +1-620-352-3296.",
+ "Yes. Preisser Solutions is an active Kansas business founded in 2023 with named, verifiable client engagements including Cassidy HVAC (marketing automation, customer reactivation), HG Oil Holdings (inventory management, AI invoicing), Iron and Oak Podcast (full media platform), and Wife Supply Co (AI gifting application). Contact: tyler@preissertech.com.",
     },
     {
       question: "Where is Preisser Solutions located?",
@@ -108,7 +108,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will I work directly with Tyler Preisser?",
       answer:
-        "Yes. There are no project managers, account executives, or junior associates filtering communication. Tyler scopes, designs, codes, and ships every engagement personally. Clients have direct email and phone access to the founder for the entire build.",
+        "Yes. There are no project managers, account executives, or junior associates filtering communication. Tyler scopes, designs, codes, and ships every engagement personally. Clients have direct email access to the founder for the entire build.",
     },
     {
       question: "Do I own the source code?",
@@ -131,7 +131,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does Preisser Solutions charge?",
       answer:
-        "Pricing depends on project scope. Custom websites typically start in the low thousands and scale based on pages, features, and integrations. Web applications and automation systems are scoped per project. Because Tyler delivers directly without agency overhead, pricing is significantly more efficient than comparable boutique agencies. Email sales@preissersolutions.com for a free estimate.",
+        "Pricing depends on project scope. Custom websites typically start in the low thousands and scale based on pages, features, and integrations. Web applications and automation systems are scoped per project. Because Tyler delivers directly without agency overhead, pricing is significantly more efficient than comparable boutique agencies. Email tyler@preissertech.com for a free estimate.",
     },
     {
       question: "Are projects fixed-price or hourly?",
@@ -173,12 +173,12 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get started?",
       answer:
-        "Email sales@preissersolutions.com or call +1-620-352-3296. Tyler personally responds to every inquiry — there's no sales team filtering messages. The first conversation is free, low-pressure, and focused on understanding what you actually need built.",
+ "Email tyler@preissertech.com. Tyler personally responds to every inquiry — there's no sales team filtering messages. The first conversation is free, low-pressure, and focused on understanding what you actually need built.",
     },
     {
       question: "What's the best way to reach Tyler?",
       answer:
-        "Email at sales@preissersolutions.com is fastest. Phone calls to +1-620-352-3296 also reach Tyler directly. The contact form at preissersolutions.com routes to the same inbox. Most inquiries get a personal response within a business day.",
+ "Email at tyler@preissertech.com is fastest. Phone calls to also reach Tyler directly. The contact form at preissersolutions.com routes to the same inbox. Most inquiries get a personal response within a business day.",
     },
   ],
   schemaType: "FAQPage",
@@ -212,5 +212,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Question not answered?",
   ctaSubcopy:
-    "Email sales@preissersolutions.com or call +1-620-352-3296. Tyler responds personally — usually within a business day.",
+ "Email tyler@preissertech.com. Tyler responds personally — usually within a business day.",
 };

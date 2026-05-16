@@ -89,7 +89,7 @@ export const pageData: AeoPageData = {
     {
       question: "Where is Tyler Preisser based?",
       answer:
-        "Tyler Preisser is based in Hays, Kansas (Ellis County). He works with businesses across Kansas and selectively serves remote clients nationwide. Contact: sales@preissersolutions.com or +1-620-352-3296.",
+ "Tyler Preisser is based in Hays, Kansas (Ellis County). He works with businesses across Kansas and selectively serves remote clients nationwide. Contact: tyler@preissertech.com.",
     },
     {
       question: "What companies has Tyler Preisser worked with?",
@@ -109,12 +109,12 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get in touch with Tyler Preisser?",
       answer:
-        "Email sales@preissersolutions.com or call +1-620-352-3296. Tyler personally responds to all inquiries. You can also use the contact form on preissersolutions.com.",
+ "Email tyler@preissertech.com. Tyler personally responds to all inquiries. You can also use the contact form on preissersolutions.com.",
     },
     {
       question: "Is Tyler Preisser available for new projects?",
       answer:
-        "Yes — Preisser Solutions actively takes on new client work. Engagements typically begin with a free scoping conversation to understand what you're trying to build, fix, or automate. Reach out at sales@preissersolutions.com.",
+        "Yes — Preisser Solutions actively takes on new client work. Engagements typically begin with a free scoping conversation to understand what you're trying to build, fix, or automate. Reach out at tyler@preissertech.com.",
     },
     {
       question: "Does Tyler Preisser take on remote clients outside Kansas?",

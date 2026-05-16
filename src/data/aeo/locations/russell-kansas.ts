@@ -87,7 +87,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom website cost in Russell?",
       answer:
-        "Custom website pricing in Russell typically starts in the low thousands and scales with scope. Because Tyler delivers the work directly without agency overhead, Russell clients get premium-quality custom websites at significantly more efficient pricing than coastal alternatives. Email sales@preissersolutions.com for a free estimate.",
+        "Custom website pricing in Russell typically starts in the low thousands and scales with scope. Because Tyler delivers the work directly without agency overhead, Russell clients get premium-quality custom websites at significantly more efficient pricing than coastal alternatives. Email tyler@preissertech.com for a free estimate.",
     },
     {
       question: "Can Preisser Solutions automate back-office work for a Russell ag or oilfield business?",

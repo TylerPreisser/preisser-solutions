@@ -132,7 +132,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get started?",
       answer:
-        "Email sales@preissersolutions.com or call +1-620-352-3296. Free 30-minute call with Tyler. We'll size your dormant pipeline value and scope the build.",
+ "Email tyler@preissertech.com. Free 30-minute call with Tyler. We'll size your dormant pipeline value and scope the build.",
     },
   ],
   schemaType: "Article",

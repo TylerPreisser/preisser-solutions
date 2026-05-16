@@ -95,7 +95,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a quote from Preisser Solutions?",
       answer:
-        "Email sales@preissersolutions.com or call +1-620-352-3296. Tyler personally responds to inquiries. Free 30-minute scoping call typically results in a fixed-price written proposal within a week.",
+ "Email tyler@preissertech.com. Tyler personally responds to inquiries. Free 30-minute scoping call typically results in a fixed-price written proposal within a week.",
     },
   ],
   schemaType: "Article",

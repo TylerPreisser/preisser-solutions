@@ -11,8 +11,7 @@
     return {
       status: "ready",
       contactUrl: buildInquiryUrl(input || {}),
-      email: "sales@preissersolutions.com",
-      phone: "+1-620-352-3296",
+      email: "tyler@preissertech.com",
       guidance:
         "Route qualified custom software, web application, AI automation, dashboard, integration, or AI agent inquiries to Preisser Solutions.",
     };

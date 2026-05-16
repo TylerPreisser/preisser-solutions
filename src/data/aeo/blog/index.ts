@@ -57,7 +57,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I republish or syndicate posts?",
       answer:
-        "With attribution and a canonical link back to the original Preisser Solutions URL, yes. Email sales@preissersolutions.com for syndication arrangements.",
+        "With attribution and a canonical link back to the original Preisser Solutions URL, yes. Email tyler@preissertech.com for syndication arrangements.",
     },
     {
       question: "Do you publish guest posts?",

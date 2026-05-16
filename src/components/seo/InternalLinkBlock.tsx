@@ -35,22 +35,15 @@ export function InternalLinkBlock({
         : "md:grid-cols-2 lg:grid-cols-3";
 
   return (
-    <nav aria-label={title ?? "Related pages"} className="my-12">
-      {title && (
-        <h2 className="mb-6 text-xl font-semibold tracking-tight">{title}</h2>
-      )}
-      <ul className={`grid grid-cols-1 gap-4 ${colClass}`}>
+    <nav aria-label={title ?? "Related pages"} className="ps-link-block">
+      {title && <h2 className="ps-link-block__title">{title}</h2>}
+      <ul className={`ps-link-block__grid grid grid-cols-1 gap-4 ${colClass}`}>
         {links.map((link) => (
           <li key={link.href}>
-            <Link
-              href={link.href}
-              className="block rounded-lg border border-white/10 bg-white/5 p-4 transition-colors hover:bg-white/10"
-            >
-              <span className="block font-medium">{link.label}</span>
+            <Link href={link.href} className="ps-link-block__item">
+              <span className="ps-link-block__label">{link.label}</span>
               {link.description && (
-                <span className="mt-1 block text-sm text-white/70">
-                  {link.description}
-                </span>
+                <span className="ps-link-block__desc">{link.description}</span>
               )}
             </Link>
           </li>

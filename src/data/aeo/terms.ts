@@ -185,6 +185,6 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Have a project in mind?",
   ctaSubcopy:
-    "Email sales@preissersolutions.com to start a scoping call. The authoritative terms for any specific engagement are in the signed proposal — this page is template language; review with counsel before relying on it.",
-  primaryCta: { label: "Email sales@preissersolutions.com", href: "mailto:sales@preissersolutions.com" },
+    "Email tyler@preissertech.com to start a scoping call. The authoritative terms for any specific engagement are in the signed proposal — this page is template language; review with counsel before relying on it.",
+  primaryCta: { label: "Email tyler@preissertech.com", href: "mailto:tyler@preissertech.com" },
 };

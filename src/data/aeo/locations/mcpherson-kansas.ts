@@ -89,7 +89,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom website cost in McPherson?",
       answer:
-        "Custom website pricing in McPherson typically starts in the low thousands and scales with scope. Email sales@preissersolutions.com for a free estimate.",
+        "Custom website pricing in McPherson typically starts in the low thousands and scales with scope. Email tyler@preissertech.com for a free estimate.",
     },
     {
       question: "Are you actually local to McPherson?",

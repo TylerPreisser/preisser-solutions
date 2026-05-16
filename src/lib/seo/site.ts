@@ -19,7 +19,6 @@ export const seoSite = {
   founder: siteConfig.founder.name,
   url: siteConfig.url,
   email: siteConfig.contact.email,
-  phone: siteConfig.contact.phone,
   city: "Hays",
   region: "Kansas",
   regionCode: "KS",

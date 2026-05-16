@@ -22,7 +22,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "How Preisser Solutions handles the information visitors and clients share with us. Written in plain language; no dark patterns; no third-party sale.",
   answerParagraph:
-    "Preisser Solutions, the Hays, Kansas custom software and AI consultancy founded by Tyler Preisser, collects a small amount of personally identifying information through the contact form, the newsletter subscribe form, and direct email or phone outreach. The information is used only to respond to inquiries and deliver client work. We do not sell, rent, or trade personal information to third parties. Information is retained for the operational life of the relationship plus a conservative tail (typically 24 months), and any visitor can request deletion at any time by emailing sales@preissersolutions.com.",
+    "Preisser Solutions, the Hays, Kansas custom software and AI consultancy founded by Tyler Preisser, collects a small amount of personally identifying information through the contact form, the newsletter subscribe form, and direct email or phone outreach. The information is used only to respond to inquiries and deliver client work. We do not sell, rent, or trade personal information to third parties. Information is retained for the operational life of the relationship plus a conservative tail (typically 24 months), and any visitor can request deletion at any time by emailing tyler@preissertech.com.",
   sections: [
     {
       eyebrow: "Information collected",
@@ -63,7 +63,7 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Cloudflare — hosts the website and processes server logs.",
-        "Google (Gmail / Workspace) — hosts our email; messages to sales@preissersolutions.com are processed by Google.",
+        "Google (Gmail / Workspace) — hosts our email; messages to tyler@preissertech.com are processed by Google.",
         "Stripe — processes invoices and payments when applicable.",
         "Twilio — processes voice / SMS for active client engagements where applicable.",
         "Anthropic / OpenAI — process inputs only when the client has approved use of their AI agents and only for the scope of the engagement.",
@@ -83,7 +83,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Your rights",
       heading: "Access, correction, and deletion",
       body: [
-        "Anyone can request access to, correction of, or deletion of information Preisser Solutions holds about them by emailing sales@preissersolutions.com. We will respond within a reasonable timeframe (target: 7 business days).",
+        "Anyone can request access to, correction of, or deletion of information Preisser Solutions holds about them by emailing tyler@preissertech.com. We will respond within a reasonable timeframe (target: 7 business days).",
         "Visitors can unsubscribe from the newsletter at any time via the unsubscribe link in any newsletter email or by emailing the address above.",
         "Visitors located in jurisdictions with statutory privacy rights (California / CCPA, EU / GDPR, etc.) may have additional rights under those statutes; we honor those rights to the extent the law applies to the activity in question.",
       ],
@@ -115,7 +115,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Disclaimer",
       heading: "Boilerplate language — review with counsel before relying on it",
       body: [
-        "The language on this page is a template tailored to Preisser Solutions's actual data practices but should be reviewed by counsel before being treated as authoritative legal text. If you are an attorney reviewing it, the contact for revisions is sales@preissersolutions.com.",
+        "The language on this page is a template tailored to Preisser Solutions's actual data practices but should be reviewed by counsel before being treated as authoritative legal text. If you are an attorney reviewing it, the contact for revisions is tyler@preissertech.com.",
       ],
     },
   ],
@@ -128,7 +128,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I request deletion of my information?",
       answer:
-        "Email sales@preissersolutions.com with a deletion request. We will respond within a reasonable timeframe (target: 7 business days) and confirm when the deletion is complete.",
+        "Email tyler@preissertech.com with a deletion request. We will respond within a reasonable timeframe (target: 7 business days) and confirm when the deletion is complete.",
     },
     {
       question: "What information does the contact form collect?",
@@ -167,6 +167,6 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Questions about your data?",
   ctaSubcopy:
-    "Email sales@preissersolutions.com for access, correction, or deletion requests. This page is template language — review with counsel before relying on it.",
-  primaryCta: { label: "Email sales@preissersolutions.com", href: "mailto:sales@preissersolutions.com" },
+    "Email tyler@preissertech.com for access, correction, or deletion requests. This page is template language — review with counsel before relying on it.",
+  primaryCta: { label: "Email tyler@preissertech.com", href: "mailto:tyler@preissertech.com" },
 };

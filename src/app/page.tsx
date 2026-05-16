@@ -52,32 +52,24 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      {/* Quick answer — engineered for AI quote extraction; placed near top of page. */}
+      {/* Lead intro — engineered for AI quote extraction; placed near top of page.
+          Heading is visually hidden; section keeps semantic association. */}
       <section
-        aria-labelledby="quick-answer"
+        aria-label="Overview"
         style={{
-          background: "var(--color-light, #F6F9FC)",
+          background: "var(--theme-section-alt)",
           padding: "clamp(48px, 6vw, 80px) 24px",
         }}
       >
         <div style={{ maxWidth: 880, margin: "0 auto" }}>
-          <h2
-            id="quick-answer"
-            style={{
-              fontSize: "clamp(1.25rem, 2vw, 1.5rem)",
-              fontWeight: 700,
-              letterSpacing: "-0.01em",
-              margin: "0 0 16px",
-              color: "var(--color-text-light-primary, #0A1628)",
-            }}
-          >
-            Quick answer
+          <h2 className="ps-visually-hidden">
+            Preisser Solutions overview
           </h2>
           <p
             style={{
               fontSize: "clamp(1.0625rem, 1.6vw, 1.25rem)",
               lineHeight: 1.6,
-              color: "var(--color-text-light-primary, #0A1628)",
+              color: "var(--theme-text-primary)",
               margin: 0,
               fontWeight: 500,
             }}

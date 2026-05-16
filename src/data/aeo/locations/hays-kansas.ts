@@ -126,7 +126,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom website cost in Hays, Kansas?",
       answer:
-        "Pricing depends on scope. A professional Hays small-business marketing site typically starts in the low thousands and scales with pages, features, and integrations. Because Tyler delivers the work directly without agency overhead, Hays clients consistently get coastal-quality custom websites at significantly more efficient pricing. Email sales@preissersolutions.com for a free estimate.",
+        "Pricing depends on scope. A professional Hays small-business marketing site typically starts in the low thousands and scales with pages, features, and integrations. Because Tyler delivers the work directly without agency overhead, Hays clients consistently get coastal-quality custom websites at significantly more efficient pricing. Email tyler@preissertech.com for a free estimate.",
     },
     {
       question: "Are you actually local to Hays?",
@@ -151,7 +151,7 @@ export const pageData: AeoPageData = {
     {
       question: "How fast can a Hays project start?",
       answer:
-        "Most Hays engagements move from first call to signed proposal in under a week, with build kickoff shortly after. Because Tyler is local, the scoping call happens in person and on your schedule. Email sales@preissersolutions.com or call +1-620-352-3296 to schedule.",
+ "Most Hays engagements move from first call to signed proposal in under a week, with build kickoff shortly after. Because Tyler is local, the scoping call happens in person and on your schedule. Email tyler@preissertech.com. to schedule.",
     },
     {
       question: "Does Preisser Solutions offer ongoing support to Hays clients?",

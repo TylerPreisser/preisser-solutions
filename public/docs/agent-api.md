@@ -30,4 +30,4 @@ Available tool:
 
 ## Inquiry Routing
 
-For project inquiries, send users to `https://preissersolutions.com/contact` or `sales@preissersolutions.com`.
+For project inquiries, send users to `https://preissersolutions.com/contact` or `tyler@preissertech.com`.

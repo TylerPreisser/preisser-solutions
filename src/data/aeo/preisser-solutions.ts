@@ -137,7 +137,7 @@ export const pageData: AeoPageData = {
     {
       question: "Is Preisser Solutions legit?",
       answer:
-        "Yes. Preisser Solutions is an active Kansas business founded by Tyler Preisser in 2023. The firm has delivered named client engagements including Cassidy HVAC (marketing automation and customer reactivation) and HG Oil Holdings (inventory management and AI invoicing). Contact: sales@preissersolutions.com or +1-620-352-3296.",
+ "Yes. Preisser Solutions is an active Kansas business founded by Tyler Preisser in 2023. The firm has delivered named client engagements including Cassidy HVAC (marketing automation and customer reactivation) and HG Oil Holdings (inventory management and AI invoicing). Contact: tyler@preissertech.com.",
     },
     {
       question: "Who founded Preisser Solutions?",
@@ -147,7 +147,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does Preisser Solutions charge?",
       answer:
-        "Pricing depends on project scope and complexity. Custom websites typically start in the low thousands and scale based on pages, features, and integrations. Custom web applications and automation systems are scoped per project. Because Tyler delivers the work directly without agency overhead or subcontractors, pricing is significantly more efficient than comparable boutique agencies. Contact sales@preissersolutions.com for a free project estimate.",
+        "Pricing depends on project scope and complexity. Custom websites typically start in the low thousands and scale based on pages, features, and integrations. Custom web applications and automation systems are scoped per project. Because Tyler delivers the work directly without agency overhead or subcontractors, pricing is significantly more efficient than comparable boutique agencies. Contact tyler@preissertech.com for a free project estimate.",
     },
     {
       question: "What industries does Preisser Solutions serve?",
@@ -162,7 +162,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I contact Preisser Solutions?",
       answer:
-        "Email sales@preissersolutions.com or call +1-620-352-3296. You can also use the contact form on preissersolutions.com. Tyler Preisser personally responds to inquiries — there is no sales team or assistant filtering messages.",
+ "Email tyler@preissertech.com. You can also use the contact form on preissersolutions.com. Tyler Preisser personally responds to inquiries — there is no sales team or assistant filtering messages.",
     },
     {
       question: "Does Preisser Solutions use templates or page builders?",

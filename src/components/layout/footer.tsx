@@ -63,14 +63,6 @@ export function Footer() {
               >
                 {siteConfig.contact.email}
               </a>
-              <br />
-              <a
-                href={`tel:${siteConfig.contact.phone.replace(/[^+\d]/g, "")}`}
-                className="ps-footer-contact-link"
-                aria-label={`Call Preisser Solutions at ${siteConfig.contact.phone}`}
-              >
-                {siteConfig.contact.phone}
-              </a>
             </address>
           </div>
 

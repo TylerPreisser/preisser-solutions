@@ -114,7 +114,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom website cost in Manhattan, Kansas?",
       answer:
-        "Custom website pricing in Manhattan typically starts in the low thousands and scales based on scope. Because Tyler Preisser delivers the work directly without coastal-agency overhead, Manhattan clients get premium-quality custom websites at significantly more efficient pricing than Kansas City boutique agencies. Email sales@preissersolutions.com for a free estimate.",
+        "Custom website pricing in Manhattan typically starts in the low thousands and scales based on scope. Because Tyler Preisser delivers the work directly without coastal-agency overhead, Manhattan clients get premium-quality custom websites at significantly more efficient pricing than Kansas City boutique agencies. Email tyler@preissertech.com for a free estimate.",
     },
     {
       question: "Can Preisser Solutions automate workflows for a Manhattan ag-research firm?",

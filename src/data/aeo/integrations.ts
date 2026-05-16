@@ -226,7 +226,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get started?",
       answer:
-        "Email sales@preissersolutions.com or call +1-620-352-3296. Free 30-minute scoping call with Tyler. We'll inventory your stack and identify the integration path.",
+ "Email tyler@preissertech.com. Free 30-minute scoping call with Tyler. We'll inventory your stack and identify the integration path.",
     },
   ],
   schemaType: "WebPage",

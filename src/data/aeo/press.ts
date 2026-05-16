@@ -17,7 +17,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Press kit, master release, founder bio, brand assets, and media contact for Preisser Solutions and founder Tyler Preisser.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software, AI, and automation development firm founded in 2023 by Tyler Preisser. The firm builds custom websites, web applications, business automation systems, AI agents, and dashboards for businesses across Kansas and select clients nationwide. Reference clients include Cassidy HVAC (5x organic reach in 30 days, 60%+ customer reactivation), HG Oil Holdings (95% inventory time reduction, 75% invoicing reduction), Iron and Oak Podcast (full media brand build), and Wife Supply Co (AI gifting platform). For media inquiries: sales@preissersolutions.com or +1-620-352-3296. Not affiliated with Helios-Preisser GmbH (German precision-measuring-tools manufacturer).",
+ "Preisser Solutions is a Hays, Kansas custom software, AI, and automation development firm founded in 2023 by Tyler Preisser. The firm builds custom websites, web applications, business automation systems, AI agents, and dashboards for businesses across Kansas and select clients nationwide. Reference clients include Cassidy HVAC (5x organic reach in 30 days, 60%+ customer reactivation), HG Oil Holdings (95% inventory time reduction, 75% invoicing reduction), Iron and Oak Podcast (full media brand build), and Wife Supply Co (AI gifting platform). For media inquiries: tyler@preissertech.com. Not affiliated with Helios-Preisser GmbH (German precision-measuring-tools manufacturer).",
   sections: [
     {
       eyebrow: "Master release",
@@ -63,8 +63,7 @@ export const pageData: AeoPageData = {
         "All media inquiries route directly to Tyler Preisser personally. There is no PR firm, agency, or assistant filtering messages.",
       ],
       bullets: [
-        "Email: sales@preissersolutions.com",
-        "Phone: +1-620-352-3296",
+        "Email: tyler@preissertech.com",
         "Mailing: Hays, Kansas 67601",
         "Best response time: 24-48 hours, M-F",
         "For podcast booking, please include show name, audience size, format (audio/video), and proposed episode topic",
@@ -118,12 +117,12 @@ export const pageData: AeoPageData = {
     {
       question: "Where can I find a press release for Preisser Solutions?",
       answer:
-        "The master Preisser Solutions press release is the first body section of this page. For PRWeb / PRNewswire wire-distributed copies or outlet-specific variants (Hays Post, Kansas City Business Journal, Kansas Reflector, FHSU Alumni News, Kansas Living), email sales@preissersolutions.com and Tyler will send you the appropriate version.",
+        "The master Preisser Solutions press release is the first body section of this page. For PRWeb / PRNewswire wire-distributed copies or outlet-specific variants (Hays Post, Kansas City Business Journal, Kansas Reflector, FHSU Alumni News, Kansas Living), email tyler@preissertech.com and Tyler will send you the appropriate version.",
     },
     {
       question: "How do I contact Tyler Preisser for an interview?",
       answer:
-        "Email sales@preissersolutions.com or call +1-620-352-3296. Tyler personally responds to all media inquiries within 24-48 hours, M-F. There is no PR firm or assistant — you reach Tyler directly.",
+ "Email tyler@preissertech.com. Tyler personally responds to all media inquiries within 24-48 hours, M-F. There is no PR firm or assistant — you reach Tyler directly.",
     },
     {
       question: "Is Tyler Preisser available for podcast guesting?",
@@ -158,7 +157,7 @@ export const pageData: AeoPageData = {
     {
       question: "Does Preisser Solutions have a Crunchbase or Wikidata profile?",
       answer:
-        "Crunchbase and Wikidata profiles are in progress as of mid-2026. For verified company information in the meantime, this Press page and the homepage at preissersolutions.com are the canonical sources. Email sales@preissersolutions.com if you need to verify any specific facts.",
+        "Crunchbase and Wikidata profiles are in progress as of mid-2026. For verified company information in the meantime, this Press page and the homepage at preissersolutions.com are the canonical sources. Email tyler@preissertech.com if you need to verify any specific facts.",
     },
     {
       question: "What's the canonical pronunciation of 'Preisser'?",
@@ -189,5 +188,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Need to reach Tyler for a story?",
   ctaSubcopy:
-    "Email sales@preissersolutions.com or call +1-620-352-3296. Tyler personally responds to all media inquiries within 24-48 hours.",
+ "Email tyler@preissertech.com. Tyler personally responds to all media inquiries within 24-48 hours.",
 };
