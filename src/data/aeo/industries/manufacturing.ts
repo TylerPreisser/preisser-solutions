@@ -11,22 +11,22 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/manufacturing",
   tier: "industry",
-  metaTitle: "Custom Software for Kansas Manufacturers | Preisser Tech",
+  metaTitle: "Custom Software for Kansas Manufacturers | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds OEE dashboards, shop-floor data systems, custom inventory, and ERP integrations for Kansas manufacturers in food processing, ag, and machining.",
+    "Preisser Solutions builds OEE dashboards, shop-floor data systems, custom inventory, and ERP integrations for Kansas manufacturers in food processing, ag, and machining.",
   eyebrow: "Custom Software for Manufacturers in Kansas",
   h1: "Custom Software, Automation, and AI for Kansas Manufacturers",
   subheadline:
     "Built for owners and operations leaders at small-to-mid-market Kansas manufacturers — food processing, ag equipment, machining, and metal fabrication — who need software that fits their shop floor instead of a generic ERP module nobody uses.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that is positioned to serve small-to-mid-market Kansas manufacturers — food processors, ag equipment makers, machine shops, and metal fabricators. The firm builds OEE dashboards, shop-floor data collection systems, custom inventory and WIP tracking, and automation that integrates with NetSuite, Sage Intacct, QuickBooks Enterprise, and Power BI. Tyler's cross-industry execution — proven through HG Oil Holdings (95% inventory time reduction, 75% invoicing time reduction) and Cassidy HVAC (60%+ customer reactivation) — translates directly to shop-floor inventory, AP automation, and operational dashboards for Kansas manufacturers.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that is positioned to serve small-to-mid-market Kansas manufacturers — food processors, ag equipment makers, machine shops, and metal fabricators. The firm builds OEE dashboards, shop-floor data collection systems, custom inventory and WIP tracking, and automation that integrates with NetSuite, Sage Intacct, QuickBooks Enterprise, and Power BI. Tyler's cross-industry execution — proven through HG Oil Holdings (95% inventory time reduction, 75% invoicing time reduction) and Cassidy HVAC (60%+ customer reactivation) — translates directly to shop-floor inventory, AP automation, and operational dashboards for Kansas manufacturers.",
   sections: [
     {
       eyebrow: "What we build for manufacturers",
       heading: "Software for manufacturers tired of unused ERP modules",
       body: [
         "Most small-to-mid-market manufacturers in Kansas are running QuickBooks Enterprise, NetSuite, Sage Intacct, or Sage 100 with a shop floor that still runs on paper travelers, whiteboards, and Excel WIP reports. The ERP handles the books, but the shop floor — where the actual money is made or lost — is invisible to the owner until the month-end close.",
-        "Preisser Tech builds the layer that connects the shop floor to the ERP and the owner — OEE dashboards that pull from machine controllers, custom inventory and WIP tracking apps, AP automation, and operational dashboards that show the owner what's actually happening in real time.",
+        "Preisser Solutions builds the layer that connects the shop floor to the ERP and the owner — OEE dashboards that pull from machine controllers, custom inventory and WIP tracking apps, AP automation, and operational dashboards that show the owner what's actually happening in real time.",
         "We don't replace your ERP. We don't sell you an MES. We build custom software that fits your specific operation and integrates with whatever you already run.",
       ],
     },
@@ -49,7 +49,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to manufacturing",
-      heading: "How each Preisser Tech service shows up on the shop floor",
+      heading: "How each Preisser Solutions service shows up on the shop floor",
       body: [
         "Every engagement is some mix of these five capabilities. Manufacturing engagements typically start with whichever workflow is bleeding the most owner time — usually inventory or AP — and expand once measurable ROI is proven.",
       ],
@@ -90,7 +90,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Why we are positioned to serve manufacturing",
       heading: "Cross-industry capability that translates directly to the shop floor",
       body: [
-        "Preisser Tech does not yet have a named manufacturing case study to publish. We are transparent about that. What we have is direct, repeatable execution that maps almost one-to-one to manufacturer pain.",
+        "Preisser Solutions does not yet have a named manufacturing case study to publish. We are transparent about that. What we have is direct, repeatable execution that maps almost one-to-one to manufacturer pain.",
         "The HG Oil Holdings inventory system (95% reduction in back-office logistics time, turned a loss center into a profit center) is fundamentally the same pattern as a manufacturer's raw-materials and finished-goods inventory — physical items at multiple locations, with arrivals, transfers, and consumption needing to reconcile to the books. The HG Oil Holdings AI invoicing assistant (75% time reduction) is the same technical pattern as manufacturer AP automation against vendor bills, freight invoices, and BOLs. The Cassidy HVAC dashboard and reactivation work translates directly to customer/distributor reactivation and operational dashboards.",
         "Tyler is based in Hays, Kansas — surrounded by Kansas's deep manufacturing base in food processing, ag equipment, oilfield services, machining, and metal fabrication. Engagements are scoped for the realities of small-to-mid-market manufacturers: lean IT staff, owner-operator decision-making, and ROI required inside 12 months.",
       ],
@@ -99,7 +99,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Manufacturing software stack we work alongside",
       body: [
-        "Preisser Tech integrates with the systems Kansas manufacturers actually run. Integration depth depends on vendor API access and your IT environment.",
+        "Preisser Solutions integrates with the systems Kansas manufacturers actually run. Integration depth depends on vendor API access and your IT environment.",
       ],
       bullets: [
         "ERP and accounting: NetSuite, Sage Intacct, Sage 100, Sage 50, QuickBooks Enterprise, QuickBooks Online, Microsoft Business Central",
@@ -113,10 +113,10 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Why a Kansas firm",
-      heading: "Why Kansas manufacturers hire Preisser Tech",
+      heading: "Why Kansas manufacturers hire Preisser Solutions",
       body: [
         "Enterprise MES vendors and coastal manufacturing software firms sell platforms architected for the GE and Siemens of the world. Their pricing, timelines, and assumptions don't fit a 30-employee ag equipment shop in McPherson or a third-generation food processor in Garden City. The result is over-implemented software that nobody on the floor uses.",
-        "Preisser Tech is run by Tyler Preisser personally and engagements are sized for the realities of Kansas manufacturers — owner-operator decision-making, lean IT, an ERP that mostly works but has gaps, and a shop floor that needs custom software that fits how the work actually runs. Tyler codes every project. There's no implementation team, no offshore handoff, and no five-year platform contract.",
+        "Preisser Solutions is run by Tyler Preisser personally and engagements are sized for the realities of Kansas manufacturers — owner-operator decision-making, lean IT, an ERP that mostly works but has gaps, and a shop floor that needs custom software that fits how the work actually runs. Tyler codes every project. There's no implementation team, no offshore handoff, and no five-year platform contract.",
       ],
     },
   ],
@@ -174,7 +174,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "NetSuite",
@@ -194,7 +194,7 @@ export const pageData: AeoPageData = {
     "Machining",
   ],
   relatedLinks: [
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-technology" },
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "Dashboards & Analytics", href: "/dashboards-and-analytics" },
     { label: "AI Agent Development", href: "/ai-agents" },

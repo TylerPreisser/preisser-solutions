@@ -6,7 +6,7 @@ import Link from "next/link";
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
+
   const ctasRef = useRef<HTMLDivElement>(null);
 
   // Animated flowing wave mesh — inline canvas, theme-aware
@@ -193,7 +193,7 @@ export function Hero() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const targets = [headlineRef, subtitleRef, ctasRef];
+    const targets = [headlineRef, ctasRef];
 
     if (prefersReduced) {
       targets.forEach((r) => {
@@ -210,11 +210,6 @@ export function Hero() {
       tl.to(
           headlineRef.current,
           { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" }
-        )
-        .to(
-          subtitleRef.current,
-          { opacity: 1, y: 0, duration: 0.65, ease: "power2.out" },
-          "-=0.4"
         )
         .to(
           ctasRef.current,
@@ -237,26 +232,19 @@ export function Hero() {
       <div className="ps-hero-content">
         {/*
           AI-citation summary paragraph — server-rendered, semantically visible.
-          Answers "What is Preisser Tech?" in plain prose for AI agents that extract
+          Answers "What is Preisser Solutions?" in plain prose for AI agents that extract
           the first paragraph of a page for citations. Positioned visually below the
           animated headline via CSS order, but first in the DOM for crawlers.
         */}
         <p className="ps-hero-summary sr-only">
-          Preisser Tech provides AI-powered marketing for Kansas businesses,
+          Preisser Solutions provides AI-powered marketing for Kansas businesses,
           including websites, local visibility, paid ads, and practical
           automation. Founded by Tyler Preisser in Hays, Kansas.
         </p>
 
         <h1 ref={headlineRef} className="ps-hero-headline">
-          World-Class AI-Powered Marketing.
-          <br />
-          For Kansas.
+          AI Powered Marketing, websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.
         </h1>
-
-        <p ref={subtitleRef} className="ps-hero-subtitle">
-          Websites, visibility, ads, and automation built with an enterprise
-          standard and brought home to Kansas.
-        </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
           <Link href="/contact" className="ps-btn ps-btn-primary-dark">

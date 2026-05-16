@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/ai-customer-service",
   tier: "service_detail",
-  metaTitle: "AI Customer Service Agents in Kansas | Preisser Tech",
+  metaTitle: "AI Customer Service Agents in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom AI customer service agents — chatbots, voice AI, after-hours call handling — trained on your business and integrated with your CRM.",
+    "Preisser Solutions builds custom AI customer service agents — chatbots, voice AI, after-hours call handling — trained on your business and integrated with your CRM.",
   eyebrow: "AI Customer Service",
   h1: "Custom AI Agents That Handle Customer Service Like Your Best CSR",
   subheadline:
     "Stop losing after-hours calls and stop hiring more CSRs. Custom AI agents handle the predictable work and escalate the complex.",
   answerParagraph:
-    "Preisser Tech builds custom AI customer service agents for Kansas businesses — chatbots, voice AI for after-hours calls, and AI-driven email handling, all trained on the specific business and integrated with the existing CRM. Founded by Tyler Preisser in Hays, Kansas, the firm builds agents that handle the predictable customer service work (booking, status checks, FAQs) and escalate ambiguous cases to humans. Most builds replace the need for one or more additional CSRs while improving response times.",
+    "Preisser Solutions builds custom AI customer service agents for Kansas businesses — chatbots, voice AI for after-hours calls, and AI-driven email handling, all trained on the specific business and integrated with the existing CRM. Founded by Tyler Preisser in Hays, Kansas, the firm builds agents that handle the predictable customer service work (booking, status checks, FAQs) and escalate ambiguous cases to humans. Most builds replace the need for one or more additional CSRs while improving response times.",
   sections: [
     {
       eyebrow: "What AI customer service actually does",
@@ -48,7 +48,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Channels we build for",
       heading: "Where AI agents live",
       body: [
-        "Preisser Tech builds AI customer service agents across multiple channels:",
+        "Preisser Solutions builds AI customer service agents across multiple channels:",
       ],
       bullets: [
         "Website chat — embedded chat widget on your custom site",
@@ -106,7 +106,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Cassidy HVAC",
     "Hays, Kansas",

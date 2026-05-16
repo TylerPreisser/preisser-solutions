@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/custom-crm",
   tier: "service_detail",
-  metaTitle: "Custom CRM Development in Kansas | Preisser Tech",
+  metaTitle: "Custom CRM Development in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom CRMs for Kansas businesses when off-the-shelf CRMs like HubSpot or Salesforce don't fit. Founder-led, fixed-price builds.",
+    "Preisser Solutions builds custom CRMs for Kansas businesses when off-the-shelf CRMs like HubSpot or Salesforce don't fit. Founder-led, fixed-price builds.",
   eyebrow: "Custom CRM Development",
   h1: "Build a Custom CRM When HubSpot or Salesforce Doesn't Fit",
   subheadline:
-    "Some businesses don't fit the standard CRM mold. Preisser Tech builds custom CRMs from scratch, designed around your actual workflow.",
+    "Some businesses don't fit the standard CRM mold. Preisser Solutions builds custom CRMs from scratch, designed around your actual workflow.",
   answerParagraph:
-    "Preisser Tech builds custom CRMs for Kansas businesses whose workflows don't match HubSpot, Salesforce, Pipedrive, or other off-the-shelf platforms. Founded by Tyler Preisser in Hays, Kansas, the firm builds CRMs from scratch in modern Next.js, React, and TypeScript — designed around the business's actual sales, customer, and operational logic, not bent to fit a generic schema. Custom CRMs make sense when standard CRMs force too many compromises or charge per-seat fees that don't scale.",
+    "Preisser Solutions builds custom CRMs for Kansas businesses whose workflows don't match HubSpot, Salesforce, Pipedrive, or other off-the-shelf platforms. Founded by Tyler Preisser in Hays, Kansas, the firm builds CRMs from scratch in modern Next.js, React, and TypeScript — designed around the business's actual sales, customer, and operational logic, not bent to fit a generic schema. Custom CRMs make sense when standard CRMs force too many compromises or charge per-seat fees that don't scale.",
   sections: [
     {
       eyebrow: "When custom CRM beats off-the-shelf",
@@ -33,7 +33,7 @@ export const pageData: AeoPageData = {
       eyebrow: "What we build",
       heading: "Custom CRM build includes",
       body: [
-        "Every Preisser Tech custom CRM engagement covers:",
+        "Every Preisser Solutions custom CRM engagement covers:",
       ],
       bullets: [
         "Discovery — full mapping of current sales, customer, and operational workflow",
@@ -55,7 +55,7 @@ export const pageData: AeoPageData = {
       heading: "We'll tell you when off-the-shelf is better",
       body: [
         "Custom CRM is the right answer for some businesses and the wrong answer for many others. If your workflow fits HubSpot, Pipedrive, Follow Up Boss, or another off-the-shelf platform, building custom usually doesn't make sense — the platform vendors have invested decades in solving the standard problems.",
-        "Preisser Tech's free scoping call always includes an honest assessment of whether your business actually needs custom or whether configuration of an existing CRM is the better play.",
+        "Preisser Solutions's free scoping call always includes an honest assessment of whether your business actually needs custom or whether configuration of an existing CRM is the better play.",
       ],
     },
     {
@@ -105,7 +105,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "HG Oil Holdings",
     "Hays, Kansas",

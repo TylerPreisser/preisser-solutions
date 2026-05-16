@@ -25,7 +25,7 @@ const whyFeatures: WhyFeature[] = [
       "We build around how your business actually works: your customers, your services, your follow-up, your tools, and the details that make the difference. It is not a generic SaaS package dropped into your business. It is shaped around your business so it can start helping faster.",
     image: "/images/ps-logo.webp",
     mobileImage: "/images/ps-logo.webp",
-    alt: "Preisser Tech logo \u2014 custom built for your business",
+    alt: "Preisser Solutions logo \u2014 custom built for your business",
     href: "/contact",
     cta: "Get in Touch",
   },
@@ -46,7 +46,7 @@ const whyFeatures: WhyFeature[] = [
     shortLabel: "we stay with it",
     title: "We Stay With It.",
     description:
-      "We don\u2019t hand you a finished product and disappear. AI shifts. Search engines shift. Competitors shift. Preisser Tech operates on an ongoing monthly service relationship \u2014 when you need an update six months later, we\u2019re already in it with you. We stay with it.",
+      "We don\u2019t hand you a finished product and disappear. AI shifts. Search engines shift. Competitors shift. Preisser Solutions operates on an ongoing monthly service relationship \u2014 when you need an update six months later, we\u2019re already in it with you. We stay with it.",
     image: "/images/why-us/we-stay-with-it-new.webp",
     mobileImage: "/images/why-us/we-stay-with-it-new.webp",
     alt: "Ongoing support and system adaptation",
@@ -105,7 +105,7 @@ export function WhyUs() {
               <div className="ps-eyebrow ps-eyebrow--light">Why Us</div>
               {/* Intentionally no h2 heading text per user request */}
               <h2 id="why-heading" className="sr-only">
-                Why Preisser Tech
+                Why Preisser Solutions
               </h2>
             </div>
 
@@ -134,7 +134,7 @@ export function WhyUs() {
           </header>
 
           {/* ── Desktop: squeeze carousel ────────────────────────── */}
-          <div className="ps-squeeze-carousel" aria-label="Why Preisser Tech carousel">
+          <div className="ps-squeeze-carousel" aria-label="Why Preisser Solutions carousel">
             {/* Track: flex row of cards */}
             <div className="ps-squeeze-track">
               {whyFeatures.map((item, i) => {

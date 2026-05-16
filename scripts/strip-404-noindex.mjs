@@ -15,7 +15,7 @@
  *   tag later in the head), but when a page contains both, Google's most-
  *   restrictive-wins rule means the hardcoded `noindex` still applies.
  *
- *   Per Tyler's directive (2026-05-11), Preisser Tech has ZERO restrictions
+ *   Per Tyler's directive (2026-05-11), Preisser Solutions has ZERO restrictions
  *   on AI crawlers and agents across every surface. The 404 page must be
  *   fully indexable too. This script enforces that after `next build`.
  *

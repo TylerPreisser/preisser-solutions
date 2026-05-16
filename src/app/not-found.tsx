@@ -4,7 +4,7 @@ import Link from "next/link";
 // Custom 404 page.
 //
 // Per Tyler's directive (2026-05-11): ZERO restrictions on AI crawlers and
-// agents across preissertech.com. Every page, every path. This includes the
+// agents across preissersolutions.com. Every page, every path. This includes the
 // 404 page, which Next.js otherwise emits with `<meta name="robots" content="noindex">`
 // by default. Exporting an explicit `metadata.robots` here overrides that
 // default and makes the 404 fully indexable too.
@@ -20,10 +20,10 @@ import Link from "next/link";
 // switch `robots.index` back to `false` — but ONLY with Tyler's approval.
 export const metadata: Metadata = {
   title: {
-    absolute: "Page Not Found | Preisser Tech",
+    absolute: "Page Not Found | Preisser Solutions",
   },
   description:
-    "The page you were looking for has moved or never existed. Browse Preisser Tech's services, case studies, and contact options below.",
+    "The page you were looking for has moved or never existed. Browse Preisser Solutions's services, case studies, and contact options below.",
   robots: {
     index: true,
     follow: true,
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://preissertech.com/",
+    canonical: "https://preissersolutions.com/",
   },
 };
 

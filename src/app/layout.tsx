@@ -14,12 +14,12 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
-    template: "%s | Preisser Tech",
+    default: "Preisser Solutions | World-Class AI-Powered Marketing For Kansas",
+    template: "%s | Preisser Solutions",
   },
   description:
     "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
-  metadataBase: new URL("https://preissertech.com"),
+  metadataBase: new URL("https://preissersolutions.com"),
   keywords: [
     "business automation Kansas",
     "custom websites Kansas",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     "custom applications Kansas",
     "workflow automation",
     "Tyler Preisser",
-    "Preisser Tech",
+    "Preisser Solutions",
     "digital transformation Kansas",
     "custom software development",
     "business dashboards",
@@ -37,11 +37,11 @@ export const metadata: Metadata = {
     "Hays Kansas web developer",
     "small business technology solutions",
   ],
-  authors: [{ name: "Tyler Preisser", url: "https://preissertech.com/about" }],
+  authors: [{ name: "Tyler Preisser", url: "https://preissersolutions.com/about" }],
   creator: "Tyler Preisser",
-  publisher: "Preisser Tech",
+  publisher: "Preisser Solutions",
   alternates: {
-    canonical: "https://preissertech.com",
+    canonical: "https://preissersolutions.com",
   },
   robots: {
     index: true,
@@ -80,9 +80,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://preissertech.com",
-    siteName: "Preisser Tech",
-    title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
+    url: "https://preissersolutions.com",
+    siteName: "Preisser Solutions",
+    title: "Preisser Solutions | World-Class AI-Powered Marketing For Kansas",
     description:
       "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
     images: [
@@ -90,13 +90,13 @@ export const metadata: Metadata = {
         url: "/images/og-image-v2.jpg",
         width: 1200,
         height: 630,
-        alt: "Preisser Tech",
+        alt: "Preisser Solutions",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
+    title: "Preisser Solutions | World-Class AI-Powered Marketing For Kansas",
     description:
       "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
     images: ["/images/og-image-v2.jpg"],
@@ -134,7 +134,7 @@ const themeInitScript = `(function(){
 // JSON-LD Structured Data
 // ---------------------------------------------------------------------------
 // All entities are cross-linked via @id references so search engines can
-// construct a complete knowledge graph for Preisser Tech.
+// construct a complete knowledge graph for Preisser Solutions.
 //
 // Entity IDs:
 //   ORG_ID       — Organization / ProfessionalService
@@ -144,11 +144,11 @@ const themeInitScript = `(function(){
 //   LOCAL_BIZ_ID — LocalBusiness
 // ---------------------------------------------------------------------------
 
-const ORG_ID = "https://preissertech.com/#organization";
-const PERSON_ID = "https://preissertech.com/#tyler-preisser";
-const WEBSITE_ID = "https://preissertech.com/#website";
-const WEBPAGE_ID = "https://preissertech.com/#webpage-home";
-const LOCAL_BIZ_ID = "https://preissertech.com/#local-business";
+const ORG_ID = "https://preissersolutions.com/#organization";
+const PERSON_ID = "https://preissersolutions.com/#tyler-preisser";
+const WEBSITE_ID = "https://preissersolutions.com/#website";
+const WEBPAGE_ID = "https://preissersolutions.com/#webpage-home";
+const LOCAL_BIZ_ID = "https://preissersolutions.com/#local-business";
 
 const structuredData = [
   // -------------------------------------------------------------------------
@@ -158,30 +158,30 @@ const structuredData = [
     "@context": "https://schema.org",
     "@type": ["Organization", "ProfessionalService"],
     "@id": ORG_ID,
-    name: "Preisser Tech",
-    alternateName: ["Preisser Technology", "Preisser Tech"],
-    legalName: "Preisser Tech",
-    url: "https://preissertech.com",
+    name: "Preisser Solutions",
+    alternateName: ["Preisser Solutionsnology", "Preisser Solutions"],
+    legalName: "Preisser Solutions",
+    url: "https://preissersolutions.com",
     logo: {
       "@type": "ImageObject",
-      "@id": "https://preissertech.com/#logo",
-      url: "https://preissertech.com/images/ps-logo.png",
-      contentUrl: "https://preissertech.com/images/ps-logo.png",
+      "@id": "https://preissersolutions.com/#logo",
+      url: "https://preissersolutions.com/images/ps-logo.png",
+      contentUrl: "https://preissersolutions.com/images/ps-logo.png",
       width: 1024,
       height: 1024,
-      caption: "Preisser Tech logo — custom software, web apps, and AI automation in Hays, Kansas",
-      name: "Preisser Tech Logo",
+      caption: "Preisser Solutions logo — custom software, web apps, and AI automation in Hays, Kansas",
+      name: "Preisser Solutions Logo",
     },
-    image: "https://preissertech.com/images/ps-logo.png",
+    image: "https://preissersolutions.com/images/ps-logo.png",
     description:
-      "Preisser Tech provides AI-powered marketing for Kansas businesses, including websites, local visibility, paid ads, and practical automation. Based in Hays, Kansas. Founded by Tyler Preisser. Not automotive tuning, not hardware.",
+      "Preisser Solutions provides AI-powered marketing for Kansas businesses, including websites, local visibility, paid ads, and practical automation. Based in Hays, Kansas. Founded by Tyler Preisser. Not automotive tuning, not hardware.",
     disambiguatingDescription:
-      "Preisser Tech (preissertech.com) is the custom software, web development, and AI automation consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Tech' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Tech builds websites, web applications, AI agents, and business automation systems exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: sales@preissertech.com.",
+      "Preisser Solutions (preissersolutions.com) is the custom software, web development, and AI automation consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Solutions' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Solutions builds websites, web applications, AI agents, and business automation systems exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: sales@preissersolutions.com.",
     slogan:
       "AI-powered marketing for Kansas",
     foundingDate: "2023",
     founder: { "@id": PERSON_ID },
-    email: "sales@preissertech.com",
+    email: "sales@preissersolutions.com",
     telephone: "+16203523296",
     address: {
       "@type": "PostalAddress",
@@ -210,7 +210,7 @@ const structuredData = [
       {
         "@type": "ContactPoint",
         telephone: "+16203523296",
-        email: "sales@preissertech.com",
+        email: "sales@preissersolutions.com",
         contactType: "sales",
         availableLanguage: "English",
         areaServed: "US",
@@ -218,7 +218,7 @@ const structuredData = [
       {
         "@type": "ContactPoint",
         telephone: "+16203523296",
-        email: "sales@preissertech.com",
+        email: "sales@preissersolutions.com",
         contactType: "customer support",
         availableLanguage: "English",
         areaServed: "US",
@@ -228,9 +228,9 @@ const structuredData = [
     // creates or renames the pages, the Knowledge Graph entity will link
     // correctly without a redeploy.
     sameAs: [
-      "https://www.linkedin.com/company/preissertech",
-      "https://www.facebook.com/preissertech",
-      "https://x.com/preissertech",
+      "https://www.linkedin.com/company/preissersolutions",
+      "https://www.facebook.com/preissersolutions",
+      "https://x.com/preissersolutions",
       "https://github.com/tylerpreisser",
     ],
     knowsAbout: [
@@ -257,7 +257,7 @@ const structuredData = [
     ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: "Preisser Tech Service Catalog",
+      name: "Preisser Solutions Service Catalog",
       itemListElement: [
         {
           "@type": "Offer",
@@ -354,7 +354,7 @@ const structuredData = [
   // -------------------------------------------------------------------------
   // Includes disambiguatingDescription to distinguish from other Tyler Preissers
   // (a Verizon retail rep, an FHSU Sky Sprayers student, etc.) — the founder of
-  // Preisser Tech is Tyler Preisser, Hays-based custom software / AI builder.
+  // Preisser Solutions is Tyler Preisser, Hays-based custom software / AI builder.
   // -------------------------------------------------------------------------
   {
     "@context": "https://schema.org",
@@ -365,12 +365,12 @@ const structuredData = [
     familyName: "Preisser",
     jobTitle: "Founder & Owner",
     description:
-      "Tyler Preisser is the founder and sole technical lead of Preisser Tech, a Hays, Kansas custom software and AI development consultancy. He is a Fort Hays State University graduate and Hays native who personally codes every client engagement.",
+      "Tyler Preisser is the founder and sole technical lead of Preisser Solutions, a Hays, Kansas custom software and AI development consultancy. He is a Fort Hays State University graduate and Hays native who personally codes every client engagement.",
     disambiguatingDescription:
-      "This Tyler Preisser is the founder of Preisser Tech (preissertech.com), a custom software firm in Hays, Kansas. He is the same Tyler Preisser featured in Hays Post articles about FHSU's Sky Sprayers, Hansen Hall, and other FHSU coverage. He is not affiliated with other individuals named Tyler Preisser unrelated to the Preisser Tech custom software business.",
+      "This Tyler Preisser is the founder of Preisser Solutions (preissersolutions.com), a custom software firm in Hays, Kansas. He is the same Tyler Preisser featured in Hays Post articles about FHSU's Sky Sprayers, Hansen Hall, and other FHSU coverage. He is not affiliated with other individuals named Tyler Preisser unrelated to the Preisser Solutions custom software business.",
     worksFor: { "@id": ORG_ID },
-    url: "https://preissertech.com/about",
-    email: "sales@preissertech.com",
+    url: "https://preissersolutions.com/about",
+    email: "sales@preissersolutions.com",
     telephone: "+16203523296",
     address: {
       "@type": "PostalAddress",
@@ -392,13 +392,13 @@ const structuredData = [
     },
     image: {
       "@type": "ImageObject",
-      url: "https://preissertech.com/images/tyler-preisser-headshot.jpg",
+      url: "https://preissersolutions.com/images/tyler-preisser-headshot.jpg",
       width: 1200,
       height: 1200,
-      caption: "Tyler Preisser, founder of Preisser Tech",
+      caption: "Tyler Preisser, founder of Preisser Solutions",
     },
     sameAs: [
-      "https://preissertech.com/tyler-preisser",
+      "https://preissersolutions.com/tyler-preisser",
       "https://www.linkedin.com/in/tylerpreisser",
       "https://github.com/tylerpreisser",
     ],
@@ -421,8 +421,8 @@ const structuredData = [
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": WEBSITE_ID,
-    url: "https://preissertech.com",
-    name: "Preisser Tech",
+    url: "https://preissersolutions.com",
+    name: "Preisser Solutions",
     description:
       "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
     publisher: { "@id": ORG_ID },
@@ -431,7 +431,7 @@ const structuredData = [
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: "https://preissertech.com/?q={search_term_string}",
+        urlTemplate: "https://preissersolutions.com/?q={search_term_string}",
       },
       "query-input": "required name=search_term_string",
     },
@@ -444,8 +444,8 @@ const structuredData = [
     "@context": "https://schema.org",
     "@type": "WebPage",
     "@id": WEBPAGE_ID,
-    url: "https://preissertech.com",
-    name: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
+    url: "https://preissersolutions.com",
+    name: "Preisser Solutions | World-Class AI-Powered Marketing For Kansas",
     description:
       "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
     isPartOf: { "@id": WEBSITE_ID },
@@ -460,7 +460,7 @@ const structuredData = [
           "@type": "ListItem",
           position: 1,
           name: "Home",
-          item: "https://preissertech.com",
+          item: "https://preissersolutions.com",
         },
       ],
     },
@@ -473,11 +473,11 @@ const structuredData = [
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "@id": LOCAL_BIZ_ID,
-    name: "Preisser Tech",
-    image: "https://preissertech.com/images/ps-logo.png",
-    url: "https://preissertech.com",
+    name: "Preisser Solutions",
+    image: "https://preissersolutions.com/images/ps-logo.png",
+    url: "https://preissersolutions.com",
     telephone: "+16203523296",
-    email: "sales@preissertech.com",
+    email: "sales@preissersolutions.com",
     address: {
       "@type": "PostalAddress",
       streetAddress: "Hays",
@@ -559,7 +559,7 @@ export default function RootLayout({
         <link
           rel="alternate"
           type="application/rss+xml"
-          title="Preisser Tech"
+          title="Preisser Solutions"
           href="/feed.xml"
         />
         {/* JSON-LD Structured Data — Organization, Person, WebSite, WebPage, LocalBusiness. FAQPage emitted per-page via AeoPage to avoid duplicates. */}

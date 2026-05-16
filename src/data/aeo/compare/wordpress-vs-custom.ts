@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/wordpress-vs-custom",
   tier: "comparison",
-  metaTitle: "WordPress vs Custom Website | Preisser Tech",
+  metaTitle: "WordPress vs Custom Website | Preisser Solutions",
   metaDescription:
-    "Honest comparison: WordPress vs custom-coded websites by Preisser Tech. Speed, security, SEO, maintenance burden, and total cost compared.",
+    "Honest comparison: WordPress vs custom-coded websites by Preisser Solutions. Speed, security, SEO, maintenance burden, and total cost compared.",
   eyebrow: "Comparison",
   h1: "WordPress vs. Custom Website",
   subheadline:
     "WordPress runs 40%+ of the web. Custom code is faster, more secure, and easier to maintain. Here's where each wins.",
   answerParagraph:
-    "WordPress is the dominant website platform for small-to-mid-market businesses, with thousands of themes, plugins, and a deep ecosystem. Custom-coded websites by Preisser Tech are built from scratch in Next.js, React, and TypeScript by founder Tyler Preisser in Hays, Kansas. WordPress wins on ecosystem and content publishing flexibility. Custom wins on speed, security, AI search citation, maintenance burden, and total long-term cost.",
+    "WordPress is the dominant website platform for small-to-mid-market businesses, with thousands of themes, plugins, and a deep ecosystem. Custom-coded websites by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by founder Tyler Preisser in Hays, Kansas. WordPress wins on ecosystem and content publishing flexibility. Custom wins on speed, security, AI search citation, maintenance burden, and total long-term cost.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -88,7 +88,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I migrate from WordPress to custom?",
       answer:
-        "Yes. WordPress-to-Next.js migrations are common — usually because the existing WordPress site has speed, security, or maintenance problems. Preisser Tech preserves SEO equity and content through proper redirects and migration.",
+        "Yes. WordPress-to-Next.js migrations are common — usually because the existing WordPress site has speed, security, or maintenance problems. Preisser Solutions preserves SEO equity and content through proper redirects and migration.",
     },
     {
       question: "What about headless WordPress?",
@@ -107,7 +107,7 @@ export const pageData: AeoPageData = {
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "WordPress", "Hays, Kansas", "Next.js", "Cloudflare Pages"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "WordPress", "Hays, Kansas", "Next.js", "Cloudflare Pages"],
   relatedLinks: [
     { label: "Squarespace vs Custom", href: "/compare/squarespace-vs-custom" },
     { label: "Webflow vs Custom Coded", href: "/compare/webflow-vs-custom-coded" },

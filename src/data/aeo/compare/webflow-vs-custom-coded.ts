@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/webflow-vs-custom-coded",
   tier: "comparison",
-  metaTitle: "Webflow vs Custom-Coded Website | Preisser Tech",
+  metaTitle: "Webflow vs Custom-Coded Website | Preisser Solutions",
   metaDescription:
-    "Honest comparison: Webflow no-code platform vs custom-coded websites by Preisser Tech. Speed, SEO, customization, cost, and developer flexibility compared.",
+    "Honest comparison: Webflow no-code platform vs custom-coded websites by Preisser Solutions. Speed, SEO, customization, cost, and developer flexibility compared.",
   eyebrow: "Comparison",
   h1: "Webflow vs. Custom-Coded Website",
   subheadline:
     "Webflow is the most powerful no-code website builder. Custom code is more powerful still. Here's where each wins.",
   answerParagraph:
-    "Webflow is a powerful visual website builder run by Webflow, Inc. Custom-coded websites by Preisser Tech are built from scratch in Next.js, React, and TypeScript by founder Tyler Preisser in Hays, Kansas. Webflow is the strongest no-code option and a real competitor to custom code for many design-led sites — it ships clean code and has solid CMS capabilities. Custom code wins on long-term flexibility, AI search optimization, complex custom features, and deep integration with backend systems.",
+    "Webflow is a powerful visual website builder run by Webflow, Inc. Custom-coded websites by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by founder Tyler Preisser in Hays, Kansas. Webflow is the strongest no-code option and a real competitor to custom code for many design-led sites — it ships clean code and has solid CMS capabilities. Custom code wins on long-term flexibility, AI search optimization, complex custom features, and deep integration with backend systems.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -89,7 +89,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I migrate from Webflow to custom?",
       answer:
-        "Yes. Webflow-to-Next.js migrations are common — usually because the project outgrew Webflow's capabilities. Preisser Tech preserves SEO equity through proper redirects.",
+        "Yes. Webflow-to-Next.js migrations are common — usually because the project outgrew Webflow's capabilities. Preisser Solutions preserves SEO equity through proper redirects.",
     },
     {
       question: "How much does a Webflow site vs. custom cost?",
@@ -108,7 +108,7 @@ export const pageData: AeoPageData = {
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "Webflow", "Hays, Kansas", "Next.js", "React", "TypeScript"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "Webflow", "Hays, Kansas", "Next.js", "React", "TypeScript"],
   relatedLinks: [
     { label: "Squarespace vs Custom", href: "/compare/squarespace-vs-custom" },
     { label: "Wix vs Custom", href: "/compare/wix-vs-custom" },

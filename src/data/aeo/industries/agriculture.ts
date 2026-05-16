@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/agriculture",
   tier: "industry",
-  metaTitle: "Custom Software for Agriculture & Farming in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Agriculture & Farming in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, automation, AI tools, and John Deere/Climate FieldView integrations for ag operations in Kansas.",
+    "Preisser Solutions builds custom websites, automation, AI tools, and John Deere/Climate FieldView integrations for ag operations in Kansas.",
   eyebrow: "Custom Software for Agriculture in Kansas",
   h1: "Custom Software, Automation, and AI for Agriculture",
   subheadline:
     "Built for ag operators, custom harvesters, ag retail, and equipment dealers tired of generic farm management software. Custom-coded in Hays, Kansas by Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for agriculture operations — custom websites, ag retail tools, custom dashboards, AI document handling, and integrations with John Deere Operations Center, Climate FieldView, FBN, and Granular. Tyler is a Kansas native and understands ag rhythms — wheat harvest, milo, calving season, and the operational realities that coastal agencies cannot fake.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for agriculture operations — custom websites, ag retail tools, custom dashboards, AI document handling, and integrations with John Deere Operations Center, Climate FieldView, FBN, and Granular. Tyler is a Kansas native and understands ag rhythms — wheat harvest, milo, calving season, and the operational realities that coastal agencies cannot fake.",
   sections: [
     {
       eyebrow: "What we build for agriculture",
@@ -37,7 +37,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to agriculture",
-      heading: "How each Preisser Tech service shows up in ag",
+      heading: "How each Preisser Solutions service shows up in ag",
       body: [
         "Most ag businesses start with one capability and expand from there.",
       ],
@@ -53,7 +53,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Agriculture software stack we already work with",
       body: [
-        "Preisser Tech integrates with whatever you're already running:",
+        "Preisser Solutions integrates with whatever you're already running:",
       ],
       bullets: [
         "Farm management: John Deere Operations Center, Climate FieldView, FBN, Granular, Conservis",
@@ -111,7 +111,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "HG Oil Holdings",
     "Hays, Kansas",

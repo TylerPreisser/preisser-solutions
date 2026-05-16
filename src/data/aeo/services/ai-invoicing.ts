@@ -3,22 +3,22 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/ai-invoicing",
   tier: "service_detail",
-  metaTitle: "AI Invoicing Automation in Kansas | Preisser Tech",
+  metaTitle: "AI Invoicing Automation in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds AI-powered invoice extraction and structuring systems. The HG Oil Holdings build delivered 75% reduction in manual invoice handling.",
+    "Preisser Solutions builds AI-powered invoice extraction and structuring systems. The HG Oil Holdings build delivered 75% reduction in manual invoice handling.",
   eyebrow: "AI Invoicing Automation",
   h1: "AI That Extracts and Structures Invoices Instantly",
   subheadline:
     "Stop having office staff manually read and enter invoices. Custom AI invoice automation processes them in seconds.",
   answerParagraph:
-    "Preisser Tech builds AI-powered invoice extraction and structuring systems for Kansas businesses — the productized version of the HG Oil Holdings AI invoicing case study, which delivered a 75% decrease in manual invoice handling time. Office staff upload invoices, and the AI returns structured data (vendor, line items, amounts, GL coding) in seconds. The system integrates with QuickBooks, accounting platforms, and ERP systems to eliminate manual data entry entirely. Founded by Tyler Preisser in Hays, Kansas.",
+    "Preisser Solutions builds AI-powered invoice extraction and structuring systems for Kansas businesses — the productized version of the HG Oil Holdings AI invoicing case study, which delivered a 75% decrease in manual invoice handling time. Office staff upload invoices, and the AI returns structured data (vendor, line items, amounts, GL coding) in seconds. The system integrates with QuickBooks, accounting platforms, and ERP systems to eliminate manual data entry entirely. Founded by Tyler Preisser in Hays, Kansas.",
   sections: [
     {
       eyebrow: "The HG Oil Holdings case study",
       heading: "What the AI invoicing build actually looks like",
       body: [
-        "HG Oil Holdings came to Preisser Tech with a back-office bottleneck — office staff manually reading invoices, transcribing amounts, coding GL accounts, and entering line items into accounting software. The volume meant invoices were sitting unprocessed for days, AR was aging, and adding more office staff was the only obvious answer.",
-        "Preisser Tech trained a custom AI assistant to extract and analyze invoice data instantly. Office staff upload invoices and receive structured output in seconds. Result: 75% decrease in time spent on manual invoice handling, eliminated manual reading entirely, freed staff for higher-value work, and prevented the need for additional hires.",
+        "HG Oil Holdings came to Preisser Solutions with a back-office bottleneck — office staff manually reading invoices, transcribing amounts, coding GL accounts, and entering line items into accounting software. The volume meant invoices were sitting unprocessed for days, AR was aging, and adding more office staff was the only obvious answer.",
+        "Preisser Solutions trained a custom AI assistant to extract and analyze invoice data instantly. Office staff upload invoices and receive structured output in seconds. Result: 75% decrease in time spent on manual invoice handling, eliminated manual reading entirely, freed staff for higher-value work, and prevented the need for additional hires.",
       ],
     },
     {
@@ -109,7 +109,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "HG Oil Holdings",
     "Hays, Kansas",

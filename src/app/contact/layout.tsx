@@ -3,15 +3,15 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Start a project with Preisser Tech. Tell us what you need built, fixed, or improved — no commitment, no sales pitch. Based in Hays, Kansas, serving businesses statewide.",
+    "Start a project with Preisser Solutions. Tell us what you need built, fixed, or improved — no commitment, no sales pitch. Based in Hays, Kansas, serving businesses statewide.",
   alternates: {
-    canonical: "https://preissertech.com/contact",
+    canonical: "https://preissersolutions.com/contact",
   },
   openGraph: {
-    title: "Contact | Preisser Tech",
+    title: "Contact | Preisser Solutions",
     description:
-      "Start a project with Preisser Tech. Tell us what you need built, fixed, or improved — no commitment, no sales pitch. Based in Hays, Kansas, serving businesses statewide.",
-    url: "https://preissertech.com/contact",
+      "Start a project with Preisser Solutions. Tell us what you need built, fixed, or improved — no commitment, no sales pitch. Based in Hays, Kansas, serving businesses statewide.",
+    url: "https://preissersolutions.com/contact",
   },
 };
 

@@ -3,21 +3,21 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "case-studies/cassidy-hvac",
   tier: "trust_faq",
-  metaTitle: "Cassidy HVAC Case Study — 5x Reach + 60%+ Reactivation | Preisser Tech",
+  metaTitle: "Cassidy HVAC Case Study — 5x Reach + 60%+ Reactivation | Preisser Solutions",
   metaDescription:
-    "Detailed case study: Preisser Tech delivered Cassidy HVAC a hands-off AI marketing engine (5x reach in 30 days) and AI customer reactivation (60%+ in 6 weeks).",
+    "Detailed case study: Preisser Solutions delivered Cassidy HVAC a hands-off AI marketing engine (5x reach in 30 days) and AI customer reactivation (60%+ in 6 weeks).",
   eyebrow: "Case Study",
   h1: "Cassidy HVAC — AI Marketing Engine + Customer Reactivation",
   subheadline:
-    "How Preisser Tech delivered Cassidy HVAC a fully hands-off marketing system and a customer reactivation engine that recovered over 60% of dormant patients in 6 weeks.",
+    "How Preisser Solutions delivered Cassidy HVAC a fully hands-off marketing system and a customer reactivation engine that recovered over 60% of dormant patients in 6 weeks.",
   answerParagraph:
-    "Cassidy HVAC engaged Preisser Tech to fix two long-standing problems: a marketing function being outsourced to an underperforming agency, and a CRM full of dormant customers nobody had time to call. Preisser Tech, founded by Tyler Preisser in Hays, Kansas, delivered two custom AI systems. The hands-off marketing engine generated and posted content automatically, increasing organic reach 5x within 30 days. The customer reactivation engine integrated with the CRM, identified dormant customers, and ran hyper-personalized SMS and email outreach — recovering over 60% of dormant patients within 6 weeks while saving 10+ hours per week of office staff time.",
+    "Cassidy HVAC engaged Preisser Solutions to fix two long-standing problems: a marketing function being outsourced to an underperforming agency, and a CRM full of dormant customers nobody had time to call. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, delivered two custom AI systems. The hands-off marketing engine generated and posted content automatically, increasing organic reach 5x within 30 days. The customer reactivation engine integrated with the CRM, identified dormant customers, and ran hyper-personalized SMS and email outreach — recovering over 60% of dormant patients within 6 weeks while saving 10+ hours per week of office staff time.",
   sections: [
     {
       eyebrow: "The problems",
       heading: "Two pain points most HVAC shops have",
       body: [
-        "Cassidy HVAC came to Preisser Tech with two problems most HVAC shops in Kansas (and across the country) have:",
+        "Cassidy HVAC came to Preisser Solutions with two problems most HVAC shops in Kansas (and across the country) have:",
       ],
       bullets: [
         "Marketing was outsourced to an external agency that wasn't moving the needle. Monthly invoices were going out, content was being posted, but reach, engagement, and lead flow weren't growing. The agency relationship was expensive and unproductive.",
@@ -28,7 +28,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Build #1",
       heading: "Hands-off AI marketing engine",
       body: [
-        "Preisser Tech built a fully hands-off AI marketing engine for Cassidy HVAC's social media. The system runs without daily staff input.",
+        "Preisser Solutions built a fully hands-off AI marketing engine for Cassidy HVAC's social media. The system runs without daily staff input.",
       ],
       subsections: [
         {
@@ -150,13 +150,13 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a similar build for my shop?",
       answer:
-        "Email sales@preissertech.com or call +1-620-352-3296. Free 30-minute scoping call with Tyler personally. We'll map your current stack, identify the highest-ROI automation, and send a fixed-price proposal.",
+        "Email sales@preissersolutions.com or call +1-620-352-3296. Free 30-minute scoping call with Tyler personally. We'll map your current stack, identify the highest-ROI automation, and send a fixed-price proposal.",
     },
   ],
   schemaType: "Article",
   namedEntities: [
     "Cassidy HVAC",
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "Facebook",

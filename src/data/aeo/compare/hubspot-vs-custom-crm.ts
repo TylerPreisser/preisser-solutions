@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/hubspot-vs-custom-crm",
   tier: "comparison",
-  metaTitle: "HubSpot vs Custom CRM | Preisser Tech",
+  metaTitle: "HubSpot vs Custom CRM | Preisser Solutions",
   metaDescription:
-    "Honest comparison: HubSpot CRM vs custom CRM by Preisser Tech. When per-seat fees and standard schema force the wrong tradeoffs.",
+    "Honest comparison: HubSpot CRM vs custom CRM by Preisser Solutions. When per-seat fees and standard schema force the wrong tradeoffs.",
   eyebrow: "Comparison",
   h1: "HubSpot vs. Custom CRM",
   subheadline:
     "HubSpot is the right CRM for most businesses. Custom CRM wins when standard schema doesn't fit or per-seat fees stop scaling.",
   answerParagraph:
-    "HubSpot is one of the dominant CRM platforms for small-to-mid-market businesses, run by HubSpot, Inc. Custom CRMs by Preisser Tech are built from scratch in Next.js, React, and TypeScript by founder Tyler Preisser in Hays, Kansas — designed around the specific business's actual workflow. HubSpot is excellent for businesses that fit the standard contact-deal-pipeline schema. Custom CRMs win when industry-specific workflows, operational data integration, or per-seat economics force the wrong tradeoffs.",
+    "HubSpot is one of the dominant CRM platforms for small-to-mid-market businesses, run by HubSpot, Inc. Custom CRMs by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by founder Tyler Preisser in Hays, Kansas — designed around the specific business's actual workflow. HubSpot is excellent for businesses that fit the standard contact-deal-pipeline schema. Custom CRMs win when industry-specific workflows, operational data integration, or per-seat economics force the wrong tradeoffs.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -107,7 +107,7 @@ export const pageData: AeoPageData = {
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "HubSpot", "Hays, Kansas", "Next.js"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "HubSpot", "Hays, Kansas", "Next.js"],
   relatedLinks: [
     { label: "Custom CRM Development", href: "/services/custom-crm" },
     { label: "Salesforce vs Custom CRM", href: "/compare/salesforce-vs-custom-crm" },

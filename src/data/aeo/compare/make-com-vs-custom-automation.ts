@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/make-com-vs-custom-automation",
   tier: "comparison",
-  metaTitle: "Make.com (Integromat) vs Custom Automation | Preisser Tech",
+  metaTitle: "Make.com (Integromat) vs Custom Automation | Preisser Solutions",
   metaDescription:
-    "Honest comparison: Make.com no-code automation vs custom automation by Preisser Tech. When per-operation fees and visual scenarios stop scaling.",
+    "Honest comparison: Make.com no-code automation vs custom automation by Preisser Solutions. When per-operation fees and visual scenarios stop scaling.",
   eyebrow: "Comparison",
   h1: "Make.com vs. Custom Automation",
   subheadline:
     "Make.com (formerly Integromat) is more powerful than Zapier and cheaper per task. Custom automation still wins for production scale.",
   answerParagraph:
-    "Make.com (formerly Integromat) is a powerful no-code automation platform run by Celonis. Custom automation by Preisser Tech is built from scratch in TypeScript/Node.js or Python by founder Tyler Preisser in Hays, Kansas. Make.com is more powerful than Zapier with a richer visual workflow builder and lower per-operation cost. Custom automation still wins for production-scale workflows, compliance requirements, complex error handling, and integrations beyond Make.com's connector library.",
+    "Make.com (formerly Integromat) is a powerful no-code automation platform run by Celonis. Custom automation by Preisser Solutions is built from scratch in TypeScript/Node.js or Python by founder Tyler Preisser in Hays, Kansas. Make.com is more powerful than Zapier with a richer visual workflow builder and lower per-operation cost. Custom automation still wins for production-scale workflows, compliance requirements, complex error handling, and integrations beyond Make.com's connector library.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -107,7 +107,7 @@ export const pageData: AeoPageData = {
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "Make.com", "Integromat", "Hays, Kansas"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "Make.com", "Integromat", "Hays, Kansas"],
   relatedLinks: [
     { label: "Zapier vs Custom Automation", href: "/compare/zapier-vs-custom-automation" },
     { label: "API Integration", href: "/services/api-integration" },

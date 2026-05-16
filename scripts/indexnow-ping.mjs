@@ -1,5 +1,5 @@
 const KEY = "cd9d2166e08f09a44331c911b5dace2d";
-const HOST = "preissertech.com";
+const HOST = "preissersolutions.com";
 const KEY_LOCATION = `https://${HOST}/${KEY}.txt`;
 
 const URL_LIST = [

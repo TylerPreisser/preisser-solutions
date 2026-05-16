@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/pest-control",
   tier: "industry",
-  metaTitle: "Custom Software for Pest Control Companies in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Pest Control Companies in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, route automation, AI lead handling, and PestPac/FieldRoutes integrations for pest control companies in Kansas.",
+    "Preisser Solutions builds custom websites, route automation, AI lead handling, and PestPac/FieldRoutes integrations for pest control companies in Kansas.",
   eyebrow: "Custom Software for Pest Control Companies in Kansas",
   h1: "Custom Software, Automation, and AI for Pest Control Operators",
   subheadline:
     "Built for owners of residential and commercial pest control operations tired of generic CRMs that don't fit recurring service workflows. Custom-coded in Hays, Kansas.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for pest control operators — custom websites, route and recurring service automation, AI agents for inbound leads, custom dashboards, and integrations with PestPac, FieldRoutes, GorillaDesk, and ServSuite. Recurring service models are a perfect fit for the Cassidy HVAC reactivation playbook (60%+ dormant customer reactivation in 6 weeks).",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for pest control operators — custom websites, route and recurring service automation, AI agents for inbound leads, custom dashboards, and integrations with PestPac, FieldRoutes, GorillaDesk, and ServSuite. Recurring service models are a perfect fit for the Cassidy HVAC reactivation playbook (60%+ dormant customer reactivation in 6 weeks).",
   sections: [
     {
       eyebrow: "What we build for pest control",
@@ -38,7 +38,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to pest control",
-      heading: "How each Preisser Tech service shows up in a pest shop",
+      heading: "How each Preisser Solutions service shows up in a pest shop",
       body: [
         "Most pest operators start with reactivation automation and expand from there.",
       ],
@@ -54,7 +54,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Pest control software stack we already work with",
       body: [
-        "Preisser Tech integrates with whatever you're already running:",
+        "Preisser Solutions integrates with whatever you're already running:",
       ],
       bullets: [
         "Platforms: PestPac, FieldRoutes, GorillaDesk, ServSuite, FieldRoutes",
@@ -104,7 +104,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Cassidy HVAC",
     "Hays, Kansas",

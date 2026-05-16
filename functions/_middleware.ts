@@ -1,6 +1,6 @@
-const CANONICAL_HOST = "preissertech.com";
-const LEGACY_HOSTS = new Set(["preissersolutions.com", "www.preissersolutions.com"]);
-const DUPLICATE_HOSTS = new Set(["www.preissertech.com", "preisser-solutions.pages.dev"]);
+const CANONICAL_HOST = "preissersolutions.com";
+const LEGACY_HOSTS = new Set(["preissertech.com", "www.preissertech.com"]);
+const DUPLICATE_HOSTS = new Set(["www.preissersolutions.com", "preisser-solutions.pages.dev"]);
 const LEGACY_PATH_REDIRECTS = new Map([
   ["/index.html", "/"],
   ["/home", "/"],
@@ -17,10 +17,10 @@ const LEGACY_PATH_REDIRECTS = new Map([
 const LEGACY_ROBOTS_TXT = `User-agent: *
 Allow: /
 
-Sitemap: https://preissertech.com/sitemap.xml
+Sitemap: https://preissersolutions.com/sitemap.xml
 `;
 
-const OPEN_ROBOTS_TXT = `# Preisser Tech — maximum-permissive crawler policy
+const OPEN_ROBOTS_TXT = `# Preisser Solutions — maximum-permissive crawler policy
 # Search indexing, AI retrieval, and AI training are allowed.
 
 User-agent: *
@@ -75,7 +75,7 @@ Allow: /
 User-agent: bingbot
 Allow: /
 
-Sitemap: https://preissertech.com/sitemap.xml
+Sitemap: https://preissersolutions.com/sitemap.xml
 `;
 
 const AGENT_DISCOVERY_LINKS = [
@@ -222,7 +222,7 @@ export const onRequest = async (context: MiddlewareContext) => {
   const response = await context.next();
 
   // Tyler's directive (2026-05-11): ZERO restrictions on AI crawlers and
-  // agents across preissertech.com. Every page, every path.
+  // agents across preissersolutions.com. Every page, every path.
   //
   // The universal `X-Robots-Tag: index, follow, archive, snippet, ...` header
   // is set on every response by `public/_headers` at the Cloudflare Pages

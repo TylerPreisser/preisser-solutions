@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/restaurants",
   tier: "industry",
-  metaTitle: "Custom Software for Restaurants in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Restaurants in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, online ordering, AI reservations, and Toast/Square/Resy integrations for restaurants in Kansas.",
+    "Preisser Solutions builds custom websites, online ordering, AI reservations, and Toast/Square/Resy integrations for restaurants in Kansas.",
   eyebrow: "Custom Software for Restaurants in Kansas",
   h1: "Custom Software, Automation, and AI for Restaurants",
   subheadline:
     "Built for restaurant owners tired of templated POS websites and third-party ordering markups. Custom-coded in Hays, Kansas by Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for restaurants — custom websites, online ordering, AI reservations, custom dashboards, and integrations with Toast, Square, Resy, OpenTable, and SevenRooms. Custom websites with first-party online ordering eliminate the 15-30% commissions paid to DoorDash, Uber Eats, and Grubhub on every order.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for restaurants — custom websites, online ordering, AI reservations, custom dashboards, and integrations with Toast, Square, Resy, OpenTable, and SevenRooms. Custom websites with first-party online ordering eliminate the 15-30% commissions paid to DoorDash, Uber Eats, and Grubhub on every order.",
   sections: [
     {
       eyebrow: "What we build for restaurants",
@@ -37,7 +37,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to restaurants",
-      heading: "How each Preisser Tech service shows up in a restaurant",
+      heading: "How each Preisser Solutions service shows up in a restaurant",
       body: [
         "Most restaurants start with custom first-party online ordering and expand from there.",
       ],
@@ -53,7 +53,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Restaurant software stack we already work with",
       body: [
-        "Preisser Tech integrates with whatever you're already running:",
+        "Preisser Solutions integrates with whatever you're already running:",
       ],
       bullets: [
         "POS: Toast, Square, Clover, TouchBistro, Lightspeed, Aloha",
@@ -104,7 +104,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "Toast",

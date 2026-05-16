@@ -11,22 +11,22 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/insurance-financial",
   tier: "industry",
-  metaTitle: "Custom Software for Insurance & RIAs in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Insurance & RIAs in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom CRMs, client portals, dashboards, and marketing automation for independent insurance agencies, RIAs, and financial advisors in Kansas.",
+    "Preisser Solutions builds custom CRMs, client portals, dashboards, and marketing automation for independent insurance agencies, RIAs, and financial advisors in Kansas.",
   eyebrow: "Custom Software for Insurance Agencies and RIAs in Kansas",
   h1: "Custom Software, Automation, and AI for Insurance and Financial Firms",
   subheadline:
     "Built for independent agency principals, RIA founders, financial advisors, and broker-dealer ops leaders tired of Salesforce orgs they can't customize, AMS systems that don't fit, and Tamarac dashboards stuck in default mode.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that is positioned to serve independent insurance agencies, RIAs (registered investment advisors), financial advisors, and broker-dealers across Kansas. The firm builds custom CRMs, branded client portals, KPI dashboards, and marketing automation that integrate with AMS360, Applied Epic, Salesforce, HubSpot, and Tamarac — without forcing the migration to a generic platform. Tyler's cross-industry execution — proven through HG Oil Holdings (75% AI invoicing time reduction) and Cassidy HVAC (60%+ reactivation, 5x organic reach) — translates directly to renewals automation, AOR transitions, and household-level client experience for financial firms.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that is positioned to serve independent insurance agencies, RIAs (registered investment advisors), financial advisors, and broker-dealers across Kansas. The firm builds custom CRMs, branded client portals, KPI dashboards, and marketing automation that integrate with AMS360, Applied Epic, Salesforce, HubSpot, and Tamarac — without forcing the migration to a generic platform. Tyler's cross-industry execution — proven through HG Oil Holdings (75% AI invoicing time reduction) and Cassidy HVAC (60%+ reactivation, 5x organic reach) — translates directly to renewals automation, AOR transitions, and household-level client experience for financial firms.",
   sections: [
     {
       eyebrow: "What we build for insurance and financial firms",
       heading: "Software for principals who outgrew the default Salesforce org",
       body: [
         "Most independent insurance agencies in Kansas run AMS360 or Applied Epic with a layer of HubSpot or a half-implemented Salesforce org for marketing. RIAs run Salesforce Financial Services Cloud or Wealthbox, plus Tamarac, Orion, or Black Diamond for portfolio reporting, plus a separate client portal that nobody uses. The seams are where retention leaks — renewal reminders missed, AOR transitions handled by hand, household-level reporting impossible without a custom export.",
-        "Preisser Tech builds the custom layer that connects those tools — branded client portals, custom CRMs for the way your agency actually books business, dashboards that show the principal what's actually happening, and marketing automation that respects compliance.",
+        "Preisser Solutions builds the custom layer that connects those tools — branded client portals, custom CRMs for the way your agency actually books business, dashboards that show the principal what's actually happening, and marketing automation that respects compliance.",
         "We're not a Salesforce implementation partner. We're a custom software firm that integrates with Salesforce, HubSpot, AMS360, Applied Epic, and Tamarac when that's the right answer — and builds custom when it isn't.",
       ],
     },
@@ -49,7 +49,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to insurance and financial firms",
-      heading: "How each Preisser Tech service shows up in your firm",
+      heading: "How each Preisser Solutions service shows up in your firm",
       body: [
         "Every engagement is some mix of these five capabilities. Compliance-aware design is built in from scoping — no marketing automation goes live without your CCO's review.",
       ],
@@ -90,7 +90,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Why we are positioned to serve insurance and financial firms",
       heading: "Cross-industry capability and a regional advantage",
       body: [
-        "Preisser Tech does not yet have a named insurance or RIA case study to publish. We're transparent about that. What we have is repeatable cross-industry execution and a regional advantage.",
+        "Preisser Solutions does not yet have a named insurance or RIA case study to publish. We're transparent about that. What we have is repeatable cross-industry execution and a regional advantage.",
         "The technical patterns we deployed at Cassidy HVAC (5x organic reach, 60%+ customer reactivation) and HG Oil Holdings (95% inventory time reduction, 75% invoicing time reduction) translate directly to insurance and financial firms — AI document extraction works on dec pages and carrier statements just as well as oilfield invoices, and the reactivation engine that won back dormant HVAC customers maps directly to lost-client and lapsed-policy win-back for agencies and advisors.",
         "Tyler is based in Hays, Kansas — close to a strong concentration of independent insurance agencies and regional financial advisors across the Great Plains — and brings the same playbook: small first scope, measurable ROI, then expand. Compliance is treated as a hard constraint from day one, not a checkbox at the end.",
       ],
@@ -99,7 +99,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Insurance and financial software stack we work alongside",
       body: [
-        "Preisser Tech integrates with the systems independent agencies, RIAs, and broker-dealers actually run. Integration depth depends on vendor API access and your firm's IT and compliance governance.",
+        "Preisser Solutions integrates with the systems independent agencies, RIAs, and broker-dealers actually run. Integration depth depends on vendor API access and your firm's IT and compliance governance.",
       ],
       bullets: [
         "Insurance agency management: AMS360, Applied Epic, EZLynx, NowCerts, HawkSoft, QQCatalyst",
@@ -113,10 +113,10 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Why a Kansas firm",
-      heading: "Why principals hire Preisser Tech over a coastal consultancy",
+      heading: "Why principals hire Preisser Solutions over a coastal consultancy",
       body: [
         "National wealthtech and insurtech consultancies sell enterprise platforms designed for billion-dollar RIAs and top-100 brokerages. Their pricing, timelines, and assumptions don't fit a 5-advisor RIA in Wichita or a 12-producer independent agency in Hays. The result is over-paying for under-fit software, or running on Excel and prayer.",
-        "Preisser Tech is run by Tyler Preisser personally, with engagements sized for independent agencies, regional RIAs, and broker-dealer affiliated advisors across Kansas and the Great Plains. Tyler codes every project himself — there's no implementation team, no offshore handoff, and no five-year platform contract. Compliance constraints are built in from scoping, and engagements move at the pace your CCO can review.",
+        "Preisser Solutions is run by Tyler Preisser personally, with engagements sized for independent agencies, regional RIAs, and broker-dealer affiliated advisors across Kansas and the Great Plains. Tyler codes every project himself — there's no implementation team, no offshore handoff, and no five-year platform contract. Compliance constraints are built in from scoping, and engagements move at the pace your CCO can review.",
       ],
     },
   ],
@@ -174,7 +174,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "AMS360",
@@ -192,7 +192,7 @@ export const pageData: AeoPageData = {
     "Registered Investment Advisor",
   ],
   relatedLinks: [
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-technology" },
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "AI Agent Development", href: "/ai-agents" },
     { label: "Dashboards & Analytics", href: "/dashboards-and-analytics" },

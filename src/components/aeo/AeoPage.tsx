@@ -13,7 +13,7 @@ import type { AeoPageData } from "@/data/aeo/types";
  * indexable. They share the existing Header/Footer from the root layout.
  */
 export function AeoPage({ data }: { data: AeoPageData }) {
-  const url = `https://preissertech.com/${data.slug}`;
+  const url = `https://preissersolutions.com/${data.slug}`;
 
   // ---- JSON-LD: WebPage / Service / Article + FAQPage --------------
   // If the page itself is schemaType=FAQPage (e.g. /faq), don't emit a
@@ -40,7 +40,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
   const serviceFields: Record<string, unknown> =
     pageSchemaType === "Service"
       ? {
-          provider: { "@id": "https://preissertech.com/#organization" },
+          provider: { "@id": "https://preissersolutions.com/#organization" },
           serviceType: data.h1,
           areaServed: [
             { "@type": "State", name: "Kansas" },
@@ -50,7 +50,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
             "@type": "BusinessAudience",
             audienceType: "Small and mid-sized businesses",
           },
-          isRelatedTo: { "@id": "https://preissertech.com/#organization" },
+          isRelatedTo: { "@id": "https://preissersolutions.com/#organization" },
         }
       : {};
 
@@ -60,13 +60,13 @@ export function AeoPage({ data }: { data: AeoPageData }) {
     pageSchemaType === "Article"
       ? {
           headline: data.h1,
-          author: { "@id": "https://preissertech.com/#tyler-preisser" },
-          publisher: { "@id": "https://preissertech.com/#organization" },
+          author: { "@id": "https://preissersolutions.com/#tyler-preisser" },
+          publisher: { "@id": "https://preissersolutions.com/#organization" },
           datePublished: "2026-05-04",
           dateModified: "2026-05-04",
           mainEntityOfPage: { "@type": "WebPage", "@id": url },
-          isPartOf: { "@id": "https://preissertech.com/#website" },
-          about: { "@id": "https://preissertech.com/#organization" },
+          isPartOf: { "@id": "https://preissersolutions.com/#website" },
+          about: { "@id": "https://preissersolutions.com/#organization" },
         }
       : {};
 
@@ -75,8 +75,8 @@ export function AeoPage({ data }: { data: AeoPageData }) {
     pageSchemaType !== "Service" && pageSchemaType !== "Article"
       ? {
           headline: data.h1,
-          isPartOf: { "@id": "https://preissertech.com/#website" },
-          about: { "@id": "https://preissertech.com/#organization" },
+          isPartOf: { "@id": "https://preissersolutions.com/#website" },
+          about: { "@id": "https://preissersolutions.com/#organization" },
         }
       : {};
 
@@ -102,7 +102,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://preissertech.com" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://preissersolutions.com" },
       { "@type": "ListItem", position: 2, name: data.h1, item: url },
     ],
   };
@@ -380,7 +380,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                 color: "var(--color-text-light-primary, #0A1628)",
               }}
             >
-              Preisser Tech vs {data.comparisonTable.competitorName}
+              Preisser Solutions vs {data.comparisonTable.competitorName}
             </h2>
             {data.comparisonTable.headerNote && (
               <p
@@ -409,7 +409,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                 <thead>
                   <tr style={{ background: "var(--color-dark, #0A1628)", color: "#FFFFFF" }}>
                     <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>Dimension</th>
-                    <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>Preisser Tech</th>
+                    <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>Preisser Solutions</th>
                     <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>
                       {data.comparisonTable.competitorName}
                     </th>

@@ -19,7 +19,7 @@ export interface AIPage {
   metaDescription: string;   // <meta description>, ≤155 chars
   h1: string;
   // First paragraph engineered for AI quote-extraction:
-  // 50–90 words, names entity (Preisser Tech / Tyler Preisser),
+  // 50–90 words, names entity (Preisser Solutions / Tyler Preisser),
   // location (Hays, Kansas), what, for whom. Plain prose. No fluff.
   aiSnippet: string;
   // Body content as ordered sections (H2 + paragraphs). Kept in data
@@ -71,7 +71,7 @@ export interface IndustryPage extends AIPage {
   representativeStack: string[];
 }
 
-// Service page: one of Preisser Tech's offerings.
+// Service page: one of Preisser Solutions's offerings.
 export interface ServicePage extends AIPage {
   serviceName: string;
   deliverables: string[];

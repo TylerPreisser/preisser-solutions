@@ -35,7 +35,7 @@ const valueItems = [
 
 export function ValueStrip() {
   return (
-    <section className="ps-value-strip" aria-label="Preisser Tech services">
+    <section className="ps-value-strip" aria-label="Preisser Solutions services">
       <div className="ps-value-strip-track">
         {valueItems.map((item) => (
           <div key={item.strong} className="ps-value-item">

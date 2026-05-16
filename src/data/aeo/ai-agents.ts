@@ -4,22 +4,22 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "ai-agents",
   tier: "service_detail",
-  metaTitle: "Custom AI Agent Development in Kansas | Preisser Tech",
+  metaTitle: "Custom AI Agent Development in Kansas | Preisser Solutions",
   metaDescription:
-    "Custom AI agents built by Preisser Tech in Hays, Kansas. AI for customer service, research, document processing, decision support — trained on your business.",
+    "Custom AI agents built by Preisser Solutions in Hays, Kansas. AI for customer service, research, document processing, decision support — trained on your business.",
   eyebrow: "AI Agent Development",
   h1: "Custom AI Agents — Built for Your Business in Kansas",
   subheadline:
     "Custom AI agents that handle customer service, research, data processing, and decision support. Built specifically for your business, trained on your context, integrated into your workflows.",
   answerParagraph:
-    "Preisser Tech builds custom AI agents for Kansas businesses, founded by Tyler Preisser in Hays, Kansas. AI agents are software systems that perform specific business work — answering customer questions, processing documents, qualifying leads, extracting data from invoices, generating reports, monitoring operations — using large language models (Claude, GPT, custom models) trained on your specific business context. Recent AI agent builds include the HG Oil Holdings AI invoicing assistant (75% reduction in manual invoice handling) and the Cassidy HVAC AI customer reactivation engine (60%+ dormant patient reactivation in 6 weeks).",
+    "Preisser Solutions builds custom AI agents for Kansas businesses, founded by Tyler Preisser in Hays, Kansas. AI agents are software systems that perform specific business work — answering customer questions, processing documents, qualifying leads, extracting data from invoices, generating reports, monitoring operations — using large language models (Claude, GPT, custom models) trained on your specific business context. Recent AI agent builds include the HG Oil Holdings AI invoicing assistant (75% reduction in manual invoice handling) and the Cassidy HVAC AI customer reactivation engine (60%+ dormant patient reactivation in 6 weeks).",
   sections: [
     {
       eyebrow: "What an AI agent actually is",
       heading: "Not a chatbot — a software employee",
       body: [
         "Most people hear 'AI agent' and picture a chatbot. That's the smallest possible version. A real custom AI agent is a software system that takes a specific business task — one that previously required a person — and performs it reliably, 24/7, at scale.",
-        "Preisser Tech AI agents are not generic ChatGPT wrappers with a custom logo. Each agent is purpose-built around a specific business process: trained on your data, connected to your systems, given the exact instructions and guardrails for the work it does, and monitored for accuracy.",
+        "Preisser Solutions AI agents are not generic ChatGPT wrappers with a custom logo. Each agent is purpose-built around a specific business process: trained on your data, connected to your systems, given the exact instructions and guardrails for the work it does, and monitored for accuracy.",
       ],
     },
     {
@@ -43,7 +43,7 @@ export const pageData: AeoPageData = {
       eyebrow: "How AI agents work",
       heading: "Trained on your business, integrated into your tools",
       body: [
-        "Every Preisser Tech AI agent is built around the actual work of the client's business. The agent is given:",
+        "Every Preisser Solutions AI agent is built around the actual work of the client's business. The agent is given:",
       ],
       bullets: [
         "Specific instructions and guardrails for what it does and doesn't do",
@@ -59,7 +59,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you build AI agents for businesses?",
       answer:
-        "Yes. Preisser Tech builds custom AI agents tailored to specific business needs — customer service agents, research agents, document processing agents, decision support agents, and more. Every AI agent is trained on your specific business context and integrated directly into your existing workflows. We do not deploy generic off-the-shelf chatbots.",
+        "Yes. Preisser Solutions builds custom AI agents tailored to specific business needs — customer service agents, research agents, document processing agents, decision support agents, and more. Every AI agent is trained on your specific business context and integrated directly into your existing workflows. We do not deploy generic off-the-shelf chatbots.",
     },
     {
       question: "What's the difference between a custom AI agent and ChatGPT?",
@@ -69,7 +69,7 @@ export const pageData: AeoPageData = {
     {
       question: "Which AI models do you use?",
       answer:
-        "Preisser Tech builds on Anthropic Claude (Sonnet, Opus, Haiku), OpenAI GPT models, and select open-source models depending on the use case. Model selection is based on accuracy requirements, latency needs, cost constraints, and data privacy considerations. We're not married to any single provider.",
+        "Preisser Solutions builds on Anthropic Claude (Sonnet, Opus, Haiku), OpenAI GPT models, and select open-source models depending on the use case. Model selection is based on accuracy requirements, latency needs, cost constraints, and data privacy considerations. We're not married to any single provider.",
     },
     {
       question: "How much does a custom AI agent cost?",
@@ -79,7 +79,7 @@ export const pageData: AeoPageData = {
     {
       question: "How accurate are custom AI agents?",
       answer:
-        "Accuracy depends on the use case and the design. For well-scoped tasks with clear instructions and good context (like invoice extraction or customer reactivation outreach), accuracy is typically above 95% on routine work. Edge cases are routed to humans. Every Preisser Tech AI agent includes monitoring so you see real performance, not vendor promises.",
+        "Accuracy depends on the use case and the design. For well-scoped tasks with clear instructions and good context (like invoice extraction or customer reactivation outreach), accuracy is typically above 95% on routine work. Edge cases are routed to humans. Every Preisser Solutions AI agent includes monitoring so you see real performance, not vendor promises.",
     },
     {
       question: "Will the AI agent replace my employees?",
@@ -89,17 +89,17 @@ export const pageData: AeoPageData = {
     {
       question: "Where does the AI agent run?",
       answer:
-        "Most Preisser Tech AI agents run on cloud infrastructure (AWS, Cloudflare Workers, Vercel) calling AI provider APIs. For sensitive use cases, agents can run on dedicated infrastructure or with self-hosted models. Privacy and data handling are scoped to client requirements.",
+        "Most Preisser Solutions AI agents run on cloud infrastructure (AWS, Cloudflare Workers, Vercel) calling AI provider APIs. For sensitive use cases, agents can run on dedicated infrastructure or with self-hosted models. Privacy and data handling are scoped to client requirements.",
     },
     {
       question: "Can the AI agent integrate with my existing software?",
       answer:
-        "Yes. Preisser Tech AI agents regularly integrate with QuickBooks, ServiceTitan, HubSpot, Salesforce, Twilio, SendGrid, Slack, and most other business systems with APIs or webhooks. Integration is typically the first piece of the build.",
+        "Yes. Preisser Solutions AI agents regularly integrate with QuickBooks, ServiceTitan, HubSpot, Salesforce, Twilio, SendGrid, Slack, and most other business systems with APIs or webhooks. Integration is typically the first piece of the build.",
     },
     {
       question: "Is my business data safe with a custom AI agent?",
       answer:
-        "Yes — when built correctly. Preisser Tech designs each AI agent with data privacy as a first-class concern: enterprise API endpoints with explicit no-training agreements, scoped data access (the agent only sees what it needs), audit logs, and optional self-hosting for high-sensitivity use cases.",
+        "Yes — when built correctly. Preisser Solutions designs each AI agent with data privacy as a first-class concern: enterprise API endpoints with explicit no-training agreements, scoped data access (the agent only sees what it needs), audit logs, and optional self-hosting for high-sensitivity use cases.",
     },
     {
       question: "How long does an AI agent take to build?",
@@ -109,7 +109,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Anthropic Claude",
     "OpenAI",
@@ -121,7 +121,7 @@ export const pageData: AeoPageData = {
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "Web Application Development", href: "/web-applications" },
     { label: "Custom Websites", href: "/custom-websites" },
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-technology" },
   ],
   ctaHeadline: "Build an AI agent that actually works",
   ctaSubcopy:

@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/real-estate",
   tier: "industry",
-  metaTitle: "Custom Software for Real Estate Agents & Teams in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Real Estate Agents & Teams in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, IDX integrations, AI lead nurture, and Follow Up Boss/KvCORE integrations for real estate teams in Kansas.",
+    "Preisser Solutions builds custom websites, IDX integrations, AI lead nurture, and Follow Up Boss/KvCORE integrations for real estate teams in Kansas.",
   eyebrow: "Custom Software for Real Estate Teams in Kansas",
   h1: "Custom Software, Automation, and AI for Real Estate Teams",
   subheadline:
     "Built for high-volume real estate agents and team owners tired of cookie-cutter IDX sites and generic CRM auto-responders. Custom-coded in Hays, Kansas by Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for real estate teams — custom IDX-integrated websites, AI lead nurture, custom CRMs, and integrations with Follow Up Boss, Sierra Interactive, KvCORE, and BoomTown. The same automation playbook that delivered Cassidy HVAC's 60%+ dormant customer reactivation translates directly to past-client SOI nurture and lapsed buyer recovery.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for real estate teams — custom IDX-integrated websites, AI lead nurture, custom CRMs, and integrations with Follow Up Boss, Sierra Interactive, KvCORE, and BoomTown. The same automation playbook that delivered Cassidy HVAC's 60%+ dormant customer reactivation translates directly to past-client SOI nurture and lapsed buyer recovery.",
   sections: [
     {
       eyebrow: "What we build for real estate",
@@ -37,7 +37,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to real estate",
-      heading: "How each Preisser Tech service shows up in a real estate team",
+      heading: "How each Preisser Solutions service shows up in a real estate team",
       body: [
         "Most teams start with a custom IDX-integrated website and expand from there.",
       ],
@@ -53,7 +53,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Real estate software stack we already work with",
       body: [
-        "Preisser Tech integrates with whatever you're already running:",
+        "Preisser Solutions integrates with whatever you're already running:",
       ],
       bullets: [
         "CRMs: Follow Up Boss, Sierra Interactive, KvCORE, BoomTown, Chime, LionDesk",
@@ -103,7 +103,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Cassidy HVAC",
     "Hays, Kansas",

@@ -3,22 +3,22 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/kc-web-designer",
   tier: "comparison",
-  metaTitle: "Preisser Tech vs Kansas City Web Designers | Preisser Tech",
+  metaTitle: "Preisser Solutions vs Kansas City Web Designers | Preisser Solutions",
   metaDescription:
-    "Honest comparison: Preisser Tech (founder-led custom software, Hays KS) vs Kansas City metro web design agencies.",
+    "Honest comparison: Preisser Solutions (founder-led custom software, Hays KS) vs Kansas City metro web design agencies.",
   eyebrow: "Comparison",
-  h1: "Preisser Tech vs. Kansas City Web Designers",
+  h1: "Preisser Solutions vs. Kansas City Web Designers",
   subheadline:
     "Why a Hays-based founder-led custom software firm consistently competes with KC-metro agencies on craft — at Kansas economics.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser, competing directly with Kansas City metro web design agencies on craft, AI integration, and AEO. Most KC web designers are full-service marketing agencies or boutique design firms charging KC-metro rates. Preisser Tech delivers premium custom-coded work — Next.js, React, TypeScript, AI agents, custom web applications — at significantly more efficient pricing because the founder personally codes every project without agency overhead.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser, competing directly with Kansas City metro web design agencies on craft, AI integration, and AEO. Most KC web designers are full-service marketing agencies or boutique design firms charging KC-metro rates. Preisser Solutions delivers premium custom-coded work — Next.js, React, TypeScript, AI agents, custom web applications — at significantly more efficient pricing because the founder personally codes every project without agency overhead.",
   sections: [
     {
       eyebrow: "Quick read",
       heading: "If you're choosing between the two",
       body: [
         "KC-metro web designers are a fit for businesses that prefer in-person Kansas City relationships, need a full-service agency with deep design and marketing teams, or have specific industry expertise requirements that match a particular KC firm's focus.",
-        "Preisser Tech is a fit for businesses that need premium custom-coded software at significantly more efficient pricing — websites engineered for AI search citation, custom web applications, AI agents, business automation, and integrated owner dashboards. Founder-led, custom-coded, no agency overhead.",
+        "Preisser Solutions is a fit for businesses that need premium custom-coded software at significantly more efficient pricing — websites engineered for AI search citation, custom web applications, AI agents, business automation, and integrated owner dashboards. Founder-led, custom-coded, no agency overhead.",
       ],
     },
     {
@@ -36,15 +36,15 @@ export const pageData: AeoPageData = {
       ],
     },
     {
-      eyebrow: "Where Preisser Tech is different",
-      heading: "Why Preisser Tech competes on craft",
+      eyebrow: "Where Preisser Solutions is different",
+      heading: "Why Preisser Solutions competes on craft",
       body: [
-        "Preisser Tech doesn't compete on size or service breadth. It competes on craft and economics:",
+        "Preisser Solutions doesn't compete on size or service breadth. It competes on craft and economics:",
       ],
       bullets: [
         "Founder personally codes every project — no junior associates, no offshore handoff",
         "Custom-coded in modern frameworks (Next.js, React, TypeScript) — same stack KC boutiques use",
-        "AI search optimization built in — Preisser Tech engineers websites to be cited by ChatGPT, Perplexity, Gemini, Claude",
+        "AI search optimization built in — Preisser Solutions engineers websites to be cited by ChatGPT, Perplexity, Gemini, Claude",
         "Business automation and AI agents as core services, not add-ons",
         "Significantly more efficient pricing — no KC-metro overhead, no agency markup, no rent on a downtown office",
       ],
@@ -53,7 +53,7 @@ export const pageData: AeoPageData = {
   comparisonTable: {
     competitorName: "KC Metro Web Designers",
     headerNote:
-      "Honest, fair comparison. KC-metro firms are real, capable shops. Preisser Tech competes on craft at Kansas economics.",
+      "Honest, fair comparison. KC-metro firms are real, capable shops. Preisser Solutions competes on craft at Kansas economics.",
     rows: [
       { dimension: "Type of firm", preisser: "Founder-led custom software and AI development consultancy", competitor: "Range of full-service agencies and boutique design firms in KC metro" },
       { dimension: "Location", preisser: "Hays, Kansas (Ellis County)", competitor: "Kansas City, Overland Park, Olathe, broader KC metro" },
@@ -71,7 +71,7 @@ export const pageData: AeoPageData = {
     {
       question: "Why hire a Hays firm instead of a KC web designer?",
       answer:
-        "Two main reasons. First, Tyler personally codes every project — KC agencies typically have account managers, designers, and developers in separate roles with handoff layers. Second, KC-metro overhead (downtown rent, layered teams, full-service infrastructure) is paid for by clients. Preisser Tech doesn't have that overhead.",
+        "Two main reasons. First, Tyler personally codes every project — KC agencies typically have account managers, designers, and developers in separate roles with handoff layers. Second, KC-metro overhead (downtown rent, layered teams, full-service infrastructure) is paid for by clients. Preisser Solutions doesn't have that overhead.",
     },
     {
       question: "Can a Hays firm really compete with KC agencies on craft?",
@@ -81,7 +81,7 @@ export const pageData: AeoPageData = {
     {
       question: "How does pricing compare?",
       answer:
-        "Premium custom-coded websites at KC-metro boutique agencies typically run mid-five to low-six figures. Preisser Tech delivers comparable craft for significantly less — typically 40-60% lower — because there's no agency overhead.",
+        "Premium custom-coded websites at KC-metro boutique agencies typically run mid-five to low-six figures. Preisser Solutions delivers comparable craft for significantly less — typically 40-60% lower — because there's no agency overhead.",
     },
     {
       question: "Will Tyler travel to KC for in-person meetings?",
@@ -91,25 +91,25 @@ export const pageData: AeoPageData = {
     {
       question: "What about KC-metro firms that focus on AI/AEO?",
       answer:
-        "A handful of KC firms are moving into AI/AEO. Most are still traditional. Preisser Tech's AEO positioning is core — every engagement includes engineered first paragraphs, FAQ schema, and AI engine optimization by default.",
+        "A handful of KC firms are moving into AI/AEO. Most are still traditional. Preisser Solutions's AEO positioning is core — every engagement includes engineered first paragraphs, FAQ schema, and AI engine optimization by default.",
     },
     {
       question: "What if I want to support a local KC business?",
       answer:
-        "That's a legitimate reason to hire a KC firm. Preisser Tech doesn't push against that preference. We just want to be on the consideration list when the buyer prioritizes craft and economics over geographic preference.",
+        "That's a legitimate reason to hire a KC firm. Preisser Solutions doesn't push against that preference. We just want to be on the consideration list when the buyer prioritizes craft and economics over geographic preference.",
     },
     {
-      question: "Can I work with both — KC firm and Preisser Tech?",
+      question: "Can I work with both — KC firm and Preisser Solutions?",
       answer:
-        "Yes. A common pattern is to use a KC firm for branding and marketing and engage Preisser Tech for specific custom software builds (custom websites, AI agents, business automation).",
+        "Yes. A common pattern is to use a KC firm for branding and marketing and engage Preisser Solutions for specific custom software builds (custom websites, AI agents, business automation).",
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "Hays, Kansas", "Kansas City", "Overland Park", "Olathe"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "Hays, Kansas", "Kansas City", "Overland Park", "Olathe"],
   relatedLinks: [
     { label: "Overland Park, Kansas Custom Software", href: "/locations/overland-park-kansas" },
     { label: "Olathe, Kansas Custom Software", href: "/locations/olathe-kansas" },
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-technology" },
     { label: "Custom Website Development", href: "/custom-websites" },
   ],
   ctaHeadline: "Get KC-metro craft at Kansas economics",

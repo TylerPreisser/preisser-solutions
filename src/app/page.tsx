@@ -12,35 +12,35 @@ import { CtaSection } from "@/components/home/cta-section";
 // Title: 52 chars — within Bing/Google optimal 50-60 range.
 export const metadata: Metadata = {
   title: {
-    absolute: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
+    absolute: "Preisser Solutions | World-Class AI-Powered Marketing For Kansas",
   },
   description:
     "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
   alternates: {
-    canonical: "https://preissertech.com/",
+    canonical: "https://preissersolutions.com/",
   },
   openGraph: {
-    title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
+    title: "Preisser Solutions | World-Class AI-Powered Marketing For Kansas",
     description:
       "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
-    url: "https://preissertech.com/",
+    url: "https://preissersolutions.com/",
     type: "website",
     images: [
       {
         url: "/images/og-image-v2.jpg",
         width: 1200,
         height: 630,
-        alt: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
+        alt: "Preisser Solutions | World-Class AI-Powered Marketing For Kansas",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Tech | World-Class AI-Powered Marketing For Kansas",
+    title: "Preisser Solutions | World-Class AI-Powered Marketing For Kansas",
     description:
       "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
     images: ["/images/og-image-v2.jpg"],
-    creator: "@preissertech",
+    creator: "@preissersolutions",
   },
 };
 

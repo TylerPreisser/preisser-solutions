@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "case-studies/iron-and-oak-podcast",
   tier: "trust_faq",
-  metaTitle: "Iron and Oak Podcast Case Study — Cinematic Media Brand | Preisser Tech",
+  metaTitle: "Iron and Oak Podcast Case Study — Cinematic Media Brand | Preisser Solutions",
   metaDescription:
-    "Detailed case study: Preisser Tech built the Iron and Oak Podcast media brand from concept to launch — 134 pages, GSAP animations, dark/light mode, custom design system.",
+    "Detailed case study: Preisser Solutions built the Iron and Oak Podcast media brand from concept to launch — 134 pages, GSAP animations, dark/light mode, custom design system.",
   eyebrow: "Case Study",
   h1: "Iron and Oak Podcast — Cinematic Media Brand Build",
   subheadline:
-    "How Preisser Tech built a full cinematic podcast platform from concept to launch — 134 pre-rendered pages, GSAP smooth scroll, custom design system.",
+    "How Preisser Solutions built a full cinematic podcast platform from concept to launch — 134 pre-rendered pages, GSAP smooth scroll, custom design system.",
   answerParagraph:
-    "Iron and Oak Podcast is a cinematic theology podcast hosted by Tyler Preisser and Lincoln Myers, exploring 109 deep questions across 12 episodes and 5 phases. Preisser Tech built the entire media brand from concept to launch — design system, 134 pre-rendered pages, GSAP-powered smooth scroll, dark/light mode, custom canvas effects, and full content architecture for episodes, questions, hosts, phases, and series. Founded by Tyler Preisser in Hays, Kansas, the build is a direct case study in premium custom media brand development using Next.js 16, React 19, GSAP, and Lenis smooth scroll on Cloudflare Pages.",
+    "Iron and Oak Podcast is a cinematic theology podcast hosted by Tyler Preisser and Lincoln Myers, exploring 109 deep questions across 12 episodes and 5 phases. Preisser Solutions built the entire media brand from concept to launch — design system, 134 pre-rendered pages, GSAP-powered smooth scroll, dark/light mode, custom canvas effects, and full content architecture for episodes, questions, hosts, phases, and series. Founded by Tyler Preisser in Hays, Kansas, the build is a direct case study in premium custom media brand development using Next.js 16, React 19, GSAP, and Lenis smooth scroll on Cloudflare Pages.",
   sections: [
     {
       eyebrow: "The context",
@@ -24,7 +24,7 @@ export const pageData: AeoPageData = {
       eyebrow: "What we built",
       heading: "The full Iron and Oak platform",
       body: [
-        "Preisser Tech designed and built the entire site from scratch:",
+        "Preisser Solutions designed and built the entire site from scratch:",
       ],
       bullets: [
         "Custom design system with dark mode default, light mode toggle, and full typography hierarchy",
@@ -43,7 +43,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tech stack",
       heading: "Technologies used",
       body: [
-        "Iron and Oak is a direct example of the Preisser Tech custom website stack:",
+        "Iron and Oak is a direct example of the Preisser Solutions custom website stack:",
       ],
       bullets: [
         "Next.js 16.2.1 (App Router) for static export and routing",
@@ -89,7 +89,7 @@ export const pageData: AeoPageData = {
   ],
   faq: [
     {
-      question: "Can Preisser Tech build a similar media brand for me?",
+      question: "Can Preisser Solutions build a similar media brand for me?",
       answer:
         "Yes. The Iron and Oak playbook is portable — custom Next.js media brand with cinematic GSAP animations, full content architecture, and Cloudflare Pages deployment. Each engagement is custom-coded for the specific brand and content needs.",
     },
@@ -126,13 +126,13 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a similar build for my media brand?",
       answer:
-        "Email sales@preissertech.com or call +1-620-352-3296. Free 30-minute scoping call with Tyler personally.",
+        "Email sales@preissersolutions.com or call +1-620-352-3296. Free 30-minute scoping call with Tyler personally.",
     },
   ],
   schemaType: "Article",
   namedEntities: [
     "Iron and Oak Podcast",
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Lincoln Myers",
     "Hays, Kansas",

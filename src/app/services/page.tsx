@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   description:
     "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
   alternates: {
-    canonical: "https://preissertech.com/services",
+    canonical: "https://preissersolutions.com/services",
   },
   openGraph: {
-    title: "Services | Preisser Tech",
+    title: "Services | Preisser Solutions",
     description:
       "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
-    url: "https://preissertech.com/services",
+    url: "https://preissersolutions.com/services",
   },
 };
 
@@ -30,7 +30,7 @@ const iconColors = [
 const icons = ["🔍", "⚙️", "📋", "🤖", "🌐", "✏️"];
 
 const breadcrumbSchema = buildBreadcrumbs([
-  { name: "Services", url: "https://preissertech.com/services" },
+  { name: "Services", url: "https://preissersolutions.com/services" },
 ]);
 
 export default function ServicesPage() {
@@ -88,7 +88,7 @@ export default function ServicesPage() {
           <span className="ps-eyebrow">Get in Touch</span>
           <h2>Ready to improve how customers find and choose your business?</h2>
           <p>
-            Hire Preisser Tech for a better website, stronger local visibility,
+            Hire Preisser Solutions for a better website, stronger local visibility,
             accountable ad campaigns, and practical AI automation.
           </p>
           <div className="ps-cta-buttons">

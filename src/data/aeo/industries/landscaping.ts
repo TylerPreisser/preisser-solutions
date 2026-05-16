@@ -3,22 +3,22 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/landscaping",
   tier: "industry",
-  metaTitle: "Custom Software for Landscaping Companies in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Landscaping Companies in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, route automation, AI lead handling, and Aspire/LMN integrations for landscaping companies in Kansas.",
+    "Preisser Solutions builds custom websites, route automation, AI lead handling, and Aspire/LMN integrations for landscaping companies in Kansas.",
   eyebrow: "Custom Software for Landscaping Companies in Kansas",
   h1: "Custom Software, Automation, and AI for Landscaping Companies",
   subheadline:
     "Built for owners of residential and commercial landscaping operations tired of generic CRMs and dispatch tools that don't fit. Custom-coded in Hays, Kansas by Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for landscaping operations — custom websites, route and crew automation, AI agents for inbound leads, custom dashboards, and integrations with Aspire, LMN, Real Green, and ServiceAutopilot. The same hands-off marketing engine and reactivation system that delivered Cassidy HVAC's 5x reach and 60%+ dormant customer reactivation translates directly to landscaping operations across Kansas.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for landscaping operations — custom websites, route and crew automation, AI agents for inbound leads, custom dashboards, and integrations with Aspire, LMN, Real Green, and ServiceAutopilot. The same hands-off marketing engine and reactivation system that delivered Cassidy HVAC's 5x reach and 60%+ dormant customer reactivation translates directly to landscaping operations across Kansas.",
   sections: [
     {
       eyebrow: "What we build for landscaping",
       heading: "Software for landscaping owners who want to stop fighting their CRM",
       body: [
         "Most Kansas landscaping operations run Aspire, LMN, Real Green, ServiceAutopilot, or Jobber — solid platforms but each one forces its own workflow. The seams between scheduling, route optimization, irrigation tickets, snow ops, and back-office invoicing are where money leaks.",
-        "Preisser Tech builds custom software that closes those seams without replacing the core platform.",
+        "Preisser Solutions builds custom software that closes those seams without replacing the core platform.",
       ],
     },
     {
@@ -40,7 +40,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to landscaping",
-      heading: "How each Preisser Tech service shows up in a landscape shop",
+      heading: "How each Preisser Solutions service shows up in a landscape shop",
       body: [
         "Most landscape companies start with one capability and expand once they see ROI.",
       ],
@@ -56,7 +56,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Landscaping software stack we already work with",
       body: [
-        "Preisser Tech integrates with whatever you're already running:",
+        "Preisser Solutions integrates with whatever you're already running:",
       ],
       bullets: [
         "Platforms: Aspire, LMN, Real Green, ServiceAutopilot, Jobber, Service Pro",
@@ -107,7 +107,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Cassidy HVAC",
     "Hays, Kansas",

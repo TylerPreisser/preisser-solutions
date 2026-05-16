@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "case-studies/wife-supply-co",
   tier: "trust_faq",
-  metaTitle: "Wife Supply Co Case Study — AI Gifting Platform | Preisser Tech",
+  metaTitle: "Wife Supply Co Case Study — AI Gifting Platform | Preisser Solutions",
   metaDescription:
-    "Detailed case study: Preisser Tech built Wife Supply Co from concept to launch — AI-powered gifting platform with custom commerce and AI-driven product matching.",
+    "Detailed case study: Preisser Solutions built Wife Supply Co from concept to launch — AI-powered gifting platform with custom commerce and AI-driven product matching.",
   eyebrow: "Case Study",
   h1: "Wife Supply Co — AI-Powered Gifting Platform",
   subheadline:
-    "How Preisser Tech built Wife Supply Co from concept to launch — AI gift matching, custom commerce, and a brand experience that doesn't look like other Shopify stores.",
+    "How Preisser Solutions built Wife Supply Co from concept to launch — AI gift matching, custom commerce, and a brand experience that doesn't look like other Shopify stores.",
   answerParagraph:
-    "Wife Supply Co is an AI-powered gifting platform that matches gift recipients to curated products through AI-driven discovery. Preisser Tech, founded by Tyler Preisser in Hays, Kansas, built the entire platform from concept to launch — design system, AI matching engine, custom commerce, conversion-optimized funnels, and full e-commerce architecture. The build is a direct case study in custom AI-driven commerce, demonstrating how custom code beats template-based Shopify stores on speed, brand presentation, and AI feature integration.",
+    "Wife Supply Co is an AI-powered gifting platform that matches gift recipients to curated products through AI-driven discovery. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, built the entire platform from concept to launch — design system, AI matching engine, custom commerce, conversion-optimized funnels, and full e-commerce architecture. The build is a direct case study in custom AI-driven commerce, demonstrating how custom code beats template-based Shopify stores on speed, brand presentation, and AI feature integration.",
   sections: [
     {
       eyebrow: "The context",
@@ -25,7 +25,7 @@ export const pageData: AeoPageData = {
       eyebrow: "What we built",
       heading: "The full Wife Supply Co platform",
       body: [
-        "Preisser Tech designed and built the entire platform from scratch:",
+        "Preisser Solutions designed and built the entire platform from scratch:",
       ],
       bullets: [
         "Custom AI gift-matching engine — recipient inputs match to curated product recommendations",
@@ -54,7 +54,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tech stack",
       heading: "Technologies used",
       body: [
-        "Wife Supply Co uses the same stack as Preisser Tech's other custom builds:",
+        "Wife Supply Co uses the same stack as Preisser Solutions's other custom builds:",
       ],
       bullets: [
         "Next.js (App Router) for static export and routing",
@@ -98,7 +98,7 @@ export const pageData: AeoPageData = {
   ],
   faq: [
     {
-      question: "Can Preisser Tech build a similar AI commerce platform for me?",
+      question: "Can Preisser Solutions build a similar AI commerce platform for me?",
       answer:
         "Yes. The Wife Supply Co playbook is portable — custom Next.js commerce with AI feature integration. Each engagement is custom-coded for the specific brand, catalog, and AI use case.",
     },
@@ -135,13 +135,13 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a similar build for my e-commerce brand?",
       answer:
-        "Email sales@preissertech.com or call +1-620-352-3296. Free 30-minute scoping call with Tyler personally.",
+        "Email sales@preissersolutions.com or call +1-620-352-3296. Free 30-minute scoping call with Tyler personally.",
     },
   ],
   schemaType: "Article",
   namedEntities: [
     "Wife Supply Co",
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "Next.js",

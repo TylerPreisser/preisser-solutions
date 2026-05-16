@@ -3,22 +3,22 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/roofing",
   tier: "industry",
-  metaTitle: "Custom Software for Roofing Contractors in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Roofing Contractors in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, claim automation, AI lead handling, and AccuLynx integrations for roofing contractors in Kansas.",
+    "Preisser Solutions builds custom websites, claim automation, AI lead handling, and AccuLynx integrations for roofing contractors in Kansas.",
   eyebrow: "Custom Software for Roofing Contractors in Kansas",
   h1: "Custom Software, Automation, and AI for Roofing Contractors",
   subheadline:
     "Built for owners of residential and commercial roofing companies who lose deals while waiting for measurements, bid responses, and insurance approvals. Custom-coded in Hays, Kansas by Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology specifically for roofing contractors — custom websites, lead and claim automation, AI agents for after-hours calls, custom dashboards, and integrations with AccuLynx, Roofr, JobNimbus, and CompanyCam. Kansas roofers face hail-driven storm seasons, insurance claim chaos, and tight measurement-to-quote turnarounds — exactly the kind of problems custom software solves.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology specifically for roofing contractors — custom websites, lead and claim automation, AI agents for after-hours calls, custom dashboards, and integrations with AccuLynx, Roofr, JobNimbus, and CompanyCam. Kansas roofers face hail-driven storm seasons, insurance claim chaos, and tight measurement-to-quote turnarounds — exactly the kind of problems custom software solves.",
   sections: [
     {
       eyebrow: "What we build for roofing",
       heading: "Software for roofing owners who want to win the storm",
       body: [
         "Kansas roofing is storm-driven. When hail hits Hays, Russell, or Wichita, the shops that win the most jobs are the ones that turn measurements into quotes fastest, get adjusters scheduled efficiently, and follow up with leads before competitors do.",
-        "Most shops are running AccuLynx, Roofr, JobNimbus, or Leap — solid CRMs but not built for the seam-level work between lead capture, measurement, claim handling, and crew scheduling. Preisser Tech builds custom software that closes those seams.",
+        "Most shops are running AccuLynx, Roofr, JobNimbus, or Leap — solid CRMs but not built for the seam-level work between lead capture, measurement, claim handling, and crew scheduling. Preisser Solutions builds custom software that closes those seams.",
       ],
     },
     {
@@ -40,7 +40,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to roofing",
-      heading: "How each Preisser Tech service shows up in a roofing shop",
+      heading: "How each Preisser Solutions service shows up in a roofing shop",
       body: [
         "Most roofing shops start with lead automation and expand from there.",
       ],
@@ -81,7 +81,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Roofing software stack we already work with",
       body: [
-        "Preisser Tech integrates with whatever you're already running:",
+        "Preisser Solutions integrates with whatever you're already running:",
       ],
       bullets: [
         "CRMs: AccuLynx, Roofr, JobNimbus, Leap, Followup CRM",
@@ -138,7 +138,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Cassidy HVAC",
     "Hays, Kansas",

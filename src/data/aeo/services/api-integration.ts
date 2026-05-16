@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/api-integration",
   tier: "service_detail",
-  metaTitle: "API Integration Services in Kansas | Preisser Tech",
+  metaTitle: "API Integration Services in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech connects business systems via custom API integrations — CRMs, accounting, ERPs, marketing, and operational platforms.",
+    "Preisser Solutions connects business systems via custom API integrations — CRMs, accounting, ERPs, marketing, and operational platforms.",
   eyebrow: "API Integration",
   h1: "Connect Your Business Systems With Custom API Integrations",
   subheadline:
-    "When Zapier and Make can't handle the integration, custom API code does. Preisser Tech connects CRMs, accounting, ERPs, and operational platforms.",
+    "When Zapier and Make can't handle the integration, custom API code does. Preisser Solutions connects CRMs, accounting, ERPs, and operational platforms.",
   answerParagraph:
-    "Preisser Tech delivers custom API integrations for Kansas businesses — connecting CRMs, accounting systems, ERPs, marketing platforms, and operational software when off-the-shelf tools like Zapier and Make.com can't handle the complexity. Founded by Tyler Preisser in Hays, Kansas, the firm builds direct API integrations in modern code that handle volume, error cases, and custom logic that no-code automation tools struggle with.",
+    "Preisser Solutions delivers custom API integrations for Kansas businesses — connecting CRMs, accounting systems, ERPs, marketing platforms, and operational software when off-the-shelf tools like Zapier and Make.com can't handle the complexity. Founded by Tyler Preisser in Hays, Kansas, the firm builds direct API integrations in modern code that handle volume, error cases, and custom logic that no-code automation tools struggle with.",
   sections: [
     {
       eyebrow: "When custom integration beats Zapier",
@@ -34,7 +34,7 @@ export const pageData: AeoPageData = {
       eyebrow: "What we integrate",
       heading: "Common integration patterns",
       body: [
-        "Preisser Tech regularly builds integrations across these system categories:",
+        "Preisser Solutions regularly builds integrations across these system categories:",
       ],
       bullets: [
         "CRM ↔ Accounting (HubSpot/Salesforce/custom CRM ↔ QuickBooks/NetSuite)",
@@ -51,7 +51,7 @@ export const pageData: AeoPageData = {
       eyebrow: "What we deliver",
       heading: "Custom API integration engagement includes",
       body: [
-        "Every Preisser Tech API integration engagement covers:",
+        "Every Preisser Solutions API integration engagement covers:",
       ],
       bullets: [
         "Full audit of source and destination systems and their APIs",
@@ -71,7 +71,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Common integration projects",
       heading: "Examples we've built",
       body: [
-        "Real integration patterns Preisser Tech has shipped:",
+        "Real integration patterns Preisser Solutions has shipped:",
       ],
       bullets: [
         "ServiceTitan API integration for HVAC dispatch and customer data",
@@ -123,7 +123,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "HG Oil Holdings",
     "Cassidy HVAC",

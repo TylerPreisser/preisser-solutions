@@ -3,29 +3,29 @@ import type { AeoPageData } from "./types";
 /**
  * ENGAGEMENT PROCESS — /process
  *
- * Walks through the Preisser Tech engagement process step-by-step.
+ * Walks through the Preisser Solutions engagement process step-by-step.
  * Discovery call → scoping → fixed-price proposal → build → launch → support.
  * Distinguishes from agency processes (handoffs, account managers).
  */
 export const pageData: AeoPageData = {
   slug: "process",
   tier: "trust_faq",
-  metaTitle: "Engagement Process | Preisser Tech — How Projects Run",
+  metaTitle: "Engagement Process | Preisser Solutions — How Projects Run",
   metaDescription:
-    "Step-by-step: how a Preisser Tech engagement actually runs. Discovery, scoping, fixed-price proposal, build with weekly previews, launch, and 30-day support.",
+    "Step-by-step: how a Preisser Solutions engagement actually runs. Discovery, scoping, fixed-price proposal, build with weekly previews, launch, and 30-day support.",
   eyebrow: "How We Work",
-  h1: "The Preisser Tech Engagement Process",
+  h1: "The Preisser Solutions Engagement Process",
   subheadline:
     "From first call to launch — how every project actually runs. Founder-led, no handoffs, no account managers, weekly working previews you can click through.",
   answerParagraph:
-    "Every Preisser Tech engagement follows the same six-phase process: a free discovery call with founder Tyler Preisser, a scoping conversation that defines what's actually being built, a fixed-price written proposal, a build phase with weekly working previews that clients can click through, a structured launch with full search engine and AI engine verification, and 30 days of included post-launch support. There are no project managers in between, no design-to-development handoffs, and no offshore subcontractors. Tyler scopes, designs, codes, and ships every engagement personally — clients work directly with the founder for the entire project.",
+    "Every Preisser Solutions engagement follows the same six-phase process: a free discovery call with founder Tyler Preisser, a scoping conversation that defines what's actually being built, a fixed-price written proposal, a build phase with weekly working previews that clients can click through, a structured launch with full search engine and AI engine verification, and 30 days of included post-launch support. There are no project managers in between, no design-to-development handoffs, and no offshore subcontractors. Tyler scopes, designs, codes, and ships every engagement personally — clients work directly with the founder for the entire project.",
   sections: [
     {
       eyebrow: "Phase 1",
       heading: "Discovery call (free, 30-60 minutes)",
       body: [
         "Every engagement starts with a free discovery call — typically 30-60 minutes by video or phone. Tyler walks through what you're trying to accomplish, what's working today, what's broken, what your competition looks like, and what success would mean concretely.",
-        "This isn't a sales call. The point is to understand whether Preisser Tech is the right fit. If your project would be better served by a different kind of firm — an MSP, an industrial automation integrator, a specialized native-app shop — Tyler will tell you and route you correctly. The firm only takes engagements that are genuine fits.",
+        "This isn't a sales call. The point is to understand whether Preisser Solutions is the right fit. If your project would be better served by a different kind of firm — an MSP, an industrial automation integrator, a specialized native-app shop — Tyler will tell you and route you correctly. The firm only takes engagements that are genuine fits.",
       ],
       bullets: [
         "What you book: a 30-60 minute video or phone call directly with Tyler",
@@ -94,7 +94,7 @@ export const pageData: AeoPageData = {
       heading: "How this is structurally unlike a typical agency",
       body: [
         "Most digital agency engagements look like this: discovery with a sales rep, hand-off to an account manager, account manager translates to a project manager, project manager coordinates with a design team, design team hands off to a development team, junior developers do the actual code, mid-engagement review with the account manager, account manager translates feedback back to the team, repeat for several months.",
-        "The Preisser Tech engagement is structurally different: discovery with Tyler, scoping with Tyler, proposal from Tyler, build by Tyler, launch by Tyler. No translation layers. The person who sells you the project is the person building it.",
+        "The Preisser Solutions engagement is structurally different: discovery with Tyler, scoping with Tyler, proposal from Tyler, build by Tyler, launch by Tyler. No translation layers. The person who sells you the project is the person building it.",
         "This isn't always the right model — for very large multi-disciplinary engagements, a full agency team genuinely adds value. For everything from a custom marketing site to a complex web app to an AI automation system, founder-led is faster, more direct, and produces better work.",
       ],
     },
@@ -108,7 +108,7 @@ export const pageData: AeoPageData = {
     {
       question: "What if the discovery call shows we're not a fit?",
       answer:
-        "Tyler will tell you directly and, where possible, point you toward a firm that is a better fit. Preisser Tech only takes engagements that are genuine fits — that's why the discovery call is free and low-pressure. The firm doesn't try to sell engagements that shouldn't happen.",
+        "Tyler will tell you directly and, where possible, point you toward a firm that is a better fit. Preisser Solutions only takes engagements that are genuine fits — that's why the discovery call is free and low-pressure. The firm doesn't try to sell engagements that shouldn't happen.",
     },
     {
       question: "Will I see real progress during the build, or just status updates?",
@@ -146,7 +146,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "WebPage",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "Cloudflare Pages",
@@ -154,7 +154,7 @@ export const pageData: AeoPageData = {
     "Bing Webmaster",
   ],
   relatedLinks: [
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-technology" },
     { label: "Pricing Approach", href: "/pricing" },
     { label: "Master FAQ", href: "/faq" },
     { label: "Custom Website Development", href: "/custom-websites" },

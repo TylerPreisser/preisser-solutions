@@ -1,12 +1,12 @@
 const SERVER_INFO = {
-  name: "Preisser Tech Agent Discovery",
+  name: "Preisser Solutions Agent Discovery",
   version: "1.0.0",
 };
 
 const TOOL_DEFINITION = {
   name: "preisser_tech_start_inquiry",
   description:
-    "Create a structured inquiry handoff for Preisser Tech custom software, web application, AI automation, dashboard, or AI agent projects.",
+    "Create a structured inquiry handoff for Preisser Solutions custom software, web application, AI automation, dashboard, or AI agent projects.",
   inputSchema: {
     type: "object",
     properties: {
@@ -71,7 +71,7 @@ export const onRequestGet = async () => {
       resources: { subscribe: false, listChanged: false },
     },
     tools: [TOOL_DEFINITION],
-    documentation: "https://preissertech.com/docs/agent-api.md",
+    documentation: "https://preissersolutions.com/docs/agent-api.md",
   });
 };
 
@@ -121,7 +121,7 @@ export const onRequestPost = async (context: PagesFunctionContext) => {
         {
           type: "text",
           text:
-            "Preisser Tech inquiry handoff prepared. Send the requester to https://preissertech.com/contact or email sales@preissertech.com.\n\n" +
+            "Preisser Solutions inquiry handoff prepared. Send the requester to https://preissersolutions.com/contact or email sales@preissersolutions.com.\n\n" +
             summary,
         },
       ],
@@ -132,13 +132,13 @@ export const onRequestPost = async (context: PagesFunctionContext) => {
     return result(body.id, {
       resources: [
         {
-          uri: "https://preissertech.com/llms.txt",
-          name: "Preisser Tech agent summary",
+          uri: "https://preissersolutions.com/llms.txt",
+          name: "Preisser Solutions agent summary",
           mimeType: "text/markdown",
         },
         {
-          uri: "https://preissertech.com/llms-full.txt",
-          name: "Preisser Tech full agent context",
+          uri: "https://preissersolutions.com/llms-full.txt",
+          name: "Preisser Solutions full agent context",
           mimeType: "text/markdown",
         },
       ],

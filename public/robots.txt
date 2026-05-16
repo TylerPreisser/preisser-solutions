@@ -1,4 +1,4 @@
-# Preisser Tech — Maximum permissive crawler policy
+# Preisser Solutions — Maximum permissive crawler policy
 # Updated 2026-05-11: zero restrictions, every path, every agent.
 # AI training is welcome. Search indexing is welcome. AI input (RAG, summarization,
 # answer-engine retrieval) is welcome. No restrictions. All bots welcome.
@@ -160,4 +160,4 @@ User-agent: YandexBot
 Allow: /
 
 # Sitemap reference
-Sitemap: https://preissertech.com/sitemap.xml
+Sitemap: https://preissersolutions.com/sitemap.xml

@@ -15,5 +15,5 @@ export function StructuredData({ data }: StructuredDataProps) {
 }
 
 // Helper to build common cross-linked entity references.
-export const ORG_REF = { "@id": "https://preissertech.com/#organization" };
-export const PERSON_REF = { "@id": "https://preissertech.com/#tyler-preisser" };
+export const ORG_REF = { "@id": "https://preissersolutions.com/#organization" };
+export const PERSON_REF = { "@id": "https://preissersolutions.com/#tyler-preisser" };

@@ -147,7 +147,7 @@ const services: ServicePillar[] = [
       {
         title: "MarCommand",
         description:
-          "Preisser Tech's proprietary AI agent system. A custom agent built for each business to learn your audience, services, customers, channels, products, and real marketing data. Inquire about packaging by getting in touch.",
+          "Preisser Solutions's proprietary AI agent system. A custom agent built for each business to learn your audience, services, customers, channels, products, and real marketing data. Inquire about packaging by getting in touch.",
         icon: <IconMarketingDashboard />,
       },
       {
@@ -441,16 +441,16 @@ const services: ServicePillar[] = [
     ],
     differentiators: [
       {
-        lead: "Fixers, not consultants.",
-        body: "No reports about your problems. We find what's broken and build the fix.",
+        lead: "We diagnose before we prescribe.",
+        body: "Full system audit of your tools, data flow, and bottlenecks — then a clear fix plan with costs and timelines before any work starts.",
       },
       {
-        lead: "We know small business tech.",
-        body: "QuickBooks. ServiceTitan. Square. Jobber. HubSpot. We've integrated them all.",
+        lead: "Every platform your business runs on.",
+        body: "QuickBooks, ServiceTitan, Square, Jobber, HubSpot, Salesforce, custom databases — we've integrated, migrated, and repaired them all.",
       },
       {
-        lead: "Fixes that pay for themselves.",
-        body: "Every improvement measured in time saved, errors eliminated, money recovered.",
+        lead: "Measured in money, not metrics.",
+        body: "Every fix tracked by hours recovered, errors eliminated, and revenue recaptured. If it doesn't pay for itself, we don't ship it.",
       },
     ],
   },
@@ -1629,12 +1629,10 @@ export function ServicePillars() {
           id="services-heading"
           className="ps-section-heading ps-section-heading--light"
         >
-          What We Build
+          What We Build for Kansas Businesses
         </h2>
         <p className="ps-services-intro">
-          Hire Preisser Tech for the pieces that make modern local marketing
-          work together: a stronger site, better search visibility, focused ads,
-          and automation that supports follow-up.
+          Websites that convert. Marketing systems that fill your pipeline. Automation that eliminates busywork. Dashboards that show exactly what&apos;s working. And when your tech stack is broken, we fix it. Everything built to enterprise standards — deployed for local businesses.
         </p>
       </div>
 

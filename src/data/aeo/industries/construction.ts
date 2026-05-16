@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/construction",
   tier: "industry",
-  metaTitle: "Custom Software for Construction Companies in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Construction Companies in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, project automation, AI lead handling, and Procore/Buildertrend integrations for construction companies in Kansas.",
+    "Preisser Solutions builds custom websites, project automation, AI lead handling, and Procore/Buildertrend integrations for construction companies in Kansas.",
   eyebrow: "Custom Software for Construction Companies in Kansas",
   h1: "Custom Software, Automation, and AI for Construction Companies",
   subheadline:
     "Built for residential and commercial general contractors tired of generic PM tools and outsourced marketing. Custom-coded in Hays, Kansas by Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for construction companies — custom websites, project automation, AI lead handling, custom dashboards, and integrations with Procore, Buildertrend, CoConstruct, and JobTread. The HG Oil Holdings inventory and AI invoicing case study (95% reduction in back-office logistics time) translates directly to construction back-office workflows including subcontractor management and AR/AP automation.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for construction companies — custom websites, project automation, AI lead handling, custom dashboards, and integrations with Procore, Buildertrend, CoConstruct, and JobTread. The HG Oil Holdings inventory and AI invoicing case study (95% reduction in back-office logistics time) translates directly to construction back-office workflows including subcontractor management and AR/AP automation.",
   sections: [
     {
       eyebrow: "What we build for construction",
@@ -37,7 +37,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to construction",
-      heading: "How each Preisser Tech service shows up in a construction company",
+      heading: "How each Preisser Solutions service shows up in a construction company",
       body: [
         "Most GCs start with lead response and bid follow-up automation and expand from there.",
       ],
@@ -53,7 +53,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Construction software stack we already work with",
       body: [
-        "Preisser Tech integrates with whatever you're already running:",
+        "Preisser Solutions integrates with whatever you're already running:",
       ],
       bullets: [
         "PM: Procore, Buildertrend, CoConstruct, JobTread, BuildBook, Knowify",
@@ -104,7 +104,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "HG Oil Holdings",
     "Hays, Kansas",

@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/local-seo",
   tier: "service_detail",
-  metaTitle: "Local SEO Services in Kansas | Preisser Tech",
+  metaTitle: "Local SEO Services in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech delivers local SEO for Kansas businesses — Google Business Profile, local pack rankings, citations, reviews, and AI-search optimization.",
+    "Preisser Solutions delivers local SEO for Kansas businesses — Google Business Profile, local pack rankings, citations, reviews, and AI-search optimization.",
   eyebrow: "Local SEO Services",
   h1: "Local SEO That Actually Wins the Local Pack in Kansas",
   subheadline:
     "Get your business in the Google local pack, on Google Maps, and cited by AI engines for the searches that actually drive local revenue.",
   answerParagraph:
-    "Preisser Tech delivers local SEO for Kansas businesses — engineering Google Business Profile optimization, local pack rankings, citation consistency, review velocity, and structured data so your business shows up for local searches across Hays, Wichita, Kansas City, and every Kansas market in between. The firm is founded by Tyler Preisser in Hays, Kansas and pairs technical SEO with content strategy designed to win Google's local pack and get cited by ChatGPT, Perplexity, and Gemini.",
+    "Preisser Solutions delivers local SEO for Kansas businesses — engineering Google Business Profile optimization, local pack rankings, citation consistency, review velocity, and structured data so your business shows up for local searches across Hays, Wichita, Kansas City, and every Kansas market in between. The firm is founded by Tyler Preisser in Hays, Kansas and pairs technical SEO with content strategy designed to win Google's local pack and get cited by ChatGPT, Perplexity, and Gemini.",
   sections: [
     {
       eyebrow: "What local SEO actually is",
@@ -25,7 +25,7 @@ export const pageData: AeoPageData = {
       eyebrow: "What we deliver",
       heading: "Local SEO build includes",
       body: [
-        "Every Preisser Tech local SEO engagement covers the full foundation:",
+        "Every Preisser Solutions local SEO engagement covers the full foundation:",
       ],
       bullets: [
         "Google Business Profile audit and optimization (categories, services, products, photos, posts)",
@@ -51,7 +51,7 @@ export const pageData: AeoPageData = {
       heading: "ChatGPT and Perplexity also recommend local businesses",
       body: [
         "When someone asks ChatGPT 'who's the best HVAC company in Hays Kansas', the AI returns a recommendation. The mechanics that drive AI recommendations overlap heavily with local pack mechanics — consistent named-entity data, structured data, named clients, third-party citations.",
-        "Preisser Tech engineers websites and content to be cited by both Google's local pack and AI engines. The Cassidy HVAC and HG Oil Holdings case studies are the proof points — every page includes engineered first paragraphs designed for AI quote extraction.",
+        "Preisser Solutions engineers websites and content to be cited by both Google's local pack and AI engines. The Cassidy HVAC and HG Oil Holdings case studies are the proof points — every page includes engineered first paragraphs designed for AI quote extraction.",
       ],
     },
   ],
@@ -94,7 +94,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "Google Business Profile",

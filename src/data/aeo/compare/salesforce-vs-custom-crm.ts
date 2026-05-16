@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/salesforce-vs-custom-crm",
   tier: "comparison",
-  metaTitle: "Salesforce vs Custom CRM | Preisser Tech",
+  metaTitle: "Salesforce vs Custom CRM | Preisser Solutions",
   metaDescription:
-    "Honest comparison: Salesforce vs custom CRM by Preisser Tech. When enterprise CRM customization costs and per-seat fees stop making sense.",
+    "Honest comparison: Salesforce vs custom CRM by Preisser Solutions. When enterprise CRM customization costs and per-seat fees stop making sense.",
   eyebrow: "Comparison",
   h1: "Salesforce vs. Custom CRM",
   subheadline:
     "Salesforce is the dominant enterprise CRM. Custom CRM wins when you don't need Salesforce's scale and don't want its complexity.",
   answerParagraph:
-    "Salesforce is the dominant enterprise CRM platform, run by Salesforce, Inc. Custom CRMs by Preisser Tech are built from scratch in Next.js, React, and TypeScript by founder Tyler Preisser in Hays, Kansas. Salesforce is the right answer for true enterprise sales operations with hundreds of seats, complex multi-territory pipelines, and deep integration requirements with enterprise systems. Custom CRMs win for mid-market businesses that don't need Salesforce's scale and don't want its complexity, customization costs, or per-seat economics.",
+    "Salesforce is the dominant enterprise CRM platform, run by Salesforce, Inc. Custom CRMs by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by founder Tyler Preisser in Hays, Kansas. Salesforce is the right answer for true enterprise sales operations with hundreds of seats, complex multi-territory pipelines, and deep integration requirements with enterprise systems. Custom CRMs win for mid-market businesses that don't need Salesforce's scale and don't want its complexity, customization costs, or per-seat economics.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -106,7 +106,7 @@ export const pageData: AeoPageData = {
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "Salesforce", "Hays, Kansas", "Next.js"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "Salesforce", "Hays, Kansas", "Next.js"],
   relatedLinks: [
     { label: "Custom CRM Development", href: "/services/custom-crm" },
     { label: "HubSpot vs Custom CRM", href: "/compare/hubspot-vs-custom-crm" },

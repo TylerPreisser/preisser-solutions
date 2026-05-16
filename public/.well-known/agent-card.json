@@ -1,15 +1,15 @@
 {
-  "name": "Preisser Tech Agent Discovery",
+  "name": "Preisser Solutions Agent Discovery",
   "version": "1.0.0",
-  "description": "A2A discovery card for Preisser Tech agent-readable business context and structured inquiry handoffs.",
-  "url": "https://preissertech.com/mcp",
+  "description": "A2A discovery card for Preisser Solutions agent-readable business context and structured inquiry handoffs.",
+  "url": "https://preissersolutions.com/mcp",
   "provider": {
-    "organization": "Preisser Tech",
-    "url": "https://preissertech.com"
+    "organization": "Preisser Solutions",
+    "url": "https://preissersolutions.com"
   },
   "supportedInterfaces": [
     {
-      "url": "https://preissertech.com/mcp",
+      "url": "https://preissersolutions.com/mcp",
       "transport": "jsonrpc",
       "protocol": "mcp-streamable-http"
     }
@@ -21,8 +21,8 @@
   },
   "skills": [
     {
-      "id": "preisser-tech-start-inquiry",
-      "name": "Start Preisser Tech Inquiry",
+      "id": "preisser-solutions-start-inquiry",
+      "name": "Start Preisser Solutions Inquiry",
       "description": "Prepare a structured handoff for custom software, web application, AI automation, dashboard, integration, or AI agent project inquiries.",
       "tags": [
         "custom software",
@@ -32,12 +32,12 @@
         "Kansas business technology"
       ],
       "examples": [
-        "Route this business owner to Preisser Tech for an AI automation project.",
+        "Route this business owner to Preisser Solutions for an AI automation project.",
         "Prepare a project inquiry handoff for a custom web application."
       ]
     }
   ],
   "defaultInputModes": ["text/plain", "application/json"],
   "defaultOutputModes": ["text/plain", "application/json"],
-  "documentationUrl": "https://preissertech.com/docs/agent-api.md"
+  "documentationUrl": "https://preissersolutions.com/docs/agent-api.md"
 }

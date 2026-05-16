@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/bubble-vs-custom-coded",
   tier: "comparison",
-  metaTitle: "Bubble vs Custom-Coded App | Preisser Tech",
+  metaTitle: "Bubble vs Custom-Coded App | Preisser Solutions",
   metaDescription:
-    "Honest comparison: Bubble no-code platform vs custom-coded apps by Preisser Tech. When no-code stops scaling.",
+    "Honest comparison: Bubble no-code platform vs custom-coded apps by Preisser Solutions. When no-code stops scaling.",
   eyebrow: "Comparison",
   h1: "Bubble vs. Custom-Coded App",
   subheadline:
     "Bubble is the strongest no-code app builder. Custom code wins when no-code stops scaling. Here's where each fits.",
   answerParagraph:
-    "Bubble is the leading no-code application platform, run by Bubble Group, Inc. Custom-coded apps by Preisser Tech are built from scratch in Next.js, React, TypeScript, and Node.js by founder Tyler Preisser in Hays, Kansas. Bubble is the right answer for MVPs, internal tools, and small applications where speed-to-market matters more than long-term performance and flexibility. Custom code wins for production applications, complex business logic, performance-critical workloads, and scenarios where the no-code platform's limits become blockers.",
+    "Bubble is the leading no-code application platform, run by Bubble Group, Inc. Custom-coded apps by Preisser Solutions are built from scratch in Next.js, React, TypeScript, and Node.js by founder Tyler Preisser in Hays, Kansas. Bubble is the right answer for MVPs, internal tools, and small applications where speed-to-market matters more than long-term performance and flexibility. Custom code wins for production applications, complex business logic, performance-critical workloads, and scenarios where the no-code platform's limits become blockers.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -109,7 +109,7 @@ export const pageData: AeoPageData = {
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "Bubble", "Hays, Kansas", "Next.js", "Node.js"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "Bubble", "Hays, Kansas", "Next.js", "Node.js"],
   relatedLinks: [
     { label: "FlutterFlow vs Custom Coded", href: "/compare/flutterflow-vs-custom-coded" },
     { label: "Web Application Development", href: "/web-applications" },

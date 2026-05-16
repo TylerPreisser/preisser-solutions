@@ -9,18 +9,18 @@ export const metadata: Metadata = {
   description:
     "Tyler Preisser is a builder — patented inventions, AI systems, and automation tools for Kansas businesses. Direct access to the person who designs, builds, and stands behind the work.",
   alternates: {
-    canonical: "https://preissertech.com/about",
+    canonical: "https://preissersolutions.com/about",
   },
   openGraph: {
-    title: "About Tyler Preisser | Preisser Tech",
+    title: "About Tyler Preisser | Preisser Solutions",
     description:
       "Tyler Preisser is a builder — patented inventions, AI systems, and automation tools for Kansas businesses. Direct access to the person who designs, builds, and stands behind the work.",
-    url: "https://preissertech.com/about",
+    url: "https://preissersolutions.com/about",
   },
 };
 
 const breadcrumbSchema = buildBreadcrumbs([
-  { name: "About", url: "https://preissertech.com/about" },
+  { name: "About", url: "https://preissersolutions.com/about" },
 ]);
 
 export default function AboutPage() {
@@ -52,7 +52,7 @@ export default function AboutPage() {
             <div>
               <Image
                 src="/images/Tyler Portait.jpeg"
-                alt="Tyler Preisser — Founder, Preisser Tech"
+                alt="Tyler Preisser — Founder, Preisser Solutions"
                 width={320}
                 height={320}
                 style={{
@@ -90,7 +90,7 @@ export default function AboutPage() {
                   marginBottom: "20px",
                 }}
               >
-                Preisser Tech exists because I got tired of watching businesses
+                Preisser Solutions exists because I got tired of watching businesses
                 struggle with technology they shouldn&apos;t have to struggle with.
                 Outdated websites. Systems that don&apos;t connect. Manual work that
                 should have been automated five years ago. Tools that were supposed
@@ -109,7 +109,7 @@ export default function AboutPage() {
                 systems that process millions in transaction volume. I&apos;ve managed
                 field operations, led large-scale technology projects, and built
                 automation systems that replaced entire manual workflows. When you work
-                with Preisser Tech, you work with me — the person who designs it,
+                with Preisser Solutions, you work with me — the person who designs it,
                 builds it, and stands behind it.
               </p>
               <Link href="/contact" className="ps-btn-primary">

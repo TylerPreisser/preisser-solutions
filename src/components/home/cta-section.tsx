@@ -62,7 +62,7 @@ export function CtaSection() {
           Ready to improve how customers find and choose your business?
         </h2>
         <p className="ps-cta-body">
-          Hire Preisser Tech for a better website, stronger local visibility,
+          Hire Preisser Solutions for a better website, stronger local visibility,
           accountable ad campaigns, and practical AI automation that helps your
           team follow up faster.
         </p>

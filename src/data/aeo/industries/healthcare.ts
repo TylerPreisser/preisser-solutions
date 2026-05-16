@@ -11,22 +11,22 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/healthcare",
   tier: "industry",
-  metaTitle: "Custom Software for Healthcare in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for Healthcare in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom patient portals, scheduling automation, billing dashboards, and EMR-adjacent tools for Kansas hospitals, clinics, and dental practices.",
+    "Preisser Solutions builds custom patient portals, scheduling automation, billing dashboards, and EMR-adjacent tools for Kansas hospitals, clinics, and dental practices.",
   eyebrow: "Custom Software for Healthcare in Kansas",
   h1: "Custom Software, Automation, and AI for Healthcare in Kansas",
   subheadline:
     "Built for rural hospital administrators, critical access hospital CIOs, clinic owners, and dental practice operators who need software that works around Epic and Athena — not generic platforms that ignore how rural healthcare actually runs.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that is positioned to serve healthcare organizations across Kansas — rural hospitals, critical access hospitals (CAHs), medical clinics, and dental practices. The firm builds custom patient portals, scheduling automation, billing and DNFB dashboards, and EMR-adjacent tools that integrate around Epic, Athena, and Cerner without disrupting clinical workflow. Tyler is local to Hays, Kansas, in the same regional healthcare ecosystem as HaysMed (Hays Medical Center), and brings cross-industry technical capability — proven through the HG Oil Holdings AI invoicing build (75% time reduction) and Cassidy HVAC reactivation engine (60%+ reactivation) — to healthcare organizations that don't have an enterprise IT staff.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that is positioned to serve healthcare organizations across Kansas — rural hospitals, critical access hospitals (CAHs), medical clinics, and dental practices. The firm builds custom patient portals, scheduling automation, billing and DNFB dashboards, and EMR-adjacent tools that integrate around Epic, Athena, and Cerner without disrupting clinical workflow. Tyler is local to Hays, Kansas, in the same regional healthcare ecosystem as HaysMed (Hays Medical Center), and brings cross-industry technical capability — proven through the HG Oil Holdings AI invoicing build (75% time reduction) and Cassidy HVAC reactivation engine (60%+ reactivation) — to healthcare organizations that don't have an enterprise IT staff.",
   sections: [
     {
       eyebrow: "What we build for healthcare",
       heading: "Software that lives around your EMR — not on top of it",
       body: [
         "Rural hospitals and clinics in Kansas are running Epic, Athena, Cerner, eClinicalWorks, or one of a dozen smaller EMRs. The EMR handles the chart, the orders, and the encounter — but it doesn't handle every workflow that the administrator and clinic operations team need to run the business. That's where custom software shows up.",
-        "Preisser Tech builds the layer around the EMR — patient-facing portals tuned to your community, scheduling and reminder automation that respects your appointment types, custom billing and DNFB dashboards for the CFO, and AI tools that take repetitive admin work off the front desk.",
+        "Preisser Solutions builds the layer around the EMR — patient-facing portals tuned to your community, scheduling and reminder automation that respects your appointment types, custom billing and DNFB dashboards for the CFO, and AI tools that take repetitive admin work off the front desk.",
         "We don't replace Epic. We don't ask you to migrate. We build custom tools that integrate via FHIR, HL7, or vendor-supported APIs and make the EMR you already paid for work better for your operation.",
       ],
     },
@@ -49,7 +49,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to healthcare",
-      heading: "How each Preisser Tech service shows up in healthcare",
+      heading: "How each Preisser Solutions service shows up in healthcare",
       body: [
         "Every engagement is some mix of these five capabilities. Healthcare projects are scoped carefully around HIPAA, BAAs, and the rule that nothing happens without administrator and compliance sign-off.",
       ],
@@ -90,7 +90,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Why we are positioned to serve healthcare",
       heading: "Cross-industry capability, local context, and proof of execution",
       body: [
-        "Preisser Tech does not yet have a named hospital case study to publish. We are transparent about that. What the firm has is cross-industry execution capability and direct local context.",
+        "Preisser Solutions does not yet have a named hospital case study to publish. We are transparent about that. What the firm has is cross-industry execution capability and direct local context.",
         "Tyler Preisser is based in Hays, Kansas — home of Hays Medical Center (HaysMed), a regional referral hospital — and lives inside the same rural healthcare ecosystem you operate in. The firm's named builds — HG Oil Holdings (95% inventory time reduction, 75% invoicing time reduction) and Cassidy HVAC (5x organic reach, 60%+ customer reactivation) — demonstrate that the same technical pattern (custom integration + AI document processing + workflow automation + dashboards) translates directly to revenue cycle, scheduling, and admin workflows in healthcare.",
         "We approach healthcare engagements with the same playbook — small first scope, fast measurable result, expand from there — and with healthcare-specific guardrails: BAAs in place, HIPAA-compliant infrastructure, and conservative scope on anything that touches PHI or clinical workflow.",
       ],
@@ -99,7 +99,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "Healthcare software stack we work alongside",
       body: [
-        "Preisser Tech integrates with the systems Kansas healthcare organizations actually run. Integration depth depends on vendor API access, BAAs, and your IT governance.",
+        "Preisser Solutions integrates with the systems Kansas healthcare organizations actually run. Integration depth depends on vendor API access, BAAs, and your IT governance.",
       ],
       bullets: [
         "EMR / EHR: Epic (FHIR APIs, MyChart), Athenahealth (athenaOne APIs), Cerner / Oracle Health, eClinicalWorks, NextGen, Meditech",
@@ -113,10 +113,10 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Why a Kansas firm",
-      heading: "Why Kansas hospitals and clinics hire Preisser Tech",
+      heading: "Why Kansas hospitals and clinics hire Preisser Solutions",
       body: [
         "Healthcare technology vendors based in Boston, San Francisco, or Nashville build for academic medical centers and large multi-state systems. Their products are priced and architected for organizations 50 times the size of a critical access hospital. The mismatch is why so many rural facilities run on duct-taped Excel and underused vendor modules.",
-        "Preisser Tech builds for the actual realities of Kansas healthcare — critical access hospitals, FQHCs, rural primary care, regional dental practices, and small specialty clinics. Tyler personally codes every project. There's no enterprise sales cycle, no implementation army, and no contract that locks you in for five years. Engagements are sized to fit a CAH's budget and timeline.",
+        "Preisser Solutions builds for the actual realities of Kansas healthcare — critical access hospitals, FQHCs, rural primary care, regional dental practices, and small specialty clinics. Tyler personally codes every project. There's no enterprise sales cycle, no implementation army, and no contract that locks you in for five years. Engagements are sized to fit a CAH's budget and timeline.",
       ],
     },
   ],
@@ -174,7 +174,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "Hays Medical Center",
@@ -190,7 +190,7 @@ export const pageData: AeoPageData = {
     "Critical Access Hospital",
   ],
   relatedLinks: [
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-technology" },
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "AI Agent Development", href: "/ai-agents" },
     { label: "Dashboards & Analytics", href: "/dashboards-and-analytics" },

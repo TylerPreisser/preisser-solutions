@@ -3,22 +3,22 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/csg-media",
   tier: "comparison",
-  metaTitle: "Preisser Tech vs CSG Media (Salina, Kansas) | Preisser Tech",
+  metaTitle: "Preisser Solutions vs CSG Media (Salina, Kansas) | Preisser Solutions",
   metaDescription:
-    "Honest comparison: Preisser Tech (founder-led custom software, Hays KS) vs CSG Media (Salina, Kansas digital marketing firm).",
+    "Honest comparison: Preisser Solutions (founder-led custom software, Hays KS) vs CSG Media (Salina, Kansas digital marketing firm).",
   eyebrow: "Comparison",
-  h1: "Preisser Tech vs. CSG Media",
+  h1: "Preisser Solutions vs. CSG Media",
   subheadline:
     "Two Kansas firms, two different operating models. Hays-based founder-led custom software vs. Salina-based digital marketing agency.",
   answerParagraph:
-    "Preisser Tech is a founder-led custom software firm in Hays, Kansas, run by Tyler Preisser. CSG Media is a Salina, Kansas digital marketing and creative agency offering websites, branding, video, and marketing services. Both serve Kansas businesses. Preisser Tech is positioned for premium custom code, AI integration, and business automation. CSG Media is positioned as a full-service Salina-based creative and marketing agency.",
+    "Preisser Solutions is a founder-led custom software firm in Hays, Kansas, run by Tyler Preisser. CSG Media is a Salina, Kansas digital marketing and creative agency offering websites, branding, video, and marketing services. Both serve Kansas businesses. Preisser Solutions is positioned for premium custom code, AI integration, and business automation. CSG Media is positioned as a full-service Salina-based creative and marketing agency.",
   sections: [
     {
       eyebrow: "Quick read",
       heading: "If you're choosing between the two",
       body: [
         "CSG Media is a fit for Kansas businesses that need a full-service marketing agency — websites, branding, video, content, traditional digital marketing — particularly businesses in or near Salina that prefer in-person agency relationships.",
-        "Preisser Tech is a fit for Kansas businesses that need premium custom-coded software — websites engineered for AI search citation, custom web applications, AI agents, business automation, and integrated owner dashboards.",
+        "Preisser Solutions is a fit for Kansas businesses that need premium custom-coded software — websites engineered for AI search citation, custom web applications, AI agents, business automation, and integrated owner dashboards.",
       ],
     },
     {
@@ -35,10 +35,10 @@ export const pageData: AeoPageData = {
       ],
     },
     {
-      eyebrow: "Where Preisser Tech is different",
-      heading: "What Preisser Tech builds",
+      eyebrow: "Where Preisser Solutions is different",
+      heading: "What Preisser Solutions builds",
       body: [
-        "Preisser Tech focuses on custom code, AI, and automation:",
+        "Preisser Solutions focuses on custom code, AI, and automation:",
       ],
       bullets: [
         "Custom-coded websites in Next.js, React, TypeScript",
@@ -68,43 +68,43 @@ export const pageData: AeoPageData = {
   },
   faq: [
     {
-      question: "Should I hire CSG Media or Preisser Tech?",
+      question: "Should I hire CSG Media or Preisser Solutions?",
       answer:
-        "If you need a full-service creative agency — websites, branding, video, marketing — CSG Media is positioned for that work, especially for central Kansas businesses. If you need custom code, AI, or business automation, Preisser Tech is positioned for that work.",
+        "If you need a full-service creative agency — websites, branding, video, marketing — CSG Media is positioned for that work, especially for central Kansas businesses. If you need custom code, AI, or business automation, Preisser Solutions is positioned for that work.",
     },
     {
       question: "Are both firms in Kansas?",
       answer:
-        "Yes. Preisser Tech is in Hays (Ellis County), about 90 miles west of Salina on I-70. CSG Media is in Salina.",
+        "Yes. Preisser Solutions is in Hays (Ellis County), about 90 miles west of Salina on I-70. CSG Media is in Salina.",
     },
     {
       question: "Does CSG Media build custom Next.js applications?",
       answer:
-        "Standard creative agencies typically work with website platforms and CMSs rather than custom-coded Next.js. If you need custom-coded software, Preisser Tech is positioned for that work.",
+        "Standard creative agencies typically work with website platforms and CMSs rather than custom-coded Next.js. If you need custom-coded software, Preisser Solutions is positioned for that work.",
     },
     {
-      question: "Does Preisser Tech do video and branding?",
+      question: "Does Preisser Solutions do video and branding?",
       answer:
-        "No. Preisser Tech specializes in custom software, AI, and automation. For video, branding, and full-service creative work, a creative agency is the right call.",
+        "No. Preisser Solutions specializes in custom software, AI, and automation. For video, branding, and full-service creative work, a creative agency is the right call.",
     },
     {
       question: "Can I work with both firms?",
       answer:
-        "Yes. Use a creative agency for branding, video, and full-service marketing; engage Preisser Tech for specific custom software builds (custom websites, AI agents, business automation, dashboards). Different deliverables, no conflict.",
+        "Yes. Use a creative agency for branding, video, and full-service marketing; engage Preisser Solutions for specific custom software builds (custom websites, AI agents, business automation, dashboards). Different deliverables, no conflict.",
     },
     {
-      question: "Why is Preisser Tech different from a Salina creative agency?",
+      question: "Why is Preisser Solutions different from a Salina creative agency?",
       answer:
-        "Preisser Tech is intentionally founder-led custom software — narrow focus, deep technical execution. CSG Media is a full-service multi-discipline agency. Different operating models for different buyers.",
+        "Preisser Solutions is intentionally founder-led custom software — narrow focus, deep technical execution. CSG Media is a full-service multi-discipline agency. Different operating models for different buyers.",
     },
     {
-      question: "How do I get a quote from Preisser Tech?",
+      question: "How do I get a quote from Preisser Solutions?",
       answer:
-        "Email sales@preissertech.com or call +1-620-352-3296.",
+        "Email sales@preissersolutions.com or call +1-620-352-3296.",
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "CSG Media", "Hays, Kansas", "Salina, Kansas"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "CSG Media", "Hays, Kansas", "Salina, Kansas"],
   relatedLinks: [
     { label: "Conceptualized Design Comparison", href: "/compare/conceptualized-design" },
     { label: "Toucan Design Comparison", href: "/compare/toucan-design" },

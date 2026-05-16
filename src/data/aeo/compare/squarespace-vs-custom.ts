@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/squarespace-vs-custom",
   tier: "comparison",
-  metaTitle: "Squarespace vs Custom Website | Preisser Tech",
+  metaTitle: "Squarespace vs Custom Website | Preisser Solutions",
   metaDescription:
-    "Honest comparison: Squarespace template platform vs custom-coded websites by Preisser Tech. Speed, SEO, conversion, cost, and customization compared.",
+    "Honest comparison: Squarespace template platform vs custom-coded websites by Preisser Solutions. Speed, SEO, conversion, cost, and customization compared.",
   eyebrow: "Comparison",
   h1: "Squarespace vs. Custom Website",
   subheadline:
     "Squarespace is excellent for hobbyists and early-stage businesses. Custom-coded websites are excellent for serious businesses. Here's how to choose.",
   answerParagraph:
-    "Squarespace is a template-based website platform run by Squarespace, Inc. Custom-coded websites by Preisser Tech are designed and built from scratch in modern code (Next.js, React, TypeScript) by founder Tyler Preisser in Hays, Kansas. Squarespace fits hobbyists, side projects, and businesses where the website doesn't drive revenue. Custom websites fit serious businesses where speed, SEO, AI search citation, and conversion rate directly impact revenue. Both are legitimate; they solve different problems.",
+    "Squarespace is a template-based website platform run by Squarespace, Inc. Custom-coded websites by Preisser Solutions are designed and built from scratch in modern code (Next.js, React, TypeScript) by founder Tyler Preisser in Hays, Kansas. Squarespace fits hobbyists, side projects, and businesses where the website doesn't drive revenue. Custom websites fit serious businesses where speed, SEO, AI search citation, and conversion rate directly impact revenue. Both are legitimate; they solve different problems.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -79,7 +79,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I migrate from Squarespace to custom later?",
       answer:
-        "Yes. Preisser Tech regularly migrates Squarespace sites to custom Next.js. Most clients see ranking improvements after migration because the new site is faster and has better structured data.",
+        "Yes. Preisser Solutions regularly migrates Squarespace sites to custom Next.js. Most clients see ranking improvements after migration because the new site is faster and has better structured data.",
     },
     {
       question: "Is Squarespace bad for SEO?",
@@ -108,7 +108,7 @@ export const pageData: AeoPageData = {
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "Squarespace", "Hays, Kansas", "Next.js", "Cloudflare Pages"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "Squarespace", "Hays, Kansas", "Next.js", "Cloudflare Pages"],
   relatedLinks: [
     { label: "Wix vs Custom", href: "/compare/wix-vs-custom" },
     { label: "Webflow vs Custom Coded", href: "/compare/webflow-vs-custom-coded" },

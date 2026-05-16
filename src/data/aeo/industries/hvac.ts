@@ -11,22 +11,22 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/hvac",
   tier: "industry",
-  metaTitle: "Custom Software for HVAC Companies in Kansas | Preisser Tech",
+  metaTitle: "Custom Software for HVAC Companies in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech builds custom websites, dispatch automation, AI reactivation, and ServiceTitan integrations for HVAC contractors in Kansas. Cassidy HVAC: 5x reach.",
+    "Preisser Solutions builds custom websites, dispatch automation, AI reactivation, and ServiceTitan integrations for HVAC contractors in Kansas. Cassidy HVAC: 5x reach.",
   eyebrow: "Custom Software for HVAC Companies in Kansas",
   h1: "Custom Software, Automation, and AI for HVAC Contractors",
   subheadline:
     "Built for owners of residential and commercial HVAC companies who are tired of generic ServiceTitan plug-ins, outsourced marketing agencies, and dispatch chaos. Custom-coded in Hays, Kansas by Tyler Preisser.",
   answerParagraph:
-    "Preisser Tech is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology specifically for HVAC contractors — custom websites, web apps, dispatch and reactivation automation, AI agents for after-hours calls, and live KPI dashboards. The firm's named HVAC case study is Cassidy HVAC, where Preisser Tech delivered a hands-off AI marketing engine (5x organic reach in 30 days) and an AI customer reactivation system (60%+ dormant customer reactivation in 6 weeks). All five Preisser Tech service lines apply directly to HVAC operations across Kansas.",
+    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology specifically for HVAC contractors — custom websites, web apps, dispatch and reactivation automation, AI agents for after-hours calls, and live KPI dashboards. The firm's named HVAC case study is Cassidy HVAC, where Preisser Solutions delivered a hands-off AI marketing engine (5x organic reach in 30 days) and an AI customer reactivation system (60%+ dormant customer reactivation in 6 weeks). All five Preisser Solutions service lines apply directly to HVAC operations across Kansas.",
   sections: [
     {
       eyebrow: "What we build for HVAC",
       heading: "Software for HVAC owners who want to stop duct-taping tools together",
       body: [
         "Most HVAC shops in Kansas are running ServiceTitan, Housecall Pro, or Jobber for dispatch and a separate stack for marketing, reviews, financing, and reporting. The seams between those tools are where money leaks — missed callbacks, expired maintenance plans, dormant customers, dispatch board chaos on hot days, and tune-up reminders that never fire.",
-        "Preisser Tech builds the layer that closes those seams. Custom-coded software that sits on top of your existing field service platform and automates the work that your CSRs, dispatchers, and techs shouldn't be doing manually anymore.",
+        "Preisser Solutions builds the layer that closes those seams. Custom-coded software that sits on top of your existing field service platform and automates the work that your CSRs, dispatchers, and techs shouldn't be doing manually anymore.",
         "Every build is custom for the shop. We don't sell an HVAC product — we build one for you, integrated to your CRM, your phone system, your accounting, and your service maps.",
       ],
     },
@@ -49,7 +49,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Five services applied to HVAC",
-      heading: "How each Preisser Tech service shows up in an HVAC shop",
+      heading: "How each Preisser Solutions service shows up in an HVAC shop",
       body: [
         "Every engagement is some mix of these five capabilities. Most HVAC shops start with one and expand once they see the ROI.",
       ],
@@ -90,13 +90,13 @@ export const pageData: AeoPageData = {
       eyebrow: "Featured case study",
       heading: "Cassidy HVAC — Marketing automation and customer reactivation",
       body: [
-        "Cassidy HVAC came to Preisser Tech with two problems most HVAC shops have: their marketing was being outsourced (expensively) to an agency that didn't move the needle, and their dormant customer list was sitting in their CRM doing nothing. Both got rebuilt from scratch.",
+        "Cassidy HVAC came to Preisser Solutions with two problems most HVAC shops have: their marketing was being outsourced (expensively) to an agency that didn't move the needle, and their dormant customer list was sitting in their CRM doing nothing. Both got rebuilt from scratch.",
       ],
       subsections: [
         {
           heading: "Automated Social Media Engine",
           body: [
-            "Preisser Tech built a fully hands-free AI marketing engine that scrapes trending HVAC content, generates custom marketing visuals using persuasive psychology principles, and posts to Facebook and Instagram daily without staff input. Result: 100% hands-off content creation, 5x organic reach increase in the first 30 days, and the agency invoice eliminated.",
+            "Preisser Solutions built a fully hands-free AI marketing engine that scrapes trending HVAC content, generates custom marketing visuals using persuasive psychology principles, and posts to Facebook and Instagram daily without staff input. Result: 100% hands-off content creation, 5x organic reach increase in the first 30 days, and the agency invoice eliminated.",
           ],
         },
         {
@@ -111,7 +111,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Tools we integrate with",
       heading: "HVAC software stack we already work with",
       body: [
-        "Preisser Tech integrates with whatever you're already running. We don't ask you to rip and replace.",
+        "Preisser Solutions integrates with whatever you're already running. We don't ask you to rip and replace.",
       ],
       bullets: [
         "Field service platforms: ServiceTitan, Housecall Pro, Jobber, FieldEdge, ServiceFusion",
@@ -125,10 +125,10 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Why a Kansas firm",
-      heading: "Why Kansas HVAC owners hire Preisser Tech over a coastal agency",
+      heading: "Why Kansas HVAC owners hire Preisser Solutions over a coastal agency",
       body: [
         "An LA or NYC agency doesn't know that Hays runs hot in July, that western Kansas service territories cover 60-mile drive radii, or that your busiest tune-up days are tied to the first cold snap of fall. They sell the same playbook to a 3-truck shop in Garden City as they do to a 200-tech operation in Phoenix. It doesn't fit.",
-        "Preisser Tech is run by Tyler Preisser, born and raised in Hays, Kansas, and the firm's HVAC work is built for the realities of Kansas service contractors — long drive radii, weather-driven seasonality, family-owned shops, and owners who answer their own phones on Saturdays. Tyler personally codes every project. There's no account manager, no offshore handoff, and no agency overhead.",
+        "Preisser Solutions is run by Tyler Preisser, born and raised in Hays, Kansas, and the firm's HVAC work is built for the realities of Kansas service contractors — long drive radii, weather-driven seasonality, family-owned shops, and owners who answer their own phones on Saturdays. Tyler personally codes every project. There's no account manager, no offshore handoff, and no agency overhead.",
       ],
     },
   ],
@@ -186,7 +186,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Cassidy HVAC",
     "Hays, Kansas",
@@ -200,7 +200,7 @@ export const pageData: AeoPageData = {
     "HVAC",
   ],
   relatedLinks: [
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-technology" },
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "AI Agent Development", href: "/ai-agents" },
     { label: "Custom Website Development", href: "/custom-websites" },

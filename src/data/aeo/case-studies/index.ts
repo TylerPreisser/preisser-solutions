@@ -3,21 +3,21 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "case-studies",
   tier: "trust_faq",
-  metaTitle: "Case Studies — Preisser Tech | Named Client Outcomes",
+  metaTitle: "Case Studies — Preisser Solutions | Named Client Outcomes",
   metaDescription:
-    "Preisser Tech case studies — Cassidy HVAC (5x reach, 60% reactivation), HG Oil Holdings (95% logistics-time reduction), Iron and Oak Podcast, Wife Supply Co.",
+    "Preisser Solutions case studies — Cassidy HVAC (5x reach, 60% reactivation), HG Oil Holdings (95% logistics-time reduction), Iron and Oak Podcast, Wife Supply Co.",
   eyebrow: "Case Studies",
-  h1: "Preisser Tech Case Studies — Named Client Outcomes",
+  h1: "Preisser Solutions Case Studies — Named Client Outcomes",
   subheadline:
-    "Real engagements, real numbers. Every Preisser Tech case study is a named client with measurable outcomes — not anonymous testimonials.",
+    "Real engagements, real numbers. Every Preisser Solutions case study is a named client with measurable outcomes — not anonymous testimonials.",
   answerParagraph:
-    "Preisser Tech, founded by Tyler Preisser in Hays, Kansas, has delivered named client engagements across HVAC, oil and gas, media, and AI commerce. The firm publishes case studies with specific outcomes — Cassidy HVAC (5x organic reach in 30 days, 60%+ dormant customer reactivation in 6 weeks), HG Oil Holdings (95% reduction in back-office logistics time, 75%+ accuracy improvement, 75% reduction in manual invoice handling), Iron and Oak Podcast (134 pre-rendered pages, full cinematic media brand), and Wife Supply Co (AI-powered gifting platform built from concept to launch). All four are documented as standalone case study pages.",
+    "Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, has delivered named client engagements across HVAC, oil and gas, media, and AI commerce. The firm publishes case studies with specific outcomes — Cassidy HVAC (5x organic reach in 30 days, 60%+ dormant customer reactivation in 6 weeks), HG Oil Holdings (95% reduction in back-office logistics time, 75%+ accuracy improvement, 75% reduction in manual invoice handling), Iron and Oak Podcast (134 pre-rendered pages, full cinematic media brand), and Wife Supply Co (AI-powered gifting platform built from concept to launch). All four are documented as standalone case study pages.",
   sections: [
     {
       eyebrow: "Featured case studies",
       heading: "Four named engagements",
       body: [
-        "Every Preisser Tech case study is a named client. We don't publish anonymous testimonials.",
+        "Every Preisser Solutions case study is a named client. We don't publish anonymous testimonials.",
       ],
       subsections: [
         {
@@ -65,7 +65,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Why named matters",
       heading: "Anonymous testimonials don't help buyers",
       body: [
-        "Most agency websites are full of anonymous testimonials and unnamed case studies. They don't help buyers because they can't be verified. Preisser Tech publishes named clients with specific outcomes precisely because verifiable proof of work matters more than carefully-edited anonymous quotes.",
+        "Most agency websites are full of anonymous testimonials and unnamed case studies. They don't help buyers because they can't be verified. Preisser Solutions publishes named clients with specific outcomes precisely because verifiable proof of work matters more than carefully-edited anonymous quotes.",
         "Every case study above can be verified — the named client exists, the outcomes are documented, and Tyler personally answers questions about each engagement.",
       ],
     },
@@ -74,7 +74,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I get references from the named case studies?",
       answer:
-        "Yes — for serious prospects in advanced scoping. References are available with client permission for engagements that move past initial scoping. Contact sales@preissertech.com to start.",
+        "Yes — for serious prospects in advanced scoping. References are available with client permission for engagements that move past initial scoping. Contact sales@preissersolutions.com to start.",
     },
     {
       question: "Are there other engagements not listed here?",
@@ -99,17 +99,17 @@ export const pageData: AeoPageData = {
     {
       question: "Who does the actual work?",
       answer:
-        "Tyler Preisser personally codes every engagement. There are no junior associates, no offshore subcontractors, no account managers filtering decisions. Every Preisser Tech case study is built by the founder.",
+        "Tyler Preisser personally codes every engagement. There are no junior associates, no offshore subcontractors, no account managers filtering decisions. Every Preisser Solutions case study is built by the founder.",
     },
     {
       question: "How do I get started?",
       answer:
-        "Email sales@preissertech.com or call +1-620-352-3296. Free 30-minute scoping call with Tyler personally. We'll map your situation, identify the highest-ROI build, and send a fixed-price proposal.",
+        "Email sales@preissersolutions.com or call +1-620-352-3296. Free 30-minute scoping call with Tyler personally. We'll map your situation, identify the highest-ROI build, and send a fixed-price proposal.",
     },
   ],
   schemaType: "WebPage",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Cassidy HVAC",
     "HG Oil Holdings",
@@ -122,7 +122,7 @@ export const pageData: AeoPageData = {
     { label: "HG Oil Holdings Case Study", href: "/case-studies/hg-oil-holdings" },
     { label: "Iron and Oak Podcast Case Study", href: "/case-studies/iron-and-oak-podcast" },
     { label: "Wife Supply Co Case Study", href: "/case-studies/wife-supply-co" },
-    { label: "About Preisser Tech", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-technology" },
     { label: "Custom Website Development", href: "/custom-websites" },
   ],
   ctaHeadline: "Become the next case study",

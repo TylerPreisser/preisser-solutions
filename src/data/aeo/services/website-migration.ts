@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/website-migration",
   tier: "service_detail",
-  metaTitle: "Website Migration Services in Kansas | Preisser Tech",
+  metaTitle: "Website Migration Services in Kansas | Preisser Solutions",
   metaDescription:
-    "Preisser Tech migrates websites off Wix, Squarespace, WordPress, GoDaddy, and Webflow to modern custom Next.js builds without losing SEO.",
+    "Preisser Solutions migrates websites off Wix, Squarespace, WordPress, GoDaddy, and Webflow to modern custom Next.js builds without losing SEO.",
   eyebrow: "Website Migration",
   h1: "Migrate Off Wix, Squarespace, WordPress, or Webflow Without Losing SEO",
   subheadline:
-    "Stuck on a template platform that's hurting your speed, rankings, and conversion? Preisser Tech migrates you to modern custom code.",
+    "Stuck on a template platform that's hurting your speed, rankings, and conversion? Preisser Solutions migrates you to modern custom code.",
   answerParagraph:
-    "Preisser Tech migrates Kansas business websites off template platforms — Wix, Squarespace, WordPress, GoDaddy, Webflow — to modern custom Next.js builds. Founded by Tyler Preisser in Hays, Kansas, the firm preserves SEO equity through proper 301 redirects, content migration, search engine notification, and a careful launch checklist that prevents the typical migration disasters (lost rankings, broken links, dropped page speed).",
+    "Preisser Solutions migrates Kansas business websites off template platforms — Wix, Squarespace, WordPress, GoDaddy, Webflow — to modern custom Next.js builds. Founded by Tyler Preisser in Hays, Kansas, the firm preserves SEO equity through proper 301 redirects, content migration, search engine notification, and a careful launch checklist that prevents the typical migration disasters (lost rankings, broken links, dropped page speed).",
   sections: [
     {
       eyebrow: "Why migrate",
@@ -32,7 +32,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Common migrations",
       heading: "Platforms we migrate from",
       body: [
-        "Preisser Tech regularly handles migrations from:",
+        "Preisser Solutions regularly handles migrations from:",
       ],
       bullets: [
         "Wix to custom Next.js",
@@ -48,7 +48,7 @@ export const pageData: AeoPageData = {
       eyebrow: "What we deliver",
       heading: "Website migration engagement includes",
       body: [
-        "Every Preisser Tech migration engagement covers:",
+        "Every Preisser Solutions migration engagement covers:",
       ],
       bullets: [
         "Full audit of existing site — pages, rankings, inbound links, current speed and SEO health",
@@ -85,7 +85,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will I lose my Google rankings during migration?",
       answer:
-        "Not if it's done right. Preisser Tech maps every URL on the existing site to a destination URL on the new site, builds 301 redirects for every legacy URL, and submits the updated sitemap to Google and Bing. Most clients see ranking improvements after migration because the new site is faster.",
+        "Not if it's done right. Preisser Solutions maps every URL on the existing site to a destination URL on the new site, builds 301 redirects for every legacy URL, and submits the updated sitemap to Google and Bing. Most clients see ranking improvements after migration because the new site is faster.",
     },
     {
       question: "How long does a migration take?",
@@ -120,7 +120,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Service",
   namedEntities: [
-    "Preisser Tech",
+    "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
     "Next.js",

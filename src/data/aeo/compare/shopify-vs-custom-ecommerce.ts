@@ -3,15 +3,15 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/shopify-vs-custom-ecommerce",
   tier: "comparison",
-  metaTitle: "Shopify vs Custom E-commerce | Preisser Tech",
+  metaTitle: "Shopify vs Custom E-commerce | Preisser Solutions",
   metaDescription:
-    "Honest comparison: Shopify vs custom e-commerce by Preisser Tech. When to use Shopify themes, headless Shopify, or full custom commerce.",
+    "Honest comparison: Shopify vs custom e-commerce by Preisser Solutions. When to use Shopify themes, headless Shopify, or full custom commerce.",
   eyebrow: "Comparison",
   h1: "Shopify vs. Custom E-commerce",
   subheadline:
     "Shopify is the right answer for most e-commerce stores. Custom commerce wins for specific scenarios. Here's where each fits.",
   answerParagraph:
-    "Shopify is the dominant e-commerce platform for small-to-mid-market merchants, run by Shopify Inc. Custom e-commerce by Preisser Tech is built from scratch in Next.js with Shopify as the headless backend, or as a full custom commerce stack on Stripe and Postgres. Founder Tyler Preisser in Hays, Kansas built the Wife Supply Co AI gifting platform as a direct example. For most stores Shopify is the right answer; custom commerce makes sense for specific scenarios.",
+    "Shopify is the dominant e-commerce platform for small-to-mid-market merchants, run by Shopify Inc. Custom e-commerce by Preisser Solutions is built from scratch in Next.js with Shopify as the headless backend, or as a full custom commerce stack on Stripe and Postgres. Founder Tyler Preisser in Hays, Kansas built the Wife Supply Co AI gifting platform as a direct example. For most stores Shopify is the right answer; custom commerce makes sense for specific scenarios.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -108,7 +108,7 @@ export const pageData: AeoPageData = {
     },
   ],
   schemaType: "Article",
-  namedEntities: ["Preisser Tech", "Tyler Preisser", "Shopify", "Wife Supply Co", "Hays, Kansas", "Next.js", "Stripe"],
+  namedEntities: ["Preisser Solutions", "Tyler Preisser", "Shopify", "Wife Supply Co", "Hays, Kansas", "Next.js", "Stripe"],
   relatedLinks: [
     { label: "Retail & E-commerce Industry", href: "/industries/retail" },
     { label: "Custom Website Development", href: "/custom-websites" },

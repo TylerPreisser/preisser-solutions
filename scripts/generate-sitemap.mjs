@@ -4,7 +4,7 @@ import { readdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const OUT_DIR = path.resolve("out");
-const SITE_ORIGIN = "https://preissertech.com";
+const SITE_ORIGIN = "https://preissersolutions.com";
 const TODAY = new Date().toISOString().slice(0, 10);
 
 const EXCLUDED_HTML = new Set([
