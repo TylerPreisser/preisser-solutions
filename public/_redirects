@@ -16,6 +16,18 @@
 /process.html /process 301
 /faq.html /faq 301
 
-# Former brand-defense page — deleted 2026-05-04, now silently 301 to homepage
-/preisser-solutions / 301
-/preisser-solutions/* / 301
+# Brand-defense page lives at /preisser-solutions (renamed 2026-05-15 from /preisser-technology).
+# 301 the now-legacy /preisser-technology slug to the new canonical.
+/preisser-technology /preisser-solutions 301
+/preisser-technology/* /preisser-solutions/:splat 301
+
+# Phase 4.5 (2026-05-15) service-page consolidation. The new canonical paths
+# all live under /services/*; legacy short-URL slugs 301 to them so AEO/SEO
+# signals consolidate. Page files still exist at the legacy paths for safety
+# (Cloudflare _redirects fires before the static file is served).
+/services/custom-crm /services/crm-systems 301
+/services/custom-crm/ /services/crm-systems/ 301
+/dashboards-and-analytics /services/dashboards-and-analytics 301
+/dashboards-and-analytics/ /services/dashboards-and-analytics/ 301
+/custom-websites /services/custom-websites 301
+/custom-websites/ /services/custom-websites/ 301

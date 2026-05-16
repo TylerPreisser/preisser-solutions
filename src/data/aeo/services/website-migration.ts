@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/website-migration",
   tier: "service_detail",
-  metaTitle: "Website Migration Services in Kansas | Preisser Solutions",
+  metaTitle: "Website Migration for Kansas Businesses | Preisser Solutions",
   metaDescription:
     "Preisser Solutions migrates websites off Wix, Squarespace, WordPress, GoDaddy, and Webflow to modern custom Next.js builds without losing SEO.",
   eyebrow: "Website Migration",

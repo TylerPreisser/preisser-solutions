@@ -200,7 +200,7 @@ export const pageData: AeoPageData = {
     "Cloudflare Pages",
   ],
   relatedLinks: [
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "About Tyler Preisser", href: "/tyler-preisser" },
     { label: "Pricing Approach", href: "/pricing" },
     { label: "Engagement Process", href: "/process" },

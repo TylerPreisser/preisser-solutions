@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/client-portal",
   tier: "service_detail",
-  metaTitle: "Custom Client Portal Development in Kansas | Preisser Solutions",
+  metaTitle: "Client Portals for Kansas Businesses | Preisser Solutions",
   metaDescription:
     "Preisser Solutions builds branded custom client portals for Kansas businesses — secure login, file sharing, billing, scheduling, and self-service.",
   eyebrow: "Custom Client Portal Development",

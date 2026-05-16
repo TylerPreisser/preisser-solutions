@@ -150,12 +150,12 @@ export function Header() {
               )}
 
               <Link
-                href="/contact"
+                href="/contact?intent=audit"
                 className="ps-header-cta"
                 onClick={() => {}}
-                aria-label="Get in Touch — start a conversation"
+                aria-label="Book a Business Systems Audit"
               >
-                Get in Touch
+                Book a Business Systems Audit
                 <svg
                   className="ps-header-cta-arrow"
                   width="16"

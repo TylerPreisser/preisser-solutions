@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/api-integration",
   tier: "service_detail",
-  metaTitle: "API Integration Services in Kansas | Preisser Solutions",
+  metaTitle: "API Integration for Kansas Businesses | Preisser Solutions",
   metaDescription:
     "Preisser Solutions connects business systems via custom API integrations — CRMs, accounting, ERPs, marketing, and operational platforms.",
   eyebrow: "API Integration",

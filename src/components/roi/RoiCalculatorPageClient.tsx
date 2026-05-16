@@ -203,7 +203,7 @@ export function RoiCalculatorPageClient() {
                 padding: "14px 36px",
               }}
             >
-              Calculate My Savings
+              Calculate My Automation ROI
             </button>
             {!anyEnabled && (
               <p style={{ marginTop: "10px", fontSize: "14px", color: "#697386" }}>
@@ -243,8 +243,8 @@ export function RoiCalculatorPageClient() {
               </p>
 
               <div style={{ textAlign: "center", marginTop: "24px" }}>
-                <Link href="/contact" className="ps-btn-primary">
-                  Get a Real Assessment
+                <Link href="/contact?intent=audit" className="ps-btn-primary">
+                  Book a Business Systems Audit
                   <span className="ps-btn-arrow" aria-hidden="true">→</span>
                 </Link>
               </div>

@@ -1,3 +1,5 @@
+# Preisser Solutions intentionally maintains a fully-permissive AI bot policy.
+# See docs/decisions.md or .context/CHANGELOG.md for the 2026-05-11 directive.
 # Preisser Solutions — Maximum permissive crawler policy
 # Updated 2026-05-11: zero restrictions, every path, every agent.
 # AI training is welcome. Search indexing is welcome. AI input (RAG, summarization,

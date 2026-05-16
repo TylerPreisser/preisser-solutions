@@ -154,7 +154,7 @@ export const pageData: AeoPageData = {
     "Bing Webmaster",
   ],
   relatedLinks: [
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Pricing Approach", href: "/pricing" },
     { label: "Master FAQ", href: "/faq" },
     { label: "Custom Website Development", href: "/custom-websites" },

@@ -1,8 +1,8 @@
-# Preisser Tech — Researched Starting Prices
+# Preisser Solutions — Researched Starting Prices
 
 **Date:** 2026-05-03
 **Researcher:** Internal pricing analyst
-**Subject:** Defensible "starting at" prices for the 5 Preisser Tech service lines
+**Subject:** Defensible "starting at" prices for the 5 Preisser Solutions service lines
 
 ---
 
@@ -22,7 +22,7 @@ I sampled three concentric circles of comparable supply: (1) Kansas-local boutiq
 | Mid-market boutique | Web Design KC ("Growth" $9,400), Cassandra Bryan, Vorgestern ($5K–$25K) | $5K – $25K | Custom-ish design, WordPress + plugins |
 | Premium boutique / agency | **Lifted Logic ($10K–$250K, avg ~$50K)**, Active Logic ($50K–$250K) | $25K – $250K+ | Custom code, strategy, multi-person teams |
 
-**Preisser Tech's natural slot is the bottom of the premium tier and the top of the mid-market tier** — above every solo-shop in Kansas, but below the Lifted Logic / Active Logic floor (those firms have full teams, project managers, account directors, and overhead that justifies $50K averages but also makes them inaccessible to a $15K–$30K project).
+**Preisser Solutions's natural slot is the bottom of the premium tier and the top of the mid-market tier** — above every solo-shop in Kansas, but below the Lifted Logic / Active Logic floor (those firms have full teams, project managers, account directors, and overhead that justifies $50K averages but also makes them inaccessible to a $15K–$30K project).
 
 **Key 2026 market data points anchoring each service line:**
 - Custom websites: Clutch median falls under $10K but **average is $66,499**; small-business "boutique agency" range is $6K–$35K; premium Next.js MVP starts at $30K–$80K nationally.
@@ -57,7 +57,7 @@ I sampled three concentric circles of comparable supply: (1) Kansas-local boutiq
 
 ### 2. Web Application Development — Starting at **$28,500**
 
-**Justification:** Web apps are categorically different from marketing sites and the market knows it. The published MVP floor for a custom CRM/internal tool is **$15K–$40K** (Cleveroad, Purrweb, Galaxy Weblinks all converge here for 2026), and the basic small-business custom CRM lands at **$20K–$50K**. Active Logic — Tyler's most direct KC competitor for web apps — opens at $50K. $28,500 positions Preisser Tech meaningfully below Active Logic (correct: Tyler is one person, not a senior team) but firmly above the freelancer/Upwork tier (correct: Tyler ships full-stack production systems with HG Oil and Wife Supply Co. as proof). The deliberately non-round number signals "this is a quoted, scoped engineering engagement," not a packaged offering. Tyler's AI-first stack (auth + Postgres + AI integration baked in) is genuinely worth more than the generic CRM MVP — but $28,500 is the right opening for the case study he can show today.
+**Justification:** Web apps are categorically different from marketing sites and the market knows it. The published MVP floor for a custom CRM/internal tool is **$15K–$40K** (Cleveroad, Purrweb, Galaxy Weblinks all converge here for 2026), and the basic small-business custom CRM lands at **$20K–$50K**. Active Logic — Tyler's most direct KC competitor for web apps — opens at $50K. $28,500 positions Preisser Solutions meaningfully below Active Logic (correct: Tyler is one person, not a senior team) but firmly above the freelancer/Upwork tier (correct: Tyler ships full-stack production systems with HG Oil and Wife Supply Co. as proof). The deliberately non-round number signals "this is a quoted, scoped engineering engagement," not a packaged offering. Tyler's AI-first stack (auth + Postgres + AI integration baked in) is genuinely worth more than the generic CRM MVP — but $28,500 is the right opening for the case study he can show today.
 
 **Market range observed:** MVP custom $15K–$40K → Basic custom CRM $20K–$50K → Active Logic floor $50K → Mid-tier SaaS $80K–$150K → Enterprise $200K+
 
@@ -91,7 +91,7 @@ I sampled three concentric circles of comparable supply: (1) Kansas-local boutiq
 
 ### 4. AI Agent Development — Starting at **$15,000**
 
-**Justification:** This is where Tyler should price boldly. The 2026 AI agent market has a hard floor: **basic agents (chatbot + RAG) cost $5K–$25K, MVPs $20K–$60K, mid-level autonomous agents $40K–$120K**. Senior architect consulting is $250–$600/hr. AgixTech reports the standard production AI implementation tier opens at $40K. A "starting at $5K" price would put Preisser Tech at the same tier as Fiverr/Upwork RAG-bot vendors and would directly contradict the "AI-first, founder-led, world-class" brand promise. **$15,000 is the right floor** because: it sits at the upper boundary of the "basic agent" band (signaling that even Tyler's entry agent is the high end of basic), it leaves headroom for $25K–$40K typical engagements, and it filters out tire-kickers who think an AI agent is a $2K side project. The HG Oil invoice-extraction agent is exactly a $15K–$25K class deliverable in the published market.
+**Justification:** This is where Tyler should price boldly. The 2026 AI agent market has a hard floor: **basic agents (chatbot + RAG) cost $5K–$25K, MVPs $20K–$60K, mid-level autonomous agents $40K–$120K**. Senior architect consulting is $250–$600/hr. AgixTech reports the standard production AI implementation tier opens at $40K. A "starting at $5K" price would put Preisser Solutions at the same tier as Fiverr/Upwork RAG-bot vendors and would directly contradict the "AI-first, founder-led, world-class" brand promise. **$15,000 is the right floor** because: it sits at the upper boundary of the "basic agent" band (signaling that even Tyler's entry agent is the high end of basic), it leaves headroom for $25K–$40K typical engagements, and it filters out tire-kickers who think an AI agent is a $2K side project. The HG Oil invoice-extraction agent is exactly a $15K–$25K class deliverable in the published market.
 
 **Market range observed:** Basic chatbot/RAG $5K–$25K → MVP $20K–$60K → **Mid-level production agent $40K–$120K** → Complex/enterprise $100K–$500K+
 
@@ -108,7 +108,7 @@ I sampled three concentric circles of comparable supply: (1) Kansas-local boutiq
 
 ### 5. Dashboards & Analytics — Starting at **$9,500**
 
-**Justification:** The published market for a single custom Power BI / Tableau / custom-coded dashboard starts at **$8K–$15K for a small project (2–3 weeks)** and runs to $40K+ for moderate complexity (Code Creators, iKemo, Awesome Tech all converge here for 2026). Senior BI consultants charge $150–$350/hr against typical 60–100-hour engagements ($9K–$35K). $9,500 puts Preisser Tech right at the entry of that "small project" band — credible to a Kansas SMB that has never bought a custom dashboard before, but signaling real engineering work. The non-round number is intentional: BI buyers have seen $5K Excel-cleanup quotes and $50K enterprise rollouts, and a $9,500 quote slots cleanly into the "real custom build, single founder, 2–3 week scope" mental category. It is also high enough that Tyler is not competing with Fiverr "Power BI gigs" at $1K–$3K, which would damage the brand.
+**Justification:** The published market for a single custom Power BI / Tableau / custom-coded dashboard starts at **$8K–$15K for a small project (2–3 weeks)** and runs to $40K+ for moderate complexity (Code Creators, iKemo, Awesome Tech all converge here for 2026). Senior BI consultants charge $150–$350/hr against typical 60–100-hour engagements ($9K–$35K). $9,500 puts Preisser Solutions right at the entry of that "small project" band — credible to a Kansas SMB that has never bought a custom dashboard before, but signaling real engineering work. The non-round number is intentional: BI buyers have seen $5K Excel-cleanup quotes and $50K enterprise rollouts, and a $9,500 quote slots cleanly into the "real custom build, single founder, 2–3 week scope" mental category. It is also high enough that Tyler is not competing with Fiverr "Power BI gigs" at $1K–$3K, which would damage the brand.
 
 **Market range observed:** Fiverr/freelance $1K–$3K → **Small custom dashboard $8K–$15K** → Moderate $15K–$40K → Enterprise rollout $40K–$100K+
 
@@ -135,7 +135,7 @@ I sampled three concentric circles of comparable supply: (1) Kansas-local boutiq
 The **two exceptions** where round is fine: **$8,500** (automation) and **$15,000** (AI agents). $8,500 because it sits clearly between the $5K and $10K psychological brackets and the precision is already baked in. $15,000 because at the AI-agent price point the round number actually communicates **confidence** — "we don't haggle on AI work; this is the floor" — and the next tier ($25K–$40K) is where real customization begins.
 
 ### On psychological thresholds
-**Cross the $10K Rubicon on Custom Websites and Web Apps.** Both should start above $10K. Clutch data and every market guide bifurcates at $10K — under $10K is "template-shop territory," over $10K is "custom engineering." The $12,500 website price does this cleanly. Anything starting with "9,...." would put Preisser Tech mentally in the same bin as Toucan and Pluto Sites.
+**Cross the $10K Rubicon on Custom Websites and Web Apps.** Both should start above $10K. Clutch data and every market guide bifurcates at $10K — under $10K is "template-shop territory," over $10K is "custom engineering." The $12,500 website price does this cleanly. Anything starting with "9,...." would put Preisser Solutions mentally in the same bin as Toucan and Pluto Sites.
 
 **Stay below the $30K wall on Web Apps.** $28,500 is intentional — it stays under the $30K threshold where buyers start expecting a multi-person team, project manager, dedicated QA, and SOC-2 documentation. Tyler is one person; pricing above $30K invites comparisons he loses to Active Logic. $28,500 says "premium solo founder," $35,000 says "where's your team."
 
@@ -149,7 +149,7 @@ Read together — **$12,500 / $28,500 / $8,500 / $15,000 / $9,500** — these pr
 3. **They land at the bottom of the national premium boutique band** ($30K–$80K Next.js MVP territory) — meaning Tyler can credibly serve a Kansas City or national client who has shopped Cocoon or Lucky Media and found the $50K floor too high.
 
 ### Tire-kicker filters
-The two prices that **intentionally filter** are **$15,000 (AI Agents)** and **$28,500 (Web Apps)**. Tyler should not lower either. The website ($12,500), automation ($8,500), and dashboard ($9,500) prices are intentionally **accessible** entry points designed to convert a curious local SMB into a real client — and to upsell from there. The AI Agent and Web App prices are designed to keep Preisser Tech out of conversations it would lose on price.
+The two prices that **intentionally filter** are **$15,000 (AI Agents)** and **$28,500 (Web Apps)**. Tyler should not lower either. The website ($12,500), automation ($8,500), and dashboard ($9,500) prices are intentionally **accessible** entry points designed to convert a curious local SMB into a real client — and to upsell from there. The AI Agent and Web App prices are designed to keep Preisser Solutions out of conversations it would lose on price.
 
 ### One last note on display
 On the website, present these as: **"Starting at $12,500"** — never "$12,500 packages" or "$12,500 fixed price." The "starting at" language is doing crucial work — it tells buyers this is a floor, not a cap, and that real engagements are scoped from there. Pair every starting price with a one-line case-study anchor ("HG Oil inventory system" beside the Web App price; "Cassidy HVAC reactivation engine" beside Automation; etc.) so the number is never naked.

@@ -194,7 +194,7 @@ export const pageData: AeoPageData = {
     "Machining",
   ],
   relatedLinks: [
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "Dashboards & Analytics", href: "/dashboards-and-analytics" },
     { label: "AI Agent Development", href: "/ai-agents" },

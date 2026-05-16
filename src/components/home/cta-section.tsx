@@ -67,8 +67,8 @@ export function CtaSection() {
           team follow up faster.
         </p>
         <div className="ps-cta-buttons">
-          <Link href="/contact" className="ps-btn ps-btn-primary-dark">
-            Start the conversation
+          <Link href="/contact?intent=audit" className="ps-btn ps-btn-primary-dark">
+            Book a Business Systems Audit
             <svg
               className="ps-btn-arrow"
               width="16"

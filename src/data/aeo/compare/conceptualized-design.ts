@@ -103,7 +103,7 @@ export const pageData: AeoPageData = {
   relatedLinks: [
     { label: "Toucan Design Comparison", href: "/compare/toucan-design" },
     { label: "CSG Media Comparison", href: "/compare/csg-media" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Custom Website Development", href: "/custom-websites" },
   ],
   ctaHeadline: "Need custom code, AI, or automation?",

@@ -108,7 +108,7 @@ export const pageData: AeoPageData = {
   relatedLinks: [
     { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
     { label: "Coffeyville, Kansas Custom Software", href: "/locations/coffeyville-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Manufacturing Industry", href: "/industries/manufacturing" },
   ],
   ctaHeadline: "Build with a Kansas-based custom-software firm",

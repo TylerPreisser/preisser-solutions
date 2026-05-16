@@ -121,7 +121,7 @@ export const pageData: AeoPageData = {
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "Web Application Development", href: "/web-applications" },
     { label: "Custom Websites", href: "/custom-websites" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
   ],
   ctaHeadline: "Build an AI agent that actually works",
   ctaSubcopy:

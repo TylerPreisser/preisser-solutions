@@ -7,6 +7,7 @@ export interface NavLink {
 export const navigation = {
   links: [
     { label: "Why Automation?", href: "/why-automation" },
+    { label: "Blog", href: "/blog" },
     { label: "Estimate ROI", href: "/roi-calculator", id: "header-roi-btn" },
     { label: "Inquiry", href: "/contact" },
   ] as NavLink[],

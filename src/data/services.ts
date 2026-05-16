@@ -48,7 +48,7 @@ export const valueProps: ValueProp[] = [
   {
     title: "Enhance Accuracy & Consistency",
     description:
-      "Eliminate costly human errors in critical processes with systems that work perfectly, 24/7.",
+      "Significantly reduce error rate by removing manual data entry from the most error-prone steps. Edge cases still need human review, but the routine work runs the same way every time.",
     icon: "Enhance Accuracy.png",
   },
 ];
@@ -75,57 +75,57 @@ export const services: Service[] = [
       "Real-time dashboards, reporting, forecasting, and data integration that show you what is actually happening in the business.",
   },
   {
-    title: "Marketing & Growth Engines",
+    title: "Marketing & Lead Generation Systems",
     description:
-      "Automated social media, email, SMS, SEO, and lead generation systems built to create demand without constant babysitting.",
+      "Automated social media, email, SMS, local SEO, AI search visibility, and lead generation systems built to capture and follow up on demand without constant babysitting.",
   },
 ];
 
 export const automationBenefits: AutomationBenefit[] = [
   {
-    title: "Works Around the Clock",
+    title: "Runs Outside Business Hours",
     description:
-      "Unlike employees, automated systems don't clock out. They run 24/7—nights, weekends, holidays—processing tasks and delivering results without interruption or overtime pay.",
+      "Once deployed, automated systems can run nights, weekends, and holidays without paying overtime — provided the workflow is well defined and the inputs and integrations stay healthy. Most clients see the biggest gains on routine after-hours tasks like lead replies, scheduling, and report generation.",
   },
   {
-    title: "Done Right, Every Time",
+    title: "Consistent Execution When the Rules Are Clear",
     description:
-      "Automation follows exact rules, every single time. No bad days, no shortcuts, no missed steps. The same task executes the same way whether it's the first run or the ten-thousandth.",
+      "Automation reduces repetitive manual errors when the workflow, inputs, and exceptions are defined correctly. The same task runs the same way the ten-thousandth time as the first. Edge cases still need human review — automation handles the routine 90% so people can focus on the 10% that requires judgment.",
   },
   {
-    title: "Zero Training on Your End",
+    title: "Minimal Training Overhead for Your Team",
     description:
-      "Once built and deployed, our systems require no training from your team. They simply work. No learning curve, no onboarding sessions, no user manuals to distribute.",
+      "Most Preisser Solutions builds are designed to fit existing workflows so staff don't need extensive retraining. A short onboarding call usually covers it. The system handles its own work — your team just keeps doing what they were already doing, with less manual data entry in the loop.",
   },
   {
-    title: "No Sick Days, No Vacations",
+    title: "Coverage When Staff Are Out",
     description:
-      "When a key employee is out, critical processes can stall. Automated systems have no absenteeism. Your operations continue smoothly regardless of staffing situations.",
+      "When a key employee is on PTO or out sick, automated processes keep moving on the parts they own (notifications, follow-ups, status updates, scheduled reports). Anything that genuinely requires human judgment still needs a human, but the routine work doesn't stall.",
   },
   {
-    title: "More Cost-Effective Long-Term",
+    title: "Lower Long-Term Cost Than Adding Headcount",
     description:
-      "Compared to hiring, training, and retaining staff for repetitive functions, custom automation delivers consistent output at a fraction of the ongoing cost—and it only gets more efficient over time.",
+      "For repetitive functions, a one-time custom build is typically less expensive over 3-5 years than hiring, training, and retaining staff to do the same task by hand. The break-even point depends on volume — automation rarely pays off below a certain throughput, and we'll tell you honestly if that's your situation.",
   },
   {
-    title: "Focused, Dedicated Performance",
+    title: "Focused on a Defined Workflow",
     description:
-      "Humans juggle multiple tasks and distractions. Automated systems are singularly focused. Each system does exactly what it was built to do—relentlessly and without distraction.",
+      "Each automated system does one well-scoped job: process this invoice, route this lead, send this follow-up. That focus is what makes it reliable. The flip side is that automations don't multitask or improvise — when the workflow changes, the system needs to be updated.",
   },
   {
-    title: "Scales With Your Business",
+    title: "Scales With Volume",
     description:
-      "As your volume grows, automation scales with it. Need to process 10x more invoices next month? The system handles it without hiring 10x more staff or paying overtime.",
+      "As volume grows, automation scales with it. Processing 10x more invoices next month usually doesn't require 10x more staff — the system handles the throughput at near-flat cost. Caveats: integrations have rate limits, AI usage has per-call costs, and very large volumes may require infrastructure upgrades.",
   },
   {
-    title: "Frees Human Talent",
+    title: "Frees People for Higher-Value Work",
     description:
-      "Your people are your greatest asset. When automation handles the repetitive, your team can focus on strategy, relationships, and the creative work that actually grows the business.",
+      "When automation handles repetitive tasks, your team can focus on strategy, customer relationships, and the work that genuinely requires their judgment. The goal isn't replacing people — it's removing the manual chasing so the people you already have can do the work you actually hired them for.",
   },
   {
-    title: "Provides Actionable Insights",
+    title: "Surfaces Operational Data You Didn't Have",
     description:
-      "Many of our systems don't just automate—they also collect and surface data. Get real-time visibility into your operations so you can make faster, smarter decisions.",
+      "Most Preisser Solutions automation systems collect data as a side effect (response times, conversion rates, error rates, throughput). That data feeds dashboards and reports that let you make decisions on what's actually happening, not what people remember happening. Quality of the data depends on quality of the inputs.",
   },
 ];
 
@@ -203,7 +203,7 @@ export const contactInterests = [
   "Automation Systems",
   "System Fixes & Efficiency",
   "Dashboards & Visualizations",
-  "Marketing & Growth Engines",
+  "Marketing & Lead Generation Systems",
   "Partnership / Referral",
   "Other",
 ] as const;

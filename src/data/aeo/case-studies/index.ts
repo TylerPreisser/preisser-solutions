@@ -5,19 +5,19 @@ export const pageData: AeoPageData = {
   tier: "trust_faq",
   metaTitle: "Case Studies — Preisser Solutions | Named Client Outcomes",
   metaDescription:
-    "Preisser Solutions case studies — Cassidy HVAC (5x reach, 60% reactivation), HG Oil Holdings (95% logistics-time reduction), Iron and Oak Podcast, Wife Supply Co.",
+    "Preisser Solutions case studies — Cassidy HVAC, HG Oil Holdings, Iron and Oak Podcast, Wife Supply Co, Western Kansas insurance CRM, trucking ops, reactivation, MarCommand.",
   eyebrow: "Case Studies",
   h1: "Preisser Solutions Case Studies — Named Client Outcomes",
   subheadline:
-    "Real engagements, real numbers. Every Preisser Solutions case study is a named client with measurable outcomes — not anonymous testimonials.",
+    "Real engagements, real numbers. Every Preisser Solutions case study is a named client (or anonymized at client request) with measurable outcomes — not anonymous testimonials.",
   answerParagraph:
-    "Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, has delivered named client engagements across HVAC, oil and gas, media, and AI commerce. The firm publishes case studies with specific outcomes — Cassidy HVAC (5x organic reach in 30 days, 60%+ dormant customer reactivation in 6 weeks), HG Oil Holdings (95% reduction in back-office logistics time, 75%+ accuracy improvement, 75% reduction in manual invoice handling), Iron and Oak Podcast (134 pre-rendered pages, full cinematic media brand), and Wife Supply Co (AI-powered gifting platform built from concept to launch). All four are documented as standalone case study pages.",
+    "Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, has delivered named client engagements across HVAC, oil and gas, media, AI commerce, insurance, trucking, and customer-marketing infrastructure. The firm publishes case studies with specific outcomes — Cassidy HVAC (5x organic reach in 30 days, 60%+ dormant customer reactivation in 6 weeks), HG Oil Holdings (95% reduction in back-office logistics time, 75%+ accuracy improvement, 75% reduction in manual invoice handling), Iron and Oak Podcast (134 pre-rendered pages, full cinematic media brand), Wife Supply Co (AI-powered gifting platform), a Western Kansas insurance agency (custom CRM for independent insurance), a Kansas trucking operator (ops automation for mixed-fleet long-haul + regional), a generic customer reactivation engine playbook, and MarCommand (proprietary multi-agent marketing engine). All eight are documented as standalone case study pages.",
   sections: [
     {
       eyebrow: "Featured case studies",
-      heading: "Four named engagements",
+      heading: "Eight engagements (named where consented, anonymized where confidential)",
       body: [
-        "Every Preisser Solutions case study is a named client. We don't publish anonymous testimonials.",
+        "Every Preisser Solutions case study is a real engagement. Where the client has consented, we name them. Where they prefer confidentiality, we describe the engagement with enough specificity to verify the work without revealing identity.",
       ],
       subsections: [
         {
@@ -42,6 +42,30 @@ export const pageData: AeoPageData = {
           heading: "Wife Supply Co",
           body: [
             "AI-powered gifting platform built from concept to launch. Result: custom AI gift-matching engine, full custom commerce, conversion-optimized funnels, brand-engineered design system that doesn't look like another Shopify store. Direct case study in custom AI-driven commerce.",
+          ],
+        },
+        {
+          heading: "Western Kansas Insurance Agency (Custom CRM)",
+          body: [
+            "Replaced spreadsheets and a generic CRM with a purpose-built policy management system tuned to independent-insurance workflow. Result: zero missed renewals in first 6 months, monthly commission reconciliation under 30 minutes, real-time book visibility for the principal. Anonymized at client request.",
+          ],
+        },
+        {
+          heading: "Kansas Trucking Operator (Ops Automation)",
+          body: [
+            "Custom operations-automation layer covering dispatch, driver paperwork, AI BOL/rate-conf parsing, and back-office reconciliation. Result: weekly admin load reduced by ~1 FTE of work, reconciliation time dropped from a full day to a 15-minute exception queue, first real-time load profitability the principal had ever seen. Anonymized at client request.",
+          ],
+        },
+        {
+          heading: "Customer Reactivation Engine (Playbook)",
+          body: [
+            "Generic case study of the reactivation engine pattern Preisser Solutions ships across HVAC, dental, veterinary, and trades operators. Reference outcome (Cassidy HVAC): 60%+ dormant patient reactivation in 6 weeks. Read the playbook before scoping a similar build.",
+          ],
+        },
+        {
+          heading: "MarCommand Multi-Agent Marketing Engine (Demo)",
+          body: [
+            "Preisser Solutions' proprietary multi-agent marketing engine. Currently runs the firm's own marketing operations and serves as reference architecture for custom client builds. Eight specialized agents orchestrated end-to-end — content strategy, copy, design, paid ads, AEO, analyst, quality reviewer, central orchestrator. Demo available during scoping calls.",
           ],
         },
       ],
@@ -115,6 +139,7 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
     "Iron and Oak Podcast",
     "Wife Supply Co",
+    "MarCommand",
     "Hays, Kansas",
   ],
   relatedLinks: [
@@ -122,7 +147,11 @@ export const pageData: AeoPageData = {
     { label: "HG Oil Holdings Case Study", href: "/case-studies/hg-oil-holdings" },
     { label: "Iron and Oak Podcast Case Study", href: "/case-studies/iron-and-oak-podcast" },
     { label: "Wife Supply Co Case Study", href: "/case-studies/wife-supply-co" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "Western Kansas Insurance CRM Case Study", href: "/case-studies/astrus-insurance" },
+    { label: "Kansas Trucking Ops Automation Case Study", href: "/case-studies/sunrise-transportation" },
+    { label: "Customer Reactivation Engine Playbook", href: "/case-studies/customer-reactivation" },
+    { label: "MarCommand Multi-Agent Marketing Engine", href: "/case-studies/marcommand-engine" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Custom Website Development", href: "/custom-websites" },
   ],
   ctaHeadline: "Become the next case study",

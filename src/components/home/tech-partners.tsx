@@ -1,92 +1,54 @@
 "use client";
 
+import Link from "next/link";
+
 /*
- * REVIEW NEEDED — Tools that may imply false partnership or affiliation:
+ * R-037: Homepage display is intentionally limited to the eight most important
+ * integration partners. The full list of tools/platforms moves to /integrations
+ * (created in §4.5 of the master rebuild). The "See all integrations" link
+ * below will 404 until that route is built — that's expected.
  *
+ * TODO(§4.5): once /integrations route exists, this comment can be removed.
+ *
+ * Notes on partnership framing (kept for the reviewer):
  * - "Salesforce" — Tyler worked WITH Salesforce on client engagements, not as
- *   a formal Salesforce partner or reseller. May imply a partnership tier that
- *   doesn't exist. Tyler to decide: keep as "tools we work with" or remove.
- *
- * - "Anthropic" / "Claude Code" — Using Anthropic's API and Claude Code CLI is
- *   not a partnership. No affiliation, reseller agreement, or partner program.
- *   Tyler to decide: keep as "tools we use" framing or remove.
- *
- * - "OpenAI" / "Codex" — Same as above. Paying API customer, not a partner.
- *   Tyler to decide.
- *
- * - "Google Gemini" / "Google NotebookLM" — Google API usage, not a Google
- *   Partner designation. Tyler to decide.
- *
- * None of these are removed automatically — Tyler reviews and makes the call.
+ *   a formal Salesforce partner or reseller.
+ * - "Anthropic" / "OpenAI" / "Google" — paying API customers, not partners.
+ * Presentation here is "tools we work with," not "partners."
  */
 
-const techPartners = [
-  // AI & Agent Tools
-  "OpenAI",
-  "Anthropic",
-  "Claude Code",
-  "Google Gemini",
-  "Google NotebookLM",
-  "Cursor",
-  "Codex",
-  // Business Systems We Integrate With
-  "QuickBooks",
-  "ServiceTitan",
-  "Jobber",
+// Eight strongest integration partners for homepage display.
+const homepageTechPartners = [
+  "Stripe",
   "HubSpot",
   "Salesforce",
-  "Square",
-  "Stripe",
-  "Mailchimp",
-  "ActiveCampaign",
-  // Automation & Integration
-  "n8n",
   "Zapier",
-  "Make",
-  // Web & Cloud
-  "Next.js",
-  "React",
-  "Tailwind CSS",
-  "TypeScript",
-  "Node.js",
-  "Python",
+  "OpenAI",
+  "Anthropic",
   "Cloudflare",
-  "Vercel",
-  "GitHub",
-  "Docker",
-  // Mobile
-  "Xcode",
-  "Swift",
-  "SwiftUI",
-  // Data & Productivity
-  "PostgreSQL",
-  "Supabase",
-  "MongoDB",
-  "Google Workspace",
-  "Notion",
-  "Figma",
+  "Google",
 ];
 
 export function TechPartners() {
   return (
-    <section className="ps-tech-partners" aria-label="Technologies and platforms we work with">
+    <section
+      className="ps-tech-partners"
+      aria-label="Technologies and platforms we work with"
+    >
       <div className="ps-tech-partners-header">
         <p className="ps-tech-partners-label" aria-hidden="true">// stack</p>
       </div>
 
       {/* Scrolling track — items duplicated for seamless loop */}
-      <div
-        className="ps-tech-partners-viewport"
-        aria-hidden="true"
-      >
+      <div className="ps-tech-partners-viewport" aria-hidden="true">
         <div className="ps-tech-partners-track">
-          {techPartners.map((name) => (
+          {homepageTechPartners.map((name) => (
             <span key={`a-${name}`} className="ps-tech-pill">
               {name}
             </span>
           ))}
           {/* Duplicate set for seamless looping */}
-          {techPartners.map((name) => (
+          {homepageTechPartners.map((name) => (
             <span key={`b-${name}`} className="ps-tech-pill" aria-hidden="true">
               {name}
             </span>
@@ -96,10 +58,31 @@ export function TechPartners() {
 
       {/* Accessible static list (visually hidden) */}
       <ul className="ps-visually-hidden">
-        {techPartners.map((name) => (
+        {homepageTechPartners.map((name) => (
           <li key={name}>{name}</li>
         ))}
       </ul>
+
+      {/* R-037: link out to the full integrations index. Route lives in §4.5. */}
+      <div
+        className="ps-tech-partners-cta"
+        style={{
+          textAlign: "center",
+          marginTop: 18,
+          fontSize: "0.875rem",
+        }}
+      >
+        <Link
+          href="/integrations"
+          style={{
+            color: "var(--color-primary)",
+            textDecoration: "none",
+            fontWeight: 600,
+          }}
+        >
+          See all integrations &rarr;
+        </Link>
+      </div>
     </section>
   );
 }

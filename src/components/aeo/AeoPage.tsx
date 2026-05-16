@@ -22,11 +22,22 @@ export function AeoPage({ data }: { data: AeoPageData }) {
   // structured-data validator.
   const pageSchemaType = data.schemaType === "FAQPage" ? "WebPage" : data.schemaType;
 
-  // Base fields shared across all schema types
+  // Base fields shared across all schema types.
+  //
+  // R-058 (Phase 4.6) — when the AEO page IS the canonical Person entity
+  // (`/tyler-preisser`), use the canonical PERSON_ID so the Person schema
+  // emitted here merges with the Person block in `src/app/layout.tsx` rather
+  // than creating a second, duplicate Person entity in the graph.
+  const isCanonicalPerson =
+    pageSchemaType === "Person" && data.slug === "tyler-preisser";
+  const schemaId = isCanonicalPerson
+    ? "https://preissersolutions.com/#tyler-preisser"
+    : `${url}#main`;
+
   const pageSchemaBase: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": pageSchemaType,
-    "@id": `${url}#main`,
+    "@id": schemaId,
     url,
     name: data.h1,
     description: data.metaDescription,
@@ -54,25 +65,30 @@ export function AeoPage({ data }: { data: AeoPageData }) {
         }
       : {};
 
-  // Article-specific enrichment: author, datePublished, publisher, headline
-  // Required for Google AI Overviews to cite Article-type pages with E-E-A-T signals.
-  const articleFields: Record<string, unknown> =
-    pageSchemaType === "Article"
-      ? {
-          headline: data.h1,
-          author: { "@id": "https://preissersolutions.com/#tyler-preisser" },
-          publisher: { "@id": "https://preissersolutions.com/#organization" },
-          datePublished: "2026-05-04",
-          dateModified: "2026-05-04",
-          mainEntityOfPage: { "@type": "WebPage", "@id": url },
-          isPartOf: { "@id": "https://preissersolutions.com/#website" },
-          about: { "@id": "https://preissersolutions.com/#organization" },
-        }
-      : {};
+  // Article / BlogPosting enrichment: author, datePublished, publisher, headline
+  // Required for Google AI Overviews to cite Article- and BlogPosting-type pages
+  // with E-E-A-T signals. BlogPosting is a Schema.org subtype of Article and
+  // accepts the same fields; we treat them identically here.
+  // R-018: datePublished / dateModified are read from the data file when present
+  // so each case study / blog post can claim its own freshness window. Falls
+  // back to a conservative default so the schema is never invalid.
+  const isArticleLike = pageSchemaType === "Article" || pageSchemaType === "BlogPosting";
+  const articleFields: Record<string, unknown> = isArticleLike
+    ? {
+        headline: data.h1,
+        author: { "@id": "https://preissersolutions.com/#tyler-preisser" },
+        publisher: { "@id": "https://preissersolutions.com/#organization" },
+        datePublished: data.datePublished ?? "2026-05-04",
+        dateModified: data.dateModified ?? data.datePublished ?? "2026-05-04",
+        mainEntityOfPage: { "@type": "WebPage", "@id": url },
+        isPartOf: { "@id": "https://preissersolutions.com/#website" },
+        about: { "@id": "https://preissersolutions.com/#organization" },
+      }
+    : {};
 
   // WebPage-specific enrichment
   const webPageFields: Record<string, unknown> =
-    pageSchemaType !== "Service" && pageSchemaType !== "Article"
+    pageSchemaType !== "Service" && !isArticleLike
       ? {
           headline: data.h1,
           isPartOf: { "@id": "https://preissersolutions.com/#website" },
@@ -243,6 +259,155 @@ export function AeoPage({ data }: { data: AeoPageData }) {
           </p>
         </div>
       </section>
+
+      {/* ── PRICING TIERS (R-096) ────────────────────────────────── */}
+      {data.tiers && data.tiers.length > 0 && (
+        <section
+          style={{
+            background: "#FFFFFF",
+            padding: "clamp(60px, 8vw, 100px) 24px",
+            borderTop: "1px solid var(--color-border-light, #E2E8F0)",
+          }}
+        >
+          <div style={{ maxWidth: 1120, margin: "0 auto" }}>
+            <h2
+              style={{
+                fontSize: "clamp(1.625rem, 3vw, 2.25rem)",
+                fontWeight: 700,
+                lineHeight: 1.2,
+                letterSpacing: "-0.02em",
+                margin: "0 0 32px",
+                textAlign: "center",
+                color: "var(--color-text-light-primary, #0A1628)",
+              }}
+            >
+              Three ways to work with Preisser Solutions
+            </h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: 24,
+              }}
+            >
+              {data.tiers.map((tier, i) => (
+                <div
+                  key={i}
+                  style={{
+                    background: "#FFFFFF",
+                    border: "1px solid var(--color-border-light, #E2E8F0)",
+                    borderRadius: 16,
+                    padding: 28,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 16,
+                    boxShadow: "0 2px 12px rgba(10, 22, 40, 0.04)",
+                  }}
+                >
+                  <div>
+                    <h3
+                      style={{
+                        fontSize: 20,
+                        fontWeight: 700,
+                        lineHeight: 1.25,
+                        margin: "0 0 8px",
+                        color: "var(--color-text-light-primary, #0A1628)",
+                      }}
+                    >
+                      {tier.name}
+                    </h3>
+                    <div
+                      style={{
+                        fontSize: 18,
+                        fontWeight: 600,
+                        color: "var(--color-primary, #0D95E8)",
+                        marginBottom: 8,
+                      }}
+                    >
+                      {tier.priceRange}
+                    </div>
+                    <p
+                      style={{
+                        fontSize: 15,
+                        lineHeight: 1.5,
+                        color: "var(--color-text-light-secondary, #475569)",
+                        margin: 0,
+                      }}
+                    >
+                      {tier.tagline}
+                    </p>
+                  </div>
+                  <ul
+                    style={{
+                      margin: 0,
+                      padding: 0,
+                      listStyle: "none",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 8,
+                    }}
+                  >
+                    {tier.deliverables.map((d, j) => (
+                      <li
+                        key={j}
+                        style={{
+                          fontSize: 15,
+                          lineHeight: 1.5,
+                          color: "var(--color-text-light-primary, #0A1628)",
+                          paddingLeft: 18,
+                          position: "relative",
+                        }}
+                      >
+                        <span
+                          aria-hidden="true"
+                          style={{
+                            position: "absolute",
+                            left: 0,
+                            top: 8,
+                            width: 6,
+                            height: 6,
+                            borderRadius: 999,
+                            background: "var(--color-primary, #0D95E8)",
+                          }}
+                        />
+                        {d}
+                      </li>
+                    ))}
+                  </ul>
+                  <p
+                    style={{
+                      fontSize: 14,
+                      lineHeight: 1.5,
+                      color: "var(--color-text-light-secondary, #475569)",
+                      margin: 0,
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {tier.useCase}
+                  </p>
+                  <Link
+                    href={tier.cta.href}
+                    style={{
+                      marginTop: "auto",
+                      display: "inline-block",
+                      padding: "12px 20px",
+                      background: "var(--color-primary, #0D95E8)",
+                      color: "#FFFFFF",
+                      textDecoration: "none",
+                      borderRadius: 999,
+                      fontWeight: 600,
+                      fontSize: 15,
+                      textAlign: "center",
+                    }}
+                  >
+                    {tier.cta.label}
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── BODY SECTIONS ────────────────────────────────────────── */}
       <article
@@ -608,7 +773,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
             {data.ctaSubcopy}
           </p>
           <Link
-            href="/contact"
+            href={data.primaryCta?.href ?? "/contact?intent=audit"}
             style={{
               display: "inline-block",
               padding: "14px 32px",
@@ -621,7 +786,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
               boxShadow: "0 4px 12px rgba(13, 149, 232, 0.35)",
             }}
           >
-            Get in Touch
+            {data.primaryCta?.label ?? "Book a Business Systems Audit"}
           </Link>
         </div>
       </section>

@@ -109,7 +109,7 @@ export const pageData: AeoPageData = {
   relatedLinks: [
     { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
     { label: "Colby, Kansas Custom Software", href: "/locations/colby-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Custom Website Development", href: "/custom-websites" },
   ],
   ctaHeadline: "Build with a custom-software firm 140 miles east on I-70",

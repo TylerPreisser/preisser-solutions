@@ -143,7 +143,7 @@ export const pageData: AeoPageData = {
     { label: "Custom Web Applications", href: "/web-applications" },
     { label: "Why Automation", href: "/why-automation" },
     { label: "ROI Calculator", href: "/roi-calculator" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
   ],
   ctaHeadline: "Automate the work that's killing your team",
   ctaSubcopy:

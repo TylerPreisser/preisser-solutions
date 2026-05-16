@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { contactInterests, type ContactInterest } from "@/data/services";
+import { siteConfig } from "@/data/site-config";
 
 interface FormState {
   name: string;
@@ -89,7 +90,137 @@ export function ContactPageClient() {
             Whether you know exactly what you need or you&apos;re still figuring it out
             — start here. Tell us what you can and we&apos;ll go from there.
           </p>
+
+          {/* Visible NAP (Name, Address, Phone) — required for local SEO citation matching. */}
+          <address
+            className="ps-contact-nap"
+            style={{
+              fontStyle: "normal",
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "24px",
+              justifyContent: "center",
+              marginTop: "32px",
+              fontSize: "15px",
+            }}
+          >
+            <span>
+              <strong>{siteConfig.name}</strong>
+            </span>
+            <span>{siteConfig.contact.location} 67601</span>
+            <a
+              href={`mailto:${siteConfig.contact.email}`}
+              aria-label={`Email Preisser Solutions at ${siteConfig.contact.email}`}
+            >
+              {siteConfig.contact.email}
+            </a>
+            <a
+              href={`tel:${siteConfig.contact.phone.replace(/[^+\d]/g, "")}`}
+              aria-label={`Call Preisser Solutions at ${siteConfig.contact.phone}`}
+            >
+              {siteConfig.contact.phone}
+            </a>
+          </address>
         </div>
+
+        {/* Engagement details — service area, response time, project fit, minimums, booking */}
+        <section
+          className="ps-contact-details"
+          aria-label="Engagement details"
+          style={{
+            maxWidth: 880,
+            margin: "48px auto 0",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: "24px",
+          }}
+        >
+          <div className="ps-contact-detail-card" style={{ padding: "20px", borderRadius: "12px", background: "rgba(13, 149, 232, 0.04)", border: "1px solid rgba(13, 149, 232, 0.12)" }}>
+            <h2 style={{ fontSize: 15, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", margin: "0 0 8px", color: "var(--color-primary, #0D95E8)" }}>
+              Service area
+            </h2>
+            <p style={{ fontSize: 15, lineHeight: 1.55, margin: 0 }}>
+              Kansas — primarily Hays, Wichita, Topeka, Kansas City, Salina, Manhattan. A small number of remote engagements outside Kansas are accepted when the work is a fit.
+            </p>
+          </div>
+          <div className="ps-contact-detail-card" style={{ padding: "20px", borderRadius: "12px", background: "rgba(13, 149, 232, 0.04)", border: "1px solid rgba(13, 149, 232, 0.12)" }}>
+            <h2 style={{ fontSize: 15, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", margin: "0 0 8px", color: "var(--color-primary, #0D95E8)" }}>
+              Response time
+            </h2>
+            <p style={{ fontSize: 15, lineHeight: 1.55, margin: 0 }}>
+              Within 1 business day (M-F, 9am-5pm Central). Tyler reads every inquiry personally before he replies.
+            </p>
+          </div>
+          <div className="ps-contact-detail-card" style={{ padding: "20px", borderRadius: "12px", background: "rgba(13, 149, 232, 0.04)", border: "1px solid rgba(13, 149, 232, 0.12)" }}>
+            <h2 style={{ fontSize: 15, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", margin: "0 0 8px", color: "var(--color-primary, #0D95E8)" }}>
+              Best fit
+            </h2>
+            <p style={{ fontSize: 15, lineHeight: 1.55, margin: 0 }}>
+              Kansas SMBs ready to invest in custom systems (websites, automation, CRM, dashboards, local SEO, AI search). We build, don&apos;t subcontract. Founder-led.
+            </p>
+          </div>
+          <div className="ps-contact-detail-card" style={{ padding: "20px", borderRadius: "12px", background: "rgba(13, 149, 232, 0.04)", border: "1px solid rgba(13, 149, 232, 0.12)" }}>
+            <h2 style={{ fontSize: 15, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", margin: "0 0 8px", color: "var(--color-primary, #0D95E8)" }}>
+              Project ranges
+            </h2>
+            <p style={{ fontSize: 15, lineHeight: 1.55, margin: 0 }}>
+              Audits from $1,500. Sprints from $5,000. Retainers from $3,500/month. Fixed-price proposal after the scoping call.
+            </p>
+          </div>
+          <div className="ps-contact-detail-card" style={{ padding: "20px", borderRadius: "12px", background: "rgba(13, 149, 232, 0.04)", border: "1px solid rgba(13, 149, 232, 0.12)" }}>
+            <h2 style={{ fontSize: 15, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", margin: "0 0 8px", color: "var(--color-primary, #0D95E8)" }}>
+              Booking
+            </h2>
+            <p style={{ fontSize: 15, lineHeight: 1.55, margin: 0 }}>
+              No public scheduling link yet. Send the form below or email{" "}
+              <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>{" "}
+              to arrange a scoping call.
+            </p>
+          </div>
+          <div className="ps-contact-detail-card" style={{ padding: "20px", borderRadius: "12px", background: "rgba(13, 149, 232, 0.04)", border: "1px solid rgba(13, 149, 232, 0.12)" }}>
+            <h2 style={{ fontSize: 15, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", margin: "0 0 8px", color: "var(--color-primary, #0D95E8)" }}>
+              Privacy
+            </h2>
+            <p style={{ fontSize: 15, lineHeight: 1.55, margin: 0 }}>
+              We never share your contact info. See our{" "}
+              <a href="/privacy">privacy policy</a>.
+            </p>
+          </div>
+        </section>
+
+        {/* Cross-links — recent case studies + service entry points */}
+        <section
+          className="ps-contact-crosslinks"
+          aria-label="Related case studies and services"
+          style={{
+            maxWidth: 880,
+            margin: "32px auto 0",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "24px",
+          }}
+        >
+          <div>
+            <h2 style={{ fontSize: 14, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", margin: "0 0 12px" }}>
+              Recent case studies
+            </h2>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "8px", fontSize: 15 }}>
+              <li><a href="/case-studies/cassidy-hvac">Cassidy HVAC — AI marketing engine</a></li>
+              <li><a href="/case-studies/hg-oil-holdings">HG Oil Holdings — inventory + AI invoicing</a></li>
+              <li><a href="/case-studies/iron-and-oak-podcast">Iron &amp; Oak Podcast — cinematic media brand</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2 style={{ fontSize: 14, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em", margin: "0 0 12px" }}>
+              Common service entry points
+            </h2>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "8px", fontSize: 15 }}>
+              <li><a href="/services/ai-automation">AI automation</a></li>
+              <li><a href="/services/local-seo">Local SEO</a></li>
+              <li><a href="/services/ai-search-optimization">AI search optimization</a></li>
+            </ul>
+          </div>
+        </section>
 
         {/* Form */}
         <form id="inquiryForm" onSubmit={handleSubmit} noValidate>

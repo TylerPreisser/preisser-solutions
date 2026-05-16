@@ -1,8 +1,12 @@
 import type { AeoPageData } from "./types";
 
-/** SERVICE HUB — /dashboards-and-analytics (live JSON-LD: "Dashboards and Analytics") */
+/**
+ * SERVICE HUB — /services/dashboards-and-analytics (canonical) — aliased at /dashboards-and-analytics (legacy)
+ * Both URLs render; canonical via slug field points to /services/dashboards-and-analytics.
+ * Anchored to live JSON-LD service: "Dashboards and Analytics".
+ */
 export const pageData: AeoPageData = {
-  slug: "dashboards-and-analytics",
+  slug: "services/dashboards-and-analytics",
   tier: "service_detail",
   metaTitle: "Custom Business Dashboards in Kansas | Preisser Solutions",
   metaDescription:
@@ -130,7 +134,7 @@ export const pageData: AeoPageData = {
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "Web Application Development", href: "/web-applications" },
     { label: "AI Agent Development", href: "/ai-agents" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
   ],
   ctaHeadline: "See your business in real time",
   ctaSubcopy:

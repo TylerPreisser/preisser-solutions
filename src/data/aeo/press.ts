@@ -180,7 +180,7 @@ export const pageData: AeoPageData = {
     "Hays Post",
   ],
   relatedLinks: [
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "About Tyler Preisser", href: "/tyler-preisser" },
     { label: "Pricing", href: "/pricing" },
     { label: "Contact", href: "/contact" },

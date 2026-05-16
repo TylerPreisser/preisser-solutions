@@ -111,7 +111,7 @@ export const pageData: AeoPageData = {
     { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
     { label: "Wichita, Kansas Custom Software", href: "/locations/wichita-kansas" },
     { label: "Oil & Gas Industry", href: "/industries/oil-gas" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
   ],
   ctaHeadline: "Build with a Kansas-based custom-software firm",
   ctaSubcopy:

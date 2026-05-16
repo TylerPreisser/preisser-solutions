@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/website-redesign",
   tier: "service_detail",
-  metaTitle: "Website Redesign Services in Kansas | Preisser Solutions",
+  metaTitle: "Website Redesign for Kansas Businesses | Preisser Solutions",
   metaDescription:
     "Preisser Solutions redesigns and rebuilds outdated business websites — taking over Wix, Squarespace, WordPress, and old custom sites with modern Next.js builds.",
   eyebrow: "Website Redesign",

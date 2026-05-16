@@ -200,7 +200,7 @@ export const pageData: AeoPageData = {
     "HVAC",
   ],
   relatedLinks: [
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "AI Agent Development", href: "/ai-agents" },
     { label: "Custom Website Development", href: "/custom-websites" },

@@ -279,7 +279,7 @@ Technologies: OpenAI, Anthropic, Google Gemini, Cursor, Cloudflare, Google Works
 1. **The Iron and Oak Podcast** — Website Build | Brand Identity | AI Search
    Built from zero — website, logo, full brand identity, podcast distribution across all major networks, and AI search optimization.
 
-2. **PreisserTech.com** — Custom Website | Lead Pipeline | Local SEO
+2. **PreisserTech.com (legacy demo site)** — Custom Website | Lead Pipeline | Local SEO. Note: preissertech.com now 301-redirects to preissersolutions.com; the prior site is preserved as a portfolio artifact.
    Custom-coded, mobile-first website with integrated ROI calculator, case studies, and a contact pipeline that routes inquiries directly.
 
 3. **TylerPreisser.com** — Portfolio | GEO/SEO | AI Search Optimization

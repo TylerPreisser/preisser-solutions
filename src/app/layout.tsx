@@ -4,6 +4,7 @@ import Script from "next/script";
 import "@/styles/globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { siteConfig } from "@/data/site-config";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,29 +15,15 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Preisser Solutions | World-Class AI-Powered Marketing For Kansas",
+    default: "Preisser Solutions | AI Automation, Websites & Local SEO in Kansas",
     template: "%s | Preisser Solutions",
   },
   description:
-    "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
+    "Preisser Solutions helps Kansas businesses grow with custom websites, local SEO, AI search optimization, CRM systems, dashboards, and workflow automation. Based in Hays, Kansas.",
   metadataBase: new URL("https://preissersolutions.com"),
-  keywords: [
-    "business automation Kansas",
-    "custom websites Kansas",
-    "web development Hays Kansas",
-    "automation systems small business",
-    "AI-powered business tools",
-    "custom applications Kansas",
-    "workflow automation",
-    "Tyler Preisser",
-    "Preisser Solutions",
-    "digital transformation Kansas",
-    "custom software development",
-    "business dashboards",
-    "ROI automation calculator",
-    "Hays Kansas web developer",
-    "small business technology solutions",
-  ],
+  // NOTE: `keywords` meta intentionally omitted. Google explicitly ignores it,
+  // and Bing treats stuffed keyword meta as a spam signal. Topical relevance is
+  // signaled instead via JSON-LD `knowsAbout`, heading structure, and body copy.
   authors: [{ name: "Tyler Preisser", url: "https://preissersolutions.com/about" }],
   creator: "Tyler Preisser",
   publisher: "Preisser Solutions",
@@ -82,9 +69,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://preissersolutions.com",
     siteName: "Preisser Solutions",
-    title: "Preisser Solutions | World-Class AI-Powered Marketing For Kansas",
+    title: "Preisser Solutions | AI Automation, Websites & Local SEO in Kansas",
     description:
-      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
+      "Preisser Solutions helps Kansas businesses grow with custom websites, local SEO, AI search optimization, CRM systems, dashboards, and workflow automation. Based in Hays, Kansas.",
     images: [
       {
         url: "/images/og-image-v2.jpg",
@@ -96,18 +83,18 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Solutions | World-Class AI-Powered Marketing For Kansas",
+    title: "Preisser Solutions | AI Automation, Websites & Local SEO in Kansas",
     description:
-      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
+      "Preisser Solutions helps Kansas businesses grow with custom websites, local SEO, AI search optimization, CRM systems, dashboards, and workflow automation. Based in Hays, Kansas.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@tylerpreisser",
   },
   verification: {
     yandex: "9f19081f7abbbb70",
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
-    other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
-      ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
-      : undefined,
+    other: {
+      "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION ?? "",
+    },
   },
 };
 
@@ -159,7 +146,9 @@ const structuredData = [
     "@type": ["Organization", "ProfessionalService"],
     "@id": ORG_ID,
     name: "Preisser Solutions",
-    alternateName: ["Preisser Solutionsnology", "Preisser Solutions"],
+    // alternateName intentionally minimal — the brand is consistently "Preisser Solutions".
+    // Add deliberate alternates (e.g. legal/dba) here only if they materially help disambiguation.
+    alternateName: ["Preisser Solutions"],
     legalName: "Preisser Solutions",
     url: "https://preissersolutions.com",
     logo: {
@@ -174,15 +163,15 @@ const structuredData = [
     },
     image: "https://preissersolutions.com/images/ps-logo.png",
     description:
-      "Preisser Solutions provides AI-powered marketing for Kansas businesses, including websites, local visibility, paid ads, and practical automation. Based in Hays, Kansas. Founded by Tyler Preisser. Not automotive tuning, not hardware.",
+      "Preisser Solutions delivers Kansas-based AI automation, custom websites, and AI search visibility systems for small and mid-sized businesses. Based in Hays, Kansas. Founded by Tyler Preisser. Not automotive tuning, not hardware.",
     disambiguatingDescription:
       "Preisser Solutions (preissersolutions.com) is the custom software, web development, and AI automation consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Solutions' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Solutions builds websites, web applications, AI agents, and business automation systems exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: sales@preissersolutions.com.",
     slogan:
       "AI-powered marketing for Kansas",
     foundingDate: "2023",
     founder: { "@id": PERSON_ID },
-    email: "sales@preissersolutions.com",
-    telephone: "+16203523296",
+    email: siteConfig.contact.email,
+    telephone: siteConfig.contact.phone,
     address: {
       "@type": "PostalAddress",
       streetAddress: "Hays",
@@ -196,47 +185,71 @@ const structuredData = [
       latitude: 38.8794,
       longitude: -99.3268,
     },
+    // R-012: Kansas (state) + Great Plains (region) + named major KS markets
+    // so AI engines see the business serves the whole state explicitly.
     areaServed: [
-      {
-        "@type": "State",
-        name: "Kansas",
-      },
-      {
-        "@type": "AdministrativeArea",
-        name: "Great Plains, United States",
-      },
+      { "@type": "State", name: "Kansas" },
+      { "@type": "AdministrativeArea", name: "Great Plains, United States" },
+      { "@type": "City", name: "Hays, Kansas" },
+      { "@type": "City", name: "Wichita, Kansas" },
+      { "@type": "City", name: "Topeka, Kansas" },
+      { "@type": "City", name: "Kansas City, Kansas" },
+      { "@type": "City", name: "Overland Park, Kansas" },
+      { "@type": "City", name: "Salina, Kansas" },
+      { "@type": "City", name: "Manhattan, Kansas" },
+      { "@type": "City", name: "Garden City, Kansas" },
+      { "@type": "City", name: "Great Bend, Kansas" },
+      { "@type": "City", name: "Dodge City, Kansas" },
+      { "@type": "City", name: "Lawrence, Kansas" },
+      { "@type": "City", name: "Olathe, Kansas" },
     ],
     contactPoint: [
       {
         "@type": "ContactPoint",
-        telephone: "+16203523296",
-        email: "sales@preissersolutions.com",
+        telephone: siteConfig.contact.phone,
+        email: siteConfig.contact.email,
         contactType: "sales",
         availableLanguage: "English",
         areaServed: "US",
       },
       {
         "@type": "ContactPoint",
-        telephone: "+16203523296",
-        email: "sales@preissersolutions.com",
+        telephone: siteConfig.contact.phone,
+        email: siteConfig.contact.email,
         contactType: "customer support",
         availableLanguage: "English",
         areaServed: "US",
       },
     ],
-    // NOTE: LinkedIn, Facebook, and X pages are set in advance — once Tyler
-    // creates or renames the pages, the Knowledge Graph entity will link
-    // correctly without a redeploy.
+    // R-014: sameAs is sourced from siteConfig.social so brand-team URL edits
+    // ripple through every JSON-LD surface without touching layout.tsx.
+    // TODO: add Wikidata Q-item and BBB profile URL once Tyler creates / claims them.
     sameAs: [
-      "https://www.linkedin.com/company/preissersolutions",
-      "https://www.facebook.com/preissersolutions",
-      "https://x.com/preissersolutions",
-      "https://github.com/tylerpreisser",
+      siteConfig.social.linkedin,
+      siteConfig.social.facebook,
+      siteConfig.social.twitter,
+      siteConfig.social.github,
+      siteConfig.social.crunchbase,
+      siteConfig.social.tylerPreisser,
+      siteConfig.social.rsquaredai,
     ],
+    // R-013: capability list expanded per master plan §2.2 (R-013).
     knowsAbout: [
+      "AI strategy",
+      "AI-native web development",
+      "Generative engine optimization",
+      "Answer engine optimization",
+      "AI search optimization",
+      "Retrieval-augmented generation",
+      "Workflow automation",
+      "Local SEO",
+      "Google Business Profile optimization",
+      "Dashboards",
+      "Business intelligence",
+      "Custom CRM",
+      "Missed-call automation",
       "Google Ads Management",
       "Meta Ads Management",
-      "AI Search Optimization (AEO/GEO)",
       "MarCommand AI Marketing Intelligence",
       "Custom Software Development",
       "Custom Web Development",
@@ -248,7 +261,6 @@ const structuredData = [
       "Dashboard and Analytics Systems",
       "Marketing Automation",
       "E-commerce Development",
-      "Workflow Automation",
       "Small Business Software Solutions",
       "Digital Transformation for Kansas Businesses",
       "B2B Technology Consulting",
@@ -347,6 +359,35 @@ const structuredData = [
       ],
     },
     priceRange: "$$",
+    // R-019: PotentialAction surfaces for agentic commerce. Booking and
+    // ROI calculator are the two primary actions an AI agent can invoke
+    // on behalf of a user. Both use schema.org Action shapes.
+    potentialAction: [
+      {
+        "@type": "ScheduleAction",
+        name: "Book a Business Systems Audit",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: "https://preissersolutions.com/contact",
+          actionPlatform: [
+            "https://schema.org/DesktopWebPlatform",
+            "https://schema.org/MobileWebPlatform",
+          ],
+        },
+      },
+      {
+        "@type": "AssessAction",
+        name: "Calculate Automation ROI",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: "https://preissersolutions.com/roi-calculator",
+          actionPlatform: [
+            "https://schema.org/DesktopWebPlatform",
+            "https://schema.org/MobileWebPlatform",
+          ],
+        },
+      },
+    ],
   },
 
   // -------------------------------------------------------------------------
@@ -369,9 +410,17 @@ const structuredData = [
     disambiguatingDescription:
       "This Tyler Preisser is the founder of Preisser Solutions (preissersolutions.com), a custom software firm in Hays, Kansas. He is the same Tyler Preisser featured in Hays Post articles about FHSU's Sky Sprayers, Hansen Hall, and other FHSU coverage. He is not affiliated with other individuals named Tyler Preisser unrelated to the Preisser Solutions custom software business.",
     worksFor: { "@id": ORG_ID },
+    // R-011: Tyler's other affiliation — Chief Product Officer at R Squared AI.
+    // This lets the Knowledge Graph link the Person to both entities.
+    affiliation: {
+      "@type": "Organization",
+      name: "R Squared AI",
+      url: siteConfig.social.rsquaredai,
+      roleName: "Chief Product Officer",
+    },
     url: "https://preissersolutions.com/about",
-    email: "sales@preissersolutions.com",
-    telephone: "+16203523296",
+    email: siteConfig.contact.email,
+    telephone: siteConfig.contact.phone,
     address: {
       "@type": "PostalAddress",
       addressLocality: "Hays",
@@ -397,10 +446,16 @@ const structuredData = [
       height: 1200,
       caption: "Tyler Preisser, founder of Preisser Solutions",
     },
+    // R-011: Person sameAs — all known canonical identities for Tyler.
+    // TODO: confirm GitHub handle. Currently using `github.com/tylerpreisser`
+    // (matches the legacy Organization sameAs). If Tyler's personal GH handle
+    // differs from the Preisser Solutions org handle, swap this URL.
     sameAs: [
       "https://preissersolutions.com/tyler-preisser",
-      "https://www.linkedin.com/in/tylerpreisser",
+      siteConfig.social.linkedinPersonal,
       "https://github.com/tylerpreisser",
+      siteConfig.social.tylerPreisser,
+      siteConfig.social.rsquaredai,
     ],
     knowsAbout: [
       "Custom Software Development",
@@ -424,7 +479,7 @@ const structuredData = [
     url: "https://preissersolutions.com",
     name: "Preisser Solutions",
     description:
-      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
+      "Preisser Solutions helps Kansas businesses grow with custom websites, local SEO, AI search optimization, CRM systems, dashboards, and workflow automation. Based in Hays, Kansas.",
     publisher: { "@id": ORG_ID },
     inLanguage: "en-US",
     potentialAction: {
@@ -445,9 +500,9 @@ const structuredData = [
     "@type": "WebPage",
     "@id": WEBPAGE_ID,
     url: "https://preissersolutions.com",
-    name: "Preisser Solutions | World-Class AI-Powered Marketing For Kansas",
+    name: "Preisser Solutions | AI Automation, Websites & Local SEO in Kansas",
     description:
-      "AI-powered marketing for Kansas businesses that need sharper websites, stronger local visibility, accountable ads, and practical automation.",
+      "Preisser Solutions helps Kansas businesses grow with custom websites, local SEO, AI search optimization, CRM systems, dashboards, and workflow automation. Based in Hays, Kansas.",
     isPartOf: { "@id": WEBSITE_ID },
     about: { "@id": ORG_ID },
     author: { "@id": PERSON_ID },
@@ -476,8 +531,8 @@ const structuredData = [
     name: "Preisser Solutions",
     image: "https://preissersolutions.com/images/ps-logo.png",
     url: "https://preissersolutions.com",
-    telephone: "+16203523296",
-    email: "sales@preissersolutions.com",
+    telephone: siteConfig.contact.phone,
+    email: siteConfig.contact.email,
     address: {
       "@type": "PostalAddress",
       streetAddress: "Hays",

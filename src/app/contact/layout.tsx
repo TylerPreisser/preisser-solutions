@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -15,10 +16,23 @@ export const metadata: Metadata = {
   },
 };
 
+// R-016: BreadcrumbList JSON-LD for non-home page.
+const breadcrumbSchema = buildBreadcrumbs([
+  { name: "Contact", url: "https://preissersolutions.com/contact" },
+]);
+
 export default function ContactLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {children}
+    </>
+  );
 }

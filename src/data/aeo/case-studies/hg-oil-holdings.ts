@@ -3,6 +3,9 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "case-studies/hg-oil-holdings",
   tier: "trust_faq",
+  // R-018: Article freshness signals.
+  datePublished: "2024-11-08",
+  dateModified: "2026-05-15",
   metaTitle: "HG Oil Holdings Case Study — 95% Logistics Time Reduction | Preisser Solutions",
   metaDescription:
     "Detailed case study: Preisser Solutions delivered HG Oil Holdings a custom inventory system (95% time reduction) and AI invoicing assistant (75% manual handling reduction).",

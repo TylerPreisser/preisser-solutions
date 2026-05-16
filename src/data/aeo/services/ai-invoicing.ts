@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/ai-invoicing",
   tier: "service_detail",
-  metaTitle: "AI Invoicing Automation in Kansas | Preisser Solutions",
+  metaTitle: "AI Invoicing for Kansas Businesses | Preisser Solutions",
   metaDescription:
     "Preisser Solutions builds AI-powered invoice extraction and structuring systems. The HG Oil Holdings build delivered 75% reduction in manual invoice handling.",
   eyebrow: "AI Invoicing Automation",

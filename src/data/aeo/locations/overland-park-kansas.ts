@@ -114,7 +114,7 @@ export const pageData: AeoPageData = {
     { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
     { label: "Olathe, Kansas Custom Software", href: "/locations/olathe-kansas" },
     { label: "Lawrence, Kansas Custom Software", href: "/locations/lawrence-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
   ],
   ctaHeadline: "Build with a Kansas-based custom-software firm at Kansas economics",
   ctaSubcopy:

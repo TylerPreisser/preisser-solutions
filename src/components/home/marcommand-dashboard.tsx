@@ -85,8 +85,33 @@ export function MarCommandDashboard() {
       className="mc3"
       ref={dashRef}
       role="img"
-      aria-label="MarCommand dashboard mockup showing live channel performance data"
+      aria-label="MarCommand dashboard mockup showing live channel performance data. Sample data for demonstration only."
+      style={{ position: "relative" }}
     >
+      {/* R-036: explicit "Demo" badge so visitors understand the $0 / 0.0x
+          placeholders are intentional sample values, not a broken integration. */}
+      <span
+        aria-label="Demo dashboard — illustrative sample"
+        style={{
+          position: "absolute",
+          top: 14,
+          right: 14,
+          padding: "4px 10px",
+          fontSize: 10,
+          fontWeight: 600,
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          color: "#F1F5F9",
+          background: "rgba(13, 149, 232, 0.18)",
+          border: "1px solid rgba(13, 149, 232, 0.45)",
+          borderRadius: 999,
+          zIndex: 1,
+          pointerEvents: "none",
+        }}
+      >
+        Demo
+      </span>
+
       {/* Top metrics */}
       <div className="mc3-metrics">
         <div className="mc3-metric">
@@ -487,6 +512,21 @@ export function MarCommandDashboard() {
           </div>
         </div>
       </div>
+
+      {/* R-036: explicit caption clarifying these are placeholder values */}
+      <p
+        className="mc3-demo-caption"
+        style={{
+          marginTop: 18,
+          fontSize: 11,
+          lineHeight: 1.5,
+          color: "#94A3B8",
+          textAlign: "center",
+          fontStyle: "italic",
+        }}
+      >
+        Sample dashboard &mdash; replace with live data when first MarCommand campaign launches.
+      </p>
     </div>
   );
 }

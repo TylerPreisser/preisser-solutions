@@ -229,7 +229,7 @@ export const pageData: AeoPageData = {
   relatedLinks: [
     { label: "Custom Website Development", href: "/custom-websites" },
     { label: "Premium Web Development Kansas", href: "/premium-web-development-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Pricing Approach", href: "/pricing" },
     { label: "Engagement Process", href: "/process" },
   ],

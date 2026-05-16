@@ -11,7 +11,7 @@ const URL_LIST = [
   `https://${HOST}/roi-calculator`,
   `https://${HOST}/why-automation`,
   // Brand defense
-  `https://${HOST}/preisser-technology`,
+  `https://${HOST}/preisser-solutions`,
   `https://${HOST}/tyler-preisser`,
   // Service hubs
   `https://${HOST}/custom-websites`,

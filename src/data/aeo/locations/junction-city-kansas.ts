@@ -110,7 +110,7 @@ export const pageData: AeoPageData = {
     { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
     { label: "Manhattan, Kansas Custom Software", href: "/locations/manhattan-kansas" },
     { label: "Topeka, Kansas Custom Software", href: "/locations/topeka-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
   ],
   ctaHeadline: "Build with a custom-software firm 165 miles west on I-70",
   ctaSubcopy:

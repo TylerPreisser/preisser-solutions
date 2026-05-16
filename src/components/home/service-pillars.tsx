@@ -1535,8 +1535,8 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
 
           {/* CTA */}
           <div className="ps-dialog-cta ps-dialog-reveal">
-            <a href="/contact" className="ps-dialog-cta-btn">
-              Interested? Let&rsquo;s talk
+            <a href="/contact?intent=review" className="ps-dialog-cta-btn">
+              Get a Website &amp; Automation Review
             </a>
           </div>
         </div>
@@ -1632,7 +1632,7 @@ export function ServicePillars() {
           What We Build for Kansas Businesses
         </h2>
         <p className="ps-services-intro">
-          Websites that convert. Marketing systems that fill your pipeline. Automation that eliminates busywork. Dashboards that show exactly what&apos;s working. And when your tech stack is broken, we fix it. Everything built to enterprise standards — deployed for local businesses.
+          We connect your website, CRM, forms, ads, calls, and reports so leads are captured, followed up, and measured without manual chasing. Custom websites, marketing systems, automations, dashboards, and tech-stack fixes — built in-house by Tyler for Kansas SMBs, not subcontracted to template shops.
         </p>
       </div>
 

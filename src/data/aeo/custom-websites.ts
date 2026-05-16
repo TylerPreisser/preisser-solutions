@@ -1,11 +1,12 @@
 import type { AeoPageData } from "./types";
 
 /**
- * SERVICE HUB — /custom-websites
+ * SERVICE HUB — /services/custom-websites (canonical) — aliased at /custom-websites (legacy)
+ * Both URLs render; canonical via slug field points to /services/custom-websites.
  * Anchored to live JSON-LD service: "Custom Website Development"
  */
 export const pageData: AeoPageData = {
-  slug: "custom-websites",
+  slug: "services/custom-websites",
   tier: "service_detail",
   metaTitle: "Custom Website Development in Kansas | Preisser Solutions",
   metaDescription:
@@ -154,7 +155,7 @@ export const pageData: AeoPageData = {
     { label: "Premium Web Development Kansas", href: "/premium-web-development-kansas" },
     { label: "Hays Kansas Custom Websites", href: "/locations/hays-kansas" },
     { label: "Wichita Kansas Custom Websites", href: "/locations/wichita-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
   ],
   ctaHeadline: "Get a custom website built right",
   ctaSubcopy:

@@ -2,6 +2,111 @@
 
 ---
 
+## 2026-05-16 — REBUILD COMPLETE (Phases 1–7) — Awaiting Tyler Deploy
+
+**Directive**: Master rebuild Phase 7 — Deploy Prep Documentation. All seven phases of the brand-reversal rebuild are now complete in code/docs; Tyler executes the production deploy + post-deploy verification.
+
+**Phases 1–7 Summary**:
+
+- **Phase 1 — Backup**: Source repo at `~/Desktop/Preisser Solutions/` tagged `pre-brand-reversal-20260515-211952`. Zip backup at `/tmp/preisser-solutions-backup-20260515-211952.zip` (~50 MB). Two rollback paths preserved.
+- **Phase 2 — Clean folder**: `~/Desktop/Preisser-Solutions-Clean/` built via rsync from source. Used as the rebuild target throughout Phases 3–7 so the source repo remained untouched as a comparison baseline.
+- **Phase 3 — Brand reversal**: Node-script string replace (Preisser Tech → Preisser Solutions, preissertech.com → preissersolutions.com) across src/, public/, docs/, scripts/. 12 manual edits (botched `Preisser Solutionsnology` artifact in `src/app/layout.tsx:162` + `public/llms.txt:109`, route rename `/preisser-technology` → `/preisser-solutions`, `public/_redirects:20-21` inversion, `workers/legacy-preissersolutions-redirect.ts` deletion, indexnow URL list refresh, footer mailto fallback rewire).
+- **Phase 4 — Research integration**: All 178 research-doc points (R-001..R-178) integrated or deferred with documented notes. 15 sub-phases (4.1 foundational through 4.15 facts embedding). New artifacts: `docs/perplexity-strategy.md`, `docs/review-strategy.md`, `docs/performance-audit.md`, `docs/local-citations.md`, `docs/review-request-template.md`, `docs/priority-scorecard.md`, `.context/plans/30-60-90.md`, plus expanded blog scaffold, AEO data files, JSON-LD entity tightening, NAP normalization across components.
+- **Phase 5 — Cleanup**: Dead files removed (workers/ entirely, legacy redirects, obsolete brand-defense routes, unreferenced assets). Source dir retained as comparison reference.
+- **Phase 6 — Verification**: `npm run build` exits 0 (clean), 153 pages emitted, sitemap.xml regenerated with 151 URLs, zero `preissertech` occurrences in `out/*.html`, one acceptable legacy-portfolio reference in `out/llms-full.txt` (historic project context), canonical URLs all `https://preissersolutions.com/...`, type-check clean. **Lint skipped**: `next lint` deprecated in Next 16 — `eslint.config.mjs` flat-config follow-up flagged (non-blocking).
+- **Phase 7 — Deploy prep docs**: `.context/DEPLOY-CHECKLIST.md` created (228 lines, 10 sections: pre-deploy, Cloudflare Pages config, DNS verification, edge redirect rule, GitHub Pages alternate, post-deploy verification with crawler UAs, Search Console submission, rollback procedure, Tyler action items summary, sign-off template).
+
+**Open follow-ups (not blocking deploy)**:
+
+- `eslint.config.mjs` — add flat-config so `npm run lint` works under Next 16. Post-deploy follow-up.
+- Companion folders still named with OLD brand: `~/Desktop/preisser-tech-monitoring/` and `~/Desktop/preisser-tech-outreach/` need rename to `preisser-solutions-*`. Tyler operational task.
+- All R-* Tyler action items (GBP claim, Wikidata, Crunchbase, BBB, Clutch, local citations execution, review cadence kickoff, weekly tracking cadences) remain Tyler-side.
+
+**Awaiting Tyler**:
+
+1. Execute production deploy per `.context/DEPLOY-CHECKLIST.md` (Cloudflare Pages, primary).
+2. Run post-deploy verification (§6: crawler UAs, Lighthouse, JSON-LD validator).
+3. Submit sitemap to GSC + BWT, fire IndexNow (§7).
+4. Append final "DEPLOYED" sign-off entry to this CHANGELOG (template in DEPLOY-CHECKLIST.md §10) with the wrangler deployment hash.
+
+**Status**: Code/docs rebuild COMPLETE. Production deploy PENDING Tyler execution.
+
+---
+
+## 2026-05-15 — PHASE 4.9 + 4.12 + 4.15 BUNDLE (docs + competitive positioning + scaffolds)
+
+**Directive**: Master rebuild Phase 4.9 (platform-specific optimization R-088..R-094), Phase 4.12 (competitive positioning R-103..R-106), Phase 4.15 (facts embedding + open questions R-111..R-146 + §2.20).
+
+**Bucket A — Platform Optimization Docs (R-088..R-094)**:
+
+- `docs/perplexity-strategy.md` — NEW. Reddit-first citation strategy (10 target subs, 10 question patterns), YouTube transcript signal plan, Google AI Overviews three-lever framing.
+- `docs/review-strategy.md` — NEW. ChatGPT recommendation requirements (≥4.3 stars + NAP + entity recognition), 12-15 reviews in 90 days, acquisition cadence, response protocol.
+- `docs/performance-audit.md` — NEW. Core Web Vitals 2026 targets (LCP <2.5s, INP <200ms per R-128 March 2024 replacement of FID, CLS <0.1), 6 action items (image audit, GSAP lazy-load, CSS purge, font weight audit, JS bundle audit, edge cache), MCP server audit + recommended additions.
+- `src/components/video/VideoObjectSchema.tsx` — NEW. Placeholder JSDoc-documented schema.org VideoObject JSON-LD emitter for case-study videos. Not yet rendered (don't emit until videos exist).
+
+**Bucket B — Competitive Positioning (R-103..R-106)**:
+
+- `src/app/layout.tsx` — Organization JSON-LD `description` updated to canonical positioning sentence: "Preisser Solutions delivers Kansas-based AI automation, custom websites, and AI search visibility systems for small and mid-sized businesses."
+- `src/data/why-us.ts` — NEW. Seven defensible wedges as canonical source-of-truth data: local trust, founder-led, faster delivery, proven outcomes, one vendor, custom systems, AI search visibility.
+- `src/data/aeo/preisser-solutions.ts` — Added "Seven defensible wedges" section to the brand-defense AEO page (after the services section, before case studies). Wedges land where AI engines and brand-search visitors actually need them.
+- `src/data/aeo/compare/vs-opinosis.ts` + `src/app/compare/vs-opinosis/page.tsx` — NEW. Kansas-specific custom builds vs. general AI analytics tooling.
+- `src/data/aeo/compare/vs-lithium-marketing.ts` + `src/app/compare/vs-lithium-marketing/page.tsx` — NEW. Custom AI infrastructure clients own vs. licensed live AI demo phone line.
+- `src/data/aeo/compare/vs-kc-ai-pro.ts` + `src/app/compare/vs-kc-ai-pro/page.tsx` — NEW. Ship-systems-first vs. audit-led discovery.
+- **R-106 (Live AI demo phone line)** — DEFERRED. Operational decision, not a code task. Captured in OPEN-QUESTIONS-FOR-TYLER.md Q5.
+
+**Bucket C — Open Questions + New Scaffolds + Fact Embeds (R-111..R-146, §2.20, R-165..R-173, R-119, R-128, R-129)**:
+
+- `.context/OPEN-QUESTIONS-FOR-TYLER.md` — NEW. Eight open operational questions verbatim from master plan §2.20: legacy domain disposition, consumer media identity, directory submissions, original-research survey, live AI demo line, productized SKU sign-off, ESP choice, case-study client naming.
+- `src/data/aeo/privacy.ts` + `src/app/privacy/page.tsx` — NEW. Privacy policy boilerplate; ~700 words; CCPA / GDPR-aware; flagged as template language requiring counsel review.
+- `src/data/aeo/terms.ts` + `src/app/terms/page.tsx` — NEW. Terms of service boilerplate; ~900 words; aligned to the three-tier pricing model and the founder-led delivery model; IP transfer-on-payment + reusable-template carve-out; Kansas law + Ellis County venue; flagged as template language requiring counsel review.
+- `src/data/aeo/resources.ts` + `src/app/resources/page.tsx` — NEW. Resource hub; cross-links to blog, ROI calculator, integrations, case studies, services, comparisons, pricing, FAQ, /about, /tyler-preisser.
+- `src/data/aeo/products.ts` + `src/app/products/page.tsx` — NEW. Productized SKUs: AI Receptionist Starter and AI-Native Website Launch. "Currently configurable — contact for pricing" — no fabricated price points (per master plan directive).
+- `src/components/layout/footer.tsx` + `src/styles/globals.css` — Added /privacy and /terms links to footer bottom row with theme-aware styling.
+- `src/data/aeo/services/ai-search-optimization.ts` — Embedded R-119 (~10% of tracked domains carry llms.txt per SERanking Nov 2025) and R-129 (Anthropic, Stripe, Cursor, Cloudflare, Vercel, Mintlify, Astro as early adopters) into the glossary section under the llms.txt entry. R-128 (INP replaced FID March 2024) embedded in `docs/performance-audit.md`.
+
+**Notes on deferred items**:
+
+- **R-091 macro context** for "AI Overviews appear on 16% of Google queries" is best embedded in `/blog/what-is-ai-search-optimization` once Phase 4.8 (blog content) ships. Captured in this changelog for traceability.
+- **R-106 live AI demo phone line** — see OPEN-QUESTIONS Q5.
+- Remaining R-111..R-146 facts that aren't already embedded in service / case-study data files are scheduled for Phase 4.8 (blog content). A copywriting pass across all blog posts is the right surface for the remaining 30+ facts.
+
+**Files changed / added**:
+
+NEW:
+- `docs/perplexity-strategy.md`
+- `docs/review-strategy.md`
+- `docs/performance-audit.md`
+- `.context/OPEN-QUESTIONS-FOR-TYLER.md`
+- `src/components/video/VideoObjectSchema.tsx`
+- `src/data/why-us.ts`
+- `src/data/aeo/compare/vs-opinosis.ts`
+- `src/data/aeo/compare/vs-lithium-marketing.ts`
+- `src/data/aeo/compare/vs-kc-ai-pro.ts`
+- `src/data/aeo/privacy.ts`
+- `src/data/aeo/terms.ts`
+- `src/data/aeo/resources.ts`
+- `src/data/aeo/products.ts`
+- `src/app/compare/vs-opinosis/page.tsx`
+- `src/app/compare/vs-lithium-marketing/page.tsx`
+- `src/app/compare/vs-kc-ai-pro/page.tsx`
+- `src/app/privacy/page.tsx`
+- `src/app/terms/page.tsx`
+- `src/app/resources/page.tsx`
+- `src/app/products/page.tsx`
+
+MODIFIED:
+- `src/app/layout.tsx` (Organization description)
+- `src/data/aeo/preisser-solutions.ts` (added Seven defensible wedges section)
+- `src/data/aeo/services/ai-search-optimization.ts` (R-119 + R-129 fact embeds)
+- `src/components/layout/footer.tsx` (legal links row)
+- `src/styles/globals.css` (footer legal styling)
+
+**Routes added**: 7 (`/compare/vs-opinosis`, `/compare/vs-lithium-marketing`, `/compare/vs-kc-ai-pro`, `/privacy`, `/terms`, `/resources`, `/products`).
+
+**Build status**: Not yet verified; verification deferred to Phase 6.
+
+---
+
 ## 2026-05-11 — PUNCH LIST PASS: COPY, STRUCTURE, ENTERPRISE REFS (web-code-executor)
 
 **Directive**: Tyler's 12-item punch list — surgical copy, structure, and visual fixes to homepage.
@@ -1191,3 +1296,117 @@ curl -I https://preissersolutions.com/robots.txt
 - Dashboards kept as standalone pillar (not folded). The 5-card bento grid visually distinguishes all pillars and Dashboards has distinct enterprise credibility (Sunrise Power BI). Folding it would lose that signal.
 - MarCommand heading is just "MarCommand" per instruction — the product name carries the weight without a tagline.
 - Tyler placeholder text added in 3 enterprise case study cards (Alliant, Astris, Salesforce) — Tyler needs to fill in project specifics.
+
+---
+
+## 2026-05-16 — Codebase Cartography Complete (codebase-cartographer)
+
+**Mission**: Deep intelligent investigation of Preisser Tech codebase (2026-05-15 state), produce perfect context for future agents.
+
+**Deliverable**: `.context/CARTOGRAPHY.md` (1200+ lines, comprehensive)
+
+### What Was Mapped
+
+**Directory Structure**: 
+- 182-page static Next.js export
+- Root layout (metadata, Header, Footer, JSON-LD Organization schema)
+- 35 core pages + 73 AEO pages (locations, industries, comparisons, special AEO) + 5 blog posts + supporting routes
+- Full src/ tree documented (components, hooks, lib, data, styles)
+
+**AEO Content System** (THE KEY INSIGHT):
+- Data-driven: all content lives in `src/data/aeo/{category}/*.ts`
+- Shared renderer: `AeoPage.tsx` (630 lines) emits consistent JSON-LD schema + layout
+- Dynamic routing: `[slug]/page.tsx` files import data, renderAeoPage, auto-generate metadata
+- Scaling mechanism: add new `.ts` data file + route file → 182 → 183 pages at build time
+- Interface: `AeoPageData` is the contract (metaTitle, h1, sections, FAQ, schemaType, etc.)
+
+**Tech Stack Inventory**:
+- Next.js 15.3.0 (App Router, static export only)
+- React 19.1.0 + TypeScript 5.7.0
+- Tailwind v4.0.0 (with HDS-style tokens in globals.css)
+- GSAP 3.12.7 + ScrollTrigger (animations via single lib/gsap.ts registration point)
+- Framer Motion 12.0.0 (page transitions, micro-interactions)
+- Cloudflare Pages deployment (wrangler.toml project "preisser-solutions", custom domain preissertech.com)
+
+**Design System**:
+- 7535-line globals.css with design tokens (colors, typography, spacing, shadows, easing)
+- CSS variables for semantic values (--color-primary, --theme-bg-primary, etc.)
+- Dark mode default + light mode overrides via data-theme attribute
+- Stripe-inspired: dark nav/hero + light content sections + gradient accents
+
+**Brand Audit Summary**:
+- **FIXED**: package.json name, layout.tsx alternateName, JSON-LD organization name, robots.txt, sitemap.xml, llms.txt
+- **RESIDUAL (cosmetic)**: wrangler.toml still says "preisser-solutions" (mints pages.dev subdomain, noindex applied), layout.tsx metadata still has some preissersolutions references, CLAUDE.md outdated
+- **CRITICAL BLOCKER**: Cloudflare dashboard has a reverse redirect rule (preissertech.com → preissersolutions.com) — NEEDS TYLER to delete
+
+**Code Conventions Documented**:
+- PascalCase components, kebab-case files
+- @/* path aliases (never relative)
+- ALL content in src/data/, never hardcoded in JSX
+- GSAP through lib/gsap.ts only (single registration point)
+- Prefers-reduced-motion respected on all animations
+- Server component event handler restriction (use "use client" for interactivity)
+
+**Performance & AI Readiness**:
+- Build: 182 pages, 179 sitemap URLs, ~1 min clean build
+- Lighthouse: 68 Performance, 93 Accessibility, 100 Best Practices, 100 SEO
+- AI crawlers: 12/12 major crawlers return HTTP 200 (zero blocks)
+- Schema: Organization, Service, WebPage, Article, FAQ, BreadcrumbList all emitted correctly
+- AI-readable surface: llms.txt (14.7 KB), llms-full.txt (34.6 KB), robots.txt, MCP server card
+
+**Gotchas Identified**:
+1. Static export only — no API routes, no server-side data fetching
+2. Server component event handler restriction
+3. GSAP import path (lib/gsap.ts authority)
+4. Tailwind v4 CSS variables override pattern
+5. Metadata canonicals must all point to preissertech.com
+6. AEO pages not linked in public nav (crawlable only)
+7. Blog post slugs must match filenames exactly
+8. Prefers-reduced-motion must be checked before animating
+
+**Companion Systems**:
+- Monitoring (preisser-tech-monitoring/): daily mention/backlink tracker
+- Outreach (preisser-tech-outreach/): press/journalist/podcast/social assets
+- Query Dominance (query-dominance/): multi-agent SEO research
+
+**Output**:
+- `.context/CARTOGRAPHY.md` — 1200+ lines, comprehensive reference for all future agents
+- All findings preserved for next session's use
+- No code changes made (read-only cartography pass)
+
+**Status**: COMPLETE. Codebase is fully understood and documented. Ready for orchestrator to delegate Phase 2 execution tasks to subagents.
+
+
+## 2026-05-15 (Brand Reversal)
+- Reverted brand from "Preisser Tech / preissertech.com" back to "Preisser Solutions / preissersolutions.com" per Tyler decision.
+- Rewrote: src/, public/, docs/, .context/ (selective), scripts/, functions/ (comments only), workers/ (deleted).
+- Fixed botched-replace artifact "Preisser Solutionsnology" → "Preisser Solutions" in src/app/layout.tsx:162 and public/llms.txt:109.
+- Renamed brand-defense page route: /preisser-technology → /preisser-solutions.
+- Inverted public/_redirects:20-21 to redirect the legacy slug to the new canonical.
+- Deleted workers/legacy-preissersolutions-redirect.ts (had inverted CANONICAL_HOST).
+- Updated indexnow-ping URL list to use new slug.
+- Integrated research-doc points R-001 through R-178 (see PREISSER-SOLUTIONS-MASTER-REBUILD-PROMPT.md §2).
+
+## 2026-05-15 (Phase 4.7 + 4.13 + 4.14 + 4.15)
+- **R-062 verified** — Footer + Contact page render NAP via semantic `<address>` element pulling from `siteConfig.contact.*` (no change required; verified still in place).
+- **R-063 documented** — GBP claim + 3-category selection added to Tyler Action Items (primary: Website designer; secondary: Software company, Marketing consultant).
+- **R-064 verified + fixed** — Audited brand-emitting NAP across `src/` + `public/`. All matches in `src/data/aeo/*` and `public/llms*.txt` are data files (acceptable). Layout/contact/footer components use `siteConfig.contact.*`. Fixed ONE hardcoded `sales@preissersolutions.com` in `src/components/layout/footer.tsx` (newsletter mailto fallback) — now sources from `siteConfig.contact.email`.
+- **R-065 created** — `docs/local-citations.md` (6 tiers, ~40 directories, canonical NAP header, "Pending — Tyler to claim" placeholders).
+- **R-066 created** — `docs/review-request-template.md` (three templates: Standard, Result-led, Follow-up + organic keyword steering notes + Google policy guardrails).
+- **R-107..R-110 documented** — Weekly SEO tracking, AEO/GEO tracking, GBP performance tracking, and conversion tracking all appended to Tyler Action Items with companion-folder rename notes (`~/Desktop/preisser-tech-monitoring/`, `~/Desktop/query-dominance/`, `~/Desktop/preisser-tech-outreach/`).
+- **§2.14 created** — `.context/plans/30-60-90.md` — 30/60/90-day execution plan (foundation → content + outreach → paid pilot + refresh + second wave). Markdown checklist format.
+- **§2.15 created** — `docs/priority-scorecard.md` — directional priority matrix (~33 items, Effort/Impact/Priority/Status columns, scoring rule, re-scoring triggers).
+
+---
+
+## Tyler Action Items
+
+External, manual steps that cannot be performed by code agents. Track completion here as Tyler does each one.
+
+- [ ] **R-028 — Sitemap submission to Google Search Console + Bing Webmaster Tools.** After production deploy, submit `https://preissersolutions.com/sitemap.xml` to GSC (Property → Sitemaps) and BWT (Sitemaps). Required for fast initial indexing of the 182 pages. Added 2026-05-15.
+- [ ] **R-061 — Decision on legacy consumer / political channels (Preisser Media).** Open question: how to position Tyler's existing consumer and political YouTube, TikTok, and Snapchat presence (300K+ followers, 30M+ views combined) in relation to the Preisser Solutions consultant identity. Options: (a) repurpose channel descriptions toward business / engineering content so they reinforce the consultancy brand; (b) accept brand-neutrality cost and keep them entirely separate from preissersolutions.com (no cross-linking, no `sameAs`); (c) link them as "Preisser Media — personal content" with a clear disambiguation note on the About page. Decision affects: layout.tsx Person `sameAs` array, About page copy, llms.txt, ai.txt. Added 2026-05-15 (Phase 4.6 / R-061).
+- [ ] **R-063 — Google Business Profile (GBP) claim + category selection.** Claim the Preisser Solutions GBP at business.google.com using the canonical NAP (`+1-620-352-3296`, `sales@preissersolutions.com`, `Hays, Kansas 67601`). Select three categories: **primary = Website designer**, **secondary = Software company** and **Marketing consultant**. Set hours to "By appointment". Upload the same headshot + logo used elsewhere on the site for visual consistency across citations. After verification, capture the GBP short review-link ID and update `docs/review-request-template.md` placeholder `{GBP_REVIEW_LINK_ID}`. Mirror category selection on Bing Places and Apple Business Connect once GBP is live. Added 2026-05-15 (Phase 4.7 / R-063).
+- [ ] **R-107 — Weekly SEO tracking metrics.** Stand up a weekly tracking cadence for organic traffic and ranking performance. Pull from Google Search Console every Friday: impressions, clicks, average position, top-10 query winners and losers week-over-week. Track ~25 target keywords (custom website Kansas, AI agents Hays, business automation Kansas, etc.) in a manual rank-tracking sheet or via a tool like Ahrefs / Semrush / Serpfox. Companion folder: `~/Desktop/preisser-tech-monitoring/` (note: folder named with OLD brand — needs renaming to `preisser-solutions-monitoring/`). Added 2026-05-15 (Phase 4.13 / R-107).
+- [ ] **R-108 — AEO / GEO tracking.** Track Answer Engine + Generative Engine surfacing for Preisser Solutions. Manually query Perplexity, Claude (claude.ai), ChatGPT, Google AI Overviews, and Bing Copilot for ~10 target prompts ("custom software firm Hays Kansas", "AI agents for Kansas businesses", "Tyler Preisser consultancy", etc.) weekly. Log whether Preisser Solutions appears, in what context, and with what citation URL. Goal: appear in top-3 citations for branded queries within 60 days and top-3 for "Hays Kansas custom software" within 90. Companion folder: `~/Desktop/query-dominance/` (note: folder named with OLD brand — needs renaming). Added 2026-05-15 (Phase 4.13 / R-108).
+- [ ] **R-109 — Local SEO tracking (GBP performance).** Track Google Business Profile performance monthly after R-063 claim lands. Pull from GBP Insights: search views (direct vs discovery), profile actions (calls, website clicks, direction requests), photo views, and review count + average rating. Goal: 50+ reviews and 4.8+ rating by end of year 1, with 60%+ of profile actions originating from discovery search (vs branded). Cross-reference with monthly review-request-template.md send cadence. Added 2026-05-15 (Phase 4.13 / R-109).
+- [ ] **R-110 — Conversion tracking.** Stand up end-to-end conversion tracking from inbound channel → contact form submission → discovery call booked → signed proposal → closed engagement. Form submissions arrive at `sales@preissersolutions.com`; tag UTMs on every external link Tyler controls (citations, social, podcast appearances, paid pilot creatives) so source attribution is recoverable in form replies. Maintain a simple CRM sheet (or proper CRM if volume justifies) tracking: lead source, first contact date, discovery call date, proposal sent date, signed date, project value. Target a measurable lift in conversion-rate from organic over the first 90 days post-deploy. Companion folder: `~/Desktop/preisser-tech-outreach/` (note: folder named with OLD brand — needs renaming to `preisser-solutions-outreach/`). Added 2026-05-15 (Phase 4.13 / R-110).

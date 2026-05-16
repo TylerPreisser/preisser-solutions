@@ -109,7 +109,7 @@ export const pageData: AeoPageData = {
   relatedLinks: [
     { label: "Overland Park, Kansas Custom Software", href: "/locations/overland-park-kansas" },
     { label: "Olathe, Kansas Custom Software", href: "/locations/olathe-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Custom Website Development", href: "/custom-websites" },
   ],
   ctaHeadline: "Get KC-metro craft at Kansas economics",

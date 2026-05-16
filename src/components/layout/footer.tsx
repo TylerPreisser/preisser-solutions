@@ -29,8 +29,9 @@ export function Footer() {
       return;
     }
 
-    // Mailto fallback: sends a notification email to sales with the subscriber address
-    window.location.href = `mailto:sales@preissersolutions.com?subject=New%20Newsletter%20Subscriber&body=New%20subscriber%3A%20${encodeURIComponent(email)}`;
+    // Mailto fallback: sends a notification email to sales with the subscriber address.
+    // NAP source-of-truth: siteConfig.contact.email (R-064 — no hardcoded brand-emitting NAP).
+    window.location.href = `mailto:${siteConfig.contact.email}?subject=New%20Newsletter%20Subscriber&body=New%20subscriber%3A%20${encodeURIComponent(email)}`;
     setSubscribed(true);
   }
 
@@ -38,7 +39,7 @@ export function Footer() {
     <footer id="footer" className="ps-footer" aria-label="Site footer">
       <div className="ps-container">
         <div className="ps-footer-main">
-          {/* Left: logo + tagline + location */}
+          {/* Left: logo + tagline + visible NAP (Name, Address, Phone) */}
           <div className="ps-footer-brand">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -49,9 +50,28 @@ export function Footer() {
             <p className="ps-footer-tagline">
               {siteConfig.tagline}
             </p>
-            <p className="ps-footer-location">
-              {siteConfig.contact.location}
-            </p>
+            {/* Visible NAP — required for local SEO consistency and citation matching. */}
+            <address className="ps-footer-nap" style={{ fontStyle: "normal" }}>
+              <span className="ps-footer-location">
+                {siteConfig.contact.location}
+              </span>
+              <br />
+              <a
+                href={`mailto:${siteConfig.contact.email}`}
+                className="ps-footer-contact-link"
+                aria-label={`Email Preisser Solutions at ${siteConfig.contact.email}`}
+              >
+                {siteConfig.contact.email}
+              </a>
+              <br />
+              <a
+                href={`tel:${siteConfig.contact.phone.replace(/[^+\d]/g, "")}`}
+                className="ps-footer-contact-link"
+                aria-label={`Call Preisser Solutions at ${siteConfig.contact.phone}`}
+              >
+                {siteConfig.contact.phone}
+              </a>
+            </address>
           </div>
 
           {/* Right: email signup */}
@@ -109,6 +129,11 @@ export function Footer() {
           <p className="ps-footer-copy">
             &copy; {year} {siteConfig.name}. All Rights Reserved.
           </p>
+          <div className="ps-footer-legal" aria-label="Legal links">
+            <a href="/privacy">Privacy</a>
+            <span aria-hidden="true"> · </span>
+            <a href="/terms">Terms</a>
+          </div>
           <div className="ps-footer-social" aria-label="Social links">
             {siteConfig.social.linkedin && (
               <a

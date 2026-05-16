@@ -32,6 +32,28 @@ export interface ComparisonRow {
   competitor: string;
 }
 
+/**
+ * R-096 — explicit pricing tier shape for /pricing.
+ *
+ * Renders as a 3-column tier card grid in AeoPage when present. Used so the
+ * pricing page can present "Audit / Sprint / Retainer" as the three primary
+ * commercial offers without being buried inside paragraph copy.
+ */
+export interface PricingTier {
+  /** Tier label, e.g. "Tier 1: Business Systems Audit" */
+  name: string;
+  /** One-line price summary, e.g. "$1,500 - $3,500" */
+  priceRange: string;
+  /** Plain-language tagline shown under the name */
+  tagline: string;
+  /** Deliverables shown as a bulleted list */
+  deliverables: string[];
+  /** Who this tier is for */
+  useCase: string;
+  /** Approved CTA label + href */
+  cta: { label: string; href: string };
+}
+
 export interface AeoPageData {
   /** URL slug (no leading slash) */
   slug: string;
@@ -61,16 +83,43 @@ export interface AeoPageData {
   /** FAQ block — minimum 5 items per AI-citation best practice */
   faq: FAQItem[];
   /** Schema.org type to use for the primary entity */
-  schemaType: "WebPage" | "Service" | "Article" | "FAQPage" | "Organization" | "Person" | "ProfessionalService" | "AboutPage";
+  schemaType: "WebPage" | "Service" | "Article" | "BlogPosting" | "FAQPage" | "Organization" | "Person" | "ProfessionalService" | "AboutPage";
   /** Optional named entities mentioned on page (for citation graphs) */
   namedEntities?: string[];
   /** Optional related/internal links to render at the bottom */
   relatedLinks?: { label: string; href: string }[];
+  /**
+   * R-018: ISO-8601 date the page (or the underlying case study / article)
+   * was first published. Required for `schemaType: "Article"` pages so
+   * Google AI Overviews can attach E-E-A-T freshness signals; optional for
+   * Service / WebPage types.
+   */
+  datePublished?: string;
+  /**
+   * R-018: ISO-8601 date of the most recent meaningful content edit.
+   * Bump whenever the page substantively changes — AI engines re-rank stale
+   * citations against fresher equivalents.
+   */
+  dateModified?: string;
   /** Final CTA copy */
   ctaHeadline: string;
   ctaSubcopy: string;
+  /**
+   * R-096 — optional pricing tier cards. When present (typically on /pricing),
+   * AeoPage renders a 3-tier card grid between the answer paragraph and the
+   * body sections. Omit on every other AEO page.
+   */
+  tiers?: PricingTier[];
+  /**
+   * R-095 — optional override for the final CTA button. When present,
+   * AeoPage's bottom CTA renders this label/href in place of the default
+   * "Book a Business Systems Audit". Use for service-specific pages where a
+   * different approved CTA (e.g. "Request an AI Search Visibility Audit")
+   * better matches the page topic.
+   */
+  primaryCta?: { label: string; href: string };
   /** Tier label for organization */
-  tier: "brand_defense" | "service_detail" | "industry" | "location" | "comparison" | "aeo_seo" | "trust_faq";
+  tier: "brand_defense" | "service_detail" | "industry" | "location" | "comparison" | "aeo_seo" | "trust_faq" | "blog";
   /**
    * Optional headshot displayed in the hero section beside the H1/subheadline.
    * When set, the hero renders a two-column layout (text + photo).

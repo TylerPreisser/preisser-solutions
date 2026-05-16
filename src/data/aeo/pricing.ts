@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Researched, defensible starting prices for every service. Fixed-price proposals after a free scoping call. Premium boutique tier — above template shops, below enterprise agency markup.",
   answerParagraph:
-    "Preisser Solutions publishes researched starting prices anchored to 2026 premium boutique market rates: custom websites start at $12,500, business automation systems start at $8,500, dashboards start at $9,500, AI agents start at $15,000, and custom web applications start at $28,500. Every engagement is a fixed-price project priced after a free 30-60 minute scoping call with founder Tyler Preisser personally. These starting numbers position Preisser Solutions in the premium boutique tier — above template shops and freelancer marketplaces, below enterprise agency rates that assume multi-person teams. Because Tyler delivers every project personally without agency overhead, project managers, or subcontractor markup, the work is significantly more efficient than comparable boutique agencies in Kansas City or Wichita. Reference clients include Cassidy HVAC and HG Oil Holdings.",
+    "Preisser Solutions structures every commercial engagement into three explicit tiers. Tier 1 is a Business Systems Audit ($1,500-$3,500): a written audit, a 30-day action plan, and a handoff call — the right starting point for a Kansas business owner who wants clarity before committing to a build. Tier 2 is a Build Sprint ($5,000-$25,000 per scoped sprint): a defined website, automation, integration, dashboard, or AI agent shipped in 4-8 weeks. Tier 3 is a Growth & Automation Retainer ($3,500-$12,000/month): ongoing improvements, AI search optimization, content, monitoring, and dashboards for established Kansas SMBs that want to keep compounding. Every tier is founder-led by Tyler Preisser personally — no subcontractors, no agency overhead, no junior handoffs. Reference clients include Cassidy HVAC and HG Oil Holdings.",
   sections: [
     {
       eyebrow: "How pricing works",
@@ -190,7 +190,7 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
   ],
   relatedLinks: [
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Engagement Process", href: "/process" },
     { label: "Master FAQ", href: "/faq" },
     { label: "Custom Website Development", href: "/custom-websites" },
@@ -203,4 +203,51 @@ export const pageData: AeoPageData = {
   ctaHeadline: "Get an honest estimate",
   ctaSubcopy:
     "Free scoping call. Tyler personally walks through what you're trying to build and gives a fixed-price number — no sales pitch, no obligation.",
+  /**
+   * R-096 — three explicit commercial tiers. Rendered as a 3-card grid by
+   * AeoPage between the answer paragraph and the body sections.
+   */
+  tiers: [
+    {
+      name: "Tier 1: Business Systems Audit",
+      priceRange: "$1,500 - $3,500",
+      tagline: "Entry-level. Clarity before you commit to a build.",
+      deliverables: [
+        "Written audit of your current systems, website, automations, and lead flow",
+        "30-day action plan with prioritized fixes and quick wins",
+        "Founder handoff call to walk you through the findings",
+      ],
+      useCase:
+        "Best for a Kansas business owner who wants an honest, expert look at where the leaks are before committing to a full engagement.",
+      cta: { label: "Book a Business Systems Audit", href: "/contact?intent=audit" },
+    },
+    {
+      name: "Tier 2: Build Sprint",
+      priceRange: "$5,000 - $25,000 per scoped sprint",
+      tagline: "Mid-tier. A specific system, designed and shipped in 4-8 weeks.",
+      deliverables: [
+        "Custom website, automation, integration, dashboard, CRM, or AI agent",
+        "Fixed scope, fixed price, fixed timeline — written into the proposal",
+        "Founder-led delivery, in-house only, no subcontractors",
+        "30 days of post-launch support",
+      ],
+      useCase:
+        "Best for a Kansas business that knows what it wants built (a CRM, a custom site, an automation, an AI agent, a dashboard) and wants a real engineer to ship it in weeks rather than quarters.",
+      cta: { label: "Get a Website & Automation Review", href: "/contact?intent=review" },
+    },
+    {
+      name: "Tier 3: Growth & Automation Retainer",
+      priceRange: "$3,500 - $12,000 / month",
+      tagline: "Top tier. Ongoing improvement on the systems you've already built.",
+      deliverables: [
+        "Monthly improvements to your website, automations, and dashboards",
+        "AI search visibility optimization (AEO/GEO) and content production",
+        "Performance monitoring and reporting on the metrics that matter",
+        "Direct founder access for changes and new requests",
+      ],
+      useCase:
+        "Best for an established Kansas SMB that has a working system and wants Tyler in the loop month-over-month to keep it compounding.",
+      cta: { label: "Request an AI Search Visibility Audit", href: "/contact?intent=audit" },
+    },
+  ],
 };

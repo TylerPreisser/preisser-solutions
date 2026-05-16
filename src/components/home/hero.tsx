@@ -2,11 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { siteConfig } from "@/data/site-config";
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
-
+  const subheadRef = useRef<HTMLParagraphElement>(null);
   const ctasRef = useRef<HTMLDivElement>(null);
 
   // Animated flowing wave mesh — inline canvas, theme-aware
@@ -193,7 +194,7 @@ export function Hero() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const targets = [headlineRef, ctasRef];
+    const targets = [headlineRef, subheadRef, ctasRef];
 
     if (prefersReduced) {
       targets.forEach((r) => {
@@ -210,6 +211,11 @@ export function Hero() {
       tl.to(
           headlineRef.current,
           { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" }
+        )
+        .to(
+          subheadRef.current,
+          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+          "-=0.4"
         )
         .to(
           ctasRef.current,
@@ -237,18 +243,24 @@ export function Hero() {
           animated headline via CSS order, but first in the DOM for crawlers.
         */}
         <p className="ps-hero-summary sr-only">
-          Preisser Solutions provides AI-powered marketing for Kansas businesses,
-          including websites, local visibility, paid ads, and practical
-          automation. Founded by Tyler Preisser in Hays, Kansas.
+          Preisser Solutions builds AI automation, custom websites, and local SEO
+          for Kansas businesses. Founded by Tyler Preisser in Hays, Kansas.
         </p>
 
         <h1 ref={headlineRef} className="ps-hero-headline">
-          AI Powered Marketing, websites, visibility, ads, and automation built with an enterprise standard and brought home to Kansas.
+          {siteConfig.hero.h1}
         </h1>
 
+        <p ref={subheadRef} className="ps-hero-subtitle">
+          {siteConfig.hero.subhead}
+        </p>
+
         <div ref={ctasRef} className="ps-hero-ctas">
-          <Link href="/contact" className="ps-btn ps-btn-primary-dark">
-            Get in Touch
+          <Link
+            href={siteConfig.hero.primaryCta.href}
+            className="ps-btn ps-btn-primary-dark"
+          >
+            {siteConfig.hero.primaryCta.label}
             <svg
               className="ps-btn-arrow"
               width="16"
@@ -265,6 +277,12 @@ export function Hero() {
                 strokeLinejoin="round"
               />
             </svg>
+          </Link>
+          <Link
+            href={siteConfig.hero.secondaryCta.href}
+            className="ps-btn ps-btn-secondary"
+          >
+            {siteConfig.hero.secondaryCta.label}
           </Link>
         </div>
       </div>

@@ -26,20 +26,20 @@ const whyFeatures: WhyFeature[] = [
     image: "/images/ps-logo.webp",
     mobileImage: "/images/ps-logo.webp",
     alt: "Preisser Solutions logo \u2014 custom built for your business",
-    href: "/contact",
-    cta: "Get in Touch",
+    href: "/contact?intent=audit",
+    cta: "Book a Business Systems Audit",
   },
   {
     id: 1,
     shortLabel: "AI with guardrails",
     title: "AI, Harnessed and Under Control.",
     description:
-      "AI accelerates our work without cutting corners. We built guardrails, safety protocols, and quality controls so we can use AI at every stage and still deliver R&D-grade precision. Three weeks instead of three months. Your timeline shrinks. Your cost shrinks. The quality never does.",
+      "AI accelerates our work without cutting corners. We built guardrails, safety protocols, code review steps, and quality controls so we can use AI at every stage and still deliver code that holds up under review. Three weeks instead of three months. Your timeline shrinks. Your cost shrinks. The quality holds.",
     image: "/images/why-us/ai-harnessed.webp",
     mobileImage: "/images/why-us/ai-harnessed.webp",
     alt: "AI-accelerated development with proper guardrails",
-    href: "/contact",
-    cta: "Get in Touch",
+    href: "/contact?intent=audit",
+    cta: "Book a Business Systems Audit",
   },
   {
     id: 2,
@@ -50,8 +50,8 @@ const whyFeatures: WhyFeature[] = [
     image: "/images/why-us/we-stay-with-it-new.webp",
     mobileImage: "/images/why-us/we-stay-with-it-new.webp",
     alt: "Ongoing support and system adaptation",
-    href: "/contact",
-    cta: "Get in Touch",
+    href: "/contact?intent=audit",
+    cta: "Book a Business Systems Audit",
   },
 ];
 

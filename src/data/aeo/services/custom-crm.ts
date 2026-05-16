@@ -1,9 +1,13 @@
 import type { AeoPageData } from "../types";
 
+/**
+ * SERVICE — /services/crm-systems (canonical) — aliased at /services/custom-crm (legacy)
+ * Both URLs render; canonical via slug field points to /services/crm-systems.
+ */
 export const pageData: AeoPageData = {
-  slug: "services/custom-crm",
+  slug: "services/crm-systems",
   tier: "service_detail",
-  metaTitle: "Custom CRM Development in Kansas | Preisser Solutions",
+  metaTitle: "Custom CRM Systems for Small Businesses | Preisser Solutions",
   metaDescription:
     "Preisser Solutions builds custom CRMs for Kansas businesses when off-the-shelf CRMs like HubSpot or Salesforce don't fit. Founder-led, fixed-price builds.",
   eyebrow: "Custom CRM Development",

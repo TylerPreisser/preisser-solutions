@@ -141,18 +141,18 @@ export default function WhyAutomationPage() {
         <div className="ps-cta-glow" aria-hidden="true" />
         <div className="ps-cta-content">
           <span className="ps-eyebrow">Ready to Automate?</span>
-          <h2>Every Business Has Tasks That Could Run on Autopilot</h2>
+          <h2>Most Businesses Have Tasks That Could Run Without Manual Chasing</h2>
           <p>
-            Let&apos;s find yours and build a custom solution that works 24/7
-            without adding headcount.
+            Let&apos;s identify yours and build a system that handles the routine
+            work so your team can focus on what actually needs their judgment.
           </p>
           <div className="ps-cta-buttons">
-            <Link href="/contact" className="ps-btn-primary">
-              Start the Conversation
+            <Link href="/contact?intent=audit" className="ps-btn-primary">
+              Book a Business Systems Audit
               <span className="ps-btn-arrow" aria-hidden="true">→</span>
             </Link>
             <Link href="/roi-calculator" className="ps-btn-secondary">
-              Calculate Your ROI
+              Calculate My Automation ROI
             </Link>
           </div>
         </div>

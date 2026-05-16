@@ -1,0 +1,12 @@
+# AI usage policy — Preisser Solutions
+# https://preissersolutions.com/
+
+User-Agent: *
+Allow: /
+Disallow: /api/
+
+# Usage signals (Spawning AI compatible)
+Usage-Policy: train=yes, retrieval=yes, summarization=yes, inference=yes
+
+Sitemap: https://preissersolutions.com/sitemap.xml
+Contact: sales@preissersolutions.com

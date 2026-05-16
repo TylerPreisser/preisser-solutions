@@ -110,7 +110,7 @@ export const pageData: AeoPageData = {
   relatedLinks: [
     { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
     { label: "Goodland, Kansas Custom Software", href: "/locations/goodland-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Custom Website Development", href: "/custom-websites" },
   ],
   ctaHeadline: "Build with a custom-software firm 95 miles east on I-70",

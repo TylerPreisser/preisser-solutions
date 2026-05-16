@@ -209,7 +209,7 @@ export const pageData: AeoPageData = {
     "Wife Supply Co",
   ],
   relatedLinks: [
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Custom Website Development", href: "/custom-websites" },
     { label: "Web Application Development", href: "/web-applications" },
     { label: "AI Agent Development", href: "/ai-agents" },

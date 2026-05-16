@@ -60,7 +60,7 @@ export default function NotFound() {
         </h1>
         <p className="mx-auto mt-6 max-w-xl text-lg text-[var(--ps-color-text-muted,#9CA3AF)]">
           The URL you followed has moved or never existed. Everything Preisser
-          Tech offers is one click away.
+          Solutions offers is one click away.
         </p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -71,10 +71,10 @@ export default function NotFound() {
             Back to homepage
           </Link>
           <Link
-            href="/contact"
+            href="/contact?intent=audit"
             className="inline-flex items-center justify-center rounded-md border border-white/20 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
           >
-            Talk to Tyler
+            Book a Business Systems Audit
           </Link>
         </div>
 

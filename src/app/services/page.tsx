@@ -71,8 +71,8 @@ export default function ServicesPage() {
                 </div>
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
-                <Link href="/contact" className="ps-btn-link">
-                  Tell us what you need
+                <Link href="/contact?intent=review" className="ps-btn-link">
+                  Get a Website &amp; Automation Review
                   <span className="ps-btn-arrow" aria-hidden="true">→</span>
                 </Link>
               </div>
@@ -92,9 +92,12 @@ export default function ServicesPage() {
             accountable ad campaigns, and practical AI automation.
           </p>
           <div className="ps-cta-buttons">
-            <Link href="/contact" className="ps-btn-primary">
-              Get in Touch
+            <Link href="/contact?intent=audit" className="ps-btn-primary">
+              Book a Business Systems Audit
               <span className="ps-btn-arrow" aria-hidden="true">→</span>
+            </Link>
+            <Link href="/case-studies" className="ps-btn-secondary">
+              See Case Studies
             </Link>
           </div>
         </div>

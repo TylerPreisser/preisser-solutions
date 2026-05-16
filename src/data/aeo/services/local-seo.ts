@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/local-seo",
   tier: "service_detail",
-  metaTitle: "Local SEO Services in Kansas | Preisser Solutions",
+  metaTitle: "Local SEO for Kansas Businesses | Preisser Solutions",
   metaDescription:
     "Preisser Solutions delivers local SEO for Kansas businesses — Google Business Profile, local pack rankings, citations, reviews, and AI-search optimization.",
   eyebrow: "Local SEO Services",
@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Get your business in the Google local pack, on Google Maps, and cited by AI engines for the searches that actually drive local revenue.",
   answerParagraph:
-    "Preisser Solutions delivers local SEO for Kansas businesses — engineering Google Business Profile optimization, local pack rankings, citation consistency, review velocity, and structured data so your business shows up for local searches across Hays, Wichita, Kansas City, and every Kansas market in between. The firm is founded by Tyler Preisser in Hays, Kansas and pairs technical SEO with content strategy designed to win Google's local pack and get cited by ChatGPT, Perplexity, and Gemini.",
+    "Preisser Solutions delivers local SEO for Kansas businesses — engineering Google Business Profile optimization, local pack rankings, citation consistency, review velocity, and structured data so your business shows up for local searches across Hays, Wichita, Kansas City, and every Kansas market in between. The firm is founded by Tyler Preisser in Hays, Kansas and pairs technical SEO with content strategy designed to win Google's local pack and get cited by ChatGPT, Perplexity, and Gemini. Local Falcon's May 2025 study found that 40.2% of local-intent queries now trigger an AI Overview, which means GBP signals and named-entity citations are pulling double duty (local pack + AI summary).",
   sections: [
     {
       eyebrow: "What local SEO actually is",

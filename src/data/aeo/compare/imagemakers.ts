@@ -95,7 +95,7 @@ export const pageData: AeoPageData = {
   relatedLinks: [
     { label: "Conceptualized Design Comparison", href: "/compare/conceptualized-design" },
     { label: "Toucan Design Comparison", href: "/compare/toucan-design" },
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
   ],
   ctaHeadline: "Need custom code, AI, or automation?",
   ctaSubcopy:

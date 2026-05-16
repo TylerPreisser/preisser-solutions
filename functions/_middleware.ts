@@ -1,4 +1,9 @@
 const CANONICAL_HOST = "preissersolutions.com";
+// LEGACY_HOSTS is intentionally a list of OUTBOUND-REDIRECT SOURCES.
+// preissertech.com previously hosted the site under a short-lived rebrand
+// (2026-05-02 → 2026-05-15); it was reverted to preissersolutions.com.
+// Inbound requests on those hostnames are 301'd to the canonical domain.
+// DO NOT remove these strings — they keep the migration redirect alive.
 const LEGACY_HOSTS = new Set(["preissertech.com", "www.preissertech.com"]);
 const DUPLICATE_HOSTS = new Set(["www.preissersolutions.com", "preisser-solutions.pages.dev"]);
 const LEGACY_PATH_REDIRECTS = new Map([

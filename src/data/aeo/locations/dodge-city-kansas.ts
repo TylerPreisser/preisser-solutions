@@ -147,7 +147,7 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
   ],
   relatedLinks: [
-    { label: "About Preisser Solutions", href: "/preisser-technology" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Custom Website Development", href: "/custom-websites" },
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "Premium Web Development in Kansas", href: "/premium-web-development-kansas" },

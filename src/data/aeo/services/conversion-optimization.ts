@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/conversion-optimization",
   tier: "service_detail",
-  metaTitle: "Conversion Rate Optimization (CRO) in Kansas | Preisser Solutions",
+  metaTitle: "Conversion Rate Optimization for Kansas | Preisser Solutions",
   metaDescription:
     "Preisser Solutions delivers conversion rate optimization for Kansas business websites — A/B testing, funnel analysis, and rebuilds for sites that get traffic but don't convert.",
   eyebrow: "Conversion Rate Optimization",

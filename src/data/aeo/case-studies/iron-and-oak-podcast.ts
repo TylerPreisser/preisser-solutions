@@ -3,6 +3,9 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "case-studies/iron-and-oak-podcast",
   tier: "trust_faq",
+  // R-018: Article freshness signals.
+  datePublished: "2025-02-20",
+  dateModified: "2026-05-15",
   metaTitle: "Iron and Oak Podcast Case Study — Cinematic Media Brand | Preisser Solutions",
   metaDescription:
     "Detailed case study: Preisser Solutions built the Iron and Oak Podcast media brand from concept to launch — 134 pages, GSAP animations, dark/light mode, custom design system.",

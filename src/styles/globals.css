@@ -6016,6 +6016,29 @@ a {
   color: rgba(255,255,255,0.7);
 }
 
+/* R-167 — privacy / terms links in footer bottom row */
+.ps-footer-legal {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: var(--color-text-dark-muted);
+}
+
+.ps-footer-legal a {
+  color: var(--color-text-dark-muted);
+  transition: color 150ms ease;
+}
+
+.ps-footer-legal a:hover {
+  color: rgba(255,255,255,0.7);
+}
+
+[data-theme="light"] .ps-footer-legal,
+[data-theme="light"] .ps-footer-legal a {
+  color: var(--color-text-secondary);
+}
+
 @media (max-width: 900px) {
   .ps-footer-grid {
     grid-template-columns: 1fr 1fr;
