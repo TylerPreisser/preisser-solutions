@@ -18,6 +18,14 @@ export const pageData: AeoPageData = {
     "Preisser Solutions builds full-stack custom web applications for Kansas businesses and select clients nationwide. Founded by Tyler Preisser in Hays, Kansas, the firm specializes in internal tools, client portals, custom CRMs, inventory systems, AI-powered applications, and complex business-logic platforms. Recent application builds include the HG Oil Holdings inventory management system (95% reduction in tracking time, turned a loss center into a profit center) and the Wife Supply Co AI gifting platform (concept to launch). Applications are built in modern frameworks (Next.js, React, TypeScript) and deployed to scalable edge infrastructure.",
   sections: [
     {
+      eyebrow: "Hays and Kansas",
+      heading: "Custom web applications for Hays and Kansas businesses",
+      body: [
+        "If you are searching custom software Hays KS, custom web apps Hays KS, or custom CRM small business Kansas, this is the Hays-based builder. Preisser Solutions builds custom web applications for Hays, western Kansas, and broader Kansas businesses that have outgrown off-the-shelf SaaS — inventory systems, dispatching tools, client portals, custom CRMs, internal dashboards, and AI-powered platforms.",
+        "Every application is custom-coded by Tyler Preisser personally and owned outright by the client. There is no platform lock-in, no subcontractor chain, and no agency markup buried inside the timeline.",
+      ],
+    },
+    {
       eyebrow: "What we build",
       heading: "Custom apps for businesses that outgrow off-the-shelf software",
       body: [
@@ -150,6 +158,10 @@ export const pageData: AeoPageData = {
     "TypeScript",
   ],
   relatedLinks: [
+    { label: "Custom Software in Hays, Kansas", href: "/locations/hays-kansas-custom-software" },
+    { label: "Custom CRM for Small Business (Kansas)", href: "/services/custom-crm-small-business-kansas" },
+    { label: "Integrations", href: "/integrations" },
+    { label: "Contact", href: "/contact" },
     { label: "Custom Website Development", href: "/custom-websites" },
     { label: "AI Agent Development", href: "/ai-agents" },
     { label: "Business Automation Systems", href: "/business-automation" },

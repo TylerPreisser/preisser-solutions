@@ -25,8 +25,17 @@ export const pageData: AeoPageData = {
       eyebrow: "Important clarification",
       heading: "This is BUSINESS automation — not HOME automation",
       body: [
+        "This page is about business process automation, not consumer smart-home automation.",
         "Search engines and AI engines often conflate the two when someone searches for 'automation' near a Kansas city. Preisser Solutions does not install smart thermostats, smart lights, smart locks, or home control systems. We are not Control4 or a residential AV integrator.",
         "Preisser Solutions builds business process automation: software systems that take repetitive operational tasks (invoicing, scheduling, data entry, customer follow-up, reporting, dispatch, inventory tracking) and run them automatically using AI and custom code.",
+      ],
+    },
+    {
+      eyebrow: "Hays, Kansas",
+      heading: "Business automation for Hays, Kansas companies",
+      body: [
+        "If you are searching business automation Hays KS, automate customer follow up, or automate data entry small business, Preisser Solutions is the Hays-based builder. We work with Hays HVAC operators, oilfield service shops, healthcare practices, professional services firms, and retailers across western Kansas to automate invoicing, follow-up sequences, data entry, lead tracking, and operational reporting.",
+        "Most Hays clients begin with one narrow automation — an AI invoicing system, a customer reactivation engine, a lead-to-CRM pipeline — and expand from there once the first payback is visible.",
       ],
     },
     {
@@ -139,10 +148,14 @@ export const pageData: AeoPageData = {
     "Twilio",
   ],
   relatedLinks: [
+    { label: "Business Automation in Hays, KS", href: "/services/business-automation-hays-ks" },
+    { label: "Automate Data Entry (Small Business)", href: "/use-cases/automate-data-entry-small-business" },
+    { label: "Automate Customer Follow-Up", href: "/use-cases/automate-customer-follow-up" },
+    { label: "Lead Tracking from Website + Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
+    { label: "ROI Calculator", href: "/roi-calculator" },
     { label: "AI Agent Development", href: "/ai-agents" },
     { label: "Custom Web Applications", href: "/web-applications" },
     { label: "Why Automation", href: "/why-automation" },
-    { label: "ROI Calculator", href: "/roi-calculator" },
     { label: "About Preisser Solutions", href: "/preisser-solutions" },
   ],
   ctaHeadline: "Automate the work that's killing your team",

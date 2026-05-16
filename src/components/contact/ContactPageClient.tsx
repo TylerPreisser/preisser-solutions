@@ -3,6 +3,40 @@
 import { useState, useRef } from "react";
 import { contactInterests, type ContactInterest } from "@/data/services";
 import { siteConfig } from "@/data/site-config";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { faqSchema } from "@/lib/seo/schema";
+import { InternalLinkBlock } from "@/components/seo/InternalLinkBlock";
+
+// R-section-6 — ContactPage JSON-LD referencing the global LocalBusiness graph.
+const contactPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Contact Preisser Solutions",
+  url: "https://preissersolutions.com/contact",
+  mainEntity: { "@id": "https://preissersolutions.com/#localbusiness" },
+};
+
+const contactFaqs = [
+  {
+    question: "How much do projects cost?",
+    answer:
+      "Audits start at $1,500. Implementation sprints start at $5,000. Retainers start at $3,500/month. We share scoped pricing after a short discovery call.",
+  },
+  {
+    question: "How fast does Preisser Solutions respond?",
+    answer: "Within 1 business day Monday-Friday, 9am-5pm Central.",
+  },
+  {
+    question: "Does Preisser Solutions work outside Hays?",
+    answer:
+      "Yes. We serve all of Kansas with a particular focus on western and central Kansas (Hays, Russell, Great Bend, WaKeeney, Colby, Dodge City, Salina). Remote engagements are available for businesses elsewhere when the project fit is strong.",
+  },
+  {
+    question: "What should I include in my message?",
+    answer:
+      "Your current website, the main problem you want solved, your city, and whether you need a website, local SEO, AI automation, or a custom system.",
+  },
+];
 
 interface FormState {
   name: string;
@@ -76,6 +110,8 @@ export function ContactPageClient() {
 
   return (
     <div className="ps-contact-page-wrapper">
+      <JsonLd data={contactPageSchema} />
+      <JsonLd data={faqSchema(contactFaqs)} />
       <div className="ps-container">
         {/* Hero */}
         <div className="ps-contact-hero">
@@ -86,6 +122,19 @@ export function ContactPageClient() {
             Contact
           </span>
           <h1>Let&apos;s Build Something.</h1>
+          <h2
+            style={{
+              fontSize: "clamp(1.25rem, 2.2vw, 1.625rem)",
+              fontWeight: 600,
+              letterSpacing: "-0.01em",
+              textAlign: "center",
+              margin: "20px auto 12px",
+              color: "var(--color-text-dark)",
+              maxWidth: 720,
+            }}
+          >
+            Contact Preisser Solutions in Hays, Kansas
+          </h2>
           <p className="ps-contact-subtitle">
             Whether you know exactly what you need or you&apos;re still figuring it out
             — start here. Tell us what you can and we&apos;ll go from there.
@@ -329,6 +378,16 @@ export function ContactPageClient() {
                 {/* Message */}
                 <div className="ps-form-group full-width">
                   <label htmlFor="contact-message">Tell Us What You Have in Mind *</label>
+                  <p
+                    style={{
+                      fontSize: 14,
+                      lineHeight: 1.55,
+                      color: "var(--color-text-body, #475569)",
+                      margin: "0 0 8px",
+                    }}
+                  >
+                    Include your current website, the main problem you want solved, your city, and whether you need a website, local SEO, AI automation, or a custom system.
+                  </p>
                   <textarea
                     id="contact-message"
                     name="message"
@@ -366,6 +425,69 @@ export function ContactPageClient() {
             </>
           )}
         </form>
+
+        {/* Section 6: contact FAQs — server-renderable text, matched by JSON-LD above */}
+        <section
+          aria-label="Contact FAQs"
+          style={{ maxWidth: 880, margin: "64px auto 0" }}
+        >
+          <h2
+            style={{
+              fontSize: "clamp(1.375rem, 2.4vw, 1.75rem)",
+              fontWeight: 700,
+              letterSpacing: "-0.02em",
+              margin: "0 0 24px",
+              color: "var(--color-text-dark)",
+            }}
+          >
+            Contact FAQs
+          </h2>
+          {contactFaqs.map((q, i) => (
+            <details
+              key={i}
+              style={{
+                borderBottom: "1px solid rgba(10, 22, 40, 0.08)",
+                padding: "18px 0",
+              }}
+            >
+              <summary
+                style={{
+                  fontSize: 17,
+                  fontWeight: 600,
+                  color: "var(--color-text-dark)",
+                  cursor: "pointer",
+                  listStyle: "none",
+                }}
+              >
+                {q.question}
+              </summary>
+              <p
+                style={{
+                  fontSize: 16,
+                  lineHeight: 1.65,
+                  color: "var(--color-text-body, #475569)",
+                  margin: "10px 0 0",
+                }}
+              >
+                {q.answer}
+              </p>
+            </details>
+          ))}
+        </section>
+
+        {/* Internal links — discoverable crawl paths */}
+        <section style={{ maxWidth: 1120, margin: "48px auto 0" }}>
+          <InternalLinkBlock
+            title="Common next steps"
+            columns={4}
+            links={[
+              { href: "/services/custom-websites", label: "Custom websites" },
+              { href: "/services/ai-automation", label: "AI automation" },
+              { href: "/business-automation", label: "Business automation" },
+              { href: "/roi-calculator", label: "ROI calculator" },
+            ]}
+          />
+        </section>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "AI Automation for Small Businesses | Preisser Solutions",
   metaDescription:
-    "Preisser Solutions builds custom AI automation systems for Kansas SMBs — agents, workflows, invoicing, outreach. Owner-operator builds, no offshore handoff.",
+    "Custom AI automation for Kansas businesses — AI agents, invoice processing, customer reactivation, lead qualification, after-hours triage, dashboards, CRM workflows.",
   eyebrow: "AI Automation",
   h1: "AI Automation for Small Businesses",
   subheadline:
@@ -13,6 +13,14 @@ export const pageData: AeoPageData = {
   answerParagraph:
     "Preisser Solutions delivers AI automation for small and mid-sized businesses in Kansas and select clients nationwide. Founded by Tyler Preisser in Hays, Kansas, the firm builds custom-coded AI agents, business automation workflows, AI invoicing, customer reactivation engines, and after-hours triage systems. Builds are custom — not Zapier-glued no-code, not productized SaaS — and integrate directly with the CRMs, dispatch systems, and accounting tools clients already run. Tyler personally codes every engagement. Cassidy HVAC's reactivation engine recovered 60%+ of dormant customers in 6 weeks; HG Oil Holdings cut back-office logistics time 95% with the same approach.",
   sections: [
+    {
+      eyebrow: "Hays and Kansas",
+      heading: "AI automation for Hays and Kansas small businesses",
+      body: [
+        "Searching AI automation Hays KS, AI consulting Hays KS, or custom AI agent Hays KS? Preisser Solutions is headquartered in Hays, Kansas and builds AI automation systems for small and mid-sized businesses across the state. Tyler Preisser personally scopes, designs, and codes every engagement — no offshore handoff, no productized SaaS, no Zapier wrapper relabeled as AI.",
+        "Most Hays and western Kansas operators get the fastest ROI from AI agents that handle invoicing, customer reactivation, after-hours triage, lead qualification, and dashboarding — not from chatbots bolted onto a marketing site. The build pattern is narrow, opinionated, and shipped in weeks rather than quarters.",
+      ],
+    },
     {
       eyebrow: "What AI automation actually means here",
       heading: "AI automation = AI agents + custom workflows + your existing systems",
@@ -105,6 +113,11 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
   ],
   relatedLinks: [
+    { label: "AI Automation in Hays, KS", href: "/services/ai-automation-hays-ks" },
+    { label: "AI Consulting in Hays, KS", href: "/services/ai-consulting-hays-ks" },
+    { label: "Custom AI Agents in Hays, KS", href: "/services/custom-ai-agents-hays-ks" },
+    { label: "AI Invoice Processing (Use Case)", href: "/use-cases/ai-invoice-processing-small-business" },
+    { label: "After-Hours AI Receptionist (Use Case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
     { label: "Business Automation Systems", href: "/business-automation" },
     { label: "AI Agents", href: "/ai-agents" },
     { label: "AI Invoicing", href: "/services/ai-invoicing" },

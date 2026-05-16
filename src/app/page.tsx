@@ -8,6 +8,7 @@ import { MarCommandCallout } from "@/components/home/marcommand-callout";
 import { WhyUs } from "@/components/home/why-us";
 import { CaseStudies } from "@/components/home/case-studies";
 import { CtaSection } from "@/components/home/cta-section";
+import { InternalLinkBlock } from "@/components/seo/InternalLinkBlock";
 import { siteConfig } from "@/data/site-config";
 
 // R-038 / R-039: homepage title + description sourced from siteConfig.meta so
@@ -51,6 +52,40 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      {/* Quick answer — engineered for AI quote extraction; placed near top of page. */}
+      <section
+        aria-labelledby="quick-answer"
+        style={{
+          background: "var(--color-light, #F6F9FC)",
+          padding: "clamp(48px, 6vw, 80px) 24px",
+        }}
+      >
+        <div style={{ maxWidth: 880, margin: "0 auto" }}>
+          <h2
+            id="quick-answer"
+            style={{
+              fontSize: "clamp(1.25rem, 2vw, 1.5rem)",
+              fontWeight: 700,
+              letterSpacing: "-0.01em",
+              margin: "0 0 16px",
+              color: "var(--color-text-light-primary, #0A1628)",
+            }}
+          >
+            Quick answer
+          </h2>
+          <p
+            style={{
+              fontSize: "clamp(1.0625rem, 1.6vw, 1.25rem)",
+              lineHeight: 1.6,
+              color: "var(--color-text-light-primary, #0A1628)",
+              margin: 0,
+              fontWeight: 500,
+            }}
+          >
+            Preisser Solutions is a Hays, Kansas-based AI-native web development, local SEO, and business automation company. We build custom-coded websites, AI agents, dashboards, CRM workflows, and AI search optimization systems for Kansas small and mid-sized businesses.
+          </p>
+        </div>
+      </section>
       <ProofBar />
       <ValueStrip />
       <ServicePillars />
@@ -58,6 +93,41 @@ export default function HomePage() {
       <MarCommandCallout />
       <WhyUs />
       <CaseStudies />
+      {/* Crawlable service + location link cluster — discoverable internal-link graph for crawlers + AI engines. */}
+      <section
+        aria-label="Services and locations"
+        style={{
+          background: "var(--color-dark, #0A1628)",
+          color: "#FFFFFF",
+          padding: "clamp(60px, 8vw, 100px) 24px",
+        }}
+      >
+        <div style={{ maxWidth: 1120, margin: "0 auto" }}>
+          <InternalLinkBlock
+            title="Services"
+            columns={3}
+            links={[
+              { href: "/services/custom-websites", label: "Custom websites", description: "Custom-coded sites built in Next.js, React, and TypeScript." },
+              { href: "/services/local-seo", label: "Local SEO", description: "Google Business Profile, local pack, citations, reviews, schema." },
+              { href: "/services/ai-automation", label: "AI automation", description: "Custom AI agents, invoicing, reactivation, lead qualification." },
+              { href: "/services/ai-search-optimization", label: "AI search optimization", description: "Be cited by ChatGPT, Perplexity, Gemini, and Claude." },
+              { href: "/web-applications", label: "Web applications", description: "Internal tools, client portals, custom CRMs, dashboards." },
+              { href: "/business-automation", label: "Business automation", description: "Automate invoicing, data entry, follow-up, and reporting." },
+            ]}
+          />
+          <InternalLinkBlock
+            title="Service area"
+            columns={3}
+            links={[
+              { href: "/locations/hays-kansas", label: "Hays, Kansas", description: "Headquarters. Full service stack delivered locally." },
+              { href: "/locations/hays-kansas-web-design", label: "Hays web design", description: "Custom website design for Hays, KS businesses." },
+              { href: "/locations/western-kansas-web-design", label: "Western Kansas web design", description: "Web design across western Kansas." },
+              { href: "/locations/great-bend-kansas-web-design", label: "Great Bend web design", description: "Custom websites for Great Bend, KS." },
+              { href: "/locations/salina-kansas-web-design", label: "Salina web design", description: "Custom websites for Salina, KS." },
+            ]}
+          />
+        </div>
+      </section>
       <CtaSection />
     </>
   );

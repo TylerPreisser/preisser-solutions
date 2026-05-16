@@ -9,7 +9,8 @@
     "lint": "next lint",
     "preview": "npx serve out",
     "indexnow": "node scripts/indexnow-ping.mjs",
-    "strip-404-noindex": "node scripts/strip-404-noindex.mjs"
+    "strip-404-noindex": "node scripts/strip-404-noindex.mjs",
+    "validate:seo": "node scripts/validate-seo.mjs"
   },
   "dependencies": {
     "next": "^15.3.0",

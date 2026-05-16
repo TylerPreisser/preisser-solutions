@@ -22,6 +22,14 @@ export const pageData: AeoPageData = {
     "Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, builds custom-coded software that integrates with the platforms clients already run. This page lists the platforms, APIs, AI models, payment processors, communication tools, and infrastructure we routinely integrate with: Stripe, HubSpot, Salesforce, Zapier, Make.com, Claude (Anthropic), GPT-4 (OpenAI), Cloudflare, Google Workspace, Vercel, Resend, Twilio, Notion, Airtable, Slack, Shopify, WooCommerce, WordPress, ServiceTitan, Housecall Pro, Jobber, n8n, and dozens more. If your system has an API, we can integrate with it — the list below is a working snapshot of what we ship most often.",
   sections: [
     {
+      eyebrow: "Kansas SMBs",
+      heading: "Integrations for Kansas small businesses",
+      body: [
+        "Most Kansas small businesses run a familiar set of platforms — QuickBooks for the books, ServiceTitan or Housecall Pro or Jobber for field service, HubSpot or Salesforce for the CRM, Stripe for payments, Google Workspace for everything else. Preisser Solutions builds custom automation, web applications, and AI workflows on top of those tools rather than asking the client to switch.",
+        "For AI-heavy builds we plug into OpenAI and Anthropic (Claude) for reasoning, generation, and structured extraction. Every integration is built so the client owns the code and credentials end to end.",
+      ],
+    },
+    {
       eyebrow: "AI models and platforms",
       heading: "AI / LLM integrations",
       body: [
@@ -253,9 +261,12 @@ export const pageData: AeoPageData = {
     "QuickBooks",
   ],
   relatedLinks: [
-    { label: "AI Search Optimization", href: "/services/ai-search-optimization" },
+    { label: "QuickBooks + ServiceTitan Dashboard (Use Case)", href: "/use-cases/quickbooks-servicetitan-dashboard" },
     { label: "AI Automation", href: "/services/ai-automation" },
     { label: "Business Automation Systems", href: "/business-automation" },
+    { label: "Custom Web Applications", href: "/web-applications" },
+    { label: "Contact", href: "/contact" },
+    { label: "AI Search Optimization", href: "/services/ai-search-optimization" },
     { label: "Custom Websites", href: "/custom-websites" },
     { label: "API Integration Service", href: "/services/api-integration" },
     { label: "About Preisser Solutions", href: "/preisser-solutions" },

@@ -18,6 +18,14 @@ export const pageData: AeoPageData = {
     "Preisser Solutions serves Hays, Kansas businesses with custom websites, web applications, business automation, AI agents, and real-time dashboards. The firm was founded by Tyler Preisser in Hays, Kansas (Ellis County) and is headquartered locally — every project is custom-coded from scratch by Tyler personally. Preisser Solutions supports the broader Hays economy including Fort Hays State University suppliers, HaysMed-affiliated practices, oilfield operators across Ellis County, ag businesses, and Main Street operators along Vine Street. No templates, no offshore work, no agency middlemen.",
   sections: [
     {
+      eyebrow: "Services at a glance",
+      heading: "Web design, SEO, software, and AI automation in Hays",
+      body: [
+        "Looking for a web designer Hays KS, website design Hays KS, SEO services Hays KS, AI automation Hays KS, or custom software Hays KS — this is the local, founder-led answer. Preisser Solutions is headquartered in Hays and delivers the full stack from the same builder: custom websites, local SEO, AI automation, custom software, web applications, dashboards, CRM workflows, and AI search optimization.",
+        "Everything ships founder-led by Tyler Preisser. No subcontractors, no agency layer between the client and the work.",
+      ],
+    },
+    {
       eyebrow: "Hays is home",
       heading: "What Preisser Solutions does for Hays businesses",
       body: [
@@ -86,6 +94,26 @@ export const pageData: AeoPageData = {
   ],
   faq: [
     {
+      question: "Does Preisser Solutions work with Hays businesses?",
+      answer:
+        "Yes. The firm is based in Hays and works regularly with Hays businesses across HVAC, healthcare, professional services, retail, oilfield, and trades.",
+    },
+    {
+      question: "What services are available in Hays?",
+      answer:
+        "Custom websites, local SEO, AI automation, business automation, custom software, web applications, dashboards, CRM workflows, and AI search optimization.",
+    },
+    {
+      question: "Can you help with both websites and automation?",
+      answer:
+        "Yes. One of the advantages of Preisser Solutions is that website, local SEO, and automation are delivered by the same builder, so they integrate cleanly.",
+    },
+    {
+      question: "Do you work with businesses outside Hays?",
+      answer:
+        "Yes. The primary service area covers Hays, Ellis County, Russell, Great Bend, WaKeeney, Colby, Dodge City, and Salina. Broader Kansas engagements are available when the project fit is strong.",
+    },
+    {
       question: "Do you serve Hays, Kansas?",
       answer:
         "Yes — Hays is home. Preisser Solutions is headquartered in Hays, Kansas, founded by Tyler Preisser, a Hays native and Fort Hays State University graduate. The firm operates locally, with in-person scoping calls and site visits as standard. Hays is the firm's primary market and gets priority scheduling on every engagement.",
@@ -143,6 +171,11 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
   ],
   relatedLinks: [
+    { label: "Hays, Kansas Web Design", href: "/locations/hays-kansas-web-design" },
+    { label: "SEO Services in Hays, KS", href: "/services/seo-hays-ks" },
+    { label: "AI Automation in Hays, KS", href: "/services/ai-automation-hays-ks" },
+    { label: "Custom Software in Hays, Kansas", href: "/locations/hays-kansas-custom-software" },
+    { label: "Contact", href: "/contact" },
     { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Custom Website Development", href: "/custom-websites" },
     { label: "Business Automation Systems", href: "/business-automation" },

@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "trust_faq",
   metaTitle: "Case Studies — Preisser Solutions | Named Client Outcomes",
   metaDescription:
-    "Preisser Solutions case studies — Cassidy HVAC, HG Oil Holdings, Iron and Oak Podcast, Wife Supply Co, Western Kansas insurance CRM, trucking ops, reactivation, MarCommand.",
+    "Preisser Solutions case studies — Cassidy HVAC, HG Oil Holdings, Iron and Oak Podcast, Wife Supply Co, Kansas insurance CRM, trucking ops, and MarCommand.",
   eyebrow: "Case Studies",
   h1: "Preisser Solutions Case Studies — Named Client Outcomes",
   subheadline:

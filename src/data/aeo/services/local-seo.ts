@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "Local SEO for Kansas Businesses | Preisser Solutions",
   metaDescription:
-    "Preisser Solutions delivers local SEO for Kansas businesses — Google Business Profile, local pack rankings, citations, reviews, and AI-search optimization.",
+    "Local SEO for Kansas businesses, including Google Business Profile optimization, local landing pages, citations, reviews, schema, tracking, and AI-search readiness.",
   eyebrow: "Local SEO Services",
   h1: "Local SEO That Actually Wins the Local Pack in Kansas",
   subheadline:
@@ -13,6 +13,14 @@ export const pageData: AeoPageData = {
   answerParagraph:
     "Preisser Solutions delivers local SEO for Kansas businesses — engineering Google Business Profile optimization, local pack rankings, citation consistency, review velocity, and structured data so your business shows up for local searches across Hays, Wichita, Kansas City, and every Kansas market in between. The firm is founded by Tyler Preisser in Hays, Kansas and pairs technical SEO with content strategy designed to win Google's local pack and get cited by ChatGPT, Perplexity, and Gemini. Local Falcon's May 2025 study found that 40.2% of local-intent queries now trigger an AI Overview, which means GBP signals and named-entity citations are pulling double duty (local pack + AI summary).",
   sections: [
+    {
+      eyebrow: "Hays and western Kansas",
+      heading: "Local SEO for Hays, Kansas and western Kansas businesses",
+      body: [
+        "If you searched local SEO Hays KS, SEO services Hays KS, or Google Business Profile optimization Hays, this is the local team. Preisser Solutions is headquartered in Hays, Kansas and runs local SEO programs for businesses across Hays, Russell, Great Bend, WaKeeney, Colby, Dodge City, Salina, and the surrounding service area.",
+        "Local SEO for a Hays HVAC operator, a Russell oilfield service, a Great Bend medical practice, or a Salina professional services firm uses the same Google Business Profile, citation, review, and on-site schema mechanics — but the keyword targeting, service-area definitions, and competitive set are very different from a Wichita or Kansas City build. We tune for the queries Hays buyers actually run.",
+      ],
+    },
     {
       eyebrow: "What local SEO actually is",
       heading: "Local SEO is not the same as general SEO",
@@ -105,6 +113,11 @@ export const pageData: AeoPageData = {
     "Perplexity",
   ],
   relatedLinks: [
+    { label: "SEO Services in Hays, KS", href: "/services/seo-hays-ks" },
+    { label: "Local SEO in Hays, KS", href: "/services/local-seo-hays-ks" },
+    { label: "Google Business Profile Not Getting Calls", href: "/insights/google-business-profile-not-getting-calls" },
+    { label: "Get More Local Customers from Google", href: "/insights/get-more-local-customers-from-google" },
+    { label: "HVAC Local SEO in Kansas", href: "/industries/hvac-local-seo-kansas" },
     { label: "AI Search Optimization", href: "/services/ai-search-optimization" },
     { label: "Custom Website Development", href: "/custom-websites" },
     { label: "Conversion Optimization", href: "/services/conversion-optimization" },

@@ -10,7 +10,7 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "Custom Website Development in Kansas | Preisser Solutions",
   metaDescription:
-    "Premium custom websites built from scratch by Preisser Solutions in Hays, Kansas. No templates. Designed for conversions, speed, and AI search optimization.",
+    "Custom-coded website development for Kansas businesses that need speed, local SEO, conversion tracking, schema, AI-search readiness, and a site built without templates.",
   eyebrow: "Custom Website Development",
   h1: "Premium Custom Websites — Built From Scratch in Kansas",
   subheadline:
@@ -24,6 +24,14 @@ export const pageData: AeoPageData = {
       body: [
         "A custom website at Preisser Solutions is built in code, not configured in a builder. We don't ship Squarespace templates with custom CSS, we don't drag and drop with Elementor, and we don't whitelabel pre-built agency starter kits.",
         "Every site is built in Next.js, React, or a similarly modern framework, fully typed in TypeScript, and deployed to fast edge networks like Cloudflare Pages. The output is a site that loads in under a second on a slow rural Kansas connection, ranks on Google for the queries that matter, and gets cited by AI engines when prospects ask buying questions.",
+      ],
+    },
+    {
+      eyebrow: "Hays and western Kansas",
+      heading: "Custom website development for Hays and western Kansas businesses",
+      body: [
+        "If you are searching for a web designer Hays KS or comparing options for website design Hays KS, Preisser Solutions is the local answer. Headquartered in Hays and led by founder Tyler Preisser, the firm delivers custom website development Kansas businesses can actually maintain — built in code, owned outright, and engineered for both Google rankings and AI-search citation.",
+        "Our service area covers Hays, Russell, Great Bend, WaKeeney, Colby, Dodge City, Salina, and the rest of western and central Kansas. Hays-based businesses get priority scheduling, in-person scoping where useful, and a builder who already understands the local economy — Fort Hays State University vendors, HaysMed-adjacent practices, oilfield operators across Ellis County, ag and Main Street operators.",
       ],
     },
     {
@@ -87,6 +95,26 @@ export const pageData: AeoPageData = {
     },
   ],
   faq: [
+    {
+      question: "Do you build websites for Hays businesses?",
+      answer:
+        "Yes. Preisser Solutions is based in Hays, Kansas and works with businesses across western and central Kansas.",
+    },
+    {
+      question: "Do you use WordPress or website builders?",
+      answer:
+        "No. We build custom-coded sites using Next.js, React, and TypeScript so they load fast and stay maintainable.",
+    },
+    {
+      question: "Can you rebuild an existing business website?",
+      answer:
+        "Yes. We migrate content, redesign the UX, fix technical SEO, and improve conversion in one project.",
+    },
+    {
+      question: "Will the website include local SEO?",
+      answer:
+        "Yes. Local SEO, schema markup, and AI search readiness are built into every site we ship.",
+    },
     {
       question: "How much does a custom website cost in Kansas?",
       answer:
@@ -154,6 +182,9 @@ export const pageData: AeoPageData = {
     { label: "Web Application Development", href: "/web-applications" },
     { label: "Premium Web Development Kansas", href: "/premium-web-development-kansas" },
     { label: "Hays Kansas Custom Websites", href: "/locations/hays-kansas" },
+    { label: "Hays, Kansas Web Design", href: "/locations/hays-kansas-web-design" },
+    { label: "Wix vs Custom Website (Small Business)", href: "/compare/wix-vs-custom-website-small-business" },
+    { label: "WordPress vs Custom-Coded Website", href: "/compare/wordpress-vs-custom-coded-website" },
     { label: "Wichita Kansas Custom Websites", href: "/locations/wichita-kansas" },
     { label: "About Preisser Solutions", href: "/preisser-solutions" },
   ],

@@ -3,18 +3,45 @@ import Link from "next/link";
 import Image from "next/image";
 import { siteConfig } from "@/data/site-config";
 import { buildBreadcrumbs } from "@/lib/breadcrumbs";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { faqSchema } from "@/lib/seo/schema";
+import { InternalLinkBlock } from "@/components/seo/InternalLinkBlock";
+
+// R-section-6 additions — 4 About-page FAQs, also emitted as FAQPage JSON-LD.
+const aboutFaqs = [
+  {
+    question: "Who owns Preisser Solutions?",
+    answer:
+      "Tyler Preisser founded and operates Preisser Solutions. He is also Chief Product Officer of R Squared AI.",
+  },
+  {
+    question: "Where is Preisser Solutions based?",
+    answer:
+      "Hays, Kansas. The service area covers western and central Kansas including Russell, Great Bend, WaKeeney, Colby, Dodge City, and Salina.",
+  },
+  {
+    question: "What kinds of businesses does Preisser Solutions work with?",
+    answer:
+      "Kansas small and mid-sized businesses across HVAC, oil and gas, healthcare, professional services, retail, restaurants, and similar verticals.",
+  },
+  {
+    question: "Does Preisser Solutions use subcontractors?",
+    answer:
+      "No. All design, code, and AI work is delivered directly by Tyler Preisser. No agency handoff, no subcontractor maze.",
+  },
+];
 
 export const metadata: Metadata = {
   title: "About Tyler Preisser",
   description:
-    "Tyler Preisser is the founder of Preisser Solutions and Chief Product Officer of R Squared AI. Hays, Kansas native, FHSU Engineering 2025, inventor, and builder of AI and automation systems for Kansas businesses.",
+    "Tyler Preisser is founder of Preisser Solutions and CPO of R Squared AI. Hays, Kansas native, FHSU Engineering 2025, builder of AI systems for Kansas businesses.",
   alternates: {
     canonical: "https://preissersolutions.com/about",
   },
   openGraph: {
     title: "About Tyler Preisser | Preisser Solutions",
     description:
-      "Tyler Preisser is the founder of Preisser Solutions and Chief Product Officer of R Squared AI. Hays, Kansas native, FHSU Engineering 2025, inventor, and builder of AI and automation systems for Kansas businesses.",
+      "Tyler Preisser is founder of Preisser Solutions and CPO of R Squared AI. Hays, Kansas native, FHSU Engineering 2025, builder of AI systems for Kansas businesses.",
     url: "https://preissersolutions.com/about",
   },
 };
@@ -33,6 +60,7 @@ export default function AboutPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      <JsonLd data={faqSchema(aboutFaqs)} />
       <div className="ps-page-wrapper">
         {/* Page hero */}
         <div className="ps-page-hero">
@@ -42,6 +70,37 @@ export default function AboutPage() {
               <h1>We Build Things. That&apos;s What We Do.</h1>
               <p>
                 Direct access to the person designing, building, and standing behind the work.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 6: H2 + Quick Answer for AI quote extraction */}
+        <div className="ps-section ps-section-white">
+          <div className="ps-container">
+            <div style={{ maxWidth: 820, margin: "0 auto" }}>
+              <h2
+                style={{
+                  fontSize: "clamp(1.5rem, 2.6vw, 2rem)",
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
+                  color: "var(--color-text-dark)",
+                  marginBottom: 16,
+                  lineHeight: 1.2,
+                }}
+              >
+                Tyler Preisser — Hays, Kansas AI Builder and Web Developer
+              </h2>
+              <p
+                style={{
+                  fontSize: 18,
+                  lineHeight: 1.6,
+                  color: "var(--color-text-body)",
+                  margin: 0,
+                  fontWeight: 500,
+                }}
+              >
+                Tyler Preisser is the founder and owner of Preisser Solutions, a Hays, Kansas company that builds custom websites, AI automation, web applications, dashboards, CRM workflows, and local SEO systems for Kansas small and mid-sized businesses.
               </p>
             </div>
           </div>
@@ -194,6 +253,76 @@ export default function AboutPage() {
                   <p>{v.body}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+
+        {/* About FAQs — server-rendered, matches FAQPage JSON-LD above */}
+        <div className="ps-section ps-section-white">
+          <div className="ps-container">
+            <div style={{ maxWidth: 820, margin: "0 auto" }}>
+              <h2
+                style={{
+                  fontSize: "clamp(1.5rem, 2.6vw, 2rem)",
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
+                  color: "var(--color-text-dark)",
+                  marginBottom: 24,
+                  lineHeight: 1.2,
+                }}
+              >
+                Frequently asked questions
+              </h2>
+              {aboutFaqs.map((q, i) => (
+                <details
+                  key={i}
+                  style={{
+                    borderBottom: "1px solid rgba(10, 22, 40, 0.08)",
+                    padding: "18px 0",
+                  }}
+                >
+                  <summary
+                    style={{
+                      fontSize: 18,
+                      fontWeight: 600,
+                      color: "var(--color-text-dark)",
+                      cursor: "pointer",
+                      listStyle: "none",
+                    }}
+                  >
+                    {q.question}
+                  </summary>
+                  <p
+                    style={{
+                      fontSize: 17,
+                      lineHeight: 1.65,
+                      color: "var(--color-text-body)",
+                      margin: "12px 0 0",
+                    }}
+                  >
+                    {q.answer}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Internal links — discoverable crawl paths */}
+        <div className="ps-section ps-section-light">
+          <div className="ps-container">
+            <div style={{ maxWidth: 1120, margin: "0 auto" }}>
+              <InternalLinkBlock
+                title="Explore Preisser Solutions"
+                columns={3}
+                links={[
+                  { href: "/locations/hays-kansas", label: "Hays, Kansas", description: "Headquarters and primary service area." },
+                  { href: "/services/custom-websites", label: "Custom websites", description: "Custom-coded sites, no templates." },
+                  { href: "/services/ai-automation", label: "AI automation", description: "Custom AI agents, automation, and workflows." },
+                  { href: "/case-studies", label: "Case studies", description: "Named clients, measurable outcomes." },
+                  { href: "/contact", label: "Contact", description: "Book a scoping call with Tyler." },
+                ]}
+              />
             </div>
           </div>
         </div>

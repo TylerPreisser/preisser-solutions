@@ -101,13 +101,13 @@ export const siteConfig = {
   meta: {
     title: "Preisser Solutions | AI Automation, Websites & Local SEO in Kansas",
     description:
-      "Preisser Solutions helps Kansas businesses grow with custom websites, local SEO, AI search optimization, CRM systems, dashboards, and workflow automation. Based in Hays, Kansas.",
+      "Preisser Solutions builds AI automation, custom websites, local SEO, web apps, dashboards, and AI search optimization systems for Hays and western Kansas businesses.",
     themeColor: "#0D95E8",
   },
   // R-031..R-033: homepage hero content. All textual content lives in data files
   // per project convention — components render, data files own the words.
   hero: {
-    h1: "AI Automation, Custom Websites, and Local SEO for Kansas Businesses",
+    h1: "AI Automation, Custom Websites, and Local SEO in Hays, Kansas",
     subhead:
       "Preisser Solutions builds the systems behind modern small businesses: high-converting websites, local SEO, AI search visibility, CRM workflows, dashboards, and automations that reduce manual work and increase qualified leads.",
     primaryCta: {

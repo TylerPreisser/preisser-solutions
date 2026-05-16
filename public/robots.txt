@@ -161,5 +161,28 @@ Allow: /
 User-agent: YandexBot
 Allow: /
 
+# --- Hardened disallow list -------------------------------------------------
+# Even with a fully-permissive policy, these path prefixes are off-limits to
+# all agents. They do not currently exist in the static export but are
+# reserved here so that future drafts, private staging URLs, or admin tooling
+# never accidentally ship to crawlers / answer engines.
+
+User-agent: *
+Disallow: /admin/
+Disallow: /drafts/
+Disallow: /private/
+
 # Sitemap reference
 Sitemap: https://preissersolutions.com/sitemap.xml
+
+# --- AI agent manifests (informational; not directives) ---------------------
+# Crawlers that ingest robots.txt and look for adjacent agent surfaces can
+# find:
+#   https://preissersolutions.com/llms.txt
+#   https://preissersolutions.com/llms-full.txt
+#   https://preissersolutions.com/ai.txt
+#   https://preissersolutions.com/openapi.json
+#   https://preissersolutions.com/.well-known/agent-card.json
+#   https://preissersolutions.com/.well-known/mcp/server-card.json
+#   https://preissersolutions.com/.well-known/api-catalog
+#   https://preissersolutions.com/feed.xml
