@@ -107,10 +107,14 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "Hays, Kansas", "Kansas City", "Overland Park", "Olathe"],
   relatedLinks: [
-    { label: "Overland Park, Kansas Custom Software", href: "/locations/overland-park-kansas" },
-    { label: "Olathe, Kansas Custom Software", href: "/locations/olathe-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Overland Park, KS services", href: "/locations/overland-park-kansas" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "Best web design company in Hays, Kansas", href: "/compare/best-web-design-company-hays-kansas" },
+    { label: "Preisser vs Pluto Sites", href: "/compare/pluto-sites" },
+    { label: "Preisser vs Toucan Design", href: "/compare/toucan-design" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Get KC-metro craft at Kansas economics",
   ctaSubcopy:

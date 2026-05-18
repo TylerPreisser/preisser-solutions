@@ -107,10 +107,12 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
   ],
   relatedLinks: [
-    { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
-    { label: "Oil & Gas Industry", href: "/industries/oil-gas" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Hays, KS services hub", href: "/locations/hays-kansas" },
+    { label: "Norton, KS services", href: "/locations/norton-kansas" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build with a custom-software firm an hour down US-283",
   ctaSubcopy:

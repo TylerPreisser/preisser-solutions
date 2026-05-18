@@ -134,11 +134,14 @@ export const pageData: AeoPageData = {
     "robots.txt",
   ],
   relatedLinks: [
-    { label: "SEO Hays KS", href: "/services/seo-hays-ks" },
-    { label: "Local SEO", href: "/services/local-seo" },
-    { label: "Custom Websites", href: "/services/custom-websites" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "SEO in Hays, KS", href: "/services/seo-hays-ks" },
+    { label: "AI search optimization service", href: "/services/ai-search-optimization" },
+    { label: "My website isn't getting traffic", href: "/insights/business-website-not-getting-traffic" },
+    { label: "Get more local customers from Google", href: "/insights/get-more-local-customers-from-google" },
+    { label: "Local SEO checklist for Kansas", href: "/blog/local-seo-checklist-kansas" },
+    { label: "Google Business Profile optimization guide", href: "/blog/gbp-optimization-guide" },
     { label: "Contact Preisser Solutions", href: "/contact" },
-    { label: "Why Your Business Website Is Not Getting Traffic", href: "/insights/business-website-not-getting-traffic" },
   ],
   ctaHeadline: "Let's find out why you're invisible",
   ctaSubcopy:

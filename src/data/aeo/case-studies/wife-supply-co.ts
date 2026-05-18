@@ -156,11 +156,13 @@ export const pageData: AeoPageData = {
     "Cloudflare Pages",
   ],
   relatedLinks: [
-    { label: "Retail & E-commerce Industry", href: "/industries/retail" },
-    { label: "Shopify vs Custom E-commerce", href: "/compare/shopify-vs-custom-ecommerce" },
-    { label: "All Case Studies", href: "/case-studies" },
-    { label: "AI Agent Development", href: "/ai-agents" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Web applications", href: "/web-applications" },
+    { label: "Shopify vs custom e-commerce", href: "/compare/shopify-vs-custom-ecommerce" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "Website redesign checklist", href: "/blog/website-redesign-checklist" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build a custom AI commerce platform from scratch",
   ctaSubcopy:

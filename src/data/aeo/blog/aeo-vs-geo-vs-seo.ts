@@ -116,10 +116,14 @@ export const pageData: AeoPageData = {
     "MERJ",
   ],
   relatedLinks: [
-    { label: "What Is AI Search Optimization?", href: "/blog/what-is-ai-search-optimization" },
-    { label: "What Is llms.txt?", href: "/blog/what-is-llms-txt" },
-    { label: "AI Search Optimization Service", href: "/services/ai-search-optimization" },
-    { label: "Local SEO", href: "/services/local-seo" },
+    { label: "AI search optimization service", href: "/services/ai-search-optimization" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "SEO in Hays, KS", href: "/services/seo-hays-ks" },
+    { label: "What is AI search optimization?", href: "/blog/what-is-ai-search-optimization" },
+    { label: "What is llms.txt?", href: "/blog/what-is-llms-txt" },
+    { label: "What is an AI-native website?", href: "/blog/what-is-an-ai-native-website" },
+    { label: "AI search optimization vs traditional SEO", href: "/compare/ai-search-optimization-vs-traditional-seo" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want a unified AEO/GEO/SEO audit?",
   ctaSubcopy:

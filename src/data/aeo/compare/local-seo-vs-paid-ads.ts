@@ -128,10 +128,14 @@ export const pageData: AeoPageData = {
     "Instagram",
   ],
   relatedLinks: [
-    { label: "Local SEO Services", href: "/services/local-seo" },
-    { label: "Paid Ads Management", href: "/services/paid-ads" },
-    { label: "AI Search Optimization", href: "/services/ai-search-optimization" },
-    { label: "AEO vs Traditional SEO", href: "/compare/ai-search-optimization-vs-traditional-seo" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "Paid ads management", href: "/services/paid-ads" },
+    { label: "Google Ads + local SEO for service businesses", href: "/services/google-ads-local-seo-service-business" },
+    { label: "Local SEO checklist for Kansas", href: "/blog/local-seo-checklist-kansas" },
+    { label: "How to track marketing ROI", href: "/blog/track-marketing-roi" },
+    { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
+    { label: "HVAC local SEO in Kansas", href: "/industries/hvac-local-seo-kansas" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Get the right mix of paid and organic",
   ctaSubcopy:

@@ -112,10 +112,14 @@ export const pageData: AeoPageData = {
     "Hays, Kansas",
   ],
   relatedLinks: [
-    { label: "What Is AI Automation for Small Businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },
-    { label: "Best Automations for Contractors", href: "/blog/best-automations-contractors" },
-    { label: "Cassidy HVAC Case Study", href: "/case-studies/cassidy-hvac" },
-    { label: "HG Oil Holdings Case Study", href: "/case-studies/hg-oil-holdings" },
+    { label: "AI automation in Hays, KS", href: "/services/ai-automation-hays-ks" },
+    { label: "AI consulting in Hays, KS", href: "/services/ai-consulting-hays-ks" },
+    { label: "AI customer service systems", href: "/services/ai-customer-service" },
+    { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "What is AI automation for small businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want to map AI augmentation against your team?",
   ctaSubcopy:

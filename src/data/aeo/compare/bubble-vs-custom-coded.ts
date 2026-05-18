@@ -111,9 +111,14 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "Bubble", "Hays, Kansas", "Next.js", "Node.js"],
   relatedLinks: [
-    { label: "FlutterFlow vs Custom Coded", href: "/compare/flutterflow-vs-custom-coded" },
-    { label: "Web Application Development", href: "/web-applications" },
-    { label: "Custom CRM Development", href: "/services/custom-crm" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Web applications", href: "/web-applications" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "FlutterFlow vs custom-coded", href: "/compare/flutterflow-vs-custom-coded" },
+    { label: "Webflow vs custom-coded", href: "/compare/webflow-vs-custom-coded" },
+    { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
+    { label: "What is an AI-native website?", href: "/blog/what-is-an-ai-native-website" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Outgrown Bubble?",
   ctaSubcopy:

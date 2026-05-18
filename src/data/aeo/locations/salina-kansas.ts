@@ -148,12 +148,12 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
   ],
   relatedLinks: [
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
-    { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "Premium Web Development in Kansas", href: "/premium-web-development-kansas" },
-    { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
-    { label: "Manhattan, Kansas Custom Software", href: "/locations/manhattan-kansas" },
+    { label: "Salina, KS SEO", href: "/locations/salina-kansas-seo" },
+    { label: "Salina, KS web design", href: "/locations/salina-kansas-web-design" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build with a Kansas-based premium custom-software firm",
   ctaSubcopy:

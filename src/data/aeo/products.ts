@@ -110,11 +110,12 @@ export const pageData: AeoPageData = {
     "Hays, Kansas",
   ],
   relatedLinks: [
-    { label: "Pricing", href: "/pricing" },
-    { label: "AI Agents", href: "/ai-agents" },
-    { label: "Custom Websites", href: "/custom-websites" },
-    { label: "Services", href: "/services" },
-    { label: "Contact", href: "/contact" },
+    { label: "All services", href: "/services" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Business automation systems", href: "/business-automation" },
+    { label: "All case studies", href: "/case-studies" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want a fixed-price quote?",
   ctaSubcopy:

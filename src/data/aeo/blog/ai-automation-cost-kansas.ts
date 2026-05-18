@@ -137,11 +137,14 @@ export const pageData: AeoPageData = {
     "OpenAI",
   ],
   relatedLinks: [
-    { label: "Missed-Call ROI Calculator", href: "/blog/missed-call-roi-calculator" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "AI automation in Hays, KS", href: "/services/ai-automation-hays-ks" },
     { label: "Pricing", href: "/pricing" },
-    { label: "Business Automation", href: "/business-automation" },
-    { label: "Cassidy HVAC Case Study", href: "/case-studies/cassidy-hvac" },
-    { label: "HG Oil Holdings Case Study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Missed-call ROI calculator", href: "/roi-calculator" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "AI vs traditional workflow automation", href: "/blog/ai-vs-traditional-workflow-automation" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want a fixed-price quote on your project?",
   ctaSubcopy:

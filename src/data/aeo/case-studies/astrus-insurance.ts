@@ -140,10 +140,14 @@ export const pageData: AeoPageData = {
     "Hays, Kansas",
   ],
   relatedLinks: [
-    { label: "Insurance & Financial Industry", href: "/industries/insurance-financial" },
-    { label: "Custom CRM Systems", href: "/services/crm-systems" },
-    { label: "Custom Websites", href: "/custom-websites" },
-    { label: "All Case Studies", href: "/case-studies" },
+    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "Custom CRM for small business in Kansas", href: "/services/custom-crm-small-business-kansas" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "Insurance & financial services", href: "/industries/insurance-financial" },
+    { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
+    { label: "Best automations for insurance agencies", href: "/blog/best-automations-insurance" },
+    { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Replace the generic CRM with a system tuned to your agency",
   ctaSubcopy:

@@ -112,11 +112,12 @@ export const pageData: AeoPageData = {
     "Cassidy HVAC",
   ],
   relatedLinks: [
-    { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
-    { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "Oil & Gas Industry", href: "/industries/oil-gas" },
+    { label: "Russell, KS web design", href: "/locations/russell-kansas-web-design" },
+    { label: "Hays, KS services hub", href: "/locations/hays-kansas" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build with a custom-software firm 40 miles down I-70",
   ctaSubcopy:

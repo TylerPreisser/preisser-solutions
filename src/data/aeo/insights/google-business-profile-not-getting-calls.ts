@@ -129,11 +129,14 @@ export const pageData: AeoPageData = {
     "Google Maps",
   ],
   relatedLinks: [
-    { label: "Local SEO Hays KS", href: "/services/local-seo-hays-ks" },
-    { label: "Local SEO", href: "/services/local-seo" },
-    { label: "How to Get More Local Customers from Google", href: "/insights/get-more-local-customers-from-google" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "AI customer service systems", href: "/services/ai-customer-service" },
+    { label: "After-hours call triage service", href: "/services/after-hours-call-triage" },
+    { label: "Get more local customers from Google", href: "/insights/get-more-local-customers-from-google" },
+    { label: "Google Business Profile optimization guide", href: "/blog/gbp-optimization-guide" },
+    { label: "Missed-call ROI calculator (article)", href: "/blog/missed-call-roi-calculator" },
+    { label: "AI receptionist for HVAC", href: "/industries/hvac-ai-receptionist" },
     { label: "Contact Preisser Solutions", href: "/contact" },
-    { label: "SEO Hays KS", href: "/services/seo-hays-ks" },
   ],
   ctaHeadline: "Want a profile + website alignment check?",
   ctaSubcopy:

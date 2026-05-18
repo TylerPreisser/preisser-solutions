@@ -108,13 +108,12 @@ export const pageData: AeoPageData = {
     "Hays, Kansas",
   ],
   relatedLinks: [
-    { label: "Blog", href: "/blog" },
-    { label: "ROI Calculator", href: "/roi-calculator" },
-    { label: "Integrations", href: "/integrations" },
-    { label: "Case Studies", href: "/case-studies" },
-    { label: "Services", href: "/services" },
+    { label: "Articles & guides", href: "/blog" },
+    { label: "All case studies", href: "/case-studies" },
+    { label: "Missed-call ROI calculator", href: "/roi-calculator" },
+    { label: "How we work (process)", href: "/process" },
     { label: "Pricing", href: "/pricing" },
-    { label: "FAQ", href: "/faq" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Ready to talk specifics?",
   ctaSubcopy:

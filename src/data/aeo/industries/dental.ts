@@ -115,10 +115,14 @@ export const pageData: AeoPageData = {
     "Curve Dental",
   ],
   relatedLinks: [
-    { label: "Healthcare Industry", href: "/industries/healthcare" },
-    { label: "Veterinary Industry", href: "/industries/veterinary" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Healthcare practices", href: "/industries/healthcare" },
+    { label: "Veterinary practices", href: "/industries/veterinary" },
+    { label: "AI customer service systems", href: "/services/ai-customer-service" },
+    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
+    { label: "AI customer reactivation campaigns", href: "/use-cases/ai-customer-reactivation-campaigns" },
+    { label: "What is AI automation for small businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Recover the unscheduled treatment sitting in your PMS",
   ctaSubcopy:

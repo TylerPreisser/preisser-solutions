@@ -115,10 +115,14 @@ export const pageData: AeoPageData = {
     "Protractor",
   ],
   relatedLinks: [
-    { label: "HVAC Industry", href: "/industries/hvac" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "AI Agent Development", href: "/ai-agents" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "HVAC industry", href: "/industries/hvac" },
+    { label: "AI customer service systems", href: "/services/ai-customer-service" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
+    { label: "AI customer reactivation campaigns", href: "/use-cases/ai-customer-reactivation-campaigns" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Best automations for contractors", href: "/blog/best-automations-contractors" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Stop losing customers between visits",
   ctaSubcopy:

@@ -110,9 +110,14 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "FlutterFlow", "Flutter", "React Native", "Hays, Kansas"],
   relatedLinks: [
-    { label: "Bubble vs Custom Coded", href: "/compare/bubble-vs-custom-coded" },
-    { label: "Web Application Development", href: "/web-applications" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Web applications", href: "/web-applications" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Bubble vs custom-coded", href: "/compare/bubble-vs-custom-coded" },
+    { label: "Webflow vs custom-coded", href: "/compare/webflow-vs-custom-coded" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "What is an AI-native website?", href: "/blog/what-is-an-ai-native-website" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Outgrown FlutterFlow?",
   ctaSubcopy:

@@ -130,10 +130,14 @@ export const pageData: AeoPageData = {
     "Fivetran",
   ],
   relatedLinks: [
-    { label: "HG Oil Holdings Case Study", href: "/case-studies/hg-oil-holdings" },
-    { label: "Dashboards & Analytics", href: "/dashboards-and-analytics" },
-    { label: "Custom CRM vs HubSpot vs Salesforce", href: "/blog/custom-crm-vs-hubspot-vs-salesforce" },
-    { label: "AI vs Traditional Workflow Automation", href: "/blog/ai-vs-traditional-workflow-automation" },
+    { label: "Dashboards & analytics service", href: "/services/dashboards-and-analytics" },
+    { label: "API integration service", href: "/services/api-integration" },
+    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Sunrise Transportation case study", href: "/case-studies/sunrise-transportation" },
+    { label: "Best automations for trucking & logistics", href: "/blog/best-automations-trucking" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want help deciding if custom is right for you?",
   ctaSubcopy:

@@ -124,10 +124,14 @@ export const pageData: AeoPageData = {
     "Squarespace",
   ],
   relatedLinks: [
-    { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "Website Migration", href: "/services/website-migration" },
-    { label: "Conversion Optimization", href: "/services/conversion-optimization" },
-    { label: "AI Search Optimization", href: "/services/ai-search-optimization" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Website migration service", href: "/services/website-migration" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Website redesign checklist", href: "/blog/website-redesign-checklist" },
+    { label: "Why small-business sites don't convert", href: "/blog/why-small-business-sites-dont-convert" },
+    { label: "My website isn't generating leads", href: "/insights/small-business-website-not-generating-leads" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Take over your outdated site without losing rankings",
   ctaSubcopy:

@@ -107,10 +107,12 @@ export const pageData: AeoPageData = {
     "I-70",
   ],
   relatedLinks: [
-    { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
-    { label: "Colby, Kansas Custom Software", href: "/locations/colby-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Colby, KS services", href: "/locations/colby-kansas" },
+    { label: "Western Kansas web design", href: "/locations/western-kansas-web-design" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build with a custom-software firm 140 miles east on I-70",
   ctaSubcopy:

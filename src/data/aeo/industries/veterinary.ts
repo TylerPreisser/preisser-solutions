@@ -114,10 +114,14 @@ export const pageData: AeoPageData = {
     "Provet Cloud",
   ],
   relatedLinks: [
-    { label: "Healthcare Industry", href: "/industries/healthcare" },
-    { label: "Dental Industry", href: "/industries/dental" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Dental practices", href: "/industries/dental" },
+    { label: "Healthcare practices", href: "/industries/healthcare" },
+    { label: "AI customer service systems", href: "/services/ai-customer-service" },
+    { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
+    { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
+    { label: "AI customer reactivation campaigns", href: "/use-cases/ai-customer-reactivation-campaigns" },
+    { label: "Best automations for contractors", href: "/blog/best-automations-contractors" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Stop losing patients between annual exams",
   ctaSubcopy:

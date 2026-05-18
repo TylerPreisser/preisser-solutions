@@ -108,10 +108,14 @@ export const pageData: AeoPageData = {
     "Google Analytics",
   ],
   relatedLinks: [
-    { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "Website Redesign", href: "/services/website-redesign" },
-    { label: "Local SEO Services", href: "/services/local-seo" },
-    { label: "AI Search Optimization", href: "/services/ai-search-optimization" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Website redesign service", href: "/services/website-redesign" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "Why small-business sites don't convert", href: "/blog/why-small-business-sites-dont-convert" },
+    { label: "My website isn't generating leads", href: "/insights/small-business-website-not-generating-leads" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "Local SEO vs paid ads", href: "/compare/local-seo-vs-paid-ads" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Turn the traffic you already have into more revenue",
   ctaSubcopy:

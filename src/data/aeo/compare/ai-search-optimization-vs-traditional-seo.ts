@@ -135,10 +135,14 @@ export const pageData: AeoPageData = {
     "Anthropic",
   ],
   relatedLinks: [
-    { label: "AI Search Optimization (AEO)", href: "/services/ai-search-optimization" },
-    { label: "Local SEO Services", href: "/services/local-seo" },
-    { label: "Local SEO vs Paid Ads", href: "/compare/local-seo-vs-paid-ads" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
+    { label: "AI search optimization service", href: "/services/ai-search-optimization" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "SEO in Hays, KS", href: "/services/seo-hays-ks" },
+    { label: "What is AI search optimization?", href: "/blog/what-is-ai-search-optimization" },
+    { label: "AEO vs GEO vs SEO", href: "/blog/aeo-vs-geo-vs-seo" },
+    { label: "What is an AI-native website?", href: "/blog/what-is-an-ai-native-website" },
+    { label: "Why your site needs an llms.txt", href: "/insights/llms-txt-small-business-website" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Get cited by ChatGPT, Perplexity, Gemini, and Claude",
   ctaSubcopy:

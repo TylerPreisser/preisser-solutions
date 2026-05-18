@@ -110,10 +110,14 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "Squarespace", "Hays, Kansas", "Next.js", "Cloudflare Pages"],
   relatedLinks: [
-    { label: "Wix vs Custom", href: "/compare/wix-vs-custom" },
-    { label: "Webflow vs Custom Coded", href: "/compare/webflow-vs-custom-coded" },
-    { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "Website Migration", href: "/services/website-migration" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Website redesign service", href: "/services/website-redesign" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "Wix vs custom website", href: "/compare/wix-vs-custom" },
+    { label: "WordPress vs custom", href: "/compare/wordpress-vs-custom" },
+    { label: "Best web design company in Hays, Kansas", href: "/compare/best-web-design-company-hays-kansas" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Need help deciding?",
   ctaSubcopy:

@@ -144,11 +144,14 @@ export const pageData: AeoPageData = {
     "CRM",
   ],
   relatedLinks: [
-    { label: "Custom Websites", href: "/services/custom-websites" },
-    { label: "Lead Tracking & Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
-    { label: "Local SEO", href: "/services/local-seo" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Website redesign service", href: "/services/website-redesign" },
+    { label: "Conversion optimization", href: "/services/conversion-optimization" },
+    { label: "AI customer service systems", href: "/services/ai-customer-service" },
+    { label: "Lead tracking for website + Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
+    { label: "Why small-business sites don't convert", href: "/blog/why-small-business-sites-dont-convert" },
+    { label: "Website redesign checklist", href: "/blog/website-redesign-checklist" },
     { label: "Contact Preisser Solutions", href: "/contact" },
-    { label: "Google Business Profile Not Getting Calls", href: "/insights/google-business-profile-not-getting-calls" },
   ],
   ctaHeadline: "Want a conversion review of your site?",
   ctaSubcopy:

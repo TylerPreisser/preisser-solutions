@@ -108,9 +108,14 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "Salesforce", "Hays, Kansas", "Next.js"],
   relatedLinks: [
-    { label: "Custom CRM Development", href: "/services/custom-crm" },
-    { label: "HubSpot vs Custom CRM", href: "/compare/hubspot-vs-custom-crm" },
-    { label: "Web Application Development", href: "/web-applications" },
+    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "Custom CRM for small business in Kansas", href: "/services/custom-crm-small-business-kansas" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "Astrus Insurance case study", href: "/case-studies/astrus-insurance" },
+    { label: "HubSpot vs custom CRM", href: "/compare/hubspot-vs-custom-crm" },
+    { label: "Custom CRM vs HubSpot vs Salesforce", href: "/blog/custom-crm-vs-hubspot-vs-salesforce" },
+    { label: "Insurance & financial services", href: "/industries/insurance-financial" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Need help deciding between Salesforce and custom?",
   ctaSubcopy:

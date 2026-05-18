@@ -121,10 +121,14 @@ export const pageData: AeoPageData = {
     "Granular",
   ],
   relatedLinks: [
-    { label: "Oil & Gas Industry", href: "/industries/oil-gas" },
-    { label: "Trucking & Logistics Industry", href: "/industries/trucking-logistics" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "AI Agent Development", href: "/ai-agents" },
+    { label: "Oil & gas industry", href: "/industries/oil-gas" },
+    { label: "Manufacturing industry", href: "/industries/manufacturing" },
+    { label: "Business automation systems", href: "/business-automation" },
+    { label: "Automate data entry", href: "/use-cases/automate-data-entry-small-business" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Best automations for trucking & logistics", href: "/blog/best-automations-trucking" },
+    { label: "AI without replacing staff (Kansas)", href: "/blog/ai-without-replacing-staff-kansas" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Get technology that fits how Kansas farms actually run",
   ctaSubcopy:

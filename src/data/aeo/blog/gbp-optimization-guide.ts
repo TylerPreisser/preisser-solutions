@@ -131,9 +131,14 @@ export const pageData: AeoPageData = {
     "Google Maps",
   ],
   relatedLinks: [
-    { label: "Local SEO Checklist for Kansas", href: "/blog/local-seo-checklist-kansas" },
-    { label: "Local SEO Service", href: "/services/local-seo" },
-    { label: "Why Small Business Sites Don't Convert", href: "/blog/why-small-business-sites-dont-convert" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "Local SEO in Hays, KS", href: "/services/local-seo-hays-ks" },
+    { label: "SEO in Hays, KS", href: "/services/seo-hays-ks" },
+    { label: "Get more local customers from Google", href: "/insights/get-more-local-customers-from-google" },
+    { label: "Why my Google Business Profile isn't getting calls", href: "/insights/google-business-profile-not-getting-calls" },
+    { label: "Local SEO checklist for Kansas", href: "/blog/local-seo-checklist-kansas" },
+    { label: "HVAC local SEO in Kansas", href: "/industries/hvac-local-seo-kansas" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want a GBP audit and fix-list?",
   ctaSubcopy:

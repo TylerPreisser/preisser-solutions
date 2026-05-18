@@ -110,9 +110,14 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "Zapier", "Make.com", "Hays, Kansas", "Cloudflare Workers"],
   relatedLinks: [
-    { label: "Make.com vs Custom Automation", href: "/compare/make-com-vs-custom-automation" },
-    { label: "API Integration", href: "/services/api-integration" },
-    { label: "Business Automation Systems", href: "/business-automation" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "Business automation systems", href: "/business-automation" },
+    { label: "API integration service", href: "/services/api-integration" },
+    { label: "Make.com vs custom automation", href: "/compare/make-com-vs-custom-automation" },
+    { label: "Zapier vs custom automation for small business", href: "/compare/zapier-vs-custom-automation-small-business" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "AI vs traditional workflow automation", href: "/blog/ai-vs-traditional-workflow-automation" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Outgrown Zapier?",
   ctaSubcopy:

@@ -109,10 +109,13 @@ export const pageData: AeoPageData = {
     "Hays, Kansas",
   ],
   relatedLinks: [
-    { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
-    { label: "Overland Park, Kansas Custom Software", href: "/locations/overland-park-kansas" },
-    { label: "Lawrence, Kansas Custom Software", href: "/locations/lawrence-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
+    { label: "Overland Park, KS services", href: "/locations/overland-park-kansas" },
+    { label: "Lawrence, KS services", href: "/locations/lawrence-kansas" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Preisser vs KC Web Designer", href: "/compare/kc-web-designer" },
+    { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build with a Kansas-based custom-software firm",
   ctaSubcopy:

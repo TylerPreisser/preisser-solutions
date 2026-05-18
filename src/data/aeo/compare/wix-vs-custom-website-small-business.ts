@@ -196,11 +196,14 @@ export const pageData: AeoPageData = {
     "Hays, Kansas",
   ],
   relatedLinks: [
-    { label: "Custom Website Development", href: "/services/custom-websites" },
-    { label: "Premium Web Development in Kansas", href: "/premium-web-development-kansas" },
-    { label: "Small Business Website Not Generating Leads", href: "/insights/small-business-website-not-generating-leads" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Website redesign service", href: "/services/website-redesign" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "Wix vs custom website", href: "/compare/wix-vs-custom" },
+    { label: "Squarespace vs custom", href: "/compare/squarespace-vs-custom" },
+    { label: "Why small-business sites don't convert", href: "/blog/why-small-business-sites-dont-convert" },
     { label: "Contact Preisser Solutions", href: "/contact" },
-    { label: "WordPress vs Custom Coded Website", href: "/compare/wordpress-vs-custom-coded-website" },
   ],
   ctaHeadline: "Outgrown your Wix site?",
   ctaSubcopy:

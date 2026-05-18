@@ -146,10 +146,13 @@ export const pageData: AeoPageData = {
     "Cloudflare Pages",
   ],
   relatedLinks: [
-    { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "All Case Studies", href: "/case-studies" },
-    { label: "Cassidy HVAC Case Study", href: "/case-studies/cassidy-hvac" },
-    { label: "Wife Supply Co Case Study", href: "/case-studies/wife-supply-co" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Website redesign service", href: "/services/website-redesign" },
+    { label: "Web applications", href: "/web-applications" },
+    { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
+    { label: "Website redesign checklist", href: "/blog/website-redesign-checklist" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build a cinematic media brand from scratch",
   ctaSubcopy:

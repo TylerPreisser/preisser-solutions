@@ -93,9 +93,14 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "Imagemakers", "Hays, Kansas"],
   relatedLinks: [
-    { label: "Conceptualized Design Comparison", href: "/compare/conceptualized-design" },
-    { label: "Toucan Design Comparison", href: "/compare/toucan-design" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Digital marketing in Hays, KS", href: "/services/digital-marketing-hays-ks" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "Preisser vs CSG Media", href: "/compare/csg-media" },
+    { label: "Preisser vs Conceptualized Design", href: "/compare/conceptualized-design" },
+    { label: "Best web design company in Hays, Kansas", href: "/compare/best-web-design-company-hays-kansas" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Need custom code, AI, or automation?",
   ctaSubcopy:

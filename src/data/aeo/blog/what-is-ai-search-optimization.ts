@@ -153,11 +153,14 @@ export const pageData: AeoPageData = {
     "Reddit",
   ],
   relatedLinks: [
+    { label: "AI search optimization service", href: "/services/ai-search-optimization" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "SEO in Hays, KS", href: "/services/seo-hays-ks" },
     { label: "AEO vs GEO vs SEO", href: "/blog/aeo-vs-geo-vs-seo" },
-    { label: "What Is llms.txt?", href: "/blog/what-is-llms-txt" },
-    { label: "How To Build a Website for AI Search", href: "/blog/website-for-ai-search" },
-    { label: "AI Search Optimization Service", href: "/services/ai-search-optimization" },
-    { label: "Resources", href: "/resources" },
+    { label: "What is llms.txt?", href: "/blog/what-is-llms-txt" },
+    { label: "What is an AI-native website?", href: "/blog/what-is-an-ai-native-website" },
+    { label: "AI search optimization vs traditional SEO", href: "/compare/ai-search-optimization-vs-traditional-seo" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want an AI Search Visibility Audit?",
   ctaSubcopy:

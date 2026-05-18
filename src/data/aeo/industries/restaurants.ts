@@ -115,10 +115,14 @@ export const pageData: AeoPageData = {
     "Uber Eats",
   ],
   relatedLinks: [
-    { label: "Retail Industry", href: "/industries/retail" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "AI Agent Development", href: "/ai-agents" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Retail industry", href: "/industries/retail" },
+    { label: "AI customer service systems", href: "/services/ai-customer-service" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
+    { label: "AI customer reactivation campaigns", href: "/use-cases/ai-customer-reactivation-campaigns" },
+    { label: "What is AI automation for small businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },
+    { label: "Google Business Profile optimization guide", href: "/blog/gbp-optimization-guide" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Recover the 30% that delivery aggregators take from every order",
   ctaSubcopy:

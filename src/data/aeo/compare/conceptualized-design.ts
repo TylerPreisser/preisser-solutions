@@ -101,10 +101,14 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "Conceptualized Design", "Hays, Kansas", "Ellis County"],
   relatedLinks: [
-    { label: "Toucan Design Comparison", href: "/compare/toucan-design" },
-    { label: "CSG Media Comparison", href: "/compare/csg-media" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Website redesign service", href: "/services/website-redesign" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "Best web design company in Hays, Kansas", href: "/compare/best-web-design-company-hays-kansas" },
+    { label: "Preisser vs CSG Media", href: "/compare/csg-media" },
+    { label: "Preisser vs Imagemakers", href: "/compare/imagemakers" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Need custom code, AI, or automation?",
   ctaSubcopy:

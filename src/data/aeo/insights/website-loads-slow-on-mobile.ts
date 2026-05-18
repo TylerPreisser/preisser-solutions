@@ -126,11 +126,13 @@ export const pageData: AeoPageData = {
     "WordPress",
   ],
   relatedLinks: [
-    { label: "Custom Websites", href: "/services/custom-websites" },
-    { label: "Premium Web Development Kansas", href: "/premium-web-development-kansas" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Website redesign service", href: "/services/website-redesign" },
+    { label: "Website migration service", href: "/services/website-migration" },
+    { label: "Website redesign checklist", href: "/blog/website-redesign-checklist" },
+    { label: "Why small-business sites don't convert", href: "/blog/why-small-business-sites-dont-convert" },
+    { label: "My website isn't generating leads", href: "/insights/small-business-website-not-generating-leads" },
     { label: "Contact Preisser Solutions", href: "/contact" },
-    { label: "Small Business Website Not Generating Leads", href: "/insights/small-business-website-not-generating-leads" },
-    { label: "SEO Hays KS", href: "/services/seo-hays-ks" },
   ],
   ctaHeadline: "Run your site past Tyler",
   ctaSubcopy:

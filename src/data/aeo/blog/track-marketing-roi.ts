@@ -124,10 +124,14 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
   ],
   relatedLinks: [
-    { label: "AI Automation Cost in Kansas", href: "/blog/ai-automation-cost-kansas" },
-    { label: "Missed-Call ROI Calculator", href: "/blog/missed-call-roi-calculator" },
-    { label: "Reactivate Old Leads", href: "/blog/reactivate-old-leads" },
-    { label: "ROI Calculator", href: "/roi-calculator" },
+    { label: "Digital marketing in Hays, KS", href: "/services/digital-marketing-hays-ks" },
+    { label: "Google Ads + local SEO for service businesses", href: "/services/google-ads-local-seo-service-business" },
+    { label: "Paid ads management", href: "/services/paid-ads" },
+    { label: "Lead tracking for website + Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
+    { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
+    { label: "Missed-call ROI calculator (article)", href: "/blog/missed-call-roi-calculator" },
+    { label: "Preisser vs a marketing agency", href: "/compare/vs-marketing-agency" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want this set up for your business?",
   ctaSubcopy:

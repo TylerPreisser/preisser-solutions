@@ -106,9 +106,14 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "CSG Media", "Hays, Kansas", "Salina, Kansas"],
   relatedLinks: [
-    { label: "Conceptualized Design Comparison", href: "/compare/conceptualized-design" },
-    { label: "Toucan Design Comparison", href: "/compare/toucan-design" },
-    { label: "Salina, Kansas Custom Software", href: "/locations/salina-kansas" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Digital marketing in Hays, KS", href: "/services/digital-marketing-hays-ks" },
+    { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
+    { label: "Preisser vs Imagemakers", href: "/compare/imagemakers" },
+    { label: "Preisser vs Conceptualized Design", href: "/compare/conceptualized-design" },
+    { label: "Preisser vs a marketing agency", href: "/compare/vs-marketing-agency" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Need custom code, AI, or automation?",
   ctaSubcopy:

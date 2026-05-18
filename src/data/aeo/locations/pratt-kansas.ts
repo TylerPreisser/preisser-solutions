@@ -108,10 +108,13 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
   ],
   relatedLinks: [
-    { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
-    { label: "Wichita, Kansas Custom Software", href: "/locations/wichita-kansas" },
-    { label: "Oil & Gas Industry", href: "/industries/oil-gas" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
+    { label: "Hutchinson, KS services", href: "/locations/hutchinson-kansas" },
+    { label: "Wichita, KS services", href: "/locations/wichita-kansas" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build with a Kansas-based custom-software firm",
   ctaSubcopy:

@@ -179,12 +179,11 @@ export const pageData: AeoPageData = {
     "Hays Post",
   ],
   relatedLinks: [
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
-    { label: "About Tyler Preisser", href: "/tyler-preisser" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "Contact", href: "/contact" },
-    { label: "FAQ", href: "/faq" },
-    { label: "Case Studies", href: "/case-studies" },
+    { label: "About Preisser Solutions", href: "/about" },
+    { label: "Tyler Preisser bio", href: "/tyler-preisser" },
+    { label: "All case studies", href: "/case-studies" },
+    { label: "Articles & guides", href: "/blog" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Need to reach Tyler for a story?",
   ctaSubcopy:

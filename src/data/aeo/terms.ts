@@ -180,8 +180,7 @@ export const pageData: AeoPageData = {
   ],
   relatedLinks: [
     { label: "Privacy Policy", href: "/privacy" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "Contact", href: "/contact" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Have a project in mind?",
   ctaSubcopy:

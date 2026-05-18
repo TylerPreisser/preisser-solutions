@@ -114,10 +114,14 @@ export const pageData: AeoPageData = {
     "JobTread",
   ],
   relatedLinks: [
-    { label: "Roofing Industry", href: "/industries/roofing" },
-    { label: "HVAC Industry", href: "/industries/hvac" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Roofing industry", href: "/industries/roofing" },
+    { label: "HVAC industry", href: "/industries/hvac" },
+    { label: "Business automation systems", href: "/business-automation" },
+    { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
+    { label: "Lead tracking for website + Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Best automations for contractors", href: "/blog/best-automations-contractors" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Stop bleeding margin between bid and final draw",
   ctaSubcopy:

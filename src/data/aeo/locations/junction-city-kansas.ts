@@ -107,10 +107,13 @@ export const pageData: AeoPageData = {
     "I-70",
   ],
   relatedLinks: [
-    { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
-    { label: "Manhattan, Kansas Custom Software", href: "/locations/manhattan-kansas" },
-    { label: "Topeka, Kansas Custom Software", href: "/locations/topeka-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
+    { label: "Manhattan, KS services", href: "/locations/manhattan-kansas" },
+    { label: "Topeka, KS services", href: "/locations/topeka-kansas" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build with a custom-software firm 165 miles west on I-70",
   ctaSubcopy:

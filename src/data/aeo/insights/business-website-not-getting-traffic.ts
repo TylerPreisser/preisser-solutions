@@ -140,11 +140,14 @@ export const pageData: AeoPageData = {
     "Core Web Vitals",
   ],
   relatedLinks: [
-    { label: "Local SEO", href: "/services/local-seo" },
-    { label: "Custom Websites", href: "/services/custom-websites" },
-    { label: "Why Your Website Is Not Showing Up on Google", href: "/insights/website-not-showing-up-on-google" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "SEO in Hays, KS", href: "/services/seo-hays-ks" },
+    { label: "AI search optimization service", href: "/services/ai-search-optimization" },
+    { label: "My website isn't showing up on Google", href: "/insights/website-not-showing-up-on-google" },
+    { label: "Get more local customers from Google", href: "/insights/get-more-local-customers-from-google" },
+    { label: "Local SEO checklist for Kansas", href: "/blog/local-seo-checklist-kansas" },
+    { label: "Google Business Profile optimization guide", href: "/blog/gbp-optimization-guide" },
     { label: "Contact Preisser Solutions", href: "/contact" },
-    { label: "SEO Hays KS", href: "/services/seo-hays-ks" },
   ],
   ctaHeadline: "Want a second pair of eyes on your site?",
   ctaSubcopy:

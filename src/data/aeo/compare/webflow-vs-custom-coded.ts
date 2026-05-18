@@ -110,10 +110,14 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "Webflow", "Hays, Kansas", "Next.js", "React", "TypeScript"],
   relatedLinks: [
-    { label: "Squarespace vs Custom", href: "/compare/squarespace-vs-custom" },
-    { label: "Wix vs Custom", href: "/compare/wix-vs-custom" },
-    { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "Website Migration", href: "/services/website-migration" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Web applications", href: "/web-applications" },
+    { label: "WordPress vs custom-coded website", href: "/compare/wordpress-vs-custom-coded-website" },
+    { label: "Bubble vs custom-coded", href: "/compare/bubble-vs-custom-coded" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "What is an AI-native website?", href: "/blog/what-is-an-ai-native-website" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Need help deciding between Webflow and custom?",
   ctaSubcopy:

@@ -133,10 +133,14 @@ export const pageData: AeoPageData = {
     "Webflow",
   ],
   relatedLinks: [
-    { label: "Website Redesign", href: "/services/website-redesign" },
-    { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "AI Search Optimization", href: "/services/ai-search-optimization" },
-    { label: "Local SEO Services", href: "/services/local-seo" },
+    { label: "Website redesign service", href: "/services/website-redesign" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Website redesign checklist", href: "/blog/website-redesign-checklist" },
+    { label: "My website loads slow on mobile", href: "/insights/website-loads-slow-on-mobile" },
+    { label: "WordPress vs custom-coded website", href: "/compare/wordpress-vs-custom-coded-website" },
+    { label: "Webflow vs custom-coded", href: "/compare/webflow-vs-custom-coded" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Migrate off your template platform without losing rankings",
   ctaSubcopy:

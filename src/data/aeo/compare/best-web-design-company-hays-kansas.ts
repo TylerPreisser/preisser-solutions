@@ -160,11 +160,14 @@ export const pageData: AeoPageData = {
     "Google",
   ],
   relatedLinks: [
-    { label: "Hays Kansas Web Design", href: "/locations/hays-kansas-web-design" },
-    { label: "Custom Website Development", href: "/services/custom-websites" },
-    { label: "Case Studies", href: "/case-studies" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Hays, KS web design", href: "/locations/hays-kansas-web-design" },
+    { label: "Hays, KS web development", href: "/locations/hays-kansas-web-development" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "Wix vs custom website", href: "/compare/wix-vs-custom" },
+    { label: "WordPress vs custom-coded website", href: "/compare/wordpress-vs-custom-coded-website" },
     { label: "Contact Preisser Solutions", href: "/contact" },
-    { label: "SEO in Hays, KS", href: "/services/seo-hays-ks" },
   ],
   ctaHeadline: "Want a second opinion before you hire?",
   ctaSubcopy:

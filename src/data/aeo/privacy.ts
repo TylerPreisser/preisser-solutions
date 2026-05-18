@@ -162,8 +162,7 @@ export const pageData: AeoPageData = {
   ],
   relatedLinks: [
     { label: "Terms of Service", href: "/terms" },
-    { label: "Contact", href: "/contact" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Questions about your data?",
   ctaSubcopy:

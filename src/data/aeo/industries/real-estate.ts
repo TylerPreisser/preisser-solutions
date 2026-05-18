@@ -113,10 +113,14 @@ export const pageData: AeoPageData = {
     "BoomTown",
   ],
   relatedLinks: [
-    { label: "Insurance & Financial Industry", href: "/industries/insurance-financial" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "AI Agent Development", href: "/ai-agents" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Insurance & financial services", href: "/industries/insurance-financial" },
+    { label: "AI customer service systems", href: "/services/ai-customer-service" },
+    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
+    { label: "Lead tracking for website + Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
+    { label: "What is AI automation for small businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },
+    { label: "HubSpot vs custom CRM", href: "/compare/hubspot-vs-custom-crm" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Stop using the same templated IDX site as the team across town",
   ctaSubcopy:

@@ -123,10 +123,14 @@ export const pageData: AeoPageData = {
     "Klaviyo",
   ],
   relatedLinks: [
-    { label: "Restaurants Industry", href: "/industries/restaurants" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "AI Agent Development", href: "/ai-agents" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Restaurants industry", href: "/industries/restaurants" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "AI customer service systems", href: "/services/ai-customer-service" },
+    { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
+    { label: "AI customer reactivation campaigns", href: "/use-cases/ai-customer-reactivation-campaigns" },
+    { label: "What is AI automation for small businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },
+    { label: "Shopify vs custom e-commerce", href: "/compare/shopify-vs-custom-ecommerce" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Stop using the same Shopify theme as 5,000 other brands",
   ctaSubcopy:

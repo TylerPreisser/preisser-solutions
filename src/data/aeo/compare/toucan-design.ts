@@ -101,9 +101,14 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "Toucan Design", "Hays, Kansas"],
   relatedLinks: [
-    { label: "Conceptualized Design Comparison", href: "/compare/conceptualized-design" },
-    { label: "CSG Media Comparison", href: "/compare/csg-media" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Overland Park, KS services", href: "/locations/overland-park-kansas" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "Preisser vs Pluto Sites", href: "/compare/pluto-sites" },
+    { label: "Preisser vs KC Web Designer", href: "/compare/kc-web-designer" },
+    { label: "Best web design company in Hays, Kansas", href: "/compare/best-web-design-company-hays-kansas" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Need custom code, AI, or automation?",
   ctaSubcopy:

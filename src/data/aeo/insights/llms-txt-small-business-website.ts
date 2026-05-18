@@ -145,11 +145,13 @@ export const pageData: AeoPageData = {
     "Schema.org",
   ],
   relatedLinks: [
-    { label: "AI Search Optimization", href: "/services/ai-search-optimization" },
-    { label: "Custom Websites", href: "/services/custom-websites" },
-    { label: "Integrations", href: "/integrations" },
+    { label: "AI search optimization service", href: "/services/ai-search-optimization" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "What is llms.txt?", href: "/blog/what-is-llms-txt" },
+    { label: "Building a website for AI search", href: "/blog/website-for-ai-search" },
+    { label: "What is an AI-native website?", href: "/blog/what-is-an-ai-native-website" },
+    { label: "AEO vs GEO vs SEO", href: "/blog/aeo-vs-geo-vs-seo" },
     { label: "Contact Preisser Solutions", href: "/contact" },
-    { label: "SEO Hays KS", href: "/services/seo-hays-ks" },
   ],
   ctaHeadline: "Want an AI-readable site?",
   ctaSubcopy:

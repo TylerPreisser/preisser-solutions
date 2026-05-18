@@ -110,9 +110,14 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "Shopify", "Wife Supply Co", "Hays, Kansas", "Next.js", "Stripe"],
   relatedLinks: [
-    { label: "Retail & E-commerce Industry", href: "/industries/retail" },
-    { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "Wife Supply Co Case Study", href: "/case-studies/wife-supply-co" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Web applications", href: "/web-applications" },
+    { label: "Wife Supply Co. case study", href: "/case-studies/wife-supply-co" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "Retail industry", href: "/industries/retail" },
+    { label: "Wix vs custom website", href: "/compare/wix-vs-custom" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Need help deciding between Shopify and custom commerce?",
   ctaSubcopy:

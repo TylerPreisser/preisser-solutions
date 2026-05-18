@@ -147,12 +147,12 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
   ],
   relatedLinks: [
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
-    { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "Premium Web Development in Kansas", href: "/premium-web-development-kansas" },
-    { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
-    { label: "Garden City, Kansas Custom Software", href: "/locations/garden-city-kansas" },
+    { label: "Dodge City, KS web design", href: "/locations/dodge-city-kansas-web-design" },
+    { label: "Hays, KS services hub", href: "/locations/hays-kansas" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build with a western-Kansas-based premium custom-software firm",
   ctaSubcopy:

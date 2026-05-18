@@ -111,10 +111,13 @@ export const pageData: AeoPageData = {
     "Hays, Kansas",
   ],
   relatedLinks: [
-    { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
-    { label: "Olathe, Kansas Custom Software", href: "/locations/olathe-kansas" },
-    { label: "Lawrence, Kansas Custom Software", href: "/locations/lawrence-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
+    { label: "Olathe, KS services", href: "/locations/olathe-kansas" },
+    { label: "Lawrence, KS services", href: "/locations/lawrence-kansas" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Preisser vs KC Web Designer", href: "/compare/kc-web-designer" },
+    { label: "Preisser vs Pluto Sites", href: "/compare/pluto-sites" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build with a Kansas-based custom-software firm at Kansas economics",
   ctaSubcopy:

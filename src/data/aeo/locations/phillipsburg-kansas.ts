@@ -106,10 +106,12 @@ export const pageData: AeoPageData = {
     "US-183",
   ],
   relatedLinks: [
-    { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
-    { label: "Plainville, Kansas Custom Software", href: "/locations/plainville-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
-    { label: "Custom Website Development", href: "/custom-websites" },
+    { label: "Norton, KS services", href: "/locations/norton-kansas" },
+    { label: "Smith Center, KS services", href: "/locations/smith-center-kansas" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build with a Kansas-based custom-software firm",
   ctaSubcopy:

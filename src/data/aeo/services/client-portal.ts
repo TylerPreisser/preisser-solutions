@@ -120,10 +120,14 @@ export const pageData: AeoPageData = {
     "Cloudflare Pages",
   ],
   relatedLinks: [
-    { label: "Web Application Development", href: "/web-applications" },
-    { label: "Custom CRM Development", href: "/services/custom-crm" },
-    { label: "Business Automation Systems", href: "/business-automation" },
-    { label: "API Integration", href: "/services/api-integration" },
+    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Web applications", href: "/web-applications" },
+    { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
+    { label: "Astrus Insurance case study", href: "/case-studies/astrus-insurance" },
+    { label: "Insurance & financial services", href: "/industries/insurance-financial" },
+    { label: "When to build a custom dashboard", href: "/blog/when-to-build-custom-dashboard" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build a portal that looks like your brand, not someone else's",
   ctaSubcopy:

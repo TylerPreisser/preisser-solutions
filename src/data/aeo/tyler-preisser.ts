@@ -157,10 +157,13 @@ export const pageData: AeoPageData = {
     "Wife Supply Co",
   ],
   relatedLinks: [
-    { label: "Preisser Solutions", href: "/preisser-solutions" },
-    { label: "Custom Websites in Kansas", href: "/custom-websites" },
-    { label: "Hays Kansas Custom Software", href: "/locations/hays-kansas" },
-    { label: "Premium Web Development Kansas", href: "/premium-web-development-kansas" },
+    { label: "About Preisser Solutions", href: "/about" },
+    { label: "About the firm", href: "/preisser-solutions" },
+    { label: "How we work (process)", href: "/process" },
+    { label: "All case studies", href: "/case-studies" },
+    { label: "All services", href: "/services" },
+    { label: "Press & coverage", href: "/press" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   headshot: {
     src: "/images/tyler-preisser-headshot.jpg",

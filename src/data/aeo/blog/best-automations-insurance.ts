@@ -126,10 +126,14 @@ export const pageData: AeoPageData = {
     "Salesforce",
   ],
   relatedLinks: [
-    { label: "Astrus Insurance Case Study", href: "/case-studies/astrus-insurance" },
-    { label: "Insurance & Financial Industry", href: "/industries/insurance-financial" },
-    { label: "Custom CRM Service", href: "/services/custom-crm" },
-    { label: "Reactivate Old Leads", href: "/blog/reactivate-old-leads" },
+    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "AI customer service systems", href: "/services/ai-customer-service" },
+    { label: "Insurance & financial services", href: "/industries/insurance-financial" },
+    { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
+    { label: "Astrus Insurance case study", href: "/case-studies/astrus-insurance" },
+    { label: "Custom CRM vs HubSpot vs Salesforce", href: "/blog/custom-crm-vs-hubspot-vs-salesforce" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want a build scoped for your agency?",
   ctaSubcopy:

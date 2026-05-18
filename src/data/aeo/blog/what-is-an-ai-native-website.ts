@@ -122,10 +122,14 @@ export const pageData: AeoPageData = {
     "Cassidy HVAC",
   ],
   relatedLinks: [
-    { label: "What Is AI Automation for Small Businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },
-    { label: "AI vs Traditional Workflow Automation", href: "/blog/ai-vs-traditional-workflow-automation" },
-    { label: "Custom Websites", href: "/custom-websites" },
-    { label: "Web Applications", href: "/web-applications" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "AI search optimization service", href: "/services/ai-search-optimization" },
+    { label: "Web applications", href: "/web-applications" },
+    { label: "Building a website for AI search", href: "/blog/website-for-ai-search" },
+    { label: "What is AI search optimization?", href: "/blog/what-is-ai-search-optimization" },
+    { label: "What is llms.txt?", href: "/blog/what-is-llms-txt" },
+    { label: "Why your site needs an llms.txt", href: "/insights/llms-txt-small-business-website" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want to know if AI-native is right for your site?",
   ctaSubcopy:

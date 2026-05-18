@@ -111,11 +111,12 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
   ],
   relatedLinks: [
-    { label: "Hays, Kansas Custom Software", href: "/locations/hays-kansas" },
-    { label: "Russell, Kansas Custom Software", href: "/locations/russell-kansas" },
-    { label: "About Preisser Solutions", href: "/preisser-solutions" },
-    { label: "Oil & Gas Industry", href: "/industries/oil-gas" },
-    { label: "Business Automation Systems", href: "/business-automation" },
+    { label: "Hays, KS services hub", href: "/locations/hays-kansas" },
+    { label: "Russell, KS services", href: "/locations/russell-kansas" },
+    { label: "AI automation for small businesses", href: "/services/ai-automation" },
+    { label: "Local SEO service", href: "/services/local-seo" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build with a custom-software firm 25 miles down US-183",
   ctaSubcopy:

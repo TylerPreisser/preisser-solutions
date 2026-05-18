@@ -109,10 +109,14 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "WordPress", "Hays, Kansas", "Next.js", "Cloudflare Pages"],
   relatedLinks: [
-    { label: "Squarespace vs Custom", href: "/compare/squarespace-vs-custom" },
-    { label: "Webflow vs Custom Coded", href: "/compare/webflow-vs-custom-coded" },
-    { label: "Custom Website Development", href: "/custom-websites" },
-    { label: "Website Migration", href: "/services/website-migration" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Website migration service", href: "/services/website-migration" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "WordPress vs custom-coded website", href: "/compare/wordpress-vs-custom-coded-website" },
+    { label: "Squarespace vs custom", href: "/compare/squarespace-vs-custom" },
+    { label: "Webflow vs custom-coded", href: "/compare/webflow-vs-custom-coded" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Need help deciding between WordPress and custom?",
   ctaSubcopy:

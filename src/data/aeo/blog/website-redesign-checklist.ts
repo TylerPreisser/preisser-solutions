@@ -117,10 +117,14 @@ export const pageData: AeoPageData = {
     "Semrush",
   ],
   relatedLinks: [
-    { label: "Website Redesign Service", href: "/services/website-redesign" },
-    { label: "Why Small Business Sites Don't Convert", href: "/blog/why-small-business-sites-dont-convert" },
-    { label: "How To Build a Website for AI Search", href: "/blog/website-for-ai-search" },
-    { label: "Custom Websites", href: "/custom-websites" },
+    { label: "Website redesign service", href: "/services/website-redesign" },
+    { label: "Website migration service", href: "/services/website-migration" },
+    { label: "Custom websites", href: "/services/custom-websites" },
+    { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
+    { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "Why small-business sites don't convert", href: "/blog/why-small-business-sites-dont-convert" },
+    { label: "My website isn't generating leads", href: "/insights/small-business-website-not-generating-leads" },
+    { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want a redesign audit?",
   ctaSubcopy:
