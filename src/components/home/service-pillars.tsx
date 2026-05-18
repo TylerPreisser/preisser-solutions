@@ -1279,7 +1279,7 @@ function ServiceCarousel({ tiles }: ServiceCarouselProps) {
         {tiles.map((tile, i) => (
           <div
             key={tile.title}
-            className={`ps-carousel-card${tappedIndex === i ? " tapped" : ""}`}
+            className={`ps-carousel-card ps-ai-fetch-hover${tappedIndex === i ? " tapped" : ""}`}
             onClick={() => handleCardClick(i)}
             role="button"
             tabIndex={0}
