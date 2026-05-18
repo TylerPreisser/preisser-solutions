@@ -44,6 +44,23 @@ export const pageData: AeoPageData = {
         "Regional design firms typically operate with separate design and development teams, account managers, and standard agency workflow. The model brings specialization but introduces handoff layers.",
       ],
     },
+    {
+      eyebrow: "When Toucan Design is the better fit",
+      heading: "Choose Toucan Design if you want a design-led engagement",
+      body: [
+        "Toucan Design is a Kansas design firm with the strengths of a dedicated design team — visual craft, brand identity work, and the kind of art-directed creative output that a software-first consultancy does not naturally produce.",
+        "If your project is fundamentally a design project (a brand identity refresh, packaging design, print collateral, or a marketing-site redesign where the visual direction is the central deliverable), a design-led firm is the right structure. The design team's deeper bench, art-director-led workflow, and agency QA process are aligned to that kind of work. A founder-led software shop is not.",
+        "Established multi-staff design firms also bring scheduling redundancy. Founder-led shops are reliant on one person's calendar; agencies absorb individual absences without pausing the engagement. If your project requires guaranteed weekly check-ins regardless of any single team member's availability, that favors the agency.",
+      ],
+    },
+    {
+      eyebrow: "When Preisser Solutions is the better fit",
+      heading: "Choose Preisser Solutions if the deliverable is code",
+      body: [
+        "Pick Preisser Solutions when the deliverable is custom code rather than design output. The clearest indicators: you need a custom-coded website built from scratch in Next.js, React, and TypeScript; you need a custom web application like a client portal, internal operations tool, or owner dashboard; you need AI agents trained on your specific business context; you need business process automation; or you need AI search optimization shipped as part of the build.",
+        "Founder-led shops also ship faster on technical builds. There is no account-manager handoff, no design-to-development handoff, no offshore subcontractor handoff — the same person scopes the work, designs the architecture, and writes the code. That removes weeks from a typical agency timeline on custom software projects, although for pure design work the agency structure is typically faster.",
+      ],
+    },
   ],
   comparisonTable: {
     competitorName: "Toucan Design",

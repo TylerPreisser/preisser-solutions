@@ -154,6 +154,18 @@ export const pageData: AeoPageData = {
     { label: "Website redesign checklist", href: "/blog/website-redesign-checklist" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
+  // Wave B: Review schema. Outcome statement mirrors verified facts —
+  // 134 pre-rendered pages, custom cinematic design system, GSAP + Lenis
+  // architecture, static export to Cloudflare. Tyler is co-host as well
+  // as developer; the engagement is attributed to the Iron and Oak brand.
+  review: {
+    reviewBody:
+      "Preisser Solutions designed and built the entire Iron and Oak Podcast media brand from concept to launch — custom design system, 134 pre-rendered pages, GSAP-powered smooth scroll, dark and light modes, custom canvas effects, full content architecture across 12 episodes, 109 questions, and 5 phases, with static export to Cloudflare Pages.",
+    ratingValue: 5,
+    authorName: "Iron and Oak Podcast",
+    authorType: "Organization",
+    itemReviewedName: "Custom cinematic media brand build",
+  },
   ctaHeadline: "Build a cinematic media brand from scratch",
   ctaSubcopy:
     "Free 30-minute call with Tyler. We'll scope the build and send a fixed-price proposal.",

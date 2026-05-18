@@ -53,6 +53,7 @@ export const seoPages: SeoPage[] = [
   { path: "/why-automation", title: "Why Automation", type: "core", phase: 1 },
   { path: "/blog", title: "Blog and Insights", type: "core", phase: 1 },
   { path: "/press", title: "Press", type: "core", phase: 1 },
+  { path: "/site-map", title: "Site map (HTML)", type: "core", phase: 1 },
   { path: "/tyler-preisser", title: "Tyler Preisser (founder)", type: "ai-page", phase: 1 },
   { path: "/preisser-solutions", title: "Preisser Solutions (brand)", type: "ai-page", phase: 1 },
   { path: "/premium-web-development-kansas", title: "Premium Web Development Kansas", type: "ai-page", phase: 1 },

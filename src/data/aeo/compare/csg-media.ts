@@ -49,6 +49,23 @@ export const pageData: AeoPageData = {
         "AI search optimization (ChatGPT, Perplexity, Gemini, Claude citation)",
       ],
     },
+    {
+      eyebrow: "When CSG Media is the better fit",
+      heading: "Choose CSG Media if you need a full-service creative agency",
+      body: [
+        "CSG Media is a real Salina-based creative agency with strengths a software-first consultancy does not have. There are scenarios where CSG Media is the genuinely better choice and we will say so on the scoping call.",
+        "Video production is the clearest case. If your project requires professional video — corporate, commercial, social cuts, or event coverage — that is a creative agency's specialty and not ours. The same applies to branding work, ongoing print and creative production, traditional digital marketing and ad management, and full-service marketing retainers where the deliverable is a steady stream of campaigns rather than a piece of software.",
+        "In-person service for central Kansas is another genuine advantage. CSG Media is in Salina and a Salina-based business that values regular face-to-face creative reviews with a multi-discipline team has a clean fit there. Preisser Solutions is in Hays (about 90 miles west on I-70) and travels for major engagements, but if in-person creative direction is a hard requirement, a Salina firm is the closer geography.",
+      ],
+    },
+    {
+      eyebrow: "When Preisser Solutions is the better fit",
+      heading: "Choose Preisser Solutions if the deliverable is software",
+      body: [
+        "Pick Preisser Solutions when the deliverable is software rather than creative output. The clearest indicators: you need a custom-coded website rather than a templated CMS build; you need a custom web application like a client portal, internal operations tool, or owner dashboard; you need an AI agent trained on the business's specific context; you need business process automation that wires together CRM, accounting, and operations; or you need AI search optimization shipped as part of the build.",
+        "Preisser Solutions is also the right call when the project requires deep technical discovery before any creative work — data-model design, API integration architecture, automation logic. Creative agencies are not built to lead that kind of discovery; software consultancies are. Many engagements end up with a creative agency on the brand and marketing side and Preisser Solutions on the software side, both running in parallel.",
+      ],
+    },
   ],
   comparisonTable: {
     competitorName: "CSG Media",

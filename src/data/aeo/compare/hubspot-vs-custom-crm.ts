@@ -51,6 +51,24 @@ export const pageData: AeoPageData = {
         "Integration requirements that exceed HubSpot's marketplace and API limits",
       ],
     },
+    {
+      eyebrow: "When HubSpot is genuinely the right call",
+      heading: "Choose HubSpot if these conditions apply",
+      body: [
+        "HubSpot is the right answer in several scenarios and it is honest to name them clearly. For most small-to-mid-market businesses with standard sales workflows, HubSpot is a better choice than custom.",
+        "If your workflow fits HubSpot's standard schema (contacts, companies, deals, pipelines), HubSpot is mature, well-tested, and ships features faster than any custom build. Marketing automation, email sequences, landing pages, and meeting scheduling all work out of the box. A custom build would spend months replicating capabilities HubSpot ships in an afternoon of configuration.",
+        "Speed matters too. HubSpot can be in production in days to weeks. A custom CRM takes 12-24 weeks. If you need a CRM live next month, HubSpot wins. The free tier is also genuinely free and covers small teams indefinitely — for businesses with fewer than 5-10 seats, the math almost never favors custom.",
+        "Vendor depth is another advantage. HubSpot has thousands of certified consultants, partner agencies, and integration partners. The talent market for HubSpot admins is deep. With a custom CRM, you depend on the firm that built it or on engineers who can pick up the codebase. For some organizations, that vendor-independence concern is a hard requirement and HubSpot's market depth answers it cleanly.",
+      ],
+    },
+    {
+      eyebrow: "When Preisser Solutions custom CRM is the right call",
+      heading: "Choose custom CRM if your workflow doesn't fit HubSpot",
+      body: [
+        "Pick a custom CRM when HubSpot is forcing the wrong tradeoffs. The clearest indicators: your workflow requires custom objects HubSpot doesn't model well (insurance policies with renewal cycles, healthcare encounters, real estate transactions, legal matters); operational data needs to live alongside customer data; you have pricing logic or quote builders that exceed HubSpot's customization framework; your per-seat licensing has crossed $1,500-$2,000/month and is climbing; or you need reporting where HubSpot's standard dashboards don't surface the right metrics.",
+        "The economic crossover usually hits around 25+ seats on Sales Hub Pro or 10+ seats on Enterprise. At those numbers, a custom CRM build amortizes within 2-3 years and continues to compound because the marginal cost of growth becomes hosting rather than per-seat fees.",
+      ],
+    },
   ],
   comparisonTable: {
     competitorName: "HubSpot",

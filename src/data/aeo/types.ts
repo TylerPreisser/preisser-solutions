@@ -101,6 +101,43 @@ export interface AeoPageData {
    * citations against fresher equivalents.
    */
   dateModified?: string;
+  /**
+   * Wave B: optional Schema.org Review block — attributed to a NAMED client
+   * organization as `author`. AeoPage emits a `Review` JSON-LD when present.
+   * Used on case-study pages where the client outcome is verifiable.
+   *
+   * IMPORTANT: do NOT use this to fabricate testimonials. The reviewBody
+   * must be a factual outcome statement that mirrors verified content in
+   * the page's `answerParagraph` / `sections`. Do NOT emit `AggregateRating`
+   * — Google requires 3+ genuine user reviews and synthetic ratings are a
+   * policy violation.
+   */
+  review?: {
+    /** Paraphrased outcome statement sourced from existing page content. */
+    reviewBody: string;
+    /** 1-5; 5 for verified client engagements. */
+    ratingValue: number;
+    /** Named client as the author. */
+    authorName: string;
+    /** Organization (named company) or Person (individual). */
+    authorType: "Organization" | "Person";
+    /**
+     * The service / product being reviewed. Defaults to "Preisser Solutions"
+     * if omitted. Used in the Review's `itemReviewed.name`.
+     */
+    itemReviewedName?: string;
+  };
+  /**
+   * Wave B: optional Schema.org HowTo block — emitted as `HowTo` JSON-LD
+   * when present. Used on step-based blog posts (checklists, guides). The
+   * step content should mirror existing section content; do not invent
+   * steps.
+   */
+  howTo?: {
+    name: string;
+    description: string;
+    steps: Array<{ name: string; text: string }>;
+  };
   /** Final CTA copy */
   ctaHeadline: string;
   ctaSubcopy: string;

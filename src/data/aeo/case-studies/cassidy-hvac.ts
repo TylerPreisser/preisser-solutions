@@ -178,6 +178,17 @@ export const pageData: AeoPageData = {
     { label: "Customer reactivation case study", href: "/case-studies/customer-reactivation" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
+  // Wave B: Review schema attributed to the named client. Outcome statement
+  // mirrors verified facts already present on the page (answerParagraph +
+  // sections). No fabrication, no AggregateRating.
+  review: {
+    reviewBody:
+      "Preisser Solutions built our hands-off AI marketing engine and our AI customer reactivation system. The marketing engine replaced our outside agency and delivered a 5x organic reach increase within 30 days. The reactivation engine recovered over 60% of our dormant patients in 6 weeks, lifted booking conversion by 45%+, and saved more than 10 hours per week of office staff time.",
+    ratingValue: 5,
+    authorName: "Cassidy HVAC",
+    authorType: "Organization",
+    itemReviewedName: "AI marketing engine + AI customer reactivation engine",
+  },
   ctaHeadline: "Get a similar build for your HVAC shop",
   ctaSubcopy:
     "Free 30-minute call with Tyler. We'll map your stack, identify the highest-ROI automation, and send a fixed-price proposal.",

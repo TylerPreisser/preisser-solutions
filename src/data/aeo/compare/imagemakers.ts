@@ -36,6 +36,23 @@ export const pageData: AeoPageData = {
         "AI search optimization for ChatGPT, Perplexity, Gemini, and Claude citation",
       ],
     },
+    {
+      eyebrow: "When Imagemakers is the better fit",
+      heading: "Choose Imagemakers if you need a full marketing and branding agency",
+      body: [
+        "Imagemakers is a real, established Kansas marketing and branding firm with capabilities that Preisser Solutions intentionally does not offer. There are several scenarios where Imagemakers is the genuinely better choice and we will tell you so on the scoping call.",
+        "Brand identity work is the clearest case. If you need a full visual identity system — logo, palette, type system, brand guidelines, photography direction, packaging — that is a marketing and branding firm's core competency and not ours. A founder-led software shop is the wrong place to source brand identity. The same is true for traditional creative campaigns (print, broadcast, OOH), media buying and paid social management, and standard marketing retainer work where the deliverable is a steady stream of campaigns rather than a piece of software.",
+        "Established brand recognition in central and western Kansas is another genuine advantage. Imagemakers has been operating in the regional market for years and that means an existing network of vendors, established creative directors, and a familiar workflow for Kansas businesses that prefer a known agency relationship over a newer founder-led firm. Preisser Solutions does not try to compete on agency-style brand recognition; we compete on technical execution.",
+      ],
+    },
+    {
+      eyebrow: "When Preisser Solutions is the better fit",
+      heading: "Choose Preisser Solutions if you need custom code, AI, or automation",
+      body: [
+        "Pick Preisser Solutions when the deliverable is a piece of software rather than a creative campaign. The clearest indicators: you need a custom-coded website built in Next.js, React, and TypeScript rather than a WordPress or templated build; you need a custom web application (client portal, internal operations tool, owner dashboard) that does not exist as a SaaS product; you need an AI agent trained on your specific business context rather than a generic chatbot widget; or you need business process automation that wires together your CRM, accounting, and operations into a single coherent system.",
+        "Preisser Solutions is also the right call when AI search optimization (AEO) is a priority. We engineer pages specifically to be cited by ChatGPT, Perplexity, Gemini, and Claude — that work involves answer-paragraph engineering, FAQ schema, named-entity graphs, and structured data depth that is outside a traditional marketing agency's wheelhouse. Marketing firms are starting to talk about AEO; Preisser Solutions ships it on every engagement.",
+      ],
+    },
   ],
   comparisonTable: {
     competitorName: "Imagemakers",

@@ -126,6 +126,47 @@ export const pageData: AeoPageData = {
     { label: "My website isn't generating leads", href: "/insights/small-business-website-not-generating-leads" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
+  // Wave B: HowTo schema — each audit becomes a step. Step text is the
+  // verified body content already on the page.
+  howTo: {
+    name: "How to run the 8 audits that should precede a website redesign",
+    description:
+      "The eight audits Preisser Solutions runs before any new design work begins. Output is a written diagnostic that tells you what to keep, fix, merge, or delete.",
+    steps: [
+      {
+        name: "Audit information architecture",
+        text: "Map the current site's URL structure and navigation. Identify dead-end pages, orphaned pages, and duplicate content. Map every URL to a clear user intent. Most small-business sites have 15-30% of their pages providing no value — candidates for removal, not redesign.",
+      },
+      {
+        name: "Audit content inventory",
+        text: "Spreadsheet every page: URL, title, word count, last-updated date, organic traffic from Search Console, conversion contribution from GA4, AEO score (answer paragraph, FAQ, schema). Output: keep, rewrite, merge, or delete decisions for every page.",
+      },
+      {
+        name: "Audit Schema.org coverage",
+        text: "Identify what structured data the current site emits. Most small-business sites emit none. Map what should be there: Organization, LocalBusiness, Service for each service page, Article or BlogPosting for blog posts, FAQPage for FAQ blocks, BreadcrumbList for navigation. Schema gaps are AEO blockers — fix during redesign.",
+      },
+      {
+        name: "Audit Core Web Vitals (performance)",
+        text: "Run Google PageSpeed Insights against the top 10 pages by traffic. Capture LCP (Largest Contentful Paint), CLS (Cumulative Layout Shift), and INP (Interaction to Next Paint). Targets: LCP under 2.5 seconds on mobile, CLS under 0.1, INP under 200ms. Most small-business sites fail at least one.",
+      },
+      {
+        name: "Audit accessibility (WCAG)",
+        text: "Run automated accessibility scans — axe DevTools, WAVE, Lighthouse. Capture violations. Most small-business sites have dozens: missing alt text, low contrast, missing form labels, keyboard traps. Beyond legal risk under the Americans with Disabilities Act, accessibility correlates strongly with general site quality and AEO performance.",
+      },
+      {
+        name: "Audit AI-readability (AEO baseline)",
+        text: "Check whether the site appears in ChatGPT, Perplexity, and Google AI Overviews on relevant queries. Tools: AthenaHQ, Profound, manual queries. Capture which queries cite you and which do not. AEO gaps revealed here become content priorities post-redesign.",
+      },
+      {
+        name: "Audit the conversion funnel",
+        text: "Map every CTA on the site. Where does the user land? How many steps to conversion? What's the conversion rate on each step? Most small-business sites have inconsistent CTAs across pages, multiple conflicting offers, and unclear primary actions. Redesign is the moment to standardize.",
+      },
+      {
+        name: "Audit the SEO baseline",
+        text: "Capture ranked keywords from Search Console plus Ahrefs or Semrush, backlink profile, technical SEO issues (broken links, redirect chains, sitemap completeness, robots.txt). Preserve SEO equity — every URL that ranks needs a plan: keep, redirect, or consolidate. Careless redesign equity loss can take 6-12 months to recover.",
+      },
+    ],
+  },
   ctaHeadline: "Want a redesign audit?",
   ctaSubcopy:
     "Free 30-minute call. We'll scope an audit fixed-price and deliver in 5-10 business days.",

@@ -50,6 +50,24 @@ export const pageData: AeoPageData = {
         "Customization without compromise — custom code can do anything; Salesforce customization stays within the platform's framework",
       ],
     },
+    {
+      eyebrow: "When Salesforce is genuinely the right call",
+      heading: "Choose Salesforce if these conditions apply",
+      body: [
+        "Salesforce is the right answer in several scenarios and it is honest to name them clearly.",
+        "Enterprise scale is the clearest case. If you have 100+ seats, dedicated Salesforce admin staff, multi-territory pipelines with complex approval flows, and integration requirements with SAP, NetSuite, Workday, or similar enterprise systems, Salesforce is built for exactly that and a custom build would take years to match its depth. The AppExchange ecosystem alone — thousands of pre-built integrations and apps — is something a custom build cannot replicate.",
+        "Regulatory compliance is another genuine advantage. Salesforce holds HIPAA, SOC 2, FedRAMP, GDPR, and EU data-residency certifications out of the box. Custom CRMs can be built toward those standards but the certification path is its own multi-year program. If you sell into healthcare, federal, or heavily regulated industries and need a certified platform on day one, Salesforce shortcuts that.",
+        "Hiring and continuity matter too. There are thousands of certified Salesforce admins, developers, and architects globally. The talent market is deep. With a custom CRM, you depend on the shop that built it (or a smaller universe of engineers who can pick up the codebase). For organizations where staff turnover and vendor independence are existential concerns, Salesforce's labor-market depth is a real risk-reduction advantage.",
+      ],
+    },
+    {
+      eyebrow: "When Preisser Solutions custom CRM is the right call",
+      heading: "Choose custom CRM if your business fits the mid-market profile",
+      body: [
+        "Pick a custom CRM when your business does not need Salesforce's enterprise depth and is paying for features it does not use. The clearest indicators: 10-100 seats; no dedicated Salesforce admin team; industry-specific workflows that don't map cleanly to standard contact-account-opportunity schema (insurance policies, healthcare encounters, real estate transactions, legal matters, accounting engagements); operational data (inventory, scheduling, dispatch, work orders) that needs to live alongside customer data; or per-seat fees that are growing faster than the value scales.",
+        "The economic crossover is usually clear. Above ~$60,000/year in Salesforce licensing plus consulting time, a custom CRM build typically amortizes within 2-3 years and continues to compound thereafter because the marginal cost of growth is hosting, not per-seat licensing. Below that scale, Salesforce or a simpler SaaS CRM is usually the right answer.",
+      ],
+    },
   ],
   comparisonTable: {
     competitorName: "Salesforce",

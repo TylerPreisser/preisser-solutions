@@ -51,6 +51,24 @@ export const pageData: AeoPageData = {
         "Performance — high-throughput workflows hit Make.com's operation limits",
       ],
     },
+    {
+      eyebrow: "When Make.com is genuinely the right call",
+      heading: "Choose Make.com if these conditions apply",
+      body: [
+        "Make.com is the right answer in several scenarios and it is honest to name them clearly. For most medium-complexity automations between standard SaaS tools, Make.com is a better choice than a custom build.",
+        "Speed of iteration is the clearest case. Make.com scenarios can be drafted, tested, and shipped in hours. Custom code takes weeks. If the workflow is going to change frequently as the business evolves, an in-house operator can keep editing the Make.com scenario without engineering involvement. That iteration speed is a real productivity advantage and a custom build cannot match it.",
+        "Cost at low-to-medium volume also favors Make.com. The free tier and entry tiers handle low-volume automations effectively for free or under $30/month. Building custom for that workload would be irrational — the build cost would never amortize. Make.com's per-operation pricing is genuinely better than Zapier's at most volume tiers, and the richer iterator/aggregator/router model handles branching logic that Zapier struggles with.",
+        "Non-technical operators can also build and maintain Make.com scenarios. With custom code, every change requires engineering. For teams that want internal ownership of the automation layer without hiring engineers, that is a structural advantage of no-code platforms generally and Make.com specifically.",
+      ],
+    },
+    {
+      eyebrow: "When Preisser Solutions custom automation is the right call",
+      heading: "Choose custom automation if you have outgrown Make.com",
+      body: [
+        "Pick custom automation when Make.com is forcing the wrong tradeoffs. The clearest indicators: your Make.com bill has crossed $500-$1,000/month and is climbing; your workflow exceeds 100,000 operations per month and is hitting throughput limits; you need HIPAA, SOC 2, or FedRAMP compliance that Make.com cannot provide cleanly; you need error-handling logic that exceeds Make.com's built-in error handlers; or you need integration with a legacy system that Make.com doesn't have a connector for and the HTTP module is starting to feel like writing custom code in a visual builder.",
+        "The economic crossover usually hits around $500-$1,000/month in Make.com fees or 100k+ operations/month. At those numbers, custom automation amortizes within 12-24 months and continues to compound thereafter. A common hybrid pattern: keep Make.com for medium-complexity workflows and migrate the high-volume or compliance-sensitive workflows to custom code running alongside.",
+      ],
+    },
   ],
   comparisonTable: {
     competitorName: "Make.com",

@@ -140,6 +140,39 @@ export const pageData: AeoPageData = {
     { label: "HVAC local SEO in Kansas", href: "/industries/hvac-local-seo-kansas" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
+  // Wave B: HowTo schema — each section becomes a step. Step text is the
+  // verified body content already on the page; nothing is invented.
+  howTo: {
+    name: "How to optimize a Google Business Profile for a small business",
+    description:
+      "The six-step workflow Preisser Solutions runs on every local-SEO engagement to fully optimize a Google Business Profile.",
+    steps: [
+      {
+        name: "Identify the most-ignored GBP fields",
+        text: "Walk through the current GBP and flag the fields most small businesses miss: an empty or sub-200-character description (should be 700+), only 2-3 photos uploaded (should be 20+), hours that don't reflect holidays, empty service areas or product lists, no GBP posts in months, and reviews going unanswered.",
+      },
+      {
+        name: "Set the most specific primary category",
+        text: "Pick the most specific primary category that fits — not the most general. Use 'HVAC Contractor,' 'Plumber,' 'Roofing Contractor,' or 'Electrician' instead of 'Contractor.' Avoid 'Business Service' when a more specific category exists. Add up to 9 secondary categories for related services.",
+      },
+      {
+        name: "Upload all the photo types Google rewards",
+        text: "Upload at minimum: exterior storefront with signage, interior workspace, real team photos (faces beat stock), branded trucks and equipment, completed-job before-after photos, a high-resolution square logo, and a 1080x608+ landscape cover photo.",
+      },
+      {
+        name: "Write a 700+ character description",
+        text: "The 700+ character description should name what you do specifically, where you serve specifically, what makes you different concretely, and end with a call to action. Do not keyword-stuff; do not repeat 'Hays Kansas HVAC repair' 12 times. Google penalizes it. Write for a human.",
+      },
+      {
+        name: "Post to GBP weekly",
+        text: "Post weekly at minimum — offers (current promotion, seasonal special), updates (new service, new hire, new equipment), events, and service highlights. Each post should be 150-300 words, include one photo, a clear CTA, and a link to the relevant page on your site.",
+      },
+      {
+        name: "Run an active review cadence",
+        text: "Ship an automated review-request after every closed job aiming for 4-8 new reviews per month. Respond to every review within 48 hours, using the business name and city in the response. For negative reviews respond publicly with empathy and an offer to resolve offline. Target 4.5+ stars across 50+ reviews to compete in Kansas markets.",
+      },
+    ],
+  },
   ctaHeadline: "Want a GBP audit and fix-list?",
   ctaSubcopy:
     "Free 30-minute call. We'll audit your GBP live on the call and tell you the top 5 fixes — for free.",

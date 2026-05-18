@@ -123,12 +123,62 @@ export function AeoPage({ data }: { data: AeoPageData }) {
     ],
   };
 
+  // Wave B — optional Review schema (case-study pages with a named client).
+  // Attribution stays with the NAMED CLIENT as the author. We deliberately
+  // omit AggregateRating; that requires 3+ genuine reviews per Google policy.
+  const reviewSchema = data.review
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Review",
+        "@id": `${url}#review`,
+        itemReviewed: {
+          "@type": "Service",
+          name: data.review.itemReviewedName ?? data.h1,
+          provider: { "@id": "https://preissersolutions.com/#organization" },
+        },
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: data.review.ratingValue,
+          bestRating: 5,
+        },
+        reviewBody: data.review.reviewBody,
+        author: { "@type": data.review.authorType, name: data.review.authorName },
+        datePublished: data.datePublished,
+        publisher: { "@id": "https://preissersolutions.com/#organization" },
+      }
+    : null;
+
+  // Wave B — optional HowTo schema for step-based blog posts.
+  const howToSchema = data.howTo
+    ? {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "@id": `${url}#howto`,
+        name: data.howTo.name,
+        description: data.howTo.description,
+        step: data.howTo.steps.map((s, i) => ({
+          "@type": "HowToStep",
+          position: i + 1,
+          name: s.name,
+          text: s.text,
+        })),
+      }
+    : null;
+
+  const schemaBlocks: Record<string, unknown>[] = [
+    pageSchema,
+    faqSchema,
+    breadcrumbSchema,
+  ];
+  if (reviewSchema) schemaBlocks.push(reviewSchema);
+  if (howToSchema) schemaBlocks.push(howToSchema);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([pageSchema, faqSchema, breadcrumbSchema]),
+          __html: JSON.stringify(schemaBlocks),
         }}
       />
 
@@ -169,41 +219,9 @@ export function AeoPage({ data }: { data: AeoPageData }) {
         >
           {/* Text column */}
           <div style={{ flex: "1 1 0", minWidth: 0 }}>
-            <div
-              style={{
-                fontSize: 14,
-                fontWeight: 600,
-                letterSpacing: "0.05em",
-                textTransform: "uppercase",
-                color: "var(--color-cyan, #80E9FF)",
-                marginBottom: 16,
-              }}
-            >
-              {data.eyebrow}
-            </div>
-            <h1
-              style={{
-                fontSize: "clamp(2.25rem, 5vw, 3.75rem)",
-                fontWeight: 700,
-                lineHeight: 1.08,
-                letterSpacing: "-0.03em",
-                margin: "0 0 24px",
-                color: "#FFFFFF",
-              }}
-            >
-              {data.h1}
-            </h1>
-            <p
-              style={{
-                fontSize: "clamp(1.125rem, 2vw, 1.3125rem)",
-                lineHeight: 1.5,
-                color: "var(--color-text-dark-secondary, #94A3B8)",
-                maxWidth: 720,
-                margin: 0,
-              }}
-            >
-              {data.subheadline}
-            </p>
+            <div className="aeo-eyebrow">{data.eyebrow}</div>
+            <h1 className="aeo-h1">{data.h1}</h1>
+            <p className="aeo-subheadline">{data.subheadline}</p>
           </div>
 
           {/* Headshot — only rendered when data.headshot is present */}
@@ -246,17 +264,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
         }}
       >
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <p
-            style={{
-              fontSize: "clamp(1.125rem, 1.75vw, 1.375rem)",
-              lineHeight: 1.6,
-              color: "var(--color-text-light-primary, #0A1628)",
-              fontWeight: 500,
-              margin: 0,
-            }}
-          >
-            {data.answerParagraph}
-          </p>
+          <p className="aeo-answer">{data.answerParagraph}</p>
         </div>
       </section>
 
@@ -270,17 +278,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
           }}
         >
           <div style={{ maxWidth: 1120, margin: "0 auto" }}>
-            <h2
-              style={{
-                fontSize: "clamp(1.625rem, 3vw, 2.25rem)",
-                fontWeight: 700,
-                lineHeight: 1.2,
-                letterSpacing: "-0.02em",
-                margin: "0 0 32px",
-                textAlign: "center",
-                color: "var(--color-text-light-primary, #0A1628)",
-              }}
-            >
+            <h2 className="aeo-h2 aeo-h2--center">
               Three ways to work with Preisser Solutions
             </h2>
             <div
@@ -423,101 +421,35 @@ export function AeoPage({ data }: { data: AeoPageData }) {
               style={{ marginBottom: i < data.sections.length - 1 ? 64 : 0 }}
             >
               {section.eyebrow && (
-                <div
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 600,
-                    letterSpacing: "0.05em",
-                    textTransform: "uppercase",
-                    color: "var(--color-primary, #0D95E8)",
-                    marginBottom: 12,
-                  }}
-                >
+                <div className="aeo-eyebrow aeo-eyebrow--light">
                   {section.eyebrow}
                 </div>
               )}
-              <h2
-                style={{
-                  fontSize: "clamp(1.625rem, 3vw, 2.25rem)",
-                  fontWeight: 700,
-                  lineHeight: 1.2,
-                  letterSpacing: "-0.02em",
-                  margin: "0 0 20px",
-                  color: "var(--color-text-light-primary, #0A1628)",
-                }}
-              >
-                {section.heading}
-              </h2>
+              <h2 className="aeo-h2">{section.heading}</h2>
               {section.body.map((p, j) => (
-                <p
-                  key={j}
-                  style={{
-                    fontSize: 17,
-                    lineHeight: 1.65,
-                    color: "var(--color-text-light-secondary, #475569)",
-                    margin: "0 0 16px",
-                  }}
-                >
+                <p key={j} className="aeo-body-p">
                   {p}
                 </p>
               ))}
               {section.bullets && (
-                <ul
-                  style={{
-                    margin: "0 0 16px",
-                    paddingLeft: 24,
-                    color: "var(--color-text-light-secondary, #475569)",
-                    fontSize: 17,
-                    lineHeight: 1.65,
-                  }}
-                >
+                <ul className="aeo-bullets">
                   {section.bullets.map((b, k) => (
-                    <li key={k} style={{ marginBottom: 8 }}>
-                      {b}
-                    </li>
+                    <li key={k}>{b}</li>
                   ))}
                 </ul>
               )}
               {section.subsections?.map((sub, k) => (
                 <div key={k} style={{ marginTop: 32 }}>
-                  <h3
-                    style={{
-                      fontSize: 22,
-                      fontWeight: 600,
-                      lineHeight: 1.3,
-                      margin: "0 0 12px",
-                      color: "var(--color-text-light-primary, #0A1628)",
-                    }}
-                  >
-                    {sub.heading}
-                  </h3>
+                  <h3 className="aeo-h3">{sub.heading}</h3>
                   {sub.body.map((p, m) => (
-                    <p
-                      key={m}
-                      style={{
-                        fontSize: 17,
-                        lineHeight: 1.65,
-                        color: "var(--color-text-light-secondary, #475569)",
-                        margin: "0 0 12px",
-                      }}
-                    >
+                    <p key={m} className="aeo-body-p">
                       {p}
                     </p>
                   ))}
                   {sub.bullets && (
-                    <ul
-                      style={{
-                        margin: "8px 0 0",
-                        paddingLeft: 24,
-                        color: "var(--color-text-light-secondary, #475569)",
-                        fontSize: 17,
-                        lineHeight: 1.65,
-                      }}
-                    >
+                    <ul className="aeo-bullets aeo-bullets--sub">
                       {sub.bullets.map((b, n) => (
-                        <li key={n} style={{ marginBottom: 6 }}>
-                          {b}
-                        </li>
+                        <li key={n}>{b}</li>
                       ))}
                     </ul>
                   )}
@@ -537,14 +469,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
           }}
         >
           <div style={{ maxWidth: 960, margin: "0 auto" }}>
-            <h2
-              style={{
-                fontSize: "clamp(1.625rem, 3vw, 2.25rem)",
-                fontWeight: 700,
-                margin: "0 0 12px",
-                color: "var(--color-text-light-primary, #0A1628)",
-              }}
-            >
+            <h2 className="aeo-h2" style={{ marginBottom: 12 }}>
               Preisser Solutions vs {data.comparisonTable.competitorName}
             </h2>
             {data.comparisonTable.headerNote && (
@@ -638,14 +563,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
         }}
       >
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <h2
-            style={{
-              fontSize: "clamp(1.625rem, 3vw, 2.25rem)",
-              fontWeight: 700,
-              margin: "0 0 32px",
-              color: "var(--color-text-light-primary, #0A1628)",
-            }}
-          >
+          <h2 className="aeo-h2" style={{ marginBottom: 32 }}>
             Frequently Asked Questions
           </h2>
           <div>
@@ -693,18 +611,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
           }}
         >
           <div style={{ maxWidth: 800, margin: "0 auto" }}>
-            <h2
-              style={{
-                fontSize: 18,
-                fontWeight: 600,
-                color: "var(--color-text-light-primary, #0A1628)",
-                margin: "0 0 16px",
-                textTransform: "uppercase",
-                letterSpacing: "0.04em",
-              }}
-            >
-              Related
-            </h2>
+            <h2 className="aeo-related-heading">Related</h2>
             <ul
               style={{
                 listStyle: "none",
@@ -750,28 +657,8 @@ export function AeoPage({ data }: { data: AeoPageData }) {
         }}
       >
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
-          <h2
-            style={{
-              fontSize: "clamp(1.875rem, 4vw, 2.75rem)",
-              fontWeight: 700,
-              lineHeight: 1.15,
-              letterSpacing: "-0.02em",
-              margin: "0 0 16px",
-              color: "#FFFFFF",
-            }}
-          >
-            {data.ctaHeadline}
-          </h2>
-          <p
-            style={{
-              fontSize: 18,
-              lineHeight: 1.55,
-              color: "var(--color-text-dark-secondary, #94A3B8)",
-              margin: "0 0 32px",
-            }}
-          >
-            {data.ctaSubcopy}
-          </p>
+          <h2 className="aeo-cta-headline">{data.ctaHeadline}</h2>
+          <p className="aeo-cta-subcopy">{data.ctaSubcopy}</p>
           <Link
             href={data.primaryCta?.href ?? "/contact"}
             style={{

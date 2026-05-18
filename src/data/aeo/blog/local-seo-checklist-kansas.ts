@@ -154,6 +154,39 @@ export const pageData: AeoPageData = {
     { label: "Hays, KS services hub", href: "/locations/hays-kansas" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
+  // Wave B: HowTo schema — each checklist section maps to a step. Step
+  // text is the verified body content already on the page.
+  howTo: {
+    name: "How to execute local SEO for a Kansas small business",
+    description:
+      "The six-step priority order Preisser Solutions uses to capture 80% of local SEO lift in Kansas markets. Step 1 (GBP) carries the highest leverage.",
+    steps: [
+      {
+        name: "Optimize Google Business Profile (items 1-10)",
+        text: "Claim and verify GBP, pick the most specific primary category, add 5-10 secondary categories, write a 700+ character description naming services and service area, set full hours including holiday hours, upload 20+ photos (exterior, interior, team, equipment, completed jobs), enable messaging, add all services with descriptions and prices, list specific Kansas cities or counties served, and post weekly. Google rewards active profiles.",
+      },
+      {
+        name: "Lock down NAP consistency (items 11-15)",
+        text: "Audit Name, Address, Phone across GBP, website, social profiles, and citations. Pick the canonical version. Update website footer, contact page, and Schema.org JSON-LD. Update the top 30-50 citations (Yelp, BBB, Yellow Pages, BrightLocal core list, industry-specific directories). Monitor with a citation tool — BrightLocal, Whitespark, or Moz Local.",
+      },
+      {
+        name: "Build the review pipeline (items 16-20)",
+        text: "Ship automated review-request after every closed job — BirdEye, Podium, NiceJob, or a CRM built-in. Respond to every review within 48 hours, using the business name and city in responses. Aim for 4.5+ stars and 50+ total reviews to compete in Kansas markets. Build a process for handling negative reviews offline first, response second.",
+      },
+      {
+        name: "Tighten website on-page fundamentals (items 21-26)",
+        text: "Put NAP in the footer of every page and make it match canonical. Ship dedicated location pages for each Kansas city or county served. Emit Schema.org LocalBusiness markup with full NAP, geo coordinates, and hours; emit Schema.org Service for each service. Hit LCP under 2.5s on mobile. Design mobile-first because Google's mobile-first indexing applies to all sites.",
+      },
+      {
+        name: "Ship content that pulls local traffic (items 27-30)",
+        text: "Build '[Service] in [City]' pages for every major service × city combination. Publish local case studies and job photos with location tagged in the content. Cover local news and events if relevant — sponsor a local team and write about it. Ship FAQ pages with FAQPage schema answering common local-specific questions.",
+      },
+      {
+        name: "Earn local backlinks (items 31-34)",
+        text: "Join local Chambers of Commerce (Hays Chamber, Kansas Chamber). Get listed in industry-specific Kansas directories like the Kansas Contractors Association. Sponsor local events, schools, and sports teams — legitimate sponsorships with backlinks. Earn local news mentions for genuinely newsworthy events: new hires, milestones, charitable work.",
+      },
+    ],
+  },
   ctaHeadline: "Want help executing this checklist?",
   ctaSubcopy:
     "Free 30-minute call. We'll audit your current local SEO posture and quote the most impactful 90-day execution plan.",

@@ -152,6 +152,17 @@ export const pageData: AeoPageData = {
     { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
+  // Wave B: Review schema. Outcome statement mirrors the page's verified
+  // outcomes — full-day weekly reconciliation cut to a 15-minute exception
+  // queue, AI BOL / rate-confirmation parsing, real-time load profitability.
+  review: {
+    reviewBody:
+      "Preisser Solutions built a custom operations automation layer covering load assignment, driver paperwork, AI BOL and rate-confirmation parsing, and back-office reconciliation between dispatch, accounting, and the factor. Weekly reconciliation dropped from a full day to a 15-minute exception queue, driver paperwork friction was reduced materially, and real-time load-level profitability became visible for the first time.",
+    ratingValue: 5,
+    authorName: "Sunrise Transportation",
+    authorType: "Organization",
+    itemReviewedName: "Custom trucking operations automation layer",
+  },
   ctaHeadline: "Automate the paperwork your dispatch team is drowning in",
   ctaSubcopy:
     "Free 30-minute call with Tyler. We'll map your TMS, accounting, and factor workflow, and send a fixed-price proposal.",

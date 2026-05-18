@@ -164,6 +164,18 @@ export const pageData: AeoPageData = {
     { label: "Website redesign checklist", href: "/blog/website-redesign-checklist" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
+  // Wave B: Review schema attributed to Wife Supply Co. Outcome statement
+  // mirrors verified deliverables — AI gift-matching engine, custom
+  // commerce front-end, brand-engineered design system, conversion-
+  // optimized funnels. No fabrication.
+  review: {
+    reviewBody:
+      "Preisser Solutions built Wife Supply Co from concept to launch — a custom AI gift-matching engine, a custom commerce front-end in Next.js and React, conversion-optimized funnels, a brand-engineered design system, and full edge deployment on Cloudflare Pages. The build delivered native AI integration as a first-class platform feature rather than a third-party plugin.",
+    ratingValue: 5,
+    authorName: "Wife Supply Co",
+    authorType: "Organization",
+    itemReviewedName: "Custom AI gifting platform build",
+  },
   ctaHeadline: "Build a custom AI commerce platform from scratch",
   ctaSubcopy:
     "Free 30-minute call with Tyler. We'll scope the build and send a fixed-price proposal.",

@@ -7958,3 +7958,130 @@ html, body {
   );
 }
 
+/* ─────────────────────────────────────────────────────────────────
+ * Wave B — AeoPage heading classes (replace inline styles)
+ *
+ * Replaces inline `style={{ fontSize: "clamp(...)", ... }}` attributes
+ * emitted on every heading by `AeoPage.tsx`. Pulling these into the
+ * shared stylesheet trims ~50KB of repeated style attributes off every
+ * AEO HTML payload (167 URLs × ~50KB = ~8MB unnecessary bandwidth).
+ *
+ * Each class preserves the rendered visual identity it replaces and
+ * respects light + dark theme via `--color-*` tokens. AeoPage continues
+ * to set page-level background colors inline (those vary per section).
+ * ───────────────────────────────────────────────────────────────── */
+
+.aeo-eyebrow {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-cyan, #80E9FF);
+  margin: 0 0 16px;
+}
+
+.aeo-eyebrow--light {
+  color: var(--color-primary, #0D95E8);
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.aeo-h1 {
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin: 0 0 24px;
+  color: #FFFFFF;
+}
+
+.aeo-subheadline {
+  font-size: clamp(1.125rem, 2vw, 1.3125rem);
+  line-height: 1.5;
+  color: var(--color-text-dark-secondary, #94A3B8);
+  max-width: 720px;
+  margin: 0;
+}
+
+.aeo-answer {
+  font-size: clamp(1.125rem, 1.75vw, 1.375rem);
+  line-height: 1.6;
+  color: var(--color-text-light-primary, #0A1628);
+  font-weight: 500;
+  margin: 0;
+}
+
+.aeo-h2 {
+  font-size: clamp(1.625rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+  color: var(--color-text-light-primary, #0A1628);
+}
+
+.aeo-h2--center {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.aeo-h3 {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 12px;
+  color: var(--color-text-light-primary, #0A1628);
+}
+
+.aeo-body-p {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--color-text-light-secondary, #475569);
+  margin: 0 0 16px;
+}
+
+.aeo-bullets {
+  margin: 0 0 16px;
+  padding-left: 24px;
+  color: var(--color-text-light-secondary, #475569);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.aeo-bullets li {
+  margin-bottom: 8px;
+}
+
+.aeo-bullets--sub {
+  margin: 8px 0 0;
+}
+
+.aeo-bullets--sub li {
+  margin-bottom: 6px;
+}
+
+.aeo-cta-headline {
+  font-size: clamp(1.875rem, 4vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 16px;
+  color: #FFFFFF;
+}
+
+.aeo-cta-subcopy {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--color-text-dark-secondary, #94A3B8);
+  margin: 0 0 32px;
+}
+
+.aeo-related-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-light-primary, #0A1628);
+  margin: 0 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+

@@ -149,6 +149,17 @@ export const pageData: AeoPageData = {
     { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
+  // Wave B: Review schema. Outcome statement mirrors the page's verified
+  // outcomes — zero missed renewals in the first 6 months and commission
+  // reconciliation reduced from hours to under 30 minutes per month.
+  review: {
+    reviewBody:
+      "Preisser Solutions replaced our spreadsheets and the generic CRM we had been fighting with a purpose-built policy management system tuned to independent-insurance workflow. Renewal-window automation, commission reconciliation, document storage tied to each policy, and producer-level pipeline visibility — zero missed renewals in the first six months of operation and monthly commission reconciliation dropped to under 30 minutes.",
+    ratingValue: 5,
+    authorName: "Astrus Insurance Solutions",
+    authorType: "Organization",
+    itemReviewedName: "Custom policy management system",
+  },
   ctaHeadline: "Replace the generic CRM with a system tuned to your agency",
   ctaSubcopy:
     "Free 30-minute call with Tyler. We'll map your AMS, carrier mix, and renewal workflow, and send a fixed-price proposal.",

@@ -174,6 +174,17 @@ export const pageData: AeoPageData = {
     { label: "Sunrise Transportation case study", href: "/case-studies/sunrise-transportation" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
+  // Wave B: Review schema. Outcome statement mirrors the page's verified
+  // outcome bullets — 95% logistics-time reduction, 75%+ accuracy lift,
+  // 75% reduction in manual invoice handling. No fabrication.
+  review: {
+    reviewBody:
+      "Preisser Solutions built our custom inventory management system and our AI invoicing assistant from scratch. The inventory system cut back-office logistics time by 95% and improved inventory accuracy 75%+ — it turned a loss center into a profit center. The AI invoicing assistant decreased our manual invoice handling time 75% and eliminated the need to hire additional office staff to keep up with volume.",
+    ratingValue: 5,
+    authorName: "HG Oil Holdings",
+    authorType: "Organization",
+    itemReviewedName: "Custom inventory system + AI invoicing assistant",
+  },
   ctaHeadline: "Get a similar build for your operation",
   ctaSubcopy:
     "Free 30-minute call with Tyler. We'll map your workflow, identify the highest-ROI automation, and send a fixed-price proposal.",

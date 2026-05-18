@@ -49,6 +49,23 @@ export const pageData: AeoPageData = {
         "Significantly more efficient pricing — no KC-metro overhead, no agency markup, no rent on a downtown office",
       ],
     },
+    {
+      eyebrow: "When a KC-metro firm is the better fit",
+      heading: "Choose a Kansas City web designer if these conditions apply",
+      body: [
+        "KC-metro web design firms are real, capable shops with strengths a founder-led Hays consultancy intentionally does not match. There are scenarios where a KC firm is the genuinely better choice and it is worth saying so plainly.",
+        "If you require in-person creative direction every week, a Kansas City or Overland Park firm is geographically closer than Hays and the meeting cadence is easier to maintain. If your project needs deep specialization across separate design, development, content strategy, and account management functions (rather than a single founder wearing every hat), a multi-staff agency is the natural structure. If your engagement requires the redundancy of a multi-person team — guaranteed coverage during a single team member's vacation, multiple senior designers reviewing creative, separate QA functions — that is what a larger firm delivers.",
+        "Local relationships matter too. KC-metro firms have established networks of vendors, photographers, printers, and downstream agencies. A founder-led shop in Hays has its own network but it is built around western Kansas, not the KC market. For KC-metro businesses that prioritize hiring locally and supporting the regional economy, that is a legitimate selection criterion.",
+      ],
+    },
+    {
+      eyebrow: "When Preisser Solutions is the better fit",
+      heading: "Choose Preisser Solutions if you want craft at Kansas economics",
+      body: [
+        "Pick Preisser Solutions when you want premium custom-coded work at significantly more efficient pricing than KC-metro agency rate cards. The clearest indicators: you don't need a multi-staff agency relationship; you do need direct access to the developer who is writing the code; the project is custom software (custom website, custom web application, AI agent, automation) rather than ongoing creative production; and AEO / AI search optimization is a priority rather than an afterthought.",
+        "Geography is less of a constraint than KC-metro agencies sometimes imply. Modern engagements run on video calls, async written collaboration, and scheduled travel for major milestones. Tyler travels to KC regularly for in-person scoping and milestone reviews. The savings versus KC-metro agency overhead easily fund travel — typically multiple round trips per engagement.",
+      ],
+    },
   ],
   comparisonTable: {
     competitorName: "KC Metro Web Designers",
