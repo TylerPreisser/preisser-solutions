@@ -894,11 +894,6 @@ a {
   background: #E8EDF3;
 }
 
-[data-theme="light"] .ps-bento-card__title {
-  color: #0A1628;
-  text-shadow: none;
-}
-
 [data-theme="light"] .ps-bento-card__expand {
   background: rgba(0, 0, 0, 0.06);
   border-color: rgba(0, 0, 0, 0.1);
@@ -908,15 +903,6 @@ a {
 [data-theme="light"] .ps-bento-card:hover .ps-bento-card__expand {
   background: rgba(0, 0, 0, 0.1);
   border-color: rgba(0, 0, 0, 0.15);
-}
-
-[data-theme="light"] .ps-bento-card__text {
-  background: linear-gradient(
-    to top,
-    rgba(246,249,252,0.9) 0%,
-    rgba(246,249,252,0.5) 60%,
-    transparent 100%
-  );
 }
 
 /* ── Problem section: light mode override ───────────────────── */
@@ -1427,72 +1413,86 @@ a {
   }
 }
 
-/* ── Card Text: title at bottom-left ──────────────────────── */
-.ps-bento-card__text {
-  position: relative;
+/* ─────────────────────────────────────────────────────────────
+   Bento card "hover for more" affordance (animated)
+   Replaces the static "Hover for details" / "Tap for details" labels.
+   Decorative only (aria-hidden); a11y handled by card aria-label.
+   ───────────────────────────────────────────────────────────── */
+
+.ps-bento-card__pulse {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   z-index: 2;
-  /* Increase left and bottom padding so labels never crowd the edge */
-  padding: 28px 28px 20px 24px;
-  padding-top: 0;
   pointer-events: none;
-
-  /* Gradient fade from bottom for readability */
-  background: linear-gradient(
-    to top,
-    rgba(10, 22, 40, 0.85) 0%,
-    rgba(10, 22, 40, 0.4) 60%,
-    transparent 100%
-  );
-  transition: background 300ms ease;
 }
 
-.ps-bento-card__title {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-weight: 600;
-  font-size: 0.8125rem;
-  line-height: 1.3;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.78);
-  margin: 0;
-  max-width: 280px;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-  transition: color 300ms ease, opacity 300ms ease;
+.ps-bento-card__pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary, #0D95E8);
+  box-shadow: 0 0 0 0 rgba(13, 149, 232, 0.6);
+  flex-shrink: 0;
 }
 
-/* "Hover for details" / "Tap for details" swap.
-   Default: show the hover hint. On touch devices (hover: none) the tap
-   hint replaces it so the language matches the actual interaction. */
-.ps-bento-card__hint--tap {
-  display: none;
+.ps-bento-card__pulse-arrow {
+  display: inline-block;
+  width: 16px;
+  height: 1.5px;
+  background: var(--color-primary, #0D95E8);
+  position: relative;
+  opacity: 0.7;
+  transition: width 380ms var(--ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+              opacity 380ms var(--ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
-@media (hover: none) {
-  .ps-bento-card__hint--hover {
-    display: none;
-  }
+.ps-bento-card__pulse-arrow::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-top: 1.5px solid var(--color-primary, #0D95E8);
+  border-right: 1.5px solid var(--color-primary, #0D95E8);
+  transform: translateY(-50%) rotate(45deg);
+}
 
-  .ps-bento-card__hint--tap {
-    display: inline;
+@media (prefers-reduced-motion: no-preference) {
+  .ps-bento-card__pulse-dot {
+    animation: ps-bento-pulse 2.4s ease-out infinite;
   }
 }
 
-/* On hover the hint brightens slightly to acknowledge the cue */
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .ps-bento-card:hover .ps-bento-card__title {
-    color: #ffffff;
+@keyframes ps-bento-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(13, 149, 232, 0.55);
+    transform: scale(1);
+  }
+  60% {
+    box-shadow: 0 0 0 12px rgba(13, 149, 232, 0);
+    transform: scale(1);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(13, 149, 232, 0);
+    transform: scale(1);
   }
 }
 
-/* On hover: title shifts to compensate for card grow */
-@media (min-width: 940px) and (prefers-reduced-motion: no-preference) {
-  .ps-bento-card__title {
-    transition: transform var(--card-duration, 800ms) var(--card-ease, cubic-bezier(0.165, 0.84, 0.44, 1));
-  }
+/* Arrow grows + brightens on card hover (extra interactive signal) */
+.ps-bento-card:hover .ps-bento-card__pulse-arrow,
+.ps-bento-card:focus-visible .ps-bento-card__pulse-arrow {
+  width: 28px;
+  opacity: 1;
+}
 
-  .ps-bento-card:hover .ps-bento-card__title {
-    transform: translate(var(--card-shift-x, -8px), var(--card-shift-y, -6px));
-  }
+/* Light mode tone-down: subtler glow on white surfaces */
+[data-theme="light"] .ps-bento-card__pulse-dot {
+  box-shadow: 0 0 0 0 rgba(13, 149, 232, 0.45);
 }
 
 /* ── Card Expand Icon: top-right frosted glass circle ─────── */
@@ -6898,11 +6898,6 @@ a {
     height: 16px;
   }
 
-  /* Bento card title: slightly smaller on mobile */
-  .ps-bento-card__title {
-    font-size: 1rem;
-    max-width: 220px;
-  }
 }
 
 /* ── Dialog / Bottom Sheet: dvh fix + show close button on mobile ── */

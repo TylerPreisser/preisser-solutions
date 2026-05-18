@@ -1388,18 +1388,12 @@ function BentoCard({ service, onClick }: BentoCardProps) {
         <ExpandIcon />
       </div>
 
-      {/* Discoverability hint — bottom left, overlaid on the visual.
-          Swaps to "Tap for details" on touch devices via CSS @media (hover: none).
-          The real pillar title is preserved on the button's aria-label so it's
-          still announced to assistive tech and indexed in card identity. */}
-      <div className="ps-bento-card__text">
-        <h3
-          className="ps-bento-card__title"
-          id={`bento-card-${service.type}-title`}
-        >
-          <span className="ps-bento-card__hint ps-bento-card__hint--hover">Hover for details</span>
-          <span className="ps-bento-card__hint ps-bento-card__hint--tap">Tap for details</span>
-        </h3>
+      {/* Discoverability affordance — bottom left, overlaid on the visual.
+          Decorative only (aria-hidden); the card's aria-label already
+          communicates "open details" to screen readers. */}
+      <div className="ps-bento-card__pulse" aria-hidden="true">
+        <span className="ps-bento-card__pulse-dot" />
+        <span className="ps-bento-card__pulse-arrow" />
       </div>
 
       {/* Gradient border that tracks mouse */}
