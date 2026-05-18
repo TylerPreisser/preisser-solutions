@@ -396,8 +396,15 @@ export function CaseStudies() {
                 className="ps-work-card-overlay"
                 aria-label={`${study.title} case study details`}
               >
-                <span className="ps-work-card-tag">{study.tags}</span>
                 <p className="ps-work-card-result">{study.description}</p>
+                <span className="ps-visually-hidden">{study.tags}</span>
+              </div>
+
+              {/* Animated pulse affordance — bottom-left, signals "hover for more".
+                  Decorative only (aria-hidden); a11y handled by card aria-label. */}
+              <div className="ps-work-card__pulse" aria-hidden="true">
+                <span className="ps-work-card__pulse-dot" />
+                <span className="ps-work-card__pulse-arrow" />
               </div>
             </>
           );

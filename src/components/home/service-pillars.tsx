@@ -1388,12 +1388,14 @@ function BentoCard({ service, onClick }: BentoCardProps) {
         <ExpandIcon />
       </div>
 
-      {/* Discoverability affordance — bottom left, overlaid on the visual.
-          Decorative only (aria-hidden); the card's aria-label already
-          communicates "open details" to screen readers. */}
-      <div className="ps-bento-card__pulse" aria-hidden="true">
-        <span className="ps-bento-card__pulse-dot" />
-        <span className="ps-bento-card__pulse-arrow" />
+      {/* Title — bottom left, overlaid on the visual */}
+      <div className="ps-bento-card__text">
+        <h3
+          className="ps-bento-card__title"
+          id={`bento-card-${service.type}-title`}
+        >
+          {service.title}
+        </h3>
       </div>
 
       {/* Gradient border that tracks mouse */}
