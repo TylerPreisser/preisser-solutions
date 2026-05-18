@@ -110,8 +110,8 @@ export const siteConfig = {
     subhead:
       "Preisser Solutions builds world-class systems behind modern businesses: high-converting websites, local SEO, AI search visibility, CRM workflows, dashboards, and automations that reduce manual work and increase qualified leads.",
     primaryCta: {
-      label: "Book a Business Systems Audit",
-      href: "/contact?intent=audit",
+      label: "Reach out",
+      href: "/contact",
     },
     secondaryCta: {
       label: "See Case Studies",
@@ -130,11 +130,21 @@ export const siteConfig = {
     "CRM Systems",
     "AI Search Optimization",
   ],
-  // R-035: verifiable proof numbers. Sourced from case studies.
+  // R-035: verifiable proof points. Sourced from case studies. Each entry
+  // is a self-contained line with explicit client / context so the bar is
+  // readable in isolation as it scrolls past.
   proofBar: [
-    { number: "22+", label: "projects completed" },
-    { number: "95%", label: "inventory tracking reduction" },
-    { number: "94%", label: "faster system workflow" },
-    { number: "Kansas-first", label: "service area" },
+    "95% reduction in back-office logistics time — HG Oil Holdings",
+    "60%+ dormant customer reactivation — Cassidy HVAC",
+    "5x organic reach in 30 days — Cassidy HVAC marketing engine",
+    "Zero missed renewals in 6 months — Astrus Insurance Solutions",
+    "Reconciliation cut from full day → 15-minute exception queue — Sunrise Transportation",
+    "75%+ accuracy improvement on inventory — HG Oil Holdings",
+    "134 pre-rendered cinematic pages — Iron and Oak Podcast",
+    "45%+ booking conversion lift — Cassidy HVAC",
+    "22+ Kansas SMB projects delivered",
+    "Founder-led: every project built directly by Tyler Preisser",
+    "Hays, Kansas — 90-mile primary service radius",
+    "Next.js, React, TypeScript, AI-native architecture",
   ],
 } as const;

@@ -147,8 +147,8 @@ export default function WhyAutomationPage() {
             work so your team can focus on what actually needs their judgment.
           </p>
           <div className="ps-cta-buttons">
-            <Link href="/contact?intent=audit" className="ps-btn-primary">
-              Book a Business Systems Audit
+            <Link href="/contact" className="ps-btn-primary">
+              Reach out
               <span className="ps-btn-arrow" aria-hidden="true">→</span>
             </Link>
             <Link href="/roi-calculator" className="ps-btn-secondary">

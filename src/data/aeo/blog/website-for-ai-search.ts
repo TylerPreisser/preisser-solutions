@@ -135,7 +135,7 @@ export const pageData: AeoPageData = {
   ctaSubcopy:
     "We test your site against the twelve points above plus query-by-query citation tests across ChatGPT, Perplexity, Claude, and Google AI Overviews.",
   primaryCta: {
-    label: "Request an AI Search Visibility Audit",
-    href: "/contact?intent=audit",
+    label: "Reach out",
+    href: "/contact",
   },
 };

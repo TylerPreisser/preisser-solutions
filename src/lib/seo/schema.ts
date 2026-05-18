@@ -145,7 +145,7 @@ export function organizationSchema() {
     potentialAction: [
       {
         "@type": "ScheduleAction",
-        name: "Book a Business Systems Audit",
+        name: "Reach out",
         target: {
           "@type": "EntryPoint",
           urlTemplate: `${URL}/contact`,

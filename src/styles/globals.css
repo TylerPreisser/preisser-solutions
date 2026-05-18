@@ -1020,6 +1020,52 @@ a {
   }
 }
 
+/* ── Proof Bar ─────────────────────────────────────────────
+   Long single-line stats with client/context. Reuses the
+   ps-value-strip marquee shell but with pill-style items so
+   the longer strings flow as one line. Hover pauses the loop
+   so visitors can read; ~52s loop accommodates 12 items
+   without feeling rushed. Theme-aware via --theme-* tokens.
+   ──────────────────────────────────────────────────────────── */
+.ps-proof-bar-track {
+  /* Slower loop so the longer strings stay legible — 12 items
+     vs the trust row's 8 short pills warrants ~52s vs 42s. */
+  animation-duration: 52s;
+}
+
+.ps-proof-bar:hover .ps-proof-bar-track,
+.ps-proof-bar:focus-within .ps-proof-bar-track {
+  animation-play-state: paused;
+}
+
+.ps-proof-item {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 12px 22px;
+  border: 1px solid var(--theme-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--theme-bg-primary) 82%, transparent);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.ps-proof-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0;
+  color: var(--theme-text-primary);
+  white-space: nowrap;
+  transition: color 300ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ps-proof-bar-track {
+    animation: none;
+    padding-right: var(--container-padding);
+  }
+}
+
 /* ── Problem Section ───────────────────────────────────────── */
 .ps-problem {
   background-color: var(--theme-section-switchable);
@@ -4714,89 +4760,20 @@ a {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Case-study card "hover for more" affordance (animated)
-   Replaces the static tag string in the bottom-left.
-   Decorative only (aria-hidden).
+   Case-study card "Hover for more" affordance (text only, bobbing)
+   Decorative only (aria-hidden); a11y handled by card aria-label.
    ───────────────────────────────────────────────────────────── */
 
-.ps-work-card__pulse {
+.ps-work-card__bob {
   position: absolute;
-  bottom: 20px;
+  bottom: 22px;
   left: 24px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
   z-index: 2;
   pointer-events: none;
+  transition: opacity 240ms var(--ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
-.ps-work-card__pulse-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--color-primary, #0D95E8);
-  box-shadow: 0 0 0 0 rgba(13, 149, 232, 0.6);
-  flex-shrink: 0;
-}
-
-.ps-work-card__pulse-arrow {
-  display: inline-block;
-  width: 14px;
-  height: 1.5px;
-  background: var(--color-primary, #0D95E8);
-  position: relative;
-  opacity: 0.75;
-  transition: width 380ms var(--ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
-              opacity 380ms var(--ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
-}
-
-.ps-work-card__pulse-arrow::after {
-  content: "";
-  position: absolute;
-  right: -1px;
-  top: 50%;
-  width: 5px;
-  height: 5px;
-  border-top: 1.5px solid var(--color-primary, #0D95E8);
-  border-right: 1.5px solid var(--color-primary, #0D95E8);
-  transform: translateY(-50%) rotate(45deg);
-}
-
-/* Light-card variant — keep blue but with softer glow for contrast */
-.ps-work-card--light .ps-work-card__pulse-dot {
-  box-shadow: 0 0 0 0 rgba(13, 149, 232, 0.4);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .ps-work-card__pulse-dot {
-    animation: ps-work-pulse 2.4s ease-out infinite;
-  }
-}
-
-@keyframes ps-work-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(13, 149, 232, 0.55);
-    transform: scale(1);
-  }
-  60% {
-    box-shadow: 0 0 0 12px rgba(13, 149, 232, 0);
-    transform: scale(1);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(13, 149, 232, 0);
-    transform: scale(1);
-  }
-}
-
-.ps-work-card:hover .ps-work-card__pulse-arrow,
-.ps-work-card:focus-visible .ps-work-card__pulse-arrow {
-  width: 26px;
-  opacity: 1;
-}
-
-/* "Hover for more" / "Tap for more" label inside the pulse affordance.
-   Replaces the resting-state card title. Softly pulses in sync with the dot. */
-.ps-work-card__pulse-label {
+.ps-work-card__bob-label {
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -4805,40 +4782,38 @@ a {
   opacity: 0.78;
   white-space: nowrap;
   line-height: 1;
+  display: inline-block;
+  will-change: transform;
 }
 
+/* Subtle vertical bob — ±2.5px over 2.8s, ease-in-out */
 @media (prefers-reduced-motion: no-preference) {
-  .ps-work-card__pulse-label {
-    animation: ps-work-pulse-label 2.4s ease-in-out infinite;
+  .ps-work-card__bob-label {
+    animation: ps-work-bob 2.8s ease-in-out infinite;
   }
 }
 
-@keyframes ps-work-pulse-label {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+@keyframes ps-work-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2.5px); }
 }
 
-/* Light-card variant — deeper blue for contrast on cream/white backgrounds */
-.ps-work-card--light .ps-work-card__pulse-label {
+/* Touch device variant */
+.ps-work-card__bob-label--tap { display: none; }
+
+@media (hover: none) {
+  .ps-work-card__bob-label--hover { display: none; }
+  .ps-work-card__bob-label--tap { display: inline-block; }
+}
+
+/* Light-card variant — deeper blue for contrast on near-white surfaces */
+.ps-work-card--light .ps-work-card__bob-label {
   color: var(--color-primary-hover, #0B7BC0);
 }
 
-/* Default: show hover variant. Touch devices swap to "Tap for more". */
-.ps-work-card__pulse-label--tap { display: none; }
-
-@media (hover: none) {
-  .ps-work-card__pulse-label--hover { display: none; }
-  .ps-work-card__pulse-label--tap { display: inline-block; }
-}
-
-/* On card hover/focus, the entire pulse affordance fades out so the overlay
-   reading experience isn't crowded by the affordance. */
-.ps-work-card__pulse {
-  transition: opacity 240ms var(--ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
-}
-
-.ps-work-card:hover .ps-work-card__pulse,
-.ps-work-card:focus-visible .ps-work-card__pulse {
+/* On card hover, the affordance fades out so the overlay reads cleanly */
+.ps-work-card:hover .ps-work-card__bob,
+.ps-work-card:focus-visible .ps-work-card__bob {
   opacity: 0;
 }
 

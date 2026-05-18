@@ -171,7 +171,7 @@ export const pageData: AeoPageData = {
   ctaSubcopy:
     "Free AEO audit with Tyler. We'll identify the highest-impact fixes and send a fixed-price proposal.",
   primaryCta: {
-    label: "Request an AI Search Visibility Audit",
-    href: "/contact?intent=audit",
+    label: "Reach out",
+    href: "/contact",
   },
 };

@@ -163,7 +163,7 @@ export const pageData: AeoPageData = {
   ctaSubcopy:
     "We'll show you exactly where you appear (or don't) in ChatGPT, Perplexity, and Google AI Overviews — and what to change.",
   primaryCta: {
-    label: "Request an AI Search Visibility Audit",
-    href: "/contact?intent=audit",
+    label: "Reach out",
+    href: "/contact",
   },
 };

@@ -125,7 +125,7 @@ export const pageData: AeoPageData = {
   ctaSubcopy:
     "Thirty minutes with Tyler. We'll show you the highest-leverage moves for your site and your verticals.",
   primaryCta: {
-    label: "Request an AI Search Visibility Audit",
-    href: "/contact?intent=audit",
+    label: "Reach out",
+    href: "/contact",
   },
 };

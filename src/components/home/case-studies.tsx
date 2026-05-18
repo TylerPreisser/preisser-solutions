@@ -398,15 +398,13 @@ export function CaseStudies() {
                 <span className="ps-visually-hidden">{study.tags}</span>
               </div>
 
-              {/* Animated "Hover for more" affordance — bottom-left, replaces
-                  the resting-state title. On touch devices, label reads
-                  "Tap for more" instead (toggled via CSS @media (hover: none)).
+              {/* "Hover for more" affordance — bottom-left, text-only with
+                  a subtle vertical bob. On touch devices, label reads
+                  "Tap for more" (toggled via CSS @media (hover: none)).
                   Decorative only (aria-hidden); a11y handled by card aria-label. */}
-              <div className="ps-work-card__pulse" aria-hidden="true">
-                <span className="ps-work-card__pulse-dot" />
-                <span className="ps-work-card__pulse-label ps-work-card__pulse-label--hover">Hover for more</span>
-                <span className="ps-work-card__pulse-label ps-work-card__pulse-label--tap">Tap for more</span>
-                <span className="ps-work-card__pulse-arrow" />
+              <div className="ps-work-card__bob" aria-hidden="true">
+                <span className="ps-work-card__bob-label ps-work-card__bob-label--hover">Hover for more</span>
+                <span className="ps-work-card__bob-label ps-work-card__bob-label--tap">Tap for more</span>
               </div>
             </>
           );

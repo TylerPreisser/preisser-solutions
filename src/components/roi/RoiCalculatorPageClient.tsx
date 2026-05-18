@@ -243,8 +243,8 @@ export function RoiCalculatorPageClient() {
               </p>
 
               <div style={{ textAlign: "center", marginTop: "24px" }}>
-                <Link href="/contact?intent=audit" className="ps-btn-primary">
-                  Book a Business Systems Audit
+                <Link href="/contact" className="ps-btn-primary">
+                  Reach out
                   <span className="ps-btn-arrow" aria-hidden="true">→</span>
                 </Link>
               </div>

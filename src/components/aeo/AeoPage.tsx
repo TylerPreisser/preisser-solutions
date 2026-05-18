@@ -773,7 +773,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
             {data.ctaSubcopy}
           </p>
           <Link
-            href={data.primaryCta?.href ?? "/contact?intent=audit"}
+            href={data.primaryCta?.href ?? "/contact"}
             style={{
               display: "inline-block",
               padding: "14px 32px",
@@ -786,7 +786,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
               boxShadow: "0 4px 12px rgba(13, 149, 232, 0.35)",
             }}
           >
-            {data.primaryCta?.label ?? "Book a Business Systems Audit"}
+            {data.primaryCta?.label ?? "Reach out"}
           </Link>
         </div>
       </section>

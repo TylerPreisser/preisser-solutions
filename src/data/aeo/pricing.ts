@@ -219,7 +219,7 @@ export const pageData: AeoPageData = {
       ],
       useCase:
         "Best for a Kansas business owner who wants an honest, expert look at where the leaks are before committing to a full engagement.",
-      cta: { label: "Book a Business Systems Audit", href: "/contact?intent=audit" },
+      cta: { label: "Reach out", href: "/contact" },
     },
     {
       name: "Tier 2: Build Sprint",
@@ -233,7 +233,7 @@ export const pageData: AeoPageData = {
       ],
       useCase:
         "Best for a Kansas business that knows what it wants built (a CRM, a custom site, an automation, an AI agent, a dashboard) and wants a real engineer to ship it in weeks rather than quarters.",
-      cta: { label: "Get a Website & Automation Review", href: "/contact?intent=review" },
+      cta: { label: "Reach out", href: "/contact" },
     },
     {
       name: "Tier 3: Growth & Automation Retainer",
@@ -247,7 +247,7 @@ export const pageData: AeoPageData = {
       ],
       useCase:
         "Best for an established Kansas SMB that has a working system and wants Tyler in the loop month-over-month to keep it compounding.",
-      cta: { label: "Request an AI Search Visibility Audit", href: "/contact?intent=audit" },
+      cta: { label: "Reach out", href: "/contact" },
     },
   ],
 };

@@ -113,9 +113,8 @@ export interface AeoPageData {
   /**
    * R-095 — optional override for the final CTA button. When present,
    * AeoPage's bottom CTA renders this label/href in place of the default
-   * "Book a Business Systems Audit". Use for service-specific pages where a
-   * different approved CTA (e.g. "Request an AI Search Visibility Audit")
-   * better matches the page topic.
+   * "Reach out". Use for service-specific pages where a different approved
+   * CTA better matches the page topic.
    */
   primaryCta?: { label: string; href: string };
   /** Tier label for organization */

@@ -135,7 +135,7 @@ export const pageData: AeoPageData = {
   ctaSubcopy:
     "Part of every Preisser Solutions AEO engagement. Or done as a standalone in under a week.",
   primaryCta: {
-    label: "Request an AI Search Visibility Audit",
-    href: "/contact?intent=audit",
+    label: "Reach out",
+    href: "/contact",
   },
 };

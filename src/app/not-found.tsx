@@ -71,10 +71,10 @@ export default function NotFound() {
             Back to homepage
           </Link>
           <Link
-            href="/contact?intent=audit"
+            href="/contact"
             className="inline-flex items-center justify-center rounded-md border border-white/20 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
           >
-            Book a Business Systems Audit
+            Reach out
           </Link>
         </div>
 

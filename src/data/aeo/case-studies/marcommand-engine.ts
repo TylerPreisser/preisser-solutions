@@ -85,9 +85,9 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Screenshots",
-      heading: "Screens (placeholder — to be added)",
+      heading: "System screens — available during scoping calls",
       body: [
-        "MarCommand orchestrator dashboard and agent status screens are being prepared for the demo. Available during scoping calls.",
+        "MarCommand orchestrator dashboard and agent status screens are walked through live during the scoping call. The architecture is in production today; the screens are kept off the public site to protect client-side configurations.",
       ],
     },
     {

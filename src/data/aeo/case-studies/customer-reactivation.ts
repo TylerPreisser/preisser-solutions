@@ -80,9 +80,9 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Screenshots",
-      heading: "Screens (placeholder — to be added)",
+      heading: "System screens — available during scoping",
       body: [
-        "Dashboard and outreach-engine screenshots are being prepared. Available on request during scoping.",
+        "Dashboard and outreach-engine screenshots are walked through live during the scoping call. Full screen set available on request.",
       ],
     },
     {

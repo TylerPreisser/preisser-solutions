@@ -75,8 +75,8 @@ export function MarCommandCallout() {
             business, your social media content, your channels, your products.
           </p>
           <div className="ps-marcommand-cta">
-            <Link href="/contact?intent=review" className="ps-btn ps-btn-primary-dark">
-              Get a Website &amp; Automation Review
+            <Link href="/contact" className="ps-btn ps-btn-primary-dark">
+              Reach out
               <svg
                 className="ps-btn-arrow"
                 width="16"

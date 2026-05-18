@@ -1538,8 +1538,8 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
 
           {/* CTA */}
           <div className="ps-dialog-cta ps-dialog-reveal">
-            <a href="/contact?intent=review" className="ps-dialog-cta-btn">
-              Get a Website &amp; Automation Review
+            <a href="/contact" className="ps-dialog-cta-btn">
+              Reach out
             </a>
           </div>
         </div>

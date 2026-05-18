@@ -26,8 +26,8 @@ const whyFeatures: WhyFeature[] = [
     image: "/images/ps-logo.webp",
     mobileImage: "/images/ps-logo.webp",
     alt: "Preisser Solutions logo \u2014 custom built for your business",
-    href: "/contact?intent=audit",
-    cta: "Book a Business Systems Audit",
+    href: "/contact",
+    cta: "Reach out",
   },
   {
     id: 1,
@@ -38,8 +38,8 @@ const whyFeatures: WhyFeature[] = [
     image: "/images/why-us/ai-harnessed.webp",
     mobileImage: "/images/why-us/ai-harnessed.webp",
     alt: "AI-accelerated development with proper guardrails",
-    href: "/contact?intent=audit",
-    cta: "Book a Business Systems Audit",
+    href: "/contact",
+    cta: "Reach out",
   },
   {
     id: 2,
@@ -50,8 +50,8 @@ const whyFeatures: WhyFeature[] = [
     image: "/images/why-us/we-stay-with-it-new.webp",
     mobileImage: "/images/why-us/we-stay-with-it-new.webp",
     alt: "Ongoing support and system adaptation",
-    href: "/contact?intent=audit",
-    cta: "Book a Business Systems Audit",
+    href: "/contact",
+    cta: "Reach out",
   },
 ];
 

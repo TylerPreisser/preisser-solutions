@@ -150,7 +150,7 @@ export function Header() {
               )}
 
               <Link
-                href="/contact?intent=audit"
+                href="/contact"
                 className="ps-header-cta"
                 onClick={() => {}}
                 aria-label="Reach out"
