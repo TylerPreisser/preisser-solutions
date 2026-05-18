@@ -279,25 +279,30 @@ export default function ServicesPage() {
         </div>
 
         {/* CTA */}
-        <div className="ps-cta-section">
+        <section
+          className="ps-cta-section"
+          aria-labelledby="services-cta-heading"
+        >
           <div className="ps-cta-glow" aria-hidden="true" />
           <div className="ps-cta-content">
-            <span className="ps-eyebrow">Get in touch</span>
-            <h2>Not sure which service fits? Start with a conversation.</h2>
-            <p>
-              We will help you scope it before quoting it. Pricing is fixed once we agree on what we are building.
+            <span className="ps-eyebrow">Get in Touch</span>
+            <h2 id="services-cta-heading" className="ps-cta-heading">
+              Not sure which service fits?
+            </h2>
+            <p className="ps-cta-body">
+              Start with a conversation. We will help you scope it before quoting it — pricing is fixed once we agree on what we are building.
             </p>
             <div className="ps-cta-buttons">
-              <Link href="/contact" className="ps-btn-primary">
-                Start a project
+              <Link href="/contact" className="ps-btn ps-btn-primary-dark">
+                Reach out
                 <span className="ps-btn-arrow" aria-hidden="true">→</span>
               </Link>
-              <Link href="/case-studies" className="ps-btn-secondary">
+              <Link href="/case-studies" className="ps-btn ps-btn-secondary">
                 See case studies
               </Link>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </>
   );
