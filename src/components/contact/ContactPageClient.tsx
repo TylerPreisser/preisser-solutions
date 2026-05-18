@@ -107,16 +107,7 @@ export function ContactPageClient() {
       <div className="ps-container">
         {/* Hero — minimal, lets the form be the focal point */}
         <div className="ps-contact-hero">
-          <span
-            className="ps-eyebrow-dark"
-            style={{ display: "block", textAlign: "center", marginBottom: "16px" }}
-          >
-            Contact
-          </span>
-          <h1>Let&apos;s Build Something.</h1>
-          <p className="ps-contact-subtitle">
-            Tell us what you have in mind. Tyler will reply within one business day.
-          </p>
+          <h1>Reach out</h1>
 
           {/* Visible NAP — email only, semantic <address>. */}
           <address
@@ -233,7 +224,7 @@ export function ContactPageClient() {
                     cursor: submitting ? "wait" : "pointer",
                   }}
                 >
-                  {submitting ? "Sending…" : "Send message"}
+                  {submitting ? "Sending…" : "Reach out"}
                   {!submitting && <span className="ps-btn-arrow" aria-hidden="true">→</span>}
                 </button>
               </div>
@@ -252,186 +243,73 @@ export function ContactPageClient() {
           }}
         />
 
-        {/* Want more context first — supporting content lives BELOW the form */}
+        {/* Want more context first — theme-aware card grid matching site vocabulary */}
         <section
           aria-label="Helpful links before you write"
-          style={{ maxWidth: 1120, margin: "48px auto 0" }}
+          className="ps-context-section"
         >
-          <h2
-            style={{
-              fontSize: "clamp(1.25rem, 2vw, 1.5rem)",
-              fontWeight: 700,
-              letterSpacing: "-0.01em",
-              margin: "0 0 8px",
-            }}
-          >
-            Want more context first?
-          </h2>
-          <p
-            style={{
-              fontSize: 15,
-              lineHeight: 1.65,
-              opacity: 0.78,
-              margin: "0 0 24px",
-              maxWidth: 720,
-            }}
-          >
-            Browse recent client work and the services we build before you reach out.
+          <h2 className="ps-context-section__title">Want more context first?</h2>
+          <p className="ps-context-section__intro">
+            Browse recent client work, the services we build, and what an engagement looks like before you reach out.
           </p>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: 32,
-            }}
-          >
-            <div>
-              <h3
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                  margin: "0 0 12px",
-                  opacity: 0.65,
-                }}
-              >
-                Recent case studies
-              </h3>
-              <ul
-                style={{
-                  listStyle: "none",
-                  padding: 0,
-                  margin: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 10,
-                  fontSize: 15,
-                }}
-              >
-                <li><a href="/case-studies/cassidy-hvac">Cassidy HVAC — AI marketing engine</a></li>
-                <li><a href="/case-studies/hg-oil-holdings">HG Oil Holdings — inventory + AI invoicing</a></li>
-                <li><a href="/case-studies/iron-and-oak-podcast">Iron &amp; Oak Podcast — cinematic media brand</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                  margin: "0 0 12px",
-                  opacity: 0.65,
-                }}
-              >
-                Services
-              </h3>
-              <ul
-                style={{
-                  listStyle: "none",
-                  padding: 0,
-                  margin: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 10,
-                  fontSize: 15,
-                }}
-              >
-                <li><a href="/services/ai-automation">AI automation</a></li>
-                <li><a href="/services/local-seo">Local SEO</a></li>
-                <li><a href="/services/ai-search-optimization">AI search optimization</a></li>
-                <li><a href="/services">All services</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                  margin: "0 0 12px",
-                  opacity: 0.65,
-                }}
-              >
-                Tools
-              </h3>
-              <ul
-                style={{
-                  listStyle: "none",
-                  padding: 0,
-                  margin: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 10,
-                  fontSize: 15,
-                }}
-              >
-                <li><a href="/roi-calculator">Automation ROI calculator</a></li>
-                <li><a href="/case-studies">All case studies</a></li>
-                <li><a href="/about">About Tyler</a></li>
-              </ul>
-            </div>
+
+          <div className="ps-context-grid">
+            <a href="/case-studies" className="ps-context-card">
+              <h3 className="ps-context-card__title">Case studies</h3>
+              <p className="ps-context-card__desc">
+                See projects we&apos;ve shipped for HVAC, oilfield, healthcare, and other Kansas businesses.
+              </p>
+              <span className="ps-context-card__cta" aria-hidden="true">
+                View
+                <span className="ps-context-card__arrow">→</span>
+              </span>
+            </a>
+
+            <a href="/services" className="ps-context-card">
+              <h3 className="ps-context-card__title">Services</h3>
+              <p className="ps-context-card__desc">
+                Every service we offer, grouped by what you&apos;re trying to fix.
+              </p>
+              <span className="ps-context-card__cta" aria-hidden="true">
+                View
+                <span className="ps-context-card__arrow">→</span>
+              </span>
+            </a>
+
+            <a href="/roi-calculator" className="ps-context-card">
+              <h3 className="ps-context-card__title">Automation ROI</h3>
+              <p className="ps-context-card__desc">
+                Estimate what an automation engagement saves your business in dollars and hours.
+              </p>
+              <span className="ps-context-card__cta" aria-hidden="true">
+                View
+                <span className="ps-context-card__arrow">→</span>
+              </span>
+            </a>
           </div>
         </section>
 
-        {/* Common questions — server-renderable text, matched by FAQPage JSON-LD above */}
+        {/* Common questions — centered column, server-renderable text, matched by FAQPage JSON-LD above */}
         <section
           aria-label="Common questions"
-          style={{ maxWidth: 880, margin: "64px auto 0" }}
+          className="ps-contact-faq-section"
         >
-          <h2
-            style={{
-              fontSize: "clamp(1.25rem, 2vw, 1.5rem)",
-              fontWeight: 700,
-              letterSpacing: "-0.01em",
-              margin: "0 0 8px",
-            }}
-          >
-            Common questions
-          </h2>
-          <p
-            style={{
-              fontSize: 15,
-              lineHeight: 1.65,
-              opacity: 0.78,
-              margin: "0 0 24px",
-              maxWidth: 720,
-            }}
-          >
+          <h2 className="ps-contact-faq__title">Common questions</h2>
+          <p className="ps-contact-faq__intro">
             Quick answers to the four questions we get most.
           </p>
-          {contactFaqs.map((q, i) => (
-            <details
-              key={i}
-              style={{
-                borderBottom: "1px solid var(--theme-border)",
-                padding: "16px 0",
-              }}
-            >
-              <summary
-                style={{
-                  fontSize: 16,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  listStyle: "none",
-                }}
-              >
-                {q.question}
-              </summary>
-              <p
-                style={{
-                  fontSize: 15,
-                  lineHeight: 1.65,
-                  opacity: 0.82,
-                  margin: "10px 0 0",
-                }}
-              >
-                {q.answer}
-              </p>
-            </details>
-          ))}
+          <div className="ps-contact-faq__list">
+            {contactFaqs.map((q, i) => (
+              <details key={i} className="ps-contact-faq__item">
+                <summary className="ps-contact-faq__summary">
+                  {q.question}
+                </summary>
+                <p className="ps-contact-faq__answer">
+                  {q.answer}
+                </p>
+              </details>
+            ))}
+          </div>
         </section>
 
         <div style={{ height: 96 }} aria-hidden="true" />

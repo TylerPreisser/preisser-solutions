@@ -7593,3 +7593,293 @@ html, body {
   line-height: 1.5;
   color: var(--theme-text-secondary);
 }
+
+/* ─────────────────────────────────────────────────────────────────
+   Home Overview redesign — centered, theme-aware fact-sheet panel
+   that complements the hero (hero = brand statement, overview =
+   structured factual lead optimized for AI citation extraction).
+   ───────────────────────────────────────────────────────────────── */
+.ps-overview {
+  background: var(--theme-section-alt);
+  padding: clamp(56px, 7vw, 96px) 24px;
+  border-top: 1px solid var(--theme-border);
+  border-bottom: 1px solid var(--theme-border);
+}
+.ps-overview__inner {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.ps-overview__rule {
+  display: block;
+  width: 48px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-primary, #0D95E8) 50%,
+    transparent 100%
+  );
+  opacity: 0.85;
+}
+.ps-overview__lead {
+  margin: 0;
+  font-size: clamp(1.0625rem, 1.55vw, 1.1875rem);
+  line-height: 1.7;
+  letter-spacing: -0.005em;
+  color: var(--theme-text-secondary);
+  font-weight: 450;
+  text-wrap: balance;
+}
+@media (max-width: 640px) {
+  .ps-overview__lead {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+}
+
+/* ── Contact page: "Want more context first?" card grid ───────── */
+.ps-context-section {
+  max-width: 1120px;
+  margin: 56px auto 0;
+  text-align: center;
+}
+
+.ps-context-section__title {
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+  color: var(--theme-text-primary);
+}
+
+.ps-context-section__intro {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--theme-text-secondary);
+  margin: 0 auto 40px;
+  max-width: 600px;
+}
+
+.ps-context-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.ps-context-card {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 28px;
+  background-color: var(--theme-card-bg);
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 250ms var(--ease-standard),
+    box-shadow 250ms var(--ease-standard),
+    border-color 250ms ease,
+    background-color 300ms ease;
+}
+
+.ps-context-card:hover,
+.ps-context-card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary);
+}
+
+.ps-context-card__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--theme-text-primary);
+  margin: 0 0 12px;
+}
+
+.ps-context-card__desc {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--theme-text-secondary);
+  margin: 0 0 20px;
+  flex: 1;
+}
+
+.ps-context-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  transition: gap 200ms ease;
+}
+
+.ps-context-card:hover .ps-context-card__cta,
+.ps-context-card:focus-visible .ps-context-card__cta {
+  gap: 10px;
+}
+
+.ps-context-card__arrow {
+  display: inline-block;
+  transition: transform 200ms ease;
+}
+
+@media (max-width: 900px) {
+  .ps-context-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ── Contact page: Common questions (centered FAQ column) ────── */
+.ps-contact-faq-section {
+  max-width: 720px;
+  margin: 80px auto 0;
+  text-align: center;
+}
+
+.ps-contact-faq__title {
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+  color: var(--theme-text-primary);
+}
+
+.ps-contact-faq__intro {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--theme-text-secondary);
+  margin: 0 auto 32px;
+  max-width: 560px;
+}
+
+.ps-contact-faq__list {
+  text-align: left;
+  border-top: 1px solid var(--theme-border);
+}
+
+.ps-contact-faq__item {
+  border-bottom: 1px solid var(--theme-border);
+  padding: 18px 4px;
+}
+
+.ps-contact-faq__summary {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ps-contact-faq__summary::-webkit-details-marker {
+  display: none;
+}
+
+.ps-contact-faq__summary::after {
+  content: "+";
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--theme-text-secondary);
+  transition: transform 200ms ease;
+  flex-shrink: 0;
+}
+
+.ps-contact-faq__item[open] .ps-contact-faq__summary::after {
+  transform: rotate(45deg);
+}
+
+.ps-contact-faq__answer {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--theme-text-secondary);
+  margin: 12px 0 4px;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Service-pillars AI-fetch shimmer
+   Subtle "AI is fetching this for you" hover treatment applied to
+   interactive items inside the service pillars popup. The visible
+   text remains in the DOM — only a thin animated highlight passes
+   over the surface via a ::before pseudo-element.
+
+   Brand token: --color-primary (#0D95E8), shared across light/dark.
+   Respects prefers-reduced-motion.
+   ───────────────────────────────────────────────────────────────── */
+
+.ps-ai-fetch-hover {
+  position: relative;
+  isolation: isolate;
+}
+
+.ps-ai-fetch-hover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 35%,
+    var(--color-primary-glow) 50%,
+    transparent 65%,
+    transparent 100%
+  );
+  transform: translateX(-110%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ps-ai-fetch-hover:hover::before,
+  .ps-ai-fetch-hover:focus-within::before {
+    animation: ps-ai-fetch-shimmer 900ms cubic-bezier(0.22, 1, 0.36, 1) 1;
+  }
+
+  @keyframes ps-ai-fetch-shimmer {
+    0% {
+      transform: translateX(-110%);
+      opacity: 0;
+    }
+    18% {
+      opacity: 1;
+    }
+    82% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(110%);
+      opacity: 0;
+    }
+  }
+}
+
+/* Light-mode tuning: screen-blend disappears on white; switch to
+   multiply for a soft brand-tinted shimmer that reads in both modes. */
+[data-theme="light"] .ps-ai-fetch-hover::before {
+  mix-blend-mode: multiply;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(13, 149, 232, 0.22) 50%,
+    transparent 65%,
+    transparent 100%
+  );
+}
+

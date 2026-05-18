@@ -153,9 +153,9 @@ export function Header() {
                 href="/contact?intent=audit"
                 className="ps-header-cta"
                 onClick={() => {}}
-                aria-label="Book a Business Systems Audit"
+                aria-label="Reach out"
               >
-                Book a Business Systems Audit
+                Reach out
                 <svg
                   className="ps-header-cta-arrow"
                   width="16"
