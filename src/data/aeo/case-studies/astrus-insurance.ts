@@ -6,21 +6,21 @@ export const pageData: AeoPageData = {
   // R-018: Article freshness signals.
   datePublished: "2025-08-01",
   dateModified: "2026-05-15",
-  metaTitle: "Insurance Agency Custom CRM Case Study | Preisser Solutions",
+  metaTitle: "Astrus Insurance Solutions — Custom Policy Management System | Preisser Solutions",
   metaDescription:
-    "How Preisser Solutions built a custom CRM and policy management system for a Western Kansas insurance agency — eliminating manual policy tracking and renewal misses.",
+    "How Preisser Solutions built Astrus Insurance Solutions a purpose-built policy management system — zero missed renewals in 6 months, commission reconciliation under 30 min/month.",
   eyebrow: "Case Study",
-  h1: "Western Kansas Insurance Agency — Custom CRM Case Study",
+  h1: "Astrus Insurance Solutions — Custom Policy Management System",
   subheadline:
-    "How Preisser Solutions replaced a Western Kansas insurance agency's spreadsheets and generic CRM with a purpose-built policy management system tuned to how independent insurance brokers actually work.",
+    "How Preisser Solutions replaced spreadsheets and a generic CRM with a purpose-built policy management system tuned to independent-insurance workflow — zero missed renewals in the first six months and commission reconciliation under 30 minutes per month.",
   answerParagraph:
-    "A Western Kansas independent insurance agency engaged Preisser Solutions to replace a tangle of spreadsheets, sticky notes, and a generic CRM that didn't fit how independent brokers run their book. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, built a custom CRM and policy management system tuned to the actual workflow: carrier-aware policy records, renewal-window automation, commission tracking, document storage tied to each policy, and producer-level pipeline visibility. The system eliminated manual renewal tracking, surfaced lapsed-policy risk before customers churned, and gave the principal real-time visibility into book composition by line, carrier, and producer.",
+    "Astrus Insurance Solutions, an independent insurance agency, engaged Preisser Solutions to replace a tangle of spreadsheets, sticky notes, and a generic CRM that didn't fit how independent brokers run their book. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, built a custom policy management system tuned to the actual workflow: carrier-aware policy records, renewal-window automation, commission reconciliation, document storage tied to each policy, and producer-level pipeline visibility. The system delivered zero missed renewals in the first six months of operation, dropped monthly commission reconciliation from a multi-hour exercise to under 30 minutes, and gave the principal real-time visibility into book composition by line, carrier, and producer.",
   sections: [
     {
       eyebrow: "The problem",
       heading: "Generic CRMs don't fit independent insurance",
       body: [
-        "The agency had tried two off-the-shelf CRMs and abandoned both. Reasons most insurance agencies run into the same wall:",
+        "Astrus Insurance Solutions had tried two off-the-shelf CRMs and abandoned both. Reasons most insurance agencies run into the same wall:",
       ],
       bullets: [
         "Generic CRMs model 'deals' or 'opportunities' — insurance runs on policies with renewal cycles, carriers, and multi-line bundles",
@@ -134,10 +134,10 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Article",
   namedEntities: [
+    "Astrus Insurance Solutions",
     "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
-    "Western Kansas",
   ],
   relatedLinks: [
     { label: "Insurance & Financial Industry", href: "/industries/insurance-financial" },

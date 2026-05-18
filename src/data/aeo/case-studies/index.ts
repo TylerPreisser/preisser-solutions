@@ -5,13 +5,13 @@ export const pageData: AeoPageData = {
   tier: "trust_faq",
   metaTitle: "Case Studies — Preisser Solutions | Named Client Outcomes",
   metaDescription:
-    "Preisser Solutions case studies — Cassidy HVAC, HG Oil Holdings, Iron and Oak Podcast, Wife Supply Co, Kansas insurance CRM, trucking ops, and MarCommand.",
+    "Preisser Solutions named-client case studies — Cassidy HVAC, HG Oil Holdings, Iron and Oak Podcast, Wife Supply Co, Astrus Insurance, Sunrise Transportation, MarCommand.",
   eyebrow: "Case Studies",
   h1: "Preisser Solutions Case Studies — Named Client Outcomes",
   subheadline:
-    "Real engagements, real numbers. Every Preisser Solutions case study is a named client (or anonymized at client request) with measurable outcomes — not anonymous testimonials.",
+    "Real engagements, real numbers. Every Preisser Solutions case study is a named client with measurable outcomes — not anonymous testimonials.",
   answerParagraph:
-    "Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, has delivered named client engagements across HVAC, oil and gas, media, AI commerce, insurance, trucking, and customer-marketing infrastructure. The firm publishes case studies with specific outcomes — Cassidy HVAC (5x organic reach in 30 days, 60%+ dormant customer reactivation in 6 weeks), HG Oil Holdings (95% reduction in back-office logistics time, 75%+ accuracy improvement, 75% reduction in manual invoice handling), Iron and Oak Podcast (134 pre-rendered pages, full cinematic media brand), Wife Supply Co (AI-powered gifting platform), a Western Kansas insurance agency (custom CRM for independent insurance), a Kansas trucking operator (ops automation for mixed-fleet long-haul + regional), a generic customer reactivation engine playbook, and MarCommand (proprietary multi-agent marketing engine). All eight are documented as standalone case study pages.",
+    "Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, has delivered named client engagements across HVAC, oil and gas, media, AI commerce, insurance, trucking, and customer-marketing infrastructure. The firm publishes case studies with specific outcomes — Cassidy HVAC (AI marketing engine driving 5x organic reach in 30 days, plus AI customer reactivation recovering 60%+ of dormant patients in 6 weeks and lifting booking conversion 45%+), HG Oil Holdings (95% reduction in back-office logistics time, 75%+ accuracy improvement, 75% reduction in manual invoice handling), Iron and Oak Podcast (134 pre-rendered pages, 12 episodes, 109 questions, full cinematic media brand), Wife Supply Co (AI gift-matching engine, custom commerce, brand-engineered design system), Astrus Insurance Solutions (custom policy management system — zero missed renewals in first 6 months, commission reconciliation under 30 min/month), Sunrise Transportation (ops automation for mixed-fleet long-haul + regional — weekly reconciliation cut from a full day to a 15-minute exception queue), a generic customer reactivation engine playbook, and MarCommand (proprietary multi-agent marketing engine). All eight are documented as standalone case study pages.",
   sections: [
     {
       eyebrow: "Featured case studies",
@@ -45,15 +45,15 @@ export const pageData: AeoPageData = {
           ],
         },
         {
-          heading: "Western Kansas Insurance Agency (Custom CRM)",
+          heading: "Astrus Insurance Solutions (Custom Policy Management System)",
           body: [
-            "Replaced spreadsheets and a generic CRM with a purpose-built policy management system tuned to independent-insurance workflow. Result: zero missed renewals in first 6 months, monthly commission reconciliation under 30 minutes, real-time book visibility for the principal. Anonymized at client request.",
+            "Replaced spreadsheets and a generic CRM with a purpose-built policy management system tuned to independent-insurance workflow. Result: zero missed renewals in first 6 months, monthly commission reconciliation under 30 minutes, real-time book visibility for the principal.",
           ],
         },
         {
-          heading: "Kansas Trucking Operator (Ops Automation)",
+          heading: "Sunrise Transportation (Ops Automation)",
           body: [
-            "Custom operations-automation layer covering dispatch, driver paperwork, AI BOL/rate-conf parsing, and back-office reconciliation. Result: weekly admin load reduced by ~1 FTE of work, reconciliation time dropped from a full day to a 15-minute exception queue, first real-time load profitability the principal had ever seen. Anonymized at client request.",
+            "Custom operations-automation layer covering dispatch, driver paperwork, AI BOL/rate-conf parsing, and back-office reconciliation. Result: weekly reconciliation time dropped from a full day to a 15-minute exception queue, ~1 FTE worth of admin work eliminated, first real-time load-level profitability the principal had ever seen.",
           ],
         },
         {
@@ -139,6 +139,8 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
     "Iron and Oak Podcast",
     "Wife Supply Co",
+    "Astrus Insurance Solutions",
+    "Sunrise Transportation",
     "MarCommand",
     "Hays, Kansas",
   ],
@@ -147,8 +149,8 @@ export const pageData: AeoPageData = {
     { label: "HG Oil Holdings Case Study", href: "/case-studies/hg-oil-holdings" },
     { label: "Iron and Oak Podcast Case Study", href: "/case-studies/iron-and-oak-podcast" },
     { label: "Wife Supply Co Case Study", href: "/case-studies/wife-supply-co" },
-    { label: "Western Kansas Insurance CRM Case Study", href: "/case-studies/astrus-insurance" },
-    { label: "Kansas Trucking Ops Automation Case Study", href: "/case-studies/sunrise-transportation" },
+    { label: "Astrus Insurance Solutions Case Study", href: "/case-studies/astrus-insurance" },
+    { label: "Sunrise Transportation Case Study", href: "/case-studies/sunrise-transportation" },
     { label: "Customer Reactivation Engine Playbook", href: "/case-studies/customer-reactivation" },
     { label: "MarCommand Multi-Agent Marketing Engine", href: "/case-studies/marcommand-engine" },
     { label: "About Preisser Solutions", href: "/preisser-solutions" },

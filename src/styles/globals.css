@@ -1448,14 +1448,40 @@ a {
 
 .ps-bento-card__title {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-weight: 700;
-  font-size: 1.125rem;
-  line-height: 1.33;
-  letter-spacing: -0.02em;
-  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
   margin: 0;
   max-width: 280px;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  transition: color 300ms ease, opacity 300ms ease;
+}
+
+/* "Hover for details" / "Tap for details" swap.
+   Default: show the hover hint. On touch devices (hover: none) the tap
+   hint replaces it so the language matches the actual interaction. */
+.ps-bento-card__hint--tap {
+  display: none;
+}
+
+@media (hover: none) {
+  .ps-bento-card__hint--hover {
+    display: none;
+  }
+
+  .ps-bento-card__hint--tap {
+    display: inline;
+  }
+}
+
+/* On hover the hint brightens slightly to acknowledge the cue */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .ps-bento-card:hover .ps-bento-card__title {
+    color: #ffffff;
+  }
 }
 
 /* On hover: title shifts to compensate for card grow */

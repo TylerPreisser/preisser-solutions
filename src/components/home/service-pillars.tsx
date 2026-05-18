@@ -9,6 +9,9 @@ import {
   DashboardVisual,
   RevenueVisual,
 } from "@/components/home/card-visuals-backup";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { LOCAL_BIZ_ID } from "@/lib/seo/schema";
+import { seoSite } from "@/lib/seo/site";
 
 /* ─────────────────────────────────────────────────────────────
    TYPES
@@ -1365,7 +1368,7 @@ function BentoCard({ service, onClick }: BentoCardProps) {
     <button
       ref={cardRef}
       className={`ps-bento-card ps-bento-card--${service.type}`}
-      aria-labelledby={`bento-card-${service.type}-title`}
+      aria-label={`${service.title} — open details`}
       onClick={onClick}
       onMouseMove={handleMouseMove}
       style={{
@@ -1385,13 +1388,17 @@ function BentoCard({ service, onClick }: BentoCardProps) {
         <ExpandIcon />
       </div>
 
-      {/* Title — bottom left, overlaid on the visual */}
+      {/* Discoverability hint — bottom left, overlaid on the visual.
+          Swaps to "Tap for details" on touch devices via CSS @media (hover: none).
+          The real pillar title is preserved on the button's aria-label so it's
+          still announced to assistive tech and indexed in card identity. */}
       <div className="ps-bento-card__text">
         <h3
           className="ps-bento-card__title"
           id={`bento-card-${service.type}-title`}
         >
-          {service.title}
+          <span className="ps-bento-card__hint ps-bento-card__hint--hover">Hover for details</span>
+          <span className="ps-bento-card__hint ps-bento-card__hint--tap">Tap for details</span>
         </h3>
       </div>
 
@@ -1547,6 +1554,111 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   SCHEMA — OfferCatalog
+   Emit each pillar as an OfferCatalog with its serviceTiles as
+   nested Offer→Service items. Lets Google + AI Overviews build
+   a clean service-catalog entity graph from the same pillar data
+   that drives the interactive UI (single source of truth).
+   ───────────────────────────────────────────────────────────── */
+
+function pillarOfferCatalogSchema() {
+  const URL = seoSite.url;
+  return {
+    "@context": "https://schema.org",
+    "@type": "OfferCatalog",
+    "@id": `${URL}/#service-catalog`,
+    name: "Preisser Solutions Service Catalog",
+    url: URL,
+    provider: { "@id": LOCAL_BIZ_ID },
+    numberOfItems: services.reduce((n, p) => n + p.serviceTiles.length, 0),
+    itemListElement: services.map((pillar) => ({
+      "@type": "OfferCatalog",
+      name: pillar.title,
+      description: pillar.description,
+      itemListElement: pillar.serviceTiles.map((tile) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: tile.title,
+          description: tile.description,
+          serviceType: pillar.title,
+          provider: { "@id": LOCAL_BIZ_ID },
+        },
+      })),
+    })),
+  };
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CRAWLER-VISIBLE PILLAR DETAIL
+   Visually-hidden but semantically present block that emits every
+   serviceTile, painPoint, and differentiator from the same pillar
+   data that drives the dialog. Lets HTML-only AI crawlers
+   (ChatGPT-User, Claude-User, OAI-SearchBot, PerplexityBot,
+   Google-Extended, CCBot) extract details that interactive users
+   see only after opening the bento popup. aria-hidden=true keeps
+   screen readers from announcing this as a duplicate of the live
+   dialog content.
+   ───────────────────────────────────────────────────────────── */
+
+function PillarCrawlerContent() {
+  return (
+    <section
+      className="ps-visually-hidden ps-pillar-crawler-content"
+      aria-hidden="true"
+    >
+      <h2>Preisser Solutions Service Details</h2>
+      {services.map((pillar) => (
+        <div key={`crawler-${pillar.type}`}>
+          <h3>{pillar.title}</h3>
+          <p>{pillar.description}</p>
+
+          {pillar.bullets.length > 0 && (
+            <>
+              <h4>Capabilities</h4>
+              <ul>
+                {pillar.bullets.map((bullet, i) => (
+                  <li key={`b-${i}`}>{bullet}</li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          <h4>What we build</h4>
+          <ul>
+            {pillar.serviceTiles.map((tile, i) => (
+              <li key={`t-${i}`}>
+                <strong>{tile.title}</strong>
+                {" — "}
+                {tile.description}
+              </li>
+            ))}
+          </ul>
+
+          <h4>The pain we hear</h4>
+          <ul>
+            {pillar.painPoints.map((pain, i) => (
+              <li key={`p-${i}`}>{pain}</li>
+            ))}
+          </ul>
+
+          <h4>How we&apos;re different</h4>
+          <ul>
+            {pillar.differentiators.map((diff, i) => (
+              <li key={`d-${i}`}>
+                <strong>{diff.lead}</strong>
+                {" "}
+                {diff.body}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
    MAIN EXPORT
    ───────────────────────────────────────────────────────────── */
 
@@ -1645,6 +1757,16 @@ export function ServicePillars() {
           />
         ))}
       </div>
+
+      {/* Crawler-visible expansion of every pillar's popup content.
+          Visually hidden (WCAG ps-visually-hidden); aria-hidden so
+          screen readers don't duplicate the dialog. AI crawlers parse
+          HTML directly and extract this text. */}
+      <PillarCrawlerContent />
+
+      {/* OfferCatalog schema — emits each serviceTile as a
+          schema.org Offer→Service for Google + AI Overviews. */}
+      <JsonLd data={pillarOfferCatalogSchema()} />
 
       {/* Bottom-sheet dialog portal */}
       {expandedIndex !== null && (

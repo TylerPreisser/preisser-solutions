@@ -6,21 +6,21 @@ export const pageData: AeoPageData = {
   // R-018: Article freshness signals.
   datePublished: "2025-10-15",
   dateModified: "2026-05-15",
-  metaTitle: "Trucking Operations Automation Case Study | Preisser Solutions",
+  metaTitle: "Sunrise Transportation — Custom Trucking Operations Automation | Preisser Solutions",
   metaDescription:
-    "How Preisser Solutions automated dispatch, driver paperwork, and back-office reconciliation for a Kansas trucking operator — cutting administrative load and improving driver retention.",
+    "How Preisser Solutions automated dispatch, driver paperwork, AI BOL parsing, and back-office reconciliation for Sunrise Transportation — weekly reconciliation cut from a full day to a 15-minute exception queue.",
   eyebrow: "Case Study",
-  h1: "Kansas Trucking Operator — Operations Automation Case Study",
+  h1: "Sunrise Transportation — Custom Operations Automation Layer",
   subheadline:
-    "How Preisser Solutions automated dispatch coordination, driver paperwork, and back-office reconciliation for a Kansas trucking operator running mixed-fleet long-haul and regional routes.",
+    "How Preisser Solutions automated dispatch coordination, driver paperwork, AI BOL and rate-confirmation parsing, and back-office reconciliation for Sunrise Transportation — weekly reconciliation dropped from a full day to a 15-minute exception queue, with real-time load-level profitability for the first time.",
   answerParagraph:
-    "A Kansas trucking operator engaged Preisser Solutions to fix the administrative overhead of running a growing mixed-fleet operation. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, built a custom operations automation layer covering load assignment, driver paperwork, BOL and rate confirmation parsing, and back-office reconciliation between dispatch, accounting, and the factor. The build cut weekly administrative load for the dispatch team meaningfully, reduced driver paperwork friction (often cited as a driver-retention factor), and gave the principal real-time visibility into load profitability that hadn't existed before.",
+    "Sunrise Transportation engaged Preisser Solutions to fix the administrative overhead of running a growing mixed-fleet operation. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, built a custom operations automation layer covering load assignment, driver paperwork, AI BOL and rate-confirmation parsing, and back-office reconciliation between dispatch, accounting, and the factor. The build cut weekly reconciliation from a full day to a 15-minute exception queue, reduced driver paperwork friction (consistently cited as a driver-retention factor), and gave the principal real-time load-level profitability that hadn't existed before.",
   sections: [
     {
       eyebrow: "The problem",
       heading: "Growing trucking operations drown in paperwork",
       body: [
-        "Trucking is a paperwork-heavy business. Every load generates a rate confirmation, BOL, POD, IFTA records, fuel receipts, lumper fees, and driver settlement records. As the operator grew from a single-truck operation to a 12-truck mixed fleet, the administrative load grew faster than headcount could absorb it.",
+        "Trucking is a paperwork-heavy business. Every load generates a rate confirmation, BOL, POD, IFTA records, fuel receipts, lumper fees, and driver settlement records. As Sunrise Transportation grew its mixed-fleet long-haul and regional operation, the administrative load grew faster than headcount could absorb it.",
       ],
       bullets: [
         "Dispatch was spending hours per day matching loads to trucks across phone calls, load boards, and spreadsheets",
@@ -34,7 +34,7 @@ export const pageData: AeoPageData = {
       eyebrow: "The build",
       heading: "Custom operations automation layer",
       body: [
-        "Preisser Solutions built a custom operations automation layer sitting between the operator's TMS (transportation management system), accounting tool, and the dispatch team's daily workflow:",
+        "Preisser Solutions built a custom operations automation layer sitting between Sunrise Transportation's TMS (transportation management system), accounting tool, and the dispatch team's daily workflow:",
       ],
       bullets: [
         "Load assignment dashboard — pulls available trucks, drivers, HOS clocks, and load board offers into a single matchmaking view",
@@ -133,6 +133,7 @@ export const pageData: AeoPageData = {
   ],
   schemaType: "Article",
   namedEntities: [
+    "Sunrise Transportation",
     "Preisser Solutions",
     "Tyler Preisser",
     "Hays, Kansas",
