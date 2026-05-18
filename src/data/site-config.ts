@@ -108,7 +108,7 @@ export const siteConfig = {
   hero: {
     h1: "AI Automation, Custom Websites, and Local SEO in Hays, Kansas",
     subhead:
-      "Preisser Solutions builds the systems behind modern small businesses: high-converting websites, local SEO, AI search visibility, CRM workflows, dashboards, and automations that reduce manual work and increase qualified leads.",
+      "Preisser Solutions builds world-class systems behind modern businesses.",
     primaryCta: {
       label: "Book a Business Systems Audit",
       href: "/contact?intent=audit",

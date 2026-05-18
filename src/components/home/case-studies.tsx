@@ -15,88 +15,88 @@ interface CaseStudyCard {
 }
 
 const caseStudyCards: CaseStudyCard[] = [
-  // 1 — Enterprise: Astrus Insurance Solutions
+  // 1 — Western Kansas insurance agency: Custom CRM (anonymized on page)
   {
     title: "Astrus Insurance Solutions",
-    tags: "Enterprise | Insurance Submissions | AI Agent",
+    tags: "Custom CRM | Insurance Agency | Policy Management",
     description:
-      "Built an AI-powered submission-ingesting agentic solution for Astrus Insurance Solutions. The system analyzes insurance submissions, routes and prepares them for review, and saves underwriters significant time. Work delivered through R Squared AI.",
+      "Replaced spreadsheets and a generic CRM with a purpose-built policy management system tuned to independent-insurance workflow — renewal-window automation, commission reconciliation, and producer-level book visibility. Zero missed renewals in the first six months.",
     gradient: "linear-gradient(135deg, #0a1f3c 0%, #0D95E8 100%)",
     caseLogo: "/images/case-studies/astrus-logo.png",
   },
-  // 2 — Enterprise: Sunrise Transportation
+  // 2 — Kansas trucking operator: Operations Automation (anonymized on page)
   {
     title: "Sunrise Transportation",
-    tags: "Enterprise | Data Visibility | Dashboards",
+    tags: "Ops Automation | Trucking | Dispatch + AI Parsing",
     description:
-      "Used AI to work through Sunrise Transportation's database and piece together broken data sources across Excel sheets and internal systems. Built visibility and dashboards around clear KPIs including revenue and EBITDA. Work delivered through R Squared AI.",
+      "Custom operations layer covering dispatch, driver paperwork, AI BOL and rate-confirmation parsing, and back-office reconciliation. Weekly reconciliation dropped from a full day to a 15-minute exception queue, with real-time load-level profitability for the first time.",
     gradient: "linear-gradient(135deg, #0F2744 0%, #1a3a6e 100%)",
     caseLogo: "/images/case-studies/sunrise-transportation-logo.svg",
   },
-  // 3
+  // 3 — Iron and Oak Podcast
   {
     title: "The Iron and Oak Podcast",
-    tags: "Website Build | AI Search Optimization",
+    tags: "Custom Media Brand | 134 Pages | GSAP Cinematic",
     description:
-      "We built the entire online presence from a founder's vision — website, theme, logos, AI search optimization, Google optimization, distribution across every platform. A concept turned into something professional and discoverable.",
+      "Designed and built the full cinematic media brand from concept to launch — custom design system, 134 pre-rendered pages, GSAP-powered smooth scroll, dark and light modes, and a content architecture spanning 12 episodes and 109 questions.",
     gradient: "linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0f2010 100%)",
     image: "iron-oak.webp",
   },
-  // 4 — John C. Cassidy HVAC
+  // 4 — Cassidy HVAC: Customer Reactivation
   {
     title: "AI Customer Reactivation Engine",
-    tags: "AI Outreach | John C Cassidy HVAC | Revenue Recovery",
+    tags: "AI Outreach | Cassidy HVAC | Revenue Recovery",
     description:
-      "Re-engaged 60%+ of past customers and dropped them back into the service pipeline. We used AI to intelligently segment them by propensity — based on the HVAC units they owned — then sent personalized messaging to each segment. Revenue already earned once, just needed a second conversation.",
+      "Reactivated 60%+ of dormant Cassidy HVAC customers within six weeks. CRM-integrated AI generated hyper-personalized SMS and email outreach using each customer's service history, equipment age, and seasonal context — driving a 45%+ booking conversion lift.",
     gradient: "linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%)",
     image: "cassidy-hvac-nobg.webp",
     lightCard: true,
   },
-  // 5 — John C. Cassidy HVAC / MarCommand
+  // 5 — Cassidy HVAC: Hands-off AI Marketing Engine
   {
-    title: "MarCommand for John C Cassidy HVAC",
-    tags: "MarCommand | AI Marketing Intelligence | HVAC",
+    title: "AI Marketing Engine for Cassidy HVAC",
+    tags: "AI Marketing | Cassidy HVAC | 5x Organic Reach",
     description:
-      "Deployed MarCommand around Cassidy's real business data, customer behavior, service history, and channel performance. The marketing work now has context from the actual business instead of relying on generic campaign metrics.",
+      "Replaced an underperforming outside marketing agency with a fully hands-off AI engine. The system scrapes trends, generates persuasive-psychology-aware visuals, and posts to Facebook and Instagram daily — delivering a 5x organic reach increase inside 30 days.",
     gradient: "linear-gradient(135deg, #F8FAFC 0%, #DBEAFE 55%, #BAE6FD 100%)",
     image: "cassidy-hvac-nobg.webp",
     lightCard: true,
   },
-  // 6
+  // 6 — HG Oil Holdings: Inventory
   {
     title: "Automated Inventory System",
     tags: "Custom App | HG Oil Holdings | Live Tracking",
     description:
-      "95% reduction in inventory tracking time. If your team is still counting stock by hand, updating spreadsheets from memory, or guessing what's on the truck — this is what it looks like when that problem disappears.",
+      "95% reduction in back-office logistics time and 75%+ accuracy improvement on inventory counts and transfers. Live counts, full audit trails, and codified markup formulas turned HG Oil Holdings' inventory function from a loss center into a profit center.",
     gradient: "linear-gradient(135deg, #f0f4f8 0%, #dce8f0 100%)",
     image: "hg-oil-icon.webp",
     lightCard: true,
   },
-  // 7
+  // 7 — Wife Supply Co
   {
     title: "Wife Supply Co",
-    tags: "AI Application | Product Build | Full Deployment",
+    tags: "AI Commerce | Custom Build | Full Deployment",
     description:
-      "An AI model psychologically trained to help men buy gifts for their wives. The system reads the buyer's profile and the wife's preferences, then returns perfectly tailored product recommendations. Internal Preisser Solutions R&D build.",
+      "Built the entire AI-powered gifting platform from concept to launch — a custom AI gift-matching engine, custom commerce front end, conversion-optimized funnels, and a brand-engineered design system that doesn't look like another Shopify store.",
     gradient: "linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%)",
     image: "wife-supply.webp",
     lightCard: true,
   },
-  // 8
+  // 8 — Our own site (Preisser Solutions)
   {
-    title: "PreisserTech.com",
-    tags: "Custom Website | Lead Pipeline | Local SEO",
+    title: "PreisserSolutions.com",
+    tags: "Custom Website | Lead Pipeline | Local + AI SEO",
     description:
-      "This is our own site, and we built it the same way we build yours: custom-coded, connected to the lead pipeline, and paired with an ROI calculator that qualifies prospects before they ever hit the calendar. A website built to work as a sales tool.",
+      "Our own flagship site, built the same way we build yours: custom-coded in Next.js, React, and TypeScript, engineered for local SEO and AI search citation, and connected straight into the lead pipeline. A website built to work as a sales tool.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #0F1D30 100%)",
     image: "preisser-solutions.webp",
   },
-  // 9
+  // 9 — Alpha Matrix
   {
     title: "Alpha Matrix — Multi-Agent AI",
-    tags: "AI Architecture | R Squared AI | Autonomous",
+    tags: "AI Architecture | Multi-Agent | Autonomous",
     description:
-      "Six autonomous AI agents running in parallel — scanning, analyzing, scoring, and producing strategic output without human intervention. This is the ceiling of what business AI can do today, and we built it specifically for this use case.",
+      "Six autonomous AI agents running in parallel — scanning, analyzing, scoring, and producing strategic output without human intervention. Developed in-house at Preisser Solutions as a working demonstration of multi-agent analytical infrastructure.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #1a1040 50%, #0A1628 100%)",
     image: "r-squared.webp",
     href: "https://3124f78d.r2-solutions.pages.dev/",
@@ -123,9 +123,9 @@ const caseStudyCards: CaseStudyCard[] = [
   // 10
   {
     title: "AI Invoice Processing",
-    tags: "Document Processing | Data Extraction | Automation",
+    tags: "Document Processing | HG Oil Holdings | Automation",
     description:
-      "A 75% reduction in time spent processing invoices. No more manual data entry, no more chasing down approvals, no more paying someone to do what a system handles in seconds. Your back office runs whether your team is at their desks or not.",
+      "A 75% reduction in time spent processing invoices at HG Oil Holdings. The AI extracts vendor, line items, totals, and GL codes from any invoice format in seconds — no manual data entry, no missed approvals, no need to hire additional office staff to keep up with volume.",
     gradient: "linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
