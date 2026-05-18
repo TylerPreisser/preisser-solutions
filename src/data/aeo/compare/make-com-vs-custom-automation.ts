@@ -112,7 +112,6 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Business automation systems", href: "/business-automation" },
     { label: "API integration service", href: "/services/api-integration" },
-    { label: "Zapier vs custom automation", href: "/compare/zapier-vs-custom-automation" },
     { label: "Zapier vs custom automation for small business", href: "/compare/zapier-vs-custom-automation-small-business" },
     { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
     { label: "AI vs traditional workflow automation", href: "/blog/ai-vs-traditional-workflow-automation" },

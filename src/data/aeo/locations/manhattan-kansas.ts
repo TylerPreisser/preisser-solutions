@@ -23,6 +23,7 @@ export const pageData: AeoPageData = {
       body: [
         "Manhattan is anchored by Kansas State University, Fort Riley, and the National Bio and Agro-Defense Facility (NBAF) — a unique combination of land-grant research, military, and federal-lab presence that creates steady demand for serious custom software, especially among the vendor and contractor ecosystem.",
         "Preisser Solutions supports Manhattan-area businesses directly. Hays is roughly two and a half hours west on I-70, and Tyler Preisser handles every engagement personally with regular travel for milestone meetings.",
+        "We also serve nearby Junction City businesses through this Manhattan hub — Fort Riley straddles both, and Geary County is within the same travel radius as Riley County for in-person scoping and milestone meetings.",
       ],
     },
     {
@@ -149,7 +150,6 @@ export const pageData: AeoPageData = {
   ],
   relatedLinks: [
     { label: "Topeka, KS services", href: "/locations/topeka-kansas" },
-    { label: "Junction City, KS services", href: "/locations/junction-city-kansas" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Custom websites", href: "/services/custom-websites" },
     { label: "Local SEO service", href: "/services/local-seo" },

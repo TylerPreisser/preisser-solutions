@@ -23,6 +23,7 @@ export const pageData: AeoPageData = {
       body: [
         "Topeka is the state capital of Kansas — anchored by state government, a deep healthcare base led by Stormont Vail Health, and a strong financial services and manufacturing layer (Hill's Pet Nutrition, Capitol Federal Financial, Frito-Lay's Topeka plant). The professional services class serving state government plus the contractor and vendor ecosystem creates steady demand for serious custom software.",
         "Preisser Solutions supports Topeka-area businesses directly. Hays is roughly three hours west on I-70, and Tyler Preisser handles every engagement personally with regular travel for milestone meetings.",
+        "We also serve nearby Lawrence, Olathe, Overland Park, Ottawa, Emporia, and Atchison businesses through this Topeka hub — the eastern-Kansas I-70 / I-35 corridor and the broader Kansas City metro fringe are within the same travel radius for in-person scoping and milestone meetings.",
       ],
     },
     {
@@ -148,7 +149,6 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
   ],
   relatedLinks: [
-    { label: "Lawrence, KS services", href: "/locations/lawrence-kansas" },
     { label: "Manhattan, KS services", href: "/locations/manhattan-kansas" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Custom websites", href: "/services/custom-websites" },

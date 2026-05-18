@@ -114,7 +114,7 @@ export const pageData: AeoPageData = {
     "Google Business Profile",
   ],
   relatedLinks: [
-    { label: "Russell, KS services", href: "/locations/russell-kansas" },
+    { label: "Hays, KS services", href: "/locations/hays-kansas" },
     { label: "Hays, KS web design", href: "/locations/hays-kansas-web-design" },
     { label: "Custom websites", href: "/services/custom-websites" },
     { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },

@@ -31,3 +31,68 @@
 /dashboards-and-analytics/ /services/dashboards-and-analytics/ 301
 /custom-websites /services/custom-websites 301
 /custom-websites/ /services/custom-websites/ 301
+
+# SEO Wave A (2026-05-18) — duplicate compare URL pair consolidation.
+# Each pair targeted the same query and split equity. Killed the weaker
+# variant, 301 to the substantive canonical sibling.
+/compare/wix-vs-custom-website-small-business /compare/wix-vs-custom 301
+/compare/wix-vs-custom-website-small-business/ /compare/wix-vs-custom 301
+/compare/zapier-vs-custom-automation /compare/zapier-vs-custom-automation-small-business 301
+/compare/zapier-vs-custom-automation/ /compare/zapier-vs-custom-automation-small-business 301
+/compare/wordpress-vs-custom /compare/wordpress-vs-custom-coded-website 301
+/compare/wordpress-vs-custom/ /compare/wordpress-vs-custom-coded-website 301
+
+# SEO Wave A (2026-05-18) — Tier-3 small-city location consolidation.
+# 25 small-city pages shared verbatim H2 templates (doorway-page risk
+# under Google's March 2024 spam policy). 301'd each to nearest Tier-1
+# city by geographic + economic proximity.
+/locations/atchison-kansas /locations/topeka-kansas 301
+/locations/atchison-kansas/ /locations/topeka-kansas 301
+/locations/beloit-kansas /locations/salina-kansas 301
+/locations/beloit-kansas/ /locations/salina-kansas 301
+/locations/coffeyville-kansas /locations/wichita-kansas 301
+/locations/coffeyville-kansas/ /locations/wichita-kansas 301
+/locations/colby-kansas /locations/garden-city-kansas 301
+/locations/colby-kansas/ /locations/garden-city-kansas 301
+/locations/concordia-kansas /locations/salina-kansas 301
+/locations/concordia-kansas/ /locations/salina-kansas 301
+/locations/emporia-kansas /locations/topeka-kansas 301
+/locations/emporia-kansas/ /locations/topeka-kansas 301
+/locations/goodland-kansas /locations/garden-city-kansas 301
+/locations/goodland-kansas/ /locations/garden-city-kansas 301
+/locations/hill-city-kansas /locations/hays-kansas 301
+/locations/hill-city-kansas/ /locations/hays-kansas 301
+/locations/hutchinson-kansas /locations/wichita-kansas 301
+/locations/hutchinson-kansas/ /locations/wichita-kansas 301
+/locations/junction-city-kansas /locations/manhattan-kansas 301
+/locations/junction-city-kansas/ /locations/manhattan-kansas 301
+/locations/lawrence-kansas /locations/topeka-kansas 301
+/locations/lawrence-kansas/ /locations/topeka-kansas 301
+/locations/liberal-kansas /locations/garden-city-kansas 301
+/locations/liberal-kansas/ /locations/garden-city-kansas 301
+/locations/mcpherson-kansas /locations/salina-kansas 301
+/locations/mcpherson-kansas/ /locations/salina-kansas 301
+/locations/newton-kansas /locations/wichita-kansas 301
+/locations/newton-kansas/ /locations/wichita-kansas 301
+/locations/norton-kansas /locations/hays-kansas 301
+/locations/norton-kansas/ /locations/hays-kansas 301
+/locations/olathe-kansas /locations/topeka-kansas 301
+/locations/olathe-kansas/ /locations/topeka-kansas 301
+/locations/ottawa-kansas /locations/topeka-kansas 301
+/locations/ottawa-kansas/ /locations/topeka-kansas 301
+/locations/overland-park-kansas /locations/topeka-kansas 301
+/locations/overland-park-kansas/ /locations/topeka-kansas 301
+/locations/parsons-kansas /locations/wichita-kansas 301
+/locations/parsons-kansas/ /locations/wichita-kansas 301
+/locations/phillipsburg-kansas /locations/hays-kansas 301
+/locations/phillipsburg-kansas/ /locations/hays-kansas 301
+/locations/pittsburg-kansas /locations/wichita-kansas 301
+/locations/pittsburg-kansas/ /locations/wichita-kansas 301
+/locations/plainville-kansas /locations/hays-kansas 301
+/locations/plainville-kansas/ /locations/hays-kansas 301
+/locations/pratt-kansas /locations/wichita-kansas 301
+/locations/pratt-kansas/ /locations/wichita-kansas 301
+/locations/russell-kansas /locations/hays-kansas 301
+/locations/russell-kansas/ /locations/hays-kansas 301
+/locations/smith-center-kansas /locations/hays-kansas 301
+/locations/smith-center-kansas/ /locations/hays-kansas 301

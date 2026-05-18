@@ -23,6 +23,7 @@ export const pageData: AeoPageData = {
       body: [
         "Garden City is the western-Kansas hub of the largest beef-packing corridor in North America — anchored by Tyson Beef and the dense feedlot, ag-input, and trucking ecosystem across Finney County and the surrounding counties. Layered on top is a deep irrigated-ag operation, a strong ag-services and equipment-dealer base, and a growing healthcare and professional services class.",
         "Preisser Solutions supports Garden City-area businesses directly. Hays is roughly two and a half hours northeast, and Tyler Preisser handles every engagement personally with travel for in-person scoping and milestone meetings.",
+        "We also serve nearby Colby, Goodland, and Liberal businesses through this Garden City hub — the High Plains feedlot, irrigated-ag, and protein-corridor economy spans Finney, Thomas, Sherman, and Seward Counties as one operational region.",
       ],
     },
     {
@@ -146,7 +147,6 @@ export const pageData: AeoPageData = {
   ],
   relatedLinks: [
     { label: "Dodge City, KS services", href: "/locations/dodge-city-kansas" },
-    { label: "Liberal, KS services", href: "/locations/liberal-kansas" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Local SEO service", href: "/services/local-seo" },
     { label: "Oil & gas industry", href: "/industries/oil-gas" },

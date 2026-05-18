@@ -23,6 +23,7 @@ export const pageData: AeoPageData = {
       body: [
         "Salina sits at the crossroads of I-70 and I-135 — a logistics and manufacturing hub anchored by Schwan's, Great Plains Manufacturing (now part of Kubota), Salina Regional Health Center, and Kansas Wesleyan University. The food-processing, ag-equipment, and healthcare base creates a steady demand for serious custom software that most local web shops can't deliver.",
         "Preisser Solutions supports Salina-area businesses directly. Hays is roughly 90 minutes west on I-70, and Tyler Preisser routinely makes the drive for scoping calls and milestone meetings.",
+        "We also serve nearby McPherson, Concordia, and Beloit businesses through this Salina hub — the central Kansas I-70 / I-135 / US-81 corridor covering Saline, McPherson, Cloud, and Mitchell Counties is within the same travel radius for in-person scoping and milestone meetings.",
       ],
     },
     {

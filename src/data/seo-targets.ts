@@ -72,11 +72,11 @@ export const seoTargets: SeoTarget[] = [
   { rank: 28, query: "salesforce vs custom crm", intent: "commercial", relativeVolume: "medium", targetFormat: "compare-page", targetSlug: "/compare/salesforce-vs-custom-crm", coverage: "covered", competitor: "G2, Capterra" },
   { rank: 29, query: "hubspot vs custom crm", intent: "commercial", relativeVolume: "medium", targetFormat: "compare-page", targetSlug: "/compare/hubspot-vs-custom-crm", coverage: "covered", competitor: "G2, Capterra" },
   { rank: 30, query: "webflow vs custom code", intent: "commercial", relativeVolume: "medium", targetFormat: "compare-page", targetSlug: "/compare/webflow-vs-custom-coded", coverage: "covered", competitor: "Webflow docs, Reddit" },
-  { rank: 31, query: "wordpress vs custom code", intent: "commercial", relativeVolume: "medium", targetFormat: "compare-page", targetSlug: "/compare/wordpress-vs-custom", coverage: "covered", competitor: "WP Beginner" },
+  { rank: 31, query: "wordpress vs custom code", intent: "commercial", relativeVolume: "medium", targetFormat: "compare-page", targetSlug: "/compare/wordpress-vs-custom-coded-website", coverage: "covered", competitor: "WP Beginner" },
   { rank: 32, query: "wix vs custom code", intent: "commercial", relativeVolume: "medium", targetFormat: "compare-page", targetSlug: "/compare/wix-vs-custom", coverage: "covered", competitor: "Wix blog" },
   { rank: 33, query: "shopify vs custom ecommerce", intent: "commercial", relativeVolume: "medium", targetFormat: "compare-page", targetSlug: "/compare/shopify-vs-custom-ecommerce", coverage: "covered", competitor: "Shopify blog" },
   { rank: 34, query: "make.com vs custom automation", intent: "commercial", relativeVolume: "medium", targetFormat: "compare-page", targetSlug: "/compare/make-com-vs-custom-automation", coverage: "covered", competitor: "Make blog, Reddit" },
-  { rank: 35, query: "zapier vs custom automation", intent: "commercial", relativeVolume: "medium", targetFormat: "compare-page", targetSlug: "/compare/zapier-vs-custom-automation", coverage: "covered", competitor: "Zapier blog" },
+  { rank: 35, query: "zapier vs custom automation", intent: "commercial", relativeVolume: "medium", targetFormat: "compare-page", targetSlug: "/compare/zapier-vs-custom-automation-small-business", coverage: "covered", competitor: "Zapier blog" },
 
   // ---------------------------- LOW -----------------------------------------
   { rank: 36, query: "local seo for hvac contractors", intent: "informational", relativeVolume: "low", targetFormat: "industry-page", targetSlug: "/industries/hvac", coverage: "covered", competitor: "ServiceTitan, Housecall Pro" },

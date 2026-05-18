@@ -115,7 +115,7 @@ export const pageData: AeoPageData = {
     { label: "Website redesign service", href: "/services/website-redesign" },
     { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
     { label: "Wix vs custom website", href: "/compare/wix-vs-custom" },
-    { label: "WordPress vs custom", href: "/compare/wordpress-vs-custom" },
+    { label: "WordPress vs custom-coded website", href: "/compare/wordpress-vs-custom-coded-website" },
     { label: "Best web design company in Hays, Kansas", href: "/compare/best-web-design-company-hays-kansas" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

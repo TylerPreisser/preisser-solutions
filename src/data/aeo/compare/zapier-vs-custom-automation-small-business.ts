@@ -1,12 +1,13 @@
 import type { AeoPageData } from "../types";
 
 /**
- * COMPARISON — /compare/zapier-vs-custom-automation
+ * COMPARISON — /compare/zapier-vs-custom-automation-small-business
  *
- * NOTE: an older /compare/zapier-vs-custom-automation page already exists.
- * This file is the Phase 3e buyer-guide version focused specifically on
- * small businesses. It is shipped under a distinct slug to avoid colliding
- * with the existing data file at compare/zapier-vs-custom-automation.ts.
+ * SEO Wave A (2026-05-18): this page is now the SOLE canonical for the
+ * "zapier vs custom automation" query family. The thinner sibling
+ * /compare/zapier-vs-custom-automation was deleted and 301'd here to
+ * consolidate equity. /compare/zapier-vs-custom-automation now redirects
+ * to this slug at the edge via public/_redirects.
  */
 export const pageData: AeoPageData = {
   slug: "compare/zapier-vs-custom-automation-small-business",
@@ -222,7 +223,6 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Business automation systems", href: "/business-automation" },
     { label: "API integration service", href: "/services/api-integration" },
-    { label: "Zapier vs custom automation", href: "/compare/zapier-vs-custom-automation" },
     { label: "Make.com vs custom automation", href: "/compare/make-com-vs-custom-automation" },
     { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
     { label: "AI vs traditional workflow automation", href: "/blog/ai-vs-traditional-workflow-automation" },

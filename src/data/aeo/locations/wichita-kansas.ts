@@ -23,6 +23,7 @@ export const pageData: AeoPageData = {
       body: [
         "Wichita is the largest metro in Kansas and the Air Capital of the World — anchored by Spirit AeroSystems, Textron Aviation, Cessna, Beechcraft, and a dense network of aerospace suppliers. Layered on top is Koch Industries, NetApp's Wichita office, Cargill Meat Solutions corporate functions, and a deep healthcare and professional services class.",
         "Preisser Solutions supports Wichita-area businesses with the same custom-coded, premium-quality work delivered to Hays clients. Tyler Preisser handles every engagement personally, with regular travel down I-135 for in-person scoping and milestone meetings.",
+        "We also serve nearby Hutchinson, Newton, Pratt, Coffeyville, Parsons, and Pittsburg businesses through this Wichita hub — the south-central and southeast Kansas economic region (Sedgwick, Reno, Harvey, Crawford, Labette, and Pratt Counties) is within the same I-135 / US-400 travel radius for in-person work.",
       ],
     },
     {
@@ -149,8 +150,6 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
   ],
   relatedLinks: [
-    { label: "Hutchinson, KS services", href: "/locations/hutchinson-kansas" },
-    { label: "Newton, KS services", href: "/locations/newton-kansas" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Custom websites", href: "/services/custom-websites" },
     { label: "Local SEO service", href: "/services/local-seo" },

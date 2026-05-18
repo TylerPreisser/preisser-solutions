@@ -122,7 +122,7 @@ export const pageData: AeoPageData = {
     "Next.js",
   ],
   relatedLinks: [
-    { label: "Colby, KS services", href: "/locations/colby-kansas" },
+    { label: "Garden City, KS services", href: "/locations/garden-city-kansas" },
     { label: "Western Kansas web design", href: "/locations/western-kansas-web-design" },
     { label: "Custom websites", href: "/services/custom-websites" },
     { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },

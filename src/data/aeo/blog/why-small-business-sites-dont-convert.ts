@@ -147,7 +147,7 @@ export const pageData: AeoPageData = {
     { label: "My website isn't generating leads", href: "/insights/small-business-website-not-generating-leads" },
     { label: "Website redesign checklist", href: "/blog/website-redesign-checklist" },
     { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
-    { label: "Wix vs custom website for small business", href: "/compare/wix-vs-custom-website-small-business" },
+    { label: "Wix vs custom", href: "/compare/wix-vs-custom" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want a conversion audit?",

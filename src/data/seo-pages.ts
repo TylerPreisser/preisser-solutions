@@ -88,10 +88,6 @@ export const seoPages: SeoPage[] = [
   { path: "/locations/garden-city-kansas", title: "Garden City, Kansas", type: "location", phase: 1 },
   { path: "/locations/dodge-city-kansas", title: "Dodge City, Kansas", type: "location", phase: 1 },
   { path: "/locations/great-bend-kansas", title: "Great Bend, Kansas", type: "location", phase: 1 },
-  { path: "/locations/kansas-city-kansas", title: "Kansas City, Kansas", type: "location", phase: 3 },
-  { path: "/locations/russell-kansas", title: "Russell, Kansas", type: "location", phase: 3 },
-  { path: "/locations/wakeeney-kansas", title: "WaKeeney, Kansas", type: "location", phase: 3 },
-  { path: "/locations/colby-kansas", title: "Colby, Kansas", type: "location", phase: 1 },
 
   // ---------- Service-location combos ---------------------------------------
   { path: "/local-seo/hays-kansas", title: "Local SEO in Hays, Kansas", type: "service-location", phase: 3 },
@@ -152,8 +148,8 @@ export const seoPages: SeoPage[] = [
   { path: "/compare/squarespace-vs-custom", title: "Squarespace vs Custom", type: "compare", phase: 1 },
   { path: "/compare/webflow-vs-custom-coded", title: "Webflow vs Custom-Coded", type: "compare", phase: 1 },
   { path: "/compare/wix-vs-custom", title: "Wix vs Custom", type: "compare", phase: 1 },
-  { path: "/compare/wordpress-vs-custom", title: "WordPress vs Custom", type: "compare", phase: 1 },
-  { path: "/compare/zapier-vs-custom-automation", title: "Zapier vs Custom Automation", type: "compare", phase: 1 },
+  { path: "/compare/wordpress-vs-custom-coded-website", title: "WordPress vs Custom-Coded Website", type: "compare", phase: 1 },
+  { path: "/compare/zapier-vs-custom-automation-small-business", title: "Zapier vs Custom Automation for Small Business", type: "compare", phase: 1 },
 
   // ---------- Case studies (Phase 3f) ---------------------------------------
   { path: "/case-studies/cassidy-hvac", title: "Cassidy HVAC", type: "case-study", phase: 3 },

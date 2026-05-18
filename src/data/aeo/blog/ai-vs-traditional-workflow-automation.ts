@@ -132,7 +132,7 @@ export const pageData: AeoPageData = {
     { label: "Automate invoice processing", href: "/use-cases/automate-invoice-processing-small-business" },
     { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
     { label: "What is AI automation for small businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },
-    { label: "Zapier vs custom automation", href: "/compare/zapier-vs-custom-automation" },
+    { label: "Zapier vs custom automation for small business", href: "/compare/zapier-vs-custom-automation-small-business" },
     { label: "Make.com vs custom automation", href: "/compare/make-com-vs-custom-automation" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

@@ -151,7 +151,7 @@ export const pageData: AeoPageData = {
     { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
     { label: "Website migration service", href: "/services/website-migration" },
     { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
-    { label: "WordPress vs custom", href: "/compare/wordpress-vs-custom" },
+    { label: "Wix vs custom", href: "/compare/wix-vs-custom" },
     { label: "Webflow vs custom-coded", href: "/compare/webflow-vs-custom-coded" },
     { label: "Website redesign checklist", href: "/blog/website-redesign-checklist" },
     { label: "Contact Preisser Solutions", href: "/contact" },

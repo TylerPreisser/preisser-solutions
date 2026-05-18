@@ -109,7 +109,7 @@ export const pageData: AeoPageData = {
   relatedLinks: [
     { label: "Custom websites", href: "/services/custom-websites" },
     { label: "Premium web development in Kansas", href: "/premium-web-development-kansas" },
-    { label: "Overland Park, KS services", href: "/locations/overland-park-kansas" },
+    { label: "Topeka, KS services", href: "/locations/topeka-kansas" },
     { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
     { label: "Best web design company in Hays, Kansas", href: "/compare/best-web-design-company-hays-kansas" },
     { label: "Preisser vs Pluto Sites", href: "/compare/pluto-sites" },

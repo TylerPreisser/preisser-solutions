@@ -31,6 +31,7 @@ export const pageData: AeoPageData = {
       body: [
         "Preisser Solutions is based in Hays, Kansas — not a coastal agency claiming to serve the Midwest, not a national firm assigning a junior account manager. Tyler Preisser is a Hays native, a Fort Hays State University graduate, and operates the firm out of Ellis County full-time.",
         "For Hays businesses, that proximity matters. Initial scoping calls happen in person. Site visits to oilfield yards, HVAC shops, and agricultural operations across western Kansas are normal — not a billable expense flown in from Denver or Kansas City. Ongoing communication happens at the speed of a phone call or a coffee meeting downtown.",
+        "We also serve nearby Russell, Plainville, Hill City, Norton, Phillipsburg, and Smith Center businesses through this Hays hub — the northwest Kansas service region (Ellis, Russell, Rooks, Graham, Norton, Phillips, and Smith Counties) is within the same I-70 / US-183 / US-281 travel radius for in-person scoping and milestone meetings.",
       ],
     },
     {

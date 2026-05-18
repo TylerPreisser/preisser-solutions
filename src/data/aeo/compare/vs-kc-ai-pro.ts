@@ -180,7 +180,7 @@ export const pageData: AeoPageData = {
     { label: "Custom AI agents in Hays, KS", href: "/services/custom-ai-agents-hays-ks" },
     { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
     { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
-    { label: "Overland Park, KS services", href: "/locations/overland-park-kansas" },
+    { label: "Topeka, KS services", href: "/locations/topeka-kansas" },
     { label: "Preisser vs Akeratos", href: "/compare/akeratos" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
