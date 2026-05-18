@@ -385,25 +385,27 @@ export function CaseStudies() {
                 <div className="ps-work-card-icon" aria-hidden="true">{study.svgIcon}</div>
               ) : null}
 
-              {/* Static label + tap hint at bottom-left (mobile default state) */}
-              <div className="ps-work-card-label-group">
-                <span className="ps-work-card-client">{study.title}</span>
-                <span className="ps-work-card-tap-hint" aria-hidden="true">Tap for details</span>
-              </div>
-
-              {/* Overlay with full details — hover on desktop, tap on mobile */}
+              {/* Overlay with full details — hover on desktop, tap on mobile.
+                  Title lives here now (resting-state title was replaced by the
+                  pulse affordance below). Overlay uses opacity:0, not display:none,
+                  so the title text stays in the SSG HTML for AI crawlers. */}
               <div
                 className="ps-work-card-overlay"
                 aria-label={`${study.title} case study details`}
               >
+                <h3 className="ps-work-card-overlay-title">{study.title}</h3>
                 <p className="ps-work-card-result">{study.description}</p>
                 <span className="ps-visually-hidden">{study.tags}</span>
               </div>
 
-              {/* Animated pulse affordance — bottom-left, signals "hover for more".
+              {/* Animated "Hover for more" affordance — bottom-left, replaces
+                  the resting-state title. On touch devices, label reads
+                  "Tap for more" instead (toggled via CSS @media (hover: none)).
                   Decorative only (aria-hidden); a11y handled by card aria-label. */}
               <div className="ps-work-card__pulse" aria-hidden="true">
                 <span className="ps-work-card__pulse-dot" />
+                <span className="ps-work-card__pulse-label ps-work-card__pulse-label--hover">Hover for more</span>
+                <span className="ps-work-card__pulse-label ps-work-card__pulse-label--tap">Tap for more</span>
                 <span className="ps-work-card__pulse-arrow" />
               </div>
             </>
