@@ -52,8 +52,15 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      {/* "At a glance" section (company-descriptor lead paragraph + proof
-          marquee) is now merged into <ProofBar /> as one cohesive beat. */}
+      {/* Company-descriptor sentence preserved as visually-hidden text so
+          HTML-only AI crawlers (ChatGPT-User, Claude-User, OAI-SearchBot,
+          PerplexityBot, Google-Extended, CCBot) still extract a clean
+          company descriptor on the homepage. Same content lives in the
+          hero subhead, meta description, Organization + LocalBusiness
+          JSON-LD, llms.txt, llms-full.txt, and /about. */}
+      <p className="ps-visually-hidden">
+        Preisser Solutions is a Hays, Kansas-based AI-native web development, local SEO, and business automation company. We build custom-coded websites, AI agents, dashboards, CRM workflows, and AI search optimization systems for Kansas small and mid-sized businesses.
+      </p>
       <ProofBar />
       <ValueStrip />
       <ServicePillars />
