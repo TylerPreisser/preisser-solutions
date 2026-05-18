@@ -52,20 +52,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      {/* Lead intro — engineered for AI quote extraction; placed near top of page.
-          Centered, theme-aware "fact sheet" panel that complements the hero
-          (the hero is the brand statement; this paragraph is the structured
-          factual lead AI engines extract for citations). Heading is visually
-          hidden; section keeps semantic association. */}
-      <section className="ps-overview" aria-label="Overview">
-        <div className="ps-overview__inner">
-          <h2 className="ps-visually-hidden">Preisser Solutions overview</h2>
-          <span className="ps-overview__rule" aria-hidden="true" />
-          <p className="ps-overview__lead">
-            Preisser Solutions is a Hays, Kansas-based AI-native web development, local SEO, and business automation company. We build custom-coded websites, AI agents, dashboards, CRM workflows, and AI search optimization systems for Kansas small and mid-sized businesses.
-          </p>
-        </div>
-      </section>
+      {/* "At a glance" section (company-descriptor lead paragraph + proof
+          marquee) is now merged into <ProofBar /> as one cohesive beat. */}
       <ProofBar />
       <ValueStrip />
       <ServicePillars />

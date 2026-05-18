@@ -7719,39 +7719,43 @@ html, body {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   Home Overview redesign — centered, theme-aware fact-sheet panel
-   that complements the hero (hero = brand statement, overview =
-   structured factual lead optimized for AI citation extraction).
+   "At a glance" — integrated section that pairs the company-descriptor
+   lead paragraph with the proof marquee below. Replaces the prior
+   standalone .ps-overview panel; together with .ps-proof-bar (nested
+   inside) it reads as one cohesive band: "here's who we are, and
+   here's what we've shipped." Theme-aware via --theme-* tokens.
    ───────────────────────────────────────────────────────────────── */
-.ps-overview {
-  background: var(--theme-section-alt);
-  padding: clamp(56px, 7vw, 96px) 24px;
+.ps-at-a-glance {
+  position: relative;
+  background: var(--theme-section-switchable);
   border-top: 1px solid var(--theme-border);
   border-bottom: 1px solid var(--theme-border);
+  padding: clamp(60px, 7.5vw, 104px) 0 0;
+  transition: background-color 300ms ease, border-color 300ms ease;
 }
-.ps-overview__inner {
-  max-width: 720px;
+
+.ps-at-a-glance__inner {
+  max-width: 760px;
   margin: 0 auto;
+  padding: 0 24px clamp(36px, 5vw, 64px);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
 }
-.ps-overview__rule {
-  display: block;
-  width: 48px;
-  height: 2px;
-  border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--color-primary, #0D95E8) 50%,
-    transparent 100%
-  );
-  opacity: 0.85;
+
+.ps-at-a-glance__eyebrow {
+  display: inline-block;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary, #0D95E8);
+  margin-bottom: 18px;
 }
-.ps-overview__lead {
+
+.ps-at-a-glance__lead {
   margin: 0;
   font-size: clamp(1.0625rem, 1.55vw, 1.1875rem);
   line-height: 1.7;
@@ -7759,12 +7763,24 @@ html, body {
   color: var(--theme-text-secondary);
   font-weight: 450;
   text-wrap: balance;
+  transition: color 300ms ease;
 }
+
 @media (max-width: 640px) {
-  .ps-overview__lead {
+  .ps-at-a-glance__lead {
     font-size: 1.0625rem;
     line-height: 1.65;
   }
+}
+
+/* The marquee is now nested inside .ps-at-a-glance. Strip the
+   marquee's own top/bottom borders (the wrapper owns the band borders)
+   and let it inherit the wrapper background so the seam disappears. */
+.ps-at-a-glance .ps-value-strip.ps-proof-bar {
+  background-color: transparent;
+  border-top: 0;
+  border-bottom: 0;
+  padding-bottom: 22px;
 }
 
 /* ── Contact page: "Want more context first?" card grid ───────── */
