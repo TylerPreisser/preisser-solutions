@@ -7160,6 +7160,290 @@ a {
 
 /* Retain existing FAQ styles from below (ps-contact-faq__title etc.) */
 
+/* ─────────────────────────────────────────────────────────────────
+   CONTACT PAGE v2 — Editorial layout
+   New classes for the redesigned contact page (May 2026).
+   Old ps-contact-* classes are preserved for any references elsewhere.
+   ───────────────────────────────────────────────────────────────── */
+
+/* ── Hero band ─────────────────────────────────────────────────── */
+.ps-contact2-hero {
+  position: relative;
+  background-color: var(--color-dark);
+  padding-top: calc(var(--nav-height) + 80px);
+  padding-bottom: 72px;
+  overflow: hidden;
+}
+
+/* Subtle radial glow in the upper-right — architectural, not decorative */
+.ps-contact2-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -10%;
+  width: 55%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at 80% 30%,
+    rgba(13, 149, 232, 0.10) 0%,
+    rgba(99, 91, 255, 0.06) 45%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ps-contact2-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  /* Left-aligned — do not center */
+}
+
+/* Initial state for GSAP entrance — JS sets opacity/transform directly */
+.ps-contact2-hero-inner > * {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.ps-contact2-h1 {
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+  color: #FFFFFF;
+  margin: 14px 0 24px;
+}
+
+.ps-contact2-subhead {
+  font-size: clamp(1rem, 1.8vw, 1.125rem);
+  line-height: 1.7;
+  color: var(--color-text-dark-secondary);
+  max-width: 520px;
+  margin: 0 0 28px;
+}
+
+/* Hairline accent rule — thin brand-blue line separating hero from body */
+.ps-contact2-hero-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    rgba(13, 149, 232, 0.2) 40%,
+    transparent 70%
+  );
+}
+
+/* ── Main body — light background ──────────────────────────────── */
+.ps-contact2-body {
+  background-color: var(--color-light);
+  padding: 72px 0 64px;
+  transition: background-color 300ms ease;
+}
+
+[data-theme="dark"] .ps-contact2-body {
+  background-color: var(--theme-bg-primary);
+}
+
+/* ── Asymmetric two-column layout ──────────────────────────────── */
+.ps-contact2-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .ps-contact2-layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
+
+/* ── LEFT: Process column ───────────────────────────────────────── */
+.ps-contact2-process {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.ps-contact2-process-heading {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-light-secondary);
+  margin: 0;
+  transition: color 300ms ease;
+}
+
+[data-theme="dark"] .ps-contact2-process-heading {
+  color: var(--color-text-dark-secondary);
+}
+
+.ps-contact2-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ps-contact2-step {
+  display: flex;
+  gap: 14px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--color-border-light);
+  transition: border-color 300ms ease;
+}
+
+.ps-contact2-step:first-child {
+  padding-top: 0;
+}
+
+.ps-contact2-step:last-child {
+  border-bottom: none;
+}
+
+[data-theme="dark"] .ps-contact2-step {
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+.ps-contact2-step-num {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 3px;
+  min-width: 20px;
+}
+
+.ps-contact2-step-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ps-contact2-step-heading {
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-text-light-primary);
+  transition: color 300ms ease;
+}
+
+[data-theme="dark"] .ps-contact2-step-heading {
+  color: #F0F0F0;
+}
+
+.ps-contact2-step-body {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-text-light-secondary);
+  margin: 0;
+  transition: color 300ms ease;
+}
+
+[data-theme="dark"] .ps-contact2-step-body {
+  color: var(--color-text-dark-secondary);
+}
+
+/* ── RIGHT: Form area — open, no card chrome ────────────────────── */
+.ps-contact2-form-area {
+  /* Initial state for GSAP — JS animates in */
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+/* ── Metrics strip ──────────────────────────────────────────────── */
+.ps-contact2-metrics-band {
+  background-color: var(--color-white);
+  border-top: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border-light);
+  padding: 32px 0;
+  transition: background-color 300ms ease, border-color 300ms ease;
+}
+
+[data-theme="dark"] .ps-contact2-metrics-band {
+  background-color: var(--color-dark-surface);
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+.ps-contact2-metrics {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.ps-contact2-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex: 1;
+  min-width: 160px;
+  padding: 4px 0;
+  position: relative;
+}
+
+.ps-contact2-metric-value {
+  font-size: clamp(1.75rem, 2.8vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.ps-contact2-metric-label {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--color-text-light-secondary);
+  transition: color 300ms ease;
+}
+
+[data-theme="dark"] .ps-contact2-metric-label {
+  color: var(--color-text-dark-secondary);
+}
+
+/* Vertical separator between metrics */
+.ps-contact2-metric-sep {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 32px;
+  background: var(--color-border-light);
+  transition: background 300ms ease;
+}
+
+[data-theme="dark"] .ps-contact2-metric-sep {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 540px) {
+  .ps-contact2-metrics {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .ps-contact2-metric {
+    min-width: unset;
+  }
+
+  .ps-contact2-metric-sep {
+    display: none;
+  }
+}
+
+/* ── Light mode for hero text (if ever toggled) ─────────────────── */
+/* Hero band is always dark — no light-mode override needed */
+
 /* ROI Calculator page compatibility */
 .ps-roi-page-wrapper {
   padding-top: var(--nav-height);
