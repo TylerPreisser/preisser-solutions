@@ -152,7 +152,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a similar build for my operation?",
       answer:
- "Email tyler@preissertech.com. Free 30-minute scoping call with Tyler personally. We'll map your current workflow, identify the highest-ROI automation, and send a fixed-price proposal.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call with Tyler personally. We'll map your current workflow, identify the highest-ROI automation, and send a fixed-price proposal.",
     },
   ],
   schemaType: "Article",

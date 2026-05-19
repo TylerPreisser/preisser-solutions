@@ -22,7 +22,7 @@ Pulled from `src/data/site-config.ts`. Any drift between this and a directory li
 
 - **Name:** Preisser Solutions
 - **Address:** Hays, Kansas 67601
-- **Email:** tyler@preissertech.com
+- **Email:** tyler@preissersolutions.com
 - **URL:** https://preissersolutions.com
 - **Hours:** By appointment (consulting model)
 

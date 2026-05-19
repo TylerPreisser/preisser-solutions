@@ -79,7 +79,7 @@
 /.well-known/agent-skills/index.json
   Content-Type: application/json; charset=utf-8
 
-/.well-known/agent-skills/preisser-tech-inquiry/SKILL.md
+/.well-known/agent-skills/preisser-solutions-inquiry/SKILL.md
   Content-Type: text/markdown; charset=utf-8
 
 /openapi.json

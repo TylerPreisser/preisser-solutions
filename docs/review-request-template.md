@@ -46,7 +46,7 @@ If you mention the speed of how we went from first call to live, or the fact tha
 
 Tyler
 Preisser Solutions
-tyler@preissertech.com
+tyler@preissersolutions.com
 
 ---
 

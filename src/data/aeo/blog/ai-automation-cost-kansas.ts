@@ -123,7 +123,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a quote on my specific project?",
       answer:
- "Email tyler@preissertech.com. Free 30-minute call with Tyler. We'll map your situation against these tiers and quote a fixed price in writing.",
+ "Email tyler@preissersolutions.com. Free 30-minute call with Tyler. We'll map your situation against these tiers and quote a fixed price in writing.",
     },
   ],
   schemaType: "BlogPosting",

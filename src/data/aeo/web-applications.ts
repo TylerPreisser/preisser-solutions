@@ -102,7 +102,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom web application cost?",
       answer:
-        "Custom application pricing varies with scope. Focused internal tools typically run in the mid-five-figure range. More substantial applications with multiple integrations, complex business logic, or AI features scale from there. Tyler provides a fixed-price proposal upfront so there are no surprise costs. Contact tyler@preissertech.com for a free scoping conversation.",
+        "Custom application pricing varies with scope. Focused internal tools typically run in the mid-five-figure range. More substantial applications with multiple integrations, complex business logic, or AI features scale from there. Tyler provides a fixed-price proposal upfront so there are no surprise costs. Contact tyler@preissersolutions.com for a free scoping conversation.",
     },
     {
       question: "Will the application integrate with our existing software (QuickBooks, ServiceTitan, etc.)?",
@@ -137,7 +137,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can you take over an existing application that another developer started?",
       answer:
-        "Often, yes. Preisser Solutions regularly takes over partially-built or maintained applications from prior developers. The first step is an audit of the existing code and architecture to scope what's salvageable vs. what should be rebuilt. Contact tyler@preissertech.com to start.",
+        "Often, yes. Preisser Solutions regularly takes over partially-built or maintained applications from prior developers. The first step is an audit of the existing code and architecture to scope what's salvageable vs. what should be rebuilt. Contact tyler@preissersolutions.com to start.",
     },
     {
       question: "What kind of businesses build custom web apps with Preisser Solutions?",

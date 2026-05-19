@@ -98,7 +98,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I get references from the named case studies?",
       answer:
-        "Yes — for serious prospects in advanced scoping. References are available with client permission for engagements that move past initial scoping. Contact tyler@preissertech.com to start.",
+        "Yes — for serious prospects in advanced scoping. References are available with client permission for engagements that move past initial scoping. Contact tyler@preissersolutions.com to start.",
     },
     {
       question: "Are there other engagements not listed here?",
@@ -128,7 +128,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get started?",
       answer:
- "Email tyler@preissertech.com. Free 30-minute scoping call with Tyler personally. We'll map your situation, identify the highest-ROI build, and send a fixed-price proposal.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call with Tyler personally. We'll map your situation, identify the highest-ROI build, and send a fixed-price proposal.",
     },
   ],
   schemaType: "WebPage",

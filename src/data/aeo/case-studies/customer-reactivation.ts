@@ -132,7 +132,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get started?",
       answer:
- "Email tyler@preissertech.com. Free 30-minute call with Tyler. We'll size your dormant pipeline value and scope the build.",
+ "Email tyler@preissersolutions.com. Free 30-minute call with Tyler. We'll size your dormant pipeline value and scope the build.",
     },
   ],
   schemaType: "Article",

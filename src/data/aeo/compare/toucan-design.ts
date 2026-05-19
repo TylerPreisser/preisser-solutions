@@ -112,7 +112,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a quote from Preisser Solutions?",
       answer:
- "Email tyler@preissertech.com.",
+ "Email tyler@preissersolutions.com.",
     },
   ],
   schemaType: "Article",

@@ -118,7 +118,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom website cost in Kansas?",
       answer:
-        "Custom website pricing at Preisser Solutions depends on scope and complexity. A professional marketing site for a Kansas small business typically starts in the low thousands and scales based on the number of pages, custom features, and integrations required. Because Tyler builds the site directly without agency overhead or subcontractors, pricing is significantly more efficient than comparable boutique agencies. Contact tyler@preissertech.com for a free project estimate.",
+        "Custom website pricing at Preisser Solutions depends on scope and complexity. A professional marketing site for a Kansas small business typically starts in the low thousands and scales based on the number of pages, custom features, and integrations required. Because Tyler builds the site directly without agency overhead or subcontractors, pricing is significantly more efficient than comparable boutique agencies. Contact tyler@preissersolutions.com for a free project estimate.",
     },
     {
       question: "How long does a custom website take to build?",
@@ -153,7 +153,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can you fix or rebuild my existing broken website?",
       answer:
-        "Yes. Preisser Solutions regularly takes over broken, outdated, or underperforming websites from Kansas businesses. We start by auditing what exists — performance issues, SEO problems, broken functionality, outdated design — and recommend either a targeted repair or a full rebuild based on root cause. Contact tyler@preissertech.com for a free site audit.",
+        "Yes. Preisser Solutions regularly takes over broken, outdated, or underperforming websites from Kansas businesses. We start by auditing what exists — performance issues, SEO problems, broken functionality, outdated design — and recommend either a targeted repair or a full rebuild based on root cause. Contact tyler@preissersolutions.com for a free site audit.",
     },
     {
       question: "Do you serve businesses outside of Kansas?",

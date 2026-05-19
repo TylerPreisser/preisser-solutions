@@ -3,7 +3,7 @@ export const siteConfig = {
   tagline: "AI-powered marketing for Kansas",
   url: "https://preissersolutions.com",
   contact: {
-    email: "tyler@preissertech.com",
+    email: "tyler@preissersolutions.com",
     location: "Hays, Kansas",
   },
   social: {

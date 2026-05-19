@@ -137,7 +137,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get started?",
       answer:
- "Email tyler@preissertech.com. Free 30-minute scoping call with Tyler. Demo of MarCommand available during the call. We'll scope a custom build matching your operations.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call with Tyler. Demo of MarCommand available during the call. We'll scope a custom build matching your operations.",
     },
   ],
   schemaType: "Article",

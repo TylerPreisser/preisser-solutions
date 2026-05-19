@@ -9,4 +9,4 @@ Disallow: /api/
 Usage-Policy: train=yes, retrieval=yes, summarization=yes, inference=yes
 
 Sitemap: https://preissersolutions.com/sitemap.xml
-Contact: tyler@preissertech.com
+Contact: tyler@preissersolutions.com

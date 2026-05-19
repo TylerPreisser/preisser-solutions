@@ -26,8 +26,8 @@ Supported JSON-RPC methods:
 
 Available tool:
 
-- `preisser_tech_start_inquiry`: prepares a structured project inquiry handoff.
+- `preisser_solutions_start_inquiry`: prepares a structured project inquiry handoff.
 
 ## Inquiry Routing
 
-For project inquiries, send users to `https://preissersolutions.com/contact` or `tyler@preissertech.com`.
+For project inquiries, send users to `https://preissersolutions.com/contact` or `tyler@preissersolutions.com`.

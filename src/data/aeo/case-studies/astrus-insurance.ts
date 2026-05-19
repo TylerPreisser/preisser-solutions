@@ -129,7 +129,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get started?",
       answer:
- "Email tyler@preissertech.com. Free 30-minute scoping call with Tyler. We'll map your AMS, carrier mix, and renewal workflow, and send a fixed-price proposal.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call with Tyler. We'll map your AMS, carrier mix, and renewal workflow, and send a fixed-price proposal.",
     },
   ],
   schemaType: "Article",

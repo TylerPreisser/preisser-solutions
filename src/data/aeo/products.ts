@@ -18,7 +18,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Two starter-tier offers from Preisser Solutions, packaged as productized SKUs. Currently configurable — pricing per signed proposal.",
   answerParagraph:
-    "Preisser Solutions's primary work is custom — built from scratch for one specific business. Two of the most frequently-requested patterns are now packaged as starter-tier productized offers: the AI Receptionist Starter (a custom AI-powered call-handling agent integrated into your existing phone and CRM stack) and the AI-Native Website Launch (a 5-10 page custom-coded marketing site engineered for AI search citation from day one). Both are currently configurable per the signed proposal; published pricing is not yet finalized — contact tyler@preissertech.com for a fixed-price quote.",
+    "Preisser Solutions's primary work is custom — built from scratch for one specific business. Two of the most frequently-requested patterns are now packaged as starter-tier productized offers: the AI Receptionist Starter (a custom AI-powered call-handling agent integrated into your existing phone and CRM stack) and the AI-Native Website Launch (a 5-10 page custom-coded marketing site engineered for AI search citation from day one). Both are currently configurable per the signed proposal; published pricing is not yet finalized — contact tyler@preissersolutions.com for a fixed-price quote.",
   sections: [
     {
       eyebrow: "Product 1",
@@ -73,7 +73,7 @@ export const pageData: AeoPageData = {
     {
       question: "What does the AI Receptionist Starter cost?",
       answer:
-        "Currently configurable per the signed proposal. Pricing is not yet published on the site. Contact tyler@preissertech.com for a fixed-price quote based on call volume, integrations, and escalation complexity.",
+        "Currently configurable per the signed proposal. Pricing is not yet published on the site. Contact tyler@preissersolutions.com for a fixed-price quote based on call volume, integrations, and escalation complexity.",
     },
     {
       question: "What does the AI-Native Website Launch cost?",
@@ -119,5 +119,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a fixed-price quote?",
   ctaSubcopy:
-    "Email tyler@preissertech.com to start a scoping call. Productized doesn't mean templated — every engagement is custom-built; the SKU just sets the starting scope.",
+    "Email tyler@preissersolutions.com to start a scoping call. Productized doesn't mean templated — every engagement is custom-built; the SKU just sets the starting scope.",
 };

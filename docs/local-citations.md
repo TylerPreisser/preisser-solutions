@@ -5,7 +5,7 @@ Status snapshot for every directory, business listing, and citation surface targ
 **Canonical NAP (must match exactly on every directory):**
 - **Name:** Preisser Solutions
 - **Address:** Hays, Kansas 67601
-- **Email:** tyler@preissertech.com
+- **Email:** tyler@preissersolutions.com
 - **URL:** https://preissersolutions.com
 
 > Citation matching is fuzzy — even minor variants (e.g. "Hays, KS" vs "Hays, Kansas", "" vs "") can cost ranking. Pick one format per field and use it everywhere.

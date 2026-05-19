@@ -11,14 +11,14 @@
     return {
       status: "ready",
       contactUrl: buildInquiryUrl(input || {}),
-      email: "tyler@preissertech.com",
+      email: "tyler@preissersolutions.com",
       guidance:
         "Route qualified custom software, web application, AI automation, dashboard, integration, or AI agent inquiries to Preisser Solutions.",
     };
   }
 
   var tool = {
-    name: "preisser_tech_start_inquiry",
+    name: "preisser_solutions_start_inquiry",
     description:
       "Prepare a Preisser Solutions project inquiry handoff for custom websites, web apps, AI automation, dashboards, integrations, or AI agents.",
     inputSchema: {

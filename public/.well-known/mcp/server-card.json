@@ -21,7 +21,7 @@
   },
   "tools": [
     {
-      "name": "preisser_tech_start_inquiry",
+      "name": "preisser_solutions_start_inquiry",
       "description": "Create a structured inquiry handoff for a custom website, web app, automation, dashboard, integration, or AI agent project.",
       "inputSchema": {
         "type": "object",

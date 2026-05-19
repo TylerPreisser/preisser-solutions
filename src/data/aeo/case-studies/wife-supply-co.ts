@@ -138,7 +138,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a similar build for my e-commerce brand?",
       answer:
- "Email tyler@preissertech.com. Free 30-minute scoping call with Tyler personally.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call with Tyler personally.",
     },
   ],
   schemaType: "Article",
