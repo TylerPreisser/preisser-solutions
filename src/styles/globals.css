@@ -128,15 +128,18 @@
 }
 
 /* ── Reset & Base ──────────────────────────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* NOTE: Tailwind v4 Preflight already handles the universal
+   { box-sizing, margin: 0, padding: 0 } reset inside @layer base.
+   Re-declaring it here UNLAYERED would beat @layer utilities and
+   silently nuke every pt-*/py-*/m-* utility site-wide. So we
+   intentionally omit the universal reset and keep html/body rules
+   inside @layer base. */
 
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
 }
 
 body {
@@ -169,37 +172,63 @@ ul, ol {
   list-style: none;
 }
 
-button {
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-family: inherit;
-  /* iOS Safari: eliminate 300ms tap delay and default blue highlight */
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
+/* Base button reset must live in @layer base so Tailwind utility classes
+   (border, bg-*, etc.) in @layer utilities WIN. Unlayered rules outrank
+   @layer rules in Tailwind v4's cascade — without this wrapper, every <button>
+   on the site had its border + background stripped no matter what utilities
+   were applied. That bug caused the Case Studies filter chips to render as
+   plain inline text instead of pill buttons. */
+@layer base {
+  button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+    /* iOS Safari: eliminate 300ms tap delay and default blue highlight */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a {
+    /* iOS Safari: eliminate 300ms tap delay and default blue highlight on links */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
-a {
-  /* iOS Safari: eliminate 300ms tap delay and default blue highlight on links */
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
+/* ── Component classes in @layer components so Tailwind utilities win ── */
+/* All .ps-* component rules live here. Tailwind's @layer utilities has
+   higher precedence than @layer components in the cascade, which means
+   any pt-*, pb-*, px-*, py-* utility on an element with a .ps-* class
+   will correctly override the component's padding. Unlayered rules (like
+   the old .ps-container and .ps-section) silently beat @layer utilities
+   even with higher specificity on the utility side — that was the root
+   cause of the Case Studies hero pt-40/pt-56 and filter chip px-4/py-2
+   classes having no effect. */
+@layer components {
 
 /* ── Container ─────────────────────────────────────────────── */
 .ps-container {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 var(--container-padding);
+  /* padding-inline instead of padding shorthand: only sets left/right,
+     leaving padding-top/padding-bottom completely free for pt- and pb-
+     Tailwind utilities. The old `padding: 0 X` shorthand reset all four
+     sides including top/bottom, which silently killed pt-40/pt-56 on
+     the Case Studies hero even after the @layer base button fix. */
+  padding-inline: var(--container-padding);
 }
 
 /* ── Section Wrapper ───────────────────────────────────────── */
 .ps-section {
-  padding: var(--section-py-desktop) 0;
+  /* padding-block instead of padding shorthand: only sets top/bottom,
+     leaving padding-left/right free for px-* utilities. */
+  padding-block: var(--section-py-desktop);
 }
 
 @media (max-width: 768px) {
   .ps-section {
-    padding: var(--section-py-mobile) 0;
+    padding-block: var(--section-py-mobile);
   }
 }
 
@@ -336,6 +365,8 @@ a {
   background-color: rgba(13, 149, 232, 0.06);
   transform: translateY(-1px);
 }
+
+} /* end @layer components — typography, buttons, container, section-wrapper */
 
 /* ── Header / Nav (Stripe-pattern) ──────────────────────────── */
 .ps-header {

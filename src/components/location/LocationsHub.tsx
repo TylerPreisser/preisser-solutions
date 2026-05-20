@@ -70,7 +70,7 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
           }}
         />
 
-        <div className="ps-container relative pt-32 pb-20 sm:pt-40 sm:pb-28">
+        <div className="ps-container relative pt-40 pb-24 sm:pt-48 sm:pb-32 lg:pt-56 lg:pb-36">
           <motion.div
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -88,7 +88,7 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
               across western and central Kansas, and remotely nationwide.
             </p>
 
-            <div className="mt-14 flex flex-wrap gap-x-12 gap-y-6">
+            <div className="mt-16 flex flex-wrap gap-x-12 gap-y-6 md:mt-20">
               <div>
                 <div className="bg-gradient-to-br from-white to-[#80E9FF] bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
                   {totalCities}
@@ -121,7 +121,7 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
       </section>
 
       {/* ── Regions ─────────────────────────────────────────── */}
-      <section className="relative bg-[#F6F9FC] pb-32 pt-20">
+      <section className="relative bg-[#F6F9FC] pb-32 pt-20 md:pt-24">
         <div className="ps-container space-y-20">
           {regions.map((region) => (
             <RegionBlock

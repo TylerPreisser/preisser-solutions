@@ -108,7 +108,7 @@ export function CaseStudiesHub({ caseStudies }: Props) {
           }}
         />
 
-        <div className="ps-container relative pt-32 pb-20 sm:pt-40 sm:pb-28">
+        <div className="ps-container relative pt-40 pb-24 sm:pt-48 sm:pb-32 lg:pt-56 lg:pb-36">
           <motion.div
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -128,7 +128,7 @@ export function CaseStudiesHub({ caseStudies }: Props) {
             </p>
 
             {/* Top-level stats strip */}
-            <div className="mt-14 flex flex-wrap gap-x-12 gap-y-6">
+            <div className="mt-16 flex flex-wrap gap-x-12 gap-y-6 md:mt-20">
               <div>
                 <div className="bg-gradient-to-br from-white to-[#80E9FF] bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
                   {caseStudies.length}
@@ -161,10 +161,15 @@ export function CaseStudiesHub({ caseStudies }: Props) {
       </section>
 
       {/* ── Filters + Grid ──────────────────────────────────── */}
-      <section className="relative bg-[#F6F9FC] pb-32 pt-16">
+      <section className="relative bg-[#F6F9FC] pb-32 pt-20 md:pt-24">
         <div className="ps-container">
+          {/* Filter heading */}
+          <div className="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-[#94A3B8]">
+            Filter by category
+          </div>
+
           {/* Filter chips */}
-          <div className="mb-10 flex flex-wrap items-center gap-2">
+          <div className="mb-12 flex flex-wrap items-center gap-2">
             {filters.map((f) => {
               const active = f === activeFilter;
               return (
@@ -173,10 +178,10 @@ export function CaseStudiesHub({ caseStudies }: Props) {
                   type="button"
                   onClick={() => setActiveFilter(f)}
                   className={
-                    "inline-flex items-center rounded-full border px-4 py-2 text-sm font-medium transition-all " +
+                    "inline-flex cursor-pointer items-center rounded-full border px-4 py-2 text-sm font-medium transition-all duration-150 " +
                     (active
                       ? "border-[#0A1628] bg-[#0A1628] text-white shadow-[0_8px_30px_rgba(10,22,40,0.18)]"
-                      : "border-[#E2E8F0] bg-white text-[#475569] hover:border-[#0D95E8]/40 hover:text-[#0A1628]")
+                      : "border-[#E2E8F0] bg-white text-[#475569] hover:border-[#0D95E8]/40 hover:bg-slate-50 hover:text-[#0A1628] hover:shadow-sm")
                   }
                 >
                   {f}
@@ -186,7 +191,7 @@ export function CaseStudiesHub({ caseStudies }: Props) {
           </div>
 
           {/* Grid */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
             {visible.map((cs, idx) => (
               <HubCard key={cs.slug} cs={cs} index={idx} reduceMotion={!!reduceMotion} />
             ))}
