@@ -19,11 +19,7 @@ const contactFaqs = [
   {
     question: "How does pricing work?",
     answer:
-      "Every engagement is scoped individually. We share a fixed-price proposal after a short discovery call — scope, deliverables, timeline, and total cost all stated up front.",
-  },
-  {
-    question: "How fast does Preisser Solutions respond?",
-    answer: "Within 1 business day Monday-Friday, 9am-5pm Central.",
+      "Every engagement is scoped individually. We share a fixed-price proposal after a short scoping conversation — scope, deliverables, timeline, and total cost all stated up front.",
   },
   {
     question: "Does Preisser Solutions work outside Hays?",
@@ -34,25 +30,6 @@ const contactFaqs = [
     question: "What should I include in my message?",
     answer:
       "Your current website, the main problem you want solved, your city, and whether you need a website, local SEO, AI automation, or a custom system.",
-  },
-];
-
-// Process steps — company voice, no personal attribution
-const processSteps = [
-  {
-    number: "01",
-    heading: "We respond within 1 business day",
-    body: "A real answer to your specific situation — not a template or a sales sequence.",
-  },
-  {
-    number: "02",
-    heading: "15-minute discovery call",
-    body: "A short call to understand your business, your goals, and whether we are the right fit.",
-  },
-  {
-    number: "03",
-    heading: "Scoped proposal in 48 hours",
-    body: "A specific plan, timeline, and fixed price. No vague estimates that expand after you say yes.",
   },
 ];
 
@@ -86,7 +63,6 @@ export function ContactPageClient() {
 
   // Refs for GSAP scroll reveals
   const heroRef = useRef<HTMLDivElement>(null);
-  const processRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const metricsRef = useRef<HTMLDivElement>(null);
   const faqRef = useRef<HTMLDivElement>(null);
@@ -112,27 +88,6 @@ export function ContactPageClient() {
             stagger: 0.1,
             ease: "power2.out",
             delay: 0.15,
-          }
-        );
-      }
-
-      // Process steps
-      if (processRef.current) {
-        const steps = Array.from(processRef.current.querySelectorAll(".ps-contact2-step")) as HTMLElement[];
-        gsap.fromTo(
-          steps,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.55,
-            stagger: 0.1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: processRef.current,
-              start: "top 84%",
-              once: true,
-            },
           }
         );
       }
@@ -253,11 +208,11 @@ export function ContactPageClient() {
           <div className="ps-contact2-hero-inner" ref={heroRef}>
             <span className="ps-eyebrow">Get in touch</span>
 
-            <h1 className="ps-contact2-h1">Open the file.</h1>
+            <h1 className="ps-contact2-h1">Reach out.</h1>
 
             <p className="ps-contact2-subhead">
-              Tell us what you&rsquo;re working on. We review every inquiry and
-              respond with a direct answer — not a sales sequence.
+              Tell us about your business and what you&rsquo;re looking for. We
+              read every message ourselves.
             </p>
 
             {/* Visible NAP — semantic <address> for local SEO */}
@@ -286,28 +241,12 @@ export function ContactPageClient() {
         <div className="ps-contact2-hero-rule" aria-hidden="true" />
       </section>
 
-      {/* ── Main content — asymmetric two-column ────────────────── */}
-      <section className="ps-contact2-body" aria-label="Contact form and process">
+      {/* ── Main content — centered form ─────────────────────────── */}
+      <section className="ps-contact2-body" aria-label="Contact form">
         <div className="ps-container">
           <div className="ps-contact2-layout">
 
-            {/* ── LEFT: Process (narrow) ──────────────────────── */}
-            <aside className="ps-contact2-process" ref={processRef} aria-label="What happens next">
-              <h2 className="ps-contact2-process-heading">What happens next</h2>
-              <ol className="ps-contact2-steps" aria-label="Process after submitting your inquiry">
-                {processSteps.map((step) => (
-                  <li key={step.number} className="ps-contact2-step">
-                    <span className="ps-contact2-step-num" aria-hidden="true">{step.number}</span>
-                    <div className="ps-contact2-step-copy">
-                      <strong className="ps-contact2-step-heading">{step.heading}</strong>
-                      <p className="ps-contact2-step-body">{step.body}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </aside>
-
-            {/* ── RIGHT: Form (wider) ─────────────────────────── */}
+            {/* ── Centered form ────────────────────────────────── */}
             <div className="ps-contact2-form-area" ref={formRef}>
               <form
                 id="inquiryForm"
@@ -325,7 +264,7 @@ export function ContactPageClient() {
                     </div>
                     <h3 className="ps-contact-success__heading">Message sent.</h3>
                     <p className="ps-contact-success__body">
-                      We&rsquo;ll review your inquiry and be in touch — typically within one business day.
+                      Thanks for reaching out. We&rsquo;ll review your message and be in touch.
                     </p>
                   </div>
                 ) : (
@@ -439,7 +378,7 @@ export function ContactPageClient() {
                         )}
                       </button>
                       <p className="ps-contact-form-privacy">
-                        No spam. No list. A real reply from our team.
+                        No spam. No list.
                       </p>
                     </div>
                   </>
@@ -475,7 +414,7 @@ export function ContactPageClient() {
             <div className="ps-contact-faq-heading-block">
               <h2 className="ps-contact-faq__title">Common questions</h2>
               <p className="ps-contact-faq__intro">
-                Quick answers to the four questions we get most.
+                Quick answers to the questions we get most.
               </p>
             </div>
             <div className="ps-contact-faq__list" role="list">

@@ -2,7 +2,7 @@
 
 **Source of truth.** Every public claim of past work, every named-client outcome, every quantified result on preissersolutions.com must trace back to an entry in this file. Anything not in this list does not exist for content purposes.
 
-Last confirmed by Tyler: 2026-05-20.
+Last confirmed by Tyler: 2026-05-20 (updated with additional website builds).
 
 ---
 
@@ -15,6 +15,13 @@ These constraints apply BEFORE any project is published:
 - **HG Oil Holdings** — full name publishable. Tyler was VP of Operations there; these are internal builds, not external client engagements.
 - **Iron and Oak Podcast** — full name publishable. Tyler's own build with co-host Lincoln Myers.
 - **Wife Supply Co** — name publishable. Tyler's own build. STATUS FLAG: Tyler has not independently confirmed whether this shipped to paying customers vs. concept-to-launch; do not claim revenue/customer metrics without confirming.
+- **preissersolutions.com** — this site itself. Tyler-built. Eats own dog food (Next.js 15, custom design system, AI search optimized).
+- **tylerpreisser.com** — Tyler's personal/professional site. Tyler-built.
+- **rsquaredai.com** — R Squared AI corporate site. Tyler-built (Tyler is CPO of R Squared AI).
+
+### Draft / in-progress (DO NOT publish until Tyler confirms launch + consent)
+- **Cord's site** — draft website Tyler is building. No client name, no URL, no outcomes publishable until Tyler authorizes.
+- **Greg's site** — draft website Tyler is building. Same constraint.
 
 ### Anonymized identifiers (R Squared AI client engagements)
 - **Astrus Insurance Solutions** — DO NOT publish the company name on preissersolutions.com case-study pages. Publish as: "an MGU within the Alliant Insurance ecosystem." DO NOT publish any of the personnel names (Joan Miles, Pat Murphy, Nicole Brown/Hansen, Jeffrey Hall, Rich Kearns, Rich Rivara, Will Godfrey, Josh Eliason). Frame engagement as: "delivered through R Squared AI; Tyler Preisser as delivery/documentation lead."
@@ -349,6 +356,61 @@ Additional: AI BOL parsing, rate-confirmation parsing, back-office reconciliatio
 - P6 (Deliver): Synthesis Reporter
 
 Produces: geo.json, personas.json, query_corpus.csv (2K–10K rows), serp_snapshots/, ai_answers/, competitors.json, opportunities.csv, content_briefs/, distribution_plan.md, executive_summary.md, 90_day_plan.md, tracker.csv.
+
+---
+
+### 22. preissersolutions.com — This Site Itself
+
+**Category:** Website Build / AI-Native Marketing Site
+**Status:** Tyler's own build. Live at preissersolutions.com.
+
+**Summary:** Custom-coded marketing site for Preisser Solutions itself — eating own dog food. Premium Next.js + Tailwind v4 build, custom design system, AI search optimized.
+
+**What was built:** ~164 statically-rendered pages across services, case studies, locations, industries, blog, comparisons, insights. Custom CaseStudyPage and LocationPage components. Multi-region SEO architecture. JSON-LD schema graph (Organization, Person, LocalBusiness, WebPage, BreadcrumbList, FAQPage, Article). Cloudflare Pages deployment.
+
+**Specifications:** Next.js 15 + React 19 + TypeScript. Tailwind v4 with custom HDS design system (8,800+ line globals.css). GSAP 3.12.7 + Framer Motion 12 for animations. Static export → Cloudflare Pages. ~164 URLs in sitemap. AI-native architecture: llms.txt, llms-full.txt, agent discovery endpoints, structured data for AI citation graphs.
+
+**STATUS FLAG:** Tyler should confirm specific outcomes (traffic, lead volume, ranking positions) before publishing as a measured case study. The build itself is real and demonstrably capable; the marketing outcomes are TBD pending Tyler's data.
+
+---
+
+### 23. tylerpreisser.com — Personal/Professional Site
+
+**Category:** Website Build / Personal Brand
+**Status:** Tyler's own build. Live at tylerpreisser.com.
+
+**Summary:** Tyler's personal/professional site. Demonstrates founder-level brand identity work.
+
+**What was built:** [PLACEHOLDER — Tyler to supply: tech stack, page count, design approach, distinct features.]
+
+**STATUS FLAG:** Need Tyler's content before publishing as a case study. The site exists and demonstrates capability, but specific outcomes/specs require Tyler's input.
+
+---
+
+### 24. rsquaredai.com — R Squared AI Corporate Site
+
+**Category:** Website Build / B2B SaaS Marketing
+**Status:** Tyler-built. Tyler is CPO of R Squared AI.
+
+**Summary:** Corporate website for R Squared AI (Tyler's employer). Tyler built it as part of his CPO role.
+
+**What was built:** [PLACEHOLDER — Tyler to supply: tech stack, page count, design approach, lead/conversion outcomes if measurable.]
+
+**STATUS FLAG:** Permission to publish as a Preisser Solutions case study needs to be confirmed with R Squared AI leadership. Currently safest to reference as "internal R Squared AI engagement" rather than external client work.
+
+---
+
+### 25. Cord's Site — DRAFT (Do Not Publish)
+
+**Status:** Draft in progress. Client name "Cord" — no surname, no URL, no public consent yet.
+**DO NOT PUBLISH** until Tyler confirms client identity is publishable AND the site is launched.
+
+---
+
+### 26. Greg's Site — DRAFT (Do Not Publish)
+
+**Status:** Draft in progress. Client name "Greg" — no surname, no URL, no public consent yet.
+**DO NOT PUBLISH** until Tyler confirms client identity is publishable AND the site is launched.
 
 ---
 

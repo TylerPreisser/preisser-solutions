@@ -7278,17 +7278,9 @@ ul, ol {
 
 /* ── Asymmetric two-column layout ──────────────────────────────── */
 .ps-contact2-layout {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 80px;
-  align-items: start;
-}
-
-@media (max-width: 860px) {
-  .ps-contact2-layout {
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
+  display: block;
+  max-width: 720px;
+  margin: 0 auto;
 }
 
 /* ── LEFT: Process column ───────────────────────────────────────── */
