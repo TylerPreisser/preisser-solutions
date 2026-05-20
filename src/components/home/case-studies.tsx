@@ -22,6 +22,7 @@ const caseStudyCards: CaseStudyCard[] = [
     description:
       "AI engine reads broker submissions — 7–15 documents per submission — extracts structured data using dual competing AI models (Claude Opus + GPT cross-validation), and auto-populates Salesforce records. Eliminated manual data entry across systems where the same data was previously entered 3–5 times. Zero missed renewals in the first six months.",
     gradient: "linear-gradient(135deg, #0a1f3c 0%, #0D95E8 100%)",
+    caseLogo: "/images/case-studies/astrus-logo.png",
   },
   // 2 — Chicago-area bus transportation operator: Power BI + Ops Automation (anonymized per privacy rules)
   {
@@ -30,6 +31,7 @@ const caseStudyCards: CaseStudyCard[] = [
     description:
       "Five Power BI dashboards — workforce planning, revenue/EBITDA, safety scorecard, FY26 goals, and routes/runs — plus AI BOL parsing, rate-confirmation parsing, and back-office reconciliation automation. Weekly reconciliation dropped from a full day to a 15-minute exception queue, with real-time load-level profitability for the first time.",
     gradient: "linear-gradient(135deg, #0F2744 0%, #1a3a6e 100%)",
+    caseLogo: "/images/case-studies/sunrise-transportation-logo.svg",
   },
   // 3 — Iron and Oak Podcast
   {

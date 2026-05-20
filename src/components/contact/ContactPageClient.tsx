@@ -33,13 +33,6 @@ const contactFaqs = [
   },
 ];
 
-// Proof metrics — inline typographic strip
-const proofMetrics = [
-  { value: "22+", label: "Kansas businesses" },
-  { value: "95%", label: "back-office time saved" },
-  { value: "5×", label: "organic reach in 30 days" },
-];
-
 interface FormState {
   name: string;
   email: string;
@@ -64,7 +57,6 @@ export function ContactPageClient() {
   // Refs for GSAP scroll reveals
   const heroRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLDivElement>(null);
-  const metricsRef = useRef<HTMLDivElement>(null);
   const faqRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -105,27 +97,6 @@ export function ContactPageClient() {
             scrollTrigger: {
               trigger: formRef.current,
               start: "top 86%",
-              once: true,
-            },
-          }
-        );
-      }
-
-      // Metrics strip
-      if (metricsRef.current) {
-        const items = Array.from(metricsRef.current.children) as HTMLElement[];
-        gsap.fromTo(
-          items,
-          { opacity: 0, y: 12 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.45,
-            stagger: 0.08,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: metricsRef.current,
-              start: "top 88%",
               once: true,
             },
           }
@@ -389,23 +360,6 @@ export function ContactPageClient() {
           </div>
         </div>
       </section>
-
-      {/* ── Proof metrics — typographic inline strip ────────────── */}
-      <div className="ps-contact2-metrics-band" aria-label="Proof metrics">
-        <div className="ps-container">
-          <div className="ps-contact2-metrics" ref={metricsRef}>
-            {proofMetrics.map((m, i) => (
-              <div key={m.label} className="ps-contact2-metric">
-                <span className="ps-contact2-metric-value">{m.value}</span>
-                <span className="ps-contact2-metric-label">{m.label}</span>
-                {i < proofMetrics.length - 1 && (
-                  <span className="ps-contact2-metric-sep" aria-hidden="true" />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* ── FAQ section — SEO-critical: matched by FAQPage JSON-LD ── */}
       <div className="ps-contact-faq-wrapper">
