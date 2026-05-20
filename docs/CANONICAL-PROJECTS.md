@@ -19,9 +19,6 @@ These constraints apply BEFORE any project is published:
 - **tylerpreisser.com** — Tyler's personal/professional site. Tyler-built.
 - **rsquaredai.com** — R Squared AI corporate site. Tyler-built (Tyler is CPO of R Squared AI).
 
-### Draft / in-progress (DO NOT publish until Tyler confirms launch + consent)
-- **Cord's site** — draft website Tyler is building. No client name, no URL, no outcomes publishable until Tyler authorizes.
-- **Greg's site** — draft website Tyler is building. Same constraint.
 
 ### Anonymized identifiers (R Squared AI client engagements)
 - **Astrus Insurance Solutions** — DO NOT publish the company name on preissersolutions.com case-study pages. Publish as: "an MGU within the Alliant Insurance ecosystem." DO NOT publish any of the personnel names (Joan Miles, Pat Murphy, Nicole Brown/Hansen, Jeffrey Hall, Rich Kearns, Rich Rivara, Will Godfrey, Josh Eliason). Frame engagement as: "delivered through R Squared AI; Tyler Preisser as delivery/documentation lead."
@@ -32,7 +29,7 @@ DO NOT name on any page: Fort Hays State University, HaysMed, Kansas State Unive
 
 ---
 
-## The 21 Projects
+## The 24 Projects
 
 ### 1. Cassidy HVAC — AI Customer Reactivation Engine
 
@@ -362,15 +359,15 @@ Produces: geo.json, personas.json, query_corpus.csv (2K–10K rows), serp_snapsh
 ### 22. preissersolutions.com — This Site Itself
 
 **Category:** Website Build / AI-Native Marketing Site
-**Status:** Tyler's own build. Live at preissersolutions.com.
+**Status:** Tyler's own build. Live at preissersolutions.com. Eats own dog food.
 
-**Summary:** Custom-coded marketing site for Preisser Solutions itself — eating own dog food. Premium Next.js + Tailwind v4 build, custom design system, AI search optimized.
+**Summary:** Custom-coded marketing and AI-search site for Preisser Solutions itself — built to showcase the same engineering quality the consultancy ships to clients. Reverse-engineered Stripe / Linear / Vercel-tier design quality, then layered AI-native infrastructure on top so the site is citable by AI search agents.
 
-**What was built:** ~164 statically-rendered pages across services, case studies, locations, industries, blog, comparisons, insights. Custom CaseStudyPage and LocationPage components. Multi-region SEO architecture. JSON-LD schema graph (Organization, Person, LocalBusiness, WebPage, BreadcrumbList, FAQPage, Article). Cloudflare Pages deployment.
+**What was built:** ~164 statically-rendered URLs across services, case studies (21+ detail pages), locations (21 + a hub), industries (8 reframed in capability-only language), a blog, comparison pages, insights, and use-cases. Bespoke CaseStudyPage component (714 lines) with radial-glow hero, glass metric chips, gradient-text numbers, and GSAP scroll-stagger reveals. Custom LocationPage with geographic hero, nearby-towns chip grid, service cards, and process timeline. Full AI-native architecture layered in: `llms.txt` and `llms-full.txt` served at the edge for AI agents, JSON-LD schema graph (Organization, Person, LocalBusiness, WebPage, BreadcrumbList, FAQPage, Article), agent discovery endpoints at `/.well-known/agent-card.json` and `/.well-known/mcp/server-card.json`, content signal headers (`ai-train=yes, search=yes, ai-input=yes`), and a fully open X-Robots-Tag.
 
-**Specifications:** Next.js 15 + React 19 + TypeScript. Tailwind v4 with custom HDS design system (8,800+ line globals.css). GSAP 3.12.7 + Framer Motion 12 for animations. Static export → Cloudflare Pages. ~164 URLs in sitemap. AI-native architecture: llms.txt, llms-full.txt, agent discovery endpoints, structured data for AI citation graphs.
+**Specifications:** Next.js 15 + React 19 + TypeScript. Tailwind v4 with a custom HDS-tokens design system (8,800+ line globals.css using cascade layers). GSAP 3.12.7 (single registration through `lib/gsap.ts`) + Framer Motion 12 for animations. Static export to Cloudflare Pages with edge middleware for canonicalization. ~164 URLs in sitemap. AI-native architecture (llms.txt, agent discovery, JSON-LD graph) for AI citation. Honest content: zero fabricated organization claims, zero pricing site-wide, anonymized R Squared AI client work.
 
-**STATUS FLAG:** Tyler should confirm specific outcomes (traffic, lead volume, ranking positions) before publishing as a measured case study. The build itself is real and demonstrably capable; the marketing outcomes are TBD pending Tyler's data.
+**STATUS FLAG:** Tyler should confirm specific marketing outcomes (traffic, lead volume, ranking positions) before they are claimed as measured outcomes. The build itself — architecture, page count, AI-native infrastructure, design system, honesty audit — is real and publishable as capability proof. Quantified marketing outcomes are TBD pending Tyler's data.
 
 ---
 
@@ -379,38 +376,28 @@ Produces: geo.json, personas.json, query_corpus.csv (2K–10K rows), serp_snapsh
 **Category:** Website Build / Personal Brand
 **Status:** Tyler's own build. Live at tylerpreisser.com.
 
-**Summary:** Tyler's personal/professional site. Demonstrates founder-level brand identity work.
+**Summary:** Founder-presence layer for Tyler Preisser — minimalist personal portfolio site that establishes the canonical Tyler Preisser entity for AI knowledge graphs and gives prospects, investors, and collaborators a single page to evaluate the operator behind Preisser Solutions.
 
-**What was built:** [PLACEHOLDER — Tyler to supply: tech stack, page count, design approach, distinct features.]
+**What was built:** Full personal portfolio with a dark editorial aesthetic, light typographic hierarchy, and readability-first layout (not animation-heavy). Sections cover the professional role (CPO at R Squared AI), a "What Tyler Does" capability summary anchored on agentic AI solutions, a background narrative spanning agriculture, construction, engineering, and entrepreneurship, eight competency blocks (AI systems, automation, product strategy, and adjacent areas), the Engineering Design & Technology degree from Fort Hays State University (2021–2025), and a connect block with LinkedIn, GitHub, email, and resume download CTAs.
 
-**STATUS FLAG:** Need Tyler's content before publishing as a case study. The site exists and demonstrates capability, but specific outcomes/specs require Tyler's input.
+**Specifications:** Dark theme with light text and professional typography hierarchy. Multiple connect-channel CTAs. JSON-LD Person schema with a canonical @id so AI search engines have a stable entity reference. Built for fast first paint and AI-citation readability.
+
+**STATUS FLAG:** Specific reach/traffic/conversion numbers are TBD pending Tyler's data. The build itself, the architecture, and the AI-search positioning are real and publishable. Capability and architecture claims are safe; quantified outcomes are not yet claimed.
 
 ---
 
 ### 24. rsquaredai.com — R Squared AI Corporate Site
 
 **Category:** Website Build / B2B SaaS Marketing
-**Status:** Tyler-built. Tyler is CPO of R Squared AI.
+**Status:** Tyler-built as part of his CPO role at R Squared AI. Publication confirmed by Tyler 2026-05-20.
 
-**Summary:** Corporate website for R Squared AI (Tyler's employer). Tyler built it as part of his CPO role.
+**Summary:** Corporate marketing site for R Squared AI's agentic CRM platform — clean dark-mode B2B marketing surface with platform showcase, industry vertical pages, deployment process, team bios, and newsletter signup. Built to support the enterprise sales motion for an agentic AI category targeting insurance, private equity, and manufacturing buyers.
 
-**What was built:** [PLACEHOLDER — Tyler to supply: tech stack, page count, design approach, lead/conversion outcomes if measurable.]
+**What was built:** Full corporate marketing site for the R Squared AI platform. Sections include six platform capabilities (Pipeline Intelligence, Expansion & Cross-Sell, Sales Enablement, Orchestrated Intelligence, Stack Integration, Compliance & Audit), three industry vertical pages (insurance, private equity, manufacturing), a results/case studies section, the deployment process, team bios, and a newsletter signup. Modern dark/light minimalist aesthetic with scrolling narrative, generous whitespace, and typography-led hierarchy.
 
-**STATUS FLAG:** Permission to publish as a Preisser Solutions case study needs to be confirmed with R Squared AI leadership. Currently safest to reference as "internal R Squared AI engagement" rather than external client work.
+**Specifications:** Clean dark/light minimalist design system. Modern typography hierarchy with generous whitespace. Enterprise-integration showcase listing Salesforce, Dynamics 365, HubSpot, Power BI, Snowflake, and Slack. Compliance and audit messaging for enterprise security buyers. Positioning claims on-site include 6–8 weeks discovery-to-production, zero rip-and-replace migrations, full audit trails with explainable AI, and no data replication to vendor servers.
 
----
-
-### 25. Cord's Site — DRAFT (Do Not Publish)
-
-**Status:** Draft in progress. Client name "Cord" — no surname, no URL, no public consent yet.
-**DO NOT PUBLISH** until Tyler confirms client identity is publishable AND the site is launched.
-
----
-
-### 26. Greg's Site — DRAFT (Do Not Publish)
-
-**Status:** Draft in progress. Client name "Greg" — no surname, no URL, no public consent yet.
-**DO NOT PUBLISH** until Tyler confirms client identity is publishable AND the site is launched.
+**STATUS FLAG:** Specific lead-volume and conversion outcomes are TBD pending Tyler's data. The build itself and the marketing/platform structure are real and publishable. Tyler is CPO of R Squared AI and the site is part of his role; no external permission gate.
 
 ---
 

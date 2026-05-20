@@ -31,6 +31,11 @@ import { caseStudy as trendAnalysis } from "./ai-trend-behavioral-analysis";
 // Proof of Concept (canonical #13)
 import { caseStudy as fitnessAgent } from "./ai-fitness-wellness-agent";
 
+// Website Builds (canonical #22, #23, #24)
+import { caseStudy as preisserSolutionsSite } from "./preisser-solutions-site";
+import { caseStudy as tylerPreisserSite } from "./tyler-preisser-site";
+import { caseStudy as rsquaredaiSite } from "./rsquaredai-site";
+
 /**
  * Canonical, publishable case studies — order = hub display order.
  *
@@ -40,6 +45,7 @@ import { caseStudy as fitnessAgent } from "./ai-fitness-wellness-agent";
  *   3. Internal operational tools (canonical #14, #15, #20)
  *   4. Pure capability offerings (canonical #10, #11, #12, #18, #19)
  *   5. Proof of concept (canonical #13)
+ *   6. Website builds (canonical #22, #23, #24)
  *
  * Adding a new case study? Create a data file in this folder, import it here,
  * add it to the array in the correct group, and create the matching route
@@ -76,6 +82,11 @@ export const caseStudies: CaseStudyData[] = [
 
   // 5. Proof of concept
   fitnessAgent,
+
+  // 6. Website builds
+  preisserSolutionsSite,
+  tylerPreisserSite,
+  rsquaredaiSite,
 ];
 
 export const caseStudyBySlug: Record<string, CaseStudyData> = Object.fromEntries(
