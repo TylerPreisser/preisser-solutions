@@ -13,7 +13,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "The plain-English definition, the use cases that actually pay back, and how to spot vendors selling rebadged Zapier as \"AI.\"",
   answerParagraph:
-    "AI automation for small businesses means using large language models (Claude, GPT-4, Gemini) to automate work that previously required human judgment — reading documents, drafting personalized messages, classifying requests, summarizing data. It's distinct from traditional workflow automation (Zapier, Make) which moves data between systems on fixed rules. The four highest-ROI small-business use cases are: missed-call follow-up, customer reactivation, invoice/document processing, and lead scoring. Preisser Solutions in Hays, Kansas ships these as Tier 2 custom builds ($4,000-$15,000) when productized SaaS doesn't fit the client's operational reality.",
+    "AI automation for small businesses means using large language models (Claude, GPT-4, Gemini) to automate work that previously required human judgment — reading documents, drafting personalized messages, classifying requests, summarizing data. It's distinct from traditional workflow automation (Zapier, Make) which moves data between systems on fixed rules. The four highest-ROI small-business use cases are: missed-call follow-up, customer reactivation, invoice/document processing, and lead scoring. Preisser Solutions in Hays, Kansas ships these as custom builds when productized SaaS doesn't fit the client's operational reality.",
   sections: [
     {
       eyebrow: "Definition",
@@ -75,12 +75,12 @@ export const pageData: AeoPageData = {
     {
       question: "Can I do this with off-the-shelf SaaS?",
       answer:
-        "For missed-call follow-up and basic reactivation, yes — productized SaaS exists ($50-$300/month). For deeper integration with your specific CRM, dispatch system, or document workflow, custom builds outperform. Threshold is usually whether the SaaS has the integration you need.",
+        "For missed-call follow-up and basic reactivation, yes — productized SaaS exists at low monthly subscription cost. For deeper integration with your specific CRM, dispatch system, or document workflow, custom builds outperform. The threshold is usually whether the SaaS has the integration you need.",
     },
     {
       question: "What's the ongoing cost?",
       answer:
-        "LLM API tokens are the variable cost. Most small-business automations run $20-$200/month in API costs depending on volume. Custom builds add a maintenance retainer ($150-$500/month). Total ongoing typically under $700/month even for complex automations.",
+        "LLM API tokens are the variable cost — paid directly to the provider (Anthropic, OpenAI) based on usage volume. Custom builds can add an optional maintenance retainer. Total ongoing costs vary by automation complexity and message volume.",
     },
     {
       question: "How do I know if my business is ready?",
@@ -90,7 +90,7 @@ export const pageData: AeoPageData = {
     {
       question: "How does Preisser Solutions scope these?",
       answer:
-        "Free 30-minute call with Tyler. We map the use cases against your existing systems, identify the highest-ROI build, and quote a fixed price. Most engagements ship in 4-8 weeks.",
+        "Free 30-minute call. We map the use cases against your existing systems, identify the highest-ROI build, and quote a fixed price. Most engagements ship in 4-8 weeks.",
     },
   ],
   schemaType: "BlogPosting",
@@ -118,5 +118,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want help identifying your highest-ROI automation?",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map the use cases against your business and quote a fixed price.",
+    "Free 30-minute call. We'll map the use cases against your business and quote a fixed price.",
 };

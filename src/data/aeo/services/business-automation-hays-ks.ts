@@ -18,7 +18,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Practical, custom automation for the manual work that eats hours every week — invoicing, follow-up, data entry, reporting, scheduling, and operations handoffs.",
   answerParagraph:
-    "Preisser Solutions builds custom business automation for Hays, KS companies that have outgrown spreadsheets and copy-paste workflows. Founded by Tyler Preisser in Hays, the firm scopes, builds, and supports automation for invoicing, intake forms, CRM updates, reporting, scheduling, and the operations handoffs in between. Every project starts with a paid systems audit so the work targets real bottlenecks, not theoretical ones. Fixed price, plain-English scope, no monthly software subscription disguised as a service.",
+    "Preisser Solutions builds custom business automation for Hays, KS companies that have outgrown spreadsheets and copy-paste workflows. Based in Hays, the firm scopes, builds, and supports automation for invoicing, intake forms, CRM updates, reporting, scheduling, and the operations handoffs in between. Every project starts with a paid systems audit so the work targets real bottlenecks, not theoretical ones. Fixed price, plain-English scope, no monthly software subscription disguised as a service.",
   sections: [
     {
       eyebrow: "Why automation matters",
@@ -59,14 +59,14 @@ export const pageData: AeoPageData = {
       heading: "Tools we connect for Hays clients",
       body: [
         "Most Hays businesses already have the right tools — they just are not talking to each other. Automation work usually means connecting what already exists, not replacing it. The recurring tools across Hays and Kansas clients include QuickBooks, Stripe, Google Workspace, Microsoft 365, HubSpot, Pipedrive, Monday, Notion, Airtable, Zapier, Make, Twilio, SendGrid, and ServiceTitan-style field-service platforms.",
-        "When a connection between two tools does not exist out-of-the-box, Preisser Solutions builds the custom integration directly against the underlying API. Tyler is the engineer doing the build, so there is no handoff to a third-party developer and no surprise discovery that 'that integration is not supported.' The HG Oil case study documents that pattern at 95% data sync improvement and 75% time saved by replacing manual entry with a tracked, audited connection between systems.",
+        "When a connection between two tools does not exist out-of-the-box, Preisser Solutions builds the custom integration directly against the underlying API. The founder is the engineer doing the build, so there is no handoff to a third-party developer and no surprise discovery that 'that integration is not supported.' The HG Oil case study documents that pattern at 95% data sync improvement and 75% time saved by replacing manual entry with a tracked, audited connection between systems.",
       ],
     },
     {
       eyebrow: "How projects ship",
       heading: "How an automation engagement ships",
       body: [
-        "Every project starts with a paid systems audit. Tyler maps the current workflows, identifies the highest-leverage targets, and writes a fixed-price proposal that lists exactly what will be automated, how the success will be measured, and when each piece ships. Most engagements are scoped in two-week sprints, with a working automation live at the end of each sprint instead of a quarterly waterfall delivery.",
+        "Every project starts with a paid systems audit. We map the current workflows, identifies the highest-leverage targets, and writes a fixed-price proposal that lists exactly what will be automated, how the success will be measured, and when each piece ships. Most engagements are scoped in two-week sprints, with a working automation live at the end of each sprint instead of a quarterly waterfall delivery.",
         "Support after launch is included for a defined period. Once the workflows are running, monthly retainer support is offered for businesses that want ongoing iteration — but it is not required. Plenty of clients get a sprint of work done, run it for a year unchanged, and come back when the next bottleneck appears.",
       ],
     },
@@ -138,5 +138,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a free automation audit for your Hays business",
   ctaSubcopy:
-    "Tyler will map your current workflows, identify the highest-leverage targets, and send a fixed-price proposal — no monthly software subscription required.",
+    "We will map your current workflows, identify the highest-leverage targets, and send a fixed-price proposal — no monthly software subscription required.",
 };

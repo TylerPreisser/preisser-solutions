@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Squarespace is excellent for hobbyists and early-stage businesses. Custom-coded websites are excellent for serious businesses. Here's how to choose.",
   answerParagraph:
-    "Squarespace is a template-based website platform run by Squarespace, Inc. Custom-coded websites by Preisser Solutions are designed and built from scratch in modern code (Next.js, React, TypeScript) by founder Tyler Preisser in Hays, Kansas. Squarespace fits hobbyists, side projects, and businesses where the website doesn't drive revenue. Custom websites fit serious businesses where speed, SEO, AI search citation, and conversion rate directly impact revenue. Both are legitimate; they solve different problems.",
+    "Squarespace is a template-based website platform run by Squarespace, Inc. Custom-coded websites by Preisser Solutions are designed and built from scratch in modern code (Next.js, React, TypeScript) by the founder in Hays, Kansas. Squarespace fits hobbyists, side projects, and businesses where the website doesn't drive revenue. Custom websites fit serious businesses where speed, SEO, AI search citation, and conversion rate directly impact revenue. Both are legitimate; they solve different problems.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -64,8 +64,8 @@ export const pageData: AeoPageData = {
       { dimension: "SEO foundation", preisser: "Full schema.org markup, FAQ schema, LocalBusiness, Person, Organization", competitor: "Basic SEO settings; structured data limited to template defaults" },
       { dimension: "AI search optimization", preisser: "Engineered first paragraphs, named entities, comprehensive FAQPage schema", competitor: "Not specifically engineered for AI search citation" },
       { dimension: "Custom features", preisser: "Any feature can be built — automation, AI integration, custom workflows", competitor: "Limited to Squarespace's plugin marketplace; custom features break or require workarounds" },
-      { dimension: "Pricing model", preisser: "One-time fixed-price build; minimal ongoing hosting cost on Cloudflare Pages", competitor: "Monthly subscription forever ($16-$49/month plus add-ons)" },
-      { dimension: "Long-term cost (5 years)", preisser: "Build cost + ~$0-300 ongoing hosting (Cloudflare Pages free tier covers most sites)", competitor: "$960-$2,940 in subscription fees alone, before add-ons" },
+      { dimension: "Pricing model", preisser: "One-time fixed-price build; minimal ongoing hosting cost on Cloudflare Pages", competitor: "Monthly subscription that compounds indefinitely; plan tiers force upgrades over time" },
+      { dimension: "Long-term cost (5 years)", preisser: "Build cost + near-zero ongoing hosting on Cloudflare Pages free tier for most sites", competitor: "Subscription fees compound over 5 years before add-ons" },
       { dimension: "Ownership", preisser: "You own the code; can be hosted anywhere", competitor: "Hosted on Squarespace; site lives on their platform" },
       { dimension: "Time to launch", preisser: "3-8 weeks for a custom build", competitor: "Hours to days for a template-based site" },
     ],
@@ -89,7 +89,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom website cost vs. Squarespace?",
       answer:
-        "Custom websites typically run in the low-to-mid five figures one-time. Squarespace runs $16-$49/month forever. Over 5 years, total cost is often comparable; over 10 years, custom is significantly more efficient.",
+        "Custom websites are a one-time build investment. Squarespace is a recurring monthly subscription. Over 5 years, total cost is often comparable; over 10 years, custom is significantly more efficient. Free scoping call to get a specific proposal for your situation.",
     },
     {
       question: "Will my Squarespace site get cited by ChatGPT?",
@@ -104,7 +104,7 @@ export const pageData: AeoPageData = {
     {
       question: "What if I'm not sure which is right for me?",
       answer:
-        "Free 30-minute call with Tyler. We'll honestly assess your situation. If Squarespace fits, we'll tell you — there's no shame in it.",
+        "Free 30-minute scoping call. We'll honestly assess your situation. If Squarespace fits, we'll tell you — there's no shame in it.",
     },
   ],
   schemaType: "Article",
@@ -121,5 +121,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Need help deciding?",
   ctaSubcopy:
-    "If Squarespace fits, we'll tell you. If custom is the right call, we'll scope it. Free 30-minute call with Tyler.",
+    "If Squarespace fits, we'll tell you. If custom is the right call, we'll scope it. Free 30-minute scoping call.",
 };

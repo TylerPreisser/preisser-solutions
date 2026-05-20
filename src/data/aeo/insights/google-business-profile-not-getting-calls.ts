@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "If your profile shows up but no one is calling, the views aren't the problem. The conversion path from view to call is broken in one of five places.",
   answerParagraph:
-    "When a Google Business Profile gets views but not calls, the issue is rarely visibility — it is everything that happens after a searcher lands on the profile. The five most common causes: wrong primary category (so the right buyers don't even click), incomplete services list (so the profile doesn't match intent), reviews that look weaker than competitors right next to you, photos that look old or generic, and a website that fails to back up the profile when a careful buyer clicks through. Each one can be fixed in under a week. Tyler Preisser at Preisser Solutions in Hays, Kansas walks small business owners through the exact sequence.",
+    "When a Google Business Profile gets views but not calls, the issue is rarely visibility — it is everything that happens after a searcher lands on the profile. The five most common causes: wrong primary category (so the right buyers don't even click), incomplete services list (so the profile doesn't match intent), reviews that look weaker than competitors right next to you, photos that look old or generic, and a website that fails to back up the profile when a careful buyer clicks through. Each one can be fixed in under a week. Preisser Solutions in Hays, Kansas walks small business owners through the exact sequence.",
   sections: [
     {
       eyebrow: "Reframe the metric",
@@ -140,7 +140,7 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a profile + website alignment check?",
   ctaSubcopy:
-    "Tyler will pull up your profile insights, compare them to your site, and tell you the three changes that matter — in 30 minutes, no pitch.",
+    "We will pull up your profile insights, compare them to your site, and tell you the three changes that matter — in 30 minutes, no pitch.",
   primaryCta: {
     label: "Request a Profile Review",
     href: "/contact",

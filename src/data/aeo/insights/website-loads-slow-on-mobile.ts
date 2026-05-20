@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Most slow mobile sites lose more leads to load time than to bad copy. The fix is usually a few specific decisions, not a rebuild — until it's a rebuild.",
   answerParagraph:
-    "A website loads slowly on mobile for predictable reasons: oversized images that aren't compressed for phones, too many third-party scripts (chat widgets, analytics, social embeds, ad pixels), fonts that load late and shift the layout, and bloated themes or page builders that ship far more code than the page actually needs. Each one shows up clearly in Google's PageSpeed Insights report. Fixing them improves Core Web Vitals, search rankings, and — most importantly for a small business — the share of mobile visitors who stay long enough to call. Tyler Preisser at Preisser Solutions in Hays, Kansas builds custom websites engineered for mobile speed from the first line of code.",
+    "A website loads slowly on mobile for predictable reasons: oversized images that aren't compressed for phones, too many third-party scripts (chat widgets, analytics, social embeds, ad pixels), fonts that load late and shift the layout, and bloated themes or page builders that ship far more code than the page actually needs. Each one shows up clearly in Google's PageSpeed Insights report. Fixing them improves Core Web Vitals, search rankings, and — most importantly for a small business — the share of mobile visitors who stay long enough to call. Preisser Solutions in Hays, Kansas builds custom websites engineered for mobile speed from the first line of code.",
   sections: [
     {
       eyebrow: "Why it matters",
@@ -134,7 +134,7 @@ export const pageData: AeoPageData = {
     { label: "My website isn't generating leads", href: "/insights/small-business-website-not-generating-leads" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
-  ctaHeadline: "Run your site past Tyler",
+  ctaHeadline: "Run your site past us",
   ctaSubcopy:
     "We'll pull your page through PageSpeed Insights together and tell you, in plain language, whether it's optimization or a rebuild — and which moves matter first.",
   primaryCta: {

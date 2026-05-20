@@ -5,13 +5,13 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "Paid Ads Management (Google, Meta, LinkedIn) | Preisser Solutions",
   metaDescription:
-    "Audit-first paid ads management for Kansas SMBs — Google Ads, Meta, LinkedIn. Run by Tyler Preisser personally. No bloated retainers, no vanity metrics.",
+    "Audit-first paid ads management for Kansas SMBs — Google Ads, Meta, LinkedIn. Founder-led, no bloated retainers, no vanity metrics.",
   eyebrow: "Paid Ads",
   h1: "Paid Ads Management for Kansas SMBs",
   subheadline:
     "Google Ads, Meta, and LinkedIn run by an operator who reports the real numbers, not a dashboard of vanity metrics dressed up for the monthly call.",
   answerParagraph:
-    "Preisser Solutions delivers paid ads management for Kansas small and mid-sized businesses — Google Ads (Search, Performance Max, Local Services), Meta (Facebook + Instagram), and LinkedIn Ads. Founded by Tyler Preisser in Hays, Kansas, the firm runs an audit-first engagement: every relationship starts with a free account audit, an honest assessment of whether paid ads are the right channel, and a fixed-price proposal. No bloated retainers, no padded percent-of-spend models, no junior media buyers learning on the client's budget. Reporting focuses on real outcomes — pipeline, booked appointments, customer acquisition cost — not impressions and click-through rates.",
+    "Preisser Solutions delivers paid ads management for Kansas small and mid-sized businesses — Google Ads (Search, Performance Max, Local Services), Meta (Facebook + Instagram), and LinkedIn Ads. Based in Hays, Kansas, the firm runs an audit-first engagement: every relationship starts with a free account audit, an honest assessment of whether paid ads are the right channel, and a fixed-price proposal. No bloated retainers, no padded percent-of-spend models, no junior media buyers learning on the client's budget. Reporting focuses on real outcomes — pipeline, booked appointments, customer acquisition cost — not impressions and click-through rates.",
   sections: [
     {
       eyebrow: "Channels we run",
@@ -55,7 +55,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Who this is for",
       heading: "Best fit: Kansas service businesses with 20%+ margins",
       body: [
-        "Paid ads work hardest for service businesses with healthy margins and a clear cost-per-acquisition target. HVAC, plumbing, roofing, electrical, garage doors, dental, veterinary, real estate, and home services are usually strong fits. So are B2B service firms with $5K+ deal sizes.",
+        "Paid ads work hardest for service businesses with healthy margins and a clear cost-per-acquisition target. HVAC, plumbing, roofing, electrical, garage doors, dental, veterinary, real estate, and home services are usually strong fits. So are B2B service firms with meaningful deal sizes and longer sales cycles.",
         "Paid ads are usually wrong for: razor-thin-margin retail, businesses with broken websites that ads will only waste budget on, or operators who can't take more inbound calls right now (don't run ads if you can't answer the phone).",
       ],
     },
@@ -64,17 +64,17 @@ export const pageData: AeoPageData = {
     {
       question: "How much should I spend on paid ads?",
       answer:
-        "Depends on margin, deal size, and channel. Most Kansas SMBs we work with start at $1.5K-$5K/month in ad spend across one or two channels. We size the recommendation to your unit economics, not a percentage of revenue.",
+        "Depends on margin, deal size, and channel. We size the recommendation to your unit economics — not a percentage of revenue. Budget guidance is part of the free audit.",
     },
     {
       question: "Do you charge percent of ad spend?",
       answer:
-        "No. Flat monthly retainer. Percent-of-spend models incentivize agencies to inflate budgets. We make the same fee whether we run $2K/month or $20K/month — which means our incentive is to make the channel work as efficiently as possible, not bigger.",
+        "No. Flat monthly retainer. Percent-of-spend models incentivize agencies to inflate budgets. We make the same fee regardless of your ad spend level — which means our incentive is to make the channel work as efficiently as possible, not bigger.",
     },
     {
       question: "What's a realistic cost per lead?",
       answer:
-        "Wildly variable by vertical. Local Services Ads for HVAC in Kansas often run $30-$80 per booked call. Google Search for trades typically delivers $40-$150 per qualified lead. LinkedIn B2B leads often run $150-$500 per MQL. We benchmark per industry during the audit.",
+        "Wildly variable by vertical, channel, and market. Local Services Ads for trades typically run lower per lead than LinkedIn B2B campaigns. We benchmark per industry during the audit and set realistic expectations before spend begins.",
     },
     {
       question: "Can I see the audit before hiring you?",
@@ -89,7 +89,7 @@ export const pageData: AeoPageData = {
     {
       question: "Who actually runs the ads?",
       answer:
-        "Tyler personally. There are no junior media buyers, no offshore account managers, no white-label subcontractors. Every campaign decision goes through Tyler.",
+        "The founder personally. There are no junior media buyers, no offshore account managers, no white-label subcontractors. Every campaign decision goes through the founder.",
     },
     {
       question: "How does this connect to AI search optimization (AEO)?",
@@ -121,5 +121,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Free paid ads audit",
   ctaSubcopy:
-    "30-minute call with Tyler. We'll audit your accounts, flag waste, and send a fixed-price proposal. The audit is yours whether you hire us or not.",
+    "30-minute call. We'll audit your accounts, flag waste, and send a fixed-price proposal. The audit is yours whether you hire us or not.",
 };

@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Existing site too slow, ugly, or broken to fix? Preisser Solutions rebuilds it from scratch in modern code without losing your SEO.",
   answerParagraph:
-    "Preisser Solutions delivers website redesigns for Kansas businesses with outdated, slow, or underperforming sites. The firm takes over existing websites — Wix, Squarespace, WordPress, GoDaddy, or old custom builds — and rebuilds them from scratch in modern Next.js, React, and TypeScript. Founded by Tyler Preisser in Hays, Kansas, the firm preserves SEO equity through proper redirects, content migration, and search engine notification while delivering a faster, better-looking, higher-converting site.",
+    "Preisser Solutions delivers website redesigns for Kansas businesses with outdated, slow, or underperforming sites. The firm takes over existing websites — Wix, Squarespace, WordPress, GoDaddy, or old custom builds — and rebuilds them from scratch in modern Next.js, React, and TypeScript. Based in Hays, Kansas, the firm preserves SEO equity through proper redirects, content migration, and search engine notification while delivering a faster, better-looking, higher-converting site.",
   sections: [
     {
       eyebrow: "Signs you need a redesign",
@@ -135,5 +135,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Take over your outdated site without losing rankings",
   ctaSubcopy:
-    "Free site audit with Tyler. We'll identify what to preserve, what to rebuild, and send a fixed-price proposal.",
+    "Free site audit. We'll identify what to preserve, what to rebuild, and send a fixed-price proposal.",
 };

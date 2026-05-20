@@ -21,7 +21,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "The terms that apply to engagements with Preisser Solutions. Written plainly; the long version is in the signed proposal for any specific project.",
   answerParagraph:
-    "Preisser Solutions, founded by Tyler Preisser and based in Hays, Kansas, is a custom software and AI consultancy serving small and mid-sized Kansas businesses. These terms apply to use of preissersolutions.com and to standard engagements. The authoritative terms for any specific client project are the signed written proposal between Preisser Solutions and the client. In case of conflict between this page and a signed proposal, the signed proposal controls.",
+    "Preisser Solutions, based in Hays, Kansas, is a custom software and AI consultancy serving small and mid-sized Kansas businesses. These terms apply to use of preissersolutions.com and to standard engagements. The authoritative terms for any specific client project are the signed written proposal between Preisser Solutions and the client. In case of conflict between this page and a signed proposal, the signed proposal controls.",
   sections: [
     {
       eyebrow: "Acceptance",
@@ -63,14 +63,14 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Payment",
-      heading: "Tiered pricing and payment schedule",
+      heading: "Engagement pricing and payment schedule",
       body: [
-        "Standard pricing follows the three published tiers (Audit, Sprint, Retainer) detailed on the /pricing page. The signed proposal sets the exact price for each engagement.",
+        "All pricing is set in the signed proposal. The proposal is the binding price document for each engagement.",
       ],
       bullets: [
-        "Tier 1 — Business Systems Audit ($1,500-$3,500): typically due in full on acceptance of the proposal.",
-        "Tier 2 — Build Sprint ($5,000-$25,000 per scoped sprint): typically 50% on proposal acceptance, 50% on delivery acceptance.",
-        "Tier 3 — Growth & Automation Retainer ($3,500-$12,000/month): billed monthly in advance.",
+        "Audit-tier engagements: typically due in full on acceptance of the proposal.",
+        "Build Sprint engagements: typically 50% on proposal acceptance, 50% on delivery acceptance.",
+        "Retainer engagements: billed monthly in advance.",
         "Payment terms (NET, late fees, currency) are specified in the proposal. Standard is NET 14 unless otherwise agreed.",
         "Invoicing via Stripe or direct bank transfer.",
       ],

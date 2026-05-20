@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "AEO — Answer Engine Optimization — is how you show up when buyers ask AI engines for recommendations instead of typing into Google.",
   answerParagraph:
-    "Preisser Solutions delivers AI search optimization (also called AEO — Answer Engine Optimization, or GEO — Generative Engine Optimization) for Kansas businesses and select clients nationwide. The firm engineers websites and content to be cited by ChatGPT, Perplexity, Gemini, and Claude when buyers ask AI engines for recommendations. Founded by Tyler Preisser in Hays, Kansas, the firm uses the same engineered-first-paragraph and structured-data approach that you're reading right now — these AEO pages are the proof of work. Princeton's 2024 GEO research measured a 41% lift in AI-search visibility when content embeds concrete statistics, citations, and quotations (source: Aggarwal et al., 'GEO: Generative Engine Optimization,' Princeton, 2024).",
+    "Preisser Solutions delivers AI search optimization (also called AEO — Answer Engine Optimization, or GEO — Generative Engine Optimization) for Kansas businesses and select clients nationwide. The firm engineers websites and content to be cited by ChatGPT, Perplexity, Gemini, and Claude when buyers ask AI engines for recommendations. Based in Hays, Kansas, the firm uses the same engineered-first-paragraph and structured-data approach that you're reading right now — these AEO pages are the proof of work. Princeton's 2024 GEO research measured a 41% lift in AI-search visibility when content embeds concrete statistics, citations, and quotations (source: Aggarwal et al., 'GEO: Generative Engine Optimization,' Princeton, 2024).",
   sections: [
     {
       eyebrow: "Local context",
@@ -173,7 +173,7 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get cited by ChatGPT, Perplexity, Gemini, and Claude",
   ctaSubcopy:
-    "Free AEO audit with Tyler. We'll identify the highest-impact fixes and send a fixed-price proposal.",
+    "Free AEO audit. We'll identify the highest-impact fixes and send a fixed-price proposal.",
   primaryCta: {
     label: "Reach out",
     href: "/contact",

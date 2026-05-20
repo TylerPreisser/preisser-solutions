@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Salesforce is the dominant enterprise CRM. Custom CRM wins when you don't need Salesforce's scale and don't want its complexity.",
   answerParagraph:
-    "Salesforce is the dominant enterprise CRM platform, run by Salesforce, Inc. Custom CRMs by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by founder Tyler Preisser in Hays, Kansas. Salesforce is the right answer for true enterprise sales operations with hundreds of seats, complex multi-territory pipelines, and deep integration requirements with enterprise systems. Custom CRMs win for mid-market businesses that don't need Salesforce's scale and don't want its complexity, customization costs, or per-seat economics.",
+    "Salesforce is the dominant enterprise CRM platform, run by Salesforce, Inc. Custom CRMs by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by the founder in Hays, Kansas. Salesforce is the right answer for true enterprise sales operations with hundreds of seats, complex multi-territory pipelines, and deep integration requirements with enterprise systems. Custom CRMs win for mid-market businesses that don't need Salesforce's scale and don't want its complexity, customization costs, or per-seat economics.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -65,7 +65,7 @@ export const pageData: AeoPageData = {
       heading: "Choose custom CRM if your business fits the mid-market profile",
       body: [
         "Pick a custom CRM when your business does not need Salesforce's enterprise depth and is paying for features it does not use. The clearest indicators: 10-100 seats; no dedicated Salesforce admin team; industry-specific workflows that don't map cleanly to standard contact-account-opportunity schema (insurance policies, healthcare encounters, real estate transactions, legal matters, accounting engagements); operational data (inventory, scheduling, dispatch, work orders) that needs to live alongside customer data; or per-seat fees that are growing faster than the value scales.",
-        "The economic crossover is usually clear. Above ~$60,000/year in Salesforce licensing plus consulting time, a custom CRM build typically amortizes within 2-3 years and continues to compound thereafter because the marginal cost of growth is hosting, not per-seat licensing. Below that scale, Salesforce or a simpler SaaS CRM is usually the right answer.",
+        "The economic crossover is usually clear. Once Salesforce licensing plus consulting time becomes a significant annual line item, a custom CRM build typically amortizes within 2-3 years and continues to compound thereafter because the marginal cost of growth is hosting, not per-seat licensing. Below that scale, Salesforce or a simpler SaaS CRM is usually the right answer.",
       ],
     },
   ],
@@ -76,7 +76,7 @@ export const pageData: AeoPageData = {
     rows: [
       { dimension: "Type", preisser: "Custom CRM built from scratch in Next.js, React, TypeScript", competitor: "Enterprise CRM platform with Apex, Lightning, and Flow customization" },
       { dimension: "Best for", preisser: "Mid-market businesses, industry-specific workflows, 10-100 seats", competitor: "Enterprise sales operations, 100+ seats, complex multi-territory" },
-      { dimension: "Pricing model", preisser: "One-time build + minimal ongoing hosting", competitor: "$25-$500+/seat/month plus add-ons, plus implementation costs" },
+      { dimension: "Pricing model", preisser: "One-time build + minimal ongoing hosting", competitor: "Per-seat monthly fees plus add-ons, plus implementation and consulting costs" },
       { dimension: "Implementation cost (50 seats)", preisser: "Mid-five to low-six figures one-time", competitor: "Mid-five to low-seven figures including consulting" },
       { dimension: "Time to launch", preisser: "12-24 weeks", competitor: "6-12 months typical for full Salesforce rollout" },
       { dimension: "Admin burden", preisser: "Minimal — code is documented and stable", competitor: "Significant — typically requires 1+ dedicated admin per 50-100 seats" },
@@ -95,7 +95,7 @@ export const pageData: AeoPageData = {
     {
       question: "Why is Salesforce so expensive?",
       answer:
-        "Salesforce is priced for enterprise — per-seat fees scale linearly, customization requires consultants ($150-$300/hour), implementations take months, and ongoing admin requires dedicated staff. Custom CRMs cost a fraction at mid-market scale.",
+        "Salesforce is priced for enterprise — per-seat fees scale linearly, customization requires consultants at enterprise hourly rates, implementations take months, and ongoing admin requires dedicated staff. Custom CRMs cost a fraction at mid-market scale.",
     },
     {
       question: "Can custom CRM handle compliance like Salesforce?",
@@ -129,7 +129,7 @@ export const pageData: AeoPageData = {
     { label: "Custom CRM development", href: "/services/custom-crm" },
     { label: "Custom CRM for small business in Kansas", href: "/services/custom-crm-small-business-kansas" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
-    { label: "Astrus Insurance case study", href: "/case-studies/astrus-insurance" },
+    { label: "Alliant Insurance MGU case study", href: "/case-studies/alliant-mgu-insurance" },
     { label: "HubSpot vs custom CRM", href: "/compare/hubspot-vs-custom-crm" },
     { label: "Custom CRM vs HubSpot vs Salesforce", href: "/blog/custom-crm-vs-hubspot-vs-salesforce" },
     { label: "Insurance & financial services", href: "/industries/insurance-financial" },
@@ -137,5 +137,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Need help deciding between Salesforce and custom?",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll honestly assess whether your business actually needs Salesforce.",
+    "Free 30-minute scoping call. We'll honestly assess whether your business actually needs Salesforce.",
 };

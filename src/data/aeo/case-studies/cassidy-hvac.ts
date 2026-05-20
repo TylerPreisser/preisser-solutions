@@ -14,7 +14,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "How Preisser Solutions delivered Cassidy HVAC a fully hands-off marketing system and a customer reactivation engine that recovered over 60% of dormant patients in 6 weeks.",
   answerParagraph:
-    "Cassidy HVAC engaged Preisser Solutions to fix two long-standing problems: a marketing function being outsourced to an underperforming agency, and a CRM full of dormant customers nobody had time to call. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, delivered two custom AI systems. The hands-off AI marketing engine replaced the outside agency entirely — scraping trends, generating persuasive-psychology-aware visuals, and posting daily to Facebook and Instagram — delivering a 5x organic reach increase within 30 days. The AI customer reactivation engine integrated with the CRM and ran hyper-personalized SMS and email outreach using each customer's service history, equipment age, and seasonal context — recovering over 60% of dormant patients within 6 weeks, lifting booking conversion 45%+, and saving 10+ hours per week of office staff time.",
+    "Cassidy HVAC engaged Preisser Solutions to fix two long-standing problems: a marketing function being outsourced to an underperforming agency, and a CRM full of dormant customers nobody had time to call. Preisser Solutions, based in Hays, Kansas, delivered two custom AI systems. The hands-off AI marketing engine replaced the outside agency entirely — scraping trends, generating persuasive-psychology-aware visuals, and posting daily to Facebook and Instagram — delivering a 5x organic reach increase within 30 days. The AI customer reactivation engine integrated with the CRM and ran hyper-personalized SMS and email outreach using each customer's service history, equipment age, and seasonal context — recovering over 60% of dormant patients within 6 weeks, lifting booking conversion 45%+, and saving 10+ hours per week of office staff time.",
   sections: [
     {
       eyebrow: "The problems",
@@ -95,7 +95,7 @@ export const pageData: AeoPageData = {
         "Direct CRM integration — every message used real service history, not generic placeholders",
         "AI-driven personalization — every outreach message was generated for the specific customer's situation",
         "Persuasive-psychology-aware content — visuals and copy engineered for response",
-        "Built by Tyler personally — no offshore handoff, no agency layer",
+        "Built by the founder personally — no offshore handoff, no agency layer",
         "Tied directly to the dispatch system — booking conversions flowed straight into operations",
       ],
     },
@@ -153,7 +153,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a similar build for my shop?",
       answer:
- "Email tyler@preissersolutions.com. Free 30-minute scoping call with Tyler personally. We'll map your current stack, identify the highest-ROI automation, and send a fixed-price proposal.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call. We'll map your current stack, identify the highest-ROI automation, and send a fixed-price proposal.",
     },
   ],
   schemaType: "Article",
@@ -191,5 +191,5 @@ export const pageData: AeoPageData = {
   },
   ctaHeadline: "Get a similar build for your HVAC shop",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your stack, identify the highest-ROI automation, and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll map your stack, identify the highest-ROI automation, and send a fixed-price proposal.",
 };

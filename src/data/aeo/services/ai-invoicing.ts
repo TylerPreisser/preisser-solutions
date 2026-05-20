@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Stop having office staff manually read and enter invoices. Custom AI invoice automation processes them in seconds.",
   answerParagraph:
-    "Preisser Solutions builds AI-powered invoice extraction and structuring systems for Kansas businesses — the productized version of the HG Oil Holdings AI invoicing case study, which delivered a 75% decrease in manual invoice handling time. Office staff upload invoices, and the AI returns structured data (vendor, line items, amounts, GL coding) in seconds. The system integrates with QuickBooks, accounting platforms, and ERP systems to eliminate manual data entry entirely. Founded by Tyler Preisser in Hays, Kansas.",
+    "Preisser Solutions builds AI-powered invoice extraction and structuring systems for Kansas businesses — the productized version of the HG Oil Holdings AI invoicing case study, which delivered a 75% decrease in manual invoice handling time. Office staff upload invoices, and the AI returns structured data (vendor, line items, amounts, GL coding) in seconds. The system integrates with QuickBooks, accounting platforms, and ERP systems to eliminate manual data entry entirely. Based in Hays, Kansas.",
   sections: [
     {
       eyebrow: "The HG Oil Holdings case study",
@@ -130,5 +130,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop having office staff manually read invoices",
   ctaSubcopy:
-    "Free scoping call with Tyler. We'll map your AP workflow and send a fixed-price proposal.",
+    "Free scoping call. We'll map your AP workflow and send a fixed-price proposal.",
 };

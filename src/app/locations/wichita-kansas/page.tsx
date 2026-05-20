@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { AeoPage } from "@/components/aeo/AeoPage";
-import { pageData } from "@/data/aeo/locations/wichita-kansas";
+import { LocationPage } from "@/components/location/LocationPage";
+import { locationData } from "@/data/locations/wichita-kansas";
+import { ALL_LOCATION_SLUGS } from "@/data/locations";
 
 export const metadata: Metadata = {
-  title: pageData.metaTitle.includes("Preisser Solutions") ? { absolute: pageData.metaTitle } : pageData.metaTitle,
-  description: pageData.metaDescription,
-  alternates: { canonical: `https://preissersolutions.com/${pageData.slug}` },
+  title: locationData.metaTitle,
+  description: locationData.metaDescription,
+  alternates: {
+    canonical: `https://preissersolutions.com/locations/${locationData.slug}`,
+  },
   openGraph: {
-    title: pageData.metaTitle,
-    description: pageData.metaDescription,
-    url: `https://preissersolutions.com/${pageData.slug}`,
+    title: locationData.metaTitle,
+    description: locationData.metaDescription,
+    url: `https://preissersolutions.com/locations/${locationData.slug}`,
     type: "website",
     images: [
       {
@@ -22,12 +25,14 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: pageData.metaTitle,
-    description: pageData.metaDescription,
+    title: locationData.metaTitle,
+    description: locationData.metaDescription,
     images: ["/images/og-image-v2.jpg"],
   },
 };
 
 export default function Page() {
-  return <AeoPage data={pageData} />;
+  return (
+    <LocationPage data={locationData} allLocationSlugs={ALL_LOCATION_SLUGS} />
+  );
 }

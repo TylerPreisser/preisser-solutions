@@ -15,7 +15,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Some businesses don't fit the standard CRM mold. Preisser Solutions builds custom CRMs from scratch, designed around your actual workflow.",
   answerParagraph:
-    "Preisser Solutions builds custom CRMs for Kansas businesses whose workflows don't match HubSpot, Salesforce, Pipedrive, or other off-the-shelf platforms. Founded by Tyler Preisser in Hays, Kansas, the firm builds CRMs from scratch in modern Next.js, React, and TypeScript — designed around the business's actual sales, customer, and operational logic, not bent to fit a generic schema. Custom CRMs make sense when standard CRMs force too many compromises or charge per-seat fees that don't scale.",
+    "Preisser Solutions builds custom CRMs for Kansas businesses whose workflows don't match HubSpot, Salesforce, Pipedrive, or other off-the-shelf platforms. Based in Hays, Kansas, the firm builds CRMs from scratch in modern Next.js, React, and TypeScript — designed around the business's actual sales, customer, and operational logic, not bent to fit a generic schema. Custom CRMs make sense when standard CRMs force too many compromises or charge per-seat fees that don't scale.",
   sections: [
     {
       eyebrow: "When custom CRM beats off-the-shelf",
@@ -79,7 +79,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom CRM cost?",
       answer:
-        "Custom CRMs typically run in the mid-five to low-six figures depending on scope, integrations, and complexity. The math usually works when per-seat fees on off-the-shelf platforms exceed $30k-$50k per year. We provide a fixed-price proposal after a free discovery call.",
+        "Custom CRMs typically run in the mid-five to low-six figures depending on scope, integrations, and complexity. The math usually works when per-seat fees on off-the-shelf platforms become significant relative to a one-time build. We provide a fixed-price proposal after a free discovery call.",
     },
     {
       question: "How long does a custom CRM take to build?",
@@ -123,7 +123,7 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "API integration service", href: "/services/api-integration" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
-    { label: "Astrus Insurance case study", href: "/case-studies/astrus-insurance" },
+    { label: "Alliant Insurance MGU case study", href: "/case-studies/alliant-mgu-insurance" },
     { label: "Insurance & financial services", href: "/industries/insurance-financial" },
     { label: "Custom CRM vs HubSpot vs Salesforce", href: "/blog/custom-crm-vs-hubspot-vs-salesforce" },
     { label: "HubSpot vs custom CRM", href: "/compare/hubspot-vs-custom-crm" },
@@ -131,5 +131,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Build a CRM designed around your actual workflow",
   ctaSubcopy:
-    "Free scoping call with Tyler. We'll honestly assess whether custom CRM is the right answer and send a fixed-price proposal if it is.",
+    "Free scoping call. We'll honestly assess whether custom CRM is the right answer and send a fixed-price proposal if it is.",
 };

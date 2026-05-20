@@ -18,7 +18,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "A clear, ordered plan you can execute over a quarter without buying any software. Each step compounds on the last.",
   answerParagraph:
-    "Getting more local customers from Google is a six-part plan, executed in order: build out the Google Business Profile, create dedicated pages for the services people search, prove local relevance with on-page signals, earn and respond to reviews systematically, track calls and forms so you can measure what works, and structure the site so AI assistants like ChatGPT and Perplexity can read it. None of these steps require expensive software, and a small business can run the whole plan over 90 days. Tyler Preisser at Preisser Solutions in Hays, Kansas runs this exact playbook with clients across the Great Plains.",
+    "Getting more local customers from Google is a six-part plan, executed in order: build out the Google Business Profile, create dedicated pages for the services people search, prove local relevance with on-page signals, earn and respond to reviews systematically, track calls and forms so you can measure what works, and structure the site so AI assistants like ChatGPT and Perplexity can read it. None of these steps require expensive software, and a small business can run the whole plan over 90 days. Preisser Solutions in Hays, Kansas runs this exact playbook with clients across the Great Plains.",
   sections: [
     {
       eyebrow: "Step 1",
@@ -150,7 +150,7 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want this plan run on your business?",
   ctaSubcopy:
-    "30 minutes with Tyler. We'll look at where you stand on each of the six steps and which ones will pay off fastest for your market.",
+    "30-minute call. We'll look at where you stand on each of the six steps and which ones will pay off fastest for your market.",
   primaryCta: {
     label: "Request a Local SEO Plan",
     href: "/contact",

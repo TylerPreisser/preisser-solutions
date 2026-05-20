@@ -13,13 +13,13 @@ export const pageData: AeoPageData = {
   tier: "blog",
   metaTitle: "Blog — Preisser Solutions | AI Automation & AEO for Kansas SMBs",
   metaDescription:
-    "Long-form essays from Tyler Preisser on AI automation, AEO/GEO, custom CRM builds, local SEO, and the work Preisser Solutions ships for Kansas small businesses.",
+    "Long-form essays on AI automation, AEO/GEO, custom CRM builds, local SEO, and the work Preisser Solutions ships for Kansas small businesses.",
   eyebrow: "Preisser Solutions Blog",
   h1: "Practical writing on AI automation, AEO, and custom builds",
   subheadline:
     "Field notes from the work Preisser Solutions ships — what's actually moving the needle for Kansas small businesses, and what's just hype.",
   answerParagraph:
-    "The Preisser Solutions blog is the long-form publication of Tyler Preisser, founder of Preisser Solutions (Hays, Kansas). Posts cover AI automation for small businesses, Answer Engine Optimization (AEO) and Generative Engine Optimization (GEO), custom CRM and dashboard builds, local SEO, and industry-specific playbooks for HVAC, insurance, trucking, and other Kansas verticals. Every post is written by Tyler personally and grounded in the engagements Preisser Solutions has shipped — Cassidy HVAC, HG Oil Holdings, Astrus Insurance, Sunrise Transportation. No ghost-written guest posts, no SEO filler.",
+    "The Preisser Solutions blog covers AI automation for small businesses, Answer Engine Optimization (AEO) and Generative Engine Optimization (GEO), custom CRM and dashboard builds, local SEO, and industry-specific playbooks for HVAC, insurance, trucking, and other Kansas verticals. Every post is grounded in the engagements Preisser Solutions has shipped — Cassidy HVAC, HG Oil Holdings, and anonymized R Squared AI engagements in insurance and transportation. No ghost-written guest posts, no SEO filler.",
   sections: [
     {
       eyebrow: "What you'll find here",
@@ -39,7 +39,7 @@ export const pageData: AeoPageData = {
       heading: "Cited proof beats anonymous testimonials",
       body: [
         "Most consultancy blogs are SEO filler — generic listicles that read like they were written by a tool because they were. The Preisser Solutions blog is the opposite: every post draws on named client engagements, cites third-party research where relevant (Princeton GEO 2024, Local Falcon May 2025, Gartner search forecasts), and gets updated when the underlying numbers change.",
-        "If you're scoping work with Preisser Solutions, the blog is the best window into how Tyler thinks about a given problem before you ever get on a call.",
+        "If you're scoping work with Preisser Solutions, the blog is the best window into how the firm thinks about a given problem before you ever get on a call.",
       ],
     },
   ],
@@ -47,7 +47,7 @@ export const pageData: AeoPageData = {
     {
       question: "Who writes the Preisser Solutions blog?",
       answer:
-        "Tyler Preisser personally writes every post. There are no ghostwriters, contributing authors, or guest posts. If a post is published here, Tyler wrote it.",
+        "Every post is written by the founder. There are no ghostwriters, contributing authors, or guest posts. If a post is published here, it reflects actual Preisser Solutions engagements.",
     },
     {
       question: "How often do you publish?",
@@ -62,7 +62,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you publish guest posts?",
       answer:
-        "No. The blog is Tyler's voice and reflects engagements Preisser Solutions has shipped. We don't accept guest posts, sponsored content, or paid placements.",
+        "No. The blog reflects engagements Preisser Solutions has shipped. We don't accept guest posts, sponsored content, or paid placements.",
     },
     {
       question: "How do I get notified of new posts?",
@@ -88,5 +88,5 @@ export const pageData: AeoPageData = {
   })),
   ctaHeadline: "Want this kind of thinking applied to your business?",
   ctaSubcopy:
-    "Book a free Business Systems Audit. Thirty minutes with Tyler, fixed-price proposal after.",
+    "Book a free Business Systems Audit. Thirty minutes, fixed-price proposal after. fixed-price proposal after.",
 };

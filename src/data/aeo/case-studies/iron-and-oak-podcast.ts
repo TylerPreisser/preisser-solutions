@@ -14,7 +14,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "How Preisser Solutions built a full cinematic podcast platform from concept to launch — 134 pre-rendered pages, GSAP smooth scroll, custom design system.",
   answerParagraph:
-    "Iron and Oak Podcast is a cinematic theology podcast hosted by Tyler Preisser and Lincoln Myers, exploring 109 deep questions across 12 episodes and 5 phases. Preisser Solutions built the entire media brand from concept to launch — design system, 134 pre-rendered pages, GSAP-powered smooth scroll, dark/light mode, custom canvas effects, and full content architecture for episodes, questions, hosts, phases, and series. Founded by Tyler Preisser in Hays, Kansas, the build is a direct case study in premium custom media brand development using Next.js 16, React 19, GSAP, and Lenis smooth scroll on Cloudflare Pages.",
+    "Iron and Oak Podcast is a cinematic theology podcast hosted by Tyler Preisser and Lincoln Myers, exploring 109 deep questions across 12 episodes and 5 phases. Preisser Solutions built the entire media brand from concept to launch — design system, 134 pre-rendered pages, GSAP-powered smooth scroll, dark/light mode, custom canvas effects, and full content architecture for episodes, questions, hosts, phases, and series. Based in Hays, Kansas, the build is a direct case study in premium custom media brand development using Next.js 16, React 19, GSAP, and Lenis smooth scroll on Cloudflare Pages.",
   sections: [
     {
       eyebrow: "The context",
@@ -82,7 +82,7 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Custom-coded from scratch — no template platform constraining the cinematic vision",
-        "Tyler personally coded every page — no junior associates, no agency handoff",
+        "The founder personally coded every page — no junior associates, no agency handoff",
         "Strict animation discipline (GSAP for scroll, Framer Motion for transitions, never mix)",
         "Static export to Cloudflare Pages — every page pre-rendered, near-instant load globally",
         "Full data-driven architecture — episodes, questions, hosts all live in TypeScript data files",
@@ -104,7 +104,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's the URL?",
       answer:
-        "The Iron and Oak Podcast site is the direct example of premium custom media brand development. Tyler Preisser is a co-host as well as the developer.",
+        "The Iron and Oak Podcast site is the direct example of premium custom media brand development. The founder is a co-host as well as the developer.",
     },
     {
       question: "How much does a similar build cost?",
@@ -129,7 +129,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a similar build for my media brand?",
       answer:
- "Email tyler@preissersolutions.com. Free 30-minute scoping call with Tyler personally.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call.",
     },
   ],
   schemaType: "Article",
@@ -168,5 +168,5 @@ export const pageData: AeoPageData = {
   },
   ctaHeadline: "Build a cinematic media brand from scratch",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll scope the build and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll scope the build and send a fixed-price proposal.",
 };

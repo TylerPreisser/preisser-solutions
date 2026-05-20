@@ -88,7 +88,7 @@ export function MarCommandDashboard() {
       aria-label="MarCommand dashboard mockup showing live channel performance data. Sample data for demonstration only."
       style={{ position: "relative" }}
     >
-      {/* R-036: explicit "Demo" badge so visitors understand the $0 / 0.0x
+      {/* R-036: explicit "Demo" badge so visitors understand the 0.0k / 0.0x
           placeholders are intentional sample values, not a broken integration. */}
       <span
         aria-label="Demo dashboard — illustrative sample"
@@ -115,13 +115,13 @@ export function MarCommandDashboard() {
       {/* Top metrics */}
       <div className="mc3-metrics">
         <div className="mc3-metric">
-          <div className="mc3-m-label">Ad spend</div>
-          <div className="mc3-m-val" data-c="4827" data-p="$">$0</div>
+          <div className="mc3-m-label">Channel spend</div>
+          <div className="mc3-m-val"><span data-c="4.8" data-d="1">0.0</span>k units</div>
           <div className="mc3-m-delta down">↓ 8% vs prior 30d</div>
         </div>
         <div className="mc3-metric">
-          <div className="mc3-m-label">Attributable revenue</div>
-          <div className="mc3-m-val" data-c="29393" data-p="$">$0</div>
+          <div className="mc3-m-label">Attributed revenue</div>
+          <div className="mc3-m-val"><span data-c="29.4" data-d="1">0.0</span>k units</div>
           <div className="mc3-m-delta up">↑ 41% vs prior 30d</div>
         </div>
         <div className="mc3-metric">
@@ -165,9 +165,9 @@ export function MarCommandDashboard() {
             Google Local Service Ads{" "}
             <span className="mc3-pill" style={{ background: "rgba(16,208,112,0.15)", color: "#10D070" }}>Top</span>
           </div>
-          <div className="mc3-num lit">$1,200</div>
+          <div className="mc3-num lit">1.2k</div>
           <div className="mc3-num">14</div>
-          <div className="mc3-num lit">$9,840</div>
+          <div className="mc3-num lit">9.8k</div>
           <div className="mc3-roi">
             <div className="mc3-bar">
               <div className="mc3-fill" style={{ "--w": 1, background: "#10D070" } as React.CSSProperties} />
@@ -187,9 +187,9 @@ export function MarCommandDashboard() {
             Email &amp; SMS Reactivation{" "}
             <span className="mc3-pill" style={{ background: "rgba(16,208,112,0.15)", color: "#10D070" }}>Top</span>
           </div>
-          <div className="mc3-num lit">$180</div>
+          <div className="mc3-num lit">0.2k</div>
           <div className="mc3-num">21</div>
-          <div className="mc3-num lit">$2,232</div>
+          <div className="mc3-num lit">2.2k</div>
           <div className="mc3-roi">
             <div className="mc3-bar">
               <div className="mc3-fill" style={{ "--w": 1, background: "#10D070" } as React.CSSProperties} />
@@ -213,9 +213,9 @@ export function MarCommandDashboard() {
             TikTok In-Feed Ads{" "}
             <span className="mc3-pill" style={{ background: "rgba(13,149,232,0.18)", color: "#4FB7F0" }}>↑ Rising</span>
           </div>
-          <div className="mc3-num lit">$327</div>
+          <div className="mc3-num lit">0.3k</div>
           <div className="mc3-num">7</div>
-          <div className="mc3-num lit">$2,453</div>
+          <div className="mc3-num lit">2.5k</div>
           <div className="mc3-roi">
             <div className="mc3-bar">
               <div className="mc3-fill" style={{ "--w": 0.91, background: "#4FB7F0" } as React.CSSProperties} />
@@ -235,9 +235,9 @@ export function MarCommandDashboard() {
             YouTube Shorts Ads{" "}
             <span className="mc3-pill" style={{ background: "rgba(13,149,232,0.18)", color: "#4FB7F0" }}>↑ Rising</span>
           </div>
-          <div className="mc3-num lit">$620</div>
+          <div className="mc3-num lit">0.6k</div>
           <div className="mc3-num">9</div>
-          <div className="mc3-num lit">$3,968</div>
+          <div className="mc3-num lit">4.0k</div>
           <div className="mc3-roi">
             <div className="mc3-bar">
               <div className="mc3-fill" style={{ "--w": 0.78, background: "#4FB7F0" } as React.CSSProperties} />
@@ -257,9 +257,9 @@ export function MarCommandDashboard() {
             </svg>
           </div>
           <div className="mc3-cn">Google Performance Max</div>
-          <div className="mc3-num lit">$1,500</div>
+          <div className="mc3-num lit">1.5k</div>
           <div className="mc3-num">18</div>
-          <div className="mc3-num lit">$7,500</div>
+          <div className="mc3-num lit">7.5k</div>
           <div className="mc3-roi">
             <div className="mc3-bar">
               <div className="mc3-fill" style={{ "--w": 0.61, background: "#4FB7F0" } as React.CSSProperties} />
@@ -281,9 +281,9 @@ export function MarCommandDashboard() {
             Instagram Reels Ads{" "}
             <span className="mc3-pill" style={{ background: "rgba(245,166,35,0.18)", color: "#F5A623" }}>Drag</span>
           </div>
-          <div className="mc3-num lit">$1,000</div>
+          <div className="mc3-num lit">1.0k</div>
           <div className="mc3-num">6</div>
-          <div className="mc3-num lit">$3,400</div>
+          <div className="mc3-num lit">3.4k</div>
           <div className="mc3-roi">
             <div className="mc3-bar">
               <div className="mc3-fill" style={{ "--w": 0.41, background: "#F5A623" } as React.CSSProperties} />
@@ -461,9 +461,9 @@ export function MarCommandDashboard() {
             <div className="mc3-pcard-cat">Budget</div>
           </div>
           <div className="mc3-pcard-body">
-            Shift <b>$300</b> from <b>Instagram Reels</b> → <b>Google LSA</b>. 2.4x stronger conversion.
+            Shift <b>0.3k units</b> from <b>Instagram Reels</b> → <b>Google LSA</b>. 2.4x stronger conversion.
           </div>
-          <div className="mc3-pcard-lift">+ $1,710 / mo projected</div>
+          <div className="mc3-pcard-lift">+ 1.7k units / mo projected</div>
           <div className="mc3-pcard-act">
             <button type="button" className="mc3-pbtn" aria-disabled="true">Adjust</button>
             <button type="button" className="mc3-pbtn p" aria-disabled="true">Approve</button>

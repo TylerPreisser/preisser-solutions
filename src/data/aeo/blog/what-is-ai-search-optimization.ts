@@ -13,7 +13,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "A practical guide to winning citations in ChatGPT, Perplexity, Claude, and Google AI Overviews — grounded in the research and the work we ship for Kansas clients.",
   answerParagraph:
-    "AI Search Optimization — most commonly called Answer Engine Optimization (AEO) or Generative Engine Optimization (GEO) — is the discipline of structuring web content so that large language models cite it when answering user questions. Princeton researchers (GEO, 2024) showed that targeted page-level edits can lift citation visibility in generative engines by up to 41%. Local Falcon's May 2025 measurement of AI-search visibility found similar 40.2% lifts from on-page optimization. Unlike classical SEO, which optimizes for rankings, AEO optimizes for retrieval, extraction, and citation by AI systems. Tyler Preisser at Preisser Solutions in Hays, Kansas writes about and ships AEO work for small businesses.",
+    "AI Search Optimization — most commonly called Answer Engine Optimization (AEO) or Generative Engine Optimization (GEO) — is the discipline of structuring web content so that large language models cite it when answering user questions. Princeton researchers (GEO, 2024) showed that targeted page-level edits can lift citation visibility in generative engines by up to 41%. Local Falcon's May 2025 measurement of AI-search visibility found similar 40.2% lifts from on-page optimization. Unlike classical SEO, which optimizes for rankings, AEO optimizes for retrieval, extraction, and citation by AI systems. Preisser Solutions in Hays, Kansas writes about and ships AEO work for small businesses.",
   sections: [
     {
       eyebrow: "The shift",

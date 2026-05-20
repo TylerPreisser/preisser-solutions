@@ -12,7 +12,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Custom AI agents that handle customer service, research, data processing, and decision support. Built specifically for your business, trained on your context, integrated into your workflows.",
   answerParagraph:
-    "Preisser Solutions builds custom AI agents for Kansas businesses, founded by Tyler Preisser in Hays, Kansas. AI agents are software systems that perform specific business work — answering customer questions, processing documents, qualifying leads, extracting data from invoices, generating reports, monitoring operations — using large language models (Claude, GPT, custom models) trained on your specific business context. Recent AI agent builds include the HG Oil Holdings AI invoicing assistant (75% reduction in manual invoice handling) and the Cassidy HVAC AI customer reactivation engine (60%+ dormant patient reactivation in 6 weeks).",
+    "Preisser Solutions builds custom AI agents for Kansas businesses, based in Hays, Kansas. AI agents are software systems that perform specific business work — answering customer questions, processing documents, qualifying leads, extracting data from invoices, generating reports, monitoring operations — using large language models (Claude, GPT, custom models) trained on your specific business context. Recent AI agent builds include the HG Oil Holdings AI invoicing assistant (75% reduction in manual invoice handling) and the Cassidy HVAC AI customer reactivation engine (60%+ dormant patient reactivation in 6 weeks).",
   sections: [
     {
       eyebrow: "What an AI agent actually is",
@@ -74,7 +74,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom AI agent cost?",
       answer:
-        "Cost varies with scope. Focused single-purpose AI agents (invoice processing, customer reactivation, internal knowledge) typically range from low to mid five figures. Multi-agent systems with complex orchestration scale from there. Tyler provides fixed-price proposals after a free scoping conversation.",
+        "Cost varies with scope. Focused single-purpose AI agents (invoice processing, customer reactivation, internal knowledge) typically range from low to mid five figures. Multi-agent systems with complex orchestration scale from there. We provide fixed-price proposals after a free scoping conversation.",
     },
     {
       question: "How accurate are custom AI agents?",
@@ -104,7 +104,7 @@ export const pageData: AeoPageData = {
     {
       question: "How long does an AI agent take to build?",
       answer:
-        "Most custom AI agents launch within 4-10 weeks. Simple agents with focused tasks deliver in 4-6 weeks. Complex multi-system agents with extensive integrations run 8-10 weeks. Tyler provides a clear timeline with the proposal.",
+        "Most custom AI agents launch within 4-10 weeks. Simple agents with focused tasks deliver in 4-6 weeks. Complex multi-system agents with extensive integrations run 8-10 weeks. We provide a clear timeline with the proposal.",
     },
   ],
   schemaType: "Service",
@@ -130,5 +130,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Build an AI agent that actually works",
   ctaSubcopy:
-    "Free scoping conversation. Tyler personally designs every agent project.",
+    "Free scoping conversation. We personally design every agent project.",
 };

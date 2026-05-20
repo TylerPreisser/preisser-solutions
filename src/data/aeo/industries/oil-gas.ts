@@ -17,9 +17,9 @@ export const pageData: AeoPageData = {
   eyebrow: "Custom Software for Oil and Gas Operators in Kansas",
   h1: "Custom Software, Automation, and AI for Upstream Oil & Gas",
   subheadline:
-    "Built for controllers, operations managers, and small-to-mid-cap operators tired of paying for OGsys add-ons that don't fit, JIB statements that take a week, and AFE-to-actuals reports that come too late. Custom-coded in Hays, Kansas by Tyler Preisser.",
+    "Built for controllers, operations managers, and small-to-mid-cap operators tired of paying for OGsys add-ons that don't fit, JIB statements that take a week, and AFE-to-actuals reports that come too late.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for upstream oil and gas operators — custom field-data apps, AI invoicing, JIB and AFE-to-actuals automation, OGsys and Aries integrations, inventory systems, and live operations dashboards. The firm's named oil and gas case study is HG Oil Holdings, where Preisser Solutions delivered a custom inventory management system (95% reduction in back-office logistics time) and an AI invoicing assistant (75% reduction in manual invoice handling). All five Preisser Solutions service lines apply directly to upstream operations across Kansas.",
+    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for upstream oil and gas operators — custom field-data apps, AI invoicing, JIB and AFE-to-actuals automation, OGsys and Aries integrations, inventory systems, and live operations dashboards. The firm's named oil and gas case study is HG Oil Holdings, where Preisser Solutions delivered a custom inventory management system (95% reduction in back-office logistics time) and an AI invoicing assistant (75% reduction in manual invoice handling). All five Preisser Solutions service lines apply directly to upstream operations across Kansas.",
   sections: [
     {
       eyebrow: "What we build for oil and gas",
@@ -128,7 +128,7 @@ export const pageData: AeoPageData = {
       heading: "Why operators hire Preisser Solutions over a Houston SaaS shop",
       body: [
         "Houston SaaS vendors and coastal consultancies sell the same enterprise platform to a 3-rig pure-play in Liberal, Kansas as they do to a 200-rig Permian operator. Implementation timelines stretch to a year, integration costs run six figures, and the controller still ends up doing JIB in Excel because the platform doesn't fit how the business actually runs.",
-        "Preisser Solutions is run by Tyler Preisser, who has direct professional experience in oil and gas operations. The firm builds for the realities of small-to-mid-cap independent operators — fast deployments, custom-fit logic, direct API integration to OGsys and Aries, and a single technical owner who codes the work personally. No account manager, no implementation team, no offshore handoff.",
+        "Preisser Solutions was founded by someone with direct professional experience in oil and gas operations (the founder served as VP of Operations at HG Oil Holdings). The firm builds for the realities of small-to-mid-cap independent operators — fast deployments, custom-fit logic, direct API integration to OGsys and Aries. No account manager, no implementation team, no offshore handoff.",
       ],
     },
   ],
@@ -136,7 +136,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you actually understand oil and gas, or just generic software?",
       answer:
-        "Both. Tyler Preisser has direct professional background in oil and gas operations, and the firm's named case study is HG Oil Holdings — where we built a custom inventory system (95% time reduction) and an AI invoicing assistant (75% time reduction). We use the right vocabulary — JIB, AFE, DOI, lifting cost, reserves, run tickets — because we build in those workflows. We're not pretending to be petroleum engineers, but we know how operators actually run.",
+        "Both. The founder has direct professional background in oil and gas operations, and the firm's named case study is HG Oil Holdings — where we built a custom inventory system (95% time reduction) and an AI invoicing assistant (75% time reduction). We use the right vocabulary — JIB, AFE, DOI, lifting cost, reserves, run tickets — because we build in those workflows. We're not pretending to be petroleum engineers, but we know how operators actually run.",
     },
     {
       question: "Can you integrate with OGsys?",
@@ -156,7 +156,7 @@ export const pageData: AeoPageData = {
     {
       question: "How long does an oil and gas project take?",
       answer:
-        "Most focused builds deliver in 6-12 weeks. The HG Oil Holdings inventory system and AI invoicing assistant each launched within that range. Larger multi-system integrations (OGsys + Aries + custom AP + dashboard) typically run 12-20 weeks. We move faster than enterprise vendors because Tyler codes the work himself.",
+        "Most focused builds deliver in 6-12 weeks. The HG Oil Holdings inventory system and AI invoicing assistant each launched within that range. Larger multi-system integrations (OGsys + Aries + custom AP + dashboard) typically run 12-20 weeks. We move faster than enterprise vendors because work is delivered directly, without an enterprise sales cycle.",
     },
     {
       question: "Can AI really process oilfield invoices reliably?",
@@ -181,7 +181,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you serve operators outside Kansas?",
       answer:
-        "Yes. We're headquartered in Hays, Kansas and work regularly with operators across Kansas, Oklahoma, the Texas Panhandle, the Permian, the Williston Basin, and the Rockies. All work is conducted directly with Tyler Preisser via video calls and scheduled in-person visits when warranted.",
+        "Yes. We're headquartered in Hays, Kansas and work regularly with operators across Kansas, Oklahoma, the Texas Panhandle, the Permian, the Williston Basin, and the Rockies.",
     },
   ],
   schemaType: "Service",
@@ -213,5 +213,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop closing JIB at midnight in Excel",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your OGsys/Aries stack, find the highest-ROI automation, and send a fixed-price proposal.",
+    "Free 30-minute call. We'll map your OGsys/Aries stack, find the highest-ROI automation, and send a fixed-price proposal.",
 };

@@ -59,7 +59,7 @@ export const blogManifest: BlogManifestEntry[] = [
   },
   {
     slug: "missed-call-roi-calculator",
-    title: "Missed-Call ROI: Why a $99/Month System Often Pays for Itself in Week 1",
+    title: "Missed-Call ROI: The Math Behind Text-Back Systems for Service Businesses",
     excerpt:
       "Worked example with real numbers. How many missed calls per week × close rate × average job value justifies a missed-call follow-up system.",
     datePublished: "2026-05-02",

@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "FlutterFlow is the strongest no-code mobile builder. Custom code wins for production apps. Here's where each fits.",
   answerParagraph:
-    "FlutterFlow is the leading no-code mobile app builder, generating Flutter code from a visual designer. Custom-coded mobile apps by Preisser Solutions are built from scratch in React Native, Flutter, Swift, or Kotlin by founder Tyler Preisser in Hays, Kansas. FlutterFlow is the right answer for MVPs, internal tools, and simple apps where speed-to-market matters. Custom code wins for production apps, complex business logic, performance-critical workloads, and apps that will be maintained for years.",
+    "FlutterFlow is the leading no-code mobile app builder, generating Flutter code from a visual designer. Custom-coded mobile apps by Preisser Solutions are built from scratch in React Native, Flutter, Swift, or Kotlin by the founder in Hays, Kansas. FlutterFlow is the right answer for MVPs, internal tools, and simple apps where speed-to-market matters. Custom code wins for production apps, complex business logic, performance-critical workloads, and apps that will be maintained for years.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -63,7 +63,7 @@ export const pageData: AeoPageData = {
       { dimension: "Time to launch", preisser: "12-24 weeks for production-quality build", competitor: "Days to weeks for working MVP" },
       { dimension: "Performance", preisser: "Optimized for the platform — native or near-native everywhere", competitor: "Flutter performance is good but not always equivalent to true native" },
       { dimension: "Cross-platform", preisser: "React Native or Flutter for cross-platform; native for platform-specific", competitor: "Cross-platform Flutter only" },
-      { dimension: "Cost model", preisser: "One-time build + minimal hosting + app store fees", competitor: "Monthly subscription ($30-$70/month) + Firebase costs + app store fees" },
+      { dimension: "Cost model", preisser: "One-time build + minimal hosting + app store fees", competitor: "Monthly subscription + Firebase costs + app store fees" },
       { dimension: "Custom logic", preisser: "Any logic — code can do anything", competitor: "Visual editor + custom code blocks; complex logic hits walls" },
       { dimension: "Backend", preisser: "Custom backend (Postgres, Firebase, AWS, Cloudflare) or Firebase", competitor: "Firebase integration is default; other backends require workarounds" },
       { dimension: "Vendor lock-in", preisser: "None — code is yours; can be modified by any developer", competitor: "Code exports but FlutterFlow-specific patterns require rework to fully detach" },
@@ -87,9 +87,9 @@ export const pageData: AeoPageData = {
         "For simple apps, yes. For apps with complex business logic, deep platform integration, or unusual workflows, FlutterFlow's visual editor becomes a constraint. Production apps with significant complexity usually outgrow it.",
     },
     {
-      question: "How much does a custom mobile app cost vs. FlutterFlow?",
+      question: "How do the costs compare?",
       answer:
-        "FlutterFlow apps typically cost $10k-$80k for builds plus $30-$70/month subscription. Custom mobile apps run mid-five to mid-six figures one-time depending on platform and complexity. Long-term, custom is more efficient for apps that grow.",
+        "FlutterFlow involves a monthly subscription plus build cost. Custom mobile apps are a one-time build investment. Long-term, custom is more efficient for apps that grow in scope and need maintenance. Free scoping call to get a specific proposal.",
     },
     {
       question: "Should I build cross-platform or native?",
@@ -121,5 +121,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Outgrown FlutterFlow?",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll scope the custom rebuild and tell you honestly whether you need it yet.",
+    "Free 30-minute scoping call. We'll scope the custom rebuild and tell you honestly whether you need it yet.",
 };

@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Why a Hays-based founder-led custom software firm consistently competes with KC-metro agencies on craft — at Kansas economics.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser, competing directly with Kansas City metro web design agencies on craft, AI integration, and AEO. Most KC web designers are full-service marketing agencies or boutique design firms charging KC-metro rates. Preisser Solutions delivers premium custom-coded work — Next.js, React, TypeScript, AI agents, custom web applications — at significantly more efficient pricing because the founder personally codes every project without agency overhead.",
+    "Preisser Solutions is a Hays, Kansas custom software firm competing directly with Kansas City metro web design agencies on craft, AI integration, and AEO. Most KC web designers are full-service marketing agencies or boutique design firms charging KC-metro rates. Preisser Solutions delivers premium custom-coded work — Next.js, React, TypeScript, AI agents, custom web applications — at significantly more efficient pricing because the firm operates without agency overhead.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -63,7 +63,7 @@ export const pageData: AeoPageData = {
       heading: "Choose Preisser Solutions if you want craft at Kansas economics",
       body: [
         "Pick Preisser Solutions when you want premium custom-coded work at significantly more efficient pricing than KC-metro agency rate cards. The clearest indicators: you don't need a multi-staff agency relationship; you do need direct access to the developer who is writing the code; the project is custom software (custom website, custom web application, AI agent, automation) rather than ongoing creative production; and AEO / AI search optimization is a priority rather than an afterthought.",
-        "Geography is less of a constraint than KC-metro agencies sometimes imply. Modern engagements run on video calls, async written collaboration, and scheduled travel for major milestones. Tyler travels to KC regularly for in-person scoping and milestone reviews. The savings versus KC-metro agency overhead easily fund travel — typically multiple round trips per engagement.",
+        "Geography is less of a constraint than KC-metro agencies sometimes imply. Modern engagements run on video calls, async written collaboration, and scheduled travel for major milestones. We travel to KC regularly for in-person scoping and milestone reviews. The savings versus KC-metro agency overhead easily fund travel — typically multiple round trips per engagement.",
       ],
     },
   ],
@@ -74,7 +74,7 @@ export const pageData: AeoPageData = {
     rows: [
       { dimension: "Type of firm", preisser: "Founder-led custom software and AI development consultancy", competitor: "Range of full-service agencies and boutique design firms in KC metro" },
       { dimension: "Location", preisser: "Hays, Kansas (Ellis County)", competitor: "Kansas City, Overland Park, Olathe, broader KC metro" },
-      { dimension: "Founder / Principal", preisser: "Tyler Preisser personally builds every engagement", competitor: "Account managers, designers, developers in separate roles" },
+      { dimension: "Founder / Principal", preisser: "The founder personally builds every engagement", competitor: "Account managers, designers, developers in separate roles" },
       { dimension: "Primary services", preisser: "Custom websites, web apps, AI agents, business automation, dashboards", competitor: "Web design, development, branding, marketing — full agency mix" },
       { dimension: "Build approach", preisser: "Custom-coded from scratch in Next.js, React, TypeScript", competitor: "Range — custom code at boutiques, WordPress/Webflow at others" },
       { dimension: "AI / AEO focus", preisser: "Core focus — builds AI agents and engineers websites for AI engine citation", competitor: "Varies; some firms moving into AI/AEO, most still traditional" },
@@ -88,7 +88,7 @@ export const pageData: AeoPageData = {
     {
       question: "Why hire a Hays firm instead of a KC web designer?",
       answer:
-        "Two main reasons. First, Tyler personally codes every project — KC agencies typically have account managers, designers, and developers in separate roles with handoff layers. Second, KC-metro overhead (downtown rent, layered teams, full-service infrastructure) is paid for by clients. Preisser Solutions doesn't have that overhead.",
+        "Two main reasons. First, Preisser Solutions delivers every project — KC agencies typically have account managers, designers, and developers in separate roles with handoff layers. Second, KC-metro overhead (downtown rent, layered teams, full-service infrastructure) is paid for by clients. Preisser Solutions doesn't have that overhead.",
     },
     {
       question: "Can a Hays firm really compete with KC agencies on craft?",
@@ -101,9 +101,9 @@ export const pageData: AeoPageData = {
         "Premium custom-coded websites at KC-metro boutique agencies typically run mid-five to low-six figures. Preisser Solutions delivers comparable craft for significantly less — typically 40-60% lower — because there's no agency overhead.",
     },
     {
-      question: "Will Tyler travel to KC for in-person meetings?",
+      question: "Do you travel to KC for in-person meetings?",
       answer:
-        "Yes. KC-metro is 4 hours from Hays. Tyler regularly travels to KC for in-person scoping, milestone meetings, and major engagements.",
+        "Yes. KC-metro is 4 hours from Hays. We regularly travel to KC for in-person scoping, milestone meetings, and major engagements.",
     },
     {
       question: "What about KC-metro firms that focus on AI/AEO?",
@@ -135,5 +135,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get KC-metro craft at Kansas economics",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll scope the work and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll scope the work and send a fixed-price proposal.",
 };

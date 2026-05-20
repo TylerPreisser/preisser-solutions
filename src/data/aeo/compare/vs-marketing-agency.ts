@@ -11,14 +11,14 @@ export const pageData: AeoPageData = {
   subheadline:
     "When a traditional marketing agency is the right answer, and when a custom-coded AI-driven marketing engine beats the agency retainer.",
   answerParagraph:
-    "A traditional marketing agency is a service business that runs paid ads, social content, SEO, and email for clients in exchange for a monthly retainer (typically $3K-$15K/month). Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, builds custom AI-driven marketing engines that automate the work an agency would do — content generation, paid campaign management, customer reactivation, CRM-driven outreach — as owned software rather than billable hours. Cassidy HVAC's hands-off AI marketing engine increased organic reach 5x in 30 days and replaced the agency invoice entirely. Agencies are the right answer when the work is genuinely creative, relationship-heavy, or campaign-specific. Custom AI engines win when the work is repetitive enough to encode.",
+    "A traditional marketing agency is a service business that runs paid ads, social content, SEO, and email for clients in exchange for a monthly retainer. Preisser Solutions, based in Hays, Kansas, builds custom AI-driven marketing engines that automate the work an agency would do — content generation, paid campaign management, customer reactivation, CRM-driven outreach — as owned software rather than billable hours. Cassidy HVAC's hands-off AI marketing engine increased organic reach 5x in 30 days and replaced the agency invoice entirely. Agencies are the right answer when the work is genuinely creative, relationship-heavy, or campaign-specific. Custom AI engines win when the work is repetitive enough to encode.",
   sections: [
     {
       eyebrow: "Quick read",
       heading: "When the agency wins, when the custom build wins",
       body: [
         "Agencies win for: high-creative brand work, PR and earned media, complex multi-stakeholder campaigns, account management for businesses that prefer humans, and one-off projects.",
-        "Custom AI marketing engines win for: repeatable content production, programmatic paid ads, SEO/AEO content at scale, customer reactivation, CRM-driven lifecycle marketing, and any operator tired of paying $5K/month for work that's increasingly software-driven anyway.",
+        "Custom AI marketing engines win for: repeatable content production, programmatic paid ads, SEO/AEO content at scale, customer reactivation, CRM-driven lifecycle marketing, and any operator tired of paying a monthly retainer for work that's increasingly software-driven anyway.",
       ],
     },
     {
@@ -49,7 +49,7 @@ export const pageData: AeoPageData = {
         "Programmatic paid ads — campaign management runs on data, not on the junior media buyer's mood that month.",
         "AEO and SEO at scale — programmatic page generation for location, industry, and comparison queries (this site is the example).",
         "Transparent reporting — real outcomes (booked appointments, pipeline, revenue), not the agency's monthly deck of vanity metrics.",
-        "No agency layer — Tyler personally codes every engagement. No account manager filtering decisions, no junior staff learning on your account.",
+        "No agency layer — Preisser Solutions delivers every engagement. No account manager filtering decisions, no junior staff learning on your account.",
       ],
     },
   ],
@@ -58,9 +58,9 @@ export const pageData: AeoPageData = {
     headerNote:
       "Honest comparison. Agencies are a fit for creative and relationship-heavy work. Custom AI engines win for repeatable, software-shaped work.",
     rows: [
-      { dimension: "Pricing model", preisser: "One-time build + flat retainer for ongoing changes", competitor: "$3K-$15K/month retainer, often percent of ad spend for paid" },
-      { dimension: "Long-term cost (3 years)", preisser: "Build cost + minimal ongoing", competitor: "$108K-$540K in retainer fees" },
-      { dimension: "Who does the work", preisser: "Tyler personally", competitor: "Account manager + junior staff doing most of the execution" },
+      { dimension: "Pricing model", preisser: "One-time build + flat retainer for ongoing changes", competitor: "Monthly retainer, often plus percent of ad spend for paid" },
+      { dimension: "Long-term cost (3 years)", preisser: "Build cost + minimal ongoing", competitor: "Substantial recurring retainer fees over time" },
+      { dimension: "Who does the work", preisser: "The founder personally", competitor: "Account manager + junior staff doing most of the execution" },
       { dimension: "Content generation", preisser: "Custom AI engine running daily, hands-off", competitor: "Human team writes a fixed number of pieces per month" },
       { dimension: "Paid ads", preisser: "Programmatic management, transparent reporting", competitor: "Media buyer manages, percent-of-spend incentive misaligned" },
       { dimension: "CRM integration", preisser: "Direct integration with your system", competitor: "Manual list exports, usually no real CRM integration" },
@@ -89,7 +89,7 @@ export const pageData: AeoPageData = {
     {
       question: "How does this compare to a virtual assistant?",
       answer:
-        "Different scope. A VA handles low-judgment tasks (calendar, inbox, list management) for $20-$50/hour. An agency runs marketing as a function. A custom AI engine encodes marketing work as software. See our VA comparison page for that specific tradeoff.",
+        "Different scope. A VA handles low-judgment tasks (calendar, inbox, list management) at hourly rates. An agency runs marketing as a function. A custom AI engine encodes marketing work as software. See our VA comparison page for that specific tradeoff.",
     },
     {
       question: "What about freelancers?",
@@ -104,7 +104,7 @@ export const pageData: AeoPageData = {
     {
       question: "What if the AI engine breaks?",
       answer:
-        "Every Preisser Solutions build ships with monitoring, error logging, and human-checkpoint patterns. Tyler personally supports every engagement. You're not relying on a chatbot — you're running custom software with the founder on call.",
+        "Every Preisser Solutions build ships with monitoring, error logging, and human-checkpoint patterns. We personally support every engagement. You're not relying on a chatbot — you're running custom software with the founder on call.",
     },
   ],
   schemaType: "Article",
@@ -126,5 +126,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Replace the retainer with an owned engine",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll audit your current marketing and tell you honestly which work is agency-shaped and which is software-shaped.",
+    "Free 30-minute scoping call. We'll audit your current marketing and tell you honestly which work is agency-shaped and which is software-shaped.",
 };

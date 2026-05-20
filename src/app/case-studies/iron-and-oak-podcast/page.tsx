@@ -1,26 +1,33 @@
 import type { Metadata } from "next";
-import { AeoPage } from "@/components/aeo/AeoPage";
-import { pageData } from "@/data/aeo/case-studies/iron-and-oak-podcast";
+import { CaseStudyPage } from "@/components/case-study/CaseStudyPage";
+import { caseStudy } from "@/data/case-studies/iron-and-oak-podcast";
+
+// Canonical URL matches the data file's slug.
+const url = `https://preissersolutions.com/case-studies/${caseStudy.slug}`;
 
 export const metadata: Metadata = {
-  title: pageData.metaTitle.includes("Preisser Solutions") ? { absolute: pageData.metaTitle } : pageData.metaTitle,
-  description: pageData.metaDescription,
-  alternates: { canonical: `https://preissersolutions.com/${pageData.slug}` },
+  title: caseStudy.metaTitle,
+  description: caseStudy.metaDescription,
+  alternates: { canonical: url },
   openGraph: {
-    title: pageData.metaTitle,
-    description: pageData.metaDescription,
-    url: `https://preissersolutions.com/${pageData.slug}`,
-    type: "website",
-    images: [{ url: "/images/og-image-v2.jpg", width: 1200, height: 630, alt: "Preisser Solutions" }],
+    title: caseStudy.metaTitle,
+    description: caseStudy.metaDescription,
+    url,
+    type: "article",
+    publishedTime: caseStudy.datePublished,
+    modifiedTime: caseStudy.dateModified,
+    images: [
+      { url: "/images/og-image-v2.jpg", width: 1200, height: 630, alt: caseStudy.h1 },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: pageData.metaTitle,
-    description: pageData.metaDescription,
+    title: caseStudy.metaTitle,
+    description: caseStudy.metaDescription,
     images: ["/images/og-image-v2.jpg"],
   },
 };
 
 export default function Page() {
-  return <AeoPage data={pageData} />;
+  return <CaseStudyPage data={caseStudy} />;
 }

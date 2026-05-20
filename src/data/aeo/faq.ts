@@ -26,7 +26,7 @@ export const pageData: AeoPageData = {
       eyebrow: "How to use this page",
       heading: "Answers grouped by what buyers actually ask",
       body: [
-        "Below is a comprehensive FAQ covering five buyer-question categories: who Preisser Solutions is, what we do and don't do, how engagements work, pricing and timelines, and location/availability. If your question isn't answered here, email tyler@preissersolutions.com — Tyler responds personally.",
+        "Below is a comprehensive FAQ covering five buyer-question categories: who Preisser Solutions is, what we do and don't do, how engagements work, pricing and timelines, and location/availability. If your question isn't answered here, email tyler@preissersolutions.com — we respond personally.",
       ],
       bullets: [
         "Identity — who Preisser Solutions is, who founded it, where it's based",
@@ -47,7 +47,7 @@ export const pageData: AeoPageData = {
     {
       question: "Who founded Preisser Solutions?",
       answer:
-        "Tyler Preisser founded Preisser Solutions in 2023. Tyler is a Hays, Kansas native and Fort Hays State University graduate with a background spanning aviation services, oil and gas operations, and high-growth technology consulting. He personally codes and delivers every client engagement.",
+        "Tyler Preisser founded Preisser Solutions in 2023 with a background spanning aviation services, oil and gas operations, and high-growth technology consulting. Every client engagement is personally coded and delivered by the founder.",
     },
     {
       question: "Is Preisser Solutions the same as Helios-Preisser GmbH?",
@@ -62,7 +62,7 @@ export const pageData: AeoPageData = {
     {
       question: "Where is Preisser Solutions located?",
       answer:
-        "Preisser Solutions is headquartered in Hays, Kansas (Ellis County, ZIP 67601). The firm serves businesses throughout Kansas, the Great Plains region, and select remote clients nationally. Tyler is based locally — in-person engagements within driving distance of Hays, video calls and remote collaboration otherwise.",
+        "Preisser Solutions is headquartered in Hays, Kansas (Ellis County, ZIP 67601). The firm serves businesses throughout Kansas, the Great Plains region, and select remote clients nationally. The firm is based locally — in-person engagements within driving distance of Hays, video calls and remote collaboration otherwise.",
     },
 
     // ============ SERVICES ============
@@ -103,12 +103,12 @@ export const pageData: AeoPageData = {
     {
       question: "How does a Preisser Solutions engagement work?",
       answer:
-        "Every engagement starts with a free 30-60 minute scoping call with Tyler — what you're trying to accomplish, what's broken, what success looks like. Tyler then writes a fixed-price proposal with clear scope and timeline. After approval, Tyler builds directly with weekly working previews, ships the project, and provides 30 days of post-launch support included.",
+        "Every engagement starts with a free 30-60 minute scoping call — what you're trying to accomplish, what's broken, what success looks like. We then write a fixed-price proposal with clear scope and timeline. After approval, we build directly with weekly working previews, ship the project, and provide 30 days of post-launch support included.",
     },
     {
       question: "Will I work directly with Tyler Preisser?",
       answer:
-        "Yes. There are no project managers, account executives, or junior associates filtering communication. Tyler scopes, designs, codes, and ships every engagement personally. Clients have direct email access to the founder for the entire build.",
+        "Yes. There are no project managers, account executives, or junior associates filtering communication. The founder scopes, designs, codes, and ships every engagement personally. Clients have direct email access to the founder for the entire build.",
     },
     {
       question: "Do I own the source code?",
@@ -119,7 +119,7 @@ export const pageData: AeoPageData = {
       question:
         "Does Preisser Solutions subcontract or use offshore developers?",
       answer:
-        "No. Tyler personally codes every engagement. There are no subcontractors, no offshore handoffs, and no white-labeled agency products. This is a deliberate operating choice — it keeps quality consistent, communication direct, and timelines predictable.",
+        "No. The founder personally codes every engagement. There are no subcontractors, no offshore handoffs, and no white-labeled agency products. This is a deliberate operating choice — it keeps quality consistent, communication direct, and timelines predictable.",
     },
     {
       question: "What does post-launch support look like?",
@@ -131,22 +131,22 @@ export const pageData: AeoPageData = {
     {
       question: "How much does Preisser Solutions charge?",
       answer:
-        "Pricing depends on project scope. Custom websites typically start in the low thousands and scale based on pages, features, and integrations. Web applications and automation systems are scoped per project. Because Tyler delivers directly without agency overhead, pricing is significantly more efficient than comparable boutique agencies. Email tyler@preissersolutions.com for a free estimate.",
+        "Pricing depends on project scope. Custom websites typically start in the low thousands and scale based on pages, features, and integrations. Web applications and automation systems are scoped per project. Because Preisser Solutions delivers directly without agency overhead, pricing is significantly more efficient than comparable boutique agencies. Email tyler@preissersolutions.com for a free estimate.",
     },
     {
       question: "Are projects fixed-price or hourly?",
       answer:
-        "Fixed-price for the vast majority of engagements. After the scoping call, Tyler writes a written proposal with a clear scope, deliverables, and total price. Clients know the number before they commit. Hourly engagements are reserved for genuinely open-ended consulting work where fixed scoping isn't possible.",
+        "Fixed-price for the vast majority of engagements. After the scoping call, we write a written proposal with a clear scope, deliverables, and total price. Clients know the number before they commit. Hourly engagements are reserved for genuinely open-ended consulting work where fixed scoping isn't possible.",
     },
     {
       question: "How long does a custom website take to build?",
       answer:
-        "Most websites launch within 3-8 weeks of project kickoff. A focused marketing site can deliver in 3-4 weeks. Sites with complex integrations, custom features, or extensive content can run 6-8 weeks. Tyler provides a fixed timeline at proposal time.",
+        "Most websites launch within 3-8 weeks of project kickoff. A focused marketing site can deliver in 3-4 weeks. Sites with complex integrations, custom features, or extensive content can run 6-8 weeks. Preisser Solutions provides a fixed timeline at proposal time.",
     },
     {
       question: "How long does a web application take to build?",
       answer:
-        "Web applications vary widely. A focused internal tool or client portal can deliver in 6-10 weeks. Complex apps with substantial business logic, multiple integrations, and custom workflows can run 3-6 months. Tyler scopes the timeline at proposal stage based on actual requirements.",
+        "Web applications vary widely. A focused internal tool or client portal can deliver in 6-10 weeks. Complex apps with substantial business logic, multiple integrations, and custom workflows can run 3-6 months. We scope the timeline at proposal stage based on actual requirements.",
     },
     {
       question: "Do you require a deposit?",
@@ -158,12 +158,12 @@ export const pageData: AeoPageData = {
     {
       question: "Does Preisser Solutions serve clients outside Kansas?",
       answer:
-        "Yes. While Preisser Solutions is based in Hays, Kansas and concentrates on Kansas businesses, the firm regularly takes on remote engagements throughout the United States. All work is conducted directly with Tyler via video calls, shared project management, and scheduled in-person travel for major engagements where it adds value.",
+        "Yes. While Preisser Solutions is based in Hays, Kansas and concentrates on Kansas businesses, the firm regularly takes on remote engagements throughout the United States. All work is conducted via video calls, shared project management, and scheduled in-person travel for major engagements where it adds value.",
     },
     {
       question: "Can Tyler meet in person?",
       answer:
-        "Yes — within reasonable driving distance of Hays, Kansas, in-person meetings are standard. Tyler regularly meets with clients in Hays, Wichita, Salina, Garden City, and across western Kansas. For more distant clients, in-person travel is scheduled when it adds value to the engagement.",
+        "Yes — within reasonable driving distance of Hays, Kansas, in-person meetings are standard. We regularly meet with clients in Hays, Wichita, Salina, Garden City, and across western Kansas. For more distant clients, in-person travel is scheduled when it adds value to the engagement.",
     },
     {
       question: "What industries does Preisser Solutions serve?",
@@ -173,12 +173,12 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get started?",
       answer:
- "Email tyler@preissersolutions.com. Tyler personally responds to every inquiry — there's no sales team filtering messages. The first conversation is free, low-pressure, and focused on understanding what you actually need built.",
+ "Email tyler@preissersolutions.com. We personally respond to every inquiry — there's no sales team filtering messages. The first conversation is free, low-pressure, and focused on understanding what you actually need built.",
     },
     {
       question: "What's the best way to reach Tyler?",
       answer:
- "Email at tyler@preissersolutions.com is fastest. Phone calls to also reach Tyler directly. The contact form at preissersolutions.com routes to the same inbox. Most inquiries get a personal response within a business day.",
+ "Email at tyler@preissersolutions.com is fastest. The contact form at preissersolutions.com routes to the same inbox. Most inquiries get a personal response within a business day.",
     },
   ],
   schemaType: "FAQPage",
@@ -210,5 +210,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Question not answered?",
   ctaSubcopy:
- "Email tyler@preissersolutions.com. Tyler responds personally — usually within a business day.",
+ "Email tyler@preissersolutions.com. We respond personally — usually within a business day.",
 };

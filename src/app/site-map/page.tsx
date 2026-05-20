@@ -124,7 +124,6 @@ const other: SiteMapLink[] = [
   { href: "/web-applications", label: "Web Applications" },
   { href: "/ai-agents", label: "AI Agents" },
   { href: "/dashboards-and-analytics", label: "Dashboards and Analytics" },
-  { href: "/products", label: "Products" },
   { href: "/resources", label: "Resources" },
   { href: "/press", label: "Press" },
   { href: "/tyler-preisser", label: "Tyler Preisser" },

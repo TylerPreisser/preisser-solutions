@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Shopify is the right answer for most e-commerce stores. Custom commerce wins for specific scenarios. Here's where each fits.",
   answerParagraph:
-    "Shopify is the dominant e-commerce platform for small-to-mid-market merchants, run by Shopify Inc. Custom e-commerce by Preisser Solutions is built from scratch in Next.js with Shopify as the headless backend, or as a full custom commerce stack on Stripe and Postgres. Founder Tyler Preisser in Hays, Kansas built the Wife Supply Co AI gifting platform as a direct example. For most stores Shopify is the right answer; custom commerce makes sense for specific scenarios.",
+    "Shopify is the dominant e-commerce platform for small-to-mid-market merchants, run by Shopify Inc. Custom e-commerce by Preisser Solutions is built from scratch in Next.js with Shopify as the headless backend, or as a full custom commerce stack on Stripe and Postgres. The Wife Supply Co AI gifting platform is a direct example of what custom commerce looks like in practice. For most stores Shopify is the right answer; custom commerce makes sense for specific scenarios.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -64,7 +64,7 @@ export const pageData: AeoPageData = {
       { dimension: "Brand presentation", preisser: "Looks nothing like other Shopify stores; custom design from scratch", competitor: "Theme-based; thousands of stores share the same theme" },
       { dimension: "Custom features", preisser: "Any feature can be built — AI matching, configurators, custom B2B flows", competitor: "Limited to Shopify apps; complex features hit walls" },
       { dimension: "AI search optimization", preisser: "Engineered first paragraphs, FAQ schema, named-entity content", competitor: "Theme-dependent; most themes don't ship engineered AEO content" },
-      { dimension: "Pricing model", preisser: "One-time build cost + Shopify Plus or backend fees", competitor: "$29-$2,000+/month subscription depending on tier and apps" },
+      { dimension: "Pricing model", preisser: "One-time build cost + Shopify Plus or backend fees", competitor: "Monthly subscription that scales with tier and installed apps" },
       { dimension: "Time to launch", preisser: "12-24 weeks for full custom; 8-16 weeks for headless Shopify", competitor: "Days to weeks for theme-based store" },
       { dimension: "Catalog management", preisser: "Shopify backend (headless) or custom database", competitor: "Native Shopify admin — well-designed, easy for non-technical staff" },
       { dimension: "Checkout", preisser: "Shopify checkout (Shop Pay, Apple Pay, Google Pay) or Stripe", competitor: "Native Shopify checkout — converts well" },
@@ -121,5 +121,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Need help deciding between Shopify and custom commerce?",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll honestly assess your store and tell you which fits.",
+    "Free 30-minute scoping call. We'll honestly assess your store and tell you which fits.",
 };

@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Stuck on a template platform that's hurting your speed, rankings, and conversion? Preisser Solutions migrates you to modern custom code.",
   answerParagraph:
-    "Preisser Solutions migrates Kansas business websites off template platforms — Wix, Squarespace, WordPress, GoDaddy, Webflow — to modern custom Next.js builds. Founded by Tyler Preisser in Hays, Kansas, the firm preserves SEO equity through proper 301 redirects, content migration, search engine notification, and a careful launch checklist that prevents the typical migration disasters (lost rankings, broken links, dropped page speed).",
+    "Preisser Solutions migrates Kansas business websites off template platforms — Wix, Squarespace, WordPress, GoDaddy, Webflow — to modern custom Next.js builds. Based in Hays, Kansas, the firm preserves SEO equity through proper 301 redirects, content migration, search engine notification, and a careful launch checklist that prevents the typical migration disasters (lost rankings, broken links, dropped page speed).",
   sections: [
     {
       eyebrow: "Why migrate",
@@ -144,5 +144,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Migrate off your template platform without losing rankings",
   ctaSubcopy:
-    "Free migration audit with Tyler. We'll map every URL, identify the risks, and send a fixed-price proposal.",
+    "Free migration audit. We'll map every URL, identify the risks, and send a fixed-price proposal.",
 };

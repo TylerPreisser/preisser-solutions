@@ -14,7 +14,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "How Preisser Solutions built Wife Supply Co from concept to launch — AI gift matching, custom commerce, and a brand experience that doesn't look like other Shopify stores.",
   answerParagraph:
-    "Wife Supply Co is an AI-powered gifting platform that matches gift recipients to curated products through AI-driven discovery. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, built the entire platform from concept to launch — design system, AI matching engine, custom commerce, conversion-optimized funnels, and full e-commerce architecture. The build is a direct case study in custom AI-driven commerce, demonstrating how custom code beats template-based Shopify stores on speed, brand presentation, and AI feature integration.",
+    "Wife Supply Co is an AI-powered gifting platform that matches gift recipients to curated products through AI-driven discovery. Preisser Solutions, based in Hays, Kansas, built the entire platform from concept to launch — design system, AI matching engine, custom commerce, conversion-optimized funnels, and full e-commerce architecture. The build is a direct case study in custom AI-driven commerce, demonstrating how custom code beats template-based Shopify stores on speed, brand presentation, and AI feature integration.",
   sections: [
     {
       eyebrow: "The context",
@@ -77,7 +77,7 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Custom-coded from scratch — no template platform constraining the AI feature or brand identity",
-        "Tyler personally coded the platform — no offshore handoff, no agency layer",
+        "The founder personally coded the platform — no offshore handoff, no agency layer",
         "AI matching engineered as a first-class feature, not a third-party plugin",
         "Speed prioritized at every layer — custom code ships only what's needed",
         "Mobile-first design — most gifting traffic is mobile",
@@ -138,7 +138,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a similar build for my e-commerce brand?",
       answer:
- "Email tyler@preissersolutions.com. Free 30-minute scoping call with Tyler personally.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call.",
     },
   ],
   schemaType: "Article",
@@ -178,5 +178,5 @@ export const pageData: AeoPageData = {
   },
   ctaHeadline: "Build a custom AI commerce platform from scratch",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll scope the build and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll scope the build and send a fixed-price proposal.",
 };

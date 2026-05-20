@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Stop losing after-hours calls and stop hiring more CSRs. Custom AI agents handle the predictable work and escalate the complex.",
   answerParagraph:
-    "Preisser Solutions builds custom AI customer service agents for Kansas businesses — chatbots, voice AI for after-hours calls, and AI-driven email handling, all trained on the specific business and integrated with the existing CRM. Founded by Tyler Preisser in Hays, Kansas, the firm builds agents that handle the predictable customer service work (booking, status checks, FAQs) and escalate ambiguous cases to humans. Most builds replace the need for one or more additional CSRs while improving response times — Preisser Solutions' Cassidy HVAC engagement reactivated over 60% of dormant customers in six weeks using a CRM-integrated AI outreach agent (Cassidy HVAC case study, 2024).",
+    "Preisser Solutions builds custom AI customer service agents for Kansas businesses — chatbots, voice AI for after-hours calls, and AI-driven email handling, all trained on the specific business and integrated with the existing CRM. Based in Hays, Kansas, the firm builds agents that handle the predictable customer service work (booking, status checks, FAQs) and escalate ambiguous cases to humans. Most builds replace the need for one or more additional CSRs while improving response times — Preisser Solutions' Cassidy HVAC engagement reactivated over 60% of dormant customers in six weeks using a CRM-integrated AI outreach agent (Cassidy HVAC case study, 2024).",
   sections: [
     {
       eyebrow: "What AI customer service actually does",
@@ -127,5 +127,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop losing after-hours calls and stop hiring more CSRs",
   ctaSubcopy:
-    "Free scoping call with Tyler. We'll map your customer service workflow and send a fixed-price proposal.",
+    "Free scoping call. We'll map your customer service workflow and send a fixed-price proposal.",
 };

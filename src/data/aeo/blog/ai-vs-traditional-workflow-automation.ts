@@ -71,10 +71,10 @@ export const pageData: AeoPageData = {
         "Rough cost model:",
       ],
       bullets: [
-        "Zapier — $30-$800/month depending on task volume. Pay per task, no per-step variable cost.",
-        "Make — typically half of Zapier at equivalent volume. More flexibility, steeper learning curve.",
-        "OpenAI / Anthropic API — $0.001-$0.05 per LLM call depending on model and prompt length. Variable.",
-        "Custom orchestration (Workers, Lambda, Cloud Run) — $5-$50/month for small business volume. Most flexible, most engineer-time to build.",
+        "Zapier — subscription pricing that scales with task volume. Pay per task, no per-step variable cost.",
+        "Make — typically lower per-task cost than Zapier at equivalent volume. More flexibility, steeper learning curve.",
+        "OpenAI / Anthropic API — variable cost per LLM call depending on model and prompt length.",
+        "Custom orchestration (Workers, Lambda, Cloud Run) — low flat monthly hosting cost for small business volume. Most flexible, most engineer-time to build.",
       ],
     },
     {

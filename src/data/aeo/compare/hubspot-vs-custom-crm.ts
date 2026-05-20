@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "HubSpot is the right CRM for most businesses. Custom CRM wins when standard schema doesn't fit or per-seat fees stop scaling.",
   answerParagraph:
-    "HubSpot is one of the dominant CRM platforms for small-to-mid-market businesses, run by HubSpot, Inc. Custom CRMs by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by founder Tyler Preisser in Hays, Kansas — designed around the specific business's actual workflow. HubSpot is excellent for businesses that fit the standard contact-deal-pipeline schema. Custom CRMs win when industry-specific workflows, operational data integration, or per-seat economics force the wrong tradeoffs.",
+    "HubSpot is one of the dominant CRM platforms for small-to-mid-market businesses, run by HubSpot, Inc. Custom CRMs by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by the founder in Hays, Kansas — designed around the specific business's actual workflow. HubSpot is excellent for businesses that fit the standard contact-deal-pipeline schema. Custom CRMs win when industry-specific workflows, operational data integration, or per-seat economics force the wrong tradeoffs.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -65,7 +65,7 @@ export const pageData: AeoPageData = {
       eyebrow: "When Preisser Solutions custom CRM is the right call",
       heading: "Choose custom CRM if your workflow doesn't fit HubSpot",
       body: [
-        "Pick a custom CRM when HubSpot is forcing the wrong tradeoffs. The clearest indicators: your workflow requires custom objects HubSpot doesn't model well (insurance policies with renewal cycles, healthcare encounters, real estate transactions, legal matters); operational data needs to live alongside customer data; you have pricing logic or quote builders that exceed HubSpot's customization framework; your per-seat licensing has crossed $1,500-$2,000/month and is climbing; or you need reporting where HubSpot's standard dashboards don't surface the right metrics.",
+        "Pick a custom CRM when HubSpot is forcing the wrong tradeoffs. The clearest indicators: your workflow requires custom objects HubSpot doesn't model well (insurance policies with renewal cycles, healthcare encounters, real estate transactions, legal matters); operational data needs to live alongside customer data; you have pricing logic or quote builders that exceed HubSpot's customization framework; your per-seat licensing is climbing faster than value delivered; or you need reporting where HubSpot's standard dashboards don't surface the right metrics.",
         "The economic crossover usually hits around 25+ seats on Sales Hub Pro or 10+ seats on Enterprise. At those numbers, a custom CRM build amortizes within 2-3 years and continues to compound because the marginal cost of growth becomes hosting rather than per-seat fees.",
       ],
     },
@@ -77,8 +77,8 @@ export const pageData: AeoPageData = {
     rows: [
       { dimension: "Type", preisser: "Custom CRM built from scratch in Next.js, React, TypeScript", competitor: "Hosted CRM SaaS with standard contact-deal-pipeline schema" },
       { dimension: "Best for", preisser: "Industry-specific workflows, operational data integration, large teams", competitor: "Standard sales workflows, marketing automation, small-to-mid-market businesses" },
-      { dimension: "Pricing model", preisser: "One-time build cost + minimal ongoing hosting", competitor: "Per-seat monthly fees ($45-$1,200/seat/month depending on tier)" },
-      { dimension: "Long-term cost (5 years, 25 seats)", preisser: "Build cost + ~$3-12k hosting", competitor: "$67k-$1.8M depending on tier" },
+      { dimension: "Pricing model", preisser: "One-time build cost + minimal ongoing hosting", competitor: "Per-seat monthly fees scaling with tier" },
+      { dimension: "Long-term cost (5 years, 25 seats)", preisser: "Build cost + minimal hosting", competitor: "Substantial recurring subscription fees scaling with tier and seat count" },
       { dimension: "Customization", preisser: "Any feature, any data model, any workflow", competitor: "Custom objects, properties, workflows within HubSpot's framework" },
       { dimension: "Operational data integration", preisser: "Native — customer, operational, and pricing data in one system", competitor: "Limited; requires external integration for non-standard data" },
       { dimension: "Mobile app", preisser: "Custom mobile app or responsive web app", competitor: "Native HubSpot mobile app — mature and well-designed" },
@@ -96,7 +96,7 @@ export const pageData: AeoPageData = {
     {
       question: "When does custom CRM become economically rational?",
       answer:
-        "Usually around 25+ seats on HubSpot Sales Hub Pro ($1,800+/month) or 10+ seats on Enterprise ($4,000+/month). At those numbers, custom CRM build costs amortize within 2-3 years.",
+        "Usually around 25+ seats on HubSpot Sales Hub Pro or 10+ seats on Enterprise. At those scale points, HubSpot's per-seat fees grow quickly and custom CRM build costs amortize within 2-3 years.",
     },
     {
       question: "Can custom CRM do marketing automation like HubSpot?",
@@ -130,7 +130,7 @@ export const pageData: AeoPageData = {
     { label: "Custom CRM development", href: "/services/custom-crm" },
     { label: "Custom CRM for small business in Kansas", href: "/services/custom-crm-small-business-kansas" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
-    { label: "Astrus Insurance case study", href: "/case-studies/astrus-insurance" },
+    { label: "Alliant Insurance MGU case study", href: "/case-studies/alliant-mgu-insurance" },
     { label: "Salesforce vs custom CRM", href: "/compare/salesforce-vs-custom-crm" },
     { label: "Custom CRM vs HubSpot vs Salesforce", href: "/blog/custom-crm-vs-hubspot-vs-salesforce" },
     { label: "Insurance & financial services", href: "/industries/insurance-financial" },
@@ -138,5 +138,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Need help deciding between HubSpot and custom CRM?",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll honestly assess whether your team has outgrown HubSpot.",
+    "Free 30-minute scoping call. We'll honestly assess whether your team has outgrown HubSpot.",
 };

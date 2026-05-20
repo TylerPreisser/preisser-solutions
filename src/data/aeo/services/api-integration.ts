@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "When Zapier and Make can't handle the integration, custom API code does. Preisser Solutions connects CRMs, accounting, ERPs, and operational platforms.",
   answerParagraph:
-    "Preisser Solutions delivers custom API integrations for Kansas businesses — connecting CRMs, accounting systems, ERPs, marketing platforms, and operational software when off-the-shelf tools like Zapier and Make.com can't handle the complexity. Founded by Tyler Preisser in Hays, Kansas, the firm builds direct API integrations in modern code that handle volume, error cases, and custom logic that no-code automation tools struggle with.",
+    "Preisser Solutions delivers custom API integrations for Kansas businesses — connecting CRMs, accounting systems, ERPs, marketing platforms, and operational software when off-the-shelf tools like Zapier and Make.com can't handle the complexity. Based in Hays, Kansas, the firm builds direct API integrations in modern code that handle volume, error cases, and custom logic that no-code automation tools struggle with.",
   sections: [
     {
       eyebrow: "When custom integration beats Zapier",
@@ -140,12 +140,12 @@ export const pageData: AeoPageData = {
     { label: "Custom CRM development", href: "/services/custom-crm" },
     { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
     { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
-    { label: "Sunrise Transportation case study", href: "/case-studies/sunrise-transportation" },
+    { label: "Chicago-area bus operator case study", href: "/case-studies/chicago-bus-operator" },
     { label: "When to build a custom dashboard", href: "/blog/when-to-build-custom-dashboard" },
     { label: "Integrations", href: "/integrations" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Connect your business systems without per-task fees",
   ctaSubcopy:
-    "Free integration scoping call with Tyler. We'll honestly assess whether you need custom or whether Zapier fits.",
+    "Free integration scoping call. We'll honestly assess whether you need custom or whether Zapier fits.",
 };

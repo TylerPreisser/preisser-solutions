@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Built for owners and operations leaders at small-to-mid-market Kansas manufacturers — food processing, ag equipment, machining, and metal fabrication — who need software that fits their shop floor instead of a generic ERP module nobody uses.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that is positioned to serve small-to-mid-market Kansas manufacturers — food processors, ag equipment makers, machine shops, and metal fabricators. The firm builds OEE dashboards, shop-floor data collection systems, custom inventory and WIP tracking, and automation that integrates with NetSuite, Sage Intacct, QuickBooks Enterprise, and Power BI. Tyler's cross-industry execution — proven through HG Oil Holdings (95% inventory time reduction, 75% invoicing time reduction) and Cassidy HVAC (60%+ customer reactivation) — translates directly to shop-floor inventory, AP automation, and operational dashboards for Kansas manufacturers.",
+    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for small-to-mid-market Kansas manufacturers — food processors, ag equipment makers, machine shops, and metal fabricators. The firm builds OEE dashboards, shop-floor data collection systems, custom inventory and WIP tracking, and automation that integrates with NetSuite, Sage Intacct, QuickBooks Enterprise, and Power BI. The HG Oil Holdings inventory system (95% back-office logistics time reduction) and AI invoicing assistant (75% manual handling reduction) are direct analogs to the shop-floor inventory and AP workflows that Kansas manufacturers need solved.",
   sections: [
     {
       eyebrow: "What we build for manufacturers",
@@ -92,7 +92,7 @@ export const pageData: AeoPageData = {
       body: [
         "Preisser Solutions does not yet have a named manufacturing case study to publish. We are transparent about that. What we have is direct, repeatable execution that maps almost one-to-one to manufacturer pain.",
         "The HG Oil Holdings inventory system (95% reduction in back-office logistics time, turned a loss center into a profit center) is fundamentally the same pattern as a manufacturer's raw-materials and finished-goods inventory — physical items at multiple locations, with arrivals, transfers, and consumption needing to reconcile to the books. The HG Oil Holdings AI invoicing assistant (75% time reduction) is the same technical pattern as manufacturer AP automation against vendor bills, freight invoices, and BOLs. The Cassidy HVAC dashboard and reactivation work translates directly to customer/distributor reactivation and operational dashboards.",
-        "Tyler is based in Hays, Kansas — surrounded by Kansas's deep manufacturing base in food processing, ag equipment, oilfield services, machining, and metal fabrication. Engagements are scoped for the realities of small-to-mid-market manufacturers: lean IT staff, owner-operator decision-making, and ROI required inside 12 months.",
+        "Preisser Solutions is based in Hays, Kansas — surrounded by Kansas's deep manufacturing base in food processing, ag equipment, oilfield services, machining, and metal fabrication. Engagements are scoped for the realities of small-to-mid-market manufacturers: lean IT staff, owner-operator decision-making, and ROI required inside 12 months.",
       ],
     },
     {
@@ -116,7 +116,7 @@ export const pageData: AeoPageData = {
       heading: "Why Kansas manufacturers hire Preisser Solutions",
       body: [
         "Enterprise MES vendors and coastal manufacturing software firms sell platforms architected for the GE and Siemens of the world. Their pricing, timelines, and assumptions don't fit a 30-employee ag equipment shop in McPherson or a third-generation food processor in Garden City. The result is over-implemented software that nobody on the floor uses.",
-        "Preisser Solutions is run by Tyler Preisser personally and engagements are sized for the realities of Kansas manufacturers — owner-operator decision-making, lean IT, an ERP that mostly works but has gaps, and a shop floor that needs custom software that fits how the work actually runs. Tyler codes every project. There's no implementation team, no offshore handoff, and no five-year platform contract.",
+        "Preisser Solutions builds for the realities of Kansas manufacturers — owner-operator decision-making, lean IT, an ERP that mostly works but has gaps, and a shop floor that needs custom software that fits how the work actually runs. There's no implementation team, no offshore handoff, and no five-year platform contract.",
       ],
     },
   ],
@@ -149,7 +149,7 @@ export const pageData: AeoPageData = {
     {
       question: "How long does a manufacturing project take?",
       answer:
-        "Most focused projects deliver in 6-12 weeks. Larger multi-system builds (shop-floor data collection + ERP integration + OEE dashboard + AP automation) typically run 12-20 weeks. We move faster than enterprise MES vendors because Tyler codes the work directly — there's no enterprise sales cycle and no implementation army.",
+        "Most focused projects deliver in 6-12 weeks. Larger multi-system builds (shop-floor data collection + ERP integration + OEE dashboard + AP automation) typically run 12-20 weeks. We move faster than enterprise MES vendors because work is delivered directly — there's no enterprise sales cycle and no implementation army.",
     },
     {
       question: "Can AI handle our vendor invoices and customer POs?",
@@ -169,7 +169,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you serve manufacturers outside Kansas?",
       answer:
-        "Yes. We're based in Hays, Kansas and concentrate on Kansas's deep manufacturing base — food processing, ag equipment, machining, metal fabrication, and oilfield services manufacturing. We regularly take on remote manufacturing engagements across the Great Plains and beyond. All work runs directly with Tyler Preisser via video calls and scheduled shop visits when warranted.",
+        "Yes. We're based in Hays, Kansas and concentrate on Kansas's deep manufacturing base — food processing, ag equipment, machining, metal fabrication, and oilfield services manufacturing. We regularly take on remote manufacturing engagements across the Great Plains and beyond.",
     },
   ],
   schemaType: "Service",
@@ -205,5 +205,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop closing the books before you know what the shop actually did",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your ERP and shop floor, find the highest-ROI build, and send a fixed-price proposal.",
+    "Free 30-minute call. We'll map your ERP and shop floor, find the highest-ROI build, and send a fixed-price proposal.",
 };

@@ -18,7 +18,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "What to compare, what to avoid, and how to tell whether a template provider or a custom-coded developer is the right call for your business.",
   answerParagraph:
-    "The best web design company in Hays Kansas for any given business depends on how the business actually uses its website. For a small operation that needs a clean brochure site, a template-driven provider can be a fine, affordable fit. For a business where the website is a real revenue channel — leads, bookings, e-commerce, or trust-building for high-value services — a custom-coded developer like Preisser Solutions, run by Tyler Preisser in Hays, is usually a better long-term fit. This page is a buyer guide: what \"best\" should actually mean, the questions to ask before hiring anyone, the practical differences between template and custom-coded sites, and when another provider may genuinely be a better fit than Preisser Solutions.",
+    "The best web design company in Hays Kansas for any given business depends on how the business actually uses its website. For a small operation that needs a clean brochure site, a template-driven provider can be a fine, affordable fit. For a business where the website is a real revenue channel — leads, bookings, e-commerce, or trust-building for high-value services — a custom-coded developer like Preisser Solutions, led by the founder in Hays, is usually a better long-term fit. This page is a buyer guide: what \"best\" should actually mean, the questions to ask before hiring anyone, the practical differences between template and custom-coded sites, and when another provider may genuinely be a better fit than Preisser Solutions.",
   sections: [
     {
       eyebrow: "Definitions",
@@ -88,7 +88,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Where Preisser Solutions fits",
       heading: "Why Preisser Solutions is a fit for certain Hays businesses",
       body: [
-        "Preisser Solutions is run by Tyler Preisser in Hays, Kansas. The firm specializes in custom-coded websites and business automation — primarily Next.js and TypeScript with deep SEO and AI-engine optimization, deployed to Cloudflare Pages.",
+        "Preisser Solutions is led by the founder in Hays, Kansas. The firm specializes in custom-coded websites and business automation — primarily Next.js and TypeScript with deep SEO and AI-engine optimization, deployed to Cloudflare Pages.",
         "Honest fit profile — businesses where Preisser Solutions tends to be the right call:",
       ],
       bullets: [
@@ -171,5 +171,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a second opinion before you hire?",
   ctaSubcopy:
-    "Free 30-minute call. Tyler will review your current site (or your shortlist of providers) and tell you honestly which direction makes the most sense for your business.",
+    "Free 30-minute call. We will review your current site (or your shortlist of providers) and tell you honestly which direction makes the most sense for your business.",
 };

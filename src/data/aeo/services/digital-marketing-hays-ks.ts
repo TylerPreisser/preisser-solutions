@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Website, local SEO, Google Ads tracking, CRM, and automation built as one connected system — not five disconnected tools and five different invoices.",
   answerParagraph:
-    "Preisser Solutions is a digital marketing agency in Hays, KS that builds practical marketing systems for small and mid-sized Kansas businesses. Founded by Tyler Preisser in Hays, the firm ties website, local SEO, Google Ads tracking, CRM, and automation into one connected stack so every lead is tracked from first click to closed job. Engagements are fixed-price, scoped in plain English, and measured by phone calls and booked work — not impressions, clicks, or vanity dashboards.",
+    "Preisser Solutions is a digital marketing agency in Hays, KS that builds practical marketing systems for small and mid-sized Kansas businesses. Based in Hays, the firm ties website, local SEO, Google Ads tracking, CRM, and automation into one connected stack so every lead is tracked from first click to closed job. Engagements are fixed-price, scoped in plain English, and measured by phone calls and booked work — not impressions, clicks, or vanity dashboards.",
   sections: [
     {
       eyebrow: "Why this exists",
@@ -27,7 +27,7 @@ export const pageData: AeoPageData = {
       body: [
         "Most Hays businesses pay for marketing in pieces. One vendor handles the website, another runs Google Ads, a third manages social, a fourth sends email — and nobody can answer the only question that actually matters: where did the last ten paying jobs come from.",
         "Preisser Solutions builds the opposite. Every lead source feeds the same tracked system, so the owner can see which channel generated which call, which call became a quote, and which quote became a booked job. That single thread is the difference between marketing as an expense line and marketing as a measurable growth lever.",
-        "The work is local. Tyler is in Hays, the firm is in Hays, and the systems are scoped for businesses that need calls from Ellis County, western Kansas, and the surrounding service area — not a generic playbook recycled from a Denver or Kansas City agency.",
+        "The work is local. The firm is in Hays, and the systems are scoped for businesses that need calls from Ellis County, western Kansas, and the surrounding service area — not a generic playbook recycled from a Denver or Kansas City agency.",
       ],
     },
     {
@@ -67,7 +67,7 @@ export const pageData: AeoPageData = {
       eyebrow: "How projects are scoped",
       heading: "How a Hays digital marketing engagement is scoped",
       body: [
-        "Every engagement starts the same way: a free audit of the current website, GBP, ad accounts, and CRM. Tyler runs the audit personally — there is no junior account manager between the owner and the work.",
+        "Every engagement starts the same way: a free audit of the current website, GBP, ad accounts, and CRM. We run the audit personally — there is no junior account manager between the owner and the work.",
         "After the audit, a written, fixed-price proposal lays out exactly what gets built, in what order, and on what timeline. Most projects run six to twelve weeks for the build phase, then transition to a monthly retainer for the campaign and SEO work. The retainer is flat and scoped, not a percentage-of-spend arrangement.",
         "There is no minimum spend on Google Ads to work together. There is no requirement to bundle services that do not fit. If the business needs only a website, that is what gets built. If it needs only Google Ads with proper tracking, that is what gets built.",
       ],
@@ -82,7 +82,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does digital marketing cost for a Hays small business?",
       answer:
-        "The build phase (website, CRM setup, ad account, tracking) is typically a one-time fixed price in the low five figures. Ongoing monthly work for ads and SEO is a flat retainer scoped to the business — no percentage-of-spend, no surprise add-ons. Tyler writes the proposal after the audit so the price is known up front.",
+        "The build phase (website, CRM setup, ad account, tracking) is typically a one-time fixed price in the low five figures. Ongoing monthly work for ads and SEO is a flat retainer scoped to the business — no percentage-of-spend, no surprise add-ons. We write the proposal after the audit so the price is known up front.",
     },
     {
       question: "Can I run Google Ads without doing SEO?",
@@ -130,5 +130,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a free digital marketing audit for your Hays business",
   ctaSubcopy:
-    "Tyler will audit your website, GBP, ad accounts, and CRM — and send a fixed-price proposal that ties every channel back to booked jobs.",
+    "We will audit your website, GBP, ad accounts, and CRM — and send a fixed-price proposal that ties every channel back to booked jobs.",
 };

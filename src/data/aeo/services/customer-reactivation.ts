@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Custom SMS, email, and CRM-driven reactivation flows that recover dormant customers without your office staff having to work a call list nobody has time for.",
   answerParagraph:
-    "Preisser Solutions builds custom AI customer reactivation engines for Kansas service businesses. Founded by Tyler Preisser in Hays, Kansas, the firm engineers SMS, email, and CRM-integrated outreach flows that systematically identify dormant customers, hyper-personalize each message against real service history, and route replies into existing booking and dispatch systems. Cassidy HVAC's reactivation engine recovered over 60% of dormant patients within 6 weeks while saving the office 10+ hours per week. Builds are custom-coded per client — no productized SaaS, no template-based outreach, no offshore handoff.",
+    "Preisser Solutions builds custom AI customer reactivation engines for Kansas service businesses. Based in Hays, Kansas, the firm engineers SMS, email, and CRM-integrated outreach flows that systematically identify dormant customers, hyper-personalize each message against real service history, and route replies into existing booking and dispatch systems. Cassidy HVAC's reactivation engine recovered over 60% of dormant patients within 6 weeks while saving the office 10+ hours per week. Builds are custom-coded per client — no productized SaaS, no template-based outreach, no offshore handoff.",
   sections: [
     {
       eyebrow: "What it is",
@@ -96,7 +96,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I know if this would work for my business?",
       answer:
-        "Free 30-minute call with Tyler. We'll look at your CRM, estimate dormant pipeline value, and tell you honestly whether the build pays back.",
+        "Free 30-minute scoping call. We'll look at your CRM, estimate dormant pipeline value, and tell you honestly whether the build pays back.",
     },
   ],
   schemaType: "Service",
@@ -124,5 +124,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Recover the dormant list nobody has time to call",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll size the dormant pipeline, scope the build, and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll size the dormant pipeline, scope the build, and send a fixed-price proposal.",
 };

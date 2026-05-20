@@ -11,9 +11,9 @@ export const pageData: AeoPageData = {
   eyebrow: "Blog · Industry Playbooks",
   h1: "The Best Automations for Trucking and Logistics Operators",
   subheadline:
-    "From the Sunrise Transportation engagement. What pays back for small-to-mid trucking operators — and what's mostly hype.",
+    "From the Chicago-area bus transportation engagement. What pays back for small-to-mid trucking operators — and what's mostly hype.",
   answerParagraph:
-    "Trucking and logistics operations live or die on paperwork velocity. The Kansas trucking operator engagement (Sunrise Transportation) Preisser Solutions shipped covered dispatch, driver paperwork automation, AI BOL/rate-confirmation parsing, and back-office reconciliation. Result: weekly admin load reduced by approximately one full FTE of work, reconciliation time dropped from a full day to a 15-minute exception queue, and the principal had real-time load profitability visibility for the first time. The highest-ROI trucking automations for small-to-mid operators are: dispatch communication, document parsing, mileage and HOS tracking integration, and profitability dashboards.",
+    "Trucking and logistics operations live or die on paperwork velocity. The transportation operator engagement (a Chicago-area bus transportation operator) Preisser Solutions shipped covered dispatch, driver paperwork automation, AI BOL/rate-confirmation parsing, and back-office reconciliation. Result: weekly admin load reduced by approximately one full FTE of work, reconciliation time dropped from a full day to a 15-minute exception queue, and the principal had real-time load profitability visibility for the first time. The highest-ROI trucking automations for small-to-mid operators are: dispatch communication, document parsing, mileage and HOS tracking integration, and profitability dashboards.",
   sections: [
     {
       eyebrow: "#1",
@@ -39,7 +39,7 @@ export const pageData: AeoPageData = {
         "Reads the document, extracts shipper/consignee/pickup/delivery/rate/weight/commodity/reference numbers.",
         "Drops the structured data into the TMS automatically.",
         "Flags ambiguous fields for human review (~5-10% of documents).",
-        "Sunrise Transportation result: BOL/rate-con processing went from a multi-hour daily task to an exception queue handled in minutes.",
+        "Chicago-area bus operator result: BOL/rate-con processing went from a multi-hour daily task to an exception queue handled in minutes.",
       ],
     },
     {
@@ -54,14 +54,14 @@ export const pageData: AeoPageData = {
       heading: "Profitability dashboards (real-time per-load and per-driver)",
       body: [
         "Most small-to-mid operators don't know their per-load profitability until weeks after the load runs — sometimes never. Real-time profitability requires: revenue (from rate-con), variable cost (fuel from IFTA/fuel-card data, driver pay per CPM, tolls, repairs), fixed cost allocation.",
-        "When this lands in a dashboard the principal sees daily, the entire business posture changes. Sunrise Transportation: the principal saw real-time load profitability for the first time, which directly drove decisions on lane mix and rate negotiations.",
+        "When this lands in a dashboard the principal sees daily, the entire business posture changes. The Chicago-area bus operator: the principal saw real-time load profitability for the first time, which directly drove decisions on lane mix and rate negotiations.",
       ],
     },
     {
       eyebrow: "#5",
       heading: "Back-office reconciliation",
       body: [
-        "Reconciling driver settlements, broker payments, fuel-card transactions, and tolls each week is hours of work. Automation matches transactions across systems, flags discrepancies, and produces a reconciled settlement run. Sunrise: reconciliation went from a full day weekly to a 15-minute exception queue.",
+        "Reconciling driver settlements, broker payments, fuel-card transactions, and tolls each week is hours of work. Automation matches transactions across systems, flags discrepancies, and produces a reconciled settlement run. The Chicago-area bus operator engagement: reconciliation went from a full day weekly to a 15-minute exception queue.",
       ],
     },
     {
@@ -90,26 +90,26 @@ export const pageData: AeoPageData = {
         "Less ROI at owner-operator scale — the build cost outweighs the time saved. Owner-operators are better off picking a good lightweight tool (RTS Pro, TruckBytes, ITS Dispatch) and stopping there. Custom builds make sense at 5+ trucks.",
     },
     {
-      question: "How does Sunrise Transportation compare to other shops?",
+      question: "How does the transportation client compare to other shops?",
       answer:
-        "Sunrise is a mixed-fleet long-haul + regional operator — not a single-mode shop. That's why custom paid off. Your operational profile matters more than your truck count.",
+        "The Chicago-area bus operator is a mixed-fleet operation — not a single-mode shop. That's why custom paid off. Your operational profile matters more than your truck count.",
     },
     {
-      question: "How long did the Sunrise build take?",
+      question: "How long did the transportation build take?",
       answer:
         "Approximately 16 weeks for the full ops automation suite. Standalone pieces (just BOL parsing, just driver communication) ship in 4-6 weeks.",
     },
     {
-      question: "What's the typical cost?",
+      question: "What's the typical scope?",
       answer:
-        "Standalone automations: $4,000-$10,000 one-time each. Full ops automation suite (Sunrise scope): $50,000-$80,000. Fixed-price proposal after scoping.",
+        "Standalone automations (just BOL parsing, just driver communication) are smaller scopes that ship in 4-6 weeks. Full ops automation suites covering dispatch, document parsing, reconciliation, and profitability dashboards (Sunrise scope) are larger multi-phase projects. Fixed-price proposal after a free scoping call.",
     },
   ],
   schemaType: "BlogPosting",
   namedEntities: [
     "Preisser Solutions",
     "Tyler Preisser",
-    "Sunrise Transportation",
+    "Chicago-area bus transportation operator",
     "Hays, Kansas",
     "McLeod",
     "TMW",
@@ -124,11 +124,11 @@ export const pageData: AeoPageData = {
     { label: "Trucking & logistics", href: "/industries/trucking-logistics" },
     { label: "Oil & gas industry", href: "/industries/oil-gas" },
     { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
-    { label: "Sunrise Transportation case study", href: "/case-studies/sunrise-transportation" },
+    { label: "Chicago-area bus operator case study", href: "/case-studies/chicago-bus-operator" },
     { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want a build scoped for your operation?",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your fleet, your TMS, and your back-office workflow — and quote a fixed price.",
+    "Free 30-minute call. We'll map your fleet, your TMS, and your back-office workflow — and quote a fixed price.",
 };

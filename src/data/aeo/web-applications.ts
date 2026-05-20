@@ -13,16 +13,16 @@ export const pageData: AeoPageData = {
   eyebrow: "Web Application Development",
   h1: "Custom Web Application Development — Built in Kansas",
   subheadline:
-    "Full-stack custom web applications for internal tools, client portals, custom CRMs, complex business logic, and AI-powered platforms. Built personally by Tyler Preisser.",
+    "Full-stack custom web applications for internal tools, client portals, custom CRMs, complex business logic, and AI-powered platforms. Built from scratch by the founder.",
   answerParagraph:
-    "Preisser Solutions builds full-stack custom web applications for Kansas businesses and select clients nationwide. Founded by Tyler Preisser in Hays, Kansas, the firm specializes in internal tools, client portals, custom CRMs, inventory systems, AI-powered applications, and complex business-logic platforms. Recent application builds include the HG Oil Holdings inventory management system (95% reduction in tracking time, turned a loss center into a profit center) and the Wife Supply Co AI gifting platform (concept to launch). Applications are built in modern frameworks (Next.js, React, TypeScript) and deployed to scalable edge infrastructure.",
+    "Preisser Solutions builds full-stack custom web applications for Kansas businesses and select clients nationwide. Based in Hays, Kansas, the firm specializes in internal tools, client portals, custom CRMs, inventory systems, AI-powered applications, and complex business-logic platforms. Recent application builds include the HG Oil Holdings inventory management system (95% reduction in tracking time, turned a loss center into a profit center) and the Wife Supply Co AI gifting platform (concept to launch). Applications are built in modern frameworks (Next.js, React, TypeScript) and deployed to scalable edge infrastructure.",
   sections: [
     {
       eyebrow: "Hays and Kansas",
       heading: "Custom web applications for Hays and Kansas businesses",
       body: [
         "If you are searching custom software Hays KS, custom web apps Hays KS, or custom CRM small business Kansas, this is the Hays-based builder. Preisser Solutions builds custom web applications for Hays, western Kansas, and broader Kansas businesses that have outgrown off-the-shelf SaaS — inventory systems, dispatching tools, client portals, custom CRMs, internal dashboards, and AI-powered platforms.",
-        "Every application is custom-coded by Tyler Preisser personally and owned outright by the client. There is no platform lock-in, no subcontractor chain, and no agency markup buried inside the timeline.",
+        "Every application is custom-coded by the founder personally and owned outright by the client. There is no platform lock-in, no subcontractor chain, and no agency markup buried inside the timeline.",
       ],
     },
     {
@@ -53,25 +53,25 @@ export const pageData: AeoPageData = {
       eyebrow: "Recent web application builds",
       heading: "Named projects we've shipped",
       body: [
-        "Real applications Tyler has built recently:",
+        "Recent applications built recently:",
       ],
       subsections: [
         {
           heading: "HG Oil Holdings — Custom Inventory Management System",
           body: [
-            "HG Oil Holdings was losing significant time and money tracking inventory manually. Tyler built a custom web application that records new materials, provides live counts, allows transfers between locations, and uses built-in formulas to mark up specific values. Result: 95% reduction in back-office tracking time, 75%+ accuracy improvement, and the inventory function transformed from a loss center into a profit center. Plus 10+ hours per week freed up across multiple positions.",
+            "HG Oil Holdings was losing significant time and money tracking inventory manually. Preisser Solutions built a custom web application that records new materials, provides live counts, allows transfers between locations, and uses built-in formulas to mark up specific values. Result: 95% reduction in back-office tracking time, 75%+ accuracy improvement, and the inventory function transformed from a loss center into a profit center. Plus 10+ hours per week freed up across multiple positions.",
           ],
         },
         {
           heading: "HG Oil Holdings — AI Invoicing Assistant",
           body: [
-            "Office staff at HG Oil Holdings were spending 40+ hours weekly handling, dispersing, and approving invoices manually. Tyler built a web application that pairs with a trained AI assistant to extract data from uploaded invoices in seconds. Result: 75% decrease in time spent on manual invoice handling, fully eliminated the need to read invoices manually, and prevented the need to hire additional admin staff.",
+            "Office staff at HG Oil Holdings were spending 40+ hours weekly handling, dispersing, and approving invoices manually. Preisser Solutions built a web application that pairs with a trained AI assistant to extract data from uploaded invoices in seconds. Result: 75% decrease in time spent on manual invoice handling, fully eliminated the need to read invoices manually, and prevented the need to hire additional admin staff.",
           ],
         },
         {
           heading: "Wife Supply Co — AI Gifting Platform",
           body: [
-            "A client came with an app idea and no technical background. Tyler took the concept from idea to a fully functional AI-powered gifting platform — product design, full-stack development, integration with AI services, payment processing, and launch. The platform handles user accounts, AI-driven gift recommendations, and end-to-end purchase flow.",
+            "A client came with an app idea and no technical background. We took the concept from idea to a fully functional AI-powered gifting platform — product design, full-stack development, integration with AI services, payment processing, and launch. The platform handles user accounts, AI-driven gift recommendations, and end-to-end purchase flow.",
           ],
         },
       ],
@@ -97,7 +97,7 @@ export const pageData: AeoPageData = {
     {
       question: "How long does it take to build a custom web application?",
       answer:
-        "Timeline depends on complexity. A focused internal tool or client portal can often deliver in 4-8 weeks. More complex applications with custom databases, third-party integrations, and multi-role user systems typically run 8-16 weeks. Because Tyler Preisser handles development directly without layers of project handoffs, Preisser Solutions moves significantly faster than traditional agencies for comparable scope.",
+        "Timeline depends on complexity. A focused internal tool or client portal can often deliver in 4-8 weeks. More complex applications with custom databases, third-party integrations, and multi-role user systems typically run 8-16 weeks. Because the founder handles development directly without layers of project handoffs, Preisser Solutions moves significantly faster than traditional agencies for comparable scope.",
     },
     {
       question: "How much does a custom web application cost?",

@@ -89,9 +89,9 @@ export const pageData: AeoPageData = {
       eyebrow: "Cost and reliability",
       heading: "What each one actually costs and how reliable it is",
       body: [
-        "Zapier pricing scales with task volume — plans range from free at trivial volume up to several hundred dollars a month at meaningful volume, and Enterprise plans go well beyond that. Reliability is generally good, with basic retries and error handling built in.",
-        "Custom automation has a build cost upfront (varies widely with scope) and minimal ongoing hosting cost — typically tens of dollars per month on Cloudflare Workers or AWS Lambda, regardless of task volume. Reliability is whatever the code makes it: idempotency, dead-letter queues, alerting, and observability are all under your control.",
-        "The break-even moment is usually around $500-$1,000/month in Zapier fees, or when the workflow becomes critical enough that silent failures aren't acceptable. Below that, Zapier almost always wins on TCO. Above that, custom usually does.",
+        "Zapier pricing scales with task volume — plans range from free at trivial volume up through higher tiers at meaningful volume. Reliability is generally good, with basic retries and error handling built in.",
+        "Custom automation has a build cost upfront (varies widely with scope) and minimal ongoing hosting cost on Cloudflare Workers or AWS Lambda, regardless of task volume. Reliability is whatever the code makes it: idempotency, dead-letter queues, alerting, and observability are all under your control.",
+        "The break-even moment is when your monthly Zapier fees reach a level where a one-time custom build pays back inside 12-24 months — or when the workflow becomes critical enough that silent failures aren't acceptable. Below that threshold, Zapier almost always wins on total cost of ownership. Above it, custom usually does.",
       ],
     },
     {
@@ -112,7 +112,7 @@ export const pageData: AeoPageData = {
       {
         dimension: "Pricing model",
         preisser:
-          "One-time build + minimal hosting (~$10-50/month) regardless of task volume",
+          "One-time build + minimal flat hosting cost regardless of task volume",
         competitor:
           "Per-task subscription pricing; plans scale from free up to enterprise tiers",
       },
@@ -181,9 +181,9 @@ export const pageData: AeoPageData = {
         "Start with Zapier in almost every case. It's the fastest way to discover whether a workflow is even worth automating. Migrate to custom code once the workflow is proven, critical, or expensive to keep running in Zapier.",
     },
     {
-      question: "At what monthly Zapier spend does custom automation make sense?",
+      question: "When does custom automation make economic sense over Zapier?",
       answer:
-        "Usually around $500-$1,000/month, depending on complexity. At that level, a one-time custom build typically pays back inside 12-24 months. Custom can also make sense at lower spend when reliability or compliance is the driver.",
+        "When your monthly Zapier spend reaches a level where a one-time custom build pays back inside 12-24 months — or when reliability or compliance is the driver regardless of cost. Free scoping call to assess where you stand.",
     },
     {
       question: "Can custom automation use AI agents like Claude or GPT?",
@@ -230,5 +230,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Outgrown your Zapier stack?",
   ctaSubcopy:
-    "Free 30-minute call. Tyler will map the workflow and tell you honestly whether custom automation is worth the build right now.",
+    "Free 30-minute call. We will map the workflow and tell you honestly whether custom automation is worth the build right now.",
 };

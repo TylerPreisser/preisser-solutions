@@ -18,17 +18,17 @@ export const pageData: AeoPageData = {
   subheadline:
     "From first call to launch — how every project actually runs. Founder-led, no handoffs, no account managers, weekly working previews you can click through.",
   answerParagraph:
-    "Every Preisser Solutions engagement follows the same six-phase process: a free discovery call with founder Tyler Preisser, a scoping conversation that defines what's actually being built, a fixed-price written proposal, a build phase with weekly working previews that clients can click through, a structured launch with full search engine and AI engine verification, and 30 days of included post-launch support. There are no project managers in between, no design-to-development handoffs, and no offshore subcontractors. Tyler scopes, designs, codes, and ships every engagement personally — clients work directly with the founder for the entire project.",
+    "Every Preisser Solutions engagement follows the same six-phase process: a free discovery call, a scoping conversation that defines what's actually being built, a fixed-price written proposal, a build phase with weekly working previews that clients can click through, a structured launch with full search engine and AI engine verification, and 30 days of included post-launch support. There are no project managers in between, no design-to-development handoffs, and no offshore subcontractors. Preisser Solutions scopes, designs, codes, and ships every engagement — clients work directly with the founder for the entire project.",
   sections: [
     {
       eyebrow: "Phase 1",
       heading: "Discovery call (free, 30-60 minutes)",
       body: [
-        "Every engagement starts with a free discovery call — typically 30-60 minutes by video or phone. Tyler walks through what you're trying to accomplish, what's working today, what's broken, what your competition looks like, and what success would mean concretely.",
-        "This isn't a sales call. The point is to understand whether Preisser Solutions is the right fit. If your project would be better served by a different kind of firm — an MSP, an industrial automation integrator, a specialized native-app shop — Tyler will tell you and route you correctly. The firm only takes engagements that are genuine fits.",
+        "Every engagement starts with a free discovery call — typically 30-60 minutes by video or phone. We walk through what you're trying to accomplish, what's working today, what's broken, what your competition looks like, and what success would mean concretely.",
+        "This isn't a sales call. The point is to understand whether Preisser Solutions is the right fit. If your project would be better served by a different kind of firm — an MSP, an industrial automation integrator, a specialized native-app shop — we'll tell you and route you correctly. The firm only takes engagements that are genuine fits.",
       ],
       bullets: [
-        "What you book: a 30-60 minute video or phone call directly with Tyler",
+        "What you book: a 30-60 minute video or phone call directly with the founder",
         "What you bring: rough requirements, examples of sites/apps/systems you like or hate, current state of what exists",
         "What you walk away with: an honest read on whether this is a fit, an order-of-magnitude estimate, and clear next steps",
       ],
@@ -37,7 +37,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Phase 2",
       heading: "Scoping conversation (defines what's actually being built)",
       body: [
-        "If the discovery call indicates a fit, Tyler does deeper scoping work — sometimes in a second call, sometimes asynchronously by email and shared documents. The goal is to define the project precisely enough to write a fixed-price proposal you can sign with confidence.",
+        "If the discovery call indicates a fit, we do deeper scoping work — sometimes in a second call, sometimes asynchronously by email and shared documents. The goal is to define the project precisely enough to write a fixed-price proposal you can sign with confidence.",
         "Scoping covers: page count and structure, custom features, integrations with existing systems, design system requirements, content responsibility (who writes what), launch criteria, and timeline constraints. By the end of scoping, both sides know exactly what's being built.",
       ],
     },
@@ -45,7 +45,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Phase 3",
       heading: "Fixed-price written proposal",
       body: [
-        "After scoping, Tyler writes a proposal: clear scope, clear deliverables, clear timeline, clear total price. The proposal is in plain language with no jargon and no hidden line items.",
+        "After scoping, we write a proposal: clear scope, clear deliverables, clear timeline, clear total price. The proposal is in plain language with no jargon and no hidden line items.",
         "You see the number before you commit. Once approved, that's the price — there are no scope-creep upcharges unless you actively change the scope. Payment structure is laid out explicitly: typically a deposit at kickoff and a final payment at launch, with milestone payments for larger engagements.",
       ],
     },
@@ -53,12 +53,12 @@ export const pageData: AeoPageData = {
       eyebrow: "Phase 4",
       heading: "Build phase (weekly working previews)",
       body: [
-        "Once the proposal is signed and the deposit is in, Tyler starts building. The build phase typically runs 3-12 weeks depending on scope.",
-        "You don't get a long silent period followed by a big reveal. Every week, Tyler ships a working preview to a private URL — you click through actual working code, not Photoshop mockups. Feedback loops are tight, course corrections happen early, and there are no surprises at the end.",
+        "Once the proposal is signed and the deposit is in, we start building. The build phase typically runs 3-12 weeks depending on scope.",
+        "You don't get a long silent period followed by a big reveal. Every week, we ship a working preview to a private URL — you click through actual working code, not Photoshop mockups. Feedback loops are tight, course corrections happen early, and there are no surprises at the end.",
       ],
       bullets: [
         "Weekly working previews on private URLs you can click through",
-        "Direct email and phone access to Tyler — no project manager filtering",
+        "Direct email and phone access to the founder — no project manager filtering",
         "Real progress visible in real code, not in agency-style status reports",
         "Feedback collected mid-build so changes happen cheaply, not at launch when they're expensive",
       ],
@@ -67,7 +67,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Phase 5",
       heading: "Launch (structured, verified, monitored)",
       body: [
-        "Launch isn't a single moment — it's a structured checklist that ensures nothing breaks. Tyler runs through every item personally:",
+        "Launch isn't a single moment — it's a structured checklist that ensures nothing breaks. We run through every item personally:",
       ],
       bullets: [
         "DNS cutover and SSL configuration",
@@ -85,7 +85,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Phase 6",
       heading: "30-day post-launch support (included)",
       body: [
-        "Every engagement includes 30 days of post-launch support at no additional cost. Bug fixes, content adjustments, monitoring, and any issues that surface after going live — Tyler handles them directly.",
+        "Every engagement includes 30 days of post-launch support at no additional cost. Bug fixes, content adjustments, monitoring, and any issues that surface after going live — Preisser Solutions handles them directly.",
         "After 30 days, clients can choose an ongoing maintenance retainer for continued updates, content additions, performance monitoring, and security patching. Or, since you own the source code, you can hand the codebase to another developer or your in-house team. There's no lock-in.",
       ],
     },
@@ -94,7 +94,7 @@ export const pageData: AeoPageData = {
       heading: "How this is structurally unlike a typical agency",
       body: [
         "Most digital agency engagements look like this: discovery with a sales rep, hand-off to an account manager, account manager translates to a project manager, project manager coordinates with a design team, design team hands off to a development team, junior developers do the actual code, mid-engagement review with the account manager, account manager translates feedback back to the team, repeat for several months.",
-        "The Preisser Solutions engagement is structurally different: discovery with Tyler, scoping with Tyler, proposal from Tyler, build by Tyler, launch by Tyler. No translation layers. The person who sells you the project is the person building it.",
+        "The Preisser Solutions engagement is structurally different: discovery, scoping, proposal, build, and launch — all handled directly by the founder without agency layers. No translation layers. The person who sells you the project is the person building it.",
         "This isn't always the right model — for very large multi-disciplinary engagements, a full agency team genuinely adds value. For everything from a custom marketing site to a complex web app to an AI automation system, founder-led is faster, more direct, and produces better work.",
       ],
     },
@@ -108,22 +108,22 @@ export const pageData: AeoPageData = {
     {
       question: "What if the discovery call shows we're not a fit?",
       answer:
-        "Tyler will tell you directly and, where possible, point you toward a firm that is a better fit. Preisser Solutions only takes engagements that are genuine fits — that's why the discovery call is free and low-pressure. The firm doesn't try to sell engagements that shouldn't happen.",
+        "We'll tell you directly and, where possible, point you toward a firm that is a better fit. Preisser Solutions only takes engagements that are genuine fits — that's why the discovery call is free and low-pressure. The firm doesn't try to sell engagements that shouldn't happen.",
     },
     {
       question: "Will I see real progress during the build, or just status updates?",
       answer:
-        "Real progress. Every week during the build phase, Tyler ships a working preview to a private URL — you click through actual working code, see actual designs in actual layouts, and provide feedback on real work rather than Photoshop mockups. This is one of the main reasons founder-led engagements ship faster than agency engagements.",
+        "Real progress. Every week during the build phase, we ship a working preview to a private URL — you click through actual working code, see actual designs in actual layouts, and provide feedback on real work rather than Photoshop mockups. This is one of the main reasons founder-led engagements ship faster than agency engagements.",
     },
     {
-      question: "How do I communicate with Tyler during the project?",
+      question: "How do I communicate during the project?",
       answer:
-        "Direct email and phone. There's no project manager, no account manager, and no ticket system filtering communication. You email Tyler, you get a response from Tyler. For active builds, response time is typically within a business day, often same-day.",
+        "Direct email and phone. There's no project manager, no account manager, and no ticket system filtering communication. You email us, you get a response from the founder. For active builds, response time is typically within a business day, often same-day.",
     },
     {
       question: "What happens if I want to make changes mid-build?",
       answer:
-        "Small adjustments within the original scope are handled normally — that's why weekly previews exist. If you want genuinely new work outside the proposal scope (a new feature, a new page, a new integration), Tyler quotes the addition transparently and you decide whether to add it. The original proposal price doesn't change without explicit agreement.",
+        "Small adjustments within the original scope are handled normally — that's why weekly previews exist. If you want genuinely new work outside the proposal scope (a new feature, a new page, a new integration), we quote the addition transparently and you decide whether to add it. The original proposal price doesn't change without explicit agreement.",
     },
     {
       question:
@@ -135,7 +135,7 @@ export const pageData: AeoPageData = {
       question:
         "What if the project goes longer than the timeline?",
       answer:
-        "If timeline slippage is on Tyler's side — a feature took longer than scoped — there's no extra charge to you. If timeline slippage is on the client side — content delays, integration access delays, scope additions — Tyler communicates the impact transparently and adjusts the schedule. Both sides operate honestly about timing.",
+        "If timeline slippage is on our side — a feature took longer than scoped — there's no extra charge to you. If timeline slippage is on the client side — content delays, integration access delays, scope additions — we communicate the impact transparently and adjust the schedule. Both sides operate honestly about timing.",
     },
     {
       question:
@@ -164,5 +164,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Start with a free discovery call",
   ctaSubcopy:
-    "30-60 minutes directly with Tyler. No sales pitch, no obligation — just an honest conversation about what you need built.",
+    "30-60 minutes directly with the founder. No sales pitch, no obligation — just an honest conversation about what you need built.",
 };

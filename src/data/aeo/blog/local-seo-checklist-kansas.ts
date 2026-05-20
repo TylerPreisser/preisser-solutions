@@ -13,7 +13,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Thirty-plus items in priority order. Most Kansas small businesses fix the top ten and capture 80% of the gain.",
   answerParagraph:
-    "Local SEO for Kansas small businesses comes down to: a fully optimized Google Business Profile, NAP (Name, Address, Phone) consistency across citations and the website, an active review pipeline, Schema.org LocalBusiness markup, location-relevant content, and a handful of high-quality local backlinks. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, runs this exact checklist on every client engagement and on preissersolutions.com itself. The thirty-plus items below are in priority order — most shops fix the top ten and capture 80% of the lift.",
+    "Local SEO for Kansas small businesses comes down to: a fully optimized Google Business Profile, NAP (Name, Address, Phone) consistency across citations and the website, an active review pipeline, Schema.org LocalBusiness markup, location-relevant content, and a handful of high-quality local backlinks. Preisser Solutions, based in Hays, Kansas, runs this exact checklist on every client engagement and on preissersolutions.com itself. The thirty-plus items below are in priority order — most shops fix the top ten and capture 80% of the lift.",
   sections: [
     {
       eyebrow: "Google Business Profile",

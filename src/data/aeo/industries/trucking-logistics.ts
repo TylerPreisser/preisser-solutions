@@ -9,9 +9,9 @@ export const pageData: AeoPageData = {
   eyebrow: "Custom Software for Trucking & Logistics in Kansas",
   h1: "Custom Software, Automation, and AI for Trucking & Logistics",
   subheadline:
-    "Built for fleet owners and dispatchers tired of generic TMS plug-ins and slow back-office workflows. Custom-coded in Hays, Kansas by Tyler Preisser.",
+    "Built for fleet owners and dispatchers tired of generic TMS plug-ins and slow back-office workflows.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for trucking and logistics operations — custom websites, dispatch automation, AI invoicing, custom dashboards, and integrations with McLeod, TMW Suite, JJ Keller, Samsara, and KeepTruckin/Motive. The HG Oil Holdings AI invoicing case study (75% decrease in manual invoice handling) translates directly to fleet billing and BOL workflows.",
+    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for trucking and logistics operations — custom websites, dispatch automation, AI invoicing, custom dashboards, and integrations with McLeod, TMW Suite, JJ Keller, Samsara, and KeepTruckin/Motive. The firm's named transportation engagement — delivered through R Squared AI for a Chicago-area bus transportation operator — built five Power BI dashboards plus operational automation that dropped weekly reconciliation from a full day to a 15-minute exception queue.",
   sections: [
     {
       eyebrow: "What we build for trucking",
@@ -67,9 +67,9 @@ export const pageData: AeoPageData = {
   ],
   faq: [
     {
-      question: "Do you really know trucking?",
+      question: "Do you really know trucking and transportation?",
       answer:
-        "We are a software firm — but we build for transportation operations specifically. The HG Oil Holdings AI invoicing case study (75% decrease in manual invoice handling) translates directly to fleet billing workflows.",
+        "Yes. Preisser Solutions — delivered through R Squared AI — built five Power BI dashboards plus back-office automation for a Chicago-area bus transportation operator. Weekly reconciliation dropped from a full day to a 15-minute exception queue, and the engagement eliminated approximately one FTE of manual admin work. The HG Oil Holdings AI invoicing build (75% time reduction) is also a direct analog to fleet billing and BOL workflows.",
     },
     {
       question: "Do you replace McLeod or TMW Suite?",
@@ -77,9 +77,9 @@ export const pageData: AeoPageData = {
         "No. We integrate with them. Where they fall short — custom shipper portals, AI invoicing, driver onboarding flows, owner dashboards — is where we sit.",
     },
     {
-      question: "Can you build AI invoicing for BOLs?",
+      question: "Can you build AI invoicing and document automation for BOLs?",
       answer:
-        "Yes. AI invoicing is one of our anchor case studies. The HG Oil Holdings AI invoice assistant extracts and structures invoice data instantly — same approach works for BOL handling.",
+        "Yes. The HG Oil Holdings AI invoice assistant (75% reduction in manual handling) and the back-office automation built for the Chicago-area bus transportation operator are both direct proof. The same AI document extraction approach applies to BOL handling, rate confirmations, and fleet billing workflows.",
     },
     {
       question: "How much does a trucking automation project cost?",
@@ -113,6 +113,8 @@ export const pageData: AeoPageData = {
     "Samsara",
     "Motive",
     "JJ Keller",
+    "Power BI",
+    "R Squared AI",
   ],
   relatedLinks: [
     { label: "Oil & gas industry", href: "/industries/oil-gas" },
@@ -120,12 +122,12 @@ export const pageData: AeoPageData = {
     { label: "Business automation systems", href: "/business-automation" },
     { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
     { label: "Automate invoice processing", href: "/use-cases/automate-invoice-processing-small-business" },
-    { label: "Sunrise Transportation case study", href: "/case-studies/sunrise-transportation" },
+    { label: "Chicago-area bus operator case study", href: "/case-studies/chicago-bus-operator" },
     { label: "Best automations for trucking & logistics", href: "/blog/best-automations-trucking" },
     { label: "When to build a custom dashboard", href: "/blog/when-to-build-custom-dashboard" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Stop losing back-office hours to manual BOLs",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your stack, identify the highest-ROI automation, and send a fixed-price proposal.",
+    "Free 30-minute call. We'll map your stack, identify the highest-ROI automation, and send a fixed-price proposal.",
 };

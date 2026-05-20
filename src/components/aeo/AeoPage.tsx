@@ -314,16 +314,6 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                     >
                       {tier.name}
                     </h3>
-                    <div
-                      style={{
-                        fontSize: 18,
-                        fontWeight: 600,
-                        color: "var(--color-primary, #0D95E8)",
-                        marginBottom: 8,
-                      }}
-                    >
-                      {tier.priceRange}
-                    </div>
                     <p
                       style={{
                         fontSize: 15,

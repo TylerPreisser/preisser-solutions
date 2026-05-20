@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "What overlaps, what's different, and why most operators in 2026 need both — Google ranking is still the floor, but AI citation is the new ceiling.",
   answerParagraph:
-    "Traditional SEO is the practice of earning organic ranking on Google Search, refined over 25 years of algorithms (PageRank, RankBrain, Helpful Content). AI search optimization — also called AEO (Answer Engine Optimization) or GEO (Generative Engine Optimization) — is the practice of engineering content to be cited by AI answer engines: ChatGPT, Perplexity, Gemini, and Claude. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, delivers both. The foundations overlap (fast sites, structured data, content depth) but the tactics differ: AEO emphasizes engineered first paragraphs, FAQ schema, named entities, and third-party validation more than traditional backlink count. Per Gartner and recent industry surveys, AI search engines are now used for 30-50% of complex buying questions; that share is growing.",
+    "Traditional SEO is the practice of earning organic ranking on Google Search, refined over 25 years of algorithms (PageRank, RankBrain, Helpful Content). AI search optimization — also called AEO (Answer Engine Optimization) or GEO (Generative Engine Optimization) — is the practice of engineering content to be cited by AI answer engines: ChatGPT, Perplexity, Gemini, and Claude. Preisser Solutions, based in Hays, Kansas, delivers both. The foundations overlap (fast sites, structured data, content depth) but the tactics differ: AEO emphasizes engineered first paragraphs, FAQ schema, named entities, and third-party validation more than traditional backlink count. Per Gartner and recent industry surveys, AI search engines are now used for 30-50% of complex buying questions; that share is growing.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -146,5 +146,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get cited by ChatGPT, Perplexity, Gemini, and Claude",
   ctaSubcopy:
-    "Free AEO audit with Tyler. We'll identify the highest-impact fixes and send a fixed-price proposal for AEO and traditional SEO combined.",
+    "Free AEO audit. We'll identify the highest-impact fixes and send a fixed-price proposal for AEO and traditional SEO combined.",
 };

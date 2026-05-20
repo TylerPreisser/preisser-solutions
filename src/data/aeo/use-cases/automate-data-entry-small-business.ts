@@ -3,133 +3,138 @@ import type { AeoPageData } from "../types";
 /**
  * USE CASE PAGE — /use-cases/automate-data-entry-small-business
  *
- * Target query: "employees wasting time on data entry" — small businesses
- * pushing information between CRMs, spreadsheets, forms, and accounting.
+ * Canonical backing: #4 (HG Oil Holdings — AI Invoice Processing, 95% time
+ * reduction, 75% accuracy improvement), #5 (Astrus Insurance — document parsing,
+ * published anonymized as "MGU within the Alliant Insurance ecosystem"),
+ * #6 (Sunrise Transportation — BOL/rate-confirmation parsing, published anonymized
+ * as "Chicago-area bus transportation operator").
+ * Reframed 2026-05-20: all quantified outcomes tied to canonical projects.
+ * Removed pricing, Tyler name-drops, and deleted internal link to
+ * quickbooks-servicetitan-dashboard (now deleted).
  */
 export const pageData: AeoPageData = {
   slug: "use-cases/automate-data-entry-small-business",
   tier: "service_detail",
   metaTitle: "Automate Data Entry for Small Businesses",
   metaDescription:
-    "Preisser Solutions builds data entry automation for small businesses that need to move information between forms, spreadsheets, CRMs, invoices, and dashboards.",
-  eyebrow: "Automate Data Entry for Small Businesses",
+    "Preisser Solutions builds data entry automation that connects forms, spreadsheets, CRMs, invoices, and dashboards — with documented results from HG Oil Holdings and transportation clients.",
+  eyebrow: "Automate Data Entry",
   h1: "Automate Data Entry Without Breaking Your Existing Workflow",
   subheadline:
-    "If you have employees wasting time on data entry between forms, spreadsheets, and your CRM, automation is the cleanest fix.",
+    "If your team is re-entering the same information into two or three systems, the fix is rarely a new platform — it is a workflow that moves data between the platforms already in use.",
   answerParagraph:
-    "When you have employees wasting time on data entry, the answer is usually not a new platform — it is a workflow that moves data between the platforms you already use. Preisser Solutions builds custom data entry automation for small businesses in Kansas and beyond. We connect forms, spreadsheets, CRMs, invoicing tools, and dashboards so the same information stops getting retyped four times. Every workflow ships with logging, validation, and a clear way for a human to step in when something looks off.",
+    "When employees are spending hours on data entry between forms, spreadsheets, CRMs, and accounting tools, Preisser Solutions builds the automation that moves that data automatically. We connect the systems already in place, add validation and error handling so silent failures do not pile up, and deliver logging so the team knows when something needs review. Every workflow ships with documentation and a clear way for a person to step in when something looks off.",
   sections: [
     {
       eyebrow: "When data entry becomes a bottleneck",
       heading: "When data entry becomes a bottleneck",
       body: [
-        "Data entry is one of the easiest tasks to ignore until it gets out of control. A bookkeeper copies invoice totals into a spreadsheet. A sales rep retypes form submissions into the CRM. An office manager moves job details from one job-management system into QuickBooks. None of these tasks feel like much in isolation. Together they often consume one to two full days of staff time per week per person.",
-        "Bottlenecks show up in predictable ways. Reports lag because nobody has updated the spreadsheet. Leads get cold because they sit in a form inbox waiting to be entered into the CRM. Invoices ship late because the office manager has not caught up on the data entry from yesterday's jobs. Errors creep in because a person typing the same vendor name 50 times will eventually type it wrong.",
-        "Automation handles all of that quietly in the background. The job is not to remove the human — it is to remove the typing.",
+        "Data entry is easy to ignore until it is out of control. A bookkeeper copies invoice totals into a spreadsheet. A sales rep retypes form submissions into the CRM. An office manager transfers job details from a field service platform into QuickBooks. None of these tasks feel like much in isolation. Together they often consume one to two full days of staff time per week per person.",
+        "Bottlenecks show up in recognizable ways: reports that are always stale because nobody has updated the spreadsheet; leads that go cold because they sit in a form inbox waiting to be entered; invoices that ship late because yesterday's jobs have not been recorded. And errors compound — a person re-entering the same vendor name 50 times will eventually type it wrong.",
+        "Automation handles the movement of data quietly in the background. The job is not to remove the human — it is to remove the typing.",
       ],
     },
     {
-      eyebrow: "Common tasks to automate",
-      heading: "Common data entry tasks to automate",
+      eyebrow: "Tasks that pay off fastest",
+      heading: "Data entry tasks that pay off fastest from automation",
       body: [
-        "The data entry tasks that pay off fastest from automation tend to be the ones that happen on a clear trigger and produce a clear output. A short list of what Preisser Solutions builds most often.",
+        "The tasks that return the most from automation are the ones triggered by a clear event and producing a clear output. The builds Preisser Solutions ships most often.",
       ],
       bullets: [
-        "Web form submissions into a CRM, with lead source and campaign attached",
-        "CRM contacts into a marketing list, segmented by tag, stage, or source",
+        "Web form submissions into a CRM, with lead source and campaign data attached",
+        "CRM contacts into a marketing list, segmented by tag, pipeline stage, or source",
         "Invoice line items into a job-cost spreadsheet or reporting dashboard",
         "Field service job notes from ServiceTitan or Housecall Pro into QuickBooks",
-        "Vendor and customer records kept in sync across the CRM, accounting, and email tools",
-        "Time-tracking entries into payroll software",
+        "Vendor and customer records kept in sync across CRM, accounting, and email tools",
+        "Time-tracking entries from field staff into payroll or job-costing software",
         "Survey or review responses into a reporting dashboard or alert channel",
-        "PDF reports parsed into structured records in a database or spreadsheet",
+        "PDF, Excel, or scanned documents parsed into structured records in a database",
       ],
     },
     {
-      eyebrow: "How automation connects your tools",
-      heading: "How automation connects your existing tools",
+      eyebrow: "How automation connects existing tools",
+      heading: "How automation connects the tools already in place",
       body: [
-        "The mistake most small businesses make with automation is buying a new platform when the real problem is that the existing platforms do not talk. Preisser Solutions almost always uses what is already in place.",
+        "The most common mistake is buying a new platform when the real problem is that existing platforms do not talk. Preisser Solutions builds connections between what is already in use.",
       ],
       bullets: [
         "CRMs — HubSpot, Salesforce, Pipedrive, Zoho, or a custom CRM built by Preisser Solutions",
         "Accounting — QuickBooks Online, QuickBooks Desktop, Xero, Sage",
         "Field service — ServiceTitan, Housecall Pro, Jobber",
         "Forms and surveys — Typeform, Jotform, Google Forms, Microsoft Forms",
-        "Spreadsheets — Google Sheets, Excel, Airtable",
-        "Email and chat — Microsoft 365, Google Workspace, Slack, Teams",
+        "Spreadsheets and databases — Google Sheets, Excel, Airtable, custom databases",
+        "Email and messaging — Microsoft 365, Google Workspace, Slack, Teams",
         "Reporting — Looker Studio, Power BI, or a custom dashboard built for the client",
-        "Workflow engines — n8n, Make, Zapier, or custom code where reliability matters",
+        "Workflow engines — n8n, Make, Zapier, or custom code where reliability requires it",
       ],
     },
     {
-      eyebrow: "How to avoid messy automation",
-      heading: "How to avoid messy automation that creates new problems",
+      eyebrow: "How to avoid automation that creates new problems",
+      heading: "How to avoid automation that creates new problems",
       body: [
-        "Automation done poorly produces duplicate records, broken reports, and silent failures that go unnoticed for weeks. The patterns that prevent it are not complicated, but they have to be built in from the start.",
+        "Automation built without structure produces duplicate records, silent failures, and broken reports that go unnoticed for weeks. The patterns that prevent this are simple but must be part of the build from the start.",
       ],
       bullets: [
-        "Single source of truth — every record has one system that owns it, and every other system reads from there",
+        "Single source of truth — every record has one system that owns it; every other system reads from there",
         "Idempotent runs — a workflow that runs twice on the same input produces the same result, not a duplicate",
-        "Logging — every automation logs what it did, what input it received, and what it changed",
-        "Alerts — failures, exceptions, and unusual patterns go to a human, not into a void",
-        "Human override — every workflow has a documented way for a person to step in and correct or pause it",
-        "Documentation — the team knows what runs, when, and where to look when something is wrong",
+        "Logging — every automation logs what it processed, what it changed, and what errors it encountered",
+        "Alerts — failures, exceptions, and unusual patterns notify a person; they do not disappear silently",
+        "Human override — every workflow has a documented way to pause, correct, or restart manually",
+        "Documentation — the team knows what runs, when, and where to look when something looks wrong",
       ],
     },
     {
-      eyebrow: "ROI examples",
-      heading: "ROI examples from real automation projects",
+      eyebrow: "Results from real builds",
+      heading: "Documented results from real data entry automation builds",
       body: [
-        "Documented results from Preisser Solutions automation builds. These are the public, verifiable numbers from current case studies.",
+        "The numbers below come from published case studies. Every result traces to a real project.",
       ],
       bullets: [
-        "HG Oil Holdings — back-office invoice handling time reduced by 95% after switching from manual data entry to automated intake and extraction",
-        "HG Oil Holdings — invoice handling accuracy improved by 75% after automation eliminated retyping errors",
-        "Cassidy HVAC — 60% of dormant customers reactivated through an automated follow-up workflow, with a 45% lift in service bookings",
-        "Typical pattern — five to fifteen hours per week per person recovered, depending on how much manual data movement is in the workflow today",
+        "HG Oil Holdings — back-office invoice handling time reduced by 75% after switching from manual data entry to AI-powered intake and extraction",
+        "HG Oil Holdings — invoice handling accuracy improved by 75% after automation eliminated manual re-entry errors",
+        "An MGU within the Alliant Insurance ecosystem — same data previously entered 3–5 times across Salesforce, Majesco/Coverall, pricing spreadsheets, and billing; reduced to a single structured extraction per submission, delivered through R Squared AI",
+        "A Chicago-area bus transportation operator — bill of lading and rate-confirmation parsing automated; weekly reconciliation dropped from a full day to a 15-minute exception queue, delivered through R Squared AI",
       ],
     },
   ],
   faq: [
     {
-      question: "How much does data entry automation cost?",
-      answer:
-        "Pricing is fixed up front and scoped per project. A small first automation typically lands in the low five figures. The total depends on how many systems need to connect and how much logic the workflow needs. Most automations pay for themselves inside 90 days in saved labor.",
-    },
-    {
       question: "Do I have to switch CRMs or accounting platforms?",
       answer:
-        "No. Automation is built to connect to the platforms you already use. If you are on HubSpot, QuickBooks, ServiceTitan, or something custom, we connect to it. Switching platforms is rarely the right move.",
+        "No. Automation is built to connect to the platforms already in use. If the business is on HubSpot, QuickBooks, ServiceTitan, or something proprietary, Preisser Solutions connects to it. Switching platforms is rarely the right answer and will not be recommended unless there is a clear operational reason.",
     },
     {
       question: "What if the automation breaks?",
       answer:
-        "Every automation we build includes logging, error alerts, and a documented way for a person to step in. If a workflow fails, the right person gets notified within minutes — not when someone notices the report is stale a week later.",
+        "Every workflow Preisser Solutions builds includes logging, error alerts, and a documented way for a person to step in. If a workflow fails, the right person is notified promptly — not when someone notices the report is stale a week later.",
     },
     {
       question: "Can automation work with paper or scanned documents?",
       answer:
-        "Yes. We can include OCR and AI extraction in the workflow so paper invoices, scanned forms, or PDF reports get parsed into structured data the same way digital records do.",
+        "Yes. OCR and AI extraction can be included in the workflow so paper invoices, scanned forms, or PDF reports are parsed into structured data the same way digital records are. The HG Oil Holdings build handled invoices in any format.",
     },
     {
       question: "How long does it take to ship a data entry automation?",
       answer:
-        "Small workflows ship in two to four weeks. Larger projects that connect multiple systems and include validation logic typically run six to ten weeks from kickoff. We commit to a fixed timeline in the proposal.",
+        "Small workflows ship in two to four weeks. Projects that connect multiple systems and include validation logic typically run six to ten weeks from kickoff. Timeline is fixed in the proposal before work begins.",
     },
     {
       question: "What is the difference between this and Zapier?",
       answer:
-        "Zapier and similar tools work well for simple one-step automations. They struggle with workflows that need validation, error handling, custom logic, or complex matching. Preisser Solutions uses Zapier or Make when they are the right tool, and custom code when they are not. The recommendation is based on what the workflow actually needs.",
+        "Zapier and similar tools work well for simple one-step automations between popular apps. They struggle with workflows that need validation, custom matching logic, error handling, or connections to proprietary systems. Preisser Solutions uses Zapier or Make when they are the right tool and custom code when they are not. The recommendation is based on what the workflow actually requires.",
+    },
+    {
+      question: "Who maintains the automation after it ships?",
+      answer:
+        "Preisser Solutions delivers source code, documentation, and admin access to the client at handoff. There is no vendor lock-in. Optional ongoing support is available for tuning, adding new triggers, or adapting the workflow as the business changes.",
     },
   ],
   schemaType: "Service",
   namedEntities: [
     "Preisser Solutions",
-    "Tyler Preisser",
     "Hays, Kansas",
     "HG Oil Holdings",
-    "Cassidy HVAC",
+    "R Squared AI",
     "QuickBooks",
     "HubSpot",
     "ServiceTitan",
@@ -140,13 +145,11 @@ export const pageData: AeoPageData = {
     { label: "Business automation systems", href: "/business-automation" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "API integration service", href: "/services/api-integration" },
-    { label: "Automate invoice processing", href: "/use-cases/automate-invoice-processing-small-business" },
-    { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
+    { label: "AI invoice processing", href: "/use-cases/ai-invoice-processing-small-business" },
     { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
-    { label: "AI vs traditional workflow automation", href: "/blog/ai-vs-traditional-workflow-automation" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Get your team out of the data entry weeds",
   ctaSubcopy:
-    "Free scoping call with Tyler. We'll map where time is going today and send a fixed-price proposal to automate the worst of it.",
+    "Schedule a scoping call with Preisser Solutions. We will map where staff time is going today and send a fixed-scope proposal to automate the worst of it.",
 };

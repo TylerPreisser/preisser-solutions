@@ -20,7 +20,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "There's a difference between being invisible and being unranked. Diagnose which one you have before you spend a dollar fixing it.",
   answerParagraph:
-    "If your website isn't showing up on Google, there are two possibilities: the page is not in Google's index at all, or it is indexed but ranking too far down to be seen. The fix depends entirely on which one is happening, and the diagnosis takes about ten minutes in Google Search Console. Pages stay out of the index because of robots.txt, noindex tags, duplicate canonicals, soft 404s, or crawl errors. Pages rank poorly because of weak titles, thin content, missing local signals, or no inbound links. Tyler Preisser at Preisser Solutions in Hays, Kansas walks small business owners through both paths.",
+    "If your website isn't showing up on Google, there are two possibilities: the page is not in Google's index at all, or it is indexed but ranking too far down to be seen. The fix depends entirely on which one is happening, and the diagnosis takes about ten minutes in Google Search Console. Pages stay out of the index because of robots.txt, noindex tags, duplicate canonicals, soft 404s, or crawl errors. Pages rank poorly because of weak titles, thin content, missing local signals, or no inbound links. Preisser Solutions in Hays, Kansas walks small business owners through both paths.",
   sections: [
     {
       eyebrow: "Step 1",

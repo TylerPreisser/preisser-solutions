@@ -137,8 +137,8 @@ const themeInitScript = `(function(){
 // fields the helper intentionally does not own:
 //   - disambiguatingDescription (deep disambiguation prose, long-form)
 //   - hasOfferCatalog (priced Offer catalog of marketing service tiers)
-// The Organization helper output keeps `priceRange: "$$"`; the LocalBusiness
-// helper output uses the longer seoSite.priceRange string. Both remain valid.
+// Neither the Organization nor LocalBusiness helpers include priceRange —
+// that field has been intentionally removed from all schema output.
 //
 // The home WebPage block (entity #4 below) is layout-local and not exposed
 // through the helper library — it points back to the website/organization/
@@ -159,97 +159,58 @@ const organization = {
   // engines surfacing pricing have an authoritative source. Per-service prices
   // are stable enough to live in code rather than data — and short enough to
   // keep inline.
-  hasOfferCatalog: {
-    "@type": "OfferCatalog",
-    name: "Preisser Solutions Service Catalog",
-    itemListElement: [
-      {
-        "@type": "Offer",
-        priceCurrency: "USD",
-        priceSpecification: {
-          "@type": "PriceSpecification",
-          minPrice: "12500",
-          priceCurrency: "USD",
-          valueAddedTaxIncluded: false,
-        },
-        availability: "https://schema.org/InStock",
-        itemOffered: {
-          "@type": "Service",
-          name: "Custom Website Development",
-          description:
-            "Pixel-perfect, high-performance custom websites built specifically for your business. No templates. Designed for conversions, speed, and SEO. Starting at $12,500.",
-        },
+  makesOffer: [
+    {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+      itemOffered: {
+        "@type": "Service",
+        name: "Custom Website Development",
+        description:
+          "Pixel-perfect, high-performance custom websites built specifically for your business. No templates. Designed for conversions, speed, and SEO.",
       },
-      {
-        "@type": "Offer",
-        priceCurrency: "USD",
-        priceSpecification: {
-          "@type": "PriceSpecification",
-          minPrice: "28500",
-          priceCurrency: "USD",
-          valueAddedTaxIncluded: false,
-        },
-        availability: "https://schema.org/InStock",
-        itemOffered: {
-          "@type": "Service",
-          name: "Web Application Development",
-          description:
-            "Full-stack custom web applications for internal tools, client portals, and complex business logic. Built with modern frameworks. Starting at $28,500.",
-        },
+    },
+    {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+      itemOffered: {
+        "@type": "Service",
+        name: "Web Application Development",
+        description:
+          "Full-stack custom web applications for internal tools, client portals, and complex business logic. Built with modern frameworks.",
       },
-      {
-        "@type": "Offer",
-        priceCurrency: "USD",
-        priceSpecification: {
-          "@type": "PriceSpecification",
-          minPrice: "8500",
-          priceCurrency: "USD",
-          valueAddedTaxIncluded: false,
-        },
-        availability: "https://schema.org/InStock",
-        itemOffered: {
-          "@type": "Service",
-          name: "Business Automation Systems",
-          description:
-            "End-to-end automation of invoicing, scheduling, data entry, reporting, and operational workflows using AI and custom software. Starting at $8,500.",
-        },
+    },
+    {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+      itemOffered: {
+        "@type": "Service",
+        name: "Business Automation Systems",
+        description:
+          "End-to-end automation of invoicing, scheduling, data entry, reporting, and operational workflows using AI and custom software.",
       },
-      {
-        "@type": "Offer",
-        priceCurrency: "USD",
-        priceSpecification: {
-          "@type": "PriceSpecification",
-          minPrice: "15000",
-          priceCurrency: "USD",
-          valueAddedTaxIncluded: false,
-        },
-        availability: "https://schema.org/InStock",
-        itemOffered: {
-          "@type": "Service",
-          name: "AI Agent Development",
-          description:
-            "Custom AI agents that handle customer service, research, data processing, and decision support — built specifically for your business. Starting at $15,000.",
-        },
+    },
+    {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+      itemOffered: {
+        "@type": "Service",
+        name: "AI Agent Development",
+        description:
+          "Custom AI agents that handle customer service, research, data processing, and decision support — built specifically for your business.",
       },
-      {
-        "@type": "Offer",
-        priceCurrency: "USD",
-        priceSpecification: {
-          "@type": "PriceSpecification",
-          minPrice: "9500",
-          priceCurrency: "USD",
-          valueAddedTaxIncluded: false,
-        },
-        availability: "https://schema.org/InStock",
-        itemOffered: {
-          "@type": "Service",
-          name: "Dashboards and Analytics",
-          description:
-            "Real-time business dashboards that surface key metrics, track KPIs, and give owners and operators a live view of operations. Starting at $9,500.",
-        },
+    },
+    {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+      itemOffered: {
+        "@type": "Service",
+        name: "Dashboards and Analytics",
+        description:
+          "Real-time business dashboards that surface key metrics, track KPIs, and give owners and operators a live view of operations.",
       },
-    ],
-  },
+    },
+  ],
 };
 
 const person = {

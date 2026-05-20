@@ -1,6 +1,12 @@
 /index.html / 301
 /home / 301
 
+# /products removed 2026-05-20 — Preisser Solutions has no productized SKUs for sale.
+# "AI Receptionist Starter" and "AI-Native Website Launch" framing deleted per canonical inventory.
+# Inbound links and Google-indexed pages (including the AI Receptionist result Tyler flagged) redirect to /services.
+/products /services 301
+/products/ /services 301
+
 # Host-level canonicalization is handled in Cloudflare Pages middleware.
 # Pages _redirects only supports path-based rules.
 
@@ -95,4 +101,62 @@
 /locations/russell-kansas /locations/hays-kansas 301
 /locations/russell-kansas/ /locations/hays-kansas 301
 /locations/smith-center-kansas /locations/hays-kansas 301
+
+# Use-case page deletions (Wave 2, 2026-05-20) — pages with no canonical project backing.
+# ai-chatbot: generic capability, no project. → /services/ai-automation
+/use-cases/ai-chatbot-small-business /services/ai-automation 301
+/use-cases/ai-chatbot-small-business/ /services/ai-automation 301
+# automate-invoice-processing: duplicate of ai-invoice-processing. → canonical sibling.
+/use-cases/automate-invoice-processing-small-business /use-cases/ai-invoice-processing-small-business 301
+/use-cases/automate-invoice-processing-small-business/ /use-cases/ai-invoice-processing-small-business 301
+# lead-tracking-google-ads: no canonical project (MarCommand is internal). → /services/local-seo
+/use-cases/lead-tracking-website-google-ads /services/local-seo 301
+/use-cases/lead-tracking-website-google-ads/ /services/local-seo 301
+# quickbooks-servicetitan-dashboard: misrepresents what was actually built. → /services/dashboards-and-analytics
+/use-cases/quickbooks-servicetitan-dashboard /services/dashboards-and-analytics 301
+/use-cases/quickbooks-servicetitan-dashboard/ /services/dashboards-and-analytics 301
 /locations/smith-center-kansas/ /locations/hays-kansas 301
+
+# Industry page deletions (2026-05-20) — pages with no canonical project backing.
+# Deleted data files + route dirs. Redirecting to /services (hub).
+/industries/agriculture /services 301
+/industries/agriculture/ /services 301
+/industries/auto-service /services 301
+/industries/auto-service/ /services 301
+/industries/construction /services 301
+/industries/construction/ /services 301
+/industries/dental /services 301
+/industries/dental/ /services 301
+/industries/electrical /services 301
+/industries/electrical/ /services 301
+/industries/garage-door /services 301
+/industries/garage-door/ /services 301
+/industries/healthcare /services 301
+/industries/healthcare/ /services 301
+/industries/landscaping /services 301
+/industries/landscaping/ /services 301
+/industries/pest-control /services 301
+/industries/pest-control/ /services 301
+/industries/plumbing /services 301
+/industries/plumbing/ /services 301
+/industries/real-estate /services 301
+/industries/real-estate/ /services 301
+/industries/restaurants /services 301
+/industries/restaurants/ /services 301
+/industries/roofing /services 301
+/industries/roofing/ /services 301
+/industries/veterinary /services 301
+/industries/veterinary/ /services 301
+
+# Privacy fix (2026-05-20) — old case-study URLs with real company names removed from public
+# site. Canonical replacements use anonymized framings per CANONICAL-PROJECTS.md.
+/case-studies/astrus-insurance       /case-studies/alliant-mgu-insurance     301
+/case-studies/astrus-insurance/      /case-studies/alliant-mgu-insurance     301
+/case-studies/sunrise-transportation /case-studies/chicago-bus-operator      301
+/case-studies/sunrise-transportation/ /case-studies/chicago-bus-operator     301
+/case-studies/cassidy-hvac           /case-studies/cassidy-hvac-reactivation 301
+/case-studies/cassidy-hvac/          /case-studies/cassidy-hvac-reactivation 301
+/case-studies/customer-reactivation  /case-studies/cassidy-hvac-reactivation 301
+/case-studies/customer-reactivation/ /case-studies/cassidy-hvac-reactivation 301
+/case-studies/hg-oil-holdings        /case-studies/hg-oil-inventory-system   301
+/case-studies/hg-oil-holdings/       /case-studies/hg-oil-inventory-system   301

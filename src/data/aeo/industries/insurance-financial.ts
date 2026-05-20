@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Built for independent agency principals, RIA founders, financial advisors, and broker-dealer ops leaders tired of Salesforce orgs they can't customize, AMS systems that don't fit, and Tamarac dashboards stuck in default mode.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that is positioned to serve independent insurance agencies, RIAs (registered investment advisors), financial advisors, and broker-dealers across Kansas. The firm builds custom CRMs, branded client portals, KPI dashboards, and marketing automation that integrate with AMS360, Applied Epic, Salesforce, HubSpot, and Tamarac — without forcing the migration to a generic platform. Tyler's cross-industry execution — proven through HG Oil Holdings (75% AI invoicing time reduction) and Cassidy HVAC (60%+ reactivation, 5x organic reach) — translates directly to renewals automation, AOR transitions, and household-level client experience for financial firms.",
+    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for insurance and financial firms — custom CRMs, branded client portals, KPI dashboards, and marketing automation that integrate with AMS360, Applied Epic, Salesforce, HubSpot, and Tamarac — without forcing the migration to a generic platform. The firm's named insurance engagement was delivered through R Squared AI for an MGU within the Alliant Insurance ecosystem: an AI-powered submission processing engine that eliminated manual data entry across disconnected systems and achieved zero missed renewals in the first six months.",
   sections: [
     {
       eyebrow: "What we build for insurance and financial firms",
@@ -87,12 +87,12 @@ export const pageData: AeoPageData = {
       ],
     },
     {
-      eyebrow: "Why we are positioned to serve insurance and financial firms",
-      heading: "Cross-industry capability and a regional advantage",
+      eyebrow: "Named insurance engagement",
+      heading: "AI-powered submission processing for an MGU within the Alliant Insurance ecosystem",
       body: [
-        "Preisser Solutions does not yet have a named insurance or RIA case study to publish. We're transparent about that. What we have is repeatable cross-industry execution and a regional advantage.",
-        "The technical patterns we deployed at Cassidy HVAC (5x organic reach, 60%+ customer reactivation) and HG Oil Holdings (95% inventory time reduction, 75% invoicing time reduction) translate directly to insurance and financial firms — AI document extraction works on dec pages and carrier statements just as well as oilfield invoices, and the reactivation engine that won back dormant HVAC customers maps directly to lost-client and lapsed-policy win-back for agencies and advisors.",
-        "Tyler is based in Hays, Kansas — close to a strong concentration of independent insurance agencies and regional financial advisors across the Great Plains — and brings the same playbook: small first scope, measurable ROI, then expand. Compliance is treated as a hard constraint from day one, not a checkbox at the end.",
+        "Preisser Solutions — delivered through R Squared AI — built an AI-powered submission processing engine for an MGU within the Alliant Insurance ecosystem. The system reads broker insurance submissions (7–15 documents per submission), extracts structured data using dual competing AI models (Claude Opus + GPT cross-validation), validates against a confidence threshold, and auto-populates Salesforce records — replacing manual data entry across disconnected systems where the same data was previously entered 3–5 times.",
+        "Results: zero missed renewals in the first six months of operation. Commission reconciliation reduced to under 30 minutes per month. Real-time book visibility for the principal where none had existed before.",
+        "The same technical pattern — AI document extraction, multi-system integration, workflow automation — is directly applicable to independent insurance agencies, RIAs, and broker-dealer affiliated advisors. For RIA and financial advisory firms, Preisser Solutions' AI invoicing and document extraction work (proven through HG Oil Holdings at 75% time reduction) translates directly to dec page extraction, policy summarization, and onboarding document handling. Compliance is treated as a hard constraint from day one, not a checkbox at the end.",
       ],
     },
     {
@@ -116,7 +116,7 @@ export const pageData: AeoPageData = {
       heading: "Why principals hire Preisser Solutions over a coastal consultancy",
       body: [
         "National wealthtech and insurtech consultancies sell enterprise platforms designed for billion-dollar RIAs and top-100 brokerages. Their pricing, timelines, and assumptions don't fit a 5-advisor RIA in Wichita or a 12-producer independent agency in Hays. The result is over-paying for under-fit software, or running on Excel and prayer.",
-        "Preisser Solutions is run by Tyler Preisser personally, with engagements sized for independent agencies, regional RIAs, and broker-dealer affiliated advisors across Kansas and the Great Plains. Tyler codes every project himself — there's no implementation team, no offshore handoff, and no five-year platform contract. Compliance constraints are built in from scoping, and engagements move at the pace your CCO can review.",
+        "Preisser Solutions is headquartered in Hays, Kansas, with engagements sized for independent agencies, regional RIAs, and broker-dealer affiliated advisors across Kansas and the Great Plains. There's no implementation team, no offshore handoff, and no five-year platform contract. Compliance constraints are built in from scoping, and engagements move at the pace your CCO can review.",
       ],
     },
   ],
@@ -137,9 +137,9 @@ export const pageData: AeoPageData = {
         "Yes — this is one of the most common asks from RIA founders. Generic Tamarac, Orion, or Black Diamond portals get used by 10-30% of clients on average. A branded, custom-built portal layered on top of those data feeds typically lifts engagement significantly. We integrate with the portfolio system as the book of record and build the experience clients actually want.",
     },
     {
-      question: "Do you have an insurance or RIA case study?",
+      question: "Do you have an insurance case study?",
       answer:
-        "Not yet — we're transparent about that. Our named work is in HVAC (Cassidy HVAC: 5x reach, 60%+ reactivation) and oil and gas (HG Oil Holdings: 95% inventory time reduction, 75% invoicing time reduction). The same technical patterns — AI document extraction, reactivation automation, custom dashboards — translate directly to renewals, AOR transitions, and household-level client experience.",
+        "Yes — delivered through R Squared AI for an MGU within the Alliant Insurance ecosystem. The engagement built an AI-powered submission processing engine that eliminated manual data entry across disconnected systems and achieved zero missed renewals in the first six months. The client is not named publicly per privacy agreement. For RIA and financial advisory work, the firm's AI document extraction capability (proven at HG Oil Holdings: 75% invoicing time reduction) translates directly to dec page extraction, policy summarization, and onboarding document handling.",
     },
     {
       question: "What does an insurance or RIA software project cost?",
@@ -149,7 +149,7 @@ export const pageData: AeoPageData = {
     {
       question: "How long does an insurance or RIA project take?",
       answer:
-        "Most focused projects deliver in 6-12 weeks. Compliance review and vendor API approvals can extend timelines slightly. Larger multi-system builds (custom CRM + portal + dashboard + automation) typically run 12-20 weeks. We move faster than national consultancies because Tyler codes the work directly.",
+        "Most focused projects deliver in 6-12 weeks. Compliance review and vendor API approvals can extend timelines slightly. Larger multi-system builds (custom CRM + portal + dashboard + automation) typically run 12-20 weeks. We move faster than national consultancies because work is delivered directly, without an enterprise sales cycle.",
     },
     {
       question: "Can AI safely handle financial and insurance workflows?",
@@ -169,7 +169,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you serve agencies and RIAs outside Kansas?",
       answer:
-        "Yes. We're based in Hays, Kansas and concentrate on Kansas and the Great Plains, but regularly take on remote engagements with independent agencies, RIAs, and broker-dealer affiliated advisors across the United States. All work runs directly with Tyler Preisser via video calls and shared project tools.",
+        "Yes. We're based in Hays, Kansas and concentrate on Kansas and the Great Plains, but regularly take on remote engagements with independent agencies, RIAs, and broker-dealer affiliated advisors across the United States.",
     },
   ],
   schemaType: "Service",
@@ -197,12 +197,12 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
     { label: "Lead tracking for website + Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
-    { label: "Astrus Insurance case study", href: "/case-studies/astrus-insurance" },
+    { label: "MGU insurance case study", href: "/case-studies/alliant-mgu-insurance" },
     { label: "Best automations for insurance agencies", href: "/blog/best-automations-insurance" },
     { label: "HubSpot vs custom CRM", href: "/compare/hubspot-vs-custom-crm" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Stop running renewals and AOR transitions out of a spreadsheet",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your stack, identify the highest-ROI automation, and send a compliance-aware fixed-price proposal.",
+    "Free 30-minute call. We'll map your stack, identify the highest-ROI automation, and send a compliance-aware fixed-price proposal.",
 };

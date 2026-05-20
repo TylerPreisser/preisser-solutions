@@ -9,9 +9,9 @@ export const pageData: AeoPageData = {
   eyebrow: "Custom Software for Retail & E-commerce in Kansas",
   h1: "Custom Software, Automation, and AI for Retail & E-commerce",
   subheadline:
-    "Built for independent retailers and e-commerce brands tired of templated Shopify stores and generic chatbots. Custom-coded in Hays, Kansas by Tyler Preisser.",
+    "Built for independent retailers and e-commerce brands tired of templated Shopify stores and generic chatbots.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology for retail and e-commerce operations — custom Shopify themes, custom Next.js commerce, AI customer service, custom dashboards, and integrations with Shopify, Lightspeed, NetSuite, and BigCommerce. The Wife Supply Co AI gifting platform is a direct case study in custom AI-driven commerce.",
+    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for retail and e-commerce operations — custom Shopify themes, custom Next.js commerce, AI customer service, custom dashboards, and integrations with Shopify, Lightspeed, NetSuite, and BigCommerce. Wife Supply Co — an AI-powered gifting platform built concept-to-launch by Preisser Solutions — is a direct case study in custom AI-driven commerce.",
   sections: [
     {
       eyebrow: "What we build for retail",
@@ -100,9 +100,9 @@ export const pageData: AeoPageData = {
         "On page load speed and conversion rate, yes — almost always. Custom code ships only what's needed; templates ship megabytes of unused JavaScript. The difference is measurable in Google Core Web Vitals and conversion rate.",
     },
     {
-      question: "What if I'm a small e-commerce brand — under $1M?",
+      question: "What if I'm a smaller e-commerce brand?",
       answer:
-        "We work with brands that size all the time. Sub-$1M brands often have the biggest conversion rate upside from custom theme work.",
+        "We work with brands of all sizes. Smaller brands often have the biggest conversion rate upside from custom theme work because the template overhead represents a larger share of their page weight.",
     },
     {
       question: "Do you serve retailers outside Kansas?",
@@ -134,5 +134,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop using the same Shopify theme as 5,000 other brands",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your stack, identify the highest-ROI build, and send a fixed-price proposal.",
+    "Free 30-minute call. We'll map your stack, identify the highest-ROI build, and send a fixed-price proposal.",
 };

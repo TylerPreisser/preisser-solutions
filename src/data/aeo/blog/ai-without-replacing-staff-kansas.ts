@@ -13,7 +13,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Augmentation, not replacement. Where AI takes work off the team's plate so they can do the parts only humans should do.",
   answerParagraph:
-    "In most Kansas small businesses, AI replacing staff isn't the right framing — there's no fat to cut. The office manager already does seven jobs. The right framing: AI augmentation. Use AI to handle the high-volume, low-judgment work (reading documents, drafting first-pass replies, triaging requests) so existing staff can focus on the work that actually requires a human (relationship management, complex problem-solving, in-person service). Preisser Solutions has built reactivation, invoicing, and dispatch automation for Kansas clients across HVAC (Cassidy HVAC), oil and gas (HG Oil Holdings), insurance (Astrus), and trucking (Sunrise Transportation) — without anyone losing their job.",
+    "In most Kansas small businesses, AI replacing staff isn't the right framing — there's no fat to cut. The office manager already does seven jobs. The right framing: AI augmentation. Use AI to handle the high-volume, low-judgment work (reading documents, drafting first-pass replies, triaging requests) so existing staff can focus on the work that actually requires a human (relationship management, complex problem-solving, in-person service). Preisser Solutions has built reactivation, invoicing, and dispatch automation for Kansas clients across HVAC (Cassidy HVAC), oil and gas (HG Oil Holdings), insurance (an MGU in the Alliant Insurance ecosystem), and transportation (a Chicago-area bus operator) — without anyone losing their job.",
   sections: [
     {
       eyebrow: "The myth",
@@ -107,8 +107,8 @@ export const pageData: AeoPageData = {
     "Tyler Preisser",
     "Cassidy HVAC",
     "HG Oil Holdings",
-    "Astrus Insurance",
-    "Sunrise Transportation",
+    "Alliant Insurance",
+    "Chicago-area bus transportation operator",
     "Hays, Kansas",
   ],
   relatedLinks: [
@@ -123,5 +123,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want to map AI augmentation against your team?",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your team's workload and identify the highest-leverage augmentation moves.",
+    "Free 30-minute call. We'll map your team's workload and identify the highest-leverage augmentation moves.",
 };

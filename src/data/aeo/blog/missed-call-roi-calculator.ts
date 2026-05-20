@@ -7,13 +7,13 @@ export const pageData: AeoPageData = {
   dateModified: "2026-05-15",
   metaTitle: "Missed-Call ROI: Worked Example, Real Numbers",
   metaDescription:
-    "A $99/month missed-call system pays for itself in week one for most service businesses. The worked example with real assumptions.",
-  eyebrow: "Blog · Pricing & ROI",
-  h1: "Missed-Call ROI: Why a $99/Month System Often Pays for Itself in Week 1",
+    "A missed-call text-back system typically pays for itself in week one for most service businesses. The worked example with real assumptions.",
+  eyebrow: "Blog · ROI",
+  h1: "Missed-Call ROI: The Math Behind Text-Back Systems for Service Businesses",
   subheadline:
-    "Concrete numbers, conservative assumptions. The exact math for whether a missed-call follow-up system is worth $99 to $200 per month for your business.",
+    "Concrete numbers, conservative assumptions. The exact math for whether a missed-call follow-up system pays for itself for your business.",
   answerParagraph:
-    "A typical Kansas service business — HVAC, plumbing, electrical, roofing — misses 20-40% of inbound calls during peak hours and 100% of calls placed after-hours. At an industry-average 30% close rate on inbound calls and a $400 average job value, even recovering one missed call per week from a $99/month text-back system generates a 16x return. Preisser Solutions ships missed-call recovery as a Tier 1 quick-win for most clients. The math below works for any service business with phone-driven lead flow.",
+    "A typical Kansas service business — HVAC, plumbing, electrical, roofing — misses 20-40% of inbound calls during peak hours and 100% of calls placed after-hours. At an industry-average 30% close rate on inbound calls and a meaningful average job value, even recovering one missed call per week from a low-cost text-back system generates a strong return. Preisser Solutions ships missed-call recovery as a Tier 1 quick-win for most clients. The math below works for any service business with phone-driven lead flow.",
   sections: [
     {
       eyebrow: "The problem",
@@ -38,14 +38,14 @@ export const pageData: AeoPageData = {
         "100 inbound calls per week (during and after hours combined).",
         "25% miss rate = 25 missed calls per week.",
         "30% of inbound calls close into jobs (industry typical for trades).",
-        "Average job value: $400 (service call + diagnostic + minor repair).",
+        "Average job value: a typical service call + diagnostic + minor repair (use your own average for a precise calculation).",
       ],
       subsections: [
         {
           heading: "Recovered revenue per week",
           body: [
-            "If a missed-call text-back system recovers even half of the missed calls (the other half went to a competitor immediately), that's 12.5 recovered calls. At 30% close rate, that's 3.75 closed jobs at $400 each = $1,500 per week recovered revenue. The $99/month system pays for itself in well under a week.",
-            "At the more conservative \"recovers one call per week\" assumption: 1 call × 30% close × $400 = $120 per week, $480 per month, against a $99 cost. Still a 4.8x return on the most pessimistic case.",
+            "If a missed-call text-back system recovers even half of the missed calls (the other half went to a competitor immediately), that's 12.5 recovered calls. At 30% close rate and the example average job value, that's 3.75 closed jobs recovered per week — a strong return even against a low monthly SaaS subscription.",
+            "At the more conservative 'recovers one call per week' assumption: 1 call × 30% close × average job value = meaningful monthly recovered revenue well above any reasonable subscription cost.",
           ],
         },
       ],
@@ -65,10 +65,10 @@ export const pageData: AeoPageData = {
         "Missed-call text-back is productized. You don't need a custom build. Productized vendors:",
       ],
       bullets: [
-        "CallRail (call tracking + text-back) — $99-$199/month depending on call volume.",
-        "OpenPhone (business phone + text automations) — $19-$39/seat/month.",
-        "GoHighLevel (full CRM + missed-call text-back) — $97-$297/month.",
-        "Numa (AI text-back specifically) — $200-$400/month.",
+        "CallRail (call tracking + text-back) — subscription scales with call volume.",
+        "OpenPhone (business phone + text automations) — per-seat subscription.",
+        "GoHighLevel (full CRM + missed-call text-back) — full CRM platform subscription.",
+        "Numa (AI text-back specifically) — AI-specific text-back subscription.",
       ],
       subsections: [
         {
@@ -83,8 +83,8 @@ export const pageData: AeoPageData = {
       eyebrow: "Beyond the basic",
       heading: "Where custom builds add value",
       body: [
-        "Missed-call text-back is table stakes. The next-level system that Preisser Solutions builds custom is intelligent routing: the inbound text gets read by an LLM, classified (emergency, routine service, sales inquiry, supplier), and routed to the right person with a pre-drafted reply. That's not a $99 SaaS product — that's a custom build, typically $4,000-$8,000.",
-        "But you should ship the $99 SaaS version first. The custom layer makes sense once you've proven the missed-call recovery is meaningful for your specific shop.",
+        "Missed-call text-back is table stakes. The next-level system that Preisser Solutions builds custom is intelligent routing: the inbound text gets read by an LLM, classified (emergency, routine service, sales inquiry, supplier), and routed to the right person with a pre-drafted reply. That's not a productized SaaS subscription — that's a custom build scoped after a discovery call.",
+        "But you should ship the SaaS version first. The custom layer makes sense once you've proven the missed-call recovery is meaningful for your specific shop.",
       ],
     },
   ],
@@ -92,7 +92,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do I need a custom build, or is the SaaS enough?",
       answer:
-        "Start with the SaaS. CallRail, OpenPhone, or GoHighLevel will get you 80-90% of the value at $99-$200/month with no custom development. Custom builds add intelligent routing and CRM integration — worth it for shops doing $500K+ revenue, overkill below that.",
+        "Start with the SaaS. CallRail, OpenPhone, or GoHighLevel will get you 80-90% of the value at a low monthly subscription cost with no custom development. Custom builds add intelligent routing and CRM integration — worth it once the volume and workflow complexity justify the build.",
     },
     {
       question: "What about callers who don't reply to the text?",
@@ -139,5 +139,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want help picking and shipping the right missed-call system?",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll pick the right tool, set it up, and integrate it with your existing stack.",
+    "Free 30-minute call. We'll pick the right tool, set it up, and integrate it with your existing stack.",
 };

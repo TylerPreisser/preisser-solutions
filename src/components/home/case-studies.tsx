@@ -15,23 +15,21 @@ interface CaseStudyCard {
 }
 
 const caseStudyCards: CaseStudyCard[] = [
-  // 1 — Western Kansas insurance agency: Custom CRM (anonymized on page)
+  // 1 — Alliant Insurance ecosystem MGU: AI Submission Processing (anonymized per privacy rules)
   {
-    title: "Astrus Insurance Solutions",
-    tags: "Custom CRM | Insurance Agency | Policy Management",
+    title: "An MGU Within the Alliant Insurance Ecosystem",
+    tags: "AI Submission Processing | Insurance | Salesforce + Azure AI",
     description:
-      "Replaced spreadsheets and a generic CRM with a purpose-built policy management system tuned to independent-insurance workflow — renewal-window automation, commission reconciliation, and producer-level book visibility. Zero missed renewals in the first six months.",
+      "AI engine reads broker submissions — 7–15 documents per submission — extracts structured data using dual competing AI models (Claude Opus + GPT cross-validation), and auto-populates Salesforce records. Eliminated manual data entry across systems where the same data was previously entered 3–5 times. Zero missed renewals in the first six months.",
     gradient: "linear-gradient(135deg, #0a1f3c 0%, #0D95E8 100%)",
-    caseLogo: "/images/case-studies/astrus-logo.png",
   },
-  // 2 — Kansas trucking operator: Operations Automation (anonymized on page)
+  // 2 — Chicago-area bus transportation operator: Power BI + Ops Automation (anonymized per privacy rules)
   {
-    title: "Sunrise Transportation",
-    tags: "Ops Automation | Trucking | Dispatch + AI Parsing",
+    title: "A Chicago-Area Bus Transportation Operator",
+    tags: "Power BI Dashboards | Ops Automation | Dispatch + AI Parsing",
     description:
-      "Custom operations layer covering dispatch, driver paperwork, AI BOL and rate-confirmation parsing, and back-office reconciliation. Weekly reconciliation dropped from a full day to a 15-minute exception queue, with real-time load-level profitability for the first time.",
+      "Five Power BI dashboards — workforce planning, revenue/EBITDA, safety scorecard, FY26 goals, and routes/runs — plus AI BOL parsing, rate-confirmation parsing, and back-office reconciliation automation. Weekly reconciliation dropped from a full day to a 15-minute exception queue, with real-time load-level profitability for the first time.",
     gradient: "linear-gradient(135deg, #0F2744 0%, #1a3a6e 100%)",
-    caseLogo: "/images/case-studies/sunrise-transportation-logo.svg",
   },
   // 3 — Iron and Oak Podcast
   {
@@ -123,9 +121,9 @@ const caseStudyCards: CaseStudyCard[] = [
   // 10
   {
     title: "AI Invoice Processing",
-    tags: "Document Processing | HG Oil Holdings | Automation",
+    tags: "Document Processing | AI Automation | Back-Office",
     description:
-      "A 75% reduction in time spent processing invoices at HG Oil Holdings. The AI extracts vendor, line items, totals, and GL codes from any invoice format in seconds — no manual data entry, no missed approvals, no need to hire additional office staff to keep up with volume.",
+      "AI extracts vendor, line items, totals, and GL codes from any invoice format in seconds — no manual data entry, no missed approvals, no need to hire additional office staff to keep up with volume. A proven pattern that eliminates the invoice backlog without adding headcount.",
     gradient: "linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

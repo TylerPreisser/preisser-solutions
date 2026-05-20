@@ -42,8 +42,8 @@ export interface ComparisonRow {
 export interface PricingTier {
   /** Tier label, e.g. "Tier 1: Business Systems Audit" */
   name: string;
-  /** One-line price summary, e.g. "$1,500 - $3,500" */
-  priceRange: string;
+  /** @deprecated Removed — no pricing published on site */
+  priceRange?: string;
   /** Plain-language tagline shown under the name */
   tagline: string;
   /** Deliverables shown as a bulleted list */

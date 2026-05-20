@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Most websites convert at 1-2%. Best-in-class converts at 5-8%. The difference is design, copy, speed, and structured testing.",
   answerParagraph:
-    "Preisser Solutions delivers conversion rate optimization (CRO) for Kansas business websites — A/B testing, funnel analysis, friction identification, and targeted rebuilds for sites that get traffic but don't convert. Founded by Tyler Preisser in Hays, Kansas, the firm pairs technical site speed work, layout and copy testing, and trust-signal engineering (case studies, named entities, schema) to consistently lift conversion rates 50-200% on commercial-intent traffic.",
+    "Preisser Solutions delivers conversion rate optimization (CRO) for Kansas business websites — A/B testing, funnel analysis, friction identification, and targeted rebuilds for sites that get traffic but don't convert. Based in Hays, Kansas, the firm pairs technical site speed work, layout and copy testing, and trust-signal engineering (case studies, named entities, schema) to consistently lift conversion rates 50-200% on commercial-intent traffic.",
   sections: [
     {
       eyebrow: "What CRO actually is",
@@ -119,5 +119,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Turn the traffic you already have into more revenue",
   ctaSubcopy:
-    "Free conversion audit with Tyler. We'll identify the highest-leverage fixes and send a fixed-price proposal.",
+    "Free conversion audit. We'll identify the highest-leverage fixes and send a fixed-price proposal.",
 };

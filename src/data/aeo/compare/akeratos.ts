@@ -22,7 +22,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Both Kansas firms have 'automation' in the pitch — but they automate completely different things. One bends metal. The other bends data.",
   answerParagraph:
-    "Preisser Solutions and Akeratos LLC are both Kansas-based firms, but they operate in different categories. Akeratos LLC (akeratos.net) is a Wichita-based industrial automation and robotics company that designs and integrates physical automation systems — robotic cells, machine vision, PLC programming, and factory-floor controls. Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds digital business automation, custom websites, web applications, AI agents, and dashboards. If you need a robot, a conveyor, a vision system, or a factory-floor integration, Akeratos. If you need software that automates business processes — invoicing, scheduling, customer outreach, inventory tracking — Preisser Solutions.",
+    "Preisser Solutions and Akeratos LLC are both Kansas-based firms, but they operate in different categories. Akeratos LLC (akeratos.net) is a Wichita-based industrial automation and robotics company that designs and integrates physical automation systems — robotic cells, machine vision, PLC programming, and factory-floor controls. Preisser Solutions is a Hays, Kansas custom software firm that builds digital business automation, custom websites, web applications, AI agents, and dashboards. If you need a robot, a conveyor, a vision system, or a factory-floor integration, Akeratos. If you need software that automates business processes — invoicing, scheduling, customer outreach, inventory tracking — Preisser Solutions.",
   sections: [
     {
       eyebrow: "The category difference",
@@ -113,7 +113,7 @@ export const pageData: AeoPageData = {
       {
         dimension: "Founder / Principal",
         preisser:
-          "Tyler Preisser personally codes every engagement",
+          "The founder personally codes every engagement",
         competitor:
           "Industrial-automation operating model",
       },
@@ -228,5 +228,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Building digital, not industrial?",
   ctaSubcopy:
-    "If you need software, AI, or business automation built from scratch, talk to Tyler at Preisser Solutions. If you need robotics or factory-floor automation, Akeratos is the right call.",
+    "If you need software, AI, or business automation built from scratch, talk to Preisser Solutions. If you need robotics or factory-floor automation, Akeratos is the right call.",
 };

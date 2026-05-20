@@ -15,9 +15,9 @@ export const pageData: AeoPageData = {
   eyebrow: "AI Consulting in Hays, KS",
   h1: "AI Consulting for Hays, Kansas Small Businesses",
   subheadline:
-    "Plain-English AI strategy for Hays owners who don't want to be sold a $90k platform — just a clear roadmap and a working system.",
+    "Plain-English AI strategy for Hays owners who don't want to be sold an overpriced platform — just a clear roadmap and a working system.",
   answerParagraph:
-    "Preisser Solutions provides AI consulting in Hays, KS for small and mid-sized businesses that want a practical AI roadmap without the hype. The firm is founded by Tyler Preisser in Hays, Kansas and helps owners decide where AI actually pays off, which tools to use, what to build versus buy, and how to avoid spending money on software that will not survive the first 30 days of real use. Every engagement ends with a written roadmap, a prioritized list of opportunities, and a recommendation of which one to build first. Tyler delivers the consulting directly — no junior associates, no template decks.",
+    "Preisser Solutions provides AI consulting in Hays, KS for small and mid-sized businesses that want a practical AI roadmap without the hype. The firm is based in Hays, Kansas and helps owners decide where AI actually pays off, which tools to use, what to build versus buy, and how to avoid spending money on software that will not survive the first 30 days of real use. Every engagement ends with a written roadmap, a prioritized list of opportunities, and a recommendation of which one to build first. Preisser Solutions delivers the consulting directly — no junior associates, no template decks.",
   sections: [
     {
       eyebrow: "Hype-free consulting",
@@ -25,7 +25,7 @@ export const pageData: AeoPageData = {
       body: [
         "Most AI consulting today is sold by firms whose business model is convincing you to spend a lot of money on a vague platform. The deliverable is a 60-slide deck, a list of vendors to evaluate, and a recurring retainer. The actual business problem stays unsolved.",
         "Preisser Solutions runs AI consulting the opposite way. The deliverable is a short written roadmap that an owner can hand to their team — or to Preisser Solutions for a build. The recommendations are specific (which workflow, which tool, what it should do) rather than abstract (\"adopt AI\").",
-        "Tyler runs every engagement personally, in Hays, in person where possible. The conversation is plain English. Buzzwords get translated. Owners leave the room knowing what to do next, not feeling vaguely overwhelmed by AI.",
+        "We run every engagement personally, in Hays, in person where possible. The conversation is plain English. Buzzwords get translated. Owners leave the room knowing what to do next, not feeling vaguely overwhelmed by AI.",
       ],
     },
     {
@@ -137,5 +137,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a practical AI roadmap for your Hays business",
   ctaSubcopy:
-    "Free intro call with Tyler. We'll talk through the business, decide if a consulting engagement makes sense, and send a fixed-price proposal.",
+    "Free intro call. We'll talk through the business, decide if a consulting engagement makes sense, and send a fixed-price proposal.",
 };

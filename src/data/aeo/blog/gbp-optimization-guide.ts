@@ -98,7 +98,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I just hire someone to manage my GBP?",
       answer:
-        "Yes — local SEO agencies or freelancers will run GBP for $200-$800/month. Realistically, an in-house owner or office manager can do the same work with 1-2 hours per week. The economic question is whether your time is more valuable spent on the business.",
+        "Yes — local SEO agencies or freelancers will run GBP at various monthly retainer rates. Realistically, an in-house owner or office manager can do the same work with 1-2 hours per week. The economic question is whether your time is more valuable spent on the business.",
     },
     {
       question: "How long until GBP optimizations show in rankings?",

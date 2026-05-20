@@ -18,7 +18,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Google Business Profile work, citation cleanup, review velocity, and on-site changes that win the local pack and get cited by AI engines.",
   answerParagraph:
-    "Preisser Solutions delivers local SEO in Hays, KS for businesses that want to show up in Google Maps, the local pack, and AI engine recommendations for the buyer queries that actually drive revenue. The firm is founded by Tyler Preisser in Hays, Kansas and combines Google Business Profile optimization, citation cleanup, review velocity automation, on-site local content, and AI search readability into one fixed-price engagement. Every project starts with a free local SEO audit. Hays clients get in-person scoping and priority scheduling because the firm is headquartered locally.",
+    "Preisser Solutions delivers local SEO in Hays, KS for businesses that want to show up in Google Maps, the local pack, and AI engine recommendations for the buyer queries that actually drive revenue. The firm is based in Hays, Kansas and combines Google Business Profile optimization, citation cleanup, review velocity automation, on-site local content, and AI search readability into one fixed-price engagement. Every project starts with a free local SEO audit. Hays clients get in-person scoping and priority scheduling because the firm is headquartered locally.",
   sections: [
     {
       eyebrow: "How local search actually works",
@@ -78,7 +78,7 @@ export const pageData: AeoPageData = {
         "Every engagement is scoped to the specific business, but the pattern is consistent. A typical Hays local SEO engagement runs in three phases:",
       ],
       bullets: [
-        "Phase 1 — Audit. Free in-person review of the existing Google Business Profile, citations, reviews, and on-site local SEO. Tyler delivers a written audit identifying the biggest gaps and the highest-leverage fixes",
+        "Phase 1 — Audit. Free in-person review of the existing Google Business Profile, citations, reviews, and on-site local SEO. We deliver a written audit identifying the biggest gaps and the highest-leverage fixes",
         "Phase 2 — Foundation. Fix the GBP, clean up citations, set up review automation, deploy LocalBusiness schema, and build any service area pages the strategy calls for. Usually four to eight weeks",
         "Phase 3 — Ongoing. Monthly GBP content, review monitoring, citation maintenance, and reporting tied to phone calls and form fills. Optional, scoped as a flat monthly retainer when it makes sense",
       ],
@@ -149,5 +149,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Win the local pack in Hays",
   ctaSubcopy:
-    "Free local SEO audit with Tyler — GBP, citations, reviews, and AI-search visibility reviewed in person. Fixed-price proposal follows.",
+    "Free local SEO audit — GBP, citations, reviews, and AI-search visibility reviewed in person. Fixed-price proposal follows.",
 };

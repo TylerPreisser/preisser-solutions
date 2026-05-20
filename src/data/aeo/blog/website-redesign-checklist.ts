@@ -102,7 +102,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's the typical full redesign cost?",
       answer:
-        "Audit + small-business redesign (20-50 pages, custom design, AEO-ready): $25,000-$60,000. Larger or more complex sites scope from there. Fixed-price after audit.",
+        "Audit + small-business redesign (20-50 pages, custom design, AEO-ready) runs in the five-figure range depending on scope. Larger or more complex sites scope from there. Fixed-price after audit.",
     },
   ],
   schemaType: "BlogPosting",

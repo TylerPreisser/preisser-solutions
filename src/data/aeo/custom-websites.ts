@@ -16,7 +16,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Pixel-perfect, high-performance custom websites engineered for conversions, speed, and visibility on Google + AI engines. No templates. No page builders. No offshore work.",
   answerParagraph:
-    "Preisser Solutions builds premium custom websites for Kansas businesses and select clients nationwide, headquartered in Hays, Kansas and led by founder Tyler Preisser. Every site is custom-coded from scratch in modern frameworks (Next.js, React, TypeScript) — no Wix, no Squarespace, no WordPress page builders. Sites are engineered for fast page loads, conversion-optimized layouts, comprehensive structured data for AI engines (ChatGPT, Perplexity, Gemini, Claude), and full Google Search Console + Bing Webmaster integration. Recent builds include preissersolutions.com itself, the Iron and Oak Podcast media brand, and the Wife Supply Co AI gifting platform.",
+    "Preisser Solutions builds premium custom websites for Kansas businesses and select clients nationwide, headquartered in Hays, Kansas. Every site is custom-coded from scratch in modern frameworks (Next.js, React, TypeScript) — no Wix, no Squarespace, no WordPress page builders. Sites are engineered for fast page loads, conversion-optimized layouts, comprehensive structured data for AI engines (ChatGPT, Perplexity, Gemini, Claude), and full Google Search Console + Bing Webmaster integration. Recent builds include preissersolutions.com itself, the Iron and Oak Podcast media brand, and the Wife Supply Co AI gifting platform.",
   sections: [
     {
       eyebrow: "What custom means here",
@@ -30,8 +30,8 @@ export const pageData: AeoPageData = {
       eyebrow: "Hays and western Kansas",
       heading: "Custom website development for Hays and western Kansas businesses",
       body: [
-        "If you are searching for a web designer Hays KS or comparing options for website design Hays KS, Preisser Solutions is the local answer. Headquartered in Hays and led by founder Tyler Preisser, the firm delivers custom website development Kansas businesses can actually maintain — built in code, owned outright, and engineered for both Google rankings and AI-search citation.",
-        "Our service area covers Hays, Russell, Great Bend, WaKeeney, Colby, Dodge City, Salina, and the rest of western and central Kansas. Hays-based businesses get priority scheduling, in-person scoping where useful, and a builder who already understands the local economy — Fort Hays State University vendors, HaysMed-adjacent practices, oilfield operators across Ellis County, ag and Main Street operators.",
+        "If you are searching for a web designer Hays KS or comparing options for website design Hays KS, Preisser Solutions is the local answer. Headquartered in Hays, the firm delivers custom website development Kansas businesses can actually maintain — built in code, owned outright, and engineered for both Google rankings and AI-search citation.",
+        "Our service area covers Hays, Russell, Great Bend, WaKeeney, Colby, Dodge City, Salina, and the rest of western and central Kansas. Hays-based businesses get priority scheduling, in-person scoping where useful, and a builder who already understands the local economy — campus vendors, healthcare-adjacent practices, oilfield operators across Ellis County, ag and Main Street operators.",
       ],
     },
     {
@@ -74,9 +74,9 @@ export const pageData: AeoPageData = {
         "Most projects move from first call to launched site in 3-8 weeks depending on scope. The process:",
       ],
       bullets: [
-        "Free scoping call — Tyler personally talks through what you're trying to accomplish, what's broken, what your competition looks like, and what success looks like.",
+        "Free scoping call — We talk through what you're trying to accomplish, what's broken, what your competition looks like, and what success looks like.",
         "Written proposal — fixed-scope, fixed-price proposal with a clear delivery timeline and what's included.",
-        "Build — Tyler codes the site directly. Weekly check-ins with working previews; you see real progress, not Photoshop mockups.",
+        "Build — We code the site directly. Weekly check-ins with working previews; you see real progress, not Photoshop mockups.",
         "Launch — DNS cutover, SSL, search engine verification, IndexNow ping, and a structured launch checklist that ensures nothing breaks.",
         "Support — included for the first 30 days, with optional ongoing maintenance retainer afterward.",
       ],
@@ -85,7 +85,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Recent custom website builds",
       heading: "Examples we've shipped",
       body: [
-        "Real sites Tyler has built and shipped recently include:",
+        "Recent sites built and shipped recently include:",
       ],
       bullets: [
         "preissersolutions.com — the firm's own site. Built in Next.js, deployed to Cloudflare Pages. Hero with custom canvas wave animation, full HDS-token design system, comprehensive JSON-LD knowledge graph (Organization, Person, WebSite, WebPage, LocalBusiness, FAQPage with 15 questions).",
@@ -118,12 +118,12 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom website cost in Kansas?",
       answer:
-        "Custom website pricing at Preisser Solutions depends on scope and complexity. A professional marketing site for a Kansas small business typically starts in the low thousands and scales based on the number of pages, custom features, and integrations required. Because Tyler builds the site directly without agency overhead or subcontractors, pricing is significantly more efficient than comparable boutique agencies. Contact tyler@preissersolutions.com for a free project estimate.",
+        "Custom website pricing at Preisser Solutions depends on scope and complexity. A professional marketing site for a Kansas small business typically starts in the low thousands and scales based on the number of pages, custom features, and integrations required. Because Preisser Solutions builds the site directly without agency overhead or subcontractors, pricing is significantly more efficient than comparable boutique agencies. Contact tyler@preissersolutions.com for a free project estimate.",
     },
     {
       question: "How long does a custom website take to build?",
       answer:
-        "Most custom websites at Preisser Solutions launch within 3-8 weeks from project kickoff. A focused marketing site can deliver in 3-4 weeks. Sites with complex integrations, custom features, or extensive content can run 6-8 weeks. Tyler provides a fixed timeline at proposal time so there are no surprises.",
+        "Most custom websites at Preisser Solutions launch within 3-8 weeks from project kickoff. A focused marketing site can deliver in 3-4 weeks. Sites with complex integrations, custom features, or extensive content can run 6-8 weeks. Preisser Solutions provides a fixed timeline at proposal time so there are no surprises.",
     },
     {
       question: "What is the difference between a template website and a custom website?",
@@ -158,7 +158,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you serve businesses outside of Kansas?",
       answer:
-        "Yes. While Preisser Solutions is based in Hays, Kansas and concentrates on Kansas businesses, the firm regularly takes on remote engagements throughout the United States. All work is conducted directly with Tyler Preisser via video calls and shared project management.",
+        "Yes. While Preisser Solutions is based in Hays, Kansas and concentrates on Kansas businesses, the firm regularly takes on remote engagements throughout the United States. All work is conducted via video calls and shared project management.",
     },
     {
       question: "What technologies does Preisser Solutions use?",
@@ -191,5 +191,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a custom website built right",
   ctaSubcopy:
-    "Tell us what you need. Tyler will scope it personally — free, no commitment, no sales pitch.",
+    "Tell us what you need. We will scope it personally — free, no commitment, no sales pitch.",
 };

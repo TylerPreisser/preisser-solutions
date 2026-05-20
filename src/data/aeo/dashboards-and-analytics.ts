@@ -16,7 +16,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Live dashboards that surface key metrics, track KPIs, and give owners and operators a real-time view of operations. Custom-built by Preisser Solutions in Hays, Kansas.",
   answerParagraph:
-    "Preisser Solutions builds custom real-time business dashboards for Kansas businesses, founded by Tyler Preisser in Hays, Kansas. Dashboards pull live data from your existing tools (QuickBooks, ServiceTitan, OGsys, custom databases), surface the metrics that actually drive your business, and update automatically — no exporting to Excel, no waiting for end-of-week reports. Common dashboards include revenue and pipeline tracking, field operations visibility, inventory and production monitoring, financial reporting for ownership, and KPI scorecards for management.",
+    "Preisser Solutions builds custom real-time business dashboards for Kansas businesses, based in Hays, Kansas. Dashboards pull live data from your existing tools (QuickBooks, ServiceTitan, OGsys, custom databases), surface the metrics that actually drive your business, and update automatically — no exporting to Excel, no waiting for end-of-week reports. Common dashboards include revenue and pipeline tracking, field operations visibility, inventory and production monitoring, financial reporting for ownership, and KPI scorecards for management.",
   sections: [
     {
       eyebrow: "Why custom dashboards win",
@@ -82,7 +82,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom dashboard cost?",
       answer:
-        "Cost depends on data sources and complexity. A focused single-system dashboard typically delivers in the low five figures. Multi-system dashboards combining 4-8 data sources scale from there. Tyler provides fixed-price proposals after a free scoping conversation.",
+        "Cost depends on data sources and complexity. A focused single-system dashboard typically delivers in the low five figures. Multi-system dashboards combining 4-8 data sources scale from there. We provide fixed-price proposals after a free scoping conversation.",
     },
     {
       question: "Will my dashboard update automatically?",
@@ -136,12 +136,12 @@ export const pageData: AeoPageData = {
     { label: "Custom CRM development", href: "/services/custom-crm" },
     { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
     { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
-    { label: "Sunrise Transportation case study", href: "/case-studies/sunrise-transportation" },
+    { label: "Chicago-area bus operator case study", href: "/case-studies/chicago-bus-operator" },
     { label: "When to build a custom dashboard", href: "/blog/when-to-build-custom-dashboard" },
     { label: "Trucking & logistics", href: "/industries/trucking-logistics" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "See your business in real time",
   ctaSubcopy:
-    "Free scoping conversation. Tyler will identify your highest-leverage dashboard in 30 minutes.",
+    "Free scoping conversation. We will identify your highest-leverage dashboard in 30 minutes.",
 };

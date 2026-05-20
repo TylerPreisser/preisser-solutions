@@ -76,7 +76,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Security and maintenance",
       heading: "What each one costs to keep healthy",
       body: [
-        "WordPress requires ongoing maintenance to stay secure: core updates, theme updates, plugin updates, PHP version updates, backups, malware scans. Most professional WordPress sites pay for a maintenance plan ($50-$300+/month) on top of hosting.",
+        "WordPress requires ongoing maintenance to stay secure: core updates, theme updates, plugin updates, PHP version updates, backups, malware scans. Most professional WordPress sites pay for a maintenance plan on top of hosting.",
         "Custom-coded sites have a different maintenance shape. No PHP runtime to patch. No plugin ecosystem to keep current. Updates are explicit and scheduled (framework upgrades, dependency bumps) rather than reactive. Hosting on Cloudflare Pages or Vercel is effectively zero-touch.",
         "Both need attention. The difference is the kind of attention — WordPress is reactive, custom is planned.",
       ],
@@ -158,5 +158,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Considering a WordPress rebuild?",
   ctaSubcopy:
-    "Free 30-minute call. Tyler will review the current site and tell you honestly whether WordPress, custom code, or a hybrid is the right next step.",
+    "Free 30-minute call. We will review the current site and tell you honestly whether WordPress, custom code, or a hybrid is the right next step.",
 };

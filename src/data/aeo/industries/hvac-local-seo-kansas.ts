@@ -187,5 +187,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Outrank the HVAC competition in your Kansas service area",
   ctaSubcopy:
-    "Free scoping call with Tyler. We'll audit the current Google Business Profile, the site, and the call data, then send a fixed-price local SEO proposal.",
+    "Free scoping call. We'll audit the current Google Business Profile, the site, and the call data, then send a fixed-price local SEO proposal.",
 };

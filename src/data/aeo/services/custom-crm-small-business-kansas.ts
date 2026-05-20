@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "When HubSpot, Salesforce, and Pipedrive stop fitting, a custom CRM shaped around how your business actually operates is usually cheaper and faster than fighting the template.",
   answerParagraph:
-    "Preisser Solutions builds custom CRMs for small businesses in Kansas that have outgrown HubSpot, Salesforce, or Pipedrive. Founded by Tyler Preisser in Hays, the firm scopes and ships sales pipelines, follow-up automation, dashboards, reporting, and integrations shaped around the way the business actually sells — not the way a SaaS template assumed it would. Projects ship in four to eight weeks, are fixed price, and are owned by the client when complete. No per-seat fees, no forced upgrade tiers, no losing access if the subscription lapses.",
+    "Preisser Solutions builds custom CRMs for small businesses in Kansas that have outgrown HubSpot, Salesforce, or Pipedrive. Based in Hays, the firm scopes and ships sales pipelines, follow-up automation, dashboards, reporting, and integrations shaped around the way the business actually sells — not the way a SaaS template assumed it would. Projects ship in four to eight weeks, are fixed price, and are owned by the client when complete. No per-seat fees, no forced upgrade tiers, no losing access if the subscription lapses.",
   sections: [
     {
       eyebrow: "Why this exists",
@@ -53,7 +53,7 @@ export const pageData: AeoPageData = {
       heading: "Pipelines, follow-up, dashboards, and integrations",
       body: [
         "Pipelines are the part most owners underestimate. The default HubSpot or Salesforce pipeline is linear: a deal moves from stage one to stage two to stage three until it is won or lost. Real businesses are rarely linear. A trades business might have a 'site visit scheduled' stage that only some deals enter. A professional services firm might have a 'proposal in legal review' branch. A custom CRM lets those branches exist as first-class stages instead of being shoved into a notes field.",
-        "Follow-up automation is the second biggest win. Off-the-shelf CRMs offer follow-up sequences, but they almost always fire on calendar time ('three days after a deal is created'), not on real signal. A custom CRM can fire on the right signal: 'no activity for seven business days, last touchpoint was a quote, deal value over $5K' — and the sequence stops the moment the prospect replies. The Cassidy Glass case study documented 60% lead-to-quote uplift and 45% close-rate uplift after that pattern shipped, with 5x growth in average deal size because the team stopped losing the high-value deals that needed more touches.",
+        "Follow-up automation is the second biggest win. Off-the-shelf CRMs offer follow-up sequences, but they almost always fire on calendar time ('three days after a deal is created'), not on real signal. A custom CRM can fire on the right signal: 'no activity for seven business days, last touchpoint was a quote, deal is high-value' — and the sequence stops the moment the prospect replies. The Cassidy Glass case study documented 60% lead-to-quote uplift and 45% close-rate uplift after that pattern shipped, with 5x growth in average deal size because the team stopped losing the high-value deals that needed more touches.",
         "Dashboards and integrations close the loop. The CRM becomes the single screen the owner opens in the morning. Booked work for the day, pipeline value by stage, open quotes by salesperson, jobs ready to invoice, and last-week revenue all live in one place. QuickBooks syncs invoicing and payment status, so the team stops re-typing customer data between systems.",
       ],
     },
@@ -130,7 +130,7 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Business automation systems", href: "/business-automation" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
-    { label: "Astrus Insurance case study", href: "/case-studies/astrus-insurance" },
+    { label: "Alliant Insurance MGU case study", href: "/case-studies/alliant-mgu-insurance" },
     { label: "Insurance & financial services", href: "/industries/insurance-financial" },
     { label: "Custom CRM vs HubSpot vs Salesforce", href: "/blog/custom-crm-vs-hubspot-vs-salesforce" },
     { label: "Salesforce vs custom CRM", href: "/compare/salesforce-vs-custom-crm" },
@@ -138,5 +138,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a free CRM scoping audit for your Kansas business",
   ctaSubcopy:
-    "Tyler will map your current sales workflow, document the gaps in your current CRM, and send a fixed-price proposal for a custom system you actually own.",
+    "We will map your current sales workflow, document the gaps in your current CRM, and send a fixed-price proposal for a custom system you actually own.",
 };

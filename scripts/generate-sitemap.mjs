@@ -12,6 +12,17 @@ const EXCLUDED_HTML = new Set([
   "/yandex_9f19081f7abbbb70.html",
 ]);
 
+// Legacy case-study URLs excluded from sitemap — canonical replacements are in place.
+// These shell routes still exist for backward-compat redirects but should not be indexed.
+const EXCLUDED_PATHS = new Set([
+  "/case-studies/astrus-insurance",
+  "/case-studies/sunrise-transportation",
+  "/case-studies/cassidy-hvac",
+  "/case-studies/customer-reactivation",
+  "/case-studies/hg-oil-holdings",
+  "/products",
+]);
+
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
   const files = [];
@@ -87,6 +98,7 @@ const htmlFiles = await walk(OUT_DIR);
 const urls = htmlFiles
   .map(htmlPathToUrl)
   .filter(Boolean)
+  .filter((urlPath) => !EXCLUDED_PATHS.has(urlPath))
   .sort((a, b) => {
     if (a === "/") return -1;
     if (b === "/") return 1;

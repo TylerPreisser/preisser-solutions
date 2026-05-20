@@ -13,7 +13,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Three acronyms, one underlying job: get your business in front of the right people at the moment of intent.",
   answerParagraph:
-    "SEO (Search Engine Optimization) optimizes web pages to rank in classical search results. AEO (Answer Engine Optimization) optimizes for direct-answer features: featured snippets, People Also Ask, voice answers, and AI Overviews. GEO (Generative Engine Optimization) — a term introduced by Princeton researchers in 2024 — optimizes specifically for citation by generative LLMs like ChatGPT, Perplexity, and Claude. The disciplines overlap heavily, but the tactics diverge in important ways. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, ships work across all three.",
+    "SEO (Search Engine Optimization) optimizes web pages to rank in classical search results. AEO (Answer Engine Optimization) optimizes for direct-answer features: featured snippets, People Also Ask, voice answers, and AI Overviews. GEO (Generative Engine Optimization) — a term introduced by Princeton researchers in 2024 — optimizes specifically for citation by generative LLMs like ChatGPT, Perplexity, and Claude. The disciplines overlap heavily, but the tactics diverge in important ways. Preisser Solutions, based in Hays, Kansas, ships work across all three.",
   sections: [
     {
       eyebrow: "Quick definitions",
@@ -127,7 +127,7 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a unified AEO/GEO/SEO audit?",
   ctaSubcopy:
-    "Thirty minutes with Tyler. We'll show you the highest-leverage moves for your site and your verticals.",
+    "30-minute call. We'll show you the highest-leverage moves for your site and your verticals.",
   primaryCta: {
     label: "Reach out",
     href: "/contact",

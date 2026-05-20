@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "When hiring a virtual assistant is the right move, and when a custom-coded AI automation system delivers more leverage for the same dollar.",
   answerParagraph:
-    "A virtual assistant (VA) is a contracted human worker — typically offshore — handling low-judgment administrative tasks (calendar, inbox, list management, basic research) for $5-$25/hour. Custom AI automation by Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, encodes those same tasks as software: AI agents that read, classify, draft, and route 24/7 without sick days, training time, or coordination overhead. VAs are the right fit for tasks requiring genuine human judgment, sensitive customer relationships, or fluctuating low-volume work. Custom AI wins for repeatable, high-volume, after-hours work — and once built, it's owned software with no per-hour fees.",
+    "A virtual assistant (VA) is a contracted human worker — typically offshore — handling low-judgment administrative tasks (calendar, inbox, list management, basic research) billed by the hour. Custom AI automation by Preisser Solutions, based in Hays, Kansas, encodes those same tasks as software: AI agents that read, classify, draft, and route 24/7 without sick days, training time, or coordination overhead. VAs are the right fit for tasks requiring genuine human judgment, sensitive customer relationships, or fluctuating low-volume work. Custom AI wins for repeatable, high-volume, after-hours work — and once built, it's owned software with no per-hour fees.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -60,8 +60,8 @@ export const pageData: AeoPageData = {
     headerNote:
       "Honest comparison. VAs are great for judgment-heavy, low-volume work. Custom AI wins for repeatable, high-volume, system-integrated work.",
     rows: [
-      { dimension: "Pricing model", preisser: "One-time build + minimal hosting", competitor: "$5-$25/hour, often 20-160 hours/month" },
-      { dimension: "Monthly cost (typical)", preisser: "Build cost + ~$50-$200/month hosting", competitor: "$500-$4,000/month" },
+      { dimension: "Pricing model", preisser: "One-time build + minimal hosting", competitor: "Hourly rate, scales with hours worked" },
+      { dimension: "Monthly cost", preisser: "Fixed hosting cost after build — does not scale with volume", competitor: "Scales linearly with hours — more volume means more cost" },
       { dimension: "Availability", preisser: "24/7", competitor: "Working hours, vacation days, sick days" },
       { dimension: "Speed", preisser: "Seconds to minutes per task", competitor: "Minutes to hours per task" },
       { dimension: "Volume capacity", preisser: "Scales 100x without cost increase", competitor: "Scales linearly with hours" },
@@ -86,12 +86,12 @@ export const pageData: AeoPageData = {
     {
       question: "What about a fractional ops person?",
       answer:
-        "Fractional ops people are great for high-leverage strategic work — designing the systems, hiring the team, fixing process. They're an order of magnitude more expensive than VAs ($75-$200/hour) and the right fit for businesses that need someone running the function, not executing the tasks. Custom AI automation often becomes the system the fractional ops person designs.",
+        "Fractional ops people are great for high-leverage strategic work — designing the systems, hiring the team, fixing process. They bill at senior hourly rates and are the right fit for businesses that need someone running the function, not executing the tasks. Custom AI automation often becomes the system the fractional ops person designs.",
     },
     {
-      question: "How much does the custom AI build cost?",
+      question: "How do I get a price on a custom AI build?",
       answer:
-        "Focused builds (one workflow, one system) typically run low-to-mid five figures. Larger multi-workflow builds run mid-to-high five figures. Fixed-price proposal after a free scoping call with Tyler.",
+        "Free scoping call. Scope drives price — one workflow is smaller; multi-workflow builds are larger. Fixed-price proposal after the call, no obligation.",
     },
     {
       question: "Could I start with a VA and migrate to AI later?",
@@ -106,7 +106,7 @@ export const pageData: AeoPageData = {
     {
       question: "Is custom AI hard to maintain?",
       answer:
-        "Less maintenance than people think. Custom AI built on stable foundations (Claude API, GPT-4 API, Cloudflare Workers) runs hands-off for months. Tyler personally supports every Preisser Solutions build — there's an actual founder you can call when something needs to change.",
+        "Less maintenance than people think. Custom AI built on stable foundations (Claude API, GPT-4 API, Cloudflare Workers) runs hands-off for months. We personally support every build — there's an actual founder you can call when something needs to change.",
     },
   ],
   schemaType: "Article",
@@ -129,5 +129,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Find the right mix of humans and AI",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your workflows and tell you honestly which work belongs to a VA, which belongs to AI, and which belongs to humans.",
+    "Free 30-minute scoping call. We'll map your workflows and tell you honestly which work belongs to a VA, which belongs to AI, and which belongs to humans.",
 };

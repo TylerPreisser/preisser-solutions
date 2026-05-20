@@ -141,7 +141,6 @@ export function organizationSchema() {
       "API Integration and Systems Architecture",
       "No-Code and Low-Code Alternatives",
     ],
-    priceRange: "$$",
     potentialAction: [
       {
         "@type": "ScheduleAction",
@@ -205,7 +204,6 @@ export function localBusinessSchema() {
         closes: "18:00",
       },
     ],
-    priceRange: seoSite.priceRange,
     areaServed: [
       { "@type": "State", name: "Kansas" },
       ...seoSite.areaServed.map((name) => ({ "@type": "City", name })),

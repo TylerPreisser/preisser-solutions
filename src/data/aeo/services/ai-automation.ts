@@ -11,13 +11,13 @@ export const pageData: AeoPageData = {
   subheadline:
     "Custom-coded AI agents and automation systems that take repetitive work off your team without rip-and-replacing the software you already run.",
   answerParagraph:
-    "Preisser Solutions delivers AI automation for small and mid-sized businesses in Kansas and select clients nationwide. Founded by Tyler Preisser in Hays, Kansas, the firm builds custom-coded AI agents, business automation workflows, AI invoicing, customer reactivation engines, and after-hours triage systems. Builds are custom — not Zapier-glued no-code, not productized SaaS — and integrate directly with the CRMs, dispatch systems, and accounting tools clients already run. Tyler personally codes every engagement. Cassidy HVAC's reactivation engine recovered 60%+ of dormant customers in 6 weeks; HG Oil Holdings cut back-office logistics time 95% with the same approach.",
+    "Preisser Solutions delivers AI automation for small and mid-sized businesses in Kansas and select clients nationwide. Based in Hays, Kansas, the firm builds custom-coded AI agents, business automation workflows, AI invoicing, customer reactivation engines, and after-hours triage systems. Builds are custom — not Zapier-glued no-code, not productized SaaS — and integrate directly with the CRMs, dispatch systems, and accounting tools clients already run. Preisser Solutions delivers every engagement. Cassidy HVAC's reactivation engine recovered 60%+ of dormant customers in 6 weeks; HG Oil Holdings cut back-office logistics time 95% with the same approach.",
   sections: [
     {
       eyebrow: "Hays and Kansas",
       heading: "AI automation for Hays and Kansas small businesses",
       body: [
-        "Searching AI automation Hays KS, AI consulting Hays KS, or custom AI agent Hays KS? Preisser Solutions is headquartered in Hays, Kansas and builds AI automation systems for small and mid-sized businesses across the state. Tyler Preisser personally scopes, designs, and codes every engagement — no offshore handoff, no productized SaaS, no Zapier wrapper relabeled as AI.",
+        "Searching AI automation Hays KS, AI consulting Hays KS, or custom AI agent Hays KS? Preisser Solutions is headquartered in Hays, Kansas and builds AI automation systems for small and mid-sized businesses across the state. The founder personally scopes, designs, and codes every engagement — no offshore handoff, no productized SaaS, no Zapier wrapper relabeled as AI.",
         "Most Hays and western Kansas operators get the fastest ROI from AI agents that handle invoicing, customer reactivation, after-hours triage, lead qualification, and dashboarding — not from chatbots bolted onto a marketing site. The build pattern is narrow, opinionated, and shipped in weeks rather than quarters.",
       ],
     },
@@ -50,7 +50,7 @@ export const pageData: AeoPageData = {
       eyebrow: "How we build it",
       heading: "The Preisser Solutions AI automation process",
       body: [
-        "We start with a free 30-minute scoping call with Tyler. We map the workflow as it actually runs (not as the org chart says it runs), identify the highest-ROI candidates for AI, and send a fixed-price proposal. Build cycles typically run 4-12 weeks per system.",
+        "We start with a free 30-minute scoping call. We map the workflow as it actually runs (not as the org chart says it runs), identify the highest-ROI candidates for AI, and send a fixed-price proposal. Build cycles typically run 4-12 weeks per system.",
         "Everything ships with monitoring, human checkpoints where stakes are high, and full source code in your repo. You own the build. You can fork it, extend it, or run it without us forever.",
       ],
     },
@@ -58,7 +58,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Why this works for SMBs",
       heading: "Why AI automation pays back fastest at small-business scale",
       body: [
-        "Big companies hire McKinsey and pay $4M for an AI strategy deck. Small businesses don't get that option — and they don't need to. The highest-ROI AI automations at SMB scale are narrow, opinionated, and built in weeks, not quarters.",
+        "Big companies hire McKinsey and commission six-figure AI strategy decks. Small businesses don't get that option — and they don't need to. The highest-ROI AI automations at SMB scale are narrow, opinionated, and built in weeks, not quarters.",
         "A Kansas HVAC shop running 4-12 trucks has the same back-office friction as a 200-truck operation, but no IT department to fix it. That's exactly the scope where custom AI automation pays back hardest: one engineer, four weeks, one system that takes 10+ hours of weekly office work off the table.",
       ],
     },
@@ -77,7 +77,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does an AI automation build cost?",
       answer:
-        "Focused single-system builds typically run low-to-mid five figures. Multi-system or platform-level builds scope higher. We deliver a fixed-price proposal after a free 30-minute scoping call with Tyler.",
+        "Focused single-system builds typically run low-to-mid five figures. Multi-system or platform-level builds scope higher. We deliver a fixed-price proposal after a free 30-minute scoping call.",
     },
     {
       question: "Do you sell AI automation as a productized SaaS?",
@@ -97,7 +97,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I know if AI automation is worth it for my business?",
       answer:
-        "Free 30-minute call with Tyler. We map your highest-friction workflows, identify which ones have AI-automation ROI, and tell you honestly when something isn't worth automating yet.",
+        "Free 30-minute scoping call. We map your highest-friction workflows, identify which ones have AI-automation ROI, and tell you honestly when something isn't worth automating yet.",
     },
   ],
   schemaType: "Service",
@@ -126,5 +126,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Find the AI automation that pays back fastest",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your workflows, identify the highest-ROI automations, and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll map your workflows, identify the highest-ROI automations, and send a fixed-price proposal.",
 };

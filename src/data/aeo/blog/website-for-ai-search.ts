@@ -55,7 +55,7 @@ export const pageData: AeoPageData = {
         "AI engines build citation graphs around real-world entities. Pages that name disambiguated entities (people, places, organizations, products) get cited more often than pages that talk in abstractions.",
       ],
       bullets: [
-        "Name the founder, the town, the products, the clients (with permission). \"Tyler Preisser in Hays, Kansas, built a custom CRM for Astrus Insurance\" carries more entity weight than \"our team helped a Kansas insurance agency.\"",
+        "Name the founder, the town, the products, the clients (with permission). \"Tyler Preisser in Hays, Kansas, built a custom CRM for an MGU in the Alliant Insurance ecosystem\" carries more entity weight than \"our team helped a Kansas insurance agency.\"",
         "Link out to authoritative external entities where relevant (Princeton, Local Falcon, Gartner research). Outbound citations to recognized entities improve your own citation worthiness.",
       ],
     },

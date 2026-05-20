@@ -17,9 +17,9 @@ const contactPageSchema = {
 // Compact FAQ set — SEO-critical: matched by FAQPage JSON-LD + AI quote extraction.
 const contactFaqs = [
   {
-    question: "How much do projects cost?",
+    question: "How does pricing work?",
     answer:
-      "Audits start at $1,500. Implementation sprints start at $5,000. Retainers start at $3,500/month. We share scoped pricing after a short discovery call.",
+      "Every engagement is scoped individually. We share a fixed-price proposal after a short discovery call — scope, deliverables, timeline, and total cost all stated up front.",
   },
   {
     question: "How fast does Preisser Solutions respond?",

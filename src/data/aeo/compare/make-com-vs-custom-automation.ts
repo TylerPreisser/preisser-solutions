@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Make.com (formerly Integromat) is more powerful than Zapier and cheaper per task. Custom automation still wins for production scale.",
   answerParagraph:
-    "Make.com (formerly Integromat) is a powerful no-code automation platform run by Celonis. Custom automation by Preisser Solutions is built from scratch in TypeScript/Node.js or Python by founder Tyler Preisser in Hays, Kansas. Make.com is more powerful than Zapier with a richer visual workflow builder and lower per-operation cost. Custom automation still wins for production-scale workflows, compliance requirements, complex error handling, and integrations beyond Make.com's connector library.",
+    "Make.com (formerly Integromat) is a powerful no-code automation platform run by Celonis. Custom automation by Preisser Solutions is built from scratch in TypeScript/Node.js or Python by the founder in Hays, Kansas. Make.com is more powerful than Zapier with a richer visual workflow builder and lower per-operation cost. Custom automation still wins for production-scale workflows, compliance requirements, complex error handling, and integrations beyond Make.com's connector library.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -57,7 +57,7 @@ export const pageData: AeoPageData = {
       body: [
         "Make.com is the right answer in several scenarios and it is honest to name them clearly. For most medium-complexity automations between standard SaaS tools, Make.com is a better choice than a custom build.",
         "Speed of iteration is the clearest case. Make.com scenarios can be drafted, tested, and shipped in hours. Custom code takes weeks. If the workflow is going to change frequently as the business evolves, an in-house operator can keep editing the Make.com scenario without engineering involvement. That iteration speed is a real productivity advantage and a custom build cannot match it.",
-        "Cost at low-to-medium volume also favors Make.com. The free tier and entry tiers handle low-volume automations effectively for free or under $30/month. Building custom for that workload would be irrational — the build cost would never amortize. Make.com's per-operation pricing is genuinely better than Zapier's at most volume tiers, and the richer iterator/aggregator/router model handles branching logic that Zapier struggles with.",
+        "Cost at low-to-medium volume also favors Make.com. The free tier and entry tiers handle low-volume automations effectively at minimal cost. Building custom for that workload would be irrational — the build cost would never amortize. Make.com's per-operation pricing is genuinely better than Zapier's at most volume tiers, and the richer iterator/aggregator/router model handles branching logic that Zapier struggles with.",
         "Non-technical operators can also build and maintain Make.com scenarios. With custom code, every change requires engineering. For teams that want internal ownership of the automation layer without hiring engineers, that is a structural advantage of no-code platforms generally and Make.com specifically.",
       ],
     },
@@ -65,8 +65,8 @@ export const pageData: AeoPageData = {
       eyebrow: "When Preisser Solutions custom automation is the right call",
       heading: "Choose custom automation if you have outgrown Make.com",
       body: [
-        "Pick custom automation when Make.com is forcing the wrong tradeoffs. The clearest indicators: your Make.com bill has crossed $500-$1,000/month and is climbing; your workflow exceeds 100,000 operations per month and is hitting throughput limits; you need HIPAA, SOC 2, or FedRAMP compliance that Make.com cannot provide cleanly; you need error-handling logic that exceeds Make.com's built-in error handlers; or you need integration with a legacy system that Make.com doesn't have a connector for and the HTTP module is starting to feel like writing custom code in a visual builder.",
-        "The economic crossover usually hits around $500-$1,000/month in Make.com fees or 100k+ operations/month. At those numbers, custom automation amortizes within 12-24 months and continues to compound thereafter. A common hybrid pattern: keep Make.com for medium-complexity workflows and migrate the high-volume or compliance-sensitive workflows to custom code running alongside.",
+        "Pick custom automation when Make.com is forcing the wrong tradeoffs. The clearest indicators: your Make.com bill is growing faster than value delivered; your workflow exceeds 100,000 operations per month and is hitting throughput limits; you need HIPAA, SOC 2, or FedRAMP compliance that Make.com cannot provide cleanly; you need error-handling logic that exceeds Make.com's built-in error handlers; or you need integration with a legacy system that Make.com doesn't have a connector for and the HTTP module is starting to feel like writing custom code in a visual builder.",
+        "The economic crossover usually hits around 100k+ operations/month or when Make.com fees become a meaningful monthly line item. At those numbers, custom automation amortizes within 12-24 months and continues to compound thereafter. A common hybrid pattern: keep Make.com for medium-complexity workflows and migrate the high-volume or compliance-sensitive workflows to custom code running alongside.",
       ],
     },
   ],
@@ -77,8 +77,8 @@ export const pageData: AeoPageData = {
     rows: [
       { dimension: "Type", preisser: "Custom automation code in TypeScript/Node.js or Python", competitor: "Hosted no-code automation platform with visual scenario builder" },
       { dimension: "Best for", preisser: "Production-scale workflows, complex logic, compliance", competitor: "Medium-complexity automations, iterators, branching logic" },
-      { dimension: "Pricing model", preisser: "One-time build + minimal hosting", competitor: "Per-operation pricing — $9-$299+/month depending on operation volume" },
-      { dimension: "Long-term cost (5 years, 100k ops/month)", preisser: "Build cost + ~$1-3k hosting", competitor: "$25k-$120k+ in subscription fees" },
+      { dimension: "Pricing model", preisser: "One-time build + minimal hosting", competitor: "Per-operation pricing scaling with operation volume" },
+      { dimension: "Long-term cost (5 years, 100k ops/month)", preisser: "Build cost + minimal hosting", competitor: "Substantial recurring subscription fees as volume grows" },
       { dimension: "Complex logic", preisser: "Any logic — code can do anything", competitor: "Iterators, aggregators, routers, code modules; complex logic possible but hits walls" },
       { dimension: "Error handling", preisser: "Custom — exactly the retry, dead-letter, and alerting logic you need", competitor: "Error handlers built in; less flexible than custom for complex cases" },
       { dimension: "Connectors", preisser: "Build to any API; custom connectors for legacy systems", competitor: "Large connector library; custom apps require HTTP modules" },
@@ -101,7 +101,7 @@ export const pageData: AeoPageData = {
     {
       question: "When does custom automation become economically rational?",
       answer:
-        "Usually around $500-$1,000/month in Make.com fees, or when operation volume exceeds 100k/month. At those numbers, custom build costs amortize within 12-24 months.",
+        "Usually when operation volume exceeds 100k/month or Make.com fees have become a meaningful recurring line item. At those numbers, custom build costs amortize within 12-24 months.",
     },
     {
       question: "Can I migrate from Make.com to custom?",
@@ -137,5 +137,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Outgrown Make.com?",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll scope the custom build and tell you honestly whether you need it yet.",
+    "Free 30-minute scoping call. We'll scope the custom build and tell you honestly whether you need it yet.",
 };

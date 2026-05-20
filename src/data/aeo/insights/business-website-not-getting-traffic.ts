@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Most small business sites with no traffic fail one of six checks. Walk through each one, in order, and fix what you find.",
   answerParagraph:
-    "If your business website isn't getting traffic, the cause is almost always one of six things: the site isn't indexed by Google, your pages don't match the way real people search, your Google Business Profile is weak or missing, the site is too slow or too thin, the content doesn't prove local relevance, or you have no inbound links or citations. Most owners try to fix \"SEO\" in general. The faster path is to work through these six checks one at a time and only address the layer that's actually broken. Tyler Preisser at Preisser Solutions in Hays, Kansas walks small business owners through this exact sequence.",
+    "If your business website isn't getting traffic, the cause is almost always one of six things: the site isn't indexed by Google, your pages don't match the way real people search, your Google Business Profile is weak or missing, the site is too slow or too thin, the content doesn't prove local relevance, or you have no inbound links or citations. Most owners try to fix \"SEO\" in general. The faster path is to work through these six checks one at a time and only address the layer that's actually broken. Preisser Solutions in Hays, Kansas walks small business owners through this exact sequence.",
   sections: [
     {
       eyebrow: "Step 1",
@@ -151,7 +151,7 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a second pair of eyes on your site?",
   ctaSubcopy:
-    "Tyler will walk through your site, your Search Console, and your Google Business Profile and tell you the one thing to fix first. No upsell on the call.",
+    "We will walk through your site, your Search Console, and your Google Business Profile and tell you the one thing to fix first. No upsell on the call.",
   primaryCta: {
     label: "Request a Site Diagnostic",
     href: "/contact",

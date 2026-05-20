@@ -24,7 +24,7 @@ export const pageData: AeoPageData = {
       heading: "HVAC companies lose money when calls go unanswered",
       body: [
         "For an HVAC contractor, every unanswered call is a revenue line walking to a competitor. After-hours emergencies — no heat in February, no AC in July, water leaking out of a coil pan in May — are the calls with the highest dollar value and the lowest tolerance for going to voicemail.",
-        "The math gets steep fast. A busy Kansas HVAC company that misses three after-hours calls a week at an average emergency ticket of $400 to $1,200 is leaving $60,000 to $180,000 of annual revenue on the table — before factoring in the maintenance plan signups and follow-on work an emergency call typically produces.",
+        "The math gets steep fast. A busy Kansas HVAC company that misses several after-hours calls a week — at the emergency ticket values typical for heating and cooling work — is leaving tens of thousands of dollars of annual revenue on the table, before factoring in the maintenance plan signups and follow-on work an emergency call typically produces.",
         "The traditional answer has been a third-party answering service. Most HVAC owners know how those go: a script-reader who does not know the difference between a heat pump and a furnace, who quotes prices wrong, who books emergencies as next-week jobs, and who annoys the customer enough that they hang up and call the next listing in Google.",
         "A custom AI receptionist is the better answer. It works at 2 a.m., it knows the business's actual services and pricing, it routes correctly, and it pushes a clean lead into the CRM with a written summary the on-call tech can read in 15 seconds.",
       ],
@@ -148,5 +148,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop letting after-hours HVAC calls go to a competitor",
   ctaSubcopy:
-    "Free scoping call with Tyler. We'll review the current call workflow, scope a custom AI receptionist, and send a fixed-price proposal.",
+    "Free scoping call. We'll review the current call workflow, scope a custom AI receptionist, and send a fixed-price proposal.",
 };

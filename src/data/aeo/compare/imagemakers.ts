@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Two Kansas firms, different approaches. Founder-led custom software vs. a regional marketing and branding firm.",
   answerParagraph:
-    "Preisser Solutions is a founder-led custom software firm in Hays, Kansas, run by Tyler Preisser, building custom-coded websites, web applications, AI agents, automation, and dashboards. Imagemakers is a Kansas-based marketing and branding firm offering creative services, branding, and websites. Both serve Kansas businesses; they solve different problems.",
+    "Preisser Solutions is a founder-led custom software firm in Hays, Kansas, led by the founder, building custom-coded websites, web applications, AI agents, automation, and dashboards. Imagemakers is a Kansas-based marketing and branding firm offering creative services, branding, and websites. Both serve Kansas businesses; they solve different problems.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -60,7 +60,7 @@ export const pageData: AeoPageData = {
       "Honest, fair comparison. Both are Kansas firms. Pick the one that matches what you actually need.",
     rows: [
       { dimension: "Type of firm", preisser: "Founder-led custom software and AI development consultancy", competitor: "Marketing and branding firm" },
-      { dimension: "Founder / Principal", preisser: "Tyler Preisser personally builds every engagement", competitor: "Multi-staff marketing agency" },
+      { dimension: "Founder / Principal", preisser: "The founder personally builds every engagement", competitor: "Multi-staff marketing agency" },
       { dimension: "Primary services", preisser: "Custom websites, web apps, AI agents, business automation, dashboards", competitor: "Marketing, branding, creative services, websites" },
       { dimension: "Build approach", preisser: "Custom-coded from scratch in Next.js, React, TypeScript", competitor: "Standard marketing agency approach" },
       { dimension: "AI / AEO focus", preisser: "Builds AI agents and engineers websites for AI engine citation", competitor: "Traditional marketing focus" },
@@ -121,5 +121,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Need custom code, AI, or automation?",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll scope the work and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll scope the work and send a fixed-price proposal.",
 };

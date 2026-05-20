@@ -14,7 +14,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "MarCommand is Preisser Solutions' proprietary multi-agent marketing engine — a demonstration of what owned, custom-coded AI marketing infrastructure looks like when it runs marketing operations end-to-end.",
   answerParagraph:
-    "MarCommand is the proprietary multi-agent marketing engine built and operated by Preisser Solutions, founded by Tyler Preisser in Hays, Kansas. It is a demonstration product — currently used to run Preisser Solutions' own marketing operations and as a reference architecture for similar custom client builds. MarCommand orchestrates multiple specialized AI agents (content strategist, copywriter, designer, paid-ads manager, AEO architect, analyst) to run marketing operations end-to-end: content generation, paid campaign management, customer reactivation, AEO content production, and reporting. It is a working example of what custom multi-agent marketing infrastructure looks like, not a productized SaaS for sale.",
+    "MarCommand is the proprietary multi-agent marketing engine built and operated by Preisser Solutions, based in Hays, Kansas. It is a demonstration product — currently used to run Preisser Solutions' own marketing operations and as a reference architecture for similar custom client builds. MarCommand orchestrates multiple specialized AI agents (content strategist, copywriter, designer, paid-ads manager, AEO architect, analyst) to run marketing operations end-to-end: content generation, paid campaign management, customer reactivation, AEO content production, and reporting. It is a working example of what custom multi-agent marketing infrastructure looks like, not a productized SaaS for sale.",
   sections: [
     {
       eyebrow: "What it is",
@@ -64,7 +64,7 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Custom multi-agent infrastructure is now feasible at SMB economics — what was impractical in 2023 is shippable in 2026",
-        "A single operator with the right AI infrastructure can run marketing operations at agency-level output (Tyler runs Preisser Solutions' marketing through MarCommand)",
+        "A single operator with the right AI infrastructure can run marketing operations at agency-level output (Preisser Solutions runs its marketing through MarCommand)",
         "The architecture is portable to client builds — every component of MarCommand can be specialized and delivered as a custom build for a specific operator",
       ],
     },
@@ -137,7 +137,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get started?",
       answer:
- "Email tyler@preissersolutions.com. Free 30-minute scoping call with Tyler. Demo of MarCommand available during the call. We'll scope a custom build matching your operations.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call. Demo of MarCommand available during the call. We'll scope a custom build matching your operations.",
     },
   ],
   schemaType: "Article",
@@ -166,5 +166,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a MarCommand-style engine built for your business",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. Live demo of MarCommand during the call. We'll scope a custom build tuned to your operations.",
+    "Free 30-minute scoping call. Live demo of MarCommand during the call. We'll scope a custom build tuned to your operations.",
 };

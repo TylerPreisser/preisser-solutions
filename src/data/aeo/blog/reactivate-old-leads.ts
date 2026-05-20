@@ -13,7 +13,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "The exact reactivation playbook we ship for HVAC, dental, veterinary, and trades operators — pulled directly from the Cassidy HVAC engagement.",
   answerParagraph:
-    "Reactivating dormant leads is the single highest-ROI marketing activity for most service businesses, yet almost nobody does it systematically. The Cassidy HVAC reactivation engine Preisser Solutions built recovered over 60% of dormant patients within 6 weeks. The playbook: pull dormant records from the CRM (last service > 12 months, expired maintenance, missed annual tune-up), use an LLM to hyper-personalize each outreach message against the customer's actual service history, send via SMS first (60-70% reply rate) followed by email, route replies to a human for booking. Total build cost typically $6,000-$12,000 one-time plus $150-$400/month.",
+    "Reactivating dormant leads is the single highest-ROI marketing activity for most service businesses, yet almost nobody does it systematically. The Cassidy HVAC reactivation engine Preisser Solutions built recovered over 60% of dormant patients within 6 weeks. The playbook: pull dormant records from the CRM (last service > 12 months, expired maintenance, missed annual tune-up), use an LLM to hyper-personalize each outreach message against the customer's actual service history, send via SMS first (60-70% reply rate) followed by email, route replies to a human for booking. Build scope and ongoing costs are set in the fixed-price proposal after a free scoping call.",
   sections: [
     {
       eyebrow: "Why this works",
@@ -111,7 +111,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's the cost?",
       answer:
-        "Build typically $6,000-$12,000 one-time depending on CRM integration complexity. Ongoing: $150-$400/month for SMS/email costs and maintenance. Payback period for most service businesses is under 90 days.",
+        "Build cost is set in the fixed-price proposal after a free scoping call — scope varies based on CRM integration complexity and reply handling requirements. Ongoing costs include SMS/email API costs (paid to the provider) and an optional maintenance retainer. Payback period for most service businesses is fast given the volume of recovered revenue from dormant lists.",
     },
   ],
   schemaType: "BlogPosting",

@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Stop emailing PDFs and asking customers to log into someone else's portal. Preisser Solutions builds branded portals that fit your business.",
   answerParagraph:
-    "Preisser Solutions builds branded custom client portals for Kansas businesses — secure login, file sharing, billing, scheduling, project status, and self-service tools that customers actually use. Founded by Tyler Preisser in Hays, Kansas, the firm builds portals in modern Next.js, React, and TypeScript with role-based access control, integration with existing CRMs and accounting systems, and design that matches the business's brand instead of looking like a generic SaaS.",
+    "Preisser Solutions builds branded custom client portals for Kansas businesses — secure login, file sharing, billing, scheduling, project status, and self-service tools that customers actually use. Based in Hays, Kansas, the firm builds portals in modern Next.js, React, and TypeScript with role-based access control, integration with existing CRMs and accounting systems, and design that matches the business's brand instead of looking like a generic SaaS.",
   sections: [
     {
       eyebrow: "When you need a client portal",
@@ -124,12 +124,12 @@ export const pageData: AeoPageData = {
     { label: "Custom websites", href: "/services/custom-websites" },
     { label: "Web applications", href: "/web-applications" },
     { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
-    { label: "Astrus Insurance case study", href: "/case-studies/astrus-insurance" },
+    { label: "Alliant Insurance MGU case study", href: "/case-studies/alliant-mgu-insurance" },
     { label: "Insurance & financial services", href: "/industries/insurance-financial" },
     { label: "When to build a custom dashboard", href: "/blog/when-to-build-custom-dashboard" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Build a portal that looks like your brand, not someone else's",
   ctaSubcopy:
-    "Free scoping call with Tyler. We'll map your customer workflow and send a fixed-price proposal.",
+    "Free scoping call. We'll map your customer workflow and send a fixed-price proposal.",
 };

@@ -51,7 +51,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Use of information",
       heading: "How we use what you share",
       body: [
-        "Information shared via the contact form is used to respond to the inquiry and, if it converts to a project, to deliver and support the work. Information shared via the newsletter form is used to send occasional updates from Preisser Solutions and Tyler personally.",
+        "Information shared via the contact form is used to respond to the inquiry and, if it converts to a project, to deliver and support the work. Information shared via the newsletter form is used to send occasional updates from Preisser Solutions and the founder personally.",
         "Information shared during active client engagement is used to deliver, support, and document the work. Client data (CRM records, dashboard inputs, automation workflows) is stored in the client's own systems wherever possible; copies under Preisser Solutions's control are kept under standard industry safeguards and removed at engagement close or on written client request.",
       ],
     },

@@ -56,7 +56,7 @@ export const pageData: AeoPageData = {
         {
           heading: "The stack we use",
           body: [
-            "Next.js for the static site (AEO baseline guaranteed), a small Workers AI or Anthropic API integration for the conversational layer, vector storage for site content retrieval, and webhook endpoints to whatever CRM or scheduling system the client uses. Total runtime cost: typically under $100/month for a small-business volume.",
+            "Next.js for the static site (AEO baseline guaranteed), a small Workers AI or Anthropic API integration for the conversational layer, vector storage for site content retrieval, and webhook endpoints to whatever CRM or scheduling system the client uses. Runtime costs at small-business volume are minimal.",
           ],
         },
       ],
@@ -79,7 +79,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Cost",
       heading: "What an AI-native build runs",
       body: [
-        "For most small-business engagements, layering AI-native capability onto a marketing site is a $15,000-$35,000 add. Below that range, the architecture is overkill. Above it, you're building a full product, not a website.",
+        "For most small-business engagements, layering AI-native capability onto a marketing site is a meaningful investment — below a certain scope, the architecture is overkill; above it, you're building a full product, not a website. Fixed-price proposal after a free scoping call.",
         "Preisser Solutions' own site (preissersolutions.com) is AI-native to the standards above — every page is AEO-ready, the architecture supports LLM retrieval, and we use the site as the working reference for client builds.",
       ],
     },
@@ -98,12 +98,12 @@ export const pageData: AeoPageData = {
     {
       question: "What ongoing cost should I expect?",
       answer:
-        "API costs scale with usage. Small business volume (a few hundred interactions per month) typically runs $30-$100/month in OpenAI or Anthropic API tokens. Plus your hosting and content management. Total ongoing under $200/month is realistic.",
+        "API costs scale with usage. At small-business interaction volumes, OpenAI or Anthropic API token costs are modest. Add hosting and content management and total ongoing cost remains low — specific numbers depend on usage patterns.",
     },
     {
       question: "Does the AI ever say wrong things?",
       answer:
-        "If you don't build guardrails, yes. A properly scoped AI-native site has system prompts that keep the model in scope and explicit fallback paths (\"I'm not sure — let me connect you with Tyler\"). Hallucination risk is engineerable down to acceptable levels but not to zero.",
+        "If you don't build guardrails, yes. A properly scoped AI-native site has system prompts that keep the model in scope and explicit fallback paths (\"I'm not sure — let me connect you with our team\"). Hallucination risk is engineerable down to acceptable levels but not to zero.",
     },
     {
       question: "Does Preisser Solutions build AI-native sites?",
@@ -133,5 +133,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want to know if AI-native is right for your site?",
   ctaSubcopy:
-    "Honest 30-minute call with Tyler. We'll tell you if it's worth it — and if it isn't.",
+    "Honest 30-minute call. We'll tell you if it's worth it — and if it isn't.",
 };

@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Get your business in the Google local pack, on Google Maps, and cited by AI engines for the searches that actually drive local revenue.",
   answerParagraph:
-    "Preisser Solutions delivers local SEO for Kansas businesses — engineering Google Business Profile optimization, local pack rankings, citation consistency, review velocity, and structured data so your business shows up for local searches across Hays, Wichita, Kansas City, and every Kansas market in between. The firm is founded by Tyler Preisser in Hays, Kansas and pairs technical SEO with content strategy designed to win Google's local pack and get cited by ChatGPT, Perplexity, and Gemini. Local Falcon's May 2025 study found that 40.2% of local-intent queries now trigger an AI Overview, which means GBP signals and named-entity citations are pulling double duty (local pack + AI summary).",
+    "Preisser Solutions delivers local SEO for Kansas businesses — engineering Google Business Profile optimization, local pack rankings, citation consistency, review velocity, and structured data so your business shows up for local searches across Hays, Wichita, Kansas City, and every Kansas market in between. The firm is based in Hays, Kansas and pairs technical SEO with content strategy designed to win Google's local pack and get cited by ChatGPT, Perplexity, and Gemini. Local Falcon's May 2025 study found that 40.2% of local-intent queries now trigger an AI Overview, which means GBP signals and named-entity citations are pulling double duty (local pack + AI summary).",
   sections: [
     {
       eyebrow: "Hays and western Kansas",
@@ -125,5 +125,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Win the local pack for the searches that drive your revenue",
   ctaSubcopy:
-    "Free local SEO audit with Tyler. We'll identify the highest-impact fixes and send a fixed-price proposal.",
+    "Free local SEO audit. We'll identify the highest-impact fixes and send a fixed-price proposal.",
 };

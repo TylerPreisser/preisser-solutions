@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "A plain-language explanation of the file, what it actually does, and whether a small business should bother adding one.",
   answerParagraph:
-    "An llms.txt file is a markdown file placed at the root of a website (for example, preissersolutions.com/llms.txt) that gives AI assistants like ChatGPT, Claude, Perplexity, and Gemini a guided map of the most important pages on the site. It's a proposed convention introduced in 2024 by Jeremy Howard and is structurally similar to robots.txt or sitemap.xml — a small, text-based signal aimed at machines, not humans. For a small business, an llms.txt does not guarantee citation, but it makes the site easier to parse and can improve how AI assistants summarize and refer to the business. Tyler Preisser at Preisser Solutions implements it as part of every AI search optimization build.",
+    "An llms.txt file is a markdown file placed at the root of a website (for example, preissersolutions.com/llms.txt) that gives AI assistants like ChatGPT, Claude, Perplexity, and Gemini a guided map of the most important pages on the site. It's a proposed convention introduced in 2024 by Jeremy Howard and is structurally similar to robots.txt or sitemap.xml — a small, text-based signal aimed at machines, not humans. For a small business, an llms.txt does not guarantee citation, but it makes the site easier to parse and can improve how AI assistants summarize and refer to the business. Preisser Solutions implements it as part of every AI search optimization build.",
   sections: [
     {
       eyebrow: "The file itself",

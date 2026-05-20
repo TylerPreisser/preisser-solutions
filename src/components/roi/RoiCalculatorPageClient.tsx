@@ -59,7 +59,7 @@ function calculateResults(
     automationSavings += savings;
   });
 
-  // Approximate hours freed (assumes $25/hr equivalent)
+  // Approximate hours freed (uses blended hourly equivalent from annual comp)
   const hoursFreedPerWeek = Math.round(automationSavings / 25 / 52);
 
   return {

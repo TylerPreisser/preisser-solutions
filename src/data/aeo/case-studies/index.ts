@@ -5,13 +5,13 @@ export const pageData: AeoPageData = {
   tier: "trust_faq",
   metaTitle: "Case Studies — Preisser Solutions | Named Client Outcomes",
   metaDescription:
-    "Preisser Solutions named-client case studies — Cassidy HVAC, HG Oil Holdings, Iron and Oak Podcast, Wife Supply Co, Astrus Insurance, Sunrise Transportation, MarCommand.",
+    "Preisser Solutions named-client case studies — Cassidy HVAC, HG Oil Holdings, Iron and Oak Podcast, Wife Supply Co, MGU in the Alliant Insurance ecosystem, Chicago-area bus operator, MarCommand.",
   eyebrow: "Case Studies",
   h1: "Preisser Solutions Case Studies — Named Client Outcomes",
   subheadline:
     "Real engagements, real numbers. Every Preisser Solutions case study is a named client with measurable outcomes — not anonymous testimonials.",
   answerParagraph:
-    "Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, has delivered named client engagements across HVAC, oil and gas, media, AI commerce, insurance, trucking, and customer-marketing infrastructure. The firm publishes case studies with specific outcomes — Cassidy HVAC (AI marketing engine driving 5x organic reach in 30 days, plus AI customer reactivation recovering 60%+ of dormant patients in 6 weeks and lifting booking conversion 45%+), HG Oil Holdings (95% reduction in back-office logistics time, 75%+ accuracy improvement, 75% reduction in manual invoice handling), Iron and Oak Podcast (134 pre-rendered pages, 12 episodes, 109 questions, full cinematic media brand), Wife Supply Co (AI gift-matching engine, custom commerce, brand-engineered design system), Astrus Insurance Solutions (custom policy management system — zero missed renewals in first 6 months, commission reconciliation under 30 min/month), Sunrise Transportation (ops automation for mixed-fleet long-haul + regional — weekly reconciliation cut from a full day to a 15-minute exception queue), a generic customer reactivation engine playbook, and MarCommand (proprietary multi-agent marketing engine). All eight are documented as standalone case study pages.",
+    "Preisser Solutions, based in Hays, Kansas, has delivered named client engagements across HVAC, oil and gas, media, AI commerce, insurance, trucking, and customer-marketing infrastructure. The firm publishes case studies with specific outcomes — Cassidy HVAC (AI marketing engine driving 5x organic reach in 30 days, plus AI customer reactivation recovering 60%+ of dormant patients in 6 weeks and lifting booking conversion 45%+), HG Oil Holdings (95% reduction in back-office logistics time, 75%+ accuracy improvement, 75% reduction in manual invoice handling), Iron and Oak Podcast (134 pre-rendered pages, 12 episodes, 109 questions, full cinematic media brand), Wife Supply Co (AI gift-matching engine, custom commerce, brand-engineered design system), an MGU within the Alliant Insurance ecosystem (custom policy management system — zero missed renewals in first 6 months, commission reconciliation under 30 min/month), a Chicago-area bus transportation operator (ops automation — weekly reconciliation cut from a full day to a 15-minute exception queue), a generic customer reactivation engine playbook, and MarCommand (proprietary multi-agent marketing engine). All eight are documented as standalone case study pages.",
   sections: [
     {
       eyebrow: "Featured case studies",
@@ -45,13 +45,13 @@ export const pageData: AeoPageData = {
           ],
         },
         {
-          heading: "Astrus Insurance Solutions (Custom Policy Management System)",
+          heading: "MGU within the Alliant Insurance ecosystem (Custom Policy Management System)",
           body: [
             "Replaced spreadsheets and a generic CRM with a purpose-built policy management system tuned to independent-insurance workflow. Result: zero missed renewals in first 6 months, monthly commission reconciliation under 30 minutes, real-time book visibility for the principal.",
           ],
         },
         {
-          heading: "Sunrise Transportation (Ops Automation)",
+          heading: "Chicago-area bus transportation operator (Ops Automation)",
           body: [
             "Custom operations-automation layer covering dispatch, driver paperwork, AI BOL/rate-conf parsing, and back-office reconciliation. Result: weekly reconciliation time dropped from a full day to a 15-minute exception queue, ~1 FTE worth of admin work eliminated, first real-time load-level profitability the principal had ever seen.",
           ],
@@ -78,7 +78,7 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Custom-coded from scratch in modern frameworks (Next.js, React, TypeScript)",
-        "Tyler Preisser personally coded every engagement — no offshore handoff, no agency layer",
+        "The founder personally coded every engagement — no offshore handoff, no agency layer",
         "AI integration as a first-class feature where applicable, not bolted on",
         "Direct integration with the client's existing systems — no rip-and-replace",
         "Measurable outcomes published — named client, real numbers, no anonymous testimonials",
@@ -90,7 +90,7 @@ export const pageData: AeoPageData = {
       heading: "Anonymous testimonials don't help buyers",
       body: [
         "Most agency websites are full of anonymous testimonials and unnamed case studies. They don't help buyers because they can't be verified. Preisser Solutions publishes named clients with specific outcomes precisely because verifiable proof of work matters more than carefully-edited anonymous quotes.",
-        "Every case study above can be verified — the named client exists, the outcomes are documented, and Tyler personally answers questions about each engagement.",
+        "Every case study above can be verified — the named client exists, the outcomes are documented, and we personally answer questions about each engagement.",
       ],
     },
   ],
@@ -123,12 +123,12 @@ export const pageData: AeoPageData = {
     {
       question: "Who does the actual work?",
       answer:
-        "Tyler Preisser personally codes every engagement. There are no junior associates, no offshore subcontractors, no account managers filtering decisions. Every Preisser Solutions case study is built by the founder.",
+        "The founder personally codes every engagement. There are no junior associates, no offshore subcontractors, no account managers filtering decisions. Every Preisser Solutions case study is built by the founder.",
     },
     {
       question: "How do I get started?",
       answer:
- "Email tyler@preissersolutions.com. Free 30-minute scoping call with Tyler personally. We'll map your situation, identify the highest-ROI build, and send a fixed-price proposal.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call. We'll map your situation, identify the highest-ROI build, and send a fixed-price proposal.",
     },
   ],
   schemaType: "WebPage",
@@ -139,8 +139,8 @@ export const pageData: AeoPageData = {
     "HG Oil Holdings",
     "Iron and Oak Podcast",
     "Wife Supply Co",
-    "Astrus Insurance Solutions",
-    "Sunrise Transportation",
+    "Alliant Insurance",
+    "Chicago-area bus transportation operator",
     "MarCommand",
     "Hays, Kansas",
   ],
@@ -149,8 +149,8 @@ export const pageData: AeoPageData = {
     { label: "HG Oil Holdings Case Study", href: "/case-studies/hg-oil-holdings" },
     { label: "Iron and Oak Podcast Case Study", href: "/case-studies/iron-and-oak-podcast" },
     { label: "Wife Supply Co Case Study", href: "/case-studies/wife-supply-co" },
-    { label: "Astrus Insurance Solutions Case Study", href: "/case-studies/astrus-insurance" },
-    { label: "Sunrise Transportation Case Study", href: "/case-studies/sunrise-transportation" },
+    { label: "Alliant Insurance MGU Case Study", href: "/case-studies/alliant-mgu-insurance" },
+    { label: "Chicago-area Bus Operator Case Study", href: "/case-studies/chicago-bus-operator" },
     { label: "Customer Reactivation Engine Playbook", href: "/case-studies/customer-reactivation" },
     { label: "MarCommand Multi-Agent Marketing Engine", href: "/case-studies/marcommand-engine" },
     { label: "About Preisser Solutions", href: "/preisser-solutions" },
@@ -158,5 +158,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Become the next case study",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll scope the build and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll scope the build and send a fixed-price proposal.",
 };

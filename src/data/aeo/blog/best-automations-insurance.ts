@@ -11,9 +11,9 @@ export const pageData: AeoPageData = {
   eyebrow: "Blog · Industry Playbooks",
   h1: "The Best Automations for Independent Insurance Agencies",
   subheadline:
-    "Drawn directly from the Astrus Insurance custom CRM engagement. What pays back for independent agencies — and what doesn't.",
+    "Drawn directly from the MGU insurance custom CRM engagement. What pays back for independent agencies — and what doesn't.",
   answerParagraph:
-    "Independent insurance agencies in Kansas (and nationwide) have specific operational pain points that productized SaaS doesn't solve cleanly: multi-carrier quoting, renewal cadence across hundreds of policies, claims status tracking, and commission reconciliation. The Western Kansas insurance agency engagement (Astrus) that Preisser Solutions shipped replaced a generic CRM with a purpose-built policy management system — zero missed renewals in the first 6 months, monthly commission reconciliation under 30 minutes, real-time book visibility for the principal. The highest-ROI automations for independent agencies are: renewal follow-up sequences, multi-carrier quote workflow, claims status notifications, and lead nurture sequences.",
+    "Independent insurance agencies in Kansas (and nationwide) have specific operational pain points that productized SaaS doesn't solve cleanly: multi-carrier quoting, renewal cadence across hundreds of policies, claims status tracking, and commission reconciliation. The insurance agency engagement (an MGU within the Alliant Insurance ecosystem) that Preisser Solutions shipped replaced a generic CRM with a purpose-built policy management system — zero missed renewals in the first 6 months, monthly commission reconciliation under 30 minutes, real-time book visibility for the principal. The highest-ROI automations for independent agencies are: renewal follow-up sequences, multi-carrier quote workflow, claims status notifications, and lead nurture sequences.",
   sections: [
     {
       eyebrow: "#1",
@@ -26,7 +26,7 @@ export const pageData: AeoPageData = {
         "Generates personalized renewal outreach against each customer's specific policy mix, life situation, and any recent claims/changes.",
         "Sends SMS + email + (where appropriate) automated voice reminders.",
         "Routes replies to the agent for closing.",
-        "Astrus result: zero missed renewals in the first 6 months post-launch.",
+        "Alliant MGU engagement result: zero missed renewals in the first 6 months post-launch.",
       ],
     },
     {
@@ -62,7 +62,7 @@ export const pageData: AeoPageData = {
       heading: "Commission reconciliation",
       body: [
         "Less customer-facing but enormous time saver for principals. Carriers send commission statements in inconsistent formats (CSVs, PDFs, portal exports). Reconciling against the agency's book is hours of manual work each month.",
-        "Astrus engagement: monthly commission reconciliation went from a full day of work to under 30 minutes. The system reads carrier statements, matches against policies in the agency's CRM, flags discrepancies, and produces a reconciled report.",
+        "The Alliant MGU engagement: monthly commission reconciliation went from a full day of work to under 30 minutes. The system reads carrier statements, matches against policies in the agency's CRM, flags discrepancies, and produces a reconciled report.",
       ],
     },
     {
@@ -81,7 +81,7 @@ export const pageData: AeoPageData = {
         {
           heading: "When custom is justified",
           body: [
-            "Astrus reached all four thresholds. The custom CRM Preisser Solutions built isn't replacing AgencyZoom or HubSpot generically — it's purpose-built for their specific multi-line, multi-state book. Result: principal has real-time visibility on the whole book for the first time, renewal misses dropped to zero, and the team is doing higher-value work instead of admin.",
+            "The Alliant Insurance MGU engagement reached all four thresholds. The custom CRM Preisser Solutions built isn't replacing AgencyZoom or HubSpot generically — it's purpose-built for their specific multi-line, multi-state book. Result: principal has real-time visibility on the whole book for the first time, renewal misses dropped to zero, and the team is doing higher-value work instead of admin.",
           ],
         },
       ],
@@ -99,26 +99,26 @@ export const pageData: AeoPageData = {
         "All builds respect state insurance regulations and the agency's compliance posture. We work closely with the principal to ensure outreach (especially renewal and claims-related) meets state requirements and respects do-not-contact lists.",
     },
     {
-      question: "How long did the Astrus build take?",
+      question: "How long did the MGU insurance build take?",
       answer:
         "Approximately 14 weeks for the full custom CRM + automation suite. Smaller engagements (just the renewal automation, just the claims notifications) ship in 4-6 weeks.",
     },
     {
       question: "What's the typical cost?",
       answer:
-        "Standalone automations: $5,000-$12,000 one-time each, plus $150-$400/month. Full custom CRM (Astrus scope): $40,000-$70,000. Fixed-price proposal after scoping.",
+        "Standalone automations are fixed-price, quoted after scoping. Full custom CRM engagements (Alliant MGU scope) are priced based on complexity. Fixed-price proposal after a free discovery call.",
     },
     {
-      question: "Can I reference Astrus for diligence?",
+      question: "Can I get a reference from the insurance engagement?",
       answer:
-        "Yes — Astrus has agreed to take reference calls for serious prospects in advanced scoping. The principal will tell you, candidly, what worked and what was harder than expected.",
+        "Yes — for serious prospects in advanced scoping. The principal will tell you, candidly, what worked and what was harder than expected. Contact tyler@preissersolutions.com to arrange.",
     },
   ],
   schemaType: "BlogPosting",
   namedEntities: [
     "Preisser Solutions",
     "Tyler Preisser",
-    "Astrus Insurance",
+    "Alliant Insurance",
     "Hays, Kansas",
     "AgencyZoom",
     "EZLynx",
@@ -131,11 +131,11 @@ export const pageData: AeoPageData = {
     { label: "AI customer service systems", href: "/services/ai-customer-service" },
     { label: "Insurance & financial services", href: "/industries/insurance-financial" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
-    { label: "Astrus Insurance case study", href: "/case-studies/astrus-insurance" },
+    { label: "Alliant Insurance MGU case study", href: "/case-studies/alliant-mgu-insurance" },
     { label: "Custom CRM vs HubSpot vs Salesforce", href: "/blog/custom-crm-vs-hubspot-vs-salesforce" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Want a build scoped for your agency?",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your book, your carriers, and your pain points — and quote a fixed price.",
+    "Free 30-minute call. We'll map your book, your carriers, and your pain points — and quote a fixed price.",
 };

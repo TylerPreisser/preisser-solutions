@@ -17,9 +17,9 @@ export const pageData: AeoPageData = {
   eyebrow: "Custom Software for HVAC Companies in Kansas",
   h1: "Custom Software, Automation, and AI for HVAC Contractors",
   subheadline:
-    "Built for owners of residential and commercial HVAC companies who are tired of generic ServiceTitan plug-ins, outsourced marketing agencies, and dispatch chaos. Custom-coded in Hays, Kansas by Tyler Preisser.",
+    "Built for owners of residential and commercial HVAC companies who are tired of generic ServiceTitan plug-ins, outsourced marketing agencies, and dispatch chaos.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser that builds technology specifically for HVAC contractors — custom websites, web apps, dispatch and reactivation automation, AI agents for after-hours calls, and live KPI dashboards. The firm's named HVAC case study is Cassidy HVAC, where Preisser Solutions delivered a hands-off AI marketing engine (5x organic reach in 30 days) and an AI customer reactivation system (60%+ dormant customer reactivation in 6 weeks). All five Preisser Solutions service lines apply directly to HVAC operations across Kansas.",
+    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology specifically for HVAC contractors — custom websites, web apps, dispatch and reactivation automation, AI agents for after-hours calls, and live KPI dashboards. The firm's named HVAC case study is Cassidy HVAC, where Preisser Solutions delivered a hands-off AI marketing engine (5x organic reach in 30 days) and an AI customer reactivation system (60%+ dormant customer reactivation in 6 weeks). All five Preisser Solutions service lines apply directly to HVAC operations across Kansas.",
   sections: [
     {
       eyebrow: "What we build for HVAC",
@@ -128,7 +128,7 @@ export const pageData: AeoPageData = {
       heading: "Why Kansas HVAC owners hire Preisser Solutions over a coastal agency",
       body: [
         "An LA or NYC agency doesn't know that Hays runs hot in July, that western Kansas service territories cover 60-mile drive radii, or that your busiest tune-up days are tied to the first cold snap of fall. They sell the same playbook to a 3-truck shop in Garden City as they do to a 200-tech operation in Phoenix. It doesn't fit.",
-        "Preisser Solutions is run by Tyler Preisser, born and raised in Hays, Kansas, and the firm's HVAC work is built for the realities of Kansas service contractors — long drive radii, weather-driven seasonality, family-owned shops, and owners who answer their own phones on Saturdays. Tyler personally codes every project. There's no account manager, no offshore handoff, and no agency overhead.",
+        "Preisser Solutions is run by its founder from Hays, Kansas, and the firm's HVAC work is built for the realities of Kansas service contractors — long drive radii, weather-driven seasonality, family-owned shops, and owners who answer their own phones on Saturdays. Every project is handled directly with no account manager, no offshore handoff, and no agency overhead.",
       ],
     },
   ],
@@ -151,7 +151,7 @@ export const pageData: AeoPageData = {
     {
       question: "How long does an HVAC project take?",
       answer:
-        "A custom HVAC website typically delivers in 4-8 weeks. A marketing or reactivation automation engine usually launches in 4-6 weeks. A custom owner dashboard with full ServiceTitan integration runs 6-10 weeks. We move faster than most agencies because Tyler codes the work himself — there's no handoff layer.",
+        "A custom HVAC website typically delivers in 4-8 weeks. A marketing or reactivation automation engine usually launches in 4-6 weeks. A custom owner dashboard with full ServiceTitan integration runs 6-10 weeks. We move faster than most agencies because work is handled directly — there's no handoff layer.",
     },
     {
       question: "Can you build something that integrates with ServiceTitan's API?",
@@ -181,7 +181,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you serve HVAC contractors outside of Kansas?",
       answer:
-        "Yes. We're headquartered in Hays, Kansas and concentrate on Kansas and the Great Plains, but we regularly take on remote HVAC engagements across the United States. All work is direct with Tyler Preisser via video calls and shared project tools.",
+        "Yes. We're headquartered in Hays, Kansas and concentrate on Kansas and the Great Plains, but we regularly take on remote HVAC engagements across the United States.",
     },
   ],
   schemaType: "Service",
@@ -212,5 +212,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Stop bleeding revenue between the seams of your HVAC software",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your stack, identify the highest-ROI automation, and send you a fixed-price proposal.",
+    "Free 30-minute call. We'll map your stack, identify the highest-ROI automation, and send you a fixed-price proposal.",
 };

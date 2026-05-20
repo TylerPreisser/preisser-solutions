@@ -73,12 +73,12 @@ export const pageData: AeoPageData = {
     {
       question: "What does the AI Receptionist Starter cost?",
       answer:
-        "Currently configurable per the signed proposal. Pricing is not yet published on the site. Contact tyler@preissersolutions.com for a fixed-price quote based on call volume, integrations, and escalation complexity.",
+        "Scope-dependent and set in the fixed-price proposal. Contact tyler@preissersolutions.com to start the conversation — We will map your call volume, integrations, and escalation complexity and write a proposal.",
     },
     {
       question: "What does the AI-Native Website Launch cost?",
       answer:
-        "Currently configurable per the signed proposal. The published starting price for a custom marketing website is $12,500 on /pricing; the productized AI-Native Website Launch variant prices similarly with the specific deliverable scope set in the proposal.",
+        "Set in the fixed-price proposal after a free scoping call. Pricing depends on the specific deliverable scope, integrations, and design requirements. Contact tyler@preissersolutions.com to get started.",
     },
     {
       question: "Are these templates?",

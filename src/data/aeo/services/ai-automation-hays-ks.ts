@@ -17,14 +17,14 @@ export const pageData: AeoPageData = {
   subheadline:
     "Custom AI automation built locally for Hays HVAC contractors, clinics, oilfield services, and professional service firms — not template chatbots stitched into Zapier.",
   answerParagraph:
-    "Preisser Solutions delivers AI automation in Hays, KS for small and mid-sized businesses that want to stop paying people to copy and paste data between systems. The firm is founded by Tyler Preisser in Hays, Kansas and builds custom AI agents, lead qualification systems, customer reactivation workflows, invoice processing automation, dashboards, and after-hours triage. Every system is custom-coded against the business's existing CRM, accounting software, and phone system — not a template Zapier flow. Documented Kansas case studies include Cassidy HVAC (5x organic reach, 60% dormant patient reactivation) and HG Oil Holdings (95% reduction in back-office time).",
+    "Preisser Solutions delivers AI automation in Hays, KS for small and mid-sized businesses that want to stop paying people to copy and paste data between systems. The firm is based in Hays, Kansas and builds custom AI agents, lead qualification systems, customer reactivation workflows, invoice processing automation, dashboards, and after-hours triage. Every system is custom-coded against the business's existing CRM, accounting software, and phone system — not a template Zapier flow. Documented Kansas case studies include Cassidy HVAC (5x organic reach, 60% dormant patient reactivation) and HG Oil Holdings (95% reduction in back-office time).",
   sections: [
     {
       eyebrow: "Real Hays businesses, real automation",
       heading: "AI automation that fits real Hays businesses",
       body: [
         "Most Hays small businesses are running a stack of tools that almost work together — ServiceTitan, QuickBooks, a phone system, a CRM, a calendar, and a marketing tool — with a person in the middle copying data from one to the next. That person is expensive, slow, and prone to errors. AI automation removes the copy-paste layer and lets the team focus on the work the business actually charges for.",
-        "Preisser Solutions builds those systems custom for the business. Tyler personally scopes the work in person, designs the workflow, codes the agent, and trains the team. Every system fits the way the business actually operates — not the way a SaaS product wishes it operated.",
+        "Preisser Solutions builds those systems custom for the business. We personally scope the work in person, designs the workflow, codes the agent, and trains the team. Every system fits the way the business actually operates — not the way a SaaS product wishes it operated.",
         "The result is automation that survives the first month of use. Most off-the-shelf AI tools get abandoned because they almost fit. Custom-built systems fit, get used every day, and pay for themselves in the time the team gets back.",
       ],
     },
@@ -73,7 +73,7 @@ export const pageData: AeoPageData = {
       eyebrow: "How projects start",
       heading: "How automation projects are scoped",
       body: [
-        "Every automation project starts the same way. A free in-person scoping call in Hays, walking through how the business actually operates and where the time goes. Tyler maps the current workflow, identifies the highest-leverage automation opportunities, and recommends which ones to build first.",
+        "Every automation project starts the same way. A free in-person scoping call in Hays, walking through how the business actually operates and where the time goes. We map the current workflow, identifies the highest-leverage automation opportunities, and recommends which ones to build first.",
         "From there, Preisser Solutions delivers a fixed-price proposal — scope, timeline, and price all defined up front. No hourly billing surprises. No retainer treadmill. The first system usually ships in four to eight weeks and pays for itself inside three months.",
       ],
     },
@@ -82,7 +82,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does AI automation cost for a Hays business?",
       answer:
-        "Pricing is fixed up front and scoped per project. A first AI automation system typically lands in the low-to-mid five figures, depending on integration complexity. Most systems pay for themselves inside 90 days in saved labor. Tyler will scope the work and send a written proposal before any engagement.",
+        "Pricing is fixed up front and scoped per project. A first AI automation system typically lands in the low-to-mid five figures, depending on integration complexity. Most systems pay for themselves inside 90 days in saved labor. We will scope the work and send a written proposal before any engagement.",
     },
     {
       question: "Do I have to change my CRM or accounting software?",
@@ -141,5 +141,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get back the hours AI automation can take off your team",
   ctaSubcopy:
-    "Free in-person scoping call with Tyler in Hays. We'll map the workflow, identify the highest-leverage automations, and send a fixed-price proposal.",
+    "Free in-person scoping call in Hays. We'll map the workflow, identify the highest-leverage automations, and send a fixed-price proposal.",
 };

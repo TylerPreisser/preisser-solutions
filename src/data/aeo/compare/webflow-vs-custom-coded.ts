@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Webflow is the most powerful no-code website builder. Custom code is more powerful still. Here's where each wins.",
   answerParagraph:
-    "Webflow is a powerful visual website builder run by Webflow, Inc. Custom-coded websites by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by founder Tyler Preisser in Hays, Kansas. Webflow is the strongest no-code option and a real competitor to custom code for many design-led sites — it ships clean code and has solid CMS capabilities. Custom code wins on long-term flexibility, AI search optimization, complex custom features, and deep integration with backend systems.",
+    "Webflow is a powerful visual website builder run by Webflow, Inc. Custom-coded websites by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by the founder in Hays, Kansas. Webflow is the strongest no-code option and a real competitor to custom code for many design-led sites — it ships clean code and has solid CMS capabilities. Custom code wins on long-term flexibility, AI search optimization, complex custom features, and deep integration with backend systems.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -64,7 +64,7 @@ export const pageData: AeoPageData = {
       { dimension: "SEO foundation", preisser: "Full schema.org markup, comprehensive FAQ, custom Person/LocalBusiness schema", competitor: "Strong SEO basics; advanced schema requires manual configuration" },
       { dimension: "AI search optimization", preisser: "Engineered first paragraphs, named entities, FAQ schema, llms.txt", competitor: "Possible but requires manual content engineering" },
       { dimension: "Custom features", preisser: "Any feature can be built — AI agents, custom CRMs, dashboards, integrations", competitor: "Webflow Logic + external code; complex features hit walls" },
-      { dimension: "Pricing model", preisser: "One-time fixed-price build; minimal ongoing hosting on Cloudflare Pages", competitor: "Monthly hosting plans ($14-$39/month for sites; more for ecommerce)" },
+      { dimension: "Pricing model", preisser: "One-time fixed-price build; minimal ongoing hosting on Cloudflare Pages", competitor: "Monthly hosting plans scaling with plan tier; more for ecommerce" },
       { dimension: "Designer workflow", preisser: "Code-first; designers work in Figma, devs implement", competitor: "Visual designer with deep CSS control; designers can ship directly" },
       { dimension: "Backend / app capabilities", preisser: "Full backend, database, authentication, and API capabilities", competitor: "Limited; requires Webflow Logic or external services for complex backend" },
       { dimension: "Ownership and portability", preisser: "Code is yours; host anywhere", competitor: "Site lives on Webflow; export possible but requires custom hosting setup" },
@@ -94,7 +94,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a Webflow site vs. custom cost?",
       answer:
-        "Webflow design-led marketing sites typically run $5k-$30k for design + build; ongoing hosting is $14-$39/month. Custom-coded sites typically run low-to-mid five figures one-time with minimal ongoing hosting on Cloudflare Pages.",
+        "Webflow design-led marketing sites carry a monthly hosting subscription that scales with plan tier. Custom-coded sites are fixed-price one-time with minimal ongoing hosting on Cloudflare Pages — fixed-price proposal after scoping.",
     },
     {
       question: "Does Webflow handle complex CMS needs?",
@@ -121,5 +121,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Need help deciding between Webflow and custom?",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll honestly assess your project and tell you which fits.",
+    "Free 30-minute scoping call. We'll honestly assess your project and tell you which fits.",
 };

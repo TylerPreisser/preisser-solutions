@@ -18,7 +18,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Traffic is necessary. It is not enough. If visitors aren't calling, filling out forms, or booking, the problem lives somewhere between your offer and your tracking.",
   answerParagraph:
-    "A small business website that is not generating leads usually has one of five issues: the offer on the page is unclear, the calls to action are weak, the forms create too much friction, the page builds no trust, or the lead events aren't actually being tracked so phantom leads look like zeros. Fixing each one is fast and cheap compared to driving more traffic. Tyler Preisser at Preisser Solutions in Hays, Kansas helps small businesses across the Great Plains diagnose this layer of the funnel before they invest another dollar in ads or SEO.",
+    "A small business website that is not generating leads usually has one of five issues: the offer on the page is unclear, the calls to action are weak, the forms create too much friction, the page builds no trust, or the lead events aren't actually being tracked so phantom leads look like zeros. Fixing each one is fast and cheap compared to driving more traffic. Preisser Solutions in Hays, Kansas helps small businesses across the Great Plains diagnose this layer of the funnel before they invest another dollar in ads or SEO.",
   sections: [
     {
       eyebrow: "The diagnosis",
@@ -155,7 +155,7 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a conversion review of your site?",
   ctaSubcopy:
-    "Send Tyler the URL and he'll mark up the page with the five highest-impact changes — no proposal pitch, no upsell.",
+    "Send us the URL and we'll mark up the page with the five highest-impact changes — no proposal pitch, no upsell.",
   primaryCta: {
     label: "Request a Conversion Review",
     href: "/contact",

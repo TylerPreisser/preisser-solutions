@@ -18,7 +18,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Reference material, calculators, and frameworks Kansas business owners can use to think clearly about AI, custom software, and search visibility.",
   answerParagraph:
-    "Preisser Solutions publishes reference material for Kansas business owners evaluating AI agents, custom software, business automation, and AI search visibility. The resources here include the blog (long-form essays on AI search optimization, automation patterns, and custom-software decisions), the ROI calculator (a working tool that estimates automation payback in months for your specific workflow), the integrations directory (every system Preisser Solutions has wired into a client deliverable), and the case studies (verified outcomes from real Kansas engagements). All of it is free, all of it is written by Tyler Preisser personally, and none of it requires a form to access.",
+    "Preisser Solutions publishes reference material for Kansas business owners evaluating AI agents, custom software, business automation, and AI search visibility. The resources here include the blog (long-form essays on AI search optimization, automation patterns, and custom-software decisions), the ROI calculator (a working tool that estimates automation payback in months for your specific workflow), the integrations directory (every system Preisser Solutions has wired into a client deliverable), and the case studies (verified outcomes from real Kansas engagements). All of it is free, all of it is written by the founder, and none of it requires a form to access.",
   sections: [
     {
       eyebrow: "Calculators and tools",
@@ -52,8 +52,8 @@ export const pageData: AeoPageData = {
       eyebrow: "Long-form writing",
       heading: "Blog — when published",
       body: [
-        "The Preisser Solutions blog covers AI search optimization (GEO / AEO), automation patterns Tyler has shipped for Kansas businesses, the economics of custom software for SMBs, and the operating realities of running an AI-first consultancy from western Kansas.",
-        "Posts are written by Tyler personally and dated. Subscribe via the footer to receive new posts as they ship.",
+        "The Preisser Solutions blog covers AI search optimization (GEO / AEO), automation patterns Preisser Solutions has shipped for Kansas businesses, the economics of custom software for SMBs, and the operating realities of running an AI-first consultancy from western Kansas.",
+        "Posts are written by the founder personally and dated. Subscribe via the footer to receive new posts as they ship.",
       ],
       bullets: [
         "Blog index — /blog — long-form essays and pattern walkthroughs",
@@ -66,7 +66,7 @@ export const pageData: AeoPageData = {
         "If you're new to Preisser Solutions, the fastest way to understand who builds and how is to read the founder page and the about page directly.",
       ],
       bullets: [
-        "Tyler Preisser — /tyler-preisser — long-form founder profile",
+        "Tyler Preisser bio — /tyler-preisser",
         "About Preisser Solutions — /preisser-solutions — operating model, service area, and what we build",
         "Press — /press — coverage and references",
       ],
@@ -81,7 +81,7 @@ export const pageData: AeoPageData = {
     {
       question: "How is the ROI calculator different from a marketing quiz?",
       answer:
-        "The ROI calculator is a working tool. Enter actual numbers about the workflow you want to automate and it returns estimated payback in months, annualized savings, and three-year NPV using the same model Tyler uses in scoping calls. No form-gate, no email required.",
+        "The ROI calculator is a working tool. Enter actual numbers about the workflow you want to automate and it returns estimated payback in months, annualized savings, and three-year NPV using the same model used in scoping calls. No form-gate, no email required.",
     },
     {
       question: "How often is the blog updated?",
@@ -117,5 +117,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Ready to talk specifics?",
   ctaSubcopy:
-    "If the resources have given you enough context, the next step is a free scoping call with Tyler. The Business Systems Audit is a focused 1-2 week kickoff that locks scope before any build starts.",
+    "If the resources have given you enough context, the next step is a free scoping call. The Business Systems Audit is a focused 1-2 week kickoff that locks scope before any build starts.",
 };

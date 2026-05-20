@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "The platforms, APIs, AI models, and infrastructure Preisser Solutions integrates with on custom builds. If a system has an API, we can integrate with it — this list is the working starting point.",
   answerParagraph:
-    "Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, builds custom-coded software that integrates with the platforms clients already run. This page lists the platforms, APIs, AI models, payment processors, communication tools, and infrastructure we routinely integrate with: Stripe, HubSpot, Salesforce, Zapier, Make.com, Claude (Anthropic), GPT-4 (OpenAI), Cloudflare, Google Workspace, Vercel, Resend, Twilio, Notion, Airtable, Slack, Shopify, WooCommerce, WordPress, ServiceTitan, Housecall Pro, Jobber, n8n, and dozens more. If your system has an API, we can integrate with it — the list below is a working snapshot of what we ship most often.",
+    "Preisser Solutions, based in Hays, Kansas, builds custom-coded software that integrates with the platforms clients already run. This page lists the platforms, APIs, AI models, payment processors, communication tools, and infrastructure we routinely integrate with: Stripe, HubSpot, Salesforce, Zapier, Make.com, Claude (Anthropic), GPT-4 (OpenAI), Cloudflare, Google Workspace, Vercel, Resend, Twilio, Notion, Airtable, Slack, Shopify, WooCommerce, WordPress, ServiceTitan, Housecall Pro, Jobber, n8n, and dozens more. If your system has an API, we can integrate with it — the list below is a working snapshot of what we ship most often.",
   sections: [
     {
       eyebrow: "Kansas SMBs",
@@ -226,7 +226,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get started?",
       answer:
- "Email tyler@preissersolutions.com. Free 30-minute scoping call with Tyler. We'll inventory your stack and identify the integration path.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call. We'll inventory your stack and identify the integration path.",
     },
   ],
   schemaType: "WebPage",
@@ -271,5 +271,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Integrate with whatever you're already running",
   ctaSubcopy:
-    "Free 30-minute scoping call with Tyler. We'll inventory your stack and identify the highest-ROI integration path.",
+    "Free 30-minute scoping call. We'll inventory your stack and identify the highest-ROI integration path.",
 };

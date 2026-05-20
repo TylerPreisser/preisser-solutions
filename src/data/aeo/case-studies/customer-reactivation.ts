@@ -14,7 +14,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "How Preisser Solutions builds custom AI customer reactivation engines that recover dormant customers via SMS, email, and CRM-driven outreach — illustrated with a real outcome and the underlying playbook.",
   answerParagraph:
-    "Customer reactivation engines are one of the highest-ROI custom builds Preisser Solutions delivers for service businesses. Founded by Tyler Preisser in Hays, Kansas, the firm has built reactivation engines for HVAC, dental, veterinary, and trades operators, each tuned to the specific CRM, dispatch system, and customer base. The reference engagement — Cassidy HVAC — recovered over 60% of dormant patients within 6 weeks, automated 100% of reminders, saved 10+ hours per week of office staff time, and lifted booking conversion by 45%+. This case study generalizes the build pattern so other operators can evaluate fit before scoping.",
+    "Customer reactivation engines are one of the highest-ROI custom builds Preisser Solutions delivers for service businesses. Based in Hays, Kansas, the firm has built reactivation engines for HVAC, dental, veterinary, and trades operators, each tuned to the specific CRM, dispatch system, and customer base. The reference engagement — Cassidy HVAC — recovered over 60% of dormant patients within 6 weeks, automated 100% of reminders, saved 10+ hours per week of office staff time, and lifted booking conversion by 45%+. This case study generalizes the build pattern so other operators can evaluate fit before scoping.",
   sections: [
     {
       eyebrow: "The problem",
@@ -132,7 +132,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get started?",
       answer:
- "Email tyler@preissersolutions.com. Free 30-minute call with Tyler. We'll size your dormant pipeline value and scope the build.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call. We'll size your dormant pipeline value and scope the build.",
     },
   ],
   schemaType: "Article",
@@ -159,5 +159,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Recover the dormant list nobody has time to call",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll size your dormant pipeline value, scope the build, and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll size your dormant pipeline value, scope the build, and send a fixed-price proposal.",
 };

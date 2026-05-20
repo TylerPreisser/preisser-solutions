@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "End-to-end automation of invoicing, scheduling, data entry, reporting, and operational workflows using AI and custom software. Not home automation — business automation.",
   answerParagraph:
-    "Preisser Solutions builds custom business process automation systems for Kansas businesses, founded by Tyler Preisser in Hays, Kansas. This is business operations automation — automating invoicing, scheduling, data entry, customer reactivation, reporting, and operational workflows — not home automation (smart thermostats, lights). Recent automation builds include the Cassidy HVAC AI marketing engine (5x organic reach in 30 days, 100% hands-off content) and the HG Oil Holdings AI invoicing assistant (75% reduction in manual invoice handling).",
+    "Preisser Solutions builds custom business process automation systems for Kansas businesses, based in Hays, Kansas. This is business operations automation — automating invoicing, scheduling, data entry, customer reactivation, reporting, and operational workflows — not home automation (smart thermostats, lights). Recent automation builds include the Cassidy HVAC AI marketing engine (5x organic reach in 30 days, 100% hands-off content) and the HG Oil Holdings AI invoicing assistant (75% reduction in manual invoice handling).",
   sections: [
     {
       eyebrow: "Important clarification",
@@ -61,7 +61,7 @@ export const pageData: AeoPageData = {
       eyebrow: "How automation projects run",
       heading: "Process: scope → build → measure",
       body: [
-        "Every automation project starts with a discovery conversation. Tyler walks through your current workflow with you, identifies the actual time sinks, and proposes the smallest possible automation that produces the biggest result. Most clients are surprised at how surgical the right automation can be.",
+        "Every automation project starts with a discovery conversation. We walk through your current workflow, identifies the actual time sinks, and proposes the smallest possible automation that produces the biggest result. Most clients are surprised at how surgical the right automation can be.",
         "The build phase typically runs 4-12 weeks depending on integration complexity. The result is a system that runs automatically, with logging and monitoring so you know it's working.",
         "Every Preisser Solutions automation system includes measurement — hours saved, errors avoided, response times improved — so you can see the ROI in real numbers, not vague promises.",
       ],
@@ -132,7 +132,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you serve businesses outside of Kansas?",
       answer:
-        "Yes. While Preisser Solutions is based in Hays, Kansas, the firm regularly takes on remote automation projects throughout the United States. All work runs directly with Tyler Preisser via video calls and shared project management.",
+        "Yes. While Preisser Solutions is based in Hays, Kansas, the firm regularly takes on remote automation projects throughout the United States. All work runs via video calls and shared project management.",
     },
   ],
   schemaType: "Service",
@@ -160,5 +160,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Automate the work that's killing your team",
   ctaSubcopy:
-    "Free scoping call. Tyler will identify your highest-ROI automation in 30 minutes.",
+    "Free scoping call. We will identify your highest-ROI automation in 30 minutes.",
 };

@@ -15,9 +15,9 @@ export const pageData: AeoPageData = {
   eyebrow: "Custom AI Agents in Hays, KS",
   h1: "Custom AI Agents for Hays and Kansas Businesses",
   subheadline:
-    "Custom-coded AI agents that connect to your existing CRM, accounting, and phone stack and do real operational work — built in Hays by Tyler Preisser.",
+    "Custom-coded AI agents that connect to your existing CRM, accounting, and phone stack and do real operational work — founder-built in Hays, Kansas.",
   answerParagraph:
-    "Preisser Solutions builds custom AI agents in Hays, KS for businesses that want automation that goes further than a basic Zapier flow. The firm is founded by Tyler Preisser in Hays, Kansas and ships custom-coded AI agents that handle lead qualification, customer follow-up, invoice processing, reporting, internal knowledge search, and operations workflows. Each agent is built against the business's existing CRM, accounting platform, and phone system — not a generic chatbot widget. Safety, approval checkpoints, and human review are designed into every agent so high-stakes work still has a human in the loop. Documented Kansas case studies anchor the work.",
+    "Preisser Solutions builds custom AI agents in Hays, KS for businesses that want automation that goes further than a basic Zapier flow. The firm is based in Hays, Kansas and ships custom-coded AI agents that handle lead qualification, customer follow-up, invoice processing, reporting, internal knowledge search, and operations workflows. Each agent is built against the business's existing CRM, accounting platform, and phone system — not a generic chatbot widget. Safety, approval checkpoints, and human review are designed into every agent so high-stakes work still has a human in the loop. Documented Kansas case studies anchor the work.",
   sections: [
     {
       eyebrow: "What an agent really is",
@@ -96,7 +96,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom AI agent cost in Hays?",
       answer:
-        "Pricing is fixed up front. A first custom AI agent typically lands in the low-to-mid five figures depending on integration complexity and scope. Most agents pay for themselves inside 90 days in saved labor. Tyler will scope the work for your specific business and send a written proposal.",
+        "Pricing is fixed up front. A first custom AI agent typically lands in the low-to-mid five figures depending on integration complexity and scope. Most agents pay for themselves inside 90 days in saved labor. We will scope the work for your specific business and send a written proposal.",
     },
     {
       question: "How is a custom AI agent different from a chatbot?",
@@ -150,5 +150,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Build a custom AI agent that actually fits your business",
   ctaSubcopy:
-    "Free scoping call with Tyler in Hays. We'll map the workflow, recommend the right agent, and send a fixed-price proposal.",
+    "Free scoping call in Hays. We'll map the workflow, recommend the right agent, and send a fixed-price proposal.",
 };

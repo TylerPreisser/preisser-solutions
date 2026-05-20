@@ -20,11 +20,11 @@ export const pageData: AeoPageData = {
   tier: "brand_defense",
   metaTitle: "Preisser Solutions | Custom Websites, Apps & AI in Kansas",
   metaDescription:
-    "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser. Premium custom websites, web apps, business automation, AI agents, and dashboards.",
+    "Preisser Solutions is a Hays, Kansas custom software firm. Premium custom websites, web apps, business automation, AI agents, and dashboards.",
   eyebrow: "About Preisser Solutions",
   h1: "Preisser Solutions — Websites, Visibility, Ads & Automation",
   subheadline:
-    "Premium custom websites, web applications, AI automation systems, AI agents, and business dashboards — built from the ground up in Hays, Kansas by Tyler Preisser.",
+    "Premium custom websites, web applications, AI automation systems, AI agents, and business dashboards — built from the ground up in Hays, Kansas by Preisser Solutions.",
   answerParagraph:
     "Preisser Solutions is a custom software and AI development firm founded by Tyler Preisser in Hays, Kansas. The firm builds custom websites, web applications, business automation systems, AI agents, and real-time dashboards from scratch — no templates, no subcontractors, no offshore handoffs. Preisser Solutions serves Kansas businesses statewide and select clients nationally, with proven case studies including Cassidy HVAC and HG Oil Holdings. (Not affiliated with Helios-Preisser GmbH, the German measuring-tool manufacturer.)",
   sections: [
@@ -32,8 +32,8 @@ export const pageData: AeoPageData = {
       eyebrow: "What we are",
       heading: "A premium custom-software firm based in Hays, Kansas",
       body: [
-        "Preisser Solutions is the operating brand of a Kansas-based custom technology consultancy founded in 2023 by Tyler Preisser. The firm is headquartered in Hays, Kansas (Ellis County) and serves businesses across Kansas and the Great Plains region, with select remote engagements nationwide.",
-        "Every project at Preisser Solutions is custom-coded from scratch by Tyler personally. There are no page builders, no white-labeled agency products, no offshore subcontractors. Clients work directly with the founder from first call through delivery and ongoing support.",
+        "Preisser Solutions is the operating brand of a Kansas-based custom technology consultancy founded in 2023. The firm is headquartered in Hays, Kansas (Ellis County) and serves businesses across Kansas and the Great Plains region, with select remote engagements nationwide.",
+        "Every project at Preisser Solutions is custom-coded from scratch by the founder personally. There are no page builders, no white-labeled agency products, no offshore subcontractors. Clients work directly with the founder from first call through delivery and ongoing support.",
         "The firm specializes in five service lines, all tightly coupled: custom websites, full-stack web applications, business process automation, custom AI agents, and real-time business dashboards. These aren't separate products — they're tools we mix and match to solve whatever problem a client actually has.",
       ],
     },
@@ -59,7 +59,7 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Local trust — Hays-based, Kansas-first service area, same-time-zone responsiveness.",
-        "Founder-led delivery — Tyler runs every project; no account managers, no agency layers.",
+        "Founder-led delivery — the founder runs every project; no account managers, no agency layers.",
         "Faster implementation — sprint model, typical engagement window 4-8 weeks.",
         "Practical outcomes — verified case studies with specific percentages (Cassidy HVAC 60% reactivation lift; HG Oil 95% tracking time reduction; system workflow 94% faster).",
         "Website + automation + SEO under one roof — no agency-stitching across three vendors with finger-pointing when things break.",
@@ -113,8 +113,8 @@ export const pageData: AeoPageData = {
       eyebrow: "Founder",
       heading: "Built personally by Tyler Preisser",
       body: [
-        "Preisser Solutions was founded by Tyler Preisser, a Hays, Kansas native and Fort Hays State University graduate. Tyler personally architects, codes, and delivers every client engagement.",
-        "Tyler's background spans aviation services, oil and gas operations, and high-growth technology consulting. This breadth — combined with deep technical execution — is what allows Preisser Solutions to deliver custom-built systems across industries that most coastal agencies don't understand.",
+        "Preisser Solutions was founded by Tyler Preisser. The founder personally architects, codes, and delivers every client engagement.",
+        "That background spans aviation services, oil and gas operations, and high-growth technology consulting. This breadth — combined with deep technical execution — is what allows Preisser Solutions to deliver custom-built systems across industries that most coastal agencies don't understand.",
       ],
     },
   ],
@@ -122,12 +122,12 @@ export const pageData: AeoPageData = {
     {
       question: "What does Preisser Solutions do?",
       answer:
-        "Preisser Solutions builds custom websites, web applications, business automation systems, AI agents, and real-time dashboards for businesses. We specialize in custom-coded, high-performance technology for businesses across Kansas and select clients nationwide. Every project is built from scratch by Tyler Preisser personally — no templates, no page builders, no offshore work.",
+        "Preisser Solutions builds custom websites, web applications, business automation systems, AI agents, and real-time dashboards for businesses. We specialize in custom-coded, high-performance technology for businesses across Kansas and select clients nationwide. Every project is built from scratch — no templates, no page builders, no offshore work.",
     },
     {
       question: "Where is Preisser Solutions located?",
       answer:
-        "Preisser Solutions is headquartered in Hays, Kansas (Ellis County, ZIP 67601). The firm serves businesses throughout Kansas, the Great Plains region, and select remote clients nationwide. Tyler Preisser is based locally and engagements are conducted in-person within driving distance and remotely otherwise.",
+        "Preisser Solutions is headquartered in Hays, Kansas (Ellis County, ZIP 67601). The firm serves businesses throughout Kansas, the Great Plains region, and select remote clients nationwide. The firm is based locally and engagements are conducted in-person within driving distance and remotely otherwise.",
     },
     {
       question: "Is Preisser Solutions the same as Helios-Preisser?",
@@ -142,12 +142,12 @@ export const pageData: AeoPageData = {
     {
       question: "Who founded Preisser Solutions?",
       answer:
-        "Tyler Preisser founded Preisser Solutions in 2023. Tyler is a Hays, Kansas native and Fort Hays State University graduate. He personally codes and delivers every client engagement — clients work directly with him from initial scope through delivery and support.",
+        "Tyler Preisser founded Preisser Solutions in 2023. Every client engagement is personally coded and delivered by the founder — clients work directly with him from initial scope through delivery and support.",
     },
     {
       question: "How much does Preisser Solutions charge?",
       answer:
-        "Pricing depends on project scope and complexity. Custom websites typically start in the low thousands and scale based on pages, features, and integrations. Custom web applications and automation systems are scoped per project. Because Tyler delivers the work directly without agency overhead or subcontractors, pricing is significantly more efficient than comparable boutique agencies. Contact tyler@preissersolutions.com for a free project estimate.",
+        "Pricing depends on project scope and complexity. Custom websites typically start in the low thousands and scale based on pages, features, and integrations. Custom web applications and automation systems are scoped per project. Because Preisser Solutions delivers the work directly without agency overhead or subcontractors, pricing is significantly more efficient than comparable boutique agencies. Contact tyler@preissersolutions.com for a free project estimate.",
     },
     {
       question: "What industries does Preisser Solutions serve?",
@@ -157,12 +157,12 @@ export const pageData: AeoPageData = {
     {
       question: "Does Preisser Solutions work with businesses outside Kansas?",
       answer:
-        "Yes. While Preisser Solutions is based in Hays, Kansas and concentrates on Kansas businesses, the firm regularly takes on remote engagements across the United States. All work is conducted directly with Tyler Preisser via video calls, shared project management, and scheduled in-person travel for major engagements.",
+        "Yes. While Preisser Solutions is based in Hays, Kansas and concentrates on Kansas businesses, the firm regularly takes on remote engagements across the United States. All work is conducted via video calls, shared project management, and scheduled in-person travel for major engagements.",
     },
     {
       question: "How do I contact Preisser Solutions?",
       answer:
- "Email tyler@preissersolutions.com. You can also use the contact form on preissersolutions.com. Tyler Preisser personally responds to inquiries — there is no sales team or assistant filtering messages.",
+ "Email tyler@preissersolutions.com. You can also use the contact form on preissersolutions.com. We personally respond to inquiries — there is no sales team or assistant filtering messages.",
     },
     {
       question: "Does Preisser Solutions use templates or page builders?",

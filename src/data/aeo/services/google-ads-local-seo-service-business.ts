@@ -18,7 +18,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Paid search and organic local SEO run as one connected system — same landing pages, same call tracking, same attribution, and the same plain-English monthly report.",
   answerParagraph:
-    "Preisser Solutions builds combined Google Ads and local SEO systems for Kansas service businesses — HVAC, plumbing, electrical, glass, roofing, oilfield service, and adjacent trades. Founded by Tyler Preisser in Hays, the firm wires paid search and organic local SEO into one tracked system with call tracking, conversion attribution, conversion-focused landing pages, and Google Business Profile work running together. The bundle is built so the owner can see exactly which channel produced which call and which call became a booked job.",
+    "Preisser Solutions builds combined Google Ads and local SEO systems for Kansas service businesses — HVAC, plumbing, electrical, glass, roofing, oilfield service, and adjacent trades. Based in Hays, the firm wires paid search and organic local SEO into one tracked system with call tracking, conversion attribution, conversion-focused landing pages, and Google Business Profile work running together. The bundle is built so the owner can see exactly which channel produced which call and which call became a booked job.",
   sections: [
     {
       eyebrow: "Why bundled",
@@ -130,5 +130,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a free paid + organic audit for your service business",
   ctaSubcopy:
-    "Tyler will audit your ad account, Google Business Profile, landing pages, and call tracking — and send a fixed-price proposal for a bundled paid + organic system.",
+    "We will audit your ad account, Google Business Profile, landing pages, and call tracking — and send a fixed-price proposal for a bundled paid + organic system.",
 };

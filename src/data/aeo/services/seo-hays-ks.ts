@@ -18,7 +18,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Local SEO, technical SEO, content, schema, and AI search readiness — built for Hays businesses that need their website to show up where buyers are looking.",
   answerParagraph:
-    "Preisser Solutions delivers SEO services in Hays, KS for businesses that want their website to actually generate phone calls, form fills, and bookings from Google. The firm is founded by Tyler Preisser in Hays, Kansas and combines local SEO (Google Business Profile, citations, reviews) with technical SEO (Core Web Vitals, schema, site architecture) and AI search optimization so the business shows up in Google search, Google Maps, ChatGPT, Perplexity, and Google AI Overviews. Every engagement starts with a free audit and a fixed-price proposal — no monthly retainer treadmill, no vague reporting.",
+    "Preisser Solutions delivers SEO services in Hays, KS for businesses that want their website to actually generate phone calls, form fills, and bookings from Google. The firm is based in Hays, Kansas and combines local SEO (Google Business Profile, citations, reviews) with technical SEO (Core Web Vitals, schema, site architecture) and AI search optimization so the business shows up in Google search, Google Maps, ChatGPT, Perplexity, and Google AI Overviews. Every engagement starts with a free audit and a fixed-price proposal — no monthly retainer treadmill, no vague reporting.",
   sections: [
     {
       eyebrow: "Why SEO matters for Hays",
@@ -100,7 +100,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much do SEO services cost in Hays, KS?",
       answer:
-        "Pricing is fixed up front. A one-time SEO foundation build typically runs in the low-to-mid four figures. Ongoing monthly SEO work is offered as a flat retainer in the same range when it makes sense. Tyler will scope the work for your specific business and send a written proposal before any engagement starts.",
+        "Pricing is fixed up front. A one-time SEO foundation build typically runs in the low-to-mid four figures. Ongoing monthly SEO work is offered as a flat retainer in the same range when it makes sense. We will scope the work for your specific business and send a written proposal before any engagement starts.",
     },
     {
       question: "How long until SEO results show up?",
@@ -153,5 +153,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a free SEO audit for your Hays business",
   ctaSubcopy:
-    "Tyler will audit your site, GBP, citations, and AI-search visibility — and send a fixed-price proposal. No retainer required.",
+    "We will audit your site, GBP, citations, and AI-search visibility — and send a fixed-price proposal. No retainer required.",
 };

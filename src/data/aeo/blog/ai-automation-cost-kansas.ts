@@ -4,85 +4,89 @@ export const pageData: AeoPageData = {
   slug: "blog/ai-automation-cost-kansas",
   tier: "blog",
   datePublished: "2026-05-05",
-  dateModified: "2026-05-15",
-  metaTitle: "AI Automation Cost in Kansas (Real Ranges, No Sales Wall)",
+  dateModified: "2026-05-20",
+  metaTitle: "AI Automation Scope for Kansas Small Businesses",
   metaDescription:
-    "Real pricing ranges for missed-call follow-up, customer reactivation, AI invoicing, and custom CRM builds for Kansas small businesses.",
-  eyebrow: "Blog · Pricing & ROI",
-  h1: "What Does AI Automation Actually Cost in Kansas?",
+    "What makes an AI automation project larger or smaller in terms of effort — the scope drivers Kansas small businesses should understand before starting.",
+  eyebrow: "Blog · AI Automation",
+  h1: "What Drives AI Automation Project Scope in Kansas?",
   subheadline:
-    "Real ranges by system type. No \"contact us for pricing\" — the actual numbers we quote for Kansas small businesses.",
+    "Understanding scope before you start. The factors that make an automation project simple versus complex — without a single dollar figure.",
   answerParagraph:
-    "AI automation pricing for Kansas small businesses ranges widely by system type. Off-the-shelf SaaS automations (missed-call follow-up, basic email sequences) typically run $50-$300 per month. Custom-built single-system automations (customer reactivation engines, AI invoicing assistants) run $4,000-$15,000 one-time plus $100-$500 per month maintenance. Full custom CRM builds run $25,000-$75,000+ depending on scope. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, publishes these ranges directly because most prospects deserve to know the rough budget before booking a call.",
+    "AI automation projects for Kansas small businesses vary enormously in scope depending on what needs to be built. Off-the-shelf SaaS automations (missed-call follow-up, basic email sequences) are quick to deploy and require minimal custom work. Custom-built single-system automations — like the customer reactivation engine Preisser Solutions built for Cassidy HVAC or the AI invoicing assistant for HG Oil Holdings — involve integration design, custom code, testing, and monitoring. Full custom platforms and CRMs sit at the top of the complexity range. The key drivers of scope are: how many systems need to integrate, whether the task requires AI judgment or just rules-based routing, and whether a productized SaaS solution already exists that fits the workflow.",
   sections: [
     {
-      eyebrow: "Why we publish ranges",
-      heading: "Most Kansas businesses get \"contact us\"",
+      eyebrow: "Why we explain scope drivers",
+      heading: "Understanding scope before starting a call",
       body: [
-        "Walk through any Kansas service-business buyer's experience. Every automation vendor's pricing page says \"contact us for a custom quote.\" Every \"AI consultant\" gates pricing behind a discovery call. The result: buyers can't even build a budget without burning half a day on sales calls.",
-        "We publish ranges because they're what we actually quote. If your project is materially outside these ranges, we tell you on the first call.",
+        "Walk through any Kansas automation vendor's experience. Every pricing page says 'contact us for a custom quote.' Every consultant gates even ballpark conversations behind a discovery call. The result: buyers can't build even a rough mental model of project scale without burning half a day on sales calls.",
+        "We explain scope drivers because understanding what makes a project larger or smaller helps you come into the conversation with an honest sense of what you need — and whether a productized SaaS tool might already solve it without any custom development.",
       ],
     },
     {
       eyebrow: "Tier 1",
-      heading: "Off-the-shelf SaaS automations — $50 to $300/month",
+      heading: "Off-the-shelf SaaS automations — quick setup, no custom development",
       body: [
-        "These are productized systems you can stand up in a day. Examples: missed-call text-back, basic email autoresponders, review request automation, basic appointment booking. No custom development.",
+        "These are productized systems that exist specifically to solve common small-business problems. Examples: missed-call text-back, basic email autoresponders, review request automation, basic appointment booking. No custom development needed.",
       ],
       bullets: [
-        "Missed-call text-back (CallRail, OpenPhone, GoHighLevel): $50-$150/month.",
-        "Review request automation (BirdEye, Podium, NiceJob): $99-$299/month.",
-        "Basic email automation (Mailchimp, ActiveCampaign): $30-$200/month.",
-        "Appointment booking (Calendly, Acuity): $10-$50/month per seat.",
-        "Setup time: 2-8 hours, no code.",
+        "Missed-call text-back (CallRail, OpenPhone, GoHighLevel): ready to use, minimal configuration.",
+        "Review request automation (BirdEye, Podium, NiceJob): productized, configure and launch.",
+        "Basic email automation (Mailchimp, ActiveCampaign): templates exist for common sequences.",
+        "Appointment booking (Calendly, Acuity): low configuration overhead.",
+        "Setup time: typically 2-8 hours, no code required.",
       ],
       subsections: [
         {
           heading: "When this is the right answer",
           body: [
-            "If the problem is well-defined and well-trodden (someone has built productized software for it), SaaS is almost always cheaper than custom. We help clients pick the right tool and stand it up — we don't markup the SaaS.",
+            "If the problem is well-defined and well-trodden — someone has built productized software for it — SaaS is almost always the right starting point. We help clients pick the right tool and stand it up. We don't build custom when productized fits.",
           ],
         },
       ],
     },
     {
       eyebrow: "Tier 2",
-      heading: "Custom single-system automations — $4,000 to $15,000 one-time",
+      heading: "Custom single-system automations — moderate scope",
       body: [
-        "These are systems that don't exist as productized SaaS — or where the productized version doesn't fit the operational reality. Custom-coded against your existing CRM/operations stack.",
+        "These are systems that don't exist as productized SaaS — or where the productized version doesn't fit the operational reality. Custom-coded against your existing CRM or operations stack.",
       ],
       bullets: [
-        "Customer reactivation engine (like the Cassidy HVAC build — 60%+ reactivation): $6,000-$12,000 one-time + $150-$400/month.",
-        "AI invoicing assistant (like HG Oil Holdings — 75% reduction in manual handling): $5,000-$10,000 one-time + $100-$300/month.",
-        "AI marketing engine (content + visuals + posting, hands-off): $8,000-$15,000 one-time + $200-$500/month.",
-        "BOL/document parsing automation (trucking, logistics): $4,000-$8,000 one-time + $100-$200/month.",
-        "Build time: 4-8 weeks.",
+        "Customer reactivation engine (like the Cassidy HVAC build — 60%+ reactivation): scope driven by CRM integration depth, message personalization requirements, reply handling logic.",
+        "AI invoicing assistant (like HG Oil Holdings — 75% reduction in manual handling): scope driven by document variety, extraction complexity, target system integration.",
+        "AI marketing engine (content + visuals + posting, hands-off): scope driven by content types, platform integrations, approval workflows.",
+        "BOL/document parsing automation (trucking, logistics): scope driven by document format variance, target system complexity.",
+        "Build time: typically 4-8 weeks.",
       ],
     },
     {
       eyebrow: "Tier 3",
-      heading: "Custom platforms and CRMs — $25,000 to $75,000+",
+      heading: "Custom platforms and CRMs — highest scope",
       body: [
-        "Full business-system builds. Custom CRM, custom inventory management, custom dispatch/operations layer. These replace generic SaaS that doesn't fit your workflow.",
+        "Full business-system builds. Custom CRM, custom inventory management, custom dispatch/operations layer. These replace generic SaaS that doesn't fit the specific workflow.",
       ],
       bullets: [
-        "Custom CRM (insurance, healthcare, niche service): $25,000-$60,000.",
-        "Custom inventory + AI invoicing (HG Oil Holdings scope): $35,000-$75,000.",
-        "Custom dispatch + ops automation (trucking, logistics): $40,000-$80,000.",
-        "Multi-agent AI platform (MarCommand scope): $60,000+.",
-        "Build time: 8-20 weeks.",
+        "Custom CRM (insurance, healthcare, niche service): scope driven by number of workflows, user roles, integration endpoints.",
+        "Custom inventory + AI invoicing (HG Oil Holdings scope): scope driven by data sources, real-time requirements, reporting depth.",
+        "Custom dispatch + ops automation (trucking, logistics): scope driven by fleet size, system integrations, compliance requirements.",
+        "Multi-agent AI platform (MarCommand scope): highest complexity — multiple coordinated agents, approval workflows, observability.",
+        "Build time: typically 8-20 weeks.",
       ],
     },
     {
-      eyebrow: "The three Preisser Solutions tiers",
-      heading: "How we structure engagements",
+      eyebrow: "The key scope drivers",
+      heading: "What makes a project larger or smaller",
       body: [
-        "Independent of what gets built, Preisser Solutions offers three commercial entry points:",
+        "Independent of tier, these are the factors that determine how much work is actually involved:",
       ],
       bullets: [
-        "Tier 1 — Business Systems Audit: $1,500-$3,500. Two-week diagnostic + roadmap.",
-        "Tier 2 — Focused Sprint: $4,000-$15,000. Single-system custom build.",
-        "Tier 3 — Retainer: $4,000-$8,000/month. Ongoing build + maintenance.",
+        "Number of integrations — each external system adds integration work, error handling, and testing surface area.",
+        "AI judgment vs rules-based routing — tasks requiring LLM judgment are more complex than deterministic rules.",
+        "Document/data variety — uniform inputs (always the same format) are simpler than varied inputs (many formats, many sources).",
+        "Reply handling and escalation — systems that need to read and route human replies are more complex than one-way sends.",
+        "Approval workflows — systems with human-in-the-loop approval steps (human reviews before AI sends) add complexity.",
+        "Real-time vs batch — real-time processing is more demanding than nightly batch jobs.",
+        "Existing productized options — if a SaaS product already does it, the custom scope is near zero.",
       ],
     },
     {
@@ -92,7 +96,7 @@ export const pageData: AeoPageData = {
         "Of the systems above, the highest-ROI / fastest-payback patterns are:",
       ],
       bullets: [
-        "Missed-call text-back — typically pays for itself in week one for any service business doing $200+ average tickets.",
+        "Missed-call text-back — typically pays back quickly for any service business doing meaningful ticket volume.",
         "Customer reactivation — Cassidy HVAC saw 60%+ dormant reactivation in 6 weeks. Every reactivated customer is recovered annual revenue.",
         "AI invoicing — HG Oil Holdings saw 75% reduction in manual handling time, freeing one office person for higher-value work.",
         "Custom dashboards — HG Oil Holdings saw 95% reduction in back-office logistics time after a custom inventory dashboard.",
@@ -101,9 +105,9 @@ export const pageData: AeoPageData = {
   ],
   faq: [
     {
-      question: "Why are your ranges wider than other quotes I've seen?",
+      question: "Why don't you publish prices?",
       answer:
-        "Because we quote real scope, not bait-and-switch lowball numbers. A reactivation engine that ships in 4 weeks at $6,000 is a different scope than one that ships in 8 weeks at $12,000 with deeper CRM integration. Both ranges are honest.",
+        "Because two projects that look the same on paper can have a 5x difference in actual scope depending on integrations, data variety, and workflow complexity. A published number would either be misleadingly low or unnecessarily scary. The free scoping call exists to give an accurate, specific number based on your actual situation.",
     },
     {
       question: "Are there setup fees, license fees, or hidden costs?",
@@ -111,19 +115,19 @@ export const pageData: AeoPageData = {
         "No hidden costs from us. We quote a fixed price and that price is the price. Third-party costs (Twilio for SMS, OpenAI API tokens, SaaS subscriptions) get itemized in writing — paid directly by you to those vendors, no markup.",
     },
     {
-      question: "What if my project is bigger than $75,000?",
+      question: "What if my project is very large in scope?",
       answer:
-        "We've shipped engagements above $75,000 — typically multi-quarter platforms with multiple integrated subsystems. We scope these in phases, with each phase delivering working software. No 12-month black-box builds.",
+        "We scope these in phases, with each phase delivering working software. No large black-box builds with no deliverables until the end.",
     },
     {
-      question: "Do you do anything under $4,000?",
+      question: "Do you do small diagnostic engagements?",
       answer:
-        "Yes — the Business Systems Audit (Tier 1) starts at $1,500. That's a paid diagnostic that produces a written roadmap. You can take the roadmap and build elsewhere, or convert it into a build sprint with us.",
+        "Yes — a Business Systems Audit is a good starting point for a Kansas business owner who wants clarity on where the opportunities are before committing to a build. Contact tyler@preissersolutions.com to discuss.",
     },
     {
-      question: "How do I get a quote on my specific project?",
+      question: "How do I get a scope estimate on my specific project?",
       answer:
- "Email tyler@preissersolutions.com. Free 30-minute call with Tyler. We'll map your situation against these tiers and quote a fixed price in writing.",
+        "Email tyler@preissersolutions.com. Free 30-minute call. We'll map your situation against these tiers and give a fixed-price proposal in writing.",
     },
   ],
   schemaType: "BlogPosting",
@@ -139,14 +143,14 @@ export const pageData: AeoPageData = {
   relatedLinks: [
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "AI automation in Hays, KS", href: "/services/ai-automation-hays-ks" },
-    { label: "Pricing", href: "/pricing" },
+    { label: "Engagement scope & process", href: "/pricing" },
     { label: "Missed-call ROI calculator", href: "/roi-calculator" },
     { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
     { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
     { label: "AI vs traditional workflow automation", href: "/blog/ai-vs-traditional-workflow-automation" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
-  ctaHeadline: "Want a fixed-price quote on your project?",
+  ctaHeadline: "Want a scoped estimate on your project?",
   ctaSubcopy:
-    "Free 30-minute scoping call with Tyler. We'll map your situation and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll map your situation and send a fixed-price proposal.",
 };

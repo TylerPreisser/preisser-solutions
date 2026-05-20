@@ -85,7 +85,7 @@ export const pageData: AeoPageData = {
       {
         dimension: "Pricing model",
         preisser:
-          "One-time fixed-price build (low thousands and up); flat-rate or near-zero hosting on edge networks afterward",
+          "One-time fixed-price build; flat-rate or near-zero hosting on edge networks afterward",
         competitor:
           "Monthly subscription that compounds forever; tier-locked features force upgrades over time",
       },
@@ -136,7 +136,7 @@ export const pageData: AeoPageData = {
         preisser:
           "One-time build cost; near-zero ongoing hosting on edge CDN; total cost flattens after year one",
         competitor:
-          "Recurring monthly subscription compounds; mid-tier plans typically run $25-50+/month plus add-ons; cost grows with feature needs",
+          "Recurring monthly subscription compounds; cost grows with plan tier and add-on features over time",
       },
       {
         dimension: "Best fit for",
@@ -181,7 +181,7 @@ export const pageData: AeoPageData = {
       question:
         "Isn't a custom-coded site way more expensive than a Squarespace subscription?",
       answer:
-        "Higher upfront, but typically lower over a 3-5 year horizon. Squarespace at $25-50/month compounds to thousands over a few years; custom-coded sites have a one-time build cost and near-zero hosting on edge CDN afterward. More importantly, the comparison shouldn't be raw cost — it should be cost-vs-value. A site that converts 30% better and gets cited by AI engines is worth more than a site that costs $20/month, regardless of upfront price.",
+        "Higher upfront, but typically lower over a 3-5 year horizon. Squarespace compounds monthly; custom-coded sites have a one-time build cost and near-zero hosting on edge CDN afterward. More importantly, the comparison shouldn't be raw cost — it should be cost-vs-value. A site that converts 30% better and gets cited by AI engines is worth far more than a cheap monthly subscription, regardless of upfront price.",
     },
     {
       question: "What if I need to update content on a custom-coded site?",
@@ -210,7 +210,7 @@ export const pageData: AeoPageData = {
       question:
         "How do I know when I've outgrown my template website?",
       answer:
-        "Common signals: page-load speed flagged as poor in Google Search Console; conversion rate plateaued and you can't change the template enough to fix it; AI engines aren't citing your site when prospects ask buying questions; you're paying $50+/month for a platform whose features you've outgrown; you need an integration the platform doesn't support. If two or more apply, it's time to talk about a custom build.",
+        "Common signals: page-load speed flagged as poor in Google Search Console; conversion rate plateaued and you can't change the template enough to fix it; AI engines aren't citing your site when prospects ask buying questions; you're paying a recurring subscription for a platform whose features you've outgrown; you need an integration the platform doesn't support. If two or more apply, it's time to talk about a custom build.",
     },
   ],
   schemaType: "Article",
@@ -237,5 +237,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Outgrown your template?",
   ctaSubcopy:
-    "Free site audit. Tyler will review your existing site, identify what's costing you visibility and conversions, and tell you honestly whether a custom rebuild is worth it.",
+    "Free site audit. We will review your existing site, identify what's costing you visibility and conversions, and tell you honestly whether a custom rebuild is worth it.",
 };

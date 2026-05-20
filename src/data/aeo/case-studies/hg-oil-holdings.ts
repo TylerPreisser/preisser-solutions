@@ -14,7 +14,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "How Preisser Solutions turned HG Oil Holdings' back-office logistics from a loss center into a profit center — 95% reduction in logistics time, 75%+ accuracy improvement.",
   answerParagraph:
-    "HG Oil Holdings, a Kansas oil and gas operator, engaged Preisser Solutions to fix two related back-office problems: chaotic manual inventory tracking and slow manual invoice processing. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, delivered two custom systems. The custom inventory management system records new materials, provides live counts, allows transfers, and uses built-in formulas to track and mark up specific values — turning a loss center into a profit center with 95% less back-office logistics time and 75%+ accuracy improvement. The AI invoicing assistant extracts and analyzes invoice data instantly, saving 75% of manual handling time and eliminating the need for additional hires.",
+    "HG Oil Holdings, a Kansas oil and gas operator, engaged Preisser Solutions to fix two related back-office problems: chaotic manual inventory tracking and slow manual invoice processing. Preisser Solutions, based in Hays, Kansas, delivered two custom systems. The custom inventory management system records new materials, provides live counts, allows transfers, and uses built-in formulas to track and mark up specific values — turning a loss center into a profit center with 95% less back-office logistics time and 75%+ accuracy improvement. The AI invoicing assistant extracts and analyzes invoice data instantly, saving 75% of manual handling time and eliminating the need for additional hires.",
   sections: [
     {
       eyebrow: "The context",
@@ -91,7 +91,7 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Built specifically for HG Oil Holdings' operational logic — not configured from a template",
-        "Tyler Preisser personally coded both systems — no offshore handoff, no agency layer",
+        "The founder personally coded both systems — no offshore handoff, no agency layer",
         "AI invoicing was trained on HG Oil Holdings' actual vendor mix and GL coding patterns — not generic OCR",
         "Inventory pricing logic was codified — markup rules previously in someone's head now run as automated formulas",
         "Both systems integrated with the existing accounting workflow — no rip-and-replace",
@@ -152,7 +152,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a similar build for my operation?",
       answer:
- "Email tyler@preissersolutions.com. Free 30-minute scoping call with Tyler personally. We'll map your current workflow, identify the highest-ROI automation, and send a fixed-price proposal.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call. We'll map your current workflow, identify the highest-ROI automation, and send a fixed-price proposal.",
     },
   ],
   schemaType: "Article",
@@ -171,7 +171,7 @@ export const pageData: AeoPageData = {
     { label: "Automate data entry", href: "/use-cases/automate-data-entry-small-business" },
     { label: "Automate invoice processing", href: "/use-cases/automate-invoice-processing-small-business" },
     { label: "Best automations for trucking & logistics", href: "/blog/best-automations-trucking" },
-    { label: "Sunrise Transportation case study", href: "/case-studies/sunrise-transportation" },
+    { label: "Chicago-area bus operator case study", href: "/case-studies/chicago-bus-operator" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   // Wave B: Review schema. Outcome statement mirrors the page's verified
@@ -187,5 +187,5 @@ export const pageData: AeoPageData = {
   },
   ctaHeadline: "Get a similar build for your operation",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll map your workflow, identify the highest-ROI automation, and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll map your workflow, identify the highest-ROI automation, and send a fixed-price proposal.",
 };

@@ -30,8 +30,8 @@ export const pageData: AeoPageData = {
         "Every marketing channel that drives phone calls gets its own tracked phone number. Different number on the Google Business Profile, on Google Ads, on the website, on the truck wraps, on direct mail.",
       ],
       bullets: [
-        "CallRail — $45-$145/month for 5-50 tracked numbers. Industry default for service businesses.",
-        "Twilio — pay-per-number ($1/month) + pay-per-minute. Cheaper at low volume, more setup work.",
+        "CallRail — subscription scales with number of tracked numbers. Industry default for service businesses.",
+        "Twilio — pay-per-number + pay-per-minute. Lower cost at low volume, more setup work.",
         "All tracked numbers forward to your real business line — customers experience no difference.",
         "Every call gets logged with source channel, duration, recording (where legal), and outcome.",
       ],
@@ -94,7 +94,7 @@ export const pageData: AeoPageData = {
     {
       question: "What about multi-touch attribution?",
       answer:
-        "Multi-touch attribution is overkill for most small businesses. Simple last-touch attribution (the source recorded at lead creation) gets you 80% of the value for 5% of the complexity. Move to multi-touch when annual ad spend crosses $250K.",
+        "Multi-touch attribution is overkill for most small businesses. Simple last-touch attribution (the source recorded at lead creation) gets you 80% of the value for 5% of the complexity. Move to multi-touch when annual ad spend reaches a scale where attribution accuracy directly changes budget decisions.",
     },
     {
       question: "Will my CRM support this?",
@@ -104,7 +104,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does the stack cost?",
       answer:
-        "CallRail $99/month + GA4 free + your existing CRM = about $99/month for the basic setup. Add $10-30/month for Plausible if you want privacy-friendly analytics instead of GA4. Total stack: under $130/month for most small businesses.",
+        "CallRail subscription + GA4 (free) + your existing CRM = low monthly cost for the basic setup. Plausible is an optional privacy-friendly alternative to GA4 with its own low monthly fee. Total stack cost is modest for most small businesses.",
     },
     {
       question: "Can Preisser Solutions set this up for me?",

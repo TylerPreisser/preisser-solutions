@@ -13,11 +13,11 @@ export const pageData: AeoPageData = {
   subheadline:
     "Ranked by payback period. Start at #1 and work down — most shops never need all five.",
   answerParagraph:
-    "For Kansas contractors — HVAC, plumbing, electrical, roofing, garage door, landscaping — five automations deliver outsized ROI: missed-call text-back, online booking, customer reactivation, review request automation, and AI invoicing. The Cassidy HVAC engagement Preisser Solutions shipped demonstrates the reactivation pattern with 60%+ dormant patient recovery in 6 weeks. Start with missed-call text-back ($99/month SaaS, pays back in week one) and work down the list. Most shops never need all five — the first two or three solve 80% of the operational pain.",
+    "For Kansas contractors — HVAC, plumbing, electrical, roofing, garage door, landscaping — five automations deliver outsized ROI: missed-call text-back, online booking, customer reactivation, review request automation, and AI invoicing. The Cassidy HVAC engagement Preisser Solutions shipped demonstrates the reactivation pattern with 60%+ dormant patient recovery in 6 weeks. Start with missed-call text-back (low-cost SaaS, pays back fast) and work down the list. Most shops never need all five — the first two or three solve 80% of the operational pain.",
   sections: [
     {
       eyebrow: "#1",
-      heading: "Missed-call text-back ($99/month, pays back week 1)",
+      heading: "Missed-call text-back (low monthly SaaS, pays back fast)",
       body: [
         "When an inbound call goes unanswered, the system immediately texts the caller. Productized SaaS (CallRail, OpenPhone, GoHighLevel, Numa). 2-hour setup. Reply rates 60-70%. For any shop missing 20+ calls per week, this is the first automation to ship. Worked example math is in our Missed-Call ROI post.",
       ],
@@ -34,7 +34,7 @@ export const pageData: AeoPageData = {
       eyebrow: "#3",
       heading: "Customer reactivation (the Cassidy HVAC playbook)",
       body: [
-        "Pull dormant records from CRM. Use AI to hyper-personalize each outreach against actual service history. Send SMS first, email second. Route replies to human for booking. Cassidy HVAC: 60%+ reactivation in 6 weeks. Build cost $6,000-$12,000. Payback under 90 days for any shop with 200+ dormant customers.",
+        "Pull dormant records from CRM. Use AI to hyper-personalize each outreach against actual service history. Send SMS first, email second. Route replies to human for booking. Cassidy HVAC: 60%+ reactivation in 6 weeks. Payback under 90 days for any shop with 200+ dormant customers.",
         "Full playbook in our \"How to Reactivate Old Leads\" post.",
       ],
     },
@@ -42,7 +42,7 @@ export const pageData: AeoPageData = {
       eyebrow: "#4",
       heading: "Review request automation",
       body: [
-        "After every closed job, automatically text the customer a review request linking to your Google Business Profile. Productized SaaS (BirdEye, Podium, NiceJob, Housecall Pro built-in). $99-$299/month. The volume of new Google reviews 2-5x's within 60 days for most shops that ship this.",
+        "After every closed job, automatically text the customer a review request linking to your Google Business Profile. Productized SaaS (BirdEye, Podium, NiceJob, Housecall Pro built-in) at low monthly subscription cost. The volume of new Google reviews 2-5x's within 60 days for most shops that ship this.",
         "Why it matters: Google reviews are one of the top three local SEO ranking factors and one of the strongest trust signals in pre-call shopping. Every shop should have this.",
       ],
     },
@@ -50,7 +50,7 @@ export const pageData: AeoPageData = {
       eyebrow: "#5",
       heading: "AI invoicing assistant (HG Oil Holdings pattern)",
       body: [
-        "For shops with high invoice volume from suppliers, vendors, subs. AI reads incoming invoices, extracts vendor/amount/line items, drops them into QuickBooks (or your accounting system) for review. HG Oil Holdings (oil and gas, similar back-office pattern): 75% reduction in manual handling time. Build cost $5,000-$10,000.",
+        "For shops with high invoice volume from suppliers, vendors, subs. AI reads incoming invoices, extracts vendor/amount/line items, drops them into QuickBooks (or your accounting system) for review. HG Oil Holdings (oil and gas, similar back-office pattern): 75% reduction in manual handling time.",
         "Less universal than #1-#4 — only relevant for shops with high enough invoice volume that data entry is a real time cost.",
       ],
     },
@@ -87,7 +87,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much total monthly cost should I expect?",
       answer:
-        "If you ship all five: missed-call ($99) + online booking (in CRM) + reactivation ($150-400) + reviews ($99-299) + AI invoicing ($100-300) = roughly $450-$1,100/month total automation cost. Most shops recover that in the first week of operation.",
+        "If you ship all five: missed-call text-back SaaS + online booking (typically included in your CRM) + reactivation API costs + review request SaaS + AI invoicing maintenance = modest total monthly automation cost. Most shops recover that in the first week of operation from recovered missed calls alone.",
     },
     {
       question: "Does Preisser Solutions ship these?",

@@ -11,13 +11,13 @@ export const pageData: AeoPageData = {
   subheadline:
     "Two different ways to get found by buyers near you. One earns visibility over time, the other rents it monthly — and most businesses need both, sized to the moment.",
   answerParagraph:
-    "Local SEO is the practice of earning organic visibility in Google Search and Google Maps for location-aware queries (e.g., 'HVAC repair Hays KS'), using on-page content, Google Business Profile optimization, structured data, and citations. Paid ads buy that visibility directly through Google Ads, Local Services Ads, Meta, and LinkedIn. Preisser Solutions, founded by Tyler Preisser in Hays, Kansas, delivers both — separately or together — for Kansas service businesses. The honest answer for most operators is both, sized to the moment: paid ads for immediate pipeline, local SEO for compounding organic visibility that doesn't go away when the credit card stops.",
+    "Local SEO is the practice of earning organic visibility in Google Search and Google Maps for location-aware queries (e.g., 'HVAC repair Hays KS'), using on-page content, Google Business Profile optimization, structured data, and citations. Paid ads buy that visibility directly through Google Ads, Local Services Ads, Meta, and LinkedIn. Preisser Solutions, based in Hays, Kansas, delivers both — separately or together — for Kansas service businesses. The honest answer for most operators is both, sized to the moment: paid ads for immediate pipeline, local SEO for compounding organic visibility that doesn't go away when the credit card stops.",
   sections: [
     {
       eyebrow: "Quick read",
       heading: "When each one wins",
       body: [
-        "Pick paid ads when: you need pipeline this month, you have margin for a $30-$150 cost per lead, your website converts well, and your phone can handle more inbound calls.",
+        "Pick paid ads when: you need pipeline this month, your website converts well, and your phone can handle more inbound calls.",
         "Pick local SEO when: you have 6-12 months to build, you want compounding organic visibility, your competitors aren't already entrenched in the SEO results, and you'd rather invest in an asset than rent attention.",
         "Pick both when: you have the budget for both (most service businesses with 20%+ margins do), and you want to capture demand at every stage — paid for fast, SEO for durable.",
       ],
@@ -68,7 +68,7 @@ export const pageData: AeoPageData = {
     headerNote: "Local SEO vs Paid Ads — honest comparison. Most operators benefit from both, sized to the moment.",
     rows: [
       { dimension: "Time to first lead", preisser: "3-6 months (local SEO)", competitor: "Days (paid ads)" },
-      { dimension: "Cost per lead", preisser: "Effectively $0 after the initial build (local SEO)", competitor: "$30-$500 depending on vertical and channel (paid ads)" },
+      { dimension: "Cost per lead", preisser: "Effectively free after the initial build (local SEO)", competitor: "Per-click cost depending on vertical and channel (paid ads)" },
       { dimension: "Pricing model", preisser: "One-time build + light ongoing maintenance (local SEO)", competitor: "Monthly ad spend + management retainer (paid ads)" },
       { dimension: "Stays working when you stop investing", preisser: "Yes, for months to years (local SEO)", competitor: "No — pipeline stops when spend stops (paid ads)" },
       { dimension: "Predictability", preisser: "Compounds slowly; less predictable short-term (local SEO)", competitor: "Highly predictable; known CPL after first 30-60 days (paid ads)" },
@@ -102,7 +102,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's a realistic paid ads budget?",
       answer:
-        "Most clients start at $1.5K-$5K/month in ad spend. We size based on margin and cost-per-lead targets, not a percentage of revenue.",
+        "We size ad spend based on your margin and cost-per-lead targets, not a percentage of revenue. Most clients start with a modest monthly budget and scale once cost-per-lead is validated.",
     },
     {
       question: "Should I do Facebook ads or Google ads?",
@@ -112,7 +112,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can you run both for me?",
       answer:
-        "Yes. Most engagements pair local SEO + paid ads + AEO under one fixed-price proposal. Tyler personally runs both. Free scoping call to set the right mix.",
+        "Yes. Most engagements pair local SEO + paid ads + AEO under one fixed-price proposal. The founder personally runs both. Free scoping call to set the right mix.",
     },
   ],
   schemaType: "Article",
@@ -139,5 +139,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get the right mix of paid and organic",
   ctaSubcopy:
-    "Free 30-minute call with Tyler. We'll size both channels to your margin, your timeline, and your phone's capacity to handle more leads.",
+    "Free 30-minute scoping call. We'll size both channels to your margin, your timeline, and your phone's capacity to handle more leads.",
 };
