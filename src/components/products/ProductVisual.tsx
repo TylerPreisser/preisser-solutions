@@ -1,19 +1,15 @@
-"use client";
 /**
  * ProductVisual — Procedural SVG visual identity per product.
  *
- * Each product gets a unique geometric composition derived from its slug.
- * Uses a simple hash of the slug characters to seed deterministic placement
- * of 3–4 engineering-schematic primitives (rings, arcs, lines, polygons).
+ * Pure server component. No "use client", no hooks, no IntersectionObserver.
+ * Animations are driven entirely by CSS @keyframes defined in globals.css
+ * using shared class names (pv-ring-outer, pv-ring-mid, pv-pulse-inner).
  *
- * All CSS animations are slow loops (6–12s). Respects prefers-reduced-motion.
- *
- * Mobile perf: IntersectionObserver pauses animations when off-screen (3A).
- * CSS media query disables animations on mobile (<768px) entirely (3C).
- * Animations gated behind .products-page-ready class (3E deferred start).
+ * Framer Motion removed. IntersectionObserver removed.
+ * Animations run on mobile via CSS — they are GPU-composited (transform only)
+ * and cost nothing on the main thread. prefers-reduced-motion pauses them.
  */
 
-import { useRef, useState, useEffect } from "react";
 import type { ProductCategory } from "@/types/product";
 
 interface Props {
@@ -79,14 +75,6 @@ function ProductIcon({
   cy: number;
   color: string;
 }) {
-  const s = `
-    stroke="${color}"
-    stroke-width="1.5"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    fill="none"
-    opacity="0.9"
-  `;
   // Each icon is authored on a 24×24 grid, then translated to cx/cy via transform.
   // transform="translate(${cx - 12} ${cy - 12})" centers the 24-unit icon.
   const t = `translate(${cx - 12} ${cy - 12})`;
@@ -285,22 +273,6 @@ function ProductIcon({
 export function ProductVisual({ slug, category, size = "card", className = "" }: Props) {
   const colors = CATEGORY_COLORS[category];
 
-  // 3A — IntersectionObserver: pause animations when the card is off-screen.
-  // rootMargin: "200px" pre-activates 200px before it enters viewport so there's
-  // no visible pop when the user scrolls to a card.
-  const svgRef = useRef<SVGSVGElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = svgRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setVisible(entry.isIntersecting),
-      { rootMargin: "200px" }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   const gradId = `pv-grad-${slug}`;
   const glowId = `pv-glow-${slug}`;
 
@@ -375,13 +347,11 @@ export function ProductVisual({ slug, category, size = "card", className = "" }:
       />
 
       <svg
-        ref={svgRef}
         viewBox={`0 0 ${vw} ${vh}`}
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
         className="h-full w-full"
         style={{ display: "block" }}
-        data-paused={!visible ? "true" : undefined}
       >
         <defs>
           <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
@@ -426,6 +396,7 @@ export function ProductVisual({ slug, category, size = "card", className = "" }:
             />
           ))}
 
+          {/* Outer ring + arc — CSS class drives rotation animation */}
           <circle
             cx={cx}
             cy={cy}
@@ -434,10 +405,8 @@ export function ProductVisual({ slug, category, size = "card", className = "" }:
             stroke={`url(#${gradId})`}
             strokeWidth="1.5"
             strokeOpacity="0.45"
-            style={{
-              transformOrigin: `${cx}px ${cy}px`,
-              animation: `pv-spin-${slug.replace(/-/g, "")} 16s linear infinite`,
-            }}
+            className="pv-ring-outer"
+            style={{ transformOrigin: `${cx}px ${cy}px` }}
           />
 
           <path
@@ -447,12 +416,11 @@ export function ProductVisual({ slug, category, size = "card", className = "" }:
             strokeWidth="2.5"
             strokeLinecap="round"
             filter={`url(#${glowId})`}
-            style={{
-              transformOrigin: `${cx}px ${cy}px`,
-              animation: `pv-spin-${slug.replace(/-/g, "")} 16s linear infinite`,
-            }}
+            className="pv-ring-outer"
+            style={{ transformOrigin: `${cx}px ${cy}px` }}
           />
 
+          {/* Mid ring — counter-rotation */}
           <circle
             cx={cx}
             cy={cy}
@@ -462,12 +430,11 @@ export function ProductVisual({ slug, category, size = "card", className = "" }:
             strokeWidth="1"
             strokeOpacity="0.35"
             strokeDasharray="3 5"
-            style={{
-              transformOrigin: `${cx}px ${cy}px`,
-              animation: `pv-spin-rev-${slug.replace(/-/g, "")} 12s linear infinite`,
-            }}
+            className="pv-ring-mid"
+            style={{ transformOrigin: `${cx}px ${cy}px` }}
           />
 
+          {/* Inner circle — pulse */}
           <circle
             cx={cx}
             cy={cy}
@@ -477,10 +444,8 @@ export function ProductVisual({ slug, category, size = "card", className = "" }:
             stroke={`url(#${gradId})`}
             strokeWidth="1.5"
             strokeOpacity="0.8"
-            style={{
-              transformOrigin: `${cx}px ${cy}px`,
-              animation: `pv-pulse-${slug.replace(/-/g, "")} 4s ease-in-out infinite`,
-            }}
+            className="pv-pulse-inner"
+            style={{ transformOrigin: `${cx}px ${cy}px` }}
           />
 
           {/* Descriptive product icon at center */}
@@ -527,66 +492,6 @@ export function ProductVisual({ slug, category, size = "card", className = "" }:
             strokeDasharray="2 3"
           />
         </g>
-
-        <style>{`
-          @keyframes pv-spin-${slug.replace(/-/g, "")} {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
-          }
-          @keyframes pv-spin-rev-${slug.replace(/-/g, "")} {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(-360deg); }
-          }
-          @keyframes pv-pulse-${slug.replace(/-/g, "")} {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50%       { transform: scale(1.12); opacity: 0.75; }
-          }
-
-          /* 3A — Off-screen: pause all animations to save GPU/CPU cycles.
-             data-paused is set by IntersectionObserver in the React component. */
-          [data-paused="true"] [style*="pv-spin-${slug.replace(/-/g, "")}"],
-          [data-paused="true"] [style*="pv-spin-rev-${slug.replace(/-/g, "")}"],
-          [data-paused="true"] [style*="pv-pulse-${slug.replace(/-/g, "")}"] {
-            animation-play-state: paused;
-          }
-
-          /* 3C — Mobile: disable all ring/arc animations on small screens.
-             They run on the CPU compositor thread which is extremely limited on
-             budget Android/iPhone SE. Static visuals look cleaner than dropped frames.
-             Desktop (≥768px) retains full animation when not reduced-motion. */
-          @media (max-width: 767px) {
-            [style*="pv-spin-${slug.replace(/-/g, "")}"],
-            [style*="pv-spin-rev-${slug.replace(/-/g, "")}"],
-            [style*="pv-pulse-${slug.replace(/-/g, "")}"] {
-              animation: none !important;
-            }
-          }
-
-          /* 3E — Deferred start: animations only activate once the page has finished
-             its initial Framer Motion fade-in (300ms after mount).
-             .products-page-ready is added by ProductGrid's useEffect. */
-          @media (min-width: 768px) {
-            [style*="pv-spin-${slug.replace(/-/g, "")}"],
-            [style*="pv-spin-rev-${slug.replace(/-/g, "")}"],
-            [style*="pv-pulse-${slug.replace(/-/g, "")}"] {
-              animation-play-state: paused;
-            }
-            .products-page-ready [style*="pv-spin-${slug.replace(/-/g, "")}"],
-            .products-page-ready [style*="pv-spin-rev-${slug.replace(/-/g, "")}"],
-            .products-page-ready [style*="pv-pulse-${slug.replace(/-/g, "")}"] {
-              animation-play-state: running;
-            }
-          }
-
-          /* prefers-reduced-motion: kill all animations regardless of viewport */
-          @media (prefers-reduced-motion: reduce) {
-            [style*="pv-spin-${slug.replace(/-/g, "")}"],
-            [style*="pv-spin-rev-${slug.replace(/-/g, "")}"],
-            [style*="pv-pulse-${slug.replace(/-/g, "")}"] {
-              animation: none !important;
-            }
-          }
-        `}</style>
       </svg>
     </div>
   );

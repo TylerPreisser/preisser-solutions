@@ -479,6 +479,109 @@ ul, ol {
   }
 }
 
+/* ── Product Card — content-visibility + stagger fade-in ──────
+   content-visibility: auto tells the browser to skip paint/layout for
+   off-screen cards entirely (the single biggest GPU/CPU win for 16 cards).
+   contain-intrinsic-size prevents layout shift when cards scroll into view.
+   The stagger fade-in is driven by animation-delay set inline via JS
+   (animationDelay: `${index * 40}ms`) — no JS runs during the animation itself. */
+.product-card {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 380px;
+  /* Initial fade-in: cards appear staggered from opacity 0 → 1 on first render.
+     animation-delay is set per-card inline. */
+  animation: pv-card-fadein 0.4s ease-out both;
+}
+
+@keyframes pv-card-fadein {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── CSS-only category filtering ──────────────────────────────
+   ProductGrid writes data-active-category on the .products-grid wrapper.
+   ProductCard has data-category on each card root.
+   No JavaScript runs when filtering — the CSS engine handles show/hide.
+   Cards that don't match are hidden; matching cards are shown.
+   "all" shows everything. Any other value hides non-matching cards.
+
+   NOTE: The "all" view uses category group markup (not flat cards),
+   so the CSS filter rules only matter in the isFiltered=true flat grid.
+   In the all view ProductGrid renders categories directly, so no filtering
+   CSS is needed there. But we include it defensively for both views. */
+.products-grid[data-active-category="all"] .product-card {
+  display: block;
+}
+.products-grid:not([data-active-category="all"]) .product-card {
+  display: none;
+}
+.products-grid[data-active-category="marketing-growth"] .product-card[data-category="marketing-growth"] {
+  display: block;
+}
+.products-grid[data-active-category="operations-back-office"] .product-card[data-category="operations-back-office"] {
+  display: block;
+}
+.products-grid[data-active-category="sales-customer-service"] .product-card[data-category="sales-customer-service"] {
+  display: block;
+}
+.products-grid[data-active-category="decision-intelligence"] .product-card[data-category="decision-intelligence"] {
+  display: block;
+}
+.products-grid[data-active-category="custom-builds"] .product-card[data-category="custom-builds"] {
+  display: block;
+}
+
+/* ── ProductVisual SVG animations — pure CSS, no JS ───────────
+   Three shared keyframes cover all 16 product cards:
+     pv-ring-outer  → outer ring + arc: slow clockwise rotation (16s)
+     pv-ring-mid    → mid ring: slow counter-clockwise rotation (12s)
+     pv-pulse-inner → inner circle: subtle scale/opacity pulse (4s)
+
+   SVG elements get static class names (pv-ring-outer, pv-ring-mid,
+   pv-pulse-inner) and transformOrigin set via inline style.
+   transform: rotate() composites on the GPU — no main-thread work.
+
+   Runs on mobile. Not killed by viewport width — Tyler specifically
+   wants animations on mobile. prefers-reduced-motion pauses them. */
+
+@keyframes pv-spin-cw {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes pv-spin-ccw {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+@keyframes pv-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.12); opacity: 0.75; }
+}
+
+.pv-ring-outer {
+  animation: pv-spin-cw 16s linear infinite;
+}
+
+.pv-ring-mid {
+  animation: pv-spin-ccw 12s linear infinite;
+}
+
+.pv-pulse-inner {
+  animation: pv-pulse 4s ease-in-out infinite;
+}
+
+/* Accessibility: respect reduced-motion preference.
+   Pauses all three animation types. Does NOT kill them by viewport width. */
+@media (prefers-reduced-motion: reduce) {
+  .pv-ring-outer,
+  .pv-ring-mid,
+  .pv-pulse-inner,
+  .product-card {
+    animation: none !important;
+  }
+}
+
 /* ── Header / Nav (Stripe-pattern) ──────────────────────────── */
 .ps-header {
   position: fixed;

@@ -1,4 +1,9 @@
-"use client";
+/**
+ * ProductCatalog — Server component wrapper for the /products page.
+ *
+ * Renders JSON-LD schema + delegates to ProductGrid (the only client component
+ * in this surface). No "use client" needed here.
+ */
 
 import { JsonLd } from "@/components/seo/JsonLd";
 import { ProductGrid } from "@/components/products/ProductGrid";

@@ -1,12 +1,20 @@
-"use client";
+/**
+ * ProductCard — Pure server component. No "use client", no Framer Motion.
+ *
+ * Hover effects are CSS-only (:hover + transition).
+ * Stagger fade-in on initial load is CSS-only via --card-index custom property
+ * and animation-delay in globals.css (.product-card).
+ * Category filtering is CSS-only via data-category attribute on the root div
+ * and .products-grid[data-active-category="..."] rules in globals.css.
+ */
 
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
 import { ProductVisual } from "@/components/products/ProductVisual";
-import type { ProductData, ProductStatus } from "@/types/product";
+import type { ProductData, ProductStatus, ProductCategory } from "@/types/product";
 
 interface Props {
   product: ProductData;
+  /** Card index within its visible set — drives CSS animation stagger delay */
   index: number;
 }
 
@@ -17,27 +25,29 @@ const STATUS_CONFIG: Record<ProductStatus, { label: string; color: string; dot: 
   service:              { label: "SVC",   color: "#94A3B8", dot: "#94A3B8" },
 };
 
+/**
+ * Map display category names to slug-form for data-category attribute.
+ * Must match the values used in .products-grid CSS filter rules in globals.css.
+ */
+const CATEGORY_SLUG: Record<ProductCategory, string> = {
+  "Marketing & Growth":       "marketing-growth",
+  "Operations & Back-Office": "operations-back-office",
+  "Sales & Customer Service": "sales-customer-service",
+  "Decision Intelligence":    "decision-intelligence",
+  "Custom Builds":            "custom-builds",
+};
+
 export function ProductCard({ product, index }: Props) {
-  const reduceMotion = useReducedMotion();
   const status = STATUS_CONFIG[product.status];
+  const categorySlug = CATEGORY_SLUG[product.category];
+  // Cap stagger delay at 10 cards so late items don't wait forever
+  const staggerDelay = Math.min(index * 40, 400);
 
   return (
-    <motion.div
-      layout="position"
-      layoutId={`product-card-${product.slug}`}
-      initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={reduceMotion ? undefined : { opacity: 0, y: -8, scale: 0.98 }}
-      transition={{
-        layout: { duration: 0.15 },
-        opacity:  { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
-        y:        { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
-        delay: Math.min(index * 0.04, 0.25),
-      }}
-      /* 3B — content-visibility: auto skips rendering off-screen cards entirely.
-         contain-intrinsic-size prevents layout shift when cards scroll into view.
-         This is the single biggest perf win for 16 cards on mobile. */
-      style={{ contentVisibility: "auto", containIntrinsicSize: "0 380px" }}
+    <div
+      className="product-card"
+      data-category={categorySlug}
+      style={{ "--card-index": index, animationDelay: `${staggerDelay}ms` } as React.CSSProperties}
     >
       <Link
         href={`/products/${product.slug}`}
@@ -155,6 +165,6 @@ export function ProductCard({ product, index }: Props) {
           }}
         />
       </Link>
-    </motion.div>
+    </div>
   );
 }

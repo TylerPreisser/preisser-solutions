@@ -1,7 +1,18 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+/**
+ * ProductGrid — ONLY client component in the /products surface.
+ *
+ * Sole responsibility: hold the active filter string in state and write
+ * data-active-category on the wrapper div so CSS can show/hide cards.
+ *
+ * ALL layout, card rendering, and SVG animations are server-rendered.
+ * No Framer Motion. No AnimatePresence. No useEffect. No layout animations.
+ * CSS handles filtering (hide/show via .products-grid[data-active-category]).
+ * CSS handles SVG ring animations (pv-ring-outer, pv-ring-mid, pv-pulse-inner).
+ */
+
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import { ProductCard } from "@/components/products/ProductCard";
 import type { ProductData, ProductCategory } from "@/types/product";
@@ -49,38 +60,38 @@ const CATEGORY_META: Record<ProductCategory, CategoryMeta> = {
   },
 };
 
+/**
+ * Map display category names to slug-form for data-active-category attribute.
+ * Must match the CSS rules in globals.css.
+ */
+const CATEGORY_TO_SLUG: Record<string, string> = {
+  "All":                      "all",
+  "Marketing & Growth":       "marketing-growth",
+  "Operations & Back-Office": "operations-back-office",
+  "Sales & Customer Service": "sales-customer-service",
+  "Decision Intelligence":    "decision-intelligence",
+  "Custom Builds":            "custom-builds",
+};
+
 export function ProductGrid({ products }: Props) {
-  const reduceMotion = useReducedMotion();
   const [activeFilter, setActiveFilter] = useState<string>("All");
-  const [pageReady, setPageReady] = useState(false);
-
-  // 3E — defer SVG animation start until 300ms after first paint
-  // so Framer Motion's initial fade-in completes first (mobile perf fix)
-  useEffect(() => {
-    const id = setTimeout(() => {
-      document.body.classList.add("products-page-ready");
-      setPageReady(true);
-    }, 300);
-    return () => {
-      clearTimeout(id);
-      document.body.classList.remove("products-page-ready");
-    };
-  }, []);
-
-  const isFiltered = activeFilter !== "All";
-
-  const filteredProducts = useMemo(() => {
-    if (!isFiltered) return products;
-    return products.filter((p) => p.category === activeFilter);
-  }, [products, activeFilter, isFiltered]);
 
   const availableCategories = useMemo(() => {
     const cats = new Set(products.map((p) => p.category));
     return ALL_FILTER_LABELS.filter((f) => f === "All" || cats.has(f as ProductCategory));
   }, [products]);
 
+  const activeCategorySlug = CATEGORY_TO_SLUG[activeFilter] ?? "all";
+  const isFiltered = activeFilter !== "All";
+
+  // For filtered view: get the subset to render
+  const filteredProducts = useMemo(() => {
+    if (!isFiltered) return products;
+    return products.filter((p) => p.category === activeFilter);
+  }, [products, activeFilter, isFiltered]);
+
   return (
-    <div>
+    <div className="products-grid" data-active-category={activeCategorySlug}>
       {/* ── Hero ──────────────────────────────────────────────── */}
       <section
         className="relative isolate overflow-hidden"
@@ -104,56 +115,50 @@ export function ProductGrid({ products }: Props) {
         />
 
         <div className="ps-container relative pt-36 pb-14 sm:pt-40 sm:pb-16 lg:pt-44 lg:pb-20">
-          <motion.div
-            initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {/* H1 */}
-            <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-[1.07] tracking-[-0.025em] sm:text-5xl md:text-6xl">
-              <span
-                className="bg-clip-text text-transparent"
-                style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary) 30%, #80E9FF 100%)" }}
-              >
-                AI Agent Catalog
-              </span>
-            </h1>
-
-            {/* Subhead */}
-            <p
-              className="mt-5 max-w-2xl text-pretty text-base leading-relaxed sm:text-lg"
-              style={{ color: "var(--theme-text-secondary)" }}
+          {/* H1 */}
+          <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-[1.07] tracking-[-0.025em] sm:text-5xl md:text-6xl">
+            <span
+              className="bg-clip-text text-transparent"
+              style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary) 30%, #80E9FF 100%)" }}
             >
-              Sixteen AI agents we&apos;ve built for real clients. Pick one, scope it for your business, and ship it.
-            </p>
+              AI Agent Catalog
+            </span>
+          </h1>
 
-            {/* Stats strip — 2 stats: agents count + pedigree */}
-            <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4 sm:mt-12">
-              <div>
-                <div
-                  className="bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl"
-                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
-                >
-                  {products.length}
-                </div>
-                <div className="mt-1 text-[11px] uppercase tracking-[0.14em]" style={{ color: "var(--theme-text-muted)" }}>
-                  Agents
-                </div>
+          {/* Subhead */}
+          <p
+            className="mt-5 max-w-2xl text-pretty text-base leading-relaxed sm:text-lg"
+            style={{ color: "var(--theme-text-secondary)" }}
+          >
+            Sixteen AI agents we&apos;ve built for real clients. Pick one, scope it for your business, and ship it.
+          </p>
+
+          {/* Stats strip — 2 stats: agents count + pedigree */}
+          <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4 sm:mt-12">
+            <div>
+              <div
+                className="bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl"
+                style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+              >
+                {products.length}
               </div>
-              <div className="h-10 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
-              <div>
-                <div
-                  className="bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl"
-                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
-                >
-                  100%
-                </div>
-                <div className="mt-1 text-[11px] uppercase tracking-[0.14em]" style={{ color: "var(--theme-text-muted)" }}>
-                  From real builds
-                </div>
+              <div className="mt-1 text-[11px] uppercase tracking-[0.14em]" style={{ color: "var(--theme-text-muted)" }}>
+                Agents
               </div>
             </div>
-          </motion.div>
+            <div className="h-10 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
+            <div>
+              <div
+                className="bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl"
+                style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+              >
+                100%
+              </div>
+              <div className="mt-1 text-[11px] uppercase tracking-[0.14em]" style={{ color: "var(--theme-text-muted)" }}>
+                From real builds
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -167,10 +172,8 @@ export function ProductGrid({ products }: Props) {
               Desktop (≥768px): flex-wrap centered row.
               Mobile (<768px): single horizontal scroll row with snap points.
               Touch targets min 44px tall (Apple HIG) via min-h on mobile.
-              Scrollbar hidden via ps-chips-scroll class in globals.css.
-              Left/right fade masks signal scrollability without overflow:hidden clipping. */}
+              Scrollbar hidden via ps-chips-scroll class in globals.css. */}
           <div className="mb-10">
-            {/* Outer wrapper: on mobile, provides the fade-edge masks via pseudo-elements */}
             <div className="ps-chips-wrapper">
               <div className="ps-chips-scroll">
                 {availableCategories.map((f) => {
@@ -205,20 +208,11 @@ export function ProductGrid({ products }: Props) {
           </div>
 
           {/* ── FILTERED VIEW — flat grid ── */}
-          {/* 3D: layout="position" is cheaper than full layout on mobile — skips
-              size recalculation and only animates x/y position. Duration capped at
-              150ms to avoid janky 300ms spring on low-end mobile CPUs. */}
           {isFiltered ? (
-            <motion.div
-              layout="position"
-              transition={{ duration: 0.15 }}
-              className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-            >
-              <AnimatePresence mode="popLayout">
-                {filteredProducts.map((product, idx) => (
-                  <ProductCard key={product.slug} product={product} index={idx} />
-                ))}
-              </AnimatePresence>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {filteredProducts.map((product, idx) => (
+                <ProductCard key={product.slug} product={product} index={idx} />
+              ))}
               {filteredProducts.length === 0 && (
                 <div
                   className="col-span-full py-16 text-center text-base"
@@ -227,7 +221,7 @@ export function ProductGrid({ products }: Props) {
                   No products in this category yet.
                 </div>
               )}
-            </motion.div>
+            </div>
           ) : (
             /* ── ALL VIEW — grouped by category ── */
             <div className="space-y-20">
