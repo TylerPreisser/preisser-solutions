@@ -26,7 +26,10 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-mono",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
+  // Only weights actually used in the codebase: 500 (font-medium) and 600
+  // (font-semibold). 400 kept as a safe baseline. 100-300 and 700-800 dropped
+  // to eliminate 5 unnecessary font-file round-trips.
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {

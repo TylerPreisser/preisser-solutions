@@ -119,6 +119,13 @@ export function Header() {
               src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/ps-logo.webp`}
               alt="Preisser Solutions"
               className="ps-logo-img"
+              width={1024}
+              height={1024}
+              /* Above-fold logo — hint browser to fetch it immediately to prevent
+                 CLS (explicit width/height) and LCP delay (fetchpriority). */
+              // @ts-ignore — fetchpriority is a valid HTML attribute not yet in React types
+              fetchpriority="high"
+              loading="eager"
             />
           </Link>
 

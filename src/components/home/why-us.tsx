@@ -159,6 +159,7 @@ export function WhyUs() {
                       src={item.image}
                       alt={item.alt}
                       className="ps-squeeze-card-img"
+                      loading="lazy"
                       draggable={false}
                     />
 

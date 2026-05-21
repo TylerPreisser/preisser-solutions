@@ -366,6 +366,7 @@ export function CaseStudies() {
                 <img
                   src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}${study.caseLogo}`}
                   alt={study.title}
+                  loading="lazy"
                   className={[
                     "ps-work-card-logo",
                     "ps-work-card-logo--company",
@@ -379,6 +380,7 @@ export function CaseStudies() {
                 <img
                   src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/cases/${study.image}`}
                   alt={study.title}
+                  loading="lazy"
                   className={`ps-work-card-logo${study.title === "TylerPreisser.com" ? " ps-work-card-logo--headshot" : ""}`}
                 />
               ) : study.svgIcon ? (

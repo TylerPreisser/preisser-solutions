@@ -5674,6 +5674,8 @@ ul, ol {
 }
 
 /* Hairline accent rule — thin brand-blue line separating hero from body */
+/* Hidden on mobile: narrow viewport compresses the gradient fade so it
+   renders as a solid glowing blue bar rather than the intended subtle fade. */
 .ps-contact2-hero-rule {
   height: 1px;
   background: linear-gradient(
@@ -5682,6 +5684,12 @@ ul, ol {
     rgba(13, 149, 232, 0.2) 40%,
     transparent 70%
   );
+}
+
+@media (max-width: 767px) {
+  .ps-contact2-hero-rule {
+    display: none;
+  }
 }
 
 /* ── Main body — light background ──────────────────────────────── */

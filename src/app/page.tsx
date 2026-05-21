@@ -1,15 +1,36 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { Hero } from "@/components/home/hero";
 import { ProofBar } from "@/components/home/proof-bar";
-import { TechPartners } from "@/components/home/tech-partners";
 import { ValueStrip } from "@/components/home/value-strip";
-import { ServicePillars } from "@/components/home/service-pillars";
-import { MarCommandCallout } from "@/components/home/marcommand-callout";
-import { WhyUs } from "@/components/home/why-us";
-import { CtaSection } from "@/components/home/cta-section";
 import { InternalLinkBlock } from "@/components/seo/InternalLinkBlock";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { siteConfig } from "@/data/site-config";
+
+// Below-fold client components — code-split so their JS is deferred until
+// after the critical above-fold content is interactive. `ssr: true` keeps
+// the HTML in the SSG output (preserves SEO + avoids layout shift on paint),
+// but the JS bundle for each component is fetched lazily by the browser.
+const TechPartners = dynamic(
+  () => import("@/components/home/tech-partners").then((m) => m.TechPartners),
+  { ssr: true }
+);
+const ServicePillars = dynamic(
+  () => import("@/components/home/service-pillars").then((m) => m.ServicePillars),
+  { ssr: true }
+);
+const MarCommandCallout = dynamic(
+  () => import("@/components/home/marcommand-callout").then((m) => m.MarCommandCallout),
+  { ssr: true }
+);
+const WhyUs = dynamic(
+  () => import("@/components/home/why-us").then((m) => m.WhyUs),
+  { ssr: true }
+);
+const CtaSection = dynamic(
+  () => import("@/components/home/cta-section").then((m) => m.CtaSection),
+  { ssr: true }
+);
 
 // R-038 / R-039: homepage title + description sourced from siteConfig.meta so
 // the layout default, JSON-LD, OG, and Twitter all stay in lockstep.
