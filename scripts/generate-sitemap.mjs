@@ -14,13 +14,90 @@ const EXCLUDED_HTML = new Set([
 
 // Legacy case-study URLs excluded from sitemap — canonical replacements are in place.
 // These shell routes still exist for backward-compat redirects but should not be indexed.
+//
+// Wave B (2026-05-21) addition — every route that has a 301 in public/_redirects
+// must NOT appear here as a source. Including a redirected URL in sitemap.xml
+// causes GSC "Page with redirect" errors (Google indexes the source, finds the
+// 301, marks it invalid). Mirror public/_redirects keys here.
 const EXCLUDED_PATHS = new Set([
+  // Legacy case-study slugs (redirect to canonical anonymized framings)
   "/case-studies/astrus-insurance",
   "/case-studies/sunrise-transportation",
   "/case-studies/cassidy-hvac",
   "/case-studies/customer-reactivation",
   "/case-studies/hg-oil-holdings",
+  // Service-page consolidation (redirect to /services/* canonicals)
+  "/custom-websites",
+  "/dashboards-and-analytics",
+  "/services/custom-crm",
+  // Brand-defense legacy slug (redirect to /preisser-solutions)
+  "/preisser-technology",
+  // Compare URL duplicate consolidation (Wave A)
+  "/compare/wix-vs-custom-website-small-business",
+  "/compare/zapier-vs-custom-automation",
+  "/compare/wordpress-vs-custom",
+  // Tier-3 small-city locations (redirect to nearest Tier-1 city)
+  "/locations/atchison-kansas",
+  "/locations/beloit-kansas",
+  "/locations/coffeyville-kansas",
+  "/locations/colby-kansas",
+  "/locations/concordia-kansas",
+  "/locations/emporia-kansas",
+  "/locations/goodland-kansas",
+  "/locations/hill-city-kansas",
+  "/locations/hutchinson-kansas",
+  "/locations/junction-city-kansas",
+  "/locations/lawrence-kansas",
+  "/locations/liberal-kansas",
+  "/locations/mcpherson-kansas",
+  "/locations/newton-kansas",
+  "/locations/norton-kansas",
+  "/locations/olathe-kansas",
+  "/locations/ottawa-kansas",
+  "/locations/overland-park-kansas",
+  "/locations/parsons-kansas",
+  "/locations/phillipsburg-kansas",
+  "/locations/pittsburg-kansas",
+  "/locations/plainville-kansas",
+  "/locations/pratt-kansas",
+  "/locations/russell-kansas",
+  "/locations/smith-center-kansas",
+  // Use-case deletions (Wave 2)
+  "/use-cases/ai-chatbot-small-business",
+  "/use-cases/automate-invoice-processing-small-business",
+  "/use-cases/lead-tracking-website-google-ads",
+  "/use-cases/quickbooks-servicetitan-dashboard",
+  // Industry-page deletions
+  "/industries/agriculture",
+  "/industries/auto-service",
+  "/industries/construction",
+  "/industries/dental",
+  "/industries/electrical",
+  "/industries/garage-door",
+  "/industries/healthcare",
+  "/industries/landscaping",
+  "/industries/pest-control",
+  "/industries/plumbing",
+  "/industries/real-estate",
+  "/industries/restaurants",
+  "/industries/roofing",
+  "/industries/veterinary",
+  // Legacy .html URL rewrites — these get .html stripped above; the bare
+  // canonical versions stay in. Only kept here for completeness.
+  "/home",
 ]);
+
+// Path prefixes excluded from sitemap. Catches /agents/* (entire tree was
+// renamed to /products/*; every agents URL 301s) without needing to enumerate
+// each agent slug individually.
+const EXCLUDED_PREFIXES = [
+  "/agents/",
+  "/preisser-technology/",
+];
+
+// Exact-match agents index route + custom-websites aliases — listed as prefixes
+// excluded above can't match the bare slug, so add them here.
+EXCLUDED_PATHS.add("/agents");
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -101,6 +178,7 @@ const urls = htmlFiles
   .map(htmlPathToUrl)
   .filter(Boolean)
   .filter((urlPath) => !EXCLUDED_PATHS.has(urlPath))
+  .filter((urlPath) => !EXCLUDED_PREFIXES.some((prefix) => urlPath.startsWith(prefix)))
   .sort((a, b) => {
     if (a === "/") return -1;
     if (b === "/") return 1;
