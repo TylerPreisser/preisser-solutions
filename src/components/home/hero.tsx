@@ -279,6 +279,12 @@ export function Hero() {
             </svg>
           </Link>
           <Link
+            href="/products"
+            className="ps-btn ps-btn-secondary"
+          >
+            AI Agent Catalog &rarr;
+          </Link>
+          <Link
             href={siteConfig.hero.secondaryCta.href}
             className="ps-btn ps-btn-secondary"
           >

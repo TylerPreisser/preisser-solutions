@@ -11,7 +11,7 @@ export const product: ProductData = {
   name: "MarCommand — Multi-Channel Marketing Engine",
   tagline:
     "An 8-agent marketing system: content, copy, design, paid, AEO, analyst, QA, orchestrator.",
-  category: "Flagship Platforms",
+  category: "Marketing & Growth",
   status: "production",
   industries: ["B2B services", "Field services", "Local retail", "Professional services"],
 

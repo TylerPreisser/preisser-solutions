@@ -11,7 +11,7 @@ export const product: ProductData = {
   name: "Business Forecast Agent",
   tagline:
     "Learns your entire company's existence — QuickBooks, CRM, calendar, operational data — then forecasts revenue, cash, hiring, and capacity.",
-  category: "Intelligence & Decision Support",
+  category: "Decision Intelligence",
   status: "deployable",
   industries: ["B2B services", "Professional services", "Field services", "Small and mid-sized business"],
 

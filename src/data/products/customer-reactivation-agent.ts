@@ -11,7 +11,7 @@ export const product: ProductData = {
   name: "Customer Reactivation Agent",
   tagline:
     "Cleans dormant lists, segments, and runs hyper-personalized SMS + email outreach daily.",
-  category: "Revenue & Marketing",
+  category: "Marketing & Growth",
   status: "production",
   industries: ["HVAC services", "Field services", "Home services", "B2B services"],
 

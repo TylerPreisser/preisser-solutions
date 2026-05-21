@@ -11,7 +11,7 @@ export const product: ProductData = {
   name: "Customer Research Agent",
   tagline:
     "Sub-agents scour the internet in parallel to research individual prospects, then return an enriched profile ready for individualized outreach.",
-  category: "Revenue & Marketing",
+  category: "Marketing & Growth",
   status: "production",
   industries: ["B2B services", "Professional services", "Financial services", "Sales organizations"],
 

@@ -11,7 +11,7 @@ export const product: ProductData = {
   name: "Custom Local AI Deployment",
   tagline:
     "Fine-tuned models that run on-premises or at the edge — zero data leaving the network.",
-  category: "Custom & Infrastructure",
+  category: "Custom Builds",
   status: "deployable",
   industries: ["Healthcare", "Financial services", "Manufacturing", "Insurance", "Government and defense"],
 

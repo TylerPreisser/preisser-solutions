@@ -11,7 +11,7 @@ export const product: ProductData = {
   name: "Custom Agent Development",
   tagline:
     "Have a unique problem we haven't packaged? We design, build, and ship custom agents from scratch — same engineering bar as the catalog, scoped to your business.",
-  category: "Custom & Infrastructure",
+  category: "Custom Builds",
   status: "service",
   industries: ["All industries", "Any business with a process that can be automated"],
 

@@ -11,7 +11,7 @@ export const product: ProductData = {
   name: "Agentic Coding Specialists",
   tagline:
     "Domain-tuned Claude Code sub-agents that architect, debug, and ship entire projects autonomously.",
-  category: "Custom & Infrastructure",
+  category: "Custom Builds",
   status: "production",
   industries: ["Software development", "Technology", "B2B services", "Any business with a software build"],
 

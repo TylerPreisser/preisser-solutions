@@ -11,8 +11,10 @@
 /agents/email-digest-agent /products/ai-digital-receptionist 301
 /agents/agentic-coding-specialists /products/agentic-coding-specialists 301
 /agents/local-ai-deployment-agent /products/local-ai-deployment-agent 301
-/agents/fitness-wellness-agent /products/fitness-wellness-agent 301
-/agents/gifting-recommendation-agent /products/gifting-recommendation-agent 301
+/agents/fitness-wellness-agent /products 301
+/agents/gifting-recommendation-agent /products 301
+/products/fitness-wellness-agent /products 301
+/products/gifting-recommendation-agent /products 301
 /agents/document-analysis-agent /products 301
 /agents/lead-pipeline-agent /products/business-triage-agent 301
 /agents/bol-rate-confirmation-agent /products 301

@@ -11,7 +11,7 @@ export const product: ProductData = {
   name: "AI Digital Receptionist",
   tagline:
     "Reads every email and phone call, remembers everything, answers anything.",
-  category: "Intelligence & Decision Support",
+  category: "Sales & Customer Service",
   status: "deployable",
   industries: ["B2B services", "Professional services", "Consulting", "Executive productivity"],
 

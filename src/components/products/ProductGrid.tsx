@@ -4,7 +4,6 @@ import { useState, useMemo } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { ProductCard } from "@/components/products/ProductCard";
-import { ProductVisual } from "@/components/products/ProductVisual";
 import type { ProductData, ProductCategory } from "@/types/product";
 import { PRODUCT_CATEGORIES } from "@/data/products";
 
@@ -12,57 +11,55 @@ interface Props {
   products: ProductData[];
 }
 
-// Filter labels — "All" + each category + "Labs" if not already present
 const ALL_FILTER_LABELS = ["All", ...PRODUCT_CATEGORIES];
 
-// Category order for grouped display (Labs handled separately below)
 const MAIN_CATEGORIES: ProductCategory[] = [
-  "Revenue & Marketing",
+  "Marketing & Growth",
   "Operations & Back-Office",
-  "Sales & Lead Capture",
-  "Intelligence & Decision Support",
-  "Flagship Platforms",
-  "Custom & Infrastructure",
+  "Sales & Customer Service",
+  "Decision Intelligence",
+  "Custom Builds",
 ];
 
-const CATEGORY_SHORT: Record<ProductCategory, string> = {
-  "Revenue & Marketing":            "REVENUE & MARKETING",
-  "Operations & Back-Office":       "OPERATIONS & BACK-OFFICE",
-  "Sales & Lead Capture":           "SALES & LEAD CAPTURE",
-  "Intelligence & Decision Support":"INTELLIGENCE & DECISION SUPPORT",
-  "Flagship Platforms":             "FLAGSHIP PLATFORMS",
-  "Custom & Infrastructure":        "CUSTOM & INFRASTRUCTURE",
-  Labs:                             "LABS",
+interface CategoryMeta {
+  description: string;
+  accentColor: string;
+}
+
+const CATEGORY_META: Record<ProductCategory, CategoryMeta> = {
+  "Marketing & Growth": {
+    description: "Agents that find, attract, and re-engage customers.",
+    accentColor: "#80E9FF",
+  },
+  "Operations & Back-Office": {
+    description: "Agents that handle the work nobody wants to do manually.",
+    accentColor: "#00D4AA",
+  },
+  "Sales & Customer Service": {
+    description: "Agents that catch every inbound and route it intelligently.",
+    accentColor: "#0D95E8",
+  },
+  "Decision Intelligence": {
+    description: "Agents that analyze, forecast, and brief you.",
+    accentColor: "#6B7FFF",
+  },
+  "Custom Builds": {
+    description: "Bespoke agent engineering for your specific problem.",
+    accentColor: "#94A3B8",
+  },
 };
 
 export function ProductGrid({ products }: Props) {
   const reduceMotion = useReducedMotion();
   const [activeFilter, setActiveFilter] = useState<string>("All");
 
-  const labsProducts = useMemo(() => products.filter((p) => p.category === "Labs"), [products]);
-  const mainProducts = useMemo(() => products.filter((p) => p.category !== "Labs"), [products]);
-
-  // When a category filter is active, flatten to a single visible list
-  // When "All", group by category for the section headers
   const isFiltered = activeFilter !== "All";
 
-  const filteredMain = useMemo(() => {
-    if (!isFiltered) return mainProducts;
-    return mainProducts.filter((p) => p.category === activeFilter);
-  }, [mainProducts, activeFilter, isFiltered]);
+  const filteredProducts = useMemo(() => {
+    if (!isFiltered) return products;
+    return products.filter((p) => p.category === activeFilter);
+  }, [products, activeFilter, isFiltered]);
 
-  const filteredLabs = useMemo(() => {
-    if (activeFilter === "All" || activeFilter === "Labs") return labsProducts;
-    return [];
-  }, [labsProducts, activeFilter]);
-
-  // Flat list for animating individual cards when filtered
-  const flatFiltered = useMemo(() => {
-    if (!isFiltered) return [];
-    return [...filteredMain, ...(activeFilter === "Labs" ? labsProducts : [])];
-  }, [isFiltered, filteredMain, labsProducts, activeFilter]);
-
-  // Available categories (only show chip if products exist in it)
   const availableCategories = useMemo(() => {
     const cats = new Set(products.map((p) => p.category));
     return ALL_FILTER_LABELS.filter((f) => f === "All" || cats.has(f as ProductCategory));
@@ -75,14 +72,12 @@ export function ProductGrid({ products }: Props) {
         className="relative isolate overflow-hidden"
         style={{ background: "var(--theme-section-switchable)" }}
       >
-        {/* Ambient glow blobs */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute -top-32 -left-32 h-[520px] w-[520px] rounded-full bg-[#0D95E8] opacity-[0.12] blur-[120px]" />
           <div className="absolute top-40 -right-32 h-[420px] w-[420px] rounded-full bg-[#80E9FF] opacity-[0.08] blur-[100px]" />
           <div className="absolute bottom-0 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-[#00D4AA] opacity-[0.06] blur-[100px]" />
         </div>
 
-        {/* Grid overlay */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10 opacity-[0.04]"
@@ -100,26 +95,13 @@ export function ProductGrid({ products }: Props) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* Eyebrow */}
-            <div
-              className="mb-5 inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-mono text-[11px] font-medium uppercase tracking-[0.16em]"
-              style={{
-                border: "1px solid var(--theme-card-border)",
-                background: "var(--theme-card-bg)",
-                color: "var(--color-primary)",
-              }}
-            >
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#0D95E8]" />
-              Products
-            </div>
-
             {/* H1 */}
             <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-[1.07] tracking-[-0.025em] sm:text-5xl md:text-6xl">
               <span
                 className="bg-clip-text text-transparent"
                 style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary) 30%, #80E9FF 100%)" }}
               >
-                Engineered capabilities.
+                AI Agent Catalog
               </span>
             </h1>
 
@@ -128,7 +110,7 @@ export function ProductGrid({ products }: Props) {
               className="mt-5 max-w-2xl text-pretty text-base leading-relaxed sm:text-lg"
               style={{ color: "var(--theme-text-secondary)" }}
             >
-              Sixteen production-grade AI agents, built from real engagements. Pick one and scope it for your business.
+              Sixteen AI agents we&apos;ve built for real clients. Pick one, scope it for your business, and ship it.
             </p>
 
             {/* Stats strip */}
@@ -138,7 +120,7 @@ export function ProductGrid({ products }: Props) {
                   className="bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl"
                   style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
                 >
-                  {mainProducts.length + labsProducts.length}
+                  {products.length}
                 </div>
                 <div className="mt-1 text-[11px] uppercase tracking-[0.14em]" style={{ color: "var(--theme-text-muted)" }}>
                   Products
@@ -217,11 +199,11 @@ export function ProductGrid({ products }: Props) {
               className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             >
               <AnimatePresence mode="popLayout">
-                {flatFiltered.map((product, idx) => (
+                {filteredProducts.map((product, idx) => (
                   <ProductCard key={product.slug} product={product} index={idx} />
                 ))}
               </AnimatePresence>
-              {flatFiltered.length === 0 && (
+              {filteredProducts.length === 0 && (
                 <div
                   className="col-span-full py-16 text-center text-base"
                   style={{ color: "var(--theme-text-secondary)" }}
@@ -232,21 +214,53 @@ export function ProductGrid({ products }: Props) {
             </motion.div>
           ) : (
             /* ── ALL VIEW — grouped by category ── */
-            <div className="space-y-16">
+            <div className="space-y-20">
               {MAIN_CATEGORIES.map((cat) => {
-                const catProducts = mainProducts.filter((p) => p.category === cat);
+                const catProducts = products.filter((p) => p.category === cat);
                 if (catProducts.length === 0) return null;
+                const meta = CATEGORY_META[cat];
                 return (
                   <div key={cat}>
                     {/* Category header */}
-                    <div className="mb-6 flex items-center gap-4">
-                      <div
-                        className="font-mono text-[11px] font-medium uppercase tracking-[0.18em]"
-                        style={{ color: "var(--theme-text-muted)" }}
-                      >
-                        {CATEGORY_SHORT[cat]} &middot; {catProducts.length} {catProducts.length === 1 ? "PRODUCT" : "PRODUCTS"}
+                    <div
+                      className="mb-8"
+                      style={{ borderTop: "1px solid var(--theme-card-border)", paddingTop: "1.75rem" }}
+                    >
+                      <div className="flex items-start gap-4">
+                        {/* Accent bar */}
+                        <div
+                          className="mt-1 hidden shrink-0 sm:block"
+                          style={{
+                            width: "4px",
+                            height: "48px",
+                            borderRadius: "2px",
+                            background: meta.accentColor,
+                            opacity: 0.85,
+                          }}
+                        />
+                        <div>
+                          <div className="flex items-baseline gap-3">
+                            <h2
+                              className="text-2xl font-semibold leading-snug tracking-tight md:text-3xl"
+                              style={{ color: "var(--theme-text-primary)" }}
+                            >
+                              {cat}
+                            </h2>
+                            <span
+                              className="font-mono text-[11px] font-medium uppercase tracking-[0.14em]"
+                              style={{ color: "var(--theme-text-muted)" }}
+                            >
+                              {catProducts.length} {catProducts.length === 1 ? "product" : "products"}
+                            </span>
+                          </div>
+                          <p
+                            className="mt-1 text-sm leading-relaxed"
+                            style={{ color: "var(--theme-text-secondary)" }}
+                          >
+                            {meta.description}
+                          </p>
+                        </div>
                       </div>
-                      <div className="h-px flex-1" style={{ background: "var(--theme-card-border)" }} />
                     </div>
 
                     {/* Cards */}
@@ -255,48 +269,13 @@ export function ProductGrid({ products }: Props) {
                         <ProductCard
                           key={product.slug}
                           product={product}
-                          index={mainProducts.indexOf(product)}
+                          index={products.indexOf(product)}
                         />
                       ))}
                     </div>
                   </div>
                 );
               })}
-
-              {/* ── Labs appendix ── */}
-              {labsProducts.length > 0 && (
-                <div>
-                  {/* Labs divider */}
-                  <div className="mb-6 flex items-center gap-4">
-                    <div
-                      className="font-mono text-[11px] font-medium uppercase tracking-[0.18em]"
-                      style={{ color: "var(--theme-text-muted)" }}
-                    >
-                      APPENDIX — LABS &middot; {labsProducts.length} {labsProducts.length === 1 ? "ITEM" : "ITEMS"}
-                    </div>
-                    <div className="h-px flex-1" style={{ background: "var(--theme-card-border)" }} />
-                  </div>
-
-                  {/* Labs description */}
-                  <p
-                    className="mb-7 max-w-xl text-[13px] leading-relaxed"
-                    style={{ color: "var(--theme-text-muted)" }}
-                  >
-                    Experimental builds — architected and functional, not yet hardened for production deployment.
-                  </p>
-
-                  {/* Labs cards (slightly smaller, dashed treatment) */}
-                  <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                    {labsProducts.map((product, idx) => (
-                      <ProductCard
-                        key={product.slug}
-                        product={product}
-                        index={mainProducts.length + idx}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           )}
         </div>
@@ -315,7 +294,6 @@ export function ProductGrid({ products }: Props) {
               background: "var(--theme-card-bg)",
             }}
           >
-            {/* Glow */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#0D95E8] opacity-[0.08] blur-[80px]"
@@ -324,7 +302,7 @@ export function ProductGrid({ products }: Props) {
               <div>
                 <div
                   className="mb-2 font-mono text-[11px] font-medium uppercase tracking-[0.18em]"
-                  style={{ color: "var(--theme-text-muted)" }}
+                  style={{ color: "var(--color-primary)" }}
                 >
                   Custom Builds
                 </div>

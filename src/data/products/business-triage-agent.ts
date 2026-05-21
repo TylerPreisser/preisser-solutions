@@ -11,7 +11,7 @@ export const product: ProductData = {
   name: "Business Triage Agent",
   tagline:
     "All customer touchpoints, classified by urgency and routed to the right person in real time.",
-  category: "Sales & Lead Capture",
+  category: "Sales & Customer Service",
   status: "deployable",
   industries: ["HVAC services", "Field services", "Home services", "B2B services", "Local retail"],
 

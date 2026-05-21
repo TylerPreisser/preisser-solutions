@@ -11,7 +11,7 @@ export const product: ProductData = {
   name: "Industry-Specific Agent",
   tagline:
     "Agents built for the document flow, regulatory shape, and downstream systems of a single industry. Insurance is the worked example.",
-  category: "Sales & Lead Capture",
+  category: "Sales & Customer Service",
   status: "production",
   industries: ["Insurance — managing general underwriting", "Insurance broking", "Logistics", "Healthcare", "Legal", "Manufacturing"],
 

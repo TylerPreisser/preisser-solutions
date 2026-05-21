@@ -11,7 +11,7 @@ export const product: ProductData = {
   name: "Autonomous Social Marketing Agent",
   tagline:
     "Scrapes local trends, generates copy + visuals, publishes to Facebook and Instagram daily.",
-  category: "Revenue & Marketing",
+  category: "Marketing & Growth",
   status: "production",
   industries: ["HVAC services", "Field services", "Home services", "Local retail"],
 

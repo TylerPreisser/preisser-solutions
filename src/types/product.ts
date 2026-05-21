@@ -1,11 +1,9 @@
 export type ProductCategory =
-  | "Revenue & Marketing"
+  | "Marketing & Growth"
   | "Operations & Back-Office"
-  | "Sales & Lead Capture"
-  | "Intelligence & Decision Support"
-  | "Flagship Platforms"
-  | "Custom & Infrastructure"
-  | "Labs";
+  | "Sales & Customer Service"
+  | "Decision Intelligence"
+  | "Custom Builds";
 
 export type ProductStatus = "production" | "proof-of-concept" | "deployable" | "service";
 

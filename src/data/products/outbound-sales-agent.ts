@@ -11,7 +11,7 @@ export const product: ProductData = {
   name: "Intelligent Outbound Sales",
   tagline:
     "Researches prospects, drafts personalized cold outreach, and sequences across email and SMS — tuned to one business's offer and voice.",
-  category: "Revenue & Marketing",
+  category: "Marketing & Growth",
   status: "deployable",
   industries: ["B2B services", "Professional services", "Sales organizations", "Field services"],
 
