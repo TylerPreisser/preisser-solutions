@@ -34,6 +34,20 @@ export interface ProductCTA {
   buttonHref: string;  // default pattern: "/contact?product=<slug>"
 }
 
+/**
+ * Lightweight projection of ProductData — only the fields rendered by the
+ * product grid / catalog. Serialised into the hydration payload instead of
+ * the full ProductData, which cuts the /products JS chunk by ~65-70%.
+ */
+export interface ProductSummary {
+  slug: string;
+  name: string;
+  tagline: string;
+  category: ProductCategory;
+  status: ProductStatus;
+  headlineMetric?: ProductHeadlineMetric;
+}
+
 export interface ProductData {
   // Routing / SEO
   slug: string;

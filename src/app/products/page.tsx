@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ProductCatalog } from "@/components/products/ProductCatalog";
-import { products } from "@/data/products";
+import { productSummaries } from "@/data/products";
 
 const url = "https://preissersolutions.com/products";
 
@@ -34,5 +34,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <ProductCatalog products={products} />;
+  return <ProductCatalog products={productSummaries} />;
 }

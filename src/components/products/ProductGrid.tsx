@@ -15,11 +15,11 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { ProductCard } from "@/components/products/ProductCard";
-import type { ProductData, ProductCategory } from "@/types/product";
-import { PRODUCT_CATEGORIES } from "@/data/products";
+import type { ProductSummary, ProductCategory } from "@/types/product";
+import { PRODUCT_CATEGORIES } from "@/data/products/constants";
 
 interface Props {
-  products: ProductData[];
+  products: ProductSummary[];
 }
 
 const ALL_FILTER_LABELS = ["All", ...PRODUCT_CATEGORIES];

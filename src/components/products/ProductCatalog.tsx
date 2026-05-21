@@ -7,10 +7,10 @@
 
 import { JsonLd } from "@/components/seo/JsonLd";
 import { ProductGrid } from "@/components/products/ProductGrid";
-import type { ProductData } from "@/types/product";
+import type { ProductSummary } from "@/types/product";
 
 interface ProductCatalogProps {
-  products: ProductData[];
+  products: ProductSummary[];
 }
 
 export function ProductCatalog({ products }: ProductCatalogProps) {

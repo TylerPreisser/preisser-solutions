@@ -10,10 +10,10 @@
 
 import Link from "next/link";
 import { ProductVisual } from "@/components/products/ProductVisual";
-import type { ProductData, ProductStatus, ProductCategory } from "@/types/product";
+import type { ProductSummary, ProductStatus, ProductCategory } from "@/types/product";
 
 interface Props {
-  product: ProductData;
+  product: ProductSummary;
   /** Card index within its visible set — drives CSS animation stagger delay */
   index: number;
 }

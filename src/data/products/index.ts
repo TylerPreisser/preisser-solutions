@@ -1,4 +1,5 @@
-import type { ProductData, ProductCategory } from "@/types/product";
+import type { ProductData, ProductSummary, ProductCategory } from "@/types/product";
+export { PRODUCT_CATEGORIES } from "./constants";
 
 // Marketing & Growth
 import { product as customerReactivationAgent } from "./customer-reactivation-agent";
@@ -76,14 +77,25 @@ export function getProduct(slug: string): ProductData | undefined {
   return productBySlug[slug];
 }
 
-export const PRODUCT_CATEGORIES: ProductCategory[] = [
-  "Marketing & Growth",
-  "Operations & Back-Office",
-  "Sales & Customer Service",
-  "Decision Intelligence",
-  "Custom Builds",
-];
-
 export function productsByCategory(category: ProductCategory): ProductData[] {
   return products.filter((p) => p.category === category);
 }
+
+/**
+ * Project a full ProductData record down to the grid-only fields.
+ * Used to build the hydration payload for the /products client component
+ * without shipping the full detail copy (~65-70% size reduction).
+ */
+export function toSummary(p: ProductData): ProductSummary {
+  return {
+    slug: p.slug,
+    name: p.name,
+    tagline: p.tagline,
+    category: p.category,
+    status: p.status,
+    ...(p.headlineMetric && { headlineMetric: p.headlineMetric }),
+  };
+}
+
+/** All products projected to summary shape — use this for the grid. */
+export const productSummaries: ProductSummary[] = products.map(toSummary);
