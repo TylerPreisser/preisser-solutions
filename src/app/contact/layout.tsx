@@ -1,18 +1,12 @@
 import type { Metadata } from "next";
 import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 
+// layout.tsx only provides the breadcrumb JSON-LD for this route.
+// Canonical title + description are set in page.tsx metadata (which takes
+// precedence over layout metadata in Next.js App Router).
 export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Start a project with Preisser Solutions. Tell us what you need built, fixed, or improved — no commitment, no sales pitch. Based in Hays, Kansas, serving businesses statewide.",
   alternates: {
     canonical: "https://preissersolutions.com/contact",
-  },
-  openGraph: {
-    title: "Contact | Preisser Solutions",
-    description:
-      "Start a project with Preisser Solutions. Tell us what you need built, fixed, or improved — no commitment, no sales pitch. Based in Hays, Kansas, serving businesses statewide.",
-    url: "https://preissersolutions.com/contact",
   },
 };
 

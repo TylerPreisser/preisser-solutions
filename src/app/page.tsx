@@ -8,6 +8,7 @@ import { MarCommandCallout } from "@/components/home/marcommand-callout";
 import { WhyUs } from "@/components/home/why-us";
 import { CtaSection } from "@/components/home/cta-section";
 import { InternalLinkBlock } from "@/components/seo/InternalLinkBlock";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { siteConfig } from "@/data/site-config";
 
 // R-038 / R-039: homepage title + description sourced from siteConfig.meta so
@@ -47,9 +48,29 @@ export const metadata: Metadata = {
   },
 };
 
+// SiteNavigationElement JSON-LD — homepage only. Signals the 6 primary
+// navigation hubs Google should promote as sitelinks. Emitted via the existing
+// JsonLd helper so it lands in the same <script type="application/ld+json">
+// pipeline as the rest of the structured-data graph.
+const primaryNavSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": "https://preissersolutions.com/#primary-nav",
+  name: "Primary navigation",
+  itemListElement: [
+    { "@type": "SiteNavigationElement", position: 1, name: "Products",     url: "https://preissersolutions.com/products"     },
+    { "@type": "SiteNavigationElement", position: 2, name: "Services",     url: "https://preissersolutions.com/services"     },
+    { "@type": "SiteNavigationElement", position: 3, name: "Case Studies", url: "https://preissersolutions.com/case-studies" },
+    { "@type": "SiteNavigationElement", position: 4, name: "Locations",    url: "https://preissersolutions.com/locations"    },
+    { "@type": "SiteNavigationElement", position: 5, name: "About",        url: "https://preissersolutions.com/about"        },
+    { "@type": "SiteNavigationElement", position: 6, name: "Contact",      url: "https://preissersolutions.com/contact"      },
+  ],
+};
+
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={primaryNavSchema} />
       <Hero />
       {/* Company-descriptor sentence preserved as visually-hidden text so
           HTML-only AI crawlers (ChatGPT-User, Claude-User, OAI-SearchBot,
@@ -180,6 +201,21 @@ export default function HomePage() {
         }}
       >
         <div style={{ maxWidth: 1120, margin: "0 auto" }}>
+          {/* Hub link for /services — body anchor so Google weights it above nav */}
+          <div style={{ marginBottom: "0.75rem" }}>
+            <a
+              href="/services"
+              style={{
+                fontSize: "0.8125rem",
+                fontWeight: 600,
+                color: "var(--color-primary)",
+                textDecoration: "none",
+                letterSpacing: "0.01em",
+              }}
+            >
+              Our services &rarr;
+            </a>
+          </div>
           <InternalLinkBlock
             title="Services"
             columns={3}
@@ -192,6 +228,21 @@ export default function HomePage() {
               { href: "/business-automation", label: "Business automation", description: "Automate invoicing, data entry, follow-up, and reporting." },
             ]}
           />
+          {/* Hub link for /locations — body anchor so Google weights it above nav */}
+          <div style={{ marginBottom: "0.75rem", marginTop: "2rem" }}>
+            <a
+              href="/locations"
+              style={{
+                fontSize: "0.8125rem",
+                fontWeight: 600,
+                color: "var(--color-primary)",
+                textDecoration: "none",
+                letterSpacing: "0.01em",
+              }}
+            >
+              All service areas &rarr;
+            </a>
+          </div>
           <InternalLinkBlock
             title="Service area"
             columns={3}
@@ -203,6 +254,22 @@ export default function HomePage() {
               { href: "/locations/salina-kansas-web-design", label: "Salina web design", description: "Custom websites for Salina, KS." },
             ]}
           />
+          {/* About body link — Google weights in-body links higher than nav */}
+          <div style={{ marginTop: "2.5rem", paddingTop: "2rem", borderTop: "1px solid var(--color-border-dark)" }}>
+            <a
+              href="/about"
+              style={{
+                fontSize: "0.9375rem",
+                fontWeight: 500,
+                color: "var(--theme-text-secondary)",
+                textDecoration: "none",
+                borderBottom: "1px solid currentColor",
+                paddingBottom: "1px",
+              }}
+            >
+              About Preisser Solutions &rarr;
+            </a>
+          </div>
         </div>
       </section>
       {/* Case studies — slim closing strip, full grid lives at /case-studies */}

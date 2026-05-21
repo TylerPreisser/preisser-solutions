@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { ContactPageClient } from "@/components/contact/ContactPageClient";
 
-// Title with template: "Contact Us — Start Your Kansas Tech Project | Preisser Solutions" = 59 chars ✓
+// Title with template: "Contact | Preisser Solutions" = 28 chars — clean,
+// direct, unambiguous for Google's sitelink ranker. The old marketing-y title
+// ("Start Your Kansas Tech Project") was confusing the sitelink algorithm.
 export const metadata: Metadata = {
-  title: "Contact Us — Start Your Kansas Tech Project",
+  title: "Contact",
   description:
-    "Get in touch with Tyler Preisser to discuss your custom website, web application, AI automation, or dashboard project. Based in Hays, Kansas. Fast response guaranteed.",
+    "Get in touch with Preisser Solutions for AI automation, custom software, and SEO in Hays, Kansas.",
   alternates: {
     canonical: "https://preissersolutions.com/contact",
   },

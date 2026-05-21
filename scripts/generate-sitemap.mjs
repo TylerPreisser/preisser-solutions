@@ -131,25 +131,59 @@ function escapeXml(value) {
 }
 
 /**
- * Per-URL priority. Set on 2026-05-18 as part of SEO Wave A. Replaces the
- * previous uniform 0.7 priority that gave Google no signal about which URLs
- * matter most. Highest signal goes to home, case studies (proof), services
- * (revenue), and the HQ city; lowest to boilerplate legal pages.
+ * Per-URL priority. Updated 2026-05-21 (SEO Wave B — sitelink targeting).
+ *
+ * Goal: the 6 primary navigation hubs (products, services, case-studies,
+ * locations, about, contact) must outrank their own detail pages so Google
+ * picks them as sitelink candidates instead of deep programmatic pages.
+ *
+ * Rules:
+ *   1.0  — homepage + the 4 top commercial hubs
+ *   0.95 — locations hub, about, contact (sitelink targets)
+ *   0.9  — blog index, process (secondary hubs)
+ *   0.8  — detail pages under the hubs (don't compete with the hub)
+ *   0.75 — compare pages (programmatic, useful but not sitelink candidates)
+ *   0.7  — location detail pages, industry pages, use-case pages
+ *   0.5  — everything else (fallback)
+ *   0.3  — legal boilerplate
  */
 function priorityFor(urlPath) {
+  // ── Tier 1 — homepage + top commercial hubs (1.0) ─────────────────────
   if (urlPath === "/") return "1.0";
-  if (urlPath.startsWith("/case-studies/") || urlPath === "/case-studies") return "0.9";
-  if (urlPath.startsWith("/products/") || urlPath === "/products") return "0.85";
-  if (urlPath.startsWith("/services/") || urlPath === "/services") return "0.85";
-  if (urlPath.startsWith("/locations/hays-kansas")) return "0.85";
-  if (urlPath.startsWith("/locations/")) return "0.7";
+  if (urlPath === "/products")     return "1.0";
+  if (urlPath === "/services")     return "1.0";
+  if (urlPath === "/case-studies") return "1.0";
+
+  // ── Tier 2 — sitelink targets: locations hub, about, contact (0.95) ───
+  if (urlPath === "/locations") return "0.95";
+  if (urlPath === "/about")     return "0.95";
+  if (urlPath === "/contact")   return "0.95";
+
+  // ── Tier 3 — secondary hubs (0.9) ─────────────────────────────────────
+  if (urlPath === "/blog")    return "0.9";
+  if (urlPath === "/process") return "0.9";
+
+  // ── Tier 4 — hub detail pages (0.8) — sit below their hubs ───────────
+  // Individual product, service, and case-study detail pages. We deliberately
+  // hold them at 0.8 so the hubs outrank them in Google's sitelink selection.
+  if (urlPath.startsWith("/products/"))     return "0.8";
+  if (urlPath.startsWith("/services/"))     return "0.8";
+  if (urlPath.startsWith("/case-studies/")) return "0.8";
+  if (urlPath.startsWith("/blog/"))         return "0.8";
+  if (urlPath.startsWith("/insights/") || urlPath === "/insights") return "0.8";
+
+  // ── Tier 5 — compare pages (0.75) ─────────────────────────────────────
   if (urlPath.startsWith("/compare/")) return "0.75";
+
+  // ── Tier 6 — location detail pages + programmatic AEO pages (0.7) ────
+  if (urlPath.startsWith("/locations/")) return "0.7";
   if (urlPath.startsWith("/industries/")) return "0.7";
-  if (urlPath.startsWith("/use-cases/")) return "0.7";
-  if (urlPath.startsWith("/blog/") || urlPath === "/blog") return "0.6";
-  if (urlPath.startsWith("/insights/") || urlPath === "/insights") return "0.6";
-  if (urlPath === "/about" || urlPath === "/contact" || urlPath === "/integrations") return "0.7";
+  if (urlPath.startsWith("/use-cases/"))  return "0.7";
+
+  // ── Tier 7 — legal boilerplate (0.3) ─────────────────────────────────
   if (urlPath === "/privacy" || urlPath === "/terms") return "0.3";
+
+  // ── Fallback ──────────────────────────────────────────────────────────
   return "0.5";
 }
 

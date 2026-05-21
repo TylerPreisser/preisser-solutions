@@ -360,7 +360,8 @@ function Hero({ data }: { data: LocationPageData }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Breadcrumb */}
+          {/* Breadcrumb — "All service areas" anchor gives /locations hub
+              stronger upward link equity than a bare "Locations" label. */}
           <div
             className="mb-10 flex items-center gap-3 text-sm"
             style={{ color: "var(--theme-text-muted)" }}
@@ -370,7 +371,7 @@ function Hero({ data }: { data: LocationPageData }) {
               className="transition-colors"
               style={{ color: "var(--theme-text-secondary)" }}
             >
-              Locations
+              All service areas
             </Link>
             <span style={{ color: "var(--theme-text-muted)" }}>/</span>
             <span style={{ color: "var(--theme-text-secondary)" }}>{cityState}</span>
@@ -1143,6 +1144,20 @@ function RelatedLocationsSection({
           </h2>
         </div>
         <div className="flex flex-wrap gap-2.5">
+          {/* Hub back-link — anchored "All service areas" pushes link equity
+              up to /locations so Google ranks the hub over detail pages. */}
+          <Link
+            href="/locations"
+            className="group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all hover:border-[#0D95E8]/40 hover:text-[#0D95E8]"
+            style={{
+              border: "1px solid var(--color-primary)",
+              background: "var(--theme-section-alt)",
+              color: "var(--color-primary)",
+            }}
+          >
+            All service areas
+            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+          </Link>
           {valid.map((slug) => (
             <Link
               key={slug}
