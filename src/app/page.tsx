@@ -98,21 +98,6 @@ export default function HomePage() {
         }}
       >
         <div style={{ maxWidth: 1120, margin: "0 auto" }}>
-          {/* Hub link for /services — body anchor so Google weights it above nav */}
-          <div style={{ marginBottom: "0.75rem" }}>
-            <a
-              href="/services"
-              style={{
-                fontSize: "0.8125rem",
-                fontWeight: 600,
-                color: "var(--color-primary)",
-                textDecoration: "none",
-                letterSpacing: "0.01em",
-              }}
-            >
-              Our services &rarr;
-            </a>
-          </div>
           <InternalLinkBlock
             title="Services"
             columns={3}
@@ -125,21 +110,6 @@ export default function HomePage() {
               { href: "/business-automation", label: "Business automation", description: "Automate invoicing, data entry, follow-up, and reporting." },
             ]}
           />
-          {/* Hub link for /locations — body anchor so Google weights it above nav */}
-          <div style={{ marginBottom: "0.75rem", marginTop: "2rem" }}>
-            <a
-              href="/locations"
-              style={{
-                fontSize: "0.8125rem",
-                fontWeight: 600,
-                color: "var(--color-primary)",
-                textDecoration: "none",
-                letterSpacing: "0.01em",
-              }}
-            >
-              All service areas &rarr;
-            </a>
-          </div>
           <InternalLinkBlock
             title="Service area"
             columns={3}
@@ -151,22 +121,6 @@ export default function HomePage() {
               { href: "/locations/salina-kansas-web-design", label: "Salina web design", description: "Custom websites for Salina, KS." },
             ]}
           />
-          {/* About body link — Google weights in-body links higher than nav */}
-          <div style={{ marginTop: "2.5rem", paddingTop: "2rem", borderTop: "1px solid var(--color-border-dark)" }}>
-            <a
-              href="/about"
-              style={{
-                fontSize: "0.9375rem",
-                fontWeight: 500,
-                color: "var(--theme-text-secondary)",
-                textDecoration: "none",
-                borderBottom: "1px solid currentColor",
-                paddingBottom: "1px",
-              }}
-            >
-              About Preisser Solutions &rarr;
-            </a>
-          </div>
         </div>
       </section>
       <CtaSection />

@@ -114,13 +114,65 @@ function buildSchema(data: LocationPageData) {
     },
   };
 
+  // Service schema — signals to LLMs what service is offered in this city
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${url}#service`,
+    name: `Web Development, AI Automation & Local SEO in ${cityState}`,
+    provider: { "@id": "https://preissersolutions.com/#organization" },
+    serviceType: "Web development, AI automation, local SEO",
+    areaServed: {
+      "@type": "City",
+      name: cityState,
+      ...(data.coordinates
+        ? {
+            geo: {
+              "@type": "GeoCoordinates",
+              latitude: data.coordinates.lat,
+              longitude: data.coordinates.lng,
+            },
+          }
+        : {}),
+    },
+    description: data.hero.answerParagraph,
+    url,
+  };
+
+  // Place schema — geographic anchor for the city
+  const placeSchema: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Place",
+    "@id": `${url}#place`,
+    name: cityState,
+    ...(data.coordinates
+      ? {
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: data.coordinates.lat,
+            longitude: data.coordinates.lng,
+          },
+        }
+      : {}),
+    ...(data.region
+      ? {
+          containedInPlace: {
+            "@type": "AdministrativeArea",
+            name: `${data.region}, ${data.state}`,
+          },
+        }
+      : {}),
+  };
+
   const schemas: Record<string, unknown>[] = [
     webPage,
     breadcrumbList,
     localBusiness,
+    serviceSchema,
+    placeSchema,
   ];
 
-  if (data.faq.length >= 5) {
+  if (data.faq.length > 0) {
     schemas.push({
       "@context": "https://schema.org",
       "@type": "FAQPage",
@@ -1188,6 +1240,93 @@ function prettifySlug(slug: string): string {
     .replace(/\bKansas\b/, "KS");
 }
 
+// ── Authoritative sources footer ─────────────────────────────
+// Editorial citation-style block linking to hub pages.
+// Signals authoritative internal linking graph to LLMs and crawlers.
+function AuthoritativeSourcesSection({ data }: { data: LocationPageData }) {
+  const industryLinks =
+    data.industriesServed && data.industriesServed.length > 0
+      ? data.industriesServed.slice(0, 3)
+      : [];
+
+  return (
+    <section
+      className="border-t py-10"
+      style={{
+        borderColor: "var(--theme-card-border)",
+        background: "var(--theme-section-alt)",
+        transition: "background 300ms ease, border-color 300ms ease",
+      }}
+    >
+      <div className="ps-container">
+        <div
+          className="mb-3 text-[10px] font-medium uppercase tracking-[0.16em]"
+          style={{ color: "var(--theme-text-muted)" }}
+        >
+          References
+        </div>
+        <p
+          className="max-w-3xl text-pretty text-sm leading-relaxed"
+          style={{ color: "var(--theme-text-secondary)" }}
+        >
+          Want proof?{" "}
+          <Link
+            href="/case-studies"
+            className="underline underline-offset-2 transition-colors hover:text-[#0D95E8]"
+            style={{ color: "var(--theme-text-primary)" }}
+          >
+            See our case studies.
+          </Link>{" "}
+          Need a specific service?{" "}
+          <Link
+            href="/services"
+            className="underline underline-offset-2 transition-colors hover:text-[#0D95E8]"
+            style={{ color: "var(--theme-text-primary)" }}
+          >
+            Browse all services.
+          </Link>{" "}
+          Exploring our product line?{" "}
+          <Link
+            href="/products"
+            className="underline underline-offset-2 transition-colors hover:text-[#0D95E8]"
+            style={{ color: "var(--theme-text-primary)" }}
+          >
+            Browse all products.
+          </Link>{" "}
+          Want to know who we are?{" "}
+          <Link
+            href="/about"
+            className="underline underline-offset-2 transition-colors hover:text-[#0D95E8]"
+            style={{ color: "var(--theme-text-primary)" }}
+          >
+            Read about Preisser Solutions.
+          </Link>
+          {industryLinks.length > 0 && (
+            <>
+              {" "}
+              We also serve these {data.city} industries:{" "}
+              {industryLinks.map((ind, i) => {
+                return (
+                  <span key={ind}>
+                    <Link
+                      href="/services"
+                      className="underline underline-offset-2 transition-colors hover:text-[#0D95E8]"
+                      style={{ color: "var(--theme-text-primary)" }}
+                    >
+                      {ind}
+                    </Link>
+                    {i < industryLinks.length - 1 ? ", " : "."}
+                  </span>
+                );
+              })}
+            </>
+          )}
+        </p>
+      </div>
+    </section>
+  );
+}
+
 // ── CTA ──────────────────────────────────────────────────────
 function CtaSection({ data }: { data: LocationPageData }) {
   return (
@@ -1265,6 +1404,7 @@ export function LocationPage({
       <IndustriesSection data={data} />
       <FaqSection data={data} />
       <RelatedLocationsSection data={data} allLocationSlugs={allLocationSlugs} />
+      <AuthoritativeSourcesSection data={data} />
       <CtaSection data={data} />
     </article>
   );
