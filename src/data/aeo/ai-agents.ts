@@ -122,7 +122,7 @@ export const pageData: AeoPageData = {
     { label: "Custom AI agents in Hays, KS", href: "/services/custom-ai-agents-hays-ks" },
     { label: "Business automation systems", href: "/business-automation" },
     { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
-    { label: "AI customer reactivation campaigns", href: "/use-cases/ai-customer-reactivation-campaigns" },
+    { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
     { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
     { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
     { label: "What is AI automation for small businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },

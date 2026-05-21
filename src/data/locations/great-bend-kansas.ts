@@ -33,7 +33,7 @@ export const locationData: LocationPageData = {
     { name: "Larned, KS", distanceLabel: "20 mi SW" },
     { name: "Lyons, KS", distanceLabel: "30 mi E" },
     { name: "Hutchinson, KS", href: "/locations/hutchinson-kansas-web-design", distanceLabel: "55 mi E" },
-    { name: "Russell, KS", href: "/locations/russell-kansas-web-design", distanceLabel: "30 mi N" },
+    { name: "Russell, KS", distanceLabel: "30 mi N" },
     { name: "Pratt, KS", href: "/locations/pratt-kansas-web-design", distanceLabel: "50 mi S" },
     { name: "Ellinwood, KS", distanceLabel: "10 mi E" },
     { name: "Hays, KS", href: "/locations/hays-kansas", distanceLabel: "50 mi NW" },
@@ -98,5 +98,5 @@ export const locationData: LocationPageData = {
     secondaryLink: { label: "See case studies", href: "/case-studies" },
   },
 
-  relatedLocations: ["hays-kansas", "russell-kansas-web-design", "salina-kansas", "western-kansas-web-design"],
+  relatedLocations: ["hays-kansas", "salina-kansas", "western-kansas-web-design", "wakeeney-kansas-web-design"],
 };

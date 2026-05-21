@@ -35,7 +35,7 @@ export const locationData: LocationPageData = {
   },
 
   nearbyAreas: [
-    { name: "Russell, KS", href: "/locations/russell-kansas-web-design", distanceLabel: "28 mi E" },
+    { name: "Russell, KS", distanceLabel: "28 mi E" },
     { name: "Great Bend, KS", href: "/locations/great-bend-kansas", distanceLabel: "50 mi E" },
     { name: "WaKeeney, KS", href: "/locations/wakeeney-kansas-web-design", distanceLabel: "37 mi W" },
     { name: "Plainville, KS", distanceLabel: "15 mi N" },
@@ -117,7 +117,6 @@ export const locationData: LocationPageData = {
     "hays-kansas-web-applications",
     "hays-kansas-web-development",
     "hays-kansas-web-design",
-    "russell-kansas-web-design",
     "great-bend-kansas",
     "wakeeney-kansas-web-design",
     "wichita-kansas",

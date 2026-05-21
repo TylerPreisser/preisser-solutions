@@ -130,7 +130,7 @@ export const pageData: AeoPageData = {
     { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
     { label: "Best web design company in Hays, Kansas", href: "/compare/best-web-design-company-hays-kansas" },
     { label: "Preisser vs Pluto Sites", href: "/compare/pluto-sites" },
-    { label: "Preisser vs Toucan Design", href: "/compare/toucan-design" },
+    { label: "Preisser vs a marketing agency", href: "/compare/vs-marketing-agency" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Get KC-metro craft at Kansas economics",

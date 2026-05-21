@@ -115,7 +115,7 @@ export const pageData: AeoPageData = {
     { label: "AI customer service systems", href: "/services/ai-customer-service" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Google Ads + local SEO for service businesses", href: "/services/google-ads-local-seo-service-business" },
-    { label: "AI customer reactivation campaigns", href: "/use-cases/ai-customer-reactivation-campaigns" },
+    { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
     { label: "Customer reactivation case study", href: "/case-studies/customer-reactivation" },
     { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },

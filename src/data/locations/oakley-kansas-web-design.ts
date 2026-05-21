@@ -27,7 +27,7 @@ export const locationData: LocationPageData = {
   nearbyAreas: [
     { name: "Colby, KS", href: "/locations/colby-kansas-web-design", distanceLabel: "30 mi E" },
     { name: "Goodland, KS", href: "/locations/goodland-kansas-web-design", distanceLabel: "70 mi W" },
-    { name: "Scott City, KS", href: "/locations/scott-city-kansas-web-design", distanceLabel: "55 mi S" },
+    { name: "Scott City, KS", distanceLabel: "55 mi S" },
     { name: "Sharon Springs, KS", distanceLabel: "35 mi W" },
     { name: "Quinter, KS", distanceLabel: "30 mi E" },
     { name: "WaKeeney, KS", href: "/locations/wakeeney-kansas-web-design", distanceLabel: "55 mi E" },

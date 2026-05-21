@@ -32,7 +32,7 @@ export const locationData: LocationPageData = {
     { name: "Stockton, KS", distanceLabel: "20 mi SE" },
     { name: "Plainville, KS", distanceLabel: "30 mi S" },
     { name: "Colby, KS", href: "/locations/colby-kansas-web-design", distanceLabel: "80 mi W" },
-    { name: "Russell, KS", href: "/locations/russell-kansas-web-design", distanceLabel: "60 mi SE" },
+    { name: "Russell, KS", distanceLabel: "60 mi SE" },
   ],
 
   serviceCards: STANDARD_SERVICE_CARDS,
@@ -93,5 +93,5 @@ export const locationData: LocationPageData = {
     secondaryLink: { label: "See case studies", href: "/case-studies" },
   },
 
-  relatedLocations: ["hays-kansas", "norton-kansas-web-design", "smith-center-kansas-web-design", "hill-city-kansas-web-design"],
+  relatedLocations: ["hays-kansas", "norton-kansas-web-design", "western-kansas-web-design", "hill-city-kansas-web-design"],
 };

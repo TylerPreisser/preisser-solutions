@@ -202,7 +202,6 @@ function KansasMap() {
   const dots: Dot[] = [
     { slug: "hays-kansas",                           label: "Hays",          lat: 38.879, lng: -99.327, region: "western" },
     { slug: "ellis-kansas-web-design",               label: "Ellis",         lat: 38.934, lng: -99.556, region: "western" },
-    { slug: "russell-kansas-web-design",             label: "Russell",       lat: 38.900, lng: -98.860, region: "western" },
     { slug: "wakeeney-kansas-web-design",            label: "WaKeeney",      lat: 39.026, lng: -99.881, region: "western" },
     { slug: "colby-kansas-web-design",               label: "Colby",         lat: 39.395, lng: -101.052, region: "western" },
     { slug: "goodland-kansas-web-design",            label: "Goodland",      lat: 39.352, lng: -101.711, region: "western" },
@@ -210,15 +209,12 @@ function KansasMap() {
     { slug: "hill-city-kansas-web-design",           label: "Hill City",     lat: 39.367, lng: -99.837, region: "western" },
     { slug: "norton-kansas-web-design",              label: "Norton",        lat: 39.836, lng: -99.893, region: "western" },
     { slug: "phillipsburg-kansas-web-design",        label: "Phillipsburg",  lat: 39.748, lng: -99.318, region: "western" },
-    { slug: "smith-center-kansas-web-design",        label: "Smith Ctr",     lat: 39.778, lng: -98.797, region: "western" },
-    { slug: "scott-city-kansas-web-design",          label: "Scott City",    lat: 38.474, lng: -100.906, region: "western" },
     { slug: "great-bend-kansas",                     label: "Great Bend",    lat: 38.364, lng: -98.765, region: "central" },
     { slug: "salina-kansas",                         label: "Salina",        lat: 38.840, lng: -97.611, region: "central" },
     { slug: "hutchinson-kansas-web-design",          label: "Hutchinson",    lat: 38.061, lng: -97.929, region: "central" },
     { slug: "mcpherson-kansas-web-design",           label: "McPherson",     lat: 38.371, lng: -97.664, region: "central" },
     { slug: "newton-kansas-web-design",              label: "Newton",        lat: 38.047, lng: -97.345, region: "central" },
     { slug: "pratt-kansas-web-design",               label: "Pratt",         lat: 37.643, lng: -98.737, region: "central" },
-    { slug: "concordia-kansas-web-design",           label: "Concordia",     lat: 39.571, lng: -97.662, region: "central" },
     { slug: "garden-city-kansas",                    label: "Garden City",   lat: 37.972, lng: -100.872, region: "southwest" },
     { slug: "dodge-city-kansas",                     label: "Dodge City",    lat: 37.752, lng: -100.017, region: "southwest" },
     { slug: "liberal-kansas-web-design",             label: "Liberal",       lat: 37.043, lng: -100.921, region: "south" },
@@ -231,8 +227,6 @@ function KansasMap() {
     { slug: "lenexa-kansas-custom-software",         label: "Lenexa",        lat: 38.952, lng: -94.733, region: "kc" },
     { slug: "wichita-kansas",                        label: "Wichita",       lat: 37.687, lng: -97.330, region: "south" },
     { slug: "derby-kansas-web-design",               label: "Derby",         lat: 37.548, lng: -97.263, region: "south" },
-    { slug: "north-platte-nebraska-web-design",      label: "N. Platte NE",  lat: 41.124, lng: -100.765, region: "border" },
-    { slug: "burlington-colorado-web-design",        label: "Burlington CO", lat: 39.300, lng: -102.270, region: "border" },
   ];
 
   const W = 800;

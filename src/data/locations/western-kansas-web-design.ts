@@ -34,7 +34,7 @@ export const locationData: LocationPageData = {
 
   nearbyAreas: [
     { name: "Hays, KS", href: "/locations/hays-kansas", distanceLabel: "HQ" },
-    { name: "Russell, KS", href: "/locations/russell-kansas-web-design", distanceLabel: "28 mi E of Hays" },
+    { name: "Russell, KS", distanceLabel: "28 mi E of Hays" },
     { name: "Great Bend, KS", href: "/locations/great-bend-kansas", distanceLabel: "50 mi E of Hays" },
     { name: "WaKeeney, KS", href: "/locations/wakeeney-kansas-web-design", distanceLabel: "37 mi W of Hays" },
     { name: "Colby, KS", href: "/locations/colby-kansas-web-design", distanceLabel: "120 mi W of Hays" },
@@ -107,7 +107,6 @@ export const locationData: LocationPageData = {
 
   relatedLocations: [
     "hays-kansas",
-    "russell-kansas-web-design",
     "great-bend-kansas",
     "wakeeney-kansas-web-design",
     "colby-kansas-web-design",

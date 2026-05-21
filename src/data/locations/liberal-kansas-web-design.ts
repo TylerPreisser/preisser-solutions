@@ -27,7 +27,7 @@ export const locationData: LocationPageData = {
   nearbyAreas: [
     { name: "Garden City, KS", href: "/locations/garden-city-kansas", distanceLabel: "85 mi NE" },
     { name: "Dodge City, KS", href: "/locations/dodge-city-kansas", distanceLabel: "100 mi NE" },
-    { name: "Scott City, KS", href: "/locations/scott-city-kansas-web-design", distanceLabel: "100 mi N" },
+    { name: "Scott City, KS", distanceLabel: "100 mi N" },
     { name: "Guymon, OK", distanceLabel: "45 mi S" },
     { name: "Pratt, KS", href: "/locations/pratt-kansas-web-design", distanceLabel: "100 mi E" },
     { name: "Hugoton, KS", distanceLabel: "35 mi E" },

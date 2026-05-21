@@ -19,9 +19,7 @@
 
 import type { LocationPageData } from "@/types/location";
 
-import { locationData as burlingtonColoradoWebDesign } from "./burlington-colorado-web-design";
 import { locationData as colbyKansasWebDesign } from "./colby-kansas-web-design";
-import { locationData as concordiaKansasWebDesign } from "./concordia-kansas-web-design";
 import { locationData as derbyKansasWebDesign } from "./derby-kansas-web-design";
 import { locationData as dodgeCityKansas } from "./dodge-city-kansas";
 import { locationData as dodgeCityKansasWebDesign } from "./dodge-city-kansas-web-design";
@@ -46,18 +44,14 @@ import { locationData as manhattanKansas } from "./manhattan-kansas";
 import { locationData as mcphersonKansasWebDesign } from "./mcpherson-kansas-web-design";
 import { locationData as newtonKansasWebDesign } from "./newton-kansas-web-design";
 import { locationData as nortonKansasWebDesign } from "./norton-kansas-web-design";
-import { locationData as northPlatteNebraskaWebDesign } from "./north-platte-nebraska-web-design";
 import { locationData as oakleyKansasWebDesign } from "./oakley-kansas-web-design";
 import { locationData as overlandParkKansasCustomSoftware } from "./overland-park-kansas-custom-software";
 import { locationData as olatheKansasCustomSoftware } from "./olathe-kansas-custom-software";
 import { locationData as phillipsburgKansasWebDesign } from "./phillipsburg-kansas-web-design";
 import { locationData as prattKansasWebDesign } from "./pratt-kansas-web-design";
-import { locationData as russellKansasWebDesign } from "./russell-kansas-web-design";
 import { locationData as salinaKansas } from "./salina-kansas";
 import { locationData as salinaKansasSeo } from "./salina-kansas-seo";
 import { locationData as salinaKansasWebDesign } from "./salina-kansas-web-design";
-import { locationData as scottCityKansasWebDesign } from "./scott-city-kansas-web-design";
-import { locationData as smithCenterKansasWebDesign } from "./smith-center-kansas-web-design";
 import { locationData as topekaKansas } from "./topeka-kansas";
 import { locationData as wakeeneyKansasWebDesign } from "./wakeeney-kansas-web-design";
 import { locationData as westernKansasWebDesign } from "./western-kansas-web-design";
@@ -69,7 +63,6 @@ export const ALL_LOCATIONS: LocationPageData[] = [
   haysKansasWebApplications,
   haysKansasWebDevelopment,
   haysKansasWebDesign,
-  russellKansasWebDesign,
   greatBendKansas,
   greatBendKansasWebDesign,
   greatBendKansasDigitalMarketing,
@@ -81,8 +74,6 @@ export const ALL_LOCATIONS: LocationPageData[] = [
   oakleyKansasWebDesign,
   nortonKansasWebDesign,
   phillipsburgKansasWebDesign,
-  smithCenterKansasWebDesign,
-  scottCityKansasWebDesign,
   westernKansasWebDesign,
   salinaKansas,
   salinaKansasWebDesign,
@@ -91,7 +82,6 @@ export const ALL_LOCATIONS: LocationPageData[] = [
   mcphersonKansasWebDesign,
   newtonKansasWebDesign,
   prattKansasWebDesign,
-  concordiaKansasWebDesign,
   manhattanKansas,
   junctionCityKansasWebDesign,
   lawrenceKansasWebDesign,
@@ -105,8 +95,6 @@ export const ALL_LOCATIONS: LocationPageData[] = [
   gardenCityKansas,
   dodgeCityKansas,
   dodgeCityKansasWebDesign,
-  northPlatteNebraskaWebDesign,
-  burlingtonColoradoWebDesign,
 ];
 
 export const ALL_LOCATION_SLUGS: Set<string> = new Set(
@@ -139,7 +127,6 @@ export const LOCATION_REGIONS: LocationRegion[] = [
       "hays-kansas-web-development",
       "hays-kansas-web-design",
       "ellis-kansas-web-design",
-      "russell-kansas-web-design",
       "wakeeney-kansas-web-design",
       "colby-kansas-web-design",
       "goodland-kansas-web-design",
@@ -147,8 +134,6 @@ export const LOCATION_REGIONS: LocationRegion[] = [
       "hill-city-kansas-web-design",
       "norton-kansas-web-design",
       "phillipsburg-kansas-web-design",
-      "smith-center-kansas-web-design",
-      "scott-city-kansas-web-design",
       "western-kansas-web-design",
     ],
   },
@@ -167,7 +152,6 @@ export const LOCATION_REGIONS: LocationRegion[] = [
       "mcpherson-kansas-web-design",
       "newton-kansas-web-design",
       "pratt-kansas-web-design",
-      "concordia-kansas-web-design",
     ],
   },
   {
@@ -209,15 +193,6 @@ export const LOCATION_REGIONS: LocationRegion[] = [
       "wichita-kansas",
       "derby-kansas-web-design",
       "liberal-kansas-web-design",
-    ],
-  },
-  {
-    name: "Border Markets",
-    blurb:
-      "Kansas-adjacent cities along the I-70 ag and energy belt — eastern Colorado and southwest Nebraska.",
-    slugs: [
-      "north-platte-nebraska-web-design",
-      "burlington-colorado-web-design",
     ],
   },
 ];

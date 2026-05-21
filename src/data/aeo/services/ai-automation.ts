@@ -117,7 +117,7 @@ export const pageData: AeoPageData = {
     { label: "AI consulting in Hays, KS", href: "/services/ai-consulting-hays-ks" },
     { label: "Custom AI agents in Hays, KS", href: "/services/custom-ai-agents-hays-ks" },
     { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
-    { label: "AI customer reactivation campaigns", href: "/use-cases/ai-customer-reactivation-campaigns" },
+    { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
     { label: "Automate invoice processing", href: "/use-cases/automate-invoice-processing-small-business" },
     { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
     { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },

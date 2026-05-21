@@ -29,7 +29,7 @@ export const locationData: LocationPageData = {
     { name: "Oberlin, KS", distanceLabel: "45 mi W" },
     { name: "Hill City, KS", href: "/locations/hill-city-kansas-web-design", distanceLabel: "45 mi S" },
     { name: "Hays, KS", href: "/locations/hays-kansas", distanceLabel: "80 mi S" },
-    { name: "Smith Center, KS", href: "/locations/smith-center-kansas-web-design", distanceLabel: "55 mi E" },
+    { name: "Smith Center, KS", distanceLabel: "55 mi E" },
     { name: "Stockton, KS", distanceLabel: "25 mi SE" },
     { name: "Colby, KS", href: "/locations/colby-kansas-web-design", distanceLabel: "65 mi SW" },
     { name: "Atwood, KS", distanceLabel: "35 mi W" },
@@ -93,5 +93,5 @@ export const locationData: LocationPageData = {
     secondaryLink: { label: "See case studies", href: "/case-studies" },
   },
 
-  relatedLocations: ["hays-kansas", "phillipsburg-kansas-web-design", "hill-city-kansas-web-design", "smith-center-kansas-web-design"],
+  relatedLocations: ["hays-kansas", "phillipsburg-kansas-web-design", "hill-city-kansas-web-design", "western-kansas-web-design"],
 };

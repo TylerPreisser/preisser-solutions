@@ -27,7 +27,7 @@ export const locationData: LocationPageData = {
   nearbyAreas: [
     { name: "Hays, KS", href: "/locations/hays-kansas", distanceLabel: "15 mi E" },
     { name: "WaKeeney, KS", href: "/locations/wakeeney-kansas-web-design", distanceLabel: "22 mi W" },
-    { name: "Russell, KS", href: "/locations/russell-kansas-web-design", distanceLabel: "40 mi E" },
+    { name: "Russell, KS", distanceLabel: "40 mi E" },
     { name: "Plainville, KS", distanceLabel: "25 mi N" },
     { name: "La Crosse, KS", distanceLabel: "30 mi SE" },
     { name: "Victoria, KS", distanceLabel: "8 mi E" },
@@ -93,5 +93,5 @@ export const locationData: LocationPageData = {
     secondaryLink: { label: "See case studies", href: "/case-studies" },
   },
 
-  relatedLocations: ["hays-kansas", "wakeeney-kansas-web-design", "russell-kansas-web-design", "hill-city-kansas-web-design"],
+  relatedLocations: ["hays-kansas", "wakeeney-kansas-web-design", "western-kansas-web-design", "hill-city-kansas-web-design"],
 };

@@ -127,7 +127,7 @@ export const pageData: AeoPageData = {
     { label: "Custom websites", href: "/services/custom-websites" },
     { label: "AI customer service systems", href: "/services/ai-customer-service" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
-    { label: "AI customer reactivation campaigns", href: "/use-cases/ai-customer-reactivation-campaigns" },
+    { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
     { label: "What is AI automation for small businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },
     { label: "Shopify vs custom e-commerce", href: "/compare/shopify-vs-custom-ecommerce" },
     { label: "Contact Preisser Solutions", href: "/contact" },

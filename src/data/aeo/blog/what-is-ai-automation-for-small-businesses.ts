@@ -110,7 +110,7 @@ export const pageData: AeoPageData = {
     { label: "Business automation systems", href: "/business-automation" },
     { label: "AI consulting in Hays, KS", href: "/services/ai-consulting-hays-ks" },
     { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
-    { label: "AI customer reactivation campaigns", href: "/use-cases/ai-customer-reactivation-campaigns" },
+    { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
     { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
     { label: "AI vs traditional workflow automation", href: "/blog/ai-vs-traditional-workflow-automation" },
     { label: "AI automation cost in Kansas", href: "/blog/ai-automation-cost-kansas" },

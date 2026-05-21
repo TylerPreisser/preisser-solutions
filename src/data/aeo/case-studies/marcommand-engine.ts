@@ -159,7 +159,7 @@ export const pageData: AeoPageData = {
     { label: "Google Ads + local SEO for service businesses", href: "/services/google-ads-local-seo-service-business" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Lead tracking for website + Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
-    { label: "AI customer reactivation campaigns", href: "/use-cases/ai-customer-reactivation-campaigns" },
+    { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
     { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
     { label: "How to track marketing ROI", href: "/blog/track-marketing-roi" },
     { label: "Contact Preisser Solutions", href: "/contact" },

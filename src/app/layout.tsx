@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Fraunces, Newsreader, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import "@/styles/globals.css";
 import { Header } from "@/components/layout/header";
@@ -20,6 +20,31 @@ const inter = Inter({
   display: "swap",
   variable: "--font-inter",
   weight: ["400", "500", "600", "700", "800"],
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-fraunces",
+  weight: "variable",
+  style: ["normal", "italic"],
+  axes: ["SOFT", "WONK", "opsz"],
+});
+
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-newsreader",
+  weight: "variable",
+  style: ["normal", "italic"],
+  axes: ["opsz"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-mono",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -264,7 +289,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${fraunces.variable} ${newsreader.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <head>
         {/* Anti-flash script: must be first in <head>, runs sync before paint */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />

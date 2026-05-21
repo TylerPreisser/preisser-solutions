@@ -103,5 +103,5 @@ export const locationData: LocationPageData = {
     secondaryLink: { label: "See case studies", href: "/case-studies" },
   },
 
-  relatedLocations: ["hays-kansas", "russell-kansas-web-design", "colby-kansas-web-design", "western-kansas-web-design"],
+  relatedLocations: ["hays-kansas", "ellis-kansas-web-design", "colby-kansas-web-design", "western-kansas-web-design"],
 };

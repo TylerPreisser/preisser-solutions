@@ -27,7 +27,7 @@ export const locationData: LocationPageData = {
   nearbyAreas: [
     { name: "Colby, KS", href: "/locations/colby-kansas-web-design", distanceLabel: "55 mi E" },
     { name: "Oakley, KS", href: "/locations/oakley-kansas-web-design", distanceLabel: "70 mi E" },
-    { name: "Burlington, CO", href: "/locations/burlington-colorado-web-design", distanceLabel: "35 mi W" },
+    { name: "Burlington, CO", distanceLabel: "35 mi W" },
     { name: "St. Francis, KS", distanceLabel: "45 mi N" },
     { name: "Tribune, KS", distanceLabel: "70 mi S" },
     { name: "Sharon Springs, KS", distanceLabel: "30 mi E" },
@@ -93,5 +93,5 @@ export const locationData: LocationPageData = {
     secondaryLink: { label: "See case studies", href: "/case-studies" },
   },
 
-  relatedLocations: ["colby-kansas-web-design", "hays-kansas", "oakley-kansas-web-design", "burlington-colorado-web-design"],
+  relatedLocations: ["colby-kansas-web-design", "hays-kansas", "oakley-kansas-web-design", "western-kansas-web-design"],
 };

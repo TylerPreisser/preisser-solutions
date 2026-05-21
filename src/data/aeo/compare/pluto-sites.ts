@@ -214,7 +214,7 @@ export const pageData: AeoPageData = {
     { label: "Topeka, KS services", href: "/locations/topeka-kansas" },
     { label: "Iron & Oak Podcast case study", href: "/case-studies/iron-and-oak-podcast" },
     { label: "Preisser vs KC Web Designer", href: "/compare/kc-web-designer" },
-    { label: "Preisser vs Toucan Design", href: "/compare/toucan-design" },
+    { label: "Preisser vs a marketing agency", href: "/compare/vs-marketing-agency" },
     { label: "Best web design company in Hays, Kansas", href: "/compare/best-web-design-company-hays-kansas" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
