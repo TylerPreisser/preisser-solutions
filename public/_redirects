@@ -168,45 +168,45 @@
 
 # Privacy fix (2026-05-20) — old case-study URLs with real company names removed from public
 # site. Canonical replacements use anonymized framings per CANONICAL-PROJECTS.md.
-/case-studies/astrus-insurance       /case-studies/alliant-mgu-insurance     301
-/case-studies/astrus-insurance/      /case-studies/alliant-mgu-insurance     301
-/case-studies/sunrise-transportation /case-studies/chicago-bus-operator      301
-/case-studies/sunrise-transportation/ /case-studies/chicago-bus-operator     301
-/case-studies/cassidy-hvac           /case-studies/cassidy-hvac-reactivation 301
-/case-studies/cassidy-hvac/          /case-studies/cassidy-hvac-reactivation 301
-/case-studies/customer-reactivation  /case-studies/cassidy-hvac-reactivation 301
+/case-studies/astrus-insurance /case-studies/alliant-mgu-insurance 301
+/case-studies/astrus-insurance/ /case-studies/alliant-mgu-insurance 301
+/case-studies/sunrise-transportation /case-studies/chicago-bus-operator 301
+/case-studies/sunrise-transportation/ /case-studies/chicago-bus-operator 301
+/case-studies/cassidy-hvac /case-studies/cassidy-hvac-reactivation 301
+/case-studies/cassidy-hvac/ /case-studies/cassidy-hvac-reactivation 301
+/case-studies/customer-reactivation /case-studies/cassidy-hvac-reactivation 301
 /case-studies/customer-reactivation/ /case-studies/cassidy-hvac-reactivation 301
-/case-studies/hg-oil-holdings        /case-studies/hg-oil-inventory-system   301
-/case-studies/hg-oil-holdings/       /case-studies/hg-oil-inventory-system   301
+/case-studies/hg-oil-holdings /case-studies/hg-oil-inventory-system 301
+/case-studies/hg-oil-holdings/ /case-studies/hg-oil-inventory-system 301
 
 # GSC crawled-not-indexed deletions (Wave 3, 2026-05-21) — 11 pages cut.
 # Confirmed not-indexed by Google: 3 known slugs. 8 heuristic cuts (thin template
 # pages: <100 lines, no headlineMetric, low-pop or out-of-state markets).
 
 # Locations (6 cuts)
-/locations/russell-kansas-web-design          /locations/hays-kansas                  301
-/locations/russell-kansas-web-design/         /locations/hays-kansas                  301
-/locations/smith-center-kansas-web-design     /locations/western-kansas-web-design    301
-/locations/smith-center-kansas-web-design/    /locations/western-kansas-web-design    301
-/locations/scott-city-kansas-web-design       /locations/garden-city-kansas           301
-/locations/scott-city-kansas-web-design/      /locations/garden-city-kansas           301
-/locations/north-platte-nebraska-web-design   /locations/hays-kansas                  301
-/locations/north-platte-nebraska-web-design/  /locations/hays-kansas                  301
-/locations/burlington-colorado-web-design     /locations/goodland-kansas-web-design   301
-/locations/burlington-colorado-web-design/    /locations/goodland-kansas-web-design   301
-/locations/concordia-kansas-web-design        /locations/salina-kansas                301
-/locations/concordia-kansas-web-design/       /locations/salina-kansas                301
+/locations/russell-kansas-web-design /locations/hays-kansas 301
+/locations/russell-kansas-web-design/ /locations/hays-kansas 301
+/locations/smith-center-kansas-web-design /locations/western-kansas-web-design 301
+/locations/smith-center-kansas-web-design/ /locations/western-kansas-web-design 301
+/locations/scott-city-kansas-web-design /locations/garden-city-kansas 301
+/locations/scott-city-kansas-web-design/ /locations/garden-city-kansas 301
+/locations/north-platte-nebraska-web-design /locations/hays-kansas 301
+/locations/north-platte-nebraska-web-design/ /locations/hays-kansas 301
+/locations/burlington-colorado-web-design /locations/goodland-kansas-web-design 301
+/locations/burlington-colorado-web-design/ /locations/goodland-kansas-web-design 301
+/locations/concordia-kansas-web-design /locations/salina-kansas 301
+/locations/concordia-kansas-web-design/ /locations/salina-kansas 301
 
 # Compare pages (4 cuts)
-/compare/lost-highway-media                   /case-studies                           301
-/compare/lost-highway-media/                  /case-studies                           301
-/compare/imagemakers                          /compare/vs-marketing-agency            301
-/compare/imagemakers/                         /compare/vs-marketing-agency            301
-/compare/toucan-design                        /compare/vs-marketing-agency            301
-/compare/toucan-design/                       /compare/vs-marketing-agency            301
-/compare/conceptualized-design                /compare/vs-marketing-agency            301
-/compare/conceptualized-design/               /compare/vs-marketing-agency            301
+/compare/lost-highway-media /case-studies 301
+/compare/lost-highway-media/ /case-studies 301
+/compare/imagemakers /compare/vs-marketing-agency 301
+/compare/imagemakers/ /compare/vs-marketing-agency 301
+/compare/toucan-design /compare/vs-marketing-agency 301
+/compare/toucan-design/ /compare/vs-marketing-agency 301
+/compare/conceptualized-design /compare/vs-marketing-agency 301
+/compare/conceptualized-design/ /compare/vs-marketing-agency 301
 
 # Use-case pages (1 cut)
-/use-cases/ai-customer-reactivation-campaigns  /products/customer-reactivation-agent  301
-/use-cases/ai-customer-reactivation-campaigns/ /products/customer-reactivation-agent  301
+/use-cases/ai-customer-reactivation-campaigns /products/customer-reactivation-agent 301
+/use-cases/ai-customer-reactivation-campaigns/ /products/customer-reactivation-agent 301
