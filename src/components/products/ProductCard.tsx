@@ -23,17 +23,21 @@ export function ProductCard({ product, index }: Props) {
 
   return (
     <motion.div
-      layout
+      layout="position"
       layoutId={`product-card-${product.slug}`}
       initial={reduceMotion ? false : { opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       exit={reduceMotion ? undefined : { opacity: 0, y: -8, scale: 0.98 }}
       transition={{
-        layout: { type: "spring", stiffness: 300, damping: 30 },
-        opacity:  { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
-        y:        { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
-        delay: Math.min(index * 0.05, 0.35),
+        layout: { duration: 0.15 },
+        opacity:  { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+        y:        { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+        delay: Math.min(index * 0.04, 0.25),
       }}
+      /* 3B — content-visibility: auto skips rendering off-screen cards entirely.
+         contain-intrinsic-size prevents layout shift when cards scroll into view.
+         This is the single biggest perf win for 16 cards on mobile. */
+      style={{ contentVisibility: "auto", containIntrinsicSize: "0 380px" }}
     >
       <Link
         href={`/products/${product.slug}`}

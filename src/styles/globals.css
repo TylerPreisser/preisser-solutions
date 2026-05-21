@@ -369,6 +369,116 @@ ul, ol {
 
 } /* end @layer components — typography, buttons, container, section-wrapper */
 
+/* ── Product Catalog Filter Chips — mobile scroll + snap ──────
+   BUG FIX: 6 chips (All + 5 categories) overflow on a 375px viewport.
+   On mobile (<768px) we switch from flex-wrap to a single horizontal
+   scroll row with CSS snap so chips feel tactile on touch. On desktop
+   we keep the centered, wrapping layout. */
+
+/* Base chip style — shared across mobile and desktop */
+.ps-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid;
+  padding: 0.5rem 1rem;        /* 8px 16px — matches original px-4 py-2 */
+  font-size: 0.875rem;         /* text-sm */
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 150ms ease;
+  /* iOS Safari: eliminate 300ms tap delay and blue tap highlight */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Desktop: flex-wrap row — chips wrap naturally, no scroll */
+@media (min-width: 768px) {
+  .ps-chips-wrapper {
+    /* no special positioning needed on desktop */
+  }
+
+  .ps-chips-scroll {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .ps-chip {
+    /* Standard desktop chip height: ~36px */
+    min-height: 36px;
+  }
+}
+
+/* Mobile: single horizontal scroll row with snap + hidden scrollbar.
+   Fade masks on left/right via pseudo-elements signal scrollable content. */
+@media (max-width: 767px) {
+  .ps-chips-wrapper {
+    position: relative;
+    /* Extend horizontally beyond ps-container padding so chips reach edge-to-edge.
+       Negative margin + matching padding exposes the scroll area to the screen edge
+       while keeping content flush with the container grid. */
+    margin-left: calc(var(--container-padding) * -1);
+    margin-right: calc(var(--container-padding) * -1);
+  }
+
+  /* Left fade: indicates there's more content to the left */
+  .ps-chips-wrapper::before,
+  .ps-chips-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 32px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .ps-chips-wrapper::before {
+    left: 0;
+    /* Fade from section background to transparent — works for both dark/light themes */
+    background: linear-gradient(to right, var(--theme-section-alt), transparent);
+  }
+
+  .ps-chips-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, var(--theme-section-alt), transparent);
+  }
+
+  .ps-chips-scroll {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    overflow-x: auto;
+    /* CSS snap: mandatory snapping so each chip flicks into a comfortable position */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;  /* iOS Safari momentum scrolling */
+    /* Hide the scrollbar on all platforms */
+    scrollbar-width: none;   /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge legacy */
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  /* Hide webkit scrollbar (Chrome/Safari) */
+  .ps-chips-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ps-chip {
+    /* Apple HIG minimum touch target: 44×44px.
+       Chips are visually ~36px tall (padding) so we use min-height to guarantee
+       the tap target even if visual height is smaller. */
+    min-height: 44px;
+    scroll-snap-align: center;
+    flex-shrink: 0;  /* prevent chips from compressing — keep natural width */
+  }
+}
+
 /* ── Header / Nav (Stripe-pattern) ──────────────────────────── */
 .ps-header {
   position: fixed;

@@ -1,3 +1,4 @@
+"use client";
 /**
  * ProductVisual — Procedural SVG visual identity per product.
  *
@@ -6,8 +7,13 @@
  * of 3–4 engineering-schematic primitives (rings, arcs, lines, polygons).
  *
  * All CSS animations are slow loops (6–12s). Respects prefers-reduced-motion.
+ *
+ * Mobile perf: IntersectionObserver pauses animations when off-screen (3A).
+ * CSS media query disables animations on mobile (<768px) entirely (3C).
+ * Animations gated behind .products-page-ready class (3E deferred start).
  */
 
+import { useRef, useState, useEffect } from "react";
 import type { ProductCategory } from "@/types/product";
 
 interface Props {
@@ -279,6 +285,22 @@ function ProductIcon({
 export function ProductVisual({ slug, category, size = "card", className = "" }: Props) {
   const colors = CATEGORY_COLORS[category];
 
+  // 3A — IntersectionObserver: pause animations when the card is off-screen.
+  // rootMargin: "200px" pre-activates 200px before it enters viewport so there's
+  // no visible pop when the user scrolls to a card.
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   const gradId = `pv-grad-${slug}`;
   const glowId = `pv-glow-${slug}`;
 
@@ -353,11 +375,13 @@ export function ProductVisual({ slug, category, size = "card", className = "" }:
       />
 
       <svg
+        ref={svgRef}
         viewBox={`0 0 ${vw} ${vh}`}
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
         className="h-full w-full"
         style={{ display: "block" }}
+        data-paused={!visible ? "true" : undefined}
       >
         <defs>
           <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
@@ -517,6 +541,44 @@ export function ProductVisual({ slug, category, size = "card", className = "" }:
             0%, 100% { transform: scale(1); opacity: 1; }
             50%       { transform: scale(1.12); opacity: 0.75; }
           }
+
+          /* 3A — Off-screen: pause all animations to save GPU/CPU cycles.
+             data-paused is set by IntersectionObserver in the React component. */
+          [data-paused="true"] [style*="pv-spin-${slug.replace(/-/g, "")}"],
+          [data-paused="true"] [style*="pv-spin-rev-${slug.replace(/-/g, "")}"],
+          [data-paused="true"] [style*="pv-pulse-${slug.replace(/-/g, "")}"] {
+            animation-play-state: paused;
+          }
+
+          /* 3C — Mobile: disable all ring/arc animations on small screens.
+             They run on the CPU compositor thread which is extremely limited on
+             budget Android/iPhone SE. Static visuals look cleaner than dropped frames.
+             Desktop (≥768px) retains full animation when not reduced-motion. */
+          @media (max-width: 767px) {
+            [style*="pv-spin-${slug.replace(/-/g, "")}"],
+            [style*="pv-spin-rev-${slug.replace(/-/g, "")}"],
+            [style*="pv-pulse-${slug.replace(/-/g, "")}"] {
+              animation: none !important;
+            }
+          }
+
+          /* 3E — Deferred start: animations only activate once the page has finished
+             its initial Framer Motion fade-in (300ms after mount).
+             .products-page-ready is added by ProductGrid's useEffect. */
+          @media (min-width: 768px) {
+            [style*="pv-spin-${slug.replace(/-/g, "")}"],
+            [style*="pv-spin-rev-${slug.replace(/-/g, "")}"],
+            [style*="pv-pulse-${slug.replace(/-/g, "")}"] {
+              animation-play-state: paused;
+            }
+            .products-page-ready [style*="pv-spin-${slug.replace(/-/g, "")}"],
+            .products-page-ready [style*="pv-spin-rev-${slug.replace(/-/g, "")}"],
+            .products-page-ready [style*="pv-pulse-${slug.replace(/-/g, "")}"] {
+              animation-play-state: running;
+            }
+          }
+
+          /* prefers-reduced-motion: kill all animations regardless of viewport */
           @media (prefers-reduced-motion: reduce) {
             [style*="pv-spin-${slug.replace(/-/g, "")}"],
             [style*="pv-spin-rev-${slug.replace(/-/g, "")}"],

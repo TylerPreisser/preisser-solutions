@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { ProductCard } from "@/components/products/ProductCard";
@@ -52,6 +52,20 @@ const CATEGORY_META: Record<ProductCategory, CategoryMeta> = {
 export function ProductGrid({ products }: Props) {
   const reduceMotion = useReducedMotion();
   const [activeFilter, setActiveFilter] = useState<string>("All");
+  const [pageReady, setPageReady] = useState(false);
+
+  // 3E — defer SVG animation start until 300ms after first paint
+  // so Framer Motion's initial fade-in completes first (mobile perf fix)
+  useEffect(() => {
+    const id = setTimeout(() => {
+      document.body.classList.add("products-page-ready");
+      setPageReady(true);
+    }, 300);
+    return () => {
+      clearTimeout(id);
+      document.body.classList.remove("products-page-ready");
+    };
+  }, []);
 
   const isFiltered = activeFilter !== "All";
 
@@ -113,7 +127,7 @@ export function ProductGrid({ products }: Props) {
               Sixteen AI agents we&apos;ve built for real clients. Pick one, scope it for your business, and ship it.
             </p>
 
-            {/* Stats strip */}
+            {/* Stats strip — 2 stats: agents count + pedigree */}
             <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4 sm:mt-12">
               <div>
                 <div
@@ -123,19 +137,7 @@ export function ProductGrid({ products }: Props) {
                   {products.length}
                 </div>
                 <div className="mt-1 text-[11px] uppercase tracking-[0.14em]" style={{ color: "var(--theme-text-muted)" }}>
-                  Products
-                </div>
-              </div>
-              <div className="h-10 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
-              <div>
-                <div
-                  className="bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl"
-                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
-                >
-                  {MAIN_CATEGORIES.length}
-                </div>
-                <div className="mt-1 text-[11px] uppercase tracking-[0.14em]" style={{ color: "var(--theme-text-muted)" }}>
-                  Categories
+                  Agents
                 </div>
               </div>
               <div className="h-10 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
@@ -161,41 +163,55 @@ export function ProductGrid({ products }: Props) {
         style={{ background: "var(--theme-section-alt)" }}
       >
         <div className="ps-container">
-          {/* Filter chips */}
-          <div className="mb-10 flex flex-wrap items-center gap-2">
-            {availableCategories.map((f) => {
-              const active = f === activeFilter;
-              return (
-                <button
-                  key={f}
-                  type="button"
-                  onClick={() => setActiveFilter(f)}
-                  className="inline-flex cursor-pointer items-center rounded-full border px-4 py-2 text-sm font-medium transition-all duration-150"
-                  style={
-                    active
-                      ? {
-                          borderColor: "var(--color-primary)",
-                          background: "var(--color-primary)",
-                          color: "#FFFFFF",
-                          boxShadow: "0 8px 30px rgba(13,149,232,0.25)",
-                        }
-                      : {
-                          borderColor: "var(--theme-card-border)",
-                          background: "var(--theme-card-bg)",
-                          color: "var(--theme-text-secondary)",
-                        }
-                  }
-                >
-                  {f}
-                </button>
-              );
-            })}
+          {/* Filter chips
+              Desktop (≥768px): flex-wrap centered row.
+              Mobile (<768px): single horizontal scroll row with snap points.
+              Touch targets min 44px tall (Apple HIG) via min-h on mobile.
+              Scrollbar hidden via ps-chips-scroll class in globals.css.
+              Left/right fade masks signal scrollability without overflow:hidden clipping. */}
+          <div className="mb-10">
+            {/* Outer wrapper: on mobile, provides the fade-edge masks via pseudo-elements */}
+            <div className="ps-chips-wrapper">
+              <div className="ps-chips-scroll">
+                {availableCategories.map((f) => {
+                  const active = f === activeFilter;
+                  return (
+                    <button
+                      key={f}
+                      type="button"
+                      onClick={() => setActiveFilter(f)}
+                      className="ps-chip"
+                      style={
+                        active
+                          ? {
+                              borderColor: "var(--color-primary)",
+                              background: "var(--color-primary)",
+                              color: "#FFFFFF",
+                              boxShadow: "0 8px 30px rgba(13,149,232,0.25)",
+                            }
+                          : {
+                              borderColor: "var(--theme-card-border)",
+                              background: "var(--theme-card-bg)",
+                              color: "var(--theme-text-secondary)",
+                            }
+                      }
+                    >
+                      {f}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
           {/* ── FILTERED VIEW — flat grid ── */}
+          {/* 3D: layout="position" is cheaper than full layout on mobile — skips
+              size recalculation and only animates x/y position. Duration capped at
+              150ms to avoid janky 300ms spring on low-end mobile CPUs. */}
           {isFiltered ? (
             <motion.div
-              layout
+              layout="position"
+              transition={{ duration: 0.15 }}
               className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             >
               <AnimatePresence mode="popLayout">
