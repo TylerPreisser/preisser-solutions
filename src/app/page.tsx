@@ -72,9 +72,10 @@ export default function HomePage() {
       <section
         aria-label="Services and locations"
         style={{
-          background: "var(--color-dark, #0A1628)",
-          color: "#FFFFFF",
+          background: "var(--theme-section-alt)",
+          color: "var(--theme-text-primary)",
           padding: "clamp(60px, 8vw, 100px) 24px",
+          transition: "background 300ms ease, color 300ms ease",
         }}
       >
         <div style={{ maxWidth: 1120, margin: "0 auto" }}>

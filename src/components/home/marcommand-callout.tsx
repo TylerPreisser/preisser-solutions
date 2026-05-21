@@ -54,9 +54,6 @@ export function MarCommandCallout() {
       id="marcommand"
       aria-labelledby="marcommand-heading"
     >
-      {/* Decorative glow — top left */}
-      <div className="ps-marcommand-glow" aria-hidden="true" />
-
       <div className="ps-marcommand-inner ps-marcommand-inner--stacked" ref={contentRef}>
 
         {/* Copy block: heading + body + closer + CTA */}
