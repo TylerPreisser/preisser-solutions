@@ -29,7 +29,7 @@ export const locationData: LocationPageData = {
   },
 
   nearbyAreas: [
-    { name: "Junction City, KS", distanceLabel: "15 mi W" },
+    { name: "Junction City, KS", href: "/locations/junction-city-kansas-web-design", distanceLabel: "15 mi W" },
     { name: "Wamego, KS", distanceLabel: "15 mi E" },
     { name: "St. George, KS", distanceLabel: "10 mi E" },
     { name: "Westmoreland, KS", distanceLabel: "25 mi N" },

@@ -39,8 +39,8 @@ export const locationData: LocationPageData = {
     { name: "Great Bend, KS", href: "/locations/great-bend-kansas", distanceLabel: "50 mi E" },
     { name: "WaKeeney, KS", href: "/locations/wakeeney-kansas-web-design", distanceLabel: "37 mi W" },
     { name: "Plainville, KS", distanceLabel: "15 mi N" },
-    { name: "Ellis, KS", distanceLabel: "15 mi W" },
-    { name: "Hill City, KS", distanceLabel: "55 mi NW" },
+    { name: "Ellis, KS", href: "/locations/ellis-kansas-web-design", distanceLabel: "15 mi W" },
+    { name: "Hill City, KS", href: "/locations/hill-city-kansas-web-design", distanceLabel: "55 mi NW" },
     { name: "La Crosse, KS", distanceLabel: "40 mi SE" },
     { name: "Stockton, KS", distanceLabel: "40 mi N" },
   ],
@@ -113,6 +113,10 @@ export const locationData: LocationPageData = {
   },
 
   relatedLocations: [
+    "hays-kansas-custom-software",
+    "hays-kansas-web-applications",
+    "hays-kansas-web-development",
+    "hays-kansas-web-design",
     "russell-kansas-web-design",
     "great-bend-kansas",
     "wakeeney-kansas-web-design",

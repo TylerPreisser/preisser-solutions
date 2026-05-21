@@ -29,13 +29,13 @@ export const locationData: LocationPageData = {
   },
 
   nearbyAreas: [
-    { name: "Lawrence, KS", distanceLabel: "25 mi E" },
+    { name: "Lawrence, KS", href: "/locations/lawrence-kansas-web-design", distanceLabel: "25 mi E" },
     { name: "Manhattan, KS", href: "/locations/manhattan-kansas", distanceLabel: "60 mi W" },
     { name: "Holton, KS", distanceLabel: "30 mi N" },
     { name: "Hiawatha, KS", distanceLabel: "70 mi NE" },
     { name: "Ottawa, KS", distanceLabel: "55 mi SE" },
     { name: "Emporia, KS", distanceLabel: "70 mi SW" },
-    { name: "Junction City, KS", distanceLabel: "70 mi W" },
+    { name: "Junction City, KS", href: "/locations/junction-city-kansas-web-design", distanceLabel: "70 mi W" },
     { name: "Atchison, KS", distanceLabel: "55 mi NE" },
   ],
 

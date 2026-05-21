@@ -30,9 +30,9 @@ export const locationData: LocationPageData = {
 
   nearbyAreas: [
     { name: "Abilene, KS", distanceLabel: "25 mi E" },
-    { name: "McPherson, KS", distanceLabel: "25 mi S" },
+    { name: "McPherson, KS", href: "/locations/mcpherson-kansas-web-design", distanceLabel: "25 mi S" },
     { name: "Lindsborg, KS", distanceLabel: "20 mi S" },
-    { name: "Concordia, KS", distanceLabel: "55 mi NW" },
+    { name: "Concordia, KS", href: "/locations/concordia-kansas-web-design", distanceLabel: "55 mi NW" },
     { name: "Ellsworth, KS", distanceLabel: "35 mi W" },
     { name: "Hays, KS", href: "/locations/hays-kansas", distanceLabel: "95 mi W" },
     { name: "Great Bend, KS", href: "/locations/great-bend-kansas", distanceLabel: "65 mi SW" },

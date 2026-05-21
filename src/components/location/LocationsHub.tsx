@@ -155,6 +155,11 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
         </div>
       </section>
 
+      {/* ── Kansas Map ───────────────────────────────────────── */}
+      <div className="hidden md:block" aria-hidden="true">
+        <KansasMap />
+      </div>
+
       {/* ── Regions ─────────────────────────────────────────── */}
       <section
         className="relative pb-32 pt-20 md:pt-24"
@@ -175,6 +180,219 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
         </div>
       </section>
     </div>
+  );
+}
+
+/**
+ * Inline SVG map of Kansas + immediate border cities.
+ * Coordinate math: KS bounding box lat 37.0–40.2, lng -102.2–-94.6
+ *   x = (102.2 + lng) / 7.6 * 800   (lng is negative, so 102.2 + neg = dist from W edge)
+ *   y = (40.2 - lat) / 3.2 * 500
+ * Each dot is a clickable Link to the location page.
+ */
+function KansasMap() {
+  type Dot = {
+    slug: string;
+    label: string;
+    lat: number;
+    lng: number;
+    region: "western" | "central" | "southwest" | "northeast" | "kc" | "south" | "border";
+  };
+
+  const dots: Dot[] = [
+    { slug: "hays-kansas",                           label: "Hays",          lat: 38.879, lng: -99.327, region: "western" },
+    { slug: "ellis-kansas-web-design",               label: "Ellis",         lat: 38.934, lng: -99.556, region: "western" },
+    { slug: "russell-kansas-web-design",             label: "Russell",       lat: 38.900, lng: -98.860, region: "western" },
+    { slug: "wakeeney-kansas-web-design",            label: "WaKeeney",      lat: 39.026, lng: -99.881, region: "western" },
+    { slug: "colby-kansas-web-design",               label: "Colby",         lat: 39.395, lng: -101.052, region: "western" },
+    { slug: "goodland-kansas-web-design",            label: "Goodland",      lat: 39.352, lng: -101.711, region: "western" },
+    { slug: "oakley-kansas-web-design",              label: "Oakley",        lat: 39.129, lng: -100.852, region: "western" },
+    { slug: "hill-city-kansas-web-design",           label: "Hill City",     lat: 39.367, lng: -99.837, region: "western" },
+    { slug: "norton-kansas-web-design",              label: "Norton",        lat: 39.836, lng: -99.893, region: "western" },
+    { slug: "phillipsburg-kansas-web-design",        label: "Phillipsburg",  lat: 39.748, lng: -99.318, region: "western" },
+    { slug: "smith-center-kansas-web-design",        label: "Smith Ctr",     lat: 39.778, lng: -98.797, region: "western" },
+    { slug: "scott-city-kansas-web-design",          label: "Scott City",    lat: 38.474, lng: -100.906, region: "western" },
+    { slug: "great-bend-kansas",                     label: "Great Bend",    lat: 38.364, lng: -98.765, region: "central" },
+    { slug: "salina-kansas",                         label: "Salina",        lat: 38.840, lng: -97.611, region: "central" },
+    { slug: "hutchinson-kansas-web-design",          label: "Hutchinson",    lat: 38.061, lng: -97.929, region: "central" },
+    { slug: "mcpherson-kansas-web-design",           label: "McPherson",     lat: 38.371, lng: -97.664, region: "central" },
+    { slug: "newton-kansas-web-design",              label: "Newton",        lat: 38.047, lng: -97.345, region: "central" },
+    { slug: "pratt-kansas-web-design",               label: "Pratt",         lat: 37.643, lng: -98.737, region: "central" },
+    { slug: "concordia-kansas-web-design",           label: "Concordia",     lat: 39.571, lng: -97.662, region: "central" },
+    { slug: "garden-city-kansas",                    label: "Garden City",   lat: 37.972, lng: -100.872, region: "southwest" },
+    { slug: "dodge-city-kansas",                     label: "Dodge City",    lat: 37.752, lng: -100.017, region: "southwest" },
+    { slug: "liberal-kansas-web-design",             label: "Liberal",       lat: 37.043, lng: -100.921, region: "south" },
+    { slug: "manhattan-kansas",                      label: "Manhattan",     lat: 39.184, lng: -96.572, region: "northeast" },
+    { slug: "junction-city-kansas-web-design",       label: "Junction City", lat: 39.028, lng: -96.831, region: "northeast" },
+    { slug: "lawrence-kansas-web-design",            label: "Lawrence",      lat: 38.972, lng: -95.235, region: "northeast" },
+    { slug: "topeka-kansas",                         label: "Topeka",        lat: 39.048, lng: -95.677, region: "northeast" },
+    { slug: "olathe-kansas-custom-software",         label: "Olathe",        lat: 38.884, lng: -94.820, region: "kc" },
+    { slug: "overland-park-kansas-custom-software",  label: "OP",            lat: 38.982, lng: -94.669, region: "kc" },
+    { slug: "lenexa-kansas-custom-software",         label: "Lenexa",        lat: 38.952, lng: -94.733, region: "kc" },
+    { slug: "wichita-kansas",                        label: "Wichita",       lat: 37.687, lng: -97.330, region: "south" },
+    { slug: "derby-kansas-web-design",               label: "Derby",         lat: 37.548, lng: -97.263, region: "south" },
+    { slug: "north-platte-nebraska-web-design",      label: "N. Platte NE",  lat: 41.124, lng: -100.765, region: "border" },
+    { slug: "burlington-colorado-web-design",        label: "Burlington CO", lat: 39.300, lng: -102.270, region: "border" },
+  ];
+
+  const W = 800;
+  const H = 520;
+  const LNG_W = -102.4;
+  const LNG_E = -94.4;
+  const LAT_N = 40.5;
+  const LAT_S = 36.8;
+  const LNG_SPAN = LNG_E - LNG_W;
+  const LAT_SPAN = LAT_N - LAT_S;
+
+  const toX = (lng: number) => ((lng - LNG_W) / LNG_SPAN) * W;
+  const toY = (lat: number) => ((LAT_N - lat) / LAT_SPAN) * H;
+
+  const regionColors: Record<string, string> = {
+    western:   "#0D95E8",
+    central:   "#34D399",
+    southwest: "#F59E0B",
+    northeast: "#6366F1",
+    kc:        "#8B5CF6",
+    south:     "#EC4899",
+    border:    "#94A3B8",
+  };
+
+  return (
+    <section
+      className="relative py-10"
+      style={{ background: "var(--theme-section-alt)", transition: "background 300ms ease" }}
+    >
+      <div className="ps-container">
+        <div className="mb-5 flex items-center justify-between">
+          <div
+            className="text-xs font-medium uppercase tracking-[0.14em]"
+            style={{ color: "var(--theme-text-muted)" }}
+          >
+            Service Area Map
+          </div>
+          <div className="flex flex-wrap gap-4 text-[11px]" style={{ color: "var(--theme-text-muted)" }}>
+            {(["western", "central", "southwest", "northeast", "kc", "south", "border"] as const).map((r) => (
+              <span key={r} className="flex items-center gap-1.5">
+                <span
+                  className="inline-block h-2 w-2 rounded-full"
+                  style={{ background: regionColors[r] }}
+                />
+                {r === "western" ? "Western KS" :
+                  r === "central" ? "Central KS" :
+                  r === "southwest" ? "SW Kansas" :
+                  r === "northeast" ? "NE & Flint Hills" :
+                  r === "kc" ? "KC Metro" :
+                  r === "south" ? "South-Central" :
+                  "Border Markets"}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div
+          className="w-full overflow-hidden rounded-xl"
+          style={{
+            border: "1px solid var(--theme-card-border)",
+            background: "var(--theme-card-bg)",
+          }}
+        >
+          <svg
+            viewBox={`0 0 ${W} ${H}`}
+            width="100%"
+            className="block"
+            aria-label="Map of Kansas service area"
+            role="img"
+          >
+            {/* Grid lines */}
+            {[37.5, 38.0, 38.5, 39.0, 39.5, 40.0].map((lat) => (
+              <line
+                key={`lat-${lat}`}
+                x1={0}
+                y1={toY(lat)}
+                x2={W}
+                y2={toY(lat)}
+                stroke="currentColor"
+                strokeWidth="0.5"
+                opacity="0.07"
+              />
+            ))}
+            {[-95, -96, -97, -98, -99, -100, -101, -102].map((lng) => (
+              <line
+                key={`lng-${lng}`}
+                x1={toX(lng)}
+                y1={0}
+                x2={toX(lng)}
+                y2={H}
+                stroke="currentColor"
+                strokeWidth="0.5"
+                opacity="0.07"
+              />
+            ))}
+
+            {/* Kansas state border (approximate rectangle) */}
+            <rect
+              x={toX(-102.05)}
+              y={toY(40.0)}
+              width={toX(-94.62) - toX(-102.05)}
+              height={toY(37.0) - toY(40.0)}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              opacity="0.15"
+              rx="2"
+            />
+
+            {/* State label */}
+            <text
+              x={toX(-98.5)}
+              y={toY(38.5)}
+              textAnchor="middle"
+              fontSize="14"
+              fontWeight="600"
+              fill="currentColor"
+              opacity="0.08"
+              letterSpacing="6"
+            >
+              KANSAS
+            </text>
+
+            {/* Location dots */}
+            {dots.map((dot) => {
+              const x = toX(dot.lng);
+              const y = toY(dot.lat);
+              const color = regionColors[dot.region];
+              return (
+                <g key={dot.slug}>
+                  <Link href={`/locations/${dot.slug}`}>
+                    <circle
+                      cx={x}
+                      cy={y}
+                      r={7}
+                      fill={color}
+                      opacity="0.22"
+                    />
+                    <circle
+                      cx={x}
+                      cy={y}
+                      r={4}
+                      fill={color}
+                      className="cursor-pointer transition-opacity hover:opacity-90"
+                    />
+                    <title>{dot.label}</title>
+                  </Link>
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+        <p
+          className="mt-3 text-center text-[11px]"
+          style={{ color: "var(--theme-text-muted)" }}
+        >
+          Click any dot to visit that location page. Hover to see city name.
+        </p>
+      </div>
+    </section>
   );
 }
 

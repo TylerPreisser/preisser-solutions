@@ -33,8 +33,8 @@ export const locationData: LocationPageData = {
     { name: "Larned, KS", distanceLabel: "20 mi SW" },
     { name: "Lyons, KS", distanceLabel: "30 mi E" },
     { name: "Russell, KS", href: "/locations/russell-kansas-web-design", distanceLabel: "30 mi N" },
-    { name: "Hutchinson, KS", distanceLabel: "55 mi E" },
-    { name: "Pratt, KS", distanceLabel: "50 mi S" },
+    { name: "Hutchinson, KS", href: "/locations/hutchinson-kansas-web-design", distanceLabel: "55 mi E" },
+    { name: "Pratt, KS", href: "/locations/pratt-kansas-web-design", distanceLabel: "50 mi S" },
     { name: "Ellinwood, KS", distanceLabel: "10 mi E" },
   ],
 

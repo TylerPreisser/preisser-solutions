@@ -37,7 +37,7 @@ export const locationData: LocationPageData = {
     { name: "Ellis, KS", distanceLabel: "22 mi E" },
     { name: "Quinter, KS", distanceLabel: "25 mi W" },
     { name: "Ogallah, KS", distanceLabel: "10 mi E" },
-    { name: "Hill City, KS", distanceLabel: "30 mi N" },
+    { name: "Hill City, KS", href: "/locations/hill-city-kansas-web-design", distanceLabel: "30 mi N" },
     { name: "Ransom, KS", distanceLabel: "30 mi S" },
     { name: "Trego Center, KS", distanceLabel: "5 mi N" },
     { name: "Collyer, KS", distanceLabel: "13 mi W" },

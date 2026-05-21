@@ -29,13 +29,13 @@ export const locationData: LocationPageData = {
   },
 
   nearbyAreas: [
-    { name: "Derby, KS", distanceLabel: "10 mi S" },
+    { name: "Derby, KS", href: "/locations/derby-kansas-web-design", distanceLabel: "10 mi S" },
     { name: "Andover, KS", distanceLabel: "10 mi E" },
     { name: "Bel Aire, KS", distanceLabel: "8 mi NE" },
-    { name: "Newton, KS", distanceLabel: "25 mi N" },
+    { name: "Newton, KS", href: "/locations/newton-kansas-web-design", distanceLabel: "25 mi N" },
     { name: "El Dorado, KS", distanceLabel: "30 mi E" },
     { name: "Augusta, KS", distanceLabel: "20 mi E" },
-    { name: "Hutchinson, KS", distanceLabel: "50 mi NW" },
+    { name: "Hutchinson, KS", href: "/locations/hutchinson-kansas-web-design", distanceLabel: "50 mi NW" },
     { name: "Park City, KS", distanceLabel: "8 mi N" },
   ],
 

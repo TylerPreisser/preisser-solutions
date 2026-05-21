@@ -9,7 +9,7 @@ export const locationData: LocationPageData = {
   slug: "colby-kansas-web-design",
   city: "Colby",
   state: "Kansas",
-  region: "Far Western Kansas",
+  region: "Western Kansas",
   coordinates: { lat: 39.395, lng: -101.052 },
 
   metaTitle: "Web Design & Custom Software in Colby, KS | Preisser Solutions",
@@ -29,8 +29,8 @@ export const locationData: LocationPageData = {
   },
 
   nearbyAreas: [
-    { name: "Goodland, KS", distanceLabel: "55 mi W" },
-    { name: "Oakley, KS", distanceLabel: "30 mi E" },
+    { name: "Goodland, KS", href: "/locations/goodland-kansas-web-design", distanceLabel: "55 mi W" },
+    { name: "Oakley, KS", href: "/locations/oakley-kansas-web-design", distanceLabel: "30 mi E" },
     { name: "Quinter, KS", distanceLabel: "55 mi E" },
     { name: "Hoxie, KS", distanceLabel: "35 mi N" },
     { name: "Atwood, KS", distanceLabel: "40 mi NW" },
