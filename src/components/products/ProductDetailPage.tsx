@@ -1,7 +1,7 @@
 "use client";
 
 import { JsonLd } from "@/components/seo/JsonLd";
-import { DetailSpread } from "@/components/products/editorial/DetailSpread";
+import { ProductDetailContent } from "@/components/products/ProductDetailContent";
 import type { ProductData } from "@/types/product";
 
 interface LinkedCaseStudy {
@@ -69,13 +69,13 @@ export function ProductDetailPage({
   };
 
   return (
-    <div className="products-editorial">
+    <>
       <JsonLd data={[serviceSchema, breadcrumbSchema]} />
-      <DetailSpread
+      <ProductDetailContent
         product={product}
         relatedProducts={relatedProducts}
         linkedCaseStudy={linkedCaseStudy}
       />
-    </div>
+    </>
   );
 }

@@ -95,32 +95,6 @@
   --theme-carousel-btn-color: rgba(255,255,255,0.8);
 }
 
-/* ── Editorial Product Palette ─────────────────────────────── */
-/* Scoped to .products-editorial — does NOT affect the rest of the site */
-
-.products-editorial {
-  --ed-bg: #F5F0E8;
-  --ed-surface: #FFFCF6;
-  --ed-ink: #1A1812;
-  --ed-ink-secondary: #5A554B;
-  --ed-ink-muted: #8C8576;
-  --ed-hairline: rgba(26, 24, 18, 0.10);
-  --ed-grid: rgba(26, 24, 18, 0.04);
-  --ed-brand-blue: #0D95E8;
-  --ed-cyan: #80E9FF;
-  --ed-mint: #00D4AA;
-}
-
-[data-theme="dark"] .products-editorial {
-  --ed-bg: #0E0D0A;
-  --ed-surface: #16140F;
-  --ed-ink: #E8E2D5;
-  --ed-ink-secondary: #9E9787;
-  --ed-ink-muted: #605A4E;
-  --ed-hairline: rgba(232, 226, 213, 0.10);
-  --ed-grid: rgba(232, 226, 213, 0.04);
-}
-
 /* ── Light mode overrides ──────────────────────────────────── */
 /* (Nav pill light-mode override lives next to the main .ps-header-blur rule below) */
 
@@ -222,36 +196,6 @@ ul, ol {
   }
 }
 
-/* ── Editorial Drop-Cap ────────────────────────────────────── */
-/* Used by .ed-drop-cap paragraphs in editorial product spreads */
-.ed-drop-cap::first-letter {
-  font-family: var(--font-fraunces), serif;
-  font-weight: 700;
-  font-style: italic;
-  font-size: 4.5em;
-  line-height: 0.75;
-  float: left;
-  margin-right: 0.1em;
-  margin-top: 0.08em;
-  color: var(--ed-ink);
-  font-feature-settings: 'ss01', 'ss02';
-}
-
-/* ── Editorial Pulse (Labs breathing dot) ──────────────────── */
-@keyframes ed-pulse-breath {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.4; transform: scale(0.85); }
-}
-
-.ed-pulse {
-  animation: ed-pulse-breath 2.4s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ed-pulse {
-    animation: none;
-  }
-}
 
 /* ── Component classes in @layer components so Tailwind utilities win ── */
 /* All .ps-* component rules live here. Tailwind's @layer utilities has
