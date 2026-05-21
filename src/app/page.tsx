@@ -68,6 +68,59 @@ export default function HomePage() {
       <MarCommandCallout />
       <WhyUs />
       <CaseStudies />
+      <section
+        aria-label="Agent catalog"
+        style={{
+          background: "var(--theme-dark)",
+          color: "var(--theme-text-on-dark)",
+          padding: "clamp(40px, 5vw, 64px) 24px",
+          textAlign: "center",
+          transition: "background 300ms ease",
+        }}
+      >
+        <div style={{ maxWidth: 720, margin: "0 auto" }}>
+          <span
+            style={{
+              display: "inline-block",
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "var(--theme-primary)",
+              marginBottom: "0.75rem",
+            }}
+          >
+            New
+          </span>
+          <p
+            style={{
+              fontSize: "clamp(1.25rem, 3vw, 1.75rem)",
+              fontWeight: 700,
+              margin: "0 0 0.5rem",
+              lineHeight: 1.25,
+            }}
+          >
+            <a
+              href="/agents"
+              style={{
+                color: "var(--theme-text-on-dark)",
+                textDecoration: "none",
+              }}
+            >
+              Browse the agent catalog →
+            </a>
+          </p>
+          <p
+            style={{
+              fontSize: "1rem",
+              color: "var(--theme-text-muted)",
+              margin: 0,
+            }}
+          >
+            19 production-grade agents built from real client engagements.
+          </p>
+        </div>
+      </section>
       {/* Crawlable service + location link cluster — discoverable internal-link graph for crawlers + AI engines. */}
       <section
         aria-label="Services and locations"
