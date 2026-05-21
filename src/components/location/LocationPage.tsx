@@ -286,7 +286,14 @@ function Hero({ data }: { data: LocationPageData }) {
   const cityState = `${data.city}, ${data.state}`;
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#0A1628] text-white">
+    <section
+      className="relative isolate overflow-hidden"
+      style={{
+        background: "var(--theme-section-switchable)",
+        color: "var(--theme-text-primary)",
+        transition: "background 300ms ease, color 300ms ease",
+      }}
+    >
       {/* Decorative gradient mesh */}
       <div
         aria-hidden="true"
@@ -340,7 +347,7 @@ function Hero({ data }: { data: LocationPageData }) {
         className="pointer-events-none absolute inset-0 -z-10 opacity-[0.05]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
+            "linear-gradient(var(--theme-text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--theme-text-primary) 1px, transparent 1px)",
           backgroundSize: "80px 80px",
           maskImage:
             "radial-gradient(ellipse at center, black 40%, transparent 80%)",
@@ -354,19 +361,30 @@ function Hero({ data }: { data: LocationPageData }) {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Breadcrumb */}
-          <div className="mb-10 flex items-center gap-3 text-sm text-white/50">
+          <div
+            className="mb-10 flex items-center gap-3 text-sm"
+            style={{ color: "var(--theme-text-muted)" }}
+          >
             <Link
               href="/locations"
-              className="transition-colors hover:text-white"
+              className="transition-colors"
+              style={{ color: "var(--theme-text-secondary)" }}
             >
               Locations
             </Link>
-            <span className="text-white/30">/</span>
-            <span className="text-white/70">{cityState}</span>
+            <span style={{ color: "var(--theme-text-muted)" }}>/</span>
+            <span style={{ color: "var(--theme-text-secondary)" }}>{cityState}</span>
           </div>
 
           {/* Eyebrow chip with pin */}
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#80E9FF] backdrop-blur">
+          <div
+            className="mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium uppercase tracking-[0.14em] backdrop-blur"
+            style={{
+              border: "1px solid var(--theme-card-border)",
+              background: "var(--theme-card-bg)",
+              color: "var(--color-primary)",
+            }}
+          >
             <MapPin className="h-3.5 w-3.5" />
             {data.hero.eyebrow}
           </div>
@@ -377,32 +395,50 @@ function Hero({ data }: { data: LocationPageData }) {
           </h1>
 
           {/* Subheadline */}
-          <p className="mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-white/70 sm:text-xl">
+          <p
+            className="mt-8 max-w-2xl text-pretty text-lg leading-relaxed sm:text-xl"
+            style={{ color: "var(--theme-text-secondary)" }}
+          >
             {data.hero.subheadline}
           </p>
 
           {/* Answer paragraph */}
-          <div className="mt-10 max-w-3xl rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm sm:p-7">
-            <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.14em] text-white/40">
+          <div
+            className="mt-10 max-w-3xl rounded-2xl p-6 backdrop-blur-sm sm:p-7"
+            style={{
+              border: "1px solid var(--theme-card-border)",
+              background: "var(--theme-card-bg)",
+            }}
+          >
+            <div
+              className="mb-3 text-[11px] font-medium uppercase tracking-[0.14em]"
+              style={{ color: "var(--theme-text-muted)" }}
+            >
               Overview
             </div>
-            <p className="text-pretty text-base leading-relaxed text-white/75 sm:text-[17px]">
+            <p
+              className="text-pretty text-base leading-relaxed sm:text-[17px]"
+              style={{ color: "var(--theme-text-secondary)" }}
+            >
               {data.hero.answerParagraph}
             </p>
           </div>
 
           {/* Region + coords inline strip */}
           {(data.region || data.coordinates) && (
-            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-xs uppercase tracking-[0.14em] text-white/40">
+            <div
+              className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-xs uppercase tracking-[0.14em]"
+              style={{ color: "var(--theme-text-muted)" }}
+            >
               {data.region && (
                 <div className="flex items-center gap-2">
-                  <span className="inline-block h-1 w-1 rounded-full bg-[#80E9FF]" />
+                  <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
                   Region · {data.region}
                 </div>
               )}
               {data.coordinates && (
                 <div className="flex items-center gap-2">
-                  <span className="inline-block h-1 w-1 rounded-full bg-[#80E9FF]" />
+                  <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
                   {data.coordinates.lat.toFixed(3)}°N,{" "}
                   {Math.abs(data.coordinates.lng).toFixed(3)}°W
                 </div>
@@ -413,7 +449,10 @@ function Hero({ data }: { data: LocationPageData }) {
       </div>
 
       {/* Bottom edge */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-px"
+        style={{ background: "var(--theme-card-border)" }}
+      />
     </section>
   );
 }
@@ -447,15 +486,32 @@ function NearbyAreasSection({ data }: { data: LocationPageData }) {
   if (data.nearbyAreas.length === 0) return null;
 
   return (
-    <section className="relative border-b border-[#E2E8F0] bg-white py-20 sm:py-24">
+    <section
+      className="relative border-b py-20 sm:py-24"
+      style={{
+        borderColor: "var(--theme-card-border)",
+        background: "var(--theme-section-switchable)",
+        transition: "background 300ms ease, border-color 300ms ease",
+      }}
+    >
       <div className="ps-container">
         <div className="mb-10 flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-[#F6F9FC] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#475569]">
-              <span className="inline-block h-1 w-1 rounded-full bg-[#0D95E8]" />
+            <div
+              className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
+              style={{
+                border: "1px solid var(--theme-card-border)",
+                background: "var(--theme-section-alt)",
+                color: "var(--theme-text-secondary)",
+              }}
+            >
+              <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
               Service area
             </div>
-            <h2 className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] text-[#0A1628] sm:text-4xl">
+            <h2
+              className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] sm:text-4xl"
+              style={{ color: "var(--theme-text-primary)" }}
+            >
               Areas we serve near {data.city}
             </h2>
           </div>
@@ -464,15 +520,27 @@ function NearbyAreasSection({ data }: { data: LocationPageData }) {
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {data.nearbyAreas.map((area, idx) => {
             const inner = (
-              <div className="flex h-full flex-col justify-between gap-2 rounded-xl border border-[#E2E8F0] bg-white px-4 py-4 transition-all hover:-translate-y-0.5 hover:border-[#0D95E8]/40 hover:shadow-[0_12px_30px_-15px_rgba(13,149,232,0.25)]">
+              <div
+                className="flex h-full flex-col justify-between gap-2 rounded-xl px-4 py-4 transition-all hover:-translate-y-0.5 hover:border-[#0D95E8]/40 hover:shadow-[0_12px_30px_-15px_rgba(13,149,232,0.25)]"
+                style={{
+                  border: "1px solid var(--theme-card-border)",
+                  background: "var(--theme-result-card-bg)",
+                }}
+              >
                 <div className="flex items-center gap-2.5">
                   <MapPin className="h-3.5 w-3.5 shrink-0 text-[#0D95E8]" />
-                  <span className="text-sm font-medium text-[#0A1628]">
+                  <span
+                    className="text-sm font-medium"
+                    style={{ color: "var(--theme-text-primary)" }}
+                  >
                     {area.name}
                   </span>
                 </div>
                 {area.distanceLabel && (
-                  <div className="text-[11px] uppercase tracking-[0.12em] text-[#94A3B8]">
+                  <div
+                    className="text-[11px] uppercase tracking-[0.12em]"
+                    style={{ color: "var(--theme-text-muted)" }}
+                  >
                     {area.distanceLabel}
                   </div>
                 )}
@@ -512,14 +580,30 @@ function ServiceCardsSection({ data }: { data: LocationPageData }) {
   if (data.serviceCards.length === 0) return null;
 
   return (
-    <section className="relative bg-[#F6F9FC] py-24 sm:py-28">
+    <section
+      className="relative py-24 sm:py-28"
+      style={{
+        background: "var(--theme-section-alt)",
+        transition: "background 300ms ease",
+      }}
+    >
       <div className="ps-container">
         <div className="mb-14 max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#475569]">
-            <span className="inline-block h-1 w-1 rounded-full bg-[#0D95E8]" />
+          <div
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
+            style={{
+              border: "1px solid var(--theme-card-border)",
+              background: "var(--theme-result-card-bg)",
+              color: "var(--theme-text-secondary)",
+            }}
+          >
+            <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
             What we build
           </div>
-          <h2 className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] text-[#0A1628] sm:text-4xl">
+          <h2
+            className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] sm:text-4xl"
+            style={{ color: "var(--theme-text-primary)" }}
+          >
             What we build for {data.city} businesses
           </h2>
         </div>
@@ -548,7 +632,13 @@ function ServiceCardsSection({ data }: { data: LocationPageData }) {
 
 function ServiceCard({ card }: { card: LocationPageData["serviceCards"][number] }) {
   const inner = (
-    <div className="group relative flex h-full flex-col rounded-2xl border border-[#E2E8F0] bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]">
+    <div
+      className="group relative flex h-full flex-col rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+      style={{
+        border: "1px solid var(--theme-card-border)",
+        background: "var(--theme-result-card-bg)",
+      }}
+    >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#0D95E8]/10 blur-2xl opacity-0 transition-opacity group-hover:opacity-100"
@@ -556,16 +646,20 @@ function ServiceCard({ card }: { card: LocationPageData["serviceCards"][number] 
       <div className="relative flex items-center justify-center self-start rounded-xl bg-gradient-to-br from-[#0D95E8]/15 to-[#80E9FF]/10 p-3 text-[#0D95E8]">
         <ServiceIconSvg type={card.icon} className="h-6 w-6" />
       </div>
-      <h3 className="relative mt-6 text-lg font-semibold tracking-tight text-[#0A1628]">
+      <h3
+        className="relative mt-6 text-lg font-semibold tracking-tight"
+        style={{ color: "var(--theme-text-primary)" }}
+      >
         {card.title}
       </h3>
       <ul className="relative mt-4 flex-1 space-y-2.5">
         {card.bullets.map((b, j) => (
           <li
             key={j}
-            className="flex items-start gap-2.5 text-[14px] leading-relaxed text-[#475569]"
+            className="flex items-start gap-2.5 text-[14px] leading-relaxed"
+            style={{ color: "var(--theme-text-secondary)" }}
           >
-            <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#0D95E8]" />
+            <span className="mt-2 h-1 w-1 shrink-0 rounded-full" style={{ background: "var(--color-primary)" }} />
             <span>{b}</span>
           </li>
         ))}
@@ -634,7 +728,12 @@ function ProcessSection({ data }: { data: LocationPageData }) {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate overflow-hidden bg-[#0A1628] py-24 text-white sm:py-32"
+      className="relative isolate overflow-hidden py-24 sm:py-32"
+      style={{
+        background: "var(--theme-section-switchable)",
+        color: "var(--theme-text-primary)",
+        transition: "background 300ms ease, color 300ms ease",
+      }}
     >
       <div
         aria-hidden="true"
@@ -647,8 +746,15 @@ function ProcessSection({ data }: { data: LocationPageData }) {
 
       <div className="ps-container relative">
         <div className="mb-14 max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#80E9FF]">
-            <span className="inline-block h-1 w-1 rounded-full bg-[#80E9FF]" />
+          <div
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
+            style={{
+              border: "1px solid var(--theme-card-border)",
+              background: "var(--theme-card-bg)",
+              color: "var(--color-primary)",
+            }}
+          >
+            <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
             How we work
           </div>
           <h2 className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] sm:text-4xl">
@@ -670,13 +776,26 @@ function ProcessSection({ data }: { data: LocationPageData }) {
                 className="relative pl-14 lg:pl-0"
               >
                 {/* Number badge */}
-                <div className="absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-xl border border-white/15 bg-white/[0.04] text-base font-semibold tracking-tight text-[#80E9FF] backdrop-blur lg:relative lg:mb-6 lg:h-11 lg:w-11">
+                <div
+                  className="absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-xl text-base font-semibold tracking-tight backdrop-blur lg:relative lg:mb-6 lg:h-11 lg:w-11"
+                  style={{
+                    border: "1px solid var(--theme-card-border)",
+                    background: "var(--theme-card-bg)",
+                    color: "var(--color-primary)",
+                  }}
+                >
                   {String(idx + 1).padStart(2, "0")}
                 </div>
-                <h3 className="text-base font-semibold tracking-tight text-white">
+                <h3
+                  className="text-base font-semibold tracking-tight"
+                  style={{ color: "var(--theme-text-primary)" }}
+                >
                   {step.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/65">
+                <p
+                  className="mt-2 text-sm leading-relaxed"
+                  style={{ color: "var(--theme-text-secondary)" }}
+                >
                   {step.description}
                 </p>
               </li>
@@ -694,15 +813,31 @@ function CaseStudiesSection({ data }: { data: LocationPageData }) {
   if (!data.caseStudies || data.caseStudies.length === 0) return null;
 
   return (
-    <section className="relative bg-white py-24 sm:py-28">
+    <section
+      className="relative py-24 sm:py-28"
+      style={{
+        background: "var(--theme-section-switchable)",
+        transition: "background 300ms ease",
+      }}
+    >
       <div className="ps-container">
         <div className="mb-12 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-[#F6F9FC] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#475569]">
-              <span className="inline-block h-1 w-1 rounded-full bg-[#0D95E8]" />
+            <div
+              className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
+              style={{
+                border: "1px solid var(--theme-card-border)",
+                background: "var(--theme-section-alt)",
+                color: "var(--theme-text-secondary)",
+              }}
+            >
+              <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
               Local work
             </div>
-            <h2 className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] text-[#0A1628] sm:text-4xl">
+            <h2
+              className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] sm:text-4xl"
+              style={{ color: "var(--theme-text-primary)" }}
+            >
               Work we have shipped
             </h2>
           </div>
@@ -730,24 +865,40 @@ function CaseStudiesSection({ data }: { data: LocationPageData }) {
             >
               <Link
                 href={`/case-studies/${cs.slug}`}
-                className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+                className="group relative flex h-full flex-col overflow-hidden rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+                style={{
+                  border: "1px solid var(--theme-card-border)",
+                  background: "var(--theme-result-card-bg)",
+                }}
               >
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gradient-to-br from-[#0D95E8]/15 to-[#0D95E8]/0 blur-2xl"
                 />
-                <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#94A3B8]">
+                <div
+                  className="text-[11px] font-medium uppercase tracking-[0.14em]"
+                  style={{ color: "var(--theme-text-muted)" }}
+                >
                   {cs.category}
                 </div>
                 <div className="mt-5">
-                  <div className="bg-gradient-to-br from-[#0A1628] to-[#0D95E8] bg-clip-text text-4xl font-semibold leading-none tracking-[-0.03em] text-transparent sm:text-5xl">
+                  <div
+                    className="bg-clip-text text-4xl font-semibold leading-none tracking-[-0.03em] text-transparent sm:text-5xl"
+                    style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #0D95E8)" }}
+                  >
                     {cs.headlineNumber}
                   </div>
                 </div>
-                <h3 className="mt-6 text-lg font-semibold leading-snug text-[#0A1628]">
+                <h3
+                  className="mt-6 text-lg font-semibold leading-snug"
+                  style={{ color: "var(--theme-text-primary)" }}
+                >
                   {cs.clientDisplay}
                 </h3>
-                <p className="mt-3 flex-1 text-[15px] leading-relaxed text-[#475569]">
+                <p
+                  className="mt-3 flex-1 text-[15px] leading-relaxed"
+                  style={{ color: "var(--theme-text-secondary)" }}
+                >
                   {cs.oneLine}
                 </p>
                 <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#0D95E8] group-hover:text-[#0B7BC0]">
@@ -771,14 +922,30 @@ function WhyLocalSection({ data }: { data: LocationPageData }) {
   const regionLabel = data.region ?? `${data.state}`;
 
   return (
-    <section className="relative bg-[#F6F9FC] py-24 sm:py-28">
+    <section
+      className="relative py-24 sm:py-28"
+      style={{
+        background: "var(--theme-section-alt)",
+        transition: "background 300ms ease",
+      }}
+    >
       <div className="ps-container">
         <div className="mb-12 max-w-2xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#475569]">
-            <span className="inline-block h-1 w-1 rounded-full bg-[#0D95E8]" />
+          <div
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
+            style={{
+              border: "1px solid var(--theme-card-border)",
+              background: "var(--theme-result-card-bg)",
+              color: "var(--theme-text-secondary)",
+            }}
+          >
+            <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
             Why local
           </div>
-          <h2 className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] text-[#0A1628] sm:text-4xl">
+          <h2
+            className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] sm:text-4xl"
+            style={{ color: "var(--theme-text-primary)" }}
+          >
             Why work with a {regionLabel} firm
           </h2>
         </div>
@@ -795,12 +962,19 @@ function WhyLocalSection({ data }: { data: LocationPageData }) {
                 delay: idx * 0.07,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="rounded-2xl border border-[#E2E8F0] bg-white p-7"
+              className="rounded-2xl p-7"
+              style={{
+                border: "1px solid var(--theme-card-border)",
+                background: "var(--theme-result-card-bg)",
+              }}
             >
               <div className="mb-4 text-xs font-medium uppercase tracking-[0.14em] text-[#0D95E8]">
                 {String(idx + 1).padStart(2, "0")}
               </div>
-              <p className="text-pretty text-[15px] leading-relaxed text-[#1A1A1A]">
+              <p
+                className="text-pretty text-[15px] leading-relaxed"
+                style={{ color: "var(--theme-text-primary)" }}
+              >
                 {item}
               </p>
             </motion.div>
@@ -816,14 +990,27 @@ function IndustriesSection({ data }: { data: LocationPageData }) {
   if (!data.industriesServed || data.industriesServed.length === 0) return null;
 
   return (
-    <section className="relative border-y border-[#E2E8F0] bg-white py-16">
+    <section
+      className="relative border-y py-16"
+      style={{
+        borderColor: "var(--theme-card-border)",
+        background: "var(--theme-section-switchable)",
+        transition: "background 300ms ease, border-color 300ms ease",
+      }}
+    >
       <div className="ps-container">
         <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#94A3B8]">
+            <div
+              className="text-[11px] font-medium uppercase tracking-[0.14em]"
+              style={{ color: "var(--theme-text-muted)" }}
+            >
               Industries we serve in {data.city}
             </div>
-            <h3 className="mt-3 max-w-md text-balance text-xl font-semibold tracking-[-0.01em] text-[#0A1628]">
+            <h3
+              className="mt-3 max-w-md text-balance text-xl font-semibold tracking-[-0.01em]"
+              style={{ color: "var(--theme-text-primary)" }}
+            >
               Capability built for the work {data.city} actually does
             </h3>
           </div>
@@ -831,7 +1018,12 @@ function IndustriesSection({ data }: { data: LocationPageData }) {
             {data.industriesServed.map((ind) => (
               <span
                 key={ind}
-                className="inline-flex items-center rounded-full border border-[#E2E8F0] bg-[#F6F9FC] px-3.5 py-1.5 text-sm font-medium text-[#0A1628] transition-colors hover:border-[#0D95E8]/40 hover:text-[#0D95E8]"
+                className="inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors hover:border-[#0D95E8]/40 hover:text-[#0D95E8]"
+                style={{
+                  border: "1px solid var(--theme-card-border)",
+                  background: "var(--theme-section-alt)",
+                  color: "var(--theme-text-primary)",
+                }}
               >
                 {ind}
               </span>
@@ -848,14 +1040,30 @@ function FaqSection({ data }: { data: LocationPageData }) {
   if (data.faq.length === 0) return null;
 
   return (
-    <section className="relative bg-[#F6F9FC] py-24 sm:py-28">
+    <section
+      className="relative py-24 sm:py-28"
+      style={{
+        background: "var(--theme-section-alt)",
+        transition: "background 300ms ease",
+      }}
+    >
       <div className="ps-container">
         <div className="mb-12 max-w-2xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#475569]">
-            <span className="inline-block h-1 w-1 rounded-full bg-[#0D95E8]" />
+          <div
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
+            style={{
+              border: "1px solid var(--theme-card-border)",
+              background: "var(--theme-result-card-bg)",
+              color: "var(--theme-text-secondary)",
+            }}
+          >
+            <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
             FAQ
           </div>
-          <h2 className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] text-[#0A1628] sm:text-4xl">
+          <h2
+            className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] sm:text-4xl"
+            style={{ color: "var(--theme-text-primary)" }}
+          >
             FAQ — {data.city}, {data.state}
           </h2>
         </div>
@@ -864,15 +1072,27 @@ function FaqSection({ data }: { data: LocationPageData }) {
           {data.faq.map((q, idx) => (
             <details
               key={idx}
-              className="group rounded-2xl border border-[#E2E8F0] bg-white px-6 py-5 transition-colors open:border-[#0D95E8]/40 hover:border-[#0D95E8]/30"
+              className="group rounded-2xl px-6 py-5 transition-colors open:border-[#0D95E8]/40 hover:border-[#0D95E8]/30"
+              style={{
+                border: "1px solid var(--theme-card-border)",
+                background: "var(--theme-result-card-bg)",
+              }}
             >
               <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-left">
-                <span className="text-base font-medium leading-snug text-[#0A1628]">
+                <span
+                  className="text-base font-medium leading-snug"
+                  style={{ color: "var(--theme-text-primary)" }}
+                >
                   {q.question}
                 </span>
-                <ChevronDown className="mt-0.5 h-4 w-4 shrink-0 text-[#475569] transition-transform duration-200 group-open:rotate-180" />
+                <span style={{ color: "var(--theme-text-secondary)" }}>
+                  <ChevronDown className="mt-0.5 h-4 w-4 shrink-0 transition-transform duration-200 group-open:rotate-180" />
+                </span>
               </summary>
-              <p className="mt-4 text-[15px] leading-relaxed text-[#475569]">
+              <p
+                className="mt-4 text-[15px] leading-relaxed"
+                style={{ color: "var(--theme-text-secondary)" }}
+              >
                 {q.answer}
               </p>
             </details>
@@ -899,13 +1119,26 @@ function RelatedLocationsSection({
   if (valid.length === 0) return null;
 
   return (
-    <section className="border-t border-[#E2E8F0] bg-white py-16">
+    <section
+      className="border-t py-16"
+      style={{
+        borderColor: "var(--theme-card-border)",
+        background: "var(--theme-section-switchable)",
+        transition: "background 300ms ease, border-color 300ms ease",
+      }}
+    >
       <div className="ps-container">
         <div className="mb-8">
-          <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#94A3B8]">
+          <div
+            className="text-[11px] font-medium uppercase tracking-[0.14em]"
+            style={{ color: "var(--theme-text-muted)" }}
+          >
             Other locations we serve
           </div>
-          <h2 className="mt-3 text-balance text-xl font-semibold tracking-[-0.01em] text-[#0A1628]">
+          <h2
+            className="mt-3 text-balance text-xl font-semibold tracking-[-0.01em]"
+            style={{ color: "var(--theme-text-primary)" }}
+          >
             Continue exploring
           </h2>
         </div>
@@ -914,7 +1147,12 @@ function RelatedLocationsSection({
             <Link
               key={slug}
               href={`/locations/${slug}`}
-              className="group inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-[#F6F9FC] px-4 py-2 text-sm font-medium text-[#0A1628] transition-all hover:border-[#0D95E8]/40 hover:bg-white hover:text-[#0D95E8]"
+              className="group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all hover:border-[#0D95E8]/40 hover:text-[#0D95E8]"
+              style={{
+                border: "1px solid var(--theme-card-border)",
+                background: "var(--theme-section-alt)",
+                color: "var(--theme-text-primary)",
+              }}
             >
               <MapPin className="h-3.5 w-3.5 text-[#0D95E8]" />
               {prettifySlug(slug)}
@@ -938,7 +1176,14 @@ function prettifySlug(slug: string): string {
 // ── CTA ──────────────────────────────────────────────────────
 function CtaSection({ data }: { data: LocationPageData }) {
   return (
-    <section className="relative isolate overflow-hidden bg-[#0A1628] py-24 text-white sm:py-32">
+    <section
+      className="relative isolate overflow-hidden py-24 sm:py-32"
+      style={{
+        background: "var(--theme-section-switchable)",
+        color: "var(--theme-text-primary)",
+        transition: "background 300ms ease, color 300ms ease",
+      }}
+    >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
@@ -950,7 +1195,10 @@ function CtaSection({ data }: { data: LocationPageData }) {
         <h2 className="mx-auto max-w-3xl text-balance text-4xl font-semibold leading-[1.1] tracking-[-0.025em] sm:text-5xl md:text-6xl">
           {data.cta.headline}
         </h2>
-        <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-white/70">
+        <p
+          className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed"
+          style={{ color: "var(--theme-text-secondary)" }}
+        >
           {data.cta.subcopy}
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -964,7 +1212,11 @@ function CtaSection({ data }: { data: LocationPageData }) {
           {data.cta.secondaryLink && (
             <Link
               href={data.cta.secondaryLink.href}
-              className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-7 py-3.5 text-base font-medium text-white/90 transition-all hover:border-white/30 hover:bg-white/[0.04]"
+              className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-base font-medium transition-all"
+              style={{
+                border: "1px solid var(--theme-card-border)",
+                color: "var(--theme-text-primary)",
+              }}
             >
               {data.cta.secondaryLink.label}
             </Link>

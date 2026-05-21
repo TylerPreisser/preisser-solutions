@@ -50,15 +50,28 @@ const QUICK_LINKS: Array<{ href: string; label: string }> = [
 
 export default function NotFound() {
   return (
-    <section className="relative flex min-h-[70vh] items-center justify-center bg-[var(--ps-color-dark,#0A1628)] px-6 py-24 text-[var(--ps-color-text-on-dark,#F0F0F0)]">
+    <section
+      className="relative flex min-h-[70vh] items-center justify-center px-6 py-24"
+      style={{
+        background: "var(--theme-section-switchable)",
+        color: "var(--theme-text-primary)",
+        transition: "background 300ms ease, color 300ms ease",
+      }}
+    >
       <div className="mx-auto w-full max-w-3xl text-center">
-        <p className="mb-6 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--ps-color-primary,#0D95E8)]">
+        <p
+          className="mb-6 text-sm font-semibold uppercase tracking-[0.2em]"
+          style={{ color: "var(--color-primary)" }}
+        >
           404
         </p>
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
           This page took a wrong turn.
         </h1>
-        <p className="mx-auto mt-6 max-w-xl text-lg text-[var(--ps-color-text-muted,#9CA3AF)]">
+        <p
+          className="mx-auto mt-6 max-w-xl text-lg"
+          style={{ color: "var(--theme-text-secondary)" }}
+        >
           The URL you followed has moved or never existed. Everything Preisser
           Solutions offers is one click away.
         </p>
@@ -66,13 +79,18 @@ export default function NotFound() {
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-md bg-[var(--ps-color-primary,#0D95E8)] px-6 py-3 font-semibold text-white transition-colors hover:bg-[var(--ps-color-primary-hover,#0B7BC0)]"
+            className="inline-flex items-center justify-center rounded-md px-6 py-3 font-semibold text-white transition-colors"
+            style={{ background: "var(--color-primary)" }}
           >
             Back to homepage
           </Link>
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded-md border border-white/20 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
+            className="inline-flex items-center justify-center rounded-md px-6 py-3 font-semibold transition-colors"
+            style={{
+              border: "1px solid var(--theme-card-border)",
+              color: "var(--theme-text-primary)",
+            }}
           >
             Reach out
           </Link>
@@ -84,7 +102,8 @@ export default function NotFound() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-[var(--ps-color-text-muted,#9CA3AF)] underline-offset-4 transition-colors hover:text-white hover:underline"
+                  className="underline-offset-4 transition-colors hover:underline"
+                  style={{ color: "var(--theme-text-muted)" }}
                 >
                   {link.label}
                 </Link>

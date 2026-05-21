@@ -201,8 +201,9 @@ export function AeoPage({ data }: { data: AeoPageData }) {
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section
         style={{
-          background: "var(--color-dark, #0A1628)",
-          color: "var(--color-text-dark-primary, #FFFFFF)",
+          background: "var(--theme-section-switchable)",
+          color: "var(--theme-text-primary)",
+          transition: "background 300ms ease, color 300ms ease",
           padding: "clamp(80px, 12vw, 140px) 24px clamp(60px, 10vw, 100px)",
           position: "relative",
         }}
@@ -259,8 +260,10 @@ export function AeoPage({ data }: { data: AeoPageData }) {
       {/* ── ANSWER PARAGRAPH (AI quote-bait) ─────────────────────── */}
       <section
         style={{
-          background: "var(--color-light, #F6F9FC)",
+          background: "var(--theme-section-alt)",
+          color: "var(--theme-text-primary)",
           padding: "clamp(60px, 8vw, 100px) 24px",
+          transition: "background 300ms ease, color 300ms ease",
         }}
       >
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
@@ -272,9 +275,10 @@ export function AeoPage({ data }: { data: AeoPageData }) {
       {data.tiers && data.tiers.length > 0 && (
         <section
           style={{
-            background: "#FFFFFF",
+            background: "var(--theme-section-switchable)",
             padding: "clamp(60px, 8vw, 100px) 24px",
-            borderTop: "1px solid var(--color-border-light, #E2E8F0)",
+            borderTop: "1px solid var(--theme-card-border)",
+            transition: "background 300ms ease, border-color 300ms ease",
           }}
         >
           <div style={{ maxWidth: 1120, margin: "0 auto" }}>
@@ -292,8 +296,8 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                 <div
                   key={i}
                   style={{
-                    background: "#FFFFFF",
-                    border: "1px solid var(--color-border-light, #E2E8F0)",
+                    background: "var(--theme-result-card-bg)",
+                    border: "1px solid var(--theme-card-border)",
                     borderRadius: 16,
                     padding: 28,
                     display: "flex",
@@ -309,7 +313,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                         fontWeight: 700,
                         lineHeight: 1.25,
                         margin: "0 0 8px",
-                        color: "var(--color-text-light-primary, #0A1628)",
+                        color: "var(--theme-text-primary)",
                       }}
                     >
                       {tier.name}
@@ -318,7 +322,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                       style={{
                         fontSize: 15,
                         lineHeight: 1.5,
-                        color: "var(--color-text-light-secondary, #475569)",
+                        color: "var(--theme-text-secondary)",
                         margin: 0,
                       }}
                     >
@@ -341,7 +345,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                         style={{
                           fontSize: 15,
                           lineHeight: 1.5,
-                          color: "var(--color-text-light-primary, #0A1628)",
+                          color: "var(--theme-text-primary)",
                           paddingLeft: 18,
                           position: "relative",
                         }}
@@ -366,7 +370,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                     style={{
                       fontSize: 14,
                       lineHeight: 1.5,
-                      color: "var(--color-text-light-secondary, #475569)",
+                      color: "var(--theme-text-secondary)",
                       margin: 0,
                       fontStyle: "italic",
                     }}
@@ -400,8 +404,10 @@ export function AeoPage({ data }: { data: AeoPageData }) {
       {/* ── BODY SECTIONS ────────────────────────────────────────── */}
       <article
         style={{
-          background: "#FFFFFF",
+          background: "var(--theme-section-switchable)",
+          color: "var(--theme-text-primary)",
           padding: "clamp(60px, 8vw, 100px) 24px",
+          transition: "background 300ms ease, color 300ms ease",
         }}
       >
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
@@ -454,8 +460,10 @@ export function AeoPage({ data }: { data: AeoPageData }) {
       {data.comparisonTable && (
         <section
           style={{
-            background: "var(--color-light, #F6F9FC)",
+            background: "var(--theme-section-alt)",
+            color: "var(--theme-text-primary)",
             padding: "clamp(60px, 8vw, 100px) 24px",
+            transition: "background 300ms ease, color 300ms ease",
           }}
         >
           <div style={{ maxWidth: 960, margin: "0 auto" }}>
@@ -466,7 +474,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
               <p
                 style={{
                   fontSize: 16,
-                  color: "var(--color-text-light-secondary, #475569)",
+                  color: "var(--theme-text-secondary)",
                   margin: "0 0 32px",
                   maxWidth: 720,
                 }}
@@ -479,15 +487,15 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                 style={{
                   width: "100%",
                   borderCollapse: "collapse",
-                  background: "#FFFFFF",
-                  border: "1px solid var(--color-border-light, #E2E8F0)",
+                  background: "var(--theme-result-card-bg)",
+                  border: "1px solid var(--theme-card-border)",
                   borderRadius: 12,
                   overflow: "hidden",
                   fontSize: 15,
                 }}
               >
                 <thead>
-                  <tr style={{ background: "var(--color-dark, #0A1628)", color: "#FFFFFF" }}>
+                  <tr style={{ background: "var(--color-primary)", color: "#FFFFFF" }}>
                     <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>Dimension</th>
                     <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>Preisser Solutions</th>
                     <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>
@@ -502,7 +510,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                       style={{
                         borderBottom:
                           i < (data.comparisonTable?.rows.length ?? 0) - 1
-                            ? "1px solid var(--color-border-light, #E2E8F0)"
+                            ? "1px solid var(--theme-card-border)"
                             : "none",
                       }}
                     >
@@ -510,7 +518,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                         style={{
                           padding: 16,
                           fontWeight: 600,
-                          color: "var(--color-text-light-primary, #0A1628)",
+                          color: "var(--theme-text-primary)",
                           verticalAlign: "top",
                           width: "25%",
                         }}
@@ -520,7 +528,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                       <td
                         style={{
                           padding: 16,
-                          color: "var(--color-text-light-secondary, #475569)",
+                          color: "var(--theme-text-secondary)",
                           verticalAlign: "top",
                         }}
                       >
@@ -529,7 +537,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                       <td
                         style={{
                           padding: 16,
-                          color: "var(--color-text-light-muted, #94A3B8)",
+                          color: "var(--theme-text-muted)",
                           verticalAlign: "top",
                         }}
                       >
@@ -547,9 +555,11 @@ export function AeoPage({ data }: { data: AeoPageData }) {
       {/* ── FAQ ──────────────────────────────────────────────────── */}
       <section
         style={{
-          background: "#FFFFFF",
+          background: "var(--theme-section-switchable)",
+          color: "var(--theme-text-primary)",
           padding: "clamp(60px, 8vw, 100px) 24px",
-          borderTop: "1px solid var(--color-border-light, #E2E8F0)",
+          borderTop: "1px solid var(--theme-card-border)",
+          transition: "background 300ms ease, color 300ms ease, border-color 300ms ease",
         }}
       >
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
@@ -561,7 +571,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
               <details
                 key={i}
                 style={{
-                  borderBottom: "1px solid var(--color-border-light, #E2E8F0)",
+                  borderBottom: "1px solid var(--theme-card-border)",
                   padding: "20px 0",
                 }}
               >
@@ -569,7 +579,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                   style={{
                     fontSize: 18,
                     fontWeight: 600,
-                    color: "var(--color-text-light-primary, #0A1628)",
+                    color: "var(--theme-text-primary)",
                     cursor: "pointer",
                     listStyle: "none",
                   }}
@@ -580,7 +590,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                   style={{
                     fontSize: 17,
                     lineHeight: 1.65,
-                    color: "var(--color-text-light-secondary, #475569)",
+                    color: "var(--theme-text-secondary)",
                     margin: "12px 0 0",
                   }}
                 >
@@ -596,8 +606,10 @@ export function AeoPage({ data }: { data: AeoPageData }) {
       {data.relatedLinks && data.relatedLinks.length > 0 && (
         <section
           style={{
-            background: "var(--color-light, #F6F9FC)",
+            background: "var(--theme-section-alt)",
+            color: "var(--theme-text-primary)",
             padding: "clamp(40px, 6vw, 64px) 24px",
+            transition: "background 300ms ease, color 300ms ease",
           }}
         >
           <div style={{ maxWidth: 800, margin: "0 auto" }}>
@@ -619,10 +631,10 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                     style={{
                       display: "inline-block",
                       padding: "10px 18px",
-                      background: "#FFFFFF",
-                      border: "1px solid var(--color-border-light, #E2E8F0)",
+                      background: "var(--theme-result-card-bg)",
+                      border: "1px solid var(--theme-card-border)",
                       borderRadius: 999,
-                      color: "var(--color-primary, #0D95E8)",
+                      color: "var(--color-primary)",
                       textDecoration: "none",
                       fontSize: 15,
                       fontWeight: 500,
@@ -640,10 +652,11 @@ export function AeoPage({ data }: { data: AeoPageData }) {
       {/* ── CTA ──────────────────────────────────────────────────── */}
       <section
         style={{
-          background: "var(--color-dark, #0A1628)",
-          color: "#FFFFFF",
+          background: "var(--theme-section-switchable)",
+          color: "var(--theme-text-primary)",
           padding: "clamp(80px, 10vw, 120px) 24px",
           textAlign: "center",
+          transition: "background 300ms ease, color 300ms ease",
         }}
       >
         <div style={{ maxWidth: 720, margin: "0 auto" }}>

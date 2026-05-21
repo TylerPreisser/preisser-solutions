@@ -50,7 +50,14 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
       <JsonLd data={collectionSchema} />
 
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="relative isolate overflow-hidden bg-[#0A1628] text-white">
+      <section
+        className="relative isolate overflow-hidden"
+        style={{
+          background: "var(--theme-section-switchable)",
+          color: "var(--theme-text-primary)",
+          transition: "background 300ms ease, color 300ms ease",
+        }}
+      >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10 opacity-80"
@@ -63,7 +70,7 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
           className="pointer-events-none absolute inset-0 -z-10 opacity-[0.05]"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
+              "linear-gradient(var(--theme-text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--theme-text-primary) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
             maskImage:
               "radial-gradient(ellipse at center, black 40%, transparent 80%)",
@@ -76,42 +83,70 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#80E9FF]">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#80E9FF]" />
+            <div
+              className="mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium uppercase tracking-[0.14em]"
+              style={{
+                border: "1px solid var(--theme-card-border)",
+                background: "var(--theme-card-bg)",
+                color: "var(--color-primary)",
+              }}
+            >
+              <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: "var(--color-primary)" }} />
               Locations
             </div>
             <h1 className="max-w-4xl text-balance text-5xl font-semibold leading-[1.05] tracking-[-0.025em] sm:text-6xl md:text-7xl">
               Locations We Serve
             </h1>
-            <p className="mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-white/70 sm:text-xl">
+            <p
+              className="mt-8 max-w-2xl text-pretty text-lg leading-relaxed sm:text-xl"
+              style={{ color: "var(--theme-text-secondary)" }}
+            >
               Preisser Solutions is based in Hays, Kansas. We deliver in person
               across western and central Kansas, and remotely nationwide.
             </p>
 
             <div className="mt-16 flex flex-wrap gap-x-12 gap-y-6 md:mt-20">
               <div>
-                <div className="bg-gradient-to-br from-white to-[#80E9FF] bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+                <div
+                  className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
+                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+                >
                   {totalCities}
                 </div>
-                <div className="mt-1 text-xs uppercase tracking-[0.14em] text-white/50">
+                <div
+                  className="mt-1 text-xs uppercase tracking-[0.14em]"
+                  style={{ color: "var(--theme-text-muted)" }}
+                >
                   Location pages
                 </div>
               </div>
-              <div className="h-12 w-px bg-white/10 self-end" />
+              <div className="h-12 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
               <div>
-                <div className="bg-gradient-to-br from-white to-[#80E9FF] bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+                <div
+                  className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
+                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+                >
                   {regions.length}
                 </div>
-                <div className="mt-1 text-xs uppercase tracking-[0.14em] text-white/50">
+                <div
+                  className="mt-1 text-xs uppercase tracking-[0.14em]"
+                  style={{ color: "var(--theme-text-muted)" }}
+                >
                   Regions of Kansas
                 </div>
               </div>
-              <div className="h-12 w-px bg-white/10 self-end" />
+              <div className="h-12 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
               <div>
-                <div className="bg-gradient-to-br from-white to-[#80E9FF] bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+                <div
+                  className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
+                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+                >
                   Hays
                 </div>
-                <div className="mt-1 text-xs uppercase tracking-[0.14em] text-white/50">
+                <div
+                  className="mt-1 text-xs uppercase tracking-[0.14em]"
+                  style={{ color: "var(--theme-text-muted)" }}
+                >
                   Headquarters
                 </div>
               </div>
@@ -121,7 +156,13 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
       </section>
 
       {/* ── Regions ─────────────────────────────────────────── */}
-      <section className="relative bg-[#F6F9FC] pb-32 pt-20 md:pt-24">
+      <section
+        className="relative pb-32 pt-20 md:pt-24"
+        style={{
+          background: "var(--theme-section-alt)",
+          transition: "background 300ms ease",
+        }}
+      >
         <div className="ps-container space-y-20">
           {regions.map((region) => (
             <RegionBlock
@@ -156,15 +197,28 @@ function RegionBlock({
     <div>
       <div className="mb-10 flex flex-col items-start gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#475569]">
-            <span className="inline-block h-1 w-1 rounded-full bg-[#0D95E8]" />
+          <div
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
+            style={{
+              border: "1px solid var(--theme-card-border)",
+              background: "var(--theme-result-card-bg)",
+              color: "var(--theme-text-secondary)",
+            }}
+          >
+            <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
             {region.name}
           </div>
-          <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-[#475569]">
+          <p
+            className="mt-3 max-w-2xl text-[15px] leading-relaxed"
+            style={{ color: "var(--theme-text-secondary)" }}
+          >
             {region.blurb}
           </p>
         </div>
-        <div className="text-xs uppercase tracking-[0.14em] text-[#94A3B8]">
+        <div
+          className="text-xs uppercase tracking-[0.14em]"
+          style={{ color: "var(--theme-text-muted)" }}
+        >
           {items.length} {items.length === 1 ? "page" : "pages"}
         </div>
       </div>
@@ -184,19 +238,32 @@ function RegionBlock({
           >
             <Link
               href={`/locations/${loc.slug}`}
-              className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+              className="group relative flex h-full flex-col overflow-hidden rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+              style={{
+                border: "1px solid var(--theme-card-border)",
+                background: "var(--theme-result-card-bg)",
+              }}
             >
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gradient-to-br from-[#0D95E8]/12 to-[#0D95E8]/0 blur-2xl"
               />
-              <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#94A3B8]">
+              <div
+                className="text-[11px] font-medium uppercase tracking-[0.14em]"
+                style={{ color: "var(--theme-text-muted)" }}
+              >
                 {loc.region ?? loc.state}
               </div>
-              <h3 className="mt-4 text-xl font-semibold leading-snug tracking-tight text-[#0A1628]">
+              <h3
+                className="mt-4 text-xl font-semibold leading-snug tracking-tight"
+                style={{ color: "var(--theme-text-primary)" }}
+              >
                 {loc.city}, {loc.state}
               </h3>
-              <p className="mt-3 flex-1 text-[15px] leading-relaxed text-[#475569]">
+              <p
+                className="mt-3 flex-1 text-[15px] leading-relaxed"
+                style={{ color: "var(--theme-text-secondary)" }}
+              >
                 {loc.hero.subheadline}
               </p>
               <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#0D95E8] group-hover:text-[#0B7BC0]">

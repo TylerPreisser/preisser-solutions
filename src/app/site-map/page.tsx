@@ -226,9 +226,10 @@ export default function SiteMapPage() {
       {/* ── HERO ───────────────────────────────────────────────── */}
       <section
         style={{
-          background: "var(--color-dark, #0A1628)",
-          color: "var(--color-text-dark-primary, #FFFFFF)",
+          background: "var(--theme-section-switchable)",
+          color: "var(--theme-text-primary)",
           padding: "clamp(80px, 12vw, 140px) 24px clamp(48px, 8vw, 72px)",
+          transition: "background 300ms ease, color 300ms ease",
         }}
       >
         <div style={{ maxWidth: 960, margin: "0 auto" }}>
@@ -238,21 +239,20 @@ export default function SiteMapPage() {
               fontWeight: 600,
               letterSpacing: "0.05em",
               textTransform: "uppercase",
-              color: "var(--color-cyan, #80E9FF)",
+              color: "var(--color-primary)",
               marginBottom: 16,
             }}
           >
             Site map
           </div>
           <h1
-            className="aeo-h1"
             style={{
               fontSize: "clamp(2.25rem, 5vw, 3.75rem)",
               fontWeight: 700,
               lineHeight: 1.08,
               letterSpacing: "-0.03em",
               margin: "0 0 24px",
-              color: "#FFFFFF",
+              color: "var(--theme-text-primary)",
             }}
           >
             Every page on preissersolutions.com
@@ -261,7 +261,7 @@ export default function SiteMapPage() {
             style={{
               fontSize: "clamp(1.125rem, 2vw, 1.3125rem)",
               lineHeight: 1.5,
-              color: "var(--color-text-dark-secondary, #94A3B8)",
+              color: "var(--theme-text-secondary)",
               maxWidth: 720,
               margin: 0,
             }}
@@ -270,7 +270,7 @@ export default function SiteMapPage() {
             by category. Companion to the machine-readable{" "}
             <a
               href="/sitemap.xml"
-              style={{ color: "var(--color-primary, #0D95E8)", textDecoration: "underline" }}
+              style={{ color: "var(--color-primary)", textDecoration: "underline" }}
             >
               /sitemap.xml
             </a>{" "}
@@ -282,8 +282,9 @@ export default function SiteMapPage() {
       {/* ── SECTIONS ──────────────────────────────────────────── */}
       <section
         style={{
-          background: "var(--color-light, #F6F9FC)",
+          background: "var(--theme-section-alt)",
           padding: "clamp(48px, 8vw, 96px) 24px",
+          transition: "background 300ms ease",
         }}
       >
         <div style={{ maxWidth: 1120, margin: "0 auto" }}>
@@ -299,8 +300,8 @@ export default function SiteMapPage() {
                 key={section.id}
                 aria-labelledby={`site-map-${section.id}-heading`}
                 style={{
-                  background: "#FFFFFF",
-                  border: "1px solid var(--color-border-light, #E2E8F0)",
+                  background: "var(--theme-result-card-bg)",
+                  border: "1px solid var(--theme-card-border)",
                   borderRadius: 16,
                   padding: 28,
                   display: "flex",
@@ -316,7 +317,7 @@ export default function SiteMapPage() {
                     fontWeight: 700,
                     lineHeight: 1.2,
                     margin: 0,
-                    color: "var(--color-text-light-primary, #0A1628)",
+                    color: "var(--theme-text-primary)",
                   }}
                 >
                   {section.heading}
@@ -325,7 +326,7 @@ export default function SiteMapPage() {
                       marginLeft: 8,
                       fontSize: 14,
                       fontWeight: 500,
-                      color: "var(--color-text-light-muted, #94A3B8)",
+                      color: "var(--theme-text-muted)",
                     }}
                     aria-hidden="true"
                   >
@@ -347,7 +348,7 @@ export default function SiteMapPage() {
                       <Link
                         href={section.hub.href}
                         style={{
-                          color: "var(--color-primary, #0D95E8)",
+                          color: "var(--color-primary)",
                           fontWeight: 600,
                           textDecoration: "none",
                           fontSize: 15,
@@ -363,7 +364,7 @@ export default function SiteMapPage() {
                       <Link
                         href={link.href}
                         style={{
-                          color: "var(--color-text-light-primary, #0A1628)",
+                          color: "var(--theme-text-primary)",
                           textDecoration: "none",
                           fontSize: 15,
                           lineHeight: 1.5,
@@ -383,10 +384,11 @@ export default function SiteMapPage() {
       {/* ── CTA ──────────────────────────────────────────────── */}
       <section
         style={{
-          background: "var(--color-dark, #0A1628)",
-          color: "#FFFFFF",
+          background: "var(--theme-section-switchable)",
+          color: "var(--theme-text-primary)",
           padding: "clamp(60px, 8vw, 96px) 24px",
           textAlign: "center",
+          transition: "background 300ms ease, color 300ms ease",
         }}
       >
         <div style={{ maxWidth: 640, margin: "0 auto" }}>
@@ -397,7 +399,7 @@ export default function SiteMapPage() {
               lineHeight: 1.15,
               letterSpacing: "-0.02em",
               margin: "0 0 16px",
-              color: "#FFFFFF",
+              color: "var(--theme-text-primary)",
             }}
           >
             Looking for something specific?
@@ -406,7 +408,7 @@ export default function SiteMapPage() {
             style={{
               fontSize: 18,
               lineHeight: 1.55,
-              color: "var(--color-text-dark-secondary, #94A3B8)",
+              color: "var(--theme-text-secondary)",
               margin: "0 0 24px",
             }}
           >

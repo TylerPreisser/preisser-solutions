@@ -88,7 +88,14 @@ export function CaseStudiesHub({ caseStudies }: Props) {
       <JsonLd data={collectionSchema} />
 
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="relative isolate overflow-hidden bg-[#0A1628] text-white">
+      <section
+        className="relative isolate overflow-hidden"
+        style={{
+          background: "var(--theme-section-switchable)",
+          color: "var(--theme-text-primary)",
+          transition: "background 300ms ease, color 300ms ease",
+        }}
+      >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10 opacity-80"
@@ -101,7 +108,7 @@ export function CaseStudiesHub({ caseStudies }: Props) {
           className="pointer-events-none absolute inset-0 -z-10 opacity-[0.05]"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
+              "linear-gradient(var(--theme-text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--theme-text-primary) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
             maskImage:
               "radial-gradient(ellipse at center, black 40%, transparent 80%)",
@@ -114,14 +121,24 @@ export function CaseStudiesHub({ caseStudies }: Props) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#80E9FF]">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#80E9FF]" />
+            <div
+              className="mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium uppercase tracking-[0.14em]"
+              style={{
+                border: "1px solid var(--theme-card-border)",
+                background: "var(--theme-card-bg)",
+                color: "var(--color-primary)",
+              }}
+            >
+              <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: "var(--color-primary)" }} />
               Case Studies
             </div>
             <h1 className="max-w-4xl text-balance text-5xl font-semibold leading-[1.05] tracking-[-0.025em] sm:text-6xl md:text-7xl">
               Real Work, Real Outcomes.
             </h1>
-            <p className="mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-white/70 sm:text-xl">
+            <p
+              className="mt-8 max-w-2xl text-pretty text-lg leading-relaxed sm:text-xl"
+              style={{ color: "var(--theme-text-secondary)" }}
+            >
               Every Preisser Solutions case study is a real engagement with a
               measurable result. Named where the client has consented;
               anonymized where the relationship requires it.
@@ -130,28 +147,46 @@ export function CaseStudiesHub({ caseStudies }: Props) {
             {/* Top-level stats strip */}
             <div className="mt-16 flex flex-wrap gap-x-12 gap-y-6 md:mt-20">
               <div>
-                <div className="bg-gradient-to-br from-white to-[#80E9FF] bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+                <div
+                  className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
+                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+                >
                   {caseStudies.length}
                 </div>
-                <div className="mt-1 text-xs uppercase tracking-[0.14em] text-white/50">
+                <div
+                  className="mt-1 text-xs uppercase tracking-[0.14em]"
+                  style={{ color: "var(--theme-text-muted)" }}
+                >
                   Published case studies
                 </div>
               </div>
-              <div className="h-12 w-px bg-white/10 self-end" />
+              <div className="h-12 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
               <div>
-                <div className="bg-gradient-to-br from-white to-[#80E9FF] bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+                <div
+                  className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
+                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+                >
                   {filters.length - 1}
                 </div>
-                <div className="mt-1 text-xs uppercase tracking-[0.14em] text-white/50">
+                <div
+                  className="mt-1 text-xs uppercase tracking-[0.14em]"
+                  style={{ color: "var(--theme-text-muted)" }}
+                >
                   Capability categories
                 </div>
               </div>
-              <div className="h-12 w-px bg-white/10 self-end" />
+              <div className="h-12 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
               <div>
-                <div className="bg-gradient-to-br from-white to-[#80E9FF] bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+                <div
+                  className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
+                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+                >
                   100%
                 </div>
-                <div className="mt-1 text-xs uppercase tracking-[0.14em] text-white/50">
+                <div
+                  className="mt-1 text-xs uppercase tracking-[0.14em]"
+                  style={{ color: "var(--theme-text-muted)" }}
+                >
                   Outcomes from real builds
                 </div>
               </div>
@@ -161,10 +196,19 @@ export function CaseStudiesHub({ caseStudies }: Props) {
       </section>
 
       {/* ── Filters + Grid ──────────────────────────────────── */}
-      <section className="relative bg-[#F6F9FC] pb-32 pt-20 md:pt-24">
+      <section
+        className="relative pb-32 pt-20 md:pt-24"
+        style={{
+          background: "var(--theme-section-alt)",
+          transition: "background 300ms ease",
+        }}
+      >
         <div className="ps-container">
           {/* Filter heading */}
-          <div className="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-[#94A3B8]">
+          <div
+            className="mb-3 text-xs font-medium uppercase tracking-[0.18em]"
+            style={{ color: "var(--theme-text-muted)" }}
+          >
             Filter by category
           </div>
 
@@ -177,11 +221,20 @@ export function CaseStudiesHub({ caseStudies }: Props) {
                   key={f}
                   type="button"
                   onClick={() => setActiveFilter(f)}
-                  className={
-                    "inline-flex cursor-pointer items-center rounded-full border px-4 py-2 text-sm font-medium transition-all duration-150 " +
-                    (active
-                      ? "border-[#0A1628] bg-[#0A1628] text-white shadow-[0_8px_30px_rgba(10,22,40,0.18)]"
-                      : "border-[#E2E8F0] bg-white text-[#475569] hover:border-[#0D95E8]/40 hover:bg-slate-50 hover:text-[#0A1628] hover:shadow-sm")
+                  className="inline-flex cursor-pointer items-center rounded-full border px-4 py-2 text-sm font-medium transition-all duration-150"
+                  style={
+                    active
+                      ? {
+                          borderColor: "var(--color-primary)",
+                          background: "var(--color-primary)",
+                          color: "#FFFFFF",
+                          boxShadow: "0 8px 30px rgba(13,149,232,0.25)",
+                        }
+                      : {
+                          borderColor: "var(--theme-card-border)",
+                          background: "var(--theme-card-bg)",
+                          color: "var(--theme-text-secondary)",
+                        }
                   }
                 >
                   {f}
@@ -198,7 +251,10 @@ export function CaseStudiesHub({ caseStudies }: Props) {
           </div>
 
           {visible.length === 0 && (
-            <div className="mx-auto max-w-md py-16 text-center text-[#475569]">
+            <div
+              className="mx-auto max-w-md py-16 text-center"
+              style={{ color: "var(--theme-text-secondary)" }}
+            >
               No case studies match this filter yet.
             </div>
           )}
@@ -241,7 +297,13 @@ function HubCard({
     >
       <Link
         href={`/case-studies/${cs.slug}`}
-        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+        style={{
+          borderColor: "var(--theme-card-border)",
+          background: "var(--theme-result-card-bg)",
+          transition:
+            "background 300ms ease, border-color 200ms ease, transform 300ms ease, box-shadow 300ms ease",
+        }}
       >
         {/* Accent corner block — abstract, no photography */}
         <div
@@ -250,34 +312,52 @@ function HubCard({
         />
 
         {/* Category eyebrow */}
-        <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#94A3B8]">
+        <div
+          className="text-[11px] font-medium uppercase tracking-[0.14em]"
+          style={{ color: "var(--theme-text-muted)" }}
+        >
           {cs.category}
         </div>
 
         {/* Big primary number */}
         {primary && (
           <div className="mt-5">
-            <div className="bg-gradient-to-br from-[#0A1628] to-[#0D95E8] bg-clip-text text-4xl font-semibold leading-none tracking-[-0.03em] text-transparent sm:text-5xl">
+            <div
+              className="bg-clip-text text-4xl font-semibold leading-none tracking-[-0.03em] text-transparent sm:text-5xl"
+              style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #0D95E8)" }}
+            >
               {primary.value}
             </div>
-            <div className="mt-2 text-xs uppercase tracking-[0.14em] text-[#475569]">
+            <div
+              className="mt-2 text-xs uppercase tracking-[0.14em]"
+              style={{ color: "var(--theme-text-secondary)" }}
+            >
               {primary.label}
             </div>
           </div>
         )}
 
         {/* Title */}
-        <h3 className="mt-7 text-balance text-xl font-semibold leading-snug text-[#0A1628]">
+        <h3
+          className="mt-7 text-balance text-xl font-semibold leading-snug"
+          style={{ color: "var(--theme-text-primary)" }}
+        >
           {cs.clientNameDisplay}
         </h3>
 
         {/* One-line context */}
-        <p className="mt-3 flex-1 text-[15px] leading-relaxed text-[#475569]">
+        <p
+          className="mt-3 flex-1 text-[15px] leading-relaxed"
+          style={{ color: "var(--theme-text-secondary)" }}
+        >
           {cs.oneLine}
         </p>
 
         {/* Footer */}
-        <div className="mt-7 flex items-center justify-between border-t border-[#E2E8F0] pt-5">
+        <div
+          className="mt-7 flex items-center justify-between border-t pt-5"
+          style={{ borderColor: "var(--theme-card-border)" }}
+        >
           <span className="text-sm font-medium text-[#0D95E8] group-hover:text-[#0B7BC0]">
             Read case study
           </span>

@@ -71,11 +71,11 @@ export default function HomePage() {
       <section
         aria-label="Agent catalog"
         style={{
-          background: "var(--theme-dark)",
-          color: "var(--theme-text-on-dark)",
+          background: "var(--theme-section-switchable)",
+          color: "var(--theme-text-primary)",
           padding: "clamp(40px, 5vw, 64px) 24px",
           textAlign: "center",
-          transition: "background 300ms ease",
+          transition: "background 300ms ease, color 300ms ease",
         }}
       >
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
@@ -86,7 +86,7 @@ export default function HomePage() {
               fontWeight: 700,
               letterSpacing: "0.1em",
               textTransform: "uppercase",
-              color: "var(--theme-primary)",
+              color: "var(--color-primary)",
               marginBottom: "0.75rem",
             }}
           >
@@ -103,7 +103,7 @@ export default function HomePage() {
             <a
               href="/agents"
               style={{
-                color: "var(--theme-text-on-dark)",
+                color: "var(--theme-text-primary)",
                 textDecoration: "none",
               }}
             >
@@ -113,7 +113,7 @@ export default function HomePage() {
           <p
             style={{
               fontSize: "1rem",
-              color: "var(--theme-text-muted)",
+              color: "var(--theme-text-secondary)",
               margin: 0,
             }}
           >

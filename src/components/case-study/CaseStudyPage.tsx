@@ -238,7 +238,14 @@ function Hero({ data }: { data: CaseStudyData }) {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#0A1628] text-white">
+    <section
+      className="relative isolate overflow-hidden"
+      style={{
+        background: "var(--theme-section-switchable)",
+        color: "var(--theme-text-primary)",
+        transition: "background 300ms ease, color 300ms ease",
+      }}
+    >
       {/* Decorative gradient mesh — non-photographic, abstract */}
       <div
         aria-hidden="true"
@@ -255,7 +262,7 @@ function Hero({ data }: { data: CaseStudyData }) {
         className="pointer-events-none absolute inset-0 -z-10 opacity-[0.05]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
+            "linear-gradient(var(--theme-text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--theme-text-primary) 1px, transparent 1px)",
           backgroundSize: "80px 80px",
           maskImage: "radial-gradient(ellipse at center, black 40%, transparent 80%)",
         }}
@@ -268,20 +275,31 @@ function Hero({ data }: { data: CaseStudyData }) {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Breadcrumb-style top nav */}
-          <div className="mb-10 flex items-center gap-3 text-sm text-white/50">
+          <div
+            className="mb-10 flex items-center gap-3 text-sm"
+            style={{ color: "var(--theme-text-muted)" }}
+          >
             <Link
               href="/case-studies"
-              className="transition-colors hover:text-white"
+              className="transition-colors hover:opacity-100"
+              style={{ color: "var(--theme-text-secondary)" }}
             >
               Case Studies
             </Link>
-            <span className="text-white/30">/</span>
-            <span className="text-white/70">{data.clientNameDisplay}</span>
+            <span style={{ color: "var(--theme-text-muted)" }}>/</span>
+            <span style={{ color: "var(--theme-text-secondary)" }}>{data.clientNameDisplay}</span>
           </div>
 
           {/* Eyebrow chip */}
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#80E9FF] backdrop-blur">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#80E9FF]" />
+          <div
+            className="mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium uppercase tracking-[0.14em] backdrop-blur"
+            style={{
+              border: "1px solid var(--theme-card-border)",
+              background: "var(--theme-card-bg)",
+              color: "var(--color-primary)",
+            }}
+          >
+            <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: "var(--color-primary)" }} />
             {data.category}
           </div>
 
@@ -291,7 +309,10 @@ function Hero({ data }: { data: CaseStudyData }) {
           </h1>
 
           {/* Subheadline */}
-          <p className="mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-white/70 sm:text-xl">
+          <p
+            className="mt-8 max-w-2xl text-pretty text-lg leading-relaxed sm:text-xl"
+            style={{ color: "var(--theme-text-secondary)" }}
+          >
             {data.subheadline}
           </p>
 
@@ -301,12 +322,22 @@ function Hero({ data }: { data: CaseStudyData }) {
               {data.headlineResults.map((r) => (
                 <div
                   key={r.label}
-                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-3 backdrop-blur transition-all hover:border-[#0D95E8]/50 hover:bg-white/[0.06]"
+                  className="group relative overflow-hidden rounded-2xl px-5 py-3 backdrop-blur transition-all hover:border-[#0D95E8]/50"
+                  style={{
+                    border: "1px solid var(--theme-card-border)",
+                    background: "var(--theme-card-bg)",
+                  }}
                 >
-                  <div className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                  <div
+                    className="text-2xl font-semibold tracking-tight sm:text-3xl"
+                    style={{ color: "var(--theme-text-primary)" }}
+                  >
                     {r.value}
                   </div>
-                  <div className="mt-0.5 text-xs uppercase tracking-wider text-white/50">
+                  <div
+                    className="mt-0.5 text-xs uppercase tracking-wider"
+                    style={{ color: "var(--theme-text-muted)" }}
+                  >
                     {r.label}
                   </div>
                 </div>
@@ -324,7 +355,10 @@ function Hero({ data }: { data: CaseStudyData }) {
       </div>
 
       {/* bottom edge — clean line, no curves */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-px"
+        style={{ background: "var(--theme-card-border)" }}
+      />
     </section>
   );
 }
@@ -334,7 +368,14 @@ function MetricsRow({ data }: { data: CaseStudyData }) {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="relative border-b border-[#E2E8F0] bg-white">
+    <section
+      className="relative border-b"
+      style={{
+        borderColor: "var(--theme-card-border)",
+        background: "var(--theme-section-alt)",
+        transition: "background 300ms ease, border-color 300ms ease",
+      }}
+    >
       <div className="ps-container py-12 sm:py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {data.headlineResults.map((r, idx) => (
@@ -353,16 +394,26 @@ function MetricsRow({ data }: { data: CaseStudyData }) {
               {idx > 0 && (
                 <div
                   aria-hidden="true"
-                  className="absolute -left-5 top-2 hidden h-12 w-px bg-[#E2E8F0] lg:block"
+                  className="absolute -left-5 top-2 hidden h-12 w-px lg:block"
+                  style={{ background: "var(--theme-card-border)" }}
                 />
               )}
-              <div className="text-xs font-medium uppercase tracking-[0.14em] text-[#94A3B8]">
+              <div
+                className="text-xs font-medium uppercase tracking-[0.14em]"
+                style={{ color: "var(--theme-text-muted)" }}
+              >
                 {String(idx + 1).padStart(2, "0")}
               </div>
-              <div className="mt-3 bg-gradient-to-br from-[#0A1628] to-[#0D95E8] bg-clip-text text-5xl font-semibold leading-none tracking-[-0.03em] text-transparent sm:text-6xl">
+              <div
+                className="mt-3 bg-clip-text text-5xl font-semibold leading-none tracking-[-0.03em] text-transparent sm:text-6xl"
+                style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #0D95E8)" }}
+              >
                 {r.value}
               </div>
-              <div className="mt-4 text-sm leading-snug text-[#475569]">
+              <div
+                className="mt-4 text-sm leading-snug"
+                style={{ color: "var(--theme-text-secondary)" }}
+              >
                 {r.label}
               </div>
             </motion.div>
@@ -378,7 +429,13 @@ function BeforeSection({ data }: { data: CaseStudyData }) {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="relative bg-[#F6F9FC] py-20 sm:py-28">
+    <section
+      className="relative py-20 sm:py-28"
+      style={{
+        background: "var(--theme-section-alt)",
+        transition: "background 300ms ease",
+      }}
+    >
       <div className="ps-container">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-4">
@@ -388,11 +445,21 @@ function BeforeSection({ data }: { data: CaseStudyData }) {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#475569]">
-                <span className="inline-block h-1 w-1 rounded-full bg-[#0D95E8]" />
+              <div
+                className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
+                style={{
+                  border: "1px solid var(--theme-card-border)",
+                  background: "var(--theme-result-card-bg)",
+                  color: "var(--theme-text-secondary)",
+                }}
+              >
+                <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
                 Before
               </div>
-              <h2 className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] text-[#0A1628] sm:text-4xl">
+              <h2
+                className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] sm:text-4xl"
+                style={{ color: "var(--theme-text-primary)" }}
+              >
                 {data.before.heading}
               </h2>
             </motion.div>
@@ -408,7 +475,8 @@ function BeforeSection({ data }: { data: CaseStudyData }) {
               {data.before.body.map((para, idx) => (
                 <p
                   key={idx}
-                  className="text-pretty text-lg leading-relaxed text-[#1A1A1A]"
+                  className="text-pretty text-lg leading-relaxed"
+                  style={{ color: "var(--theme-text-primary)" }}
                 >
                   {para}
                 </p>
@@ -426,7 +494,14 @@ function BuiltSection({ data }: { data: CaseStudyData }) {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#0A1628] py-24 text-white sm:py-32">
+    <section
+      className="relative isolate overflow-hidden py-24 sm:py-32"
+      style={{
+        background: "var(--theme-section-switchable)",
+        color: "var(--theme-text-primary)",
+        transition: "background 300ms ease, color 300ms ease",
+      }}
+    >
       {/* Accent corner glow */}
       <div
         aria-hidden="true"
@@ -441,8 +516,15 @@ function BuiltSection({ data }: { data: CaseStudyData }) {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#80E9FF]">
-                <span className="inline-block h-1 w-1 rounded-full bg-[#80E9FF]" />
+              <div
+                className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
+                style={{
+                  border: "1px solid var(--theme-card-border)",
+                  background: "var(--theme-card-bg)",
+                  color: "var(--color-primary)",
+                }}
+              >
+                <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
                 What we built
               </div>
               <h2 className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] sm:text-4xl">
@@ -461,7 +543,8 @@ function BuiltSection({ data }: { data: CaseStudyData }) {
               {data.built.body.map((para, idx) => (
                 <p
                   key={idx}
-                  className="text-pretty text-lg leading-relaxed text-white/80"
+                  className="text-pretty text-lg leading-relaxed"
+                  style={{ color: "var(--theme-text-secondary)" }}
                 >
                   {para}
                 </p>
@@ -479,7 +562,13 @@ function SpecsSection({ data }: { data: CaseStudyData }) {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="relative bg-white py-24 sm:py-32">
+    <section
+      className="relative py-24 sm:py-32"
+      style={{
+        background: "var(--theme-section-switchable)",
+        transition: "background 300ms ease",
+      }}
+    >
       <div className="ps-container">
         <div className="mb-14 max-w-3xl">
           <motion.div
@@ -488,11 +577,21 @@ function SpecsSection({ data }: { data: CaseStudyData }) {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-[#F6F9FC] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#475569]">
-              <span className="inline-block h-1 w-1 rounded-full bg-[#0D95E8]" />
+            <div
+              className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
+              style={{
+                border: "1px solid var(--theme-card-border)",
+                background: "var(--theme-card-bg)",
+                color: "var(--theme-text-secondary)",
+              }}
+            >
+              <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
               Specifications
             </div>
-            <h2 className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] text-[#0A1628] sm:text-4xl">
+            <h2
+              className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] sm:text-4xl"
+              style={{ color: "var(--theme-text-primary)" }}
+            >
               {data.specifications.heading}
             </h2>
           </motion.div>
@@ -508,10 +607,16 @@ function SpecsSection({ data }: { data: CaseStudyData }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.5, delay: Math.min(idx * 0.04, 0.3) }}
-                className="flex items-start gap-3 border-b border-[#E2E8F0] py-4 last:border-b-0"
+                className="flex items-start gap-3 border-b py-4 last:border-b-0"
+                style={{ borderColor: "var(--theme-card-border)" }}
               >
-                <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#0D95E8]" />
-                <p className="text-base leading-relaxed text-[#1A1A1A]">{b}</p>
+                <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: "var(--color-primary)" }} />
+                <p
+                  className="text-base leading-relaxed"
+                  style={{ color: "var(--theme-text-primary)" }}
+                >
+                  {b}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -528,18 +633,26 @@ function SpecsSection({ data }: { data: CaseStudyData }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ duration: 0.6, delay: idx * 0.05 }}
-                  className="group relative rounded-2xl border border-[#E2E8F0] bg-[#F6F9FC] p-8 transition-all hover:border-[#0D95E8]/40 hover:shadow-[0_12px_40px_rgba(13,149,232,0.08)]"
+                  className="group relative rounded-2xl p-8 transition-all hover:border-[#0D95E8]/40 hover:shadow-[0_12px_40px_rgba(13,149,232,0.08)]"
+                  style={{
+                    border: "1px solid var(--theme-card-border)",
+                    background: "var(--theme-section-alt)",
+                  }}
                 >
-                  <h3 className="text-lg font-semibold tracking-tight text-[#0A1628]">
+                  <h3
+                    className="text-lg font-semibold tracking-tight"
+                    style={{ color: "var(--theme-text-primary)" }}
+                  >
                     {sub.title}
                   </h3>
                   <ul className="mt-5 space-y-3">
                     {sub.items.map((item, j) => (
                       <li
                         key={j}
-                        className="flex items-start gap-3 text-[15px] leading-relaxed text-[#475569]"
+                        className="flex items-start gap-3 text-[15px] leading-relaxed"
+                        style={{ color: "var(--theme-text-secondary)" }}
                       >
-                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#94A3B8]" />
+                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full" style={{ background: "var(--theme-text-muted)" }} />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -600,7 +713,12 @@ function ResultsSection({ data }: { data: CaseStudyData }) {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate overflow-hidden bg-[#0A1628] py-24 text-white sm:py-32"
+      className="relative isolate overflow-hidden py-24 sm:py-32"
+      style={{
+        background: "var(--theme-section-switchable)",
+        color: "var(--theme-text-primary)",
+        transition: "background 300ms ease, color 300ms ease",
+      }}
     >
       {/* Gradient corner */}
       <div
@@ -614,8 +732,15 @@ function ResultsSection({ data }: { data: CaseStudyData }) {
 
       <div className="ps-container relative">
         <div className="mb-16 max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#80E9FF]">
-            <span className="inline-block h-1 w-1 rounded-full bg-[#80E9FF]" />
+          <div
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
+            style={{
+              border: "1px solid var(--theme-card-border)",
+              background: "var(--theme-card-bg)",
+              color: "var(--color-primary)",
+            }}
+          >
+            <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
             Results
           </div>
           <h2 className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] sm:text-5xl">
@@ -628,7 +753,11 @@ function ResultsSection({ data }: { data: CaseStudyData }) {
             <div
               key={`${r.value}-${idx}`}
               data-result-card
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] p-8 backdrop-blur-sm transition-all hover:border-[#0D95E8]/40 hover:bg-white/[0.07] sm:p-10"
+              className="group relative overflow-hidden rounded-2xl p-8 backdrop-blur-sm transition-all hover:border-[#0D95E8]/40 sm:p-10"
+              style={{
+                border: "1px solid var(--theme-card-border)",
+                background: "var(--theme-result-card-bg)",
+              }}
             >
               {/* corner accent */}
               <div
@@ -636,16 +765,28 @@ function ResultsSection({ data }: { data: CaseStudyData }) {
                 className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#0D95E8]/10 blur-2xl transition-opacity group-hover:opacity-100"
               />
               <div className="relative">
-                <div className="text-xs font-medium uppercase tracking-[0.14em] text-white/40">
+                <div
+                  className="text-xs font-medium uppercase tracking-[0.14em]"
+                  style={{ color: "var(--theme-text-muted)" }}
+                >
                   Result {String(idx + 1).padStart(2, "0")}
                 </div>
-                <div className="mt-4 flex items-baseline gap-2 bg-gradient-to-br from-white to-[#80E9FF] bg-clip-text text-6xl font-semibold leading-none tracking-[-0.03em] text-transparent sm:text-7xl">
+                <div
+                  className="mt-4 flex items-baseline gap-2 bg-clip-text text-6xl font-semibold leading-none tracking-[-0.03em] text-transparent sm:text-7xl"
+                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+                >
                   {r.value}
                 </div>
-                <div className="mt-5 text-base font-medium text-white/90">
+                <div
+                  className="mt-5 text-base font-medium"
+                  style={{ color: "var(--theme-text-primary)" }}
+                >
                   {r.label}
                 </div>
-                <p className="mt-3 text-[15px] leading-relaxed text-white/60">
+                <p
+                  className="mt-3 text-[15px] leading-relaxed"
+                  style={{ color: "var(--theme-text-secondary)" }}
+                >
                   {r.context}
                 </p>
               </div>
@@ -662,17 +803,32 @@ function TechStackSection({ data }: { data: CaseStudyData }) {
   if (data.techStack.length === 0) return null;
 
   return (
-    <section className="border-y border-[#E2E8F0] bg-white py-14">
+    <section
+      className="border-y py-14"
+      style={{
+        borderColor: "var(--theme-card-border)",
+        background: "var(--theme-section-switchable)",
+        transition: "background 300ms ease, border-color 300ms ease",
+      }}
+    >
       <div className="ps-container">
         <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-xs font-medium uppercase tracking-[0.14em] text-[#94A3B8]">
+          <div
+            className="text-xs font-medium uppercase tracking-[0.14em]"
+            style={{ color: "var(--theme-text-muted)" }}
+          >
             Tech stack
           </div>
           <div className="flex flex-wrap gap-2.5">
             {data.techStack.map((t) => (
               <span
                 key={t}
-                className="inline-flex items-center rounded-full border border-[#E2E8F0] bg-[#F6F9FC] px-3.5 py-1.5 text-sm font-medium text-[#0A1628] transition-colors hover:border-[#0D95E8]/40 hover:text-[#0D95E8]"
+                className="inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors hover:border-[#0D95E8]/40 hover:text-[#0D95E8]"
+                style={{
+                  border: "1px solid var(--theme-card-border)",
+                  background: "var(--theme-section-alt)",
+                  color: "var(--theme-text-primary)",
+                }}
               >
                 {t}
               </span>
@@ -693,15 +849,31 @@ function RelatedSection({ data }: { data: CaseStudyData }) {
   if (related.length === 0) return null;
 
   return (
-    <section className="bg-[#F6F9FC] py-24 sm:py-28">
+    <section
+      className="py-24 sm:py-28"
+      style={{
+        background: "var(--theme-section-alt)",
+        transition: "background 300ms ease",
+      }}
+    >
       <div className="ps-container">
         <div className="mb-12 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#E2E8F0] bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#475569]">
-              <span className="inline-block h-1 w-1 rounded-full bg-[#0D95E8]" />
+            <div
+              className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
+              style={{
+                border: "1px solid var(--theme-card-border)",
+                background: "var(--theme-result-card-bg)",
+                color: "var(--theme-text-secondary)",
+              }}
+            >
+              <span className="inline-block h-1 w-1 rounded-full" style={{ background: "var(--color-primary)" }} />
               More work
             </div>
-            <h2 className="mt-4 text-balance text-3xl font-semibold tracking-[-0.02em] text-[#0A1628] sm:text-4xl">
+            <h2
+              className="mt-4 text-balance text-3xl font-semibold tracking-[-0.02em] sm:text-4xl"
+              style={{ color: "var(--theme-text-primary)" }}
+            >
               Related case studies
             </h2>
           </div>
@@ -719,15 +891,28 @@ function RelatedSection({ data }: { data: CaseStudyData }) {
             <Link
               key={r.slug}
               href={`/case-studies/${r.slug}`}
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-7 transition-all hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+              className="group relative flex flex-col overflow-hidden rounded-2xl p-7 transition-all hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+              style={{
+                border: "1px solid var(--theme-card-border)",
+                background: "var(--theme-result-card-bg)",
+              }}
             >
-              <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#94A3B8]">
+              <div
+                className="text-[11px] font-medium uppercase tracking-[0.14em]"
+                style={{ color: "var(--theme-text-muted)" }}
+              >
                 {r.category}
               </div>
-              <h3 className="mt-3 text-lg font-semibold leading-snug text-[#0A1628]">
+              <h3
+                className="mt-3 text-lg font-semibold leading-snug"
+                style={{ color: "var(--theme-text-primary)" }}
+              >
                 {r.label}
               </h3>
-              <p className="mt-3 flex-1 text-[15px] leading-relaxed text-[#475569]">
+              <p
+                className="mt-3 flex-1 text-[15px] leading-relaxed"
+                style={{ color: "var(--theme-text-secondary)" }}
+              >
                 {r.oneLine}
               </p>
               <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#0D95E8]">
@@ -745,7 +930,14 @@ function RelatedSection({ data }: { data: CaseStudyData }) {
 // ── CTA ──────────────────────────────────────────────────────
 function CtaSection({ data }: { data: CaseStudyData }) {
   return (
-    <section className="relative isolate overflow-hidden bg-[#0A1628] py-24 text-white sm:py-32">
+    <section
+      className="relative isolate overflow-hidden py-24 sm:py-32"
+      style={{
+        background: "var(--theme-section-switchable)",
+        color: "var(--theme-text-primary)",
+        transition: "background 300ms ease, color 300ms ease",
+      }}
+    >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
@@ -757,7 +949,10 @@ function CtaSection({ data }: { data: CaseStudyData }) {
         <h2 className="mx-auto max-w-3xl text-balance text-4xl font-semibold leading-[1.1] tracking-[-0.025em] sm:text-5xl md:text-6xl">
           {data.cta.heading}
         </h2>
-        <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-white/70">
+        <p
+          className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed"
+          style={{ color: "var(--theme-text-secondary)" }}
+        >
           {data.cta.subcopy}
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -770,7 +965,11 @@ function CtaSection({ data }: { data: CaseStudyData }) {
           </Link>
           <Link
             href="/case-studies"
-            className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-7 py-3.5 text-base font-medium text-white/90 transition-all hover:border-white/30 hover:bg-white/[0.04]"
+            className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-base font-medium transition-all"
+            style={{
+              border: "1px solid var(--theme-card-border)",
+              color: "var(--theme-text-primary)",
+            }}
           >
             See all case studies
           </Link>
