@@ -5,9 +5,10 @@
  * Animations are driven entirely by CSS @keyframes defined in globals.css
  * using shared class names (pv-ring-outer, pv-ring-mid, pv-pulse-inner).
  *
- * Framer Motion removed. IntersectionObserver removed.
- * Animations run on mobile via CSS — they are GPU-composited (transform only)
- * and cost nothing on the main thread. prefers-reduced-motion pauses them.
+ * Fix 3 (2026-05-21): Reduced SVG from ~25 nodes to ~5 per card.
+ * Removed: connector lines, 12 tick marks, accent arc, 2 satellite dots.
+ * Kept: outer ring (animated), mid ring (counter-rotate), inner pulse, ProductIcon.
+ * 16 cards × ~25 nodes = ~400 DOM nodes → 16 × ~5 = ~80 DOM nodes.
  */
 
 import type { ProductCategory } from "@/types/product";
@@ -285,53 +286,6 @@ export function ProductVisual({ slug, category, size = "card", className = "" }:
   const outerR = 70 + slugHash(slug, 20, 1);
   const midR = 40 + slugHash(slug, 15, 2);
   const innerR = 14 + slugHash(slug, 10, 3);
-  const arcStartDeg = slugHash(slug, 360, 4);
-  const arcSpanDeg = 80 + slugHash(slug, 120, 5);
-  const arcEndDeg = arcStartDeg + arcSpanDeg;
-  const lineAngles = [
-    slugHash(slug, 180, 6),
-    slugHash(slug, 180, 7) + 40,
-    slugHash(slug, 180, 8) + 80,
-  ];
-  const dot1Angle = (slugHash(slug, 360, 9) * Math.PI) / 180;
-  const dot2Angle = (slugHash(slug, 360, 10) * Math.PI) / 180;
-  const dotR = outerR + 8;
-  const dot1x = cx + dotR * Math.cos(dot1Angle);
-  const dot1y = cy + dotR * Math.sin(dot1Angle);
-  const dot2x = cx + dotR * Math.cos(dot2Angle);
-  const dot2y = cy + dotR * Math.sin(dot2Angle);
-
-  function arcPath(r: number, startDeg: number, endDeg: number): string {
-    const s = ((startDeg - 90) * Math.PI) / 180;
-    const e = ((endDeg - 90) * Math.PI) / 180;
-    const x1 = cx + r * Math.cos(s);
-    const y1 = cy + r * Math.sin(s);
-    const x2 = cx + r * Math.cos(e);
-    const y2 = cy + r * Math.sin(e);
-    const largeArc = endDeg - startDeg > 180 ? 1 : 0;
-    return `M ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r} ${r} 0 ${largeArc} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`;
-  }
-
-  function linePath(angleDeg: number, length: number): string {
-    const a = (angleDeg * Math.PI) / 180;
-    const dx = (length / 2) * Math.cos(a);
-    const dy = (length / 2) * Math.sin(a);
-    return `M ${(cx - dx).toFixed(2)} ${(cy - dy).toFixed(2)} L ${(cx + dx).toFixed(2)} ${(cy + dy).toFixed(2)}`;
-  }
-
-  const ticks: { x1: number; y1: number; x2: number; y2: number }[] = [];
-  const tickCount = 12;
-  for (let i = 0; i < tickCount; i++) {
-    const a = ((i / tickCount) * 360 * Math.PI) / 180;
-    const r1 = outerR - 6;
-    const r2 = outerR + 2;
-    ticks.push({
-      x1: cx + r1 * Math.cos(a),
-      y1: cy + r1 * Math.sin(a),
-      x2: cx + r2 * Math.cos(a),
-      y2: cy + r2 * Math.sin(a),
-    });
-  }
 
   return (
     <div
@@ -366,132 +320,51 @@ export function ProductVisual({ slug, category, size = "card", className = "" }:
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-
-          <clipPath id={`clip-${slug}`}>
-            <rect width={vw} height={vh} />
-          </clipPath>
         </defs>
 
-        <g clipPath={`url(#clip-${slug})`}>
-          {lineAngles.map((angle, i) => (
-            <path
-              key={i}
-              d={linePath(angle, Math.max(vw, vh) * 1.4)}
-              stroke={colors.primary}
-              strokeWidth="0.5"
-              strokeOpacity="0.08"
-            />
-          ))}
+        {/* Outer ring — CSS class drives rotation animation */}
+        <circle
+          cx={cx}
+          cy={cy}
+          r={outerR}
+          fill="none"
+          stroke={`url(#${gradId})`}
+          strokeWidth="1.5"
+          strokeOpacity="0.45"
+          className="pv-ring-outer"
+          style={{ transformOrigin: `${cx}px ${cy}px` }}
+        />
 
-          {ticks.map((t, i) => (
-            <line
-              key={i}
-              x1={t.x1.toFixed(2)}
-              y1={t.y1.toFixed(2)}
-              x2={t.x2.toFixed(2)}
-              y2={t.y2.toFixed(2)}
-              stroke={colors.primary}
-              strokeWidth="1"
-              strokeOpacity="0.3"
-            />
-          ))}
+        {/* Mid ring — dashed, counter-rotation */}
+        <circle
+          cx={cx}
+          cy={cy}
+          r={midR}
+          fill="none"
+          stroke={colors.secondary}
+          strokeWidth="1"
+          strokeOpacity="0.35"
+          strokeDasharray="3 5"
+          className="pv-ring-mid"
+          style={{ transformOrigin: `${cx}px ${cy}px` }}
+        />
 
-          {/* Outer ring + arc — CSS class drives rotation animation */}
-          <circle
-            cx={cx}
-            cy={cy}
-            r={outerR}
-            fill="none"
-            stroke={`url(#${gradId})`}
-            strokeWidth="1.5"
-            strokeOpacity="0.45"
-            className="pv-ring-outer"
-            style={{ transformOrigin: `${cx}px ${cy}px` }}
-          />
+        {/* Inner circle — pulse */}
+        <circle
+          cx={cx}
+          cy={cy}
+          r={innerR}
+          fill={`url(#${gradId})`}
+          fillOpacity="0.15"
+          stroke={`url(#${gradId})`}
+          strokeWidth="1.5"
+          strokeOpacity="0.8"
+          className="pv-pulse-inner"
+          style={{ transformOrigin: `${cx}px ${cy}px` }}
+        />
 
-          <path
-            d={arcPath(outerR, arcStartDeg, arcEndDeg)}
-            fill="none"
-            stroke={`url(#${gradId})`}
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            filter={`url(#${glowId})`}
-            className="pv-ring-outer"
-            style={{ transformOrigin: `${cx}px ${cy}px` }}
-          />
-
-          {/* Mid ring — counter-rotation */}
-          <circle
-            cx={cx}
-            cy={cy}
-            r={midR}
-            fill="none"
-            stroke={colors.secondary}
-            strokeWidth="1"
-            strokeOpacity="0.35"
-            strokeDasharray="3 5"
-            className="pv-ring-mid"
-            style={{ transformOrigin: `${cx}px ${cy}px` }}
-          />
-
-          {/* Inner circle — pulse */}
-          <circle
-            cx={cx}
-            cy={cy}
-            r={innerR}
-            fill={`url(#${gradId})`}
-            fillOpacity="0.15"
-            stroke={`url(#${gradId})`}
-            strokeWidth="1.5"
-            strokeOpacity="0.8"
-            className="pv-pulse-inner"
-            style={{ transformOrigin: `${cx}px ${cy}px` }}
-          />
-
-          {/* Descriptive product icon at center */}
-          <ProductIcon slug={slug} cx={cx} cy={cy} color={colors.primary} />
-
-          <circle
-            cx={dot1x.toFixed(2)}
-            cy={dot1y.toFixed(2)}
-            r="3"
-            fill={colors.primary}
-            fillOpacity="0.7"
-            stroke={colors.primary}
-            strokeWidth="1"
-            strokeOpacity="0.5"
-          />
-          <circle
-            cx={dot2x.toFixed(2)}
-            cy={dot2y.toFixed(2)}
-            r="2"
-            fill="none"
-            stroke={colors.secondary}
-            strokeWidth="1"
-            strokeOpacity="0.5"
-          />
-
-          <line
-            x1={cx}
-            y1={cy}
-            x2={dot1x.toFixed(2)}
-            y2={dot1y.toFixed(2)}
-            stroke={colors.primary}
-            strokeWidth="0.75"
-            strokeOpacity="0.2"
-            strokeDasharray="2 3"
-          />
-          <line
-            x1={cx}
-            y1={cy}
-            x2={dot2x.toFixed(2)}
-            y2={dot2y.toFixed(2)}
-            stroke={colors.secondary}
-            strokeWidth="0.75"
-            strokeOpacity="0.15"
-            strokeDasharray="2 3"
-          />
-        </g>
+        {/* Descriptive product icon at center */}
+        <ProductIcon slug={slug} cx={cx} cy={cy} color={colors.primary} />
       </svg>
     </div>
   );
