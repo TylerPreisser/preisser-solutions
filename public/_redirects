@@ -1,6 +1,3 @@
-/index.html / 301
-/home / 301
-
 # Agents → Products rename 2026-05-21
 /agents /products 301
 /agents/ /products 301
@@ -23,10 +20,62 @@
 /agents/alpha-matrix /products 301
 /agents/trend-behavioral-analysis-agent /products 301
 /agents/robin-hiring-screener /case-studies/hiring-pipeline-robin 301
-/agents/* /products/:splat 301
 
-# Host-level canonicalization is handled in Cloudflare Pages middleware.
-# Pages _redirects only supports path-based rules.
+# GSC crawled-not-indexed deletions (Wave 3, 2026-05-21) — 11 pages cut.
+# Confirmed not-indexed by Google: 3 known slugs. 8 heuristic cuts (thin template
+# pages: <100 lines, no headlineMetric, low-pop or out-of-state markets).
+
+# Locations (6 cuts)
+/locations/russell-kansas-web-design /locations/hays-kansas 301
+/locations/russell-kansas-web-design/ /locations/hays-kansas 301
+/locations/smith-center-kansas-web-design /locations/western-kansas-web-design 301
+/locations/smith-center-kansas-web-design/ /locations/western-kansas-web-design 301
+/locations/scott-city-kansas-web-design /locations/garden-city-kansas 301
+/locations/scott-city-kansas-web-design/ /locations/garden-city-kansas 301
+/locations/north-platte-nebraska-web-design /locations/hays-kansas 301
+/locations/north-platte-nebraska-web-design/ /locations/hays-kansas 301
+/locations/burlington-colorado-web-design /locations/goodland-kansas-web-design 301
+/locations/burlington-colorado-web-design/ /locations/goodland-kansas-web-design 301
+/locations/concordia-kansas-web-design /locations/salina-kansas 301
+/locations/concordia-kansas-web-design/ /locations/salina-kansas 301
+
+# Compare pages (4 cuts)
+/compare/lost-highway-media /case-studies 301
+/compare/lost-highway-media/ /case-studies 301
+/compare/imagemakers /compare/vs-marketing-agency 301
+/compare/imagemakers/ /compare/vs-marketing-agency 301
+/compare/toucan-design /compare/vs-marketing-agency 301
+/compare/toucan-design/ /compare/vs-marketing-agency 301
+/compare/conceptualized-design /compare/vs-marketing-agency 301
+/compare/conceptualized-design/ /compare/vs-marketing-agency 301
+
+# Use-case pages (1 cut)
+/use-cases/ai-customer-reactivation-campaigns /products/customer-reactivation-agent 301
+/use-cases/ai-customer-reactivation-campaigns/ /products/customer-reactivation-agent 301
+
+# Privacy fix (2026-05-20) — old case-study URLs with real company names removed from public
+# site. Canonical replacements use anonymized framings per CANONICAL-PROJECTS.md.
+/case-studies/astrus-insurance /case-studies/alliant-mgu-insurance 301
+/case-studies/astrus-insurance/ /case-studies/alliant-mgu-insurance 301
+/case-studies/sunrise-transportation /case-studies/chicago-bus-operator 301
+/case-studies/sunrise-transportation/ /case-studies/chicago-bus-operator 301
+/case-studies/cassidy-hvac /case-studies/cassidy-hvac-reactivation 301
+/case-studies/cassidy-hvac/ /case-studies/cassidy-hvac-reactivation 301
+/case-studies/customer-reactivation /case-studies/cassidy-hvac-reactivation 301
+/case-studies/customer-reactivation/ /case-studies/cassidy-hvac-reactivation 301
+/case-studies/hg-oil-holdings /case-studies/hg-oil-inventory-system 301
+/case-studies/hg-oil-holdings/ /case-studies/hg-oil-inventory-system 301
+
+# Phase 4.5 (2026-05-15) service-page consolidation. The new canonical paths
+# all live under /services/*; legacy short-URL slugs 301 to them so AEO/SEO
+# signals consolidate. Page files still exist at the legacy paths for safety
+# (Cloudflare _redirects fires before the static file is served).
+/services/custom-crm /services/crm-systems 301
+/services/custom-crm/ /services/crm-systems/ 301
+/dashboards-and-analytics /services/dashboards-and-analytics 301
+/dashboards-and-analytics/ /services/dashboards-and-analytics/ 301
+/custom-websites /services/custom-websites 301
+/custom-websites/ /services/custom-websites/ 301
 
 # Legacy .html URL rules — handles Google-indexed pre-Next.js paths from the old domain
 # Must be specific rules because Cloudflare Pages _redirects cannot strip .html via splat pattern
@@ -40,21 +89,58 @@
 /process.html /process 301
 /faq.html /faq 301
 
+# Domain-root redirects
+/index.html / 301
+/home / 301
+
 # Brand-defense page lives at /preisser-solutions (renamed 2026-05-15 from /preisser-technology).
 # 301 the now-legacy /preisser-technology slug to the new canonical.
 /preisser-technology /preisser-solutions 301
-/preisser-technology/* /preisser-solutions/:splat 301
 
-# Phase 4.5 (2026-05-15) service-page consolidation. The new canonical paths
-# all live under /services/*; legacy short-URL slugs 301 to them so AEO/SEO
-# signals consolidate. Page files still exist at the legacy paths for safety
-# (Cloudflare _redirects fires before the static file is served).
-/services/custom-crm /services/crm-systems 301
-/services/custom-crm/ /services/crm-systems/ 301
-/dashboards-and-analytics /services/dashboards-and-analytics 301
-/dashboards-and-analytics/ /services/dashboards-and-analytics/ 301
-/custom-websites /services/custom-websites 301
-/custom-websites/ /services/custom-websites/ 301
+# Use-case page deletions (Wave 2, 2026-05-20) — pages with no canonical project backing.
+# ai-chatbot: generic capability, no project. → /services/ai-automation
+/use-cases/ai-chatbot-small-business /services/ai-automation 301
+/use-cases/ai-chatbot-small-business/ /services/ai-automation 301
+# automate-invoice-processing: duplicate of ai-invoice-processing. → canonical sibling.
+/use-cases/automate-invoice-processing-small-business /use-cases/ai-invoice-processing-small-business 301
+/use-cases/automate-invoice-processing-small-business/ /use-cases/ai-invoice-processing-small-business 301
+# lead-tracking-google-ads: no canonical project (MarCommand is internal). → /services/local-seo
+/use-cases/lead-tracking-website-google-ads /services/local-seo 301
+/use-cases/lead-tracking-website-google-ads/ /services/local-seo 301
+# quickbooks-servicetitan-dashboard: misrepresents what was actually built. → /services/dashboards-and-analytics
+/use-cases/quickbooks-servicetitan-dashboard /services/dashboards-and-analytics 301
+/use-cases/quickbooks-servicetitan-dashboard/ /services/dashboards-and-analytics 301
+
+# Industry page deletions (2026-05-20) — pages with no canonical project backing.
+# Deleted data files + route dirs. Redirecting to /services (hub).
+/industries/agriculture /services 301
+/industries/agriculture/ /services 301
+/industries/auto-service /services 301
+/industries/auto-service/ /services 301
+/industries/construction /services 301
+/industries/construction/ /services 301
+/industries/dental /services 301
+/industries/dental/ /services 301
+/industries/electrical /services 301
+/industries/electrical/ /services 301
+/industries/garage-door /services 301
+/industries/garage-door/ /services 301
+/industries/healthcare /services 301
+/industries/healthcare/ /services 301
+/industries/landscaping /services 301
+/industries/landscaping/ /services 301
+/industries/pest-control /services 301
+/industries/pest-control/ /services 301
+/industries/plumbing /services 301
+/industries/plumbing/ /services 301
+/industries/real-estate /services 301
+/industries/real-estate/ /services 301
+/industries/restaurants /services 301
+/industries/restaurants/ /services 301
+/industries/roofing /services 301
+/industries/roofing/ /services 301
+/industries/veterinary /services 301
+/industries/veterinary/ /services 301
 
 # SEO Wave A (2026-05-18) — duplicate compare URL pair consolidation.
 # Each pair targeted the same query and split equity. Killed the weaker
@@ -119,94 +205,10 @@
 /locations/russell-kansas /locations/hays-kansas 301
 /locations/russell-kansas/ /locations/hays-kansas 301
 /locations/smith-center-kansas /locations/hays-kansas 301
-
-# Use-case page deletions (Wave 2, 2026-05-20) — pages with no canonical project backing.
-# ai-chatbot: generic capability, no project. → /services/ai-automation
-/use-cases/ai-chatbot-small-business /services/ai-automation 301
-/use-cases/ai-chatbot-small-business/ /services/ai-automation 301
-# automate-invoice-processing: duplicate of ai-invoice-processing. → canonical sibling.
-/use-cases/automate-invoice-processing-small-business /use-cases/ai-invoice-processing-small-business 301
-/use-cases/automate-invoice-processing-small-business/ /use-cases/ai-invoice-processing-small-business 301
-# lead-tracking-google-ads: no canonical project (MarCommand is internal). → /services/local-seo
-/use-cases/lead-tracking-website-google-ads /services/local-seo 301
-/use-cases/lead-tracking-website-google-ads/ /services/local-seo 301
-# quickbooks-servicetitan-dashboard: misrepresents what was actually built. → /services/dashboards-and-analytics
-/use-cases/quickbooks-servicetitan-dashboard /services/dashboards-and-analytics 301
-/use-cases/quickbooks-servicetitan-dashboard/ /services/dashboards-and-analytics 301
 /locations/smith-center-kansas/ /locations/hays-kansas 301
 
-# Industry page deletions (2026-05-20) — pages with no canonical project backing.
-# Deleted data files + route dirs. Redirecting to /services (hub).
-/industries/agriculture /services 301
-/industries/agriculture/ /services 301
-/industries/auto-service /services 301
-/industries/auto-service/ /services 301
-/industries/construction /services 301
-/industries/construction/ /services 301
-/industries/dental /services 301
-/industries/dental/ /services 301
-/industries/electrical /services 301
-/industries/electrical/ /services 301
-/industries/garage-door /services 301
-/industries/garage-door/ /services 301
-/industries/healthcare /services 301
-/industries/healthcare/ /services 301
-/industries/landscaping /services 301
-/industries/landscaping/ /services 301
-/industries/pest-control /services 301
-/industries/pest-control/ /services 301
-/industries/plumbing /services 301
-/industries/plumbing/ /services 301
-/industries/real-estate /services 301
-/industries/real-estate/ /services 301
-/industries/restaurants /services 301
-/industries/restaurants/ /services 301
-/industries/roofing /services 301
-/industries/roofing/ /services 301
-/industries/veterinary /services 301
-/industries/veterinary/ /services 301
-
-# Privacy fix (2026-05-20) — old case-study URLs with real company names removed from public
-# site. Canonical replacements use anonymized framings per CANONICAL-PROJECTS.md.
-/case-studies/astrus-insurance /case-studies/alliant-mgu-insurance 301
-/case-studies/astrus-insurance/ /case-studies/alliant-mgu-insurance 301
-/case-studies/sunrise-transportation /case-studies/chicago-bus-operator 301
-/case-studies/sunrise-transportation/ /case-studies/chicago-bus-operator 301
-/case-studies/cassidy-hvac /case-studies/cassidy-hvac-reactivation 301
-/case-studies/cassidy-hvac/ /case-studies/cassidy-hvac-reactivation 301
-/case-studies/customer-reactivation /case-studies/cassidy-hvac-reactivation 301
-/case-studies/customer-reactivation/ /case-studies/cassidy-hvac-reactivation 301
-/case-studies/hg-oil-holdings /case-studies/hg-oil-inventory-system 301
-/case-studies/hg-oil-holdings/ /case-studies/hg-oil-inventory-system 301
-
-# GSC crawled-not-indexed deletions (Wave 3, 2026-05-21) — 11 pages cut.
-# Confirmed not-indexed by Google: 3 known slugs. 8 heuristic cuts (thin template
-# pages: <100 lines, no headlineMetric, low-pop or out-of-state markets).
-
-# Locations (6 cuts)
-/locations/russell-kansas-web-design /locations/hays-kansas 301
-/locations/russell-kansas-web-design/ /locations/hays-kansas 301
-/locations/smith-center-kansas-web-design /locations/western-kansas-web-design 301
-/locations/smith-center-kansas-web-design/ /locations/western-kansas-web-design 301
-/locations/scott-city-kansas-web-design /locations/garden-city-kansas 301
-/locations/scott-city-kansas-web-design/ /locations/garden-city-kansas 301
-/locations/north-platte-nebraska-web-design /locations/hays-kansas 301
-/locations/north-platte-nebraska-web-design/ /locations/hays-kansas 301
-/locations/burlington-colorado-web-design /locations/goodland-kansas-web-design 301
-/locations/burlington-colorado-web-design/ /locations/goodland-kansas-web-design 301
-/locations/concordia-kansas-web-design /locations/salina-kansas 301
-/locations/concordia-kansas-web-design/ /locations/salina-kansas 301
-
-# Compare pages (4 cuts)
-/compare/lost-highway-media /case-studies 301
-/compare/lost-highway-media/ /case-studies 301
-/compare/imagemakers /compare/vs-marketing-agency 301
-/compare/imagemakers/ /compare/vs-marketing-agency 301
-/compare/toucan-design /compare/vs-marketing-agency 301
-/compare/toucan-design/ /compare/vs-marketing-agency 301
-/compare/conceptualized-design /compare/vs-marketing-agency 301
-/compare/conceptualized-design/ /compare/vs-marketing-agency 301
-
-# Use-case pages (1 cut)
-/use-cases/ai-customer-reactivation-campaigns /products/customer-reactivation-agent 301
-/use-cases/ai-customer-reactivation-campaigns/ /products/customer-reactivation-agent 301
+# Wildcards — do not count toward Cloudflare Pages 100-rule static limit
+# Host-level canonicalization is handled in Cloudflare Pages middleware.
+# Pages _redirects only supports path-based rules.
+/agents/* /products/:splat 301
+/preisser-technology/* /preisser-solutions/:splat 301
