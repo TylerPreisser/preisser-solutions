@@ -69,7 +69,7 @@ export default function HomePage() {
       <WhyUs />
       <CaseStudies />
       <section
-        aria-label="Agent catalog"
+        aria-label="Product catalog"
         style={{
           background: "var(--theme-section-switchable)",
           color: "var(--theme-text-primary)",
@@ -101,13 +101,13 @@ export default function HomePage() {
             }}
           >
             <a
-              href="/agents"
+              href="/products"
               style={{
                 color: "var(--theme-text-primary)",
                 textDecoration: "none",
               }}
             >
-              Browse the agent catalog →
+              Browse our products →
             </a>
           </p>
           <p
@@ -117,7 +117,7 @@ export default function HomePage() {
               margin: 0,
             }}
           >
-            19 production-grade agents built from real client engagements.
+            16 production-grade products built from real client engagements.
           </p>
         </div>
       </section>

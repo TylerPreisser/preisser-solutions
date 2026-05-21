@@ -1,11 +1,29 @@
 /index.html / 301
 /home / 301
 
-# /products removed 2026-05-20 — Preisser Solutions has no productized SKUs for sale.
-# "AI Receptionist Starter" and "AI-Native Website Launch" framing deleted per canonical inventory.
-# Inbound links and Google-indexed pages (including the AI Receptionist result Tyler flagged) redirect to /services.
-/products /services 301
-/products/ /services 301
+# Agents → Products rename 2026-05-21
+/agents /products 301
+/agents/ /products 301
+/agents/customer-reactivation-agent /products/customer-reactivation-agent 301
+/agents/social-marketing-agent /products/social-marketing-agent 301
+/agents/marcommand-engine /products/marcommand-engine 301
+/agents/inventory-operations-agent /products/intelligent-inventory-monitoring 301
+/agents/invoice-processing-agent /products/invoice-processing-agent 301
+/agents/after-hours-call-triage /products/business-triage-agent 301
+/agents/submission-processing-agent /products/industry-specific-agent 301
+/agents/email-digest-agent /products/ai-digital-receptionist 301
+/agents/agentic-coding-specialists /products/agentic-coding-specialists 301
+/agents/local-ai-deployment-agent /products/local-ai-deployment-agent 301
+/agents/fitness-wellness-agent /products/fitness-wellness-agent 301
+/agents/gifting-recommendation-agent /products/gifting-recommendation-agent 301
+/agents/document-analysis-agent /products 301
+/agents/lead-pipeline-agent /products/business-triage-agent 301
+/agents/bol-rate-confirmation-agent /products 301
+/agents/query-dominance-agent-system /products 301
+/agents/alpha-matrix /products 301
+/agents/trend-behavioral-analysis-agent /products 301
+/agents/robin-hiring-screener /case-studies/hiring-pipeline-robin 301
+/agents/* /products/:splat 301
 
 # Host-level canonicalization is handled in Cloudflare Pages middleware.
 # Pages _redirects only supports path-based rules.

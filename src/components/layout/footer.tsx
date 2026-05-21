@@ -122,7 +122,7 @@ export function Footer() {
             &copy; {year} {siteConfig.name}. All Rights Reserved.
           </p>
           <div className="ps-footer-legal" aria-label="Legal links">
-            <a href="/agents">Agents</a>
+            <a href="/products">Products</a>
             <span aria-hidden="true"> · </span>
             <a href="/privacy">Privacy</a>
             <span aria-hidden="true"> · </span>

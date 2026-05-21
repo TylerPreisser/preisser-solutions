@@ -20,7 +20,6 @@ const EXCLUDED_PATHS = new Set([
   "/case-studies/cassidy-hvac",
   "/case-studies/customer-reactivation",
   "/case-studies/hg-oil-holdings",
-  "/products",
 ]);
 
 async function walk(dir) {
@@ -63,7 +62,7 @@ function escapeXml(value) {
 function priorityFor(urlPath) {
   if (urlPath === "/") return "1.0";
   if (urlPath.startsWith("/case-studies/") || urlPath === "/case-studies") return "0.9";
-  if (urlPath.startsWith("/agents/") || urlPath === "/agents") return "0.85";
+  if (urlPath.startsWith("/products/") || urlPath === "/products") return "0.85";
   if (urlPath.startsWith("/services/") || urlPath === "/services") return "0.85";
   if (urlPath.startsWith("/locations/hays-kansas")) return "0.85";
   if (urlPath.startsWith("/locations/")) return "0.7";
@@ -83,8 +82,8 @@ function priorityFor(urlPath) {
  */
 function changefreqFor(urlPath) {
   if (urlPath === "/") return "weekly";
-  if (urlPath === "/agents") return "weekly";
-  if (urlPath.startsWith("/agents/")) return "monthly";
+  if (urlPath === "/products") return "weekly";
+  if (urlPath.startsWith("/products/")) return "monthly";
   if (urlPath.startsWith("/case-studies") || urlPath.startsWith("/blog") || urlPath.startsWith("/insights")) return "weekly";
   if (
     urlPath.startsWith("/services") ||
