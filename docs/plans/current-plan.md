@@ -30,6 +30,8 @@ local `out/`.
   generated output, and active Claude/Codex/Cursor instruction state.
 - [x] Delete old Cloudflare Pages deployments and preserve only the current live
   `preisser-solutions` deployment.
+- [x] Deploy the cleanup from the canonical folder with Wrangler and prune
+  superseded Cloudflare deployments.
 
 ## Completed Site Work In Clean Source
 
@@ -47,8 +49,6 @@ local `out/`.
 - [ ] Run a deeper JS bundle pass on `LocationPage` and `CaseStudyPage` detail
   views.
 - [ ] Decide whether to keep all 78 location routes or consolidate another wave.
-- [ ] Deploy this cleanup from the canonical folder with Wrangler only after
-  validation passes, then prune superseded Cloudflare deployments.
 - [ ] Keep active agent memory filenames and prompts aligned with Preisser
   Solutions source-of-truth docs.
 

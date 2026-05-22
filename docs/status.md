@@ -20,6 +20,8 @@ Last updated: 2026-05-22.
 - Type status: `npx tsc --noEmit` passed on 2026-05-22.
 - SEO validation: `npm run validate:seo` passed on 2026-05-22 with 144
   checks passed and 0 failed.
+- Cloudflare status: one production deployment and zero preview deployments
+  after the final Wrangler deploy/prune cycle on 2026-05-22.
 - Source routes: 231 `page.tsx` files.
 - Route handlers: 0 `route.ts` / `route.tsx` files.
 - Sitemap URLs: 231 canonical URLs.
@@ -44,6 +46,8 @@ Last updated: 2026-05-22.
   after confirming it carried obsolete source and instruction state.
 - Deleted old Cloudflare Pages deployments for `preisser-solutions`; Cloudflare
   now lists one production deployment and zero preview deployments.
+- Deployed the clean source from the canonical folder with Wrangler after
+  validation, then removed the superseded Cloudflare deployments.
 - Fixed mobile hero CTA stalls:
   - Hero canvas now draws once on mobile/coarse-pointer devices.
   - Hero GSAP entrance animation is skipped on mobile.
