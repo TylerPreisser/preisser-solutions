@@ -1,6 +1,3 @@
-"use client";
-
-import { useMemo, useState } from "react";
 import Link from "next/link";
 
 export interface CaseStudySummary {
@@ -83,28 +80,15 @@ const FALLBACK_META: CategoryMeta = {
 };
 
 export function CaseStudiesCatalog({ caseStudies }: Props) {
-  const [activeFilter, setActiveFilter] = useState("All");
-
-  const groups = useMemo(() => {
-    const seen = new Set<string>();
-    return caseStudies
-      .map((study) => study.group)
-      .filter((group) => {
-        if (seen.has(group)) return false;
-        seen.add(group);
-        return true;
-      });
-  }, [caseStudies]);
-
-  const filters = useMemo(() => ["All", ...groups], [groups]);
-  const isFiltered = activeFilter !== "All";
-  const filteredStudies = useMemo(
-    () =>
-      isFiltered
-        ? caseStudies.filter((study) => study.group === activeFilter)
-        : caseStudies,
-    [activeFilter, caseStudies, isFiltered]
-  );
+  const seen = new Set<string>();
+  const groups = caseStudies
+    .map((study) => study.group)
+    .filter((group) => {
+      if (seen.has(group)) return false;
+      seen.add(group);
+      return true;
+    });
+  const filters = ["All", ...groups];
 
   return (
     <div>
@@ -177,53 +161,52 @@ export function CaseStudiesCatalog({ caseStudies }: Props) {
 
       <section className="pb-28 pt-10" style={{ background: "var(--theme-section-alt)" }}>
         <div className="ps-container">
-          <div className="mb-10">
+          <style>{buildCaseFilterCss(filters)}</style>
+
+          <fieldset className="ps-case-filters relative border-0 p-0">
+            {filters.map((filter) => (
+              <input
+                key={filter}
+                className="ps-filter-input"
+                type="radio"
+                name="case-study-filter"
+                id={`ps-case-filter-${toFilterSlug(filter)}`}
+                defaultChecked={filter === "All"}
+              />
+            ))}
+
+            <legend className="sr-only">Filter case studies by category</legend>
             <div className="ps-chips-wrapper">
               <div className="ps-chips-scroll">
                 {filters.map((filter) => {
-                  const active = filter === activeFilter;
                   return (
-                    <button
+                    <label
                       key={filter}
-                      type="button"
-                      onClick={() => setActiveFilter(filter)}
                       className="ps-chip"
-                      style={
-                        active
-                          ? {
-                              borderColor: "var(--color-primary)",
-                              background: "var(--color-primary)",
-                              color: "#FFFFFF",
-                              boxShadow: "0 8px 30px rgba(13,149,232,0.25)",
-                            }
-                          : {
-                              borderColor: "var(--theme-card-border)",
-                              background: "var(--theme-card-bg)",
-                              color: "var(--theme-text-secondary)",
-                            }
-                      }
+                      htmlFor={`ps-case-filter-${toFilterSlug(filter)}`}
+                      style={{
+                        borderColor: "var(--theme-card-border)",
+                        background: "var(--theme-card-bg)",
+                        color: "var(--theme-text-secondary)",
+                      }}
                     >
                       {filter}
-                    </button>
+                    </label>
                   );
                 })}
               </div>
             </div>
-          </div>
 
-          {isFiltered ? (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredStudies.map((study) => (
-                <CaseStudyCard key={study.slug} study={study} />
-              ))}
-            </div>
-          ) : (
-            <div className="space-y-20">
+            <div className="ps-filter-content mt-10 space-y-20">
               {groups.map((group) => {
                 const groupStudies = caseStudies.filter((study) => study.group === group);
                 const meta = CATEGORY_META[group] ?? FALLBACK_META;
                 return (
-                  <div key={group}>
+                  <div
+                    key={group}
+                    className="ps-filter-group"
+                    data-filter-group={toFilterSlug(group)}
+                  >
                     <div
                       className="mb-8"
                       style={{ borderTop: "1px solid var(--theme-card-border)", paddingTop: "1.75rem" }}
@@ -273,7 +256,7 @@ export function CaseStudiesCatalog({ caseStudies }: Props) {
                 );
               })}
             </div>
-          )}
+          </fieldset>
         </div>
       </section>
 
@@ -339,6 +322,44 @@ export function CaseStudiesCatalog({ caseStudies }: Props) {
       </section>
     </div>
   );
+}
+
+function toFilterSlug(value: string) {
+  if (value === "All") return "all";
+  return value
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function buildCaseFilterCss(filters: string[]) {
+  const rules = filters
+    .map((filter) => {
+      const slug = toFilterSlug(filter);
+      const input = `#ps-case-filter-${slug}`;
+      const label = `.ps-case-filters label[for="ps-case-filter-${slug}"]`;
+      const checked = `${input}:checked ~ .ps-chips-wrapper ${label}`;
+      const active =
+        `${checked} { border-color: var(--color-primary); background: var(--color-primary); ` +
+        "color: #FFFFFF; box-shadow: 0 8px 30px rgba(13,149,232,0.25); }";
+
+      if (slug === "all") return active;
+
+      return `${active}
+${input}:checked ~ .ps-filter-content .ps-filter-group:not([data-filter-group="${slug}"]) { display: none; }`;
+    })
+    .join("\n");
+
+  return `.ps-filter-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+${rules}`;
 }
 
 function CaseStudyCard({ study }: { study: CaseStudySummary }) {

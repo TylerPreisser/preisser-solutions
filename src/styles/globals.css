@@ -417,11 +417,11 @@ ul, ol {
 @media (max-width: 767px) {
   .ps-chips-wrapper {
     position: relative;
-    /* Extend horizontally beyond ps-container padding so chips reach edge-to-edge.
-       Negative margin + matching padding exposes the scroll area to the screen edge
-       while keeping content flush with the container grid. */
-    margin-left: calc(var(--container-padding) * -1);
-    margin-right: calc(var(--container-padding) * -1);
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    overflow: hidden;
   }
 
   /* Left fade: indicates there's more content to the left */
@@ -451,6 +451,8 @@ ul, ol {
     display: flex;
     flex-wrap: nowrap;
     gap: 0.5rem;
+    width: 100%;
+    max-width: 100%;
     overflow-x: auto;
     /* CSS snap: mandatory snapping so each chip flicks into a comfortable position */
     scroll-snap-type: x mandatory;
@@ -489,39 +491,6 @@ ul, ol {
   transform: none;
 }
 
-/* ── CSS-only category filtering ──────────────────────────────
-   ProductGrid writes data-active-category on the .products-grid wrapper.
-   ProductCard has data-category on each card root.
-   No JavaScript runs when filtering — the CSS engine handles show/hide.
-   Cards that don't match are hidden; matching cards are shown.
-   "all" shows everything. Any other value hides non-matching cards.
-
-   NOTE: The "all" view uses category group markup (not flat cards),
-   so the CSS filter rules only matter in the isFiltered=true flat grid.
-   In the all view ProductGrid renders categories directly, so no filtering
-   CSS is needed there. But we include it defensively for both views. */
-.products-grid[data-active-category="all"] .product-card {
-  display: block;
-}
-.products-grid:not([data-active-category="all"]) .product-card {
-  display: none;
-}
-.products-grid[data-active-category="marketing-growth"] .product-card[data-category="marketing-growth"] {
-  display: block;
-}
-.products-grid[data-active-category="operations-back-office"] .product-card[data-category="operations-back-office"] {
-  display: block;
-}
-.products-grid[data-active-category="sales-customer-service"] .product-card[data-category="sales-customer-service"] {
-  display: block;
-}
-.products-grid[data-active-category="decision-intelligence"] .product-card[data-category="decision-intelligence"] {
-  display: block;
-}
-.products-grid[data-active-category="custom-builds"] .product-card[data-category="custom-builds"] {
-  display: block;
-}
-
 /* ── ProductVisual SVG animations — pure CSS, no JS ───────────
    Three shared keyframes cover all 16 product cards:
      pv-ring-outer  → outer ring + arc: slow clockwise rotation (16s)
@@ -532,8 +501,9 @@ ul, ol {
    pv-pulse-inner) and transformOrigin set via inline style.
    transform: rotate() composites on the GPU — no main-thread work.
 
-   Runs on mobile. Not killed by viewport width — Tyler specifically
-   wants animations on mobile. prefers-reduced-motion pauses them. */
+   Desktop keeps the subtle motion. Touch/mobile Safari gets the same SVGs as
+   static visuals so the page scrolls like the homepage instead of repainting
+   dozens of animated SVG rings while the user moves down the catalog. */
 
 @keyframes pv-spin-cw {
   from { transform: rotate(0deg); }
@@ -569,6 +539,14 @@ ul, ol {
   .pv-ring-mid,
   .pv-pulse-inner,
   .product-card {
+    animation: none !important;
+  }
+}
+
+@media (hover: none), (max-width: 767px) {
+  .pv-ring-outer,
+  .pv-ring-mid,
+  .pv-pulse-inner {
     animation: none !important;
   }
 }

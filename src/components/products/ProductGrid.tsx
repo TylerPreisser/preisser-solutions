@@ -1,18 +1,12 @@
-"use client";
-
 /**
- * ProductGrid — ONLY client component in the /products surface.
+ * ProductGrid — server-rendered catalog surface.
  *
- * Sole responsibility: hold the active filter string in state and write
- * data-active-category on the wrapper div so CSS can show/hide cards.
- *
- * ALL layout, card rendering, and SVG animations are server-rendered.
- * No Framer Motion. No AnimatePresence. No useEffect. No layout animations.
- * CSS handles filtering (hide/show via .products-grid[data-active-category]).
- * CSS handles SVG ring animations (pv-ring-outer, pv-ring-mid, pv-pulse-inner).
+ * The homepage works because most of it is static HTML with small client
+ * islands. Keep the catalog the same way: no React state, no hydration for
+ * filters, and no client bundle for every SVG card. Native radio inputs +
+ * CSS selectors handle category filtering.
  */
 
-import { useState, useMemo } from "react";
 import Link from "next/link";
 import { ProductCard } from "@/components/products/ProductCard";
 import type { ProductSummary, ProductCategory } from "@/types/product";
@@ -60,10 +54,6 @@ const CATEGORY_META: Record<ProductCategory, CategoryMeta> = {
   },
 };
 
-/**
- * Map display category names to slug-form for data-active-category attribute.
- * Must match the CSS rules in globals.css.
- */
 const CATEGORY_TO_SLUG: Record<string, string> = {
   "All":                      "all",
   "Marketing & Growth":       "marketing-growth",
@@ -73,25 +63,46 @@ const CATEGORY_TO_SLUG: Record<string, string> = {
   "Custom Builds":            "custom-builds",
 };
 
+function buildFilterCss(filters: string[]) {
+  const activeRules = filters
+    .map((filter) => {
+      const slug = CATEGORY_TO_SLUG[filter] ?? "all";
+      const input = `#ps-product-filter-${slug}`;
+      const label = `.ps-product-filters label[for="ps-product-filter-${slug}"]`;
+      const checked = `${input}:checked ~ .ps-chips-wrapper ${label}`;
+      const active =
+        `${checked} { border-color: var(--color-primary); background: var(--color-primary); ` +
+        "color: #FFFFFF; box-shadow: 0 8px 30px rgba(13,149,232,0.25); }";
+
+      if (slug === "all") return active;
+
+      return `${active}
+${input}:checked ~ .ps-filter-content .ps-filter-group:not([data-filter-group="${slug}"]) { display: none; }`;
+    })
+    .join("\n");
+
+  return `.ps-filter-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.ps-filter-input:focus-visible ~ .ps-chips-wrapper label {
+  outline-offset: 3px;
+}
+${activeRules}`;
+}
+
 export function ProductGrid({ products }: Props) {
-  const [activeFilter, setActiveFilter] = useState<string>("All");
-
-  const availableCategories = useMemo(() => {
-    const cats = new Set(products.map((p) => p.category));
-    return ALL_FILTER_LABELS.filter((f) => f === "All" || cats.has(f as ProductCategory));
-  }, [products]);
-
-  const activeCategorySlug = CATEGORY_TO_SLUG[activeFilter] ?? "all";
-  const isFiltered = activeFilter !== "All";
-
-  // For filtered view: get the subset to render
-  const filteredProducts = useMemo(() => {
-    if (!isFiltered) return products;
-    return products.filter((p) => p.category === activeFilter);
-  }, [products, activeFilter, isFiltered]);
+  const cats = new Set(products.map((p) => p.category));
+  const availableCategories = ALL_FILTER_LABELS.filter(
+    (f) => f === "All" || cats.has(f as ProductCategory)
+  );
 
   return (
-    <div className="products-grid" data-active-category={activeCategorySlug}>
+    <div className="products-grid">
       {/* ── Hero ──────────────────────────────────────────────── */}
       <section
         className="relative isolate overflow-hidden"
@@ -168,69 +179,56 @@ export function ProductGrid({ products }: Props) {
         style={{ background: "var(--theme-section-alt)" }}
       >
         <div className="ps-container">
-          {/* Filter chips
-              Desktop (≥768px): flex-wrap centered row.
-              Mobile (<768px): single horizontal scroll row with snap points.
-              Touch targets min 44px tall (Apple HIG) via min-h on mobile.
-              Scrollbar hidden via ps-chips-scroll class in globals.css. */}
-          <div className="mb-10">
+          <style>{buildFilterCss(availableCategories)}</style>
+
+          <fieldset className="ps-product-filters relative border-0 p-0">
+            {availableCategories.map((f) => {
+              const slug = CATEGORY_TO_SLUG[f] ?? "all";
+              return (
+                <input
+                  key={f}
+                  className="ps-filter-input"
+                  type="radio"
+                  name="product-filter"
+                  id={`ps-product-filter-${slug}`}
+                  defaultChecked={f === "All"}
+                />
+              );
+            })}
+
+            <legend className="sr-only">Filter AI agent products by category</legend>
             <div className="ps-chips-wrapper">
               <div className="ps-chips-scroll">
                 {availableCategories.map((f) => {
-                  const active = f === activeFilter;
                   return (
-                    <button
+                    <label
                       key={f}
-                      type="button"
-                      onClick={() => setActiveFilter(f)}
                       className="ps-chip"
-                      style={
-                        active
-                          ? {
-                              borderColor: "var(--color-primary)",
-                              background: "var(--color-primary)",
-                              color: "#FFFFFF",
-                              boxShadow: "0 8px 30px rgba(13,149,232,0.25)",
-                            }
-                          : {
-                              borderColor: "var(--theme-card-border)",
-                              background: "var(--theme-card-bg)",
-                              color: "var(--theme-text-secondary)",
-                            }
-                      }
+                      htmlFor={`ps-product-filter-${CATEGORY_TO_SLUG[f] ?? "all"}`}
+                      style={{
+                        borderColor: "var(--theme-card-border)",
+                        background: "var(--theme-card-bg)",
+                        color: "var(--theme-text-secondary)",
+                      }}
                     >
                       {f}
-                    </button>
+                    </label>
                   );
                 })}
               </div>
             </div>
-          </div>
 
-          {/* ── FILTERED VIEW — flat grid ── */}
-          {isFiltered ? (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {filteredProducts.map((product, idx) => (
-                <ProductCard key={product.slug} product={product} index={idx} />
-              ))}
-              {filteredProducts.length === 0 && (
-                <div
-                  className="col-span-full py-16 text-center text-base"
-                  style={{ color: "var(--theme-text-secondary)" }}
-                >
-                  No products in this category yet.
-                </div>
-              )}
-            </div>
-          ) : (
-            /* ── ALL VIEW — grouped by category ── */
-            <div className="space-y-20">
+            <div className="ps-filter-content mt-10 space-y-20">
               {MAIN_CATEGORIES.map((cat) => {
                 const catProducts = products.filter((p) => p.category === cat);
                 if (catProducts.length === 0) return null;
                 const meta = CATEGORY_META[cat];
                 return (
-                  <div key={cat}>
+                  <div
+                    key={cat}
+                    className="ps-filter-group"
+                    data-filter-group={CATEGORY_TO_SLUG[cat]}
+                  >
                     {/* Category header */}
                     <div
                       className="mb-8"
@@ -287,7 +285,7 @@ export function ProductGrid({ products }: Props) {
                 );
               })}
             </div>
-          )}
+          </fieldset>
         </div>
       </section>
 

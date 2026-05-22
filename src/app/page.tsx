@@ -11,10 +11,6 @@ import { siteConfig } from "@/data/site-config";
 // after the critical above-fold content is interactive. `ssr: true` keeps
 // the HTML in the SSG output (preserves SEO + avoids layout shift on paint),
 // but the JS bundle for each component is fetched lazily by the browser.
-const TechPartners = dynamic(
-  () => import("@/components/home/tech-partners").then((m) => m.TechPartners),
-  { ssr: true }
-);
 const ServicePillars = dynamic(
   () => import("@/components/home/service-pillars").then((m) => m.ServicePillars),
   { ssr: true }
@@ -105,7 +101,6 @@ export default function HomePage() {
       <ProofBar />
       <ValueStrip />
       <ServicePillars />
-      <TechPartners />
       <MarCommandCallout />
       <WhyUs />
       {/* Crawlable service + location link cluster — discoverable internal-link graph for crawlers + AI engines. */}

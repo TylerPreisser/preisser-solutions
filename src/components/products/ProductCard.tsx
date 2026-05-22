@@ -2,8 +2,8 @@
  * ProductCard — Pure server component. No "use client", no Framer Motion.
  *
  * Hover effects are CSS-only (:hover + transition).
- * Category filtering is CSS-only via data-category attribute on the root div
- * and .products-grid[data-active-category="..."] rules in globals.css.
+ * Category filtering is CSS-only at the catalog section level, so this card
+ * stays static HTML and does not require hydration.
  */
 
 import Link from "next/link";
