@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
 
 // Sun icon — shown in dark mode (click to switch to light)
 function SunIcon() {
@@ -108,7 +107,7 @@ export function Header() {
         />
         <div className="ps-header-inner">
           {/* Logo */}
-          <Link
+          <a
             href="/"
             className="ps-logo-link"
             onClick={() => {}}
@@ -116,18 +115,16 @@ export function Header() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/ps-logo.webp`}
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/ps-logo-192.webp`}
               alt="Preisser Solutions"
               className="ps-logo-img"
-              width={1024}
-              height={1024}
-              /* Above-fold logo — hint browser to fetch it immediately to prevent
-                 CLS (explicit width/height) and LCP delay (fetchpriority). */
-              // @ts-ignore — fetchpriority is a valid HTML attribute not yet in React types
-              fetchpriority="high"
+              width={192}
+              height={192}
+              fetchPriority="high"
               loading="eager"
+              decoding="async"
             />
-          </Link>
+          </a>
 
           {/* Desktop nav — minimal Stripe-style: theme toggle + CTA */}
           <nav
@@ -156,7 +153,7 @@ export function Header() {
                 </button>
               )}
 
-              <Link
+              <a
                 href="/contact"
                 className="ps-header-cta"
                 onClick={() => {}}
@@ -179,7 +176,7 @@ export function Header() {
                     strokeLinejoin="round"
                   />
                 </svg>
-              </Link>
+              </a>
             </div>
           </nav>
 
