@@ -8,7 +8,7 @@ once; maintenance is forever. Without this cadence, rankings decay 6-12 months a
 > - `docs/local-seo-checklist.md` — GBP + citation setup (one-time)
 > - `docs/local-citations.md` — full directory portfolio status
 > - `docs/site-map.md` — full route index
-> - `docs/priority-scorecard.md` — backlog with impact/effort scoring
+> - `docs/plans/current-plan.md` - active backlog and validation gate
 
 ---
 
@@ -81,7 +81,7 @@ Substantive content + measurement work. Block a half-day.
 - [ ] Run the full 20-prompt battery from `docs/seo-validation-checklist.md` §8 across all four
       platforms (Perplexity, ChatGPT, Gemini, Claude). Log results. Identify the 1-2 prompts where
       we're farthest from being cited; create a corresponding "improve page X" item in
-      `docs/priority-scorecard.md`.
+      `docs/plans/current-plan.md`.
 
 ---
 
@@ -143,7 +143,7 @@ Heavy audit + plan adjustment. Block a full day.
 
 ### Priorities reset
 
-- [ ] **Re-score** `docs/priority-scorecard.md`. Per the doc's own rules: re-score items where
+- [ ] **Re-score the active backlog** in `docs/plans/current-plan.md` where
       evidence has shifted (e.g., GBP is driving 60% of leads → all GBP-adjacent items move to
       Impact=5). Move completed items to a "Done this quarter" archive section.
 - [ ] **30/60/90 refresh.** Update `.context/plans/30-60-90.md` (or the equivalent file) with the
@@ -178,7 +178,7 @@ Some maintenance is triggered by events, not the calendar:
 - **Algorithm update (Google announces)** → check rankings 30 days later; document any volatility
   in `docs/decisions.md`.
 - **AI platform launches / shifts** (new ChatGPT search, new Claude search, etc.) → add a battery
-  for the new platform; update `docs/perplexity-strategy.md` and `public/llms.txt` accordingly.
+  for the new platform; update `docs/seo-maintenance.md` and `public/llms.txt` accordingly.
 
 ---
 

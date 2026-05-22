@@ -1513,8 +1513,10 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
         <div className="ps-dialog-drag-handle" aria-hidden="true" />
 
         {/* Visual area — large animated preview */}
-        <div className="ps-dialog-visual" aria-hidden="true">
-          {service.visual}
+        <div className="ps-dialog-visual">
+          <div className="ps-dialog-visual-art" aria-hidden="true">
+            {service.visual}
+          </div>
 
           {/* Close button floats over the visual */}
           <button

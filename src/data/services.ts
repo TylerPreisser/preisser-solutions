@@ -1,9 +1,3 @@
-export interface ValueProp {
-  title: string;
-  description: string;
-  icon: string; // image filename in /public/images/
-}
-
 export interface Service {
   title: string;
   description: string;
@@ -13,45 +7,6 @@ export interface AutomationBenefit {
   title: string;
   description: string;
 }
-
-export const valueProps: ValueProp[] = [
-  {
-    title: "Boost Team Productivity",
-    description:
-      "Free your skilled employees from repetitive work to focus on high-value activities that grow your business.",
-    icon: "Boost Productivity.png",
-  },
-  {
-    title: "Reduce Operational Costs",
-    description:
-      "Significantly lower the expense of manual tasks with efficient, custom automation.",
-    icon: "Reduce Operational.png",
-  },
-  {
-    title: "Scalable & Reliable",
-    description:
-      "Automated systems that can handle growing workloads reliably without proportional cost increases.",
-    icon: "Scalable & Reliable.png",
-  },
-  {
-    title: "Personalized Expert Service",
-    description:
-      "Direct access, ongoing support, and system management from me, your dedicated automation partner.",
-    icon: "Personalized.png",
-  },
-  {
-    title: "Truly Tailored Solutions",
-    description:
-      "Automation systems custom-built for your exact needs and workflows, not one-size-fits-all.",
-    icon: "Truly Tailored.png",
-  },
-  {
-    title: "Enhance Accuracy & Consistency",
-    description:
-      "Significantly reduce error rate by removing manual data entry from the most error-prone steps. Edge cases still need human review, but the routine work runs the same way every time.",
-    icon: "Enhance Accuracy.png",
-  },
-];
 
 export const services: Service[] = [
   {

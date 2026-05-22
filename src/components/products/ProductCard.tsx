@@ -2,8 +2,10 @@
  * ProductCard — Pure server component. No "use client", no Framer Motion.
  *
  * Hover effects are CSS-only (:hover + transition).
- * Category filtering is CSS-only at the catalog section level, so this card
- * stays static HTML and does not require hydration.
+ * Stagger fade-in on initial load is CSS-only via --card-index custom property
+ * and animation-delay in globals.css (.product-card).
+ * Category filtering is CSS-only via data-category attribute on the root div
+ * and .products-grid[data-active-category="..."] rules in globals.css.
  */
 
 import Link from "next/link";
@@ -12,7 +14,7 @@ import type { ProductSummary, ProductStatus, ProductCategory } from "@/types/pro
 
 interface Props {
   product: ProductSummary;
-  /** Kept for call-site compatibility with catalog ordering. */
+  /** Card index within its visible set — drives CSS animation stagger delay */
   index: number;
 }
 
@@ -38,15 +40,18 @@ const CATEGORY_SLUG: Record<ProductCategory, string> = {
 export function ProductCard({ product, index }: Props) {
   const status = STATUS_CONFIG[product.status];
   const categorySlug = CATEGORY_SLUG[product.category];
+  // Cap stagger delay at 10 cards so late items don't wait forever
+  const staggerDelay = Math.min(index * 40, 400);
 
   return (
     <div
       className="product-card"
       data-category={categorySlug}
-      style={{ "--card-index": index } as React.CSSProperties}
+      style={{ "--card-index": index, animationDelay: `${staggerDelay}ms` } as React.CSSProperties}
     >
       <Link
         href={`/products/${product.slug}`}
+        prefetch={false}
         className="group relative flex h-full flex-col overflow-hidden rounded-2xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
         style={{
           borderColor: "var(--theme-card-border)",

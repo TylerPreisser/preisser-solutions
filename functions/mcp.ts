@@ -3,8 +3,10 @@ const SERVER_INFO = {
   version: "1.0.0",
 };
 
+const CONTACT_EMAIL = "tyler@preissersolutions.com";
+
 const TOOL_DEFINITION = {
-  name: "preisser_tech_start_inquiry",
+  name: "preisser_solutions_start_inquiry",
   description:
     "Create a structured inquiry handoff for Preisser Solutions custom software, web application, AI automation, dashboard, or AI agent projects.",
   inputSchema: {
@@ -121,7 +123,7 @@ export const onRequestPost = async (context: PagesFunctionContext) => {
         {
           type: "text",
           text:
-            "Preisser Solutions inquiry handoff prepared. Send the requester to https://preissersolutions.com/contact or email sales@preissersolutions.com.\n\n" +
+            `Preisser Solutions inquiry handoff prepared. Send the requester to https://preissersolutions.com/contact or email ${CONTACT_EMAIL}.\n\n` +
             summary,
         },
       ],

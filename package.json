@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build && node scripts/strip-404-noindex.mjs && node scripts/generate-sitemap.mjs",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --max-warnings=0",
     "preview": "npx serve out",
     "indexnow": "node scripts/indexnow-ping.mjs",
     "strip-404-noindex": "node scripts/strip-404-noindex.mjs",

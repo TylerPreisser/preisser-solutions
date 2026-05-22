@@ -278,15 +278,6 @@ export default function RootLayout({
       <head>
         {/* Anti-flash script: must be first in <head>, runs sync before paint */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-        <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
         {/* Browser chrome / PWA colors */}
         <meta name="theme-color" content="#0D95E8" />
         {/* Windows tile / IE11 */}

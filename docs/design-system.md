@@ -522,17 +522,17 @@ tl.from(".hero-eyebrow", { opacity: 0, y: 20, duration: 0.5 })
 
 ## 10. Image Treatments
 
-### Current Brand Assets (in archive/ and public/images/)
-- `LOGO.png` — Company logo
-- `Tyler Portait.jpeg` — Tyler Preisser photo
-- `Boost Productivity.png` — Value prop icon
-- `Reduce Operational.png` — Value prop icon
-- `Scalable & Reliable.png` — Value prop icon
-- `Personalized.png` — Value prop icon
-- `Truly Tailored.png` — Value prop icon
-- `Enhance Accuracy.png` — Value prop icon
+### Current Brand Assets
+- `public/images/ps-logo.webp` - Header/footer logo.
+- `public/images/ps-logo.png` - JSON-LD logo fallback.
+- `public/images/og-image-v2.jpg` - Open Graph image.
+- `public/images/og-image-square-v2.jpg` - Square social image.
+- `public/images/tyler-preisser-headshot.jpg` - Founder profile image.
+- `public/images/cases/tyler-headshot.webp` - Press/profile asset referenced by the press page.
+- `public/images/why-us/ai-harnessed.webp` - Homepage why-us visual.
+- `public/images/why-us/we-stay-with-it-new.webp` - Homepage why-us visual.
 
 ### Image Style Rules
-- Icons: 65px height, auto width, consistent style
-- Portrait: Rounded or circular crop, professional
-- All images: Lazy load below fold, optimized WebP where possible
+- Icons: prefer SVG or lucide icons unless a bitmap asset is already required.
+- Portrait: rounded or circular crop, professional.
+- All images: lazy load below fold, optimized WebP where possible.

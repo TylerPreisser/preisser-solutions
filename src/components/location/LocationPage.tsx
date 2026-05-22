@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { siteConfig } from "@/data/site-config";
 import type {
   LocationPageData,
   LocationServiceIcon,
@@ -88,8 +89,8 @@ function buildSchema(data: LocationPageData) {
     url,
     description: data.hero.answerParagraph,
     image: "https://preissersolutions.com/images/og-image-v2.jpg",
-    telephone: "+1-620-352-3296",
-    email: "sales@preissersolutions.com",
+    telephone: siteConfig.contact.phone,
+    email: siteConfig.contact.email,
     address: {
       "@type": "PostalAddress",
       addressLocality: "Hays",
@@ -741,11 +742,12 @@ function ProcessSection({ data }: { data: LocationPageData }) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    const section = sectionRef.current;
+    if (!section) return;
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    const items = sectionRef.current.querySelectorAll<HTMLElement>(
+    const items = section.querySelectorAll<HTMLElement>(
       "[data-process-step]"
     );
     if (prefersReduced || items.length === 0) {
@@ -763,7 +765,7 @@ function ProcessSection({ data }: { data: LocationPageData }) {
           stagger: 0.09,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: section,
             start: "top 80%",
             once: true,
           },
@@ -773,7 +775,7 @@ function ProcessSection({ data }: { data: LocationPageData }) {
     return () => {
       ctx.revert();
       ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger === sectionRef.current) t.kill();
+        if (t.trigger === section) t.kill();
       });
     };
   }, []);

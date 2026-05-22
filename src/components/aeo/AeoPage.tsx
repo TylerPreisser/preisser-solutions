@@ -235,6 +235,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                 height: "clamp(160px, 20vw, 260px)",
               }}
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={data.headshot.src}
                 alt={data.headshot.alt}

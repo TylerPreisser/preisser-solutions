@@ -94,6 +94,6 @@ After 90 days, compute:
 ## Cross-references
 
 - `docs/review-request-template.md` — actual outreach copy
-- `docs/perplexity-strategy.md` — adjacent off-site visibility plan
+- `docs/seo-maintenance.md` - adjacent off-site visibility and maintenance cadence
 - `docs/local-citations.md` — NAP-consistency citations
 - `docs/measurement-plan.md` — how reviews feed into the overall lift attribution

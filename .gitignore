@@ -42,3 +42,8 @@ next-env.d.ts
 
 # claude code
 .claude/
+
+# local agent state and generated deployment state
+.context/
+.cursor/
+.wrangler/

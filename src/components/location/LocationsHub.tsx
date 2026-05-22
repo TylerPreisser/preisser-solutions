@@ -1,13 +1,10 @@
-"use client";
-
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
 import { JsonLd } from "@/components/seo/JsonLd";
-import type { LocationPageData } from "@/types/location";
+import type { LocationSummary } from "@/types/location";
 import type { LocationRegion } from "@/data/locations";
 
 interface Props {
-  locationsBySlug: Record<string, LocationPageData>;
+  locationsBySlug: Record<string, LocationSummary>;
   regions: LocationRegion[];
 }
 
@@ -19,8 +16,6 @@ interface Props {
  * case-studies hub design pattern.
  */
 export function LocationsHub({ locationsBySlug, regions }: Props) {
-  const reduceMotion = useReducedMotion();
-
   const totalCities = Object.values(locationsBySlug).length;
 
   const collectionSchema = {
@@ -78,11 +73,7 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
         />
 
         <div className="ps-container relative pt-40 pb-24 sm:pt-48 sm:pb-32 lg:pt-56 lg:pb-36">
-          <motion.div
-            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <div>
             <div
               className="mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium uppercase tracking-[0.14em]"
               style={{
@@ -151,14 +142,9 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
-
-      {/* ── Kansas Map ───────────────────────────────────────── */}
-      <div className="hidden md:block" aria-hidden="true">
-        <KansasMap />
-      </div>
 
       {/* ── Regions ─────────────────────────────────────────── */}
       <section
@@ -174,7 +160,6 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
               key={region.name}
               region={region}
               locationsBySlug={locationsBySlug}
-              reduceMotion={!!reduceMotion}
             />
           ))}
         </div>
@@ -357,7 +342,7 @@ function KansasMap() {
               const color = regionColors[dot.region];
               return (
                 <g key={dot.slug}>
-                  <Link href={`/locations/${dot.slug}`}>
+                  <Link href={`/locations/${dot.slug}`} prefetch={false}>
                     <circle
                       cx={x}
                       cy={y}
@@ -393,11 +378,9 @@ function KansasMap() {
 function RegionBlock({
   region,
   locationsBySlug,
-  reduceMotion,
 }: {
   region: LocationRegion;
-  locationsBySlug: Record<string, LocationPageData>;
-  reduceMotion: boolean;
+  locationsBySlug: Record<string, LocationSummary>;
 }) {
   const items = region.slugs
     .map((s) => locationsBySlug[s])
@@ -435,67 +418,34 @@ function RegionBlock({
         </div>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {items.map((loc, idx) => (
-          <motion.div
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((loc) => (
+          <Link
             key={loc.slug}
-            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{
-              duration: 0.5,
-              delay: Math.min(idx * 0.05, 0.3),
-              ease: [0.16, 1, 0.3, 1],
+            href={`/locations/${loc.slug}`}
+            prefetch={false}
+            className="group block rounded-xl border p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#0D95E8]/50"
+            style={{
+              borderColor: "var(--theme-card-border)",
+              background: "var(--theme-result-card-bg)",
             }}
           >
-            <Link
-              href={`/locations/${loc.slug}`}
-              className="group relative flex h-full flex-col overflow-hidden rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
-              style={{
-                border: "1px solid var(--theme-card-border)",
-                background: "var(--theme-result-card-bg)",
-              }}
+            <h3
+              className="text-lg font-semibold leading-snug tracking-tight"
+              style={{ color: "var(--theme-text-primary)" }}
             >
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gradient-to-br from-[#0D95E8]/12 to-[#0D95E8]/0 blur-2xl"
-              />
-              <div
-                className="text-[11px] font-medium uppercase tracking-[0.14em]"
-                style={{ color: "var(--theme-text-muted)" }}
-              >
-                {loc.region ?? loc.state}
-              </div>
-              <h3
-                className="mt-4 text-xl font-semibold leading-snug tracking-tight"
-                style={{ color: "var(--theme-text-primary)" }}
-              >
-                {loc.city}, {loc.state}
-              </h3>
-              <p
-                className="mt-3 flex-1 text-[15px] leading-relaxed"
-                style={{ color: "var(--theme-text-secondary)" }}
-              >
-                {loc.hero.subheadline}
-              </p>
-              <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#0D95E8] group-hover:text-[#0B7BC0]">
-                Visit page
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
-                  aria-hidden="true"
-                >
-                  <path d="M5 12h14" />
-                  <path d="m12 5 7 7-7 7" />
-                </svg>
-              </div>
-            </Link>
-          </motion.div>
+              {loc.city}, {loc.state}
+            </h3>
+            <p
+              className="mt-2 line-clamp-2 text-sm leading-relaxed"
+              style={{ color: "var(--theme-text-secondary)" }}
+            >
+              {loc.subheadline}
+            </p>
+            <span className="mt-4 inline-block text-sm font-medium text-[#0D95E8]">
+              Visit page
+            </span>
+          </Link>
         ))}
       </div>
     </div>

@@ -4,6 +4,7 @@ export const siteConfig = {
   url: "https://preissersolutions.com",
   contact: {
     email: "tyler@preissersolutions.com",
+    phone: "+1-620-352-3296",
     location: "Hays, Kansas",
   },
   social: {

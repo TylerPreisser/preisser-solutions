@@ -206,7 +206,7 @@ export default function ServicesPage() {
               <h1>Every service Preisser Solutions builds.</h1>
               <p>
                 A complete index of the websites, applications, automation systems, SEO programs, integrations, and CRM work we deliver for Kansas businesses. For the rich, interactive overview of each category, see{" "}
-                <Link href="/#services">What We Do</Link> on the homepage.
+                <Link href="/#services" prefetch={false}>What We Do</Link> on the homepage.
               </p>
             </div>
           </div>
@@ -259,6 +259,7 @@ export default function ServicesPage() {
                       <li key={item.href}>
                         <Link
                           href={item.href}
+                          prefetch={false}
                           className="ps-link-block__item"
                           style={{ height: "100%" }}
                         >
@@ -293,11 +294,11 @@ export default function ServicesPage() {
               Start with a conversation. We will help you scope it before quoting it — pricing is fixed once we agree on what we are building.
             </p>
             <div className="ps-cta-buttons">
-              <Link href="/contact" className="ps-btn ps-btn-primary-dark">
+              <Link href="/contact" prefetch={false} className="ps-btn ps-btn-primary-dark">
                 Reach out
                 <span className="ps-btn-arrow" aria-hidden="true">→</span>
               </Link>
-              <Link href="/case-studies" className="ps-btn ps-btn-secondary">
+              <Link href="/case-studies" prefetch={false} className="ps-btn ps-btn-secondary">
                 See case studies
               </Link>
             </div>

@@ -1,0 +1,219 @@
+.ps-contact2-hero-inner > * {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.ps-contact-nap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px 24px;
+  font-style: normal;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-text-dark-secondary);
+}
+
+.ps-contact-nap__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ps-contact-nap__link {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.ps-contact-nap__link:hover,
+.ps-contact-nap__link:focus-visible {
+  color: var(--color-cyan);
+}
+
+.ps-contact2-form-area {
+  color: var(--theme-text-primary);
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.ps-contact-form-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+  margin-bottom: 6px;
+}
+
+@media (max-width: 560px) {
+  .ps-contact-form-fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ps-contact-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ps-contact-field--full {
+  grid-column: 1 / -1;
+}
+
+.ps-contact-field__label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--theme-text-primary);
+}
+
+.ps-contact-field__input,
+.ps-contact-field__textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 13px 16px;
+  border: 1.5px solid var(--theme-border);
+  border-radius: 10px;
+  background-color: var(--theme-bg-secondary);
+  color: var(--theme-text-primary);
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ps-contact-field__input:hover,
+.ps-contact-field__textarea:hover {
+  border-color: var(--color-primary);
+}
+
+.ps-contact-field__input:focus,
+.ps-contact-field__textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(13, 149, 232, 0.18);
+}
+
+.ps-contact-field__input::placeholder,
+.ps-contact-field__textarea::placeholder {
+  color: var(--theme-text-muted);
+}
+
+.ps-contact-field__textarea {
+  min-height: 150px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.ps-contact-form-footer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ps-contact-submit {
+  width: 100%;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 24px;
+  font-size: 1rem;
+}
+
+.ps-contact-submit:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.ps-contact-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: ps-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes ps-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ps-contact-spinner {
+    animation: none;
+    border-top-color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.ps-contact-form-privacy {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--theme-text-muted);
+  text-align: center;
+}
+
+.ps-contact-success {
+  text-align: center;
+  padding: 48px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.ps-contact-success-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: rgba(0, 212, 170, 0.1);
+  border-radius: 50%;
+  color: var(--color-green);
+}
+
+.ps-contact-success__heading {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  margin: 0;
+}
+
+.ps-contact-success__body {
+  max-width: 360px;
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--theme-text-secondary);
+}
+
+.ps-contact-faq-wrapper {
+  background-color: var(--theme-bg-primary);
+  padding: 80px 0 0;
+  color: var(--theme-text-primary);
+}
+
+.ps-contact-faq-inner,
+.ps-contact-faq-section {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ps-contact-faq-section {
+  margin-top: 80px;
+}
+
+.ps-contact-faq-heading-block {
+  margin-bottom: 40px;
+}

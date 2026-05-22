@@ -1,4 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { JsonLd } from "@/components/seo/JsonLd";
 import type { CaseStudyData } from "@/types/case-study";
 
@@ -230,6 +235,8 @@ const Spark = ({ className = "" }: { className?: string }) => (
 
 // ── Hero ─────────────────────────────────────────────────────
 function Hero({ data }: { data: CaseStudyData }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section
       className="relative isolate overflow-hidden"
@@ -262,7 +269,11 @@ function Hero({ data }: { data: CaseStudyData }) {
       />
 
       <div className="ps-container relative pt-40 pb-24 sm:pt-48 sm:pb-32 lg:pt-56 lg:pb-36">
-        <div>
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
           {/* Breadcrumb-style top nav */}
           <div
             className="mb-10 flex items-center gap-3 text-sm"
@@ -341,7 +352,7 @@ function Hero({ data }: { data: CaseStudyData }) {
               <span>{data.statusNote}</span>
             </div>
           )}
-        </div>
+        </motion.div>
       </div>
 
       {/* bottom edge — clean line, no curves */}
@@ -355,6 +366,8 @@ function Hero({ data }: { data: CaseStudyData }) {
 
 // ── At-a-glance metrics row ──────────────────────────────────
 function MetricsRow({ data }: { data: CaseStudyData }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section
       className="relative border-b"
@@ -367,8 +380,16 @@ function MetricsRow({ data }: { data: CaseStudyData }) {
       <div className="ps-container py-12 sm:py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {data.headlineResults.map((r, idx) => (
-            <div
+            <motion.div
               key={`${r.value}-${idx}`}
+              initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{
+                duration: 0.7,
+                delay: idx * 0.08,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               className="relative"
             >
               {idx > 0 && (
@@ -396,7 +417,7 @@ function MetricsRow({ data }: { data: CaseStudyData }) {
               >
                 {r.label}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -406,6 +427,8 @@ function MetricsRow({ data }: { data: CaseStudyData }) {
 
 // ── What existed before ──────────────────────────────────────
 function BeforeSection({ data }: { data: CaseStudyData }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section
       className="relative py-20 sm:py-28"
@@ -417,7 +440,12 @@ function BeforeSection({ data }: { data: CaseStudyData }) {
       <div className="ps-container">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-4">
-            <div>
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
               <div
                 className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
                 style={{
@@ -435,10 +463,16 @@ function BeforeSection({ data }: { data: CaseStudyData }) {
               >
                 {data.before.heading}
               </h2>
-            </div>
+            </motion.div>
           </div>
           <div className="lg:col-span-8">
-            <div className="space-y-6">
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="space-y-6"
+            >
               {data.before.body.map((para, idx) => (
                 <p
                   key={idx}
@@ -448,7 +482,7 @@ function BeforeSection({ data }: { data: CaseStudyData }) {
                   {para}
                 </p>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -458,6 +492,8 @@ function BeforeSection({ data }: { data: CaseStudyData }) {
 
 // ── What we built ────────────────────────────────────────────
 function BuiltSection({ data }: { data: CaseStudyData }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section
       className="relative isolate overflow-hidden py-24 sm:py-32"
@@ -475,7 +511,12 @@ function BuiltSection({ data }: { data: CaseStudyData }) {
       <div className="ps-container relative">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-4">
-            <div>
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
               <div
                 className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
                 style={{
@@ -490,10 +531,16 @@ function BuiltSection({ data }: { data: CaseStudyData }) {
               <h2 className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] sm:text-4xl">
                 {data.built.heading}
               </h2>
-            </div>
+            </motion.div>
           </div>
           <div className="lg:col-span-8">
-            <div className="space-y-6">
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="space-y-6"
+            >
               {data.built.body.map((para, idx) => (
                 <p
                   key={idx}
@@ -503,7 +550,7 @@ function BuiltSection({ data }: { data: CaseStudyData }) {
                   {para}
                 </p>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -513,6 +560,8 @@ function BuiltSection({ data }: { data: CaseStudyData }) {
 
 // ── Specifications ───────────────────────────────────────────
 function SpecsSection({ data }: { data: CaseStudyData }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section
       className="relative py-24 sm:py-32"
@@ -523,7 +572,12 @@ function SpecsSection({ data }: { data: CaseStudyData }) {
     >
       <div className="ps-container">
         <div className="mb-14 max-w-3xl">
-          <div>
+          <motion.div
+            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <div
               className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em]"
               style={{
@@ -541,15 +595,19 @@ function SpecsSection({ data }: { data: CaseStudyData }) {
             >
               {data.specifications.heading}
             </h2>
-          </div>
+          </motion.div>
         </div>
 
         {/* Top-level capability bullets — 2 col grid */}
         {data.specifications.bullets.length > 0 && (
           <div className="grid gap-x-10 gap-y-5 sm:grid-cols-2">
             {data.specifications.bullets.map((b, idx) => (
-              <div
+              <motion.div
                 key={idx}
+                initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: Math.min(idx * 0.04, 0.3) }}
                 className="flex items-start gap-3 border-b py-4 last:border-b-0"
                 style={{ borderColor: "var(--theme-card-border)" }}
               >
@@ -560,7 +618,7 @@ function SpecsSection({ data }: { data: CaseStudyData }) {
                 >
                   {b}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}
@@ -569,9 +627,13 @@ function SpecsSection({ data }: { data: CaseStudyData }) {
         {data.specifications.subsections &&
           data.specifications.subsections.length > 0 && (
             <div className="mt-16 grid gap-10 lg:grid-cols-2">
-              {data.specifications.subsections.map((sub) => (
-                <div
+              {data.specifications.subsections.map((sub, idx) => (
+                <motion.div
                   key={sub.title}
+                  initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.6, delay: idx * 0.05 }}
                   className="group relative rounded-2xl p-8 transition-all hover:border-[#0D95E8]/40 hover:shadow-[0_12px_40px_rgba(13,149,232,0.08)]"
                   style={{
                     border: "1px solid var(--theme-card-border)",
@@ -596,7 +658,7 @@ function SpecsSection({ data }: { data: CaseStudyData }) {
                       </li>
                     ))}
                   </ul>
-                </div>
+                </motion.div>
               ))}
             </div>
           )}
@@ -607,8 +669,52 @@ function SpecsSection({ data }: { data: CaseStudyData }) {
 
 // ── Results ──────────────────────────────────────────────────
 function ResultsSection({ data }: { data: CaseStudyData }) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // GSAP scroll-trigger reveal — staggered cards.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    const cards = section.querySelectorAll<HTMLElement>(
+      "[data-result-card]"
+    );
+    if (prefersReduced) {
+      gsap.set(cards, { opacity: 1, y: 0 });
+      return;
+    }
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        cards,
+        { opacity: 0, y: 36 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          stagger: 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 75%",
+            once: true,
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => {
+      ctx.revert();
+      ScrollTrigger.getAll().forEach((t) => {
+        if (t.trigger === section) t.kill();
+      });
+    };
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       className="relative isolate overflow-hidden py-24 sm:py-32"
       style={{
         background: "var(--theme-section-switchable)",

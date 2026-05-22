@@ -144,7 +144,7 @@ contact, one service, one location). Mobile + Desktop.
 - [ ] **TTFB** < 800ms (Cloudflare edge should be < 400ms)
 
 If any vitals miss target, log it in `docs/performance-audit.md` and create a remediation item in
-`docs/priority-scorecard.md`.
+`docs/plans/current-plan.md`.
 
 ---
 

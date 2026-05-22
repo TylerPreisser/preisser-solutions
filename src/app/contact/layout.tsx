@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-css-tags -- Versioned contact CSS bypasses immutable cached bundles. */
 import type { Metadata } from "next";
 import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 
@@ -22,6 +23,11 @@ export default function ContactLayout({
 }) {
   return (
     <>
+      <link
+        rel="stylesheet"
+        href="/contact-critical-v20260522.css"
+        data-contact-critical="20260522"
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Link from "next/link";
 import { siteConfig } from "@/data/site-config";
 
 export function Hero() {
@@ -16,6 +15,7 @@ export function Hero() {
     if (!container) return;
 
     const canvas = document.createElement("canvas");
+    canvas.id = "ps-hero-canvas";
     canvas.style.cssText =
       "position:absolute;inset:0;width:100%;height:100%;z-index:0;";
     canvas.setAttribute("aria-hidden", "true");
@@ -256,7 +256,7 @@ export function Hero() {
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
-          <Link
+          <a
             href={siteConfig.hero.primaryCta.href}
             className="ps-btn ps-btn-primary-dark"
           >
@@ -277,19 +277,19 @@ export function Hero() {
                 strokeLinejoin="round"
               />
             </svg>
-          </Link>
-          <Link
+          </a>
+          <a
             href="/products"
             className="ps-btn ps-btn-secondary"
           >
             AI Agent Catalog &rarr;
-          </Link>
-          <Link
+          </a>
+          <a
             href={siteConfig.hero.secondaryCta.href}
             className="ps-btn ps-btn-secondary"
           >
             {siteConfig.hero.secondaryCta.label}
-          </Link>
+          </a>
         </div>
       </div>
     </section>

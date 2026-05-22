@@ -1,10 +1,12 @@
 /**
- * ProductGrid — server-rendered catalog surface.
+ * ProductGrid — server-rendered /products catalog.
  *
- * The homepage works because most of it is static HTML with small client
- * islands. Keep the catalog the same way: no React state, no hydration for
- * filters, and no client bundle for every SVG card. Native radio inputs +
- * CSS selectors handle category filtering.
+ * Filtering is native HTML + CSS:
+ * - radio inputs hold the selected category
+ * - labels render as chips
+ * - globals.css uses :has(...) to show/hide category groups
+ *
+ * This keeps the product cards and SVG visuals out of the client bundle.
  */
 
 import Link from "next/link";
@@ -16,7 +18,7 @@ interface Props {
   products: ProductSummary[];
 }
 
-const ALL_FILTER_LABELS = ["All", ...PRODUCT_CATEGORIES];
+const ALL_FILTER_LABELS = ["All", ...PRODUCT_CATEGORIES] as const;
 
 const MAIN_CATEGORIES: ProductCategory[] = [
   "Marketing & Growth",
@@ -55,68 +57,56 @@ const CATEGORY_META: Record<ProductCategory, CategoryMeta> = {
 };
 
 const CATEGORY_TO_SLUG: Record<string, string> = {
-  "All":                      "all",
-  "Marketing & Growth":       "marketing-growth",
+  All: "all",
+  "Marketing & Growth": "marketing-growth",
   "Operations & Back-Office": "operations-back-office",
   "Sales & Customer Service": "sales-customer-service",
-  "Decision Intelligence":    "decision-intelligence",
-  "Custom Builds":            "custom-builds",
+  "Decision Intelligence": "decision-intelligence",
+  "Custom Builds": "custom-builds",
 };
 
-function buildFilterCss(filters: string[]) {
-  const activeRules = filters
-    .map((filter) => {
-      const slug = CATEGORY_TO_SLUG[filter] ?? "all";
-      const input = `#ps-product-filter-${slug}`;
-      const label = `.ps-product-filters label[for="ps-product-filter-${slug}"]`;
-      const checked = `${input}:checked ~ .ps-chips-wrapper ${label}`;
-      const active =
-        `${checked} { border-color: var(--color-primary); background: var(--color-primary); ` +
-        "color: #FFFFFF; box-shadow: 0 8px 30px rgba(13,149,232,0.25); }";
-
-      if (slug === "all") return active;
-
-      return `${active}
-${input}:checked ~ .ps-filter-content .ps-filter-group:not([data-filter-group="${slug}"]) { display: none; }`;
-    })
-    .join("\n");
-
-  return `.ps-filter-input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
-.ps-filter-input:focus-visible ~ .ps-chips-wrapper label {
-  outline-offset: 3px;
-}
-${activeRules}`;
-}
-
 export function ProductGrid({ products }: Props) {
-  const cats = new Set(products.map((p) => p.category));
-  const availableCategories = ALL_FILTER_LABELS.filter(
-    (f) => f === "All" || cats.has(f as ProductCategory)
-  );
+  const availableCategories = ALL_FILTER_LABELS.filter((f) => {
+    if (f === "All") return true;
+    return products.some((p) => p.category === f);
+  });
 
   return (
     <div className="products-grid">
-      {/* ── Hero ──────────────────────────────────────────────── */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `!function(){if(location.hash)return;try{history.scrollRestoration='manual'}catch(e){}var t=function(){scrollTo(0,0)};requestAnimationFrame(t);addEventListener('pageshow',function(){requestAnimationFrame(t)},{once:true})}();`,
+        }}
+      />
+
+      {availableCategories.map((category) => {
+        const slug = CATEGORY_TO_SLUG[category] ?? "all";
+        return (
+          <input
+            key={slug}
+            className="product-filter-radio"
+            type="radio"
+            name="product-category"
+            id={`product-filter-${slug}`}
+            defaultChecked={category === "All"}
+          />
+        );
+      })}
+
+      {/* Product catalog hero */}
       <section
-        className="relative isolate overflow-hidden"
+        className="product-catalog-hero relative isolate overflow-hidden"
         style={{ background: "var(--theme-section-switchable)" }}
       >
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute -top-32 -left-32 h-[520px] w-[520px] rounded-full bg-[#0D95E8] opacity-[0.12] blur-[120px]" />
-          <div className="absolute top-40 -right-32 h-[420px] w-[420px] rounded-full bg-[#80E9FF] opacity-[0.08] blur-[100px]" />
-          <div className="absolute bottom-0 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-[#00D4AA] opacity-[0.06] blur-[100px]" />
+          <div className="product-catalog-glow absolute -top-32 -left-32 h-[520px] w-[520px] rounded-full bg-[#0D95E8] opacity-[0.12] blur-[120px]" />
+          <div className="product-catalog-glow absolute top-40 -right-32 h-[420px] w-[420px] rounded-full bg-[#80E9FF] opacity-[0.08] blur-[100px]" />
+          <div className="product-catalog-glow absolute bottom-0 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-[#00D4AA] opacity-[0.06] blur-[100px]" />
         </div>
 
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10 opacity-[0.04]"
+          className="product-catalog-grid-bg pointer-events-none absolute inset-0 -z-10 opacity-[0.04]"
           style={{
             backgroundImage:
               "linear-gradient(var(--theme-text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--theme-text-primary) 1px, transparent 1px)",
@@ -126,7 +116,6 @@ export function ProductGrid({ products }: Props) {
         />
 
         <div className="ps-container relative pt-36 pb-14 sm:pt-40 sm:pb-16 lg:pt-44 lg:pb-20">
-          {/* H1 */}
           <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-[1.07] tracking-[-0.025em] sm:text-5xl md:text-6xl">
             <span
               className="bg-clip-text text-transparent"
@@ -136,7 +125,6 @@ export function ProductGrid({ products }: Props) {
             </span>
           </h1>
 
-          {/* Subhead */}
           <p
             className="mt-5 max-w-2xl text-pretty text-base leading-relaxed sm:text-lg"
             style={{ color: "var(--theme-text-secondary)" }}
@@ -144,7 +132,6 @@ export function ProductGrid({ products }: Props) {
             Sixteen AI agents we&apos;ve built for real clients. Pick one, scope it for your business, and ship it.
           </p>
 
-          {/* Stats strip — 2 stats: agents count + pedigree */}
           <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4 sm:mt-12">
             <div>
               <div
@@ -173,123 +160,102 @@ export function ProductGrid({ products }: Props) {
         </div>
       </section>
 
-      {/* ── Grid + Filters ────────────────────────────────────── */}
+      {/* Grid and filters */}
       <section
-        className="pb-28 pt-10"
+        id="agent-catalog"
+        className="product-catalog-section pb-28 pt-10"
         style={{ background: "var(--theme-section-alt)" }}
       >
         <div className="ps-container">
-          <style>{buildFilterCss(availableCategories)}</style>
-
-          <fieldset className="ps-product-filters relative border-0 p-0">
-            {availableCategories.map((f) => {
-              const slug = CATEGORY_TO_SLUG[f] ?? "all";
-              return (
-                <input
-                  key={f}
-                  className="ps-filter-input"
-                  type="radio"
-                  name="product-filter"
-                  id={`ps-product-filter-${slug}`}
-                  defaultChecked={f === "All"}
-                />
-              );
-            })}
-
-            <legend className="sr-only">Filter AI agent products by category</legend>
+          <div className="mb-10">
             <div className="ps-chips-wrapper">
               <div className="ps-chips-scroll">
-                {availableCategories.map((f) => {
+                {availableCategories.map((category) => {
+                  const slug = CATEGORY_TO_SLUG[category] ?? "all";
                   return (
                     <label
-                      key={f}
+                      key={slug}
+                      htmlFor={`product-filter-${slug}`}
                       className="ps-chip"
-                      htmlFor={`ps-product-filter-${CATEGORY_TO_SLUG[f] ?? "all"}`}
-                      style={{
-                        borderColor: "var(--theme-card-border)",
-                        background: "var(--theme-card-bg)",
-                        color: "var(--theme-text-secondary)",
-                      }}
                     >
-                      {f}
+                      {category}
                     </label>
                   );
                 })}
               </div>
             </div>
+          </div>
 
-            <div className="ps-filter-content mt-10 space-y-20">
-              {MAIN_CATEGORIES.map((cat) => {
-                const catProducts = products.filter((p) => p.category === cat);
-                if (catProducts.length === 0) return null;
-                const meta = CATEGORY_META[cat];
-                return (
+          <div className="product-category-groups space-y-20">
+            {MAIN_CATEGORIES.map((cat) => {
+              const catProducts = products.filter((p) => p.category === cat);
+              if (catProducts.length === 0) return null;
+              const meta = CATEGORY_META[cat];
+              const categorySlug = CATEGORY_TO_SLUG[cat];
+
+              return (
+                <div
+                  key={cat}
+                  className="product-category-group"
+                  data-category-group={categorySlug}
+                >
                   <div
-                    key={cat}
-                    className="ps-filter-group"
-                    data-filter-group={CATEGORY_TO_SLUG[cat]}
+                    className="product-category-heading mb-8"
+                    style={{ borderTop: "1px solid var(--theme-card-border)", paddingTop: "1.75rem" }}
                   >
-                    {/* Category header */}
-                    <div
-                      className="mb-8"
-                      style={{ borderTop: "1px solid var(--theme-card-border)", paddingTop: "1.75rem" }}
-                    >
-                      <div className="flex items-start gap-4">
-                        {/* Accent bar */}
-                        <div
-                          className="mt-1 hidden shrink-0 sm:block"
-                          style={{
-                            width: "4px",
-                            height: "48px",
-                            borderRadius: "2px",
-                            background: meta.accentColor,
-                            opacity: 0.85,
-                          }}
-                        />
-                        <div>
-                          <div className="flex items-baseline gap-3">
-                            <h2
-                              className="text-2xl font-semibold leading-snug tracking-tight md:text-3xl"
-                              style={{ color: "var(--theme-text-primary)" }}
-                            >
-                              {cat}
-                            </h2>
-                            <span
-                              className="font-mono text-[11px] font-medium uppercase tracking-[0.14em]"
-                              style={{ color: "var(--theme-text-muted)" }}
-                            >
-                              {catProducts.length} {catProducts.length === 1 ? "product" : "products"}
-                            </span>
-                          </div>
-                          <p
-                            className="mt-1 text-sm leading-relaxed"
-                            style={{ color: "var(--theme-text-secondary)" }}
+                    <div className="flex items-start gap-4">
+                      <div
+                        className="mt-1 hidden shrink-0 sm:block"
+                        style={{
+                          width: "4px",
+                          height: "48px",
+                          borderRadius: "2px",
+                          background: meta.accentColor,
+                          opacity: 0.85,
+                        }}
+                      />
+                      <div>
+                        <div className="flex items-baseline gap-3">
+                          <h2
+                            className="text-2xl font-semibold leading-snug tracking-tight md:text-3xl"
+                            style={{ color: "var(--theme-text-primary)" }}
                           >
-                            {meta.description}
-                          </p>
+                            {cat}
+                          </h2>
+                          <span
+                            className="font-mono text-[11px] font-medium uppercase tracking-[0.14em]"
+                            style={{ color: "var(--theme-text-muted)" }}
+                          >
+                            {catProducts.length} {catProducts.length === 1 ? "product" : "products"}
+                          </span>
                         </div>
+                        <p
+                          className="mt-1 text-sm leading-relaxed"
+                          style={{ color: "var(--theme-text-secondary)" }}
+                        >
+                          {meta.description}
+                        </p>
                       </div>
                     </div>
-
-                    {/* Cards */}
-                    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                      {catProducts.map((product, idx) => (
-                        <ProductCard
-                          key={product.slug}
-                          product={product}
-                          index={products.indexOf(product)}
-                        />
-                      ))}
-                    </div>
                   </div>
-                );
-              })}
-            </div>
-          </fieldset>
+
+                  <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {catProducts.map((product, idx) => (
+                      <ProductCard
+                        key={product.slug}
+                        product={product}
+                        index={idx}
+                      />
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
-      {/* ── Open Call CTA ─────────────────────────────────────── */}
+      {/* Open call CTA */}
       <section
         className="py-16 sm:py-20"
         style={{ background: "var(--theme-section-switchable)" }}
@@ -330,6 +296,7 @@ export function ProductGrid({ products }: Props) {
               <div className="shrink-0">
                 <Link
                   href="/contact?inquiry=custom-product"
+                  prefetch={false}
                   className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-[0_8px_30px_rgba(13,149,232,0.3)]"
                   style={{ background: "var(--color-primary)" }}
                 >

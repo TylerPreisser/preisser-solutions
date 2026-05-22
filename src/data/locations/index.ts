@@ -18,7 +18,7 @@
  *   Industry × city: <city>-<state>-<industry>-software
  */
 
-import type { LocationPageData } from "@/types/location";
+import type { LocationPageData, LocationSummary } from "@/types/location";
 
 import { locationData as arkansasCityKansasWebDesign } from "./arkansas-city-kansas-web-design";
 import { locationData as atchinsonKansasWebDesign } from "./atchison-kansas-web-design";
@@ -192,6 +192,20 @@ export const ALL_LOCATION_SLUGS: Set<string> = new Set(
 
 export const LOCATIONS_BY_SLUG: Record<string, LocationPageData> = Object.fromEntries(
   ALL_LOCATIONS.map((l) => [l.slug, l])
+);
+
+export function toLocationSummary(location: LocationPageData): LocationSummary {
+  return {
+    slug: location.slug,
+    city: location.city,
+    state: location.state,
+    region: location.region,
+    subheadline: location.hero.subheadline,
+  };
+}
+
+export const LOCATION_SUMMARIES_BY_SLUG: Record<string, LocationSummary> = Object.fromEntries(
+  ALL_LOCATIONS.map((l) => [l.slug, toLocationSummary(l)])
 );
 
 /**

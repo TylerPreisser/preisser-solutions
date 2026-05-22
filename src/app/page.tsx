@@ -23,6 +23,10 @@ const WhyUs = dynamic(
   () => import("@/components/home/why-us").then((m) => m.WhyUs),
   { ssr: true }
 );
+const CaseStudies = dynamic(
+  () => import("@/components/home/case-studies").then((m) => m.CaseStudies),
+  { ssr: true }
+);
 const CtaSection = dynamic(
   () => import("@/components/home/cta-section").then((m) => m.CtaSection),
   { ssr: true }
@@ -103,6 +107,7 @@ export default function HomePage() {
       <ServicePillars />
       <MarCommandCallout />
       <WhyUs />
+      <CaseStudies />
       {/* Crawlable service + location link cluster — discoverable internal-link graph for crawlers + AI engines. */}
       <section
         aria-label="Services and locations"

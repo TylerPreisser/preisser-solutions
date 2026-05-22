@@ -1,4 +1,4 @@
-import type { CaseStudyData } from "@/types/case-study";
+import type { CaseStudyData, CaseStudySummary } from "@/types/case-study";
 
 // Named client engagements (canonical #1–8)
 import { caseStudy as cassidyReactivation } from "./cassidy-hvac-reactivation";
@@ -96,3 +96,16 @@ export const caseStudyBySlug: Record<string, CaseStudyData> = Object.fromEntries
 export function getCaseStudy(slug: string): CaseStudyData | undefined {
   return caseStudyBySlug[slug];
 }
+
+export function toSummary(cs: CaseStudyData): CaseStudySummary {
+  return {
+    slug: cs.slug,
+    category: cs.category,
+    clientNameDisplay: cs.clientNameDisplay,
+    h1: cs.h1,
+    oneLine: cs.oneLine,
+    headlineResults: cs.headlineResults,
+  };
+}
+
+export const caseStudySummaries: CaseStudySummary[] = caseStudies.map(toSummary);

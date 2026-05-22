@@ -53,6 +53,14 @@ export interface LocationFaqItem {
   answer: string;
 }
 
+export interface LocationSummary {
+  slug: string;
+  city: string;
+  state: string;
+  region?: string;
+  subheadline: string;
+}
+
 export interface LocationPageData {
   // ── Routing / SEO ───────────────────────────────────────────
   slug: string;            // e.g. "hays-kansas"

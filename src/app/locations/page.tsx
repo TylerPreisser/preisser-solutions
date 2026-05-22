@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LocationsHub } from "@/components/location/LocationsHub";
-import { LOCATIONS_BY_SLUG, LOCATION_REGIONS } from "@/data/locations";
+import { LOCATION_REGIONS, LOCATION_SUMMARIES_BY_SLUG } from "@/data/locations";
 
 export const metadata: Metadata = {
   title: "Locations We Serve | Preisser Solutions",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 export default function LocationsHubPage() {
   return (
     <LocationsHub
-      locationsBySlug={LOCATIONS_BY_SLUG}
+      locationsBySlug={LOCATION_SUMMARIES_BY_SLUG}
       regions={LOCATION_REGIONS}
     />
   );

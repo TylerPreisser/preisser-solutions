@@ -40,7 +40,7 @@ export function InternalLinkBlock({
       <ul className={`ps-link-block__grid grid grid-cols-1 gap-4 ${colClass}`}>
         {links.map((link) => (
           <li key={link.href}>
-            <Link href={link.href} className="ps-link-block__item">
+            <Link href={link.href} prefetch={false} className="ps-link-block__item">
               <span className="ps-link-block__label">{link.label}</span>
               {link.description && (
                 <span className="ps-link-block__desc">{link.description}</span>

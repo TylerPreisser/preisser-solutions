@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 import { siteConfig } from "@/data/site-config";
 
 export function Footer() {
@@ -42,13 +43,12 @@ export function Footer() {
           <div className="ps-footer-brand">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/ps-logo-192.webp`}
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/ps-logo.webp`}
               alt="Preisser Solutions"
               className="ps-footer-logo-img"
-              width={192}
-              height={192}
+              width={1024}
+              height={1024}
               loading="lazy"
-              decoding="async"
             />
             <p className="ps-footer-tagline">
               {siteConfig.tagline}

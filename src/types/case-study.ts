@@ -33,6 +33,15 @@ export interface SpecSubsection {
   items: string[];
 }
 
+export interface CaseStudySummary {
+  slug: string;
+  category: string;
+  clientNameDisplay: string;
+  h1: string;
+  oneLine: string;
+  headlineResults: HeadlineResult[];
+}
+
 export interface CaseStudyData {
   // ── Routing / SEO ──────────────────────────────────────────
   slug: string;

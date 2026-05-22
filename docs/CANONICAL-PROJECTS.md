@@ -1,5 +1,12 @@
 # Canonical Projects Inventory
 
+Operational source of truth:
+`/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean`.
+
+Do not work from archived duplicate folders. GitHub push does not deploy
+production. Cloudflare Pages production deploys happen only when Wrangler uploads
+local `out/` from the canonical workspace.
+
 **Source of truth.** Every public claim of past work, every named-client outcome, every quantified result on preissersolutions.com must trace back to an entry in this file. Anything not in this list does not exist for content purposes.
 
 Last confirmed by Tyler: 2026-05-20 (updated with additional website builds).

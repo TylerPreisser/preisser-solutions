@@ -8,7 +8,7 @@ rebuilt site, then re-audit every quarter (see `docs/seo-maintenance.md`).
 > - `docs/local-citations.md` — full directory portfolio (Tier 1-6) with claim status per platform
 > - `docs/review-request-template.md` — the email/SMS templates for review requests
 > - `docs/review-strategy.md` — when and how to ask, escalation paths
-> - `docs/perplexity-strategy.md` — AI-platform-specific local positioning
+> - `docs/seo-maintenance.md` - weekly/monthly/quarterly maintenance cadence
 
 Where this file overlaps with `local-citations.md` (e.g., directory list), the citations doc is the
 **source of truth** for which platforms exist. This file is the source of truth for **what to fill in**
@@ -221,5 +221,5 @@ on the web. See `docs/local-citations.md` Tier 4.
 
 ---
 
-_Last updated: 2026-05-16. Tracks against `docs/priority-scorecard.md` items #21-26 (GBP, Citations,
+_Last updated: 2026-05-16. Tracks local SEO, citations,
 Wikidata, Crunchbase, Clutch/UpCity, BBB)._
