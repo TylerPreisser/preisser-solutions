@@ -11,7 +11,7 @@ Cloudflare Pages is not Git-connected. GitHub push alone does not deploy
 production. Wrangler uploads the local `out/` directory.
 
 Read `WORKSPACE_SOURCE_OF_TRUTH.md` and `docs/agent-operating-system.md` before
-deploying. Do not use archived deploy checklists except as historical reference.
+deploying. Do not use any other deploy checklist.
 
 ## Required Working Directory
 

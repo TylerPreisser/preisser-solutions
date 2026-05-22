@@ -8,13 +8,12 @@ The only active workspace is:
 /Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean
 ```
 
-Never work from the archived duplicate folders. Never deploy unless `pwd` is
-exactly the canonical path above.
+Never work outside the canonical folder. Never deploy unless `pwd` is exactly
+the canonical path above.
 
 This is the Preisser Solutions website. Do not use stale prompt names, stale
 workspace paths, or old website identities as active operating instructions.
-Archived files may be read for principles only; rewrite those principles into
-current Preisser Solutions docs before relying on them.
+Active instructions must point to the canonical workspace above.
 
 For non-trivial work, operate as the Preisser Solutions PM:
 

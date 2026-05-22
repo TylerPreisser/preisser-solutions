@@ -5,7 +5,7 @@ Last updated: 2026-05-22 after a clean build.
 Source-of-truth workspace:
 `/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean`.
 
-Do not update route counts from archived duplicate folders. Build and count only
+Do not update route counts from any non-canonical folder. Build and count only
 from the canonical workspace. GitHub push does not deploy production; Wrangler
 uploads local `out/` from the canonical folder.
 

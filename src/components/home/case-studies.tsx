@@ -99,7 +99,7 @@ const caseStudyCards: CaseStudyCard[] = [
       "Six autonomous AI agents running in parallel — scanning, analyzing, scoring, and producing strategic output without human intervention. Developed in-house at Preisser Solutions as a working demonstration of multi-agent analytical infrastructure.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #1a1040 50%, #0A1628 100%)",
     image: "r-squared.webp",
-    href: "https://3124f78d.r2-solutions.pages.dev/",
+    href: "/case-studies/alpha-matrix",
   },
   // 10
   {

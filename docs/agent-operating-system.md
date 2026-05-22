@@ -3,9 +3,8 @@
 Last updated: 2026-05-22.
 
 This is the operating guide for future agents working on the Preisser Solutions
-website. It preserves the useful intelligence from the archived memory,
-cartography, mobile, debug, and deployment files, but the active instructions
-below are rewritten for the current canonical workspace only.
+website. It is the active instruction surface for the current canonical
+workspace only.
 
 ## Non-Negotiable Identity
 
@@ -17,8 +16,8 @@ The only active local workspace is:
 /Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean
 ```
 
-Do not work from old local folders, copied clean rooms, archived memories, or
-agent cache paths. Archived files are reference material only.
+Do not work from any other local folder, copied clean room, memory cache, or
+agent cache path.
 
 Before reading, editing, committing, validating, or deploying:
 
@@ -82,7 +81,7 @@ Useful specialist roles to emulate:
 - Keep content in typed data files when that is the established pattern.
 - Keep components presentational where the repo already does that.
 - Use `@/*` imports and the current TypeScript/Tailwind conventions.
-- Do not restore stale `.context`, `.claude`, `.cursor`, copied output, old
+- Do not restore non-canonical `.context`, `.claude`, `.cursor`, copied output, old
   placeholder assets, GitHub Pages settings, `basePath`, or `assetPrefix`.
 - Do not revive old route source that exists only to be redirected by
   Cloudflare.
@@ -183,7 +182,7 @@ recorded.
 
 Update docs when the agent-facing reality changes:
 
-- `WORKSPACE_SOURCE_OF_TRUTH.md` for source, deploy, route count, archive, and
+- `WORKSPACE_SOURCE_OF_TRUTH.md` for source, deploy, route count, and
   Cloudflare facts.
 - `CLAUDE.md` and `AGENTS.md` for operating instructions.
 - `docs/status.md` for what changed and what remains.
@@ -191,9 +190,9 @@ Update docs when the agent-facing reality changes:
 - `docs/deploy.md` for deployment behavior.
 - `docs/decisions.md` for significant architectural or workflow decisions.
 
-Do not keep active instruction files with stale names. If an old prompt or
-memory is useful, archive it, extract the principle, and rewrite it under the
-current Preisser Solutions identity.
+Do not keep active instruction files with stale names or non-canonical paths.
+If a useful principle is discovered, rewrite it under the current Preisser
+Solutions identity and canonical workspace.
 
 ## Definition Of Done
 
@@ -201,7 +200,7 @@ A task is done when:
 
 - Changes were made only in the canonical workspace or deliberately updated
   active agent memory.
-- Stale duplicate paths were not used as source.
+- No non-canonical path was used as source.
 - Validation appropriate to the change passed.
 - Docs and memory were updated if workflow, deploy, source, or agent behavior
   changed.

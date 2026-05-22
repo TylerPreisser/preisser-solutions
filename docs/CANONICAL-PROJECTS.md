@@ -3,7 +3,7 @@
 Operational source of truth:
 `/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean`.
 
-Do not work from archived duplicate folders. GitHub push does not deploy
+Do not work outside the canonical workspace. GitHub push does not deploy
 production. Cloudflare Pages production deploys happen only when Wrangler uploads
 local `out/` from the canonical workspace.
 

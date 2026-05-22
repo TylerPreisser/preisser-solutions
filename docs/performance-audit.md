@@ -10,9 +10,9 @@ All performance work and cleanup must happen only in:
 /Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean
 ```
 
-Do not use archived duplicate folders as performance baselines unless Tyler
-explicitly asks for forensic comparison. Cloudflare Pages is not Git-connected;
-GitHub push alone does not deploy production.
+Do not use any folder outside the canonical workspace as a performance baseline
+unless Tyler explicitly asks for forensic comparison. Cloudflare Pages is not
+Git-connected; GitHub push alone does not deploy production.
 
 ## Mobile Hero
 
@@ -80,8 +80,7 @@ locations and case studies.
 
 ## Cleanup Completed
 
-- Removed duplicate local workspaces from active use and quarantined them in the
-  archive.
+- Removed non-canonical local workspaces from active use.
 - Removed `/agents` source tree and kept redirects.
 - Removed old top-level redirect-only route source.
 - Removed the homepage `// stack` horizontal marquee and its animation CSS.

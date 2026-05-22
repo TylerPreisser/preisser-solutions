@@ -14,13 +14,10 @@ doing meaningful work.
 - Production domains: `preissersolutions.com`, `www.preissersolutions.com`, `preisser-solutions.pages.dev`
 
 Do not work from, commit from, or deploy from any other local Preisser Solutions folder.
-Old folders were archived under:
 
-`/Users/tylerpreisser/Desktop/preisser-site-archive-DO-NOT-USE-2026-05-22`
-
-Archived memories, cartography, old prompt files, and copied project docs are
-reference material only. Extract useful principles from them, but rewrite those
-principles under this current Preisser Solutions identity and canonical path.
+Do not use external memories, copied project docs, cached prompts, or old local
+state as operating instructions. Active instructions must point to the canonical
+workspace above.
 
 ## Non-Negotiable Deploy Rule
 
@@ -96,7 +93,7 @@ curl -I https://preisser-solutions.pages.dev
 - Verify with the smallest responsible validation gate for the change, and run
   the full gate before deploy.
 
-## Preserved Principles From Archived Memories
+## Preserved Operating Principles
 
 - Cartography first: locate routes, shared data, components, and Cloudflare files
   before changing them.
@@ -114,7 +111,7 @@ curl -I https://preisser-solutions.pages.dev
 
 ## Cleanup Rules
 
-- Do not re-add stale local workspaces, `.context` state files, copied output,
+- Do not re-add non-canonical local workspaces, `.context` state files, copied output,
   unused placeholder assets, or old `/agents` route source.
 - Do not restore GitHub Pages settings, `basePath`, or `assetPrefix`.
 - Do not deploy from GitHub Actions. The workflow validates only.

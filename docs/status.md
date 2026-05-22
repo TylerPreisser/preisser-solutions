@@ -5,8 +5,7 @@ Last updated: 2026-05-22.
 ## Source Of Truth
 
 - Only active workspace: `/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean`.
-- Duplicate workspaces were archived under
-  `/Users/tylerpreisser/Desktop/preisser-site-archive-DO-NOT-USE-2026-05-22`.
+- No other local folder is active for this site.
 - Production target: Cloudflare Pages project `preisser-solutions`.
 - Production deployment model: Wrangler uploads local `out/`.
 - Cloudflare Pages is not Git-connected. GitHub push alone does not deploy
@@ -32,13 +31,12 @@ Last updated: 2026-05-22.
 
 - Established `/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean` as
   the sole active source.
-- Archived stale duplicate local workspaces before deletion/quarantine.
+- Removed non-canonical local workspaces from active use.
 - Removed old `.context` cartography/state/deploy-checklist files from the repo.
 - Rewrote agent-facing operating docs so future agents use one source, one
   deployment path, and one current Preisser Solutions identity.
-- Added `docs/agent-operating-system.md` to preserve the useful principles from
-  archived memories, cartography, mobile notes, debug notes, and deployment
-  checklists without preserving stale names, paths, or deploy commands.
+- Added `docs/agent-operating-system.md` so every future agent sees the current
+  Preisser Solutions operating model, canonical path, and deploy guardrails.
 - Fixed mobile hero CTA stalls:
   - Hero canvas now draws once on mobile/coarse-pointer devices.
   - Hero GSAP entrance animation is skipped on mobile.

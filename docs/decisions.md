@@ -69,7 +69,7 @@
 
 **Decision**: The only active Preisser Solutions workspace is `/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean`. Cloudflare Pages production deploys are manual Wrangler uploads of local `out/` from that folder. GitHub Actions validates only.
 
-**Why**: Multiple duplicate local folders, stale agent memories, and old deployment assumptions made it possible for agents to edit one folder, commit another folder, and deploy a third folder.
+**Why**: Multiple local folders, stale agent memories, and old deployment assumptions made it possible for agents to edit one folder, commit another folder, and deploy a third folder.
 
 **Alternatives**: Keep multiple workspaces and rely on agent judgment, or reconnect Cloudflare Pages to Git. Both increase ambiguity right now.
 
@@ -77,7 +77,7 @@
 
 ## 2026-05-22 — Active agent operating system replaces stale prompt memory
 
-**Decision**: `docs/agent-operating-system.md` is the active operating model for future Preisser Solutions agents. Archived memory, cartography, mobile, debug, context, and deploy files may be mined for principles, but stale identities, paths, route counts, and deploy commands must not remain active.
+**Decision**: `docs/agent-operating-system.md` is the active operating model for future Preisser Solutions agents. Stale identities, paths, route counts, and deploy commands must not remain active.
 
 **Why**: The old files contained useful engineering discipline, but their names and deploy instructions taught agents the wrong project identity and source path.
 

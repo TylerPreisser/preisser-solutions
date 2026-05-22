@@ -30,9 +30,9 @@ Agent operating guide:
 docs/agent-operating-system.md
 ```
 
-Future agents must treat archived prompt, memory, cartography, deploy, context,
-and project files as reference material only. Useful principles should be
-rewritten into active Preisser Solutions docs with the canonical path above.
+Future agents must treat any instruction that points somewhere else as
+non-authoritative. Active work, validation, commits, and deploys happen only from
+the canonical workspace above.
 
 ## GitHub
 
@@ -92,29 +92,6 @@ curl -I https://www.preissersolutions.com
 curl -I https://preisser-solutions.pages.dev
 ```
 
-## Archived Duplicate Workspaces
-
-Archive root:
-
-```text
-/Users/tylerpreisser/Desktop/preisser-site-archive-DO-NOT-USE-2026-05-22
-```
-
-The following app/workspace copies are stale and must not be used:
-
-- `/Users/tylerpreisser/Documents/New project/preisser-solutions`
-- `/Users/tylerpreisser/Desktop/Preisser Solutions`
-- `/Users/tylerpreisser/Desktop/Preisser-Solutions-Clean`
-- `/Users/tylerpreisser/Desktop/preisser-solutions-clean-room`
-
-These paths were archived/quarantined during the 2026-05-22 cleanup. If a future
-agent sees one of them again, treat it as stale until Tyler explicitly restores
-it and updates this file.
-
-The non-app branding asset folder
-`/Users/tylerpreisser/Desktop/R2-Business/R2-Branding/Preisser Solutions IMages`
-was inventoried but not treated as a deployable workspace.
-
 ## Cloudflare Cleanup Result
 
 `npx wrangler pages project list` confirms `preisser-solutions` has Git Provider
@@ -137,7 +114,7 @@ Cloudflare source files confirmed in this workspace:
 
 ## Warnings
 
-- Old local folders must not be used.
+- No local folder except the canonical workspace may be used for this site.
 - GitHub push alone does not deploy production.
 - Cloudflare deploys only come from Wrangler uploading local `out/`.
 - Never deploy unless `pwd` is exactly the canonical workspace path.

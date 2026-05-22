@@ -18,11 +18,11 @@ local `out/`.
 
 - [x] Confirm the canonical clean source directory.
 - [x] Inventory local Preisser Solutions folders.
-- [x] Create the archive root before moving duplicates.
+- [x] Preserve records before removing non-canonical local workspaces from active use.
 - [x] Rewrite canonical agent-facing operating docs.
-- [x] Add a current Preisser Solutions agent operating system that integrates
-  useful archived memory principles without stale identity or deploy references.
-- [x] Preserve and quarantine stale local workspaces.
+- [x] Add a current Preisser Solutions agent operating system without stale
+  identity or deploy references.
+- [x] Remove non-canonical local workspaces from active use.
 - [x] Align GitHub workflow to validation-only behavior.
 - [x] Document that Cloudflare deployments cannot be individually deleted with a
   simple Wrangler command.
