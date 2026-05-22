@@ -34,8 +34,11 @@ Last updated: 2026-05-22.
   the sole active source.
 - Archived stale duplicate local workspaces before deletion/quarantine.
 - Removed old `.context` cartography/state/deploy-checklist files from the repo.
-- Rewrote agent-facing operating docs so future agents use one source and one
-  deployment path.
+- Rewrote agent-facing operating docs so future agents use one source, one
+  deployment path, and one current Preisser Solutions identity.
+- Added `docs/agent-operating-system.md` to preserve the useful principles from
+  archived memories, cartography, mobile notes, debug notes, and deployment
+  checklists without preserving stale names, paths, or deploy commands.
 - Fixed mobile hero CTA stalls:
   - Hero canvas now draws once on mobile/coarse-pointer devices.
   - Hero GSAP entrance animation is skipped on mobile.
@@ -86,3 +89,5 @@ npx wrangler pages deploy out --project-name preisser-solutions
 - Decide whether to keep all 78 location routes or consolidate another wave.
 - Do not delete/recreate the active Cloudflare Pages project without Tyler's
   explicit confirmation.
+- Keep active Claude/Codex/Cursor instruction files aligned with
+  `docs/agent-operating-system.md` whenever agent workflows change.

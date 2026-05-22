@@ -20,6 +20,8 @@ local `out/`.
 - [x] Inventory local Preisser Solutions folders.
 - [x] Create the archive root before moving duplicates.
 - [x] Rewrite canonical agent-facing operating docs.
+- [x] Add a current Preisser Solutions agent operating system that integrates
+  useful archived memory principles without stale identity or deploy references.
 - [x] Preserve and quarantine stale local workspaces.
 - [x] Align GitHub workflow to validation-only behavior.
 - [x] Document that Cloudflare deployments cannot be individually deleted with a
@@ -42,6 +44,8 @@ local `out/`.
   views.
 - [ ] Decide whether to keep all 78 location routes or consolidate another wave.
 - [ ] Deploy from the canonical folder with Wrangler only after validation passes.
+- [ ] Keep active agent memory filenames and prompts aligned with Preisser
+  Solutions source-of-truth docs.
 
 ## Validation Gate
 

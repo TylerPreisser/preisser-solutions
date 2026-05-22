@@ -24,3 +24,7 @@ npx wrangler pages deploy out --project-name preisser-solutions
 
 See `WORKSPACE_SOURCE_OF_TRUTH.md` before changing source, committing, or
 deploying.
+
+Agent workflow lives in `docs/agent-operating-system.md`. It explains the
+current Preisser Solutions PM/orchestration model, mobile/debug/theme principles,
+documentation update loop, and Cloudflare deploy guardrails.

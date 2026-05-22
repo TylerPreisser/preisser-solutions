@@ -24,6 +24,16 @@ pwd
 /Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean
 ```
 
+Agent operating guide:
+
+```text
+docs/agent-operating-system.md
+```
+
+Future agents must treat archived prompt, memory, cartography, deploy, context,
+and project files as reference material only. Useful principles should be
+rewritten into active Preisser Solutions docs with the canonical path above.
+
 ## GitHub
 
 - Remote: `https://github.com/TylerPreisser/preisser-solutions.git`
@@ -131,3 +141,5 @@ Cloudflare source files confirmed in this workspace:
 - GitHub push alone does not deploy production.
 - Cloudflare deploys only come from Wrangler uploading local `out/`.
 - Never deploy unless `pwd` is exactly the canonical workspace path.
+- Active agent files must not carry stale website-PM names or stale deploy
+  commands.
