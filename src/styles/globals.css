@@ -814,6 +814,7 @@ ul, ol {
   .ps-header {
     height: 80px;
     padding: 6px 0;
+    background-color: var(--theme-section-switchable);
   }
 
   .ps-header-blur {
