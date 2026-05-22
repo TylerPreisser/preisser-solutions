@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
-import { CaseStudiesHub } from "@/components/case-study/CaseStudiesHub";
-import { caseStudies } from "@/data/case-studies/index";
-
-const url = "https://preissersolutions.com/case-studies";
+import { AeoPage } from "@/components/aeo/AeoPage";
+import { pageData } from "@/data/aeo/case-studies";
 
 export const metadata: Metadata = {
-  title: "Case Studies — Preisser Solutions",
-  description:
-    "Named-client outcomes from Preisser Solutions — HVAC reactivation, oil and gas operations, insurance AI, transportation dashboards, media brands, and AI commerce.",
-  alternates: { canonical: url },
+  title: pageData.metaTitle.includes("Preisser Solutions")
+    ? { absolute: pageData.metaTitle }
+    : pageData.metaTitle,
+  description: pageData.metaDescription,
+  alternates: { canonical: `https://preissersolutions.com/${pageData.slug}` },
   openGraph: {
-    title: "Case Studies — Preisser Solutions",
-    description:
-      "Real engagements, real outcomes. Eight publishable case studies spanning HVAC, oil and gas, insurance, transportation, media, and AI commerce.",
-    url,
+    title: pageData.metaTitle,
+    description: pageData.metaDescription,
+    url: `https://preissersolutions.com/${pageData.slug}`,
     type: "website",
     images: [
       {
@@ -26,13 +24,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Case Studies — Preisser Solutions",
-    description:
-      "Real engagements, real outcomes. Eight publishable case studies from Preisser Solutions.",
+    title: pageData.metaTitle,
+    description: pageData.metaDescription,
     images: ["/images/og-image-v2.jpg"],
   },
 };
 
 export default function Page() {
-  return <CaseStudiesHub caseStudies={caseStudies} />;
+  return <AeoPage data={pageData} />;
 }
