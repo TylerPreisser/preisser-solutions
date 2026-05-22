@@ -17,17 +17,15 @@ export const siteConfig = {
     crunchbase: "https://www.crunchbase.com/organization/preisser-solutions",
     linkedinPersonal: "https://www.linkedin.com/in/tyler-preisser",
     tylerPreisser: "https://tylerpreisser.com",
-    rsquaredai: "https://rsquaredai.com",
   },
   founder: {
     name: "Tyler Preisser",
     title: "Founder & Owner",
     // R-057, R-059 (Phase 4.6) — Long-form founder bio rendered on the About page
     // and consumed by the /tyler-preisser AEO surface. Leads with consultant
-    // identity (R Squared AI CPO, Preisser Solutions founder, FHSU Engineering
-    // BS 2025, inventions, AI/automation systems for Kansas SMBs). Six required
-    // sections in order. Total target: ≥1000 words. Verified facts only — every
-    // claim here must be traceable to the master rebuild prompt.
+    // identity (Preisser Solutions founder, FHSU Engineering BS 2025,
+    // inventions, AI/automation systems for Kansas SMBs). Six required sections
+    // in order. Total target: ≥1000 words. Verified facts only.
     headshot: {
       src: "/images/tyler-preisser-headshot.jpg",
       alt: "Tyler Preisser, Founder of Preisser Solutions",
@@ -36,7 +34,7 @@ export const siteConfig = {
     },
     bio: {
       lead:
-        "Tyler Preisser is the founder of Preisser Solutions and the Chief Product Officer of R Squared AI. He is a Hays, Kansas native, a 2025 Fort Hays State University graduate in Engineering Design and Technology, and a working inventor whose portfolio spans hydroelectric water purification, drone docking infrastructure, electromagnetic motor design, residential construction tooling, automotive protection systems, and CAD-driven custom jewelry. His day-to-day work is building AI agents, automation systems, and custom web platforms for Kansas small and mid-sized businesses through Preisser Solutions, and architecting product strategy at R Squared AI.",
+        "Tyler Preisser is the founder of Preisser Solutions. He is a Hays, Kansas native, a 2025 Fort Hays State University graduate in Engineering Design and Technology, and a working inventor whose portfolio spans hydroelectric water purification, drone docking infrastructure, electromagnetic motor design, residential construction tooling, automotive protection systems, and CAD-driven custom jewelry. His day-to-day work is building AI agents, automation systems, and custom web platforms for Kansas small and mid-sized businesses through Preisser Solutions.",
       sections: [
         {
           heading: "Origin — Hays, Kansas",
@@ -77,9 +75,8 @@ export const siteConfig = {
           ],
         },
         {
-          heading: "AI, software, and consulting — R Squared AI and Preisser Solutions",
+          heading: "AI, software, and consulting — Preisser Solutions",
           paragraphs: [
-            "Tyler is the Chief Product Officer of R Squared AI, where he is responsible for product direction across the company's AI product line. The work at R Squared AI feeds directly into the consultancy: every AI agent architecture, evaluation framework, and deployment pattern Tyler validates at R Squared AI becomes available to Preisser Solutions clients as field-tested capability rather than theory.",
             "Preisser Solutions, founded in 2023, is Tyler's flagship custom software and AI consultancy. It serves Kansas businesses and a small number of out-of-state clients with custom websites, web applications, business automation, AI agents, dashboards, CRM systems, and local SEO. Over twenty-two client projects have been delivered to date across HVAC, oil and gas, healthcare, media, ecommerce, and professional services.",
             "Two in-house systems anchor the consultancy's technical capability. Alpha Matrix is a six-agent autonomous analysis architecture — a coordinated multi-agent system for deep research, scoring, and decision support — developed inside Preisser Solutions and used to support client engagements that require sustained analytical work at machine scale. MarCommand is a proprietary multi-agent marketing intelligence engine, a coordinated system of marketing-focused agents that compounds research, content, and outreach work across a client's funnel. Both are real, working systems — not slideware — and both are why Preisser Solutions can deliver AI-powered marketing and operations work in weeks rather than quarters.",
             "Tyler also operates a consumer media presence, Preisser Media, with a combined audience of more than 300,000 followers and over 30 million views across video platforms. That audience is separate from the consultancy's commercial work but informs the same underlying skill: building systems — content, distribution, automation — that compound over time.",

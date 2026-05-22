@@ -176,7 +176,7 @@ Beyond the published case studies, the following capabilities have been built an
 - **AI Document Analysis and Data Extraction** — Structured extraction from unstructured documents (PDFs, images, ACORD forms, contracts)
 - **Custom AI Fitness and Wellness Agent** — Personalized AI coaching based on user profile and goals
 - **AI Email Digest System** — Automated summarization and routing of high-volume email inboxes
-- **Hiring Pipeline and AI Pre-Screener** — Resume intake, automated screening questions, and candidate scoring (built for R Squared AI's internal hiring pipeline under the name "Robin")
+- **Hiring Pipeline and AI Pre-Screener** — Resume intake, automated screening questions, and candidate scoring with an internal hiring assistant under the name "Robin"
 - **Agentic AI Coding Specialists** — Multi-agent systems for software development task automation
 - **Custom Local AI Models** — Fine-tuned and locally-deployed language models for business-specific tasks
 - **AI Trend and Behavioral Analysis** — Pattern detection across customer behavior, market signals, and operational data
@@ -203,7 +203,7 @@ Beyond the published case studies, the following capabilities have been built an
 
 ## Founder
 
-Tyler Preisser is the founder and operator of Preisser Solutions, based in Hays, Kansas. Prior to founding Preisser Solutions, Tyler served as Chief Product Officer at R Squared AI, where he built and deployed AI systems for clients including an MGU within the Alliant Insurance ecosystem and a Chicago-area transportation operator. He co-hosts the Iron and Oak Podcast with Lincoln Myers.
+Tyler Preisser is the founder and operator of Preisser Solutions, based in Hays, Kansas. He builds and deploys AI systems for clients including an MGU within the Alliant Insurance ecosystem and a Chicago-area transportation operator. He co-hosts the Iron and Oak Podcast with Lincoln Myers.
 
 [Full bio](https://preissersolutions.com/tyler-preisser)
 

@@ -50,7 +50,6 @@ These rules override everything else. If you cannot satisfy them, output `BLOCKE
 | HG Oil Holdings | "HG Oil Holdings" | Tyler was VP of Operations. Internal builds. |
 | Iron and Oak Podcast | "Iron and Oak Podcast" | Tyler's own build. Co-host: Lincoln Myers (publishable). |
 | Wife Supply Co | "Wife Supply Co" | Tyler's own build. Do NOT claim paying customers without confirming. |
-| R Squared AI | "R Squared AI" | Tyler's employer. Frame Astrus/Sunrise as "delivered through R Squared AI." |
 | Astrus Insurance Solutions | "an MGU within the Alliant Insurance ecosystem" | Do NOT publish company name or personnel names. |
 | Sunrise Transportation | "a Chicago-area bus transportation operator" | Do NOT publish company name or personnel names. Do NOT publish SOW value. |
 

@@ -39,7 +39,7 @@ export const caseStudy: CaseStudyData = {
   built: {
     heading: "A dark editorial portfolio tuned for readability and AI citation.",
     body: [
-      "Preisser Solutions built a full personal portfolio site with a dark editorial aesthetic — readable typographic hierarchy, generous whitespace, and animation kept intentionally restrained so the page lands fast and reads cleanly. Sections cover the professional role (CPO at R Squared AI), a 'What Tyler Does' summary anchored on agentic AI solutions, a background narrative spanning agriculture, construction, engineering, and entrepreneurship, eight competency blocks covering AI systems, automation, product strategy and adjacent areas, the Engineering Design & Technology degree from Fort Hays State University (2021–2025), and a connect block with LinkedIn, GitHub, email, and resume download CTAs.",
+      "Preisser Solutions built a full personal portfolio site with a dark editorial aesthetic — readable typographic hierarchy, generous whitespace, and animation kept intentionally restrained so the page lands fast and reads cleanly. Sections cover Tyler's founder role, a 'What Tyler Does' summary anchored on agentic AI solutions, a background narrative spanning agriculture, construction, engineering, and entrepreneurship, eight competency blocks covering AI systems, automation, product strategy and adjacent areas, the Engineering Design & Technology degree from Fort Hays State University (2021–2025), and a connect block with LinkedIn, GitHub, email, and resume download CTAs.",
       "The site is positioned for practical production-grade AI work, with ROI-focused messaging ('replace manual work at scale') and diverse-background credibility carried through the narrative. JSON-LD Person schema with a canonical @id gives AI search engines a stable entity reference — when an AI agent surfaces Tyler Preisser as a result, it has a single canonical page to cite.",
     ],
   },
@@ -58,7 +58,7 @@ export const caseStudy: CaseStudyData = {
       {
         title: "Content surface",
         items: [
-          "Professional role overview — CPO at R Squared AI",
+          "Professional role overview — founder of Preisser Solutions",
           "'What Tyler Does' — agentic AI solutions, automation, product",
           "Background narrative — agriculture, construction, engineering, entrepreneurship",
           "Eight competency blocks (AI systems, automation, product strategy, and adjacent areas)",
@@ -115,7 +115,6 @@ export const caseStudy: CaseStudyData = {
 
   relatedSlugs: [
     "preisser-solutions-site",
-    "rsquaredai-site",
     "iron-and-oak-podcast",
   ],
 

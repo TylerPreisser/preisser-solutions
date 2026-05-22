@@ -131,7 +131,6 @@ export const caseStudy: CaseStudyData = {
   relatedSlugs: [
     "iron-and-oak-podcast",
     "tyler-preisser-site",
-    "rsquaredai-site",
   ],
 
   cta: {

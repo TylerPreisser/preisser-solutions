@@ -92,8 +92,8 @@ export const pageData: AeoPageData = {
       bullets: [
         "HG Oil Holdings — back-office invoice handling time reduced by 75% after switching from manual data entry to AI-powered intake and extraction",
         "HG Oil Holdings — invoice handling accuracy improved by 75% after automation eliminated manual re-entry errors",
-        "An MGU within the Alliant Insurance ecosystem — same data previously entered 3–5 times across Salesforce, Majesco/Coverall, pricing spreadsheets, and billing; reduced to a single structured extraction per submission, delivered through R Squared AI",
-        "A Chicago-area bus transportation operator — bill of lading and rate-confirmation parsing automated; weekly reconciliation dropped from a full day to a 15-minute exception queue, delivered through R Squared AI",
+        "An MGU within the Alliant Insurance ecosystem — same data previously entered 3–5 times across Salesforce, Majesco/Coverall, pricing spreadsheets, and billing; reduced to a single structured extraction per submission",
+        "A Chicago-area bus transportation operator — bill of lading and rate-confirmation parsing automated; weekly reconciliation dropped from a full day to a 15-minute exception queue",
       ],
     },
   ],
@@ -134,7 +134,6 @@ export const pageData: AeoPageData = {
     "Preisser Solutions",
     "Hays, Kansas",
     "HG Oil Holdings",
-    "R Squared AI",
     "QuickBooks",
     "HubSpot",
     "ServiceTitan",

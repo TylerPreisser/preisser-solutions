@@ -405,29 +405,24 @@ ul, ol {
   pointer-events: none;
 }
 
-.products-grid:has(#product-filter-all:checked) .ps-chip[for="product-filter-all"],
-.products-grid:has(#product-filter-marketing-growth:checked) .ps-chip[for="product-filter-marketing-growth"],
-.products-grid:has(#product-filter-operations-back-office:checked) .ps-chip[for="product-filter-operations-back-office"],
-.products-grid:has(#product-filter-sales-customer-service:checked) .ps-chip[for="product-filter-sales-customer-service"],
-.products-grid:has(#product-filter-decision-intelligence:checked) .ps-chip[for="product-filter-decision-intelligence"],
-.products-grid:has(#product-filter-custom-builds:checked) .ps-chip[for="product-filter-custom-builds"] {
+#product-filter-all:checked ~ .product-catalog-section .ps-chip[for="product-filter-all"],
+#product-filter-marketing-growth:checked ~ .product-catalog-section .ps-chip[for="product-filter-marketing-growth"],
+#product-filter-operations-back-office:checked ~ .product-catalog-section .ps-chip[for="product-filter-operations-back-office"],
+#product-filter-sales-customer-service:checked ~ .product-catalog-section .ps-chip[for="product-filter-sales-customer-service"],
+#product-filter-decision-intelligence:checked ~ .product-catalog-section .ps-chip[for="product-filter-decision-intelligence"],
+#product-filter-custom-builds:checked ~ .product-catalog-section .ps-chip[for="product-filter-custom-builds"] {
   border-color: var(--color-primary);
   background: var(--color-primary);
   color: #FFFFFF;
   box-shadow: 0 8px 30px rgba(13, 149, 232, 0.25);
 }
 
-.products-grid:has(#product-filter-marketing-growth:checked) .product-category-group:not([data-category-group="marketing-growth"]),
-.products-grid:has(#product-filter-operations-back-office:checked) .product-category-group:not([data-category-group="operations-back-office"]),
-.products-grid:has(#product-filter-sales-customer-service:checked) .product-category-group:not([data-category-group="sales-customer-service"]),
-.products-grid:has(#product-filter-decision-intelligence:checked) .product-category-group:not([data-category-group="decision-intelligence"]),
-.products-grid:has(#product-filter-custom-builds:checked) .product-category-group:not([data-category-group="custom-builds"]) {
+#product-filter-marketing-growth:checked ~ .product-catalog-section .product-category-group:not([data-category-group="marketing-growth"]),
+#product-filter-operations-back-office:checked ~ .product-catalog-section .product-category-group:not([data-category-group="operations-back-office"]),
+#product-filter-sales-customer-service:checked ~ .product-catalog-section .product-category-group:not([data-category-group="sales-customer-service"]),
+#product-filter-decision-intelligence:checked ~ .product-catalog-section .product-category-group:not([data-category-group="decision-intelligence"]),
+#product-filter-custom-builds:checked ~ .product-catalog-section .product-category-group:not([data-category-group="custom-builds"]) {
   display: none;
-}
-
-.products-grid:not(:has(#product-filter-all:checked)) .product-category-group {
-  margin-block-start: 0 !important;
-  margin-block-end: 0 !important;
 }
 
 .product-catalog-section {
@@ -823,6 +818,14 @@ ul, ol {
 
   .ps-header-blur {
     inset: 6px 10px;
+    background-color: rgba(10, 22, 40, 0.94);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    will-change: auto;
+  }
+
+  [data-theme="light"] .ps-header-blur {
+    background-color: rgba(255, 255, 255, 0.94);
   }
 
   .ps-header-inner {
@@ -6551,7 +6554,7 @@ body {
 /* System Fixes bento card — increase height on mobile so the
    before/after visual is fully visible, not cropped */
 @media (max-width: 768px) {
-  .ps-bento-card:has(.ps-fix-root) {
+  .ps-bento-card--systems {
     min-height: 420px !important;
   }
   .ps-fix-board {

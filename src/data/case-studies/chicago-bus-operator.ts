@@ -1,7 +1,6 @@
 import type { CaseStudyData } from "@/types/case-study";
 
 // Canonical project #6 — anonymized per privacy rules.
-// "A Chicago-area bus transportation operator. Delivered through R Squared AI."
 // DO NOT name the company, personnel, or SOW value.
 export const caseStudy: CaseStudyData = {
   slug: "chicago-bus-operator",
@@ -39,7 +38,7 @@ export const caseStudy: CaseStudyData = {
   built: {
     heading: "Five dashboards and an AI back-office layer that runs in real time.",
     body: [
-      "Delivered through R Squared AI by Tyler Preisser and Tim Wright between late 2025 and March 2026, Preisser Solutions designed and built five Power BI dashboards covering workforce planning, revenue and EBITDA, safety, fiscal-year goals, and route operations.",
+      "Tyler Preisser and Tim Wright designed and built five Power BI dashboards covering workforce planning, revenue and EBITDA, safety, fiscal-year goals, and route operations between late 2025 and March 2026.",
       "Underneath the dashboards, the team built an AI back-office layer — automated bill-of-lading parsing, rate-confirmation parsing, dispatch workflow support, and back-office reconciliation. Weekly reconciliation dropped from a full day to a 15-minute exception queue, and the principal gained the first real-time load-level profitability view the company had ever had.",
     ],
   },

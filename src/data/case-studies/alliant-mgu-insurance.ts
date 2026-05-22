@@ -1,7 +1,6 @@
 import type { CaseStudyData } from "@/types/case-study";
 
 // Canonical project #5 — anonymized per privacy rules.
-// "An MGU within the Alliant Insurance ecosystem. Delivered through R Squared AI."
 // DO NOT name the company or personnel.
 export const caseStudy: CaseStudyData = {
   slug: "alliant-mgu-insurance",
@@ -39,7 +38,7 @@ export const caseStudy: CaseStudyData = {
   built: {
     heading: "Salesforce → AI extraction → cross-validation → Cosmos DB → Salesforce.",
     body: [
-      "Delivered through R Squared AI, Preisser Solutions architected and led delivery of an AI-powered submission processing pipeline. Broker submissions arrive via email intake, get classified by document type, and feed into an AI extraction layer mapped to a JSON schema aligned to Salesforce objects.",
+      "Tyler Preisser architected and led delivery of an AI-powered submission processing pipeline. Broker submissions arrive via email intake, get classified by document type, and feed into an AI extraction layer mapped to a JSON schema aligned to Salesforce objects.",
       "Two AI models cross-validate every extraction. Claude Opus runs as the primary extractor; GPT runs as the cross-validation engine. Any field falling below a 0.90 confidence threshold triggers the second model. Cross-document validation catches inconsistencies. Results land in Cosmos DB, then PubSub-sync back to Salesforce, with a custom human-in-the-loop review surface for low-confidence items.",
     ],
   },

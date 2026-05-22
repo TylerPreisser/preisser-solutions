@@ -46,7 +46,7 @@ function buildFilterCss(filters: string[]) {
   const activeChipRules = filters
     .map((filter) => {
       const slug = slugifyFilter(filter);
-      return `.case-studies-hub:has(#case-filter-${slug}:checked) .ps-chip[for="case-filter-${slug}"]`;
+      return `#case-filter-${slug}:checked ~ .case-studies-grid-section .ps-chip[for="case-filter-${slug}"]`;
     })
     .join(",\n");
 
@@ -54,7 +54,7 @@ function buildFilterCss(filters: string[]) {
     .filter((filter) => filter !== "All")
     .map((filter) => {
       const slug = slugifyFilter(filter);
-      return `.case-studies-hub:has(#case-filter-${slug}:checked) .case-study-card:not([data-case-filter="${slug}"]){display:none}`;
+      return `#case-filter-${slug}:checked ~ .case-studies-grid-section .case-study-card:not([data-case-filter="${slug}"]){display:none}`;
     })
     .join("\n");
 
@@ -65,7 +65,9 @@ function buildFilterCss(filters: string[]) {
  * Case Studies hub page renderer.
  *
  * The hub is server-rendered. Category filtering uses native radio inputs and
- * CSS :has(...) so mobile does not hydrate the full card grid just to filter.
+ * sibling CSS selectors so mobile does not hydrate the full card grid just to
+ * filter, and iOS WebKit does not have to run ancestor :has() invalidation
+ * across the long card list.
  */
 export function CaseStudiesHub({ caseStudies }: Props) {
   const filters = getFilters(caseStudies);

@@ -163,7 +163,7 @@ export const pageData: AeoPageData = {
         "Infrastructure platforms we routinely build on:",
       ],
       bullets: [
-        "Cloudflare — our default for hosting, edge functions, Workers, R2, D1, Pages, Stream",
+        "Cloudflare — our default for hosting, edge functions, object storage, D1, Pages, and Stream",
         "Vercel — Next.js-optimized hosting alternative",
         "AWS — for clients needing full AWS infrastructure (Lambda, S3, RDS, ECS)",
         "Supabase — PostgreSQL + auth + storage for full-stack builds",

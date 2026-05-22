@@ -1,24 +1,24 @@
 import type { CaseStudyData } from "@/types/case-study";
 
 // Canonical project #15 — Hiring Pipeline & AI Pre-Screener "Robin".
-// Built for R Squared AI's frontend hiring. See docs/CANONICAL-PROJECTS.md.
+// Internal hiring automation pattern. See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "hiring-pipeline-robin",
   metaTitle: "Hiring Pipeline & AI Pre-Screener Robin | Preisser Solutions",
   metaDescription:
-    "Google Sheets + Apps Script hiring pipeline for R Squared AI, with an AI pre-screener called Robin that stack-ranks resumes A/B/C before a human looks.",
+    "Google Sheets + Apps Script hiring pipeline with an AI pre-screener called Robin that stack-ranks resumes A/B/C before a human looks.",
   datePublished: "2026-02-18",
   dateModified: "2026-05-20",
 
   category: "Internal Tool • AI Agent",
   clientName: "Hiring Pipeline Robin",
-  clientNameDisplay: "Internal — R Squared AI",
+  clientNameDisplay: "Internal — Hiring Automation",
   industry: "Recruiting and hiring automation",
 
-  h1: "Hiring Pipeline & Robin — AI Pre-Screening for R Squared AI",
+  h1: "Hiring Pipeline & Robin — AI Pre-Screening System",
   subheadline:
-    "A complete Google Sheets and Apps Script hiring pipeline built for R Squared AI's frontend developer hiring, with an AI agent called Robin that stack-ranks resumes A/B/C against weighted criteria.",
-  oneLine: "60-column tracker plus Robin AI pre-screener, deployed for R Squared AI",
+    "A complete Google Sheets and Apps Script hiring pipeline with an AI agent called Robin that stack-ranks resumes A/B/C against weighted criteria.",
+  oneLine: "60-column tracker plus Robin AI pre-screener",
 
   headlineResults: [
     { value: "60", label: "Columns covering the full pipeline" },
@@ -30,7 +30,7 @@ export const caseStudy: CaseStudyData = {
   before: {
     heading: "Inbound resumes piling up, no consistent way to evaluate.",
     body: [
-      "Frontend hiring at R Squared AI was generating inbound applications faster than the team could evaluate them with consistency. Resumes lived in Gusto. Status updates lived in someone's head. Decline emails were written one at a time. There was no shared scoreboard for who was where in the funnel and no shared lens for what made a strong candidate.",
+      "A hiring process was generating inbound applications faster than the team could evaluate them with consistency. Resumes lived in Gusto. Status updates lived in someone's head. Decline emails were written one at a time. There was no shared scoreboard for who was where in the funnel and no shared lens for what made a strong candidate.",
       "What was needed: a single tracker covering every stage from application to offer, a consistent evaluation lens applied before a human spent time, and automation to handle the mechanical parts (status updates, decline emails, date stamps) so people could focus on the interviews that mattered.",
     ],
   },
@@ -98,9 +98,9 @@ export const caseStudy: CaseStudyData = {
     },
     {
       value: "Deployed",
-      label: "In use at R Squared AI",
+      label: "In use as a hiring workflow",
       context:
-        "The pipeline is live for R Squared AI's frontend developer hiring — the same pattern is replicable for any role family.",
+        "The same pattern is replicable for any role family: one tracker, one scoring rubric, and one automation layer.",
     },
   ],
 

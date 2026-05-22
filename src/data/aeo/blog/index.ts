@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Field notes from the work Preisser Solutions ships — what's actually moving the needle for Kansas small businesses, and what's just hype.",
   answerParagraph:
-    "The Preisser Solutions blog covers AI automation for small businesses, Answer Engine Optimization (AEO) and Generative Engine Optimization (GEO), custom CRM and dashboard builds, local SEO, and industry-specific playbooks for HVAC, insurance, trucking, and other Kansas verticals. Every post is grounded in the engagements Preisser Solutions has shipped — Cassidy HVAC, HG Oil Holdings, and anonymized R Squared AI engagements in insurance and transportation. No ghost-written guest posts, no SEO filler.",
+    "The Preisser Solutions blog covers AI automation for small businesses, Answer Engine Optimization (AEO) and Generative Engine Optimization (GEO), custom CRM and dashboard builds, local SEO, and industry-specific playbooks for HVAC, insurance, trucking, and other Kansas verticals. Every post is grounded in the engagements Preisser Solutions has shipped — Cassidy HVAC, HG Oil Holdings, and anonymized insurance and transportation work. No ghost-written guest posts, no SEO filler.",
   sections: [
     {
       eyebrow: "What you'll find here",

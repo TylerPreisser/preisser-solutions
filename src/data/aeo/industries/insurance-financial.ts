@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Built for independent agency principals, RIA founders, financial advisors, and broker-dealer ops leaders tired of Salesforce orgs they can't customize, AMS systems that don't fit, and Tamarac dashboards stuck in default mode.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for insurance and financial firms — custom CRMs, branded client portals, KPI dashboards, and marketing automation that integrate with AMS360, Applied Epic, Salesforce, HubSpot, and Tamarac — without forcing the migration to a generic platform. The firm's named insurance engagement was delivered through R Squared AI for an MGU within the Alliant Insurance ecosystem: an AI-powered submission processing engine that eliminated manual data entry across disconnected systems and achieved zero missed renewals in the first six months.",
+    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for insurance and financial firms — custom CRMs, branded client portals, KPI dashboards, and marketing automation that integrate with AMS360, Applied Epic, Salesforce, HubSpot, and Tamarac — without forcing the migration to a generic platform. The firm's named insurance engagement for an MGU within the Alliant Insurance ecosystem built an AI-powered submission processing engine that eliminated manual data entry across disconnected systems and achieved zero missed renewals in the first six months.",
   sections: [
     {
       eyebrow: "What we build for insurance and financial firms",
@@ -90,7 +90,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Named insurance engagement",
       heading: "AI-powered submission processing for an MGU within the Alliant Insurance ecosystem",
       body: [
-        "Preisser Solutions — delivered through R Squared AI — built an AI-powered submission processing engine for an MGU within the Alliant Insurance ecosystem. The system reads broker insurance submissions (7–15 documents per submission), extracts structured data using dual competing AI models (Claude Opus + GPT cross-validation), validates against a confidence threshold, and auto-populates Salesforce records — replacing manual data entry across disconnected systems where the same data was previously entered 3–5 times.",
+        "Preisser Solutions built an AI-powered submission processing engine for an MGU within the Alliant Insurance ecosystem. The system reads broker insurance submissions (7–15 documents per submission), extracts structured data using dual competing AI models (Claude Opus + GPT cross-validation), validates against a confidence threshold, and auto-populates Salesforce records — replacing manual data entry across disconnected systems where the same data was previously entered 3–5 times.",
         "Results: zero missed renewals in the first six months of operation. Commission reconciliation reduced to under 30 minutes per month. Real-time book visibility for the principal where none had existed before.",
         "The same technical pattern — AI document extraction, multi-system integration, workflow automation — is directly applicable to independent insurance agencies, RIAs, and broker-dealer affiliated advisors. For RIA and financial advisory firms, Preisser Solutions' AI invoicing and document extraction work (proven through HG Oil Holdings at 75% time reduction) translates directly to dec page extraction, policy summarization, and onboarding document handling. Compliance is treated as a hard constraint from day one, not a checkbox at the end.",
       ],
@@ -139,7 +139,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you have an insurance case study?",
       answer:
-        "Yes — delivered through R Squared AI for an MGU within the Alliant Insurance ecosystem. The engagement built an AI-powered submission processing engine that eliminated manual data entry across disconnected systems and achieved zero missed renewals in the first six months. The client is not named publicly per privacy agreement. For RIA and financial advisory work, the firm's AI document extraction capability (proven at HG Oil Holdings: 75% invoicing time reduction) translates directly to dec page extraction, policy summarization, and onboarding document handling.",
+        "Yes — for an MGU within the Alliant Insurance ecosystem. The engagement built an AI-powered submission processing engine that eliminated manual data entry across disconnected systems and achieved zero missed renewals in the first six months. The client is not named publicly per privacy agreement. For RIA and financial advisory work, the firm's AI document extraction capability (proven at HG Oil Holdings: 75% invoicing time reduction) translates directly to dec page extraction, policy summarization, and onboarding document handling.",
     },
     {
       question: "What does an insurance or RIA software project cost?",

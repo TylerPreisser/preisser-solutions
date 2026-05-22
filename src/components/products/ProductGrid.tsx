@@ -4,7 +4,7 @@
  * Filtering is native HTML + CSS:
  * - radio inputs hold the selected category
  * - labels render as chips
- * - globals.css uses :has(...) to show/hide category groups
+ * - globals.css uses sibling selectors to show/hide category groups
  *
  * This keeps the product cards and SVG visuals out of the client bundle.
  */

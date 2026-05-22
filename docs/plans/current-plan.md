@@ -24,8 +24,12 @@ local `out/`.
   identity or deploy references.
 - [x] Remove non-canonical local workspaces from active use.
 - [x] Align GitHub workflow to validation-only behavior.
-- [x] Document that Cloudflare deployments cannot be individually deleted with a
-  simple Wrangler command.
+- [x] Archive and remove the stale `seo-local-growth-system` branch from local
+  Git and GitHub.
+- [x] Remove unrelated separate-company references from active repo content,
+  generated output, and active Claude/Codex/Cursor instruction state.
+- [x] Delete old Cloudflare Pages deployments and preserve only the current live
+  `preisser-solutions` deployment.
 
 ## Completed Site Work In Clean Source
 
@@ -43,7 +47,8 @@ local `out/`.
 - [ ] Run a deeper JS bundle pass on `LocationPage` and `CaseStudyPage` detail
   views.
 - [ ] Decide whether to keep all 78 location routes or consolidate another wave.
-- [ ] Deploy from the canonical folder with Wrangler only after validation passes.
+- [ ] Deploy this cleanup from the canonical folder with Wrangler only after
+  validation passes, then prune superseded Cloudflare deployments.
 - [ ] Keep active agent memory filenames and prompts aligned with Preisser
   Solutions source-of-truth docs.
 

@@ -20,10 +20,10 @@ Last updated: 2026-05-22.
 - Type status: `npx tsc --noEmit` passed on 2026-05-22.
 - SEO validation: `npm run validate:seo` passed on 2026-05-22 with 144
   checks passed and 0 failed.
-- Source routes: 232 `page.tsx` files.
+- Source routes: 231 `page.tsx` files.
 - Route handlers: 0 `route.ts` / `route.tsx` files.
-- Sitemap URLs: 232 canonical URLs.
-- Generated pages: 235 static pages including framework support output.
+- Sitemap URLs: 231 canonical URLs.
+- Generated pages: 234 static pages including framework support output.
 - Public image payload: about 2.9 MB after removing unused Stripe and placeholder
   assets.
 
@@ -37,6 +37,13 @@ Last updated: 2026-05-22.
   deployment path, and one current Preisser Solutions identity.
 - Added `docs/agent-operating-system.md` so every future agent sees the current
   Preisser Solutions operating model, canonical path, and deploy guardrails.
+- Removed unrelated separate-company references from active site content,
+  active repo docs, generated output, and active Claude/Codex/Cursor instruction
+  state.
+- Archived and deleted the stale `seo-local-growth-system` local/GitHub branch
+  after confirming it carried obsolete source and instruction state.
+- Deleted old Cloudflare Pages deployments for `preisser-solutions`; Cloudflare
+  now lists one production deployment and zero preview deployments.
 - Fixed mobile hero CTA stalls:
   - Hero canvas now draws once on mobile/coarse-pointer devices.
   - Hero GSAP entrance animation is skipped on mobile.
@@ -87,5 +94,7 @@ npx wrangler pages deploy out --project-name preisser-solutions
 - Decide whether to keep all 78 location routes or consolidate another wave.
 - Do not delete/recreate the active Cloudflare Pages project without Tyler's
   explicit confirmation.
+- Keep Cloudflare Pages deployment history pruned to the current production
+  deployment after each intentional Wrangler upload.
 - Keep active Claude/Codex/Cursor instruction files aligned with
   `docs/agent-operating-system.md` whenever agent workflows change.

@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Built for fleet owners and dispatchers tired of generic TMS plug-ins and slow back-office workflows.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for trucking and logistics operations — custom websites, dispatch automation, AI invoicing, custom dashboards, and integrations with McLeod, TMW Suite, JJ Keller, Samsara, and KeepTruckin/Motive. The firm's named transportation engagement — delivered through R Squared AI for a Chicago-area bus transportation operator — built five Power BI dashboards plus operational automation that dropped weekly reconciliation from a full day to a 15-minute exception queue.",
+    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for trucking and logistics operations — custom websites, dispatch automation, AI invoicing, custom dashboards, and integrations with McLeod, TMW Suite, JJ Keller, Samsara, and KeepTruckin/Motive. The firm's named transportation engagement for a Chicago-area bus transportation operator built five Power BI dashboards plus operational automation that dropped weekly reconciliation from a full day to a 15-minute exception queue.",
   sections: [
     {
       eyebrow: "What we build for trucking",
@@ -69,7 +69,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you really know trucking and transportation?",
       answer:
-        "Yes. Preisser Solutions — delivered through R Squared AI — built five Power BI dashboards plus back-office automation for a Chicago-area bus transportation operator. Weekly reconciliation dropped from a full day to a 15-minute exception queue, and the engagement eliminated approximately one FTE of manual admin work. The HG Oil Holdings AI invoicing build (75% time reduction) is also a direct analog to fleet billing and BOL workflows.",
+        "Yes. Preisser Solutions built five Power BI dashboards plus back-office automation for a Chicago-area bus transportation operator. Weekly reconciliation dropped from a full day to a 15-minute exception queue, and the engagement eliminated approximately one FTE of manual admin work. The HG Oil Holdings AI invoicing build (75% time reduction) is also a direct analog to fleet billing and BOL workflows.",
     },
     {
       question: "Do you replace McLeod or TMW Suite?",
@@ -114,7 +114,6 @@ export const pageData: AeoPageData = {
     "Motive",
     "JJ Keller",
     "Power BI",
-    "R Squared AI",
   ],
   relatedLinks: [
     { label: "Oil & gas industry", href: "/industries/oil-gas" },

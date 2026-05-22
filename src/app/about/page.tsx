@@ -12,7 +12,7 @@ const aboutFaqs = [
   {
     question: "Who owns Preisser Solutions?",
     answer:
-      "Tyler Preisser founded and operates Preisser Solutions. He is also Chief Product Officer of R Squared AI.",
+      "Tyler Preisser founded and operates Preisser Solutions.",
   },
   {
     question: "Where is Preisser Solutions based?",
@@ -34,14 +34,14 @@ const aboutFaqs = [
 export const metadata: Metadata = {
   title: "About Tyler Preisser",
   description:
-    "Tyler Preisser is founder of Preisser Solutions and CPO of R Squared AI. Hays, Kansas native, FHSU Engineering 2025, builder of AI systems for Kansas businesses.",
+    "Tyler Preisser is founder of Preisser Solutions. Hays, Kansas native, FHSU Engineering 2025, builder of AI systems for Kansas businesses.",
   alternates: {
     canonical: "https://preissersolutions.com/about",
   },
   openGraph: {
     title: "About Tyler Preisser | Preisser Solutions",
     description:
-      "Tyler Preisser is founder of Preisser Solutions and CPO of R Squared AI. Hays, Kansas native, FHSU Engineering 2025, builder of AI systems for Kansas businesses.",
+      "Tyler Preisser is founder of Preisser Solutions. Hays, Kansas native, FHSU Engineering 2025, builder of AI systems for Kansas businesses.",
     url: "https://preissersolutions.com/about",
   },
 };

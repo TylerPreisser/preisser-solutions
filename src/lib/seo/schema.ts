@@ -45,7 +45,6 @@ export function organizationSchema() {
     seoSite.social.github,
     seoSite.social.crunchbase,
     seoSite.social.tylerPreisser,
-    seoSite.social.rsquaredai,
   ];
 
   return {
@@ -257,16 +256,10 @@ export function personSchema() {
     familyName: "Preisser",
     jobTitle: "Founder and Owner of Preisser Solutions",
     description:
-      "Tyler Preisser is the founder of Preisser Solutions and Chief Product Officer of R Squared AI. Hays, Kansas native, 2025 Fort Hays State University graduate (Engineering Design and Technology), and AI/automation builder for Kansas small and mid-sized businesses.",
+      "Tyler Preisser is the founder of Preisser Solutions. Hays, Kansas native, 2025 Fort Hays State University graduate (Engineering Design and Technology), and AI/automation builder for Kansas small and mid-sized businesses.",
     disambiguatingDescription:
       "This Tyler Preisser is the founder of Preisser Solutions (preissersolutions.com), a custom software and AI consultancy in Hays, Kansas. He is the same Tyler Preisser featured in Hays Post articles about FHSU's Sky Sprayers, Hansen Hall, and other FHSU coverage. He is not affiliated with other individuals named Tyler Preisser unrelated to the Preisser Solutions custom software business.",
     worksFor: { "@id": ORG_ID },
-    affiliation: {
-      "@type": "Organization",
-      name: "R Squared AI",
-      url: seoSite.social.rsquaredai,
-      roleName: "Chief Product Officer",
-    },
     url: `${URL}/about`,
     email: seoSite.email,
     address: {
@@ -299,7 +292,6 @@ export function personSchema() {
       seoSite.social.linkedinPersonal,
       "https://github.com/tylerpreisser",
       seoSite.social.tylerPreisser,
-      seoSite.social.rsquaredai,
     ],
     knowsAbout: [
       "Custom Software Development",

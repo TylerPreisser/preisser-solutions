@@ -51,6 +51,9 @@ curl -I https://www.preissersolutions.com
 curl -I https://preisser-solutions.pages.dev
 ```
 
+After a successful replacement deployment, delete any superseded production or
+preview deployments and leave only the current production deployment listed.
+
 ## Important Files
 
 - `wrangler.toml` - Cloudflare Pages output directory.
@@ -65,11 +68,25 @@ curl -I https://preisser-solutions.pages.dev
 The GitHub workflow validates the Cloudflare build. It does not deploy to GitHub
 Pages, does not deploy to Cloudflare, and does not set a GitHub Pages `basePath`.
 
-## Cloudflare Project Deletion
+## Cloudflare Deployment Cleanup
 
-Wrangler can list deployments but does not provide a simple individual deployment
-delete command. Wiping Cloudflare deployment history requires deleting and
-recreating the Pages project. Do not delete the `preisser-solutions` Pages
-project unless Tyler explicitly confirms project deletion after domains,
-settings, redirects, headers, functions, and the replacement deployment plan are
-recorded.
+As of 2026-05-22, old Cloudflare Pages deployments for `preisser-solutions` were
+deleted. The expected state is one production deployment and zero preview
+deployments.
+
+Current live deployment:
+
+```text
+The single production deployment returned by:
+npx wrangler@latest pages deployment list --project-name preisser-solutions --json
+```
+
+If stale deployments appear again, delete only non-current deployments:
+
+```bash
+npx wrangler@latest pages deployment delete DEPLOYMENT_ID --project-name preisser-solutions --force
+```
+
+Do not delete the current live deployment. Do not delete or recreate the
+`preisser-solutions` Pages project unless Tyler explicitly asks for full project
+deletion.
