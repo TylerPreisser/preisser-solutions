@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { Hero } from "@/components/home/hero";
 import { ProofBar } from "@/components/home/proof-bar";
 import { ValueStrip } from "@/components/home/value-strip";
-import { InternalLinkBlock } from "@/components/seo/InternalLinkBlock";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { LOCATION_REGIONS, LOCATIONS_BY_SLUG } from "@/data/locations";
 import { siteConfig } from "@/data/site-config";
 
 // Below-fold client components — code-split so their JS is deferred until
@@ -88,6 +90,55 @@ const primaryNavSchema = {
   ],
 };
 
+const serviceLinks = [
+  { href: "/services/custom-websites", label: "Custom websites", description: "Custom-coded sites built in Next.js, React, and TypeScript." },
+  { href: "/services/local-seo", label: "Local SEO", description: "Google Business Profile, local pack, citations, reviews, schema." },
+  { href: "/services/ai-automation", label: "AI automation", description: "Custom AI agents, invoicing, reactivation, lead qualification." },
+  { href: "/services/ai-search-optimization", label: "AI search optimization", description: "Be cited by ChatGPT, Perplexity, Gemini, and Claude." },
+  { href: "/web-applications", label: "Web applications", description: "Internal tools, client portals, custom CRMs, dashboards." },
+  { href: "/business-automation", label: "Business automation", description: "Automate invoicing, data entry, follow-up, and reporting." },
+];
+
+function cleanLocationTitle(title: string) {
+  return title.replace(/\s*\|\s*Preisser Solutions$/, "");
+}
+
+const serviceAreaGroups = LOCATION_REGIONS.map((region) => ({
+  name: region.name,
+  blurb: region.blurb,
+  links: region.slugs
+    .map((slug) => LOCATIONS_BY_SLUG[slug])
+    .filter(Boolean)
+    .map((location) => ({
+      href: `/locations/${location.slug}`,
+      label: cleanLocationTitle(location.metaTitle),
+      description: location.hero.subheadline,
+    })),
+}));
+
+function HomeLinkDropdown({
+  title,
+  summary,
+  children,
+}: {
+  title: string;
+  summary: string;
+  children: ReactNode;
+}) {
+  return (
+    <details className="ps-home-link-details">
+      <summary className="ps-home-link-details__summary">
+        <span>
+          <span className="ps-home-link-details__title">{title}</span>
+          <span className="ps-home-link-details__desc">{summary}</span>
+        </span>
+        <span className="ps-home-link-details__icon" aria-hidden="true" />
+      </summary>
+      <div className="ps-home-link-details__content">{children}</div>
+    </details>
+  );
+}
+
 export default function HomePage() {
   return (
     <>
@@ -108,40 +159,55 @@ export default function HomePage() {
       <MarCommandCallout />
       <WhyUs />
       <CaseStudies />
-      {/* Crawlable service + location link cluster — discoverable internal-link graph for crawlers + AI engines. */}
+      {/* Crawlable service + location link cluster — static HTML for crawlers + AI engines. */}
       <section
         aria-label="Services and locations"
-        style={{
-          background: "var(--theme-section-alt)",
-          color: "var(--theme-text-primary)",
-          padding: "clamp(60px, 8vw, 100px) 24px",
-          transition: "background 300ms ease, color 300ms ease",
-        }}
+        className="ps-home-link-cluster"
       >
-        <div style={{ maxWidth: 1120, margin: "0 auto" }}>
-          <InternalLinkBlock
+        <div className="ps-home-link-cluster__inner">
+          <HomeLinkDropdown
             title="Services"
-            columns={3}
-            links={[
-              { href: "/services/custom-websites", label: "Custom websites", description: "Custom-coded sites built in Next.js, React, and TypeScript." },
-              { href: "/services/local-seo", label: "Local SEO", description: "Google Business Profile, local pack, citations, reviews, schema." },
-              { href: "/services/ai-automation", label: "AI automation", description: "Custom AI agents, invoicing, reactivation, lead qualification." },
-              { href: "/services/ai-search-optimization", label: "AI search optimization", description: "Be cited by ChatGPT, Perplexity, Gemini, and Claude." },
-              { href: "/web-applications", label: "Web applications", description: "Internal tools, client portals, custom CRMs, dashboards." },
-              { href: "/business-automation", label: "Business automation", description: "Automate invoicing, data entry, follow-up, and reporting." },
-            ]}
-          />
-          <InternalLinkBlock
+            summary="Websites, SEO, AI automation, search visibility, software, and workflow systems."
+          >
+            <ul className="ps-home-link-grid">
+              {serviceLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} prefetch={false} className="ps-home-link-item">
+                    <span className="ps-home-link-item__label">{link.label}</span>
+                    <span className="ps-home-link-item__desc">{link.description}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </HomeLinkDropdown>
+
+          <HomeLinkDropdown
             title="Service area"
-            columns={3}
-            links={[
-              { href: "/locations/hays-kansas", label: "Hays, Kansas", description: "Headquarters. Full service stack delivered locally." },
-              { href: "/locations/hays-kansas-web-design", label: "Hays web design", description: "Custom website design for Hays, KS businesses." },
-              { href: "/locations/western-kansas-web-design", label: "Western Kansas web design", description: "Web design across western Kansas." },
-              { href: "/locations/great-bend-kansas-web-design", label: "Great Bend web design", description: "Custom websites for Great Bend, KS." },
-              { href: "/locations/salina-kansas-web-design", label: "Salina web design", description: "Custom websites for Salina, KS." },
-            ]}
-          />
+            summary="Hays, northwest Kansas, and the regional markets we support from here."
+          >
+            <div className="ps-service-area-groups">
+              {serviceAreaGroups.map((region) => (
+                <section key={region.name} className="ps-service-area-group" aria-labelledby={`service-area-${region.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}>
+                  <div className="ps-service-area-group__header">
+                    <h3 id={`service-area-${region.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}>
+                      {region.name}
+                    </h3>
+                    <p>{region.blurb}</p>
+                  </div>
+                  <ul className="ps-home-link-grid ps-home-link-grid--compact">
+                    {region.links.map((link) => (
+                      <li key={link.href}>
+                        <Link href={link.href} prefetch={false} className="ps-home-link-item">
+                          <span className="ps-home-link-item__label">{link.label}</span>
+                          <span className="ps-home-link-item__desc">{link.description}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </div>
+          </HomeLinkDropdown>
         </div>
       </section>
       <CtaSection />

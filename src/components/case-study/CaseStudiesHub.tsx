@@ -58,7 +58,7 @@ function buildFilterCss(filters: string[]) {
     })
     .join("\n");
 
-  return `${activeChipRules}{border-color:var(--color-primary);background:var(--color-primary);color:#FFFFFF;box-shadow:0 8px 30px rgba(13,149,232,0.25)}\n${cardRules}`;
+  return `${activeChipRules}{border-color:var(--color-primary);background:var(--color-primary);color:#FFFFFF;box-shadow:var(--ps-chip-active-shadow)}\n${cardRules}`;
 }
 
 /**
@@ -172,8 +172,8 @@ export function CaseStudiesHub({ caseStudies }: Props) {
               anonymized where the relationship requires it.
             </p>
 
-            <div className="mt-16 flex flex-wrap gap-x-12 gap-y-6 md:mt-20">
-              <div>
+            <div className="case-studies-hero-stats mt-16 flex flex-wrap gap-x-12 gap-y-6 md:mt-20">
+              <div className="case-studies-hero-stat">
                 <div
                   className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
                   style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
@@ -187,8 +187,8 @@ export function CaseStudiesHub({ caseStudies }: Props) {
                   Published case studies
                 </div>
               </div>
-              <div className="h-12 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
-              <div>
+              <div className="case-studies-hero-stat-divider h-12 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
+              <div className="case-studies-hero-stat">
                 <div
                   className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
                   style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
@@ -202,8 +202,8 @@ export function CaseStudiesHub({ caseStudies }: Props) {
                   Capability categories
                 </div>
               </div>
-              <div className="h-12 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
-              <div>
+              <div className="case-studies-hero-stat-divider h-12 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
+              <div className="case-studies-hero-stat">
                 <div
                   className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
                   style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
