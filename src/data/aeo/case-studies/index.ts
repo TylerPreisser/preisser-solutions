@@ -3,83 +3,132 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "case-studies",
   tier: "trust_faq",
-  metaTitle: "Case Studies — Preisser Solutions | Real Client Outcomes",
+  metaTitle: "Case Studies — Preisser Solutions | Named Client Outcomes",
   metaDescription:
-    "Preisser Solutions case studies: real AI automation, custom software, web app, dashboard, and AI search outcomes from founder-led builds.",
+    "Preisser Solutions named-client case studies — Cassidy HVAC, HG Oil Holdings, Iron and Oak Podcast, Wife Supply Co, MGU in the Alliant Insurance ecosystem, Chicago-area bus operator, MarCommand.",
   eyebrow: "Case Studies",
-  h1: "Case Studies — Real Work, Real Outcomes",
+  h1: "Preisser Solutions Case Studies — Named Client Outcomes",
   subheadline:
-    "A lightweight index of the engagements, internal platforms, and capability builds behind Preisser Solutions. Built to load like the AI agents page, with direct links to the full case studies.",
+    "Real engagements, real numbers. Every Preisser Solutions case study is a named client with measurable outcomes — not anonymous testimonials.",
   answerParagraph:
-    "Preisser Solutions publishes case studies from real founder-led builds: AI customer reactivation for Cassidy HVAC, inventory and invoice automation for HG Oil Holdings, insurance submission processing, transportation dashboards, media-brand architecture, AI commerce, internal multi-agent systems, and AI capability patterns. Each page documents what existed before, what was built, the measurable result, and the systems involved.",
+    "Preisser Solutions, based in Hays, Kansas, has delivered named client engagements across HVAC, oil and gas, media, AI commerce, insurance, trucking, and customer-marketing infrastructure. The firm publishes case studies with specific outcomes — Cassidy HVAC (AI marketing engine driving 5x organic reach in 30 days, plus AI customer reactivation recovering 60%+ of dormant patients in 6 weeks and lifting booking conversion 45%+), HG Oil Holdings (95% reduction in back-office logistics time, 75%+ accuracy improvement, 75% reduction in manual invoice handling), Iron and Oak Podcast (134 pre-rendered pages, 12 episodes, 109 questions, full cinematic media brand), Wife Supply Co (AI gift-matching engine, custom commerce, brand-engineered design system), an MGU within the Alliant Insurance ecosystem (custom policy management system — zero missed renewals in first 6 months, commission reconciliation under 30 min/month), a Chicago-area bus transportation operator (ops automation — weekly reconciliation cut from a full day to a 15-minute exception queue), a generic customer reactivation engine playbook, and MarCommand (proprietary multi-agent marketing engine). All eight are documented as standalone case study pages.",
   sections: [
     {
-      eyebrow: "Named client work",
-      heading: "Published client engagements",
+      eyebrow: "Featured case studies",
+      heading: "Eight engagements (named where consented, anonymized where confidential)",
       body: [
-        "These are real builds with concrete outcomes. Named clients are listed where the client has consented; confidential engagements are described by industry and operating model so the work is still understandable without exposing the client.",
+        "Every Preisser Solutions case study is a real engagement. Where the client has consented, we name them. Where they prefer confidentiality, we describe the engagement with enough specificity to verify the work without revealing identity.",
       ],
-      bullets: [
-        "Cassidy HVAC: customer reactivation and AI marketing systems.",
-        "HG Oil Holdings: inventory operations and AI invoice processing.",
-        "Alliant Insurance ecosystem MGU: submission, renewal, and commission workflow automation.",
-        "Chicago-area bus transportation operator: dashboards, reconciliation, and operations automation.",
-        "Iron and Oak Podcast: cinematic media brand, content architecture, and AI-search-ready web presence.",
-        "Wife Supply Co: AI gifting and custom commerce experience.",
+      subsections: [
+        {
+          heading: "Cassidy HVAC",
+          body: [
+            "AI marketing engine + customer reactivation. Result: 100% hands-off content creation, 5x organic reach increase in 30 days, replaced outsourced marketing agency. Plus: 60%+ reactivation of dormant patients within 6 weeks, 100% automation of reminders, 10+ hours per week saved, 45%+ increase in booking conversion rate. Read the full case study.",
+          ],
+        },
+        {
+          heading: "HG Oil Holdings",
+          body: [
+            "Custom inventory management + AI invoicing assistant. Result: 95% reduction in back-office logistics time, 75%+ accuracy improvement, turned a loss center into a profit center. Plus: 75% decrease in manual invoice handling time, eliminated manual reading entirely, freed staff for higher-value work, prevented the need for additional hires.",
+          ],
+        },
+        {
+          heading: "Iron and Oak Podcast",
+          body: [
+            "Full cinematic media brand build. Result: 134 pre-rendered pages, GSAP-powered smooth scroll, custom design system, dark/light mode, full content architecture for 12 episodes and 109 questions across 5 phases. Built in Next.js 16, React 19, TypeScript, GSAP, Lenis, deployed to Cloudflare Pages.",
+          ],
+        },
+        {
+          heading: "Wife Supply Co",
+          body: [
+            "AI-powered gifting platform built from concept to launch. Result: custom AI gift-matching engine, full custom commerce, conversion-optimized funnels, brand-engineered design system that doesn't look like another Shopify store. Direct case study in custom AI-driven commerce.",
+          ],
+        },
+        {
+          heading: "MGU within the Alliant Insurance ecosystem (Custom Policy Management System)",
+          body: [
+            "Replaced spreadsheets and a generic CRM with a purpose-built policy management system tuned to independent-insurance workflow. Result: zero missed renewals in first 6 months, monthly commission reconciliation under 30 minutes, real-time book visibility for the principal.",
+          ],
+        },
+        {
+          heading: "Chicago-area bus transportation operator (Ops Automation)",
+          body: [
+            "Custom operations-automation layer covering dispatch, driver paperwork, AI BOL/rate-conf parsing, and back-office reconciliation. Result: weekly reconciliation time dropped from a full day to a 15-minute exception queue, ~1 FTE worth of admin work eliminated, first real-time load-level profitability the principal had ever seen.",
+          ],
+        },
+        {
+          heading: "Customer Reactivation Engine (Playbook)",
+          body: [
+            "Generic case study of the reactivation engine pattern Preisser Solutions ships across HVAC, dental, veterinary, and trades operators. Reference outcome (Cassidy HVAC): 60%+ dormant patient reactivation in 6 weeks. Read the playbook before scoping a similar build.",
+          ],
+        },
+        {
+          heading: "MarCommand Multi-Agent Marketing Engine (Demo)",
+          body: [
+            "Preisser Solutions' proprietary multi-agent marketing engine. Currently runs the firm's own marketing operations and serves as reference architecture for custom client builds. Eight specialized agents orchestrated end-to-end — content strategy, copy, design, paid ads, AEO, analyst, quality reviewer, central orchestrator. Demo available during scoping calls.",
+          ],
+        },
       ],
     },
     {
-      eyebrow: "Internal platforms",
-      heading: "Systems built to run Preisser Solutions itself",
+      eyebrow: "What these have in common",
+      heading: "Common patterns across the case studies",
       body: [
-        "Some of the most important case studies are internal platforms because they show how the company actually operates. These are not brochure concepts. They are working systems used to build, market, analyze, and improve the business.",
+        "Four very different industries — HVAC, oil and gas, media, and gifting — but the case studies share patterns:",
       ],
       bullets: [
-        "MarCommand: multi-agent marketing engine for strategy, content, ads, AEO, QA, and analysis.",
-        "Agentic coding specialists: reusable domain-specific build agents for research, implementation, and verification.",
-        "Alpha Matrix: multi-agent stock analysis pipeline with daily scoring and self-improvement loops.",
-        "Query Dominance: local SEO and GEO planning system for owning high-intent search surfaces.",
+        "Custom-coded from scratch in modern frameworks (Next.js, React, TypeScript)",
+        "The founder personally coded every engagement — no offshore handoff, no agency layer",
+        "AI integration as a first-class feature where applicable, not bolted on",
+        "Direct integration with the client's existing systems — no rip-and-replace",
+        "Measurable outcomes published — named client, real numbers, no anonymous testimonials",
+        "Long-term ROI — every build pays back significantly within the first year",
       ],
     },
     {
-      eyebrow: "Capability patterns",
-      heading: "Reusable AI and automation patterns",
+      eyebrow: "Why named matters",
+      heading: "Anonymous testimonials don't help buyers",
       body: [
-        "The case-study library also includes capability pages. These are generalized versions of proven patterns: after-hours call triage, AI invoice processing, document analysis, local AI models, behavioral analysis, AI fitness personalization, and website builds.",
-        "That keeps the hub useful without making the mobile page behave like a giant app catalog. The full case studies are still available through direct links below.",
+        "Most agency websites are full of anonymous testimonials and unnamed case studies. They don't help buyers because they can't be verified. Preisser Solutions publishes named clients with specific outcomes precisely because verifiable proof of work matters more than carefully-edited anonymous quotes.",
+        "Every case study above can be verified — the named client exists, the outcomes are documented, and we personally answer questions about each engagement.",
       ],
     },
   ],
   faq: [
     {
-      question: "Why does the case-studies page look like the AI agents page now?",
+      question: "Can I get references from the named case studies?",
       answer:
-        "The homepage hero link needs to land on a fast, readable, mobile-friendly page. The case-studies hub now uses the same static AEO page renderer as the AI agents page, with concise sections, FAQ schema, and direct links to individual case studies.",
+        "Yes — for serious prospects in advanced scoping. References are available with client permission for engagements that move past initial scoping. Contact tyler@preissersolutions.com to start.",
     },
     {
-      question: "Did the individual case studies go away?",
+      question: "Are there other engagements not listed here?",
       answer:
-        "No. The full individual case-study pages still exist. This page now acts as a lightweight entry point instead of a heavy interactive catalog.",
+        "Yes. Several engagements are confidential or not yet ready for public case studies. The four named engagements above are the firm's primary published case studies as of 2026.",
     },
     {
-      question: "Does this still support AEO, GEO, and search crawling?",
+      question: "Can you build something similar for my industry?",
       answer:
-        "Yes. The page keeps canonical metadata, WebPage schema, FAQ schema, breadcrumb schema, named entities, and crawlable internal links to the full case studies.",
+        "Yes — the patterns translate across industries. HVAC marketing automation patterns work for plumbing, electrical, roofing, and other trades. HG Oil Holdings inventory and AI invoicing patterns work for any operator with similar back-office pain. Iron and Oak's cinematic media brand approach works for any brand needing premium presentation. Wife Supply Co's AI commerce patterns work across retail categories.",
     },
     {
-      question: "Are all outcomes real?",
+      question: "How much do these builds typically cost?",
       answer:
-        "Yes. Preisser Solutions publishes real engagements, internal platform builds, and capability patterns. Named clients are named where consented; confidential engagements are described without exposing private client details.",
+        "Pricing varies widely by scope. Focused builds (one website, one automation engine) typically run in the low-to-mid five figures. Larger multi-system builds run mid-to-high five figures. Custom CRMs and complex platforms scope from there. Fixed-price proposal after a free scoping call.",
     },
     {
-      question: "Who built the case-study systems?",
+      question: "How long do these builds take?",
       answer:
-        "Preisser Solutions is founder-led. Tyler Preisser personally designs and builds the systems documented in these case studies, with AI tooling used as part of the delivery workflow.",
+        "Custom websites: 3-8 weeks. Marketing or reactivation automation: 4-6 weeks. Custom inventory or business systems: 8-16 weeks. AI commerce or media brand platforms: 3-6 months. Specific timeline depends on scope.",
     },
     {
-      question: "Where should I start if I want something similar?",
+      question: "Who does the actual work?",
       answer:
-        "Start with the case study closest to your bottleneck, then reach out for a scoping conversation. Preisser Solutions will map the workflow, identify the highest-ROI build, and propose a focused system.",
+        "The founder personally codes every engagement. There are no junior associates, no offshore subcontractors, no account managers filtering decisions. Every Preisser Solutions case study is built by the founder.",
+    },
+    {
+      question: "How do I get started?",
+      answer:
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call. We'll map your situation, identify the highest-ROI build, and send a fixed-price proposal.",
     },
   ],
   schemaType: "WebPage",
@@ -88,46 +137,26 @@ export const pageData: AeoPageData = {
     "Tyler Preisser",
     "Cassidy HVAC",
     "HG Oil Holdings",
-    "Alliant Insurance",
     "Iron and Oak Podcast",
     "Wife Supply Co",
+    "Alliant Insurance",
+    "Chicago-area bus transportation operator",
     "MarCommand",
-    "Alpha Matrix",
-    "Query Dominance",
     "Hays, Kansas",
   ],
   relatedLinks: [
-    { label: "Cassidy HVAC reactivation", href: "/case-studies/cassidy-hvac-reactivation" },
-    { label: "Cassidy HVAC marketing engine", href: "/case-studies/cassidy-hvac-marketing-engine" },
-    { label: "HG Oil inventory system", href: "/case-studies/hg-oil-inventory-system" },
-    { label: "HG Oil AI invoice processing", href: "/case-studies/hg-oil-ai-invoice-processing" },
-    { label: "Alliant MGU insurance", href: "/case-studies/alliant-mgu-insurance" },
-    { label: "Chicago bus operator", href: "/case-studies/chicago-bus-operator" },
-    { label: "Iron and Oak Podcast", href: "/case-studies/iron-and-oak-podcast" },
-    { label: "Wife Supply Co", href: "/case-studies/wife-supply-co" },
-    { label: "MarCommand", href: "/case-studies/marcommand" },
-    { label: "MarCommand engine", href: "/case-studies/marcommand-engine" },
-    { label: "Agentic coding specialists", href: "/case-studies/agentic-coding-specialists" },
-    { label: "Alpha Matrix", href: "/case-studies/alpha-matrix" },
-    { label: "Query Dominance", href: "/case-studies/query-dominance" },
-    { label: "AI email digest", href: "/case-studies/ai-email-digest" },
-    { label: "Hiring pipeline Robin", href: "/case-studies/hiring-pipeline-robin" },
-    { label: "Contact form CRM pipeline", href: "/case-studies/contact-form-crm-pipeline" },
-    { label: "After-hours call triage", href: "/case-studies/after-hours-call-triage" },
-    { label: "AI invoice processing platform", href: "/case-studies/ai-invoice-processing-platform" },
-    { label: "AI document analysis", href: "/case-studies/ai-document-analysis" },
-    { label: "Custom local AI models", href: "/case-studies/custom-local-ai-models" },
-    { label: "AI trend analysis", href: "/case-studies/ai-trend-behavioral-analysis" },
-    { label: "AI fitness wellness agent", href: "/case-studies/ai-fitness-wellness-agent" },
-    { label: "Preisser Solutions website", href: "/case-studies/preisser-solutions-site" },
-    { label: "Tyler Preisser website", href: "/case-studies/tyler-preisser-site" },
-    { label: "R Squared AI website", href: "/case-studies/rsquaredai-site" },
+    { label: "Cassidy HVAC Case Study", href: "/case-studies/cassidy-hvac" },
+    { label: "HG Oil Holdings Case Study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Iron and Oak Podcast Case Study", href: "/case-studies/iron-and-oak-podcast" },
+    { label: "Wife Supply Co Case Study", href: "/case-studies/wife-supply-co" },
+    { label: "Alliant Insurance MGU Case Study", href: "/case-studies/alliant-mgu-insurance" },
+    { label: "Chicago-area Bus Operator Case Study", href: "/case-studies/chicago-bus-operator" },
+    { label: "Customer Reactivation Engine Playbook", href: "/case-studies/customer-reactivation" },
+    { label: "MarCommand Multi-Agent Marketing Engine", href: "/case-studies/marcommand-engine" },
+    { label: "About Preisser Solutions", href: "/preisser-solutions" },
+    { label: "Custom Website Development", href: "/custom-websites" },
   ],
-  ctaHeadline: "Want to be the next case study?",
+  ctaHeadline: "Become the next case study",
   ctaSubcopy:
-    "Free scoping conversation. We'll map the workflow, identify the highest-ROI build, and send a fixed-price proposal.",
-  primaryCta: {
-    label: "Start a scoping conversation",
-    href: "/contact",
-  },
+    "Free 30-minute scoping call. We'll scope the build and send a fixed-price proposal.",
 };

@@ -479,20 +479,14 @@ ul, ol {
   }
 }
 
-/* ── Product Card — stagger fade-in ──────────────────────────
-   content-visibility: auto removed — iOS Safari < 17 can trigger extra
-   layout work when cards enter viewport, net-negative on mobile GPUs.
-   The stagger fade-in is driven by animation-delay set inline via JS
-   (animationDelay: `${index * 40}ms`) — no JS runs during the animation itself. */
+/* ── Product Card ────────────────────────────────────────────
+   Keep catalog cards immediately visible. A staggered fade-in looked polished
+   on desktop, but mobile browsers and full-page screenshot stitching could
+   capture offscreen cards while they were still opacity: 0, leaving giant
+   blank sections in the AI Agent Catalog. */
 .product-card {
-  /* Initial fade-in: cards appear staggered from opacity 0 → 1 on first render.
-     animation-delay is set per-card inline. */
-  animation: pv-card-fadein 0.4s ease-out both;
-}
-
-@keyframes pv-card-fadein {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  opacity: 1;
+  transform: none;
 }
 
 /* ── CSS-only category filtering ──────────────────────────────
