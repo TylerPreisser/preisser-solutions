@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ProductVisual } from "@/components/products/ProductVisual";
 import { ProductCard } from "@/components/products/ProductCard";
+import { ProductFlowAnimation } from "@/components/products/ProductFlowAnimation";
 import type { ProductData, ProductStatus } from "@/types/product";
 
 interface LinkedCaseStudy {
@@ -113,25 +113,13 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
                 </div>
               )}
 
-              {/* Visual */}
-              <div
-                className="overflow-hidden rounded-2xl border"
-                style={{
-                  borderColor: "var(--theme-card-border)",
-                  height: "280px",
-                }}
-              >
-                <ProductVisual
-                  slug={product.slug}
-                  category={product.category}
-                  size="hero"
-                  className="h-full w-full"
-                />
-              </div>
             </div>
 
             {/* Right: CTAs + case study + industries */}
             <div className="flex flex-col gap-6 lg:sticky lg:top-28">
+              {/* Agent-specific animated workflow */}
+              <ProductFlowAnimation product={product} />
+
               {/* Primary CTA */}
               <div
                 className="rounded-2xl border p-6"

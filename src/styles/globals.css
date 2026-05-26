@@ -7592,3 +7592,242 @@ html, body {
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
+
+/* ── Product detail agent-flow SVG demos ───────────────────── */
+.ps-product-flow {
+  margin: 28px 0 0;
+  border: 1px solid var(--theme-card-border);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(13, 149, 232, 0.12), rgba(0, 212, 170, 0.06)),
+    var(--theme-card-bg);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+}
+
+.ps-product-flow__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 330px;
+}
+
+.ps-product-flow__grid {
+  fill: none;
+  stroke: rgba(148, 163, 184, 0.14);
+  stroke-width: 1;
+}
+
+.ps-product-flow__badge {
+  fill: var(--flow-primary);
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ps-product-flow__proof {
+  fill: rgba(226, 232, 240, 0.82);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ps-product-flow__line {
+  fill: none;
+  stroke: var(--flow-primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 9 12;
+  opacity: 0.55;
+  animation: ps-product-flow-dash 2.4s linear infinite;
+}
+
+.ps-product-flow__line--out {
+  stroke: var(--flow-accent);
+}
+
+.ps-product-flow__dot {
+  fill: var(--flow-primary);
+  filter: drop-shadow(0 0 8px var(--flow-primary));
+}
+
+.ps-product-flow__dot--out {
+  fill: var(--flow-accent);
+  filter: drop-shadow(0 0 8px var(--flow-accent));
+}
+
+.ps-product-flow__card rect {
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
+}
+
+.ps-product-flow__card--input rect {
+  fill: rgba(255, 255, 255, 0.075);
+}
+
+.ps-product-flow__card--output rect {
+  fill: rgba(13, 149, 232, 0.12);
+  stroke: color-mix(in srgb, var(--flow-primary) 42%, rgba(255, 255, 255, 0.16));
+}
+
+.ps-product-flow__kicker {
+  fill: rgba(203, 213, 225, 0.8);
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ps-product-flow__label {
+  fill: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.ps-product-flow__halo {
+  fill: rgba(13, 149, 232, 0.08);
+  stroke: rgba(128, 233, 255, 0.14);
+  stroke-width: 1;
+  animation: ps-product-flow-pulse 3.8s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.ps-product-flow__ring {
+  fill: rgba(255, 255, 255, 0.045);
+  stroke: color-mix(in srgb, var(--flow-primary) 55%, rgba(255,255,255,0.12));
+  stroke-width: 1.5;
+  stroke-dasharray: 12 10;
+  animation: ps-product-flow-spin 18s linear infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.ps-product-flow__body {
+  fill: rgba(10, 22, 40, 0.88);
+  stroke: var(--flow-primary);
+  stroke-width: 2;
+}
+
+.ps-product-flow__mark {
+  fill: none;
+  stroke: var(--flow-accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.28;
+}
+
+.ps-product-flow__core-title {
+  fill: #ffffff;
+  font-size: 19px;
+  font-weight: 850;
+}
+
+.ps-product-flow__core-subtitle {
+  fill: rgba(203, 213, 225, 0.86);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.ps-product-flow__steps rect {
+  fill: rgba(255, 255, 255, 0.07);
+  stroke: rgba(255, 255, 255, 0.14);
+  stroke-width: 1;
+}
+
+.ps-product-flow__step-label {
+  fill: var(--flow-primary);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.ps-product-flow__step-detail {
+  fill: rgba(226, 232, 240, 0.8);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.ps-product-flow__output-1,
+.ps-product-flow__output-3 {
+  animation: ps-product-flow-output-a 5.7s ease-in-out infinite;
+}
+
+.ps-product-flow__output-2,
+.ps-product-flow__output-4 {
+  animation: ps-product-flow-output-b 6.1s ease-in-out infinite;
+}
+
+@keyframes ps-product-flow-dash {
+  to {
+    stroke-dashoffset: -42;
+  }
+}
+
+@keyframes ps-product-flow-pulse {
+  0%, 100% {
+    opacity: 0.58;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes ps-product-flow-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ps-product-flow-output-a {
+  0%, 100% {
+    opacity: 0.84;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes ps-product-flow-output-b {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.84;
+  }
+}
+
+@media (max-width: 720px) {
+  .ps-product-flow {
+    margin-top: 24px;
+    border-radius: 12px;
+  }
+
+  .ps-product-flow__svg {
+    min-height: 248px;
+  }
+
+  .ps-product-flow__proof {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ps-product-flow__line,
+  .ps-product-flow__halo,
+  .ps-product-flow__ring,
+  .ps-product-flow__output-1,
+  .ps-product-flow__output-2,
+  .ps-product-flow__output-3,
+  .ps-product-flow__output-4 {
+    animation: none;
+  }
+
+  .ps-product-flow__dot {
+    display: none;
+  }
+}
