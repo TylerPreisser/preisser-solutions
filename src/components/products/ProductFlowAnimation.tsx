@@ -113,10 +113,9 @@ export function ProductFlowAnimation({ product }: ProductFlowAnimationProps) {
         role="img"
         aria-labelledby={`${svgId}-flow-title ${svgId}-flow-desc`}
       >
-        <title id={`${svgId}-flow-title`}>{product.name} workflow animation</title>
+        <title id={`${svgId}-flow-title`}>{`${product.name} workflow animation`}</title>
         <desc id={`${svgId}-flow-desc`}>
-          Animated workflow showing inputs flowing into {flow.centerLabel} and
-          becoming concrete outputs.
+          {`Animated workflow showing inputs flowing into ${flow.centerLabel} and becoming concrete outputs.`}
         </desc>
         <defs>
           <linearGradient id={`${svgId}-bg`} x1="0" x2="1" y1="0" y2="1">
