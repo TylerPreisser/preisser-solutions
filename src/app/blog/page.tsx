@@ -96,7 +96,7 @@ export default function Page() {
                     fontWeight: 600,
                     letterSpacing: "0.05em",
                     textTransform: "uppercase",
-                    color: "var(--color-primary, #0D95E8)",
+                    color: "var(--color-primary)",
                     marginBottom: 12,
                   }}
                 >

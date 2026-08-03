@@ -29,7 +29,7 @@ interface Props {
  */
 const STATUS_CONFIG: Record<ProductStatus, { label: string; color: string; dot: string }> = {
   production:           { label: "LIVE",  color: "#00D4AA", dot: "#00D4AA" },
-  deployable:           { label: "READY", color: "#0D95E8", dot: "#0D95E8" },
+  deployable:           { label: "READY", color: "#1590FF", dot: "#1590FF" },
   "proof-of-concept":   { label: "LAB",   color: "#80E9FF", dot: "#80E9FF" },
   service:              { label: "SVC",   color: "#94A3B8", dot: "#94A3B8" },
 };
@@ -61,7 +61,7 @@ export function ProductCard({ product, index }: Props) {
       <Link
         href={`/products/${product.slug}`}
         prefetch={false}
-        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_24px_60px_-20px_rgba(21, 144, 255,0.18)]"
         style={{
           borderColor: "var(--theme-card-border)",
           background: "var(--theme-result-card-bg)",
@@ -85,7 +85,7 @@ export function ProductCard({ product, index }: Props) {
               className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em]"
               style={{
                 // 0.95, not 0.75. At 0.75 this pill composites to ~#47505E over
-                // a light card, where READY (#0D95E8) is 2.52:1 and SVC is
+                // a light card, where READY (#1590FF) is 2.52:1 and SVC is
                 // 3.18:1. Near-opaque also makes the badge legible over ANY
                 // product artwork behind it rather than only the light ones.
                 background: "rgba(10,22,40,0.95)",

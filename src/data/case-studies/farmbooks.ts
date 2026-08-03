@@ -132,7 +132,7 @@ export const caseStudy: CaseStudyData = {
     "SharePoint two-way sync",
   ],
 
-  relatedSlugs: ["hg-oil-ai-invoice-processing", "c3-studio", "nwks-encounter"],
+  relatedSlugs: ["hg-oil-ai-invoice-processing", "hg-oil-inventory-system", "alliant-mgu-insurance"],
 
   cta: {
     heading: "Buried in farm bills at tax time?",

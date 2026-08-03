@@ -99,7 +99,7 @@ export const siteConfig = {
       "Preisser Solutions | Custom Business Software, Automation & AI Integration in Kansas",
     description:
       "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
-    themeColor: "#0D95E8",
+    themeColor: "#1590FF",
   },
   // R-031..R-033: homepage hero content. All textual content lives in data files
   // per project convention — components render, data files own the words.
@@ -138,9 +138,7 @@ export const siteConfig = {
     "75%+ accuracy improvement on inventory — HG Oil Holdings",
     "A photo of a farm bill becomes Schedule-F-ready books — FarmBooks",
     "Tax season without retyping a single co-op bill — FarmBooks",
-    "Staff publish to the website and the mobile app themselves — C3 Studio",
-    "One admin login runs the site, the app, and the check-in desk — C3 Studio",
-    "Registration, confirmation and roster run themselves — NWKS Encounter",
+    "Reconciliation that used to take a full day now takes 15 minutes",
     "134 pre-rendered cinematic pages — Iron and Oak Podcast",
     "22+ Kansas SMB projects delivered",
     "Founder-led: every project built directly by Tyler Preisser",

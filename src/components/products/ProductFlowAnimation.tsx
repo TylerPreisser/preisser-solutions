@@ -12,27 +12,27 @@ interface ProductFlowAnimationProps {
 const CATEGORY_COLORS: Record<ProductData["category"], { primary: string; secondary: string; accent: string }> = {
   "Marketing & Growth": {
     primary: "#80E9FF",
-    secondary: "#0D95E8",
+    secondary: "#1590FF",
     accent: "#00D4AA",
   },
   "Operations & Back-Office": {
     primary: "#00D4AA",
-    secondary: "#0D95E8",
+    secondary: "#1590FF",
     accent: "#F59E0B",
   },
   "Sales & Customer Service": {
-    primary: "#0D95E8",
+    primary: "#1590FF",
     secondary: "#80E9FF",
     accent: "#00D4AA",
   },
   "Decision Intelligence": {
     primary: "#8B9CFF",
-    secondary: "#0D95E8",
+    secondary: "#1590FF",
     accent: "#80E9FF",
   },
   "Custom Builds": {
     primary: "#CBD5E1",
-    secondary: "#0D95E8",
+    secondary: "#1590FF",
     accent: "#00D4AA",
   },
 };

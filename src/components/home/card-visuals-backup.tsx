@@ -90,7 +90,7 @@ export function WebsiteVisual() {
               <div className="ps-phone-content-block ps-phone-block--blue" />
               <div className="ps-phone-list">
                 <div className="ps-phone-list-item">
-                  <div className="ps-phone-list-dot" style={{ background: "#0D95E8" }} />
+                  <div className="ps-phone-list-dot" style={{ background: "#1590FF" }} />
                   <div className="ps-phone-list-lines"><span /><span /></div>
                 </div>
                 <div className="ps-phone-list-item">

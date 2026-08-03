@@ -136,7 +136,7 @@ export function CaseStudiesHub({ caseStudies }: Props) {
           aria-hidden="true"
           className="case-studies-hero-glow pointer-events-none absolute inset-0 -z-10 opacity-80"
         >
-          <div className="absolute -top-40 -left-40 h-[640px] w-[640px] rounded-full bg-[#0D95E8] opacity-[0.18] blur-[140px]" />
+          <div className="absolute -top-40 -left-40 h-[640px] w-[640px] rounded-full bg-[#1590FF] opacity-[0.18] blur-[140px]" />
           <div className="absolute top-60 -right-40 h-[520px] w-[520px] rounded-full bg-[#80E9FF] opacity-[0.10] blur-[120px]" />
         </div>
         <div
@@ -296,7 +296,7 @@ function HubCard({
 
   const accent =
     index % 3 === 0
-      ? "from-[#0D95E8]/15 to-[#0D95E8]/0"
+      ? "from-[#1590FF]/15 to-[#1590FF]/0"
       : index % 3 === 1
       ? "from-[#80E9FF]/12 to-[#80E9FF]/0"
       : "from-[#00D4AA]/10 to-[#00D4AA]/0";
@@ -306,7 +306,7 @@ function HubCard({
       <Link
         href={`/case-studies/${cs.slug}`}
         prefetch={false}
-        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#1590FF]/40 hover:shadow-[0_24px_60px_-20px_rgba(21, 144, 255,0.18)]"
         style={{
           borderColor: "var(--theme-card-border)",
           background: "var(--theme-result-card-bg)",
@@ -353,8 +353,8 @@ function HubCard({
           <div
             className="mt-6 rounded-xl border p-5"
             style={{
-              borderColor: "rgba(13, 149, 232, 0.28)",
-              background: "rgba(13, 149, 232, 0.06)",
+              borderColor: "rgba(21, 144, 255, 0.28)",
+              background: "rgba(21, 144, 255, 0.06)",
             }}
           >
             <CardFact label="What changed" emphasis>

@@ -97,7 +97,7 @@
 .ps-contact-field__input:focus,
 .ps-contact-field__textarea:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(13, 149, 232, 0.18);
+  box-shadow: 0 0 0 3px rgba(21, 144, 255, 0.18);
 }
 
 .ps-contact-field__input::placeholder,

@@ -32,71 +32,13 @@ const caseStudyCards: CaseStudyCard[] = [
     tags: "Farming | Document Pipeline | Bookkeeping",
     description:
       "A farm bookkeeper was retyping every co-op and dealer bill into a spreadsheet by hand, line by line, field by field, ahead of every tax season. Now a phone photo of the bill becomes categorized, Schedule-F-ready books. Anything the system is not certain about — and anything handwritten — goes to a person instead of being guessed at. Tax season stopped being a data-entry month.",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #0D95E8 55%, #0F3D2E 100%)",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #1590FF 55%, #0F3D2E 100%)",
     href: "/case-studies/farmbooks",
-    svgIcon: (
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        {/* Bill / receipt */}
-        <path d="M8 5h22v34l-3.5-2.5L23 39l-3.5-2.5L16 39l-3.5-2.5L9 39" strokeOpacity="0.55" />
-        <path d="M8 5v34" strokeOpacity="0.55" />
-        <path d="M14 14h11" strokeOpacity="0.8" />
-        <path d="M14 20h11" strokeOpacity="0.8" />
-        <path d="M14 26h6" strokeOpacity="0.8" />
-        {/* Camera lens — the photograph step */}
-        <circle cx="35" cy="30" r="9" fill="currentColor" fillOpacity="0.14" stroke="currentColor" strokeOpacity="0.9" />
-        <circle cx="35" cy="30" r="3.5" strokeOpacity="0.9" />
-        <path d="M31 19h8l2 3" strokeOpacity="0.5" />
-      </svg>
-    ),
-  },
-  // C3 Studio — one admin login behind a website and a native iOS app.
-  {
-    title: "C3 Studio",
-    tags: "Nonprofit | Admin Platform | Website + Mobile App",
-    description:
-      "Every content change meant emailing a developer and waiting for a deploy, and the mobile app had its own separate copy that drifted out of sync. Now their own staff edit the website and the app from one login, hit publish, and both update at the same moment. Scheduling, communications, giving and kids check-in all run from that same place.",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #1B2E5C 50%, #0D95E8 100%)",
-    href: "/case-studies/c3-studio",
-    svgIcon: (
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        {/* Desktop front end */}
-        <rect x="4" y="9" width="28" height="20" rx="2.5" strokeOpacity="0.75" />
-        <path d="M4 15h28" strokeOpacity="0.4" />
-        <path d="M14 33h8" strokeOpacity="0.5" />
-        <path d="M18 29v4" strokeOpacity="0.5" />
-        {/* Native app front end */}
-        <rect x="31" y="21" width="13" height="22" rx="3" fill="currentColor" fillOpacity="0.12" stroke="currentColor" strokeOpacity="0.9" />
-        <path d="M35 25h5" strokeOpacity="0.6" />
-        <path d="M35 31h5" strokeOpacity="0.45" />
-        <path d="M35 35h5" strokeOpacity="0.45" />
-        {/* One contract feeding both */}
-        <circle cx="9" cy="12" r="1" fill="currentColor" fillOpacity="0.7" stroke="none" />
-        <circle cx="13" cy="12" r="1" fill="currentColor" fillOpacity="0.45" stroke="none" />
-      </svg>
-    ),
-  },
-  // NWKS Encounter — registration through roster for two ministries on one system.
-  {
-    title: "NWKS Encounter",
-    tags: "Events | Registration to Roster | Two Programs",
-    description:
-      "Two annual events run off sign-up forms and spreadsheets, with confirmations and reminders sent by hand and the same people duplicated across lists. Now registration, confirmation, reminders and the roster run themselves, duplicates get matched and merged on the way in, and organizers can see who is coming without asking anyone to compile it.",
-    gradient: "linear-gradient(135deg, #0F172A 0%, #334155 45%, #0D95E8 100%)",
-    href: "/case-studies/nwks-encounter",
-    svgIcon: (
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        {/* Roster clipboard */}
-        <rect x="7" y="7" width="24" height="32" rx="2.5" strokeOpacity="0.7" />
-        <path d="M17 4h4a2 2 0 0 1 2 2v2h-8V6a2 2 0 0 1 2-2z" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeOpacity="0.7" />
-        <path d="M13 17h12" strokeOpacity="0.75" />
-        <path d="M13 23h12" strokeOpacity="0.6" />
-        <path d="M13 29h7" strokeOpacity="0.6" />
-        {/* Scheduled send */}
-        <circle cx="37" cy="31" r="8" fill="currentColor" fillOpacity="0.14" stroke="currentColor" strokeOpacity="0.9" />
-        <path d="M37 27v4.5l3 1.5" strokeOpacity="0.9" />
-        <path d="M33 12h10l-5 5-5-5z" fill="currentColor" fillOpacity="0.25" stroke="currentColor" strokeOpacity="0.6" />
-      </svg>
-    ),
+    // Real FarmBooks mark — this is the actual PWA icon/favicon shipped at
+    // farm-books.com (web/app/icon.svg, declared in web/app/manifest.ts).
+    caseLogo: "/images/case-studies/farmbooks-logo.svg",
+    caseLogoWidth: 48,
+    caseLogoHeight: 48,
   },
   // Alliant Insurance ecosystem MGU: AI Submission Processing (anonymized per privacy rules)
   {
@@ -104,7 +46,7 @@ const caseStudyCards: CaseStudyCard[] = [
     tags: "AI Submission Processing | Insurance | Salesforce + Azure AI",
     description:
       "AI engine reads broker submissions — 7–15 documents per submission — extracts structured data using dual competing AI models (Claude Opus + GPT cross-validation), and auto-populates Salesforce records. Eliminated manual data entry across systems where the same data was previously entered 3–5 times. Zero missed renewals in the first six months.",
-    gradient: "linear-gradient(135deg, #0a1f3c 0%, #0D95E8 100%)",
+    gradient: "linear-gradient(135deg, #0a1f3c 0%, #1590FF 100%)",
     caseLogo: "/images/case-studies/astrus-logo.png",
     caseLogoWidth: 2066,
     caseLogoHeight: 530,
@@ -196,7 +138,7 @@ const caseStudyCards: CaseStudyCard[] = [
     tags: "AI Automation | Lead Capture | Routing",
     description:
       "Every call that goes to voicemail after 5 PM is a customer choosing your competitor by 8 AM. This system answers calls, handles texts, qualifies urgency, and routes the right ones to you — so you stop losing jobs while you sleep.",
-    gradient: "linear-gradient(135deg, #0D95E8 0%, #00D4AA 100%)",
+    gradient: "linear-gradient(135deg, #1590FF 0%, #00D4AA 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         {/* Phone handset */}
@@ -313,7 +255,7 @@ const caseStudyCards: CaseStudyCard[] = [
     tags: "AI Architecture | Agentic Coding | Claude Code",
     description:
       "Built specialized agentic coding models \u2014 AI systems that don\u2019t just generate code, they architect, debug, and ship entire projects autonomously. Each agent is tuned for a specific domain: web development, automation pipelines, data analysis. This is the toolset behind our speed.",
-    gradient: "linear-gradient(135deg, #7C3AED 0%, #2563EB 50%, #0D95E8 100%)",
+    gradient: "linear-gradient(135deg, #7C3AED 0%, #2563EB 50%, #1590FF 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <rect x="6" y="8" width="36" height="28" rx="3" strokeOpacity="0.7" />
@@ -352,7 +294,7 @@ const caseStudyCards: CaseStudyCard[] = [
     tags: "AI Research | Predictive Modeling | Economics",
     description:
       "Built AI models that calculate economic trends and map psychological behavior patterns \u2014 systems that process market signals, consumer data, and behavioral indicators to surface insights no spreadsheet or manual analysis can produce.",
-    gradient: "linear-gradient(135deg, #0D95E8 0%, #6366F1 50%, #EC4899 100%)",
+    gradient: "linear-gradient(135deg, #1590FF 0%, #6366F1 50%, #EC4899 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M6 38l10-12 8 6 8-14 10-6" strokeOpacity="0.9" />

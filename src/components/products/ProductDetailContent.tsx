@@ -21,7 +21,7 @@ interface Props {
 
 const STATUS_CONFIG: Record<ProductStatus, { label: string; color: string; dot: string }> = {
   production:           { label: "LIVE",  color: "#00D4AA", dot: "#00D4AA" },
-  deployable:           { label: "READY", color: "#0D95E8", dot: "#0D95E8" },
+  deployable:           { label: "READY", color: "#1590FF", dot: "#1590FF" },
   "proof-of-concept":   { label: "LAB",   color: "#80E9FF", dot: "#80E9FF" },
   service:              { label: "SVC",   color: "#94A3B8", dot: "#94A3B8" },
 };
@@ -39,7 +39,7 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
       >
         {/* Ambient glows */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-[#0D95E8] opacity-[0.1] blur-[120px]" />
+          <div className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-[#1590FF] opacity-[0.1] blur-[120px]" />
           <div className="absolute top-40 -right-20 h-[400px] w-[400px] rounded-full bg-[#80E9FF] opacity-[0.07] blur-[100px]" />
         </div>
 
@@ -100,8 +100,8 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
                 <div
                   className="mb-8 inline-flex items-baseline gap-2 rounded-xl border px-5 py-3"
                   style={{
-                    borderColor: "rgba(13,149,232,0.2)",
-                    background: "rgba(13,149,232,0.06)",
+                    borderColor: "rgba(21, 144, 255,0.2)",
+                    background: "rgba(21, 144, 255,0.06)",
                   }}
                 >
                   <span className="text-3xl font-bold tracking-tight" style={{ color: "var(--color-primary)" }}>
@@ -143,7 +143,7 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
                 <Link
                   href={product.cta.buttonHref}
                   prefetch={false}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-[0_8px_30px_rgba(13,149,232,0.3)]"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-[0_8px_30px_rgba(21, 144, 255,0.3)]"
                   style={{ background: "var(--color-primary)" }}
                 >
                   {product.cta.buttonLabel}
@@ -159,7 +159,7 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
                 <Link
                   href={`/case-studies/${linkedCaseStudy.slug}`}
                   prefetch={false}
-                  className="group rounded-2xl border p-5 transition-all duration-200 hover:border-[#0D95E8]/30 hover:shadow-[0_12px_30px_-8px_rgba(13,149,232,0.12)]"
+                  className="group rounded-2xl border p-5 transition-all duration-200 hover:border-[#1590FF]/30 hover:shadow-[0_12px_30px_-8px_rgba(21, 144, 255,0.12)]"
                   style={{
                     borderColor: "var(--theme-card-border)",
                     background: "var(--theme-card-bg)",
@@ -284,8 +284,8 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
                     <div
                       className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[12px] font-bold"
                       style={{
-                        borderColor: "rgba(13,149,232,0.3)",
-                        background: "rgba(13,149,232,0.08)",
+                        borderColor: "rgba(21, 144, 255,0.3)",
+                        background: "rgba(21, 144, 255,0.08)",
                         color: "var(--color-primary)",
                       }}
                     >
@@ -452,7 +452,7 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
               background: "var(--theme-card-bg)",
             }}
           >
-            <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#0D95E8] opacity-[0.08] blur-[80px]" />
+            <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#1590FF] opacity-[0.08] blur-[80px]" />
             <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <div className="mb-2 font-mono text-[11px] font-medium uppercase tracking-[0.18em]" style={{ color: "var(--theme-text-muted)" }}>
@@ -469,7 +469,7 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
                 <Link
                   href="/contact?inquiry=custom-product"
                   prefetch={false}
-                  className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-[0_8px_30px_rgba(13,149,232,0.3)]"
+                  className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-[0_8px_30px_rgba(21, 144, 255,0.3)]"
                   style={{ background: "var(--color-primary)" }}
                 >
                   Send us the brief

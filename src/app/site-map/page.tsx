@@ -420,13 +420,13 @@ export default function SiteMapPage() {
             style={{
               display: "inline-block",
               padding: "14px 32px",
-              background: "var(--color-primary, #0D95E8)",
+              background: "var(--color-primary)",
               color: "#FFFFFF",
               textDecoration: "none",
               borderRadius: 999,
               fontWeight: 600,
               fontSize: 16,
-              boxShadow: "0 4px 12px rgba(13, 149, 232, 0.35)",
+              boxShadow: "0 4px 12px rgba(21, 144, 255, 0.35)",
             }}
           >
             Reach out

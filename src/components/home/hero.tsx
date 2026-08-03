@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { siteConfig } from "@/data/site-config";
-import { mountLedgerField } from "./hero-ledger-field";
+import { mountMarkLight } from "./hero-mark-light";
 
 /**
  * The H1 lives in site-config as ONE string ("Business Software. Business
@@ -33,14 +33,15 @@ export function Hero() {
 
   const pillars = splitPillars(siteConfig.hero.h1);
 
-  // The background: a ledger that files itself. See hero-ledger-field.ts for
-  // the full rationale — it owns reduced-motion, off-screen pause, the theme
-  // watcher and the contrast scrim.
+  // The background: light falling across planes cut from the brand mark's own
+  // geometry. See hero-mark-light.ts for the full rationale — it owns
+  // reduced-motion, the mobile still frame, off-screen pause and the theme
+  // watcher. The contrast scrim is CSS (.ps-hero-overlay), on purpose.
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
-    const field = mountLedgerField(container);
-    return () => field.destroy();
+    const bg = mountMarkLight(container);
+    return () => bg.destroy();
   }, []);
 
   // GSAP entrance timeline — the three pillar lines on their own stagger, then

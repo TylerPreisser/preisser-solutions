@@ -9,21 +9,24 @@
 
 /* ── Design Tokens ─────────────────────────────────────────── */
 :root {
-  /* Brand Colors */
-  --color-primary:       #0D95E8;
-  --color-primary-hover: #0B7BC0;
-  --color-primary-glow:  rgba(13, 149, 232, 0.2);
+  /* Brand Colors
+     --color-primary is sampled directly from the logo (public/images/ps-logo.webp):
+     #1590FF is the dominant chroma across ~190k of its pixels. It was #0D95E8,
+     which was close but not the mark. Do not "correct" this to a rounder number. */
+  --color-primary:       #1590FF;
+  --color-primary-hover: #0D76D6;
+  --color-primary-glow:  rgba(21, 144, 255, 0.2);
 
-  /* The brand blue is only safe as a COLOR, not as a SURFACE under white text:
-     #FFF on #0D95E8 measures 3.24:1, below the 4.5:1 floor — and that is true
-     in both themes, since it depends on the button, not the page. These two
-     are the fill colors for anything with white text on it. */
-  --color-primary-strong:       #0B7BC0;  /* 4.56:1 with white */
-  --color-primary-strong-hover: #0B72B3;  /* 5.16:1 with white */
+  /* The logo blue is safe as a COLOR on dark (5.58:1 on #0A1628) and as LARGE
+     text anywhere (3.25:1 clears the 3:1 large-text bar, which is why the 88px
+     hero wordmark uses the exact mark). It is NOT safe as a surface under white
+     text, or as small text on white — both land at 3.25:1 against a 4.5:1 floor.
+     These are the same hue, darkened only as far as the threshold requires. */
+  --color-primary-strong:       #0C6FC9;  /* 5.08:1 with white */
+  --color-primary-strong-hover: #0B68BE;  /* 5.62:1 with white */
 
-  /* Accent used as TEXT. On the dark theme the brand blue is fine (5.60:1
-     on #0A1628); the light theme overrides this below, because #0D95E8 on
-     white is only 3.24:1. */
+  /* Accent used as small TEXT. Dark theme takes the exact logo blue; the light
+     theme overrides this below. */
   --theme-accent-text: var(--color-primary);
   --theme-success-text: var(--color-green);
 
@@ -126,7 +129,7 @@
   --theme-border:         #E2E8F0;
   /* Dark-theme accents don't survive a light background: #0D95E8 as text on
      white is 3.24:1 and the cyan eyebrow is 1.40:1. */
-  --theme-accent-text:  #0B72B3;  /* 5.16:1 on white */
+  --theme-accent-text:  #0C6FC9;  /* 5.08:1 on white — logo hue, darkened only to clear 4.5:1 */
   --theme-success-text: #07795F;  /* 5.37:1 on white */
   --theme-nav-bg:         rgba(255, 255, 255, 0.95);
   --theme-nav-shadow:
@@ -915,8 +918,8 @@ ul, ol {
 
   /* The hero background colour as a raw RGB triple so .ps-hero-overlay can
      build translucent scrims from it without restating the colour per theme.
-     The ledger canvas paints transparent and lets THIS show through, which is
-     why the base colour only has to exist in one place. */
+     The background canvas paints transparent and lets THIS show through, which
+     is why the base colour only has to exist in one place. */
   --ps-hero-bg-rgb: 10, 22, 40;
 
   position: relative;
@@ -931,8 +934,8 @@ ul, ol {
   padding-top: var(--nav-height);
 }
 
-/* The ledger field (hero-ledger-field.ts) paints here. It is decoration only —
-   it must never intercept a click meant for the hero CTAs. */
+/* The mark-light background (hero-mark-light.ts) paints here. It is decoration
+   only — it must never intercept a click meant for the hero CTAs. */
 #ps-hero-canvas {
   position: absolute;
   inset: 0;
@@ -943,7 +946,7 @@ ul, ol {
   pointer-events: none;
 }
 
-/* Two scrims, composited over the ledger canvas and under the content.
+/* Two scrims, composited over the background canvas and under the content.
    Deliberately CSS rather than canvas: they are static, so painting them in
    the animation loop cost two full-viewport gradient fills per frame (measured
    — it was the difference between a 60fps and a 120fps frame budget at
@@ -1150,9 +1153,14 @@ ul, ol {
 [data-theme="light"] .ps-hero {
   background: #F6F9FC;
   --ps-hero-bg-rgb: 246, 249, 252;
-  /* AA fix — see the note on --ps-hero-accent in .ps-hero above.
-     #0D95E8 on #F6F9FC = 3.07:1 (fails 4.5:1). #0B72B3 on #F6F9FC = 4.88:1. */
-  --ps-hero-accent: #0B72B3;
+  /* The hero wordmark is 88px/800 — large text, so the bar is 3:1, not 4.5:1.
+     The exact logo blue clears it (#1590FF on #F6F9FC = 3.07:1), which means
+     "AI Integration." can be the literal mark colour in BOTH themes rather
+     than a darkened approximation of it. That match is the point.
+     Margin over the threshold is thin (0.07), so do not lighten this hero
+     background or shrink the wordmark without re-measuring. Small accent text
+     on light still uses the darker --theme-accent-text. */
+  --ps-hero-accent: var(--color-primary);
 }
 
 /* The glow reads as haze on a light background — drop it there. */

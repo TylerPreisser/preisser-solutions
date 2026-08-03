@@ -251,7 +251,7 @@ function Hero({ data }: { data: CaseStudyData }) {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 opacity-80"
       >
-        <div className="absolute -top-40 -left-40 h-[640px] w-[640px] rounded-full bg-[#0D95E8] opacity-[0.18] blur-[140px]" />
+        <div className="absolute -top-40 -left-40 h-[640px] w-[640px] rounded-full bg-[#1590FF] opacity-[0.18] blur-[140px]" />
         <div className="absolute top-60 -right-40 h-[520px] w-[520px] rounded-full bg-[#80E9FF] opacity-[0.10] blur-[120px]" />
         <div className="absolute bottom-0 left-1/3 h-[420px] w-[420px] rounded-full bg-[#00D4AA] opacity-[0.07] blur-[120px]" />
       </div>
@@ -323,7 +323,7 @@ function Hero({ data }: { data: CaseStudyData }) {
               {data.headlineResults.map((r) => (
                 <div
                   key={r.label}
-                  className="group relative overflow-hidden rounded-2xl px-5 py-3 backdrop-blur transition-all hover:border-[#0D95E8]/50"
+                  className="group relative overflow-hidden rounded-2xl px-5 py-3 backdrop-blur transition-all hover:border-[#1590FF]/50"
                   style={{
                     border: "1px solid var(--theme-card-border)",
                     background: "var(--theme-card-bg)",
@@ -407,7 +407,7 @@ function MetricsRow({ data }: { data: CaseStudyData }) {
               </div>
               <div
                 className="mt-3 bg-clip-text text-5xl font-semibold leading-none tracking-[-0.03em] text-transparent sm:text-6xl"
-                style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #0D95E8)" }}
+                style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #1590FF)" }}
               >
                 {r.value}
               </div>
@@ -506,7 +506,7 @@ function BuiltSection({ data }: { data: CaseStudyData }) {
       {/* Accent corner glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-32 right-0 h-[480px] w-[480px] rounded-full bg-[#0D95E8] opacity-[0.12] blur-[120px]"
+        className="pointer-events-none absolute -top-32 right-0 h-[480px] w-[480px] rounded-full bg-[#1590FF] opacity-[0.12] blur-[120px]"
       />
       <div className="ps-container relative">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
@@ -634,7 +634,7 @@ function SpecsSection({ data }: { data: CaseStudyData }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ duration: 0.6, delay: idx * 0.05 }}
-                  className="group relative rounded-2xl p-8 transition-all hover:border-[#0D95E8]/40 hover:shadow-[0_12px_40px_rgba(13,149,232,0.08)]"
+                  className="group relative rounded-2xl p-8 transition-all hover:border-[#1590FF]/40 hover:shadow-[0_12px_40px_rgba(21, 144, 255,0.08)]"
                   style={{
                     border: "1px solid var(--theme-card-border)",
                     background: "var(--theme-section-alt)",
@@ -725,7 +725,7 @@ function ResultsSection({ data }: { data: CaseStudyData }) {
       {/* Gradient corner */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -left-32 top-1/3 h-[480px] w-[480px] rounded-full bg-[#0D95E8] opacity-[0.10] blur-[140px]"
+        className="pointer-events-none absolute -left-32 top-1/3 h-[480px] w-[480px] rounded-full bg-[#1590FF] opacity-[0.10] blur-[140px]"
       />
       <div
         aria-hidden="true"
@@ -755,7 +755,7 @@ function ResultsSection({ data }: { data: CaseStudyData }) {
             <div
               key={`${r.value}-${idx}`}
               data-result-card
-              className="group relative overflow-hidden rounded-2xl p-8 backdrop-blur-sm transition-all hover:border-[#0D95E8]/40 sm:p-10"
+              className="group relative overflow-hidden rounded-2xl p-8 backdrop-blur-sm transition-all hover:border-[#1590FF]/40 sm:p-10"
               style={{
                 border: "1px solid var(--theme-card-border)",
                 background: "var(--theme-result-card-bg)",
@@ -764,7 +764,7 @@ function ResultsSection({ data }: { data: CaseStudyData }) {
               {/* corner accent */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#0D95E8]/10 blur-2xl transition-opacity group-hover:opacity-100"
+                className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#1590FF]/10 blur-2xl transition-opacity group-hover:opacity-100"
               />
               <div className="relative">
                 <div
@@ -825,7 +825,7 @@ function TechStackSection({ data }: { data: CaseStudyData }) {
             {data.techStack.map((t) => (
               <span
                 key={t}
-                className="inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors hover:border-[#0D95E8]/40 hover:[color:var(--theme-accent-text)]"
+                className="inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors hover:border-[#1590FF]/40 hover:[color:var(--theme-accent-text)]"
                 style={{
                   border: "1px solid var(--theme-card-border)",
                   background: "var(--theme-section-alt)",
@@ -895,7 +895,7 @@ function RelatedSection({ data }: { data: CaseStudyData }) {
               key={r.slug}
               href={`/case-studies/${r.slug}`}
               prefetch={false}
-              className="group relative flex flex-col overflow-hidden rounded-2xl p-7 transition-all hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+              className="group relative flex flex-col overflow-hidden rounded-2xl p-7 transition-all hover:-translate-y-1 hover:border-[#1590FF]/40 hover:shadow-[0_24px_60px_-20px_rgba(21, 144, 255,0.18)]"
               style={{
                 border: "1px solid var(--theme-card-border)",
                 background: "var(--theme-result-card-bg)",
@@ -946,7 +946,7 @@ function CtaSection({ data }: { data: CaseStudyData }) {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
       >
-        <div className="absolute left-1/2 top-1/2 h-[640px] w-[640px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#0D95E8] opacity-[0.10] blur-[140px]" />
+        <div className="absolute left-1/2 top-1/2 h-[640px] w-[640px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#1590FF] opacity-[0.10] blur-[140px]" />
       </div>
 
       <div className="ps-container relative text-center">
@@ -963,7 +963,7 @@ function CtaSection({ data }: { data: CaseStudyData }) {
           <Link
             href={data.cta.buttonHref}
             prefetch={false}
-            className="group inline-flex items-center gap-2 rounded-xl bg-[#0D95E8] px-7 py-3.5 text-base font-medium text-white shadow-[0_8px_30px_rgba(13,149,232,0.35)] transition-all hover:bg-[#0B7BC0] hover:shadow-[0_12px_40px_rgba(13,149,232,0.45)]"
+            className="group inline-flex items-center gap-2 rounded-xl bg-[#1590FF] px-7 py-3.5 text-base font-medium text-white shadow-[0_8px_30px_rgba(21, 144, 255,0.35)] transition-all hover:bg-[#0D76D6] hover:shadow-[0_12px_40px_rgba(21, 144, 255,0.45)]"
           >
             {data.cta.buttonLabel}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

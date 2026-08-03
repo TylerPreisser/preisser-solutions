@@ -3,8 +3,6 @@ import type { CaseStudyData, CaseStudySummary } from "@/types/case-study";
 // Flagship platforms — the three-pillar reposition showcase
 // (docs/plans/2026-08-02-three-pillar-reposition.md)
 import { caseStudy as farmbooks } from "./farmbooks";
-import { caseStudy as c3Studio } from "./c3-studio";
-import { caseStudy as nwksEncounter } from "./nwks-encounter";
 
 // Named client engagements (canonical #1–8)
 import { caseStudy as cassidyReactivation } from "./cassidy-hvac-reactivation";
@@ -66,8 +64,6 @@ import { caseStudy as tylerPreisserSite } from "./tyler-preisser-site";
 export const caseStudies: CaseStudyData[] = [
   // 0. Flagship platforms
   farmbooks,
-  c3Studio,
-  nwksEncounter,
 
   // 1. Named client engagements
   cassidyReactivation,
@@ -133,8 +129,6 @@ export function getCaseStudy(slug: string): CaseStudyData | undefined {
 export const hubSlugs: string[] = [
   // Flagship platforms
   "farmbooks",
-  "c3-studio",
-  "nwks-encounter",
 
   // Named client engagements
   "hg-oil-inventory-system",

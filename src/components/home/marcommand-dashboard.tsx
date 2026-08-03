@@ -102,8 +102,8 @@ export function MarCommandDashboard() {
           letterSpacing: "0.12em",
           textTransform: "uppercase",
           color: "#F1F5F9",
-          background: "rgba(13, 149, 232, 0.18)",
-          border: "1px solid rgba(13, 149, 232, 0.45)",
+          background: "rgba(21, 144, 255, 0.18)",
+          border: "1px solid rgba(21, 144, 255, 0.45)",
           borderRadius: 999,
           zIndex: 1,
           pointerEvents: "none",
@@ -211,7 +211,7 @@ export function MarCommandDashboard() {
           </div>
           <div className="mc3-cn">
             TikTok In-Feed Ads{" "}
-            <span className="mc3-pill" style={{ background: "rgba(13,149,232,0.18)", color: "#4FB7F0" }}>↑ Rising</span>
+            <span className="mc3-pill" style={{ background: "rgba(21, 144, 255,0.18)", color: "#4FB7F0" }}>↑ Rising</span>
           </div>
           <div className="mc3-num lit">0.3k</div>
           <div className="mc3-num">7</div>
@@ -233,7 +233,7 @@ export function MarCommandDashboard() {
           </div>
           <div className="mc3-cn">
             YouTube Shorts Ads{" "}
-            <span className="mc3-pill" style={{ background: "rgba(13,149,232,0.18)", color: "#4FB7F0" }}>↑ Rising</span>
+            <span className="mc3-pill" style={{ background: "rgba(21, 144, 255,0.18)", color: "#4FB7F0" }}>↑ Rising</span>
           </div>
           <div className="mc3-num lit">0.6k</div>
           <div className="mc3-num">9</div>
@@ -400,8 +400,8 @@ export function MarCommandDashboard() {
         >
           <defs>
             <linearGradient id="mc3tf" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#0D95E8" stopOpacity="0.35" />
-              <stop offset="100%" stopColor="#0D95E8" stopOpacity="0" />
+              <stop offset="0%" stopColor="#1590FF" stopOpacity="0.35" />
+              <stop offset="100%" stopColor="#1590FF" stopOpacity="0" />
             </linearGradient>
           </defs>
           <line x1="0" y1="18" x2="700" y2="18" stroke="rgba(255,255,255,0.04)" />
@@ -415,7 +415,7 @@ export function MarCommandDashboard() {
           />
           <path
             d="M0,54 C50,52 80,48 130,46 S210,44 260,36 S360,28 410,26 S510,16 560,14 S660,8 700,5"
-            stroke="#0D95E8"
+            stroke="#1590FF"
             strokeWidth="2.5"
             fill="none"
             strokeLinecap="round"
@@ -427,7 +427,7 @@ export function MarCommandDashboard() {
             cx="700"
             cy="5"
             r="4"
-            fill="#0D95E8"
+            fill="#1590FF"
             opacity="0"
             style={{ animation: "mc3fade 0.4s 3.1s forwards" }}
           />
@@ -435,7 +435,7 @@ export function MarCommandDashboard() {
             cx="700"
             cy="5"
             r="5"
-            fill="#0D95E8"
+            fill="#1590FF"
             fillOpacity="0.4"
             className="mc3-ping-circle"
             style={{ animation: "mc3ping 2s 3.3s ease-out infinite" }}

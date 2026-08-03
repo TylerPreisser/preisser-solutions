@@ -83,7 +83,7 @@ const services: ServicePillar[] = [
       {
         title: "Admin Dashboard",
         description:
-          "One login that runs the operation — records, scheduling, communication, and reporting in one place instead of six tools that don't talk. C3 Studio runs a church's website, iOS app, scheduling, comms, care, giving, and kids check-in from a single admin.",
+          "One login that runs the operation — records, scheduling, communication, and reporting in one place instead of six tools that don't talk. Your team stops exporting from one system to paste into another, and the numbers stop disagreeing with each other.",
         icon: <IconExecutiveDashboard />,
       },
       {
@@ -168,7 +168,7 @@ const services: ServicePillar[] = [
       {
         title: "Registration → Confirmation → Reminder",
         description:
-          "Someone signs up, gets matched against existing records, lands on a roster, and gets a confirmation — with nobody retyping a name or sending a message by hand. Registration → dedup → roster → confirmation is the chain that runs two annual retreat events for NWKS Encounter off one codebase.",
+          "Someone signs up, gets matched against the records you already have, lands on the right list, and gets a confirmation — with nobody retyping a name or sending a message by hand. Sign-up → match → list → confirmation, running whether or not anyone is at a desk.",
         icon: <IconSchedulingReminders />,
       },
       {
@@ -1089,11 +1089,11 @@ function IconSystemIntegrationDashboard() {
    ───────────────────────────────────────────────────────────── */
 
 const CARD_GRADIENTS = [
-  "linear-gradient(135deg, #0D95E8, #635BFF)",
+  "linear-gradient(135deg, #1590FF, #635BFF)",
   "linear-gradient(135deg, #635BFF, #a855f7)",
-  "linear-gradient(135deg, #00D4AA, #0D95E8)",
+  "linear-gradient(135deg, #00D4AA, #1590FF)",
   "linear-gradient(135deg, #F59E0B, #EF4444)",
-  "linear-gradient(135deg, #0D95E8, #00D4AA)",
+  "linear-gradient(135deg, #1590FF, #00D4AA)",
   "linear-gradient(135deg, #a855f7, #EF4444)",
   "linear-gradient(135deg, #EF4444, #F59E0B)",
   "linear-gradient(135deg, #00D4AA, #635BFF)",

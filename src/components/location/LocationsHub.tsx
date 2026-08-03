@@ -57,7 +57,7 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10 opacity-80"
         >
-          <div className="absolute -top-40 -left-40 h-[640px] w-[640px] rounded-full bg-[#0D95E8] opacity-[0.18] blur-[140px]" />
+          <div className="absolute -top-40 -left-40 h-[640px] w-[640px] rounded-full bg-[#1590FF] opacity-[0.18] blur-[140px]" />
           <div className="absolute top-60 -right-40 h-[520px] w-[520px] rounded-full bg-[#80E9FF] opacity-[0.10] blur-[120px]" />
         </div>
         <div
@@ -227,7 +227,7 @@ function KansasMap() {
   const toY = (lat: number) => ((LAT_N - lat) / LAT_SPAN) * H;
 
   const regionColors: Record<string, string> = {
-    western:   "#0D95E8",
+    western:   "#1590FF",
     central:   "#34D399",
     southwest: "#F59E0B",
     northeast: "#6366F1",
@@ -424,7 +424,7 @@ function RegionBlock({
             key={loc.slug}
             href={`/locations/${loc.slug}`}
             prefetch={false}
-            className="group block rounded-xl border p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#0D95E8]/50"
+            className="group block rounded-xl border p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#1590FF]/50"
             style={{
               borderColor: "var(--theme-card-border)",
               background: "var(--theme-result-card-bg)",

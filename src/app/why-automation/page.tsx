@@ -7,13 +7,13 @@ import type { Metadata } from "next";
 
 // Icon colors cycling through for benefit cards
 const iconColors = [
-  { bg: "rgba(13, 149, 232, 0.12)", color: "#0D95E8" },
+  { bg: "rgba(21, 144, 255, 0.12)", color: "#1590FF" },
   { bg: "rgba(0, 212, 170, 0.12)", color: "#00D4AA" },
   { bg: "rgba(99, 91, 255, 0.12)", color: "#635BFF" },
   { bg: "rgba(255, 107, 53, 0.12)", color: "#FF6B35" },
   { bg: "rgba(245, 158, 11, 0.12)", color: "#F59E0B" },
   { bg: "rgba(239, 68, 68, 0.12)", color: "#EF4444" },
-  { bg: "rgba(13, 149, 232, 0.12)", color: "#0D95E8" },
+  { bg: "rgba(21, 144, 255, 0.12)", color: "#1590FF" },
   { bg: "rgba(0, 212, 170, 0.12)", color: "#00D4AA" },
   { bg: "rgba(99, 91, 255, 0.12)", color: "#635BFF" },
 ];

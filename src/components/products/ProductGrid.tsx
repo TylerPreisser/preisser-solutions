@@ -44,7 +44,7 @@ const CATEGORY_META: Record<ProductCategory, CategoryMeta> = {
   },
   "Sales & Customer Service": {
     description: "Agents that catch every inbound and route it intelligently.",
-    accentColor: "#0D95E8",
+    accentColor: "#1590FF",
   },
   "Decision Intelligence": {
     description: "Agents that analyze, forecast, and brief you.",
@@ -99,7 +99,7 @@ export function ProductGrid({ products }: Props) {
         style={{ background: "var(--theme-section-switchable)" }}
       >
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-          <div className="product-catalog-glow absolute -top-32 -left-32 h-[520px] w-[520px] rounded-full bg-[#0D95E8] opacity-[0.12] blur-[120px]" />
+          <div className="product-catalog-glow absolute -top-32 -left-32 h-[520px] w-[520px] rounded-full bg-[#1590FF] opacity-[0.12] blur-[120px]" />
           <div className="product-catalog-glow absolute top-40 -right-32 h-[420px] w-[420px] rounded-full bg-[#80E9FF] opacity-[0.08] blur-[100px]" />
           <div className="product-catalog-glow absolute bottom-0 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-[#00D4AA] opacity-[0.06] blur-[100px]" />
         </div>
@@ -278,7 +278,7 @@ export function ProductGrid({ products }: Props) {
           >
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#0D95E8] opacity-[0.08] blur-[80px]"
+              className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#1590FF] opacity-[0.08] blur-[80px]"
             />
             <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
               <div>
@@ -305,7 +305,7 @@ export function ProductGrid({ products }: Props) {
                 <Link
                   href="/contact?inquiry=custom-product"
                   prefetch={false}
-                  className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-[0_8px_30px_rgba(13,149,232,0.3)]"
+                  className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-[0_8px_30px_rgba(21, 144, 255,0.3)]"
                   style={{ background: "var(--color-primary)" }}
                 >
                   Send us the brief

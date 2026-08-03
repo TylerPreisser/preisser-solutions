@@ -78,7 +78,7 @@ export const metadata: Metadata = {
       {
         rel: "mask-icon",
         url: "/safari-pinned-tab.svg",
-        color: "#0D95E8",
+        color: "#1590FF",
       },
     ],
   },
@@ -259,7 +259,7 @@ export default function RootLayout({
         {/* Anti-flash script: must be first in <head>, runs sync before paint */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         {/* Browser chrome / PWA colors */}
-        <meta name="theme-color" content="#0D95E8" />
+        <meta name="theme-color" content="#1590FF" />
         {/* Windows tile / IE11 */}
         <meta name="msapplication-TileColor" content="#0A1628" />
         <meta name="msapplication-TileImage" content="/mstile-150x150.png" />

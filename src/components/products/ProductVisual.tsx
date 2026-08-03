@@ -25,7 +25,7 @@ interface Props {
 const CATEGORY_COLORS: Record<ProductCategory, { primary: string; secondary: string; glow: string }> = {
   "Marketing & Growth": {
     primary: "#80E9FF",
-    secondary: "#0D95E8",
+    secondary: "#1590FF",
     glow: "rgba(128,233,255,0.18)",
   },
   "Operations & Back-Office": {
@@ -34,13 +34,13 @@ const CATEGORY_COLORS: Record<ProductCategory, { primary: string; secondary: str
     glow: "rgba(0,212,170,0.18)",
   },
   "Sales & Customer Service": {
-    primary: "#0D95E8",
+    primary: "#1590FF",
     secondary: "#80E9FF",
-    glow: "rgba(13,149,232,0.18)",
+    glow: "rgba(21, 144, 255,0.18)",
   },
   "Decision Intelligence": {
     primary: "#6B7FFF",
-    secondary: "#0D95E8",
+    secondary: "#1590FF",
     glow: "rgba(107,127,255,0.18)",
   },
   "Custom Builds": {

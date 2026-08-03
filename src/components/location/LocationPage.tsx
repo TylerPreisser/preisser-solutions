@@ -352,7 +352,7 @@ function Hero({ data }: { data: LocationPageData }) {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 opacity-80"
       >
-        <div className="absolute -top-40 -left-40 h-[640px] w-[640px] rounded-full bg-[#0D95E8] opacity-[0.18] blur-[140px]" />
+        <div className="absolute -top-40 -left-40 h-[640px] w-[640px] rounded-full bg-[#1590FF] opacity-[0.18] blur-[140px]" />
         <div className="absolute top-60 -right-40 h-[520px] w-[520px] rounded-full bg-[#80E9FF] opacity-[0.10] blur-[120px]" />
         <div className="absolute bottom-0 left-1/3 h-[420px] w-[420px] rounded-full bg-[#00D4AA] opacity-[0.07] blur-[120px]" />
       </div>
@@ -526,7 +526,7 @@ function renderH1WithCityAccent(h1: string, city: string) {
   return (
     <>
       {before}
-      <span className="bg-gradient-to-br from-[#80E9FF] to-[#0D95E8] bg-clip-text text-transparent">
+      <span className="bg-gradient-to-br from-[#80E9FF] to-[#1590FF] bg-clip-text text-transparent">
         {city}
       </span>
       {after}
@@ -575,7 +575,7 @@ function NearbyAreasSection({ data }: { data: LocationPageData }) {
           {data.nearbyAreas.map((area, idx) => {
             const inner = (
               <div
-                className="flex h-full flex-col justify-between gap-2 rounded-xl px-4 py-4 transition-all hover:-translate-y-0.5 hover:border-[#0D95E8]/40 hover:shadow-[0_12px_30px_-15px_rgba(13,149,232,0.25)]"
+                className="flex h-full flex-col justify-between gap-2 rounded-xl px-4 py-4 transition-all hover:-translate-y-0.5 hover:border-[#1590FF]/40 hover:shadow-[0_12px_30px_-15px_rgba(21, 144, 255,0.25)]"
                 style={{
                   border: "1px solid var(--theme-card-border)",
                   background: "var(--theme-result-card-bg)",
@@ -687,7 +687,7 @@ function ServiceCardsSection({ data }: { data: LocationPageData }) {
 function ServiceCard({ card }: { card: LocationPageData["serviceCards"][number] }) {
   const inner = (
     <div
-      className="group relative flex h-full flex-col rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+      className="group relative flex h-full flex-col rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#1590FF]/40 hover:shadow-[0_24px_60px_-20px_rgba(21, 144, 255,0.18)]"
       style={{
         border: "1px solid var(--theme-card-border)",
         background: "var(--theme-result-card-bg)",
@@ -695,9 +695,9 @@ function ServiceCard({ card }: { card: LocationPageData["serviceCards"][number] 
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#0D95E8]/10 blur-2xl opacity-0 transition-opacity group-hover:opacity-100"
+        className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#1590FF]/10 blur-2xl opacity-0 transition-opacity group-hover:opacity-100"
       />
-      <div className="relative flex items-center justify-center self-start rounded-xl bg-gradient-to-br from-[#0D95E8]/15 to-[#80E9FF]/10 p-3 [color:var(--theme-accent-text)]">
+      <div className="relative flex items-center justify-center self-start rounded-xl bg-gradient-to-br from-[#1590FF]/15 to-[#80E9FF]/10 p-3 [color:var(--theme-accent-text)]">
         <ServiceIconSvg type={card.icon} className="h-6 w-6" />
       </div>
       <h3
@@ -792,7 +792,7 @@ function ProcessSection({ data }: { data: LocationPageData }) {
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-40 right-0 h-[480px] w-[480px] rounded-full bg-[#0D95E8] opacity-[0.10] blur-[140px]"
+        className="pointer-events-none absolute -top-40 right-0 h-[480px] w-[480px] rounded-full bg-[#1590FF] opacity-[0.10] blur-[140px]"
       />
       <div
         aria-hidden="true"
@@ -920,7 +920,7 @@ function CaseStudiesSection({ data }: { data: LocationPageData }) {
             >
               <Link
                 href={`/case-studies/${cs.slug}`}
-                className="group relative flex h-full flex-col overflow-hidden rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#0D95E8]/40 hover:shadow-[0_24px_60px_-20px_rgba(13,149,232,0.18)]"
+                className="group relative flex h-full flex-col overflow-hidden rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#1590FF]/40 hover:shadow-[0_24px_60px_-20px_rgba(21, 144, 255,0.18)]"
                 style={{
                   border: "1px solid var(--theme-card-border)",
                   background: "var(--theme-result-card-bg)",
@@ -928,7 +928,7 @@ function CaseStudiesSection({ data }: { data: LocationPageData }) {
               >
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gradient-to-br from-[#0D95E8]/15 to-[#0D95E8]/0 blur-2xl"
+                  className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gradient-to-br from-[#1590FF]/15 to-[#1590FF]/0 blur-2xl"
                 />
                 <div
                   className="text-[11px] font-medium uppercase tracking-[0.14em]"
@@ -939,7 +939,7 @@ function CaseStudiesSection({ data }: { data: LocationPageData }) {
                 <div className="mt-5">
                   <div
                     className="bg-clip-text text-4xl font-semibold leading-none tracking-[-0.03em] text-transparent sm:text-5xl"
-                    style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #0D95E8)" }}
+                    style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #1590FF)" }}
                   >
                     {cs.headlineNumber}
                   </div>
@@ -1073,7 +1073,7 @@ function IndustriesSection({ data }: { data: LocationPageData }) {
             {data.industriesServed.map((ind) => (
               <span
                 key={ind}
-                className="inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors hover:border-[#0D95E8]/40 hover:[color:var(--theme-accent-text)]"
+                className="inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors hover:border-[#1590FF]/40 hover:[color:var(--theme-accent-text)]"
                 style={{
                   border: "1px solid var(--theme-card-border)",
                   background: "var(--theme-section-alt)",
@@ -1127,7 +1127,7 @@ function FaqSection({ data }: { data: LocationPageData }) {
           {data.faq.map((q, idx) => (
             <details
               key={idx}
-              className="group rounded-2xl px-6 py-5 transition-colors open:border-[#0D95E8]/40 hover:border-[#0D95E8]/30"
+              className="group rounded-2xl px-6 py-5 transition-colors open:border-[#1590FF]/40 hover:border-[#1590FF]/30"
               style={{
                 border: "1px solid var(--theme-card-border)",
                 background: "var(--theme-result-card-bg)",
@@ -1202,7 +1202,7 @@ function RelatedLocationsSection({
               up to /locations so Google ranks the hub over detail pages. */}
           <Link
             href="/locations"
-            className="group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all hover:border-[#0D95E8]/40 hover:[color:var(--theme-accent-text)]"
+            className="group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all hover:border-[#1590FF]/40 hover:[color:var(--theme-accent-text)]"
             style={{
               border: "1px solid var(--color-primary)",
               background: "var(--theme-section-alt)",
@@ -1216,7 +1216,7 @@ function RelatedLocationsSection({
             <Link
               key={slug}
               href={`/locations/${slug}`}
-              className="group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all hover:border-[#0D95E8]/40 hover:[color:var(--theme-accent-text)]"
+              className="group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all hover:border-[#1590FF]/40 hover:[color:var(--theme-accent-text)]"
               style={{
                 border: "1px solid var(--theme-card-border)",
                 background: "var(--theme-section-alt)",
@@ -1344,7 +1344,7 @@ function CtaSection({ data }: { data: LocationPageData }) {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
       >
-        <div className="absolute left-1/2 top-1/2 h-[640px] w-[640px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#0D95E8] opacity-[0.10] blur-[140px]" />
+        <div className="absolute left-1/2 top-1/2 h-[640px] w-[640px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#1590FF] opacity-[0.10] blur-[140px]" />
       </div>
 
       <div className="ps-container relative text-center">
@@ -1360,7 +1360,7 @@ function CtaSection({ data }: { data: LocationPageData }) {
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <Link
             href={data.cta.primaryButton.href}
-            className="group inline-flex items-center gap-2 rounded-xl bg-[#0D95E8] px-7 py-3.5 text-base font-medium text-white shadow-[0_8px_30px_rgba(13,149,232,0.35)] transition-all hover:bg-[#0B7BC0] hover:shadow-[0_12px_40px_rgba(13,149,232,0.45)]"
+            className="group inline-flex items-center gap-2 rounded-xl bg-[#1590FF] px-7 py-3.5 text-base font-medium text-white shadow-[0_8px_30px_rgba(21, 144, 255,0.35)] transition-all hover:bg-[#0D76D6] hover:shadow-[0_12px_40px_rgba(21, 144, 255,0.45)]"
           >
             {data.cta.primaryButton.label}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
