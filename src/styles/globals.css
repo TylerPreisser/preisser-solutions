@@ -991,7 +991,16 @@ ul, ol {
 }
 
 /* On a phone the content column IS the whole viewport, so a left-edge scrim
-   protects nothing. Flatten layer 1 into an even veil instead. */
+   protects nothing. Flatten layer 1 into an even veil instead.
+
+   The vertical ramp's TAIL is eased here relative to the desktop rule
+   (0.4/0.75 -> 0.30/0.60 at 80%/100%). A phone hero has the header across the
+   top and the copy down the middle, so the strip below the CTAs is the only
+   place the background's accent light is allowed to be — and at the desktop
+   tail values that strip was under a 0.75 scrim, i.e. the still frame's one
+   bright moment was being wiped. Nothing reads down there, so this costs no
+   contrast: the measured worst pixel behind the wordmark is unchanged, since
+   the wordmark sits at ~34% of the hero's height. */
 @media (max-width: 767px) {
   .ps-hero-overlay {
     background:
@@ -1004,32 +1013,51 @@ ul, ol {
         rgba(var(--ps-hero-scrim-rgb), 0.55) 0%,
         rgba(var(--ps-hero-scrim-rgb), 0.05) 22%,
         rgba(var(--ps-hero-scrim-rgb), 0)    50%,
-        rgba(var(--ps-hero-scrim-rgb), 0.4)  80%,
-        rgba(var(--ps-hero-scrim-rgb), 0.75) 100%
+        rgba(var(--ps-hero-scrim-rgb), 0.30) 80%,
+        rgba(var(--ps-hero-scrim-rgb), 0.60) 100%
       );
   }
 
   /* Light mode on a phone is the tightest case in the whole hero: the text
      column is the entire viewport, so there is nowhere to put the geometry
      that is not behind type, and the logo-blue wordmark has 0.02 of contrast
-     margin to give (see the desktop note below). Measured on the built page,
-     a 0.55 veil left "AI Integration." at 2.51:1 against a 3:1 bar.
-     At 0.95 the composition survives as a tone and a whisper of the folds,
-     and the wordmark is unimpeachable. On a phone that is the right trade —
-     the type IS the hero there. */
+     margin to give (see the desktop note below). An earlier full-bleed
+     composition needed a 0.95 veil here — at 0.55 it left "AI Integration."
+     at 2.51:1 against a 3:1 bar — and 0.95 left the phone hero effectively
+     blank.
+
+     A FLAT veil is the wrong shape for the fix, and measuring it says why:
+     dropped to 0.72 the worst pixel came back as rgb(247,248,250) — that is
+     the page colour #F6F9FC itself, not the composition. #1590FF on #F6F9FC
+     is 3.07:1, so on light the flat veil is not hiding the background, it is
+     the only thing holding the wordmark above pure-white. Flat 0.95 measures
+     3.22:1 and flat 0.72 measures 3.06:1, i.e. every point of veil traded
+     goes straight out of the margin and buys almost nothing back.
+
+     So the phone gets the same SHAPE the desktop already uses: hold the scrim
+     near-solid across the wordmark, then release. "AI Integration." is the
+     shortest of the three lines and ends at 53% of a 375px viewport, so the
+     plateau runs to 62% and is clear by 92%. The composition is drawn only on
+     the right (hero-mark-light.ts fades it out toward the text column), which
+     is exactly the part this now uncovers. Measured on the built page:
+     3.19:1 against a 3:1 bar, with a visible composition instead of a
+     blank box. */
   [data-theme="light"] .ps-hero-overlay {
     background:
       linear-gradient(
-        rgba(var(--ps-hero-scrim-rgb), 0.95),
-        rgba(var(--ps-hero-scrim-rgb), 0.95)
+        90deg,
+        rgba(var(--ps-hero-scrim-rgb), 0.97) 0%,
+        rgba(var(--ps-hero-scrim-rgb), 0.95) 62%,
+        rgba(var(--ps-hero-scrim-rgb), 0.55) 78%,
+        rgba(var(--ps-hero-scrim-rgb), 0)    92%
       ),
       linear-gradient(
         180deg,
         rgba(var(--ps-hero-scrim-rgb), 0.55) 0%,
         rgba(var(--ps-hero-scrim-rgb), 0.05) 22%,
         rgba(var(--ps-hero-scrim-rgb), 0)    50%,
-        rgba(var(--ps-hero-scrim-rgb), 0.4)  80%,
-        rgba(var(--ps-hero-scrim-rgb), 0.75) 100%
+        rgba(var(--ps-hero-scrim-rgb), 0.30) 80%,
+        rgba(var(--ps-hero-scrim-rgb), 0.60) 100%
       );
   }
 }

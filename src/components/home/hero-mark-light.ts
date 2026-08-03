@@ -2,199 +2,249 @@
  * hero-mark-light.ts — the hero background.
  *
  * WHAT IT IS
- * Light falling across a structure. Three enormous, very-low-contrast planes
- * recede into depth, and one soft blue source drifts along the frontmost fold,
- * catching the edges as it passes. No data imagery. No metaphor. It is the
- * visual equivalent of a well-built thing: calm, deliberate, quiet.
+ * Preisser Solutions' own mark, blown up to three or four times the viewport
+ * and cropped hard by the frame. You never see a logo — you see the fragments
+ * that stay in shot: one long sweeping arc and two or three angular blades
+ * running off the edges. They overlap, each at its own tonal value, and one
+ * narrow blue light travels slowly along a real contour of the mark.
  *
- * WHY THE PLANES ARE THE SHAPES THEY ARE
- * Every edge in the composition is lifted off Preisser Solutions' own mark
- * (`public/images/ps-logo.webp`), traced from its pixels:
+ * WHERE THE GEOMETRY COMES FROM — this is not "inspired by" the logo
+ * MARK_BODY and MARK_WEDGE below are the literal pixel boundary of
+ * `public/images/ps-logo.webp` (1024x1024, ink #1590FF). They were produced by
+ * a crack-following contour trace of the ink mask, corner-detected with
+ * Douglas-Peucker at eps=4 to find the mark's true vertices, smoothed only
+ * BETWEEN those vertices (so the 33-degree point stays a point), then
+ * re-simplified at eps=0.45. Re-filling those two polygons reproduces the
+ * original ink mask at IoU 0.9937. At the scales used here a 0.45-unit
+ * tolerance is under 2 CSS px, so the arcs stay smooth when magnified.
  *
- *   - the swoosh          cubic (545,285) (470,390) (330,450) (207,566)
- *   - the blade back      dx/dy = -2.62   (69.1 deg), straight for 280 units
- *   - the blade underside dx/dy = -1.42   (35.1 deg) — the two meet at the
- *                         mark's acute point, a 34 deg vertex
- *   - the bowl            a circular cap, r = 210 of a 1024 box
+ * The four primitives measured by an earlier pass all check out against the
+ * trace, with one label correction:
+ *   - swoosh cubic (545,285)(470,390)(330,450)(207,566) — its endpoints land
+ *     on the traced wedge edge to within 4 units, max deviation 34 units over
+ *     the whole span (the real edge is slightly flatter in the middle). The
+ *     trace is used instead of the cubic because it IS the edge.
+ *   - blade underside 35.1 deg — traced 34.97 deg.
+ *   - blade back edge 69.1 deg — traced 68.2 deg. NOTE the "-2.62" in that
+ *     table is dy/dx, not dx/dy; as dx/dy it would be a 21-degree edge and the
+ *     vertex would not close.
+ *   - the two meet at the mark's acute vertex — traced 33.2 deg (called 34).
+ *   - bowl r = 210 — least-squares fit of the traced outer arc gives
+ *     r = 210.9 about (771.4, 309.6).
  *
- * Scaled 2-3x the viewport and rotated, the mark stops being a logo and
- * becomes architecture — you read folds and depth, not a watermark. That is
- * the whole point: this geometry belongs to one company by construction, so
- * "a lot of people have that" cannot be true of it.
- *
- * WHY NOT ANOTHER DATA METAPHOR
- * The previous background drew records snapping onto a lattice. It was a
- * well-executed literal metaphor and it read as a spreadsheet — which argues
- * against a business whose entire pitch is getting people off spreadsheets.
- * There is deliberately nothing orthogonal, nothing repeating, and nothing
- * countable in here. Every line is a diagonal or a curve, and there are four
- * of them in total.
+ * WHY THIS COMPOSITION AND NOT ANOTHER
+ * Two earlier backgrounds were rejected: an animated wave mesh ("a lot of
+ * people have that") and a field of records snapping to a lattice ("looks like
+ * an Excel sheet" — fatal for a business that sells getting people OFF
+ * spreadsheets). So: nothing orthogonal, nothing repeating, nothing countable.
+ * Every edge in here is an edge of this company's mark, which is the one thing
+ * no template can also have.
  *
  * CONSTRAINTS THIS FILE HONOURS
  * - Canvas 2D only. No dependencies.
- * - `prefers-reduced-motion` and every viewport under 768px paint ONE frame
- *   and never start a rAF loop. The still frame is the full composition with
- *   the light parked at its most flattering position — a deliberate image, not
- *   an empty box.
- * - The rAF loop is cancelled outright by an IntersectionObserver when the
- *   hero scrolls away.
- * - Colour is read from the CSS custom properties (`--ps-hero-accent`, which
- *   resolves to `--color-primary` in dark and to the AA-safe variant in
- *   light). No brand hex is hardcoded here.
+ * - `prefers-reduced-motion` and every viewport under 768px paint ONE frame and
+ *   never start a rAF. The still frame is the whole composition with the light
+ *   parked at its most flattering point — a deliberate image, not a blank box.
+ * - The rAF is cancelled outright by an IntersectionObserver when the hero
+ *   leaves the viewport, not idled.
+ * - Colour comes from the CSS custom properties (`--ps-hero-accent`, which
+ *   resolves to `--color-primary` = the exact logo blue). No brand hex here.
  * - Theme is watched with a MutationObserver on `<html data-theme>`, and a
  *   stopped loop is explicitly repainted so a toggle never leaves stale paint.
  * - The canvas paints TRANSPARENT. The page colour is `.ps-hero`; the contrast
- *   scrim over the wordmark is `.ps-hero-overlay`. Painting full-viewport
+ *   scrim over the wordmark is `.ps-hero-overlay`, in CSS. Painting those
  *   scrims inside the loop is what once regressed frame pacing from 8.3ms to
- *   16.7ms, so they stay in CSS where they cost nothing per frame.
+ *   16.7ms, so they stay declarative where they cost nothing per frame.
  *
  * HOW IT STAYS CHEAP
- * The planes never change, so they are painted ONCE into an offscreen plate.
- * Per frame the only work is: restore the plate over the rectangle the light
- * touched, then draw the light. The light is bounded, so that rectangle is
- * bounded — the loop never touches the full viewport.
+ * The planes never move, so they are painted ONCE into an offscreen plate. Per
+ * frame the only work is: blit the plate back over the rectangle the light
+ * touched last, then stroke the light. The light is a short arc segment, so
+ * that rectangle is small and the loop never touches the full viewport.
  */
 
 type RGB = [number, number, number];
-
-// ── The mark's own geometry, in its native 1024 box ──────────────────────────
-const MARK_ANCHOR_SWEEP: Pt = [394, 421]; // the swoosh's midpoint
-const MARK_ANCHOR_POINT: Pt = [85, 904]; // the acute vertex
-const MARK_ANCHOR_BOWL: Pt = [769, 326]; // the bowl's centre
-
-const SWOOSH: [Pt, Pt, Pt, Pt] = [
-  [545, 285],
-  [470, 390],
-  [330, 450],
-  [207, 566],
-];
-/** The blade's back edge and underside, as unit directions in mark space. */
-const BACK_DIR: Pt = norm([1, -2.62]);
-const UNDER_DIR: Pt = norm([1.42, -1]);
-const BOWL_R = 210;
-
 type Pt = [number, number];
 
+// ── The mark, traced from public/images/ps-logo.webp ─────────────────────────
+// Flat x,y pairs in the logo's native 1024 box. See the header for provenance.
+// The main body: top bar, bowl, counter, swoosh and the stem down to the point.
+const MARK_BODY = [
+  121,116, 121,117, 123.3,118.7, 239.6,194.4, 315.2,242.8, 316,244, 537,244,
+  552,243, 721,243, 729,244, 738,244, 738.3,244.7, 758,249, 772.4,257.6,
+  782,266, 782,267, 785.3,271.7, 791,283, 793,296, 793,309, 792.3,309.3,
+  791.4,316.4, 786.8,332.8, 779.3,348.3, 773,358, 773,359, 770.2,361.2,
+  761.8,370.8, 751.8,378.8, 750,381, 749,381, 724,395, 705.4,400.4,
+  693.4,403.4, 680.3,405.3, 680,406, 666,407, 561,407, 553,408, 543,408,
+  542.7,408.7, 514.7,412.7, 497.6,416.6, 482,421, 480,421, 479.7,421.7,
+  450.1,432.1, 427,442, 391,460, 390.2,461.2, 370.8,472.8, 345.6,489.6,
+  323.7,505.7, 306.6,519.6, 305,520, 264.2,560.2, 251.8,574.8, 249,577,
+  248.6,578.6, 235.7,594.7, 223.6,611.6, 208.8,633.8, 194.2,658.2, 193,659,
+  190.3,665.3, 168.7,705.7, 150,746, 147,751, 146.6,753.6, 127.2,799.2,
+  85,906, 90.3,903.3, 155.6,856.6, 300.4,755.4, 377.6,700.6, 381,699,
+  384.3,694.3, 386.8,688.8, 410.2,626.2, 421,602, 422.2,601.2, 432.2,587.2,
+  439.3,579.3, 458,564, 480,553, 497.7,546.7, 498,546, 513.7,542.7,
+  533.7,539.7, 534,539, 543,539, 551,538, 744,538, 745.2,537.2, 766.1,535.1,
+  781.4,532.4, 802.7,526.7, 825,519, 852.2,504.2, 865.4,495.4, 877.4,486.4,
+  879,486, 906.8,458.8, 916.2,447.2, 919,445, 920.6,441.6, 935.2,421.2,
+  952,391, 953,387, 962.9,363.9, 970.3,340.3, 971,340, 977.3,310.3, 979,298,
+  980,288, 980,261, 979.3,260.7, 976.3,239.7, 973.4,228.6, 970.9,220.1,
+  963,200, 961.8,199.2, 951.4,182.6, 944.8,174.2, 924,154, 920.6,152.4,
+  909.3,144.7, 892,136, 874.9,129.1, 856.3,123.7, 856,123, 824.1,117.9,
+  809.2,116.8, 808,116
+];
+// The wedge the swoosh cuts free of the body. A second, separate ink island.
+const MARK_WEDGE = [
+  316,278, 273.2,386.2, 203,570, 204,570, 206.8,567.8, 213.8,560.8,
+  242.2,529.2, 265,506, 266.6,505.6, 281.2,492.2, 301.7,475.7, 323.3,460.3,
+  327,457, 331.2,455.2, 363.7,435.7, 411,412, 415.8,410.8, 445.1,399.1,
+  462.3,393.3, 486.4,386.4, 502.6,382.6, 508,382, 513.2,368.2, 516,363,
+  518.1,355.1, 543.9,287.9, 547,278
+];
+
+/** Vertex index ranges into MARK_BODY, so a layer can name the run of real
+ *  contour it leads with — and so the light has real contours to choose from. */
+const RUN_SWOOSH = [35, 58] as const; // the swoosh's curved span
+const RUN_BLADE = [64, 78] as const; // the 33-degree point and both its edges
+const RUN_BOWL = [95, 133] as const; // the outer bowl arc — the long sweep
+
 // ── Composition ──────────────────────────────────────────────────────────────
-// One rotation for the whole scene, so every plane stays in the mark's own
-// angular family. `span` is the plane's size as a multiple of the viewport's
-// long edge; `ax`/`ay` place that plane's anchor as a fraction of the hero box.
-const SCENE_ROT = -85.3;
+/**
+ * Each layer is the WHOLE mark, magnified and cropped. `height` is the mark's
+ * 790-unit height as a multiple of the hero's height — 3 and up, so what stays
+ * in frame is a fragment, not a logo. `anchor` is a vertex index in MARK_BODY
+ * pinned at (ax, ay) of the hero box, which is how a specific real edge is
+ * aimed at a specific part of the frame. `value` scales the layer's tone.
+ */
+type LayerSpec = {
+  height: number;
+  rot: number;
+  anchor: number;
+  ax: number;
+  ay: number;
+  value: number;
+  /** the contour run this layer leads with — where its crisp edge is drawn */
+  lead: readonly [number, number];
+};
 
-/** Sized so the CURVED part of the swoosh spans most of the crossing rather
- *  than one of its straight tangents. That matters: a fold that reads as a
- *  curve is the thing separating this from the angular-shard look every
- *  template agency site already has. */
-const SWEEP_LAYER = { span: 1.2, ax: 0.66, ay: 0.5, lift: 1.0 };
-/** Placed so the mark's acute vertex lands INSIDE the frame, to the right of
- *  the sweep. That 34-degree point is the most particular thing the mark owns.
- *  Kept quiet on purpose — it should be found, not announced.
+/** Back to front: two deep blades, the bowl, then the sweep. Overlap is doing
+ *  the depth work, so the order matters.
  *
- *  This is the one plane that DARKENS. Every plane lightening the page reads
- *  as translucent film stacked on glass; one plane that occludes is what makes
- *  the others read as being in front of it. */
-const BLADE_LAYER = { span: 2.1, ax: 0.93, ay: 0.68, lift: 0.5 };
-/** A shallow dome under the composition — the quietest plane, there to put a
- *  floor under the depth rather than to be noticed. */
-const BOWL_LAYER = { span: 3.02, ax: 0.62, ay: 1.62, lift: 0.34 };
+ *  Every anchor is an ACUTE vertex or a point on a curve — never the mark's
+ *  one right-angled corner. Two right angles in frame and the composition
+ *  starts reading as panels, which is the failure mode this background exists
+ *  to avoid. */
+const LAYERS: LayerSpec[] = [
+  // The deep blade: the mark's 33-degree point, its vertex parked off the
+  // bottom-right corner so the wedge opens up across the frame. Quietest.
+  { height: 5.0, rot: -47, anchor: 70, ax: 1.14, ay: 1.18, value: 0.55, lead: RUN_BLADE },
+  // A second blade off the right edge, crossing the first at a shallow angle
+  // so the two read at different depths where they overlap.
+  { height: 3.4, rot: 158, anchor: 70, ax: 1.1, ay: 0.16, value: 0.8, lead: RUN_BLADE },
+  // The bowl: r = 210 of the mark, magnified until its radius is most of the
+  // viewport. It is the only closed curve in the mark and it puts a floor of
+  // real curvature under the angular work.
+  { height: 5.6, rot: 22, anchor: 110, ax: 0.62, ay: 1.06, value: 0.7, lead: RUN_BOWL },
+  // The sweep: the swoosh, the mark's signature curve, arcing down through the
+  // right of the frame. First in line for the light (see build()).
+  { height: 2.1, rot: 6, anchor: 52, ax: 0.86, ay: 0.24, value: 1.0, lead: RUN_SWOOSH },
+];
 
-/** How far past the frame a plane's polygon runs. Any value that clears the
- *  diagonal at the largest span works; this is generous on purpose. */
-const OVERSHOOT = 6000;
+/** How far outside the hero a layer's polygon may run before it is clipped.
+ *  Only used to bound the sheen gradient; the fill itself is a closed polygon. */
+const SHEEN_SPAN = 0.16;
 
 // ── Light ────────────────────────────────────────────────────────────────────
-/** One full there-and-back drift. Deliberately long — presence, not motion. */
-const DRIFT_PERIOD = 34;
-/** Bloom radius as a fraction of the viewport's long edge. Also the distance
- *  at which an edge stops catching the light, which is what bounds the dirty
- *  rectangle and therefore the per-frame cost. */
-const BLOOM_SPAN = 0.3;
-/** How far the source floats off its fold, as a fraction of the long edge. */
-const OFFSET_SPAN = 0.09;
-/** Where the light parks for the still frame — 0.34 of its travel puts it on
- *  the upper third of the fold, where it catches two edges at once. */
-const STILL_PHASE = 0.34;
+/** One full there-and-back drift, in seconds. Slow on purpose: presence, not
+ *  motion. Anything under ~20s starts reading as an animation. */
+const DRIFT_PERIOD = 30;
+/** The lit stretch of contour, as a fraction of the hero's long edge. */
+const BEAM_SPAN = 0.3;
+/** Where the light parks in the still frame — just off centre, so the parked
+ *  frame does not read as the midpoint of an animation someone paused. */
+const STILL_PHASE = 0.36;
+/**
+ * The light is the brightest thing on the canvas AND it is the exact blue of
+ * "AI Integration." in the headline, which has about 0.2 of contrast margin on
+ * the light theme. So it is not allowed under the type at all: its travel is
+ * clipped to the stretch of contour that clears the measured keep-out boxes
+ * (see keepOut()) by this fraction of the hero's long edge, and is never left of
+ * BEAM_FLOOR_X. Both are structural — they hold for any copy length, any
+ * viewport and any font, rather than being tuned to one screenshot.
+ */
+const BEAM_CLEARANCE = 0.03;
+const BEAM_FLOOR_X = 0.45;
+
+/**
+ * Narrow viewports are a different picture, not the same one squeezed: the
+ * text column IS the whole frame there, so the composition slides down and
+ * right, out from behind the copy, and shrinks enough that a real curve still
+ * fits across the remaining band.
+ */
+const NARROW = 768;
+const NARROW_SCALE = 0.62;
+const NARROW_DX = 0.14;
+const NARROW_DY = -0.12;
 
 // ── Palette ──────────────────────────────────────────────────────────────────
-/** What gets painted OVER the page colour. Dark theme lifts toward a cool
- *  light; light theme lays down a cool shade. Both are tints of the same hue
- *  family as the brand blue, so the planes never read as grey. */
-const DARK_INK: RGB = [152, 196, 255];
-const LIGHT_INK: RGB = [12, 46, 96];
-/** What the occluding plane lays down. Below the page colour in dark, a cool
- *  shade in light — either way it reads as a face turned away from the light. */
-const DARK_SHADE: RGB = [2, 7, 16];
-const LIGHT_SHADE: RGB = [34, 72, 126];
+/** What a plane lays down over the page colour. Dark lifts toward a cool
+ *  light; light lays down a cool shade. Both stay in the brand's hue family so
+ *  a plane never reads as neutral grey. */
+const DARK_INK: RGB = [150, 196, 255];
+const LIGHT_INK: RGB = [26, 62, 112];
+/** Light theme only: the plane that lifts instead of shading. The page is
+ *  #F6F9FC, not white, so pure white is a real value ABOVE it — which is what
+ *  keeps a low-contrast light composition from turning into grey smears. */
+const LIGHT_LIFT: RGB = [255, 255, 255];
 
 type Tone = {
   ink: RGB;
-  shade: RGB;
-  /** the occluding plane's own fill alpha */
-  occlude: number;
-  /** plane fill alpha at the fold, and out in the depth */
-  planeNear: number;
-  planeFar: number;
-  /** the fold hairline */
+  lift: RGB | null;
+  /** flat fill alpha of one plane, before its own `value` */
+  plane: number;
+  /** the crisp hairline along a plane's boundary */
   edge: number;
-  /** the sheen banded along the inside of each fold — this is what gives a
-   *  plane a rounded surface instead of the flat look of filled vector art */
+  /** the soft band just inside a plane's lead edge — gives it a surface */
   sheen: number;
-  /** grain, which is what keeps a 5%-contrast gradient from banding */
+  /** dither, so a 4%-contrast fill cannot band on an 8-bit display */
   grain: number;
-  /** the light */
-  bloom: number;
-  glint: number;
-  glintHalo: number;
-  /** dark theme adds light; light theme tints. See paintLight(). */
+  /** the light: narrow core, and the halo that keeps it from looking drawn */
+  beam: number;
+  beamHalo: number;
+  /** dark theme adds light; light theme lays down tint. See paintBeam(). */
   additive: boolean;
 };
 
-const DARK_TONE: Omit<Tone, "ink" | "shade"> = {
-  occlude: 0.42,
-  planeNear: 0.07,
-  planeFar: 0.0,
-  edge: 0.3,
-  sheen: 0.075,
+const DARK_TONE: Omit<Tone, "ink" | "lift"> = {
+  plane: 0.062,
+  edge: 0.36,
+  sheen: 0.07,
   grain: 0.05,
-  bloom: 0.16,
-  glint: 0.8,
-  glintHalo: 0.17,
+  beam: 0.85,
+  beamHalo: 0.13,
   additive: true,
 };
 
-// A light page has almost no headroom below it, so every value here is
-// roughly half its dark counterpart. Pushed any further the planes stop
-// reading as light on a surface and start reading as grey creases.
-const LIGHT_TONE: Omit<Tone, "ink" | "shade"> = {
-  occlude: 0.034,
-  planeNear: 0.055,
-  planeFar: 0.0,
-  edge: 0.17,
-  sheen: 0.045,
-  grain: 0.035,
-  bloom: 0.14,
-  glint: 0.55,
-  glintHalo: 0.11,
+// A light page has almost no headroom, and a cool shade pushed too far stops
+// reading as a lit plane and starts reading as dirt. Every value here is well
+// under its dark counterpart, and the composition earns its separation from
+// the lift plane instead of from more shade.
+const LIGHT_TONE: Omit<Tone, "ink" | "lift"> = {
+  plane: 0.06,
+  edge: 0.3,
+  sheen: 0.055,
+  grain: 0.03,
+  beam: 0.6,
+  beamHalo: 0.09,
   additive: false,
 };
 
 // ── small maths ──────────────────────────────────────────────────────────────
 
-function norm(v: Pt): Pt {
-  const m = Math.hypot(v[0], v[1]) || 1;
-  return [v[0] / m, v[1] / m];
-}
-
-/** scale + rotate about `origin`, then land `origin` on (tx, ty). */
 type Mat = { a: number; b: number; c: number; d: number; e: number; f: number };
 
-function makeMat(
-  scale: number,
-  deg: number,
-  origin: Pt,
-  tx: number,
-  ty: number
-): Mat {
+/** scale + rotate about `origin`, then land `origin` on (tx, ty). */
+function makeMat(scale: number, deg: number, origin: Pt, tx: number, ty: number): Mat {
   const r = (deg * Math.PI) / 180;
   const a = Math.cos(r) * scale;
   const b = Math.sin(r) * scale;
@@ -208,26 +258,10 @@ function makeMat(
   };
 }
 
-const applyMat = (m: Mat, p: Pt): Pt => [
-  m.a * p[0] + m.c * p[1] + m.e,
-  m.b * p[0] + m.d * p[1] + m.f,
+const applyMat = (m: Mat, x: number, y: number): Pt => [
+  m.a * x + m.c * y + m.e,
+  m.b * x + m.d * y + m.f,
 ];
-
-/** Direction vectors ignore the translation. */
-const applyDir = (m: Mat, p: Pt): Pt =>
-  norm([m.a * p[0] + m.c * p[1], m.b * p[0] + m.d * p[1]]);
-
-function cubicAt(c: [Pt, Pt, Pt, Pt], t: number): Pt {
-  const u = 1 - t;
-  const w0 = u * u * u;
-  const w1 = 3 * u * u * t;
-  const w2 = 3 * u * t * t;
-  const w3 = t * t * t;
-  return [
-    w0 * c[0][0] + w1 * c[1][0] + w2 * c[2][0] + w3 * c[3][0],
-    w0 * c[0][1] + w1 * c[1][1] + w2 * c[2][1] + w3 * c[3][1],
-  ];
-}
 
 function rgba(c: RGB, a: number): string {
   return `rgba(${c[0]},${c[1]},${c[2]},${a})`;
@@ -263,59 +297,54 @@ function parseColor(raw: string): RGB | null {
 
 // ── geometry built per resize ────────────────────────────────────────────────
 
-/** A fold: the polyline a hairline is stroked along and the light glints on. */
-type Fold = {
-  pts: Float64Array; // x,y pairs, in CSS px
-  cum: Float64Array; // cumulative arc length, same count
+/** A run of contour in CSS px, arc-length indexed so the light can walk it. */
+type Edge = {
+  pts: Float64Array; // x,y pairs
+  cum: Float64Array; // cumulative arc length
   len: number;
 };
 
 type Plane = {
   fill: Path2D;
-  fold: Fold;
-  /** the plane's fill gradient runs from the fold into the depth */
-  g0: Pt;
-  g1: Pt;
-  lift: number;
-  /** true for the plane that occludes rather than catches light */
-  occludes?: boolean;
+  /** the whole boundary — stroked crisply, because a plane meeting a plane on
+   *  a defined line is what makes this read as built rather than smudged */
+  outline: Path2D;
+  /** the run this layer leads with, densified for the light to ride */
+  lead: Edge;
+  value: number;
+  /** the sheen band's gradient, running inward from the lead edge */
+  s0: Pt;
+  s1: Pt;
 };
 
-/** Longest gap allowed between fold samples. The glint finds the lit stretch
- *  of a fold by walking its samples, so a fold made of two 2000px segments
- *  would light all-or-nothing. Densifying makes that walk smooth. */
-const FOLD_STEP = 22;
-const FOLD_MAX_STEPS = 220;
+/** Longest gap allowed between lead-edge samples. The light finds its lit
+ *  stretch by walking these, so a run made of two 900px segments would light
+ *  all-or-nothing. Densifying makes the walk smooth. */
+const EDGE_STEP = 14;
+const EDGE_MAX_STEPS = 400;
 
-function densify(pts: Pt[]): Pt[] {
-  const out: Pt[] = [pts[0]];
-  for (let i = 1; i < pts.length; i++) {
-    const [ax, ay] = pts[i - 1];
-    const [bx, by] = pts[i];
+function makeEdge(raw: Pt[]): Edge {
+  const dense: Pt[] = [raw[0]];
+  for (let i = 1; i < raw.length; i++) {
+    const [ax, ay] = raw[i - 1];
+    const [bx, by] = raw[i];
     const d = Math.hypot(bx - ax, by - ay);
-    const steps = Math.max(1, Math.min(Math.ceil(d / FOLD_STEP), FOLD_MAX_STEPS));
+    const steps = Math.max(1, Math.min(Math.ceil(d / EDGE_STEP), EDGE_MAX_STEPS));
     for (let s = 1; s <= steps; s++) {
-      out.push([ax + ((bx - ax) * s) / steps, ay + ((by - ay) * s) / steps]);
+      dense.push([ax + ((bx - ax) * s) / steps, ay + ((by - ay) * s) / steps]);
     }
   }
-  return out;
-}
-
-function makeFold(raw: Pt[]): Fold {
-  const pts = densify(raw);
-  const n = pts.length;
-  const flat = new Float64Array(n * 2);
+  const n = dense.length;
+  const pts = new Float64Array(n * 2);
   const cum = new Float64Array(n);
   let len = 0;
   for (let i = 0; i < n; i++) {
-    flat[i * 2] = pts[i][0];
-    flat[i * 2 + 1] = pts[i][1];
-    if (i > 0) {
-      len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
-    }
+    pts[i * 2] = dense[i][0];
+    pts[i * 2 + 1] = dense[i][1];
+    if (i > 0) len += Math.hypot(dense[i][0] - dense[i - 1][0], dense[i][1] - dense[i - 1][1]);
     cum[i] = len;
   }
-  return { pts: flat, cum, len };
+  return { pts, cum, len };
 }
 
 export type MarkLight = { destroy: () => void };
@@ -346,16 +375,23 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   let dpr = 1;
   let staticFrame = true;
   let planes: Plane[] = [];
-  /** the path the source drifts along — the sweep's fold, pushed off it */
-  let track: Fold | null = null;
-  /** arc-length bounds on `track` that keep the source inside the hero box */
+  /** the contour the light rides — see the selection in build() */
+  let track: Edge | null = null;
+  /** arc-length bounds on `track` that keep the light on stage and off the
+   *  type (see BEAM_CLEARANCE / BEAM_FLOOR_X) */
   let travel: [number, number] = [0, 0];
-  let bloomR = 0;
-  let tone: Tone = { ...DARK_TONE, ink: DARK_INK, shade: DARK_SHADE };
+  let beamLen = 0;
+  let haloWidth = 0;
+  let tone: Tone = { ...DARK_TONE, ink: DARK_INK, lift: null };
   let accent: RGB = [21, 144, 255];
 
   /** The planes, painted once. Only allocated when there is a loop to feed. */
   let plate: HTMLCanvasElement | null = null;
+  /** Where the composition is assembled before the ramp is applied to it.
+   *  Reused: on the degraded path where the plate is unavailable this is
+   *  reached once per frame, and allocating a full-viewport canvas there
+   *  would turn a cosmetic fallback into a memory problem. */
+  let scratch: HTMLCanvasElement | null = null;
   let prevBox: [number, number, number, number] | null = null;
 
   let t = 0;
@@ -367,15 +403,13 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   function readPalette() {
     isLight = document.documentElement.getAttribute("data-theme") === "light";
     tone = isLight
-      ? { ...LIGHT_TONE, ink: LIGHT_INK, shade: LIGHT_SHADE }
-      : { ...DARK_TONE, ink: DARK_INK, shade: DARK_SHADE };
+      ? { ...LIGHT_TONE, ink: LIGHT_INK, lift: LIGHT_LIFT }
+      : { ...DARK_TONE, ink: DARK_INK, lift: null };
 
     const cs = getComputedStyle(container);
     const raw =
       cs.getPropertyValue("--ps-hero-accent") ||
-      getComputedStyle(document.documentElement).getPropertyValue(
-        "--color-primary"
-      );
+      getComputedStyle(document.documentElement).getPropertyValue("--color-primary");
     const parsed = parseColor(raw);
     if (parsed) {
       accent = parsed;
@@ -389,150 +423,141 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
 
   // ── geometry ───────────────────────────────────────────────────────────────
 
-  /** The swoosh plane: the mark's cubic, run out past the frame at both ends,
-   *  closed off on one side. The fold keeps only the part near the frame. */
-  function buildSweep(K: number): Plane {
-    const m = makeMat(
-      (SWEEP_LAYER.span * K) / 1024,
-      SCENE_ROT,
-      MARK_ANCHOR_SWEEP,
-      SWEEP_LAYER.ax * w,
-      SWEEP_LAYER.ay * h
-    );
-
-    const curve: Pt[] = [];
-    for (let i = 0; i <= 96; i++) curve.push(applyMat(m, cubicAt(SWOOSH, i / 96)));
-
-    // Tangent directions leaving each end, in canvas space.
-    const headDir = applyDir(m, [
-      SWOOSH[0][0] - SWOOSH[1][0],
-      SWOOSH[0][1] - SWOOSH[1][1],
-    ]);
-    const tailDir = applyDir(m, [
-      SWOOSH[3][0] - SWOOSH[2][0],
-      SWOOSH[3][1] - SWOOSH[2][1],
-    ]);
-
-    const head = curve[0];
-    const tail = curve[curve.length - 1];
-    const reach = K * 1.4;
-
-    // The fold: what a hairline is drawn along. Long enough to leave the frame
-    // at both ends so it never appears to stop in mid-air, no longer.
-    const foldPts: Pt[] = [
-      [head[0] + headDir[0] * reach, head[1] + headDir[1] * reach],
-      ...curve,
-      [tail[0] + tailDir[0] * reach, tail[1] + tailDir[1] * reach],
-    ];
-
-    // The filled region sits on the concave side, so the plane's boundary
-    // bulges into it and reads as a curved fold rather than a cut.
-    const chord = norm([tail[0] - head[0], tail[1] - head[1]]);
-    const nrm: Pt = [chord[1], -chord[0]];
-    const mid = curve[48];
-    const chordMid: Pt = [(head[0] + tail[0]) / 2, (head[1] + tail[1]) / 2];
-    // Flip the normal so it points AWAY from the bulge (the concave side).
-    const bulge =
-      (mid[0] - chordMid[0]) * nrm[0] + (mid[1] - chordMid[1]) * nrm[1];
-    const side: Pt = bulge > 0 ? [-nrm[0], -nrm[1]] : nrm;
+  /** One magnified, cropped copy of the mark. */
+  function buildPlane(spec: LayerSpec): Plane {
+    const narrow = w < NARROW;
+    const height = spec.height * (narrow ? NARROW_SCALE : 1);
+    const ax = spec.ax + (narrow ? NARROW_DX : 0);
+    const ay = spec.ay + (narrow ? NARROW_DY : 0);
+    const scale = (height * h) / 790; // 790 = the mark's own height
+    const anchor: Pt = [MARK_BODY[spec.anchor * 2], MARK_BODY[spec.anchor * 2 + 1]];
+    const m = makeMat(scale, spec.rot, anchor, ax * w, ay * h);
 
     const fill = new Path2D();
-    const far: Pt[] = [
-      [head[0] + headDir[0] * OVERSHOOT, head[1] + headDir[1] * OVERSHOOT],
-      ...curve,
-      [tail[0] + tailDir[0] * OVERSHOOT, tail[1] + tailDir[1] * OVERSHOOT],
-    ];
-    fill.moveTo(far[0][0], far[0][1]);
-    for (let i = 1; i < far.length; i++) fill.lineTo(far[i][0], far[i][1]);
-    const last = far[far.length - 1];
-    fill.lineTo(
-      last[0] + side[0] * OVERSHOOT,
-      last[1] + side[1] * OVERSHOOT
-    );
-    fill.lineTo(
-      far[0][0] + side[0] * OVERSHOOT,
-      far[0][1] + side[1] * OVERSHOOT
-    );
-    fill.closePath();
-
-    return {
-      fill,
-      fold: makeFold(foldPts),
-      g0: mid,
-      g1: [mid[0] + side[0] * K * 0.8, mid[1] + side[1] * K * 0.8],
-      lift: SWEEP_LAYER.lift,
-    };
-  }
-
-  /** The blade: the mark's 34-degree acute vertex, opened out to plane scale.
-   *  Its point is the single most recognisable thing about the mark, and at
-   *  this size it reads as the corner of a structure. */
-  function buildBlade(K: number): Plane {
-    const m = makeMat(
-      (BLADE_LAYER.span * K) / 1024,
-      SCENE_ROT,
-      MARK_ANCHOR_POINT,
-      BLADE_LAYER.ax * w,
-      BLADE_LAYER.ay * h
-    );
-    const v = applyMat(m, MARK_ANCHOR_POINT);
-    const back = applyDir(m, BACK_DIR);
-    const under = applyDir(m, UNDER_DIR);
-
-    const fill = new Path2D();
-    fill.moveTo(v[0], v[1]);
-    fill.lineTo(v[0] + back[0] * OVERSHOOT, v[1] + back[1] * OVERSHOOT);
-    fill.lineTo(v[0] + under[0] * OVERSHOOT, v[1] + under[1] * OVERSHOOT);
-    fill.closePath();
-
-    // The fold runs IN along one edge, through the vertex, and OUT along the
-    // other — so the hairline gradient peaks exactly on the mark's acute
-    // point, and the light traces around the corner as it passes.
-    const reach = K * 1.9;
-    const fold = makeFold([
-      [v[0] + under[0] * reach, v[1] + under[1] * reach],
-      [v[0], v[1]],
-      [v[0] + back[0] * reach, v[1] + back[1] * reach],
-    ]);
-
-    const bis = norm([back[0] + under[0], back[1] + under[1]]);
-    return {
-      fill,
-      fold,
-      // Deepest right at the vertex, easing off as the plane opens out — a
-      // corner is always the darkest part of a turned face.
-      g0: [v[0] + bis[0] * K * 0.02, v[1] + bis[1] * K * 0.02],
-      g1: [v[0] + bis[0] * K * 1.35, v[1] + bis[1] * K * 1.35],
-      lift: BLADE_LAYER.lift,
-      occludes: true,
-    };
-  }
-
-  /** The bowl: the mark's large-radius cap, the deepest and quietest plane. */
-  function buildBowl(K: number): Plane {
-    const s = (BOWL_LAYER.span * K) / 1024;
-    const m = makeMat(s, SCENE_ROT, MARK_ANCHOR_BOWL, BOWL_LAYER.ax * w, BOWL_LAYER.ay * h);
-    const c = applyMat(m, MARK_ANCHOR_BOWL);
-    const r = BOWL_R * s;
-
-    const fill = new Path2D();
-    fill.arc(c[0], c[1], r, 0, Math.PI * 2);
-
-    // The fold is the arc, sampled only where it can plausibly cross the frame.
-    const pts: Pt[] = [];
-    for (let i = 0; i <= 128; i++) {
-      const a = (i / 128) * Math.PI * 2;
-      pts.push([c[0] + Math.cos(a) * r, c[1] + Math.sin(a) * r]);
+    const outline = new Path2D();
+    for (const poly of [MARK_BODY, MARK_WEDGE]) {
+      const n = poly.length / 2;
+      for (let i = 0; i < n; i++) {
+        const [x, y] = applyMat(m, poly[i * 2], poly[i * 2 + 1]);
+        if (i === 0) {
+          fill.moveTo(x, y);
+          outline.moveTo(x, y);
+        } else {
+          fill.lineTo(x, y);
+          outline.lineTo(x, y);
+        }
+      }
+      fill.closePath();
+      outline.closePath();
     }
 
+    // The lead run, in canvas space.
+    const [i0, i1] = spec.lead;
+    const raw: Pt[] = [];
+    for (let i = i0; i <= i1; i++) raw.push(applyMat(m, MARK_BODY[i * 2], MARK_BODY[i * 2 + 1]));
+    const lead = makeEdge(raw);
+
+    // The sheen runs inward from the lead run's midpoint. "Inward" is decided
+    // by testing which side of the edge normal is actually inside the polygon,
+    // so it is correct for any rotation rather than tuned per layer.
+    const mid = Math.floor(lead.cum.length / 2);
+    const mx = lead.pts[mid * 2];
+    const my = lead.pts[mid * 2 + 1];
+    const j = Math.min(mid + 1, lead.cum.length - 1);
+    const k = Math.max(mid - 1, 0);
+    const tx = lead.pts[j * 2] - lead.pts[k * 2];
+    const ty = lead.pts[j * 2 + 1] - lead.pts[k * 2 + 1];
+    const tl = Math.hypot(tx, ty) || 1;
+    let nx = -ty / tl;
+    let ny = tx / tl;
+    // isPointInPath is specified to take its point in canvas coordinates
+    // UNAFFECTED by the current transform, while the path IS transformed by
+    // it. With the CTM at scale(dpr) the two disagree, and the sheen would
+    // band the wrong way round on every device with dpr > 1. Testing under an
+    // identity transform puts both in the same CSS-pixel space.
+    const probe = Math.max(w, h) * 0.01;
+    c2d.save();
+    c2d.setTransform(1, 0, 0, 1, 0, 0);
+    const inside = c2d.isPointInPath(fill, mx + nx * probe, my + ny * probe);
+    c2d.restore();
+    if (!inside) {
+      nx = -nx;
+      ny = -ny;
+    }
+    const reach = Math.max(w, h) * SHEEN_SPAN;
+
     return {
       fill,
-      fold: makeFold(pts),
-      // Brightest at the dome's crest, falling away into the depth below it.
-      g0: [c[0], c[1] - r],
-      g1: [c[0], c[1] + r * 0.35],
-      lift: BOWL_LAYER.lift,
+      outline,
+      lead,
+      value: spec.value,
+      s0: [mx, my],
+      s1: [mx + nx * reach, my + ny * reach],
     };
+  }
+
+  /**
+   * The rectangles the light must stay out of, in canvas coordinates.
+   *
+   * Two of them, kept SEPARATE on purpose. Unioning them would merge the
+   * full-width site header into the type's box and leave no safe region at
+   * all on a wide screen.
+   *
+   *   1. the hero's type — deliberately the RANGE rect of each line's text
+   *      nodes, not the element box: `.ps-hero-line` and `.ps-hero-subtitle`
+   *      are block-level and span the full 1200px content column, so their
+   *      element boxes claim backdrop the glyphs never sit on.
+   *   2. the site header, which floats over the top of the hero. Without it
+   *      the narrow still frame parks the light behind the nav pill, where
+   *      nobody ever sees it.
+   */
+  function keepOut(): [number, number, number, number][] {
+    const base = container.getBoundingClientRect();
+    const rel = (r: DOMRect): [number, number, number, number] => [
+      r.left - base.left,
+      r.top - base.top,
+      r.right - base.left,
+      r.bottom - base.top,
+    ];
+    const boxes: [number, number, number, number][] = [];
+
+    const nodes = container.querySelectorAll<HTMLElement>(
+      ".ps-hero-line, .ps-hero-subtitle, .ps-hero-ctas"
+    );
+    if (!nodes.length) {
+      // Never drop silently: without this the light has no exclusion zone.
+      console.warn("[hero] no hero type found — light falls back to a width floor");
+    }
+    let x0 = Infinity;
+    let y0 = Infinity;
+    let x1 = -Infinity;
+    let y1 = -Infinity;
+    for (const el of nodes) {
+      // The CTA row is boxes, not a text run; everything else is measured as ink.
+      let r: DOMRect;
+      if (el.classList.contains("ps-hero-ctas")) {
+        r = el.getBoundingClientRect();
+      } else {
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        r = range.getBoundingClientRect();
+        range.detach();
+      }
+      if (r.width <= 0 || r.height <= 0) continue;
+      const b = rel(r);
+      x0 = Math.min(x0, b[0]);
+      y0 = Math.min(y0, b[1]);
+      x1 = Math.max(x1, b[2]);
+      y1 = Math.max(y1, b[3]);
+    }
+    if (Number.isFinite(x0)) boxes.push([x0, y0, x1, y1]);
+
+    const header = document.querySelector("header");
+    if (header) {
+      const b = rel(header.getBoundingClientRect());
+      if (b[3] > 0 && b[1] < h) boxes.push(b);
+    }
+    return boxes;
   }
 
   function build() {
@@ -549,53 +574,86 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     c2d.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     const K = Math.max(w, h);
-    bloomR = K * BLOOM_SPAN;
+    beamLen = K * BEAM_SPAN;
+    haloWidth = Math.max(6, K * 0.007);
 
-    // Back to front: bowl, blade, sweep.
-    planes = [buildBowl(K), buildBlade(K), buildSweep(K)];
+    planes = LAYERS.map(buildPlane);
 
-    // The source drifts along the sweep's fold, floated off it so it reads as
-    // a light in the space above the fold rather than a bead on a wire.
-    const sweepFold = planes[2].fold;
-    const off = K * OFFSET_SPAN;
-    const n = sweepFold.cum.length;
-    const shifted: Pt[] = [];
-    for (let i = 0; i < n; i++) {
-      const x = sweepFold.pts[i * 2];
-      const y = sweepFold.pts[i * 2 + 1];
-      const j = Math.min(i + 1, n - 1);
-      const k = Math.max(i - 1, 0);
-      const tx = sweepFold.pts[j * 2] - sweepFold.pts[k * 2];
-      const ty = sweepFold.pts[j * 2 + 1] - sweepFold.pts[k * 2 + 1];
-      const d = norm([tx, ty]);
-      shifted.push([x - d[1] * off, y + d[0] * off]);
+    // Which contour does the light ride? The longest stretch of a lead run
+    // that is on stage, right of BEAM_FLOOR_X and clear of the measured type.
+    // Front to back, first acceptable wins — so the light prefers the swoosh,
+    // the mark's signature curve, and only falls back to a deeper arc on a
+    // viewport where the swoosh has no room. Nothing here is per-breakpoint.
+    const boxes = keepOut();
+    const clear = K * BEAM_CLEARANCE;
+    const floorX = BEAM_FLOOR_X * w;
+    const margin = K * 0.04;
+
+    const safeRun = (e: Edge): [number, number] | null => {
+      let bestA = -1;
+      let bestB = -1;
+      let runA = -1;
+      for (let i = 0; i < e.cum.length; i++) {
+        const x = e.pts[i * 2];
+        const y = e.pts[i * 2 + 1];
+        const onStage = x >= floorX && x <= w + margin && y >= -margin && y <= h + margin;
+        // Outside EVERY keep-out box, with clearance on all four sides.
+        let clearOfType = true;
+        for (const b of boxes) {
+          if (
+            x < b[2] + clear &&
+            x > b[0] - clear &&
+            y < b[3] + clear &&
+            y > b[1] - clear
+          ) {
+            clearOfType = false;
+            break;
+          }
+        }
+        if (onStage && clearOfType) {
+          if (runA < 0) runA = i;
+          if (bestA < 0 || e.cum[i] - e.cum[runA] > e.cum[bestB] - e.cum[bestA]) {
+            bestA = runA;
+            bestB = i;
+          }
+        } else {
+          runA = -1;
+        }
+      }
+      return bestA >= 0 && bestB > bestA ? [e.cum[bestA], e.cum[bestB]] : null;
+    };
+
+    const wanted = K * BEAM_SPAN;
+    let chosen: { edge: Edge; run: [number, number] } | null = null;
+    for (let i = planes.length - 1; i >= 0; i--) {
+      const run = safeRun(planes[i].lead);
+      if (!run) continue;
+      const len = run[1] - run[0];
+      if (!chosen || len > chosen.run[1] - chosen.run[0]) chosen = { edge: planes[i].lead, run };
+      // Long enough to carry a full-length beam AND some travel: stop here, so
+      // the frontmost workable contour wins rather than merely the longest.
+      if (len >= wanted * 1.05) break;
     }
-    track = makeFold(shifted);
 
-    // The fold deliberately runs well past the frame at both ends, so the
-    // source has to be confined to the stretch of it that is actually on
-    // screen — otherwise most of the cycle is spent lighting nothing.
-    travel = [track.len * 0.12, track.len * 0.88];
-    let first = -1;
-    let last = -1;
-    const margin = bloomR * 0.35;
-    for (let i = 0; i < track.cum.length; i++) {
-      const x = track.pts[i * 2];
-      const y = track.pts[i * 2 + 1];
-      if (x < -margin || x > w + margin || y < -margin || y > h + margin) continue;
-      if (first < 0) first = i;
-      last = i;
-    }
-    if (first >= 0 && last > first) {
-      travel = [track.cum[first], track.cum[last]];
+    if (chosen) {
+      track = chosen.edge;
+      // The beam has to FIT inside the safe stretch, not merely be centred in
+      // it — its own length is what would otherwise reach past the clearance
+      // and put the brightest thing on the canvas under the wordmark.
+      beamLen = Math.min(wanted, (chosen.run[1] - chosen.run[0]) * 0.72);
+      travel = [chosen.run[0] + beamLen * 0.5, chosen.run[1] - beamLen * 0.5];
     } else {
-      console.warn("[hero] light track never crosses the hero — using its midspan");
+      // Never drop silently — say why the light is parked mid-run.
+      console.warn("[hero] no contour clears the hero type — light parked mid-sweep");
+      track = planes[planes.length - 1].lead;
+      beamLen = Math.min(wanted, track.len * 0.5);
+      travel = [track.len * 0.4, track.len * 0.6];
     }
 
     prevBox = null;
     if (staticFrame) {
-      // No loop, so no plate: a 12MB backing store nobody reads is 12MB of
-      // phone memory spent on nothing.
+      // No loop, so no plate: a backing store nobody reads is phone memory
+      // spent on nothing.
       plate = null;
     } else {
       plate = plate ?? document.createElement("canvas");
@@ -608,8 +666,8 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
 
   // ── painting ───────────────────────────────────────────────────────────────
 
-  /** Fine grain. A 5%-contrast gradient on a dark page bands visibly on an
-   *  8-bit display; a per-pixel dither is what stops it. Painted once. */
+  /** Fine grain. A 5%-contrast fill on a dark page bands visibly on an 8-bit
+   *  display; a per-pixel dither is what stops it. Painted once. */
   function paintGrain(g: CanvasRenderingContext2D) {
     const size = 128;
     const tile = document.createElement("canvas");
@@ -633,68 +691,77 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     g.fillRect(0, 0, w, h);
   }
 
-  /** The planes and their folds. Never changes between frames. */
+  /**
+   * The composition, minus the light. Never changes between frames.
+   *
+   * The whole thing is drawn into a scratch layer first and then composited
+   * through a horizontal ramp, so the planes keep their crisp edges on the
+   * right — that definition is the point — while the whole composition falls
+   * away to nothing under the text column on the left.
+   */
   function paintScene(g: CanvasRenderingContext2D) {
     g.clearRect(0, 0, w, h);
 
-    for (const p of planes) {
-      const paint = p.occludes ? tone.shade : tone.ink;
-      const near = p.occludes ? tone.occlude : tone.planeNear * p.lift;
-      const far = p.occludes ? 0 : tone.planeFar * p.lift;
-      const grad = g.createLinearGradient(p.g0[0], p.g0[1], p.g1[0], p.g1[1]);
-      grad.addColorStop(0, rgba(paint, near));
-      grad.addColorStop(1, rgba(paint, far));
-      g.fillStyle = grad;
-      g.fill(p.fill);
+    scratch = scratch ?? document.createElement("canvas");
+    scratch.width = Math.max(1, Math.round(w * dpr));
+    scratch.height = Math.max(1, Math.round(h * dpr));
+    const sg = scratch.getContext("2d");
+    if (!sg) {
+      // Never drop silently, and never leave the hero unpainted.
+      console.warn("[hero] scratch layer unavailable — drawing planes direct");
+      paintPlanes(g);
+      paintGrain(g);
+      return;
     }
+    sg.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paintPlanes(sg);
+    paintGrain(sg);
 
-    const K = Math.max(w, h);
+    // The ramp. Left of FADE_FROM the composition is gone entirely, which is
+    // what keeps the wordmark's contrast independent of what the planes do.
+    sg.setTransform(1, 0, 0, 1, 0, 0);
+    sg.globalCompositeOperation = "destination-in";
+    const ramp = sg.createLinearGradient(0, 0, scratch.width, 0);
+    ramp.addColorStop(0, "rgba(0,0,0,0)");
+    ramp.addColorStop(0.42, "rgba(0,0,0,0)");
+    ramp.addColorStop(0.68, "rgba(0,0,0,0.55)");
+    ramp.addColorStop(1, "rgba(0,0,0,1)");
+    sg.fillStyle = ramp;
+    sg.fillRect(0, 0, scratch.width, scratch.height);
 
-    /** Trace a fold, with a gradient that dies at both ends — an edge running
-     *  to the corner at full strength reads as a graphic, not as a lit fold. */
-    const traceFold = (p: Plane, alpha: number) => {
-      const f = p.fold;
-      const n = f.cum.length;
-      const a: Pt = [f.pts[0], f.pts[1]];
-      const b: Pt = [f.pts[(n - 1) * 2], f.pts[(n - 1) * 2 + 1]];
-      const grad = g.createLinearGradient(a[0], a[1], b[0], b[1]);
-      grad.addColorStop(0, rgba(tone.ink, 0));
-      grad.addColorStop(0.34, rgba(tone.ink, alpha));
-      grad.addColorStop(0.66, rgba(tone.ink, alpha));
-      grad.addColorStop(1, rgba(tone.ink, 0));
-      g.strokeStyle = grad;
-      g.beginPath();
-      g.moveTo(f.pts[0], f.pts[1]);
-      for (let i = 1; i < n; i++) g.lineTo(f.pts[i * 2], f.pts[i * 2 + 1]);
-      g.stroke();
-    };
+    g.drawImage(scratch, 0, 0, scratch.width, scratch.height, 0, 0, w, h);
+  }
 
+  function paintPlanes(g: CanvasRenderingContext2D) {
     g.lineJoin = "round";
     g.lineCap = "butt";
 
-    // Sheen: wide soft strokes along each fold, CLIPPED to that plane so only
-    // the inboard half survives. The result is a surface that rolls away from
-    // its own edge — the difference between a lit plane and a flat fill.
     for (const p of planes) {
+      // 1 — the flat value. Overlapping planes compound, which is where the
+      //     depth comes from: no plane is shaded to fake it.
+      const paint = tone.lift && p.value < 0.8 ? tone.lift : tone.ink;
+      g.fillStyle = rgba(paint, tone.plane * p.value);
+      g.fill(p.fill);
+
+      // 2 — a soft band inside the lead edge, so a plane has a surface that
+      //     rolls away from its own boundary instead of reading as flat art.
       g.save();
       g.clip(p.fill);
-      // Two bands, not three: a tight third band turns the fold into a beam,
-      // and beams across a dark hero is exactly the look everyone has.
-      for (const band of [
-        { width: K * 0.19, alpha: tone.sheen * 0.5 },
-        { width: K * 0.075, alpha: tone.sheen },
-      ]) {
-        g.lineWidth = band.width;
-        traceFold(p, band.alpha * p.lift);
-      }
+      const sheen = g.createLinearGradient(p.s0[0], p.s0[1], p.s1[0], p.s1[1]);
+      sheen.addColorStop(0, rgba(paint, tone.sheen * p.value));
+      sheen.addColorStop(1, rgba(paint, 0));
+      g.fillStyle = sheen;
+      g.fillRect(0, 0, w, h);
       g.restore();
     }
 
-    // Hairlines last, so a fold is never buried by the plane in front of it.
-    g.lineWidth = Math.max(1 / dpr, 0.75);
-    for (const p of planes) traceFold(p, tone.edge * p.lift);
-
-    paintGrain(g);
+    // 3 — the boundaries, last so no plane buries the edge of the one behind
+    //     it. These are what make the forms definite.
+    g.lineWidth = Math.max(1 / dpr, 0.8);
+    for (const p of planes) {
+      g.strokeStyle = rgba(tone.ink, tone.edge * p.value);
+      g.stroke(p.outline);
+    }
   }
 
   function paintPlate() {
@@ -710,13 +777,9 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     paintScene(g);
   }
 
-  /** Where the source is at clock `time`, and how strongly it burns. */
-  function sourceAt(time: number): Pt | null {
-    if (!track || track.len <= 0) return null;
-    // Cosine ease: the light slows at each end of its travel instead of
-    // snapping around, which is what makes a 34s cycle read as drift.
-    const phase = 0.5 - 0.5 * Math.cos((2 * Math.PI * time) / DRIFT_PERIOD);
-    const s = travel[0] + (travel[1] - travel[0]) * phase;
+  /** Sample index on `track` nearest arc length `s`. */
+  function indexAt(s: number): number {
+    if (!track) return 0;
     const cum = track.cum;
     let lo = 0;
     let hi = cum.length - 1;
@@ -725,108 +788,75 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
       if (cum[mid] < s) lo = mid + 1;
       else hi = mid;
     }
-    const i = Math.max(1, lo);
-    const seg = cum[i] - cum[i - 1] || 1;
-    const f = (s - cum[i - 1]) / seg;
-    return [
-      track.pts[(i - 1) * 2] + (track.pts[i * 2] - track.pts[(i - 1) * 2]) * f,
-      track.pts[(i - 1) * 2 + 1] +
-        (track.pts[i * 2 + 1] - track.pts[(i - 1) * 2 + 1]) * f,
-    ];
+    return lo;
+  }
+
+  /** The lit stretch of contour at clock `time`, plus the box it dirties. */
+  function beamAt(time: number): { i0: number; i1: number; box: [number, number, number, number] } | null {
+    if (!track || track.len <= 0 || travel[1] <= travel[0]) return null;
+    // Cosine ease: the light slows at each end of its travel instead of
+    // snapping around, which is what makes a 30s cycle read as drift.
+    const phase = 0.5 - 0.5 * Math.cos((2 * Math.PI * time) / DRIFT_PERIOD);
+    const s = travel[0] + (travel[1] - travel[0]) * phase;
+    const i0 = indexAt(s - beamLen * 0.5);
+    const i1 = indexAt(s + beamLen * 0.5);
+    if (i1 <= i0) return null;
+
+    let x0 = Infinity;
+    let y0 = Infinity;
+    let x1 = -Infinity;
+    let y1 = -Infinity;
+    for (let i = i0; i <= i1; i++) {
+      const x = track.pts[i * 2];
+      const y = track.pts[i * 2 + 1];
+      if (x < x0) x0 = x;
+      if (x > x1) x1 = x;
+      if (y < y0) y0 = y;
+      if (y > y1) y1 = y;
+    }
+    const pad = haloWidth + 2;
+    return { i0, i1, box: [x0 - pad, y0 - pad, x1 - x0 + pad * 2, y1 - y0 + pad * 2] };
   }
 
   /**
-   * The light. Two parts, both bounded by `bloomR` so the dirty rectangle
-   * stays bounded:
-   *   1. a soft bloom, clipped to the planes so it can never float free of
-   *      the geometry (an unclipped one is just a gradient blob);
-   *   2. a glint on every fold that passes close enough — a short bright
-   *      segment of the edge itself, which is what sells it as light on a
-   *      structure rather than a light on a background.
+   * The light. A narrow bright core with one soft halo behind it, gradient-
+   * faded to nothing at both ends so it reads as light catching a contour
+   * rather than as a lit outline or a moving dot. Two stroked passes are
+   * cheaper and crisper than shadowBlur, which costs a full-surface blur.
    */
-  function paintLight(g: CanvasRenderingContext2D, L: Pt) {
-    // 1 — bloom.
-    g.save();
-    const clip = new Path2D();
-    for (const p of planes) clip.addPath(p.fill);
-    g.clip(clip);
-    if (tone.additive) g.globalCompositeOperation = "lighter";
-    const bg = g.createRadialGradient(L[0], L[1], 0, L[0], L[1], bloomR);
-    bg.addColorStop(0, rgba(accent, tone.bloom));
-    bg.addColorStop(0.45, rgba(accent, tone.bloom * 0.34));
-    bg.addColorStop(1, rgba(accent, 0));
-    g.fillStyle = bg;
-    g.fillRect(L[0] - bloomR, L[1] - bloomR, bloomR * 2, bloomR * 2);
-    g.restore();
+  function paintBeam(g: CanvasRenderingContext2D, b: { i0: number; i1: number }) {
+    if (!track) return;
+    const a: Pt = [track.pts[b.i0 * 2], track.pts[b.i0 * 2 + 1]];
+    const z: Pt = [track.pts[b.i1 * 2], track.pts[b.i1 * 2 + 1]];
 
-    // 2 — glints.
     g.save();
     if (tone.additive) g.globalCompositeOperation = "lighter";
     g.lineCap = "round";
-    for (const p of planes) {
-      const f = p.fold;
-      const n = f.cum.length;
-
-      // Nearest sample on this fold.
-      let best = -1;
-      let bestD = Infinity;
-      for (let i = 0; i < n; i++) {
-        const dx = f.pts[i * 2] - L[0];
-        const dy = f.pts[i * 2 + 1] - L[1];
-        const d = dx * dx + dy * dy;
-        if (d < bestD) {
-          bestD = d;
-          best = i;
-        }
-      }
-      const dist = Math.sqrt(bestD);
-      if (best < 0 || dist > bloomR) continue;
-
-      // Falls off with distance, and never reaches full strength on the
-      // planes set back in depth.
-      const fall = 1 - dist / bloomR;
-      const strength = fall * fall * p.lift;
-      if (strength < 0.02) continue;
-
-      // The lit stretch: whatever of this fold is inside the bloom.
-      const reach = Math.sqrt(Math.max(0, bloomR * bloomR - bestD));
-      const s0 = f.cum[best] - reach;
-      const s1 = f.cum[best] + reach;
-      let i0 = best;
-      let i1 = best;
-      while (i0 > 0 && f.cum[i0 - 1] > s0) i0--;
-      while (i1 < n - 1 && f.cum[i1 + 1] < s1) i1++;
-      if (i1 <= i0) continue;
-
-      const a: Pt = [f.pts[i0 * 2], f.pts[i0 * 2 + 1]];
-      const b: Pt = [f.pts[i1 * 2], f.pts[i1 * 2 + 1]];
-
-      // Two passes: a wide soft halo, then the hairline itself. Cheaper and
-      // crisper than shadowBlur, which costs a full-surface blur per stroke.
-      for (const pass of [
-        { width: 7, alpha: tone.glintHalo },
-        { width: Math.max(1 / dpr, 0.9), alpha: tone.glint },
-      ]) {
-        const grad = g.createLinearGradient(a[0], a[1], b[0], b[1]);
-        grad.addColorStop(0, rgba(accent, 0));
-        grad.addColorStop(0.5, rgba(accent, pass.alpha * strength));
-        grad.addColorStop(1, rgba(accent, 0));
-        g.strokeStyle = grad;
-        g.lineWidth = pass.width;
-        g.beginPath();
-        g.moveTo(a[0], a[1]);
-        for (let i = i0 + 1; i <= i1; i++) g.lineTo(f.pts[i * 2], f.pts[i * 2 + 1]);
-        g.stroke();
-      }
+    g.lineJoin = "round";
+    for (const pass of [
+      { width: haloWidth, alpha: tone.beamHalo },
+      { width: Math.max(1.6, haloWidth * 0.22), alpha: tone.beam },
+    ]) {
+      const grad = g.createLinearGradient(a[0], a[1], z[0], z[1]);
+      grad.addColorStop(0, rgba(accent, 0));
+      grad.addColorStop(0.34, rgba(accent, pass.alpha * 0.7));
+      grad.addColorStop(0.55, rgba(accent, pass.alpha));
+      grad.addColorStop(1, rgba(accent, 0));
+      g.strokeStyle = grad;
+      g.lineWidth = pass.width;
+      g.beginPath();
+      g.moveTo(a[0], a[1]);
+      for (let i = b.i0 + 1; i <= b.i1; i++) g.lineTo(track.pts[i * 2], track.pts[i * 2 + 1]);
+      g.stroke();
     }
     g.restore();
   }
 
-  /** Full repaint — used for the still frame, and whenever the plate changes. */
+  /** Full repaint — the still frame, and whenever the plate changes. */
   function drawStill() {
     paintScene(c2d);
-    const L = sourceAt(t);
-    if (L) paintLight(c2d, L);
+    const b = beamAt(t);
+    if (b) paintBeam(c2d, b);
     prevBox = null;
   }
 
@@ -836,24 +866,15 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
       drawStill();
       return;
     }
-    const L = sourceAt(t);
-    if (!L) return;
+    const b = beamAt(t);
+    if (!b) return;
 
-    // The light's footprint, plus a pixel of slack for the halo's line width.
-    const pad = bloomR + 6;
-    const box: [number, number, number, number] = [
-      L[0] - pad,
-      L[1] - pad,
-      pad * 2,
-      pad * 2,
-    ];
-
-    // Union with the previous frame's footprint, so the trailing edge of the
-    // bloom is cleaned up rather than smeared across the hero.
-    let x0 = box[0];
-    let y0 = box[1];
-    let x1 = box[0] + box[2];
-    let y1 = box[1] + box[3];
+    // Union with the previous frame's footprint, so the trailing end of the
+    // beam is cleaned up rather than smeared along the contour.
+    let x0 = b.box[0];
+    let y0 = b.box[1];
+    let x1 = b.box[0] + b.box[2];
+    let y1 = b.box[1] + b.box[3];
     if (prevBox) {
       x0 = Math.min(x0, prevBox[0]);
       y0 = Math.min(y0, prevBox[1]);
@@ -864,7 +885,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     y0 = Math.max(0, Math.floor(y0));
     x1 = Math.min(w, Math.ceil(x1));
     y1 = Math.min(h, Math.ceil(y1));
-    prevBox = box;
+    prevBox = b.box;
     if (x1 <= x0 || y1 <= y0) return;
 
     const dw = x1 - x0;
@@ -875,18 +896,8 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     c2d.rect(x0, y0, dw, dh);
     c2d.clip();
     c2d.clearRect(x0, y0, dw, dh);
-    c2d.drawImage(
-      plate,
-      x0 * dpr,
-      y0 * dpr,
-      dw * dpr,
-      dh * dpr,
-      x0,
-      y0,
-      dw,
-      dh
-    );
-    paintLight(c2d, L);
+    c2d.drawImage(plate, x0 * dpr, y0 * dpr, dw * dpr, dh * dpr, x0, y0, dw, dh);
+    paintBeam(c2d, b);
     c2d.restore();
   }
 
@@ -920,8 +931,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   }
 
   const themeObserver = new MutationObserver(() => {
-    const nowLight =
-      document.documentElement.getAttribute("data-theme") === "light";
+    const nowLight = document.documentElement.getAttribute("data-theme") === "light";
     if (nowLight === isLight) return;
     readPalette();
     // The plate holds baked-in theme colour, so it has to be repainted before
@@ -964,6 +974,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
       themeObserver.disconnect();
       canvas.remove();
       plate = null;
+      scratch = null;
     },
   };
 }

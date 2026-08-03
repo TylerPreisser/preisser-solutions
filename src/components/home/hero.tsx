@@ -33,10 +33,14 @@ export function Hero() {
 
   const pillars = splitPillars(siteConfig.hero.h1);
 
-  // The background: light falling across planes cut from the brand mark's own
-  // geometry. See hero-mark-light.ts for the full rationale — it owns
-  // reduced-motion, the mobile still frame, off-screen pause and the theme
-  // watcher. The contrast scrim is CSS (.ps-hero-overlay), on purpose.
+  // The background: the brand mark itself, magnified past the frame so only
+  // fragments of it stay in shot, with one narrow blue light travelling a real
+  // contour. See hero-mark-light.ts for the full rationale — it owns
+  // reduced-motion, the narrow-viewport still frame, the off-screen cancel and
+  // the theme watcher, and it measures THIS component's glyph boxes to decide
+  // where the light is allowed to go. Mounted in an effect on purpose: the
+  // headline below is server-rendered and must never wait on it. The contrast
+  // scrim is CSS (.ps-hero-overlay), also on purpose.
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
