@@ -88,8 +88,12 @@ const SCENE_ROT = -85.3;
 const SWEEP_LAYER = { span: 1.75, ax: 0.68, ay: 0.5, lift: 1.0 };
 /** Placed so the mark's acute vertex lands INSIDE the frame, to the right of
  *  the sweep. That 34-degree point is the most particular thing the mark owns.
- *  Kept quiet on purpose — it should be found, not announced. */
-const BLADE_LAYER = { span: 2.1, ax: 0.9, ay: 0.63, lift: 0.42 };
+ *  Kept quiet on purpose — it should be found, not announced.
+ *
+ *  This is the one plane that DARKENS. Every plane lightening the page reads
+ *  as translucent film stacked on glass; one plane that occludes is what makes
+ *  the others read as being in front of it. */
+const BLADE_LAYER = { span: 2.1, ax: 0.93, ay: 0.68, lift: 0.5 };
 /** A shallow dome under the composition — the quietest plane, there to put a
  *  floor under the depth rather than to be noticed. */
 const BOWL_LAYER = { span: 3.02, ax: 0.62, ay: 1.62, lift: 0.34 };
@@ -117,9 +121,16 @@ const STILL_PHASE = 0.34;
  *  family as the brand blue, so the planes never read as grey. */
 const DARK_INK: RGB = [152, 196, 255];
 const LIGHT_INK: RGB = [12, 46, 96];
+/** What the occluding plane lays down. Below the page colour in dark, a cool
+ *  shade in light — either way it reads as a face turned away from the light. */
+const DARK_SHADE: RGB = [2, 7, 16];
+const LIGHT_SHADE: RGB = [34, 72, 126];
 
 type Tone = {
   ink: RGB;
+  shade: RGB;
+  /** the occluding plane's own fill alpha */
+  occlude: number;
   /** plane fill alpha at the fold, and out in the depth */
   planeNear: number;
   planeFar: number;
@@ -138,7 +149,8 @@ type Tone = {
   additive: boolean;
 };
 
-const DARK_TONE: Omit<Tone, "ink"> = {
+const DARK_TONE: Omit<Tone, "ink" | "shade"> = {
+  occlude: 0.42,
   planeNear: 0.07,
   planeFar: 0.0,
   edge: 0.3,
@@ -150,11 +162,15 @@ const DARK_TONE: Omit<Tone, "ink"> = {
   additive: true,
 };
 
-const LIGHT_TONE: Omit<Tone, "ink"> = {
-  planeNear: 0.08,
+// A light page has almost no headroom below it, so every value here is
+// roughly half its dark counterpart. Pushed any further the planes stop
+// reading as light on a surface and start reading as grey creases.
+const LIGHT_TONE: Omit<Tone, "ink" | "shade"> = {
+  occlude: 0.034,
+  planeNear: 0.055,
   planeFar: 0.0,
-  edge: 0.26,
-  sheen: 0.07,
+  edge: 0.17,
+  sheen: 0.045,
   grain: 0.035,
   bloom: 0.14,
   glint: 0.55,
@@ -261,6 +277,8 @@ type Plane = {
   g0: Pt;
   g1: Pt;
   lift: number;
+  /** true for the plane that occludes rather than catches light */
+  occludes?: boolean;
 };
 
 /** Longest gap allowed between fold samples. The glint finds the lit stretch
@@ -333,7 +351,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   /** arc-length bounds on `track` that keep the source inside the hero box */
   let travel: [number, number] = [0, 0];
   let bloomR = 0;
-  let tone: Tone = { ...DARK_TONE, ink: DARK_INK };
+  let tone: Tone = { ...DARK_TONE, ink: DARK_INK, shade: DARK_SHADE };
   let accent: RGB = [21, 144, 255];
 
   /** The planes, painted once. Only allocated when there is a loop to feed. */
@@ -349,8 +367,8 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   function readPalette() {
     isLight = document.documentElement.getAttribute("data-theme") === "light";
     tone = isLight
-      ? { ...LIGHT_TONE, ink: LIGHT_INK }
-      : { ...DARK_TONE, ink: DARK_INK };
+      ? { ...LIGHT_TONE, ink: LIGHT_INK, shade: LIGHT_SHADE }
+      : { ...DARK_TONE, ink: DARK_INK, shade: DARK_SHADE };
 
     const cs = getComputedStyle(container);
     const raw =
@@ -481,9 +499,12 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     return {
       fill,
       fold,
-      g0: [v[0] + bis[0] * K * 0.05, v[1] + bis[1] * K * 0.05],
-      g1: [v[0] + bis[0] * K * 1.1, v[1] + bis[1] * K * 1.1],
+      // Deepest right at the vertex, easing off as the plane opens out — a
+      // corner is always the darkest part of a turned face.
+      g0: [v[0] + bis[0] * K * 0.02, v[1] + bis[1] * K * 0.02],
+      g1: [v[0] + bis[0] * K * 1.35, v[1] + bis[1] * K * 1.35],
       lift: BLADE_LAYER.lift,
+      occludes: true,
     };
   }
 
@@ -617,9 +638,12 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     g.clearRect(0, 0, w, h);
 
     for (const p of planes) {
+      const paint = p.occludes ? tone.shade : tone.ink;
+      const near = p.occludes ? tone.occlude : tone.planeNear * p.lift;
+      const far = p.occludes ? 0 : tone.planeFar * p.lift;
       const grad = g.createLinearGradient(p.g0[0], p.g0[1], p.g1[0], p.g1[1]);
-      grad.addColorStop(0, rgba(tone.ink, tone.planeNear * p.lift));
-      grad.addColorStop(1, rgba(tone.ink, tone.planeFar * p.lift));
+      grad.addColorStop(0, rgba(paint, near));
+      grad.addColorStop(1, rgba(paint, far));
       g.fillStyle = grad;
       g.fill(p.fill);
     }
@@ -654,10 +678,11 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     for (const p of planes) {
       g.save();
       g.clip(p.fill);
+      // Two bands, not three: a tight third band turns the fold into a beam,
+      // and beams across a dark hero is exactly the look everyone has.
       for (const band of [
-        { width: K * 0.16, alpha: tone.sheen * 0.42 },
-        { width: K * 0.07, alpha: tone.sheen * 0.7 },
-        { width: K * 0.026, alpha: tone.sheen },
+        { width: K * 0.19, alpha: tone.sheen * 0.5 },
+        { width: K * 0.075, alpha: tone.sheen },
       ]) {
         g.lineWidth = band.width;
         traceFold(p, band.alpha * p.lift);

@@ -20,6 +20,9 @@ const EXCLUDED_HTML = new Set([
 // causes GSC "Page with redirect" errors (Google indexes the source, finds the
 // 301, marks it invalid). Mirror public/_redirects keys here.
 const EXCLUDED_PATHS = new Set([
+  // Unshipped work removed 2026-08-03 (301 -> /case-studies in _redirects)
+  "/case-studies/c3-studio",
+  "/case-studies/nwks-encounter",
   // Legacy case-study slugs (redirect to canonical anonymized framings)
   "/case-studies/astrus-insurance",
   "/case-studies/sunrise-transportation",

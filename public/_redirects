@@ -1,3 +1,8 @@
+# Unshipped work pulled from the site 2026-08-03 — C3 Studio and NWKS
+# Encounter are not finished and should not be presented as delivered.
+/case-studies/c3-studio /case-studies 301
+/case-studies/nwks-encounter /case-studies 301
+
 # Agents → Products rename 2026-05-21
 /agents /products 301
 /agents/ /products 301
