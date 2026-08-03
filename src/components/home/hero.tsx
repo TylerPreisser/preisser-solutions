@@ -137,10 +137,9 @@ export function Hero() {
         */}
         <p className="ps-hero-summary sr-only">
           Preisser Solutions builds custom business software, business
-          automation, and AI integration for Kansas businesses — admin
-          dashboards, customer databases, document pipelines, and the
-          automations that connect them. Founded by Tyler Preisser in Hays,
-          Kansas.
+          automation, and AI integration — admin dashboards, customer
+          databases, document pipelines, and the automations that connect
+          them. Founded by Tyler Preisser.
         </p>
 
         {/*

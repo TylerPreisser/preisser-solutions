@@ -68,7 +68,7 @@ export function organizationSchema() {
     },
     image: `${URL}/images/ps-logo.png`,
     description: seoSite.description,
-    slogan: "Custom business software, built in Kansas",
+    slogan: "Business Software. Business Automation. AI Integration.",
     foundingDate: "2023",
     founder: { "@id": PERSON_ID },
     email: seoSite.email,

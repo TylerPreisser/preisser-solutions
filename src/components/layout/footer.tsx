@@ -50,8 +50,25 @@ export function Footer() {
               height={1024}
               loading="lazy"
             />
+            {/* The brand line under the mark. Split on the sentence boundary so
+                "AI Integration." can carry the accent — the same colour device
+                the hero uses. The full string stays intact for screen readers. */}
             <p className="ps-footer-tagline">
-              {siteConfig.tagline}
+              {siteConfig.tagline
+                .split(".")
+                .map((part) => part.trim())
+                .filter(Boolean)
+                .map((part, i, all) => (
+                  <span
+                    key={part}
+                    className={
+                      "ps-footer-tagline-line" +
+                      (i === all.length - 1 ? " ps-footer-tagline-line--accent" : "")
+                    }
+                  >
+                    {part}.{i < all.length - 1 ? " " : ""}
+                  </span>
+                ))}
             </p>
             {/* Visible NAP — required for local SEO consistency and citation matching. */}
             <address className="ps-footer-nap" style={{ fontStyle: "normal" }}>

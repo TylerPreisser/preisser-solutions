@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Preisser Solutions",
-  tagline: "Custom business software, built in Kansas",
+  tagline: "Business Software. Business Automation. AI Integration.",
   url: "https://preissersolutions.com",
   contact: {
     email: "tyler@preissersolutions.com",

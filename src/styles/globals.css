@@ -8256,3 +8256,13 @@ body:has(.ps-contact2-hero) .ps-header-blur {
   opacity: 0;
   transition: opacity 200ms ease;
 }
+
+/* Footer brand line — the three pillars under the mark, matching the hero's
+   colour device. Each on its own line so it reads as the wordmark, not a
+   run-on sentence. */
+.ps-footer-tagline-line {
+  display: block;
+}
+.ps-footer-tagline-line--accent {
+  color: var(--theme-accent-text);
+}
