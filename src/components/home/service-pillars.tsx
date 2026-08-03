@@ -1648,13 +1648,8 @@ export function ServicePillars() {
           Every one of our builds begins with how your business operates, and the person
           who scopes the project is the person who builds it. No handoffs, no
           subcontractors, no seven-figure Salesforce integration. Our solutions target
-          ease of use, time savings, and the parts of the week that quietly cost you the
-          most &mdash; the same numbers keyed into three different systems, the report
-          somebody rebuilds by hand every month, the season that turns into a
-          data-entry job. You already know where your business loses hours. We build to
-          give them back, in something your team can use on day one without a manual.
-          That is the difference between software you get sold and software built around
-          you.
+          ease of use, time savings, fewer manual steps, and numbers that finally agree
+          with each other. Built around your business, not sold to it.
         </p>
       </div>
 
