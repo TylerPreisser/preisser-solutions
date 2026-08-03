@@ -4,14 +4,14 @@ Last updated: 2026-05-22.
 
 ## Source Of Truth
 
-- Only active workspace: `/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean`.
+- Only active workspace: `/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current`.
 - No other local folder is active for this site.
 - Production target: Cloudflare Pages project `preisser-solutions`.
 - Production deployment model: Wrangler uploads local `out/`.
 - Cloudflare Pages is not Git-connected. GitHub push alone does not deploy
   production.
 - Never deploy unless `pwd` is exactly
-  `/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean`.
+  `/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current`.
 
 ## Current Snapshot
 
@@ -31,7 +31,7 @@ Last updated: 2026-05-22.
 
 ## What Changed On 2026-05-22
 
-- Established `/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean` as
+- Established `/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current` as
   the sole active source.
 - Removed non-canonical local workspaces from active use.
 - Removed old `.context` cartography/state/deploy-checklist files from the repo.
@@ -78,7 +78,7 @@ Last updated: 2026-05-22.
 ## Required Gate
 
 ```bash
-cd "/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean"
+cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
 npm ci
 npm run build
 npm run lint

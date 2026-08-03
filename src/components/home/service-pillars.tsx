@@ -3,11 +3,9 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import {
-  WebsiteVisual,
   AutomationVisual,
   SystemFixesVisual,
   DashboardVisual,
-  RevenueVisual,
 } from "@/components/home/card-visuals-backup";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { LOCAL_BIZ_ID } from "@/lib/seo/schema";
@@ -29,7 +27,16 @@ interface Differentiator {
 }
 
 interface ServicePillar {
+  /** Stable key + DOM id for this pillar. */
   type: string;
+  /**
+   * Which existing `.ps-bento-card--<variant>` layout class this card reuses.
+   * Kept separate from `type` because the variant names come from the old
+   * five-pillar bento and no longer match the pillar they style.
+   */
+  variant: string;
+  /** Optional extra utility classes for grid placement overrides. */
+  cardClass?: string;
   title: string;
   description: string;
   href: string;
@@ -46,414 +53,268 @@ interface ServicePillar {
 
 const services: ServicePillar[] = [
   {
-    type: "websites",
-    title: "Websites & Applications",
+    type: "software",
+    // Reuses the existing .ps-bento-card--websites layout variant.
+    variant: "websites",
+    // At >=940px the --websites variant spans the full row (it was the
+    // hero card of the old five-card bento). With three pillars each card
+    // is one third, so the span is reset here. See the note in the report:
+    // this belongs in globals.css once Stream B owns the 3-card grid.
+    title: "Business Software.",
     description:
-      "Custom-coded onto servers designed for AI agents. Indexed on every AI registry. Structured so AI gets exactly what it needs when it crawls. We frame the messaging so AI picks you first.",
+      "The platform your team logs into. Admin dashboards, customer and member databases, client portals, and the internal tools that replace the shared spreadsheet. Real-time views of the numbers that actually run your business. Built for owners, not analysts.",
     href: "/contact",
-    visual: <WebsiteVisual />,
+    visual: <DashboardVisual />,
     bullets: [
-      "Professional website development",
-      "Custom web applications",
-      "E-commerce and online sales systems",
-      "Ongoing maintenance and performance support",
+      "Admin dashboards and internal tools",
+      "Customer and member databases",
+      "Client portals, booking, and intake",
+      "Custom web and mobile applications",
     ],
     painPoints: [
-      "We have a website, but I don't know if it's ever brought in a lead.",
-      "If we search our company or what we do, we don't show up on Google.",
-      "When customers ask ChatGPT or Perplexity about our industry, our competitor shows up — we don't.",
-      "Our website is hard to use.",
-      "Our website doesn't connect to our email, our forms, or anything else we use.",
-      "We paid someone to build our site years ago and we haven't been able to update it since.",
+      "We've outgrown spreadsheets and shared inboxes, but Salesforce isn't a serious option for a company our size.",
+      "Our data lives in five different places and nobody has a complete picture.",
+      "I make most decisions on gut feeling because I don't have the numbers in front of me.",
+      "By the time I get a report, the information is already two weeks old.",
+      "We pay for a platform, use a tenth of it, and still can't change a field without calling someone.",
+      "We paid someone to build our system years ago and we haven't been able to change it since.",
     ],
     serviceTiles: [
       {
-        title: "Professional Website Builds",
+        title: "Admin Dashboard",
         description:
-          "Custom-coded, fast-loading, mobile-optimized websites. No templates, no page builders. Built to rank and convert.",
-        icon: <IconProfessionalWebsite />,
+          "One login that runs the operation — records, scheduling, communication, and reporting in one place instead of six tools that don't talk. C3 Studio runs a church's website, iOS app, scheduling, comms, care, giving, and kids check-in from a single admin.",
+        icon: <IconExecutiveDashboard />,
       },
       {
-        title: "AI Search Optimization (GEO)",
+        title: "Real-Time Business Reporting",
         description:
-          "Your site structured so AI systems can understand who you are, what you do, where you serve, and why you should be cited.",
-        icon: <IconAISearch />,
+          "Real-time views of the numbers that actually run your business. Built for owners, not analysts. If you can use your phone, you can use this.",
+        icon: <IconKPIReporting />,
       },
       {
-        title: "Google Business Profile & Review Systems",
+        title: "Customer & Member Databases",
         description:
-          "Profile cleanup, service-area clarity, review request flows, and local trust signals that support how customers actually find you.",
-        icon: <IconGoogleBusiness />,
+          "One record per customer or member — history, status, and documents attached — that every other part of the system reads from. New signups get matched against existing records instead of quietly creating a second one.",
+        icon: <IconCustomerReactivation />,
       },
       {
-        title: "SEO & Local Search",
+        title: "Client Portals, Booking & Intake",
         description:
-          "Site structure, content, and technical performance built to rank for the searches that matter in your market.",
-        icon: <IconSEOLocalSearch />,
-      },
-      {
-        title: "Custom Web Applications",
-        description:
-          "Client portals, booking systems, internal tools, intake forms, calculators. If you need more than a website, we build it.",
+          "A login for the people you serve: their documents, their history, their appointments. Booking and intake forms that write straight into your system instead of into somebody's inbox.",
         icon: <IconCustomWebApp />,
       },
       {
-        title: "UI/UX Redesign",
+        title: "Financial & Operational Reporting",
         description:
-          "Your current site works but looks outdated. We redesign for modern aesthetics and higher conversion without rebuilding from scratch.",
-        icon: <IconUIUXRedesign />,
+          "AR aging, cash position, revenue against forecast, cost per job — connected to the systems those numbers already live in, so the report is current when you open it.",
+        icon: <IconFinancialHealth />,
       },
       {
-        title: "E-Commerce & Online Sales",
+        title: "One Data Model, Website and App",
         description:
-          "Product catalogs, payments, inventory sync, automated orders. A real store, not a template.",
-        icon: <IconECommerce />,
+          "C3 Studio renders 18 typed content block types identically on a Next.js website and a native SwiftUI iOS app from a single API contract. Draft → Publish flips the website and the app live at the same time.",
+        icon: <IconSystemIntegrationDashboard />,
+      },
+      {
+        title: "Spreadsheets to a Real System",
+        description:
+          "The shared workbook everyone edits becomes a system with real records, permissions, and history — migrated with the data you already have, not a fresh start.",
+        icon: <IconSpreadsheetMigration />,
       },
     ],
     differentiators: [
       {
-        lead: "AI search is our edge.",
-        body: "We build for ChatGPT, Perplexity, and AI Overviews — not just Google. Almost nobody locally does this yet.",
+        lead: "One place instead of six tools.",
+        body: "Records, scheduling, communication, and reporting sit behind one login and read from one database. Nothing to reconcile between exports.",
+      },
+      {
+        lead: "It's better because it isn't generic.",
+        body: "Nothing to turn off, no unused modules, and no consultant needed to change a field. It's built around how your business actually works, not around someone else's assumptions about your industry.",
       },
       {
         lead: "You own everything.",
-        body: "Your code. Your domain. Your data. No proprietary lock-in.",
-      },
-      {
-        lead: "Sites that generate business.",
-        body: "Not digital brochures. Lead machines with tracking, forms, and conversion optimization built in.",
-      },
-    ],
-  },
-  {
-    type: "revenue",
-    title: "Revenue Growth Engines",
-    description:
-      "Hyper-personalized, psychologically targeted campaigns. We use AI to organically maximize your AI presence — your business shows up where AI is looking. Powered by MarCommand, our internal AI agent. Nobody else in Kansas is doing this.",
-    href: "/contact",
-    visual: <RevenueVisual />,
-    bullets: [
-      "Automated social media content",
-      "Email and SMS outreach engines",
-      "SEO and AI search optimization",
-      "Lead generation and conversion systems",
-    ],
-    painPoints: [
-      "We do good work, but we rely almost entirely on word-of-mouth for new customers.",
-      "We've spent money on marketing. I couldn't tell you what it actually did for us.",
-      "Leads come in, but nobody follows up fast enough and they go cold.",
-      "We have years of past customers we've never reached back out to.",
-      "Our competitors are everywhere online. We're invisible.",
-      "I know we're leaving money on the table. I just don't know where.",
-    ],
-    serviceTiles: [
-      {
-        title: "MarCommand",
-        description:
-          "Preisser Solutions's proprietary AI agent system. A custom agent built for each business to learn your audience, services, customers, channels, products, and real marketing data. Inquire about packaging by getting in touch.",
-        icon: <IconMarketingDashboard />,
-      },
-      {
-        title: "AI-Powered Customer Segmentation",
-        description:
-          "AI analyzes your customer data and segments by behavior, value, and likelihood to convert. Target the right people with the right message.",
-        icon: <IconCustomerSegmentation />,
-      },
-      {
-        title: "Individualized AI Marketing",
-        description:
-          "Hyper-personalized outreach crafted by AI for each customer based on their history, preferences, and engagement patterns.",
-        icon: <IconIndividualizedMarketing />,
-      },
-      {
-        title: "AI-Powered Advertising Management",
-        description:
-          "Google Ads, Facebook Ads, managed and optimized by AI. Budget allocation, bid strategy, and creative testing on autopilot.",
-        icon: <IconAdvertisingManagement />,
-      },
-      {
-        title: "Speed-to-Lead Auto Response",
-        description:
-          "New inquiry, personalized response in under 60 seconds, captured in CRM, right person notified. First response wins the customer.",
-        icon: <IconSpeedToLead />,
-      },
-      {
-        title: "Digital Presence Overhaul",
-        description:
-          "Full audit and rebuild of your online footprint — website, Google Business Profile, social accounts, review systems, local SEO.",
-        icon: <IconDigitalPresence />,
-      },
-      {
-        title: "SEO & AI Search Optimization",
-        description:
-          "Found on Google AND in AI search results. Content architecture for traditional SEO and AI citations.",
-        icon: <IconSEOAIOptimization />,
-      },
-      {
-        title: "Automated Review Generation",
-        description:
-          "Post-service review requests that make it easier for satisfied customers to leave public proof.",
-        icon: <IconAutomatedReviews />,
-      },
-      {
-        title: "Lead Capture & Nurture Funnels",
-        description:
-          "Landing pages, forms, email capture, automated nurture, and CRM integration so leads do not disappear after the first touch.",
-        icon: <IconLeadNurtureFunnel />,
-      },
-      {
-        title: "Marketing Performance Dashboard",
-        description:
-          "See exactly which channels drive leads and revenue. Connected to ads, social, email, and CRM.",
-        icon: <IconMarketingDashboard />,
-      },
-    ],
-    differentiators: [
-      {
-        lead: "Systems, not services.",
-        body: "We connect the public-facing pieces of your business so marketing has memory, context, and follow-through.",
-      },
-      {
-        lead: "Measured, not guessed.",
-        body: "MarCommand connects channels, reviews, content, ads, and follow-up back to the actual business context.",
-      },
-      {
-        lead: "Full funnel.",
-        body: "Not just ads or social — the entire pipeline from discovery to conversion to re-engagement.",
+        body: "Your code. Your domain. Your data. No proprietary lock-in and no six-figure platform bill.",
       },
     ],
   },
   {
     type: "automation",
-    title: "Automation Systems",
+    // Reuses the existing .ps-bento-card--systems layout variant, which is
+    // height-tuned on mobile for the before/after board this card renders.
+    variant: "systems",
+    // --systems carries order:5 in the <640px stack; with three pillars it
+    // needs to sit second. Belongs in globals.css — see the report.
+    title: "Business Automation.",
     description:
-      "Lead follow-up, customer reactivation, review collection, internal workflows. The routine work keeps moving whether anyone is watching the inbox or not.",
+      "The work that happens without anyone doing it. Registration → confirmation → reminder. Bill → categorized ledger. Form → CRM → follow-up. Scheduled jobs, notifications, and the integrations that make the tools you already pay for talk to each other.",
     href: "/contact",
-    visual: <AutomationVisual />,
+    visual: <SystemFixesVisual />,
     bullets: [
-      "Process automation",
-      "AI document processing",
-      "Custom AI assistants",
-      "Intelligent alerts and monitoring",
+      "Scheduled jobs, reminders, and notifications",
+      "Form and document intake routing",
+      "Integrations between the tools you already pay for",
+      "Diagnosing and fixing the process underneath",
     ],
     painPoints: [
       "We have three people doing work that shouldn't take any.",
-      "Every time someone quits, half our processes walk out the door with them.",
       "We're still copying data between systems by hand.",
-      "There's a faster way to do this. Nobody on our team has time to figure it out.",
+      "We use six different tools and none of them talk to each other.",
+      "Every time someone quits, half our processes walk out the door with them.",
+      "Half our processes are held together with workarounds nobody documented.",
       "Our best people are buried in busywork instead of the work we hired them for.",
-      "We keep hiring to keep up with volume instead of fixing the process that causes it.",
     ],
     serviceTiles: [
       {
-        title: "AI Document Processing",
+        title: "Registration → Confirmation → Reminder",
         description:
-          "Upload invoices, contracts, or forms. AI reads, extracts data, categorizes, and routes it to your systems. Seconds, not hours.",
-        icon: <IconDocumentProcessing />,
-      },
-      {
-        title: "Automated Scheduling & Reminders",
-        description:
-          "Confirmations, reminders, follow-ups, and reschedules via SMS and email. No-shows drop. Staff gets their time back.",
+          "Someone signs up, gets matched against existing records, lands on a roster, and gets a confirmation — with nobody retyping a name or sending a message by hand. Registration → dedup → roster → confirmation is the chain that runs two annual retreat events for NWKS Encounter off one codebase.",
         icon: <IconSchedulingReminders />,
       },
       {
-        title: "AI Customer Reactivation",
+        title: "Scheduled Jobs That Run Themselves",
         description:
-          "Dormant customer lists organized into meaningful segments so outreach is relevant to what they own, bought, or need next.",
-        icon: <IconCustomerReactivation />,
-      },
-      {
-        title: "Smart Lead Routing & Auto-Response",
-        description:
-          "New inquiry captured, auto-responded in under 60 seconds, categorized, and routed to the right person. Nothing falls through.",
-        icon: <IconLeadRouting />,
+          "A dedicated always-on worker drains scheduled sends in bounded chunks. It exists because pushing 2,402 recipients in one request took 67 seconds and would blow the per-request CPU budget. The unglamorous version is the one that doesn't fall over.",
+        icon: <IconAfterHoursCall />,
       },
       {
         title: "Form Routing & Intake Automation",
         description:
-          "Incoming form submissions categorized by type, auto-triaged, and routed with AI responses for common questions.",
+          "Submissions categorized by type, checked against existing records, and routed to the person who owns them. Duplicates get matched, not re-keyed.",
         icon: <IconFormRouting />,
-      },
-      {
-        title: "Inventory Management Systems",
-        description:
-          "Live tracking, automated reorder alerts, inter-site transfers, and cost formulas. From spreadsheets to a real system.",
-        icon: <IconInventoryManagement />,
-      },
-      {
-        title: "Employee Onboarding Automation",
-        description:
-          "Document collection, form signing, tax paperwork, equipment tracking — all automated before day one.",
-        icon: <IconEmployeeOnboarding />,
-      },
-      {
-        title: "Custom AI Assistants",
-        description:
-          "A digital team member that knows your business. Handles inquiries, pulls data, and manages routine tasks 24/7.",
-        icon: <IconCustomAIAssistant />,
-      },
-      {
-        title: "After-Hours Call & Text Triage",
-        description:
-          "Every after-hours inquiry received, assessed by AI, auto-responded via SMS, logged, and routed by urgency.",
-        icon: <IconAfterHoursCall />,
-      },
-      {
-        title: "Process Standardization & Compliance",
-        description:
-          "Your team does the same task five different ways. We build AI-enforced workflows that ensure consistency and compliance every time.",
-        icon: <IconProcessCompliance />,
-      },
-    ],
-    differentiators: [
-      {
-        lead: "Custom-built, not off-the-shelf.",
-        body: "No generic Zapier chains. Every automation engineered for your specific workflow.",
-      },
-      {
-        lead: "AI-first means smarter.",
-        body: "Our automations read documents, understand context, and make intelligent decisions — not just follow rules.",
-      },
-      {
-        lead: "Less drag.",
-        body: "The goal is not to add software. The goal is to remove the manual steps that slow the business down.",
-      },
-    ],
-  },
-  {
-    type: "dashboards",
-    title: "Dashboards & Business Intelligence",
-    description:
-      "Real-time views of the numbers that actually run your business. Built for owners, not analysts. If you can use your phone, you can use this.",
-    href: "/contact",
-    visual: <DashboardVisual />,
-    bullets: [
-      "Custom dashboards",
-      "Financial and operational reporting",
-      "Data integration and cleanup",
-      "Forecasting and trend analysis",
-    ],
-    painPoints: [
-      "I make most decisions on gut feeling because I don't have the numbers in front of me.",
-      "By the time I get a report, the information is already two weeks old.",
-      "Our data lives in five different places and nobody has a complete picture.",
-      "I couldn't tell you our most profitable service line without digging through spreadsheets.",
-      "My team spends hours building reports that I glance at for thirty seconds.",
-      "We have data scattered across platforms and none of it lines up when we need it.",
-    ],
-    serviceTiles: [
-      {
-        title: "Executive Dashboard",
-        description:
-          "One screen, three-second status of your entire business. Revenue, expenses, KPIs, cash flow — updated in real time.",
-        icon: <IconExecutiveDashboard />,
-      },
-      {
-        title: "AI-Powered Business Insights",
-        description:
-          "Ask your dashboard questions in plain English. 'Why is revenue down this month?' 'Which service is most profitable?' AI answers from your real data.",
-        icon: <IconAIBusinessInsights />,
-      },
-      {
-        title: "Financial Health Dashboard",
-        description:
-          "Live connection to QuickBooks, your bank, and invoicing. AR aging, cash position, revenue vs. forecast — always current.",
-        icon: <IconFinancialHealth />,
-      },
-    ],
-    differentiators: [
-      {
-        lead: "Dashboards you want to look at.",
-        body: "Clean, visual, built for business owners — not analysts.",
-      },
-      {
-        lead: "Connected to your real systems.",
-        body: "Live data from QuickBooks, ServiceTitan, Square, your CRM.",
-      },
-      {
-        lead: "Decisions, not data dumps.",
-        body: "Built around the questions you actually need answered.",
-      },
-    ],
-  },
-  {
-    type: "systems",
-    title: "System Fixes & Efficiency",
-    description:
-      "Slow software, broken integrations, manual handoffs eating an hour a day. We fix the technical bottlenecks costing you time and revenue — and connect the tools you already pay for (QuickBooks, ServiceTitan, HubSpot, Salesforce, Square, Stripe).",
-    href: "/contact",
-    visual: <SystemFixesVisual />,
-    bullets: [
-      "Workflow efficiency",
-      "Platform integration",
-      "System fixes and upgrades",
-      "Modernization",
-    ],
-    painPoints: [
-      "We use six different tools and none of them talk to each other.",
-      "Half our processes are held together with workarounds nobody documented.",
-      "We bought software that was supposed to fix everything. Now it's another problem.",
-      "If one person is out sick, nobody else knows how to run their system.",
-      "We've outgrown our current setup and migrating feels impossible.",
-      "Every month something breaks and we spend a week patching it instead of growing.",
-    ],
-    serviceTiles: [
-      {
-        title: "Workflow Efficiency Overhaul",
-        description:
-          "We walk through how your team actually works. Find the bottlenecks and eliminate them with a working solution.",
-        icon: <IconWorkflowEfficiency />,
       },
       {
         title: "Platform Integration",
         description:
-          "CRM doesn't talk to accounting. Scheduling disconnected from customer database. We wire your tools together so data flows once.",
+          "The CRM doesn't talk to accounting. Scheduling is disconnected from the customer database. We wire the tools together so data gets entered once and shows up everywhere it's needed.",
         icon: <IconPlatformIntegration />,
       },
       {
-        title: "Tool Stack Audit & Consolidation",
+        title: "Inventory & Operations Tracking",
         description:
-          "Paying for overlapping subscriptions? We audit, consolidate where it makes sense, and migrate without breaking the business.",
-        icon: <IconToolStackAudit />,
+          "Live tracking, reorder alerts, transfers between sites, and cost formulas. For HG Oil Holdings this cut back-office logistics time by 95% and pushed inventory accuracy past 75%.",
+        icon: <IconInventoryManagement />,
+      },
+      {
+        title: "Renewals & Deadlines That Don't Get Missed",
+        description:
+          "Dates tracked in the system rather than in someone's head, with the reminder chain attached. A managing general underwriter in the Alliant Insurance ecosystem went six months with zero missed renewals.",
+        icon: <IconProcessCompliance />,
+      },
+      {
+        title: "Reconciliation & Exception Queues",
+        description:
+          "The machine matches what it can and hands you only what it can't. A Chicago-area bus operator's reconciliation went from a full day to a 15-minute exception queue.",
+        icon: <IconDataPipeline />,
       },
       {
         title: "System Diagnostics & Fixes",
         description:
-          "Something's slow, clunky, or breaking at the worst time. We diagnose root cause and fix it properly.",
+          "Something is slow, clunky, or breaking at the worst possible time. We find the root cause and fix that, rather than adding another tool on top of it.",
         icon: <IconSystemDiagnostics />,
       },
       {
-        title: "Spreadsheet to Real System Migration",
+        title: "Tool Stack Audit & Consolidation",
         description:
-          "Still tracking in Excel? We move you to modern tools without losing data and set it up right from day one.",
-        icon: <IconSpreadsheetMigration />,
+          "Paying for four subscriptions that overlap? We audit what you have, consolidate where it makes sense, and migrate without stopping the business.",
+        icon: <IconToolStackAudit />,
       },
       {
-        title: "AI-Powered Compliance & Documentation",
+        title: "Employee Onboarding Automation",
         description:
-          "Processes that live in people's heads get documented, systematized, and enforced by AI — so knowledge never walks out the door.",
-        icon: <IconAICompliance />,
-      },
-      {
-        title: "Data Pipeline & API Integration",
-        description:
-          "Custom connections between any systems via APIs, middleware, or automation layers. Your data flows where it needs to go.",
-        icon: <IconDataPipeline />,
+          "Document collection, form signing, tax paperwork, and equipment tracking handled before day one instead of during week one.",
+        icon: <IconEmployeeOnboarding />,
       },
     ],
     differentiators: [
       {
         lead: "We diagnose before we prescribe.",
-        body: "Full system audit of your tools, data flow, and bottlenecks — then a clear fix plan with costs and timelines before any work starts.",
+        body: "Full audit of your tools, data flow, and bottlenecks — then a clear fix plan with costs and timelines before any work starts.",
       },
       {
         lead: "Every platform your business runs on.",
         body: "QuickBooks, ServiceTitan, Square, Jobber, HubSpot, Salesforce, custom databases — we've integrated, migrated, and repaired them all.",
       },
       {
-        lead: "Measured in money, not metrics.",
-        body: "Every fix tracked by hours recovered, errors eliminated, and revenue recaptured. If it doesn't pay for itself, we don't ship it.",
+        lead: "Measured in hours recovered and errors eliminated.",
+        body: "HG Oil Holdings: 95% less back-office logistics time. A Chicago-area bus operator: reconciliation from a full day to a 15-minute exception queue. If it doesn't pay for itself, we don't ship it.",
+      },
+    ],
+  },
+  {
+    type: "ai",
+    // Reuses the existing .ps-bento-card--automation layout variant, which
+    // is height-tuned for the workflow diagram this card renders.
+    variant: "automation",
+    title: "AI Integration.",
+    description:
+      "AI put exactly where it earns its place — reading documents, classifying, drafting — with a human gate on anything that matters. It isn't a product you buy from us. It's how the work gets done, and where it belongs inside your system.",
+    href: "/contact",
+    visual: <AutomationVisual />,
+    bullets: [
+      "Document extraction and classification",
+      "AI-assisted drafting with approval gates",
+      "Corrections that turn into durable rules",
+      "AI inside the workflow, not bolted on beside it",
+    ],
+    painPoints: [
+      "Someone here retypes the same information off a PDF every single day.",
+      "We were sold an AI tool. Nobody uses it and nobody trusts it.",
+      "If the software is going to be wrong, it needs to tell me which one it got wrong — not let me find out at tax time.",
+      "We can't have software emailing customers on its own.",
+      "We fix the same mistake for it over and over and it never learns.",
+      "A build like this used to be a three-month quote we couldn't justify.",
+    ],
+    serviceTiles: [
+      {
+        title: "Document Extraction & Classification",
+        description:
+          "A photographed bill becomes a categorized ledger line. In FarmBooks, vision and OCR read the same page independently and each has to prove the section total, so a dropped line surfaces instead of vanishing silently. That is how a $92.57 line OCR alone had dropped got recovered.",
+        icon: <IconDocumentProcessing />,
+      },
+      {
+        title: "A Human Gate on Anything That Matters",
+        description:
+          "Handwritten bills are always routed to a person and never auto-posted. Anything the system isn't confident about goes to a review queue instead of quietly into the books.",
+        icon: <IconHumanApproval />,
+      },
+      {
+        title: "AI-Assisted Drafting, You Approve",
+        description:
+          "AI proposes the email, the summary, the categorization. A person approves it before it goes anywhere. Nothing autosends.",
+        icon: <IconCustomAIAssistant />,
+      },
+      {
+        title: "It Learns From Your Corrections",
+        description:
+          "When you fix something the system got wrong, that correction is stored as a durable rule. The same input resolves itself next time instead of coming back to your queue.",
+        icon: <IconCorrectionRules />,
+      },
+      {
+        title: "AI Inside the Workflow, Not Bolted On",
+        description:
+          "No chatbot parked in the corner of the screen. The model sits at the step where the work actually happens — reading the document, sorting the intake, drafting the follow-up — inside the system your team already uses.",
+        icon: <IconWorkflowEfficiency />,
+      },
+      {
+        title: "Structured Output You Can Audit",
+        description:
+          "FarmBooks ends in a formula-driven spreadsheet — Month Summary and Ledger with live rollups, synced two ways with SharePoint, where a human edit always wins. You can check the machine's work in the tool you already use.",
+        icon: <IconAICompliance />,
+      },
+    ],
+    differentiators: [
+      {
+        lead: "It proposes. A person approves.",
+        body: "Anything touching money, a customer, or the books passes a human gate before it counts. Handwritten bills never auto-post, and low-confidence reads go to a review queue.",
+      },
+      {
+        lead: "Two readers, one answer.",
+        body: "Vision and OCR read the same bill independently and each has to prove the section total. When they disagree, the line goes to review — it doesn't disappear. The engine that does it carries 1,069 tests against a corpus of 23 photographed real bills.",
+      },
+      {
+        lead: "Three weeks instead of three months.",
+        body: "AI is why a build that used to take a quarter now takes weeks — with guardrails, safety protocols, and code review steps around it. That speed is what makes a custom system cost less than configuring someone else's platform.",
       },
     ],
   },
@@ -802,6 +663,44 @@ function IconProcessCompliance() {
       <path d="M24 4L8 10v12c0 10 7 18 16 22 9-4 16-12 16-22V10z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       {/* Checkmark */}
       <polyline points="16,23 21,28 32,18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.9" />
+    </svg>
+  );
+}
+
+/* ── AI INTEGRATION ── */
+
+/* Human gate: a machine-read document handed to a person to approve. */
+function IconHumanApproval() {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Document */}
+      <path d="M8 6h16l6 6v18H8z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.7" />
+      <path d="M24 6v6h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.4" />
+      <line x1="13" y1="17" x2="25" y2="17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.6" />
+      <line x1="13" y1="22" x2="21" y2="22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.35" />
+      {/* Reviewer */}
+      <circle cx="31" cy="30" r="5" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M22 44c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.7" />
+      {/* Approval check */}
+      <polyline points="36,17 39,20 45,13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.9" />
+    </svg>
+  );
+}
+
+/* A correction becoming a durable rule: edit, loop, then a fixed rule row. */
+function IconCorrectionRules() {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Pencil — the correction */}
+      <path d="M6 30l16-16 6 6-16 16H6z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="20" y1="16" x2="26" y2="22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.5" />
+      {/* Loop back — it gets remembered */}
+      <path d="M30 10a12 12 0 0 1 8 20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.8" />
+      <path d="M38 30l-4-1 1 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.8" />
+      {/* Stored rule */}
+      <rect x="26" y="34" width="18" height="9" rx="2" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.7" />
+      <polyline points="29,38.5 31,40.5 35,36.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.9" />
+      <line x1="38" y1="38.5" x2="41" y2="38.5" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeOpacity="0.45" />
     </svg>
   );
 }
@@ -1367,7 +1266,9 @@ function BentoCard({ service, onClick }: BentoCardProps) {
   return (
     <button
       ref={cardRef}
-      className={`ps-bento-card ps-bento-card--${service.type}`}
+      className={`ps-bento-card ps-bento-card--${service.variant}${
+        service.cardClass ? ` ${service.cardClass}` : ""
+      }`}
       aria-label={`${service.title} — open details`}
       onClick={onClick}
       onMouseMove={handleMouseMove}
@@ -1663,13 +1564,9 @@ function PillarCrawlerContent() {
 export function ServicePillars() {
   const gridRef = useRef<HTMLDivElement>(null);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-  const displayedServices = [
-    services[0],
-    services[2],
-    services[1],
-    services[3],
-    services[4],
-  ];
+  // Three pillars, rendered in plan order:
+  // Business Software → Business Automation → AI Integration.
+  const displayedServices = services;
 
   const handleExpand = useCallback((index: number) => {
     setExpandedIndex(index);
@@ -1739,10 +1636,10 @@ export function ServicePillars() {
           id="services-heading"
           className="ps-section-heading ps-section-heading--light"
         >
-          What We Build for Kansas Businesses
+          One System Instead of Six Tools
         </h2>
         <p className="ps-services-intro">
-          We connect your website, CRM, forms, ads, calls, and reports so leads are captured, followed up, and measured without manual chasing. Custom websites, marketing systems, automations, dashboards, and tech-stack fixes — built in-house by Tyler for Kansas SMBs, not subcontracted to template shops.
+          Everything a Kansas business runs on lands in one place instead of six tools that don&apos;t talk to each other — and it&apos;s built for how you actually work, which is exactly why it beats a generic platform. Nothing to turn off, no unused modules, no consultant needed to change a field, and no six-figure platform bill. Not every business needs all three of these. Some needed a whole admin system; some needed one document pipeline.
         </p>
       </div>
 

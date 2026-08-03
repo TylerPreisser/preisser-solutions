@@ -59,12 +59,12 @@ export function CtaSection() {
       <div className="ps-cta-content" ref={contentRef}>
         <div className="ps-eyebrow">Get in Touch</div>
         <h2 id="cta-heading" className="ps-cta-heading">
-          Ready to improve how customers find and choose your business?
+          What does your business still run on a spreadsheet?
         </h2>
         <p className="ps-cta-body">
-          Hire Preisser Solutions for a better website, stronger local visibility,
-          accountable ad campaigns, and practical AI automation that helps your
-          team follow up faster.
+          Tell us the workflow that costs your team the most time. We&apos;ll tell you
+          honestly whether it needs software, automation, AI &mdash; or none of the
+          above. Not every business needs the whole platform.
         </p>
         <div className="ps-cta-buttons">
           <Link href="/contact" className="ps-btn ps-btn-primary-dark">

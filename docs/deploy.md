@@ -4,7 +4,7 @@ Production deploys use Cloudflare Pages through Wrangler, and only from the
 canonical local workspace:
 
 ```text
-/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean
+/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current
 ```
 
 Cloudflare Pages is not Git-connected. GitHub push alone does not deploy
@@ -16,14 +16,14 @@ deploying. Do not use any other deploy checklist.
 ## Required Working Directory
 
 ```bash
-cd "/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean"
+cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
 pwd
 ```
 
 Do not deploy unless `pwd` prints exactly:
 
 ```text
-/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean
+/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current
 ```
 
 ## Validate

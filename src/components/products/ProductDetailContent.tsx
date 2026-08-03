@@ -184,7 +184,7 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
                       {linkedCaseStudy.oneLine}
                     </p>
                   )}
-                  <div className="mt-3 flex items-center gap-1.5 text-[12px] font-medium text-[#0D95E8] transition-all duration-200 group-hover:gap-2 group-hover:text-[#80E9FF]">
+                  <div className="mt-3 flex items-center gap-1.5 text-[12px] font-medium [color:var(--theme-accent-text)] transition-all duration-200 group-hover:gap-2 group-hover:[color:var(--theme-accent-text)]">
                     Read the full case study
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true">
                       <path d="M5 12h14" />

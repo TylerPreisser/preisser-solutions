@@ -825,7 +825,7 @@ function TechStackSection({ data }: { data: CaseStudyData }) {
             {data.techStack.map((t) => (
               <span
                 key={t}
-                className="inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors hover:border-[#0D95E8]/40 hover:text-[#0D95E8]"
+                className="inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors hover:border-[#0D95E8]/40 hover:[color:var(--theme-accent-text)]"
                 style={{
                   border: "1px solid var(--theme-card-border)",
                   background: "var(--theme-section-alt)",
@@ -882,7 +882,7 @@ function RelatedSection({ data }: { data: CaseStudyData }) {
           <Link
             href="/case-studies"
             prefetch={false}
-            className="group inline-flex items-center gap-2 text-sm font-medium text-[#0D95E8] hover:text-[#0B7BC0]"
+            className="group inline-flex items-center gap-2 text-sm font-medium [color:var(--theme-accent-text)] hover:[color:var(--theme-accent-text)]"
           >
             All case studies
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -919,7 +919,7 @@ function RelatedSection({ data }: { data: CaseStudyData }) {
               >
                 {r.oneLine}
               </p>
-              <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#0D95E8]">
+              <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium [color:var(--theme-accent-text)]">
                 Read case study
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
               </div>

@@ -67,7 +67,7 @@
 
 ## 2026-05-22 — Canonical workspace and Wrangler-only production deploy
 
-**Decision**: The only active Preisser Solutions workspace is `/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean`. Cloudflare Pages production deploys are manual Wrangler uploads of local `out/` from that folder. GitHub Actions validates only.
+**Decision**: The only active Preisser Solutions workspace is `/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current`. Cloudflare Pages production deploys are manual Wrangler uploads of local `out/` from that folder. GitHub Actions validates only.
 
 **Why**: Multiple local folders, stale agent memories, and old deployment assumptions made it possible for agents to edit one folder, commit another folder, and deploy a third folder.
 

@@ -5,7 +5,7 @@ Read `WORKSPACE_SOURCE_OF_TRUTH.md` and `docs/agent-operating-system.md` first.
 The only active workspace is:
 
 ```text
-/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean
+/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current
 ```
 
 Never work outside the canonical folder. Never deploy unless `pwd` is exactly
@@ -29,7 +29,7 @@ does not deploy production. Production deploys use Wrangler to upload the local
 `out/` directory:
 
 ```bash
-cd "/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean"
+cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
 npm ci
 npm run build
 npm run lint

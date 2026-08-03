@@ -582,7 +582,7 @@ function NearbyAreasSection({ data }: { data: LocationPageData }) {
                 }}
               >
                 <div className="flex items-center gap-2.5">
-                  <MapPin className="h-3.5 w-3.5 shrink-0 text-[#0D95E8]" />
+                  <MapPin className="h-3.5 w-3.5 shrink-0 [color:var(--theme-accent-text)]" />
                   <span
                     className="text-sm font-medium"
                     style={{ color: "var(--theme-text-primary)" }}
@@ -697,7 +697,7 @@ function ServiceCard({ card }: { card: LocationPageData["serviceCards"][number] 
         aria-hidden="true"
         className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#0D95E8]/10 blur-2xl opacity-0 transition-opacity group-hover:opacity-100"
       />
-      <div className="relative flex items-center justify-center self-start rounded-xl bg-gradient-to-br from-[#0D95E8]/15 to-[#80E9FF]/10 p-3 text-[#0D95E8]">
+      <div className="relative flex items-center justify-center self-start rounded-xl bg-gradient-to-br from-[#0D95E8]/15 to-[#80E9FF]/10 p-3 [color:var(--theme-accent-text)]">
         <ServiceIconSvg type={card.icon} className="h-6 w-6" />
       </div>
       <h3
@@ -719,7 +719,7 @@ function ServiceCard({ card }: { card: LocationPageData["serviceCards"][number] 
         ))}
       </ul>
       {card.href && (
-        <div className="relative mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#0D95E8] group-hover:text-[#0B7BC0]">
+        <div className="relative mt-6 inline-flex items-center gap-2 text-sm font-medium [color:var(--theme-accent-text)] group-hover:[color:var(--theme-accent-text)]">
           Learn more
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
         </div>
@@ -898,7 +898,7 @@ function CaseStudiesSection({ data }: { data: LocationPageData }) {
           </div>
           <Link
             href="/case-studies"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-[#0D95E8] hover:text-[#0B7BC0]"
+            className="group inline-flex items-center gap-2 text-sm font-medium [color:var(--theme-accent-text)] hover:[color:var(--theme-accent-text)]"
           >
             All case studies
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -956,7 +956,7 @@ function CaseStudiesSection({ data }: { data: LocationPageData }) {
                 >
                   {cs.oneLine}
                 </p>
-                <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#0D95E8] group-hover:text-[#0B7BC0]">
+                <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium [color:var(--theme-accent-text)] group-hover:[color:var(--theme-accent-text)]">
                   Read case study
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                 </div>
@@ -1023,7 +1023,7 @@ function WhyLocalSection({ data }: { data: LocationPageData }) {
                 background: "var(--theme-result-card-bg)",
               }}
             >
-              <div className="mb-4 text-xs font-medium uppercase tracking-[0.14em] text-[#0D95E8]">
+              <div className="mb-4 text-xs font-medium uppercase tracking-[0.14em] [color:var(--theme-accent-text)]">
                 {String(idx + 1).padStart(2, "0")}
               </div>
               <p
@@ -1073,7 +1073,7 @@ function IndustriesSection({ data }: { data: LocationPageData }) {
             {data.industriesServed.map((ind) => (
               <span
                 key={ind}
-                className="inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors hover:border-[#0D95E8]/40 hover:text-[#0D95E8]"
+                className="inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors hover:border-[#0D95E8]/40 hover:[color:var(--theme-accent-text)]"
                 style={{
                   border: "1px solid var(--theme-card-border)",
                   background: "var(--theme-section-alt)",
@@ -1202,7 +1202,7 @@ function RelatedLocationsSection({
               up to /locations so Google ranks the hub over detail pages. */}
           <Link
             href="/locations"
-            className="group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all hover:border-[#0D95E8]/40 hover:text-[#0D95E8]"
+            className="group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all hover:border-[#0D95E8]/40 hover:[color:var(--theme-accent-text)]"
             style={{
               border: "1px solid var(--color-primary)",
               background: "var(--theme-section-alt)",
@@ -1216,14 +1216,14 @@ function RelatedLocationsSection({
             <Link
               key={slug}
               href={`/locations/${slug}`}
-              className="group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all hover:border-[#0D95E8]/40 hover:text-[#0D95E8]"
+              className="group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all hover:border-[#0D95E8]/40 hover:[color:var(--theme-accent-text)]"
               style={{
                 border: "1px solid var(--theme-card-border)",
                 background: "var(--theme-section-alt)",
                 color: "var(--theme-text-primary)",
               }}
             >
-              <MapPin className="h-3.5 w-3.5 text-[#0D95E8]" />
+              <MapPin className="h-3.5 w-3.5 [color:var(--theme-accent-text)]" />
               {prettifySlug(slug)}
               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
             </Link>
@@ -1274,7 +1274,7 @@ function AuthoritativeSourcesSection({ data }: { data: LocationPageData }) {
           Want proof?{" "}
           <Link
             href="/case-studies"
-            className="underline underline-offset-2 transition-colors hover:text-[#0D95E8]"
+            className="underline underline-offset-2 transition-colors hover:[color:var(--theme-accent-text)]"
             style={{ color: "var(--theme-text-primary)" }}
           >
             See our case studies.
@@ -1282,7 +1282,7 @@ function AuthoritativeSourcesSection({ data }: { data: LocationPageData }) {
           Need a specific service?{" "}
           <Link
             href="/services"
-            className="underline underline-offset-2 transition-colors hover:text-[#0D95E8]"
+            className="underline underline-offset-2 transition-colors hover:[color:var(--theme-accent-text)]"
             style={{ color: "var(--theme-text-primary)" }}
           >
             Browse all services.
@@ -1290,7 +1290,7 @@ function AuthoritativeSourcesSection({ data }: { data: LocationPageData }) {
           Exploring our product line?{" "}
           <Link
             href="/products"
-            className="underline underline-offset-2 transition-colors hover:text-[#0D95E8]"
+            className="underline underline-offset-2 transition-colors hover:[color:var(--theme-accent-text)]"
             style={{ color: "var(--theme-text-primary)" }}
           >
             Browse all products.
@@ -1298,7 +1298,7 @@ function AuthoritativeSourcesSection({ data }: { data: LocationPageData }) {
           Want to know who we are?{" "}
           <Link
             href="/about"
-            className="underline underline-offset-2 transition-colors hover:text-[#0D95E8]"
+            className="underline underline-offset-2 transition-colors hover:[color:var(--theme-accent-text)]"
             style={{ color: "var(--theme-text-primary)" }}
           >
             Read about Preisser Solutions.
@@ -1312,7 +1312,7 @@ function AuthoritativeSourcesSection({ data }: { data: LocationPageData }) {
                   <span key={ind}>
                     <Link
                       href="/services"
-                      className="underline underline-offset-2 transition-colors hover:text-[#0D95E8]"
+                      className="underline underline-offset-2 transition-colors hover:[color:var(--theme-accent-text)]"
                       style={{ color: "var(--theme-text-primary)" }}
                     >
                       {ind}

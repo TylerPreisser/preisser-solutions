@@ -5,7 +5,7 @@ Canonical source for `preissersolutions.com`.
 Work only from:
 
 ```text
-/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean
+/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current
 ```
 
 Cloudflare Pages is not Git-connected. GitHub push alone does not deploy
@@ -13,7 +13,7 @@ production. Build locally, validate, then deploy the local `out/` directory with
 Wrangler.
 
 ```bash
-cd "/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean"
+cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
 npm ci
 npm run build
 npm run lint

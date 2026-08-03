@@ -384,7 +384,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                       marginTop: "auto",
                       display: "inline-block",
                       padding: "12px 20px",
-                      background: "var(--color-primary, #0D95E8)",
+                      background: "var(--color-primary-strong)",
                       color: "#FFFFFF",
                       textDecoration: "none",
                       borderRadius: 999,
@@ -496,7 +496,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                 }}
               >
                 <thead>
-                  <tr style={{ background: "var(--color-primary)", color: "#FFFFFF" }}>
+                  <tr style={{ background: "var(--color-primary-strong)", color: "#FFFFFF" }}>
                     <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>Dimension</th>
                     <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>Preisser Solutions</th>
                     <th style={{ padding: "16px", textAlign: "left", fontWeight: 600 }}>
@@ -635,7 +635,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                       background: "var(--theme-result-card-bg)",
                       border: "1px solid var(--theme-card-border)",
                       borderRadius: 999,
-                      color: "var(--color-primary)",
+                      color: "var(--theme-accent-text)",
                       textDecoration: "none",
                       fontSize: 15,
                       fontWeight: 500,
@@ -668,7 +668,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
             style={{
               display: "inline-block",
               padding: "14px 32px",
-              background: "var(--color-primary, #0D95E8)",
+              background: "var(--color-primary-strong)",
               color: "#FFFFFF",
               textDecoration: "none",
               borderRadius: 999,

@@ -7,7 +7,7 @@ Last updated: 2026-05-22.
 All future work must happen only in:
 
 ```text
-/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean
+/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current
 ```
 
 Cloudflare Pages is not Git-connected. GitHub push alone does not deploy
@@ -55,7 +55,7 @@ local `out/`.
 ## Validation Gate
 
 ```bash
-cd "/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean"
+cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
 npm ci
 npm run build
 npm run lint

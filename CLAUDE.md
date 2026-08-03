@@ -7,7 +7,7 @@ doing meaningful work.
 
 ## Source Of Truth
 
-- Canonical local path: `/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean`
+- Canonical local path: `/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current`
 - GitHub remote: `https://github.com/TylerPreisser/preisser-solutions.git`
 - Main branch: `main`
 - Cloudflare Pages project: `preisser-solutions`
@@ -24,14 +24,14 @@ workspace above.
 Production deploys only happen from:
 
 ```bash
-cd "/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean"
+cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
 pwd
 ```
 
 `pwd` must print exactly:
 
 ```text
-/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean
+/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current
 ```
 
 Cloudflare Pages is not Git-connected. GitHub push alone does not deploy
@@ -42,7 +42,7 @@ production. Wrangler uploads the local `out/` directory.
 Run the full gate before any production deploy:
 
 ```bash
-cd "/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean"
+cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
 npm ci
 npm run build
 npm run lint

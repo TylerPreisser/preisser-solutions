@@ -475,7 +475,7 @@ export function SystemFixesVisual() {
 
   const fixes = [
     { title: "Unified workflow", metric: "1 source of truth" },
-    { title: "Automated routing", metric: "94% faster" },
+    { title: "Automated routing", metric: "No manual step" },
     { title: "Clean reporting", metric: "Live visibility" },
   ];
 

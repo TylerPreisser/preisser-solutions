@@ -1,6 +1,6 @@
 # Validation only. This workflow does not deploy production.
 # Production deploys must run from:
-# /Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean
+# /Users/tylerpreisser/Projects/Preisser Solutions/Website - Current
 # with: npx wrangler pages deploy out --project-name preisser-solutions
 
 name: Validate Site

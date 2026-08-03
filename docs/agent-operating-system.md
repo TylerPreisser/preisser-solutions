@@ -13,7 +13,7 @@ This is the Preisser Solutions website.
 The only active local workspace is:
 
 ```text
-/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean
+/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current
 ```
 
 Do not work from any other local folder, copied clean room, memory cache, or
@@ -22,14 +22,14 @@ agent cache path.
 Before reading, editing, committing, validating, or deploying:
 
 ```bash
-cd "/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean"
+cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
 pwd
 ```
 
 `pwd` must print exactly:
 
 ```text
-/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean
+/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current
 ```
 
 ## Session Start Protocol
@@ -150,7 +150,7 @@ production. Production deploys happen only when Wrangler uploads the local
 Required validation before any production deploy:
 
 ```bash
-cd "/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean"
+cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
 npm ci
 npm run build
 npm run lint

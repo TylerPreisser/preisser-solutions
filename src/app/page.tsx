@@ -17,8 +17,8 @@ const ServicePillars = dynamic(
   () => import("@/components/home/service-pillars").then((m) => m.ServicePillars),
   { ssr: true }
 );
-const MarCommandCallout = dynamic(
-  () => import("@/components/home/marcommand-callout").then((m) => m.MarCommandCallout),
+const Showcase = dynamic(
+  () => import("@/components/home/showcase").then((m) => m.Showcase),
   { ssr: true }
 );
 const WhyUs = dynamic(
@@ -90,13 +90,16 @@ const primaryNavSchema = {
   ],
 };
 
+// Ordered to lead with the three pillars (business software, business
+// automation, AI integration). Every href here is an existing route — do not
+// rename or remove one; validate-seo.mjs hardcodes the required route list.
 const serviceLinks = [
+  { href: "/web-applications", label: "Business software", description: "Admin dashboards, customer and member databases, client portals, internal tools." },
+  { href: "/business-automation", label: "Business automation", description: "Registration to confirmation. Bill to categorized ledger. Form to CRM to follow-up." },
+  { href: "/services/ai-automation", label: "AI integration", description: "AI that reads documents, classifies, and drafts — with a human gate on anything that matters." },
   { href: "/services/custom-websites", label: "Custom websites", description: "Custom-coded sites built in Next.js, React, and TypeScript." },
   { href: "/services/local-seo", label: "Local SEO", description: "Google Business Profile, local pack, citations, reviews, schema." },
-  { href: "/services/ai-automation", label: "AI automation", description: "Custom AI agents, invoicing, reactivation, lead qualification." },
   { href: "/services/ai-search-optimization", label: "AI search optimization", description: "Be cited by ChatGPT, Perplexity, Gemini, and Claude." },
-  { href: "/web-applications", label: "Web applications", description: "Internal tools, client portals, custom CRMs, dashboards." },
-  { href: "/business-automation", label: "Business automation", description: "Automate invoicing, data entry, follow-up, and reporting." },
 ];
 
 function cleanLocationTitle(title: string) {
@@ -151,12 +154,12 @@ export default function HomePage() {
           hero subhead, meta description, Organization + LocalBusiness
           JSON-LD, llms.txt, llms-full.txt, and /about. */}
       <p className="ps-visually-hidden">
-        Preisser Solutions is a Hays, Kansas-based AI-native web development, local SEO, and business automation company. We build custom-coded websites, AI agents, dashboards, CRM workflows, and AI search optimization systems for Kansas small and mid-sized businesses.
+        Preisser Solutions is a Hays, Kansas-based custom software company: business software, business automation, and AI integration. We build the internal systems a business runs on — admin dashboards, customer and member databases, client portals, document pipelines, and the automations that connect them — purpose-built for how each business actually works, for small and mid-sized businesses in Kansas and beyond.
       </p>
       <ProofBar />
       <ValueStrip />
       <ServicePillars />
-      <MarCommandCallout />
+      <Showcase />
       <WhyUs />
       <CaseStudies />
       {/* Crawlable service + location link cluster — static HTML for crawlers + AI engines. */}
@@ -167,7 +170,7 @@ export default function HomePage() {
         <div className="ps-home-link-cluster__inner">
           <HomeLinkDropdown
             title="Services"
-            summary="Websites, SEO, AI automation, search visibility, software, and workflow systems."
+            summary="Business software, business automation, AI integration, websites, and search visibility."
           >
             <ul className="ps-home-link-grid">
               {serviceLinks.map((link) => (

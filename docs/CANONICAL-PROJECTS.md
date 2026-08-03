@@ -1,7 +1,7 @@
 # Canonical Projects Inventory
 
 Operational source of truth:
-`/Users/tylerpreisser/Desktop/Preisser-Solutions-Current-Clean`.
+`/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current`.
 
 Do not work outside the canonical workspace. GitHub push does not deploy
 production. Cloudflare Pages production deploys happen only when Wrangler uploads

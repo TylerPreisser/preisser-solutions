@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Preisser Solutions",
-  tagline: "AI-powered marketing for Kansas",
+  tagline: "Custom business software, built in Kansas",
   url: "https://preissersolutions.com",
   contact: {
     email: "tyler@preissersolutions.com",
@@ -78,8 +78,7 @@ export const siteConfig = {
           heading: "AI, software, and consulting — Preisser Solutions",
           paragraphs: [
             "Preisser Solutions, founded in 2023, is Tyler's flagship custom software and AI consultancy. It serves Kansas businesses and a small number of out-of-state clients with custom websites, web applications, business automation, AI agents, dashboards, CRM systems, and local SEO. Over twenty-two client projects have been delivered to date across HVAC, oil and gas, healthcare, media, ecommerce, and professional services.",
-            "Two in-house systems anchor the consultancy's technical capability. Alpha Matrix is a six-agent autonomous analysis architecture — a coordinated multi-agent system for deep research, scoring, and decision support — developed inside Preisser Solutions and used to support client engagements that require sustained analytical work at machine scale. MarCommand is a proprietary multi-agent marketing intelligence engine, a coordinated system of marketing-focused agents that compounds research, content, and outreach work across a client's funnel. Both are real, working systems — not slideware — and both are why Preisser Solutions can deliver AI-powered marketing and operations work in weeks rather than quarters.",
-            "Tyler also operates a consumer media presence, Preisser Media, with a combined audience of more than 300,000 followers and over 30 million views across video platforms. That audience is separate from the consultancy's commercial work but informs the same underlying skill: building systems — content, distribution, automation — that compound over time.",
+            "Two in-house systems anchor the consultancy's technical capability. Alpha Matrix is a six-agent autonomous analysis architecture — a coordinated multi-agent system for deep research, scoring, and decision support — developed inside Preisser Solutions and used to support client engagements that require sustained analytical work at machine scale. MarCommand is an internal multi-agent system, a coordinated set of agents that compounds research, content, and outreach work across a client's funnel. Both are real, working systems — not slideware — and both are why Preisser Solutions can deliver custom software and automation work in weeks rather than quarters.",
           ],
         },
         {
@@ -96,23 +95,25 @@ export const siteConfig = {
     },
   },
   meta: {
-    title: "Preisser Solutions | AI Automation, Websites & Local SEO in Kansas",
+    title:
+      "Preisser Solutions | Custom Business Software, Automation & AI Integration in Kansas",
     description:
-      "Preisser Solutions builds AI automation, custom websites, local SEO, web apps, dashboards, and AI search optimization systems for Hays and western Kansas businesses.",
+      "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
     themeColor: "#0D95E8",
   },
   // R-031..R-033: homepage hero content. All textual content lives in data files
   // per project convention — components render, data files own the words.
   hero: {
-    h1: "AI Automation, Custom Websites, and Local SEO in Hays, Kansas",
+    eyebrow: "Custom software · Hays, Kansas",
+    h1: "Business Software. Business Automation. AI Integration.",
     subhead:
-      "Preisser Solutions builds world-class systems behind modern businesses: high-converting websites, local SEO, AI search visibility, CRM workflows, dashboards, and automations that reduce manual work and increase qualified leads.",
+      "The dashboard, the database, and the automations in between — built for how your business actually works. Shipped in weeks, not quarters, and without the six-figure platform bill.",
     primaryCta: {
-      label: "Reach out",
+      label: "Start a project",
       href: "/contact",
     },
     secondaryCta: {
-      label: "See Case Studies",
+      label: "See what we've built",
       href: "/case-studies",
     },
   },
@@ -121,28 +122,28 @@ export const siteConfig = {
   valueStrip: [
     "Hays, Kansas based",
     "Founder-led",
-    "Websites",
-    "Automation",
-    "Local SEO",
-    "Dashboards",
-    "CRM Systems",
-    "AI Search Optimization",
+    "Admin dashboards",
+    "Custom databases",
+    "Document pipelines",
+    "Workflow automation",
+    "AI integration",
+    "Built in-house",
   ],
   // R-035: verifiable proof points. Sourced from case studies. Each entry
   // is a self-contained line with explicit client / context so the bar is
   // readable in isolation as it scrolls past.
   proofBar: [
     "95% reduction in back-office logistics time — HG Oil Holdings",
-    "60%+ dormant customer reactivation — Cassidy HVAC",
-    "5x organic reach in 30 days — Cassidy HVAC marketing engine",
+    "Reconciliation cut from a full day → 15-minute exception queue — Chicago-area bus operator",
     "Zero missed renewals in 6 months — MGU in the Alliant Insurance ecosystem",
-    "Reconciliation cut from full day → 15-minute exception queue — Chicago-area bus operator",
     "75%+ accuracy improvement on inventory — HG Oil Holdings",
+    "A photo of a farm bill becomes Schedule-F-ready books — FarmBooks",
+    "1,069 engine tests and 505 app tests green — FarmBooks",
+    "18 content block types shared by a website and a native iOS app — C3 Studio",
+    "One admin login runs the site, the app, and the check-in desk — C3 Studio",
+    "Two ministries, one registration and roster system — NWKS Encounter",
     "134 pre-rendered cinematic pages — Iron and Oak Podcast",
-    "45%+ booking conversion lift — Cassidy HVAC",
     "22+ Kansas SMB projects delivered",
     "Founder-led: every project built directly by Tyler Preisser",
-    "Hays, Kansas — 90-mile primary service radius",
-    "Next.js, React, TypeScript, AI-native architecture",
   ],
 } as const;

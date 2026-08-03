@@ -18,6 +18,15 @@ interface Props {
   index: number;
 }
 
+/**
+ * These stay the vivid brand colours on purpose.
+ *
+ * The status pill is painted on `rgba(10,22,40,0.75)` — a dark translucent
+ * chip over the card visual — in BOTH themes, so these light values are the
+ * high-contrast choice here. Do not "fix" them to the darkened
+ * --theme-accent-text tokens: those are for text on a light surface, and on
+ * this dark pill they would be the low-contrast option.
+ */
 const STATUS_CONFIG: Record<ProductStatus, { label: string; color: string; dot: string }> = {
   production:           { label: "LIVE",  color: "#00D4AA", dot: "#00D4AA" },
   deployable:           { label: "READY", color: "#0D95E8", dot: "#0D95E8" },
@@ -75,7 +84,11 @@ export function ProductCard({ product, index }: Props) {
             <span
               className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em]"
               style={{
-                background: "rgba(10,22,40,0.75)",
+                // 0.95, not 0.75. At 0.75 this pill composites to ~#47505E over
+                // a light card, where READY (#0D95E8) is 2.52:1 and SVC is
+                // 3.18:1. Near-opaque also makes the badge legible over ANY
+                // product artwork behind it rather than only the light ones.
+                background: "rgba(10,22,40,0.95)",
                 backdropFilter: "blur(8px)",
                 WebkitBackdropFilter: "blur(8px)",
                 border: `1px solid ${status.dot}40`,
@@ -103,7 +116,7 @@ export function ProductCard({ product, index }: Props) {
 
           {/* Product name */}
           <h3
-            className="mb-2 text-[15px] font-semibold leading-snug transition-colors duration-200 group-hover:text-[#80E9FF]"
+            className="mb-2 text-[15px] font-semibold leading-snug transition-colors duration-200 group-hover:[color:var(--theme-accent-text)]"
             style={{ color: "var(--theme-text-primary)" }}
           >
             {product.name}
@@ -125,7 +138,7 @@ export function ProductCard({ product, index }: Props) {
             >
               <span
                 className="text-xl font-bold leading-none tracking-tight"
-                style={{ color: "var(--color-primary)" }}
+                style={{ color: "var(--theme-accent-text)" }}
               >
                 {product.headlineMetric.value}
               </span>
@@ -139,7 +152,7 @@ export function ProductCard({ product, index }: Props) {
           )}
 
           {/* Learn more affordance */}
-          <div className="mt-4 flex items-center gap-1.5 text-[12px] font-medium text-[#0D95E8] transition-all duration-200 group-hover:gap-2 group-hover:text-[#80E9FF]">
+          <div className="mt-4 flex items-center gap-1.5 text-[12px] font-medium [color:var(--theme-accent-text)] transition-all duration-200 group-hover:gap-2 group-hover:[color:var(--theme-accent-text)]">
             Learn more
             <svg
               viewBox="0 0 24 24"

@@ -34,11 +34,11 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Preisser Solutions | AI Automation, Websites & Local SEO in Kansas",
+    default: "Preisser Solutions | Custom Business Software, Automation & AI Integration in Kansas",
     template: "%s | Preisser Solutions",
   },
   description:
-    "Preisser Solutions helps Kansas businesses grow with custom websites, local SEO, AI search optimization, CRM systems, dashboards, and workflow automation. Based in Hays, Kansas.",
+    "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
   metadataBase: new URL("https://preissersolutions.com"),
   // NOTE: `keywords` meta intentionally omitted. Google explicitly ignores it,
   // and Bing treats stuffed keyword meta as a spam signal. Topical relevance is
@@ -88,9 +88,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://preissersolutions.com",
     siteName: "Preisser Solutions",
-    title: "Preisser Solutions | AI Automation, Websites & Local SEO in Kansas",
+    title: "Preisser Solutions | Custom Business Software, Automation & AI Integration in Kansas",
     description:
-      "Preisser Solutions helps Kansas businesses grow with custom websites, local SEO, AI search optimization, CRM systems, dashboards, and workflow automation. Based in Hays, Kansas.",
+      "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
     images: [
       {
         url: "/images/og-image-v2.jpg",
@@ -102,9 +102,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Solutions | AI Automation, Websites & Local SEO in Kansas",
+    title: "Preisser Solutions | Custom Business Software, Automation & AI Integration in Kansas",
     description:
-      "Preisser Solutions helps Kansas businesses grow with custom websites, local SEO, AI search optimization, CRM systems, dashboards, and workflow automation. Based in Hays, Kansas.",
+      "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@tylerpreisser",
   },
@@ -164,7 +164,7 @@ const organization = {
   // unrelated brands. Long-form prose belongs in layout.tsx, not the generic
   // helper, because it is brand-specific (not a reusable shape).
   disambiguatingDescription:
-    "Preisser Solutions (preissersolutions.com) is the custom software, web development, and AI automation consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Solutions' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Solutions builds websites, web applications, AI agents, and business automation systems exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: tyler@preissersolutions.com.",
+    "Preisser Solutions (preissersolutions.com) is the custom business software, automation, and AI integration consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Solutions' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Solutions builds admin dashboards, customer and member databases, document-processing pipelines, and the automations and AI integrations that connect them, exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: tyler@preissersolutions.com.",
   // Service-tier price catalog. Lives on the Organization (homepage) so AI
   // engines surfacing pricing have an authoritative source. Per-service prices
   // are stable enough to live in code rather than data — and short enough to
@@ -175,9 +175,9 @@ const organization = {
       availability: "https://schema.org/InStock",
       itemOffered: {
         "@type": "Service",
-        name: "Custom Website Development",
+        name: "Business Software",
         description:
-          "Pixel-perfect, high-performance custom websites built specifically for your business. No templates. Designed for conversions, speed, and SEO.",
+          "Admin dashboards, customer and member databases, client portals, and internal tools — the platform your team actually logs into, built for how your business works.",
       },
     },
     {
@@ -185,9 +185,9 @@ const organization = {
       availability: "https://schema.org/InStock",
       itemOffered: {
         "@type": "Service",
-        name: "Web Application Development",
+        name: "Business Automation",
         description:
-          "Full-stack custom web applications for internal tools, client portals, and complex business logic. Built with modern frameworks.",
+          "Workflow automation for document pipelines, scheduled jobs, notifications and confirmations, and the system integrations that connect them — the work that happens without anyone doing it.",
       },
     },
     {
@@ -195,29 +195,9 @@ const organization = {
       availability: "https://schema.org/InStock",
       itemOffered: {
         "@type": "Service",
-        name: "Business Automation Systems",
+        name: "AI Integration",
         description:
-          "End-to-end automation of invoicing, scheduling, data entry, reporting, and operational workflows using AI and custom software.",
-      },
-    },
-    {
-      "@type": "Offer",
-      availability: "https://schema.org/InStock",
-      itemOffered: {
-        "@type": "Service",
-        name: "AI Agent Development",
-        description:
-          "Custom AI agents that handle customer service, research, data processing, and decision support — built specifically for your business.",
-      },
-    },
-    {
-      "@type": "Offer",
-      availability: "https://schema.org/InStock",
-      itemOffered: {
-        "@type": "Service",
-        name: "Dashboards and Analytics",
-        description:
-          "Real-time business dashboards that surface key metrics, track KPIs, and give owners and operators a live view of operations.",
+          "AI put exactly where it earns its place: reading and classifying documents, drafting with a human approval gate, and joining an existing workflow — never replacing judgment on anything that matters.",
       },
     },
   ],
@@ -239,9 +219,9 @@ const homeWebPage = {
   "@type": "WebPage",
   "@id": WEBPAGE_ID,
   url: "https://preissersolutions.com",
-  name: "Preisser Solutions | AI Automation, Websites & Local SEO in Kansas",
+  name: "Preisser Solutions | Custom Business Software, Automation & AI Integration in Kansas",
   description:
-    "Preisser Solutions helps Kansas businesses grow with custom websites, local SEO, AI search optimization, CRM systems, dashboards, and workflow automation. Based in Hays, Kansas.",
+    "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
   isPartOf: { "@id": WEBSITE_ID },
   about: { "@id": ORG_ID },
   author: { "@id": PERSON_ID },

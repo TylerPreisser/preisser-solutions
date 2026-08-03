@@ -27,9 +27,9 @@ export const seoSite = {
   latitude: 38.8794,
   longitude: -99.3268,
   description:
-    "Preisser Solutions is a founder-led AI-native web development, local SEO, custom software, and business automation company based in Hays, Kansas.",
+    "Preisser Solutions is a founder-led custom business software, automation, and AI integration company based in Hays, Kansas.",
   shortDescription:
-    "AI automation, custom websites, local SEO, web apps, dashboards, and AI search optimization for Kansas small businesses.",
+    "Custom business software, workflow automation, and AI integration — admin dashboards, databases, and document pipelines for Kansas businesses.",
   // Geographic markets explicitly served. Used by LocalBusiness.areaServed
   // and as a discoverability hint for AI engines listing geographic coverage.
   areaServed: [
@@ -52,15 +52,15 @@ export const seoSite = {
   // Top-level service categories. Used by LocalBusiness.makesOffer and as
   // discoverability hints for AI agents listing capabilities.
   services: [
-    "AI Automation",
-    "Custom Website Development",
-    "Local SEO",
-    "AI Search Optimization",
+    "Business Software",
+    "Admin Dashboards & Business Intelligence",
+    "Custom Databases & Client Portals",
     "Business Automation",
+    "Document Processing Pipelines",
+    "AI Integration",
+    "Document Extraction & Classification",
     "Custom Web Applications",
     "Custom CRM Systems",
-    "Dashboards and Business Intelligence",
-    "Digital Marketing Systems",
     "API Integrations",
   ] as const,
   social: siteConfig.social,

@@ -10,19 +10,19 @@ export interface AutomationBenefit {
 
 export const services: Service[] = [
   {
-    title: "Websites & Applications",
+    title: "Business Software",
     description:
-      "Professional sites, custom apps, client portals, e-commerce, and internal tools built from scratch to perform.",
+      "Admin dashboards, customer and member databases, client portals, and internal tools built from scratch for how your business actually works.",
   },
   {
-    title: "Automation Systems",
+    title: "Business Automation",
     description:
-      "AI-powered automation systems for repetitive work like invoicing, document processing, outreach, routing, and monitoring.",
+      "Workflow automation for document pipelines, scheduled jobs, notifications and confirmations, and the system integrations that connect them.",
   },
   {
-    title: "System Fixes & Efficiency",
+    title: "AI Integration",
     description:
-      "If something is slow, broken, disconnected, or redundant, we figure out why and fix it with better systems.",
+      "Document extraction and classification, AI-assisted drafting with a human approval gate, and putting AI into an existing workflow where it earns its place.",
   },
   {
     title: "Dashboards & Business Intelligence",
@@ -30,9 +30,9 @@ export const services: Service[] = [
       "Real-time dashboards, reporting, forecasting, and data integration that show you what is actually happening in the business.",
   },
   {
-    title: "Marketing & Lead Generation Systems",
+    title: "System Fixes & Efficiency",
     description:
-      "Automated social media, email, SMS, local SEO, AI search visibility, and lead generation systems built to capture and follow up on demand without constant babysitting.",
+      "If something is slow, broken, disconnected, or redundant, we figure out why and fix it with better systems.",
   },
 ];
 
@@ -70,7 +70,7 @@ export const automationBenefits: AutomationBenefit[] = [
   {
     title: "Scales With Volume",
     description:
-      "As volume grows, automation scales with it. Processing 10x more invoices next month usually doesn't require 10x more staff — the system handles the throughput at near-flat cost. Caveats: integrations have rate limits, AI usage has per-call costs, and very large volumes may require infrastructure upgrades.",
+      "As volume grows, automation scales with it. Doubling your invoice count next month usually doesn't mean doubling your staff — the system absorbs the throughput at near-flat cost. Caveats: integrations have rate limits, AI usage has per-call costs, and very large volumes may require infrastructure upgrades.",
   },
   {
     title: "Frees People for Higher-Value Work",
@@ -154,11 +154,11 @@ export const roiJobRoles: RoiJobRole[] = [
 
 export const contactInterests = [
   "General Inquiry",
-  "Websites & Applications",
-  "Automation Systems",
+  "Business Software",
+  "Business Automation",
+  "AI Integration",
+  "Dashboards & Business Intelligence",
   "System Fixes & Efficiency",
-  "Dashboards & Visualizations",
-  "Marketing & Lead Generation Systems",
   "Partnership / Referral",
   "Other",
 ] as const;

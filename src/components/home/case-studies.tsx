@@ -8,14 +8,97 @@ interface CaseStudyCard {
   description: string;
   gradient: string;
   image?: string;
+  // Intrinsic pixel dimensions of `image` — required alongside `image` so the
+  // <img> can carry width/height and reserve layout space before it loads.
+  imageWidth?: number;
+  imageHeight?: number;
   caseLogo?: string;
+  // Intrinsic pixel dimensions of `caseLogo`.
+  caseLogoWidth?: number;
+  caseLogoHeight?: number;
   svgIcon?: React.ReactNode;
   lightCard?: boolean;
   href?: string;
 }
 
+// Order is deliberate: the three shipped internal platforms lead, then the
+// operational client wins, then the internal tooling. Every claim below is
+// verified in docs/plans/2026-08-02-three-pillar-reposition.md §9 — do not add
+// a number that is not on that list. The two anonymized clients stay anonymized.
 const caseStudyCards: CaseStudyCard[] = [
-  // 1 — Alliant Insurance ecosystem MGU: AI Submission Processing (anonymized per privacy rules)
+  // FarmBooks — flagship. Document pipeline + Schedule-F-ready books.
+  {
+    title: "FarmBooks",
+    tags: "Business Software | Document Pipeline | AI Integration",
+    description:
+      "Photograph a farm bill; get Schedule-F-ready books. Vision and OCR read every bill independently and each has to prove the section total, so a dropped line surfaces instead of vanishing silently. Handwritten bills always route to a human, never auto-posted. Output is a formula-driven .xlsx with live two-way SharePoint sync where human edits win. 1,069 engine tests and 505 app tests green.",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #0D95E8 55%, #0F3D2E 100%)",
+    href: "/case-studies/farmbooks",
+    svgIcon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        {/* Bill / receipt */}
+        <path d="M8 5h22v34l-3.5-2.5L23 39l-3.5-2.5L16 39l-3.5-2.5L9 39" strokeOpacity="0.55" />
+        <path d="M8 5v34" strokeOpacity="0.55" />
+        <path d="M14 14h11" strokeOpacity="0.8" />
+        <path d="M14 20h11" strokeOpacity="0.8" />
+        <path d="M14 26h6" strokeOpacity="0.8" />
+        {/* Camera lens — the photograph step */}
+        <circle cx="35" cy="30" r="9" fill="currentColor" fillOpacity="0.14" stroke="currentColor" strokeOpacity="0.9" />
+        <circle cx="35" cy="30" r="3.5" strokeOpacity="0.9" />
+        <path d="M31 19h8l2 3" strokeOpacity="0.5" />
+      </svg>
+    ),
+  },
+  // C3 Studio — one admin login behind a website and a native iOS app.
+  {
+    title: "C3 Studio",
+    tags: "Business Software | Admin Platform | Website + Native App",
+    description:
+      "One admin login runs a website, a native iOS app, scheduling, comms, care, giving, and kids check-in. 18 typed content block types are rendered identically by the website and the native app from one API contract, and Draft to Publish flips the site and the app live at the same moment.",
+    gradient: "linear-gradient(135deg, #0A1628 0%, #1B2E5C 50%, #0D95E8 100%)",
+    href: "/case-studies/c3-studio",
+    svgIcon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        {/* Desktop front end */}
+        <rect x="4" y="9" width="28" height="20" rx="2.5" strokeOpacity="0.75" />
+        <path d="M4 15h28" strokeOpacity="0.4" />
+        <path d="M14 33h8" strokeOpacity="0.5" />
+        <path d="M18 29v4" strokeOpacity="0.5" />
+        {/* Native app front end */}
+        <rect x="31" y="21" width="13" height="22" rx="3" fill="currentColor" fillOpacity="0.12" stroke="currentColor" strokeOpacity="0.9" />
+        <path d="M35 25h5" strokeOpacity="0.6" />
+        <path d="M35 31h5" strokeOpacity="0.45" />
+        <path d="M35 35h5" strokeOpacity="0.45" />
+        {/* One contract feeding both */}
+        <circle cx="9" cy="12" r="1" fill="currentColor" fillOpacity="0.7" stroke="none" />
+        <circle cx="13" cy="12" r="1" fill="currentColor" fillOpacity="0.45" stroke="none" />
+      </svg>
+    ),
+  },
+  // NWKS Encounter — registration through roster for two ministries on one system.
+  {
+    title: "NWKS Encounter",
+    tags: "Business Automation | Registration to Roster | Two Ministries",
+    description:
+      "Registration, confirmation, reminder, roster — for two separate ministries running on one system. A dedicated always-on cron worker drains scheduled campaigns in bounded chunks, because a synchronous send to 2,402 recipients took 67 seconds and would blow the per-request CPU budget. Admin access is protected by passkey and WebAuthn two-factor with a recovery ladder.",
+    gradient: "linear-gradient(135deg, #0F172A 0%, #334155 45%, #0D95E8 100%)",
+    href: "/case-studies/nwks-encounter",
+    svgIcon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        {/* Roster clipboard */}
+        <rect x="7" y="7" width="24" height="32" rx="2.5" strokeOpacity="0.7" />
+        <path d="M17 4h4a2 2 0 0 1 2 2v2h-8V6a2 2 0 0 1 2-2z" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeOpacity="0.7" />
+        <path d="M13 17h12" strokeOpacity="0.75" />
+        <path d="M13 23h12" strokeOpacity="0.6" />
+        <path d="M13 29h7" strokeOpacity="0.6" />
+        {/* Scheduled send */}
+        <circle cx="37" cy="31" r="8" fill="currentColor" fillOpacity="0.14" stroke="currentColor" strokeOpacity="0.9" />
+        <path d="M37 27v4.5l3 1.5" strokeOpacity="0.9" />
+        <path d="M33 12h10l-5 5-5-5z" fill="currentColor" fillOpacity="0.25" stroke="currentColor" strokeOpacity="0.6" />
+      </svg>
+    ),
+  },
+  // Alliant Insurance ecosystem MGU: AI Submission Processing (anonymized per privacy rules)
   {
     title: "An MGU Within the Alliant Insurance Ecosystem",
     tags: "AI Submission Processing | Insurance | Salesforce + Azure AI",
@@ -23,8 +106,10 @@ const caseStudyCards: CaseStudyCard[] = [
       "AI engine reads broker submissions — 7–15 documents per submission — extracts structured data using dual competing AI models (Claude Opus + GPT cross-validation), and auto-populates Salesforce records. Eliminated manual data entry across systems where the same data was previously entered 3–5 times. Zero missed renewals in the first six months.",
     gradient: "linear-gradient(135deg, #0a1f3c 0%, #0D95E8 100%)",
     caseLogo: "/images/case-studies/astrus-logo.png",
+    caseLogoWidth: 2066,
+    caseLogoHeight: 530,
   },
-  // 2 — Chicago-area bus transportation operator: Power BI + Ops Automation (anonymized per privacy rules)
+  // Chicago-area bus transportation operator: Power BI + Ops Automation (anonymized per privacy rules)
   {
     title: "A Chicago-Area Bus Transportation Operator",
     tags: "Power BI Dashboards | Ops Automation | Dispatch + AI Parsing",
@@ -32,8 +117,10 @@ const caseStudyCards: CaseStudyCard[] = [
       "Five Power BI dashboards — workforce planning, revenue/EBITDA, safety scorecard, FY26 goals, and routes/runs — plus AI BOL parsing, rate-confirmation parsing, and back-office reconciliation automation. Weekly reconciliation dropped from a full day to a 15-minute exception queue, with real-time load-level profitability for the first time.",
     gradient: "linear-gradient(135deg, #0F2744 0%, #1a3a6e 100%)",
     caseLogo: "/images/case-studies/sunrise-transportation-logo.svg",
+    caseLogoWidth: 150,
+    caseLogoHeight: 64,
   },
-  // 3 — Iron and Oak Podcast
+  // Iron and Oak Podcast
   {
     title: "The Iron and Oak Podcast",
     tags: "Custom Media Brand | 134 Pages | GSAP Cinematic",
@@ -41,8 +128,10 @@ const caseStudyCards: CaseStudyCard[] = [
       "Designed and built the full cinematic media brand from concept to launch — custom design system, 134 pre-rendered pages, GSAP-powered smooth scroll, dark and light modes, and a content architecture spanning 12 episodes and 109 questions.",
     gradient: "linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0f2010 100%)",
     image: "iron-oak.webp",
+    imageWidth: 2048,
+    imageHeight: 2048,
   },
-  // 4 — Cassidy HVAC: Customer Reactivation
+  // Cassidy HVAC: Customer Reactivation
   {
     title: "AI Customer Reactivation Engine",
     tags: "AI Outreach | Cassidy HVAC | Revenue Recovery",
@@ -50,19 +139,11 @@ const caseStudyCards: CaseStudyCard[] = [
       "Reactivated 60%+ of dormant Cassidy HVAC customers within six weeks. CRM-integrated AI generated hyper-personalized SMS and email outreach using each customer's service history, equipment age, and seasonal context — driving a 45%+ booking conversion lift.",
     gradient: "linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%)",
     image: "cassidy-hvac-nobg.webp",
+    imageWidth: 505,
+    imageHeight: 100,
     lightCard: true,
   },
-  // 5 — Cassidy HVAC: Hands-off AI Marketing Engine
-  {
-    title: "AI Marketing Engine for Cassidy HVAC",
-    tags: "AI Marketing | Cassidy HVAC | 5x Organic Reach",
-    description:
-      "Replaced an underperforming outside marketing agency with a fully hands-off AI engine. The system scrapes trends, generates persuasive-psychology-aware visuals, and posts to Facebook and Instagram daily — delivering a 5x organic reach increase inside 30 days.",
-    gradient: "linear-gradient(135deg, #F8FAFC 0%, #DBEAFE 55%, #BAE6FD 100%)",
-    image: "cassidy-hvac-nobg.webp",
-    lightCard: true,
-  },
-  // 6 — HG Oil Holdings: Inventory
+  // HG Oil Holdings: Inventory
   {
     title: "Automated Inventory System",
     tags: "Custom App | HG Oil Holdings | Live Tracking",
@@ -70,9 +151,11 @@ const caseStudyCards: CaseStudyCard[] = [
       "95% reduction in back-office logistics time and 75%+ accuracy improvement on inventory counts and transfers. Live counts, full audit trails, and codified markup formulas turned HG Oil Holdings' inventory function from a loss center into a profit center.",
     gradient: "linear-gradient(135deg, #f0f4f8 0%, #dce8f0 100%)",
     image: "hg-oil-icon.webp",
+    imageWidth: 180,
+    imageHeight: 150,
     lightCard: true,
   },
-  // 7 — Wife Supply Co
+  // Wife Supply Co
   {
     title: "Wife Supply Co",
     tags: "AI Commerce | Custom Build | Full Deployment",
@@ -80,9 +163,11 @@ const caseStudyCards: CaseStudyCard[] = [
       "Built the entire AI-powered gifting platform from concept to launch — a custom AI gift-matching engine, custom commerce front end, conversion-optimized funnels, and a brand-engineered design system that doesn't look like another Shopify store.",
     gradient: "linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%)",
     image: "wife-supply.webp",
+    imageWidth: 1024,
+    imageHeight: 996,
     lightCard: true,
   },
-  // 8 — Our own site (Preisser Solutions)
+  // Our own site (Preisser Solutions)
   {
     title: "PreisserSolutions.com",
     tags: "Custom Website | Lead Pipeline | Local + AI SEO",
@@ -90,8 +175,10 @@ const caseStudyCards: CaseStudyCard[] = [
       "Our own flagship site, built the same way we build yours: custom-coded in Next.js, React, and TypeScript, engineered for local SEO and AI search citation, and connected straight into the lead pipeline. A website built to work as a sales tool.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #0F1D30 100%)",
     image: "preisser-solutions.webp",
+    imageWidth: 1024,
+    imageHeight: 1024,
   },
-  // 9 — Alpha Matrix
+  // Alpha Matrix
   {
     title: "Alpha Matrix — Multi-Agent AI",
     tags: "AI Architecture | Multi-Agent | Autonomous",
@@ -99,9 +186,11 @@ const caseStudyCards: CaseStudyCard[] = [
       "Six autonomous AI agents running in parallel — scanning, analyzing, scoring, and producing strategic output without human intervention. Developed in-house at Preisser Solutions as a working demonstration of multi-agent analytical infrastructure.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #1a1040 50%, #0A1628 100%)",
     image: "preisser-solutions.webp",
+    imageWidth: 1024,
+    imageHeight: 1024,
     href: "/case-studies/alpha-matrix",
   },
-  // 10
+  // After-Hours Call Triage
   {
     title: "After-Hours Call Triage",
     tags: "AI Automation | Lead Capture | Routing",
@@ -120,7 +209,7 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
-  // 10
+  // AI Invoice Processing
   {
     title: "AI Invoice Processing",
     tags: "Document Processing | AI Automation | Back-Office",
@@ -140,7 +229,7 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
-  // 11
+  // AI Document Analysis
   {
     title: "AI Document Analysis",
     tags: "AI Automation | Workflow Integration | Efficiency",
@@ -160,7 +249,7 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
-  // 12
+  // Custom AI Fitness Agent
   {
     title: "Custom AI Fitness Agent",
     tags: "Custom AI Agent | Personalization | Data",
@@ -181,7 +270,7 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
-  // 13
+  // AI Email Digest System
   {
     title: "AI Email Digest System",
     tags: "AI Automation | Email Management | Productivity",
@@ -199,7 +288,7 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
-  // 14
+  // Hiring Pipeline & AI Screener
   {
     title: "Hiring Pipeline & AI Screener",
     tags: "Google Workspace | Apps Script | AI Agent",
@@ -218,7 +307,7 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
-  // 15
+  // Agentic AI Coding Specialists
   {
     title: "Agentic AI Coding Specialists",
     tags: "AI Architecture | Agentic Coding | Claude Code",
@@ -236,7 +325,7 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
-  // 16
+  // Custom Local AI Models
   {
     title: "Custom Local AI Models",
     tags: "AI Engineering | Local Deployment | Custom Training",
@@ -257,7 +346,7 @@ const caseStudyCards: CaseStudyCard[] = [
       </svg>
     ),
   },
-  // 17
+  // AI Trend & Behavioral Analysis
   {
     title: "AI Trend & Behavioral Analysis",
     tags: "AI Research | Predictive Modeling | Economics",
@@ -367,13 +456,9 @@ export function CaseStudies() {
                   src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}${study.caseLogo}`}
                   alt={study.title}
                   loading="lazy"
-                  className={[
-                    "ps-work-card-logo",
-                    "ps-work-card-logo--company",
-                    study.title === "Salesforce" ? "ps-work-card-logo--salesforce" : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
+                  width={study.caseLogoWidth}
+                  height={study.caseLogoHeight}
+                  className="ps-work-card-logo ps-work-card-logo--company"
                 />
               ) : study.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -381,6 +466,8 @@ export function CaseStudies() {
                   src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/cases/${study.image}`}
                   alt={study.title}
                   loading="lazy"
+                  width={study.imageWidth}
+                  height={study.imageHeight}
                   className={`ps-work-card-logo${study.title === "TylerPreisser.com" ? " ps-work-card-logo--headshot" : ""}`}
                 />
               ) : study.svgIcon ? (
@@ -412,12 +499,16 @@ export function CaseStudies() {
           );
 
           if (study.href) {
+            // Internal case-study routes stay in the same tab; only genuinely
+            // external destinations get a new tab.
+            const isExternal = /^https?:\/\//.test(study.href);
             return (
               <a
                 key={`${study.title}-${index}`}
                 href={study.href}
-                target="_blank"
-                rel="noopener noreferrer"
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                aria-label={`${study.title} case study`}
                 className={[
                   "ps-work-card",
                   study.lightCard ? "ps-work-card--light" : "",

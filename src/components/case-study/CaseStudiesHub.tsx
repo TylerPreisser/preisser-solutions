@@ -352,7 +352,7 @@ function HubCard({
           className="mt-7 flex items-center justify-between border-t pt-5"
           style={{ borderColor: "var(--theme-card-border)" }}
         >
-          <span className="text-sm font-medium text-[#0D95E8] group-hover:text-[#0B7BC0]">
+          <span className="text-sm font-medium [color:var(--theme-accent-text)] group-hover:[color:var(--theme-accent-text)]">
             Read case study
           </span>
           <svg
@@ -362,7 +362,7 @@ function HubCard({
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="h-4 w-4 text-[#0D95E8] transition-transform group-hover:translate-x-0.5"
+            className="h-4 w-4 [color:var(--theme-accent-text)] transition-transform group-hover:translate-x-0.5"
             aria-hidden="true"
           >
             <path d="M5 12h14" />

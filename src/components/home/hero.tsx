@@ -1,13 +1,37 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { siteConfig } from "@/data/site-config";
+
+/**
+ * The H1 lives in site-config as ONE string ("Business Software. Business
+ * Automation. AI Integration.") so the accessible name, the JSON-LD slogan and
+ * the SEO validators all read the same text. The hero renders it as a
+ * three-line wordmark, so we split it on the sentence boundary here and
+ * re-append the period. The <h1> still contains the full string.
+ *
+ * Deliberately no regex lookbehind — iOS Safari < 16.4 throws a SyntaxError at
+ * parse time, which would take the whole bundle down rather than one component.
+ * Generic: any number of sentences renders as that many lines.
+ */
+function splitPillars(h1: string): string[] {
+  const parts = h1
+    .split(".")
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => `${part}.`);
+  return parts.length > 0 ? parts : [h1];
+}
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subheadRef = useRef<HTMLParagraphElement>(null);
   const ctasRef = useRef<HTMLDivElement>(null);
+
+  const pillars = splitPillars(siteConfig.hero.h1);
 
   // Animated flowing wave mesh — inline canvas, theme-aware
   useEffect(() => {
@@ -188,41 +212,87 @@ export function Hero() {
     };
   }, []);
 
-  // GSAP entrance timeline
+  // GSAP entrance timeline — eyebrow, then the three pillar lines on their own
+  // stagger, then the subhead, then the CTAs. Only opacity + transform.
   useEffect(() => {
+    const lines = headlineRef.current
+      ? Array.from(
+          headlineRef.current.querySelectorAll<HTMLElement>(".ps-hero-line")
+        )
+      : [];
+
+    const all = [
+      eyebrowRef.current,
+      ...lines,
+      subheadRef.current,
+      ctasRef.current,
+    ].filter((el): el is HTMLElement => el !== null);
+
+    // Static end-state. Used for prefers-reduced-motion and as the failure
+    // path — the hero must never be left invisible.
+    const reveal = () => {
+      all.forEach((el) => {
+        el.style.opacity = "1";
+        el.style.transform = "none";
+      });
+    };
+
+    // Manual check, matching the convention used across this codebase.
     const prefersReduced =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const targets = [headlineRef, subheadRef, ctasRef];
-
     if (prefersReduced) {
-      targets.forEach((r) => {
-        if (r.current) {
-          r.current.style.opacity = "1";
-          r.current.style.transform = "none";
-        }
-      });
+      reveal();
       return;
     }
 
-    import("@/lib/gsap").then(({ gsap }) => {
-      const tl = gsap.timeline({ delay: 0.2 });
-      tl.to(
-          headlineRef.current,
-          { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" }
-        )
-        .to(
-          subheadRef.current,
-          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-          "-=0.4"
-        )
-        .to(
-          ctasRef.current,
-          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-          "-=0.35"
-        );
-    });
+    let cancelled = false;
+    let timeline: { kill: () => void } | null = null;
+
+    import("@/lib/gsap")
+      .then(({ gsap }) => {
+        if (cancelled) return;
+        const tl = gsap.timeline({ delay: 0.15 });
+        timeline = tl;
+        tl.to(eyebrowRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+          })
+          .to(
+            lines,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              stagger: 0.12,
+              ease: "power3.out",
+            },
+            "-=0.25"
+          )
+          .to(
+            subheadRef.current,
+            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+            "-=0.3"
+          )
+          .to(
+            ctasRef.current,
+            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+            "-=0.35"
+          );
+      })
+      .catch((err) => {
+        // Never drop silently: surface it, then show the hero anyway.
+        console.error("[hero] GSAP chunk failed to load — revealing statically", err);
+        reveal();
+      });
+
+    return () => {
+      cancelled = true;
+      timeline?.kill();
+    };
   }, []);
 
   return (
@@ -243,12 +313,38 @@ export function Hero() {
           animated headline via CSS order, but first in the DOM for crawlers.
         */}
         <p className="ps-hero-summary sr-only">
-          Preisser Solutions builds AI automation, custom websites, and local SEO
-          for Kansas businesses. Founded by Tyler Preisser in Hays, Kansas.
+          Preisser Solutions builds custom business software, business
+          automation, and AI integration for Kansas businesses — admin
+          dashboards, customer databases, document pipelines, and the
+          automations that connect them. Founded by Tyler Preisser in Hays,
+          Kansas.
         </p>
 
+        <p ref={eyebrowRef} className="ps-hero-eyebrow">
+          {siteConfig.hero.eyebrow}
+        </p>
+
+        {/*
+          One <h1>, one accessible string. The spans are presentational line
+          boxes — assistive tech reads the heading's full text content:
+          "Business Software. Business Automation. AI Integration."
+          The trailing space keeps the sentences separated for that reading;
+          it collapses visually because each span is display: block.
+        */}
         <h1 ref={headlineRef} className="ps-hero-headline">
-          {siteConfig.hero.h1}
+          {pillars.map((line, i) => (
+            <span
+              key={line}
+              className={
+                i === pillars.length - 1
+                  ? "ps-hero-line ps-hero-line--accent"
+                  : "ps-hero-line"
+              }
+            >
+              {line}
+              {i < pillars.length - 1 ? " " : ""}
+            </span>
+          ))}
         </h1>
 
         <p ref={subheadRef} className="ps-hero-subtitle">
@@ -256,8 +352,11 @@ export function Hero() {
         </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
-          <a
+          {/* prefetch={false}: eager prefetch on above-the-fold CTAs was the
+              root cause of a 4.1s -> 0.8s mobile navigation regression. */}
+          <Link
             href={siteConfig.hero.primaryCta.href}
+            prefetch={false}
             className="ps-btn ps-btn-primary-dark"
           >
             {siteConfig.hero.primaryCta.label}
@@ -277,19 +376,14 @@ export function Hero() {
                 strokeLinejoin="round"
               />
             </svg>
-          </a>
-          <a
-            href="/products"
-            className="ps-btn ps-btn-secondary"
-          >
-            AI Agent Catalog &rarr;
-          </a>
-          <a
+          </Link>
+          <Link
             href={siteConfig.hero.secondaryCta.href}
+            prefetch={false}
             className="ps-btn ps-btn-secondary"
           >
             {siteConfig.hero.secondaryCta.label}
-          </a>
+          </Link>
         </div>
       </div>
     </section>

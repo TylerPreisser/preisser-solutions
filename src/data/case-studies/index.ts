@@ -1,5 +1,11 @@
 import type { CaseStudyData, CaseStudySummary } from "@/types/case-study";
 
+// Flagship platforms — the three-pillar reposition showcase
+// (docs/plans/2026-08-02-three-pillar-reposition.md)
+import { caseStudy as farmbooks } from "./farmbooks";
+import { caseStudy as c3Studio } from "./c3-studio";
+import { caseStudy as nwksEncounter } from "./nwks-encounter";
+
 // Named client engagements (canonical #1–8)
 import { caseStudy as cassidyReactivation } from "./cassidy-hvac-reactivation";
 import { caseStudy as cassidyMarketing } from "./cassidy-hvac-marketing-engine";
@@ -39,6 +45,7 @@ import { caseStudy as tylerPreisserSite } from "./tyler-preisser-site";
  * Canonical, publishable case studies — order = hub display order.
  *
  * Sort order (the order maps directly onto the hub grid):
+ *   0. Flagship platforms (FarmBooks, C3 Studio, NWKS Encounter)
  *   1. Named client engagements (canonical #1–8)
  *   2. Internal AI platforms (canonical #9, #16, #17, #21)
  *   3. Internal operational tools (canonical #14, #15, #20)
@@ -51,6 +58,11 @@ import { caseStudy as tylerPreisserSite } from "./tyler-preisser-site";
  * under src/app/case-studies/[slug]/page.tsx. Slug becomes the route segment.
  */
 export const caseStudies: CaseStudyData[] = [
+  // 0. Flagship platforms
+  farmbooks,
+  c3Studio,
+  nwksEncounter,
+
   // 1. Named client engagements
   cassidyReactivation,
   cassidyMarketing,

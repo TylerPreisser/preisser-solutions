@@ -100,7 +100,7 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
               <div>
                 <div
                   className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
-                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), var(--theme-accent-text))" }}
                 >
                   {totalCities}
                 </div>
@@ -115,7 +115,7 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
               <div>
                 <div
                   className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
-                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), var(--theme-accent-text))" }}
                 >
                   {regions.length}
                 </div>
@@ -130,7 +130,7 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
               <div>
                 <div
                   className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
-                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), var(--theme-accent-text))" }}
                 >
                   Hays
                 </div>
@@ -442,7 +442,7 @@ function RegionBlock({
             >
               {loc.subheadline}
             </p>
-            <span className="mt-4 inline-block text-sm font-medium text-[#0D95E8]">
+            <span className="mt-4 inline-block text-sm font-medium [color:var(--theme-accent-text)]">
               Visit page
             </span>
           </Link>

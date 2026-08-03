@@ -117,11 +117,17 @@ export function ProductGrid({ products }: Props) {
 
         <div className="ps-container relative pt-36 pb-14 sm:pt-40 sm:pb-16 lg:pt-44 lg:pb-20">
           <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-[1.07] tracking-[-0.025em] sm:text-5xl md:text-6xl">
+            {/* Gradient ends on --theme-accent-text, not the raw #80E9FF cyan:
+                that cyan is a dark-theme colour and renders at 1.40:1 on the
+                light theme's white background. */}
             <span
               className="bg-clip-text text-transparent"
-              style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary) 30%, #80E9FF 100%)" }}
+              style={{
+                backgroundImage:
+                  "linear-gradient(135deg, var(--theme-text-primary) 30%, var(--theme-accent-text) 100%)",
+              }}
             >
-              AI Agent Catalog
+              Systems we&apos;ve built
             </span>
           </h1>
 
@@ -129,14 +135,16 @@ export function ProductGrid({ products }: Props) {
             className="mt-5 max-w-2xl text-pretty text-base leading-relaxed sm:text-lg"
             style={{ color: "var(--theme-text-secondary)" }}
           >
-            Sixteen AI agents we&apos;ve built for real clients. Pick one, scope it for your business, and ship it.
+            Sixteen builds drawn from real client work &mdash; document pipelines, admin
+            dashboards, and the automations between them. Pick one, scope it for your
+            business, and ship it.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4 sm:mt-12">
             <div>
               <div
                 className="bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl"
-                style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+                style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), var(--theme-accent-text))" }}
               >
                 {products.length}
               </div>
@@ -148,7 +156,7 @@ export function ProductGrid({ products }: Props) {
             <div>
               <div
                 className="bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl"
-                style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
+                style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), var(--theme-accent-text))" }}
               >
                 100%
               </div>
