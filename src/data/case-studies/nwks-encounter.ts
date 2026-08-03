@@ -26,11 +26,19 @@ export const caseStudy: CaseStudyData = {
   oneLine: "Registration dedups into a roster; a dedicated worker drains campaigns in bounded chunks",
 
   headlineResults: [
-    { value: "2 ministries", label: "Partitioned per program on one codebase" },
-    { value: "756", label: "API tests" },
-    { value: "Dedicated cron worker", label: "Drains scheduled campaigns in bounded chunks" },
-    { value: "Passkey 2FA", label: "With a recovery ladder" },
+    { value: "Self-running", label: "Registration, confirmation, and roster" },
+    { value: "1 record", label: "Repeat sign-ups matched to the person already on file" },
+    { value: "2 ministries", label: "Kept separate on one codebase" },
+    { value: "Passkey 2FA", label: "On the admin surface, with a recovery ladder" },
   ],
+
+  hub: {
+    problem:
+      "Two annual retreat ministries ran sign-ups, follow-up and rosters out of forms, spreadsheets and an inbox, with no shared record of who had registered for which event or in which role.",
+    built:
+      "A public registration form that matches each sign-up against the person already on file, writes the roster entry on the spot, queues the confirmation, and hands scheduled sends to a dedicated worker so a large campaign cannot stall a request.",
+    outcome: "Registration, confirmation and roster run themselves",
+  },
 
   before: {
     heading: "Two annual retreats' worth of registration, follow-up, and roster work with no shared system.",

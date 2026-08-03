@@ -113,7 +113,7 @@ const services: ServicePillar[] = [
       {
         title: "One Data Model, Website and App",
         description:
-          "C3 Studio renders 18 typed content block types identically on a Next.js website and a native SwiftUI iOS app from a single API contract. Draft → Publish flips the website and the app live at the same time.",
+          "Your website and your mobile app read from the same place, so they can never drift apart. Staff edit once, hit publish, and both update at the same moment — no developer, no deploy, no waiting.",
         icon: <IconSystemIntegrationDashboard />,
       },
       {
@@ -174,7 +174,7 @@ const services: ServicePillar[] = [
       {
         title: "Scheduled Jobs That Run Themselves",
         description:
-          "A dedicated always-on worker drains scheduled sends in bounded chunks. It exists because pushing 2,402 recipients in one request took 67 seconds and would blow the per-request CPU budget. The unglamorous version is the one that doesn't fall over.",
+          "Reminders, confirmations and campaigns go out on their own schedule, in the background, whether or not anyone is at a desk. Built to keep working as the list grows instead of quietly timing out on the send that finally got too big.",
         icon: <IconAfterHoursCall />,
       },
       {
@@ -309,8 +309,8 @@ const services: ServicePillar[] = [
         body: "Anything touching money, a customer, or the books passes a human gate before it counts. Handwritten bills never auto-post, and low-confidence reads go to a review queue.",
       },
       {
-        lead: "Two readers, one answer.",
-        body: "Vision and OCR read the same bill independently and each has to prove the section total. When they disagree, the line goes to review — it doesn't disappear. The engine that does it carries 1,069 tests against a corpus of 23 photographed real bills.",
+        lead: "A missed line shows up instead of disappearing.",
+        body: "Two separate readers go over the same bill, and both have to agree on the total before anything posts. When they don't, that line lands in a review queue where somebody sees it. On a farm bill, that is the difference between books you can file and books you have to go re-check by hand.",
       },
       {
         lead: "Three weeks instead of three months.",
@@ -1642,10 +1642,14 @@ export function ServicePillars() {
           id="services-heading"
           className="ps-section-heading ps-section-heading--light"
         >
-          One System Instead of Six Tools
+          Built to Fit, Not to Fill a Category
         </h2>
         <p className="ps-services-intro">
-          Everything a Kansas business runs on lands in one place instead of six tools that don&apos;t talk to each other — and it&apos;s built for how you actually work, which is exactly why it beats a generic platform. Nothing to turn off, no unused modules, no consultant needed to change a field, and no six-figure platform bill. Not every business needs all three of these. Some needed a whole admin system; some needed one document pipeline.
+          Sometimes the job is a whole internal platform. Sometimes it&apos;s one
+          workflow that costs your team a day a week. Both are worth building, and the
+          right answer is whichever one actually fixes the problem &mdash; scoped to what
+          you need, built for how you already work, with nothing in it you didn&apos;t ask
+          for and no six-figure platform bill attached.
         </p>
       </div>
 

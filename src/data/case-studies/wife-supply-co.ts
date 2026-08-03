@@ -11,7 +11,7 @@ export const caseStudy: CaseStudyData = {
   datePublished: "2025-10-01",
   dateModified: "2026-05-20",
 
-  category: "AI Commerce • Custom Build • Full Deployment",
+  category: "AI Integration • Commerce Platform",
   clientName: "Wife Supply Co",
   clientNameDisplay: "Wife Supply Co",
   industry: "AI commerce and gifting",
@@ -27,6 +27,14 @@ export const caseStudy: CaseStudyData = {
     { value: "Brand-engineered", label: "Design system" },
     { value: "Concept → Launch", label: "Built end-to-end" },
   ],
+
+  hub: {
+    problem:
+      "A gifting concept with no commerce stack, no brand and no recommendation logic — and a premise that only works if the matching actually understands what it is given.",
+    built:
+      "A gift-matching engine that turns stated preferences into specific products, running on a purpose-built commerce front end and a design system made for the product rather than pulled from a theme.",
+    outcome: "A working gifting platform taken from concept to launch, engine, storefront and brand together",
+  },
 
   before: {
     heading: "A concept, a thesis, no platform.",

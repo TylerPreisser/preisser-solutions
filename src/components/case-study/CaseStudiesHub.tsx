@@ -6,12 +6,16 @@ interface Props {
   caseStudies: CaseStudySummary[];
 }
 
+/**
+ * The three pillars, in the fixed order set by
+ * docs/plans/2026-08-02-three-pillar-reposition.md §2. Every case study on the
+ * grid leads its `category` string with one of these, so the chip row is the
+ * pillar row — not a taxonomy of whatever words happened to be used.
+ */
 const FILTER_RANK: Record<string, number> = {
-  "Named Engagement": 0,
-  "Internal Platform": 10,
-  "Internal Tool": 20,
-  Capability: 30,
-  "Proof of Concept": 40,
+  "Business Software": 0,
+  "Business Automation": 1,
+  "AI Integration": 2,
 };
 
 function getFilterLabel(cs: CaseStudySummary) {
@@ -78,7 +82,7 @@ export function CaseStudiesHub({ caseStudies }: Props) {
     url: "https://preissersolutions.com/case-studies",
     name: "Case Studies — Preisser Solutions",
     description:
-      "Real engagements, real outcomes. Preisser Solutions case studies span HVAC, oil and gas, insurance, transportation, media, and AI commerce.",
+      "What was broken, what we built, and what changed — Preisser Solutions engagements across farming, oil and gas, insurance, transportation, HVAC, ministry, and media.",
     inLanguage: "en-US",
     isPartOf: { "@id": "https://preissersolutions.com/#website" },
     mainEntity: {
@@ -161,63 +165,17 @@ export function CaseStudiesHub({ caseStudies }: Props) {
               Case Studies
             </div>
             <h1 className="max-w-4xl text-balance text-5xl font-semibold leading-[1.05] tracking-[-0.025em] sm:text-6xl md:text-7xl">
-              Real Work, Real Outcomes.
+              What We Built, and What Changed.
             </h1>
             <p
               className="mt-8 max-w-2xl text-pretty text-lg leading-relaxed sm:text-xl"
               style={{ color: "var(--theme-text-secondary)" }}
             >
-              Every Preisser Solutions case study is a real engagement with a
-              measurable result. Named where the client has consented;
-              anonymized where the relationship requires it.
+              Each of these is a real business with a real before-state. What
+              was broken, what we built for them, and what changed once it was
+              running. Named where the client has consented; anonymized where
+              the relationship requires it.
             </p>
-
-            <div className="case-studies-hero-stats mt-16 flex flex-wrap gap-x-12 gap-y-6 md:mt-20">
-              <div className="case-studies-hero-stat">
-                <div
-                  className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
-                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
-                >
-                  {caseStudies.length}
-                </div>
-                <div
-                  className="mt-1 text-xs uppercase tracking-[0.14em]"
-                  style={{ color: "var(--theme-text-muted)" }}
-                >
-                  Published case studies
-                </div>
-              </div>
-              <div className="case-studies-hero-stat-divider h-12 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
-              <div className="case-studies-hero-stat">
-                <div
-                  className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
-                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
-                >
-                  {filters.length - 1}
-                </div>
-                <div
-                  className="mt-1 text-xs uppercase tracking-[0.14em]"
-                  style={{ color: "var(--theme-text-muted)" }}
-                >
-                  Capability categories
-                </div>
-              </div>
-              <div className="case-studies-hero-stat-divider h-12 w-px self-end" style={{ background: "var(--theme-card-border)" }} />
-              <div className="case-studies-hero-stat">
-                <div
-                  className="bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl"
-                  style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #80E9FF)" }}
-                >
-                  100%
-                </div>
-                <div
-                  className="mt-1 text-xs uppercase tracking-[0.14em]"
-                  style={{ color: "var(--theme-text-muted)" }}
-                >
-                  Outcomes from real builds
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -258,7 +216,7 @@ export function CaseStudiesHub({ caseStudies }: Props) {
             </div>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+          <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
             {caseStudies.map((cs, idx) => (
               <HubCard
                 key={cs.slug}
@@ -274,6 +232,49 @@ export function CaseStudiesHub({ caseStudies }: Props) {
   );
 }
 
+/**
+ * One row of the card's structured body — a label and the sentence under it.
+ * The labels are deliberately literal ("The problem", "What we built",
+ * "What changed"): the card exists to answer a buyer's four questions in
+ * order, not to show off a metric.
+ */
+function CardFact({
+  label,
+  children,
+  emphasis = false,
+}: {
+  label: string;
+  children: React.ReactNode;
+  emphasis?: boolean;
+}) {
+  return (
+    <div>
+      <div
+        className="text-[10px] font-semibold uppercase tracking-[0.16em]"
+        style={{
+          color: emphasis ? "var(--theme-accent-text)" : "var(--theme-text-muted)",
+        }}
+      >
+        {label}
+      </div>
+      <p
+        className={
+          emphasis
+            ? "mt-1.5 text-[15px] font-semibold leading-snug"
+            : "mt-1.5 text-[15px] leading-relaxed"
+        }
+        style={{
+          color: emphasis
+            ? "var(--theme-text-primary)"
+            : "var(--theme-text-secondary)",
+        }}
+      >
+        {children}
+      </p>
+    </div>
+  );
+}
+
 function HubCard({
   cs,
   index,
@@ -283,7 +284,15 @@ function HubCard({
   index: number;
   filterSlug: string;
 }) {
+  // Fall back to the one-line summary and the leading result for any entry
+  // that has not been given hub copy yet, so a missing block degrades to
+  // something readable instead of an empty card.
   const primary = cs.headlineResults[0];
+  const problem = cs.hub?.problem;
+  const built = cs.hub?.built ?? cs.oneLine;
+  const outcome =
+    cs.hub?.outcome ??
+    (primary ? `${primary.value} — ${primary.label}` : undefined);
 
   const accent =
     index % 3 === 0
@@ -317,36 +326,42 @@ function HubCard({
           {cs.category}
         </div>
 
-        {primary && (
-          <div className="mt-5">
-            <div
-              className="bg-clip-text text-4xl font-semibold leading-none tracking-[-0.03em] text-transparent sm:text-5xl"
-              style={{ backgroundImage: "linear-gradient(135deg, var(--theme-text-primary), #0D95E8)" }}
-            >
-              {primary.value}
-            </div>
-            <div
-              className="mt-2 text-xs uppercase tracking-[0.14em]"
-              style={{ color: "var(--theme-text-secondary)" }}
-            >
-              {primary.label}
-            </div>
-          </div>
-        )}
-
+        {/* 1. Who */}
         <h3
-          className="mt-7 text-balance text-xl font-semibold leading-snug"
+          className="mt-5 text-balance text-2xl font-semibold leading-snug"
           style={{ color: "var(--theme-text-primary)" }}
         >
           {cs.clientNameDisplay}
         </h3>
-
-        <p
-          className="mt-3 flex-1 text-[15px] leading-relaxed"
-          style={{ color: "var(--theme-text-secondary)" }}
+        <div
+          className="mt-1.5 text-[13px] leading-snug"
+          style={{ color: "var(--theme-text-muted)" }}
         >
-          {cs.oneLine}
-        </p>
+          {cs.industry}
+        </div>
+
+        <div className="mt-6 flex flex-1 flex-col gap-5">
+          {/* 2. What was broken */}
+          {problem && <CardFact label="The problem">{problem}</CardFact>}
+
+          {/* 3. What got built */}
+          <CardFact label="What we built">{built}</CardFact>
+        </div>
+
+        {/* 4. What changed */}
+        {outcome && (
+          <div
+            className="mt-6 rounded-xl border p-5"
+            style={{
+              borderColor: "rgba(13, 149, 232, 0.28)",
+              background: "rgba(13, 149, 232, 0.06)",
+            }}
+          >
+            <CardFact label="What changed" emphasis>
+              {outcome}
+            </CardFact>
+          </div>
+        )}
 
         <div
           className="mt-7 flex items-center justify-between border-t pt-5"

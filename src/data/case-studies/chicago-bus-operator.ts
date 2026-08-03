@@ -10,7 +10,7 @@ export const caseStudy: CaseStudyData = {
   datePublished: "2026-03-15",
   dateModified: "2026-05-20",
 
-  category: "Dashboards & BI • Ops Automation • Trucking",
+  category: "Business Software • Dashboards and Reporting",
   clientName: "Anonymized Chicago bus operator",
   clientNameDisplay: "A Chicago-area bus transportation operator",
   industry: "Commercial passenger transportation",
@@ -26,6 +26,14 @@ export const caseStudy: CaseStudyData = {
     { value: "5", label: "Power BI dashboards delivered" },
     { value: "Real-time", label: "Load-level profitability" },
   ],
+
+  hub: {
+    problem:
+      "There was no live view of financials or operations across branches, load-level profitability did not exist as a number anyone could look up, and weekly reconciliation ate a full day of admin time.",
+    built:
+      "Five operational dashboards covering workforce, revenue, safety, goals and routes, sitting on an automated back-office layer that parses bills of lading and rate confirmations and reconciles the week.",
+    outcome: "A full day of weekly reconciliation became a 15-minute exception queue — about one full-time role of admin work",
+  },
 
   before: {
     heading: "No real-time visibility into financials, operations, or load-level profit.",

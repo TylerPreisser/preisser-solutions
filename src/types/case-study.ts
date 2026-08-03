@@ -33,13 +33,29 @@ export interface SpecSubsection {
   items: string[];
 }
 
+/**
+ * The four questions a buyer actually asks of a case study card:
+ * who was this, what was broken, what got built, what changed.
+ * Rendered by CaseStudiesHub in exactly that order.
+ */
+export interface HubCardCopy {
+  /** What was broken — the before-state, one plain sentence. */
+  problem: string;
+  /** What got built — one plain sentence. */
+  built: string;
+  /** What changed, in the business's terms. Never engineering trivia. */
+  outcome: string;
+}
+
 export interface CaseStudySummary {
   slug: string;
   category: string;
   clientNameDisplay: string;
+  industry: string;
   h1: string;
   oneLine: string;
   headlineResults: HeadlineResult[];
+  hub?: HubCardCopy;
 }
 
 export interface CaseStudyData {
@@ -59,8 +75,15 @@ export interface CaseStudyData {
   // ── Hero ───────────────────────────────────────────────────
   h1: string;
   subheadline: string;        // 1 sentence, ≤ ~30 words
-  oneLine: string;            // "60%+ reactivation in 6 weeks" — used on hub cards
+  oneLine: string;            // "60%+ reactivation in 6 weeks" — one-line summary
   headlineResults: HeadlineResult[]; // 3–4 items for the at-a-glance row
+
+  // ── Hub card ───────────────────────────────────────────────
+  /**
+   * Buyer-facing card copy for /case-studies. Required for anything that
+   * appears in the hub grid (see hubSlugs in ./index.ts).
+   */
+  hub?: HubCardCopy;
 
   // ── Body sections ──────────────────────────────────────────
   before: {

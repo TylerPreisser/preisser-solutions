@@ -10,7 +10,7 @@ export const caseStudy: CaseStudyData = {
   datePublished: "2025-08-12",
   dateModified: "2026-05-20",
 
-  category: "Custom CRM • AI Document Processing • Insurance",
+  category: "AI Integration • Custom CRM • Insurance",
   clientName: "Anonymized MGU client",
   clientNameDisplay: "An MGU within the Alliant Insurance ecosystem",
   industry: "Insurance — managing general underwriting",
@@ -26,6 +26,14 @@ export const caseStudy: CaseStudyData = {
     { value: "~2,500/yr", label: "Submissions scaled without new headcount" },
     { value: "0.90", label: "Dual-model confidence threshold" },
   ],
+
+  hub: {
+    problem:
+      "The same submission data was retyped three to five times across the CRM, carrier systems, pricing spreadsheets and billing, and the principal had no live view of the book while two new carrier markets were coming online.",
+    built:
+      "An intake pipeline that classifies every broker document, extracts the fields with two models cross-checking each other, and writes the result back into Salesforce — with anything low-confidence held for a human to review.",
+    outcome: "Zero missed renewals in the first six months, with volume scaling toward ~2,500 submissions a year and no new headcount",
+  },
 
   before: {
     heading: "The same data entered 3–5 times across disconnected systems.",

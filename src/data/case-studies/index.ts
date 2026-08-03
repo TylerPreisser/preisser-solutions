@@ -42,9 +42,13 @@ import { caseStudy as preisserSolutionsSite } from "./preisser-solutions-site";
 import { caseStudy as tylerPreisserSite } from "./tyler-preisser-site";
 
 /**
- * Canonical, publishable case studies — order = hub display order.
+ * Every published case study — one entry per /case-studies/<slug> route.
  *
- * Sort order (the order maps directly onto the hub grid):
+ * This is the full registry, NOT the hub grid. The grid is `hubSlugs` below.
+ * Entries stay here even when they are off the grid, because each has a live
+ * indexed route and because `getCaseStudy` backs the product pages.
+ *
+ * Grouping:
  *   0. Flagship platforms (FarmBooks, C3 Studio, NWKS Encounter)
  *   1. Named client engagements (canonical #1–8)
  *   2. Internal AI platforms (canonical #9, #16, #17, #21)
@@ -56,6 +60,8 @@ import { caseStudy as tylerPreisserSite } from "./tyler-preisser-site";
  * Adding a new case study? Create a data file in this folder, import it here,
  * add it to the array in the correct group, and create the matching route
  * under src/app/case-studies/[slug]/page.tsx. Slug becomes the route segment.
+ * If it is a real client engagement, also add the slug to `hubSlugs` and give
+ * the data file a `hub` block.
  */
 export const caseStudies: CaseStudyData[] = [
   // 0. Flagship platforms
@@ -107,15 +113,60 @@ export function getCaseStudy(slug: string): CaseStudyData | undefined {
   return caseStudyBySlug[slug];
 }
 
+/**
+ * What appears on the /case-studies grid — and nothing else.
+ *
+ * The hub answers exactly one question for a prospect: "has he solved a
+ * problem like mine, for a business like mine." Only real engagements and
+ * substantial delivered platforms qualify. Internal tooling, proofs of
+ * concept, capability blurbs with no client, and our own website builds are
+ * deliberately NOT listed here.
+ *
+ * Everything left out stays fully reachable at /case-studies/<slug> — those
+ * routes are indexed, they are their own page.tsx files, and they remain in
+ * `caseStudies` above so `getCaseStudy` (used by the 16 product pages) keeps
+ * resolving. This list controls the grid only.
+ *
+ * Order = display order. Anything added here MUST define `hub` in its data
+ * file, or the card renders without the four buyer questions.
+ */
+export const hubSlugs: string[] = [
+  // Flagship platforms
+  "farmbooks",
+  "c3-studio",
+  "nwks-encounter",
+
+  // Named client engagements
+  "hg-oil-inventory-system",
+  "hg-oil-ai-invoice-processing",
+  "alliant-mgu-insurance",
+  "chicago-bus-operator",
+  "cassidy-hvac-reactivation",
+  "iron-and-oak-podcast",
+  "wife-supply-co",
+];
+
+export const hubCaseStudies: CaseStudyData[] = hubSlugs
+  .map((slug) => caseStudyBySlug[slug])
+  .filter((cs): cs is CaseStudyData => Boolean(cs));
+
 export function toSummary(cs: CaseStudyData): CaseStudySummary {
   return {
     slug: cs.slug,
     category: cs.category,
     clientNameDisplay: cs.clientNameDisplay,
+    industry: cs.industry,
     h1: cs.h1,
     oneLine: cs.oneLine,
     headlineResults: cs.headlineResults,
+    hub: cs.hub,
   };
 }
 
-export const caseStudySummaries: CaseStudySummary[] = caseStudies.map(toSummary);
+/** Summaries for the hub grid — the curated roster, not every data file. */
+export const caseStudySummaries: CaseStudySummary[] =
+  hubCaseStudies.map(toSummary);
+
+/** Every published case study, including the ones kept off the hub grid. */
+export const allCaseStudySummaries: CaseStudySummary[] =
+  caseStudies.map(toSummary);

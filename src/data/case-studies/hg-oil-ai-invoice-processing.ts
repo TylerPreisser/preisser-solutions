@@ -10,7 +10,7 @@ export const caseStudy: CaseStudyData = {
   datePublished: "2024-06-10",
   dateModified: "2026-05-20",
 
-  category: "AI Document Processing • Back-Office Automation",
+  category: "AI Integration • Back-Office Automation",
   clientName: "HG Oil Holdings",
   clientNameDisplay: "HG Oil Holdings",
   industry: "Oil and gas back-office operations",
@@ -26,6 +26,14 @@ export const caseStudy: CaseStudyData = {
     { value: "0", label: "Additional admin hires needed" },
     { value: "Any format", label: "Document ingestion" },
   ],
+
+  hub: {
+    problem:
+      "Office staff spent 40+ hours a week reading invoices, coding line items to cost centers and chasing approvals, and the volume was growing past what the team could absorb.",
+    built:
+      "An assistant trained on the company's own vendors, GL codes and approval chains that reads an invoice in any format, extracts the line items, flags anomalies and routes it to the right approver.",
+    outcome: "75% less manual invoice handling, and the extra admin hire was never needed",
+  },
 
   before: {
     heading: "Office staff spending 40+ hours a week reading invoices.",

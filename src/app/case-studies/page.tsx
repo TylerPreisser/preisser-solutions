@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Case Studies — Preisser Solutions",
     description:
-      "Real engagements, real outcomes. Eight publishable case studies spanning HVAC, oil and gas, insurance, transportation, media, and AI commerce.",
+      "What was broken, what we built, and what changed — real engagements across farming, oil and gas, insurance, transportation, HVAC, ministry, and media.",
     url,
     type: "website",
     images: [
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Case Studies — Preisser Solutions",
     description:
-      "Real engagements, real outcomes. Eight publishable case studies from Preisser Solutions.",
+      "What was broken, what we built, and what changed — real engagements from Preisser Solutions.",
     images: ["/images/og-image-v2.jpg"],
   },
 };

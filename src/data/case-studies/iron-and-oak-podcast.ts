@@ -10,7 +10,7 @@ export const caseStudy: CaseStudyData = {
   datePublished: "2025-12-04",
   dateModified: "2026-05-20",
 
-  category: "Website Build • Brand Identity • AI Search Optimization",
+  category: "Business Software • Media Platform Build",
   clientName: "Iron and Oak Podcast",
   clientNameDisplay: "The Iron and Oak Podcast",
   industry: "Media and podcasting",
@@ -26,6 +26,14 @@ export const caseStudy: CaseStudyData = {
     { value: "109", label: "Questions across 5 phases" },
     { value: "End-to-end", label: "Brand, web, studio, distribution" },
   ],
+
+  hub: {
+    problem:
+      "A thesis and two co-hosts, with no website, no brand identity, no studio and no way to get an episode in front of anyone.",
+    built:
+      "The whole media platform — brand identity and design system, a 134-page site with every episode and question architected into it, the studio itself, and distribution across the major platforms.",
+    outcome: "134 pre-rendered pages live, and a show that publishes on infrastructure it owns",
+  },
 
   before: {
     heading: "A thesis, two co-hosts, and a blank slate.",

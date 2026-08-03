@@ -477,19 +477,8 @@ ul, ol {
 }
 
 @media (max-width: 767px) {
-  .case-studies-hero-stats {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 24px !important;
-  }
-
-  .case-studies-hero-stat {
-    min-width: 0;
-  }
-
-  .case-studies-hero-stat-divider {
-    display: none;
-  }
+  /* .case-studies-hero-stat* rules removed 2026-08-03 — the case-studies hero
+     stat strip (case count / category count / "100%") was deleted. */
 
   .product-catalog-glow,
   .product-catalog-grid-bg,
@@ -924,6 +913,12 @@ ul, ol {
      Scoped here on purpose: --color-primary is used site-wide and is unchanged. */
   --ps-hero-accent: var(--color-primary);
 
+  /* The hero background colour as a raw RGB triple so .ps-hero-overlay can
+     build translucent scrims from it without restating the colour per theme.
+     The ledger canvas paints transparent and lets THIS show through, which is
+     why the base colour only has to exist in one place. */
+  --ps-hero-bg-rgb: 10, 22, 40;
+
   position: relative;
   min-height: 100vh;
   min-height: 100dvh;
@@ -936,6 +931,8 @@ ul, ol {
   padding-top: var(--nav-height);
 }
 
+/* The ledger field (hero-ledger-field.ts) paints here. It is decoration only —
+   it must never intercept a click meant for the hero CTAs. */
 #ps-hero-canvas {
   position: absolute;
   inset: 0;
@@ -943,21 +940,59 @@ ul, ol {
   height: 100%;
   display: block;
   z-index: 0;
+  pointer-events: none;
 }
 
+/* Two scrims, composited over the ledger canvas and under the content.
+   Deliberately CSS rather than canvas: they are static, so painting them in
+   the animation loop cost two full-viewport gradient fills per frame (measured
+   — it was the difference between a 60fps and a 120fps frame budget at
+   2880x1800). As CSS they are free, AND the contrast guarantee becomes
+   declarative: it holds for any cell layout the field ever generates.
+
+   Layer 1 (horizontal) sits under the left-aligned wordmark and fades out
+   before the field's busiest area.
+   Layer 2 (vertical) is the original header/footer falloff. */
 .ps-hero-overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(10, 22, 40, 0.3)  0%,
-    rgba(10, 22, 40, 0.05) 30%,
-    rgba(10, 22, 40, 0.0)  50%,
-    rgba(10, 22, 40, 0.4)  80%,
-    rgba(10, 22, 40, 0.75) 100%
-  );
+  background:
+    linear-gradient(
+      90deg,
+      rgba(var(--ps-hero-bg-rgb), 0.94) 0%,
+      rgba(var(--ps-hero-bg-rgb), 0.74) 30%,
+      rgba(var(--ps-hero-bg-rgb), 0)    64%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(var(--ps-hero-bg-rgb), 0.55) 0%,
+      rgba(var(--ps-hero-bg-rgb), 0.05) 22%,
+      rgba(var(--ps-hero-bg-rgb), 0)    50%,
+      rgba(var(--ps-hero-bg-rgb), 0.4)  80%,
+      rgba(var(--ps-hero-bg-rgb), 0.75) 100%
+    );
+}
+
+/* On a phone the content column IS the whole viewport, so a left-edge scrim
+   protects nothing. Flatten layer 1 into an even veil instead. */
+@media (max-width: 767px) {
+  .ps-hero-overlay {
+    background:
+      linear-gradient(
+        rgba(var(--ps-hero-bg-rgb), 0.55),
+        rgba(var(--ps-hero-bg-rgb), 0.55)
+      ),
+      linear-gradient(
+        180deg,
+        rgba(var(--ps-hero-bg-rgb), 0.55) 0%,
+        rgba(var(--ps-hero-bg-rgb), 0.05) 22%,
+        rgba(var(--ps-hero-bg-rgb), 0)    50%,
+        rgba(var(--ps-hero-bg-rgb), 0.4)  80%,
+        rgba(var(--ps-hero-bg-rgb), 0.75) 100%
+      );
+  }
 }
 
 .ps-hero-content {
@@ -984,31 +1019,7 @@ ul, ol {
   align-items: stretch;
 }
 
-.ps-hero-eyebrow {
-  opacity: 0;
-  transform: translateY(16px);
-  display: inline-flex;
-  /* Hug its own content instead of stretching the full content column. */
-  align-self: flex-start;
-  align-items: center;
-  gap: 10px;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-cyan);
-  margin-bottom: 24px;
-}
 
-.ps-hero-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--color-cyan);
-  flex-shrink: 0;
-  animation: pulse-dot 2s infinite;
-}
 
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
@@ -1101,7 +1112,6 @@ ul, ol {
 /* Reduced motion: guarantee the hero paints without any JS at all.
    The GSAP effect short-circuits to the same end state (hero.tsx). */
 @media (prefers-reduced-motion: reduce) {
-  .ps-hero-eyebrow,
   .ps-hero-line,
   .ps-hero-subtitle,
   .ps-hero-ctas {
@@ -1139,6 +1149,7 @@ ul, ol {
 /* ── Hero: light mode overrides ────────────────────────────── */
 [data-theme="light"] .ps-hero {
   background: #F6F9FC;
+  --ps-hero-bg-rgb: 246, 249, 252;
   /* AA fix — see the note on --ps-hero-accent in .ps-hero above.
      #0D95E8 on #F6F9FC = 3.07:1 (fails 4.5:1). #0B72B3 on #F6F9FC = 4.88:1. */
   --ps-hero-accent: #0B72B3;
@@ -1149,16 +1160,9 @@ ul, ol {
   text-shadow: none;
 }
 
-[data-theme="light"] .ps-hero-overlay {
-  background: linear-gradient(
-    180deg,
-    rgba(246,249,252,0.3) 0%,
-    rgba(246,249,252,0.15) 30%,
-    rgba(246,249,252,0.0) 50%,
-    rgba(246,249,252,0.4) 80%,
-    rgba(246,249,252,0.65) 100%
-  );
-}
+/* No light-mode override for .ps-hero-overlay any more — both scrims are built
+   from --ps-hero-bg-rgb, which the rule above re-points at the light page
+   colour. One gradient definition, both themes. */
 
 [data-theme="light"] .ps-hero-headline {
   color: #0A1628;
@@ -1168,15 +1172,7 @@ ul, ol {
   color: #475569;
 }
 
-/* Plain text in both themes — cyan on dark, the AA-safe blue on light.
-   0.75rem is small text, so it needs the full 4.5:1, not the large-text 3:1. */
-[data-theme="light"] .ps-hero-eyebrow {
-  color: var(--ps-hero-accent);
-}
 
-[data-theme="light"] .ps-hero-dot {
-  background: var(--ps-hero-accent);
-}
 
 [data-theme="light"] .ps-btn-secondary {
   color: #0A1628;
@@ -6372,7 +6368,6 @@ ul, ol {
 
   /* Mobile hero content paints from CSS — it must never wait on the GSAP
      chunk. The performance audit is explicit about this. */
-  .ps-hero-eyebrow,
   .ps-hero-line,
   .ps-hero-subtitle,
   .ps-hero-ctas {
@@ -8088,11 +8083,12 @@ body:has(.ps-contact2-hero) .ps-header-blur {
     0 0 12px rgba(10, 22, 40, 0.55);
 }
 
-/* No text below 12px anywhere in the pillar card artwork. The mockups were
-   rendering labels down to 7px, unreadable on any phone. */
-.ps-bento-card [class*="label"],
-.ps-bento-card [class*="metric"],
-.ps-bento-card text,
-.ps-site-card [class*="label"] {
-  font-size: max(12px, 1em);
-}
+/* REVERTED 2026-08-03. A blanket `font-size: max(12px, 1em)` on the pillar-card
+   artwork was wrong: these mockups are fixed-layout, and their labels are sized
+   to fit a specific box. Forcing them up overflowed and overlapped every one of
+   them — "Retention"/"Close Rate" collided under the donuts, the before/after
+   headings clipped mid-word, and the pipeline stage labels ran into each other.
+
+   The underlying note still stands (some labels render as small as 7px), but
+   the fix is to simplify the artwork so it needs fewer labels, not to inflate
+   type inside a box that cannot grow. These are decorative and aria-hidden. */

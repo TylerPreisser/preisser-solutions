@@ -10,7 +10,7 @@ export const caseStudy: CaseStudyData = {
   datePublished: "2024-04-22",
   dateModified: "2026-05-20",
 
-  category: "Custom Application Build • Operational Efficiency",
+  category: "Business Software • Inventory Operations",
   clientName: "HG Oil Holdings",
   clientNameDisplay: "HG Oil Holdings",
   industry: "Oil and gas operations",
@@ -26,6 +26,14 @@ export const caseStudy: CaseStudyData = {
     { value: "Loss to Profit", label: "Operation converted" },
     { value: "10+ hrs/wk", label: "Staff hours freed" },
   ],
+
+  hub: {
+    problem:
+      "Nobody could say what material was sitting at which site without phoning operators in the field, and transport and reconditioning costs were quietly eating the margin on stock that should have been an asset.",
+    built:
+      "A centralized, role-aware inventory application with live counts per site, inter-site transfers on a full audit trail, and cost formulas that revalue material as it moves and gets reconditioned.",
+    outcome: "95% less back-office logistics time, 75%+ better inventory accuracy, and a loss center that now turns a margin",
+  },
 
   before: {
     heading: "No centralized visibility, no live counts, no way to know what was where.",

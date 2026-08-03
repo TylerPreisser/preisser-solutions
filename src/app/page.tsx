@@ -17,10 +17,6 @@ const ServicePillars = dynamic(
   () => import("@/components/home/service-pillars").then((m) => m.ServicePillars),
   { ssr: true }
 );
-const Showcase = dynamic(
-  () => import("@/components/home/showcase").then((m) => m.Showcase),
-  { ssr: true }
-);
 const WhyUs = dynamic(
   () => import("@/components/home/why-us").then((m) => m.WhyUs),
   { ssr: true }
@@ -159,7 +155,6 @@ export default function HomePage() {
       <ProofBar />
       <ValueStrip />
       <ServicePillars />
-      <Showcase />
       <WhyUs />
       <CaseStudies />
       {/* Crawlable service + location link cluster — static HTML for crawlers + AI engines. */}

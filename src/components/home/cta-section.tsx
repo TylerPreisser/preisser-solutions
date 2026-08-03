@@ -59,12 +59,12 @@ export function CtaSection() {
       <div className="ps-cta-content" ref={contentRef}>
         <div className="ps-eyebrow">Get in Touch</div>
         <h2 id="cta-heading" className="ps-cta-heading">
-          What does your business still run on a spreadsheet?
+          Tell us what&apos;s slowing your business down.
         </h2>
         <p className="ps-cta-body">
-          Tell us the workflow that costs your team the most time. We&apos;ll tell you
-          honestly whether it needs software, automation, AI &mdash; or none of the
-          above. Not every business needs the whole platform.
+          Bring the one workflow that costs your team the most time. You&apos;ll get a
+          straight answer on what it takes to fix it &mdash; scope, cost, and timeline
+          &mdash; from the person who would actually build it.
         </p>
         <div className="ps-cta-buttons">
           <Link href="/contact" className="ps-btn ps-btn-primary-dark">

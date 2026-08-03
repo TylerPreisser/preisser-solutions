@@ -25,11 +25,19 @@ export const caseStudy: CaseStudyData = {
   oneLine: "Photograph a farm bill; two independent reads cross-check it into Schedule-F-ready books",
 
   headlineResults: [
-    { value: "2 reads", label: "OCR and vision, cross-checked on every bill" },
-    { value: "1,069", label: "Engine tests collected" },
-    { value: "23", label: "Photographed real bills in the test corpus" },
+    { value: "No retyping", label: "A photographed bill becomes a Schedule-F-ready entry" },
+    { value: "$92.57", label: "Line the vision read recovered that OCR alone had dropped" },
+    { value: "Every bill", label: "Cross-checked by two independent reads before it posts" },
     { value: "Always", label: "Handwritten bills routed to human review" },
   ],
+
+  hub: {
+    problem:
+      "A farm bookkeeper retyped every co-op, dealer, chemical and fuel bill by hand, and a mis-keyed or dropped line only surfaced months later when the books would not reconcile.",
+    built:
+      "Photograph a bill and two independent reads have to agree on every section total before anything posts; allocation to field, entity and Schedule F category follows, and anything uncertain waits in a review queue.",
+    outcome: "Tax-season bookkeeping without retyping a single bill",
+  },
 
   before: {
     heading: "A farm bookkeeper retyping every co-op and dealer bill by hand.",

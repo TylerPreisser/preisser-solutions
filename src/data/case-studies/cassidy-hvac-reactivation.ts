@@ -10,7 +10,7 @@ export const caseStudy: CaseStudyData = {
   datePublished: "2024-09-15",
   dateModified: "2026-05-20",
 
-  category: "AI Automation • Revenue Recovery",
+  category: "Business Automation • Revenue Recovery",
   clientName: "Cassidy HVAC",
   clientNameDisplay: "Cassidy HVAC",
   industry: "HVAC services",
@@ -26,6 +26,14 @@ export const caseStudy: CaseStudyData = {
     { value: "10+ hrs/wk", label: "Staff time recovered" },
     { value: "100%", label: "Promotional messaging automated" },
   ],
+
+  hub: {
+    problem:
+      "Tens of thousands of dormant customer records sat scattered and broken across several systems, and the only outreach was whatever the office staff found time to send by hand.",
+    built:
+      "An outreach engine that cleans and segments the customer data, writes each message from that customer's service history, equipment age and season, and sends by SMS and email on its own daily schedule.",
+    outcome: "60%+ of dormant customers reactivated in six weeks, with staff sending nothing by hand",
+  },
 
   before: {
     heading: "Tens of thousands of dormant records nobody had time to call.",

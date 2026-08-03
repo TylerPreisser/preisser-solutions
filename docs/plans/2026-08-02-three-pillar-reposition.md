@@ -198,6 +198,10 @@ the site.
 - Chicago-area bus operator (anonymized) — reconciliation from a full day to a
   15-minute exception queue
 - Iron and Oak Podcast — 134 pre-rendered pages
+- Cassidy HVAC — 60%+ dormant-customer reactivation in 6 weeks. (Added 2026-08-03:
+  a real, already-published engagement. It was missing from this list only because
+  §9 was assembled from a scan of the FarmBooks/C3/NWKS repos, which do not cover
+  the earlier client work.)
 - 22+ Kansas SMB projects delivered; founder-led
 
 ### Claims that are now BANNED

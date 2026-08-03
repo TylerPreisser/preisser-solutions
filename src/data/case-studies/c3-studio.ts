@@ -26,11 +26,19 @@ export const caseStudy: CaseStudyData = {
   oneLine: "One login runs the website, the native app, and day-to-day church operations",
 
   headlineResults: [
-    { value: "18", label: "Typed content block types" },
-    { value: "1 API contract", label: "Website and native iOS app render it identically" },
-    { value: "1 click", label: "Draft to Publish flips both live at once" },
-    { value: "~170", label: "Test files" },
+    { value: "No developer", label: "Staff publish to the website and the app themselves" },
+    { value: "1 click", label: "Draft to Publish flips both surfaces live at once" },
+    { value: "1 login", label: "Content, scheduling, comms, care, giving, and kids check-in" },
+    { value: "1 API contract", label: "Website and native iOS app render the same content" },
   ],
+
+  hub: {
+    problem:
+      "Website copy was hardcoded, so a new service time or staff bio needed a developer and a redeploy — and the native iOS app ran a second, disconnected content path that had to be updated all over again.",
+    built:
+      "One admin login with a visual page builder, where a published page goes live on the website and in the native app at the same moment, plus the scheduling, communications, care, giving and kids check-in that sit behind it.",
+    outcome: "Staff update the app and the website themselves — no developer",
+  },
 
   before: {
     heading: "Website copy locked in code, and a native app with its own disconnected content path.",
