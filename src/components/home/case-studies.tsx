@@ -18,6 +18,8 @@ interface CaseStudyCard {
   caseLogoHeight?: number;
   svgIcon?: React.ReactNode;
   lightCard?: boolean;
+  /** Extra class on the logo img — lets one card opt out of the shared silhouette treatment. */
+  logoClass?: string;
   href?: string;
 }
 
@@ -32,13 +34,17 @@ const caseStudyCards: CaseStudyCard[] = [
     tags: "Farming | Document Pipeline | Bookkeeping",
     description:
       "A farm bookkeeper was retyping every co-op and dealer bill into a spreadsheet by hand, line by line, field by field, ahead of every tax season. Now a phone photo of the bill becomes categorized, Schedule-F-ready books. Anything the system is not certain about — and anything handwritten — goes to a person instead of being guessed at. Tax season stopped being a data-entry month.",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #1590FF 55%, #0F3D2E 100%)",
+    // FarmBooks' own palette, not ours: its manifest declares #F2F2F7 and the
+    // mark is gold #C9A227. Card runs light so the gold reads as the gold.
+    gradient: "linear-gradient(150deg, #FDFCF7 0%, #F2F2F7 55%, #E8E4D6 100%)",
+    lightCard: true,
     href: "/case-studies/farmbooks",
-    // Real FarmBooks mark — this is the actual PWA icon/favicon shipped at
-    // farm-books.com (web/app/icon.svg, declared in web/app/manifest.ts).
+    // Real FarmBooks mark — the actual PWA icon shipped at farm-books.com
+    // (web/app/icon.svg, declared in web/app/manifest.ts).
     caseLogo: "/images/case-studies/farmbooks-logo.svg",
     caseLogoWidth: 48,
     caseLogoHeight: 48,
+    logoClass: "ps-work-card-logo--farmbooks",
   },
   // Alliant Insurance ecosystem MGU: AI Submission Processing (anonymized per privacy rules)
   {
@@ -400,7 +406,9 @@ export function CaseStudies() {
                   loading="lazy"
                   width={study.caseLogoWidth}
                   height={study.caseLogoHeight}
-                  className="ps-work-card-logo ps-work-card-logo--company"
+                  className={`ps-work-card-logo ps-work-card-logo--company${
+                    study.logoClass ? ` ${study.logoClass}` : ""
+                  }`}
                 />
               ) : study.image ? (
                 // eslint-disable-next-line @next/next/no-img-element

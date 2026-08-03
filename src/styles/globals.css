@@ -8203,3 +8203,21 @@ body:has(.ps-contact2-hero) .ps-header-blur {
    The underlying note still stands (some labels render as small as 7px), but
    the fix is to simplify the artwork so it needs fewer labels, not to inflate
    type inside a box that cannot grow. These are decorative and aria-hidden. */
+
+/* FarmBooks card carries FarmBooks' own branding rather than ours: a light
+   card from its manifest colour (#F2F2F7) with the mark in its real gold
+   (#C9A227). The shared --company rule forces every logo to a white
+   silhouette so mixed brands sit together on dark gradients; this card opts
+   out of that, and out of the size cap, because the mark is a fine-stroke
+   48x48 line icon that reads as spindly at 40% height. */
+.ps-work-card-logo--farmbooks {
+  filter: none;
+  max-width: 78%;
+  max-height: 68%;
+}
+
+/* The white scrim above is for labels on dark gradients; a light card needs
+   the inverse or the glow haloes the text. */
+.ps-work-card--light .ps-work-card__bob-label {
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.85);
+}

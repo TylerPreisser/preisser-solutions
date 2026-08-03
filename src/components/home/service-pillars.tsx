@@ -1642,14 +1642,15 @@ export function ServicePillars() {
           id="services-heading"
           className="ps-section-heading ps-section-heading--light"
         >
-          Built to Fit, Not to Fill a Category
+          Built to Fit Your Business
         </h2>
         <p className="ps-services-intro">
-          Sometimes the job is a whole internal platform. Sometimes it&apos;s one
-          workflow that costs your team a day a week. Both are worth building, and the
-          right answer is whichever one actually fixes the problem &mdash; scoped to what
-          you need, built for how you already work, with nothing in it you didn&apos;t ask
-          for and no six-figure platform bill attached.
+          Sometimes the job is a full internal platform. Sometimes it&apos;s one form
+          that should have gone straight into a database two years ago. That is exactly
+          why everything here is built for your business specifically &mdash; you may not
+          need a massive platform, and you should not be sold one. What gets built is
+          shaped around how your business already runs, at the size the problem actually
+          is.
         </p>
       </div>
 
