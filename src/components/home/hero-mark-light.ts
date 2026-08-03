@@ -180,6 +180,10 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     for (let i = 0; i < MARK_BODY.length; i += 2) {
       outline.push([MARK_BODY[i] * s + tx, MARK_BODY[i + 1] * s + ty]);
     }
+    // Close the loop. Without this the closing edge — the top bar of the P —
+    // is not part of the arc-length, so when the beam runs off the last vertex
+    // it jumps straight back to the first instead of crossing that edge.
+    outline.push([outline[0][0], outline[0][1]]);
     cumulative = [0];
     total = 0;
     for (let i = 1; i < outline.length; i++) {
@@ -227,7 +231,6 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
       const t0 = i / steps, t1 = (i + 1) / steps;
       const a = (head - len * (1 - t0) + total) % total;
       const b = (head - len * (1 - t1) + total) % total;
-      if (b < a) continue;                       // skip the wrap seam
       const p0 = at(a), p1 = at(b);
       if (p0[0] < guard || p1[0] < guard) continue;
       const fall = Math.sin(Math.PI * t1);       // dark -> bright -> dark

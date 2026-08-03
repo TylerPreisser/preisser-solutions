@@ -8257,12 +8257,32 @@ body:has(.ps-contact2-hero) .ps-header-blur {
   transition: opacity 200ms ease;
 }
 
-/* Footer brand line — the three pillars under the mark, matching the hero's
-   colour device. Each on its own line so it reads as the wordmark, not a
-   run-on sentence. */
+/* Footer brand line — the same wordmark as the hero, just smaller. Family,
+   weight, tracking and line-height all match .ps-hero-headline; only the size
+   differs.
+
+   19px, not 18: at weight 800 that clears WCAG's 18.66px large-text threshold,
+   which is what lets the accent stay the EXACT logo blue. The footer is #F8FAFC
+   in the light theme, where #1590FF measures 3.07:1 — fine against the 3:1
+   large-text bar, and a fail against the 4.5:1 small-text bar one pixel down.
+   Do not shrink this without darkening the accent. */
+.ps-footer-tagline {
+  font-size: 1.1875rem;
+  font-weight: 800;
+  line-height: 1.07;
+  letter-spacing: -0.03em;
+  color: var(--color-text-dark-primary);
+  max-width: none;
+}
+/* The footer DOES flip with the theme (#F8FAFC on light), so the two
+   non-accent lines have to flip with it. */
+[data-theme="light"] .ps-footer-tagline {
+  color: var(--theme-text-primary);
+}
 .ps-footer-tagline-line {
   display: block;
 }
-.ps-footer-tagline-line--accent {
-  color: var(--theme-accent-text);
+.ps-footer-tagline-line--accent,
+[data-theme="light"] .ps-footer-tagline-line--accent {
+  color: var(--color-primary);
 }
