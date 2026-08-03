@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/local-seo",
   tier: "service_detail",
-  metaTitle: "Local SEO for Kansas Businesses | Preisser Solutions",
+  metaTitle: "Local SEO for Kansas Businesses",
   metaDescription:
     "Local SEO for Kansas businesses, including Google Business Profile optimization, local landing pages, citations, reviews, schema, tracking, and AI-search readiness.",
   eyebrow: "Local SEO Services",

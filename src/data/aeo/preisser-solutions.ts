@@ -18,7 +18,7 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "preisser-solutions",
   tier: "brand_defense",
-  metaTitle: "Preisser Solutions | Custom Websites, Apps & AI in Kansas",
+  metaTitle: "About Preisser Solutions | Hays, KS",
   metaDescription:
     "Preisser Solutions is a Hays, Kansas custom software firm. Premium custom websites, web apps, business automation, AI agents, and dashboards.",
   eyebrow: "About Preisser Solutions",

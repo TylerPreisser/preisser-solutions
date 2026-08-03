@@ -5,7 +5,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "preisser-solutions-site",
-  metaTitle: "preissersolutions.com — 164-Page Custom AI-Search Build",
+  metaTitle: "preissersolutions.com — AI-Search Build",
   metaDescription:
     "Custom-coded Next.js 15 marketing platform with an 8,800-line design system, AI-native architecture, and 164 statically-rendered pages.",
   datePublished: "2026-05-16",

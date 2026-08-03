@@ -10,7 +10,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-05-16",
   dateModified: "2026-05-16",
-  metaTitle: "Why Your Small Business Website Is Not Generating Leads",
+  metaTitle: "Why Your Website Is Not Getting Leads",
   metaDescription:
     "A practical guide to fixing a small business website that gets visits but does not generate calls, forms, quote requests, or booked jobs.",
   eyebrow: "Insights · Conversion",
@@ -148,7 +148,7 @@ export const pageData: AeoPageData = {
     { label: "Website redesign service", href: "/services/website-redesign" },
     { label: "Conversion optimization", href: "/services/conversion-optimization" },
     { label: "AI customer service systems", href: "/services/ai-customer-service" },
-    { label: "Lead tracking for website + Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
+    { label: "Lead tracking for website + Google Ads", href: "/services/local-seo" },
     { label: "Why small-business sites don't convert", href: "/blog/why-small-business-sites-dont-convert" },
     { label: "Website redesign checklist", href: "/blog/website-redesign-checklist" },
     { label: "Contact Preisser Solutions", href: "/contact" },

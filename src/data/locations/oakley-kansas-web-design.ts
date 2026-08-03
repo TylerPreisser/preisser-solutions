@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 39.129, lng: -100.852 },
 
-  metaTitle: "Web Design & Custom Software in Oakley, KS | Preisser Solutions",
+  metaTitle: "Oakley, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Oakley, Kansas — built by a Hays-based firm for the I-70 truck-stop hub market.",
 

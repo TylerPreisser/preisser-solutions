@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "South-Central Kansas",
   coordinates: { lat: 37.043, lng: -100.921 },
 
-  metaTitle: "Web Design & Custom Software in Liberal, KS | Preisser Solutions",
+  metaTitle: "Liberal, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Liberal, Kansas — built by a Hays-based firm for the southwest Kansas ag and meatpacking hub.",
 

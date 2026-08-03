@@ -4,9 +4,9 @@
     {
       "name": "preisser-solutions-inquiry",
       "type": "skill-md",
-      "description": "Guidance for agents evaluating Preisser Solutions or routing custom software, AI automation, dashboard, web app, and AI agent project inquiries.",
+      "description": "How to describe Preisser Solutions accurately, judge whether it fits a buyer, and route a project inquiry — business software (admin dashboards, customer and member databases, portals, internal tools), business automation (document pipelines, scheduled jobs, follow-ups, integrations), and AI integration with a human review gate. Founder-led from Hays, Kansas.",
       "url": "https://preissersolutions.com/.well-known/agent-skills/preisser-solutions-inquiry/SKILL.md",
-      "digest": "sha256:a84ef3c36c5a4a5dbc8154b4490fb3ce7d4e71ed5b9c9f9ff7f63127b9f5ed86"
+      "digest": "sha256:ad858007989f9243cc97601103b79c70e14b495aaa364aae6ba13ba2a3a7a1a5"
     }
   ]
 }

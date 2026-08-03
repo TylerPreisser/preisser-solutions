@@ -8,7 +8,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // beyond that list, and never state an extraction accuracy percentage.
 export const caseStudy: CaseStudyData = {
   slug: "farmbooks",
-  metaTitle: "FarmBooks — Schedule-F-Ready Books From a Photo",
+  metaTitle: "FarmBooks — Bills to Schedule-F Books",
   metaDescription:
     "Photograph a farm bill and get Schedule-F-ready books. Vision and OCR read every bill independently, cross-check each other, and route disagreements to a human.",
   datePublished: "2026-07-20",

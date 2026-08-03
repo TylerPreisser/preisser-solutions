@@ -8,7 +8,7 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "services/custom-websites",
   tier: "service_detail",
-  metaTitle: "Custom Website Development in Kansas | Preisser Solutions",
+  metaTitle: "Custom Website Development in Kansas",
   metaDescription:
     "Custom-coded website development for Kansas businesses that need speed, local SEO, conversion tracking, schema, AI-search readiness, and a site built without templates.",
   eyebrow: "Custom Website Development",

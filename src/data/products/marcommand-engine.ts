@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "marcommand-engine",
-  metaTitle: "MarCommand Marketing Engine | Preisser Solutions",
+  metaTitle: "MarCommand Marketing Engine",
   metaDescription:
     "An 8-agent marketing system: content, copy, design, paid, AEO, analyst, QA, and orchestrator. The AI engine powering the Preisser Solutions marketing service.",
   datePublished: "2026-05-21",

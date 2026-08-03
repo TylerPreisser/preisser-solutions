@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/hubspot-vs-custom-crm",
   tier: "comparison",
-  metaTitle: "HubSpot vs Custom CRM | Preisser Solutions",
+  metaTitle: "HubSpot vs Custom CRM",
   metaDescription:
     "Honest comparison: HubSpot CRM vs custom CRM by Preisser Solutions. When per-seat fees and standard schema force the wrong tradeoffs.",
   eyebrow: "Comparison",
@@ -127,7 +127,7 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "HubSpot", "Hays, Kansas", "Next.js"],
   relatedLinks: [
-    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "Custom CRM development", href: "/services/crm-systems" },
     { label: "Custom CRM for small business in Kansas", href: "/services/custom-crm-small-business-kansas" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Alliant Insurance MGU case study", href: "/case-studies/alliant-mgu-insurance" },

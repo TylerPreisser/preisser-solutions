@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // Capability demonstration. See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "custom-local-ai-models",
-  metaTitle: "Custom Local AI Models | Preisser Solutions",
+  metaTitle: "Custom Local AI Models",
   metaDescription:
     "Custom AI models that run locally — no cloud dependency, no data leaving the network — tuned for specific business operations with proprietary logic.",
   datePublished: "2026-04-10",

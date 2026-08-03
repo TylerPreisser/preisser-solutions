@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-05-08",
   dateModified: "2026-05-15",
-  metaTitle: "How To Build a Website AI Search Engines Understand",
+  metaTitle: "Build a Website AI Search Understands",
   metaDescription:
     "Twelve concrete on-page changes that move pages from \"crawled\" to \"cited\" in ChatGPT, Perplexity, and Google AI Overviews.",
   eyebrow: "Blog · AI Search",

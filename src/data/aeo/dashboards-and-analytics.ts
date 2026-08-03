@@ -8,7 +8,7 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "services/dashboards-and-analytics",
   tier: "service_detail",
-  metaTitle: "Custom Business Dashboards in Kansas | Preisser Solutions",
+  metaTitle: "Custom Business Dashboards in Kansas",
   metaDescription:
     "Real-time custom business dashboards built by Preisser Solutions in Hays, Kansas. Live KPIs, operational visibility, financial reporting, and analytics.",
   eyebrow: "Dashboards & Analytics",
@@ -133,9 +133,9 @@ export const pageData: AeoPageData = {
   relatedLinks: [
     { label: "API integration service", href: "/services/api-integration" },
     { label: "Business automation systems", href: "/business-automation" },
-    { label: "Custom CRM development", href: "/services/custom-crm" },
-    { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
-    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Custom CRM development", href: "/services/crm-systems" },
+    { label: "QuickBooks + ServiceTitan dashboard", href: "/services/dashboards-and-analytics" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-inventory-system" },
     { label: "Chicago-area bus operator case study", href: "/case-studies/chicago-bus-operator" },
     { label: "When to build a custom dashboard", href: "/blog/when-to-build-custom-dashboard" },
     { label: "Trucking & logistics", href: "/industries/trucking-logistics" },

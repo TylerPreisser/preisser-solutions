@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-05-16",
   dateModified: "2026-05-16",
-  metaTitle: "Google Business Profile Not Getting Calls",
+  metaTitle: "Why Your Google Profile Gets No Calls",
   metaDescription:
     "Common reasons a Google Business Profile gets views but not calls, including weak categories, poor reviews, thin services, bad photos, and weak local pages.",
   eyebrow: "Insights · Local",

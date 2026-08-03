@@ -1,18 +1,29 @@
 import type { Metadata } from "next";
 import { RoiCalculatorPageClient } from "@/components/roi/RoiCalculatorPageClient";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 
-// Title with template: "Estimate Automation ROI for Your Business | Preisser Solutions" = 57 chars ✓
+// Home > Automation ROI Calculator. Name matches the page title exactly, which
+// is what Google's breadcrumb guidance asks for.
+const breadcrumbSchema = buildBreadcrumbs([
+  {
+    name: "Automation ROI Calculator",
+    url: "https://preissersolutions.com/roi-calculator",
+  },
+]);
+
+// Title with template: "Automation ROI Calculator | Preisser Solutions" = 46 chars ✓
 export const metadata: Metadata = {
-  title: "Estimate Automation ROI for Your Business",
+  title: "Automation ROI Calculator",
   description:
-    "Calculate how much time and money your business could save with custom automation. Enter your team size and roles — get an instant estimate from Preisser Solutions in Hays, Kansas.",
+    "Estimate the time and money custom automation could save your business. Enter your team size and roles for an instant annual savings figure.",
   alternates: {
     canonical: "https://preissersolutions.com/roi-calculator",
   },
   openGraph: {
     title: "Automation ROI Calculator | Estimate Your Annual Savings",
     description:
-      "Calculate how much time and money your business could save with custom automation. Enter your team size and roles — get an instant estimate from Preisser Solutions in Hays, Kansas.",
+      "Estimate the time and money custom automation could save your business. Enter your team size and roles for an instant annual savings figure.",
     url: "https://preissersolutions.com/roi-calculator",
     type: "website",
     images: [
@@ -28,12 +39,17 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Automation ROI Calculator | Estimate Your Annual Savings",
     description:
-      "Calculate how much time and money your business could save with custom automation. Enter your team size and roles — get an instant estimate from Preisser Solutions in Hays, Kansas.",
+      "Estimate the time and money custom automation could save your business. Enter your team size and roles for an instant annual savings figure.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@preissersolutions",
   },
 };
 
 export default function RoiCalculatorPage() {
-  return <RoiCalculatorPageClient />;
+  return (
+    <>
+      <JsonLd data={breadcrumbSchema} />
+      <RoiCalculatorPageClient />
+    </>
+  );
 }

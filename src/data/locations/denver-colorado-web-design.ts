@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Border Markets",
   coordinates: { lat: 39.739, lng: -104.984 },
 
-  metaTitle: "Web Design & Custom Software in Denver, CO | Preisser Solutions",
+  metaTitle: "Denver, CO Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Denver, Colorado businesses — Kansas-based firm delivering remotely to Denver's tech and energy markets.",
 

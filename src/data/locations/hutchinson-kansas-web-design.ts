@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Central Kansas",
   coordinates: { lat: 38.061, lng: -97.929 },
 
-  metaTitle: "Web Design & Custom Software in Hutchinson, KS | Preisser Solutions",
+  metaTitle: "Hutchinson, KS Web Design & Software",
   metaDescription:
     "Custom software, web apps, and AI automation for Hutchinson, Kansas — built by a Hays-based firm for the Reno County B2B market.",
 

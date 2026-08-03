@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Northeast Kansas & Flint Hills",
   coordinates: { lat: 39.183, lng: -96.572 },
 
-  metaTitle: "SEO & AI Search Optimization in Manhattan, KS | Preisser Solutions",
+  metaTitle: "SEO & AI Search in Manhattan, KS",
   metaDescription:
     "Local SEO and AI search optimization for Manhattan, Kansas businesses — get found on Google, ChatGPT, Perplexity, and Gemini.",
 

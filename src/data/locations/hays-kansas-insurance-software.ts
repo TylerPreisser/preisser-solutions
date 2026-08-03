@@ -57,7 +57,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 38.879, lng: -99.327 },
 
-  metaTitle: "Insurance Agency Software in Hays, KS | Preisser Solutions",
+  metaTitle: "Insurance Agency Software in Hays, KS",
   metaDescription:
     "Custom insurance agency software, policy dashboards, and AI document automation for insurance businesses in Hays, Kansas.",
 

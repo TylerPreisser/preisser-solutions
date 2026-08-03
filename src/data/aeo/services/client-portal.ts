@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/client-portal",
   tier: "service_detail",
-  metaTitle: "Client Portals for Kansas Businesses | Preisser Solutions",
+  metaTitle: "Client Portals for Kansas Businesses",
   metaDescription:
     "Preisser Solutions builds branded custom client portals for Kansas businesses — secure login, file sharing, billing, scheduling, and self-service.",
   eyebrow: "Custom Client Portal Development",
@@ -120,10 +120,10 @@ export const pageData: AeoPageData = {
     "Cloudflare Pages",
   ],
   relatedLinks: [
-    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "Custom CRM development", href: "/services/crm-systems" },
     { label: "Custom websites", href: "/services/custom-websites" },
     { label: "Web applications", href: "/web-applications" },
-    { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
+    { label: "QuickBooks + ServiceTitan dashboard", href: "/services/dashboards-and-analytics" },
     { label: "Alliant Insurance MGU case study", href: "/case-studies/alliant-mgu-insurance" },
     { label: "Insurance & financial services", href: "/industries/insurance-financial" },
     { label: "When to build a custom dashboard", href: "/blog/when-to-build-custom-dashboard" },

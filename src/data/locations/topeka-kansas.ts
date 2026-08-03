@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Northeast Kansas",
   coordinates: { lat: 39.048, lng: -95.677 },
 
-  metaTitle: "Custom Software in Topeka, Kansas | Preisser Solutions",
+  metaTitle: "Custom Software in Topeka, Kansas",
   metaDescription:
     "Custom software, AI automation, and custom websites for Topeka, Kansas businesses — based in Hays, KS, delivered statewide.",
 

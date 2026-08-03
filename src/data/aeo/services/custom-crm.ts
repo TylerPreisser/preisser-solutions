@@ -7,7 +7,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/crm-systems",
   tier: "service_detail",
-  metaTitle: "Custom CRM Systems for Small Businesses | Preisser Solutions",
+  metaTitle: "Custom CRM Systems for Small Businesses",
   metaDescription:
     "Preisser Solutions builds custom CRMs for Kansas businesses when off-the-shelf CRMs like HubSpot or Salesforce don't fit. Founder-led, fixed-price builds.",
   eyebrow: "Custom CRM Development",

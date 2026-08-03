@@ -11,7 +11,7 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "business-automation",
   tier: "service_detail",
-  metaTitle: "Business Automation Systems in Kansas | Preisser Solutions",
+  metaTitle: "Business Automation Systems in Kansas",
   metaDescription:
     "Custom business automation built by Preisser Solutions in Hays, Kansas. Automate invoicing, scheduling, data entry, reporting, and operational workflows.",
   eyebrow: "Business Automation Systems",
@@ -151,9 +151,9 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "AI automation in Hays, KS", href: "/services/ai-automation-hays-ks" },
     { label: "Custom AI agents in Hays, KS", href: "/services/custom-ai-agents-hays-ks" },
-    { label: "Automate invoice processing", href: "/use-cases/automate-invoice-processing-small-business" },
+    { label: "Automate invoice processing", href: "/use-cases/ai-invoice-processing-small-business" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
-    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-inventory-system" },
     { label: "What is AI automation for small businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },
     { label: "AI vs traditional workflow automation", href: "/blog/ai-vs-traditional-workflow-automation" },
     { label: "Contact Preisser Solutions", href: "/contact" },

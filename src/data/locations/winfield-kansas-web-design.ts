@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "South-Central Kansas",
   coordinates: { lat: 37.240, lng: -96.961 },
 
-  metaTitle: "Web Design & Custom Software in Winfield, KS | Preisser Solutions",
+  metaTitle: "Winfield, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Winfield, Kansas businesses — Kansas-based firm with fixed-price proposals and full code ownership.",
 

@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "compliance-agent",
-  metaTitle: "Compliance Agent | Preisser Solutions",
+  metaTitle: "Compliance Agent",
   metaDescription:
     "Reads regulatory documents and internal policy, flags risk on every artifact before it ships, and produces audit-ready summaries — built for regulated industries.",
   datePublished: "2026-05-21",

@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 38.879, lng: -99.327 },
 
-  metaTitle: "Web Design in Hays, Kansas | Preisser Solutions",
+  metaTitle: "Web Design in Hays, Kansas",
   metaDescription:
     "Custom website design in Hays, Kansas — fast, SEO-strong, AI-search ready. Built locally by Preisser Solutions.",
 

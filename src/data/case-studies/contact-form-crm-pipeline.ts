@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // Internal lead pipeline automation pattern. See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "contact-form-crm-pipeline",
-  metaTitle: "Contact Form to CRM AI Pipeline | Preisser Solutions",
+  metaTitle: "Contact Form to CRM AI Pipeline",
   metaDescription:
     "End-to-end automated lead pipeline: Typeform, Attio, Zapier, OpenAI scoring, Slack notification. Zero manual steps.",
   datePublished: "2026-02-25",

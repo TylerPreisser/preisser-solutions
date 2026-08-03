@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // Internal hiring automation pattern. See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "hiring-pipeline-robin",
-  metaTitle: "Hiring Pipeline & AI Pre-Screener Robin | Preisser Solutions",
+  metaTitle: "Hiring Pipeline & AI Pre-Screener Robin",
   metaDescription:
     "Google Sheets + Apps Script hiring pipeline with an AI pre-screener called Robin that stack-ranks resumes A/B/C before a human looks.",
   datePublished: "2026-02-18",

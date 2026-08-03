@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Southwest Kansas",
   coordinates: { lat: 37.972, lng: -100.873 },
 
-  metaTitle: "Custom Software in Garden City, Kansas | Preisser Solutions",
+  metaTitle: "Custom Software in Garden City, Kansas",
   metaDescription:
     "Custom software, AI automation, and custom websites for Garden City, Kansas businesses — based in Hays, KS, delivered statewide.",
 

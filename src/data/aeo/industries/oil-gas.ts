@@ -11,7 +11,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/oil-gas",
   tier: "industry",
-  metaTitle: "Custom Software for Oil & Gas Operators in Kansas | Preisser",
+  metaTitle: "Kansas Oil & Gas Software",
   metaDescription:
     "Preisser Solutions builds custom OGsys integrations, AFE-to-actuals dashboards, AI invoicing, and inventory systems for upstream operators. HG Oil: 95% time saved.",
   eyebrow: "Custom Software for Oil and Gas Operators in Kansas",
@@ -205,9 +205,9 @@ export const pageData: AeoPageData = {
     { label: "Manufacturing industry", href: "/industries/manufacturing" },
     { label: "Business automation systems", href: "/business-automation" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
-    { label: "Automate invoice processing", href: "/use-cases/automate-invoice-processing-small-business" },
+    { label: "Automate invoice processing", href: "/use-cases/ai-invoice-processing-small-business" },
     { label: "Automate data entry", href: "/use-cases/automate-data-entry-small-business" },
-    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-inventory-system" },
     { label: "Best automations for trucking & logistics", href: "/blog/best-automations-trucking" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

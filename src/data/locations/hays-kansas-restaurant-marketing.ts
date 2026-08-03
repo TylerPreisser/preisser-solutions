@@ -57,7 +57,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 38.879, lng: -99.327 },
 
-  metaTitle: "Restaurant Marketing & Websites in Hays, KS | Preisser Solutions",
+  metaTitle: "Restaurant Marketing in Hays, KS",
   metaDescription:
     "Restaurant websites, local SEO, and AI-powered review automation for restaurants in Hays, Kansas — built by a local firm.",
 

@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 38.934, lng: -99.556 },
 
-  metaTitle: "Web Design & Custom Software in Ellis, KS | Preisser Solutions",
+  metaTitle: "Ellis, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Ellis, Kansas — built locally by the Hays-based firm 15 miles east in Ellis County.",
 

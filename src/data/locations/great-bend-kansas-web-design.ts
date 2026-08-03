@@ -11,7 +11,7 @@ export const locationData: LocationPageData = {
   region: "Central Kansas",
   coordinates: { lat: 38.364, lng: -98.765 },
 
-  metaTitle: "Web Design in Great Bend, Kansas | Preisser Solutions",
+  metaTitle: "Web Design in Great Bend, Kansas",
   metaDescription:
     "Custom websites for Great Bend, Kansas businesses — fast, SEO-strong, AI-search ready. Built by a nearby Hays-based firm.",
 

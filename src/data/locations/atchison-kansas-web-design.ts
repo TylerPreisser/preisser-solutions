@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Northeast Kansas",
   coordinates: { lat: 39.561, lng: -95.122 },
 
-  metaTitle: "Web Design & Custom Software in Atchison, KS | Preisser Solutions",
+  metaTitle: "Atchison, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Atchison, Kansas businesses — built by a Kansas-based firm with fixed-price proposals.",
 

@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Central Kansas",
   coordinates: { lat: 37.643, lng: -98.737 },
 
-  metaTitle: "Web Design & Custom Software in Pratt, KS | Preisser Solutions",
+  metaTitle: "Pratt, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Pratt, Kansas — built by a Hays-based firm for the US-54 hub market.",
 

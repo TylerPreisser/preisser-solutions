@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Central Kansas",
   coordinates: { lat: 38.364, lng: -98.765 },
 
-  metaTitle: "Custom Software in Great Bend, Kansas | Preisser Solutions",
+  metaTitle: "Custom Software in Great Bend, Kansas",
   metaDescription:
     "Custom software, AI automation, and custom websites for Great Bend, Kansas businesses — based in Hays, KS, delivered locally.",
 

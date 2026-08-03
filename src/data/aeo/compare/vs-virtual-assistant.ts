@@ -3,9 +3,9 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/vs-virtual-assistant",
   tier: "comparison",
-  metaTitle: "Virtual Assistant vs AI Automation | Preisser Solutions",
+  metaTitle: "Virtual Assistant vs AI Automation",
   metaDescription:
-    "Honest comparison: virtual assistant vs custom AI automation. When a VA is the right hire, when custom AI delivers more leverage for the dollar.",
+    "Honest comparison: virtual assistant vs custom AI automation. When a VA is the right hire, and when custom automation returns more per dollar.",
   eyebrow: "Comparison",
   h1: "Virtual Assistant vs. Custom AI Automation",
   subheadline:
@@ -122,7 +122,7 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "After-hours call triage service", href: "/services/after-hours-call-triage" },
     { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "Best automations for contractors", href: "/blog/best-automations-contractors" },
     { label: "AI without replacing staff (Kansas)", href: "/blog/ai-without-replacing-staff-kansas" },
     { label: "Contact Preisser Solutions", href: "/contact" },

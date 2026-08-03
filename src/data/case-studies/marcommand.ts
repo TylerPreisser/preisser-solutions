@@ -5,7 +5,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // Clients never log in. See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "marcommand",
-  metaTitle: "MarCommand — Multi-Agent Marketing Engine",
+  metaTitle: "MarCommand — Marketing Automation",
   metaDescription:
     "MarCommand is the proprietary 8-agent marketing engine behind every Preisser Solutions engagement — channels, copy, creative, and ROI in one pipeline.",
   datePublished: "2026-02-01",

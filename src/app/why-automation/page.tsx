@@ -3,7 +3,16 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { automationBenefits } from "@/data/services";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 import type { Metadata } from "next";
+
+const breadcrumbSchema = buildBreadcrumbs([
+  {
+    name: "Why Automate Your Business?",
+    url: "https://preissersolutions.com/why-automation",
+  },
+]);
 
 // Icon colors cycling through for benefit cards
 const iconColors = [
@@ -69,6 +78,8 @@ export default function WhyAutomationPage() {
 
   return (
     <div className="ps-page-wrapper">
+      {/* Home > Why Automate Your Business? — name matches the H1 below. */}
+      <JsonLd data={breadcrumbSchema} />
       {/* Page hero */}
       <div className="ps-page-hero">
         <div className="ps-container">

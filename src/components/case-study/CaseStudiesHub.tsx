@@ -151,7 +151,12 @@ export function CaseStudiesHub({ caseStudies }: Props) {
           }}
         />
 
-        <div className="ps-container relative pt-40 pb-24 sm:pt-48 sm:pb-32 lg:pt-56 lg:pb-36">
+        {/*
+          Bottom padding is intentionally lighter than the top. It was sized to
+          sit under a three-stat strip that no longer exists; left at pb-36 it
+          read as a hole rather than as deliberate space.
+        */}
+        <div className="ps-container relative pt-40 pb-16 sm:pt-48 sm:pb-20 lg:pt-56 lg:pb-24">
           <div>
             <div
               className="mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium uppercase tracking-[0.14em]"
@@ -183,7 +188,7 @@ export function CaseStudiesHub({ caseStudies }: Props) {
       {/* Filters and grid */}
       <section
         id="case-study-grid"
-        className="case-studies-grid-section relative pb-32 pt-20 md:pt-24"
+        className="case-studies-grid-section relative pb-32 pt-12 md:pt-16"
         style={{
           background: "var(--theme-section-alt)",
           transition: "background 300ms ease",
@@ -249,10 +254,17 @@ function CardFact({
 }) {
   return (
     <div>
+      {/*
+        --theme-text-secondary, not --theme-text-muted: muted (#64748B) on the
+        card background (#0F1D30 in dark) measures 3.56:1, under the 4.5:1 AA
+        floor for body text. Secondary clears it in both themes.
+      */}
       <div
-        className="text-[10px] font-semibold uppercase tracking-[0.16em]"
+        className="text-[11px] font-semibold uppercase tracking-[0.16em]"
         style={{
-          color: emphasis ? "var(--theme-accent-text)" : "var(--theme-text-muted)",
+          color: emphasis
+            ? "var(--theme-accent-text)"
+            : "var(--theme-text-secondary)",
         }}
       >
         {label}
@@ -306,7 +318,7 @@ function HubCard({
       <Link
         href={`/case-studies/${cs.slug}`}
         prefetch={false}
-        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#1590FF]/40 hover:shadow-[0_24px_60px_-20px_rgba(21, 144, 255,0.18)]"
+        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#1590FF]/40 hover:shadow-[0_24px_60px_-20px_rgba(21,144,255,0.18)]"
         style={{
           borderColor: "var(--theme-card-border)",
           background: "var(--theme-result-card-bg)",
@@ -321,7 +333,7 @@ function HubCard({
 
         <div
           className="text-[11px] font-medium uppercase tracking-[0.14em]"
-          style={{ color: "var(--theme-text-muted)" }}
+          style={{ color: "var(--theme-text-secondary)" }}
         >
           {cs.category}
         </div>
@@ -335,12 +347,12 @@ function HubCard({
         </h3>
         <div
           className="mt-1.5 text-[13px] leading-snug"
-          style={{ color: "var(--theme-text-muted)" }}
+          style={{ color: "var(--theme-text-secondary)" }}
         >
           {cs.industry}
         </div>
 
-        <div className="mt-6 flex flex-1 flex-col gap-5">
+        <div className="mt-6 mb-6 flex flex-col gap-5">
           {/* 2. What was broken */}
           {problem && <CardFact label="The problem">{problem}</CardFact>}
 
@@ -348,10 +360,16 @@ function HubCard({
           <CardFact label="What we built">{built}</CardFact>
         </div>
 
-        {/* 4. What changed */}
+        {/*
+          4. What changed. `mt-auto` pins this to the bottom of the card so the
+          outcome panels line up across a row; the `mb-6` on the block above
+          guarantees the gap when there is no slack to absorb. Letting the prose
+          block grow with `flex-1` instead left a dead gap above the panel on
+          whichever card in a row had the shorter copy.
+        */}
         {outcome && (
           <div
-            className="mt-6 rounded-xl border p-5"
+            className="mt-auto rounded-xl border p-5"
             style={{
               borderColor: "rgba(21, 144, 255, 0.28)",
               background: "rgba(21, 144, 255, 0.06)",

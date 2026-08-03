@@ -46,7 +46,7 @@ export function buildBreadcrumbs(items: BreadcrumbItem[]) {
 /**
  * Convenience: build breadcrumbs from a route path string.
  *
- * buildBreadcrumbsFromPath("/services/custom-crm")
+ * buildBreadcrumbsFromPath("/services/crm-systems")
  * → Home > Services > Custom CRM
  *
  * Uses title-case conversion on slugs. For fine-grained control, use

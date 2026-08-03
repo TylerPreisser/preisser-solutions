@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Southwest Kansas",
   coordinates: { lat: 37.752, lng: -100.017 },
 
-  metaTitle: "SEO & AI Search Optimization in Dodge City, KS | Preisser Solutions",
+  metaTitle: "SEO & AI Search in Dodge City, KS",
   metaDescription:
     "Local SEO and AI search optimization for Dodge City, Kansas businesses — get found on Google, ChatGPT, Perplexity, and Gemini.",
 

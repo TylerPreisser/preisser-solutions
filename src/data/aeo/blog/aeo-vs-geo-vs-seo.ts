@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-05-12",
   dateModified: "2026-05-15",
-  metaTitle: "AEO vs GEO vs SEO: What's the Difference?",
+  metaTitle: "AEO vs GEO vs SEO: The Difference",
   metaDescription:
     "Three overlapping disciplines, one website. Where AEO, GEO, and SEO diverge — and how to invest if you only have budget for one.",
   eyebrow: "Blog · AI Search",

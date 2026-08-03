@@ -8,9 +8,9 @@ export const locationData: LocationPageData = {
   region: "Kansas City Metro",
   coordinates: { lat: 38.982, lng: -94.669 },
 
-  metaTitle: "Custom Software Development in Overland Park, KS | Preisser Solutions",
+  metaTitle: "Overland Park, KS Custom Software",
   metaDescription:
-    "Custom software, AI automation, and web applications for Overland Park, Kansas — built by a Kansas-based firm for the Johnson County financial services and professional economy.",
+    "Custom software, business automation, and web applications for Overland Park, Kansas, built for the Johnson County professional services economy.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",

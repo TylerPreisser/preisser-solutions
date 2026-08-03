@@ -13,7 +13,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 38.879, lng: -99.327 },
 
-  metaTitle: "Digital Marketing Services in Hays, KS | Preisser Solutions",
+  metaTitle: "Digital Marketing Services in Hays, KS",
   metaDescription:
     "Digital marketing built on custom code for Hays, Kansas businesses — local SEO, AI automation, and web infrastructure.",
 

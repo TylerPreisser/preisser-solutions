@@ -13,7 +13,7 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "Digital Marketing Agency in Hays, KS",
   metaDescription:
-    "Preisser Solutions builds practical digital marketing systems for Hays businesses: websites, local SEO, Google Ads tracking, CRM workflows, automation, and AI search optimization.",
+    "Practical digital marketing systems for Hays, Kansas businesses: websites, local SEO, Google Ads tracking, CRM workflows, and AI search visibility.",
   eyebrow: "Digital Marketing in Hays, KS",
   h1: "Digital Marketing Systems for Hays, Kansas Businesses",
   subheadline:

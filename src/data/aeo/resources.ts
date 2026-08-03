@@ -10,9 +10,9 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "resources",
   tier: "trust_faq",
-  metaTitle: "Resources | Preisser Solutions",
+  metaTitle: "Resources",
   metaDescription:
-    "Reference material from Preisser Solutions — blog, ROI calculator, integrations directory, case studies, and frameworks for Kansas businesses evaluating AI and custom software.",
+    "Reference material from Preisser Solutions: blog, ROI calculator, integrations directory, case studies, and frameworks for Kansas business owners.",
   eyebrow: "Resources",
   h1: "Resources",
   subheadline:

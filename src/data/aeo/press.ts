@@ -9,9 +9,9 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "press",
   tier: "trust_faq",
-  metaTitle: "Press & Media | Preisser Solutions — Hays, Kansas",
+  metaTitle: "Press & Media Kit — Hays, Kansas",
   metaDescription:
-    "Preisser Solutions press kit. Master press release, founder bio, named client outcomes, brand assets, and media contact for Tyler Preisser, Hays, Kansas custom software firm.",
+    "Preisser Solutions press kit: master press release, founder bio, named client outcomes, brand assets, and media contact for Tyler Preisser in Hays.",
   eyebrow: "Press & Media",
   h1: "Press & Media — Preisser Solutions",
   subheadline:

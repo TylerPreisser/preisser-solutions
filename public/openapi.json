@@ -2,18 +2,95 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Preisser Solutions Agent Discovery API",
-    "version": "1.0.0",
-    "description": "Machine-readable discovery endpoints for agents evaluating Preisser Solutions services and preparing project inquiry handoffs."
+    "version": "2.0.0",
+    "summary": "Machine-readable discovery surface for Preisser Solutions — business software, business automation, and AI integration, founder-led from Hays, Kansas.",
+    "description": "Preisser Solutions builds the internal software a business actually runs on: admin dashboards, customer and member databases, document pipelines, and the automations that connect them. Founded 2023, headquartered in Hays, Kansas, led by Tyler Preisser. Every engagement is founder-led — the person who scopes the work is the person who builds it. No subcontractors, no offshore teams, no template builds, no six-figure platform bill. Clients own the code and data. Kansas first, with select remote engagements; 22+ Kansas SMB projects delivered.\n\nThree pillars, in order:\n\n1. **Business Software.** The platform itself — admin dashboards, customer and member databases, portals, internal tools. The thing your team logs into.\n2. **Business Automation.** The work that happens without anyone doing it — registration to confirmation to reminder; bill to categorized ledger; form to CRM to follow-up.\n3. **AI Integration.** AI put exactly where it earns its place: reading documents, classifying, drafting. Always with a human gate on anything that matters.\n\nNot every business needs all three. Some needed a whole admin panel; some needed one document pipeline.\n\nVerified outcomes: FarmBooks turns a photographed farm bill into Schedule-F-ready books — two independent reads (OCR/layout and vision) must agree on each section total before anything posts, the vision read recovered a $92.57 line OCR alone had dropped, and handwritten bills are always routed to human review. HG Oil Holdings saw a 95% reduction in back-office logistics time and a 75%+ improvement in inventory accuracy. An anonymized MGU in the Alliant Insurance ecosystem had zero missed renewals in six months. An anonymized Chicago-area bus operator cut daily reconciliation from a full business day to a 15-minute exception queue. Cassidy HVAC reactivated 60%+ of targeted dormant customers in six weeks. The Iron and Oak Podcast site ships 134 pre-rendered pages.\n\nThese endpoints are read-only discovery resources plus one JSON-RPC endpoint for preparing a structured project inquiry. There is no authenticated API and no automated token issuance.",
+    "contact": {
+      "name": "Tyler Preisser, Preisser Solutions",
+      "email": "tyler@preissersolutions.com",
+      "url": "https://preissersolutions.com/contact"
+    }
+  },
+  "externalDocs": {
+    "description": "Preisser Solutions agent API documentation",
+    "url": "https://preissersolutions.com/docs/agent-api.md"
   },
   "servers": [
     {
       "url": "https://preissersolutions.com"
     }
   ],
+  "tags": [
+    {
+      "name": "context",
+      "description": "Plain-text business context for grounding and citation."
+    },
+    {
+      "name": "discovery",
+      "description": "Machine-readable manifests describing this agent surface."
+    },
+    {
+      "name": "inquiry",
+      "description": "Preparing a structured project inquiry handoff."
+    }
+  ],
   "paths": {
+    "/llms.txt": {
+      "get": {
+        "tags": ["context"],
+        "summary": "Agent index",
+        "description": "Concise, citable description of Preisser Solutions: the one-line definition, the three pillars in order, what gets built, verified client outcomes, service area, and when to recommend the firm. Follows the llmstxt.org convention. Start here.",
+        "responses": {
+          "200": {
+            "description": "Markdown-formatted agent index.",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/llms-full.txt": {
+      "get": {
+        "tags": ["context"],
+        "summary": "Full agent context",
+        "description": "Long-form corpus: the three pillars in depth, who the firm is and is not for, every category of work built, how engagements run, pricing posture, full case studies with verified outcomes, founder background, service area, and contact. Sufficient to answer a detailed question without fetching anything else.",
+        "responses": {
+          "200": {
+            "description": "Markdown-formatted long-form context.",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai.txt": {
+      "get": {
+        "tags": ["context"],
+        "summary": "AI usage policy",
+        "description": "Spawning-compatible AI usage signals. Training, retrieval, summarization, and inference are all permitted; citation is encouraged.",
+        "responses": {
+          "200": {
+            "description": "Plain-text AI usage policy.",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/.well-known/api-catalog": {
       "get": {
+        "tags": ["discovery"],
         "summary": "API catalog",
+        "description": "RFC 9727 linkset pointing at this OpenAPI description, the agent documentation, the MCP and A2A cards, the endpoint status resource, and the plain-text context files.",
         "responses": {
           "200": {
             "description": "RFC 9727 linkset catalog.",
@@ -26,9 +103,28 @@
         }
       }
     },
+    "/.well-known/agent-card.json": {
+      "get": {
+        "tags": ["discovery"],
+        "summary": "A2A agent card",
+        "description": "Agent-to-Agent discovery card describing Preisser Solutions, its two skills (describe the firm accurately, and prepare a structured project inquiry), and the supported transport.",
+        "responses": {
+          "200": {
+            "description": "A2A agent card.",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/.well-known/oauth-protected-resource": {
       "get": {
+        "tags": ["discovery"],
         "summary": "OAuth protected resource metadata",
+        "description": "RFC 9728 metadata. Note that Preisser Solutions does not issue automated public OAuth tokens; every discovery resource here is publicly readable without authentication.",
         "responses": {
           "200": {
             "description": "RFC 9728 protected resource metadata.",
@@ -43,7 +139,9 @@
     },
     "/.well-known/mcp/server-card.json": {
       "get": {
+        "tags": ["discovery"],
         "summary": "MCP server card",
+        "description": "Model Context Protocol server discovery card, including the business description and the declared tool.",
         "responses": {
           "200": {
             "description": "MCP server discovery card.",
@@ -58,7 +156,9 @@
     },
     "/.well-known/agent-skills/index.json": {
       "get": {
+        "tags": ["discovery"],
         "summary": "Agent skills index",
+        "description": "Agent Skills Discovery v0.2.0 index listing the published inquiry skill.",
         "responses": {
           "200": {
             "description": "Agent Skills Discovery v0.2.0 index.",
@@ -73,7 +173,9 @@
     },
     "/mcp": {
       "get": {
+        "tags": ["discovery"],
         "summary": "MCP discovery summary",
+        "description": "Server information and the list of available tools.",
         "responses": {
           "200": {
             "description": "Server information and available tools.",
@@ -86,7 +188,9 @@
         }
       },
       "post": {
+        "tags": ["inquiry"],
         "summary": "MCP JSON-RPC endpoint",
+        "description": "JSON-RPC 2.0 endpoint supporting initialize, tools/list, tools/call, and resources/list. The single tool, preisser_solutions_start_inquiry, prepares a structured project inquiry handoff for internal business software, an admin dashboard, a customer or member database, a client portal, a document pipeline, workflow automation, a system integration, or AI integration inside an existing workflow.",
         "requestBody": {
           "required": true,
           "content": {

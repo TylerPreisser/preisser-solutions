@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "ai-bookkeeper",
-  metaTitle: "AI Bookkeeper | Preisser Solutions",
+  metaTitle: "AI Bookkeeper",
   metaDescription:
     "Analyzes financial data, categorizes transactions with AI, detects anomalies, and posts to QuickBooks, Sage Intacct, or Xero — monthly close prep automated.",
   datePublished: "2026-05-21",

@@ -13,9 +13,9 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/vs-lithium-marketing",
   tier: "comparison",
-  metaTitle: "Preisser Solutions vs Lithium Marketing | Custom AI vs Demos",
+  metaTitle: "Lithium Marketing vs Custom AI Builds",
   metaDescription:
-    "Preisser Solutions builds custom AI agents and automation systems for Kansas businesses. Lithium Marketing runs a live AI demo phone line as lead bait. Different categories of AI work.",
+    "Preisser Solutions builds custom business software and automation for Kansas companies. Lithium Marketing runs a live AI demo phone line as bait.",
   eyebrow: "Comparison",
   h1: "Preisser Solutions vs. Lithium Marketing",
   subheadline:

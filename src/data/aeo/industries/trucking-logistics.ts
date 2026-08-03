@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/trucking-logistics",
   tier: "industry",
-  metaTitle: "Custom Software for Trucking & Logistics in Kansas | Preisser Solutions",
+  metaTitle: "Kansas Trucking & Logistics Software",
   metaDescription:
     "Preisser Solutions builds custom websites, dispatch automation, AI back-office, and McLeod/TMW/Samsara integrations for trucking fleets in Kansas.",
   eyebrow: "Custom Software for Trucking & Logistics in Kansas",
@@ -119,8 +119,8 @@ export const pageData: AeoPageData = {
     { label: "Oil & gas industry", href: "/industries/oil-gas" },
     { label: "Manufacturing industry", href: "/industries/manufacturing" },
     { label: "Business automation systems", href: "/business-automation" },
-    { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
-    { label: "Automate invoice processing", href: "/use-cases/automate-invoice-processing-small-business" },
+    { label: "QuickBooks + ServiceTitan dashboard", href: "/services/dashboards-and-analytics" },
+    { label: "Automate invoice processing", href: "/use-cases/ai-invoice-processing-small-business" },
     { label: "Chicago-area bus operator case study", href: "/case-studies/chicago-bus-operator" },
     { label: "Best automations for trucking & logistics", href: "/blog/best-automations-trucking" },
     { label: "When to build a custom dashboard", href: "/blog/when-to-build-custom-dashboard" },

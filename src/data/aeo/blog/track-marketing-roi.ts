@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-04-28",
   dateModified: "2026-05-15",
-  metaTitle: "How To Track Marketing ROI Without Guessing",
+  metaTitle: "How To Track Marketing ROI",
   metaDescription:
     "A practical attribution model for small businesses with no marketing team. Call tracking, UTMs, CRM source fields, and one weekly review.",
   eyebrow: "Blog · Pricing & ROI",
@@ -127,7 +127,7 @@ export const pageData: AeoPageData = {
     { label: "Digital marketing in Hays, KS", href: "/services/digital-marketing-hays-ks" },
     { label: "Google Ads + local SEO for service businesses", href: "/services/google-ads-local-seo-service-business" },
     { label: "Paid ads management", href: "/services/paid-ads" },
-    { label: "Lead tracking for website + Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
+    { label: "Lead tracking for website + Google Ads", href: "/services/local-seo" },
     { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
     { label: "Missed-call ROI calculator (article)", href: "/blog/missed-call-roi-calculator" },
     { label: "Preisser vs a marketing agency", href: "/compare/vs-marketing-agency" },

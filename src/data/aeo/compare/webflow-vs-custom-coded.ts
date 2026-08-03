@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/webflow-vs-custom-coded",
   tier: "comparison",
-  metaTitle: "Webflow vs Custom-Coded Website | Preisser Solutions",
+  metaTitle: "Webflow vs Custom-Coded Website",
   metaDescription:
     "Honest comparison: Webflow no-code platform vs custom-coded websites by Preisser Solutions. Speed, SEO, customization, cost, and developer flexibility compared.",
   eyebrow: "Comparison",

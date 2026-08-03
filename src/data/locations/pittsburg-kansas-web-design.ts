@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Southeast Kansas",
   coordinates: { lat: 37.411, lng: -94.705 },
 
-  metaTitle: "Web Design & Custom Software in Pittsburg, KS | Preisser Solutions",
+  metaTitle: "Pittsburg, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Pittsburg, Kansas — built by a Kansas development firm with fixed-price proposals and full code ownership.",
 

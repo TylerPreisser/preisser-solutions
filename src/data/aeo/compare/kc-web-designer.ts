@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/kc-web-designer",
   tier: "comparison",
-  metaTitle: "Preisser Solutions vs Kansas City Web Designers | Preisser Solutions",
+  metaTitle: "KC Web Designers vs Custom Software",
   metaDescription:
     "Honest comparison: Preisser Solutions (founder-led custom software, Hays KS) vs Kansas City metro web design agencies.",
   eyebrow: "Comparison",

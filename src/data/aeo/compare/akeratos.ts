@@ -14,9 +14,9 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/akeratos",
   tier: "comparison",
-  metaTitle: "Preisser Solutions vs Akeratos | Digital vs Industrial Automation",
+  metaTitle: "Akeratos vs Custom Business Software",
   metaDescription:
-    "Different categories: Akeratos LLC builds industrial robotics and physical automation in Wichita. Preisser Solutions builds digital business automation and AI software in Hays.",
+    "Akeratos LLC builds industrial robotics and physical automation in Wichita. Preisser Solutions builds business software and automation in Hays.",
   eyebrow: "Comparison",
   h1: "Preisser Solutions vs. Akeratos LLC",
   subheadline:
@@ -220,7 +220,7 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "AI consulting in Hays, KS", href: "/services/ai-consulting-hays-ks" },
     { label: "Custom AI agents in Hays, KS", href: "/services/custom-ai-agents-hays-ks" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
     { label: "Preisser vs KC AI Pro", href: "/compare/vs-kc-ai-pro" },
     { label: "Preisser vs a marketing agency", href: "/compare/vs-marketing-agency" },

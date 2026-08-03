@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Border Markets",
   coordinates: { lat: 39.099, lng: -94.578 },
 
-  metaTitle: "Custom Software Development in Kansas City, MO | Preisser Solutions",
+  metaTitle: "Kansas City, MO Custom Software",
   metaDescription:
     "Custom software and AI automation for Kansas City, Missouri businesses — Kansas-based firm serving the KC metro with fixed-price proposals.",
 

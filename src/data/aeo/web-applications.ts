@@ -7,7 +7,7 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "web-applications",
   tier: "service_detail",
-  metaTitle: "Custom Web Application Development in Kansas | Preisser Solutions",
+  metaTitle: "Custom Web Applications in Kansas",
   metaDescription:
     "Full-stack custom web applications built by Preisser Solutions in Hays, Kansas. Internal tools, client portals, custom CRMs, and AI-powered platforms.",
   eyebrow: "Web Application Development",

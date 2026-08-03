@@ -11,7 +11,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/hvac",
   tier: "industry",
-  metaTitle: "Custom Software for HVAC Companies in Kansas | Preisser Solutions",
+  metaTitle: "Kansas HVAC Software",
   metaDescription:
     "Preisser Solutions builds custom websites, dispatch automation, AI reactivation, and ServiceTitan integrations for HVAC contractors in Kansas. Cassidy HVAC: 5x reach.",
   eyebrow: "Custom Software for HVAC Companies in Kansas",
@@ -206,7 +206,7 @@ export const pageData: AeoPageData = {
     { label: "Customer reactivation engine", href: "/services/customer-reactivation" },
     { label: "Local SEO service", href: "/services/local-seo" },
     { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "Best automations for contractors", href: "/blog/best-automations-contractors" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

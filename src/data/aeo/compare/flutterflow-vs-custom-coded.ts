@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/flutterflow-vs-custom-coded",
   tier: "comparison",
-  metaTitle: "FlutterFlow vs Custom-Coded Mobile App | Preisser Solutions",
+  metaTitle: "FlutterFlow vs Custom-Coded Mobile App",
   metaDescription:
     "Honest comparison: FlutterFlow no-code mobile builder vs custom-coded mobile apps by Preisser Solutions. When no-code mobile stops scaling.",
   eyebrow: "Comparison",

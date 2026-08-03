@@ -11,7 +11,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "use-cases/ai-invoice-processing-small-business",
   tier: "service_detail",
-  metaTitle: "AI Invoice Processing for Small Businesses",
+  metaTitle: "AI Invoice Processing for SMBs",
   metaDescription:
     "Preisser Solutions builds AI invoice processing systems for small businesses — with HG Oil Holdings as the documented example: 75% reduction in manual handling time.",
   eyebrow: "AI Invoice Processing",
@@ -159,7 +159,7 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Business automation systems", href: "/business-automation" },
     { label: "Automate data entry", href: "/use-cases/automate-data-entry-small-business" },
-    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-inventory-system" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Get the time back your team spends on invoices",

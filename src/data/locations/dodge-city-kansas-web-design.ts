@@ -13,7 +13,7 @@ export const locationData: LocationPageData = {
   region: "Southwest Kansas",
   coordinates: { lat: 37.752, lng: -100.018 },
 
-  metaTitle: "Web Design in Dodge City, Kansas | Preisser Solutions",
+  metaTitle: "Web Design in Dodge City, Kansas",
   metaDescription:
     "Custom websites for Dodge City, Kansas businesses — fast, SEO-strong, AI-search ready. Built by a Hays-based firm.",
 

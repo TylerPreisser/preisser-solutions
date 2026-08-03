@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Northeast Kansas & Flint Hills",
   coordinates: { lat: 39.048, lng: -95.677 },
 
-  metaTitle: "Custom Software Development in Topeka, KS | Preisser Solutions",
+  metaTitle: "Topeka, KS Custom Software Development",
   metaDescription:
     "Custom software, web applications, and AI automation built for Topeka, Kansas businesses — fixed-price proposals, full code ownership.",
 

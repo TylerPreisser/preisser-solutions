@@ -12,43 +12,75 @@
   # Deleted routes kept serving 200 from cache after they were gone, and any
   # copy change on an interior page took a week to appear. Static assets below
   # are matched by more specific rules and keep their immutable long cache.
+  #
+  # IMPORTANT (2026-08-03): Cloudflare Pages does NOT let a later, more specific
+  # rule *replace* a header set here — it APPENDS. Adding this catch-all made
+  # every specific rule below emit a concatenated value, verified live:
+  #   GET /            -> "public, max-age=0, must-revalidate, public, max-age=0, must-revalidate"
+  #   GET /sitemap.xml -> "public, max-age=0, must-revalidate, public, max-age=3600"
+  #   GET /_next/.../x.woff2 -> "public, max-age=31536000, must-revalidate, immutable"
+  # Chromium takes the FIRST max-age it parses, so every long-lived asset below
+  # was silently degrading to max-age=0. Each override therefore detaches this
+  # header first with "! Cache-Control" before setting its own. Do not remove
+  # those detach lines, and do not add a new Cache-Control rule without one.
   Cache-Control: public, max-age=0, must-revalidate
 
 /_next/static/*
+  ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable
 
 /*.woff2
+  ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable
   Access-Control-Allow-Origin: *
 
 /*.webp
+  ! Cache-Control
   Cache-Control: public, max-age=2592000
 
 /*.png
+  ! Cache-Control
   Cache-Control: public, max-age=2592000
 
 /*.jpg
+  ! Cache-Control
   Cache-Control: public, max-age=2592000
 
+/*.avif
+  ! Cache-Control
+  Cache-Control: public, max-age=2592000
+
+/*.svg
+  ! Cache-Control
+  Cache-Control: public, max-age=2592000
+
+# "/" is already matched by "/*" above and inherits the identical
+# max-age=0, must-revalidate. Re-declaring it here is what produced the
+# doubled Cache-Control observed on the homepage, so only the Link: header
+# — which is genuinely homepage-only — is declared in this block.
 /
-  Cache-Control: public, max-age=0, must-revalidate
   Link: </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </openapi.json>; rel="service-desc"; type="application/openapi+json", </docs/agent-api.md>; rel="service-doc"; type="text/markdown", </.well-known/oauth-protected-resource>; rel="oauth-protected-resource"; type="application/json", </.well-known/mcp/server-card.json>; rel="mcp-server-card"; type="application/json", </.well-known/agent-card.json>; rel="agent-card"; type="application/json", </.well-known/agent-skills/index.json>; rel="agent-skills"; type="application/json", </llms.txt>; rel="alternate"; type="text/markdown"
 
 /sitemap.xml
+  ! Cache-Control
   Cache-Control: public, max-age=3600
 
 /robots.txt
+  ! Cache-Control
   Cache-Control: public, max-age=3600
 
 /llms.txt
+  ! Cache-Control
   Cache-Control: public, max-age=3600
   Content-Type: text/markdown; charset=utf-8
 
 /llms-full.txt
+  ! Cache-Control
   Cache-Control: public, max-age=3600
   Content-Type: text/markdown; charset=utf-8
 
 /feed.xml
+  ! Cache-Control
   Cache-Control: public, max-age=3600
   Content-Type: application/rss+xml; charset=utf-8
 
@@ -89,14 +121,17 @@
   Content-Type: text/markdown; charset=utf-8
 
 /openapi.json
+  ! Cache-Control
   Cache-Control: public, max-age=3600
   Content-Type: application/openapi+json; charset=utf-8
 
 /docs/*.md
+  ! Cache-Control
   Cache-Control: public, max-age=3600
   Content-Type: text/markdown; charset=utf-8
 
 /.well-known/*
+  ! Cache-Control
   Cache-Control: public, max-age=3600
 
 # Note (2026-05-11): the legacy `https://:project.pages.dev/*` rule that set

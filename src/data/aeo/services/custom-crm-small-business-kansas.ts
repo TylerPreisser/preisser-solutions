@@ -13,7 +13,7 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "Custom CRM for Small Business in Kansas",
   metaDescription:
-    "Custom CRMs for Kansas small businesses that outgrew HubSpot or Salesforce. Sales pipelines, follow-up automation, dashboards, reporting, and integrations built around your actual workflow.",
+    "Custom CRMs for Kansas small businesses that outgrew HubSpot or Salesforce. Pipelines, follow-up automation, dashboards, and reporting built to fit.",
   eyebrow: "Custom CRM in Kansas",
   h1: "Custom CRM Development for Kansas Small Businesses",
   subheadline:
@@ -126,7 +126,7 @@ export const pageData: AeoPageData = {
     "Cassidy Glass",
   ],
   relatedLinks: [
-    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "Custom CRM development", href: "/services/crm-systems" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Business automation systems", href: "/business-automation" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },

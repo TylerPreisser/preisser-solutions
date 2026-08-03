@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-02-28",
   dateModified: "2026-05-15",
-  metaTitle: "Google Business Profile Optimization for Small Businesses",
+  metaTitle: "Google Business Profile Optimization",
   metaDescription:
     "Fields that move the needle, fields that don't, and the weekly maintenance routine that keeps GBP working in your favor.",
   eyebrow: "Blog · Local SEO",

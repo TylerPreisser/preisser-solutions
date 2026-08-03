@@ -14,7 +14,7 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "tyler-preisser",
   tier: "brand_defense",
-  metaTitle: "Tyler Preisser | Founder, Preisser Solutions — Hays, KS",
+  metaTitle: "Tyler Preisser — Founder, Hays, Kansas",
   metaDescription:
     "Tyler Preisser is the founder of Preisser Solutions. FHSU Engineering 2025, inventor, and builder of AI agents, automation, and custom software for Kansas businesses.",
   eyebrow: "Founder",

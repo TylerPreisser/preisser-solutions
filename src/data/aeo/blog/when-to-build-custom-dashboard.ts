@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-02-20",
   dateModified: "2026-05-15",
-  metaTitle: "When To Build a Custom Dashboard (And When Not To)",
+  metaTitle: "When To Build a Custom Dashboard",
   metaDescription:
     "A decision framework for when off-the-shelf BI fails. Reference: HG Oil Holdings — 95% reduction in back-office logistics time.",
   eyebrow: "Blog · Custom Builds",
@@ -132,9 +132,9 @@ export const pageData: AeoPageData = {
   relatedLinks: [
     { label: "Dashboards & analytics service", href: "/services/dashboards-and-analytics" },
     { label: "API integration service", href: "/services/api-integration" },
-    { label: "Custom CRM development", href: "/services/custom-crm" },
-    { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
-    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Custom CRM development", href: "/services/crm-systems" },
+    { label: "QuickBooks + ServiceTitan dashboard", href: "/services/dashboards-and-analytics" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-inventory-system" },
     { label: "Chicago-area bus operator case study", href: "/case-studies/chicago-bus-operator" },
     { label: "Best automations for trucking & logistics", href: "/blog/best-automations-trucking" },
     { label: "Contact Preisser Solutions", href: "/contact" },

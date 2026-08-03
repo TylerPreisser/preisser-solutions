@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "customer-research-agent",
-  metaTitle: "Customer Research Agent | Preisser Solutions",
+  metaTitle: "Customer Research Agent",
   metaDescription:
     "Sub-agents scour the internet in parallel to research individual prospects and return enriched profiles ready for individualized outreach — in minutes, not hours.",
   datePublished: "2026-05-21",

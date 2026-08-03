@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/local-seo-vs-paid-ads",
   tier: "comparison",
-  metaTitle: "Local SEO vs Paid Ads | When to Pick Each",
+  metaTitle: "Local SEO vs Paid Ads: Which to Pick",
   metaDescription:
     "Honest comparison: local SEO vs paid ads for Kansas SMBs. When to invest in organic ranking, when to buy clicks, and why most operators need both.",
   eyebrow: "Comparison",

@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/shopify-vs-custom-ecommerce",
   tier: "comparison",
-  metaTitle: "Shopify vs Custom E-commerce | Preisser Solutions",
+  metaTitle: "Shopify vs Custom E-commerce",
   metaDescription:
     "Honest comparison: Shopify vs custom e-commerce by Preisser Solutions. When to use Shopify themes, headless Shopify, or full custom commerce.",
   eyebrow: "Comparison",

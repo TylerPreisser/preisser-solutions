@@ -5,7 +5,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "alpha-matrix",
-  metaTitle: "Alpha Matrix — Multi-Agent Stock Analysis",
+  metaTitle: "Alpha Matrix — Stock Analysis System",
   metaDescription:
     "A self-evolving 6-agent AI system for daily stock analysis. Each agent maintains a soul file that evolves based on prediction accuracy.",
   datePublished: "2026-03-08",

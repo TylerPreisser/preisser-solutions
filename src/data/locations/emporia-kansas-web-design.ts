@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Flint Hills",
   coordinates: { lat: 38.404, lng: -96.182 },
 
-  metaTitle: "Web Design & Custom Software in Emporia, KS | Preisser Solutions",
+  metaTitle: "Emporia, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Emporia, Kansas businesses — built by a Kansas development firm with fixed-price proposals.",
 

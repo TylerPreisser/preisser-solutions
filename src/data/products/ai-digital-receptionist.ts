@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "ai-digital-receptionist",
-  metaTitle: "AI Digital Receptionist | Preisser Solutions",
+  metaTitle: "AI Digital Receptionist",
   metaDescription:
     "Reads every email and transcribed phone call, remembers everything across conversations, auto-responds to common asks, and delivers a morning digest of the last 24 hours.",
   datePublished: "2026-05-21",

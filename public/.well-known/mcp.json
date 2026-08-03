@@ -5,7 +5,7 @@
     "name": "Preisser Solutions Agent Discovery",
     "version": "1.0.0"
   },
-  "description": "Discovery endpoint for Preisser Solutions services, agent-readable site context, and structured inquiry handoffs.",
+  "description": "Discovery endpoint for Preisser Solutions — a founder-led custom software firm in Hays, Kansas that builds business software (admin dashboards, customer and member databases, portals, internal tools), business automation (document pipelines, scheduled jobs, confirmations, follow-ups, system-to-system handoffs), and AI integration (document reading, classification, and drafting with a human gate on anything that matters). Provides agent-readable business context and structured inquiry handoffs. Canonical card: https://preissersolutions.com/.well-known/mcp/server-card.json",
   "transport": {
     "type": "streamable-http",
     "url": "https://preissersolutions.com/mcp"

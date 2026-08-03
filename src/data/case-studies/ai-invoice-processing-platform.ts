@@ -5,7 +5,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "ai-invoice-processing-platform",
-  metaTitle: "AI Invoice Processing Platform | Preisser Solutions",
+  metaTitle: "AI Invoice Processing Platform",
   metaDescription:
     "The AI invoice engine that cut HG Oil Holdings' manual handling 75%, packaged as a repeatable platform for any business format or accounting stack.",
   datePublished: "2026-03-18",

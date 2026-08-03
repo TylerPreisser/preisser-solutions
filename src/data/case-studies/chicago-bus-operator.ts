@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // DO NOT name the company, personnel, or SOW value.
 export const caseStudy: CaseStudyData = {
   slug: "chicago-bus-operator",
-  metaTitle: "Power BI + Ops Automation — Bus Operator",
+  metaTitle: "Bus Operator — Ops Automation & BI",
   metaDescription:
     "A Chicago-area bus operator cut weekly reconciliation from a full day to a 15-minute exception queue with five Power BI dashboards plus AI ops automation.",
   datePublished: "2026-03-15",

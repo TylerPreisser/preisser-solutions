@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "North-Central Kansas",
   coordinates: { lat: 39.454, lng: -98.106 },
 
-  metaTitle: "Web Design & Custom Software in Beloit, KS | Preisser Solutions",
+  metaTitle: "Beloit, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Beloit, Kansas — built by a nearby Hays-based firm with fixed-price proposals.",
 

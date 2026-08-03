@@ -1,5 +1,31 @@
 # Reposition: Business Software. Business Automation. AI Integration.
 
+> **AMENDED 2026-08-03 — READ THIS BEFORE §1, §5 OR §9.**
+>
+> **C3 Studio and NWKS Encounter have been removed from the site entirely** —
+> cards, case-study pages, routes, data files, index entries, and every mention
+> in the proof bar and pillar tiles. Their routes 301 to `/case-studies`. The
+> owner's instruction was explicit: *"The only thing that should be up there is
+> Farm Books."* Both are unfinished work and must not be presented as shipped.
+>
+> This makes parts of the original text below stale. Specifically:
+> - **§1** names them as 2 of the 3 flagship systems. Only **FarmBooks** is.
+> - **§5 stream E** schedules their case studies. Those no longer exist.
+> - **§9** carries verified proof points for both (18 typed block types,
+>   PBKDF2 210k iterations, the 2,402-recipient/67s cron finding, 756 API
+>   tests, ~170 test files). **Those numbers are now unusable on this site.**
+>
+> §9 otherwise still stands and is still the only list anyone may quote from.
+> The usable receipts are: **FarmBooks** (1,069 engine tests, 505 app tests,
+> 23 photographed bills, the $92.57 recovered line, the .xlsx + SharePoint
+> output, handwriting always routed to a human), plus the existing client work
+> — HG Oil, the anonymized MGU, the anonymized Chicago-area bus operator,
+> Cassidy HVAC, and Iron and Oak.
+>
+> Also since: the tagline is now the three pillars themselves (geography was
+> dropped as positioning), and `--color-primary` is the exact logo blue
+> `#1590FF` sampled from `public/images/ps-logo.webp`.
+
 Date: 2026-08-02
 Status: **in build**
 Owner: Tyler Preisser (Preisser Solutions)

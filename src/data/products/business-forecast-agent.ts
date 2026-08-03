@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "business-forecast-agent",
-  metaTitle: "Business Forecast Agent | Preisser Solutions",
+  metaTitle: "Business Forecast Agent",
   metaDescription:
     "Learns your entire company's existence — QuickBooks, CRM, calendar, operational data — then forecasts revenue, cash, hiring, and capacity with scenario modeling.",
   datePublished: "2026-05-21",

@@ -11,7 +11,7 @@ import { blogManifest } from "./manifest";
 export const pageData: AeoPageData = {
   slug: "blog",
   tier: "blog",
-  metaTitle: "Blog — Preisser Solutions | AI Automation & AEO for Kansas SMBs",
+  metaTitle: "Blog: Automation & AI Search for SMBs",
   metaDescription:
     "Long-form essays on AI automation, AEO/GEO, custom CRM builds, local SEO, and the work Preisser Solutions ships for Kansas small businesses.",
   eyebrow: "Preisser Solutions Blog",

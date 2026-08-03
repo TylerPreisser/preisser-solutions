@@ -13,7 +13,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 38.879, lng: -99.327 },
 
-  metaTitle: "Local SEO & AI Search Optimization in Hays, KS | Preisser Solutions",
+  metaTitle: "Local SEO & AI Search in Hays, KS",
   metaDescription:
     "Local SEO and AI search optimization in Hays, Kansas — get your business found on Google, ChatGPT, Perplexity, and Gemini.",
 

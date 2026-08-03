@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // Internal Preisser Solutions toolset. See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "agentic-coding-specialists",
-  metaTitle: "Agentic AI Coding Specialists | Preisser Solutions",
+  metaTitle: "Agentic AI Coding Specialists",
   metaDescription:
     "Specialized agentic coding models that architect, debug, and ship projects autonomously — the internal Preisser Solutions build toolset.",
   datePublished: "2026-02-04",

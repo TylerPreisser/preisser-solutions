@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 39.395, lng: -101.052 },
 
-  metaTitle: "Web Design & Custom Software in Colby, KS | Preisser Solutions",
+  metaTitle: "Colby, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Colby, Kansas — built by a nearby Hays-based firm.",
 

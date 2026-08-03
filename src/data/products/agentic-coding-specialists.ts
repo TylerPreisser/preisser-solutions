@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "agentic-coding-specialists",
-  metaTitle: "Agentic Coding Specialists | Preisser Solutions",
+  metaTitle: "Agentic Coding Specialists",
   metaDescription:
     "Domain-tuned Claude Code sub-agents that architect, debug, and ship entire projects autonomously. Tyler's actual development toolset — not a pitch, a practice.",
   datePublished: "2026-05-21",

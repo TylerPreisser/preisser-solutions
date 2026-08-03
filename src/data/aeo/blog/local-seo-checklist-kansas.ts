@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-03-07",
   dateModified: "2026-05-15",
-  metaTitle: "Local SEO Checklist for Kansas Small Businesses (30+ Items)",
+  metaTitle: "Local SEO Checklist for Kansas SMBs",
   metaDescription:
     "GBP, citations, reviews, NAP, schema, content, local backlinks, Kansas directories — in priority order, no fluff.",
   eyebrow: "Blog · Local SEO",

@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/ai-search-optimization-vs-traditional-seo",
   tier: "comparison",
-  metaTitle: "AI Search Optimization vs Traditional SEO | Preisser Solutions",
+  metaTitle: "AI Search Optimization vs SEO",
   metaDescription:
     "Honest comparison: AEO (AI search optimization) vs traditional SEO. What overlaps, what differs, and why most operators need both in 2026.",
   eyebrow: "Comparison",

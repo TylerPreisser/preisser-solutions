@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // Capability offering. See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "after-hours-call-triage",
-  metaTitle: "After-Hours Call Triage System | Preisser Solutions",
+  metaTitle: "After-Hours Call Triage System",
   metaDescription:
     "Agentic automation that catches every after-hours call, text, and form submission so service-business leads stop bleeding to competitors overnight.",
   datePublished: "2026-03-12",

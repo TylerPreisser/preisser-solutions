@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Southeast Kansas",
   coordinates: { lat: 37.224, lng: -95.709 },
 
-  metaTitle: "Web Design & Custom Software in Independence, KS | Preisser Solutions",
+  metaTitle: "Independence, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Independence, Kansas businesses — Kansas-based firm with fixed-price proposals.",
 

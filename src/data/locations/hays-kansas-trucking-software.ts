@@ -57,7 +57,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 38.879, lng: -99.327 },
 
-  metaTitle: "Trucking Software & Fleet Management in Hays, KS | Preisser Solutions",
+  metaTitle: "Trucking & Fleet Software in Hays, KS",
   metaDescription:
     "Custom trucking software, fleet dashboards, and AI document automation for carriers and freight brokers in Hays, Kansas.",
 

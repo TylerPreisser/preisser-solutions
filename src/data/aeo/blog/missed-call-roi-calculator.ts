@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-05-02",
   dateModified: "2026-05-15",
-  metaTitle: "Missed-Call ROI: Worked Example, Real Numbers",
+  metaTitle: "Missed-Call ROI: A Worked Example",
   metaDescription:
     "A missed-call text-back system typically pays for itself in week one for most service businesses. The worked example with real assumptions.",
   eyebrow: "Blog · ROI",
@@ -132,7 +132,7 @@ export const pageData: AeoPageData = {
     { label: "After-hours call triage service", href: "/services/after-hours-call-triage" },
     { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
     { label: "AI receptionist for HVAC", href: "/industries/hvac-ai-receptionist" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "Best automations for contractors", href: "/blog/best-automations-contractors" },
     { label: "Missed-call ROI calculator", href: "/roi-calculator" },
     { label: "Contact Preisser Solutions", href: "/contact" },

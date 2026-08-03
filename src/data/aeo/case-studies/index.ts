@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "case-studies",
   tier: "trust_faq",
-  metaTitle: "Case Studies — Preisser Solutions | Named Client Outcomes",
+  metaTitle: "Case Studies: Named Client Outcomes",
   metaDescription:
     "Preisser Solutions named-client case studies — Cassidy HVAC, HG Oil Holdings, Iron and Oak Podcast, Wife Supply Co, MGU in the Alliant Insurance ecosystem, Chicago-area bus operator, MarCommand.",
   eyebrow: "Case Studies",
@@ -145,8 +145,8 @@ export const pageData: AeoPageData = {
     "Hays, Kansas",
   ],
   relatedLinks: [
-    { label: "Cassidy HVAC Case Study", href: "/case-studies/cassidy-hvac" },
-    { label: "HG Oil Holdings Case Study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Cassidy HVAC Case Study", href: "/case-studies/cassidy-hvac-reactivation" },
+    { label: "HG Oil Holdings Case Study", href: "/case-studies/hg-oil-inventory-system" },
     { label: "Iron and Oak Podcast Case Study", href: "/case-studies/iron-and-oak-podcast" },
     { label: "Wife Supply Co Case Study", href: "/case-studies/wife-supply-co" },
     { label: "Alliant Insurance MGU Case Study", href: "/case-studies/alliant-mgu-insurance" },

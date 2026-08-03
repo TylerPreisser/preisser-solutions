@@ -8,7 +8,7 @@ const CONTACT_EMAIL = "tyler@preissersolutions.com";
 const TOOL_DEFINITION = {
   name: "preisser_solutions_start_inquiry",
   description:
-    "Create a structured inquiry handoff for Preisser Solutions custom software, web application, AI automation, dashboard, or AI agent projects.",
+    "Create a structured inquiry handoff for Preisser Solutions projects: business software, business automation, and AI integration \u2014 admin dashboards, customer and member databases, document pipelines, and the automations between them.",
   inputSchema: {
     type: "object",
     properties: {
@@ -18,7 +18,7 @@ const TOOL_DEFINITION = {
       projectType: {
         type: "string",
         description:
-          "Project category such as custom website, web app, AI automation, dashboard, integration, or AI agent.",
+          "Project category such as business software, admin dashboard, customer database, document pipeline, workflow automation, system integration, or AI integration.",
       },
       message: { type: "string", description: "What the business needs built or improved." },
     },

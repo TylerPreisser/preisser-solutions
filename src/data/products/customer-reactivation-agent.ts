@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "customer-reactivation-agent",
-  metaTitle: "Customer Reactivation Agent | Preisser Solutions",
+  metaTitle: "Customer Reactivation Agent",
   metaDescription:
     "AI-powered SMS and email engine that cleans dormant customer lists, segments by service history, and runs hyper-personalized outreach daily — 60%+ reactivation rate.",
   datePublished: "2026-05-21",

@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-03-28",
   dateModified: "2026-05-15",
-  metaTitle: "5 Best Automations for Contractors (HVAC, Plumbing, Roofing)",
+  metaTitle: "5 Automations for HVAC & Plumbing Pros",
   metaDescription:
     "Missed-call follow-up, online booking, customer reactivation, review automation, and AI invoicing — ranked by payback period.",
   eyebrow: "Blog · Industry Playbooks",
@@ -115,7 +115,7 @@ export const pageData: AeoPageData = {
     { label: "HVAC industry", href: "/industries/hvac" },
     { label: "Plumbing industry", href: "/industries/plumbing" },
     { label: "Roofing industry", href: "/industries/roofing" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "How to reactivate old leads", href: "/blog/reactivate-old-leads" },
     { label: "Missed-call ROI calculator (article)", href: "/blog/missed-call-roi-calculator" },
     { label: "Contact Preisser Solutions", href: "/contact" },

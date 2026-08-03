@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "South-Central Kansas",
   coordinates: { lat: 37.062, lng: -97.037 },
 
-  metaTitle: "Web Design & Custom Software in Arkansas City, KS | Preisser Solutions",
+  metaTitle: "Arkansas City, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Arkansas City, Kansas — Kansas-based development firm with fixed-price proposals.",
 

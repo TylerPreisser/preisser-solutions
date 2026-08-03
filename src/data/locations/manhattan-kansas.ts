@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Flint Hills",
   coordinates: { lat: 39.184, lng: -96.572 },
 
-  metaTitle: "Custom Software in Manhattan, Kansas | Preisser Solutions",
+  metaTitle: "Custom Software in Manhattan, Kansas",
   metaDescription:
     "Custom software, AI automation, and custom websites for Manhattan, Kansas businesses — based in Hays, KS, delivered statewide.",
 

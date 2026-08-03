@@ -147,6 +147,8 @@ export function Footer() {
             <a href="/privacy">Privacy</a>
             <span aria-hidden="true"> · </span>
             <a href="/terms">Terms</a>
+            <span aria-hidden="true"> &middot; </span>
+            <a href="/site-map">Site Map</a>
           </div>
           <div className="ps-footer-social" aria-label="Social links">
             {siteConfig.social.linkedin && (

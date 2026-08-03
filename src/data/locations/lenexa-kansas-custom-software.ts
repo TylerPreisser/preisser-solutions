@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Kansas City Metro",
   coordinates: { lat: 38.952, lng: -94.733 },
 
-  metaTitle: "Custom Software Development in Lenexa, KS | Preisser Solutions",
+  metaTitle: "Lenexa, KS Custom Software Development",
   metaDescription:
     "Custom software, AI automation, and web applications for Lenexa, Kansas — built by a Kansas-based firm for the Johnson County logistics and distribution economy.",
 

@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/retail",
   tier: "industry",
-  metaTitle: "Custom Software for Retail & E-commerce in Kansas | Preisser Solutions",
+  metaTitle: "Kansas Retail & E-commerce Software",
   metaDescription:
     "Preisser Solutions builds custom websites, custom Shopify themes, AI customer service, and Lightspeed/NetSuite integrations for retailers in Kansas.",
   eyebrow: "Custom Software for Retail & E-commerce in Kansas",

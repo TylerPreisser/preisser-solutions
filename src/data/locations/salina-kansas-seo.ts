@@ -11,7 +11,7 @@ export const locationData: LocationPageData = {
   region: "Central Kansas",
   coordinates: { lat: 38.840, lng: -97.611 },
 
-  metaTitle: "Local SEO in Salina, Kansas | Preisser Solutions",
+  metaTitle: "Local SEO in Salina, Kansas",
   metaDescription:
     "Local SEO and AI-search optimization for Salina, Kansas businesses — built by a Hays-based custom software firm.",
 

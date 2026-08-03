@@ -6,7 +6,7 @@ export const pageData: AeoPageData = {
   // R-018: Article freshness signals.
   datePublished: "2024-11-01",
   dateModified: "2026-05-15",
-  metaTitle: "Customer Reactivation Engine Case Study | Preisser Solutions",
+  metaTitle: "Customer Reactivation Engine Case Study",
   metaDescription:
     "Generic case study: how Preisser Solutions builds AI customer reactivation engines that recover dormant customers via SMS and email — 60%+ reactivation in 6 weeks.",
   eyebrow: "Case Study",
@@ -152,7 +152,7 @@ export const pageData: AeoPageData = {
     { label: "AI customer service systems", href: "/services/ai-customer-service" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
     { label: "How to reactivate old leads", href: "/blog/reactivate-old-leads" },
     { label: "Contact Preisser Solutions", href: "/contact" },

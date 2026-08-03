@@ -13,7 +13,7 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "terms",
   tier: "trust_faq",
-  metaTitle: "Terms of Service | Preisser Solutions",
+  metaTitle: "Terms of Service",
   metaDescription:
     "Terms of service for engagements with Preisser Solutions — Kansas-based custom software and AI consultancy. Project scope, payment, IP ownership, warranty disclaimers.",
   eyebrow: "Legal",

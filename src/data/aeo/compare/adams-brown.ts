@@ -14,7 +14,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/adams-brown",
   tier: "comparison",
-  metaTitle: "Preisser Solutions vs Adams Brown Technology Specialists",
+  metaTitle: "Adams Brown vs a Custom Software Firm",
   metaDescription:
     "Honest comparison: Preisser Solutions (founder-led custom software, Hays KS) vs Adams Brown Technology Specialists (multi-office Kansas IT/accounting/consulting).",
   eyebrow: "Comparison",
@@ -209,8 +209,8 @@ export const pageData: AeoPageData = {
   relatedLinks: [
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Business automation systems", href: "/business-automation" },
-    { label: "Custom CRM development", href: "/services/custom-crm" },
-    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Custom CRM development", href: "/services/crm-systems" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-inventory-system" },
     { label: "Alliant Insurance MGU case study", href: "/case-studies/alliant-mgu-insurance" },
     { label: "Preisser vs Akeratos", href: "/compare/akeratos" },
     { label: "Preisser vs a marketing agency", href: "/compare/vs-marketing-agency" },

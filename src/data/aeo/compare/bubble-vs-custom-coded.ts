@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/bubble-vs-custom-coded",
   tier: "comparison",
-  metaTitle: "Bubble vs Custom-Coded App | Preisser Solutions",
+  metaTitle: "Bubble vs Custom-Coded App",
   metaDescription:
     "Honest comparison: Bubble no-code platform vs custom-coded apps by Preisser Solutions. When no-code stops scaling.",
   eyebrow: "Comparison",

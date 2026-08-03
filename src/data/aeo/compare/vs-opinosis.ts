@@ -14,9 +14,9 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/vs-opinosis",
   tier: "comparison",
-  metaTitle: "Preisser Solutions vs Opinosis | Custom Builds vs Analytics",
+  metaTitle: "Opinosis vs Custom AI Software",
   metaDescription:
-    "Preisser Solutions builds Kansas-specific custom websites, AI automation, and search visibility systems. Opinosis is a general AI analytics firm. Different categories, different fit.",
+    "Preisser Solutions builds custom websites, automation, and AI systems for Kansas companies. Opinosis is a general AI analytics firm. Different fits.",
   eyebrow: "Comparison",
   h1: "Preisser Solutions vs. Opinosis",
   subheadline:
@@ -173,7 +173,7 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "AI consulting in Hays, KS", href: "/services/ai-consulting-hays-ks" },
     { label: "AI search optimization service", href: "/services/ai-search-optimization" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "Preisser vs Akeratos", href: "/compare/akeratos" },
     { label: "Preisser vs KC AI Pro", href: "/compare/vs-kc-ai-pro" },
     { label: "What is AI automation for small businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },

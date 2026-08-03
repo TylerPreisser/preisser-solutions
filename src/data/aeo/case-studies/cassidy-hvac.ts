@@ -6,7 +6,7 @@ export const pageData: AeoPageData = {
   // R-018: Article freshness signals.
   datePublished: "2024-09-15",
   dateModified: "2026-05-15",
-  metaTitle: "Cassidy HVAC Case Study — 5x Reach + 60%+ Reactivation | Preisser Solutions",
+  metaTitle: "Cassidy HVAC Case Study — 5x Reach",
   metaDescription:
     "Detailed case study: Preisser Solutions delivered Cassidy HVAC a hands-off AI marketing engine (5x reach in 30 days) and AI customer reactivation (60%+ in 6 weeks).",
   eyebrow: "Case Study",

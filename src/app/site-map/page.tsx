@@ -21,12 +21,12 @@ import type { AeoPageData } from "@/data/aeo/types";
 const PAGE_URL = "https://preissersolutions.com/site-map";
 
 export const metadata: Metadata = {
-  title: "Site map — Preisser Solutions",
+  title: "Site map",
   description:
     "Complete index of every page on preissersolutions.com — services, industries, use cases, case studies, comparisons, blog, insights, and locations.",
   alternates: { canonical: PAGE_URL },
   openGraph: {
-    title: "Site map — Preisser Solutions",
+    title: "Site map",
     description:
       "Every page on preissersolutions.com, organized by category.",
     url: PAGE_URL,
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Site map — Preisser Solutions",
+    title: "Site map",
     description:
       "Every page on preissersolutions.com, organized by category.",
     images: ["/images/og-image-v2.jpg"],
@@ -92,6 +92,21 @@ function readAeoDir(
       label = slug;
     }
 
+    // A data file is not a page. Three AEO case-study data files
+    // (cassidy-hvac, customer-reactivation, hg-oil-holdings) have no route,
+    // so they were emitted here as dead links AND as 404 `item` URLs inside
+    // the CollectionPage JSON-LD below. Confirm the route actually exists
+    // before listing it — this catches any future orphaned data file, not
+    // just today's three.
+    const routeFile = path.join(
+      process.cwd(),
+      "src/app",
+      routePrefix,
+      slug,
+      "page.tsx",
+    );
+    if (!fs.existsSync(routeFile)) continue;
+
     links.push({ href: `${routePrefix}/${slug}`, label });
   }
 
@@ -123,7 +138,10 @@ const other: SiteMapLink[] = [
   { href: "/business-automation", label: "Business Automation" },
   { href: "/web-applications", label: "Web Applications" },
   { href: "/ai-agents", label: "AI Agents" },
-  { href: "/dashboards-and-analytics", label: "Dashboards and Analytics" },
+  // Lives under /services — there is no top-level /dashboards-and-analytics
+  // route, so the old href 404'd both as a link and inside the CollectionPage
+  // JSON-LD below.
+  { href: "/services/dashboards-and-analytics", label: "Dashboards and Analytics" },
   { href: "/resources", label: "Resources" },
   { href: "/press", label: "Press" },
   { href: "/tyler-preisser", label: "Tyler Preisser" },
@@ -140,8 +158,8 @@ const other: SiteMapLink[] = [
 // CollectionPage JSON-LD hasPart graph.
 const sections: Array<{ id: string; heading: string; hub?: SiteMapLink; links: SiteMapLink[] }> = [
   { id: "services", heading: "Services", hub: { href: "/services", label: "All services" }, links: services },
-  { id: "industries", heading: "Industries", hub: { href: "/industries", label: "All industries" }, links: industries },
-  { id: "use-cases", heading: "Use cases", hub: { href: "/use-cases", label: "All use cases" }, links: useCases },
+  { id: "industries", heading: "Industries", hub: { href: "/services", label: "All services" }, links: industries },
+  { id: "use-cases", heading: "Use cases", hub: { href: "/services", label: "All services" }, links: useCases },
   { id: "case-studies", heading: "Case studies", hub: { href: "/case-studies", label: "All case studies" }, links: caseStudies },
   { id: "compare", heading: "Comparisons", links: compare },
   { id: "blog", heading: "Blog", hub: { href: "/blog", label: "All blog posts" }, links: blog },

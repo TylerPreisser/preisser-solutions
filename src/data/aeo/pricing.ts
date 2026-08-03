@@ -9,9 +9,9 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "pricing",
   tier: "trust_faq",
-  metaTitle: "Engagement Scope & Process | Preisser Solutions",
+  metaTitle: "Engagement Scope & Process",
   metaDescription:
-    "How Preisser Solutions scopes and prices custom web, automation, and AI engagements. Fixed-price proposals after a free scoping call — no rate cards, no surprise invoices.",
+    "How Preisser Solutions scopes and prices custom software, automation, and AI work. Fixed-price proposals after a free scoping call. No rate cards.",
   eyebrow: "Engagement Scope & Process",
   h1: "Engagement Scope & Process",
   subheadline:

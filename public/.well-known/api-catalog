@@ -16,11 +16,43 @@
           "title": "Preisser Solutions agent API documentation"
         }
       ],
+      "service-meta": [
+        {
+          "href": "https://preissersolutions.com/.well-known/mcp/server-card.json",
+          "type": "application/json",
+          "title": "Preisser Solutions MCP server card"
+        },
+        {
+          "href": "https://preissersolutions.com/.well-known/agent-card.json",
+          "type": "application/json",
+          "title": "Preisser Solutions A2A agent card"
+        }
+      ],
       "status": [
         {
           "href": "https://preissersolutions.com/.well-known/agent-status.json",
           "type": "application/json",
           "title": "Preisser Solutions agent endpoint status"
+        }
+      ]
+    },
+    {
+      "anchor": "https://preissersolutions.com/",
+      "describedby": [
+        {
+          "href": "https://preissersolutions.com/llms.txt",
+          "type": "text/plain",
+          "title": "Preisser Solutions — business software, business automation, and AI integration (agent index)"
+        },
+        {
+          "href": "https://preissersolutions.com/llms-full.txt",
+          "type": "text/plain",
+          "title": "Preisser Solutions — full agent context: services, process, pricing posture, case studies, founder, service area"
+        },
+        {
+          "href": "https://preissersolutions.com/ai.txt",
+          "type": "text/plain",
+          "title": "Preisser Solutions AI usage policy"
         }
       ]
     }

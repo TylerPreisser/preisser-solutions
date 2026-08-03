@@ -13,7 +13,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/pluto-sites",
   tier: "comparison",
-  metaTitle: "Preisser Solutions vs Pluto Sites | Hays Kansas Web Firms",
+  metaTitle: "Pluto Sites vs Custom Software in Hays",
   metaDescription:
     "Honest comparison: Preisser Solutions (full-stack custom software consultancy) vs Pluto Sites (Hays, Kansas web design shop).",
   eyebrow: "Comparison",

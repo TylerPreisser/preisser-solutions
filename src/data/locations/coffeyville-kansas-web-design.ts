@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Southeast Kansas",
   coordinates: { lat: 37.037, lng: -95.616 },
 
-  metaTitle: "Web Design & Custom Software in Coffeyville, KS | Preisser Solutions",
+  metaTitle: "Coffeyville, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Coffeyville, Kansas businesses — fixed-price proposals from a Kansas-based development firm.",
 

@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Border Markets",
   coordinates: { lat: 36.154, lng: -95.993 },
 
-  metaTitle: "Web Design & Custom Software in Tulsa, OK | Preisser Solutions",
+  metaTitle: "Tulsa, OK Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Tulsa, Oklahoma businesses — Kansas-based firm delivering remotely to Tulsa's energy and healthcare markets.",
 

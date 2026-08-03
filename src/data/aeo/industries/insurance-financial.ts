@@ -11,7 +11,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/insurance-financial",
   tier: "industry",
-  metaTitle: "Custom Software for Insurance & RIAs in Kansas | Preisser Solutions",
+  metaTitle: "Kansas Insurance & RIA Software",
   metaDescription:
     "Preisser Solutions builds custom CRMs, client portals, dashboards, and marketing automation for independent insurance agencies, RIAs, and financial advisors in Kansas.",
   eyebrow: "Custom Software for Insurance Agencies and RIAs in Kansas",
@@ -192,11 +192,11 @@ export const pageData: AeoPageData = {
     "Registered Investment Advisor",
   ],
   relatedLinks: [
-    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "Custom CRM development", href: "/services/crm-systems" },
     { label: "Custom CRM for small business in Kansas", href: "/services/custom-crm-small-business-kansas" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
-    { label: "Lead tracking for website + Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
+    { label: "Lead tracking for website + Google Ads", href: "/services/local-seo" },
     { label: "MGU insurance case study", href: "/case-studies/alliant-mgu-insurance" },
     { label: "Best automations for insurance agencies", href: "/blog/best-automations-insurance" },
     { label: "HubSpot vs custom CRM", href: "/compare/hubspot-vs-custom-crm" },

@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Northeast Kansas & Flint Hills",
   coordinates: { lat: 39.048, lng: -95.677 },
 
-  metaTitle: "SEO & AI Search Optimization in Topeka, KS | Preisser Solutions",
+  metaTitle: "SEO & AI Search in Topeka, KS",
   metaDescription:
     "Local SEO and AI search optimization for Topeka, Kansas businesses — get found on Google, ChatGPT, Perplexity, and Gemini.",
 

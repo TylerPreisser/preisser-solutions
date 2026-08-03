@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/ai-search-optimization",
   tier: "service_detail",
-  metaTitle: "AI Search Optimization (GEO) for SMBs | Preisser Solutions",
+  metaTitle: "AI Search Optimization (GEO) for SMBs",
   metaDescription:
     "Preisser Solutions engineers websites to be cited by ChatGPT, Perplexity, Gemini, and Claude. AEO (Answer Engine Optimization) for Kansas businesses.",
   eyebrow: "AI Search Optimization (AEO)",

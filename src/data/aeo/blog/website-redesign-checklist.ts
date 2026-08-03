@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-02-12",
   dateModified: "2026-05-15",
-  metaTitle: "Website Redesign Checklist: Don't Skip These 8 Audits",
+  metaTitle: "Website Redesign Checklist: 8 Audits",
   metaDescription:
     "IA, content, schema, performance, accessibility, AI-readability — the audits to run before anyone writes a line of new design.",
   eyebrow: "Blog · Web Strategy",

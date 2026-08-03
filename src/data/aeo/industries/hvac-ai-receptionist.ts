@@ -142,7 +142,7 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
     { label: "After-hours call triage service", href: "/services/after-hours-call-triage" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "Best automations for contractors", href: "/blog/best-automations-contractors" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

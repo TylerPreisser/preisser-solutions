@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/paid-ads",
   tier: "service_detail",
-  metaTitle: "Paid Ads Management (Google, Meta, LinkedIn) | Preisser Solutions",
+  metaTitle: "Paid Ads: Google, Meta & LinkedIn",
   metaDescription:
     "Audit-first paid ads management for Kansas SMBs — Google Ads, Meta, LinkedIn. Founder-led, no bloated retainers, no vanity metrics.",
   eyebrow: "Paid Ads",
@@ -113,7 +113,7 @@ export const pageData: AeoPageData = {
     { label: "Google Ads + local SEO for service businesses", href: "/services/google-ads-local-seo-service-business" },
     { label: "Digital marketing in Hays, KS", href: "/services/digital-marketing-hays-ks" },
     { label: "Local SEO service", href: "/services/local-seo" },
-    { label: "Lead tracking for website + Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
+    { label: "Lead tracking for website + Google Ads", href: "/services/local-seo" },
     { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
     { label: "How to track marketing ROI", href: "/blog/track-marketing-roi" },
     { label: "Local SEO vs paid ads", href: "/compare/local-seo-vs-paid-ads" },

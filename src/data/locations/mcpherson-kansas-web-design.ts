@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Central Kansas",
   coordinates: { lat: 38.371, lng: -97.664 },
 
-  metaTitle: "Web Design & Custom Software in McPherson, KS | Preisser Solutions",
+  metaTitle: "McPherson, KS Web Design & Software",
   metaDescription:
     "Custom software, web apps, and AI automation for McPherson, Kansas — built by a Hays-based firm for the I-135 refining and manufacturing corridor.",
 

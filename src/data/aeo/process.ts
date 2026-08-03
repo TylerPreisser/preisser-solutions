@@ -10,7 +10,7 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "process",
   tier: "trust_faq",
-  metaTitle: "Engagement Process | Preisser Solutions — How Projects Run",
+  metaTitle: "Engagement Process: How Projects Run",
   metaDescription:
     "Step-by-step: how a Preisser Solutions engagement actually runs. Discovery, scoping, fixed-price proposal, build with weekly previews, launch, and 30-day support.",
   eyebrow: "How We Work",

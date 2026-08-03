@@ -11,9 +11,9 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "integrations",
   tier: "service_detail",
-  metaTitle: "Integrations | Preisser Solutions",
+  metaTitle: "Integrations",
   metaDescription:
-    "Full list of platforms, APIs, CRMs, AI models, payments, comms, and infrastructure Preisser Solutions integrates with on custom builds — Stripe, HubSpot, Claude, OpenAI, Cloudflare, more.",
+    "Platforms, APIs, CRMs, AI models, payments, and infrastructure Preisser Solutions integrates on custom builds: Stripe, HubSpot, Claude, Cloudflare.",
   eyebrow: "Integrations",
   h1: "Integrations and Tooling We Build With",
   subheadline:
@@ -262,10 +262,10 @@ export const pageData: AeoPageData = {
   ],
   relatedLinks: [
     { label: "API integration service", href: "/services/api-integration" },
-    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "Custom CRM development", href: "/services/crm-systems" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
-    { label: "QuickBooks + ServiceTitan dashboard", href: "/use-cases/quickbooks-servicetitan-dashboard" },
-    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "QuickBooks + ServiceTitan dashboard", href: "/services/dashboards-and-analytics" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-inventory-system" },
     { label: "AI vs traditional workflow automation", href: "/blog/ai-vs-traditional-workflow-automation" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

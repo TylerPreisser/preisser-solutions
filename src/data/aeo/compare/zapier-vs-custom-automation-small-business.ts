@@ -224,7 +224,7 @@ export const pageData: AeoPageData = {
     { label: "Business automation systems", href: "/business-automation" },
     { label: "API integration service", href: "/services/api-integration" },
     { label: "Make.com vs custom automation", href: "/compare/make-com-vs-custom-automation" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "AI vs traditional workflow automation", href: "/blog/ai-vs-traditional-workflow-automation" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

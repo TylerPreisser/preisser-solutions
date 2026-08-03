@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "South-Central Kansas",
   coordinates: { lat: 37.692, lng: -97.330 },
 
-  metaTitle: "Custom Software Development in Wichita, KS | Preisser Solutions",
+  metaTitle: "Wichita, KS Custom Software Development",
   metaDescription:
     "Custom software, web applications, and AI automation built for Wichita, Kansas businesses — fixed-price proposals, full code ownership.",
 

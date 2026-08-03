@@ -11,9 +11,9 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "use-cases/automate-customer-follow-up",
   tier: "service_detail",
-  metaTitle: "Automate Customer Follow-Up for Small Businesses",
+  metaTitle: "Automate Customer Follow-Up",
   metaDescription:
-    "Preisser Solutions builds customer follow-up automation for quotes, missed leads, dormant customers, review requests, and service reminders — backed by the Cassidy HVAC case study.",
+    "Customer follow-up automation for quotes, missed leads, dormant customers, review requests, and service reminders. See the Cassidy HVAC case study.",
   eyebrow: "Automate Customer Follow-Up",
   h1: "Automate Customer Follow-Up Without Sounding Robotic",
   subheadline:
@@ -141,7 +141,7 @@ export const pageData: AeoPageData = {
     { label: "AI customer service systems", href: "/services/ai-customer-service" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Stop letting quotes and leads go cold",

@@ -12,7 +12,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/wix-vs-custom",
   tier: "comparison",
-  metaTitle: "Wix/Squarespace vs Custom-Coded Website | Preisser Solutions",
+  metaTitle: "Wix/Squarespace vs Custom-Coded Website",
   metaDescription:
     "When to use Wix or Squarespace and when to invest in custom-coded. Honest 10-dimension comparison from Preisser Solutions, Hays Kansas.",
   eyebrow: "Comparison",

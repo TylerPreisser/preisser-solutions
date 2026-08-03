@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Southeast Kansas",
   coordinates: { lat: 37.679, lng: -95.457 },
 
-  metaTitle: "Web Design & Custom Software in Chanute, KS | Preisser Solutions",
+  metaTitle: "Chanute, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Chanute, Kansas businesses — Kansas-based firm with fixed-price proposals and full code ownership.",
 

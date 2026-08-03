@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2025-12-15",
   dateModified: "2026-05-15",
-  metaTitle: "Custom CRM vs HubSpot vs Salesforce: Which Wins?",
+  metaTitle: "Custom CRM vs HubSpot vs Salesforce",
   metaDescription:
     "A three-way narrative comparison: ownership, cost curve, fit, switching pain. When custom wins, when it doesn't.",
   eyebrow: "Blog · Custom Builds",
@@ -146,7 +146,7 @@ export const pageData: AeoPageData = {
     "AgencyZoom",
   ],
   relatedLinks: [
-    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "Custom CRM development", href: "/services/crm-systems" },
     { label: "Custom CRM for small business in Kansas", href: "/services/custom-crm-small-business-kansas" },
     { label: "Insurance & financial services", href: "/industries/insurance-financial" },
     { label: "Alliant Insurance MGU case study", href: "/case-studies/alliant-mgu-insurance" },

@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-02-04",
   dateModified: "2026-05-15",
-  metaTitle: "Why Most Small Business Websites Don't Convert",
+  metaTitle: "Why Small Business Sites Don't Convert",
   metaDescription:
     "Vague CTAs, slow load, no NAP, no proof, unclear offer. The five fixes that move conversion before spending a dollar on ads.",
   eyebrow: "Blog · Web Strategy",

@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Kansas City Metro",
   coordinates: { lat: 38.884, lng: -94.820 },
 
-  metaTitle: "Custom Software Development in Olathe, KS | Preisser Solutions",
+  metaTitle: "Olathe, KS Custom Software Development",
   metaDescription:
     "Custom software, AI automation, and web applications for Olathe, Kansas — built by a Kansas-based firm for the Johnson County manufacturing and healthcare market.",
 

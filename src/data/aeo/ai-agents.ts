@@ -4,7 +4,7 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "ai-agents",
   tier: "service_detail",
-  metaTitle: "Custom AI Agent Development in Kansas | Preisser Solutions",
+  metaTitle: "Custom AI Agent Development in Kansas",
   metaDescription:
     "Custom AI agents built by Preisser Solutions in Hays, Kansas. AI for customer service, research, document processing, decision support — trained on your business.",
   eyebrow: "AI Agent Development",
@@ -124,7 +124,7 @@ export const pageData: AeoPageData = {
     { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
     { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
     { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "What is AI automation for small businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

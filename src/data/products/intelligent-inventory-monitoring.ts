@@ -2,9 +2,9 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "intelligent-inventory-monitoring",
-  metaTitle: "Intelligent Inventory Monitoring | Preisser Solutions",
+  metaTitle: "Intelligent Inventory Monitoring",
   metaDescription:
-    "Watches inventory across sites, detects discrepancies, tracks transfers with full audit trail, and produces monthly reports automatically — 95% back-office time reduction.",
+    "Watches inventory across sites, flags discrepancies, tracks transfers with a full audit trail, and produces monthly reports on its own, unattended.",
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
 

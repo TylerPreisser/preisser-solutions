@@ -57,7 +57,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 38.879, lng: -99.327 },
 
-  metaTitle: "Healthcare Software & Websites in Hays, KS | Preisser Solutions",
+  metaTitle: "Healthcare Software in Hays, KS",
   metaDescription:
     "Custom healthcare software, patient portals, and workflow automation for providers in Hays, Kansas — built by a local firm.",
 

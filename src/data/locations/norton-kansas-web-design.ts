@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 39.836, lng: -99.893 },
 
-  metaTitle: "Web Design & Custom Software in Norton, KS | Preisser Solutions",
+  metaTitle: "Norton, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Norton, Kansas — built by a Hays-based firm serving the US-36 north corridor.",
 

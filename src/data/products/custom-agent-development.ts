@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "custom-agent-development",
-  metaTitle: "Custom Agent Development | Preisser Solutions",
+  metaTitle: "Custom Agent Development",
   metaDescription:
     "Have a problem we haven't packaged? We design, build, and ship custom agents from scratch — same engineering bar as the catalog, scoped to your business.",
   datePublished: "2026-05-21",

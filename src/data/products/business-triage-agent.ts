@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "business-triage-agent",
-  metaTitle: "Business Triage Agent | Preisser Solutions",
+  metaTitle: "Business Triage Agent",
   metaDescription:
     "Ingests website forms, Google reviews, SMS, phone calls, and email — classifies each by urgency, routes urgent items to on-call staff in real time, queues the rest.",
   datePublished: "2026-05-21",

@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Eastern Kansas",
   coordinates: { lat: 38.616, lng: -95.269 },
 
-  metaTitle: "Web Design & Custom Software in Ottawa, KS | Preisser Solutions",
+  metaTitle: "Ottawa, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Ottawa, Kansas businesses — fixed-price proposals from a Kansas-based development firm.",
 

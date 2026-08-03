@@ -12,7 +12,7 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "faq",
   tier: "trust_faq",
-  metaTitle: "FAQ | Preisser Solutions — Hays, Kansas Custom Software",
+  metaTitle: "FAQ: Custom Software in Hays, Kansas",
   metaDescription:
     "Answers to common questions about Preisser Solutions — services, pricing, timelines, locations, technologies, founder, and engagement process.",
   eyebrow: "Frequently Asked Questions",

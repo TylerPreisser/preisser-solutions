@@ -1,10 +1,18 @@
 #!/usr/bin/env node
 
-import { readdir, stat, writeFile } from "node:fs/promises";
+import { readdir, readFile, stat, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import fs from "node:fs";
 import path from "node:path";
 
 const OUT_DIR = path.resolve("out");
 const SITE_ORIGIN = "https://preissersolutions.com";
+const PUBLIC_DIR = path.resolve("public");
+const SCRIPTS_DIR = path.resolve("scripts");
+const REDIRECTS_FILE = path.join(PUBLIC_DIR, "_redirects");
+// Per-URL content fingerprints + the date each URL's content last changed.
+// Committed to the repo so <lastmod> survives CI rebuilds. See buildLastmod().
+const LASTMOD_MANIFEST = path.join(SCRIPTS_DIR, "sitemap-lastmod.json");
 const TODAY = new Date().toISOString().slice(0, 10);
 
 const EXCLUDED_HTML = new Set([
@@ -101,6 +109,87 @@ const EXCLUDED_PREFIXES = [
 // Exact-match agents index route + custom-websites aliases — listed as prefixes
 // excluded above can't match the bare slug, so add them here.
 EXCLUDED_PATHS.add("/agents");
+
+// ---------------------------------------------------------------------------
+// Derive the exclusion set from public/_redirects (2026-08-03)
+//
+// EXCLUDED_PATHS above was hand-maintained and its comment said it "must mirror
+// public/_redirects". A hand-mirrored list drifts: the moment someone adds a
+// 301 without remembering to add the twin entry here, that URL goes back into
+// sitemap.xml and Google files it as "Page with redirect".
+//
+// So we now READ _redirects and treat every redirect source as excluded. The
+// literal set above is kept as a superset for anything excluded for a reason
+// OTHER than a redirect, and because it documents intent — but it is no longer
+// load-bearing, and drift is structurally impossible rather than merely
+// discouraged. Any redirect source that 301s is never emitted, by construction.
+// ---------------------------------------------------------------------------
+function parseRedirects(text) {
+  const exact = new Set();
+  const prefixes = [];
+  for (const raw of text.split("\n")) {
+    const line = raw.trim();
+    if (!line || line.startsWith("#")) continue;
+    const [from] = line.split(/\s+/);
+    if (!from || !from.startsWith("/")) continue;
+    if (from.includes("*")) {
+      const prefix = from.slice(0, from.indexOf("*"));
+      if (prefix.length > 1) prefixes.push(prefix);
+      continue;
+    }
+    // "/foo/" and "/foo" address the same page here — normalize to the bare form.
+    exact.add(from.length > 1 && from.endsWith("/") ? from.slice(0, -1) : from);
+  }
+  return { exact, prefixes };
+}
+
+const redirects = parseRedirects(await readFile(REDIRECTS_FILE, "utf8"));
+for (const p of redirects.exact) EXCLUDED_PATHS.add(p);
+for (const p of redirects.prefixes) {
+  if (!EXCLUDED_PREFIXES.includes(p)) EXCLUDED_PREFIXES.push(p);
+}
+
+// ---------------------------------------------------------------------------
+// <lastmod> that reflects reality
+//
+// Every URL used to be stamped with today's date on every build. That is a
+// freshness claim we cannot support: it tells Google 232 pages changed tonight
+// when three did, and a source that cries wolf gets its lastmod ignored.
+//
+// Instead we fingerprint each page's *meaningful* content and only move
+// lastmod when the fingerprint actually moves. Normalization strips the parts
+// of the document that churn on every build regardless of content — the Next.js
+// hydration payload and the fingerprinted asset URLs — so an untouched page
+// keeps its date across rebuilds.
+// ---------------------------------------------------------------------------
+function contentFingerprint(html) {
+  const normalized = html
+    // Next.js stamps the build ID into an HTML comment on every page
+    // (<!--AKOq7ZRVKQNLq_4DV3cS_-->) and React emits <!--$--> suspense markers.
+    // The build ID is different on every single build, so without this every
+    // page would look "changed" every time and lastmod would be worthless.
+    // Verified: with comments stripped, an untouched page (/terms, /privacy)
+    // normalizes byte-identically across two consecutive builds.
+    .replace(/<!--[\s\S]*?-->/g, "")
+    // Drop every <script> except JSON-LD: the __next_f hydration payload and
+    // the chunk <script src> list change whenever ANY page's JS changes.
+    .replace(/<script(?![^>]*application\/ld\+json)[^>]*>[\s\S]*?<\/script>/gi, "")
+    // Drop preload/stylesheet links to build-fingerprinted assets.
+    .replace(/<link[^>]+\/_next\/static\/[^>]*>/gi, "")
+    // Drop any remaining fingerprinted asset path.
+    .replace(/\/_next\/static\/[^"')\s]+/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return createHash("sha256").update(normalized).digest("hex").slice(0, 16);
+}
+
+function loadManifest() {
+  try {
+    return JSON.parse(fs.readFileSync(LASTMOD_MANIFEST, "utf8"));
+  } catch {
+    return {};
+  }
+}
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -211,9 +300,13 @@ function changefreqFor(urlPath) {
 }
 
 const htmlFiles = await walk(OUT_DIR);
-const urls = htmlFiles
-  .map(htmlPathToUrl)
-  .filter(Boolean)
+const fileByUrl = new Map();
+for (const file of htmlFiles) {
+  const urlPath = htmlPathToUrl(file);
+  if (urlPath) fileByUrl.set(urlPath, file);
+}
+
+const urls = [...fileByUrl.keys()]
   .filter((urlPath) => !EXCLUDED_PATHS.has(urlPath))
   .filter((urlPath) => !EXCLUDED_PREFIXES.some((prefix) => urlPath.startsWith(prefix)))
   .sort((a, b) => {
@@ -221,6 +314,31 @@ const urls = htmlFiles
     if (b === "/") return 1;
     return a.localeCompare(b);
   });
+
+// Resolve <lastmod> per URL against the committed fingerprint manifest.
+const previous = loadManifest();
+const manifest = {};
+let changed = 0;
+let seeded = 0;
+const lastmodFor = new Map();
+
+for (const urlPath of urls) {
+  const hash = contentFingerprint(await readFile(fileByUrl.get(urlPath), "utf8"));
+  const prior = previous[urlPath];
+  let lastmod;
+  if (!prior) {
+    // First time we have ever recorded this URL: today is the honest answer.
+    lastmod = TODAY;
+    seeded += 1;
+  } else if (prior.hash === hash) {
+    lastmod = prior.lastmod; // content is genuinely unchanged — keep the date
+  } else {
+    lastmod = TODAY;
+    changed += 1;
+  }
+  manifest[urlPath] = { hash, lastmod };
+  lastmodFor.set(urlPath, lastmod);
+}
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -230,7 +348,7 @@ ${urls
     const changefreq = changefreqFor(urlPath);
     return `  <url>
     <loc>${escapeXml(`${SITE_ORIGIN}${urlPath}`)}</loc>
-    <lastmod>${TODAY}</lastmod>
+    <lastmod>${lastmodFor.get(urlPath)}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
   </url>`;
@@ -239,6 +357,21 @@ ${urls
 </urlset>
 `;
 
+await writeFile(LASTMOD_MANIFEST, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+
 await stat(OUT_DIR);
 await writeFile(path.join(OUT_DIR, "sitemap.xml"), xml, "utf8");
 console.log(`[generate-sitemap] Wrote ${urls.length} URLs to out/sitemap.xml.`);
+console.log(
+  `[generate-sitemap] lastmod: ${changed} changed, ${seeded} newly tracked, ` +
+    `${urls.length - changed - seeded} unchanged (date preserved).`,
+);
+
+// A page that exists, is indexable, and is not redirected but never reaches
+// sitemap.xml is invisible to Search Console. Say so loudly rather than
+// silently emitting a short sitemap.
+const omitted = [...fileByUrl.keys()].filter((u) => !urls.includes(u));
+if (omitted.length) {
+  console.log(`[generate-sitemap] ${omitted.length} built page(s) intentionally omitted:`);
+  for (const u of omitted) console.log(`[generate-sitemap]   - ${u}`);
+}

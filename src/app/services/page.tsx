@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     canonical: "https://preissersolutions.com/services",
   },
   openGraph: {
-    title: "All Services | Preisser Solutions",
+    title: "All Services",
     description:
       "Every service Preisser Solutions builds for Kansas businesses — websites, AI automation, local SEO, AI search optimization, CRM, dashboards, integrations, and more.",
     url: "https://preissersolutions.com/services",
@@ -153,7 +153,10 @@ const groups: ServiceGroup[] = [
     items: [
       {
         title: "Custom CRM",
-        href: "/services/custom-crm",
+        // `/services/custom-crm` never existed as a route — the built page is
+        // `/services/crm-systems`. It was a dead link on the page AND a 404
+        // URL inside this page's ItemList JSON-LD.
+        href: "/services/crm-systems",
         description:
           "Custom CRM systems built for how your team actually works — not how HubSpot says they should.",
       },

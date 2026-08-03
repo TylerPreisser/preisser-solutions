@@ -10,7 +10,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-05-16",
   dateModified: "2026-05-16",
-  metaTitle: "How to Get More Local Customers from Google",
+  metaTitle: "Get More Local Customers from Google",
   metaDescription:
     "A practical local SEO plan for small businesses that want more calls, map visibility, reviews, and qualified leads from Google.",
   eyebrow: "Insights · Local",

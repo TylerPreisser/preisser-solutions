@@ -34,18 +34,37 @@ export const WEBSITE_ID = `${URL}/#website`;
 export const PERSON_ID = `${URL}/#tyler-preisser`;
 export const PERSON_PAGE_ID = `${URL}/about#tyler-preisser`;
 
+/**
+ * Company-owned profiles. Every entry traces to `src/data/site-config.ts` —
+ * nothing here is hand-typed, so a handle change is a one-file edit.
+ *
+ * Shared by the Organization AND LocalBusiness nodes: they describe the same
+ * real-world business, and `sameAs` is how an engine reconciles the two.
+ */
+const ORG_SAME_AS = [
+  seoSite.social.linkedin,
+  seoSite.social.facebook,
+  seoSite.social.twitter,
+  seoSite.social.github,
+  seoSite.social.crunchbase,
+  seoSite.social.tylerPreisser,
+];
+
+/**
+ * Compact service area for Services nested inside an Offer. The full 15-city
+ * list lives on the LocalBusiness/Organization node; repeating it inside every
+ * nested Offer would multiply the payload on all 234 pages for no added signal.
+ */
+const OFFER_AREA_SERVED = [
+  { "@type": "State", name: "Kansas" },
+  { "@type": "City", name: "Hays, Kansas" },
+];
+
 // ---------------------------------------------------------------------------
 // Organization (also typed as ProfessionalService)
 // ---------------------------------------------------------------------------
 export function organizationSchema() {
-  const sameAs = [
-    seoSite.social.linkedin,
-    seoSite.social.facebook,
-    seoSite.social.twitter,
-    seoSite.social.github,
-    seoSite.social.crunchbase,
-    seoSite.social.tylerPreisser,
-  ];
+  const sameAs = ORG_SAME_AS;
 
   return {
     "@context": "https://schema.org",
@@ -63,7 +82,7 @@ export function organizationSchema() {
       width: 1024,
       height: 1024,
       caption:
-        "Preisser Solutions logo — custom software, web apps, and AI automation in Hays, Kansas",
+        "Preisser Solutions logo — custom business software, business automation, and AI integration in Hays, Kansas",
       name: "Preisser Solutions Logo",
     },
     image: `${URL}/images/ps-logo.png`,
@@ -107,33 +126,29 @@ export function organizationSchema() {
       },
     ],
     sameAs,
+    // Topical expertise, deduplicated and aligned to the three pillars
+    // (Business Software / Business Automation / AI Integration). The prior
+    // list carried four near-identical "dashboard" entries plus retired
+    // marketing-era topics (missed-call automation, no-code alternatives),
+    // which reads as keyword stuffing rather than a knowledge signal.
     knowsAbout: [
-      "Business Software",
-      "Admin Dashboards",
-      "Customer and Member Databases",
-      "AI strategy",
-      "AI-native web development",
-      "AI Integration",
-      "Document Extraction and Classification",
-      "Document Processing Pipelines",
-      "Retrieval-augmented generation",
+      "Custom business software",
+      "Admin dashboards",
+      "Customer and member databases",
+      "Client portals and internal tools",
+      "Business process automation",
       "Workflow automation",
-      "Dashboards",
-      "Business intelligence",
-      "Custom CRM",
-      "Missed-call automation",
-      "Custom Software Development",
-      "Custom Web Development",
-      "Business Process Automation",
-      "Web Application Development",
-      "Real-Time Business Dashboards",
-      "Dashboard and Analytics Systems",
-      "E-commerce Development",
-      "Small Business Software Solutions",
-      "Digital Transformation for Kansas Businesses",
-      "B2B Technology Consulting",
-      "API Integration and Systems Architecture",
-      "No-Code and Low-Code Alternatives",
+      "Document processing pipelines",
+      "Document extraction and classification",
+      "AI integration",
+      "Human-in-the-loop AI review workflows",
+      "AI-native web development",
+      "Custom CRM systems",
+      "Web application development",
+      "API integration and systems architecture",
+      "Business intelligence and reporting dashboards",
+      "Software for Kansas small and mid-sized businesses",
+      "B2B technology consulting",
     ],
     potentialAction: [
       {
@@ -177,6 +192,8 @@ export function localBusinessSchema() {
     url: seoSite.url,
     email: seoSite.email,
     description: seoSite.shortDescription,
+    slogan: "Business Software. Business Automation. AI Integration.",
+    founder: { "@id": PERSON_ID },
     address: {
       "@type": "PostalAddress",
       streetAddress: seoSite.city,
@@ -202,15 +219,24 @@ export function localBusinessSchema() {
       { "@type": "State", name: "Kansas" },
       ...seoSite.areaServed.map((name) => ({ "@type": "City", name })),
     ],
+    // `provider` + `areaServed` only. A `serviceType` identical to `name`
+    // carries no information, and `availability: InStock` is inventory
+    // vocabulary that means nothing for consulting work — both would just add
+    // bytes to a JSON-LD payload that already runs ~20 KB per page.
     makesOffer: seoSite.services.map((name) => ({
       "@type": "Offer",
       itemOffered: {
         "@type": "Service",
         name,
         provider: { "@id": LOCAL_BIZ_ID },
+        areaServed: OFFER_AREA_SERVED,
       },
     })),
-    sameAs: { "@id": ORG_ID },
+    // `sameAs` takes URLs, never a node reference — the previous
+    // `{ "@id": ORG_ID }` was invalid and gave engines nothing to resolve.
+    // The Organization and LocalBusiness nodes describe one business, so they
+    // carry the identical profile list; that is what reconciles them.
+    sameAs: ORG_SAME_AS,
   };
 }
 
@@ -251,9 +277,9 @@ export function personSchema() {
     familyName: "Preisser",
     jobTitle: "Founder and Owner of Preisser Solutions",
     description:
-      "Tyler Preisser is the founder of Preisser Solutions. Hays, Kansas native, 2025 Fort Hays State University graduate (Engineering Design and Technology), and AI/automation builder for Kansas small and mid-sized businesses.",
+      "Tyler Preisser is the founder of Preisser Solutions. Hays, Kansas native, 2025 Fort Hays State University graduate (Engineering Design and Technology), and the builder behind the custom business software, automation, and AI integrations Preisser Solutions ships for Kansas small and mid-sized businesses.",
     disambiguatingDescription:
-      "This Tyler Preisser is the founder of Preisser Solutions (preissersolutions.com), a custom software and AI consultancy in Hays, Kansas. He is the same Tyler Preisser featured in Hays Post articles about FHSU's Sky Sprayers, Hansen Hall, and other FHSU coverage. He is not affiliated with other individuals named Tyler Preisser unrelated to the Preisser Solutions custom software business.",
+      "This Tyler Preisser is the founder of Preisser Solutions (preissersolutions.com), a custom business software, automation, and AI integration consultancy in Hays, Kansas. He is the same Tyler Preisser featured in Hays Post articles about FHSU's Sky Sprayers, Hansen Hall, and other FHSU coverage. He is not affiliated with other individuals named Tyler Preisser unrelated to the Preisser Solutions custom software business.",
     worksFor: { "@id": ORG_ID },
     url: `${URL}/about`,
     email: seoSite.email,
@@ -282,25 +308,27 @@ export function personSchema() {
       height: 1200,
       caption: "Tyler Preisser, founder of Preisser Solutions",
     },
+    // Personal profiles only, and every entry traces to `site-config.ts`.
+    // A hardcoded `https://github.com/tylerpreisser` used to sit here; it is
+    // not in site-config and could not be verified, so it is gone — an
+    // unresolvable `sameAs` weakens the whole array.
     sameAs: [
       `${URL}/tyler-preisser`,
       seoSite.social.linkedinPersonal,
-      "https://github.com/tylerpreisser",
       seoSite.social.tylerPreisser,
     ],
     knowsAbout: [
-      "Custom Software Development",
-      "Business Software",
-      "Admin Dashboards",
-      "Business Automation",
-      "Workflow Automation",
-      "Document Processing",
-      "AI Integration",
-      "Web Application Architecture",
-      "Product Management",
-      "Small Business Operations",
-      "Kansas Business Ecosystem",
-      "Engineering Design and Technology",
+      "Custom business software",
+      "Admin dashboards",
+      "Customer and member databases",
+      "Business automation",
+      "Workflow automation",
+      "Document processing pipelines",
+      "AI integration",
+      "Web application architecture",
+      "Small business operations",
+      "Kansas business ecosystem",
+      "Engineering design and technology",
     ],
   };
 }

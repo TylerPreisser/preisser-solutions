@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/ai-invoicing",
   tier: "service_detail",
-  metaTitle: "AI Invoicing for Kansas Businesses | Preisser Solutions",
+  metaTitle: "AI Invoicing for Kansas Businesses",
   metaDescription:
     "Preisser Solutions builds AI-powered invoice extraction and structuring systems. The HG Oil Holdings build delivered 75% reduction in manual invoice handling.",
   eyebrow: "AI Invoicing Automation",
@@ -122,8 +122,8 @@ export const pageData: AeoPageData = {
     { label: "Business automation systems", href: "/business-automation" },
     { label: "API integration service", href: "/services/api-integration" },
     { label: "AI invoice processing", href: "/use-cases/ai-invoice-processing-small-business" },
-    { label: "Automate invoice processing", href: "/use-cases/automate-invoice-processing-small-business" },
-    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Automate invoice processing", href: "/use-cases/ai-invoice-processing-small-business" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-inventory-system" },
     { label: "AI vs traditional workflow automation", href: "/blog/ai-vs-traditional-workflow-automation" },
     { label: "Oil & gas industry", href: "/industries/oil-gas" },
     { label: "Contact Preisser Solutions", href: "/contact" },

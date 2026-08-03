@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Border Markets",
   coordinates: { lat: 40.813, lng: -96.703 },
 
-  metaTitle: "Web Design & Custom Software in Lincoln, NE | Preisser Solutions",
+  metaTitle: "Lincoln, NE Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Lincoln, Nebraska businesses — Kansas-based firm delivering remotely to Lincoln's university and ag markets.",
 

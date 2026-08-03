@@ -1,7 +1,15 @@
+# Preisser Solutions — https://preissersolutions.com/
+#
+# Business Software. Business Automation. AI Integration.
+# Custom internal software — admin dashboards, customer and member databases,
+# document pipelines, and the automations between them — built for one specific
+# business. Founder-led from Hays, Kansas. Full machine-readable context:
+#   https://preissersolutions.com/llms.txt
+#   https://preissersolutions.com/llms-full.txt
+#
 # Preisser Solutions intentionally maintains a fully-permissive AI bot policy.
 # See docs/decisions.md or .context/CHANGELOG.md for the 2026-05-11 directive.
-# Preisser Solutions — Maximum permissive crawler policy
-# Updated 2026-05-11: zero restrictions, every path, every agent.
+# Updated 2026-08-03: repositioning + refreshed AI crawler allowlist.
 # AI training is welcome. Search indexing is welcome. AI input (RAG, summarization,
 # answer-engine retrieval) is welcome. No restrictions. All bots welcome.
 
@@ -24,8 +32,17 @@ Allow: /
 User-agent: ChatGPT-User
 Allow: /
 
+User-agent: ChatGPT-Agent
+Allow: /
+
 # Anthropic
 User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
 Allow: /
 
 User-agent: Claude-Web
@@ -54,12 +71,18 @@ Allow: /
 User-agent: GoogleOther
 Allow: /
 
+User-agent: Google-CloudVertexBot
+Allow: /
+
 # Common Crawl (powers many LLM training sets + Bing/Brave search)
 User-agent: CCBot
 Allow: /
 
 # ByteDance / TikTok / Doubao
 User-agent: Bytespider
+Allow: /
+
+User-agent: TikTokSpider
 Allow: /
 
 # Amazon
@@ -101,11 +124,14 @@ Allow: /
 User-agent: DuckDuckBot
 Allow: /
 
-# Microsoft / Bing
+# Microsoft / Bing / Copilot
 User-agent: bingbot
 Allow: /
 
 User-agent: MSNBot
+Allow: /
+
+User-agent: MicrosoftPreview
 Allow: /
 
 # omgili / Webz.io (news aggregation, often LLM-bound)
@@ -113,6 +139,9 @@ User-agent: omgilibot
 Allow: /
 
 User-agent: omgili
+Allow: /
+
+User-agent: Webzio-Extended
 Allow: /
 
 # You.com
@@ -153,6 +182,10 @@ Allow: /
 User-agent: Kagibot
 Allow: /
 
+# Timpi (decentralized search)
+User-agent: Timpibot
+Allow: /
+
 # Petalbot (Huawei Aspiegel)
 User-agent: PetalBot
 Allow: /
@@ -182,7 +215,9 @@ Sitemap: https://preissersolutions.com/sitemap.xml
 #   https://preissersolutions.com/llms-full.txt
 #   https://preissersolutions.com/ai.txt
 #   https://preissersolutions.com/openapi.json
+#   https://preissersolutions.com/docs/agent-api.md
 #   https://preissersolutions.com/.well-known/agent-card.json
 #   https://preissersolutions.com/.well-known/mcp/server-card.json
+#   https://preissersolutions.com/.well-known/agent-skills/index.json
 #   https://preissersolutions.com/.well-known/api-catalog
 #   https://preissersolutions.com/feed.xml

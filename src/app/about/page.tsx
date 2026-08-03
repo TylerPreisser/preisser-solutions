@@ -4,7 +4,12 @@ import Image from "next/image";
 import { siteConfig } from "@/data/site-config";
 import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { faqSchema } from "@/lib/seo/schema";
+import {
+  faqSchema,
+  ORG_ID,
+  PERSON_ID,
+  WEBSITE_ID,
+} from "@/lib/seo/schema";
 import { InternalLinkBlock } from "@/components/seo/InternalLinkBlock";
 
 // R-section-6 additions — 4 About-page FAQs, also emitted as FAQPage JSON-LD.
@@ -39,7 +44,7 @@ export const metadata: Metadata = {
     canonical: "https://preissersolutions.com/about",
   },
   openGraph: {
-    title: "About Tyler Preisser | Preisser Solutions",
+    title: "About Tyler Preisser",
     description:
       "Tyler Preisser is founder of Preisser Solutions. Hays, Kansas native, FHSU Engineering 2025, builder of AI systems for Kansas businesses.",
     url: "https://preissersolutions.com/about",
@@ -49,6 +54,36 @@ export const metadata: Metadata = {
 const breadcrumbSchema = buildBreadcrumbs([
   { name: "About", url: "https://preissersolutions.com/about" },
 ]);
+
+// This page had no node describing itself — only a breadcrumb and an FAQPage.
+// Without one, the long-form founder bio below is unattached prose as far as
+// the entity graph is concerned. `mainEntity` is what tells an engine that
+// /about IS the profile surface for the Tyler Preisser entity that the root
+// layout defines, which is the link a knowledge panel is built from.
+const aboutPageSchema = {
+  "@context": "https://schema.org",
+  "@type": ["AboutPage", "ProfilePage"],
+  "@id": "https://preissersolutions.com/about#webpage",
+  url: "https://preissersolutions.com/about",
+  name: "About Tyler Preisser",
+  description:
+    "Tyler Preisser is founder of Preisser Solutions. Hays, Kansas native, FHSU Engineering 2025, builder of AI systems for Kansas businesses.",
+  mainEntity: { "@id": PERSON_ID },
+  about: { "@id": ORG_ID },
+  isPartOf: { "@id": WEBSITE_ID },
+  publisher: { "@id": ORG_ID },
+  primaryImageOfPage: {
+    "@type": "ImageObject",
+    url: `https://preissersolutions.com${siteConfig.founder.headshot.src}`,
+    width: siteConfig.founder.headshot.width,
+    height: siteConfig.founder.headshot.height,
+    caption: siteConfig.founder.headshot.alt,
+  },
+  // No inline `breadcrumb` — the standalone BreadcrumbList block below already
+  // covers this page, and nesting a second copy here would emit the same trail
+  // twice.
+  inLanguage: "en-US",
+};
 
 export default function AboutPage() {
   const { founder } = siteConfig;
@@ -60,6 +95,7 @@ export default function AboutPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      <JsonLd data={aboutPageSchema} />
       <JsonLd data={faqSchema(aboutFaqs)} />
       <div className="ps-page-wrapper">
         {/* Page hero */}

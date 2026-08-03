@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Southeast Kansas",
   coordinates: { lat: 37.340, lng: -95.261 },
 
-  metaTitle: "Web Design & Custom Software in Parsons, KS | Preisser Solutions",
+  metaTitle: "Parsons, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Parsons, Kansas businesses — fixed-price proposals from a Kansas-based development firm.",
 

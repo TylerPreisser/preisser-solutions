@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 39.352, lng: -101.711 },
 
-  metaTitle: "Web Design & Custom Software in Goodland, KS | Preisser Solutions",
+  metaTitle: "Goodland, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Goodland, Kansas — built by a Hays-based firm serving the I-70 western terminus.",
 

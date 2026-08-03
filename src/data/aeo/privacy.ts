@@ -14,7 +14,7 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "privacy",
   tier: "trust_faq",
-  metaTitle: "Privacy Policy | Preisser Solutions",
+  metaTitle: "Privacy Policy",
   metaDescription:
     "How Preisser Solutions collects, uses, retains, and protects information from visitors and clients. Contact-form data only. No third-party sale. Hays, Kansas-based.",
   eyebrow: "Legal",

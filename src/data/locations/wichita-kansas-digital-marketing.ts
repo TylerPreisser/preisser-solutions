@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "South-Central Kansas",
   coordinates: { lat: 37.692, lng: -97.330 },
 
-  metaTitle: "Digital Marketing Services in Wichita, KS | Preisser Solutions",
+  metaTitle: "Digital Marketing in Wichita, KS",
   metaDescription:
     "Digital marketing built on custom code for Wichita, Kansas businesses — local SEO, AI automation, and web infrastructure done right.",
 

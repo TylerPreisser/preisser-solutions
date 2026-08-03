@@ -97,8 +97,20 @@
 /faq.html /faq 301
 
 # Domain-root redirects
-/index.html / 301
+# (/index.html is already declared in the legacy .html block above — a second
+# identical rule here was dead weight against the Pages static-rule budget.)
 /home / 301
+
+# Hub paths that are linked from /site-map but have no page (2026-08-03).
+# They were serving 404s to every crawler that followed those links. The pages
+# under /industries/* and /use-cases/* are real; only the bare index is absent,
+# and /services is the closest equivalent — the same target the deleted
+# /industries/* pages already redirect to. If a real hub page is ever built at
+# either path, DELETE the matching rule here or it will shadow the new page.
+/industries /services 301
+/industries/ /services 301
+/use-cases /services 301
+/use-cases/ /services 301
 
 # Brand-defense page lives at /preisser-solutions (renamed 2026-05-15 from /preisser-technology).
 # 301 the now-legacy /preisser-technology slug to the new canonical.

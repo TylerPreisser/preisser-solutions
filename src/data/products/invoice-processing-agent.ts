@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "invoice-processing-agent",
-  metaTitle: "AI Invoice Processing Agent | Preisser Solutions",
+  metaTitle: "AI Invoice Processing Agent",
   metaDescription:
     "AI document processor that extracts vendor, line items, and GL codes from any invoice format and auto-routes for approval — 75% reduction in manual handling time.",
   datePublished: "2026-05-21",

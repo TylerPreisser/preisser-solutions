@@ -10,7 +10,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "use-cases/after-hours-ai-receptionist-small-business",
   tier: "service_detail",
-  metaTitle: "After-Hours AI Call Triage for Small Businesses",
+  metaTitle: "After-Hours AI Call Triage for SMBs",
   metaDescription:
     "Preisser Solutions builds after-hours call triage systems that catch every inquiry, assess urgency, route critical calls, and log everything to your CRM by morning.",
   eyebrow: "After-Hours AI Call Triage",
@@ -139,7 +139,7 @@ export const pageData: AeoPageData = {
     { label: "AI customer service systems", href: "/services/ai-customer-service" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
     { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Stop losing leads after 5pm",

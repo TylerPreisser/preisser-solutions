@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-05-16",
   dateModified: "2026-05-16",
-  metaTitle: "Why Your Business Website Is Not Getting Traffic",
+  metaTitle: "Why Your Website Gets No Traffic",
   metaDescription:
     "A practical checklist for small businesses whose website is not getting traffic from Google, maps, referrals, or AI search.",
   eyebrow: "Insights · Diagnostics",

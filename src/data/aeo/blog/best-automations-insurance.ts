@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-03-21",
   dateModified: "2026-05-15",
-  metaTitle: "Best Automations for Independent Insurance Agencies",
+  metaTitle: "Best Automations for Insurance Agencies",
   metaDescription:
     "Quote workflow, renewal follow-up, claims status, and lead nurture — what worked in the Western Kansas insurance CRM build.",
   eyebrow: "Blog · Industry Playbooks",
@@ -126,7 +126,7 @@ export const pageData: AeoPageData = {
     "Salesforce",
   ],
   relatedLinks: [
-    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "Custom CRM development", href: "/services/crm-systems" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "AI customer service systems", href: "/services/ai-customer-service" },
     { label: "Insurance & financial services", href: "/industries/insurance-financial" },

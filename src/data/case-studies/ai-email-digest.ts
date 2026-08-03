@@ -5,7 +5,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "ai-email-digest",
-  metaTitle: "AI Email Digest System | Preisser Solutions",
+  metaTitle: "AI Email Digest System",
   metaDescription:
     "One briefing every morning. Every important email from the last 24 hours — summarized, prioritized, and ready for decisions. Operational internally.",
   datePublished: "2026-01-08",

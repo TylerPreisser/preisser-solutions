@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 39.367, lng: -99.837 },
 
-  metaTitle: "Web Design & Custom Software in Hill City, KS | Preisser Solutions",
+  metaTitle: "Hill City, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Hill City, Kansas — built by a Hays-based firm 55 miles northwest.",
 

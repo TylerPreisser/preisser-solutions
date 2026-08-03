@@ -10,7 +10,7 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "products",
   tier: "trust_faq",
-  metaTitle: "Products | AI Receptionist & Website Launch | Preisser Solutions",
+  metaTitle: "Products: AI Receptionist & Websites",
   metaDescription:
     "Preisser Solutions's two productized SKUs: the AI Receptionist Starter and the AI-Native Website Launch. Currently configurable — contact for pricing.",
   eyebrow: "Products",

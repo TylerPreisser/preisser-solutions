@@ -11,7 +11,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "industries/manufacturing",
   tier: "industry",
-  metaTitle: "Custom Software for Kansas Manufacturers | Preisser Solutions",
+  metaTitle: "Kansas Manufacturing Software",
   metaDescription:
     "Preisser Solutions builds OEE dashboards, shop-floor data systems, custom inventory, and ERP integrations for Kansas manufacturers in food processing, ag, and machining.",
   eyebrow: "Custom Software for Manufacturers in Kansas",
@@ -198,8 +198,8 @@ export const pageData: AeoPageData = {
     { label: "Trucking & logistics", href: "/industries/trucking-logistics" },
     { label: "Business automation systems", href: "/business-automation" },
     { label: "Automate data entry", href: "/use-cases/automate-data-entry-small-business" },
-    { label: "Automate invoice processing", href: "/use-cases/automate-invoice-processing-small-business" },
-    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Automate invoice processing", href: "/use-cases/ai-invoice-processing-small-business" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-inventory-system" },
     { label: "Best automations for trucking & logistics", href: "/blog/best-automations-trucking" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

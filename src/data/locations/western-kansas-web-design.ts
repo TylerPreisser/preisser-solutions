@@ -16,7 +16,7 @@ export const locationData: LocationPageData = {
   state: "Kansas",
   region: "Western Kansas",
 
-  metaTitle: "Web Design Across Western Kansas | Preisser Solutions",
+  metaTitle: "Web Design Across Western Kansas",
   metaDescription:
     "Custom websites, web apps, and AI automation for western Kansas businesses — based in Hays, KS.",
 

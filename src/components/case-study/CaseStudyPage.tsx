@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { JsonLd } from "@/components/seo/JsonLd";
 import type { CaseStudyData } from "@/types/case-study";
+import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 
 /**
  * Case study detail renderer.
@@ -270,7 +271,7 @@ function Hero({ data }: { data: CaseStudyData }) {
 
       <div className="ps-container relative pt-40 pb-24 sm:pt-48 sm:pb-32 lg:pt-56 lg:pb-36">
         <motion.div
-          initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
@@ -988,10 +989,19 @@ function CtaSection({ data }: { data: CaseStudyData }) {
 // ── Top-level ────────────────────────────────────────────────
 export function CaseStudyPage({ data }: { data: CaseStudyData }) {
   const schema = buildSchema(data);
+  // Case-study detail pages were the last class on the site without a
+  // breadcrumb trail. buildBreadcrumbs prepends Home at position 1.
+  const breadcrumbSchema = buildBreadcrumbs([
+    { name: "Case Studies", url: "https://preissersolutions.com/case-studies" },
+    {
+      name: data.clientNameDisplay || data.h1,
+      url: `https://preissersolutions.com/case-studies/${data.slug}`,
+    },
+  ]);
 
   return (
     <article>
-      <JsonLd data={schema} />
+      <JsonLd data={[schema, breadcrumbSchema]} />
       <Hero data={data} />
       <MetricsRow data={data} />
       <BeforeSection data={data} />

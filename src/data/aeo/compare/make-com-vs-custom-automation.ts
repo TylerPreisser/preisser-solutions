@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/make-com-vs-custom-automation",
   tier: "comparison",
-  metaTitle: "Make.com (Integromat) vs Custom Automation | Preisser Solutions",
+  metaTitle: "Make.com vs Custom Automation",
   metaDescription:
     "Honest comparison: Make.com no-code automation vs custom automation by Preisser Solutions. When per-operation fees and visual scenarios stop scaling.",
   eyebrow: "Comparison",
@@ -131,7 +131,7 @@ export const pageData: AeoPageData = {
     { label: "Business automation systems", href: "/business-automation" },
     { label: "API integration service", href: "/services/api-integration" },
     { label: "Zapier vs custom automation for small business", href: "/compare/zapier-vs-custom-automation-small-business" },
-    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-inventory-system" },
     { label: "AI vs traditional workflow automation", href: "/blog/ai-vs-traditional-workflow-automation" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

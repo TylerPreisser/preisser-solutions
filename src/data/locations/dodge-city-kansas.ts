@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Southwest Kansas",
   coordinates: { lat: 37.752, lng: -100.018 },
 
-  metaTitle: "Custom Software in Dodge City, Kansas | Preisser Solutions",
+  metaTitle: "Custom Software in Dodge City, Kansas",
   metaDescription:
     "Custom software, AI automation, and custom websites for Dodge City, Kansas businesses — based in Hays, KS, delivered statewide.",
 

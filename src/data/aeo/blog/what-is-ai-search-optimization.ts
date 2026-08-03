@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-05-15",
   dateModified: "2026-05-15",
-  metaTitle: "What Is AI Search Optimization? (AEO/GEO Guide)",
+  metaTitle: "What Is AI Search Optimization?",
   metaDescription:
     "How AI Overviews, ChatGPT, Perplexity, and Claude pick which sources to cite — and the page-level changes that move you into the citation set.",
   eyebrow: "Blog · AI Search",

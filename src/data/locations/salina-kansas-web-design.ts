@@ -11,7 +11,7 @@ export const locationData: LocationPageData = {
   region: "Central Kansas",
   coordinates: { lat: 38.840, lng: -97.611 },
 
-  metaTitle: "Web Design in Salina, Kansas | Preisser Solutions",
+  metaTitle: "Web Design in Salina, Kansas",
   metaDescription:
     "Custom websites for Salina, Kansas businesses — fast, SEO-strong, AI-search ready. Built by a Hays-based firm.",
 

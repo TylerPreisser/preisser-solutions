@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "social-marketing-agent",
-  metaTitle: "Autonomous Social Marketing Agent | Preisser Solutions",
+  metaTitle: "Autonomous Social Marketing Agent",
   metaDescription:
     "AI agent that scrapes local market trends, generates persuasion-aware copy and visuals, and publishes to Facebook and Instagram daily — 5x organic reach in 30 days.",
   datePublished: "2026-05-21",

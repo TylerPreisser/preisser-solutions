@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/customer-reactivation",
   tier: "service_detail",
-  metaTitle: "Customer Reactivation Engines (SMS + Email) | Preisser Solutions",
+  metaTitle: "Customer Reactivation: SMS + Email",
   metaDescription:
     "Custom AI customer reactivation systems — SMS, email, and CRM flows that recover dormant customers. Cassidy HVAC recovered 60%+ in 6 weeks.",
   eyebrow: "Customer Reactivation",
@@ -118,7 +118,7 @@ export const pageData: AeoPageData = {
     { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
     { label: "Customer reactivation case study", href: "/case-studies/customer-reactivation" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "How to reactivate old leads", href: "/blog/reactivate-old-leads" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

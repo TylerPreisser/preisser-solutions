@@ -6,7 +6,7 @@ export const pageData: AeoPageData = {
   // R-018: Article freshness signals.
   datePublished: "2026-01-15",
   dateModified: "2026-05-15",
-  metaTitle: "MarCommand Multi-Agent Marketing Engine | Case Study",
+  metaTitle: "MarCommand Marketing Engine Case Study",
   metaDescription:
     "Preisser Solutions' proprietary multi-agent marketing engine — MarCommand. Demo product: how multi-agent orchestration runs marketing operations end-to-end.",
   eyebrow: "Case Study — Internal Product",
@@ -158,9 +158,9 @@ export const pageData: AeoPageData = {
     { label: "Digital marketing in Hays, KS", href: "/services/digital-marketing-hays-ks" },
     { label: "Google Ads + local SEO for service businesses", href: "/services/google-ads-local-seo-service-business" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
-    { label: "Lead tracking for website + Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
+    { label: "Lead tracking for website + Google Ads", href: "/services/local-seo" },
     { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "How to track marketing ROI", href: "/blog/track-marketing-roi" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

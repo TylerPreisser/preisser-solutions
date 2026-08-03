@@ -5,7 +5,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "ai-fitness-wellness-agent",
-  metaTitle: "Custom AI Fitness & Wellness Agent | Preisser Solutions",
+  metaTitle: "Custom AI Fitness & Wellness Agent",
   metaDescription:
     "Proof-of-concept AI agent that analyzes body composition data, harvests current research, and produces fully personalized lifting and nutrition regimens.",
   datePublished: "2026-04-02",

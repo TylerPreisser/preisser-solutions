@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/ai-automation",
   tier: "service_detail",
-  metaTitle: "AI Automation for Small Businesses | Preisser Solutions",
+  metaTitle: "AI Automation for Small Businesses",
   metaDescription:
     "Custom AI automation for Kansas businesses — AI agents, invoice processing, customer reactivation, lead qualification, after-hours triage, dashboards, CRM workflows.",
   eyebrow: "AI Automation",
@@ -118,9 +118,9 @@ export const pageData: AeoPageData = {
     { label: "Custom AI agents in Hays, KS", href: "/services/custom-ai-agents-hays-ks" },
     { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
     { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
-    { label: "Automate invoice processing", href: "/use-cases/automate-invoice-processing-small-business" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
-    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "Automate invoice processing", href: "/use-cases/ai-invoice-processing-small-business" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-inventory-system" },
     { label: "What is AI automation for small businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

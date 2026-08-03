@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Border Markets",
   coordinates: { lat: 38.833, lng: -104.821 },
 
-  metaTitle: "Web Design & Custom Software in Colorado Springs, CO | Preisser Solutions",
+  metaTitle: "Colorado Springs, CO Web Design",
   metaDescription:
     "Custom websites, web apps, and AI automation for Colorado Springs businesses — Kansas-based firm delivering remotely to the Front Range.",
 

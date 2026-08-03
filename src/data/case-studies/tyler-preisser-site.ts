@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // Tyler's own build. Founder presence layer. See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "tyler-preisser-site",
-  metaTitle: "tylerpreisser.com — Founder Portfolio for an AI Operator",
+  metaTitle: "tylerpreisser.com — Founder Portfolio",
   metaDescription:
     "Minimalist personal portfolio site for Tyler Preisser — readability-first, dark editorial layout, optimized for AI-search citation.",
   datePublished: "2026-05-16",

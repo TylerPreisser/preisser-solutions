@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "outbound-sales-agent",
-  metaTitle: "Intelligent Outbound Sales | Preisser Solutions",
+  metaTitle: "Intelligent Outbound Sales",
   metaDescription:
     "Researches prospects, drafts personalized cold outreach via email and SMS, and sequences follow-up automatically — tuned to one business's offer and voice.",
   datePublished: "2026-05-21",

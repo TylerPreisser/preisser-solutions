@@ -58,7 +58,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 38.879, lng: -99.327 },
 
-  metaTitle: "HVAC Software & Web Design in Hays, KS | Preisser Solutions",
+  metaTitle: "HVAC Software & Web Design in Hays, KS",
   metaDescription:
     "Custom HVAC software, job management dashboards, and AI automation for HVAC businesses in Hays, Kansas — built by a local firm.",
 

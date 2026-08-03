@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Border Markets",
   coordinates: { lat: 41.257, lng: -95.995 },
 
-  metaTitle: "Web Design & Custom Software in Omaha, NE | Preisser Solutions",
+  metaTitle: "Omaha, NE Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Omaha, Nebraska businesses — Kansas-based firm delivering remotely to Omaha's finance and agriculture markets.",
 

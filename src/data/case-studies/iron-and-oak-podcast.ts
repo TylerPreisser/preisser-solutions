@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // Tyler's own build. Co-hosted with Lincoln Myers (publishable).
 export const caseStudy: CaseStudyData = {
   slug: "iron-and-oak-podcast",
-  metaTitle: "Iron and Oak Podcast — Cinematic Media Brand",
+  metaTitle: "Iron and Oak — Cinematic Media Brand",
   metaDescription:
     "The Iron and Oak Podcast: a full cinematic media brand, 134 pre-rendered pages, custom design system, GSAP smooth scroll, and complete studio buildout.",
   datePublished: "2025-12-04",

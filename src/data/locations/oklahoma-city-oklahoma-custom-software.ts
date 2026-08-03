@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Border Markets",
   coordinates: { lat: 35.467, lng: -97.516 },
 
-  metaTitle: "Custom Software Development in Oklahoma City, OK | Preisser Solutions",
+  metaTitle: "Oklahoma City, OK Custom Software",
   metaDescription:
     "Custom software and AI automation for Oklahoma City businesses — Kansas-based firm delivering remotely to OKC's energy, healthcare, and government markets.",
 

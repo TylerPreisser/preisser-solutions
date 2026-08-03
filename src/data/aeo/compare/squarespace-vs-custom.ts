@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/squarespace-vs-custom",
   tier: "comparison",
-  metaTitle: "Squarespace vs Custom Website | Preisser Solutions",
+  metaTitle: "Squarespace vs Custom Website",
   metaDescription:
     "Honest comparison: Squarespace template platform vs custom-coded websites by Preisser Solutions. Speed, SEO, conversion, cost, and customization compared.",
   eyebrow: "Comparison",

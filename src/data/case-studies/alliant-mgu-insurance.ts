@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // DO NOT name the company or personnel.
 export const caseStudy: CaseStudyData = {
   slug: "alliant-mgu-insurance",
-  metaTitle: "AI Submission Processing — MGU Insurance",
+  metaTitle: "MGU Insurance — AI Submission Intake",
   metaDescription:
     "An MGU within the Alliant Insurance ecosystem ran dual-model AI on broker submissions — zero missed renewals in the first six months.",
   datePublished: "2025-08-12",

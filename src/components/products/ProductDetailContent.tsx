@@ -45,7 +45,7 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
 
         <div className="ps-container relative pt-36 pb-16 lg:pt-44 lg:pb-24">
           <motion.div
-            initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="grid items-start gap-12 lg:grid-cols-2 lg:gap-20"

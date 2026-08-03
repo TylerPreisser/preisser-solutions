@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Central Kansas",
   coordinates: { lat: 38.047, lng: -97.345 },
 
-  metaTitle: "Web Design & Custom Software in Newton, KS | Preisser Solutions",
+  metaTitle: "Newton, KS Web Design & Software",
   metaDescription:
     "Custom software, web apps, and AI automation for Newton, Kansas — built by a Hays-based firm for the Harvey County manufacturing and healthcare market.",
 

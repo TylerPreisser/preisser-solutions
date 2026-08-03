@@ -95,8 +95,10 @@ export const siteConfig = {
     },
   },
   meta: {
-    title:
-      "Preisser Solutions | Custom Business Software, Automation & AI Integration in Kansas",
+    // 55 chars. The previous value was 84 and was truncated in every search
+    // result — this is the site's single most important title. Metadata only;
+    // nothing on the homepage itself changes.
+    title: "Business Software, Automation & AI | Preisser Solutions",
     description:
       "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
     themeColor: "#1590FF",

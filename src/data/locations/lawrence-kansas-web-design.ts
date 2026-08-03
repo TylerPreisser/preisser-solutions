@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Northeast Kansas",
   coordinates: { lat: 38.972, lng: -95.235 },
 
-  metaTitle: "Web Design & Custom Software in Lawrence, KS | Preisser Solutions",
+  metaTitle: "Lawrence, KS Web Design & Software",
   metaDescription:
     "Custom software, web apps, and AI automation for Lawrence, Kansas — built by a Kansas-based firm for the Douglas County college-town economy.",
 

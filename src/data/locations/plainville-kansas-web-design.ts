@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Northwest Kansas",
   coordinates: { lat: 39.234, lng: -99.299 },
 
-  metaTitle: "Web Design & Custom Software in Plainville, KS | Preisser Solutions",
+  metaTitle: "Plainville, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Plainville, Kansas — a nearby Hays-based firm with fixed-price proposals.",
 

@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // Named client with consent. See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "cassidy-hvac-reactivation",
-  metaTitle: "Cassidy HVAC — 60%+ Reactivation in 6 Weeks",
+  metaTitle: "Cassidy HVAC — 60%+ Reactivation",
   metaDescription:
     "Cassidy HVAC reactivated 60%+ of dormant customers in 6 weeks through an AI-powered SMS and email outreach engine built by Preisser Solutions.",
   datePublished: "2024-09-15",

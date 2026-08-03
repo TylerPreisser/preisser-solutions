@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Central Kansas",
   coordinates: { lat: 38.840, lng: -97.611 },
 
-  metaTitle: "Custom Software in Salina, Kansas | Preisser Solutions",
+  metaTitle: "Custom Software in Salina, Kansas",
   metaDescription:
     "Custom software, AI automation, and custom websites for Salina, Kansas businesses — based in Hays, KS, delivered statewide.",
 

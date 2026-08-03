@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "industry-specific-agent",
-  metaTitle: "Industry-Specific Agent | Preisser Solutions",
+  metaTitle: "Industry-Specific Agent",
   metaDescription:
     "Agents built for the document flow, regulatory shape, and downstream systems of a single industry. Insurance is the worked example — zero missed renewals in six months.",
   datePublished: "2026-05-21",

@@ -58,7 +58,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 38.879, lng: -99.327 },
 
-  metaTitle: "Oil & Gas Software in Hays, KS | Preisser Solutions",
+  metaTitle: "Oil & Gas Software in Hays, KS",
   metaDescription:
     "Custom oil and gas software, dashboards, and AI automation for operators in Hays and Ellis County, Kansas — built by a local firm.",
 

@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/salesforce-vs-custom-crm",
   tier: "comparison",
-  metaTitle: "Salesforce vs Custom CRM | Preisser Solutions",
+  metaTitle: "Salesforce vs Custom CRM",
   metaDescription:
     "Honest comparison: Salesforce vs custom CRM by Preisser Solutions. When enterprise CRM customization costs and per-seat fees stop making sense.",
   eyebrow: "Comparison",
@@ -126,7 +126,7 @@ export const pageData: AeoPageData = {
   schemaType: "Article",
   namedEntities: ["Preisser Solutions", "Tyler Preisser", "Salesforce", "Hays, Kansas", "Next.js"],
   relatedLinks: [
-    { label: "Custom CRM development", href: "/services/custom-crm" },
+    { label: "Custom CRM development", href: "/services/crm-systems" },
     { label: "Custom CRM for small business in Kansas", href: "/services/custom-crm-small-business-kansas" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "Alliant Insurance MGU case study", href: "/case-studies/alliant-mgu-insurance" },

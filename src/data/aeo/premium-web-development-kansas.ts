@@ -12,7 +12,7 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "premium-web-development-kansas",
   tier: "service_detail",
-  metaTitle: "Premium Web Development in Kansas | Preisser Solutions",
+  metaTitle: "Premium Web Development in Kansas",
   metaDescription:
     "Premium custom web development for Kansas businesses. Boutique, high-end, custom-coded sites and applications. No templates. No subcontractors. Founder-built.",
   eyebrow: "Premium Custom Development",

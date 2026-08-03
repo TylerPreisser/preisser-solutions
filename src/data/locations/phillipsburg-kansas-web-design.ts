@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 39.748, lng: -99.318 },
 
-  metaTitle: "Web Design & Custom Software in Phillipsburg, KS | Preisser Solutions",
+  metaTitle: "Phillipsburg, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Phillipsburg, Kansas — built by a Hays-based firm serving the US-36 and US-183 junction.",
 

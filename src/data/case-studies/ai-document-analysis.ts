@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // Built. Generalized capability. See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "ai-document-analysis",
-  metaTitle: "AI Document Analysis & Data Extraction | Preisser Solutions",
+  metaTitle: "AI Document Analysis & Data Extraction",
   metaDescription:
     "Automation workflows that ingest invoices, contracts, forms, reports, and permits — extract structured data, categorize, and forward to downstream systems.",
   datePublished: "2026-03-22",

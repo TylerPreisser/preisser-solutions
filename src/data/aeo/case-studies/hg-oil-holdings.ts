@@ -6,7 +6,7 @@ export const pageData: AeoPageData = {
   // R-018: Article freshness signals.
   datePublished: "2024-11-08",
   dateModified: "2026-05-15",
-  metaTitle: "HG Oil Holdings Case Study — 95% Logistics Time Reduction | Preisser Solutions",
+  metaTitle: "HG Oil Holdings — 95% Less Admin Time",
   metaDescription:
     "Detailed case study: Preisser Solutions delivered HG Oil Holdings a custom inventory system (95% time reduction) and AI invoicing assistant (75% manual handling reduction).",
   eyebrow: "Case Study",
@@ -169,7 +169,7 @@ export const pageData: AeoPageData = {
     { label: "API integration service", href: "/services/api-integration" },
     { label: "Oil & gas industry", href: "/industries/oil-gas" },
     { label: "Automate data entry", href: "/use-cases/automate-data-entry-small-business" },
-    { label: "Automate invoice processing", href: "/use-cases/automate-invoice-processing-small-business" },
+    { label: "Automate invoice processing", href: "/use-cases/ai-invoice-processing-small-business" },
     { label: "Best automations for trucking & logistics", href: "/blog/best-automations-trucking" },
     { label: "Chicago-area bus operator case study", href: "/case-studies/chicago-bus-operator" },
     { label: "Contact Preisser Solutions", href: "/contact" },

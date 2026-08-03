@@ -5,7 +5,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "query-dominance",
-  metaTitle: "Query Dominance Agent System | Preisser Solutions",
+  metaTitle: "Query Dominance Agent System",
   metaDescription:
     "A 10-agent, 6-phase autonomous system for dominating Google and AI search in a local market. Built for Preisser Solutions; deployable for clients.",
   datePublished: "2026-03-26",

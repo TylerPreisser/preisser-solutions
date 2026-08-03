@@ -12,9 +12,9 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/vs-kc-ai-pro",
   tier: "comparison",
-  metaTitle: "Preisser Solutions vs KC AI Pro | Shipped Systems vs AI Audits",
+  metaTitle: "KC AI Pro vs Shipped AI Systems",
   metaDescription:
-    "Preisser Solutions ships custom AI agents, automation, and websites for Kansas businesses. KC AI Pro's public model centers on an AI Opportunity Finder audit. Different fits.",
+    "Preisser Solutions ships custom business software, automation, and AI for Kansas companies. KC AI Pro centers on an AI Opportunity Finder audit.",
   eyebrow: "Comparison",
   h1: "Preisser Solutions vs. KC AI Pro",
   subheadline:
@@ -178,7 +178,7 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "AI consulting in Hays, KS", href: "/services/ai-consulting-hays-ks" },
     { label: "Custom AI agents in Hays, KS", href: "/services/custom-ai-agents-hays-ks" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
     { label: "Topeka, KS services", href: "/locations/topeka-kansas" },
     { label: "Preisser vs Akeratos", href: "/compare/akeratos" },

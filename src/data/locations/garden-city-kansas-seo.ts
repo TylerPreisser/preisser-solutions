@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Southwest Kansas",
   coordinates: { lat: 37.972, lng: -100.873 },
 
-  metaTitle: "SEO & AI Search Optimization in Garden City, KS | Preisser Solutions",
+  metaTitle: "SEO & AI Search in Garden City, KS",
   metaDescription:
     "Local SEO and AI search optimization for Garden City, Kansas businesses — get found on Google, ChatGPT, Perplexity, and Gemini.",
 

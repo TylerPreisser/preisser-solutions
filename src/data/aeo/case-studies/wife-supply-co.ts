@@ -6,7 +6,7 @@ export const pageData: AeoPageData = {
   // R-018: Article freshness signals.
   datePublished: "2025-04-12",
   dateModified: "2026-05-15",
-  metaTitle: "Wife Supply Co Case Study — AI Gifting Platform | Preisser Solutions",
+  metaTitle: "Wife Supply Co — AI Gifting Platform",
   metaDescription:
     "Detailed case study: Preisser Solutions built Wife Supply Co from concept to launch — AI-powered gifting platform with custom commerce and AI-driven product matching.",
   eyebrow: "Case Study",

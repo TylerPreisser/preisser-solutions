@@ -12,7 +12,7 @@ export const locationData: LocationPageData = {
   region: "Northeast Kansas & Flint Hills",
   coordinates: { lat: 39.048, lng: -95.677 },
 
-  metaTitle: "Digital Marketing Services in Topeka, KS | Preisser Solutions",
+  metaTitle: "Digital Marketing in Topeka, KS",
   metaDescription:
     "Digital marketing built on custom code for Topeka, Kansas businesses — local SEO, AI automation, and web infrastructure.",
 

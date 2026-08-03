@@ -34,7 +34,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Preisser Solutions | Custom Business Software, Automation & AI Integration in Kansas",
+    default: "Business Software, Automation & AI | Preisser Solutions",
     template: "%s | Preisser Solutions",
   },
   description:
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://preissersolutions.com",
     siteName: "Preisser Solutions",
-    title: "Preisser Solutions | Custom Business Software, Automation & AI Integration in Kansas",
+    title: "Business Software, Automation & AI | Preisser Solutions",
     description:
       "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
     images: [
@@ -102,7 +102,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Preisser Solutions | Custom Business Software, Automation & AI Integration in Kansas",
+    title: "Business Software, Automation & AI | Preisser Solutions",
     description:
       "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
     images: ["/images/og-image-v2.jpg"],
@@ -153,9 +153,26 @@ const themeInitScript = `(function(){
 // The home WebPage block (entity #4 below) is layout-local and not exposed
 // through the helper library — it points back to the website/organization/
 // person @ids defined above.
+//
+// KNOWN LIMITATION: the root layout renders on every route, so this home
+// WebPage node ships on all 234 pages rather than only on `/`. It is a stable
+// @id describing one entity, so engines dedupe it rather than mis-attribute
+// it — but the correct home is `src/app/page.tsx`. Moving it there is a
+// homepage-owned change, tracked, not done here.
+//
+// `speakable` is deliberately NOT on this node for the same reason: a
+// cssSelector evaluated from the root layout would assert homepage speakable
+// content on 233 pages that do not have it.
 // ---------------------------------------------------------------------------
 
 const WEBPAGE_ID = "https://preissersolutions.com/#webpage-home";
+
+// Service area for the three pillar Offers below. Kept to two nodes on
+// purpose — see the note on `makesOffer`.
+const PILLAR_AREA_SERVED = [
+  { "@type": "State", name: "Kansas" },
+  { "@type": "City", name: "Hays, Kansas" },
+];
 
 const organization = {
   ...organizationSchema(),
@@ -169,6 +186,13 @@ const organization = {
   // engines surfacing pricing have an authoritative source. Per-service prices
   // are stable enough to live in code rather than data — and short enough to
   // keep inline.
+  // Each nested Service carries `provider` and `areaServed`. Without them a
+  // Service node is incomplete: an engine reading the Offer has no way to tell
+  // who performs the work or where, and it will not attach the Service to this
+  // Organization. `PILLAR_AREA_SERVED` is deliberately the compact two-node
+  // form — the full 15-city list already sits on the LocalBusiness node, and
+  // repeating it three more times multiplies payload on all 234 pages for no
+  // added signal.
   makesOffer: [
     {
       "@type": "Offer",
@@ -176,8 +200,11 @@ const organization = {
       itemOffered: {
         "@type": "Service",
         name: "Business Software",
+        serviceType: "Custom business software development",
         description:
           "Admin dashboards, customer and member databases, client portals, and internal tools — the platform your team actually logs into, built for how your business works.",
+        provider: { "@id": ORG_ID },
+        areaServed: PILLAR_AREA_SERVED,
       },
     },
     {
@@ -186,8 +213,11 @@ const organization = {
       itemOffered: {
         "@type": "Service",
         name: "Business Automation",
+        serviceType: "Business process automation",
         description:
           "Workflow automation for document pipelines, scheduled jobs, notifications and confirmations, and the system integrations that connect them — the work that happens without anyone doing it.",
+        provider: { "@id": ORG_ID },
+        areaServed: PILLAR_AREA_SERVED,
       },
     },
     {
@@ -196,8 +226,11 @@ const organization = {
       itemOffered: {
         "@type": "Service",
         name: "AI Integration",
+        serviceType: "AI integration",
         description:
           "AI put exactly where it earns its place: reading and classifying documents, drafting with a human approval gate, and joining an existing workflow — never replacing judgment on anything that matters.",
+        provider: { "@id": ORG_ID },
+        areaServed: PILLAR_AREA_SERVED,
       },
     },
   ],
@@ -208,7 +241,7 @@ const person = {
   // Disambiguates from other Tyler Preissers (Verizon retail rep, etc.). Lives
   // here as long-form prose for the same reason as the Organization version.
   disambiguatingDescription:
-    "This Tyler Preisser is the founder of Preisser Solutions (preissersolutions.com), a custom software firm in Hays, Kansas. He is the same Tyler Preisser featured in Hays Post articles about FHSU's Sky Sprayers, Hansen Hall, and other FHSU coverage. He is not affiliated with other individuals named Tyler Preisser unrelated to the Preisser Solutions custom software business.",
+    "This Tyler Preisser is the founder of Preisser Solutions (preissersolutions.com), a custom business software, automation, and AI integration firm in Hays, Kansas. He is the same Tyler Preisser featured in Hays Post articles about FHSU's Sky Sprayers, Hansen Hall, and other FHSU coverage. He is not affiliated with other individuals named Tyler Preisser unrelated to the Preisser Solutions custom software business.",
 };
 
 const website = websiteSchema();
@@ -219,7 +252,7 @@ const homeWebPage = {
   "@type": "WebPage",
   "@id": WEBPAGE_ID,
   url: "https://preissersolutions.com",
-  name: "Preisser Solutions | Custom Business Software, Automation & AI Integration in Kansas",
+  name: "Business Software, Automation & AI | Preisser Solutions",
   description:
     "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
   isPartOf: { "@id": WEBSITE_ID },
@@ -227,17 +260,10 @@ const homeWebPage = {
   author: { "@id": PERSON_ID },
   publisher: { "@id": ORG_ID },
   inLanguage: "en-US",
-  breadcrumb: {
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://preissersolutions.com",
-      },
-    ],
-  },
+  // No `breadcrumb` here. A single-item BreadcrumbList ("Home") is what
+  // Google's own docs call unnecessary, and because this block is emitted from
+  // the root layout it was shipping on all 234 pages — 233 stray
+  // BreadcrumbList nodes competing with each page's real trail.
 };
 
 const structuredData = [

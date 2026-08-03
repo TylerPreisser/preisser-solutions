@@ -47,7 +47,7 @@ import { caseStudy as tylerPreisserSite } from "./tyler-preisser-site";
  * indexed route and because `getCaseStudy` backs the product pages.
  *
  * Grouping:
- *   0. Flagship platforms (FarmBooks, C3 Studio, NWKS Encounter)
+ *   0. Flagship platform (FarmBooks)
  *   1. Named client engagements (canonical #1–8)
  *   2. Internal AI platforms (canonical #9, #16, #17, #21)
  *   3. Internal operational tools (canonical #14, #15, #20)
@@ -130,11 +130,14 @@ export const hubSlugs: string[] = [
   // Flagship platforms
   "farmbooks",
 
-  // Named client engagements
+  // Named client engagements.
+  // The two HG Oil engagements are deliberately NOT adjacent — side by side in
+  // the grid they read as duplicate cards before you notice the categories
+  // differ (inventory operations vs. back-office automation).
   "hg-oil-inventory-system",
-  "hg-oil-ai-invoice-processing",
   "alliant-mgu-insurance",
   "chicago-bus-operator",
+  "hg-oil-ai-invoice-processing",
   "cassidy-hvac-reactivation",
   "iron-and-oak-podcast",
   "wife-supply-co",

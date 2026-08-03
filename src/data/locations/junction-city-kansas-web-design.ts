@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "Northeast Kansas",
   coordinates: { lat: 39.028, lng: -96.831 },
 
-  metaTitle: "Web Design & Custom Software in Junction City, KS | Preisser Solutions",
+  metaTitle: "Junction City, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Junction City, Kansas — built by a Hays-based firm for the Fort Riley market.",
 

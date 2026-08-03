@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-04-20",
   dateModified: "2026-05-15",
-  metaTitle: "What Is AI Automation for Small Businesses?",
+  metaTitle: "What Is AI Automation for SMBs?",
   metaDescription:
     "The plain-English version. Use cases, what's worth building, what isn't, and how to spot vendors selling rebadged Zapier as \"AI.\"",
   eyebrow: "Blog · AI Automation",
@@ -111,7 +111,7 @@ export const pageData: AeoPageData = {
     { label: "AI consulting in Hays, KS", href: "/services/ai-consulting-hays-ks" },
     { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
     { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "AI vs traditional workflow automation", href: "/blog/ai-vs-traditional-workflow-automation" },
     { label: "AI automation cost in Kansas", href: "/blog/ai-automation-cost-kansas" },
     { label: "Contact Preisser Solutions", href: "/contact" },

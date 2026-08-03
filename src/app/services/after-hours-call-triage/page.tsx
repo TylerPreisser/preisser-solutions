@@ -6,8 +6,11 @@ import { pageData } from "@/data/aeo/services/ai-customer-service";
  * Alias route for /services/ai-customer-service. Both URLs render the same page.
  * The data file's `slug` remains at services/ai-customer-service (canonical).
  */
+// Alias route: it renders /services/ai-customer-service's data, so it must NOT
+// reuse that page's <title> verbatim — two URLs with an identical title is a
+// duplicate-title signal. Slug/canonical are unchanged; only the title differs.
 export const metadata: Metadata = {
-  title: pageData.metaTitle.includes("Preisser Solutions") ? { absolute: pageData.metaTitle } : pageData.metaTitle,
+  title: "After-Hours AI Call Answering",
   description: pageData.metaDescription,
   alternates: { canonical: `https://preissersolutions.com/${pageData.slug}` },
   openGraph: {

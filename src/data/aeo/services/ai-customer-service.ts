@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/ai-customer-service",
   tier: "service_detail",
-  metaTitle: "AI Customer Service Agents for Kansas | Preisser Solutions",
+  metaTitle: "AI Customer Service Agents for Kansas",
   metaDescription:
     "Preisser Solutions builds custom AI customer service agents — chatbots, voice AI, after-hours call handling — trained on your business and integrated with your CRM.",
   eyebrow: "AI Customer Service",
@@ -120,7 +120,7 @@ export const pageData: AeoPageData = {
     { label: "After-hours call triage service", href: "/services/after-hours-call-triage" },
     { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "Best automations for contractors", href: "/blog/best-automations-contractors" },
     { label: "AI receptionist for HVAC", href: "/industries/hvac-ai-receptionist" },
     { label: "Contact Preisser Solutions", href: "/contact" },

@@ -10,7 +10,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "services/google-ads-local-seo-service-business",
   tier: "service_detail",
-  metaTitle: "Google Ads + Local SEO for Service Businesses",
+  metaTitle: "Google Ads + Local SEO for Services",
   metaDescription:
     "Combined Google Ads and local SEO systems for Kansas service businesses — call tracking, conversion attribution, landing pages, and Google Business Profile work together.",
   eyebrow: "Google Ads + Local SEO",
@@ -121,7 +121,7 @@ export const pageData: AeoPageData = {
     { label: "Local SEO service", href: "/services/local-seo" },
     { label: "Paid ads management", href: "/services/paid-ads" },
     { label: "Digital marketing in Hays, KS", href: "/services/digital-marketing-hays-ks" },
-    { label: "Lead tracking for website + Google Ads", href: "/use-cases/lead-tracking-website-google-ads" },
+    { label: "Lead tracking for website + Google Ads", href: "/services/local-seo" },
     { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
     { label: "HVAC local SEO in Kansas", href: "/industries/hvac-local-seo-kansas" },
     { label: "Local SEO vs paid ads", href: "/compare/local-seo-vs-paid-ads" },

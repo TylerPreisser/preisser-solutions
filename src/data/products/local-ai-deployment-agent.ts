@@ -2,7 +2,7 @@ import type { ProductData } from "@/types/product";
 
 export const product: ProductData = {
   slug: "local-ai-deployment-agent",
-  metaTitle: "Custom Local AI Deployment | Preisser Solutions",
+  metaTitle: "Custom Local AI Deployment",
   metaDescription:
     "Fine-tuned models that run on-premises or at the edge — zero data leaving the network. Custom AI for businesses where cloud dependency is not an option.",
   datePublished: "2026-05-21",

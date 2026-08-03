@@ -15,9 +15,9 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "use-cases/automate-data-entry-small-business",
   tier: "service_detail",
-  metaTitle: "Automate Data Entry for Small Businesses",
+  metaTitle: "Automate Data Entry for SMBs",
   metaDescription:
-    "Preisser Solutions builds data entry automation that connects forms, spreadsheets, CRMs, invoices, and dashboards — with documented results from HG Oil Holdings and transportation clients.",
+    "Data entry automation that connects forms, spreadsheets, CRMs, invoices, and dashboards, with documented results from HG Oil Holdings and others.",
   eyebrow: "Automate Data Entry",
   h1: "Automate Data Entry Without Breaking Your Existing Workflow",
   subheadline:
@@ -145,7 +145,7 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "API integration service", href: "/services/api-integration" },
     { label: "AI invoice processing", href: "/use-cases/ai-invoice-processing-small-business" },
-    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-holdings" },
+    { label: "HG Oil Holdings case study", href: "/case-studies/hg-oil-inventory-system" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   ctaHeadline: "Get your team out of the data entry weeds",

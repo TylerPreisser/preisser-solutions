@@ -5,7 +5,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-04-04",
   dateModified: "2026-05-15",
-  metaTitle: "How To Reactivate Old Leads (SMS + Email + CRM Playbook)",
+  metaTitle: "How To Reactivate Old Leads",
   metaDescription:
     "The exact reactivation sequence Preisser Solutions ships for HVAC, dental, veterinary, and trades — including the Cassidy HVAC 60% case.",
   eyebrow: "Blog · AI Automation",
@@ -132,7 +132,7 @@ export const pageData: AeoPageData = {
     { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
     { label: "Customer reactivation case study", href: "/case-studies/customer-reactivation" },
-    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac" },
+    { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "HVAC industry", href: "/industries/hvac" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],

@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/csg-media",
   tier: "comparison",
-  metaTitle: "Preisser Solutions vs CSG Media (Salina, Kansas) | Preisser Solutions",
+  metaTitle: "CSG Media vs Custom Software, Salina KS",
   metaDescription:
     "Honest comparison: Preisser Solutions (founder-led custom software, Hays KS) vs CSG Media (Salina, Kansas digital marketing firm).",
   eyebrow: "Comparison",

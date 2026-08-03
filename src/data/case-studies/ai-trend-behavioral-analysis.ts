@@ -5,7 +5,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "ai-trend-behavioral-analysis",
-  metaTitle: "AI Trend & Behavioral Analysis | Preisser Solutions",
+  metaTitle: "AI Trend & Behavioral Analysis",
   metaDescription:
     "AI models that calculate economic trends and map psychological behavior patterns — the analytical backbone behind Alpha Matrix and MarCommand.",
   datePublished: "2026-04-14",

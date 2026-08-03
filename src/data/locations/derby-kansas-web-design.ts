@@ -8,7 +8,7 @@ export const locationData: LocationPageData = {
   region: "South-Central Kansas",
   coordinates: { lat: 37.548, lng: -97.263 },
 
-  metaTitle: "Web Design & Custom Software in Derby, KS | Preisser Solutions",
+  metaTitle: "Derby, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for Derby, Kansas — built by a Hays-based firm for the Wichita south-suburb market.",
 

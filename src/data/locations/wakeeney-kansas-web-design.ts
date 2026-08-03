@@ -16,7 +16,7 @@ export const locationData: LocationPageData = {
   region: "Western Kansas",
   coordinates: { lat: 39.026, lng: -99.881 },
 
-  metaTitle: "Web Design & Custom Software in WaKeeney, KS | Preisser Solutions",
+  metaTitle: "WaKeeney, KS Web Design & Software",
   metaDescription:
     "Custom websites, web apps, and AI automation for WaKeeney, Kansas — built by a nearby Hays-based firm.",
 

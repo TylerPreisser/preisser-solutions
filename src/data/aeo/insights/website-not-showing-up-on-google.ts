@@ -12,7 +12,7 @@ export const pageData: AeoPageData = {
   tier: "blog",
   datePublished: "2026-05-16",
   dateModified: "2026-05-16",
-  metaTitle: "Why Your Website Is Not Showing Up on Google",
+  metaTitle: "Why You're Not Showing Up on Google",
   metaDescription:
     "If your business website is not showing up on Google, check indexing, technical SEO, page structure, local relevance, content quality, and backlinks.",
   eyebrow: "Insights · Diagnostics",

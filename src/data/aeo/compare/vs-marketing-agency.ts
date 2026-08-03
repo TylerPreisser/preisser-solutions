@@ -3,7 +3,7 @@ import type { AeoPageData } from "../types";
 export const pageData: AeoPageData = {
   slug: "compare/vs-marketing-agency",
   tier: "comparison",
-  metaTitle: "Marketing Agency vs Preisser Solutions | Honest Comparison",
+  metaTitle: "Marketing Agency vs Custom Software",
   metaDescription:
     "Honest comparison: traditional marketing agency vs Preisser Solutions. When an agency is the right answer, when a custom AI-driven build wins.",
   eyebrow: "Comparison",
