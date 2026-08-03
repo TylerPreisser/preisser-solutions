@@ -922,6 +922,14 @@ ul, ol {
      is why the base colour only has to exist in one place. */
   --ps-hero-bg-rgb: 10, 22, 40;
 
+  /* The scrim's own colour, separate from the hero background.
+     On light, the scrim can only ever wash the backdrop toward
+     --ps-hero-bg-rgb (#F6F9FC), which caps "AI Integration." at 3.07:1
+     against a 3:1 bar. Pure white is the physical maximum for #1590FF —
+     3.25:1 — so the light theme re-points this at white and buys back the
+     only margin available. Dark inherits the background and is unaffected. */
+  --ps-hero-scrim-rgb: var(--ps-hero-bg-rgb);
+
   position: relative;
   min-height: 100vh;
   min-height: 100dvh;
@@ -954,7 +962,10 @@ ul, ol {
    declarative: it holds for any cell layout the field ever generates.
 
    Layer 1 (horizontal) sits under the left-aligned wordmark and fades out
-   before the field's busiest area.
+   before the composition's busiest area. Its tail was extended from 64% to
+   78% after measuring the built page: the subhead's last line ends at 64% of
+   the width, so a scrim that had already reached zero there left it at
+   4.74:1 — passing, but with 0.24 of margin. It now clears comfortably.
    Layer 2 (vertical) is the original header/footer falloff. */
 .ps-hero-overlay {
   position: absolute;
@@ -964,17 +975,18 @@ ul, ol {
   background:
     linear-gradient(
       90deg,
-      rgba(var(--ps-hero-bg-rgb), 0.94) 0%,
-      rgba(var(--ps-hero-bg-rgb), 0.74) 30%,
-      rgba(var(--ps-hero-bg-rgb), 0)    64%
+      rgba(var(--ps-hero-scrim-rgb), 0.94) 0%,
+      rgba(var(--ps-hero-scrim-rgb), 0.74) 30%,
+      rgba(var(--ps-hero-scrim-rgb), 0.30) 58%,
+      rgba(var(--ps-hero-scrim-rgb), 0)    78%
     ),
     linear-gradient(
       180deg,
-      rgba(var(--ps-hero-bg-rgb), 0.55) 0%,
-      rgba(var(--ps-hero-bg-rgb), 0.05) 22%,
-      rgba(var(--ps-hero-bg-rgb), 0)    50%,
-      rgba(var(--ps-hero-bg-rgb), 0.4)  80%,
-      rgba(var(--ps-hero-bg-rgb), 0.75) 100%
+      rgba(var(--ps-hero-scrim-rgb), 0.55) 0%,
+      rgba(var(--ps-hero-scrim-rgb), 0.05) 22%,
+      rgba(var(--ps-hero-scrim-rgb), 0)    50%,
+      rgba(var(--ps-hero-scrim-rgb), 0.4)  80%,
+      rgba(var(--ps-hero-scrim-rgb), 0.75) 100%
     );
 }
 
@@ -984,16 +996,40 @@ ul, ol {
   .ps-hero-overlay {
     background:
       linear-gradient(
-        rgba(var(--ps-hero-bg-rgb), 0.55),
-        rgba(var(--ps-hero-bg-rgb), 0.55)
+        rgba(var(--ps-hero-scrim-rgb), 0.55),
+        rgba(var(--ps-hero-scrim-rgb), 0.55)
       ),
       linear-gradient(
         180deg,
-        rgba(var(--ps-hero-bg-rgb), 0.55) 0%,
-        rgba(var(--ps-hero-bg-rgb), 0.05) 22%,
-        rgba(var(--ps-hero-bg-rgb), 0)    50%,
-        rgba(var(--ps-hero-bg-rgb), 0.4)  80%,
-        rgba(var(--ps-hero-bg-rgb), 0.75) 100%
+        rgba(var(--ps-hero-scrim-rgb), 0.55) 0%,
+        rgba(var(--ps-hero-scrim-rgb), 0.05) 22%,
+        rgba(var(--ps-hero-scrim-rgb), 0)    50%,
+        rgba(var(--ps-hero-scrim-rgb), 0.4)  80%,
+        rgba(var(--ps-hero-scrim-rgb), 0.75) 100%
+      );
+  }
+
+  /* Light mode on a phone is the tightest case in the whole hero: the text
+     column is the entire viewport, so there is nowhere to put the geometry
+     that is not behind type, and the logo-blue wordmark has 0.02 of contrast
+     margin to give (see the desktop note below). Measured on the built page,
+     a 0.55 veil left "AI Integration." at 2.51:1 against a 3:1 bar.
+     At 0.95 the composition survives as a tone and a whisper of the folds,
+     and the wordmark is unimpeachable. On a phone that is the right trade —
+     the type IS the hero there. */
+  [data-theme="light"] .ps-hero-overlay {
+    background:
+      linear-gradient(
+        rgba(var(--ps-hero-scrim-rgb), 0.95),
+        rgba(var(--ps-hero-scrim-rgb), 0.95)
+      ),
+      linear-gradient(
+        180deg,
+        rgba(var(--ps-hero-scrim-rgb), 0.55) 0%,
+        rgba(var(--ps-hero-scrim-rgb), 0.05) 22%,
+        rgba(var(--ps-hero-scrim-rgb), 0)    50%,
+        rgba(var(--ps-hero-scrim-rgb), 0.4)  80%,
+        rgba(var(--ps-hero-scrim-rgb), 0.75) 100%
       );
   }
 }
@@ -1153,6 +1189,7 @@ ul, ol {
 [data-theme="light"] .ps-hero {
   background: #F6F9FC;
   --ps-hero-bg-rgb: 246, 249, 252;
+  --ps-hero-scrim-rgb: 255, 255, 255;
   /* The hero wordmark is 88px/800 — large text, so the bar is 3:1, not 4.5:1.
      The exact logo blue clears it (#1590FF on #F6F9FC = 3.07:1), which means
      "AI Integration." can be the literal mark colour in BOTH themes rather
@@ -1168,7 +1205,45 @@ ul, ol {
   text-shadow: none;
 }
 
-/* No light-mode override for .ps-hero-overlay any more — both scrims are built
+/* Light mode DOES need its own horizontal ramp, and the reason is arithmetic.
+   "AI Integration." is the exact logo blue in both themes; on the flat light
+   hero that measures 3.02:1 against a 3:1 bar for large text (see the note in
+   [data-theme="light"] .ps-hero above). 0.02 of margin means the wordmark can
+   tolerate NO darkening at all — measured on the built page, the background's
+   planes pulled it to 2.64:1, i.e. a fail.
+
+   So in light mode the scrim holds near-solid across the text column and only
+   then releases. The accent line ends at 50% of the hero's width, hence the
+   plateau to 54%. Dark mode does not need this: white-on-navy has margin to
+   spare there, and a plateau that long would flatten the composition for no
+   contrast gain. Declarative on purpose — it holds for any frame the canvas
+   ever paints, rather than depending on where the light happens to be.
+
+   Scoped to >=768px deliberately: this selector outranks the phone rule below,
+   and on a phone a left-edge scrim protects nothing — the content column IS
+   the viewport, so the flat veil is the correct shape there. */
+@media (min-width: 768px) {
+  [data-theme="light"] .ps-hero-overlay {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(var(--ps-hero-scrim-rgb), 0.99) 0%,
+        rgba(var(--ps-hero-scrim-rgb), 0.97) 54%,
+        rgba(var(--ps-hero-scrim-rgb), 0.50) 70%,
+        rgba(var(--ps-hero-scrim-rgb), 0)    86%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(var(--ps-hero-scrim-rgb), 0.55) 0%,
+        rgba(var(--ps-hero-scrim-rgb), 0.05) 22%,
+        rgba(var(--ps-hero-scrim-rgb), 0)    50%,
+        rgba(var(--ps-hero-scrim-rgb), 0.4)  80%,
+        rgba(var(--ps-hero-scrim-rgb), 0.75) 100%
+      );
+  }
+}
+
+/* Both scrims are otherwise built
    from --ps-hero-bg-rgb, which the rule above re-points at the light page
    colour. One gradient definition, both themes. */
 

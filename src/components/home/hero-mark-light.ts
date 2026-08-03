@@ -85,7 +85,7 @@ const SCENE_ROT = -85.3;
  *  than one of its straight tangents. That matters: a fold that reads as a
  *  curve is the thing separating this from the angular-shard look every
  *  template agency site already has. */
-const SWEEP_LAYER = { span: 1.75, ax: 0.68, ay: 0.5, lift: 1.0 };
+const SWEEP_LAYER = { span: 1.2, ax: 0.66, ay: 0.5, lift: 1.0 };
 /** Placed so the mark's acute vertex lands INSIDE the frame, to the right of
  *  the sweep. That 34-degree point is the most particular thing the mark owns.
  *  Kept quiet on purpose — it should be found, not announced.
