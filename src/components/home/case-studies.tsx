@@ -20,6 +20,8 @@ interface CaseStudyCard {
   lightCard?: boolean;
   /** Extra class on the logo img — lets one card opt out of the shared silhouette treatment. */
   logoClass?: string;
+  /** Wordmark set under the logo, for marks that are an icon with no type in them. */
+  logoWordmark?: string;
   href?: string;
 }
 
@@ -45,6 +47,7 @@ const caseStudyCards: CaseStudyCard[] = [
     caseLogoWidth: 48,
     caseLogoHeight: 48,
     logoClass: "ps-work-card-logo--farmbooks",
+    logoWordmark: "FarmBooks",
   },
   // Alliant Insurance ecosystem MGU: AI Submission Processing (anonymized per privacy rules)
   {
@@ -410,6 +413,11 @@ export function CaseStudies() {
                     study.logoClass ? ` ${study.logoClass}` : ""
                   }`}
                 />
+              ) : null}
+              {study.caseLogo && study.logoWordmark ? (
+                <span className="ps-work-card-wordmark" aria-hidden="true">
+                  {study.logoWordmark}
+                </span>
               ) : study.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img

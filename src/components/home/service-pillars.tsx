@@ -1645,12 +1645,12 @@ export function ServicePillars() {
           Built to Fit Your Business
         </h2>
         <p className="ps-services-intro">
-          Sometimes the job is a full internal platform. Sometimes it&apos;s one form
-          that should have gone straight into a database two years ago. That is exactly
-          why everything here is built for your business specifically &mdash; you may not
-          need a massive platform, and you should not be sold one. What gets built is
-          shaped around how your business already runs, at the size the problem actually
-          is.
+          Nothing here is a template. Every build starts from how one business actually
+          works &mdash; yours &mdash; and the person who scopes it is the person who
+          builds it, start to finish. No handoffs, no subcontractors, no modules you
+          will never open, and no six-figure platform bill for software that was never
+          shaped around your business in the first place. That is why it fits, and why
+          it ships in weeks instead of quarters.
         </p>
       </div>
 

@@ -8221,3 +8221,38 @@ body:has(.ps-contact2-hero) .ps-header-blur {
 .ps-work-card--light .ps-work-card__bob-label {
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.85);
 }
+
+/* A wordmark under the logo, for marks that are an icon with no type in them —
+   the FarmBooks mark is a wheat-and-book glyph, so the card needs to say the
+   name. Positioned off the same centre the logo uses. */
+.ps-work-card-wordmark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 118%);
+  z-index: 1;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #0A1628;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.ps-work-card:not(.ps-work-card--light) .ps-work-card-wordmark {
+  color: #FFFFFF;
+}
+/* The FarmBooks glyph is a fine-stroke 48x48 line icon. max-width only CAPS a
+   size — it will not scale a 48px image up — so this sets an explicit width. */
+.ps-work-card-logo--farmbooks {
+  width: 46%;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  transform: translate(-50%, -78%);
+}
+/* Both fade out together when the hover overlay takes the card. */
+.ps-work-card:hover .ps-work-card-wordmark,
+.ps-work-card:focus-within .ps-work-card-wordmark {
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
