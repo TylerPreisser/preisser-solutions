@@ -1291,8 +1291,14 @@ function BentoCard({ service, onClick }: BentoCardProps) {
 
       {/* Title — bottom left, overlaid on the visual */}
       <div className="ps-bento-card__text">
+        {/* "AI Integration." carries the brand blue wherever the three pillars
+            are listed together — see §2 of the reposition plan. This is the
+            most literal such place, so the device has to hold here. */}
         <h3
-          className="ps-bento-card__title"
+          className={
+            "ps-bento-card__title" +
+            (service.type === "ai" ? " ps-bento-card__title--accent" : "")
+          }
           id={`bento-card-${service.type}-title`}
         >
           {service.title}

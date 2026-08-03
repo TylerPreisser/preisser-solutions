@@ -963,7 +963,16 @@ ul, ol {
 .ps-hero-content {
   position: relative;
   z-index: 2;
-  max-width: 860px;
+  /* Same max-width and inline padding as .ps-container so the hero's left
+     edge lines up with every section heading below it. The measure of the
+     text itself is capped on the children instead.
+
+     width: 100% matters. .ps-hero is display:flex, so this is a flex item —
+     without it the box shrink-to-fits its content and `margin: 0 auto` then
+     centres that narrower box, putting the h1 121px inboard of every heading
+     below it instead of on the shared axis. */
+  width: 100%;
+  max-width: var(--container-max);
   margin: 0 auto;
   padding: 0 var(--container-padding);
   /* Left-aligned: the three-pillar wordmark reads as one stacked block. */
@@ -1027,7 +1036,7 @@ ul, ol {
      the floor takes over, and 22px * 10.38em = 228px still fits.
      Upper bound 3.75rem = 60px -> 623px, inside the 812px content box. */
 .ps-hero-headline {
-  font-size: clamp(1.375rem, 7.5vw, 3.75rem);
+  font-size: clamp(1.375rem, 7.5vw, 5.5rem);
   font-weight: 800;
   /* Tighter than the old 1.15 so the three lines read as one block. */
   line-height: 1.07;
@@ -8022,4 +8031,68 @@ input#contact-website {
 .ps-contact-form select,
 .ps-contact-form textarea {
   min-height: 44px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Design review corrections — 2026-08-02
+
+   From an adversarial critique of the rendered pages. Each item
+   quotes the measurement that justified it.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* The brand device: "AI Integration." carries the blue wherever the three
+   pillars appear together. It was rendering rgb(10,22,40) — identical to the
+   other two — in the pillar cards, which is the most literal place the three
+   are listed. Unlayered and after the [data-theme="light"] override so it
+   actually wins. */
+.ps-bento-card__title--accent {
+  color: var(--theme-accent-text);
+}
+[data-theme="light"] .ps-bento-card__title--accent {
+  color: var(--theme-accent-text);
+}
+
+/* Hero text measure. The hero column now spans the full 1200px container so
+   its left edge matches the page, but headline and body still need a sane
+   line length. */
+.ps-hero-headline { max-width: 20ch; }
+.ps-hero-subtitle { max-width: 62ch; }
+
+/* Full-width stacked CTA slabs are a phone treatment. At 768px they were
+   640px-wide blocks under a near-desktop 57px headline. */
+@media (min-width: 641px) and (max-width: 768px) {
+  .ps-hero-ctas {
+    flex-direction: row;
+    align-items: center;
+  }
+  .ps-hero-ctas .ps-btn {
+    width: auto;
+  }
+}
+
+/* The header is a translucent white slab; over the dark /contact hero it
+   composited to ~rgb(145,150,158) and read as a broken backdrop-filter. */
+.ps-contact2-hero ~ * .ps-header-blur,
+body:has(.ps-contact2-hero) .ps-header-blur {
+  background: rgba(10, 22, 40, 0.62);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+/* "Hover for more" is one fixed colour sitting over 17 different gradients.
+   On the bright blue-teal card its leading characters vanished and it read
+   "ver for more". White plus a scrim works over all of them. */
+.ps-work-card__bob-label {
+  color: #FFFFFF;
+  text-shadow:
+    0 1px 3px rgba(10, 22, 40, 0.85),
+    0 0 12px rgba(10, 22, 40, 0.55);
+}
+
+/* No text below 12px anywhere in the pillar card artwork. The mockups were
+   rendering labels down to 7px, unreadable on any phone. */
+.ps-bento-card [class*="label"],
+.ps-bento-card [class*="metric"],
+.ps-bento-card text,
+.ps-site-card [class*="label"] {
+  font-size: max(12px, 1em);
 }

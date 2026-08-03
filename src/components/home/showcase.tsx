@@ -28,6 +28,15 @@ const PILLAR = {
 
 type PillarKey = keyof typeof PILLAR;
 
+/**
+ * §2 fixes the pillar order. Sorting on render means a card's `pillars` array
+ * can be written in whatever order reads naturally for that project without
+ * the three cards disagreeing with each other on screen.
+ */
+const PILLAR_ORDER: PillarKey[] = ["software", "automation", "ai"];
+const inPillarOrder = (keys: PillarKey[]) =>
+  [...keys].sort((a, b) => PILLAR_ORDER.indexOf(a) - PILLAR_ORDER.indexOf(b));
+
 interface ShowcaseItem {
   name: string;
   href: string;
@@ -169,8 +178,14 @@ export function Showcase() {
               >
                 {/* Pillar tags — which pillar this build proves. "AI Integration."
                     renders in the brand blue; that colour split is the brand device. */}
-                <ul className="mb-4 flex flex-wrap gap-1.5" aria-label="Pillars this build proves">
-                  {item.pillars.map((key) => (
+                {/* min-h reserves two rows. FarmBooks carries three tags and
+                    wraps; without a reserved row its title sat 27px below the
+                    other two cards' titles. */}
+                <ul
+                  className="mb-4 flex min-h-[52px] flex-wrap content-start gap-1.5"
+                  aria-label="Pillars this build proves"
+                >
+                  {inPillarOrder(item.pillars).map((key) => (
                     <li
                       key={key}
                       className="inline-flex items-center rounded-full border px-2.5 py-1 text-[12px] font-medium leading-none"

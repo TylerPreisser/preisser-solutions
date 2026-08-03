@@ -26,78 +26,11 @@ interface CaseStudyCard {
 // verified in docs/plans/2026-08-02-three-pillar-reposition.md §9 — do not add
 // a number that is not on that list. The two anonymized clients stay anonymized.
 const caseStudyCards: CaseStudyCard[] = [
-  // FarmBooks — flagship. Document pipeline + Schedule-F-ready books.
-  {
-    title: "FarmBooks",
-    tags: "Business Software | Document Pipeline | AI Integration",
-    description:
-      "Photograph a farm bill; get Schedule-F-ready books. Vision and OCR read every bill independently and each has to prove the section total, so a dropped line surfaces instead of vanishing silently. Handwritten bills always route to a human, never auto-posted. Output is a formula-driven .xlsx with live two-way SharePoint sync where human edits win. 1,069 engine tests and 505 app tests green.",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #0D95E8 55%, #0F3D2E 100%)",
-    href: "/case-studies/farmbooks",
-    svgIcon: (
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        {/* Bill / receipt */}
-        <path d="M8 5h22v34l-3.5-2.5L23 39l-3.5-2.5L16 39l-3.5-2.5L9 39" strokeOpacity="0.55" />
-        <path d="M8 5v34" strokeOpacity="0.55" />
-        <path d="M14 14h11" strokeOpacity="0.8" />
-        <path d="M14 20h11" strokeOpacity="0.8" />
-        <path d="M14 26h6" strokeOpacity="0.8" />
-        {/* Camera lens — the photograph step */}
-        <circle cx="35" cy="30" r="9" fill="currentColor" fillOpacity="0.14" stroke="currentColor" strokeOpacity="0.9" />
-        <circle cx="35" cy="30" r="3.5" strokeOpacity="0.9" />
-        <path d="M31 19h8l2 3" strokeOpacity="0.5" />
-      </svg>
-    ),
-  },
-  // C3 Studio — one admin login behind a website and a native iOS app.
-  {
-    title: "C3 Studio",
-    tags: "Business Software | Admin Platform | Website + Native App",
-    description:
-      "One admin login runs a website, a native iOS app, scheduling, comms, care, giving, and kids check-in. 18 typed content block types are rendered identically by the website and the native app from one API contract, and Draft to Publish flips the site and the app live at the same moment.",
-    gradient: "linear-gradient(135deg, #0A1628 0%, #1B2E5C 50%, #0D95E8 100%)",
-    href: "/case-studies/c3-studio",
-    svgIcon: (
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        {/* Desktop front end */}
-        <rect x="4" y="9" width="28" height="20" rx="2.5" strokeOpacity="0.75" />
-        <path d="M4 15h28" strokeOpacity="0.4" />
-        <path d="M14 33h8" strokeOpacity="0.5" />
-        <path d="M18 29v4" strokeOpacity="0.5" />
-        {/* Native app front end */}
-        <rect x="31" y="21" width="13" height="22" rx="3" fill="currentColor" fillOpacity="0.12" stroke="currentColor" strokeOpacity="0.9" />
-        <path d="M35 25h5" strokeOpacity="0.6" />
-        <path d="M35 31h5" strokeOpacity="0.45" />
-        <path d="M35 35h5" strokeOpacity="0.45" />
-        {/* One contract feeding both */}
-        <circle cx="9" cy="12" r="1" fill="currentColor" fillOpacity="0.7" stroke="none" />
-        <circle cx="13" cy="12" r="1" fill="currentColor" fillOpacity="0.45" stroke="none" />
-      </svg>
-    ),
-  },
-  // NWKS Encounter — registration through roster for two ministries on one system.
-  {
-    title: "NWKS Encounter",
-    tags: "Business Automation | Registration to Roster | Two Ministries",
-    description:
-      "Registration, confirmation, reminder, roster — for two separate ministries running on one system. A dedicated always-on cron worker drains scheduled campaigns in bounded chunks, because a synchronous send to 2,402 recipients took 67 seconds and would blow the per-request CPU budget. Admin access is protected by passkey and WebAuthn two-factor with a recovery ladder.",
-    gradient: "linear-gradient(135deg, #0F172A 0%, #334155 45%, #0D95E8 100%)",
-    href: "/case-studies/nwks-encounter",
-    svgIcon: (
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        {/* Roster clipboard */}
-        <rect x="7" y="7" width="24" height="32" rx="2.5" strokeOpacity="0.7" />
-        <path d="M17 4h4a2 2 0 0 1 2 2v2h-8V6a2 2 0 0 1 2-2z" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeOpacity="0.7" />
-        <path d="M13 17h12" strokeOpacity="0.75" />
-        <path d="M13 23h12" strokeOpacity="0.6" />
-        <path d="M13 29h7" strokeOpacity="0.6" />
-        {/* Scheduled send */}
-        <circle cx="37" cy="31" r="8" fill="currentColor" fillOpacity="0.14" stroke="currentColor" strokeOpacity="0.9" />
-        <path d="M37 27v4.5l3 1.5" strokeOpacity="0.9" />
-        <path d="M33 12h10l-5 5-5-5z" fill="currentColor" fillOpacity="0.25" stroke="currentColor" strokeOpacity="0.6" />
-      </svg>
-    ),
-  },
+  // FarmBooks, C3 Studio and NWKS Encounter deliberately do NOT appear here.
+  // They get the Showcase section immediately above this one, with real detail.
+  // Listing them again as hover tiles argued the same point twice and made the
+  // strongest proof on the page look like filler. This carousel is the breadth
+  // of prior client work; the Showcase is the depth on the three new platforms.
   // Alliant Insurance ecosystem MGU: AI Submission Processing (anonymized per privacy rules)
   {
     title: "An MGU Within the Alliant Insurance Ecosystem",
