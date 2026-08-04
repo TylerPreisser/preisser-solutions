@@ -47,6 +47,9 @@
   --color-text-dark-primary:   #FFFFFF;
   --color-text-dark-secondary: #94A3B8;
   --color-text-dark-muted:     #64748B;
+  /* #64748B is 3.81:1 on the dark page — fine for a dot or a rule, not for
+     text. Anything that carries words uses this instead (6.13:1). */
+  --color-text-dark-muted-text: #8A97AC;
 
   /* Text on light */
   --color-text-light-primary:   #0A1628;
@@ -89,7 +92,7 @@
   --theme-bg-card:      rgba(255,255,255,0.05);
   --theme-text-primary:   #FFFFFF;
   --theme-text-secondary: #94A3B8;
-  --theme-text-muted:     #64748B;
+  --theme-text-muted:     #8A97AC;  /* was #64748B: 3.81:1 on the dark page, 3.56:1 on a dark card. */
   --theme-border:         rgba(255, 255, 255, 0.08);
   --theme-nav-bg:         rgba(10, 22, 40, 0.95);
   --theme-nav-shadow:
@@ -5442,7 +5445,7 @@ ul, ol {
 
 .ps-footer-location {
   font-size: 0.875rem;
-  color: var(--color-text-dark-muted);
+  color: var(--color-text-dark-muted-text);
 }
 
 .ps-footer-signup {
@@ -5555,7 +5558,7 @@ ul, ol {
 
 .ps-footer-social a {
   font-size: 0.875rem;
-  color: var(--color-text-dark-muted);
+  color: var(--color-text-dark-muted-text);
   transition: color 150ms ease;
 }
 
@@ -5569,11 +5572,11 @@ ul, ol {
   align-items: center;
   gap: 6px;
   font-size: 0.875rem;
-  color: var(--color-text-dark-muted);
+  color: var(--color-text-dark-muted-text);
 }
 
 .ps-footer-legal a {
-  color: var(--color-text-dark-muted);
+  color: var(--color-text-dark-muted-text);
   transition: color 150ms ease;
 }
 
@@ -5871,17 +5874,19 @@ ul, ol {
 }
 
 .ps-section-header h2 {
+  /* Theme-aware: the section background follows the theme, so the text must
+     too. Hardcoding the light-theme ink rendered this invisible in dark. */
+  color: var(--theme-text-primary);
   font-size: clamp(1.75rem, 4vw, 3rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.1;
-  color: var(--color-text-light-primary);
   margin-top: 12px;
 }
 
 .ps-section-header p {
   font-size: 1.0625rem;
-  color: var(--color-text-light-secondary);
+  color: var(--theme-text-secondary);
   margin-top: 16px;
   max-width: 600px;
   margin-left: auto;
@@ -8285,4 +8290,14 @@ body:has(.ps-contact2-hero) .ps-header-blur {
 .ps-footer-tagline-line--accent,
 [data-theme="light"] .ps-footer-tagline-line--accent {
   color: var(--color-primary);
+}
+
+/* The footer flips with the theme (#F8FAFC on light), so the muted text that
+   was raised for the dark background has to come back down on the light one.
+   #8A97AC is 6.13:1 on the dark page but only 2.83:1 on the light footer. */
+[data-theme="light"] .ps-footer-location,
+[data-theme="light"] .ps-footer-social a,
+[data-theme="light"] .ps-footer-legal,
+[data-theme="light"] .ps-footer-legal a {
+  color: var(--theme-text-secondary);
 }

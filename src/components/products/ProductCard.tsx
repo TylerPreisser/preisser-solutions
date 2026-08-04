@@ -61,7 +61,7 @@ export function ProductCard({ product, index }: Props) {
       <Link
         href={`/products/${product.slug}`}
         prefetch={false}
-        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_24px_60px_-20px_rgba(21, 144, 255,0.18)]"
+        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_24px_60px_-20px_rgba(21,144,255,0.18)]"
         style={{
           borderColor: "var(--theme-card-border)",
           background: "var(--theme-result-card-bg)",

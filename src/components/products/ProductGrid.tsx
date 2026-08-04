@@ -305,7 +305,7 @@ export function ProductGrid({ products }: Props) {
                 <Link
                   href="/contact?inquiry=custom-product"
                   prefetch={false}
-                  className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-[0_8px_30px_rgba(21, 144, 255,0.3)]"
+                  className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-[0_8px_30px_rgba(21,144,255,0.3)]"
                   style={{ background: "var(--color-primary)" }}
                 >
                   Send us the brief

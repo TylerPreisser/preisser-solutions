@@ -635,7 +635,7 @@ function SpecsSection({ data }: { data: CaseStudyData }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ duration: 0.6, delay: idx * 0.05 }}
-                  className="group relative rounded-2xl p-8 transition-all hover:border-[#1590FF]/40 hover:shadow-[0_12px_40px_rgba(21, 144, 255,0.08)]"
+                  className="group relative rounded-2xl p-8 transition-all hover:border-[#1590FF]/40 hover:shadow-[0_12px_40px_rgba(21,144,255,0.08)]"
                   style={{
                     border: "1px solid var(--theme-card-border)",
                     background: "var(--theme-section-alt)",
@@ -896,7 +896,7 @@ function RelatedSection({ data }: { data: CaseStudyData }) {
               key={r.slug}
               href={`/case-studies/${r.slug}`}
               prefetch={false}
-              className="group relative flex flex-col overflow-hidden rounded-2xl p-7 transition-all hover:-translate-y-1 hover:border-[#1590FF]/40 hover:shadow-[0_24px_60px_-20px_rgba(21, 144, 255,0.18)]"
+              className="group relative flex flex-col overflow-hidden rounded-2xl p-7 transition-all hover:-translate-y-1 hover:border-[#1590FF]/40 hover:shadow-[0_24px_60px_-20px_rgba(21,144,255,0.18)]"
               style={{
                 border: "1px solid var(--theme-card-border)",
                 background: "var(--theme-result-card-bg)",
@@ -964,7 +964,7 @@ function CtaSection({ data }: { data: CaseStudyData }) {
           <Link
             href={data.cta.buttonHref}
             prefetch={false}
-            className="group inline-flex items-center gap-2 rounded-xl bg-[#1590FF] px-7 py-3.5 text-base font-medium text-white shadow-[0_8px_30px_rgba(21, 144, 255,0.35)] transition-all hover:bg-[#0D76D6] hover:shadow-[0_12px_40px_rgba(21, 144, 255,0.45)]"
+            className="group inline-flex items-center gap-2 rounded-xl bg-[#1590FF] px-7 py-3.5 text-base font-medium text-white shadow-[0_8px_30px_rgba(21,144,255,0.35)] transition-all hover:bg-[#0D76D6] hover:shadow-[0_12px_40px_rgba(21,144,255,0.45)]"
           >
             {data.cta.buttonLabel}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

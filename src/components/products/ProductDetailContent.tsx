@@ -143,7 +143,7 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
                 <Link
                   href={product.cta.buttonHref}
                   prefetch={false}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-[0_8px_30px_rgba(21, 144, 255,0.3)]"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-[0_8px_30px_rgba(21,144,255,0.3)]"
                   style={{ background: "var(--color-primary)" }}
                 >
                   {product.cta.buttonLabel}
@@ -159,7 +159,7 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
                 <Link
                   href={`/case-studies/${linkedCaseStudy.slug}`}
                   prefetch={false}
-                  className="group rounded-2xl border p-5 transition-all duration-200 hover:border-[#1590FF]/30 hover:shadow-[0_12px_30px_-8px_rgba(21, 144, 255,0.12)]"
+                  className="group rounded-2xl border p-5 transition-all duration-200 hover:border-[#1590FF]/30 hover:shadow-[0_12px_30px_-8px_rgba(21,144,255,0.12)]"
                   style={{
                     borderColor: "var(--theme-card-border)",
                     background: "var(--theme-card-bg)",
@@ -469,7 +469,7 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
                 <Link
                   href="/contact?inquiry=custom-product"
                   prefetch={false}
-                  className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-[0_8px_30px_rgba(21, 144, 255,0.3)]"
+                  className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-[0_8px_30px_rgba(21,144,255,0.3)]"
                   style={{ background: "var(--color-primary)" }}
                 >
                   Send us the brief

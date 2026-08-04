@@ -72,11 +72,14 @@ function parseArgs(argv) {
     if (a === '--pages') { out.pages = []; while (argv[i + 1] && !argv[i + 1].startsWith('--')) out.pages.push(argv[++i]); }
     else if (a === '--devices') out.devices = argv[++i].split(',').map((s) => s.trim());
     else if (a === '--engine') out.engine = argv[++i];
+    else if (a === '--theme') out.theme = argv[++i];
     else if (a === '--no-shots') out.shots = false;
   }
   return out;
 }
 const ARGS = parseArgs(process.argv.slice(2));
+/** Dark first — it is this site's default. */
+const THEMES = ARGS.theme ? [ARGS.theme] : ['dark', 'light'];
 
 // ---------------------------------------------------------------------------
 // static server for out/
@@ -494,11 +497,19 @@ async function main() {
       page.on('pageerror', (e) => consoleErrors.push('pageerror: ' + String(e).slice(0, 200)));
 
       for (const route of pages) {
+       // BOTH themes. Playwright defaults to colorScheme:light and this site is
+       // dark-FIRST — auditing only the default meant every run before
+       // 2026-08-03 was blind to dark-theme contrast. A reviewer found
+       // --theme-text-muted at 3.56:1 on a dark card that this script had
+       // passed with 0 blockers.
+       for (const theme of THEMES) {
         const url = base + route;
-        const entry = { engine: engineName, device: device.name, viewport: `${device.width}x${device.height}`, route, findings: [], meta: null, consoleErrors: [] };
+        const entry = { engine: engineName, device: device.name, theme, viewport: `${device.width}x${device.height}`, route, findings: [], meta: null, consoleErrors: [] };
         try {
           const resp = await page.goto(url, { waitUntil: 'networkidle', timeout: 45000 });
           entry.status = resp ? resp.status() : null;
+          await page.evaluate((t) => document.documentElement.setAttribute('data-theme', t), theme);
+          await page.waitForTimeout(180);
           // let scroll-reveal animations settle so we screenshot the resting state
           await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
           await page.waitForTimeout(450);
@@ -514,7 +525,7 @@ async function main() {
             const slug = route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '-');
             const dir = path.join(QA_DIR, 'shots', engineName, device.name.replace(/\s+/g, '-'));
             await fsp.mkdir(dir, { recursive: true });
-            await page.screenshot({ path: path.join(dir, `${slug}.png`), fullPage: true });
+            await page.screenshot({ path: path.join(dir, `${slug}-${theme}.png`), fullPage: true });
           }
         } catch (err) {
           entry.error = String(err).slice(0, 300);
@@ -524,7 +535,8 @@ async function main() {
         const blockers = entry.findings.filter((f) => f.severity === 'blocker').length;
         const majors = entry.findings.filter((f) => f.severity === 'major').length;
         const flag = blockers ? 'BLOCK' : majors ? 'major' : 'ok';
-        console.log(`  [${flag.padEnd(5)}] ${engineName.padEnd(8)} ${device.name.padEnd(18)} ${route.padEnd(16)} ${blockers}b ${majors}m`);
+        console.log(`  [${flag.padEnd(5)}] ${engineName.padEnd(8)} ${theme.padEnd(5)} ${device.name.padEnd(18)} ${route.padEnd(16)} ${blockers}b ${majors}m`);
+       }
       }
       await context.close();
     }
@@ -560,7 +572,7 @@ async function main() {
   server.close();
 
   // ---- summarise -----------------------------------------------------------
-  const all = report.results.flatMap((r) => r.findings.map((f) => ({ ...f, engine: r.engine, device: r.device, route: r.route })));
+  const all = report.results.flatMap((r) => r.findings.map((f) => ({ ...f, engine: r.engine, device: r.device, theme: r.theme, route: r.route })));
   const blockers = all.filter((f) => f.severity === 'blocker');
   const majors = all.filter((f) => f.severity === 'major');
   const minors = all.filter((f) => f.severity === 'minor');
@@ -570,7 +582,7 @@ async function main() {
   for (const f of all) {
     const key = `${f.severity}|${f.kind}|${f.selector}|${f.expected}`;
     if (!grouped.has(key)) grouped.set(key, { ...f, contexts: [] });
-    grouped.get(key).contexts.push(`${f.engine}/${f.device}${f.route === '/' ? '' : f.route}`);
+    grouped.get(key).contexts.push(`${f.engine}/${f.theme || 'default'}/${f.device}${f.route === '/' ? '' : f.route}`);
   }
   const uniq = [...grouped.values()].sort((a, b) => {
     const rank = { blocker: 0, major: 1, minor: 2 };

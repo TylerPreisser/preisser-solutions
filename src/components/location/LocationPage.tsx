@@ -575,7 +575,7 @@ function NearbyAreasSection({ data }: { data: LocationPageData }) {
           {data.nearbyAreas.map((area, idx) => {
             const inner = (
               <div
-                className="flex h-full flex-col justify-between gap-2 rounded-xl px-4 py-4 transition-all hover:-translate-y-0.5 hover:border-[#1590FF]/40 hover:shadow-[0_12px_30px_-15px_rgba(21, 144, 255,0.25)]"
+                className="flex h-full flex-col justify-between gap-2 rounded-xl px-4 py-4 transition-all hover:-translate-y-0.5 hover:border-[#1590FF]/40 hover:shadow-[0_12px_30px_-15px_rgba(21,144,255,0.25)]"
                 style={{
                   border: "1px solid var(--theme-card-border)",
                   background: "var(--theme-result-card-bg)",
@@ -687,7 +687,7 @@ function ServiceCardsSection({ data }: { data: LocationPageData }) {
 function ServiceCard({ card }: { card: LocationPageData["serviceCards"][number] }) {
   const inner = (
     <div
-      className="group relative flex h-full flex-col rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#1590FF]/40 hover:shadow-[0_24px_60px_-20px_rgba(21, 144, 255,0.18)]"
+      className="group relative flex h-full flex-col rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#1590FF]/40 hover:shadow-[0_24px_60px_-20px_rgba(21,144,255,0.18)]"
       style={{
         border: "1px solid var(--theme-card-border)",
         background: "var(--theme-result-card-bg)",
@@ -920,7 +920,7 @@ function CaseStudiesSection({ data }: { data: LocationPageData }) {
             >
               <Link
                 href={`/case-studies/${cs.slug}`}
-                className="group relative flex h-full flex-col overflow-hidden rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#1590FF]/40 hover:shadow-[0_24px_60px_-20px_rgba(21, 144, 255,0.18)]"
+                className="group relative flex h-full flex-col overflow-hidden rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#1590FF]/40 hover:shadow-[0_24px_60px_-20px_rgba(21,144,255,0.18)]"
                 style={{
                   border: "1px solid var(--theme-card-border)",
                   background: "var(--theme-result-card-bg)",
@@ -1360,7 +1360,7 @@ function CtaSection({ data }: { data: LocationPageData }) {
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <Link
             href={data.cta.primaryButton.href}
-            className="group inline-flex items-center gap-2 rounded-xl bg-[#1590FF] px-7 py-3.5 text-base font-medium text-white shadow-[0_8px_30px_rgba(21, 144, 255,0.35)] transition-all hover:bg-[#0D76D6] hover:shadow-[0_12px_40px_rgba(21, 144, 255,0.45)]"
+            className="group inline-flex items-center gap-2 rounded-xl bg-[#1590FF] px-7 py-3.5 text-base font-medium text-white shadow-[0_8px_30px_rgba(21,144,255,0.35)] transition-all hover:bg-[#0D76D6] hover:shadow-[0_12px_40px_rgba(21,144,255,0.45)]"
           >
             {data.cta.primaryButton.label}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
