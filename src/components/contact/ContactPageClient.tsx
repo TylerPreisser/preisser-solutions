@@ -152,21 +152,26 @@ export function ContactPageClient() {
 
     setSubmitting(true);
 
-    try {
-      await fetch("https://hooks.zapier.com/hooks/catch/21721728/u7hhmth/", {
-        method: "POST",
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          message: form.message,
-        }),
-      });
-    } catch {
-      // Zapier webhook is fire-and-forget — still show success
-    }
+    // No third-party webhook. This site is a static export, so there is no
+    // server of ours to post to — and routing enquiries through someone else's
+    // automation means a lead can sit in a queue we cannot see. The message
+    // goes straight from the visitor's mail client to the inbox instead:
+    // nothing in between, nothing to expire, nothing to misconfigure.
+    window.location.href = buildMailto();
     setSubmitted(true);
     setSubmitting(false);
   };
+
+  /** The enquiry, addressed and pre-written, ready for the visitor to send. */
+  const buildMailto = () =>
+    `mailto:${siteConfig.contact.email}` +
+    `?subject=${encodeURIComponent(
+      `Website enquiry from ${form.name || "a visitor"}`
+    )}` +
+    `&body=${encodeURIComponent(
+      `Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}\n\n` +
+        `— sent from preissersolutions.com/contact`
+    )}`;
 
   return (
     <>
@@ -233,9 +238,15 @@ export function ContactPageClient() {
                         <path d="M10 16.5l4 4 8-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
-                    <h3 className="ps-contact-success__heading">Message sent.</h3>
+                    <h3 className="ps-contact-success__heading">Ready to send.</h3>
                     <p className="ps-contact-success__body">
-                      Thanks for reaching out. We&rsquo;ll review your message and be in touch.
+                      Your email app should have opened with the message already
+                      written. Hit send and it comes straight to us &mdash; we read
+                      every one ourselves.
+                    </p>
+                    <p className="ps-contact-success__body" style={{ marginTop: 12 }}>
+                      Nothing opened? Email{" "}
+                      <a href={buildMailto()}>{siteConfig.contact.email}</a> directly.
                     </p>
                   </div>
                 ) : (
