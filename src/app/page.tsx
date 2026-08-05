@@ -163,6 +163,16 @@ export default function HomePage() {
         className="ps-home-link-cluster"
       >
         <div className="ps-home-link-cluster__inner">
+          <div className="ps-home-link-cluster__header">
+            <span className="ps-eyebrow ps-eyebrow--light">Explore</span>
+            <h2 className="ps-section-heading ps-section-heading--light">
+              Everything we do, one tap away
+            </h2>
+            <p className="ps-home-link-cluster__intro">
+              Every service we offer and every market we build for. Open a panel
+              to jump straight to what you need.
+            </p>
+          </div>
           <HomeLinkDropdown
             title="Services"
             summary="Business software, business automation, AI integration, websites, and search visibility."

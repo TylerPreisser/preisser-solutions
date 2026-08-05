@@ -28,7 +28,6 @@ function splitPillars(h1: string): string[] {
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
-  const subheadRef = useRef<HTMLParagraphElement>(null);
   const ctasRef = useRef<HTMLDivElement>(null);
 
   const pillars = splitPillars(siteConfig.hero.h1);
@@ -48,8 +47,8 @@ export function Hero() {
     return () => bg.destroy();
   }, []);
 
-  // GSAP entrance timeline — the three pillar lines on their own stagger, then
-  // the subhead, then the CTAs. Only opacity + transform.
+  // GSAP entrance timeline — the three pillar lines stagger in, then the CTAs.
+  // Only opacity + transform.
   useEffect(() => {
     const lines = headlineRef.current
       ? Array.from(
@@ -57,7 +56,7 @@ export function Hero() {
         )
       : [];
 
-    const all = [...lines, subheadRef.current, ctasRef.current].filter(
+    const all = [...lines, ctasRef.current].filter(
       (el): el is HTMLElement => el !== null
     );
 
@@ -95,11 +94,6 @@ export function Hero() {
             stagger: 0.12,
             ease: "power3.out",
           })
-          .to(
-            subheadRef.current,
-            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-            "-=0.3"
-          )
           .to(
             ctasRef.current,
             { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
@@ -164,10 +158,6 @@ export function Hero() {
             </span>
           ))}
         </h1>
-
-        <p ref={subheadRef} className="ps-hero-subtitle">
-          {siteConfig.hero.subhead}
-        </p>
 
         <div ref={ctasRef} className="ps-hero-ctas">
           {/* prefetch={false}: eager prefetch on above-the-fold CTAs was the

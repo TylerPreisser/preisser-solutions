@@ -114,21 +114,28 @@ export const siteConfig = {
       href: "/contact",
     },
     secondaryCta: {
+      // Jumps to the "Real Projects. Real Results." carousel further down the
+      // homepage (CaseStudies section, id="case-studies") rather than routing
+      // to the full /case-studies page.
       label: "See what we've built",
-      href: "/case-studies",
+      href: "#case-studies",
     },
   },
-  // R-034: trust / value strip. 8 pipe-separated items rendered as pill items
-  // in the existing horizontal marquee.
+  // R-034: the "what we've built" marquee. Only things we've actually built —
+  // no positioning lines (Hays / founder-led / built in-house live in the
+  // proof bar, meta, and JSON-LD instead). Each item renders as a pill in the
+  // horizontal marquee below the metrics bar.
   valueStrip: [
-    "Hays, Kansas based",
-    "Founder-led",
     "Admin dashboards",
     "Custom databases",
+    "AI automation",
     "Document pipelines",
     "Workflow automation",
-    "AI integration",
-    "Built in-house",
+    "Client & member portals",
+    "Inventory systems",
+    "Invoice processing",
+    "CRM & lead pipelines",
+    "Power BI dashboards",
   ],
   // R-035: verifiable proof points. Sourced from case studies. Each entry
   // is a self-contained line with explicit client / context so the bar is
