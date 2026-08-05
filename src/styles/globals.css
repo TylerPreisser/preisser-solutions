@@ -4399,72 +4399,6 @@ ul, ol {
   gap: 16px;
 }
 
-/* ── Inline enquiry form (homepage CTA) ─────────────────────────
-   Reuses the .ps-contact-field* controls from the /contact page so
-   the two forms stay visually identical. Constrained + left-aligned
-   inside the otherwise centered CTA content. */
-.ps-cta-form {
-  max-width: 560px;
-  margin: 4px auto 0;
-  text-align: left;
-}
-
-.ps-cta-form-footer {
-  margin-top: 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.ps-cta-form-submit {
-  width: 100%;
-  justify-content: center;
-}
-
-.ps-cta-form-note {
-  margin: 0;
-  font-size: 0.8125rem;
-  color: var(--theme-text-muted);
-  transition: color 300ms ease;
-}
-
-.ps-cta-form-success {
-  max-width: 520px;
-  margin: 0 auto;
-  padding: 30px 26px;
-  text-align: center;
-  border: 1px solid var(--theme-card-border);
-  border-radius: var(--radius-card);
-  background: var(--theme-card-bg);
-}
-
-.ps-cta-form-success__check {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-  color: var(--color-green);
-}
-
-.ps-cta-form-success__heading {
-  margin: 0 0 8px;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--theme-text-primary);
-}
-
-.ps-cta-form-success__body {
-  margin: 0;
-  font-size: 0.98rem;
-  line-height: 1.6;
-  color: var(--theme-text-secondary);
-}
-
-.ps-cta-form-success__body a {
-  color: var(--theme-accent-text);
-  font-weight: 600;
-}
-
 @media (max-width: 768px) {
   .ps-cta-section {
     padding: var(--section-py-mobile) 0;
@@ -6313,6 +6247,21 @@ ul, ol {
   resize: vertical;
 }
 
+/* Native <select> styled to match the inputs, with a custom chevron since
+   appearance:none removes the default one. */
+.ps-contact-field__select {
+  cursor: pointer;
+  padding-right: 44px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%238A97AC' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+
+.ps-contact-field__optional {
+  font-weight: 500;
+  color: var(--theme-text-muted);
+}
+
 .ps-contact-form-footer {
   margin-top: 20px;
   display: flex;
@@ -7390,101 +7339,143 @@ html, body {
   padding: 4px 0 30px;
 }
 
-.ps-home-link-grid {
+/* Services — a clean, hoverable list instead of bordered tiles. */
+.ps-explore-services {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.ps-home-link-grid--compact {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 20px;
 }
 
-.ps-home-link-item {
-  display: block;
-  height: 100%;
+.ps-explore-service {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
   padding: 15px 16px;
-  border-radius: 8px;
-  border: 1px solid var(--theme-card-border);
-  background: color-mix(in srgb, var(--theme-bg-primary) 88%, white 4%);
+  border-radius: 12px;
   transition:
-    background-color 180ms var(--ease-out-expo),
-    border-color 180ms var(--ease-out-expo),
-    transform 180ms var(--ease-out-expo),
-    box-shadow 180ms var(--ease-out-expo);
+    background-color 160ms var(--ease-out-expo),
+    transform 160ms var(--ease-out-expo);
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
-[data-theme="light"] .ps-home-link-item {
-  background: #FFFFFF;
+.ps-explore-service:hover,
+.ps-explore-service:focus-visible {
+  background: color-mix(in srgb, var(--color-primary) 9%, transparent);
 }
 
-.ps-home-link-item:hover,
-.ps-home-link-item:focus-visible {
-  border-color: color-mix(in srgb, var(--color-primary) 60%, var(--theme-card-border));
-  transform: translateY(-1px);
-  box-shadow: 0 12px 28px rgba(13, 149, 232, 0.12);
+.ps-explore-service:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-primary) 72%, white);
+  outline-offset: 2px;
 }
 
-.ps-home-link-item:active {
-  transform: translateY(1px) scale(0.99);
-  box-shadow: 0 6px 16px rgba(13, 149, 232, 0.10);
+.ps-explore-service:hover .ps-explore-service__arrow {
+  color: var(--color-primary);
+  transform: translateX(2px);
 }
 
-.ps-home-link-item__label {
+.ps-explore-service__text {
+  min-width: 0;
+}
+
+.ps-explore-service__label {
   display: block;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 650;
   line-height: 1.3;
   color: var(--theme-text-primary);
 }
 
-.ps-home-link-item__desc {
+.ps-explore-service__desc {
   display: block;
-  margin-top: 6px;
-  font-size: 0.84rem;
+  margin-top: 4px;
+  font-size: 0.85rem;
   line-height: 1.45;
   color: var(--theme-text-secondary);
 }
 
-.ps-service-area-groups {
-  display: grid;
-  gap: 34px;
+.ps-explore-service__arrow {
+  flex: 0 0 auto;
+  color: var(--theme-text-muted);
+  transition:
+    color 160ms var(--ease-out-expo),
+    transform 160ms var(--ease-out-expo);
 }
 
-.ps-service-area-group {
-  display: grid;
-  grid-template-columns: minmax(180px, 0.42fr) minmax(0, 1fr);
-  gap: 24px;
-  padding-top: 28px;
-  border-top: 1px solid var(--theme-card-border);
-}
-
-.ps-service-area-group:first-child {
-  padding-top: 0;
-  border-top: 0;
-}
-
-.ps-service-area-group__header h3 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-  color: var(--theme-text-primary);
-}
-
-.ps-service-area-group__header p {
-  margin: 8px 0 0;
-  font-size: 0.88rem;
-  line-height: 1.55;
+/* Service area — a short lead + a coverage chip cloud per region. Reads as
+   breadth ("we build everywhere") instead of a dense grid of link tiles. */
+.ps-explore-area-lead {
+  max-width: 660px;
+  margin: 0 0 26px;
+  font-size: clamp(0.95rem, 1.4vw, 1.0625rem);
+  line-height: 1.65;
   color: var(--theme-text-secondary);
 }
 
-@media (max-width: 900px) {
-  .ps-home-link-grid,
-  .ps-home-link-grid--compact,
-  .ps-service-area-group {
+.ps-explore-regions {
+  display: grid;
+  gap: 24px;
+}
+
+.ps-explore-region__name {
+  margin: 0 0 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--theme-text-muted);
+}
+
+.ps-explore-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ps-explore-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 15px;
+  border-radius: 999px;
+  border: 1px solid var(--theme-card-border);
+  background: color-mix(in srgb, var(--theme-bg-primary) 55%, transparent);
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--theme-text-secondary);
+  transition:
+    background-color 160ms var(--ease-out-expo),
+    border-color 160ms var(--ease-out-expo),
+    color 160ms var(--ease-out-expo),
+    transform 160ms var(--ease-out-expo);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[data-theme="light"] .ps-explore-chip {
+  background: #FFFFFF;
+}
+
+.ps-explore-chip:hover,
+.ps-explore-chip:focus-visible {
+  border-color: color-mix(in srgb, var(--color-primary) 55%, var(--theme-card-border));
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+  transform: translateY(-1px);
+}
+
+.ps-explore-chip:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-primary) 72%, white);
+  outline-offset: 2px;
+}
+
+.ps-explore-chip:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+  .ps-explore-services {
     grid-template-columns: 1fr;
   }
 }

@@ -177,43 +177,78 @@ export default function HomePage() {
             title="Services"
             summary="Business software, business automation, AI integration, websites, and search visibility."
           >
-            <ul className="ps-home-link-grid">
+            <div className="ps-explore-services">
               {serviceLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} prefetch={false} className="ps-home-link-item">
-                    <span className="ps-home-link-item__label">{link.label}</span>
-                    <span className="ps-home-link-item__desc">{link.description}</span>
-                  </Link>
-                </li>
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  prefetch={false}
+                  className="ps-explore-service"
+                >
+                  <span className="ps-explore-service__text">
+                    <span className="ps-explore-service__label">{link.label}</span>
+                    <span className="ps-explore-service__desc">{link.description}</span>
+                  </span>
+                  <svg
+                    className="ps-explore-service__arrow"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M6 3l5 5-5 5"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </Link>
               ))}
-            </ul>
+            </div>
           </HomeLinkDropdown>
 
           <HomeLinkDropdown
             title="Service area"
-            summary="Hays, northwest Kansas, and the regional markets we support from here."
+            summary="Kansas is home base — we build for businesses anywhere."
           >
-            <div className="ps-service-area-groups">
-              {serviceAreaGroups.map((region) => (
-                <section key={region.name} className="ps-service-area-group" aria-labelledby={`service-area-${region.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}>
-                  <div className="ps-service-area-group__header">
-                    <h3 id={`service-area-${region.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}>
+            <p className="ps-explore-area-lead">
+              We&apos;re based in Hays and work across every Kansas market, and we
+              take on remote clients wherever the fit is right. Distance has never
+              been the thing that decides a project. Here&apos;s where we already
+              build.
+            </p>
+            <div className="ps-explore-regions">
+              {serviceAreaGroups.map((region) => {
+                const regionId = `service-area-${region.name
+                  .toLowerCase()
+                  .replace(/[^a-z0-9]+/g, "-")}`;
+                return (
+                  <section
+                    key={region.name}
+                    className="ps-explore-region"
+                    aria-labelledby={regionId}
+                  >
+                    <h3 id={regionId} className="ps-explore-region__name">
                       {region.name}
                     </h3>
-                    <p>{region.blurb}</p>
-                  </div>
-                  <ul className="ps-home-link-grid ps-home-link-grid--compact">
-                    {region.links.map((link) => (
-                      <li key={link.href}>
-                        <Link href={link.href} prefetch={false} className="ps-home-link-item">
-                          <span className="ps-home-link-item__label">{link.label}</span>
-                          <span className="ps-home-link-item__desc">{link.description}</span>
+                    <div className="ps-explore-chips">
+                      {region.links.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          prefetch={false}
+                          className="ps-explore-chip"
+                        >
+                          {link.label}
                         </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              ))}
+                      ))}
+                    </div>
+                  </section>
+                );
+              })}
             </div>
           </HomeLinkDropdown>
         </div>

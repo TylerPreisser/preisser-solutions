@@ -36,13 +36,23 @@ const contactFaqs = [
 interface FormState {
   name: string;
   email: string;
-  message: string;
+  business: string;
+  task: string;
+  cost: string;
+  tried: string;
+  timeline: string;
+  phone: string;
 }
 
 const initialForm: FormState = {
   name: "",
   email: "",
-  message: "",
+  business: "",
+  task: "",
+  cost: "",
+  tried: "",
+  timeline: "",
+  phone: "",
 };
 
 export function ContactPageClient() {
@@ -129,7 +139,9 @@ export function ContactPageClient() {
   }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -163,15 +175,32 @@ export function ContactPageClient() {
   };
 
   /** The enquiry, addressed and pre-written, ready for the visitor to send. */
-  const buildMailto = () =>
-    `mailto:${siteConfig.contact.email}` +
-    `?subject=${encodeURIComponent(
-      `Website enquiry from ${form.name || "a visitor"}`
-    )}` +
-    `&body=${encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}\n\n` +
-        `— sent from preissersolutions.com/contact`
-    )}`;
+  const buildMailto = () => {
+    const blocks: string[] = [];
+
+    const contact = [
+      `Name: ${form.name}`,
+      `Email: ${form.email}`,
+      form.phone ? `Phone: ${form.phone}` : "",
+      form.business ? `Business: ${form.business}` : "",
+    ].filter(Boolean);
+    blocks.push(contact.join("\n"));
+
+    if (form.task) blocks.push(`The one task they want handled:\n${form.task}`);
+    if (form.cost) blocks.push(`What it's costing them:\n${form.cost}`);
+    if (form.tried) blocks.push(`What they've tried:\n${form.tried}`);
+    if (form.timeline) blocks.push(`Timeline: ${form.timeline}`);
+
+    blocks.push("— sent from preissersolutions.com/contact");
+
+    return (
+      `mailto:${siteConfig.contact.email}` +
+      `?subject=${encodeURIComponent(
+        `New project enquiry — ${form.business || form.name || "a visitor"}`
+      )}` +
+      `&body=${encodeURIComponent(blocks.join("\n\n"))}`
+    );
+  };
 
   return (
     <>
@@ -187,8 +216,10 @@ export function ContactPageClient() {
             <h1 className="ps-contact2-h1">Reach out.</h1>
 
             <p className="ps-contact2-subhead">
-              Tell us about your business and what you&rsquo;re looking for. We
-              read every message ourselves.
+              A few focused questions below &mdash; answer what you can. The more
+              you tell us about the actual work, the sharper the answer you get
+              back: scope, cost, and timeline from the person who&rsquo;d build it.
+              We read every message ourselves.
             </p>
 
             {/* Visible NAP — semantic <address> for local SEO */}
@@ -307,19 +338,101 @@ export function ContactPageClient() {
                       </div>
 
                       <div className="ps-contact-field ps-contact-field--full">
-                        <label htmlFor="contact-message" className="ps-contact-field__label">
-                          What do you need?
+                        <label htmlFor="contact-business" className="ps-contact-field__label">
+                          Your business &mdash; and what it does
+                        </label>
+                        <input
+                          type="text"
+                          id="contact-business"
+                          name="business"
+                          value={form.business}
+                          onChange={handleChange}
+                          placeholder="e.g. Cassidy HVAC — residential heating &amp; cooling, Hays KS"
+                          required
+                          autoComplete="organization"
+                          className="ps-contact-field__input"
+                          aria-required="true"
+                        />
+                      </div>
+
+                      <div className="ps-contact-field ps-contact-field--full">
+                        <label htmlFor="contact-task" className="ps-contact-field__label">
+                          If one job could handle itself starting tomorrow, which one would you pick?
                         </label>
                         <textarea
-                          id="contact-message"
-                          name="message"
-                          value={form.message}
+                          id="contact-task"
+                          name="task"
+                          value={form.task}
                           onChange={handleChange}
-                          placeholder="What does your business do? What problem are you trying to solve? What city are you in? (Your current website URL is helpful too.)"
+                          placeholder="The repetitive thing that quietly eats your team's week — data entry, chasing follow-ups, invoicing, scheduling, re-keying the same numbers into two systems…"
                           required
-                          rows={6}
+                          rows={4}
                           className="ps-contact-field__textarea"
                           aria-required="true"
+                        />
+                      </div>
+
+                      <div className="ps-contact-field ps-contact-field--full">
+                        <label htmlFor="contact-cost" className="ps-contact-field__label">
+                          What is that costing you right now?
+                        </label>
+                        <textarea
+                          id="contact-cost"
+                          name="cost"
+                          value={form.cost}
+                          onChange={handleChange}
+                          placeholder="Hours a week, missed calls, late invoices, mistakes you keep catching, a hire you're trying to avoid — however you'd measure it."
+                          rows={3}
+                          className="ps-contact-field__textarea"
+                        />
+                      </div>
+
+                      <div className="ps-contact-field ps-contact-field--full">
+                        <label htmlFor="contact-tried" className="ps-contact-field__label">
+                          What have you already tried?
+                        </label>
+                        <input
+                          type="text"
+                          id="contact-tried"
+                          name="tried"
+                          value={form.tried}
+                          onChange={handleChange}
+                          placeholder="Spreadsheets, another tool, hiring, an off-the-shelf platform — or nothing yet."
+                          className="ps-contact-field__input"
+                        />
+                      </div>
+
+                      <div className="ps-contact-field">
+                        <label htmlFor="contact-timeline" className="ps-contact-field__label">
+                          How soon do you want this handled?
+                        </label>
+                        <select
+                          id="contact-timeline"
+                          name="timeline"
+                          value={form.timeline}
+                          onChange={handleChange}
+                          className="ps-contact-field__input ps-contact-field__select"
+                        >
+                          <option value="">Where are you at?</option>
+                          <option value="Just exploring for now">Just exploring for now</option>
+                          <option value="In the next few months">In the next few months</option>
+                          <option value="As soon as possible">As soon as possible</option>
+                        </select>
+                      </div>
+
+                      <div className="ps-contact-field">
+                        <label htmlFor="contact-phone" className="ps-contact-field__label">
+                          Phone <span className="ps-contact-field__optional">(optional)</span>
+                        </label>
+                        <input
+                          type="tel"
+                          id="contact-phone"
+                          name="phone"
+                          value={form.phone}
+                          onChange={handleChange}
+                          placeholder="(620) 555-0143"
+                          autoComplete="tel"
+                          className="ps-contact-field__input"
                         />
                       </div>
 
