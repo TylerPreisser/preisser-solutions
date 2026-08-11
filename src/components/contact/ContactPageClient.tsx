@@ -29,34 +29,87 @@ const contactFaqs = [
   {
     question: "What should I include in my message?",
     answer:
-      "Your current website, the main problem you want solved, your city, and whether you need a website, local SEO, AI automation, or a custom system.",
+      "Your business, what you want fixed or built, and how to reach you. A few sentences is enough — we ask the detailed questions on the call, not on the form.",
   },
+];
+
+// What the visitor needs. Doubles as the service menu: reading the options is
+// often how someone works out which one they are, so the wording stays plain
+// rather than matching our internal service names exactly.
+const NEED_OPTIONS = [
+  "Custom business software (dashboard, database, portal)",
+  "Business automation",
+  "AI integration",
+  "New website or redesign",
+  "Local SEO / AI search visibility",
+  "Something else — or not sure yet",
+];
+
+const TIMELINE_OPTIONS = [
+  "Just exploring",
+  "Next 1–3 months",
+  "As soon as possible",
 ];
 
 interface FormState {
   name: string;
   email: string;
-  business: string;
-  task: string;
-  cost: string;
-  tried: string;
-  timeline: string;
   phone: string;
+  company: string;
+  need: string;
+  timeline: string;
+  details: string;
 }
 
 const initialForm: FormState = {
   name: "",
   email: "",
-  business: "",
-  task: "",
-  cost: "",
-  tried: "",
-  timeline: "",
   phone: "",
+  company: "",
+  need: "",
+  timeline: "",
+  details: "",
 };
+
+// The four fields we actually need to reply intelligently. Everything else is
+// optional on purpose — each required field costs completions, so a field only
+// earns "required" if we cannot write a useful reply without it.
+type RequiredField = "name" | "email" | "need" | "details";
+
+type Errors = Partial<Record<RequiredField, string>>;
+
+// Deliberately permissive: something@something.something. Strict RFC-5322
+// matching rejects addresses that are actually valid and deliverable, which
+// is a worse failure than letting a typo through to a bounced reply.
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+function validate(form: FormState): Errors {
+  const errors: Errors = {};
+
+  if (!form.name.trim()) {
+    errors.name = "Please enter your name.";
+  }
+
+  if (!form.email.trim()) {
+    errors.email = "Please enter your email so we can reply.";
+  } else if (!EMAIL_PATTERN.test(form.email.trim())) {
+    errors.email = "That doesn't look like a valid email address.";
+  }
+
+  if (!form.need) {
+    errors.need = "Please pick the closest option.";
+  }
+
+  if (!form.details.trim()) {
+    errors.details = "Please tell us a little about the project.";
+  }
+
+  return errors;
+}
 
 export function ContactPageClient() {
   const [form, setForm] = useState<FormState>(initialForm);
+  const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   // Honeypot — bots fill this, humans never see it
@@ -145,10 +198,41 @@ export function ContactPageClient() {
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+
+    // Clear a field's error as soon as the visitor starts fixing it. Errors
+    // re-appear on the next submit if the field is still invalid — nobody
+    // should be scolded mid-keystroke.
+    setErrors((prev) => {
+      if (!(name in prev)) return prev;
+      const next = { ...prev };
+      delete next[name as RequiredField];
+      return next;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validation runs BEFORE the spam gates on purpose. The gates fake a
+    // success screen rather than reporting anything, so a real visitor who trips
+    // one would otherwise be shown "sent" while their incomplete form was
+    // silently dropped. Checking first means a human always gets real feedback;
+    // a bot that fills every field correctly still hits the gates below.
+    //
+    // The form previously carried `noValidate` with no JS validation behind it,
+    // so an empty form submitted happily and produced an empty enquiry. Move
+    // focus to the first problem so keyboard and screen-reader users are taken
+    // to it rather than left to hunt.
+    const found = validate(form);
+    if (Object.keys(found).length > 0) {
+      setErrors(found);
+      const order: RequiredField[] = ["name", "email", "need", "details"];
+      const first = order.find((field) => field in found);
+      if (first) {
+        document.getElementById(`contact-${first}`)?.focus();
+      }
+      return;
+    }
 
     // Spam gate 1: honeypot field was filled — silent discard
     if (honeypot) {
@@ -176,31 +260,41 @@ export function ContactPageClient() {
 
   /** The enquiry, addressed and pre-written, ready for the visitor to send. */
   const buildMailto = () => {
-    const blocks: string[] = [];
-
-    const contact = [
+    const lines = [
       `Name: ${form.name}`,
       `Email: ${form.email}`,
       form.phone ? `Phone: ${form.phone}` : "",
-      form.business ? `Business: ${form.business}` : "",
+      form.company ? `Company: ${form.company}` : "",
+      `Needs: ${form.need}`,
+      form.timeline ? `Timeline: ${form.timeline}` : "",
     ].filter(Boolean);
-    blocks.push(contact.join("\n"));
 
-    if (form.task) blocks.push(`The one task they want handled:\n${form.task}`);
-    if (form.cost) blocks.push(`What it's costing them:\n${form.cost}`);
-    if (form.tried) blocks.push(`What they've tried:\n${form.tried}`);
-    if (form.timeline) blocks.push(`Timeline: ${form.timeline}`);
-
-    blocks.push("— sent from preissersolutions.com/contact");
+    const body = [
+      lines.join("\n"),
+      `Project details:\n${form.details}`,
+      "— sent from preissersolutions.com/contact",
+    ].join("\n\n");
 
     return (
       `mailto:${siteConfig.contact.email}` +
       `?subject=${encodeURIComponent(
-        `New project enquiry — ${form.business || form.name || "a visitor"}`
+        `New project enquiry — ${form.company || form.name || "a visitor"}`
       )}` +
-      `&body=${encodeURIComponent(blocks.join("\n\n"))}`
+      `&body=${encodeURIComponent(body)}`
     );
   };
+
+  /** Wires a required field to its error message for assistive tech. */
+  const errorProps = (field: RequiredField) =>
+    errors[field]
+      ? {
+          "aria-invalid": true as const,
+          "aria-describedby": `contact-${field}-error`,
+        }
+      : {};
+
+  const fieldClass = (base: string, field: RequiredField) =>
+    errors[field] ? `${base} ps-contact-field__control--error` : base;
 
   return (
     <>
@@ -211,16 +305,7 @@ export function ContactPageClient() {
       <section className="ps-contact2-hero" aria-label="Contact Preisser Solutions">
         <div className="ps-container">
           <div className="ps-contact2-hero-inner" ref={heroRef}>
-            <span className="ps-eyebrow">Get in touch</span>
-
             <h1 className="ps-contact2-h1">Reach out.</h1>
-
-            <p className="ps-contact2-subhead">
-              A few focused questions below &mdash; answer what you can. The more
-              you tell us about the actual work, the sharper the answer you get
-              back: scope, cost, and timeline from the person who&rsquo;d build it.
-              We read every message ourselves.
-            </p>
 
             {/* Visible NAP — semantic <address> for local SEO */}
             <address className="ps-contact-nap" aria-label="Contact information">
@@ -303,7 +388,7 @@ export function ContactPageClient() {
 
                       <div className="ps-contact-field">
                         <label htmlFor="contact-name" className="ps-contact-field__label">
-                          Your name
+                          Name
                         </label>
                         <input
                           type="text"
@@ -311,17 +396,20 @@ export function ContactPageClient() {
                           name="name"
                           value={form.name}
                           onChange={handleChange}
-                          placeholder="Jane Smith"
-                          required
                           autoComplete="name"
-                          className="ps-contact-field__input"
-                          aria-required="true"
+                          className={fieldClass("ps-contact-field__input", "name")}
+                          {...errorProps("name")}
                         />
+                        {errors.name && (
+                          <p id="contact-name-error" className="ps-contact-field__error">
+                            {errors.name}
+                          </p>
+                        )}
                       </div>
 
                       <div className="ps-contact-field">
                         <label htmlFor="contact-email" className="ps-contact-field__label">
-                          Business email
+                          Email
                         </label>
                         <input
                           type="email"
@@ -329,95 +417,15 @@ export function ContactPageClient() {
                           name="email"
                           value={form.email}
                           onChange={handleChange}
-                          placeholder="you@yourbusiness.com"
-                          required
                           autoComplete="email"
-                          className="ps-contact-field__input"
-                          aria-required="true"
+                          className={fieldClass("ps-contact-field__input", "email")}
+                          {...errorProps("email")}
                         />
-                      </div>
-
-                      <div className="ps-contact-field ps-contact-field--full">
-                        <label htmlFor="contact-business" className="ps-contact-field__label">
-                          Your business &mdash; and what it does
-                        </label>
-                        <input
-                          type="text"
-                          id="contact-business"
-                          name="business"
-                          value={form.business}
-                          onChange={handleChange}
-                          placeholder="e.g. Cassidy HVAC — residential heating &amp; cooling, Hays KS"
-                          required
-                          autoComplete="organization"
-                          className="ps-contact-field__input"
-                          aria-required="true"
-                        />
-                      </div>
-
-                      <div className="ps-contact-field ps-contact-field--full">
-                        <label htmlFor="contact-task" className="ps-contact-field__label">
-                          If one job could handle itself starting tomorrow, which one would you pick?
-                        </label>
-                        <textarea
-                          id="contact-task"
-                          name="task"
-                          value={form.task}
-                          onChange={handleChange}
-                          placeholder="The repetitive thing that quietly eats your team's week — data entry, chasing follow-ups, invoicing, scheduling, re-keying the same numbers into two systems…"
-                          required
-                          rows={4}
-                          className="ps-contact-field__textarea"
-                          aria-required="true"
-                        />
-                      </div>
-
-                      <div className="ps-contact-field ps-contact-field--full">
-                        <label htmlFor="contact-cost" className="ps-contact-field__label">
-                          What is that costing you right now?
-                        </label>
-                        <textarea
-                          id="contact-cost"
-                          name="cost"
-                          value={form.cost}
-                          onChange={handleChange}
-                          placeholder="Hours a week, missed calls, late invoices, mistakes you keep catching, a hire you're trying to avoid — however you'd measure it."
-                          rows={3}
-                          className="ps-contact-field__textarea"
-                        />
-                      </div>
-
-                      <div className="ps-contact-field ps-contact-field--full">
-                        <label htmlFor="contact-tried" className="ps-contact-field__label">
-                          What have you already tried?
-                        </label>
-                        <input
-                          type="text"
-                          id="contact-tried"
-                          name="tried"
-                          value={form.tried}
-                          onChange={handleChange}
-                          placeholder="Spreadsheets, another tool, hiring, an off-the-shelf platform — or nothing yet."
-                          className="ps-contact-field__input"
-                        />
-                      </div>
-
-                      <div className="ps-contact-field">
-                        <label htmlFor="contact-timeline" className="ps-contact-field__label">
-                          How soon do you want this handled?
-                        </label>
-                        <select
-                          id="contact-timeline"
-                          name="timeline"
-                          value={form.timeline}
-                          onChange={handleChange}
-                          className="ps-contact-field__input ps-contact-field__select"
-                        >
-                          <option value="">Where are you at?</option>
-                          <option value="Just exploring for now">Just exploring for now</option>
-                          <option value="In the next few months">In the next few months</option>
-                          <option value="As soon as possible">As soon as possible</option>
-                        </select>
+                        {errors.email && (
+                          <p id="contact-email-error" className="ps-contact-field__error">
+                            {errors.email}
+                          </p>
+                        )}
                       </div>
 
                       <div className="ps-contact-field">
@@ -430,10 +438,94 @@ export function ContactPageClient() {
                           name="phone"
                           value={form.phone}
                           onChange={handleChange}
-                          placeholder="(620) 555-0143"
                           autoComplete="tel"
                           className="ps-contact-field__input"
                         />
+                      </div>
+
+                      <div className="ps-contact-field">
+                        <label htmlFor="contact-company" className="ps-contact-field__label">
+                          Company <span className="ps-contact-field__optional">(optional)</span>
+                        </label>
+                        <input
+                          type="text"
+                          id="contact-company"
+                          name="company"
+                          value={form.company}
+                          onChange={handleChange}
+                          autoComplete="organization"
+                          className="ps-contact-field__input"
+                        />
+                      </div>
+
+                      <div className="ps-contact-field ps-contact-field--full">
+                        <label htmlFor="contact-need" className="ps-contact-field__label">
+                          What do you need?
+                        </label>
+                        <select
+                          id="contact-need"
+                          name="need"
+                          value={form.need}
+                          onChange={handleChange}
+                          className={fieldClass(
+                            "ps-contact-field__input ps-contact-field__select",
+                            "need"
+                          )}
+                          {...errorProps("need")}
+                        >
+                          <option value="">Select the closest fit</option>
+                          {NEED_OPTIONS.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                        {errors.need && (
+                          <p id="contact-need-error" className="ps-contact-field__error">
+                            {errors.need}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="ps-contact-field ps-contact-field--full">
+                        <label htmlFor="contact-timeline" className="ps-contact-field__label">
+                          Timeline <span className="ps-contact-field__optional">(optional)</span>
+                        </label>
+                        <select
+                          id="contact-timeline"
+                          name="timeline"
+                          value={form.timeline}
+                          onChange={handleChange}
+                          className="ps-contact-field__input ps-contact-field__select"
+                        >
+                          <option value="">No particular timeline</option>
+                          {TIMELINE_OPTIONS.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="ps-contact-field ps-contact-field--full">
+                        <label htmlFor="contact-details" className="ps-contact-field__label">
+                          Tell us about the project
+                        </label>
+                        <textarea
+                          id="contact-details"
+                          name="details"
+                          value={form.details}
+                          onChange={handleChange}
+                          placeholder="A few sentences is plenty — what you're trying to fix or build, and anything we should know."
+                          rows={5}
+                          className={fieldClass("ps-contact-field__textarea", "details")}
+                          {...errorProps("details")}
+                        />
+                        {errors.details && (
+                          <p id="contact-details-error" className="ps-contact-field__error">
+                            {errors.details}
+                          </p>
+                        )}
                       </div>
 
                     </div>

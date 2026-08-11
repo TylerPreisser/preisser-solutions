@@ -63,7 +63,9 @@
 }
 
 .ps-contact-field__label {
-  font-size: 0.8125rem;
+  /* Keep in sync with globals.css — this file is loaded AFTER the main bundle
+     and silently wins any selector it redeclares. */
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   color: var(--theme-text-primary);
@@ -156,7 +158,7 @@
 }
 
 .ps-contact-form-privacy {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   line-height: 1.5;
   color: var(--theme-text-muted);
   text-align: center;

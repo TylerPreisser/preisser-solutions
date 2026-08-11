@@ -42,6 +42,9 @@
   /* Accent */
   --color-cyan:          #80E9FF;
   --color-green:         #00D4AA;
+  /* Error/invalid state. Specified in docs/design-system.md but never actually
+     declared — the contact form's validation was the first thing to need it. */
+  --color-danger:        #DF1B41;
 
   /* Text on dark */
   --color-text-dark-primary:   #FFFFFF;
@@ -6026,15 +6029,9 @@ ul, ol {
   letter-spacing: -0.05em;
   line-height: 0.95;
   color: #FFFFFF;
-  margin: 14px 0 24px;
-}
-
-.ps-contact2-subhead {
-  font-size: clamp(1rem, 1.8vw, 1.125rem);
-  line-height: 1.7;
-  color: var(--color-text-dark-secondary);
-  max-width: 520px;
-  margin: 0 0 28px;
+  /* No top margin: the eyebrow that used to sit above this was removed, so the
+     H1 is now the first thing in the band and the hero padding owns the gap. */
+  margin: 0 0 24px;
 }
 
 /* Hairline accent rule — thin brand-blue line separating hero from body */
@@ -6198,7 +6195,10 @@ ul, ol {
 }
 
 .ps-contact-field__label {
-  font-size: 0.8125rem;
+  /* 14px, not 13px: scripts/ui-audit.mjs flags anything under 14px as tiny-text
+     on phones, and a form label is the one piece of text a visitor must read to
+     answer correctly. */
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   color: var(--theme-text-primary);
@@ -6262,6 +6262,24 @@ ul, ol {
   color: var(--theme-text-muted);
 }
 
+/* Validation errors. The red border has to beat the :hover and :focus rules
+   above on specificity, hence the doubled class — a field that is wrong should
+   stay visibly wrong while the visitor is inside it fixing it. */
+.ps-contact-field__control--error.ps-contact-field__control--error {
+  border-color: var(--color-danger);
+}
+
+.ps-contact-field__control--error.ps-contact-field__control--error:focus {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px rgba(223, 27, 65, 0.18);
+}
+
+.ps-contact-field__error {
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--color-danger);
+}
+
 .ps-contact-form-footer {
   margin-top: 20px;
   display: flex;
@@ -6307,7 +6325,7 @@ ul, ol {
 }
 
 .ps-contact-form-privacy {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   line-height: 1.5;
   color: var(--theme-text-muted);
   text-align: center;
