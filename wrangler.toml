@@ -1,3 +1,24 @@
 name = "preisser-solutions"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "./out"
+
+# Contact form delivery (functions/api/contact.ts).
+#
+# Not secrets — the sender and destination are public-facing facts, and keeping
+# them in version control means the sending identity is reviewable in a diff
+# rather than living only in a dashboard someone has to remember to check.
+# RESEND_API_KEY is the actual credential and is an encrypted Pages secret; it
+# must never appear in this file.
+#
+# preissersolutions.com was verified in Resend on 2026-08-11 (DKIM + SPF via
+# Cloudflare). Before that, mail went out through Resend's shared
+# onboarding@resend.dev sender and Outlook stamped every enquiry with a
+# blocked-content warning because the From domain had nothing to do with us.
+#
+# CONTACT_FROM is a send-only identity. Replies are not meant to land there —
+# the Function sets reply_to to the enquirer, so answering in the inbox reaches
+# the customer. Point website@ at a real mailbox or alias if you want stray
+# replies to survive.
+[vars]
+CONTACT_FROM = "Preisser Solutions <website@preissersolutions.com>"
+CONTACT_TO = "tyler@preissersolutions.com"
