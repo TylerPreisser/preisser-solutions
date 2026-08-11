@@ -112,6 +112,11 @@ export function ContactPageClient() {
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  // Which path actually delivered the enquiry. The success screen has to tell
+  // the truth about this: "we've got it" and "your mail app should have opened"
+  // are different instructions, and showing the wrong one either strands a
+  // visitor waiting on a reply or makes them send a duplicate.
+  const [delivery, setDelivery] = useState<"sent" | "mailto">("sent");
   // Honeypot — bots fill this, humans never see it
   const [honeypot, setHoneypot] = useState("");
   // Track when the form was rendered to catch instant-submit bots
@@ -248,14 +253,33 @@ export function ContactPageClient() {
 
     setSubmitting(true);
 
-    // No third-party webhook. This site is a static export, so there is no
-    // server of ours to post to — and routing enquiries through someone else's
-    // automation means a lead can sit in a queue we cannot see. The message
-    // goes straight from the visitor's mail client to the inbox instead:
-    // nothing in between, nothing to expire, nothing to misconfigure.
-    window.location.href = buildMailto();
-    setSubmitted(true);
-    setSubmitting(false);
+    // POST to our own Cloudflare Pages Function, which emails the enquiry via
+    // Resend. `mailto:` used to be the whole submission path, and it silently
+    // fails for anyone reading webmail in a browser with no registered mail
+    // handler — they see nothing happen and we never learn they tried.
+    //
+    // It survives as the fallback: if the endpoint is unreachable or misbehaves
+    // we hand off to the mail client rather than lose the enquiry, and the
+    // success screen tells the visitor which of the two just happened.
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ ...form, website: honeypot }),
+      });
+
+      if (!response.ok) throw new Error(`contact endpoint returned ${response.status}`);
+
+      setDelivery("sent");
+      setSubmitted(true);
+    } catch (error) {
+      console.error("[contact] falling back to mailto", error);
+      setDelivery("mailto");
+      setSubmitted(true);
+      window.location.href = buildMailto();
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   /** The enquiry, addressed and pre-written, ready for the visitor to send. */
@@ -354,16 +378,28 @@ export function ContactPageClient() {
                         <path d="M10 16.5l4 4 8-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
-                    <h3 className="ps-contact-success__heading">Ready to send.</h3>
-                    <p className="ps-contact-success__body">
-                      Your email app should have opened with the message already
-                      written. Hit send and it comes straight to us &mdash; we read
-                      every one ourselves.
-                    </p>
-                    <p className="ps-contact-success__body" style={{ marginTop: 12 }}>
-                      Nothing opened? Email{" "}
-                      <a href={buildMailto()}>{siteConfig.contact.email}</a> directly.
-                    </p>
+                    {delivery === "sent" ? (
+                      <>
+                        <h3 className="ps-contact-success__heading">Message sent.</h3>
+                        <p className="ps-contact-success__body">
+                          It&rsquo;s in our inbox &mdash; we read every one ourselves,
+                          and you&rsquo;ll hear back from the person who&rsquo;d
+                          actually build it.
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <h3 className="ps-contact-success__heading">Ready to send.</h3>
+                        <p className="ps-contact-success__body">
+                          Your email app should have opened with the message already
+                          written. Hit send and it comes straight to us.
+                        </p>
+                        <p className="ps-contact-success__body" style={{ marginTop: 12 }}>
+                          Nothing opened? Email{" "}
+                          <a href={buildMailto()}>{siteConfig.contact.email}</a> directly.
+                        </p>
+                      </>
+                    )}
                   </div>
                 ) : (
                   <>
@@ -460,7 +496,7 @@ export function ContactPageClient() {
 
                       <div className="ps-contact-field ps-contact-field--full">
                         <label htmlFor="contact-need" className="ps-contact-field__label">
-                          What do you need?
+                          Area of interest
                         </label>
                         <select
                           id="contact-need"
@@ -473,7 +509,7 @@ export function ContactPageClient() {
                           )}
                           {...errorProps("need")}
                         >
-                          <option value="">Select the closest fit</option>
+                          <option value="">Select an area</option>
                           {NEED_OPTIONS.map((option) => (
                             <option key={option} value={option}>
                               {option}
@@ -509,14 +545,14 @@ export function ContactPageClient() {
 
                       <div className="ps-contact-field ps-contact-field--full">
                         <label htmlFor="contact-details" className="ps-contact-field__label">
-                          Tell us about the project
+                          What are you trying to solve?
                         </label>
                         <textarea
                           id="contact-details"
                           name="details"
                           value={form.details}
                           onChange={handleChange}
-                          placeholder="A few sentences is plenty — what you're trying to fix or build, and anything we should know."
+                          placeholder="The problem, in your own words — what's slow, breaking, manual, or costing you. A few sentences is plenty."
                           rows={5}
                           className={fieldClass("ps-contact-field__textarea", "details")}
                           {...errorProps("details")}

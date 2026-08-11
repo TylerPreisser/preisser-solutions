@@ -5958,8 +5958,11 @@ ul, ol {
 .ps-contact2-hero {
   position: relative;
   background-color: var(--color-dark);
-  padding-top: calc(var(--nav-height) + 80px);
-  padding-bottom: 72px;
+  /* Tightened from +80px/72px. Removing the eyebrow and the subhead left the
+     band mostly empty, so the old padding read as dead space and pushed the
+     first field below the fold on shorter laptops. */
+  padding-top: calc(var(--nav-height) + 52px);
+  padding-bottom: 48px;
   overflow: hidden;
 }
 
@@ -6056,7 +6059,7 @@ ul, ol {
 /* ── Main body — light background ──────────────────────────────── */
 .ps-contact2-body {
   background-color: var(--color-light);
-  padding: 72px 0 64px;
+  padding: 44px 0 64px;
   transition: background-color 300ms ease;
 }
 
