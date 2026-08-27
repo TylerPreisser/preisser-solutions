@@ -318,6 +318,26 @@ function Hero({ data }: { data: CaseStudyData }) {
             {data.subheadline}
           </p>
 
+          {/* Live product link — outbound, new tab (see CaseStudyData.liveLink) */}
+          {data.liveLink && (
+            <div className="mt-8">
+              <a
+                href={data.liveLink.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-medium backdrop-blur transition-all hover:border-[#1590FF]/50"
+                style={{
+                  border: "1px solid var(--theme-card-border)",
+                  background: "var(--theme-card-bg)",
+                  color: "var(--theme-text-primary)",
+                }}
+              >
+                {data.liveLink.label}
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              </a>
+            </div>
+          )}
+
           {/* Headline result chips */}
           {data.headlineResults.length > 0 && (
             <div className="mt-12 flex flex-wrap gap-3">
