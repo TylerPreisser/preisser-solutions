@@ -269,7 +269,7 @@ const services: ServicePillar[] = [
       {
         title: "Document Extraction & Classification",
         description:
-          "A photographed bill becomes a categorized ledger line. In FarmBooks, vision and OCR read the same page independently and each has to prove the section total, so a dropped line surfaces instead of vanishing silently. That is how a $92.57 line OCR alone had dropped got recovered.",
+          "A photographed bill becomes a categorized ledger line. In FarmBooks, the line amounts have to match the printed total within two cents or the whole bill is held for a human, so a misread line surfaces instead of vanishing silently. A line that goes missing between stages stops the run.",
         icon: <IconDocumentProcessing />,
       },
       {
@@ -310,7 +310,7 @@ const services: ServicePillar[] = [
       },
       {
         lead: "A missed line shows up instead of disappearing.",
-        body: "Two separate readers go over the same bill, and both have to agree on the total before anything posts. When they don't, that line lands in a review queue where somebody sees it. On a farm bill, that is the difference between books you can file and books you have to go re-check by hand.",
+        body: "Every line on a bill has to add up to the printed total within two cents before anything posts. When it doesn't, the bill lands in a review queue where somebody sees it. On a farm bill, that is the difference between books you can file and books you have to go re-check by hand.",
       },
       {
         lead: "Three weeks instead of three months.",
