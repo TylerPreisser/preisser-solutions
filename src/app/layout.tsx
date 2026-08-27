@@ -313,6 +313,19 @@ export default function RootLayout({
         <main id="main-content">{children}</main>
         <Footer />
         <Script src="/agent-tools.js" strategy="afterInteractive" />
+        {/* MarCommand first-party telemetry (client "Preisser Solutions", site 1).
+            The write key is PUBLIC BY DESIGN — it ships in browser JavaScript on
+            every page, so it is not a secret (see siteConfig.ts in marcommand). It is
+            origin-locked: the collector rejects any beacon whose Origin is not on the
+            site's allowed_origins ("rejected:forged_origin"), and it rotates in one
+            call (POST /telemetry/sites/1/rotate). NEXT_PUBLIC_MC_WRITE_KEY overrides
+            it with no code change.
+            Contract: docs/phases/INSTALL-CONTRACT-telemetry.md */}
+        <Script
+          src="https://marcommand.tylerpreisser.workers.dev/mc.js"
+          strategy="afterInteractive"
+          data-mc-key={process.env.NEXT_PUBLIC_MC_WRITE_KEY ?? "mcw_jHsUyqYDp3pcH4z5d9MdnX_CQYAwTW5V"}
+        />
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <>
             <Script
