@@ -56,6 +56,24 @@ export const pageData: AeoPageData = {
       ],
     },
     {
+      eyebrow: "Connected platform data",
+      heading: "Google and Meta account data accessed on a client's behalf",
+      body: [
+        "For clients who engage Preisser Solutions to manage their marketing, we operate an internal platform, MarCommand, that reads advertising and analytics data from the client's own accounts. Access is granted by the client, through each platform's own consent screen, and can be revoked by the client at any time from their own account settings without contacting us.",
+        "We access this data only to report on and manage the marketing work that client has engaged us to do. We do not use it for advertising, we do not sell or transfer it, and we do not use it to train generalized artificial intelligence or machine learning models. No client's connected account data is ever exposed to another client.",
+      ],
+      bullets: [
+        "Google Ads: campaign, ad group, and keyword performance — cost, impressions, clicks, and conversions — read through the Google Ads API for accounts the client has linked to our manager account.",
+        "Google Analytics: aggregate traffic and channel behaviour for the client's own web property.",
+        "Google Search Console: search performance for the client's own verified site.",
+        "Google Business Profile: listing and review data for the client's own locations.",
+        "Meta: advertising performance for the client's own ad account and Pages.",
+        "Access tokens are encrypted at rest with per-client keys and are never stored in plain text. Only Preisser Solutions staff operating the engagement, and the client whose data it is, can view it.",
+        "Google user data obtained through Google APIs is handled in accordance with the Google API Services User Data Policy, including its Limited Use requirements.",
+        "Connected account data is deleted on written client request, and access ends when the client revokes consent or the engagement closes.",
+      ],
+    },
+    {
       eyebrow: "Sharing and third parties",
       heading: "No sale; limited operational sharing",
       body: [
