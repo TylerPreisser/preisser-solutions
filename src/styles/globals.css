@@ -176,8 +176,20 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+  }
+
+  /* Smooth scrolling is opt-OUT for reduced-motion visitors, so it has to be
+     gated here rather than declared unconditionally. Declared ungated, every
+     scripted `scrollIntoView` and every in-page anchor animated for someone who
+     asked the OS for no animation — and JS cannot override it, because the
+     CSS property wins over the scroll call's own behavior in practice. Found
+     2026-09-03 while adding the hero scroll cue, whose reduced-motion test
+     measured a smooth 150ms scroll where it should have been instant. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 }
 
@@ -1200,31 +1212,14 @@ ul, ol {
   }
 }
 
-/* Scroll indicator */
-.ps-scroll-indicator {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  opacity: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.ps-scroll-chevron {
-  width: 24px;
-  height: 24px;
-  color: rgba(255,255,255,0.4);
-  animation: bounce-chevron 2s ease-in-out infinite;
-}
-
-@keyframes bounce-chevron {
-  0%, 100% { transform: translateY(0); opacity: 0.4; }
-  50%       { transform: translateY(6px); opacity: 0.8; }
-}
+/* The original `.ps-scroll-indicator` / `.ps-scroll-chevron` / `bounce-chevron`
+   block lived here and was DEAD — styled, `opacity: 0`, and referenced by zero
+   components since it was written. Removed 2026-09-03. It also carried an
+   `animation: ... infinite` with no `prefers-reduced-motion` guard and a
+   hardcoded `rgba(255,255,255,0.4)` that could not follow the light theme, so
+   reviving it was the wrong move. The live hero scroll cue is a real focusable
+   button with its own theme-aware, reduced-motion-guarded styles in
+   src/styles/hero-scroll-cue.css. */
 
 /* ── Hero: light mode overrides ────────────────────────────── */
 [data-theme="light"] .ps-hero {

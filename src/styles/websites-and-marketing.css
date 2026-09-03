@@ -1,0 +1,180 @@
+/* ============================================================
+   websites-and-marketing.css
+   Secondary services band — ADR-0003. Split out of globals.css
+   following the existing `@import "./card-visuals.css"` precedent
+   so the 2026-09-03 homepage overhaul could be built in parallel.
+   Tokens only — every color here is a var() from the :root block
+   in globals.css. No new hex values.
+
+   Subordination to the three pillars is carried by the type scale
+   and the inset surface, NOT by breaking the section rhythm: the
+   outer padding uses the same --section-py-* tokens as its
+   neighbours so the vertical cadence of the page is unchanged.
+   ============================================================ */
+
+.ps-websvc {
+  /* --theme-bg-secondary reads as an inset shelf against the
+     --theme-section-switchable sections above and below it
+     (dark #0F1D30 on #0A1628, light #F6F9FC on #FFFFFF). */
+  background-color: var(--theme-bg-secondary);
+  border-block: 1px solid var(--theme-border);
+  padding-block: var(--section-py-desktop);
+  transition: background-color 300ms ease, border-color 300ms ease;
+}
+
+@media (max-width: 768px) {
+  .ps-websvc {
+    padding-block: var(--section-py-mobile);
+  }
+}
+
+.ps-websvc__header {
+  max-width: 640px;
+  margin-bottom: 40px;
+}
+
+.ps-websvc__eyebrow {
+  /* Colour is deliberately NOT set here. globals.css:8181-8186 gives every
+     .ps-eyebrow `color: var(--ps-eyebrow-color)`, which is already theme-aware
+     (--color-cyan on dark, --theme-accent-text/#0C6FC9 on light) and wins the
+     cascade over this sheet anyway, since @import hoists it above that rule.
+     Measured on the built page: 12.12:1 dark, 4.81:1 light — both clear 4.5:1.
+     Overriding it would also make this the only eyebrow on the homepage that
+     is not the same colour as its neighbours. Only the spacing is tightened. */
+  margin-bottom: 16px;
+}
+
+.ps-websvc__heading {
+  /* Deliberately below .ps-section-heading's clamp(2rem, 4vw, 3.5rem).
+     This band must not compete with the pillars for weight. */
+  font-size: clamp(1.5rem, 2.6vw, 2.125rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--theme-text-primary);
+  transition: color 300ms ease;
+}
+
+.ps-websvc__lede {
+  margin-top: 12px;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--theme-text-secondary);
+  transition: color 300ms ease;
+}
+
+/* ── Link grid ─────────────────────────────────────────────── */
+
+.ps-websvc__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .ps-websvc__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ps-websvc__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.ps-websvc__item {
+  display: flex;
+}
+
+.ps-websvc__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  /* Tap target: 16px block padding + ~44px of content puts every tile
+     well past the repo's 44x44 floor; min-height guards the shortest
+     one-line case. */
+  min-height: 64px;
+  padding: 16px 18px;
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-btn);
+  background-color: var(--theme-card-bg);
+  text-decoration: none;
+  transition:
+    border-color 200ms var(--ease-standard),
+    background-color 200ms var(--ease-standard),
+    transform 200ms var(--ease-standard),
+    box-shadow 200ms var(--ease-standard);
+}
+
+.ps-websvc__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ps-websvc__label {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--theme-text-primary);
+  transition: color 300ms ease;
+}
+
+.ps-websvc__desc {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--theme-text-secondary);
+  transition: color 300ms ease;
+}
+
+.ps-websvc__arrow {
+  flex-shrink: 0;
+  color: var(--theme-accent-text);
+  transition: transform 200ms var(--ease-standard), color 300ms ease;
+}
+
+/* ── States ────────────────────────────────────────────────── */
+
+.ps-websvc__link:hover {
+  border-color: var(--theme-accent-text);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.ps-websvc__link:hover .ps-websvc__arrow {
+  transform: translateX(3px);
+}
+
+.ps-websvc__link:focus-visible {
+  outline: 2px solid var(--theme-accent-text);
+  outline-offset: 2px;
+  border-color: var(--theme-accent-text);
+}
+
+.ps-websvc__link:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ps-websvc__link,
+  .ps-websvc__arrow {
+    transition: border-color 200ms var(--ease-standard);
+  }
+
+  .ps-websvc__link:hover {
+    transform: none;
+  }
+
+  .ps-websvc__link:hover .ps-websvc__arrow {
+    transform: none;
+  }
+}

@@ -17,6 +17,15 @@ const ServicePillars = dynamic(
   () => import("@/components/home/service-pillars").then((m) => m.ServicePillars),
   { ssr: true }
 );
+// Websites + marketing secondary band (ADR-0003). Sits directly under the three
+// pillars as a quieter tier and carries the homepage's first /services/* links.
+const WebsitesAndMarketing = dynamic(
+  () =>
+    import("@/components/home/websites-and-marketing").then(
+      (m) => m.WebsitesAndMarketing
+    ),
+  { ssr: true }
+);
 const WhyUs = dynamic(
   () => import("@/components/home/why-us").then((m) => m.WhyUs),
   { ssr: true }
@@ -157,6 +166,12 @@ export default function HomePage() {
       <ServicePillars />
       <WhyUs />
       <CaseStudies />
+      {/* Websites + marketing band (ADR-0003). Sits AFTER the work rather than
+          under the pillars: its own eyebrow reads "Also from Preisser
+          Solutions", which only makes sense once the reader has seen what the
+          main offering produced. Keeping it here also keeps it visually
+          subordinate to the three pillars, which is what ADR-0003 requires. */}
+      <WebsitesAndMarketing />
       {/* Crawlable service + location link cluster — static HTML for crawlers + AI engines. */}
       <section
         aria-label="Services and locations"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import { siteConfig } from "@/data/site-config";
 import { mountMarkLight } from "./hero-mark-light";
@@ -29,6 +29,9 @@ export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const ctasRef = useRef<HTMLDivElement>(null);
+  const cueRef = useRef<HTMLDivElement>(null);
+  const cueBtnRef = useRef<HTMLButtonElement>(null);
+  const cueSentinelRef = useRef<HTMLSpanElement>(null);
 
   const pillars = splitPillars(siteConfig.hero.h1);
 
@@ -56,7 +59,7 @@ export function Hero() {
         )
       : [];
 
-    const all = [...lines, ctasRef.current].filter(
+    const all = [...lines, ctasRef.current, cueBtnRef.current].filter(
       (el): el is HTMLElement => el !== null
     );
 
@@ -98,7 +101,18 @@ export function Hero() {
             ctasRef.current,
             { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
             "-=0.35"
-          );
+          )
+          // The scroll cue lands LAST, sequenced onto this same timeline
+          // rather than a second uncoordinated one — it is an invitation to
+          // leave, so it must not compete with the headline for attention
+          // while the headline is still arriving. Default position (no
+          // offset) means it starts only after the CTAs have settled.
+          .to(cueBtnRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+          });
       })
       .catch((err) => {
         // Never drop silently: surface it, then show the hero anyway.
@@ -110,6 +124,97 @@ export function Hero() {
       cancelled = true;
       timeline?.kill();
     };
+  }, []);
+
+  // Dismiss the cue once the page has actually moved — a "scroll down" prompt
+  // that is still sitting there after you scrolled reads as broken UI.
+  //
+  // IntersectionObserver rather than a scroll listener: it never runs on the
+  // main thread per-frame, and it fires exactly twice (out, and back in if the
+  // user returns to the top). The sentinel is a zero-width absolutely
+  // positioned span at the hero's top edge whose HEIGHT is the trigger
+  // distance (20vh, set in hero-scroll-cue.css) — so the threshold is
+  // expressed in CSS next to the rest of the cue's layout, not as a magic
+  // pixel number in here. Written as a data attribute rather than React state
+  // on purpose: this must not re-render the hero on scroll.
+  useEffect(() => {
+    const cue = cueRef.current;
+    const sentinel = cueSentinelRef.current;
+    if (!cue || !sentinel || typeof IntersectionObserver === "undefined") return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        cue.dataset.cueHidden = entry.isIntersecting ? "false" : "true";
+      },
+      { threshold: 0 }
+    );
+    io.observe(sentinel);
+    return () => io.disconnect();
+  }, []);
+
+  // The cue is a real affordance, so it has to actually go somewhere.
+  //
+  // The section following the hero carries no id and lives in page.tsx — a
+  // file this component does not own — so the target is resolved from the DOM
+  // instead: walk forward from the hero to the next section that is actually
+  // RENDERED.
+  //
+  // Both halves of that test are load-bearing, measured on the built page:
+  //   - tagName check: the immediate nextElementSibling is the 1px
+  //     visually-hidden crawler paragraph, not a section.
+  //   - height check: at 390px BOTH <ProofBar> (.ps-proof-bar) and
+  //     <ValueStrip> (.ps-value-strip) compute to display:none, so a walk that
+  //     stopped at the first <section> landed on a 0x0 box whose rect.top is
+  //     0. That produced a negative target that clamped to 0 — the cue simply
+  //     did nothing on mobile. Skipping zero-height sections lands on
+  //     .ps-services (top 844) there and .ps-proof-bar (top 844) at 1440.
+  //
+  // Because the real destination therefore differs by viewport, the button's
+  // accessible name stays generic ("Scroll to the next section") rather than
+  // naming a section it would misname on one of the two.
+  //
+  // If the markup ever changes shape and nothing qualifies, fall back to one
+  // viewport of travel, which is never wrong for a 100dvh hero.
+  const scrollToNext = useCallback(() => {
+    const hero = containerRef.current;
+    if (!hero) return;
+
+    let next: Element | null = hero.nextElementSibling;
+    while (
+      next &&
+      (next.tagName !== "SECTION" || next.getBoundingClientRect().height === 0)
+    ) {
+      next = next.nextElementSibling;
+    }
+
+    // The header is fixed, so land the target below it. --nav-height is 88px
+    // and 78px under 768px; reading the computed value picks up the media
+    // query for free. The +24 matches the scroll-margin-top convention
+    // already used by .product-catalog-section and .case-studies-grid-section.
+    const navHeight =
+      parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue(
+          "--nav-height"
+        ),
+        10
+      ) || 88;
+
+    const top = next
+      ? window.scrollY + next.getBoundingClientRect().top - navHeight - 24
+      : window.scrollY + window.innerHeight;
+
+    // globals.css sets `html { scroll-behavior: smooth }` UNCONDITIONALLY
+    // (inside @layer base, not gated on prefers-reduced-motion). "auto" would
+    // therefore inherit smooth and animate anyway — "instant" is the only
+    // value that overrides it, so reduced-motion users genuinely jump.
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: prefersReduced ? "instant" : "smooth",
+    });
   }, []);
 
   return (
@@ -193,6 +298,51 @@ export function Hero() {
             {siteConfig.hero.secondaryCta.label}
           </Link>
         </div>
+      </div>
+
+      {/* Trigger distance for the dismiss-on-scroll observer above. Its height
+          is the only thing about it that matters; it is invisible, unhittable
+          and absolutely positioned, so it costs no layout. */}
+      <span
+        ref={cueSentinelRef}
+        className="ps-hero-cue__sentinel"
+        aria-hidden="true"
+      />
+
+      {/*
+        Scroll cue. A <button>, deliberately, not an aria-hidden ornament:
+        anything that looks this much like a control WILL get tapped, and a
+        chevron that does nothing when pressed is worse than no chevron. So it
+        is a real control — keyboard focusable, Enter/Space handled natively by
+        the button element, 44x44 tap target, visible focus ring, and its text
+        content ("Scroll to the next section") is its accessible name.
+
+        The wrapper owns positioning and the scroll-away fade; the button owns
+        the GSAP entrance. See hero-scroll-cue.css for why they are split.
+      */}
+      <div ref={cueRef} className="ps-hero-cue" data-cue-hidden="false">
+        <button
+          ref={cueBtnRef}
+          type="button"
+          className="ps-hero-cue__btn"
+          onClick={scrollToNext}
+        >
+          <span className="sr-only">Scroll to the next section</span>
+          <svg
+            className="ps-hero-cue__icon"
+            viewBox="0 0 20 20"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M5 8l5 5 5-5"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
       </div>
     </section>
   );
