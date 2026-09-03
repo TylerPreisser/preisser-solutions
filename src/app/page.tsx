@@ -17,6 +17,14 @@ const ServicePillars = dynamic(
   () => import("@/components/home/service-pillars").then((m) => m.ServicePillars),
   { ssr: true }
 );
+// The MarCommand live surface. Sits directly below the services section, which
+// is where the owner asked for it. Its own stage owns the animation, the
+// reduced-motion end state and the pause control.
+const MarCommandLive = dynamic(
+  () =>
+    import("@/components/home/marcommand-live").then((m) => m.MarCommandLive),
+  { ssr: true }
+);
 // Websites + marketing secondary band (ADR-0003). Sits directly under the three
 // pillars as a quieter tier and carries the homepage's first /services/* links.
 const WebsitesAndMarketing = dynamic(
@@ -164,6 +172,7 @@ export default function HomePage() {
       <ProofBar />
       <ValueStrip />
       <ServicePillars />
+      <MarCommandLive />
       <WhyUs />
       <CaseStudies />
       {/* Websites + marketing band (ADR-0003). Sits AFTER the work rather than

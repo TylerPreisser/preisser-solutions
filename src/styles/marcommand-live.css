@@ -44,6 +44,11 @@
   inherits: false;
   initial-value: 0;
 }
+@property --mc-bob {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
 
 /* ------------------------------------------------------------
    Section frame — reuses .ps-section / .ps-container /
@@ -129,6 +134,17 @@
 
   .mc-stage {
     aspect-ratio: 390 / 620;
+
+    /* The narrow profile is authored in a 390x620 space and had no upper
+       bound, so it magnified without limit up to the breakpoint. Measured on
+       the built page: at a 768px viewport the stage is 688px wide — a 1.764x
+       blow-up of a phone composition, a 1094px-tall card taller than the
+       viewport, and 28.2px dial labels. Capping the stage box holds the
+       magnification at 1.10x (430px wide, 683px tall, 17.6px labels) and
+       leaves 390px untouched, where the stage is 310px and already under
+       the cap. Centred so the card does not go lopsided. */
+    max-width: 430px;
+    margin-inline: auto;
   }
 
   .mc-stage__wide {
@@ -313,9 +329,10 @@
   image-rendering: pixelated;
 
   /* -50% x centres him on the point; -100% y puts his FEET on it,
-     which is what every stage coordinate in the component means. */
-  transform: translate3d(-50%, -100%, 0) scaleX(var(--mc-flip));
-  -webkit-transform: translate3d(-50%, -100%, 0) scaleX(var(--mc-flip));
+     which is what every stage coordinate in the component means.
+     --mc-bob is the two-step walk hop. */
+  transform: translate3d(-50%, calc(-100% + var(--mc-bob)), 0) scaleX(var(--mc-flip));
+  -webkit-transform: translate3d(-50%, calc(-100% + var(--mc-bob)), 0) scaleX(var(--mc-flip));
   will-change: transform;
 }
 
