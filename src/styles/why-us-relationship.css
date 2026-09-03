@@ -7,3 +7,90 @@
    Tokens only — every color here must be a var() from the :root
    block in globals.css. No new hex values.
    ============================================================ */
+
+/* ── Why Us: one calm, static relationship statement ────────────
+   SPECIFICITY NOTE. This file is @imported at the TOP of globals.css, so
+   every rule here loses a same-specificity tie to the ~8,400 lines that
+   follow — including `.ps-why { padding: ... }` at globals.css:2920 and its
+   768px override. Every selector below is therefore written at 0,2,0 (two
+   classes) so it wins on specificity and not on source order.
+   `.ps-why` itself is left untouched: it still supplies the theme-switchable
+   background (`--theme-bg-primary`) and the 300ms background transition. */
+
+/* .ps-why is `padding: var(--section-py-desktop) 0 72px` — the 72px bottom was
+   clearance for the old carousel's detail panel. A centered statement block
+   wants symmetric air. padding-block only touches top/bottom, leaving the
+   shorthand's padding-inline: 0 in place for .ps-container to handle. */
+.ps-why.ps-why--relationship {
+  padding-block: var(--section-py-desktop);
+}
+
+.ps-why--relationship .ps-why-relationship {
+  max-width: 720px;          /* design-system.md §4: "narrow (text-focused)" */
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;                 /* spacing scale: lg */
+}
+
+/* .ps-eyebrow carries `margin-bottom: 20px` (globals.css:284); the flex gap
+   owns the rhythm here, so zero it out rather than stack the two. */
+.ps-why--relationship .ps-why-relationship__eyebrow {
+  margin-bottom: 0;
+}
+
+/* The mark is a single-ink logotype (#1590FF across its opaque pixels, alpha
+   background), so it reads on both themes with no filter and no light/dark
+   pair: 5.58:1 on the dark page, 3.25:1 on white — and WCAG 1.4.11 exempts
+   logotypes from non-text contrast regardless. */
+.ps-why--relationship .ps-why-relationship__mark {
+  width: 112px;
+  height: auto;
+  margin-block-start: 8px;
+}
+
+.ps-why--relationship .ps-why-relationship__tagline {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);   /* design-system.md Section H2 */
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--theme-text-primary);
+  text-wrap: balance;                  /* keeps the 390px wrap off a widow */
+}
+
+/* Same accent device the hero and footer taglines use. --theme-accent-text is
+   the exact logo blue on dark (5.58:1) and #0C6FC9 on light (5.08:1) — never
+   raw --color-primary on white, which is 3.25:1. */
+.ps-why--relationship .ps-why-relationship__accent {
+  color: var(--theme-accent-text);
+}
+
+.ps-why--relationship .ps-why-relationship__copy {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 1.125rem;                 /* Body Default, 18px */
+  line-height: 1.7;
+  color: var(--theme-text-secondary);  /* 7.0:1 dark, 7.5:1 light */
+  text-wrap: pretty;
+}
+
+@media (max-width: 768px) {
+  .ps-why.ps-why--relationship {
+    padding-block: var(--section-py-mobile);
+  }
+
+  .ps-why--relationship .ps-why-relationship {
+    gap: 20px;
+  }
+
+  .ps-why--relationship .ps-why-relationship__mark {
+    width: 88px;
+  }
+
+  .ps-why--relationship .ps-why-relationship__copy {
+    font-size: 1.0625rem;
+  }
+}
