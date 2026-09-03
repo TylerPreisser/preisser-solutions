@@ -55,3 +55,7 @@ next-env.d.ts
 .dev.vars
 .claude/settings.local.json
 CLAUDE.local.md
+
+# graphify — local-only knowledge graph (rebuild with `graphify update .`, ~12s)
+graphify-out/
+.claude/settings.json.graphify-bak
