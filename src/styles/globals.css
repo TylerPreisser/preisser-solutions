@@ -6,6 +6,7 @@
 @import "./why-us-relationship.css";
 @import "./work-card-reveal.css";
 @import "./marcommand-live.css";
+@import "./websites-and-marketing.css";
 
 /* ============================================================
    PREISSER SOLUTIONS — GLOBAL CSS
@@ -4258,8 +4259,23 @@ ul, ol {
   color: var(--color-primary-hover, #0B7BC0);
 }
 
-/* On card hover, the affordance fades out so the overlay reads cleanly */
-.ps-work-card:hover .ps-work-card__bob,
+/* On card hover, the affordance fades out so the overlay reads cleanly.
+   MUST stay inside `@media (hover: hover)`. Unscoped, this rule was the root
+   cause of "the TAP FOR MORE tab disappears for the card in view on mobile":
+   a touch tap puts the card into :hover and LEAVES it there (sticky hover), so
+   the label went to opacity 0 and never came back after the overlay was
+   dismissed. Reproduced 2026-09-03 at 390x844 and 430x932 with real touch
+   events (page.touchscreen.tap, no synthetic mouse move). Do not "simplify"
+   this back out of the media query.
+   :focus-visible stays unscoped on purpose — it only fires for keyboard focus,
+   which is not affected by sticky hover, and a keyboard user reading the
+   overlay wants the same clean surface a mouse user gets. */
+@media (hover: hover) and (pointer: fine) {
+  .ps-work-card:hover .ps-work-card__bob {
+    opacity: 0;
+  }
+}
+
 .ps-work-card:focus-visible .ps-work-card__bob {
   opacity: 0;
 }
