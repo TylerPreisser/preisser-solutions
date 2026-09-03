@@ -8,11 +8,11 @@
    in globals.css. No new hex values.
 
    CASCADE NOTE: this sheet is UNLAYERED, while globals.css puts its
-   .ps-* base classes inside `@layer components` (globals.css:248-420).
+   .ps-* base classes inside `@layer components` (globals.css:260-432).
    Unlayered rules beat layered ones regardless of source order, so
    anything declared here overrides .ps-section / .ps-eyebrow even
    though @import hoists this file to the top. Rules that appear
-   AFTER line 420 in globals.css are also unlayered, and those DO
+   AFTER line 432 in globals.css are also unlayered, and those DO
    beat this file on equal specificity (see .ps-websvc__eyebrow).
    Keep this sheet minimal for that reason.
 
@@ -21,8 +21,8 @@
    ============================================================ */
 
 .ps-websvc {
-  /* Matches every sibling homepage section (.ps-marcommand:4432,
-     .ps-cta-section:4361, .ps-home-link-cluster:7238). An inset
+  /* Matches every sibling homepage section (.ps-marcommand:3876,
+     .ps-cta-section:3798, .ps-home-link-cluster:6557). An inset
      contrasting shelf was tried first and rejected: a distinct band
      draws MORE eye than its neighbours, which is the opposite of the
      subordination ADR-0003 requires. Subordination is carried by the
@@ -37,7 +37,7 @@
 }
 
 .ps-websvc__eyebrow {
-  /* Colour deliberately NOT set. globals.css:8181-8186 is unlayered and
+  /* Colour deliberately NOT set. globals.css:7494-7499 is unlayered and
      later in source order, so its `color: var(--ps-eyebrow-color)` wins
      over anything declared here. That token is already theme-aware
      (--color-cyan dark / --theme-accent-text light) and measured
@@ -116,7 +116,7 @@
   text-decoration: none;
   /* Only transform + paint properties, per the plan's rule 5 ("never
      width/height/top/left/margin/padding"). Mirrors the existing
-     .ps-explore-service treatment at globals.css:7394-7396. */
+     .ps-explore-service treatment at globals.css:6707-6709. */
   transition:
     background-color 160ms var(--ease-out-expo),
     border-color 160ms var(--ease-out-expo),

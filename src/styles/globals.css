@@ -2920,428 +2920,9 @@ ul, ol {
   transition: background 300ms ease;
 }
 
-.events-section-container {
-  overflow: hidden;
-}
-
-.events-section__header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 48px;
-  margin-bottom: 34px;
-}
-
-.events-section__header-content {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 760px;
-}
-
-.events-section__header-title,
-.events-section__header-subtitle {
-  max-width: 43ch;
-  text-wrap: pretty;
-}
-
-.events-section__header-subtitle {
-  font-size: 1.125rem;
-  line-height: 1.65;
-  color: var(--theme-text-secondary);
-  transition: color 300ms ease;
-}
-
-.events-section__controls {
-  display: flex;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.ps-events-control {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #0D95E8;
-  background: rgba(13, 149, 232, 0.1);
-  border: 1px solid rgba(13, 149, 232, 0.15);
-  transition:
-    transform 220ms var(--ease-standard),
-    background-color 220ms var(--ease-standard),
-    border-color 220ms var(--ease-standard),
-    color 220ms var(--ease-standard);
-}
-
-.ps-events-control:hover {
-  transform: translateY(-1px);
-  background: rgba(13, 149, 232, 0.18);
-  border-color: rgba(13, 149, 232, 0.25);
-}
-
-/* ── Squeeze Carousel (CSS flex approach, replaces canvas) ── */
-
-.ps-squeeze-carousel {
-  display: block;
-}
-
-/* Track: the flex row of cards */
-.ps-squeeze-track {
-  display: flex;
-  gap: 6px;
-  aspect-ratio: 1232 / 460;
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-/* Compressed (inactive) card */
-.ps-squeeze-card {
-  flex: 0 0 60px;
-  overflow: hidden;
-  cursor: pointer;
-  border-radius: 12px;
-  position: relative;
-  transition:
-    flex-basis 680ms cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 400ms ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Active card takes all remaining space */
-.ps-squeeze-card--active {
-  flex: 1 0 0;
-  cursor: default;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-}
-
-.ps-squeeze-card-img {
-  width: 100%;
-  height: 100%;
-  /* Matches .ps-squeeze-track's aspect-ratio (1232/460) — the img is fully
-     sized by width/height:100% of that track, so this doesn't change layout;
-     it just gives the img element itself a declared ratio to reserve space
-     against, instead of relying solely on the ancestor chain. */
-  aspect-ratio: 1232 / 460;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  pointer-events: none;
-  user-select: none;
-  transition: transform 680ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Logo card — centered contain on dark bg instead of cover */
-.ps-squeeze-card--logo {
-  background: #0A1628;
-}
-
-.ps-squeeze-card--logo .ps-squeeze-card-img {
-  object-fit: contain;
-  padding: 9%;
-}
-
-/* Inactive: zoom in slightly so the narrow strip shows the image center */
-.ps-squeeze-card:not(.ps-squeeze-card--active) .ps-squeeze-card-img {
-  transform: scale(1.15);
-}
-
-/* Active: normal scale — reveals the full image naturally */
-.ps-squeeze-card--active .ps-squeeze-card-img {
-  transform: scale(1);
-}
-
-/* Gradient overlay — tinted dark on inactive, subtle on active */
-.ps-squeeze-card-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
-  transition: opacity 400ms ease;
-  pointer-events: none;
-}
-
-.ps-squeeze-card-overlay--active {
-  background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.4));
-}
-
-/* Brand label pinned to bottom-left of active card */
-.ps-squeeze-label {
-  position: absolute;
-  bottom: 22px;
-  left: 24px;
-  color: #ffffff;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
-  pointer-events: none;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
-}
-
-/* Detail text panel below the track */
-.ps-squeeze-details {
-  min-width: 0;
-  display: flex;
-  overflow: hidden;
-  margin-top: 28px;
-}
-
-.ps-squeeze-detail {
-  width: 100%;
-  flex-shrink: 0;
-  display: grid;
-  align-content: start;
-  justify-content: space-between;
-  gap: 28px;
-  transition:
-    transform 680ms cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 120ms ease;
-}
-
-@media (min-width: 940px) {
-  .ps-squeeze-detail {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: end;
-  }
-}
-
-.ps-squeeze-detail-copy {
-  max-width: min(72ch, calc(460px * (16 / 9)));
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-/* Reduce motion: instant transitions, no easing */
-@media (prefers-reduced-motion: reduce) {
-  .ps-squeeze-card {
-    transition: none;
-  }
-
-  .ps-squeeze-card-img {
-    transition: none;
-  }
-
-  .ps-squeeze-card-overlay {
-    transition: none;
-  }
-
-  .ps-squeeze-detail {
-    transition: none;
-  }
-}
-
-.squeezy-carousel__itemDescription {
-  display: block;
-  color: var(--theme-text-secondary);
-  font-size: 1rem;
-  line-height: 1.65;
-  transition: color 300ms ease;
-}
-
-.ps-events-detail__cta {
-  align-self: start;
-}
-
-.events-mobile-carousel {
-  display: none;
-}
-
-.ps-events-detail__title {
-  font-size: clamp(1.5rem, 2.4vw, 2.125rem);
-  font-weight: 600;
-  line-height: 1.12;
-  letter-spacing: -0.03em;
-  color: var(--theme-text-primary);
-  text-wrap: pretty;
-  transition: color 300ms ease;
-}
-
-.ps-events-detail__description {
-  max-width: 70ch;
-  font-size: 1.125rem;
-  line-height: 1.65;
-  color: var(--theme-text-secondary);
-  transition: color 300ms ease;
-}
-
-.mobile-carousel {
-  --carousel-gap: 16px;
-  --carousel-gutter: 16px;
-  width: 100%;
-}
-
-.mobile-carousel_container {
-  overflow: hidden;
-}
-
-.mobile-carousel__scroller {
-  overflow-x: scroll;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  position: relative;
-  scroll-padding-inline-start: 16px;
-}
-
-.mobile-carousel__items-container {
-  margin: 0 auto;
-  display: grid;
-  gap: var(--carousel-gap);
-  grid-auto-flow: column;
-  width: fit-content;
-  padding-inline: 16px;
-}
-
-.mobile-carousel__scroller::-webkit-scrollbar {
-  display: none;
-}
-
-.mobile-carousel__item {
-  width: calc(100vw - 32px);
-  scroll-snap-align: start;
-  position: relative;
-}
-
-.mobile-carousel__inner {
-  pointer-events: auto;
-}
-
-.events-mobile-carousel-card {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.events-mobile-carousel-card__media {
-  position: relative;
-  overflow: hidden;
-  background: #E7EDF5;
-  border-radius: 24px;
-  aspect-ratio: 336 / 350;
-}
-
-.events-mobile-carousel-card__image {
-  width: 100%;
-  height: 100%;
-  /* Matches .events-mobile-carousel-card__media's aspect-ratio (336/350) —
-     this is a next/image `fill` image, so its underlying <img> carries no
-     width/height attrs; declare the ratio here so the element itself (not
-     just its ancestor) reserves space before the image loads. */
-  aspect-ratio: 336 / 350;
-  object-fit: cover;
-}
-
-/* Logo card on mobile — small centered logo on dark bg */
-.events-mobile-carousel-card__media--logo {
-  background: #0A1628;
-}
-
-.events-mobile-carousel-card__image--logo {
-  object-fit: contain !important;
-  padding: 12% !important;
-}
-
-.events-mobile-carousel-card__title {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.ps-events-mobile-carousel__headline {
-  font-size: 1.375rem;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.03em;
-  color: var(--theme-text-primary);
-  transition: color 300ms ease;
-}
-
-.events-mobile-carousel-card__link {
-  margin-top: auto;
-  width: fit-content;
-}
-
 @media (max-width: 768px) {
   .ps-why {
     padding: var(--section-py-mobile) 0;
-  }
-}
-
-/* ── Why Us mobile carousel: centering, swipe hint, hide CTA ── */
-@media (max-width: 639px) {
-  /* Center the mobile carousel track */
-  .events-mobile-carousel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .mobile-carousel_container {
-    width: 100%;
-  }
-
-  /* Hide the CTA button on mobile — header always has Get in Touch */
-  .ps-why-mobile-cta {
-    display: none;
-  }
-}
-
-/* Swipe hint — always hidden on desktop, shown only on mobile */
-.ps-why-swipe-hint {
-  display: none;
-  margin-top: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.45);
-  letter-spacing: 0.05em;
-  text-align: center;
-  /* Animate in after a short delay so it's noticeable */
-  animation: ps-swipe-hint-fade 2.5s ease-in-out infinite;
-}
-
-@media (max-width: 639px) {
-  .ps-why-swipe-hint {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-  }
-}
-
-@keyframes ps-swipe-hint-fade {
-  0%   { opacity: 0.3; transform: translateX(-4px); }
-  50%  { opacity: 0.7; transform: translateX(4px); }
-  100% { opacity: 0.3; transform: translateX(-4px); }
-}
-
-@media (max-width: 939px) {
-  .events-section__header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
-
-  .ps-squeeze-detail {
-    grid-template-columns: 1fr;
-    align-items: start;
-  }
-}
-
-@media (max-width: 639px) {
-  .events-section__controls {
-    display: none;
-  }
-
-  .ps-squeeze-carousel {
-    display: none;
-  }
-
-  .events-mobile-carousel {
-    display: block;
   }
 }
 
@@ -4108,69 +3689,8 @@ ul, ol {
   height: 100%;
 }
 
-/* Static client name — always visible at bottom-left */
-.ps-work-card-client {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  font-size: 0.9375rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.9);
-  letter-spacing: 0.01em;
-  line-height: 1.3;
-  z-index: 2;
-  pointer-events: none;
-  transition: opacity 280ms ease;
-}
-
-/* Light card variant — dark text for cream/white backgrounds */
-.ps-work-card--light .ps-work-card-client {
-  color: #1E293B;
-}
-
-/* Desktop hover: hide standalone client label if not wrapped in group.
-   The label-group handles fading as a unit on desktop (see below). */
-.ps-work-card:hover .ps-work-card-client:not(.ps-work-card-label-group .ps-work-card-client),
-.ps-work-card:focus-within .ps-work-card-client:not(.ps-work-card-label-group .ps-work-card-client) {
-  opacity: 0;
-}
-
-/* Hover overlay */
-.ps-work-card-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.62);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 24px 20px 20px;
-  opacity: 0;
-  transition: opacity 280ms ease;
-  z-index: 3;
-}
-
-/* Desktop only: hover shows overlay */
-@media (min-width: 769px) {
-  .ps-work-card:hover .ps-work-card-overlay,
-  .ps-work-card:focus-within .ps-work-card-overlay {
-    opacity: 1;
-  }
-}
-
 /* Mobile: overlay controlled ONLY by .ps-work-card--tapped class (JS) */
 @media (max-width: 768px) {
-  .ps-work-card-overlay {
-    opacity: 0 !important;
-    transition: opacity 200ms ease;
-  }
-  .ps-work-card--tapped .ps-work-card-overlay {
-    opacity: 1 !important;
-    background: rgba(0, 0, 0, 0.8);
-  }
-  .ps-work-card--tapped .ps-work-card-label-group {
-    opacity: 0;
-  }
   /* Logos always visible on mobile — never fade from scroll-triggered hover states */
   .ps-work-card-logo,
   .ps-work-card-icon {
@@ -4182,25 +3702,8 @@ ul, ol {
   .ps-work-card--tapped .ps-work-card-icon {
     opacity: 0 !important;
   }
-  /* Remove line-clamp on mobile; use smaller text so description fits */
-  .ps-work-card-result {
-    -webkit-line-clamp: unset !important;
-    font-size: 0.6875rem !important;
-    line-height: 1.45 !important;
-  }
-  .ps-work-card-tag {
-    font-size: 0.5625rem !important;
-  }
 }
 
-.ps-work-card-tag {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-cyan);
-  margin-bottom: 10px;
-}
 
 /* ─────────────────────────────────────────────────────────────
    Case-study card "Hover for more" affordance (text only, bobbing)
@@ -4275,46 +3778,6 @@ ul, ol {
   opacity: 0;
 }
 
-/* Overlay title — appears on hover (desktop) / tap (mobile).
-   Matches the overlay's existing typography rhythm. */
-.ps-work-card-overlay-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.96);
-  letter-spacing: 0.01em;
-  line-height: 1.3;
-  margin: 0 0 10px;
-}
-
-.ps-work-card-result {
-  font-size: 0.8125rem;
-  font-weight: 400;
-  color: rgba(255,255,255,0.88);
-  line-height: 1.6;
-  letter-spacing: 0;
-  margin-bottom: 0;
-}
-
-.ps-work-card-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--color-primary);
-  transition: gap 200ms ease;
-}
-
-.ps-work-card-link:hover {
-  gap: 10px;
-}
-
-.ps-work-card-link:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: 3px;
-}
-
 @media (max-width: 768px) {
   .ps-work {
     padding: var(--section-py-mobile) 0;
@@ -4331,30 +3794,6 @@ ul, ol {
     width: 260px;
   }
 }
-
-/* "See more" text link below the carousel */
-.ps-work-see-more {
-  max-width: var(--container-max);
-  margin: 24px auto 0;
-  padding: 0 var(--container-padding);
-  text-align: right;
-}
-
-.ps-work-see-more a {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: gap 200ms ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.ps-work-see-more a:hover {
-  gap: 8px;
-}
-
 /* ── CTA Section ───────────────────────────────────────────── */
 .ps-cta-section {
   position: relative;
@@ -6654,28 +6093,6 @@ ul, ol {
 
 /* ── Case Studies: mobile tap-to-reveal overlay ── */
 @media (max-width: 768px) {
-  /* Default state on mobile: overlay hidden, title + tap hint visible */
-  .ps-work-card-overlay {
-    opacity: 0;
-  }
-
-  /* Overlay only appears when the card has been tapped (.ps-work-card--tapped added by JS) */
-  .ps-work-card--tapped .ps-work-card-overlay {
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.72);
-  }
-
-  /* Hide the client label when overlay is active on tapped card */
-  .ps-work-card--tapped .ps-work-card-client,
-  .ps-work-card--tapped .ps-work-card-tap-hint {
-    opacity: 0;
-  }
-
-  /* Prevent description text from overflowing card bounds */
-  .ps-work-card-overlay {
-    overflow: hidden;
-  }
-
   /* Slightly smaller cards for better 320px viewport fit */
   .ps-work-card {
     width: 240px;
@@ -6685,11 +6102,6 @@ ul, ol {
   .ps-work-nav {
     display: none;
   }
-}
-
-/* Case study card description — no clamp, let it flow */
-.ps-work-card-result {
-  overflow: hidden;
 }
 
 /* ── CTA Section: stack buttons on narrow screens ── */
@@ -6717,24 +6129,6 @@ ul, ol {
   }
 }
 
-/* ── Why Us mobile carousel: fix on very narrow screens ── */
-@media (max-width: 639px) {
-  /* Prevent item width from causing horizontal overflow on 320px */
-  .mobile-carousel__item {
-    width: min(calc(100vw - 32px), 480px);
-  }
-
-  /* Reduce image aspect ratio so cards are not too tall on narrow screens */
-  .events-mobile-carousel-card__media {
-    aspect-ratio: 4 / 3;
-  }
-
-  /* Full-width CTA inside mobile carousel cards */
-  .events-mobile-carousel-card__link {
-    width: 100%;
-    justify-content: center;
-  }
-}
 
 /* ── Prevent horizontal overflow on all sections ── */
 @media (max-width: 768px) {
@@ -6778,33 +6172,6 @@ body {
   }
 }
 
-/* ── Why Us: center cards, hide CTA button, fix cutoff ── */
-@media (max-width: 639px) {
-  .ps-squeeze-carousel {
-    display: none !important;
-  }
-  .events-mobile-carousel {
-    display: block !important;
-  }
-  .mobile-carousel__items-container {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-  .mobile-carousel__item {
-    width: calc(100vw - 32px) !important;
-    min-width: calc(100vw - 32px) !important;
-    scroll-snap-align: center !important;
-  }
-  .mobile-carousel__scroller {
-    scroll-padding-inline: 16px !important;
-  }
-  .events-mobile-carousel-card__link {
-    display: none !important;
-  }
-  .ps-events-detail__cta {
-    display: none !important;
-  }
-}
 
 /* ── System Fixes card: no scale on mobile — keep desktop layout, let card clip naturally ── */
 
@@ -6862,24 +6229,6 @@ body {
   }
 }
 
-/* Why Us mobile carousel — shrink cards and force center */
-@media (max-width: 639px) {
-  .mobile-carousel__item {
-    width: 85vw !important;
-    min-width: 85vw !important;
-    max-width: 85vw !important;
-    scroll-snap-align: center !important;
-  }
-  .mobile-carousel__scroller {
-    display: flex;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding: 0 7.5vw !important;
-  }
-  .events-mobile-carousel-card__media {
-    aspect-ratio: 16/10 !important;
-  }
-}
 
 /* Hero — eliminate gray bar on theme switch */
 .ps-hero {
@@ -6903,27 +6252,6 @@ html, body {
     aspect-ratio: 5 / 8 !important;
     min-height: auto !important;
   }
-  .ps-work-card-overlay {
-    padding: 20px 18px 18px !important;
-    justify-content: flex-start !important;
-    padding-top: 30% !important;
-  }
-  .ps-work-card-tag {
-    font-size: 0.75rem !important;
-    letter-spacing: 0.06em !important;
-    margin-bottom: 12px !important;
-  }
-  .ps-work-card-result {
-    font-size: 0.9375rem !important;
-    line-height: 1.55 !important;
-    -webkit-line-clamp: unset !important;
-  }
-  .ps-work-card-client {
-    font-size: 1.125rem !important;
-  }
-  .ps-work-card-tap-hint {
-    font-size: 0.75rem !important;
-  }
   .ps-work-card-logo {
     max-width: 55% !important;
     max-height: 40% !important;
@@ -6938,21 +6266,6 @@ html, body {
 @media (max-width: 768px) {
   .ps-work-card {
     min-height: auto !important;
-  }
-  .ps-work-card-overlay {
-    justify-content: center !important;
-    padding: 24px 20px !important;
-    gap: 12px !important;
-  }
-  .ps-work-card-result {
-    font-size: 0.9375rem !important;
-    line-height: 1.65 !important;
-    font-weight: 400 !important;
-    color: rgba(255,255,255,0.88) !important;
-  }
-  .ps-work-card-tag {
-    font-size: 0.6875rem !important;
-    margin-bottom: 6px !important;
   }
 
   /* Add swipe hint to Our Work section */
@@ -8234,7 +7547,6 @@ html, body {
   min-height: 44px;
 }
 
-.ps-events-control,
 .ps-work-nav-btn {
   min-width: 44px;       /* measured 40x40 */
   min-height: 44px;

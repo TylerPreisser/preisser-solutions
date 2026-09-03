@@ -118,7 +118,7 @@
    #0F1D30 is 15.4:1, so nothing is given up to get it.
 
    Fully opaque on purpose. The artwork underneath is NOT faded out, because
-   the only way to beat globals.css:4177-4181's `opacity: 1 !important` would
+   the only way to beat globals.css:3695-3699's `opacity: 1 !important` would
    be another !important, and !important wars in this file are already a known
    problem. An opaque scrim gets the same result with plain painting order. */
 .ps-work-card__panel::before {
@@ -145,23 +145,6 @@
   .ps-work-card--open .ps-work-card__panel {
     transform: translateY(0);
   }
-}
-
-/* Visible dismiss affordance. Decorative and aria-hidden — it is not a control
-   and adds no tab stop. It does not need to be: the panel is
-   pointer-events:none, so tapping the glyph (or anywhere else on the panel)
-   falls through to the toggle button and closes the card. The real control
-   remains the one button, which already carries aria-expanded. */
-.ps-work-card__panel-dismiss {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  z-index: 1;
-  font-size: 1.375rem;
-  line-height: 1;
-  font-weight: 400;
-  color: var(--color-white);
-  opacity: 0.6;
 }
 
 /* Content is bottom-weighted (as the old overlay was), so the link sits at the
@@ -274,7 +257,7 @@
 
 /* ── Countermanding globals.css ───────────────────────────────── */
 /* globals.css fades the artwork out on :hover and :focus-within
-   (globals.css:4077-4082, 4098-4103, 8388-8390) because hover used to reveal
+   (globals.css:3659-3664, 3680-3685, 7707-7711) because hover used to reveal
    the overlay. It no longer does, so hovering — or merely giving the toggle
    button keyboard focus, which makes the card match :focus-within — would
    empty the card and show nothing in its place. Doubled class + :not() gives
@@ -282,7 +265,7 @@
    sheet, with no !important.
 
    NOTE: there is deliberately NO rule here for .ps-work-card__bob on hover.
-   globals.css:4268-4272 now scopes that fade behind
+   globals.css:3771-3775 now scopes that fade behind
    `@media (hover: hover) and (pointer: fine)` — that is the team lead's
    committed fix for the touch bug and this file must not override it. */
 .ps-work-card.ps-work-card:not(.ps-work-card--open):hover .ps-work-card-logo,
@@ -309,7 +292,7 @@
 }
 
 /* ── 940px and up ─────────────────────────────────────────────── */
-/* The codebase's bespoke breakpoint (globals.css:1503, 1567, 1590, 3104).
+/* The codebase's bespoke breakpoint (globals.css:1503, 1567, 1590).
    Everything above is the narrow-viewport case; this is the only width query
    in the file. */
 @media (min-width: 940px) {

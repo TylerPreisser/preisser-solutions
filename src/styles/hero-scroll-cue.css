@@ -8,6 +8,24 @@
    block in globals.css. No new hex values.
    ============================================================ */
 
+/* CASCADE NOTE — read before editing.
+   This sheet is UNLAYERED and is `@import`ed at the top of globals.css, so its
+   rules occupy the FIRST source positions in the built sheet.
+     - It BEATS everything inside `@layer components` (globals.css:260-432)
+       automatically: an unlayered rule outranks any named layer, whatever the
+       specificity or the order.
+     - It LOSES to any unlayered rule AFTER globals.css:432 on equal
+       specificity, because those come later in source order.
+   Therefore: only style class names that appear nowhere in globals.css. If you
+   must touch an existing name, win on SPECIFICITY and prove it with
+   getComputedStyle on a built page.
+
+   Do NOT wrap this file in `@layer components`. Measured 2026-09-03: wrapping
+   all five new sheets demoted them beneath the unlayered globals rules (which
+   are the large majority — the layer block ends at line 432 of a 7,750-line
+   file) and broke two load-bearing overrides — work-card artwork opacity
+   1 -> 0 on hover/focus-within, and .ps-why padding-bottom 100px -> 72px. */
+
 /* ── The cue ────────────────────────────────────────────────
    A 44x44 button pinned to the bottom of .ps-hero (position:
    relative, overflow: hidden), centred on the hero's axis.
