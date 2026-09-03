@@ -203,10 +203,13 @@ export function Hero() {
       ? window.scrollY + next.getBoundingClientRect().top - navHeight - 24
       : window.scrollY + window.innerHeight;
 
-    // globals.css sets `html { scroll-behavior: smooth }` UNCONDITIONALLY
-    // (inside @layer base, not gated on prefers-reduced-motion). "auto" would
-    // therefore inherit smooth and animate anyway — "instant" is the only
-    // value that overrides it, so reduced-motion users genuinely jump.
+    // globals.css sets `html { scroll-behavior: smooth }` inside @layer base,
+    // and it IS now gated on `prefers-reduced-motion: no-preference` — that
+    // gate was added 2026-09-03; before then it applied unconditionally.
+    // "instant" is kept here anyway rather than "auto": it is correct under
+    // both the old and new CSS, it does not depend on a media query in another
+    // file staying put, and "auto" would silently start animating again if the
+    // gate were ever removed.
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;

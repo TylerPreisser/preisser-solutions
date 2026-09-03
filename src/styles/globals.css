@@ -4401,6 +4401,13 @@ ul, ol {
   color: var(--theme-text-primary);
   margin-bottom: 20px;
   transition: color 300ms ease;
+  /* Without this the heading orphans its last, most emphatic word onto line 2
+     alone — measured at 390px and 1440px as line widths [316, 75] and
+     [514, 121], i.e. the payload word sitting at 24% of line 1. `balance`
+     evens them to [174, 217] and [283, 352]. 768px is a single line either
+     way. Progressive: browsers without it fall back to the ragged wrap, which
+     is what shipped before. */
+  text-wrap: balance;
 }
 
 .ps-cta-body {

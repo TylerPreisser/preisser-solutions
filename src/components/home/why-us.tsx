@@ -26,14 +26,19 @@ export function WhyUs() {
         <div className="ps-why-relationship">
           <p className="ps-eyebrow ps-why-relationship__eyebrow">Why Us</p>
 
-          {/* The mark is the only thing in this block that names the brand —
-              the tagline deliberately does not — so it gets a real alt, not
-              alt="". Same URL the header already loaded, so it is warm in
-              cache. Explicit intrinsic width/height reserve the box (no CLS);
-              CSS scales it down. */}
+          {/* alt="" on purpose. The first draft gave this a real alt on the
+              reasoning that the tagline never names the brand — true, but the
+              very next paragraph OPENS with "Preisser Solutions", so a screen
+              reader would announce the name twice one node apart. The mark is
+              decorative here; the paragraph carries the name. (Accessibility
+              audit, 2026-09-03.)
+              Same URL the header already loaded, so it is warm in cache.
+              Explicit intrinsic width/height reserve the box (no CLS); CSS
+              scales it down. */}
           <Image
             src="/images/ps-logo.webp"
-            alt="Preisser Solutions"
+            alt=""
+            aria-hidden="true"
             width={1024}
             height={1024}
             className="ps-why-relationship__mark"
@@ -44,12 +49,18 @@ export function WhyUs() {
             <span className="ps-why-relationship__accent">our success.</span>
           </h2>
 
+          {/* The last sentence is deliberately short. The longer draft ("we
+              are still here to change with it") widowed "with it." onto an
+              eighth line at 390px — 53px of text in a 342px measure.
+              text-wrap: pretty is already applied and does not fix it, and
+              balance measurably made it worse. Copy was the only lever.
+              (Design critique, 2026-09-03.) */}
           <p className="ps-why-relationship__copy">
             Preisser Solutions works in long-term relationships, not one-off
             handoffs. Every system we build is custom — shaped around one
             business, its customers, its services, its tools, and the details
-            that make the difference. When your business changes, we are still
-            here to change with it.
+            that make the difference. When your business changes, we change
+            with it.
           </p>
         </div>
       </div>
