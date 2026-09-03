@@ -1,5 +1,11 @@
 @import "tailwindcss";
 @import "./card-visuals.css";
+/* 2026-09-03 homepage overhaul — one stylesheet per new surface. Split out so the
+   work could be parallelized; every rule inside uses the :root tokens below. */
+@import "./hero-scroll-cue.css";
+@import "./why-us-relationship.css";
+@import "./work-card-reveal.css";
+@import "./marcommand-live.css";
 
 /* ============================================================
    PREISSER SOLUTIONS — GLOBAL CSS

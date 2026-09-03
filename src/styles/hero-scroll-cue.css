@@ -1,0 +1,9 @@
+/* ============================================================
+   hero-scroll-cue.css
+   Split out of globals.css deliberately, following the existing
+   `@import "./card-visuals.css"` precedent, so the 2026-09-03
+   homepage overhaul could be built by several agents at once
+   without them serializing on one 8,400-line stylesheet.
+   Tokens only — every color here must be a var() from the :root
+   block in globals.css. No new hex values.
+   ============================================================ */
