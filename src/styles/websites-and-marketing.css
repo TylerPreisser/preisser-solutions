@@ -3,29 +3,32 @@
    Secondary services band — ADR-0003. Split out of globals.css
    following the existing `@import "./card-visuals.css"` precedent
    so the 2026-09-03 homepage overhaul could be built in parallel.
-   Tokens only — every color here is a var() from the :root block
+
+   Tokens only — every declaration uses a var() from the :root block
    in globals.css. No new hex values.
 
-   Subordination to the three pillars is carried by the type scale
-   and the inset surface, NOT by breaking the section rhythm: the
-   outer padding uses the same --section-py-* tokens as its
-   neighbours so the vertical cadence of the page is unchanged.
+   CASCADE NOTE: this sheet is UNLAYERED, while globals.css puts its
+   .ps-* base classes inside `@layer components` (globals.css:248-420).
+   Unlayered rules beat layered ones regardless of source order, so
+   anything declared here overrides .ps-section / .ps-eyebrow even
+   though @import hoists this file to the top. Rules that appear
+   AFTER line 420 in globals.css are also unlayered, and those DO
+   beat this file on equal specificity (see .ps-websvc__eyebrow).
+   Keep this sheet minimal for that reason.
+
+   Layout, padding and container width come from .ps-section and
+   .ps-container in the markup; only what those don't provide is here.
    ============================================================ */
 
 .ps-websvc {
-  /* --theme-bg-secondary reads as an inset shelf against the
-     --theme-section-switchable sections above and below it
-     (dark #0F1D30 on #0A1628, light #F6F9FC on #FFFFFF). */
-  background-color: var(--theme-bg-secondary);
-  border-block: 1px solid var(--theme-border);
-  padding-block: var(--section-py-desktop);
-  transition: background-color 300ms ease, border-color 300ms ease;
-}
-
-@media (max-width: 768px) {
-  .ps-websvc {
-    padding-block: var(--section-py-mobile);
-  }
+  /* Matches every sibling homepage section (.ps-marcommand:4432,
+     .ps-cta-section:4361, .ps-home-link-cluster:7238). An inset
+     contrasting shelf was tried first and rejected: a distinct band
+     draws MORE eye than its neighbours, which is the opposite of the
+     subordination ADR-0003 requires. Subordination is carried by the
+     type scale instead. */
+  background: var(--theme-bg-primary);
+  transition: background 300ms ease;
 }
 
 .ps-websvc__header {
@@ -34,23 +37,25 @@
 }
 
 .ps-websvc__eyebrow {
-  /* Colour is deliberately NOT set here. globals.css:8181-8186 gives every
-     .ps-eyebrow `color: var(--ps-eyebrow-color)`, which is already theme-aware
-     (--color-cyan on dark, --theme-accent-text/#0C6FC9 on light) and wins the
-     cascade over this sheet anyway, since @import hoists it above that rule.
-     Measured on the built page: 12.12:1 dark, 4.81:1 light — both clear 4.5:1.
-     Overriding it would also make this the only eyebrow on the homepage that
-     is not the same colour as its neighbours. Only the spacing is tightened. */
+  /* Colour deliberately NOT set. globals.css:8181-8186 is unlayered and
+     later in source order, so its `color: var(--ps-eyebrow-color)` wins
+     over anything declared here. That token is already theme-aware
+     (--color-cyan dark / --theme-accent-text light) and measured
+     12.12:1 and 4.81:1 on the built page. Forcing a different colour
+     would also make this the only eyebrow on the homepage that doesn't
+     match its neighbours. Only the spacing is tightened. */
   margin-bottom: 16px;
 }
 
 .ps-websvc__heading {
   /* Deliberately below .ps-section-heading's clamp(2rem, 4vw, 3.5rem).
-     This band must not compete with the pillars for weight. */
+     Measured 34px here vs 56px for a pillar heading at 1440. This size
+     gap IS the subordination required by ADR-0003 §1, and is the one
+     thing the shared heading classes cannot give us. */
   font-size: clamp(1.5rem, 2.6vw, 2.125rem);
   font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
   color: var(--theme-text-primary);
   transition: color 300ms ease;
 }
@@ -64,6 +69,10 @@
 }
 
 /* ── Link grid ─────────────────────────────────────────────── */
+/* Breakpoint ladder mirrors .ps-bento-grid exactly: 1 col, 2 at 640px,
+   3 at 940px (globals.css:1508). 940px is the codebase's bespoke
+   breakpoint — matching it keeps this band in step with the pillars
+   above it instead of going 2-up while they are already 3-up. */
 
 .ps-websvc__grid {
   display: grid;
@@ -76,14 +85,14 @@
 
 @media (min-width: 640px) {
   .ps-websvc__grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 940px) {
   .ps-websvc__grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -92,25 +101,28 @@
 }
 
 .ps-websvc__link {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
   gap: 16px;
   width: 100%;
-  /* Tap target: 16px block padding + ~44px of content puts every tile
-     well past the repo's 44x44 floor; min-height guards the shortest
-     one-line case. */
+  /* Tap target: measured 101px tall x 342px wide at 390px, against the
+     repo's binding 44x44 floor. min-height guards the shortest case. */
   min-height: 64px;
   padding: 16px 18px;
   border: 1px solid var(--theme-card-border);
   border-radius: var(--radius-btn);
   background-color: var(--theme-card-bg);
   text-decoration: none;
+  /* Only transform + paint properties, per the plan's rule 5 ("never
+     width/height/top/left/margin/padding"). Mirrors the existing
+     .ps-explore-service treatment at globals.css:7394-7396. */
   transition:
-    border-color 200ms var(--ease-standard),
-    background-color 200ms var(--ease-standard),
-    transform 200ms var(--ease-standard),
-    box-shadow 200ms var(--ease-standard);
+    background-color 160ms var(--ease-out-expo),
+    border-color 160ms var(--ease-out-expo),
+    transform 160ms var(--ease-out-expo);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .ps-websvc__text {
@@ -138,15 +150,15 @@
 .ps-websvc__arrow {
   flex-shrink: 0;
   color: var(--theme-accent-text);
-  transition: transform 200ms var(--ease-standard), color 300ms ease;
+  transition: transform 160ms var(--ease-out-expo), color 300ms ease;
 }
 
 /* ── States ────────────────────────────────────────────────── */
+/* No shadow lift on hover: elevation is a prominence signal, and this
+   band is meant to sit quieter than the pillars. Border + arrow only. */
 
 .ps-websvc__link:hover {
   border-color: var(--theme-accent-text);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
 }
 
 .ps-websvc__link:hover .ps-websvc__arrow {
@@ -160,21 +172,17 @@
 }
 
 .ps-websvc__link:active {
-  transform: translateY(0);
-  box-shadow: none;
+  transform: translateY(1px);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .ps-websvc__link,
   .ps-websvc__arrow {
-    transition: border-color 200ms var(--ease-standard);
+    transition: border-color 160ms var(--ease-out-expo);
   }
 
-  .ps-websvc__link:hover {
-    transform: none;
-  }
-
-  .ps-websvc__link:hover .ps-websvc__arrow {
+  .ps-websvc__link:hover .ps-websvc__arrow,
+  .ps-websvc__link:active {
     transform: none;
   }
 }

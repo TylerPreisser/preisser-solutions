@@ -22,7 +22,25 @@ interface CaseStudyCard {
   logoClass?: string;
   /** Wordmark set under the logo, for marks that are an icon with no type in them. */
   logoWordmark?: string;
+  /** Our own internal case-study page. Never a third-party destination. */
   href?: string;
+  /**
+   * The client's own public site, opened in a new tab from the bottom of the
+   * revealed panel. Governed by DECISIONS/0002: a card only gets one when the
+   * URL resolves 2xx AND the client is not one we anonymize. Deliberately a
+   * separate field from `href` — several cards depend on `href` meaning "our
+   * case-study page", and overloading it would send visitors off-site from a
+   * link that reads as internal.
+   */
+  liveUrl?: string;
+}
+
+/** "https://farm-books.com/" -> "farm-books.com", for a link label that says where it goes. */
+function liveUrlLabel(url: string): string {
+  return url
+    .replace(/^https?:\/\//, "")
+    .replace(/^www\./, "")
+    .replace(/\/+$/, "");
 }
 
 // Order is deliberate: the three shipped internal platforms lead, then the
@@ -41,6 +59,8 @@ const caseStudyCards: CaseStudyCard[] = [
     gradient: "linear-gradient(150deg, #FDFCF7 0%, #F2F2F7 55%, #E8E4D6 100%)",
     lightCard: true,
     href: "/case-studies/farmbooks",
+    // Verified 2026-09-03: https://farm-books.com -> 200. See DECISIONS/0002.
+    liveUrl: "https://farm-books.com",
     // Real FarmBooks mark — the actual PWA icon shipped at farm-books.com
     // (web/app/icon.svg, declared in web/app/manifest.ts).
     caseLogo: "/images/case-studies/farmbooks-logo.svg",
@@ -81,6 +101,8 @@ const caseStudyCards: CaseStudyCard[] = [
     image: "iron-oak.webp",
     imageWidth: 2048,
     imageHeight: 2048,
+    // Verified 2026-09-03: https://theironandoakpodcast.com -> 200. See DECISIONS/0002.
+    liveUrl: "https://theironandoakpodcast.com",
   },
   // Cassidy HVAC: Customer Reactivation
   {
@@ -320,8 +342,14 @@ const caseStudyCards: CaseStudyCard[] = [
 
 export function CaseStudies() {
   const trackRef = useRef<HTMLDivElement>(null);
-  // Track which card is tapped on mobile (null = none active)
-  const [activeMobileCard, setActiveMobileCard] = useState<number | null>(null);
+  // Which card's detail panel is open. One at a time, every viewport — the
+  // reveal is no longer mobile-only, so this is not "activeMobileCard".
+  const [openCard, setOpenCard] = useState<number | null>(null);
+  // scrollLeft at the moment a card was opened. Focusing the toggle button can
+  // make the browser scroll the card into view, which fires onScroll and used
+  // to slam the panel shut on the very click that opened it. Only a real user
+  // scroll (> 24px away from where we started) counts as "moving on".
+  const scrollAtOpenRef = useRef(0);
 
   function scrollTrack(direction: "left" | "right") {
     if (!trackRef.current) return;
@@ -332,15 +360,18 @@ export function CaseStudies() {
     });
   }
 
-  function handleCardTap(index: number) {
-    // Toggle: tap same card to close, tap different card to switch
-    setActiveMobileCard((prev) => (prev === index ? null : index));
+  function handleCardToggle(index: number) {
+    scrollAtOpenRef.current = trackRef.current?.scrollLeft ?? 0;
+    // Toggle: activate the same card to close, a different card to switch
+    setOpenCard((prev) => (prev === index ? null : index));
   }
 
-  // Close overlay when user scrolls the track (they're moving on)
+  // Close the panel when the user scrolls the track (they're moving on)
   function handleTrackScroll() {
-    if (activeMobileCard !== null) {
-      setActiveMobileCard(null);
+    if (openCard === null) return;
+    const now = trackRef.current?.scrollLeft ?? 0;
+    if (Math.abs(now - scrollAtOpenRef.current) > 24) {
+      setOpenCard(null);
     }
   }
 
@@ -390,9 +421,23 @@ export function CaseStudies() {
 
       <div className="ps-work-track" ref={trackRef} role="list" onScroll={handleTrackScroll}>
         {caseStudyCards.map((study, index) => {
-          const isMobileActive = activeMobileCard === index;
-          const cardContent = (
-            <>
+          const isOpen = openCard === index;
+          const panelId = `ps-work-panel-${index}`;
+          // Defensive: `href` is meant to be an internal route, but if one is
+          // ever absolute it must still get the new-tab treatment.
+          const hrefIsExternal = study.href ? /^https?:\/\//.test(study.href) : false;
+          return (
+            <article
+              key={`${study.title}-${index}`}
+              className={[
+                "ps-work-card",
+                study.lightCard ? "ps-work-card--light" : "",
+                isOpen ? "ps-work-card--open" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              role="listitem"
+            >
               {/* Gradient background layer */}
               <div
                 className="ps-work-card-bg"
@@ -432,70 +477,79 @@ export function CaseStudies() {
                 <div className="ps-work-card-icon" aria-hidden="true">{study.svgIcon}</div>
               ) : null}
 
-              {/* Overlay with full details — hover on desktop, tap on mobile.
-                  Title lives here now (resting-state title was replaced by the
-                  pulse affordance below). Overlay uses opacity:0, not display:none,
-                  so the title text stays in the SSG HTML for AI crawlers. */}
-              <div
-                className="ps-work-card-overlay"
-                aria-label={`${study.title} case study details`}
-              >
-                <h3 className="ps-work-card-overlay-title">{study.title}</h3>
-                <p className="ps-work-card-result">{study.description}</p>
-                <span className="ps-visually-hidden">{study.tags}</span>
+              {/* The card is NOT an anchor any more. It used to be, on the two
+                  cards with an `href`, which made a click navigate instead of
+                  inform and made it impossible to put a link in the panel
+                  without nesting <a> inside <a>. The whole card face is now a
+                  disclosure button, and every link lives inside the panel as a
+                  sibling of that button — so no anchor is ever nested. */}
+              <button
+                type="button"
+                className="ps-work-card__toggle"
+                aria-expanded={isOpen}
+                aria-controls={panelId}
+                aria-label={`Details for ${study.title}`}
+                onClick={() => handleCardToggle(index)}
+              />
+
+              {/* Detail panel. Kept at opacity 0 rather than display:none so the
+                  title and description stay in the SSG HTML for AI crawlers;
+                  aria-hidden + tabIndex -1 keep the collapsed copy out of the
+                  screen-reader flow and out of the tab order, so nothing is
+                  focusable while invisible. */}
+              <div id={panelId} className="ps-work-card__panel" aria-hidden={!isOpen || undefined}>
+                <div className="ps-work-card__panel-scroll">
+                  <h3 className="ps-work-card__panel-title">{study.title}</h3>
+                  <span className="ps-visually-hidden">{study.tags}</span>
+                  <p className="ps-work-card__panel-body">{study.description}</p>
+                </div>
+
+                {(study.href || study.liveUrl) && (
+                  <div className="ps-work-card__panel-links">
+                    {study.href && (
+                      <a
+                        className="ps-work-card__panel-link ps-work-card__panel-link--case"
+                        href={study.href}
+                        target={hrefIsExternal ? "_blank" : undefined}
+                        rel={hrefIsExternal ? "noopener noreferrer" : undefined}
+                        aria-label={`Read the ${study.title} case study`}
+                        tabIndex={isOpen ? undefined : -1}
+                      >
+                        Read the case study
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                          <path d="M3 8h10M9 3l5 5-5 5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </a>
+                    )}
+                    {study.liveUrl && (
+                      <a
+                        className="ps-work-card__panel-link ps-work-card__panel-link--live"
+                        href={study.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        tabIndex={isOpen ? undefined : -1}
+                      >
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                          <path d="M6.5 9.5a3 3 0 0 0 4.24 0l2.12-2.12a3 3 0 0 0-4.24-4.24l-.7.7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                          <path d="M9.5 6.5a3 3 0 0 0-4.24 0L3.14 8.62a3 3 0 0 0 4.24 4.24l.7-.7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        </svg>
+                        Visit {liveUrlLabel(study.liveUrl)}
+                        <span className="ps-visually-hidden"> (opens in a new tab)</span>
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
 
-              {/* "Hover for more" affordance — bottom-left, text-only with
-                  a subtle vertical bob. On touch devices, label reads
-                  "Tap for more" (toggled via CSS @media (hover: none)).
-                  Decorative only (aria-hidden); a11y handled by card aria-label. */}
+              {/* Affordance — bottom-left, text-only with a subtle vertical bob.
+                  Reveal is click/tap driven on every viewport now, so the
+                  pointer-device label says "Click for more"; touch devices get
+                  "Tap for more" via CSS @media (hover: none).
+                  Decorative only (aria-hidden); a11y is on the toggle button. */}
               <div className="ps-work-card__bob" aria-hidden="true">
-                <span className="ps-work-card__bob-label ps-work-card__bob-label--hover">Hover for more</span>
+                <span className="ps-work-card__bob-label ps-work-card__bob-label--hover">Click for more</span>
                 <span className="ps-work-card__bob-label ps-work-card__bob-label--tap">Tap for more</span>
               </div>
-            </>
-          );
-
-          if (study.href) {
-            // Internal case-study routes stay in the same tab; only genuinely
-            // external destinations get a new tab.
-            const isExternal = /^https?:\/\//.test(study.href);
-            return (
-              <a
-                key={`${study.title}-${index}`}
-                href={study.href}
-                target={isExternal ? "_blank" : undefined}
-                rel={isExternal ? "noopener noreferrer" : undefined}
-                aria-label={`${study.title} case study`}
-                className={[
-                  "ps-work-card",
-                  study.lightCard ? "ps-work-card--light" : "",
-                  isMobileActive ? "ps-work-card--tapped" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                role="listitem"
-                onClick={() => handleCardTap(index)}
-              >
-                {cardContent}
-              </a>
-            );
-          }
-
-          return (
-            <article
-              key={`${study.title}-${index}`}
-              className={[
-                "ps-work-card",
-                study.lightCard ? "ps-work-card--light" : "",
-                isMobileActive ? "ps-work-card--tapped" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              role="listitem"
-              onClick={() => handleCardTap(index)}
-            >
-              {cardContent}
             </article>
           );
         })}

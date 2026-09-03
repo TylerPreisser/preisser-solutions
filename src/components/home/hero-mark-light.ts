@@ -21,6 +21,11 @@
  * Per frame the only work is restoring the plate over the rectangle the beam
  * last touched and stroking the beam again. The loop never touches the full
  * viewport.
+ *
+ * Narrow viewports animate too, but cheaper: a smaller backing store, half the
+ * frame rate and fewer beam segments. The lap there is FASTER, not slower —
+ * see BEAM_PERIOD_MS. Only prefers-reduced-motion parks the beam as a still
+ * frame.
  */
 
 type RGB = [number, number, number];
@@ -58,8 +63,45 @@ const MARK_WEDGE = [
 ];
 
 const BOX = 1024;                 // the mark's native coordinate box
+const NARROW_MAX = 768;           // below this we use the narrow framing
 const DPR_CAP = 1.5;
-const BEAM_PERIOD_MS = 30000;     // one full lap of the outline
+const DPR_CAP_NARROW = 1.25;      // fewer pixels to clear/blit per frame
+/** One full lap of the outline. This has to read as a line TRAVELLING the
+ *  shape within the few seconds someone looks at the hero before scrolling —
+ *  at the old 30s a visitor saw ~15% of a lap, which is a static glow, not a
+ *  beam. 11s puts a visible head-of-light past a recognisable stretch of the
+ *  mark in about a second.
+ *
+ *  Narrow is FASTER, not slower. The mark is drawn at 0.70 of the hero height
+ *  there instead of 0.92, so a lap is fewer css pixels of travel and the same
+ *  duration reads as slower motion; 9s restores the apparent speed. It is also
+ *  the shorter visit. Smoothness is not the thing being bought here — at a 9s
+ *  lap and 30fps the head advances 4.4% of the beam's own length per frame,
+ *  which is far below the point where a low-opacity background line steps. */
+const BEAM_PERIOD_MS = 11000;
+const BEAM_PERIOD_MS_NARROW = 9000;
+const FRAME_GAP_MS_NARROW = 30;   // ~30fps on a 60Hz or 120Hz phone
+/* Beam weight multipliers. Added 2026-09-03: at the original alpha 0.55 /
+   width 0.9-2.0 the beam measured 1.03:1 against the page on a light-theme
+   phone and 1.70:1 on dark — moving, and invisible. The `.ps-hero` contrast
+   veil sits over this canvas at a flat 0.55 (globals.css:1017-1031) and is a
+   documented deliberate trade-off protecting the headline
+   (globals.css:1033-1045), so it stays; the beam's own weight underneath is
+   the only honest lever.
+   Light theme takes the larger alpha gain because the veil costs it more
+   headroom than it costs dark. Narrow takes the larger width gain because the
+   mark is drawn at 0.70 scale there, so an identical stroke covers fewer CSS
+   pixels — and a phone was the worst case to begin with.
+   WIDTH_GAIN_* is read in TWO places: the stroke, and the dirty-rect `pad`
+   that restores the plate behind it. Change one without the other and the
+   blit misses the stroke's outer edge, leaving a sliver every frame until the
+   ghost accumulates into coloured banding. */
+const ALPHA_GAIN_LIGHT = 1.85;
+const ALPHA_GAIN_DARK = 1.5;
+const WIDTH_GAIN_NARROW = 1.9;
+const WIDTH_GAIN_WIDE = 1.5;
+const BEAM_STEPS = 72;
+const BEAM_STEPS_NARROW = 44;     // the beam covers fewer css px on a phone
 
 /** How tall the mark is drawn, as a multiple of the hero's height, and where
  *  its centre sits as a fraction of the viewport. Bigger than 1 means it is
@@ -113,10 +155,20 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   let W = 0, H = 0, dpr = 1;
   let onStage = true;
   let started = 0;
+  let narrow = false;
+  let lastPaint = 0;
+  /** The rectangle the previous frame's beam was stroked into, in device
+   *  pixels. Restoring only this plus the new one is what keeps the loop off
+   *  the full viewport. Null means "the whole canvas is clean plate". */
+  let dirty: [number, number, number, number] | null = null;
 
   const isLight = () => document.documentElement.getAttribute("data-theme") === "light";
-  /** Below this width the mark is painted once and never animated. */
-  const still = () => reduced || window.innerWidth < 768;
+  /** Only a stated motion preference parks the beam. Narrow viewports animate;
+   *  they animate cheaply. See the per-frame budget in drawBeam. */
+  const still = () => reduced;
+  const period = () => (narrow ? BEAM_PERIOD_MS_NARROW : BEAM_PERIOD_MS);
+  /** Phase 0.34 of a lap — the beam parked somewhere flattering on the edge. */
+  const parked = () => period() * 0.34;
 
   function markPath(p: Path2D, s: number, tx: number, ty: number) {
     for (const poly of [MARK_BODY, MARK_WEDGE]) {
@@ -132,13 +184,14 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     const rect = container.getBoundingClientRect();
     W = Math.max(1, Math.round(rect.width));
     H = Math.max(1, Math.round(rect.height));
-    dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
+    narrow = W < NARROW_MAX;
+    dpr = Math.min(window.devicePixelRatio || 1, narrow ? DPR_CAP_NARROW : DPR_CAP);
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
     canvas.style.width = W + "px";
     canvas.style.height = H + "px";
 
-    const L = W < 768 ? LAYOUT.narrow : LAYOUT.wide;
+    const L = narrow ? LAYOUT.narrow : LAYOUT.wide;
     const s = (H * L.scale) / BOX * dpr;
     const tx = W * L.cx * dpr - (BOX * s) / 2;
     const ty = H * L.cy * dpr - (BOX * s) / 2;
@@ -193,6 +246,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(plate, 0, 0);
+    dirty = null;   // the canvas is clean plate again
   }
 
   const at = (d: number): [number, number] => {
@@ -210,23 +264,31 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
    *  contrast margin to give on the light theme. */
   function drawBeam(now: number) {
     if (!plate || !total) return;
-    // clearRect first: drawImage composites, it does not replace. Without
-    // this, every frame stacks another copy of the semi-transparent plate and
-    // another beam stroke — the ghost accumulates to near-opaque and the beam
-    // smears into coloured vertical banding.
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(plate, 0, 0);
 
-    const phase = ((now - started) % BEAM_PERIOD_MS) / BEAM_PERIOD_MS;
+    const P = period();
+    const phase = ((now - started) % P) / P;
     const head = phase * total;
     const len = total * 0.085;
-    const steps = 72;
+    const steps = narrow ? BEAM_STEPS_NARROW : BEAM_STEPS;
     const guard = W * 0.46 * dpr;      // never left of this
+    /* Half the widest stroke, plus the round cap, plus a pixel of slack. This
+       MUST track the `widthGain` used when stroking below: the beam's widest
+       lineWidth is (0.9 + 1.1) * widthGain * dpr, and a round cap extends half
+       that beyond each endpoint. Under-padding here does not merely clip — the
+       restore blit misses the stroke's outer edge, so every frame leaves a
+       sliver behind and the ghost accumulates to near-opaque coloured banding.
+       Kept deliberately generous; the dirty area is ~1.4% of the canvas even
+       so. */
+    const widthGain = narrow ? WIDTH_GAIN_NARROW : WIDTH_GAIN_WIDE;
+    const widestStroke = 2.0 * widthGain * dpr;
+    const pad = widestStroke + 2 * dpr + 2;
 
     const accent = parseRGB(getComputedStyle(container).getPropertyValue("--color-primary")) || [21, 144, 255];
 
-    ctx.save();
-    ctx.lineCap = "round";
+    // Walk the beam first and keep its bounding box, so the repaint below can
+    // be confined to the pixels this frame and the last one actually touch.
+    const segs: Array<[number, number, number, number, number]> = [];
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
     for (let i = 0; i < steps; i++) {
       const t0 = i / steps, t1 = (i + 1) / steps;
       const a = (head - len * (1 - t0) + total) % total;
@@ -234,21 +296,88 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
       const p0 = at(a), p1 = at(b);
       if (p0[0] < guard || p1[0] < guard) continue;
       const fall = Math.sin(Math.PI * t1);       // dark -> bright -> dark
-      ctx.strokeStyle = rgba(accent, 0.55 * fall * fall);
-      ctx.lineWidth = (0.9 + 1.1 * fall) * dpr;
-      ctx.beginPath(); ctx.moveTo(p0[0], p0[1]); ctx.lineTo(p1[0], p1[1]); ctx.stroke();
+      segs.push([p0[0], p0[1], p1[0], p1[1], fall]);
+      x0 = Math.min(x0, p0[0], p1[0]); x1 = Math.max(x1, p0[0], p1[0]);
+      y0 = Math.min(y0, p0[1], p1[1]); y1 = Math.max(y1, p0[1], p1[1]);
+    }
+    const box: [number, number, number, number] | null = segs.length
+      ? [x0 - pad, y0 - pad, x1 - x0 + pad * 2, y1 - y0 + pad * 2]
+      : null;
+
+    // Restore the plate over the union of the old beam's rectangle and the new
+    // one. clearRect first: drawImage composites, it does not replace. Without
+    // this, every frame stacks another copy of the semi-transparent plate and
+    // another beam stroke — the ghost accumulates to near-opaque and the beam
+    // smears into coloured vertical banding.
+    const zone = union(dirty, box);
+    if (zone) {
+      const [rx, ry, rw, rh] = zone;
+      ctx.clearRect(rx, ry, rw, rh);
+      // src and dst are the same size at integer device pixels, so this is a
+      // straight blit with no resampling.
+      ctx.drawImage(plate, rx, ry, rw, rh, rx, ry, rw, rh);
+    }
+    dirty = box;
+
+    /* Beam weight. The old values (alpha 0.55 * fall^2, width 0.9 + 1.1 * fall)
+       measured 1.03:1 against the page on a light-theme phone and 1.70:1 on
+       dark — i.e. the light was moving and nobody could see it, which is the
+       whole thing the owner asked for. The `.ps-hero` contrast veil at
+       globals.css:1017-1031 sits OVER this canvas at a flat 0.55 and is a
+       deliberate, documented trade-off (globals.css:1033-1045) protecting the
+       headline, so it stays; the only honest lever is the beam's own weight
+       underneath it.
+       Narrow viewports get the bigger boost: the mark is drawn at 0.70 scale
+       there, so the same stroke covers fewer CSS pixels and reads thinner, and
+       a phone is the case that was worst. Light theme gets a further push
+       because the veil costs it more headroom than it costs dark.
+       Widening the stroke is doing more of the work than raising alpha — on a
+       3x screen a bright hairline still reads as a hairline. */
+    const alphaGain = isLight() ? ALPHA_GAIN_LIGHT : ALPHA_GAIN_DARK;
+
+    ctx.save();
+    ctx.lineCap = "round";
+    for (const [ax, ay, bx, by, fall] of segs) {
+      ctx.strokeStyle = rgba(accent, Math.min(1, 0.55 * alphaGain * fall * fall));
+      ctx.lineWidth = (0.9 + 1.1 * fall) * widthGain * dpr;
+      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
     }
     ctx.restore();
   }
 
+  /** Union of two device-pixel rects, snapped out to whole pixels and clamped
+   *  to the canvas. Either side may be absent. */
+  function union(
+    a: [number, number, number, number] | null,
+    b: [number, number, number, number] | null,
+  ): [number, number, number, number] | null {
+    const r = !a ? b : !b ? a : [
+      Math.min(a[0], b[0]),
+      Math.min(a[1], b[1]),
+      Math.max(a[0] + a[2], b[0] + b[2]) - Math.min(a[0], b[0]),
+      Math.max(a[1] + a[3], b[1] + b[3]) - Math.min(a[1], b[1]),
+    ] as [number, number, number, number];
+    if (!r) return null;
+    const lx = Math.max(0, Math.floor(r[0]));
+    const ly = Math.max(0, Math.floor(r[1]));
+    const rx = Math.min(canvas.width, Math.ceil(r[0] + r[2]));
+    const ry = Math.min(canvas.height, Math.ceil(r[1] + r[3]));
+    return rx > lx && ry > ly ? [lx, ly, rx - lx, ry - ly] : null;
+  }
+
   function frame(now: number) {
     if (!started) started = now;
-    drawBeam(now);
+    // Narrow viewports paint at ~30fps. rAF still drives the loop so the
+    // browser keeps throttling us in background tabs; we just skip the work.
+    if (!narrow || now - lastPaint >= FRAME_GAP_MS_NARROW) {
+      lastPaint = now;
+      drawBeam(now);
+    }
     raf = requestAnimationFrame(frame);
   }
 
   function start() {
-    if (raf || still()) return;
+    if (raf || still() || document.hidden) return;
     raf = requestAnimationFrame(frame);
   }
   function stop() {
@@ -257,25 +386,31 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
 
   function rebuild() {
     stop();
-    build();
+    build();               // sets `narrow`, which parked() and the loop read
+    started = 0;
+    lastPaint = 0;
     if (still()) {
-      // a still frame with the beam parked somewhere flattering on the edge
-      started = 0;
-      drawBeam(BEAM_PERIOD_MS * 0.34);
+      drawBeam(parked());  // a still frame, beam parked on the edge
     } else if (onStage) {
-      started = 0;
       start();
     }
   }
 
   build();
-  if (still()) drawBeam(BEAM_PERIOD_MS * 0.34);
+  if (still()) drawBeam(parked());
 
+  // The hero leaves a phone's viewport within one flick of the thumb, so this
+  // is the mitigation that matters most on mobile: no beam, no loop, off stage.
   const io = new IntersectionObserver((entries) => {
     onStage = entries[0]?.isIntersecting ?? true;
     if (onStage) start(); else stop();
   }, { threshold: 0 });
   io.observe(container);
+
+  // rAF is already throttled in a hidden tab, but cancel the handle outright
+  // so a backgrounded phone holds no pending frame at all.
+  const onVisibility = () => { if (document.hidden) stop(); else if (onStage) start(); };
+  document.addEventListener("visibilitychange", onVisibility);
 
   // Repaint on theme change even while the loop is stopped.
   const mo = new MutationObserver(rebuild);
@@ -288,6 +423,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   return {
     destroy() {
       stop(); io.disconnect(); mo.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", onResize);
       clearTimeout(resizeTimer);
       canvas.remove();

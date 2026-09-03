@@ -60,7 +60,7 @@ export function WebsitesAndMarketing() {
   return (
     <section
       id="websites-and-marketing"
-      className="ps-websvc"
+      className="ps-section ps-websvc"
       aria-labelledby="websites-and-marketing-heading"
     >
       <div className="ps-container ps-websvc__inner">

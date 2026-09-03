@@ -7,3 +7,396 @@
    Tokens only — every color here must be a var() from the :root
    block in globals.css. No new hex values.
    ============================================================ */
+
+/* ------------------------------------------------------------
+   Typed custom properties.
+
+   Registering these makes them interpolable and, more
+   importantly, unambiguous to GSAP: a `<percentage>` property
+   round-trips as a number + unit instead of an opaque string.
+   Elara's position is expressed ONLY through these, so GSAP
+   never touches `transform` itself and never touches
+   left/top/width/height — which docs/plans/2026-08-02-three-
+   pillar-reposition.md:264 forbids on the homepage.
+   ------------------------------------------------------------ */
+@property --mc-x {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+@property --mc-y {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+@property --mc-flip {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+@property --mc-frame {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+@property --mc-arc {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+/* ------------------------------------------------------------
+   Section frame — reuses .ps-section / .ps-container /
+   .ps-eyebrow / .ps-section-heading from globals.css. Nothing
+   bespoke is invented here (…reposition.md:281).
+   ------------------------------------------------------------ */
+.mc-live {
+  background: var(--theme-bg-primary);
+  transition: background 300ms ease;
+
+  /* Dial ring. §4.2 asks for --theme-border. Measured on the dark
+     page that lands at 1.24:1 against the stage card, i.e. still a
+     hole rather than a dial, so dark mode uses the next token up
+     the same scale. Light mode keeps --theme-border exactly as
+     specified. Both are tokens; neither is a hex. */
+  --mc-dial-ring: var(--theme-text-muted);
+}
+
+[data-theme="light"] .mc-live {
+  --mc-dial-ring: var(--theme-border);
+}
+
+.mc-live__head {
+  max-width: 68ch;
+}
+
+.mc-live__heading {
+  color: var(--theme-text-primary);
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.mc-live__body {
+  color: var(--theme-text-secondary);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  max-width: 68ch;
+  margin: 0;
+}
+
+.mc-live__cta {
+  margin-top: 32px;
+}
+
+/* ------------------------------------------------------------
+   Stage card
+   No backdrop-filter (iOS composites it every frame of a 15s
+   loop) and no box-shadow on anything inside — ADR-0015
+   decision 1 is flat 2D, no depth.
+   ------------------------------------------------------------ */
+.mc-live__stage-card {
+  position: relative;
+  margin-top: 40px;
+  padding: 24px;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-card);
+}
+
+.mc-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1200 / 680;
+  overflow: hidden;
+}
+
+.mc-stage__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* One tree, two CSS-toggled groups (§3.2). No JS decides which
+   renders, so there is no hydration branch by construction. */
+.mc-stage__narrow {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mc-live__stage-card {
+    padding: 16px;
+  }
+
+  .mc-stage {
+    aspect-ratio: 390 / 620;
+  }
+
+  .mc-stage__wide {
+    display: none;
+  }
+
+  .mc-stage__narrow {
+    display: block;
+  }
+}
+
+/* ------------------------------------------------------------
+   Stage furniture
+   ------------------------------------------------------------ */
+.mc-card__face {
+  fill: var(--theme-bg-card);
+  stroke: var(--theme-border);
+  stroke-width: 1.5;
+}
+
+.mc-card--lit .mc-card__face {
+  fill: var(--color-primary-glow);
+  stroke: var(--color-primary);
+  stroke-width: 3;
+}
+
+.mc-card__cap {
+  fill: var(--theme-text-secondary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  text-anchor: middle;
+}
+
+.mc-pad__fill {
+  fill: var(--theme-bg-card);
+}
+
+.mc-pad__ring {
+  fill: none;
+  stroke: var(--theme-border);
+  stroke-width: 2;
+}
+
+/* Rails. The idle spoke is a grey line; the "live" copy is the
+   identical path drawn on top in the accent and revealed with
+   stroke-dashoffset, so the recolour is a geometry reveal rather
+   than a per-frame colour tween. */
+.mc-rail {
+  fill: none;
+  stroke: var(--theme-border);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mc-rail--live {
+  stroke: var(--color-primary);
+}
+
+.mc-wire {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ------------------------------------------------------------
+   Dials — §4.2
+   ------------------------------------------------------------ */
+.mc-dial__body {
+  fill: var(--color-dark-surface);
+  stroke: var(--mc-dial-ring);
+  stroke-width: 1.5;
+}
+
+.mc-dial__arc {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: var(--mc-arc) 100;
+}
+
+.mc-dial__needle {
+  stroke: var(--color-text-dark-secondary);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.mc-dial__label {
+  fill: var(--theme-text-secondary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  text-anchor: middle;
+}
+
+.mc-dial__value {
+  fill: var(--theme-accent-text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+/* ------------------------------------------------------------
+   Keywords / chips tile
+   ------------------------------------------------------------ */
+.mc-tile__box {
+  fill: var(--theme-bg-secondary);
+  stroke: var(--theme-border);
+  stroke-width: 1.5;
+}
+
+.mc-tile__title {
+  fill: var(--theme-text-muted);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.mc-pill__box {
+  fill: var(--theme-bg-card);
+  stroke: var(--theme-border);
+  stroke-width: 1.5;
+}
+
+.mc-pill__text {
+  fill: var(--theme-text-secondary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+}
+
+.mc-pill--new .mc-pill__box {
+  stroke: var(--color-primary);
+  stroke-width: 2;
+}
+
+/* The new chip is distinguished by outline AND by being the only
+   chip whose text carries the accent — never by hue alone (§7). */
+.mc-pill--new .mc-pill__text {
+  fill: var(--theme-accent-text);
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------
+   Elara
+   The anchor is the full size of the stage, so a percentage
+   translate on it is a percentage of the STAGE, not of the
+   sprite. That is what lets the figure track a fluid SVG using
+   transform only.
+   ------------------------------------------------------------ */
+.mc-elara-anchor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  /* Wide end-state (§6): standing at the Daily budget dial. */
+  --mc-x: 34.583%;
+  --mc-y: 65%;
+
+  transform: translate3d(var(--mc-x), var(--mc-y), 0);
+  -webkit-transform: translate3d(var(--mc-x), var(--mc-y), 0);
+  will-change: transform;
+}
+
+.mc-elara {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 96px;
+  height: 116px;
+
+  background-image: url("/images/marcommand/elara-sheet.webp");
+  background-repeat: no-repeat;
+  background-size: 400% 100%;
+  background-position-x: calc(var(--mc-frame) * 33.3333%);
+  background-position-y: 0;
+
+  image-rendering: pixelated;
+
+  /* -50% x centres him on the point; -100% y puts his FEET on it,
+     which is what every stage coordinate in the component means. */
+  transform: translate3d(-50%, -100%, 0) scaleX(var(--mc-flip));
+  -webkit-transform: translate3d(-50%, -100%, 0) scaleX(var(--mc-flip));
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .mc-elara-anchor {
+    /* Narrow end-state: at the Daily budget dial in portrait. */
+    --mc-x: 11.538%;
+    --mc-y: 50.323%;
+  }
+
+  .mc-elara {
+    width: 48px;
+    height: 58px;
+  }
+}
+
+/* ------------------------------------------------------------
+   Pause control — WCAG 2.2 SC 2.2.2 / SC 2.5.8
+   The visible glyph is 20px; the hit area is 44x44.
+   ------------------------------------------------------------ */
+.mc-live__pause {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+
+  padding: 0;
+  border-radius: 999px;
+  background: var(--theme-carousel-btn-bg);
+  border: 1px solid var(--theme-carousel-btn-border);
+  color: var(--theme-carousel-btn-color);
+  transition:
+    background-color 200ms var(--ease-standard),
+    border-color 200ms var(--ease-standard);
+}
+
+.mc-live__pause:hover {
+  border-color: var(--color-primary);
+}
+
+.mc-live__pause:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.mc-live__pause svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 768px) {
+  .mc-live__pause {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+/* ------------------------------------------------------------
+   Reduced motion — belt and braces (§6).
+   The markup already ships in the end-state and the component
+   returns before importing GSAP at all, so there is nothing to
+   stop; this only guarantees it.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .mc-stage *,
+  .mc-elara-anchor,
+  .mc-elara {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .mc-live__pause {
+    display: none;
+  }
+}

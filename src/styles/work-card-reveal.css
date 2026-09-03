@@ -6,4 +6,310 @@
    without them serializing on one 8,400-line stylesheet.
    Tokens only — every color here must be a var() from the :root
    block in globals.css. No new hex values.
+   ============================================================
+
+   CASCADE NOTE — read before editing.
+   This file is `@import`ed at globals.css:7, so it is the FIRST
+   thing in the sheet. Any rule here that ties on specificity with
+   a rule in globals.css LOSES. Where this file has to countermand
+   globals it wins on specificity, not order, using a doubled class
+   (`.ps-work-card.ps-work-card`) or `:not()`. Those doubled
+   selectors are load-bearing; do not "tidy" them away.
+
+   INTERACTION MODEL — the reveal is click/tap driven on EVERY
+   viewport, and hover no longer reveals the panel.
+     - The card face is a <button> (.ps-work-card__toggle) sitting
+       above the artwork and below the panel. Activating it toggles
+       .ps-work-card--open on the card.
+     - The panel is pointer-events:none, so a click on the open
+       panel's background falls through to the button underneath
+       and closes the card. Only the panel's links take pointer
+       events, and only while open.
+     - Hover is deliberately NOT a reveal. A hover-only panel that
+       contains a link is either non-clickable (a preview you can
+       see but not use) or focusable-while-invisible (WCAG 2.4.11).
+       One click-driven state avoids both, keeps aria-expanded
+       truthful, and makes touch and pointer behave identically.
    ============================================================ */
+
+/* ── The card face: a real button, so keyboard and AT get it free ── */
+.ps-work-card__toggle {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+/* Dual-tone focus ring. One fixed colour cannot clear 3:1 against all ten
+   card gradients — one of them IS --color-primary. A white ring against a
+   dark ring is 15.8:1 with each other, so whichever one disappears into the
+   card, the other stays visible. The transparent outline is the
+   forced-colors-mode fallback, since box-shadow is dropped there. */
+.ps-work-card__toggle:focus-visible {
+  outline: 3px solid transparent;
+  outline-offset: -3px;
+  box-shadow:
+    inset 0 0 0 3px var(--color-white),
+    inset 0 0 0 6px var(--color-dark);
+}
+
+/* ── The revealed panel ───────────────────────────────────────── */
+.ps-work-card__panel {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 20px;
+  border-radius: 12px;
+  opacity: 0;
+  /* Collapsed OR open, the panel body never eats a click: a click on it falls
+     through to the toggle button underneath, which is what closes the card.
+     Only the links below opt back in. */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Scrim. Deliberately the SAME dark scrim on all 18 cards and in BOTH themes.
+   The card gradients are inline styles and do not follow data-theme, so a
+   scrim that did follow the theme would put light-on-light text over the four
+   `lightCard` gradients in light mode. One dark scrim gives one contrast
+   story: white body text lands at ~15:1 on every card.
+
+   --color-dark-surface (#0F1D30), NOT --color-dark (#0A1628). The section
+   behind these cards is `background: var(--theme-bg-primary)` and in dark
+   theme that token IS #0A1628 (globals.css:99) — a #0A1628 scrim made an open
+   card dissolve into the page and lose its edges entirely. #0F1D30 is one
+   step up from the page, and the hairline ring below finishes the separation.
+   White on #0F1D30 is 15.4:1, so nothing is given up to get it. */
+.ps-work-card__panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-dark-surface);
+  opacity: 0.95;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--color-border-dark);
+}
+
+.ps-work-card--open .ps-work-card__panel {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ps-work-card__panel {
+    transform: translateY(6px);
+    transition:
+      opacity 240ms var(--ease-standard),
+      transform 240ms var(--ease-standard);
+  }
+
+  .ps-work-card--open .ps-work-card__panel {
+    transform: translateY(0);
+  }
+}
+
+/* Content is bottom-weighted (as the old overlay was), so the link sits at the
+   literal bottom of the card with no dead void between it and the copy. The
+   panel's `overflow: hidden` is the safety valve: verified at 390px and 1440px
+   in both themes, the longest description (FarmBooks, 375 chars, and the only
+   card carrying two links) measures scrollHeight == clientHeight, i.e. zero
+   clipping — see agent-reports/workcard/playwright-log.txt. */
+.ps-work-card__panel-scroll {
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ps-work-card__panel-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-white);
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  margin: 0 0 10px;
+}
+
+.ps-work-card__panel-body {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--color-white);
+  opacity: 0.9;
+  line-height: 1.6;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+/* ── Link row, pinned to the bottom of the panel ──────────────── */
+.ps-work-card__panel-links {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+}
+
+.ps-work-card__panel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  /* Binding repo rule: 44px minimum tap target. */
+  min-height: 44px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: background-color 180ms var(--ease-standard), color 180ms var(--ease-standard);
+}
+
+/* Links are inert until the card is open — pointer-events here, tabIndex -1
+   and aria-hidden in the component. Nothing invisible is ever focusable. */
+.ps-work-card--open .ps-work-card__panel-link {
+  pointer-events: auto;
+}
+
+.ps-work-card__panel-link:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
+/* Internal case-study route. Negative margin keeps the text optically flush
+   with the body copy while the tap target stays oversized. */
+.ps-work-card__panel-link--case {
+  color: var(--color-cyan);
+  padding: 0 10px;
+  margin-left: -10px;
+}
+
+.ps-work-card__panel-link--case:hover {
+  color: var(--color-white);
+}
+
+/* The client's own live site. A filled pill, because this is the thing the
+   owner asked for by name and it must not read as body text.
+   --color-primary-strong (#0C6FC9) not --color-primary (#1590FF): the logo
+   blue under white text is 3.25:1, below the 4.5:1 floor. This is 5.08:1. */
+.ps-work-card__panel-link--live {
+  background: var(--color-primary-strong);
+  color: var(--color-white);
+  /* Full width, not shrink-to-fit. theironandoakpodcast.com is 24 characters
+     and wraps inside a 240px card no matter how it is sized; a full-width pill
+     makes that a deliberate two-line button instead of a ragged blob. */
+  width: 100%;
+  justify-content: flex-start;
+  padding: 8px 16px;
+  text-align: left;
+}
+
+.ps-work-card__panel-link--live:hover {
+  background: var(--color-primary-strong-hover);
+  color: var(--color-white);
+}
+
+.ps-work-card__panel-link--live svg {
+  flex-shrink: 0;
+}
+
+/* ── Countermanding globals.css ───────────────────────────────── */
+/* globals.css fades the artwork out on :hover and :focus-within
+   (globals.css:4081-4086, 4102-4107, 8378-8380) because hover used to reveal
+   the overlay. It no longer does, so hovering would just empty the card.
+   Doubled class + :not() outruns those (0,3,0) selectors from an earlier
+   position in the sheet. */
+.ps-work-card.ps-work-card:not(.ps-work-card--open):hover .ps-work-card-logo,
+.ps-work-card.ps-work-card:not(.ps-work-card--open):hover .ps-work-card-icon,
+.ps-work-card.ps-work-card:not(.ps-work-card--open):hover .ps-work-card-wordmark,
+.ps-work-card.ps-work-card:not(.ps-work-card--open):focus-within .ps-work-card-logo,
+.ps-work-card.ps-work-card:not(.ps-work-card--open):focus-within .ps-work-card-icon,
+.ps-work-card.ps-work-card:not(.ps-work-card--open):focus-within .ps-work-card-wordmark {
+  opacity: 1;
+}
+
+/* Same for the affordance: globals.css:4263-4266 hides it on :hover with no
+   `@media (hover: hover)` guard at all, so on iOS the sticky :hover left after
+   a tap or a scroll kills the label on the card in view. Hover reveals nothing
+   now, so the label stays put and that sticky-hover path is closed. */
+.ps-work-card.ps-work-card:not(.ps-work-card--open):hover .ps-work-card__bob,
+.ps-work-card.ps-work-card:not(.ps-work-card--open):focus-within .ps-work-card__bob {
+  opacity: 1;
+}
+
+/* Open state: the artwork and the affordance get out of the panel's way.
+   !important is required to beat the mobile `opacity: 1 !important` at
+   globals.css:4177-4181; the doubled class carries the specificity. */
+.ps-work-card--open.ps-work-card--open .ps-work-card-logo,
+.ps-work-card--open.ps-work-card--open .ps-work-card-icon,
+.ps-work-card--open.ps-work-card--open .ps-work-card-wordmark {
+  opacity: 0 !important;
+}
+
+.ps-work-card--open.ps-work-card--open .ps-work-card__bob {
+  opacity: 0;
+}
+
+/* Pointer-device polish. Hover no longer reveals, so it earns its keep as a
+   plain affordance lift instead. Guarded so touch never gets it. */
+@media (hover: hover) and (pointer: fine) {
+  .ps-work-card__toggle:hover {
+    background: transparent;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .ps-work-card {
+      transition: transform 220ms var(--ease-standard), box-shadow 220ms var(--ease-standard);
+    }
+
+    .ps-work-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+  }
+}
+
+/* ── Narrow viewports ─────────────────────────────────────────── */
+/* Card is 240px wide (globals.css:6663) => ~324px tall at the 332/448 aspect.
+   Title + up to two 44px links leave roughly 150px for the body, so the type
+   steps down here exactly as the old overlay's did. */
+@media (max-width: 768px) {
+  .ps-work-card__panel {
+    padding: 14px;
+  }
+
+  .ps-work-card__panel-title {
+    font-size: 0.875rem;
+    margin: 0 0 8px;
+  }
+
+  .ps-work-card__panel-body {
+    font-size: 0.6875rem;
+    line-height: 1.45;
+  }
+
+  .ps-work-card__panel-links {
+    padding-top: 10px;
+    gap: 4px;
+  }
+
+  .ps-work-card__panel-link {
+    font-size: 0.75rem;
+  }
+}
