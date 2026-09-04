@@ -277,6 +277,126 @@
   opacity: 1;
 }
 
+/* WCAG 1.4.3, round 1 — "TAP FOR MORE" on the four lightCard tiles.
+   THE RULE FOR THIS NOW LIVES IN globals.css, on the existing
+   `.ps-work-card--light .ps-work-card__bob-label` declaration. It was a
+   doubled-class override here until 2026-09-03; that made two rules where one
+   would do, so the globals declaration was corrected in place and this one
+   deleted. Do not re-add an override here — there is nothing left to
+   countermand, and a second rule would only drift.
+
+   The measurement is recorded here because it is the thing that is expensive
+   to redo. Rendered-pixel contrast at 390x844 dpr3, glyph interiors only
+   (~2,255 px per card), before the fix:
+
+     HG Oil 2.78   FarmBooks 2.83   Wife Supply 2.83   Cassidy HVAC 3.05
+
+   against a 4.5 floor for 12px/600. The cause was COMPOSITING, not the token:
+   `opacity: 0.78` over a near-white card turned #0D76D6 into rgb(61,144,220).
+   Every declared blue, measured on the four real card backgrounds:
+
+     token                              FarmBooks Cassidy HGOil WifeSupply
+     --color-primary        #1590FF        2.79     3.07   2.74    2.83
+     --color-primary-hover  #0D76D6        3.93     4.34   3.87    4.00
+     --color-primary-strong #0C6FC9        4.36     4.81   4.28    4.43
+     --color-primary-strong-hover #0B68BE  4.82     5.31   4.74    4.90
+
+   Only the last clears 4.5 on all four, and only at full opacity — which is
+   why the globals rule sets BOTH `color` and `opacity`. #0C6FC9 is 5.08:1 on
+   white and looks like it should work; these cards are not white.
+   Post-fix, measured: 4.66 / 5.21 / 4.59 / 4.68. HG Oil is the tightest at
+   4.59 — if that gradient is ever darkened at the bottom-left, re-measure,
+   because there is no darker blue in the palette to fall back to. */
+
+/* WCAG 1.4.3, round 2 — the same label on the FOURTEEN non-light cards.
+   Nine of them failed on the shipped build, measured the same way: 1.82:1
+   (After-Hours Call Triage), 2.40 (AI Invoice Processing), 2.47 (Custom AI
+   Fitness Agent), 3.03, 3.06, 3.22, 3.26, 3.50. "Dark card" is a misnomer —
+   several of those gradients are saturated brights (cyan rgb(8,184,204),
+   orange rgb(242,105,45), green rgb(9,164,114)) and white text does not work
+   on them.
+
+   WHY NOT JUST STRENGTHEN THE EXISTING text-shadow (globals.css:7669-7676).
+   Measured on the worst card, four shadow strengths, glyph interior each time:
+
+     as shipped              glyph rgb(200,241,242)  vs card 1.88  vs shadow 3.55
+     shadow removed          glyph rgb(200,241,242)  vs card 1.88  vs shadow 1.88
+     shadow alpha -> 1.0     glyph rgb(200,241,242)  vs card 1.88  vs shadow 4.24
+     six stacked rings       glyph rgb(200,241,242)  vs card 1.88  vs shadow 8.38
+
+   The glyph interior is BIT-IDENTICAL in all four. That is not a coincidence,
+   it is the compositing model: the shadow is painted behind an opaque glyph
+   INSIDE the element's own opacity group, so it never reaches the glyph
+   interior, which is pinned at `0.78 * white + 0.22 * card` by the `opacity`
+   and `color` alone. A shadow can only darken what is AROUND the text. Even
+   taking the shadowed pixels as the background, doubling the alpha to full
+   only reaches 4.24 — still short — and clearing 4.5 took six stacked rings,
+   i.e. a scrim built the expensive way, six blur passes deep, on an element
+   that is animating 2.8s infinite. So: a real scrim, once.
+
+   WHAT COUNTS AS "THE BACKGROUND". With a scrim present, the background of
+   the text is the scrim — that is what is painted behind it and what the eye
+   compares against. The round-1 light-card numbers used the raw card because
+   there was no scrim there, so the two readings coincided. They do not here,
+   and the report states both.
+
+   SHAPE. Three were built and looked at, not argued about:
+     1. a rounded pill + soft box-shadow halo  -> reads as a BADGE. Rejected.
+     2. a radial `closest-side` vignette       -> reads as a dark SMUDGE, no
+        hard edge but an amorphous oval sitting on the artwork. Rejected.
+     3. a full-card-width band fading upward   -> the conventional caption
+        scrim you see under text on photography. Reads as intentional
+        vignetting rather than a patch. Shipped.
+   It is anchored off the label but stretched +/-400px horizontally and past
+   the card's bottom edge; `.ps-work-card` is `overflow: hidden` with
+   `border-radius: 12px` (globals.css:3547-3548), so it is clipped to the card
+   corners exactly and cannot widen the horizontal card scroller.
+
+   The scrim is NOT opaque in the end: it lives inside the label's 0.78 group,
+   so it paints as 0.78 of --color-dark with 22% of each card gradient showing
+   through, and it fades to nothing before it reaches the artwork. It picks up
+   a tint from every card instead of stamping the same navy on all fourteen —
+   on the already-dark cards (Iron and Oak, Alpha Matrix) it is barely
+   perceptible, and it only asserts itself where the gradient is bright enough
+   to have caused the failure. No new hex; --color-dark is the token.
+
+   Scoped away from the four lightCard tiles, which take the dark blue from the
+   round-1 rule above and whose white text-shadow (globals.css:7699-7702) would
+   fight a dark scrim.
+
+   z-index:-1 is safe because the label already establishes a stacking context
+   twice over (`opacity: 0.78` and `will-change: transform`, globals.css:3753
+   and :3757); `isolation: isolate` is belt-and-braces so the scrim can never
+   escape behind the card artwork if either of those is ever removed. */
+.ps-work-card:not(.ps-work-card--light) .ps-work-card__bob-label {
+  position: relative;
+  isolation: isolate;
+}
+
+.ps-work-card:not(.ps-work-card--light) .ps-work-card__bob-label::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -130px;
+  bottom: -40px;
+  left: -400px;
+  right: -400px;
+  /* Two stacked ramps, not one. A single linear stop fades over 26px and the
+     eye reads that as a band with a top edge. Stacking a short dense ramp over
+     a tall shallow one multiplies the alphas — 1-(1-a1)(1-a2) — so the falloff
+     decelerates instead of running out, and the visible transition stretches
+     to ~120px with no edge to catch on. Both layers use the same token; the
+     only alphas in play are 1 and 0, so no new colour is introduced. */
+  background:
+    linear-gradient(
+      to top,
+      var(--color-dark) 0%,
+      var(--color-dark) 34%,
+      transparent 70%
+    ),
+    linear-gradient(to top, var(--color-dark) 0%, transparent 100%);
+}
+
 /* Pointer-device polish. Hover no longer reveals, so it earns its keep as a
    plain affordance lift. transform only — box-shadow is not animatable under
    the house rule. Guarded by capability so touch never gets it, and by

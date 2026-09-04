@@ -49,18 +49,39 @@ export function WhyUs() {
             <span className="ps-why-relationship__accent">our success.</span>
           </h2>
 
-          {/* The last sentence is deliberately short. The longer draft ("we
-              are still here to change with it") widowed "with it." onto an
-              eighth line at 390px — 53px of text in a 342px measure.
-              text-wrap: pretty is already applied and does not fix it, and
-              balance measurably made it worse. Copy was the only lever.
-              (Design critique, 2026-09-03.) */}
+          {/* COPY IS LENGTH-TUNED. Do not shorten or lengthen this paragraph
+              without re-measuring both widths; the measure is 342px at 390 and
+              704px at 1440, and the wrap lands badly at several nearby
+              lengths. Two earlier drafts failed on exactly that:
+                - "we are still here to change with it" widowed "with it."
+                  onto an eighth line at 390 — 53px in a 342px measure.
+                - the draft this replaces ran 3 lines at 1440 and ended on
+                  "more efficient." — 123px of 704px, two words, visibly
+                  orphaned.
+              text-wrap: pretty is already applied (why-us-relationship.css)
+              and does not fix either; balance measurably made the first worse.
+              Copy length is the only lever that works.
+
+              "world-class" was removed 2026-09-03. docs/WRITER-AGENT-PROMPT.md
+              line 74 names it as a banned marketing cliché, alongside
+              "industry-leading", "best-in-class", "cutting-edge" and
+              "next-generation". The owner did say the phrase out loud, but the
+              same owner wrote the rule that bans it, and the guide's own
+              standard is "show, don't tell — outcomes over adjectives". So the
+              adjective is replaced by the concrete thing it was pointing at:
+              software built around how the business actually works, and kept
+              working long after launch. Both halves are existing approved
+              positioning (service-pillars.tsx differentiators: "It's better
+              because it isn't generic", "built around how your business
+              actually works, not around someone else's assumptions").
+              Everything the owner asked for is still here — long-term
+              relationship, helping them grow, crafting AND maintaining, and
+              the efficiency payoff. */}
           <p className="ps-why-relationship__copy">
-            Preisser Solutions works in long-term relationships, not one-off
-            handoffs. Every system we build is custom — shaped around one
-            business, its customers, its services, its tools, and the details
-            that make the difference. When your business changes, we change
-            with it.
+            Our goal is a long-term relationship with every client — helping
+            them grow, and crafting and maintaining custom software built
+            around how their business actually works, so it keeps making them
+            more efficient long after launch.
           </p>
         </div>
       </div>

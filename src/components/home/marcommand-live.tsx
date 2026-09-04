@@ -2,9 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { MarCommandFunnel } from "@/components/home/marcommand-funnel";
 import {
   MarCommandLiveStage,
   ELARA_MARKS,
+  ROUTES,
   FRAME,
   DIAL_MATH,
   BUDGET,
@@ -113,25 +115,75 @@ export function MarCommandLive() {
         const setFlip = (n: number) =>
           sprite.style.setProperty("--mc-flip", String(n));
 
-        /** A walk: position tween plus the two-step bob, on one timeline slot. */
+        /**
+         * A walk along an ORTHOGONAL ROUTE.
+         *
+         * The previous implementation issued one tween across both --mc-x and
+         * --mc-y, which is a straight DIAGONAL between the two marks. Every rail
+         * on this stage is a right-angled elbowed path, so he was on a line only
+         * at the two endpoints and cut the corner across bare canvas for the whole
+         * middle of the walk — measured 48.6 CSS px off the nearest visible rail
+         * mid-walk at 1440px, which is the "he is not even walking on the line"
+         * defect and a straight violation of ADR-0018.
+         *
+         * Now a walk takes the route's waypoint list. Consecutive waypoints always
+         * share an axis, so every leg is a pure horizontal or vertical run along a
+         * segment that is actually drawn. The duration is split across the legs in
+         * proportion to their length, so he does not sprint the short legs and
+         * crawl the long ones — his speed is constant through the corners.
+         *
+         * Percentages are of the stage box in each axis, so leg "length" is
+         * normalised by the stage's aspect (1200x680 wide, 390x620 narrow) before
+         * being compared. Otherwise a vertical leg would be weighted wrongly.
+         */
+        const num = (v: string) => parseFloat(v);
+
         const walk = (
           tl: gsap.core.Timeline,
-          to: { x: string; y: string },
+          route: readonly { x: string; y: string }[],
           dur: number,
-          at: number
+          at: number,
+          aspect: number
         ) => {
-          tl.to(
-            anchor,
-            {
-              "--mc-x": to.x,
-              "--mc-y": to.y,
-              duration: dur,
-              ease: "power1.inOut",
-            },
-            at
-          );
+          // Leg lengths in a square-ish space, so horizontal and vertical runs of
+          // the same visual length get the same share of the duration.
+          const legs: number[] = [];
+          for (let i = 1; i < route.length; i += 1) {
+            const dx = (num(route[i].x) - num(route[i - 1].x)) * aspect;
+            const dy = num(route[i].y) - num(route[i - 1].y);
+            legs.push(Math.abs(dx) + Math.abs(dy));
+          }
+          const total = legs.reduce((a, b) => a + b, 0) || 1;
+
+          let cursor = at;
+          for (let i = 1; i < route.length; i += 1) {
+            const legDur = (legs[i - 1] / total) * dur;
+            if (legDur > 0) {
+              tl.to(
+                anchor,
+                {
+                  "--mc-x": route[i].x,
+                  "--mc-y": route[i].y,
+                  duration: legDur,
+                  // Ease in on the first leg and out on the last; the corners in
+                  // between are linear so he does not stall at every elbow.
+                  ease:
+                    route.length === 2
+                      ? "power1.inOut"
+                      : i === 1
+                        ? "power1.in"
+                        : i === route.length - 1
+                          ? "power1.out"
+                          : "none",
+                },
+                cursor
+              );
+            }
+            cursor += legDur;
+          }
+
           // 0.34s two-step hop, held as discrete steps so it reads as pixel-art
-          // footfall rather than a smooth float.
+          // footfall rather than a smooth float. One bob across the whole route.
           tl.to(
             sprite,
             {
@@ -149,18 +201,72 @@ export function MarCommandLive() {
         const build = (variant: Variant) => {
           const B = BEATS[variant];
           const M = ELARA_MARKS[variant];
+          const R = ROUTES[variant];
+          // Stage aspect, used to weight horizontal vs vertical legs of a route.
+          const aspect = variant === "wide" ? 1200 / 680 : 390 / 620;
 
           const liveRail = q<SVGPathElement>(`[data-mc-liverail="${variant}"]`);
+          const ribbons = qa<SVGPathElement>(`[data-mc-ribbon^="${variant}-"]`);
           const wires = qa<SVGPathElement>(`[data-mc-wire^="${variant}-"]`);
           const cards = qa<SVGGElement>(`[data-mc-card^="${variant}-"]`);
           const litCard = q<SVGGElement>(`[data-mc-card="${variant}-google_ads"]`);
           const pad = q<SVGGElement>(`[data-mc-pad="${variant}"]`);
-          // The pad is hub furniture and fades on exactly the same cue as the
-          // five unlit cards, so it is never left ringing an opened dial.
-          const otherCards = [
+
+          /*
+            THE HUB LAYER.
+
+            Everything that belongs to the switchboard: the pad, the five unlit
+            cards, ALL SIX spokes (including the live rail Elara walks in on) and,
+            on portrait, the pad's link up to the room trunk.
+
+            It fades as ONE unit when the room opens and returns as one unit when
+            the room folds, because these objects only make sense together. The
+            previous build faded the pad and the five cards but left all six
+            spokes at opacity 1, so five grey rails radiated from an invisible hub
+            to invisible cards and the blue live rail's tail dangled where the pad
+            had been — measured at the grip beat: padOpacity "0" while
+            `M548,340 H180 V176` and `M548,340 H180 V504` were both still
+            opacity "1", visFrac 1. That is the "lines that start and stop without
+            meeting anything".
+
+            Fading the whole layer also kills the empty blue rectangle that the
+            rail's elbow and the bus's elbow used to close off under the Google Ads
+            card: the hub rail and the room bus are now never on screen together
+            except during their 0.15s crossfade, and where they do overlap they are
+            collinear.
+          */
+          const spokes = qa<SVGPathElement>(`[data-mc-spoke^="${variant}-"]`);
+          const hubLink = q<SVGPathElement>(`[data-mc-hublink="${variant}"]`);
+          const liveSpoke = q<SVGPathElement>(`[data-mc-spoke="${variant}-google_ads"]`);
+
+          /*
+            The hub layer is split in two, and the split is load-bearing.
+
+            `hubFurniture` — the five unlit cards and their five spokes — is dead
+            weight the moment the room opens, so it goes on the light beat. It does
+            NOT come back on the fold beat, which is the obvious symmetric choice
+            and is wrong: see beat 13, where the measurement is.
+
+            `hubPath` — the pad, the Google Ads spoke, the blue live rail drawn over
+            it, and (portrait) the pad's link up to the trunk — is the ground Elara
+            is standing on. It cannot go on the light beat: on portrait he taps from
+            the pad and the first two legs of walk2 run across the pad and up the hub
+            link, so dropping it early leaves him walking on an invisible line for
+            about 1.6s (0.35 tap + 0.15 light + 0.4 card lift + 0.7 room + the first
+            33% of walk2 — measured from the beat table). It fades once he is demonstrably
+            off it and onto the bus, and comes back before walk5 needs it.*/
+          const hubFurniture = [
             ...cards.filter((c) => c !== litCard),
-            ...(pad ? [pad] : []),
+            ...spokes.filter((sp) => sp !== liveSpoke),
           ];
+          const hubPath = [
+            ...(liveSpoke ? [liveSpoke] : []),
+            ...(liveRail ? [liveRail] : []),
+            ...(pad ? [pad] : []),
+            ...(hubLink ? [hubLink] : []),
+          ];
+          const hubLayer = [...hubFurniture, ...hubPath];
+
           const dials = qa<SVGGElement>(`[data-mc-dial^="${variant}-"]`);
           const tile = q<SVGGElement>(`[data-mc-tile="${variant}"]`);
           const arc = q<SVGCircleElement>(`[data-mc-arc="${variant}-budget"]`);
@@ -187,7 +293,7 @@ export function MarCommandLive() {
           tl.set(liveRail, { strokeDashoffset: 100 }, 0);
           tl.set(wires, { strokeDashoffset: 100 }, 0);
           tl.set(controls, { opacity: 0, scale: 0.92, transformOrigin: "center" }, 0);
-          tl.set(otherCards, { opacity: 1 }, 0);
+          tl.set(hubLayer, { opacity: 1 }, 0);
           tl.set(arc, { "--mc-arc": DIAL_MATH.arcDash(BUDGET.vFrom) }, 0);
           tl.set(pillOld, { opacity: 1, scale: 1 }, 0);
           tl.set(pillNew, { opacity: 0 }, 0);
@@ -213,7 +319,7 @@ export function MarCommandLive() {
           let t = 0;
 
           // ---- 1. Walk pad -> Google Ads card ----------------------------
-          walk(tl, M.tap, B.walk1, t);
+          walk(tl, R.walk1, B.walk1, t, aspect);
           // The rail recolours AHEAD of him: an identical path drawn on top and
           // revealed by dashoffset, so no colour is tweened per frame.
           tl.to(liveRail, { strokeDashoffset: 0, duration: B.walk1, ease: "power1.inOut" }, t);
@@ -226,9 +332,31 @@ export function MarCommandLive() {
 
           // ---- 3. The tap lights the card (never a timer) -----------------
           tl.call(() => litCard?.classList.add("mc-card--lit"), undefined, t);
-          tl.to(otherCards, { opacity: 0, duration: B.light, ease: "none" }, t);
+          tl.to(hubFurniture, { opacity: 0, duration: B.light, ease: "none" }, t);
           if (variant === "narrow") {
-            tl.to(litCard, { x: 0, y: 0, duration: B.cardMove, ease: "power2.inOut" }, t);
+            /*
+              THE CARD LIFTS ORTHOGONALLY: UP ITS OWN COLUMN FIRST, THEN ACROSS.
+
+              A single `{x:0, y:0}` tween is one straight DIAGONAL from the hub
+              slot (95,310) to the lifted position (195,70) — the same mistake the
+              walks used to make, and forbidden by ADR-0018 for the same reason.
+              It also swept the card's own caption straight through Elara, who is
+              standing still at N_TAP (160,310) for the whole beat: measured worst
+              frame 73.2% of the "Google Ads" caption covered by his body at 390
+              dark, which on screen reads as the word "Google" with "Ads" hidden
+              behind him.
+
+              Rising in its own column at x=95 first keeps the card 23 units clear
+              of his left edge for all but the moment its caption passes his
+              shoulder — re-measured at 12.9%. The 0.45/0.55 overlap rounds the
+              corner instead of hinging it, so it still reads as one movement.
+            */
+            tl.to(litCard, { y: 0, duration: B.cardMove * 0.55, ease: "power2.in" }, t);
+            tl.to(
+              litCard,
+              { x: 0, duration: B.cardMove * 0.55, ease: "power2.out" },
+              t + B.cardMove * 0.45
+            );
             t += B.cardMove;
           }
           t += B.light;
@@ -247,7 +375,14 @@ export function MarCommandLive() {
             setFrame(FRAME.idle);
             setFlip(1);
           }, undefined, t);
-          walk(tl, M.dial, B.walk2, t);
+          walk(tl, R.walk2, B.walk2, t, aspect);
+          // He is on the bus by 40% of walk2 in both profiles, so the ground he
+          // came in on can go now — not a beat earlier (see hubPath above).
+          tl.to(
+            hubPath,
+            { opacity: 0, duration: B.walk2 * 0.25, ease: "none" },
+            t + B.walk2 * 0.4
+          );
           t += B.walk2;
 
           // ---- 6. Grip and turn ------------------------------------------
@@ -313,7 +448,7 @@ export function MarCommandLive() {
 
           // ---- 7. Walk to the keyword list -------------------------------
           tl.call(() => setFrame(FRAME.idle), undefined, t);
-          walk(tl, M.keys, B.walk3, t);
+          walk(tl, R.walk3, B.walk3, t, aspect);
           t += B.walk3;
 
           // ---- 8. Face left ----------------------------------------------
@@ -352,7 +487,7 @@ export function MarCommandLive() {
             setFlip(1);
             setFrame(FRAME.idle);
           }, undefined, t);
-          walk(tl, M.closeTap, B.walk4, t);
+          walk(tl, R.walk4, B.walk4, t, aspect);
           t += B.walk4;
 
           // ---- 11. Closing tap, same coordinate it opened from ------------
@@ -371,22 +506,122 @@ export function MarCommandLive() {
             },
             t
           );
-          tl.to(wires, { strokeDashoffset: 100, duration: B.fold, ease: "power2.in" }, t);
-          tl.to(otherCards, { opacity: 1, duration: B.fold, ease: "power2.in" }, t);
           tl.call(() => litCard?.classList.remove("mc-card--lit"), undefined, t + B.fold * 0.8);
-          if (variant === "narrow") {
-            tl.to(litCard, { x: -100, y: 240, duration: B.fold, ease: "power2.inOut" }, t);
-          }
           t += B.fold;
 
           // ---- 13. Walk home down the same spoke, retraced ----------------
           tl.call(() => setFrame(FRAME.idle), undefined, t);
-          walk(tl, M.pad, B.walk5, t);
+          walk(tl, R.walk5, B.walk5, t, aspect);
+          // The ground comes back before the last leg of walk5 lands on it.
+          tl.to(hubPath, { opacity: 1, duration: B.walk5 * 0.25, ease: "none" }, t);
+          /*
+            THE FIVE UNLIT CARDS COME BACK AT THE END OF WALK5, NOT ON THE FOLD.
+
+            They used to return on the fold beat, i.e. before he had moved. On
+            portrait that put them at opacity 1 while walk5 still had to bring
+            him DOWN the bus at x=110 and along the y=200 trunk — and x=110 is
+            underneath the Facebook card (face x 53..137). He is anchored by his
+            feet and stands 73.4 stage units tall at a 390px viewport, so feet on
+            y=200 puts his head at y=127 and his body straight across the
+            "Facebook" caption at y 142..157. Worst frame measured: 63.8% of that
+            caption covered, over samples 122-126 of a 233-sample sweep, all at
+            card opacity 1.
+
+            No geometry change fixes that one: the descent has to pass through
+            every y between 112 and 200, so wherever the caption sits in that
+            band he sweeps it. What fixes it is not having the card on screen
+            while he is walking underneath it, which is also the truer reading —
+            the room folds, he walks home, and the switchboard comes back up as
+            he arrives, in the same beat the pad and the live rail already do.
+
+            0.62 is measured, not chosen for looks. Weighting the route's legs the
+            way `walk()` weights them (140,112 -> 110,112 -> 110,240 -> 195,240 ->
+            195,310, x scaled by the 390/620 aspect) the leg boundaries fall at
+            9.6% / 50.5% / 77.6%, and his left edge clears the Facebook caption's
+            right edge (x=128) at 64.1%. The fade starts at 0.62 rather than 0.641
+            because `power2.in` is still under 1% opacity there, and the remaining
+            0.38 lands it exactly as he reaches the pad. If ROUTES.narrow.walk5 or
+            the trunk's y changes, re-derive this and re-run the occlusion probe.
+
+            Wide gets the same treatment. It does not strictly need it — the
+            rerouted spoke keeps him out from under the Instagram card on walk5
+            as well as walk1 — but the wide sprite is a fixed 96x116 CSS px on a
+            fluid stage, so its size IN STAGE UNITS grows as the viewport falls
+            toward the 769px breakpoint, and this keeps the cards off screen for
+            that whole band rather than only where it was measured.
+          */
+          tl.to(
+            hubFurniture,
+            { opacity: 1, duration: B.walk5 * 0.38, ease: "power2.in" },
+            t + B.walk5 * 0.62
+          );
+          /*
+            The room's wiring retracts DURING the walk home, not during the fold.
+            It has to: on portrait his route home runs back along the bus itself
+            (closeTap sits beside the lifted card, which is only reachable on the
+            bus's own y=112 run), so retracting the wire a beat earlier would have
+            left him walking on nothing for the whole of walk5. Retracting it under
+            him instead reads as the wire withdrawing behind him — dashoffset hides
+            a path from its START, and every bus path starts at the card he is
+            walking away from, so it peels off in the right direction.
+          */
+          tl.to(wires, { strokeDashoffset: 100, duration: B.walk5, ease: "power2.in" }, t);
           tl.to(liveRail, { strokeDashoffset: 100, duration: B.walk5, ease: "power1.inOut" }, t);
+          if (variant === "narrow") {
+            /*
+              Home the same way, orthogonally — but DOWN ITS LIFTED COLUMN first
+              (x stays at 195) and only then left along y=310 into the slot.
+
+              Not the reverse of the lift, deliberately. The exact reverse would
+              bring it left at y=70 and then down the x=95 column, and x=95 is
+              where Elara is on the first two legs of walk5 (his box spans
+              85..146 at 390px), so the card would descend through him. Coming down at
+              x=195 puts it in the column he does not reach until leg 4, by which
+              time it is already parked. Verified across the walk: no frame of
+              walk5 puts his box on the card's caption.
+            */
+            tl.to(litCard, { y: 240, duration: B.walk5 * 0.55, ease: "power2.in" }, t);
+            tl.to(
+              litCard,
+              { x: -100, duration: B.walk5 * 0.55, ease: "power2.out" },
+              t + B.walk5 * 0.45
+            );
+          }
           t += B.walk5;
 
           // ---- 14. Rest on the pad. A real pause, not a turnaround. -------
           tl.to({}, { duration: B.rest }, t);
+          const loopTotal = t + B.rest;
+
+          /*
+            ---- The funnel's ribbon flow -------------------------------------
+            It rides THIS timeline rather than one of its own, which is the whole
+            reason the funnel costs the loop nothing: the pause control, the
+            ScrollTrigger gate and `visibilitychange` already govern this
+            timeline, so SC 2.2.2 is satisfied for the funnel by construction
+            and there is no second RAF loop to stop.
+
+            The ribbons are dashed `6 10`, a 16-unit period. The offset slides by
+            EXACTLY 32 units — two whole periods — over one loop, so when the
+            timeline repeats and snaps the offset back to 0 the pattern is in the
+            same phase and the seam is invisible. Any non-multiple would jump.
+
+            Known and accepted: the timeline's 0.8s `repeatDelay` holds the flow
+            still between loops. On a dashed line that reads as a lull, not a
+            glitch, and removing it would mean giving the funnel its own ticker.
+
+            Paint-only (`stroke-dashoffset`), which is the same mechanism the
+            rails and the dial arcs already use on this surface. No layout, no
+            filter, nothing composited per frame.
+          */
+          if (ribbons.length) {
+            tl.set(ribbons, { strokeDashoffset: 0 }, 0);
+            tl.to(
+              ribbons,
+              { strokeDashoffset: -32, duration: loopTotal, ease: "none" },
+              0
+            );
+          }
 
           return tl;
         };
@@ -497,10 +732,19 @@ export function MarCommandLive() {
     >
       <div className="ps-container">
         <div className="mc-live__head">
-          <span className="ps-eyebrow">MarCommand</span>
+          {/*
+            The eyebrow is gone, not restyled. It said "MARCOMMAND" and the
+            title now IS "MarCommand", so keeping it would print the product
+            name twice in two type treatments. The descriptor takes the slot
+            underneath instead — see .mc-live__descriptor in the stylesheet for
+            why it is sentence case and not `.ps-eyebrow`.
+          */}
           <h2 id="marcommand-live-heading" className="ps-section-heading mc-live__heading">
-            Watch the agent work.
+            MarCommand
           </h2>
+          <p className="mc-live__descriptor">
+            Our proprietary agentic learning marketing channel optimization platform
+          </p>
           <p className="mc-live__body">
             MarCommand gives your business a custom AI agent that learns your audience, your
             channels and your products — then works the controls. Every channel you advertise on,
@@ -530,6 +774,19 @@ export function MarCommandLive() {
         </div>
 
         <div className="mc-live__stage-card">
+          {/*
+            The funnel and the agent stage are the two halves of the MarCommand
+            live surface and they share one card, so the section reads as one
+            product rather than two graphics. The funnel ships in its end state
+            and its only motion is the ribbon flow, which lives on the SAME
+            timeline as the stage — so the pause control, the ScrollTrigger gate
+            and `visibilitychange` all already govern it, and the loop's
+            wall-clock budget is unchanged.
+          */}
+          <div className="mc-fn" aria-hidden="true">
+            <MarCommandFunnel />
+          </div>
+
           <div className="mc-stage">
             <MarCommandLiveStage />
 
@@ -569,11 +826,14 @@ export function MarCommandLive() {
           problem, not just a noise problem (§7).
         */}
         <p className="ps-visually-hidden">
-          An animation of the MarCommand agent at work. Six advertising channels — Facebook,
-          Instagram, Google Ads, TikTok, direct mail and Google Local Services — connect to a
-          central hub. The agent walks to the Google Ads channel, opens its control panel, and
-          adjusts the real controls that platform offers: daily budget, bid strategy, targeting
-          radius, ad schedule and the keyword list. The figures shown are a demonstration.
+          MarCommand is a marketing channel optimization platform. This animation shows two
+          things. First, an acquisition funnel: six advertising channels — Facebook, Instagram,
+          Google Ads, TikTok, direct mail and Google Local Services — flow into your business,
+          and the audience is then counted through five stages: reached, visited, interested,
+          leads, and validated. Second, the agent at work: it walks to the Google Ads channel,
+          opens its control panel, and adjusts the real controls that platform offers — daily
+          budget, bid strategy, targeting radius, ad schedule and the keyword list. The figures
+          shown are a demonstration.
         </p>
       </div>
     </section>

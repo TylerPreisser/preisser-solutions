@@ -59,12 +59,13 @@ export function CtaSection() {
       <div className="ps-cta-content" ref={contentRef}>
         <div className="ps-eyebrow">Get in Touch</div>
         <h2 id="cta-heading" className="ps-cta-heading">
-          Tell us what you want built.
+          Find out how we can help your business.
         </h2>
         <p className="ps-cta-body">
-          Bring the workflow you&apos;d most like to automate. You&apos;ll get a straight
-          answer on what it takes &mdash; scope, cost, and timeline &mdash; from the
-          person who would actually build it.
+          We start by listening &mdash; your biggest goals, and the problems
+          getting in their way. Then we put a consulting background to work and
+          come back with a set of solutions built for how your business
+          actually runs.
         </p>
         <div className="ps-cta-buttons">
           <Link href="/contact" className="ps-btn ps-btn-primary-dark">

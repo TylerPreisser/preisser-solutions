@@ -1,0 +1,479 @@
+/* ============================================================
+   capabilities.css
+   The static capability + proof section that replaced the two
+   infinite marquees under the hero (<ValueStrip> and <ProofBar>,
+   both deleted 2026-09-03).
+
+   Split out of globals.css following the existing
+   `@import "./card-visuals.css"` precedent so the 2026-09-03
+   homepage overhaul could be built by several agents at once
+   without serializing on one 7,700-line stylesheet.
+
+   Tokens only — every colour, radius, easing and spacing value
+   here is a var() from the :root block in globals.css. No hex.
+
+   DO NOT wrap this file in `@layer components`. Measured
+   2026-09-03: globals.css's layer block spans only lines 288-460 of
+   a 7,687-line file, the competing rules are unlayered, and layer
+   order beats specificity — it produced 925,871 differing pixels
+   and blanked all 18 work cards on keyboard focus. Full note at
+   the top of globals.css.
+
+   CASCADE NOTE (same as why-us-relationship.css and
+   websites-and-marketing.css): this sheet is @imported at the TOP
+   of globals.css and is UNLAYERED, while globals.css keeps its
+   .ps-* base classes inside `@layer components` (globals.css:251).
+   Unlayered beats layered regardless of order, so these rules win
+   over .ps-eyebrow / .ps-container. Unlayered rules that appear
+   LATER in globals.css (past line ~432) do beat this file on an
+   equal-specificity tie — which is why .ps-caps__eyebrow below
+   sets spacing only and leaves colour to globals.css:7512.
+
+   NO ANIMATION LIVES IN THIS FILE. The section it styles replaced
+   two 42s infinite marquees the owner called tacky; the fix is
+   stillness, not a subtler loop. The only `transition`s are the
+   300ms theme swap every sibling section already runs, plus a 3px
+   arrow nudge on the one link (reduced-motion handled at the
+   bottom). No transform/opacity entrance, no GSAP, no
+   backdrop-filter, no content-visibility.
+   ============================================================ */
+
+.ps-caps {
+  /* Matches every sibling homepage band (.ps-websvc, .ps-marcommand:3876,
+     .ps-cta-section:3798). .ps-services below it uses --theme-section-alt;
+     in BOTH themes those two tokens resolve to the same colour
+     (globals.css:99/112 dark, 133/152 light), so there is no band seam to
+     manage here — the separation is spacing, not contrast. */
+  background-color: var(--theme-bg-primary);
+  padding-block: var(--section-py-desktop);
+  transition: background-color 300ms ease;
+}
+
+@media (max-width: 768px) {
+  .ps-caps {
+    padding-block: var(--section-py-mobile);
+  }
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+
+.ps-caps__header {
+  max-width: 720px;
+  margin-bottom: 40px;
+}
+
+/* .ps-eyebrow carries margin-bottom: 20px (globals.css:288). The header owns
+   its own rhythm, so this only tightens the gap to the heading. Colour is
+   deliberately NOT set — globals.css:7512 is unlayered and later in source
+   order, so its theme-aware --ps-eyebrow-color wins anyway, and matching the
+   other homepage eyebrows is the point. */
+.ps-caps .ps-caps__eyebrow {
+  margin-bottom: 16px;
+}
+
+.ps-caps__heading {
+  margin: 0;
+  /* Deliberately between .ps-section-heading (clamp(2rem, 4vw, 3.5rem) = 56px
+     at 1440, used by the three pillars directly below) and .ps-websvc__heading
+     (34px, the subordinate band). This section supports the pillars; it must
+     not out-shout them from above. Measured 40px at 1440, 28px at 390. */
+  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--theme-text-primary);
+  text-wrap: balance;
+  transition: color 300ms ease;
+}
+
+.ps-caps__lede {
+  margin: 16px 0 0;
+  max-width: 60ch;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--theme-text-secondary);
+  text-wrap: pretty;
+  transition: color 300ms ease;
+}
+
+/* ── Tier 1: capability grid ───────────────────────────────── */
+/* 10 items. The column counts are chosen so no row is ever left with a
+   single orphan: 1 col (10 rows), 2 cols (5 rows), 5 cols (2 rows).
+   3 and 4 columns both leave a ragged last row with 10 items, which is why
+   the ladder skips them. 940px is the codebase's bespoke breakpoint
+   (.ps-bento-grid, globals.css:1503) so the switch to the wide layout
+   happens in step with the pillars below. */
+
+.ps-caps__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* 2-up from 360px, which includes every phone this site is measured at (390).
+   Ten full-width rows at 390 measured 668px of ladder with 150px of dead space
+   to the right of "AI automation" — the grid halves that to 5 rows and reads as
+   a deliberate block instead of a list that will not end. 320px (iPhone SE)
+   stays 1-up, where 165px columns really would be too tight. */
+@media (min-width: 360px) {
+  .ps-caps__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (min-width: 520px) {
+  .ps-caps__grid {
+    gap: 14px;
+  }
+}
+
+@media (min-width: 940px) {
+  .ps-caps__grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+.ps-caps__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* These are statements, not controls: there is deliberately no hover, no
+     cursor change and no link. min-height still clears the repo's 44px floor
+     so the row reads as a deliberate object on touch rather than loose text. */
+  min-height: 56px;
+  padding: 14px 16px;
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-btn);
+  background-color: var(--theme-card-bg);
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease;
+}
+
+.ps-caps__dot {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  /* --theme-accent-text, never raw --color-primary: this is a 6px mark, and
+     the light theme resolves it to #0C6FC9 (globals.css:145). */
+  background-color: var(--theme-accent-text);
+  transition: background-color 300ms ease;
+}
+
+.ps-caps__label {
+  min-width: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--theme-text-primary);
+  transition: color 300ms ease;
+}
+
+/* Two 165px columns at 390: 16px labels push "Client & member portals" and
+   "Power BI dashboards" onto a third line and ragged the row heights. 15px
+   holds every one of the ten to two lines or fewer. */
+@media (max-width: 519px) {
+  .ps-caps__item {
+    gap: 10px;
+    padding: 12px 14px;
+    align-items: flex-start;
+  }
+
+  .ps-caps__dot {
+    /* align-items is flex-start now, so the dot needs its own optical nudge
+       onto the first line's centre rather than the box's. */
+    margin-top: 7px;
+  }
+
+  .ps-caps__label {
+    font-size: 0.9375rem;
+  }
+}
+
+/* ── The three pillar hubs ─────────────────────────────────── */
+/* These are the only homepage links to /web-applications,
+   /business-automation and /services/ai-automation since the "Everything we
+   do, one tap away" cluster was deleted (2026-09-03), so they are real
+   controls and get real affordances: border, hover, focus-visible, active.
+   That is the deliberate difference from .ps-caps__item above, which is a
+   statement and has none of them. Same 3-col-at-940 ladder as the proof list
+   below and the pillar grid above. */
+
+.ps-caps__routes {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+}
+
+@media (min-width: 940px) {
+  .ps-caps__routes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+  }
+}
+
+.ps-caps__route {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  height: 100%;
+  /* Tap floor; the real measured height is far above it. */
+  min-height: 64px;
+  padding: 16px 18px;
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-btn);
+  background-color: var(--theme-card-bg);
+  text-decoration: none;
+  /* Colour + transform only — never width/height/margin/padding. */
+  transition:
+    background-color 300ms ease,
+    border-color 160ms var(--ease-out-expo),
+    transform 160ms var(--ease-out-expo);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ps-caps__route-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ps-caps__route-label {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--theme-text-primary);
+  transition: color 300ms ease;
+}
+
+.ps-caps__route-desc {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--theme-text-secondary);
+  transition: color 300ms ease;
+}
+
+.ps-caps__route-arrow {
+  flex-shrink: 0;
+  color: var(--theme-accent-text);
+  transition: transform 160ms var(--ease-out-expo), color 300ms ease;
+}
+
+/* The three descriptions are long enough to run to four lines in a 342px
+   measure, which made this row 468px of the mobile section on its own. One
+   step down on both sizes holds each card to three lines without taking the
+   label below the 15px the capability grid already uses at this width. */
+@media (max-width: 519px) {
+  .ps-caps__route {
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .ps-caps__route-label {
+    font-size: 0.9375rem;
+  }
+
+  .ps-caps__route-desc {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+  }
+}
+
+.ps-caps__route:hover {
+  border-color: var(--theme-accent-text);
+}
+
+.ps-caps__route:hover .ps-caps__route-arrow {
+  transform: translateX(3px);
+}
+
+.ps-caps__route:focus-visible {
+  outline: 2px solid var(--theme-accent-text);
+  outline-offset: 2px;
+  border-color: var(--theme-accent-text);
+}
+
+.ps-caps__route:active {
+  transform: translateY(1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ps-caps__route,
+  .ps-caps__route-arrow {
+    transition:
+      background-color 300ms ease,
+      border-color 160ms var(--ease-out-expo),
+      color 300ms ease;
+  }
+
+  .ps-caps__route:hover .ps-caps__route-arrow,
+  .ps-caps__route:active {
+    transform: none;
+  }
+}
+
+/* ── Tier 2: proof ─────────────────────────────────────────── */
+/* A visibly different texture from tier 1 on purpose — hairline rules instead
+   of card chrome. The two tiers are two different kinds of statement (what we
+   can build vs. what a build did), and giving them one uniform treatment is
+   what made the old pair of marquees read as a single undifferentiated blur. */
+
+.ps-caps__proof {
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: 1px solid var(--theme-border);
+  transition: border-color 300ms ease;
+}
+
+@media (max-width: 640px) {
+  .ps-caps__proof {
+    margin-top: 32px;
+    padding-top: 28px;
+  }
+
+  /* Nine stacked claims is the tallest part of the section on a phone. The
+     type comes down one step and the gaps close by 4-6px; measured together
+     they take ~150px off the column without shrinking any claim below the
+     17px body size used elsewhere on the page. */
+  .ps-caps__proof-list {
+    gap: 20px;
+  }
+
+  .ps-caps__proof-item {
+    padding-top: 14px;
+  }
+
+  .ps-caps__proof-claim {
+    font-size: 1.0625rem;
+  }
+
+  .ps-caps__proof-source {
+    margin-top: 6px;
+  }
+}
+
+/* An h3 carrying .ps-eyebrow: resets the UA heading margin/size so the label
+   matches every other eyebrow on the page instead of rendering as a bold 19px
+   heading. */
+.ps-caps .ps-caps__proof-heading {
+  margin: 0 0 24px;
+}
+
+.ps-caps__proof-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .ps-caps__proof-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 32px;
+  }
+}
+
+/* 9 proof points => exactly three full rows at three columns. */
+@media (min-width: 940px) {
+  .ps-caps__proof-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.ps-caps__proof-item {
+  padding-top: 16px;
+  border-top: 1px solid var(--theme-border);
+  transition: border-color 300ms ease;
+}
+
+.ps-caps__proof-claim {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--theme-text-primary);
+  text-wrap: pretty;
+  transition: color 300ms ease;
+}
+
+/* The attribution the marquee could only render as "... — Client" on one flat
+   line. Mono + smaller + secondary reads as a citation and stops the client
+   name competing with the claim.
+   NO text-transform: "FarmBooks" and "MGU in the Alliant Insurance ecosystem"
+   are the exact publishable forms (docs/WRITER-AGENT-PROMPT.md:51-54) and
+   uppercasing would destroy their casing. */
+.ps-caps__proof-source {
+  margin: 8px 0 0;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: var(--theme-text-secondary);
+  transition: color 300ms ease;
+}
+
+/* ── Closing link into the existing work carousel ──────────── */
+
+.ps-caps__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 32px;
+  /* 44px tap floor. */
+  min-height: 44px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--theme-accent-text);
+  text-decoration: none;
+  transition: color 300ms ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ps-caps__link-arrow {
+  flex-shrink: 0;
+  transition: transform 160ms var(--ease-out-expo);
+}
+
+.ps-caps__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.ps-caps__link:hover .ps-caps__link-arrow {
+  transform: translateX(3px);
+}
+
+.ps-caps__link:focus-visible {
+  outline: 2px solid var(--theme-accent-text);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* The one piece of motion in the file, and it is a 3px response to a pointer
+   rather than an ambient loop. Still honoured: */
+@media (prefers-reduced-motion: reduce) {
+  .ps-caps__link-arrow {
+    transition: none;
+  }
+
+  .ps-caps__link:hover .ps-caps__link-arrow {
+    transform: none;
+  }
+}

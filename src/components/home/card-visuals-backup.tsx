@@ -3,13 +3,31 @@
 /**
  * card-visuals-backup.tsx
  *
- * Backup of the 5 service card visual components extracted from service-pillars.tsx.
- * These are preserved here so they can be imported into a rebuilt card grid structure
- * without losing the animations.
+ * NAME IS WRONG, FILE IS LIVE. Despite "backup", this module ships: it is
+ * imported at service-pillars.tsx and five of its exports render the homepage
+ * bento grid. Deleting it breaks the build. Not renamed here only because the
+ * rename is a separate change from the one this file is carrying.
+ *
+ * Originally (2026-04-02) a backup of the 5 card visuals extracted from
+ * service-pillars.tsx, "preserved here so they can be imported into a rebuilt
+ * card grid structure without losing the animations". 2026-09-03 is that
+ * rebuild: ADR-0006 folded websites/marketing into the pillar grid and
+ * WebsiteVisual was adopted back off this shelf exactly as intended.
+ *
+ * Exports and where they land:
+ *   WebsiteVisual      -> Website Redesign card       (readopted 2026-09-03)
+ *   AutomationVisual   -> AI Integration card
+ *   SystemFixesVisual  -> Business Automation card
+ *   DashboardVisual    -> Business Software card
+ *   RevenueVisual      -> NOTHING, on purpose. It draws an up-and-to-the-right
+ *                         revenue chart; that is an outcome claim as artwork,
+ *                         gated by docs/WRITER-AGENT-PROMPT.md:31, and ADR-0006
+ *                         decision 4 bars reviving the positioning it was built
+ *                         for. Kept, unused. Do not wire it up without an ADR.
+ *   CustomBuildVisual  -> Custom Websites card        (new 2026-09-03)
+ *   SearchVisual       -> Search and Ads card         (new 2026-09-03)
  *
  * CSS lives in: src/styles/card-visuals.css
- *
- * Extracted: 2026-04-02
  */
 
 import React, { useEffect, useRef, useState } from "react";
@@ -789,6 +807,271 @@ export function RevenueVisual() {
           <span className="ps-ge-chart-label">Apr</span>
           <span className="ps-ge-chart-label">Jul</span>
           <span className="ps-ge-chart-label">Now</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VISUAL 6 — Custom Websites  (added 2026-09-03, ADR-0006)
+
+   Split panel: a code editor on the left resolving into a rendered
+   page on the right. This is the literal positioning of
+   /services/custom-websites — "custom-coded from scratch, no
+   templates, no page builders" — drawn rather than claimed.
+
+   Deliberately NOT another browser-and-phone mockup: WebsiteVisual
+   already owns that language on the Website Redesign card, and two
+   cards in the same row must not read as the same picture.
+
+   Code is rendered as coloured token BARS, never as readable text.
+   Fake source that a visitor can squint at is a liability; an
+   abstraction is honest and scales down to a 340px card.
+
+   Motion: opacity + transform only, driven by an .in-view class set
+   by IntersectionObserver. prefers-reduced-motion short-circuits to
+   the final state in the effect AND in card-visuals.css.
+   ───────────────────────────────────────────────────────────── */
+
+/** One token bar: `k` picks the syntax colour, `w` is its width in px. */
+interface CbToken {
+  k: "kw" | "fn" | "str" | "attr" | "punc";
+  w: number;
+}
+
+const CB_CODE: { indent: number; tokens: CbToken[] }[] = [
+  { indent: 0, tokens: [{ k: "kw", w: 26 }, { k: "fn", w: 44 }, { k: "punc", w: 10 }] },
+  { indent: 1, tokens: [{ k: "punc", w: 8 }, { k: "fn", w: 34 }, { k: "attr", w: 26 }] },
+  { indent: 2, tokens: [{ k: "attr", w: 22 }, { k: "str", w: 40 }] },
+  { indent: 2, tokens: [{ k: "attr", w: 30 }, { k: "str", w: 28 }] },
+  { indent: 1, tokens: [{ k: "punc", w: 8 }, { k: "fn", w: 40 }] },
+  { indent: 2, tokens: [{ k: "kw", w: 20 }, { k: "str", w: 46 }] },
+  { indent: 1, tokens: [{ k: "punc", w: 14 }] },
+  { indent: 0, tokens: [{ k: "punc", w: 8 }] },
+];
+
+export function CustomBuildVisual() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={containerRef} className="ps-cb-root" aria-hidden="true">
+      {/* LEFT — editor */}
+      <div className="ps-cb-editor">
+        <div className="ps-cb-tabs">
+          <span className="ps-cb-tab ps-cb-tab--active">page.tsx</span>
+          <span className="ps-cb-tab">layout.tsx</span>
+        </div>
+        <div className="ps-cb-code">
+          {CB_CODE.map((line, i) => (
+            <div
+              className="ps-cb-line"
+              key={`cb-line-${i}`}
+              style={{ "--cb-i": i } as React.CSSProperties}
+            >
+              <span className="ps-cb-gutter" />
+              <span
+                className="ps-cb-tokens"
+                style={{ paddingLeft: `${line.indent * 9}px` }}
+              >
+                {line.tokens.map((tok, j) => (
+                  <span
+                    key={`cb-tok-${i}-${j}`}
+                    className={`ps-cb-tok ps-cb-tok--${tok.k}`}
+                    style={{ width: `${tok.w}px` }}
+                  />
+                ))}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* RIGHT — the rendered result */}
+      <div className="ps-cb-preview">
+        <div className="ps-cb-bar">
+          <span /><span /><span />
+        </div>
+        <div className="ps-cb-page">
+          <div className="ps-cb-nav">
+            <span className="ps-cb-nav-logo" />
+            <span className="ps-cb-nav-dots"><i /><i /><i /></span>
+          </div>
+          <div className="ps-cb-block ps-cb-block--h1" style={{ "--cb-i": 0 } as React.CSSProperties} />
+          <div className="ps-cb-block ps-cb-block--p" style={{ "--cb-i": 1 } as React.CSSProperties} />
+          <div className="ps-cb-block ps-cb-block--p ps-cb-block--short" style={{ "--cb-i": 2 } as React.CSSProperties} />
+          <div className="ps-cb-cta" style={{ "--cb-i": 3 } as React.CSSProperties} />
+          <div className="ps-cb-cards">
+            <div style={{ "--cb-i": 4 } as React.CSSProperties}><span /><span /></div>
+            <div style={{ "--cb-i": 5 } as React.CSSProperties}><span /><span /></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VISUAL 7 — Search and Ads  (added 2026-09-03, ADR-0006)
+
+   A results surface: query field, an AI-answer block that cites a
+   placeholder domain, and a local-pack list. It draws the three
+   destinations this card carries — local SEO, AI search
+   optimization, paid ads — in the order a buyer meets them.
+
+   CLAIMS DISCIPLINE (docs/WRITER-AGENT-PROMPT.md:29,31):
+   - The query is the literal placeholder "[your service] near me".
+     A real-looking query would name a vertical, and :29 bars
+     industry claims without a canonical project behind them.
+   - The cited domain is "yourcompany.com" — the same placeholder
+     WebsiteVisual already uses (card-visuals-backup.tsx:33).
+   - There is NO rank-rise animation and NO position numbers. A #3
+     row climbing to #1 is an outcome claim drawn as artwork, which
+     is the same trap RevenueVisual falls into. The only motion is
+     the citation chip arriving, which illustrates the capability
+     ("get cited") without asserting a result.
+   ───────────────────────────────────────────────────────────── */
+export function SearchVisual() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={containerRef} className="ps-sr-root" aria-hidden="true">
+      <div className="ps-sr-panel">
+        {/* Chrome bar. Two jobs, both load-bearing:
+            1. .ps-bento-card__expand is a frosted WHITE circle at top:16
+               right:16 (globals.css:1703) sitting at z-index 3, i.e. ON TOP
+               of this visual. On a 390px card this panel reaches that corner,
+               and a white icon on a white panel is an invisible affordance.
+               A dark strip along the top puts contrast back under it — the
+               same thing .ps-browser-chrome does for WebsiteVisual.
+            2. It makes the panel read as a surface with depth rather than a
+               white slab, which is what it looked like without one. */}
+        <div className="ps-sr-chrome">
+          <span className="ps-sr-chrome-dots"><i /><i /><i /></span>
+          <span className="ps-sr-chrome-pill" />
+        </div>
+
+        {/* Query field */}
+        <div className="ps-sr-field">
+          <svg className="ps-sr-glass" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="4.6" stroke="currentColor" strokeWidth="1.4" />
+            <path d="M10.6 10.6L14 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+          </svg>
+          <span className="ps-sr-query">[your service] near me</span>
+        </div>
+
+        {/* AI answer block */}
+        <div className="ps-sr-ai">
+          <div className="ps-sr-ai-head">
+            <svg className="ps-sr-spark" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M8 1.5l1.5 4L13.5 7l-4 1.5L8 12.5 6.5 8.5 2.5 7l4-1.5z"
+                fill="currentColor"
+              />
+            </svg>
+            <span className="ps-sr-ai-label">AI Overview</span>
+          </div>
+          <span className="ps-sr-ai-line" style={{ "--sr-i": 0 } as React.CSSProperties} />
+          <span className="ps-sr-ai-line" style={{ "--sr-i": 1 } as React.CSSProperties} />
+          <span className="ps-sr-ai-line ps-sr-ai-line--short" style={{ "--sr-i": 2 } as React.CSSProperties} />
+          <span className="ps-sr-cite">yourcompany.com</span>
+        </div>
+
+        {/* Results list. The first row is a paid placement and the two
+            below it are the organic local pack — which is the actual shape
+            of the page this card is about, and the only way the card's own
+            title ("Search and Ads.") is honest: without the Ad row the
+            picture depicts two of its three destinations and silently drops
+            /services/paid-ads. Still no rank numbers and no rank-rise
+            animation — see the claims note above this component. */}
+        <div className="ps-sr-pack">
+          <span className="ps-sr-pack-label">Results</span>
+          <div className="ps-sr-row ps-sr-row--ad" style={{ "--sr-i": 0 } as React.CSSProperties}>
+            <span className="ps-sr-ad-badge">Ad</span>
+            <span className="ps-sr-row-lines">
+              <i className="ps-sr-row-name" />
+              <i className="ps-sr-row-meta" />
+            </span>
+          </div>
+          {[1, 2].map((row) => (
+            <div
+              className={`ps-sr-row${row === 1 ? " ps-sr-row--lead" : ""}`}
+              key={`sr-row-${row}`}
+              style={{ "--sr-i": row } as React.CSSProperties}
+            >
+              <span className="ps-sr-pin">
+                <svg viewBox="0 0 12 14" fill="none">
+                  <path
+                    d="M6 .8a4.6 4.6 0 00-4.6 4.6C1.4 8.8 6 13.2 6 13.2s4.6-4.4 4.6-7.8A4.6 4.6 0 006 .8z"
+                    fill="currentColor"
+                  />
+                  <circle cx="6" cy="5.3" r="1.7" fill="#0A1628" />
+                </svg>
+              </span>
+              <span className="ps-sr-row-lines">
+                <i className="ps-sr-row-name" />
+                <i className="ps-sr-row-meta" />
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

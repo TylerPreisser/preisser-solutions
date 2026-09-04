@@ -121,10 +121,15 @@ export const siteConfig = {
       href: "#case-studies",
     },
   },
-  // R-034: the "what we've built" marquee. Only things we've actually built —
-  // no positioning lines (Hays / founder-led / built in-house live in the
-  // proof bar, meta, and JSON-LD instead). Each item renders as a pill in the
-  // horizontal marquee below the metrics bar.
+  // R-034: the capability inventory — only things we have actually built. No
+  // positioning lines here (Hays / founder-led / built in-house live in the proof
+  // list, meta, and JSON-LD instead).
+  //
+  // 2026-09-03: these were the pills of an infinite horizontal marquee, which the
+  // owner called tacky and asked to be replaced with a better way of showing
+  // capabilities. They now render as the static capability grid in
+  // <Capabilities> (src/components/home/capabilities.tsx). The WORDS are
+  // untouched — only the presentation moved.
   valueStrip: [
     "Admin dashboards",
     "Custom databases",
@@ -137,19 +142,56 @@ export const siteConfig = {
     "CRM & lead pipelines",
     "Power BI dashboards",
   ],
-  // R-035: verifiable proof points. Sourced from case studies. Each entry
-  // is a self-contained line with explicit client / context so the bar is
-  // readable in isolation as it scrolls past.
+  // R-035: verifiable proof points. Sourced from case studies.
+  //
+  // 2026-09-03: reshaped from `string[]` to `{ claim, source? }`. Each entry used
+  // to be one line of the form "<claim> — <client/context>" because a marquee can
+  // only render one line. Splitting at that em dash is what lets the static
+  // layout typeset the attribution differently from the claim.
+  //
+  // NOT ONE WORD WAS CHANGED, STRENGTHENED, OR ADDED. Every claim + source pair
+  // re-concatenates to its exact original string, em dash included.
+  //
+  // One entry was removed as a DUPLICATE, not as a claim: "Reconciliation that
+  // used to take a full day now takes 15 minutes" was an unattributed, weaker
+  // restatement of the Chicago-area bus operator entry above it. The attributed
+  // one survives.
+  //
+  // ANONYMIZATION IS LOAD-BEARING — docs/WRITER-AGENT-PROMPT.md:51-54. "MGU in the
+  // Alliant Insurance ecosystem" and "Chicago-area bus operator" are the ONLY
+  // publishable forms of those two clients. Never replace either with a company
+  // name. Entries with no `source` are standing facts about the practice rather
+  // than a single client's outcome, and render without an attribution line.
   proofBar: [
-    "95% reduction in back-office logistics time — HG Oil Holdings",
-    "Reconciliation cut from a full day → 15-minute exception queue — Chicago-area bus operator",
-    "Zero missed renewals in 6 months — MGU in the Alliant Insurance ecosystem",
-    "75%+ accuracy improvement on inventory — HG Oil Holdings",
-    "A photo of a farm bill becomes Schedule-F-ready books — FarmBooks",
-    "Tax season without retyping a single co-op bill — FarmBooks",
-    "Reconciliation that used to take a full day now takes 15 minutes",
-    "134 pre-rendered cinematic pages — Iron and Oak Podcast",
-    "22+ Kansas SMB projects delivered",
-    "Founder-led: every project built directly by Tyler Preisser",
+    {
+      claim: "95% reduction in back-office logistics time",
+      source: "HG Oil Holdings",
+    },
+    {
+      claim: "Reconciliation cut from a full day → 15-minute exception queue",
+      source: "Chicago-area bus operator",
+    },
+    {
+      claim: "Zero missed renewals in 6 months",
+      source: "MGU in the Alliant Insurance ecosystem",
+    },
+    {
+      claim: "75%+ accuracy improvement on inventory",
+      source: "HG Oil Holdings",
+    },
+    {
+      claim: "A photo of a farm bill becomes Schedule-F-ready books",
+      source: "FarmBooks",
+    },
+    {
+      claim: "Tax season without retyping a single co-op bill",
+      source: "FarmBooks",
+    },
+    {
+      claim: "134 pre-rendered cinematic pages",
+      source: "Iron and Oak Podcast",
+    },
+    { claim: "22+ Kansas SMB projects delivered" },
+    { claim: "Founder-led: every project built directly by Tyler Preisser" },
   ],
 } as const;

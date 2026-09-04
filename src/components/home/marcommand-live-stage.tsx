@@ -12,6 +12,15 @@
  *    visitor, a saveData visitor, or anyone whose JS fails simply never has it
  *    disturbed — and there is no flash of the end-state on load.
  *
+ *    "End state" includes what is NOT on screen. In the end state the room is
+ *    open, so the whole HUB LAYER — the pad, the five unlit cards, all six
+ *    spokes, the live rail and (portrait) the pad's link to the trunk — ships
+ *    at `opacity: 0`. Shipping any of it visible superimposes the hub on the
+ *    open room and produces text-on-text collisions at 390px; see the comment
+ *    on ChannelCard for the measurements. The timeline's t=0
+ *    `tl.set(hubLayer, { opacity: 1 })` winds all of it back for the animated
+ *    path, so this is invisible to a visitor who gets the animation.
+ *
  * 2. One tree, two CSS-toggled groups (§3.2). `.mc-stage__wide` and
  *    `.mc-stage__narrow` are BOTH in the static export; a media query at 768px
  *    shows exactly one. No JS decides what renders, so there is no hydration
@@ -50,7 +59,17 @@ type StageGeom = {
   pill: PillGeom;
 };
 
-/** Wide stage space. Matches the SVG viewBox exactly. */
+/**
+ * Wide stage space. Matches the SVG viewBox exactly.
+ *
+ * The keyword tile sits further left than the brief's §2.3 (x 140 -> 100). It is
+ * not a taste change: the bus's final run into the tile is the segment Elara
+ * STANDS on at the keyword beat, and his drawn feet are 53 stage units wide at
+ * 1440. With the tile's right edge at 340 that run was 20 units — he stood on a
+ * stub. At 320 it was 55 units, which is only 2 units of tolerance and measured
+ * FULLY_ON=false twice mid-walk. At 300 the run is 75 units and his feet sit
+ * inside it with 11 units of margin on each side, through the whole walk.
+ */
 const WIDE: StageGeom = {
   w: 1200,
   h: 680,
@@ -60,8 +79,8 @@ const WIDE: StageGeom = {
   logoPx: 54,
   capFont: 14,
   dial: { cy: 430, r: 46, arcR: 36, needleLen: 30, labelFont: 15, valueFont: 17 },
-  tile: { x: 140, y: 350, w: 200, h: 195 },
-  pill: { x: 160, w: 160, h: 30, font: 15 },
+  tile: { x: 100, y: 350, w: 200, h: 195 },
+  pill: { x: 120, w: 160, h: 30, font: 15 },
 };
 
 /**
@@ -134,7 +153,43 @@ const CARDS_NARROW: Channel[] = [
 const SPOKES_WIDE: Record<string, string> = {
   facebook: "M548,340 H180 V176",
   instagram: "M600,288 V176",
-  google_ads: "M652,340 H890 V190 H964",
+  /*
+    THE GOOGLE ADS SPOKE LEAVES THE PAD'S RIGHT RIM, NOT ITS TOP.
+
+    It used to be `M600,288 V220 H964 V176` — it shared the Instagram card's
+    trunk up the pad's top rim and then ran right along y=220. That rail is the
+    one Elara walks in on and home again, and the consequence, measured on the
+    built page, was that he stood UNDER the Instagram card for the whole of the
+    corner: the sprite is anchored by its FEET and is 126.3 stage units tall at
+    a 1440px viewport, so feet on y=220 puts his head at y=94 — through the
+    Instagram card face (y 64..176) and straight over its caption (y 185..201).
+    Worst frame measured 100.0% of the "Instagram" caption covered, at
+    (600,220) on walk1 and again on walk5, both with the card at opacity 1.
+
+    Lowering the y=220 run could not fix it. To clear a caption whose glyph box
+    ends at y=201 his feet have to be below y=327, and a horizontal run at y=327
+    from x=600 would cut straight through the pad (x 548..652, y 288..392),
+    which ADR-0018 forbids.
+
+    So the rail moves sideways instead of downwards. It now leaves the pad at
+    the SAME rim point as the Local Services spoke (652,340) — they are
+    collinear as far as x=800, exactly as facebook/tiktok already share
+    `M548,340 H180` — climbs in the clear channel between the Instagram card
+    (right edge x=656) and the Google Ads card (left edge x=964), and only then
+    runs right along y=220 to the card. Nothing is above x=800, so his head has
+    bare canvas the whole way up.
+
+    Rim usage is more symmetric than it was, not less: top = Instagram,
+    left = Facebook + TikTok, right = Google Ads + Local Services,
+    bottom = direct mail.
+
+    The 800 is not arbitrary. His half-width is ~52 units at 1440, so the
+    climb needs an x with 52 units of clearance on both sides: the channel is
+    656..964, its centre is 810, and 800 keeps him off the Google Ads caption
+    (glyph box x 981..1059) as he arrives. If you move this, move
+    W_RAILH / W_RAILV with it and re-run the occlusion probe.
+  */
+  google_ads: "M652,340 H800 V220 H964 V176",
   tiktok: "M548,340 H180 V504",
   direct_mail: "M600,392 V504",
   google_lsa: "M652,340 H1020 V504",
@@ -143,7 +198,7 @@ const SPOKES_WIDE: Record<string, string> = {
 const SPOKES_NARROW: Record<string, string> = {
   facebook: "M153,310 V90 H137",
   instagram: "M237,310 V90 H253",
-  google_ads: "M153,310 H137",
+  google_ads: "M195,310 H137",
   tiktok: "M237,310 H253",
   direct_mail: "M153,310 V530 H137",
   google_lsa: "M237,310 V530 H253",
@@ -160,12 +215,12 @@ const SPOKES_NARROW: Record<string, string> = {
  * circle the rim is at cx - sqrt(46^2 - 12^2) = cx - 44.4, which is where each
  * riser terminates.
  */
-const BUS_WIDE = "M964,190 V250 H380 V470 H340";
+const BUS_WIDE = "M964,176 V220 H900 V270 H375 V470 H300";
 const RISERS_WIDE = [
-  "M400,250 V442 H435",
-  "M570,250 V442 H615",
-  "M750,250 V442 H795",
-  "M930,250 V442 H975",
+  "M375,442 H435",
+  "M570,270 V442 H615",
+  "M750,270 V442 H795",
+  "M890,270 V442 H975",
 ];
 
 /**
@@ -176,8 +231,37 @@ const RISERS_WIDE = [
  * x=45 — so he is on a line, at the elbow, with the wire continuing into the dial
  * his hand enters.
  */
-const BUS_NARROW = "M195,112 V200 H40 V312 H70";
-const RISERS_NARROW = ["M195,200 H355 V470 H340", "M154,200 V312 H166", "M250,200 V312 H262"];
+/*
+  THE TRUNK SITS AT y=240, NOT y=200.
+
+  y=200 left only 63 units between the lifted Google Ads card's caption (glyph
+  box y 122..137 once the card is at (195,70)) and the run Elara walks along.
+  He is anchored by his FEET and stands 73.4 stage units tall at a 390px
+  viewport, so feet on y=200 put his head at y=127 and his shoulders through
+  that caption on walk3, walk4 AND walk5 — measured worst frame 58.0% of
+  "Google Ads" covered, and unlike the hub cards this one is lit and on screen
+  for the whole room sequence, so it recurred three times a loop.
+
+  240 is bounded on both sides and both bounds were checked:
+    - ABOVE: clear of the lifted caption by 29.6u at 390px and still 12u at a
+      320px viewport, where the sprite grows to ~91u tall.
+    - BELOW: the dial faces start at y=262 (cy 300, r 38), so the run and its
+      risers must stay above that. 240 clears by 22u.
+    - The pad's top rim is y=268, so the trunk still passes above the pad
+      rather than through it (ADR-0018).
+  The risers still drop in the GUTTERS at x=154 and x=250 between the dial
+  columns (faces 68..144, 164..240, 260..336) and still enter each dial on its
+  side at cy+12 = 312. Only the y they start from changed.
+*/
+const BUS_NARROW = "M195,112 H110 V240 H375 V470 H340";
+const RISERS_NARROW = ["M110,240 H28 V312 H70", "M154,240 V312 H166", "M250,240 V312 H262"];
+
+/**
+ * The hub link. It is HUB furniture, not room wiring: it joins the pad's top rim
+ * to the room trunk so Elara has a continuous orthogonal route off the pad, and it
+ * fades with the pad. Both of its ends are real objects while it is drawn.
+ */
+const HUB_LINK_NARROW = "M195,268 V240";
 
 type Dial = {
   id: string;
@@ -333,6 +417,27 @@ function ChannelCard({
     <g
       className={`mc-card${lit ? " mc-card--lit" : ""}`}
       data-mc-card={`${variant}-${channel.id}`}
+      /*
+        M2. The five UNLIT cards ship at opacity 0, the same way the pad does
+        and for the same reason: the shipped markup is the END state (§6), and
+        in the end state the room is open and the hub has been faded out. They
+        used to ship at opacity 1, which meant the one composition nobody ever
+        animates into place — the still kept by prefers-reduced-motion visitors,
+        by saveData visitors, and by anyone whose GSAP chunk fails — was the hub
+        and the open room printed ON TOP OF EACH OTHER. Measured in that state
+        at 390px, in both themes: "TikTok" over "25 mi" 252px (48.3% of the
+        smaller glyph box) and "TikTok" over "Radius" 194px (37.3%). At 1440
+        there was no text collision but all six cards still sat over the room
+        with five spokes hanging down into the wiring, which reads as a double
+        exposure rather than a diagram.
+
+        Nothing about the animated path changes: the timeline's t=0 already does
+        `tl.set(hubLayer, { opacity: 1 })`, so the "before" state winds these
+        straight back up before the first frame is shown. The condition is tied
+        to `lit` on purpose — `hubFurniture` in marcommand-live.tsx is exactly
+        `cards.filter(c => c !== litCard)`, so the two sets cannot drift apart.
+      */
+      style={lit ? undefined : { opacity: 0 }}
     >
       {/* No shadow, ever. ADR-0015 decision 1 is flat 2D, no depth. */}
       <rect
@@ -527,8 +632,15 @@ export function MarCommandLiveStage() {
       {/* ---------------- WIDE ---------------- */}
       <g className="mc-stage__wide">
         {/* Idle spokes */}
+        {/* Hub furniture, so it ships hidden with the rest of the hub layer (M2). */}
         {CARDS_WIDE.map((c) => (
-          <path key={`sw-${c.id}`} className="mc-rail" d={SPOKES_WIDE[c.id]} />
+          <path
+            key={`sw-${c.id}`}
+            className="mc-rail"
+            data-mc-spoke={`wide-${c.id}`}
+            d={SPOKES_WIDE[c.id]}
+            style={{ opacity: 0 }}
+          />
         ))}
 
         {/* The Google Ads spoke, live. Identical path drawn on top and revealed
@@ -541,6 +653,7 @@ export function MarCommandLiveStage() {
           pathLength={100}
           strokeDasharray={100}
           strokeDashoffset={0}
+          style={{ opacity: 0 }}
         />
 
         {/*
@@ -610,9 +723,24 @@ export function MarCommandLiveStage() {
 
       {/* ---------------- NARROW ---------------- */}
       <g className="mc-stage__narrow" transform={NARROW_TRANSFORM}>
+        {/* Hub furniture, so it ships hidden with the rest of the hub layer (M2). */}
         {CARDS_NARROW.map((c) => (
-          <path key={`sn-${c.id}`} className="mc-rail" d={SPOKES_NARROW[c.id]} />
+          <path
+            key={`sn-${c.id}`}
+            className="mc-rail"
+            data-mc-spoke={`narrow-${c.id}`}
+            d={SPOKES_NARROW[c.id]}
+            style={{ opacity: 0 }}
+          />
         ))}
+
+        {/* Hub furniture: the pad's link up to the room trunk. Fades with the pad. */}
+        <path
+          className="mc-rail"
+          data-mc-hublink="narrow"
+          d={HUB_LINK_NARROW}
+          style={{ opacity: 0 }}
+        />
 
         <path
           className="mc-rail mc-rail--live"
@@ -621,6 +749,7 @@ export function MarCommandLiveStage() {
           pathLength={100}
           strokeDasharray={100}
           strokeDashoffset={0}
+          style={{ opacity: 0 }}
         />
 
         <g className="mc-pad" data-mc-pad="narrow" style={{ opacity: 0 }}>
@@ -693,40 +822,112 @@ export function MarCommandLiveStage() {
  */
 export const ELARA_MARKS = {
   wide: {
-    /* (600, 352) — standing on the pad */
-    pad: { x: "50%", y: "51.765%" },
-    /* (930, 190) — beside the Google Ads card, arm into its left edge */
-    tap: { x: "77.5%", y: "27.941%" },
-    /* (415, 442) — on the riser, hand inside the Daily budget dial */
-    dial: { x: "34.583%", y: "65%" },
-    /* (380, 470) — at the keyword list's right edge, facing left */
-    keys: { x: "31.667%", y: "69.118%" },
+    /* (600, 340) — dead centre of the pad, on the spoke line. */
+    pad: { x: "50%", y: "50%" },
+    /* (932, 220) — on the hub rail's y=220 run, arm up-right into the card. */
+    tap: { x: "77.6667%", y: "32.3529%" },
+    /* (400, 442) — mid-way along the budget dial's 55u entry leg. */
+    dial: { x: "33.75%", y: "65%" },
+    /* (355, 470) — on the bus's 60u tile run, facing left into the tile. */
+    keys: { x: "28.125%", y: "69.1176%" },
     /* Desktop closes at the identical coordinate it opened from (§2.5 beat 11). */
-    closeTap: { x: "77.5%", y: "27.941%" },
+    closeTap: { x: "77.6667%", y: "32.3529%" },
   },
   narrow: {
-    /* (195, 322) */
-    pad: { x: "50%", y: "51.935%" },
-    /* (160, 310) — beside the Google Ads card in its hub slot, facing left */
-    tap: { x: "41.026%", y: "50%" },
+    /* (195, 310) — centre of the pad. */
+    pad: { x: "50%", y: "50%" },
+    /* (160, 310) — on the google_ads spoke, which now spans the pad, facing left. */
+    tap: { x: "41.0256%", y: "50%" },
+    /* (45, 312) — mid-way along the budget dial's 40u entry leg. */
+    dial: { x: "12.5641%", y: "50.3226%" },
+    /* (357, 470) — on the bus's tile run, facing left. */
+    keys: { x: "91.5385%", y: "75.8065%" },
     /*
-      (45, 312) — on the bus's final run into the Daily budget dial, standing at
-      the elbow with the reaching arm crossing the rim at x=68. UNCHANGED by the
-      dial-row shift: the mark was always right, the dial was too close to the
-      left edge. See DIALS_NARROW for the measurements.
+      (140, 112) — beside the lit card AFTER it has tweened to (195, 70), standing
+      on the bus's y=112 run. The "identical coordinate" invariant is about the
+      card's own frame: on portrait the card moves (a deliberate §3.3 divergence),
+      so the tap point moves with it.
     */
-    dial: { x: "11.538%", y: "50.323%" },
-    /* (355, 470) */
-    keys: { x: "91.026%", y: "75.806%" },
-    /*
-      (140, 112) — beside the lit card AFTER it has tweened to (195, 70).
-      The "identical coordinate" invariant is about the card's own frame: on
-      portrait the card moves (a deliberate §3.3 divergence), so the tap point
-      moves with it. He still closes it from exactly where he opened it
-      relative to the card, and the card rides back down to the hub during the
-      fold with him alongside.
-    */
-    closeTap: { x: "35.897%", y: "18.065%" },
+    closeTap: { x: "35.8974%", y: "18.0645%" },
+  },
+} as const;
+
+/**
+ * ORTHOGONAL WALK ROUTES — the fix for ADR-0018 ("he is never off a line").
+ *
+ * Every rail in this stage is a right-angled elbowed path, but a single GSAP tween
+ * across both --mc-x and --mc-y draws a STRAIGHT DIAGONAL between its endpoints. So
+ * the previous build had him on a line only at the two ends of each walk and cutting
+ * the corner across bare canvas for the whole middle — measured at 48.6 CSS px off
+ * the nearest visible rail mid-walk at 1440px.
+ *
+ * A route is the list of waypoints he actually travels, in order, INCLUDING the start.
+ * Consecutive waypoints always share an axis, so each leg is a pure horizontal or
+ * vertical run and he is on a drawn segment at every instant. The timeline splits the
+ * beat's duration across the legs in proportion to their length, so his walking speed
+ * is constant through the corners.
+ *
+ * Each waypoint below is annotated with the path it lies on. If you move a path, move
+ * its waypoints, and re-run the probe: nothing here is decorative.
+ */
+export type Waypoint = { x: string; y: string };
+
+const W_PAD: Waypoint = { x: "50%", y: "50%" };            /* (600,340) pad centre   */
+/*
+  The two waypoints that replace the old W_RAILCORNER at (600,220). He now
+  crosses the pad to its right rim and climbs in the open channel at x=800
+  rather than rising through the Instagram card — see SPOKES_WIDE.google_ads
+  for the measurement that forced it. x=600..652 of the first leg is the pad
+  disc itself and x=652..800 is the new spoke, so he is on a drawn object for
+  every instant of it.
+*/
+const W_RAILH: Waypoint = { x: "66.6667%", y: "50%" };      /* (800,340) rail elbow   */
+const W_RAILV: Waypoint = { x: "66.6667%", y: "32.3529%" }; /* (800,220) rail elbow   */
+const W_TAP: Waypoint = { x: "77.6667%", y: "32.3529%" };   /* (932,220) hub rail + bus */
+const W_BUSTOP: Waypoint = { x: "75%", y: "32.3529%" };     /* (900,220) bus elbow    */
+const W_TRUNKR: Waypoint = { x: "75%", y: "39.7059%" };     /* (900,270) trunk right  */
+const W_TRUNKL: Waypoint = { x: "31.25%", y: "39.7059%" };  /* (375,270) trunk left   */
+const W_DROP: Waypoint = { x: "31.25%", y: "65%" };         /* (375,442) riser-0 tee  */
+const W_DIAL: Waypoint = { x: "33.75%", y: "65%" };         /* (405,442) at the dial  */
+const W_TILEL: Waypoint = { x: "31.25%", y: "69.1176%" };   /* (375,470) bus elbow    */
+const W_KEYS: Waypoint = { x: "28.125%", y: "69.1176%" };   /* (337.5,470) at the tile*/
+
+const N_PAD: Waypoint = { x: "50%", y: "50%" };             /* (195,310) pad centre   */
+const N_TAP: Waypoint = { x: "41.0256%", y: "50%" };        /* (160,310) on the spoke */
+const N_LINKTOP: Waypoint = { x: "50%", y: "38.7097%" };    /* (195,240) trunk        */
+const N_TRUNKL: Waypoint = { x: "7.1795%", y: "38.7097%" }; /* (28,240)  riser-0 elbow*/
+const N_DROP: Waypoint = { x: "7.1795%", y: "50.3226%" };   /* (28,312)  riser-0 elbow*/
+const N_DIAL: Waypoint = { x: "12.5641%", y: "50.3226%" };  /* (49,312)  at the dial  */
+const N_TRUNKR: Waypoint = { x: "96.1538%", y: "38.7097%" };/* (375,240) bus elbow    */
+const N_TILER: Waypoint = { x: "96.1538%", y: "75.8065%" }; /* (375,470) bus elbow    */
+const N_KEYS: Waypoint = { x: "91.5385%", y: "75.8065%" };  /* (357,470) at the tile  */
+const N_BUSL: Waypoint = { x: "28.2051%", y: "38.7097%" };  /* (110,240) bus elbow    */
+const N_CARDL: Waypoint = { x: "28.2051%", y: "18.0645%" }; /* (110,112) bus elbow    */
+const N_CLOSE: Waypoint = { x: "35.8974%", y: "18.0645%" }; /* (140,112) beside card  */
+
+export const ROUTES = {
+  wide: {
+    /* pad -> across to the rim -> up the clear channel -> along y=220 to the card */
+    walk1: [W_PAD, W_RAILH, W_RAILV, W_TAP],
+    /* card -> bus jog -> down -> trunk -> down -> into the budget dial */
+    walk2: [W_TAP, W_BUSTOP, W_TRUNKR, W_TRUNKL, W_DROP, W_DIAL],
+    /* dial -> back to the bus tee -> down -> along the tile run */
+    walk3: [W_DIAL, W_DROP, W_TILEL, W_KEYS],
+    /* tile -> back up the bus to the card */
+    walk4: [W_KEYS, W_TILEL, W_TRUNKL, W_TRUNKR, W_BUSTOP, W_TAP],
+    /* card -> home down the hub rail, retraced */
+    walk5: [W_TAP, W_RAILV, W_RAILH, W_PAD],
+  },
+  narrow: {
+    walk1: [N_PAD, N_TAP],
+    /* spoke -> across the pad -> up the hub link -> trunk -> down -> into the dial */
+    walk2: [N_TAP, N_PAD, N_LINKTOP, N_TRUNKL, N_DROP, N_DIAL],
+    /* dial -> back up -> right along the trunk -> down the far side -> the tile */
+    walk3: [N_DIAL, N_DROP, N_TRUNKL, N_TRUNKR, N_TILER, N_KEYS],
+    /* tile -> back along the trunk -> up to the card's own run */
+    walk4: [N_KEYS, N_TILER, N_TRUNKR, N_BUSL, N_CARDL, N_CLOSE],
+    /* card -> back down the bus -> up the hub link -> across the pad */
+    walk5: [N_CLOSE, N_CARDL, N_BUSL, N_LINKTOP, N_PAD],
   },
 } as const;
 

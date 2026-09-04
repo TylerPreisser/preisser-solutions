@@ -21,9 +21,11 @@
 
 | Token | Hex | Usage |
 |-------|-----|-------|
-| `--color-primary` | `#0D95E8` | Brand blue — CTAs, links, accents |
-| `--color-primary-hover` | `#0B7BC0` | Button/link hover |
-| `--color-primary-glow` | `rgba(13, 149, 232, 0.4)` | Button hover shadow |
+| `--color-primary` | `#1590FF` | Brand blue — CTAs, links, accents. Sampled from the logo; was `#0D95E8`. Do not "correct" it back |
+| `--color-primary-hover` | `#0D76D6` | Button/link hover. Was documented here as `#0B7BC0`, which has never been the token's value |
+| `--color-primary-strong` | `#0C6FC9` | 5.08:1 with white — small text / surfaces under white text |
+| `--color-primary-strong-hover` | `#0B68BE` | 5.62:1 with white — the darkest declared blue; small text on tinted light surfaces |
+| `--color-primary-glow` | `rgba(21, 144, 255, 0.2)` | Button hover shadow |
 | `--color-dark` | `#0A1628` | Hero/nav/dark sections (Stripe's navy influence) |
 | `--color-dark-surface` | `#0F1D30` | Cards on dark backgrounds |
 | `--color-dark-subtle` | `#132840` | Subtle dark section variation |

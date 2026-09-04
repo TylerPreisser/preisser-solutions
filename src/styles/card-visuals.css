@@ -1,7 +1,29 @@
 /**
  * card-visuals.css
  *
- * All visual-specific CSS for the 5 service card animations.
+ * ⚠ DO NOT WRAP THIS FILE — OR ANY PART OF IT — IN `@layer components`.
+ *
+ * This was recommended by a design-system audit, attempted, measured, and
+ * reverted on 2026-09-03 (commit 07906a1). The audit's premise was wrong:
+ * there is no shared layer to join. `@layer components` spans only
+ * globals.css:260-432, and the rules these visuals compete with are
+ * UNLAYERED. Layer order is compared BEFORE specificity, so layering makes
+ * a (0,5,0) rule LOSE to a (0,3,0) one.
+ *
+ * Measured consequences of the layered build, not predicted ones:
+ *   - 925,871 hard-differing pixels
+ *   - card artwork at opacity 0 at 1440 in BOTH themes
+ *   - wordmark at opacity 0 in all four viewport/theme combinations
+ *   - a real keyboard Tab walk blanked all 18 work cards
+ *   - the 390px "pass" was a FALSE pass: an unrelated mobile !important
+ *     propped the logo up while the wordmark still went to 0, so a
+ *     mobile-only check would have shipped it
+ *
+ * If you are reading a design-system audit that tells you to layer these
+ * sheets: that recommendation has already been tried and it breaks the
+ * site. Do not repeat it.
+ *
+ * All visual-specific CSS for the service card animations.
  * Extracted from globals.css — classes prefixed with:
  *   ps-visual-, ps-wb-, ps-browser-, ps-iphone-, ps-site-,
  *   ps-auto-, ps-dash-flow, ps-hm-, ps-dbc-, ps-ge-
@@ -1504,4 +1526,901 @@
   .ps-dbc-kpi-value {
     font-size: 8px;
   }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   VISUALS 6 & 7 — added 2026-09-03 for ADR-0006
+   (websites/marketing folded into the pillar bento grid)
+
+   DO NOT wrap this file, or any part of it, in `@layer components`.
+   Measured 2026-09-03: `@layer components` spans only globals.css
+   260-432, the competing .ps-bento-card rules are unlayered, and
+   layer order beats specificity — it produced 925,871 differing
+   pixels and blanked all 18 work cards on keyboard focus.
+
+   Both visuals: transform + opacity only, no backdrop-filter, and a
+   prefers-reduced-motion block at the foot of this section that
+   pins them to their final state.
+   ═════════════════════════════════════════════════════════════ */
+
+/* ── VISUAL 6: Custom Websites — code resolving into a page ──── */
+
+/* TOP INSET IS 52px AND THAT NUMBER IS LOAD-BEARING.
+
+   .ps-bento-card__expand is a 32px circle at top:16 right:16 (globals.css),
+   z-index 3, drawn OVER the visual. Its glyph is white in dark theme and
+   #0A1628 navy in light theme, on a near-transparent frosted disc — so it
+   only reads against a backdrop that flips with the theme, and it turns to
+   mush against anything busy.
+
+   Measured 2026-09-04 by cropping the corner and LOOKING at it: with the
+   composition reaching that corner, Custom Websites put its permanently
+   dark nav strip under a navy glyph in light theme and the affordance was
+   effectively invisible. A pixel-percentile contrast probe scored that same
+   corner 14.32:1 and called it the best on the grid -- it was measuring the
+   dark bar against the white page beside it, not the glyph against its
+   backdrop. The number was confidently wrong; the crop was not.
+
+   48px = 16 top offset + 32 icon. But the visual root is NOT the card box:
+   .ps-bento-card__inner is inset by -6px for the breathe animation, so a
+   root-relative inset of N lands at N-6 from the card edge. 52 measured as
+   46 and still clipped the icon. 60 is the real number: 60-6 = 54, i.e.
+   6px of slack past the icon. This -6px overhang is the single easiest
+   thing to get wrong in this file.
+
+   AND THE ICON IS NOT ALWAYS 32px. globals.css:5969 grows it to 44x44 at
+   top:12 right:12 for touch at max-width:768 — so it reaches y=56 there,
+   not y=48. Sizing against the desktop 32px number leaves a 10px clip on
+   exactly the viewports where the affordance matters most. 68 clears both
+   cases (68-6 = 62, past the 56px touch icon with slack).
+
+   68 puts the
+   icon on plain card background — exactly where the three original cards
+   put theirs, and they read correctly in both themes. Do not reduce this
+   to reclaim vertical space; take it from the bottom inset instead. */
+.ps-cb-root {
+  display: flex;
+  flex-direction: row;
+  /* flex-start for the same reason as .ps-sr-root — see the note there. */
+  align-items: flex-start;
+  justify-content: center;
+  background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
+  padding: 68px 16px 76px;
+  overflow: hidden;
+}
+
+/* Editor sits behind and slightly low; the rendered page sits in
+   front and lifted. Same depth grammar as WebsiteVisual's
+   browser-behind-phone, without repeating the same picture.
+
+   HEIGHTS ARE EXPLICIT, NOT CONTENT-DERIVED. Left to its content this
+   composition measured 154px tall inside a 380px card (41%) while the
+   WebsiteVisual next to it filled 269px (71%), and it read visibly
+   cheaper than its neighbours. The panels are sized to the card and the
+   content distributes inside them. */
+.ps-cb-editor {
+  flex: 0 0 47%;
+  min-width: 0;
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  background: #101a2e;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.46),
+    0 5px 16px rgba(0,0,0,0.3);
+}
+
+.ps-cb-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  background: linear-gradient(180deg, #20314f 0%, #182743 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.ps-cb-tab {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 7.5px;
+  letter-spacing: 0.02em;
+  color: #64748B;
+  padding: 6px 8px;
+  white-space: nowrap;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+
+.ps-cb-tab--active {
+  color: #CBD5E1;
+  background: #101a2e;
+  box-shadow: inset 0 -1px 0 var(--color-primary);
+}
+
+.ps-cb-code {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 6px;
+  padding: 10px 10px 12px;
+  overflow: hidden;
+}
+
+.ps-cb-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateX(-6px);
+}
+
+.ps-cb-root.in-view .ps-cb-line {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 340ms ease calc(var(--cb-i, 0) * 55ms),
+    transform 340ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--cb-i, 0) * 55ms);
+}
+
+.ps-cb-gutter {
+  flex: 0 0 5px;
+  height: 5px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.14);
+}
+
+.ps-cb-tokens {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+
+.ps-cb-tok {
+  height: 5px;
+  border-radius: 2.5px;
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+
+.ps-cb-tok--kw   { background: rgba(167,139,250,0.85); }
+.ps-cb-tok--fn   { background: var(--color-cyan); opacity: 0.75; }
+.ps-cb-tok--str  { background: var(--color-green); opacity: 0.7; }
+.ps-cb-tok--attr { background: var(--color-primary); opacity: 0.8; }
+.ps-cb-tok--punc { background: rgba(255,255,255,0.22); }
+
+/* Rendered result — in front, lifted, overlapping the editor */
+.ps-cb-preview {
+  flex: 0 0 56%;
+  min-width: 0;
+  height: 246px;
+  display: flex;
+  flex-direction: column;
+  margin-left: -16px;
+  z-index: 2;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  transform: translateY(0);
+  transition: transform 300ms ease;
+  box-shadow:
+    0 26px 60px rgba(0,0,0,0.55),
+    0 6px 18px rgba(0,0,0,0.34);
+}
+
+.ps-bento-card:hover .ps-cb-preview {
+  transform: translateY(-6px);
+}
+
+/* Depth by pushing the editor DOWN, never by lifting the preview UP: up is
+   where the expand icon lives. */
+.ps-cb-editor {
+  transform: translateY(16px);
+}
+
+.ps-cb-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  background: linear-gradient(180deg, #20314f 0%, #182743 100%);
+}
+
+.ps-cb-bar span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+}
+
+/* Nav pinned to the top, card row pinned to the bottom (margin-top:auto
+   below), hero group flowing under the nav. `justify-content: center`
+   was wrong here: it centred the WHOLE column including the nav, which
+   left a bare white strip above the nav bar. A page's chrome does not
+   float. */
+.ps-cb-page {
+  flex: 1;
+  background: #f8fafc;
+  padding: 0 0 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.ps-cb-nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 9px;
+  background: #0A1628;
+  margin-bottom: 6px;
+}
+
+.ps-cb-nav-logo {
+  width: 22px;
+  height: 5px;
+  border-radius: 2px;
+  background: var(--color-primary);
+}
+
+.ps-cb-nav-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.ps-cb-nav-dots i {
+  width: 10px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.28);
+}
+
+.ps-cb-block,
+.ps-cb-cta,
+.ps-cb-cards > div {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.ps-cb-root.in-view .ps-cb-block,
+.ps-cb-root.in-view .ps-cb-cta,
+.ps-cb-root.in-view .ps-cb-cards > div {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 420ms ease calc(320ms + var(--cb-i, 0) * 70ms),
+    transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(320ms + var(--cb-i, 0) * 70ms);
+}
+
+.ps-cb-block {
+  border-radius: 3px;
+  background: #cbd5e1;
+}
+
+.ps-cb-block--h1 {
+  width: 68%;
+  height: 10px;
+  margin-top: 6px;
+  background: #334155;
+}
+
+.ps-cb-block--p {
+  width: 78%;
+  height: 5px;
+}
+
+.ps-cb-block--short {
+  width: 54%;
+}
+
+.ps-cb-cta {
+  margin-top: 6px;
+  width: 42%;
+  height: 15px;
+  border-radius: 6px;
+  background: var(--color-primary);
+  box-shadow: 0 4px 12px var(--color-primary-glow);
+}
+
+.ps-cb-cards {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 9px 0;
+  /* Absorbs the column's slack, so the card row sits at the foot of the
+     page and the hero group stays under the nav. */
+  margin-top: auto;
+}
+
+.ps-cb-cards > div {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px 7px;
+  border-radius: 5px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.ps-cb-cards > div > span {
+  height: 3px;
+  border-radius: 2px;
+  background: #cbd5e1;
+}
+
+.ps-cb-cards > div > span:first-child {
+  width: 70%;
+  background: var(--color-primary);
+  opacity: 0.55;
+}
+
+/* ── VISUAL 7: Search and Ads — query, AI answer, local pack ─── */
+
+.ps-sr-root {
+  display: flex;
+  /* flex-start, NOT center. `center` on an over-tall child splits the
+     overflow both ways, and the half that goes UP lands under the expand
+     icon and silently undoes the top inset. Pinning the top means content
+     growth can only ever push downward, into the title scrim, which is
+     survivable. The fixed height that used to guard this clipped the last
+     result row at every width instead — measured scrollHeight 271 vs 250. */
+  align-items: flex-start;
+  justify-content: center;
+  background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
+  /* Same corner clearance as .ps-cb-root, same -6px and 44px caveats. */
+  padding: 68px 18px 68px;
+  overflow: hidden;
+}
+
+.ps-sr-panel {
+  width: 100%;
+  max-width: 330px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 10px 11px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f8fafc;
+  border: 1px solid rgba(255,255,255,0.1);
+  transform: translateY(0);
+  transition: transform 300ms ease;
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.5),
+    0 6px 20px rgba(0,0,0,0.32);
+}
+
+.ps-bento-card:hover .ps-sr-panel {
+  transform: translateY(-6px);
+}
+
+.ps-sr-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.ps-sr-glass {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 auto;
+  color: #94A3B8;
+}
+
+.ps-sr-query {
+  font-size: 8px;
+  letter-spacing: 0.01em;
+  color: #475569;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ps-sr-ai {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 9px 7px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-left: 2px solid var(--color-primary-strong);
+}
+
+.ps-sr-ai-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 1px;
+}
+
+.ps-sr-spark {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  color: var(--color-primary-strong);
+}
+
+.ps-sr-ai-label {
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-primary-strong);
+}
+
+.ps-sr-ai-line {
+  height: 4px;
+  width: 100%;
+  border-radius: 2px;
+  background: #cbd5e1;
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.ps-sr-ai-line--short {
+  width: 62%;
+}
+
+.ps-sr-root.in-view .ps-sr-ai-line {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 360ms ease calc(var(--sr-i, 0) * 90ms),
+    transform 360ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--sr-i, 0) * 90ms);
+}
+
+/* Chrome bar — full-bleed dark strip. See the note in the TSX: this is
+   what keeps the frosted white .ps-bento-card__expand icon visible where
+   the panel reaches the top-right corner on a 390px card. */
+.ps-sr-chrome {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 -10px 2px;
+  padding: 6px 9px;
+  background: linear-gradient(180deg, #20314f 0%, #182743 100%);
+}
+
+.ps-sr-chrome-dots {
+  display: flex;
+  gap: 3px;
+  flex: 0 0 auto;
+}
+
+.ps-sr-chrome-dots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.22);
+}
+
+.ps-sr-chrome-pill {
+  flex: 1;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.12);
+}
+
+/* The citation chip is the point of the whole visual, so it lands last. */
+.ps-sr-cite {
+  align-self: flex-start;
+  margin-top: 3px;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+  background: var(--color-primary-strong);
+  padding: 3px 7px;
+  border-radius: 999px;
+  opacity: 0;
+  transform: translateY(5px) scale(0.94);
+}
+
+.ps-sr-root.in-view .ps-sr-cite {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 420ms ease 460ms,
+    transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) 460ms;
+}
+
+.ps-sr-pack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 9px 7px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.ps-sr-pack-label {
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #94A3B8;
+  margin-bottom: 1px;
+}
+
+.ps-sr-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 5px;
+  border-radius: 5px;
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+.ps-sr-root.in-view .ps-sr-row {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 380ms ease calc(560ms + var(--sr-i, 0) * 90ms),
+    transform 380ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(560ms + var(--sr-i, 0) * 90ms);
+}
+
+.ps-sr-row--lead {
+  background: rgba(21, 144, 255, 0.09);
+  box-shadow: inset 0 0 0 1px rgba(21, 144, 255, 0.22);
+}
+
+/* Paid placement row. Labelled "Ad" because that is what it is — a
+   sponsored slot drawn as a sponsored slot. */
+.ps-sr-row--ad {
+  background: rgba(15, 118, 110, 0.07);
+  box-shadow: inset 0 0 0 1px rgba(15, 118, 110, 0.16);
+}
+
+.ps-sr-ad-badge {
+  flex: 0 0 auto;
+  font-size: 6.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff;
+  /* --theme-success-text (#07795F) is the 5.37:1-on-white green token. */
+  background: var(--theme-success-text, #07795F);
+  padding: 2px 5px;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+.ps-sr-pin {
+  width: 9px;
+  height: 11px;
+  flex: 0 0 auto;
+  color: #94A3B8;
+  display: flex;
+}
+
+.ps-sr-pin svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ps-sr-row--lead .ps-sr-pin {
+  color: var(--color-primary-strong);
+}
+
+.ps-sr-row-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ps-sr-row-name {
+  height: 4px;
+  width: 64%;
+  border-radius: 2px;
+  background: #cbd5e1;
+}
+
+.ps-sr-row--lead .ps-sr-row-name {
+  background: #64748B;
+  width: 74%;
+}
+
+.ps-sr-row-meta {
+  height: 3px;
+  width: 42%;
+  border-radius: 2px;
+  background: #e2e8f0;
+}
+
+/* ── Light mode: only the backdrop and shadows change ────────── */
+/* The panels stay light in both themes, exactly like .ps-site-layout
+   (card-visuals.css:271) — a device screen is lit in a dark room too. */
+[data-theme="light"] .ps-cb-root,
+[data-theme="light"] .ps-sr-root {
+  background: linear-gradient(160deg, #F0F4F8 0%, #E8EDF3 100%);
+}
+
+/* Chrome strips FLIP WITH THE THEME, they do not stay dark.
+
+   .ps-bento-card__expand is a 32px circle at top:16 right:16, z-index 3,
+   drawn OVER the visual. In dark mode it is white-on-frosted-white; in
+   light mode (globals.css:1323) it is #0A1628 navy on rgba(0,0,0,0.06).
+   Both compositions reach that corner, so whatever sits under the icon
+   has to be dark in dark mode and light in light mode or the affordance
+   disappears in one of them. Measured both ways on 2026-09-03: a chrome
+   bar left dark in light mode hid the icon completely.
+
+   This is exactly what [data-theme="light"] .ps-browser-chrome does for
+   WebsiteVisual (card-visuals.css:1113). Same trick, same reason. */
+[data-theme="light"] .ps-cb-bar,
+[data-theme="light"] .ps-sr-chrome {
+  background: linear-gradient(180deg, #E8EDF3 0%, #DDE4EC 100%);
+  border-bottom: 1px solid #CBD5E1;
+}
+
+[data-theme="light"] .ps-cb-bar span,
+[data-theme="light"] .ps-sr-chrome-dots i {
+  background: rgba(10,22,40,0.18);
+}
+
+[data-theme="light"] .ps-sr-chrome-pill {
+  background: rgba(10,22,40,0.09);
+}
+
+[data-theme="light"] .ps-cb-nav {
+  background: #1E293B;
+}
+
+/* THE EDITOR FLIPS WITH THE THEME TOO.
+ *
+ * Shipped first as a permanently dark #101a2e panel on the reasoning that
+ * "code editors are dark". Measured against the row above it, that was
+ * wrong: cards 1-3 flip their artwork with the theme, so in light theme a
+ * fixed-dark editor was the only dark slab in an otherwise airy grid and
+ * read as artwork imported from a different site. Light editor themes are
+ * completely ordinary (VS Code Light+), and matching the row matters more
+ * than matching a developer's personal colour scheme.
+ *
+ * Token hues are preserved but darkened to stay legible on white; the
+ * green and blue use the audited on-white tokens rather than new hex. */
+[data-theme="light"] .ps-cb-editor {
+  background: #FFFFFF;
+  border-color: rgba(0,0,0,0.12);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.14), 0 4px 12px rgba(0,0,0,0.07);
+}
+
+[data-theme="light"] .ps-cb-tabs {
+  background: linear-gradient(180deg, #E8EDF3 0%, #DDE4EC 100%);
+  border-bottom: 1px solid #CBD5E1;
+}
+
+[data-theme="light"] .ps-cb-tab {
+  color: #64748B;
+  border-right-color: rgba(10,22,40,0.08);
+}
+
+[data-theme="light"] .ps-cb-tab--active {
+  color: #0A1628;
+  background: #FFFFFF;
+  box-shadow: inset 0 -1px 0 var(--color-primary-strong);
+}
+
+[data-theme="light"] .ps-cb-gutter {
+  background: rgba(10,22,40,0.16);
+}
+
+[data-theme="light"] .ps-cb-tok--kw   { background: #7C3AED; opacity: 0.9; }
+[data-theme="light"] .ps-cb-tok--fn   { background: #0E7490; opacity: 0.85; }
+[data-theme="light"] .ps-cb-tok--str  { background: var(--theme-success-text); opacity: 0.85; }
+[data-theme="light"] .ps-cb-tok--attr { background: var(--color-primary-strong); opacity: 0.85; }
+[data-theme="light"] .ps-cb-tok--punc { background: rgba(10,22,40,0.24); }
+
+[data-theme="light"] .ps-cb-preview,
+[data-theme="light"] .ps-sr-panel {
+  border-color: rgba(0,0,0,0.1);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+}
+
+/* ── Reduced motion: pin both visuals to their final state ──── */
+@media (prefers-reduced-motion: reduce) {
+  .ps-cb-line,
+  .ps-cb-block,
+  .ps-cb-cta,
+  .ps-cb-cards > div,
+  .ps-sr-ai-line,
+  .ps-sr-cite,
+  .ps-sr-row {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .ps-cb-preview,
+  .ps-sr-panel,
+  .ps-bento-card:hover .ps-cb-preview,
+  .ps-bento-card:hover .ps-sr-panel {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── Mobile: the cards are ~340px wide, so tighten both ──────── */
+@media (max-width: 639px) {
+  .ps-cb-root {
+    padding: 68px 12px 54px;
+  }
+
+  .ps-cb-editor {
+    flex-basis: 45%;
+    height: 172px;
+  }
+
+  .ps-cb-code {
+    gap: 4px;
+    padding: 8px 8px 10px;
+  }
+
+  .ps-cb-preview {
+    flex-basis: 58%;
+    height: 204px;
+    margin-left: -12px;
+  }
+
+  .ps-sr-root {
+    padding: 68px 16px 60px;
+  }
+
+  /* Card is 342x320 here, so the panel gets ~222px. Tightened rather
+     than truncated: the composition must not change by breakpoint. */
+  .ps-sr-panel {
+    max-width: 268px;
+    gap: 4px;
+    padding: 0 8px 8px;
+  }
+
+  .ps-sr-chrome {
+    margin: 0 -8px 1px;
+    padding: 5px 8px;
+  }
+
+  .ps-sr-field {
+    padding: 5px 8px;
+  }
+
+  .ps-sr-ai,
+  .ps-sr-pack {
+    padding: 4px 7px 5px;
+    gap: 3px;
+  }
+
+  .ps-sr-ai-line {
+    height: 3px;
+  }
+
+  .ps-sr-row {
+    padding: 2px 4px;
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   BOTTOM-SHEET SERVICE LINKS (ADR-0006)
+
+   WHY THIS IS IN card-visuals.css AND NOT globals.css: it belongs
+   next to .ps-dialog-cta at globals.css:2862 and should be moved
+   there in a follow-up. The build brief for this change scoped
+   this agent's globals.css write access to the .ps-bento-grid
+   block only, and shipping the rule in a file it does own beat
+   shipping an unstyled link list. Flagged in the report.
+
+   These are the only navigation out of the bento grid. Every card
+   is a <button> that expands; the /services/* destinations the
+   deleted websites-and-marketing band used to carry live here,
+   one level in. See the long note above tileLinks() in
+   service-pillars.tsx.
+
+   NOT wrapped in @layer components — see the note at the head of
+   the visuals section above. Layer order beats specificity and
+   the competing .ps-dialog-* rules are unlayered.
+   ═════════════════════════════════════════════════════════════ */
+
+.ps-dialog-links {
+  margin-top: 8px;
+  padding-top: 28px;
+  border-top: 1px solid var(--theme-dialog-stat-border);
+  transition: border-color 300ms ease;
+}
+
+.ps-dialog-links-label {
+  margin: 0 0 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-text-muted);
+  transition: color 300ms ease;
+}
+
+.ps-dialog-links-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+/* Same 640px step the deleted band used, so the rhythm survives it. */
+@media (min-width: 640px) {
+  .ps-dialog-links-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+.ps-dialog-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  /* >=44px tap target: 13px + 13px + ~18px line box. */
+  min-height: 44px;
+  padding: 13px 14px;
+  border-radius: 10px;
+  background: var(--theme-dialog-stat-bg);
+  border: 1px solid var(--theme-dialog-stat-border);
+  color: var(--theme-text-primary);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+}
+
+.ps-dialog-link svg {
+  flex: 0 0 auto;
+  color: var(--theme-accent-text);
+  transform: translateX(0);
+  transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.ps-dialog-link:hover {
+  border-color: var(--theme-accent-text);
+  color: var(--theme-accent-text);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ps-dialog-link:hover svg {
+    transform: translateX(3px);
+  }
+}
+
+.ps-dialog-link:focus-visible {
+  outline: 2px solid var(--theme-accent-text);
+  outline-offset: 2px;
+}
+
+[data-theme="light"] .ps-dialog-link {
+  background: #FFFFFF;
+  border-color: var(--color-border-light);
+}
+
+[data-theme="light"] .ps-dialog-link:hover {
+  border-color: var(--color-primary-strong);
+  color: var(--color-primary-strong);
 }

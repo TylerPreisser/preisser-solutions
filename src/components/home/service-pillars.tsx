@@ -6,6 +6,15 @@ import {
   AutomationVisual,
   SystemFixesVisual,
   DashboardVisual,
+  // Readopted 2026-09-03 under ADR-0006. WebsiteVisual sat exported and
+  // unimported in that file since commit 7a8393b collapsed the grid 5 -> 3;
+  // its header said it was kept so it could be "imported into a rebuilt card
+  // grid structure without losing the animations". This is that rebuild.
+  WebsiteVisual,
+  // New for the same ADR. RevenueVisual is deliberately NOT imported --
+  // see the note in card-visuals-backup.tsx.
+  CustomBuildVisual,
+  SearchVisual,
 } from "@/components/home/card-visuals-backup";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { LOCAL_BIZ_ID } from "@/lib/seo/schema";
@@ -18,6 +27,23 @@ import { seoSite } from "@/lib/seo/site";
 interface ServiceTile {
   title: string;
   description: string;
+  /**
+   * Optional `/services/*` destination for this tile.
+   *
+   * Only the row-2 (websites/marketing) cards use it. It is rendered TWICE and
+   * deliberately so:
+   *   1. as a visible link list in the bottom sheet (BottomSheetDialog), which
+   *      is where a reader who opened the card is actually looking, and
+   *   2. as a real <a> in PillarCrawlerContent, which is server-rendered into
+   *      out/index.html. The sheet is a portal that only exists after a click,
+   *      so without (2) deleting websites-and-marketing.tsx would have removed
+   *      /services/website-redesign, /conversion-optimization and /paid-ads
+   *      from the homepage's static HTML entirely.
+   *
+   * Every value here must resolve to a real src/app/<path>/page.tsx and must
+   * not appear in public/_redirects -- ADR-0003 §4 still stands.
+   */
+  href?: string;
   icon?: React.ReactNode;
 }
 
@@ -315,6 +341,251 @@ const services: ServicePillar[] = [
       {
         lead: "Three weeks instead of three months.",
         body: "AI is why a build that used to take a quarter now takes weeks — with guardrails, safety protocols, and code review steps around it. That speed is what makes a custom system cost less than configuring someone else's platform.",
+      },
+    ],
+  },
+
+  /* ───────────────────────────────────────────────────────────
+     ROW 2 — added 2026-09-03 under ADR-0006, which lifted
+     ADR-0003 decision 3's bar on a fourth pillar and deleted the
+     standalone `websites-and-marketing.tsx` band in favour of
+     these cards.
+
+     Copy discipline: the tile descriptions marked "(band copy)"
+     are lifted verbatim from the deleted band, which was itself
+     compressed from the live /services/* pages and reviewed under
+     ADR-0003 §3. Everything else is written from each page's own
+     `subheadline` / `answerParagraph` in src/data/aeo/**. No
+     metric, client name, outcome or price appears on these three
+     cards — docs/WRITER-AGENT-PROMPT.md:31 gates quantified
+     claims to a specific canonical project and none of these
+     destinations has one. The pre-7a8393b card copy is NOT reused
+     (ADR-0006 decision 3).
+
+     Variant names here are accurate, unlike `websites`/`systems`/
+     `automation` above, which predate the reposition. Keep them
+     accurate.
+     ─────────────────────────────────────────────────────────── */
+  {
+    type: "redesign",
+    variant: "redesign",
+    title: "Website Redesign.",
+    description:
+      "The site you already have, rebuilt from scratch in modern code. We take over Wix, Squarespace, WordPress, GoDaddy, Webflow, and old custom builds, and carry the search equity across with the redirects mapped and the content migrated before anything goes live.",
+    href: "/contact",
+    visual: <WebsiteVisual />,
+    bullets: [
+      "Rebuilt in Next.js, React, and TypeScript",
+      "301 redirects mapped before launch, not after",
+      "Content, metadata, and schema migrated, not retyped",
+      "Off the template platform and onto code you own",
+    ],
+    painPoints: [
+      "Our site looks like it was built a decade ago, because it was.",
+      "It takes forever to load on a phone, which is where everyone actually opens it.",
+      "We want off Squarespace but we're afraid of losing the rankings we have.",
+      "The person who built it stopped answering, and now nobody can change a word.",
+      "We pay a platform every month for a site we can't actually control.",
+      "It looks fine on a laptop and falls apart on a phone.",
+    ],
+    serviceTiles: [
+      {
+        title: "Website Redesign",
+        description:
+          "Rebuild a slow or dated site without losing the SEO you already have. Existing site too slow, ugly, or broken to fix? It gets rebuilt from scratch in modern code rather than patched again.",
+        href: "/services/website-redesign",
+        icon: <IconUIUXRedesign />,
+      },
+      {
+        title: "Platform Migration",
+        description:
+          "Move off Wix, Squarespace, WordPress, GoDaddy, or Webflow to custom code. Template platforms are great when you're getting started and become a liability once the business depends on the site for revenue.",
+        href: "/services/website-migration",
+        icon: <IconSpreadsheetMigration />,
+      },
+      {
+        title: "SEO Equity Carried Across",
+        description:
+          "The unglamorous half of a rebuild: 301 redirects mapped from every old URL, content and metadata migrated, structured data reinstated, and the search engines told. This is what keeps a redesign from resetting you to zero.",
+        href: "/services/website-redesign",
+        icon: <IconSEOLocalSearch />,
+      },
+      {
+        title: "Mobile-First Rebuild",
+        description:
+          "Laid out for the phone first and the desktop second, because that is the order your visitors arrive in. Tap targets you can actually hit, and no horizontal scroll on a 390px screen.",
+        icon: <IconProfessionalWebsite />,
+      },
+      {
+        title: "You Own It Afterwards",
+        description:
+          "Your code, your domain, your analytics, your content. No proprietary editor, no platform that holds the pages hostage, and no monthly fee for permission to publish.",
+        icon: <IconCustomWebApp />,
+      },
+    ],
+    differentiators: [
+      {
+        lead: "A rebuild, not a reskin.",
+        body: "New template on the same slow foundation is why the last redesign didn't fix anything. This one replaces the foundation.",
+      },
+      {
+        lead: "The redirects are mapped before launch.",
+        body: "Every old URL gets a destination, the metadata comes with it, and the search engines get told. The typical migration disaster is a launch-day discovery, so it happens before launch day here.",
+      },
+      {
+        lead: "The person who scopes it is the person who builds it.",
+        body: "No handoff to a team you never met, and no subcontractor between you and the code.",
+      },
+    ],
+  },
+  {
+    type: "custom-sites",
+    variant: "custom-sites",
+    title: "Custom Websites.",
+    description:
+      "Built from scratch in Next.js, React, and TypeScript. No templates, no page builders, no offshore work, and no monthly platform that owns your pages. Structured so search engines and AI assistants can read it, and laid out so the traffic you already pay for has somewhere to go.",
+    href: "/contact",
+    visual: <CustomBuildVisual />,
+    bullets: [
+      "Custom-coded — no templates, no page builders",
+      "Conversion-focused layout, copy, and speed",
+      "Structured data built in, not bolted on",
+      "Search Console and conversion tracking wired up",
+    ],
+    painPoints: [
+      "Our website looks like everyone else's, because it is everyone else's template.",
+      "We get traffic and almost none of it turns into a phone call.",
+      "Nobody can tell me which pages actually produce enquiries.",
+      "Every change means opening a ticket with an agency and waiting a week.",
+      "The site was built by someone who never asked how the business makes money.",
+      "We're paying for ads that land on a page nobody designed for converting.",
+    ],
+    serviceTiles: [
+      {
+        title: "Custom Website Development",
+        description:
+          "Built from scratch in Next.js, React, and TypeScript. Pixel-perfect and fast, engineered for conversion and for visibility on Google and AI engines. No Wix, no Squarespace, no WordPress page builders.",
+        href: "/services/custom-websites",
+        icon: <IconProfessionalWebsite />,
+      },
+      {
+        title: "Conversion Optimization",
+        description:
+          "For traffic that arrives and then leaves without converting. Technical speed work, layout and copy testing, friction reduction, and trust-signal engineering on the pages that carry commercial intent.",
+        href: "/services/conversion-optimization",
+        icon: <IconMarketingROI />,
+      },
+      {
+        title: "Structured Data and Schema",
+        description:
+          "The machine-readable layer underneath the page — organization, service, FAQ, and location schema — so Google and the AI engines can state what you do without guessing at it.",
+        href: "/services/ai-search-optimization",
+        icon: <IconAISearch />,
+      },
+      {
+        title: "Custom Web Applications",
+        description:
+          "When the site needs to do something rather than say something: portals, calculators, booking, quoting, gated content. The same codebase, not a plugin bolted onto it.",
+        icon: <IconCustomWebApp />,
+      },
+      {
+        title: "E-Commerce and Online Sales",
+        description:
+          "Selling directly, with the checkout, catalogue, and fulfilment hooks built into the site instead of rented from a storefront platform.",
+        icon: <IconECommerce />,
+      },
+      {
+        title: "Tracking You Can Actually Read",
+        description:
+          "Search Console, conversion events, and reporting connected at build time, so the question “which page produced that call” has an answer from day one.",
+        icon: <IconMarketingDashboard />,
+      },
+    ],
+    differentiators: [
+      {
+        lead: "Custom-coded, start to finish.",
+        body: "No template bought and repainted, no page builder, no offshore work. That is why it loads fast and why it can do things a template cannot.",
+      },
+      {
+        lead: "Designed around how you get paid.",
+        body: "The layout follows the path from a stranger arriving to a customer calling. Pages that do not serve that path do not get built.",
+      },
+      {
+        lead: "Readable by machines on purpose.",
+        body: "Structured data, engineered answer blocks, and clean semantics go in during the build — the same approach these service pages use on themselves.",
+      },
+    ],
+  },
+  {
+    type: "search-ads",
+    variant: "search-ads",
+    title: "Search and Ads.",
+    description:
+      "Getting found on the three surfaces that matter now: the Google local pack, the AI assistants people ask instead of typing into Google, and paid placement for when you need volume sooner than SEO can deliver it. Audit first, then a plan, then the work.",
+    href: "/contact",
+    visual: <SearchVisual />,
+    bullets: [
+      "Google Business Profile and local pack",
+      "Cited by ChatGPT, Perplexity, Gemini, and Claude",
+      "Google, Meta, and LinkedIn campaigns",
+      "Reported on pipeline, not impressions",
+    ],
+    painPoints: [
+      "We don't show up on Google Maps for the thing we actually do.",
+      "Our competitors are in the local pack and we're on page two.",
+      "People are asking ChatGPT for a recommendation and it has never heard of us.",
+      "We've spent months on ads and I still can't tell you what a customer costs.",
+      "The last agency sent a dashboard of impressions and clicks and no answers.",
+      "Our reviews trickle in and nobody has ever asked a customer for one.",
+    ],
+    serviceTiles: [
+      {
+        title: "Local SEO",
+        description:
+          "Win the Google local pack on searches that drive local revenue. Google Business Profile optimization, local landing pages, citation consistency, review velocity, and structured data across the Kansas markets you serve.",
+        href: "/services/local-seo",
+        icon: <IconSEOLocalSearch />,
+      },
+      {
+        title: "AI Search Optimization",
+        description:
+          "Show up when buyers ask an AI engine for a recommendation. AEO — Answer Engine Optimization — is the structured data, named-entity citations, and engineered answer blocks that let ChatGPT, Perplexity, Gemini, and Claude cite you.",
+        href: "/services/ai-search-optimization",
+        icon: <IconSEOAIOptimization />,
+      },
+      {
+        title: "Paid Ads",
+        description:
+          "Google, Meta, and LinkedIn, reported on pipeline instead of impressions. Audit-first: every engagement starts with an account audit and an honest answer about whether paid is the right channel at all.",
+        href: "/services/paid-ads",
+        icon: <IconAdvertisingManagement />,
+      },
+      {
+        title: "Google Business Profile and Reviews",
+        description:
+          "The profile filled out properly, the categories chosen deliberately, and a system that asks satisfied customers for a review instead of hoping they think of it.",
+        href: "/services/local-seo",
+        icon: <IconGoogleBusiness />,
+      },
+      {
+        title: "Digital Presence Audit",
+        description:
+          "What you rank for, what you don't, what the AI engines currently say about you, and where the money is leaking. Delivered as a findings document you keep, whether or not you hire us for the work.",
+        icon: <IconDigitalPresence />,
+      },
+    ],
+    differentiators: [
+      {
+        lead: "Audit before proposal, every time.",
+        body: "The first deliverable is an honest read on whether this channel is worth your money. Sometimes the answer is no, and that is still the answer you get.",
+      },
+      {
+        lead: "One operator, not a junior media buyer.",
+        body: "The person running the account is the person you talk to. No percent-of-spend model, no bloated retainer, no learning on your budget.",
+      },
+      {
+        lead: "Search and AI search are one job now.",
+        body: "The structured data that helps the local pack is the same structured data an AI engine reads before it recommends anyone. Doing them separately pays twice for one result.",
       },
     ],
   },
@@ -1217,6 +1488,49 @@ function ServiceCarousel({ tiles }: ServiceCarouselProps) {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   TILE LINK EXTRACTION
+
+   THE BUTTON-vs-LINK PROBLEM, AND HOW IT IS SOLVED.
+
+   Every card in .ps-bento-grid is a <button> that opens a bottom
+   sheet. The websites/marketing content this grid absorbed under
+   ADR-0006 was six <Link>s that navigate. Those are two different
+   affordances and they cannot both live on the card face:
+
+   - An <a> inside the <button> is invalid HTML and a nested
+     interactive control. Not an option.
+   - Making the three new cards <a>s instead would give one grid
+     two meanings behind one identical expand icon: three cards
+     that open in place, three that leave the page, with nothing
+     visually distinguishing them. That is the worse failure -- a
+     card whose affordance lies about what it does.
+
+   So: EVERY card stays a <button> and EVERY card expands. The
+   navigation lives one level in, in the sheet, as a real link row
+   under the carousel -- which is where a reader who opened a card
+   is actually looking, and where the old band's descriptions now
+   live as tile copy.
+
+   The cost, stated plainly: the six /services/* URLs move out of
+   the initial paint. PillarCrawlerContent pays that back by
+   emitting them as real <a>s in the server-rendered HTML, and the
+   report recommends the lead add the three that only the deleted
+   band carried (website-redesign, conversion-optimization,
+   paid-ads) to `serviceLinks` in page.tsx, which this agent does
+   not own.
+   ───────────────────────────────────────────────────────────── */
+
+/** Tiles that carry an href, first occurrence of each URL only. */
+function tileLinks(pillar: ServicePillar): ServiceTile[] {
+  const seen = new Set<string>();
+  return pillar.serviceTiles.filter((tile) => {
+    if (!tile.href || seen.has(tile.href)) return false;
+    seen.add(tile.href);
+    return true;
+  });
+}
+
+/* ─────────────────────────────────────────────────────────────
    BENTO CARD
    Exact Stripe nesting: expand icon (top-right), title (bottom-left),
    gradient border, clip-path breathe inner, visual content.
@@ -1445,6 +1759,40 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
             <ServiceCarousel tiles={service.serviceTiles} />
           </div>
 
+          {/* Service-page links — only the row-2 cards have any.
+              Real <a>s, not router pushes: the sheet is a portal on
+              document.body and a client-side navigation out of it
+              would unmount its own scroll lock mid-flight. */}
+          {tileLinks(service).length > 0 && (
+            <div className="ps-dialog-links ps-dialog-reveal">
+              <h4 className="ps-dialog-links-label">Read more</h4>
+              <ul className="ps-dialog-links-list">
+                {tileLinks(service).map((tile) => (
+                  <li key={tile.href}>
+                    <a href={tile.href} className="ps-dialog-link">
+                      <span>{tile.title}</span>
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M6 3l5 5-5 5"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {/* CTA */}
           <div className="ps-dialog-cta ps-dialog-reveal">
             <a href="/contact" className="ps-dialog-cta-btn">
@@ -1533,7 +1881,20 @@ function PillarCrawlerContent() {
           <ul>
             {pillar.serviceTiles.map((tile, i) => (
               <li key={`t-${i}`}>
-                <strong>{tile.title}</strong>
+                {/* A tile with an href emits a real anchor. This block is
+                    server-rendered into out/index.html, so these are the
+                    homepage's only static links to the /services/* pages the
+                    deleted websites-and-marketing band used to carry. Plain
+                    <a>, not next/link: prefetching links inside a
+                    visually-hidden block would re-create the 4.1s -> 0.8s
+                    mobile navigation regression noted at hero.tsx:162-163. */}
+                {tile.href ? (
+                  <a href={tile.href}>
+                    <strong>{tile.title}</strong>
+                  </a>
+                ) : (
+                  <strong>{tile.title}</strong>
+                )}
                 {" — "}
                 {tile.description}
               </li>
@@ -1570,8 +1931,17 @@ function PillarCrawlerContent() {
 export function ServicePillars() {
   const gridRef = useRef<HTMLDivElement>(null);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-  // Three pillars, rendered in plan order:
-  // Business Software → Business Automation → AI Integration.
+  // Six cards, rendered in source order.
+  //   Row 1 — Business Software → Business Automation → AI Integration
+  //   Row 2 — Website Redesign → Custom Websites → Search and Ads
+  // Row 2 was folded in from the deleted websites-and-marketing.tsx band
+  // under ADR-0006, which lifted ADR-0003's bar on a fourth pillar. The
+  // hero <h1>, siteConfig.hero.h1 and the JSON-LD slogan are untouched:
+  // ADR-0006 decision 4 moves cards, not the positioning sentence.
+  //
+  // The mobile `order` rules in globals.css must stay in step with this
+  // array — six cards, orders 1..6. A new card with no order rule gets
+  // order:0 and jumps to the top of the mobile stack.
   const displayedServices = services;
 
   const handleExpand = useCallback((index: number) => {

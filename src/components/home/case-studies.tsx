@@ -58,7 +58,12 @@ const caseStudyCards: CaseStudyCard[] = [
     // mark is gold #C9A227. Card runs light so the gold reads as the gold.
     gradient: "linear-gradient(150deg, #FDFCF7 0%, #F2F2F7 55%, #E8E4D6 100%)",
     lightCard: true,
-    href: "/case-studies/farmbooks",
+    // No `href` on purpose. The card used to carry a "Read the case study"
+    // link to /case-studies/farmbooks alongside the live link; the owner asked
+    // for the case-study link off this card (2026-09-03) — with the real
+    // product one tap away, a write-up about it is the weaker destination.
+    // The /case-studies/farmbooks ROUTE still exists and stays in the sitemap;
+    // only the card's link to it is gone. Do not "restore" this href.
     // Verified 2026-09-03: https://farm-books.com -> 200. See DECISIONS/0002.
     liveUrl: "https://farm-books.com",
     // Real FarmBooks mark — the actual PWA icon shipped at farm-books.com

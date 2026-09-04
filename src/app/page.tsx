@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
+import { Capabilities } from "@/components/home/capabilities";
 import { Hero } from "@/components/home/hero";
-import { ProofBar } from "@/components/home/proof-bar";
-import { ValueStrip } from "@/components/home/value-strip";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { LOCATION_REGIONS, LOCATIONS_BY_SLUG } from "@/data/locations";
 import { siteConfig } from "@/data/site-config";
 
 // Below-fold client components — code-split so their JS is deferred until
@@ -23,15 +19,6 @@ const ServicePillars = dynamic(
 const MarCommandLive = dynamic(
   () =>
     import("@/components/home/marcommand-live").then((m) => m.MarCommandLive),
-  { ssr: true }
-);
-// Websites + marketing secondary band (ADR-0003). Sits directly under the three
-// pillars as a quieter tier and carries the homepage's first /services/* links.
-const WebsitesAndMarketing = dynamic(
-  () =>
-    import("@/components/home/websites-and-marketing").then(
-      (m) => m.WebsitesAndMarketing
-    ),
   { ssr: true }
 );
 const WhyUs = dynamic(
@@ -103,58 +90,6 @@ const primaryNavSchema = {
   ],
 };
 
-// Ordered to lead with the three pillars (business software, business
-// automation, AI integration). Every href here is an existing route — do not
-// rename or remove one; validate-seo.mjs hardcodes the required route list.
-const serviceLinks = [
-  { href: "/web-applications", label: "Business software", description: "Admin dashboards, customer and member databases, client portals, internal tools." },
-  { href: "/business-automation", label: "Business automation", description: "Registration to confirmation. Bill to categorized ledger. Form to CRM to follow-up." },
-  { href: "/services/ai-automation", label: "AI integration", description: "AI that reads documents, classifies, and drafts — with a human gate on anything that matters." },
-  { href: "/services/custom-websites", label: "Custom websites", description: "Custom-coded sites built in Next.js, React, and TypeScript." },
-  { href: "/services/local-seo", label: "Local SEO", description: "Google Business Profile, local pack, citations, reviews, schema." },
-  { href: "/services/ai-search-optimization", label: "AI search optimization", description: "Be cited by ChatGPT, Perplexity, Gemini, and Claude." },
-];
-
-function cleanLocationTitle(title: string) {
-  return title.replace(/\s*\|\s*Preisser Solutions$/, "");
-}
-
-const serviceAreaGroups = LOCATION_REGIONS.map((region) => ({
-  name: region.name,
-  blurb: region.blurb,
-  links: region.slugs
-    .map((slug) => LOCATIONS_BY_SLUG[slug])
-    .filter(Boolean)
-    .map((location) => ({
-      href: `/locations/${location.slug}`,
-      label: cleanLocationTitle(location.metaTitle),
-      description: location.hero.subheadline,
-    })),
-}));
-
-function HomeLinkDropdown({
-  title,
-  summary,
-  children,
-}: {
-  title: string;
-  summary: string;
-  children: ReactNode;
-}) {
-  return (
-    <details className="ps-home-link-details">
-      <summary className="ps-home-link-details__summary">
-        <span>
-          <span className="ps-home-link-details__title">{title}</span>
-          <span className="ps-home-link-details__desc">{summary}</span>
-        </span>
-        <span className="ps-home-link-details__icon" aria-hidden="true" />
-      </summary>
-      <div className="ps-home-link-details__content">{children}</div>
-    </details>
-  );
-}
-
 export default function HomePage() {
   return (
     <>
@@ -169,114 +104,44 @@ export default function HomePage() {
       <p className="ps-visually-hidden">
         Preisser Solutions is a Hays, Kansas-based custom software company: business software, business automation, and AI integration. We build the internal systems a business runs on — admin dashboards, customer and member databases, client portals, document pipelines, and the automations that connect them — purpose-built for how each business actually works, for small and mid-sized businesses in Kansas and beyond.
       </p>
-      <ProofBar />
-      <ValueStrip />
+      {/* Replaces <ProofBar> and <ValueStrip> — two infinite marquees the owner
+          called tacky on 2026-09-03. Same slot, same content, no motion, and
+          it now renders below 640px, where both marquees were display:none.
+          Statically imported rather than next/dynamic: it is a server
+          component with no client bundle to defer. */}
+      <Capabilities />
       <ServicePillars />
       <MarCommandLive />
       <WhyUs />
       <CaseStudies />
-      {/* Websites + marketing band (ADR-0003). Sits AFTER the work rather than
-          under the pillars: its own eyebrow reads "Also from Preisser
-          Solutions", which only makes sense once the reader has seen what the
-          main offering produced. Keeping it here also keeps it visually
-          subordinate to the three pillars, which is what ADR-0003 requires. */}
-      <WebsitesAndMarketing />
-      {/* Crawlable service + location link cluster — static HTML for crawlers + AI engines. */}
-      <section
-        aria-label="Services and locations"
-        className="ps-home-link-cluster"
-      >
-        <div className="ps-home-link-cluster__inner">
-          <div className="ps-home-link-cluster__header">
-            <span className="ps-eyebrow ps-eyebrow--light">Explore</span>
-            <h2 className="ps-section-heading ps-section-heading--light">
-              Everything we do, one tap away
-            </h2>
-            <p className="ps-home-link-cluster__intro">
-              Every service we offer and every market we build for. Open a panel
-              to jump straight to what you need.
-            </p>
-          </div>
-          <HomeLinkDropdown
-            title="Services"
-            summary="Business software, business automation, AI integration, websites, and search visibility."
-          >
-            <div className="ps-explore-services">
-              {serviceLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  prefetch={false}
-                  className="ps-explore-service"
-                >
-                  <span className="ps-explore-service__text">
-                    <span className="ps-explore-service__label">{link.label}</span>
-                    <span className="ps-explore-service__desc">{link.description}</span>
-                  </span>
-                  <svg
-                    className="ps-explore-service__arrow"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M6 3l5 5-5 5"
-                      stroke="currentColor"
-                      strokeWidth="1.6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Link>
-              ))}
-            </div>
-          </HomeLinkDropdown>
+      {/* The websites + marketing band stood here until 2026-09-04. It is gone
+          per ADR-0006: its six destinations now live as bento cards in the
+          pillar grid, which is where the owner asked for them ("the websites
+          and marketing section should be a bento card up there beuatiful like
+          th eothers"). Do not reinstate a band — ADR-0006 decision 1 removed
+          the standalone section deliberately, not by oversight. */}
+      {/* The "Everything we do, one tap away" <details> link cluster used to
+          live here. Removed 2026-09-03 on the owner's call: "the everythign we
+          do one tap away is i also wish that wasnt there tbh unless it is
+          winning for us on seo type stuff It destroys the vibe."
 
-          <HomeLinkDropdown
-            title="Service area"
-            summary="Kansas is home base — we build for businesses anywhere."
-          >
-            <p className="ps-explore-area-lead">
-              We&apos;re based in Hays and work across every Kansas market, and we
-              take on remote clients wherever the fit is right. Distance has never
-              been the thing that decides a project. Here&apos;s where we already
-              build.
-            </p>
-            <div className="ps-explore-regions">
-              {serviceAreaGroups.map((region) => {
-                const regionId = `service-area-${region.name
-                  .toLowerCase()
-                  .replace(/[^a-z0-9]+/g, "-")}`;
-                return (
-                  <section
-                    key={region.name}
-                    className="ps-explore-region"
-                    aria-labelledby={regionId}
-                  >
-                    <h3 id={regionId} className="ps-explore-region__name">
-                      {region.name}
-                    </h3>
-                    <div className="ps-explore-chips">
-                      {region.links.map((link) => (
-                        <Link
-                          key={link.href}
-                          href={link.href}
-                          prefetch={false}
-                          className="ps-explore-chip"
-                        >
-                          {link.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </section>
-                );
-              })}
-            </div>
-          </HomeLinkDropdown>
-        </div>
-      </section>
+          It was not winning. Measured on the built page before removal, it
+          emitted 83 distinct links — 77 of them to /locations/* — out of 119
+          internal links on the whole homepage. Nothing is orphaned by the
+          deletion: /locations is a real hub page (out/locations.html, in the
+          232-URL sitemap) that links all 77 location pages, so the silo moves
+          from depth-1 to depth-2 via the new footer link rather than being
+          cut off. The three destinations the cluster uniquely linked
+          (/web-applications, /business-automation, /services/ai-automation —
+          each had exactly ONE homepage link, and it was this one) moved into
+          <Capabilities>. The other three service links it carried are now
+          carried by the websites/marketing bento cards in <ServicePillars>
+          (ADR-0006).
+
+          Deliberately NOT claimed here: any effect on AI-engine citation from
+          collapsed vs. visible markup. The research found no credible evidence
+          in either direction. The honest falsifier is Search Console
+          impressions for /locations/* over the next 4-8 weeks. */}
       <CtaSection />
     </>
   );

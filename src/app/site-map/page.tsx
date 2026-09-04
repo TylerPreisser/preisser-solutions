@@ -17,6 +17,7 @@ import path from "node:path";
 import Link from "next/link";
 import type { Metadata } from "next";
 import type { AeoPageData } from "@/data/aeo/types";
+import { ALL_LOCATIONS } from "@/data/locations";
 
 const PAGE_URL = "https://preissersolutions.com/site-map";
 
@@ -122,7 +123,27 @@ const caseStudies = readAeoDir("case-studies", "/case-studies");
 const compare = readAeoDir("compare", "/compare");
 const blog = readAeoDir("blog", "/blog");
 const insights = readAeoDir("insights", "/insights");
-const locations = readAeoDir("locations", "/locations");
+// Locations do NOT come from src/data/aeo — they live in src/data/locations,
+// so `readAeoDir("locations", ...)` hit a directory that does not exist,
+// silently returned [], and this page shipped a "Locations" heading with zero
+// links under it while 77 location pages were live and in sitemap.xml. That
+// gap predates the 2026-09-03 homepage change; it is fixed here because the
+// homepage link cluster that used to carry those 77 links has been deleted and
+// this is now the site's HTML index for them.
+//
+// Same dead-link discipline as readAeoDir: a data entry is not a page, so the
+// route file is checked before the link is emitted.
+const locations: SiteMapLink[] = ALL_LOCATIONS.map((location) => ({
+  href: `/locations/${location.slug}`,
+  // Same trim the deleted homepage cluster used on these labels.
+  label: location.metaTitle.replace(/\s*\|\s*Preisser Solutions$/, "").trim(),
+}))
+  .filter((link) =>
+    fs.existsSync(
+      path.join(process.cwd(), "src/app", link.href, "page.tsx"),
+    ),
+  )
+  .sort((a, b) => a.label.localeCompare(b.label));
 
 // Curated "Other" set — top-level pages outside the AEO category folders.
 const other: SiteMapLink[] = [
@@ -164,7 +185,7 @@ const sections: Array<{ id: string; heading: string; hub?: SiteMapLink; links: S
   { id: "compare", heading: "Comparisons", links: compare },
   { id: "blog", heading: "Blog", hub: { href: "/blog", label: "All blog posts" }, links: blog },
   { id: "insights", heading: "Insights", links: insights },
-  { id: "locations", heading: "Locations", links: locations },
+  { id: "locations", heading: "Locations", hub: { href: "/locations", label: "All locations" }, links: locations },
   { id: "other", heading: "Other", links: other },
 ];
 
