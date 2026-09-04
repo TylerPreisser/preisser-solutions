@@ -4,25 +4,25 @@ export const product: ProductData = {
   slug: "custom-agent-development",
   metaTitle: "Custom Agent Development",
   metaDescription:
-    "Have a problem we haven't packaged? We design, build, and ship custom agents from scratch — same engineering bar as the catalog, scoped to your business.",
+    "Have a problem we haven't packaged? We design, build, and ship custom agents from scratch: same engineering bar as the catalog, scoped to your business.",
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
 
   name: "Custom Agent Development",
   tagline:
-    "Have a unique problem we haven't packaged? We design, build, and ship custom agents from scratch — same engineering bar as the catalog, scoped to your business.",
+    "Have a unique problem we haven't packaged? We design, build, and ship custom agents from scratch: same engineering bar as the catalog, scoped to your business.",
   category: "Custom Builds",
   status: "service",
   industries: ["All industries", "Any business with a process that can be automated"],
 
-  h1: "Your process, your problem, your agent — built from scratch.",
+  h1: "Your process, your problem, your agent: built from scratch.",
   subheadline:
-    "When none of the catalog products fit your specific problem, Preisser Solutions designs, builds, and deploys a custom agent engineered for your business — same technical bar as every other product in this catalog.",
+    "When none of the catalog products fit your specific problem, Preisser Solutions designs, builds, and deploys a custom agent engineered for your business: same technical bar as every other product in this catalog.",
   oneLine:
-    "Custom agent design and build from scratch — scoped to your specific problem and engineered to the same bar as every catalog product.",
+    "Custom agent design and build from scratch: scoped to your specific problem and engineered to the same bar as every catalog product.",
 
   whatItDoes: [
-    "Every product in the Preisser Solutions catalog was built for a real problem at a specific business. But not every business's most painful automation problem fits a packaged solution. Custom Agent Development is the engagement where we scope, design, and build from scratch — starting from your problem definition, not from a template.",
+    "Every product in the Preisser Solutions catalog was built for a real problem at a specific business. But not every business's most painful automation problem fits a packaged solution. Custom Agent Development is the engagement where we scope, design, and build from scratch, starting from your problem definition, not from a template.",
     "The process begins with scoping: understanding the problem, the data available, the downstream systems, and what done looks like. Research follows: what patterns exist that are applicable, what the technical architecture should look like, and where the risks are. A prototype validates the core approach before full build investment. Deployment covers integration, testing, and production go-live. Maintenance defines what ongoing support and iteration looks like after the build.",
     "Custom engagements are delivered on the same engineering standard as the catalog products: TypeScript, Claude API, structured orchestration, CLAUDE.md configuration, build-verified before handoff. The range includes single-purpose agents (one task, one system), multi-agent orchestration (parallel agents coordinated by an orchestrator), and embedded AI workflows (AI capability injected into an existing business process or system).",
   ],
@@ -35,12 +35,12 @@ export const product: ProductData = {
     {
       title: "Architecture research and design",
       description:
-        "Technical architecture designed for the specific problem — single-agent, multi-agent orchestration, or embedded AI workflow — with a clear implementation path.",
+        "Technical architecture designed for the specific problem (single-agent, multi-agent orchestration, or embedded AI workflow): with a clear implementation path.",
     },
     {
       title: "Prototype validation",
       description:
-        "Core approach validated in a working prototype before full build investment — surfaces architecture risks and confirms the pattern will work on real data.",
+        "Core approach validated in a working prototype before full build investment, surfaces architecture risks and confirms the pattern will work on real data.",
     },
     {
       title: "Production build and deployment",
@@ -80,12 +80,12 @@ export const product: ProductData = {
     {
       step: "Research and architecture",
       description:
-        "Technical architecture is designed for the specific problem — applicable patterns identified, risks surfaced, implementation path documented.",
+        "Technical architecture is designed for the specific problem: applicable patterns identified, risks surfaced, implementation path documented.",
     },
     {
       step: "Prototype",
       description:
-        "A working prototype validates the core approach against real data before full build investment — confirms the pattern works, surfaces integration issues early.",
+        "A working prototype validates the core approach against real data before full build investment: confirms the pattern works, surfaces integration issues early.",
     },
     {
       step: "Deploy",
@@ -95,7 +95,7 @@ export const product: ProductData = {
     {
       step: "Maintain",
       description:
-        "Post-launch support covers bugs, performance, and iteration as the business's needs evolve — the system stays current with your operation.",
+        "Post-launch support covers bugs, performance, and iteration as the business's needs evolve: the system stays current with your operation.",
     },
   ],
   useCases: [
@@ -121,7 +121,7 @@ export const product: ProductData = {
   cta: {
     heading: "Have a problem that doesn't fit the catalog?",
     subcopy:
-      "Preisser Solutions scopes and builds custom agents from scratch. The first conversation is about your problem — what it costs you today and what solved looks like.",
+      "Preisser Solutions scopes and builds custom agents from scratch. The first conversation is about your problem, what it costs you today and what solved looks like.",
     buttonLabel: "Start a custom engagement",
     buttonHref: "/contact?inquiry=custom-product",
   },

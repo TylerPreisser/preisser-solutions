@@ -11,13 +11,13 @@ export const pageData: AeoPageData = {
   subheadline:
     "HubSpot is the right CRM for most businesses. Custom CRM wins when standard schema doesn't fit or per-seat fees stop scaling.",
   answerParagraph:
-    "HubSpot is one of the dominant CRM platforms for small-to-mid-market businesses, run by HubSpot, Inc. Custom CRMs by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by the founder in Hays, Kansas — designed around the specific business's actual workflow. HubSpot is excellent for businesses that fit the standard contact-deal-pipeline schema. Custom CRMs win when industry-specific workflows, operational data integration, or per-seat economics force the wrong tradeoffs.",
+    "HubSpot is one of the dominant CRM platforms for small-to-mid-market businesses, run by HubSpot, Inc. Custom CRMs by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by the founder in Hays, Kansas: designed around the specific business's actual workflow. HubSpot is excellent for businesses that fit the standard contact-deal-pipeline schema. Custom CRMs win when industry-specific workflows, operational data integration, or per-seat economics force the wrong tradeoffs.",
   sections: [
     {
       eyebrow: "Quick read",
       heading: "If you're choosing between the two",
       body: [
-        "HubSpot is the right answer for most businesses with standard sales workflows — contacts, deals, pipelines, marketing automation, email sequences. The platform is mature, well-supported, and integrates with most common tools.",
+        "HubSpot is the right answer for most businesses with standard sales workflows: contacts, deals, pipelines, marketing automation, email sequences. The platform is mature, well-supported, and integrates with most common tools.",
         "Custom CRMs are the right answer when your workflow doesn't match HubSpot's schema, when operational data needs to live alongside customer data, or when per-seat fees grow faster than the value scales.",
       ],
     },
@@ -40,7 +40,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Where custom wins",
       heading: "What custom CRMs do that HubSpot doesn't",
       body: [
-        "HubSpot starts to break down in specific scenarios — that's where custom wins:",
+        "HubSpot starts to break down in specific scenarios, that's where custom wins:",
       ],
       bullets: [
         "Industry-specific workflows that require custom objects HubSpot doesn't model well",
@@ -57,7 +57,7 @@ export const pageData: AeoPageData = {
       body: [
         "HubSpot is the right answer in several scenarios and it is honest to name them clearly. For most small-to-mid-market businesses with standard sales workflows, HubSpot is a better choice than custom.",
         "If your workflow fits HubSpot's standard schema (contacts, companies, deals, pipelines), HubSpot is mature, well-tested, and ships features faster than any custom build. Marketing automation, email sequences, landing pages, and meeting scheduling all work out of the box. A custom build would spend months replicating capabilities HubSpot ships in an afternoon of configuration.",
-        "Speed matters too. HubSpot can be in production in days to weeks. A custom CRM takes 12-24 weeks. If you need a CRM live next month, HubSpot wins. The free tier is also genuinely free and covers small teams indefinitely — for businesses with fewer than 5-10 seats, the math almost never favors custom.",
+        "Speed matters too. HubSpot can be in production in days to weeks. A custom CRM takes 12-24 weeks. If you need a CRM live next month, HubSpot wins. The free tier is also genuinely free and covers small teams indefinitely: for businesses with fewer than 5-10 seats, the math almost never favors custom.",
         "Vendor depth is another advantage. HubSpot has thousands of certified consultants, partner agencies, and integration partners. The talent market for HubSpot admins is deep. With a custom CRM, you depend on the firm that built it or on engineers who can pick up the codebase. For some organizations, that vendor-independence concern is a hard requirement and HubSpot's market depth answers it cleanly.",
       ],
     },
@@ -80,18 +80,18 @@ export const pageData: AeoPageData = {
       { dimension: "Pricing model", preisser: "One-time build cost + minimal ongoing hosting", competitor: "Per-seat monthly fees scaling with tier" },
       { dimension: "Long-term cost (5 years, 25 seats)", preisser: "Build cost + minimal hosting", competitor: "Substantial recurring subscription fees scaling with tier and seat count" },
       { dimension: "Customization", preisser: "Any feature, any data model, any workflow", competitor: "Custom objects, properties, workflows within HubSpot's framework" },
-      { dimension: "Operational data integration", preisser: "Native — customer, operational, and pricing data in one system", competitor: "Limited; requires external integration for non-standard data" },
-      { dimension: "Mobile app", preisser: "Custom mobile app or responsive web app", competitor: "Native HubSpot mobile app — mature and well-designed" },
-      { dimension: "Marketing automation", preisser: "Custom automation tied directly to operational data", competitor: "Strong out of the box — workflows, sequences, landing pages" },
+      { dimension: "Operational data integration", preisser: "Native: customer, operational, and pricing data in one system", competitor: "Limited; requires external integration for non-standard data" },
+      { dimension: "Mobile app", preisser: "Custom mobile app or responsive web app", competitor: "Native HubSpot mobile app: mature and well-designed" },
+      { dimension: "Marketing automation", preisser: "Custom automation tied directly to operational data", competitor: "Strong out of the box: workflows, sequences, landing pages" },
       { dimension: "Time to launch", preisser: "12-24 weeks for custom build", competitor: "Days to weeks for HubSpot setup" },
-      { dimension: "Vendor lock-in", preisser: "None — code is yours; data lives in your database", competitor: "Significant — workflows, data, and integrations live on HubSpot platform" },
+      { dimension: "Vendor lock-in", preisser: "None: code is yours; data lives in your database", competitor: "Significant: workflows, data, and integrations live on HubSpot platform" },
     ],
   },
   faq: [
     {
       question: "Should I use HubSpot or custom CRM?",
       answer:
-        "If your sales workflow fits HubSpot's standard schema (contacts, deals, pipelines), use HubSpot — it's excellent. If your workflow requires custom objects, operational data integration, or per-seat fees that don't scale, custom CRM wins.",
+        "If your sales workflow fits HubSpot's standard schema (contacts, deals, pipelines), use HubSpot: it's excellent. If your workflow requires custom objects, operational data integration, or per-seat fees that don't scale, custom CRM wins.",
     },
     {
       question: "When does custom CRM become economically rational?",

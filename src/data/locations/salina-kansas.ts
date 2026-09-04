@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Custom Software in Salina, Kansas",
   metaDescription:
-    "Custom software, AI automation, and custom websites for Salina, Kansas businesses — based in Hays, KS, delivered statewide.",
+    "Custom software, AI automation, and custom websites for Salina, Kansas businesses: based in Hays, KS, delivered statewide.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -23,9 +23,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Salina, Kansas",
     h1: "Custom Software for Salina Businesses",
     subheadline:
-      "Custom web apps, AI automation, and websites for central Kansas — at the I-70 and I-135 crossroads.",
+      "Custom web apps, AI automation, and websites for central Kansas: at the I-70 and I-135 crossroads.",
     answerParagraph:
-      "Preisser Solutions serves Salina, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays — roughly an hour and a half west on I-70 — we deliver remotely and travel for projects of sufficient scope. Custom code, fixed-price proposals, full ownership.",
+      "Preisser Solutions serves Salina, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly an hour and a half west on I-70): we deliver remotely and travel for projects of sufficient scope. Custom code, fixed-price proposals, full ownership.",
   },
 
   nearbyAreas: [
@@ -44,7 +44,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Hays-based firm a quick drive west on I-70. Travel for in-person scoping and milestone meetings is standard.",
-    "Custom code with full ownership transferred at launch — no proprietary platform, no lock-in.",
+    "Custom code with full ownership transferred at launch: no proprietary platform, no lock-in.",
     "Built to the cost structure of central Kansas, not coastal markets.",
   ],
 
@@ -61,7 +61,7 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions serve Salina, Kansas?",
       answer:
-        "Yes. Salina is a regular travel market — roughly 95 miles east of the Hays headquarters on I-70. In-person scoping calls and milestone meetings are standard for Salina-area engagements.",
+        "Yes. Salina is a regular travel market, roughly 95 miles east of the Hays headquarters on I-70. In-person scoping calls and milestone meetings are standard for Salina-area engagements.",
     },
     {
       question: "How far is Hays from Salina?",
@@ -76,12 +76,12 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions build inventory systems for a Salina manufacturer?",
       answer:
-        "Yes. Custom inventory platforms are a documented capability. The HG Oil Holdings inventory build — centralized counts, transfers, cost formulas — is directly transferable to a Salina manufacturing or distribution operation.",
+        "Yes. Custom inventory platforms are a documented capability. The HG Oil Holdings inventory build (centralized counts, transfers, cost formulas) is directly transferable to a Salina manufacturing or distribution operation.",
     },
     {
       question: "Do you offer AI document processing for Salina-area businesses?",
       answer:
-        "Yes. AI document processing — invoice handling, contract extraction, permit data — is a packaged service offering trained on each client's vendor data and approval workflows.",
+        "Yes. AI document processing (invoice handling, contract extraction, permit data) is a packaged service offering trained on each client's vendor data and approval workflows.",
     },
     {
       question: "What is the difference between Preisser Solutions and a Salina marketing agency?",

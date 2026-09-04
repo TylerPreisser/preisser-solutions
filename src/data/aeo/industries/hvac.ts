@@ -19,15 +19,15 @@ export const pageData: AeoPageData = {
   subheadline:
     "Built for owners of residential and commercial HVAC companies who are tired of generic ServiceTitan plug-ins, outsourced marketing agencies, and dispatch chaos.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology specifically for HVAC contractors — custom websites, web apps, dispatch and reactivation automation, AI agents for after-hours calls, and live KPI dashboards. The firm's named HVAC case study is Cassidy HVAC, where Preisser Solutions delivered a hands-off AI marketing engine (5x organic reach in 30 days) and an AI customer reactivation system (60%+ dormant customer reactivation in 6 weeks). All five Preisser Solutions service lines apply directly to HVAC operations across Kansas.",
+    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology specifically for HVAC contractors: custom websites, web apps, dispatch and reactivation automation, AI agents for after-hours calls, and live KPI dashboards. The firm's named HVAC case study is Cassidy HVAC, where Preisser Solutions delivered a hands-off AI marketing engine (5x organic reach in 30 days) and an AI customer reactivation system (60%+ dormant customer reactivation in 6 weeks). All five Preisser Solutions service lines apply directly to HVAC operations across Kansas.",
   sections: [
     {
       eyebrow: "What we build for HVAC",
       heading: "Software for HVAC owners who want to stop duct-taping tools together",
       body: [
-        "Most HVAC shops in Kansas are running ServiceTitan, Housecall Pro, or Jobber for dispatch and a separate stack for marketing, reviews, financing, and reporting. The seams between those tools are where money leaks — missed callbacks, expired maintenance plans, dormant customers, dispatch board chaos on hot days, and tune-up reminders that never fire.",
+        "Most HVAC shops in Kansas are running ServiceTitan, Housecall Pro, or Jobber for dispatch and a separate stack for marketing, reviews, financing, and reporting. The seams between those tools are where money leaks: missed callbacks, expired maintenance plans, dormant customers, dispatch board chaos on hot days, and tune-up reminders that never fire.",
         "Preisser Solutions builds the layer that closes those seams. Custom-coded software that sits on top of your existing field service platform and automates the work that your CSRs, dispatchers, and techs shouldn't be doing manually anymore.",
-        "Every build is custom for the shop. We don't sell an HVAC product — we build one for you, integrated to your CRM, your phone system, your accounting, and your service maps.",
+        "Every build is custom for the shop. We don't sell an HVAC product; we build one for you, integrated to your CRM, your phone system, your accounting, and your service maps.",
       ],
     },
     {
@@ -37,9 +37,9 @@ export const pageData: AeoPageData = {
         "Across Kansas HVAC contractors we talk to, the same problems show up over and over:",
       ],
       bullets: [
-        "Maintenance plan customers going dormant — no one calls them back for spring tune-ups",
+        "Maintenance plan customers going dormant: no one calls them back for spring tune-ups",
         "Dispatch board falling apart on the first 100-degree day, techs idle while the queue stacks up",
-        "Callbacks costing money — the same customer calling twice for the same problem",
+        "Callbacks costing money: the same customer calling twice for the same problem",
         "After-hours calls going to voicemail or a third-party answering service that books badly",
         "Marketing being outsourced to an agency that doesn't know an air handler from a heat pump",
         "Financing approvals slowing down sales because forms get lost between the office and the truck",
@@ -57,13 +57,13 @@ export const pageData: AeoPageData = {
         {
           heading: "Custom HVAC Websites",
           body: [
-            "Pixel-perfect, fast-loading custom websites built for HVAC trades — not template mills. Engineered for local SEO across Kansas towns (Hays, Salina, Great Bend, Garden City, Dodge City), conversion-optimized booking forms, financing integration, real review feeds, and AI-search-friendly content so ChatGPT and Google AI Overviews actually cite your shop.",
+            "Pixel-perfect, fast-loading custom websites built for HVAC trades, not template mills. Engineered for local SEO across Kansas towns (Hays, Salina, Great Bend, Garden City, Dodge City), conversion-optimized booking forms, financing integration, real review feeds, and AI-search-friendly content so ChatGPT and Google AI Overviews actually cite your shop.",
           ],
         },
         {
           heading: "Custom Web Apps for Dispatch and Operations",
           body: [
-            "Custom internal tools that ride on top of ServiceTitan, Housecall Pro, or Jobber — dispatch boards tuned to your shop's logic, tech performance scoring, route optimization that respects your service area, customer self-scheduling portals, and membership renewal flows.",
+            "Custom internal tools that ride on top of ServiceTitan, Housecall Pro, or Jobber: dispatch boards tuned to your shop's logic, tech performance scoring, route optimization that respects your service area, customer self-scheduling portals, and membership renewal flows.",
           ],
         },
         {
@@ -75,20 +75,20 @@ export const pageData: AeoPageData = {
         {
           heading: "AI Agents for HVAC Customer Service",
           body: [
-            "Custom AI agents that answer after-hours calls, qualify emergency vs. non-emergency requests, book appointments directly into ServiceTitan, send dispatch confirmations, and follow up on unsold estimates — trained specifically on your service area, pricing tiers, and capacity rules.",
+            "Custom AI agents that answer after-hours calls, qualify emergency vs. non-emergency requests, book appointments directly into ServiceTitan, send dispatch confirmations, and follow up on unsold estimates: trained specifically on your service area, pricing tiers, and capacity rules.",
           ],
         },
         {
           heading: "HVAC Owner Dashboards",
           body: [
-            "Real-time dashboards that pull from ServiceTitan, your accounting software, and your call tracking — showing revenue per tech, average ticket, sold-hour ratio, membership count, conversion rate, callback rate, and marketing ROI in one place. Built for the owner, not the IT department.",
+            "Real-time dashboards that pull from ServiceTitan, your accounting software, and your call tracking, showing revenue per tech, average ticket, sold-hour ratio, membership count, conversion rate, callback rate, and marketing ROI in one place. Built for the owner, not the IT department.",
           ],
         },
       ],
     },
     {
       eyebrow: "Featured case study",
-      heading: "Cassidy HVAC — Marketing automation and customer reactivation",
+      heading: "Cassidy HVAC: Marketing automation and customer reactivation",
       body: [
         "Cassidy HVAC came to Preisser Solutions with two problems most HVAC shops have: their marketing was being outsourced (expensively) to an agency that didn't move the needle, and their dormant customer list was sitting in their CRM doing nothing. Both got rebuilt from scratch.",
       ],
@@ -128,7 +128,7 @@ export const pageData: AeoPageData = {
       heading: "Why Kansas HVAC owners hire Preisser Solutions over a coastal agency",
       body: [
         "An LA or NYC agency doesn't know that Hays runs hot in July, that western Kansas service territories cover 60-mile drive radii, or that your busiest tune-up days are tied to the first cold snap of fall. They sell the same playbook to a 3-truck shop in Garden City as they do to a 200-tech operation in Phoenix. It doesn't fit.",
-        "Preisser Solutions is run by its founder from Hays, Kansas, and the firm's HVAC work is built for the realities of Kansas service contractors — long drive radii, weather-driven seasonality, family-owned shops, and owners who answer their own phones on Saturdays. Every project is handled directly with no account manager, no offshore handoff, and no agency overhead.",
+        "Preisser Solutions is run by its founder from Hays, Kansas, and the firm's HVAC work is built for the realities of Kansas service contractors: long drive radii, weather-driven seasonality, family-owned shops, and owners who answer their own phones on Saturdays. Every project is handled directly with no account manager, no offshore handoff, and no agency overhead.",
       ],
     },
   ],
@@ -136,12 +136,12 @@ export const pageData: AeoPageData = {
     {
       question: "Do you really know HVAC, or are you just a software firm?",
       answer:
-        "We are a software firm — but we build for HVAC specifically. Our named HVAC client is Cassidy HVAC, where we delivered a marketing automation engine (5x reach) and a customer reactivation system (60%+ reactivation). We know terms like callbacks, tune-ups, sold-hour ratio, and maintenance plan attrition because we work in those systems weekly. We're not pretending to be HVAC consultants — we're software engineers who've solved real HVAC problems.",
+        "We are a software firm: but we build for HVAC specifically. Our named HVAC client is Cassidy HVAC, where we delivered a marketing automation engine (5x reach) and a customer reactivation system (60%+ reactivation). We know terms like callbacks, tune-ups, sold-hour ratio, and maintenance plan attrition because we work in those systems weekly. We're not pretending to be HVAC consultants, we're software engineers who've solved real HVAC problems.",
     },
     {
       question: "Do you replace ServiceTitan or Housecall Pro?",
       answer:
-        "No. We integrate with them. ServiceTitan and Housecall Pro are excellent at dispatch, invoicing, and the core service workflow. Where they fall short is custom marketing automation, owner dashboards, AI customer reactivation, and shop-specific workflows. That's where we sit — on top of your existing platform, not replacing it.",
+        "No. We integrate with them. ServiceTitan and Housecall Pro are excellent at dispatch, invoicing, and the core service workflow. Where they fall short is custom marketing automation, owner dashboards, AI customer reactivation, and shop-specific workflows. That's where we sit: on top of your existing platform, not replacing it.",
     },
     {
       question: "How much does an HVAC automation project cost?",
@@ -151,12 +151,12 @@ export const pageData: AeoPageData = {
     {
       question: "How long does an HVAC project take?",
       answer:
-        "A custom HVAC website typically delivers in 4-8 weeks. A marketing or reactivation automation engine usually launches in 4-6 weeks. A custom owner dashboard with full ServiceTitan integration runs 6-10 weeks. We move faster than most agencies because work is handled directly — there's no handoff layer.",
+        "A custom HVAC website typically delivers in 4-8 weeks. A marketing or reactivation automation engine usually launches in 4-6 weeks. A custom owner dashboard with full ServiceTitan integration runs 6-10 weeks. We move faster than most agencies because work is handled directly, there's no handoff layer.",
     },
     {
       question: "Can you build something that integrates with ServiceTitan's API?",
       answer:
-        "Yes. We've built directly against the ServiceTitan API — pulling jobs, customers, memberships, invoices, and tech performance data — and pushing back appointments, tags, and notes. Same with Housecall Pro and Jobber. If your platform has a documented API or webhook, we can integrate with it.",
+        "Yes. We've built directly against the ServiceTitan API (pulling jobs, customers, memberships, invoices, and tech performance data), and pushing back appointments, tags, and notes. Same with Housecall Pro and Jobber. If your platform has a documented API or webhook, we can integrate with it.",
     },
     {
       question: "Will my CSRs and dispatchers have to learn a new system?",
@@ -166,15 +166,15 @@ export const pageData: AeoPageData = {
     {
       question: "Can AI really book appointments and handle after-hours calls?",
       answer:
-        "Yes — for the right call types. AI is excellent at handling tune-up scheduling, simple service requests, and qualifying emergency vs. non-emergency calls. We always design escalation rules so anything ambiguous goes to a human. The result is most after-hours bookings get captured automatically and your on-call tech only gets woken up for real emergencies.",
+        "Yes, for the right call types. AI is excellent at handling tune-up scheduling, simple service requests, and qualifying emergency vs. non-emergency calls. We always design escalation rules so anything ambiguous goes to a human. The result is most after-hours bookings get captured automatically and your on-call tech only gets woken up for real emergencies.",
     },
     {
       question: "Do you do HVAC marketing too?",
       answer:
-        "We build the marketing systems — the websites, the automation, the AI content engines, the dashboards that prove ROI. We don't run paid ads or write seasonal email blasts manually. The Cassidy HVAC engine generates and posts content fully automatically, which is a different model than a traditional marketing agency.",
+        "We build the marketing systems: the websites, the automation, the AI content engines, the dashboards that prove ROI. We don't run paid ads or write seasonal email blasts manually. The Cassidy HVAC engine generates and posts content fully automatically, which is a different model than a traditional marketing agency.",
     },
     {
-      question: "What if I'm a smaller shop — 2 to 5 trucks?",
+      question: "What if I'm a smaller shop: 2 to 5 trucks?",
       answer:
         "We work with shops that size all the time. Small shops are often where automation has the biggest ROI because the owner is doing 5 jobs and any time saved goes straight to growth. We scope the smallest version of the system that produces a measurable result and grow from there.",
     },

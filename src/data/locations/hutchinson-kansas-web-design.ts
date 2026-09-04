@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Hutchinson, KS Web Design & Software",
   metaDescription:
-    "Custom software, web apps, and AI automation for Hutchinson, Kansas — built by a Hays-based firm for the Reno County B2B market.",
+    "Custom software, web apps, and AI automation for Hutchinson, Kansas: built by a Hays-based firm for the Reno County B2B market.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -19,9 +19,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Hutchinson, Kansas",
     h1: "Custom Software and Websites for Hutchinson Businesses",
     subheadline:
-      "Custom web apps, AI automation, and websites for Reno County's manufacturing, energy, and professional services economy — one of the densest B2B markets in central Kansas.",
+      "Custom web apps, AI automation, and websites for Reno County's manufacturing, energy, and professional services economy: one of the densest B2B markets in central Kansas.",
     answerParagraph:
-      "Preisser Solutions serves Hutchinson, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. At 40,000 people, Hutchinson is one of the larger cities in central Kansas with real manufacturing density, salt mining, and agricultural processing that generate ongoing demand for custom operational tooling. Based in Hays — roughly 130 miles northwest — we deliver remotely and travel for projects of sufficient scope.",
+      "Preisser Solutions serves Hutchinson, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. At 40,000 people, Hutchinson is one of the larger cities in central Kansas with real manufacturing density, salt mining, and agricultural processing that generate ongoing demand for custom operational tooling. Based in Hays (roughly 130 miles northwest): we deliver remotely and travel for projects of sufficient scope.",
   },
 
   nearbyAreas: [
@@ -40,7 +40,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Hutchinson's manufacturing and salt-mining sector creates demand for custom inventory systems, ops dashboards, and AI document processing that national SaaS vendors do not cover well.",
-    "A Kansas-based firm working at Kansas economics — not a coastal agency charging coastal rates for Reno County projects.",
+    "A Kansas-based firm working at Kansas economics: not a coastal agency charging coastal rates for Reno County projects.",
     "Custom code with full ownership at launch. No per-seat SaaS fees on software that runs your core operations.",
   ],
 
@@ -72,7 +72,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions automate invoice and document processing for a Hutchinson business?",
       answer:
-        "Yes. AI document processing — extracting vendors, line items, totals, and GL codes from invoices and routing for approval — is a packaged, production-ready capability.",
+        "Yes. AI document processing (extracting vendors, line items, totals, and GL codes from invoices and routing for approval) is a packaged, production-ready capability.",
     },
     {
       question: "Does Preisser Solutions serve healthcare and professional services in Hutchinson?",

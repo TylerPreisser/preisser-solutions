@@ -15,7 +15,7 @@ export const caseStudy: CaseStudyData = {
   clientNameDisplay: "Capability",
   industry: "After-hours lead capture and intelligent routing",
 
-  h1: "After-Hours Call Triage — Every Lead Caught, Classified, and Routed",
+  h1: "After-Hours Call Triage: Every Lead Caught, Classified, and Routed",
   subheadline:
     "An agentic automation that receives every after-hours call, text, and contact form, classifies urgency, auto-responds via SMS, and routes only the urgent items to on-call staff.",
   oneLine: "Every after-hours lead caught, classified, and routed automatically",
@@ -30,7 +30,7 @@ export const caseStudy: CaseStudyData = {
   before: {
     heading: "Leads going to voicemail at 7 p.m. were leads going to a competitor.",
     body: [
-      "Service businesses lose money every night. A homeowner with a broken furnace, a leaking pipe, or a smoking electrical panel does not wait until business hours — they call the next number on the list. Every missed call, unread text, and unanswered contact form is a lead bleeding to whichever competitor picks up first.",
+      "Service businesses lose money every night. A homeowner with a broken furnace, a leaking pipe, or a smoking electrical panel does not wait until business hours; they call the next number on the list. Every missed call, unread text, and unanswered contact form is a lead bleeding to whichever competitor picks up first.",
       "Hiring a 24/7 answering service is expensive, inconsistent, and pulls human attention away from the next business day. What was needed was an agentic system that catches every inbound, decides what is urgent, and only escalates the calls that actually need a human in the middle of the night.",
     ],
   },
@@ -38,8 +38,8 @@ export const caseStudy: CaseStudyData = {
   built: {
     heading: "An agent that triages every call, text, and form the moment it arrives.",
     body: [
-      "Preisser Solutions builds an AI triage layer that sits in front of every after-hours channel — phone, SMS, and web contact form. The system receives the inbound, runs an AI urgency classification, and immediately auto-responds to the customer via SMS so they know they have been received and what happens next.",
-      "Every interaction is logged to the database. Urgent issues — burst pipes, no-heat calls, electrical hazards, anything matching the business's escalation rules — route straight to on-call personnel. Non-urgent items queue for a morning digest so the team starts the day with a clean, prioritized list instead of forty voicemails.",
+      "Preisser Solutions builds an AI triage layer that sits in front of every after-hours channel: phone, SMS, and web contact form. The system receives the inbound, runs an AI urgency classification, and immediately auto-responds to the customer via SMS so they know they have been received and what happens next.",
+      "Every interaction is logged to the database. Urgent issues (burst pipes, no-heat calls, electrical hazards, anything matching the business's escalation rules): route straight to on-call personnel. Non-urgent items queue for a morning digest so the team starts the day with a clean, prioritized list instead of forty voicemails.",
     ],
   },
 
@@ -50,7 +50,7 @@ export const caseStudy: CaseStudyData = {
       "AI urgency classification engine tuned to the business's escalation rules",
       "Automated SMS auto-response to every inbound contact",
       "CRM and database logging of every interaction",
-      "Urgency-based routing rules — urgent to on-call, rest to morning queue",
+      "Urgency-based routing rules: urgent to on-call, rest to morning queue",
       "Morning digest delivered to the team for non-urgent items",
     ],
     subsections: [
@@ -80,7 +80,7 @@ export const caseStudy: CaseStudyData = {
       value: "24/7",
       label: "Capture of every inbound lead",
       context:
-        "Every after-hours call, text, and contact form is captured and acknowledged — nothing goes to silent voicemail.",
+        "Every after-hours call, text, and contact form is captured and acknowledged: nothing goes to silent voicemail.",
     },
     {
       value: "SMS",

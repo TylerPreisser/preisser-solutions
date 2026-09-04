@@ -4,7 +4,7 @@ export const product: ProductData = {
   slug: "invoice-processing-agent",
   metaTitle: "AI Invoice Processing Agent",
   metaDescription:
-    "AI document processor that extracts vendor, line items, and GL codes from any invoice format and auto-routes for approval — 75% reduction in manual handling time.",
+    "AI document processor that extracts vendor, line items, and GL codes from any invoice format and auto-routes for approval: 75% reduction in manual handling time.",
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
 
@@ -19,22 +19,22 @@ export const product: ProductData = {
   subheadline:
     "An AI processing engine that accepts any invoice format, extracts vendor information, line items, totals, and GL codes in seconds, flags anomalies, and routes automatically for approval.",
   oneLine:
-    "Eliminates manual invoice reading and data entry — any format accepted, GL codes auto-assigned, approval routing automated.",
+    "Eliminates manual invoice reading and data entry: any format accepted, GL codes auto-assigned, approval routing automated.",
   headlineMetric: {
     value: "75%",
     label: "reduction in manual invoice handling time",
   },
 
   whatItDoes: [
-    "Manual invoice processing is one of the highest-cost administrative tasks in any operations-heavy business. Staff spend hours reading invoices, transcribing line items, assigning GL codes, and routing for approval — all of it repetitive, all of it error-prone, and all of it growing in volume without a natural ceiling.",
-    "The AI Invoice Processing Agent eliminates the reading and transcription steps entirely. Staff upload an invoice — in any format: PDF, scan, email attachment, Excel — and the system extracts the complete structured record: vendor identity, all line items, subtotals, taxes, totals, and the appropriate GL code for each line. The system is trained on the client's specific vendor roster and approval workflows, so the GL assignments and routing logic reflect the business's actual chart of accounts, not generic categories.",
-    "Anomalies — duplicate invoices, amounts outside expected ranges, unrecognized vendors — are flagged for human review. Everything else routes automatically. The system was built and proven at HG Oil Holdings, where it reduced manual invoice handling time by 75% and eliminated the need for an additional administrative hire. The same pattern deploys to any business running significant invoice volume.",
+    "Manual invoice processing is one of the highest-cost administrative tasks in any operations-heavy business. Staff spend hours reading invoices, transcribing line items, assigning GL codes, and routing for approval: all of it repetitive, all of it error-prone, and all of it growing in volume without a natural ceiling.",
+    "The AI Invoice Processing Agent eliminates the reading and transcription steps entirely. Staff upload an invoice (in any format: PDF, scan, email attachment, Excel), and the system extracts the complete structured record: vendor identity, all line items, subtotals, taxes, totals, and the appropriate GL code for each line. The system is trained on the client's specific vendor roster and approval workflows, so the GL assignments and routing logic reflect the business's actual chart of accounts, not generic categories.",
+    "Anomalies (duplicate invoices, amounts outside expected ranges, unrecognized vendors) are flagged for human review. Everything else routes automatically. The system was built and proven at HG Oil Holdings, where it reduced manual invoice handling time by 75% and eliminated the need for an additional administrative hire. The same pattern deploys to any business running significant invoice volume.",
   ],
   capabilities: [
     {
       title: "Any-format invoice ingestion",
       description:
-        "Accepts PDF, scanned image, email attachment, Excel, and Word formats — no manual pre-processing or format normalization required.",
+        "Accepts PDF, scanned image, email attachment, Excel, and Word formats: no manual pre-processing or format normalization required.",
     },
     {
       title: "Structured data extraction",
@@ -44,7 +44,7 @@ export const product: ProductData = {
     {
       title: "GL code auto-assignment",
       description:
-        "Assigns GL codes to each line item based on the client's specific chart of accounts and vendor history — trained on actual accounting structure, not generic categories.",
+        "Assigns GL codes to each line item based on the client's specific chart of accounts and vendor history: trained on actual accounting structure, not generic categories.",
     },
     {
       title: "Anomaly detection and flagging",
@@ -54,7 +54,7 @@ export const product: ProductData = {
     {
       title: "Automated approval routing",
       description:
-        "Routes each processed invoice to the correct approver based on amount thresholds, department, and vendor type — following the client's actual approval chain.",
+        "Routes each processed invoice to the correct approver based on amount thresholds, department, and vendor type, following the client's actual approval chain.",
     },
     {
       title: "Accounting system integration",
@@ -80,7 +80,7 @@ export const product: ProductData = {
     {
       step: "Invoice intake",
       description:
-        "Staff upload an invoice or the system receives it directly via email forwarding or API connection — any format is accepted.",
+        "Staff upload an invoice or the system receives it directly via email forwarding or API connection: any format is accepted.",
     },
     {
       step: "AI extraction",
@@ -100,7 +100,7 @@ export const product: ProductData = {
     {
       step: "Posting on approval",
       description:
-        "Once approved, the structured invoice record posts directly to the accounting system — no manual data entry required.",
+        "Once approved, the structured invoice record posts directly to the accounting system: no manual data entry required.",
     },
   ],
   useCases: [
@@ -108,7 +108,7 @@ export const product: ProductData = {
     "Use this when you're facing a hiring decision for additional administrative capacity driven primarily by invoice processing workload.",
     "Use this when duplicate invoices or data entry errors are creating reconciliation problems in your accounting system.",
     "Use this when invoices arrive in multiple formats from different vendor systems and manual normalization is a bottleneck.",
-    "Use this when your approval routing is inconsistent — the right person doesn't always see the right invoice at the right time.",
+    "Use this when your approval routing is inconsistent, the right person doesn't always see the right invoice at the right time.",
   ],
   techStack: [
     "AI document extraction engine",

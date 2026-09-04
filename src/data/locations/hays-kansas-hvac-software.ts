@@ -15,7 +15,7 @@ const HVAC_SERVICE_CARDS: LocationServiceCard[] = [
     bullets: [
       "Custom dashboards for service tickets, technician scheduling, and job status",
       "Customer history, equipment records, and maintenance schedules in one place",
-      "Mobile-friendly — technicians can update jobs in the field",
+      "Mobile-friendly: technicians can update jobs in the field",
     ],
     href: "/services",
   },
@@ -25,7 +25,7 @@ const HVAC_SERVICE_CARDS: LocationServiceCard[] = [
     bullets: [
       "AI-powered dispatch routing and technician assignment",
       "Automated service reminders, follow-up sequences, and review requests",
-      "Document processing — proposals, invoices, warranty forms",
+      "Document processing: proposals, invoices, warranty forms",
     ],
     href: "/services",
   },
@@ -60,7 +60,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "HVAC Software & Web Design in Hays, KS",
   metaDescription:
-    "Custom HVAC software, job management dashboards, and AI automation for HVAC businesses in Hays, Kansas — built by a local firm.",
+    "Custom HVAC software, job management dashboards, and AI automation for HVAC businesses in Hays, Kansas: built by a local firm.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -71,7 +71,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Job management dashboards, AI dispatch automation, and websites built specifically for HVAC contractors in Hays and western Kansas.",
     answerParagraph:
-      "Preisser Solutions builds custom software for HVAC businesses in Hays, Kansas — job management dashboards, technician scheduling tools, AI-powered dispatch automation, customer history portals, and marketing websites. Based in Hays, we serve Ellis County and the surrounding western Kansas HVAC market with remote delivery and in-person availability.",
+      "Preisser Solutions builds custom software for HVAC businesses in Hays, Kansas: job management dashboards, technician scheduling tools, AI-powered dispatch automation, customer history portals, and marketing websites. Based in Hays, we serve Ellis County and the surrounding western Kansas HVAC market with remote delivery and in-person availability.",
   },
 
   nearbyAreas: [
@@ -92,7 +92,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "We are headquartered in Hays and serve the local HVAC market directly. In-person scoping and site visits are practical.",
-    "HVAC software built for actual field-service operations — not generic CRM platforms that require workarounds.",
+    "HVAC software built for actual field-service operations, not generic CRM platforms that require workarounds.",
     "Custom code with full ownership transferred at launch. No monthly software subscription after handoff.",
   ],
 
@@ -113,7 +113,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions build a job management app for a Hays HVAC contractor?",
       answer:
-        "Yes. Custom job management web applications — service tickets, technician assignment, equipment records, job status — are built for HVAC contractors in Hays.",
+        "Yes. Custom job management web applications (service tickets, technician assignment, equipment records, job status) are built for HVAC contractors in Hays.",
     },
     {
       question: "Does Preisser Solutions offer AI automation for HVAC dispatching?",
@@ -123,7 +123,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can you build a website and SEO for a Hays HVAC company?",
       answer:
-        "Yes. Custom websites built for HVAC local search — Google Business Profile, local pack, schema markup, and AI-search visibility — are an explicit service line.",
+        "Yes. Custom websites built for HVAC local search (Google Business Profile, local pack, schema markup, and AI-search visibility) are an explicit service line.",
     },
     {
       question: "How much does custom HVAC software cost?",
@@ -133,7 +133,7 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions serve HVAC businesses outside of Hays?",
       answer:
-        "Yes. HVAC software and websites are offered across the western Kansas service area — Ellis, Salina, Great Bend, and surrounding markets.",
+        "Yes. HVAC software and websites are offered across the western Kansas service area: Ellis, Salina, Great Bend, and surrounding markets.",
     },
   ],
 

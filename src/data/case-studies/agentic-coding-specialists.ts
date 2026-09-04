@@ -6,18 +6,18 @@ export const caseStudy: CaseStudyData = {
   slug: "agentic-coding-specialists",
   metaTitle: "Agentic AI Coding Specialists",
   metaDescription:
-    "Specialized agentic coding models that architect, debug, and ship projects autonomously — the internal Preisser Solutions build toolset.",
+    "Specialized agentic coding models that architect, debug, and ship projects autonomously: the internal Preisser Solutions build toolset.",
   datePublished: "2026-02-04",
   dateModified: "2026-05-20",
 
   category: "Internal Platform • AI Architecture",
   clientName: "Agentic Coding Specialists",
-  clientNameDisplay: "Internal — Preisser Solutions Toolset",
+  clientNameDisplay: "Internal: Preisser Solutions Toolset",
   industry: "Agentic AI coding and Claude Code orchestration",
 
-  h1: "Agentic Coding Specialists — The Toolset Behind Every Shipped Build",
+  h1: "Agentic Coding Specialists: The Toolset Behind Every Shipped Build",
   subheadline:
-    "Specialized agentic coding models that architect, debug, and ship entire projects autonomously. Each agent is tuned for a specific domain — frontend, backend, data, agents themselves.",
+    "Specialized agentic coding models that architect, debug, and ship entire projects autonomously. Each agent is tuned for a specific domain: frontend, backend, data, agents themselves.",
   oneLine: "Specialized agentic coding agents, each tuned to a build domain",
 
   headlineResults: [
@@ -38,7 +38,7 @@ export const caseStudy: CaseStudyData = {
   built: {
     heading: "Claude Code multi-agent delegation, specialized per domain.",
     body: [
-      "Each specialist runs Claude Code as the orchestration layer. The main thread coordinates — never executes — and delegates to sub-agents with clear, schema-validated briefs. The pipeline is consistent across specialists: a research phase establishes what is known and what needs to be discovered, a build phase produces the work in isolation, and a verify phase runs the actual checks (tests, type-checks, lint, hand-off review) before anything is claimed complete.",
+      "Each specialist runs Claude Code as the orchestration layer. The main thread coordinates (never executes), and delegates to sub-agents with clear, schema-validated briefs. The pipeline is consistent across specialists: a research phase establishes what is known and what needs to be discovered, a build phase produces the work in isolation, and a verify phase runs the actual checks (tests, type-checks, lint, hand-off review) before anything is claimed complete.",
       "AGENTS.md and .claude configuration files make every specialist portable. The same agent can be pointed at a new repository and pick up the conventions of that codebase without re-tuning. The whole toolset is what makes Preisser Solutions ship work at the volume and quality that named clients expect.",
     ],
   },
@@ -51,17 +51,17 @@ export const caseStudy: CaseStudyData = {
       "Research → build → verify three-phase pipeline",
       "Domain-specific tuning per specialist",
       "AGENTS.md / .claude configuration for portability across repos",
-      "Orchestrator-only main threads — sub-agents do the work",
+      "Orchestrator-only main threads: sub-agents do the work",
     ],
     subsections: [
       {
         title: "Specialist roles",
         items: [
-          "Frontend specialist — design systems, animation, accessibility",
-          "Backend specialist — schema, migrations, idempotency, API design",
-          "Data specialist — pipelines, transformations, schema validation",
-          "Agent specialist — building further agents and prompts",
-          "Verification specialist — tests, lint, type-checks, review pass",
+          "Frontend specialist: design systems, animation, accessibility",
+          "Backend specialist: schema, migrations, idempotency, API design",
+          "Data specialist: pipelines, transformations, schema validation",
+          "Agent specialist: building further agents and prompts",
+          "Verification specialist: tests, lint, type-checks, review pass",
         ],
       },
       {
@@ -87,7 +87,7 @@ export const caseStudy: CaseStudyData = {
       value: "3 phases",
       label: "Research, build, verify",
       context:
-        "Each task moves through research, build, and verify phases — verification is not optional.",
+        "Each task moves through research, build, and verify phases: verification is not optional.",
     },
     {
       value: "Schema briefs",
@@ -99,7 +99,7 @@ export const caseStudy: CaseStudyData = {
       value: "Portable",
       label: "Configuration across repos",
       context:
-        "AGENTS.md and .claude configuration make every specialist portable — point at a new repo and the conventions follow.",
+        "AGENTS.md and .claude configuration make every specialist portable, point at a new repo and the conventions follow.",
     },
   ],
 

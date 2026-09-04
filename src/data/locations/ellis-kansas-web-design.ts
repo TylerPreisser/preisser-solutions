@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Ellis, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Ellis, Kansas — built locally by the Hays-based firm 15 miles east in Ellis County.",
+    "Custom websites, web apps, and AI automation for Ellis, Kansas: built locally by the Hays-based firm 15 miles east in Ellis County.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -19,9 +19,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Ellis, Kansas",
     h1: "Custom Software and Websites for Ellis Businesses",
     subheadline:
-      "Custom web apps, AI automation, and websites for Ellis County businesses — from the same firm headquartered 15 miles east in Hays.",
+      "Custom web apps, AI automation, and websites for Ellis County businesses: from the same firm headquartered 15 miles east in Hays.",
     answerParagraph:
-      "Preisser Solutions serves Ellis, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Ellis is in Ellis County — the same county as the Hays headquarters. That means in-person scoping is never an issue, local market context is deeply familiar, and the firm's reference cases are built from the same regional economy. Custom code, fixed-price proposals, full ownership.",
+      "Preisser Solutions serves Ellis, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Ellis is in Ellis County, the same county as the Hays headquarters. That means in-person scoping is never an issue, local market context is deeply familiar, and the firm's reference cases are built from the same regional economy. Custom code, fixed-price proposals, full ownership.",
   },
 
   nearbyAreas: [
@@ -39,7 +39,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Ellis is in Ellis County — the same county as the Hays headquarters. No firm in Kansas is closer or more familiar with the local operating environment.",
+    "Ellis is in Ellis County: the same county as the Hays headquarters. No firm in Kansas is closer or more familiar with the local operating environment.",
     "In-person scoping and milestone visits are a 15-minute drive, not a travel expense.",
     "Custom code with full ownership at launch. No platform dependency on the firm after delivery.",
   ],
@@ -61,7 +61,7 @@ export const locationData: LocationPageData = {
     {
       question: "How far is the Preisser Solutions office from Ellis?",
       answer:
-        "About 15 miles east via I-70, roughly 15 minutes. Ellis County businesses are essentially on-site clients — in-person scoping is a quick drive, not a scheduled travel day.",
+        "About 15 miles east via I-70, roughly 15 minutes. Ellis County businesses are essentially on-site clients: in-person scoping is a quick drive, not a scheduled travel day.",
     },
     {
       question: "What does Preisser Solutions build for Ellis businesses?",

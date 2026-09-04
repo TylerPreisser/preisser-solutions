@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Custom Software in Dodge City, Kansas",
   metaDescription:
-    "Custom software, AI automation, and custom websites for Dodge City, Kansas businesses — based in Hays, KS, delivered statewide.",
+    "Custom software, AI automation, and custom websites for Dodge City, Kansas businesses: based in Hays, KS, delivered statewide.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for southwest Kansas operators along US-50 and US-283.",
     answerParagraph:
-      "Preisser Solutions serves Dodge City, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays — roughly an hour and a half north on US-283 — we deliver remotely and travel for projects of sufficient scope. Fixed-price proposals, custom code, full ownership.",
+      "Preisser Solutions serves Dodge City, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly an hour and a half north on US-283): we deliver remotely and travel for projects of sufficient scope. Fixed-price proposals, custom code, full ownership.",
   },
 
   nearbyAreas: [
@@ -44,7 +44,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Western-Kansas firm that understands the working day for ag, energy, and distribution operators in this region.",
-    "Custom code with full ownership transferred at launch — your repo, your infrastructure.",
+    "Custom code with full ownership transferred at launch: your repo, your infrastructure.",
     "Travel for in-person scoping and milestone meetings is standard for projects of meaningful scope.",
   ],
 

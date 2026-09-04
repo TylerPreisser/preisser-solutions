@@ -13,7 +13,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Web Design in Salina, Kansas",
   metaDescription:
-    "Custom websites for Salina, Kansas businesses — fast, SEO-strong, AI-search ready. Built by a Hays-based firm.",
+    "Custom websites for Salina, Kansas businesses: fast, SEO-strong, AI-search ready. Built by a Hays-based firm.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -22,9 +22,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Web Design in Salina, Kansas",
     h1: "Custom Web Design for Salina Businesses",
     subheadline:
-      "Custom websites — engineered for performance, conversion, and AI search visibility.",
+      "Custom websites: engineered for performance, conversion, and AI search visibility.",
     answerParagraph:
-      "Preisser Solutions builds custom websites for Salina, Kansas businesses — fast, conversion-engineered, and optimized for both Google and AI search. Based in Hays, an hour and a half west on I-70. No templates. Custom code, fixed-price proposals, full ownership at launch.",
+      "Preisser Solutions builds custom websites for Salina, Kansas businesses: fast, conversion-engineered, and optimized for both Google and AI search. Based in Hays, an hour and a half west on I-70. No templates. Custom code, fixed-price proposals, full ownership at launch.",
   },
 
   nearbyAreas: [
@@ -43,8 +43,8 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Hays-based firm an easy drive west on I-70. In-person scoping is standard.",
-    "Custom code, not templates — your site is engineered, not assembled.",
-    "Built for AI search visibility — citations on Google AI Overviews, ChatGPT, Perplexity, and Gemini.",
+    "Custom code, not templates: your site is engineered, not assembled.",
+    "Built for AI search visibility: citations on Google AI Overviews, ChatGPT, Perplexity, and Gemini.",
   ],
 
   industriesServed: ["Manufacturing", "Agriculture", "Distribution & Logistics", "Trades", "Professional Services"],
@@ -58,7 +58,7 @@ export const locationData: LocationPageData = {
     {
       question: "What makes a Preisser Solutions site different from a templated site?",
       answer:
-        "Custom code with full ownership at launch — Next.js, React, TypeScript. Fast page loads, real SEO architecture, AI-search visibility, no platform lock-in.",
+        "Custom code with full ownership at launch: Next.js, React, TypeScript. Fast page loads, real SEO architecture, AI-search visibility, no platform lock-in.",
     },
     {
       question: "How long does a Salina website project take?",
@@ -73,7 +73,7 @@ export const locationData: LocationPageData = {
     {
       question: "How far is Hays from Salina?",
       answer:
-        "About 95 miles via I-70 — roughly an hour and a half. In-person scoping is straightforward.",
+        "About 95 miles via I-70: roughly an hour and a half. In-person scoping is straightforward.",
     },
     {
       question: "What is the difference between Preisser Solutions and a Salina marketing agency?",

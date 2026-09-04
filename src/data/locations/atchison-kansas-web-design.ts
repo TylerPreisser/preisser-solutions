@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Atchison, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Atchison, Kansas businesses — built by a Kansas-based firm with fixed-price proposals.",
+    "Custom websites, web apps, and AI automation for Atchison, Kansas businesses: built by a Kansas-based firm with fixed-price proposals.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Web design, custom applications, and AI automation for Atchison County businesses along the Missouri River corridor.",
     answerParagraph:
-      "Preisser Solutions builds custom websites, web applications, dashboards, AI automation, and local SEO systems for businesses in Atchison, Kansas — an Atchison County community of roughly 10,000 on the Missouri River, historically significant as a rail and commerce hub. Based in Hays, we deliver remotely with on-site travel for projects of sufficient scope.",
+      "Preisser Solutions builds custom websites, web applications, dashboards, AI automation, and local SEO systems for businesses in Atchison, Kansas, an Atchison County community of roughly 10,000 on the Missouri River, historically significant as a rail and commerce hub. Based in Hays, we deliver remotely with on-site travel for projects of sufficient scope.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Deep familiarity with northeast Kansas business culture — manufacturing, logistics, and trades operators along US-73.",
+    "Deep familiarity with northeast Kansas business culture, manufacturing, logistics, and trades operators along US-73.",
     "Custom code with full ownership transferred at launch. No proprietary platform or ongoing licensing.",
     "Fixed-price proposals only. Scope, timeline, and cost agreed before a line of code is written.",
   ],
@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do you offer local SEO services in Atchison?",
       answer:
-        "Yes. Local SEO — Google Business Profile, local pack optimization, citations, schema markup — and AI-search visibility are both explicit service lines.",
+        "Yes. Local SEO (Google Business Profile, local pack optimization, citations, schema markup), and AI-search visibility are both explicit service lines.",
     },
     {
       question: "How far is Atchison from your Hays headquarters?",

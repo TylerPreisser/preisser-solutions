@@ -26,7 +26,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Quick comparison",
       heading: "Zapier vs custom automation at a glance",
       body: [
-        "Zapier and custom automation aren't really competing products — they're different tools for different stages of a business.",
+        "Zapier and custom automation aren't really competing products, they're different tools for different stages of a business.",
         "Zapier is the right starting point for almost every small business. Custom automation enters the conversation when you've hit Zapier's walls on price, complexity, reliability, or compliance.",
       ],
     },
@@ -37,11 +37,11 @@ export const pageData: AeoPageData = {
         "Zapier is genuinely excellent for a wide range of small-business automations. Honest cases where it's the right tool:",
       ],
       bullets: [
-        "Simple one-way integrations — form submission to CRM, payment to spreadsheet, calendar event to Slack, e-commerce order to email.",
+        "Simple one-way integrations: form submission to CRM, payment to spreadsheet, calendar event to Slack, e-commerce order to email.",
         "Low-volume workflows under roughly 1,000 tasks per month, where per-task pricing is comfortably below custom build cost.",
-        "Standard SaaS connectors — both ends of the workflow are in Zapier's library of 6,000+ apps.",
+        "Standard SaaS connectors: both ends of the workflow are in Zapier's library of 6,000+ apps.",
         "Workflows that are easy to describe in one sentence: \"when X happens, do Y.\"",
-        "Quick experiments — testing whether a workflow is worth building seriously, with a low cost to abandon.",
+        "Quick experiments: testing whether a workflow is worth building seriously, with a low cost to abandon.",
       ],
     },
     {
@@ -51,13 +51,13 @@ export const pageData: AeoPageData = {
         "Zapier holds up for a long time, then it starts to crack in predictable ways:",
       ],
       bullets: [
-        "Per-task pricing climbing — once the monthly Zapier bill is in the high hundreds, the math starts to favor custom.",
+        "Per-task pricing climbing: once the monthly Zapier bill is in the high hundreds, the math starts to favor custom.",
         "Complex Zaps with many filters, paths, formatters, and Code-by-Zapier steps that nobody on the team can confidently change.",
         "Two-way sync between two systems with no clean conflict resolution.",
-        "Workflows where a silent failure costs real money — Zapier's basic retry logic isn't enough.",
-        "Integrations Zapier doesn't fully support — legacy systems, internal APIs, niche industry software, custom databases.",
-        "Compliance pressure — HIPAA, SOC 2, FedRAMP, or finance regulations that rule out routing data through a third-party automation platform.",
-        "Volume — high-volume workflows (10k+ tasks/month) where per-task pricing becomes economically irrational.",
+        "Workflows where a silent failure costs real money, Zapier's basic retry logic isn't enough.",
+        "Integrations Zapier doesn't fully support: legacy systems, internal APIs, niche industry software, custom databases.",
+        "Compliance pressure: HIPAA, SOC 2, FedRAMP, or finance regulations that rule out routing data through a third-party automation platform.",
+        "Volume: high-volume workflows (10k+ tasks/month) where per-task pricing becomes economically irrational.",
       ],
     },
     {
@@ -69,10 +69,10 @@ export const pageData: AeoPageData = {
       bullets: [
         "Workflows are mission-critical and downtime or silent failure has real cost.",
         "Logic is complex enough that mapping it out in Zapier produces a maze rather than a clean diagram.",
-        "An AI agent needs to be in the loop — calling Claude, GPT, or a local model with structured prompts, retries, and guardrails.",
+        "An AI agent needs to be in the loop: calling Claude, GPT, or a local model with structured prompts, retries, and guardrails.",
         "Human-in-the-loop approval steps are required (Slack message with approve/reject buttons that gate the next action).",
-        "Multi-system orchestration — a single workflow touches 5+ systems with conditional branching.",
-        "Strict cost predictability — fixed monthly hosting cost regardless of volume, instead of per-task pricing.",
+        "Multi-system orchestration: a single workflow touches 5+ systems with conditional branching.",
+        "Strict cost predictability: fixed monthly hosting cost regardless of volume, instead of per-task pricing.",
         "Compliance constraints rule out third-party automation platforms.",
       ],
     },
@@ -81,7 +81,7 @@ export const pageData: AeoPageData = {
       heading: "Where custom code is meaningfully better",
       body: [
         "The gap is widest when AI agents and human approvals enter the picture. Zapier supports calls to OpenAI and Anthropic, but multi-step agent loops with tool calls, retries, structured output, and guardrails are awkward inside a visual workflow builder.",
-        "Custom automation can run a real agent loop — the model decides which tool to call next, the code enforces guardrails, errors are handled deliberately, and audit trails are first-class. Human approvals are clean: a Slack message with approve/reject buttons writes back to the workflow and gates the next step. None of that is impossible in Zapier; it's just fragile.",
+        "Custom automation can run a real agent loop: the model decides which tool to call next, the code enforces guardrails, errors are handled deliberately, and audit trails are first-class. Human approvals are clean: a Slack message with approve/reject buttons writes back to the workflow and gates the next step. None of that is impossible in Zapier; it's just fragile.",
         "If AI agents are core to the workflow, custom is usually the right call.",
       ],
     },
@@ -89,9 +89,9 @@ export const pageData: AeoPageData = {
       eyebrow: "Cost and reliability",
       heading: "What each one actually costs and how reliable it is",
       body: [
-        "Zapier pricing scales with task volume — plans range from free at trivial volume up through higher tiers at meaningful volume. Reliability is generally good, with basic retries and error handling built in.",
+        "Zapier pricing scales with task volume: plans range from free at trivial volume up through higher tiers at meaningful volume. Reliability is generally good, with basic retries and error handling built in.",
         "Custom automation has a build cost upfront (varies widely with scope) and minimal ongoing hosting cost on Cloudflare Workers or AWS Lambda, regardless of task volume. Reliability is whatever the code makes it: idempotency, dead-letter queues, alerting, and observability are all under your control.",
-        "The break-even moment is when your monthly Zapier fees reach a level where a one-time custom build pays back inside 12-24 months — or when the workflow becomes critical enough that silent failures aren't acceptable. Below that threshold, Zapier almost always wins on total cost of ownership. Above it, custom usually does.",
+        "The break-even moment is when your monthly Zapier fees reach a level where a one-time custom build pays back inside 12-24 months, or when the workflow becomes critical enough that silent failures aren't acceptable. Below that threshold, Zapier almost always wins on total cost of ownership. Above it, custom usually does.",
       ],
     },
     {
@@ -100,7 +100,7 @@ export const pageData: AeoPageData = {
       body: [
         "Start with Zapier. Almost every business should. It's the fastest, cheapest way to discover whether a workflow is worth running at all.",
         "Migrate to custom automation when one or more of these are true: monthly Zapier fees are climbing past what a one-time build would cost over 12-24 months, the workflow is mission-critical and downtime has real cost, AI agents or human approvals are central, or compliance rules out the third-party platform.",
-        "Hybrid is normal — Zapier handles the easy 80%, custom code handles the hard 20%. Both can coexist indefinitely.",
+        "Hybrid is normal: Zapier handles the easy 80%, custom code handles the hard 20%. Both can coexist indefinitely.",
       ],
     },
   ],
@@ -126,21 +126,21 @@ export const pageData: AeoPageData = {
       {
         dimension: "Complex logic",
         preisser:
-          "Any logic — branching, retries, idempotency, dead-letter queues, observability are all controllable",
+          "Any logic: branching, retries, idempotency, dead-letter queues, observability are all controllable",
         competitor:
           "Filters, paths, formatters, and Code-by-Zapier steps; complex logic gets visually unwieldy",
       },
       {
         dimension: "AI agents",
         preisser:
-          "First-class — real agent loops with tool calls, retries, structured output, guardrails",
+          "First-class: real agent loops with tool calls, retries, structured output, guardrails",
         competitor:
           "OpenAI and Anthropic actions are supported; multi-step agent loops are fragile",
       },
       {
         dimension: "Human approvals",
         preisser:
-          "Built into the workflow — Slack/Teams approvals gate the next step with audit trail",
+          "Built into the workflow: Slack/Teams approvals gate the next step with audit trail",
         competitor:
           "Possible with paths and webhooks; reliability and UX vary",
       },
@@ -161,7 +161,7 @@ export const pageData: AeoPageData = {
       {
         dimension: "Vendor lock-in",
         preisser:
-          "None — code belongs to the client",
+          "None: code belongs to the client",
         competitor:
           "Workflows live inside Zapier; logic is portable only by rewriting elsewhere",
       },
@@ -183,12 +183,12 @@ export const pageData: AeoPageData = {
     {
       question: "When does custom automation make economic sense over Zapier?",
       answer:
-        "When your monthly Zapier spend reaches a level where a one-time custom build pays back inside 12-24 months — or when reliability or compliance is the driver regardless of cost. Free scoping call to assess where you stand.",
+        "When your monthly Zapier spend reaches a level where a one-time custom build pays back inside 12-24 months, or when reliability or compliance is the driver regardless of cost. Free scoping call to assess where you stand.",
     },
     {
       question: "Can custom automation use AI agents like Claude or GPT?",
       answer:
-        "Yes — and it's usually cleaner than in Zapier. Custom code can run real agent loops with tool calls, structured output, retries, and guardrails, with full observability on every step. Zapier supports basic AI actions but isn't designed for multi-step agents.",
+        "Yes, and it's usually cleaner than in Zapier. Custom code can run real agent loops with tool calls, structured output, retries, and guardrails, with full observability on every step. Zapier supports basic AI actions but isn't designed for multi-step agents.",
     },
     {
       question: "How reliable is custom automation compared to Zapier?",

@@ -15,18 +15,18 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Digital Marketing Services in Hays, KS",
   metaDescription:
-    "Digital marketing built on custom code for Hays, Kansas businesses — local SEO, AI automation, and web infrastructure.",
+    "Digital marketing built on custom code for Hays, Kansas businesses: local SEO, AI automation, and web infrastructure.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
 
   hero: {
     eyebrow: "Digital Marketing in Hays, Kansas",
-    h1: "Digital Marketing for Hays Businesses — Built on Custom Code",
+    h1: "Digital Marketing for Hays Businesses: Built on Custom Code",
     subheadline:
-      "Local SEO, AI-search visibility, and automated outreach workflows engineered for Hays, Kansas businesses — not templated, not outsourced.",
+      "Local SEO, AI-search visibility, and automated outreach workflows engineered for Hays, Kansas businesses, not templated, not outsourced.",
     answerParagraph:
-      "Preisser Solutions is headquartered in Hays, Kansas and builds digital marketing infrastructure for Ellis County businesses. Services include local SEO, AI-search optimization, custom websites built for conversion, and AI-powered marketing automation. Every deliverable is built on custom code — no page-builder templates, no third-party marketing platforms with recurring licensing fees.",
+      "Preisser Solutions is headquartered in Hays, Kansas and builds digital marketing infrastructure for Ellis County businesses. Services include local SEO, AI-search optimization, custom websites built for conversion, and AI-powered marketing automation. Every deliverable is built on custom code: no page-builder templates, no third-party marketing platforms with recurring licensing fees.",
   },
 
   nearbyAreas: [
@@ -46,7 +46,7 @@ export const locationData: LocationPageData = {
   caseStudies: [HG_OIL_INVENTORY_CARD, HG_OIL_INVOICE_CARD],
 
   whyLocal: [
-    "Hays is Preisser Solutions' home market. Local digital marketing context is not guesswork — it is direct knowledge.",
+    "Hays is Preisser Solutions' home market. Local digital marketing context is not guesswork; it is direct knowledge.",
     "Digital marketing infrastructure built in code means no recurring platform licensing and no vendor lock-in.",
     "Fixed-price proposals. No open-ended retainers unless you specifically request them.",
   ],
@@ -69,12 +69,12 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions do paid advertising for Hays businesses?",
       answer:
-        "No. The firm specializes in organic search, AI-search visibility, and owned digital infrastructure — not paid media management.",
+        "No. The firm specializes in organic search, AI-search visibility, and owned digital infrastructure, not paid media management.",
     },
     {
       question: "How is Preisser Solutions different from a Hays marketing agency?",
       answer:
-        "Preisser Solutions is a custom-software firm. Every digital marketing deliverable is built in code — not assembled from marketing platforms with ongoing licensing.",
+        "Preisser Solutions is a custom-software firm. Every digital marketing deliverable is built in code, not assembled from marketing platforms with ongoing licensing.",
     },
     {
       question: "Can Preisser Solutions automate marketing workflows for a Hays business?",
@@ -84,12 +84,12 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions build a conversion-optimized website for a Hays business?",
       answer:
-        "Yes. Custom websites built for conversion — clear CTAs, fast load, strong schema markup, mobile-first — are a core deliverable.",
+        "Yes. Custom websites built for conversion (clear CTAs, fast load, strong schema markup, mobile-first) are a core deliverable.",
     },
     {
       question: "How are digital marketing projects priced in Hays?",
       answer:
-        "All projects use fixed-price proposals. Scope, deliverables, and cost are agreed before work begins — no surprises.",
+        "All projects use fixed-price proposals. Scope, deliverables, and cost are agreed before work begins: no surprises.",
     },
   ],
 

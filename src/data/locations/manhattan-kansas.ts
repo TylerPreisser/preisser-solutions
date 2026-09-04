@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Custom Software in Manhattan, Kansas",
   metaDescription:
-    "Custom software, AI automation, and custom websites for Manhattan, Kansas businesses — based in Hays, KS, delivered statewide.",
+    "Custom software, AI automation, and custom websites for Manhattan, Kansas businesses: based in Hays, KS, delivered statewide.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -23,9 +23,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Manhattan, Kansas",
     h1: "Custom Software for Manhattan Businesses",
     subheadline:
-      "Custom web apps, AI automation, and websites for the Flint Hills region — built remotely, in person when scope warrants it.",
+      "Custom web apps, AI automation, and websites for the Flint Hills region: built remotely, in person when scope warrants it.",
     answerParagraph:
-      "Preisser Solutions serves Manhattan, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays — roughly three hours west on I-70 — we deliver remotely and travel for projects of sufficient scope. Fixed-price proposals, custom code, full ownership.",
+      "Preisser Solutions serves Manhattan, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly three hours west on I-70): we deliver remotely and travel for projects of sufficient scope. Fixed-price proposals, custom code, full ownership.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Kansas-based, working at Kansas economics — not a coastal agency on coastal time zones.",
+    "Kansas-based, working at Kansas economics: not a coastal agency on coastal time zones.",
     "Custom code with full ownership transferred at launch. No proprietary platform.",
     "Travel for in-person scoping and milestone meetings is standard for projects of meaningful scope.",
   ],

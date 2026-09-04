@@ -7,7 +7,7 @@ export const caseStudy: CaseStudyData = {
   slug: "ai-trend-behavioral-analysis",
   metaTitle: "AI Trend & Behavioral Analysis",
   metaDescription:
-    "AI models that calculate economic trends and map psychological behavior patterns — the analytical backbone behind Alpha Matrix and MarCommand.",
+    "AI models that calculate economic trends and map psychological behavior patterns, the analytical backbone behind Alpha Matrix and MarCommand.",
   datePublished: "2026-04-14",
   dateModified: "2026-05-20",
 
@@ -16,7 +16,7 @@ export const caseStudy: CaseStudyData = {
   clientNameDisplay: "Capability",
   industry: "AI trend modeling and behavioral analysis",
 
-  h1: "AI Trend & Behavioral Analysis — Patterns No Manual Review Can Find",
+  h1: "AI Trend & Behavioral Analysis: Patterns No Manual Review Can Find",
   subheadline:
     "AI models that calculate economic trends and map psychological behavior patterns by processing market signals, consumer data, and behavioral indicators at scale.",
   oneLine: "Economic trends and behavioral patterns surfaced from raw signal volume",
@@ -31,7 +31,7 @@ export const caseStudy: CaseStudyData = {
   before: {
     heading: "The interesting patterns are below the resolution of manual review.",
     body: [
-      "Manual trend analysis can surface the obvious — a spike in sales, a shift in sentiment, a quarter-over-quarter movement. What it cannot surface are the patterns hiding in correlations between signals: a subtle change in behavioral indicators that historically precedes a market move, a consumer-data shift that maps to a known psychological pattern, an economic indicator combination that has only happened a handful of times.",
+      "Manual trend analysis can surface the obvious: a spike in sales, a shift in sentiment, a quarter-over-quarter movement. What it cannot surface are the patterns hiding in correlations between signals: a subtle change in behavioral indicators that historically precedes a market move, a consumer-data shift that maps to a known psychological pattern, an economic indicator combination that has only happened a handful of times.",
       "AI is built for that resolution. It can process market signals, consumer data, and behavioral indicators across volumes that no human analyst can review, and surface the patterns that emerge from those correlations.",
     ],
   },
@@ -39,7 +39,7 @@ export const caseStudy: CaseStudyData = {
   built: {
     heading: "Models built to find the patterns, configurable per domain.",
     body: [
-      "Preisser Solutions builds AI trend and behavioral analysis models tuned to specific analytical questions. The system processes market signals, consumer behavioral data, and external indicators, then identifies predictive patterns — including the ones that only become visible after the correlations are computed across enough signal volume.",
+      "Preisser Solutions builds AI trend and behavioral analysis models tuned to specific analytical questions. The system processes market signals, consumer behavioral data, and external indicators, then identifies predictive patterns, including the ones that only become visible after the correlations are computed across enough signal volume.",
       "This capability is the analytical backbone behind Alpha Matrix (multi-agent stock analysis) and MarCommand (multi-agent marketing engine). The same models can be configured for adjacent domains: retail demand modeling, churn prediction, customer behavioral segmentation, market-entry analysis, or any other question where the answer lives in patterns across high-volume signals.",
     ],
   },
@@ -57,9 +57,9 @@ export const caseStudy: CaseStudyData = {
       {
         title: "Signal categories",
         items: [
-          "Market signals — price, volume, volatility, options flow",
-          "Consumer behavioral signals — engagement, conversion, attention",
-          "External economic indicators — macro data, sentiment, social trends",
+          "Market signals: price, volume, volatility, options flow",
+          "Consumer behavioral signals: engagement, conversion, attention",
+          "External economic indicators: macro data, sentiment, social trends",
           "Domain-specific signals depending on the question",
         ],
       },
@@ -80,7 +80,7 @@ export const caseStudy: CaseStudyData = {
       value: "Predictive",
       label: "Pattern identification at scale",
       context:
-        "Models surface predictive patterns that emerge from correlations across high-volume signals — patterns below the resolution of manual review.",
+        "Models surface predictive patterns that emerge from correlations across high-volume signals, patterns below the resolution of manual review.",
     },
     {
       value: "Multi-signal",
@@ -92,7 +92,7 @@ export const caseStudy: CaseStudyData = {
       value: "Configurable",
       label: "Adapts to any analytical domain",
       context:
-        "Models are configurable per domain and analytical question — retail demand, churn, market entry, marketing attribution, and more.",
+        "Models are configurable per domain and analytical question: retail demand, churn, market entry, marketing attribution, and more.",
     },
     {
       value: "Internal proof",

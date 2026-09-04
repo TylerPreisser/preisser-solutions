@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Coffeyville, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Coffeyville, Kansas businesses — fixed-price proposals from a Kansas-based development firm.",
+    "Custom websites, web apps, and AI automation for Coffeyville, Kansas businesses: fixed-price proposals from a Kansas-based development firm.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Web design, AI automation, and custom applications for Montgomery County businesses in the Verdigris River industrial corridor.",
     answerParagraph:
-      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Coffeyville, Kansas — a Montgomery County city of approximately 9,000 in southeast Kansas, known for its refining, manufacturing, and agricultural industries near the Oklahoma border. Work is delivered remotely; on-site travel available for larger engagements.",
+      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Coffeyville, Kansas, a Montgomery County city of approximately 9,000 in southeast Kansas, known for its refining, manufacturing, and agricultural industries near the Oklahoma border. Work is delivered remotely; on-site travel available for larger engagements.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Southeast Kansas industrial context — refining, manufacturing, and ag operations along US-166 and US-169.",
+    "Southeast Kansas industrial context: refining, manufacturing, and ag operations along US-166 and US-169.",
     "Custom code with full ownership transferred at launch. No ongoing platform licensing.",
     "Remote-first delivery with on-site travel for projects requiring in-person collaboration.",
   ],

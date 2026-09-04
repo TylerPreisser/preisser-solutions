@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Emporia, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Emporia, Kansas businesses — built by a Kansas development firm with fixed-price proposals.",
+    "Custom websites, web apps, and AI automation for Emporia, Kansas businesses: built by a Kansas development firm with fixed-price proposals.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Web design, AI automation, and custom applications for Lyon County businesses at the I-35 and US-50 corridor in the Flint Hills.",
     answerParagraph:
-      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Emporia, Kansas — a Lyon County city of approximately 25,000 at the intersection of I-35 and US-50, gateway to the Flint Hills. Emporia is home to Emporia State University, significant healthcare, and regional manufacturing. Remote delivery with on-site travel available.",
+      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Emporia, Kansas, a Lyon County city of approximately 25,000 at the intersection of I-35 and US-50, gateway to the Flint Hills. Emporia is home to Emporia State University, significant healthcare, and regional manufacturing. Remote delivery with on-site travel available.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Flint Hills regional context — university community, healthcare, manufacturing, and ag operators along I-35.",
+    "Flint Hills regional context: university community, healthcare, manufacturing, and ag operators along I-35.",
     "Custom code with full ownership at launch. No SaaS dependency or ongoing licensing.",
     "Fixed-price proposals ensure no scope creep. Cost agreed before work begins.",
   ],
@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do you offer local SEO for Emporia businesses?",
       answer:
-        "Yes. Local SEO — Google Business Profile, local pack, citations, schema markup — and AI-search visibility on ChatGPT, Perplexity, and Gemini are both offered.",
+        "Yes. Local SEO (Google Business Profile, local pack, citations, schema markup), and AI-search visibility on ChatGPT, Perplexity, and Gemini are both offered.",
     },
     {
       question: "How far is Emporia from Hays?",

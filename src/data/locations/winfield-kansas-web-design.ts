@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Winfield, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Winfield, Kansas businesses — Kansas-based firm with fixed-price proposals and full code ownership.",
+    "Custom websites, web apps, and AI automation for Winfield, Kansas businesses: Kansas-based firm with fixed-price proposals and full code ownership.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Web design, AI automation, and custom applications for Cowley County businesses at the US-77 and US-160 junction in south-central Kansas.",
     answerParagraph:
-      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Winfield, Kansas — the county seat of Cowley County in south-central Kansas, approximately 50 miles south of Wichita on US-77. Winfield hosts Southwestern College and significant manufacturing and agricultural activity. Remote delivery with on-site travel available.",
+      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Winfield, Kansas, the county seat of Cowley County in south-central Kansas, approximately 50 miles south of Wichita on US-77. Winfield hosts Southwestern College and significant manufacturing and agricultural activity. Remote delivery with on-site travel available.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "South-central Kansas context — Cowley County ag, manufacturing, and education businesses along US-77.",
+    "South-central Kansas context: Cowley County ag, manufacturing, and education businesses along US-77.",
     "Custom code with full ownership at launch. No SaaS platform dependency or recurring license.",
     "Remote delivery from Hays with on-site travel for projects of sufficient scope.",
   ],
@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do you offer local SEO for Winfield, Kansas businesses?",
       answer:
-        "Yes. Local SEO and AI-search visibility — citations on ChatGPT, Perplexity, and Google AI Overviews — are both offered.",
+        "Yes. Local SEO and AI-search visibility (citations on ChatGPT, Perplexity, and Google AI Overviews) are both offered.",
     },
     {
       question: "Is Preisser Solutions closer to Winfield or Wichita?",

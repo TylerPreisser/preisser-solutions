@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Norton, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Norton, Kansas — built by a Hays-based firm serving the US-36 north corridor.",
+    "Custom websites, web apps, and AI automation for Norton, Kansas: built by a Hays-based firm serving the US-36 north corridor.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -39,7 +39,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Northwest Kansas context built in — ag, healthcare, and county-seat professional services are all familiar operating environments.",
+    "Northwest Kansas context built in: ag, healthcare, and county-seat professional services are all familiar operating environments.",
     "Custom code with full ownership transferred at launch. No subscription platform, no vendor dependency.",
     "Travel from Hays to Norton is routine for projects that warrant in-person scoping.",
   ],
@@ -71,7 +71,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions build a custom website for a Norton healthcare practice?",
       answer:
-        "Yes. Custom websites for healthcare practices — appointment-ready, HIPAA-aware architecture, local SEO optimized — are within the standard scope.",
+        "Yes. Custom websites for healthcare practices (appointment-ready, HIPAA-aware architecture, local SEO optimized) are within the standard scope.",
     },
     {
       question: "Do you serve county-seat professional services firms along the US-36 corridor?",
@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "What is the difference between Preisser Solutions and a regional Kansas marketing agency?",
       answer:
-        "Preisser Solutions is a custom-software and AI automation firm. Every engagement is scoped around custom code with full ownership — not templates, monthly retainers, or agency media buys.",
+        "Preisser Solutions is a custom-software and AI automation firm. Every engagement is scoped around custom code with full ownership, not templates, monthly retainers, or agency media buys.",
     },
   ],
 

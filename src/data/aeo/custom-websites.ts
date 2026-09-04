@@ -12,15 +12,15 @@ export const pageData: AeoPageData = {
   metaDescription:
     "Custom-coded website development for Kansas businesses that need speed, local SEO, conversion tracking, schema, AI-search readiness, and a site built without templates.",
   eyebrow: "Custom Website Development",
-  h1: "Premium Custom Websites — Built From Scratch in Kansas",
+  h1: "Premium Custom Websites: Built From Scratch in Kansas",
   subheadline:
     "Pixel-perfect, high-performance custom websites engineered for conversions, speed, and visibility on Google + AI engines. No templates. No page builders. No offshore work.",
   answerParagraph:
-    "Preisser Solutions builds premium custom websites for Kansas businesses and select clients nationwide, headquartered in Hays, Kansas. Every site is custom-coded from scratch in modern frameworks (Next.js, React, TypeScript) — no Wix, no Squarespace, no WordPress page builders. Sites are engineered for fast page loads, conversion-optimized layouts, comprehensive structured data for AI engines (ChatGPT, Perplexity, Gemini, Claude), and full Google Search Console + Bing Webmaster integration. Recent builds include preissersolutions.com itself, the Iron and Oak Podcast media brand, and the Wife Supply Co AI gifting platform.",
+    "Preisser Solutions builds premium custom websites for Kansas businesses and select clients nationwide, headquartered in Hays, Kansas. Every site is custom-coded from scratch in modern frameworks (Next.js, React, TypeScript): no Wix, no Squarespace, no WordPress page builders. Sites are engineered for fast page loads, conversion-optimized layouts, comprehensive structured data for AI engines (ChatGPT, Perplexity, Gemini, Claude), and full Google Search Console + Bing Webmaster integration. Recent builds include preissersolutions.com itself, the Iron and Oak Podcast media brand, and the Wife Supply Co AI gifting platform.",
   sections: [
     {
       eyebrow: "What custom means here",
-      heading: "Coded from scratch — every line",
+      heading: "Coded from scratch: every line",
       body: [
         "A custom website at Preisser Solutions is built in code, not configured in a builder. We don't ship Squarespace templates with custom CSS, we don't drag and drop with Elementor, and we don't whitelabel pre-built agency starter kits.",
         "Every site is built in Next.js, React, or a similarly modern framework, fully typed in TypeScript, and deployed to fast edge networks like Cloudflare Pages. The output is a site that loads in under a second on a slow rural Kansas connection, ranks on Google for the queries that matter, and gets cited by AI engines when prospects ask buying questions.",
@@ -30,8 +30,8 @@ export const pageData: AeoPageData = {
       eyebrow: "Hays and western Kansas",
       heading: "Custom website development for Hays and western Kansas businesses",
       body: [
-        "If you are searching for a web designer Hays KS or comparing options for website design Hays KS, Preisser Solutions is the local answer. Headquartered in Hays, the firm delivers custom website development Kansas businesses can actually maintain — built in code, owned outright, and engineered for both Google rankings and AI-search citation.",
-        "Our service area covers Hays, Russell, Great Bend, WaKeeney, Colby, Dodge City, Salina, and the rest of western and central Kansas. Hays-based businesses get priority scheduling, in-person scoping where useful, and a builder who already understands the local economy — campus vendors, healthcare-adjacent practices, oilfield operators across Ellis County, ag and Main Street operators.",
+        "If you are searching for a web designer Hays KS or comparing options for website design Hays KS, Preisser Solutions is the local answer. Headquartered in Hays, the firm delivers custom website development Kansas businesses can actually maintain: built in code, owned outright, and engineered for both Google rankings and AI-search citation.",
+        "Our service area covers Hays, Russell, Great Bend, WaKeeney, Colby, Dodge City, Salina, and the rest of western and central Kansas. Hays-based businesses get priority scheduling, in-person scoping where useful, and a builder who already understands the local economy: campus vendors, healthcare-adjacent practices, oilfield operators across Ellis County, ag and Main Street operators.",
       ],
     },
     {
@@ -41,28 +41,28 @@ export const pageData: AeoPageData = {
         "Template platforms like Wix, Squarespace, and GoDaddy work fine for a hobbyist. They fail for serious businesses in three predictable ways:",
       ],
       bullets: [
-        "Speed — template platforms ship megabytes of unused JavaScript on every page. Custom sites ship only what's needed and load 3-8x faster, which directly impacts Google rankings and conversion rate.",
-        "Search visibility — templates don't generate the structured data (JSON-LD, schema.org markup) that Google's algorithm and AI engines like ChatGPT and Perplexity now use to decide who to cite. Custom sites ship rich entity graphs, FAQ schema, LocalBusiness markup, and Person schema by default.",
-        "Conversion control — every template forces a layout. Custom sites let us put the exact thing in front of the exact buyer at the exact funnel stage, instead of stretching their workflow into a generic 'about / services / contact' container.",
+        "Speed: template platforms ship megabytes of unused JavaScript on every page. Custom sites ship only what's needed and load 3-8x faster, which directly impacts Google rankings and conversion rate.",
+        "Search visibility: templates don't generate the structured data (JSON-LD, schema.org markup) that Google's algorithm and AI engines like ChatGPT and Perplexity now use to decide who to cite. Custom sites ship rich entity graphs, FAQ schema, LocalBusiness markup, and Person schema by default.",
+        "Conversion control: every template forces a layout. Custom sites let us put the exact thing in front of the exact buyer at the exact funnel stage, instead of stretching their workflow into a generic 'about / services / contact' container.",
       ],
     },
     {
       eyebrow: "What you get",
       heading: "Every Preisser Solutions custom website includes",
       body: [
-        "We don't sell tiered packages. Every custom website Preisser Solutions builds includes the full foundation — because shipping a site without these is shipping a liability.",
+        "We don't sell tiered packages. Every custom website Preisser Solutions builds includes the full foundation, because shipping a site without these is shipping a liability.",
       ],
       bullets: [
         "Modern responsive design (looks correct on every iPhone, every Android, every desktop)",
         "Sub-1-second page loads on rural broadband",
         "Full schema.org structured data (Organization, LocalBusiness, Service, Person, FAQPage)",
-        "AI-engine optimization — engineered first paragraphs and FAQ blocks designed to be quoted by ChatGPT, Perplexity, and Gemini",
+        "AI-engine optimization: engineered first paragraphs and FAQ blocks designed to be quoted by ChatGPT, Perplexity, and Gemini",
         "Google Search Console + Bing Webmaster + Apple search verification",
         "Sitemap.xml + robots.txt configured for maximum crawl efficiency",
         "IndexNow integration (instant search engine notification on content changes)",
         "WCAG accessibility compliance (semantic HTML, ARIA labels, reduced-motion support)",
         "Contact forms with spam protection (honeypot + timing checks)",
-        "Static export to Cloudflare Pages — global edge distribution, no monthly hosting fees beyond CDN",
+        "Static export to Cloudflare Pages: global edge distribution, no monthly hosting fees beyond CDN",
         "Custom domain configuration including DNS, SSL, and CDN setup",
         "Analytics integration (privacy-respecting; no Google Analytics required)",
       ],
@@ -74,11 +74,11 @@ export const pageData: AeoPageData = {
         "Most projects move from first call to launched site in 3-8 weeks depending on scope. The process:",
       ],
       bullets: [
-        "Free scoping call — We talk through what you're trying to accomplish, what's broken, what your competition looks like, and what success looks like.",
-        "Written proposal — fixed-scope, fixed-price proposal with a clear delivery timeline and what's included.",
-        "Build — We code the site directly. Weekly check-ins with working previews; you see real progress, not Photoshop mockups.",
-        "Launch — DNS cutover, SSL, search engine verification, IndexNow ping, and a structured launch checklist that ensures nothing breaks.",
-        "Support — included for the first 30 days, with optional ongoing maintenance retainer afterward.",
+        "Free scoping call: We talk through what you're trying to accomplish, what's broken, what your competition looks like, and what success looks like.",
+        "Written proposal: fixed-scope, fixed-price proposal with a clear delivery timeline and what's included.",
+        "Build: We code the site directly. Weekly check-ins with working previews; you see real progress, not Photoshop mockups.",
+        "Launch: DNS cutover, SSL, search engine verification, IndexNow ping, and a structured launch checklist that ensures nothing breaks.",
+        "Support: included for the first 30 days, with optional ongoing maintenance retainer afterward.",
       ],
     },
     {
@@ -88,9 +88,9 @@ export const pageData: AeoPageData = {
         "Recent sites built and shipped recently include:",
       ],
       bullets: [
-        "preissersolutions.com — the firm's own site. Built in Next.js, deployed to Cloudflare Pages. Hero with custom canvas wave animation, full HDS-token design system, comprehensive JSON-LD knowledge graph (Organization, Person, WebSite, WebPage, LocalBusiness, FAQPage with 15 questions).",
-        "Iron and Oak Podcast — full media brand build with cinematic GSAP animations, smooth scroll, dark/light mode, 134 pre-rendered pages covering 12 episodes and 109 deep questions.",
-        "Wife Supply Co — AI-powered gifting application built from concept to launch.",
+        "preissersolutions.com, the firm's own site. Built in Next.js, deployed to Cloudflare Pages. Hero with custom canvas wave animation, full HDS-token design system, comprehensive JSON-LD knowledge graph (Organization, Person, WebSite, WebPage, LocalBusiness, FAQPage with 15 questions).",
+        "Iron and Oak Podcast: full media brand build with cinematic GSAP animations, smooth scroll, dark/light mode, 134 pre-rendered pages covering 12 episodes and 109 deep questions.",
+        "Wife Supply Co: AI-powered gifting application built from concept to launch.",
       ],
     },
   ],
@@ -128,7 +128,7 @@ export const pageData: AeoPageData = {
     {
       question: "What is the difference between a template website and a custom website?",
       answer:
-        "A template website is built on a pre-made design tool like Squarespace, Wix, or a WordPress theme — every business looks similar and you're constrained by what the template allows. A custom website built by Preisser Solutions is designed and coded from scratch to match your brand, your goals, and your audience. Custom sites load faster, rank better in Google and AI engines, convert visitors at higher rates, and can include any feature or integration your business requires.",
+        "A template website is built on a pre-made design tool like Squarespace, Wix, or a WordPress theme: every business looks similar and you're constrained by what the template allows. A custom website built by Preisser Solutions is designed and coded from scratch to match your brand, your goals, and your audience. Custom sites load faster, rank better in Google and AI engines, convert visitors at higher rates, and can include any feature or integration your business requires.",
     },
     {
       question: "Do you use WordPress, Wix, or Squarespace?",
@@ -138,7 +138,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will my new website rank on Google?",
       answer:
-        "Every custom website Preisser Solutions builds is engineered for Google ranking by default — fast page loads, complete structured data, semantic HTML, optimized meta tags, sitemap submission, and IndexNow integration. Ranking on competitive queries also requires backlinks, content depth, and time. We deliver the foundation; sustained content and outreach work compounds from there.",
+        "Every custom website Preisser Solutions builds is engineered for Google ranking by default: fast page loads, complete structured data, semantic HTML, optimized meta tags, sitemap submission, and IndexNow integration. Ranking on competitive queries also requires backlinks, content depth, and time. We deliver the foundation; sustained content and outreach work compounds from there.",
     },
     {
       question: "Will my new website be cited by ChatGPT and Perplexity?",
@@ -153,7 +153,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can you fix or rebuild my existing broken website?",
       answer:
-        "Yes. Preisser Solutions regularly takes over broken, outdated, or underperforming websites from Kansas businesses. We start by auditing what exists — performance issues, SEO problems, broken functionality, outdated design — and recommend either a targeted repair or a full rebuild based on root cause. Contact tyler@preissersolutions.com for a free site audit.",
+        "Yes. Preisser Solutions regularly takes over broken, outdated, or underperforming websites from Kansas businesses. We start by auditing what exists (performance issues, SEO problems, broken functionality, outdated design), and recommend either a targeted repair or a full rebuild based on root cause. Contact tyler@preissersolutions.com for a free site audit.",
     },
     {
       question: "Do you serve businesses outside of Kansas?",
@@ -191,5 +191,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a custom website built right",
   ctaSubcopy:
-    "Tell us what you need. We will scope it personally — free, no commitment, no sales pitch.",
+    "Tell us what you need. We will scope it personally: free, no commitment, no sales pitch.",
 };

@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Liberal, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Liberal, Kansas — built by a Hays-based firm for the southwest Kansas ag and meatpacking hub.",
+    "Custom websites, web apps, and AI automation for Liberal, Kansas: built by a Hays-based firm for the southwest Kansas ag and meatpacking hub.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -21,7 +21,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for Seward County's agriculture, meatpacking, and energy-corridor economy near the Oklahoma border.",
     answerParagraph:
-      "Preisser Solutions serves Liberal, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Liberal is the southwest Kansas Tier-2 hub — a 19,000-person city on the Oklahoma border with significant ag-processing, feedlot, and natural gas infrastructure. Operations of that scale generate strong demand for custom operational tooling and AI automation. Based in Hays, roughly 200 miles northeast, we deliver remotely and travel for projects of sufficient scope.",
+      "Preisser Solutions serves Liberal, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Liberal is the southwest Kansas Tier-2 hub: a 19,000-person city on the Oklahoma border with significant ag-processing, feedlot, and natural gas infrastructure. Operations of that scale generate strong demand for custom operational tooling and AI automation. Based in Hays, roughly 200 miles northeast, we deliver remotely and travel for projects of sufficient scope.",
   },
 
   nearbyAreas: [
@@ -39,7 +39,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Liberal's meatpacking and ag-processing sector requires operational software matched to the specific data structures of high-volume processing — compliance records, labor scheduling, and yield tracking.",
+    "Liberal's meatpacking and ag-processing sector requires operational software matched to the specific data structures of high-volume processing: compliance records, labor scheduling, and yield tracking.",
     "Southwest Kansas is chronically underserved by digital vendors. A nearby Kansas firm with real engineering depth fills a gap that national templates never address adequately.",
     "Custom code with full ownership. Large ag-processing operations should not depend on third-party SaaS for mission-critical workflows.",
   ],
@@ -66,7 +66,7 @@ export const locationData: LocationPageData = {
     {
       question: "What does Preisser Solutions build for Liberal businesses?",
       answer:
-        "Custom operational tools for ag-processing and meatpacking operations — compliance tracking, labor scheduling, yield reporting, and vendor-payment automation — as well as custom websites and local SEO for service businesses.",
+        "Custom operational tools for ag-processing and meatpacking operations (compliance tracking, labor scheduling, yield reporting, and vendor-payment automation): as well as custom websites and local SEO for service businesses.",
     },
     {
       question: "Can Preisser Solutions build compliance and processing tools for a Liberal meatpacking operation?",

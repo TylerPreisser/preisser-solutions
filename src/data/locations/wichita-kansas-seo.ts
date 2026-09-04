@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "SEO & AI Search in Wichita, KS",
   metaDescription:
-    "Local SEO and AI search optimization for Wichita, Kansas businesses — get found on Google, ChatGPT, Perplexity, and Gemini.",
+    "Local SEO and AI search optimization for Wichita, Kansas businesses: get found on Google, ChatGPT, Perplexity, and Gemini.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -23,9 +23,9 @@ export const locationData: LocationPageData = {
     eyebrow: "SEO & AI Search in Wichita, Kansas",
     h1: "Local SEO and AI Search Optimization for Wichita",
     subheadline:
-      "Get found on Google, Google AI Overviews, ChatGPT, Perplexity, and Gemini — local SEO and AI-search optimization for Wichita businesses.",
+      "Get found on Google, Google AI Overviews, ChatGPT, Perplexity, and Gemini: local SEO and AI-search optimization for Wichita businesses.",
     answerParagraph:
-      "Preisser Solutions delivers local SEO and AI-search optimization for businesses in Wichita, Kansas — Kansas's largest metro, a Sedgwick County market of 397,000. Services include Google Business Profile optimization, local pack strategy, citation building, schema markup, and AI-search citation engineering so your business is cited when ChatGPT, Perplexity, Gemini, and Google AI Overviews answer questions about your industry in Wichita.",
+      "Preisser Solutions delivers local SEO and AI-search optimization for businesses in Wichita, Kansas: Kansas's largest metro, a Sedgwick County market of 397,000. Services include Google Business Profile optimization, local pack strategy, citation building, schema markup, and AI-search citation engineering so your business is cited when ChatGPT, Perplexity, Gemini, and Google AI Overviews answer questions about your industry in Wichita.",
   },
 
   nearbyAreas: [
@@ -43,9 +43,9 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Wichita is a competitive market — aerospace, healthcare, and professional services firms all compete for local search real estate.",
+    "Wichita is a competitive market: aerospace, healthcare, and professional services firms all compete for local search real estate.",
     "AI-search visibility is a separate discipline from traditional SEO. Preisser Solutions engineers both simultaneously.",
-    "Schema markup, content architecture, and authoritative internal linking are implemented as code — not as plugin configurations.",
+    "Schema markup, content architecture, and authoritative internal linking are implemented as code, not as plugin configurations.",
   ],
 
   industriesServed: [
@@ -71,22 +71,22 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions offer local SEO for Wichita?",
       answer:
-        "Yes. Local SEO — Google Business Profile, local pack, citations, schema markup — and AI-search citation engineering are both explicit service lines for Wichita businesses.",
+        "Yes. Local SEO (Google Business Profile, local pack, citations, schema markup), and AI-search citation engineering are both explicit service lines for Wichita businesses.",
     },
     {
       question: "How competitive is SEO in the Wichita market?",
       answer:
-        "Wichita is Kansas's largest market. Competition for local search real estate is meaningful in aerospace, healthcare, financial services, and professional services — but most competitors are not yet optimized for AI search.",
+        "Wichita is Kansas's largest market. Competition for local search real estate is meaningful in aerospace, healthcare, financial services, and professional services, but most competitors are not yet optimized for AI search.",
     },
     {
       question: "Can Preisser Solutions help a Wichita business rank on ChatGPT?",
       answer:
-        "Yes. AI-search citation engineering — the technical and content work required to be cited by ChatGPT, Perplexity, and Gemini — is an explicit service. ChatGPT does not have a traditional ranking; it cites authoritative sources, which requires different optimization.",
+        "Yes. AI-search citation engineering (the technical and content work required to be cited by ChatGPT, Perplexity, and Gemini) is an explicit service. ChatGPT does not have a traditional ranking; it cites authoritative sources, which requires different optimization.",
     },
     {
       question: "Does Preisser Solutions build websites as part of Wichita SEO engagements?",
       answer:
-        "Typically yes. The highest-leverage SEO improvements require control over site architecture, schema markup, and page content — which is easiest when we also build or rebuild the site.",
+        "Typically yes. The highest-leverage SEO improvements require control over site architecture, schema markup, and page content: which is easiest when we also build or rebuild the site.",
     },
   ],
 

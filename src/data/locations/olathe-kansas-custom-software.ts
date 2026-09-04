@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Olathe, KS Custom Software Development",
   metaDescription:
-    "Custom software, AI automation, and web applications for Olathe, Kansas — built by a Kansas-based firm for the Johnson County manufacturing and healthcare market.",
+    "Custom software, AI automation, and web applications for Olathe, Kansas: built by a Kansas-based firm for the Johnson County manufacturing and healthcare market.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -19,9 +19,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Olathe, Kansas",
     h1: "Custom Software Development for Olathe Businesses",
     subheadline:
-      "Custom web applications, AI automation, and operational dashboards for Olathe's manufacturing and healthcare economy — built at Kansas pricing, not KC metro agency rates.",
+      "Custom web applications, AI automation, and operational dashboards for Olathe's manufacturing and healthcare economy: built at Kansas pricing, not KC metro agency rates.",
     answerParagraph:
-      "Preisser Solutions serves Olathe, Kansas businesses with custom software, AI automation, custom web applications, dashboards, and local SEO and AI-search optimization. Olathe is Johnson County's industrial anchor — a 145,000-person city with a strong manufacturing, distribution, and healthcare base that generates persistent demand for custom operational tooling. Based in Hays, roughly 280 miles west, we deliver remotely and travel for projects of meaningful scope.",
+      "Preisser Solutions serves Olathe, Kansas businesses with custom software, AI automation, custom web applications, dashboards, and local SEO and AI-search optimization. Olathe is Johnson County's industrial anchor: a 145,000-person city with a strong manufacturing, distribution, and healthcare base that generates persistent demand for custom operational tooling. Based in Hays, roughly 280 miles west, we deliver remotely and travel for projects of meaningful scope.",
   },
 
   nearbyAreas: [
@@ -39,7 +39,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Olathe's manufacturing and healthcare operations need custom internal tools — not the marketing retainers that Johnson County agencies typically sell.",
+    "Olathe's manufacturing and healthcare operations need custom internal tools, not the marketing retainers that Johnson County agencies typically sell.",
     "A Kansas-based firm at Kansas economics. Custom software from Hays is structurally less expensive than a KC metro agency on the same scope, with the same engineering quality.",
     "Custom code with full ownership. Johnson County businesses with any proprietary IP or operational data benefit significantly from full-ownership software vs. SaaS lock-in.",
   ],

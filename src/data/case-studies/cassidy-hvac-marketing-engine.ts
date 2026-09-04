@@ -4,9 +4,9 @@ import type { CaseStudyData } from "@/types/case-study";
 // Named client with consent. See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "cassidy-hvac-marketing-engine",
-  metaTitle: "Cassidy HVAC — 5x Organic Reach",
+  metaTitle: "Cassidy HVAC: 5x Organic Reach",
   metaDescription:
-    "Cassidy HVAC replaced an underperforming agency with an autonomous AI content engine — 5x organic reach in 30 days, fully hands-off operation.",
+    "Cassidy HVAC replaced an underperforming agency with an autonomous AI content engine: 5x organic reach in 30 days, fully hands-off operation.",
   datePublished: "2024-11-04",
   dateModified: "2026-05-20",
 
@@ -15,7 +15,7 @@ export const caseStudy: CaseStudyData = {
   clientNameDisplay: "Cassidy HVAC",
   industry: "HVAC services",
 
-  h1: "Cassidy HVAC — 5x Organic Reach in 30 Days",
+  h1: "Cassidy HVAC: 5x Organic Reach in 30 Days",
   subheadline:
     "Replaced an underperforming outsourced agency with a proprietary AI content engine that scrapes trends, generates marketing visuals, and publishes daily without staff input.",
   oneLine: "5x organic reach in 30 days, outside agency replaced",
@@ -31,7 +31,7 @@ export const caseStudy: CaseStudyData = {
     heading: "Paying an agency, getting generic content, watching the numbers stay flat.",
     body: [
       "Cassidy HVAC was paying an outside marketing agency to handle their social presence. Content was being produced and posted, but it was generic, untargeted, and showed no measurable lift in reach or inbound activity.",
-      "The agency invoice kept arriving every month. Reach, engagement, and lead flow stayed flat. The relationship was expensive and unproductive — but pulling content back in-house meant adding marketing headcount nobody had time to manage.",
+      "The agency invoice kept arriving every month. Reach, engagement, and lead flow stayed flat. The relationship was expensive and unproductive, but pulling content back in-house meant adding marketing headcount nobody had time to manage.",
     ],
   },
 
@@ -39,7 +39,7 @@ export const caseStudy: CaseStudyData = {
     heading: "A proprietary AI engine that runs the entire content pipeline.",
     body: [
       "Preisser Solutions built a proprietary AI-powered social media engine for Cassidy HVAC. The system scrapes trending content from across the HVAC market, generates custom marketing visuals using persuasion-psychology principles (scarcity, social proof, authority, urgency framing), and publishes to Facebook and Instagram daily.",
-      "It runs fully hands-off. Office staff can opt into an email approval workflow if they want a gate before content goes live — or let the engine post autonomously. Either way, the agency retainer was retired and content quality went up.",
+      "It runs fully hands-off. Office staff can opt into an email approval workflow if they want a gate before content goes live, or let the engine post autonomously. Either way, the agency retainer was retired and content quality went up.",
     ],
   },
 
@@ -50,7 +50,7 @@ export const caseStudy: CaseStudyData = {
       "AI visual and copy generation tuned on persuasion-psychology principles",
       "Automated daily publishing to Facebook and Instagram on optimal schedules",
       "Optional owner email approval gate (one-click approve, or full autonomy)",
-      "Zero staff time post-deployment — no captions, no image sourcing, no scheduling",
+      "Zero staff time post-deployment: no captions, no image sourcing, no scheduling",
       "Engagement tracking feeds back into next-day content selection",
     ],
     subsections: [
@@ -66,10 +66,10 @@ export const caseStudy: CaseStudyData = {
       {
         title: "What it replaced",
         items: [
-          "External marketing agency retainer — eliminated",
-          "Manual content briefing and approval cycles — eliminated",
+          "External marketing agency retainer: eliminated",
+          "Manual content briefing and approval cycles: eliminated",
           "In-house marketing hire that would otherwise have been required",
-          "Inconsistent posting cadence — replaced with daily autonomous output",
+          "Inconsistent posting cadence: replaced with daily autonomous output",
         ],
       },
     ],
@@ -92,13 +92,13 @@ export const caseStudy: CaseStudyData = {
       value: "1",
       label: "Outside marketing agency retired",
       context:
-        "The external marketing agency relationship was retired entirely — the engine replaced their function at higher quality.",
+        "The external marketing agency relationship was retired entirely, the engine replaced their function at higher quality.",
     },
     {
       value: "33%",
       label: "Email open rate on adjacent campaigns",
       context:
-        "Companion email campaigns produced by the engine achieved a 33% open rate — well above HVAC industry averages.",
+        "Companion email campaigns produced by the engine achieved a 33% open rate, well above HVAC industry averages.",
     },
   ],
 

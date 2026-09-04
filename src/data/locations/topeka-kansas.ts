@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Custom Software in Topeka, Kansas",
   metaDescription:
-    "Custom software, AI automation, and custom websites for Topeka, Kansas businesses — based in Hays, KS, delivered statewide.",
+    "Custom software, AI automation, and custom websites for Topeka, Kansas businesses: based in Hays, KS, delivered statewide.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "A Kansas-based firm working at Kansas economics — not a coastal agency working on coastal time zones.",
+    "A Kansas-based firm working at Kansas economics: not a coastal agency working on coastal time zones.",
     "Custom code with full ownership transferred at launch. No proprietary platform behind the work.",
     "Travel for in-person scoping and milestone meetings is standard practice for Topeka engagements.",
   ],
@@ -76,7 +76,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions help with AI document processing for Topeka professional services firms?",
       answer:
-        "Yes. AI document processing — extracting structured data from invoices, contracts, forms, permits, and reports — is a packaged service offering and one of the most-shipped builds.",
+        "Yes. AI document processing (extracting structured data from invoices, contracts, forms, permits, and reports) is a packaged service offering and one of the most-shipped builds.",
     },
     {
       question: "Do you build custom dashboards for Topeka operators?",

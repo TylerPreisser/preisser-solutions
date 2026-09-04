@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Custom Software in Garden City, Kansas",
   metaDescription:
-    "Custom software, AI automation, and custom websites for Garden City, Kansas businesses — based in Hays, KS, delivered statewide.",
+    "Custom software, AI automation, and custom websites for Garden City, Kansas businesses: based in Hays, KS, delivered statewide.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for southwest Kansas ag, energy, and operations.",
     answerParagraph:
-      "Preisser Solutions serves Garden City, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays — roughly two and a half hours northeast on US-83 — we deliver remotely and travel for projects of sufficient scope. Custom code, full ownership, fixed-price proposals.",
+      "Preisser Solutions serves Garden City, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly two and a half hours northeast on US-83): we deliver remotely and travel for projects of sufficient scope. Custom code, full ownership, fixed-price proposals.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Western-Kansas firm that understands the operating context — ag, energy, distribution — without needing it explained over Zoom.",
+    "Western-Kansas firm that understands the operating context (ag, energy, distribution): without needing it explained over Zoom.",
     "Custom code with full ownership. Your repo, your infrastructure, no proprietary platform.",
     "Travel for in-person scoping and milestone meetings is standard for projects of meaningful scope.",
   ],
@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do you offer AI search and local SEO in Garden City?",
       answer:
-        "Yes. Local SEO and AI-search visibility — citations on Google AI Overviews, ChatGPT, Perplexity, and Gemini — are an explicit service line.",
+        "Yes. Local SEO and AI-search visibility (citations on Google AI Overviews, ChatGPT, Perplexity, and Gemini) are an explicit service line.",
     },
     {
       question: "What is the difference between Preisser Solutions and a Garden City marketing agency?",

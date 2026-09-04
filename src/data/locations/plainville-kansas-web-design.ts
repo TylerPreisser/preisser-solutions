@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Plainville, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Plainville, Kansas — a nearby Hays-based firm with fixed-price proposals.",
+    "Custom websites, web apps, and AI automation for Plainville, Kansas, a nearby Hays-based firm with fixed-price proposals.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Web design, AI automation, and custom applications for Rooks County businesses along the US-183 and US-270 corridors in northwest Kansas.",
     answerParagraph:
-      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Plainville, Kansas — the county seat of Rooks County in northwest Kansas, approximately 55 miles north of Hays on US-183. Agriculture, energy, and trades operations dominate the local economy. Remote delivery from Hays; on-site travel standard for meaningful engagements.",
+      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Plainville, Kansas, the county seat of Rooks County in northwest Kansas, approximately 55 miles north of Hays on US-183. Agriculture, energy, and trades operations dominate the local economy. Remote delivery from Hays; on-site travel standard for meaningful engagements.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Northwest Kansas context — Rooks County ag, energy, and trades businesses along the US-183 corridor.",
+    "Northwest Kansas context: Rooks County ag, energy, and trades businesses along the US-183 corridor.",
     "Hays-based firm. Travel to Plainville is a short 55-mile drive. In-person scoping is practical.",
     "Custom code, fixed-price proposals, full ownership at launch.",
   ],

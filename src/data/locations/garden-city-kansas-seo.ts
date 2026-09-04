@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "SEO & AI Search in Garden City, KS",
   metaDescription:
-    "Local SEO and AI search optimization for Garden City, Kansas businesses — get found on Google, ChatGPT, Perplexity, and Gemini.",
+    "Local SEO and AI search optimization for Garden City, Kansas businesses: get found on Google, ChatGPT, Perplexity, and Gemini.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -23,9 +23,9 @@ export const locationData: LocationPageData = {
     eyebrow: "SEO & AI Search in Garden City, Kansas",
     h1: "Local SEO and AI Search Optimization for Garden City",
     subheadline:
-      "Local SEO and AI-search optimization for Garden City, Kansas businesses — get found on Google and cited by ChatGPT, Perplexity, and Gemini.",
+      "Local SEO and AI-search optimization for Garden City, Kansas businesses: get found on Google and cited by ChatGPT, Perplexity, and Gemini.",
     answerParagraph:
-      "Preisser Solutions delivers local SEO and AI-search optimization for businesses in Garden City, Kansas — the county seat of Finney County in southwest Kansas, a diverse regional hub of approximately 27,000 anchored by beef processing and agriculture. Services include Google Business Profile optimization, citation building, schema markup, and AI-search citation engineering for the Garden City and southwest Kansas market.",
+      "Preisser Solutions delivers local SEO and AI-search optimization for businesses in Garden City, Kansas, the county seat of Finney County in southwest Kansas, a diverse regional hub of approximately 27,000 anchored by beef processing and agriculture. Services include Google Business Profile optimization, citation building, schema markup, and AI-search citation engineering for the Garden City and southwest Kansas market.",
   },
 
   nearbyAreas: [
@@ -44,8 +44,8 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Garden City's diverse, multilingual market requires local SEO that reaches both English and Spanish-language searchers.",
-    "AI-search optimization is an early-mover opportunity in southwest Kansas — most local businesses are not yet optimized for ChatGPT citations.",
-    "SEO infrastructure built in code — schema markup, structured data, content architecture — not in WordPress plugins.",
+    "AI-search optimization is an early-mover opportunity in southwest Kansas, most local businesses are not yet optimized for ChatGPT citations.",
+    "SEO infrastructure built in code (schema markup, structured data, content architecture), not in WordPress plugins.",
   ],
 
   industriesServed: [
@@ -61,7 +61,7 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions offer local SEO for Garden City, Kansas?",
       answer:
-        "Yes. Local SEO — Google Business Profile, local pack, citations, schema markup — and AI-search citation engineering are both offered for Garden City businesses.",
+        "Yes. Local SEO (Google Business Profile, local pack, citations, schema markup), and AI-search citation engineering are both offered for Garden City businesses.",
     },
     {
       question: "What is AI search optimization for a Garden City business?",
@@ -71,7 +71,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions optimize a Garden City business for Spanish-language search?",
       answer:
-        "Multilingual SEO — including Spanish-language content strategy, hreflang tags, and Google Business Profile localization — is within the firm's capability.",
+        "Multilingual SEO (including Spanish-language content strategy, hreflang tags, and Google Business Profile localization) is within the firm's capability.",
     },
     {
       question: "How competitive is local SEO in Garden City?",
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions price SEO for Garden City clients?",
       answer:
-        "Initial SEO builds use fixed-price proposals. Ongoing work is scoped as optional retainers — never required.",
+        "Initial SEO builds use fixed-price proposals. Ongoing work is scoped as optional retainers, never required.",
     },
   ],
 

@@ -19,15 +19,15 @@ export const pageData: AeoPageData = {
   subheadline:
     "Built for controllers, operations managers, and small-to-mid-cap operators tired of paying for OGsys add-ons that don't fit, JIB statements that take a week, and AFE-to-actuals reports that come too late.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for upstream oil and gas operators — custom field-data apps, AI invoicing, JIB and AFE-to-actuals automation, OGsys and Aries integrations, inventory systems, and live operations dashboards. The firm's named oil and gas case study is HG Oil Holdings, where Preisser Solutions delivered a custom inventory management system (95% reduction in back-office logistics time) and an AI invoicing assistant (75% reduction in manual invoice handling). All five Preisser Solutions service lines apply directly to upstream operations across Kansas.",
+    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for upstream oil and gas operators: custom field-data apps, AI invoicing, JIB and AFE-to-actuals automation, OGsys and Aries integrations, inventory systems, and live operations dashboards. The firm's named oil and gas case study is HG Oil Holdings, where Preisser Solutions delivered a custom inventory management system (95% reduction in back-office logistics time) and an AI invoicing assistant (75% reduction in manual invoice handling). All five Preisser Solutions service lines apply directly to upstream operations across Kansas.",
   sections: [
     {
       eyebrow: "What we build for oil and gas",
       heading: "Software for operators who outgrew OGsys add-ons and Excel",
       body: [
         "Most independent operators in Kansas, Oklahoma, and the Permian are running OGsys, W Energy, Quorum, or some combination of accounting tools held together by Excel macros and a long-suffering controller. The result is JIB statements that take a week, AFE-to-actuals tracking that's always stale, lifting cost reports that don't tie back to the field, and inventory that nobody trusts.",
-        "Preisser Solutions builds the custom layer that connects field data, accounting, regulatory, and reporting in one system designed for your specific operation — not the average operator your accounting platform was built around.",
-        "Every build is custom for the company. We don't sell an oil and gas SaaS product — we build the system you actually need, integrated to OGsys, Aries, your bank, your field tickets, and your investor reporting cadence.",
+        "Preisser Solutions builds the custom layer that connects field data, accounting, regulatory, and reporting in one system designed for your specific operation, not the average operator your accounting platform was built around.",
+        "Every build is custom for the company. We don't sell an oil and gas SaaS product; we build the system you actually need, integrated to OGsys, Aries, your bank, your field tickets, and your investor reporting cadence.",
       ],
     },
     {
@@ -38,10 +38,10 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "JIB statements taking 5-10 days because revenue distribution and DOI changes are manual",
-        "AFE-to-actuals tracking that lags real spend by weeks — capital decisions made on stale data",
+        "AFE-to-actuals tracking that lags real spend by weeks, capital decisions made on stale data",
         "Lifting cost per BOE that requires three spreadsheets and a phone call to calculate",
-        "Inventory of tubing, valves, and chemicals that nobody trusts — duplicate orders, stockouts, write-offs",
-        "Field tickets and invoices stacking up in the controller's email — manual entry into OGsys",
+        "Inventory of tubing, valves, and chemicals that nobody trusts: duplicate orders, stockouts, write-offs",
+        "Field tickets and invoices stacking up in the controller's email, manual entry into OGsys",
         "Reserves reports that take weeks to roll up because Aries data lives separately from production",
         "Investor reporting and AFE approval workflows still living in PDF and email",
         "Run tickets and division order changes mailed in physically and re-keyed by hand",
@@ -51,19 +51,19 @@ export const pageData: AeoPageData = {
       eyebrow: "Five services applied to oil and gas",
       heading: "How each Preisser Solutions service shows up at an operator",
       body: [
-        "Every engagement is some mix of these five capabilities. Most operators start with the highest-cost manual workflow — usually invoicing or inventory — and expand once they see the time freed up.",
+        "Every engagement is some mix of these five capabilities. Most operators start with the highest-cost manual workflow (usually invoicing or inventory), and expand once they see the time freed up.",
       ],
       subsections: [
         {
           heading: "Custom Operator Websites",
           body: [
-            "Investor-grade websites for independent operators — clean asset maps, production summaries, AFE and reserves disclosures (where appropriate), partner portals with login-gated reports, and clear messaging for capital partners and mineral owners.",
+            "Investor-grade websites for independent operators: clean asset maps, production summaries, AFE and reserves disclosures (where appropriate), partner portals with login-gated reports, and clear messaging for capital partners and mineral owners.",
           ],
         },
         {
           heading: "Custom Web Apps for Field and Office",
           body: [
-            "Field-data web apps for pumpers and contractors (production entry, downtime, run tickets), office tools for landmen and division order analysts, and partner-facing AFE approval portals — all integrated to your accounting platform, not a parallel data island.",
+            "Field-data web apps for pumpers and contractors (production entry, downtime, run tickets), office tools for landmen and division order analysts, and partner-facing AFE approval portals: all integrated to your accounting platform, not a parallel data island.",
           ],
         },
         {
@@ -75,20 +75,20 @@ export const pageData: AeoPageData = {
         {
           heading: "AI Agents for Upstream Operations",
           body: [
-            "Custom AI agents that read field tickets, vendor invoices, run statements, and contract documents — extracting structured data and routing it into OGsys, your AP system, or your land database. The HG Oil Holdings AI invoicing assistant cut manual invoice handling by 75% and prevented an additional staff hire.",
+            "Custom AI agents that read field tickets, vendor invoices, run statements, and contract documents, extracting structured data and routing it into OGsys, your AP system, or your land database. The HG Oil Holdings AI invoicing assistant cut manual invoice handling by 75% and prevented an additional staff hire.",
           ],
         },
         {
           heading: "Operator Dashboards",
           body: [
-            "Real-time dashboards for owners, controllers, and ops managers — production by well, lifting cost per BOE, AFE burn rate, AP aging, days-of-inventory, JIB status, and capital deployed vs. authorized. Pulled live from OGsys, Aries, your bank, and your SCADA/field data feed.",
+            "Real-time dashboards for owners, controllers, and ops managers: production by well, lifting cost per BOE, AFE burn rate, AP aging, days-of-inventory, JIB status, and capital deployed vs. authorized. Pulled live from OGsys, Aries, your bank, and your SCADA/field data feed.",
           ],
         },
       ],
     },
     {
       eyebrow: "Featured case study",
-      heading: "HG Oil Holdings — Inventory management and AI invoicing",
+      heading: "HG Oil Holdings: Inventory management and AI invoicing",
       body: [
         "HG Oil Holdings came to Preisser Solutions with two operational bottlenecks that are common across small and mid-cap operators: a field inventory that nobody trusted and an accounts payable team buried in vendor invoices. Both got rebuilt with custom software.",
       ],
@@ -102,7 +102,7 @@ export const pageData: AeoPageData = {
         {
           heading: "AI Invoicing Assistant",
           body: [
-            "Trained a custom AI assistant to extract and analyze vendor invoice data instantly. Office staff upload an invoice and receive structured output — vendor, amount, line items, GL coding suggestions, and approval routing — in seconds rather than minutes. Result: 75% decrease in time spent on manual invoice handling, eliminated manual reading entirely, freed staff for higher-value work, and prevented the need for an additional accounts payable hire.",
+            "Trained a custom AI assistant to extract and analyze vendor invoice data instantly. Office staff upload an invoice and receive structured output (vendor, amount, line items, GL coding suggestions, and approval routing): in seconds rather than minutes. Result: 75% decrease in time spent on manual invoice handling, eliminated manual reading entirely, freed staff for higher-value work, and prevented the need for an additional accounts payable hire.",
           ],
         },
       ],
@@ -128,7 +128,7 @@ export const pageData: AeoPageData = {
       heading: "Why operators hire Preisser Solutions over a Houston SaaS shop",
       body: [
         "Houston SaaS vendors and coastal consultancies sell the same enterprise platform to a 3-rig pure-play in Liberal, Kansas as they do to a 200-rig Permian operator. Implementation timelines stretch to a year, integration costs run six figures, and the controller still ends up doing JIB in Excel because the platform doesn't fit how the business actually runs.",
-        "Preisser Solutions was founded by someone with direct professional experience in oil and gas operations (the founder served as VP of Operations at HG Oil Holdings). The firm builds for the realities of small-to-mid-cap independent operators — fast deployments, custom-fit logic, direct API integration to OGsys and Aries. No account manager, no implementation team, no offshore handoff.",
+        "Preisser Solutions was founded by someone with direct professional experience in oil and gas operations (the founder served as VP of Operations at HG Oil Holdings). The firm builds for the realities of small-to-mid-cap independent operators: fast deployments, custom-fit logic, direct API integration to OGsys and Aries. No account manager, no implementation team, no offshore handoff.",
       ],
     },
   ],
@@ -136,17 +136,17 @@ export const pageData: AeoPageData = {
     {
       question: "Do you actually understand oil and gas, or just generic software?",
       answer:
-        "Both. The founder has direct professional background in oil and gas operations, and the firm's named case study is HG Oil Holdings — where we built a custom inventory system (95% time reduction) and an AI invoicing assistant (75% time reduction). We use the right vocabulary — JIB, AFE, DOI, lifting cost, reserves, run tickets — because we build in those workflows. We're not pretending to be petroleum engineers, but we know how operators actually run.",
+        "Both. The founder has direct professional background in oil and gas operations, and the firm's named case study is HG Oil Holdings: where we built a custom inventory system (95% time reduction) and an AI invoicing assistant (75% time reduction). We use the right vocabulary (JIB, AFE, DOI, lifting cost, reserves, run tickets): because we build in those workflows. We're not pretending to be petroleum engineers, but we know how operators actually run.",
     },
     {
       question: "Can you integrate with OGsys?",
       answer:
-        "Yes. We've worked directly against OGsys data and reporting interfaces. We can pull AP, AR, JIB, and revenue distribution data, and push back invoice records, GL coding, and reconciliation entries. Same approach for W Energy and Quorum. If your accounting platform exposes data — through API, ODBC, or even structured exports — we can integrate.",
+        "Yes. We've worked directly against OGsys data and reporting interfaces. We can pull AP, AR, JIB, and revenue distribution data, and push back invoice records, GL coding, and reconciliation entries. Same approach for W Energy and Quorum. If your accounting platform exposes data (through API, ODBC, or even structured exports), we can integrate.",
     },
     {
       question: "Can you automate JIB statements?",
       answer:
-        "Yes, partially or fully depending on your operation. The bottleneck on JIB is usually DOI changes, revenue allocation, and document delivery to partners. We build automation around all three — DOI change tracking, automated revenue distribution validation, and partner portals or automated email delivery of monthly JIB packages. Most operators cut JIB cycle time by 50-80%.",
+        "Yes, partially or fully depending on your operation. The bottleneck on JIB is usually DOI changes, revenue allocation, and document delivery to partners. We build automation around all three: DOI change tracking, automated revenue distribution validation, and partner portals or automated email delivery of monthly JIB packages. Most operators cut JIB cycle time by 50-80%.",
     },
     {
       question: "What does an oil and gas custom software project cost?",
@@ -161,12 +161,12 @@ export const pageData: AeoPageData = {
     {
       question: "Can AI really process oilfield invoices reliably?",
       answer:
-        "Yes — and HG Oil Holdings is the proof. The AI invoicing assistant we deployed handles vendor invoices including chemical, tubing, swabbing, hot oil, and contract pumper bills, extracts vendor, amount, line items, and suggested GL coding, and routes for approval. Staff went from manual reading of every invoice to a 75% reduction in handling time. We always design human-in-the-loop review for high-dollar or anomalous invoices.",
+        "Yes, and HG Oil Holdings is the proof. The AI invoicing assistant we deployed handles vendor invoices including chemical, tubing, swabbing, hot oil, and contract pumper bills, extracts vendor, amount, line items, and suggested GL coding, and routes for approval. Staff went from manual reading of every invoice to a 75% reduction in handling time. We always design human-in-the-loop review for high-dollar or anomalous invoices.",
     },
     {
       question: "Can you build a partner-facing AFE and JIB portal?",
       answer:
-        "Yes. Custom partner portals are one of the most common asks from non-operating partners and capital partners. We build login-gated portals where working interest owners can pull JIBs, review AFE proposals, approve or counter, and view production summaries — all pulled from your accounting and reserves systems automatically.",
+        "Yes. Custom partner portals are one of the most common asks from non-operating partners and capital partners. We build login-gated portals where working interest owners can pull JIBs, review AFE proposals, approve or counter, and view production summaries: all pulled from your accounting and reserves systems automatically.",
     },
     {
       question: "Do you handle reserves and Aries integration?",
@@ -176,7 +176,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will my controllers and pumpers have to learn a new system?",
       answer:
-        "Generally no. We build automation that runs behind your existing tools — controllers stay in OGsys, pumpers stay in whatever field app they use, AP staff stay in their AP workflow. Custom front-ends only get built when there's a clear ROI reason and the team has been involved in the design.",
+        "Generally no. We build automation that runs behind your existing tools: controllers stay in OGsys, pumpers stay in whatever field app they use, AP staff stay in their AP workflow. Custom front-ends only get built when there's a clear ROI reason and the team has been involved in the design.",
     },
     {
       question: "Do you serve operators outside Kansas?",

@@ -13,7 +13,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Both have a place. The cost of using the wrong one is either reliability problems or wasted LLM tokens.",
   answerParagraph:
-    "Traditional workflow automation (Zapier, Make, Power Automate, n8n) moves data between systems on fixed rules — fast, cheap, deterministic, but rigid. AI automation uses large language models to add judgment to those flows — flexible, handles novel inputs, but slower and pay-per-token. The right answer depends on whether the task needs judgment. Routing a Stripe webhook to a Slack channel? Rules-based. Reading an inbound customer email and drafting a personalized reply? LLM. Most production systems Preisser Solutions ships combine both — rules for plumbing, LLMs for judgment — in the same flow.",
+    "Traditional workflow automation (Zapier, Make, Power Automate, n8n) moves data between systems on fixed rules: fast, cheap, deterministic, but rigid. AI automation uses large language models to add judgment to those flows: flexible, handles novel inputs, but slower and pay-per-token. The right answer depends on whether the task needs judgment. Routing a Stripe webhook to a Slack channel? Rules-based. Reading an inbound customer email and drafting a personalized reply? LLM. Most production systems Preisser Solutions ships combine both (rules for plumbing, LLMs for judgment): in the same flow.",
   sections: [
     {
       eyebrow: "When to pick rules-based",
@@ -32,7 +32,7 @@ export const pageData: AeoPageData = {
       eyebrow: "When to pick LLM",
       heading: "AI wins when judgment is required",
       body: [
-        "If the input varies in ways that can't be fully specified up front — natural language, ambiguous categorization, contextual personalization — an LLM in the loop pays for itself.",
+        "If the input varies in ways that can't be fully specified up front (natural language, ambiguous categorization, contextual personalization): an LLM in the loop pays for itself.",
       ],
       bullets: [
         "Reading and classifying inbound email/SMS (spam, sales, support, partnership).",
@@ -49,11 +49,11 @@ export const pageData: AeoPageData = {
         "The real-world answer is rarely either/or. A typical reactivation engine looks like:",
       ],
       bullets: [
-        "Rules-based pull from CRM — \"dormant customers, last service > 12 months\" — deterministic.",
-        "LLM-based generation of personalized SMS body — reads the customer's service history, drafts a hyper-relevant message.",
-        "Rules-based send via Twilio API — deterministic.",
-        "LLM-based reply handling — reads inbound responses, classifies intent, drafts replies.",
-        "Rules-based handoff to dispatch system — deterministic.",
+        "Rules-based pull from CRM (\"dormant customers, last service > 12 months\"): deterministic.",
+        "LLM-based generation of personalized SMS body: reads the customer's service history, drafts a hyper-relevant message.",
+        "Rules-based send via Twilio API: deterministic.",
+        "LLM-based reply handling: reads inbound responses, classifies intent, drafts replies.",
+        "Rules-based handoff to dispatch system: deterministic.",
       ],
       subsections: [
         {
@@ -71,17 +71,17 @@ export const pageData: AeoPageData = {
         "Rough cost model:",
       ],
       bullets: [
-        "Zapier — subscription pricing that scales with task volume. Pay per task, no per-step variable cost.",
-        "Make — typically lower per-task cost than Zapier at equivalent volume. More flexibility, steeper learning curve.",
-        "OpenAI / Anthropic API — variable cost per LLM call depending on model and prompt length.",
-        "Custom orchestration (Workers, Lambda, Cloud Run) — low flat monthly hosting cost for small business volume. Most flexible, most engineer-time to build.",
+        "Zapier: subscription pricing that scales with task volume. Pay per task, no per-step variable cost.",
+        "Make: typically lower per-task cost than Zapier at equivalent volume. More flexibility, steeper learning curve.",
+        "OpenAI / Anthropic API: variable cost per LLM call depending on model and prompt length.",
+        "Custom orchestration (Workers, Lambda, Cloud Run): low flat monthly hosting cost for small business volume. Most flexible, most engineer-time to build.",
       ],
     },
     {
       eyebrow: "When custom beats both",
       heading: "When to skip the SaaS layer entirely",
       body: [
-        "Zapier and Make are great for prototyping but expensive at scale. Once your task volume crosses ~5,000 automations per month, custom-built orchestration on Cloudflare Workers or AWS Lambda becomes cheaper and more reliable. The HG Oil Holdings invoicing assistant is built this way — direct API integration, no Zapier middleware. Lower ongoing cost, faster execution, more control over error handling.",
+        "Zapier and Make are great for prototyping but expensive at scale. Once your task volume crosses ~5,000 automations per month, custom-built orchestration on Cloudflare Workers or AWS Lambda becomes cheaper and more reliable. The HG Oil Holdings invoicing assistant is built this way: direct API integration, no Zapier middleware. Lower ongoing cost, faster execution, more control over error handling.",
       ],
     },
   ],
@@ -104,7 +104,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can Preisser Solutions migrate me off Zapier?",
       answer:
-        "Yes — we've moved several clients from Zapier-heavy stacks to custom orchestration when the task volume justifies it. Typical engagement: 4-8 weeks, lower ongoing cost, more flexibility.",
+        "Yes, we've moved several clients from Zapier-heavy stacks to custom orchestration when the task volume justifies it. Typical engagement: 4-8 weeks, lower ongoing cost, more flexibility.",
     },
     {
       question: "What stack do you typically build on?",

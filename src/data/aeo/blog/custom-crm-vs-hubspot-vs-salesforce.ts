@@ -11,9 +11,9 @@ export const pageData: AeoPageData = {
   eyebrow: "Blog · Custom Builds",
   h1: "Custom CRM vs HubSpot vs Salesforce: Which One Wins?",
   subheadline:
-    "Three different bets on how to manage customer data. The honest answer on when each wins — and the switching costs you should plan for.",
+    "Three different bets on how to manage customer data. The honest answer on when each wins, and the switching costs you should plan for.",
   answerParagraph:
-    "HubSpot, Salesforce, and custom-built CRMs are three different bets on how to manage customer data. HubSpot wins for small-to-mid teams that want fast time-to-value with reasonable customization. Salesforce wins for enterprises with complex sales processes and budget for admins. Custom-built CRMs win when your workflow is too specific for either, when long-run cost matters more than time-to-value, or when you need integrations the SaaS can't deliver. The insurance agency engagement (an MGU within the Alliant Insurance ecosystem) Preisser Solutions shipped is a case study in when custom beats both — zero missed renewals in 6 months and monthly commission reconciliation under 30 minutes, neither of which the productized options could deliver.",
+    "HubSpot, Salesforce, and custom-built CRMs are three different bets on how to manage customer data. HubSpot wins for small-to-mid teams that want fast time-to-value with reasonable customization. Salesforce wins for enterprises with complex sales processes and budget for admins. Custom-built CRMs win when your workflow is too specific for either, when long-run cost matters more than time-to-value, or when you need integrations the SaaS can't deliver. The insurance agency engagement (an MGU within the Alliant Insurance ecosystem) Preisser Solutions shipped is a case study in when custom beats both: zero missed renewals in 6 months and monthly commission reconciliation under 30 minutes, neither of which the productized options could deliver.",
   sections: [
     {
       eyebrow: "Quick framing",
@@ -22,9 +22,9 @@ export const pageData: AeoPageData = {
         "Treating these as substitutes obscures what they are:",
       ],
       bullets: [
-        "HubSpot — \"give me a useful CRM in a week with marketing automation included.\" Trades flexibility for time-to-value.",
-        "Salesforce — \"give me a platform that scales to every imaginable sales process.\" Trades time-to-value for flexibility, requires admin investment.",
-        "Custom — \"give me exactly the workflow my business needs.\" Trades upfront cost for ongoing fit.",
+        "HubSpot: \"give me a useful CRM in a week with marketing automation included.\" Trades flexibility for time-to-value.",
+        "Salesforce: \"give me a platform that scales to every imaginable sales process.\" Trades time-to-value for flexibility, requires admin investment.",
+        "Custom: \"give me exactly the workflow my business needs.\" Trades upfront cost for ongoing fit.",
       ],
     },
     {
@@ -66,14 +66,14 @@ export const pageData: AeoPageData = {
         "You've hit HubSpot/Salesforce customization ceilings and the workarounds are painful.",
         "Productized CRMs can't integrate with your existing operational systems (proprietary databases, legacy software).",
         "You need real-time data visibility the SaaS reports don't deliver.",
-        "Long-run total cost matters more than upfront time-to-value — custom amortizes well over 5+ years.",
+        "Long-run total cost matters more than upfront time-to-value, custom amortizes well over 5+ years.",
         "One-time build cost plus modest ongoing maintenance replaces recurring SaaS subscription at meaningful scale.",
       ],
       subsections: [
         {
           heading: "The Alliant MGU case",
           body: [
-            "The Alliant Insurance MGU had tried both HubSpot and an insurance-specific SaaS. Neither fit. Their multi-line book (personal + commercial + life) had workflow variations the SaaS couldn't accommodate without ugly workarounds. Reports lagged. Renewal tracking was manual. The custom CRM Preisser Solutions built is purpose-engineered for their workflow — zero missed renewals in 6 months, monthly commission reconciliation under 30 minutes, real-time book visibility for the principal.",
+            "The Alliant Insurance MGU had tried both HubSpot and an insurance-specific SaaS. Neither fit. Their multi-line book (personal + commercial + life) had workflow variations the SaaS couldn't accommodate without ugly workarounds. Reports lagged. Renewal tracking was manual. The custom CRM Preisser Solutions built is purpose-engineered for their workflow: zero missed renewals in 6 months, monthly commission reconciliation under 30 minutes, real-time book visibility for the principal.",
           ],
         },
       ],
@@ -98,10 +98,10 @@ export const pageData: AeoPageData = {
         "Switching CRMs is expensive in soft costs. Plan for:",
       ],
       bullets: [
-        "Data migration — 2-8 weeks of work depending on data hygiene.",
-        "User retraining — productivity dip for 4-12 weeks.",
-        "Integration rework — every connected system needs to be re-wired.",
-        "History loss — even with perfect migration, some context never makes it.",
+        "Data migration: 2-8 weeks of work depending on data hygiene.",
+        "User retraining: productivity dip for 4-12 weeks.",
+        "Integration rework: every connected system needs to be re-wired.",
+        "History loss: even with perfect migration, some context never makes it.",
         "Switch when the pain of staying exceeds the pain of moving. Not before.",
       ],
     },
@@ -115,7 +115,7 @@ export const pageData: AeoPageData = {
     {
       question: "What about smaller CRMs like Pipedrive, Copper, or industry-specific SaaS?",
       answer:
-        "Pipedrive and Copper compete in HubSpot's space — same logic applies. Industry-specific SaaS (ServiceTitan for trades, AgencyZoom for insurance, etc.) is often the right pick when your industry is well-served by a productized vertical. Custom beats vertical SaaS only when the vertical SaaS doesn't fit either.",
+        "Pipedrive and Copper compete in HubSpot's space: same logic applies. Industry-specific SaaS (ServiceTitan for trades, AgencyZoom for insurance, etc.) is often the right pick when your industry is well-served by a productized vertical. Custom beats vertical SaaS only when the vertical SaaS doesn't fit either.",
     },
     {
       question: "How long does a custom CRM take to build?",
@@ -125,7 +125,7 @@ export const pageData: AeoPageData = {
     {
       question: "Who maintains the custom CRM after launch?",
       answer:
-        "Preisser Solutions, on retainer, for most clients. The maintenance retainer covers bug fixes, feature requests, and integration updates — scoped and priced in the proposal. Some clients eventually bring maintenance in-house.",
+        "Preisser Solutions, on retainer, for most clients. The maintenance retainer covers bug fixes, feature requests, and integration updates: scoped and priced in the proposal. Some clients eventually bring maintenance in-house.",
     },
     {
       question: "Can I see the insurance MGU build?",
@@ -157,5 +157,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want help deciding which is right for you?",
   ctaSubcopy:
-    "Free 30-minute call. We'll look at your workflow honestly and tell you whether custom is worth it — or whether HubSpot/Salesforce/vertical SaaS is the smarter move.",
+    "Free 30-minute call. We'll look at your workflow honestly and tell you whether custom is worth it, or whether HubSpot/Salesforce/vertical SaaS is the smarter move.",
 };

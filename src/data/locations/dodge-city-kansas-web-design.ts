@@ -15,7 +15,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Web Design in Dodge City, Kansas",
   metaDescription:
-    "Custom websites for Dodge City, Kansas businesses — fast, SEO-strong, AI-search ready. Built by a Hays-based firm.",
+    "Custom websites for Dodge City, Kansas businesses: fast, SEO-strong, AI-search ready. Built by a Hays-based firm.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -24,9 +24,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Web Design in Dodge City, Kansas",
     h1: "Custom Web Design for Dodge City Businesses",
     subheadline:
-      "Custom websites — engineered for performance, conversion, and AI search visibility.",
+      "Custom websites: engineered for performance, conversion, and AI search visibility.",
     answerParagraph:
-      "Preisser Solutions builds custom websites for Dodge City, Kansas businesses — fast, conversion-engineered, and optimized for both Google and AI search. Based in Hays, roughly an hour and a half north on US-283. No templates. Custom code, fixed-price proposals, full ownership at launch.",
+      "Preisser Solutions builds custom websites for Dodge City, Kansas businesses: fast, conversion-engineered, and optimized for both Google and AI search. Based in Hays, roughly an hour and a half north on US-283. No templates. Custom code, fixed-price proposals, full ownership at launch.",
   },
 
   nearbyAreas: [
@@ -45,8 +45,8 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Western-Kansas firm that understands the audience and the market.",
-    "Custom code, no templates — your site is engineered, not assembled.",
-    "Built for AI search visibility — citations on Google AI Overviews, ChatGPT, Perplexity, and Gemini.",
+    "Custom code, no templates: your site is engineered, not assembled.",
+    "Built for AI search visibility: citations on Google AI Overviews, ChatGPT, Perplexity, and Gemini.",
   ],
 
   industriesServed: ["Agriculture", "Trades", "Energy", "Hospitality", "Professional Services"],
@@ -60,7 +60,7 @@ export const locationData: LocationPageData = {
     {
       question: "What makes a Preisser Solutions website different from a Wix or Squarespace site?",
       answer:
-        "Custom code with full ownership at launch — Next.js, React, TypeScript. Fast page loads, real SEO architecture, AI-search visibility, no platform lock-in.",
+        "Custom code with full ownership at launch: Next.js, React, TypeScript. Fast page loads, real SEO architecture, AI-search visibility, no platform lock-in.",
     },
     {
       question: "How long does a Dodge City website project take?",
@@ -75,7 +75,7 @@ export const locationData: LocationPageData = {
     {
       question: "How far is Hays from Dodge City?",
       answer:
-        "About 90 miles via US-283 — roughly an hour and a half. In-person scoping is available.",
+        "About 90 miles via US-283: roughly an hour and a half. In-person scoping is available.",
     },
     {
       question: "What is the difference between Preisser Solutions and a Dodge City marketing agency?",

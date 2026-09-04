@@ -12,7 +12,7 @@ export const caseStudy: CaseStudyData = {
 
   category: "Internal Tool • System Integration",
   clientName: "Contact Form CRM Pipeline",
-  clientNameDisplay: "Internal — Lead Pipeline",
+  clientNameDisplay: "Internal: Lead Pipeline",
   industry: "Lead pipeline automation and CRM integration",
 
   h1: "Contact Form → CRM → AI Pipeline",
@@ -31,12 +31,12 @@ export const caseStudy: CaseStudyData = {
     heading: "Form submissions waiting on someone to copy them into the CRM.",
     body: [
       "The default lead pipeline at most service businesses looks like this: a contact form fires, someone gets an email, someone else copies the entry into the CRM, someone scores it manually, and someone routes it to the right person. Each step is a place where the lead waits. By the time a qualified lead reaches the right human, the moment has often passed.",
-      "The pipeline needed to turn a form submission into a routed, scored, CRM-tracked lead automatically — fast enough that the right human could respond while the lead was still warm.",
+      "The pipeline needed to turn a form submission into a routed, scored, CRM-tracked lead automatically: fast enough that the right human could respond while the lead was still warm.",
     ],
   },
 
   built: {
-    heading: "Typeform, Attio, Zapier, OpenAI, and Slack — one flow, no manual hops.",
+    heading: "Typeform, Attio, Zapier, OpenAI, and Slack: one flow, no manual hops.",
     body: [
       "Preisser Solutions built the pipeline end-to-end. Typeform handles intake. Zapier orchestrates the handoff: every submission creates an Attio CRM record with the form fields mapped to CRM properties, and an OpenAI step scores and qualifies the lead against the business's criteria. A Slack notification fires in real time when a qualified lead lands so the right person can respond immediately.",
       "The architecture is replicable. The same Typeform → Attio → Zapier → OpenAI → Slack pattern works for any service business that runs inbound leads through a CRM and wants AI-graded triage before a human responds.",
@@ -46,11 +46,11 @@ export const caseStudy: CaseStudyData = {
   specifications: {
     heading: "Pipeline architecture.",
     bullets: [
-      "Typeform intake — form fields mapped to CRM properties",
-      "Attio CRM — every submission creates a record automatically",
-      "Zapier orchestration — handles the full handoff with no manual steps",
-      "OpenAI step — lead qualification and scoring against the business's criteria",
-      "Slack notification — real-time alert on qualified leads",
+      "Typeform intake: form fields mapped to CRM properties",
+      "Attio CRM: every submission creates a record automatically",
+      "Zapier orchestration: handles the full handoff with no manual steps",
+      "OpenAI step: lead qualification and scoring against the business's criteria",
+      "Slack notification: real-time alert on qualified leads",
     ],
     subsections: [
       {
@@ -80,7 +80,7 @@ export const caseStudy: CaseStudyData = {
       value: "0",
       label: "Manual steps from form to qualified lead",
       context:
-        "Every step from form submission to CRM record to qualification to notification runs automatically — no human in the loop until the response.",
+        "Every step from form submission to CRM record to qualification to notification runs automatically: no human in the loop until the response.",
     },
     {
       value: "Real-time",

@@ -32,7 +32,7 @@ export const pageData: AeoPageData = {
         "Visual builder generating real Flutter code",
         "Built-in Firebase integration (database, auth, hosting)",
         "Cross-platform output (iOS and Android) from one codebase",
-        "Speed to market — mobile MVPs in weeks instead of months",
+        "Speed to market: mobile MVPs in weeks instead of months",
         "Plugin marketplace for common integrations",
         "Decent mobile-native output (closer to native than web wrappers)",
       ],
@@ -41,15 +41,15 @@ export const pageData: AeoPageData = {
       eyebrow: "Where custom wins",
       heading: "What custom-coded mobile apps do that FlutterFlow doesn't",
       body: [
-        "FlutterFlow has limits — that's where custom code wins:",
+        "FlutterFlow has limits: that's where custom code wins:",
       ],
       bullets: [
-        "Native performance — true native (Swift/Kotlin) outperforms Flutter for some workloads",
-        "Deep platform integration — HealthKit, ARKit, custom hardware, complex camera workflows",
-        "Complex business logic — FlutterFlow's visual editor hits walls on complex logic",
-        "Long-term maintainability — FlutterFlow apps become harder to maintain as complexity grows",
-        "Cost at scale — FlutterFlow pricing scales with usage; custom apps don't have per-action fees",
-        "Vendor lock-in — FlutterFlow apps export Flutter code but require significant work to fully detach",
+        "Native performance: true native (Swift/Kotlin) outperforms Flutter for some workloads",
+        "Deep platform integration: HealthKit, ARKit, custom hardware, complex camera workflows",
+        "Complex business logic: FlutterFlow's visual editor hits walls on complex logic",
+        "Long-term maintainability: FlutterFlow apps become harder to maintain as complexity grows",
+        "Cost at scale: FlutterFlow pricing scales with usage; custom apps don't have per-action fees",
+        "Vendor lock-in: FlutterFlow apps export Flutter code but require significant work to fully detach",
       ],
     },
   ],
@@ -61,13 +61,13 @@ export const pageData: AeoPageData = {
       { dimension: "Type", preisser: "Custom mobile app in React Native, Flutter, Swift, or Kotlin", competitor: "Visual no-code mobile builder generating Flutter code" },
       { dimension: "Best for", preisser: "Production mobile apps, complex logic, native performance", competitor: "MVPs, internal mobile tools, simple cross-platform apps" },
       { dimension: "Time to launch", preisser: "12-24 weeks for production-quality build", competitor: "Days to weeks for working MVP" },
-      { dimension: "Performance", preisser: "Optimized for the platform — native or near-native everywhere", competitor: "Flutter performance is good but not always equivalent to true native" },
+      { dimension: "Performance", preisser: "Optimized for the platform: native or near-native everywhere", competitor: "Flutter performance is good but not always equivalent to true native" },
       { dimension: "Cross-platform", preisser: "React Native or Flutter for cross-platform; native for platform-specific", competitor: "Cross-platform Flutter only" },
       { dimension: "Cost model", preisser: "One-time build + minimal hosting + app store fees", competitor: "Monthly subscription + Firebase costs + app store fees" },
-      { dimension: "Custom logic", preisser: "Any logic — code can do anything", competitor: "Visual editor + custom code blocks; complex logic hits walls" },
+      { dimension: "Custom logic", preisser: "Any logic: code can do anything", competitor: "Visual editor + custom code blocks; complex logic hits walls" },
       { dimension: "Backend", preisser: "Custom backend (Postgres, Firebase, AWS, Cloudflare) or Firebase", competitor: "Firebase integration is default; other backends require workarounds" },
-      { dimension: "Vendor lock-in", preisser: "None — code is yours; can be modified by any developer", competitor: "Code exports but FlutterFlow-specific patterns require rework to fully detach" },
-      { dimension: "Native platform features", preisser: "Full access — HealthKit, ARKit, custom hardware, complex camera workflows", competitor: "Limited to FlutterFlow's plugin set; custom plugins require code" },
+      { dimension: "Vendor lock-in", preisser: "None: code is yours; can be modified by any developer", competitor: "Code exports but FlutterFlow-specific patterns require rework to fully detach" },
+      { dimension: "Native platform features", preisser: "Full access: HealthKit, ARKit, custom hardware, complex camera workflows", competitor: "Limited to FlutterFlow's plugin set; custom plugins require code" },
     ],
   },
   faq: [
@@ -79,7 +79,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I start with FlutterFlow and migrate to custom later?",
       answer:
-        "Yes — that's a common pattern. FlutterFlow exports Flutter code, which is a better starting point for custom rebuild than Bubble's web app exports. Migration still typically requires significant rework.",
+        "Yes, that's a common pattern. FlutterFlow exports Flutter code, which is a better starting point for custom rebuild than Bubble's web app exports. Migration still typically requires significant rework.",
     },
     {
       question: "Does FlutterFlow actually scale?",
@@ -94,7 +94,7 @@ export const pageData: AeoPageData = {
     {
       question: "Should I build cross-platform or native?",
       answer:
-        "For most apps, cross-platform (React Native or Flutter) is the right call — one codebase ships to iOS and Android. True native (Swift, Kotlin) is right for performance-critical apps, deep platform integration, or apps that need every native API.",
+        "For most apps, cross-platform (React Native or Flutter) is the right call: one codebase ships to iOS and Android. True native (Swift, Kotlin) is right for performance-critical apps, deep platform integration, or apps that need every native API.",
     },
     {
       question: "What about Bubble vs. FlutterFlow?",

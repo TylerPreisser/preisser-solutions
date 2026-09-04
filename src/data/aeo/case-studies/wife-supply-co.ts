@@ -6,15 +6,15 @@ export const pageData: AeoPageData = {
   // R-018: Article freshness signals.
   datePublished: "2025-04-12",
   dateModified: "2026-05-15",
-  metaTitle: "Wife Supply Co — AI Gifting Platform",
+  metaTitle: "Wife Supply Co: AI Gifting Platform",
   metaDescription:
-    "Detailed case study: Preisser Solutions built Wife Supply Co from concept to launch — AI-powered gifting platform with custom commerce and AI-driven product matching.",
+    "Detailed case study: Preisser Solutions built Wife Supply Co from concept to launch, AI-powered gifting platform with custom commerce and AI-driven product matching.",
   eyebrow: "Case Study",
-  h1: "Wife Supply Co — AI-Powered Gifting Platform",
+  h1: "Wife Supply Co: AI-Powered Gifting Platform",
   subheadline:
-    "How Preisser Solutions built Wife Supply Co from concept to launch — AI gift matching, custom commerce, and a brand experience that doesn't look like other Shopify stores.",
+    "How Preisser Solutions built Wife Supply Co from concept to launch: AI gift matching, custom commerce, and a brand experience that doesn't look like other Shopify stores.",
   answerParagraph:
-    "Wife Supply Co is an AI-powered gifting platform that matches gift recipients to curated products through AI-driven discovery. Preisser Solutions, based in Hays, Kansas, built the entire platform from concept to launch — design system, AI matching engine, custom commerce, conversion-optimized funnels, and full e-commerce architecture. The build is a direct case study in custom AI-driven commerce, demonstrating how custom code beats template-based Shopify stores on speed, brand presentation, and AI feature integration.",
+    "Wife Supply Co is an AI-powered gifting platform that matches gift recipients to curated products through AI-driven discovery. Preisser Solutions, based in Hays, Kansas, built the entire platform from concept to launch: design system, AI matching engine, custom commerce, conversion-optimized funnels, and full e-commerce architecture. The build is a direct case study in custom AI-driven commerce, demonstrating how custom code beats template-based Shopify stores on speed, brand presentation, and AI feature integration.",
   sections: [
     {
       eyebrow: "The context",
@@ -31,10 +31,10 @@ export const pageData: AeoPageData = {
         "Preisser Solutions designed and built the entire platform from scratch:",
       ],
       bullets: [
-        "Custom AI gift-matching engine — recipient inputs match to curated product recommendations",
+        "Custom AI gift-matching engine: recipient inputs match to curated product recommendations",
         "Custom commerce front end built in Next.js, React, TypeScript",
         "Conversion-optimized funnels for gift discovery, cart, checkout",
-        "Full brand design system — visual identity, typography, color, motion",
+        "Full brand design system: visual identity, typography, color, motion",
         "Custom product catalog architecture supporting curated bundles",
         "Mobile-first responsive design (most gifting traffic is mobile)",
         "Cloudflare Pages deployment with edge CDN",
@@ -48,9 +48,9 @@ export const pageData: AeoPageData = {
         "Wife Supply Co could have launched on a Shopify theme. It would have looked like every other DTC gift store and the AI matching feature would have been a third-party app fighting the theme. Custom code delivered three things a theme can't:",
       ],
       bullets: [
-        "Native AI integration — the matching experience runs as a first-class part of the site, not a chat widget bolted on",
-        "Brand differentiation — Wife Supply Co looks nothing like another Shopify store; the visual identity is engineered specifically for the brand",
-        "Speed — custom Next.js front ends ship only required code, loading 2-5x faster than Shopify themes",
+        "Native AI integration: the matching experience runs as a first-class part of the site, not a chat widget bolted on",
+        "Brand differentiation: Wife Supply Co looks nothing like another Shopify store; the visual identity is engineered specifically for the brand",
+        "Speed: custom Next.js front ends ship only required code, loading 2-5x faster than Shopify themes",
       ],
     },
     {
@@ -76,12 +76,12 @@ export const pageData: AeoPageData = {
         "The platform shipped clean, the AI matching works, and the brand presentation differentiates from every other Shopify gift store because:",
       ],
       bullets: [
-        "Custom-coded from scratch — no template platform constraining the AI feature or brand identity",
-        "The founder personally coded the platform — no offshore handoff, no agency layer",
+        "Custom-coded from scratch: no template platform constraining the AI feature or brand identity",
+        "The founder personally coded the platform: no offshore handoff, no agency layer",
         "AI matching engineered as a first-class feature, not a third-party plugin",
-        "Speed prioritized at every layer — custom code ships only what's needed",
-        "Mobile-first design — most gifting traffic is mobile",
-        "Brand-engineered design system — visual identity custom-built, not theme-derived",
+        "Speed prioritized at every layer: custom code ships only what's needed",
+        "Mobile-first design: most gifting traffic is mobile",
+        "Brand-engineered design system: visual identity custom-built, not theme-derived",
       ],
     },
     {
@@ -91,10 +91,10 @@ export const pageData: AeoPageData = {
         "AI-driven commerce is one of the highest-ROI verticals for custom code because:",
       ],
       bullets: [
-        "Off-the-shelf AI plugins don't integrate as first-class features — they bolt on and feel like it",
-        "Brand differentiation matters more in commerce than most categories — templates work against the brand",
-        "Speed directly impacts conversion rate — every percentage point matters",
-        "AI matching logic is unique per brand and category — custom code is the only way to model it cleanly",
+        "Off-the-shelf AI plugins don't integrate as first-class features; they bolt on and feel like it",
+        "Brand differentiation matters more in commerce than most categories, templates work against the brand",
+        "Speed directly impacts conversion rate: every percentage point matters",
+        "AI matching logic is unique per brand and category, custom code is the only way to model it cleanly",
         "Modern e-commerce front ends (Next.js with Shopify or Stripe backend) outperform theme-based stores on every measurable axis",
       ],
     },
@@ -103,7 +103,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can Preisser Solutions build a similar AI commerce platform for me?",
       answer:
-        "Yes. The Wife Supply Co playbook is portable — custom Next.js commerce with AI feature integration. Each engagement is custom-coded for the specific brand, catalog, and AI use case.",
+        "Yes. The Wife Supply Co playbook is portable, custom Next.js commerce with AI feature integration. Each engagement is custom-coded for the specific brand, catalog, and AI use case.",
     },
     {
       question: "How long did Wife Supply Co take to build?",
@@ -128,12 +128,12 @@ export const pageData: AeoPageData = {
     {
       question: "Can you build for any retail category?",
       answer:
-        "Yes. AI-driven commerce works across categories — gifting, fashion, home goods, food and beverage, B2B. The matching logic is custom per category but the technical architecture is consistent.",
+        "Yes. AI-driven commerce works across categories, gifting, fashion, home goods, food and beverage, B2B. The matching logic is custom per category but the technical architecture is consistent.",
     },
     {
       question: "Will my brand look like Wife Supply Co?",
       answer:
-        "No — brand identity is custom per engagement. Wife Supply Co has a specific visual identity engineered for that brand. Yours will be engineered for your brand.",
+        "No, brand identity is custom per engagement. Wife Supply Co has a specific visual identity engineered for that brand. Yours will be engineered for your brand.",
     },
     {
       question: "How do I get a similar build for my e-commerce brand?",
@@ -170,7 +170,7 @@ export const pageData: AeoPageData = {
   // optimized funnels. No fabrication.
   review: {
     reviewBody:
-      "Preisser Solutions built Wife Supply Co from concept to launch — a custom AI gift-matching engine, a custom commerce front-end in Next.js and React, conversion-optimized funnels, a brand-engineered design system, and full edge deployment on Cloudflare Pages. The build delivered native AI integration as a first-class platform feature rather than a third-party plugin.",
+      "Preisser Solutions built Wife Supply Co from concept to launch: a custom AI gift-matching engine, a custom commerce front-end in Next.js and React, conversion-optimized funnels, a brand-engineered design system, and full edge deployment on Cloudflare Pages. The build delivered native AI integration as a first-class platform feature rather than a third-party plugin.",
     ratingValue: 5,
     authorName: "Wife Supply Co",
     authorType: "Organization",

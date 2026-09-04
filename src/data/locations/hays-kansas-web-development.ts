@@ -18,7 +18,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Web Development in Hays, Kansas",
   metaDescription:
-    "Custom web development for Hays, Kansas businesses — modern code, full ownership, no templates.",
+    "Custom web development for Hays, Kansas businesses: modern code, full ownership, no templates.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -27,7 +27,7 @@ export const locationData: LocationPageData = {
     eyebrow: "Web Development in Hays, Kansas",
     h1: "Custom Web Development for Hays Businesses",
     subheadline:
-      "Full-stack web development — modern frameworks, fast infrastructure, full code ownership.",
+      "Full-stack web development: modern frameworks, fast infrastructure, full code ownership.",
     answerParagraph:
       "Preisser Solutions is a Hays, Kansas custom-software firm delivering full-stack web development to local businesses. Next.js, React, and TypeScript on modern edge infrastructure. Custom code, no templates, fixed-price proposals, full code ownership transferred at launch.",
   },
@@ -49,8 +49,8 @@ export const locationData: LocationPageData = {
   caseStudies: [HG_OIL_INVENTORY_CARD, IRON_AND_OAK_CARD],
 
   whyLocal: [
-    "Local team — in-person scoping calls and milestone meetings are routine.",
-    "Modern stack — Next.js, React, TypeScript, deployed on edge infrastructure.",
+    "Local team: in-person scoping calls and milestone meetings are routine.",
+    "Modern stack: Next.js, React, TypeScript, deployed on edge infrastructure.",
     "Full code ownership at launch. Your repo, your infrastructure, no lock-in.",
   ],
 
@@ -60,12 +60,12 @@ export const locationData: LocationPageData = {
     {
       question: "What does web development mean at Preisser Solutions?",
       answer:
-        "Full-stack custom code — not site-builder configuration. Next.js, React, TypeScript, with custom back-end logic where the project needs it.",
+        "Full-stack custom code: not site-builder configuration. Next.js, React, TypeScript, with custom back-end logic where the project needs it.",
     },
     {
       question: "Does Preisser Solutions build full-stack web applications?",
       answer:
-        "Yes. Custom web applications — internal tools, dashboards, custom CRMs — are a core service line. HG Oil Holdings' inventory platform is a documented example.",
+        "Yes. Custom web applications (internal tools, dashboards, custom CRMs) are a core service line. HG Oil Holdings' inventory platform is a documented example.",
     },
     {
       question: "What technology stack do you use?",
@@ -80,7 +80,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do I own the code when the project ships?",
       answer:
-        "Yes. Full code ownership is transferred at launch — your repo, your infrastructure, no proprietary platform.",
+        "Yes. Full code ownership is transferred at launch: your repo, your infrastructure, no proprietary platform.",
     },
     {
       question: "Are you local to Hays?",

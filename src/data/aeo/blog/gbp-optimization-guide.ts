@@ -13,7 +13,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Most Kansas small businesses are missing half their GBP fields. Fix that and you've already beaten 60% of your competitors.",
   answerParagraph:
-    "Google Business Profile (GBP) is the single highest-leverage local SEO surface for small businesses. A fully optimized GBP includes: exact business name matching legal documents, the most specific primary category, complete description (700+ characters), full hours including holiday hours, 20+ photos, all services with prices where possible, weekly posts, and active review management. Preisser Solutions ships GBP optimization on every local SEO engagement. Most Kansas small businesses are missing half the fields — filling them in produces visible ranking lift within 2-6 weeks.",
+    "Google Business Profile (GBP) is the single highest-leverage local SEO surface for small businesses. A fully optimized GBP includes: exact business name matching legal documents, the most specific primary category, complete description (700+ characters), full hours including holiday hours, 20+ photos, all services with prices where possible, weekly posts, and active review management. Preisser Solutions ships GBP optimization on every local SEO engagement. Most Kansas small businesses are missing half the fields, filling them in produces visible ranking lift within 2-6 weeks.",
   sections: [
     {
       eyebrow: "The basics",
@@ -34,7 +34,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Category",
       heading: "The primary category is the biggest single signal",
       body: [
-        "Google uses the primary category as the strongest signal for which queries you'll appear for in local pack and Maps results. Pick the most specific category that fits — not the most general.",
+        "Google uses the primary category as the strongest signal for which queries you'll appear for in local pack and Maps results. Pick the most specific category that fits, not the most general.",
       ],
       bullets: [
         "Wrong: \"Contractor.\"",
@@ -50,20 +50,20 @@ export const pageData: AeoPageData = {
         "Google's research on photo engagement shows certain photo types drive more clicks and calls than others. Upload all of these:",
       ],
       bullets: [
-        "Exterior — the storefront or building with signage. Helps customers find you in person.",
-        "Interior — workspace, lobby, showroom. Builds trust pre-call.",
-        "Team — real photos of the actual team members. Faces beat stock photos.",
-        "Equipment / trucks — branded trucks, gear, tools.",
-        "Completed jobs / before-after — proof of work, in-context.",
-        "Logo — high-resolution, square crop.",
-        "Cover photo — high-quality landscape, 1080x608 or larger.",
+        "Exterior: the storefront or building with signage. Helps customers find you in person.",
+        "Interior: workspace, lobby, showroom. Builds trust pre-call.",
+        "Team: real photos of the actual team members. Faces beat stock photos.",
+        "Equipment / trucks: branded trucks, gear, tools.",
+        "Completed jobs / before-after: proof of work, in-context.",
+        "Logo: high-resolution, square crop.",
+        "Cover photo: high-quality landscape, 1080x608 or larger.",
       ],
     },
     {
       eyebrow: "Description",
       heading: "How to write the description",
       body: [
-        "The 700+ character description should: name what you do (specifically), name where you serve (specifically), name what makes you different (concretely), and end with a call to action. Don't keyword-stuff. Don't repeat \"Hays Kansas HVAC repair\" 12 times — Google penalizes it. Write the description for a human.",
+        "The 700+ character description should: name what you do (specifically), name where you serve (specifically), name what makes you different (concretely), and end with a call to action. Don't keyword-stuff. Don't repeat \"Hays Kansas HVAC repair\" 12 times, Google penalizes it. Write the description for a human.",
       ],
     },
     {
@@ -98,7 +98,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I just hire someone to manage my GBP?",
       answer:
-        "Yes — local SEO agencies or freelancers will run GBP at various monthly retainer rates. Realistically, an in-house owner or office manager can do the same work with 1-2 hours per week. The economic question is whether your time is more valuable spent on the business.",
+        "Yes, local SEO agencies or freelancers will run GBP at various monthly retainer rates. Realistically, an in-house owner or office manager can do the same work with 1-2 hours per week. The economic question is whether your time is more valuable spent on the business.",
     },
     {
       question: "How long until GBP optimizations show in rankings?",
@@ -118,7 +118,7 @@ export const pageData: AeoPageData = {
     {
       question: "Does Preisser Solutions handle GBP?",
       answer:
-        "Yes — as part of the Local SEO service. We can run it for you, train your team, or audit existing GBPs and produce a fix-list.",
+        "Yes, as part of the Local SEO service. We can run it for you, train your team, or audit existing GBPs and produce a fix-list.",
     },
   ],
   schemaType: "BlogPosting",
@@ -153,7 +153,7 @@ export const pageData: AeoPageData = {
       },
       {
         name: "Set the most specific primary category",
-        text: "Pick the most specific primary category that fits — not the most general. Use 'HVAC Contractor,' 'Plumber,' 'Roofing Contractor,' or 'Electrician' instead of 'Contractor.' Avoid 'Business Service' when a more specific category exists. Add up to 9 secondary categories for related services.",
+        text: "Pick the most specific primary category that fits, not the most general. Use 'HVAC Contractor,' 'Plumber,' 'Roofing Contractor,' or 'Electrician' instead of 'Contractor.' Avoid 'Business Service' when a more specific category exists. Add up to 9 secondary categories for related services.",
       },
       {
         name: "Upload all the photo types Google rewards",
@@ -165,7 +165,7 @@ export const pageData: AeoPageData = {
       },
       {
         name: "Post to GBP weekly",
-        text: "Post weekly at minimum — offers (current promotion, seasonal special), updates (new service, new hire, new equipment), events, and service highlights. Each post should be 150-300 words, include one photo, a clear CTA, and a link to the relevant page on your site.",
+        text: "Post weekly at minimum: offers (current promotion, seasonal special), updates (new service, new hire, new equipment), events, and service highlights. Each post should be 150-300 words, include one photo, a clear CTA, and a link to the relevant page on your site.",
       },
       {
         name: "Run an active review cadence",
@@ -175,5 +175,5 @@ export const pageData: AeoPageData = {
   },
   ctaHeadline: "Want a GBP audit and fix-list?",
   ctaSubcopy:
-    "Free 30-minute call. We'll audit your GBP live on the call and tell you the top 5 fixes — for free.",
+    "Free 30-minute call. We'll audit your GBP live on the call and tell you the top 5 fixes, for free.",
 };

@@ -15,7 +15,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Local SEO & AI Search in Hays, KS",
   metaDescription:
-    "Local SEO and AI search optimization in Hays, Kansas — get your business found on Google, ChatGPT, Perplexity, and Gemini.",
+    "Local SEO and AI search optimization in Hays, Kansas: get your business found on Google, ChatGPT, Perplexity, and Gemini.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -24,9 +24,9 @@ export const locationData: LocationPageData = {
     eyebrow: "SEO & AI Search in Hays, Kansas",
     h1: "Local SEO and AI Search Optimization in Hays",
     subheadline:
-      "Get found on Google, Google AI Overviews, ChatGPT, Perplexity, and Gemini — local SEO and AI-search optimization for Hays, Kansas businesses.",
+      "Get found on Google, Google AI Overviews, ChatGPT, Perplexity, and Gemini: local SEO and AI-search optimization for Hays, Kansas businesses.",
     answerParagraph:
-      "Preisser Solutions is headquartered in Hays, Kansas and delivers local SEO and AI-search optimization for Hays businesses and Ellis County operators. Services include Google Business Profile optimization, local pack strategy, citation building, schema markup, and AI-search citation engineering — so your Hays business is cited when AI answer engines respond to questions about your industry.",
+      "Preisser Solutions is headquartered in Hays, Kansas and delivers local SEO and AI-search optimization for Hays businesses and Ellis County operators. Services include Google Business Profile optimization, local pack strategy, citation building, schema markup, and AI-search citation engineering, so your Hays business is cited when AI answer engines respond to questions about your industry.",
   },
 
   nearbyAreas: [
@@ -46,9 +46,9 @@ export const locationData: LocationPageData = {
   caseStudies: [HG_OIL_INVENTORY_CARD, HG_OIL_INVOICE_CARD],
 
   whyLocal: [
-    "Preisser Solutions is headquartered in Hays. We are local to Ellis County — not a remote agency guessing at the market.",
+    "Preisser Solutions is headquartered in Hays. We are local to Ellis County, not a remote agency guessing at the market.",
     "AI-search visibility is a newer discipline than traditional SEO, and it is the primary growth area for local search in 2025-2026.",
-    "SEO infrastructure is built in code — schema markup, structured data, content architecture — not in plugins.",
+    "SEO infrastructure is built in code (schema markup, structured data, content architecture), not in plugins.",
   ],
 
   industriesServed: [
@@ -79,17 +79,17 @@ export const locationData: LocationPageData = {
     {
       question: "How competitive is local SEO in Hays?",
       answer:
-        "Hays is a regional hub for western Kansas — healthcare, oil and gas, education, and trades businesses all compete for local search presence. AI-search optimization is still an early-mover opportunity.",
+        "Hays is a regional hub for western Kansas: healthcare, oil and gas, education, and trades businesses all compete for local search presence. AI-search optimization is still an early-mover opportunity.",
     },
     {
       question: "Can Preisser Solutions get a Hays business cited by ChatGPT?",
       answer:
-        "Yes. AI-search citation engineering — the technical and content work required to be cited by ChatGPT, Perplexity, and Gemini — is an explicit service. We have engineered this for our own site and for client properties.",
+        "Yes. AI-search citation engineering (the technical and content work required to be cited by ChatGPT, Perplexity, and Gemini) is an explicit service. We have engineered this for our own site and for client properties.",
     },
     {
       question: "Does Preisser Solutions handle Google Business Profile for Hays clients?",
       answer:
-        "Yes. Google Business Profile optimization — categories, attributes, posts, Q&A, review strategy, photo strategy — is part of every local SEO engagement.",
+        "Yes. Google Business Profile optimization (categories, attributes, posts, Q&A, review strategy, photo strategy) is part of every local SEO engagement.",
     },
   ],
 

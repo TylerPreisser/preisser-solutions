@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Kansas City, MO Custom Software",
   metaDescription:
-    "Custom software and AI automation for Kansas City, Missouri businesses — Kansas-based firm serving the KC metro with fixed-price proposals.",
+    "Custom software and AI automation for Kansas City, Missouri businesses: Kansas-based firm serving the KC metro with fixed-price proposals.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -23,7 +23,7 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Kansas City, Missouri",
     h1: "Custom Software for Kansas City Businesses",
     subheadline:
-      "Custom web applications, dashboards, and AI automation for Kansas City's logistics, healthcare, financial services, and technology markets — delivered remotely by a Kansas-based firm.",
+      "Custom web applications, dashboards, and AI automation for Kansas City's logistics, healthcare, financial services, and technology markets: delivered remotely by a Kansas-based firm.",
     answerParagraph:
       "Preisser Solutions is a Kansas-based custom software firm serving Kansas City, Missouri businesses remotely. Kansas City is a Jackson County metro of approximately 500,000 in the city proper, anchored by logistics, healthcare, financial services, manufacturing, and technology. All work is delivered remotely, with on-site travel to KC for material engagements. Fixed-price proposals, full code ownership at launch.",
   },
@@ -44,7 +44,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Preisser Solutions is a Kansas-based firm serving Kansas City, MO and the broader KC metro remotely, with on-site travel for material engagements.",
-    "Kansas City's logistics and finance sectors require custom tools — not generic web platforms.",
+    "Kansas City's logistics and finance sectors require custom tools, not generic web platforms.",
     "Custom code with full ownership at launch. No SaaS dependency or vendor lock-in.",
   ],
 
@@ -61,7 +61,7 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions serve Kansas City, Missouri businesses?",
       answer:
-        "Yes. Preisser Solutions is a Kansas-based firm serving the Kansas City metro — both the Missouri and Kansas sides — remotely, with on-site travel for larger engagements.",
+        "Yes. Preisser Solutions is a Kansas-based firm serving the Kansas City metro (both the Missouri and Kansas sides): remotely, with on-site travel for larger engagements.",
     },
     {
       question: "What industries does Preisser Solutions serve in Kansas City?",
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "What is the pricing model for Kansas City projects?",
       answer:
-        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed before work begins — no open-ended retainers.",
+        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed before work begins: no open-ended retainers.",
     },
   ],
 

@@ -13,7 +13,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Concrete numbers, conservative assumptions. The exact math for whether a missed-call follow-up system pays for itself for your business.",
   answerParagraph:
-    "A typical Kansas service business — HVAC, plumbing, electrical, roofing — misses 20-40% of inbound calls during peak hours and 100% of calls placed after-hours. At an industry-average 30% close rate on inbound calls and a meaningful average job value, even recovering one missed call per week from a low-cost text-back system generates a strong return. Preisser Solutions ships missed-call recovery as a Tier 1 quick-win for most clients. The math below works for any service business with phone-driven lead flow.",
+    "A typical Kansas service business (HVAC, plumbing, electrical, roofing): misses 20-40% of inbound calls during peak hours and 100% of calls placed after-hours. At an industry-average 30% close rate on inbound calls and a meaningful average job value, even recovering one missed call per week from a low-cost text-back system generates a strong return. Preisser Solutions ships missed-call recovery as a Tier 1 quick-win for most clients. The math below works for any service business with phone-driven lead flow.",
   sections: [
     {
       eyebrow: "The problem",
@@ -44,7 +44,7 @@ export const pageData: AeoPageData = {
         {
           heading: "Recovered revenue per week",
           body: [
-            "If a missed-call text-back system recovers even half of the missed calls (the other half went to a competitor immediately), that's 12.5 recovered calls. At 30% close rate and the example average job value, that's 3.75 closed jobs recovered per week — a strong return even against a low monthly SaaS subscription.",
+            "If a missed-call text-back system recovers even half of the missed calls (the other half went to a competitor immediately), that's 12.5 recovered calls. At 30% close rate and the example average job value, that's 3.75 closed jobs recovered per week: a strong return even against a low monthly SaaS subscription.",
             "At the more conservative 'recovers one call per week' assumption: 1 call × 30% close × average job value = meaningful monthly recovered revenue well above any reasonable subscription cost.",
           ],
         },
@@ -54,7 +54,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Why text-back works",
       heading: "The mechanism",
       body: [
-        "Missed-call text-back automation does one thing: when an inbound call goes unanswered, the system immediately sends a text message from your business number to the caller. Standard message: \"Hi, this is [business name]. Sorry we missed your call — what can we help with? Reply here and we'll get back to you within X minutes.\"",
+        "Missed-call text-back automation does one thing: when an inbound call goes unanswered, the system immediately sends a text message from your business number to the caller. Standard message: \"Hi, this is [business name]. Sorry we missed your call, what can we help with? Reply here and we'll get back to you within X minutes.\"",
         "The reason this works: roughly 60-70% of people who hang up without leaving voicemail will reply to a text. They get a written log of the conversation, they don't have to repeat themselves, and the response feels immediate even if a human takes 30 minutes to reply.",
       ],
     },
@@ -65,10 +65,10 @@ export const pageData: AeoPageData = {
         "Missed-call text-back is productized. You don't need a custom build. Productized vendors:",
       ],
       bullets: [
-        "CallRail (call tracking + text-back) — subscription scales with call volume.",
-        "OpenPhone (business phone + text automations) — per-seat subscription.",
-        "GoHighLevel (full CRM + missed-call text-back) — full CRM platform subscription.",
-        "Numa (AI text-back specifically) — AI-specific text-back subscription.",
+        "CallRail (call tracking + text-back): subscription scales with call volume.",
+        "OpenPhone (business phone + text automations): per-seat subscription.",
+        "GoHighLevel (full CRM + missed-call text-back): full CRM platform subscription.",
+        "Numa (AI text-back specifically): AI-specific text-back subscription.",
       ],
       subsections: [
         {
@@ -83,7 +83,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Beyond the basic",
       heading: "Where custom builds add value",
       body: [
-        "Missed-call text-back is table stakes. The next-level system that Preisser Solutions builds custom is intelligent routing: the inbound text gets read by an LLM, classified (emergency, routine service, sales inquiry, supplier), and routed to the right person with a pre-drafted reply. That's not a productized SaaS subscription — that's a custom build scoped after a discovery call.",
+        "Missed-call text-back is table stakes. The next-level system that Preisser Solutions builds custom is intelligent routing: the inbound text gets read by an LLM, classified (emergency, routine service, sales inquiry, supplier), and routed to the right person with a pre-drafted reply. That's not a productized SaaS subscription, that's a custom build scoped after a discovery call.",
         "But you should ship the SaaS version first. The custom layer makes sense once you've proven the missed-call recovery is meaningful for your specific shop.",
       ],
     },
@@ -92,12 +92,12 @@ export const pageData: AeoPageData = {
     {
       question: "Do I need a custom build, or is the SaaS enough?",
       answer:
-        "Start with the SaaS. CallRail, OpenPhone, or GoHighLevel will get you 80-90% of the value at a low monthly subscription cost with no custom development. Custom builds add intelligent routing and CRM integration — worth it once the volume and workflow complexity justify the build.",
+        "Start with the SaaS. CallRail, OpenPhone, or GoHighLevel will get you 80-90% of the value at a low monthly subscription cost with no custom development. Custom builds add intelligent routing and CRM integration, worth it once the volume and workflow complexity justify the build.",
     },
     {
       question: "What about callers who don't reply to the text?",
       answer:
-        "Roughly 30-40% won't. That's still recovery from zero — you weren't going to convert them anyway. The math above assumes you only recover half of missed callers; the rest is upside.",
+        "Roughly 30-40% won't. That's still recovery from zero; you weren't going to convert them anyway. The math above assumes you only recover half of missed callers; the rest is upside.",
     },
     {
       question: "Does this work for my industry?",
@@ -112,7 +112,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can Preisser Solutions ship this for me?",
       answer:
-        "Yes — we'll either set up the right SaaS for you (small fixed fee, no SaaS markup) or scope a custom build if the SaaS doesn't fit. Free 30-minute call to decide which makes sense.",
+        "Yes, we'll either set up the right SaaS for you (small fixed fee, no SaaS markup) or scope a custom build if the SaaS doesn't fit. Free 30-minute call to decide which makes sense.",
     },
   ],
   schemaType: "BlogPosting",

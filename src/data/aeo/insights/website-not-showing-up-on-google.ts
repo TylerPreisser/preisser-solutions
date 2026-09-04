@@ -26,7 +26,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Step 1",
       heading: "Check whether Google has indexed the page",
       body: [
-        "Start with the simplest test. Open Google and type site:yourdomain.com. The results show every URL Google currently has in its index for your domain. If the URL you care about isn't in that list, ranking is irrelevant — the page literally doesn't exist as far as Google search is concerned.",
+        "Start with the simplest test. Open Google and type site:yourdomain.com. The results show every URL Google currently has in its index for your domain. If the URL you care about isn't in that list, ranking is irrelevant: the page literally doesn't exist as far as Google search is concerned.",
         "For the authoritative answer, open Google Search Console. Use the URL Inspection tool at the top: paste the exact URL and press Enter. Search Console will report \"URL is on Google\" or \"URL is not on Google\" along with a reason.",
         "If the page is not on Google, click \"Request Indexing.\" That submits the URL to Google's crawl queue. Indexing is not guaranteed and can take days to weeks, but the request is the right first step.",
       ],
@@ -40,7 +40,7 @@ export const pageData: AeoPageData = {
         "Match intent as well as phrasing. A page about \"plumbing services\" that lists pricing tiers will compete poorly against pages targeting \"emergency plumber near me\" if the underlying intent is different. Decide which intent the page targets, then write to that intent exclusively.",
       ],
       bullets: [
-        "One primary topic per page — split if you're trying to cover three",
+        "One primary topic per page: split if you're trying to cover three",
         "Title tag ≤ 60 characters, with the keyword toward the front",
         "H1 in plain customer language, not in marketing-speak",
         "First paragraph answers the search query directly within 100 words",
@@ -74,7 +74,7 @@ export const pageData: AeoPageData = {
         "If your page is half the length of every page ranking above it, or skips the obvious questions a buyer would ask, Google has a reasonable basis for ranking those pages above yours regardless of how old your domain is.",
       ],
       bullets: [
-        "Cover the obvious questions a buyer would ask before calling — pricing, timing, what's included, what's not",
+        "Cover the obvious questions a buyer would ask before calling, pricing, timing, what's included, what's not",
         "Show your work: photos of finished jobs, real names, real testimonials",
         "Add an FAQ block of five to seven real questions, with concise answers",
         "Internally link to two or three closely related pages on your site",
@@ -114,12 +114,12 @@ export const pageData: AeoPageData = {
     {
       question: "Will buying backlinks help me show up on Google?",
       answer:
-        "No, and it can actively hurt. Paid links violate Google's guidelines and can trigger a manual penalty that suppresses the site for months. Earn citations from real local sources — chamber of commerce, trade associations, local press, supplier sites — and links will follow naturally.",
+        "No, and it can actively hurt. Paid links violate Google's guidelines and can trigger a manual penalty that suppresses the site for months. Earn citations from real local sources (chamber of commerce, trade associations, local press, supplier sites), and links will follow naturally.",
     },
     {
       question: "Can I appear on Google without having a website?",
       answer:
-        "Yes, through a Google Business Profile. A profile alone can drive calls and direction requests if you serve a local market. But a profile without a backing website tends to convert less well — buyers click through to read more, and finding nothing weakens trust. A simple, fast site paired with the profile outperforms either one alone.",
+        "Yes, through a Google Business Profile. A profile alone can drive calls and direction requests if you serve a local market. But a profile without a backing website tends to convert less well: buyers click through to read more, and finding nothing weakens trust. A simple, fast site paired with the profile outperforms either one alone.",
     },
   ],
   schemaType: "Article",

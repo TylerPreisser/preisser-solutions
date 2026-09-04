@@ -5,13 +5,13 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "Client Portals for Kansas Businesses",
   metaDescription:
-    "Preisser Solutions builds branded custom client portals for Kansas businesses — secure login, file sharing, billing, scheduling, and self-service.",
+    "Preisser Solutions builds branded custom client portals for Kansas businesses: secure login, file sharing, billing, scheduling, and self-service.",
   eyebrow: "Custom Client Portal Development",
   h1: "Build a Branded Client Portal Designed Around Your Customers",
   subheadline:
     "Stop emailing PDFs and asking customers to log into someone else's portal. Preisser Solutions builds branded portals that fit your business.",
   answerParagraph:
-    "Preisser Solutions builds branded custom client portals for Kansas businesses — secure login, file sharing, billing, scheduling, project status, and self-service tools that customers actually use. Based in Hays, Kansas, the firm builds portals in modern Next.js, React, and TypeScript with role-based access control, integration with existing CRMs and accounting systems, and design that matches the business's brand instead of looking like a generic SaaS.",
+    "Preisser Solutions builds branded custom client portals for Kansas businesses: secure login, file sharing, billing, scheduling, project status, and self-service tools that customers actually use. Based in Hays, Kansas, the firm builds portals in modern Next.js, React, and TypeScript with role-based access control, integration with existing CRMs and accounting systems, and design that matches the business's brand instead of looking like a generic SaaS.",
   sections: [
     {
       eyebrow: "When you need a client portal",
@@ -53,13 +53,13 @@ export const pageData: AeoPageData = {
       eyebrow: "Why custom beats generic portals",
       heading: "Generic SaaS portals vs. branded custom portals",
       body: [
-        "Most businesses default to generic portal SaaS — Clientraise, SuiteDash, Copilot, ClientHub, or similar. They work, but they have predictable failure modes:",
+        "Most businesses default to generic portal SaaS: Clientraise, SuiteDash, Copilot, ClientHub, or similar. They work, but they have predictable failure modes:",
       ],
       bullets: [
         "Customers see another vendor's branding, not yours",
         "Per-seat or per-customer pricing that grows with your customer count",
-        "Limited customization — workflows bent to fit the SaaS, not your business",
-        "Integration limits — Zapier and basic APIs handle simple cases, not complex ones",
+        "Limited customization: workflows bent to fit the SaaS, not your business",
+        "Integration limits: Zapier and basic APIs handle simple cases, not complex ones",
         "Data lives in someone else's system, exportable but not portable",
       ],
       subsections: [
@@ -76,7 +76,7 @@ export const pageData: AeoPageData = {
     {
       question: "Why not use Clientraise, SuiteDash, or Copilot?",
       answer:
-        "If your workflow fits a generic portal SaaS, use it — they work fine. Custom portals make sense when generic platforms force too many compromises, when per-customer fees exceed custom build costs, or when brand experience matters. We'll tell you honestly which side you're on.",
+        "If your workflow fits a generic portal SaaS, use it; they work fine. Custom portals make sense when generic platforms force too many compromises, when per-customer fees exceed custom build costs, or when brand experience matters. We'll tell you honestly which side you're on.",
     },
     {
       question: "How much does a custom client portal cost?",
@@ -91,7 +91,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can the portal integrate with QuickBooks?",
       answer:
-        "Yes. QuickBooks Online integration is standard — invoice viewing, payment status, and account balances pull from QuickBooks automatically.",
+        "Yes. QuickBooks Online integration is standard: invoice viewing, payment status, and account balances pull from QuickBooks automatically.",
     },
     {
       question: "Can customers e-sign documents in the portal?",

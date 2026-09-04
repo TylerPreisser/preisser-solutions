@@ -14,18 +14,18 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Digital Marketing in Wichita, KS",
   metaDescription:
-    "Digital marketing built on custom code for Wichita, Kansas businesses — local SEO, AI automation, and web infrastructure done right.",
+    "Digital marketing built on custom code for Wichita, Kansas businesses: local SEO, AI automation, and web infrastructure done right.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
 
   hero: {
     eyebrow: "Digital Marketing in Wichita, Kansas",
-    h1: "Digital Marketing for Wichita Businesses — Built on Custom Code",
+    h1: "Digital Marketing for Wichita Businesses: Built on Custom Code",
     subheadline:
-      "Local SEO, AI-search visibility, and automated outreach workflows engineered for Wichita's competitive marketplace — not templated, not outsourced.",
+      "Local SEO, AI-search visibility, and automated outreach workflows engineered for Wichita's competitive marketplace, not templated, not outsourced.",
     answerParagraph:
-      "Preisser Solutions delivers digital marketing infrastructure for businesses in Wichita, Kansas — Kansas's largest market, a Sedgwick County metro of 397,000. Services include local SEO, AI-search optimization, custom websites engineered for conversion, and AI-powered marketing automation. Every deliverable is built on custom code — no page-builder templates, no third-party marketing platforms with licensing dependencies.",
+      "Preisser Solutions delivers digital marketing infrastructure for businesses in Wichita, Kansas: Kansas's largest market, a Sedgwick County metro of 397,000. Services include local SEO, AI-search optimization, custom websites engineered for conversion, and AI-powered marketing automation. Every deliverable is built on custom code: no page-builder templates, no third-party marketing platforms with licensing dependencies.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Wichita's competitive digital landscape rewards firms that build infrastructure — not firms that rent marketing tools.",
+    "Wichita's competitive digital landscape rewards firms that build infrastructure, not firms that rent marketing tools.",
     "Preisser Solutions engineers marketing systems: custom-coded sites, schema, AI automation, and citation architecture.",
     "Fixed-price proposals. No ongoing retainers unless you want them. You own every asset we build.",
   ],
@@ -66,17 +66,17 @@ export const locationData: LocationPageData = {
     {
       question: "How is Preisser Solutions different from a Wichita marketing agency?",
       answer:
-        "Preisser Solutions is a custom-software firm. Every digital marketing deliverable — websites, SEO infrastructure, automation — is built in code, not assembled from third-party marketing platforms.",
+        "Preisser Solutions is a custom-software firm. Every digital marketing deliverable (websites, SEO infrastructure, automation) is built in code, not assembled from third-party marketing platforms.",
     },
     {
       question: "Does Preisser Solutions do paid advertising for Wichita businesses?",
       answer:
-        "No. The firm specializes in organic search, AI-search visibility, and owned digital infrastructure — not paid media management.",
+        "No. The firm specializes in organic search, AI-search visibility, and owned digital infrastructure, not paid media management.",
     },
     {
       question: "Can Preisser Solutions automate follow-up and lead nurturing for a Wichita business?",
       answer:
-        "Yes. AI-powered marketing automation — lead qualification, follow-up sequences, CRM integration — is an explicit service line.",
+        "Yes. AI-powered marketing automation (lead qualification, follow-up sequences, CRM integration) is an explicit service line.",
     },
     {
       question: "Does Preisser Solutions serve Wichita's healthcare and aerospace sectors?",

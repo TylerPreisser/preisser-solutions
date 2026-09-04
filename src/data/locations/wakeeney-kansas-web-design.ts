@@ -18,7 +18,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "WaKeeney, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for WaKeeney, Kansas — built by a nearby Hays-based firm.",
+    "Custom websites, web apps, and AI automation for WaKeeney, Kansas: built by a nearby Hays-based firm.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -29,7 +29,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for Trego County operators along I-70 in western Kansas.",
     answerParagraph:
-      "Preisser Solutions serves WaKeeney, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays — roughly 37 miles east on I-70 — we deliver locally and remotely. Custom code, fixed-price proposals, full ownership.",
+      "Preisser Solutions serves WaKeeney, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly 37 miles east on I-70): we deliver locally and remotely. Custom code, fixed-price proposals, full ownership.",
   },
 
   nearbyAreas: [
@@ -49,7 +49,7 @@ export const locationData: LocationPageData = {
   caseStudies: [HG_OIL_INVENTORY_CARD],
 
   whyLocal: [
-    "Hays is a 37-mile drive east on I-70 — in-person scoping is straightforward.",
+    "Hays is a 37-mile drive east on I-70: in-person scoping is straightforward.",
     "We understand the western-Kansas operating context for ag, oilfield, and trades businesses.",
     "Custom code with full ownership transferred at launch. No proprietary platform.",
   ],
@@ -66,12 +66,12 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions serve WaKeeney, Kansas?",
       answer:
-        "Yes. WaKeeney is within the firm's primary service radius — 37 miles west of Hays on I-70. In-person scoping is straightforward.",
+        "Yes. WaKeeney is within the firm's primary service radius: 37 miles west of Hays on I-70. In-person scoping is straightforward.",
     },
     {
       question: "How far is Hays from WaKeeney?",
       answer:
-        "About 37 miles east via I-70 — roughly 35 minutes. Travel for in-person work is treated as part of the engagement.",
+        "About 37 miles east via I-70: roughly 35 minutes. Travel for in-person work is treated as part of the engagement.",
     },
     {
       question: "What does Preisser Solutions build for WaKeeney businesses?",
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do you offer AI invoice processing in WaKeeney?",
       answer:
-        "Yes. AI invoice processing is a packaged service offering — the engine extracts vendor, line items, and GL codes from any invoice format and routes for approval.",
+        "Yes. AI invoice processing is a packaged service offering: the engine extracts vendor, line items, and GL codes from any invoice format and routes for approval.",
     },
     {
       question: "What is the difference between Preisser Solutions and a Kansas marketing agency?",

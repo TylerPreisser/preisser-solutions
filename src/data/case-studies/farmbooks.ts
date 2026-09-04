@@ -19,7 +19,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // FarmBooks site and out of this file.
 export const caseStudy: CaseStudyData = {
   slug: "farmbooks",
-  metaTitle: "FarmBooks — Bills to Schedule-F Books",
+  metaTitle: "FarmBooks: Bills to Schedule-F Books",
   metaDescription:
     "Photograph a farm bill and get Schedule-F-ready books. The line amounts have to equal the printed total within two cents, or a person looks at it first.",
   datePublished: "2026-07-20",
@@ -30,7 +30,7 @@ export const caseStudy: CaseStudyData = {
   clientNameDisplay: "FarmBooks",
   industry: "Farm bookkeeping and Schedule F accounting",
 
-  h1: "FarmBooks — Photograph a Bill, Get Schedule-F-Ready Books",
+  h1: "FarmBooks: Photograph a Bill, Get Schedule-F-Ready Books",
   subheadline:
     "The line amounts have to equal the bill's printed total within two cents before anything is allowed to post, and every bill stays a draft until a person submits it.",
   oneLine: "Photograph a farm bill; deterministic checks turn it into Schedule-F-ready books",
@@ -66,11 +66,11 @@ export const caseStudy: CaseStudyData = {
   built: {
     heading: "Deterministic checks around every number, and a person at every uncertain moment.",
     body: [
-      "A bill arrives however it actually arrives — emailed as a PDF, mailed as a statement, or photographed in the cab, sideways and badly lit. Photographs are straightened before they are read, and a multi-page bill is put back together by proving the math: a continuation page is matched to its parent by checking the page's line total against the printed subtotal, so the same arithmetic that proves the pages belong together proves they are in the right order. Vendor identification works cheapest-signal-first, and a layout it has never seen falls back to a generic profile and a human look rather than a guess.",
-      "Then the arithmetic conscience the spreadsheet never had. The line amounts must equal the printed total within two cents or the bill is held for a person. If a line disappears between processing stages, the system raises an error instead of posting a quietly smaller bill. Non-billable footer rows are stripped with a running count, so an audit can prove nothing real was discarded. A re-sent bill is caught on identity — same vendor and total inside a short window, or a matching vendor document number — not on file bytes.",
+      "A bill arrives however it actually arrives: emailed as a PDF, mailed as a statement, or photographed in the cab, sideways and badly lit. Photographs are straightened before they are read, and a multi-page bill is put back together by proving the math: a continuation page is matched to its parent by checking the page's line total against the printed subtotal, so the same arithmetic that proves the pages belong together proves they are in the right order. Vendor identification works cheapest-signal-first, and a layout it has never seen falls back to a generic profile and a human look rather than a guess.",
+      "Then the arithmetic conscience the spreadsheet never had. The line amounts must equal the printed total within two cents or the bill is held for a person. If a line disappears between processing stages, the system raises an error instead of posting a quietly smaller bill. Non-billable footer rows are stripped with a running count, so an audit can prove nothing real was discarded. A re-sent bill is caught on identity (same vendor and total inside a short window, or a matching vendor document number), not on file bytes.",
       "Understanding what was bought is a translation problem, and we treated it as one. A 530-entry dictionary turns co-op shorthand into plain English and keeps the exact printed text beside it, always reachable, because a prettier description must never be able to move a dollar figure. Categorization resolves in order: the farm's own confirmed corrections first, then that deterministic dictionary weighted by vendor context, then a single batched model call for anything still unresolved, locked to a 26-category taxonomy and never free-form. The Schedule F line is always re-derived from the category and never accepted from the model. Across 893 ledger lines from 101 bills in one crop year at a live three-farm operation, zero came out uncategorized.",
-      "Nothing posts itself when anything is uncertain, and uncertainty here is boolean rather than a percentage — certain, or it needs a person's eyes. A self-reported confidence score was deliberately removed, because a made-up score is not something a set of books should lean on. A handwritten quantity is always routed to review no matter how clean the read looks. An overlay that highlighted the exact spot on the image was built and then turned off after it once drew the box around the wrong product line, on the judgment that a confident pointer that is wrong is worse than no pointer. Every bill lands as a draft, and the money moves when a person presses submit.",
-      "What makes the result defensible is the record. Every field is stored as a printed-value and translated-value pair, so from any amount in the app you open the original bill it came from and read the exact words the vendor printed. Every change — assigning a field, changing a category, splitting, cost-sharing, confirming, submitting — writes an audit row carrying who, when, the previous value and the new value, inside the same transaction as the change itself. The history cannot drift from the data, because the system refuses to record one without the other.",
+      "Nothing posts itself when anything is uncertain, and uncertainty here is boolean rather than a percentage: certain, or it needs a person's eyes. A self-reported confidence score was deliberately removed, because a made-up score is not something a set of books should lean on. A handwritten quantity is always routed to review no matter how clean the read looks. An overlay that highlighted the exact spot on the image was built and then turned off after it once drew the box around the wrong product line, on the judgment that a confident pointer that is wrong is worse than no pointer. Every bill lands as a draft, and the money moves when a person presses submit.",
+      "What makes the result defensible is the record. Every field is stored as a printed-value and translated-value pair, so from any amount in the app you open the original bill it came from and read the exact words the vendor printed. Every change (assigning a field, changing a category, splitting, cost-sharing, confirming, submitting): writes an audit row carrying who, when, the previous value and the new value, inside the same transaction as the change itself. The history cannot drift from the data, because the system refuses to record one without the other.",
     ],
   },
 
@@ -96,7 +96,7 @@ export const caseStudy: CaseStudyData = {
         items: [
           "Arithmetic validation on every bill, within two cents of the printed total",
           "Cross-stage line check, so no bill can post quietly smaller than it was",
-          "Confidence is boolean by design — certain, or it needs a person's eyes; no percentage score",
+          "Confidence is boolean by design: certain, or it needs a person's eyes; no percentage score",
           "A highlight-the-spot overlay was built and deliberately turned off after it once boxed the wrong line",
           "Split shares are proven three times: at allocation, before the write, and by re-reading after it",
           "3,345 automated tests on the extraction engine, 2,081 on the web app",

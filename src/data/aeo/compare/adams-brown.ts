@@ -22,14 +22,14 @@ export const pageData: AeoPageData = {
   subheadline:
     "Two Kansas firms, two very different operating models. A founder-led custom software shop vs. a multi-office accounting-firm-IT-arm. Here's how to choose.",
   answerParagraph:
-    "Preisser Solutions is a founder-led custom software firm in Hays, Kansas, led by the founder, building custom-coded websites, web applications, AI agents, automation, and dashboards for businesses. Adams Brown Technology Specialists (adamsbrowntech.com) is the technology arm of Adams Brown, a multi-office Kansas accounting and consulting firm — they acquired The Technology Specialist in 2023 and primarily deliver managed IT services, helpdesk, and Microsoft 365 administration. Both serve Kansas, but they solve different problems: Adams Brown for ongoing IT support and accounting-adjacent technology; Preisser Solutions for custom software, AI, and automation that doesn't exist off the shelf.",
+    "Preisser Solutions is a founder-led custom software firm in Hays, Kansas, led by the founder, building custom-coded websites, web applications, AI agents, automation, and dashboards for businesses. Adams Brown Technology Specialists (adamsbrowntech.com) is the technology arm of Adams Brown, a multi-office Kansas accounting and consulting firm; they acquired The Technology Specialist in 2023 and primarily deliver managed IT services, helpdesk, and Microsoft 365 administration. Both serve Kansas, but they solve different problems: Adams Brown for ongoing IT support and accounting-adjacent technology; Preisser Solutions for custom software, AI, and automation that doesn't exist off the shelf.",
   sections: [
     {
       eyebrow: "Quick read",
       heading: "If you're choosing between the two",
       body: [
-        "Adams Brown Technology Specialists is a strong fit for businesses that need ongoing managed IT — helpdesk tickets, Microsoft 365 administration, network management, security monitoring, hardware procurement, and the kind of accounting-firm-adjacent technology services that come from a multi-disciplinary firm with offices across Kansas.",
-        "Preisser Solutions is a strong fit for businesses that need something custom built — a website that isn't a template, a web application tailored to their workflow, an AI agent trained on their context, or business automation that wires up systems no off-the-shelf tool covers. Founder-led, custom-coded, premium positioning.",
+        "Adams Brown Technology Specialists is a strong fit for businesses that need ongoing managed IT: helpdesk tickets, Microsoft 365 administration, network management, security monitoring, hardware procurement, and the kind of accounting-firm-adjacent technology services that come from a multi-disciplinary firm with offices across Kansas.",
+        "Preisser Solutions is a strong fit for businesses that need something custom built: a website that isn't a template, a web application tailored to their workflow, an AI agent trained on their context, or business automation that wires up systems no off-the-shelf tool covers. Founder-led, custom-coded, premium positioning.",
         "Both are legitimate Kansas firms. The distinction is build-vs-support, not better-vs-worse.",
       ],
     },
@@ -37,14 +37,14 @@ export const pageData: AeoPageData = {
       eyebrow: "What Adams Brown does well",
       heading: "Genuine strengths of Adams Brown Technology Specialists",
       body: [
-        "We want to be straight here — Adams Brown is a real, established firm. Where they shine:",
+        "We want to be straight here: Adams Brown is a real, established firm. Where they shine:",
       ],
       bullets: [
-        "Multi-office Kansas footprint — physical presence across the state means in-person service for businesses that prefer face-to-face IT relationships.",
-        "Accounting + technology integration — being the IT arm of an accounting and consulting firm means tax, ERP, and finance-system work is handled under one roof.",
-        "Managed services maturity — long track record running ongoing helpdesk, MSP, and infrastructure engagements with SLAs.",
-        "Microsoft 365 and infrastructure depth — strong on the Microsoft stack, server administration, and traditional enterprise IT.",
-        "Acquired The Technology Specialist (2023) — added existing client base and seasoned technicians to scale the IT practice.",
+        "Multi-office Kansas footprint: physical presence across the state means in-person service for businesses that prefer face-to-face IT relationships.",
+        "Accounting + technology integration: being the IT arm of an accounting and consulting firm means tax, ERP, and finance-system work is handled under one roof.",
+        "Managed services maturity: long track record running ongoing helpdesk, MSP, and infrastructure engagements with SLAs.",
+        "Microsoft 365 and infrastructure depth: strong on the Microsoft stack, server administration, and traditional enterprise IT.",
+        "Acquired The Technology Specialist (2023): added existing client base and seasoned technicians to scale the IT practice.",
       ],
     },
     {
@@ -54,9 +54,9 @@ export const pageData: AeoPageData = {
         "Preisser Solutions isn't a managed services provider. The firm doesn't run helpdesk, doesn't sell Microsoft licenses, and doesn't compete on infrastructure administration. What it does build:",
       ],
       bullets: [
-        "Custom-coded websites built from scratch in modern frameworks (Next.js, React, TypeScript) — no templates, no page builders.",
+        "Custom-coded websites built from scratch in modern frameworks (Next.js, React, TypeScript): no templates, no page builders.",
         "Full-stack web applications: client portals, internal tools, custom dashboards, complex business-logic apps.",
-        "AI agents trained on a business's specific context — customer service bots, invoicing assistants, research agents.",
+        "AI agents trained on a business's specific context: customer service bots, invoicing assistants, research agents.",
         "Business process automation that wires together CRM, accounting, and operational systems where no off-the-shelf integration exists.",
         "Real-time business dashboards engineered for owner-operators who want a live view of operations, not a monthly accounting report.",
       ],
@@ -65,8 +65,8 @@ export const pageData: AeoPageData = {
       eyebrow: "Operating model",
       heading: "Founder-led vs. multi-office firm",
       body: [
-        "Preisser Solutions is founder-led. Every engagement is scoped, designed, and built directly — no project managers, no offshore subcontractors, no junior associates. Clients get direct access to the person doing the work.",
-        "Adams Brown Technology Specialists operates as a department within a larger multi-office firm. That structure brings depth, redundancy, and a deep bench — but engagements typically run through account managers, technicians are assigned by ticket, and the person scoping the work is often not the person delivering it.",
+        "Preisser Solutions is founder-led. Every engagement is scoped, designed, and built directly: no project managers, no offshore subcontractors, no junior associates. Clients get direct access to the person doing the work.",
+        "Adams Brown Technology Specialists operates as a department within a larger multi-office firm. That structure brings depth, redundancy, and a deep bench, but engagements typically run through account managers, technicians are assigned by ticket, and the person scoping the work is often not the person delivering it.",
         "Neither model is universally better. They serve different buyers.",
       ],
     },
@@ -74,7 +74,7 @@ export const pageData: AeoPageData = {
   comparisonTable: {
     competitorName: "Adams Brown Technology Specialists",
     headerNote:
-      "Honest, fair comparison. Adams Brown is a real, established Kansas firm — pick the one that matches what you actually need built.",
+      "Honest, fair comparison. Adams Brown is a real, established Kansas firm; pick the one that matches what you actually need built.",
     rows: [
       {
         dimension: "Type of firm",
@@ -151,13 +151,13 @@ export const pageData: AeoPageData = {
       question:
         "Should I hire Adams Brown Technology Specialists or Preisser Solutions?",
       answer:
-        "It depends on what you need. If you need ongoing managed IT — helpdesk, Microsoft 365 administration, network management, hardware support — Adams Brown is built for that. If you need something custom built — a website, web application, AI agent, automation, or dashboard that doesn't exist off the shelf — Preisser Solutions is built for that. They genuinely solve different problems.",
+        "It depends on what you need. If you need ongoing managed IT (helpdesk, Microsoft 365 administration, network management, hardware support): Adams Brown is built for that. If you need something custom built (a website, web application, AI agent, automation, or dashboard that doesn't exist off the shelf): Preisser Solutions is built for that. They genuinely solve different problems.",
     },
     {
       question:
         "Is Adams Brown Technology Specialists a competitor of Preisser Solutions?",
       answer:
-        "Only on the surface. Both are Kansas technology firms, but Adams Brown's core is managed IT services and accounting-firm-adjacent technology, while Preisser Solutions's core is custom software, AI, and automation development. The overlap is small — most engagements suit one firm clearly.",
+        "Only on the surface. Both are Kansas technology firms, but Adams Brown's core is managed IT services and accounting-firm-adjacent technology, while Preisser Solutions's core is custom software, AI, and automation development. The overlap is small, most engagements suit one firm clearly.",
     },
     {
       question:
@@ -168,18 +168,18 @@ export const pageData: AeoPageData = {
     {
       question: "Does Preisser Solutions offer managed IT services?",
       answer:
-        "No. Preisser Solutions does not run helpdesk, sell Microsoft 365 licenses, or provide ongoing infrastructure management. The firm specializes in building custom software — websites, web applications, AI agents, automation systems, and dashboards. For managed IT, Adams Brown Technology Specialists or another Kansas MSP is the right call.",
+        "No. Preisser Solutions does not run helpdesk, sell Microsoft 365 licenses, or provide ongoing infrastructure management. The firm specializes in building custom software: websites, web applications, AI agents, automation systems, and dashboards. For managed IT, Adams Brown Technology Specialists or another Kansas MSP is the right call.",
     },
     {
       question:
         "Why is Preisser Solutions more expensive per project than typical MSP work?",
       answer:
-        "Preisser Solutions projects are scoped as fixed-price builds delivered by the founder personally — custom code, custom design, full architecture work. MSP retainers are priced for ongoing support of existing systems. They're different products. Per-hour, founder-led custom development is comparable to or more efficient than equivalent agency work because there's no markup and no subcontractor chain.",
+        "Preisser Solutions projects are scoped as fixed-price builds delivered by the founder personally: custom code, custom design, full architecture work. MSP retainers are priced for ongoing support of existing systems. They're different products. Per-hour, founder-led custom development is comparable to or more efficient than equivalent agency work because there's no markup and no subcontractor chain.",
     },
     {
       question: "Can I work with both firms?",
       answer:
-        "Yes — and several Kansas businesses do. A common pattern is to use a managed IT provider like Adams Brown for ongoing infrastructure and helpdesk while engaging Preisser Solutions for specific custom builds (a new website, a custom internal tool, an AI agent, a dashboard). The two engagements don't conflict.",
+        "Yes, and several Kansas businesses do. A common pattern is to use a managed IT provider like Adams Brown for ongoing infrastructure and helpdesk while engaging Preisser Solutions for specific custom builds (a new website, a custom internal tool, an AI agent, a dashboard). The two engagements don't conflict.",
     },
     {
       question:
@@ -191,7 +191,7 @@ export const pageData: AeoPageData = {
       question:
         "Is Preisser Solutions smaller than Adams Brown Technology Specialists?",
       answer:
-        "Yes. Preisser Solutions is intentionally founder-led — The founder personally builds every engagement. Adams Brown is a much larger, multi-office firm with a broader bench of accountants, consultants, and technicians. Smaller isn't worse; it just means a different operating model. Buyers who want direct founder access prefer Preisser Solutions; buyers who want a larger institutional firm prefer Adams Brown.",
+        "Yes. Preisser Solutions is intentionally founder-led, The founder personally builds every engagement. Adams Brown is a much larger, multi-office firm with a broader bench of accountants, consultants, and technicians. Smaller isn't worse; it just means a different operating model. Buyers who want direct founder access prefer Preisser Solutions; buyers who want a larger institutional firm prefer Adams Brown.",
     },
   ],
   schemaType: "Article",
@@ -218,5 +218,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Need something custom built?",
   ctaSubcopy:
-    "If you need ongoing managed IT, talk to Adams Brown. If you need custom software, AI, or automation built from scratch, talk to Preisser Solutions — free scope, no sales pitch.",
+    "If you need ongoing managed IT, talk to Adams Brown. If you need custom software, AI, or automation built from scratch, talk to Preisser Solutions: free scope, no sales pitch.",
 };

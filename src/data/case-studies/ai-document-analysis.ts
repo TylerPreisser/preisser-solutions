@@ -6,7 +6,7 @@ export const caseStudy: CaseStudyData = {
   slug: "ai-document-analysis",
   metaTitle: "AI Document Analysis & Data Extraction",
   metaDescription:
-    "Automation workflows that ingest invoices, contracts, forms, reports, and permits — extract structured data, categorize, and forward to downstream systems.",
+    "Automation workflows that ingest invoices, contracts, forms, reports, and permits: extract structured data, categorize, and forward to downstream systems.",
   datePublished: "2026-03-22",
   dateModified: "2026-05-20",
 
@@ -15,9 +15,9 @@ export const caseStudy: CaseStudyData = {
   clientNameDisplay: "Capability",
   industry: "AI document analysis and data extraction",
 
-  h1: "AI Document Analysis — Any Document In, Structured Data Out",
+  h1: "AI Document Analysis: Any Document In, Structured Data Out",
   subheadline:
-    "Automation workflows that ingest any document type — invoices, contracts, forms, reports, permits — extract structured data, categorize, date-stamp, and forward to downstream systems.",
+    "Automation workflows that ingest any document type (invoices, contracts, forms, reports, permits): extract structured data, categorize, date-stamp, and forward to downstream systems.",
   oneLine: "Any document in, structured data out, downstream systems updated",
 
   headlineResults: [
@@ -30,23 +30,23 @@ export const caseStudy: CaseStudyData = {
   before: {
     heading: "Documents arrive, then sit. Staff key them in by hand.",
     body: [
-      "Every business runs on documents — invoices, contracts, signed forms, inspection reports, permits, regulatory filings, work orders. Most of those documents arrive as PDFs, scanned images, Excel files, or Word docs, and most are read by a human who then types the same information into a CRM, an ERP, or an accounting system.",
-      "This is the slowest, most error-prone work in the back office. It does not have to be done by a human. AI document analysis turns the pile into structured data — categorized, dated, and routed — without anyone keying it twice.",
+      "Every business runs on documents: invoices, contracts, signed forms, inspection reports, permits, regulatory filings, work orders. Most of those documents arrive as PDFs, scanned images, Excel files, or Word docs, and most are read by a human who then types the same information into a CRM, an ERP, or an accounting system.",
+      "This is the slowest, most error-prone work in the back office. It does not have to be done by a human. AI document analysis turns the pile into structured data (categorized, dated, and routed): without anyone keying it twice.",
     ],
   },
 
   built: {
     heading: "A workflow per document type, sharing one extraction engine.",
     body: [
-      "Preisser Solutions builds AI document analysis workflows tuned to each business's document mix. The system ingests documents in any format — PDF, Excel, Word, scanned image — runs field extraction against the schema for that document type, auto-categorizes the document, and date-stamps it for audit history.",
-      "From there, the workflow routes the extracted data to whatever downstream system the business runs: CRM, accounting platform, ERP, or a custom internal database. Anomalous extractions queue for a human reviewer. The build pattern is the same as the invoice processing platform — purposefully generalized so the same engine handles contracts, claims, permits, or any other structured document the business needs to process.",
+      "Preisser Solutions builds AI document analysis workflows tuned to each business's document mix. The system ingests documents in any format (PDF, Excel, Word, scanned image): runs field extraction against the schema for that document type, auto-categorizes the document, and date-stamps it for audit history.",
+      "From there, the workflow routes the extracted data to whatever downstream system the business runs: CRM, accounting platform, ERP, or a custom internal database. Anomalous extractions queue for a human reviewer. The build pattern is the same as the invoice processing platform: purposefully generalized so the same engine handles contracts, claims, permits, or any other structured document the business needs to process.",
     ],
   },
 
   specifications: {
     heading: "Workflow capabilities.",
     bullets: [
-      "Multi-format ingestion — PDF, Excel, Word, scanned image, email attachment",
+      "Multi-format ingestion: PDF, Excel, Word, scanned image, email attachment",
       "AI-powered field extraction tuned per document type",
       "Auto-categorization based on document content",
       "Date-stamping for audit history",

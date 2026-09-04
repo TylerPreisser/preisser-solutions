@@ -40,17 +40,17 @@ export const automationBenefits: AutomationBenefit[] = [
   {
     title: "Runs Outside Business Hours",
     description:
-      "Once deployed, automated systems can run nights, weekends, and holidays without paying overtime — provided the workflow is well defined and the inputs and integrations stay healthy. Most clients see the biggest gains on routine after-hours tasks like lead replies, scheduling, and report generation.",
+      "Once deployed, automated systems can run nights, weekends, and holidays without paying overtime, provided the workflow is well defined and the inputs and integrations stay healthy. Most clients see the biggest gains on routine after-hours tasks like lead replies, scheduling, and report generation.",
   },
   {
     title: "Consistent Execution When the Rules Are Clear",
     description:
-      "Automation reduces repetitive manual errors when the workflow, inputs, and exceptions are defined correctly. The same task runs the same way the ten-thousandth time as the first. Edge cases still need human review — automation handles the routine 90% so people can focus on the 10% that requires judgment.",
+      "Automation reduces repetitive manual errors when the workflow, inputs, and exceptions are defined correctly. The same task runs the same way the ten-thousandth time as the first. Edge cases still need human review; automation handles the routine 90% so people can focus on the 10% that requires judgment.",
   },
   {
     title: "Minimal Training Overhead for Your Team",
     description:
-      "Most Preisser Solutions builds are designed to fit existing workflows so staff don't need extensive retraining. A short onboarding call usually covers it. The system handles its own work — your team just keeps doing what they were already doing, with less manual data entry in the loop.",
+      "Most Preisser Solutions builds are designed to fit existing workflows so staff don't need extensive retraining. A short onboarding call usually covers it. The system handles its own work; your team just keeps doing what they were already doing, with less manual data entry in the loop.",
   },
   {
     title: "Coverage When Staff Are Out",
@@ -60,22 +60,22 @@ export const automationBenefits: AutomationBenefit[] = [
   {
     title: "Lower Long-Term Cost Than Adding Headcount",
     description:
-      "For repetitive functions, a one-time custom build is typically less expensive over 3-5 years than hiring, training, and retaining staff to do the same task by hand. The break-even point depends on volume — automation rarely pays off below a certain throughput, and we'll tell you honestly if that's your situation.",
+      "For repetitive functions, a one-time custom build is typically less expensive over 3-5 years than hiring, training, and retaining staff to do the same task by hand. The break-even point depends on volume; automation rarely pays off below a certain throughput, and we'll tell you honestly if that's your situation.",
   },
   {
     title: "Focused on a Defined Workflow",
     description:
-      "Each automated system does one well-scoped job: process this invoice, route this lead, send this follow-up. That focus is what makes it reliable. The flip side is that automations don't multitask or improvise — when the workflow changes, the system needs to be updated.",
+      "Each automated system does one well-scoped job: process this invoice, route this lead, send this follow-up. That focus is what makes it reliable. The flip side is that automations don't multitask or improvise; when the workflow changes, the system needs to be updated.",
   },
   {
     title: "Scales With Volume",
     description:
-      "As volume grows, automation scales with it. Doubling your invoice count next month usually doesn't mean doubling your staff — the system absorbs the throughput at near-flat cost. Caveats: integrations have rate limits, AI usage has per-call costs, and very large volumes may require infrastructure upgrades.",
+      "As volume grows, automation scales with it. Doubling your invoice count next month usually doesn't mean doubling your staff; the system absorbs the throughput at near-flat cost. Caveats: integrations have rate limits, AI usage has per-call costs, and very large volumes may require infrastructure upgrades.",
   },
   {
     title: "Frees People for Higher-Value Work",
     description:
-      "When automation handles repetitive tasks, your team can focus on strategy, customer relationships, and the work that genuinely requires their judgment. The goal isn't replacing people — it's removing the manual chasing so the people you already have can do the work you actually hired them for.",
+      "When automation handles repetitive tasks, your team can focus on strategy, customer relationships, and the work that genuinely requires their judgment. The goal isn't replacing people; it's removing the manual chasing so the people you already have can do the work you actually hired them for.",
   },
   {
     title: "Surfaces Operational Data You Didn't Have",

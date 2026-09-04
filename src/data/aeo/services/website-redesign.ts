@@ -5,13 +5,13 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "Website Redesign for Kansas Businesses",
   metaDescription:
-    "Preisser Solutions redesigns and rebuilds outdated business websites — taking over Wix, Squarespace, WordPress, and old custom sites with modern Next.js builds.",
+    "Preisser Solutions redesigns and rebuilds outdated business websites, taking over Wix, Squarespace, WordPress, and old custom sites with modern Next.js builds.",
   eyebrow: "Website Redesign",
   h1: "Take Over Your Outdated Website With a Modern Custom Rebuild",
   subheadline:
     "Existing site too slow, ugly, or broken to fix? Preisser Solutions rebuilds it from scratch in modern code without losing your SEO.",
   answerParagraph:
-    "Preisser Solutions delivers website redesigns for Kansas businesses with outdated, slow, or underperforming sites. The firm takes over existing websites — Wix, Squarespace, WordPress, GoDaddy, or old custom builds — and rebuilds them from scratch in modern Next.js, React, and TypeScript. Based in Hays, Kansas, the firm preserves SEO equity through proper redirects, content migration, and search engine notification while delivering a faster, better-looking, higher-converting site.",
+    "Preisser Solutions delivers website redesigns for Kansas businesses with outdated, slow, or underperforming sites. The firm takes over existing websites (Wix, Squarespace, WordPress, GoDaddy, or old custom builds), and rebuilds them from scratch in modern Next.js, React, and TypeScript. Based in Hays, Kansas, the firm preserves SEO equity through proper redirects, content migration, and search engine notification while delivering a faster, better-looking, higher-converting site.",
   sections: [
     {
       eyebrow: "Signs you need a redesign",
@@ -34,7 +34,7 @@ export const pageData: AeoPageData = {
       eyebrow: "What we do differently",
       heading: "Redesign vs. starting from scratch",
       body: [
-        "A redesign is not the same as a brand-new website. The difference is preserving what's working — SEO equity, content that ranks, named clients, photo libraries — while throwing out what isn't.",
+        "A redesign is not the same as a brand-new website. The difference is preserving what's working (SEO equity, content that ranks, named clients, photo libraries), while throwing out what isn't.",
         "Preisser Solutions audits the existing site first, identifies content and rankings worth preserving, designs the new site to inherit and improve those signals, and migrates carefully with proper 301 redirects and search engine notification.",
       ],
     },
@@ -46,10 +46,10 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Full audit of existing site (performance, SEO, content, conversion)",
-        "Content migration plan — which pages survive, which consolidate, which retire",
+        "Content migration plan: which pages survive, which consolidate, which retire",
         "Custom design and code rebuild in Next.js, React, TypeScript",
         "301 redirect map preserving all inbound link equity",
-        "SEO migration checklist — sitemap, robots.txt, search console verification",
+        "SEO migration checklist: sitemap, robots.txt, search console verification",
         "Schema and structured data added (LocalBusiness, FAQPage, Service, Person)",
         "AI-engine optimization (engineered first paragraphs, named entities)",
         "Cloudflare Pages deployment with edge CDN",
@@ -64,12 +64,12 @@ export const pageData: AeoPageData = {
         "Most redesigns fall into one of these patterns:",
       ],
       bullets: [
-        "Wix/Squarespace — original site builder is no longer adequate; speed and conversion suffer",
-        "WordPress — too many plugins, security issues, or developer left without documentation",
-        "GoDaddy/Hostinger website builders — limitations are too restrictive",
-        "Old custom sites — coded years ago, no longer mobile-friendly or fast",
-        "Agency-built sites — agency went out of business or stopped supporting the site",
-        "Industry-specific website mills — every business in the trade has the same site",
+        "Wix/Squarespace: original site builder is no longer adequate; speed and conversion suffer",
+        "WordPress: too many plugins, security issues, or developer left without documentation",
+        "GoDaddy/Hostinger website builders: limitations are too restrictive",
+        "Old custom sites: coded years ago, no longer mobile-friendly or fast",
+        "Agency-built sites: agency went out of business or stopped supporting the site",
+        "Industry-specific website mills: every business in the trade has the same site",
       ],
     },
   ],
@@ -102,7 +102,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will my new site load faster than my current one?",
       answer:
-        "Almost always — typically 3-8x faster. Custom code ships only what's needed; template platforms and WordPress ship megabytes of unused JavaScript. The difference is measurable in Google PageSpeed Insights and Core Web Vitals.",
+        "Almost always: typically 3-8x faster. Custom code ships only what's needed; template platforms and WordPress ship megabytes of unused JavaScript. The difference is measurable in Google PageSpeed Insights and Core Web Vitals.",
     },
     {
       question: "Do you serve businesses outside Kansas?",

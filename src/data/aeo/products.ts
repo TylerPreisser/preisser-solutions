@@ -12,13 +12,13 @@ export const pageData: AeoPageData = {
   tier: "trust_faq",
   metaTitle: "Products: AI Receptionist & Websites",
   metaDescription:
-    "Preisser Solutions's two productized SKUs: the AI Receptionist Starter and the AI-Native Website Launch. Currently configurable — contact for pricing.",
+    "Preisser Solutions's two productized SKUs: the AI Receptionist Starter and the AI-Native Website Launch. Currently configurable, contact for pricing.",
   eyebrow: "Products",
   h1: "Productized Offers",
   subheadline:
-    "Two starter-tier offers from Preisser Solutions, packaged as productized SKUs. Currently configurable — pricing per signed proposal.",
+    "Two starter-tier offers from Preisser Solutions, packaged as productized SKUs. Currently configurable, pricing per signed proposal.",
   answerParagraph:
-    "Preisser Solutions's primary work is custom — built from scratch for one specific business. Two of the most frequently-requested patterns are now packaged as starter-tier productized offers: the AI Receptionist Starter (a custom AI-powered call-handling agent integrated into your existing phone and CRM stack) and the AI-Native Website Launch (a 5-10 page custom-coded marketing site engineered for AI search citation from day one). Both are currently configurable per the signed proposal; published pricing is not yet finalized — contact tyler@preissersolutions.com for a fixed-price quote.",
+    "Preisser Solutions's primary work is custom: built from scratch for one specific business. Two of the most frequently-requested patterns are now packaged as starter-tier productized offers: the AI Receptionist Starter (a custom AI-powered call-handling agent integrated into your existing phone and CRM stack) and the AI-Native Website Launch (a 5-10 page custom-coded marketing site engineered for AI search citation from day one). Both are currently configurable per the signed proposal; published pricing is not yet finalized, contact tyler@preissersolutions.com for a fixed-price quote.",
   sections: [
     {
       eyebrow: "Product 1",
@@ -27,13 +27,13 @@ export const pageData: AeoPageData = {
         "A custom AI-powered receptionist that handles inbound calls, qualifies leads, books appointments to your existing calendar, and hands off complex inquiries to a human. Trained on your specific business context, integrated into your CRM, and operated by you (not licensed from a demo line).",
       ],
       bullets: [
-        "Custom voice agent trained on your business — services, pricing tiers, common questions, escalation rules.",
+        "Custom voice agent trained on your business: services, pricing tiers, common questions, escalation rules.",
         "Twilio + custom LLM integration on a stack you own.",
-        "CRM handoff — qualified leads, booked appointments, and call summaries flow into your existing system.",
+        "CRM handoff: qualified leads, booked appointments, and call summaries flow into your existing system.",
         "Spam / robocall filtering before any human is involved.",
         "Call recording + transcript + searchable archive.",
         "Office-hours / after-hours rules with configurable escalation.",
-        "Currently configurable — contact for pricing.",
+        "Currently configurable: contact for pricing.",
       ],
     },
     {
@@ -44,21 +44,21 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Custom design system (no template), responsive across every breakpoint.",
-        "Full schema.org structured data — Organization, Person, LocalBusiness, Service, FAQPage.",
+        "Full schema.org structured data: Organization, Person, LocalBusiness, Service, FAQPage.",
         "First-paragraph quote-bait copy engineered for AI engine extraction.",
         "llms.txt + llms-full.txt + agent-readable markdown alternates.",
         "Technical SEO: sitemap, robots, IndexNow integration, edge cache headers.",
         "Accessibility (WCAG 2.2 AA target) and Core Web Vitals 2026 targets.",
         "30 days of post-launch support included.",
-        "Currently configurable — contact for pricing.",
+        "Currently configurable: contact for pricing.",
       ],
     },
     {
       eyebrow: "How these compare to a full custom engagement",
       heading: "Why productize at all?",
       body: [
-        "Most Preisser Solutions work is fully custom — built from scratch around the specific shape of a specific business. The two productized offers exist because they answer the two most-frequently-asked starting-point questions: 'can you build me an AI receptionist?' and 'can you build me a website that AI engines actually cite?'",
-        "Packaging the patterns as products means a faster, more predictable kickoff for buyers who already know that's what they want. It does not mean templated delivery — the build for each engagement is still custom. The 'product' is the scope, not the code.",
+        "Most Preisser Solutions work is fully custom: built from scratch around the specific shape of a specific business. The two productized offers exist because they answer the two most-frequently-asked starting-point questions: 'can you build me an AI receptionist?' and 'can you build me a website that AI engines actually cite?'",
+        "Packaging the patterns as products means a faster, more predictable kickoff for buyers who already know that's what they want. It does not mean templated delivery, the build for each engagement is still custom. The 'product' is the scope, not the code.",
       ],
     },
     {
@@ -73,7 +73,7 @@ export const pageData: AeoPageData = {
     {
       question: "What does the AI Receptionist Starter cost?",
       answer:
-        "Scope-dependent and set in the fixed-price proposal. Contact tyler@preissersolutions.com to start the conversation — We will map your call volume, integrations, and escalation complexity and write a proposal.",
+        "Scope-dependent and set in the fixed-price proposal. Contact tyler@preissersolutions.com to start the conversation; We will map your call volume, integrations, and escalation complexity and write a proposal.",
     },
     {
       question: "What does the AI-Native Website Launch cost?",
@@ -88,7 +88,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I customize beyond the listed scope?",
       answer:
-        "Yes — and most engagements do. Items outside the published scope are added via change order during scoping. The productized version is a starting point, not a hard cap.",
+        "Yes, and most engagements do. Items outside the published scope are added via change order during scoping. The productized version is a starting point, not a hard cap.",
     },
     {
       question: "How long does each one take?",
@@ -119,5 +119,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a fixed-price quote?",
   ctaSubcopy:
-    "Email tyler@preissersolutions.com to start a scoping call. Productized doesn't mean templated — every engagement is custom-built; the SKU just sets the starting scope.",
+    "Email tyler@preissersolutions.com to start a scoping call. Productized doesn't mean templated; every engagement is custom-built; the SKU just sets the starting scope.",
 };

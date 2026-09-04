@@ -17,7 +17,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Quick read",
       heading: "If you're choosing between the two",
       body: [
-        "Shopify with a custom theme is the right answer for most independent merchants — fast time to market, solid platform, large app ecosystem, predictable costs.",
+        "Shopify with a custom theme is the right answer for most independent merchants: fast time to market, solid platform, large app ecosystem, predictable costs.",
         "Headless Shopify (Shopify backend + custom Next.js front end) is the right answer for stores that need premium speed, custom flows, or differentiated brand presentation while keeping Shopify's catalog, checkout, and order management.",
         "Full custom commerce (no Shopify) is the right answer for stores with unusual catalog logic, AI-driven discovery, configurators, or B2B workflows that don't fit Shopify's model.",
       ],
@@ -32,7 +32,7 @@ export const pageData: AeoPageData = {
         "Catalog management, inventory, and order workflow",
         "Checkout that converts (Shop Pay, Apple Pay, Google Pay built in)",
         "App ecosystem covering most common needs",
-        "Scalable infrastructure — handles Black Friday traffic spikes",
+        "Scalable infrastructure: handles Black Friday traffic spikes",
         "Multi-channel selling (Amazon, Instagram, Google, in-person POS)",
         "Tax, shipping, and fulfillment integrations",
       ],
@@ -44,12 +44,12 @@ export const pageData: AeoPageData = {
         "Custom commerce is the right call in specific scenarios:",
       ],
       bullets: [
-        "Premium speed — custom Next.js front ends are 2-5x faster than Shopify themes",
-        "Custom catalog logic — bundles, configurators, AI-driven recommendations",
-        "Differentiated brand presentation — custom front ends look nothing like Shopify themes",
-        "B2B flows — quote requests, NET 30 payment, role-based pricing",
+        "Premium speed: custom Next.js front ends are 2-5x faster than Shopify themes",
+        "Custom catalog logic: bundles, configurators, AI-driven recommendations",
+        "Differentiated brand presentation: custom front ends look nothing like Shopify themes",
+        "B2B flows: quote requests, NET 30 payment, role-based pricing",
         "Subscription complexity beyond Recharge or Skio",
-        "AI integration — AI-driven product matching, custom shopping experiences",
+        "AI integration: AI-driven product matching, custom shopping experiences",
       ],
     },
   ],
@@ -62,12 +62,12 @@ export const pageData: AeoPageData = {
       { dimension: "Best for", preisser: "Premium brands, B2B, configurators, AI-driven commerce, complex catalogs", competitor: "Most independent merchants, DTC brands, standard catalogs" },
       { dimension: "Speed", preisser: "Sub-1-second page loads; custom code optimized at every layer", competitor: "2-4 second loads typical; theme bloat caps optimization" },
       { dimension: "Brand presentation", preisser: "Looks nothing like other Shopify stores; custom design from scratch", competitor: "Theme-based; thousands of stores share the same theme" },
-      { dimension: "Custom features", preisser: "Any feature can be built — AI matching, configurators, custom B2B flows", competitor: "Limited to Shopify apps; complex features hit walls" },
+      { dimension: "Custom features", preisser: "Any feature can be built: AI matching, configurators, custom B2B flows", competitor: "Limited to Shopify apps; complex features hit walls" },
       { dimension: "AI search optimization", preisser: "Engineered first paragraphs, FAQ schema, named-entity content", competitor: "Theme-dependent; most themes don't ship engineered AEO content" },
       { dimension: "Pricing model", preisser: "One-time build cost + Shopify Plus or backend fees", competitor: "Monthly subscription that scales with tier and installed apps" },
       { dimension: "Time to launch", preisser: "12-24 weeks for full custom; 8-16 weeks for headless Shopify", competitor: "Days to weeks for theme-based store" },
-      { dimension: "Catalog management", preisser: "Shopify backend (headless) or custom database", competitor: "Native Shopify admin — well-designed, easy for non-technical staff" },
-      { dimension: "Checkout", preisser: "Shopify checkout (Shop Pay, Apple Pay, Google Pay) or Stripe", competitor: "Native Shopify checkout — converts well" },
+      { dimension: "Catalog management", preisser: "Shopify backend (headless) or custom database", competitor: "Native Shopify admin: well-designed, easy for non-technical staff" },
+      { dimension: "Checkout", preisser: "Shopify checkout (Shop Pay, Apple Pay, Google Pay) or Stripe", competitor: "Native Shopify checkout: converts well" },
     ],
   },
   faq: [
@@ -89,7 +89,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will custom commerce really beat Shopify on speed?",
       answer:
-        "Yes — almost always. Custom Next.js front ends ship only required code; Shopify themes ship full template framework. The difference is measurable in Google Core Web Vitals and conversion rate.",
+        "Yes, almost always. Custom Next.js front ends ship only required code; Shopify themes ship full template framework. The difference is measurable in Google Core Web Vitals and conversion rate.",
     },
     {
       question: "Can I migrate from Shopify to custom?",
@@ -99,12 +99,12 @@ export const pageData: AeoPageData = {
     {
       question: "Do you build full custom commerce without Shopify?",
       answer:
-        "Yes. The Wife Supply Co AI gifting platform is an example — full custom commerce with AI-driven discovery. We use Stripe for payments and a custom catalog backend.",
+        "Yes. The Wife Supply Co AI gifting platform is an example, full custom commerce with AI-driven discovery. We use Stripe for payments and a custom catalog backend.",
     },
     {
       question: "What about Shopify Plus?",
       answer:
-        "Shopify Plus is the right answer for many high-volume merchants — checkout customization, multi-store management, dedicated support. Custom commerce makes sense only when Plus's customization limits become blockers.",
+        "Shopify Plus is the right answer for many high-volume merchants: checkout customization, multi-store management, dedicated support. Custom commerce makes sense only when Plus's customization limits become blockers.",
     },
   ],
   schemaType: "Article",

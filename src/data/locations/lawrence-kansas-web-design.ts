@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Lawrence, KS Web Design & Software",
   metaDescription:
-    "Custom software, web apps, and AI automation for Lawrence, Kansas — built by a Kansas-based firm for the Douglas County college-town economy.",
+    "Custom software, web apps, and AI automation for Lawrence, Kansas: built by a Kansas-based firm for the Douglas County college-town economy.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -19,9 +19,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Lawrence, Kansas",
     h1: "Custom Software and Websites for Lawrence Businesses",
     subheadline:
-      "Custom web apps, AI automation, and websites for Lawrence's technology-forward, KU-adjacent business community — built by a Kansas firm.",
+      "Custom web apps, AI automation, and websites for Lawrence's technology-forward, KU-adjacent business community: built by a Kansas firm.",
     answerParagraph:
-      "Preisser Solutions serves Lawrence, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Lawrence is Douglas County's economic anchor and home to the University of Kansas — a market with unusually high digital sophistication and strong demand for custom applications, startup tooling, and AI automation. Based in Hays, roughly 230 miles west, we deliver remotely and travel for projects of meaningful scope.",
+      "Preisser Solutions serves Lawrence, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Lawrence is Douglas County's economic anchor and home to the University of Kansas, a market with unusually high digital sophistication and strong demand for custom applications, startup tooling, and AI automation. Based in Hays, roughly 230 miles west, we deliver remotely and travel for projects of meaningful scope.",
   },
 
   nearbyAreas: [
@@ -40,7 +40,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Lawrence has a tech-forward business community driven by KU startup culture and a high concentration of digital-native service firms. Custom software is the right tool for that market.",
-    "A Kansas-based firm at Kansas economics — not a Kansas City agency charging metro rates for Lawrence projects.",
+    "A Kansas-based firm at Kansas economics: not a Kansas City agency charging metro rates for Lawrence projects.",
     "Custom code with full ownership at launch. Especially important for software tied to KU-adjacent intellectual work or startup infrastructure.",
   ],
 

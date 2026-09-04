@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Garden City, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Garden City, Kansas — built by a nearby Kansas firm with fixed-price proposals.",
+    "Custom websites, web apps, and AI automation for Garden City, Kansas: built by a nearby Kansas firm with fixed-price proposals.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Web design, AI automation, and custom applications for Finney County businesses in the Garden City agricultural and processing corridor.",
     answerParagraph:
-      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Garden City, Kansas — the county seat of Finney County in southwest Kansas, a regional hub of approximately 27,000 anchored by beef processing, agriculture, and a diverse population along US-50 and US-83. Remote delivery with on-site travel available.",
+      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Garden City, Kansas, the county seat of Finney County in southwest Kansas, a regional hub of approximately 27,000 anchored by beef processing, agriculture, and a diverse population along US-50 and US-83. Remote delivery with on-site travel available.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Southwest Kansas ag and processing context — Garden City's diverse, fast-growing economy includes beef processing, irrigation, and a significant multilingual business community.",
+    "Southwest Kansas ag and processing context: Garden City's diverse, fast-growing economy includes beef processing, irrigation, and a significant multilingual business community.",
     "Custom code with full ownership at launch. No SaaS platform dependency after handoff.",
     "Remote delivery from Hays with on-site travel for projects of sufficient scope.",
   ],
@@ -71,7 +71,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions build a website in Spanish for a Garden City business?",
       answer:
-        "Multilingual website builds — including Spanish-language versions — are within the firm's capability for Garden City's diverse market.",
+        "Multilingual website builds (including Spanish-language versions) are within the firm's capability for Garden City's diverse market.",
     },
     {
       question: "Can you build a website for a Garden City beef processing supplier?",

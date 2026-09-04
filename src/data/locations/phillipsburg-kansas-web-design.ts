@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Phillipsburg, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Phillipsburg, Kansas — built by a Hays-based firm serving the US-36 and US-183 junction.",
+    "Custom websites, web apps, and AI automation for Phillipsburg, Kansas: built by a Hays-based firm serving the US-36 and US-183 junction.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -39,7 +39,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "North-central Kansas context — wheat, cattle, and the county-seat professional services that support them — is already built into how we scope and build.",
+    "North-central Kansas context (wheat, cattle, and the county-seat professional services that support them) is already built into how we scope and build.",
     "Custom code with full ownership transferred at launch. No recurring platform fees.",
     "Hays is a straightforward 70-mile drive south, making in-person scoping practical for meaningful engagements.",
   ],

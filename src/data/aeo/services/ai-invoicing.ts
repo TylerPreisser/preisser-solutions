@@ -11,13 +11,13 @@ export const pageData: AeoPageData = {
   subheadline:
     "Stop having office staff manually read and enter invoices. Custom AI invoice automation processes them in seconds.",
   answerParagraph:
-    "Preisser Solutions builds AI-powered invoice extraction and structuring systems for Kansas businesses — the productized version of the HG Oil Holdings AI invoicing case study, which delivered a 75% decrease in manual invoice handling time. Office staff upload invoices, and the AI returns structured data (vendor, line items, amounts, GL coding) in seconds. The system integrates with QuickBooks, accounting platforms, and ERP systems to eliminate manual data entry entirely. Based in Hays, Kansas.",
+    "Preisser Solutions builds AI-powered invoice extraction and structuring systems for Kansas businesses: the productized version of the HG Oil Holdings AI invoicing case study, which delivered a 75% decrease in manual invoice handling time. Office staff upload invoices, and the AI returns structured data (vendor, line items, amounts, GL coding) in seconds. The system integrates with QuickBooks, accounting platforms, and ERP systems to eliminate manual data entry entirely. Based in Hays, Kansas.",
   sections: [
     {
       eyebrow: "The HG Oil Holdings case study",
       heading: "What the AI invoicing build actually looks like",
       body: [
-        "HG Oil Holdings came to Preisser Solutions with a back-office bottleneck — office staff manually reading invoices, transcribing amounts, coding GL accounts, and entering line items into accounting software. The volume meant invoices were sitting unprocessed for days, AR was aging, and adding more office staff was the only obvious answer.",
+        "HG Oil Holdings came to Preisser Solutions with a back-office bottleneck: office staff manually reading invoices, transcribing amounts, coding GL accounts, and entering line items into accounting software. The volume meant invoices were sitting unprocessed for days, AR was aging, and adding more office staff was the only obvious answer.",
         "Preisser Solutions trained a custom AI assistant to extract and analyze invoice data instantly. Office staff upload invoices and receive structured output in seconds. Result: 75% decrease in time spent on manual invoice handling, eliminated manual reading entirely, freed staff for higher-value work, and prevented the need for additional hires.",
       ],
     },
@@ -74,17 +74,17 @@ export const pageData: AeoPageData = {
     {
       question: "How accurate is AI invoice extraction?",
       answer:
-        "Modern AI extraction is 95%+ accurate on standard fields (vendor, amounts, dates) and 85-95% on GL coding when properly trained on your vendor history. We always design human-in-the-loop validation for edge cases — humans review flagged invoices, AI handles the standard ones.",
+        "Modern AI extraction is 95%+ accurate on standard fields (vendor, amounts, dates) and 85-95% on GL coding when properly trained on your vendor history. We always design human-in-the-loop validation for edge cases: humans review flagged invoices, AI handles the standard ones.",
     },
     {
       question: "Why not use Bill.com or Stampli?",
       answer:
-        "If your AP fits Bill.com or Stampli, use them — they work fine. Custom AI invoicing makes sense when your vendor mix is unusual, per-invoice fees exceed custom build costs, or your GL coding logic is more complex than off-the-shelf handles. We'll tell you honestly which side you're on.",
+        "If your AP fits Bill.com or Stampli, use them; they work fine. Custom AI invoicing makes sense when your vendor mix is unusual, per-invoice fees exceed custom build costs, or your GL coding logic is more complex than off-the-shelf handles. We'll tell you honestly which side you're on.",
     },
     {
       question: "How much does AI invoicing automation cost?",
       answer:
-        "Custom AI invoicing builds typically run in the mid-five figures depending on integration complexity. The HG Oil Holdings build delivered 75% reduction in manual processing time — payback periods are usually under 12 months. Fixed-price proposal after a free discovery call.",
+        "Custom AI invoicing builds typically run in the mid-five figures depending on integration complexity. The HG Oil Holdings build delivered 75% reduction in manual processing time, payback periods are usually under 12 months. Fixed-price proposal after a free discovery call.",
     },
     {
       question: "How long does the build take?",

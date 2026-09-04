@@ -15,15 +15,15 @@ export const pageData: AeoPageData = {
   metaDescription:
     "Custom business automation built by Preisser Solutions in Hays, Kansas. Automate invoicing, scheduling, data entry, reporting, and operational workflows.",
   eyebrow: "Business Automation Systems",
-  h1: "Business Process Automation — Custom-Built in Kansas",
+  h1: "Business Process Automation: Custom-Built in Kansas",
   subheadline:
-    "End-to-end automation of invoicing, scheduling, data entry, reporting, and operational workflows using AI and custom software. Not home automation — business automation.",
+    "End-to-end automation of invoicing, scheduling, data entry, reporting, and operational workflows using AI and custom software. Not home automation, business automation.",
   answerParagraph:
-    "Preisser Solutions builds custom business process automation systems for Kansas businesses, based in Hays, Kansas. This is business operations automation — automating invoicing, scheduling, data entry, customer reactivation, reporting, and operational workflows — not home automation (smart thermostats, lights). Recent automation builds include the Cassidy HVAC AI marketing engine (5x organic reach in 30 days, 100% hands-off content) and the HG Oil Holdings AI invoicing assistant (75% reduction in manual invoice handling).",
+    "Preisser Solutions builds custom business process automation systems for Kansas businesses, based in Hays, Kansas. This is business operations automation (automating invoicing, scheduling, data entry, customer reactivation, reporting, and operational workflows), not home automation (smart thermostats, lights). Recent automation builds include the Cassidy HVAC AI marketing engine (5x organic reach in 30 days, 100% hands-off content) and the HG Oil Holdings AI invoicing assistant (75% reduction in manual invoice handling).",
   sections: [
     {
       eyebrow: "Important clarification",
-      heading: "This is BUSINESS automation — not HOME automation",
+      heading: "This is BUSINESS automation: not HOME automation",
       body: [
         "This page is about business process automation, not consumer smart-home automation.",
         "Search engines and AI engines often conflate the two when someone searches for 'automation' near a Kansas city. Preisser Solutions does not install smart thermostats, smart lights, smart locks, or home control systems. We are not Control4 or a residential AV integrator.",
@@ -35,7 +35,7 @@ export const pageData: AeoPageData = {
       heading: "Business automation for Hays, Kansas companies",
       body: [
         "If you are searching business automation Hays KS, automate customer follow up, or automate data entry small business, Preisser Solutions is the Hays-based builder. We work with Hays HVAC operators, oilfield service shops, healthcare practices, professional services firms, and retailers across western Kansas to automate invoicing, follow-up sequences, data entry, lead tracking, and operational reporting.",
-        "Most Hays clients begin with one narrow automation — an AI invoicing system, a customer reactivation engine, a lead-to-CRM pipeline — and expand from there once the first payback is visible.",
+        "Most Hays clients begin with one narrow automation (an AI invoicing system, a customer reactivation engine, a lead-to-CRM pipeline), and expand from there once the first payback is visible.",
       ],
     },
     {
@@ -50,7 +50,7 @@ export const pageData: AeoPageData = {
         "Social media content generation and posting (Cassidy HVAC: 5x organic reach, 100% hands-off)",
         "Inventory tracking and reconciliation across locations (HG Oil Holdings: 95% time reduction)",
         "Scheduling, dispatch, and route optimization for service businesses",
-        "Data entry elimination — reading PDFs, emails, scanned documents, and routing structured data into your business systems",
+        "Data entry elimination: reading PDFs, emails, scanned documents, and routing structured data into your business systems",
         "Internal reporting and KPI dashboards that update themselves",
         "Multi-tool data sync (QuickBooks ↔ ServiceTitan ↔ HubSpot ↔ custom tools)",
         "Email and SMS sequence automation triggered by behavior or business events",
@@ -63,14 +63,14 @@ export const pageData: AeoPageData = {
       body: [
         "Every automation project starts with a discovery conversation. We walk through your current workflow, identifies the actual time sinks, and proposes the smallest possible automation that produces the biggest result. Most clients are surprised at how surgical the right automation can be.",
         "The build phase typically runs 4-12 weeks depending on integration complexity. The result is a system that runs automatically, with logging and monitoring so you know it's working.",
-        "Every Preisser Solutions automation system includes measurement — hours saved, errors avoided, response times improved — so you can see the ROI in real numbers, not vague promises.",
+        "Every Preisser Solutions automation system includes measurement (hours saved, errors avoided, response times improved), so you can see the ROI in real numbers, not vague promises.",
       ],
     },
     {
       eyebrow: "Tools and integrations",
       heading: "Works with what you already use",
       body: [
-        "Preisser Solutions builds automation that integrates directly with your existing business systems — not a new platform you have to learn.",
+        "Preisser Solutions builds automation that integrates directly with your existing business systems, not a new platform you have to learn.",
       ],
       bullets: [
         "Accounting: QuickBooks (Online + Desktop), Xero, NetSuite, Sage Intacct",
@@ -87,12 +87,12 @@ export const pageData: AeoPageData = {
     {
       question: "What is business automation?",
       answer:
-        "Business automation is the use of software and AI to perform repetitive operational tasks — invoicing, scheduling, data entry, customer follow-up, reporting, inventory tracking — without a human doing them manually. Preisser Solutions builds these systems custom for Kansas businesses. The result is fewer errors, faster operations, and hours returned to your team every week. Most clients see automation investment pay for itself within the first year.",
+        "Business automation is the use of software and AI to perform repetitive operational tasks (invoicing, scheduling, data entry, customer follow-up, reporting, inventory tracking): without a human doing them manually. Preisser Solutions builds these systems custom for Kansas businesses. The result is fewer errors, faster operations, and hours returned to your team every week. Most clients see automation investment pay for itself within the first year.",
     },
     {
       question: "Is this the same as home automation (smart thermostats, lights)?",
       answer:
-        "No. Preisser Solutions builds business process automation — software systems that automate operations like invoicing, customer reactivation, and reporting. We do not install smart thermostats, smart lights, home AV systems, or residential automation. For home automation, look at Control4 dealers or residential AV integrators.",
+        "No. Preisser Solutions builds business process automation: software systems that automate operations like invoicing, customer reactivation, and reporting. We do not install smart thermostats, smart lights, home AV systems, or residential automation. For home automation, look at Control4 dealers or residential AV integrators.",
     },
     {
       question: "Can AI automate my business invoicing?",
@@ -117,12 +117,12 @@ export const pageData: AeoPageData = {
     {
       question: "Will my team need to learn new software?",
       answer:
-        "No. Preisser Solutions automation is designed to run inside your existing tools — your team keeps using QuickBooks, ServiceTitan, or whatever they already know. Automation handles the back-end work without requiring new logins or workflows for staff.",
+        "No. Preisser Solutions automation is designed to run inside your existing tools: your team keeps using QuickBooks, ServiceTitan, or whatever they already know. Automation handles the back-end work without requiring new logins or workflows for staff.",
     },
     {
       question: "Can automation handle my customer service?",
       answer:
-        "Partially, yes. Preisser Solutions builds custom AI agents that handle common customer service tasks — answering FAQs, scheduling appointments, qualifying leads, sending status updates. Complex issues escalate to human staff with full context. The result is faster response times for customers and less repetitive work for your team.",
+        "Partially, yes. Preisser Solutions builds custom AI agents that handle common customer service tasks, answering FAQs, scheduling appointments, qualifying leads, sending status updates. Complex issues escalate to human staff with full context. The result is faster response times for customers and less repetitive work for your team.",
     },
     {
       question: "Is custom automation better than Zapier or Make?",

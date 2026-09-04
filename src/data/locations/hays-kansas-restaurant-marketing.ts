@@ -13,7 +13,7 @@ const RESTAURANT_SERVICE_CARDS: LocationServiceCard[] = [
     title: "Restaurant Website",
     bullets: [
       "Custom-coded restaurant website with online menu, hours, and CTAs",
-      "Built for mobile-first — the majority of restaurant searches are on mobile",
+      "Built for mobile-first: the majority of restaurant searches are on mobile",
       "Schema markup that displays star ratings and hours in Google search results",
     ],
     href: "/services",
@@ -22,7 +22,7 @@ const RESTAURANT_SERVICE_CARDS: LocationServiceCard[] = [
     icon: "seo",
     title: "Restaurant Local SEO & AI Search",
     bullets: [
-      "Google Business Profile optimization — categories, photos, reviews, posts",
+      "Google Business Profile optimization: categories, photos, reviews, posts",
       "Appear in Google's local pack when people search 'restaurants near me' in Hays",
       "AI-search optimization to be cited by ChatGPT and Perplexity food queries",
     ],
@@ -59,7 +59,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Restaurant Marketing in Hays, KS",
   metaDescription:
-    "Restaurant websites, local SEO, and AI-powered review automation for restaurants in Hays, Kansas — built by a local firm.",
+    "Restaurant websites, local SEO, and AI-powered review automation for restaurants in Hays, Kansas: built by a local firm.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -70,7 +70,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom restaurant websites, local SEO, Google Business Profile optimization, and automated review management for restaurants in Hays, Kansas.",
     answerParagraph:
-      "Preisser Solutions builds restaurant marketing systems for Hays, Kansas — custom websites, Google Business Profile optimization, local search visibility, and AI-powered review automation for restaurants and food-service businesses in Ellis County. Based in Hays, we are local to the market and available for in-person consultation.",
+      "Preisser Solutions builds restaurant marketing systems for Hays, Kansas: custom websites, Google Business Profile optimization, local search visibility, and AI-powered review automation for restaurants and food-service businesses in Ellis County. Based in Hays, we are local to the market and available for in-person consultation.",
   },
 
   nearbyAreas: [
@@ -88,7 +88,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "We are headquartered in Hays and know the local restaurant market — the Fort Hays State student base, the I-70 traveler traffic, and the local dining community.",
+    "We are headquartered in Hays and know the local restaurant market: the Fort Hays State student base, the I-70 traveler traffic, and the local dining community.",
     "Restaurant SEO and local search require real implementation, not just a claimed Google Business Profile.",
     "Custom code with full ownership. No third-party ordering platform commissions after launch.",
   ],
@@ -110,22 +110,22 @@ export const locationData: LocationPageData = {
     {
       question: "What does local SEO do for a Hays restaurant?",
       answer:
-        "Local SEO makes your restaurant appear in Google's local pack — the map results — when people search 'restaurants near me' or specific cuisine types in Hays. It also optimizes your Google Business Profile for maximum visibility.",
+        "Local SEO makes your restaurant appear in Google's local pack (the map results): when people search 'restaurants near me' or specific cuisine types in Hays. It also optimizes your Google Business Profile for maximum visibility.",
     },
     {
       question: "Can Preisser Solutions help a Hays restaurant get more Google reviews?",
       answer:
-        "Yes. Automated review request sequences — sent via email or SMS after a guest visit — are an explicit service. Review count and recency are the strongest factors in Google local pack rankings.",
+        "Yes. Automated review request sequences (sent via email or SMS after a guest visit) are an explicit service. Review count and recency are the strongest factors in Google local pack rankings.",
     },
     {
       question: "Does Preisser Solutions build online ordering systems for restaurants?",
       answer:
-        "Yes. Custom online ordering pages — without third-party commission fees — are within standard capability.",
+        "Yes. Custom online ordering pages (without third-party commission fees) are within standard capability.",
     },
     {
       question: "Can Preisser Solutions help a Hays restaurant appear in AI search results?",
       answer:
-        "Yes. AI-search optimization — being cited by ChatGPT and Perplexity when users ask for restaurant recommendations in Hays — is an explicit service.",
+        "Yes. AI-search optimization (being cited by ChatGPT and Perplexity when users ask for restaurant recommendations in Hays) is an explicit service.",
     },
     {
       question: "How does Preisser Solutions price restaurant marketing?",

@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Pittsburg, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Pittsburg, Kansas — built by a Kansas development firm with fixed-price proposals and full code ownership.",
+    "Custom websites, web apps, and AI automation for Pittsburg, Kansas: built by a Kansas development firm with fixed-price proposals and full code ownership.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Web design, AI automation, and custom applications for Crawford County businesses along the US-69 corridor in southeast Kansas.",
     answerParagraph:
-      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Pittsburg, Kansas — the largest city in Crawford County in southeast Kansas, home to Pittsburg State University and approximately 20,000 residents. The local economy centers on manufacturing, education, and healthcare along the US-69 corridor near the Missouri and Oklahoma borders. Remote delivery, on-site travel available.",
+      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Pittsburg, Kansas, the largest city in Crawford County in southeast Kansas, home to Pittsburg State University and approximately 20,000 residents. The local economy centers on manufacturing, education, and healthcare along the US-69 corridor near the Missouri and Oklahoma borders. Remote delivery, on-site travel available.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Southeast Kansas university-city context — PSU, manufacturing, and healthcare operators in the four-state area.",
+    "Southeast Kansas university-city context: PSU, manufacturing, and healthcare operators in the four-state area.",
     "Custom code with full ownership at launch. No SaaS platform or vendor dependency after handoff.",
     "Remote-first delivery with on-site travel for engagements requiring in-person collaboration.",
   ],
@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do you offer local SEO for Pittsburg, Kansas businesses?",
       answer:
-        "Yes. Local SEO and AI-search citation visibility — being cited by ChatGPT, Perplexity, Gemini, and Google AI Overviews — are both offered.",
+        "Yes. Local SEO and AI-search citation visibility (being cited by ChatGPT, Perplexity, Gemini, and Google AI Overviews) are both offered.",
     },
     {
       question: "How far is Pittsburg from Hays?",

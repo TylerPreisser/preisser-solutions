@@ -7,11 +7,11 @@ export const pageData: AeoPageData = {
   dateModified: "2026-05-15",
   metaTitle: "How To Reactivate Old Leads",
   metaDescription:
-    "The exact reactivation sequence Preisser Solutions ships for HVAC, dental, veterinary, and trades — including the Cassidy HVAC 60% case.",
+    "The exact reactivation sequence Preisser Solutions ships for HVAC, dental, veterinary, and trades, including the Cassidy HVAC 60% case.",
   eyebrow: "Blog · AI Automation",
   h1: "How To Reactivate Old Leads (SMS + Email + CRM Playbook)",
   subheadline:
-    "The exact reactivation playbook we ship for HVAC, dental, veterinary, and trades operators — pulled directly from the Cassidy HVAC engagement.",
+    "The exact reactivation playbook we ship for HVAC, dental, veterinary, and trades operators: pulled directly from the Cassidy HVAC engagement.",
   answerParagraph:
     "Reactivating dormant leads is the single highest-ROI marketing activity for most service businesses, yet almost nobody does it systematically. The Cassidy HVAC reactivation engine Preisser Solutions built recovered over 60% of dormant patients within 6 weeks. The playbook: pull dormant records from the CRM (last service > 12 months, expired maintenance, missed annual tune-up), use an LLM to hyper-personalize each outreach message against the customer's actual service history, send via SMS first (60-70% reply rate) followed by email, route replies to a human for booking. Build scope and ongoing costs are set in the fixed-price proposal after a free scoping call.",
   sections: [
@@ -20,7 +20,7 @@ export const pageData: AeoPageData = {
       heading: "Existing customers are 5x cheaper to win back",
       body: [
         "Industry-wide stat: it costs roughly 5-7x more to acquire a new customer than to reactivate an existing one. Most service businesses have hundreds or thousands of dormant records sitting in the CRM. Every one of those records represents customers who: already trust your brand, already know how you work, already exist in your service area, and are statistically much more likely to convert than cold inbound.",
-        "The reason nobody does this systematically: it's tedious work without automation. Manually calling 500 dormant customers and remembering each one's service history isn't realistic. Which is exactly why a well-built reactivation engine has 60%+ response rates — you're doing what nobody else does.",
+        "The reason nobody does this systematically: it's tedious work without automation. Manually calling 500 dormant customers and remembering each one's service history isn't realistic. Which is exactly why a well-built reactivation engine has 60%+ response rates, you're doing what nobody else does.",
       ],
     },
     {
@@ -42,14 +42,14 @@ export const pageData: AeoPageData = {
       heading: "Personalize per record with an LLM",
       body: [
         "Generic blast = 5% reply rate. Hyper-personalized = 60%+. The difference is whether the message references the customer's actual history. An LLM reads each customer's record (last service date, equipment age, prior issues, location, service area weather) and drafts a message that sounds like a human who knows them.",
-        "Example output for an HVAC dormant: \"Hi Susan — looking at our records, your AC tune-up was back in May 2024 and we haven't been out since. With summer coming and your unit at 11 years old, we'd hate for you to be the next AC-down call when we're already booked out two weeks. Want to grab a slot in the next two weeks? Reply YES and we'll send options.\"",
+        "Example output for an HVAC dormant: \"Hi Susan, looking at our records, your AC tune-up was back in May 2024 and we haven't been out since. With summer coming and your unit at 11 years old, we'd hate for you to be the next AC-down call when we're already booked out two weeks. Want to grab a slot in the next two weeks? Reply YES and we'll send options.\"",
       ],
     },
     {
       eyebrow: "Step 3",
       heading: "SMS first, email second, voice third",
       body: [
-        "Channel order matters. Don't blast all three at once — sequence them:",
+        "Channel order matters. Don't blast all three at once, sequence them:",
       ],
       bullets: [
         "Day 1: SMS. Highest open rate (~95%), highest reply rate (~60-70%).",
@@ -69,7 +69,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Step 5",
       heading: "Hand off to dispatch / scheduling",
       body: [
-        "When the customer says yes, the system creates a job/appointment in the dispatch or scheduling system automatically. No double-entry, no staff member retyping the info. The Cassidy HVAC engine integrated directly with their dispatch system — booking conversions flowed straight into operations with zero manual handoff.",
+        "When the customer says yes, the system creates a job/appointment in the dispatch or scheduling system automatically. No double-entry, no staff member retyping the info. The Cassidy HVAC engine integrated directly with their dispatch system, booking conversions flowed straight into operations with zero manual handoff.",
       ],
     },
     {
@@ -96,7 +96,7 @@ export const pageData: AeoPageData = {
     {
       question: "Won't customers feel spammed?",
       answer:
-        "Not if the messages are genuinely personalized and the offer is real. The Cassidy HVAC campaign generated more thank-you replies than complaints. The reason: customers want to maintain their equipment / pets / cars — they just lose track of it. A timely, personalized nudge is genuinely useful.",
+        "Not if the messages are genuinely personalized and the offer is real. The Cassidy HVAC campaign generated more thank-you replies than complaints. The reason: customers want to maintain their equipment / pets / cars; they just lose track of it. A timely, personalized nudge is genuinely useful.",
     },
     {
       question: "What about SMS regulations?",
@@ -111,7 +111,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's the cost?",
       answer:
-        "Build cost is set in the fixed-price proposal after a free scoping call — scope varies based on CRM integration complexity and reply handling requirements. Ongoing costs include SMS/email API costs (paid to the provider) and an optional maintenance retainer. Payback period for most service businesses is fast given the volume of recovered revenue from dormant lists.",
+        "Build cost is set in the fixed-price proposal after a free scoping call, scope varies based on CRM integration complexity and reply handling requirements. Ongoing costs include SMS/email API costs (paid to the provider) and an optional maintenance retainer. Payback period for most service businesses is fast given the volume of recovered revenue from dormant lists.",
     },
   ],
   schemaType: "BlogPosting",

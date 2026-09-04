@@ -18,7 +18,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Hays, KS Custom Software Development",
   metaDescription:
-    "Custom software development in Hays, Kansas — purpose-built for the way your operation works.",
+    "Custom software development in Hays, Kansas: purpose-built for the way your operation works.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -27,9 +27,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Custom Software in Hays, Kansas",
     h1: "Custom Software Development for Hays Businesses",
     subheadline:
-      "Software built around how your operation actually works — not the other way around.",
+      "Software built around how your operation actually works, not the other way around.",
     answerParagraph:
-      "Preisser Solutions is a Hays, Kansas custom-software firm building purpose-built software for local businesses. Internal tools, dashboards, custom CRMs, AI agents, automation pipelines. Modern stack — Next.js, React, TypeScript, Node, Python. Fixed-price proposals, full code ownership transferred at launch.",
+      "Preisser Solutions is a Hays, Kansas custom-software firm building purpose-built software for local businesses. Internal tools, dashboards, custom CRMs, AI agents, automation pipelines. Modern stack: Next.js, React, TypeScript, Node, Python. Fixed-price proposals, full code ownership transferred at launch.",
   },
 
   nearbyAreas: [
@@ -49,8 +49,8 @@ export const locationData: LocationPageData = {
   caseStudies: [HG_OIL_INVENTORY_CARD, HG_OIL_INVOICE_CARD],
 
   whyLocal: [
-    "Direct experience building operator-side software in western Kansas — HG Oil Holdings is a documented example.",
-    "Local team — in-person scoping calls and site visits are routine.",
+    "Direct experience building operator-side software in western Kansas, HG Oil Holdings is a documented example.",
+    "Local team: in-person scoping calls and site visits are routine.",
     "Modern stack, full code ownership, no platform lock-in.",
   ],
 
@@ -60,7 +60,7 @@ export const locationData: LocationPageData = {
     {
       question: "What is custom software, exactly?",
       answer:
-        "Software built from scratch for a specific operation — internal tools, dashboards, CRMs, agents, automation pipelines. Not SaaS, not a template, not a configuration of someone else's product.",
+        "Software built from scratch for a specific operation: internal tools, dashboards, CRMs, agents, automation pipelines. Not SaaS, not a template, not a configuration of someone else's product.",
     },
     {
       question: "When does it make sense to build custom software?",
@@ -80,7 +80,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do I own the code when the project ships?",
       answer:
-        "Yes. Full code ownership is transferred at launch — your repo, your infrastructure, no proprietary platform.",
+        "Yes. Full code ownership is transferred at launch: your repo, your infrastructure, no proprietary platform.",
     },
     {
       question: "Are you local to Hays?",

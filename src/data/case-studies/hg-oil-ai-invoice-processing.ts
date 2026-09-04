@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // Real. Built while Tyler was VP of Operations at HG Oil Holdings.
 export const caseStudy: CaseStudyData = {
   slug: "hg-oil-ai-invoice-processing",
-  metaTitle: "HG Oil Holdings — AI Invoice Processing",
+  metaTitle: "HG Oil Holdings: AI Invoice Processing",
   metaDescription:
     "An AI document assistant that cut HG Oil Holdings' manual invoice handling by 75% and prevented the need for an additional admin hire.",
   datePublished: "2024-06-10",
@@ -15,7 +15,7 @@ export const caseStudy: CaseStudyData = {
   clientNameDisplay: "HG Oil Holdings",
   industry: "Oil and gas back-office operations",
 
-  h1: "HG Oil Holdings — 75% Less Manual Invoice Handling",
+  h1: "HG Oil Holdings: 75% Less Manual Invoice Handling",
   subheadline:
     "An AI assistant trained on the company's vendor data and approval workflows extracts, categorizes, and routes any invoice format in seconds.",
   oneLine: "75% reduction in manual invoice handling time",
@@ -39,14 +39,14 @@ export const caseStudy: CaseStudyData = {
     heading: "Office staff spending 40+ hours a week reading invoices.",
     body: [
       "Before the build, office staff at HG Oil Holdings were spending 40+ hours per week manually reading invoices, categorizing line items, dispersing them to the right cost centers, and chasing down approvals.",
-      "Invoice volume was growing beyond what existing staff could absorb. The next step was hiring another admin — pure overhead in a function that was already a bottleneck.",
+      "Invoice volume was growing beyond what existing staff could absorb. The next step was hiring another admin, pure overhead in a function that was already a bottleneck.",
     ],
   },
 
   built: {
     heading: "An AI trained on the company's vendors, approvals, and financial structure.",
     body: [
-      "Preisser Solutions built an AI assistant trained on HG Oil Holdings' vendor data, approval workflows, and financial structure. Staff upload an invoice — any format — and the system extracts vendor info, line items, totals, and GL codes in seconds.",
+      "Preisser Solutions built an AI assistant trained on HG Oil Holdings' vendor data, approval workflows, and financial structure. Staff upload an invoice (any format), and the system extracts vendor info, line items, totals, and GL codes in seconds.",
       "From there, the assistant categorizes the expense, flags anomalies, and routes the invoice through the right approval chain. Staff time on manual reading and data extraction dropped to near zero, freeing the team for higher-priority work and removing the need to hire.",
     ],
   },
@@ -55,11 +55,11 @@ export const caseStudy: CaseStudyData = {
     heading: "How invoices flow through the system.",
     bullets: [
       "AI extraction engine trained on the company's vendor data and approval workflows",
-      "Accepts any invoice format — PDF, scanned image, Word, Excel, email attachments",
+      "Accepts any invoice format: PDF, scanned image, Word, Excel, email attachments",
       "Extracts vendor, line items, totals, and GL codes in seconds",
       "Auto-categorizes expenses against the company's financial structure",
       "Anomaly flagging on unusual amounts, vendors, or line items",
-      "Approval routing automation — invoices land with the right approver",
+      "Approval routing automation: invoices land with the right approver",
     ],
     subsections: [
       {
@@ -75,7 +75,7 @@ export const caseStudy: CaseStudyData = {
         title: "Operational handoffs",
         items: [
           "Auto-categorization against the company's chart of accounts",
-          "Anomaly flagging — out-of-pattern amounts, vendor mismatches",
+          "Anomaly flagging: out-of-pattern amounts, vendor mismatches",
           "Approval routing based on amount thresholds and cost centers",
           "Exception queue surfaces low-confidence extractions for human review",
         ],
@@ -94,7 +94,7 @@ export const caseStudy: CaseStudyData = {
       value: "100%",
       label: "Manual reading eliminated",
       context:
-        "Manual reading and data extraction was eliminated entirely — staff no longer key invoices by hand.",
+        "Manual reading and data extraction was eliminated entirely, staff no longer key invoices by hand.",
     },
     {
       value: "0",

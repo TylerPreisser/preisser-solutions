@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Oklahoma City, OK Custom Software",
   metaDescription:
-    "Custom software and AI automation for Oklahoma City businesses — Kansas-based firm delivering remotely to OKC's energy, healthcare, and government markets.",
+    "Custom software and AI automation for Oklahoma City businesses: Kansas-based firm delivering remotely to OKC's energy, healthcare, and government markets.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -23,7 +23,7 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Oklahoma City, Oklahoma",
     h1: "Custom Software for Oklahoma City Businesses",
     subheadline:
-      "Custom web applications, dashboards, and AI automation for OKC's energy, healthcare, government, and professional-services markets — delivered remotely by a Kansas-based firm.",
+      "Custom web applications, dashboards, and AI automation for OKC's energy, healthcare, government, and professional-services markets: delivered remotely by a Kansas-based firm.",
     answerParagraph:
       "Preisser Solutions is a Kansas-based custom software firm serving Oklahoma City businesses with web applications, dashboards, internal tools, and AI automation. OKC is an Oklahoma County metro of approximately 680,000 anchored by energy, healthcare, government, and aerospace. All work is delivered remotely, with on-site travel to Oklahoma City for material engagements.",
   },
@@ -44,7 +44,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Preisser Solutions is a Kansas-based firm serving Oklahoma City and the broader Oklahoma market remotely, with on-site travel for material engagements.",
-    "OKC's energy and healthcare sectors require custom tools — not off-the-shelf software that doesn't fit the workflow.",
+    "OKC's energy and healthcare sectors require custom tools, not off-the-shelf software that doesn't fit the workflow.",
     "Custom code with full ownership at launch. No SaaS dependency, no vendor lock-in.",
   ],
 
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions price projects for Oklahoma City clients?",
       answer:
-        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed before work begins — no open-ended retainers.",
+        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed before work begins: no open-ended retainers.",
     },
   ],
 

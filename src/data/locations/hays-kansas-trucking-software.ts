@@ -70,7 +70,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Fleet management dashboards, AI document processing, dispatch automation, and websites for carriers and freight brokers in Hays and western Kansas.",
     answerParagraph:
-      "Preisser Solutions builds custom software for trucking and freight operations in Hays, Kansas — fleet management dashboards, AI-powered BOL and invoice processing, dispatch automation, and carrier websites. Hays sits at the I-70 corridor, a major east-west freight route through Kansas. We serve carriers, owner-operators, and freight brokers in the Hays and western Kansas trucking market.",
+      "Preisser Solutions builds custom software for trucking and freight operations in Hays, Kansas: fleet management dashboards, AI-powered BOL and invoice processing, dispatch automation, and carrier websites. Hays sits at the I-70 corridor, a major east-west freight route through Kansas. We serve carriers, owner-operators, and freight brokers in the Hays and western Kansas trucking market.",
   },
 
   nearbyAreas: [
@@ -88,8 +88,8 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Hays is on I-70 — the primary east-west freight corridor through Kansas. We are local to the trucking market we serve.",
-    "Custom trucking software built for actual dispatch and fleet operations — not generic CRM platforms repurposed for freight.",
+    "Hays is on I-70: the primary east-west freight corridor through Kansas. We are local to the trucking market we serve.",
+    "Custom trucking software built for actual dispatch and fleet operations, not generic CRM platforms repurposed for freight.",
     "Custom code with full ownership at launch. No per-truck or per-driver SaaS licensing after handoff.",
   ],
 
@@ -110,17 +110,17 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions automate BOL and invoice processing for a Hays carrier?",
       answer:
-        "Yes. AI-powered BOL, POD, and freight invoice intake — with automated routing and coding — is an explicit service line.",
+        "Yes. AI-powered BOL, POD, and freight invoice intake (with automated routing and coding) is an explicit service line.",
     },
     {
       question: "What is a fleet management dashboard?",
       answer:
-        "A custom web application that centralizes load status, driver location and availability, fleet utilization, and revenue per load in one view — replacing spreadsheets and manual reporting.",
+        "A custom web application that centralizes load status, driver location and availability, fleet utilization, and revenue per load in one view, replacing spreadsheets and manual reporting.",
     },
     {
       question: "Can Preisser Solutions build a website for a Hays trucking company?",
       answer:
-        "Yes. Custom carrier and freight broker websites — including load board integration and carrier qualification portals — are within standard capability.",
+        "Yes. Custom carrier and freight broker websites (including load board integration and carrier qualification portals) are within standard capability.",
     },
     {
       question: "Does Preisser Solutions work with owner-operators or only larger fleets?",

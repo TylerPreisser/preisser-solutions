@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Junction City, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Junction City, Kansas — built by a Hays-based firm for the Fort Riley market.",
+    "Custom websites, web apps, and AI automation for Junction City, Kansas: built by a Hays-based firm for the Fort Riley market.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -19,9 +19,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Junction City, Kansas",
     h1: "Custom Software and Websites for Junction City Businesses",
     subheadline:
-      "Custom web apps, AI automation, and websites for Geary County's Fort Riley-adjacent economy — a dense, underserved B2B market.",
+      "Custom web apps, AI automation, and websites for Geary County's Fort Riley-adjacent economy: a dense, underserved B2B market.",
     answerParagraph:
-      "Preisser Solutions serves Junction City, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Junction City's economy is anchored by Fort Riley — one of the largest Army installations in the country — which drives a high-density mix of defense contractors, trades, retail, and professional services that consistently need custom operational tooling. Based in Hays, roughly 130 miles west, we deliver remotely and travel for projects of meaningful scope.",
+      "Preisser Solutions serves Junction City, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Junction City's economy is anchored by Fort Riley (one of the largest Army installations in the country): which drives a high-density mix of defense contractors, trades, retail, and professional services that consistently need custom operational tooling. Based in Hays, roughly 130 miles west, we deliver remotely and travel for projects of meaningful scope.",
   },
 
   nearbyAreas: [
@@ -39,7 +39,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Fort Riley adjacency creates a unique B2B environment — defense contractors, military-family services, and trades operators all have distinct operational software needs that standard templates don't address.",
+    "Fort Riley adjacency creates a unique B2B environment: defense contractors, military-family services, and trades operators all have distinct operational software needs that standard templates don't address.",
     "Junction City is frequently overlooked by larger metro agencies. A Kansas-based firm that serves the full I-70 corridor fills a real gap in the local digital-services market.",
     "Custom code with full ownership. Defense-contractor and trades operators benefit from software that reflects their specific workflow rather than generalized SaaS assumptions.",
   ],
@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "What makes Preisser Solutions a better choice than a Topeka or Manhattan agency for Junction City?",
       answer:
-        "Custom-software and AI automation depth. Most regional agencies sell marketing retainers. Preisser Solutions builds operational tools, custom websites, and AI automation — the full stack of what Junction City businesses need.",
+        "Custom-software and AI automation depth. Most regional agencies sell marketing retainers. Preisser Solutions builds operational tools, custom websites, and AI automation: the full stack of what Junction City businesses need.",
     },
   ],
 

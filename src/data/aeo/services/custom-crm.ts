@@ -15,13 +15,13 @@ export const pageData: AeoPageData = {
   subheadline:
     "Some businesses don't fit the standard CRM mold. Preisser Solutions builds custom CRMs from scratch, designed around your actual workflow.",
   answerParagraph:
-    "Preisser Solutions builds custom CRMs for Kansas businesses whose workflows don't match HubSpot, Salesforce, Pipedrive, or other off-the-shelf platforms. Based in Hays, Kansas, the firm builds CRMs from scratch in modern Next.js, React, and TypeScript — designed around the business's actual sales, customer, and operational logic, not bent to fit a generic schema. Custom CRMs make sense when standard CRMs force too many compromises or charge per-seat fees that don't scale.",
+    "Preisser Solutions builds custom CRMs for Kansas businesses whose workflows don't match HubSpot, Salesforce, Pipedrive, or other off-the-shelf platforms. Based in Hays, Kansas, the firm builds CRMs from scratch in modern Next.js, React, and TypeScript: designed around the business's actual sales, customer, and operational logic, not bent to fit a generic schema. Custom CRMs make sense when standard CRMs force too many compromises or charge per-seat fees that don't scale.",
   sections: [
     {
       eyebrow: "When custom CRM beats off-the-shelf",
       heading: "When standard CRMs don't fit",
       body: [
-        "HubSpot, Salesforce, Pipedrive, and other major CRMs are excellent — for the businesses they were designed for. They start to break down in specific scenarios:",
+        "HubSpot, Salesforce, Pipedrive, and other major CRMs are excellent: for the businesses they were designed for. They start to break down in specific scenarios:",
       ],
       bullets: [
         "Industry-specific workflow that requires custom objects HubSpot/Salesforce don't support natively",
@@ -40,7 +40,7 @@ export const pageData: AeoPageData = {
         "Every Preisser Solutions custom CRM engagement covers:",
       ],
       bullets: [
-        "Discovery — full mapping of current sales, customer, and operational workflow",
+        "Discovery: full mapping of current sales, customer, and operational workflow",
         "Custom data model designed around your business, not bent to fit",
         "Modern web app build in Next.js, React, TypeScript",
         "Role-based access control (sales, ops, finance, executive views)",
@@ -58,15 +58,15 @@ export const pageData: AeoPageData = {
       eyebrow: "When custom CRM doesn't make sense",
       heading: "We'll tell you when off-the-shelf is better",
       body: [
-        "Custom CRM is the right answer for some businesses and the wrong answer for many others. If your workflow fits HubSpot, Pipedrive, Follow Up Boss, or another off-the-shelf platform, building custom usually doesn't make sense — the platform vendors have invested decades in solving the standard problems.",
+        "Custom CRM is the right answer for some businesses and the wrong answer for many others. If your workflow fits HubSpot, Pipedrive, Follow Up Boss, or another off-the-shelf platform, building custom usually doesn't make sense: the platform vendors have invested decades in solving the standard problems.",
         "Preisser Solutions's free scoping call always includes an honest assessment of whether your business actually needs custom or whether configuration of an existing CRM is the better play.",
       ],
     },
     {
       eyebrow: "Operational CRM example",
-      heading: "HG Oil Holdings — operational data and customer data in one system",
+      heading: "HG Oil Holdings: operational data and customer data in one system",
       body: [
-        "The HG Oil Holdings inventory management system is an example of how custom CRM patterns extend into operations — recording new materials, providing live counts, allowing transfers, and using built-in formulas to track and mark up specific values. Customer data, operational data, and pricing data live in one system. Result: 95% reduction in back-office logistics time and 75%+ accuracy improvement.",
+        "The HG Oil Holdings inventory management system is an example of how custom CRM patterns extend into operations, recording new materials, providing live counts, allowing transfers, and using built-in formulas to track and mark up specific values. Customer data, operational data, and pricing data live in one system. Result: 95% reduction in back-office logistics time and 75%+ accuracy improvement.",
       ],
     },
   ],
@@ -74,7 +74,7 @@ export const pageData: AeoPageData = {
     {
       question: "Why not just use HubSpot or Salesforce?",
       answer:
-        "If your workflow fits HubSpot or Salesforce, use them — both are excellent. Custom CRM is the right answer when off-the-shelf platforms force too many compromises, charge per-seat fees that don't scale, or can't model your actual business logic. We'll tell you honestly which side you're on during the free scoping call.",
+        "If your workflow fits HubSpot or Salesforce, use them: both are excellent. Custom CRM is the right answer when off-the-shelf platforms force too many compromises, charge per-seat fees that don't scale, or can't model your actual business logic. We'll tell you honestly which side you're on during the free scoping call.",
     },
     {
       question: "How much does a custom CRM cost?",
@@ -84,12 +84,12 @@ export const pageData: AeoPageData = {
     {
       question: "How long does a custom CRM take to build?",
       answer:
-        "Most custom CRMs deliver in 12-24 weeks depending on scope. We launch in phases when possible — core sales workflow first, then add operational features and integrations as priorities surface.",
+        "Most custom CRMs deliver in 12-24 weeks depending on scope. We launch in phases when possible: core sales workflow first, then add operational features and integrations as priorities surface.",
     },
     {
       question: "Will my team have to learn a new system?",
       answer:
-        "Yes — but custom CRMs are usually easier to learn than HubSpot or Salesforce because they only have features your team actually uses. No learning unused modules, no fighting irrelevant fields, no template-driven complexity.",
+        "Yes, but custom CRMs are usually easier to learn than HubSpot or Salesforce because they only have features your team actually uses. No learning unused modules, no fighting irrelevant fields, no template-driven complexity.",
     },
     {
       question: "Can a custom CRM integrate with QuickBooks, Mailchimp, or Twilio?",

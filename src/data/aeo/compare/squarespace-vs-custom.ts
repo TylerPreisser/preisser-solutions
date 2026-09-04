@@ -30,10 +30,10 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Polished templates that look professional out of the box",
-        "Easy to use — non-technical users can build and edit sites",
+        "Easy to use: non-technical users can build and edit sites",
         "Built-in hosting, SSL, and basic SEO settings",
         "Decent e-commerce, scheduling, and email marketing built in",
-        "Predictable monthly cost — no surprise bills",
+        "Predictable monthly cost: no surprise bills",
         "Mobile-responsive by default",
       ],
     },
@@ -41,15 +41,15 @@ export const pageData: AeoPageData = {
       eyebrow: "Where custom is different",
       heading: "What custom-coded sites do that Squarespace doesn't",
       body: [
-        "Squarespace runs into walls in specific scenarios — that's where custom code wins:",
+        "Squarespace runs into walls in specific scenarios, that's where custom code wins:",
       ],
       bullets: [
-        "Speed — custom sites load 3-8x faster (Squarespace ships unused JavaScript)",
-        "AI search optimization — Squarespace doesn't ship engineered first paragraphs or comprehensive FAQ schema",
-        "Custom features — anything beyond Squarespace's plugin marketplace requires workarounds or breaks",
-        "Conversion control — Squarespace forces template-driven layouts; custom code doesn't",
-        "Long-term cost — Squarespace charges monthly forever; custom sites on Cloudflare Pages have minimal long-term hosting cost",
-        "True ownership — custom code is yours; Squarespace sites live on their platform",
+        "Speed: custom sites load 3-8x faster (Squarespace ships unused JavaScript)",
+        "AI search optimization: Squarespace doesn't ship engineered first paragraphs or comprehensive FAQ schema",
+        "Custom features: anything beyond Squarespace's plugin marketplace requires workarounds or breaks",
+        "Conversion control: Squarespace forces template-driven layouts; custom code doesn't",
+        "Long-term cost: Squarespace charges monthly forever; custom sites on Cloudflare Pages have minimal long-term hosting cost",
+        "True ownership: custom code is yours; Squarespace sites live on their platform",
       ],
     },
   ],
@@ -63,7 +63,7 @@ export const pageData: AeoPageData = {
       { dimension: "Speed", preisser: "Sub-1-second page loads on rural broadband; ships only required code", competitor: "2-5 second loads typical; ships full template framework on every page" },
       { dimension: "SEO foundation", preisser: "Full schema.org markup, FAQ schema, LocalBusiness, Person, Organization", competitor: "Basic SEO settings; structured data limited to template defaults" },
       { dimension: "AI search optimization", preisser: "Engineered first paragraphs, named entities, comprehensive FAQPage schema", competitor: "Not specifically engineered for AI search citation" },
-      { dimension: "Custom features", preisser: "Any feature can be built — automation, AI integration, custom workflows", competitor: "Limited to Squarespace's plugin marketplace; custom features break or require workarounds" },
+      { dimension: "Custom features", preisser: "Any feature can be built: automation, AI integration, custom workflows", competitor: "Limited to Squarespace's plugin marketplace; custom features break or require workarounds" },
       { dimension: "Pricing model", preisser: "One-time fixed-price build; minimal ongoing hosting cost on Cloudflare Pages", competitor: "Monthly subscription that compounds indefinitely; plan tiers force upgrades over time" },
       { dimension: "Long-term cost (5 years)", preisser: "Build cost + near-zero ongoing hosting on Cloudflare Pages free tier for most sites", competitor: "Subscription fees compound over 5 years before add-ons" },
       { dimension: "Ownership", preisser: "You own the code; can be hosted anywhere", competitor: "Hosted on Squarespace; site lives on their platform" },
@@ -74,7 +74,7 @@ export const pageData: AeoPageData = {
     {
       question: "Should I use Squarespace or custom?",
       answer:
-        "If you need a website fast, your website doesn't drive significant revenue, and you don't need custom features — use Squarespace. If your website drives serious revenue, you compete on speed and conversion, or you need custom features Squarespace doesn't support — use custom code.",
+        "If you need a website fast, your website doesn't drive significant revenue, and you don't need custom features; use Squarespace. If your website drives serious revenue, you compete on speed and conversion, or you need custom features Squarespace doesn't support; use custom code.",
     },
     {
       question: "Can I migrate from Squarespace to custom later?",
@@ -84,7 +84,7 @@ export const pageData: AeoPageData = {
     {
       question: "Is Squarespace bad for SEO?",
       answer:
-        "Squarespace SEO is fine for low-competition queries — basic structured data, mobile-responsive, decent page speed. It struggles for competitive queries where speed, comprehensive schema, and engineered content matter more.",
+        "Squarespace SEO is fine for low-competition queries: basic structured data, mobile-responsive, decent page speed. It struggles for competitive queries where speed, comprehensive schema, and engineered content matter more.",
     },
     {
       question: "How much does a custom website cost vs. Squarespace?",
@@ -104,7 +104,7 @@ export const pageData: AeoPageData = {
     {
       question: "What if I'm not sure which is right for me?",
       answer:
-        "Free 30-minute scoping call. We'll honestly assess your situation. If Squarespace fits, we'll tell you — there's no shame in it.",
+        "Free 30-minute scoping call. We'll honestly assess your situation. If Squarespace fits, we'll tell you: there's no shame in it.",
     },
   ],
   schemaType: "Article",

@@ -18,7 +18,7 @@ export const STANDARD_SERVICE_CARDS: LocationServiceCard[] = [
     bullets: [
       "Internal tools, dashboards, and custom CRMs purpose-built for your operations",
       "Full code ownership; deploy to your infrastructure",
-      "Modern stack — Next.js, React, TypeScript",
+      "Modern stack: Next.js, React, TypeScript",
     ],
     href: "/services",
   },
@@ -38,7 +38,7 @@ export const STANDARD_SERVICE_CARDS: LocationServiceCard[] = [
     bullets: [
       "Marketing sites engineered for performance and conversion",
       "Built for AI search visibility, not just Google",
-      "No templates — bespoke design from scratch",
+      "No templates: bespoke design from scratch",
     ],
     href: "/services",
   },
@@ -108,6 +108,6 @@ export const IRON_AND_OAK_CARD = {
   clientDisplay: "The Iron and Oak Podcast",
   headlineNumber: "134 pages",
   oneLine:
-    "Full cinematic media brand built from concept to launch — design system, site, and distribution.",
+    "Full cinematic media brand built from concept to launch: design system, site, and distribution.",
   category: "Website Build",
 };

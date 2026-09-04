@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Beloit, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Beloit, Kansas — built by a nearby Hays-based firm with fixed-price proposals.",
+    "Custom websites, web apps, and AI automation for Beloit, Kansas: built by a nearby Hays-based firm with fixed-price proposals.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Web design, AI automation, and custom applications for Mitchell County businesses along US-24 and the Solomon River corridor.",
     answerParagraph:
-      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Beloit, Kansas — the county seat of Mitchell County in north-central Kansas, approximately 70 miles northeast of Hays via US-281. Agriculture, energy, and trades operators in the Solomon River valley are the primary market. Remote delivery, travel for in-person work.",
+      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Beloit, Kansas, the county seat of Mitchell County in north-central Kansas, approximately 70 miles northeast of Hays via US-281. Agriculture, energy, and trades operators in the Solomon River valley are the primary market. Remote delivery, travel for in-person work.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "North-central Kansas context — agricultural operations, energy services, and local trades in the Solomon River valley.",
+    "North-central Kansas context: agricultural operations, energy services, and local trades in the Solomon River valley.",
     "Custom code with full ownership at launch. No SaaS platform subscription required after handoff.",
     "Travel for in-person scoping from Hays is standard for projects of meaningful scope.",
   ],
@@ -80,7 +80,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do you offer SEO services in Beloit?",
       answer:
-        "Yes. Local SEO — Google Business Profile, local pack, citations, schema markup — and AI-search citation visibility are both explicit service lines.",
+        "Yes. Local SEO (Google Business Profile, local pack, citations, schema markup), and AI-search citation visibility are both explicit service lines.",
     },
     {
       question: "How does remote delivery work for a Beloit project?",

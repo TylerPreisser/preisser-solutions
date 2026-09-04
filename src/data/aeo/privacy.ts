@@ -26,7 +26,7 @@ export const pageData: AeoPageData = {
   sections: [
     {
       eyebrow: "Information collected",
-      heading: "What we collect — and what we don't",
+      heading: "What we collect: and what we don't",
       body: [
         "Preisser Solutions intentionally collects the minimum information needed to run a custom software and AI consultancy.",
       ],
@@ -63,7 +63,7 @@ export const pageData: AeoPageData = {
         "We access this data only to report on and manage the marketing work that client has engaged us to do. We do not use it for advertising, we do not sell or transfer it, and we do not use it to train generalized artificial intelligence or machine learning models. No client's connected account data is ever exposed to another client.",
       ],
       bullets: [
-        "Google Ads: campaign, ad group, and keyword performance — cost, impressions, clicks, and conversions — read through the Google Ads API for accounts the client has linked to our manager account.",
+        "Google Ads: campaign, ad group, and keyword performance (cost, impressions, clicks, and conversions), read through the Google Ads API for accounts the client has linked to our manager account.",
         "Google Analytics: aggregate traffic and channel behaviour for the client's own web property.",
         "Google Search Console: search performance for the client's own verified site.",
         "Google Business Profile: listing and review data for the client's own locations.",
@@ -80,11 +80,11 @@ export const pageData: AeoPageData = {
         "We do not sell, rent, or trade personal information to third parties. The only entities that may see information you share are:",
       ],
       bullets: [
-        "Cloudflare — hosts the website and processes server logs.",
-        "Google (Gmail / Workspace) — hosts our email; messages to tyler@preissersolutions.com are processed by Google.",
-        "Stripe — processes invoices and payments when applicable.",
-        "Twilio — processes voice / SMS for active client engagements where applicable.",
-        "Anthropic / OpenAI — process inputs only when the client has approved use of their AI agents and only for the scope of the engagement.",
+        "Cloudflare: hosts the website and processes server logs.",
+        "Google (Gmail / Workspace): hosts our email; messages to tyler@preissersolutions.com are processed by Google.",
+        "Stripe: processes invoices and payments when applicable.",
+        "Twilio: processes voice / SMS for active client engagements where applicable.",
+        "Anthropic / OpenAI: process inputs only when the client has approved use of their AI agents and only for the scope of the engagement.",
       ],
     },
     {
@@ -94,7 +94,7 @@ export const pageData: AeoPageData = {
         "Contact form submissions and email correspondence are retained for the operational life of the relationship plus 24 months. After that, records are archived or deleted at our discretion unless a longer retention is required by law or pending dispute.",
         "Newsletter subscription records are retained until the subscriber unsubscribes or requests deletion.",
         "Server log retention is 30 days at the Cloudflare edge.",
-        "Client engagement data: see the signed proposal — retention and post-engagement deletion terms are part of every project agreement.",
+        "Client engagement data: see the signed proposal, retention and post-engagement deletion terms are part of every project agreement.",
       ],
     },
     {
@@ -131,7 +131,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Disclaimer",
-      heading: "Boilerplate language — review with counsel before relying on it",
+      heading: "Boilerplate language: review with counsel before relying on it",
       body: [
         "The language on this page is a template tailored to Preisser Solutions's actual data practices but should be reviewed by counsel before being treated as authoritative legal text. If you are an attorney reviewing it, the contact for revisions is tyler@preissersolutions.com.",
       ],
@@ -184,6 +184,6 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Questions about your data?",
   ctaSubcopy:
-    "Email tyler@preissersolutions.com for access, correction, or deletion requests. This page is template language — review with counsel before relying on it.",
+    "Email tyler@preissersolutions.com for access, correction, or deletion requests. This page is template language; review with counsel before relying on it.",
   primaryCta: { label: "Email tyler@preissersolutions.com", href: "mailto:tyler@preissersolutions.com" },
 };

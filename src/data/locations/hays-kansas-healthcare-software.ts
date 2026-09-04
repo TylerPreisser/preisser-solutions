@@ -33,7 +33,7 @@ const HEALTHCARE_SERVICE_CARDS: LocationServiceCard[] = [
     title: "Healthcare Website & SEO",
     bullets: [
       "Custom-coded websites built for patient acquisition and local search",
-      "HIPAA-conscious build practices — no third-party trackers on patient-facing forms",
+      "HIPAA-conscious build practices: no third-party trackers on patient-facing forms",
       "AI-search optimization to appear in provider-recommendation queries",
     ],
     href: "/services",
@@ -59,7 +59,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Healthcare Software in Hays, KS",
   metaDescription:
-    "Custom healthcare software, patient portals, and workflow automation for providers in Hays, Kansas — built by a local firm.",
+    "Custom healthcare software, patient portals, and workflow automation for providers in Hays, Kansas: built by a local firm.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -70,7 +70,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Operations dashboards, workflow automation, patient communication tools, and websites for healthcare providers in Hays and the surrounding western Kansas region.",
     answerParagraph:
-      "Preisser Solutions builds custom software for healthcare providers in Hays, Kansas — HaysMed (Hays Medical Center) is the regional hospital, and a significant number of specialist clinics, dental practices, mental health providers, and home health agencies serve Ellis County and the surrounding region. Services include operations dashboards, workflow automation, patient intake tools, and local SEO for patient acquisition. All builds follow HIPAA-conscious development practices.",
+      "Preisser Solutions builds custom software for healthcare providers in Hays, Kansas: HaysMed (Hays Medical Center) is the regional hospital, and a significant number of specialist clinics, dental practices, mental health providers, and home health agencies serve Ellis County and the surrounding region. Services include operations dashboards, workflow automation, patient intake tools, and local SEO for patient acquisition. All builds follow HIPAA-conscious development practices.",
   },
 
   nearbyAreas: [
@@ -88,8 +88,8 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Hays is the healthcare hub for western Kansas — HaysMed serves a 25-county regional catchment. We are local to this market.",
-    "HIPAA-conscious development practices are built into every patient-facing deliverable — not added as an afterthought.",
+    "Hays is the healthcare hub for western Kansas: HaysMed serves a 25-county regional catchment. We are local to this market.",
+    "HIPAA-conscious development practices are built into every patient-facing deliverable, not added as an afterthought.",
     "Custom code with full ownership at launch. No recurring SaaS platform fees for patient-facing tools.",
   ],
 
@@ -116,12 +116,12 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions build a patient intake form for a Hays clinic?",
       answer:
-        "Yes. Secure patient intake forms and document collection tools — designed with HIPAA considerations — are within standard capability.",
+        "Yes. Secure patient intake forms and document collection tools (designed with HIPAA considerations) are within standard capability.",
     },
     {
       question: "Does Preisser Solutions offer local SEO for Hays healthcare providers?",
       answer:
-        "Yes. Local SEO for medical practices — Google Business Profile, local pack, schema markup for healthcare providers, and AI-search visibility — is an explicit service.",
+        "Yes. Local SEO for medical practices (Google Business Profile, local pack, schema markup for healthcare providers, and AI-search visibility) is an explicit service.",
     },
     {
       question: "Can Preisser Solutions automate appointment reminders for a Hays practice?",

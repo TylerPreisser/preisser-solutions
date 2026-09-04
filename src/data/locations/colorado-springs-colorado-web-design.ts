@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Colorado Springs, CO Web Design",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Colorado Springs businesses — Kansas-based firm delivering remotely to the Front Range.",
+    "Custom websites, web apps, and AI automation for Colorado Springs businesses: Kansas-based firm delivering remotely to the Front Range.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -44,7 +44,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Preisser Solutions is a Kansas-based firm serving Colorado Springs and the Front Range remotely, with on-site travel for material engagements.",
-    "Colorado Springs' defense and technology sectors require custom tools — not page-builder websites or generic SaaS applications.",
+    "Colorado Springs' defense and technology sectors require custom tools, not page-builder websites or generic SaaS applications.",
     "Custom code with full ownership at launch. No vendor lock-in.",
   ],
 

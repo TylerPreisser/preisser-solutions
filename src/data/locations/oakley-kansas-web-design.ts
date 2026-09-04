@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Oakley, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Oakley, Kansas — built by a Hays-based firm for the I-70 truck-stop hub market.",
+    "Custom websites, web apps, and AI automation for Oakley, Kansas: built by a Hays-based firm for the I-70 truck-stop hub market.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -21,7 +21,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for Logan County's trucking, hospitality, and agriculture operators on I-70.",
     answerParagraph:
-      "Preisser Solutions serves Oakley, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Positioned at one of western Kansas's busiest I-70 interchange hubs, Oakley operators face real digital-presence competition from passing traffic. Based in Hays — roughly 90 miles east — we deliver remotely and travel for projects of meaningful scope.",
+      "Preisser Solutions serves Oakley, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Positioned at one of western Kansas's busiest I-70 interchange hubs, Oakley operators face real digital-presence competition from passing traffic. Based in Hays (roughly 90 miles east): we deliver remotely and travel for projects of meaningful scope.",
   },
 
   nearbyAreas: [
@@ -41,7 +41,7 @@ export const locationData: LocationPageData = {
   whyLocal: [
     "Western Kansas firm that understands the trucking-hub economy of the Logan County I-70 corridor.",
     "Hospitality and fuel-stop operators along I-70 benefit from fast-loading, SEO-strong sites that capture transient and local searches.",
-    "Custom code with full ownership — no proprietary platform, no ongoing license fees.",
+    "Custom code with full ownership: no proprietary platform, no ongoing license fees.",
   ],
 
   industriesServed: [
@@ -76,12 +76,12 @@ export const locationData: LocationPageData = {
     {
       question: "Do you offer local SEO for Oakley ag and trucking operators?",
       answer:
-        "Yes. Local SEO and AI-search visibility — citations on Google AI Overviews, ChatGPT, Perplexity, and Gemini — are an explicit service line available to Logan County businesses.",
+        "Yes. Local SEO and AI-search visibility (citations on Google AI Overviews, ChatGPT, Perplexity, and Gemini) are an explicit service line available to Logan County businesses.",
     },
     {
       question: "What is the difference between Preisser Solutions and a local Kansas web agency?",
       answer:
-        "Preisser Solutions is a custom-software and AI automation firm, not a design agency. Every site is custom-coded from scratch with full ownership at launch — no themes, no page builders, no lock-in.",
+        "Preisser Solutions is a custom-software and AI automation firm, not a design agency. Every site is custom-coded from scratch with full ownership at launch: no themes, no page builders, no lock-in.",
     },
   ],
 

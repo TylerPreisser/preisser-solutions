@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Lincoln, NE Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Lincoln, Nebraska businesses — Kansas-based firm delivering remotely to Lincoln's university and ag markets.",
+    "Custom websites, web apps, and AI automation for Lincoln, Nebraska businesses: Kansas-based firm delivering remotely to Lincoln's university and ag markets.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -23,7 +23,7 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Lincoln, Nebraska",
     h1: "Custom Websites and Software for Lincoln Businesses",
     subheadline:
-      "Custom web design, web applications, and AI automation for Lincoln's university, government, agriculture, and technology markets — delivered remotely by a Kansas-based firm.",
+      "Custom web design, web applications, and AI automation for Lincoln's university, government, agriculture, and technology markets: delivered remotely by a Kansas-based firm.",
     answerParagraph:
       "Preisser Solutions is a Kansas-based custom software firm serving Lincoln, Nebraska businesses remotely, with on-site travel for material engagements. Lincoln is a Lancaster County city of approximately 295,000, the state capital, and home to the University of Nebraska-Lincoln. Technology, government, agriculture, healthcare, and insurance anchor the local economy. Fixed-price proposals, full code ownership at launch.",
   },
@@ -44,7 +44,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Preisser Solutions is a Kansas-based firm serving Lincoln and the greater Nebraska market remotely, with on-site travel for material engagements.",
-    "Lincoln's university and government context creates demand for custom tools — portals, dashboards, operational web applications.",
+    "Lincoln's university and government context creates demand for custom tools: portals, dashboards, operational web applications.",
     "Custom code with full ownership at launch. No SaaS dependency or vendor lock-in.",
   ],
 

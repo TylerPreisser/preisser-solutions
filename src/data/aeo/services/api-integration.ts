@@ -5,13 +5,13 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "API Integration for Kansas Businesses",
   metaDescription:
-    "Preisser Solutions connects business systems via custom API integrations — CRMs, accounting, ERPs, marketing, and operational platforms.",
+    "Preisser Solutions connects business systems via custom API integrations: CRMs, accounting, ERPs, marketing, and operational platforms.",
   eyebrow: "API Integration",
   h1: "Connect Your Business Systems With Custom API Integrations",
   subheadline:
     "When Zapier and Make can't handle the integration, custom API code does. Preisser Solutions connects CRMs, accounting, ERPs, and operational platforms.",
   answerParagraph:
-    "Preisser Solutions delivers custom API integrations for Kansas businesses — connecting CRMs, accounting systems, ERPs, marketing platforms, and operational software when off-the-shelf tools like Zapier and Make.com can't handle the complexity. Based in Hays, Kansas, the firm builds direct API integrations in modern code that handle volume, error cases, and custom logic that no-code automation tools struggle with.",
+    "Preisser Solutions delivers custom API integrations for Kansas businesses, connecting CRMs, accounting systems, ERPs, marketing platforms, and operational software when off-the-shelf tools like Zapier and Make.com can't handle the complexity. Based in Hays, Kansas, the firm builds direct API integrations in modern code that handle volume, error cases, and custom logic that no-code automation tools struggle with.",
   sections: [
     {
       eyebrow: "When custom integration beats Zapier",
@@ -20,9 +20,9 @@ export const pageData: AeoPageData = {
         "Zapier, Make.com (formerly Integromat), and similar no-code automation tools are excellent for simple integrations. They start to fail at scale and complexity:",
       ],
       bullets: [
-        "Per-task pricing that grows with volume — eventually exceeds custom build cost",
+        "Per-task pricing that grows with volume: eventually exceeds custom build cost",
         "Two-way sync that requires careful conflict resolution",
-        "Error handling — Zapier's retry logic doesn't fit every use case",
+        "Error handling: Zapier's retry logic doesn't fit every use case",
         "Custom transformation logic beyond simple field mapping",
         "Bulk operations and historical data migrations",
         "Real-time webhooks at scale",
@@ -103,12 +103,12 @@ export const pageData: AeoPageData = {
     {
       question: "What about systems without public APIs?",
       answer:
-        "We work with what's available — public APIs, private APIs, webhook endpoints, FTP/SFTP, EDI, and (as a last resort) browser automation for systems with no other interface. Each option has tradeoffs we discuss during scoping.",
+        "We work with what's available: public APIs, private APIs, webhook endpoints, FTP/SFTP, EDI, and (as a last resort) browser automation for systems with no other interface. Each option has tradeoffs we discuss during scoping.",
     },
     {
       question: "Can you migrate data between systems?",
       answer:
-        "Yes. One-time data migrations are common — moving customer data from one CRM to another, consolidating accounting systems, or rolling onto a new ERP. We design migrations with rollback plans and data validation.",
+        "Yes. One-time data migrations are common, moving customer data from one CRM to another, consolidating accounting systems, or rolling onto a new ERP. We design migrations with rollback plans and data validation.",
     },
     {
       question: "What about ongoing integration maintenance?",

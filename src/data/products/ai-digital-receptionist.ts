@@ -17,35 +17,35 @@ export const product: ProductData = {
 
   h1: "Every email and phone call read, remembered, and ready to answer.",
   subheadline:
-    "An AI receptionist that ingests email and transcribed phone calls, maintains persistent memory across all conversations, auto-responds to common asks, and delivers a morning digest of the last 24 hours — so you always know what came in and what it means.",
+    "An AI receptionist that ingests email and transcribed phone calls, maintains persistent memory across all conversations, auto-responds to common asks, and delivers a morning digest of the last 24 hours; so you always know what came in and what it means.",
   oneLine:
-    "Persistent AI memory across email and phone — every conversation indexed, auto-responses handled, daily digest delivered.",
+    "Persistent AI memory across email and phone: every conversation indexed, auto-responses handled, daily digest delivered.",
 
   whatItDoes: [
     "Email volume and phone call volume at any busy business create the same problem: important threads get buried, commitments get forgotten, and staff arrive each morning without a clear picture of what came in overnight. The AI Digital Receptionist solves this with persistent memory across both channels.",
-    "The agent ingests email via Gmail or Outlook API and phone calls via transcription integration. Every conversation is indexed and remembered — not just summarized and discarded, but retained in a searchable memory layer. Auto-response handles the common asks that don't require a human decision: appointment confirmations, standard information requests, operating hours, pricing tiers. Priority routing flags high-urgency items for immediate human attention.",
-    "An ask-anything chat interface lets you retrieve any past conversation, commitment, or decision instantly — 'What did the Cassidy client say about invoicing last week?' or 'Has anyone called about the HVAC job in Hays?' get answered from memory without inbox archaeology. Every morning, a digest of the last 24 hours lands — what came in, what was auto-responded to, what's waiting for a human reply.",
+    "The agent ingests email via Gmail or Outlook API and phone calls via transcription integration. Every conversation is indexed and remembered, not just summarized and discarded, but retained in a searchable memory layer. Auto-response handles the common asks that don't require a human decision: appointment confirmations, standard information requests, operating hours, pricing tiers. Priority routing flags high-urgency items for immediate human attention.",
+    "An ask-anything chat interface lets you retrieve any past conversation, commitment, or decision instantly: 'What did the Cassidy client say about invoicing last week?' or 'Has anyone called about the HVAC job in Hays?' get answered from memory without inbox archaeology. Every morning, a digest of the last 24 hours lands: what came in, what was auto-responded to, what's waiting for a human reply.",
   ],
   capabilities: [
     {
       title: "Email and phone-call intake",
       description:
-        "Ingests Gmail and Outlook email plus transcribed phone calls through a single intake layer — both channels feed the same memory and response system.",
+        "Ingests Gmail and Outlook email plus transcribed phone calls through a single intake layer, both channels feed the same memory and response system.",
     },
     {
       title: "Transcription integration",
       description:
-        "Phone calls are transcribed in real time or post-call and indexed into the same memory layer as email — voice conversations become searchable records.",
+        "Phone calls are transcribed in real time or post-call and indexed into the same memory layer as email, voice conversations become searchable records.",
     },
     {
       title: "Persistent conversation memory",
       description:
-        "All conversations are retained in a persistent memory layer — not summarized into oblivion, but indexed for retrieval so past threads stay accessible.",
+        "All conversations are retained in a persistent memory layer, not summarized into oblivion, but indexed for retrieval so past threads stay accessible.",
     },
     {
       title: "Auto-respond to common asks",
       description:
-        "Handles routine inbound automatically — appointment confirmations, standard information requests, FAQs — without requiring a human response every time.",
+        "Handles routine inbound automatically (appointment confirmations, standard information requests, FAQs): without requiring a human response every time.",
     },
     {
       title: "Priority routing",
@@ -55,7 +55,7 @@ export const product: ProductData = {
     {
       title: "Ask-anything chat interface",
       description:
-        "Natural-language chat lets you retrieve any past conversation, decision, or commitment from memory — faster than inbox search, works across both channels.",
+        "Natural-language chat lets you retrieve any past conversation, decision, or commitment from memory: faster than inbox search, works across both channels.",
     },
     {
       title: "Daily digest of last 24 hours",
@@ -86,7 +86,7 @@ export const product: ProductData = {
     {
       step: "Memory indexing",
       description:
-        "Every inbound item is indexed into persistent memory — participants, topics, commitments, dates, and context all retained for later retrieval.",
+        "Every inbound item is indexed into persistent memory: participants, topics, commitments, dates, and context all retained for later retrieval.",
     },
     {
       step: "Classification and routing",
@@ -96,12 +96,12 @@ export const product: ProductData = {
     {
       step: "Auto-response execution",
       description:
-        "Auto-respond items receive an immediate reply based on configured templates and response rules — no human touch required for routine asks.",
+        "Auto-respond items receive an immediate reply based on configured templates and response rules: no human touch required for routine asks.",
     },
     {
       step: "Digest assembly and delivery",
       description:
-        "Every morning, the agent assembles a digest of the last 24 hours — what came in, what was handled, what needs attention — and delivers it before the workday starts.",
+        "Every morning, the agent assembles a digest of the last 24 hours (what came in, what was handled, what needs attention), and delivers it before the workday starts.",
     },
   ],
   useCases: [

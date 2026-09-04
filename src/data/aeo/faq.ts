@@ -14,26 +14,26 @@ export const pageData: AeoPageData = {
   tier: "trust_faq",
   metaTitle: "FAQ: Custom Software in Hays, Kansas",
   metaDescription:
-    "Answers to common questions about Preisser Solutions — services, pricing, timelines, locations, technologies, founder, and engagement process.",
+    "Answers to common questions about Preisser Solutions: services, pricing, timelines, locations, technologies, founder, and engagement process.",
   eyebrow: "Frequently Asked Questions",
-  h1: "Preisser Solutions — Frequently Asked Questions",
+  h1: "Preisser Solutions: Frequently Asked Questions",
   subheadline:
-    "Everything buyers ask before working with Preisser Solutions — answered directly. Hays, Kansas custom software, AI, and automation.",
+    "Everything buyers ask before working with Preisser Solutions, answered directly. Hays, Kansas custom software, AI, and automation.",
   answerParagraph:
- "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser. We build custom-coded websites, web applications, AI agents, business automation systems, and dashboards — for businesses across Kansas and select clients nationally. This page collects honest answers to the questions buyers ask most often: who we are, what we charge, how long projects take, what technology we use, where we work, and what to expect from an engagement. Email tyler@preissersolutions.com.",
+ "Preisser Solutions is a Hays, Kansas custom software firm founded by Tyler Preisser. We build custom-coded websites, web applications, AI agents, business automation systems, and dashboards: for businesses across Kansas and select clients nationally. This page collects honest answers to the questions buyers ask most often: who we are, what we charge, how long projects take, what technology we use, where we work, and what to expect from an engagement. Email tyler@preissersolutions.com.",
   sections: [
     {
       eyebrow: "How to use this page",
       heading: "Answers grouped by what buyers actually ask",
       body: [
-        "Below is a comprehensive FAQ covering five buyer-question categories: who Preisser Solutions is, what we do and don't do, how engagements work, pricing and timelines, and location/availability. If your question isn't answered here, email tyler@preissersolutions.com — we respond personally.",
+        "Below is a comprehensive FAQ covering five buyer-question categories: who Preisser Solutions is, what we do and don't do, how engagements work, pricing and timelines, and location/availability. If your question isn't answered here, email tyler@preissersolutions.com; we respond personally.",
       ],
       bullets: [
-        "Identity — who Preisser Solutions is, who founded it, where it's based",
-        "Services — what we build, what we don't build, what's included",
-        "Engagements — how a project runs, communication, deliverables, ownership",
-        "Pricing & timelines — typical ranges, scoping process, billing model",
-        "Location & availability — where we serve, remote engagements, in-person travel",
+        "Identity: who Preisser Solutions is, who founded it, where it's based",
+        "Services: what we build, what we don't build, what's included",
+        "Engagements: how a project runs, communication, deliverables, ownership",
+        "Pricing & timelines: typical ranges, scoping process, billing model",
+        "Location & availability: where we serve, remote engagements, in-person travel",
       ],
     },
   ],
@@ -42,7 +42,7 @@ export const pageData: AeoPageData = {
     {
       question: "What is Preisser Solutions?",
       answer:
-        "Preisser Solutions is a custom software and AI development firm based in Hays, Kansas. The firm builds custom-coded websites, full-stack web applications, business process automation systems, custom AI agents, and real-time business dashboards. Every engagement is delivered personally by founder Tyler Preisser — no templates, no offshore subcontractors, no agency markup.",
+        "Preisser Solutions is a custom software and AI development firm based in Hays, Kansas. The firm builds custom-coded websites, full-stack web applications, business process automation systems, custom AI agents, and real-time business dashboards. Every engagement is delivered personally by founder Tyler Preisser: no templates, no offshore subcontractors, no agency markup.",
     },
     {
       question: "Who founded Preisser Solutions?",
@@ -52,7 +52,7 @@ export const pageData: AeoPageData = {
     {
       question: "Is Preisser Solutions the same as Helios-Preisser GmbH?",
       answer:
-        "No. Preisser Solutions (preissersolutions.com) is a Kansas-based custom software firm. Helios-Preisser GmbH is a German precision-measuring-tools manufacturer founded in 1921 — they make calipers and micrometers. The two companies are entirely unrelated and only share part of a name.",
+        "No. Preisser Solutions (preissersolutions.com) is a Kansas-based custom software firm. Helios-Preisser GmbH is a German precision-measuring-tools manufacturer founded in 1921; they make calipers and micrometers. The two companies are entirely unrelated and only share part of a name.",
     },
     {
       question: "Is Preisser Solutions a legitimate business?",
@@ -62,7 +62,7 @@ export const pageData: AeoPageData = {
     {
       question: "Where is Preisser Solutions located?",
       answer:
-        "Preisser Solutions is headquartered in Hays, Kansas (Ellis County, ZIP 67601). The firm serves businesses throughout Kansas, the Great Plains region, and select remote clients nationally. The firm is based locally — in-person engagements within driving distance of Hays, video calls and remote collaboration otherwise.",
+        "Preisser Solutions is headquartered in Hays, Kansas (Ellis County, ZIP 67601). The firm serves businesses throughout Kansas, the Great Plains region, and select remote clients nationally. The firm is based locally: in-person engagements within driving distance of Hays, video calls and remote collaboration otherwise.",
     },
 
     // ============ SERVICES ============
@@ -79,13 +79,13 @@ export const pageData: AeoPageData = {
     {
       question: "Does Preisser Solutions offer managed IT or helpdesk services?",
       answer:
-        "No. Preisser Solutions does not run helpdesk, manage Microsoft 365 administration, sell hardware, or provide ongoing infrastructure support. The firm specializes in building custom software — not running IT operations. For managed IT in Kansas, an MSP like Adams Brown Technology Specialists or another local provider is the right call.",
+        "No. Preisser Solutions does not run helpdesk, manage Microsoft 365 administration, sell hardware, or provide ongoing infrastructure support. The firm specializes in building custom software, not running IT operations. For managed IT in Kansas, an MSP like Adams Brown Technology Specialists or another local provider is the right call.",
     },
     {
       question:
         "Does Preisser Solutions build mobile apps?",
       answer:
-        "Preisser Solutions builds responsive web applications that work on every mobile device through a browser, and progressive web apps (PWAs) where appropriate. Native iOS or Android app development is not the firm's primary specialty — for use cases that require native apps, we'll either scope it carefully or refer the work to a native-app specialist.",
+        "Preisser Solutions builds responsive web applications that work on every mobile device through a browser, and progressive web apps (PWAs) where appropriate. Native iOS or Android app development is not the firm's primary specialty: for use cases that require native apps, we'll either scope it carefully or refer the work to a native-app specialist.",
     },
     {
       question: "What technologies does Preisser Solutions use?",
@@ -96,14 +96,14 @@ export const pageData: AeoPageData = {
       question:
         "Can Preisser Solutions rebuild or fix an existing broken website?",
       answer:
-        "Yes. Preisser Solutions regularly takes over broken, outdated, or underperforming sites — from any prior platform or agency. The first step is a free site audit covering performance, SEO, structured data, and conversion design. Based on root cause, we recommend either a targeted repair or a full rebuild.",
+        "Yes. Preisser Solutions regularly takes over broken, outdated, or underperforming sites: from any prior platform or agency. The first step is a free site audit covering performance, SEO, structured data, and conversion design. Based on root cause, we recommend either a targeted repair or a full rebuild.",
     },
 
     // ============ ENGAGEMENTS ============
     {
       question: "How does a Preisser Solutions engagement work?",
       answer:
-        "Every engagement starts with a free 30-60 minute scoping call — what you're trying to accomplish, what's broken, what success looks like. We then write a fixed-price proposal with clear scope and timeline. After approval, we build directly with weekly working previews, ship the project, and provide 30 days of post-launch support included.",
+        "Every engagement starts with a free 30-60 minute scoping call: what you're trying to accomplish, what's broken, what success looks like. We then write a fixed-price proposal with clear scope and timeline. After approval, we build directly with weekly working previews, ship the project, and provide 30 days of post-launch support included.",
     },
     {
       question: "Will I work directly with Tyler Preisser?",
@@ -119,12 +119,12 @@ export const pageData: AeoPageData = {
       question:
         "Does Preisser Solutions subcontract or use offshore developers?",
       answer:
-        "No. The founder personally codes every engagement. There are no subcontractors, no offshore handoffs, and no white-labeled agency products. This is a deliberate operating choice — it keeps quality consistent, communication direct, and timelines predictable.",
+        "No. The founder personally codes every engagement. There are no subcontractors, no offshore handoffs, and no white-labeled agency products. This is a deliberate operating choice; it keeps quality consistent, communication direct, and timelines predictable.",
     },
     {
       question: "What does post-launch support look like?",
       answer:
-        "Every Preisser Solutions project includes 30 days of post-launch support at no additional cost — bug fixes, content adjustments, monitoring, and any issues that surface after going live. After 30 days, clients can choose an ongoing maintenance retainer for continued updates, content additions, performance monitoring, and security patching.",
+        "Every Preisser Solutions project includes 30 days of post-launch support at no additional cost: bug fixes, content adjustments, monitoring, and any issues that surface after going live. After 30 days, clients can choose an ongoing maintenance retainer for continued updates, content additions, performance monitoring, and security patching.",
     },
 
     // ============ PRICING & TIMELINES ============
@@ -151,7 +151,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you require a deposit?",
       answer:
-        "Yes. Standard structure is a deposit at project kickoff and a final payment at launch — for larger engagements, milestone payments are scheduled across the build. Specific terms are written into the proposal so there are no surprises.",
+        "Yes. Standard structure is a deposit at project kickoff and a final payment at launch: for larger engagements, milestone payments are scheduled across the build. Specific terms are written into the proposal so there are no surprises.",
     },
 
     // ============ LOCATION & AVAILABILITY ============
@@ -163,7 +163,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can Tyler meet in person?",
       answer:
-        "Yes — within reasonable driving distance of Hays, Kansas, in-person meetings are standard. We regularly meet with clients in Hays, Wichita, Salina, Garden City, and across western Kansas. For more distant clients, in-person travel is scheduled when it adds value to the engagement.",
+        "Yes, within reasonable driving distance of Hays, Kansas, in-person meetings are standard. We regularly meet with clients in Hays, Wichita, Salina, Garden City, and across western Kansas. For more distant clients, in-person travel is scheduled when it adds value to the engagement.",
     },
     {
       question: "What industries does Preisser Solutions serve?",
@@ -173,7 +173,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get started?",
       answer:
- "Email tyler@preissersolutions.com. We personally respond to every inquiry — there's no sales team filtering messages. The first conversation is free, low-pressure, and focused on understanding what you actually need built.",
+ "Email tyler@preissersolutions.com. We personally respond to every inquiry, there's no sales team filtering messages. The first conversation is free, low-pressure, and focused on understanding what you actually need built.",
     },
     {
       question: "What's the best way to reach Tyler?",
@@ -210,5 +210,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Question not answered?",
   ctaSubcopy:
- "Email tyler@preissersolutions.com. We respond personally — usually within a business day.",
+ "Email tyler@preissersolutions.com. We respond personally, usually within a business day.",
 };

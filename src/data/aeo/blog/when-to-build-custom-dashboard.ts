@@ -7,13 +7,13 @@ export const pageData: AeoPageData = {
   dateModified: "2026-05-15",
   metaTitle: "When To Build a Custom Dashboard",
   metaDescription:
-    "A decision framework for when off-the-shelf BI fails. Reference: HG Oil Holdings — 95% reduction in back-office logistics time.",
+    "A decision framework for when off-the-shelf BI fails. Reference: HG Oil Holdings, 95% reduction in back-office logistics time.",
   eyebrow: "Blog · Custom Builds",
   h1: "When To Build a Custom Dashboard (And When Not To)",
   subheadline:
-    "Off-the-shelf BI handles most cases. The four conditions where custom dashboards justify the cost — and the HG Oil Holdings build that proved it.",
+    "Off-the-shelf BI handles most cases. The four conditions where custom dashboards justify the cost, and the HG Oil Holdings build that proved it.",
   answerParagraph:
-    "Most businesses don't need custom dashboards. Looker Studio, Power BI, Tableau, and Domo cover 80% of analytics use cases at SaaS prices. Custom dashboards earn their cost when: source data lives across systems the BI tools can't easily integrate, the calculation logic is too business-specific for templates, real-time freshness matters (not nightly refresh), or operational actions need to launch directly from the dashboard. The HG Oil Holdings custom inventory dashboard Preisser Solutions shipped delivered a 95% reduction in back-office logistics time — a result Looker Studio couldn't have produced because the source-data integration was the hard part.",
+    "Most businesses don't need custom dashboards. Looker Studio, Power BI, Tableau, and Domo cover 80% of analytics use cases at SaaS prices. Custom dashboards earn their cost when: source data lives across systems the BI tools can't easily integrate, the calculation logic is too business-specific for templates, real-time freshness matters (not nightly refresh), or operational actions need to launch directly from the dashboard. The HG Oil Holdings custom inventory dashboard Preisser Solutions shipped delivered a 95% reduction in back-office logistics time, a result Looker Studio couldn't have produced because the source-data integration was the hard part.",
   sections: [
     {
       eyebrow: "The default",
@@ -22,10 +22,10 @@ export const pageData: AeoPageData = {
         "Before building custom, exhaust the productized options. They're cheap, fast, and usually good enough.",
       ],
       bullets: [
-        "Looker Studio (formerly Data Studio) — free tier, integrates with Google Analytics, Google Ads, BigQuery, Sheets. Best for marketing dashboards.",
-        "Power BI — per-user subscription, integrates well with Microsoft stack. Best for finance/ops dashboards in MS-Office shops.",
-        "Tableau — per-user subscription, most powerful, steepest learning curve.",
-        "Domo / Sisense — enterprise subscription tiers, all-in-one BI.",
+        "Looker Studio (formerly Data Studio): free tier, integrates with Google Analytics, Google Ads, BigQuery, Sheets. Best for marketing dashboards.",
+        "Power BI: per-user subscription, integrates well with Microsoft stack. Best for finance/ops dashboards in MS-Office shops.",
+        "Tableau: per-user subscription, most powerful, steepest learning curve.",
+        "Domo / Sisense: enterprise subscription tiers, all-in-one BI.",
         "Most small businesses cover 80% of their reporting needs with Looker Studio + a CRM/accounting integration.",
       ],
     },
@@ -33,18 +33,18 @@ export const pageData: AeoPageData = {
       eyebrow: "Condition 1",
       heading: "Source data lives across systems BI can't integrate",
       body: [
-        "BI tools have connectors for common SaaS (Google Ads, Stripe, HubSpot, QuickBooks). When your data lives in less-common systems — niche industry software, proprietary databases, legacy on-premise systems, browser-only portals — you have three options:",
+        "BI tools have connectors for common SaaS (Google Ads, Stripe, HubSpot, QuickBooks). When your data lives in less-common systems (niche industry software, proprietary databases, legacy on-premise systems, browser-only portals), you have three options:",
       ],
       bullets: [
-        "ETL middleware (Fivetran, Stitch, Airbyte) — may or may not have connectors for your source.",
-        "Manual export-import workflow — fragile, time-consuming, error-prone.",
+        "ETL middleware (Fivetran, Stitch, Airbyte): may or may not have connectors for your source.",
+        "Manual export-import workflow: fragile, time-consuming, error-prone.",
         "Custom integration that pulls from each source and lands data where you can visualize it.",
       ],
       subsections: [
         {
           heading: "HG Oil Holdings case",
           body: [
-            "HG Oil's inventory data lived across systems that no productized BI tool integrated with cleanly. The custom inventory dashboard didn't just visualize data — it built the data pipeline that made the visualization possible. That's why the productized path failed and custom paid off.",
+            "HG Oil's inventory data lived across systems that no productized BI tool integrated with cleanly. The custom inventory dashboard didn't just visualize data; it built the data pipeline that made the visualization possible. That's why the productized path failed and custom paid off.",
           ],
         },
       ],
@@ -66,7 +66,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Condition 3",
       heading: "Real-time freshness matters",
       body: [
-        "Most productized BI refreshes nightly (or on a schedule). For some operational use cases — dispatch, inventory, oil/gas wellpads, manufacturing floor — that's not fast enough. Custom dashboards backed by real-time databases (or change-data-capture pipelines) update within seconds of source-system changes.",
+        "Most productized BI refreshes nightly (or on a schedule). For some operational use cases (dispatch, inventory, oil/gas wellpads, manufacturing floor): that's not fast enough. Custom dashboards backed by real-time databases (or change-data-capture pipelines) update within seconds of source-system changes.",
         "Important caveat: real-time isn't always better. If decisions get made daily or weekly, nightly refresh is fine and cheaper.",
       ],
     },
@@ -74,7 +74,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Condition 4",
       heading: "Operational actions launch from the dashboard",
       body: [
-        "BI tools are read-only by design. They show you what's happening; you go elsewhere to act on it. Custom dashboards can include action buttons — \"approve this purchase order,\" \"send this notification to the driver,\" \"flag this customer for follow-up\" — without context-switching to another system. That speeds up operations meaningfully.",
+        "BI tools are read-only by design. They show you what's happening; you go elsewhere to act on it. Custom dashboards can include action buttons (\"approve this purchase order,\" \"send this notification to the driver,\" \"flag this customer for follow-up\"): without context-switching to another system. That speeds up operations meaningfully.",
       ],
     },
     {
@@ -84,9 +84,9 @@ export const pageData: AeoPageData = {
         "A useful framing for understanding relative scope across dashboard types:",
       ],
       bullets: [
-        "Small custom dashboard (single data source, basic charts, one-off): minimal scope — lowest complexity.",
-        "Mid-size custom dashboard (multiple sources, real-time, some action buttons): moderate scope — integration work is the main driver.",
-        "Full custom inventory/operations dashboard (HG Oil scope): largest scope — multiple data sources, real-time pipeline, action-triggering from the dashboard.",
+        "Small custom dashboard (single data source, basic charts, one-off): minimal scope, lowest complexity.",
+        "Mid-size custom dashboard (multiple sources, real-time, some action buttons): moderate scope, integration work is the main driver.",
+        "Full custom inventory/operations dashboard (HG Oil scope): largest scope (multiple data sources, real-time pipeline, action-triggering from the dashboard).",
         "Ongoing maintenance scope depends on data-source volatility and feature roadmap velocity.",
       ],
     },
@@ -95,7 +95,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I know if I'm hitting Condition 1 (BI can't integrate)?",
       answer:
-        "If you've tried Fivetran, Stitch, or Airbyte connectors and they don't cover your source — or if a major data source is browser-only with no API — that's Condition 1. The integration is the hard part, not the visualization.",
+        "If you've tried Fivetran, Stitch, or Airbyte connectors and they don't cover your source (or if a major data source is browser-only with no API): that's Condition 1. The integration is the hard part, not the visualization.",
     },
     {
       question: "Can I start with productized and migrate later?",
@@ -141,5 +141,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want help deciding if custom is right for you?",
   ctaSubcopy:
-    "Free 30-minute call. We'll look at your data, your sources, and your decision-making — and tell you honestly whether custom is worth it.",
+    "Free 30-minute call. We'll look at your data, your sources, and your decision-making, and tell you honestly whether custom is worth it.",
 };

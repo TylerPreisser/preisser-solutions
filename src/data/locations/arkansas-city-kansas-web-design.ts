@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Arkansas City, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Arkansas City, Kansas — Kansas-based development firm with fixed-price proposals.",
+    "Custom websites, web apps, and AI automation for Arkansas City, Kansas: Kansas-based development firm with fixed-price proposals.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -23,9 +23,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Arkansas City, Kansas",
     h1: "Custom Websites and Software for Arkansas City Businesses",
     subheadline:
-      "Web design, AI automation, and custom applications for businesses in Arkansas City — Cowley County's second-largest city on the Oklahoma border.",
+      "Web design, AI automation, and custom applications for businesses in Arkansas City: Cowley County's second-largest city on the Oklahoma border.",
     answerParagraph:
-      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Arkansas City, Kansas — a Cowley County city of approximately 11,000 on the Oklahoma border, 60 miles south of Wichita. The local economy centers on manufacturing, oil and gas services, and agriculture. Remote delivery with on-site travel available for larger projects.",
+      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Arkansas City, Kansas, a Cowley County city of approximately 11,000 on the Oklahoma border, 60 miles south of Wichita. The local economy centers on manufacturing, oil and gas services, and agriculture. Remote delivery with on-site travel available for larger projects.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Southern Cowley County border-market context — oil and gas services, manufacturing, and ag along US-77.",
+    "Southern Cowley County border-market context: oil and gas services, manufacturing, and ag along US-77.",
     "Custom code with full ownership transferred at launch. No SaaS platform or vendor dependency.",
     "Remote-first delivery with on-site travel available for projects requiring in-person work.",
   ],
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions price projects?",
       answer:
-        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed before work begins — no open-ended retainers.",
+        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed before work begins: no open-ended retainers.",
     },
   ],
 

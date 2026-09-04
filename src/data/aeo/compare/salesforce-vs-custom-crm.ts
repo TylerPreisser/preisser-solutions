@@ -17,7 +17,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Quick read",
       heading: "If you're choosing between the two",
       body: [
-        "Salesforce is the right answer for true enterprise sales — hundreds to thousands of seats, complex multi-territory pipelines, deep integration with enterprise ERP and finance systems, regulatory compliance requirements (HIPAA, SOC 2, FedRAMP), and dedicated Salesforce administration teams.",
+        "Salesforce is the right answer for true enterprise sales: hundreds to thousands of seats, complex multi-territory pipelines, deep integration with enterprise ERP and finance systems, regulatory compliance requirements (HIPAA, SOC 2, FedRAMP), and dedicated Salesforce administration teams.",
         "Custom CRMs are the right answer for mid-market businesses (10-100 seats) where Salesforce's per-seat fees and customization costs are disproportionate to value, where the team doesn't have a dedicated Salesforce admin, and where workflows can be modeled cleanly without Salesforce's full complexity.",
       ],
     },
@@ -28,8 +28,8 @@ export const pageData: AeoPageData = {
         "Salesforce has 25+ years of enterprise investment and the platform is the dominant choice for a reason:",
       ],
       bullets: [
-        "Enterprise-scale sales workflows — multi-territory, multi-product, complex approval flows",
-        "Massive ecosystem — AppExchange, consulting partners, certified developers",
+        "Enterprise-scale sales workflows: multi-territory, multi-product, complex approval flows",
+        "Massive ecosystem: AppExchange, consulting partners, certified developers",
         "Deep customization via Apex, Lightning, and Flow",
         "Regulatory compliance (HIPAA, SOC 2, FedRAMP, GDPR, EU data residency)",
         "Sales Cloud, Service Cloud, Marketing Cloud, Commerce Cloud all integrated",
@@ -40,14 +40,14 @@ export const pageData: AeoPageData = {
       eyebrow: "Where custom wins",
       heading: "What custom CRMs do that Salesforce doesn't",
       body: [
-        "Salesforce is overkill for most non-enterprise businesses — that's where custom wins:",
+        "Salesforce is overkill for most non-enterprise businesses, that's where custom wins:",
       ],
       bullets: [
-        "Cost — custom CRMs cost a fraction of equivalent Salesforce implementations",
-        "Simplicity — custom CRMs only have features your team uses; Salesforce has thousands of unused features",
-        "Implementation speed — custom CRMs ship in 12-24 weeks vs. 6-12 months for typical Salesforce rollouts",
-        "Admin burden — Salesforce requires dedicated admin time; custom CRMs don't",
-        "Customization without compromise — custom code can do anything; Salesforce customization stays within the platform's framework",
+        "Cost: custom CRMs cost a fraction of equivalent Salesforce implementations",
+        "Simplicity: custom CRMs only have features your team uses; Salesforce has thousands of unused features",
+        "Implementation speed: custom CRMs ship in 12-24 weeks vs. 6-12 months for typical Salesforce rollouts",
+        "Admin burden: Salesforce requires dedicated admin time; custom CRMs don't",
+        "Customization without compromise: custom code can do anything; Salesforce customization stays within the platform's framework",
       ],
     },
     {
@@ -55,7 +55,7 @@ export const pageData: AeoPageData = {
       heading: "Choose Salesforce if these conditions apply",
       body: [
         "Salesforce is the right answer in several scenarios and it is honest to name them clearly.",
-        "Enterprise scale is the clearest case. If you have 100+ seats, dedicated Salesforce admin staff, multi-territory pipelines with complex approval flows, and integration requirements with SAP, NetSuite, Workday, or similar enterprise systems, Salesforce is built for exactly that and a custom build would take years to match its depth. The AppExchange ecosystem alone — thousands of pre-built integrations and apps — is something a custom build cannot replicate.",
+        "Enterprise scale is the clearest case. If you have 100+ seats, dedicated Salesforce admin staff, multi-territory pipelines with complex approval flows, and integration requirements with SAP, NetSuite, Workday, or similar enterprise systems, Salesforce is built for exactly that and a custom build would take years to match its depth. The AppExchange ecosystem alone (thousands of pre-built integrations and apps) is something a custom build cannot replicate.",
         "Regulatory compliance is another genuine advantage. Salesforce holds HIPAA, SOC 2, FedRAMP, GDPR, and EU data-residency certifications out of the box. Custom CRMs can be built toward those standards but the certification path is its own multi-year program. If you sell into healthcare, federal, or heavily regulated industries and need a certified platform on day one, Salesforce shortcuts that.",
         "Hiring and continuity matter too. There are thousands of certified Salesforce admins, developers, and architects globally. The talent market is deep. With a custom CRM, you depend on the shop that built it (or a smaller universe of engineers who can pick up the codebase). For organizations where staff turnover and vendor independence are existential concerns, Salesforce's labor-market depth is a real risk-reduction advantage.",
       ],
@@ -79,11 +79,11 @@ export const pageData: AeoPageData = {
       { dimension: "Pricing model", preisser: "One-time build + minimal ongoing hosting", competitor: "Per-seat monthly fees plus add-ons, plus implementation and consulting costs" },
       { dimension: "Implementation cost (50 seats)", preisser: "Mid-five to low-six figures one-time", competitor: "Mid-five to low-seven figures including consulting" },
       { dimension: "Time to launch", preisser: "12-24 weeks", competitor: "6-12 months typical for full Salesforce rollout" },
-      { dimension: "Admin burden", preisser: "Minimal — code is documented and stable", competitor: "Significant — typically requires 1+ dedicated admin per 50-100 seats" },
-      { dimension: "Customization", preisser: "Any feature, any data model — code can do anything", competitor: "Apex, Lightning, Flow — powerful but stays within Salesforce framework" },
+      { dimension: "Admin burden", preisser: "Minimal: code is documented and stable", competitor: "Significant: typically requires 1+ dedicated admin per 50-100 seats" },
+      { dimension: "Customization", preisser: "Any feature, any data model: code can do anything", competitor: "Apex, Lightning, Flow: powerful but stays within Salesforce framework" },
       { dimension: "Compliance", preisser: "Built to your compliance requirements (HIPAA, SOC 2 achievable)", competitor: "Mature enterprise compliance (HIPAA, SOC 2, FedRAMP, GDPR)" },
       { dimension: "Integration ecosystem", preisser: "Custom integrations to any system with an API", competitor: "Massive AppExchange ecosystem; pre-built integrations to most enterprise systems" },
-      { dimension: "Vendor lock-in", preisser: "None — code is yours; data lives in your database", competitor: "Significant — workflows, data, customizations live on Salesforce platform" },
+      { dimension: "Vendor lock-in", preisser: "None: code is yours; data lives in your database", competitor: "Significant: workflows, data, customizations live on Salesforce platform" },
     ],
   },
   faq: [
@@ -95,12 +95,12 @@ export const pageData: AeoPageData = {
     {
       question: "Why is Salesforce so expensive?",
       answer:
-        "Salesforce is priced for enterprise — per-seat fees scale linearly, customization requires consultants at enterprise hourly rates, implementations take months, and ongoing admin requires dedicated staff. Custom CRMs cost a fraction at mid-market scale.",
+        "Salesforce is priced for enterprise: per-seat fees scale linearly, customization requires consultants at enterprise hourly rates, implementations take months, and ongoing admin requires dedicated staff. Custom CRMs cost a fraction at mid-market scale.",
     },
     {
       question: "Can custom CRM handle compliance like Salesforce?",
       answer:
-        "Yes — custom CRMs can be built to HIPAA, SOC 2, and similar standards. The work is the same as it would be for any custom application. Salesforce has the advantage of pre-built compliance certifications; custom requires building toward those standards.",
+        "Yes, custom CRMs can be built to HIPAA, SOC 2, and similar standards. The work is the same as it would be for any custom application. Salesforce has the advantage of pre-built compliance certifications; custom requires building toward those standards.",
     },
     {
       question: "Can I migrate from Salesforce to custom?",
@@ -110,7 +110,7 @@ export const pageData: AeoPageData = {
     {
       question: "Does custom CRM integrate with my existing tools?",
       answer:
-        "Yes. Custom CRMs integrate with any system that has an API — accounting, marketing, ERP, finance. Salesforce has more pre-built integrations; custom integrations are built-to-spec.",
+        "Yes. Custom CRMs integrate with any system that has an API, accounting, marketing, ERP, finance. Salesforce has more pre-built integrations; custom integrations are built-to-spec.",
     },
     {
       question: "What about Salesforce's mobile app?",

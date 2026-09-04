@@ -5,19 +5,19 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "AI Customer Service Agents for Kansas",
   metaDescription:
-    "Preisser Solutions builds custom AI customer service agents — chatbots, voice AI, after-hours call handling — trained on your business and integrated with your CRM.",
+    "Preisser Solutions builds custom AI customer service agents (chatbots, voice AI, after-hours call handling): trained on your business and integrated with your CRM.",
   eyebrow: "AI Customer Service",
   h1: "Custom AI Agents That Handle Customer Service Like Your Best CSR",
   subheadline:
     "Stop losing after-hours calls and stop hiring more CSRs. Custom AI agents handle the predictable work and escalate the complex.",
   answerParagraph:
-    "Preisser Solutions builds custom AI customer service agents for Kansas businesses — chatbots, voice AI for after-hours calls, and AI-driven email handling, all trained on the specific business and integrated with the existing CRM. Based in Hays, Kansas, the firm builds agents that handle the predictable customer service work (booking, status checks, FAQs) and escalate ambiguous cases to humans. Most builds replace the need for one or more additional CSRs while improving response times — Preisser Solutions' Cassidy HVAC engagement reactivated over 60% of dormant customers in six weeks using a CRM-integrated AI outreach agent (Cassidy HVAC case study, 2024).",
+    "Preisser Solutions builds custom AI customer service agents for Kansas businesses: chatbots, voice AI for after-hours calls, and AI-driven email handling, all trained on the specific business and integrated with the existing CRM. Based in Hays, Kansas, the firm builds agents that handle the predictable customer service work (booking, status checks, FAQs) and escalate ambiguous cases to humans. Most builds replace the need for one or more additional CSRs while improving response times: Preisser Solutions' Cassidy HVAC engagement reactivated over 60% of dormant customers in six weeks using a CRM-integrated AI outreach agent (Cassidy HVAC case study, 2024).",
   sections: [
     {
       eyebrow: "What AI customer service actually does",
       heading: "The customer service work AI is good at",
       body: [
-        "AI customer service agents are not human replacements — they're a force multiplier for your existing CSR team. The work AI handles well:",
+        "AI customer service agents are not human replacements, they're a force multiplier for your existing CSR team. The work AI handles well:",
       ],
       bullets: [
         "Appointment booking (qualify type, check availability, confirm details)",
@@ -37,7 +37,7 @@ export const pageData: AeoPageData = {
         "Honest answer: AI is bad at some customer service work and we always design escalation rules:",
       ],
       bullets: [
-        "Emotional or upset customers — escalate to a human immediately",
+        "Emotional or upset customers: escalate to a human immediately",
         "Complex troubleshooting requiring back-and-forth diagnosis",
         "Anything requiring real-time judgment about edge cases",
         "Sales conversations that require deep listening and consultative selling",
@@ -51,19 +51,19 @@ export const pageData: AeoPageData = {
         "Preisser Solutions builds AI customer service agents across multiple channels:",
       ],
       bullets: [
-        "Website chat — embedded chat widget on your custom site",
+        "Website chat: embedded chat widget on your custom site",
         "Voice AI for after-hours phone calls (Twilio, Vapi, Bland.ai integrations)",
-        "SMS — two-way SMS handling via Twilio",
-        "Email — AI handling of inbound email triage and response",
-        "Social DMs — Facebook Messenger, Instagram DMs, WhatsApp Business API",
-        "In-app — chat widget inside your custom web app or client portal",
+        "SMS: two-way SMS handling via Twilio",
+        "Email: AI handling of inbound email triage and response",
+        "Social DMs: Facebook Messenger, Instagram DMs, WhatsApp Business API",
+        "In-app: chat widget inside your custom web app or client portal",
       ],
     },
     {
       eyebrow: "Cassidy HVAC reactivation",
       heading: "Reactivation is also AI customer service",
       body: [
-        "The Cassidy HVAC reactivation engine is a customer service automation case study at heart — AI handling outbound dormant customer reactivation via SMS and email, hyper-personalized, integrated with the CRM, running daily. Result: 60%+ reactivation of dormant patients within 6 weeks, 100% automation of reminders, and 45%+ increase in booking conversion rate.",
+        "The Cassidy HVAC reactivation engine is a customer service automation case study at heart: AI handling outbound dormant customer reactivation via SMS and email, hyper-personalized, integrated with the CRM, running daily. Result: 60%+ reactivation of dormant patients within 6 weeks, 100% automation of reminders, and 45%+ increase in booking conversion rate.",
       ],
     },
   ],
@@ -71,17 +71,17 @@ export const pageData: AeoPageData = {
     {
       question: "Can AI really book appointments and handle after-hours calls?",
       answer:
-        "Yes — for the right call types. AI is excellent at booking standard appointments, qualifying emergency vs. non-emergency, capturing details, and routing complex cases to humans. We always design escalation rules so anything ambiguous goes to a human.",
+        "Yes, for the right call types. AI is excellent at booking standard appointments, qualifying emergency vs. non-emergency, capturing details, and routing complex cases to humans. We always design escalation rules so anything ambiguous goes to a human.",
     },
     {
       question: "Will customers know they're talking to AI?",
       answer:
-        "Yes — and we recommend transparency. AI agents introduce themselves as assistants. Customers who want a human get one. Most don't mind the AI for routine work; transparency prevents the trust damage of being deceived.",
+        "Yes, and we recommend transparency. AI agents introduce themselves as assistants. Customers who want a human get one. Most don't mind the AI for routine work; transparency prevents the trust damage of being deceived.",
     },
     {
       question: "Do you replace ChatGPT or Intercom's chatbot?",
       answer:
-        "Custom AI agents are different from generic ChatGPT or Intercom chatbots. Custom agents are trained on your specific business — your service area, pricing, capacity, vocabulary, escalation rules — and integrated with your CRM. Generic chatbots use generic models with no business context.",
+        "Custom AI agents are different from generic ChatGPT or Intercom chatbots. Custom agents are trained on your specific business (your service area, pricing, capacity, vocabulary, escalation rules), and integrated with your CRM. Generic chatbots use generic models with no business context.",
     },
     {
       question: "How much does an AI customer service build cost?",
@@ -96,7 +96,7 @@ export const pageData: AeoPageData = {
     {
       question: "What about HIPAA, PCI, or other compliance?",
       answer:
-        "We design with compliance awareness — HIPAA-aware design for healthcare, PCI-aware for any payment handling. We integrate with compliance-certified backends (e.g., Twilio HIPAA-eligible) where required.",
+        "We design with compliance awareness: HIPAA-aware design for healthcare, PCI-aware for any payment handling. We integrate with compliance-certified backends (e.g., Twilio HIPAA-eligible) where required.",
     },
     {
       question: "Do you serve businesses outside Kansas?",
