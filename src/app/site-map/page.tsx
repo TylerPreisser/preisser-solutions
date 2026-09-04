@@ -24,7 +24,7 @@ const PAGE_URL = "https://preissersolutions.com/site-map";
 export const metadata: Metadata = {
   title: "Site map",
   description:
-    "Complete index of every page on preissersolutions.com — services, industries, use cases, case studies, comparisons, blog, insights, and locations.",
+    "Complete index of every page on preissersolutions.com: services, industries, use cases, case studies, comparisons, blog, insights, and locations.",
   alternates: { canonical: PAGE_URL },
   openGraph: {
     title: "Site map",
@@ -201,7 +201,7 @@ const collectionSchema = {
   "@type": "CollectionPage",
   "@id": `${PAGE_URL}#main`,
   url: PAGE_URL,
-  name: "Site map — Preisser Solutions",
+  name: "Site map: Preisser Solutions",
   description:
     "Complete index of every page on preissersolutions.com, organized by category.",
   inLanguage: "en-US",

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import { siteConfig } from "@/data/site-config";
-import { mountMarkLight } from "./hero-mark-light";
+import { mountMarkLight, MARK_MIN_WIDTH, type MarkLight } from "./hero-mark-light";
 
 /**
  * The H1 lives in site-config as ONE string ("Business Software. Business
@@ -27,104 +27,58 @@ function splitPillars(h1: string): string[] {
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const ctasRef = useRef<HTMLDivElement>(null);
   const cueRef = useRef<HTMLDivElement>(null);
-  const cueBtnRef = useRef<HTMLButtonElement>(null);
   const cueSentinelRef = useRef<HTMLSpanElement>(null);
 
   const pillars = splitPillars(siteConfig.hero.h1);
 
-  // The background: the brand mark itself, magnified past the frame so only
-  // fragments of it stay in shot, with one narrow blue light travelling a real
-  // contour. See hero-mark-light.ts for the full rationale — it owns
-  // reduced-motion, the narrow-viewport still frame, the off-screen cancel and
-  // the theme watcher, and it measures THIS component's glyph boxes to decide
-  // where the light is allowed to go. Mounted in an effect on purpose: the
-  // headline below is server-rendered and must never wait on it. The contrast
-  // scrim is CSS (.ps-hero-overlay), also on purpose.
+  // The background: the brand mark, drawn large and faint with one blue light
+  // travelling its contour. See hero-mark-light.ts for the full rationale — it
+  // owns reduced-motion, the off-screen cancel and the theme watcher, and it
+  // measures THIS component's headline ink to decide where the mark may go.
+  // Mounted in an effect on purpose: the headline below is server-rendered and
+  // must never wait on it. The contrast scrim is CSS (.ps-hero-overlay).
+  //
+  // DESKTOP ONLY, since 2026-09-04. The client rejected the mark on phones in
+  // three successive forms and asked for it gone there, so below MARK_MIN_WIDTH
+  // nothing is created at all — not a hidden canvas, not a parked loop. That
+  // skips the backing-store allocation, the IntersectionObserver, the resize
+  // handler and the fonts.ready / animationend listeners on the device where
+  // they cost the most.
+  //
+  // matchMedia rather than a one-shot width check so the boundary is handled in
+  // both directions: rotating a phone to landscape crosses 768 and mounts it,
+  // and narrowing a desktop window destroys it and releases the canvas.
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
-    const bg = mountMarkLight(container);
-    return () => bg.destroy();
-  }, []);
 
-  // GSAP entrance timeline — the three pillar lines stagger in, then the CTAs.
-  // Only opacity + transform.
-  useEffect(() => {
-    const lines = headlineRef.current
-      ? Array.from(
-          headlineRef.current.querySelectorAll<HTMLElement>(".ps-hero-line")
-        )
-      : [];
+    const mq = window.matchMedia(`(min-width: ${MARK_MIN_WIDTH}px)`);
+    let bg: MarkLight | null = null;
 
-    const all = [...lines, ctasRef.current, cueBtnRef.current].filter(
-      (el): el is HTMLElement => el !== null
-    );
-
-    // Static end-state. Used for prefers-reduced-motion and as the failure
-    // path — the hero must never be left invisible.
-    const reveal = () => {
-      all.forEach((el) => {
-        el.style.opacity = "1";
-        el.style.transform = "none";
-      });
+    const sync = () => {
+      if (mq.matches) {
+        if (!bg) bg = mountMarkLight(container);
+      } else if (bg) {
+        bg.destroy();
+        bg = null;
+      }
     };
 
-    // Manual check, matching the convention used across this codebase.
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (prefersReduced) {
-      reveal();
-      return;
-    }
-
-    let cancelled = false;
-    let timeline: { kill: () => void } | null = null;
-
-    import("@/lib/gsap")
-      .then(({ gsap }) => {
-        if (cancelled) return;
-        const tl = gsap.timeline({ delay: 0.15 });
-        timeline = tl;
-        tl.to(lines, {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            stagger: 0.12,
-            ease: "power3.out",
-          })
-          .to(
-            ctasRef.current,
-            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-            "-=0.35"
-          )
-          // The scroll cue lands LAST, sequenced onto this same timeline
-          // rather than a second uncoordinated one — it is an invitation to
-          // leave, so it must not compete with the headline for attention
-          // while the headline is still arriving. Default position (no
-          // offset) means it starts only after the CTAs have settled.
-          .to(cueBtnRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            ease: "power2.out",
-          });
-      })
-      .catch((err) => {
-        // Never drop silently: surface it, then show the hero anyway.
-        console.error("[hero] GSAP chunk failed to load — revealing statically", err);
-        reveal();
-      });
-
+    sync();
+    mq.addEventListener("change", sync);
     return () => {
-      cancelled = true;
-      timeline?.kill();
+      mq.removeEventListener("change", sync);
+      bg?.destroy();
     };
   }, []);
+
+  // The entrance is CSS now (src/styles/hero-entrance.css), not a GSAP
+  // timeline. The old timeline awaited a dynamic import("@/lib/gsap") — which
+  // pulls gsap + ScrollTrigger — before raising opacity off 0, so the
+  // server-rendered headline stayed invisible for ~600ms on localhost and
+  // never appeared at all on Fast 3G. Nothing about the hero's appearance may
+  // depend on JS reaching the browser.
 
   // Dismiss the cue once the page has actually moved — a "scroll down" prompt
   // that is still sitting there after you scrolled reads as broken UI.
@@ -239,7 +193,7 @@ export function Hero() {
         */}
         <p className="ps-hero-summary sr-only">
           Preisser Solutions builds custom business software, business
-          automation, and AI integration — admin dashboards, customer
+          automation, and AI integration: admin dashboards, customer
           databases, document pipelines, and the automations that connect
           them. Founded by Tyler Preisser.
         </p>
@@ -251,7 +205,7 @@ export function Hero() {
           The trailing space keeps the sentences separated for that reading;
           it collapses visually because each span is display: block.
         */}
-        <h1 ref={headlineRef} className="ps-hero-headline">
+        <h1 className="ps-hero-headline">
           {pillars.map((line, i) => (
             <span
               key={line}
@@ -267,7 +221,7 @@ export function Hero() {
           ))}
         </h1>
 
-        <div ref={ctasRef} className="ps-hero-ctas">
+        <div className="ps-hero-ctas">
           {/* prefetch={false}: eager prefetch on above-the-fold CTAs was the
               root cause of a 4.1s -> 0.8s mobile navigation regression. */}
           <Link
@@ -321,11 +275,11 @@ export function Hero() {
         content ("Scroll to the next section") is its accessible name.
 
         The wrapper owns positioning and the scroll-away fade; the button owns
-        the GSAP entrance. See hero-scroll-cue.css for why they are split.
+        the entrance (now CSS, in hero-entrance.css — it used to be GSAP). See
+        hero-scroll-cue.css for why they are split.
       */}
       <div ref={cueRef} className="ps-hero-cue" data-cue-hidden="false">
         <button
-          ref={cueBtnRef}
           type="button"
           className="ps-hero-cue__btn"
           onClick={scrollToNext}

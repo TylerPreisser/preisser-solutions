@@ -46,8 +46,8 @@ export function Footer() {
               src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/ps-logo.webp`}
               alt="Preisser Solutions"
               className="ps-footer-logo-img"
-              width={1024}
-              height={1024}
+              width={336}
+              height={336}
               loading="lazy"
             />
             {/* The brand line under the mark. Split on the sentence boundary so

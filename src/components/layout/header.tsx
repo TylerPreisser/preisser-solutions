@@ -92,20 +92,16 @@ export function Header() {
         className={`ps-header${isScrolled ? " scrolled" : ""}`}
         aria-label="Site header"
       >
-        {/* Blur layer — real DOM element so backdrop-filter works.
-            backdrop-filter is set INLINE because Tailwind v4's Lightning CSS
-            minifier strips the unprefixed property when both versions appear
-            in source CSS, leaving only -webkit- (Safari only). Inline style
-            bypasses the minifier and lands directly on the DOM element, so
-            Chrome / Firefox / Edge all get the blur. */}
-        <div
-          className="ps-header-blur"
-          aria-hidden="true"
-          style={{
-            backdropFilter: "blur(24px) saturate(180%)",
-            WebkitBackdropFilter: "blur(24px) saturate(180%)",
-          }}
-        />
+        {/* The pill. A real DOM element so it can carry its own paint and
+            transform without touching the fixed parent.
+
+            The inline backdropFilter / WebkitBackdropFilter that used to be here
+            are DELETED. They existed to dodge Lightning CSS stripping the
+            unprefixed property, but an inline style beats any stylesheet rule —
+            so with the blur removed from globals.css and left here, the blur
+            would have stayed fully live while the diff looked correct. The pill
+            is opaque now; there is nothing behind it to blur. */}
+        <div className="ps-header-blur" aria-hidden="true" />
         <div className="ps-header-inner">
           {/* Logo */}
           <Link
@@ -113,15 +109,15 @@ export function Header() {
             prefetch={false}
             className="ps-logo-link"
             onClick={() => {}}
-            aria-label="Preisser Solutions — Home"
+            aria-label="Preisser Solutions Home"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/ps-logo.webp`}
               alt="Preisser Solutions"
               className="ps-logo-img"
-              width={1024}
-              height={1024}
+              width={336}
+              height={336}
               /* Above-fold logo — hint browser to fetch it immediately to prevent
                  CLS (explicit width/height) and LCP delay. */
               fetchPriority="high"

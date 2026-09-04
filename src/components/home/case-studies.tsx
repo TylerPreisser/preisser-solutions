@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface CaseStudyCard {
   title: string;
@@ -53,7 +53,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "FarmBooks",
     tags: "Farming | Document Pipeline | Bookkeeping",
     description:
-      "A farm bookkeeper was retyping every co-op and dealer bill into a spreadsheet by hand, line by line, field by field, ahead of every tax season. Now a phone photo of the bill becomes categorized, Schedule-F-ready books. Anything the system is not certain about — and anything handwritten — goes to a person instead of being guessed at. Tax season stopped being a data-entry month.",
+      "A farm bookkeeper was retyping every co-op and dealer bill into a spreadsheet by hand, line by line, field by field, ahead of every tax season. Now a phone photo of the bill becomes categorized, Schedule-F-ready books. Anything the system is not certain about, and anything handwritten, goes to a person instead of being guessed at. Tax season stopped being a data-entry month.",
     // FarmBooks' own palette, not ours: its manifest declares #F2F2F7 and the
     // mark is gold #C9A227. Card runs light so the gold reads as the gold.
     gradient: "linear-gradient(150deg, #FDFCF7 0%, #F2F2F7 55%, #E8E4D6 100%)",
@@ -79,7 +79,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "An MGU Within the Alliant Insurance Ecosystem",
     tags: "AI Submission Processing | Insurance | Salesforce + Azure AI",
     description:
-      "AI engine reads broker submissions — 7–15 documents per submission — extracts structured data using dual competing AI models (Claude Opus + GPT cross-validation), and auto-populates Salesforce records. Eliminated manual data entry across systems where the same data was previously entered 3–5 times. Zero missed renewals in the first six months.",
+      "AI engine reads broker submissions (7–15 documents per submission), extracts structured data using dual competing AI models (Claude Opus + GPT cross-validation), and auto-populates Salesforce records. Eliminated manual data entry across systems where the same data was previously entered 3–5 times. Zero missed renewals in the first six months.",
     gradient: "linear-gradient(135deg, #0a1f3c 0%, #1590FF 100%)",
     caseLogo: "/images/case-studies/astrus-logo.png",
     caseLogoWidth: 2066,
@@ -90,7 +90,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "A Chicago-Area Bus Transportation Operator",
     tags: "Power BI Dashboards | Ops Automation | Dispatch + AI Parsing",
     description:
-      "Five Power BI dashboards — workforce planning, revenue/EBITDA, safety scorecard, FY26 goals, and routes/runs — plus AI BOL parsing, rate-confirmation parsing, and back-office reconciliation automation. Weekly reconciliation dropped from a full day to a 15-minute exception queue, with real-time load-level profitability for the first time.",
+      "Five Power BI dashboards (workforce planning, revenue/EBITDA, safety scorecard, FY26 goals, and routes/runs), plus AI BOL parsing, rate-confirmation parsing, and back-office reconciliation automation. Weekly reconciliation dropped from a full day to a 15-minute exception queue, with real-time load-level profitability for the first time.",
     gradient: "linear-gradient(135deg, #0F2744 0%, #1a3a6e 100%)",
     caseLogo: "/images/case-studies/sunrise-transportation-logo.svg",
     caseLogoWidth: 150,
@@ -101,7 +101,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "The Iron and Oak Podcast",
     tags: "Custom Media Brand | 134 Pages | GSAP Cinematic",
     description:
-      "Designed and built the full cinematic media brand from concept to launch — custom design system, 134 pre-rendered pages, GSAP-powered smooth scroll, dark and light modes, and a content architecture spanning 12 episodes and 109 questions.",
+      "Designed and built the full cinematic media brand from concept to launch: custom design system, 134 pre-rendered pages, GSAP-powered smooth scroll, dark and light modes, and a content architecture spanning 12 episodes and 109 questions.",
     gradient: "linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0f2010 100%)",
     image: "iron-oak.webp",
     imageWidth: 2048,
@@ -114,7 +114,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "AI Customer Reactivation Engine",
     tags: "AI Outreach | Cassidy HVAC | Revenue Recovery",
     description:
-      "Reactivated 60%+ of dormant Cassidy HVAC customers within six weeks. CRM-integrated AI generated hyper-personalized SMS and email outreach using each customer's service history, equipment age, and seasonal context — driving a 45%+ booking conversion lift.",
+      "Reactivated 60%+ of dormant Cassidy HVAC customers within six weeks. CRM-integrated AI generated hyper-personalized SMS and email outreach using each customer's service history, equipment age, and seasonal context, driving a 45%+ booking conversion lift.",
     gradient: "linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%)",
     image: "cassidy-hvac-nobg.webp",
     imageWidth: 505,
@@ -138,7 +138,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Wife Supply Co",
     tags: "AI Commerce | Custom Build | Full Deployment",
     description:
-      "Built the entire AI-powered gifting platform from concept to launch — a custom AI gift-matching engine, custom commerce front end, conversion-optimized funnels, and a brand-engineered design system that doesn't look like another Shopify store.",
+      "Built the entire AI-powered gifting platform from concept to launch: a custom AI gift-matching engine, custom commerce front end, conversion-optimized funnels, and a brand-engineered design system that doesn't look like another Shopify store.",
     gradient: "linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%)",
     image: "wife-supply.webp",
     imageWidth: 1024,
@@ -158,10 +158,10 @@ const caseStudyCards: CaseStudyCard[] = [
   },
   // Alpha Matrix
   {
-    title: "Alpha Matrix — Multi-Agent AI",
+    title: "Alpha Matrix: Multi-Agent AI",
     tags: "AI Architecture | Multi-Agent | Autonomous",
     description:
-      "Six autonomous AI agents running in parallel — scanning, analyzing, scoring, and producing strategic output without human intervention. Developed in-house at Preisser Solutions as a working demonstration of multi-agent analytical infrastructure.",
+      "Six autonomous AI agents running in parallel: scanning, analyzing, scoring, and producing strategic output without human intervention. Developed in-house at Preisser Solutions as a working demonstration of multi-agent analytical infrastructure.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #1a1040 50%, #0A1628 100%)",
     image: "preisser-solutions.webp",
     imageWidth: 1024,
@@ -173,7 +173,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "After-Hours Call Triage",
     tags: "AI Automation | Lead Capture | Routing",
     description:
-      "Every call that goes to voicemail after 5 PM is a customer choosing your competitor by 8 AM. This system answers calls, handles texts, qualifies urgency, and routes the right ones to you — so you stop losing jobs while you sleep.",
+      "Every call that goes to voicemail after 5 PM is a customer choosing your competitor by 8 AM. This system answers calls, handles texts, qualifies urgency, and routes the right ones to you, so you stop losing jobs while you sleep.",
     gradient: "linear-gradient(135deg, #1590FF 0%, #00D4AA 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -192,7 +192,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "AI Invoice Processing",
     tags: "Document Processing | AI Automation | Back-Office",
     description:
-      "AI extracts vendor, line items, totals, and GL codes from any invoice format in seconds — no manual data entry, no missed approvals, no need to hire additional office staff to keep up with volume. A proven pattern that eliminates the invoice backlog without adding headcount.",
+      "AI extracts vendor, line items, totals, and GL codes from any invoice format in seconds: no manual data entry, no missed approvals, no need to hire additional office staff to keep up with volume. A proven pattern that eliminates the invoice backlog without adding headcount.",
     gradient: "linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -212,7 +212,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "AI Document Analysis",
     tags: "AI Automation | Workflow Integration | Efficiency",
     description:
-      "This system reads contracts, invoices, permits, and any other document your team currently re-types by hand — then extracts the data and puts it exactly where it needs to go. Stop paying skilled people to do copy-paste work.",
+      "This system reads contracts, invoices, permits, and any other document your team currently re-types by hand, then extracts the data and puts it exactly where it needs to go. Stop paying skilled people to do copy-paste work.",
     gradient: "linear-gradient(135deg, #1E293B 0%, #334155 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -232,7 +232,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Custom AI Fitness Agent",
     tags: "Custom AI Agent | Personalization | Data",
     description:
-      "We built an AI agent that generates personalized fitness and nutrition regimens — work that previously required a human expert for every client. This is a proof of concept for any business where expert knowledge gets repeated hundreds of times a day.",
+      "We built an AI agent that generates personalized fitness and nutrition regimens, work that previously required a human expert for every client. This is a proof of concept for any business where expert knowledge gets repeated hundreds of times a day.",
     gradient: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -253,7 +253,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "AI Email Digest System",
     tags: "AI Automation | Email Management | Productivity",
     description:
-      "One briefing. Every morning. Every important email from the last 24 hours — summarized, prioritized, and ready for decisions. Built for the business owner who loses their first productive hour to an inbox full of noise.",
+      "One briefing. Every morning. Every important email from the last 24 hours: summarized, prioritized, and ready for decisions. Built for the business owner who loses their first productive hour to an inbox full of noise.",
     gradient: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -271,7 +271,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Hiring Pipeline & AI Screener",
     tags: "Google Workspace | Apps Script | AI Agent",
     description:
-      "Applications come in, the AI ranks and screens them against your criteria, and qualified candidates surface to the top — automatically. No more spreadsheet tracking, no more \"I think we already called that one,\" no more losing good applicants because nobody followed up fast enough.",
+      "Applications come in, the AI ranks and screens them against your criteria, and qualified candidates surface to the top, automatically. No more spreadsheet tracking, no more \"I think we already called that one,\" no more losing good applicants because nobody followed up fast enough.",
     gradient: "linear-gradient(135deg, #0EA5E9 0%, #2563EB 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -290,7 +290,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Agentic AI Coding Specialists",
     tags: "AI Architecture | Agentic Coding | Claude Code",
     description:
-      "Built specialized agentic coding models \u2014 AI systems that don\u2019t just generate code, they architect, debug, and ship entire projects autonomously. Each agent is tuned for a specific domain: web development, automation pipelines, data analysis. This is the toolset behind our speed.",
+      "Built specialized agentic coding models: AI systems that don\u2019t just generate code, they architect, debug, and ship entire projects autonomously. Each agent is tuned for a specific domain: web development, automation pipelines, data analysis. This is the toolset behind our speed.",
     gradient: "linear-gradient(135deg, #7C3AED 0%, #2563EB 50%, #1590FF 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -308,7 +308,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "Custom Local AI Models",
     tags: "AI Engineering | Local Deployment | Custom Training",
     description:
-      "Designed and deployed custom AI models that run locally \u2014 no cloud dependency, no data leaving your network. Tuned for specific business operations with proprietary logic built in. When off-the-shelf AI doesn\u2019t fit the problem, we build one that does.",
+      "Designed and deployed custom AI models that run locally: no cloud dependency, no data leaving your network. Tuned for specific business operations with proprietary logic built in. When off-the-shelf AI doesn\u2019t fit the problem, we build one that does.",
     gradient: "linear-gradient(135deg, #0F172A 0%, #1E293B 40%, #7C3AED 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -329,7 +329,7 @@ const caseStudyCards: CaseStudyCard[] = [
     title: "AI Trend & Behavioral Analysis",
     tags: "AI Research | Predictive Modeling | Economics",
     description:
-      "Built AI models that calculate economic trends and map psychological behavior patterns \u2014 systems that process market signals, consumer data, and behavioral indicators to surface insights no spreadsheet or manual analysis can produce.",
+      "Built AI models that calculate economic trends and map psychological behavior patterns: systems that process market signals, consumer data, and behavioral indicators to surface insights no spreadsheet or manual analysis can produce.",
     gradient: "linear-gradient(135deg, #1590FF 0%, #6366F1 50%, #EC4899 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -355,6 +355,65 @@ export function CaseStudies() {
   // to slam the panel shut on the very click that opened it. Only a real user
   // scroll (> 24px away from where we started) counts as "moving on".
   const scrollAtOpenRef = useRef(0);
+
+  // Entry fade for the bottom affordance + its scrim.
+  //
+  // A 240ms fade was authored on .ps-work-card__bob in globals.css, but its
+  // ONLY triggers were :hover — gated behind `pointer: fine` — and
+  // :focus-visible. On a phone neither ever fires, so the label and its
+  // gradient simply translated in at the scroll's own speed (measured
+  // 34.0px/frame, settled by t~293ms). The owner called that "it jerks one in
+  // real quick instead of fading it in" (2026-09-04).
+  //
+  // A `data-` attribute, not a class: this element's className is a React
+  // prop that CHANGES when the card opens (see the className array below), so
+  // a class added via classList.add would be wiped on the very first tap and
+  // — the observer having already unobserved — would never come back. React
+  // does not touch attributes it did not set. Same reasoning and same idiom
+  // as hero.tsx:137-139.
+  //
+  // The arming class goes on the TRACK so the hidden state cannot exist
+  // without JS: no script, no `--reveal`, nothing is ever at opacity 0.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const cards = Array.from(
+      track.querySelectorAll<HTMLElement>(".ps-work-card")
+    );
+    if (cards.length === 0) return;
+
+    track.classList.add("ps-work-track--reveal");
+
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    // Reduced motion short-circuits to the final state in the effect AND in
+    // CSS, matching card-visuals-backup.tsx:860-868.
+    if (prefersReduced || typeof IntersectionObserver === "undefined") {
+      cards.forEach((card) => {
+        card.dataset.revealed = "true";
+      });
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          (entry.target as HTMLElement).dataset.revealed = "true";
+          io.unobserve(entry.target);
+        });
+      },
+      // Viewport, not the track: with the track as root, every card that is
+      // horizontally in view would reveal while the section is still below
+      // the fold, and the first fade would be spent unseen.
+      { threshold: 0.35 }
+    );
+
+    cards.forEach((card) => io.observe(card));
+    return () => io.disconnect();
+  }, []);
 
   function scrollTrack(direction: "left" | "right") {
     if (!trackRef.current) return;
@@ -428,6 +487,23 @@ export function CaseStudies() {
         {caseStudyCards.map((study, index) => {
           const isOpen = openCard === index;
           const panelId = `ps-work-panel-${index}`;
+          // Per-card type scale, from the client's 2026-09-04 note: the
+          // panel should be "sized to fit the card on a card by card basis".
+          // Copy runs 219-377 characters across the eighteen cards, so one
+          // fixed size has to serve the longest and leaves the other
+          // fifteen under-set — which is what made the panel look
+          // bottom-weighted and half-empty.
+          //
+          // Computed from the static data at render, so this is baked into
+          // the SSG HTML: no runtime measuring, no reflow, no flash of
+          // wrong size. Boundaries sit inside natural gaps in the length
+          // distribution (290|339 and 261|275), not next to a real value,
+          // so a copy edit of a character or two cannot flip a card into a
+          // different size. If you change a description, re-check the
+          // bucket AND re-run the 320x568 clipping check.
+          const copyLength = study.description.length;
+          const density =
+            copyLength >= 300 ? "long" : copyLength >= 268 ? "mid" : "short";
           // Defensive: `href` is meant to be an internal route, but if one is
           // ever absolute it must still get the new-tab treatment.
           const hrefIsExternal = study.href ? /^https?:\/\//.test(study.href) : false;
@@ -441,6 +517,7 @@ export function CaseStudies() {
               ]
                 .filter(Boolean)
                 .join(" ")}
+              data-density={density}
               role="listitem"
             >
               {/* Gradient background layer */}

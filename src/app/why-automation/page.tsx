@@ -87,7 +87,7 @@ export default function WhyAutomationPage() {
             <span className="ps-eyebrow">The Case for Automation</span>
             <h1>Why Automate Your Business?</h1>
             <p>
-              Automation isn&apos;t just about efficiency — it&apos;s about freeing your
+              Automation isn&apos;t just about efficiency; it&apos;s about freeing your
               team to do the work that actually moves the needle.
             </p>
           </div>

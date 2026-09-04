@@ -9,12 +9,12 @@ const url = "https://preissersolutions.com/products";
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Production-grade AI products built from real client engagements — packaged capabilities you can deploy.",
+    "Production-grade AI products built from real client engagements: packaged capabilities you can deploy.",
   alternates: { canonical: url },
   openGraph: {
     title: "Products",
     description:
-      "Production-grade AI products built from real client engagements — packaged capabilities you can deploy.",
+      "Production-grade AI products built from real client engagements: packaged capabilities you can deploy.",
     url,
     type: "website",
     images: [
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Products",
     description:
-      "Production-grade AI products built from real client engagements — packaged capabilities you can deploy.",
+      "Production-grade AI products built from real client engagements: packaged capabilities you can deploy.",
     images: ["/images/og-image-v2.jpg"],
   },
 };

@@ -23,7 +23,7 @@ export function LocationsHub({ locationsBySlug, regions }: Props) {
     "@type": "CollectionPage",
     "@id": "https://preissersolutions.com/locations#collection",
     url: "https://preissersolutions.com/locations",
-    name: "Locations We Serve — Preisser Solutions",
+    name: "Locations We Serve: Preisser Solutions",
     description:
       "Preisser Solutions is headquartered in Hays, KS, and delivers custom software, AI automation, and websites across Kansas.",
     inLanguage: "en-US",

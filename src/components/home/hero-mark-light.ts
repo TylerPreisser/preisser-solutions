@@ -64,6 +64,12 @@ const MARK_WEDGE = [
 
 const BOX = 1024;                 // the mark's native coordinate box
 const NARROW_MAX = 768;           // below this we use the narrow framing
+/** The width at or above which the hero mark exists AT ALL. Exported so hero.tsx
+ *  and this file share one number. The client rejected the mark on phones in
+ *  three successive forms — sprawling, badge, and large watermark — so below
+ *  this width nothing is mounted: no canvas, no backing store, no rAF, no
+ *  observers, no listeners. Same threshold as NARROW_MAX by design. */
+export const MARK_MIN_WIDTH = NARROW_MAX;
 const DPR_CAP = 1.5;
 const DPR_CAP_NARROW = 1.25;      // fewer pixels to clear/blit per frame
 /** One full lap of the outline. This has to read as a line TRAVELLING the
@@ -96,20 +102,47 @@ const FRAME_GAP_MS_NARROW = 30;   // ~30fps on a 60Hz or 120Hz phone
    that restores the plate behind it. Change one without the other and the
    blit misses the stroke's outer edge, leaving a sliver every frame until the
    ghost accumulates into coloured banding. */
-const ALPHA_GAIN_LIGHT = 1.85;
-const ALPHA_GAIN_DARK = 1.5;
+/* Lowered 2026-09-04 from 1.85 / 1.5. Those were tuned to punch through a
+   0.55-0.99 veil that the beam is no longer under: the mark is now fitted into
+   a stage that sits where the light-theme scrim has already released (see
+   `stage()` below), so 1.85 put the peak at 0.55*1.85 = 1.0 clamped — a fully
+   saturated #1590FF hairline on near-white, which reads as harsh un-veiled. */
+const ALPHA_GAIN_LIGHT = 1.15;   // peak 0.63
+/* DARK LOWERED 1.25 -> 1.00 on 2026-09-04, as a direct consequence of §24: that
+   change lowered the dark EDGE to 0.27 and released the veil that was also
+   dimming the beam, so the mark got fainter and the beam got brighter from one
+   edit. The target is the RELATIONSHIP, not the number — light reads correctly
+   at beam/edge = 2.37/1.64 = 1.45x, and dark had drifted to 3.63/1.93 = 1.88x.
+   Deliberately aimed at the low side of 1.3-1.5x because the beam is the moving
+   element. WIDTH_GAIN_* is untouched: it is coupled to the dirty-rect pad.
+   TUNED TO THE INSTRUMENT, not computed: 1.00 still measured 1.64x because §24
+   raised the dark EDGE too (1.93 -> 2.13), so the ratio's denominator moved as
+   well as its numerator. Measured 1.00 -> 1.64x, 0.85 -> 1.55x, 0.75 -> 1.46x,
+   which lands on light's own 1.46x. */
+const ALPHA_GAIN_DARK = 0.75;    // peak 0.413
 const WIDTH_GAIN_NARROW = 1.9;
 const WIDTH_GAIN_WIDE = 1.5;
 const BEAM_STEPS = 72;
 const BEAM_STEPS_NARROW = 44;     // the beam covers fewer css px on a phone
 
-/** How tall the mark is drawn, as a multiple of the hero's height, and where
- *  its centre sits as a fraction of the viewport. Bigger than 1 means it is
- *  cropped by the frame — which is the point. */
-const LAYOUT = {
-  wide:   { scale: 0.92, cx: 0.80, cy: 0.50 },
-  narrow: { scale: 0.70, cx: 0.80, cy: 0.62 },
-};
+/** The mark's ink extent inside its 1024 box (verified against the webp at
+ *  IoU 0.9924 — see the header note). */
+const MARK_X0 = 85, MARK_Y0 = 116, MARK_W = 895, MARK_H = 790;
+/** Clear air at the frame edges. (STAGE_GAP, the old bounding-box margin between
+ *  the headline and the mark, is gone — §22(c) replaced that margin with a true
+ *  ink-vs-ink test in layout(), which is what allows the mark to be large.) */
+const STAGE_PAD = 24;
+/** The x at which the light-theme desktop scrim reaches zero, as a fraction of
+ *  the hero's width. MUST track globals.css `[data-theme="light"] .ps-hero-overlay`
+ *  inside @media (min-width:768px). If that ramp moves, move this. */
+const SCRIM_CLEAR = 0.70;
+/* NOTE, kept because it corrects a false claim that lived here: the phone scrim
+ * is NOT "a flat veil with no horizontal ramp". It is a 90deg ramp exactly like
+ * the desktop one — `0.97 0% -> 0.95 62% -> 0.55 70% -> 0 78%` after the
+ * 2026-09-04 retiming in globals.css. There is no SCRIM_CLEAR_NARROW any more:
+ * §22(b) gives narrow viewports the FULL width and lets the ramp fade the mark's
+ * left side, which is the large-faint-watermark reading the client asked for
+ * rather than a small fully-released badge. */
 
 function parseRGB(raw: string): RGB | null {
   const m = raw.trim().match(/^#?([0-9a-f]{6})$/i);
@@ -129,8 +162,30 @@ const rgba = (c: RGB, a: number) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
  *  dirt — a tinted shadow reads as a form. */
 function palette(isLight: boolean) {
   return isLight
-    ? { fill: [140, 160, 190] as RGB, fillA: 0.13, edge: [104, 128, 162] as RGB, edgeA: 0.26 }
-    : { fill: [150, 186, 232] as RGB, fillA: 0.055, edge: [150, 186, 232] as RGB, edgeA: 0.16 };
+    // Raised 2026-09-04. WCAG relative-luminance ratios against the measured
+    // hero background (rgb(246,249,252) light, rgb(10,22,40) dark) with the mark
+    // in its released position: fill ~1.35:1 (a soft watermark that is
+    // unmistakably present without competing), edge ~2.2:1 (a definite
+    // contour). Both are far under the headline's own >15:1, so the mark cannot
+    // pull focus. Light and dark are matched so the mark reads the same weight
+    // in both themes — dark used to be 2.4x fainter than light on fill.
+    // 2026-09-04, §22(a): back to the WATERMARK register. The 0.34/0.62 values
+    // were tuned when the mark was a small contained badge and needed to hold
+    // its own; at watermark scale they read as a placed object. Lowering these
+    // LOWERS the measured contrast ratio and that is the correct direction —
+    // §3's targets were always ~1.3:1 fill and ~2.1:1 contour, and the number
+    // was never the problem. Dark is scaled proportionally.
+    ? { fill: [140, 160, 190] as RGB, fillA: 0.20, edge: [104, 128, 162] as RGB, edgeA: 0.38 }
+    // DARK EDGE IS 0.27, NOT 0.20. §22 scaled dark proportionally from light,
+    // but light uses two DIFFERENT colours for fill and edge ([140,160,190] /
+    // [104,128,162]) while dark uses the SAME colour for both, so proportional
+    // scaling does not preserve the fill-to-edge relationship. Matched instead
+    // on mean dRGB against the page: light fill 0.20 -> 17.1 vs dark 0.10 ->
+    // 17.0; light edge 0.38 -> 45.2 vs dark 0.27 -> 44.6. (0.20 would give 33.1,
+    // about a quarter of light.) dRGB rather than a WCAG ratio deliberately:
+    // ratio is a text-legibility metric, and on a dark ground the same ratio
+    // carries ~12x less absolute luminance difference.
+    : { fill: [150, 186, 232] as RGB, fillA: 0.10, edge: [150, 186, 232] as RGB, edgeA: 0.27 };
 }
 
 export type MarkLight = { destroy: () => void };
@@ -148,6 +203,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
 
 
   let raf = 0;
+  let destroyed = false;
   let plate: HTMLCanvasElement | null = null;
   let outline: Array<[number, number]> = [];
   let cumulative: number[] = [];
@@ -157,18 +213,42 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   let started = 0;
   let narrow = false;
   let lastPaint = 0;
+  /** --color-primary, resolved once per build() instead of on every frame.
+     It only changes with the theme, and a theme change already triggers a
+     rebuild via the MutationObserver below. Cheap either way (0.33us on clean
+     style) but there is no reason to read layout-adjacent state at 30-60Hz. */
+  let accent: RGB = [21, 144, 255];
   /** The rectangle the previous frame's beam was stroked into, in device
    *  pixels. Restoring only this plus the new one is what keeps the loop off
    *  the full viewport. Null means "the whole canvas is clean plate". */
   let dirty: [number, number, number, number] | null = null;
+  /** Arc-length distance of the outline's rightmost vertex. Set in build(). */
+  let parkDist = 0;
 
   const isLight = () => document.documentElement.getAttribute("data-theme") === "light";
-  /** Only a stated motion preference parks the beam. Narrow viewports animate;
-   *  they animate cheaply. See the per-frame budget in drawBeam. */
-  const still = () => reduced;
+  /** Reduced motion parks the beam, AND SO DOES NARROW, since 2026-09-04.
+   *
+   *  On a phone the mark now spans the light scrim's 0.95-0.97 plateau, so a
+   *  travelling beam is only visible while it crosses the released right-hand
+   *  band: measured 4 of 12 samples across a full lap at 390 light. A highlight
+   *  that blinks in and out as it travels IS the client's issue #1, on the exact
+   *  device they reported it on. Raising the beam's alpha cannot fix it — the
+   *  scrim composites OVER the canvas, so under a 0.95-0.97 white plateau a beam
+   *  at alpha 1.0 still arrives at ~3-5% of its own colour; it would only make
+   *  the already-visible samples louder. Moving the plateau is not available:
+   *  it ends at 62% against accent ink at 55.9%.
+   *  A still highlight cannot blink. It also stops the rAF loop outright on
+   *  phones, which the IntersectionObserver note below already calls the
+   *  mitigation that matters most there. Desktop is untouched. */
+  const still = () => reduced || narrow;
   const period = () => (narrow ? BEAM_PERIOD_MS_NARROW : BEAM_PERIOD_MS);
-  /** Phase 0.34 of a lap — the beam parked somewhere flattering on the edge. */
-  const parked = () => period() * 0.34;
+  /** Where the parked beam sits, as a `now` value that drawBeam turns into a
+   *  phase. The old hardcoded 0.34 of a lap was chosen when the mark was
+   *  elsewhere and is no longer guaranteed to land in the released band — park
+   *  on the outline's RIGHTMOST point instead, which is the bowl's outer curve
+   *  and is released at every width by construction, since the stage's right
+   *  edge is W - STAGE_PAD. */
+  const parked = () => (total > 0 ? period() * (parkDist / total) : 0);
 
   function markPath(p: Path2D, s: number, tx: number, ty: number) {
     for (const poly of [MARK_BODY, MARK_WEDGE]) {
@@ -177,6 +257,120 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
       p.closePath();
     }
   }
+
+  /** The rectangle the whole mark is fitted inside. Two candidates: the column
+   *  right of the headline, and the band between the CTAs and the scroll cue.
+   *  Whichever fits the mark larger wins — which self-selects the column on
+   *  desktop and the band on tablets and phones, with no magic breakpoint.
+   *  Measured rather than assumed: the headline's ink edge moves with the webfont
+   *  and with clamp(1.375rem, 7.5vw, 5.5rem), so a hardcoded fraction is wrong on
+   *  half the width range. */
+  /** The headline's INK rectangles, in container coordinates. Boxes are the full
+   *  flex column and are useless for this; ink is what can actually collide. */
+  function headlineInk(): Array<{ l: number; r: number; t: number; b: number }> {
+    const cr = container.getBoundingClientRect();
+    const out: Array<{ l: number; r: number; t: number; b: number }> = [];
+    container.querySelectorAll(".ps-hero-line").forEach((el) => {
+      const rg = document.createRange();
+      rg.selectNodeContents(el);
+      const b = rg.getBoundingClientRect();
+      if (b.width > 0 && b.height > 0) {
+        out.push({ l: b.left - cr.left, r: b.right - cr.left, t: b.top - cr.top, b: b.bottom - cr.top });
+      }
+    });
+    return out;
+  }
+
+  /** Area, in css px², where the mark's INK overlaps the headline's INK.
+   *  Scanlines the evenodd polygon pair — the same fill rule markPath() uses —
+   *  against each line's ink rect. This is the whole point of §22(c): the old
+   *  guard pushed the mark's BOX right of the headline, but the mark's ink at
+   *  the headline's y-band sits far right of its box edge because the tail
+   *  sweeps down-left BELOW the text. Testing ink against ink is what buys the
+   *  size back. Runs in build(), never in frame(). */
+  function inkOverlap(sCss: number, ox: number, oy: number,
+                      rects: Array<{ l: number; r: number; t: number; b: number }>): number {
+    if (!rects.length || !(sCss > 0)) return 0;
+    let area = 0;
+    for (const rect of rects) {
+      const y0 = Math.floor(rect.t), y1 = Math.ceil(rect.b);
+      for (let y = y0; y < y1; y++) {
+        const xs: number[] = [];
+        for (const poly of [MARK_BODY, MARK_WEDGE]) {
+          const n = poly.length / 2;
+          for (let i = 0; i < n; i++) {
+            const j = (i + 1) % n;
+            const ay = poly[i * 2 + 1] * sCss + oy, by = poly[j * 2 + 1] * sCss + oy;
+            if ((ay <= y && by > y) || (by <= y && ay > y)) {
+              const ax = poly[i * 2] * sCss + ox, bx = poly[j * 2] * sCss + ox;
+              xs.push(ax + ((y - ay) / (by - ay)) * (bx - ax));
+            }
+          }
+        }
+        if (xs.length < 2) continue;
+        xs.sort((a, b) => a - b);
+        // even-odd: fill between alternate pairs
+        for (let k = 0; k + 1 < xs.length; k += 2) {
+          const l = Math.max(xs[k], rect.l), r = Math.min(xs[k + 1], rect.r);
+          if (r > l) area += r - l;
+        }
+      }
+    }
+    return area;
+  }
+
+  type Placement = { sCss: number; ox: number; oy: number };
+
+  /** Fit the mark into a stage rect and return its placement in css px, where a
+   *  polygon point maps to (P.x * sCss + ox, P.y * sCss + oy). */
+  function fitInto(st: { x: number; y: number; w: number; h: number }, shrink: number): Placement {
+    const sCss = Math.min(st.w / MARK_W, st.h / MARK_H) * shrink;
+    return {
+      sCss,
+      ox: st.x + (st.w - MARK_W * sCss) / 2 - MARK_X0 * sCss,
+      oy: st.y + (st.h - MARK_H * sCss) / 2 - MARK_Y0 * sCss,
+    };
+  }
+
+  /** §22(b)+(c). A WIDTH REGIME, not an A/B fit, plus a true ink test.
+   *
+   *  Wide: the full hero height in the column the light scrim has released. The
+   *  mark is width-bound there, so it grows to fill that column.
+   *  Narrow: the full width, dropped below the headline's ink, sweeping BEHIND
+   *  the CTA buttons. Passing behind content is what makes it read as a
+   *  background layer; the previous contained version sat in empty space below
+   *  everything, which is exactly what makes a thing look stuck on.
+   *
+   *  The headline guard is now a TEST, not a margin. Deleting it outright is not
+   *  safe — measured at 820, the scrim floor alone leaves ~2,825 px² of real ink
+   *  overlap. So: lay out, scanline, and only if ink actually collides drop
+   *  below the headline and then shrink 4% per iteration. */
+  function layout(): Placement {
+    const rects = headlineInk();
+    const headBottom = rects.length ? Math.max(...rects.map((r) => r.b)) : 0;
+    const floor = Math.max(STAGE_PAD, W * SCRIM_CLEAR);
+
+    const primary = narrow
+      ? { x: STAGE_PAD, y: headBottom + 8, w: W - STAGE_PAD * 2, h: H - STAGE_PAD - (headBottom + 8) }
+      : { x: floor, y: STAGE_PAD, w: W - STAGE_PAD - floor, h: H - STAGE_PAD * 2 };
+    // Step 3: the same recipe the narrow regime already uses — drop clear of the
+    // headline's ink entirely. For narrow this is identical to `primary`, so the
+    // loop simply falls through to the shrink step.
+    const dropped = { x: STAGE_PAD, y: headBottom + 8, w: W - STAGE_PAD * 2, h: H - STAGE_PAD - (headBottom + 8) };
+
+    let last = fitInto(primary, 1);
+    for (const st of [primary, dropped]) {
+      if (!(st.w > 0 && st.h > 0)) continue;
+      for (let k = 0; k < 12; k++) {
+        const pl = fitInto(st, Math.pow(0.96, k));
+        if (!(pl.sCss > 0)) break;
+        last = pl;
+        if (inkOverlap(pl.sCss, pl.ox, pl.oy, rects) === 0) return pl;
+      }
+    }
+    return last;   // never paint nothing; the caller guards sCss > 0
+  }
+
 
   /** Paint the mark into the offscreen plate and cache its outline in device
    *  pixels so the beam can walk the same edge that is actually visible. */
@@ -191,11 +385,31 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     canvas.style.width = W + "px";
     canvas.style.height = H + "px";
 
-    const L = narrow ? LAYOUT.narrow : LAYOUT.wide;
-    const s = (H * L.scale) / BOX * dpr;
-    const tx = W * L.cx * dpr - (BOX * s) / 2;
-    const ty = H * L.cy * dpr - (BOX * s) / 2;
+    /* The whole mark is fitted INSIDE a measured stage rather than drawn
+       oversized and cropped by the frame. That single change is what makes the
+       beam continuously visible (no part of the outline is off-canvas, so there
+       are no dark gaps), what makes the P legible (it now sits where the scrim
+       has released, so raising its alpha actually shows up), and what takes the
+       headline overlap to zero at every width by construction rather than by
+       tuning a breakpoint. It deliberately reverses the "bigger than 1 means it
+       is cropped by the frame — which is the point" intent in the header note:
+       you cannot have a continuously-visible beam around a shape whose outline
+       leaves the frame. */
+    const pl = layout();
+    const sCss = pl.sCss;
+    const s = sCss * dpr;
+    const tx = pl.ox * dpr;
+    const ty = pl.oy * dpr;
 
+    // A degenerate stage (a very short viewport) means there is nowhere honest
+    // to put the mark. Paint nothing rather than a sliver.
+    if (!(s > 0)) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      outline = []; cumulative = [0]; total = 0; plate = null; dirty = null;
+      return;
+    }
+
+    accent = parseRGB(getComputedStyle(container).getPropertyValue("--color-primary")) || [21, 144, 255];
     const pal = palette(isLight());
     plate = document.createElement("canvas");
     plate.width = canvas.width;
@@ -212,21 +426,19 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     p.fill(path, "evenodd");
     // A hairline keeps the edge definite rather than letting it dissolve.
     p.strokeStyle = rgba(pal.edge, pal.edgeA);
-    p.lineWidth = Math.max(1, 1.1 * dpr);
+    /* Scale-proportional, clamped. An absolute 1.1*dpr hairline read ~2.2x
+       heavier once the mark stopped being drawn oversized. */
+    p.lineWidth = Math.max(1.25 * dpr, Math.min(3 * dpr, s * 3.2));
     p.lineJoin = "round";
     p.stroke(path);
 
-    // Fade toward the text column. A ramp, not a dissolve: every edge on the
-    // right keeps its definition, and nothing survives on the left.
-    const ramp = p.createLinearGradient(0, 0, canvas.width, 0);
-    ramp.addColorStop(0, "rgba(0,0,0,0)");
-    ramp.addColorStop(0.40, "rgba(0,0,0,0)");
-    ramp.addColorStop(0.68, "rgba(0,0,0,0.55)");
-    ramp.addColorStop(1, "rgba(0,0,0,1)");
-    p.globalCompositeOperation = "destination-in";
-    p.fillStyle = ramp;
-    p.fillRect(0, 0, canvas.width, canvas.height);
-    p.globalCompositeOperation = "source-over";
+    /* The `destination-in` alpha ramp that used to fade the plate toward the
+       text column is GONE (2026-09-04). It faded the P but never the beam —
+       the beam is stroked onto `ctx`, not onto the plate — so the light read as
+       detached from a mark that was not there. Geometry now does the separation
+       the ramp was doing: the stage never overlaps the headline. Removing it
+       also drops one full-canvas gradient fill and one composite pass from
+       every build(). */
 
     // Outline in device pixels, for the beam.
     outline = [];
@@ -242,6 +454,11 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     for (let i = 1; i < outline.length; i++) {
       total += Math.hypot(outline[i][0] - outline[i - 1][0], outline[i][1] - outline[i - 1][1]);
       cumulative.push(total);
+    }
+    // Park point: the rightmost vertex, i.e. deepest into the released band.
+    parkDist = 0;
+    for (let i = 0, best = -Infinity; i < outline.length; i++) {
+      if (outline[i][0] > best) { best = outline[i][0]; parkDist = cumulative[i]; }
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -259,9 +476,9 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   };
 
   /** The beam: a short run of the outline, brightest at its head, faded at
-   *  both ends. It is clipped to the right of the text column so the brightest
-   *  thing on the canvas can never reach the wordmark, which has very little
-   *  contrast margin to give on the light theme. */
+   *  both ends. It is no longer clipped — the mark is fitted into a stage that
+   *  is already clear of the wordmark, so the whole lap is on-canvas and the
+   *  light never reaches the type. */
   function drawBeam(now: number) {
     if (!plate || !total) return;
 
@@ -270,7 +487,6 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     const head = phase * total;
     const len = total * 0.085;
     const steps = narrow ? BEAM_STEPS_NARROW : BEAM_STEPS;
-    const guard = W * 0.46 * dpr;      // never left of this
     /* Half the widest stroke, plus the round cap, plus a pixel of slack. This
        MUST track the `widthGain` used when stroking below: the beam's widest
        lineWidth is (0.9 + 1.1) * widthGain * dpr, and a round cap extends half
@@ -283,8 +499,6 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     const widestStroke = 2.0 * widthGain * dpr;
     const pad = widestStroke + 2 * dpr + 2;
 
-    const accent = parseRGB(getComputedStyle(container).getPropertyValue("--color-primary")) || [21, 144, 255];
-
     // Walk the beam first and keep its bounding box, so the repaint below can
     // be confined to the pixels this frame and the last one actually touch.
     const segs: Array<[number, number, number, number, number]> = [];
@@ -294,7 +508,10 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
       const a = (head - len * (1 - t0) + total) % total;
       const b = (head - len * (1 - t1) + total) % total;
       const p0 = at(a), p1 = at(b);
-      if (p0[0] < guard || p1[0] < guard) continue;
+      /* The left guard (`W * 0.46 * dpr`) is gone with the ramp. It existed to
+         keep the beam out of the text column; the mark is no longer in the text
+         column. Below ~900px it was the second source of the dark gaps in the
+         lap — at 390 it removed roughly a third of the outline. */
       const fall = Math.sin(Math.PI * t1);       // dark -> bright -> dark
       segs.push([p0[0], p0[1], p1[0], p1[1], fall]);
       x0 = Math.min(x0, p0[0], p1[0]); x1 = Math.max(x1, p0[0], p1[0]);
@@ -377,7 +594,12 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   }
 
   function start() {
-    if (raf || still() || document.hidden) return;
+    /* `destroyed` is load-bearing, not defensive. io.disconnect() does not reset
+       onStage, so after unmount a still-pending fonts.ready.then(rebuild) — or
+       the entrance animationend — reached start() with onStage still true and
+       started an rAF loop on a detached canvas that nothing could ever cancel:
+       one leaked loop per client-side visit to the homepage. */
+    if (destroyed || raf || still() || document.hidden) return;
     raf = requestAnimationFrame(frame);
   }
   function stop() {
@@ -385,6 +607,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   }
 
   function rebuild() {
+    if (destroyed) return;   // a late fonts.ready / animationend must not repaint
     stop();
     build();               // sets `narrow`, which parked() and the loop read
     started = 0;
@@ -416,14 +639,68 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   const mo = new MutationObserver(rebuild);
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
+  /* Rebuild on WIDTH changes only. The stage, the mark's scale and the backing
+     store are all driven by width; a height-only change (an iOS toolbar moving,
+     a desktop window dragged shorter) does not need either canvas reallocated.
+     Height is still re-read on the next real rebuild. Belt-and-braces with the
+     svh change in globals.css: that stops the hero's box tracking the toolbar,
+     this stops the canvas reacting even if some other height source moves.
+     `lastW` is seeded from W AFTER the first build() above, because build() is
+     what sets W. */
+  let lastW = W;
   let resizeTimer = 0;
-  const onResize = () => { clearTimeout(resizeTimer); resizeTimer = window.setTimeout(rebuild, 150); };
+  const onResize = () => {
+    if (Math.round(container.getBoundingClientRect().width) === lastW) return;
+    clearTimeout(resizeTimer);
+    // rebuild() FIRST: build() is the only thing that writes W, so reading
+    // lastW before it left lastW permanently stale and the width guard dead
+    // after a single width change.
+    resizeTimer = window.setTimeout(() => { rebuild(); lastW = W; }, 150);
+  };
   window.addEventListener("resize", onResize);
+
+  // The stage is measured from the headline's ink, which moves when the webfont
+  // swaps in. Without this the mark is laid out against the fallback metrics.
+  if (document.fonts?.ready) document.fonts.ready.then(() => rebuild());
+
+  /* Same problem, different mover: hero-entrance.css translates .ps-hero-ctas
+     while the entrance plays, and stage() candidate B is anchored to that
+     element's rect — so a build() that runs mid-entrance reads ctasBottom too
+     low and places the mark under it. Measured 2026-09-04 at 390x844:
+     mark box [102,608,287,772] (185x164) mid-entrance against [99,592,290,760]
+     (191x168) at rest; a forced rebuild converged to the latter, so the
+     geometry was right and only the timing was wrong. Rebuild once when the
+     CTAs settle. Only stage B is affected (390 and the 768-940 band); stage A
+     is anchored to the headline, which does not move. No-op under
+     prefers-reduced-motion, where no animation runs and no event ever fires.
+     stage() reads BOTH .ps-hero-ctas (for `ctasBottom`) and .ps-hero-cue__btn
+     (for `cueTop`), and the entrance translates the cue too — by 12px, finishing
+     ~340ms AFTER the CTAs — so listening only for the CTAs left `cueTop`
+     readable mid-flight. Rebuild on either; rebuild() is idempotent and costs
+     1-2ms, so firing twice is cheap insurance and firing once is correct.
+     NOTE: under prefers-reduced-motion NO animationend ever fires. That path is
+     correct without this listener — nothing is transformed there, so the very
+     first build() already measures both elements at rest — and this listener
+     must never become the only thing producing a correct build. Verified. */
+  /* .ps-hero-line is in this list because layout() now measures the HEADLINE's
+     ink, and hero-entrance.css translates those lines by 24px while the entrance
+     plays. The other two remain harmless no-ops. */
+  const ENTRANCE_ANCHORS = ["ps-hero-line", "ps-hero-ctas", "ps-hero-cue__btn"];
+  const onEntranceEnd = (e: AnimationEvent) => {
+    if (!e.animationName.startsWith("ps-hero-rise")) return;
+    const el = e.target as Element;
+    if (!ENTRANCE_ANCHORS.some((c) => el.classList?.contains(c))) return;
+    rebuild();
+  };
+  container.addEventListener("animationend", onEntranceEnd);
 
   return {
     destroy() {
+      destroyed = true;
+      onStage = false;      // io.disconnect() does NOT do this, and start() reads it
       stop(); io.disconnect(); mo.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
+      container.removeEventListener("animationend", onEntranceEnd);
       window.removeEventListener("resize", onResize);
       clearTimeout(resizeTimer);
       canvas.remove();

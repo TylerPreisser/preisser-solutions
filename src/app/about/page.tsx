@@ -117,7 +117,7 @@ export default function AboutPage() {
           <div className="ps-container">
             <div style={{ maxWidth: 820, margin: "0 auto" }}>
               <h2 className="ps-visually-hidden">
-                Tyler Preisser — Hays, Kansas AI Builder and Web Developer
+                Tyler Preisser: Hays, Kansas AI Builder and Web Developer
               </h2>
               <p
                 style={{

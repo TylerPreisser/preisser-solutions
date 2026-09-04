@@ -6,7 +6,7 @@
 @import "./why-us-relationship.css";
 @import "./work-card-reveal.css";
 @import "./marcommand-live.css";
-@import "./capabilities.css";
+@import "./hero-entrance.css";
 
 /* ============================================================
    DO NOT WRAP THE SHEETS ABOVE — OR ANY PART OF THIS FILE —
@@ -740,38 +740,72 @@ ul, ol {
   padding: 8px 0;
 }
 
-/* Blur layer — must be a real child element, not ::before.
-   Positioned to create the inset pill shape with rounded corners.
-   backdrop-filter blurs page content scrolling underneath.
-
-   GPU compositing hints (transform + will-change) are applied to THIS
-   element only — not the parent .ps-header — so we get reliable
-   backdrop-filter rendering in Safari/Chrome without re-introducing the
-   Safari scroll jank that came from will-change on the fixed parent. */
+/* The pill — a real child element, not ::before, so it can carry its own paint
+   and transform without touching the fixed parent. It is now OPAQUE: there is no
+   backdrop-filter here any more (see below), so nothing shows through it.
+   translateZ(0) is applied to THIS element only, never to the parent
+   .ps-header, which is what caused the original Safari scroll jank. */
+/* Measured 2026-09-04: the old `inset: 8px 14px` gave a 14px gutter at 1440 —
+   0.97% of the viewport — on a 1412px bar with a 14px radius (1% of its own
+   width). It read as a full-bleed slab, not a floating pill. WIDTH is the
+   lever, not the vertical inset: top/bottom stay at 8px because the pill is
+   72px tall around a 56px logo (.ps-logo-img) and a 46px CTA, so tightening
+   vertically buys ~4px and risks the logo. Capping the width at
+   --container-max (1200px) puts a 120px gutter each side at 1440 — 8.3% —
+   and lands the logo's left edge on 144px, the same axis as .ps-hero-content
+   and every section heading below it. */
 .ps-header-blur {
   position: absolute;
-  inset: 8px 14px;
+  top: 8px;
+  bottom: 8px;
+  left: 50%;
+  width: min(calc(100% - 48px), 1200px);
   z-index: 0;
-  border-radius: 14px;
-  background-color: rgba(10, 22, 40, 0.55);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  box-shadow: var(--theme-nav-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  transform: translateZ(0);
-  will-change: backdrop-filter;
+  border-radius: 20px;
+  /* OPAQUE, from tokens, 2026-09-04. `--theme-bg-secondary` puts the pill one
+     step OFF its page rather than on it (#0F1D30 over the #0A1628 hero).
+     NOT --theme-nav-bg: that is rgba(...,0.95), still translucent, and the 0.94
+     alpha it descends from is what produced the ghosting this change fixes. */
+  background-color: var(--theme-bg-secondary);
+  /* backdrop-filter DELETED. It was invisible work behind an opaque fill. It was
+     ALSO set inline in header.tsx, which beats any stylesheet rule, so removing
+     it here alone would have left the blur fully live while the diff looked
+     correct — both went in the same change. */
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, 0.46),
+    0 2px 8px rgba(0, 0, 0, 0.30);
+  border: 1px solid var(--theme-border);
+  /* translateZ(0) STAYS — it now earns its place promoting the layer for the
+     transform transition rather than for the blur. */
+  transform: translateX(-50%) translateZ(0);
   isolation: isolate;
+  /* background-color is NOT in this list: both states are now the same opaque
+     token, so it would be animating nothing. */
   transition:
-    background-color 300ms ease,
     box-shadow 300ms ease,
-    border-color 300ms ease;
+    border-color 300ms ease,
+    border-radius 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
 
-/* Light mode pill: translucent white so backdrop-filter shows page color through */
+/* Light mode pill. A white pill on a near-white page can never separate by
+   FILL — 0.80 over #F6F9FC composites to rgb(253,254,254) against a
+   rgb(246,249,252) page, a 7-level delta. The border and the shadow carry the
+   separation: rgba(10,22,40,0.10) composites to ~rgb(222,226,231), a ~24-level
+   hairline, where the old rgba(0,0,0,0.06) gave ~15 and vanished. The shadow's
+   12px offset against a 30px blur (ratio 0.4) reads as elevation; the old
+   2px/24px (0.08) read as fog. The alpha rise 0.55 -> 0.80 is for legibility of
+   the nav's own contents over dark sections scrolling under it. */
+/* Light: pure #FFFFFF over the #F6F9FC hero — again one step off the page.
+   With the fill opaque the shadow is the ONLY separation signal on light, so it
+   carries more weight and more directional bias than it did behind glass.
+   --theme-border is #E2E8F0 here, a solid ~24-level hairline against #F6F9FC. */
 [data-theme="light"] .ps-header-blur {
-  background-color: rgba(255, 255, 255, 0.55);
-  border-color: rgba(0, 0, 0, 0.06);
+  background-color: var(--theme-bg-primary);
+  box-shadow:
+    0 12px 30px rgba(10, 22, 40, 0.13),
+    0 3px 10px rgba(10, 22, 40, 0.08);
 }
 
 /* Kill the old ::before completely */
@@ -779,21 +813,53 @@ ul, ol {
   content: none;
 }
 
-/* Slightly more opaque pill once user has scrolled past the hero, so the nav
-   stays legible against light content sections. */
+/* Scrolled state. Previously the ONLY difference from rest was background
+   alpha .55 -> .72; geometry, radius, shadow and blur were byte-identical, and
+   box-shadow / border-color were in the transition list but never changed
+   value, so nothing visibly happened. The pill now DOCKS: it lifts 3px toward
+   the top edge, tightens 20px -> 14px, darkens, and its shadow deepens. Four
+   simultaneous, legible deltas. transform is composited; the rest is paint on
+   one 1200x72 element, fired when scrollY crosses 40 (header.tsx), not per
+   frame. Nothing here reflows. */
 .ps-header.scrolled .ps-header-blur {
-  background-color: rgba(10, 22, 40, 0.72);
+  /* Travel and radius carry the whole signal now that alpha cannot: -4px and
+     20 -> 12 are both larger deltas than before. NOTE: the mobile override
+     inside @media (max-width: 768px) repeats this travel to drop the
+     translateX(-50%) — the two values must stay in sync, and neither may use
+     !important, which would beat that override and throw the 390 pill to
+     left: -175px. */
+  transform: translateX(-50%) translateY(-4px) translateZ(0);
+  border-radius: 12px;
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 22px 48px rgba(0, 0, 0, 0.58),
+    0 3px 12px rgba(0, 0, 0, 0.36);
 }
 [data-theme="light"] .ps-header.scrolled .ps-header-blur {
-  background-color: rgba(255, 255, 255, 0.72);
+  border-color: rgba(10, 22, 40, 0.16);
+  box-shadow:
+    0 18px 44px rgba(10, 22, 40, 0.19),
+    0 4px 12px rgba(10, 22, 40, 0.11);
+}
+
+/* The state change stays; only the tween goes. Matches the site's posture —
+   0 of 21 animations run under reduce. */
+@media (prefers-reduced-motion: reduce) {
+  .ps-header-blur {
+    transition: none;
+  }
 }
 
 .ps-header-inner {
   position: relative;
   z-index: 1;
-  max-width: 1400px;
+  /* Matches .ps-header-blur's 1200px cap (= --container-max) so the nav's
+     contents land INSIDE the narrower pill. With 24px padding the logo's left
+     edge is 144px at 1440 and 384px at 1920 — the same axis as
+     .ps-hero-ctas / .ps-hero-content. Was 1400px / 0 32px. */
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 24px;
   height: 100%;
   display: flex;
   align-items: center;
@@ -914,25 +980,47 @@ ul, ol {
 /* Mobile: show nav inline (only 2 items — theme toggle + CTA — no hamburger needed) */
 @media (max-width: 768px) {
   :root {
-    --nav-height: 78px;
+    /* Must equal .ps-header's rendered height directly below (80px), which it
+       did not: the token said 78 while every viewport <=768 measured 80, so
+       every mobile consumer of --nav-height was 2px short of clearing the
+       header. Ten CSS consumers (scroll-margin-top on anchor targets,
+       padding-top on page wrappers and .ps-hero-content) plus hero.tsx's
+       scrollToNext offset all read this. Corrected 2026-09-04 — the drift
+       predates this run; `height: 80px; padding: 6px 0` below is unchanged. */
+    --nav-height: 80px;
   }
 
   .ps-header {
     height: 80px;
     padding: 6px 0;
-    background-color: var(--theme-section-switchable);
+    /* No background-color here. --theme-section-switchable is fully opaque
+       (#0A1628 / #FFFFFF) on the square full-bleed shell, which filled the
+       gutter and merged shell and pill into one solid bar — the nav stopped
+       reading as a floating pill on mobile. The pill's own background lives
+       on .ps-header-blur below. */
   }
 
   .ps-header-blur {
     inset: 6px 10px;
-    background-color: rgba(10, 22, 40, 0.94);
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    will-change: auto;
+    /* The desktop rule above positions the pill with left:50% + width +
+       translateX(-50%). `inset` alone does NOT undo that: width still wins over
+       `right` on an over-constrained box, and the -50% translate then drags the
+       pill off the left edge (measured 2026-09-04 at 390px: rect [-161, 181]).
+       All three have to be reset here for the mobile gutter to survive. */
+    width: auto;
+    transform: translateZ(0);
+    /* The 0.94-alpha fills that used to be here are gone: the base rule is now
+       an opaque token in both themes, and that alpha was the ghosting defect.
+       The `backdrop-filter: none !important` override that used to sit here is
+       also gone — there is no filter left to override. */
   }
 
-  [data-theme="light"] .ps-header-blur {
-    background-color: rgba(255, 255, 255, 0.94);
+  /* Same reset for the docked state — keep the lift, drop the centring.
+     -4px MUST track the desktop rule above; they are one signal split across
+     two selectors. No !important anywhere: it would beat this override and put
+     the 390 pill at left: -175px. */
+  .ps-header.scrolled .ps-header-blur {
+    transform: translateY(-4px) translateZ(0);
   }
 
   .ps-header-inner {
@@ -983,8 +1071,17 @@ ul, ol {
   --ps-hero-scrim-rgb: var(--ps-hero-bg-rgb);
 
   position: relative;
+  /* svh, not dvh. `dvh` tracks the mobile browser's dynamic toolbar, so every
+     toolbar collapse/expand RESIZES the hero mid-gesture — which is what makes
+     scrolling up and then reversing straight back down jerk. `svh` is the
+     SMALL viewport height: it is the toolbar-expanded value and never changes,
+     so the hero's height is stable through the whole gesture. 100vh is the
+     desktop/legacy fallback and is what `svh` equals there.
+     THREE sites set this and two of them are `!important` overrides much
+     further down this file — changing only this one is a no-op. Search
+     `min-height: 100svh` before assuming a change here has any effect. */
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
   background-color: var(--color-dark);
   display: flex;
   flex-direction: column;
@@ -992,6 +1089,23 @@ ul, ol {
   justify-content: center;
   overflow: hidden;
   padding-top: var(--nav-height);
+}
+
+/* The hero's secondary CTA gets a real fill. Site-wide it is a ghost button
+   (`background-color: rgba(0,0,0,0)`), which was fine when nothing was behind
+   it; with the watermark now sweeping through the CTA row the mark's contour was
+   visible crossing the control's face — measured 49.9% of its box at 390 — so it
+   read as passing THROUGH the button rather than behind it.
+   SCOPED TO .ps-hero deliberately: the ghost fill is a considered style
+   everywhere else and changing it globally to fix a hero-only symptom is exactly
+   the kind of scope creep that regresses something nobody is watching.
+   --theme-bg-primary, not the hero's own --ps-hero-bg-rgb: the button is z-2,
+   ABOVE the scrim at z-1, so its backdrop is page colour already washed toward
+   the scrim (~#FEFEFE under the light plateau), which #FFFFFF matches far better
+   than #F6F9FC would. On dark the scrim colour equals the page colour, so the
+   backdrop is exactly #0A1628. */
+.ps-hero .ps-btn-secondary {
+  background-color: var(--theme-bg-primary);
 }
 
 /* The mark-light background (hero-mark-light.ts) paints here. It is decoration
@@ -1037,7 +1151,13 @@ ul, ol {
       rgba(var(--ps-hero-scrim-rgb), 0.55) 0%,
       rgba(var(--ps-hero-scrim-rgb), 0.05) 22%,
       rgba(var(--ps-hero-scrim-rgb), 0)    50%,
-      rgba(var(--ps-hero-scrim-rgb), 0.4)  80%,
+      /* Was `0.4 80%`. Mirrors the light release: this is the rule DARK runs,
+         and every scrim release before 2026-09-04 targeted a [data-theme="light"]
+         block, so dark still carried the original veil. Safe by construction —
+         .ps-hero sets --ps-hero-scrim-rgb to --ps-hero-bg-rgb (10,22,40) and only
+         light re-points it to white, so on dark this scrim is #0A1628 over a
+         #0A1628 page and cannot change any text's contrast at all. */
+      rgba(var(--ps-hero-scrim-rgb), 0)    90%,
       rgba(var(--ps-hero-scrim-rgb), 0.75) 100%
     );
 }
@@ -1056,16 +1176,24 @@ ul, ol {
 @media (max-width: 767px) {
   .ps-hero-overlay {
     background:
+      /* Flat layer 0.55 -> 0.25 and the vertical tail 0.30 80% -> 0 90%,
+         2026-09-04. This rule is NOT theme-scoped, so on a dark phone it was the
+         dominant term: combined with the base tail it put ~0.70 of veil over the
+         mark at 77-84% of hero height, which is the 1.59:1 real Safari measured
+         and why the mark read as "a faint halo around a small core". Light
+         phones are unaffected — the [data-theme="light"] rule below overrides
+         both layers. 0.25 rather than 0 is deliberate: it keeps some separation
+         between the canvas and the nav pill at the top of the hero. */
       linear-gradient(
-        rgba(var(--ps-hero-scrim-rgb), 0.55),
-        rgba(var(--ps-hero-scrim-rgb), 0.55)
+        rgba(var(--ps-hero-scrim-rgb), 0.25),
+        rgba(var(--ps-hero-scrim-rgb), 0.25)
       ),
       linear-gradient(
         180deg,
         rgba(var(--ps-hero-scrim-rgb), 0.55) 0%,
         rgba(var(--ps-hero-scrim-rgb), 0.05) 22%,
         rgba(var(--ps-hero-scrim-rgb), 0)    50%,
-        rgba(var(--ps-hero-scrim-rgb), 0.30) 80%,
+        rgba(var(--ps-hero-scrim-rgb), 0)    90%,
         rgba(var(--ps-hero-scrim-rgb), 0.60) 100%
       );
   }
@@ -1089,26 +1217,41 @@ ul, ol {
      So the phone gets the same SHAPE the desktop already uses: hold the scrim
      near-solid across the wordmark, then release. "AI Integration." is the
      shortest of the three lines and ends at 53% of a 375px viewport, so the
-     plateau runs to 62% and is clear by 92%. The composition is drawn only on
-     the right (hero-mark-light.ts fades it out toward the text column), which
-     is exactly the part this now uncovers. Measured on the built page:
-     3.19:1 against a 3:1 bar, with a visible composition instead of a
-     blank box. */
+     plateau runs to 62% and is now clear by 78% (tail retimed 2026-09-04 — see
+     the note on the stops below).
+
+     CORRECTION 2026-09-04: this comment used to say the composition "is drawn
+     only on the right (hero-mark-light.ts fades it out toward the text
+     column)". That plate ramp was DELETED earlier in this run. The mark is now
+     kept out of the text column by GEOMETRY — a measured stage floored at
+     SCRIM_CLEAR_NARROW in hero-mark-light.ts — not by fading. Nothing fades it
+     any more. */
   [data-theme="light"] .ps-hero-overlay {
     background:
       linear-gradient(
         90deg,
         rgba(var(--ps-hero-scrim-rgb), 0.97) 0%,
         rgba(var(--ps-hero-scrim-rgb), 0.95) 62%,
-        rgba(var(--ps-hero-scrim-rgb), 0.55) 78%,
-        rgba(var(--ps-hero-scrim-rgb), 0)    92%
+        /* THE PLATEAU ABOVE DOES NOT MOVE. It defends a 0.02 margin on
+           "AI Integration." (#1590FF on #F6F9FC), whose ink ends at 54.6-56.0%
+           of W across 320-430 — 6+ points inside the 62% edge. Only the TAIL
+           after it was retimed, 2026-09-04: 0.55 78% -> 70%, 0 92% -> 78%, so
+           the phone gets a released right edge for the mark to sit in — the same
+           shape desktop already had. Verified byte-identical accent backdrop at
+           320/375/390/430 before and after. */
+        rgba(var(--ps-hero-scrim-rgb), 0.55) 70%,
+        rgba(var(--ps-hero-scrim-rgb), 0)    78%
       ),
       linear-gradient(
         180deg,
         rgba(var(--ps-hero-scrim-rgb), 0.55) 0%,
         rgba(var(--ps-hero-scrim-rgb), 0.05) 22%,
         rgba(var(--ps-hero-scrim-rgb), 0)    50%,
-        rgba(var(--ps-hero-scrim-rgb), 0.30) 80%,
+        /* Was `0.30 80%`. Released for the same reason as the desktop rule's
+           layer 2: stage B sits low in the hero, so a vertical tail starting at
+           80% washes the mark out again after the horizontal ramp cleared it.
+           The 100% stop still re-applies before the scroll cue. */
+        rgba(var(--ps-hero-scrim-rgb), 0)    90%,
         rgba(var(--ps-hero-scrim-rgb), 0.60) 100%
       );
   }
@@ -1290,17 +1433,37 @@ ul, ol {
     background:
       linear-gradient(
         90deg,
+        /* Release moved 86% -> 70% (plateau 54% -> 52%) on 2026-09-04. The only
+           line with a contrast problem is "AI Integration." (#1590FF on #F6F9FC,
+           3.02-3.07:1 against a 3:1 bar) and its ink right edge measures 50.3%
+           of W at 1920, 50.4% at 1440, 50.5% at 1280, 52.0% at 1024 and 52.7%
+           at 768 — so a 52% plateau still covers it everywhere the old 54% did.
+           Everything right of it is #0A1628 on #F6F9FC at >15:1 and needs no
+           veil. Releasing at 70% is what makes a 330px-wide un-veiled stage
+           possible at 1440 instead of a 178px one (hero-mark-light.ts
+           SCRIM_CLEAR tracks this number — if this ramp moves, move that). */
         rgba(var(--ps-hero-scrim-rgb), 0.99) 0%,
-        rgba(var(--ps-hero-scrim-rgb), 0.97) 54%,
-        rgba(var(--ps-hero-scrim-rgb), 0.50) 70%,
-        rgba(var(--ps-hero-scrim-rgb), 0)    86%
+        rgba(var(--ps-hero-scrim-rgb), 0.97) 52%,
+        rgba(var(--ps-hero-scrim-rgb), 0.55) 62%,
+        rgba(var(--ps-hero-scrim-rgb), 0)    70%
       ),
       linear-gradient(
         180deg,
         rgba(var(--ps-hero-scrim-rgb), 0.55) 0%,
         rgba(var(--ps-hero-scrim-rgb), 0.05) 22%,
         rgba(var(--ps-hero-scrim-rgb), 0)    50%,
-        rgba(var(--ps-hero-scrim-rgb), 0.4)  80%,
+        /* Was `0.4 80%`. Released to 0 and pushed to 90% on 2026-09-04 so the
+           vertical tail stops veiling the mark. Stage B (the band under the
+           CTAs, chosen only at 768-940px) lands the mark at 71.9%-88.6% of the
+           hero's height, which sat squarely inside the old 0.4 stop: measured
+           veil alpha 0.34 there against 0.04 at 1440, while the mark's own ink
+           is an identical 3.06:1 pre-scrim at both widths. Horizontal geometry
+           could not fix that — see the stage floor in hero-mark-light.ts.
+           What this spends: the scroll cue occupies 94.2%-98.0%, 5.6 points
+           below the mark and the only thing rendering below 68%. Its backdrop
+           veil drops 0.70 -> 0.32 and #475569 on it goes 7.42:1 -> 7.27:1,
+           against a 4.5:1 bar. Dark and mobile are untouched. */
+        rgba(var(--ps-hero-scrim-rgb), 0)    90%,
         rgba(var(--ps-hero-scrim-rgb), 0.75) 100%
       );
   }
@@ -1451,7 +1614,7 @@ ul, ol {
 }
 
 @media (max-width: 639px) {
-  /* Six cards, in plan order.
+  /* Five cards, in plan order.
 
      The first three variant names predate the reposition and DO NOT
      match their card: websites = Business Software, systems = Business
@@ -1472,31 +1635,41 @@ ul, ol {
 
   /* Row 2 — websites and marketing, folded in from the deleted
      websites-and-marketing.tsx band. Without an explicit order these
-     would default to order:0 and jump ABOVE the three pillars. */
-  .ps-bento-card--redesign {
+     would default to order:0 and jump ABOVE the three pillars.
+
+     2026-09-04 (ADR-0007): --redesign and --custom-sites merged into
+     --web, so this stack is five cards at orders 1-5, not six at 1-6. */
+  .ps-bento-card--web {
     order: 4;
   }
 
-  .ps-bento-card--custom-sites {
-    order: 5;
-  }
-
   .ps-bento-card--search-ads {
-    order: 6;
+    order: 5;
   }
 }
 
-/* ── Card heights ──────────────────────────────────────────────
-   Six cards divide evenly at every breakpoint — 1 col mobile,
-   2 cols @640 (3 rows), 3 cols @940 (2 rows) — so NO card needs a
-   grid-column span and none is left in a row with a hole.
+/* ── Card heights + the two spans five cards need ──────────────
+   2026-09-04 (ADR-0007). Five cards do NOT divide evenly above 1
+   column, so exactly two grid-column spans exist — one per
+   multi-column breakpoint. The comment this replaces said six cards
+   need no span: true of six, false of five. The `span 2` that used
+   to sit on --websites was removed for the same reason it comes back
+   here — spans exist to close a hole, and only when there is one.
 
-   The `grid-column: span 2` that used to sit on --websites is gone
-   for that reason. It existed because THREE cards in a 2-col grid
-   leave a hole; six do not. This deletes the special case instead of
-   adding a second one to compensate for it, which is the failure the
-   comment on the old `1 / -1` span recorded going the other way when
-   the grid was cut from five cards to three. */
+     1 col  (<640):    5 stacked, order 1-5. No span. No hole.
+     2 cols (640-939): [software|automation] [ai|web] [search-ads ——]
+     3 cols (>=940):   [software|automation|ai] [web ——|search-ads]
+
+   Both spans land on the LAST row, so the grid always closes on a
+   wide card instead of on a gap. Deliberate shape, not a patch. It
+   also gives the merged websites card the horizontal room its
+   browser mockup wants — WebsiteVisual is a landscape composition
+   and the worst casualty of `.ps-bento-card { overflow: hidden }`
+   (globals.css:1447).
+
+   The span rules themselves sit BELOW the row-2 height rule; this
+   note covers both. If the card count ever changes again, these
+   spans do not survive it — they are derived from five. */
 @media (min-width: 640px) {
   .ps-bento-card {
     min-height: 380px;
@@ -1512,21 +1685,34 @@ ul, ol {
 /* Desktop only: row 2 runs 12% shorter than the pillar row.
 
    This is rhythm, not subordination — ADR-0006 §2 explicitly lifted
-   the requirement that websites read as secondary. Six identical
-   rectangles in a 3x2 block read as a spreadsheet; a slightly
-   shallower second row reads as a bento. 430 -> 380 is small enough
-   that no card looks demoted and large enough that the grid has a
-   shape.
+   the requirement that websites read as secondary. Five cards in a
+   3-then-2 block read as a spreadsheet if every rectangle matches; a
+   slightly shallower second row reads as a bento. 430 -> 380 is small
+   enough that no card looks demoted and large enough that the grid
+   has a shape. Row 2 is now BOTH shallower and differently
+   proportioned, since --web spans two columns there (ADR-0007).
 
    Applied at >=940 only. At 640-939 the grid is 2 columns, so row 2
    of the GRID holds one pillar and one websites card; giving them
    different min-heights there would do nothing (align-items: stretch
    equalises them) except confuse the next reader. */
 @media (min-width: 940px) {
-  .ps-bento-card--redesign,
-  .ps-bento-card--custom-sites,
+  .ps-bento-card--web,
   .ps-bento-card--search-ads {
     min-height: 380px;
+  }
+}
+
+/* Five cards, two spans — see the note above the card-height rules. */
+@media (min-width: 640px) and (max-width: 939px) {
+  .ps-bento-card--search-ads {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 940px) {
+  .ps-bento-card--web {
+    grid-column: span 2;
   }
 }
 
@@ -3623,18 +3809,13 @@ ul, ol {
   height: 100%;
 }
 
-/* Mobile: overlay controlled ONLY by .ps-work-card--tapped class (JS) */
+/* Mobile: keep the artwork visible; the open panel is opaque and covers it. */
 @media (max-width: 768px) {
   /* Logos always visible on mobile — never fade from scroll-triggered hover states */
   .ps-work-card-logo,
   .ps-work-card-icon {
     opacity: 1 !important;
     transition: none !important;
-  }
-  /* Only hide logo when card is explicitly tapped (JS class) */
-  .ps-work-card--tapped .ps-work-card-logo,
-  .ps-work-card--tapped .ps-work-card-icon {
-    opacity: 0 !important;
   }
 }
 
@@ -3663,7 +3844,6 @@ ul, ol {
   white-space: nowrap;
   line-height: 1;
   display: inline-block;
-  will-change: transform;
 }
 
 /* Subtle vertical bob — ±2.5px over 2.8s, ease-in-out */
@@ -3798,6 +3978,26 @@ ul, ol {
   color: var(--theme-text-secondary);
   margin-bottom: 40px;
   transition: color 300ms ease;
+  /* The body was the one node in this section with no wrap control; the
+     heading directly above uses `balance`. `pretty` (NOT `balance`) because
+     this is a 4-line paragraph, not a 2-line display heading — `balance`
+     evens ALL four lines and makes body copy read like a pull-quote.
+
+     HONEST RESULT, MEASURED 2026-09-04: `pretty` did NOT fix the widow here.
+     It is applied and computes to `pretty` in Chromium and WebKit, and
+     Firefox drops it entirely (computes `wrap`/`auto` — no support). Line
+     breaks were byte-identical before and after in all three engines: line 4
+     stayed "after launch." alone at 106px of a 632px measure (16.8%, inside
+     the 15-17% band this repo records as a failure). This matches
+     why-us.tsx's own note that `pretty` "does not fix either".
+
+     What actually fixed it is a non-breaking space binding "stays" to
+     "after" in cta-section.tsx, which drops three words to the last line
+     instead of two (24.7% of measure, all three engines). THAT is the fix;
+     this declaration is kept only as progressive insurance for future copy
+     changes. Do not delete the nbsp believing this line covers it, and do
+     not swap this to `balance` — see above. */
+  text-wrap: pretty;
 }
 
 .ps-cta-buttons {
@@ -3814,1006 +4014,14 @@ ul, ol {
   }
 }
 
-/* ── MarCommand Callout ─────────────────────────────────────── */
-
-.ps-marcommand {
-  position: relative;
-  background: var(--theme-bg-primary);
-  color: inherit;
-  padding: var(--section-py-desktop) 0;
-  margin-top: -1px;
-  overflow: hidden;
-  transition: background-color 300ms ease;
-}
-
-
-.ps-marcommand-inner {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: 0 var(--container-padding);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  align-items: start;
-}
-
-/* Stacked variant: copy on top, full-width dashboard below */
-.ps-marcommand-inner--stacked {
-  grid-template-columns: 1fr;
-  gap: 48px;
-  align-items: start;
-}
-
-/* Copy block inside stacked layout */
-.ps-marcommand-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 780px;
-}
-
-/* Dashboard wrapper — slight outer ring so the mc3 card "floats" */
-.ps-marcommand-dashboard-wrap {
-  width: 100%;
-}
-
-/* Left column (legacy — kept for reference, no longer rendered) */
-.ps-marcommand-left {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
+/* `.ps-eyebrow--brand` physically sat inside the deleted MarCommand Callout
+   region but is NOT a MarCommand selector, so it is kept rather than removed as
+   a side effect of the sweep. It is referenced nowhere in the TSX sources, and
+   the later rule in the eyebrow selector list wins on source
+   order, so it is inert — but deleting a global selector is not this change's
+   job. Remove it in its own change if it is genuinely wanted gone. */
 .ps-eyebrow--brand {
   color: var(--color-primary);
-}
-
-.ps-marcommand-heading {
-  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
-  color: var(--theme-text-primary);
-  margin: 0;
-  transition: color 300ms ease;
-}
-
-.ps-marcommand-body {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--theme-text-secondary);
-  margin: 0;
-  transition: color 300ms ease;
-}
-
-.ps-marcommand-closer {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #94A3B8;
-  margin: 0;
-}
-
-.ps-marcommand-cta {
-  margin-top: 8px;
-}
-
-/* Below-dashboard framing copy — Tyler's verbatim quotes */
-.ps-marcommand-footer-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 680px;
-  margin: 40px auto 0;
-  padding: 32px 40px;
-  background: rgba(13, 149, 232, 0.05);
-  border: 1px solid rgba(13, 149, 232, 0.15);
-  border-radius: 12px;
-}
-
-.ps-marcommand-footer-body {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--color-text-on-dark);
-  opacity: 0.85;
-  margin: 0;
-}
-
-@media (max-width: 768px) {
-  .ps-marcommand-footer-copy {
-    padding: 24px 20px;
-    margin-top: 32px;
-  }
-}
-
-/* Right column */
-.ps-marcommand-right {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-/* Pull-quote block */
-.ps-marcommand-quote-wrap {
-  background: rgba(13, 149, 232, 0.07);
-  border: 1px solid rgba(13, 149, 232, 0.2);
-  border-left: 3px solid var(--color-primary);
-  border-radius: var(--radius-card);
-  padding: 28px 28px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.ps-marcommand-quote-icon {
-  color: var(--color-primary);
-  line-height: 0;
-}
-
-.ps-marcommand-quote {
-  font-size: 1.0625rem;
-  font-style: italic;
-  line-height: 1.65;
-  color: var(--color-text-dark-primary);
-  margin: 0;
-  padding: 0;
-  border: none;
-}
-
-.ps-marcommand-quote-source {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--color-primary);
-}
-
-/* Feature list */
-.ps-marcommand-features {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.ps-marcommand-feature {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  font-size: 0.9375rem;
-  line-height: 1.5;
-  color: var(--color-text-dark-secondary);
-}
-
-.ps-marcommand-feature-dot {
-  flex-shrink: 0;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--color-primary);
-  margin-top: 7px;
-}
-
-/* Responsive — collapse to single column on mobile */
-@media (max-width: 900px) {
-  .ps-marcommand-inner {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-}
-
-@media (max-width: 768px) {
-  .ps-marcommand {
-    padding: var(--section-py-mobile) 0;
-  }
-
-  /* Reduce quote-wrap padding on mobile so blockquote has more breathing room */
-  .ps-marcommand-quote-wrap {
-    padding: 20px 20px 18px;
-  }
-
-  /* Safety: prevent long channel/brand names from breaking layout */
-  .ps-marcommand-quote {
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-
-  /* Ensure MarCommand CTA button wraps gracefully if viewport is very narrow */
-  .ps-marcommand-cta .ps-btn {
-    white-space: normal;
-    text-align: center;
-  }
-}
-
-/* ── MarCommand Dashboard Mockup (mc3-*) ───────────────────────
-   All classes are prefixed mc3- to guarantee zero collisions with
-   the existing ps-marcommand-* system.
-   ──────────────────────────────────────────────────────────────*/
-
-.mc3 {
-  background: #0A1628;
-  color: #F1F5F9;
-  padding: 26px;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.06);
-  font-feature-settings: "tnum";
-  font-family: var(--font-inter, 'Inter', system-ui, -apple-system, sans-serif);
-}
-
-.mc3 *, .mc3 *::before, .mc3 *::after {
-  box-sizing: border-box;
-}
-
-.mc3-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 22px;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.mc3-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.mc3-mark {
-  width: 34px;
-  height: 34px;
-  background: #0D95E8;
-  border-radius: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  color: #0A1628;
-  font-size: 16px;
-  letter-spacing: -0.04em;
-}
-
-.mc3-name {
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.mc3-meta {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.mc3-live {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  color: #94A3B8;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.mc3-pulse {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #10D070;
-  position: relative;
-  flex-shrink: 0;
-}
-
-.mc3-pulse::after {
-  content: "";
-  position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  background: #10D070;
-  opacity: 0.5;
-  /* iOS Safari: promote to own compositing layer to prevent scale() flicker */
-  will-change: transform, opacity;
-  /* Fallback: force GPU layer on older WebKit */
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .mc3-pulse::after {
-    animation: mc3pulse 1.8s ease-out infinite;
-  }
-}
-
-@keyframes mc3pulse {
-  0%   { transform: scale(0.4); opacity: 0.7; }
-  100% { transform: scale(2.4); opacity: 0; }
-}
-
-.mc3-window {
-  font-size: 11px;
-  color: #94A3B8;
-  padding: 6px 12px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 8px;
-}
-
-/* Metrics row */
-.mc3-metrics {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.mc3-metric {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px;
-  padding: 16px 18px;
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .mc3-metric {
-    opacity: 0;
-    animation: mc3up 0.7s cubic-bezier(.16,1,.3,1) forwards;
-  }
-  .mc3-metric:nth-child(1) { animation-delay: 0.08s; }
-  .mc3-metric:nth-child(2) { animation-delay: 0.16s; }
-  .mc3-metric:nth-child(3) { animation-delay: 0.24s; }
-}
-
-@keyframes mc3up {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.mc3-m-label {
-  font-size: 10px;
-  color: #64748B;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 6px;
-}
-
-.mc3-m-val {
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-.mc3-m-delta {
-  font-size: 11px;
-  margin-top: 7px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-weight: 500;
-}
-
-.mc3-m-delta.up   { color: #10D070; }
-.mc3-m-delta.down { color: #EF4444; }
-
-/* Section sub-headers */
-.mc3-sec {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.mc3-sec-t {
-  font-size: 10px;
-  color: #64748B;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-weight: 500;
-}
-
-.mc3-sec-m {
-  font-size: 11px;
-  color: #94A3B8;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.mc3-api-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #10D070;
-  box-shadow: 0 0 8px rgba(16,208,112,0.6);
-  flex-shrink: 0;
-}
-
-/* Channel table */
-.mc3-channels {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px;
-  padding: 6px;
-  margin-bottom: 16px;
-}
-
-.mc3-ch-head {
-  display: grid;
-  grid-template-columns: 32px minmax(150px, 1.5fr) 80px 50px 90px minmax(120px, 1.2fr);
-  gap: 12px;
-  padding: 10px 14px 4px;
-  font-size: 9px;
-  color: #64748B;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.mc3-ch-head > div:nth-child(3),
-.mc3-ch-head > div:nth-child(4),
-.mc3-ch-head > div:nth-child(5) {
-  text-align: right;
-}
-
-.mc3-ch {
-  display: grid;
-  grid-template-columns: 32px minmax(150px, 1.5fr) 80px 50px 90px minmax(120px, 1.2fr);
-  gap: 12px;
-  align-items: center;
-  padding: 12px 14px;
-  border-radius: 8px;
-  opacity: 1;
-  transition: background 0.2s;
-}
-
-.mc3-ch:hover {
-  background: rgba(255,255,255,0.02);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .mc3-ch {
-    opacity: 0;
-    animation: mc3row 0.55s cubic-bezier(.16,1,.3,1) forwards;
-  }
-  .mc3-ch:nth-of-type(1) { animation-delay: 0.30s; }
-  .mc3-ch:nth-of-type(2) { animation-delay: 0.37s; }
-  .mc3-ch:nth-of-type(3) { animation-delay: 0.44s; }
-  .mc3-ch:nth-of-type(4) { animation-delay: 0.51s; }
-  .mc3-ch:nth-of-type(5) { animation-delay: 0.58s; }
-  .mc3-ch:nth-of-type(6) { animation-delay: 0.65s; }
-}
-
-@keyframes mc3row {
-  from { opacity: 0; transform: translateX(-6px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-.mc3-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.mc3-cn {
-  font-size: 13.5px;
-  font-weight: 500;
-  line-height: 1.25;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 7px;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  min-width: 0; /* Prevent flex item from overflowing grid cell */
-}
-
-.mc3-num {
-  font-size: 13px;
-  color: #94A3B8;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-.mc3-num.lit {
-  color: #F1F5F9;
-  font-weight: 500;
-}
-
-.mc3-roi {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.mc3-bar {
-  flex: 1;
-  height: 6px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.mc3-fill {
-  height: 100%;
-  border-radius: 3px;
-  transform-origin: left center;
-  transform: scaleX(var(--w, 0.5));
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .mc3-fill {
-    transform: scaleX(0);
-    animation: mc3fill 1.1s 0.55s cubic-bezier(.16,1,.3,1) forwards;
-  }
-}
-
-@keyframes mc3fill {
-  to { transform: scaleX(var(--w, 0.5)); }
-}
-
-.mc3-roi-v {
-  font-size: 13px;
-  font-weight: 600;
-  min-width: 42px;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-.mc3-pill {
-  display: inline-flex;
-  align-items: center;
-  font-size: 9px;
-  padding: 2px 7px;
-  border-radius: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 600;
-}
-
-/* Bottom 2-col grid */
-.mc3-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 16px;
-}
-
-.mc3-panel {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px;
-  padding: 15px 18px;
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .mc3-panel {
-    opacity: 0;
-    animation: mc3up 0.7s 0.7s cubic-bezier(.16,1,.3,1) forwards;
-  }
-}
-
-.mc3-panel-t {
-  font-size: 10px;
-  color: #64748B;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 500;
-  margin-bottom: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.mc3-panel-m {
-  color: #4FB7F0;
-  font-weight: 600;
-}
-
-/* Post format bars */
-.mc3-fmt {
-  display: grid;
-  grid-template-columns: 1fr 60px 36px;
-  gap: 12px;
-  align-items: center;
-  padding: 7px 0;
-  font-size: 13px;
-}
-
-.mc3-fmt-bar {
-  height: 5px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.mc3-fmt-fill {
-  height: 100%;
-  border-radius: 2px;
-  transform-origin: left;
-  transform: scaleX(var(--w, 0.5));
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .mc3-fmt-fill {
-    transform: scaleX(0);
-    animation: mc3fill 1s 1s cubic-bezier(.16,1,.3,1) forwards;
-  }
-}
-
-.mc3-fmt-v {
-  color: #F1F5F9;
-  font-weight: 600;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-  font-size: 13px;
-}
-
-/* Audience segments */
-.mc3-seg {
-  padding: 9px 0;
-  border-top: 1px solid rgba(255,255,255,0.04);
-}
-
-.mc3-seg:first-child {
-  border-top: none;
-  padding-top: 0;
-}
-
-.mc3-seg-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 6px;
-  gap: 10px;
-}
-
-.mc3-seg-name {
-  font-size: 13px;
-  color: #F1F5F9;
-  font-weight: 500;
-  line-height: 1.3;
-}
-
-.mc3-seg-since {
-  font-size: 10px;
-  color: #64748B;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-top: 2px;
-}
-
-.mc3-seg-pct {
-  font-size: 13px;
-  color: #94A3B8;
-  font-variant-numeric: tabular-nums;
-  flex-shrink: 0;
-}
-
-.mc3-seg-bar {
-  height: 5px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.mc3-seg-fill {
-  height: 100%;
-  background: #0D95E8;
-  border-radius: 2px;
-  transform-origin: left;
-  transform: scaleX(var(--w, 0.5));
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .mc3-seg-fill {
-    transform: scaleX(0);
-    animation: mc3fill 1.1s 1.2s cubic-bezier(.16,1,.3,1) forwards;
-  }
-}
-
-/* Trend chart */
-.mc3-trend {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px;
-  padding: 14px 18px 12px;
-  margin-bottom: 16px;
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .mc3-trend {
-    opacity: 0;
-    animation: mc3up 0.7s 1s cubic-bezier(.16,1,.3,1) forwards;
-  }
-}
-
-.mc3-trend-svg {
-  width: 100%;
-  height: 70px;
-  display: block;
-}
-
-@keyframes mc3draw {
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes mc3fade {
-  to { opacity: 1; }
-}
-
-@keyframes mc3ping {
-  0%   { transform: scale(1); opacity: 0.5; }
-  100% { transform: scale(3); opacity: 0; }
-}
-
-/* iOS Safari: promote SVG ping circle to GPU layer to prevent scale() flicker */
-.mc3-ping-circle {
-  will-change: transform, opacity;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-/* Pending recommendations */
-.mc3-pending-head {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin-bottom: 11px;
-}
-
-.mc3-pending-t {
-  font-size: 10px;
-  color: #4FB7F0;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-weight: 600;
-}
-
-.mc3-pending-c {
-  font-size: 11px;
-  color: #64748B;
-}
-
-.mc3-pending-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
-.mc3-pcard {
-  background: rgba(13,149,232,0.06);
-  border: 1px solid rgba(13,149,232,0.28);
-  border-radius: 12px;
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .mc3-pcard {
-    opacity: 0;
-    animation: mc3up 0.8s cubic-bezier(.16,1,.3,1) forwards;
-  }
-  .mc3-pcard:nth-of-type(1) { animation-delay: 1.50s; }
-  .mc3-pcard:nth-of-type(2) { animation-delay: 1.62s; }
-  .mc3-pcard:nth-of-type(3) { animation-delay: 1.74s; }
-}
-
-.mc3-pcard-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.mc3-pcard-ic {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
-  background: rgba(13,149,232,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.mc3-pcard-cat {
-  font-size: 10px;
-  color: #4FB7F0;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 600;
-}
-
-.mc3-pcard-body {
-  font-size: 13px;
-  line-height: 1.5;
-  color: #F1F5F9;
-  min-height: 38px;
-}
-
-.mc3-pcard-body b {
-  color: #4FB7F0;
-  font-weight: 600;
-}
-
-.mc3-pcard-lift {
-  font-size: 11.5px;
-  color: #10D070;
-  font-weight: 600;
-}
-
-.mc3-pcard-act {
-  display: flex;
-  gap: 7px;
-}
-
-.mc3-pbtn {
-  flex: 1;
-  font-size: 11px;
-  /* min-height 44px meets Apple HIG touch target spec even though buttons are decorative */
-  padding: 7px 8px;
-  min-height: 44px;
-  border-radius: 6px;
-  border: 1px solid rgba(13,149,232,0.4);
-  background: rgba(13,149,232,0.1);
-  color: #4FB7F0;
-  font-weight: 500;
-  cursor: default;
-  font-family: inherit;
-  transition: all 0.15s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mc3-pbtn.p {
-  background: #0D95E8;
-  border-color: #0D95E8;
-  color: #0A1628;
-  font-weight: 600;
-}
-
-[data-theme="light"] .mc3 {
-  background: #FFFFFF;
-  color: #0A1628;
-  border-color: rgba(13, 149, 232, 0.14);
-  box-shadow: 0 20px 60px rgba(10, 22, 40, 0.08);
-}
-
-[data-theme="light"] .mc3-metric,
-[data-theme="light"] .mc3-channels,
-[data-theme="light"] .mc3-panel,
-[data-theme="light"] .mc3-trend {
-  background: #F8FAFC;
-  border-color: #E2E8F0;
-}
-
-[data-theme="light"] .mc3-ch:hover {
-  background: rgba(13, 149, 232, 0.06);
-}
-
-[data-theme="light"] .mc3-m-label,
-[data-theme="light"] .mc3-sec-t,
-[data-theme="light"] .mc3-ch-head,
-[data-theme="light"] .mc3-panel-t,
-[data-theme="light"] .mc3-seg-since,
-[data-theme="light"] .mc3-pending-c {
-  color: #64748B;
-}
-
-[data-theme="light"] .mc3-sec-m,
-[data-theme="light"] .mc3-num,
-[data-theme="light"] .mc3-seg-pct,
-[data-theme="light"] .mc3-window {
-  color: #475569;
-}
-
-[data-theme="light"] .mc3-name,
-[data-theme="light"] .mc3-m-val,
-[data-theme="light"] .mc3-num.lit,
-[data-theme="light"] .mc3-fmt-v,
-[data-theme="light"] .mc3-seg-name,
-[data-theme="light"] .mc3-pcard-body {
-  color: #0A1628;
-}
-
-[data-theme="light"] .mc3-bar,
-[data-theme="light"] .mc3-fmt-bar,
-[data-theme="light"] .mc3-seg-bar {
-  background: #E2E8F0;
-}
-
-[data-theme="light"] .mc3-seg {
-  border-top-color: #E2E8F0;
-}
-
-[data-theme="light"] .mc3-trend-svg line {
-  stroke: rgba(10, 22, 40, 0.08);
-}
-
-[data-theme="light"] .mc3-pcard {
-  background: #EFF6FF;
-  border-color: rgba(13, 149, 232, 0.24);
-}
-
-[data-theme="light"] .mc3-pbtn {
-  background: #FFFFFF;
-  border-color: rgba(13, 149, 232, 0.28);
-}
-
-/* Responsive: 720px — stack bottom grid */
-@media (max-width: 720px) {
-  .mc3-grid {
-    grid-template-columns: 1fr;
-  }
-  .mc3-pending-grid {
-    grid-template-columns: 1fr;
-  }
-  .mc3-pending-c {
-    font-size: 0;
-  }
-  .mc3-pending-c::after {
-    content: "· 1 recommendation awaiting approval";
-    font-size: 11px;
-  }
-  .mc3-pcard:nth-child(n + 2) {
-    display: none;
-  }
-  /* Prevent long segment names/microcopy from overflowing single-column panel */
-  .mc3-seg-name,
-  .mc3-seg-since {
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-}
-
-/* Responsive: 640px — simplify channel table */
-@media (max-width: 640px) {
-  .mc3 {
-    padding: 18px;
-  }
-  .mc3-metrics {
-    grid-template-columns: 1fr;
-  }
-  /* 4-column table: icon | channel | spend | roi-value
-     Keep ROI value chip visible; hide Leads/Revenue columns and the bar only.
-     Without this, the 6th grid child (ROI cell) wraps to the next row
-     because display:none removes items from grid flow — iOS Safari confirmed. */
-  .mc3-ch-head,
-  .mc3-ch {
-    grid-template-columns: 32px 1fr 72px auto;
-  }
-  .mc3-ch-head > div:nth-child(4),
-  .mc3-ch-head > div:nth-child(5),
-  .mc3-ch > div:nth-child(4),
-  .mc3-ch > div:nth-child(5) {
-    display: none;
-  }
-  /* Hide bar inside the ROI cell; the mc3-roi-v chip remains visible */
-  .mc3-bar {
-    display: none;
-  }
-  /* ROI cell: just the value chip, no flex gap needed */
-  .mc3-roi {
-    gap: 0;
-  }
-  .mc3-roi-v {
-    min-width: unset;
-    text-align: left;
-  }
-  /* Channel name: tighten font so long names don't squeeze spend column */
-  .mc3-cn {
-    font-size: 12px;
-  }
 }
 
 /* ── Footer ────────────────────────────────────────────────── */
@@ -6119,8 +5327,10 @@ body {
 /* ── System Fixes card: no scale on mobile — keep desktop layout, let card clip naturally ── */
 
 /* ── Hero: fill entire screen regardless of theme ── */
+/* svh not dvh — see the note on the base .ps-hero rule. This !important is one
+   of the two overrides that make a change up there invisible. */
 .ps-hero {
-  min-height: 100dvh !important;
+  min-height: 100svh !important;
   padding-top: 0 !important;
   margin-top: 0 !important;
 }
@@ -6174,9 +5384,12 @@ body {
 
 
 /* Hero — eliminate gray bar on theme switch */
+/* svh not dvh — see the note on the base .ps-hero rule. The inert
+   `min-height: 100vh` that used to sit below this line is DELETED: it could
+   never beat the !important above it, and its presence was the evidence that
+   this exact fix had been attempted once before and silently failed. */
 .ps-hero {
-  min-height: 100dvh !important;
-  min-height: 100vh;
+  min-height: 100svh !important;
   margin-top: 0 !important;
   padding-top: 0 !important;
 }
@@ -6187,12 +5400,21 @@ html, body {
   background-color: var(--theme-bg-primary, #FFFFFF) !important;
 }
 
-/* ── Case study cards: taller and narrower on mobile ── */
+/* ── Case study cards: sized for a readable panel on mobile ── */
 @media (max-width: 768px) {
   .ps-work-card {
-    width: 65vw !important;
-    min-width: 65vw !important;
-    aspect-ratio: 5 / 8 !important;
+    /* 78vw + 5/7, not 65vw + 5/8. At 65vw the revealed description ran 30-33
+       characters per line against a ~45 readability floor and the owner could
+       not read it (2026-09-04). Font size alone cannot fix that: in a fixed
+       column a bigger font makes the measure worse, and at 360px 13px left
+       only 8px before overflow:hidden began eating the FarmBooks copy.
+       Relaxing the aspect ratio is what makes the width affordable — +50.7px
+       of width for +20.3px of height at 390px. Measured with the 13px body:
+       36.0-40.4 chars/line at 360, 39.8-45.2 at 390. Peek of the next card
+       stays at 69.8px (390) / 63.2px (360), so the swipe affordance lives. */
+    width: 78vw !important;
+    min-width: 78vw !important;
+    aspect-ratio: 5 / 7 !important;
     min-height: auto !important;
   }
   .ps-work-card-logo {
@@ -6202,6 +5424,20 @@ html, body {
   .ps-work-card-icon {
     width: 100px !important;
     height: 100px !important;
+  }
+}
+
+/* Below 360px the vw-derived card is only ~250px wide, and at 5/7 the longest
+   description — FarmBooks, 379 characters — came within THREE PIXELS of being
+   clipped by the panel's overflow:hidden (measured 320x568). That copy is the
+   only homepage anchor for the "Schedule-F-ready" and "tax season" claims and
+   cannot be shortened, so the geometry has to absorb it. 5/8 buys the height
+   back without touching the width, so the 360px measure is unchanged and
+   320px goes from 3px to 53px of headroom. Reuses the existing 360px tier;
+   no new breakpoint. */
+@media (max-width: 360px) {
+  .ps-work-card {
+    aspect-ratio: 5 / 8 !important;
   }
 }
 
@@ -6275,17 +5511,42 @@ html, body {
 }
 
 /* ── Our Work: swipe hint (replaces see-more link) ── */
+/* WCAG 1.4.3. This measured 1.40:1 at its pulse trough and 2.19:1 at peak in
+   dark, and 1.27:1 / 1.66:1 in light, against a 4.5:1 floor at 12px.
+   The cause was COMPOUNDING alpha, not the token: `opacity` multiplies the
+   colour's own alpha, so rgba(...,0.35) animated between opacity 0.35 and 0.7
+   painted at an effective 0.1225-0.245. A solid theme token fixes both themes
+   at once — 7.07:1 dark, 7.58:1 light, measured from rendered pixels — and
+   makes the separate [data-theme="light"] override redundant.
+
+   The pulse is now a TRANSFORM, not an opacity fade. Contrast then cannot
+   depend on animation phase at all, so this can never silently regress the
+   way tuning an opacity range above a threshold would. It is also the better
+   affordance: a horizontal nudge demonstrates the swipe the text is asking
+   for. Still transform/opacity only, per the house rule. */
 .ps-work-swipe-hint {
   text-align: center;
   font-size: 0.75rem;
-  color: rgba(255,255,255,0.35);
+  color: var(--theme-text-secondary);
   margin-top: 20px;
-  animation: ps-swipe-hint-fade 2.5s ease-in-out infinite;
 }
 
-@keyframes ps-swipe-hint-fade {
-  0%, 100% { opacity: 0.35; }
-  50% { opacity: 0.7; }
+/* Guarded. Unguarded since Aug 11, this was the only animation in
+   #case-studies not behind a reduced-motion query. NOTE: it was already
+   neutralised at RUN time by the blanket
+   `@media (prefers-reduced-motion: reduce) { *,*::before,*::after {
+   animation-duration:0.01ms!important; animation-iteration-count:1!important } }`
+   further down this file, so this guard is source hygiene rather than a live
+   behavioural fix — it stops the section depending on that catch-all. */
+@media (prefers-reduced-motion: no-preference) {
+  .ps-work-swipe-hint {
+    animation: ps-swipe-hint-nudge 2.5s ease-in-out infinite;
+  }
+}
+
+@keyframes ps-swipe-hint-nudge {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(4px); }
 }
 
 /* Hide on desktop — only show on mobile */
@@ -6293,10 +5554,6 @@ html, body {
   .ps-work-swipe-hint {
     display: none;
   }
-}
-
-[data-theme="light"] .ps-work-swipe-hint {
-  color: rgba(0,0,0,0.3);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -7446,7 +6703,6 @@ html, body {
 .ps-page-hero,
 .ps-contact2-hero,
 .ps-footer,
-.mc3,
 .ps-bento-card__content,
 .ps-dialog-visual {
   --ps-eyebrow-color: var(--color-cyan);

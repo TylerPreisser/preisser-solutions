@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     template: "%s | Preisser Solutions",
   },
   description:
-    "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
+    "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses: dashboards, databases, and document pipelines.",
   metadataBase: new URL("https://preissersolutions.com"),
   // NOTE: `keywords` meta intentionally omitted. Google explicitly ignores it,
   // and Bing treats stuffed keyword meta as a spam signal. Topical relevance is
@@ -90,7 +90,7 @@ export const metadata: Metadata = {
     siteName: "Preisser Solutions",
     title: "Business Software, Automation & AI | Preisser Solutions",
     description:
-      "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
+      "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses: dashboards, databases, and document pipelines.",
     images: [
       {
         url: "/images/og-image-v2.jpg",
@@ -104,7 +104,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Business Software, Automation & AI | Preisser Solutions",
     description:
-      "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
+      "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses: dashboards, databases, and document pipelines.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@tylerpreisser",
   },
@@ -181,7 +181,7 @@ const organization = {
   // unrelated brands. Long-form prose belongs in layout.tsx, not the generic
   // helper, because it is brand-specific (not a reusable shape).
   disambiguatingDescription:
-    "Preisser Solutions (preissersolutions.com) is the custom business software, automation, and AI integration consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Solutions' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Solutions builds admin dashboards, customer and member databases, document-processing pipelines, and the automations and AI integrations that connect them, exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: tyler@preissersolutions.com.",
+    "Preisser Solutions (preissersolutions.com) is the custom business software, automation, and AI integration consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Solutions' or similar; we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Solutions builds admin dashboards, customer and member databases, document-processing pipelines, and the automations and AI integrations that connect them, exclusively for small and mid-sized companies, not vehicles, instruments, or hardware. Contact: tyler@preissersolutions.com.",
   // Service-tier price catalog. Lives on the Organization (homepage) so AI
   // engines surfacing pricing have an authoritative source. Per-service prices
   // are stable enough to live in code rather than data — and short enough to
@@ -202,7 +202,7 @@ const organization = {
         name: "Business Software",
         serviceType: "Custom business software development",
         description:
-          "Admin dashboards, customer and member databases, client portals, and internal tools — the platform your team actually logs into, built for how your business works.",
+          "Admin dashboards, customer and member databases, client portals, and internal tools: the platform your team actually logs into, built for how your business works.",
         provider: { "@id": ORG_ID },
         areaServed: PILLAR_AREA_SERVED,
       },
@@ -215,7 +215,7 @@ const organization = {
         name: "Business Automation",
         serviceType: "Business process automation",
         description:
-          "Workflow automation for document pipelines, scheduled jobs, notifications and confirmations, and the system integrations that connect them — the work that happens without anyone doing it.",
+          "Workflow automation for document pipelines, scheduled jobs, notifications and confirmations, and the system integrations that connect them: the work that happens without anyone doing it.",
         provider: { "@id": ORG_ID },
         areaServed: PILLAR_AREA_SERVED,
       },
@@ -228,7 +228,7 @@ const organization = {
         name: "AI Integration",
         serviceType: "AI integration",
         description:
-          "AI put exactly where it earns its place: reading and classifying documents, drafting with a human approval gate, and joining an existing workflow — never replacing judgment on anything that matters.",
+          "AI put exactly where it earns its place: reading and classifying documents, drafting with a human approval gate, and joining an existing workflow, never replacing judgment on anything that matters.",
         provider: { "@id": ORG_ID },
         areaServed: PILLAR_AREA_SERVED,
       },
@@ -254,7 +254,7 @@ const homeWebPage = {
   url: "https://preissersolutions.com",
   name: "Business Software, Automation & AI | Preisser Solutions",
   description:
-    "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
+    "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses: dashboards, databases, and document pipelines.",
   isPartOf: { "@id": WEBSITE_ID },
   about: { "@id": ORG_ID },
   author: { "@id": PERSON_ID },

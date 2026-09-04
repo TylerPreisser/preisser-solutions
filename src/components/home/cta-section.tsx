@@ -61,11 +61,20 @@ export function CtaSection() {
         <h2 id="cta-heading" className="ps-cta-heading">
           Find out how we can help your business.
         </h2>
+        {/* THE OWNER'S OWN PHRASING. Restored 2026-09-04 under ADR-0009 after
+            he rejected the agent-written version: "The text for get in touch,
+            the paragraph below is SO poorly written, follow what I fricken
+            said." Do not tighten, re-balance or "improve" this. It is longer
+            than what it replaced and that is accepted. No em dashes anywhere
+            on this site; commas and colons only. */}
         <p className="ps-cta-body">
-          We start by listening &mdash; your biggest goals, and the problems
-          getting in their way. Then we put a consulting background to work and
-          come back with a set of solutions built for how your business
-          actually runs.
+          We start by listening, finding out how we can help you achieve your
+          business&apos;s biggest goals, or even solve your business&apos;s
+          biggest problems. We have a very effective, unique approach:
+          experience in enterprise software and consulting, as well as
+          development. We are the ones who ideate with you and come up with
+          solutions, and the same person who builds it works with you every
+          step of the way.
         </p>
         <div className="ps-cta-buttons">
           <Link href="/contact" className="ps-btn ps-btn-primary-dark">

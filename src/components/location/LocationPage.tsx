@@ -1119,7 +1119,7 @@ function FaqSection({ data }: { data: LocationPageData }) {
             className="mt-4 text-balance text-3xl font-semibold leading-tight tracking-[-0.02em] sm:text-4xl"
             style={{ color: "var(--theme-text-primary)" }}
           >
-            FAQ — {data.city}, {data.state}
+            FAQ: {data.city}, {data.state}
           </h2>
         </div>
 

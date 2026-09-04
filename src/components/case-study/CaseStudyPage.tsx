@@ -36,25 +36,25 @@ const RELATED_CARD_INDEX: Record<
   // ── 1. Named client engagements (canonical #1–8) ────────────
   "cassidy-hvac-reactivation": {
     slug: "cassidy-hvac-reactivation",
-    label: "Cassidy HVAC — Customer Reactivation",
+    label: "Cassidy HVAC: Customer Reactivation",
     oneLine: "60%+ dormant customer reactivation in 6 weeks",
     category: "AI Automation",
   },
   "cassidy-hvac-marketing-engine": {
     slug: "cassidy-hvac-marketing-engine",
-    label: "Cassidy HVAC — AI Marketing Engine",
+    label: "Cassidy HVAC: AI Marketing Engine",
     oneLine: "5x organic reach in 30 days, agency replaced",
     category: "Marketing Automation",
   },
   "hg-oil-inventory-system": {
     slug: "hg-oil-inventory-system",
-    label: "HG Oil Holdings — Inventory System",
+    label: "HG Oil Holdings: Inventory System",
     oneLine: "95% logistics-time reduction, loss center to profit center",
     category: "Custom Application",
   },
   "hg-oil-ai-invoice-processing": {
     slug: "hg-oil-ai-invoice-processing",
-    label: "HG Oil Holdings — AI Invoice Processing",
+    label: "HG Oil Holdings: AI Invoice Processing",
     oneLine: "75% reduction in manual invoice handling",
     category: "AI Document Processing",
   },
@@ -86,7 +86,7 @@ const RELATED_CARD_INDEX: Record<
   // ── 2. Internal AI platforms (canonical #9, #16, #17, #21) ──
   marcommand: {
     slug: "marcommand",
-    label: "MarCommand — Multi-Agent Marketing Engine",
+    label: "MarCommand: Multi-Agent Marketing Engine",
     oneLine: "8 agents orchestrated end-to-end across every channel",
     category: "Internal Platform",
   },
@@ -98,7 +98,7 @@ const RELATED_CARD_INDEX: Record<
   },
   "alpha-matrix": {
     slug: "alpha-matrix",
-    label: "Alpha Matrix — Multi-Agent Stock Analysis",
+    label: "Alpha Matrix: Multi-Agent Stock Analysis",
     oneLine: "6 agents, daily pipeline, self-evolving soul files",
     category: "Internal Platform",
   },
@@ -113,7 +113,7 @@ const RELATED_CARD_INDEX: Record<
   "ai-email-digest": {
     slug: "ai-email-digest",
     label: "AI Email Digest System",
-    oneLine: "Daily executive briefing — every important email summarized",
+    oneLine: "Daily executive briefing: every important email summarized",
     category: "Internal Tool",
   },
   "hiring-pipeline-robin": {
@@ -139,7 +139,7 @@ const RELATED_CARD_INDEX: Record<
   "ai-invoice-processing-platform": {
     slug: "ai-invoice-processing-platform",
     label: "AI Invoice Processing Platform",
-    oneLine: "75% manual handling cut — proven at HG Oil, generalized",
+    oneLine: "75% manual handling cut: proven at HG Oil, generalized",
     category: "Capability",
   },
   "ai-document-analysis": {

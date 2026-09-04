@@ -1,5 +1,5 @@
 # ADR-0004: Why Us collapses to a logo and a tagline, superseding the three-pillar plan's "keep it" line
-Status: Accepted — 2026-09-03 (conversation) — Owner: Tyler Preisser
+Status: Superseded by ADR-0008 — 2026-09-04
 Supersedes / Superseded by: Supersedes `docs/plans/2026-08-02-three-pillar-reposition.md` §7 row 6 ("WhyUs | keep; it already works") and its §8 protection of card 2. The rest of that plan stands untouched.
 
 ## Context

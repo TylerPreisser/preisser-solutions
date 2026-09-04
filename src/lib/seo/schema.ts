@@ -82,7 +82,7 @@ export function organizationSchema() {
       width: 1024,
       height: 1024,
       caption:
-        "Preisser Solutions logo — custom business software, business automation, and AI integration in Hays, Kansas",
+        "Preisser Solutions logo: custom business software, business automation, and AI integration in Hays, Kansas",
       name: "Preisser Solutions Logo",
     },
     image: `${URL}/images/ps-logo.png`,

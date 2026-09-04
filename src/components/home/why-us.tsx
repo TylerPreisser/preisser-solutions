@@ -39,49 +39,58 @@ export function WhyUs() {
             src="/images/ps-logo.webp"
             alt=""
             aria-hidden="true"
-            width={1024}
-            height={1024}
+            width={336}
+            height={336}
             className="ps-why-relationship__mark"
           />
 
+          {/* THE OWNER'S OWN WORDS. Restored 2026-09-04 under ADR-0009 after
+              he rejected the agent-authored replacement on sight:
+              "It's not 'in it for the long term' it is your success is our
+              success thing dude."
+              Do NOT substitute a different tagline, however well it renders.
+              ADR-0004 chose this string because it is HIS phrasing; ADR-0008
+              replaced it with "In it for the long term." and was wrong to.
+              A better-reading line is not a reason to change it. */}
           <h2 id="why-heading" className="ps-why-relationship__tagline">
             Your success is{" "}
             <span className="ps-why-relationship__accent">our success.</span>
           </h2>
 
-          {/* COPY IS LENGTH-TUNED. Do not shorten or lengthen this paragraph
-              without re-measuring both widths; the measure is 342px at 390 and
-              704px at 1440, and the wrap lands badly at several nearby
-              lengths. Two earlier drafts failed on exactly that:
-                - "we are still here to change with it" widowed "with it."
-                  onto an eighth line at 390 — 53px in a 342px measure.
-                - the draft this replaces ran 3 lines at 1440 and ended on
-                  "more efficient." — 123px of 704px, two words, visibly
-                  orphaned.
-              text-wrap: pretty is already applied (why-us-relationship.css)
-              and does not fix either; balance measurably made the first worse.
-              Copy length is the only lever that works.
+          {/* THIS IS THE OWNER'S TEXT, VERBATIM. NOT ONE WORD IS OURS.
+              Authority: ADR-0009 (2026-09-04). Every deviation below has now
+              been tried and reversed, so do not re-derive them:
 
-              "world-class" was removed 2026-09-03. docs/WRITER-AGENT-PROMPT.md
-              line 74 names it as a banned marketing cliché, alongside
-              "industry-leading", "best-in-class", "cutting-edge" and
-              "next-generation". The owner did say the phrase out loud, but the
-              same owner wrote the rule that bans it, and the guide's own
-              standard is "show, don't tell — outcomes over adjectives". So the
-              adjective is replaced by the concrete thing it was pointing at:
-              software built around how the business actually works, and kept
-              working long after launch. Both halves are existing approved
-              positioning (service-pillars.tsx differentiators: "It's better
-              because it isn't generic", "built around how your business
-              actually works, not around someone else's assumptions").
-              Everything the owner asked for is still here — long-term
-              relationship, helping them grow, crafting AND maintaining, and
-              the efficiency payoff. */}
+                - An earlier pass "tightened" it and silently dropped
+                  "solving their business problems", his only statement of
+                  what the work is FOR.
+                - A later pass deleted the article in "after the launch" to
+                  cure a measured widow. THE ARTICLE IS BACK AND STAYS BACK.
+                  That edit was defensible on the render and still wrong,
+                  because it was an edit to words he had already told us to
+                  use as written.
+                - Do not "fix" the referent of "It" in the last sentence.
+                  That objection was raised, argued, and is not ours to act
+                  on.
+
+              KNOWN AND ACCEPTED: with "the" restored, at 375x667 and 360x640
+              this runs 8 lines and the last line is short. The engines
+              disagree there (Chromium 27% / Firefox 18% / WebKit 75% of
+              measure). text-wrap: pretty is applied in
+              why-us-relationship.css and does NOT fix it; balance made an
+              earlier draft measurably worse. That is a cosmetic cost the
+              owner accepted by supplying this exact sentence. IF IT NEEDS TO
+              CHANGE, HE CHANGES IT — measure, report, and leave the words
+              alone.
+
+              REAL SAFARI HAS NEVER BEEN RUN ON THIS SECTION. The WebKit
+              figures are Playwright WebKit, which is not Safari. */}
           <p className="ps-why-relationship__copy">
-            Our goal is a long-term relationship with every client — helping
-            them grow, and crafting and maintaining custom software built
-            around how their business actually works, so it keeps making them
-            more efficient long after launch.
+            Our top goal is to develop long-term working relationships with all
+            our clients, helping them grow and solving their business problems
+            by crafting and maintaining custom software built around their
+            specific business. It keeps making them more efficient after the
+            launch.
           </p>
         </div>
       </div>

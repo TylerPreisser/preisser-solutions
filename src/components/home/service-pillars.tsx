@@ -11,9 +11,11 @@ import {
   // its header said it was kept so it could be "imported into a rebuilt card
   // grid structure without losing the animations". This is that rebuild.
   WebsiteVisual,
-  // New for the same ADR. RevenueVisual is deliberately NOT imported --
-  // see the note in card-visuals-backup.tsx.
-  CustomBuildVisual,
+  // RevenueVisual and CustomBuildVisual are deliberately NOT imported -- see
+  // the note in card-visuals-backup.tsx, which is an explicit shelf for
+  // visuals with no current card, not dead code. CustomBuildVisual joined it
+  // on 2026-09-04 when ADR-0007 merged the Custom Websites card it drew into
+  // the Websites card, which keeps WebsiteVisual. Neither file is pruned.
   SearchVisual,
 } from "@/components/home/card-visuals-backup";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -106,10 +108,19 @@ const services: ServicePillar[] = [
       "We paid someone to build our system years ago and we haven't been able to change it since.",
     ],
     serviceTiles: [
+      // Relocated here 2026-09-04 from the deleted <Capabilities> section
+      // (capabilities.tsx:73-78) — see the note on the AI pillar's first tile.
+      {
+        title: "Business Software",
+        description:
+          "Admin dashboards, customer and member databases, client portals, internal tools.",
+        href: "/web-applications",
+        icon: <IconExecutiveDashboard />,
+      },
       {
         title: "Admin Dashboard",
         description:
-          "One login that runs the operation — records, scheduling, communication, and reporting in one place instead of six tools that don't talk. Your team stops exporting from one system to paste into another, and the numbers stop disagreeing with each other.",
+          "One login that runs the operation: records, scheduling, communication, and reporting in one place instead of six tools that don't talk. Your team stops exporting from one system to paste into another, and the numbers stop disagreeing with each other.",
         icon: <IconExecutiveDashboard />,
       },
       {
@@ -121,11 +132,11 @@ const services: ServicePillar[] = [
       {
         title: "Customer & Member Databases",
         description:
-          "One record per customer or member — history, status, and documents attached — that every other part of the system reads from. New signups get matched against existing records instead of quietly creating a second one.",
+          "One record per customer or member (history, status, and documents attached) that every other part of the system reads from. New signups get matched against existing records instead of quietly creating a second one.",
         icon: <IconCustomerReactivation />,
       },
       {
-        title: "Client Portals, Booking & Intake",
+        title: "Client & Member Portals, Booking & Intake",
         description:
           "A login for the people you serve: their documents, their history, their appointments. Booking and intake forms that write straight into your system instead of into somebody's inbox.",
         icon: <IconCustomWebApp />,
@@ -133,19 +144,19 @@ const services: ServicePillar[] = [
       {
         title: "Financial & Operational Reporting",
         description:
-          "AR aging, cash position, revenue against forecast, cost per job — connected to the systems those numbers already live in, so the report is current when you open it.",
+          "AR aging, cash position, revenue against forecast, cost per job, connected to the systems those numbers already live in, so the report is current when you open it.",
         icon: <IconFinancialHealth />,
       },
       {
         title: "One Data Model, Website and App",
         description:
-          "Your website and your mobile app read from the same place, so they can never drift apart. Staff edit once, hit publish, and both update at the same moment — no developer, no deploy, no waiting.",
+          "Your website and your mobile app read from the same place, so they can never drift apart. Staff edit once, hit publish, and both update at the same moment: no developer, no deploy, no waiting.",
         icon: <IconSystemIntegrationDashboard />,
       },
       {
         title: "Spreadsheets to a Real System",
         description:
-          "The shared workbook everyone edits becomes a system with real records, permissions, and history — migrated with the data you already have, not a fresh start.",
+          "The shared workbook everyone edits becomes a system with real records, permissions, and history, migrated with the data you already have, not a fresh start.",
         icon: <IconSpreadsheetMigration />,
       },
     ],
@@ -191,10 +202,19 @@ const services: ServicePillar[] = [
       "Our best people are buried in busywork instead of the work we hired them for.",
     ],
     serviceTiles: [
+      // Relocated here 2026-09-04 from the deleted <Capabilities> section
+      // (capabilities.tsx:79-84) — see the note on the AI pillar's first tile.
+      {
+        title: "Business Automation",
+        description:
+          "Registration to confirmation. Bill to categorized ledger. Form to CRM to follow-up.",
+        href: "/business-automation",
+        icon: <IconSystemIntegrationDashboard />,
+      },
       {
         title: "Registration → Confirmation → Reminder",
         description:
-          "Someone signs up, gets matched against the records you already have, lands on the right list, and gets a confirmation — with nobody retyping a name or sending a message by hand. Sign-up → match → list → confirmation, running whether or not anyone is at a desk.",
+          "Someone signs up, gets matched against the records you already have, lands on the right list, and gets a confirmation, with nobody retyping a name or sending a message by hand. Sign-up → match → list → confirmation, running whether or not anyone is at a desk.",
         icon: <IconSchedulingReminders />,
       },
       {
@@ -255,11 +275,11 @@ const services: ServicePillar[] = [
     differentiators: [
       {
         lead: "We diagnose before we prescribe.",
-        body: "Full audit of your tools, data flow, and bottlenecks — then a clear fix plan with costs and timelines before any work starts.",
+        body: "Full audit of your tools, data flow, and bottlenecks, then a clear fix plan with costs and timelines before any work starts.",
       },
       {
         lead: "Every platform your business runs on.",
-        body: "QuickBooks, ServiceTitan, Square, Jobber, HubSpot, Salesforce, custom databases — we've integrated, migrated, and repaired them all.",
+        body: "QuickBooks, ServiceTitan, Square, Jobber, HubSpot, Salesforce, custom databases. We've integrated, migrated, and repaired them all.",
       },
       {
         lead: "Measured in hours recovered and errors eliminated.",
@@ -274,7 +294,7 @@ const services: ServicePillar[] = [
     variant: "automation",
     title: "AI Integration.",
     description:
-      "AI put exactly where it earns its place — reading documents, classifying, drafting — with a human gate on anything that matters. It isn't a product you buy from us. It's how the work gets done, and where it belongs inside your system.",
+      "AI put exactly where it earns its place (reading documents, classifying, drafting), with a human gate on anything that matters. It isn't a product you buy from us. It's how the work gets done, and where it belongs inside your system.",
     href: "/contact",
     visual: <AutomationVisual />,
     bullets: [
@@ -286,12 +306,24 @@ const services: ServicePillar[] = [
     painPoints: [
       "Someone here retypes the same information off a PDF every single day.",
       "We were sold an AI tool. Nobody uses it and nobody trusts it.",
-      "If the software is going to be wrong, it needs to tell me which one it got wrong — not let me find out at tax time.",
+      "If the software is going to be wrong, it needs to tell me which one it got wrong, not let me find out at tax time.",
       "We can't have software emailing customers on its own.",
       "We fix the same mistake for it over and over and it never learns.",
       "A build like this used to be a three-month quote we couldn't justify.",
     ],
     serviceTiles: [
+      // Relocated here 2026-09-04 from the deleted <Capabilities> section
+      // (capabilities.tsx:85-90), which was this hub's ONLY homepage link.
+      // Title + description are the exact strings that section used. A tile
+      // with an href emits a real <a> in PillarCrawlerContent, so the link
+      // survives in out/index.html at depth 1 — same crawl value as before.
+      {
+        title: "AI Integration",
+        description:
+          "AI that reads documents, classifies, and drafts, with a human gate on anything that matters.",
+        href: "/services/ai-automation",
+        icon: <IconAISearch />,
+      },
       {
         title: "Document Extraction & Classification",
         description:
@@ -319,13 +351,13 @@ const services: ServicePillar[] = [
       {
         title: "AI Inside the Workflow, Not Bolted On",
         description:
-          "No chatbot parked in the corner of the screen. The model sits at the step where the work actually happens — reading the document, sorting the intake, drafting the follow-up — inside the system your team already uses.",
+          "No chatbot parked in the corner of the screen. The model sits at the step where the work actually happens (reading the document, sorting the intake, drafting the follow-up) inside the system your team already uses.",
         icon: <IconWorkflowEfficiency />,
       },
       {
         title: "Structured Output You Can Audit",
         description:
-          "FarmBooks ends in a formula-driven spreadsheet — Month Summary and Ledger with live rollups, synced two ways with SharePoint, where a human edit always wins. You can check the machine's work in the tool you already use.",
+          "FarmBooks ends in a formula-driven spreadsheet: Month Summary and Ledger with live rollups, synced two ways with SharePoint, where a human edit always wins. You can check the machine's work in the tool you already use.",
         icon: <IconAICompliance />,
       },
     ],
@@ -340,7 +372,7 @@ const services: ServicePillar[] = [
       },
       {
         lead: "Three weeks instead of three months.",
-        body: "AI is why a build that used to take a quarter now takes weeks — with guardrails, safety protocols, and code review steps around it. That speed is what makes a custom system cost less than configuring someone else's platform.",
+        body: "AI is why a build that used to take a quarter now takes weeks, with guardrails, safety protocols, and code review steps around it. That speed is what makes a custom system cost less than configuring someone else's platform.",
       },
     ],
   },
@@ -367,27 +399,38 @@ const services: ServicePillar[] = [
      accurate.
      ─────────────────────────────────────────────────────────── */
   {
-    type: "redesign",
-    variant: "redesign",
-    title: "Website Redesign.",
+    // Merged 2026-09-04 (ADR-0007): the Website Redesign and Custom Websites
+    // cards became one. `web` because `websites` is already taken as a layout
+    // variant by Business Software (see the note at the top of this array) --
+    // the name is accurate, per globals.css's instruction for the row-2 cards.
+    type: "web",
+    variant: "web",
+    title: "Websites.",
     description:
-      "The site you already have, rebuilt from scratch in modern code. We take over Wix, Squarespace, WordPress, GoDaddy, Webflow, and old custom builds, and carry the search equity across with the redirects mapped and the content migrated before anything goes live.",
+      "Built from scratch in Next.js, React, and TypeScript. New builds, and rebuilds of the site you already have. No templates, no page builders, and no monthly platform that owns your pages. We take over Wix, Squarespace, WordPress, GoDaddy, and Webflow, and carry the search equity across with the redirects mapped and the content migrated before anything goes live.",
     href: "/contact",
     visual: <WebsiteVisual />,
     bullets: [
-      "Rebuilt in Next.js, React, and TypeScript",
+      "Custom-coded: no templates, no page builders",
       "301 redirects mapped before launch, not after",
-      "Content, metadata, and schema migrated, not retyped",
+      "Structured data built in, not bolted on",
       "Off the template platform and onto code you own",
     ],
     painPoints: [
       "Our site looks like it was built a decade ago, because it was.",
-      "It takes forever to load on a phone, which is where everyone actually opens it.",
+      "Our website looks like everyone else's, because it is everyone else's template.",
       "We want off Squarespace but we're afraid of losing the rankings we have.",
+      "We get traffic and almost none of it turns into a phone call.",
       "The person who built it stopped answering, and now nobody can change a word.",
-      "We pay a platform every month for a site we can't actually control.",
-      "It looks fine on a laptop and falls apart on a phone.",
+      "We're paying for ads that land on a page nobody designed for converting.",
     ],
+    // All ELEVEN tiles from both merged cards, verbatim and in order (five
+    // from Website Redesign, then six from Custom Websites). ADR-0007
+    // decision 3: every href-bearing tile MUST survive the merge --
+    // /services/custom-websites, /services/conversion-optimization and
+    // /services/ai-search-optimization reach the homepage ONLY through the
+    // ex-custom-sites tiles, as real <a>s in PillarCrawlerContent. tileLinks()
+    // dedupes by href, so "Read more" still renders 5 unique links, not 11.
     serviceTiles: [
       {
         title: "Website Redesign",
@@ -422,45 +465,6 @@ const services: ServicePillar[] = [
           "Your code, your domain, your analytics, your content. No proprietary editor, no platform that holds the pages hostage, and no monthly fee for permission to publish.",
         icon: <IconCustomWebApp />,
       },
-    ],
-    differentiators: [
-      {
-        lead: "A rebuild, not a reskin.",
-        body: "New template on the same slow foundation is why the last redesign didn't fix anything. This one replaces the foundation.",
-      },
-      {
-        lead: "The redirects are mapped before launch.",
-        body: "Every old URL gets a destination, the metadata comes with it, and the search engines get told. The typical migration disaster is a launch-day discovery, so it happens before launch day here.",
-      },
-      {
-        lead: "The person who scopes it is the person who builds it.",
-        body: "No handoff to a team you never met, and no subcontractor between you and the code.",
-      },
-    ],
-  },
-  {
-    type: "custom-sites",
-    variant: "custom-sites",
-    title: "Custom Websites.",
-    description:
-      "Built from scratch in Next.js, React, and TypeScript. No templates, no page builders, no offshore work, and no monthly platform that owns your pages. Structured so search engines and AI assistants can read it, and laid out so the traffic you already pay for has somewhere to go.",
-    href: "/contact",
-    visual: <CustomBuildVisual />,
-    bullets: [
-      "Custom-coded — no templates, no page builders",
-      "Conversion-focused layout, copy, and speed",
-      "Structured data built in, not bolted on",
-      "Search Console and conversion tracking wired up",
-    ],
-    painPoints: [
-      "Our website looks like everyone else's, because it is everyone else's template.",
-      "We get traffic and almost none of it turns into a phone call.",
-      "Nobody can tell me which pages actually produce enquiries.",
-      "Every change means opening a ticket with an agency and waiting a week.",
-      "The site was built by someone who never asked how the business makes money.",
-      "We're paying for ads that land on a page nobody designed for converting.",
-    ],
-    serviceTiles: [
       {
         title: "Custom Website Development",
         description:
@@ -478,7 +482,7 @@ const services: ServicePillar[] = [
       {
         title: "Structured Data and Schema",
         description:
-          "The machine-readable layer underneath the page — organization, service, FAQ, and location schema — so Google and the AI engines can state what you do without guessing at it.",
+          "The machine-readable layer underneath the page (organization, service, FAQ, and location schema) so Google and the AI engines can state what you do without guessing at it.",
         href: "/services/ai-search-optimization",
         icon: <IconAISearch />,
       },
@@ -507,19 +511,19 @@ const services: ServicePillar[] = [
         body: "No template bought and repainted, no page builder, no offshore work. That is why it loads fast and why it can do things a template cannot.",
       },
       {
-        lead: "Designed around how you get paid.",
-        body: "The layout follows the path from a stranger arriving to a customer calling. Pages that do not serve that path do not get built.",
+        lead: "The redirects are mapped before launch.",
+        body: "Every old URL gets a destination, the metadata comes with it, and the search engines get told. The typical migration disaster is a launch-day discovery, so it happens before launch day here.",
       },
       {
-        lead: "Readable by machines on purpose.",
-        body: "Structured data, engineered answer blocks, and clean semantics go in during the build — the same approach these service pages use on themselves.",
+        lead: "Designed around how you get paid.",
+        body: "The layout follows the path from a stranger arriving to a customer calling. Pages that do not serve that path do not get built.",
       },
     ],
   },
   {
     type: "search-ads",
     variant: "search-ads",
-    title: "Search and Ads.",
+    title: "Search, AI, and Ads.",
     description:
       "Getting found on the three surfaces that matter now: the Google local pack, the AI assistants people ask instead of typing into Google, and paid placement for when you need volume sooner than SEO can deliver it. Audit first, then a plan, then the work.",
     href: "/contact",
@@ -549,7 +553,7 @@ const services: ServicePillar[] = [
       {
         title: "AI Search Optimization",
         description:
-          "Show up when buyers ask an AI engine for a recommendation. AEO — Answer Engine Optimization — is the structured data, named-entity citations, and engineered answer blocks that let ChatGPT, Perplexity, Gemini, and Claude cite you.",
+          "Show up when buyers ask an AI engine for a recommendation. AEO (Answer Engine Optimization) is the structured data, named-entity citations, and engineered answer blocks that let ChatGPT, Perplexity, Gemini, and Claude cite you.",
         href: "/services/ai-search-optimization",
         icon: <IconSEOAIOptimization />,
       },
@@ -1583,7 +1587,7 @@ function BentoCard({ service, onClick }: BentoCardProps) {
       className={`ps-bento-card ps-bento-card--${service.variant}${
         service.cardClass ? ` ${service.cardClass}` : ""
       }`}
-      aria-label={`${service.title} — open details`}
+      aria-label={`${service.title} Open details`}
       onClick={onClick}
       onMouseMove={handleMouseMove}
       style={{
@@ -1889,13 +1893,26 @@ function PillarCrawlerContent() {
                     visually-hidden block would re-create the 4.1s -> 0.8s
                     mobile navigation regression noted at hero.tsx:162-163. */}
                 {tile.href ? (
-                  <a href={tile.href}>
+                  /* tabIndex={-1} is REQUIRED, not optional, and must not be
+                     removed. This whole section is aria-hidden="true" and
+                     `.ps-visually-hidden` hides it with `clip`, NOT
+                     `display: none` — so without this these anchors stay in
+                     the tab order. A real Tab walk found stops 13-25 of 57
+                     all at x=-1: thirteen consecutive invisible tab stops
+                     mid-page, and axe flags it as `aria-hidden-focus`.
+                     Removing them from the tab order does NOT remove them
+                     from the DOM or from a crawler's path, which is the
+                     whole point of this block. Do NOT "fix" this instead by
+                     switching to display:none or deleting the links —
+                     that would orphan six /services/* pages plus the three
+                     pillar hubs from the homepage entirely. */
+                  <a href={tile.href} tabIndex={-1}>
                     <strong>{tile.title}</strong>
                   </a>
                 ) : (
                   <strong>{tile.title}</strong>
                 )}
-                {" — "}
+                {": "}
                 {tile.description}
               </li>
             ))}
@@ -1931,25 +1948,59 @@ function PillarCrawlerContent() {
 export function ServicePillars() {
   const gridRef = useRef<HTMLDivElement>(null);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-  // Six cards, rendered in source order.
+  // Five cards, rendered in source order.
   //   Row 1 — Business Software → Business Automation → AI Integration
-  //   Row 2 — Website Redesign → Custom Websites → Search and Ads
+  //   Row 2 — Websites → Search and Ads
   // Row 2 was folded in from the deleted websites-and-marketing.tsx band
   // under ADR-0006, which lifted ADR-0003's bar on a fourth pillar. The
   // hero <h1>, siteConfig.hero.h1 and the JSON-LD slogan are untouched:
   // ADR-0006 decision 4 moves cards, not the positioning sentence.
   //
+  // 2026-09-04 (ADR-0007): six cards became five. Website Redesign and
+  // Custom Websites merged into one `web` card titled "Websites."; that
+  // ADR settles the card count ADR-0006 left open. Five cards do NOT
+  // divide evenly above 1 column, so two grid-column spans now exist —
+  // see the note above the card-height rules in globals.css.
+  //
   // The mobile `order` rules in globals.css must stay in step with this
-  // array — six cards, orders 1..6. A new card with no order rule gets
+  // array — five cards, orders 1..5. A new card with no order rule gets
   // order:0 and jumps to the top of the mobile stack.
   const displayedServices = services;
 
+  // Which card opened the sheet. Held in a ref as well as state because
+  // handleClose needs it AFTER setExpandedIndex(null) has been queued, and a
+  // [] -deps useCallback would otherwise close over a stale value.
+  const openerIndexRef = useRef<number | null>(null);
+
   const handleExpand = useCallback((index: number) => {
+    openerIndexRef.current = index;
     setExpandedIndex(index);
   }, []);
 
   const handleClose = useCallback(() => {
+    const idx = openerIndexRef.current;
+    openerIndexRef.current = null;
     setExpandedIndex(null);
+
+    // Return focus to the card that opened the sheet. Without this, closing
+    // dropped focus to <body> and a keyboard user restarted from the top of
+    // the document — the sheet is a portal on document.body, so when it
+    // unmounts there is nothing adjacent for focus to fall back to.
+    //
+    // Restored by INDEX off gridRef rather than by remembering
+    // document.activeElement: a mouse click does not reliably focus a
+    // <button> in every engine, so activeElement is often <body> at open
+    // time and would restore nothing. The index is deterministic.
+    //
+    // rAF because onClose fires at the end of the close animation and React
+    // has not yet committed the unmount; focusing in the same tick can be
+    // undone as the portal tears down.
+    if (idx !== null) {
+      const card = gridRef.current?.children[idx] as HTMLElement | undefined;
+      if (card) {
+        requestAnimationFrame(() => card.focus());
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -2019,7 +2070,7 @@ export function ServicePillars() {
           who scopes the project is the person who builds it. No handoffs, no
           subcontractors, no seven-figure Salesforce integration. Our solutions target
           ease of use, time savings, fewer manual steps, and numbers that finally agree
-          with each other. Built around your business, not sold to it.
+          with each other. Built around your business, not sold to it. 22+ Kansas SMB projects delivered.
         </p>
       </div>
 

@@ -34,11 +34,12 @@
      .ps-hero-cue      — positioning + the scroll-away fade. Owns
                          translateX(-50%). CSS writes this one.
      .ps-hero-cue__btn — the affordance. Owns the entrance
-                         (opacity + y). GSAP writes this one.
-   Splitting them keeps GSAP off the centring transform. If GSAP
-   animated the positioned element it would decompose
-   translateX(-50%) into a fixed pixel offset on first tween and
-   the cue would drift off-centre on resize. The two opacities
+                         (opacity + y). hero-entrance.css writes
+                         this one. (Was GSAP until 2026-09-04 —
+                         see hero-entrance.css for why it moved.)
+   Splitting them keeps the entrance off the centring transform: an
+   animation on the positioned element would fight translateX(-50%)
+   and the cue would drift off-centre on resize. The two opacities
    multiply, so "entered" and "scrolled away" compose without
    either owner clobbering the other's value.
 
@@ -104,9 +105,9 @@
 }
 
 .ps-hero-cue__btn {
-  /* Entrance start state. GSAP tweens to opacity 1 / y 0 on the shared
-     hero timeline; hero.tsx's reveal() writes the same end state for
-     reduced-motion and for the GSAP-chunk failure path. */
+  /* Entrance start state, kept as a fallback only. The live entrance is
+     .ps-hero .ps-hero-cue__btn in hero-entrance.css, which is (0,2,0) and
+     therefore outranks this (0,1,0) rule in both directions. */
   opacity: 0;
   transform: translateY(10px);
 
@@ -171,9 +172,9 @@
   50%      { transform: translateY(3px);  opacity: 1; }
 }
 
-/* Reduced motion: visible, static, still clickable. Mirrors the
-   existing .ps-hero-line / .ps-hero-ctas block in globals.css so the
-   cue paints from CSS alone, with no dependency on the GSAP chunk. */
+/* Reduced motion: visible, static, still clickable. Belt and braces —
+   hero-entrance.css's unconditional block already guarantees this at
+   higher specificity. No dependency on any JS chunk, in either sheet. */
 @media (prefers-reduced-motion: reduce) {
   .ps-hero-cue__btn {
     opacity: 1;

@@ -135,7 +135,7 @@ export function ProductGrid({ products }: Props) {
             className="mt-5 max-w-2xl text-pretty text-base leading-relaxed sm:text-lg"
             style={{ color: "var(--theme-text-secondary)" }}
           >
-            Sixteen builds drawn from real client work &mdash; document pipelines, admin
+            Sixteen builds drawn from real client work: document pipelines, admin
             dashboards, and the automations between them. Pick one, scope it for your
             business, and ship it.
           </p>
@@ -298,7 +298,7 @@ export function ProductGrid({ products }: Props) {
                   className="mt-2 max-w-lg text-base leading-relaxed"
                   style={{ color: "var(--theme-text-secondary)" }}
                 >
-                  Every listed product started as a custom engagement. If your problem isn&apos;t covered, describe it — Preisser Solutions scopes and builds to spec.
+                  Every listed product started as a custom engagement. If your problem isn&apos;t covered, describe it; Preisser Solutions scopes and builds to spec.
                 </p>
               </div>
               <div className="shrink-0">

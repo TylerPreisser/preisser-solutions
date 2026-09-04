@@ -92,8 +92,13 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-end;
-  padding: 14px;
+  /* Centred, not bottom-anchored. `flex-end` put the copy on the floor of the
+     card with the top ~40% empty; the client called that out directly
+     (2026-09-04). Vertical only — the body stays left-aligned, because centred
+     rag on a 225px column is harder to read, and the complaint was about empty
+     space above the text, not about alignment. */
+  justify-content: center;
+  padding: 12px;
   border-radius: 12px;
   opacity: 0;
   /* Collapsed OR open, the panel body never eats a click: a click on it falls
@@ -158,7 +163,11 @@
   z-index: 1;
   min-height: 0;
   overflow: hidden;
-  padding-right: 22px; /* keeps the title clear of the dismiss glyph */
+  /* The `padding-right: 22px` that used to live here reserved space for a
+     "dismiss glyph" that does not exist: grep for `ps-work-card__panel`
+     across globals.css returns nothing, no rule in this file declares a
+     ::after on the panel, and case-studies.tsx:505-547 renders no close
+     control. It was costing 22px of measure on a 203px column. */
 }
 
 .ps-work-card__panel-title {
@@ -171,14 +180,40 @@
 }
 
 .ps-work-card__panel-body {
-  font-size: 0.6875rem;
+  /* 13px at EVERY width. It was 11px here and 13px only above 940px — the
+     sizing was inverted and the phone got less than the desktop. A clamp()
+     was considered and rejected: clamp(0.8125rem, 0.7rem + 0.55vw, 0.9375rem)
+     is pinned to its 13px floor across the entire phone range, so the fluid
+     term never fires where the complaint is, and it reaches 15px on desktop —
+     where the card is 300px wide, NARROWER than the 304px mobile card, so it
+     would make the tightest measure worse. */
   font-weight: 400;
   color: var(--color-white);
   opacity: 0.9;
-  line-height: 1.45;
   letter-spacing: 0;
   margin: 0;
 }
+
+/* Per-card type scale. See the `density` computation in case-studies.tsx.
+   Title stays a step above body in every bucket — at a 15px body a 14px title
+   would invert the hierarchy. Sizes chosen so the LONGEST bucket keeps 13px:
+   FarmBooks at 320x568 is the binding no-clip case and must not move. */
+.ps-work-card[data-density="long"] .ps-work-card__panel-body {
+  font-size: 0.8125rem;   /* 13px */
+  line-height: 1.55;
+}
+.ps-work-card[data-density="mid"] .ps-work-card__panel-body {
+  font-size: 0.875rem;    /* 14px */
+  line-height: 1.62;
+}
+.ps-work-card[data-density="short"] .ps-work-card__panel-body {
+  font-size: 0.9375rem;   /* 15px */
+  line-height: 1.7;
+}
+
+.ps-work-card[data-density="long"]  .ps-work-card__panel-title { font-size: 0.9375rem; }
+.ps-work-card[data-density="mid"]   .ps-work-card__panel-title { font-size: 1rem; }
+.ps-work-card[data-density="short"] .ps-work-card__panel-title { font-size: 1.0625rem; }
 
 /* ── Link row, at the bottom of the panel ─────────────────────── */
 .ps-work-card__panel-links {
@@ -277,6 +312,20 @@
   opacity: 1;
 }
 
+/* Countermands the `left: 24px` on `.ps-work-card__bob` in globals.css.
+   Pinned bottom-LEFT, the label is the first thing clipped as a card exits
+   the viewport to the left: measured off-screen with 129.5px — 51% — of the
+   card still visible. The scrim is anchored to the label and the two read as
+   one object, so the gradient appears to leave well before the card does.
+   Centred, the label survives to ~32% and enters and exits symmetrically.
+   Doubled class gives (0,2,0) against globals' (0,1,0); no !important, and
+   globals.css is untouched. */
+.ps-work-card .ps-work-card__bob {
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
 /* WCAG 1.4.3, round 1 — "TAP FOR MORE" on the four lightCard tiles.
    THE RULE FOR THIS NOW LIVES IN globals.css, on the existing
    `.ps-work-card--light .ps-work-card__bob-label` declaration. It was a
@@ -364,10 +413,14 @@
    round-1 rule above and whose white text-shadow (globals.css:7699-7702) would
    fight a dark scrim.
 
-   z-index:-1 is safe because the label already establishes a stacking context
-   twice over (`opacity: 0.78` and `will-change: transform`, globals.css:3753
-   and :3757); `isolation: isolate` is belt-and-braces so the scrim can never
-   escape behind the card artwork if either of those is ever removed. */
+   z-index:-1 is kept in place by `isolation: isolate` on the label, declared
+   immediately below. That is now the ONLY stacking context on this element:
+   the `will-change: transform` that used to sit on .ps-work-card__bob-label in
+   globals.css was deleted 2026-09-04 (it promoted 18 permanent layers and
+   bought nothing — the 2.8s infinite bob animation auto-promotes anyway). On
+   these fourteen non-light cards `opacity: 0.78` still forms one as well, so
+   the two are belt-and-braces here. (The light cards no longer have a scrim at
+   all — see the note below — so this rule is correctly scoped away from them.) */
 .ps-work-card:not(.ps-work-card--light) .ps-work-card__bob-label {
   position: relative;
   isolation: isolate;
@@ -397,6 +450,81 @@
     linear-gradient(to top, var(--color-dark) 0%, transparent 100%);
 }
 
+/* The four lightCard tiles deliberately have NO scrim. One was added
+   2026-09-04 and removed the same day: measured, it moved the binding label
+   minimum from 4.59:1 to 4.66:1 — 0.07 on a metric that already passes 4.5 —
+   while ramping to --color-white took the card's bottom band to the page's own
+   #FFFFFF and erased the card's silhouette in light theme. A pixel A/B also
+   found it near-invisible on Cassidy (delta 5.2/255), whose gradient is
+   already white where the label sits.
+
+   The label's contrast on these four comes from --color-primary-strong-hover
+   at opacity 1 (see the round-1 note above), not from a backdrop. Measured on
+   the raw cards: 4.66 / 5.21 / 4.59 / 4.68. HG Oil at 4.59 is the tightest and
+   there is no darker blue in the palette — if ANY of the four gradients is
+   ever darkened where the label sits, re-measure all four before shipping. */
+
+/* The light cards have no silhouette on a white page, and never did.
+   `.ps-work-card` carries no border and no box-shadow, so a card's only edge
+   is its gradient against --theme-bg-primary, which in light theme is #FFFFFF.
+   Computed against the page, the four termini are 1.10-1.27:1, and Cassidy's
+   gradient literally STARTS at #FFFFFF so its top edge has always been 1.00:1.
+   The scrim removed above made the bottom band 1.00:1 too, which is how this
+   finally got noticed — it exposed the defect rather than causing it.
+
+   A hairline ring is the same device .ps-work-card__panel::before already uses
+   to stop the open panel dissolving into the page. --theme-text-muted is
+   4.76:1 against the page (floor: 3:1, WCAG 1.4.11 non-text) and 3.74-4.34:1
+   against the four card bodies — visible from both sides without reading as an
+   outline. --theme-border (#E2E8F0) was checked first and rejected at 1.23:1;
+   it is essentially the card colour.
+
+   Light theme only: in dark theme these near-white cards already sit at ~15:1
+   against #0A1628. Inset, so it follows the 12px radius and survives the
+   card's overflow:hidden. Static — never animated.
+
+   NOTE ON THE SELECTOR: the ring is carried by `.ps-work-card-bg`, not by
+   `.ps-work-card` itself. `.ps-work-card-bg` is an absolutely-positioned
+   `inset: 0` child holding the gradient, and an inset box-shadow paints ABOVE
+   its own element's background but BELOW that element's descendants — so a
+   ring on the parent is painted over by the gradient layer and never appears.
+   Verified against rendered pixels 2026-09-04: on `.ps-work-card` a forced 8px
+   ring sampled as gradient (239,243,248); with the bg layer hidden the same
+   ring sampled 255,0,0; moved onto `.ps-work-card-bg` it sampled correctly
+   with the gradient resuming beyond it. Do not "simplify" this back onto the
+   parent. */
+[data-theme="light"] .ps-work-card--light .ps-work-card-bg {
+  box-shadow: inset 0 0 0 1px var(--theme-text-muted);
+}
+
+/* ── Entry fade for the affordance + its scrim ────────────────── */
+/* Driven by an IntersectionObserver in case-studies.tsx, in the house idiom
+   (card-visuals-backup.tsx:856-885, imported live by service-pillars.tsx:15).
+   `.ps-work-track--reveal` is added by that effect, so with JS off nothing is
+   ever hidden.
+
+   The whole rule set sits inside prefers-reduced-motion: no-preference AND
+   short-circuits in the effect, so with reduced motion on there is no hidden
+   state to recover from and no transition to run — the section keeps its
+   0-of-N record.
+
+   transform + opacity only (house rule, line 41). Fading .ps-work-card__bob
+   rather than .ps-work-card is deliberate: the card already owns a
+   `transition: transform 220ms` hover lift at line 406, and two transitions
+   racing one property on one element is how you get the jerk back. */
+@media (prefers-reduced-motion: no-preference) {
+  .ps-work-track--reveal .ps-work-card__bob {
+    transition:
+      opacity 420ms var(--ease-out-expo),
+      transform 420ms var(--ease-out-expo);
+  }
+
+  .ps-work-track--reveal .ps-work-card:not([data-revealed]) .ps-work-card__bob {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
 /* Pointer-device polish. Hover no longer reveals, so it earns its keep as a
    plain affordance lift. transform only — box-shadow is not animatable under
    the house rule. Guarded by capability so touch never gets it, and by
@@ -421,13 +549,10 @@
   }
 
   .ps-work-card__panel-title {
-    font-size: 1rem;
+    /* font-size deleted 2026-09-04: the data-density buckets now set 15/16/17px
+       at every width, at or above the 16px this was setting, and an unscoped
+       (0,1,0) rule here would tie-lose to them anyway. Margin still applies. */
     margin: 0 0 10px;
-  }
-
-  .ps-work-card__panel-body {
-    font-size: 0.8125rem;
-    line-height: 1.6;
   }
 
   .ps-work-card__panel-links {

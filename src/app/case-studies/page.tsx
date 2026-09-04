@@ -9,12 +9,12 @@ const url = "https://preissersolutions.com/case-studies";
 export const metadata: Metadata = {
   title: "Case Studies",
   description:
-    "Named-client outcomes from Preisser Solutions — HVAC reactivation, oil and gas operations, insurance AI, transportation dashboards, media brands, and AI commerce.",
+    "Named-client outcomes from Preisser Solutions: HVAC reactivation, oil and gas operations, insurance AI, transportation dashboards, media brands, and AI commerce.",
   alternates: { canonical: url },
   openGraph: {
     title: "Case Studies",
     description:
-      "What was broken, what we built, and what changed — real engagements across farming, oil and gas, insurance, transportation, HVAC, ministry, and media.",
+      "What was broken, what we built, and what changed: real engagements across farming, oil and gas, insurance, transportation, HVAC, ministry, and media.",
     url,
     type: "website",
     images: [
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Case Studies",
     description:
-      "What was broken, what we built, and what changed — real engagements from Preisser Solutions.",
+      "What was broken, what we built, and what changed: real engagements from Preisser Solutions.",
     images: ["/images/og-image-v2.jpg"],
   },
 };

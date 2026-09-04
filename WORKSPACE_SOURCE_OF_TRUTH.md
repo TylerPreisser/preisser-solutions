@@ -107,8 +107,17 @@ Deploy only from the canonical folder:
 
 ```bash
 cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
-npx wrangler pages deploy out --project-name preisser-solutions
+npx wrangler pages deploy out --project-name preisser-solutions --branch main
 ```
+
+`--branch main` is REQUIRED for a production deploy. Wrangler otherwise stamps
+the deployment with the current git branch, and Cloudflare files any branch that
+is not `main` as a **Preview** deployment: the upload succeeds, wrangler exits 0,
+and `preissersolutions.com` keeps serving the previous production build. This
+happened on 2026-09-04 (deployment `9c173db9`, Preview, branch
+`feature/mobile-and-marcommand-overhaul`) and was caught only by diffing the
+live apex HTML against local `out/index.html`. Exit code 0 is not proof of a
+production release.
 
 Then verify:
 
@@ -132,12 +141,18 @@ itself was preserved.
 Current expected deployment state:
 
 - Project: `preisser-solutions`
-- Production deployments listed: 1
-- Preview deployments listed: 0
-- Current live deployment: the single production deployment returned by
-  `npx wrangler@latest pages deployment list --project-name preisser-solutions --json`
-- Current live source: the latest pushed `main` commit deployed from this
-  canonical workspace
+- Current live production deployment: `618f82f8` (deployed 2026-09-04), which
+  serves Next.js `BUILD_ID = mx-0H1WmgLJlecK060PZR`
+- Verified live on 2026-09-04: `https://preissersolutions.com` returns HTTP/2 200
+  and its homepage HTML contains that BUILD_ID, zero `ps-caps`, zero em dashes,
+  and `.ps-hero{min-height:100svh}` with zero `100dvh`. `www.` and
+  `preisser-solutions.pages.dev` both 301 to the apex.
+- Current live source: uncommitted working tree on branch
+  `feature/mobile-and-marcommand-overhaul`, uploaded from local `out/` with
+  `--branch main`. NOTE: production is therefore ahead of any committed `main`
+  commit; the shipped source exists only in this workspace until it is committed.
+- Deployment list now contains both Production and Preview entries (the earlier
+  "Production 1 / Preview 0" expectation no longer holds).
 
 Do not delete the current live deployment. Do not delete or recreate the Pages
 project unless Tyler explicitly asks for full project deletion.

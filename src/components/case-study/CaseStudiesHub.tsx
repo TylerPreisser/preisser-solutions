@@ -80,9 +80,9 @@ export function CaseStudiesHub({ caseStudies }: Props) {
     "@type": "CollectionPage",
     "@id": "https://preissersolutions.com/case-studies#collection",
     url: "https://preissersolutions.com/case-studies",
-    name: "Case Studies — Preisser Solutions",
+    name: "Case Studies: Preisser Solutions",
     description:
-      "What was broken, what we built, and what changed — Preisser Solutions engagements across farming, oil and gas, insurance, transportation, HVAC, ministry, and media.",
+      "What was broken, what we built, and what changed: Preisser Solutions engagements across farming, oil and gas, insurance, transportation, HVAC, ministry, and media.",
     inLanguage: "en-US",
     isPartOf: { "@id": "https://preissersolutions.com/#website" },
     mainEntity: {
@@ -304,7 +304,7 @@ function HubCard({
   const built = cs.hub?.built ?? cs.oneLine;
   const outcome =
     cs.hub?.outcome ??
-    (primary ? `${primary.value} — ${primary.label}` : undefined);
+    (primary ? `${primary.value}: ${primary.label}` : undefined);
 
   const accent =
     index % 3 === 0
