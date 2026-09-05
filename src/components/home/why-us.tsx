@@ -73,15 +73,22 @@ export function WhyUs() {
                   That objection was raised, argued, and is not ours to act
                   on.
 
-              KNOWN AND ACCEPTED: with "the" restored, at 375x667 and 360x640
-              this runs 8 lines and the last line is short. The engines
-              disagree there (Chromium 27% / Firefox 18% / WebKit 75% of
-              measure). text-wrap: pretty is applied in
-              why-us-relationship.css and does NOT fix it; balance made an
-              earlier draft measurably worse. That is a cosmetic cost the
-              owner accepted by supplying this exact sentence. IF IT NEEDS TO
-              CHANGE, HE CHANGES IT — measure, report, and leave the words
-              alone.
+              THE TWO &nbsp; IN THE LAST SENTENCE ARE LOAD-BEARING. They bind
+              "after the launch." so it cannot strand. Do not remove them, and
+              do not "tidy" them back to plain spaces.
+              A non-breaking space is a typographic join, NOT an edit: the
+              rendered text is identical character for character, which is the
+              whole reason this is permissible where deleting the article was
+              not.
+              Measured at 360 and 375, last line as a % of measure:
+                Chromium 27.1% -> 39.8%   Firefox 17.8% -> 39.8%
+                WebKit  75.4% -> 75.4% (never widowed; it hyphenates)
+              Firefox's 17.8% sat at the bottom of the 15-17% band this repo
+              records as a failure. Line count is unchanged at 8 and nothing
+              overflows. text-wrap: pretty is applied in
+              why-us-relationship.css and did NOT fix this; balance made an
+              earlier draft measurably worse. Copy length and typographic
+              joins are the only levers left, and the copy is not ours.
 
               REAL SAFARI HAS NEVER BEEN RUN ON THIS SECTION. The WebKit
               figures are Playwright WebKit, which is not Safari. */}
@@ -89,8 +96,8 @@ export function WhyUs() {
             Our top goal is to develop long-term working relationships with all
             our clients, helping them grow and solving their business problems
             by crafting and maintaining custom software built around their
-            specific business. It keeps making them more efficient after the
-            launch.
+            specific business. It keeps making them more efficient
+            after&nbsp;the&nbsp;launch.
           </p>
         </div>
       </div>

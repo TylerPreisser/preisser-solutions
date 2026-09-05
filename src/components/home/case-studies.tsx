@@ -33,6 +33,24 @@ interface CaseStudyCard {
    * link that reads as internal.
    */
   liveUrl?: string;
+  /**
+   * One outcome line shown on the CLOSED card face. Stage 2 of the conversion
+   * plan: the section is headed "Real Projects. Real Results." but a closed
+   * card showed only a logo and a tap affordance, putting every result one tap
+   * deep.
+   *
+   * Every value is a VERBATIM substring of that card's own `description` — no
+   * new copy is written here (ADR-0009). It is a separate field rather than a
+   * truncation of `description` for two reasons: `data-density` is computed
+   * from `description.length`, so a separate field leaves the size buckets
+   * untouched by construction; and a truncated description reads as a sentence
+   * cut off rather than a claim made.
+   *
+   * FarmBooks deliberately has none: every outcome sentence in it carries one
+   * of the three frozen claims, and repeating one on the closed face would
+   * change their built-HTML counts.
+   */
+  outcome?: string;
 }
 
 /** "https://farm-books.com/" -> "farm-books.com", for a link label that says where it goes. */
@@ -51,6 +69,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // FarmBooks — flagship. Document pipeline + Schedule-F-ready books.
   {
     title: "FarmBooks",
+    outcome: "Tax season stopped being a data-entry month.",
     tags: "Farming | Document Pipeline | Bookkeeping",
     description:
       "A farm bookkeeper was retyping every co-op and dealer bill into a spreadsheet by hand, line by line, field by field, ahead of every tax season. Now a phone photo of the bill becomes categorized, Schedule-F-ready books. Anything the system is not certain about, and anything handwritten, goes to a person instead of being guessed at. Tax season stopped being a data-entry month.",
@@ -77,6 +96,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // Alliant Insurance ecosystem MGU: AI Submission Processing (anonymized per privacy rules)
   {
     title: "An MGU Within the Alliant Insurance Ecosystem",
+    outcome: "Zero missed renewals in the first six months.",
     tags: "AI Submission Processing | Insurance | Salesforce + Azure AI",
     description:
       "AI engine reads broker submissions (7–15 documents per submission), extracts structured data using dual competing AI models (Claude Opus + GPT cross-validation), and auto-populates Salesforce records. Eliminated manual data entry across systems where the same data was previously entered 3–5 times. Zero missed renewals in the first six months.",
@@ -88,6 +108,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // Chicago-area bus transportation operator: Power BI + Ops Automation (anonymized per privacy rules)
   {
     title: "A Chicago-Area Bus Transportation Operator",
+    outcome: "Weekly reconciliation dropped from a full day",
     tags: "Power BI Dashboards | Ops Automation | Dispatch + AI Parsing",
     description:
       "Five Power BI dashboards (workforce planning, revenue/EBITDA, safety scorecard, FY26 goals, and routes/runs), plus AI BOL parsing, rate-confirmation parsing, and back-office reconciliation automation. Weekly reconciliation dropped from a full day to a 15-minute exception queue, with real-time load-level profitability for the first time.",
@@ -99,6 +120,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // Iron and Oak Podcast
   {
     title: "The Iron and Oak Podcast",
+    outcome: "Designed and built the full cinematic media brand",
     tags: "Custom Media Brand | 134 Pages | GSAP Cinematic",
     description:
       "Designed and built the full cinematic media brand from concept to launch: custom design system, 134 pre-rendered pages, GSAP-powered smooth scroll, dark and light modes, and a content architecture spanning 12 episodes and 109 questions.",
@@ -112,6 +134,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // Cassidy HVAC: Customer Reactivation
   {
     title: "AI Customer Reactivation Engine",
+    outcome: "Reactivated 60%+ of dormant Cassidy HVAC customers within six weeks.",
     tags: "AI Outreach | Cassidy HVAC | Revenue Recovery",
     description:
       "Reactivated 60%+ of dormant Cassidy HVAC customers within six weeks. CRM-integrated AI generated hyper-personalized SMS and email outreach using each customer's service history, equipment age, and seasonal context, driving a 45%+ booking conversion lift.",
@@ -124,6 +147,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // HG Oil Holdings: Inventory
   {
     title: "Automated Inventory System",
+    outcome: "95% reduction in back-office logistics time",
     tags: "Custom App | HG Oil Holdings | Live Tracking",
     description:
       "95% reduction in back-office logistics time and 75%+ accuracy improvement on inventory counts and transfers. Live counts, full audit trails, and codified markup formulas turned HG Oil Holdings' inventory function from a loss center into a profit center.",
@@ -136,6 +160,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // Wife Supply Co
   {
     title: "Wife Supply Co",
+    outcome: "Built the entire AI-powered gifting platform",
     tags: "AI Commerce | Custom Build | Full Deployment",
     description:
       "Built the entire AI-powered gifting platform from concept to launch: a custom AI gift-matching engine, custom commerce front end, conversion-optimized funnels, and a brand-engineered design system that doesn't look like another Shopify store.",
@@ -148,6 +173,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // Our own site (Preisser Solutions)
   {
     title: "PreisserSolutions.com",
+    outcome: "A website built to work as a sales tool.",
     tags: "Custom Website | Lead Pipeline | Local + AI SEO",
     description:
       "Our own flagship site, built the same way we build yours: custom-coded in Next.js, React, and TypeScript, engineered for local SEO and AI search citation, and connected straight into the lead pipeline. A website built to work as a sales tool.",
@@ -159,6 +185,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // Alpha Matrix
   {
     title: "Alpha Matrix: Multi-Agent AI",
+    outcome: "Six autonomous AI agents running in parallel",
     tags: "AI Architecture | Multi-Agent | Autonomous",
     description:
       "Six autonomous AI agents running in parallel: scanning, analyzing, scoring, and producing strategic output without human intervention. Developed in-house at Preisser Solutions as a working demonstration of multi-agent analytical infrastructure.",
@@ -171,6 +198,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // After-Hours Call Triage
   {
     title: "After-Hours Call Triage",
+    outcome: "This system answers calls, handles texts, qualifies urgency",
     tags: "AI Automation | Lead Capture | Routing",
     description:
       "Every call that goes to voicemail after 5 PM is a customer choosing your competitor by 8 AM. This system answers calls, handles texts, qualifies urgency, and routes the right ones to you, so you stop losing jobs while you sleep.",
@@ -190,6 +218,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // AI Invoice Processing
   {
     title: "AI Invoice Processing",
+    outcome: "A proven pattern that eliminates the invoice backlog",
     tags: "Document Processing | AI Automation | Back-Office",
     description:
       "AI extracts vendor, line items, totals, and GL codes from any invoice format in seconds: no manual data entry, no missed approvals, no need to hire additional office staff to keep up with volume. A proven pattern that eliminates the invoice backlog without adding headcount.",
@@ -210,6 +239,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // AI Document Analysis
   {
     title: "AI Document Analysis",
+    outcome: "Stop paying skilled people to do copy-paste work.",
     tags: "AI Automation | Workflow Integration | Efficiency",
     description:
       "This system reads contracts, invoices, permits, and any other document your team currently re-types by hand, then extracts the data and puts it exactly where it needs to go. Stop paying skilled people to do copy-paste work.",
@@ -230,6 +260,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // Custom AI Fitness Agent
   {
     title: "Custom AI Fitness Agent",
+    outcome: "We built an AI agent that generates personalized fitness and nutrition regimens",
     tags: "Custom AI Agent | Personalization | Data",
     description:
       "We built an AI agent that generates personalized fitness and nutrition regimens, work that previously required a human expert for every client. This is a proof of concept for any business where expert knowledge gets repeated hundreds of times a day.",
@@ -251,6 +282,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // AI Email Digest System
   {
     title: "AI Email Digest System",
+    outcome: "One briefing. Every morning.",
     tags: "AI Automation | Email Management | Productivity",
     description:
       "One briefing. Every morning. Every important email from the last 24 hours: summarized, prioritized, and ready for decisions. Built for the business owner who loses their first productive hour to an inbox full of noise.",
@@ -269,6 +301,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // Hiring Pipeline & AI Screener
   {
     title: "Hiring Pipeline & AI Screener",
+    outcome: "Applications come in, the AI ranks and screens them against your criteria",
     tags: "Google Workspace | Apps Script | AI Agent",
     description:
       "Applications come in, the AI ranks and screens them against your criteria, and qualified candidates surface to the top, automatically. No more spreadsheet tracking, no more \"I think we already called that one,\" no more losing good applicants because nobody followed up fast enough.",
@@ -288,6 +321,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // Agentic AI Coding Specialists
   {
     title: "Agentic AI Coding Specialists",
+    outcome: "This is the toolset behind our speed.",
     tags: "AI Architecture | Agentic Coding | Claude Code",
     description:
       "Built specialized agentic coding models: AI systems that don\u2019t just generate code, they architect, debug, and ship entire projects autonomously. Each agent is tuned for a specific domain: web development, automation pipelines, data analysis. This is the toolset behind our speed.",
@@ -306,6 +340,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // Custom Local AI Models
   {
     title: "Custom Local AI Models",
+    outcome: "Designed and deployed custom AI models that run locally",
     tags: "AI Engineering | Local Deployment | Custom Training",
     description:
       "Designed and deployed custom AI models that run locally: no cloud dependency, no data leaving your network. Tuned for specific business operations with proprietary logic built in. When off-the-shelf AI doesn\u2019t fit the problem, we build one that does.",
@@ -327,6 +362,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // AI Trend & Behavioral Analysis
   {
     title: "AI Trend & Behavioral Analysis",
+    outcome: "Built AI models that calculate economic trends",
     tags: "AI Research | Predictive Modeling | Economics",
     description:
       "Built AI models that calculate economic trends and map psychological behavior patterns: systems that process market signals, consumer data, and behavioral indicators to surface insights no spreadsheet or manual analysis can produce.",
@@ -504,6 +540,9 @@ export function CaseStudies() {
           const copyLength = study.description.length;
           const density =
             copyLength >= 300 ? "long" : copyLength >= 268 ? "mid" : "short";
+          // NOTE: `outcome` deliberately does NOT feed `density` — density is
+          // computed from `description.length` only, so adding an outcome line
+          // cannot move a card between size buckets.
           // Defensive: `href` is meant to be an internal route, but if one is
           // ever absolute it must still get the new-tab treatment.
           const hrefIsExternal = study.href ? /^https?:\/\//.test(study.href) : false;
@@ -518,6 +557,7 @@ export function CaseStudies() {
                 .filter(Boolean)
                 .join(" ")}
               data-density={density}
+              data-has-outcome={study.outcome ? "true" : undefined}
               role="listitem"
             >
               {/* Gradient background layer */}
@@ -628,6 +668,21 @@ export function CaseStudies() {
                   pointer-device label says "Click for more"; touch devices get
                   "Tap for more" via CSS @media (hover: none).
                   Decorative only (aria-hidden); a11y is on the toggle button. */}
+              {/* Outcome line on the CLOSED face. A SIBLING of the panel, not a
+                  child: the panel is opacity:0 / pointer-events:none as a unit,
+                  so anything inside it would either stay invisible or reveal the
+                  whole story and kill the tap. Hidden while the card is open so
+                  it never double-prints under the revealed copy.
+                  aria-hidden because the identical words are already in the
+                  panel, which is opacity:0 rather than display:none and is
+                  therefore already read by assistive tech — announcing them
+                  twice would be worse than not announcing them here. */}
+              {study.outcome ? (
+                <p className="ps-work-card__outcome" aria-hidden="true">
+                  {study.outcome}
+                </p>
+              ) : null}
+
               <div className="ps-work-card__bob" aria-hidden="true">
                 <span className="ps-work-card__bob-label ps-work-card__bob-label--hover">Click for more</span>
                 <span className="ps-work-card__bob-label ps-work-card__bob-label--tap">Tap for more</span>

@@ -1,5 +1,5 @@
 # ADR-0008: The Why Us tagline and paragraph become the client's 2026-09-04 text, superseding ADR-0004's tagline choice
-Status: Accepted — 2026-09-04 (conversation, relayed through the TEAM ALPHA brief and the A3 adversary review) — Owner: Tyler Preisser
+Status: Superseded by ADR-0009 — 2026-09-04
 Supersedes / Superseded by: Supersedes **ADR-0004 Decision 1 and Decision 2, the tagline only.** Everything else in ADR-0004 stands — see "What this does NOT overturn" below.
 
 ## Context

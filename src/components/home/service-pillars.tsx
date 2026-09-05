@@ -66,11 +66,53 @@ interface ServicePillar {
   /** Optional extra utility classes for grid placement overrides. */
   cardClass?: string;
   title: string;
+  /**
+   * Display-only title for the CARD FACE. Falls back to `title`.
+   *
+   * DECOUPLED ON PURPOSE, 2026-09-04. `title` does three jobs at once: the
+   * card face, JSON-LD `serviceType` on all 42 nested Offers, and the
+   * OfferCatalog `name` on all 5 catalogs. schema.org defines `serviceType`
+   * as the TYPE of service -- a category -- so putting an outcome sentence
+   * there would change what the field MEANS, not merely its value.
+   *
+   * So: `cardTitle` is what a visitor reads, `title` is what a machine reads.
+   * Structured data is byte-identical to before this field existed. Do NOT
+   * "simplify" this by feeding cardTitle into the schema, and do not use it
+   * in the bottom sheet or the crawler mirror -- both keep the category name
+   * deliberately.
+   *
+   * CURRENTLY UNSET ON ALL FIVE PILLARS, and that is a finding, not an
+   * oversight. Stage 3 tried outcome titles here ("One place instead of six
+   * tools." etc). The decoupling worked perfectly -- serviceType and
+   * OfferCatalog name stayed byte-identical -- but the titles wrap to 2-3
+   * lines on mobile, which grows .ps-bento-card__text by 20-40px, which
+   * pushes it back UP into the artwork. Read at 390: four of the five cards
+   * had the title running through their own mockup. Reverted pending a
+   * decision. The mechanism is proven and re-applying is five lines.
+   */
+  cardTitle?: string;
   description: string;
   href: string;
   visual: React.ReactNode;
   bullets: string[];
   painPoints: string[];
+  /**
+   * Which painPoints entry shows on the CARD FACE as the visible hook.
+   *
+   * These 30 sentences are the only copy on the homepage written in the
+   * visitor's own voice, and until 2026-09-04 every one of them rendered ONLY
+   * inside the aria-hidden crawler mirror -- Googlebot read them, no human
+   * ever did. The card now renders ONE of them a second time, visibly.
+   *
+   * An INDEX, not a string, on purpose: the visible hook can never drift from
+   * the crawler copy, and swapping which sentence ships is a one-character
+   * change. Required, not optional, so a new pillar has to choose.
+   *
+   * The mirror is NOT touched -- it still emits all six. Reader/crawler
+   * duplication is settled policy (ADR-0005 decision 3), and `description`
+   * plus every `serviceTile` already render twice today.
+   */
+  hookIndex: number;
   serviceTiles: ServiceTile[];
   differentiators: Differentiator[];
 }
@@ -99,6 +141,8 @@ const services: ServicePillar[] = [
       "Client portals, booking, and intake",
       "Custom web and mobile applications",
     ],
+    // Card-face hook: painPoints[1] -- the platform symptom every other bullet is a consequence of; the Salesforce line is longer and only speaks to buyers who already shortlisted it.
+    hookIndex: 1,
     painPoints: [
       "We've outgrown spreadsheets and shared inboxes, but Salesforce isn't a serious option for a company our size.",
       "Our data lives in five different places and nobody has a complete picture.",
@@ -193,6 +237,8 @@ const services: ServicePillar[] = [
       "Integrations between the tools you already pay for",
       "Diagnosing and fixing the process underneath",
     ],
+    // Card-face hook: painPoints[1] -- the most concrete, most universally recognised automation symptom in the set.
+    hookIndex: 1,
     painPoints: [
       "We have three people doing work that shouldn't take any.",
       "We're still copying data between systems by hand.",
@@ -303,6 +349,8 @@ const services: ServicePillar[] = [
       "Corrections that turn into durable rules",
       "AI inside the workflow, not bolted on beside it",
     ],
+    // Card-face hook: painPoints[0] -- a picture of the actual daily waste; the alternatives describe a failed purchase rather than the need.
+    hookIndex: 0,
     painPoints: [
       "Someone here retypes the same information off a PDF every single day.",
       "We were sold an AI tool. Nobody uses it and nobody trusts it.",
@@ -416,6 +464,8 @@ const services: ServicePillar[] = [
       "Structured data built in, not bolted on",
       "Off the template platform and onto code you own",
     ],
+    // Card-face hook: painPoints[3] -- commercial rather than cosmetic -- it ties the site to revenue, which is what this card argues.
+    hookIndex: 3,
     painPoints: [
       "Our site looks like it was built a decade ago, because it was.",
       "Our website looks like everyone else's, because it is everyone else's template.",
@@ -534,6 +584,8 @@ const services: ServicePillar[] = [
       "Google, Meta, and LinkedIn campaigns",
       "Reported on pipeline, not impressions",
     ],
+    // Card-face hook: painPoints[2] -- matches the retitled card and its own AI OVERVIEW artwork; the local-pack lines are narrower.
+    hookIndex: 2,
     painPoints: [
       "We don't show up on Google Maps for the thing we actually do.",
       "Our competitors are in the local pack and we're on page two.",
@@ -1587,7 +1639,13 @@ function BentoCard({ service, onClick }: BentoCardProps) {
       className={`ps-bento-card ps-bento-card--${service.variant}${
         service.cardClass ? ` ${service.cardClass}` : ""
       }`}
-      aria-label={`${service.title} Open details`}
+      // The hook string MUST stay in this label. aria-label OVERRIDES all
+      // inner text for assistive tech, so without it the visible hook
+      // sentence would be announced to nobody: seen by sighted users and
+      // absent for screen reader users, and the visible text would not appear
+      // in the accessible name (WCAG 2.5.3, Label in Name). Order matches
+      // reading order: title, then hook, then the action.
+      aria-label={`${service.cardTitle ?? service.title} ${service.painPoints[service.hookIndex]} Open details`}
       onClick={onClick}
       onMouseMove={handleMouseMove}
       style={{
@@ -1619,8 +1677,19 @@ function BentoCard({ service, onClick }: BentoCardProps) {
           }
           id={`bento-card-${service.type}-title`}
         >
-          {service.title}
+          {service.cardTitle ?? service.title}
         </h3>
+        {/* The visitor's own voice, surfaced. SPAN, NOT <p> — this card is a
+            <button> (see the element above) and a button permits phrasing
+            content only. The <h3> above already breaks that rule; do not
+            deepen it here, and do not "fix" the h3 in passing.
+            Styled display:block in globals.css.
+
+            The string is read from painPoints by index, so it is byte-identical
+            to what the crawler mirror emits and cannot drift from it. */}
+        <span className="ps-bento-card__hook">
+          {service.painPoints[service.hookIndex]}
+        </span>
       </div>
 
       {/* Gradient border that tracks mouse */}

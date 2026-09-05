@@ -64,12 +64,6 @@ const MARK_WEDGE = [
 
 const BOX = 1024;                 // the mark's native coordinate box
 const NARROW_MAX = 768;           // below this we use the narrow framing
-/** The width at or above which the hero mark exists AT ALL. Exported so hero.tsx
- *  and this file share one number. The client rejected the mark on phones in
- *  three successive forms — sprawling, badge, and large watermark — so below
- *  this width nothing is mounted: no canvas, no backing store, no rAF, no
- *  observers, no listeners. Same threshold as NARROW_MAX by design. */
-export const MARK_MIN_WIDTH = NARROW_MAX;
 const DPR_CAP = 1.5;
 const DPR_CAP_NARROW = 1.25;      // fewer pixels to clear/blit per frame
 /** One full lap of the outline. This has to read as a line TRAVELLING the
@@ -191,13 +185,39 @@ function palette(isLight: boolean) {
 export type MarkLight = { destroy: () => void };
 
 export function mountMarkLight(container: HTMLElement): MarkLight {
+  /* TWO canvases, with the scrim between them. This is the whole of §26.1.
+     The beam's invisibility under the phone plateau was never a scrim problem —
+     it was a layering accident. One canvas held mark AND beam at z-0 with
+     .ps-hero-overlay at z-1 on top, so the 0.95-0.97 white plateau crushed the
+     beam wherever it crushed the mark. Alphas, gains, moving stops and parking
+     were all aimed at the wrong thing.
+
+       #ps-hero-canvas   z 0   the plate (mark) — under the scrim, stays faint
+       .ps-hero-overlay  z 1   the scrim        — UNCHANGED, not one stop moves
+       #ps-hero-beam     z 1   the beam only    — inserted AFTER the overlay
+       .ps-hero-content  z 2   the type         — unchanged, still on top
+
+     Equal z-index with later DOM order puts the beam above the scrim and below
+     the type. The scrim's job is to protect TYPE from the MARK; the beam is a
+     1-3px highlight that never approaches the headline ink, because the stage is
+     below it by construction. It should never have been under that veil. */
   const canvas = document.createElement("canvas");
   canvas.id = "ps-hero-canvas";
   canvas.setAttribute("aria-hidden", "true");
   container.prepend(canvas);
+
+  const beamCanvas = document.createElement("canvas");
+  beamCanvas.id = "ps-hero-beam";
+  beamCanvas.setAttribute("aria-hidden", "true");
+  const overlay = container.querySelector(".ps-hero-overlay");
+  if (overlay) overlay.after(beamCanvas);
+  else container.prepend(beamCanvas);
+
   const ctx0 = canvas.getContext("2d");
-  if (!ctx0) return { destroy: () => canvas.remove() };
+  const bctx0 = beamCanvas.getContext("2d");
+  if (!ctx0 || !bctx0) return { destroy: () => { canvas.remove(); beamCanvas.remove(); } };
   const ctx: CanvasRenderingContext2D = ctx0;
+  const bctx: CanvasRenderingContext2D = bctx0;
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -226,21 +246,11 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   let parkDist = 0;
 
   const isLight = () => document.documentElement.getAttribute("data-theme") === "light";
-  /** Reduced motion parks the beam, AND SO DOES NARROW, since 2026-09-04.
-   *
-   *  On a phone the mark now spans the light scrim's 0.95-0.97 plateau, so a
-   *  travelling beam is only visible while it crosses the released right-hand
-   *  band: measured 4 of 12 samples across a full lap at 390 light. A highlight
-   *  that blinks in and out as it travels IS the client's issue #1, on the exact
-   *  device they reported it on. Raising the beam's alpha cannot fix it — the
-   *  scrim composites OVER the canvas, so under a 0.95-0.97 white plateau a beam
-   *  at alpha 1.0 still arrives at ~3-5% of its own colour; it would only make
-   *  the already-visible samples louder. Moving the plateau is not available:
-   *  it ends at 62% against accent ink at 55.9%.
-   *  A still highlight cannot blink. It also stops the rAF loop outright on
-   *  phones, which the IntersectionObserver note below already calls the
-   *  mitigation that matters most there. Desktop is untouched. */
-  const still = () => reduced || narrow;
+  /** Only a stated motion preference parks the beam. The narrow park added in
+   *  §25.1 is REVERTED: it existed because the beam was invisible for 8 of 12
+   *  samples under the phone plateau, and §26.1 fixed that by moving the beam
+   *  above the scrim instead. A layering fix beats a motion workaround. */
+  const still = () => reduced;
   const period = () => (narrow ? BEAM_PERIOD_MS_NARROW : BEAM_PERIOD_MS);
   /** Where the parked beam sits, as a `now` value that drawBeam turns into a
    *  phase. The old hardcoded 0.34 of a lap was chosen when the mark was
@@ -384,6 +394,10 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     canvas.height = Math.round(H * dpr);
     canvas.style.width = W + "px";
     canvas.style.height = H + "px";
+    beamCanvas.width = canvas.width;
+    beamCanvas.height = canvas.height;
+    beamCanvas.style.width = W + "px";
+    beamCanvas.style.height = H + "px";
 
     /* The whole mark is fitted INSIDE a measured stage rather than drawn
        oversized and cropped by the frame. That single change is what makes the
@@ -405,6 +419,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     // to put the mark. Paint nothing rather than a sliver.
     if (!(s > 0)) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      bctx.clearRect(0, 0, beamCanvas.width, beamCanvas.height);
       outline = []; cumulative = [0]; total = 0; plate = null; dirty = null;
       return;
     }
@@ -463,7 +478,8 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(plate, 0, 0);
-    dirty = null;   // the canvas is clean plate again
+    bctx.clearRect(0, 0, beamCanvas.width, beamCanvas.height);
+    dirty = null;   // both canvases are clean
   }
 
   const at = (d: number): [number, number] => {
@@ -526,13 +542,15 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     // this, every frame stacks another copy of the semi-transparent plate and
     // another beam stroke — the ghost accumulates to near-opaque and the beam
     // smears into coloured vertical banding.
+    /* The beam now lives on its own TRANSPARENT canvas, so restoring the
+       previous frame is a bare clearRect — the plate does not have to be blitted
+       back underneath it. That is strictly cheaper per frame than the
+       clearRect + drawImage this replaces. The dirty-rect union and `pad` logic
+       are unchanged and still coupled to WIDTH_GAIN_* (§14.7). */
     const zone = union(dirty, box);
     if (zone) {
       const [rx, ry, rw, rh] = zone;
-      ctx.clearRect(rx, ry, rw, rh);
-      // src and dst are the same size at integer device pixels, so this is a
-      // straight blit with no resampling.
-      ctx.drawImage(plate, rx, ry, rw, rh, rx, ry, rw, rh);
+      bctx.clearRect(rx, ry, rw, rh);
     }
     dirty = box;
 
@@ -552,14 +570,32 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        3x screen a bright hairline still reads as a hairline. */
     const alphaGain = isLight() ? ALPHA_GAIN_LIGHT : ALPHA_GAIN_DARK;
 
-    ctx.save();
-    ctx.lineCap = "round";
-    for (const [ax, ay, bx, by, fall] of segs) {
-      ctx.strokeStyle = rgba(accent, Math.min(1, 0.55 * alphaGain * fall * fall));
-      ctx.lineWidth = (0.9 + 1.1 * fall) * widthGain * dpr;
-      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+    /* BUTT caps, except on the two ends of the beam. (§27)
+       The beam is 72 separate segments, each `total * 0.085 / 72` long. A ROUND
+       cap extends lineWidth/2 past each endpoint — which is LONGER than the
+       segments themselves — so every cap overlapped its neighbour and 71
+       source-over composites accumulated as 1-(1-a)^n. Measured on the beam
+       layer: max alpha 239/255 against a per-stroke ceiling of 0.6325 -> 161.
+       That is 1.48x hotter than any tuned value intended.
+       Butt caps abut exactly: no overlap, no accumulation, and all 72 alpha and
+       width steps survive, so the sin(pi*t) head-bright/tail-dark envelope is
+       untouched. Round is kept on the FIRST and LAST segment only, so the taper
+       still terminates softly instead of ending on a flat edge.
+       NOTE FOR WHOEVER FINDS THIS NEXT: the accumulation was always here. The
+       two-canvas split in §26.1 did not cause it — it made it measurable for the
+       first time, by isolating the beam on its own layer where its alpha could
+       be read directly. The desktop beam has been ~1.48x hot since long before
+       this run and nothing could have shown it. */
+    bctx.save();
+    const last = segs.length - 1;
+    for (let i = 0; i <= last; i++) {
+      const [ax, ay, bx, by, fall] = segs[i];
+      bctx.lineCap = (i === 0 || i === last) ? "round" : "butt";
+      bctx.strokeStyle = rgba(accent, Math.min(1, 0.55 * alphaGain * fall * fall));
+      bctx.lineWidth = (0.9 + 1.1 * fall) * widthGain * dpr;
+      bctx.beginPath(); bctx.moveTo(ax, ay); bctx.lineTo(bx, by); bctx.stroke();
     }
-    ctx.restore();
+    bctx.restore();
   }
 
   /** Union of two device-pixel rects, snapped out to whole pixels and clamped
@@ -685,10 +721,16 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   /* .ps-hero-line is in this list because layout() now measures the HEADLINE's
      ink, and hero-entrance.css translates those lines by 24px while the entrance
      plays. The other two remain harmless no-ops. */
+  /* `.ps-hero-ctas` is display:none below 768 (§26.2) and a display:none element
+     NEVER fires animationend — so an anchor set that waits on it would hang the
+     rebuild on exactly the viewport this all exists for. Any ONE rendered anchor
+     resolving is enough, and offsetParent === null is the cheap test for "not
+     rendered". rebuild() is idempotent, so firing on several is harmless. */
   const ENTRANCE_ANCHORS = ["ps-hero-line", "ps-hero-ctas", "ps-hero-cue__btn"];
   const onEntranceEnd = (e: AnimationEvent) => {
     if (!e.animationName.startsWith("ps-hero-rise")) return;
-    const el = e.target as Element;
+    const el = e.target as HTMLElement;
+    if (el.offsetParent === null) return;
     if (!ENTRANCE_ANCHORS.some((c) => el.classList?.contains(c))) return;
     rebuild();
   };
@@ -704,6 +746,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
       window.removeEventListener("resize", onResize);
       clearTimeout(resizeTimer);
       canvas.remove();
+      beamCanvas.remove();
     },
   };
 }

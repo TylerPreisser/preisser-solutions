@@ -2492,5 +2492,36 @@
    44px clears `.ps-bento-card__text`'s 20px bottom padding plus its
    ~17px uppercase line at 0.8125rem/1.3, with a few px of margin. */
 .ps-bento-card--websites .ps-dbc-layout {
+  /* 2026-09-04, revised: 44px -> 124px / 104px.
+     44px cleared the ~37px text block that held only the title. The block now
+     also carries the visible pain-point hook and runs 89-110px, so the title
+     was landing INSIDE the KPI label row: measured title.top minus
+     lowestLabel.bottom = -33px at 390, and on screen "BUSINESS SOFTWARE." ran
+     straight into the word "Retention" in both themes.
+
+     Geometry, not a scrim, because a heavier scrim fixes legibility by
+     obscuring the artwork — and amputated tile artwork is a defect the client
+     has already reported once ("etentio", "ose Ra"). Trading one of their
+     complaints for the other is not a fix.
+
+     >=390  104px -> title clears the labels by +30px at 1440, +15px at 390,
+                     and the artwork is fully visible with no scrim reliance.
+
+     <390 IS UNRESOLVED AND DELIBERATELY LEFT AT THE OLD 44px.
+     124px does clear the title there (+12px), but it compresses the KEY
+     METRICS panel to 72px and the heatmap to 9px, and the KPI labels clip
+     VERTICALLY -- read from a screenshot at 320: "Retenti", and "Close" with
+     "Rate" cut off. That is the same defect the client already reported once
+     ("etentio", "ose Ra"), reintroduced on a different axis. A 320px card
+     holding a 110px text block leaves 182px of artwork, which is not enough
+     for a three-panel dashboard with two-line labels. More padding clips the
+     labels; less padding restores the title collision. Awaiting a decision --
+     do not paper over it with a third value. */
   padding: 14px 14px 44px;
+}
+
+@media (min-width: 390px) {
+  .ps-bento-card--websites .ps-dbc-layout {
+    padding: 14px 14px 104px;
+  }
 }

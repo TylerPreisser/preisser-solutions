@@ -774,7 +774,21 @@ ul, ol {
   box-shadow:
     0 16px 38px rgba(0, 0, 0, 0.46),
     0 2px 8px rgba(0, 0, 0, 0.30);
-  border: 1px solid var(--theme-border);
+  /* VALUE 1 of 2. Dark's hairline, brightened 0.08 -> 0.18.
+     Measured 2026-09-04: the box-shadow above reaches this pill intact at every
+     width (getComputedStyle confirms the §23 value byte-for-byte, no override) —
+     and it still cannot show on dark. The dark hero is rgb(10,22,40), so a BLACK
+     shadow has a ceiling of ~24 levels; at 0.46 through a 38px blur it delivers
+     9-11. Light starts at rgb(255,255,255) with ~250 levels of headroom and
+     delivers 29. So on dark the border is the only lever with anywhere to go.
+     This is the exact mirror of the argument that made this pill opaque in the
+     first place — "a white pill on a near-white page can never separate by
+     fill" — the same physics at the other end of the scale, which is why the
+     shadow §23 kept cannot do its job in dark.
+     NOT the token: --theme-border has six consumers, the wrong blast radius for
+     a polish item. NOT the fill: that would reverse §23's deliberate
+     "one step off its page" choice, which is still right. */
+  border: 1px solid rgba(255, 255, 255, 0.18);
   /* translateZ(0) STAYS — it now earns its place promoting the layer for the
      transform transition rather than for the blur. */
   transform: translateX(-50%) translateZ(0);
@@ -803,6 +817,14 @@ ul, ol {
    --theme-border is #E2E8F0 here, a solid ~24-level hairline against #F6F9FC. */
 [data-theme="light"] .ps-header-blur {
   background-color: var(--theme-bg-primary);
+  /* VALUE 2 of 2, and it exists to PREVENT movement, not to cause it. The rule
+     above is now a dark-theme literal, so without this line light would inherit
+     a white 0.18 hairline and lose the border it actually separates with. This
+     pins light to --theme-border, which resolves to #E2E8F0 here — the value a
+     real iPhone verified at ~25 levels of separation. Kept as the token rather
+     than the literal so light keeps tracking the design system; it evaluates to
+     exactly #E2E8F0 today. */
+  border-color: var(--theme-border);
   box-shadow:
     0 12px 30px rgba(10, 22, 40, 0.13),
     0 3px 10px rgba(10, 22, 40, 0.08);
@@ -853,11 +875,17 @@ ul, ol {
 .ps-header-inner {
   position: relative;
   z-index: 1;
-  /* Matches .ps-header-blur's 1200px cap (= --container-max) so the nav's
-     contents land INSIDE the narrower pill. With 24px padding the logo's left
-     edge is 144px at 1440 and 384px at 1920 — the same axis as
-     .ps-hero-ctas / .ps-hero-content. Was 1400px / 0 32px. */
-  max-width: 1200px;
+  /* Matches .ps-header-blur's box so the nav's contents land INSIDE the pill.
+     With 24px padding the logo's left edge is 144px at 1440 and 384px at 1920 —
+     the same axis as .ps-hero-ctas / .ps-hero-content. Was 1400px / 0 32px.
+
+     The `min(calc(100% - 48px), ...)` term mirrors .ps-header-blur's own width
+     EXACTLY, and it is load-bearing below ~1248. A flat `max-width: 1200px` is
+     wider than the viewport there, so this box ran full-width and its 24px
+     padding put the logo at x=24 — precisely the pill's own edge, zero inset.
+     Measured 0px at 768/820/900/1024/1200 before this change; 24px at 1440,
+     where the 1200px term already governed and nothing moves. */
+  max-width: min(calc(100% - 48px), 1200px);
   margin: 0 auto;
   padding: 0 24px;
   height: 100%;
@@ -978,10 +1006,14 @@ ul, ol {
 
 
 /* Mobile: show nav inline (only 2 items — theme toggle + CTA — no hamburger needed) */
-@media (max-width: 768px) {
+/* 767, not 768, since 2026-09-04. This block used to end at 768 while NARROW_MAX
+   in hero-mark-light.ts and every hero rule use 767, so at exactly 768 the mobile
+   nav pill applied while the mark used the wide regime — the one width where the
+   two disagreed. Aligned as its own change so it shows up in a diff. */
+@media (max-width: 767px) {
   :root {
     /* Must equal .ps-header's rendered height directly below (80px), which it
-       did not: the token said 78 while every viewport <=768 measured 80, so
+       did not: the token said 78 while every viewport in this block measured 80, so
        every mobile consumer of --nav-height was 2px short of clearing the
        header. Ten CSS consumers (scroll-margin-top on anchor targets,
        padding-top on page wrappers and .ps-hero-content) plus hero.tsx's
@@ -1001,7 +1033,21 @@ ul, ol {
   }
 
   .ps-header-blur {
-    inset: 6px 10px;
+    /* ITEM 4 (§26.6). The gutter was 10px = 2.56% of a 390px viewport against
+       8.33% on desktop. While the pill was translucent you could see through it
+       and it still read as a pill; OPAQUE at 2.56% reads as a bar, which is the
+       client's exact word. 20px doubles it to 5.13%.
+       `width: auto` is MANDATORY, not tidiness: the desktop rule sets
+       left: 50% + width + translateX(-50%), and left/right alone cannot override
+       a width — that is the identical trap that threw this pill to left: -175px
+       once already. The scrolled override below keeps translateY with no
+       translateX, and must stay that way. */
+    inset: auto;
+    left: 20px;
+    right: 20px;
+    top: 10px;
+    bottom: 10px;
+    border-radius: 22px;
     /* The desktop rule above positions the pill with left:50% + width +
        translateX(-50%). `inset` alone does NOT undo that: width still wins over
        `right` on an over-constrained box, and the -50% translate then drags the
@@ -1024,7 +1070,16 @@ ul, ol {
   }
 
   .ps-header-inner {
-    padding: 0 16px;
+    /* max-width: none is REQUIRED, and it is not tidiness. The desktop rule is
+       `min(calc(100% - 48px), 1200px)`, which mirrors the DESKTOP pill's 24px
+       gutter — but the mobile pill sits at 20px. Inheriting it put the inner box
+       at [24, W-24] inside a pill at [20, W-20], so the 36px padding measured a
+       40px logo inset instead of 16. Caught by getComputedStyle on the built
+       page, not by reading the diff. Mobile runs the box full-width and lets
+       this padding do the work. */
+    max-width: none;
+    /* 36px so the logo and CTA sit 16px inside the pill's 20px edges. */
+    padding: 0 36px;
     gap: 12px;
   }
 
@@ -1117,6 +1172,22 @@ ul, ol {
   height: 100%;
   display: block;
   z-index: 0;
+  pointer-events: none;
+}
+
+/* The beam's own layer (§26.1). Same box as the plate, but z-index 1 — EQUAL to
+   .ps-hero-overlay, and inserted AFTER it in DOM order, which is what puts the
+   beam above the scrim and still below .ps-hero-content at z-index 2. The scrim
+   exists to protect type from the mark; the beam is a 1-3px highlight that never
+   reaches the headline ink, so veiling it was a layering accident. Transparent,
+   so the per-frame restore is a bare clearRect instead of re-blitting the plate. */
+#ps-hero-beam {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
   pointer-events: none;
 }
 
@@ -1519,12 +1590,24 @@ ul, ol {
 }
 
 [data-theme="light"] .ps-bento-card__text {
+  /* Stops extended to match the dark rule — the text block grew from ~37px
+     to 89-130px when the pain-point hook was surfaced. */
   background: linear-gradient(
     to top,
-    rgba(246,249,252,0.9) 0%,
-    rgba(246,249,252,0.5) 60%,
+    rgba(246,249,252,0.94) 0%,
+    rgba(246,249,252,0.86) 60%,
+    rgba(246,249,252,0.5) 85%,
     transparent 100%
   );
+}
+
+/* LIGHT THEME NEEDS DARK INK. A white hook is very nearly invisible here —
+   pale artwork behind a white sentence — and a contrast probe PASSES it,
+   because it measures the ink against an assumed background rather than
+   against the mockup underneath. This was caught by reading the screenshot.
+   Matches .ps-bento-card__title, which is #0A1628 with no text-shadow. */
+[data-theme="light"] .ps-bento-card__hook {
+  color: rgba(10, 22, 40, 0.82);
 }
 
 /* ── Service Pillars ───────────────────────────────────────── */
@@ -1842,14 +1925,44 @@ ul, ol {
   padding-top: 0;
   pointer-events: none;
 
-  /* Gradient fade from bottom for readability */
+  /* Gradient fade from bottom for readability.
+     2026-09-04: stops extended. They were calibrated for a ~37px block
+     holding only the title; the block now also carries the visible
+     pain-point hook and runs 89-130px, which grew UP out of the opaque
+     zone and left the hook sitting on live artwork. Read on a screenshot,
+     not probed — a contrast probe passes this because it samples the ink,
+     not what is behind it. */
   background: linear-gradient(
     to top,
-    rgba(10, 22, 40, 0.85) 0%,
-    rgba(10, 22, 40, 0.4) 60%,
+    rgba(10, 22, 40, 0.9) 0%,
+    rgba(10, 22, 40, 0.8) 60%,
+    rgba(10, 22, 40, 0.45) 85%,
     transparent 100%
   );
   transition: background 300ms ease;
+}
+
+/* The visitor's own words on the card face. See the note in
+   service-pillars.tsx: this is a <span> because the card is a <button>.
+   display:block so it stacks under the title. */
+.ps-bento-card__hook {
+  display: block;
+  margin-top: 10px;
+  max-width: 320px;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.86);
+  text-wrap: pretty;
+  transition: color 300ms ease;
+}
+
+@media (max-width: 639px) {
+  .ps-bento-card__hook {
+    max-width: 260px;
+    font-size: 0.875rem;
+  }
 }
 
 .ps-bento-card__title {
@@ -5092,8 +5205,13 @@ ul, ol {
 /* ── Header: reduce horizontal padding and ensure 44px tap targets ── */
 @media (max-width: 768px) {
   .ps-header-inner {
-    /* Reduce from 32px to 16px so logo + CTA fit on 320px screens */
-    padding: 0 16px;
+    /* The `padding: 0 16px` that used to be here is DELETED, not re-valued.
+       This block is @media (max-width: 768px) while the header block is 767, so
+       a padding here also reached the DESKTOP header at exactly 768. It was also
+       LATER in source order than the header block's own padding and silently
+       overrode it — logo at x=16 against a pill edge at x=20, a 4px OVERFLOW
+       rather than the 16px inset §26.6 specifies. One property, one owner: the
+       767 header block sets it for mobile, the desktop rule for >=768. */
     gap: 12px;
   }
 
@@ -5303,6 +5421,15 @@ ul, ol {
 
 /* ── iOS Safari: prevent horizontal rubber-band scroll ── */
 /* Ensures horizontal swipe does not expose overflow content */
+/* ITEM 6 (§26.4). Measured on the served build: html was `overscroll-behavior-y:
+   auto`, so the top rubber-band was fully enabled. On iOS Safari that is the same
+   gesture the client is describing.
+   TRADE-OFF, stated: this also removes pull-to-refresh. That is a real
+   behavioural removal, not a side effect, and it is why the client was told. */
+html {
+  overscroll-behavior-y: none;
+}
+
 body {
   overscroll-behavior-x: none;
 }
@@ -5392,6 +5519,80 @@ body {
   min-height: 100svh !important;
   margin-top: 0 !important;
   padding-top: 0 !important;
+}
+
+/* ═══ MOBILE HERO (§26) — items 2, 3 and 5. Scoped to <768 only; nothing at
+   >=768 may move. Placed HERE, after both `min-height: ... !important` rules
+   above, because an unlayered rule in a media query still loses to an earlier
+   !important — so item 5 needs both !important AND later source order. ═══ */
+@media (max-width: 767px) {
+  /* ITEM 5 — "nothing even centered". Under 100svh the hero is the SMALL
+     viewport height (714 on the Simulator) while the retracted-toolbar visual
+     viewport is 754, so centred content sat 20px high and 40px of the next
+     section peeked. Both units here are STATIC, so the box never resizes and
+     the verified dynamic-viewport scroll fix cannot regress; the acceptance
+     grep for that unit must stay at zero matches, which is why this comment
+     does not spell it out.
+
+     CAVEAT ON THAT GREP, and read it before trusting a green result. IT FAILS
+     IN BOTH DIRECTIONS, so it is not evidence of anything on its own:
+       - FALSE POSITIVE: the literal can be present in SOURCE while absent from
+         the ARTIFACT — a comment naming the unit takes the count from 0 to 1 on
+         CSS that ships entirely correctly, because comments are stripped at
+         build. That happened twice in this run, here and in hero.tsx.
+       - FALSE NEGATIVE: the literal can be absent from source while a rule
+         using it still exists — rewording prose satisfies the grep without
+         changing a single declaration, which is exactly what this comment did.
+     A grep over source is a proxy for a property of the ARTIFACT, and the
+     artifact is what ships. The real checks are the BUILT CSS carrying
+     `min-height: 100svh` on .ps-hero with no dynamic unit anywhere, and the
+     COMPUTED VALUE ON A REAL DEVICE,
+     which was taken on Mobile Safari 2026-09-04: lvh 754, svh 714,
+     padding-bottom 40.000008px, and across a full reversing-toolbar gesture the
+     dynamic unit swept 13 distinct values while svh, lvh, min-height,
+     padding-bottom, hero height and content centre each held exactly one.
+     justify-content: center then centres inside lvh - (lvh - svh) = exactly the
+     top svh, the band visible in every toolbar state. On desktop lvh == svh so
+     the term is 0, which is why this is inherently mobile-only. */
+  .ps-hero {
+    min-height: 100lvh !important;
+    padding-bottom: calc(100lvh - 100svh) !important;
+  }
+
+  /* The cue lifts by the same amount, back inside the visible band. This is
+     what makes lvh viable where §14.3 rejected it: lvh ALONE pushed the cue
+     below the fold, lvh + compensated padding does not. */
+  .ps-hero-cue {
+    bottom: calc(24px + env(safe-area-inset-bottom, 0px) + (100lvh - 100svh));
+  }
+
+  /* ITEM 2 — the hero CTAs go on mobile. The mark's stage anchors to the
+     headline's ink and the cue, never to the CTAs, so its layout is unaffected.
+     `.ps-hero .ps-btn-secondary`'s opaque fill STAYS: it is still load-bearing
+     at >=768 where the buttons remain. */
+  .ps-hero .ps-hero-ctas {
+    display: none;
+  }
+
+  /* ITEM 3 — the cue reads as incidental. 52px target and a transform-only bob.
+     On the ICON, deliberately: the button owns the entrance (hero-entrance.css)
+     and the wrapper owns translateX(-50%); animating either would clobber them.
+     Same three-element split hero-scroll-cue.css already documents. */
+  .ps-hero-cue__btn {
+    width: 52px;
+    height: 52px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .ps-hero-cue__icon {
+      animation: ps-cue-bob 2400ms cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+  }
+}
+
+@keyframes ps-cue-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(5px); }
 }
 html, body {
   background-color: var(--theme-bg-primary, #0A1628) !important;

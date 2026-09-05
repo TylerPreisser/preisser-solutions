@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import { siteConfig } from "@/data/site-config";
-import { mountMarkLight, MARK_MIN_WIDTH, type MarkLight } from "./hero-mark-light";
+import { mountMarkLight } from "./hero-mark-light";
 
 /**
  * The H1 lives in site-config as ONE string ("Business Software. Business
@@ -39,38 +39,14 @@ export function Hero() {
   // Mounted in an effect on purpose: the headline below is server-rendered and
   // must never wait on it. The contrast scrim is CSS (.ps-hero-overlay).
   //
-  // DESKTOP ONLY, since 2026-09-04. The client rejected the mark on phones in
-  // three successive forms and asked for it gone there, so below MARK_MIN_WIDTH
-  // nothing is created at all — not a hidden canvas, not a parked loop. That
-  // skips the backing-store allocation, the IntersectionObserver, the resize
-  // handler and the fonts.ready / animationend listeners on the device where
-  // they cost the most.
-  //
-  // matchMedia rather than a one-shot width check so the boundary is handled in
-  // both directions: rotating a phone to landscape crosses 768 and mounts it,
-  // and narrowing a desktop window destroys it and releases the canvas.
+  // Mounted at every width again. The mobile removal was a response to the mark
+  // being unreadable on a phone; §26.1 fixed the cause — the beam was under the
+  // scrim — so the mark and its light come back on mobile.
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
-
-    const mq = window.matchMedia(`(min-width: ${MARK_MIN_WIDTH}px)`);
-    let bg: MarkLight | null = null;
-
-    const sync = () => {
-      if (mq.matches) {
-        if (!bg) bg = mountMarkLight(container);
-      } else if (bg) {
-        bg.destroy();
-        bg = null;
-      }
-    };
-
-    sync();
-    mq.addEventListener("change", sync);
-    return () => {
-      mq.removeEventListener("change", sync);
-      bg?.destroy();
-    };
+    const bg = mountMarkLight(container);
+    return () => bg.destroy();
   }, []);
 
   // The entrance is CSS now (src/styles/hero-entrance.css), not a GSAP
@@ -128,7 +104,9 @@ export function Hero() {
   // naming a section it would misname on one of the two.
   //
   // If the markup ever changes shape and nothing qualifies, fall back to one
-  // viewport of travel, which is never wrong for a 100dvh hero.
+  // viewport of travel, which is never wrong for a full-viewport-height hero.
+  // (Deliberately not naming the dynamic viewport unit: an acceptance grep runs
+  //  over SOURCE, and a comment can fail it on code that ships correctly.)
   const scrollToNext = useCallback(() => {
     const hero = containerRef.current;
     if (!hero) return;

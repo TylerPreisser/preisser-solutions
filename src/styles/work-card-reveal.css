@@ -497,6 +497,83 @@
   box-shadow: inset 0 0 0 1px var(--theme-text-muted);
 }
 
+/* ── Outcome line on the CLOSED card face (conversion plan, Stage 2) ── */
+/* The section is headed "Real Projects. Real Results." but a closed card showed
+   a logo, empty gradient and TAP FOR MORE — every result was one tap deep. This
+   surfaces one outcome per card without opening it.
+
+   COSTS ZERO PAGE HEIGHT: .ps-work-card is `aspect-ratio: 332/448`, so its
+   height is derived from its width and is fixed regardless of content. This
+   competes with the logo for composition, never with the page for scroll.
+
+   Sits above .ps-work-card__bob (bottom: 22px, ~12px tall in globals), so it is
+   anchored at 46px to clear it. Colour mirrors .ps-work-card__bob-label exactly,
+   because that treatment is the one already measured on all eighteen gradients:
+   white on the fourteen dark cards, --color-primary-strong-hover with a white
+   text-shadow on the four light ones. No new token, no new hex. */
+.ps-work-card__outcome {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 46px;
+  /* z-index 3, not 1. The dark-card scrim is a ::before on
+     .ps-work-card__bob-label that reaches `top: -130px` — far enough to cover
+     this line — and it lives inside .ps-work-card__bob at z-index 2. At a lower
+     index the outcome was painted OVER by that scrim and rendered visibly
+     greyer than the TAP FOR MORE beneath it, inverting the hierarchy, even
+     though computed colour was #FFF at opacity 1 against the label's 0.78.
+     Caught by reading a screenshot; getComputedStyle could not see it. */
+  z-index: 3;
+  margin: 0;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--color-white);
+  text-shadow: 0 1px 3px rgba(10, 22, 40, 0.55);
+  pointer-events: none;
+}
+
+/* Light cards: same blue as the affordance, same white shadow, for the same
+   measured reason — a dark label on a near-white gradient.
+
+   The size/weight step is the HIERARCHY fix. On the fourteen dark cards the
+   outcome already separates from TAP FOR MORE because the affordance sits at
+   `opacity: 0.78` while this line is at 1. The four --light cards cannot use
+   that: their label is deliberately `opacity: 1` because it is the only thing
+   holding it at 4.59-5.62:1, and dimming it would undo the round-1 contrast
+   work. So the separation is bought by RAISING this line rather than lowering
+   the affordance — 13px/700 against the affordance's 12px/600 uppercase. That
+   only improves this line's own contrast (same colour, more mass) and leaves
+   the measured affordance untouched. */
+.ps-work-card--light .ps-work-card__outcome {
+  color: var(--color-primary-strong-hover);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.85);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+/* Never double-print under the revealed panel. */
+.ps-work-card--open .ps-work-card__outcome {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ps-work-card__outcome {
+    transition: opacity 240ms var(--ease-standard);
+  }
+}
+
+/* The logo is absolutely centred at translate(-50%, -60%) in globals. On cards
+   that now carry an outcome line it lifts further so the two never collide.
+   Driven by a data attribute set at render, not :has(), so it is inspectable in
+   the SSG HTML and needs no selector-support caveat. */
+.ps-work-card[data-has-outcome] .ps-work-card-logo,
+.ps-work-card[data-has-outcome] .ps-work-card-icon {
+  transform: translate(-50%, -78%);
+}
+
 /* ── Entry fade for the affordance + its scrim ────────────────── */
 /* Driven by an IntersectionObserver in case-studies.tsx, in the house idiom
    (card-visuals-backup.tsx:856-885, imported live by service-pillars.tsx:15).
