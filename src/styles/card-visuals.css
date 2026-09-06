@@ -660,10 +660,17 @@
    as bubbles — they become bars. */
 .ps-asst-panel {
   position: absolute;
-  left: 0;
+  /* Inset from plane 1's own top-left rather than flush to the stage. At
+     left:0/top:6% the 5deg rotation lifted this panel's left corner ABOVE the
+     window's top edge and it covered the chrome strip almost completely, so
+     card 3 lost the real-chrome signal the other four cards keep -- the
+     window stopped reading as a window. Plane 2 may overlap plane 1 (card 4's
+     phone does), but it must not erase the chrome that makes plane 1
+     recognisable. */
+  left: 4%;
   /* Top-anchored: the payoff lands at ~45% of card height, out of the scrim
      band. See COMPOSITION note at the head of this section. */
-  top: 6%;
+  top: 12%;
   width: 74%;
   min-width: 172px;
   max-width: 252px;
