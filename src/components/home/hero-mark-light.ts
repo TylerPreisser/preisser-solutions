@@ -281,11 +281,17 @@ const NARROW_BLEED_W = 1.45;
  *  at 390x844: 1.05 puts the counter's opening across the upper third and the
  *  tail's diagonal across the lower half; past ~1.4 the frame is inside the top
  *  bar and the counter is gone, which is §30-B's smudge. */
-const NARROW_MARK_H = 1.05;
+/** §35, 2026-09-06. 1.05 -> 0.95. A consequence of NARROW_OVERHANG 0.48 -> 0.12,
+ *  not an independent taste change: pulling the frame back onto the bowl brings
+ *  much more ink into view at the same height, and at 1.05 the crown of the bowl
+ *  then pushed off the top of the frame. 0.95 keeps the whole bowl and its
+ *  counter inside the crop. §30-B records a very large phone mark rejected
+ *  TWICE for reading as a smudge, so this deliberately moves DOWN, not up. */
+const NARROW_MARK_H = 0.95;
 /** §33-P. The phone's WIDE_MARK_TOP. Slightly under the desktop's 0.14 because
  *  a phone hero is tall and the headline sits low in it (y 381..479 in an 844
  *  hero at 390), so less lift is needed to clear the top bar off the frame. */
-const NARROW_MARK_TOP = 0.10;
+const NARROW_MARK_TOP = 0.05;
 /** §33-P. The phone's WIDE_OVERHANG_TALL, and it is much larger — 0.48 against
  *  the tablet's 0.34 and the desktop's 0.12.
  *
@@ -303,7 +309,16 @@ const NARROW_MARK_TOP = 0.10;
  *  further left (0.59+) does catch the tail all the way down, but at that point
  *  the mark's left edge lands at x ~= 0 and the letterform stops being cropped
  *  on the left at all — trading one of the client's three asks for another. */
-const NARROW_OVERHANG = 0.48;
+/** §35, 2026-09-06. 0.48 -> 0.12. THIS CONSTANT IS WHY NO PHONE EVER SHOWED A
+ *  LETTERFORM. At 0.48 the frame slides off the bowl entirely and keeps only
+ *  the tail and the wedge, which rasterise as two diagonal bands — precisely
+ *  the "abstract planes" reading §31 was rejected for, arriving on phones by a
+ *  different route. Verified by screenshot at 390x844 and 393x852 in both
+ *  themes: at 0.12 the bowl, its counter and the tail are all in frame and the
+ *  mark reads as a P; at 0.48-0.50 it does not. The desktop's own
+ *  MARK_OVERHANG is 0.12 and always was — this brings the phone into line with
+ *  it rather than inventing a phone-specific number. */
+const NARROW_OVERHANG = 0.12;
 /** §31, 2026-09-05. How far the mark's stage runs PAST the right viewport edge,
  *  as a fraction of the hero's width. The client asked for the mark "bigger and
  *  less prominent, with less opacity and hanging off the right side of the page
@@ -478,7 +493,11 @@ const WIDE_MARK_H = 1.55;
  *  It is a fraction of the MARK's width, exactly like MARK_OVERHANG, so §32(c)'s
  *  correction — an overhang expressed in viewport widths crops a different
  *  fraction of the letter at every size — still holds. */
-const WIDE_OVERHANG_TALL = 0.34;
+/** §35, 2026-09-06. 0.34 -> 0.12, for the same reason as NARROW_OVERHANG and
+ *  landing on the same number as the desktop's MARK_OVERHANG. Verified at
+ *  941x900, which produced the single most legible capture of the whole sweep:
+ *  bowl, counter, stem, flag and tail all in frame at once. */
+const WIDE_OVERHANG_TALL = 0.12;
 /** §33(b). How far the mark's INK TOP sits ABOVE the hero's top edge, as a
  *  fraction of the hero's height. This is the client's "MOVE IT VERTICALLY UP",
  *  and it is the whole of it.
@@ -572,8 +591,65 @@ const WIDE_MARK_TOP = 0.14;
  *  The feather is what keeps the keep-out invisible: at the mark's peak alpha of
  *  0.267 a hard edge would read as a rectangle cut out of the watermark, which
  *  is worse than the watermark being absent. */
-const KEEPOUT_MARGIN = 10;
-const KEEPOUT_FEATHER = 0.085;   // fraction of the hero's width
+/**
+ * §35 — 2026-09-06. "SOLID, CONFIDENT, ZOOMED-IN MASS", not a ghost watermark.
+ *
+ * THE ONE DEFECT THIS FIXES, AND THE ONE IT DOES NOT TOUCH. §31-§33 spent three
+ * revisions on SIZE, CROP and POSITION, and the owner rejected all three. This
+ * section changes NONE of that geometry: the mark is still 1.42 * W wide
+ * (0.748 * W of visible frame by construction, §33(a)), still taller than the
+ * hero, still overflowing top and bottom, still cropped by the viewport, still
+ * behind the headline. Re-read §31-§33 before touching those constants; the
+ * rejected approaches are recorded there and this is not another one of them.
+ *
+ * The defect was the TREATMENT. Every version through §33 held
+ * edge ~= 1.92 * fill — a CONTOUR-DOMINANT weighting. That is the correct
+ * weighting for a hairline watermark and it is the literal cause of the
+ * "faint outline / wireframe" reading: at fillA 0.0975 on light there was
+ * effectively no mass at all, only a pale stroke tracing bowl and stem. A
+ * design critic's survey of 329 screenshots of the surfaces this owner DOES
+ * approve of found them to be fills only, zero structural strokes, depth from
+ * shadow — and named hairline-stroke-with-no-filled-mass as "the literal
+ * source of 'unsatisfying'".
+ *
+ * §35 INVERTS THE EMPHASIS to fill-dominant, edge = 1.24 * fill. The stroke is
+ * now a definition ON a mass rather than being the mark itself.
+ *
+ * THE CROSS-THEME RELATIONSHIP §24 ESTABLISHED IS PRESERVED EXACTLY, and it is
+ * matched on mean dRGB against each theme's own page, NOT on a WCAG ratio —
+ * ratio is a text-legibility metric and on a dark ground the same ratio carries
+ * ~12x less absolute luminance difference. §24's own numbers, recomputed:
+ *   fill  light [140,160,190] on (246,249,252) =  85.67 dRGB per unit alpha
+ *         dark  [150,186,232] on ( 10, 22, 40) = 165.33 dRGB per unit alpha
+ *         => darkFill = 0.5182 * lightFill.  0.55 * 0.5182 = 0.285
+ *   edge  light [104,128,162] = 117.67/unit, dark [150,186,232] = 165.33/unit
+ *         => darkEdge = 0.7117 * lightEdge.  0.68 * 0.7117 = 0.484
+ * MEASURED RESULT of those four numbers, from composited screenshot pixels:
+ * light fill rgb(188,200,218) on rgb(246,249,252) = 1.57:1, mean dRGB 47.0;
+ * dark fill rgb(50,69,95) on rgb(10,22,40) = 1.95:1, mean dRGB 47.3. The dRGB
+ * match is 47.0 vs 47.3 — dark is present without going muddy, which is the
+ * whole point of matching on dRGB rather than on ratio.
+ *
+ * DO NOT "tidy" these four into one pair. Light uses two DIFFERENT colours for
+ * fill and edge; dark uses the SAME colour for both, so a proportional scale
+ * from light does not preserve the fill-to-edge relationship. That asymmetry is
+ * load-bearing and §24 documents it in the dark branch of palette().
+ */
+const MARK_FILL_A_LIGHT = 0.55;
+const MARK_EDGE_A_LIGHT = 0.68;
+const MARK_FILL_A_DARK = 0.285;
+const MARK_EDGE_A_DARK = 0.484;
+/** §35: 10 -> 14. A filled mass is a far heavier occluder than a hairline, so
+ *  the protected ink needs more slack before the feather starts. */
+const KEEPOUT_MARGIN = 14;
+/** §35: 0.085 -> 0.14, plus a px floor. The feather is what keeps the keep-out
+ *  INVISIBLE — at §33's peak alpha of 0.267 a hard edge read as a rectangle cut
+ *  out of the watermark, and at §35's much heavier fill that rectangle would be
+ *  blatant. KEEPOUT_FEATHER_MIN exists because the feather is a fraction of the
+ *  hero's WIDTH: at 390 the 0.14 term is only 55px, which is too abrupt against
+ *  a solid fill. The floor makes a phone feather as soft as a desktop one. */
+const KEEPOUT_FEATHER = 0.14;    // fraction of the hero's width
+const KEEPOUT_FEATHER_MIN = 76;  // css px floor, for narrow viewports
 /** How long the beam takes to cross the whole off-screen arc, regardless of how
  *  much of it is off-screen. See the time remap in build(). */
 const HIDDEN_TRAVERSE_MS = 350;
@@ -635,7 +711,11 @@ function palette(isLight: boolean) {
     // the reason spelled out in the dark branch below, and that asymmetry is
     // load-bearing.
     // Light 0.13 -> 0.0975 fill, 0.25 -> 0.1875 edge.
-    ? { fill: [140, 160, 190] as RGB, fillA: 0.0975, edge: [104, 128, 162] as RGB, edgeA: 0.1875 }
+    // §35: 0.0975 -> MARK_FILL_A_LIGHT (0.55), 0.1875 -> MARK_EDGE_A_LIGHT (0.68).
+    // The comments above record the WATERMARK register that §22-§33 tuned for.
+    // §35 deliberately leaves that register: the owner rejected it three times
+    // as a ghost. See the §35 block for the fill-dominant rationale.
+    ? { fill: [140, 160, 190] as RGB, fillA: MARK_FILL_A_LIGHT, edge: [104, 128, 162] as RGB, edgeA: MARK_EDGE_A_LIGHT }
     // DARK EDGE IS 0.27, NOT 0.20. §22 scaled dark proportionally from light,
     // but light uses two DIFFERENT colours for fill and edge ([140,160,190] /
     // [104,128,162]) while dark uses the SAME colour for both, so proportional
@@ -646,7 +726,10 @@ function palette(isLight: boolean) {
     // ratio is a text-legibility metric, and on a dark ground the same ratio
     // carries ~12x less absolute luminance difference.
     // §32: dark 0.065 -> 0.04875 fill, 0.175 -> 0.13125 edge. Same 0.75 factor.
-    : { fill: [150, 186, 232] as RGB, fillA: 0.04875, edge: [150, 186, 232] as RGB, edgeA: 0.13125 };
+    // §35: 0.04875 -> MARK_FILL_A_DARK (0.285), 0.13125 -> MARK_EDGE_A_DARK
+    // (0.484). Derived from light by §24's mean-dRGB match, NOT by a uniform
+    // scale — the arithmetic is in the §35 block.
+    : { fill: [150, 186, 232] as RGB, fillA: MARK_FILL_A_DARK, edge: [150, 186, 232] as RGB, edgeA: MARK_EDGE_A_DARK };
 }
 
 export type MarkLight = { destroy: () => void };
@@ -986,9 +1069,16 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
       r: r.r + KEEPOUT_MARGIN, b: r.b + KEEPOUT_MARGIN,
     });
     if (rects.length) {
-      feather = KEEPOUT_FEATHER * W;
+      /* §35: the feather takes a px floor. See KEEPOUT_FEATHER_MIN. */
+      feather = Math.max(KEEPOUT_FEATHER * W, KEEPOUT_FEATHER_MIN);
       beamPush = rects.map(grow);
-      platePush = rects.filter((r) => r.accent).map(grow);
+      /* §35: EVERY headline line, not just the accent one. §33(c) protected the
+         accent line alone because at fillA 0.0975 the plate was too faint to
+         threaten the white/near-black lines. At §35's 0.55 it is not: measured
+         unprotected, the plate pulls line 1 well down from its 15.7:1. The
+         subset optimisation was correct for a hairline and is wrong for a
+         mass. */
+      platePush = rects.map(grow);
     } else {
       feather = 0; beamPush = []; platePush = [];
     }
@@ -1146,7 +1236,14 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        the whole letterform on dark, where the stem is otherwise the first thing
        the ramp eats. The BEAM ramp below is NOT theme-scoped — the beam is
        brand blue in both themes and crosses brand-blue type in both. */
-    if (platePush.length && feather > 0 && isLight()) {
+    /* §35: NO LONGER LIGHT-ONLY. The light-only reasoning above was measured at
+       §33's dark fillA of 0.04875, where dark genuinely had the headroom. At
+       §35's 0.285 it does not — the dark plate leaves the accent line around
+       3:1 unprotected, which is not a margin. Ramping both themes costs dark a
+       little of the stem, which is the cheaper trade. NOTE `isLight` is a
+       FUNCTION on this closure: `&& isLight` (no call) is always truthy and
+       would silently apply to both themes by accident rather than by choice. */
+    if (platePush.length && feather > 0) {
       p.globalCompositeOperation = "destination-out";
       for (const k of platePush) punch(p, k, dpr);
       p.globalCompositeOperation = "source-over";
