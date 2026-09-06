@@ -24,13 +24,49 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
 
+      # 22.18+ is REQUIRED, not a preference: the hermetic probes import
+      # functions/api/subscribe.ts and functions/_middleware.ts directly and
+      # rely on Node's built-in type stripping, which is only on by default
+      # from 22.18. Also pinned in package.json "engines".
       - uses: actions/setup-node@v6.4.0
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - run: npm ci
+      - run: node --version
+
+      # Hermetic. No network, no secrets, no browser, no build: the handlers'
+      # fetch is swapped for a recorder and the middleware is composed in
+      # process. Runs before the build so it fails in seconds.
+      #
+      # Invoked as `npm test` — the package's aggregate entry point — and NOT as
+      # a list of probe filenames. `test` -> `test:unit` -> the chained probes,
+      # so adding the next hermetic probe is a one-line package.json change and
+      # needs no edit to this workflow. A probe that exists but is not wired
+      # into CI protects nothing.
+      - name: Hermetic probes (subscribe endpoint + host middleware)
+        run: npm test
+
       - run: npm run build
       - run: npm run lint
       - run: npx tsc --noEmit
       - run: npm run validate:seo
+
+      # Drives the footer signup in a real browser against the static export
+      # produced by the build above. /api/subscribe is intercepted in-page, so
+      # no email is ever sent.
+      - name: Install Chromium for the browser test
+        run: npx playwright install --with-deps chromium
+
+      - name: Test the footer signup in a browser
+        run: |
+          npx --yes serve out -l 4321 --no-clipboard &
+          for _ in $(seq 1 30); do
+            curl -sf -o /dev/null http://127.0.0.1:4321/privacy && break
+            sleep 1
+          done
+          # Hard assert the bind. `serve` can fail to bind and stay quiet, and a
+          # probe pointed at nothing must not be mistaken for a probe that passed.
+          curl -sf -o /dev/null http://127.0.0.1:4321/privacy
+          PS_TEST_BASE_URL=http://127.0.0.1:4321 npm run test:e2e

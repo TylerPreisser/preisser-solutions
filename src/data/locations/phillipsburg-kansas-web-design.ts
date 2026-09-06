@@ -26,7 +26,14 @@ export const locationData: LocationPageData = {
 
   nearbyAreas: [
     { name: "Norton, KS", href: "/locations/norton-kansas-web-design", distanceLabel: "25 mi W" },
-    { name: "Smith Center, KS", href: "/locations/smith-center-kansas-web-design", distanceLabel: "35 mi E" },
+    // Smith Center has no location page. Previously linked to
+    // /locations/smith-center-kansas-web-design, which 301s to the regional
+    // /locations/western-kansas-web-design — so the anchor "Smith Center, KS"
+    // landed on a page about Western Kansas generally. Dropping the href
+    // instead of repointing it follows this array's own established pattern
+    // (see "Stockton, KS" below, which is listed with no href for the same
+    // reason). Keeps the geographic signal, removes the misleading link.
+    { name: "Smith Center, KS", distanceLabel: "35 mi E" },
     { name: "Hill City, KS", href: "/locations/hill-city-kansas-web-design", distanceLabel: "35 mi SW" },
     { name: "Hays, KS", href: "/locations/hays-kansas", distanceLabel: "70 mi S" },
     { name: "Stockton, KS", distanceLabel: "20 mi SE" },

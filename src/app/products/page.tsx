@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     "Production-grade AI products built from real client engagements: packaged capabilities you can deploy.",
   alternates: { canonical: url },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: "Products",
     description:
       "Production-grade AI products built from real client engagements: packaged capabilities you can deploy.",

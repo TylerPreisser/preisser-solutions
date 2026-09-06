@@ -134,7 +134,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can you build custom client portals for an RIA?",
       answer:
-        "Yes, this is one of the most common asks from RIA founders. Generic Tamarac, Orion, or Black Diamond portals get used by 10-30% of clients on average. A branded, custom-built portal layered on top of those data feeds typically lifts engagement significantly. We integrate with the portfolio system as the book of record and build the experience clients actually want.",
+        "Yes, this is one of the most common asks from RIA founders, and the reason is consistent: the portals bundled with Tamarac, Orion, or Black Diamond ship in a default configuration built for every firm, which means they are built for no firm in particular. Your clients see a generic surface that does not carry your brand, your household structure, or the documents and reviews your practice actually runs on. A branded portal layered on top of those same data feeds fixes that, because it is designed around how your clients are used to being served. We integrate with the portfolio system as the book of record and build the experience on top of it.",
     },
     {
       question: "Do you have an insurance case study?",

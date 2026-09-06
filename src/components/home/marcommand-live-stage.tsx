@@ -117,43 +117,16 @@ const NARROW: StageGeom = {
  * no JS.
  */
 /* ---------------------------------------------------------------------------
-   MOBILE geometry (rebuilt). Authored in viewBox units inside the 390/300
-   slice band x 158..1042. Deliberately sparse: one ledge, one dial, one card.
+   MOBILE geometry is the NARROW geometry again.
+
+   The sparse rebuild that stood here — one ledge, one dial, one card — is
+   removed. It was the version the owner rejected: on a 390px phone it left the
+   top third of the stage card empty, occluded its own "Google Ads" caption with
+   the sprite, and had no second channel on screen for him to walk to. The
+   portrait hub below (six cards, three dials, the bus and the keyword tile) is
+   restored from 3478cb4 and is authored in its own 390x620 space, mapped in by
+   NARROW_TRANSFORM.
    --------------------------------------------------------------------------- */
-const M_LEDGE_Y = 580;
-const M_PAD_X = 235;
-const LEDGE_MOBILE = `M 210 ${M_LEDGE_Y} H 990`;
-
-const MOBILE: StageGeom = {
-  w: 884,
-  h: 680,
-  pad: { x: M_PAD_X, y: M_LEDGE_Y, r: 26 },
-  cardSize: 150,
-  cardRadius: 28,
-  logoPx: 68,
-  /* 34, not 44: at 44 the "Google Ads" caption is ~90px wide on screen and ran
-     into the robot, who is 64.5px wide and standing right beside the card. */
-  capFont: 34,
-  /* 44/50 rather than the narrow sheet's 16/19: at 390px the stage renders at
-     0.348 px per unit, so a 44-unit label is ~15px on screen. */
-  dial: { cy: 300, r: 82, arcR: 64, needleLen: 52, labelFont: 44, valueFont: 50 },
-  tile: { x: 0, y: 0, w: 0, h: 0 },
-  pill: { x: 0, w: 0, h: 0, font: 0 },
-};
-
-/** ONE dial. Its before/after is BUDGET, which the timeline already drives. */
-const DIALS_MOBILE: Dial[] = [
-  /* x=300, not 365. The label and value sit BELOW the knob and are ~85px wide
-     on screen; at 365 they ran under the robot's body when he stood at the
-     dial — invisible at 390 because he is mid-walk at that moment, obvious at
-     320 dark where he has already arrived. Caught in a screenshot, not a probe. */
-  { id: "budget", x: 300, label: "Daily budget", value: "$2,850", v: 0.63 },
-];
-
-/** ONE card, the one he touches. */
-/* Pushed up and right so the card and its caption clear the robot's box
-   entirely: he spans x 136..200 on screen, the caption now spans 226..291. */
-const CARD_MOBILE: Channel = { id: "google_ads", name: "Google Ads", x: 900, y: 175 };
 
 const NARROW_TRANSFORM = "translate(386.129 0) scale(1.0967742)";
 
@@ -293,7 +266,9 @@ const RISERS_WIDE = [
   side at cy+12 = 312. Only the y they start from changed.
 */
 const BUS_NARROW = "M195,112 H110 V240 H375 V470 H340";
-const RISERS_NARROW = ["M110,240 H28 V312 H70", "M154,240 V312 H166", "M250,240 V312 H262"];
+/* Riser 2 moved from x=250 to x=262, and the Radius dial with it — see the
+   DIALS_NARROW note. Everything else is unchanged. */
+const RISERS_NARROW = ["M110,240 H28 V312 H70", "M154,240 V312 H166", "M262,240 V312 H274"];
 
 /**
  * The hub link. It is HUB furniture, not room wiring: it joins the pad's top rim
@@ -318,7 +293,21 @@ type Dial = {
  */
 const DIALS_WIDE: Dial[] = [
   { id: "budget", x: 480, label: "Daily budget", value: "$2,850", v: 0.63 },
-  { id: "bidding", x: 660, label: "Bidding", value: "Maximize conversions", v: 0.55 },
+  /*
+    DEMOGRAPHIC REPLACES BIDDING. Owner's instruction: "also demographic needs
+    to be a knob."
+
+    It is a replacement rather than a fifth dial because the row is derived, not
+    free: on portrait the three faces already span 68..144 / 164..240 / 272..336
+    of a 390-unit stage and a fourth would have to shrink all of them. Bidding is
+    the one that gives way because its readout is the word "Maximize
+    conversions" — a needle with no number beside it, which is exactly the
+    weakness called out on the arc-2 knob choice in marcommand-live.tsx:324.
+    Demographic reads as an AGE FLOOR and counts, so it belongs to the same
+    idiom as "$2,850" and "40 mi". Audience demographics are a real Google Ads
+    lever, so ADR-0015 decision 5 ("do not invent a lever") still holds.
+  */
+  { id: "demographic", x: 660, label: "Demographic", value: "Age 45+", v: 0.62 },
   { id: "radius", x: 840, label: "Radius", value: "25 mi", v: 0.38 },
   { id: "schedule", x: 1020, label: "Ad schedule", value: "6am–9pm", v: 0.62 },
 ];
@@ -340,9 +329,65 @@ const DIALS_WIDE: Dial[] = [
  * close to the left edge.
  */
 const DIALS_NARROW: Dial[] = [
-  { id: "budget", x: 106, label: "Daily budget", value: "$2,850", v: 0.63 },
-  { id: "bidding", x: 202, label: "Bidding", value: "Max conv.", v: 0.55 },
-  { id: "radius", x: 298, label: "Radius", value: "25 mi", v: 0.38 },
+  /*
+    "Budget", not "Daily budget", and ONLY on portrait.
+
+    CAUGHT IN A SCREENSHOT, THEN MEASURED. "Demographic" is a much wider label
+    than the "Bidding" it replaced, and both it and its left neighbour are
+    CENTRED on their dials, so the two labels grew into each other. Measured
+    gap between the "Daily budget" and "Demographic" glyph boxes, before this
+    change: -2.3px at 320, -2.8px at 390, -3.9px at 768 — overlapping at every
+    single portrait width, not just the narrow end. On screen it read as one
+    run-together word, "Daily budgetDemographic".
+
+    Abbreviating the label is the fix with no geometry risk: the alternative was
+    shifting the dial x's, and 106/202/310 are load-bearing for the risers
+    (gutters at 154 and 262), for Elara's two knob stances, and for the Radius
+    label's clearance to the stage edge. Shortening one string touches none of
+    it, and this array already abbreviates for portrait — the same lever read
+    "Maximize conversions" on wide and "Max conv." here.
+
+    Post-change gaps are in the report; the value row was never in danger
+    (14.9px at 320, its worst).
+  */
+  { id: "budget", x: 106, label: "Budget", value: "$2,850", v: 0.63 },
+  /*
+    See the DIALS_WIDE note for why Bidding gave way to Demographic.
+
+    The label is the long one now — "Demographic" at fontSize 16 is wider than
+    "Bidding" was — and it is CENTRED on 202, so it grows symmetrically into the
+    gutters on both sides rather than toward one neighbour. The measured glyph
+    boxes at 390px are in the report; if this row is ever re-derived, re-measure
+    the three LABELS, not just the three faces, because the label is now the
+    widest object in the middle column.
+  */
+  { id: "demographic", x: 202, label: "Demographic", value: "Age 45+", v: 0.62 },
+  /*
+    RADIUS SHIPS AT 40 mi ON PORTRAIT, NOT 25.
+
+    Every value in this file is the POST-change reading, because the markup is
+    the end state. Portrait now turns this dial in its second arc (TikTok), so
+    40 is its end state here. The WIDE table still reads 25 because the desktop
+    sequence never touches this knob — each variant states its own end state,
+    and they legitimately differ. Keep this in step with RADIUS below.
+  */
+  /*
+    x=310, not 298, and riser 2 moved with it.
+
+    CAUGHT IN A SCREENSHOT, NOT A PROBE. With Radius at 298 he stands at the
+    foot of its riser at x=250 and his sprite is ~55 stage units wide, so he
+    spanned 223..277 — seventeen units of him lay across the BIDDING dial's
+    face (164..240) while he was turning Radius. Every occlusion probe passed,
+    because no text was covered: it is the knob rim itself that he was standing
+    on, and only a rendered frame shows that.
+
+    Twelve units right puts the face at 272..348 and his stance at 262
+    (235..289), which leaves a 5-unit overlap of Bidding — the same order as
+    the 8 units he already has against Daily budget's face on the first arc, so
+    the two knob beats now read identically. The label and value are centred on
+    310 and are ~50u wide, so they end at ~335 inside a 390u stage.
+  */
+  { id: "radius", x: 310, label: "Radius", value: "40 mi", v: 0.58 },
 ];
 
 /** The gauge sweeps 270 degrees, starting at the 7:30 position. */
@@ -774,57 +819,116 @@ export function MarCommandLiveStage() {
 
       {/* ---------------- NARROW ---------------- */}
       {/*
-        ---- MOBILE (rebuilt) --------------------------------------------------
-        NOT the desktop schematic re-packed. The portrait version of the wiring
-        diagram was the thing the client rejected: six cards, four gauges, a bus
-        and risers inside 390px is unreadable at any height, and the "overlapping
-        lines" were the symptom of that density rather than bad routing.
+        RESTORED FROM 3478cb4 (the portrait hub), not the sparse ledge.
 
-        This is the robot and ONE control. He stands on a console ledge with the
-        Daily budget dial on his left and the Google Ads card on his right, and
-        that is the whole surface. The outcome figures live below the stage as
-        real DOM text, not SVG, so they cost no aspect-ratio height and are
-        selectable and screen-reader-native.
-
-        Authored directly in viewBox units — no NARROW_TRANSFORM. At
-        aspect-ratio 390/300 the `slice` crop shows x 158..1042 (884 units) by
-        the full 0..680, so everything below sits inside that band.
+        The sparse rebuild replaced this with one card and one dial, which is the
+        version the owner rejected: with only Google Ads on stage there is no
+        second channel for him to walk to, and the five beats he remembers
+        ("walks the line, Google Ads, turns a knob, moves to TikTok, turns a
+        knob") cannot be told at all. The portrait hub puts Google Ads and TikTok
+        on the SAME rail at y=310 either side of the pad, which is what makes the
+        second stop a walk rather than a teleport.
       */}
-      <g className="mc-stage__narrow">
-        {/* The ledge he walks on. He is never off this line. */}
-        <path className="mc-wire" data-mc-wire="narrow-ledge" d={LEDGE_MOBILE}
-          pathLength={100} strokeDasharray={100} strokeDashoffset={0} />
-
-        {/* Kept so the timeline's hub queries resolve; it is his entry mark. */}
-        <g className="mc-pad" data-mc-pad="narrow" style={{ opacity: 0 }}>
-          <circle className="mc-pad__fill" cx={M_PAD_X} cy={M_LEDGE_Y} r={26} />
-        </g>
-
-        <path className="mc-rail mc-rail--live" data-mc-liverail="narrow"
-          d={LEDGE_MOBILE} pathLength={100} strokeDasharray={100}
-          strokeDashoffset={0} style={{ opacity: 0 }} />
-
-        <g data-mc-room="narrow" />
-
-        {DIALS_MOBILE.map((d) => (
-          <DialGroup
-            key={`dm-${d.id}`}
-            dial={d}
-            geom={MOBILE.dial}
-            variant="narrow"
-            labelAbove
+      <g className="mc-stage__narrow" transform={NARROW_TRANSFORM}>
+        {/* Hub furniture, so it ships hidden with the rest of the hub layer (M2). */}
+        {CARDS_NARROW.map((c) => (
+          <path
+            key={`sn-${c.id}`}
+            className="mc-rail mc-hub-off"
+            data-mc-spoke={`narrow-${c.id}`}
+            d={SPOKES_NARROW[c.id]}
           />
         ))}
 
-        <ChannelCard
-          channel={CARD_MOBILE}
-          size={MOBILE.cardSize}
-          radius={MOBILE.cardRadius}
-          logoPx={MOBILE.logoPx}
-          capFont={MOBILE.capFont}
-          lit
-          variant="narrow"
+        {/* Hub furniture: the pad's link up to the room trunk. Fades with the pad. */}
+        <path className="mc-rail mc-hub-off" data-mc-hublink="narrow" d={HUB_LINK_NARROW} />
+
+        <path
+          className="mc-rail mc-rail--live mc-hub-off"
+          data-mc-liverail="narrow"
+          d={SPOKES_NARROW.google_ads}
+          pathLength={100}
+          strokeDasharray={100}
+          strokeDashoffset={0}
         />
+
+        {/*
+          THE SECOND LIVE RAIL — TikTok's.
+
+          Same treatment as the Google Ads rail, mirrored across the pad. It is a
+          separate node rather than a re-pointed `d` because both rails are on
+          screen during the fold between the two arcs, and re-writing `d`
+          mid-timeline would snap the first rail out from under him.
+        */}
+        <path
+          className="mc-rail mc-rail--live mc-hub-off"
+          data-mc-liverail2="narrow"
+          d={SPOKES_NARROW.tiktok}
+          pathLength={100}
+          strokeDasharray={100}
+          strokeDashoffset={0}
+        />
+
+        <g className="mc-pad mc-hub-off" data-mc-pad="narrow">
+          <circle className="mc-pad__fill" cx={NARROW.pad.x} cy={NARROW.pad.y} r={NARROW.pad.r} />
+          <circle className="mc-pad__ring" cx={NARROW.pad.x} cy={NARROW.pad.y} r={NARROW.pad.r} />
+        </g>
+
+        <g data-mc-room="narrow">
+          <path
+            className="mc-wire"
+            data-mc-wire="narrow-bus"
+            d={BUS_NARROW}
+            pathLength={100}
+            strokeDasharray={100}
+            strokeDashoffset={0}
+          />
+          {RISERS_NARROW.map((d, i) => (
+            <path
+              key={`rn-${i}`}
+              className="mc-wire"
+              data-mc-wire={`narrow-riser-${i}`}
+              d={d}
+              pathLength={100}
+              strokeDasharray={100}
+              strokeDashoffset={0}
+            />
+          ))}
+        </g>
+
+        {/*
+          Mobile-only divergence (§3.3): the lit card ships at (195, 70) rather
+          than in its hub slot, because that IS the end state on portrait —
+          leaving it in a corner wastes half the canvas. The timeline tweens it
+          back down to the hub for the "before" state and then up again.
+
+          TikTok is NOT pre-moved: it ships in its hub slot and the timeline
+          lifts it to the same (195,70) perch only for the second arc. It has to
+          leave the slot, because the Radius dial's face (x 260..336, y 262..338)
+          sits almost exactly on top of the TikTok card (x 253..337, y 268..352)
+          — the knob he turns for TikTok is underneath the card he just lit.
+        */}
+        {CARDS_NARROW.map((c) => {
+          const lit = c.id === "google_ads";
+          const moved = lit ? { x: 195, y: 70 } : c;
+          return (
+            <ChannelCard
+              key={`cn-${c.id}`}
+              channel={{ ...c, x: moved.x, y: moved.y }}
+              size={NARROW.cardSize}
+              radius={NARROW.cardRadius}
+              logoPx={NARROW.logoPx}
+              capFont={NARROW.capFont}
+              lit={lit}
+              variant="narrow"
+            />
+          );
+        })}
+
+        <KeywordTile tile={NARROW.tile} pill={NARROW.pill} variant="narrow" />
+        {DIALS_NARROW.map((d) => (
+          <DialGroup key={`dn-${d.id}`} dial={d} geom={NARROW.dial} variant="narrow" />
+        ))}
       </g>
     </svg>
   );
@@ -853,12 +957,41 @@ export const ELARA_MARKS = {
     closeTap: { x: "77.6667%", y: "32.3529%" },
   },
   narrow: {
-    /* All feet-on-the-ledge; see the MOBILE waypoint note for the mapping. */
-    pad: { x: "8.7104%", y: "85.2941%" },
-    tap: { x: "54.5249%", y: "85.2941%" },
-    dial: { x: "47.7376%", y: "85.2941%" },
-    keys: { x: "47.7376%", y: "85.2941%" },
-    closeTap: { x: "54.5249%", y: "85.2941%" },
+    /* (195, 310) — dead centre of the pad. */
+    pad: { x: "50%", y: "50%" },
+    /* (160, 310) — on the Google Ads spoke, 23u clear of the card's edge. */
+    tap: { x: "41.0256%", y: "50%" },
+    /* (49, 312) — at the foot of riser 0, reaching into the Daily budget dial. */
+    dial: { x: "12.5641%", y: "50.3226%" },
+    /* (357, 470) — on the bus's tile run, facing left into the keyword tile. */
+    keys: { x: "91.5385%", y: "75.8065%" },
+    /* Portrait closes from beside the LIFTED card at (195,70), not from the
+       hub slot the card has left. */
+    closeTap: { x: "35.8974%", y: "18.0645%" },
+    /* ---- second arc ---- */
+    /* (230, 310) — on the TikTok spoke, the mirror of `tap`. */
+    tapTT: { x: "58.9744%", y: "50%" },
+    /* (262, 312) — at the foot of riser 2, reaching into the Radius dial. */
+    dialRad: { x: "67.1795%", y: "50.3226%" },
+
+    /* ---- THE RIDE. He goes UP WITH THE CARD, then steps off. ----
+       Owner: "the robot is staying where he is when he taps on an icon instead
+       of moving with the icon to wherever the icon is."
+
+       rideTop   (160,112) top of the climb. He holds his tap column the whole
+                 way up, so his 23u clearance to the Google Ads card's right
+                 edge at the tap is the SAME 23u at the top — he reads as
+                 travelling with the card rather than drifting toward it. 112 is
+                 the lifted card's bottom edge and the y of the bus's first run.
+       rideTopTT (230,112) arc 2's mirror, holding TikTok's tap column.
+       ledge     (110,112) the bus elbow at N_CARDL. Both arcs step off here as
+                 the card slides across into its perch at (195,70): the card's
+                 face then spans 153..237 and his box spans 80..140, so he is
+                 13u clear of the card he just delivered, and standing exactly on
+                 the corner where the descent begins. */
+    rideTop: { x: "41.0256%", y: "18.0645%" },
+    rideTopTT: { x: "58.9744%", y: "18.0645%" },
+    ledge: { x: "28.2051%", y: "18.0645%" },
   },
 };
 
@@ -885,13 +1018,44 @@ const W_DIAL: Waypoint = { x: "33.75%", y: "65%" };         /* (405,442) at the 
 const W_TILEL: Waypoint = { x: "31.25%", y: "69.1176%" };   /* (375,470) bus elbow    */
 const W_KEYS: Waypoint = { x: "28.125%", y: "69.1176%" };   /* (337.5,470) at the tile*/
 
-/* ---- MOBILE waypoints. He walks one ledge, so there are three marks, not
-   twelve. Percentages are of the STAGE BOX: at aspect 390/300 the slice band is
-   viewBox x 158..1042 (884u) by y 0..680, so boxX% = (x-158)/884 and
-   boxY% = y/680. Ledge y=520 -> 76.4706%. ---- */
-const N_PAD: Waypoint = { x: "8.7104%", y: "85.2941%" };   /* (235,580) enters left */
-const N_DIAL: Waypoint = { x: "47.7376%", y: "85.2941%" }; /* (580,580) at the dial */
-const N_TAP: Waypoint = { x: "54.5249%", y: "85.2941%" };  /* (640,580) at the card */
+/* ---- NARROW waypoints, restored from 3478cb4. Percentages are of the 390x620
+   portrait space: boxX% = x/390, boxY% = y/620. ---- */
+const N_PAD: Waypoint = { x: "50%", y: "50%" };             /* (195,310) pad centre   */
+const N_TAP: Waypoint = { x: "41.0256%", y: "50%" };        /* (160,310) on the spoke */
+const N_LINKTOP: Waypoint = { x: "50%", y: "38.7097%" };    /* (195,240) trunk        */
+const N_TRUNKL: Waypoint = { x: "7.1795%", y: "38.7097%" }; /* (28,240)  riser-0 elbow*/
+const N_DROP: Waypoint = { x: "7.1795%", y: "50.3226%" };   /* (28,312)  riser-0 elbow*/
+const N_DIAL: Waypoint = { x: "12.5641%", y: "50.3226%" };  /* (49,312)  at the dial  */
+const N_TRUNKR: Waypoint = { x: "96.1538%", y: "38.7097%" };/* (375,240) bus elbow    */
+const N_TILER: Waypoint = { x: "96.1538%", y: "75.8065%" }; /* (375,470) bus elbow    */
+const N_KEYS: Waypoint = { x: "91.5385%", y: "75.8065%" };  /* (357,470) at the tile  */
+const N_BUSL: Waypoint = { x: "28.2051%", y: "38.7097%" };  /* (110,240) bus elbow    */
+const N_CARDL: Waypoint = { x: "28.2051%", y: "18.0645%" }; /* (110,112) bus elbow    */
+const N_CLOSE: Waypoint = { x: "35.8974%", y: "18.0645%" }; /* (140,112) beside card  */
+
+/* ---- THE SECOND STOP: TikTok. New in this revision. -----------------------
+   The three marks the TikTok arc needs, and nothing else. Each one is the
+   MIRROR of a mark the Google Ads arc already uses, which is why no new rail
+   had to be drawn for any of them:
+
+   N_TAPTT  (230,310)  mirror of N_TAP about the pad centre. N_TAP stands 23u
+                       clear of the Google Ads card's right edge (137); this
+                       stands the same 23u clear of TikTok's left edge (253).
+                       x 195..237 is the pad disc and 237..253 is the TikTok
+                       spoke, so the whole leg is on a drawn object.
+   N_RISER2 (262,240)  the top of riser 2 ("M262,240 V312 H274"), on the bus's
+                       y=240 run (x 110..375). Same relationship to the Radius
+                       dial that N_TRUNKL has to Daily budget.
+   N_DIALRAD(262,312)  the foot of riser 2. The Radius face spans x 272..348,
+                       so he stands 10u off its rim and reaches in — exactly
+                       the clearance N_DIAL (49) has to the Daily budget face
+                       (68..144) after the ADR-0018 fix. He does not stand on
+                       the dial he is turning, and at 262 he no longer stands
+                       across the Bidding dial either (see DIALS_NARROW).
+   ---------------------------------------------------------------------------- */
+const N_TAPTT: Waypoint = { x: "58.9744%", y: "50%" };      /* (230,310) beside TikTok */
+const N_RISER2: Waypoint = { x: "67.1795%", y: "38.7097%" };/* (262,240) riser-2 top   */
+const N_DIALRAD: Waypoint = { x: "67.1795%", y: "50.3226%" };/*(262,312) at Radius     */
 
 export const ROUTES = {
   wide: {
@@ -907,14 +1071,49 @@ export const ROUTES = {
     walk5: [W_TAP, W_RAILV, W_RAILH, W_PAD],
   },
   narrow: {
-    /* One ledge, three stops: in -> card -> dial -> card -> out. Same beat
-       structure as wide, so the timeline needs no mobile-specific branch. */
     walk1: [N_PAD, N_TAP],
-    walk2: [N_TAP, N_DIAL],
-    /* No keyword tile on mobile: this leg is zero-length and walk() skips it. */
-    walk3: [N_DIAL, N_DIAL],
-    walk4: [N_DIAL, N_TAP],
-    walk5: [N_TAP, N_PAD],
+    /*
+      WALK2 NOW STARTS BESIDE THE LIFTED CARD AND DESCENDS. Owner's instruction:
+      "...instead of moving with the icon to wherever the icon is and then
+      walking back down to tune the knobs."
+
+      It used to be [N_TAP, N_PAD, N_LINKTOP, N_TRUNKL, N_DROP, N_DIAL] — it
+      began at (160,310), i.e. down on the hub spoke, because he never left the
+      hub when the card did. He now RIDES the card up to N_CARDL (110,112) (see
+      the coupled-ride block in marcommand-live.tsx), so the route begins where
+      he actually is, and its first leg is a pure 128-unit DROP down the bus at
+      x=110. That drop is the "walking back down" in the owner's sentence, and
+      it is the beat that did not exist before.
+
+      Every leg is on a drawn object: (110,112)->(110,240) and the y=240 run are
+      BUS_NARROW ("M195,112 H110 V240 H375..."), and (28,240)->(28,312)->(49...)
+      is RISERS_NARROW[0] ("M110,240 H28 V312 H70"). The pad and the hub link
+      are no longer on the route at all, which is why their fade could move off
+      walk2 and onto the tap.
+    */
+    walk2: [N_CARDL, N_BUSL, N_TRUNKL, N_DROP, N_DIAL],
+    /* dial -> back up -> right along the trunk -> down the far side -> the tile */
+    walk3: [N_DIAL, N_DROP, N_TRUNKL, N_TRUNKR, N_TILER, N_KEYS],
+    /* tile -> back along the trunk -> up to the card's own run */
+    walk4: [N_KEYS, N_TILER, N_TRUNKR, N_BUSL, N_CARDL, N_CLOSE],
+    /* card -> back down the bus -> up the hub link -> across the pad */
+    walk5: [N_CLOSE, N_CARDL, N_BUSL, N_LINKTOP, N_PAD],
+
+    /* ---- THE SECOND ARC. Mobile only; see the note on N_TAPTT. ----
+       walk6 is deliberately the mirror image of walk1, same length and same
+       rail, so the two arrivals read as the same action performed on two
+       channels rather than as two different animations. */
+    walk6: [N_PAD, N_TAPTT],
+    /*
+      The arc-2 mirror of walk2, and it changed for the same reason: he rides
+      TikTok's card up to N_CARDL (110,112) too, so the descent starts there.
+      Down the bus at x=110, right along the y=240 trunk, then down riser 2 into
+      the Radius dial. Both arcs now share the same "walk back down" gesture,
+      which is what makes the second arc read as the same job on another channel.
+    */
+    walk7: [N_CARDL, N_BUSL, N_RISER2, N_DIALRAD],
+    /* Radius -> back up riser 2 -> left along the bus -> down onto the pad */
+    walk8: [N_DIALRAD, N_RISER2, N_LINKTOP, N_PAD],
   },
 } as const;
 
@@ -926,3 +1125,32 @@ export const DIAL_MATH = { arcDash, needleAngle };
 
 /** The Daily budget dial's before/after readings (§2.5 beat 6). */
 export const BUDGET = { from: 2400, to: 2850, vFrom: 0.42, vTo: 0.63 } as const;
+
+/**
+ * The Radius dial's before/after, in miles. This is the TikTok arc's knob
+ * (portrait only). 0.38 -> 0.58 of the 270-degree sweep is a 54-degree needle
+ * move — the same visual magnitude as BUDGET's 0.42 -> 0.63, so the second
+ * knob turn reads as the same gesture rather than a smaller afterthought.
+ */
+export const RADIUS = { from: 25, to: 40, vFrom: 0.38, vTo: 0.58 } as const;
+
+/**
+ * The Demographic dial's range, in years — the minimum age of the targeted
+ * audience. Shipped as the END state ("Age 45+") the way every other value in
+ * this file is.
+ *
+ * IT IS NOT TURNED BY THE TIMELINE, AND THAT IS A GEOMETRY FACT RATHER THAN AN
+ * OVERSIGHT. Elara has to stand at the foot of a dial's riser to reach it, and
+ * the middle column's riser is `M154,240 V312 H166`, which puts his stance at
+ * (154,312). His box is ~60 stage units wide at a 390px viewport, so he would
+ * span 124..184 and lie 20 units across the Daily budget face (68..144) AND 20
+ * units across the Demographic face (164..240) at the same time. The worst
+ * overlap anywhere else in this build is 8 units, and a 17-unit version of
+ * exactly this defect is what forced the Radius dial from x=298 to x=310 (see
+ * DIALS_NARROW). There is no stance in the middle column that clears both
+ * neighbours, so the middle dial is a knob that is read, not turned.
+ *
+ * `from`/`to` are here so the range is a one-number edit if the owner wants a
+ * different band, and so a future arc that finds a clean stance has them.
+ */
+export const DEMOGRAPHIC = { from: 25, to: 45, vFrom: 0.42, vTo: 0.62 } as const;

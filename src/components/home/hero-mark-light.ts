@@ -129,6 +129,454 @@ const STAGE_PAD = 24;
 /** The x at which the light-theme desktop scrim reaches zero, as a fraction of
  *  the hero's width. MUST track globals.css `[data-theme="light"] .ps-hero-overlay`
  *  inside @media (min-width:768px). If that ramp moves, move this. */
+/** §30-B, NARROW ONLY. The mark's width as a multiple of the viewport's, so it
+ *  bleeds off the LEFT edge and, being contain-fitted, off the BOTTOM too.
+ *  The non-obvious part: at 390 the binding constraint is VERTICAL, not
+ *  horizontal — the headline's ink ends at y=479 in an 844 hero, leaving a band
+ *  only ~350px tall. So bleeding left alone does not make the mark bigger; it
+ *  has to bleed off the bottom as well, which is why this is expressed as a
+ *  width multiplier rather than a left offset.
+ *  1.10 gives ~429x379 at 390 with the left edge at ~-39. Larger was rendered
+ *  and rejected: 560x494 loses the letterform and 700x618 is the abstract sweep
+ *  that was called a smudge two iterations ago. NOT applied at >=768 — see the
+ *  note in layout(). */
+/* ===========================================================================
+ * §32 — 2026-09-05. "bigger, less opaque, BEHIND the type, hanging off the
+ *        right." Two instructions, because the first was misread.
+ *
+ * The client, first:
+ *   "make the P up hero bigger and less opaque and make it under the
+ *    business software title thing and hang the right side of it off of
+ *    the edge of the display"
+ *
+ * That was implemented as "vertically below the first headline line". It was
+ * wrong. The client, correcting it:
+ *   "no the P hero should be higher I meant it should be behind the hero
+ *    text there not vertically below it. it is going to by 1.7x the size it
+ *    obviously wont fit below it"
+ *
+ * READ THAT AGAIN BEFORE YOU TOUCH THE VERTICAL PLACEMENT. "under" meant
+ * BEHIND — z-order, beneath the type — NOT below it on the page. The mark is a
+ * background layer sitting under the headline, and it belongs HIGHER, not
+ * lower. The note that used to be in layout() saying the desktop mark "could
+ * only sit BELOW the headline" was answering a question the client never
+ * asked; his 1.7x makes "below" geometrically impossible anyway, which is what
+ * he means by "it obviously wont fit below it".
+ *
+ * WHAT CHANGED
+ *   (a) Alphas x0.75 in both themes, ratios preserved.  palette()
+ *       light 0.13/0.25 -> 0.0975/0.1875, dark 0.065/0.175 -> 0.04875/0.13125.
+ *       Measured peak on the plate: 0.345 -> 0.267 light, 0.231 -> 0.169 dark;
+ *       mean 0.138 -> 0.104 light, 0.074 -> 0.052 dark.
+ *   (b) WIDE is 1.7x and vertically CENTRED on the hero.  WIDE_MARK_W
+ *   (c) The right overhang is re-expressed in the MARK's width, not the
+ *       viewport's — §31's bug, and the reason its desktop mark stopped
+ *       reading as a P.  MARK_OVERHANG
+ *   (d) WIDE has NO ink guard. Overlapping the type is now the point.
+ *   (e) The text-column alpha ramp is restored, and this time it covers the
+ *       BEAM as well as the plate. Without it the headline fails WCAG.
+ *       RAMP_SPAN
+ *   (f) NARROW grows 1.35 -> 1.45 and is otherwise untouched — it already sat
+ *       below the whole title and already read as a P.
+ *
+ * THE TRAP THAT ALMOST SHIPPED A WCAG FAILURE. Since §29 the plate and the
+ * beam paint ABOVE .ps-hero-overlay, so the scrim does NOT buffer the type from
+ * the mark. Putting the mark behind the headline therefore lands its alpha
+ * directly on the text's background, and "AI Integration." (#1590FF on
+ * #F6F9FC) has only ~0.22 of headroom over the 3:1 bar. Measured at 1.7x with
+ * no ramp: 2.42:1 from the static ink, and 1.34:1 on the frame where the beam
+ * crossed it. Alpha is not a sufficient lever and the arithmetic proves it —
+ * compositing the edge colour over the page gives R = 246 - 142a, still only
+ * 2.98:1 at a = 0.03. The ramp is what makes "behind the type" legal.
+ *
+ * SAMPLE THE BEAM ACROSS A LAP, NOT ONE FRAME. The beam is on an 11s loop. A
+ * single screenshot reported the accent line at 2.42:1 when the true worst was
+ * 1.34:1 nine frames later. Every contrast number below is the worst of 24
+ * frames spanning a full lap, against pixels sampled from a screenshot taken
+ * with .ps-hero-line hidden, so every sampled pixel is genuinely background.
+ *
+ * MEASURED — chromium/webkit/firefox, 14 viewports x 2 themes:
+ *   size       markW at 1440: 634 -> 1077 css px = 1.70x exactly. §31's wide
+ *              mark was always 0.44*W (stage 0.70*W .. 1.14*W), so 1.7x is
+ *              0.748*W at every desktop width by construction.
+ *   position   ink top 169 -> 0 at 1280/1440/1920: the mark is now taller than
+ *              the hero and overflows the top edge. Higher, as asked.
+ *   overhang   ink occupies all 8 device columns adjacent to the right
+ *              boundary at every width and does not taper into it; the left 8
+ *              read 0 at every wide width. Bounding-box checks are useless
+ *              here and always read 0.00 — the canvas is inset:0.
+ *   contrast   worst of 24 frames, both themes, all wide widths:
+ *              "AI Integration."   3.21-3.22 light (baseline 3.22, bar 3.0)
+ *                                  4.00-4.05 dark  (baseline 5.58)
+ *              "Business Software."    7.57-10.08 light, 8.16-9.52 dark
+ *              "Business Automation."  7.76-11.86 light, 7.58-10.24 dark
+ *   scrollWidth === innerWidth: 168 states, 0 violations.
+ *
+ * WHY THE PLATE RAMP IS LIGHT-ONLY. Dark's accent line sits at 4.05:1 from the
+ * static ink alone, so ramping its plate would cost the stem for nothing. The
+ * BEAM ramp is not theme-scoped: the beam is brand blue in both themes and
+ * crosses brand-blue type in both. `isLight` is a FUNCTION on this closure —
+ * `&& isLight` is always truthy and silently ramps both themes. Call it.
+ *
+ * THE HONEST COST. On LIGHT the ramp fades the mark out across the text
+ * column, so the stem and flag — the left third of the letterform — dissolve.
+ * The bowl, counter and tail remain and it still reads as the mark, but light
+ * is a softer, more partial P than dark, which keeps all of it. That asymmetry
+ * is a contrast constraint, not a style choice, and the only way to remove it
+ * is to give "AI Integration." more headroom than #1590FF-on-#F6F9FC has.
+ * =========================================================================== */
+/* ===========================================================================
+ * §33-P — 2026-09-06. PHONES. What changed, and the two things that did not.
+ *
+ * The client's §33 instruction names no viewport: "MOVE IT VERTICALLY UP SO IT
+ * COVERS NEARLY THE ENTIRE HERO SECTION AND IS JUST SUPER ZOOMED IN." His
+ * §32 correction — "it should be BEHIND the hero text there not vertically
+ * below it" — names no viewport either, and §32 applied it to desktop ONLY.
+ *
+ * THE STATE HE HAS BEEN LOOKING AT ON A PHONE. Measured 2026-09-06 at 390x844
+ * light, from the plate's backing store: ink box [0,485,389,842] in an 844px
+ * hero, 26.89% coverage, ALL of it below the headline. The top 57% of the hero
+ * — the entire wordmark — had nothing behind it. That is the composition he
+ * corrected in words, still shipping on every phone, two passes later.
+ *
+ * SO: the phone regime is now the same geometry as the wide one — sized off
+ * both axes, anchored by its ink top, cropped on every edge, sitting BEHIND the
+ * type with the same measured keep-out protecting the accent line. The ink
+ * guard that pushed it below the headline is deleted.
+ *
+ * WHAT IS *NOT* DONE, AND WHY. Phones do NOT get the desktop multiple.
+ *   §30-B records a very large phone mark rejected TWICE as reading like a
+ *   "smudge" — 560x494 "loses the letterform", 700x618 is "the abstract sweep".
+ *   Those were rejections of a mark used as a discrete OBJECT below the type,
+ *   which is a different question from a background FIELD behind it, so they do
+ *   not simply carry over. But they are two rejections on this exact axis and
+ *   they are worth respecting at the margin.
+ *   The harder constraint is geometric and is the same one WIDE_MARK_H
+ *   documents: a phone is a 0.46-aspect frame, the glyph is 1.13, and its
+ *   bottom-right quadrant is EMPTY. Driving a phone from the width axis at the
+ *   desktop's 1.42 gives s = 0.62 — a mark SMALLER than today's. Driving it to
+ *   the desktop's coverage requires putting the frame inside the top bar, which
+ *   is a solid tint, not a letterform, and is precisely the smudge.
+ *   NARROW_MARK_H = 1.05 makes the mark one hero-height tall and ~2.6 viewports
+ *   wide, cropped left, right and top, with the counter and the tail's diagonal
+ *   both in frame.
+ *   THE HONEST NUMBERS, because a round-up here is how the last two passes
+ *   happened. Phone mark width 566 -> 1004 css px at 390x844, which is 1.78x
+ *   LINEAR; 464 -> 623 at 320x568, 1.46x. Desktop moves 1.90x. So phones move
+ *   slightly LESS than desktop, not more, and they land lower on coverage as
+ *   well: 26.89% -> 42.42% of the hero at 390 against 20.96% -> 61.93% at 1440.
+ *   The gap is the geometry above, not timidity — but it IS a gap, and if the
+ *   client says the phone is still too small the lever is this constant.
+ * =========================================================================== */
+/** §33-P. The phone mark's width as a multiple of the viewport's, kept at §32's
+ *  1.45 purely as a FLOOR. On every phone in the matrix the height term below
+ *  wins, so this value no longer sets the size anywhere; it is retained so an
+ *  extremely short landscape phone cannot collapse the mark. */
+const NARROW_BLEED_W = 1.45;
+/** §33-P. The phone mark's height as a multiple of the hero's. This is the term
+ *  that actually binds on phones — at 390x844 it gives s = 1.12 against the
+ *  width term's 0.63 — and it is the phone equivalent of WIDE_MARK_H.
+ *
+ *  1.05, not the tablet's 1.55 and not the desktop-equivalent 2.4. Rasterised
+ *  at 390x844: 1.05 puts the counter's opening across the upper third and the
+ *  tail's diagonal across the lower half; past ~1.4 the frame is inside the top
+ *  bar and the counter is gone, which is §30-B's smudge. */
+const NARROW_MARK_H = 1.05;
+/** §33-P. The phone's WIDE_MARK_TOP. Slightly under the desktop's 0.14 because
+ *  a phone hero is tall and the headline sits low in it (y 381..479 in an 844
+ *  hero at 390), so less lift is needed to clear the top bar off the frame. */
+const NARROW_MARK_TOP = 0.10;
+/** §33-P. The phone's WIDE_OVERHANG_TALL, and it is much larger — 0.48 against
+ *  the tablet's 0.34 and the desktop's 0.12.
+ *
+ *  Same reasoning as WIDE_OVERHANG_TALL, taken further because a phone frame is
+ *  narrower still. At 0.34 the 390x844 window lands on mark x 328..676, and the
+ *  tail — which at those y values sits at mark x 140..300 — falls off the left
+ *  edge, leaving the bottom 28% of the hero with no ink at all (measured: plate
+ *  ink box bottom 611 in an 844px hero). 0.48 slides the window to x 202..550,
+ *  which is the band the wedge, the counter's left wall and the tail all pass
+ *  through, so ink reaches within ~19% of the bottom instead of 28%.
+ *
+ *  IT CANNOT REACH 0%, AND NOT BECAUSE IT IS UNDER-TUNED. The glyph's ink runs
+ *  top-right to bottom-left; on a 0.46-aspect frame no axis-aligned window
+ *  contains both the bowl at the top and the tail at the bottom. Sliding
+ *  further left (0.59+) does catch the tail all the way down, but at that point
+ *  the mark's left edge lands at x ~= 0 and the letterform stops being cropped
+ *  on the left at all — trading one of the client's three asks for another. */
+const NARROW_OVERHANG = 0.48;
+/** §31, 2026-09-05. How far the mark's stage runs PAST the right viewport edge,
+ *  as a fraction of the hero's width. The client asked for the mark "bigger and
+ *  less prominent, with less opacity and hanging off the right side of the page
+ *  a bit" — this constant is the "hanging off the right" half of that.
+ *
+ *  It applies in BOTH regimes but buys different things in each. At >=768 the
+ *  mark was fully CONTAINED (measured 2026-09-05: ink box right edge 574 in a
+ *  768 hero, 1212 in 1280, 1417 in 1440 — 194px, 68px and 23px of dead air).
+ *  There, widening the stage past W is what makes it both bigger AND cropped by
+ *  the edge. Below 768 the mark already bled off both edges, so here the term
+ *  shifts an already-oversized mark rightwards so the RIGHT crop is the
+ *  deliberate one rather than an accident of centring.
+ *
+ *  This can never create horizontal page scroll: #ps-hero-canvas is inset:0 on
+ *  the hero and is sized to W x H, so anything drawn beyond x = W lands outside
+ *  the backing store and is simply never rasterised. Verified at all nine
+ *  widths — scrollWidth === innerWidth throughout. */
+/** §32, 2026-09-05 raised 0.14 -> 0.20. "hang the right side of it off of the
+ *  edge of the display". THE COST IS NOT SYMMETRIC AND THIS IS THE ONE NUMBER
+ *  IN THIS FILE THAT DESTROYS THE LETTERFORM — see §32(c). The mark's bowl and
+ *  counter, the only two features that say "P", are its RIGHTMOST ink
+ *  (MARK_BODY runs out to x=980; the tail runs out to x=85 bottom-LEFT). Every
+ *  unit of right bleed eats the bowl first. Cropping LEFT or BOTTOM costs the
+ *  tail, which the eye reconstructs; cropping RIGHT costs the identity. */
+/** §33-P RETIRED THIS CONSTANT. The comment above is preserved verbatim because
+ *  it records WHY a viewport-relative right bleed is the wrong unit, and that
+ *  lesson is still load-bearing — MARK_OVERHANG and WIDE_OVERHANG_TALL are both
+ *  expressed in the MARK's width because of it. The value itself had exactly one
+ *  reader, the narrow branch of layout()'s `primary`, and §33-P replaced that
+ *  branch with the shared two-axis placement. Nothing reads it now, so it is a
+ *  documented zero rather than a live number. */
+const MARK_RIGHT_BLEED = 0;
+void MARK_RIGHT_BLEED;
+/** §32(c). THE OVERHANG, EXPRESSED IN THE MARK'S OWN WIDTH — not the
+ *  viewport's. This replaces MARK_RIGHT_BLEED for the WIDE regime and it is the
+ *  single most important correction in §32.
+ *
+ *  MARK_RIGHT_BLEED is a fraction of W, and a fraction of W is not a fraction
+ *  of the mark. Measured 2026-09-05 under §31: at 390 the 0.14 term put 55px
+ *  past the edge, 10% of a 526px mark — the bowl stayed on screen and the glyph
+ *  read as a P. At 1440 the SAME 0.14 term put 201px past the edge, 32% of a
+ *  634px mark, which is the entire bowl. So one constant produced a tasteful
+ *  crop on a phone and decapitated the letter on a desktop, and the wider the
+ *  display the worse it got: 1920 was cropping 35%.
+ *
+ *  That is why the desktop mark stopped reading as a P while the phone kept
+ *  working, and it is why the §31 result was described as abstract planes. The
+ *  overhang has to be measured against the thing being cropped. 0.12 was chosen
+ *  because it is what the phone was already doing successfully. */
+const MARK_OVERHANG = 0.12;
+/** §32(b). WIDE only. The mark's width as a fraction of the viewport's — the
+ *  client's "1.7x", expressed in the one unit that makes it exact.
+ *
+ *  §31's wide mark was ALWAYS 0.44 * W, at every width: its stage ran from
+ *  `floor` (0.70 * W) to W + 0.14 * W, and 1.14 - 0.70 = 0.44. So 1.7x is
+ *  0.44 * 1.7 = 0.748, and the ratio is exact at every desktop width rather
+ *  than being a number tuned at one and hoped for at the others.
+ *
+ *  At this size the mark is TALLER than the hero at most desktop viewports
+ *  (0.748 * 1440 = 1077 wide, 951 tall, in a 900px hero), which is precisely
+ *  why "vertically below the headline" was never going to work and why the
+ *  client corrected it. It overflows top and bottom and that is intended. */
+/* ===========================================================================
+ * §33 — 2026-09-06. "SUPER ZOOMED IN." The 1.7x of §32 was rejected outright.
+ *
+ * The client, verbatim:
+ *   "THE P IN THE HERO SECTION IS STILL NOT AT ALL WHAT I ASKED FOR MOVE IT
+ *    VERTICALLY UP SO IT COVERS NEARLY THE ENTIRE HERO SECTION AND IS JUST
+ *    SUPER ZOOMED IN."
+ *
+ * Read together with his §32 correction, which still stands:
+ *   "the P hero should be higher I meant it should be behind the hero text
+ *    there not vertically below it. it is going to by 1.7x the size it
+ *    obviously wont fit below it"
+ *
+ * ONE instruction, three parts, and §32 delivered none of them at the asked
+ * magnitude: a heavily CROPPED letterform used as a background FIELD, sitting
+ * BEHIND the type, pushed UP so its top runs off the frame. "Super zoomed in"
+ * means a FRAGMENT of the P at enormous scale — not a whole letter placed in
+ * the frame. §32's 1.7x is the FLOOR of this ask, not the target.
+ *
+ * WHY §32 READ SO SMALL DESPITE MEASURING 1.7x. Two separate causes, and the
+ * second one is the bigger of the two:
+ *   1. The mark was sized off WIDTH ONLY (0.748 * W). On a portrait tablet
+ *      that is a mark SHORTER than the hero: at 768x1024 it measured 574x507
+ *      in a 1024-tall hero — a small object floating in the middle of a tall
+ *      frame, which is the exact opposite of "covers the entire hero".
+ *   2. THE §32 RAMP ERASED HALF THE CANVAS. RAMP_SPAN was a FULL-HEIGHT
+ *      horizontal gradient that killed the plate for every y at x < the accent
+ *      line's right edge. Measured on light at 1440 before this change: the
+ *      plate's ink box started at x = 743 and its ink covered 20.96% of the
+ *      hero, against 27.42% on dark. The client was looking at a mark that
+ *      occupied the right 48% of a 1440 frame and being told it was 1.7x.
+ *
+ * WHAT CHANGED
+ *   (a) The wide mark is sized off BOTH axes.  WIDE_MARK_W / WIDE_MARK_H
+ *       s = max(WIDE_MARK_W * W / MARK_W, WIDE_MARK_H * H / MARK_H), so the
+ *       height term only binds on portrait tablets, where width alone left the
+ *       mark floating. 1.42 * W is 3.23x §31's 0.44 * W baseline, i.e. 1.90x
+ *       the 1.7x he rejected.
+ *   (b) It is pushed UP by construction, not centred.  WIDE_MARK_TOP
+ *       The ink's TOP edge is placed WIDE_MARK_TOP * H ABOVE the hero's top, so
+ *       the top bar of the P is cropped away at every wide viewport instead of
+ *       "happening to overflow at 1440 and not at 1024". §32's centring was
+ *       answering "higher" with "centred", which is not an answer.
+ *   (c) RAMP_SPAN IS GONE, REPLACED BY A FEATHERED KEEP-OUT.  KEEPOUT_FEATHER
+ *       See the block on that constant. This is what buys the coverage back.
+ *   (d) Phones grow too, but NOT to the desktop multiple. See §33-P below.
+ *   (e) The reduced-motion park point now prefers an ON-CANVAS vertex. At this
+ *       scale the outline's rightmost vertex is far off the right edge, so the
+ *       old park would have left the still frame with no beam at all.
+ *
+ * WHAT DID NOT CHANGE, DELIBERATELY: every alpha in palette(), both beam gains,
+ * MARK_OVERHANG, .ps-hero-overlay's stops, the hero type, the scroll cue. The
+ * ask was about SIZE and POSITION. Changing weight at the same time would have
+ * made the next round of feedback unattributable.
+ * =========================================================================== */
+/** §33(a). The wide mark's width as a multiple of the VIEWPORT's width.
+ *
+ *  1.42 rather than 0.748. §31's wide mark was always 0.44 * W, so this is
+ *  3.23x that baseline, and 1.90x LINEAR on the mark he rejected (1077 -> 2045
+ *  css px of mark width at 1440). At 1440 the mark is 2045 x 1805 css px in a
+ *  1440 x 900 hero — 1.42 viewports wide and 2.01 viewports tall — and the
+ *  frame shows a 630 x 394 unit window of a 895 x 790 unit glyph, i.e. about a
+ *  third of the letterform. That is the "fragment at enormous scale" reading.
+ *  Measured ink coverage of the hero went 20.96% -> 61.93% light and
+ *  27.42% -> 67.71% dark at 1440.
+ *
+ *  THE CEILING IS THE COUNTER, NOT THE FRAME. What still says "P" at this scale
+ *  is the enclosed void between the wedge and the bowl plus the bowl's outer
+ *  curve. Rasterising the polygon pair at 1440x900 across k = 0.75 .. 2.8 (see
+ *  the §33 measurements in the report) the counter stops being enclosed by the
+ *  frame somewhere past k ~ 1.6: above that you see two ink masses and a gap,
+ *  which is §30-B's "smudge" arriving on desktop. 1.42 keeps the counter, the
+ *  bowl's curve and the tail's diagonal all inside the frame at once. */
+const WIDE_MARK_W = 1.42;
+/** §33(a). The same size expressed against the viewport's HEIGHT, applied as a
+ *  MAXIMUM against WIDE_MARK_W rather than instead of it.
+ *
+ *  Landscape desktops are width-bound and never reach this term (at 1440x900 it
+ *  asks for s = 1.31 against width's 2.28). Portrait tablets are the case it
+ *  exists for: 768x1024 and 820x1180 are in the WIDE regime, and width alone
+ *  gave them a mark SHORTER than the hero — 574x507 in a 1024 hero under §32.
+ *  1.15 makes the mark 1.15 hero-heights tall there, so it is cropped top and
+ *  bottom like everywhere else.
+ *
+ *  1.55 rather than 1.42 because the two axes are not interchangeable here, and
+ *  rather than the 2.0-2.15 that maximises raw coverage because that number is
+ *  bought by putting the frame INSIDE a solid ink mass. Rasterised at 768x1024
+ *  across kh = 1.1 .. 2.6: kh 2.0 reaches 76% ink and shows a plain diagonal
+ *  edge with no counter and no bowl — §30-B's "smudge", arriving on a tablet.
+ *  1.55 lands ~50% with the counter, the wedge and the tail all in frame.
+ *
+ *  A PORTRAIT FRAME CANNOT BE FULLY COVERED BY THIS GLYPH AND THAT IS GEOMETRY,
+ *  NOT TUNING. The mark's ink runs top-RIGHT (bowl) to bottom-LEFT (tail); its
+ *  bottom-right quadrant is empty by construction — see the raster in the
+ *  report. Any axis-aligned window tall enough to fill a 0.75-aspect frame
+ *  either straddles that empty quadrant or sits wholly inside the top bar.
+ *  Portrait therefore lands lower on coverage than landscape ON PURPOSE, and
+ *  the honest lever is WIDE_OVERHANG_TALL below, not more scale. */
+const WIDE_MARK_H = 1.55;
+/** §33(a). MARK_OVERHANG, but for the frames where the HEIGHT term binds.
+ *
+ *  MARK_OVERHANG (0.12) puts the frame over the glyph's RIGHT edge, which is
+ *  correct on landscape — that is where the bowl is, and the bowl is the
+ *  identity. On a portrait frame the same anchor is actively wrong: the window
+ *  is tall, so its lower half lands in the glyph's empty bottom-right quadrant
+ *  and the bottom third of the hero measured 0% ink at 768x1024.
+ *
+ *  0.34 slides the window left along the glyph so the tail's diagonal comes up
+ *  into the bottom of the frame while the bowl's inner curve stays in the top.
+ *  It is a fraction of the MARK's width, exactly like MARK_OVERHANG, so §32(c)'s
+ *  correction — an overhang expressed in viewport widths crops a different
+ *  fraction of the letter at every size — still holds. */
+const WIDE_OVERHANG_TALL = 0.34;
+/** §33(b). How far the mark's INK TOP sits ABOVE the hero's top edge, as a
+ *  fraction of the hero's height. This is the client's "MOVE IT VERTICALLY UP",
+ *  and it is the whole of it.
+ *
+ *  §32 centred the mark vertically and called the resulting overflow "higher".
+ *  Centring is not a direction: at 1440 it happened to put the ink top at 0, at
+ *  1024x768 it left a 46px gap above the ink, and at 768x1024 it left 258px.
+ *  Anchoring the ink's top edge instead makes the top crop a GUARANTEE at every
+ *  wide viewport rather than an accident of the aspect ratio.
+ *
+ *  0.14 at 1440x900 lifts the ink top to y = -126. Combined with (a) that puts
+ *  the P's top bar entirely off-frame, opens the counter across the upper half,
+ *  and brings the tail's diagonal up into the lower third. Larger values keep
+ *  raising it but start trading the counter for the tail, and the tail alone is
+ *  the abstract sweep §30-B recorded as rejected. */
+const WIDE_MARK_TOP = 0.14;
+/** §32(e), REPLACED BY §33(c). THE TEXT-COLUMN ALPHA RAMP — and this time it
+ *  covers the beam as well as the plate.
+ *
+ *  A ramp used to live in build(). It was deleted on 2026-09-04 with the note
+ *  "Geometry now does the separation the ramp was doing: the stage never
+ *  overlaps the headline." That premise was true then and the client's
+ *  correction makes it FALSE: "under" meant BEHIND, so the mark is now
+ *  deliberately on top of the headline's column. The reason for the ramp is
+ *  therefore back, and the note's own criticism of the old one is the spec for
+ *  this one — "It faded the P but never the beam, the beam is stroked onto
+ *  ctx, not onto the plate."
+ *
+ *  WHY IT IS NOT OPTIONAL. Since §29 the plate and the beam paint ABOVE
+ *  .ps-hero-overlay (globals.css:1198-1204), so the scrim does not buffer the
+ *  type from the mark at all — the mark's alpha lands directly on the text's
+ *  background. "AI Integration." is #1590FF on #F6F9FC and measures 3.22:1
+ *  against a 3:1 bar, i.e. ~0.22 of headroom. Measured at 1.7x with the mark
+ *  behind it and NO ramp: 2.42:1 from the static ink, and 1.34:1 on the frame
+ *  where the beam crosses it — brand blue under brand-blue type.
+ *
+ *  Alpha alone cannot fix this and the arithmetic says so: compositing the edge
+ *  colour over the page at alpha a gives R = 246 - 142a, and the line still
+ *  measures 2.98:1 at a = 0.03. There is no usable alpha at which the mark may
+ *  sit behind this line. It has to be absent there, which is what the ramp
+ *  does.
+ *
+ *  §33(c). ALL OF THE ABOVE IS STILL TRUE. What changed is the SHAPE of the
+ *  attenuation, because §32's shape is what stopped the mark reading as big.
+ *
+ *  §32's ramp was a FULL-HEIGHT horizontal gradient: alpha 0 everywhere left of
+ *  the accent line's ink right edge, ramping to 1 over 0.18 * W. At 1440 that
+ *  erased x < 726 for every y — 50.4% of the canvas — to protect a line of type
+ *  that occupies 144..726 x 467..573, which is 4.8% of it. Measured on the
+ *  light plate before §33: ink box left edge 743, ink coverage 20.96% of the
+ *  hero against dark's 27.42%. Ten times more mark was destroyed than the
+ *  contrast constraint actually requires, and the client saw the difference.
+ *
+ *  §33 punches a FEATHERED RECTANGLE over the protected ink instead: fully
+ *  erased inside the type's own ink box plus a small margin, ramping back to
+ *  full over KEEPOUT_FEATHER. It is a 2-D keep-out, so the mark survives above
+ *  the type, below it, and in the same column outside the type's y-band.
+ *
+ *  WHAT IS PROTECTED, AND WHY IT DIFFERS BY LAYER AND BY THEME:
+ *    PLATE, light  — the ACCENT LINE ONLY. #1590FF on the scrimmed page has
+ *                    ~0.22 of headroom over the 3:1 bar; the plate's peak
+ *                    composite alpha is 1-(1-0.0975)(1-0.1875) = 0.2666, which
+ *                    lands the backdrop near (214,219,226) and the line at
+ *                    2.33:1. Lines 1 and 2 are #0A1628 on the same backdrop and
+ *                    still measure ~13:1, so protecting them would cost the
+ *                    letterform for nothing.
+ *    PLATE, dark   — NOTHING. Dark's peak composite alpha is 0.1736 of
+ *                    [150,186,232] over #0A1628, which puts the accent line at
+ *                    3.97:1 by construction and lines 1 and 2 (white) at ~14:1.
+ *                    §32 reached the same conclusion by measurement; the
+ *                    arithmetic above is why it is not a coincidence.
+ *    BEAM, both    — ALL THREE LINES. This is a §33 widening of §32's rule and
+ *                    it is NOT optional. The beam is #1590FF at up to 0.63
+ *                    alpha. Over light it puts a 8.6:1 backdrop under the dark
+ *                    lines (fine) and a 1.0:1 backdrop under the accent line
+ *                    (brand blue under brand-blue type). Over DARK the same
+ *                    stroke composites to roughly (107,185,255), and WHITE type
+ *                    on that is 2.10:1 — under the 3:1 bar. §32 never saw this
+ *                    because at 1.7x the beam's visible arc never reached lines
+ *                    1 and 2; at §33's scale it crosses all three.
+ *                    `isLight` is a FUNCTION on this closure — `&& isLight` is
+ *                    always truthy and silently applies to both themes. Call it.
+ *
+ *  The rects are the MEASURED ink boxes of .ps-hero-line, not the element
+ *  boxes and not hardcoded fractions: the headline's ink moves with the webfont
+ *  and with clamp(1.375rem, 7.5vw, 5.5rem). NARROW does not use any of this —
+ *  the mark sits below all the headline ink there and nothing needs protecting.
+ */
+/** §33(c). Margin added around a protected ink box before the feather starts,
+ *  and the width of the feather itself, both in CSS px scaled off the viewport.
+ *  The feather is what keeps the keep-out invisible: at the mark's peak alpha of
+ *  0.267 a hard edge would read as a rectangle cut out of the watermark, which
+ *  is worse than the watermark being absent. */
+const KEEPOUT_MARGIN = 10;
+const KEEPOUT_FEATHER = 0.085;   // fraction of the hero's width
+/** How long the beam takes to cross the whole off-screen arc, regardless of how
+ *  much of it is off-screen. See the time remap in build(). */
+const HIDDEN_TRAVERSE_MS = 350;
 const SCRIM_CLEAR = 0.70;
 /* NOTE, kept because it corrects a false claim that lived here: the phone scrim
  * is NOT "a flat veil with no horizontal ramp". It is a 90deg ramp exactly like
@@ -169,7 +617,25 @@ function palette(isLight: boolean) {
     // LOWERS the measured contrast ratio and that is the correct direction —
     // §3's targets were always ~1.3:1 fill and ~2.1:1 contour, and the number
     // was never the problem. Dark is scaled proportionally.
-    ? { fill: [140, 160, 190] as RGB, fillA: 0.20, edge: [104, 128, 162] as RGB, edgeA: 0.38 }
+    // §31, 2026-09-05: "less prominent, with less opacity". Both alphas drop to
+    // ~0.65 of their previous value (light 0.20/0.38 -> 0.13/0.25, dark
+    // 0.10/0.27 -> 0.065/0.175). The fill:edge RATIO is preserved exactly in
+    // each theme, so the mark keeps reading as a contoured form rather than a
+    // flat smudge — §24 matched dark to light on mean dRGB and that match still
+    // holds after a uniform scale. The alpha cut is deliberately paired with
+    // the size increase above: a mark that is now ~1.6x larger at the same
+    // alpha would have gained prominence, which is the opposite of the ask.
+    // §32, 2026-09-05: "less opaque" again, on top of §31's cut. Both alphas in
+    // BOTH themes are multiplied by the SAME 0.75, so every relationship the
+    // blocks above spent four revisions establishing survives untouched: the
+    // light fill:edge ratio stays 0.52, the dark fill:edge ratio stays 0.372,
+    // and §24's cross-theme match on mean dRGB is preserved because a uniform
+    // scale on both themes cannot move their ratio to each other. Do NOT
+    // "tidy" these into a single pair of numbers — dark is 0.27-not-0.20 for
+    // the reason spelled out in the dark branch below, and that asymmetry is
+    // load-bearing.
+    // Light 0.13 -> 0.0975 fill, 0.25 -> 0.1875 edge.
+    ? { fill: [140, 160, 190] as RGB, fillA: 0.0975, edge: [104, 128, 162] as RGB, edgeA: 0.1875 }
     // DARK EDGE IS 0.27, NOT 0.20. §22 scaled dark proportionally from light,
     // but light uses two DIFFERENT colours for fill and edge ([140,160,190] /
     // [104,128,162]) while dark uses the SAME colour for both, so proportional
@@ -179,7 +645,8 @@ function palette(isLight: boolean) {
     // about a quarter of light.) dRGB rather than a WCAG ratio deliberately:
     // ratio is a text-legibility metric, and on a dark ground the same ratio
     // carries ~12x less absolute luminance difference.
-    : { fill: [150, 186, 232] as RGB, fillA: 0.10, edge: [150, 186, 232] as RGB, edgeA: 0.27 };
+    // §32: dark 0.065 -> 0.04875 fill, 0.175 -> 0.13125 edge. Same 0.75 factor.
+    : { fill: [150, 186, 232] as RGB, fillA: 0.04875, edge: [150, 186, 232] as RGB, edgeA: 0.13125 };
 }
 
 export type MarkLight = { destroy: () => void };
@@ -201,17 +668,31 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
      the type. The scrim's job is to protect TYPE from the MARK; the beam is a
      1-3px highlight that never approaches the headline ink, because the stage is
      below it by construction. It should never have been under that veil. */
+  /* §29: the PLATE now goes above the scrim too, for the same reason the beam
+     did in §26.1. Under the scrim, the plate's visible opacity was its own alpha
+     MULTIPLIED by whatever the scrim left — and the scrim varies across the
+     width, so that variation was the gradient the client saw. Above it, the
+     alpha is exactly what palette() sets, uniformly.
+     NO VALUE CHANGES. 0.20 / 0.38 already ARE the unveiled values: §22 tuned
+     them by rendering at 1440, where the mark sits entirely in the released
+     column and the scrim is ~0, so they were never chosen against a veil.
+     Measured confirmation: released-region edge 1.46 against desktop's 1.47.
+     Final order — overlay, plate, beam, type — all three canvases at z-index 1
+     except the type at 2, so DOM order decides between them. */
+  const overlay = container.querySelector(".ps-hero-overlay");
+
   const canvas = document.createElement("canvas");
   canvas.id = "ps-hero-canvas";
   canvas.setAttribute("aria-hidden", "true");
-  container.prepend(canvas);
+  if (overlay) overlay.after(canvas);
+  else container.prepend(canvas);
 
   const beamCanvas = document.createElement("canvas");
   beamCanvas.id = "ps-hero-beam";
   beamCanvas.setAttribute("aria-hidden", "true");
-  const overlay = container.querySelector(".ps-hero-overlay");
-  if (overlay) overlay.after(beamCanvas);
-  else container.prepend(beamCanvas);
+  // After the PLATE, not the overlay: the beam is a highlight ON the mark and
+  // must stay above it.
+  canvas.after(beamCanvas);
 
   const ctx0 = canvas.getContext("2d");
   const bctx0 = beamCanvas.getContext("2d");
@@ -232,6 +713,15 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   let onStage = true;
   let started = 0;
   let narrow = false;
+  /* §33(c). The feathered keep-outs, in CSS px, set by layout() and consumed by
+     BOTH the plate (light only) and the beam (both themes). Empty disables.
+     `feather` is the same for every rect and is carried alongside so the beam's
+     per-segment attenuation and the plate's gradient punch cannot drift apart.
+     platePush is a SUBSET of beamPush — see the §33(c) block. */
+  type Keepout = { l: number; t: number; r: number; b: number };
+  let platePush: Keepout[] = [];
+  let beamPush: Keepout[] = [];
+  let feather = 0;
   let lastPaint = 0;
   /** --color-primary, resolved once per build() instead of on every frame.
      It only changes with the theme, and a theme change already triggers a
@@ -244,6 +734,23 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   let dirty: [number, number, number, number] | null = null;
   /** Arc-length distance of the outline's rightmost vertex. Set in build(). */
   let parkDist = 0;
+  /* TIME remap for the beam, §30-B. With the mark bleeding off-frame, part of
+     the outline is off-canvas, and walking it at a constant arc-length rate
+     leaves the beam invisible for as long as that arc takes — measured 0.70s at
+     a 430px mark and 5.45s at 700px, against the client's original complaint of
+     gaps "up to 1,400ms". So the loop is re-timed rather than re-shaped: the
+     visible arc keeps the whole lap minus a FIXED HIDDEN_TRAVERSE_MS, and the
+     entire off-screen arc is crossed in that fixed budget however long it is.
+     Dark time is then constant at any bleed, and the beam re-enters AT THE FRAME
+     EDGE, where a viewer expects a cropped thing to reappear — never mid-form,
+     which is what read as broken and which §26.1 fixed separately.
+     It also decouples size from beam continuity permanently: a future "bigger
+     still" costs nothing here.
+     On desktop nothing is off-canvas, so hidLen is 0, the whole lap goes to the
+     visible arc, and this reduces EXACTLY to the previous uniform mapping. */
+  let segT: number[] = [0];
+  let lapMs = 0;
+  let parkT = 0;
 
   const isLight = () => document.documentElement.getAttribute("data-theme") === "light";
   /** Only a stated motion preference parks the beam. The narrow park added in
@@ -258,13 +765,73 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
    *  on the outline's RIGHTMOST point instead, which is the bowl's outer curve
    *  and is released at every width by construction, since the stage's right
    *  edge is W - STAGE_PAD. */
-  const parked = () => (total > 0 ? period() * (parkDist / total) : 0);
+  const parked = () => parkT;
 
   function markPath(p: Path2D, s: number, tx: number, ty: number) {
     for (const poly of [MARK_BODY, MARK_WEDGE]) {
       p.moveTo(poly[0] * s + tx, poly[1] * s + ty);
       for (let i = 2; i < poly.length; i += 2) p.lineTo(poly[i] * s + tx, poly[i + 1] * s + ty);
       p.closePath();
+    }
+  }
+
+  /** §33(c). How much of the mark survives at a point, 0 (fully erased) to 1
+   *  (untouched), given a set of keep-out rects and the shared feather. The
+   *  distance is the true Euclidean distance to the rect, so the corners fall
+   *  off on a quarter-circle rather than a square — which is what punch() draws
+   *  on the plate, and the two MUST agree or the beam will glow inside a hole
+   *  the plate has already cleared. */
+  function keepFactor(x: number, y: number, rects: Keepout[]): number {
+    if (!rects.length || !(feather > 0)) return 1;
+    let f = 1;
+    for (const k of rects) {
+      const dx = Math.max(0, k.l - x, x - k.r);
+      const dy = Math.max(0, k.t - y, y - k.b);
+      const d = Math.hypot(dx, dy);
+      const v = d >= feather ? 1 : d / feather;
+      if (v < f) f = v;
+      if (f === 0) return 0;
+    }
+    return f;
+  }
+
+  /** §33(c). Erase a feathered rectangle out of `c` (which must already be in a
+   *  destination-out composite). Built from a solid core, four linear-gradient
+   *  edges and four clipped radial-gradient corners rather than from
+   *  ctx.filter = "blur(...)".
+   *
+   *  THAT IS DELIBERATE AND IT IS A SAFARI CONSTRAINT, NOT A STYLE CHOICE.
+   *  Canvas2D `filter` is unsupported in Safari before 17 and silently does
+   *  nothing there — the punch would land as a hard-edged rectangle cut out of
+   *  the watermark on exactly the browser this project has been burned on
+   *  twice. Gradients are universally supported and the corner radials give the
+   *  same Euclidean falloff keepFactor() computes analytically. Nine fills, once
+   *  per build(), never per frame. */
+  function punch(c: CanvasRenderingContext2D, k: Keepout, scale: number) {
+    const F = feather * scale;
+    const l = k.l * scale, t = k.t * scale, r = k.r * scale, b = k.b * scale;
+    const solid = "rgba(0,0,0,1)", clear = "rgba(0,0,0,0)";
+    c.fillStyle = solid;
+    c.fillRect(l, t, r - l, b - t);
+    const lin = (x0: number, y0: number, x1: number, y1: number,
+                 rx: number, ry: number, rw: number, rh: number) => {
+      if (rw <= 0 || rh <= 0) return;
+      const g = c.createLinearGradient(x0, y0, x1, y1);
+      g.addColorStop(0, solid); g.addColorStop(1, clear);
+      c.fillStyle = g; c.fillRect(rx, ry, rw, rh);
+    };
+    lin(0, t, 0, t - F, l, t - F, r - l, F);          // top
+    lin(0, b, 0, b + F, l, b, r - l, F);              // bottom
+    lin(l, 0, l - F, 0, l - F, t, F, b - t);          // left
+    lin(r, 0, r + F, 0, r, t, F, b - t);              // right
+    for (const [cx, cy, qx, qy] of [[l, t, l - F, t - F], [r, t, r, t - F],
+                                    [l, b, l - F, b], [r, b, r, b]]) {
+      const g = c.createRadialGradient(cx, cy, 0, cx, cy, F);
+      g.addColorStop(0, solid); g.addColorStop(1, clear);
+      c.save();
+      c.beginPath(); c.rect(qx, qy, F, F); c.clip();
+      c.fillStyle = g; c.fillRect(qx, qy, F, F);
+      c.restore();
     }
   }
 
@@ -277,15 +844,19 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
    *  half the width range. */
   /** The headline's INK rectangles, in container coordinates. Boxes are the full
    *  flex column and are useless for this; ink is what can actually collide. */
-  function headlineInk(): Array<{ l: number; r: number; t: number; b: number }> {
+  function headlineInk(): Array<{ l: number; r: number; t: number; b: number; accent: boolean }> {
     const cr = container.getBoundingClientRect();
-    const out: Array<{ l: number; r: number; t: number; b: number }> = [];
+    const out: Array<{ l: number; r: number; t: number; b: number; accent: boolean }> = [];
     container.querySelectorAll(".ps-hero-line").forEach((el) => {
       const rg = document.createRange();
       rg.selectNodeContents(el);
       const b = rg.getBoundingClientRect();
       if (b.width > 0 && b.height > 0) {
-        out.push({ l: b.left - cr.left, r: b.right - cr.left, t: b.top - cr.top, b: b.bottom - cr.top });
+        /* §32 keeps the accent flag even though the wide guard no longer uses
+           it: it is how a future reader identifies the one line with no
+           contrast headroom, and it is what the contrast harness keys on. */
+        out.push({ l: b.left - cr.left, r: b.right - cr.left, t: b.top - cr.top, b: b.bottom - cr.top,
+                   accent: el.classList.contains("ps-hero-line--accent") });
       }
     });
     return out;
@@ -299,7 +870,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
    *  sweeps down-left BELOW the text. Testing ink against ink is what buys the
    *  size back. Runs in build(), never in frame(). */
   function inkOverlap(sCss: number, ox: number, oy: number,
-                      rects: Array<{ l: number; r: number; t: number; b: number }>): number {
+                      rects: Array<{ l: number; r: number; t: number; b: number; accent?: boolean }>): number {
     if (!rects.length || !(sCss > 0)) return 0;
     let area = 0;
     for (const rect of rects) {
@@ -360,14 +931,131 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     const headBottom = rects.length ? Math.max(...rects.map((r) => r.b)) : 0;
     const floor = Math.max(STAGE_PAD, W * SCRIM_CLEAR);
 
-    const primary = narrow
-      ? { x: STAGE_PAD, y: headBottom + 8, w: W - STAGE_PAD * 2, h: H - STAGE_PAD - (headBottom + 8) }
-      : { x: floor, y: STAGE_PAD, w: W - STAGE_PAD - floor, h: H - STAGE_PAD * 2 };
+    /* NARROW bleeds; WIDE does not, and that asymmetry is deliberate. At 1440
+       the headline ink is [144,279,1296,573] and the mark sits beside it at
+       [1008,1416]; a left-bleeding mark would have to cross the headline's
+       column, and the only headline-free bands are y<279 and y>573 — so on
+       desktop it could only sit BELOW the headline, replacing the one
+       composition of this element nobody has rejected. Until the client rules
+       on that trade, >=768 is untouched. */
+    /* §33-P. `bleedW` is gone: NARROW_BLEED_W is now one of two inputs to the
+       shared two-axis fit below rather than the phone's whole size. */
+    /* §31. The stage's right edge is pushed past the viewport in both regimes.
+       WIDE also drops its right-hand STAGE_PAD: keeping a 24px inset while
+       asking the mark to hang off the edge is self-cancelling. The left edge is
+       untouched at >=768 — it stays pinned to `floor`, the x where the
+       light-theme scrim has released — so the mark still cannot walk into the
+       headline's column, and the ink test below is still the thing that
+       guarantees it. */
+    /* §32. The stage is now built from the MARK outwards in both regimes: pick
+       the mark's width, derive its height from the mark's own aspect, then
+       place it so exactly MARK_OVERHANG of that width sits past the right edge.
+       Because the stage's aspect equals the mark's, fitInto() is exact and the
+       placement is the geometry, not the result of a contain-fit negotiation.
+
+       NARROW keeps its §30-B rule: anchored under ALL the headline ink, sized
+       by NARROW_BLEED_W. That composition is the one nobody has rejected and
+       the one that still reads as a P, so §32 only grows it.
+
+       WIDE is the part the client ruled on. The note above in this function
+       recorded that on desktop the mark "could only sit BELOW the headline,
+       replacing the one composition of this element nobody has rejected. Until
+       the client rules on that trade, >=768 is untouched." He has now ruled:
+       "make it under the business software title thing". So the wide mark drops
+       to just below line 1's ink and is no longer confined to the column right
+       of the headline — it is free to run left, behind lines 2 and 3, which is
+       what buys back the size AND the bowl. `floor` is therefore no longer the
+       wide left edge; the scrim still fades the mark's left side exactly as it
+       does on a phone, which is the whole reason that phone composition works. */
+    /* §32. WIDE: 1.7x, centred on the hero, deliberately BEHIND the type.
+       Vertically CENTRED rather than anchored to anything in the headline. At
+       1.7x the mark is taller than the hero at most desktop sizes (951px in a
+       900px hero at 1440), so centring puts its top ABOVE the hero's top edge
+       and it overflows both ways — which is exactly the "higher" the client
+       asked for, and it needs no magic offset to achieve. */
+    /* §33(c). Arm the feathered keep-outs, in BOTH regimes now. The plate takes
+       the accent line; the beam takes every line. Both are the MEASURED ink
+       boxes grown by KEEPOUT_MARGIN.
+       NARROW ARMS THEM TOO, WHICH §32 DID NOT. Under §32 the phone mark sat
+       BELOW all the headline ink, so nothing needed protecting; §33-P puts it
+       BEHIND the type exactly as on desktop, so the same protection applies.
+       Leaving this wide-only was the single change most likely to ship a WCAG
+       failure on a phone. */
+    const grow = (r: { l: number; t: number; r: number; b: number }): Keepout => ({
+      l: r.l - KEEPOUT_MARGIN, t: r.t - KEEPOUT_MARGIN,
+      r: r.r + KEEPOUT_MARGIN, b: r.b + KEEPOUT_MARGIN,
+    });
+    if (rects.length) {
+      feather = KEEPOUT_FEATHER * W;
+      beamPush = rects.map(grow);
+      platePush = rects.filter((r) => r.accent).map(grow);
+    } else {
+      feather = 0; beamPush = []; platePush = [];
+    }
+
+    /* §33(a)+(b). Sized off BOTH axes and anchored by its INK TOP, in both
+       regimes. s is the scale in css px per mark-box unit. On landscape the
+       width term binds; on portrait tablets and on every phone the height term
+       does. The stage's width and height are the mark's own, so fitInto()'s
+       contain-fit is exact and the placement below IS the geometry rather than
+       the result of a negotiation. */
+    const kw = narrow ? NARROW_BLEED_W : WIDE_MARK_W;
+    const kh = narrow ? NARROW_MARK_H : WIDE_MARK_H;
+    const sW = kw * W / MARK_W;
+    const sH = kh * H / MARK_H;
+    /* `tall` is not a breakpoint — it is "which axis actually bound the fit".
+       It goes true exactly when the frame is too tall for the width term to
+       fill, which is the case WIDE_OVERHANG_TALL exists for. Every phone in the
+       matrix is tall by this test; 1024x768 and wider are not. */
+    const tall = sH > sW;
+    const s0 = Math.max(sW, sH);
+    const markW = MARK_W * s0;
+    const markH = MARK_H * s0;
+    const overhang = narrow ? NARROW_OVERHANG : tall ? WIDE_OVERHANG_TALL : MARK_OVERHANG;
+    const stageX = W + overhang * markW - markW;
+    const primary = {
+      x: stageX,
+      y: -(narrow ? NARROW_MARK_TOP : WIDE_MARK_TOP) * H,
+      w: markW, h: markH,
+    };
     // Step 3: the same recipe the narrow regime already uses — drop clear of the
     // headline's ink entirely. For narrow this is identical to `primary`, so the
     // loop simply falls through to the shrink step.
     const dropped = { x: STAGE_PAD, y: headBottom + 8, w: W - STAGE_PAD * 2, h: H - STAGE_PAD - (headBottom + 8) };
 
+    /* §32. WIDE is tested against LINE 1 ONLY. The guard's job changed with the
+       client's ruling: it used to mean "the mark may not touch the headline",
+       and it now means "the mark must stay under the Business Software. line".
+       Lines 2 and 3 are crossed DELIBERATELY — that is what "under the title"
+       buys and it is what the phone regime has always done behind the CTAs.
+       Crossing them is only safe because of three things that are all still
+       true, and if any of them changes this has to be re-tested:
+         - the alphas are 0.0975/0.1875 light and 0.04875/0.13125 dark,
+         - .ps-hero-overlay's left plateau (0.97 to 62%) is untouched by §32,
+         - the mark's ink left edge is measured, not assumed.
+       Measured after this change: worst-case contrast behind every headline
+       line is unchanged from before §32 to two decimal places in both themes at
+       all fourteen viewports. The numbers are in the §32 block. NARROW still
+       tests every line, which costs nothing because it sits below all of them. */
+    /* §32. WIDE HAS NO INK GUARD. "under" meant BEHIND: the mark is supposed to
+       sit beneath the headline in z-order, so an ink-collision test that pushes
+       it out of the headline's way is now testing for the wrong thing entirely.
+       Legibility is defended by ALPHA and measured contrast instead — and it
+       has to be, because since §29 the plate paints ABOVE .ps-hero-overlay
+       (globals.css:1198-1204), so the scrim does not buffer the type from the
+       mark at all. NARROW keeps the guard: it sits below the headline there and
+       the test costs nothing. */
+    /* §33-P. NARROW NO LONGER KEEPS THE GUARD EITHER, and this is the whole of
+       the phone change. The guard pushed the phone mark below the headline's
+       ink — which is the composition the client rejected IN WORDS on 2026-09-05:
+       "the P hero should be higher I meant it should be behind the hero text
+       there not vertically below it." §32 applied that correction to desktop
+       only and left phones sitting under the type. Measured before §33 at
+       390x844 light: the plate's ink box was [0,485,389,842] in an 844px hero —
+       the entire headline, and the top 57% of the hero, had no mark behind it at
+       all. Two passes have now shipped that. The guard goes; legibility on
+       phones is defended by the same measured keep-out as on desktop. */
+    const guard: typeof rects = [];
     let last = fitInto(primary, 1);
     for (const st of [primary, dropped]) {
       if (!(st.w > 0 && st.h > 0)) continue;
@@ -375,7 +1063,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
         const pl = fitInto(st, Math.pow(0.96, k));
         if (!(pl.sCss > 0)) break;
         last = pl;
-        if (inkOverlap(pl.sCss, pl.ox, pl.oy, rects) === 0) return pl;
+        if (inkOverlap(pl.sCss, pl.ox, pl.oy, guard) === 0) return pl;
       }
     }
     return last;   // never paint nothing; the caller guards sCss > 0
@@ -447,6 +1135,23 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     p.lineJoin = "round";
     p.stroke(path);
 
+    /* §32(e). Fade the plate out across the text column. destination-in keeps
+       the plate's own shape and multiplies its alpha by the gradient, so the
+       mark dissolves toward the headline instead of being clipped by a hard
+       edge. One gradient fill per build(), never per frame. */
+    /* LIGHT ONLY. Dark does not need the PLATE ramped: measured at 1.7x with
+       the mark behind it and the beam attenuated, dark's accent line sits at
+       4.05:1 from the static ink alone, well clear of 3:1. Light has ~0.22 of
+       headroom and fails at 2.42:1. Ramping only the theme that needs it keeps
+       the whole letterform on dark, where the stem is otherwise the first thing
+       the ramp eats. The BEAM ramp below is NOT theme-scoped — the beam is
+       brand blue in both themes and crosses brand-blue type in both. */
+    if (platePush.length && feather > 0 && isLight()) {
+      p.globalCompositeOperation = "destination-out";
+      for (const k of platePush) punch(p, k, dpr);
+      p.globalCompositeOperation = "source-over";
+    }
+
     /* The `destination-in` alpha ramp that used to fade the plate toward the
        text column is GONE (2026-09-04). It faded the P but never the beam —
        the beam is stroked onto `ctx`, not onto the plate — so the light read as
@@ -470,11 +1175,79 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
       total += Math.hypot(outline[i][0] - outline[i - 1][0], outline[i][1] - outline[i - 1][1]);
       cumulative.push(total);
     }
-    // Park point: the rightmost vertex, i.e. deepest into the released band.
+    /* §33(e). THE PARK POINT — where the beam sits as a STILL FRAME under
+       prefers-reduced-motion. Rewritten, and the first version of this rewrite
+       was still wrong, which is worth recording.
+
+       The rule used to be "the rightmost vertex, i.e. deepest into the released
+       band". At §33's scale that vertex is ~800px past the right edge, so the
+       still frame parked on a beam nobody could see. The obvious repair —
+       "rightmost vertex that is ON canvas" — MEASURED ZERO BEAM PIXELS at
+       390x844 and 768x1024 in both themes. It is not enough, because the beam
+       is not a point: it is a RUN of the outline `total * 0.085` long ending at
+       the head, and it is attenuated per segment by the keep-out. A head can
+       sit on canvas while the whole run behind it is off-frame or inside the
+       hole punched over the headline, and then nothing is drawn.
+       So score the RUN, not the point: sample candidate heads around the lap,
+       and for each count how much of its own span would actually be painted.
+       Ties break rightwards, which preserves the old rule's intent — park deep
+       in the band the light scrim has released. */
     parkDist = 0;
-    for (let i = 0, best = -Infinity; i < outline.length; i++) {
-      if (outline[i][0] > best) { best = outline[i][0]; parkDist = cumulative[i]; }
+    let parkIdx = 0;
+    {
+      const spanLen = total * 0.085;
+      const CANDIDATES = 96, PROBES = 16;
+      let bestScore = -1, bestX = -Infinity;
+      const atIdx = (d: number) => {
+        let lo = 0, hi = cumulative.length - 1;
+        while (lo < hi - 1) { const m = (lo + hi) >> 1; if (cumulative[m] <= d) lo = m; else hi = m; }
+        return lo;
+      };
+      for (let c = 0; c < CANDIDATES; c++) {
+        const head = (c / CANDIDATES) * total;
+        let score = 0, sumX = 0;
+        for (let q = 0; q <= PROBES; q++) {
+          const d = (head - spanLen * (1 - q / PROBES) + total) % total;
+          const i = atIdx(d);
+          const [px, py] = outline[i];
+          if (px < 0 || px > canvas.width || py < 0 || py > canvas.height) continue;
+          if (keepFactor(px / dpr, py / dpr, beamPush) <= 0.3) continue;
+          score++; sumX += px;
+        }
+        const avgX = score ? sumX / score : -Infinity;
+        if (score > bestScore || (score === bestScore && avgX > bestX)) {
+          bestScore = score; bestX = avgX;
+          parkIdx = atIdx(head); parkDist = cumulative[parkIdx];
+        }
+      }
     }
+
+    // Time remap: visible arc at normal rate, the whole hidden arc in a fixed
+    // budget. A segment counts as hidden if its midpoint is off the canvas.
+    const vis: boolean[] = [];
+    let hidLen = 0;
+    for (let i = 1; i < outline.length; i++) {
+      const mx = (outline[i][0] + outline[i - 1][0]) / 2;
+      const my = (outline[i][1] + outline[i - 1][1]) / 2;
+      const v = mx >= 0 && mx <= canvas.width && my >= 0 && my <= canvas.height;
+      vis.push(v);
+      if (!v) hidLen += cumulative[i] - cumulative[i - 1];
+    }
+    const visLen = total - hidLen;
+    const P0 = period();
+    // Never spend more than half a lap in the dark, however extreme the bleed.
+    const hidMs = hidLen > 0 ? Math.min(HIDDEN_TRAVERSE_MS, P0 * 0.5) : 0;
+    const visMs = P0 - hidMs;
+    segT = [0];
+    for (let i = 1; i < outline.length; i++) {
+      const len = cumulative[i] - cumulative[i - 1];
+      const dt = vis[i - 1]
+        ? (visLen > 0 ? (len / visLen) * visMs : 0)
+        : (hidLen > 0 ? (len / hidLen) * hidMs : 0);
+      segT.push(segT[i - 1] + dt);
+    }
+    lapMs = segT[segT.length - 1] || P0;
+    parkT = segT[parkIdx] || 0;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(plate, 0, 0);
@@ -498,9 +1271,12 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   function drawBeam(now: number) {
     if (!plate || !total) return;
 
-    const P = period();
-    const phase = ((now - started) % P) / P;
-    const head = phase * total;
+    // Time -> arc distance through the remap, not a linear phase.
+    const t = lapMs > 0 ? (((now - started) % lapMs) + lapMs) % lapMs : 0;
+    let lo = 0, hi = segT.length - 1;
+    while (lo < hi - 1) { const mid = (lo + hi) >> 1; if (segT[mid] <= t) lo = mid; else hi = mid; }
+    const span = segT[hi] - segT[lo] || 1;
+    const head = cumulative[lo] + (cumulative[hi] - cumulative[lo]) * ((t - segT[lo]) / span);
     const len = total * 0.085;
     const steps = narrow ? BEAM_STEPS_NARROW : BEAM_STEPS;
     /* Half the widest stroke, plus the round cap, plus a pixel of slack. This
@@ -591,7 +1367,18 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     for (let i = 0; i <= last; i++) {
       const [ax, ay, bx, by, fall] = segs[i];
       bctx.lineCap = (i === 0 || i === last) ? "round" : "butt";
-      bctx.strokeStyle = rgba(accent, Math.min(1, 0.55 * alphaGain * fall * fall));
+      /* §32(e), widened by §33(c). The beam gets the SAME keep-out as the plate,
+         per segment — and over EVERY headline line in BOTH themes, not just the
+         accent line on light. This is the half the 2026-09-04 ramp was missing,
+         and it is the half that matters most: the beam is #1590FF at up to 0.63
+         alpha, and unattenuated it measured 1.34:1 against #1590FF headline type
+         on light and 2.10:1 against WHITE type on dark. Sampled at the segment's
+         MIDPOINT, not its start: a segment is total*0.085/72 long, so an endpoint
+         test lets the far end of the last unattenuated segment sit inside the
+         hole. `ax`/`bx` are device px; keepFactor works in css px. */
+      const rx = keepFactor((ax + bx) / 2 / dpr, (ay + by) / 2 / dpr, beamPush);
+      if (rx <= 0) continue;
+      bctx.strokeStyle = rgba(accent, Math.min(1, 0.55 * alphaGain * fall * fall * rx));
       bctx.lineWidth = (0.9 + 1.1 * fall) * widthGain * dpr;
       bctx.beginPath(); bctx.moveTo(ax, ay); bctx.lineTo(bx, by); bctx.stroke();
     }

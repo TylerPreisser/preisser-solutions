@@ -9,16 +9,16 @@ export const pageData: AeoPageData = {
   eyebrow: "Conversion Rate Optimization",
   h1: "Turn the Traffic You're Already Getting Into Actual Revenue",
   subheadline:
-    "Most websites convert at 1-2%. Best-in-class converts at 5-8%. The difference is design, copy, speed, and structured testing.",
+    "The difference between a site that gets traffic and a site that gets enquiries is design, copy, speed, and structured testing.",
   answerParagraph:
-    "Preisser Solutions delivers conversion rate optimization (CRO) for Kansas business websites: A/B testing, funnel analysis, friction identification, and targeted rebuilds for sites that get traffic but don't convert. Based in Hays, Kansas, the firm pairs technical site speed work, layout and copy testing, and trust-signal engineering (case studies, named entities, schema) to consistently lift conversion rates 50-200% on commercial-intent traffic.",
+    "Preisser Solutions delivers conversion rate optimization (CRO) for Kansas business websites: A/B testing, funnel analysis, friction identification, and targeted rebuilds for sites that get traffic but don't convert. Based in Hays, Kansas, the firm pairs technical site speed work, layout and copy testing, and trust-signal engineering (case studies, named entities, schema) to raise the rate at which commercial-intent traffic turns into enquiries.",
   sections: [
     {
       eyebrow: "What CRO actually is",
       heading: "Conversion optimization is not just A/B testing",
       body: [
         "CRO is the discipline of turning website traffic into measurable business outcomes (leads, calls, bookings, sales): at higher rates without spending more on traffic. It's a mix of disciplines: technical site speed, conversion-focused design, persuasive copy, trust-signal engineering, friction reduction, and structured A/B testing on the highest-leverage elements.",
-        "Most websites convert at 1-2%. Best-in-class commercial sites convert at 5-8%. The difference between those numbers is what CRO addresses, and the math typically pays for the engagement many times over.",
+        "Closing the gap between a site that collects visits and one that collects enquiries is what CRO addresses.",
       ],
     },
     {
@@ -66,7 +66,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much can I realistically lift conversion rates?",
       answer:
-        "Typical CRO engagements lift conversion rates 50-200% on commercial-intent pages over 6-12 months. The lift depends on starting point, sites converting below 1% have more upside than sites already at 4%+.",
+        "Honestly: not knowable before we measure your site, and we will not quote you a multiple that we cannot stand behind. The realistic range depends on where you are starting, how much commercial-intent traffic you get, and how much friction is actually in the path. The free conversion audit establishes your current baseline and what is achievable from it, in writing, before any engagement starts.",
     },
     {
       question: "How long does CRO take to show results?",

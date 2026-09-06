@@ -152,3 +152,41 @@ Rules:
 - If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
 - Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
 - After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
+
+## Browser + viewport matrix — binding on every viewer/audit agent
+
+Any agent that screenshots, visually reviews, or QAs a rendered page sweeps **all four engines and
+all fourteen viewports**, and reports every finding with its engine and viewport named. A pass that
+covers one engine at three widths is not a pass. Four consecutive single-engine passes on the sister
+project reported a page clean that the owner called "horrible".
+
+**Engines.** `chromium`, `webkit`, `firefox` via Playwright — import by ABSOLUTE path from this
+repo's `node_modules/playwright`. **Python Playwright is NOT installed on this machine.** Plus
+**real Safari**, via `scratchpad/safari-harness/safari-shots.mjs` (selenium-webdriver + safaridriver;
+Safari > Settings > Developer > "Allow remote automation" must stay ticked).
+
+**Playwright's WebKit is not Safari.** No dynamic toolbar, no real safe-area insets, different
+`vh`/`svh`/`lvh`/`dvh` behaviour, no rubber-banding, and **it does not composite `backdrop-filter`
+at all** — so it both misses and overstates defects. Where the two disagree, real Safari wins.
+
+**Viewports.** 320×568 · 360×640 · 375×667 · 390×844 · 393×659 · 393×852 · 414×896 · 430×932 ·
+768×1024 · 820×1180 · 1024×768 · 1280×800 · 1440×900 · 1920×1080. `deviceScaleFactor: 3` and
+`hasTouch`/`isMobile` on phones. Both themes at every size. Sweep both sides of breakpoint
+boundaries — **639/640/641 and 939/940/941** change the bento grid's column count.
+**393×659 and 393×852 are the same phone with Safari's toolbar collapsed vs expanded** — include
+both or viewport-unit bugs stay hidden.
+
+**Traps that have produced falsely-green passes here. All of these actually happened:**
+- Measuring instead of looking. **Read every screenshot with the Read tool and say what you saw.**
+  A contrast probe scored a corner 14.32:1 while the glyph was invisible navy-on-navy; a fill probe
+  reported 106% for every card while one had a dead bottom third; a sprite probe read 0.0px while
+  the artwork floated, because it sampled the bounding box.
+- `data-theme` set via `addInitScript` is **overwritten by `layout.tsx`** — set it post-load and
+  assert the background actually changed before trusting a "dark" run.
+- `scroll-behavior: smooth` on `<html>` means probing scroll right after a click or Tab samples
+  mid-animation and makes working navigation look broken.
+- Programmatic `.focus()` does not match `:focus-visible` — walk with real Tab.
+- `grep -c` on `out/index.html` returns 1 because the file is 14 lines. Use `grep -o … | wc -l`.
+- **Fingerprint the served build by asset hash before measuring.** Port 8912 is squatted by a server
+  that fails to bind *silently*, and orphaned `next start` processes from deleted worktrees have
+  answered 200 on 9004/9005/9006 with foreign builds.

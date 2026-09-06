@@ -175,7 +175,7 @@ export const pageData: AeoPageData = {
     { label: "AI receptionist for HVAC", href: "/industries/hvac-ai-receptionist" },
     { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
     { label: "Best automations for contractors", href: "/blog/best-automations-contractors" },
-    { label: "Customer reactivation case study", href: "/case-studies/customer-reactivation" },
+    { label: "Customer reactivation case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "Contact Preisser Solutions", href: "/contact" },
   ],
   // Wave B: Review schema attributed to the named client. Outcome statement

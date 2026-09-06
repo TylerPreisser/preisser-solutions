@@ -13,19 +13,19 @@ export const pageData: AeoPageData = {
   subheadline:
     "Concrete numbers, conservative assumptions. The exact math for whether a missed-call follow-up system pays for itself for your business.",
   answerParagraph:
-    "A typical Kansas service business (HVAC, plumbing, electrical, roofing): misses 20-40% of inbound calls during peak hours and 100% of calls placed after-hours. At an industry-average 30% close rate on inbound calls and a meaningful average job value, even recovering one missed call per week from a low-cost text-back system generates a strong return. Preisser Solutions ships missed-call recovery as a Tier 1 quick-win for most clients. The math below works for any service business with phone-driven lead flow.",
+    "Whether a missed-call text-back system pays for itself comes down to four numbers, and all four are yours: how many calls you get, what share of them you miss, what share of answered calls become jobs, and what a job is worth. This page shows the arithmetic and gives you a starting set of assumptions to replace with your own figures. Preisser Solutions ships missed-call recovery as a Tier 1 quick-win for most clients. To get a number for your own shop rather than an illustration, use the calculator at /roi-calculator and enter your figures.",
   sections: [
     {
       eyebrow: "The problem",
       heading: "Missed calls = invisible revenue loss",
       body: [
-        "Most service-business owners underestimate how many calls go unanswered. CallRail and ServiceTitan data routinely show:",
+        "Most service-business owners underestimate how many calls go unanswered. If you have call tracking, pull your real numbers now; if you do not, these are the starting assumptions used in the worked example below. They are placeholders to be replaced with your own, not findings about your business:",
       ],
       bullets: [
-        "20-40% of calls go unanswered during business hours (technicians on jobs, dispatchers on other calls).",
+        "Assume some share of calls goes unanswered during business hours (technicians on jobs, dispatchers on other calls). Your phone system or call-tracking tool can tell you the real figure.",
         "Effectively 100% of calls placed after 5pm or on weekends go unanswered unless an answering service is paid for.",
-        "70-85% of callers who reach voicemail hang up without leaving a message.",
-        "60% of callers who can't reach you immediately call the next business on the search results page.",
+        "Assume most callers who reach voicemail hang up without leaving a message. Your voicemail box is the check: compare messages left against calls missed.",
+        "Assume a caller who cannot reach you will try the next business on the results page rather than wait.",
       ],
     },
     {
@@ -37,7 +37,7 @@ export const pageData: AeoPageData = {
       bullets: [
         "100 inbound calls per week (during and after hours combined).",
         "25% miss rate = 25 missed calls per week.",
-        "30% of inbound calls close into jobs (industry typical for trades).",
+        "Assume 30% of answered calls close into jobs. Substitute your own close rate: your CRM or job board has it.",
         "Average job value: a typical service call + diagnostic + minor repair (use your own average for a precise calculation).",
       ],
       subsections: [
@@ -55,7 +55,7 @@ export const pageData: AeoPageData = {
       heading: "The mechanism",
       body: [
         "Missed-call text-back automation does one thing: when an inbound call goes unanswered, the system immediately sends a text message from your business number to the caller. Standard message: \"Hi, this is [business name]. Sorry we missed your call, what can we help with? Reply here and we'll get back to you within X minutes.\"",
-        "The reason this works: roughly 60-70% of people who hang up without leaving voicemail will reply to a text. They get a written log of the conversation, they don't have to repeat themselves, and the response feels immediate even if a human takes 30 minutes to reply.",
+        "The reason this works is behavioural, not statistical: a text gives the caller a written log of the conversation, means they do not have to repeat themselves, and feels immediate even if a human takes thirty minutes to reply. A voicemail offers none of that, which is why so many callers simply hang up and dial the next number.",
       ],
     },
     {
@@ -92,12 +92,12 @@ export const pageData: AeoPageData = {
     {
       question: "Do I need a custom build, or is the SaaS enough?",
       answer:
-        "Start with the SaaS. CallRail, OpenPhone, or GoHighLevel will get you 80-90% of the value at a low monthly subscription cost with no custom development. Custom builds add intelligent routing and CRM integration, worth it once the volume and workflow complexity justify the build.",
+        "Start with the SaaS. CallRail, OpenPhone, or GoHighLevel deliver the core of the value at a low monthly subscription cost with no custom development. Custom builds add intelligent routing and CRM integration, worth it once the volume and workflow complexity justify the build.",
     },
     {
       question: "What about callers who don't reply to the text?",
       answer:
-        "Roughly 30-40% won't. That's still recovery from zero; you weren't going to convert them anyway. The math above assumes you only recover half of missed callers; the rest is upside.",
+        "Some won't, and that is fine: those callers were already lost, so anything recovered is recovery from zero. The worked example above deliberately assumes you recover only half of missed callers, so the non-repliers are already priced in rather than treated as upside.",
     },
     {
       question: "Does this work for my industry?",

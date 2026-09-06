@@ -1,16 +1,21 @@
-import Image from "next/image";
-
 /**
  * Why Us — one calm, static statement block.
  *
  * This replaced a three-panel interactive carousel (squeeze carousel on
  * desktop, horizontal scroll carousel on mobile, live-region item
- * announcements, swipe hint). The owner asked for the logo, a tagline, and a
- * short piece of relationship copy instead, so all of the per-item state is
- * gone and with it the "use client" directive: nothing here runs in the
- * browser. `page.tsx` still loads it through next/dynamic with `ssr: true`,
- * which is valid for a server component and now ships zero JS for this
- * section.
+ * announcements, swipe hint). The owner asked for a tagline and a short piece
+ * of relationship copy instead, so all of the per-item state is gone and with
+ * it the "use client" directive: nothing here runs in the browser. `page.tsx`
+ * still loads it through next/dynamic with `ssr: true`, which is valid for a
+ * server component and now ships zero JS for this section.
+ *
+ * 2026-09-05: the decorative ps-logo.webp mark that sat between the eyebrow
+ * and the tagline was REMOVED on the owner's instruction — "remove the logo
+ * for the your success is our success thing there just make the text itself
+ * bigger". The tagline is now the section's sole visual anchor and was scaled
+ * up to carry the weight the mark was carrying (see the __tagline rule in
+ * why-us-relationship.css). The mark was aria-hidden/alt="", so nothing in the
+ * accessibility tree changed. Do not re-add it.
  *
  * The section id `why-us` and the heading id `why-heading` are preserved.
  *
@@ -26,24 +31,6 @@ export function WhyUs() {
         <div className="ps-why-relationship">
           <p className="ps-eyebrow ps-why-relationship__eyebrow">Why Us</p>
 
-          {/* alt="" on purpose. The first draft gave this a real alt on the
-              reasoning that the tagline never names the brand — true, but the
-              very next paragraph OPENS with "Preisser Solutions", so a screen
-              reader would announce the name twice one node apart. The mark is
-              decorative here; the paragraph carries the name. (Accessibility
-              audit, 2026-09-03.)
-              Same URL the header already loaded, so it is warm in cache.
-              Explicit intrinsic width/height reserve the box (no CLS); CSS
-              scales it down. */}
-          <Image
-            src="/images/ps-logo.webp"
-            alt=""
-            aria-hidden="true"
-            width={336}
-            height={336}
-            className="ps-why-relationship__mark"
-          />
-
           {/* THE OWNER'S OWN WORDS. Restored 2026-09-04 under ADR-0009 after
               he rejected the agent-authored replacement on sight:
               "It's not 'in it for the long term' it is your success is our
@@ -57,47 +44,53 @@ export function WhyUs() {
             <span className="ps-why-relationship__accent">our success.</span>
           </h2>
 
-          {/* THIS IS THE OWNER'S TEXT, VERBATIM. NOT ONE WORD IS OURS.
-              Authority: ADR-0009 (2026-09-04). Every deviation below has now
-              been tried and reversed, so do not re-derive them:
+          {/* THE OWNER'S TEXT, VERBATIM. NOT ONE WORD HERE IS OURS.
+              Authority: ADR-0009 (2026-09-04), amended by the owner's
+              2026-09-05 copy pass (#21/#23).
 
-                - An earlier pass "tightened" it and silently dropped
-                  "solving their business problems", his only statement of
-                  what the work is FOR.
-                - A later pass deleted the article in "after the launch" to
-                  cure a measured widow. THE ARTICLE IS BACK AND STAYS BACK.
-                  That edit was defensible on the render and still wrong,
-                  because it was an edit to words he had already told us to
-                  use as written.
-                - Do not "fix" the referent of "It" in the last sentence.
-                  That objection was raised, argued, and is not ours to act
-                  on.
+              WHAT THE 2026-09-05 PASS CHANGED, AND ON WHOSE AUTHORITY:
 
-              THE TWO &nbsp; IN THE LAST SENTENCE ARE LOAD-BEARING. They bind
-              "after the launch." so it cannot strand. Do not remove them, and
-              do not "tidy" them back to plain spaces.
-              A non-breaking space is a typographic join, NOT an edit: the
-              rendered text is identical character for character, which is the
-              whole reason this is permissible where deleting the article was
-              not.
-              Measured at 360 and 375, last line as a % of measure:
-                Chromium 27.1% -> 39.8%   Firefox 17.8% -> 39.8%
-                WebKit  75.4% -> 75.4% (never widowed; it hyphenates)
-              Firefox's 17.8% sat at the bottom of the 15-17% band this repo
-              records as a failure. Line count is unchanged at 8 and nothing
-              overflows. text-wrap: pretty is applied in
-              why-us-relationship.css and did NOT fix this; balance made an
-              earlier draft measurably worse. Copy length and typographic
-              joins are the only levers left, and the copy is not ours.
+                - REMOVED the closing sentence "It keeps making them more
+                  efficient after the launch." Owner, verbatim: "at the
+                  bottom, it says, 'It keeps making them more efficient
+                  after the launch.' Remove that." This supersedes the
+                  earlier note that guarded that sentence's article.
+                - The two &nbsp; that bound "after the launch." went with it.
+                  They existed only to stop THAT phrase widowing, so they are
+                  not a surviving constraint. Nothing else in this paragraph
+                  is nbsp-joined; re-measure before adding any.
+                - ADDED the opening "We start by listening..." sentence, moved
+                  here verbatim from the Get in Touch body copy, which the
+                  owner reduced to its heading alone. He asked for it by name:
+                  "we could put it up with the Why Us section... That top
+                  section where it says, 'We start out by listening and
+                  finding out how we can help you achieve your business's
+                  biggest goals or even solve your biggest problems.'"
 
-              REAL SAFARI HAS NEVER BEEN RUN ON THIS SECTION. The WebKit
-              figures are Playwright WebKit, which is not Safari. */}
+              STILL IN FORCE from the earlier pass:
+                - Do NOT "tighten" the second sentence. An earlier pass did,
+                  and silently dropped "solving their business problems", his
+                  only statement of what the work is FOR. It was reversed.
+                  The owner's own #23 paraphrase happens to omit that clause;
+                  a paraphrase is not an instruction to cut, so the full
+                  sentence stays until he says otherwise.
+                - Yes, "solve your business's biggest problems" and "solving
+                  their business problems" now both appear. Both are his.
+                  Redundancy in his words beats concision in ours.
+
+              The h2 tagline above is separately load-bearing: see its own
+              comment. Do not touch it.
+
+              REAL SAFARI HAS NEVER BEEN RUN ON THIS SECTION. Any WebKit
+              figures in this repo are Playwright WebKit, which is not
+              Safari. */}
           <p className="ps-why-relationship__copy">
-            Our top goal is to develop long-term working relationships with all
-            our clients, helping them grow and solving their business problems
-            by crafting and maintaining custom software built around their
-            specific business. It keeps making them more efficient
-            after&nbsp;the&nbsp;launch.
+            We start by listening, finding out how we can help you achieve your
+            business&apos;s biggest goals, or even solve your business&apos;s
+            biggest problems. Our top goal is to develop long-term working
+            relationships with all our clients, helping them grow and solving
+            their business problems by crafting and maintaining custom software
+            built around their specific business.
           </p>
         </div>
       </div>

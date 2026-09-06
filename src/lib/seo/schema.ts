@@ -253,14 +253,32 @@ export function websiteSchema() {
     description: seoSite.shortDescription,
     publisher: { "@id": ORG_ID },
     inLanguage: "en-US",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${URL}/?q={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
-    },
+    // ---------------------------------------------------------------------
+    // The SearchAction / sitelinks-searchbox block was REMOVED 2026-09-05.
+    // Three independent reasons, in order of severity:
+    //
+    //   1. IT WAS FALSE. `urlTemplate` pointed at `/?q={search_term_string}`.
+    //      There is no /search route and the homepage does not read a `q`
+    //      param — nothing on this site consumes it. Google's own guidance is
+    //      that structured data must match what the page actually does
+    //      (developers.google.com/search/docs/appearance/ai-features, updated
+    //      2025-12-10). This asserted a capability the site does not have, on
+    //      all 233 pages.
+    //
+    //   2. THE FEATURE IS RETIRED. Google's sitelinks-searchbox documentation
+    //      no longer exists; checked 2026-09-05:
+    //        .../structured-data/sitelinks-searchbox
+    //          -> 301 -> developers.google.com/search/updates#bye-sitelinkbox
+    //
+    //   3. `query-input` IS NOT SCHEMA.ORG VOCABULARY. Validated against
+    //      schemaorg-current-https.jsonld: SearchAction defines `query`, not
+    //      `query-input`. It was a Google extension for the retired feature,
+    //      and it was the single largest source of unknown-property warnings
+    //      in our graph — 233 occurrences, one per page.
+    //
+    // If a real site search is ever built, add this back pointing at the real
+    // endpoint, and use `query` unless Google has re-published a spec.
+    // ---------------------------------------------------------------------
   };
 }
 

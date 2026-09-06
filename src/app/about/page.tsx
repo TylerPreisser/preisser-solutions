@@ -44,10 +44,15 @@ export const metadata: Metadata = {
     canonical: "https://preissersolutions.com/about",
   },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: "About Tyler Preisser",
     description:
       "Tyler Preisser is founder of Preisser Solutions. Hays, Kansas native, FHSU Engineering 2025, builder of AI systems for Kansas businesses.",
     url: "https://preissersolutions.com/about",
+    type: "website",
+    images: [
+      { url: "/images/og-image-v2.jpg", width: 1200, height: 630, alt: "Preisser Solutions" },
+    ],
   },
 };
 

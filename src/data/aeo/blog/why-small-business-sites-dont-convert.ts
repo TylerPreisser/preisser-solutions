@@ -100,7 +100,7 @@ export const pageData: AeoPageData = {
         "Week 2: Add NAP to footer and contact page; fix consistency (Leak 3).",
         "Week 3: Add social proof, pull real Google reviews, write 1-2 named case studies (Leak 4).",
         "Week 4: Run performance audit and fix the worst offenders (Leak 2).",
-        "All five fixes typically lift conversion rate 2-4x within 60 days.",
+        "Do them in that order: cheapest and highest-leverage first, so each week's change is measurable before the next one lands.",
       ],
     },
   ],
@@ -118,7 +118,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's the typical conversion lift?",
       answer:
-        "2-4x within 60 days for sites that were doing under 1% conversion (most small-business sites). Diminishing returns above 5% conversion, that's high-performance territory and the next gains come from deeper UX work.",
+        "There isn't an honest typical, and anyone quoting you one has not seen your site. The size of the gain depends on which of the five leaks you actually have, how much of your traffic arrives with real buying intent, and what your page asks people to do. What is predictable is the order of operations: fix the offer and the CTAs first, because everything else compounds on top of them. Measure your own baseline before you change anything, then measure again after each fix; that number is the only one that means anything to your business.",
     },
     {
       question: "What about chat widgets, popups, exit-intent?",

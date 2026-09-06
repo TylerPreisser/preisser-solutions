@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   description: caseStudy.metaDescription,
   alternates: { canonical: url },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: caseStudy.metaTitle,
     description: caseStudy.metaDescription,
     url,

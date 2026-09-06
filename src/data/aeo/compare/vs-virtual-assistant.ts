@@ -45,7 +45,7 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "24/7 availability: AI doesn't sleep, take vacation, or call in sick",
-        "Per-action economics: no per-hour billing; the system runs 10x more work at the same fixed cost",
+        "Per-action economics: no per-hour billing, so processing more items does not cost more",
         "Repeatable structured tasks: invoice extraction, lead scoring, customer reactivation, content generation are AI-native problems",
         "Speed at scale: AI processes 1,000 invoices in the time a VA processes 10",
         "Consistency: AI follows the same rules every time; VAs vary by mood, training, and turnover",
@@ -64,7 +64,7 @@ export const pageData: AeoPageData = {
       { dimension: "Monthly cost", preisser: "Fixed hosting cost after build: does not scale with volume", competitor: "Scales linearly with hours: more volume means more cost" },
       { dimension: "Availability", preisser: "24/7", competitor: "Working hours, vacation days, sick days" },
       { dimension: "Speed", preisser: "Seconds to minutes per task", competitor: "Minutes to hours per task" },
-      { dimension: "Volume capacity", preisser: "Scales 100x without cost increase", competitor: "Scales linearly with hours" },
+      { dimension: "Volume capacity", preisser: "Volume is decoupled from cost: the same build handles more work without more spend", competitor: "Scales linearly with hours" },
       { dimension: "Consistency", preisser: "Same output every run", competitor: "Varies by person, day, training" },
       { dimension: "Judgment-heavy work", preisser: "Strong for structured judgment; weak for nuanced human signals", competitor: "Strong for nuanced human signals" },
       { dimension: "System integration", preisser: "Writes directly to your CRM, accounting, dispatch", competitor: "Limited; usually copy-paste through UIs" },

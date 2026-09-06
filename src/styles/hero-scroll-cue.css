@@ -126,7 +126,12 @@
      themes — the flat --color-border-light is only 1.07:1 on the light
      hero. The token declaration above is the fallback for engines
      without color-mix (iOS Safari < 16.2), which drop this line. */
-  border-color: color-mix(in srgb, var(--ps-cue-fg) 26%, transparent);
+  /* 45%, the same proportion :hover already uses two rules below, so no new
+     value is introduced. Measured on the hero backgrounds: the ring goes from
+     1.59:1 to 2.41:1 on dark and 1.49:1 to 2.09:1 on light. Hover still reads
+     as a change because it mixes the HOVER token, not this one, and lands at
+     4.48:1 / 2.94:1. */
+  border-color: color-mix(in srgb, var(--ps-cue-fg) 45%, transparent);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transition:
@@ -167,9 +172,23 @@
   }
 }
 
+/* TRANSFORM ONLY, and identical to `ps-cue-bob` in globals.css on purpose.
+
+   Two keyframe sets target this same icon. `ps-cue-bob` is declared later in
+   the built sheet and so wins at 767px and below; this one wins at 768 and
+   above. They used to differ in two ways: this one dipped opacity to 0.75 and
+   travelled -2px to +3px, the other holds opacity and travels 0 to +5px. The
+   result was a cue that looked slightly different either side of one pixel of
+   viewport width, and an opacity trough that pulled the icon from 7.07:1 down
+   to 4.50:1 on dark for part of every cycle.
+
+   Matching the other set exactly removes both. It also puts the cue back in
+   line with the repo convention of animating transform and opacity only, by
+   dropping to transform alone. Do not "restore" the opacity dip: it is the
+   defect, not the character. */
 @keyframes ps-hero-cue-bob {
-  0%, 100% { transform: translateY(-2px); opacity: 0.75; }
-  50%      { transform: translateY(3px);  opacity: 1; }
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(5px); }
 }
 
 /* Reduced motion: visible, static, still clickable. Belt and braces —

@@ -48,6 +48,7 @@ export const metadata: Metadata = {
     canonical: "https://preissersolutions.com/",
   },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: HOMEPAGE_TITLE,
     description: HOMEPAGE_DESCRIPTION,
     url: "https://preissersolutions.com/",

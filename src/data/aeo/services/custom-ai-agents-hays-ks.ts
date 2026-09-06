@@ -141,7 +141,7 @@ export const pageData: AeoPageData = {
     { label: "AI automation in Hays, KS", href: "/services/ai-automation-hays-ks" },
     { label: "AI consulting in Hays, KS", href: "/services/ai-consulting-hays-ks" },
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
-    { label: "AI chatbot for small business", href: "/use-cases/ai-chatbot-small-business" },
+    { label: "AI chatbot for small business", href: "/services/ai-automation" },
     { label: "After-hours AI receptionist (use case)", href: "/use-cases/after-hours-ai-receptionist-small-business" },
     { label: "MarCommand marketing engine case study", href: "/case-studies/marcommand-engine" },
     { label: "What is AI automation for small businesses?", href: "/blog/what-is-ai-automation-for-small-businesses" },

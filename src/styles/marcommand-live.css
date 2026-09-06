@@ -104,40 +104,74 @@
   --mc-dial-ring: var(--theme-border);
 }
 
+/* No measure on the WRAPPER, deliberately.
+
+   68ch here was the body paragraph's measure and the body paragraph is gone.
+   Replacing it with 34ch was worse, and measurably so: `ch` resolves against
+   THIS element's font-size (16px), so it pinned the column at 386px at every
+   width, while the h2 inside grows to 56px through `ps-section-heading`'s
+   clamp. Rendered result at 1440 and 1920: the 57-character sentence wrapped
+   to SIX lines in a 386px column inside a 1100px section. At 1280 it was five.
+
+   The measure belongs on the heading, in the heading's own `ch` — see below. */
 .mc-live__head {
-  max-width: 68ch;
+  max-width: none;
 }
 
 .mc-live__heading {
   color: var(--theme-text-primary);
   margin-top: 0;
-  margin-bottom: 20px;
+  /* 8px, not 20px. The heading is now a one-word product name with its own
+     descriptor line directly under it, so the two have to read as ONE block.
+     20px was the gap between a heading and the stage card below it. */
+  margin-bottom: 8px;
+
+  /* NO `max-width` HERE ANY MORE.
+
+     The 26ch that stood here was the measure for the 57-character sentence
+     while the sentence WAS the heading. The heading is now "MarCommand" — ten
+     characters — so a 26ch cap does nothing but invite confusion, and the
+     measure has moved to `.mc-live__lede`, expressed in the lede's own `ch`.
+     Leaving it here would have capped the lede at nothing, since the lede is a
+     sibling and never inherited it. */
 }
 
-/* The descriptor. SENTENCE CASE, and not `.ps-eyebrow`.
-   Rationale, measured rather than assumed: `.ps-eyebrow` is 12px uppercase
-   JetBrains Mono with 0.1em tracking (globals.css:288-297). The phrase is 71
-   characters, so in that treatment it runs about 610px and wraps to two or
-   three lines of shouting monospace above the title — it reads as a legal
-   disclaimer, not as a kicker. As a deck under the title, in sentence case, at
-   the same optical weight as a standfirst, it reads as what it is: the name,
-   then the definition of the name. Title case was rejected for the same reason
-   — nine generic words in Title Case reads as a press release. */
-.mc-live__descriptor {
-  color: var(--theme-text-secondary);
-  font-size: clamp(1.0625rem, 1.6vw, 1.375rem);
-  font-weight: 500;
-  line-height: 1.45;
-  max-width: 34ch;
-  margin: 0 0 20px;
+/* The two halves of the wordmark. Owner: "mar command should be the black for
+   Mar and the blue for Command."
+
+   BOTH HALVES ARE TOKENS, AND BOTH ARE THEME-AWARE — which is the whole reason
+   a literal near-black hex would have been wrong. `--theme-text-primary` is
+   #0A1628 in light and #FFFFFF in dark, so "Mar" is his black on the light page
+   and stays legible when the page inverts instead of vanishing into it.
+   `--theme-accent-text` is #0C6FC9 in light and #1590FF (--color-primary) in
+   dark; both were already tuned against `--theme-bg-primary`, which is exactly
+   what `.mc-live` paints its background with. Measured sampled-pixel contrast
+   for all four combinations is in the report — every one clears 4.5:1.
+
+   `--color-primary-strong-hover` (#0B68BE) was the alternative for "Command".
+   Not used: it is only defined once, with no dark-theme counterpart, so it
+   would have held a mid-dark blue on the #0A1628 dark page. */
+.mc-live__wm--a {
+  color: var(--theme-text-primary);
 }
 
-.mc-live__body {
+.mc-live__wm--b {
+  color: var(--theme-accent-text);
+}
+
+/* The proprietary line. This is body text under the title, not a second
+   heading — it carries no heading semantics so the section keeps exactly one
+   <h2> and the document outline is unchanged. */
+.mc-live__lede {
+  margin: 0;
   color: var(--theme-text-secondary);
   font-size: 1.125rem;
-  line-height: 1.65;
-  max-width: 68ch;
-  margin: 0;
+  line-height: 1.55;
+  /* The measure the heading used to carry, re-expressed in THIS element's own
+     `ch` now that the sentence lives here at body size. 46ch puts the
+     57-character line on two lines from 1280 up and lets it use the full
+     column on a phone, where the viewport is the real constraint. */
+  max-width: 46ch;
 }
 
 /* ------------------------------------------------------------
@@ -186,18 +220,17 @@
      is what the surrounding sections already do by width. 17px body with 1.55
      leading is still at iOS's default reading size. */
   .mc-live__heading {
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     line-height: 1.1;
   }
 
-  .mc-live__descriptor {
-    margin-bottom: 14px;
-    line-height: 1.38;
-  }
-
-  .mc-live__body {
+  /* One step tighter, the same way the heading is — the head copy is this
+     block's largest term on a phone and the words are the client's, so the
+     type is set down rather than the sentence cut. 17px with 1.5 leading is
+     still at iOS's default reading size. */
+  .mc-live__lede {
     font-size: 1.0625rem;
-    line-height: 1.55;
+    line-height: 1.5;
   }
 
   .mc-live__stage-card {
@@ -242,11 +275,13 @@
   }
 
   .mc-stage {
-    /* REBUILT MOBILE: a short, wide ledge, not a portrait schematic. 300 rather
-       than 620 because the surface is now one dial, one card and the robot —
-       the six-card column, the bus, the risers and the second funnel figure are
-       all gone. This is the single largest term in the height fix. */
-    aspect-ratio: 390 / 300;
+    /* PORTRAIT HUB RESTORED (3478cb4): 390/620, the space the narrow group is
+       actually authored in. The 390/300 ledge that stood here belonged to the
+       sparse one-card rebuild the owner rejected; with the six-card hub back,
+       620 is not optional — it is the height the composition is drawn at, and
+       cropping to 300 would slice the top and bottom card rows off.
+       The max-width cap below is what keeps that height in check. */
+    aspect-ratio: 390 / 620;
 
     /* The narrow profile is authored in a 390x620 space and had no upper
        bound, so it magnified without limit up to the breakpoint. Measured on
@@ -267,6 +302,41 @@
   .mc-stage__narrow {
     display: block;
   }
+}
+
+/* ------------------------------------------------------------
+   THE HUB LAYER'S SHIPPED STATE.
+
+   The pad, the six spokes, the hub link and the two live rails
+   ship HIDDEN. GSAP's `tl.set(hubLayer, {opacity: 1}, 0)`
+   immediately winds them back at t=0, so on a normal visit this
+   value is never seen; it only decides the still that a
+   reduced-motion or JS-failed visitor gets.
+
+   This is a class rather than `style={{opacity: 0}}` repeated on
+   nine nodes, so the shipped state is stated once and a future
+   reader can find it. The VALUE is unconditional, and that is
+   deliberate — I tried scoping it to `no-preference` so that
+   reduced-motion visitors would get the rails too, and rendering
+   it proved that wrong:
+
+     the five unlit cards ship at opacity 0 as well
+     (marcommand-live-stage.tsx:479), so revealing the rails
+     without them drew six spokes and a pad radiating out to
+     cards that are not on screen — the exact "lines that start
+     and stop without meeting anything" the client complained
+     about, reintroduced in the one composition nobody animates.
+
+   The hub-hidden still is the coherent one: the room is open,
+   the lit card is above it, the three dials read their
+   post-change values and Elara stands at the Daily budget dial
+   on RISER 0's own entry leg ("M110,240 H28 V312 H70" passes
+   under his feet at y=312, he is at x=49) — so he is standing on
+   a drawn wire, not floating, with no hub layer needed.
+   Measured in a reduced-motion render, not assumed.
+   ------------------------------------------------------------ */
+.mc-hub-off {
+  opacity: 0;
 }
 
 /* ------------------------------------------------------------
@@ -516,23 +586,23 @@
 
 @media (max-width: 768px) {
   .mc-elara-anchor {
-    /* Narrow end-state: at the Daily budget dial in portrait.
-       In step with ELARA_MARKS.narrow.dial. */
-    /* Mobile end-state: on the ledge at the Daily budget dial. Must stay in
-       step with ELARA_MARKS.narrow.dial — this is the still a reduced-motion
-       or JS-failed visitor sees. */
-    --mc-x: 47.7376%;
-    --mc-y: 85.2941%;
+    /* Portrait end-state: at the Daily budget dial, (49,312) in the 390x620
+       space. Must stay in step with ELARA_MARKS.narrow.dial — this is the still
+       that a reduced-motion or JS-failed visitor sees, so it is load-bearing
+       and not decorative. */
+    --mc-x: 12.5641%;
+    --mc-y: 50.3226%;
   }
 
   .mc-elara {
-    /* 78px is a CEILING, not a preference. The sheet is 768x232 = four 192x232
-       cells, so 232/78 = 2.97x, just under the 3.0x a DPR3 phone samples at.
-       Larger is visibly soft and would need the sheet re-exported at 2x, which
-       is an asset change requiring sign-off. Width follows the cell ratio:
-       78 * 192/232 = 64.55. */
-    width: 64.5px;
-    height: 78px;
+    /* 58px, a quarter of the 232px sheet cell, so the sprite lands on exact
+       source pixels under image-rendering: pixelated. The 78px sprite that
+       stood here was sized for the sparse ledge, where he was the only object;
+       in the restored hub he stands between two 84u cards on a 390u stage and
+       at 78px tall he covered the "Google Ads" caption. Width follows the cell
+       ratio: 58 * 192/232 = 48. */
+    width: 48px;
+    height: 58px;
   }
 }
 

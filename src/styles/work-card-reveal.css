@@ -641,3 +641,340 @@
     font-size: 0.8125rem;
   }
 }
+
+/* ============================================================
+   MOBILE PANEL RHYTHM — owner report 2026-09-05:
+   "the verticle spece in beltween the title and the paragraph
+   adn the link is way too crammed on the our work section once
+   you tap on a card on mobile", and "the text needs to scale
+   based off of the amount of text and or the card".
+
+   MEASURED CAUSE (chromium, deviceScaleFactor 3, panels open):
+   the card's height was pinned by `aspect-ratio: 5/7`
+   (globals.css:5776) / `5/8` (globals.css:5800), both
+   !important, so the panel was a FIXED box that content could
+   never push open. Sizing was therefore made to fit by
+   shrinking type — 13/14/15px bodies keyed to `data-density`
+   — while the gaps were squeezed to 8px (title -> body) and
+   10px (body -> link).
+
+   The box was never actually full. Slack (panel inner height
+   minus content height) measured across all 18 cards:
+     320: 39-141px   360: 137-216px   375: 98-177px
+     390: 139-219px  414: 165-245px   430: 183-281px
+   i.e. every card wasted between 39px and 281px of vertical
+   space while its three text blocks sat jammed together. The
+   type had been shrunk to fit a box that had room to spare.
+
+   FIX, in the order that matters:
+   1. Height follows content. `aspect-ratio` is dropped on
+      mobile and the panel goes in-flow (`position: relative`,
+      `flex: 1`) inside a column-flex card, so copy can push the
+      card taller. `min-height: 109vw` (= the old 78vw x 7/5
+      box) keeps the previous height as a FLOOR, so a card only
+      ever grows, never shrinks. Measured effect: at 430 nothing
+      moves (floor binds); at 320 the three long cards grow.
+      Height is identical open and closed, so tapping a card
+      causes no layout shift.
+   2. Body type goes to 16px everywhere on mobile. The old
+      13/14/15px buckets put primary body copy under the 16px
+      floor on every single card.
+   3. The gaps, not the font, now carry `data-density`. Short
+      copy gets the most air, long copy the least, and all three
+      buckets clear the old 8/10px badly.
+
+   Scoped to `max-width: 768px` — the same bound as the existing
+   mobile card sizing (globals.css:5763, 5793). No new
+   breakpoint, and >=769px (tablet, 1024, 1440, 1920) is
+   untouched by construction.
+
+   Doubled-class selectors are load-bearing, per this file's
+   CASCADE NOTE: this file is @imported at globals.css:7 and so
+   is FIRST in the sheet. Against globals' `!important` rules a
+   tie on specificity LOSES on order, so `.ps-work-card
+   .ps-work-card` (0,2,0) is what actually beats
+   `.ps-work-card` (0,1,0). Do not "tidy" the repetition away.
+   ============================================================ */
+@media (max-width: 768px) {
+  /* Cards must not stretch to the tallest sibling when one grows. */
+  .ps-work-track.ps-work-track {
+    align-items: flex-start;
+  }
+
+  .ps-work-card.ps-work-card {
+    /* Countermands globals.css:5776 (5/7) and :5800 (5/8). */
+    aspect-ratio: auto !important;
+    height: auto !important;
+    /* Countermands globals.css:5779 and :5806 `min-height: auto`.
+       109vw == the old 78vw-wide card at 7/5, kept as a floor. */
+    min-height: 109vw !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* In-flow so the copy can size the card. Every other child of the
+     card (bg, logo, wordmark, toggle, outcome, bob) is absolutely
+     positioned and so contributes no height. */
+  .ps-work-card.ps-work-card .ps-work-card__panel {
+    position: relative;
+    inset: auto;
+    flex: 1 1 auto;
+    padding: 16px;
+  }
+
+  /* 16px body on every card. Line-height 1.55 is the readable
+     setting at this measure; it is NOT keyed to density any more. */
+  .ps-work-card.ps-work-card .ps-work-card__panel-body {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .ps-work-card.ps-work-card .ps-work-card__panel-title {
+    font-size: 1.125rem;
+    line-height: 1.3;
+  }
+
+  /* ---- Rhythm keyed to copy length (was: font size keyed to it) ----
+     title -> paragraph. Old value: 8px for all three buckets. */
+  .ps-work-card.ps-work-card[data-density="long"] .ps-work-card__panel-title {
+    margin: 0 0 12px;
+  }
+  .ps-work-card.ps-work-card[data-density="mid"] .ps-work-card__panel-title {
+    margin: 0 0 16px;
+  }
+  .ps-work-card.ps-work-card[data-density="short"] .ps-work-card__panel-title {
+    margin: 0 0 20px;
+  }
+
+  /* paragraph -> link row. Old value: 10px for all three buckets. */
+  .ps-work-card.ps-work-card[data-density="long"] .ps-work-card__panel-links {
+    padding-top: 16px;
+  }
+  .ps-work-card.ps-work-card[data-density="mid"] .ps-work-card__panel-links {
+    padding-top: 20px;
+  }
+  .ps-work-card.ps-work-card[data-density="short"] .ps-work-card__panel-links {
+    padding-top: 24px;
+  }
+
+  /* Two stacked links (only FarmBooks and one other carry both) need
+     real separation from each other too. Old value: 4px. */
+  .ps-work-card.ps-work-card .ps-work-card__panel-links {
+    gap: 10px;
+  }
+
+  /* The link label is a primary action, not secondary text, so it
+     takes the same 16px floor as the body. */
+  .ps-work-card.ps-work-card .ps-work-card__panel-link {
+    font-size: 1rem;
+  }
+}
+
+/* The live-URL pill at 16px is 4.3px too wide for one line at 320px
+   (measured: needs 189.9px, has 185.6px). Trimming its horizontal
+   padding from 16px to 12px buys 8px and lands every label on one
+   line -- EXCEPT "Visit theironandoakpodcast.com", a 26-character
+   domain that overruns by 45-88px and wrapped to two lines at 320px
+   BEFORE this change too. It is left wrapping deliberately: the pill
+   is full-width, the wrap is even, and the target grows to 54.4px,
+   which is further above the 44px floor, not below it. Shrinking the
+   label to fit would have taken it to ~14px, and it is a primary
+   action, not secondary text. */
+@media (max-width: 768px) {
+  .ps-work-card.ps-work-card .ps-work-card__panel-link--live {
+    padding: 8px 12px;
+  }
+}
+
+/* Below 360px the card was already proportioned 5/8 rather than 5/7
+   (globals.css:5793-5801). Keeping that taller floor here matters for
+   more than proportion: the floor is what stops the track going
+   ragged. Measured closed-card heights with a 109vw floor were
+   349-524px at 320 (spread 175px) and 392-442px at 360 (spread 50px).
+   124.8vw (= 78vw x 8/5) lifts the floor to 449px at 360, which is
+   above the tallest card there, so 360 goes fully uniform again, and
+   cuts the 320 spread from 175px to 125px.
+
+   The residual spread at 320 is accepted, not overlooked: 377
+   characters of FarmBooks copy at 16px in a 218px measure genuinely
+   needs 524px, and the only ways to flatten it are to shrink the type
+   (the defect being fixed) or to clip the copy (worse). Cards are
+   top-aligned, so the variance shows only at the bottom edge. */
+@media (max-width: 360px) {
+  .ps-work-card.ps-work-card {
+    min-height: 124.8vw !important;
+  }
+}
+
+/* ============================================================
+   LOGO CENTRING — owner report 2026-09-05: "make sure all logos
+   on the verticle our work cards are perfectly horizonally and
+   vertically centered."
+
+   MEASURED, all 18 cards, chromium 390x844 @dScale3, closed
+   state, animations frozen, ink taken by diffing each card
+   against itself with the logo hidden (container boxes are
+   leads; the diff is the drawn pixels).
+
+   VERTICAL — the universal defect. Not one logo was centred:
+     .ps-work-card-logo / -icon   translate(-50%, -60%)
+     [data-has-outcome] logo/icon translate(-50%, -78%)
+     --farmbooks                  translate(-50%, -78%)
+   Measured box-centre offsets ran -9.27px to -46.84px. The
+   lift existed so the mark could not collide with the outcome
+   line, but the free gap between logo bottom and the outcome /
+   "tap for more" block measured 68.5-140.9px on every card, so
+   the lift buys nothing that the existing spacing did not
+   already provide. True centring collides with nothing:
+   worst case after this change is card 3 at 50.5px clear.
+
+   HORIZONTAL — box was already exact (geomDX 0.00 on all 18),
+   but the INK was not, because some assets carry asymmetric
+   internal whitespace. Corrections below are in PERCENT of the
+   logo's own box, not px, so they scale with the card instead
+   of drifting at other widths.
+   ============================================================ */
+
+/* True vertical centre for every mark that is a single unit.
+   Overrides globals.css:3942 / :3979 (-60%) and this file's own
+   [data-has-outcome] rule (-78%). */
+.ps-work-card.ps-work-card .ps-work-card-logo,
+.ps-work-card.ps-work-card .ps-work-card-icon,
+.ps-work-card.ps-work-card[data-has-outcome] .ps-work-card-logo,
+.ps-work-card.ps-work-card[data-has-outcome] .ps-work-card-icon {
+  transform: translate(-50%, -50%);
+}
+
+/* Per-asset horizontal ink correction. Keyed off the asset's own
+   filename rather than a positional :nth-child, so re-ordering the
+   deliberate card order cannot silently move a nudge onto the wrong
+   mark. Values are (measured ink offset / logo box width).
+     hg-oil-icon.webp        ink sat +7.30px right of centre / 167.3 = 4.36%
+     preisser-solutions.webp ink sat +3.26 and +3.57px (same asset on
+                             cards 7 and 8; the 0.31px spread is
+                             measurement noise) -> 2.05% */
+.ps-work-card.ps-work-card .ps-work-card-logo[src$="hg-oil-icon.webp"] {
+  transform: translate(-54.36%, -50%);
+}
+.ps-work-card.ps-work-card .ps-work-card-logo[src$="preisser-solutions.webp"] {
+  transform: translate(-52.05%, -50%);
+}
+
+/* FarmBooks is a LOCKUP, not a lone mark: a wheat glyph with a separate
+   wordmark under it, each independently anchored to the card's centre.
+
+   The old pairing (glyph translateY(-78%), wordmark translateY(118%)) was
+   broken independently of centring: the glyph's height L scales with the
+   card (46% of a 78vw card = 35.88vw) while the wordmark's W is a fixed
+   17px type block, so their overlap works out to 0.22L - 1.18W and grows
+   with the viewport. Measured, BEFORE any change of mine and unaffected by
+   a uniform shift of the pair: -0.15px at 430 but +3.8px at 480, +13.3px
+   at 600 and +26.5px at 768 — the glyph sat ON the word "FarmBooks"
+   through the whole 431-768px band. Found by sweeping the band rather
+   than the named breakpoints.
+
+   Rebuilt as an explicit stack instead of two guessed percentages. With
+   G = L + gap + W, the group's top is 50% - G/2 and the wordmark's top is
+   50% + (L + gap - W)/2. That pins the GROUP's centre to the card's centre
+   and holds the gap at a constant 4px at every width, so neither value can
+   drift apart again. translateY is dropped entirely; only the X centring
+   translate remains. */
+.ps-work-card.ps-work-card[data-has-outcome] .ps-work-card-logo.ps-work-card-logo--farmbooks {
+  /* L = 35.88vw, W = 28.9px, gap = 4px  ->  50% - (L + 4 + W)/2 */
+  top: calc(50% - 17.94vw - 16.45px);
+  transform: translateX(-50%);
+}
+.ps-work-card.ps-work-card .ps-work-card-wordmark {
+  /* 50% + (L + gap - W)/2 */
+  top: calc(50% + 17.94vw - 12.45px);
+  transform: translateX(-50%);
+}
+@media (min-width: 769px) {
+  /* Above 768 the card is a fixed 300px, so L is a fixed 138px. */
+  .ps-work-card.ps-work-card[data-has-outcome] .ps-work-card-logo.ps-work-card-logo--farmbooks {
+    top: calc(50% - 85.45px);
+  }
+  .ps-work-card.ps-work-card .ps-work-card-wordmark {
+    top: calc(50% + 56.55px);
+  }
+}
+
+/* ============================================================
+   Per-icon vertical ink correction. Consumes --ps-icon-nudge-y,
+   set per card in case-studies.tsx and absent on every card that
+   does not need it, so the fallback of 0px leaves the shared
+   centring rule intact. Expressed in PERCENT of the icon's own
+   box, so one value holds at both the 100px mobile and 120px
+   desktop icon sizes.
+
+   ------------------------------------------------------------
+   READ THIS BEFORE "FIXING" AN ICON THAT MEASURES OFF-CENTRE.
+
+   THE RULE: an ink bounding box is the truth for a SINGLE MASS
+   and the WRONG TARGET for a COMPOSITE.
+
+   Centre the drawn pixels when the mark is one shape. When the
+   mark is one shape PLUS a small badge, foot or antenna in a
+   corner, the bbox is dragged toward that appendage while the
+   primary shape is already centred — so "correcting" the bbox
+   offset visibly pushes the actual subject off centre. The
+   probe goes green and the card looks worse.
+
+   Five of the eighteen are composites and are DELIBERATELY NOT
+   nudged. Measured ink-bbox offset at 390x844, then checked by
+   eye against a red centre crosshair (2026-09-05):
+
+     card  9  After-Hours Call Triage   X +6.55, Y -5.99
+              phone outline + clock badge, top-right
+     card 10  AI Invoice Processing     X +4.20
+              receipt + check badge, bottom-right
+     card 11  AI Document Analysis      X +4.01
+              document + magnifier, bottom-right
+     card 15  Agentic AI Coding         Y +4.51
+              code window + stand/foot beneath it
+     card 16  Custom Local AI Models    Y -3.82
+              server body + antenna above it
+
+   In every one of those the primary shape sits ON the crosshair.
+   Do not add an iconNudgeY for them. If their bounding boxes
+   really must centre too, that belongs in the SVG artwork
+   (viewBox / path coordinates), not in a CSS nudge here.
+
+   Only two qualify as single masses that genuinely sat off
+   centre, and only these two carry a nudge:
+     card 12  Custom AI Fitness Agent   Y +8.68  (artwork low)
+     card 14  Hiring Pipeline & Screener Y -7.32 (artwork high)
+   Both now measure ink ~0.01px off centre.
+
+   Cards 6 and 17 carry sub-3px ink offsets, judged below the
+   threshold worth a per-asset rule. They are known, not missed.
+   ============================================================ */
+.ps-work-card.ps-work-card .ps-work-card-icon,
+.ps-work-card.ps-work-card[data-has-outcome] .ps-work-card-icon {
+  transform: translate(-50%, calc(-50% + var(--ps-icon-nudge-y, 0px)));
+}
+
+/* ============================================================
+   STICKY-HEADER LANDING — follow-up to the 320px finding in
+   part 1 of this work: with height now following content, the
+   FarmBooks card is 524px at 320px wide while the space under
+   the fixed header is 568 - 80 = 488px, so a scroll that lands
+   the card's top at y=0 puts its title behind the header.
+
+   `.ps-header` is `position: fixed` and its measured height is
+   exactly `--nav-height` (verified 80px at <=767 and 88px at
+   >=768, token vs getBoundingClientRect, 2026-09-05 after
+   today's nav rebuild). Keyed to the token, never hardcoded,
+   and using the same `+ 24px` idiom already at globals.css:537
+   and :541 so anchor targets in this codebase all land alike.
+
+   #case-studies is the section's anchor id, so the section
+   needs this for in-page links; the card needs it for
+   scrollIntoView on an individual card. Neither changes
+   anything at rest — scroll-margin-top only participates when
+   something scrolls, so no rendered pixel moves at any width.
+   ============================================================ */
+.ps-work,
+.ps-work-card {
+  scroll-margin-top: calc(var(--nav-height) + 24px);
+}

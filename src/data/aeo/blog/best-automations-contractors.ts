@@ -113,8 +113,6 @@ export const pageData: AeoPageData = {
     { label: "AI customer service systems", href: "/services/ai-customer-service" },
     { label: "Customer reactivation engine", href: "/services/customer-reactivation" },
     { label: "HVAC industry", href: "/industries/hvac" },
-    { label: "Plumbing industry", href: "/industries/plumbing" },
-    { label: "Roofing industry", href: "/industries/roofing" },
     { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "How to reactivate old leads", href: "/blog/reactivate-old-leads" },
     { label: "Missed-call ROI calculator (article)", href: "/blog/missed-call-roi-calculator" },

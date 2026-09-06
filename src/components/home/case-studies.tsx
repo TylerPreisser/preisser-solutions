@@ -51,6 +51,23 @@ interface CaseStudyCard {
    * change their built-HTML counts.
    */
   outcome?: string;
+  /**
+   * Per-icon vertical ink correction, as a length (e.g. "-7.32%").
+   *
+   * The icon BOX is centred exactly (verified: geomDY 0.00 on all 18 cards),
+   * but a few inline SVGs draw their artwork off-centre inside their own
+   * viewBox, so the drawn pixels land off-centre while the box is perfect.
+   * Only set this where the icon is a SINGLE visual mass that genuinely sits
+   * high or low. Do NOT set it to cancel an ink-bbox offset caused by a small
+   * badge or foot in one corner — on those the primary shape is already
+   * centred and a nudge would visibly push it off (cards 9, 10, 11, 15 and 16
+   * are all that case; measured, then confirmed by eye against a centre
+   * crosshair, 2026-09-05).
+   *
+   * Expressed in PERCENT of the icon's own box so it stays correct at both
+   * the 100px mobile and 120px desktop icon sizes.
+   */
+  iconNudgeY?: string;
 }
 
 /** "https://farm-books.com/" -> "farm-books.com", for a link label that says where it goes. */
@@ -260,6 +277,9 @@ const caseStudyCards: CaseStudyCard[] = [
   // Custom AI Fitness Agent
   {
     title: "Custom AI Fitness Agent",
+    // Ink measured +8.68px off the card centre at 390x844; the artwork sits
+    // low inside its own viewBox while the box itself is centred exactly.
+    iconNudgeY: "-8.68%",
     outcome: "We built an AI agent that generates personalized fitness and nutrition regimens",
     tags: "Custom AI Agent | Personalization | Data",
     description:
@@ -301,6 +321,9 @@ const caseStudyCards: CaseStudyCard[] = [
   // Hiring Pipeline & AI Screener
   {
     title: "Hiring Pipeline & AI Screener",
+    // Ink measured -7.32px off the card centre at 390x844; the artwork sits
+    // high inside its own viewBox while the box itself is centred exactly.
+    iconNudgeY: "7.32%",
     outcome: "Applications come in, the AI ranks and screens them against your criteria",
     tags: "Google Workspace | Apps Script | AI Agent",
     description:
@@ -558,6 +581,11 @@ export function CaseStudies() {
                 .join(" ")}
               data-density={density}
               data-has-outcome={study.outcome ? "true" : undefined}
+              style={
+                study.iconNudgeY
+                  ? ({ "--ps-icon-nudge-y": study.iconNudgeY } as React.CSSProperties)
+                  : undefined
+              }
               role="listitem"
             >
               {/* Gradient background layer */}

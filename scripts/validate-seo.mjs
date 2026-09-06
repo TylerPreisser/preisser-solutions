@@ -14,6 +14,307 @@ const PROJECT_ROOT = path.resolve(__dirname, "..");
 const OUT_DIR = path.join(PROJECT_ROOT, "out");
 const PUBLIC_DIR = path.join(PROJECT_ROOT, "public");
 
+// ---------------------------------------------------------------------------
+// 0. SOURCE PREFLIGHT — the five pillar names must agree across the two files
+//    that own them (added 2026-09-05)
+//
+// WHY THIS RUNS BEFORE THE BUILD-FRESHNESS INTERLOCK BELOW
+//
+// Everything after the interlock grades the HTML in out/, so it would be a
+// false green to run it against a stale build. This check grades neither out/
+// nor anything derived from it: it compares two SOURCE files to each other.
+// Build staleness cannot make its answer wrong, and it is at its most useful
+// on exactly the tree the interlock rejects — mid-rename, out/ not rebuilt yet,
+// which is the moment the two names are most likely to have drifted apart.
+// Deferring it behind the interlock would mean the one gate that catches a
+// desync never runs on the one tree where a desync exists.
+//
+// WHAT IT ENFORCES
+//
+// Each pillar's name is written TWICE on purpose:
+//   - src/lib/seo/pillars.ts          `name`  -> JSON-LD Service.name, which is
+//                                              emitted into all 234 pages
+//   - src/components/home/service-pillars.tsx `title` -> the visible card title
+//                                              (the trailing period is styling)
+//
+// They are duplicated because importing the client component into the metadata
+// layer would drag the homepage bundle into every route's server graph. That is
+// a defensible reason to duplicate, but duplication without a gate is just a
+// bug with a delay on it. Google's structured-data guidance is explicit that
+// markup must match the visible text; when these two disagree, every page on
+// the site tells an engine one thing and a human another.
+//
+// Until 2026-09-05 the ONLY thing holding the pair together was a prose comment
+// in pillars.ts — and that comment had already rotted, citing
+// service-pillars.tsx:542 when the title actually sat at :547. A comment that is
+// wrong about where the other half lives cannot be what keeps the two halves in
+// step. Hence a check that fails the build.
+//
+// All FIVE are compared, not just the pillar that happened to be renamed. The
+// coupling is identical for the other four and nothing about them is safer.
+// ---------------------------------------------------------------------------
+const PILLAR_SEO_FILE = path.join(PROJECT_ROOT, "src", "lib", "seo", "pillars.ts");
+const PILLAR_UI_FILE = path.join(
+  PROJECT_ROOT, "src", "components", "home", "service-pillars.tsx",
+);
+
+/**
+ * Reads `type` -> value pairs out of an object-literal array in source.
+ *
+ * Deliberately NOT one regex spanning `type` to `valueKey`. A single spanning
+ * pattern that fails to find the value key inside one entry silently runs on
+ * into the NEXT entry and pairs the wrong two strings — a parser that reports a
+ * confident, wrong answer. Instead: find every `type:` position, then search
+ * only the slice belonging to that entry. A missing key is then a hard error
+ * rather than a shifted pairing.
+ */
+function readPillarPairs(file, startAnchor, valueKey) {
+  const source = fs.readFileSync(file, "utf8");
+  const start = source.indexOf(startAnchor);
+  if (start === -1) {
+    return { error: `could not find ${JSON.stringify(startAnchor)} in ${path.relative(PROJECT_ROOT, file)}` };
+  }
+  // Slicing from the array declaration skips the interface/type declarations
+  // above it, whose union members would otherwise read as a sixth entry.
+  const body = source.slice(start);
+
+  const typeRe = /\btype:\s*"([^"]+)"/g;
+  const starts = [];
+  for (const m of body.matchAll(typeRe)) starts.push({ type: m[1], at: m.index });
+  if (starts.length === 0) {
+    return { error: `no \`type: "..."\` entries found in ${path.relative(PROJECT_ROOT, file)}` };
+  }
+
+  const valueRe = new RegExp(`\\b${valueKey}:\\s*"((?:[^"\\\\]|\\\\.)*)"`);
+  const pairs = [];
+  for (let i = 0; i < starts.length; i += 1) {
+    const from = starts[i].at;
+    const to = i + 1 < starts.length ? starts[i + 1].at : body.length;
+    const found = valueRe.exec(body.slice(from, to));
+    if (!found) {
+      return {
+        error:
+          `pillar "${starts[i].type}" in ${path.relative(PROJECT_ROOT, file)} has no \`${valueKey}: "..."\``,
+      };
+    }
+    pairs.push({ type: starts[i].type, value: found[1] });
+  }
+  return { pairs };
+}
+
+function pillarGateFail(lines) {
+  for (const line of lines) console.log(line);
+  console.log("");
+  console.log("---------------------------------------------------------------");
+  console.log("❌ SEO validation aborted: pillar name synchronisation");
+  console.log("---------------------------------------------------------------");
+  process.exit(1);
+}
+
+{
+  const seo = readPillarPairs(PILLAR_SEO_FILE, "export const SERVICE_PILLARS", "name");
+  const ui = readPillarPairs(PILLAR_UI_FILE, "const services: ServicePillar[] = [", "title");
+
+  if (seo.error || ui.error) {
+    pillarGateFail([
+      "❌ PILLAR NAMES: could not read the pillar list, so the names are UNVERIFIED.",
+      "   An unreadable gate must fail, not pass silently.",
+      ...[seo.error, ui.error].filter(Boolean).map((e) => `   ${e}`),
+    ]);
+  }
+
+  const seoTypes = seo.pairs.map((p) => p.type);
+  const uiTypes = ui.pairs.map((p) => p.type);
+  if (seoTypes.length !== uiTypes.length || seoTypes.some((t, i) => t !== uiTypes[i])) {
+    pillarGateFail([
+      "❌ PILLAR NAMES: the two files no longer describe the same pillars.",
+      `   src/lib/seo/pillars.ts                    : ${seoTypes.join(", ")}`,
+      `   src/components/home/service-pillars.tsx   : ${uiTypes.join(", ")}`,
+      "   Add or remove the pillar in BOTH files, in the same commit.",
+    ]);
+  }
+
+  // The visible card title carries a trailing period as styling; the JSON-LD
+  // name deliberately does not. That single character is the only difference
+  // permitted between the two.
+  const mismatches = [];
+  for (let i = 0; i < seo.pairs.length; i += 1) {
+    const seoName = seo.pairs[i].value;
+    const uiTitle = ui.pairs[i].value.replace(/\.$/, "");
+    if (seoName !== uiTitle) {
+      mismatches.push({ type: seoTypes[i], seoName, uiTitle, raw: ui.pairs[i].value });
+    }
+  }
+
+  if (mismatches.length > 0) {
+    const lines = [
+      `❌ PILLAR NAMES: ${mismatches.length} of ${seo.pairs.length} pillar name(s) disagree between structured data and visible text.`,
+      "",
+      "   Every page on this site emits the pillars.ts name in JSON-LD while the",
+      "   homepage shows the service-pillars.tsx title. While these differ, the",
+      "   markup contradicts the visible text on 234 pages.",
+      "",
+    ];
+    for (const m of mismatches) {
+      lines.push(`   pillar "${m.type}"`);
+      lines.push(`     src/lib/seo/pillars.ts          name  : ${JSON.stringify(m.seoName)}`);
+      lines.push(`     src/components/home/service-pillars.tsx title : ${JSON.stringify(m.raw)}`);
+    }
+    lines.push("");
+    lines.push("   Rename in BOTH files in the SAME commit — never one alone.");
+    pillarGateFail(lines);
+  }
+
+  console.log(
+    `✅ pillar names in sync — all ${seo.pairs.length} of src/lib/seo/pillars.ts \`name\` match ` +
+      `src/components/home/service-pillars.tsx \`title\` (${seoTypes.join(", ")})`,
+  );
+}
+
+// ---------------------------------------------------------------------------
+// 0. BUILD-FRESHNESS INTERLOCK (added 2026-09-05)
+//
+// This runs BEFORE every other check and exits the process the moment it trips.
+//
+// Everything below this point grades the static HTML sitting in out/. Nothing
+// below it knew or cared how old that HTML was. On 2026-09-05 this script
+// reported a clean run against an out/ that predated a service-pillar rename:
+// out/index.html was written at 09:14:35, the renamed pillar lived in
+// src/components/home/service-pillars.tsx at 10:20:23, and the new pillar name
+// "SEO AI Visibility Ad Management" appeared ZERO times in the HTML being
+// graded while the old "Search, AI, and Ads" appeared 11 times. The validator
+// still said 152 checks, 0 failures.
+//
+// A harness that certifies a build which no longer exists is worse than no
+// harness, because it hands you a confident green. So: the newest artifact in
+// out/ must be at least as new as the newest real source input. This is a HARD
+// failure with a non-zero exit, not a warning — a warning in a CI log is a
+// green, and there is deliberately no environment-variable bypass.
+// ---------------------------------------------------------------------------
+const FRESHNESS_SOURCES = [
+  "src",
+  "public",
+  "scripts",
+  "next.config.ts",
+  "package.json",
+];
+const FRESHNESS_IGNORE = new Set(["node_modules", ".next", "out", ".git"]);
+
+// ---------------------------------------------------------------------------
+// ONE named exclusion. Do not widen this to `scripts/**`, and do not delete it.
+//
+// The question this interlock asks is: "is out/ older than anything that
+// DETERMINES ITS CONTENTS?" Most of scripts/ genuinely qualifies —
+// generate-sitemap.mjs writes out/sitemap.xml, strip-404-noindex.mjs rewrites
+// out/404.html, generate-og-farmbooks.mjs writes into public/images/, and
+// regenerate-location-routes.mjs generates route source under src/. Editing any
+// of those really does stale out/, so they all stay in the source set.
+//
+// This file is the INSTRUMENT, not an input. It is the only script in scripts/
+// with no write call of any kind: it reads out/ and public/ and prints. Editing
+// a thermometer does not change the temperature. Left in the set, the validator
+// declares its own output stale every time someone improves it, and the third
+// person to trip that will just delete the interlock — which is how a gate dies.
+//
+// scripts/ui-audit.mjs is the same shape (reads out/, writes only to qa/). It is
+// NOT excluded here, because nothing has yet required it and a second exclusion
+// added speculatively is how a named exception becomes a blanket one.
+// ---------------------------------------------------------------------------
+const FRESHNESS_EXCLUDE_FILES = new Set([
+  path.join(PROJECT_ROOT, "scripts", "validate-seo.mjs"),
+]);
+
+function collectFiles(target, ignore, acc = []) {
+  let st;
+  try {
+    st = fs.lstatSync(target);
+  } catch {
+    return acc; // missing input is not a freshness problem
+  }
+  if (st.isSymbolicLink()) return acc;
+  if (st.isDirectory()) {
+    for (const entry of fs.readdirSync(target)) {
+      if (ignore.has(entry)) continue;
+      collectFiles(path.join(target, entry), ignore, acc);
+    }
+    return acc;
+  }
+  if (st.isFile()) acc.push({ file: target, mtimeMs: st.mtimeMs });
+  return acc;
+}
+
+// Local wall-clock, so the timestamps printed here line up with `ls -l` and
+// `stat` output from the same machine rather than being an hour off in UTC.
+function stamp(ms) {
+  const d = new Date(ms);
+  const pad = (n) => String(n).padStart(2, "0");
+  return (
+    `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ` +
+    `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
+  );
+}
+
+function stale(lines) {
+  for (const line of lines) console.log(line);
+  console.log("");
+  console.log("---------------------------------------------------------------");
+  console.log("❌ SEO validation aborted: build freshness interlock");
+  console.log("---------------------------------------------------------------");
+  process.exit(1);
+}
+
+if (!fs.existsSync(OUT_DIR)) {
+  stale([
+    "❌ BUILD FRESHNESS: out/ does not exist, so there is nothing to validate.",
+    "   Reporting zero checks as success would be a false green.",
+    "   Run `npm run build` first.",
+  ]);
+}
+
+const builtFiles = collectFiles(OUT_DIR, new Set([".git"]));
+if (builtFiles.length === 0) {
+  stale([
+    "❌ BUILD FRESHNESS: out/ exists but contains no files.",
+    "   Reporting zero checks as success would be a false green.",
+    "   Run `npm run build` first.",
+  ]);
+}
+const newestBuilt = builtFiles.reduce((a, b) => (b.mtimeMs > a.mtimeMs ? b : a));
+
+const sourceFiles = FRESHNESS_SOURCES.flatMap((entry) =>
+  collectFiles(path.join(PROJECT_ROOT, entry), FRESHNESS_IGNORE),
+).filter((f) => !FRESHNESS_EXCLUDE_FILES.has(f.file));
+const newerThanBuild = sourceFiles
+  .filter((f) => f.mtimeMs > newestBuilt.mtimeMs)
+  .sort((a, b) => b.mtimeMs - a.mtimeMs);
+
+if (newerThanBuild.length > 0) {
+  const worst = newerThanBuild[0];
+  const relOf = (f) => path.relative(PROJECT_ROOT, f);
+  const lines = [
+    `❌ BUILD FRESHNESS: out/ is STALE. ${newerThanBuild.length} source file(s) are newer than the newest build artifact.`,
+    `   newest source   : ${relOf(worst.file)}  (${stamp(worst.mtimeMs)})`,
+    `   newest artifact : ${relOf(newestBuilt.file)}  (${stamp(newestBuilt.mtimeMs)})`,
+    "",
+    "   Every result this script would print describes a build that no longer",
+    "   matches the source tree. That is a false green, so nothing else ran.",
+    "   Re-run `npm run build`, then `npm run validate:seo` again.",
+    "",
+    "   Newest offenders:",
+  ];
+  for (const f of newerThanBuild.slice(0, 10)) {
+    lines.push(`     ${stamp(f.mtimeMs)}  ${relOf(f.file)}`);
+  }
+  if (newerThanBuild.length > 10) {
+    lines.push(`     … and ${newerThanBuild.length - 10} more`);
+  }
+  stale(lines);
+}
+
+console.log(
+  `✅ build freshness ok — newest artifact ${path.relative(PROJECT_ROOT, newestBuilt.file)} (${stamp(newestBuilt.mtimeMs)}) is not older than any source input`,
+);
+
 const errors = [];
 const passes = [];
 
@@ -132,12 +433,12 @@ for (const route of REQUIRED_ROUTES) {
   const html = fs.readFileSync(htmlPath, "utf8");
   const rel = path.relative(PROJECT_ROOT, htmlPath);
 
-  // <title>
-  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-  if (!titleMatch || !titleMatch[1].trim()) {
+  // <title> — document title only, entity-decoded. See documentTitle().
+  const titleText = documentTitle(html);
+  if (!titleText) {
     fail(`${rel}: missing <title> content`);
   } else {
-    pass(`${rel}: <title> ok (${titleMatch[1].trim().length} chars)`);
+    pass(`${rel}: <title> ok (${titleText.length} chars)`);
   }
 
   // <meta name="description">
@@ -209,18 +510,147 @@ const BUDGETS = {
   // This gate is what keeps it at 0: it is a clean state, so never raise this.
   doubledBrandTitles: 0,
   // Titles over ~60 chars get truncated in Google's SERP. Was 162 before the
-  // doubled-brand fix, now 18 — the remainder are genuinely long titles that
-  // need editorial shortening, not a mechanical fix. Lower as they are fixed.
-  longTitles: 17,
+  // doubled-brand fix, then reported as 17-18 for a long time.
+  //
+  // LOWERED TO 0 on 2026-09-05 — and NOT by shortening 18 titles. All 18 were
+  // measurement artifacts of the old extractor, which this commit also fixed
+  // (see documentTitle() above):
+  //   - 17 were under 60 rendered characters and were only pushed over by
+  //     counting "&amp;" as 5 chars and "&#x27;" as 6. Google truncates on
+  //     rendered characters.
+  //   - 1 (/products/marcommand-engine) was not a document title at all. The
+  //     old regex grabbed the first <title> anywhere in the file, which was the
+  //     accessible name of an inline SVG: "MarCommand: Multi-Channel Marketing
+  //     Engine workflow animation" (61). Its real title is 47 chars.
+  // Verified against the running dev server, all 232 routes, entity-decoded and
+  // head-scoped: zero titles exceed 60 rendered characters. Clean state — never
+  // raise this without checking you are not re-measuring an SVG label.
+  longTitles: 0,
   // Two distinct URLs sharing one <title> compete with each other for the same
   // query. Was 2, now 0. Clean state — never raise this.
   duplicateTitleGroups: 0,
-  // Internal links pointing at a URL that 301s. Not fatal, but every one is a
-  // wasted crawl hop and a diluted internal-link signal. All 83 are literal
-  // href strings in src/data/aeo/**; six distinct stale targets account for
-  // nearly all of them. Target: 0.
-  linksToRedirects: 7,
+  // Internal links pointing at a URL that 301s. Every one is a wasted crawl hop
+  // and a diluted internal-link signal.
+  //
+  // LOWERED TO 0 on 2026-09-05. All 9 source occurrences (7 of which rendered)
+  // were repointed at the destination public/_redirects already sends them to,
+  // so behaviour is unchanged and only the hop is gone. One was fixed
+  // differently: a "Smith Center, KS" nearby-area entry had its href dropped
+  // rather than repointed, because the target city has no page and the
+  // nearbyAreas array already lists href-less cities for exactly that reason.
+  // Clean state — never raise this.
+  linksToRedirects: 0,
 };
+
+// ---------------------------------------------------------------------------
+// Document-title extraction (fixed 2026-09-05)
+//
+// The old one-liner `html.match(/<title[^>]*>...<\/title>/i)` had TWO bugs that
+// between them invented 18 phantom "over-length title" defects:
+//
+//   1. IT MATCHED THE FIRST <title> ANYWHERE IN THE DOCUMENT. Inline SVGs use
+//      <title> as their accessible name. /products/marcommand-engine has
+//      <title>MarCommand: Multi-Channel Marketing Engine workflow animation</title>
+//      inside its animation SVG — 61 chars — which was being measured and
+//      reported as that page's document title. Its real <title> is
+//      "MarCommand Marketing Engine | Preisser Solutions" (47). Shortening the
+//      SVG label to satisfy the budget would have degraded an accessibility
+//      label to fix a defect that never existed.
+//
+//   2. IT MEASURED HTML-ENTITY SOURCE LENGTH, NOT RENDERED LENGTH. "&amp;"
+//      counts as 5 characters and "&#x27;" as 6. Seventeen titles containing
+//      "&" or an apostrophe were pushed over the 60-char line by their own
+//      encoding. Google truncates on rendered characters, not source bytes.
+//
+// So: scope to <head>, then decode entities, then measure.
+// ---------------------------------------------------------------------------
+function decodeEntities(s) {
+  return s
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(parseInt(d, 10)))
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&"); // must be last
+}
+
+// Everything above </head>. Anything after it is body content: inline SVG
+// <title> accessible names, and the Next.js RSC flight payload, which repeats
+// every meta tag as escaped JSON inside a <script>. Both have already fooled a
+// whole-file regex in this script once.
+function headOf(html) {
+  return html.split(/<\/head>/i)[0];
+}
+
+function stripComments(s) {
+  return s.replace(/<!--[\s\S]*?-->/g, "");
+}
+
+function documentTitle(html) {
+  const m = headOf(html).match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  return m ? decodeEntities(m[1]).trim() : "";
+}
+
+// Reads one attribute off a single tag. Returns null when the attribute is
+// absent, and "" when it is present but empty — the caller must be able to tell
+// those two apart, because `content=""` and no `content` at all are different
+// defects with different fixes.
+function tagAttr(tag, attrName) {
+  const m = tag.match(
+    new RegExp(`\\b${attrName}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s"'>]+))`, "i"),
+  );
+  if (!m) return null;
+  return m[1] !== undefined ? m[1] : m[2] !== undefined ? m[2] : m[3];
+}
+
+// ---------------------------------------------------------------------------
+// The brand string every page's og:site_name must equal.
+//
+// Deliberately NOT a fresh literal typed into this file. It is read at runtime
+// out of the declaring source of truth, src/data/site-config.ts
+// (`siteConfig.name`), which is the same string src/app/layout.tsx:91 hands to
+// `openGraph.siteName`. A copied literal would drift the first time the brand
+// changed and the gate would then be asserting history. This script is plain
+// ESM and cannot `import` a .ts module, so it parses the declaration instead,
+// and refuses to run rather than guess if the shape ever changes.
+// ---------------------------------------------------------------------------
+const EXPECTED_SITE_NAME = (() => {
+  const configPath = path.join(PROJECT_ROOT, "src", "data", "site-config.ts");
+  let src;
+  try {
+    src = fs.readFileSync(configPath, "utf8");
+  } catch {
+    console.log(`❌ cannot read ${path.relative(PROJECT_ROOT, configPath)} — og:site_name has no source of truth to check against.`);
+    process.exit(1);
+  }
+  const decl = src.indexOf("export const siteConfig");
+  const m =
+    decl === -1 ? null : src.slice(decl).match(/\bname:\s*["'`]([^"'`]+)["'`]/);
+  if (!m) {
+    console.log(`❌ could not find \`siteConfig.name\` in ${path.relative(PROJECT_ROOT, configPath)} — update the extractor in scripts/validate-seo.mjs, do not delete the gate.`);
+    process.exit(1);
+  }
+  return m[1];
+})();
+
+// Finds the FIRST <meta property="og:site_name"> in the document <head>, with
+// HTML comments removed, and reports the state of its content attribute:
+//   { present: false }               no such tag in <head>
+//   { present: true, value: null }   tag exists but carries no content attribute
+//   { present: true, value: "..." }  content, entity-decoded and trimmed ("" if empty)
+function headOgSiteName(html) {
+  const head = stripComments(headOf(html));
+  for (const m of head.matchAll(/<meta\b[^>]*>/gi)) {
+    const tag = m[0];
+    const property = tagAttr(tag, "property");
+    if (!property || property.trim().toLowerCase() !== "og:site_name") continue;
+    const content = tagAttr(tag, "content");
+    return { present: true, value: content === null ? null : decodeEntities(content).trim() };
+  }
+  return { present: false };
+}
 
 function walkHtml(dir, acc = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -283,7 +713,7 @@ if (fs.existsSync(OUT_DIR)) {
     const route = rel === "/index.html" ? "/" : rel.replace(/\.html$/, "");
     const html = fs.readFileSync(file, "utf8");
 
-    const title = (html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || "").trim();
+    const title = documentTitle(html);
     if (title && route !== "/404") {
       if (!titleOwners.has(title)) titleOwners.set(title, []);
       titleOwners.get(title).push(route);
@@ -337,6 +767,124 @@ if (fs.existsSync(OUT_DIR)) {
     } else {
       pass(`${name}: ${actual} (at budget)`);
     }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 5. Site-wide infrastructure gates (added 2026-09-05)
+//
+// Three defects were found by crawling out/ that NO existing check caught,
+// because every check above either samples 19 hand-listed routes or looks at
+// one page in isolation. These are whole-corpus, cross-file gates. All three
+// are HARD gates at 0 — they were each fixed to 0 in the same commit that added
+// them, so any non-zero number is a regression, not a backlog.
+// ---------------------------------------------------------------------------
+if (fs.existsSync(OUT_DIR) && sitemap) {
+  const htmlFiles = walkHtml(OUT_DIR);
+  const NON_PAGE = new Set(["/404", "/yandex_9f19081f7abbbb70"]);
+
+  const byRoute = new Map();
+  for (const file of htmlFiles) {
+    const rel = "/" + path.relative(OUT_DIR, file).split(path.sep).join("/");
+    const route = rel === "/index.html" ? "/" : rel.replace(/\.html$/, "");
+    byRoute.set(route, fs.readFileSync(file, "utf8"));
+  }
+  const indexable = [...byRoute.keys()].filter((r) => !NON_PAGE.has(r));
+
+  // -- 5a. og:site_name on every indexable page ------------------------------
+  // Next.js REPLACES the parent `openGraph` object when a child route exports
+  // its own — it does not deep-merge. layout.tsx sets siteName once; every page
+  // that exported an openGraph block silently overrode it away. This was
+  // missing on 232 of 232 pages before 2026-09-05. If this fires again, a new
+  // page exported `openGraph` without `siteName`.
+  //
+  // The original form of this gate was `/property="og:site_name"/i.test(html)`
+  // over the WHOLE file, which could not fail. A substring test passes on
+  // `content=""`, on the tag with no `content` attribute at all, on a wrong
+  // brand, and on the tag sitting inside an HTML comment; and because it was
+  // unscoped it also matched the Next.js RSC flight payload in <body>, where
+  // every meta tag is repeated as escaped JSON. It guarded a codemod across 232
+  // pages while being incapable of reporting a defect.
+  //
+  // This is the same class of bug as the old <title> extractor (see
+  // documentTitle() above), so it is fixed the same way and with the same
+  // helpers: scope to <head>, drop comments, parse the tag rather than the
+  // file, decode entities, then compare against the declared brand.
+  const siteNameProblems = [];
+  for (const r of indexable) {
+    const found = headOgSiteName(byRoute.get(r));
+    if (!found.present) {
+      siteNameProblems.push(`${r} — no <meta property="og:site_name"> in <head>`);
+    } else if (found.value === null) {
+      siteNameProblems.push(`${r} — og:site_name tag has no content attribute`);
+    } else if (found.value === "") {
+      siteNameProblems.push(`${r} — og:site_name content is empty`);
+    } else if (found.value !== EXPECTED_SITE_NAME) {
+      siteNameProblems.push(
+        `${r} — og:site_name is "${found.value}", expected "${EXPECTED_SITE_NAME}"`,
+      );
+    }
+  }
+  if (siteNameProblems.length === 0) {
+    pass(`og:site_name present on all ${indexable.length} indexable pages`);
+  } else {
+    fail(
+      `${siteNameProblems.length} page(s) with a bad og:site_name — every indexable page needs \`siteName: "${EXPECTED_SITE_NAME}"\` in its openGraph block (Next REPLACES the parent openGraph object, it does not inherit siteName from layout.tsx):`,
+    );
+    for (const p of siteNameProblems.slice(0, 15)) console.log(`     ${p}`);
+    if (siteNameProblems.length > 15) console.log(`     … and ${siteNameProblems.length - 15} more`);
+  }
+
+  // -- 5b. every sitemap URL must canonicalise to itself ---------------------
+  // A sitemap entry says "index this URL"; a canonical pointing elsewhere on
+  // the same page says "no, index that other one". Google resolves it by
+  // dropping the URL ("Alternate page with proper canonical tag"). Alias routes
+  // like /services/after-hours-call-triage are legitimate pages — they just
+  // must not be submitted. generate-sitemap.mjs now filters them out; this
+  // gate proves it stayed filtered.
+  const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) =>
+    m[1].replace("https://preissersolutions.com", "").replace(/\/$/, "") || "/",
+  );
+  const canonicalConflicts = [];
+  for (const url of sitemapUrls) {
+    const html = byRoute.get(url);
+    if (!html) continue; // covered by the per-route checks above
+    const declared = (html.match(/<link[^>]+rel="canonical"[^>]+href="([^"]+)"/i) || [])[1];
+    if (!declared) continue;
+    const norm = declared.replace("https://preissersolutions.com", "").replace(/\/$/, "") || "/";
+    if (norm !== url) canonicalConflicts.push(`${url} -> canonical ${norm}`);
+  }
+  if (canonicalConflicts.length === 0) {
+    pass(`all ${sitemapUrls.length} sitemap URLs canonicalise to themselves`);
+  } else {
+    fail(`${canonicalConflicts.length} sitemap URL(s) canonicalise elsewhere — remove them from the sitemap or fix the canonical:`);
+    for (const c of canonicalConflicts.slice(0, 15)) console.log(`     ${c}`);
+  }
+
+  // -- 5c. no orphaned indexable route ---------------------------------------
+  // A route in sitemap.xml with zero inbound internal links is the weakest
+  // state a page can be in: crawlers reach it only via the sitemap and get no
+  // internal-link signal about what it is. Two case-study routes were in this
+  // state before 2026-09-05. /site-map is the site's HTML index and is the
+  // right place to fix any new occurrence.
+  const inbound = new Map(indexable.map((r) => [r, 0]));
+  for (const [route, html] of byRoute) {
+    const seen = new Set();
+    for (const m of html.matchAll(/href="(\/[^"#?]*)/g)) {
+      const target = m[1].replace(/\/$/, "") || "/";
+      if (target.startsWith("/_next")) continue;
+      if (target === route || seen.has(target)) continue;
+      seen.add(target);
+      if (inbound.has(target)) inbound.set(target, inbound.get(target) + 1);
+    }
+  }
+  const sitemapSet = new Set(sitemapUrls);
+  const orphans = [...inbound.entries()].filter(([r, n]) => n === 0 && sitemapSet.has(r));
+  if (orphans.length === 0) {
+    pass(`no orphaned routes — all ${sitemapSet.size} submitted URLs have >=1 inbound internal link`);
+  } else {
+    fail(`${orphans.length} submitted URL(s) have ZERO inbound internal links — link them from /site-map or a relevant hub:`);
+    for (const [r] of orphans.slice(0, 15)) console.log(`     ${r}`);
   }
 }
 

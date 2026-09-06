@@ -5,6 +5,7 @@ import "@/styles/globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { SERVICE_PILLARS } from "@/lib/seo/pillars";
 import {
   organizationSchema,
   localBusinessSchema,
@@ -193,47 +194,27 @@ const organization = {
   // form — the full 15-city list already sits on the LocalBusiness node, and
   // repeating it three more times multiplies payload on all 234 pages for no
   // added signal.
-  makesOffer: [
-    {
-      "@type": "Offer",
-      availability: "https://schema.org/InStock",
-      itemOffered: {
-        "@type": "Service",
-        name: "Business Software",
-        serviceType: "Custom business software development",
-        description:
-          "Admin dashboards, customer and member databases, client portals, and internal tools: the platform your team actually logs into, built for how your business works.",
-        provider: { "@id": ORG_ID },
-        areaServed: PILLAR_AREA_SERVED,
-      },
+  // Built from SERVICE_PILLARS (src/lib/seo/pillars.ts) rather than hand-written
+  // here. Two reasons:
+  //   1. This array previously listed only 3 of the 5 pillars — engines reading
+  //      our Organization node saw a firm that does not build websites and does
+  //      not do search work.
+  //   2. The fifth pillar is being renamed to "SEO AI Visibility Ad Management".
+  //      Sourcing the names from one constant means that rename is a one-line
+  //      change that propagates to all 232 pages instead of a string hunt.
+  makesOffer: SERVICE_PILLARS.map((pillar) => ({
+    "@type": "Offer",
+    availability: "https://schema.org/InStock",
+    itemOffered: {
+      "@type": "Service",
+      name: pillar.name,
+      serviceType: pillar.serviceType,
+      description: pillar.description,
+      url: `https://preissersolutions.com${pillar.path}`,
+      provider: { "@id": ORG_ID },
+      areaServed: PILLAR_AREA_SERVED,
     },
-    {
-      "@type": "Offer",
-      availability: "https://schema.org/InStock",
-      itemOffered: {
-        "@type": "Service",
-        name: "Business Automation",
-        serviceType: "Business process automation",
-        description:
-          "Workflow automation for document pipelines, scheduled jobs, notifications and confirmations, and the system integrations that connect them: the work that happens without anyone doing it.",
-        provider: { "@id": ORG_ID },
-        areaServed: PILLAR_AREA_SERVED,
-      },
-    },
-    {
-      "@type": "Offer",
-      availability: "https://schema.org/InStock",
-      itemOffered: {
-        "@type": "Service",
-        name: "AI Integration",
-        serviceType: "AI integration",
-        description:
-          "AI put exactly where it earns its place: reading and classifying documents, drafting with a human approval gate, and joining an existing workflow, never replacing judgment on anything that matters.",
-        provider: { "@id": ORG_ID },
-        areaServed: PILLAR_AREA_SERVED,
-      },
-    },
-  ],
+  })),
 };
 
 const person = {

@@ -10,10 +10,15 @@ export const metadata: Metadata = {
     canonical: "https://preissersolutions.com/services",
   },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: "All Services",
     description:
       "Every service Preisser Solutions builds for Kansas businesses: websites, AI automation, local SEO, AI search optimization, CRM, dashboards, integrations, and more.",
     url: "https://preissersolutions.com/services",
+    type: "website",
+    images: [
+      { url: "/images/og-image-v2.jpg", width: 1200, height: 630, alt: "Preisser Solutions" },
+    ],
   },
 };
 

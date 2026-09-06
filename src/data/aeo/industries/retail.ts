@@ -123,7 +123,6 @@ export const pageData: AeoPageData = {
     "Klaviyo",
   ],
   relatedLinks: [
-    { label: "Restaurants industry", href: "/industries/restaurants" },
     { label: "Custom websites", href: "/services/custom-websites" },
     { label: "AI customer service systems", href: "/services/ai-customer-service" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },

@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   description: pageData.metaDescription,
   alternates: { canonical: `https://preissersolutions.com/${pageData.slug}` },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: pageData.metaTitle,
     description: pageData.metaDescription,
     url: `https://preissersolutions.com/${pageData.slug}`,

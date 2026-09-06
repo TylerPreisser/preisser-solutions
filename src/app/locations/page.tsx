@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     "Preisser Solutions is based in Hays, Kansas. Custom software, AI automation, and websites delivered across western, central, and eastern Kansas.",
   alternates: { canonical: "https://preissersolutions.com/locations" },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: "Locations We Serve",
     description:
       "Preisser Solutions is based in Hays, Kansas. Custom software, AI automation, and websites delivered across Kansas.",

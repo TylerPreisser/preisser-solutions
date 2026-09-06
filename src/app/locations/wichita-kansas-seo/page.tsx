@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     canonical: `https://preissersolutions.com/locations/${locationData.slug}`,
   },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: locationData.metaTitle,
     description: locationData.metaDescription,
     url: `https://preissersolutions.com/locations/${locationData.slug}`,

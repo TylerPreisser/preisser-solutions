@@ -26,7 +26,16 @@
 }
 
 .ps-why--relationship .ps-why-relationship {
-  max-width: 720px;          /* design-system.md §4: "narrow (text-focused)" */
+  /* Was 720px (design-system.md §4 "narrow (text-focused)"). Raised to 900px
+     on 2026-09-05 so the enlarged tagline still sets on ONE line at desktop:
+     at 60px it measures 817px, which 720px could not hold. This does not widen
+     the reading copy — .__copy self-limits at `max-width: 62ch`, which computes
+     to 704.03px (>=820px vw) and 664.92px (768px vw), both already below 720.
+     MEASURED before/after at 768/820/939/1024/1280/1440/1920: copy box width
+     and line count identical. The eyebrow is shrink-to-fit and centered, so it
+     does not move either. Display type overhanging the reading measure is the
+     point: the tagline is the anchor now that the logo is gone. */
+  max-width: 900px;
   margin-inline: auto;
   display: flex;
   flex-direction: column;
@@ -41,19 +50,18 @@
   margin-bottom: 0;
 }
 
-/* The mark is a single-ink logotype (#1590FF across its opaque pixels, alpha
-   background), so it reads on both themes with no filter and no light/dark
-   pair: 5.58:1 on the dark page, 3.25:1 on white — and WCAG 1.4.11 exempts
-   logotypes from non-text contrast regardless. */
-.ps-why--relationship .ps-why-relationship__mark {
-  width: 112px;
-  height: auto;
-  margin-block-start: 8px;
-}
-
 .ps-why--relationship .ps-why-relationship__tagline {
   margin: 0;
-  font-size: clamp(2rem, 4vw, 3rem);   /* design-system.md Section H2 */
+  /* Was clamp(2rem, 4vw, 3rem) = 32px -> 48px. The logo that shared this
+     section's visual weight was removed 2026-09-05 on the owner's instruction
+     ("just make the text itself bigger"), so the tagline absorbs it: 36px on
+     phones (+12.5%) and 60px from 1000px up (+25%). Not larger at the small
+     end on purpose — at 320px the content box is 288px and the longest line
+     ("is our success.") measures 254px at 36px = 88% fill; 38px would be 93%,
+     which leaves no tolerance if the webfont swaps to a fallback. MEASURED at
+     320/360/375/390/414/430/639/640/641/768/820/939/940/941/1024/1280/1440/
+     1920: no overflow, no rebreak, last line is never a one-word orphan. */
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -84,10 +92,6 @@
 
   .ps-why--relationship .ps-why-relationship {
     gap: 20px;
-  }
-
-  .ps-why--relationship .ps-why-relationship__mark {
-    width: 88px;
   }
 
   .ps-why--relationship .ps-why-relationship__copy {

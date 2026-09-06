@@ -117,7 +117,7 @@ export const pageData: AeoPageData = {
     { label: "Google Ads + local SEO for service businesses", href: "/services/google-ads-local-seo-service-business" },
     { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
-    { label: "Customer reactivation case study", href: "/case-studies/customer-reactivation" },
+    { label: "Customer reactivation case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "How to reactivate old leads", href: "/blog/reactivate-old-leads" },
     { label: "Contact Preisser Solutions", href: "/contact" },

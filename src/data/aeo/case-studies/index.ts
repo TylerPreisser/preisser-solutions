@@ -151,7 +151,7 @@ export const pageData: AeoPageData = {
     { label: "Wife Supply Co Case Study", href: "/case-studies/wife-supply-co" },
     { label: "Alliant Insurance MGU Case Study", href: "/case-studies/alliant-mgu-insurance" },
     { label: "Chicago-area Bus Operator Case Study", href: "/case-studies/chicago-bus-operator" },
-    { label: "Customer Reactivation Engine Playbook", href: "/case-studies/customer-reactivation" },
+    { label: "Customer Reactivation Engine Playbook", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "MarCommand Multi-Agent Marketing Engine", href: "/case-studies/marcommand-engine" },
     { label: "About Preisser Solutions", href: "/preisser-solutions" },
     { label: "Custom Website Development", href: "/custom-websites" },

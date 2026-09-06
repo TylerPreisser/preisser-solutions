@@ -9,6 +9,7 @@ import {
   FRAME,
   DIAL_MATH,
   BUDGET,
+  RADIUS,
 } from "@/components/home/marcommand-live-stage";
 
 type Variant = "wide" | "narrow";
@@ -51,7 +52,34 @@ const BEATS = {
     fold: 0.9,
     walk5: 1.1,
     rest: 1.0,
-    cardMove: 0.4,
+    /*
+      1.0, up from 0.4. This beat is no longer a card lift he watches — it is the
+      RIDE, and he is on it (see the coupled-ride block in the timeline). It
+      covers 198 units of climb plus a 50-unit step-off, which is a longer
+      journey than walk1 (35 units) and comparable to walk2, so 0.4s would have
+      made the one beat the owner asked for the fastest movement in the loop.
+      Split 0.55/0.55 with the 0.45 overlap, that is 0.55s of climb and 0.55s of
+      step-off, which puts his climbing speed within ~15% of his walking speed on
+      the other legs — the EASING is untouched, per the note at the top of BEATS.
+    */
+    cardMove: 1.0,
+
+    /*
+      ---- THE SECOND ARC (TikTok). Portrait only. ----
+      Shorter than the Google Ads arc on purpose. The first arc has to teach
+      the idea — tap a channel, the room opens, a lever moves — and it spends
+      walk3/face/pocket doing it on the keyword tile. The second arc only has
+      to show that the SAME agent does the SAME job on a DIFFERENT channel, so
+      it drops the keyword beat entirely and goes card -> knob -> home.
+
+      walk6 is set equal to walk1 (1.2) rather than trimmed: it is the mirror
+      of walk1 along the same rail, and giving the two arrivals different
+      speeds is what would make the second one look like a different animation.
+    */
+    walk6: 1.2,
+    walk7: 1.0,
+    grip2: 1.3,
+    walk8: 1.0,
   },
 } as const;
 
@@ -268,11 +296,48 @@ export function MarCommandLive() {
           ];
           const hubLayer = [...hubFurniture, ...hubPath];
 
+          /*
+            ---- THE SECOND ARC'S NODES -------------------------------------
+            TikTok's card, its spoke and its own blue live rail. `liveRail2` is
+            a separate path rather than a re-pointed `d` on `liveRail`, because
+            both rails exist across the fold between the arcs and rewriting `d`
+            mid-timeline would snap the first one out from under him.
+
+            These are queried unconditionally for both variants — `q` returns
+            null on wide, where there is no second arc — so the query block
+            stays one shape and nothing here is behind a branch.
+          */
+          const litCard2 = q<SVGGElement>(`[data-mc-card="${variant}-tiktok"]`);
+          const liveRail2 = q<SVGPathElement>(`[data-mc-liverail2="${variant}"]`);
+          const liveSpoke2 = q<SVGPathElement>(`[data-mc-spoke="${variant}-tiktok"]`);
+
+          /* The arc-2 mirror of hubFurniture / hubPath: the ground he stands on
+             is TikTok's spoke this time, so TikTok's spoke is what has to
+             survive the light beat and everything else is dead weight. */
+          const hubFurniture2 = [
+            ...cards.filter((c) => c !== litCard2),
+            ...spokes.filter((sp) => sp !== liveSpoke2),
+          ];
+          const hubPath2 = [
+            ...(liveSpoke2 ? [liveSpoke2] : []),
+            ...(liveRail2 ? [liveRail2] : []),
+            ...(pad ? [pad] : []),
+            ...(hubLink ? [hubLink] : []),
+          ];
+
           const dials = qa<SVGGElement>(`[data-mc-dial^="${variant}-"]`);
           const tile = q<SVGGElement>(`[data-mc-tile="${variant}"]`);
           const arc = q<SVGCircleElement>(`[data-mc-arc="${variant}-budget"]`);
           const needle = q<SVGLineElement>(`[data-mc-needle="${variant}-budget"]`);
           const readout = q<SVGTextElement>(`[data-mc-value="${variant}-budget"]`);
+
+          /* The second arc's knob. Radius, not Bidding: Bidding's readout is the
+             word "Max conv." and a needle sweep with no number moving beside it
+             does not read as a VALUE changing — which is the whole point of the
+             beat. Radius counts 25 -> 40 in miles, the way budget counts money. */
+          const arcRad = q<SVGCircleElement>(`[data-mc-arc="${variant}-radius"]`);
+          const needleRad = q<SVGLineElement>(`[data-mc-needle="${variant}-radius"]`);
+          const readoutRad = q<SVGTextElement>(`[data-mc-value="${variant}-radius"]`);
           const pillOld = q<SVGGElement>(`[data-mc-pill="${variant}-kw-old"]`);
           const pillNew = q<SVGGElement>(`[data-mc-pill="${variant}-kw-new"]`);
 
@@ -298,6 +363,37 @@ export function MarCommandLive() {
           tl.set(arc, { "--mc-arc": DIAL_MATH.arcDash(BUDGET.vFrom) }, 0);
           tl.set(pillOld, { opacity: 1, scale: 1 }, 0);
           tl.set(pillNew, { opacity: 0 }, 0);
+
+          /*
+            The second arc's own wind-back. TikTok's rail is retracted, its card
+            is put back in its hub slot and un-lit, and the Radius needle is
+            wound back to 25 mi. Without this the loop would ratchet: the card
+            would stay perched at (195,70) and the needle would sit at 40 mi
+            from the second repeat onwards, so the "before" state would silently
+            become the "after" state one loop in.
+          */
+          tl.set(liveRail2, { strokeDashoffset: 100, opacity: 1 }, 0);
+          tl.set(litCard2, { x: 0, y: 0 }, 0);
+          tl.call(() => litCard2?.classList.remove("mc-card--lit"), undefined, 0);
+          tl.set(arcRad, { "--mc-arc": DIAL_MATH.arcDash(RADIUS.vFrom) }, 0);
+          if (needleRad) {
+            const nx0 = needleRad.getAttribute("x1");
+            const ny0 = needleRad.getAttribute("y1");
+            tl.call(
+              () =>
+                needleRad.setAttribute(
+                  "transform",
+                  `rotate(${DIAL_MATH.needleAngle(RADIUS.vFrom)} ${nx0} ${ny0})`
+                ),
+              undefined,
+              0
+            );
+          }
+          if (readoutRad) {
+            tl.call(() => {
+              readoutRad.textContent = `${RADIUS.from} mi`;
+            }, undefined, 0);
+          }
           tl.call(
             () => {
               litCard?.classList.remove("mc-card--lit");
@@ -356,30 +452,133 @@ export function MarCommandLive() {
             { opacity: 0, duration: B.light, ease: "none" },
             t
           );
+          /*
+            PORTRAIT ALSO DROPS THE REST OF THE HUB PATH HERE, over the ride
+            rather than in one snap.
+
+            hubPath is the ground he was standing on — the Google Ads spoke, the
+            blue live rail, and the pad's link up to the trunk. On wide it has to
+            survive into walk2 because he walks out along it. On portrait he does
+            not: the very next thing he does is leave the floor with the card, so
+            the moment the ride starts nothing on the hub is under him again until
+            walk5 brings him home. Fading it across the first half of the ride
+            hands the stage over to the room in one continuous movement instead of
+            leaving a lone grey ring behind him.
+          */
           if (variant === "narrow") {
-            /*
-              THE CARD LIFTS ORTHOGONALLY: UP ITS OWN COLUMN FIRST, THEN ACROSS.
-
-              A single `{x:0, y:0}` tween is one straight DIAGONAL from the hub
-              slot (95,310) to the lifted position (195,70) — the same mistake the
-              walks used to make, and forbidden by ADR-0018 for the same reason.
-              It also swept the card's own caption straight through Elara, who is
-              standing still at N_TAP (160,310) for the whole beat: measured worst
-              frame 73.2% of the "Google Ads" caption covered by his body at 390
-              dark, which on screen reads as the word "Google" with "Ads" hidden
-              behind him.
-
-              Rising in its own column at x=95 first keeps the card 23 units clear
-              of his left edge for all but the moment its caption passes his
-              shoulder — re-measured at 12.9%. The 0.45/0.55 overlap rounds the
-              corner instead of hinging it, so it still reads as one movement.
-            */
-            tl.to(litCard, { y: 0, duration: B.cardMove * 0.55, ease: "power2.in" }, t);
             tl.to(
-              litCard,
-              { x: 0, duration: B.cardMove * 0.55, ease: "power2.out" },
+              hubPath.filter((el) => el !== pad),
+              { opacity: 0, duration: B.cardMove * 0.5, ease: "none" },
+              t
+            );
+            /*
+              ================================================================
+              THE RIDE. HE GOES UP WITH THE CARD.
+              ================================================================
+              Owner, verbatim: "the robot is staying where he is when he taps on
+              an icon instead of moving with the icon to wherever the icon is and
+              then walking back down to tune the knobs."
+
+              That is a literal description of what portrait did. The card
+              travelled the full 198 units from the hub slot (95,310) to its
+              perch (195,70) while `--mc-x`/`--mc-y` never changed: measured on
+              the built page at 390px, feet at (162.9, 416.1) at the tap and
+              (162.9, 416.1) when the card had finished lifting. He watched it go.
+
+              Desktop already solved this — the coupled-lift block below drives
+              the card and the sprite anchor from ONE proxy so they cannot drift
+              apart. Portrait now uses the same mechanism, extended to both axes
+              because portrait's card travels in both:
+
+                card   (95,310) -> (95,70) -> (195,70)
+                Elara (160,310) -> (160,112) -> (110,112)
+
+              Phase A is the climb. He holds his tap column (x=160), so the 23
+              units of clearance he had to the card's right edge at the tap are
+              the same 23 units at the top: he rises BESIDE it, in step, which is
+              what "moving with the icon" looks like. He keeps FRAME.reach for
+              the whole climb, so his hand stays on the card that is carrying him.
+
+              Phase B is the step-off. The card slides right into its perch and
+              he steps left onto the bus elbow at (110,112) — out of its way, and
+              onto the corner where the descent starts. FRAME.idle and a walk bob
+              here, because this leg IS a walk; the climb is not, and giving it a
+              bob would have read as levitation.
+
+              The 0.45/0.55 overlap is kept from the old card-only lift: it
+              rounds the corner instead of hinging it, for the card and for him
+              identically, because both are driven by the same two proxies.
+
+              DISCLOSED, not hidden: the climb is the one movement in this build
+              that is not along a drawn line. ADR-0018's rule is about WALKING on
+              rails, and this is a coupled ride with a drawn object that is
+              itself crossing open canvas — which is precisely what the owner
+              asked for. If it should instead be a walk, it needs a drawn riser
+              from (160,310) to (160,112) and that is new geometry, not a tweak.
+            */
+            const RIDE_FROM_X = 41.0256; /* (160) his tap column   */
+            const RIDE_TO_X = 28.2051; /*   (110) the bus elbow  */
+            const RIDE_FROM_Y = 50; /*      (310) the hub row   */
+            const RIDE_TO_Y = 18.0645; /*   (112) the card's sill*/
+
+            const climb = { v: 0 };
+            tl.to(
+              climb,
+              {
+                v: 1,
+                duration: B.cardMove * 0.55,
+                ease: "power2.in",
+                onUpdate: () => {
+                  const p = climb.v;
+                  gsap.set(litCard, { y: 240 * (1 - p) });
+                  gsap.set(anchor, {
+                    "--mc-y": `${RIDE_FROM_Y - (RIDE_FROM_Y - RIDE_TO_Y) * p}%`,
+                  });
+                },
+              },
+              t
+            );
+
+            const stepOff = { v: 0 };
+            tl.call(
+              () => {
+                setFrame(FRAME.idle);
+                /* Still facing left — the step-off travels left too, so the
+                   flip he took at walk1 is already correct and re-asserting it
+                   would be a no-op that hides a future regression. */
+              },
+              undefined,
               t + B.cardMove * 0.45
             );
+            tl.to(
+              stepOff,
+              {
+                v: 1,
+                duration: B.cardMove * 0.55,
+                ease: "power2.out",
+                onUpdate: () => {
+                  const p = stepOff.v;
+                  gsap.set(litCard, { x: -100 * (1 - p) });
+                  gsap.set(anchor, {
+                    "--mc-x": `${RIDE_FROM_X - (RIDE_FROM_X - RIDE_TO_X) * p}%`,
+                  });
+                },
+              },
+              t + B.cardMove * 0.45
+            );
+            /* The two-step footfall, on the step-off only. */
+            tl.to(
+              sprite,
+              {
+                "--mc-bob": "-3px",
+                duration: 0.17,
+                repeat: Math.max(1, Math.round((B.cardMove * 0.55) / 0.17) - 1),
+                yoyo: true,
+                ease: "steps(1)",
+              },
+              t + B.cardMove * 0.45
+            );
+            tl.set(sprite, { "--mc-bob": "0px" }, t + B.cardMove);
             t += B.cardMove;
           } else if (B.cardMove > 0) {
             /*
@@ -444,18 +643,48 @@ export function MarCommandLive() {
           t += B.room;
 
           // ---- 5. Walk to the Daily budget dial --------------------------
+          /*
+            HE FACES THE WAY HE IS GOING, AND TURNS ONCE, AT THE DIAL.
+
+            This used to be a flat `setFlip(1)` for the whole of walk2, and walk2
+            is overwhelmingly a LEFTWARD journey in both profiles — the long
+            trunk run is 525 units right-to-left on wide and 82 on portrait. He
+            walked it backwards. The only rightward part is the last leg, the
+            short step in to the dial face, which is also the one moment his
+            facing carries meaning because he is about to reach into it.
+
+            0.95 is derived, not chosen: weighting the route's legs exactly the
+            way `walk()` weights them (x scaled by the stage aspect), the final
+            leg begins at 0.958 of walk2 on wide and 0.950 on portrait. If either
+            ROUTES.*.walk2 changes, re-derive this.
+          */
           tl.call(() => {
             setFrame(FRAME.idle);
-            setFlip(1);
+            setFlip(-1);
           }, undefined, t);
+          tl.call(() => setFlip(1), undefined, t + B.walk2 * 0.95);
           walk(tl, R.walk2, B.walk2, t, aspect);
-          // He is on the bus by 40% of walk2 in both profiles, so the ground he
-          // came in on can go now — not a beat earlier (see hubPath above).
-          tl.to(
-            hubPath,
-            { opacity: 0, duration: B.walk2 * 0.25, ease: "none" },
-            t + B.walk2 * 0.4
-          );
+          /*
+            LANDSCAPE ONLY. He is on the bus by 40% of walk2 on wide, so the
+            ground he came in on can go now — not a beat earlier (see hubPath).
+
+            Portrait no longer fades hubPath here, and it MUST not: walk2 on
+            portrait now starts at (110,112), beside the lifted card, because he
+            rode up with it. He left the spoke a whole beat ago and never touches
+            the pad or the hub link again until walk5. Leaving the fade here would
+            have held the pad's 96px `.mc-pad__ring` — the client's "stray grey
+            ring" — on screen alone for ride(1.0) + light(0.15) + room(0.7) +
+            0.4*walk2 = about 2.25s, which is longer than the window that was
+            reported as a defect in the first place. Portrait fades it on the tap
+            instead, in the block above.
+          */
+          if (variant === "wide") {
+            tl.to(
+              hubPath,
+              { opacity: 0, duration: B.walk2 * 0.25, ease: "none" },
+              t + B.walk2 * 0.4
+            );
+          }
           t += B.walk2;
 
           // ---- 6. Grip and turn ------------------------------------------
@@ -678,6 +907,255 @@ export function MarCommandLive() {
           }
           t += B.walk5;
 
+          /* ================================================================
+             BEATS 15-20 — THE SECOND ARC: TIKTOK.
+
+             This is the half of the sequence the owner remembers and the build
+             at HEAD could not tell: "...moves to TikTok, turns a knob." He is
+             back on the pad with the hub restored, which is byte-for-byte the
+             state the timeline started in, so the second arc is the first one
+             replayed against a different card and a different knob — mirrored
+             across the pad rather than newly choreographed.
+
+             Portrait only, and that is a geometry fact rather than a
+             preference: on wide the keyword tile occupies x 100..300, y
+             350..545 and the TikTok card sits at x 124..236, y 504..616, so
+             the room's own tile is drawn on top of the card he would be
+             lighting. Giving desktop a second stop needs new WIDE geometry,
+             not new routes, and that is a separate change.
+             ================================================================ */
+          if (variant === "narrow") {
+            const NB = BEATS.narrow;
+            const NR = ROUTES.narrow;
+
+            // ---- 15. Walk the line again, this time to the right ---------
+            tl.call(() => {
+              setFrame(FRAME.idle);
+              /* Facing RIGHT. walk1 set -1 to face Google Ads on the left; the
+                 mirror leg has to undo that or he moonwalks to TikTok. */
+              setFlip(1);
+            }, undefined, t);
+            walk(tl, NR.walk6, NB.walk6, t, aspect);
+            tl.to(
+              liveRail2,
+              { strokeDashoffset: 0, duration: NB.walk6, ease: "power1.inOut" },
+              t
+            );
+            t += NB.walk6;
+
+            // ---- 16. Tap TikTok ------------------------------------------
+            tl.call(() => setFrame(FRAME.reach), undefined, t);
+            t += NB.tap;
+
+            // ---- 17. The tap lights TikTok, and the card gets out of the
+            //          way of the knob it is about to turn ------------------
+            tl.call(() => litCard2?.classList.add("mc-card--lit"), undefined, t);
+            tl.to(
+              [...hubFurniture2, ...(pad ? [pad] : [])],
+              { opacity: 0, duration: NB.light, ease: "none" },
+              t
+            );
+            /*
+              THE LIFT IS NOT DECORATION HERE, IT IS CLEARANCE.
+
+              TikTok's hub slot is (295,310) and the Radius dial's face is
+              (298,300) r=38 — the card is sitting exactly on top of the knob
+              this arc exists to turn. So it rides up its own column to the same
+              (195,70) perch the Google Ads card uses, which is empty by the
+              time it gets there because Google Ads went home on walk5.
+              Orthogonally, up first then across, for the same reason walk1's
+              lift is orthogonal: a diagonal would cut the corner across bare
+              canvas.
+            */
+            /* And he rides it, exactly as he rides the Google Ads card — same
+               two proxies, same 0.45/0.55 overlap, mirrored. His climb column is
+               his TikTok tap column (230), so he holds the same clearance to the
+               card's left edge going up that he had at the tap; then the card
+               slides LEFT into the perch and he steps further left onto the same
+               bus elbow at (110,112) both arcs descend from.
+
+               The step-off is the one place the two arcs are not identical: here
+               he and the card are both travelling left, so for the first third of
+               the slide the card's left edge (253 -> 153) is within ~7 units of
+               his right edge before the gap opens to 13. That is the same order
+               as the 5- and 8-unit knob-rim overlaps this build already accepts,
+               and `power2.out` clears it inside the first 0.2s. */
+            const climb2 = { v: 0 };
+            tl.to(
+              climb2,
+              {
+                v: 1,
+                duration: NB.cardMove * 0.55,
+                ease: "power2.in",
+                onUpdate: () => {
+                  const p = climb2.v;
+                  gsap.set(litCard2, { y: -240 * p });
+                  gsap.set(anchor, { "--mc-y": `${50 - (50 - 18.0645) * p}%` });
+                },
+              },
+              t
+            );
+            tl.call(
+              () => {
+                setFrame(FRAME.idle);
+                /* He arrived facing RIGHT (walk6 set +1) and now travels LEFT. */
+                setFlip(-1);
+              },
+              undefined,
+              t + NB.cardMove * 0.45
+            );
+            const stepOff2 = { v: 0 };
+            tl.to(
+              stepOff2,
+              {
+                v: 1,
+                duration: NB.cardMove * 0.55,
+                ease: "power2.out",
+                onUpdate: () => {
+                  const p = stepOff2.v;
+                  gsap.set(litCard2, { x: -100 * p });
+                  gsap.set(anchor, { "--mc-x": `${58.9744 - (58.9744 - 28.2051) * p}%` });
+                },
+              },
+              t + NB.cardMove * 0.45
+            );
+            tl.to(
+              sprite,
+              {
+                "--mc-bob": "-3px",
+                duration: 0.17,
+                repeat: Math.max(1, Math.round((NB.cardMove * 0.55) / 0.17) - 1),
+                yoyo: true,
+                ease: "steps(1)",
+              },
+              t + NB.cardMove * 0.45
+            );
+            tl.set(sprite, { "--mc-bob": "0px" }, t + NB.cardMove);
+            /* Arc 2's ground goes on the ride too, for the reason arc 1's does. */
+            tl.to(
+              hubPath2.filter((el) => el !== pad),
+              { opacity: 0, duration: NB.cardMove * 0.5, ease: "none" },
+              t
+            );
+            t += NB.cardMove;
+            t += NB.light;
+
+            // ---- 18. The room draws out of the TikTok card ---------------
+            tl.to(wires, { strokeDashoffset: 0, duration: NB.room, ease: "power3.out" }, t);
+            tl.to(
+              controls,
+              { opacity: 1, scale: 1, duration: NB.room, stagger: 0.06, ease: "power3.out" },
+              t
+            );
+            t += NB.room;
+
+            // ---- 19. Walk to the Radius dial -----------------------------
+            tl.call(() => {
+              setFrame(FRAME.idle);
+              setFlip(1);
+            }, undefined, t);
+            walk(tl, NR.walk7, NB.walk7, t, aspect);
+            /* The hubPath2 fade moved to the ride, alongside arc 1's. Nothing
+               is left to fade here: walk7 now starts at (110,112) on the bus,
+               so the pad and TikTok's rail were already gone before he set off. */
+            t += NB.walk7;
+
+            // ---- 20. Grip and turn the SECOND knob -----------------------
+            const gripSteps2 = Math.floor(NB.grip2 / 0.16);
+            for (let i = 0; i < gripSteps2; i += 1) {
+              const f = i % 2 === 0 ? FRAME.gripA : FRAME.gripB;
+              tl.call(() => setFrame(f), undefined, t + i * 0.16);
+            }
+            tl.to(
+              arcRad,
+              {
+                "--mc-arc": DIAL_MATH.arcDash(RADIUS.vTo),
+                duration: NB.grip2,
+                ease: "power2.inOut",
+              },
+              t
+            );
+            if (needleRad) {
+              /* Attribute-written from a numeric proxy, for the two reasons
+                 spelled out on the budget needle at beat 6. Same mechanism, so
+                 the two knobs cannot drift apart in behaviour. */
+              const nx = needleRad.getAttribute("x1");
+              const ny = needleRad.getAttribute("y1");
+              const spin2 = { a: DIAL_MATH.needleAngle(RADIUS.vFrom) };
+              tl.to(
+                spin2,
+                {
+                  a: DIAL_MATH.needleAngle(RADIUS.vTo),
+                  duration: NB.grip2,
+                  ease: "power2.inOut",
+                  onUpdate: () => {
+                    needleRad.setAttribute("transform", `rotate(${spin2.a} ${nx} ${ny})`);
+                  },
+                },
+                t
+              );
+            }
+            if (readoutRad) {
+              const counter2 = { v: RADIUS.from };
+              tl.to(
+                counter2,
+                {
+                  v: RADIUS.to,
+                  duration: NB.grip2,
+                  ease: "none",
+                  onUpdate: () => {
+                    readoutRad.textContent = `${Math.round(counter2.v)} mi`;
+                  },
+                },
+                t
+              );
+            }
+            t += NB.grip2;
+
+            // ---- 21. Fold the room ---------------------------------------
+            tl.to(
+              [...controls].reverse(),
+              { opacity: 0, scale: 0.92, duration: NB.fold, stagger: 0.05, ease: "power2.in" },
+              t
+            );
+            tl.call(
+              () => litCard2?.classList.remove("mc-card--lit"),
+              undefined,
+              t + NB.fold * 0.8
+            );
+            t += NB.fold;
+
+            // ---- 22. Walk home, and put the hub back ---------------------
+            tl.call(() => setFrame(FRAME.idle), undefined, t);
+            walk(tl, NR.walk8, NB.walk8, t, aspect);
+            /* The ground returns BEFORE the last leg lands on it — he walks the
+               bus back to the hub link and then down onto the pad, so the pad
+               cannot arrive late. */
+            tl.to(hubPath2, { opacity: 1, duration: NB.walk8 * 0.3, ease: "none" }, t);
+            tl.to(
+              [...hubFurniture2, ...(pad ? [pad] : [])],
+              { opacity: 1, duration: NB.walk8 * 0.4, ease: "power2.in" },
+              t + NB.walk8 * 0.55
+            );
+            tl.to(wires, { strokeDashoffset: 100, duration: NB.walk8, ease: "power2.in" }, t);
+            tl.to(
+              liveRail2,
+              { strokeDashoffset: 100, duration: NB.walk8, ease: "power1.inOut" },
+              t
+            );
+            /* TikTok comes down its own lifted column and then across into its
+               slot — the same order, and for the same reason, as the Google Ads
+               card on walk5: the exact reverse would bring it left at y=70 and
+               down the x=295 column, which is where he is standing. */
+            tl.to(litCard2, { y: 0, duration: NB.walk8 * 0.55, ease: "power2.in" }, t);
+            tl.to(
+              litCard2,
+              { x: 0, duration: NB.walk8 * 0.55, ease: "power2.out" },
+              t + NB.walk8 * 0.45
+            );
+            t += NB.walk8;
+          }
+
           // ---- 14. Rest on the pad. A real pause, not a turnaround. -------
           tl.to({}, { duration: B.rest }, t);
           const loopTotal = t + B.rest;
@@ -822,22 +1300,48 @@ export function MarCommandLive() {
       <div className="ps-container">
         <div className="mc-live__head">
           {/*
-            The eyebrow is gone, not restyled. It said "MARCOMMAND" and the
-            title now IS "MarCommand", so keeping it would print the product
-            name twice in two type treatments. The descriptor takes the slot
-            underneath instead — see .mc-live__descriptor in the stylesheet for
-            why it is sentence case and not `.ps-eyebrow`.
+            TITLE, THEN THE PROPRIETARY LINE UNDER IT. EXACTLY TWO THINGS.
+
+            Owner: "the marcommand was supposed to have MarCommand as the title
+            and then the our proprietary section under it as the text."
+
+            This reverses an over-application, not a decision. His earlier
+            instruction — a one-line headline naming the platform, and "get rid
+            of the thing below it" — was read as "merge everything into one
+            line", so the descriptor's sentence was folded INTO the <h2> and
+            nothing was left beneath. The element he actually wanted gone was a
+            different one: the long `.mc-live__body` prose paragraph that sat
+            further down (measured 184px, three-and-a-bit lines between the claim
+            and the animation that demonstrates the claim), plus the duplicate
+            `.mc-live__descriptor` deck. Those two stay deleted. The sentence
+            itself was never the thing to remove — it was in the wrong element.
+
+            So: <h2> is the product name, <p> beneath it is the proprietary line,
+            verbatim as he gave it. Nothing else goes in this block.
+
+            THE ID STAYS ON THE <h2>. `marcommand-live-heading` is referenced by
+            this section's own `aria-labelledby` and nowhere else — checked
+            across src/, scripts/ and public/ before moving anything, and the
+            only two hits are both in this file. The <h2> remains the labelling
+            element, so the reference keeps pointing at a real heading.
+
+            THE WORDMARK IS ONE WORD AND MUST STAY ONE WORD.
+
+            The two spans are written adjacent on a single line with no
+            whitespace, no newline and no separator between them, so the DOM
+            holds "Mar" + "Command" as touching inline text and `textContent` is
+            the single token "MarCommand". Put them on separate lines and a
+            formatter is one reflow away from turning this into "Mar Command" in
+            the accessible name. Nothing here may introduce a break opportunity
+            mid-word either: there is no space and no hyphen, and the only
+            `overflow-wrap: break-word` on the site is scoped to
+            `.ps-hero-headline`, so the word cannot be split across lines.
           */}
           <h2 id="marcommand-live-heading" className="ps-section-heading mc-live__heading">
-            MarCommand
+            <span className="mc-live__wm mc-live__wm--a">Mar</span><span className="mc-live__wm mc-live__wm--b">Command</span>
           </h2>
-          <p className="mc-live__descriptor">
-            Our proprietary agentic learning marketing channel optimization platform
-          </p>
-          <p className="mc-live__body">
-            MarCommand gives your business a custom AI agent that learns your audience, your
-            channels and your products, then works the controls. Every channel you advertise on,
-            every lever those platforms actually offer, in one place. Nothing moves without you.
+          <p className="mc-live__lede">
+            Our proprietary AI-powered marketing optimization platform
           </p>
         </div>
 
@@ -943,14 +1447,18 @@ export function MarCommandLive() {
           and the audience is then counted through five stages: reached, visited, interested,
           leads, and validated. Second, the agent at work: it walks to the Google Ads channel,
           opens its control panel, and adjusts the real controls that platform offers: daily
-          budget, bid strategy, targeting radius, ad schedule and the keyword list. The figures
-          shown are a demonstration.
+          budget, audience demographic, targeting radius, ad schedule and the keyword list. The
+          figures shown are a demonstration.
         </p>
         <p className="ps-visually-hidden mc-live__sr mc-live__sr--narrow">
           MarCommand is a marketing channel optimization platform. This animation shows the
-          agent at work: it walks along a console to the Google Ads channel, turns the daily
-          budget dial from $2,400 up to $2,850, and touches the channel card, which rises with
-          it. Below the animation are the outcomes it is working toward: 1,625,100 reached,
+          agent at work on a switchboard of six advertising channels. It walks to the Google
+          Ads card, taps it, and rides up with the card as it lifts, then walks back down to
+          the control panel below and turns the daily budget dial from $2,400 up to $2,850. It
+          swaps the keyword duct cleaning for heat pump, closes the panel, and then repeats the
+          whole sequence on a second channel, TikTok, where it widens the targeting radius from
+          25 to 40 miles. The panel also shows an audience demographic dial reading age 45 and
+          over. Below the animation are the outcomes it is working toward: 1,625,100 reached,
           1,482 leads, and $156,740 in revenue. The figures shown are a demonstration.
         </p>      </div>
     </section>

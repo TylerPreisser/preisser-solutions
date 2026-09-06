@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     "Named-client outcomes from Preisser Solutions: HVAC reactivation, oil and gas operations, insurance AI, transportation dashboards, media brands, and AI commerce.",
   alternates: { canonical: url },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: "Case Studies",
     description:
       "What was broken, what we built, and what changed: real engagements across farming, oil and gas, insurance, transportation, HVAC, ministry, and media.",

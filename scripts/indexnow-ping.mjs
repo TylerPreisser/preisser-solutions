@@ -1,131 +1,57 @@
+import fs from "node:fs";
+import path from "node:path";
+
 const KEY = "cd9d2166e08f09a44331c911b5dace2d";
 const HOST = "preissersolutions.com";
 const KEY_LOCATION = `https://${HOST}/${KEY}.txt`;
 
+// ---------------------------------------------------------------------------
+// URL list — DERIVED from out/sitemap.xml, not hand-maintained (2026-09-05).
+//
+// This was a 110-entry hand-written array, and it had drifted badly. Measured
+// against the current build before this change:
+//
+//   110 URLs submitted
+//    56 actually in sitemap.xml
+//    50 were REDIRECT SOURCES that 301 elsewhere
+//     4 were static files or a template literal, not pages
+//   175 live, indexable URLs were never submitted at all
+//
+// Telling Bing and Yandex to recrawl 50 URLs that immediately 301 wastes the
+// IndexNow quota and asks them to re-discover pages we have already told them
+// (via the sitemap and the redirects themselves) not to index. Meanwhile three
+// quarters of the real site was invisible to this ping.
+//
+// sitemap.xml is already the canonical list: generate-sitemap.mjs excludes
+// every redirect source AND every cross-canonical alias, by construction. So
+// read it instead of duplicating it. This is the same reasoning generate-
+// sitemap.mjs applies to its own exclusion set — a hand-mirrored list drifts,
+// a derived one cannot.
+//
+// Requires a build first (out/sitemap.xml must exist); the script says so
+// clearly rather than silently submitting a stale or empty list.
+// ---------------------------------------------------------------------------
+const SITEMAP_PATH = path.resolve("out/sitemap.xml");
+
+if (!fs.existsSync(SITEMAP_PATH)) {
+  console.error(
+    `[indexnow] ${SITEMAP_PATH} not found. Run \`npm run build\` first — this script submits exactly what the sitemap contains.`,
+  );
+  process.exit(1);
+}
+
 const URL_LIST = [
-  // Homepage + existing public
-  `https://${HOST}/`,
-  `https://${HOST}/about`,
-  `https://${HOST}/services`,
-  `https://${HOST}/contact`,
-  `https://${HOST}/roi-calculator`,
-  `https://${HOST}/why-automation`,
-  // Brand defense
-  `https://${HOST}/preisser-solutions`,
-  `https://${HOST}/tyler-preisser`,
-  // Service hubs
-  `https://${HOST}/custom-websites`,
-  `https://${HOST}/web-applications`,
-  `https://${HOST}/business-automation`,
-  `https://${HOST}/ai-agents`,
-  `https://${HOST}/dashboards-and-analytics`,
-  `https://${HOST}/premium-web-development-kansas`,
-  // Service depth pages
-  `https://${HOST}/services/local-seo`,
-  `https://${HOST}/services/ai-search-optimization`,
-  `https://${HOST}/services/website-redesign`,
-  `https://${HOST}/services/website-migration`,
-  `https://${HOST}/services/custom-crm`,
-  `https://${HOST}/services/client-portal`,
-  `https://${HOST}/services/ai-invoicing`,
-  `https://${HOST}/services/ai-customer-service`,
-  `https://${HOST}/services/conversion-optimization`,
-  `https://${HOST}/services/api-integration`,
-  // Trust / utility
-  `https://${HOST}/faq`,
-  `https://${HOST}/pricing`,
-  `https://${HOST}/process`,
-  `https://${HOST}/press`,
-  // Case studies
-  `https://${HOST}/case-studies`,
-  `https://${HOST}/case-studies/cassidy-hvac`,
-  `https://${HOST}/case-studies/hg-oil-holdings`,
-  `https://${HOST}/case-studies/iron-and-oak-podcast`,
-  `https://${HOST}/case-studies/wife-supply-co`,
-  // Locations (existing)
-  `https://${HOST}/locations/hays-kansas`,
-  `https://${HOST}/locations/wichita-kansas`,
-  `https://${HOST}/locations/salina-kansas`,
-  `https://${HOST}/locations/topeka-kansas`,
-  `https://${HOST}/locations/manhattan-kansas`,
-  `https://${HOST}/locations/garden-city-kansas`,
-  `https://${HOST}/locations/great-bend-kansas`,
-  `https://${HOST}/locations/dodge-city-kansas`,
-  // Locations (new)
-  `https://${HOST}/locations/russell-kansas`,
-  `https://${HOST}/locations/plainville-kansas`,
-  `https://${HOST}/locations/phillipsburg-kansas`,
-  `https://${HOST}/locations/norton-kansas`,
-  `https://${HOST}/locations/hill-city-kansas`,
-  `https://${HOST}/locations/smith-center-kansas`,
-  `https://${HOST}/locations/concordia-kansas`,
-  `https://${HOST}/locations/beloit-kansas`,
-  `https://${HOST}/locations/pratt-kansas`,
-  `https://${HOST}/locations/emporia-kansas`,
-  `https://${HOST}/locations/pittsburg-kansas`,
-  `https://${HOST}/locations/newton-kansas`,
-  `https://${HOST}/locations/atchison-kansas`,
-  `https://${HOST}/locations/ottawa-kansas`,
-  `https://${HOST}/locations/coffeyville-kansas`,
-  `https://${HOST}/locations/parsons-kansas`,
-  `https://${HOST}/locations/hutchinson-kansas`,
-  `https://${HOST}/locations/liberal-kansas`,
-  `https://${HOST}/locations/goodland-kansas`,
-  `https://${HOST}/locations/colby-kansas`,
-  `https://${HOST}/locations/mcpherson-kansas`,
-  `https://${HOST}/locations/junction-city-kansas`,
-  `https://${HOST}/locations/lawrence-kansas`,
-  `https://${HOST}/locations/olathe-kansas`,
-  `https://${HOST}/locations/overland-park-kansas`,
-  // Industries (existing)
-  `https://${HOST}/industries/hvac`,
-  `https://${HOST}/industries/oil-gas`,
-  `https://${HOST}/industries/healthcare`,
-  `https://${HOST}/industries/insurance-financial`,
-  `https://${HOST}/industries/manufacturing`,
-  // Industries (new)
-  `https://${HOST}/industries/plumbing`,
-  `https://${HOST}/industries/electrical`,
-  `https://${HOST}/industries/roofing`,
-  `https://${HOST}/industries/landscaping`,
-  `https://${HOST}/industries/pest-control`,
-  `https://${HOST}/industries/garage-door`,
-  `https://${HOST}/industries/auto-service`,
-  `https://${HOST}/industries/veterinary`,
-  `https://${HOST}/industries/dental`,
-  `https://${HOST}/industries/real-estate`,
-  `https://${HOST}/industries/construction`,
-  `https://${HOST}/industries/trucking-logistics`,
-  `https://${HOST}/industries/restaurants`,
-  `https://${HOST}/industries/retail`,
-  `https://${HOST}/industries/agriculture`,
-  // Comparisons (existing)
-  `https://${HOST}/compare/adams-brown`,
-  `https://${HOST}/compare/lost-highway-media`,
-  `https://${HOST}/compare/pluto-sites`,
-  `https://${HOST}/compare/akeratos`,
-  `https://${HOST}/compare/wix-vs-custom`,
-  // Comparisons (new)
-  `https://${HOST}/compare/squarespace-vs-custom`,
-  `https://${HOST}/compare/webflow-vs-custom-coded`,
-  `https://${HOST}/compare/shopify-vs-custom-ecommerce`,
-  `https://${HOST}/compare/wordpress-vs-custom`,
-  `https://${HOST}/compare/hubspot-vs-custom-crm`,
-  `https://${HOST}/compare/salesforce-vs-custom-crm`,
-  `https://${HOST}/compare/bubble-vs-custom-coded`,
-  `https://${HOST}/compare/flutterflow-vs-custom-coded`,
-  `https://${HOST}/compare/zapier-vs-custom-automation`,
-  `https://${HOST}/compare/make-com-vs-custom-automation`,
-  `https://${HOST}/compare/conceptualized-design`,
-  `https://${HOST}/compare/toucan-design`,
-  `https://${HOST}/compare/csg-media`,
-  `https://${HOST}/compare/imagemakers`,
-  `https://${HOST}/compare/kc-web-designer`,
-  // Feeds + indexes
-  `https://${HOST}/llms.txt`,
-  `https://${HOST}/feed.xml`,
-  `https://${HOST}/sitemap.xml`,
+  ...new Set(
+    [...fs.readFileSync(SITEMAP_PATH, "utf8").matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+      (m) => m[1].trim(),
+    ),
+  ),
 ];
+
+if (URL_LIST.length === 0) {
+  console.error("[indexnow] sitemap.xml contained no <loc> entries — refusing to submit an empty list.");
+  process.exit(1);
+}
 
 const payload = {
   host: HOST,

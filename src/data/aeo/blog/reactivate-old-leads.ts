@@ -131,7 +131,7 @@ export const pageData: AeoPageData = {
     { label: "AI automation for small businesses", href: "/services/ai-automation" },
     { label: "AI customer reactivation campaigns", href: "/products/customer-reactivation-agent" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },
-    { label: "Customer reactivation case study", href: "/case-studies/customer-reactivation" },
+    { label: "Customer reactivation case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "HVAC industry", href: "/industries/hvac" },
     { label: "Contact Preisser Solutions", href: "/contact" },

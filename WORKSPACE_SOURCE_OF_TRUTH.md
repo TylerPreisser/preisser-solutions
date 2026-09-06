@@ -141,10 +141,22 @@ itself was preserved.
 Current expected deployment state:
 
 - Project: `preisser-solutions`
-- Current live production deployment: `f2ea80a5` (deployed 2026-09-04, source
-  `0589a40`), which serves Next.js `BUILD_ID = SRn-vNY_v_NXWuSGjKBrC`,
-  CSS `_next/static/css/b6a2b279e5fb3986.css` (+ `41ced62a3916091e.css`) and
-  JS `_next/static/chunks/app/page-44b95b0d2f0898a9.js`
+- Current live production deployment: `ebc9213b` (deployed 2026-09-04, source
+  `6fcfd65`), which serves Next.js `BUILD_ID = Qw5SIlrjZuQVgzEeP5psE`,
+  CSS `_next/static/css/946ec399be138d9d.css` (+ `41ced62a3916091e.css`) and
+  JS `_next/static/chunks/app/page-62aede1f99531b3d.js`
+- `22+ Kansas SMB projects delivered` is INTENTIONALLY absent from the homepage
+  as of this deploy; it lived inside the removed "Built for your business"
+  paragraph. Verified live 1 -> 0. Not a regression.
+- Bento/work-card cues are `Click for more` / `Tap for more` in the DOM
+  (sentence case), rendered uppercase by `text-transform:uppercase` on
+  `.ps-bento-card__cue`, toggled by `@media (hover:none)`. Grep the DOM in
+  sentence case; the all-caps form exists only on screen.
+- Crawler mirror `<section class="ps-visually-hidden ps-pillar-crawler-content">`
+  carries 13 anchors (bare `<a href tabindex="-1">`, no class) and 30
+  pain-point items in five `<h4>The pain we hear</h4>` blocks of six. Three
+  further `tabindex="-1"` anchors are work-card panel links OUTSIDE the mirror,
+  so a raw `grep -c 'tabindex="-1"'` reads 16/17, not 13.
 - The hero mark is created at RUNTIME (`document.createElement("canvas")`,
   `src/components/home/hero-mark-light.ts:204,209`) and appears in NO JSX.
   Therefore `grep '<canvas' out/index.html` is 0 whether the mark is present or
@@ -170,7 +182,8 @@ Current expected deployment state:
   `<canvas>`, zero `ps-caps`, zero em dashes, and `100svh` with zero `100dvh`
   across both CSS bundles. `www.` and `preisser-solutions.pages.dev` both 301
   to the apex.
-- Supersedes `60387210` (BUILD_ID `NDGZP95g6U-XdB9IY40ux`).
+- Supersedes `f2ea80a5` (BUILD_ID `SRn-vNY_v_NXWuSGjKBrC`) and `60387210`
+  (BUILD_ID `NDGZP95g6U-XdB9IY40ux`).
 - Supersedes `e94d5d78` (BUILD_ID `HMPsuSbj1OHQ_5C0doZuh`), which was built
   four minutes before the knockout fix landed and shipped without it.
 - Supersedes `bad98893` (BUILD_ID `D0AkNYivpAmaJCcN0wMDd`) and `618f82f8`
