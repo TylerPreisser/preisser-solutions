@@ -136,240 +136,173 @@ export function WebsiteVisual() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   VISUAL 2 — AI Integration card face: "The Gate"
+   SHARED REVEAL GATE  (added 2026-09-06 with the card 1/2/3 rebuild)
 
-   IDENTITY WARNING, read this before editing: this component renders the
+   One-shot IntersectionObserver -> `.in-view`, lifted verbatim from
+   SearchVisual (card-visuals-backup.tsx:1003-1030) so the three rebuilt
+   cards use the SAME convention as the two reference cards instead of
+   introducing a second one.
+
+   What this REPLACES, and why it matters: the previous cards 1-3 each
+   drove their reveal through a `useState` + `--play` modifier class (and
+   card 1 additionally through a `key=` remount plus a rAF counter loop).
+   That was a second convention living beside `.in-view` in one grid, and
+   it carried 26 / 21 / 14 keyframe animations against the reference
+   cards' ZERO. Motion quantity turned out to be inversely correlated with
+   the owner's approval; the two cards he keeps satisfy through mass,
+   depth and crop. So: one gate, CSS transitions only, no @keyframes.
+
+   Reduced motion short-circuits to the FINISHED frame before the observer
+   is ever constructed — same as SearchVisual, and the CSS at the foot of
+   this file's stylesheet section pins transitions off as well.
+   ───────────────────────────────────────────────────────────── */
+function useRevealOnce<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return ref;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VISUAL 2 — AI Integration card face: the DOCKED ASSISTANT
+
+   IDENTITY WARNING, unchanged by this rebuild: this component renders the
    **AI Integration** tile. `variant` does not match `type` — the AI pillar
    is `type: "ai"` with `variant: "automation"`, so its class is
    `.ps-bento-card--automation` (service-pillars.tsx:333-341). The card
-   called "Business Automation" is `SystemFixesVisual` /
+   titled "Business Automation" is `SystemFixesVisual` /
    `.ps-bento-card--systems`. Key off the component, never the class name.
 
-   Replaced the three cycling n8n flow diagrams on 2026-09-05. Reasons,
-   each read off a render rather than inferred:
+   REBUILT 2026-09-06. The thing this replaces was a node-and-edge
+   architecture diagram (EMAIL -> EXTRACT -> AI READ, forking to SEND and
+   HOLD). Each reason below was read off a render, not inferred:
 
-   1. LETTERBOXING. `FlowSvg` was `viewBox="0 0 412 200"` (2.06:1) with
-      `preserveAspectRatio="xMidYMid meet"` inside a near-square stage, so
-      the drawn band used only 39-50% of the card height and the rest was
-      empty. Two probes called this card "full" -- a leaf bounding-box
-      union said 96.9% because it measured the <svg> element (height:100%,
-      overflow:visible) rather than the drawn content, and a pixel row-scan
-      said 94.1% because the card's own gradient beat the ink threshold.
-      The screenshot was right both times.
-   2. LABEL/GRAPH DESYNC. The label transitioned in 300ms while the slide
-      crossfaded in 600ms, so for ~300ms of every 4s cycle the label named
-      one flow while the previous flow's graph was still painted.
-   3. OFF-FAMILY DRIFT was NOT the problem here -- this card was already
-      the family exemplar (a UI mockup of a named system). The redesign
-      keeps that property and gives it a subject with a point of view.
+   1. WRONG ABSTRACTION. Cards 4 and 5 — the two the owner approves of —
+      each depict a surface the BUYER USES: a browser window and a phone,
+      a Google results page. This depicted an internal topology the buyer
+      will never see. It was the only diagram on a grid of pictures, and
+      nobody buys a flowchart.
+   2. HAIRLINES, NO MASS. 15 SVG nodes at stroke-width 1.1-2 with almost
+      no filled area anywhere. WebsiteVisual contains ZERO structural
+      strokes and is 100% filled mass. That contrast is the literal source
+      of "unsatisfying": there was nothing to look at, only lines to trace.
+   3. THE BRAND COLOUR WAS ABSENT and the loudest pixel on the page was a
+      saturated amber HOLD branch — a hue that exists nowhere else on the
+      site. SearchVisual makes #1590FF do every job.
+   4. A PERPETUAL LOOP. `ps-dash-flow 1.4s linear infinite` was the only
+      infinite animation in the whole grid. Cards 4/5 settle and stop.
+   5. THE PAYOFF WAS A NEGATIVE — "AI PROPOSED · NOT SENT", a dimmed SEND
+      branch, "HELD FOR YOU". The climax was that the thing did not happen.
 
-   NOT a reason, and deliberately not fixed: the "artwork overlaps the
-   title by -57px at 768 / -53px at 1440" finding. That is a measurement
-   artefact. The deepest artwork leaf was `.ps-n8n-dot`, the PAGINATION
-   INDICATOR, which sits bottom-centre BELOW "CLICK FOR MORE" and clear of
-   the left-aligned title. `titleTop - artBottom` is a DIRECTIONAL metric
-   and only means "collision" when the element is above the title. Pixel
-   proof it was never real: the title measured 11.47 min / 0% of core
-   glyph pixels failing at 1440 -- if artwork were behind those glyphs the
-   sampled backgrounds would scatter and the minimum would collapse.
-   Do not reserve clearance for it; doing so would crush the artwork to
-   fix a collision that does not exist. Vertical budget below is derived
-   from the MEASURED title block instead (62.8px <940, 58.9px >=940).
+   SUBJECT NOW: your assistant, docked into the screen you already use.
+   Plane 1 is your own app — real window chrome, content as grey bars.
+   Plane 2 is the assistant panel, tilted 5deg and occluding it, and the
+   payoff is the solid brand-blue reply it wrote. One readable string
+   ("Assistant"), which is the same budget WebsiteVisual runs on.
 
-   Subject: one AI action held at an approval gate. The model read a
-   document, checked its extraction back against the source, found one
-   field it could not verify, and stopped -- with Send visibly locked.
-   The market is full of glowing brains; nobody draws the leash.
+   Note the reply bubble carries no text. A bubble you can READ is a claim
+   about what the model said; a filled blue mass with two placeholder bars
+   is the capability drawn as artwork. Same discipline as SearchVisual's
+   "no rank numbers" note at :991.
    ───────────────────────────────────────────────────────────── */
-
-/* Node icons recovered verbatim from HEAD (git show HEAD:...:155-170). The
-   originals' node glyphs were dropped in the 2026-09-05 rebuild; the branch
-   graph is unreadable as "a real tool" without them. */
-const GATE_ICONS = {
-  email: "M2 7l10 7 10-7M2 4h20a2 2 0 012 2v12a2 2 0 01-2 2H2a2 2 0 01-2-2V6a2 2 0 012-2z",
-  file: "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8",
-  brain: "M9.5 2A2.5 2.5 0 0112 4.5V7h-1a7 7 0 00-7 7v1a1 1 0 000 2h1v1a2 2 0 002 2h10a2 2 0 002-2v-1h1a1 1 0 000-2v-1a7 7 0 00-7-7h-1V4.5A2.5 2.5 0 0114.5 2",
-  check: "M20 6L9 17l-5-5",
-  flag: "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7",
-} as const;
-
-function GateNode({
-  cls, icon, label, style,
-}: { cls: string; icon: keyof typeof GATE_ICONS; label: string; style?: React.CSSProperties }) {
-  return (
-    <div className={`ps-gate-node ${cls}`} style={style}>
-      <span className="ps-gate-node-disc">
-        <svg className="ps-gate-node-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d={GATE_ICONS[icon]} stroke="currentColor" strokeWidth="2"
-                strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </span>
-      <span className="ps-gate-node-label">{label}</span>
-    </div>
-  );
-}
-
-/* Node anchors, in fractions of the graph box. ONE source of truth: the HTML
-   nodes are positioned from these and the wire endpoints are computed from
-   them, so the wires cannot drift away from the nodes at any aspect ratio. */
-const GATE_POS = {
-  email:   { x: 0.08, y: 0.64, r: 13 },
-  extract: { x: 0.30, y: 0.575, r: 13 },
-  ai:      { x: 0.55, y: 0.50, r: 19 },
-  send:    { x: 0.86, y: 0.18, r: 13 },
-  hold:    { x: 0.86, y: 0.82, r: 13 },
-} as const;
-
-/* Wire paths in PIXELS of the measured graph box. Because the <svg> carries a
-   viewBox whose aspect EQUALS the element's aspect, the default
-   `preserveAspectRatio` ("xMidYMid meet") maps 1:1 — no letterboxing is
-   possible, and no `preserveAspectRatio="none"` is needed. Letterboxing can
-   only occur when the two aspects differ, and here they are equal by
-   construction. That removes the bug class rather than patching it. */
-const pct = (v: number) => `${(v * 100).toFixed(2)}%`;
-
-function gateWires(w: number, h: number) {
-  const P = (k: keyof typeof GATE_POS) => ({ x: GATE_POS[k].x * w, y: GATE_POS[k].y * h, r: GATE_POS[k].r });
-  const e = P("email"), a = P("ai"), sd = P("send"), hd = P("hold");
-  const trunk = `M${(e.x + e.r).toFixed(1)} ${e.y.toFixed(1)} L${(a.x - a.r).toFixed(1)} ${a.y.toFixed(1)}`;
-  // Horizontal-tangent cubics: the n8n wire shape.
-  const fork = (t: { x: number; y: number; r: number }) => {
-    const x0 = a.x + a.r, y0 = a.y, x1 = t.x - t.r, y1 = t.y;
-    const c = (x1 - x0) * 0.5;
-    return `M${x0.toFixed(1)} ${y0.toFixed(1)} C${(x0 + c).toFixed(1)} ${y0.toFixed(1)} ${(x1 - c).toFixed(1)} ${y1.toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)}`;
-  };
-  return { trunk, send: fork(sd), hold: fork(hd) };
-}
-
 export function AutomationVisual() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const graphRef = useRef<HTMLDivElement>(null);
-  const [played, setPlayed] = useState(false);
-  // Same value on the server and on the first client render, so hydration
-  // matches; a ResizeObserver refines it to real pixels after mount.
-  const [box, setBox] = useState({ w: 320, h: 200 });
-
-  useEffect(() => {
-    const el = graphRef.current;
-    if (!el || typeof ResizeObserver === "undefined") return;
-    const ro = new ResizeObserver(() => {
-      const r = el.getBoundingClientRect();
-      if (r.width > 0 && r.height > 0) {
-        setBox((p) => (Math.abs(p.w - r.width) < 0.5 && Math.abs(p.h - r.height) < 0.5
-          ? p : { w: r.width, h: r.height }));
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (prefersReduced) {
-      setPlayed(true);
-      return;
-    }
-
-    // Unchanged house pattern: one-shot IO at threshold 0.25. rootMargin pulls
-    // the start until the card is genuinely in frame rather than 107px showing.
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setPlayed(true);
-            observer.unobserve(el);
-          }
-        });
-      },
-      { threshold: 0.25, rootMargin: "0px 0px -12% 0px" }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  const wires = gateWires(box.w, box.h);
+  const containerRef = useRevealOnce<HTMLDivElement>();
 
   return (
-    <div ref={containerRef} className="ps-visual-automation" aria-hidden="true">
-      <div className={`ps-gate-panel${played ? " ps-gate-panel--play" : ""}`}>
-        {/* Chrome strip. FLIPS WITH THE THEME on purpose — see the note at
-            card-visuals.css:2633. A bar left dark in light mode hides the
-            frosted .ps-bento-card__expand icon completely (measured). */}
-        <div className="ps-gate-chrome">
-          <span className="ps-gate-chrome-dots"><i /><i /><i /></span>
-          <span className="ps-gate-chrome-name">ai-review-queue</span>
-        </div>
-
-        <div className="ps-gate-graph" ref={graphRef}>
-          {/* WIRES ONLY. Nodes are HTML in percentage coordinates.
-              NO `preserveAspectRatio="none"`: the viewBox is measured in real
-              pixels, so its aspect EQUALS the element's aspect and the default
-              "xMidYMid meet" maps 1:1. Letterboxing is only possible when the
-              two aspects differ, so this removes the bug class by construction
-              — and unlike `none`, nothing is non-uniformly scaled at all. */}
-          <svg className="ps-gate-wires" viewBox={`0 0 ${box.w} ${box.h}`}
-               fill="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="ps-gate-trunk" gradientUnits="userSpaceOnUse"
-                              x1={GATE_POS.email.x * box.w} y1={GATE_POS.email.y * box.h}
-                              x2={GATE_POS.ai.x * box.w} y2={GATE_POS.ai.y * box.h}>
-                <stop offset="0%" stopColor="#635BFF" />
-                <stop offset="100%" stopColor="#A855F7" />
-              </linearGradient>
-            </defs>
-            {/* One continuous trunk; the Extract node sits ON it, so dropping
-                Extract at <=639 leaves an unbroken wire. */}
-            <path className="ps-gate-wire ps-gate-wire--a" d={wires.trunk} />
-            {/* THE FORK. Send is thin, dashed and dimmed; Hold is solid, heavy
-                and fully saturated. The picture says "it chose to hold" through
-                line weight alone — no rank claim, no outcome claim. */}
-            <path className="ps-gate-wire ps-gate-wire--send" d={wires.send} />
-            <path className="ps-gate-wire ps-gate-wire--hold" d={wires.hold} />
-            {/* The flowing wire, recovered from the originals: the card's ONE
-                resting loop. A travelling dash laid over the solid amber wire,
-                so the wire still reads solid and saturated at rest. One
-                property, one element, one compositor layer. */}
-            <path className="ps-gate-wire ps-gate-wire--flow" d={wires.hold} />
-          </svg>
-
-          {/* The packet rides the trunk via `offset-path`, so it follows the
-              wire exactly instead of approximating it with left/top — and it
-              animates `offset-distance`, not layout. */}
-          <span className="ps-gate-packet"
-                style={{ offsetPath: `path("${wires.trunk}")` } as React.CSSProperties} />
-
-          <GateNode cls="ps-gate-node--email" icon="email" label="Email"
-                    style={{ left: pct(GATE_POS.email.x), top: pct(GATE_POS.email.y) }} />
-          <GateNode cls="ps-gate-node--extract" icon="file" label="Extract"
-                    style={{ left: pct(GATE_POS.extract.x), top: pct(GATE_POS.extract.y) }} />
-          <div className="ps-gate-node ps-gate-node--ai"
-               style={{ left: pct(GATE_POS.ai.x), top: pct(GATE_POS.ai.y) }}>
-            <span className="ps-gate-node-glow" />
-            <span className="ps-gate-node-ring" />
-            <span className="ps-gate-node-disc">
-              <svg className="ps-gate-node-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d={GATE_ICONS.brain} stroke="currentColor" strokeWidth="2"
-                      strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
-            <span className="ps-gate-node-label">AI read</span>
+    <div ref={containerRef} className="ps-asst-root" aria-hidden="true">
+      <div className="ps-asst-stage">
+        {/* PLANE 1 — the customer's own screen. Deliberately generic: a
+            window, a rail, five content bars. It is the thing being
+            integrated INTO, so it must not compete for attention, and it
+            must not read as WebsiteVisual's browser (no traffic lights,
+            no URL bar, no phone). It runs off the right card edge. */}
+        <div className="ps-asst-app">
+          {/* Dark chrome strip. Load-bearing, not decoration: the frosted
+              .ps-bento-card__expand circle sits at top:16 right:16 z-index 3
+              (globals.css:2075) OVER this artwork. Something with contrast
+              has to be under it in whichever theme the icon is light. It
+              flips with the theme for exactly that reason — see the note at
+              card-visuals.css's light-mode block. */}
+          <div className="ps-asst-app-chrome">
+            <span className="ps-asst-app-dots"><i /><i /><i /></span>
+            <span className="ps-asst-app-pill" />
           </div>
-          <GateNode cls="ps-gate-node--send" icon="check" label="Send"
-                    style={{ left: pct(GATE_POS.send.x), top: pct(GATE_POS.send.y) }} />
-          <GateNode cls="ps-gate-node--hold" icon="flag" label="Hold"
-                    style={{ left: pct(GATE_POS.hold.x), top: pct(GATE_POS.hold.y) }} />
+          <div className="ps-asst-app-body">
+            <span className="ps-asst-app-rail" />
+            <span className="ps-asst-app-list">
+              {[0, 1, 2, 3, 4].map((r) => (
+                <i className="ps-asst-app-item" key={`asst-item-${r}`}>
+                  <b className="ps-asst-app-av" />
+                  <b className="ps-asst-app-name" />
+                  <b className="ps-asst-app-meta" />
+                </i>
+              ))}
+            </span>
+          </div>
         </div>
 
-        <div className="ps-gate-foot">
-          <span className="ps-gate-caption">AI proposed · not sent</span>
-          <span className="ps-gate-chip">Held for you</span>
+        {/* PLANE 2 — the assistant, docked over plane 1 at 5deg. This is
+            the second plane the reference language requires: it OCCLUDES
+            the first and carries the deep shadow, the way .ps-phone
+            overlaps .ps-wb-browser at card-visuals.css:82-99. 5deg is the
+            grid's only rotation angle; do not introduce a second one. */}
+        <div className="ps-asst-panel">
+          <div className="ps-asst-head">
+            <svg className="ps-asst-spark" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M8 1.5l1.5 4L13.5 7l-4 1.5L8 12.5 6.5 8.5 2.5 7l4-1.5z"
+                fill="currentColor"
+              />
+            </svg>
+            <span className="ps-asst-label">Assistant</span>
+          </div>
+
+          <div className="ps-asst-thread">
+            <span className="ps-asst-bubble" style={{ "--sr-i": 0 } as React.CSSProperties} />
+            <span
+              className="ps-asst-bubble ps-asst-bubble--short"
+              style={{ "--sr-i": 1 } as React.CSSProperties}
+            />
+            <span
+              className="ps-asst-bubble ps-asst-bubble--wide"
+              style={{ "--sr-i": 2 } as React.CSSProperties}
+            />
+
+            {/* PAYOFF. Solid brand blue, arrives last, scales 0.94 -> 1
+                exactly once — the single permitted scale in the language
+                (card-visuals.css:3088, .ps-sr-cite). */}
+            <span className="ps-asst-reply">
+              <i /><i />
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -377,179 +310,109 @@ export function AutomationVisual() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   VISUAL 3 — Business Automation card face:
-   "The Invoice That Chases Itself"
+   VISUAL 3 — Business Automation card face: the DOCUMENT THAT SENDS ITSELF
 
-   IDENTITY WARNING: this renders the **Business Automation** tile —
-   `type: "automation"`, `variant: "systems"`, class
-   `.ps-bento-card--systems` (service-pillars.tsx:219-229). The AI card is
-   `AutomationVisual` above. The names are crossed; trust the component.
+   REBUILT 2026-09-06. What this replaces was a timestamped invoice-run
+   log. Reasons:
 
-   Replaced the BEFORE/AFTER diptych on 2026-09-05. It was the only tile on
-   the grid that was not a UI mockup of a named system:
+   1. 236 CHARACTERS OF READABLE PROSE — the worst violation in the grid,
+      4x SearchVisual's 61. Six timestamped sentences plus AUTO/SENT/YOU/
+      QUEUED/CLOSED/PAID and two dollar figures. A changelog, not a
+      graphic. It could not be parsed at card scale and could not survive
+      a 320px column.
+   2. A LIVE BUG. `card-visuals.css:2166` hid `.ps-run-doc` below 1200px
+      but left `.ps-run-stamp` visible, so at 1024x768 a green PAID badge
+      was stamped onto empty space with nothing under it — reproduced in
+      chromium, webkit AND firefox. The payoff object did not exist at the
+      width where most tablets sit. Cards 4/5's payoff exists everywhere.
+   3. FIVE HUE FAMILIES AND TWO GREENS, including a dark saturated green
+      that appears nowhere else on the site. The language permits navy,
+      white, three greys, #1590FF and at most three DESATURATED decorative
+      accents — and no semantic colour at all.
+   4. `rotate(-8deg) scale(1.3) -> scale(1)` on a bounce easing: a stamp
+      SLAM, the most violent gesture in the grid, and a second rotation
+      angle against WebsiteVisual's single 5deg.
+   5. NO ARTWORK HOVER. Both reference cards answer the cursor.
 
-   1. NO ARTIFACT FRAME. Its micro-labels were `BEFORE` and `AFTER` —
-      rhetorical positions, not systems. Every sibling names a real thing:
-      `MEMBER RECORDS`, `AI REVIEW QUEUE`, `RESULTS`, a browser chrome.
-   2. MARKETER'S COPY, NOT MACHINE STATE. `Manual handoff`,
-      `Duplicate tools`, `Approval bottleneck`, `1 source of truth`,
-      `Live visibility` are phrases a person wrote about the client's pain.
-      `LAG` / `BREAK` / `WASTE` are adjectives about the buyer, not states
-      of a running system.
-   3. NO TIME AXIS. A static diptych delivers its whole idea in frame one
-      and gives the eye nothing to follow.
+   SUBJECT NOW: the document your business sends, produced and delivered
+   without you touching it. Plane 1 is the document itself, cropped by the
+   card's right and bottom edges. Plane 2 is the outgoing message, tilted
+   5deg over it, and the payoff is its solid brand-blue Send control.
 
-   It was NOT under-dense — it was the densest tile on the grid, filling
-   70-80% of its height. "Add more" would have been the wrong reading.
-
-   Replacement: one invoice's whole life as a run log — rendered at 07:00,
-   emailed itself, approved by a one-word reply at 09:12, chase-ups already
-   queued, closed when the deposit matched.
-
-   SIBLING, NOT TWIN, to the AI card: same panel, same micro-label, same
-   pill vocabulary, same dashed-means-unsettled rule. Different axis and
-   different ending — AI Integration runs left-to-right and BRANCHES (a
-   decision that could go either way, and it stops); this runs top-to-bottom
-   and CLOSES (a sequence that completes).
+   CLAIMS DISCIPLINE (docs/WRITER-AGENT-PROMPT.md:31): every line item and
+   every total is a GREY BAR. There is no currency figure, no quantity, no
+   date and no company name anywhere in this card. Two readable strings,
+   both chrome: "Invoice" (a document kicker) and "Send" (a button). A
+   real number here would be a fabricated outcome drawn as artwork, which
+   is the trap RevenueVisual is shelved for.
    ───────────────────────────────────────────────────────────── */
-
-/* The invoice's own line items — the content the document was missing. Widths
-   only; no invented copy, and nothing here is an outcome claim. */
-const DOC_ITEMS = [
-  { d: 64, a: 30 },
-  { d: 78, a: 24 },
-  { d: 52, a: 34 },
-  { d: 71, a: 27 },
-  { d: 46, a: 32 },
-  { d: 68, a: 22 },
-] as const;
-
-const RUN_STEPS = [
-  { time: "07:00", label: "Invoice 4417 rendered", pill: "Auto", tone: "muted" },
-  { time: "07:00", label: "Emailed to accounts@", pill: "Sent", tone: "sent" },
-  // The one human beat in a column of machine steps — and it is a REPLY,
-  // not a login. Only highlighted row, only outlined pill, only cyan dot.
-  { time: "09:12", label: "Reply: “approved”", pill: "You", tone: "you" },
-  { time: "Mar 8", label: "Reminder scheduled", pill: "Queued", tone: "queued" },
-  { time: "Mar 9", label: "Second notice", pill: "Queued", tone: "queued" },
-] as const;
-
 export function SystemFixesVisual() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [played, setPlayed] = useState(false);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (prefersReduced) {
-      setPlayed(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setPlayed(true);
-            observer.unobserve(el);
-          }
-        });
-      },
-      { threshold: 0.25, rootMargin: "0px 0px -12% 0px" }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const containerRef = useRevealOnce<HTMLDivElement>();
 
   return (
-    <div ref={containerRef} className="ps-fix-root" aria-hidden="true">
-      <div className={`ps-run-panel${played ? " ps-run-panel--play" : ""}`}>
-        {/* Chrome strip — flips with the theme (card-visuals.css:2633). */}
-        <div className="ps-run-chrome">
-          <span className="ps-run-chrome-dots"><i /><i /><i /></span>
-          <span className="ps-run-chrome-name">invoice-4417</span>
-        </div>
-
-        {/* The label moved INSIDE the panel head. It used to sit outside at
-            the very top edge of the card, detached from the artwork. */}
-        <div className="ps-run-head">
-          <span className="ps-run-label">Invoice Run · Mar 1</span>
-          <span className="ps-run-ref">#4417</span>
-        </div>
-
-        <div className="ps-run-body">
-          <div className="ps-run-list">
-            {/* The spine. 2px, blue->green: the rail itself encodes
-                start->closed as colour, which is legible at REST and needs
-                no motion to read. It terminates at the last dot rather than
-                running on into empty space. */}
-            <span className="ps-run-rail" />
-            {RUN_STEPS.map((step, index) => (
-              <div
-                key={step.time + step.label}
-                className={`ps-run-row ps-run-row--${step.tone}`}
-                style={{ "--row-i": index } as React.CSSProperties}
-              >
-                <span className="ps-run-time">{step.time}</span>
-                <span className="ps-run-dot" />
-                <span className="ps-run-text">{step.label}</span>
-                <span className={`ps-run-pill ps-run-pill--${step.tone}`}>{step.pill}</span>
-              </div>
-            ))}
+    <div ref={containerRef} className="ps-doc-root" aria-hidden="true">
+      <div className="ps-doc-stage">
+        {/* PLANE 1 — the document. Bleeds off the right edge and past the
+            bottom of the stage; the crop is designed, not an overflow
+            accident. WebsiteVisual does the same thing with its third
+            content card and the phone (card-visuals.css:57-63). */}
+        <article className="ps-doc-sheet">
+          {/* The dark band is both the document's letterhead AND the
+              contrast bed for .ps-bento-card__expand. Flips with theme. */}
+          <div className="ps-doc-head">
+            <span className="ps-doc-mark" />
+            <span className="ps-doc-kicker">Invoice</span>
           </div>
 
-          {/* Second object: the invoice itself, so the panel has an overlap
-              and an off-axis element instead of being one flat rectangle. */}
-          <div className="ps-run-doc">
-            <span className="ps-run-doc-head">
-              <i className="ps-run-doc-mark" />
-              <i className="ps-run-doc-title" />
-            </span>
-            {/* LINE ITEMS, not flat rules. Seven flush-top lines left a
-                measured 108.2px dead gap in a 204.5px document — half the
-                object empty, the emptiest rectangle on the grid. Each item is
-                `flex: 1` inside a flex column, exactly like `.ps-run-row`, so
-                they distribute across whatever height the document has instead
-                of stacking at the top. That fills the box at every width
-                without reintroducing the dead air the card started with. */}
-            <span className="ps-run-doc-items">
-              {DOC_ITEMS.map((it, i) => (
-                <span className="ps-run-doc-item" key={i}>
-                  <i className="ps-run-doc-desc" style={{ width: `${it.d}%` }} />
-                  <i className="ps-run-doc-amt" style={{ width: `${it.a}%` }} />
+          <div className="ps-doc-body">
+            <span className="ps-doc-title" />
+            <span className="ps-doc-sub" />
+
+            <div className="ps-doc-rows">
+              {[0, 1, 2, 3, 4].map((row) => (
+                <span
+                  className="ps-doc-row"
+                  key={`doc-row-${row}`}
+                  style={{ "--sr-i": row } as React.CSSProperties}
+                >
+                  <i className="ps-doc-row-name" />
+                  <i className="ps-doc-row-val" />
                 </span>
               ))}
-            </span>
-            <i className="ps-run-doc-rule" />
-            <span className="ps-run-doc-total">
-              <i className="ps-run-doc-total-label" />
-              $4,120.00
+            </div>
+
+            <span className="ps-doc-total" style={{ "--sr-i": 5 } as React.CSSProperties}>
+              <i className="ps-doc-total-name" />
+              <i className="ps-doc-total-val" />
             </span>
           </div>
-        </div>
+        </article>
 
-        {/* THE PAYOFF — a child of the PANEL, not of the document. The document
-            is dropped below 940px; the stamp must not go with it. It is the
-            only rotated object on the card and it lands last at EVERY width.
-            CSS re-seats it over the document at >=940 and over the panel head
-            below that, where it also stays clear of the dark title scrim. */}
-        <span className="ps-run-stamp">Paid</span>
-
-        <div className="ps-run-close">
-          <svg className="ps-run-close-glyph" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-            <circle cx="6" cy="6" r="5.1" stroke="currentColor" strokeWidth="1.2" />
-            <path className="ps-run-close-tick" d="M3.6 6.2 5.3 7.9 8.5 4.4"
-                  stroke="currentColor" strokeWidth="1.3"
-                  strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span className="ps-run-close-text">Deposit $4,120.00 matched to 4417</span>
-          <span className="ps-run-pill ps-run-pill--closed">Closed</span>
+        {/* PLANE 2 — it leaves by itself. Occludes the sheet's lower-left,
+            carries the 0 20px 50px rgba(0,0,0,0.6) shadow, tilted 5deg. */}
+        <div className="ps-doc-mail">
+          <span className="ps-doc-mail-icon">
+            <svg viewBox="0 0 16 16" fill="none">
+              <path
+                d="M2 4.6h12v7.2H2z"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M2.4 5L8 9.1 13.6 5"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+          <span className="ps-doc-mail-lines">
+            <i /><i />
+          </span>
+          {/* PAYOFF. Solid brand blue, last in, 0.94 -> 1. */}
+          <span className="ps-doc-send">Send</span>
         </div>
       </div>
     </div>
@@ -557,201 +420,137 @@ export function SystemFixesVisual() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   VISUAL 4 — Dashboards & Business Intelligence
-   Fixed dashboard layout:
-   - wide revenue mix chart on top
-   - activity panel bottom-left
-   - KPI ring grid bottom-right
-   Animates on scroll into view or direct user interaction only.
+   VISUAL 4 — Business Software card face: YOUR OWN BACK-OFFICE APP
+
+   REBUILT 2026-09-06. What this replaces was a member-records panel.
+   Reasons, all measured on a render:
+
+   1. 18 READABLE STRINGS where the language allows <=5 — MEMBERS, MEMBER
+      RECORDS, 1,248, SIGN-UPS, six avatar initials, five ACTIVE pills,
+      PENDING, New member, SAVE. The card had to be READ, so it could not
+      be RECOGNISED. Cards 4/5 are recognised in ~200ms without reading.
+   2. SEMANTIC COLOUR, which the language forbids: green ACTIVE x5, amber
+      PENDING, six pastel avatar chips, 28 distinct colour tokens. In the
+      reference cards accents are decorative, identically sized, and never
+      encode state.
+   3. A WHITE SLAB IN DARK MODE. The panel was `rgb(248,250,252)` and did
+      not change with theme, so on a #0A1628 page it glared. The fix had
+      been applied to the wrong axis — the panel was made BRIGHTER to
+      separate from a light card.
+   4. FRAME 1 WAS AN EMPTY WHITE BOX. At t=0 the panel was blank but for
+      "MEMBER RECORDS 0". Nothing in the reference language ever presents
+      an empty container: card 4 is complete at t=0, card 5 draws all its
+      chrome at t=0 and reveals only content.
+   5. IT AMPUTATED UNDER PRESSURE — 2 of 6 rows gone at 393px. Card 5
+      keeps 7 of 7 elements at 393px. That is the bar.
+   6. 26 keyframe animations, including a 0 -> 1,084 -> 1,248 rAF counter
+      on `cubic-bezier(0.34,1.56,0.64,1)` — an overshoot easing that
+      appears nowhere in cards 4/5.
+
+   SUBJECT NOW: the software itself. A desktop app window with a navy rail,
+   one chart widget and a list, cropped by the right card edge, and the
+   record you opened floating over it at 5deg.
+
+   THE CHART IS THE ONE THING RECOVERED FROM THE PRE-8c7c955 VERSION. That
+   card had a large saturated filled bar mass, which is exactly the weight
+   the whole current set lacks and exactly what WebsiteVisual has. It is
+   NOT abstract data-viz here — the reason the old chart card was replaced
+   was that it stood alone on a grid of UI mockups; inside an app window it
+   is a widget, which is what a buyer recognises.
+
+   CLAIMS DISCIPLINE: the bars are deliberately NON-MONOTONIC and carry no
+   axis, no labels and no values. A rising chart is an outcome claim drawn
+   as artwork — the thing docs/WRITER-AGENT-PROMPT.md:31 gates and the
+   reason RevenueVisual is shelved under ADR-0006 decision 4. Two readable
+   strings, both chrome: "Dashboard" (a nav tab) and "Save" (a button).
    ───────────────────────────────────────────────────────────── */
 
-/* Card face content — the RECORDS LIST the team logs into.
-
-   Replaced the 3-panel bar-chart + heatmap + KPI-ring dashboard on
-   2026-09-05. Reasons, all read off screenshots, not inferred:
-
-   1. ELEMENT COUNT. The old scene drew ~64 leaves (7 bars + 45 heatmap
-      cells + 3 rings + 3 values + 3 KPI labels + 3 panel labels) inside a
-      tile that is 244px wide at 320. The 45-cell heatmap resolved to
-      ~4px dots that carried no meaning at any width.
-   2. TEXT CLIPPING, the client's own complaint ("etentio", "ose Ra"),
-      was live again: "Retenti/on" wrapped mid-word at 320 and 768, and at
-      390 dark "Retention" rendered clipped as "Retentior" with the
-      heatmap overflowing its panel across the word ACTIVITY. The
-      clearance probe read +19.7px at 320 and +65.6px at 390 the whole
-      time -- the numbers were green because the clipping happened INSIDE
-      `.ps-dbc-kpi-card`'s own `overflow:hidden`, not against the title.
-      Do not trust that probe alone here; look at the render.
-   3. OFF-FAMILY. The other four tiles are all UI mockups (rounded panels,
-      uppercase micro-labels, tinted pills, grey placeholder content
-      lines). This was the only abstract data-viz on the grid.
-   4. OFF-MESSAGE. Retention / Close Rate / NPS is marketing-analytics
-      vocabulary that belongs to the SEO+Ads pillar. This pillar is
-      "custom stuff to get them off of spreadsheets, move them into an
-      entire system" -- records, rosters, exports, assignments, logins.
-
-   The replacement is one window with a header and four record rows: 15
-   drawn leaves. Rows are droppable at narrow widths, which a 3-panel
-   grid with two-line labels never was. The only per-row text is a
-   2-character initial and a nowrap status pill, so the mid-word wrap
-   class of defect is structurally impossible now.
-
-   Still decorative: the root keeps aria-hidden and the button's
-   aria-label carries the accessible name. No information lives only
-   here. */
-const dbcRecords = [
-  { initials: "AM", name: 78, status: "Active", tone: "on", hue: "#0C6FC9" },
-  { initials: "RK", name: 62, status: "Active", tone: "on", hue: "#7C3AED" },
-  { initials: "TD", name: 71, status: "Pending", tone: "off", hue: "#B45309" },
-  { initials: "JW", name: 55, status: "Active", tone: "on", hue: "#0E7490" },
-  { initials: "LP", name: 68, status: "Active", tone: "on", hue: "#07795F" },
-  { initials: "SG", name: 49, status: "Active", tone: "on", hue: "#635BFF" },
-] as const;
-
-// Reinstated from the original card 1: varying-height saturated bars. The
-// one mechanism of the old dashboard that unambiguously worked.
-const dbcSpark = [30, 42, 52, 64, 78, 92] as const;
+/* Bar heights as a fraction of the plot box. Shuffled on purpose: no
+   trend, no story, no claim. Read the claims note above before "fixing"
+   these into an ascending series. */
+const APP_BARS = [0.54, 0.78, 0.43, 0.9, 0.61, 0.83, 0.5] as const;
 
 export function DashboardVisual() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [playToken, setPlayToken] = useState(0);
-  const hasPlayedInView = useRef(false);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (prefersReduced) {
-      setPlayToken(1);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasPlayedInView.current) {
-            hasPlayedInView.current = true;
-            setPlayToken(1);
-            observer.unobserve(el);
-          }
-        });
-      },
-      { threshold: 0.25, rootMargin: "0px 0px -12% 0px" }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const containerRef = useRevealOnce<HTMLDivElement>();
 
   return (
-    <div ref={containerRef} className="ps-dbc-root" aria-hidden="true">
-      <div className="ps-dbc-layout">
-        <DashboardScene key={playToken} animated={playToken > 0} />
-      </div>
-    </div>
-  );
-}
-
-const DBC_COUNT_TARGET = 1248;
-const DBC_COUNT_MS = 900;
-const DBC_COUNT_DELAY = 380;
-
-function DashboardScene({ animated }: { animated: boolean }) {
-  const countRef = useRef<HTMLDivElement>(null);
-
-  // THE PAYOFF: the count travels instead of appearing. One rAF loop, ~900ms,
-  // once per page view, writing textContent on a single node. Never starts
-  // under reduced motion (the element already carries the final string from
-  // the DOM), and is cancelled on cleanup.
-  useEffect(() => {
-    const node = countRef.current;
-    if (!node || !animated) return;
-
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
-
-    let raf = 0;
-    let start = 0;
-    const easeOutQuint = (t: number) => 1 - Math.pow(1 - t, 5);
-
-    const step = (now: number) => {
-      if (!start) start = now;
-      const t = Math.min(1, (now - start) / DBC_COUNT_MS);
-      const v = Math.round(easeOutQuint(t) * DBC_COUNT_TARGET);
-      node.textContent = v.toLocaleString("en-US");
-      if (t < 1) raf = requestAnimationFrame(step);
-    };
-
-    node.textContent = "0";
-    const timer = window.setTimeout(() => { raf = requestAnimationFrame(step); }, DBC_COUNT_DELAY);
-
-    return () => {
-      window.clearTimeout(timer);
-      if (raf) cancelAnimationFrame(raf);
-      node.textContent = DBC_COUNT_TARGET.toLocaleString("en-US");
-    };
-  }, [animated]);
-
-  return (
-    <div className={`ps-dbc-stage${animated ? " ps-dbc-stage--play" : ""}`}>
-      <div className="ps-dbc-win">
-        {/* Chrome strip — flips with the theme (card-visuals.css:2633). */}
-        <div className="ps-dbc-chrome">
-          <span className="ps-dbc-chrome-dots"><i /><i /><i /></span>
-          <span className="ps-dbc-chrome-name">members</span>
-        </div>
-
-        <div className="ps-dbc-app">
-          <div className="ps-dbc-app-head">
-            <div className="ps-dbc-app-eyebrow">Member Records</div>
-            <div className="ps-dbc-app-count" ref={countRef}>1,248</div>
+    <div ref={containerRef} className="ps-app-root" aria-hidden="true">
+      <div className="ps-app-stage">
+        {/* PLANE 1 — the app window. Wider than the stage on purpose: it
+            is cropped by the card's right edge, which is the reference
+            language's "bleed" and the opposite of the timid inset panel
+            this replaces. */}
+        <div className="ps-app-window">
+          {/* Chrome strip: contrast bed for .ps-bento-card__expand, and it
+              is what makes the window read as a surface with depth rather
+              than a slab. Flips with the theme. */}
+          <div className="ps-app-chrome">
+            <span className="ps-app-dots"><i /><i /><i /></span>
+            <span className="ps-app-chrome-pill" />
           </div>
 
-          <div className="ps-dbc-spark">
-            <span className="ps-dbc-spark-label">Sign-ups</span>
-            <span className="ps-dbc-spark-plot">
-              {dbcSpark.map((h, i) => (
-                <i
-                  key={i}
-                  className={`ps-dbc-spark-col${i >= 3 ? " ps-dbc-spark-col--hot" : ""}`}
-                  style={{ "--sh": `${h}%`, "--si": i } as React.CSSProperties}
-                />
-              ))}
-            </span>
-          </div>
+          <div className="ps-app-body">
+            {/* The navy rail is the large dark mass the language requires.
+                It stays navy in BOTH themes, exactly like .ps-site-nav
+                (card-visuals.css:2331) — a chrome rail is dark in a lit
+                room too. What flips is the ROOT backdrop and the chrome
+                strip, which is where the old card got it wrong. */}
+            <div className="ps-app-rail">
+              <span className="ps-app-rail-mark" />
+              <span className="ps-app-rail-item ps-app-rail-item--on" />
+              <span className="ps-app-rail-item" />
+              <span className="ps-app-rail-item" />
+              <span className="ps-app-rail-item" />
+            </div>
 
-          <div className="ps-dbc-app-list">
-            {dbcRecords.map((record, index) => (
-              <div
-                key={record.initials}
-                className={`ps-dbc-app-row${index === 0 ? " ps-dbc-app-row--current" : ""}`}
-                style={{ "--row-i": index } as React.CSSProperties}
-              >
-                <div className="ps-dbc-app-avatar" style={{ "--av": record.hue } as React.CSSProperties}>{record.initials}</div>
-                <div className="ps-dbc-app-name" style={{ "--name-w": `${record.name}%` } as React.CSSProperties} />
-                <div className={`ps-dbc-app-pill ps-dbc-app-pill--${record.tone}`}>{record.status}</div>
+            <div className="ps-app-main">
+              <div className="ps-app-toolbar">
+                <span className="ps-app-tab">Dashboard</span>
+                <span className="ps-app-toolbar-pill" />
               </div>
-            ))}
+
+              {/* One animated unit, not seven. Bars are drawn at full
+                  height inside it — a scaleY(0)->1 grow per bar is the
+                  "data is loading" gesture the reference cards never
+                  make, and it costs six animated elements. */}
+              <div className="ps-app-chart" style={{ "--sr-i": 0 } as React.CSSProperties}>
+                {APP_BARS.map((h, i) => (
+                  <span
+                    className="ps-app-bar"
+                    key={`app-bar-${i}`}
+                    style={{ "--bar-h": h } as React.CSSProperties}
+                  />
+                ))}
+              </div>
+
+              <div className="ps-app-rows">
+                {[0, 1, 2].map((row) => (
+                  <span
+                    className="ps-app-row"
+                    key={`app-row-${row}`}
+                    style={{ "--sr-i": row + 1 } as React.CSSProperties}
+                  >
+                    <i className="ps-app-row-av" />
+                    <i className="ps-app-row-name" />
+                    <i className="ps-app-row-meta" />
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
-
         </div>
-      </div>
 
-      {/* The phone. Direct borrow of card 4's C1/C2/C6 — it overlaps the
-          window's bottom-right corner, sits off-axis at rotate(5deg) and
-          bleeds off the right edge, so the two tiles read as siblings. */}
-      <div className="ps-dbc-phone">
-        <span className="ps-dbc-phone-notch" />
-        <span className="ps-dbc-phone-title">New member</span>
-        <i className="ps-dbc-phone-field" />
-        <i className="ps-dbc-phone-field" />
-        <span className="ps-dbc-phone-save">Save</span>
+        {/* PLANE 2 — the record you opened. Occludes the window, 5deg,
+            deep shadow. This is what the old card's "New member / SAVE"
+            chip was reaching for and missed: that one sat in the GUTTER
+            BESIDE the panel instead of over it, so in dark mode it was a
+            detached white blob with no surface behind it. */}
+        <div className="ps-app-sheet">
+          <span className="ps-app-sheet-bar" />
+          <span className="ps-app-sheet-bar ps-app-sheet-bar--short" />
+          {/* PAYOFF. Solid brand blue, last in, 0.94 -> 1. */}
+          <span className="ps-app-save">Save</span>
+        </div>
       </div>
     </div>
   );

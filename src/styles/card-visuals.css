@@ -26,7 +26,7 @@
  * All visual-specific CSS for the service card animations.
  * Extracted from globals.css — classes prefixed with:
  *   ps-visual-, ps-wb-, ps-browser-, ps-iphone-, ps-site-,
- *   ps-auto-, ps-dash-flow, ps-hm-, ps-dbc-, ps-ge-
+ *   ps-app-, ps-asst-, ps-cb-, ps-doc-, ps-ge-, ps-sr-
  *
  * Also includes all @keyframes for these visuals and the
  * prefers-reduced-motion overrides block.
@@ -403,1815 +403,989 @@
   transition: transform 300ms var(--ease-standard);
 }
 
-/* ── VISUAL 2: Automation Systems — n8n-style cycling flows ─── */
+/* ═════════════════════════════════════════════════════════════
+   VISUALS 2, 3 & 4 — REBUILT 2026-09-06
 
-/*
-  Container: fills the card visual area.
-  Stage: fixed-height area that holds the slides.
-  Each slide is position:absolute inset-0, transitions opacity+translateX.
-  Diagram: position:relative with explicit pixel height matching the SVG viewBox (200px).
-  Nodes: position:absolute, placed by (left, top) set in JSX from cx/cy.
-  SVG: position:absolute inset-0, same coordinate space as nodes (viewBox 0 0 412 200).
-*/
+   These three replace `.ps-gate-*` (AI Integration), `.ps-run-*`
+   (Business Automation) and `.ps-dbc-*` (Business Software), which were
+   deleted with them. Prefixes are NEW on purpose: `.ps-dbc-root` and
+   `.ps-dbc-layout` are ALSO declared in globals.css, and because
+   globals.css @imports this file on its second line, the globals copies
+   win at equal specificity. Reusing those names would have meant fighting
+   a sheet this change has no business editing. Verified before choosing:
+   `ps-app-`, `ps-doc-` and `ps-asst-` have zero occurrences anywhere in
+   src/. (`ps-ai-` was rejected — 48 hits in globals.css for an unrelated
+   AI landing page.)
 
-.ps-visual-automation {
-  background: linear-gradient(160deg, #0a0b1a 0%, #080b18 60%, #060810 100%);
-  position: relative;
-  overflow: hidden;
+   DO NOT wrap this file, or any part of it, in `@layer components`. See
+   the header at the top of this file: it was tried on 2026-09-03, it
+   produced 925,871 differing pixels, and it was reverted (07906a1).
+
+   THE DESIGN LAW THESE THREE OBEY, derived from WebsiteVisual and
+   SearchVisual — the only two cards the owner approves of:
+
+     - FILLS ONLY. Zero structural strokes. Strokes appear solely as
+       sub-16px icon glyphs at stroke-width 1.4 inside a filled container.
+       Depth is 0 24px 60px rgba(0,0,0,.5) shadows on filled mass, never
+       an outline.
+     - PALETTE: navy #0A1628 -> #0C1E3A, white/#f8fafc, three greys
+       (#cbd5e1 #e2e8f0 #94A3B8, plus #64748B for emphasis) and brand blue.
+       NO semantic colour: nothing is green because it succeeded and
+       nothing is amber because it is pending. No hue encodes state.
+     - A LITERAL, RECOGNISABLE CUSTOMER SURFACE at wireframe fidelity.
+       Chrome is real; all content is a grey placeholder bar. Between the
+       three cards there are five readable strings in total.
+     - BLEED AND TWO PLANES. Each primary object is cropped by a card
+       edge, and a second object overlaps it at 5deg with a
+       0 20px 50px rgba(0,0,0,.6) shadow. 5deg is the grid's ONLY
+       rotation angle (WebsiteVisual's .ps-phone). Do not add a second.
+     - ONE PAYOFF OBJECT per card, solid brand blue, arriving last.
+     - MOTION: opacity + translateY(5px) only, 360ms, easeOutQuart,
+       90ms stagger off --sr-i, one-shot `.in-view`, plus one payoff at
+       420ms/520ms delay that is the ONLY thing that scales (0.94 -> 1).
+       Longest timeline is 940ms. Zero @keyframes. Zero infinite loops.
+       Zero overshoot easings. Zero rotation animation.
+     - HOVER: the second plane lifts 6px, the first lifts 2px — the 3:1
+       parallax WebsiteVisual uses at card-visuals.css:92 and :401.
+
+   Chrome strips FLIP WITH THE THEME. `.ps-bento-card__expand` is a 32px
+   circle at top:16 right:16 z-index 3 drawn OVER the artwork — white on
+   frosted white in dark mode, #0A1628 navy in light (globals.css:1617).
+   Whatever sits under it must be dark in dark mode and light in light
+   mode or the affordance vanishes in one of them. Measured both ways on
+   2026-09-03; a strip left dark in light mode hid the icon completely.
+   The navy RAIL and the document LETTERHEAD do not flip — a chrome rail
+   is dark in a lit room too, same as `.ps-site-nav`.
+   ═════════════════════════════════════════════════════════════ */
+
+/* ── VISUAL 2: AI Integration — the docked assistant ──────────── */
+
+.ps-asst-root {
   display: flex;
   flex-direction: column;
-  padding: 14px 12px 10px;
-  gap: 8px;
-}
-
-/* Flow title label top-left */
-/* ── AI Integration card face: "The model stopped at the gate" ───
-   Rebuilt 2026-09-05. Scoped to `.ps-bento-card--automation` (0,2,0) on
-   purpose — `globals.css` @imports this file on its second line, so globals
-   is LATER and wins every tie at equal specificity. `.ps-visual-automation`
-   is declared in BOTH files (globals.css:2124 and :3240), so an unscoped
-   copy here would do nothing on screen.
-
-   WHY THIS REPLACED "THE GATE" LADDER. Measured, not inferred: the ladder's
-   panel was `rgba(255,255,255,0.043)` over a `rgb(10,22,40)` card, i.e. it
-   composited to rgb(20,32,49) — a delta of ~10/255 from its own background,
-   with `box-shadow: none`. It could not read as an object because it was
-   optically the same surface as the card. Card 5's panel is an opaque
-   rgb(248,250,252) on the same card: delta ~238. That gap, not the animation
-   count, is why one reads as a lit device and the other as a flat form.
-
-   THE LETTERBOXING BUG CLASS IS REMOVED, NOT PATCHED. The original n8n graph
-   died because a fixed 2.06:1 `viewBox` with `preserveAspectRatio="meet"` in
-   a near-square stage drew into ~36% of the height. Nodes here are HTML in
-   percentage coordinates, so the composition fills ANY aspect by
-   construction. The wire <svg> carries no text and no rx and every stroke is
-   `vector-effect: non-scaling-stroke`, so `preserveAspectRatio="none"` on it
-   cannot distort anything the spec warns about — there is nothing in that
-   element except stroked paths.
-
-   Panel interior is dark-ink-on-near-white in BOTH themes, exactly as card 5
-   does it. Only the SCENE and the CHROME STRIP flip with the theme. That is
-   what keeps figure/ground alive in light theme as well as dark. ── */
-
-.ps-bento-card--automation .ps-visual-automation {
-  /* Panel interior tokens: theme-INDEPENDENT. The panel is a white device in
-     both themes, so its ink must not track the theme either. */
-  --gt-ink: #0A1628;
-  --gt-dim: #475569;
-  --gt-faint: #94A3B8;
-  --gt-line: #E2E8F0;
-  --gt-email: #635BFF;
-  --gt-extract: #8B5CF6;
-  --gt-ai: #A855F7;
-  --gt-send: #10B981;
-  --gt-hold: #F59E0B;
-  --mo-arrive: cubic-bezier(0.165, 0.84, 0.44, 1);
-  --mo-draw: cubic-bezier(0.16, 1, 0.3, 1);
-  --mo-snap: cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  display: flex;
-  flex-direction: column;
-  /* Its own opaque ground, identical to `.ps-sr-root`. The artwork brings a
-     scene instead of sitting on the card's background. */
-/* PANEL INSET — cards 2/3 sat 8/6/6px from the card edge and read as
-   screenshots pasted to the edge rather than objects placed in a scene. Card 4
-   sits at 82/105/207 and card 5 at 62/35/35. The 62px TOP is doing a second
-   job: it lifts the panel clear of `.ps-bento-card__expand` (top:12 right:12,
-   44px at <=768), which previously overlapped these panels 100%. Card 5 gets
-   its 0% overlap the same way. */
-  background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
-  padding: 62px 16px 80px;
-  box-sizing: border-box;
-  align-items: center;
-  overflow: hidden;
-}
-
-.ps-bento-card--automation .ps-gate-panel {
-  width: 100%;
-  max-width: 340px;
-}
-
-[data-theme="light"] .ps-bento-card--automation .ps-visual-automation {
-  background: linear-gradient(160deg, #F0F4F8 0%, #E8EDF3 100%);
-}
-
-/* The dark-theme title scrim (`[data-theme="dark"] .ps-bento-card__text::before`,
-   globals.css, <=768 only) spans [titleTop-80, titleTop+62.8]. White panels are
-   MEANT to be scrimmed there — globals says so explicitly and card 5 ships the
-   same way — so this is not a defect to fight. But a PAYOFF element sitting in
-   the densest part of that band reads muddy, and the payoff is the one thing
-   that must stay legible. 96px lifts the panel foot clear of the strongest
-   band while keeping the panel tall enough to compose. */
-@media (min-width: 940px) {
-  .ps-bento-card--automation .ps-visual-automation { padding-bottom: 124px; }
-}
-
-
-/* Panel. Opaque fill + the card-4/5 two-layer shadow pair. NOT opacity-gated:
-   the shell is furniture and is painted at t=0, so a failed observer degrades
-   to a static composed card and never a blank one. */
-.ps-bento-card--automation .ps-gate-panel {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  border-radius: 9px;
-  background: #F8FAFC;
-  border: 1px solid rgba(255,255,255,0.1);
-  overflow: hidden;
-  box-shadow:
-    0 24px 60px rgba(0,0,0,0.5),
-    0 6px 20px rgba(0,0,0,0.32);
-}
-
-[data-theme="light"] .ps-bento-card--automation .ps-gate-panel {
-  border-color: rgba(0,0,0,0.1);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
-}
-
-/* Chrome strip. FLIPS WITH THE THEME — card-visuals.css:2633 records that a
-   bar left dark in light mode hid the frosted expand icon completely. This
-   is also what reserves contrast under `.ps-bento-card__expand`. */
-.ps-bento-card--automation .ps-gate-chrome {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 9px;
-  background: linear-gradient(180deg, #20314f 0%, #182743 100%);
-}
-
-[data-theme="light"] .ps-bento-card--automation .ps-gate-chrome {
-  background: linear-gradient(180deg, #E8EDF3 0%, #DDE4EC 100%);
-  border-bottom: 1px solid #CBD5E1;
-}
-
-.ps-bento-card--automation .ps-gate-chrome-dots {
-  display: flex;
-  gap: 3px;
-  flex-shrink: 0;
-}
-
-.ps-bento-card--automation .ps-gate-chrome-dots i {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.28);
-}
-
-[data-theme="light"] .ps-bento-card--automation .ps-gate-chrome-dots i {
-  background: rgba(10,22,40,0.18);
-}
-
-.ps-bento-card--automation .ps-gate-chrome-name {
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  /* Reserve the top-right 44px for `.ps-bento-card__expand`, which is drawn
-     over every tile's artwork and is not part of this flow. */
-  padding-right: 42px;
-}
-
-[data-theme="light"] .ps-bento-card--automation .ps-gate-chrome-name {
-  color: rgba(10,22,40,0.5);
-}
-
-/* ── The graph. Nodes are HTML in %; SVG carries wires only. ── */
-.ps-bento-card--automation .ps-gate-graph {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  margin: 0;
-  padding: 6px 4px;
-}
-
-.ps-bento-card--automation .ps-gate-wires {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  overflow: visible;
-}
-
-.ps-bento-card--automation .ps-gate-wire {
-  fill: none;
-  stroke-linecap: round;
-  vector-effect: non-scaling-stroke;
-}
-
-/* ONE CONTINUOUS TRUNK from Email to AI read, with the Extract node sitting
-   ON it at 30% — which is how a node graph actually looks, and which means
-   hiding Extract at <=639 leaves a clean unbroken wire. The alternative
-   (rewriting `d` per breakpoint) would rely on the `d` CSS property, which is
-   not safe across engines. */
-.ps-bento-card--automation .ps-gate-wire--a {
-  stroke: url(#ps-gate-trunk);
-  stroke-width: 1.6;
-  opacity: 0.55;
-}
-
-/* THE FORK, AT REST. Resting state IS the resolved state: Send is thin,
-   dashed and dim; Hold is solid, heavy and fully saturated. The picture says
-   "it chose to hold" through line weight alone — no rank claim, no outcome
-   claim, so it stays inside docs/WRITER-AGENT-PROMPT.md:29,31. Because the
-   resolved state is the BASE, a failed observer or reduced motion shows the
-   finished scene rather than an unresolved one. */
-.ps-bento-card--automation .ps-gate-wire--send {
-  stroke: var(--gt-send);
-  stroke-width: 1.1;
-  stroke-dasharray: 3 3;
-  opacity: 0.4;
-}
-
-.ps-bento-card--automation .ps-gate-wire--hold {
-  stroke: var(--gt-hold);
-  stroke-width: 2;
-  opacity: 1;
-}
-
-/* THE FLOWING WIRE — recovered from the originals, which the owner preferred.
-   A travelling dash laid OVER the solid amber wire, so the wire still reads
-   solid and fully saturated at rest while the flow says "this path is live".
-   This is the card's ONE resting loop and the only infinite animation on any
-   of the three cards: one property (`stroke-dashoffset`), one element, one
-   compositor layer. `ps-dash-flow` ends at -28 and the dash cycle is 4+10=14,
-   so it is exactly two cycles and loops seamlessly. */
-.ps-bento-card--automation .ps-gate-wire--flow {
-  /* White, not amber: an amber dash on an amber wire is invisible, which is
-     how the first attempt shipped a loop nobody could see — the exact defect
-     `ps-gate-breathe` was deleted for. */
-  stroke: #FFFFFF;
-  stroke-width: 1.4;
-  /* 4+24 = 28, and `ps-dash-flow` ends at exactly -28, so the loop is ONE
-     whole cycle and never jumps at restart. A sparse pip travelling a solid
-     wire — not the barber-pole a dense 4/10 dash produced. */
-  stroke-dasharray: 4 24;
-  stroke-linecap: round;
-  opacity: 0;
-}
-
-
-/* Packet travelling the wire. Precedent for animating `left` on a small
-   absolutely-positioned dot is the house's own `ps-flow-pulse`
-   (card-visuals.css:46). One-shot, one 7px element, out of flow. */
-.ps-bento-card--automation .ps-gate-packet {
-  position: absolute;
-  top: 0;
-  left: 0;
-  /* `offset-path` is set inline from the SAME path data the trunk wire uses,
-     so the packet cannot drift off the wire at any aspect ratio. Default
-     `offset-anchor` is the element's centre, so no negative margins. */
-  offset-distance: 0%;
-  offset-rotate: 0deg;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  box-shadow: 0 0 0 2px rgba(139,92,246,0.55), 0 0 8px rgba(139,92,246,0.9);
-  opacity: 0;
-  z-index: 2;
-}
-
-/* ── Nodes ── */
-.ps-bento-card--automation .ps-gate-node {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  z-index: 1;
-}
-
-.ps-bento-card--automation .ps-gate-node-disc {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: #FFFFFF;
-  border: 1.4px solid currentColor;
-  box-shadow: 0 3px 10px rgba(15,32,56,0.18);
-}
-
-.ps-bento-card--automation .ps-gate-node-icon {
-  width: 13px;
-  height: 13px;
-  display: block;
-}
-
-.ps-bento-card--automation .ps-gate-node-label {
-  font-size: 7.5px;
-  font-weight: 800;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  line-height: 1;
-  color: var(--gt-dim);
-  white-space: nowrap;
-}
-
-.ps-bento-card--automation .ps-gate-node--email   { color: var(--gt-email); }
-.ps-bento-card--automation .ps-gate-node--extract { color: var(--gt-extract); }
-.ps-bento-card--automation .ps-gate-node--send    { color: var(--gt-send); }
-.ps-bento-card--automation .ps-gate-node--hold    { color: var(--gt-hold); }
-
-/* Scale hierarchy: the AI node is the big one, double-ringed and glowing —
-   the single largest object in the graph, as in the original. */
-.ps-bento-card--automation .ps-gate-node--ai {
-  color: var(--gt-ai);
-}
-
-.ps-bento-card--automation .ps-gate-node--ai .ps-gate-node-disc {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  border-width: 1.8px;
-  box-shadow: 0 6px 18px rgba(168,85,247,0.32);
-}
-
-.ps-bento-card--automation .ps-gate-node--ai .ps-gate-node-icon {
-  width: 19px;
-  height: 19px;
-}
-
-/* The double ring extends 42px below the node top while the disc is 38px, so
-   the default 3px gap put the label 1px inside the ring. Clear it explicitly. */
-.ps-bento-card--automation .ps-gate-node--ai .ps-gate-node-label {
-  margin-top: 6px;
-}
-
-.ps-bento-card--automation .ps-gate-node-ring {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 46px;
-  height: 46px;
-  margin-left: -23px;
-  margin-top: -4px;
-  border-radius: 15px;
-  border: 1px solid rgba(168,85,247,0.45);
-  pointer-events: none;
-}
-
-.ps-bento-card--automation .ps-gate-node-glow {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 62px;
-  height: 62px;
-  margin-left: -31px;
-  margin-top: -12px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(168,85,247,0.30) 0%, rgba(168,85,247,0) 70%);
-  opacity: 0.22;
-  pointer-events: none;
-}
-
-/* Send is the path that died: dimmed at rest. */
-.ps-bento-card--automation .ps-gate-node--send { opacity: 0.4; }
-
-.ps-bento-card--automation .ps-gate-node--hold .ps-gate-node-disc {
-  border-width: 1.8px;
-  background: #FFFBEB;
-}
-
-/* ── Foot: caption + THE PAYOFF CHIP ── */
-.ps-bento-card--automation .ps-gate-foot {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 0 9px 8px;
-  min-width: 0;
-}
-
-.ps-bento-card--automation .ps-gate-caption {
-  font-size: 8px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--gt-faint);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-}
-
-/* THE PRIVILEGED ELEMENT. Largest, most saturated leaf on the card; solid
-   amber on white; arrives alone, last, longest duration, and it is the only
-   element on the card carrying a `scale`. Card 5's citation chip is the
-   reference and this matches its role exactly. */
-.ps-bento-card--automation .ps-gate-chip {
-  flex-shrink: 0;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  line-height: 1;
-  padding: 5px 9px;
-  border-radius: 999px;
-  white-space: nowrap;
-  color: #0A1628;
-  background: #F59E0B;
-  box-shadow: 0 3px 10px rgba(245,158,11,0.45);
-}
-
-/* THE PAYOFF MUST CLEAR THE SCRIM *AND* COME LAST.
-   An earlier attempt moved the foot ABOVE the graph at <=768. That did keep the
-   chip clean, but it put the verdict above its own reasoning and reversed card
-   5's payoff-last order — the very thing that makes a run feel resolved. So the
-   foot stays last and the PANEL is lifted instead: extra bottom padding pulls
-   the whole panel up so the foot lands at the very top of the scrim's fade,
-   where the wash is a few percent rather than the 30-40% it was at +44/+60px
-   in. The scrim is a GRADIENT, not a binary — being 5px into a 143px fade is
-   not the same defect as sitting in the middle of it, and the sampled chip
-   colour below is the proof. */
-/* 124px is the MINIMUM that keeps the chip bit-exact. Measured ramp at 320
-   dark, peak sampled pixel against the declared rgb(245,158,11):
-     pad 108 -> 216,141,14   pad 116 -> 231,150,12
-     pad 112 -> 224,146,13   pad 120 -> 238,154,12
-     pad 124 -> 245,158,11  <- exact
-   Do not trim this to reclaim the 55px gap below the panel; the gap is what
-   buys the payoff its full saturation.
-
-   IT BUYS A SECOND THING. Before this lift the scrim also cost the HOLD node
-   ~27% of its saturation — a named fork outcome going grey, which is the one
-   place this card's whole point lives. Card 5 pays a much smaller price for the
-   same treatment (0% on its AD row, ~5% on its pin row) purely because what IT
-   puts in that band is a colourless grey row. Re-measured after this lift, at
-   320/390/430/768 dark, HOLD samples rgb(245,158,11) with the scrim ON and
-   rgb(245,158,11) with it OFF: saturation loss 0.0% at every width. Trimming
-   this padding puts BOTH the chip and the HOLD node back under the wash. */
-@media (max-width: 768px) {
-  .ps-bento-card--automation .ps-visual-automation { padding-bottom: 124px; }
-}
-
-/* With the caption hidden at <=639 the foot has one child, and
-   `justify-content: space-between` would drop the chip to the left. Keep it in
-   the right-hand seat it holds on desktop. Declared after the base foot rule. */
-@media (max-width: 639px) {
-  .ps-bento-card--automation .ps-gate-foot { justify-content: flex-end; }
-}
-
-/* ══ REVEAL ══════════════════════════════════════════════════════
-   Driven by --play from the one-shot IO at threshold 0.25. Every animation
-   below ENDS AT THE RESTING STATE declared above, so the base CSS is already
-   the finished picture. Phases overlap by >=25%; nothing waits for the
-   previous thing to finish. Durations run in three bands, not one value. ── */
-
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-node {
-  animation: ps-gate-node-in 320ms var(--mo-arrive) var(--node-delay, 0s) both;
-}
-
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-node--email   { --node-delay: 0.15s; }
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-node--extract { --node-delay: 0.24s; }
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-node--ai      { --node-delay: 0.33s; }
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-node--send    { --node-delay: 0.42s; }
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-node--hold    { --node-delay: 0.42s; }
-
-/* Send does not fade to 1 — it fades to its dimmed resting value. */
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-node--send {
-  animation-name: ps-gate-node-in-dim;
-}
-
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-wire {
-  animation: ps-gate-wire-in 420ms var(--mo-draw) 0.30s both;
-}
-
-/* The two fork wires resolve LAST and travel to their resting values: Send
-   dims to 40%, Hold lights to full amber. */
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-wire--send {
-  animation: ps-gate-send-dim 420ms ease-out 1.25s both;
-}
-
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-wire--hold {
-  animation: ps-gate-hold-light 420ms var(--mo-draw) 1.25s both;
-}
-
-/* Declared AFTER the generic `.ps-gate-wire` reveal rule above: both are
-   (0,3,0), so source order decides and the generic one would otherwise
-   overwrite this shorthand and freeze the loop. That is not hypothetical —
-   it shipped that way once and the measured dashoffset sat at 0px.
-
-   PERFORMANCE, RULED 2026-09-06 — DO NOT DELETE THIS TO SAVE CPU.
-   Controlled A/B (CDP Performance.getMetrics, 4s at rest, 3 runs each) puts
-   this loop at 2.60% of one core. That was weighed and accepted, because:
-     - it is REVEAL-GATED, not constant: measured play=false -> running=0,
-       infinite=0 before the IntersectionObserver fires. The "0.63% of a core"
-       figure it gets compared against describes the hero canvas, which runs on
-       every page load unconditionally. This does not.
-     - it is PAINT-ONLY: LayoutCount is 217 with AND without it. One property
-       (`stroke-dashoffset`), one path, one element, one compositor layer.
-     - it is the ONLY infinite animation on the whole bento grid; cards 1, 2, 4
-       and 5 are all 0 running / 0 infinite at rest.
-     - the owner explicitly asked for the originals' flowing wires.
-   Re-open the decision before removing it; do not treat it as dead weight. */
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-wire--flow {
-  animation:
-    ps-gate-flow-in 420ms ease-out 1.45s both,
-    ps-dash-flow 1.4s linear 1.45s infinite;
-}
-
-@keyframes ps-gate-flow-in {
-  from { opacity: 0; }
-  to   { opacity: 0.8; }
-}
-
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-packet {
-  animation: ps-gate-packet 620ms ease-in-out 0.62s both;
-}
-
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-node--ai .ps-gate-node-ring {
-  animation: ps-gate-ai-ring 460ms ease-out 1.05s both;
-}
-
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-node--ai .ps-gate-node-glow {
-  animation: ps-gate-ai-glow 460ms ease-out 1.05s both;
-}
-
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-caption {
-  animation: ps-gate-fade 300ms ease 1.62s both;
-}
-
-/* THE BEAT: alone, last, longest duration on the card, only `scale`. */
-.ps-bento-card--automation .ps-gate-panel--play .ps-gate-chip {
-  animation: ps-gate-chip-in 420ms var(--mo-snap) 1.42s both;
-}
-
-@keyframes ps-gate-node-in {
-  from { opacity: 0; transform: translate(-50%, -50%) translateY(8px) scale(0.92); }
-  to   { opacity: 1; transform: translate(-50%, -50%) translateY(0) scale(1); }
-}
-
-@keyframes ps-gate-node-in-dim {
-  from { opacity: 0; transform: translate(-50%, -50%) translateY(8px) scale(0.92); }
-  to   { opacity: 0.4; transform: translate(-50%, -50%) translateY(0) scale(1); }
-}
-
-@keyframes ps-gate-wire-in {
-  from { opacity: 0; }
-  to   { opacity: 0.55; }
-}
-
-@keyframes ps-gate-send-dim {
-  from { opacity: 0.9; stroke-width: 2; }
-  to   { opacity: 0.4; stroke-width: 1.1; }
-}
-
-@keyframes ps-gate-hold-light {
-  from { opacity: 0.45; stroke-width: 1.1; }
-  to   { opacity: 1; stroke-width: 2; }
-}
-
-@keyframes ps-gate-packet {
-  0%   { opacity: 0; offset-distance: 0%; }
-  12%  { opacity: 1; }
-  88%  { opacity: 1; }
-  100% { opacity: 0; offset-distance: 100%; }
-}
-
-@keyframes ps-gate-ai-ring {
-  0%   { transform: scale(1); opacity: 0.45; }
-  45%  { transform: scale(1.06); opacity: 1; }
-  100% { transform: scale(1); opacity: 0.45; }
-}
-
-@keyframes ps-gate-ai-glow {
-  0%   { opacity: 0.22; }
-  45%  { opacity: 0.5; }
-  100% { opacity: 0.22; }
-}
-
-@keyframes ps-gate-fade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes ps-gate-chip-in {
-  from { opacity: 0; transform: translateY(5px) scale(0.94); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-/* Narrow tiles: drop EXTRACT and re-seat the remaining nodes across the full
-   width. The FORK IS NEVER DROPPED — it is the entire point of the card.
-   Delays are re-assigned here too, so no hidden element burns a slot and the
-   run stays contiguous (the measured 240/360ms holes came from exactly that
-   mistake on the old ladder). */
-@media (max-width: 639px) {
-  .ps-bento-card--automation .ps-gate-node--extract { display: none; }
-  /* Extract sat ON the trunk, so hiding it leaves the wire intact and the
-     remaining nodes keep their coordinates. Nothing is re-seated, nothing is
-     re-pathed, and — the point — the delay run is re-assigned so the hidden
-     node does not burn a slot. The old ladder's 240ms and 360ms holes were
-     exactly this bug: index-based delays against nth-child hiding. */
-  .ps-bento-card--automation .ps-gate-panel--play .ps-gate-node--ai   { --node-delay: 0.24s; }
-  .ps-bento-card--automation .ps-gate-panel--play .ps-gate-node--send { --node-delay: 0.33s; }
-  .ps-bento-card--automation .ps-gate-panel--play .ps-gate-node--hold { --node-delay: 0.33s; }
-  .ps-bento-card--automation .ps-gate-caption { display: none; }
-  .ps-bento-card--automation .ps-gate-node--ai .ps-gate-node-disc { width: 34px; height: 34px; }
-  .ps-bento-card--automation .ps-gate-node--ai .ps-gate-node-icon { width: 17px; height: 17px; }
-  .ps-bento-card--automation .ps-gate-node-ring { width: 42px; margin-left: -21px; }
-}
-
-/* REDUCED MOTION — a REAL COMPOSED SCENE, never a blank stage.
-   `animation: none` alone would be a broken state, not a reduced one: it
-   freezes every animated property at its UNDERLYING value. Here the
-   underlying values ARE the resolved scene (Send dim, Hold lit, chip solid)
-   because the reveal animates TO the base rather than away from it, so the
-   only thing that must be pinned explicitly is the packet, which is
-   `opacity: 0` at rest by design and would otherwise sit visible mid-wire. */
-@media (prefers-reduced-motion: reduce) {
-  .ps-bento-card--automation .ps-gate-panel--play *,
-  .ps-bento-card--automation .ps-gate-panel--play {
-    animation: none !important;
-    transition: none !important;
-  }
-  .ps-bento-card--automation .ps-gate-node,
-  .ps-bento-card--automation .ps-gate-chip,
-  .ps-bento-card--automation .ps-gate-caption,
-  .ps-bento-card--automation .ps-gate-wire {
-    opacity: 1 !important;
-  }
-  .ps-bento-card--automation .ps-gate-node--send,
-  .ps-bento-card--automation .ps-gate-wire--send { opacity: 0.4 !important; }
-  .ps-bento-card--automation .ps-gate-wire--a,
-  .ps-bento-card--automation .ps-gate-wire--b { opacity: 0.55 !important; }
-  .ps-bento-card--automation .ps-gate-packet { opacity: 0 !important; }
-  /* The one resting loop is stopped AND its overlay hidden, so the amber wire
-     rests as a clean solid stroke rather than a frozen dash pattern. */
-  .ps-bento-card--automation .ps-gate-wire--flow { opacity: 0 !important; }
-  .ps-bento-card--automation .ps-gate-node-glow { opacity: 0.22 !important; }
-  .ps-bento-card--automation .ps-gate-node-ring { opacity: 0.45 !important; }
-}
-
-/* ── Business Software card face — "the roster, and the phone that edits it" ──
-   Rebuilt 2026-09-05. Scoped to `.ps-bento-card--websites` (0,2,0): globals.css
-   @imports this file on its second line, so globals is LATER and wins every tie
-   at equal specificity, and `.ps-dbc-root`, `.ps-dbc-layout` and `.ps-dbc-stage`
-   are ALL declared there too (globals.css:3641+). An unscoped copy here would
-   do nothing on screen.
-
-   THE MEASURED FAILURE THIS FIXES. The old face was `rgba(255,255,255,0.043)`
-   over a `rgb(10,22,40)` card in dark — composited rgb(20,32,49), a delta of
-   ~10/255 from its own background — and `rgba(255,255,255,0.92)` over a white
-   card in light. The surface TRACKED the card, so it was dark-on-dark in one
-   theme and white-on-white in the other, with `box-shadow: none` to boot. It
-   also had no subject: four grey placeholder lines carrying ~20px of ink in
-   ~110px rows.
-
-   The fix is card 5's, verbatim: an OPAQUE panel whose fill is a literal value
-   rather than alpha over the card, the card-4/5 two-layer shadow pair, and a
-   scene of its own. Panel interior is dark-ink-on-near-white in BOTH themes;
-   only the SCENE and the CHROME STRIP flip. ── */
-
-.ps-bento-card--websites .ps-dbc-root {
-  /* Panel interior tokens: theme-INDEPENDENT, because the panel is a white
-     device in both themes and its ink must not track the theme either. */
-  --dbc-ink: #0A1628;
-  --dbc-dim: #475569;
-  --dbc-faint: #94A3B8;
-  --dbc-line: #E2E8F0;
-  --dbc-rule: #CBD5E1;
-  --dbc-accent: #1590FF;
-  --dbc-accent-strong: #0C6FC9;
-  --mo-arrive: cubic-bezier(0.165, 0.84, 0.44, 1);
-  --mo-draw: cubic-bezier(0.16, 1, 0.3, 1);
-  --mo-snap: cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  display: flex;
-  flex-direction: column;
+  /* top 62 clears the 32px expand circle at top:16; bottom 58 clears the
+     measured title block (62.8px mobile / 58.9px desktop) with the card's
+     own bottom inset. Same budget .ps-sr-root proved at 320-1920. */
+  padding: 62px 0 58px 16px;
   background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
   overflow: hidden;
 }
 
-[data-theme="light"] .ps-bento-card--websites .ps-dbc-root {
-  background: linear-gradient(160deg, #F0F4F8 0%, #E8EDF3 100%);
-}
-
-/* Bottom clearance for `.ps-dbc-layout` is NOT set here. The authoritative
-   block is the calibrated one further down this file (search "DEFECT 2B"),
-   which targets the same selector at the same specificity and therefore wins
-   on source order. Setting it here would be dead code, and zeroing
-   `.ps-dbc-root`'s padding would silently break that block's arithmetic. */
-
-.ps-bento-card--websites .ps-dbc-stage {
+.ps-asst-stage {
   position: relative;
-  display: flex;
+  flex: 0 0 auto;
   width: 100%;
-  height: 100%;
-  min-height: 0;
+  /* the overhang plane 2 hangs into */
+  padding-bottom: 52px;
 }
 
-/* The records window. Opaque, shadowed, and NOT opacity-gated — the shell is
-   furniture, painted at t=0, so a failed observer degrades to a static
-   composed card rather than a blank one. */
-.ps-bento-card--websites .ps-dbc-win {
+/* PLANE 1 — the customer's own screen. `width: calc(100% + 28px)` is the
+   bleed: it runs past the stage and is cropped by the card edge, like
+   .ps-wb-browser's third content card.
+
+   HEIGHT COMES FROM THE CONTENT, and the root centres it — the same call
+   .ps-wb-browser makes with `min-height: 260px` inside a centred
+   .ps-visual-website. TWO WRONG ANSWERS WERE MEASURED BEFORE THIS ONE:
+   stretching the panel to the tile spaced its children out until the
+   middle went hollow (defect 5 on the card this replaces), and letting
+   the rows flex to absorb the height turned each row into a 90px band
+   with a 4px bar floating in it — the same hollow, one level down. Fixed
+   row heights on a content-sized panel is the only version where ink
+   density is a property of the artwork rather than of the tile. */
+.ps-asst-app {
   position: relative;
-  z-index: 1;
-  width: 78%;
-  min-width: 0;
+  width: calc(100% + 28px);
   display: flex;
   flex-direction: column;
-  border-radius: 9px;
-  background: #F8FAFC;
-  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px 0 0 10px;
   overflow: hidden;
+  background: #f8fafc;
+  border: 1px solid rgba(255,255,255,0.1);
   box-shadow:
     0 24px 60px rgba(0,0,0,0.5),
     0 6px 20px rgba(0,0,0,0.32);
-}
-
-[data-theme="light"] .ps-bento-card--websites .ps-dbc-win {
-  border-color: rgba(0,0,0,0.1);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
-}
-
-/* Chrome strip. FLIPS WITH THE THEME — a bar left dark in light mode hid the
-   frosted `.ps-bento-card__expand` icon completely (card-visuals.css:2633). */
-.ps-bento-card--websites .ps-dbc-chrome {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 9px;
-  background: linear-gradient(180deg, #20314f 0%, #182743 100%);
-}
-
-[data-theme="light"] .ps-bento-card--websites .ps-dbc-chrome {
-  background: linear-gradient(180deg, #E8EDF3 0%, #DDE4EC 100%);
-  border-bottom: 1px solid #CBD5E1;
-}
-
-.ps-bento-card--websites .ps-dbc-chrome-dots { display: flex; gap: 3px; flex-shrink: 0; }
-
-.ps-bento-card--websites .ps-dbc-chrome-dots i {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: rgba(255,255,255,0.28);
-}
-
-[data-theme="light"] .ps-bento-card--websites .ps-dbc-chrome-dots i { background: rgba(10,22,40,0.18); }
-
-.ps-bento-card--websites .ps-dbc-chrome-name {
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-[data-theme="light"] .ps-bento-card--websites .ps-dbc-chrome-name { color: rgba(10,22,40,0.5); }
-
-.ps-bento-card--websites .ps-dbc-app {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  padding: 9px;
-}
-
-/* ── Head: micro-label + THE PRIVILEGED ELEMENT ── */
-.ps-bento-card--websites .ps-dbc-app-head {
-  flex-shrink: 0;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  min-width: 0;
-  /* Reserve the top-right corner for `.ps-bento-card__expand`, which is drawn
-     over the artwork and is not part of this flow. Without this the count —
-     the payoff element — renders underneath the frosted circle at <=768. */
-  padding-right: 46px;
-}
-
-@media (min-width: 940px) {
-  .ps-bento-card--websites .ps-dbc-app-head { padding-right: 40px; }
-}
-
-.ps-bento-card--websites .ps-dbc-app-eyebrow {
-  font-size: 8.5px;
-  font-weight: 800;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--dbc-faint);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-}
-
-/* THE PAYOFF. Largest, highest-contrast leaf on the card. It TRAVELS (rAF
-   counts it 0 -> 1,248) and then snaps — it used to fade in at 60ms, i.e.
-   before any row existed, which made it old news by the time the list arrived. */
-.ps-bento-card--websites .ps-dbc-app-count {
-  flex-shrink: 0;
-  font-size: 21px;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.01em;
-  color: var(--dbc-accent-strong);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-/* ── Rows ── */
-.ps-bento-card--websites .ps-dbc-app-list {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(3px, 3%, 6px);
-}
-
-.ps-bento-card--websites .ps-dbc-app-row {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 0 7px;
-  border-radius: 7px;
-  border: 1px solid transparent;
-  background: #FFFFFF;
-  box-shadow: inset 0 0 0 1px var(--dbc-line);
-  overflow: hidden;
-}
-
-.ps-bento-card--websites .ps-dbc-app-row--current {
-  background: rgba(21,144,255,0.08);
-  box-shadow: inset 0 0 0 1px rgba(21,144,255,0.28);
-}
-
-.ps-bento-card--websites .ps-dbc-app-avatar {
-  flex-shrink: 0;
-  width: 22px;
-  height: 22px;
-  border-radius: 7px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 8px;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--av, var(--dbc-accent-strong));
-  background: color-mix(in srgb, var(--av, #1590FF) 14%, transparent);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--av, #1590FF) 26%, transparent);
-  white-space: nowrap;
-}
-
-/* Placeholder content line — the same device cards 4 and 5 use. Deliberately
-   NOT real text: a name here is one more string that can wrap mid-word at 320,
-   which is the exact defect the client reported twice on this tile. */
-.ps-bento-card--websites .ps-dbc-app-name {
-  height: 6px;
-  border-radius: 3px;
-  width: var(--name-w, 70%);
-  min-width: 0;
-  flex-shrink: 1;
-  background: var(--dbc-rule);
-  transform-origin: left center;
-}
-
-.ps-bento-card--websites .ps-dbc-app-pill {
-  margin-left: auto;
-  flex-shrink: 0;
-  font-size: 7.5px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  line-height: 1;
-  padding: 3.5px 6px;
-  border-radius: 999px;
-  /* nowrap is load-bearing: "Retention" wrapping to "Retenti / on" inside a
-     fixed-height box under overflow:hidden is the defect the client reported. */
-  white-space: nowrap;
-}
-
-.ps-bento-card--websites .ps-dbc-app-pill--on {
-  color: #07795F;
-  background: rgba(7,121,95,0.12);
-}
-
-.ps-bento-card--websites .ps-dbc-app-pill--off {
-  color: #B45309;
-  background: rgba(245,158,11,0.16);
-}
-
-/* ── Footer: the SIGN-UPS micro-chart. Reinstates the one mechanism of the
-   original card 1 that unambiguously worked — varying-height saturated bars
-   growing from zero. Fixed 34px, immediately after the list, so no dead white
-   band can open up between them (that was the v2 mockup's failure). ── */
-.ps-bento-card--websites .ps-dbc-spark {
-  flex-shrink: 0;
-  height: 34px;
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--dbc-line);
-}
-
-.ps-bento-card--websites .ps-dbc-spark-label {
-  flex-shrink: 0;
-  font-size: 7.5px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--dbc-faint);
-  white-space: nowrap;
-  line-height: 1;
-  padding-bottom: 2px;
-}
-
-.ps-bento-card--websites .ps-dbc-spark-plot {
-  flex: 0 1 auto;
-  width: 124px;
-  max-width: 52%;
-  min-width: 0;
-  height: 100%;
-  display: flex;
-  align-items: flex-end;
-  gap: 3px;
-}
-
-.ps-bento-card--websites .ps-dbc-spark-col {
-  flex: 1;
-  min-width: 0;
-  height: var(--sh, 50%);
-  border-radius: 2px 2px 0 0;
-  background: var(--dbc-rule);
-  transform-origin: bottom center;
-}
-
-.ps-bento-card--websites .ps-dbc-spark-col--hot { background: var(--dbc-accent); }
-.ps-bento-card--websites .ps-dbc-spark-col:nth-child(4) { opacity: 0.55; }
-.ps-bento-card--websites .ps-dbc-spark-col:nth-child(5) { opacity: 0.75; }
-.ps-bento-card--websites .ps-dbc-spark-col:nth-child(6) { opacity: 1; }
-
-/* ── The phone. Direct borrow of card 4's C1/C2/C6: it OVERLAPS the window's
-   bottom-right corner (occlusion), sits OFF-AXIS at rotate(5deg), and BLEEDS
-   off the right edge. Those are the three depth cues cards 1-3 had none of. ── */
-.ps-bento-card--websites .ps-dbc-phone {
-  position: absolute;
-  z-index: 3;
-  right: -4px;
-  bottom: 62px;
-  width: 88px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 5px;
-  padding: 9px 8px 10px;
-  border-radius: 11px;
-  background: #FFFFFF;
-  border: 1px solid rgba(15,32,56,0.14);
-  transform: rotate(5deg);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.65);
-}
-
-[data-theme="light"] .ps-bento-card--websites .ps-dbc-phone {
-  box-shadow: 0 16px 36px rgba(15,32,56,0.22), 0 4px 12px rgba(15,32,56,0.10);
-}
-
-.ps-bento-card--websites .ps-dbc-phone-notch {
-  width: 26px;
-  height: 3.5px;
-  border-radius: 999px;
-  background: #0A1628;
-  opacity: 0.85;
-  margin: 0 auto 1px;
-}
-
-.ps-bento-card--websites .ps-dbc-phone-title {
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  color: var(--dbc-ink);
-  white-space: nowrap;
-  line-height: 1;
-}
-
-.ps-bento-card--websites .ps-dbc-phone-field {
-  height: 9px;
-  border-radius: 3px;
-  background: #F1F5F9;
-  box-shadow: inset 0 0 0 1px var(--dbc-line);
-}
-
-.ps-bento-card--websites .ps-dbc-phone-save {
-  margin-top: 1px;
-  font-size: 7.5px;
-  font-weight: 800;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  line-height: 1;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 5px;
-  color: #FFFFFF;
-  background: var(--dbc-accent-strong);
-  white-space: nowrap;
-}
-
-.ps-bento-card--websites:hover .ps-dbc-phone {
-  transform: rotate(5deg) translateY(-6px);
-}
-
-.ps-bento-card--websites .ps-dbc-phone {
+  transform: translateY(0);
   transition: transform 300ms ease;
 }
 
-/* ══ REVEAL ══════════════════════════════════════════════════════
-   Driven by --play from the one-shot IO at threshold 0.25. Shell is painted at
-   t=0; only CONTENT animates in. Delays are derived from `--row-i`, which the
-   component sets from the row's own index, and rows are only ever dropped from
-   the END of the list — so the visible run is contiguous by construction and
-   no hidden row can burn a delay slot. Three duration bands, split easing per
-   property, phases overlapping by >=25%. ── */
-
-.ps-bento-card--websites .ps-dbc-stage--play .ps-dbc-app-row {
-  animation: ps-dbc-row-in 340ms var(--mo-arrive) calc(140ms + var(--row-i, 0) * 70ms) both;
-}
-
-.ps-bento-card--websites .ps-dbc-stage--play .ps-dbc-app-name {
-  animation: ps-dbc-name-grow 420ms var(--mo-draw) calc(260ms + var(--row-i, 0) * 70ms) both;
-}
-
-.ps-bento-card--websites .ps-dbc-stage--play .ps-dbc-app-pill {
-  animation: ps-dbc-pill-in 220ms var(--mo-snap) calc(400ms + var(--row-i, 0) * 70ms) both;
-}
-
-/* An unsettled row is not an error: PENDING fades, it does not snap. */
-.ps-bento-card--websites .ps-dbc-stage--play .ps-dbc-app-pill--off {
-  animation: ps-dbc-fade 260ms ease-out calc(400ms + var(--row-i, 0) * 70ms) both;
-}
-
-.ps-bento-card--websites .ps-dbc-stage--play .ps-dbc-spark-col {
-  animation: ps-dbc-bar-grow 460ms var(--mo-draw) calc(560ms + var(--si, 0) * 60ms) both;
-}
-
-/* THE BEAT: the count snaps at the end of its 900ms run (rAF starts at 380ms,
-   so it lands at ~1280ms) — alone, last, and the only `scale` on the card. */
-.ps-bento-card--websites .ps-dbc-stage--play .ps-dbc-app-count {
-  animation: ps-dbc-count-pop 260ms var(--mo-snap) 1280ms both;
-}
-
-.ps-bento-card--websites .ps-dbc-stage--play .ps-dbc-phone {
-  animation: ps-dbc-phone-in 420ms var(--mo-arrive) 980ms both;
-}
-
-@keyframes ps-dbc-row-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes ps-dbc-name-grow {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
-@keyframes ps-dbc-pill-in {
-  from { opacity: 0; transform: scale(0.9); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-@keyframes ps-dbc-fade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes ps-dbc-bar-grow {
-  from { transform: scaleY(0); }
-  to   { transform: scaleY(1); }
-}
-
-@keyframes ps-dbc-count-pop {
-  0%   { transform: scale(1); }
-  45%  { transform: scale(1.06); }
-  100% { transform: scale(1); }
-}
-
-@keyframes ps-dbc-phone-in {
-  from { opacity: 0; transform: rotate(5deg) translate(14px, 10px) scale(0.96); }
-  to   { opacity: 1; transform: rotate(5deg) translate(0, 0) scale(1); }
-}
-
-/* Narrow tiles. Rows are dropped ONLY FROM THE END, which is what keeps the
-   delay run contiguous without re-assigning a single value — the old ladder's
-   measured 240ms and 360ms holes came from hiding MIDDLE rows by nth-child
-   while delays were index-based. Never drop from the middle. */
-@media (max-width: 939px) {
-  .ps-bento-card--websites .ps-dbc-app-row:nth-child(n + 6) { display: none; }
-}
-
-@media (max-width: 639px) {
-  /* Phone dropped: at these widths the window needs the full width more than
-     the composition needs the overlap. */
-  .ps-bento-card--websites .ps-dbc-phone { display: none; }
-  .ps-bento-card--websites .ps-dbc-win { width: 100%; }
-}
-
-/* ROTATION AT PHONE WIDTHS. Card 4 keeps its `rotate(5deg)` phone all the way
-   down and that off-axis object is one of its core depth devices; cards 1-3 had
-   ZERO rotated elements at 390, flattening out exactly where depth matters
-   most. Card 2 regains its rotated PAID stamp at every width now. Here the
-   phone comes back from 360 up, smaller and tucked closer, so the window still
-   has room to read. Below 360 there is genuinely no room and it stays dropped. */
-@media (min-width: 360px) and (max-width: 639px) {
-  .ps-bento-card--websites .ps-dbc-phone {
-    display: flex;
-    width: 68px;
-    right: -6px;
-    bottom: 44px;
-    gap: 4px;
-    padding: 7px 6px 8px;
-    border-radius: 9px;
-  }
-  .ps-bento-card--websites .ps-dbc-win { width: 82%; }
-  .ps-bento-card--websites .ps-dbc-phone-title { font-size: 7px; }
-  .ps-bento-card--websites .ps-dbc-phone-field { height: 7px; }
-  .ps-bento-card--websites .ps-dbc-phone-save { font-size: 6.5px; padding: 4px 0; }
-  .ps-bento-card--websites .ps-dbc-app-row:nth-child(n + 5) { display: none; }
-  .ps-bento-card--websites .ps-dbc-app-count { font-size: 18px; }
-  .ps-bento-card--websites .ps-dbc-spark { height: 28px; }
-}
-
-@media (max-width: 359px) {
-  .ps-bento-card--websites .ps-dbc-app-row:nth-child(n + 4) { display: none; }
-  .ps-bento-card--websites .ps-dbc-app-count { font-size: 17px; }
-  .ps-bento-card--websites .ps-dbc-app-eyebrow { font-size: 8px; letter-spacing: 0.06em; }
-  .ps-bento-card--websites .ps-dbc-spark { height: 28px; }
-}
-
-/* REDUCED MOTION — a REAL COMPOSED SCENE, never a blank stage and never a
-   half-built one. `animation: none` alone is NOT sufficient here: it freezes
-   every animated property at its UNDERLYING value, which for the name bars is
-   `scaleX(0)` (invisible) and for the spark bars `scaleY(0)` (a flat line).
-   Each is therefore pinned explicitly. The rAF counter never starts (guarded
-   in the component), so the count renders its final 1,248 straight from the
-   DOM. */
-@media (prefers-reduced-motion: reduce) {
-  .ps-bento-card--websites .ps-dbc-stage--play *,
-  .ps-bento-card--websites .ps-dbc-stage--play {
-    animation: none !important;
-    transition: none !important;
-  }
-  .ps-bento-card--websites .ps-dbc-app-row,
-  .ps-bento-card--websites .ps-dbc-app-pill,
-  .ps-bento-card--websites .ps-dbc-app-name,
-  .ps-bento-card--websites .ps-dbc-spark-col,
-  .ps-bento-card--websites .ps-dbc-app-count {
-    opacity: 1 !important;
-  }
-  .ps-bento-card--websites .ps-dbc-app-row,
-  .ps-bento-card--websites .ps-dbc-app-count { transform: none !important; }
-  .ps-bento-card--websites .ps-dbc-app-name { transform: scaleX(1) !important; }
-  .ps-bento-card--websites .ps-dbc-spark-col { transform: scaleY(1) !important; }
-  .ps-bento-card--websites .ps-dbc-app-pill { transform: scale(1) !important; }
-  .ps-bento-card--websites .ps-dbc-phone {
-    opacity: 1 !important;
-    transform: rotate(5deg) !important;
-  }
-  .ps-bento-card--websites .ps-dbc-spark-col:nth-child(4) { opacity: 0.55 !important; }
-  .ps-bento-card--websites .ps-dbc-spark-col:nth-child(5) { opacity: 0.75 !important; }
-}
-
-/* ── Business Automation card face: "The Invoice That Chases Itself" ──
-   Rebuilt 2026-09-05. Scoped to `.ps-bento-card--systems` (0,2,0): globals.css
-   is the LATER sheet and declares `.ps-fix-root` itself (globals.css:3326), so
-   an unscoped copy here would do nothing on screen.
-
-   THE MEASURED FAILURE THIS FIXES. Same root cause as its two siblings: the
-   panel was `rgba(255,255,255,0.043)` over a `rgb(10,22,40)` card — composited
-   rgb(20,32,49), ~10/255 from its own background — with `box-shadow: none`. On
-   top of that the rail was a 1px hairline, the label sat OUTSIDE the panel at
-   the card's top edge, and there was no second object anywhere: one flat
-   rounded rectangle, no overlap, no nesting, nothing off-axis.
-
-   The content was always the strongest of the three and is kept intact. What
-   changes is the surface, the spine, and the arrival of a second object. ── */
-
-.ps-bento-card--systems .ps-fix-root {
-  /* Panel interior tokens: theme-INDEPENDENT (white device in both themes). */
-  --rn-ink: #0A1628;
-  --rn-dim: #475569;
-  --rn-faint: #94A3B8;
-  --rn-line: #E2E8F0;
-  --rn-rule: #CBD5E1;
-  --rn-act: #0C6FC9;
-  --rn-ok: #10B981;
-  --rn-ok-ink: #07795F;
-  --rn-you: #0C6FC9;
-  --rail-inset: 10%;
-  --mo-arrive: cubic-bezier(0.165, 0.84, 0.44, 1);
-  --mo-draw: cubic-bezier(0.16, 1, 0.3, 1);
-  --mo-snap: cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  display: flex;
-  flex-direction: column;
-/* PANEL INSET — cards 2/3 sat 8/6/6px from the card edge and read as
-   screenshots pasted to the edge rather than objects placed in a scene. Card 4
-   sits at 82/105/207 and card 5 at 62/35/35. The 62px TOP is doing a second
-   job: it lifts the panel clear of `.ps-bento-card__expand` (top:12 right:12,
-   44px at <=768), which previously overlapped these panels 100%. Card 5 gets
-   its 0% overlap the same way. */
-  background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
-  padding: 62px 16px 80px;
-  box-sizing: border-box;
-  align-items: center;
-  overflow: hidden;
-}
-
-.ps-bento-card--systems .ps-run-panel {
-  width: 100%;
-  max-width: 360px;
-}
-
-[data-theme="light"] .ps-bento-card--systems .ps-fix-root {
-  background: linear-gradient(160deg, #F0F4F8 0%, #E8EDF3 100%);
-}
-
-/* The dark-theme title scrim (`[data-theme="dark"] .ps-bento-card__text::before`,
-   globals.css, <=768 only) spans [titleTop-80, titleTop+62.8]. White panels are
-   MEANT to be scrimmed there — globals says so explicitly and card 5 ships the
-   same way — so this is not a defect to fight. But a PAYOFF element sitting in
-   the densest part of that band reads muddy, and the payoff is the one thing
-   that must stay legible. 96px lifts the panel foot clear of the strongest
-   band while keeping the panel tall enough to compose. */
-@media (min-width: 940px) {
-  .ps-bento-card--systems .ps-fix-root { padding-bottom: 76px; }
-}
-
-.ps-bento-card--systems .ps-run-panel {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  border-radius: 9px;
-  background: #F8FAFC;
-  border: 1px solid rgba(255,255,255,0.1);
-  overflow: hidden;
-  box-shadow:
-    0 24px 60px rgba(0,0,0,0.5),
-    0 6px 20px rgba(0,0,0,0.32);
-}
-
-[data-theme="light"] .ps-bento-card--systems .ps-run-panel {
-  border-color: rgba(0,0,0,0.1);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
-}
-
-/* Chrome strip — FLIPS WITH THE THEME (card-visuals.css:2633). */
-.ps-bento-card--systems .ps-run-chrome {
-  flex-shrink: 0;
+.ps-asst-app-chrome {
   display: flex;
   align-items: center;
   gap: 7px;
+  flex: 0 0 auto;
   padding: 6px 9px;
   background: linear-gradient(180deg, #20314f 0%, #182743 100%);
 }
 
-[data-theme="light"] .ps-bento-card--systems .ps-run-chrome {
+.ps-asst-app-dots {
+  display: flex;
+  gap: 3px;
+  flex: 0 0 auto;
+}
+
+.ps-asst-app-dots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.22);
+}
+
+.ps-asst-app-pill {
+  flex: 1;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.12);
+}
+
+.ps-asst-app-body {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 9px;
+  padding: 9px 10px;
+}
+
+/* The navy rail: the large dark mass, unchanged by theme. */
+.ps-asst-app-rail {
+  flex: 0 0 auto;
+  align-self: stretch;
+  width: 24px;
+  border-radius: 5px;
+  background: linear-gradient(170deg, #0A1628 0%, #0C1E3A 100%);
+}
+
+/* Plane 1 is a LIST, not five bare lines. Bare lines spread across a tile
+   read as an empty sheet; rows with an avatar block and two bars carry ink
+   and read as "the system you already use". */
+.ps-asst-app-list {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ps-asst-app-item {
+  flex: 0 0 auto;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: rgba(10,22,40,0.05);
+}
+
+.ps-asst-app-av {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  background: #cbd5e1;
+}
+
+.ps-asst-app-name {
+  flex: 0 0 auto;
+  width: 42%;
+  height: 4px;
+  border-radius: 2px;
+  background: #94A3B8;
+}
+
+.ps-asst-app-meta {
+  flex: 0 0 auto;
+  margin-left: auto;
+  width: 24px;
+  height: 4px;
+  border-radius: 2px;
+  background: #e2e8f0;
+}
+
+/* PLANE 2 — the assistant, docked over plane 1 at 5deg. */
+/* Capped width. Unbounded, the bubbles stretch to 500px and stop reading
+   as bubbles — they become bars. */
+.ps-asst-panel {
+  position: absolute;
+  left: -8px;
+  bottom: 0;
+  width: 72%;
+  min-width: 172px;
+  max-width: 244px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px 10px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  transform: rotate(5deg);
+  transition: transform 300ms ease;
+}
+
+.ps-asst-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ps-asst-spark {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  color: var(--color-primary-strong);
+}
+
+.ps-asst-label {
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-primary-strong);
+}
+
+.ps-asst-thread {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.ps-asst-bubble {
+  display: block;
+  width: 72%;
+  height: 15px;
+  border-radius: 9px 9px 9px 3px;
+  background: #e2e8f0;
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+.ps-asst-bubble--short { width: 50%; }
+.ps-asst-bubble--wide  { width: 86%; background: #cbd5e1; }
+
+.ps-asst-root.in-view .ps-asst-bubble {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 360ms ease calc(var(--sr-i, 0) * 90ms),
+    transform 360ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--sr-i, 0) * 90ms);
+}
+
+/* PAYOFF — the reply the assistant wrote. Solid brand blue, arrives
+   last, and it is the only element in this card that scales. */
+.ps-asst-reply {
+  align-self: flex-end;
+  width: 68%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 7px 9px;
+  border-radius: 9px 9px 3px 9px;
+  background: var(--color-primary-strong);
+  opacity: 0;
+  transform: translateY(5px) scale(0.94);
+}
+
+.ps-asst-reply i {
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.62);
+}
+
+.ps-asst-reply i:last-child {
+  width: 56%;
+  background: rgba(255,255,255,0.38);
+}
+
+.ps-asst-root.in-view .ps-asst-reply {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 420ms ease 520ms,
+    transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) 520ms;
+}
+
+/* Hover: 6px on the near plane, 2px on the far one. */
+.ps-bento-card:hover .ps-asst-panel { transform: rotate(5deg) translateY(-6px); }
+.ps-bento-card:hover .ps-asst-app   { transform: translateY(-2px); }
+
+/* ── VISUAL 3: Business Automation — the document that sends itself ── */
+
+.ps-doc-root {
+  display: flex;
+  flex-direction: column;
+  /* Content-sized and centred — see the note on .ps-asst-app. */
+  justify-content: center;
+  padding: 62px 0 62px 0;
+  background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
+  overflow: hidden;
+}
+
+.ps-doc-stage {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  padding-bottom: 34px;
+}
+
+/* PLANE 1 — the document. `margin-left: -18px` is the bleed: the sheet's
+   left edge is cropped by the card, the way .ps-wb-browser's content runs
+   off frame on purpose. Height comes from the line items — see the note
+   on .ps-asst-app for the versions measured and rejected before this. */
+.ps-doc-sheet {
+  position: relative;
+  margin-left: -18px;
+  width: 76%;
+  min-width: 206px;
+  max-width: 290px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 8px 8px 0;
+  overflow: hidden;
+  background: #f8fafc;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.5),
+    0 6px 20px rgba(0,0,0,0.32);
+  transform: translateY(0);
+  transition: transform 300ms ease;
+}
+
+/* Letterhead. Doubles as the contrast bed under .ps-bento-card__expand. */
+.ps-doc-head {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 11px;
+  background: linear-gradient(180deg, #20314f 0%, #182743 100%);
+}
+
+.ps-doc-mark {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 auto;
+  border-radius: 3px;
+  background: #1590FF;
+}
+
+.ps-doc-kicker {
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+}
+
+.ps-doc-body {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 11px 13px 12px;
+}
+
+.ps-doc-title {
+  display: block;
+  flex: 0 0 auto;
+  width: 44%;
+  height: 6px;
+  border-radius: 3px;
+  background: #64748B;
+}
+
+.ps-doc-sub {
+  display: block;
+  flex: 0 0 auto;
+  width: 28%;
+  height: 4px;
+  border-radius: 2px;
+  background: #cbd5e1;
+}
+
+.ps-doc-rows {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 3px;
+}
+
+/* Every line item is a grey bar. There is no currency figure and no
+   quantity anywhere in this card — see the claims note in the TSX.
+   Fixed 24px bands with a zebra fill: the band is the ink. */
+.ps-doc-row {
+  flex: 0 0 auto;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 6px;
+  border-radius: 3px;
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+.ps-doc-row:nth-child(odd) {
+  background: rgba(10,22,40,0.045);
+}
+
+.ps-doc-row-name {
+  flex: 1 1 auto;
+  height: 5px;
+  border-radius: 2px;
+  background: #e2e8f0;
+}
+
+.ps-doc-row:nth-child(1) .ps-doc-row-name { width: 62%; flex: 0 0 auto; }
+.ps-doc-row:nth-child(2) .ps-doc-row-name { width: 48%; flex: 0 0 auto; }
+.ps-doc-row:nth-child(3) .ps-doc-row-name { width: 57%; flex: 0 0 auto; }
+.ps-doc-row:nth-child(4) .ps-doc-row-name { width: 41%; flex: 0 0 auto; }
+.ps-doc-row:nth-child(5) .ps-doc-row-name { width: 53%; flex: 0 0 auto; }
+
+.ps-doc-row-val {
+  flex: 0 0 auto;
+  margin-left: auto;
+  width: 22px;
+  height: 5px;
+  border-radius: 2px;
+  background: #cbd5e1;
+}
+
+.ps-doc-total {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 8px 6px 0;
+  border-top: 1px solid #e2e8f0;
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+.ps-doc-total-name {
+  flex: 0 0 auto;
+  width: 30%;
+  height: 5px;
+  border-radius: 2px;
+  background: #94A3B8;
+}
+
+.ps-doc-total-val {
+  flex: 0 0 auto;
+  margin-left: auto;
+  width: 30px;
+  height: 5px;
+  border-radius: 2px;
+  background: #64748B;
+}
+
+.ps-doc-root.in-view .ps-doc-row,
+.ps-doc-root.in-view .ps-doc-total {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 360ms ease calc(var(--sr-i, 0) * 90ms),
+    transform 360ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--sr-i, 0) * 90ms);
+}
+
+/* PLANE 2 — the counterweight, at the right, occluding the sheet's edge.
+   Same role .ps-phone plays against .ps-wb-browser: asymmetric, one
+   object over the other, weight low. */
+.ps-doc-mail {
+  position: absolute;
+  right: 4px;
+  bottom: 10px;
+  z-index: 2;
+  width: 58%;
+  min-width: 148px;
+  max-width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 9px;
+  border-radius: 9px;
+  background: #ffffff;
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  transform: rotate(5deg);
+  transition: transform 300ms ease;
+}
+
+.ps-doc-mail-icon {
+  flex: 0 0 auto;
+  width: 13px;
+  height: 13px;
+  display: flex;
+  color: #94A3B8;
+}
+
+.ps-doc-mail-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ps-doc-mail-lines {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ps-doc-mail-lines i {
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background: #cbd5e1;
+}
+
+.ps-doc-mail-lines i:last-child {
+  width: 58%;
+  background: #e2e8f0;
+}
+
+/* PAYOFF — solid brand blue, arrives last, the only scale in this card. */
+.ps-doc-send {
+  flex: 0 0 auto;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  background: var(--color-primary-strong);
+  padding: 3px 8px;
+  border-radius: 999px;
+  line-height: 1.35;
+  opacity: 0;
+  transform: translateY(5px) scale(0.94);
+}
+
+.ps-doc-root.in-view .ps-doc-send {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 420ms ease 520ms,
+    transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) 520ms;
+}
+
+.ps-bento-card:hover .ps-doc-mail  { transform: rotate(5deg) translateY(-6px); }
+.ps-bento-card:hover .ps-doc-sheet { transform: translateY(-2px); }
+
+/* ── VISUAL 4: Business Software — your own back-office app ──── */
+
+.ps-app-root {
+  display: flex;
+  flex-direction: column;
+  padding: 62px 0 72px 20px;
+  background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
+  overflow: hidden;
+}
+
+.ps-app-stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+
+/* PLANE 1 — the app window, cropped by the card's right edge. */
+.ps-app-window {
+  position: absolute;
+  inset: 0 -30px 0 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 9px 0 0 9px;
+  overflow: hidden;
+  background: #f8fafc;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.5),
+    0 6px 20px rgba(0,0,0,0.32);
+  transform: translateY(0);
+  transition: transform 300ms ease;
+}
+
+.ps-app-chrome {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  padding: 6px 9px;
+  background: linear-gradient(180deg, #20314f 0%, #182743 100%);
+}
+
+.ps-app-dots {
+  display: flex;
+  gap: 3px;
+  flex: 0 0 auto;
+}
+
+.ps-app-dots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.22);
+}
+
+.ps-app-chrome-pill {
+  flex: 1;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.12);
+}
+
+.ps-app-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+}
+
+/* The navy rail: the large dark mass. Stays navy in both themes, the
+   same call .ps-site-nav makes at card-visuals.css:2331. */
+.ps-app-rail {
+  flex: 0 0 auto;
+  width: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 0;
+  background: linear-gradient(170deg, #0A1628 0%, #0C1E3A 100%);
+}
+
+.ps-app-rail-mark {
+  width: 13px;
+  height: 13px;
+  border-radius: 4px;
+  background: #1590FF;
+  margin-bottom: 2px;
+}
+
+.ps-app-rail-item {
+  width: 15px;
+  height: 5px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.13);
+}
+
+.ps-app-rail-item--on {
+  background: rgba(255,255,255,0.42);
+}
+
+.ps-app-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 9px 10px 10px;
+}
+
+.ps-app-toolbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ps-app-tab {
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748B;
+  white-space: nowrap;
+}
+
+.ps-app-toolbar-pill {
+  flex: 1 1 auto;
+  height: 4px;
+  border-radius: 2px;
+  background: #e2e8f0;
+}
+
+/* The chart is the MASS. It is the one thing recovered from the
+   pre-8c7c955 card, which had the confidence with a big saturated fill
+   that the whole current set lacks. Non-monotonic by design — a rising
+   chart is an outcome claim as artwork (WRITER-AGENT-PROMPT.md:31). */
+.ps-app-chart {
+  flex: 1 1 auto;
+  min-height: 42px;
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+.ps-app-bar {
+  flex: 1 1 0;
+  min-width: 0;
+  height: calc(var(--bar-h, 0.5) * 100%);
+  border-radius: 3px 3px 1px 1px;
+  background: linear-gradient(180deg, #1590FF 0%, rgba(21,144,255,0.68) 100%);
+}
+
+.ps-app-rows {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ps-app-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 4px;
+  border-radius: 4px;
+  background: rgba(10,22,40,0.04);
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+.ps-app-row-av {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  background: #cbd5e1;
+}
+
+.ps-app-row-name {
+  flex: 0 0 auto;
+  width: 38%;
+  height: 4px;
+  border-radius: 2px;
+  background: #94A3B8;
+}
+
+.ps-app-row-meta {
+  flex: 0 0 auto;
+  margin-left: auto;
+  width: 26px;
+  height: 4px;
+  border-radius: 2px;
+  background: #e2e8f0;
+}
+
+.ps-app-root.in-view .ps-app-chart,
+.ps-app-root.in-view .ps-app-row {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 360ms ease calc(var(--sr-i, 0) * 90ms),
+    transform 360ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--sr-i, 0) * 90ms);
+}
+
+/* PLANE 2 — the record you opened, over the window at 5deg. */
+.ps-app-sheet {
+  position: absolute;
+  right: 8px;
+  bottom: 10px;
+  z-index: 2;
+  width: 42%;
+  min-width: 116px;
+  max-width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 9px 10px 10px;
+  border-radius: 9px;
+  background: #ffffff;
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  transform: rotate(5deg);
+  transition: transform 300ms ease;
+}
+
+.ps-app-sheet-bar {
+  display: block;
+  width: 78%;
+  height: 4px;
+  border-radius: 2px;
+  background: #cbd5e1;
+}
+
+.ps-app-sheet-bar--short {
+  width: 52%;
+  background: #e2e8f0;
+}
+
+/* PAYOFF — solid brand blue, arrives last, the only scale in this card. */
+.ps-app-save {
+  margin-top: 2px;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  background: var(--color-primary-strong);
+  padding: 3px 9px;
+  border-radius: 999px;
+  line-height: 1.35;
+  opacity: 0;
+  transform: translateY(5px) scale(0.94);
+}
+
+.ps-app-root.in-view .ps-app-save {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 420ms ease 520ms,
+    transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) 520ms;
+}
+
+.ps-bento-card:hover .ps-app-sheet  { transform: rotate(5deg) translateY(-6px); }
+.ps-bento-card:hover .ps-app-window { transform: translateY(-2px); }
+
+/* ── Light mode for visuals 2, 3 & 4 ──────────────────────────
+   Only the backdrop, the chrome strips and the shadows change. The
+   panels stay light in both themes (a screen is lit in a dark room too)
+   and the navy rail / letterhead stay navy — same calls .ps-site-layout
+   and .ps-site-nav make for WebsiteVisual.
+
+   The old cards failed exactly here: their panels were a theme-invariant
+   rgb(248,250,252) with NO flipping backdrop, so on a #0A1628 page they
+   read as a white slab. The flip below is what fixes that. */
+
+[data-theme="light"] .ps-asst-root,
+[data-theme="light"] .ps-doc-root,
+[data-theme="light"] .ps-app-root {
+  background: linear-gradient(160deg, #F0F4F8 0%, #E8EDF3 100%);
+}
+
+[data-theme="light"] .ps-asst-app-chrome,
+[data-theme="light"] .ps-doc-head,
+[data-theme="light"] .ps-app-chrome {
   background: linear-gradient(180deg, #E8EDF3 0%, #DDE4EC 100%);
   border-bottom: 1px solid #CBD5E1;
 }
 
-.ps-bento-card--systems .ps-run-chrome-dots { display: flex; gap: 3px; flex-shrink: 0; }
-
-.ps-bento-card--systems .ps-run-chrome-dots i {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: rgba(255,255,255,0.28);
+[data-theme="light"] .ps-asst-app-dots i,
+[data-theme="light"] .ps-app-dots i {
+  background: rgba(10,22,40,0.18);
 }
 
-[data-theme="light"] .ps-bento-card--systems .ps-run-chrome-dots i { background: rgba(10,22,40,0.18); }
-
-.ps-bento-card--systems .ps-run-chrome-name {
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+[data-theme="light"] .ps-asst-app-pill,
+[data-theme="light"] .ps-app-chrome-pill {
+  background: rgba(10,22,40,0.09);
 }
 
-[data-theme="light"] .ps-bento-card--systems .ps-run-chrome-name { color: rgba(10,22,40,0.5); }
-
-/* The label now lives INSIDE the panel head. It used to sit outside it at the
-   very top edge of the card, detached from the artwork it named. */
-.ps-bento-card--systems .ps-run-head {
-  flex-shrink: 0;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px 9px 0;
-  min-width: 0;
-  /* Reserve the top-right 44px for `.ps-bento-card__expand`. */
-  padding-right: 46px;
+/* The letterhead flips, so its kicker has to stop being white-on-white. */
+[data-theme="light"] .ps-doc-kicker {
+  color: #475569;
 }
 
-.ps-bento-card--systems .ps-run-label {
-  font-size: 8.5px;
-  font-weight: 800;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--rn-faint);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
+[data-theme="light"] .ps-asst-app,
+[data-theme="light"] .ps-doc-sheet,
+[data-theme="light"] .ps-app-window {
+  border-color: rgba(0,0,0,0.1);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
 }
 
-.ps-bento-card--systems .ps-run-ref {
-  flex-shrink: 0;
-  font-size: 10px;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--rn-act);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+[data-theme="light"] .ps-asst-panel,
+[data-theme="light"] .ps-doc-mail,
+[data-theme="light"] .ps-app-sheet {
+  border-color: rgba(0,0,0,0.1);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.16), 0 4px 12px rgba(0,0,0,0.08);
 }
 
-.ps-bento-card--systems .ps-run-body {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  gap: 9px;
-  padding: 7px 9px 0;
-}
-
-.ps-bento-card--systems .ps-run-list {
-  position: relative;
-  flex: 1;
-  min-width: 0;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: clamp(3px, 4%, 8px);
-}
-
-/* THE SPINE. 2px, and it carries a blue->green gradient so the rail itself
-   encodes start->closed as COLOUR — legible at rest, needing no motion to
-   read. It terminates at the last dot rather than running on into empty
-   space: with N equal rows the first and last dot centres sit at
-   `100%/(2N)` from each end, which is what --rail-inset carries. */
-.ps-bento-card--systems .ps-run-rail {
-  position: absolute;
-  left: 45px;
-  top: var(--rail-inset);
-  /* Negative: the rail continues past the last dot, out of the list box, and
-     lands on the closing strip's top edge. `.ps-run-list` does not clip. */
-  bottom: var(--rail-end, -9px);
-  width: 2px;
-  border-radius: 2px;
-  background: linear-gradient(180deg, var(--rn-act) 0%, var(--rn-ok) 100%);
-  transform-origin: top center;
-}
-
-/* The closed terminal. A filled green cap where the spine meets the strip, so
-   the run visibly ENDS on a resolved state instead of on a hollow QUEUED dot. */
-.ps-bento-card--systems .ps-run-rail::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -3px;
-  width: 8px;
-  height: 8px;
-  margin-left: -4px;
-  border-radius: 50%;
-  background: var(--rn-ok);
-  box-shadow: 0 0 0 2.5px #F8FAFC;
-}
-
-.ps-bento-card--systems .ps-run-row {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: 30px 10px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 6px;
-  padding: 0 5px;
-  border-radius: 6px;
-  color: var(--rn-ink);
-  white-space: nowrap;
-  min-width: 0;
-  font-variant-numeric: tabular-nums;
-}
-
-/* The only tinted row on the card: the one human beat in a column of machine
-   steps. Tint is painted by a ::before opacity, never an animated
-   background-color. */
-.ps-bento-card--systems .ps-run-row--you::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 6px;
-  background: rgba(34,211,238,0.10);
-  box-shadow: inset 0 0 0 1px rgba(34,211,238,0.30);
-  pointer-events: none;
-}
-
-.ps-bento-card--systems .ps-run-time {
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--rn-faint);
-  white-space: nowrap;
-}
-
-/* Dots punch OUT of the rail with a white ring, so the spine reads as passing
-   behind them rather than colliding with them. */
-.ps-bento-card--systems .ps-run-dot {
-  justify-self: center;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--rn-rule);
-  box-shadow: 0 0 0 2.5px #F8FAFC;
-  z-index: 1;
-}
-
-.ps-bento-card--systems .ps-run-row--sent .ps-run-dot { background: var(--rn-act); }
-.ps-bento-card--systems .ps-run-row--you .ps-run-dot  { background: #22D3EE; }
-.ps-bento-card--systems .ps-run-row--queued .ps-run-dot {
-  background: #F8FAFC;
-  box-shadow: 0 0 0 1.4px var(--rn-rule), 0 0 0 2.5px #F8FAFC;
-}
-
-.ps-bento-card--systems .ps-run-text {
-  font-size: 9px;
-  font-weight: 600;
-  color: var(--rn-ink);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-}
-
-.ps-bento-card--systems .ps-run-pill {
-  justify-self: end;
-  font-size: 7.5px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  line-height: 1;
-  padding: 3.5px 6px;
-  border-radius: 999px;
-  white-space: nowrap;
-  color: var(--rn-dim);
-  background: #F1F5F9;
-}
-
-.ps-bento-card--systems .ps-run-pill--sent {
-  color: var(--rn-act);
-  background: rgba(12,111,201,0.12);
-}
-
-.ps-bento-card--systems .ps-run-pill--you {
-  color: #0E7490;
-  background: transparent;
-  box-shadow: inset 0 0 0 1px rgba(14,116,144,0.45);
-}
-
-.ps-bento-card--systems .ps-run-pill--queued {
-  color: var(--rn-faint);
-  background: #F1F5F9;
-}
-
-.ps-bento-card--systems .ps-run-pill--closed {
-  color: #FFFFFF;
-  background: var(--rn-ok-ink);
-}
-
-/* ── The second object: the invoice itself. Supplies the nesting the flat
-   list had none of, and carries the only off-axis element on the card. ── */
-.ps-bento-card--systems .ps-run-doc {
-  position: relative;
-  flex: 0 0 34%;
-  max-width: 116px;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 8px 7px;
-  border-radius: 6px;
-  background: #FFFFFF;
-  box-shadow: inset 0 0 0 1px var(--rn-line), 0 4px 12px rgba(15,32,56,0.10);
-}
-
-.ps-bento-card--systems .ps-run-doc-head {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 1px;
-}
-
-.ps-bento-card--systems .ps-run-doc-mark {
-  width: 9px; height: 9px; border-radius: 2px;
-  background: var(--rn-act); opacity: 0.85;
-  flex-shrink: 0;
-}
-
-.ps-bento-card--systems .ps-run-doc-title {
-  height: 4px; border-radius: 2px; flex: 1; min-width: 0;
-  background: var(--rn-rule);
-}
-
-/* Items fill the document's height the same way `.ps-run-row` fills the list:
-   a flex column of `flex: 1` children with a bounded gap. No `margin-top:auto`
-   anywhere in here — that is what opened the 108px hole. */
-.ps-bento-card--systems .ps-run-doc-items {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-  gap: clamp(2px, 3%, 6px);
-}
-
-.ps-bento-card--systems .ps-run-doc-item {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.ps-bento-card--systems .ps-run-doc-desc {
-  height: 3px;
-  border-radius: 2px;
-  background: var(--rn-line);
-}
-
-/* The amount column: right-aligned, one shade darker so the document reads as
-   description + figure rather than as undifferentiated ruling. */
-.ps-bento-card--systems .ps-run-doc-amt {
-  height: 3px;
-  border-radius: 2px;
-  margin-left: auto;
-  background: var(--rn-rule);
-}
-
-.ps-bento-card--systems .ps-run-doc-rule {
-  height: 1px;
-  margin: 4px 0 3px;
-  background: var(--rn-rule);
-}
-
-.ps-bento-card--systems .ps-run-doc-total-label {
-  display: block;
-  width: 22px;
-  height: 3px;
-  border-radius: 2px;
-  margin-bottom: 3px;
-  background: var(--rn-line);
-}
-
-.ps-bento-card--systems .ps-run-doc-total {
-  font-size: 9px;
-  font-weight: 800;
-  color: var(--rn-ink);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-/* THE PRIVILEGED ELEMENT. The only rotated object on the card, the most
-   saturated leaf, landing alone and last on top of the document. */
-/* Seated against the PANEL now, not the document. Default position is over the
-   panel head, which exists at every width and sits well clear of the dark title
-   scrim; >=940 re-seats it onto the document. */
-.ps-bento-card--systems .ps-run-stamp {
-  position: absolute;
-  z-index: 4;
-  right: 14px;
-  top: 38px;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  line-height: 1;
-  padding: 4px 8px;
-  border-radius: 4px;
-  color: #FFFFFF;
-  background: var(--rn-ok-ink);
-  box-shadow: 0 4px 12px rgba(7,121,95,0.45);
-  transform: rotate(-8deg);
-  white-space: nowrap;
-}
-
-/* Document is present at >=940: land the stamp on it instead of the head.
-   Declared AFTER the base `.ps-run-stamp` rule on purpose — placed before it,
-   `top: 40px` won on source order and stretched the stamp to 72x202. */
-@media (min-width: 1200px) {
-  .ps-bento-card--systems .ps-run-stamp {
-    right: 14px;
-    top: auto;
-    bottom: 64px;
-  }
-}
-
-/* ── The close. The card's thesis: this runs top-to-bottom and CLOSES. ── */
-.ps-bento-card--systems .ps-run-close {
-  position: relative;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 7px 9px 9px;
-  padding: 6px 8px;
-  border-radius: 6px;
-  color: var(--rn-ok-ink);
-  background: rgba(16,185,129,0.12);
-  box-shadow: inset 0 0 0 1px rgba(16,185,129,0.32);
-}
-
-.ps-bento-card--systems .ps-run-close-glyph {
-  width: 12px; height: 12px; flex-shrink: 0; display: block;
-}
-
-.ps-bento-card--systems .ps-run-close-tick {
-  stroke-dasharray: 8;
-  stroke-dashoffset: 0;
-}
-
-.ps-bento-card--systems .ps-run-close-text {
-  font-size: 8.5px;
-  font-weight: 700;
-  color: var(--rn-ok-ink);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-}
-
-.ps-bento-card--systems .ps-run-close .ps-run-pill--closed { margin-left: auto; }
-
-/* ══ REVEAL ══════════════════════════════════════════════════════
-   Shell painted at t=0; only content animates. Delays derive from `--row-i`,
-   set by the component from the row's own index, and rows are dropped ONLY
-   FROM THE END — so the visible run is contiguous by construction.
-
-   THE OLD BUG, FOR THE RECORD: the previous rule hid `.ps-run-row:nth-child(5)`
-   at <=639. `.ps-run-list` also contains `.ps-run-rail` as its FIRST child, so
-   nth-child(5) actually matched the FOURTH row — a MIDDLE row — while delays
-   were index-based. That off-by-one is what produced the measured 240ms hole.
-   Nothing here counts children. ── */
-
-.ps-bento-card--systems .ps-run-panel--play .ps-run-rail {
-  animation: ps-run-rail 620ms var(--mo-draw) 120ms both;
-}
-
-/* Rail-synced: each row lands as the rail head reaches it, so the spine
-   visibly CAUSES each step rather than five rows fading in sequence. */
-.ps-bento-card--systems .ps-run-panel--play .ps-run-row {
-  animation: ps-run-in 300ms var(--mo-arrive) calc(180ms + var(--row-i, 0) * 120ms) both;
-}
-
-.ps-bento-card--systems .ps-run-panel--play .ps-run-dot {
-  animation: ps-run-dot-in 260ms var(--mo-snap) calc(240ms + var(--row-i, 0) * 120ms) both;
-}
-
-.ps-bento-card--systems .ps-run-panel--play .ps-run-pill {
-  animation: ps-run-pill-in 200ms var(--mo-snap) calc(300ms + var(--row-i, 0) * 120ms) both;
-}
-
-/* An unsettled step is not an error: QUEUED fades to 0.6, it does not snap. */
-.ps-bento-card--systems .ps-run-panel--play .ps-run-pill--queued {
-  animation: ps-run-queued-in 240ms ease-out calc(300ms + var(--row-i, 0) * 120ms) both;
-}
-
-.ps-bento-card--systems .ps-run-panel--play .ps-run-doc {
-  animation: ps-run-in 380ms var(--mo-arrive) 760ms both;
-}
-
-.ps-bento-card--systems .ps-run-panel--play .ps-run-close {
-  animation: ps-run-close-in 420ms var(--mo-draw) 1000ms both;
-}
-
-.ps-bento-card--systems .ps-run-panel--play .ps-run-close-tick {
-  animation: ps-run-tick-draw 380ms ease-out 1180ms both;
-}
-
-/* THE BEAT: the stamp lands, alone and last, at the longest duration on the
-   card, and it is the only element here with a `scale`. */
-.ps-bento-card--systems .ps-run-panel--play .ps-run-stamp {
-  animation: ps-run-stamp 460ms var(--mo-snap) 1280ms both;
-}
-
-.ps-bento-card--systems .ps-run-panel--play .ps-run-pill--closed {
-  animation: ps-run-pill-in 320ms var(--mo-snap) 1420ms both;
-}
-
-@keyframes ps-run-rail {
-  from { transform: scaleY(0); }
-  to   { transform: scaleY(1); }
-}
-
-@keyframes ps-run-in {
-  from { opacity: 0; transform: translateX(-10px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes ps-run-dot-in {
-  from { transform: scale(0); }
-  to   { transform: scale(1); }
-}
-
-@keyframes ps-run-pill-in {
-  from { opacity: 0; transform: scale(0.9); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-@keyframes ps-run-queued-in {
-  from { opacity: 0; }
-  to   { opacity: 0.6; }
-}
-
-@keyframes ps-run-close-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes ps-run-tick-draw {
-  from { stroke-dashoffset: 8; }
-  to   { stroke-dashoffset: 0; }
-}
-
-@keyframes ps-run-stamp {
-  from { opacity: 0; transform: rotate(-8deg) scale(1.3); }
-  to   { opacity: 1; transform: rotate(-8deg) scale(1); }
-}
-
-/* Narrow tiles. The document is dropped and the LAST row goes with it; the
-   YOU row and the closing strip are never dropped — they are the story. With
-   four rows the dot centres move to 12.5% from each end, so the rail still
-   terminates exactly on the first and last dot. */
-@media (max-width: 1199px) {
-  .ps-bento-card--systems .ps-run-doc { display: none; }
-}
-
-@media (max-width: 1199px) {
-  /* The chrome strip already reads "INVOICE-4417", so this is duplicative —
-     and the stamp lands exactly here below 1200. Give the corner to the payoff. */
-  .ps-bento-card--systems .ps-run-ref { display: none; }
-}
-
-@media (max-width: 639px) {
-  .ps-bento-card--systems .ps-run-row:last-child { display: none; }
-  .ps-bento-card--systems .ps-fix-root { --rail-inset: 12.5%; }
-  .ps-bento-card--systems .ps-run-close-text { font-size: 8px; }
-}
-
-@media (max-width: 359px) {
-  .ps-bento-card--systems .ps-run-time { font-size: 7.5px; }
-  .ps-bento-card--systems .ps-run-text { font-size: 8.5px; }
-}
-
-/* REDUCED MOTION — a REAL COMPOSED SCENE. `animation: none` alone would be a
-   BROKEN state here, not a reduced one: it freezes each property at its
-   UNDERLYING value, which for the rail is `scaleY(0)` (no spine at all) and
-   for the tick would be an undrawn path if the dash were left offset. Both
-   are pinned explicitly, which is exactly the failure class the brief names. */
+/* ── Reduced motion: pin all three to their finished frame ───── */
 @media (prefers-reduced-motion: reduce) {
-  .ps-bento-card--systems .ps-run-panel--play *,
-  .ps-bento-card--systems .ps-run-panel--play {
-    animation: none !important;
+  .ps-asst-bubble,
+  .ps-asst-reply,
+  .ps-doc-row,
+  .ps-doc-total,
+  .ps-doc-send,
+  .ps-app-chart,
+  .ps-app-row,
+  .ps-app-save {
+    opacity: 1 !important;
+    transform: none !important;
     transition: none !important;
   }
-  .ps-bento-card--systems .ps-run-row,
-  .ps-bento-card--systems .ps-run-dot,
-  .ps-bento-card--systems .ps-run-pill,
-  .ps-bento-card--systems .ps-run-close,
-  .ps-bento-card--systems .ps-run-doc,
-  .ps-bento-card--systems .ps-run-stamp,
-  .ps-bento-card--systems .ps-run-rail {
-    opacity: 1 !important;
+
+  .ps-asst-panel,
+  .ps-doc-mail,
+  .ps-app-sheet,
+  .ps-bento-card:hover .ps-asst-panel,
+  .ps-bento-card:hover .ps-doc-mail,
+  .ps-bento-card:hover .ps-app-sheet {
+    /* The 5deg stays — it is composition, not motion. Only the lift goes. */
+    transform: rotate(5deg) !important;
+    transition: none !important;
   }
-  .ps-bento-card--systems .ps-run-rail { transform: scaleY(1) !important; }
-  .ps-bento-card--systems .ps-run-row,
-  .ps-bento-card--systems .ps-run-close,
-  .ps-bento-card--systems .ps-run-doc { transform: none !important; }
-  .ps-bento-card--systems .ps-run-dot { transform: scale(1) !important; }
-  .ps-bento-card--systems .ps-run-pill { transform: scale(1) !important; }
-  .ps-bento-card--systems .ps-run-stamp { transform: rotate(-8deg) !important; }
-  .ps-bento-card--systems .ps-run-close-tick { stroke-dashoffset: 0 !important; }
-  .ps-bento-card--systems .ps-run-pill--queued { opacity: 0.6 !important; }
+
+  .ps-asst-app,
+  .ps-doc-sheet,
+  .ps-app-window,
+  .ps-bento-card:hover .ps-asst-app,
+  .ps-bento-card:hover .ps-doc-sheet,
+  .ps-bento-card:hover .ps-app-window {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── Mobile: 1 column, card ~342x320. Tighten, never truncate ──
+   Nothing is display:none'd at any width. Every element in all three
+   cards survives 320x568 — that is the bar SearchVisual set at 7/7, and
+   it is the specific failure of the card this replaces (2 of 6 rows gone
+   at 393px, and a payoff badge that vanished below 1200px entirely). */
+@media (max-width: 639px) {
+  /* PAYOFF CLEARANCE, measured on the rendered page rather than assumed.
+     `.ps-bento-card__text` is a constant 62.8px block on mobile and it
+     paints a scrim OVER the artwork. At 54px of bottom padding the
+     measured gap from the payoff's bottom edge to the title's top edge
+     was card1 +8px and card3 -1px — card 3's blue reply bubble sat UNDER
+     the scrim and rendered as dark navy-on-navy. The reference card 5
+     runs +123px there. Re-measure with the clearance probe before
+     changing these: a dimmed payoff is invisible to every box-geometry
+     check and shows up only in a screenshot. */
+  .ps-asst-root { padding: 60px 0 76px 12px; }
+  .ps-doc-root  { padding: 60px 0 58px 16px; }
+  .ps-app-root  { padding: 60px 0 74px 14px; }
+
+  .ps-asst-app-body { gap: 8px; padding: 8px; }
+  .ps-asst-app-rail { width: 20px; }
+  .ps-asst-app-list { gap: 5px; }
+  .ps-asst-app-item { height: 19px; padding: 3px 5px; }
+  .ps-asst-stage { padding-bottom: 28px; }
+  .ps-asst-panel { min-width: 168px; max-width: 224px; gap: 5px; padding: 7px 9px 9px; }
+  .ps-asst-bubble { height: 12px; }
+  .ps-asst-reply { padding: 6px 8px; }
+
+  .ps-doc-stage { padding-bottom: 30px; }
+  .ps-doc-sheet { min-width: 186px; max-width: 236px; }
+  .ps-doc-body { padding: 9px 10px 10px; gap: 5px; }
+  .ps-doc-rows { gap: 3px; }
+  .ps-doc-row { height: 18px; }
+  .ps-doc-mail { min-width: 142px; max-width: 184px; padding: 7px 8px; gap: 6px; }
+
+  .ps-app-rail { width: 28px; }
+  .ps-app-main { padding: 8px 8px 9px; gap: 6px; }
+  .ps-app-chart { min-height: 36px; gap: 4px; }
+  .ps-app-sheet { min-width: 108px; padding: 8px 9px 9px; right: 6px; }
+}
+
+/* 320px is the narrowest viewport in the matrix and the card is ~288px
+   wide there. These are the only rules below 360; they shrink, they do
+   not remove. */
+@media (max-width: 359px) {
+  .ps-asst-panel { min-width: 156px; max-width: 200px; }
+  .ps-asst-app-item { height: 17px; }
+  .ps-asst-stage { padding-bottom: 24px; }
+  .ps-doc-sheet  { min-width: 168px; max-width: 200px; }
+  .ps-doc-row    { height: 16px; }
+  .ps-doc-mail   { min-width: 132px; max-width: 162px; }
+  .ps-app-sheet  { min-width: 100px; max-width: 124px; }
+  .ps-app-rail   { width: 24px; }
+  .ps-app-rail-item { width: 12px; }
+  .ps-app-rail-mark { width: 11px; height: 11px; }
 }
 
 /* ── VISUAL 5: Revenue Growth Engine ───────────────────────── */
@@ -2298,9 +1472,6 @@
 
 /* All visual roots get light background */
 [data-theme="light"] .ps-visual-website,
-[data-theme="light"] .ps-visual-automation,
-[data-theme="light"] .ps-fix-root,
-[data-theme="light"] .ps-dbc-root,
 [data-theme="light"] .ps-ge-root {
   background: linear-gradient(160deg, #F0F4F8 0%, #E8EDF3 100%);
 }
@@ -2413,26 +1584,6 @@
   border-color: rgba(0,0,0,0.08);
 }
 
-/* Automation card */
-[data-theme="light"] .ps-visual-automation {
-  background: linear-gradient(160deg, #EEF2F7 0%, #E4EBF3 100%);
-}
-
-/* .ps-n8n-* and .ps-auto-node light overrides deleted 2026-09-05 with the
-   elements themselves. The Gate takes its light tones from the --gt-*
-   custom properties on .ps-visual-automation. */
-
-/* Dashboard card */
-[data-theme="light"] .ps-dbc-root {
-  background:
-    radial-gradient(circle at 18% 12%, rgba(21, 144, 255,0.08) 0%, rgba(21, 144, 255,0) 30%),
-    linear-gradient(180deg, #EEF2F7 0%, #E4EBF3 100%);
-}
-
-/* .ps-dbc-panel / -tile-label / -bars / -kpi-* light overrides deleted
-   2026-09-05 with the elements themselves. The records list takes its
-   light tones from the --dbc-* custom properties on .ps-dbc-root. */
-
 /* System health monitor */
 [data-theme="light"] .ps-hm-root {
   background: #EEF2F7;
@@ -2465,17 +1616,6 @@
 [data-theme="light"] .ps-hm-footer-bar-track {
   background: rgba(0,0,0,0.06);
 }
-
-/* System fixes card */
-[data-theme="light"] .ps-fix-root {
-  background: linear-gradient(160deg, #F0F4F8 0%, #E8EDF3 100%);
-}
-
-/* The light overrides for .ps-fix-problem-card, .ps-fix-solution-card,
-   .ps-fix-column-label, .ps-fix-problem-title/-badge/-lines,
-   .ps-fix-solution-title/-metric/-bars and .ps-fix-progress-* were deleted
-   2026-09-05 along with the elements themselves. The run log takes its
-   light tones from the --rn-* custom properties on .ps-fix-root. */
 
 /* Revenue growth engine */
 [data-theme="light"] .ps-ge-root {
@@ -2517,19 +1657,6 @@
   .ps-hm-live-dot   { animation: none !important; }
   .ps-hm-live-label { color: #10B981 !important; transition: none !important; }
 
-  /* Dashboard — skip entry animations */
-  .ps-dbc-tile-shell {
-    animation: none !important;
-    opacity: 1 !important;
-    transition: none !important;
-  }
-  .ps-dbc-bar { animation: none !important; height: calc(var(--bar-h, 0.5) * 100%) !important; }
-  .ps-dbc-line-path { animation: none !important; stroke-dashoffset: 0 !important; }
-  .ps-dbc-donut-ring { animation: none !important; stroke-dashoffset: 11.3 !important; }
-  .ps-dbc-tip-dot,
-  .ps-dbc-live-dot::after,
-  .ps-dbc-heatmap-cell { animation: none !important; opacity: 1 !important; }
-
   /* Revenue Growth Engine — show final state */
   .ps-ge-input-item,
   .ps-ge-output-item {
@@ -2550,39 +1677,6 @@
    2026-09-05 with those elements. The run log is a single-column timeline
    and needs no column-count override. */
 
-
-/*
-  Fix #4: Dashboard bento card — KPI dials cut off on 375px screens.
-  Reduce ring size from 44px to 32px and tighten grid gap.
-*/
-@media (max-width: 639px) {
-  .ps-dbc-kpi-grid {
-    gap: 4px;
-  }
-
-  .ps-dbc-kpi-card {
-    padding: 4px 2px;
-    gap: 3px;
-    border-radius: 8px;
-  }
-
-  .ps-dbc-kpi-ring-wrap {
-    /* Shrink KPI ring from 44px to 30px so all 4 dials fit on 375px screens */
-    width: 30px;
-    height: 30px;
-  }
-
-  .ps-dbc-kpi-label {
-    font-size: 7px;
-    white-space: normal;
-    line-height: 1.0;
-    padding-bottom: 2px;
-  }
-
-  .ps-dbc-kpi-value {
-    font-size: 8px;
-  }
-}
 
 /* ═════════════════════════════════════════════════════════════
    VISUALS 6 & 7 — added 2026-09-03 for ADR-0006
@@ -3381,113 +2475,3 @@
    CARD and says nothing about this link list, so removing it conflicts with
    no accepted decision. ADR-0005 decision 3 protects the crawler-facing
    <details> links in page.tsx -- a DIFFERENT surface, still present. */
-
-/* ── DEFECT 2A: KPI labels sliced at BOTH ends, 320 and 640-1024 ──
-   A centred `white-space: nowrap` label wider than its grid cell
-   overflows symmetrically, and `.ps-dbc-panel { overflow: hidden }`
-   cuts it on both sides. "Retention" rendered as "etentio" and
-   "Close Rate" as "ose Ra" — losing characters off the LEFT is the
-   signature of centred overflow, and it is what rules out a padding
-   cause. (`.ps-bento-card`'s padding:0 / overflow:hidden pair was the
-   first suspect and is NOT the mechanism; do not change it.)
-
-   The existing shrink lives in `@media (max-width: 639px)` here and
-   in globals.css, and stops dead at 639. 640-1024 is exactly where
-   the card is narrowest, as a 2- or 3-column grid child, so the label
-   reverts to 9px nowrap in the one band where it least fits. This
-   extends the same treatment across that band rather than inventing
-   a new one.
-
-   `overflow-wrap: anywhere` is the guarantee: "Retention" is a single
-   unbreakable word, so wrapping alone cannot save it at any size. */
-/* Upper bound is 1279, NOT 1024. The 1024 the spec originally carried was
-   measured wrong: at 1025 the rule stops, the label reverts to 9px nowrap
-   and the defect returns identically — read from screenshots, "Close Rate"
-   rendered as "lose Rat" at 1025 and "Close Rat" at 1100, marginal at 1200,
-   clean at 1280. Bracketed by eye, because every box-based probe reported
-   these widths as fine: the label is `overflow: visible`, so its own
-   scrollWidth never exceeds clientWidth — the cut happens at the hidden
-   ancestor `.ps-dbc-panel`. Keep the upper bound: at >=1280 the label fits
-   at 9px nowrap and looks correct, so extending past it would change
-   appearance for no reason. */
-@media (min-width: 640px) and (max-width: 1279px) {
-  .ps-dbc-kpi-label {
-    font-size: 7px;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    line-height: 1.05;
-  }
-}
-
-/* Same guarantee below 640, where the label is already 7px and
-   `normal` but "Retention" still cannot break. globals.css sets only
-   `font-size` in its own <=639 block, so nothing is overridden in
-   either direction. */
-@media (max-width: 639px) {
-  .ps-dbc-kpi-label {
-    overflow-wrap: anywhere;
-  }
-}
-
-/* ── DEFECT 2B: tile 1's title paints over its own ACTIVITY panel ──
-   Tile 1 (Business Software, variant `websites`) is the only card
-   whose artwork puts a content panel — ACTIVITY — in the bottom band
-   where `.ps-bento-card__text` paints its title scrim. That overlay
-   is BY DESIGN and shared by all five tiles: do not touch
-   `.ps-bento-card__text`, `.ps-bento-card`, or the scrim. What is
-   missing is bottom clearance inside THIS artwork.
-
-   Scoped to the one variant and deliberately at (0,2,0) so it beats
-   `.ps-dbc-layout { padding: 14px }` in globals.css WITHOUT editing
-   that file. `.ps-dbc-root` and `.ps-dbc-layout` are each declared in
-   BOTH stylesheets at equal specificity (0,1,0), and globals.css
-   @imports this file on its second line — so globals is later in
-   source order and wins. Editing the copies above does nothing on
-   screen, which is very likely why the "extra on bottom to prevent
-   label cutoff" padding at `.ps-dbc-root` has never had any effect.
-
-   44px clears `.ps-bento-card__text`'s 20px bottom padding plus its
-   ~17px uppercase line at 0.8125rem/1.3, with a few px of margin. */
-.ps-bento-card--websites .ps-dbc-layout {
-  /* 2026-09-05: 44px (<390) / 104px (>=390) -> a single 60px on mobile.
-
-     The split existed because the text block used to carry the visible
-     pain-point hook and ran 89-110px tall. That hook was REMOVED the same
-     day it shipped, on the owner's instruction (see the comment in
-     BentoCard) -- the face is title + affordance only. Measured now, at
-     320/360/375/390/414/430/639/640/768/1024/1440, the block is a
-     constant 62.8px on mobile and 58.9px on desktop. So 104px was
-     reserving ~41px of clearance for copy that is not there, and that
-     overshoot is visible: at 390 dark the artwork stopped at y=191 in a
-     320px card and the bottom third was empty while the panels above it
-     were crushed hard enough to clip "Retention" to "Retentior".
-
-     Mobile arithmetic: card 320 - `.ps-dbc-root`'s 32px padding-bottom
-     (globals.css, <=767 only) - 60 = artwork bottom at 228, title top at
-     257.2 => +29.2px clear, and it no longer changes across the 390
-     boundary, so there is one mobile geometry instead of two.
-
-     >=768 keeps 104px unchanged: there the root contributes no padding,
-     the card is 420-430 tall, and 104 already lands +40-ish. Verified by
-     re-measuring after the change, not assumed. */
-  padding: 14px 14px 60px;
-}
-
-/* Was `min-width: 390px` -> 104px. Moved to 768: below 768 `.ps-dbc-root`
-   contributes its own 32px padding-bottom (globals.css) and the card is
-   320 tall, so 104 there overshot the 62.8px text block by ~41px. See the
-   arithmetic in the rule above. */
-@media (min-width: 768px) {
-  .ps-bento-card--websites .ps-dbc-layout {
-    padding: 14px 14px 104px;
-  }
-}
-
-/* ── Card 1, narrow tiles only: clear `.ps-bento-card__expand`. ──
-   Below 640 the phone is dropped and the window goes full width, which put the
-   panel under the frosted button at 100% overlap (measured at 320 and 390;
-   0% at >=768 where the 78% window already leaves the corner free). This is
-   card 5's mechanism — a real top inset — and it must be declared AFTER the
-   "DEFECT 2B" block above, which sets the `padding` shorthand and would
-   otherwise reset padding-top. Bottom clearance there is untouched. */
-.ps-bento-card--websites .ps-dbc-layout { padding-top: 62px; }
