@@ -185,7 +185,25 @@ function useRevealOnce<T extends HTMLElement>() {
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+
+    /* SAFETY NET (from the concurrent session's 2026-09-06 working tree, kept
+       verbatim because it is correct). The content of these three cards bases
+       at `opacity: 0` until `.in-view` arrives, so if the observer never fires
+       the card renders as an empty shell: a navy rail, one label and a blank
+       panel. A threshold of 0.25 on a card taller than the viewport, a
+       detached or hidden ancestor, or any observer failure all reach that
+       state. If the class has not arrived by 1200ms, show the content anyway.
+       The observer still wins on the normal path, so the staged entrance is
+       unchanged for every real visitor. */
+    const failsafe = window.setTimeout(() => {
+      el.classList.add("in-view");
+      observer.disconnect();
+    }, 1200);
+
+    return () => {
+      window.clearTimeout(failsafe);
+      observer.disconnect();
+    };
   }, []);
 
   return ref;
@@ -245,12 +263,15 @@ export function AutomationVisual() {
             must not read as WebsiteVisual's browser (no traffic lights,
             no URL bar, no phone). It runs off the right card edge. */}
         <div className="ps-asst-app">
-          {/* Dark chrome strip. Load-bearing, not decoration: the frosted
-              .ps-bento-card__expand circle sits at top:16 right:16 z-index 3
-              (globals.css:2075) OVER this artwork. Something with contrast
-              has to be under it in whichever theme the icon is light. It
-              flips with the theme for exactly that reason — see the note at
-              card-visuals.css's light-mode block. */}
+          {/* Chrome strip. It FLIPS WITH THE THEME, and the reason written
+              here first was wrong: measured, .ps-bento-card__expand spans
+              card-y 16->48 while plane 1's top edge is at 54-56, so the
+              frosted circle never touches this strip on any of the three
+              cards at any of the fourteen viewports — it sits on the root
+              backdrop. The flip is still required, for the ordinary reason:
+              a permanently dark strip is the only dark object in an
+              otherwise light composition in light theme, and reads as
+              artwork imported from another site. */}
           <div className="ps-asst-app-chrome">
             <span className="ps-asst-app-dots"><i /><i /><i /></span>
             <span className="ps-asst-app-pill" />
@@ -258,7 +279,7 @@ export function AutomationVisual() {
           <div className="ps-asst-app-body">
             <span className="ps-asst-app-rail" />
             <span className="ps-asst-app-list">
-              {[0, 1, 2, 3, 4].map((r) => (
+              {[0, 1, 2, 3, 4, 5].map((r) => (
                 <i className="ps-asst-app-item" key={`asst-item-${r}`}>
                   <b className="ps-asst-app-av" />
                   <b className="ps-asst-app-name" />
@@ -352,10 +373,14 @@ export function SystemFixesVisual() {
   return (
     <div ref={containerRef} className="ps-doc-root" aria-hidden="true">
       <div className="ps-doc-stage">
-        {/* PLANE 1 — the document. Bleeds off the right edge and past the
-            bottom of the stage; the crop is designed, not an overflow
-            accident. WebsiteVisual does the same thing with its third
-            content card and the phone (card-visuals.css:57-63). */}
+        {/* PLANE 1 — the document, sitting wholly inside the card frame.
+            An earlier version ran it off the card's left edge on the strength
+            of binding requirement 7 ("cropped by at least one card edge").
+            That requirement misreads its own reference: measured, card 4's
+            browser has 205px of clear navy to the card's right edge and card 5
+            is an inset panel with margin on all four sides. In the approved
+            language the crop is ONE OBJECT OCCLUDING ANOTHER, never the card
+            frame amputating the artwork. Plane 2 does the cropping here. */}
         <article className="ps-doc-sheet">
           {/* The dark band is both the document's letterhead AND the
               contrast bed for .ps-bento-card__expand. Flips with theme. */}

@@ -458,6 +458,55 @@
    is dark in a lit room too, same as `.ps-site-nav`.
    ═════════════════════════════════════════════════════════════ */
 
+/* ── COMPOSITION, CORRECTED 2026-09-06 (adjustment pass 1) ────────
+   Two measured findings changed the geometry below; both contradict the
+   brief these cards were built to, so the reasoning is recorded here.
+
+   1. NOTHING IS CROPPED BY THE CARD FRAME ANY MORE. Binding requirement 7
+      said "the primary object must be cropped by at least one card edge; no
+      inset panel with margin on all four sides". Measured on the approved
+      cards, that is backwards: card 4's browser has 205.5px of clear navy to
+      its card's right edge, and card 5 IS an inset panel with margin on all
+      four sides -- both spill 0px on all four sides at all fourteen
+      viewports. In the approved language the crop is ONE OBJECT OCCLUDING
+      ANOTHER. Obeying requirement 7 gave these three 24-36px of frame
+      amputation and made them read as zoomed-in fragments beside two cards
+      that read as whole objects. Plane 1 now sits wholly inside the card and
+      plane 2 does all the cropping.
+
+   2. PLANE 2 IS TOP-ANCHORED, NOT BOTTOM-ANCHORED. globals.css:7451 puts the
+      title scrim on `.ps-bento-card__text::before` at `top: -80px`, still at
+      alpha 0.86 where the text box begins -- so scrim onset is 80px ABOVE the
+      datum a "clearance" measurement uses. Bottom-anchored payoffs sat in the
+      darkest band: card 2's Send sampled (17,73,127) at 768x1024 against card
+      5's cite pill at (20,116,203) -- 35-40% of the brand blue extinguished,
+      dark theme only, and dark is the default. Card 5 puts its payoff at ~45%
+      of card height, so these do too. The acceptance test is the payoff's
+      rendered RGB against (20,116,203), NOT a pixel gap; a box-geometry probe
+      cannot see a dimmed pill.
+   ───────────────────────────────────────────────────────────────── */
+
+/* ── NO-SCRIPT RESTING STATE ──────────────────────────────────────
+   From the concurrent session's 2026-09-06 working tree, kept because it is
+   correct. The content bases at `opacity: 0` and is revealed by a class the
+   JS adds; with scripting unavailable that class never arrives and all three
+   render as empty shells. Pins them to the finished state -- no keyframes
+   (this file's design law forbids them), no flash, no effect on the scripted
+   path. Pairs with the 1200ms failsafe in `useRevealOnce`. */
+@media (scripting: none) {
+  .ps-app-chart,
+  .ps-app-row,
+  .ps-app-save,
+  .ps-doc-row,
+  .ps-doc-total,
+  .ps-doc-send,
+  .ps-asst-bubble,
+  .ps-asst-reply {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 /* ── VISUAL 2: AI Integration — the docked assistant ──────────── */
 
 .ps-asst-root {
@@ -466,7 +515,7 @@
   /* top 62 clears the 32px expand circle at top:16; bottom 58 clears the
      measured title block (62.8px mobile / 58.9px desktop) with the card's
      own bottom inset. Same budget .ps-sr-root proved at 320-1920. */
-  padding: 62px 0 58px 16px;
+  padding: 56px 24px 78px 24px;
   background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
   overflow: hidden;
 }
@@ -475,8 +524,6 @@
   position: relative;
   flex: 0 0 auto;
   width: 100%;
-  /* the overhang plane 2 hangs into */
-  padding-bottom: 52px;
 }
 
 /* PLANE 1 — the customer's own screen. `width: calc(100% + 28px)` is the
@@ -494,10 +541,10 @@
    density is a property of the artwork rather than of the tile. */
 .ps-asst-app {
   position: relative;
-  width: calc(100% + 28px);
+  width: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: 10px 0 0 10px;
+  border-radius: 10px;
   overflow: hidden;
   background: #f8fafc;
   border: 1px solid rgba(255,255,255,0.1);
@@ -556,17 +603,25 @@
 /* Plane 1 is a LIST, not five bare lines. Bare lines spread across a tile
    read as an empty sheet; rows with an avatar block and two bars carry ink
    and read as "the system you already use". */
+/* Bordered container, same reason as `.ps-doc-rows`. In light theme the app
+   window's own right and bottom edges were imperceptible, so the navy rail
+   read as a detached near-black rectangle floating in a white field with no
+   container around it -- the owner's original card-1 complaint with the
+   polarity inverted. */
 .ps-asst-app-list {
   flex: 1 1 auto;
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  padding: 6px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
 }
 
 .ps-asst-app-item {
   flex: 0 0 auto;
-  height: 28px;
+  height: 30px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -605,11 +660,13 @@
    as bubbles — they become bars. */
 .ps-asst-panel {
   position: absolute;
-  left: -8px;
-  bottom: 0;
-  width: 72%;
+  left: 0;
+  /* Top-anchored: the payoff lands at ~45% of card height, out of the scrim
+     band. See COMPOSITION note at the head of this section. */
+  top: 6%;
+  width: 74%;
   min-width: 172px;
-  max-width: 244px;
+  max-width: 252px;
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -718,7 +775,7 @@
   flex-direction: column;
   /* Content-sized and centred — see the note on .ps-asst-app. */
   justify-content: center;
-  padding: 62px 0 62px 0;
+  padding: 56px 24px 78px 24px;
   background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
   overflow: hidden;
 }
@@ -727,7 +784,6 @@
   position: relative;
   flex: 0 0 auto;
   width: 100%;
-  padding-bottom: 34px;
 }
 
 /* PLANE 1 — the document. `margin-left: -18px` is the bleed: the sheet's
@@ -736,13 +792,15 @@
    on .ps-asst-app for the versions measured and rejected before this. */
 .ps-doc-sheet {
   position: relative;
-  margin-left: -18px;
-  width: 76%;
-  min-width: 206px;
-  max-width: 290px;
+  /* margin-left:-18px removed. It ran the sheet off the card's left edge, and
+     it took `.ps-doc-mark` -- the 12px #1590FF square that is this card's ONLY
+     plane-1 brand accent -- entirely off-card at every width >=640
+     (measured box left:-12 right:0 visibleW:0). No display/opacity/inside-box
+     probe can see that; only the screenshot could. */
+  width: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: 0 8px 8px 0;
+  border-radius: 8px;
   overflow: hidden;
   background: #f8fafc;
   border: 1px solid rgba(255,255,255,0.1);
@@ -805,12 +863,23 @@
   background: #cbd5e1;
 }
 
+/* Bordered container. This is `.ps-sr-pack`'s exact device
+   (`border: 1px solid #e2e8f0` on white) and it is why card 5 survives light
+   theme: its panel is full of BORDERED sub-containers, so when the backdrop
+   flips to #F0F4F8 and panel-to-backdrop contrast falls to ~1.07:1, the
+   internal structure still carries the figure. Without it this sheet measured
+   mean L 0.929 / 98.4% near-white in light theme -- a featureless wash with no
+   perceptible edge. A 1px seam is permitted by the form language; it separates
+   stacked surfaces and never carries structure. */
 .ps-doc-rows {
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-top: 3px;
+  margin-top: 4px;
+  padding: 6px 7px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
 }
 
 /* Every line item is a grey bar. There is no currency figure and no
@@ -818,7 +887,7 @@
    Fixed 24px bands with a zebra fill: the band is the ink. */
 .ps-doc-row {
   flex: 0 0 auto;
-  height: 24px;
+  height: 30px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -897,8 +966,12 @@
    object over the other, weight low. */
 .ps-doc-mail {
   position: absolute;
-  right: 4px;
-  bottom: 10px;
+  right: 6px;
+  /* Top-anchored -- see the COMPOSITION note. This also un-collides it from
+     the total row's value chip, which it used to bisect with a hard white
+     edge at 1440 (a 30px chip half-eaten by a 200px lozenge reads as a
+     collision, not as depth). */
+  top: 34%;
   z-index: 2;
   width: 58%;
   min-width: 148px;
@@ -979,7 +1052,7 @@
 .ps-app-root {
   display: flex;
   flex-direction: column;
-  padding: 62px 0 72px 20px;
+  padding: 56px 24px 78px 24px;
   background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
   overflow: hidden;
 }
@@ -994,10 +1067,10 @@
 /* PLANE 1 — the app window, cropped by the card's right edge. */
 .ps-app-window {
   position: absolute;
-  inset: 0 -30px 0 0;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  border-radius: 9px 0 0 9px;
+  border-radius: 9px;
   overflow: hidden;
   background: #f8fafc;
   border: 1px solid rgba(255,255,255,0.1);
@@ -1184,8 +1257,9 @@
 /* PLANE 2 — the record you opened, over the window at 5deg. */
 .ps-app-sheet {
   position: absolute;
-  right: 8px;
-  bottom: 10px;
+  right: 10px;
+  /* Top-anchored -- see the COMPOSITION note. */
+  top: 14%;
   z-index: 2;
   width: 42%;
   min-width: 116px;
@@ -1280,18 +1354,28 @@
   color: #475569;
 }
 
+/* A REAL EDGE, not a shadow. rgba(0,0,0,0.1) against a #F0F4F8 backdrop was
+   invisible: measured panel-to-backdrop contrast 1.07:1 at the gradient's top,
+   so separation rested entirely on a 12% shadow and cards 2 and 3 dissolved
+   into the field. #C3CFDD is a drawn boundary at ~1.35:1 against the panel,
+   which is what card 5's bordered sub-containers give it for free. */
 [data-theme="light"] .ps-asst-app,
 [data-theme="light"] .ps-doc-sheet,
 [data-theme="light"] .ps-app-window {
-  border-color: rgba(0,0,0,0.1);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+  border-color: #C3CFDD;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.14), 0 4px 12px rgba(0,0,0,0.08);
+}
+
+[data-theme="light"] .ps-doc-rows,
+[data-theme="light"] .ps-asst-app-list {
+  border-color: #D5DEE9;
 }
 
 [data-theme="light"] .ps-asst-panel,
 [data-theme="light"] .ps-doc-mail,
 [data-theme="light"] .ps-app-sheet {
-  border-color: rgba(0,0,0,0.1);
-  box-shadow: 0 14px 34px rgba(0,0,0,0.16), 0 4px 12px rgba(0,0,0,0.08);
+  border-color: #C3CFDD;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.1);
 }
 
 /* ── Reduced motion: pin all three to their finished frame ───── */
@@ -1346,24 +1430,26 @@
      runs +123px there. Re-measure with the clearance probe before
      changing these: a dimmed payoff is invisible to every box-geometry
      check and shows up only in a screenshot. */
-  .ps-asst-root { padding: 60px 0 76px 12px; }
-  .ps-doc-root  { padding: 60px 0 58px 16px; }
-  .ps-app-root  { padding: 60px 0 74px 14px; }
+  /* Side padding is now symmetric because nothing is cropped by the card
+     frame. Bottom padding came DOWN from 74-76px: it used to be carrying the
+     payoff clearance, and the payoff is top-anchored now, so the space goes
+     back to the artwork instead. Top stays >=52 so the expand circle
+     (card-y 16->48) never lands on plane 1. */
+  .ps-asst-root { padding: 52px 16px 68px 16px; }
+  .ps-doc-root  { padding: 52px 16px 68px 16px; }
+  .ps-app-root  { padding: 52px 16px 68px 16px; }
 
   .ps-asst-app-body { gap: 8px; padding: 8px; }
   .ps-asst-app-rail { width: 20px; }
-  .ps-asst-app-list { gap: 5px; }
+  .ps-asst-app-list { gap: 5px; padding: 5px; }
   .ps-asst-app-item { height: 19px; padding: 3px 5px; }
-  .ps-asst-stage { padding-bottom: 28px; }
-  .ps-asst-panel { min-width: 168px; max-width: 224px; gap: 5px; padding: 7px 9px 9px; }
+  .ps-asst-panel { min-width: 168px; max-width: 232px; gap: 5px; padding: 7px 9px 9px; }
   .ps-asst-bubble { height: 12px; }
   .ps-asst-reply { padding: 6px 8px; }
 
-  .ps-doc-stage { padding-bottom: 30px; }
-  .ps-doc-sheet { min-width: 186px; max-width: 236px; }
   .ps-doc-body { padding: 9px 10px 10px; gap: 5px; }
-  .ps-doc-rows { gap: 3px; }
-  .ps-doc-row { height: 18px; }
+  .ps-doc-rows { gap: 3px; padding: 5px 6px; }
+  .ps-doc-row { height: 19px; }
   .ps-doc-mail { min-width: 142px; max-width: 184px; padding: 7px 8px; gap: 6px; }
 
   .ps-app-rail { width: 28px; }
@@ -1376,12 +1462,11 @@
    wide there. These are the only rules below 360; they shrink, they do
    not remove. */
 @media (max-width: 359px) {
-  .ps-asst-panel { min-width: 156px; max-width: 200px; }
+  .ps-asst-root, .ps-doc-root, .ps-app-root { padding-left: 12px; padding-right: 12px; }
+  .ps-asst-panel { min-width: 156px; max-width: 208px; }
   .ps-asst-app-item { height: 17px; }
-  .ps-asst-stage { padding-bottom: 24px; }
-  .ps-doc-sheet  { min-width: 168px; max-width: 200px; }
-  .ps-doc-row    { height: 16px; }
-  .ps-doc-mail   { min-width: 132px; max-width: 162px; }
+  .ps-doc-row    { height: 17px; }
+  .ps-doc-mail   { min-width: 132px; max-width: 168px; }
   .ps-app-sheet  { min-width: 100px; max-width: 124px; }
   .ps-app-rail   { width: 24px; }
   .ps-app-rail-item { width: 12px; }
