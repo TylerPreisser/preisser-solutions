@@ -34,6 +34,27 @@ export function AeoPage({ data }: { data: AeoPageData }) {
     ? "https://preissersolutions.com/#tyler-preisser"
     : `${url}#main`;
 
+  // `inLanguage` is defined on CreativeWork, NOT on Service or Person. Emitting
+  // it on a Service node made schema.org's own validator report
+  // UNKNOWN_FIELD(inLanguage, Service) on 134 Service pages
+  // (validator.schema.org, checked 2026-09-05). It is a warning rather than a
+  // hard error, but it is still a property an engine cannot interpret, so it
+  // is now scoped to the CreativeWork-descended types that actually define it.
+  const CREATIVE_WORK_TYPES = new Set([
+    "WebPage",
+    "AboutPage",
+    "ContactPage",
+    "CollectionPage",
+    "ProfilePage",
+    "FAQPage",
+    "QAPage",
+    "Article",
+    "BlogPosting",
+    "NewsArticle",
+    "HowTo",
+    "ItemPage",
+  ]);
+
   const pageSchemaBase: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": pageSchemaType,
@@ -41,7 +62,9 @@ export function AeoPage({ data }: { data: AeoPageData }) {
     url,
     name: data.h1,
     description: data.metaDescription,
-    inLanguage: "en-US",
+    ...(typeof pageSchemaType === "string" && CREATIVE_WORK_TYPES.has(pageSchemaType)
+      ? { inLanguage: "en-US" }
+      : {}),
   };
 
   // Service-specific enrichment: provider, serviceType, areaServed
@@ -86,9 +109,20 @@ export function AeoPage({ data }: { data: AeoPageData }) {
       }
     : {};
 
-  // WebPage-specific enrichment
+  // WebPage-specific enrichment.
+  //
+  // `headline`, `isPartOf` and `about` are all CreativeWork properties. The old
+  // condition was "not a Service and not Article-like", which is not the same
+  // thing as "is a CreativeWork" — it also matched `Person`, so /tyler-preisser
+  // shipped a Person node carrying three properties whose schema.org
+  // domainIncludes does not admit Person. Confirmed against
+  // schemaorg-current-https.jsonld on 2026-09-05: Person.headline,
+  // Person.isPartOf and Person.about were all domain violations.
+  //
+  // Gate on the CreativeWork set instead, so this can only ever be added to a
+  // type that actually defines these properties.
   const webPageFields: Record<string, unknown> =
-    pageSchemaType !== "Service" && !isArticleLike
+    typeof pageSchemaType === "string" && CREATIVE_WORK_TYPES.has(pageSchemaType) && !isArticleLike
       ? {
           headline: data.h1,
           isPartOf: { "@id": "https://preissersolutions.com/#website" },

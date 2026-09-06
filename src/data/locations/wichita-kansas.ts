@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Custom Software in Wichita, Kansas",
   metaDescription:
-    "Custom software, AI automation, and custom websites for Wichita, Kansas businesses — based in Hays, KS, delivered remotely or in person.",
+    "Custom software, AI automation, and custom websites for Wichita, Kansas businesses: based in Hays, KS, delivered remotely or in person.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -23,9 +23,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Wichita, Kansas",
     h1: "Custom Software for Wichita Businesses",
     subheadline:
-      "Custom web apps, AI automation, and websites for the largest economy in Kansas — built by a Kansas-based firm.",
+      "Custom web apps, AI automation, and websites for the largest economy in Kansas: built by a Kansas-based firm.",
     answerParagraph:
-      "Preisser Solutions serves Wichita, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Headquartered in Hays — roughly three hours west by car — we deliver remotely and travel for projects of sufficient scope. Custom code, full ownership, fixed-price proposals.",
+      "Preisser Solutions serves Wichita, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Headquartered in Hays (roughly three hours west by car): we deliver remotely and travel for projects of sufficient scope. Custom code, full ownership, fixed-price proposals.",
   },
 
   nearbyAreas: [
@@ -45,7 +45,7 @@ export const locationData: LocationPageData = {
   whyLocal: [
     "We are Kansas-based, not coastal. Engagements are scoped against the cost structure of the market, not against Denver or Austin rates.",
     "Travel to Wichita for scoping calls and milestone meetings is standard for projects of meaningful scope.",
-    "Custom code with full ownership transferred at launch — no proprietary platform, no vendor lock-in.",
+    "Custom code with full ownership transferred at launch: no proprietary platform, no vendor lock-in.",
   ],
 
   industriesServed: [
@@ -77,12 +77,12 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions build dashboards for Wichita manufacturers?",
       answer:
-        "Yes. Real-time business dashboards are a core service. Common views include production, on-time delivery, RFQ pipeline, and supplier performance — all role-based, deployed on fast modern infrastructure.",
+        "Yes. Real-time business dashboards are a core service. Common views include production, on-time delivery, RFQ pipeline, and supplier performance: all role-based, deployed on fast modern infrastructure.",
     },
     {
       question: "Do you offer local SEO and AI search optimization for Wichita businesses?",
       answer:
-        "Yes. Local SEO and AI-search visibility — citations on ChatGPT, Perplexity, Gemini, and Google AI Overviews — are an explicit service line. Schema, content architecture, and review-signal work are scoped as a single engagement.",
+        "Yes. Local SEO and AI-search visibility (citations on ChatGPT, Perplexity, Gemini, and Google AI Overviews) are an explicit service line. Schema, content architecture, and review-signal work are scoped as a single engagement.",
     },
     {
       question: "What is the difference between Preisser Solutions and a Wichita-based marketing agency?",

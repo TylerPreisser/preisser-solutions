@@ -3,90 +3,115 @@ import type { CaseStudyData } from "@/types/case-study";
 // FarmBooks — flagship AI Integration + Business Automation platform.
 // Photograph a farm bill, get Schedule-F-ready books. Live at farm-books.com
 // (Next.js 15 PWA on Cloudflare Workers) backed by a Python FastAPI extraction
-// engine on Azure Container Apps with Cosmos DB. Numbers sourced from
-// docs/plans/2026-08-02-three-pillar-reposition.md §9 — do not add figures
-// beyond that list, and never state an extraction accuracy percentage.
+// engine on Azure Container Apps with Cosmos DB.
+//
+// SOURCE OF CLAIMS: the FarmBooks value brief,
+// docs/deliverables/farmbooks-value-brief-SOURCE.md in the FarmBooks repo —
+// an evidence-cited capability inventory with a 13-item do-not-claim list.
+// Every sentence below traces to a SHIPPED entry in it. Do not add a claim
+// from anywhere else, and specifically never: an extraction accuracy
+// percentage (no such number exists), an offline mode, a dark mode, a CSV or
+// PDF export, a live-synced workbook in the customer's own tenant, a
+// one-click bulk document export, a printed Schedule F line number, or
+// auto-emailed landowner invoices. The reference client is only ever "a live
+// three-farm operation" — never a name. Per src/types/case-study.ts, no
+// dollar amounts appear here, so the measured error figures stay on the
+// FarmBooks site and out of this file.
 export const caseStudy: CaseStudyData = {
   slug: "farmbooks",
-  metaTitle: "FarmBooks — Bills to Schedule-F Books",
+  metaTitle: "FarmBooks: Bills to Schedule-F Books",
   metaDescription:
-    "Photograph a farm bill and get Schedule-F-ready books. Vision and OCR read every bill independently, cross-check each other, and route disagreements to a human.",
+    "Photograph a farm bill and get Schedule-F-ready books. The line amounts have to equal the printed total within two cents, or a person looks at it first.",
   datePublished: "2026-07-20",
-  dateModified: "2026-08-02",
+  dateModified: "2026-08-27",
 
   category: "AI Integration • Business Automation",
   clientName: "FarmBooks",
   clientNameDisplay: "FarmBooks",
   industry: "Farm bookkeeping and Schedule F accounting",
 
-  h1: "FarmBooks — Photograph a Bill, Get Schedule-F-Ready Books",
+  h1: "FarmBooks: Photograph a Bill, Get Schedule-F-Ready Books",
   subheadline:
-    "Two independent reads of every bill — OCR and vision — have to agree on each section's total, or a human sees the disagreement instead of a silently dropped line.",
-  oneLine: "Photograph a farm bill; two independent reads cross-check it into Schedule-F-ready books",
+    "The line amounts have to equal the bill's printed total within two cents before anything is allowed to post, and every bill stays a draft until a person submits it.",
+  oneLine: "Photograph a farm bill; deterministic checks turn it into Schedule-F-ready books",
+
+  liveLink: {
+    label: "See it live at farm-books.com",
+    href: "https://farm-books.com",
+  },
 
   headlineResults: [
-    { value: "No retyping", label: "A photographed bill becomes a Schedule-F-ready entry" },
-    { value: "$92.57", label: "Line the vision read recovered that OCR alone had dropped" },
-    { value: "Every bill", label: "Cross-checked by two independent reads before it posts" },
-    { value: "Always", label: "Handwritten bills routed to human review" },
+    { value: "Two cents", label: "Tolerance the line amounts must meet against the printed total" },
+    { value: "0", label: "Uncategorized lines across 893 in a live three-farm operation" },
+    { value: "530", label: "Vendor shorthand entries translated, printed original kept" },
+    { value: "101 bills", label: "One crop year, read and booked without retyping a line" },
   ],
 
   hub: {
     problem:
-      "A farm bookkeeper retyped every co-op, dealer, chemical and fuel bill by hand, and a mis-keyed or dropped line only surfaced months later when the books would not reconcile.",
+      "A three-farm operation kept its books in a hand-typed spreadsheet, where a subtotal that did not reach far enough, a paste block that landed twice, and one bill filed under two vendors all stayed hidden until the year would not reconcile.",
     built:
-      "Photograph a bill and two independent reads have to agree on every section total before anything posts; allocation to field, entity and Schedule F category follows, and anything uncertain waits in a review queue.",
-    outcome: "Tax-season bookkeeping without retyping a single bill",
+      "Photograph a bill and the line amounts must equal the printed total within two cents before anything posts; a 530-entry dictionary translates vendor shorthand while keeping the printed original beside it, and every bill stays a draft until a person submits it.",
+    outcome: "Books where every amount opens the bill it came from",
   },
 
   before: {
-    heading: "A farm bookkeeper retyping every co-op and dealer bill by hand.",
+    heading: "A spreadsheet cannot check its own arithmetic.",
     body: [
-      "Farm bookkeeping runs on paper that doesn't cooperate: co-op grain tickets, dealer parts invoices, chemical and seed bills, fuel statements, each with its own layout, and each one needing to be split across fields, entities, and IRS Schedule F categories before it means anything at tax time. The default tool is a spreadsheet and a bookkeeper retyping every line by hand.",
-      "That retyping is where lines get missed. A bill with several sections and subtotals is easy to mis-key or drop a line from, and nothing catches it until the books don't reconcile — usually months later, at tax time, when tracing the error back to its source bill is its own project.",
+      "Farm bookkeeping runs on paper that does not cooperate: co-op tickets, dealer parts invoices, chemical and seed bills, fuel statements, each with its own layout, and each one needing to be split across fields, entities, and IRS Schedule F categories before it means anything at tax time. The default tool is a spreadsheet and a bookkeeper retyping every line by hand.",
+      "The failure modes are not exotic. They are the ordinary ones of any spreadsheet kept by a busy person: a hand-typed SUM that does not reach far enough, a paste block that lands twice, one delivery billed once and counted on two sheets. When we imported a live three-farm operation's existing hand-kept workbook, all three were sitting in it, and they are still true of that source file today. Nothing in the spreadsheet was ever going to find them.",
     ],
   },
 
   built: {
-    heading: "Two independent reads of every bill, checked against each other before anything posts.",
+    heading: "Deterministic checks around every number, and a person at every uncertain moment.",
     body: [
-      "FarmBooks starts with a photo or an upload. The bill goes through a layout/OCR extraction pass and a separate vision read at the same time, co-equally — neither is treated as the fallback for the other. Vendor detection, line-item extraction, and allocation to the right farm field and entity follow, then IRS Schedule F categorization, then a review queue for anything the system isn't confident about.",
-      "The two reads are required to independently agree on each section's printed total. When they don't, the discrepancy surfaces for a human instead of a line silently vanishing into the ledger — in testing, the vision read recovered a $92.57 line that OCR alone had dropped. Handwritten bills skip auto-posting entirely and always land in the review queue. When a bookkeeper corrects a field or category assignment, that correction becomes a durable alias, so the same vendor resolves itself automatically the next time it shows up.",
-      "Every bill also gets a plain-English one-line summary, and the equipment roster is inferred from VIN and serial numbers found on repair bills rather than asked for up front. One login covers multiple farms, each scoped to its own learning, so a correction on one farm doesn't bleed into another's aliases. Output is a formula-driven .xlsx — a Month Summary and a Ledger tab with live SUMIF rollups — with two-way sync to a real SharePoint workbook, where a human's edit always wins over an engine write.",
+      "A bill arrives however it actually arrives: emailed as a PDF, mailed as a statement, or photographed in the cab, sideways and badly lit. Photographs are straightened before they are read, and a multi-page bill is put back together by proving the math: a continuation page is matched to its parent by checking the page's line total against the printed subtotal, so the same arithmetic that proves the pages belong together proves they are in the right order. Vendor identification works cheapest-signal-first, and a layout it has never seen falls back to a generic profile and a human look rather than a guess.",
+      "Then the arithmetic conscience the spreadsheet never had. The line amounts must equal the printed total within two cents or the bill is held for a person. If a line disappears between processing stages, the system raises an error instead of posting a quietly smaller bill. Non-billable footer rows are stripped with a running count, so an audit can prove nothing real was discarded. A re-sent bill is caught on identity (same vendor and total inside a short window, or a matching vendor document number), not on file bytes.",
+      "Understanding what was bought is a translation problem, and we treated it as one. A 530-entry dictionary turns co-op shorthand into plain English and keeps the exact printed text beside it, always reachable, because a prettier description must never be able to move a dollar figure. Categorization resolves in order: the farm's own confirmed corrections first, then that deterministic dictionary weighted by vendor context, then a single batched model call for anything still unresolved, locked to a 26-category taxonomy and never free-form. The Schedule F line is always re-derived from the category and never accepted from the model. Across 893 ledger lines from 101 bills in one crop year at a live three-farm operation, zero came out uncategorized.",
+      "Nothing posts itself when anything is uncertain, and uncertainty here is boolean rather than a percentage: certain, or it needs a person's eyes. A self-reported confidence score was deliberately removed, because a made-up score is not something a set of books should lean on. A handwritten quantity is always routed to review no matter how clean the read looks. An overlay that highlighted the exact spot on the image was built and then turned off after it once drew the box around the wrong product line, on the judgment that a confident pointer that is wrong is worse than no pointer. Every bill lands as a draft, and the money moves when a person presses submit.",
+      "What makes the result defensible is the record. Every field is stored as a printed-value and translated-value pair, so from any amount in the app you open the original bill it came from and read the exact words the vendor printed. Every change (assigning a field, changing a category, splitting, cost-sharing, confirming, submitting): writes an audit row carrying who, when, the previous value and the new value, inside the same transaction as the change itself. The history cannot drift from the data, because the system refuses to record one without the other.",
     ],
   },
 
   specifications: {
-    heading: "How a bill moves from photo to posted ledger.",
+    heading: "How a bill becomes a ledger line that holds up.",
     bullets: [
-      "Upload or photograph a bill; OCR/layout extraction and a separate vision read run co-equally",
-      "The two reads must independently agree on each section's total, or the discrepancy surfaces for review",
-      "Vendor detection, line-item extraction, and allocation to farm field and entity",
-      "IRS Schedule F categorization, with a review queue for anything uncertain",
-      "Handwritten bills always route to human review — never auto-posted",
-      "Bookkeeper corrections become durable aliases so the same vendor resolves itself next time",
-      "Plain-English one-line summary generated for every bill",
-      "Equipment roster inferred from VIN/serial numbers found on repair bills",
-      "One login, multiple farms, each scoped to its own learning",
+      "Add a bill by photograph or email; sideways, crumpled, and multi-page bills are handled as they arrive",
+      "Continuation pages are matched to their parent bill by checking the page total against the printed subtotal",
+      "Line amounts must equal the printed total within two cents, or the bill is held for a person",
+      "A line that vanishes between processing stages raises an error instead of posting a smaller bill",
+      "Non-billable footer rows are stripped with a running count, so nothing real is discarded silently",
+      "A 530-entry dictionary translates vendor shorthand and keeps the exact printed text beside it",
+      "Categories resolve from the farm's own confirmed corrections, then the dictionary, then one batched model call locked to 26 categories",
+      "The Schedule F line is always re-derived from the category, never accepted from the model",
+      "Handwritten quantities always route to a person and are never auto-posted",
+      "Every bill lands as a draft; the money moves when a person presses submit",
+      "Splitting a line across fields is acreage-weighted and cent-exact, and stops rather than invent a ratio for a field with no acreage on file",
+      "Corrections become durable, farm-specific mappings applied to every later bill from that vendor",
     ],
     subsections: [
       {
-        title: "Extraction and reconciliation",
+        title: "Guardrails",
         items: [
-          "OCR/layout extraction pass and an independent vision pass, co-equal",
-          "Cross-check on each section's total before anything posts",
-          "Discrepancies surface to a human review queue instead of dropping silently",
-          "Vendor code aliasing learned from bookkeeper corrections",
+          "Arithmetic validation on every bill, within two cents of the printed total",
+          "Cross-stage line check, so no bill can post quietly smaller than it was",
+          "Confidence is boolean by design: certain, or it needs a person's eyes; no percentage score",
+          "A highlight-the-spot overlay was built and deliberately turned off after it once boxed the wrong line",
+          "Split shares are proven three times: at allocation, before the write, and by re-reading after it",
+          "3,345 automated tests on the extraction engine, 2,081 on the web app",
         ],
       },
       {
-        title: "Output and sync",
+        title: "The record and the workbook",
         items: [
-          "Formula-driven .xlsx: Month Summary and Ledger tabs with live SUMIF rollups",
-          "Two-way sync to a live SharePoint workbook",
-          "Human edits in the workbook always win over engine writes",
-          "Python FastAPI extraction engine on Azure Container Apps with Cosmos DB",
-          "Next.js 15 / React 19 PWA on Cloudflare Workers",
+          "Every field kept as a printed-value and translated-value pair",
+          "From any amount in the app, open the original bill image it came from",
+          "The audit row is written inside the same transaction as the change, so history cannot drift from data",
+          "Who changed what, when, and both the previous and the new value, on every bill",
+          "One-click .xlsx workbook: a month summary plus a ledger per farm, grouped by field",
+          "Rollups are live Excel formulas rather than pasted values, so the file stays correct when a figure is edited",
+          "Category names map one-to-one onto Schedule F lines",
         ],
       },
     ],
@@ -94,28 +119,28 @@ export const caseStudy: CaseStudyData = {
 
   results: [
     {
-      value: "2 independent reads",
-      label: "OCR and vision cross-check every bill",
+      value: "Two cents",
+      label: "Arithmetic tolerance before a bill is held",
       context:
-        "Neither read is a fallback for the other — both have to agree on each section's total before a bill is trusted.",
+        "The line amounts must equal the printed total within two cents, or the bill waits for a person instead of posting.",
     },
     {
-      value: "$92.57",
-      label: "Line recovered by the vision read alone",
+      value: "0",
+      label: "Uncategorized lines out of 893",
       context:
-        "In testing, OCR alone dropped a line that the independent vision read caught, which is the failure mode the cross-check exists to catch.",
+        "Across 101 bills in one crop year at a live three-farm operation, every ledger line resolved to a tax category.",
     },
     {
-      value: "1,069 / 505",
-      label: "Engine and web tests",
+      value: "85 fields",
+      label: "Across three farms kept cleanly apart under one login",
       context:
-        "1,069 Python engine tests collected and 505 web tests passing across 59 files, run against a corpus of 23 photographed real bills.",
+        "Each operation carries its own fields and its own learned corrections, so a correction on one farm does not bleed into another.",
     },
     {
-      value: "Always",
-      label: "Handwritten bills go to a human",
+      value: "3,345 / 2,081",
+      label: "Automated tests, extraction engine and web app",
       context:
-        "No handwritten bill is ever auto-posted — it always routes to the review queue.",
+        "The guardrails are pinned by tests, including one named for the rule that unmarking a lease never re-books money already posted.",
     },
   ],
 
@@ -123,13 +148,13 @@ export const caseStudy: CaseStudyData = {
     "Python FastAPI",
     "Azure Container Apps",
     "Cosmos DB",
-    "OCR/layout extraction",
-    "Vision model extraction",
+    "Azure Blob Storage",
+    "Vision document extraction",
     "Next.js 15",
     "React 19",
     "Cloudflare Workers",
     "PWA",
-    "SharePoint two-way sync",
+    "Excel workbook generation",
   ],
 
   relatedSlugs: ["hg-oil-ai-invoice-processing", "hg-oil-inventory-system", "alliant-mgu-insurance"],
@@ -137,7 +162,7 @@ export const caseStudy: CaseStudyData = {
   cta: {
     heading: "Buried in farm bills at tax time?",
     subcopy:
-      "Preisser Solutions builds document-extraction systems that check their own work before anything posts. Scoping begins with a conversation about your bills and your books.",
+      "Preisser Solutions builds document systems that check their own arithmetic before anything posts. Scoping begins with a conversation about your bills and your books.",
     buttonLabel: "Start a scoping conversation",
     buttonHref: "/contact",
   },

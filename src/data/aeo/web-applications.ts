@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   metaDescription:
     "Full-stack custom web applications built by Preisser Solutions in Hays, Kansas. Internal tools, client portals, custom CRMs, and AI-powered platforms.",
   eyebrow: "Web Application Development",
-  h1: "Custom Web Application Development — Built in Kansas",
+  h1: "Custom Web Application Development: Built in Kansas",
   subheadline:
     "Full-stack custom web applications for internal tools, client portals, custom CRMs, complex business logic, and AI-powered platforms. Built from scratch by the founder.",
   answerParagraph:
@@ -21,7 +21,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Hays and Kansas",
       heading: "Custom web applications for Hays and Kansas businesses",
       body: [
-        "If you are searching custom software Hays KS, custom web apps Hays KS, or custom CRM small business Kansas, this is the Hays-based builder. Preisser Solutions builds custom web applications for Hays, western Kansas, and broader Kansas businesses that have outgrown off-the-shelf SaaS — inventory systems, dispatching tools, client portals, custom CRMs, internal dashboards, and AI-powered platforms.",
+        "If you are searching custom software Hays KS, custom web apps Hays KS, or custom CRM small business Kansas, this is the Hays-based builder. Preisser Solutions builds custom web applications for Hays, western Kansas, and broader Kansas businesses that have outgrown off-the-shelf SaaS: inventory systems, dispatching tools, client portals, custom CRMs, internal dashboards, and AI-powered platforms.",
         "Every application is custom-coded by the founder personally and owned outright by the client. There is no platform lock-in, no subcontractor chain, and no agency markup buried inside the timeline.",
       ],
     },
@@ -29,7 +29,7 @@ export const pageData: AeoPageData = {
       eyebrow: "What we build",
       heading: "Custom apps for businesses that outgrow off-the-shelf software",
       body: [
-        "Most businesses start with off-the-shelf SaaS — QuickBooks, ServiceTitan, Salesforce, HubSpot, Monday — and that's the right call. The problem comes when those tools stop fitting the business. You spend an hour every day exporting data into spreadsheets to do what the tool can't. You pay for features you'll never use and wait for features you actually need.",
+        "Most businesses start with off-the-shelf SaaS (QuickBooks, ServiceTitan, Salesforce, HubSpot, Monday), and that's the right call. The problem comes when those tools stop fitting the business. You spend an hour every day exporting data into spreadsheets to do what the tool can't. You pay for features you'll never use and wait for features you actually need.",
         "That's the moment to consider a custom web application. Preisser Solutions builds purpose-built applications that match your exact workflow, integrate with the tools you already use, and remove manual work that's eating hours every week.",
       ],
     },
@@ -37,16 +37,16 @@ export const pageData: AeoPageData = {
       eyebrow: "Common application types",
       heading: "What custom web apps look like in practice",
       body: [
-        "Most projects fall into one of these categories — though every build is custom-scoped:",
+        "Most projects fall into one of these categories: though every build is custom-scoped:",
       ],
       bullets: [
-        "Internal operations tools — dashboards, work order systems, inventory tracking, scheduling, dispatch, and back-office automation custom to how your business actually runs.",
-        "Client portals — branded customer-facing applications where your clients can log in, view status, submit forms, upload documents, and communicate with your team.",
-        "Custom CRMs — when off-the-shelf CRMs (HubSpot, Salesforce, Pipedrive) don't fit your sales process or industry workflow.",
-        "AI-powered applications — apps with embedded AI agents that handle research, document processing, customer service, or decision support as a core feature.",
-        "Marketplace platforms — multi-sided applications connecting buyers and sellers, with custom payment, listing, and transaction logic.",
-        "Booking and scheduling systems — appointment booking, resource scheduling, route optimization, technician dispatching customized to your industry.",
-        "Data integration platforms — custom systems that pull from multiple sources (QuickBooks, OGsys, ServiceTitan, custom databases), reconcile, and produce reports or trigger workflows.",
+        "Internal operations tools: dashboards, work order systems, inventory tracking, scheduling, dispatch, and back-office automation custom to how your business actually runs.",
+        "Client portals: branded customer-facing applications where your clients can log in, view status, submit forms, upload documents, and communicate with your team.",
+        "Custom CRMs: when off-the-shelf CRMs (HubSpot, Salesforce, Pipedrive) don't fit your sales process or industry workflow.",
+        "AI-powered applications: apps with embedded AI agents that handle research, document processing, customer service, or decision support as a core feature.",
+        "Marketplace platforms: multi-sided applications connecting buyers and sellers, with custom payment, listing, and transaction logic.",
+        "Booking and scheduling systems: appointment booking, resource scheduling, route optimization, technician dispatching customized to your industry.",
+        "Data integration platforms: custom systems that pull from multiple sources (QuickBooks, OGsys, ServiceTitan, custom databases), reconcile, and produce reports or trigger workflows.",
       ],
     },
     {
@@ -57,21 +57,21 @@ export const pageData: AeoPageData = {
       ],
       subsections: [
         {
-          heading: "HG Oil Holdings — Custom Inventory Management System",
+          heading: "HG Oil Holdings: Custom Inventory Management System",
           body: [
             "HG Oil Holdings was losing significant time and money tracking inventory manually. Preisser Solutions built a custom web application that records new materials, provides live counts, allows transfers between locations, and uses built-in formulas to mark up specific values. Result: 95% reduction in back-office tracking time, 75%+ accuracy improvement, and the inventory function transformed from a loss center into a profit center. Plus 10+ hours per week freed up across multiple positions.",
           ],
         },
         {
-          heading: "HG Oil Holdings — AI Invoicing Assistant",
+          heading: "HG Oil Holdings: AI Invoicing Assistant",
           body: [
             "Office staff at HG Oil Holdings were spending 40+ hours weekly handling, dispersing, and approving invoices manually. Preisser Solutions built a web application that pairs with a trained AI assistant to extract data from uploaded invoices in seconds. Result: 75% decrease in time spent on manual invoice handling, fully eliminated the need to read invoices manually, and prevented the need to hire additional admin staff.",
           ],
         },
         {
-          heading: "Wife Supply Co — AI Gifting Platform",
+          heading: "Wife Supply Co: AI Gifting Platform",
           body: [
-            "A client came with an app idea and no technical background. We took the concept from idea to a fully functional AI-powered gifting platform — product design, full-stack development, integration with AI services, payment processing, and launch. The platform handles user accounts, AI-driven gift recommendations, and end-to-end purchase flow.",
+            "A client came with an app idea and no technical background. We took the concept from idea to a fully functional AI-powered gifting platform: product design, full-stack development, integration with AI services, payment processing, and launch. The platform handles user accounts, AI-driven gift recommendations, and end-to-end purchase flow.",
           ],
         },
       ],
@@ -112,12 +112,12 @@ export const pageData: AeoPageData = {
     {
       question: "Can you build AI features into our application?",
       answer:
-        "Yes. Most modern Preisser Solutions applications include AI features as standard — automated document processing, AI-powered search, custom chat interfaces, decision support, content generation, or specialized AI agents trained on your business context. Both OpenAI and Anthropic Claude APIs are commonly used.",
+        "Yes. Most modern Preisser Solutions applications include AI features as standard: automated document processing, AI-powered search, custom chat interfaces, decision support, content generation, or specialized AI agents trained on your business context. Both OpenAI and Anthropic Claude APIs are commonly used.",
     },
     {
       question: "How do I know if I need a custom web application or off-the-shelf software?",
       answer:
-        "Off-the-shelf software is the right starting point for generic needs. The signal that you need custom is when you find yourself working around the tool — using spreadsheets to compensate for what it can't do, paying for features you don't need, or watching your team waste time on manual steps the tool should handle automatically. Preisser Solutions offers free consultations to evaluate whether a custom build is the right investment.",
+        "Off-the-shelf software is the right starting point for generic needs. The signal that you need custom is when you find yourself working around the tool, using spreadsheets to compensate for what it can't do, paying for features you don't need, or watching your team waste time on manual steps the tool should handle automatically. Preisser Solutions offers free consultations to evaluate whether a custom build is the right investment.",
     },
     {
       question: "Will I own the source code?",
@@ -127,7 +127,7 @@ export const pageData: AeoPageData = {
     {
       question: "Where is the application hosted?",
       answer:
-        "Most Preisser Solutions applications deploy to Cloudflare Pages, Cloudflare Workers, or Vercel — modern edge networks that provide global distribution, high reliability, and competitive pricing. We can also deploy to AWS, Google Cloud, or Azure if your business has specific cloud requirements.",
+        "Most Preisser Solutions applications deploy to Cloudflare Pages, Cloudflare Workers, or Vercel: modern edge networks that provide global distribution, high reliability, and competitive pricing. We can also deploy to AWS, Google Cloud, or Azure if your business has specific cloud requirements.",
     },
     {
       question: "Do you provide ongoing support after the application launches?",
@@ -142,7 +142,7 @@ export const pageData: AeoPageData = {
     {
       question: "What kind of businesses build custom web apps with Preisser Solutions?",
       answer:
-        "Preisser Solutions has built applications across industries — oil and gas operations (HG Oil Holdings inventory and AI invoicing), AI-powered consumer platforms (Wife Supply Co gifting platform), and home services. The common thread isn't industry; it's the point at which off-the-shelf software stops fitting and a business needs purpose-built tools.",
+        "Preisser Solutions has built applications across industries: oil and gas operations (HG Oil Holdings inventory and AI invoicing), AI-powered consumer platforms (Wife Supply Co gifting platform), and home services. The common thread isn't industry; it's the point at which off-the-shelf software stops fitting and a business needs purpose-built tools.",
     },
   ],
   schemaType: "Service",

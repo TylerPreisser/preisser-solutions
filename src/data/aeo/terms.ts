@@ -15,7 +15,7 @@ export const pageData: AeoPageData = {
   tier: "trust_faq",
   metaTitle: "Terms of Service",
   metaDescription:
-    "Terms of service for engagements with Preisser Solutions — Kansas-based custom software and AI consultancy. Project scope, payment, IP ownership, warranty disclaimers.",
+    "Terms of service for engagements with Preisser Solutions, Kansas-based custom software and AI consultancy. Project scope, payment, IP ownership, warranty disclaimers.",
   eyebrow: "Legal",
   h1: "Terms of Service",
   subheadline:
@@ -35,7 +35,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Service area",
       heading: "Kansas-first; remote engagements considered",
       body: [
-        "Preisser Solutions is based in Hays, Kansas and primarily serves Kansas businesses — including Hays, Wichita, Topeka, Kansas City, Salina, Manhattan, Garden City, Dodge City, and the rural communities in between.",
+        "Preisser Solutions is based in Hays, Kansas and primarily serves Kansas businesses, including Hays, Wichita, Topeka, Kansas City, Salina, Manhattan, Garden City, Dodge City, and the rural communities in between.",
         "Remote engagements with clients outside Kansas are accepted on a case-by-case basis when the work fits. Out-of-state engagements may carry different terms (jurisdiction, taxes, on-site travel) which are negotiated in the proposal.",
       ],
     },
@@ -79,14 +79,14 @@ export const pageData: AeoPageData = {
       eyebrow: "Intellectual property",
       heading: "Deliverables transfer to the client; templates stay with us",
       body: [
-        "On full payment, the client owns the deliverables built specifically for them — application code, database schemas, content, custom design assets, and any client-specific configuration.",
+        "On full payment, the client owns the deliverables built specifically for them: application code, database schemas, content, custom design assets, and any client-specific configuration.",
       ],
       bullets: [
         "Client-specific deliverables transfer to the client on full payment per the signed proposal.",
         "Reusable internal templates, starter codebases, design system primitives, agent prompts, and tooling that Preisser Solutions develops or maintains across multiple clients remain Preisser Solutions's property.",
-        "Open-source code used in a deliverable retains its original open-source license — the client doesn't own the OSS, but the configured deliverable is theirs to operate.",
+        "Open-source code used in a deliverable retains its original open-source license: the client doesn't own the OSS, but the configured deliverable is theirs to operate.",
         "Third-party software and SaaS subscriptions (e.g. hosting, CRMs, payment processors) remain owned by their respective providers under their own terms; the client is responsible for ongoing subscription fees after engagement close.",
-        "Preisser Solutions retains the right to use the work in its portfolio, case studies, and marketing — unless the proposal explicitly prohibits this — with reasonable confidentiality protections for genuinely sensitive client information.",
+        "Preisser Solutions retains the right to use the work in its portfolio, case studies, and marketing (unless the proposal explicitly prohibits this): with reasonable confidentiality protections for genuinely sensitive client information.",
       ],
     },
     {
@@ -129,7 +129,7 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Disclaimer",
-      heading: "Template language — review with counsel before relying on it",
+      heading: "Template language: review with counsel before relying on it",
       body: [
         "The language on this page is a template tailored to Preisser Solutions's actual engagement model but should be reviewed by counsel before being treated as authoritative legal text. The authoritative terms for any specific project are the signed written proposal between Preisser Solutions and the client.",
         "Last updated: 2026-05-15.",
@@ -140,7 +140,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do I own the code Preisser Solutions builds for me?",
       answer:
-        "Yes — on full payment, deliverables built specifically for you transfer to you. Reusable internal templates and tooling that Preisser Solutions uses across multiple clients remain Preisser Solutions's property.",
+        "Yes, on full payment, deliverables built specifically for you transfer to you. Reusable internal templates and tooling that Preisser Solutions uses across multiple clients remain Preisser Solutions's property.",
     },
     {
       question: "What is the payment schedule for a typical build?",
@@ -150,7 +150,7 @@ export const pageData: AeoPageData = {
     {
       question: "What happens if scope changes during a project?",
       answer:
-        "Out-of-scope work is documented as a change order — written, priced, and approved before any out-of-scope work begins. This protects both parties from scope creep and surprise invoices.",
+        "Out-of-scope work is documented as a change order: written, priced, and approved before any out-of-scope work begins. This protects both parties from scope creep and surprise invoices.",
     },
     {
       question: "Is there a warranty on the work?",
@@ -165,7 +165,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can Preisser Solutions feature my project in a case study?",
       answer:
-        "Yes by default — portfolio and case study use is permitted unless the signed proposal explicitly prohibits it. Sensitive client information is protected with reasonable confidentiality regardless.",
+        "Yes by default: portfolio and case study use is permitted unless the signed proposal explicitly prohibits it. Sensitive client information is protected with reasonable confidentiality regardless.",
     },
   ],
   schemaType: "WebPage",
@@ -184,6 +184,6 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Have a project in mind?",
   ctaSubcopy:
-    "Email tyler@preissersolutions.com to start a scoping call. The authoritative terms for any specific engagement are in the signed proposal — this page is template language; review with counsel before relying on it.",
+    "Email tyler@preissersolutions.com to start a scoping call. The authoritative terms for any specific engagement are in the signed proposal; this page is template language; review with counsel before relying on it.",
   primaryCta: { label: "Email tyler@preissersolutions.com", href: "mailto:tyler@preissersolutions.com" },
 };

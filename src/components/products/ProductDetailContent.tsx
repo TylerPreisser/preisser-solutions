@@ -462,7 +462,7 @@ export function ProductDetailContent({ product, relatedProducts, linkedCaseStudy
                   Don&apos;t see what you need?
                 </h2>
                 <p className="mt-2 max-w-lg text-base leading-relaxed" style={{ color: "var(--theme-text-secondary)" }}>
-                  Every listed product started as a custom engagement. If your problem isn&apos;t covered, describe it — Preisser Solutions scopes and builds to spec.
+                  Every listed product started as a custom engagement. If your problem isn&apos;t covered, describe it; Preisser Solutions scopes and builds to spec.
                 </p>
               </div>
               <div className="shrink-0">

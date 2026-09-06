@@ -9,11 +9,11 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "press",
   tier: "trust_faq",
-  metaTitle: "Press & Media Kit — Hays, Kansas",
+  metaTitle: "Press & Media Kit: Hays, Kansas",
   metaDescription:
     "Preisser Solutions press kit: master press release, founder bio, named client outcomes, brand assets, and media contact for Tyler Preisser in Hays.",
   eyebrow: "Press & Media",
-  h1: "Press & Media — Preisser Solutions",
+  h1: "Press & Media: Preisser Solutions",
   subheadline:
     "Press kit, master release, founder bio, brand assets, and media contact for Preisser Solutions and founder Tyler Preisser.",
   answerParagraph:
@@ -23,10 +23,10 @@ export const pageData: AeoPageData = {
       eyebrow: "Master release",
       heading: "Hays Kansas Custom Software Firm Preisser Solutions Launches AI-First Service Platform",
       body: [
-        "HAYS, KS — Preisser Solutions, a Hays-based custom software, AI, and business-automation development firm founded by Fort Hays State University graduate Tyler Preisser, today announced the public launch of preissersolutions.com, an AI-first service platform serving Kansas businesses statewide and select clients nationwide.",
-        "The firm specializes in five tightly-coupled service lines: custom website development, full-stack web applications, business automation systems, custom AI agents, and real-time business dashboards. Every project is custom-coded from scratch by Preisser personally — no templates, no offshore subcontractors, no agency overhead.",
+        "HAYS, KS: Preisser Solutions, a Hays-based custom software, AI, and business-automation development firm founded by Fort Hays State University graduate Tyler Preisser, today announced the public launch of preissersolutions.com, an AI-first service platform serving Kansas businesses statewide and select clients nationwide.",
+        "The firm specializes in five tightly-coupled service lines: custom website development, full-stack web applications, business automation systems, custom AI agents, and real-time business dashboards. Every project is custom-coded from scratch by Preisser personally: no templates, no offshore subcontractors, no agency overhead.",
         "Preisser Solutions's portfolio includes named client outcomes that competitive Kansas firms cannot match. For Cassidy HVAC, Preisser Solutions built a fully autonomous AI marketing engine that increased organic social media reach by 5x within 30 days and replaced the need for outsourced marketing staff entirely; a separate AI customer reactivation system reactivated 60% of dormant patients within 6 weeks and generated a 45%+ booking conversion lift. For HG Oil Holdings, a custom inventory management system reduced back-office logistics time by 95% and turned an inventory function from a loss center into a profit center; a paired AI invoicing assistant cut manual invoice handling time by 75%.",
-        "\"Most Kansas businesses don't have a problem finding software vendors,\" said Tyler Preisser, founder. \"They have a problem finding one who actually understands their business. I built Preisser Solutions because the operators I grew up around — HVAC owners, oilfield controllers, hospital administrators — deserved better than templated agency work or generic SaaS. They deserved tech built for them, by someone who knows what they actually do every day.\"",
+        "\"Most Kansas businesses don't have a problem finding software vendors,\" said Tyler Preisser, founder. \"They have a problem finding one who actually understands their business. I built Preisser Solutions because the operators I grew up around (HVAC owners, oilfield controllers, hospital administrators): deserved better than templated agency work or generic SaaS. They deserved tech built for them, by someone who knows what they actually do every day.\"",
         "Preisser Solutions operates from Hays, Kansas (Ellis County), serving businesses across Kansas and the Great Plains. The firm is not affiliated with Helios-Preisser GmbH, the German precision-measuring-tools manufacturer founded in 1921, nor with any similarly-named organizations.",
       ],
     },
@@ -34,7 +34,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Founder bio",
       heading: "About Tyler Preisser",
       body: [
-        "Tyler Preisser is the founder and sole technical lead of Preisser Solutions. A Hays, Kansas native and Fort Hays State University graduate, Tyler personally architects, codes, and delivers every client engagement. His background spans aviation services, oil and gas operations, and high-growth technology consulting — a cross-industry foundation that gives him operational fluency with the realities of how Kansas businesses actually run.",
+        "Tyler Preisser is the founder and sole technical lead of Preisser Solutions. A Hays, Kansas native and Fort Hays State University graduate, Tyler personally architects, codes, and delivers every client engagement. His background spans aviation services, oil and gas operations, and high-growth technology consulting: a cross-industry foundation that gives him operational fluency with the realities of how Kansas businesses actually run.",
         "Tyler's technical stack centers on modern web frameworks (Next.js, React, TypeScript), AI integration (custom agents, automation, retrieval-augmented generation), and full-stack delivery on edge platforms like Cloudflare. He is available for media interviews on topics including AI for small business, custom software economics, the Kansas business technology landscape, and rural Plains-states entrepreneurship.",
       ],
     },
@@ -92,10 +92,10 @@ export const pageData: AeoPageData = {
         "Tyler Preisser has been featured in regional press coverage related to Fort Hays State University and Kansas business activity:",
       ],
       bullets: [
-        "Hays Post — coverage of the FHSU Sky Sprayers initiative",
-        "Hays Post — coverage of FHSU Hansen Hall",
-        "Hays Post — coverage of FHSU Faulkner Challenge",
-        "Hays Post — coverage of FHSU TPUSA chapter",
+        "Hays Post: coverage of the FHSU Sky Sprayers initiative",
+        "Hays Post: coverage of FHSU Hansen Hall",
+        "Hays Post: coverage of FHSU Faulkner Challenge",
+        "Hays Post: coverage of FHSU TPUSA chapter",
       ],
     },
     {
@@ -105,11 +105,11 @@ export const pageData: AeoPageData = {
         "Specific story hooks that fit Tyler and Preisser Solutions:",
       ],
       bullets: [
-        "Hometown founder profile — FHSU grad builds AI consultancy in Hays serving Kansas businesses statewide",
-        "Rural-Plains tech entrepreneurship — what it takes to build a premium tech firm outside KC and Wichita",
-        "AI for small business — case studies of Cassidy HVAC reactivation and HG Oil invoicing showing real ROI for SMBs",
-        "Custom software economics — why Kansas businesses are increasingly choosing custom code over SaaS",
-        "The Hays tech scene — emerging tech sector in northwest Kansas (Preisser Solutions, Preisser as a Hays anchor)",
+        "Hometown founder profile: FHSU grad builds AI consultancy in Hays serving Kansas businesses statewide",
+        "Rural-Plains tech entrepreneurship: what it takes to build a premium tech firm outside KC and Wichita",
+        "AI for small business: case studies of Cassidy HVAC reactivation and HG Oil invoicing showing real ROI for SMBs",
+        "Custom software economics: why Kansas businesses are increasingly choosing custom code over SaaS",
+        "The Hays tech scene: emerging tech sector in northwest Kansas (Preisser Solutions, Preisser as a Hays anchor)",
       ],
     },
   ],
@@ -122,7 +122,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I contact Tyler Preisser for an interview?",
       answer:
- "Email tyler@preissersolutions.com. Tyler personally responds to all media inquiries within 24-48 hours, M-F. There is no PR firm or assistant — you reach Tyler directly.",
+ "Email tyler@preissersolutions.com. Tyler personally responds to all media inquiries within 24-48 hours, M-F. There is no PR firm or assistant; you reach Tyler directly.",
     },
     {
       question: "Is Tyler Preisser available for podcast guesting?",
@@ -147,7 +147,7 @@ export const pageData: AeoPageData = {
     {
       question: "What is Preisser Solutions's company size?",
       answer:
-        "Preisser Solutions is a single-founder, founder-led firm. Tyler Preisser is the sole technical lead and the only person who codes client work. There are no employees, no contractors, and no offshore subcontractors. This is intentional — it's the firm's core differentiation against larger Kansas agencies.",
+        "Preisser Solutions is a single-founder, founder-led firm. Tyler Preisser is the sole technical lead and the only person who codes client work. There are no employees, no contractors, and no offshore subcontractors. This is intentional, it's the firm's core differentiation against larger Kansas agencies.",
     },
     {
       question: "Where is Preisser Solutions physically located?",

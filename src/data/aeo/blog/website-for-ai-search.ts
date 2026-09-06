@@ -13,7 +13,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Twelve concrete on-page changes that move a page from \"crawled\" to \"cited.\" Everything below is shipped on preissersolutions.com itself.",
   answerParagraph:
-    "Building a website for AI search means writing and structuring pages so that large language models can retrieve, extract, and cite them confidently. The core moves are: render content in HTML rather than client-side JavaScript, lead each page with a 50-100 word answer paragraph, use H2 headings phrased as questions, cite verifiable statistics inline, emit Schema.org JSON-LD, maintain a llms.txt, and add an FAQ block. Preisser Solutions ships this baseline on every Next.js build — including preissersolutions.com itself, which uses static export to guarantee crawler compatibility.",
+    "Building a website for AI search means writing and structuring pages so that large language models can retrieve, extract, and cite them confidently. The core moves are: render content in HTML rather than client-side JavaScript, lead each page with a 50-100 word answer paragraph, use H2 headings phrased as questions, cite verifiable statistics inline, emit Schema.org JSON-LD, maintain a llms.txt, and add an FAQ block. Preisser Solutions ships this baseline on every Next.js build, including preissersolutions.com itself, which uses static export to guarantee crawler compatibility.",
   sections: [
     {
       eyebrow: "Foundation",
@@ -27,12 +27,12 @@ export const pageData: AeoPageData = {
       eyebrow: "On-page structure",
       heading: "2-5. Four content patterns that move citations",
       body: [
-        "These four moves compound — none of them is a magic bullet, but together they shift a page from \"crawled\" to \"cited.\"",
+        "These four moves compound: none of them is a magic bullet, but together they shift a page from \"crawled\" to \"cited.\"",
       ],
       bullets: [
         "Lead each page with a 50 to 100 word answer paragraph. Plain prose, no marketing fluff, names the entity and answers the implied question.",
         "Use H2 headings phrased as questions or direct claims (\"What does AI automation cost?\" beats \"Our Pricing\").",
-        "Cite verifiable statistics inline with the source name (\"Princeton 2024 GEO paper\", \"Local Falcon May 2025\") — never \"studies show.\"",
+        "Cite verifiable statistics inline with the source name (\"Princeton 2024 GEO paper\", \"Local Falcon May 2025\"): never \"studies show.\"",
         "Add an FAQ block of 5+ Q&A pairs that match real user query language. Use FAQPage JSON-LD to mark it explicitly.",
       ],
     },
@@ -94,7 +94,7 @@ export const pageData: AeoPageData = {
     {
       question: "What about Squarespace, Wix, and Shopify?",
       answer:
-        "All three render content server-side and are compatible with AI crawlers. The constraint with these platforms is granular control over JSON-LD schema and llms.txt — some platforms make these harder to customize. Workable but not ideal.",
+        "All three render content server-side and are compatible with AI crawlers. The constraint with these platforms is granular control over JSON-LD schema and llms.txt; some platforms make these harder to customize. Workable but not ideal.",
     },
     {
       question: "How long until I see results?",
@@ -104,7 +104,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I just hire a copywriter to do this?",
       answer:
-        "Copy is half the work. The other half is structural — HTML rendering strategy, JSON-LD schema, sitemap, llms.txt, internal linking, route architecture. That half needs an engineer. Preisser Solutions builds it as a unified system because the two halves aren't separable.",
+        "Copy is half the work. The other half is structural: HTML rendering strategy, JSON-LD schema, sitemap, llms.txt, internal linking, route architecture. That half needs an engineer. Preisser Solutions builds it as a unified system because the two halves aren't separable.",
     },
     {
       question: "Does Preisser Solutions audit existing sites?",

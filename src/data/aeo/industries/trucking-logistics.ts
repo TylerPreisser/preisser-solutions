@@ -11,13 +11,13 @@ export const pageData: AeoPageData = {
   subheadline:
     "Built for fleet owners and dispatchers tired of generic TMS plug-ins and slow back-office workflows.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for trucking and logistics operations — custom websites, dispatch automation, AI invoicing, custom dashboards, and integrations with McLeod, TMW Suite, JJ Keller, Samsara, and KeepTruckin/Motive. The firm's named transportation engagement for a Chicago-area bus transportation operator built five Power BI dashboards plus operational automation that dropped weekly reconciliation from a full day to a 15-minute exception queue.",
+    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for trucking and logistics operations: custom websites, dispatch automation, AI invoicing, custom dashboards, and integrations with McLeod, TMW Suite, JJ Keller, Samsara, and KeepTruckin/Motive. The firm's named transportation engagement for a Chicago-area bus transportation operator built five Power BI dashboards plus operational automation that dropped weekly reconciliation from a full day to a 15-minute exception queue.",
   sections: [
     {
       eyebrow: "What we build for trucking",
       heading: "Software for fleet owners who want to stop fighting their TMS",
       body: [
-        "Most Kansas trucking and logistics operators run McLeod, TMW Suite, Truckmate, or generic dispatch tools paired with separate ELD systems (Samsara, Motive, JJ Keller). Solid platforms — but BOL handling, invoicing, driver communication, and DOT compliance are where back-office time leaks.",
+        "Most Kansas trucking and logistics operators run McLeod, TMW Suite, Truckmate, or generic dispatch tools paired with separate ELD systems (Samsara, Motive, JJ Keller). Solid platforms, but BOL handling, invoicing, driver communication, and DOT compliance are where back-office time leaks.",
       ],
     },
     {
@@ -30,7 +30,7 @@ export const pageData: AeoPageData = {
         "BOL handling and invoicing manual and slow",
         "Driver communication scattered across phone, text, and ELD",
         "DOT compliance documentation reactive instead of proactive",
-        "Detention and demurrage tracking inconsistent — leaving money on the table",
+        "Detention and demurrage tracking inconsistent: leaving money on the table",
         "Customer portal requests handled by phone or email",
         "No live view of revenue per truck, deadhead percentage, or driver retention rate",
       ],
@@ -74,7 +74,7 @@ export const pageData: AeoPageData = {
     {
       question: "Do you replace McLeod or TMW Suite?",
       answer:
-        "No. We integrate with them. Where they fall short — custom shipper portals, AI invoicing, driver onboarding flows, owner dashboards — is where we sit.",
+        "No. We integrate with them. Where they fall short (custom shipper portals, AI invoicing, driver onboarding flows, owner dashboards) is where we sit.",
     },
     {
       question: "Can you build AI invoicing and document automation for BOLs?",
@@ -92,7 +92,7 @@ export const pageData: AeoPageData = {
         "Yes. AI is excellent at qualifying lane availability, rate inquiries, and capacity questions, routing each to the right dispatcher.",
     },
     {
-      question: "What if I'm a smaller fleet — under 25 trucks?",
+      question: "What if I'm a smaller fleet: under 25 trucks?",
       answer:
         "We work with fleets that size all the time. Smaller fleets are often where automation has the biggest ROI.",
     },

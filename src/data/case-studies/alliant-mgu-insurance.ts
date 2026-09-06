@@ -4,16 +4,16 @@ import type { CaseStudyData } from "@/types/case-study";
 // DO NOT name the company or personnel.
 export const caseStudy: CaseStudyData = {
   slug: "alliant-mgu-insurance",
-  metaTitle: "MGU Insurance — AI Submission Intake",
+  metaTitle: "MGU Insurance: AI Submission Intake",
   metaDescription:
-    "An MGU within the Alliant Insurance ecosystem ran dual-model AI on broker submissions — zero missed renewals in the first six months.",
+    "An MGU within the Alliant Insurance ecosystem ran dual-model AI on broker submissions: zero missed renewals in the first six months.",
   datePublished: "2025-08-12",
   dateModified: "2026-05-20",
 
   category: "AI Integration • Custom CRM • Insurance",
   clientName: "Anonymized MGU client",
   clientNameDisplay: "An MGU within the Alliant Insurance ecosystem",
-  industry: "Insurance — managing general underwriting",
+  industry: "Insurance: managing general underwriting",
 
   h1: "Dual-Model AI Submission Processing for a Multi-Carrier MGU",
   subheadline:
@@ -31,14 +31,14 @@ export const caseStudy: CaseStudyData = {
     problem:
       "The same submission data was retyped three to five times across the CRM, carrier systems, pricing spreadsheets and billing, and the principal had no live view of the book while two new carrier markets were coming online.",
     built:
-      "An intake pipeline that classifies every broker document, extracts the fields with two models cross-checking each other, and writes the result back into Salesforce — with anything low-confidence held for a human to review.",
+      "An intake pipeline that classifies every broker document, extracts the fields with two models cross-checking each other, and writes the result back into Salesforce: with anything low-confidence held for a human to review.",
     outcome: "Zero missed renewals in the first six months, with volume scaling toward ~2,500 submissions a year and no new headcount",
   },
 
   before: {
     heading: "The same data entered 3–5 times across disconnected systems.",
     body: [
-      "An MGU within the Alliant Insurance ecosystem was running ~1,700 submissions per year across workers' comp, general liability, commercial auto, and excess liability. The same data was being entered 3 to 5 times — across Salesforce, Majesco/Coverall, Chubb's systems, Excel pricing models, and Epic billing.",
+      "An MGU within the Alliant Insurance ecosystem was running ~1,700 submissions per year across workers' comp, general liability, commercial auto, and excess liability. The same data was being entered 3 to 5 times: across Salesforce, Majesco/Coverall, Chubb's systems, Excel pricing models, and Epic billing.",
       "With two new carrier markets coming online (AXA XL and Everest) alongside the existing Chubb relationship, the operation needed to scale to roughly 2,500 submissions per year without adding headcount. Approximately 70% of submissions were getting declined at various stages, and the principal had no real-time visibility into the book.",
     ],
   },
@@ -74,11 +74,11 @@ export const caseStudy: CaseStudyData = {
       {
         title: "Custom Salesforce objects",
         items: [
-          "Submission — the master submission record per broker package",
-          "Line of Business — line-level data per submission",
-          "LOB Quote — line-of-business quote tracking",
-          "Submission Quote — submission-level quote rollup",
-          "Submission Communication — broker correspondence log",
+          "Submission: the master submission record per broker package",
+          "Line of Business: line-level data per submission",
+          "LOB Quote: line-of-business quote tracking",
+          "Submission Quote: submission-level quote rollup",
+          "Submission Communication: broker correspondence log",
         ],
       },
       {
@@ -110,13 +110,13 @@ export const caseStudy: CaseStudyData = {
       value: "Real-time",
       label: "Book visibility for the principal",
       context:
-        "The principal gained real-time visibility into the book — replacing rear-view reporting with a live view of every submission, quote, and bind.",
+        "The principal gained real-time visibility into the book, replacing rear-view reporting with a live view of every submission, quote, and bind.",
     },
     {
       value: "~2,500/yr",
       label: "Submissions scaled without new headcount",
       context:
-        "The operation scaled toward ~2,500 submissions per year — across three carrier markets — without adding administrative headcount.",
+        "The operation scaled toward ~2,500 submissions per year (across three carrier markets): without adding administrative headcount.",
     },
   ],
 

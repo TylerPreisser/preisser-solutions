@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     canonical: "https://preissersolutions.com/contact",
   },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: "Contact Preisser Solutions | Start Your Custom Software Project",
     description:
       "Get in touch with Tyler Preisser to discuss your custom website, web application, AI automation, or dashboard project. Based in Hays, Kansas. Fast response guaranteed.",

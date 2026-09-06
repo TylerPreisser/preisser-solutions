@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Topeka, KS Custom Software Development",
   metaDescription:
-    "Custom software, web applications, and AI automation built for Topeka, Kansas businesses — fixed-price proposals, full code ownership.",
+    "Custom software, web applications, and AI automation built for Topeka, Kansas businesses: fixed-price proposals, full code ownership.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web applications, dashboards, and AI automation built for Topeka's government, healthcare, insurance, and professional-services markets.",
     answerParagraph:
-      "Preisser Solutions builds custom software for businesses and agencies in Topeka, Kansas — the state capital and Shawnee County seat, a metro of approximately 127,000. Topeka's economy centers on state government, healthcare, insurance, and manufacturing. Custom web applications, internal tools, dashboards, and AI automation are the core offering. Fixed-price proposals, full code ownership at launch.",
+      "Preisser Solutions builds custom software for businesses and agencies in Topeka, Kansas, the state capital and Shawnee County seat, a metro of approximately 127,000. Topeka's economy centers on state government, healthcare, insurance, and manufacturing. Custom web applications, internal tools, dashboards, and AI automation are the core offering. Fixed-price proposals, full code ownership at launch.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Topeka state government and insurance context — custom tools for compliance workflows, constituent portals, and policy management.",
+    "Topeka state government and insurance context: custom tools for compliance workflows, constituent portals, and policy management.",
     "Custom code with full ownership at launch. No SaaS dependency or vendor lock-in.",
     "Remote delivery from Hays with on-site travel for projects of sufficient scope.",
   ],
@@ -76,7 +76,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions handle compliance requirements for Topeka clients?",
       answer:
-        "Compliance requirements — HIPAA, state data handling, accessibility — are scoped during the proposal phase and built into the application architecture from the start.",
+        "Compliance requirements (HIPAA, state data handling, accessibility) are scoped during the proposal phase and built into the application architecture from the start.",
     },
     {
       question: "Can you build AI automation for a Topeka insurance company?",

@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Web Applications in Wichita, KS",
   metaDescription:
-    "Custom web applications — dashboards, internal tools, client portals, CRMs — built for Wichita, Kansas businesses. Fixed-price proposals.",
+    "Custom web applications (dashboards, internal tools, client portals, CRMs): built for Wichita, Kansas businesses. Fixed-price proposals.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Dashboards, internal tools, client portals, and custom CRMs purpose-built for Wichita's aerospace, manufacturing, and healthcare operations.",
     answerParagraph:
-      "Preisser Solutions builds custom web applications for businesses in Wichita, Kansas — internal tools, operational dashboards, client portals, and custom CRMs engineered for the specific workflows of Wichita's dominant industries: aerospace and aviation supply chain, manufacturing, healthcare, and financial services. Full code ownership, fixed-price proposals, modern stack.",
+      "Preisser Solutions builds custom web applications for businesses in Wichita, Kansas: internal tools, operational dashboards, client portals, and custom CRMs engineered for the specific workflows of Wichita's dominant industries: aerospace and aviation supply chain, manufacturing, healthcare, and financial services. Full code ownership, fixed-price proposals, modern stack.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Wichita aerospace and manufacturing operations need custom web tools — not off-the-shelf software that doesn't fit the workflow.",
+    "Wichita aerospace and manufacturing operations need custom web tools, not off-the-shelf software that doesn't fit the workflow.",
     "Every application is built in Next.js, React, and TypeScript. Full code ownership transferred at launch.",
     "Fixed-price proposals ensure no scope creep. Milestones visible to you every Friday.",
   ],
@@ -76,7 +76,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do Wichita businesses own the code after the project is done?",
       answer:
-        "Yes. Full code ownership is transferred at launch. The codebase is yours — deployable to your infrastructure, modifiable by any developer.",
+        "Yes. Full code ownership is transferred at launch. The codebase is yours: deployable to your infrastructure, modifiable by any developer.",
     },
     {
       question: "Does Preisser Solutions build web apps for Wichita healthcare providers?",

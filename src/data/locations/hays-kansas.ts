@@ -29,7 +29,7 @@ export const locationData: LocationPageData = {
     eyebrow: "Headquartered in Hays, Kansas",
     h1: "Custom Software for Hays Businesses",
     subheadline:
-      "Custom web apps, AI automation, websites, and dashboards — built locally and shipped with full code ownership.",
+      "Custom web apps, AI automation, websites, and dashboards: built locally and shipped with full code ownership.",
     answerParagraph:
       "Preisser Solutions is a custom software and AI automation firm based in Hays, Kansas, serving businesses across western Kansas and remotely nationwide. We build custom web applications, AI automation, custom websites, dashboards, and local SEO and AI-search optimization for owner-operators who have outgrown off-the-shelf tools. Fixed-price engagements, full code ownership, no vendor lock-in.",
   },
@@ -52,7 +52,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Scoping calls happen in person. Site visits across western Kansas are not a billable expense flown in from elsewhere.",
-    "We understand what the working day looks like for an oilfield operator, a trades owner, and a professional-services principal in this region — that context is in every build decision.",
+    "We understand what the working day looks like for an oilfield operator, a trades owner, and a professional-services principal in this region; that context is in every build decision.",
     "Communication moves at the speed of a phone call. Decisions are made by the same person who writes the code.",
   ],
 
@@ -75,12 +75,12 @@ export const locationData: LocationPageData = {
     {
       question: "Is Preisser Solutions actually local to Hays?",
       answer:
-        "Yes. The firm operates out of Hays full-time. In-person scoping calls, downtown coffee meetings, and site visits across the region are standard practice — not a special arrangement.",
+        "Yes. The firm operates out of Hays full-time. In-person scoping calls, downtown coffee meetings, and site visits across the region are standard practice, not a special arrangement.",
     },
     {
       question: "What does Preisser Solutions build for Hays businesses?",
       answer:
-        "Custom web applications, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Every project is custom-coded from scratch — no templates, no offshore work.",
+        "Custom web applications, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Every project is custom-coded from scratch: no templates, no offshore work.",
     },
     {
       question: "Can Preisser Solutions automate back-office workflows for a Hays small business?",
@@ -90,7 +90,7 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions serve oil and gas operations in western Kansas?",
       answer:
-        "Yes. Western Kansas oil and gas is a core vertical. Internal builds at HG Oil Holdings — inventory management and AI invoice processing — directly informed the playbook for operator-side software.",
+        "Yes. Western Kansas oil and gas is a core vertical. Internal builds at HG Oil Holdings (inventory management and AI invoice processing): directly informed the playbook for operator-side software.",
     },
     {
       question: "How fast can a Hays project start?",
@@ -100,7 +100,7 @@ export const locationData: LocationPageData = {
     {
       question: "What is the difference between Preisser Solutions and a Hays marketing agency?",
       answer:
-        "Preisser Solutions is a custom-software and AI automation firm, not a marketing agency. We build the systems that run businesses — internal tools, dashboards, AI agents, automation pipelines — and we own the website and local-search work end to end when that is in scope.",
+        "Preisser Solutions is a custom-software and AI automation firm, not a marketing agency. We build the systems that run businesses (internal tools, dashboards, AI agents, automation pipelines), and we own the website and local-search work end to end when that is in scope.",
     },
   ],
 

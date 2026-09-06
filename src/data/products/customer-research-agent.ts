@@ -4,7 +4,7 @@ export const product: ProductData = {
   slug: "customer-research-agent",
   metaTitle: "Customer Research Agent",
   metaDescription:
-    "Sub-agents scour the internet in parallel to research individual prospects and return enriched profiles ready for individualized outreach — in minutes, not hours.",
+    "Sub-agents scour the internet in parallel to research individual prospects and return enriched profiles ready for individualized outreach: in minutes, not hours.",
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
 
@@ -15,32 +15,32 @@ export const product: ProductData = {
   status: "production",
   industries: ["B2B services", "Professional services", "Financial services", "Sales organizations"],
 
-  h1: "Deep prospect research in minutes — not hours of manual lookup.",
+  h1: "Deep prospect research in minutes: not hours of manual lookup.",
   subheadline:
-    "A multi-agent orchestration system that deploys parallel sub-agents to research individual prospects across the web, synthesizes findings into enriched profiles, and scores source credibility — so outreach is individualized, not generic.",
+    "A multi-agent orchestration system that deploys parallel sub-agents to research individual prospects across the web, synthesizes findings into enriched profiles, and scores source credibility, so outreach is individualized, not generic.",
   oneLine:
     "Parallel sub-agents research individual prospects across the web and return enriched, source-scored profiles ready for individualized outreach.",
 
   whatItDoes: [
-    "Personalized outreach requires knowing something real about the person you're reaching. Manual prospect research — LinkedIn, company site, Google, news search — takes 30-60 minutes per person and still misses signals scattered across sources a human wouldn't think to check. Most outreach skips the research step and sends generic messages. The Customer Research Agent makes individualized research fast enough to be practical at scale.",
-    "The agent deploys a fleet of parallel sub-agents against a single prospect. Each sub-agent searches a different source category — professional profile, company news, recent activity, public statements, industry context, social signals — and returns structured findings. A synthesis layer aggregates the parallel results, scores each source for credibility, resolves conflicts between sources, and produces a unified enriched profile: current role, recent moves, areas of focus, likely priorities, and any signals relevant to the outreach context.",
+    "Personalized outreach requires knowing something real about the person you're reaching. Manual prospect research (LinkedIn, company site, Google, news search): takes 30-60 minutes per person and still misses signals scattered across sources a human wouldn't think to check. Most outreach skips the research step and sends generic messages. The Customer Research Agent makes individualized research fast enough to be practical at scale.",
+    "The agent deploys a fleet of parallel sub-agents against a single prospect. Each sub-agent searches a different source category (professional profile, company news, recent activity, public statements, industry context, social signals), and returns structured findings. A synthesis layer aggregates the parallel results, scores each source for credibility, resolves conflicts between sources, and produces a unified enriched profile: current role, recent moves, areas of focus, likely priorities, and any signals relevant to the outreach context.",
     "The pattern was proven in the Elect Righteous research pipeline, which deploys the same parallel sub-agent architecture to research individuals across 15+ web source passes. For commercial use, the same architecture enriches CRM records for existing customers, qualifies inbound leads, and powers the individualized outreach layer for the Intelligent Outbound Sales product.",
   ],
   capabilities: [
     {
       title: "Parallel sub-agent deployment",
       description:
-        "Multiple sub-agents research different source categories simultaneously — no sequential single-source lookup, parallel passes across professional, news, social, and industry sources.",
+        "Multiple sub-agents research different source categories simultaneously: no sequential single-source lookup, parallel passes across professional, news, social, and industry sources.",
     },
     {
       title: "Source credibility scoring",
       description:
-        "Each source is scored for credibility and recency before its findings enter the synthesized profile — high-confidence recent signals weighted over outdated or low-quality sources.",
+        "Each source is scored for credibility and recency before its findings enter the synthesized profile, high-confidence recent signals weighted over outdated or low-quality sources.",
     },
     {
       title: "Schema-validated profile output",
       description:
-        "Research outputs conform to a defined profile schema — current role, company context, recent activity, areas of focus, signals — ready for downstream system integration.",
+        "Research outputs conform to a defined profile schema (current role, company context, recent activity, areas of focus, signals): ready for downstream system integration.",
     },
     {
       title: "CRM record enrichment",
@@ -50,12 +50,12 @@ export const product: ProductData = {
     {
       title: "Inbound lead qualification",
       description:
-        "Researches inbound leads immediately on capture — so the sales team receives a qualified, enriched record rather than a bare form submission.",
+        "Researches inbound leads immediately on capture: so the sales team receives a qualified, enriched record rather than a bare form submission.",
     },
     {
       title: "Outreach material generation",
       description:
-        "Researched profile context feeds directly into hyper-personalized outreach generation — each message references something real about the prospect.",
+        "Researched profile context feeds directly into hyper-personalized outreach generation: each message references something real about the prospect.",
     },
   ],
   inputs: [
@@ -74,12 +74,12 @@ export const product: ProductData = {
     {
       step: "Prospect intake",
       description:
-        "A prospect name and company enter the system — from a CRM record, a manual input, or an inbound lead capture trigger.",
+        "A prospect name and company enter the system: from a CRM record, a manual input, or an inbound lead capture trigger.",
     },
     {
       step: "Parallel sub-agent deployment",
       description:
-        "Sub-agents deploy simultaneously across configured source categories — professional profile, company news, recent activity, social signals, industry context.",
+        "Sub-agents deploy simultaneously across configured source categories: professional profile, company news, recent activity, social signals, industry context.",
     },
     {
       step: "Findings aggregation",
@@ -98,7 +98,7 @@ export const product: ProductData = {
     },
   ],
   useCases: [
-    "Use this when manual prospect research is a bottleneck — each qualified prospect requires 30-60 minutes of lookup before outreach can be personalized.",
+    "Use this when manual prospect research is a bottleneck: each qualified prospect requires 30-60 minutes of lookup before outreach can be personalized.",
     "Use this when your CRM contains sparse contact records and you want to enrich them with researched context without manual investigation.",
     "Use this when inbound leads arrive as bare form submissions and the sales team needs enriched context before the first conversation.",
     "Use this when outbound outreach is generic because the research step is too slow to do at scale.",

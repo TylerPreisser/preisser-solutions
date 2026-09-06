@@ -28,7 +28,7 @@ export const pageData: AeoPageData = {
         "Make.com has earned its position as a more powerful Zapier alternative:",
       ],
       bullets: [
-        "Richer visual builder than Zapier — better for complex multi-step scenarios",
+        "Richer visual builder than Zapier: better for complex multi-step scenarios",
         "Lower per-operation cost than Zapier",
         "Iterators, aggregators, and routers built in",
         "Handles arrays and complex data structures better than Zapier",
@@ -40,15 +40,15 @@ export const pageData: AeoPageData = {
       eyebrow: "Where custom wins",
       heading: "What custom automation does that Make.com doesn't",
       body: [
-        "Make.com hits walls in specific scenarios — that's where custom wins:",
+        "Make.com hits walls in specific scenarios, that's where custom wins:",
       ],
       bullets: [
-        "Per-operation pricing at scale — high-volume workflows still rack up significant fees",
-        "Complex error handling — Make.com's error handlers are improving but still less flexible than custom",
-        "Compliance — HIPAA, SOC 2, FedRAMP rule out most no-code platforms",
+        "Per-operation pricing at scale: high-volume workflows still rack up significant fees",
+        "Complex error handling: Make.com's error handlers are improving but still less flexible than custom",
+        "Compliance: HIPAA, SOC 2, FedRAMP rule out most no-code platforms",
         "Custom logic that exceeds Make.com's modules and code steps",
         "Integrations Make.com doesn't have connectors for",
-        "Performance — high-throughput workflows hit Make.com's operation limits",
+        "Performance: high-throughput workflows hit Make.com's operation limits",
       ],
     },
     {
@@ -57,7 +57,7 @@ export const pageData: AeoPageData = {
       body: [
         "Make.com is the right answer in several scenarios and it is honest to name them clearly. For most medium-complexity automations between standard SaaS tools, Make.com is a better choice than a custom build.",
         "Speed of iteration is the clearest case. Make.com scenarios can be drafted, tested, and shipped in hours. Custom code takes weeks. If the workflow is going to change frequently as the business evolves, an in-house operator can keep editing the Make.com scenario without engineering involvement. That iteration speed is a real productivity advantage and a custom build cannot match it.",
-        "Cost at low-to-medium volume also favors Make.com. The free tier and entry tiers handle low-volume automations effectively at minimal cost. Building custom for that workload would be irrational — the build cost would never amortize. Make.com's per-operation pricing is genuinely better than Zapier's at most volume tiers, and the richer iterator/aggregator/router model handles branching logic that Zapier struggles with.",
+        "Cost at low-to-medium volume also favors Make.com. The free tier and entry tiers handle low-volume automations effectively at minimal cost. Building custom for that workload would be irrational, the build cost would never amortize. Make.com's per-operation pricing is genuinely better than Zapier's at most volume tiers, and the richer iterator/aggregator/router model handles branching logic that Zapier struggles with.",
         "Non-technical operators can also build and maintain Make.com scenarios. With custom code, every change requires engineering. For teams that want internal ownership of the automation layer without hiring engineers, that is a structural advantage of no-code platforms generally and Make.com specifically.",
       ],
     },
@@ -79,12 +79,12 @@ export const pageData: AeoPageData = {
       { dimension: "Best for", preisser: "Production-scale workflows, complex logic, compliance", competitor: "Medium-complexity automations, iterators, branching logic" },
       { dimension: "Pricing model", preisser: "One-time build + minimal hosting", competitor: "Per-operation pricing scaling with operation volume" },
       { dimension: "Long-term cost (5 years, 100k ops/month)", preisser: "Build cost + minimal hosting", competitor: "Substantial recurring subscription fees as volume grows" },
-      { dimension: "Complex logic", preisser: "Any logic — code can do anything", competitor: "Iterators, aggregators, routers, code modules; complex logic possible but hits walls" },
-      { dimension: "Error handling", preisser: "Custom — exactly the retry, dead-letter, and alerting logic you need", competitor: "Error handlers built in; less flexible than custom for complex cases" },
+      { dimension: "Complex logic", preisser: "Any logic: code can do anything", competitor: "Iterators, aggregators, routers, code modules; complex logic possible but hits walls" },
+      { dimension: "Error handling", preisser: "Custom: exactly the retry, dead-letter, and alerting logic you need", competitor: "Error handlers built in; less flexible than custom for complex cases" },
       { dimension: "Connectors", preisser: "Build to any API; custom connectors for legacy systems", competitor: "Large connector library; custom apps require HTTP modules" },
       { dimension: "Time to launch", preisser: "4-8 weeks for production custom automation", competitor: "Hours to days for simple scenarios" },
       { dimension: "Compliance", preisser: "Built to your compliance requirements", competitor: "SOC 2 certified; HIPAA via specific arrangements" },
-      { dimension: "Vendor lock-in", preisser: "None — code is yours", competitor: "Significant — scenarios live on Make.com" },
+      { dimension: "Vendor lock-in", preisser: "None: code is yours", competitor: "Significant: scenarios live on Make.com" },
     ],
   },
   faq: [
@@ -121,7 +121,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can custom automation handle Make.com-style branching logic?",
       answer:
-        "Yes — and more flexibly. Custom code can implement any branching, iteration, or aggregation logic without scenario constraints.",
+        "Yes, and more flexibly. Custom code can implement any branching, iteration, or aggregation logic without scenario constraints.",
     },
   ],
   schemaType: "Article",

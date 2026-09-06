@@ -66,7 +66,7 @@ export function ProductCard({ product, index }: Props) {
           borderColor: "var(--theme-card-border)",
           background: "var(--theme-result-card-bg)",
         }}
-        aria-label={`${product.name} — ${product.tagline}`}
+        aria-label={`${product.name} ${product.tagline}`}
       >
         {/* ── Visual area (top 200px) ── */}
         <div

@@ -1,0 +1,227 @@
+/* ============================================================
+   hero-scroll-cue.css
+   Split out of globals.css deliberately, following the existing
+   `@import "./card-visuals.css"` precedent, so the 2026-09-03
+   homepage overhaul could be built by several agents at once
+   without them serializing on one 8,400-line stylesheet.
+   Tokens only — every color here must be a var() from the :root
+   block in globals.css. No new hex values.
+   ============================================================ */
+
+/* CASCADE NOTE — read before editing.
+   This sheet is UNLAYERED and is `@import`ed at the top of globals.css, so its
+   rules occupy the FIRST source positions in the built sheet.
+     - It BEATS everything inside `@layer components` (globals.css:260-432)
+       automatically: an unlayered rule outranks any named layer, whatever the
+       specificity or the order.
+     - It LOSES to any unlayered rule AFTER globals.css:432 on equal
+       specificity, because those come later in source order.
+   Therefore: only style class names that appear nowhere in globals.css. If you
+   must touch an existing name, win on SPECIFICITY and prove it with
+   getComputedStyle on a built page.
+
+   Do NOT wrap this file in `@layer components`. Measured 2026-09-03: wrapping
+   all five new sheets demoted them beneath the unlayered globals rules (which
+   are the large majority — the layer block ends at line 432 of a 7,750-line
+   file) and broke two load-bearing overrides — work-card artwork opacity
+   1 -> 0 on hover/focus-within, and .ps-why padding-bottom 100px -> 72px. */
+
+/* ── The cue ────────────────────────────────────────────────
+   A 44x44 button pinned to the bottom of .ps-hero (position:
+   relative, overflow: hidden), centred on the hero's axis.
+
+   TWO ELEMENTS ON PURPOSE, and it is not decoration:
+     .ps-hero-cue      — positioning + the scroll-away fade. Owns
+                         translateX(-50%). CSS writes this one.
+     .ps-hero-cue__btn — the affordance. Owns the entrance
+                         (opacity + y). hero-entrance.css writes
+                         this one. (Was GSAP until 2026-09-04 —
+                         see hero-entrance.css for why it moved.)
+   Splitting them keeps the entrance off the centring transform: an
+   animation on the positioned element would fight translateX(-50%)
+   and the cue would drift off-centre on resize. The two opacities
+   multiply, so "entered" and "scrolled away" compose without
+   either owner clobbering the other's value.
+
+   Do NOT reuse .ps-scroll-indicator / .ps-scroll-chevron from
+   globals.css:1203-1230. That block is orphaned (no component has
+   ever rendered those classes), it hard-codes opacity: 0 with no
+   JS to raise it, and its bounce-chevron keyframes run infinitely
+   with no prefers-reduced-motion guard. Namespaced away from it
+   deliberately. */
+
+.ps-hero-cue {
+  /* Dark hero (default theme). #94A3B8 on #0A1628 is 6.6:1; the
+     scrim's vertical ramp is back up to 0.75 opacity by the bottom
+     edge, so the canvas behind barely lightens it. */
+  --ps-cue-fg:       var(--color-text-dark-secondary);
+  --ps-cue-fg-hover: var(--color-text-dark-primary);
+  --ps-cue-border:   var(--color-border-dark);
+  --ps-cue-ring:     var(--color-primary);      /* 5.58:1 on #0A1628 */
+
+  position: absolute;
+  left: 50%;
+  /* 24px is the design-system `lg` step. env() keeps it clear of the
+     iOS Safari home indicator / bottom bar; 0px fallback everywhere
+     else. This is the only place in the stylesheet using safe-area,
+     because it is the only thing pinned to the bottom edge. */
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 3;                 /* over .ps-hero-overlay (1) and content (2) */
+  display: flex;
+  opacity: 1;
+  transition: opacity 0.35s var(--ease-standard), visibility 0s linear 0.35s;
+}
+
+/* Light hero (#F6F9FC). #475569 measures 8.3:1 there. The focus ring
+   switches to --color-primary-strong: the exact logo blue is only
+   3.07:1 on this background, which is inside the noise for a 2px
+   ring, while #0C6FC9 is 5.08:1. */
+[data-theme="light"] .ps-hero-cue {
+  --ps-cue-fg:       var(--color-text-light-secondary);
+  --ps-cue-fg-hover: var(--color-text-light-primary);
+  --ps-cue-border:   var(--color-border-light);
+  --ps-cue-ring:     var(--color-primary-strong);
+}
+
+/* Scrolled away. A cue that stays put once the page has moved reads
+   as broken. visibility is delayed by the transition duration so the
+   fade is seen, then it stops being a tab stop and stops compositing
+   the idle bob. */
+.ps-hero-cue[data-cue-hidden="true"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ...unless it still holds focus. Yanking visibility out from under a
+   focused button drops focus to <body>, which strands a keyboard user
+   mid-page. While focus is inside, the cue stays real and re-pressable. */
+.ps-hero-cue[data-cue-hidden="true"]:focus-within {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.ps-hero-cue__btn {
+  /* Entrance start state, kept as a fallback only. The live entrance is
+     .ps-hero .ps-hero-cue__btn in hero-entrance.css, which is (0,2,0) and
+     therefore outranks this (0,1,0) rule in both directions. */
+  opacity: 0;
+  transform: translateY(10px);
+
+  /* Binding repo rule: 44x44 minimum tap target. */
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--ps-cue-fg);
+  border: 1px solid var(--ps-cue-border);
+  /* Derived from the foreground token so the ring is visible in BOTH
+     themes — the flat --color-border-light is only 1.07:1 on the light
+     hero. The token declaration above is the fallback for engines
+     without color-mix (iOS Safari < 16.2), which drop this line. */
+  /* 45%, the same proportion :hover already uses two rules below, so no new
+     value is introduced. Measured on the hero backgrounds: the ring goes from
+     1.59:1 to 2.41:1 on dark and 1.49:1 to 2.09:1 on light. Hover still reads
+     as a change because it mixes the HOVER token, not this one, and lands at
+     4.48:1 / 2.94:1. */
+  border-color: color-mix(in srgb, var(--ps-cue-fg) 45%, transparent);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color 0.2s var(--ease-standard),
+    border-color 0.2s var(--ease-standard);
+}
+
+.ps-hero-cue__btn:hover {
+  color: var(--ps-cue-fg-hover);
+  border-color: color-mix(in srgb, var(--ps-cue-fg-hover) 45%, transparent);
+}
+
+/* Matches the site-wide ring (.ps-carousel-btn, .ps-work-nav-btn). */
+.ps-hero-cue__btn:focus-visible {
+  outline: 2px solid var(--ps-cue-ring);
+  outline-offset: 3px;
+  color: var(--ps-cue-fg-hover);
+}
+
+.ps-hero-cue__icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+/* Idle bob. Opt-IN via no-preference, so reduced-motion users get a
+   static cue by default rather than by override. Transform-only on one
+   20px element, so it composites off the main thread; it is also pure
+   CSS on purpose, which means it survives the GSAP chunk failing to
+   load. Nothing here moves layout. */
+@media (prefers-reduced-motion: no-preference) {
+  .ps-hero-cue__icon {
+    animation: ps-hero-cue-bob 2.4s var(--ease-standard) infinite;
+  }
+  .ps-hero-cue__btn:hover .ps-hero-cue__icon,
+  .ps-hero-cue__btn:focus-visible .ps-hero-cue__icon {
+    animation-play-state: paused;
+  }
+}
+
+/* TRANSFORM ONLY, and identical to `ps-cue-bob` in globals.css on purpose.
+
+   Two keyframe sets target this same icon. `ps-cue-bob` is declared later in
+   the built sheet and so wins at 767px and below; this one wins at 768 and
+   above. They used to differ in two ways: this one dipped opacity to 0.75 and
+   travelled -2px to +3px, the other holds opacity and travels 0 to +5px. The
+   result was a cue that looked slightly different either side of one pixel of
+   viewport width, and an opacity trough that pulled the icon from 7.07:1 down
+   to 4.50:1 on dark for part of every cycle.
+
+   Matching the other set exactly removes both. It also puts the cue back in
+   line with the repo convention of animating transform and opacity only, by
+   dropping to transform alone. Do not "restore" the opacity dip: it is the
+   defect, not the character. */
+@keyframes ps-hero-cue-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(5px); }
+}
+
+/* Reduced motion: visible, static, still clickable. Belt and braces —
+   hero-entrance.css's unconditional block already guarantees this at
+   higher specificity. No dependency on any JS chunk, in either sheet. */
+@media (prefers-reduced-motion: reduce) {
+  .ps-hero-cue__btn {
+    opacity: 1;
+    transform: none;
+  }
+  .ps-hero-cue {
+    transition: none;
+  }
+}
+
+/* The sentinel the IntersectionObserver watches (hero.tsx). Zero-width,
+   absolutely positioned, so it can never affect layout or be hit. Its
+   height IS the scroll distance that dismisses the cue. */
+.ps-hero-cue__sentinel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 20vh;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* Landscape phones and other short viewports: the hero content column
+   already fills the frame, so the cue would land on the CTAs. Drop it
+   rather than let it collide. */
+@media (max-height: 560px) {
+  .ps-hero-cue {
+    display: none;
+  }
+}

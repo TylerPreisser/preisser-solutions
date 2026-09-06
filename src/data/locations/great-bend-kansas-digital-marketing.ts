@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Digital Marketing in Great Bend, KS",
   metaDescription:
-    "Local SEO, AI-search optimization, and custom websites for Great Bend, Kansas — built by a nearby Hays-based firm.",
+    "Local SEO, AI-search optimization, and custom websites for Great Bend, Kansas: built by a nearby Hays-based firm.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -23,7 +23,7 @@ export const locationData: LocationPageData = {
     eyebrow: "Digital Marketing in Great Bend, Kansas",
     h1: "Digital Marketing for Great Bend Businesses",
     subheadline:
-      "Local SEO, AI-search visibility, and custom marketing sites — engineered to actually move the needle.",
+      "Local SEO, AI-search visibility, and custom marketing sites: engineered to actually move the needle.",
     answerParagraph:
       "Preisser Solutions delivers local SEO, AI-search optimization, and custom websites for Great Bend, Kansas businesses. Based in Hays, an hour west on US-281. The firm's marketing engine layers schema architecture, citation work, content engineering, and AI-search optimization on top of fast custom websites. No retainer-forever billing.",
   },
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Hays-based firm an hour away on US-281 — local context built into every campaign.",
+    "Hays-based firm an hour away on US-281: local context built into every campaign.",
     "Engineered for both Google search and the AI-search ecosystem (ChatGPT, Perplexity, Gemini, Google AI Overviews).",
     "Fixed-price scoping, no retainer-forever billing.",
   ],
@@ -59,12 +59,12 @@ export const locationData: LocationPageData = {
     {
       question: "What is AI search optimization?",
       answer:
-        "Engineering a site, content, schema, and citation footprint so AI engines — ChatGPT, Perplexity, Gemini, Google AI Overviews — cite it when users ask relevant questions.",
+        "Engineering a site, content, schema, and citation footprint so AI engines (ChatGPT, Perplexity, Gemini, Google AI Overviews): cite it when users ask relevant questions.",
     },
     {
       question: "How do you measure SEO results?",
       answer:
-        "Citation tracking on AI engines, Google rank positions, organic traffic, and lead volume — all reported on a monthly cadence.",
+        "Citation tracking on AI engines, Google rank positions, organic traffic, and lead volume: all reported on a monthly cadence.",
     },
     {
       question: "How long does SEO take to show results?",

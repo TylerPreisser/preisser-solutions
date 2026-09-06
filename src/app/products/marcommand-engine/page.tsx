@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   description: product.metaDescription,
   alternates: { canonical: url },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: product.metaTitle,
     description: product.metaDescription,
     url,

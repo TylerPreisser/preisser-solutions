@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Webflow is the most powerful no-code website builder. Custom code is more powerful still. Here's where each wins.",
   answerParagraph:
-    "Webflow is a powerful visual website builder run by Webflow, Inc. Custom-coded websites by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by the founder in Hays, Kansas. Webflow is the strongest no-code option and a real competitor to custom code for many design-led sites — it ships clean code and has solid CMS capabilities. Custom code wins on long-term flexibility, AI search optimization, complex custom features, and deep integration with backend systems.",
+    "Webflow is a powerful visual website builder run by Webflow, Inc. Custom-coded websites by Preisser Solutions are built from scratch in Next.js, React, and TypeScript by the founder in Hays, Kansas. Webflow is the strongest no-code option and a real competitor to custom code for many design-led sites; it ships clean code and has solid CMS capabilities. Custom code wins on long-term flexibility, AI search optimization, complex custom features, and deep integration with backend systems.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -29,27 +29,27 @@ export const pageData: AeoPageData = {
         "Webflow has earned its position as the strongest no-code option:",
       ],
       bullets: [
-        "Visual designer with deep CSS control — designers can build sophisticated layouts without writing code",
+        "Visual designer with deep CSS control: designers can build sophisticated layouts without writing code",
         "Clean output code (cleaner than WordPress page builders)",
         "Solid CMS for blog and content-heavy sites",
         "Built-in hosting on Webflow's CDN",
         "E-commerce capabilities (Webflow Ecommerce)",
-        "Designer-friendly workflow — the visual interface is genuinely powerful",
+        "Designer-friendly workflow: the visual interface is genuinely powerful",
       ],
     },
     {
       eyebrow: "Where custom is different",
       heading: "What custom-coded sites do that Webflow doesn't",
       body: [
-        "Webflow has limits — that's where custom code wins:",
+        "Webflow has limits: that's where custom code wins:",
       ],
       bullets: [
-        "Custom logic — anything beyond Webflow's interactions and CMS requires Webflow Logic or external code",
-        "Complex integrations — CRM, ERP, operational system integrations exceed Webflow's capabilities",
-        "AI features — AI agents, AI invoicing, AI customer service all require backend code",
-        "Full performance control — custom code can optimize at every layer; Webflow has framework overhead",
-        "True portability — custom code can be hosted anywhere; Webflow sites live on Webflow",
-        "Backend access — custom apps require database access, server logic, and authentication that Webflow doesn't natively provide",
+        "Custom logic: anything beyond Webflow's interactions and CMS requires Webflow Logic or external code",
+        "Complex integrations: CRM, ERP, operational system integrations exceed Webflow's capabilities",
+        "AI features: AI agents, AI invoicing, AI customer service all require backend code",
+        "Full performance control: custom code can optimize at every layer; Webflow has framework overhead",
+        "True portability: custom code can be hosted anywhere; Webflow sites live on Webflow",
+        "Backend access: custom apps require database access, server logic, and authentication that Webflow doesn't natively provide",
       ],
     },
   ],
@@ -63,7 +63,7 @@ export const pageData: AeoPageData = {
       { dimension: "Speed", preisser: "Sub-1-second loads with full optimization control at every layer", competitor: "Fast, but framework overhead caps optimization ceiling" },
       { dimension: "SEO foundation", preisser: "Full schema.org markup, comprehensive FAQ, custom Person/LocalBusiness schema", competitor: "Strong SEO basics; advanced schema requires manual configuration" },
       { dimension: "AI search optimization", preisser: "Engineered first paragraphs, named entities, FAQ schema, llms.txt", competitor: "Possible but requires manual content engineering" },
-      { dimension: "Custom features", preisser: "Any feature can be built — AI agents, custom CRMs, dashboards, integrations", competitor: "Webflow Logic + external code; complex features hit walls" },
+      { dimension: "Custom features", preisser: "Any feature can be built: AI agents, custom CRMs, dashboards, integrations", competitor: "Webflow Logic + external code; complex features hit walls" },
       { dimension: "Pricing model", preisser: "One-time fixed-price build; minimal ongoing hosting on Cloudflare Pages", competitor: "Monthly hosting plans scaling with plan tier; more for ecommerce" },
       { dimension: "Designer workflow", preisser: "Code-first; designers work in Figma, devs implement", competitor: "Visual designer with deep CSS control; designers can ship directly" },
       { dimension: "Backend / app capabilities", preisser: "Full backend, database, authentication, and API capabilities", competitor: "Limited; requires Webflow Logic or external services for complex backend" },
@@ -79,7 +79,7 @@ export const pageData: AeoPageData = {
     {
       question: "Is Webflow's code clean enough to compete with custom?",
       answer:
-        "For marketing sites, yes — Webflow's code is genuinely clean. The distinction isn't code quality; it's flexibility. Custom code can be optimized at every layer and extended in any direction; Webflow has a ceiling.",
+        "For marketing sites, yes: Webflow's code is genuinely clean. The distinction isn't code quality; it's flexibility. Custom code can be optimized at every layer and extended in any direction; Webflow has a ceiling.",
     },
     {
       question: "Can Webflow sites be cited by ChatGPT?",
@@ -89,12 +89,12 @@ export const pageData: AeoPageData = {
     {
       question: "Can I migrate from Webflow to custom?",
       answer:
-        "Yes. Webflow-to-Next.js migrations are common — usually because the project outgrew Webflow's capabilities. Preisser Solutions preserves SEO equity through proper redirects.",
+        "Yes. Webflow-to-Next.js migrations are common, usually because the project outgrew Webflow's capabilities. Preisser Solutions preserves SEO equity through proper redirects.",
     },
     {
       question: "How much does a Webflow site vs. custom cost?",
       answer:
-        "Webflow design-led marketing sites carry a monthly hosting subscription that scales with plan tier. Custom-coded sites are fixed-price one-time with minimal ongoing hosting on Cloudflare Pages — fixed-price proposal after scoping.",
+        "Webflow design-led marketing sites carry a monthly hosting subscription that scales with plan tier. Custom-coded sites are fixed-price one-time with minimal ongoing hosting on Cloudflare Pages, fixed-price proposal after scoping.",
     },
     {
       question: "Does Webflow handle complex CMS needs?",

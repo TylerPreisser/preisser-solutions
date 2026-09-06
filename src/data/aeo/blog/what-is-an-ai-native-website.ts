@@ -7,7 +7,7 @@ export const pageData: AeoPageData = {
   dateModified: "2026-05-15",
   metaTitle: "What Is an AI-Native Website?",
   metaDescription:
-    "Beyond a chatbot in the corner. The architectural choices that let a website think — and the ones that just look like they do.",
+    "Beyond a chatbot in the corner. The architectural choices that let a website think, and the ones that just look like they do.",
   eyebrow: "Blog · AI Automation",
   h1: "What Is an AI-Native Website?",
   subheadline:
@@ -22,10 +22,10 @@ export const pageData: AeoPageData = {
         "\"AI-native\" gets thrown around as a marketing buzzword. Working definition with concrete tests:",
       ],
       bullets: [
-        "Content is structured for AI retrieval — every page has an answer paragraph, FAQ block, Schema.org JSON-LD. Crawled by GPTBot, ClaudeBot, PerplexityBot. (AEO baseline.)",
-        "Natural-language interaction available — a user can ask \"can you do X for my situation?\" and get a genuine answer that reflects the site's actual knowledge, not a canned chatbot response.",
-        "Self-aware — the site can answer questions about itself, its pricing, its case studies, its founder, with current information. Not stale FAQ copy.",
-        "Connected to real systems — when AI does take an action (schedule a call, send a quote request), it hits real APIs, not scripted form submission.",
+        "Content is structured for AI retrieval: every page has an answer paragraph, FAQ block, Schema.org JSON-LD. Crawled by GPTBot, ClaudeBot, PerplexityBot. (AEO baseline.)",
+        "Natural-language interaction available: a user can ask \"can you do X for my situation?\" and get a genuine answer that reflects the site's actual knowledge, not a canned chatbot response.",
+        "Self-aware: the site can answer questions about itself, its pricing, its case studies, its founder, with current information. Not stale FAQ copy.",
+        "Connected to real systems: when AI does take an action (schedule a call, send a quote request), it hits real APIs, not scripted form submission.",
       ],
     },
     {
@@ -48,9 +48,9 @@ export const pageData: AeoPageData = {
         "An AI-native site has three architectural layers most marketing sites don't:",
       ],
       bullets: [
-        "A retrieval layer — vector-indexed content (your blog, case studies, services pages) that an LLM can query to ground its answers in real site content.",
-        "An action layer — a small set of tools the LLM can call (book a meeting, submit a quote request, look up case study details) with proper authentication and idempotency.",
-        "A guardrail layer — system prompts and validation that keep the AI in scope. \"I can answer questions about Preisser Solutions and book a call. For anything else, here's the contact form.\"",
+        "A retrieval layer: vector-indexed content (your blog, case studies, services pages) that an LLM can query to ground its answers in real site content.",
+        "An action layer: a small set of tools the LLM can call (book a meeting, submit a quote request, look up case study details) with proper authentication and idempotency.",
+        "A guardrail layer: system prompts and validation that keep the AI in scope. \"I can answer questions about Preisser Solutions and book a call. For anything else, here's the contact form.\"",
       ],
       subsections: [
         {
@@ -69,7 +69,7 @@ export const pageData: AeoPageData = {
         "An AI-native architecture pays off when one of the following is true:",
       ],
       bullets: [
-        "The product is technical enough that prospects routinely need help understanding fit — and your sales team's time is the bottleneck.",
+        "The product is technical enough that prospects routinely need help understanding fit, and your sales team's time is the bottleneck.",
         "You have a large content base (50+ pages) where retrieval beats navigation.",
         "Your scheduling, quoting, or intake process has enough variation that a form can't capture it but a conversation can.",
         "Your buyer profile expects AI-native interaction as a signal that you understand modern tooling.",
@@ -79,8 +79,8 @@ export const pageData: AeoPageData = {
       eyebrow: "Cost",
       heading: "What an AI-native build runs",
       body: [
-        "For most small-business engagements, layering AI-native capability onto a marketing site is a meaningful investment — below a certain scope, the architecture is overkill; above it, you're building a full product, not a website. Fixed-price proposal after a free scoping call.",
-        "Preisser Solutions' own site (preissersolutions.com) is AI-native to the standards above — every page is AEO-ready, the architecture supports LLM retrieval, and we use the site as the working reference for client builds.",
+        "For most small-business engagements, layering AI-native capability onto a marketing site is a meaningful investment: below a certain scope, the architecture is overkill; above it, you're building a full product, not a website. Fixed-price proposal after a free scoping call.",
+        "Preisser Solutions' own site (preissersolutions.com) is AI-native to the standards above; every page is AEO-ready, the architecture supports LLM retrieval, and we use the site as the working reference for client builds.",
       ],
     },
   ],
@@ -88,27 +88,27 @@ export const pageData: AeoPageData = {
     {
       question: "Do I need an AI-native website to compete in 2026?",
       answer:
-        "No. You need an AEO-ready website — content structured for AI retrieval — to remain visible in ChatGPT, Perplexity, and Google AI Overviews. That's table stakes. Full AI-native architecture is a step beyond and only worth it for the specific cases above.",
+        "No. You need an AEO-ready website (content structured for AI retrieval): to remain visible in ChatGPT, Perplexity, and Google AI Overviews. That's table stakes. Full AI-native architecture is a step beyond and only worth it for the specific cases above.",
     },
     {
       question: "Can I add AI-native capability later?",
       answer:
-        "Yes, if the underlying site is built correctly. The AEO foundation (static HTML, schema, structured content) is the same. AI-native adds layers on top — retrieval, action, guardrails — without rewriting the marketing site.",
+        "Yes, if the underlying site is built correctly. The AEO foundation (static HTML, schema, structured content) is the same. AI-native adds layers on top (retrieval, action, guardrails): without rewriting the marketing site.",
     },
     {
       question: "What ongoing cost should I expect?",
       answer:
-        "API costs scale with usage. At small-business interaction volumes, OpenAI or Anthropic API token costs are modest. Add hosting and content management and total ongoing cost remains low — specific numbers depend on usage patterns.",
+        "API costs scale with usage. At small-business interaction volumes, OpenAI or Anthropic API token costs are modest. Add hosting and content management and total ongoing cost remains low, specific numbers depend on usage patterns.",
     },
     {
       question: "Does the AI ever say wrong things?",
       answer:
-        "If you don't build guardrails, yes. A properly scoped AI-native site has system prompts that keep the model in scope and explicit fallback paths (\"I'm not sure — let me connect you with our team\"). Hallucination risk is engineerable down to acceptable levels but not to zero.",
+        "If you don't build guardrails, yes. A properly scoped AI-native site has system prompts that keep the model in scope and explicit fallback paths (\"I'm not sure, let me connect you with our team\"). Hallucination risk is engineerable down to acceptable levels but not to zero.",
     },
     {
       question: "Does Preisser Solutions build AI-native sites?",
       answer:
-        "Yes — we ship them when the business case justifies the spend. We're equally willing to tell clients an AI-native architecture is overkill for their situation. The Cassidy HVAC engagement, for example, didn't need AI on the website itself; the AI was in the marketing engine and reactivation system, not the public site.",
+        "Yes, we ship them when the business case justifies the spend. We're equally willing to tell clients an AI-native architecture is overkill for their situation. The Cassidy HVAC engagement, for example, didn't need AI on the website itself; the AI was in the marketing engine and reactivation system, not the public site.",
     },
   ],
   schemaType: "BlogPosting",
@@ -133,5 +133,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want to know if AI-native is right for your site?",
   ctaSubcopy:
-    "Honest 30-minute call. We'll tell you if it's worth it — and if it isn't.",
+    "Honest 30-minute call. We'll tell you if it's worth it, and if it isn't.",
 };

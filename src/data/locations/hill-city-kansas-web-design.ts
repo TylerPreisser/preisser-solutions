@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Hill City, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Hill City, Kansas — built by a Hays-based firm 55 miles northwest.",
+    "Custom websites, web apps, and AI automation for Hill City, Kansas: built by a Hays-based firm 55 miles northwest.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -39,8 +39,8 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Hill City is 55 miles from Hays headquarters — closer than many in-market engagements. Travel for scoping and milestone meetings is a straightforward half-hour drive.",
-    "Graham County's ag and energy context is deeply familiar — no onboarding required to understand your operating environment.",
+    "Hill City is 55 miles from Hays headquarters: closer than many in-market engagements. Travel for scoping and milestone meetings is a straightforward half-hour drive.",
+    "Graham County's ag and energy context is deeply familiar: no onboarding required to understand your operating environment.",
     "Custom code with full ownership at launch. No platform dependency, no recurring build fees.",
   ],
 
@@ -56,7 +56,7 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions serve Hill City, Kansas?",
       answer:
-        "Yes. Hill City is within the firm's immediate service radius — 55 miles northwest of the Hays headquarters. In-person scoping and milestone visits are practical for any project size.",
+        "Yes. Hill City is within the firm's immediate service radius: 55 miles northwest of the Hays headquarters. In-person scoping and milestone visits are practical for any project size.",
     },
     {
       question: "How far is Hays from Hill City?",

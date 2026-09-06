@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Built for independent retailers and e-commerce brands tired of templated Shopify stores and generic chatbots.",
   answerParagraph:
-    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for retail and e-commerce operations — custom Shopify themes, custom Next.js commerce, AI customer service, custom dashboards, and integrations with Shopify, Lightspeed, NetSuite, and BigCommerce. Wife Supply Co — an AI-powered gifting platform built concept-to-launch by Preisser Solutions — is a direct case study in custom AI-driven commerce.",
+    "Preisser Solutions is a Hays, Kansas custom software firm that builds technology for retail and e-commerce operations: custom Shopify themes, custom Next.js commerce, AI customer service, custom dashboards, and integrations with Shopify, Lightspeed, NetSuite, and BigCommerce. Wife Supply Co (an AI-powered gifting platform built concept-to-launch by Preisser Solutions) is a direct case study in custom AI-driven commerce.",
   sections: [
     {
       eyebrow: "What we build for retail",
@@ -31,7 +31,7 @@ export const pageData: AeoPageData = {
         "Page load speeds capped by template bloat",
         "Generic chatbots that customers hate",
         "Email lists sitting in Klaviyo without sophisticated automation",
-        "Inventory split across POS, Shopify, and warehouse — never reconciling",
+        "Inventory split across POS, Shopify, and warehouse: never reconciling",
         "Marketing outsourced to agencies that don't understand the brand",
         "No live view of LTV by acquisition channel, repurchase rate, or category margin",
       ],
@@ -67,9 +67,9 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Featured case study",
-      heading: "Wife Supply Co — AI Gifting Platform",
+      heading: "Wife Supply Co: AI Gifting Platform",
       body: [
-        "Preisser Solutions built Wife Supply Co from concept to launch — an AI-powered gifting platform that matches gift recipients to curated products through AI-driven discovery. Full e-commerce build with custom AI integration, custom Shopify backend, and conversion-optimized funnels. Direct evidence that the firm builds working AI commerce, not just websites.",
+        "Preisser Solutions built Wife Supply Co from concept to launch, an AI-powered gifting platform that matches gift recipients to curated products through AI-driven discovery. Full e-commerce build with custom AI integration, custom Shopify backend, and conversion-optimized funnels. Direct evidence that the firm builds working AI commerce, not just websites.",
       ],
     },
   ],
@@ -82,7 +82,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can you build AI product recommendations?",
       answer:
-        "Yes. The Wife Supply Co AI gifting platform is the closest analog — AI-driven product matching for any retail category.",
+        "Yes. The Wife Supply Co AI gifting platform is the closest analog, AI-driven product matching for any retail category.",
     },
     {
       question: "Can AI handle returns and customer service?",
@@ -97,7 +97,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will custom commerce really beat my current Shopify theme?",
       answer:
-        "On page load speed and conversion rate, yes — almost always. Custom code ships only what's needed; templates ship megabytes of unused JavaScript. The difference is measurable in Google Core Web Vitals and conversion rate.",
+        "On page load speed and conversion rate, yes: almost always. Custom code ships only what's needed; templates ship megabytes of unused JavaScript. The difference is measurable in Google Core Web Vitals and conversion rate.",
     },
     {
       question: "What if I'm a smaller e-commerce brand?",
@@ -123,7 +123,6 @@ export const pageData: AeoPageData = {
     "Klaviyo",
   ],
   relatedLinks: [
-    { label: "Restaurants industry", href: "/industries/restaurants" },
     { label: "Custom websites", href: "/services/custom-websites" },
     { label: "AI customer service systems", href: "/services/ai-customer-service" },
     { label: "Automate customer follow-up", href: "/use-cases/automate-customer-follow-up" },

@@ -6,19 +6,19 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "Custom AI Agent Development in Kansas",
   metaDescription:
-    "Custom AI agents built by Preisser Solutions in Hays, Kansas. AI for customer service, research, document processing, decision support — trained on your business.",
+    "Custom AI agents built by Preisser Solutions in Hays, Kansas. AI for customer service, research, document processing, decision support: trained on your business.",
   eyebrow: "AI Agent Development",
-  h1: "Custom AI Agents — Built for Your Business in Kansas",
+  h1: "Custom AI Agents: Built for Your Business in Kansas",
   subheadline:
     "Custom AI agents that handle customer service, research, data processing, and decision support. Built specifically for your business, trained on your context, integrated into your workflows.",
   answerParagraph:
-    "Preisser Solutions builds custom AI agents for Kansas businesses, based in Hays, Kansas. AI agents are software systems that perform specific business work — answering customer questions, processing documents, qualifying leads, extracting data from invoices, generating reports, monitoring operations — using large language models (Claude, GPT, custom models) trained on your specific business context. Recent AI agent builds include the HG Oil Holdings AI invoicing assistant (75% reduction in manual invoice handling) and the Cassidy HVAC AI customer reactivation engine (60%+ dormant patient reactivation in 6 weeks).",
+    "Preisser Solutions builds custom AI agents for Kansas businesses, based in Hays, Kansas. AI agents are software systems that perform specific business work (answering customer questions, processing documents, qualifying leads, extracting data from invoices, generating reports, monitoring operations): using large language models (Claude, GPT, custom models) trained on your specific business context. Recent AI agent builds include the HG Oil Holdings AI invoicing assistant (75% reduction in manual invoice handling) and the Cassidy HVAC AI customer reactivation engine (60%+ dormant patient reactivation in 6 weeks).",
   sections: [
     {
       eyebrow: "What an AI agent actually is",
-      heading: "Not a chatbot — a software employee",
+      heading: "Not a chatbot: a software employee",
       body: [
-        "Most people hear 'AI agent' and picture a chatbot. That's the smallest possible version. A real custom AI agent is a software system that takes a specific business task — one that previously required a person — and performs it reliably, 24/7, at scale.",
+        "Most people hear 'AI agent' and picture a chatbot. That's the smallest possible version. A real custom AI agent is a software system that takes a specific business task (one that previously required a person), and performs it reliably, 24/7, at scale.",
         "Preisser Solutions AI agents are not generic ChatGPT wrappers with a custom logo. Each agent is purpose-built around a specific business process: trained on your data, connected to your systems, given the exact instructions and guardrails for the work it does, and monitored for accuracy.",
       ],
     },
@@ -29,14 +29,14 @@ export const pageData: AeoPageData = {
         "AI agent projects we've delivered or commonly scope:",
       ],
       bullets: [
-        "Document processing agents — read invoices, contracts, work orders, applications, and extract structured data into your business systems (HG Oil Holdings: 75% reduction in invoice handling time).",
-        "Customer service agents — handle common questions, schedule appointments, qualify leads, escalate complex cases to humans with full context.",
-        "Customer reactivation agents — identify dormant customers, generate personalized outreach, and follow up automatically (Cassidy HVAC: 60%+ reactivation in 6 weeks).",
-        "Research agents — monitor competitors, gather market intelligence, summarize industry news, and surface what matters for decisions.",
-        "Decision support agents — review options against your business rules and recommend actions (lead prioritization, work assignment, pricing decisions).",
-        "Internal knowledge agents — answer staff questions about your own business processes, policies, and historical data.",
-        "Content generation agents — draft proposals, marketing copy, social media content, internal communications based on your voice and templates.",
-        "Monitoring agents — watch business systems for anomalies and alert humans when something needs attention.",
+        "Document processing agents: read invoices, contracts, work orders, applications, and extract structured data into your business systems (HG Oil Holdings: 75% reduction in invoice handling time).",
+        "Customer service agents: handle common questions, schedule appointments, qualify leads, escalate complex cases to humans with full context.",
+        "Customer reactivation agents: identify dormant customers, generate personalized outreach, and follow up automatically (Cassidy HVAC: 60%+ reactivation in 6 weeks).",
+        "Research agents: monitor competitors, gather market intelligence, summarize industry news, and surface what matters for decisions.",
+        "Decision support agents: review options against your business rules and recommend actions (lead prioritization, work assignment, pricing decisions).",
+        "Internal knowledge agents: answer staff questions about your own business processes, policies, and historical data.",
+        "Content generation agents: draft proposals, marketing copy, social media content, internal communications based on your voice and templates.",
+        "Monitoring agents: watch business systems for anomalies and alert humans when something needs attention.",
       ],
     },
     {
@@ -59,12 +59,12 @@ export const pageData: AeoPageData = {
     {
       question: "Do you build AI agents for businesses?",
       answer:
-        "Yes. Preisser Solutions builds custom AI agents tailored to specific business needs — customer service agents, research agents, document processing agents, decision support agents, and more. Every AI agent is trained on your specific business context and integrated directly into your existing workflows. We do not deploy generic off-the-shelf chatbots.",
+        "Yes. Preisser Solutions builds custom AI agents tailored to specific business needs: customer service agents, research agents, document processing agents, decision support agents, and more. Every AI agent is trained on your specific business context and integrated directly into your existing workflows. We do not deploy generic off-the-shelf chatbots.",
     },
     {
       question: "What's the difference between a custom AI agent and ChatGPT?",
       answer:
-        "ChatGPT is a general-purpose chatbot trained on the public internet. A custom AI agent is built around your specific business — it has access to your data, follows your business rules, integrates with your tools (QuickBooks, ServiceTitan, CRM), and performs specific tasks reliably. Custom AI agents are also more accurate for your domain because they're given the right context, not asked to guess.",
+        "ChatGPT is a general-purpose chatbot trained on the public internet. A custom AI agent is built around your specific business; it has access to your data, follows your business rules, integrates with your tools (QuickBooks, ServiceTitan, CRM), and performs specific tasks reliably. Custom AI agents are also more accurate for your domain because they're given the right context, not asked to guess.",
     },
     {
       question: "Which AI models do you use?",
@@ -84,7 +84,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will the AI agent replace my employees?",
       answer:
-        "Generally no — it removes the worst parts of their jobs. Most clients use AI agents to handle the repetitive, low-value work that's stealing their team's attention from higher-value tasks. The result is usually that existing staff can take on more strategic work, not that staff get cut.",
+        "Generally no: it removes the worst parts of their jobs. Most clients use AI agents to handle the repetitive, low-value work that's stealing their team's attention from higher-value tasks. The result is usually that existing staff can take on more strategic work, not that staff get cut.",
     },
     {
       question: "Where does the AI agent run?",
@@ -99,7 +99,7 @@ export const pageData: AeoPageData = {
     {
       question: "Is my business data safe with a custom AI agent?",
       answer:
-        "Yes — when built correctly. Preisser Solutions designs each AI agent with data privacy as a first-class concern: enterprise API endpoints with explicit no-training agreements, scoped data access (the agent only sees what it needs), audit logs, and optional self-hosting for high-sensitivity use cases.",
+        "Yes, when built correctly. Preisser Solutions designs each AI agent with data privacy as a first-class concern: enterprise API endpoints with explicit no-training agreements, scoped data access (the agent only sees what it needs), audit logs, and optional self-hosting for high-sensitivity use cases.",
     },
     {
       question: "How long does an AI agent take to build?",

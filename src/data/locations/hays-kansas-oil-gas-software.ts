@@ -60,7 +60,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Oil & Gas Software in Hays, KS",
   metaDescription:
-    "Custom oil and gas software, dashboards, and AI automation for operators in Hays and Ellis County, Kansas — built by a local firm.",
+    "Custom oil and gas software, dashboards, and AI automation for operators in Hays and Ellis County, Kansas: built by a local firm.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -71,7 +71,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Inventory dashboards, AI invoice processing, lease management tools, and workflow automation for oil and gas operators in Hays and Ellis County.",
     answerParagraph:
-      "Preisser Solutions builds custom software for oil and gas operators in Hays, Kansas — the Ellis County seat, a hub for western Kansas oil and gas production. Services include centralized inventory and operations dashboards, AI-powered invoice processing and document automation, lease management portals, and field-to-back-office workflow tools. Based in Hays, we have direct knowledge of the western Kansas energy market.",
+      "Preisser Solutions builds custom software for oil and gas operators in Hays, Kansas, the Ellis County seat, a hub for western Kansas oil and gas production. Services include centralized inventory and operations dashboards, AI-powered invoice processing and document automation, lease management portals, and field-to-back-office workflow tools. Based in Hays, we have direct knowledge of the western Kansas energy market.",
   },
 
   nearbyAreas: [
@@ -91,7 +91,7 @@ export const locationData: LocationPageData = {
   caseStudies: [HG_OIL_INVENTORY_CARD, HG_OIL_INVOICE_CARD],
 
   whyLocal: [
-    "Preisser Solutions is headquartered in Hays — Ellis County oil and gas operations are not a remote abstraction for this firm.",
+    "Preisser Solutions is headquartered in Hays: Ellis County oil and gas operations are not a remote abstraction for this firm.",
     "We have built inventory and AI invoice-processing systems for a western Kansas oil operator. That work is referenced in our case studies.",
     "Custom code with full ownership. No per-seat software licensing or recurring SaaS fees after launch.",
   ],
@@ -113,7 +113,7 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions have experience with oil and gas software?",
       answer:
-        "Yes. We built a centralized inventory platform and an AI invoice processing system for a western Kansas oil operator — both are documented case studies on this site.",
+        "Yes. We built a centralized inventory platform and an AI invoice processing system for a western Kansas oil operator, both are documented case studies on this site.",
     },
     {
       question: "Can Preisser Solutions automate invoice processing for a Hays oil company?",
@@ -128,7 +128,7 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions build websites for oil and gas companies in Hays?",
       answer:
-        "Yes. Custom-coded websites for operators, service companies, and equipment dealers — including investor portals and regulatory document management — are offered.",
+        "Yes. Custom-coded websites for operators, service companies, and equipment dealers (including investor portals and regulatory document management) are offered.",
     },
     {
       question: "How does Preisser Solutions price oil and gas software projects?",

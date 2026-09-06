@@ -1,0 +1,97 @@
+/* hero-entrance.css
+   The hero's entrance, in CSS.
+
+   It used to be a GSAP timeline in hero.tsx that awaited a dynamic import of
+   gsap + ScrollTrigger before raising opacity off 0. Measured 2026-09-04, that
+   held the server-rendered headline invisible for ~600ms on localhost
+   (headlineInDOM@12ms, opacity>0.5@611ms) and INDEFINITELY on Fast 3G
+   (headlineInDOM@1525ms, opacity>0.5 never, within an 8s poll). Mobile had
+   already been exempted for exactly this reason (globals.css,
+   @media max-width:768px).
+
+   THE RULE THIS FILE EXISTS TO ENFORCE — read before editing:
+
+     A "safety" rule placed LAST is an override, not a fallback.
+
+   The first version of this sheet put `opacity: 0` in a
+   @media (prefers-reduced-motion: no-preference) block and an unconditional
+   `opacity: 1` block after it, believing the latter acted as a base state.
+   Both are (0,2,0), so the later block simply WON: opacity resolved to 1, the
+   keyframes declared only `to`, its implicit 0% keyframe read the underlying
+   value, and the animation ran 1 -> 1. Measured: opacity was 1 at every sample
+   from 61ms. The hero appeared instantly but the stagger never played.
+
+   The correct shape, used below:
+     - The element's OWN computed opacity is 1, unconditionally and always.
+       No rule anywhere in this sheet sets it to 0.
+     - The entrance's start state lives INSIDE the keyframes (`from`), and
+       `animation-fill-mode: both` applies it only while the animation is
+       pending or running.
+     - The @media block therefore declares ONLY `animation`, which nothing
+       competes with, so cascade order between the two blocks is irrelevant.
+
+   Consequence, and it is the whole point: if animations are disabled,
+   unsupported, suppressed by prefers-reduced-motion, or this @media block never
+   matches, the element still computes opacity 1 and the headline is visible.
+   There is no code path that can leave it invisible waiting on anything, and
+   nothing here depends on JavaScript reaching the browser.
+
+   Specificity note: this sheet is @imported, so it occupies the FIRST source
+   positions and loses to unlayered globals.css rules on a tie. `.ps-hero
+   .ps-hero-line` is (0,2,0) and beats globals' (0,1,0) at :1180 / :1222
+   regardless of source order, which is why those two rules are left untouched.
+   See the cascade note at the top of hero-scroll-cue.css. */
+
+/* Base state. Visible. This is the only opacity these three elements ever have
+   outside an animation, in every engine and every motion preference. */
+.ps-hero .ps-hero-line,
+.ps-hero .ps-hero-ctas,
+.ps-hero .ps-hero-cue__btn {
+  opacity: 1;
+  transform: none;
+}
+
+/* Opt IN to motion. This block declares `animation` and nothing else — no
+   opacity, no transform — so it cannot fight the rule above. */
+@media (prefers-reduced-motion: no-preference) {
+  .ps-hero .ps-hero-line {
+    animation: ps-hero-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  /* The stagger is carried entirely by animation-delay. The GSAP timeline this
+     replaces opened with a 0.15s lead-in; that is DELIBERATELY GONE. Measured
+     2026-09-04, it cost 150ms of first meaningful paint (opacity>0.5 at 277ms)
+     and bought nothing a visitor can read as intentional — the hero simply sat
+     still. Line 1 now starts immediately and the 0.12s inter-line spacing is
+     preserved, so the cascade is unchanged and everything downstream just
+     shifts 150ms earlier. */
+  .ps-hero .ps-hero-line:nth-child(1) { animation-delay: 0ms; }
+  .ps-hero .ps-hero-line:nth-child(2) { animation-delay: 120ms; }
+  .ps-hero .ps-hero-line:nth-child(3) { animation-delay: 240ms; }
+
+  .ps-hero .ps-hero-ctas {
+    animation: ps-hero-rise-sm 600ms cubic-bezier(0.22, 1, 0.36, 1) 510ms both;
+  }
+  .ps-hero .ps-hero-cue__btn {
+    animation: ps-hero-rise-xs 500ms cubic-bezier(0.22, 1, 0.36, 1) 950ms both;
+  }
+}
+
+/* Three keyframes rather than one parameterised by a custom property: the rise
+   distance differs per element (24 / 16 / 12px, as the GSAP timeline had it),
+   and a literal `from` cannot be mis-resolved. Transform and opacity only —
+   both compositor-only properties, per the rule stated in
+   work-card-reveal.css:41-45. */
+@keyframes ps-hero-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ps-hero-rise-sm {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ps-hero-rise-xs {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

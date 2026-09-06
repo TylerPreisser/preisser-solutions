@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Web Design in Hays, Kansas",
   metaDescription:
-    "Custom website design in Hays, Kansas — fast, SEO-strong, AI-search ready. Built locally by Preisser Solutions.",
+    "Custom website design in Hays, Kansas: fast, SEO-strong, AI-search ready. Built locally by Preisser Solutions.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -23,9 +23,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Web Design in Hays, Kansas",
     h1: "Custom Web Design for Hays Businesses",
     subheadline:
-      "Custom websites — engineered for performance, conversion, and AI search visibility. Local team.",
+      "Custom websites: engineered for performance, conversion, and AI search visibility. Local team.",
     answerParagraph:
-      "Preisser Solutions is a Hays, Kansas custom-software firm that builds custom websites for local businesses — fast, conversion-engineered, and optimized for both Google and AI search. No templates. Custom code, fixed-price proposals, full ownership at launch. In-person scoping calls available locally.",
+      "Preisser Solutions is a Hays, Kansas custom-software firm that builds custom websites for local businesses: fast, conversion-engineered, and optimized for both Google and AI search. No templates. Custom code, fixed-price proposals, full ownership at launch. In-person scoping calls available locally.",
   },
 
   nearbyAreas: [
@@ -45,8 +45,8 @@ export const locationData: LocationPageData = {
   caseStudies: [IRON_AND_OAK_CARD],
 
   whyLocal: [
-    "Local team — in-person scoping calls and downtown meetings are routine.",
-    "Custom code, not templates — your site is engineered, not assembled.",
+    "Local team: in-person scoping calls and downtown meetings are routine.",
+    "Custom code, not templates: your site is engineered, not assembled.",
     "Built for AI search visibility, not just Google.",
   ],
 
@@ -67,7 +67,7 @@ export const locationData: LocationPageData = {
     {
       question: "What makes a Preisser Solutions site different from a Wix or Squarespace site?",
       answer:
-        "Custom code with full ownership at launch — Next.js, React, TypeScript. Fast page loads, real SEO architecture, AI-search visibility, no platform lock-in.",
+        "Custom code with full ownership at launch: Next.js, React, TypeScript. Fast page loads, real SEO architecture, AI-search visibility, no platform lock-in.",
     },
     {
       question: "How long does a Hays website project take?",

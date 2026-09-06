@@ -13,13 +13,13 @@ export const caseStudy: CaseStudyData = {
 
   category: "Capability • AI Document Processing",
   clientName: "AI Invoice Processing Platform",
-  clientNameDisplay: "Capability — proven at HG Oil Holdings",
+  clientNameDisplay: "Capability: proven at HG Oil Holdings",
   industry: "AI invoice processing and back-office automation",
 
-  h1: "AI Invoice Processing — Proven at HG Oil, Generalized for Any Business",
+  h1: "AI Invoice Processing: Proven at HG Oil, Generalized for Any Business",
   subheadline:
-    "The same AI assistant that cut manual invoice handling 75% at HG Oil Holdings — abstracted as a repeatable platform that adapts to your vendors, your approval chain, and your accounting system.",
-  oneLine: "75% reduction in manual handling — proven at HG Oil Holdings",
+    "The same AI assistant that cut manual invoice handling 75% at HG Oil Holdings: abstracted as a repeatable platform that adapts to your vendors, your approval chain, and your accounting system.",
+  oneLine: "75% reduction in manual handling: proven at HG Oil Holdings",
 
   headlineResults: [
     { value: "75%", label: "Manual handling time eliminated at HG Oil" },
@@ -31,16 +31,16 @@ export const caseStudy: CaseStudyData = {
   before: {
     heading: "Office staff burning 40+ hours a week reading paper.",
     body: [
-      "Manual invoice processing eats real time. Office staff spend hours every week reading vendor invoices, hand-keying line items, categorizing expenses against the chart of accounts, and chasing down approvals. The growth path looks like one more admin hire — and then another.",
-      "At HG Oil Holdings, this pattern hit a breaking point. Staff were spending 40+ hours per week on invoice handling and the volume kept climbing. Rather than hire, Preisser Solutions built an AI assistant trained on the company's vendors and approval workflows. That build now serves as the reference architecture for a generalized platform — same engine, customized per client.",
+      "Manual invoice processing eats real time. Office staff spend hours every week reading vendor invoices, hand-keying line items, categorizing expenses against the chart of accounts, and chasing down approvals. The growth path looks like one more admin hire, and then another.",
+      "At HG Oil Holdings, this pattern hit a breaking point. Staff were spending 40+ hours per week on invoice handling and the volume kept climbing. Rather than hire, Preisser Solutions built an AI assistant trained on the company's vendors and approval workflows. That build now serves as the reference architecture for a generalized platform: same engine, customized per client.",
     ],
   },
 
   built: {
     heading: "A platform pattern that adapts to your stack, not the other way around.",
     body: [
-      "The platform accepts any invoice format — PDF, scanned image, Word, Excel, or email attachment — and an AI extraction engine trained on the client's specific vendor data extracts vendor info, line items, totals, and GL codes in seconds. The engine learns the client's chart of accounts and assigns expenses automatically.",
-      "From there, the system flags anomalies (out-of-pattern amounts, unfamiliar vendors, line items outside historical norms) and routes invoices through the right approval chain based on amount thresholds and cost centers. A human-review queue surfaces only the low-confidence extractions. The platform connects to QuickBooks, Sage, NetSuite, or whatever accounting system the client runs — the integration adapts to the client's stack rather than forcing the client to change tools.",
+      "The platform accepts any invoice format (PDF, scanned image, Word, Excel, or email attachment), and an AI extraction engine trained on the client's specific vendor data extracts vendor info, line items, totals, and GL codes in seconds. The engine learns the client's chart of accounts and assigns expenses automatically.",
+      "From there, the system flags anomalies (out-of-pattern amounts, unfamiliar vendors, line items outside historical norms) and routes invoices through the right approval chain based on amount thresholds and cost centers. A human-review queue surfaces only the low-confidence extractions. The platform connects to QuickBooks, Sage, NetSuite, or whatever accounting system the client runs: the integration adapts to the client's stack rather than forcing the client to change tools.",
     ],
   },
 
@@ -48,7 +48,7 @@ export const caseStudy: CaseStudyData = {
     heading: "Platform capabilities.",
     bullets: [
       "AI extraction trained per client on their vendor data and approval workflows",
-      "Accepts any invoice format — PDF, scanned image, Word, Excel, email attachment",
+      "Accepts any invoice format: PDF, scanned image, Word, Excel, email attachment",
       "Extracts vendor, line items, totals, and GL codes in seconds",
       "Auto-categorization against the client's chart of accounts",
       "Anomaly flagging on amounts, vendors, and line items",
@@ -82,13 +82,13 @@ export const caseStudy: CaseStudyData = {
       value: "75%",
       label: "Manual invoice handling time eliminated at HG Oil",
       context:
-        "The HG Oil Holdings deployment cut manual invoice handling 75% across the back-office team — proof of the underlying pattern.",
+        "The HG Oil Holdings deployment cut manual invoice handling 75% across the back-office team, proof of the underlying pattern.",
     },
     {
       value: "Any format",
       label: "Invoice ingestion across formats",
       context:
-        "The platform handles PDF, scanned image, Word, Excel, and email attachments — extraction does not require a standardized format.",
+        "The platform handles PDF, scanned image, Word, Excel, and email attachments: extraction does not require a standardized format.",
     },
     {
       value: "Any stack",

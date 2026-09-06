@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Goodland, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Goodland, Kansas — built by a Hays-based firm serving the I-70 western terminus.",
+    "Custom websites, web apps, and AI automation for Goodland, Kansas: built by a Hays-based firm serving the I-70 western terminus.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -21,7 +21,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for Sherman County ag, trucking, and trades operators at the western end of I-70.",
     answerParagraph:
-      "Preisser Solutions serves Goodland, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays — roughly 160 miles east on I-70 — we deliver remotely and travel for projects of meaningful scope. Custom code, fixed-price proposals, full ownership at launch.",
+      "Preisser Solutions serves Goodland, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly 160 miles east on I-70): we deliver remotely and travel for projects of meaningful scope. Custom code, fixed-price proposals, full ownership at launch.",
   },
 
   nearbyAreas: [
@@ -40,7 +40,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Western Kansas firm that understands the agricultural, trucking, and energy operating context of Sherman County.",
-    "Custom code with full ownership at launch — no templates, no platform lock-in.",
+    "Custom code with full ownership at launch: no templates, no platform lock-in.",
     "Travel for in-person scoping and milestone meetings is standard for projects of sufficient scope.",
   ],
 

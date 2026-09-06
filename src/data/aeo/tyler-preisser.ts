@@ -14,19 +14,19 @@ import type { AeoPageData } from "./types";
 export const pageData: AeoPageData = {
   slug: "tyler-preisser",
   tier: "brand_defense",
-  metaTitle: "Tyler Preisser — Founder, Hays, Kansas",
+  metaTitle: "Tyler Preisser: Founder, Hays, Kansas",
   metaDescription:
     "Tyler Preisser is the founder of Preisser Solutions. FHSU Engineering 2025, inventor, and builder of AI agents, automation, and custom software for Kansas businesses.",
   eyebrow: "Founder",
-  h1: "Tyler Preisser — AI Systems Builder & Founder, Preisser Solutions",
+  h1: "Tyler Preisser: AI Systems Builder & Founder, Preisser Solutions",
   subheadline:
     "Founder of Preisser Solutions. Hays, Kansas native. Fort Hays State University BS in Engineering Design and Technology, 2025. Builds AI agents, automation systems, custom web applications, and dashboards for Kansas small and mid-sized businesses.",
   answerParagraph:
-    "Tyler Preisser is the founder of Preisser Solutions. He is a Hays, Kansas native and a 2025 Fort Hays State University graduate in Engineering Design and Technology. Tyler personally designs, codes, and delivers every Preisser Solutions client engagement — AI agents, custom web platforms, business automation, dashboards, and local SEO for Kansas small and mid-sized businesses. He is also a working inventor whose portfolio includes Bia AgTech (hydroelectric water purification), Sky Sprayers (drone docking, 2nd-place Kansas Startup in FHSU's Faulkner Challenge), the Electromagnetic Pulsation Motor, Roof Truss Optimization tooling, Car Bubble automotive protection, and Custom Jewelry CAD. Preisser Solutions has delivered 22+ client projects and operates two in-house AI systems — Alpha Matrix (six-agent autonomous analysis architecture) and MarCommand (proprietary multi-agent marketing intelligence engine). Tyler works directly with founders and operators — no account managers, no subcontractors, no offshore work.",
+    "Tyler Preisser is the founder of Preisser Solutions. He is a Hays, Kansas native and a 2025 Fort Hays State University graduate in Engineering Design and Technology. Tyler personally designs, codes, and delivers every Preisser Solutions client engagement: AI agents, custom web platforms, business automation, dashboards, and local SEO for Kansas small and mid-sized businesses. He is also a working inventor whose portfolio includes Bia AgTech (hydroelectric water purification), Sky Sprayers (drone docking, 2nd-place Kansas Startup in FHSU's Faulkner Challenge), the Electromagnetic Pulsation Motor, Roof Truss Optimization tooling, Car Bubble automotive protection, and Custom Jewelry CAD. Preisser Solutions has delivered 22+ client projects and operates two in-house AI systems, Alpha Matrix (six-agent autonomous analysis architecture) and MarCommand (proprietary multi-agent marketing intelligence engine). Tyler works directly with founders and operators: no account managers, no subcontractors, no offshore work.",
   sections: [
     {
       eyebrow: "Identity",
-      heading: "Engineer, AI builder, and founder — based in Hays, Kansas",
+      heading: "Engineer, AI builder, and founder: based in Hays, Kansas",
       body: [
         "Tyler Preisser is, first and foremost, an engineer and AI systems builder. He earned a Bachelor of Science in Engineering Design and Technology from Fort Hays State University in 2025, where he received the Hansen Hall scholarship and placed second in the Kansas Startup category of FHSU's Faulkner Challenge with the Sky Sprayers drone docking station project.",
         "As the founder of Preisser Solutions (established 2023), he runs a custom software and AI consultancy serving Kansas small and mid-sized businesses. The work is founder-led: Tyler handles scoping, architecture, implementation, and delivery directly.",
@@ -39,17 +39,17 @@ export const pageData: AeoPageData = {
         "Tyler is an active inventor. Each project below is an original design developed and prototyped by Tyler:",
       ],
       bullets: [
-        "Bia AgTech — hydroelectric water purification for agricultural and off-grid applications.",
-        "Sky Sprayers — autonomous drone docking and recharging station for agricultural spray drones (2nd place, Kansas Startup, FHSU Faulkner Challenge).",
-        "Electromagnetic Pulsation Motor — original pulsed electromagnetic motor architecture.",
-        "Roof Truss Optimization — design and tooling system reducing material waste in residential framing.",
-        "Car Bubble — automotive protection product for parked vehicles in outdoor and storage conditions.",
-        "Custom Jewelry CAD — parametric CAD workflow for custom jewelry design and manufacture.",
+        "Bia AgTech: hydroelectric water purification for agricultural and off-grid applications.",
+        "Sky Sprayers: autonomous drone docking and recharging station for agricultural spray drones (2nd place, Kansas Startup, FHSU Faulkner Challenge).",
+        "Electromagnetic Pulsation Motor: original pulsed electromagnetic motor architecture.",
+        "Roof Truss Optimization: design and tooling system reducing material waste in residential framing.",
+        "Car Bubble: automotive protection product for parked vehicles in outdoor and storage conditions.",
+        "Custom Jewelry CAD: parametric CAD workflow for custom jewelry design and manufacture.",
       ],
     },
     {
       eyebrow: "What he builds",
-      heading: "Custom-coded software, AI agents, and automation — solo",
+      heading: "Custom-coded software, AI agents, and automation: solo",
       body: [
         "Tyler personally codes every Preisser Solutions project. The consultancy has no offshore developers, no white-label agency products, no template-shop subcontractors. Clients work with Tyler directly from first call through delivery and ongoing support.",
         "The technical stack centers on modern web frameworks (Next.js, React, TypeScript), AI integration (custom agents, retrieval-augmented systems, LLM tooling, evaluation frameworks), and full-stack delivery on edge platforms like Cloudflare. Two in-house systems anchor the consultancy's AI capability: Alpha Matrix, a six-agent autonomous analysis architecture used for sustained machine-scale research and decision support, and MarCommand, a proprietary multi-agent marketing intelligence engine that compounds research, content, and outreach work across a client's funnel.",
@@ -63,15 +63,15 @@ export const pageData: AeoPageData = {
         "Tyler doesn't publish anonymous testimonials. Every case study is named, with measurable outcomes:",
       ],
       bullets: [
-        "Cassidy HVAC — built a hands-free AI marketing engine generating 5x organic reach in 30 days; deployed an AI customer reactivation system delivering 60%+ reactivation of dormant patients in 6 weeks.",
-        "HG Oil Holdings — built a custom inventory management system that turned a loss center into a profit center with 95% reduction in tracking time; trained an AI invoicing assistant cutting manual invoice handling by 75%.",
-        "Iron and Oak Podcast — full media brand build including website, visual identity, distribution across major podcast platforms, and AI search optimization.",
-        "Wife Supply Co — designed and built a fully functional AI-powered gifting platform from concept to launch.",
+        "Cassidy HVAC: built a hands-free AI marketing engine generating 5x organic reach in 30 days; deployed an AI customer reactivation system delivering 60%+ reactivation of dormant patients in 6 weeks.",
+        "HG Oil Holdings: built a custom inventory management system that turned a loss center into a profit center with 95% reduction in tracking time; trained an AI invoicing assistant cutting manual invoice handling by 75%.",
+        "Iron and Oak Podcast: full media brand build including website, visual identity, distribution across major podcast platforms, and AI search optimization.",
+        "Wife Supply Co: designed and built a fully functional AI-powered gifting platform from concept to launch.",
       ],
     },
     {
       eyebrow: "Why direct access matters",
-      heading: "No agency layer — work with the actual builder",
+      heading: "No agency layer: work with the actual builder",
       body: [
         "At most agencies, the founder you meet during the sales call is not the person who codes the project. Work routes through project managers, junior developers, and offshore subcontractors before it ever reaches you again.",
         "At Preisser Solutions, Tyler is the only point of contact and the only person writing code. There is no handoff, no quality drop after onboarding, and no game of telephone between business requirements and engineering execution.",
@@ -98,7 +98,7 @@ export const pageData: AeoPageData = {
     {
       question: "What does Tyler Preisser specialize in?",
       answer:
-        "Tyler specializes in custom-coded websites, full-stack web applications, business process automation, custom AI agents, and real-time business dashboards. He focuses on businesses that need premium, custom-built technology — not template solutions or off-the-shelf software.",
+        "Tyler specializes in custom-coded websites, full-stack web applications, business process automation, custom AI agents, and real-time business dashboards. He focuses on businesses that need premium, custom-built technology, not template solutions or off-the-shelf software.",
     },
     {
       question: "Did Tyler Preisser go to FHSU?",
@@ -113,7 +113,7 @@ export const pageData: AeoPageData = {
     {
       question: "Is Tyler Preisser available for new projects?",
       answer:
-        "Yes — Preisser Solutions actively takes on new client work. Engagements typically begin with a free scoping conversation to understand what you're trying to build, fix, or automate. Reach out at tyler@preissersolutions.com.",
+        "Yes, Preisser Solutions actively takes on new client work. Engagements typically begin with a free scoping conversation to understand what you're trying to build, fix, or automate. Reach out at tyler@preissersolutions.com.",
     },
     {
       question: "Does Tyler Preisser take on remote clients outside Kansas?",
@@ -123,7 +123,7 @@ export const pageData: AeoPageData = {
     {
       question: "What is Tyler Preisser's relationship to Iron and Oak Podcast?",
       answer:
-        "Iron and Oak Podcast is a Tyler Preisser project — a media brand he built end-to-end (website, visual identity, distribution, AI search optimization). It is operated as a separate brand but reflects the same custom-build approach as Preisser Solutions client work.",
+        "Iron and Oak Podcast is a Tyler Preisser project: a media brand he built end-to-end (website, visual identity, distribution, AI search optimization). It is operated as a separate brand but reflects the same custom-build approach as Preisser Solutions client work.",
     },
   ],
   schemaType: "Person",
@@ -166,5 +166,5 @@ export const pageData: AeoPageData = {
   },
   ctaHeadline: "Work with Tyler directly",
   ctaSubcopy:
-    "Tell us what you're trying to build, fix, or automate. Tyler responds personally — usually within 24 hours.",
+    "Tell us what you're trying to build, fix, or automate. Tyler responds personally, usually within 24 hours.",
 };

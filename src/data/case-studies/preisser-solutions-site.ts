@@ -5,7 +5,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "preisser-solutions-site",
-  metaTitle: "preissersolutions.com — AI-Search Build",
+  metaTitle: "preissersolutions.com: AI-Search Build",
   metaDescription:
     "Custom-coded Next.js 15 marketing platform with an 8,800-line design system, AI-native architecture, and 164 statically-rendered pages.",
   datePublished: "2026-05-16",
@@ -16,9 +16,9 @@ export const caseStudy: CaseStudyData = {
   clientNameDisplay: "Preisser Solutions",
   industry: "Custom software and AI consultancy",
 
-  h1: "preissersolutions.com — 164 Pages, Custom Next.js, Built for AI Search",
+  h1: "preissersolutions.com: 164 Pages, Custom Next.js, Built for AI Search",
   subheadline:
-    "A bespoke marketing and AI-search platform for Preisser Solutions itself — Next.js 15, an 8,800-line custom design system, AI-native infrastructure, and 164 statically-rendered pages.",
+    "A bespoke marketing and AI-search platform for Preisser Solutions itself: Next.js 15, an 8,800-line custom design system, AI-native infrastructure, and 164 statically-rendered pages.",
   oneLine:
     "Custom-coded Next.js 15 marketing platform with 8,800-line design system, AI-native architecture, and 164 statically-rendered pages.",
 
@@ -32,13 +32,13 @@ export const caseStudy: CaseStudyData = {
   before: {
     heading: "Generic agency-template marketing pages that did not differentiate.",
     body: [
-      "Before this build, the Preisser Solutions web surface was the same kind of generic agency template that every consultancy ends up with — pages that look like every other page, no AI-search infrastructure, no honest case-study layer, and no way for AI agents to cite the work cleanly.",
+      "Before this build, the Preisser Solutions web surface was the same kind of generic agency template that every consultancy ends up with: pages that look like every other page, no AI-search infrastructure, no honest case-study layer, and no way for AI agents to cite the work cleanly.",
       "For a consultancy whose pitch is building production-grade custom software, that surface was actively undermining the offer. The rebuild treated the site as a first-class engineering artifact and as the company's most public proof of capability.",
     ],
   },
 
   built: {
-    heading: "A full custom build — design system, components, and AI-native infrastructure.",
+    heading: "A full custom build: design system, components, and AI-native infrastructure.",
     body: [
       "Preisser Solutions built the site end-to-end on Next.js 15, React 19, and TypeScript, with Tailwind v4 layered over an 8,800-line custom design system that uses CSS cascade layers, HDS tokens, and bespoke component utilities. GSAP 3.12.7 (single registration through `lib/gsap.ts`) and Framer Motion 12 handle animations. The output ships as a static export to Cloudflare Pages with edge middleware for canonicalization.",
       "Two component systems carry the design language. The CaseStudyPage component (714 lines) drives every case-study route with a radial-glow hero, glass metric chips, gradient-text numbers, and GSAP scroll-stagger reveals. The LocationPage component drives the geographic surface with a city-led hero, nearby-towns chip grid, service cards, and a process timeline.",
@@ -60,9 +60,9 @@ export const caseStudy: CaseStudyData = {
       {
         title: "Component systems",
         items: [
-          "CaseStudyPage (714 lines) — radial-glow hero, glass metric chips, gradient-text numbers, GSAP scroll-stagger",
-          "LocationPage — geographic hero, nearby-towns chip grid, service cards, process timeline",
-          "Bespoke design tokens for color, motion, and spacing — no template libraries",
+          "CaseStudyPage (714 lines): radial-glow hero, glass metric chips, gradient-text numbers, GSAP scroll-stagger",
+          "LocationPage: geographic hero, nearby-towns chip grid, service cards, process timeline",
+          "Bespoke design tokens for color, motion, and spacing: no template libraries",
           "Cascade-layered CSS architecture for predictable specificity",
         ],
       },
@@ -95,13 +95,13 @@ export const caseStudy: CaseStudyData = {
       value: "164",
       label: "Statically-rendered URLs shipped",
       context:
-        "Roughly 164 URLs go out as static HTML at build time — services, case studies, locations, industries, blog, comparisons, insights, and use-cases.",
+        "Roughly 164 URLs go out as static HTML at build time: services, case studies, locations, industries, blog, comparisons, insights, and use-cases.",
     },
     {
       value: "8.8k",
       label: "Lines of custom design system CSS",
       context:
-        "An 8,800-line globals.css built on Tailwind v4 cascade layers and HDS tokens drives the visual language — no template framework, no UI kit.",
+        "An 8,800-line globals.css built on Tailwind v4 cascade layers and HDS tokens drives the visual language: no template framework, no UI kit.",
     },
     {
       value: "100%",
@@ -113,7 +113,7 @@ export const caseStudy: CaseStudyData = {
       value: "0",
       label: "Templates used",
       context:
-        "Zero off-the-shelf themes, UI kits, or page templates. Every component — including the case-study and location systems — was authored for this site.",
+        "Zero off-the-shelf themes, UI kits, or page templates. Every component (including the case-study and location systems) was authored for this site.",
     },
   ],
 
@@ -136,7 +136,7 @@ export const caseStudy: CaseStudyData = {
   cta: {
     heading: "Need a marketing site that is also an engineering artifact?",
     subcopy:
-      "Preisser Solutions builds custom marketing platforms end-to-end — design system, component architecture, AI-native infrastructure. Scoping begins with a conversation.",
+      "Preisser Solutions builds custom marketing platforms end-to-end: design system, component architecture, AI-native infrastructure. Scoping begins with a conversation.",
     buttonLabel: "Start a scoping conversation",
     buttonHref: "/contact",
   },

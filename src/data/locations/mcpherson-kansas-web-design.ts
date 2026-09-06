@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "McPherson, KS Web Design & Software",
   metaDescription:
-    "Custom software, web apps, and AI automation for McPherson, Kansas — built by a Hays-based firm for the I-135 refining and manufacturing corridor.",
+    "Custom software, web apps, and AI automation for McPherson, Kansas: built by a Hays-based firm for the I-135 refining and manufacturing corridor.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -21,7 +21,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for McPherson County's refining, manufacturing, and professional services economy on the I-135 corridor.",
     answerParagraph:
-      "Preisser Solutions serves McPherson, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. McPherson's refining and manufacturing base — including one of the largest refinery operations in the central Plains — generates strong demand for operational dashboards, process-documentation tools, and supply-chain automation. Based in Hays, roughly 105 miles northwest, we deliver remotely and travel for projects of sufficient scope.",
+      "Preisser Solutions serves McPherson, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. McPherson's refining and manufacturing base (including one of the largest refinery operations in the central Plains): generates strong demand for operational dashboards, process-documentation tools, and supply-chain automation. Based in Hays, roughly 105 miles northwest, we deliver remotely and travel for projects of sufficient scope.",
   },
 
   nearbyAreas: [
@@ -39,7 +39,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "McPherson's refining and manufacturing sector demands custom software built around operational reality — not generic ERP modules poorly adapted to mid-size production environments.",
+    "McPherson's refining and manufacturing sector demands custom software built around operational reality, not generic ERP modules poorly adapted to mid-size production environments.",
     "A Kansas-based firm at Kansas economics. Refinery and manufacturing builds are priced for the market, not the metro.",
     "Custom code with full ownership at launch. No vendor lock-in on software that production operations depend on daily.",
   ],
@@ -71,7 +71,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions build custom dashboards for a McPherson refinery operation?",
       answer:
-        "Yes. Real-time production dashboards with role-based views — executives, plant operators, procurement — are a core service line and one of the most-shipped build types.",
+        "Yes. Real-time production dashboards with role-based views (executives, plant operators, procurement) are a core service line and one of the most-shipped build types.",
     },
     {
       question: "Does Preisser Solutions serve McPherson manufacturers needing supply-chain visibility?",

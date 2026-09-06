@@ -5,27 +5,27 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "Paid Ads: Google, Meta & LinkedIn",
   metaDescription:
-    "Audit-first paid ads management for Kansas SMBs — Google Ads, Meta, LinkedIn. Founder-led, no bloated retainers, no vanity metrics.",
+    "Audit-first paid ads management for Kansas SMBs: Google Ads, Meta, LinkedIn. Founder-led, no bloated retainers, no vanity metrics.",
   eyebrow: "Paid Ads",
   h1: "Paid Ads Management for Kansas SMBs",
   subheadline:
     "Google Ads, Meta, and LinkedIn run by an operator who reports the real numbers, not a dashboard of vanity metrics dressed up for the monthly call.",
   answerParagraph:
-    "Preisser Solutions delivers paid ads management for Kansas small and mid-sized businesses — Google Ads (Search, Performance Max, Local Services), Meta (Facebook + Instagram), and LinkedIn Ads. Based in Hays, Kansas, the firm runs an audit-first engagement: every relationship starts with a free account audit, an honest assessment of whether paid ads are the right channel, and a fixed-price proposal. No bloated retainers, no padded percent-of-spend models, no junior media buyers learning on the client's budget. Reporting focuses on real outcomes — pipeline, booked appointments, customer acquisition cost — not impressions and click-through rates.",
+    "Preisser Solutions delivers paid ads management for Kansas small and mid-sized businesses: Google Ads (Search, Performance Max, Local Services), Meta (Facebook + Instagram), and LinkedIn Ads. Based in Hays, Kansas, the firm runs an audit-first engagement: every relationship starts with a free account audit, an honest assessment of whether paid ads are the right channel, and a fixed-price proposal. No bloated retainers, no padded percent-of-spend models, no junior media buyers learning on the client's budget. Reporting focuses on real outcomes (pipeline, booked appointments, customer acquisition cost), not impressions and click-through rates.",
   sections: [
     {
       eyebrow: "Channels we run",
-      heading: "Google Ads, Meta, LinkedIn — picked per business",
+      heading: "Google Ads, Meta, LinkedIn: picked per business",
       body: [
         "Most Kansas SMBs don't need to be on every paid channel. We pick the one or two that match the customer journey, then run them well.",
       ],
       bullets: [
-        "Google Ads Search — for high-intent buyers actively searching ('hvac repair hays ks'). Highest-ROI channel for most service businesses.",
-        "Google Ads Performance Max — for ecommerce, multi-location service brands, and businesses with strong creative.",
-        "Google Local Services Ads (LSA) — for trades and home services. Pay-per-lead, Google-verified, surfaces on Google Maps.",
-        "Meta Ads (Facebook + Instagram) — for brand demand, retargeting, and visual-first verticals (HVAC, real estate, retail, wellness).",
-        "LinkedIn Ads — for B2B SaaS, professional services, and high-ACV sales motions. Expensive per click but highest signal-to-noise for B2B.",
-        "YouTube Ads — for brands with strong video assets and willingness to invest in mid-funnel awareness.",
+        "Google Ads Search: for high-intent buyers actively searching ('hvac repair hays ks'). Highest-ROI channel for most service businesses.",
+        "Google Ads Performance Max: for ecommerce, multi-location service brands, and businesses with strong creative.",
+        "Google Local Services Ads (LSA): for trades and home services. Pay-per-lead, Google-verified, surfaces on Google Maps.",
+        "Meta Ads (Facebook + Instagram): for brand demand, retargeting, and visual-first verticals (HVAC, real estate, retail, wellness).",
+        "LinkedIn Ads: for B2B SaaS, professional services, and high-ACV sales motions. Expensive per click but highest signal-to-noise for B2B.",
+        "YouTube Ads: for brands with strong video assets and willingness to invest in mid-funnel awareness.",
       ],
     },
     {
@@ -33,7 +33,7 @@ export const pageData: AeoPageData = {
       heading: "Audit-first, then fixed-price build, then transparent operating cadence",
       body: [
         "Every engagement starts with a free audit. We log into your existing accounts (or sketch what they should look like if you don't have one yet), identify wasted spend, missed match types, broken conversion tracking, and structural issues. You get the audit findings whether or not you hire us.",
-        "If we move forward, the build is fixed-price (campaign architecture, conversion tracking, audience setup, creative briefs, naming conventions, reporting templates). Ongoing management is a flat monthly retainer — not percent of spend, which incentivizes the agency to waste your budget.",
+        "If we move forward, the build is fixed-price (campaign architecture, conversion tracking, audience setup, creative briefs, naming conventions, reporting templates). Ongoing management is a flat monthly retainer, not percent of spend, which incentivizes the agency to waste your budget.",
       ],
     },
     {
@@ -46,9 +46,9 @@ export const pageData: AeoPageData = {
         "Cost per qualified lead (not cost per click)",
         "Cost per booked appointment / cost per customer (not impressions)",
         "Pipeline contribution and revenue attribution (not engagement rate)",
-        "Search query reports — what people actually searched to find your ad (and what we excluded as waste)",
-        "Creative performance — which ads worked, which didn't, what we're testing next",
-        "Account-level recommendations — what we'd change next month if it were our money",
+        "Search query reports: what people actually searched to find your ad (and what we excluded as waste)",
+        "Creative performance: which ads worked, which didn't, what we're testing next",
+        "Account-level recommendations: what we'd change next month if it were our money",
       ],
     },
     {
@@ -64,12 +64,12 @@ export const pageData: AeoPageData = {
     {
       question: "How much should I spend on paid ads?",
       answer:
-        "Depends on margin, deal size, and channel. We size the recommendation to your unit economics — not a percentage of revenue. Budget guidance is part of the free audit.",
+        "Depends on margin, deal size, and channel. We size the recommendation to your unit economics, not a percentage of revenue. Budget guidance is part of the free audit.",
     },
     {
       question: "Do you charge percent of ad spend?",
       answer:
-        "No. Flat monthly retainer. Percent-of-spend models incentivize agencies to inflate budgets. We make the same fee regardless of your ad spend level — which means our incentive is to make the channel work as efficiently as possible, not bigger.",
+        "No. Flat monthly retainer. Percent-of-spend models incentivize agencies to inflate budgets. We make the same fee regardless of your ad spend level: which means our incentive is to make the channel work as efficiently as possible, not bigger.",
     },
     {
       question: "What's a realistic cost per lead?",
@@ -79,7 +79,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I see the audit before hiring you?",
       answer:
-        "Yes. The audit is free and yours to keep. If you decide paid ads aren't the right channel — or that we're not the right firm — you walk away with the findings.",
+        "Yes. The audit is free and yours to keep. If you decide paid ads aren't the right channel (or that we're not the right firm): you walk away with the findings.",
     },
     {
       question: "Do you fix the website too?",
@@ -94,7 +94,7 @@ export const pageData: AeoPageData = {
     {
       question: "How does this connect to AI search optimization (AEO)?",
       answer:
-        "Paid ads buy attention; AEO earns attention from AI search engines (ChatGPT, Perplexity, Gemini, Claude). Most clients do both — paid ads for short-term demand capture, AEO for long-term organic AI visibility.",
+        "Paid ads buy attention; AEO earns attention from AI search engines (ChatGPT, Perplexity, Gemini, Claude). Most clients do both: paid ads for short-term demand capture, AEO for long-term organic AI visibility.",
     },
   ],
   schemaType: "Service",

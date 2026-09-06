@@ -30,9 +30,9 @@ export const pageData: AeoPageData = {
         "Every marketing channel that drives phone calls gets its own tracked phone number. Different number on the Google Business Profile, on Google Ads, on the website, on the truck wraps, on direct mail.",
       ],
       bullets: [
-        "CallRail — subscription scales with number of tracked numbers. Industry default for service businesses.",
-        "Twilio — pay-per-number + pay-per-minute. Lower cost at low volume, more setup work.",
-        "All tracked numbers forward to your real business line — customers experience no difference.",
+        "CallRail: subscription scales with number of tracked numbers. Industry default for service businesses.",
+        "Twilio: pay-per-number + pay-per-minute. Lower cost at low volume, more setup work.",
+        "All tracked numbers forward to your real business line, customers experience no difference.",
         "Every call gets logged with source channel, duration, recording (where legal), and outcome.",
       ],
     },
@@ -40,7 +40,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Piece 2",
       heading: "2. UTM-tagged campaign URLs",
       body: [
-        "Every link in every campaign — Google Ads, Facebook Ads, email, SMS, QR codes — gets UTM parameters appended.",
+        "Every link in every campaign (Google Ads, Facebook Ads, email, SMS, QR codes) gets UTM parameters appended.",
       ],
       bullets: [
         "utm_source = the channel (google, facebook, email, sms, qr).",
@@ -60,7 +60,7 @@ export const pageData: AeoPageData = {
         "Web form: hidden field populated from utm_source.",
         "Inbound call: tracked number tells you the source automatically.",
         "Walk-in or referral: CSR asks and records.",
-        "Required field — no new lead enters the CRM without a source.",
+        "Required field: no new lead enters the CRM without a source.",
       ],
     },
     {
@@ -71,10 +71,10 @@ export const pageData: AeoPageData = {
         "This is the part most businesses skip. The data accumulates and nobody looks at it. The 15-minute weekly review is what turns the system from \"we have tracking\" to \"we make better decisions.\"",
       ],
       bullets: [
-        "Revenue by source — sum of closed-job value, grouped by source.",
-        "Spend by source — Google Ads, Facebook Ads, direct mail, sponsorships.",
-        "ROAS by source — revenue divided by spend.",
-        "Trend — is this source improving or declining quarter-over-quarter?",
+        "Revenue by source: sum of closed-job value, grouped by source.",
+        "Spend by source: Google Ads, Facebook Ads, direct mail, sponsorships.",
+        "ROAS by source: revenue divided by spend.",
+        "Trend: is this source improving or declining quarter-over-quarter?",
       ],
     },
     {
@@ -99,7 +99,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will my CRM support this?",
       answer:
-        "If your CRM has a custom field on lead records, yes. ServiceTitan, Housecall Pro, Jobber, FieldEdge, HubSpot, Salesforce — all support custom source fields. If yours doesn't, that's a sign to look at switching CRMs.",
+        "If your CRM has a custom field on lead records, yes. ServiceTitan, Housecall Pro, Jobber, FieldEdge, HubSpot, Salesforce: all support custom source fields. If yours doesn't, that's a sign to look at switching CRMs.",
     },
     {
       question: "How much does the stack cost?",
@@ -109,7 +109,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can Preisser Solutions set this up for me?",
       answer:
-        "Yes — typically a 1-week engagement to set up call tracking, UTM templates, CRM source field, and build the weekly review template. Fixed price, includes 30 days of follow-up to make sure the review habit sticks.",
+        "Yes, typically a 1-week engagement to set up call tracking, UTM templates, CRM source field, and build the weekly review template. Fixed price, includes 30 days of follow-up to make sure the review habit sticks.",
     },
   ],
   schemaType: "BlogPosting",

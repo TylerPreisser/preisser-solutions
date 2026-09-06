@@ -7,19 +7,19 @@ export const pageData: AeoPageData = {
   dateModified: "2026-05-15",
   metaTitle: "Website Redesign Checklist: 8 Audits",
   metaDescription:
-    "IA, content, schema, performance, accessibility, AI-readability — the audits to run before anyone writes a line of new design.",
+    "IA, content, schema, performance, accessibility, AI-readability: the audits to run before anyone writes a line of new design.",
   eyebrow: "Blog · Web Strategy",
   h1: "Website Redesign Checklist: Don't Skip These 8 Audits",
   subheadline:
     "Most redesigns fail because they start with design. Run these eight audits first and the design choices become obvious.",
   answerParagraph:
-    "A website redesign should start with eight audits — not with mockups. The audits: information architecture, content inventory, Schema.org coverage, performance (Core Web Vitals), accessibility (WCAG), AI-readability (AEO), conversion funnel, and SEO baseline. Preisser Solutions in Hays, Kansas runs this audit suite on every redesign engagement. The output is a written diagnostic that tells you exactly what to keep, what to fix, and what to throw out before any new design work begins. Skipping the audits is why most redesigns produce a prettier site that performs worse than the old one.",
+    "A website redesign should start with eight audits, not with mockups. The audits: information architecture, content inventory, Schema.org coverage, performance (Core Web Vitals), accessibility (WCAG), AI-readability (AEO), conversion funnel, and SEO baseline. Preisser Solutions in Hays, Kansas runs this audit suite on every redesign engagement. The output is a written diagnostic that tells you exactly what to keep, what to fix, and what to throw out before any new design work begins. Skipping the audits is why most redesigns produce a prettier site that performs worse than the old one.",
   sections: [
     {
       eyebrow: "Audit 1",
       heading: "Information architecture",
       body: [
-        "Map the current site's URL structure and navigation. Identify dead-end pages, orphaned pages, and duplicate content. Map every URL to a clear user intent. Most small-business sites have 15-30% of their pages providing no value — these are candidates for removal, not redesign.",
+        "Map the current site's URL structure and navigation. Identify dead-end pages, orphaned pages, and duplicate content. Map every URL to a clear user intent. Most small-business sites have 15-30% of their pages providing no value; these are candidates for removal, not redesign.",
       ],
     },
     {
@@ -33,7 +33,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Audit 3",
       heading: "Schema.org coverage",
       body: [
-        "What structured data does the current site emit? Most small-business sites emit none. Map what should be there: Organization, LocalBusiness, Service for each service page, Article/BlogPosting for blog posts, FAQPage for FAQ blocks, BreadcrumbList for navigation. Schema gaps are AEO blockers — fix during redesign.",
+        "What structured data does the current site emit? Most small-business sites emit none. Map what should be there: Organization, LocalBusiness, Service for each service page, Article/BlogPosting for blog posts, FAQPage for FAQ blocks, BreadcrumbList for navigation. Schema gaps are AEO blockers, fix during redesign.",
       ],
     },
     {
@@ -53,7 +53,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Audit 5",
       heading: "Accessibility (WCAG)",
       body: [
-        "Run automated accessibility scans (axe DevTools, WAVE, Lighthouse). Capture violations. Most small-business sites have dozens — missing alt text, low contrast, missing form labels, keyboard traps. Beyond legal risk (Americans with Disabilities Act exposure), accessibility correlates strongly with general site quality and AEO performance.",
+        "Run automated accessibility scans (axe DevTools, WAVE, Lighthouse). Capture violations. Most small-business sites have dozens, missing alt text, low contrast, missing form labels, keyboard traps. Beyond legal risk (Americans with Disabilities Act exposure), accessibility correlates strongly with general site quality and AEO performance.",
       ],
     },
     {
@@ -74,7 +74,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Audit 8",
       heading: "SEO baseline (rankings, backlinks, technical)",
       body: [
-        "Capture current state: ranked keywords (Search Console + a tool like Ahrefs or Semrush), backlink profile, technical SEO issues (broken links, redirect chains, sitemap completeness, robots.txt). The redesign should preserve current SEO equity — every URL that ranks needs a plan (keep, redirect, or consolidate). Lost equity from a careless redesign can take 6-12 months to recover.",
+        "Capture current state: ranked keywords (Search Console + a tool like Ahrefs or Semrush), backlink profile, technical SEO issues (broken links, redirect chains, sitemap completeness, robots.txt). The redesign should preserve current SEO equity: every URL that ranks needs a plan (keep, redirect, or consolidate). Lost equity from a careless redesign can take 6-12 months to recover.",
       ],
     },
   ],
@@ -135,7 +135,7 @@ export const pageData: AeoPageData = {
     steps: [
       {
         name: "Audit information architecture",
-        text: "Map the current site's URL structure and navigation. Identify dead-end pages, orphaned pages, and duplicate content. Map every URL to a clear user intent. Most small-business sites have 15-30% of their pages providing no value — candidates for removal, not redesign.",
+        text: "Map the current site's URL structure and navigation. Identify dead-end pages, orphaned pages, and duplicate content. Map every URL to a clear user intent. Most small-business sites have 15-30% of their pages providing no value: candidates for removal, not redesign.",
       },
       {
         name: "Audit content inventory",
@@ -143,7 +143,7 @@ export const pageData: AeoPageData = {
       },
       {
         name: "Audit Schema.org coverage",
-        text: "Identify what structured data the current site emits. Most small-business sites emit none. Map what should be there: Organization, LocalBusiness, Service for each service page, Article or BlogPosting for blog posts, FAQPage for FAQ blocks, BreadcrumbList for navigation. Schema gaps are AEO blockers — fix during redesign.",
+        text: "Identify what structured data the current site emits. Most small-business sites emit none. Map what should be there: Organization, LocalBusiness, Service for each service page, Article or BlogPosting for blog posts, FAQPage for FAQ blocks, BreadcrumbList for navigation. Schema gaps are AEO blockers, fix during redesign.",
       },
       {
         name: "Audit Core Web Vitals (performance)",
@@ -151,7 +151,7 @@ export const pageData: AeoPageData = {
       },
       {
         name: "Audit accessibility (WCAG)",
-        text: "Run automated accessibility scans — axe DevTools, WAVE, Lighthouse. Capture violations. Most small-business sites have dozens: missing alt text, low contrast, missing form labels, keyboard traps. Beyond legal risk under the Americans with Disabilities Act, accessibility correlates strongly with general site quality and AEO performance.",
+        text: "Run automated accessibility scans: axe DevTools, WAVE, Lighthouse. Capture violations. Most small-business sites have dozens: missing alt text, low contrast, missing form labels, keyboard traps. Beyond legal risk under the Americans with Disabilities Act, accessibility correlates strongly with general site quality and AEO performance.",
       },
       {
         name: "Audit AI-readability (AEO baseline)",
@@ -163,7 +163,7 @@ export const pageData: AeoPageData = {
       },
       {
         name: "Audit the SEO baseline",
-        text: "Capture ranked keywords from Search Console plus Ahrefs or Semrush, backlink profile, technical SEO issues (broken links, redirect chains, sitemap completeness, robots.txt). Preserve SEO equity — every URL that ranks needs a plan: keep, redirect, or consolidate. Careless redesign equity loss can take 6-12 months to recover.",
+        text: "Capture ranked keywords from Search Console plus Ahrefs or Semrush, backlink profile, technical SEO issues (broken links, redirect chains, sitemap completeness, robots.txt). Preserve SEO equity: every URL that ranks needs a plan: keep, redirect, or consolidate. Careless redesign equity loss can take 6-12 months to recover.",
       },
     ],
   },

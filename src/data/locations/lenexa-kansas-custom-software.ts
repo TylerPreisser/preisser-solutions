@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Lenexa, KS Custom Software Development",
   metaDescription:
-    "Custom software, AI automation, and web applications for Lenexa, Kansas — built by a Kansas-based firm for the Johnson County logistics and distribution economy.",
+    "Custom software, AI automation, and web applications for Lenexa, Kansas: built by a Kansas-based firm for the Johnson County logistics and distribution economy.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -19,9 +19,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Lenexa, Kansas",
     h1: "Custom Software Development for Lenexa Businesses",
     subheadline:
-      "Custom web applications, AI automation, and logistics-operations tooling for Lenexa's distribution and warehousing economy — engineered at Kansas rates.",
+      "Custom web applications, AI automation, and logistics-operations tooling for Lenexa's distribution and warehousing economy: engineered at Kansas rates.",
     answerParagraph:
-      "Preisser Solutions serves Lenexa, Kansas businesses with custom software, AI automation, custom web applications, dashboards, and local SEO and AI-search optimization. Lenexa is a Johnson County logistics and distribution hub — one of the stronger warehouse and fulfillment concentrations in the greater KC metro. Custom inventory platforms, shipment-tracking tools, and warehouse-operations dashboards are recurring builds for operators in this market. Based in Hays, roughly 280 miles west, we deliver remotely and travel for projects of meaningful scope.",
+      "Preisser Solutions serves Lenexa, Kansas businesses with custom software, AI automation, custom web applications, dashboards, and local SEO and AI-search optimization. Lenexa is a Johnson County logistics and distribution hub: one of the stronger warehouse and fulfillment concentrations in the greater KC metro. Custom inventory platforms, shipment-tracking tools, and warehouse-operations dashboards are recurring builds for operators in this market. Based in Hays, roughly 280 miles west, we deliver remotely and travel for projects of meaningful scope.",
   },
 
   nearbyAreas: [
@@ -40,7 +40,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Lenexa's logistics and distribution operators need custom warehouse-management and shipment-tracking tools that off-the-shelf WMS products don't address at mid-market scale.",
-    "Kansas-based at Kansas economics — structurally less expensive than a KC metro agency for the same engineering output.",
+    "Kansas-based at Kansas economics: structurally less expensive than a KC metro agency for the same engineering output.",
     "Custom code with full ownership at launch. Logistics operations running on custom software own a competitive advantage that SaaS platforms cannot provide.",
   ],
 
@@ -71,7 +71,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions build a custom inventory system for a Lenexa warehouse operator?",
       answer:
-        "Yes. Custom inventory platforms — receiving, bin management, transfers, order fulfillment, and cost tracking — are a documented capability. The HG Oil Holdings inventory system is a direct analogue for warehouse-scale data management.",
+        "Yes. Custom inventory platforms (receiving, bin management, transfers, order fulfillment, and cost tracking) are a documented capability. The HG Oil Holdings inventory system is a direct analogue for warehouse-scale data management.",
     },
     {
       question: "Does Preisser Solutions build AI automation for Lenexa logistics companies?",

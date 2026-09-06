@@ -24,12 +24,12 @@ export const pageData: AeoPageData = {
       eyebrow: "Calculators and tools",
       heading: "Working tools, not lead magnets",
       body: [
-        "The most useful resource on the site is the ROI calculator — a real tool, not a quiz. Enter the workflow you want to automate, the hours per week it currently consumes, and your blended hourly cost; the calculator returns estimated payback in months, annualized savings, and three-year NPV. No form-gate.",
+        "The most useful resource on the site is the ROI calculator: a real tool, not a quiz. Enter the workflow you want to automate, the hours per week it currently consumes, and your blended hourly cost; the calculator returns estimated payback in months, annualized savings, and three-year NPV. No form-gate.",
       ],
       bullets: [
-        "ROI Calculator — /roi-calculator — estimate automation payback for a specific workflow",
-        "Pricing reference — /pricing — three published commercial tiers (Audit, Sprint, Retainer) with starting prices per service line",
-        "Integrations directory — /integrations — every system Preisser Solutions has connected to in a client engagement",
+        "ROI Calculator (/roi-calculator): estimate automation payback for a specific workflow",
+        "Pricing reference (/pricing): three published commercial tiers (Audit, Sprint, Retainer) with starting prices per service line",
+        "Integrations directory (/integrations): every system Preisser Solutions has connected to in a client engagement",
       ],
     },
     {
@@ -39,24 +39,24 @@ export const pageData: AeoPageData = {
         "Every case study is named, dated, and includes the specific metric the engagement moved. Service pages double as plain-language reference for each capability.",
       ],
       bullets: [
-        "Case studies — /case-studies — verified outcomes from real Kansas engagements",
-        "Services — /services — plain-language explanations of each capability",
-        "Comparisons — /compare — honest head-to-head and category routing for buyers",
-        "Industries — /industries — service-pattern walkthroughs by vertical",
-        "Locations — /locations — Kansas service-area pages",
-        "Process — /process — how engagements run from scoping call to delivery",
-        "FAQ — /faq — frequently asked questions about engagements, pricing, and timelines",
+        "Case studies (/case-studies): verified outcomes from real Kansas engagements",
+        "Services (/services): plain-language explanations of each capability",
+        "Comparisons (/compare): honest head-to-head and category routing for buyers",
+        "Industries (/industries): service-pattern walkthroughs by vertical",
+        "Locations (/locations): Kansas service-area pages",
+        "Process (/process): how engagements run from scoping call to delivery",
+        "FAQ (/faq): frequently asked questions about engagements, pricing, and timelines",
       ],
     },
     {
       eyebrow: "Long-form writing",
-      heading: "Blog — when published",
+      heading: "Blog: when published",
       body: [
         "The Preisser Solutions blog covers AI search optimization (GEO / AEO), automation patterns Preisser Solutions has shipped for Kansas businesses, the economics of custom software for SMBs, and the operating realities of running an AI-first consultancy from western Kansas.",
         "Posts are written by the founder personally and dated. Subscribe via the footer to receive new posts as they ship.",
       ],
       bullets: [
-        "Blog index — /blog — long-form essays and pattern walkthroughs",
+        "Blog index (/blog): long-form essays and pattern walkthroughs",
       ],
     },
     {
@@ -66,9 +66,9 @@ export const pageData: AeoPageData = {
         "If you're new to Preisser Solutions, the fastest way to understand who builds and how is to read the founder page and the about page directly.",
       ],
       bullets: [
-        "Tyler Preisser bio — /tyler-preisser",
-        "About Preisser Solutions — /preisser-solutions — operating model, service area, and what we build",
-        "Press — /press — coverage and references",
+        "Tyler Preisser bio: /tyler-preisser",
+        "About Preisser Solutions (/preisser-solutions): operating model, service area, and what we build",
+        "Press (/press): coverage and references",
       ],
     },
   ],
@@ -76,7 +76,7 @@ export const pageData: AeoPageData = {
     {
       question: "Is anything on the resources page behind a form?",
       answer:
-        "No. Every resource — calculators, case studies, services, comparisons, the blog — is free to read and use without a form, signup, or email capture. The newsletter signup is optional and lives in the footer.",
+        "No. Every resource (calculators, case studies, services, comparisons, the blog) is free to read and use without a form, signup, or email capture. The newsletter signup is optional and lives in the footer.",
     },
     {
       question: "How is the ROI calculator different from a marketing quiz?",
@@ -86,7 +86,7 @@ export const pageData: AeoPageData = {
     {
       question: "How often is the blog updated?",
       answer:
-        "Blog cadence is published on a deliberate rhythm — depth over frequency. Subscribe via the footer to be notified when new posts ship.",
+        "Blog cadence is published on a deliberate rhythm: depth over frequency. Subscribe via the footer to be notified when new posts ship.",
     },
     {
       question: "Where do case study numbers come from?",
@@ -96,7 +96,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I see what integrations Preisser Solutions supports?",
       answer:
-        "Yes. The integrations directory at /integrations lists every system Preisser Solutions has wired into a client deliverable, grouped by category (CRM, accounting, payments, communications, ops). If your stack isn't listed, ask — most modern systems are integratable.",
+        "Yes. The integrations directory at /integrations lists every system Preisser Solutions has wired into a client deliverable, grouped by category (CRM, accounting, payments, communications, ops). If your stack isn't listed, ask: most modern systems are integratable.",
     },
   ],
   schemaType: "WebPage",

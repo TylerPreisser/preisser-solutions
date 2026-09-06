@@ -36,13 +36,13 @@ export const pageData: AeoPageData = {
       heading: "Your pages may not match real searches",
       body: [
         "If pages are indexed but still get no traffic, the next question is whether the page targets a phrase anyone actually types into Google.",
-        "Owners often write pages around how the business talks about itself — internal product names, taglines, broad marketing language — instead of around how a customer describes the problem. A page titled \"Our Solutions\" almost never ranks. A page titled \"Same-Day Furnace Repair in Hays, KS\" can.",
+        "Owners often write pages around how the business talks about itself (internal product names, taglines, broad marketing language), instead of around how a customer describes the problem. A page titled \"Our Solutions\" almost never ranks. A page titled \"Same-Day Furnace Repair in Hays, KS\" can.",
         "Use Search Console's Performance report to see what queries already trigger an impression for your domain. Sort by impressions, look at queries with 50+ impressions and a position worse than ten, and rewrite the matching page title and H1 to use the exact phrasing the searcher used. This is the lowest-effort, highest-impact move for a small site.",
       ],
       bullets: [
         "Lead with a problem the customer would name, not a product the business sells",
         "Put the city or service area in the title tag when you serve a local market",
-        "Match the H1 to the title — Google reads both",
+        "Match the H1 to the title: Google reads both",
         "Add one FAQ per page that uses a real long-tail question",
       ],
     },
@@ -50,7 +50,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Step 3",
       heading: "Your Google Business Profile may be weak",
       body: [
-        "Most local searches resolve in the map pack — the three businesses Google shows above the blue links. If your business is not winning a spot there, you are watching competitors take phone calls that should be yours.",
+        "Most local searches resolve in the map pack: the three businesses Google shows above the blue links. If your business is not winning a spot there, you are watching competitors take phone calls that should be yours.",
         "Check your Google Business Profile (search for your business name on Google and click Edit profile, or open business.google.com). The profile needs the right primary category, a complete services list, current hours, recent photos, a clean business name (no keyword stuffing), and a phone number that matches your website footer exactly.",
         "Reviews drive map ranking more than most owners think. A profile with fewer than twenty reviews and no recent activity tends to lose to a competitor with eighty reviews from the last twelve months, even when the website is weaker.",
       ],
@@ -59,7 +59,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Step 4",
       heading: "Your site may be too slow or too thin",
       body: [
-        "Pages that take more than three seconds to load on a phone lose a meaningful share of visitors before the content even paints. Google also factors page experience into ranking — slow, layout-shifting mobile pages get suppressed.",
+        "Pages that take more than three seconds to load on a phone lose a meaningful share of visitors before the content even paints. Google also factors page experience into ranking: slow, layout-shifting mobile pages get suppressed.",
         "Run your homepage and your top service page through PageSpeed Insights. If your Largest Contentful Paint on mobile is worse than 2.5 seconds, or your Cumulative Layout Shift is above 0.1, that is a real ranking and conversion drag.",
         "Thin content is the other half of this issue. Pages with under 300 words, no images, no headings, and no internal links rarely earn traffic. If your service pages are one paragraph and a contact form, expand them with a clear scope of work, an FAQ block, and a soft proof point (a photo, a testimonial, or a short case description).",
       ],
@@ -90,7 +90,7 @@ export const pageData: AeoPageData = {
         {
           heading: "When patching is no longer enough",
           body: [
-            "If your site was built years ago on a template platform, layered with plugins, and has had three different people touch the SEO over time, you may spend more time fighting the existing structure than you would rebuilding cleanly. At that point, a focused rebuild on a fast, modern stack typically outperforms another round of patches. That's the work Preisser Solutions does for small businesses across Kansas — a clean rebuild with the search, schema, and local signals correct from day one.",
+            "If your site was built years ago on a template platform, layered with plugins, and has had three different people touch the SEO over time, you may spend more time fighting the existing structure than you would rebuilding cleanly. At that point, a focused rebuild on a fast, modern stack typically outperforms another round of patches. That's the work Preisser Solutions does for small businesses across Kansas, a clean rebuild with the search, schema, and local signals correct from day one.",
           ],
         },
       ],
@@ -120,12 +120,12 @@ export const pageData: AeoPageData = {
     {
       question: "How do I know if my Google Business Profile is hurting me?",
       answer:
-        "Search for your business by name on Google. If your profile shows missing categories, no recent posts, fewer than twenty reviews, no service list, or photos older than a year, those are all signals you can improve. Also compare your review count and recency against your top three local competitors — that gap usually predicts the map pack outcome.",
+        "Search for your business by name on Google. If your profile shows missing categories, no recent posts, fewer than twenty reviews, no service list, or photos older than a year, those are all signals you can improve. Also compare your review count and recency against your top three local competitors; that gap usually predicts the map pack outcome.",
     },
     {
       question: "Can AI search tools like ChatGPT and Perplexity send me traffic?",
       answer:
-        "Yes, increasingly. AI assistants pull from sites with clean structure, named entities, FAQ content, and schema markup. Building a site for AI readability tends to also help with Google, because the underlying signals overlap. There's no guaranteed citation — but a well-structured site is far more likely to be referenced than a thin, plugin-heavy one.",
+        "Yes, increasingly. AI assistants pull from sites with clean structure, named entities, FAQ content, and schema markup. Building a site for AI readability tends to also help with Google, because the underlying signals overlap. There's no guaranteed citation, but a well-structured site is far more likely to be referenced than a thin, plugin-heavy one.",
     },
   ],
   schemaType: "Article",

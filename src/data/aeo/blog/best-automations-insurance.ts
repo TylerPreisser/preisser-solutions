@@ -7,19 +7,19 @@ export const pageData: AeoPageData = {
   dateModified: "2026-05-15",
   metaTitle: "Best Automations for Insurance Agencies",
   metaDescription:
-    "Quote workflow, renewal follow-up, claims status, and lead nurture — what worked in the Western Kansas insurance CRM build.",
+    "Quote workflow, renewal follow-up, claims status, and lead nurture: what worked in the Western Kansas insurance CRM build.",
   eyebrow: "Blog · Industry Playbooks",
   h1: "The Best Automations for Independent Insurance Agencies",
   subheadline:
-    "Drawn directly from the MGU insurance custom CRM engagement. What pays back for independent agencies — and what doesn't.",
+    "Drawn directly from the MGU insurance custom CRM engagement. What pays back for independent agencies, and what doesn't.",
   answerParagraph:
-    "Independent insurance agencies in Kansas (and nationwide) have specific operational pain points that productized SaaS doesn't solve cleanly: multi-carrier quoting, renewal cadence across hundreds of policies, claims status tracking, and commission reconciliation. The insurance agency engagement (an MGU within the Alliant Insurance ecosystem) that Preisser Solutions shipped replaced a generic CRM with a purpose-built policy management system — zero missed renewals in the first 6 months, monthly commission reconciliation under 30 minutes, real-time book visibility for the principal. The highest-ROI automations for independent agencies are: renewal follow-up sequences, multi-carrier quote workflow, claims status notifications, and lead nurture sequences.",
+    "Independent insurance agencies in Kansas (and nationwide) have specific operational pain points that productized SaaS doesn't solve cleanly: multi-carrier quoting, renewal cadence across hundreds of policies, claims status tracking, and commission reconciliation. The insurance agency engagement (an MGU within the Alliant Insurance ecosystem) that Preisser Solutions shipped replaced a generic CRM with a purpose-built policy management system: zero missed renewals in the first 6 months, monthly commission reconciliation under 30 minutes, real-time book visibility for the principal. The highest-ROI automations for independent agencies are: renewal follow-up sequences, multi-carrier quote workflow, claims status notifications, and lead nurture sequences.",
   sections: [
     {
       eyebrow: "#1",
       heading: "Renewal follow-up sequences (the biggest revenue protector)",
       body: [
-        "Every policy that lapses without renewal is recurring revenue lost — often customer relationships lost permanently. A renewal automation engine:",
+        "Every policy that lapses without renewal is recurring revenue lost, often customer relationships lost permanently. A renewal automation engine:",
       ],
       bullets: [
         "Pulls policies expiring in 90/60/30/15/7 day windows.",
@@ -54,7 +54,7 @@ export const pageData: AeoPageData = {
         "Captures lead source and intent from the initial inquiry.",
         "Drops them into a sequence that delivers genuinely useful content (not generic drip emails) over 30-90 days.",
         "Watches for signals (clicked a quote-request link, replied to an email) and surfaces hot leads to the agent.",
-        "Quietly closes leads who don't engage — no manual list management.",
+        "Quietly closes leads who don't engage: no manual list management.",
       ],
     },
     {
@@ -81,7 +81,7 @@ export const pageData: AeoPageData = {
         {
           heading: "When custom is justified",
           body: [
-            "The Alliant Insurance MGU engagement reached all four thresholds. The custom CRM Preisser Solutions built isn't replacing AgencyZoom or HubSpot generically — it's purpose-built for their specific multi-line, multi-state book. Result: principal has real-time visibility on the whole book for the first time, renewal misses dropped to zero, and the team is doing higher-value work instead of admin.",
+            "The Alliant Insurance MGU engagement reached all four thresholds. The custom CRM Preisser Solutions built isn't replacing AgencyZoom or HubSpot generically: it's purpose-built for their specific multi-line, multi-state book. Result: principal has real-time visibility on the whole book for the first time, renewal misses dropped to zero, and the team is doing higher-value work instead of admin.",
           ],
         },
       ],
@@ -91,7 +91,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will this work with AgencyZoom or EZLynx?",
       answer:
-        "Yes, on the integration side — we can build automations that read from and write to most insurance CRMs via API or file integration. Whether the underlying CRM stays or gets replaced is a separate conversation based on its fit for your workflow.",
+        "Yes, on the integration side: we can build automations that read from and write to most insurance CRMs via API or file integration. Whether the underlying CRM stays or gets replaced is a separate conversation based on its fit for your workflow.",
     },
     {
       question: "What about compliance?",
@@ -111,7 +111,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can I get a reference from the insurance engagement?",
       answer:
-        "Yes — for serious prospects in advanced scoping. The principal will tell you, candidly, what worked and what was harder than expected. Contact tyler@preissersolutions.com to arrange.",
+        "Yes, for serious prospects in advanced scoping. The principal will tell you, candidly, what worked and what was harder than expected. Contact tyler@preissersolutions.com to arrange.",
     },
   ],
   schemaType: "BlogPosting",
@@ -137,5 +137,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a build scoped for your agency?",
   ctaSubcopy:
-    "Free 30-minute call. We'll map your book, your carriers, and your pain points — and quote a fixed price.",
+    "Free 30-minute call. We'll map your book, your carriers, and your pain points, and quote a fixed price.",
 };

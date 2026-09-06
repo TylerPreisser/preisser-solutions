@@ -13,7 +13,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Web Design in Great Bend, Kansas",
   metaDescription:
-    "Custom websites for Great Bend, Kansas businesses — fast, SEO-strong, AI-search ready. Built by a nearby Hays-based firm.",
+    "Custom websites for Great Bend, Kansas businesses: fast, SEO-strong, AI-search ready. Built by a nearby Hays-based firm.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -22,9 +22,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Web Design in Great Bend, Kansas",
     h1: "Custom Web Design for Great Bend Businesses",
     subheadline:
-      "Custom websites — engineered for performance, conversion, and AI search visibility.",
+      "Custom websites: engineered for performance, conversion, and AI search visibility.",
     answerParagraph:
-      "Preisser Solutions builds custom websites for Great Bend, Kansas businesses — fast, conversion-engineered, and optimized for both Google and AI search. Based in Hays, roughly an hour west on US-281. No templates. Custom code, fixed-price proposals, full ownership at launch.",
+      "Preisser Solutions builds custom websites for Great Bend, Kansas businesses: fast, conversion-engineered, and optimized for both Google and AI search. Based in Hays, roughly an hour west on US-281. No templates. Custom code, fixed-price proposals, full ownership at launch.",
   },
 
   nearbyAreas: [
@@ -43,8 +43,8 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Hays-based firm an hour away on US-281. In-person scoping is straightforward.",
-    "Custom code, not templates — your site is engineered, not assembled.",
-    "Built for AI search visibility — citations on Google AI Overviews, ChatGPT, Perplexity, and Gemini.",
+    "Custom code, not templates: your site is engineered, not assembled.",
+    "Built for AI search visibility: citations on Google AI Overviews, ChatGPT, Perplexity, and Gemini.",
   ],
 
   industriesServed: ["Oilfield Services", "Agriculture", "Trades", "Manufacturing", "Hospitality"],
@@ -58,7 +58,7 @@ export const locationData: LocationPageData = {
     {
       question: "What makes a Preisser Solutions site different from a templated site?",
       answer:
-        "Custom code with full ownership at launch — Next.js, React, TypeScript. Fast page loads, real SEO architecture, AI-search visibility, no platform lock-in.",
+        "Custom code with full ownership at launch: Next.js, React, TypeScript. Fast page loads, real SEO architecture, AI-search visibility, no platform lock-in.",
     },
     {
       question: "How long does a Great Bend website project take?",
@@ -73,7 +73,7 @@ export const locationData: LocationPageData = {
     {
       question: "How far is Hays from Great Bend?",
       answer:
-        "About 50 miles via US-281 — roughly an hour. In-person scoping is routine.",
+        "About 50 miles via US-281: roughly an hour. In-person scoping is routine.",
     },
     {
       question: "What is the difference between Preisser Solutions and a Great Bend marketing agency?",

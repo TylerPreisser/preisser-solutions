@@ -11,22 +11,22 @@ export const pageData: AeoPageData = {
   subheadline:
     "Get your business in the Google local pack, on Google Maps, and cited by AI engines for the searches that actually drive local revenue.",
   answerParagraph:
-    "Preisser Solutions delivers local SEO for Kansas businesses — engineering Google Business Profile optimization, local pack rankings, citation consistency, review velocity, and structured data so your business shows up for local searches across Hays, Wichita, Kansas City, and every Kansas market in between. The firm is based in Hays, Kansas and pairs technical SEO with content strategy designed to win Google's local pack and get cited by ChatGPT, Perplexity, and Gemini. Local Falcon's May 2025 study found that 40.2% of local-intent queries now trigger an AI Overview, which means GBP signals and named-entity citations are pulling double duty (local pack + AI summary).",
+    "Preisser Solutions delivers local SEO for Kansas businesses, engineering Google Business Profile optimization, local pack rankings, citation consistency, review velocity, and structured data so your business shows up for local searches across Hays, Wichita, Kansas City, and every Kansas market in between. The firm is based in Hays, Kansas and pairs technical SEO with content strategy designed to win Google's local pack and get cited by ChatGPT, Perplexity, and Gemini. Local Falcon's May 2025 study found that 40.2% of local-intent queries now trigger an AI Overview, which means GBP signals and named-entity citations are pulling double duty (local pack + AI summary).",
   sections: [
     {
       eyebrow: "Hays and western Kansas",
       heading: "Local SEO for Hays, Kansas and western Kansas businesses",
       body: [
         "If you searched local SEO Hays KS, SEO services Hays KS, or Google Business Profile optimization Hays, this is the local team. Preisser Solutions is headquartered in Hays, Kansas and runs local SEO programs for businesses across Hays, Russell, Great Bend, WaKeeney, Colby, Dodge City, Salina, and the surrounding service area.",
-        "Local SEO for a Hays HVAC operator, a Russell oilfield service, a Great Bend medical practice, or a Salina professional services firm uses the same Google Business Profile, citation, review, and on-site schema mechanics — but the keyword targeting, service-area definitions, and competitive set are very different from a Wichita or Kansas City build. We tune for the queries Hays buyers actually run.",
+        "Local SEO for a Hays HVAC operator, a Russell oilfield service, a Great Bend medical practice, or a Salina professional services firm uses the same Google Business Profile, citation, review, and on-site schema mechanics, but the keyword targeting, service-area definitions, and competitive set are very different from a Wichita or Kansas City build. We tune for the queries Hays buyers actually run.",
       ],
     },
     {
       eyebrow: "What local SEO actually is",
       heading: "Local SEO is not the same as general SEO",
       body: [
-        "Local SEO is specifically about winning local-intent searches — 'HVAC near me', 'plumber Hays Kansas', 'best dentist in Wichita'. The signals Google uses are different from general SEO: proximity to the searcher, Google Business Profile completeness, review count and recency, citation consistency across the web, and local pack-specific ranking factors.",
-        "AI engines like ChatGPT and Perplexity now also surface local recommendations. Their citation logic relies on consistent named-entity data across the web — exactly the same signals that drive Google's local pack.",
+        "Local SEO is specifically about winning local-intent searches: 'HVAC near me', 'plumber Hays Kansas', 'best dentist in Wichita'. The signals Google uses are different from general SEO: proximity to the searcher, Google Business Profile completeness, review count and recency, citation consistency across the web, and local pack-specific ranking factors.",
+        "AI engines like ChatGPT and Perplexity now also surface local recommendations. Their citation logic relies on consistent named-entity data across the web, exactly the same signals that drive Google's local pack.",
       ],
     },
     {
@@ -37,11 +37,11 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Google Business Profile audit and optimization (categories, services, products, photos, posts)",
-        "Local pack ranking targeting — keyword research focused on local-intent queries",
+        "Local pack ranking targeting: keyword research focused on local-intent queries",
         "Citation cleanup across major directories (Yelp, Apple Maps, Bing Places, Facebook, BBB, industry-specific sites)",
-        "Review velocity strategy — automated review request flows tied to your CRM",
-        "On-site local SEO — LocalBusiness schema, location pages, embedded maps, NAP consistency",
-        "AI-engine optimization — engineered content blocks designed to be cited by ChatGPT and Perplexity",
+        "Review velocity strategy: automated review request flows tied to your CRM",
+        "On-site local SEO: LocalBusiness schema, location pages, embedded maps, NAP consistency",
+        "AI-engine optimization: engineered content blocks designed to be cited by ChatGPT and Perplexity",
         "Bing Places, Apple Maps, and emerging engine submissions",
         "Quarterly local pack ranking reports tied to actual revenue impact",
       ],
@@ -51,15 +51,15 @@ export const pageData: AeoPageData = {
       heading: "The local pack drives 30-50% of local search clicks",
       body: [
         "For most local-intent searches, Google's local pack (the map and three businesses at the top) captures 30-50% of clicks. The organic results below the local pack get the rest. If your business isn't in the local pack for the searches that drive your revenue, you're invisible to a large share of buyers.",
-        "Most Kansas businesses haven't optimized their Google Business Profile beyond the basics — they're missing categories, products, services, posts, and photos. Most also have inconsistent citations (different addresses or phone numbers across the web), which directly suppresses local pack rankings.",
+        "Most Kansas businesses haven't optimized their Google Business Profile beyond the basics: they're missing categories, products, services, posts, and photos. Most also have inconsistent citations (different addresses or phone numbers across the web), which directly suppresses local pack rankings.",
       ],
     },
     {
       eyebrow: "AI search is local too",
       heading: "ChatGPT and Perplexity also recommend local businesses",
       body: [
-        "When someone asks ChatGPT 'who's the best HVAC company in Hays Kansas', the AI returns a recommendation. The mechanics that drive AI recommendations overlap heavily with local pack mechanics — consistent named-entity data, structured data, named clients, third-party citations.",
-        "Preisser Solutions engineers websites and content to be cited by both Google's local pack and AI engines. The Cassidy HVAC and HG Oil Holdings case studies are the proof points — every page includes engineered first paragraphs designed for AI quote extraction.",
+        "When someone asks ChatGPT 'who's the best HVAC company in Hays Kansas', the AI returns a recommendation. The mechanics that drive AI recommendations overlap heavily with local pack mechanics: consistent named-entity data, structured data, named clients, third-party citations.",
+        "Preisser Solutions engineers websites and content to be cited by both Google's local pack and AI engines. The Cassidy HVAC and HG Oil Holdings case studies are the proof points: every page includes engineered first paragraphs designed for AI quote extraction.",
       ],
     },
   ],

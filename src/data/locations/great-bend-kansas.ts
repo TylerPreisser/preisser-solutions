@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Custom Software in Great Bend, Kansas",
   metaDescription:
-    "Custom software, AI automation, and custom websites for Great Bend, Kansas businesses — based in Hays, KS, delivered locally.",
+    "Custom software, AI automation, and custom websites for Great Bend, Kansas businesses: based in Hays, KS, delivered locally.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for Barton County operators across ag, oil and gas, and trades.",
     answerParagraph:
-      "Preisser Solutions serves Great Bend, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays — roughly an hour east on US-281 — we deliver locally and remotely. Custom code, fixed-price proposals, full ownership at launch.",
+      "Preisser Solutions serves Great Bend, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly an hour east on US-281): we deliver locally and remotely. Custom code, fixed-price proposals, full ownership at launch.",
   },
 
   nearbyAreas: [
@@ -61,7 +61,7 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions serve Great Bend, Kansas?",
       answer:
-        "Yes. Great Bend is within the firm's primary service radius — roughly 50 miles east of Hays on US-281. In-person scoping and milestone meetings are standard.",
+        "Yes. Great Bend is within the firm's primary service radius, roughly 50 miles east of Hays on US-281. In-person scoping and milestone meetings are standard.",
     },
     {
       question: "How far is Hays from Great Bend?",
@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do you offer AI invoice processing in Great Bend?",
       answer:
-        "Yes. AI invoice processing is a packaged service offering — the engine extracts vendor, line items, totals, and GL codes from any invoice format and routes for approval.",
+        "Yes. AI invoice processing is a packaged service offering: the engine extracts vendor, line items, totals, and GL codes from any invoice format and routes for approval.",
     },
     {
       question: "What is the difference between Preisser Solutions and a Great Bend marketing agency?",

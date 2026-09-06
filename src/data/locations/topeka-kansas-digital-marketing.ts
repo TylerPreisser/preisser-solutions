@@ -14,18 +14,18 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Digital Marketing in Topeka, KS",
   metaDescription:
-    "Digital marketing built on custom code for Topeka, Kansas businesses — local SEO, AI automation, and web infrastructure.",
+    "Digital marketing built on custom code for Topeka, Kansas businesses: local SEO, AI automation, and web infrastructure.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
 
   hero: {
     eyebrow: "Digital Marketing in Topeka, Kansas",
-    h1: "Digital Marketing for Topeka Businesses — Built on Custom Code",
+    h1: "Digital Marketing for Topeka Businesses: Built on Custom Code",
     subheadline:
       "Local SEO, AI-search visibility, and automated outreach workflows engineered for Topeka's government, healthcare, and professional-services markets.",
     answerParagraph:
-      "Preisser Solutions delivers digital marketing infrastructure for businesses in Topeka, Kansas — the state capital and Shawnee County seat. Services include local SEO, AI-search optimization, custom websites built for conversion, and AI-powered marketing automation. All work is custom-coded — no page-builder platforms, no third-party marketing tools with recurring licensing fees.",
+      "Preisser Solutions delivers digital marketing infrastructure for businesses in Topeka, Kansas, the state capital and Shawnee County seat. Services include local SEO, AI-search optimization, custom websites built for conversion, and AI-powered marketing automation. All work is custom-coded: no page-builder platforms, no third-party marketing tools with recurring licensing fees.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Topeka's government and healthcare sector demands digital marketing that complies with accessibility and data handling requirements — built right from the start.",
+    "Topeka's government and healthcare sector demands digital marketing that complies with accessibility and data handling requirements, built right from the start.",
     "Preisser Solutions builds digital marketing infrastructure in code, not in marketing platforms that create vendor dependency.",
     "Fixed-price proposals with no open-ended retainers unless you request them.",
   ],
@@ -66,12 +66,12 @@ export const locationData: LocationPageData = {
     {
       question: "How is Preisser Solutions different from a Topeka marketing agency?",
       answer:
-        "Preisser Solutions is a custom-software firm. Every digital marketing deliverable is built in code — not assembled from marketing platforms with ongoing licensing fees.",
+        "Preisser Solutions is a custom-software firm. Every digital marketing deliverable is built in code, not assembled from marketing platforms with ongoing licensing fees.",
     },
     {
       question: "Does Preisser Solutions do paid advertising for Topeka businesses?",
       answer:
-        "No. The firm specializes in organic search, AI-search visibility, and owned digital infrastructure — not paid media or ad management.",
+        "No. The firm specializes in organic search, AI-search visibility, and owned digital infrastructure, not paid media or ad management.",
     },
     {
       question: "Can Preisser Solutions build a government-compliant website for a Topeka agency?",
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "How are Topeka digital marketing projects priced?",
       answer:
-        "All projects use fixed-price proposals. Scope, deliverables, and cost are agreed before work begins — no surprises.",
+        "All projects use fixed-price proposals. Scope, deliverables, and cost are agreed before work begins: no surprises.",
     },
   ],
 

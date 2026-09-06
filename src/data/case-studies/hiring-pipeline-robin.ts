@@ -12,10 +12,10 @@ export const caseStudy: CaseStudyData = {
 
   category: "Internal Tool • AI Agent",
   clientName: "Hiring Pipeline Robin",
-  clientNameDisplay: "Internal — Hiring Automation",
+  clientNameDisplay: "Internal: Hiring Automation",
   industry: "Recruiting and hiring automation",
 
-  h1: "Hiring Pipeline & Robin — AI Pre-Screening System",
+  h1: "Hiring Pipeline & Robin: AI Pre-Screening System",
   subheadline:
     "A complete Google Sheets and Apps Script hiring pipeline with an AI agent called Robin that stack-ranks resumes A/B/C against weighted criteria.",
   oneLine: "60-column tracker plus Robin AI pre-screener",
@@ -38,8 +38,8 @@ export const caseStudy: CaseStudyData = {
   built: {
     heading: "A 60-column tracker with an AI pre-screener at the top of the funnel.",
     body: [
-      "Preisser Solutions built the full pipeline in Google Sheets with Apps Script automation. The master tracker is 60 columns wide and covers the entire hiring funnel — application intake, resume review, three interview rounds, references, and offer status. Apps Script handles automated decline emails (three stage-specific templates), status updates, and date-stamping on every state change.",
-      "Robin is the AI agent at the front of the pipeline. Robin reviews resumes in Gusto and stack-ranks candidates A, B, or C against weighted hiring criteria before a human ever looks. The combination of Robin and the tracker means the team spends time on the candidates most likely to move forward — not on triaging the full inbox.",
+      "Preisser Solutions built the full pipeline in Google Sheets with Apps Script automation. The master tracker is 60 columns wide and covers the entire hiring funnel: application intake, resume review, three interview rounds, references, and offer status. Apps Script handles automated decline emails (three stage-specific templates), status updates, and date-stamping on every state change.",
+      "Robin is the AI agent at the front of the pipeline. Robin reviews resumes in Gusto and stack-ranks candidates A, B, or C against weighted hiring criteria before a human ever looks. The combination of Robin and the tracker means the team spends time on the candidates most likely to move forward, not on triaging the full inbox.",
     ],
   },
 
@@ -48,7 +48,7 @@ export const caseStudy: CaseStudyData = {
     bullets: [
       "Google Sheets master tracker with 60 columns covering the full funnel",
       "Apps Script onEdit trigger automation",
-      "Robin AI pre-screener — stack-ranks resumes A/B/C against weighted criteria",
+      "Robin AI pre-screener: stack-ranks resumes A/B/C against weighted criteria",
       "Three auto-sent stage-specific decline email templates",
       "Two manual invite email templates for interview rounds",
       "Automatic status updates and date-stamping on every state change",
@@ -68,7 +68,7 @@ export const caseStudy: CaseStudyData = {
       {
         title: "Automation surface",
         items: [
-          "Three decline email templates — application, post-interview, and post-final",
+          "Three decline email templates: application, post-interview, and post-final",
           "Two invite templates for interview round coordination",
           "onEdit triggers update statuses and timestamps automatically",
           "Robin reviews Gusto resumes and writes the rank back to the tracker",
@@ -123,7 +123,7 @@ export const caseStudy: CaseStudyData = {
   cta: {
     heading: "Want an AI pre-screener at the top of your hiring funnel?",
     subcopy:
-      "Preisser Solutions can deploy a Robin-style hiring pipeline for any role family — tracker, automations, and AI pre-screen included. Free 30-minute scoping call.",
+      "Preisser Solutions can deploy a Robin-style hiring pipeline for any role family: tracker, automations, and AI pre-screen included. Free 30-minute scoping call.",
     buttonLabel: "Schedule a call",
     buttonHref: "/contact",
   },

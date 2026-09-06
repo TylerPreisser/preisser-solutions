@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // Named client with consent. See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "cassidy-hvac-reactivation",
-  metaTitle: "Cassidy HVAC — 60%+ Reactivation",
+  metaTitle: "Cassidy HVAC: 60%+ Reactivation",
   metaDescription:
     "Cassidy HVAC reactivated 60%+ of dormant customers in 6 weeks through an AI-powered SMS and email outreach engine built by Preisser Solutions.",
   datePublished: "2024-09-15",
@@ -15,7 +15,7 @@ export const caseStudy: CaseStudyData = {
   clientNameDisplay: "Cassidy HVAC",
   industry: "HVAC services",
 
-  h1: "Cassidy HVAC — 60%+ Customer Reactivation in 6 Weeks",
+  h1: "Cassidy HVAC: 60%+ Customer Reactivation in 6 Weeks",
   subheadline:
     "AI-powered SMS and email outreach engine that scrubbed 43K+ broken customer records, segmented by service history, and ran daily without staff input.",
   oneLine: "60%+ dormant customer reactivation in 6 weeks",
@@ -38,8 +38,8 @@ export const caseStudy: CaseStudyData = {
   before: {
     heading: "Tens of thousands of dormant records nobody had time to call.",
     body: [
-      "Cassidy HVAC was sitting on tens of thousands of dormant customer records. The data was scattered, broken, and unusable across multiple systems — service histories in one place, contact information in another, equipment notes somewhere else entirely.",
-      "Office staff sent occasional reminders manually. The cadence was inconsistent. There was no tracking, no segmentation, and no way to measure whether outreach was even reaching the right customers. Every dormant record represented potential lost revenue on tune-ups, maintenance plans, callbacks, and referrals — and the list kept growing.",
+      "Cassidy HVAC was sitting on tens of thousands of dormant customer records. The data was scattered, broken, and unusable across multiple systems: service histories in one place, contact information in another, equipment notes somewhere else entirely.",
+      "Office staff sent occasional reminders manually. The cadence was inconsistent. There was no tracking, no segmentation, and no way to measure whether outreach was even reaching the right customers. Every dormant record represented potential lost revenue on tune-ups, maintenance plans, callbacks, and referrals, and the list kept growing.",
     ],
   },
 
@@ -47,7 +47,7 @@ export const caseStudy: CaseStudyData = {
     heading: "An AI engine that cleans the data, writes the message, and sends it daily.",
     body: [
       "Preisser Solutions built an AI-powered SMS and email outreach engine. The system first uses AI to scrub through broken dispatch data across multiple internal systems, cleaning and segmenting 43,000+ dormant customer records into usable cohorts.",
-      "Once the data is clean, the engine crafts hyper-personalized messages for each customer based on service history, equipment age, and seasonal context — then sends them through dual SMS and email channels. The system runs daily without human input, auto-splits tests for higher response rates, and feeds every outcome back into the CRM.",
+      "Once the data is clean, the engine crafts hyper-personalized messages for each customer based on service history, equipment age, and seasonal context: then sends them through dual SMS and email channels. The system runs daily without human input, auto-splits tests for higher response rates, and feeds every outcome back into the CRM.",
     ],
   },
 
@@ -58,7 +58,7 @@ export const caseStudy: CaseStudyData = {
       "AI personalization on service history, equipment type and age, seasonal timing, and behavioral triggers",
       "Automated A/B split testing across message variants for higher response rates",
       "Daily autonomous execution with zero staff involvement post-deployment",
-      "Full CRM integration — outcomes feed back into customer records",
+      "Full CRM integration: outcomes feed back into customer records",
       "Cleaned and segmented 43,000+ broken dormant records across multiple internal systems",
     ],
     subsections: [
@@ -77,7 +77,7 @@ export const caseStudy: CaseStudyData = {
           "Zero staff time required after launch",
           "Daily automated send schedule with cooldowns per customer",
           "A/B variant testing runs automatically; winners promoted",
-          "CRM round-trip — every reply, booking, or opt-out is logged",
+          "CRM round-trip: every reply, booking, or opt-out is logged",
         ],
       },
     ],
@@ -106,7 +106,7 @@ export const caseStudy: CaseStudyData = {
       value: "100%",
       label: "Automation of promotional messaging",
       context:
-        "All promotional and reminder messaging moved to automated execution — no daily staff intervention required.",
+        "All promotional and reminder messaging moved to automated execution: no daily staff intervention required.",
     },
   ],
 
@@ -128,7 +128,7 @@ export const caseStudy: CaseStudyData = {
   cta: {
     heading: "Have a dormant customer list draining revenue?",
     subcopy:
-      "Preisser Solutions can scope an AI reactivation engine for your business — clean the data, segment the list, and run hyper-personalized outreach on autopilot.",
+      "Preisser Solutions can scope an AI reactivation engine for your business: clean the data, segment the list, and run hyper-personalized outreach on autopilot.",
     buttonLabel: "Start a scoping conversation",
     buttonHref: "/contact",
   },

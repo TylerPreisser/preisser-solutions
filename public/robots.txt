@@ -35,6 +35,15 @@ Allow: /
 User-agent: ChatGPT-Agent
 Allow: /
 
+# Added 2026-09-05. OAI-AdsBot is on OpenAI's current published crawler list
+# (platform.openai.com/docs/bots) and was the only OpenAI agent missing here.
+# It fetches landing pages submitted as ChatGPT ads to check policy compliance
+# and relevance; OpenAI states its data is NOT used for foundation-model
+# training. Listed for the same reason as the others: an affirmative Allow
+# under the bot's own name.
+User-agent: OAI-AdsBot
+Allow: /
+
 # Anthropic
 User-agent: ClaudeBot
 Allow: /
@@ -45,6 +54,11 @@ Allow: /
 User-agent: Claude-SearchBot
 Allow: /
 
+# Claude-Web, ClaudeBot-User and anthropic-ai are NOT on Anthropic's current
+# published list (support.anthropic.com, updated 2026-04-07), which names
+# exactly three agents: ClaudeBot, Claude-User, Claude-SearchBot — all allowed
+# above. These three are retained as harmless historical aliases; nothing reads
+# them today. Do not add new agents here without a vendor doc to cite.
 User-agent: Claude-Web
 Allow: /
 

@@ -4,7 +4,7 @@ export const product: ProductData = {
   slug: "social-marketing-agent",
   metaTitle: "Autonomous Social Marketing Agent",
   metaDescription:
-    "AI agent that scrapes local market trends, generates persuasion-aware copy and visuals, and publishes to Facebook and Instagram daily — 5x organic reach in 30 days.",
+    "AI agent that scrapes local market trends, generates persuasion-aware copy and visuals, and publishes to Facebook and Instagram daily: 5x organic reach in 30 days.",
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
 
@@ -17,7 +17,7 @@ export const product: ProductData = {
 
   h1: "Replace your marketing agency with an agent that runs daily.",
   subheadline:
-    "An AI-powered social media engine that monitors trending content in your local market, generates custom visuals and copy built on persuasion psychology, and publishes to Facebook and Instagram every day — no staff time required.",
+    "An AI-powered social media engine that monitors trending content in your local market, generates custom visuals and copy built on persuasion psychology, and publishes to Facebook and Instagram every day: no staff time required.",
   oneLine:
     "Replaces outsourced social media management with a daily AI engine that knows your market.",
   headlineMetric: {
@@ -27,8 +27,8 @@ export const product: ProductData = {
 
   whatItDoes: [
     "Most small businesses either outsource social media to agencies producing generic content with no measurable results, or they let it go dark entirely when the owner runs out of time. The Autonomous Social Marketing Agent replaces both outcomes with a daily publishing engine that actually understands the market.",
-    "The agent starts with a trend-scraping module: it monitors what's performing in the business's specific local market and service category. That intelligence feeds directly into content creation — the copy and visual assets are generated against what's actually resonating with the audience, not against a generic content calendar.",
-    "Visual generation uses persuasion-psychology principles — emotional triggers, authority signals, social proof structures — rather than template design. The result is content that earns engagement rather than getting scrolled past. Once generated, posts publish to Facebook and Instagram on a configured schedule. An optional owner email approval gate can be added for any business that wants a review step before publishing.",
+    "The agent starts with a trend-scraping module: it monitors what's performing in the business's specific local market and service category. That intelligence feeds directly into content creation: the copy and visual assets are generated against what's actually resonating with the audience, not against a generic content calendar.",
+    "Visual generation uses persuasion-psychology principles (emotional triggers, authority signals, social proof structures), rather than template design. The result is content that earns engagement rather than getting scrolled past. Once generated, posts publish to Facebook and Instagram on a configured schedule. An optional owner email approval gate can be added for any business that wants a review step before publishing.",
   ],
   capabilities: [
     {
@@ -39,7 +39,7 @@ export const product: ProductData = {
     {
       title: "Persuasion-aware copy generation",
       description:
-        "Writes post copy engineered around psychological engagement principles — emotional relevance, authority, social proof — rather than filler text.",
+        "Writes post copy engineered around psychological engagement principles (emotional relevance, authority, social proof), rather than filler text.",
     },
     {
       title: "AI visual asset creation",
@@ -54,7 +54,7 @@ export const product: ProductData = {
     {
       title: "Optional email approval gate",
       description:
-        "An optional workflow step delivers each day's content to the owner for review before publishing — configurable as always-on or selectively triggered.",
+        "An optional workflow step delivers each day's content to the owner for review before publishing, configurable as always-on or selectively triggered.",
     },
     {
       title: "Performance and engagement tracking",
@@ -85,7 +85,7 @@ export const product: ProductData = {
     {
       step: "Content brief generation",
       description:
-        "Based on trend signals and the business's brand voice, the agent produces a content brief for each post — topic, angle, copy direction, and visual treatment.",
+        "Based on trend signals and the business's brand voice, the agent produces a content brief for each post: topic, angle, copy direction, and visual treatment.",
     },
     {
       step: "Copy and visual creation",
@@ -108,7 +108,7 @@ export const product: ProductData = {
     "Use this when social media has gone dark on your business accounts because no one has time to manage it consistently.",
     "Use this when your business has a local market where trending content (seasonal events, weather, local news) drives engagement that generic national content misses.",
     "Use this when you need a daily publishing cadence but can't justify hiring a full-time social media coordinator.",
-    "Use this when you want content that reflects your actual service category and local context — not a template calendar designed for a national franchise brand.",
+    "Use this when you want content that reflects your actual service category and local context, not a template calendar designed for a national franchise brand.",
   ],
   techStack: [
     "AI trend-scraping module",

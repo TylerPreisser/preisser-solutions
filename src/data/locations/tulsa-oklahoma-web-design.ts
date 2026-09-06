@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Tulsa, OK Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Tulsa, Oklahoma businesses — Kansas-based firm delivering remotely to Tulsa's energy and healthcare markets.",
+    "Custom websites, web apps, and AI automation for Tulsa, Oklahoma businesses: Kansas-based firm delivering remotely to Tulsa's energy and healthcare markets.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -23,7 +23,7 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Tulsa, Oklahoma",
     h1: "Custom Websites and Software for Tulsa Businesses",
     subheadline:
-      "Custom web design, web applications, and AI automation for Tulsa's energy, healthcare, and professional-services markets — delivered remotely by a Kansas-based firm.",
+      "Custom web design, web applications, and AI automation for Tulsa's energy, healthcare, and professional-services markets: delivered remotely by a Kansas-based firm.",
     answerParagraph:
       "Preisser Solutions is a Kansas-based custom software and web development firm serving Tulsa, Oklahoma businesses. Tulsa is a Tulsa County metro of approximately 413,000, anchored by energy (oil and gas), aerospace, healthcare, and finance. All work is delivered remotely, with on-site travel to Tulsa for material engagements.",
   },
@@ -44,7 +44,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "Preisser Solutions is a Kansas-based firm serving Tulsa and the northeast Oklahoma market remotely, with on-site travel for material engagements.",
-    "Tulsa's energy and aerospace sectors require custom tools — not generic web templates.",
+    "Tulsa's energy and aerospace sectors require custom tools, not generic web templates.",
     "Custom code with full ownership at launch. No SaaS dependency or vendor lock-in.",
   ],
 

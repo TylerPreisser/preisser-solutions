@@ -16,7 +16,7 @@ export const caseStudy: CaseStudyData = {
   clientNameDisplay: "Internal Proof of Concept",
   industry: "Custom AI agent and personalization engine",
 
-  h1: "Custom AI Fitness Agent — What a Personalization Engine Looks Like",
+  h1: "Custom AI Fitness Agent: What a Personalization Engine Looks Like",
   subheadline:
     "An internal proof-of-concept agent that analyzes body composition data, harvests current research, and produces fully personalized lifting, nutrition, and weight-loss regimens.",
   oneLine: "Personalized regimens generated from body composition data and current research",
@@ -32,15 +32,15 @@ export const caseStudy: CaseStudyData = {
     heading: "Personalization at scale is the hard problem for any business.",
     body: [
       "Almost every service business eventually hits the same wall: clients want personalization, but personalization requires expertise per client, and expertise per client does not scale. A financial advisor cannot rewrite every plan weekly. A nutritionist cannot research the latest study for every client. A trainer cannot redesign every program. The market has settled for templates because the alternative is too expensive.",
-      "Custom AI agents change that equation. They ingest a client's data, pull the latest research, and produce a plan tuned to that specific person — at a cost that lets a business actually offer it as a service. Preisser Solutions built a fitness and wellness agent as the proof of concept for that pattern.",
+      "Custom AI agents change that equation. They ingest a client's data, pull the latest research, and produce a plan tuned to that specific person: at a cost that lets a business actually offer it as a service. Preisser Solutions built a fitness and wellness agent as the proof of concept for that pattern.",
     ],
   },
 
   built: {
     heading: "An agent that reads the data, reads the research, and writes the plan.",
     body: [
-      "The agent takes body composition data as input — weight, body fat percentage, lean mass, and goal metrics. It then harvests current research relevant to the individual's profile and goals (recent training studies, nutrition meta-analyses, supplement efficacy data) and synthesizes a fully personalized regimen: lifting program, nutrition plan, and weight-loss strategy.",
-      "The point is not the fitness output. The point is the pattern. The same agent framework can be repointed at any domain that needs personalization at scale — a financial advisor's portfolio agent, an insurance broker's coverage agent, a nutritionist's meal-plan agent, a trainer's program agent. The data inputs and research sources change. The architecture does not.",
+      "The agent takes body composition data as input: weight, body fat percentage, lean mass, and goal metrics. It then harvests current research relevant to the individual's profile and goals (recent training studies, nutrition meta-analyses, supplement efficacy data) and synthesizes a fully personalized regimen: lifting program, nutrition plan, and weight-loss strategy.",
+      "The point is not the fitness output. The point is the pattern. The same agent framework can be repointed at any domain that needs personalization at scale: a financial advisor's portfolio agent, an insurance broker's coverage agent, a nutritionist's meal-plan agent, a trainer's program agent. The data inputs and research sources change. The architecture does not.",
     ],
   },
 
@@ -59,7 +59,7 @@ export const caseStudy: CaseStudyData = {
         items: [
           "AI agents can produce expert-level personalization without a human reviewing every plan",
           "Research harvesting can be wired into the generation step, not bolted on later",
-          "The architecture is domain-agnostic — fitness is one application",
+          "The architecture is domain-agnostic: fitness is one application",
           "Cost-per-plan is low enough to make the offer commercially viable",
         ],
       },
@@ -80,7 +80,7 @@ export const caseStudy: CaseStudyData = {
       value: "Body comp",
       label: "Personal data intake",
       context:
-        "Each generated plan starts from the individual's specific body composition data — not a generic template.",
+        "Each generated plan starts from the individual's specific body composition data, not a generic template.",
     },
     {
       value: "Live",
@@ -92,13 +92,13 @@ export const caseStudy: CaseStudyData = {
       value: "Full plan",
       label: "Lifting, nutrition, and weight loss outputs",
       context:
-        "Output is a fully formed regimen — lifting program, nutrition plan, and weight-loss strategy — not a list of suggestions.",
+        "Output is a fully formed regimen (lifting program, nutrition plan, and weight-loss strategy), not a list of suggestions.",
     },
     {
       value: "Any domain",
       label: "Adaptable framework",
       context:
-        "The same architecture re-applies to any domain that needs personalized output at scale — finance, nutrition, training, insurance, and more.",
+        "The same architecture re-applies to any domain that needs personalized output at scale: finance, nutrition, training, insurance, and more.",
     },
   ],
 
@@ -119,7 +119,7 @@ export const caseStudy: CaseStudyData = {
   cta: {
     heading: "Need scaled personalization for your business?",
     subcopy:
-      "Preisser Solutions builds custom AI agents tuned to your domain — financial planning, nutrition, training, insurance, or anywhere personalization is the offer. Free 30-minute scoping call.",
+      "Preisser Solutions builds custom AI agents tuned to your domain: financial planning, nutrition, training, insurance, or anywhere personalization is the offer. Free 30-minute scoping call.",
     buttonLabel: "Schedule a call",
     buttonHref: "/contact",
   },

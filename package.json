@@ -2,11 +2,17 @@
   "name": "preisser-solutions",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build && node scripts/strip-404-noindex.mjs && node scripts/generate-sitemap.mjs",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
+    "test": "npm run test:unit",
+    "test:unit": "node tests/subscribe.probe.mjs && node tests/middleware.probe.mjs",
+    "test:e2e": "node tests/footer.probe.mjs",
     "preview": "npx serve out",
     "indexnow": "node scripts/indexnow-ping.mjs",
     "strip-404-noindex": "node scripts/strip-404-noindex.mjs",
@@ -21,6 +27,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",
+    "playwright": "^1.62.1",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",

@@ -214,6 +214,42 @@ function htmlPathToUrl(filePath) {
   return relative.replace(/\.html$/, "");
 }
 
+// ---------------------------------------------------------------------------
+// Cross-canonical alias exclusion (2026-09-05)
+//
+// The redirect-derived exclusion above catches URLs that 301. It does NOT catch
+// ALIAS ROUTES: a real, 200-serving page whose <link rel="canonical"> points at
+// a DIFFERENT URL. Those are just as wrong to list. A sitemap entry says "index
+// this URL"; the canonical on the same page says "no, index that other one".
+// Google resolves the contradiction by dropping the URL and reporting
+// "Alternate page with proper canonical tag" in Search Console — a wasted crawl
+// slot and a self-inflicted mixed signal.
+//
+// Found in the wild: /services/after-hours-call-triage is an intentional alias
+// for /services/ai-customer-service (see src/app/services/after-hours-call-
+// triage/page.tsx) and was being emitted into sitemap.xml anyway.
+//
+// Rather than hand-listing it — the exact drift this file already warns about
+// for _redirects — we READ the canonical out of each built page and drop any
+// URL that does not canonicalise to itself. New aliases are excluded by
+// construction, with no list to remember to update.
+// ---------------------------------------------------------------------------
+const CANONICAL_RE = /<link[^>]+rel="canonical"[^>]+href="([^"]+)"/i;
+
+async function canonicalisesToSelf(filePath, urlPath) {
+  let html;
+  try {
+    html = await readFile(filePath, "utf8");
+  } catch {
+    return true; // unreadable: fail open, the other gates will catch it
+  }
+  const match = html.match(CANONICAL_RE);
+  if (!match) return true; // no canonical at all is a separate defect, not ours
+  const declared = match[1].replace(SITE_ORIGIN, "") || "/";
+  const normalise = (p) => (p.length > 1 ? p.replace(/\/$/, "") : p);
+  return normalise(declared) === normalise(urlPath);
+}
+
 function escapeXml(value) {
   return value
     .replaceAll("&", "&amp;")
@@ -304,6 +340,19 @@ const fileByUrl = new Map();
 for (const file of htmlFiles) {
   const urlPath = htmlPathToUrl(file);
   if (urlPath) fileByUrl.set(urlPath, file);
+}
+
+const aliasExcluded = [];
+for (const [urlPath, file] of fileByUrl) {
+  if (!(await canonicalisesToSelf(file, urlPath))) {
+    aliasExcluded.push(urlPath);
+    fileByUrl.delete(urlPath);
+  }
+}
+if (aliasExcluded.length > 0) {
+  console.log(
+    `[sitemap] Excluded ${aliasExcluded.length} cross-canonical alias route(s): ${aliasExcluded.join(", ")}`,
+  );
 }
 
 const urls = [...fileByUrl.keys()]

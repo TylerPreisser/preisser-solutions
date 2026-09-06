@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Derby, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Derby, Kansas — built by a Hays-based firm for the Wichita south-suburb market.",
+    "Custom websites, web apps, and AI automation for Derby, Kansas: built by a Hays-based firm for the Wichita south-suburb market.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -19,7 +19,7 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Derby, Kansas",
     h1: "Custom Software and Websites for Derby Businesses",
     subheadline:
-      "Custom web apps, AI automation, and websites for Derby's growing south-Wichita suburban economy — trades, professional services, and retail in Sedgwick County.",
+      "Custom web apps, AI automation, and websites for Derby's growing south-Wichita suburban economy: trades, professional services, and retail in Sedgwick County.",
     answerParagraph:
       "Preisser Solutions serves Derby, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Derby is a fast-growing Wichita suburb of 25,000 with strong trades, professional services, and retail density. Businesses here benefit from the same custom software and AI automation capability as the Wichita market, at a market-specific price point. Based in Hays, roughly 195 miles northwest, we deliver remotely and travel for projects of meaningful scope.",
   },
@@ -39,7 +39,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Derby's trades and service businesses benefit from custom websites and AI automation built to the Sedgwick County market — not generic templates that rank poorly for local Wichita-suburb searches.",
+    "Derby's trades and service businesses benefit from custom websites and AI automation built to the Sedgwick County market, not generic templates that rank poorly for local Wichita-suburb searches.",
     "A Kansas-based firm at Kansas economics. Derby businesses get the same engineering quality as the Wichita market without the overhead of a large Wichita agency.",
     "Custom code with full ownership at launch. No ongoing platform fees.",
   ],

@@ -3,13 +3,31 @@
 /**
  * card-visuals-backup.tsx
  *
- * Backup of the 5 service card visual components extracted from service-pillars.tsx.
- * These are preserved here so they can be imported into a rebuilt card grid structure
- * without losing the animations.
+ * NAME IS WRONG, FILE IS LIVE. Despite "backup", this module ships: it is
+ * imported at service-pillars.tsx and five of its exports render the homepage
+ * bento grid. Deleting it breaks the build. Not renamed here only because the
+ * rename is a separate change from the one this file is carrying.
+ *
+ * Originally (2026-04-02) a backup of the 5 card visuals extracted from
+ * service-pillars.tsx, "preserved here so they can be imported into a rebuilt
+ * card grid structure without losing the animations". 2026-09-03 is that
+ * rebuild: ADR-0006 folded websites/marketing into the pillar grid and
+ * WebsiteVisual was adopted back off this shelf exactly as intended.
+ *
+ * Exports and where they land:
+ *   WebsiteVisual      -> Website Redesign card       (readopted 2026-09-03)
+ *   AutomationVisual   -> AI Integration card
+ *   SystemFixesVisual  -> Business Automation card
+ *   DashboardVisual    -> Business Software card
+ *   RevenueVisual      -> NOTHING, on purpose. It draws an up-and-to-the-right
+ *                         revenue chart; that is an outcome claim as artwork,
+ *                         gated by docs/WRITER-AGENT-PROMPT.md:31, and ADR-0006
+ *                         decision 4 bars reviving the positioning it was built
+ *                         for. Kept, unused. Do not wire it up without an ADR.
+ *   CustomBuildVisual  -> Custom Websites card        (new 2026-09-03)
+ *   SearchVisual       -> Search and Ads card         (new 2026-09-03)
  *
  * CSS lives in: src/styles/card-visuals.css
- *
- * Extracted: 2026-04-02
  */
 
 import React, { useEffect, useRef, useState } from "react";
@@ -118,239 +136,132 @@ export function WebsiteVisual() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   VISUAL 2 — Automation Systems
-   Three n8n-style workflow diagrams that cycle every 4 seconds.
-   Triggered on scroll into view (IntersectionObserver).
+   VISUAL 2 — AI Integration card face: "The Gate"
 
-   Architecture: Entire diagram rendered as a single SVG so that
-   node boxes, connection lines, and dots all share one coordinate
-   system — eliminating the mixed HTML/SVG scaling mismatch.
+   IDENTITY WARNING, read this before editing: this component renders the
+   **AI Integration** tile. `variant` does not match `type` — the AI pillar
+   is `type: "ai"` with `variant: "automation"`, so its class is
+   `.ps-bento-card--automation` (service-pillars.tsx:333-341). The card
+   called "Business Automation" is `SystemFixesVisual` /
+   `.ps-bento-card--systems`. Key off the component, never the class name.
 
-   ViewBox: 412 × 200
-   Node sizes (in SVG units):
-     Regular: 52×52, half=26
-     Large AI: 72×72, half=36
-   Connection dots: r=3.5
+   Replaced the three cycling n8n flow diagrams on 2026-09-05. Reasons,
+   each read off a render rather than inferred:
+
+   1. LETTERBOXING. `FlowSvg` was `viewBox="0 0 412 200"` (2.06:1) with
+      `preserveAspectRatio="xMidYMid meet"` inside a near-square stage, so
+      the drawn band used only 39-50% of the card height and the rest was
+      empty. Two probes called this card "full" -- a leaf bounding-box
+      union said 96.9% because it measured the <svg> element (height:100%,
+      overflow:visible) rather than the drawn content, and a pixel row-scan
+      said 94.1% because the card's own gradient beat the ink threshold.
+      The screenshot was right both times.
+   2. LABEL/GRAPH DESYNC. The label transitioned in 300ms while the slide
+      crossfaded in 600ms, so for ~300ms of every 4s cycle the label named
+      one flow while the previous flow's graph was still painted.
+   3. OFF-FAMILY DRIFT was NOT the problem here -- this card was already
+      the family exemplar (a UI mockup of a named system). The redesign
+      keeps that property and gives it a subject with a point of view.
+
+   NOT a reason, and deliberately not fixed: the "artwork overlaps the
+   title by -57px at 768 / -53px at 1440" finding. That is a measurement
+   artefact. The deepest artwork leaf was `.ps-n8n-dot`, the PAGINATION
+   INDICATOR, which sits bottom-centre BELOW "CLICK FOR MORE" and clear of
+   the left-aligned title. `titleTop - artBottom` is a DIRECTIONAL metric
+   and only means "collision" when the element is above the title. Pixel
+   proof it was never real: the title measured 11.47 min / 0% of core
+   glyph pixels failing at 1440 -- if artwork were behind those glyphs the
+   sampled backgrounds would scatter and the minimum would collapse.
+   Do not reserve clearance for it; doing so would crush the artwork to
+   fix a collision that does not exist. Vertical budget below is derived
+   from the MEASURED title block instead (62.8px <940, 58.9px >=940).
+
+   Subject: one AI action held at an approval gate. The model read a
+   document, checked its extraction back against the source, found one
+   field it could not verify, and stopped -- with Send visibly locked.
+   The market is full of glowing brains; nobody draws the leash.
    ───────────────────────────────────────────────────────────── */
 
-/* ── SVG icon path data for each node type ─── */
-const ICON_PATHS = {
-  email:      "M2 7l10 7 10-7M2 4h20a2 2 0 012 2v12a2 2 0 01-2 2H2a2 2 0 01-2-2V6a2 2 0 012-2z",
-  file:       "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8",
-  brain:      "M9.5 2A2.5 2.5 0 0112 4.5V7h-1a7 7 0 00-7 7v1a1 1 0 000 2h1v1a2 2 0 002 2h10a2 2 0 002-2v-1h1a1 1 0 000-2v-1a7 7 0 00-7-7h-1V4.5A2.5 2.5 0 0114.5 2",
-  check:      "M20 6L9 17l-5-5",
-  flag:       "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7",
-  user:       "M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 3a4 4 0 110 8 4 4 0 010-8zM19 8v6M22 11h-6",
-  phone:      "M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z",
-  monitor:    "M2 3h20a2 2 0 012 2v12a2 2 0 01-2 2H2a2 2 0 01-2-2V5a2 2 0 012-2zM8 21h8M12 17v4",
-  database:   "M12 2C7.03 2 3 3.34 3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5c0-1.66-4.03-3-9-3zM3 5c0 1.66 4.03 3 9 3s9-1.34 9-3M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3",
-  calendar:   "M3 4h18a2 2 0 012 2v14a2 2 0 01-2 2H3a2 2 0 01-2-2V6a2 2 0 012-2zM16 2v4M8 2v4M1 10h22",
-  clock:      "M12 2a10 10 0 100 20A10 10 0 0012 2zM12 6v6l4 2",
-  pen:        "M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4 12.5-12.5z",
-  search:     "M11 3a8 8 0 100 16A8 8 0 0011 3zM21 21l-4.35-4.35M8 11h6M11 8v6",
-  upload:     "M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12",
-  bars:       "M18 20V10M12 20V4M6 20v-6",
+/* Node icons recovered verbatim from HEAD (git show HEAD:...:155-170). The
+   originals' node glyphs were dropped in the 2026-09-05 rebuild; the branch
+   graph is unreadable as "a real tool" without them. */
+const GATE_ICONS = {
+  email: "M2 7l10 7 10-7M2 4h20a2 2 0 012 2v12a2 2 0 01-2 2H2a2 2 0 01-2-2V6a2 2 0 012-2z",
+  file: "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8",
+  brain: "M9.5 2A2.5 2.5 0 0112 4.5V7h-1a7 7 0 00-7 7v1a1 1 0 000 2h1v1a2 2 0 002 2h10a2 2 0 002-2v-1h1a1 1 0 000-2v-1a7 7 0 00-7-7h-1V4.5A2.5 2.5 0 0114.5 2",
+  check: "M20 6L9 17l-5-5",
+  flag: "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7",
 } as const;
 
-type IconKey = keyof typeof ICON_PATHS;
-
-interface SvgNode {
-  id: string;
-  cx: number;
-  cy: number;
-  label: string;
-  color: string;
-  large?: boolean;
-  iconKey: IconKey;
-}
-
-interface SvgConn {
-  from: string;
-  to: string;
-  color: string;
-}
-
-interface SvgFlow {
-  id: string;
-  title: string;
-  nodes: SvgNode[];
-  connections: SvgConn[];
-}
-
-const REG_HALF = 26; // half of 52px regular node
-const LG_HALF = 36;  // half of 72px large node
-
-const N8N_FLOWS: SvgFlow[] = [
-  {
-    id: "invoice",
-    title: "Invoice Processing",
-    nodes: [
-      { id: "email",   cx: 54,  cy: 100, label: "Email",    color: "#635BFF", iconKey: "email" },
-      { id: "extract", cx: 160, cy: 100, label: "Extract",  color: "#8B5CF6", iconKey: "file" },
-      { id: "ai",      cx: 265, cy: 100, label: "AI Process", color: "#A855F7", large: true, iconKey: "brain" },
-      { id: "approve", cx: 358, cy: 58,  label: "Approve",  color: "#10B981", iconKey: "check" },
-      { id: "flag",    cx: 358, cy: 142, label: "Flag",     color: "#F59E0B", iconKey: "flag" },
-    ],
-    connections: [
-      { from: "email",   to: "extract", color: "#635BFF" },
-      { from: "extract", to: "ai",      color: "#8B5CF6" },
-      { from: "ai",      to: "approve", color: "#10B981" },
-      { from: "ai",      to: "flag",    color: "#F59E0B" },
-    ],
-  },
-  {
-    id: "onboarding",
-    title: "Customer Onboarding",
-    nodes: [
-      { id: "signup",  cx: 54,  cy: 100, label: "Signup",    color: "#0EA5E9", iconKey: "user" },
-      { id: "welcome", cx: 160, cy: 100, label: "Welcome",   color: "#6366F1", iconKey: "phone" },
-      { id: "account", cx: 265, cy: 100, label: "Create Acct", color: "#8B5CF6", large: true, iconKey: "monitor" },
-      { id: "crm",     cx: 358, cy: 58,  label: "Add to CRM", color: "#10B981", iconKey: "database" },
-      { id: "demo",    cx: 358, cy: 142, label: "Schedule",  color: "#F97316", iconKey: "calendar" },
-    ],
-    connections: [
-      { from: "signup",  to: "welcome", color: "#0EA5E9" },
-      { from: "welcome", to: "account", color: "#6366F1" },
-      { from: "account", to: "crm",     color: "#10B981" },
-      { from: "account", to: "demo",    color: "#F97316" },
-    ],
-  },
-  {
-    id: "content",
-    title: "Content Pipeline",
-    nodes: [
-      { id: "schedule", cx: 54,  cy: 100, label: "Schedule", color: "#06B6D4", iconKey: "clock" },
-      { id: "generate", cx: 160, cy: 100, label: "Generate", color: "#8B5CF6", iconKey: "pen" },
-      { id: "review",   cx: 265, cy: 100, label: "AI Review", color: "#A855F7", large: true, iconKey: "search" },
-      { id: "publish",  cx: 358, cy: 58,  label: "Publish",  color: "#10B981", iconKey: "upload" },
-      { id: "analytics",cx: 358, cy: 142, label: "Analytics",color: "#F59E0B", iconKey: "bars" },
-    ],
-    connections: [
-      { from: "schedule", to: "generate", color: "#06B6D4" },
-      { from: "generate", to: "review",   color: "#8B5CF6" },
-      { from: "review",   to: "publish",  color: "#10B981" },
-      { from: "review",   to: "analytics",color: "#F59E0B" },
-    ],
-  },
-];
-
-function getEdge(node: SvgNode, side: "left" | "right") {
-  const half = node.large ? LG_HALF : REG_HALF;
-  return { x: side === "right" ? node.cx + half : node.cx - half, y: node.cy };
-}
-
-function FlowSvg({ flow }: { flow: SvgFlow }) {
-  const nodeMap = new Map(flow.nodes.map((n) => [n.id, n]));
-
+function GateNode({
+  cls, icon, label, style,
+}: { cls: string; icon: keyof typeof GATE_ICONS; label: string; style?: React.CSSProperties }) {
   return (
-    <svg
-      className="ps-n8n-svg"
-      viewBox="0 0 412 200"
-      fill="none"
-      preserveAspectRatio="xMidYMid meet"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Connection lines drawn first so they appear behind nodes */}
-      {flow.connections.map((conn) => {
-        const src = nodeMap.get(conn.from);
-        const dst = nodeMap.get(conn.to);
-        if (!src || !dst) return null;
-
-        const start = getEdge(src, "right");
-        const end = getEdge(dst, "left");
-        const dx = Math.abs(end.x - start.x);
-        const cp = Math.min(dx * 0.42, 52);
-        const d = `M${start.x},${start.y} C${start.x + cp},${start.y} ${end.x - cp},${end.y} ${end.x},${end.y}`;
-
-        return (
-          <g key={`conn-${conn.from}-${conn.to}`}>
-            <path d={d} stroke={conn.color} strokeWidth="1.5" strokeOpacity="0.45" />
-            <circle cx={start.x} cy={start.y} r="3.5" fill={conn.color} opacity="0.75" />
-            <circle cx={end.x}   cy={end.y}   r="3.5" fill={conn.color} opacity="0.75" />
-          </g>
-        );
-      })}
-
-      {/* Nodes rendered on top of connections */}
-      {flow.nodes.map((node) => {
-        const half = node.large ? LG_HALF : REG_HALF;
-        const size = half * 2;
-        const x = node.cx - half;
-        const y = node.cy - half;
-
-        // Icon scale: map 0-24 to iconSize px, centered in node
-        const iconSize = node.large ? 18 : 14;
-        const iconX = node.cx - iconSize / 2;
-        const iconY = node.cy - iconSize / 2 - 4; // shift up slightly to make room for label
-
-        return (
-          <g key={node.id}>
-            {/* Node background rect */}
-            <rect
-              x={x}
-              y={y}
-              width={size}
-              height={size}
-              rx={node.large ? 14 : 12}
-              fill="rgba(255,255,255,0.04)"
-              stroke={node.color}
-              strokeWidth="1"
-              strokeOpacity="0.35"
-            />
-            {/* Subtle glow for large node — extra rect with blur */}
-            {node.large && (
-              <rect
-                x={x - 4}
-                y={y - 4}
-                width={size + 8}
-                height={size + 8}
-                rx={18}
-                fill="none"
-                stroke={node.color}
-                strokeWidth="1"
-                strokeOpacity="0.15"
-              />
-            )}
-            {/* Icon — SVG path scaled via transform */}
-            <g transform={`translate(${iconX}, ${iconY}) scale(${iconSize / 24})`}>
-              <path
-                d={ICON_PATHS[node.iconKey]}
-                stroke={node.color}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-                opacity="0.9"
-              />
-            </g>
-            {/* Label text below icon */}
-            <text
-              x={node.cx}
-              y={node.cy + half - 7}
-              textAnchor="middle"
-              fontSize={node.large ? 7 : 6.5}
-              fontWeight="700"
-              fontFamily="Inter, system-ui, sans-serif"
-              letterSpacing="0.04em"
-              fill={node.color}
-              opacity="0.85"
-              style={{ textTransform: "uppercase" } as React.CSSProperties}
-            >
-              {node.label}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
+    <div className={`ps-gate-node ${cls}`} style={style}>
+      <span className="ps-gate-node-disc">
+        <svg className="ps-gate-node-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d={GATE_ICONS[icon]} stroke="currentColor" strokeWidth="2"
+                strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
+      <span className="ps-gate-node-label">{label}</span>
+    </div>
   );
+}
+
+/* Node anchors, in fractions of the graph box. ONE source of truth: the HTML
+   nodes are positioned from these and the wire endpoints are computed from
+   them, so the wires cannot drift away from the nodes at any aspect ratio. */
+const GATE_POS = {
+  email:   { x: 0.08, y: 0.64, r: 13 },
+  extract: { x: 0.30, y: 0.575, r: 13 },
+  ai:      { x: 0.55, y: 0.50, r: 19 },
+  send:    { x: 0.86, y: 0.18, r: 13 },
+  hold:    { x: 0.86, y: 0.82, r: 13 },
+} as const;
+
+/* Wire paths in PIXELS of the measured graph box. Because the <svg> carries a
+   viewBox whose aspect EQUALS the element's aspect, the default
+   `preserveAspectRatio` ("xMidYMid meet") maps 1:1 — no letterboxing is
+   possible, and no `preserveAspectRatio="none"` is needed. Letterboxing can
+   only occur when the two aspects differ, and here they are equal by
+   construction. That removes the bug class rather than patching it. */
+const pct = (v: number) => `${(v * 100).toFixed(2)}%`;
+
+function gateWires(w: number, h: number) {
+  const P = (k: keyof typeof GATE_POS) => ({ x: GATE_POS[k].x * w, y: GATE_POS[k].y * h, r: GATE_POS[k].r });
+  const e = P("email"), a = P("ai"), sd = P("send"), hd = P("hold");
+  const trunk = `M${(e.x + e.r).toFixed(1)} ${e.y.toFixed(1)} L${(a.x - a.r).toFixed(1)} ${a.y.toFixed(1)}`;
+  // Horizontal-tangent cubics: the n8n wire shape.
+  const fork = (t: { x: number; y: number; r: number }) => {
+    const x0 = a.x + a.r, y0 = a.y, x1 = t.x - t.r, y1 = t.y;
+    const c = (x1 - x0) * 0.5;
+    return `M${x0.toFixed(1)} ${y0.toFixed(1)} C${(x0 + c).toFixed(1)} ${y0.toFixed(1)} ${(x1 - c).toFixed(1)} ${y1.toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)}`;
+  };
+  return { trunk, send: fork(sd), hold: fork(hd) };
 }
 
 export function AutomationVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [activeFlow, setActiveFlow] = useState(0);
-  const [prevFlow, setPrevFlow] = useState<number | null>(null);
-  const hasStarted = useRef(false);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const graphRef = useRef<HTMLDivElement>(null);
+  const [played, setPlayed] = useState(false);
+  // Same value on the server and on the first client render, so hydration
+  // matches; a ResizeObserver refines it to real pixels after mount.
+  const [box, setBox] = useState({ w: 320, h: 200 });
+
+  useEffect(() => {
+    const el = graphRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => {
+      const r = el.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0) {
+        setBox((p) => (Math.abs(p.w - r.width) < 0.5 && Math.abs(p.h - r.height) < 0.5
+          ? p : { w: r.width, h: r.height }));
+      }
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -361,82 +272,171 @@ export function AutomationVisual() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (prefersReduced) {
-      hasStarted.current = true;
+      setPlayed(true);
       return;
     }
 
+    // Unchanged house pattern: one-shot IO at threshold 0.25. rootMargin pulls
+    // the start until the card is genuinely in frame rather than 107px showing.
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasStarted.current) {
-            hasStarted.current = true;
+          if (entry.isIntersecting) {
+            setPlayed(true);
             observer.unobserve(el);
-
-            intervalRef.current = setInterval(() => {
-              setActiveFlow((current) => {
-                const next = (current + 1) % N8N_FLOWS.length;
-                setPrevFlow(current);
-                return next;
-              });
-            }, 4000);
           }
         });
       },
-      { threshold: 0.25 }
+      { threshold: 0.25, rootMargin: "0px 0px -12% 0px" }
     );
 
     observer.observe(el);
-    return () => {
-      observer.disconnect();
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
+    return () => observer.disconnect();
   }, []);
 
+  const wires = gateWires(box.w, box.h);
+
   return (
-    <div
-      ref={containerRef}
-      className="ps-visual-automation"
-      aria-hidden="true"
-    >
-      {/* Flow title */}
-      <div className="ps-n8n-label">{N8N_FLOWS[activeFlow].title}</div>
+    <div ref={containerRef} className="ps-visual-automation" aria-hidden="true">
+      <div className={`ps-gate-panel${played ? " ps-gate-panel--play" : ""}`}>
+        {/* Chrome strip. FLIPS WITH THE THEME on purpose — see the note at
+            card-visuals.css:2633. A bar left dark in light mode hides the
+            frosted .ps-bento-card__expand icon completely (measured). */}
+        <div className="ps-gate-chrome">
+          <span className="ps-gate-chrome-dots"><i /><i /><i /></span>
+          <span className="ps-gate-chrome-name">ai-review-queue</span>
+        </div>
 
-      {/* Sliding stage */}
-      <div className="ps-n8n-stage">
-        {N8N_FLOWS.map((flow, index) => {
-          const isActive = index === activeFlow;
-          const isPrev = index === prevFlow;
-          return (
-            <div
-              key={flow.id}
-              className={`ps-n8n-slide${isActive ? " ps-n8n-slide--active" : ""}${isPrev ? " ps-n8n-slide--exit" : ""}`}
-            >
-              <FlowSvg flow={flow} />
-            </div>
-          );
-        })}
-      </div>
+        <div className="ps-gate-graph" ref={graphRef}>
+          {/* WIRES ONLY. Nodes are HTML in percentage coordinates.
+              NO `preserveAspectRatio="none"`: the viewBox is measured in real
+              pixels, so its aspect EQUALS the element's aspect and the default
+              "xMidYMid meet" maps 1:1. Letterboxing is only possible when the
+              two aspects differ, so this removes the bug class by construction
+              — and unlike `none`, nothing is non-uniformly scaled at all. */}
+          <svg className="ps-gate-wires" viewBox={`0 0 ${box.w} ${box.h}`}
+               fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="ps-gate-trunk" gradientUnits="userSpaceOnUse"
+                              x1={GATE_POS.email.x * box.w} y1={GATE_POS.email.y * box.h}
+                              x2={GATE_POS.ai.x * box.w} y2={GATE_POS.ai.y * box.h}>
+                <stop offset="0%" stopColor="#635BFF" />
+                <stop offset="100%" stopColor="#A855F7" />
+              </linearGradient>
+            </defs>
+            {/* One continuous trunk; the Extract node sits ON it, so dropping
+                Extract at <=639 leaves an unbroken wire. */}
+            <path className="ps-gate-wire ps-gate-wire--a" d={wires.trunk} />
+            {/* THE FORK. Send is thin, dashed and dimmed; Hold is solid, heavy
+                and fully saturated. The picture says "it chose to hold" through
+                line weight alone — no rank claim, no outcome claim. */}
+            <path className="ps-gate-wire ps-gate-wire--send" d={wires.send} />
+            <path className="ps-gate-wire ps-gate-wire--hold" d={wires.hold} />
+            {/* The flowing wire, recovered from the originals: the card's ONE
+                resting loop. A travelling dash laid over the solid amber wire,
+                so the wire still reads solid and saturated at rest. One
+                property, one element, one compositor layer. */}
+            <path className="ps-gate-wire ps-gate-wire--flow" d={wires.hold} />
+          </svg>
 
-      {/* Dot indicators */}
-      <div className="ps-n8n-dots">
-        {N8N_FLOWS.map((flow, index) => (
-          <div
-            key={flow.id}
-            className={`ps-n8n-dot${index === activeFlow ? " ps-n8n-dot--active" : ""}`}
-          />
-        ))}
+          {/* The packet rides the trunk via `offset-path`, so it follows the
+              wire exactly instead of approximating it with left/top — and it
+              animates `offset-distance`, not layout. */}
+          <span className="ps-gate-packet"
+                style={{ offsetPath: `path("${wires.trunk}")` } as React.CSSProperties} />
+
+          <GateNode cls="ps-gate-node--email" icon="email" label="Email"
+                    style={{ left: pct(GATE_POS.email.x), top: pct(GATE_POS.email.y) }} />
+          <GateNode cls="ps-gate-node--extract" icon="file" label="Extract"
+                    style={{ left: pct(GATE_POS.extract.x), top: pct(GATE_POS.extract.y) }} />
+          <div className="ps-gate-node ps-gate-node--ai"
+               style={{ left: pct(GATE_POS.ai.x), top: pct(GATE_POS.ai.y) }}>
+            <span className="ps-gate-node-glow" />
+            <span className="ps-gate-node-ring" />
+            <span className="ps-gate-node-disc">
+              <svg className="ps-gate-node-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d={GATE_ICONS.brain} stroke="currentColor" strokeWidth="2"
+                      strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <span className="ps-gate-node-label">AI read</span>
+          </div>
+          <GateNode cls="ps-gate-node--send" icon="check" label="Send"
+                    style={{ left: pct(GATE_POS.send.x), top: pct(GATE_POS.send.y) }} />
+          <GateNode cls="ps-gate-node--hold" icon="flag" label="Hold"
+                    style={{ left: pct(GATE_POS.hold.x), top: pct(GATE_POS.hold.y) }} />
+        </div>
+
+        <div className="ps-gate-foot">
+          <span className="ps-gate-caption">AI proposed · not sent</span>
+          <span className="ps-gate-chip">Held for you</span>
+        </div>
       </div>
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────
-   VISUAL 3 — System Fixes & Efficiency
-   Real-time health monitor: 6 service rows animate from red/broken
-   to green/healthy on scroll into view.
+   VISUAL 3 — Business Automation card face:
+   "The Invoice That Chases Itself"
+
+   IDENTITY WARNING: this renders the **Business Automation** tile —
+   `type: "automation"`, `variant: "systems"`, class
+   `.ps-bento-card--systems` (service-pillars.tsx:219-229). The AI card is
+   `AutomationVisual` above. The names are crossed; trust the component.
+
+   Replaced the BEFORE/AFTER diptych on 2026-09-05. It was the only tile on
+   the grid that was not a UI mockup of a named system:
+
+   1. NO ARTIFACT FRAME. Its micro-labels were `BEFORE` and `AFTER` —
+      rhetorical positions, not systems. Every sibling names a real thing:
+      `MEMBER RECORDS`, `AI REVIEW QUEUE`, `RESULTS`, a browser chrome.
+   2. MARKETER'S COPY, NOT MACHINE STATE. `Manual handoff`,
+      `Duplicate tools`, `Approval bottleneck`, `1 source of truth`,
+      `Live visibility` are phrases a person wrote about the client's pain.
+      `LAG` / `BREAK` / `WASTE` are adjectives about the buyer, not states
+      of a running system.
+   3. NO TIME AXIS. A static diptych delivers its whole idea in frame one
+      and gives the eye nothing to follow.
+
+   It was NOT under-dense — it was the densest tile on the grid, filling
+   70-80% of its height. "Add more" would have been the wrong reading.
+
+   Replacement: one invoice's whole life as a run log — rendered at 07:00,
+   emailed itself, approved by a one-word reply at 09:12, chase-ups already
+   queued, closed when the deposit matched.
+
+   SIBLING, NOT TWIN, to the AI card: same panel, same micro-label, same
+   pill vocabulary, same dashed-means-unsettled rule. Different axis and
+   different ending — AI Integration runs left-to-right and BRANCHES (a
+   decision that could go either way, and it stops); this runs top-to-bottom
+   and CLOSES (a sequence that completes).
    ───────────────────────────────────────────────────────────── */
+
+/* The invoice's own line items — the content the document was missing. Widths
+   only; no invented copy, and nothing here is an outcome claim. */
+const DOC_ITEMS = [
+  { d: 64, a: 30 },
+  { d: 78, a: 24 },
+  { d: 52, a: 34 },
+  { d: 71, a: 27 },
+  { d: 46, a: 32 },
+  { d: 68, a: 22 },
+] as const;
+
+const RUN_STEPS = [
+  { time: "07:00", label: "Invoice 4417 rendered", pill: "Auto", tone: "muted" },
+  { time: "07:00", label: "Emailed to accounts@", pill: "Sent", tone: "sent" },
+  // The one human beat in a column of machine steps — and it is a REPLY,
+  // not a login. Only highlighted row, only outlined pill, only cyan dot.
+  { time: "09:12", label: "Reply: “approved”", pill: "You", tone: "you" },
+  { time: "Mar 8", label: "Reminder scheduled", pill: "Queued", tone: "queued" },
+  { time: "Mar 9", label: "Second notice", pill: "Queued", tone: "queued" },
+] as const;
+
 export function SystemFixesVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [played, setPlayed] = useState(false);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -447,7 +447,7 @@ export function SystemFixesVisual() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (prefersReduced) {
-      el.classList.add("in-view");
+      setPlayed(true);
       return;
     }
 
@@ -455,92 +455,101 @@ export function SystemFixesVisual() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            el.classList.add("in-view");
+            setPlayed(true);
             observer.unobserve(el);
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.25, rootMargin: "0px 0px -12% 0px" }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  const problems = [
-    { tag: "Lag", title: "Manual handoff", tone: "orange" },
-    { tag: "Break", title: "Duplicate tools", tone: "red" },
-    { tag: "Waste", title: "Approval bottleneck", tone: "amber" },
-  ];
-
-  const fixes = [
-    { title: "Unified workflow", metric: "1 source of truth" },
-    { title: "Automated routing", metric: "No manual step" },
-    { title: "Clean reporting", metric: "Live visibility" },
-  ];
-
   return (
-    <div
-      ref={containerRef}
-      className="ps-fix-root"
-      aria-hidden="true"
-    >
-      <div className="ps-fix-board">
-        <div className="ps-fix-column ps-fix-column--before">
-          <div className="ps-fix-column-label">Before</div>
-          <div className="ps-fix-problem-stack">
-            {problems.map((problem, index) => (
+    <div ref={containerRef} className="ps-fix-root" aria-hidden="true">
+      <div className={`ps-run-panel${played ? " ps-run-panel--play" : ""}`}>
+        {/* Chrome strip — flips with the theme (card-visuals.css:2633). */}
+        <div className="ps-run-chrome">
+          <span className="ps-run-chrome-dots"><i /><i /><i /></span>
+          <span className="ps-run-chrome-name">invoice-4417</span>
+        </div>
+
+        {/* The label moved INSIDE the panel head. It used to sit outside at
+            the very top edge of the card, detached from the artwork. */}
+        <div className="ps-run-head">
+          <span className="ps-run-label">Invoice Run · Mar 1</span>
+          <span className="ps-run-ref">#4417</span>
+        </div>
+
+        <div className="ps-run-body">
+          <div className="ps-run-list">
+            {/* The spine. 2px, blue->green: the rail itself encodes
+                start->closed as colour, which is legible at REST and needs
+                no motion to read. It terminates at the last dot rather than
+                running on into empty space. */}
+            <span className="ps-run-rail" />
+            {RUN_STEPS.map((step, index) => (
               <div
-                key={problem.title}
-                className={`ps-fix-problem-card ps-fix-problem-card--${problem.tone}`}
-                style={{ "--fix-delay": `${index * 0.12}s` } as React.CSSProperties}
+                key={step.time + step.label}
+                className={`ps-run-row ps-run-row--${step.tone}`}
+                style={{ "--row-i": index } as React.CSSProperties}
               >
-                <div className="ps-fix-problem-top">
-                  <span className="ps-fix-problem-badge">{problem.tag}</span>
-                  <span className="ps-fix-problem-dot" />
-                </div>
-                <div className="ps-fix-problem-title">{problem.title}</div>
-                <div className="ps-fix-problem-lines">
-                  <span />
-                  <span />
-                </div>
+                <span className="ps-run-time">{step.time}</span>
+                <span className="ps-run-dot" />
+                <span className="ps-run-text">{step.label}</span>
+                <span className={`ps-run-pill ps-run-pill--${step.tone}`}>{step.pill}</span>
               </div>
             ))}
           </div>
-        </div>
 
-        <div className="ps-fix-center">
-          <div className="ps-fix-center-arrow">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M7 14h14M16 9l5 5-5 5" stroke="#40D9AC" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+          {/* Second object: the invoice itself, so the panel has an overlap
+              and an off-axis element instead of being one flat rectangle. */}
+          <div className="ps-run-doc">
+            <span className="ps-run-doc-head">
+              <i className="ps-run-doc-mark" />
+              <i className="ps-run-doc-title" />
+            </span>
+            {/* LINE ITEMS, not flat rules. Seven flush-top lines left a
+                measured 108.2px dead gap in a 204.5px document — half the
+                object empty, the emptiest rectangle on the grid. Each item is
+                `flex: 1` inside a flex column, exactly like `.ps-run-row`, so
+                they distribute across whatever height the document has instead
+                of stacking at the top. That fills the box at every width
+                without reintroducing the dead air the card started with. */}
+            <span className="ps-run-doc-items">
+              {DOC_ITEMS.map((it, i) => (
+                <span className="ps-run-doc-item" key={i}>
+                  <i className="ps-run-doc-desc" style={{ width: `${it.d}%` }} />
+                  <i className="ps-run-doc-amt" style={{ width: `${it.a}%` }} />
+                </span>
+              ))}
+            </span>
+            <i className="ps-run-doc-rule" />
+            <span className="ps-run-doc-total">
+              <i className="ps-run-doc-total-label" />
+              $4,120.00
+            </span>
           </div>
         </div>
 
-        <div className="ps-fix-column ps-fix-column--after">
-          <div className="ps-fix-column-label">After</div>
-          <div className="ps-fix-solution-stack">
-            {fixes.map((fix, index) => (
-              <div
-                key={fix.title}
-                className="ps-fix-solution-card"
-                style={{ "--fix-delay": `${0.18 + index * 0.14}s` } as React.CSSProperties}
-              >
-                <div className="ps-fix-solution-top">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path d="M2.4 6.3 4.8 8.6 9.6 3.8" stroke="#40D9AC" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  <span className="ps-fix-solution-metric">{fix.metric}</span>
-                </div>
-                <div className="ps-fix-solution-title">{fix.title}</div>
-                <div className="ps-fix-solution-bars">
-                  <span />
-                  <span />
-                  <span />
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* THE PAYOFF — a child of the PANEL, not of the document. The document
+            is dropped below 940px; the stamp must not go with it. It is the
+            only rotated object on the card and it lands last at EVERY width.
+            CSS re-seats it over the document at >=940 and over the panel head
+            below that, where it also stays clear of the dark title scrim. */}
+        <span className="ps-run-stamp">Paid</span>
+
+        <div className="ps-run-close">
+          <svg className="ps-run-close-glyph" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <circle cx="6" cy="6" r="5.1" stroke="currentColor" strokeWidth="1.2" />
+            <path className="ps-run-close-tick" d="M3.6 6.2 5.3 7.9 8.5 4.4"
+                  stroke="currentColor" strokeWidth="1.3"
+                  strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span className="ps-run-close-text">Deposit $4,120.00 matched to 4417</span>
+          <span className="ps-run-pill ps-run-pill--closed">Closed</span>
         </div>
       </div>
     </div>
@@ -556,21 +565,52 @@ export function SystemFixesVisual() {
    Animates on scroll into view or direct user interaction only.
    ───────────────────────────────────────────────────────────── */
 
-const HEATMAP_ROWS = 5;
-const HEATMAP_COLS = 9;
-const HEATMAP_LEVELS = [0, 1, 1, 2, 2, 2, 3, 3, 4];
-const heatmapCells: number[][] = Array.from({ length: HEATMAP_ROWS }, (_, r) =>
-  Array.from({ length: HEATMAP_COLS }, (_, c) =>
-    HEATMAP_LEVELS[(r * HEATMAP_COLS + c * 3 + r * 2) % HEATMAP_LEVELS.length]
-  )
-);
+/* Card face content — the RECORDS LIST the team logs into.
 
-const dashboardBars = [0.38, 0.66, 0.53, 0.84, 0.61, 0.74, 0.92];
-const dashboardMetrics = [
-  { label: "Retention", value: 94, tone: "blue" },
-  { label: "Close Rate", value: 72, tone: "cyan" },
-  { label: "NPS", value: 88, tone: "violet" },
+   Replaced the 3-panel bar-chart + heatmap + KPI-ring dashboard on
+   2026-09-05. Reasons, all read off screenshots, not inferred:
+
+   1. ELEMENT COUNT. The old scene drew ~64 leaves (7 bars + 45 heatmap
+      cells + 3 rings + 3 values + 3 KPI labels + 3 panel labels) inside a
+      tile that is 244px wide at 320. The 45-cell heatmap resolved to
+      ~4px dots that carried no meaning at any width.
+   2. TEXT CLIPPING, the client's own complaint ("etentio", "ose Ra"),
+      was live again: "Retenti/on" wrapped mid-word at 320 and 768, and at
+      390 dark "Retention" rendered clipped as "Retentior" with the
+      heatmap overflowing its panel across the word ACTIVITY. The
+      clearance probe read +19.7px at 320 and +65.6px at 390 the whole
+      time -- the numbers were green because the clipping happened INSIDE
+      `.ps-dbc-kpi-card`'s own `overflow:hidden`, not against the title.
+      Do not trust that probe alone here; look at the render.
+   3. OFF-FAMILY. The other four tiles are all UI mockups (rounded panels,
+      uppercase micro-labels, tinted pills, grey placeholder content
+      lines). This was the only abstract data-viz on the grid.
+   4. OFF-MESSAGE. Retention / Close Rate / NPS is marketing-analytics
+      vocabulary that belongs to the SEO+Ads pillar. This pillar is
+      "custom stuff to get them off of spreadsheets, move them into an
+      entire system" -- records, rosters, exports, assignments, logins.
+
+   The replacement is one window with a header and four record rows: 15
+   drawn leaves. Rows are droppable at narrow widths, which a 3-panel
+   grid with two-line labels never was. The only per-row text is a
+   2-character initial and a nowrap status pill, so the mid-word wrap
+   class of defect is structurally impossible now.
+
+   Still decorative: the root keeps aria-hidden and the button's
+   aria-label carries the accessible name. No information lives only
+   here. */
+const dbcRecords = [
+  { initials: "AM", name: 78, status: "Active", tone: "on", hue: "#0C6FC9" },
+  { initials: "RK", name: 62, status: "Active", tone: "on", hue: "#7C3AED" },
+  { initials: "TD", name: 71, status: "Pending", tone: "off", hue: "#B45309" },
+  { initials: "JW", name: 55, status: "Active", tone: "on", hue: "#0E7490" },
+  { initials: "LP", name: 68, status: "Active", tone: "on", hue: "#07795F" },
+  { initials: "SG", name: 49, status: "Active", tone: "on", hue: "#635BFF" },
 ] as const;
+
+// Reinstated from the original card 1: varying-height saturated bars. The
+// one mechanism of the old dashboard that unambiguously worked.
+const dbcSpark = [30, 42, 52, 64, 78, 92] as const;
 
 export function DashboardVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -600,7 +640,7 @@ export function DashboardVisual() {
           }
         });
       },
-      { threshold: 0.25 }
+      { threshold: 0.25, rootMargin: "0px 0px -12% 0px" }
     );
 
     observer.observe(el);
@@ -608,11 +648,7 @@ export function DashboardVisual() {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="ps-dbc-root"
-      aria-hidden="true"
-    >
+    <div ref={containerRef} className="ps-dbc-root" aria-hidden="true">
       <div className="ps-dbc-layout">
         <DashboardScene key={playToken} animated={playToken > 0} />
       </div>
@@ -620,84 +656,103 @@ export function DashboardVisual() {
   );
 }
 
+const DBC_COUNT_TARGET = 1248;
+const DBC_COUNT_MS = 900;
+const DBC_COUNT_DELAY = 380;
+
 function DashboardScene({ animated }: { animated: boolean }) {
+  const countRef = useRef<HTMLDivElement>(null);
+
+  // THE PAYOFF: the count travels instead of appearing. One rAF loop, ~900ms,
+  // once per page view, writing textContent on a single node. Never starts
+  // under reduced motion (the element already carries the final string from
+  // the DOM), and is cancelled on cleanup.
+  useEffect(() => {
+    const node = countRef.current;
+    if (!node || !animated) return;
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
+    let raf = 0;
+    let start = 0;
+    const easeOutQuint = (t: number) => 1 - Math.pow(1 - t, 5);
+
+    const step = (now: number) => {
+      if (!start) start = now;
+      const t = Math.min(1, (now - start) / DBC_COUNT_MS);
+      const v = Math.round(easeOutQuint(t) * DBC_COUNT_TARGET);
+      node.textContent = v.toLocaleString("en-US");
+      if (t < 1) raf = requestAnimationFrame(step);
+    };
+
+    node.textContent = "0";
+    const timer = window.setTimeout(() => { raf = requestAnimationFrame(step); }, DBC_COUNT_DELAY);
+
+    return () => {
+      window.clearTimeout(timer);
+      if (raf) cancelAnimationFrame(raf);
+      node.textContent = DBC_COUNT_TARGET.toLocaleString("en-US");
+    };
+  }, [animated]);
+
   return (
     <div className={`ps-dbc-stage${animated ? " ps-dbc-stage--play" : ""}`}>
-      <section className="ps-dbc-panel ps-dbc-panel--revenue">
-        <div className="ps-dbc-tile-label">Revenue Mix</div>
-        <div className="ps-dbc-bars">
-          {dashboardBars.map((height, index) => (
-            <div key={index} className="ps-dbc-bar-wrap">
-              <div
-                className="ps-dbc-bar"
-                style={{
-                  "--bar-h": height,
-                  "--bar-delay": `${index * 0.08}s`,
-                } as React.CSSProperties}
-              />
-            </div>
-          ))}
+      <div className="ps-dbc-win">
+        {/* Chrome strip — flips with the theme (card-visuals.css:2633). */}
+        <div className="ps-dbc-chrome">
+          <span className="ps-dbc-chrome-dots"><i /><i /><i /></span>
+          <span className="ps-dbc-chrome-name">members</span>
         </div>
-      </section>
 
-      <section className="ps-dbc-panel ps-dbc-panel--activity">
-        <div className="ps-dbc-tile-inner">
-          <div className="ps-dbc-tile-label">Activity</div>
-          <div className="ps-dbc-heatmap">
-            {heatmapCells.map((row, r) => (
-              <div key={r} className="ps-dbc-heatmap-row">
-                {row.map((level, c) => (
-                  <div
-                    key={c}
-                    className={`ps-dbc-heatmap-cell ps-dbc-heatmap-cell--${level}`}
-                    style={{ "--hm-cell-delay": `${(r * HEATMAP_COLS + c) * 0.015}s` } as React.CSSProperties}
-                  />
-                ))}
+        <div className="ps-dbc-app">
+          <div className="ps-dbc-app-head">
+            <div className="ps-dbc-app-eyebrow">Member Records</div>
+            <div className="ps-dbc-app-count" ref={countRef}>1,248</div>
+          </div>
+
+          <div className="ps-dbc-spark">
+            <span className="ps-dbc-spark-label">Sign-ups</span>
+            <span className="ps-dbc-spark-plot">
+              {dbcSpark.map((h, i) => (
+                <i
+                  key={i}
+                  className={`ps-dbc-spark-col${i >= 3 ? " ps-dbc-spark-col--hot" : ""}`}
+                  style={{ "--sh": `${h}%`, "--si": i } as React.CSSProperties}
+                />
+              ))}
+            </span>
+          </div>
+
+          <div className="ps-dbc-app-list">
+            {dbcRecords.map((record, index) => (
+              <div
+                key={record.initials}
+                className={`ps-dbc-app-row${index === 0 ? " ps-dbc-app-row--current" : ""}`}
+                style={{ "--row-i": index } as React.CSSProperties}
+              >
+                <div className="ps-dbc-app-avatar" style={{ "--av": record.hue } as React.CSSProperties}>{record.initials}</div>
+                <div className="ps-dbc-app-name" style={{ "--name-w": `${record.name}%` } as React.CSSProperties} />
+                <div className={`ps-dbc-app-pill ps-dbc-app-pill--${record.tone}`}>{record.status}</div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      <section className="ps-dbc-panel ps-dbc-panel--kpis">
-        <div className="ps-dbc-tile-label">Key Metrics</div>
-        <div className="ps-dbc-kpi-grid">
-          {dashboardMetrics.map((metric, index) => (
-            <div
-              key={metric.label}
-              className={`ps-dbc-kpi-card ps-dbc-kpi-card--${metric.tone}`}
-              style={{ "--metric-delay": `${0.18 + index * 0.1}s` } as React.CSSProperties}
-            >
-              <div className="ps-dbc-kpi-ring-wrap">
-                <svg className="ps-dbc-kpi-ring-svg" viewBox="0 0 72 72" fill="none">
-                  <circle
-                    cx="36"
-                    cy="36"
-                    r="26"
-                    stroke="rgba(255,255,255,0.07)"
-                    strokeWidth="6"
-                  />
-                  <circle
-                    className="ps-dbc-kpi-ring"
-                    cx="36"
-                    cy="36"
-                    r="26"
-                    strokeWidth="6"
-                    strokeLinecap="round"
-                    strokeDasharray="163.36"
-                    transform="rotate(-90 36 36)"
-                    style={{
-                      "--ring-offset": `${163.36 * (1 - metric.value / 100)}`,
-                    } as React.CSSProperties}
-                  />
-                </svg>
-                <div className="ps-dbc-kpi-value">{metric.value}%</div>
-              </div>
-              <div className="ps-dbc-kpi-label">{metric.label}</div>
-            </div>
-          ))}
         </div>
-      </section>
+      </div>
+
+      {/* The phone. Direct borrow of card 4's C1/C2/C6 — it overlaps the
+          window's bottom-right corner, sits off-axis at rotate(5deg) and
+          bleeds off the right edge, so the two tiles read as siblings. */}
+      <div className="ps-dbc-phone">
+        <span className="ps-dbc-phone-notch" />
+        <span className="ps-dbc-phone-title">New member</span>
+        <i className="ps-dbc-phone-field" />
+        <i className="ps-dbc-phone-field" />
+        <span className="ps-dbc-phone-save">Save</span>
+      </div>
     </div>
   );
 }
@@ -789,6 +844,271 @@ export function RevenueVisual() {
           <span className="ps-ge-chart-label">Apr</span>
           <span className="ps-ge-chart-label">Jul</span>
           <span className="ps-ge-chart-label">Now</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VISUAL 6 — Custom Websites  (added 2026-09-03, ADR-0006)
+
+   Split panel: a code editor on the left resolving into a rendered
+   page on the right. This is the literal positioning of
+   /services/custom-websites — "custom-coded from scratch, no
+   templates, no page builders" — drawn rather than claimed.
+
+   Deliberately NOT another browser-and-phone mockup: WebsiteVisual
+   already owns that language on the Website Redesign card, and two
+   cards in the same row must not read as the same picture.
+
+   Code is rendered as coloured token BARS, never as readable text.
+   Fake source that a visitor can squint at is a liability; an
+   abstraction is honest and scales down to a 340px card.
+
+   Motion: opacity + transform only, driven by an .in-view class set
+   by IntersectionObserver. prefers-reduced-motion short-circuits to
+   the final state in the effect AND in card-visuals.css.
+   ───────────────────────────────────────────────────────────── */
+
+/** One token bar: `k` picks the syntax colour, `w` is its width in px. */
+interface CbToken {
+  k: "kw" | "fn" | "str" | "attr" | "punc";
+  w: number;
+}
+
+const CB_CODE: { indent: number; tokens: CbToken[] }[] = [
+  { indent: 0, tokens: [{ k: "kw", w: 26 }, { k: "fn", w: 44 }, { k: "punc", w: 10 }] },
+  { indent: 1, tokens: [{ k: "punc", w: 8 }, { k: "fn", w: 34 }, { k: "attr", w: 26 }] },
+  { indent: 2, tokens: [{ k: "attr", w: 22 }, { k: "str", w: 40 }] },
+  { indent: 2, tokens: [{ k: "attr", w: 30 }, { k: "str", w: 28 }] },
+  { indent: 1, tokens: [{ k: "punc", w: 8 }, { k: "fn", w: 40 }] },
+  { indent: 2, tokens: [{ k: "kw", w: 20 }, { k: "str", w: 46 }] },
+  { indent: 1, tokens: [{ k: "punc", w: 14 }] },
+  { indent: 0, tokens: [{ k: "punc", w: 8 }] },
+];
+
+export function CustomBuildVisual() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={containerRef} className="ps-cb-root" aria-hidden="true">
+      {/* LEFT — editor */}
+      <div className="ps-cb-editor">
+        <div className="ps-cb-tabs">
+          <span className="ps-cb-tab ps-cb-tab--active">page.tsx</span>
+          <span className="ps-cb-tab">layout.tsx</span>
+        </div>
+        <div className="ps-cb-code">
+          {CB_CODE.map((line, i) => (
+            <div
+              className="ps-cb-line"
+              key={`cb-line-${i}`}
+              style={{ "--cb-i": i } as React.CSSProperties}
+            >
+              <span className="ps-cb-gutter" />
+              <span
+                className="ps-cb-tokens"
+                style={{ paddingLeft: `${line.indent * 9}px` }}
+              >
+                {line.tokens.map((tok, j) => (
+                  <span
+                    key={`cb-tok-${i}-${j}`}
+                    className={`ps-cb-tok ps-cb-tok--${tok.k}`}
+                    style={{ width: `${tok.w}px` }}
+                  />
+                ))}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* RIGHT — the rendered result */}
+      <div className="ps-cb-preview">
+        <div className="ps-cb-bar">
+          <span /><span /><span />
+        </div>
+        <div className="ps-cb-page">
+          <div className="ps-cb-nav">
+            <span className="ps-cb-nav-logo" />
+            <span className="ps-cb-nav-dots"><i /><i /><i /></span>
+          </div>
+          <div className="ps-cb-block ps-cb-block--h1" style={{ "--cb-i": 0 } as React.CSSProperties} />
+          <div className="ps-cb-block ps-cb-block--p" style={{ "--cb-i": 1 } as React.CSSProperties} />
+          <div className="ps-cb-block ps-cb-block--p ps-cb-block--short" style={{ "--cb-i": 2 } as React.CSSProperties} />
+          <div className="ps-cb-cta" style={{ "--cb-i": 3 } as React.CSSProperties} />
+          <div className="ps-cb-cards">
+            <div style={{ "--cb-i": 4 } as React.CSSProperties}><span /><span /></div>
+            <div style={{ "--cb-i": 5 } as React.CSSProperties}><span /><span /></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VISUAL 7 — Search and Ads  (added 2026-09-03, ADR-0006)
+
+   A results surface: query field, an AI-answer block that cites a
+   placeholder domain, and a local-pack list. It draws the three
+   destinations this card carries — local SEO, AI search
+   optimization, paid ads — in the order a buyer meets them.
+
+   CLAIMS DISCIPLINE (docs/WRITER-AGENT-PROMPT.md:29,31):
+   - The query is the literal placeholder "[your service] near me".
+     A real-looking query would name a vertical, and :29 bars
+     industry claims without a canonical project behind them.
+   - The cited domain is "yourcompany.com" — the same placeholder
+     WebsiteVisual already uses (card-visuals-backup.tsx:33).
+   - There is NO rank-rise animation and NO position numbers. A #3
+     row climbing to #1 is an outcome claim drawn as artwork, which
+     is the same trap RevenueVisual falls into. The only motion is
+     the citation chip arriving, which illustrates the capability
+     ("get cited") without asserting a result.
+   ───────────────────────────────────────────────────────────── */
+export function SearchVisual() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={containerRef} className="ps-sr-root" aria-hidden="true">
+      <div className="ps-sr-panel">
+        {/* Chrome bar. Two jobs, both load-bearing:
+            1. .ps-bento-card__expand is a frosted WHITE circle at top:16
+               right:16 (globals.css:1703) sitting at z-index 3, i.e. ON TOP
+               of this visual. On a 390px card this panel reaches that corner,
+               and a white icon on a white panel is an invisible affordance.
+               A dark strip along the top puts contrast back under it — the
+               same thing .ps-browser-chrome does for WebsiteVisual.
+            2. It makes the panel read as a surface with depth rather than a
+               white slab, which is what it looked like without one. */}
+        <div className="ps-sr-chrome">
+          <span className="ps-sr-chrome-dots"><i /><i /><i /></span>
+          <span className="ps-sr-chrome-pill" />
+        </div>
+
+        {/* Query field */}
+        <div className="ps-sr-field">
+          <svg className="ps-sr-glass" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="4.6" stroke="currentColor" strokeWidth="1.4" />
+            <path d="M10.6 10.6L14 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+          </svg>
+          <span className="ps-sr-query">[your service] near me</span>
+        </div>
+
+        {/* AI answer block */}
+        <div className="ps-sr-ai">
+          <div className="ps-sr-ai-head">
+            <svg className="ps-sr-spark" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M8 1.5l1.5 4L13.5 7l-4 1.5L8 12.5 6.5 8.5 2.5 7l4-1.5z"
+                fill="currentColor"
+              />
+            </svg>
+            <span className="ps-sr-ai-label">AI Overview</span>
+          </div>
+          <span className="ps-sr-ai-line" style={{ "--sr-i": 0 } as React.CSSProperties} />
+          <span className="ps-sr-ai-line" style={{ "--sr-i": 1 } as React.CSSProperties} />
+          <span className="ps-sr-ai-line ps-sr-ai-line--short" style={{ "--sr-i": 2 } as React.CSSProperties} />
+          <span className="ps-sr-cite">yourcompany.com</span>
+        </div>
+
+        {/* Results list. The first row is a paid placement and the two
+            below it are the organic local pack — which is the actual shape
+            of the page this card is about, and the only way the card's own
+            title ("Search and Ads.") is honest: without the Ad row the
+            picture depicts two of its three destinations and silently drops
+            /services/paid-ads. Still no rank numbers and no rank-rise
+            animation — see the claims note above this component. */}
+        <div className="ps-sr-pack">
+          <span className="ps-sr-pack-label">Results</span>
+          <div className="ps-sr-row ps-sr-row--ad" style={{ "--sr-i": 0 } as React.CSSProperties}>
+            <span className="ps-sr-ad-badge">Ad</span>
+            <span className="ps-sr-row-lines">
+              <i className="ps-sr-row-name" />
+              <i className="ps-sr-row-meta" />
+            </span>
+          </div>
+          {[1, 2].map((row) => (
+            <div
+              className={`ps-sr-row${row === 1 ? " ps-sr-row--lead" : ""}`}
+              key={`sr-row-${row}`}
+              style={{ "--sr-i": row } as React.CSSProperties}
+            >
+              <span className="ps-sr-pin">
+                <svg viewBox="0 0 12 14" fill="none">
+                  <path
+                    d="M6 .8a4.6 4.6 0 00-4.6 4.6C1.4 8.8 6 13.2 6 13.2s4.6-4.4 4.6-7.8A4.6 4.6 0 006 .8z"
+                    fill="currentColor"
+                  />
+                  <circle cx="6" cy="5.3" r="1.7" fill="#0A1628" />
+                </svg>
+              </span>
+              <span className="ps-sr-row-lines">
+                <i className="ps-sr-row-name" />
+                <i className="ps-sr-row-meta" />
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

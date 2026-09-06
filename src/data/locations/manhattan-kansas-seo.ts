@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "SEO & AI Search in Manhattan, KS",
   metaDescription:
-    "Local SEO and AI search optimization for Manhattan, Kansas businesses — get found on Google, ChatGPT, Perplexity, and Gemini.",
+    "Local SEO and AI search optimization for Manhattan, Kansas businesses: get found on Google, ChatGPT, Perplexity, and Gemini.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -23,9 +23,9 @@ export const locationData: LocationPageData = {
     eyebrow: "SEO & AI Search in Manhattan, Kansas",
     h1: "Local SEO and AI Search Optimization for Manhattan",
     subheadline:
-      "Get found on Google, Google AI Overviews, ChatGPT, Perplexity, and Gemini — local SEO and AI-search optimization for Manhattan, Kansas businesses.",
+      "Get found on Google, Google AI Overviews, ChatGPT, Perplexity, and Gemini: local SEO and AI-search optimization for Manhattan, Kansas businesses.",
     answerParagraph:
-      "Preisser Solutions delivers local SEO and AI-search optimization for businesses in Manhattan, Kansas — a Riley County city of 55,000, home to Kansas State University and Fort Riley. Services include Google Business Profile optimization, local pack strategy, citation building, schema markup, and AI-search citation engineering for the Manhattan-Aggieville and broader Riley County market.",
+      "Preisser Solutions delivers local SEO and AI-search optimization for businesses in Manhattan, Kansas, a Riley County city of 55,000, home to Kansas State University and Fort Riley. Services include Google Business Profile optimization, local pack strategy, citation building, schema markup, and AI-search citation engineering for the Manhattan-Aggieville and broader Riley County market.",
   },
 
   nearbyAreas: [
@@ -43,8 +43,8 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Manhattan's KSU community creates unique local search demand — restaurants, retail, services, and tech firms all compete for student and faculty attention.",
-    "AI-search visibility is an early-mover opportunity in Manhattan — most businesses have not yet optimized for ChatGPT or Perplexity citations.",
+    "Manhattan's KSU community creates unique local search demand: restaurants, retail, services, and tech firms all compete for student and faculty attention.",
+    "AI-search visibility is an early-mover opportunity in Manhattan; most businesses have not yet optimized for ChatGPT or Perplexity citations.",
     "SEO infrastructure built in code, not in plugins or marketing platforms.",
   ],
 
@@ -61,7 +61,7 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions offer local SEO for Manhattan, Kansas businesses?",
       answer:
-        "Yes. Local SEO — Google Business Profile, local pack, citations, schema markup — and AI-search citation engineering are both offered for Manhattan businesses.",
+        "Yes. Local SEO (Google Business Profile, local pack, citations, schema markup), and AI-search citation engineering are both offered for Manhattan businesses.",
     },
     {
       question: "How competitive is local SEO in Manhattan, Kansas?",
@@ -76,7 +76,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions improve Google rankings for a Manhattan restaurant?",
       answer:
-        "Local SEO for restaurants — Google Business Profile, local pack, reviews strategy, schema markup — is within standard capability.",
+        "Local SEO for restaurants (Google Business Profile, local pack, reviews strategy, schema markup) is within standard capability.",
     },
     {
       question: "Does Preisser Solutions help Manhattan businesses appear in AI Overviews?",
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions price SEO for Manhattan clients?",
       answer:
-        "Initial SEO builds use fixed-price proposals. Ongoing work is scoped as optional retainers — never required.",
+        "Initial SEO builds use fixed-price proposals. Ongoing work is scoped as optional retainers, never required.",
     },
   ],
 

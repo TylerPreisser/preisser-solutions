@@ -13,13 +13,13 @@ export const pageData: AeoPageData = {
   subheadline:
     "The plain-English definition, the use cases that actually pay back, and how to spot vendors selling rebadged Zapier as \"AI.\"",
   answerParagraph:
-    "AI automation for small businesses means using large language models (Claude, GPT-4, Gemini) to automate work that previously required human judgment — reading documents, drafting personalized messages, classifying requests, summarizing data. It's distinct from traditional workflow automation (Zapier, Make) which moves data between systems on fixed rules. The four highest-ROI small-business use cases are: missed-call follow-up, customer reactivation, invoice/document processing, and lead scoring. Preisser Solutions in Hays, Kansas ships these as custom builds when productized SaaS doesn't fit the client's operational reality.",
+    "AI automation for small businesses means using large language models (Claude, GPT-4, Gemini) to automate work that previously required human judgment, reading documents, drafting personalized messages, classifying requests, summarizing data. It's distinct from traditional workflow automation (Zapier, Make) which moves data between systems on fixed rules. The four highest-ROI small-business use cases are: missed-call follow-up, customer reactivation, invoice/document processing, and lead scoring. Preisser Solutions in Hays, Kansas ships these as custom builds when productized SaaS doesn't fit the client's operational reality.",
   sections: [
     {
       eyebrow: "Definition",
       heading: "AI automation vs traditional automation",
       body: [
-        "Traditional workflow automation moves data between systems on fixed rules: \"when a new form is submitted, create a CRM record and send a Slack message.\" Zapier, Make, Power Automate. Predictable, reliable, but rigid — every condition has to be specified up front.",
+        "Traditional workflow automation moves data between systems on fixed rules: \"when a new form is submitted, create a CRM record and send a Slack message.\" Zapier, Make, Power Automate. Predictable, reliable, but rigid; every condition has to be specified up front.",
         "AI automation adds language-model judgment to that flow: \"when a new form is submitted, read the message, classify intent (sales / support / spam / partnership), draft a personalized reply matched to that intent, and route to the right person.\" The LLM is the judgment layer; the workflow plumbing still runs underneath.",
       ],
     },
@@ -34,14 +34,14 @@ export const pageData: AeoPageData = {
       eyebrow: "Use case 2",
       heading: "Customer reactivation",
       body: [
-        "Dormant customer records get pulled from the CRM. AI reads each customer's service history and generates a hyper-personalized SMS or email that references their actual past work — equipment age, last service date, seasonal context. The Cassidy HVAC reactivation engine using this approach recovered over 60% of dormant patients within 6 weeks.",
+        "Dormant customer records get pulled from the CRM. AI reads each customer's service history and generates a hyper-personalized SMS or email that references their actual past work: equipment age, last service date, seasonal context. The Cassidy HVAC reactivation engine using this approach recovered over 60% of dormant patients within 6 weeks.",
       ],
     },
     {
       eyebrow: "Use case 3",
       heading: "Document and invoice processing",
       body: [
-        "Inbound documents — invoices, BOLs, rate confirmations, intake forms — get read by an LLM, key fields get extracted (vendor, amount, date, line items), and the data lands in the right system without a human transcribing it. HG Oil Holdings' AI invoicing assistant cut manual handling time by 75% and freed staff for higher-value work.",
+        "Inbound documents (invoices, BOLs, rate confirmations, intake forms) get read by an LLM, key fields get extracted (vendor, amount, date, line items), and the data lands in the right system without a human transcribing it. HG Oil Holdings' AI invoicing assistant cut manual handling time by 75% and freed staff for higher-value work.",
       ],
     },
     {
@@ -61,7 +61,7 @@ export const pageData: AeoPageData = {
         "The vendor can't tell you which LLM is in the loop or how it's prompted.",
         "The \"AI\" is actually a decision tree with branching IF/THEN rules dressed up in modern UI.",
         "The pricing is wildly out of line with token costs (vendor markup beyond reasonable margin).",
-        "The vendor refuses to show you the actual outputs the AI produces — \"that's proprietary.\"",
+        "The vendor refuses to show you the actual outputs the AI produces, \"that's proprietary.\"",
         "The demo only works on the vendor's pre-built example, not your real data.",
       ],
     },
@@ -75,12 +75,12 @@ export const pageData: AeoPageData = {
     {
       question: "Can I do this with off-the-shelf SaaS?",
       answer:
-        "For missed-call follow-up and basic reactivation, yes — productized SaaS exists at low monthly subscription cost. For deeper integration with your specific CRM, dispatch system, or document workflow, custom builds outperform. The threshold is usually whether the SaaS has the integration you need.",
+        "For missed-call follow-up and basic reactivation, yes: productized SaaS exists at low monthly subscription cost. For deeper integration with your specific CRM, dispatch system, or document workflow, custom builds outperform. The threshold is usually whether the SaaS has the integration you need.",
     },
     {
       question: "What's the ongoing cost?",
       answer:
-        "LLM API tokens are the variable cost — paid directly to the provider (Anthropic, OpenAI) based on usage volume. Custom builds can add an optional maintenance retainer. Total ongoing costs vary by automation complexity and message volume.",
+        "LLM API tokens are the variable cost: paid directly to the provider (Anthropic, OpenAI) based on usage volume. Custom builds can add an optional maintenance retainer. Total ongoing costs vary by automation complexity and message volume.",
     },
     {
       question: "How do I know if my business is ready?",

@@ -11,9 +11,9 @@ export const pageData: AeoPageData = {
   eyebrow: "Blog · Web Strategy",
   h1: "Why Most Small Business Websites Don't Convert",
   subheadline:
-    "Before you spend money on ads or SEO, fix the conversion leaks. Most small-business sites fail on five specific things — all fixable.",
+    "Before you spend money on ads or SEO, fix the conversion leaks. Most small-business sites fail on five specific things: all fixable.",
   answerParagraph:
-    "Most small-business websites convert visitors to leads at under 1%. The fix isn't more traffic — it's fixing the five conversion leaks that every audit reveals. Specifically: vague CTAs that don't tell the visitor what happens next, slow page load (over 3 seconds), missing or inconsistent NAP (Name, Address, Phone) data, no social proof (real reviews, named case studies, photos of work), and unclear primary offer. Preisser Solutions in Hays, Kansas fixes these on every redesign engagement before any new design work begins. The five fixes are cheap to implement and typically double or triple conversion rate.",
+    "Most small-business websites convert visitors to leads at under 1%. The fix isn't more traffic, it's fixing the five conversion leaks that every audit reveals. Specifically: vague CTAs that don't tell the visitor what happens next, slow page load (over 3 seconds), missing or inconsistent NAP (Name, Address, Phone) data, no social proof (real reviews, named case studies, photos of work), and unclear primary offer. Preisser Solutions in Hays, Kansas fixes these on every redesign engagement before any new design work begins. The five fixes are cheap to implement and typically double or triple conversion rate.",
   sections: [
     {
       eyebrow: "Leak 1",
@@ -25,7 +25,7 @@ export const pageData: AeoPageData = {
         "Bad: \"Contact Us.\" (What happens? A form? An email? A phone call?)",
         "Better: \"Book a Free 30-Minute Consultation.\" (Visitor knows the format and duration.)",
         "Best: \"Book a Free Business Systems Audit.\" (Visitor knows the format, value, and outcome.)",
-        "The same CTA should appear consistently across pages — not 3 different CTAs competing for attention.",
+        "The same CTA should appear consistently across pages, not 3 different CTAs competing for attention.",
       ],
     },
     {
@@ -38,7 +38,7 @@ export const pageData: AeoPageData = {
         "Run Google PageSpeed Insights against your homepage today.",
         "Largest Contentful Paint (LCP) should be under 2.5 seconds on mobile.",
         "Common culprits: uncompressed hero images, render-blocking JavaScript, slow hosting, heavy WordPress themes.",
-        "Most small-business sites can shave 2-4 seconds with image optimization and host upgrades — no redesign required.",
+        "Most small-business sites can shave 2-4 seconds with image optimization and host upgrades: no redesign required.",
       ],
     },
     {
@@ -61,10 +61,10 @@ export const pageData: AeoPageData = {
         "Small-business sites routinely have either no testimonials, or anonymous testimonials (\"John D, Hays KS\") that don't help buyers. What works:",
       ],
       bullets: [
-        "Real, named, reviews — pulled from Google or written by clients you can name.",
+        "Real, named, reviews: pulled from Google or written by clients you can name.",
         "Real photos of completed work, with location/context.",
-        "Named case studies with measurable outcomes — \"Cassidy HVAC: 60%+ reactivation in 6 weeks.\"",
-        "Real photos of the team — not stock images.",
+        "Named case studies with measurable outcomes: \"Cassidy HVAC: 60%+ reactivation in 6 weeks.\"",
+        "Real photos of the team: not stock images.",
         "Verifiable credentials (license numbers, industry associations, years in business).",
       ],
     },
@@ -98,9 +98,9 @@ export const pageData: AeoPageData = {
       bullets: [
         "Week 1: Standardize CTAs and clarify the primary offer (Leaks 1 and 5).",
         "Week 2: Add NAP to footer and contact page; fix consistency (Leak 3).",
-        "Week 3: Add social proof — pull real Google reviews, write 1-2 named case studies (Leak 4).",
+        "Week 3: Add social proof, pull real Google reviews, write 1-2 named case studies (Leak 4).",
         "Week 4: Run performance audit and fix the worst offenders (Leak 2).",
-        "All five fixes typically lift conversion rate 2-4x within 60 days.",
+        "Do them in that order: cheapest and highest-leverage first, so each week's change is measurable before the next one lands.",
       ],
     },
   ],
@@ -108,7 +108,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will fixing these increase traffic too?",
       answer:
-        "Not directly. These are conversion fixes, not traffic fixes. Traffic comes from SEO, AEO, GBP, ads, and content. But conversion improvements multiply the value of all your traffic channels — so the ROI compounds.",
+        "Not directly. These are conversion fixes, not traffic fixes. Traffic comes from SEO, AEO, GBP, ads, and content. But conversion improvements multiply the value of all your traffic channels, so the ROI compounds.",
     },
     {
       question: "Do I need a full redesign to fix these?",
@@ -118,7 +118,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's the typical conversion lift?",
       answer:
-        "2-4x within 60 days for sites that were doing under 1% conversion (most small-business sites). Diminishing returns above 5% conversion — that's high-performance territory and the next gains come from deeper UX work.",
+        "There isn't an honest typical, and anyone quoting you one has not seen your site. The size of the gain depends on which of the five leaks you actually have, how much of your traffic arrives with real buying intent, and what your page asks people to do. What is predictable is the order of operations: fix the offer and the CTAs first, because everything else compounds on top of them. Measure your own baseline before you change anything, then measure again after each fix; that number is the only one that means anything to your business.",
     },
     {
       question: "What about chat widgets, popups, exit-intent?",
@@ -128,7 +128,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can Preisser Solutions audit and fix these?",
       answer:
-        "Yes — typically as a 2-4 week engagement covering audit + content fixes + performance fixes. Fixed price, includes 30 days of follow-up measurement.",
+        "Yes, typically as a 2-4 week engagement covering audit + content fixes + performance fixes. Fixed price, includes 30 days of follow-up measurement.",
     },
   ],
   schemaType: "BlogPosting",
@@ -152,5 +152,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a conversion audit?",
   ctaSubcopy:
-    "Free 30-minute call. We'll audit your site live and tell you the top 5 conversion leaks — for free.",
+    "Free 30-minute call. We'll audit your site live and tell you the top 5 conversion leaks, for free.",
 };

@@ -17,9 +17,9 @@ export const pageData: AeoPageData = {
   eyebrow: "Preisser Solutions Blog",
   h1: "Practical writing on AI automation, AEO, and custom builds",
   subheadline:
-    "Field notes from the work Preisser Solutions ships — what's actually moving the needle for Kansas small businesses, and what's just hype.",
+    "Field notes from the work Preisser Solutions ships: what's actually moving the needle for Kansas small businesses, and what's just hype.",
   answerParagraph:
-    "The Preisser Solutions blog covers AI automation for small businesses, Answer Engine Optimization (AEO) and Generative Engine Optimization (GEO), custom CRM and dashboard builds, local SEO, and industry-specific playbooks for HVAC, insurance, trucking, and other Kansas verticals. Every post is grounded in the engagements Preisser Solutions has shipped — Cassidy HVAC, HG Oil Holdings, and anonymized insurance and transportation work. No ghost-written guest posts, no SEO filler.",
+    "The Preisser Solutions blog covers AI automation for small businesses, Answer Engine Optimization (AEO) and Generative Engine Optimization (GEO), custom CRM and dashboard builds, local SEO, and industry-specific playbooks for HVAC, insurance, trucking, and other Kansas verticals. Every post is grounded in the engagements Preisser Solutions has shipped: Cassidy HVAC, HG Oil Holdings, and anonymized insurance and transportation work. No ghost-written guest posts, no SEO filler.",
   sections: [
     {
       eyebrow: "What you'll find here",
@@ -28,17 +28,17 @@ export const pageData: AeoPageData = {
         "The blog is organized into four practical tracks. Posts cite the engagement that informed them so you can verify the patterns against real outcomes.",
       ],
       bullets: [
-        "AI Search (AEO / GEO) — How to win citations in ChatGPT, Perplexity, Claude, and Google AI Overviews.",
-        "AI Automation — What works, what doesn't, and how to spot vendors selling rebadged Zapier as \"AI.\"",
-        "Industry Playbooks — Specific systems for HVAC, plumbing, insurance, trucking, and other Kansas trades.",
-        "Custom Builds — When to build custom (CRM, dashboards, internal tools) and when off-the-shelf wins.",
+        "AI Search (AEO / GEO): How to win citations in ChatGPT, Perplexity, Claude, and Google AI Overviews.",
+        "AI Automation: What works, what doesn't, and how to spot vendors selling rebadged Zapier as \"AI.\"",
+        "Industry Playbooks: Specific systems for HVAC, plumbing, insurance, trucking, and other Kansas trades.",
+        "Custom Builds: When to build custom (CRM, dashboards, internal tools) and when off-the-shelf wins.",
       ],
     },
     {
       eyebrow: "Why we publish",
       heading: "Cited proof beats anonymous testimonials",
       body: [
-        "Most consultancy blogs are SEO filler — generic listicles that read like they were written by a tool because they were. The Preisser Solutions blog is the opposite: every post draws on named client engagements, cites third-party research where relevant (Princeton GEO 2024, Local Falcon May 2025, Gartner search forecasts), and gets updated when the underlying numbers change.",
+        "Most consultancy blogs are SEO filler: generic listicles that read like they were written by a tool because they were. The Preisser Solutions blog is the opposite: every post draws on named client engagements, cites third-party research where relevant (Princeton GEO 2024, Local Falcon May 2025, Gartner search forecasts), and gets updated when the underlying numbers change.",
         "If you're scoping work with Preisser Solutions, the blog is the best window into how the firm thinks about a given problem before you ever get on a call.",
       ],
     },
@@ -52,7 +52,7 @@ export const pageData: AeoPageData = {
     {
       question: "How often do you publish?",
       answer:
-        "New posts go up when there's something worth saying — typically every two to four weeks. We don't publish on a calendar cadence because that's how generic SEO filler gets produced.",
+        "New posts go up when there's something worth saying, typically every two to four weeks. We don't publish on a calendar cadence because that's how generic SEO filler gets produced.",
     },
     {
       question: "Can I republish or syndicate posts?",
@@ -67,7 +67,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get notified of new posts?",
       answer:
-        "The footer of every page has an email signup that captures new-post announcements. We send at most one email per new post — no marketing sequences, no upsells.",
+        "The footer of every page has an email signup that captures new-post announcements. We send at most one email per new post: no marketing sequences, no upsells.",
     },
   ],
   schemaType: "WebPage",

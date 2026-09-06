@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Ottawa, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Ottawa, Kansas businesses — fixed-price proposals from a Kansas-based development firm.",
+    "Custom websites, web apps, and AI automation for Ottawa, Kansas businesses: fixed-price proposals from a Kansas-based development firm.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Web design, AI automation, and custom applications for Franklin County businesses along the I-35 corridor in eastern Kansas.",
     answerParagraph:
-      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Ottawa, Kansas — the county seat of Franklin County in eastern Kansas, approximately 60 miles southwest of Kansas City on I-35. Ottawa University and regional manufacturing anchor the local economy. Remote delivery with on-site travel available.",
+      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Ottawa, Kansas, the county seat of Franklin County in eastern Kansas, approximately 60 miles southwest of Kansas City on I-35. Ottawa University and regional manufacturing anchor the local economy. Remote delivery with on-site travel available.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Eastern Kansas I-35 corridor context — university community, manufacturing, and regional commerce.",
+    "Eastern Kansas I-35 corridor context: university community, manufacturing, and regional commerce.",
     "Full code ownership transferred at launch. No SaaS platform fees after handoff.",
     "Remote-first delivery with on-site travel for projects requiring in-person collaboration.",
   ],
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions price projects for Ottawa clients?",
       answer:
-        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed in writing before work begins — no hourly billing, no open-ended retainers.",
+        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed in writing before work begins: no hourly billing, no open-ended retainers.",
     },
   ],
 

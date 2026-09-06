@@ -1,0 +1,1004 @@
+/* ============================================================
+   marcommand-live.css
+   Split out of globals.css deliberately, following the existing
+   `@import "./card-visuals.css"` precedent, so the 2026-09-03
+   homepage overhaul could be built by several agents at once
+   without them serializing on one 8,400-line stylesheet.
+   Tokens only — every color here must be a var() from the :root
+   block in globals.css. No new hex values.
+   ============================================================ */
+
+/* CASCADE NOTE — read before editing.
+   This sheet is UNLAYERED and is `@import`ed at the top of globals.css, so its
+   rules occupy the FIRST source positions in the built sheet.
+     - It BEATS everything inside `@layer components` (globals.css:260-432)
+       automatically: an unlayered rule outranks any named layer, whatever the
+       specificity or the order.
+     - It LOSES to any unlayered rule AFTER globals.css:432 on equal
+       specificity, because those come later in source order.
+   Therefore: only style class names that appear nowhere in globals.css. If you
+   must touch an existing name, win on SPECIFICITY and prove it with
+   getComputedStyle on a built page.
+
+   ------------------------------------------------------------------
+   DO NOT WRAP THIS FILE IN `@layer components`. IT BREAKS THE SITE.
+   ------------------------------------------------------------------
+   This has now been tried twice and measured twice. Layer order is compared
+   BEFORE specificity, so a layered (0,5,0) rule loses to an unlayered (0,3,0)
+   one; `@layer components` covers only globals.css:260-432, and almost
+   everything these sheets compete with is unlayered.
+
+   Measured consequence of the layered build, 2026-09-03:
+     - 925,871 differing pixels against the unlayered baseline
+     - work-card artwork at opacity 0 at 1440 in BOTH themes
+     - a real keyboard Tab walk blanked all 18 work cards
+     - .ps-why padding-bottom 100px -> 72px
+   It was reverted (see commit 07906a1's subject line, which says the same).
+
+   The design-system audit recommends wrapping these sheets in a layer. That
+   recommendation is WRONG for this codebase and this note exists so the next
+   agent who reads it does not repeat the experiment. If you want layers here,
+   every unlayered rule in globals.css has to move into a layer in the same
+   change — it is not a per-sheet decision. */
+
+/* ------------------------------------------------------------
+   Typed custom properties.
+
+   Registering these makes them interpolable and, more
+   importantly, unambiguous to GSAP: a `<percentage>` property
+   round-trips as a number + unit instead of an opaque string.
+   Elara's position is expressed ONLY through these, so GSAP
+   never touches `transform` itself and never touches
+   left/top/width/height — which docs/plans/2026-08-02-three-
+   pillar-reposition.md:264 forbids on the homepage.
+   ------------------------------------------------------------ */
+@property --mc-x {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+@property --mc-y {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+@property --mc-flip {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+@property --mc-frame {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+@property --mc-arc {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+@property --mc-bob {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+/* ------------------------------------------------------------
+   Section frame — reuses .ps-section / .ps-container /
+   .ps-eyebrow / .ps-section-heading from globals.css. Nothing
+   bespoke is invented here (…reposition.md:281).
+   ------------------------------------------------------------ */
+.mc-live {
+  background: var(--theme-bg-primary);
+  transition: background 300ms ease;
+
+  /* Dial ring. §4.2 asks for --theme-border. Measured on the dark
+     page that lands at 1.24:1 against the stage card, i.e. still a
+     hole rather than a dial, so dark mode uses the next token up
+     the same scale. Light mode keeps --theme-border exactly as
+     specified. Both are tokens; neither is a hex. */
+  --mc-dial-ring: var(--theme-text-muted);
+}
+
+[data-theme="light"] .mc-live {
+  --mc-dial-ring: var(--theme-border);
+}
+
+/* No measure on the WRAPPER, deliberately.
+
+   68ch here was the body paragraph's measure and the body paragraph is gone.
+   Replacing it with 34ch was worse, and measurably so: `ch` resolves against
+   THIS element's font-size (16px), so it pinned the column at 386px at every
+   width, while the h2 inside grows to 56px through `ps-section-heading`'s
+   clamp. Rendered result at 1440 and 1920: the 57-character sentence wrapped
+   to SIX lines in a 386px column inside a 1100px section. At 1280 it was five.
+
+   The measure belongs on the heading, in the heading's own `ch` — see below. */
+.mc-live__head {
+  max-width: none;
+}
+
+.mc-live__heading {
+  color: var(--theme-text-primary);
+  margin-top: 0;
+  /* 8px, not 20px. The heading is now a one-word product name with its own
+     descriptor line directly under it, so the two have to read as ONE block.
+     20px was the gap between a heading and the stage card below it. */
+  margin-bottom: 8px;
+
+  /* NO `max-width` HERE ANY MORE.
+
+     The 26ch that stood here was the measure for the 57-character sentence
+     while the sentence WAS the heading. The heading is now "MarCommand" — ten
+     characters — so a 26ch cap does nothing but invite confusion, and the
+     measure has moved to `.mc-live__lede`, expressed in the lede's own `ch`.
+     Leaving it here would have capped the lede at nothing, since the lede is a
+     sibling and never inherited it. */
+}
+
+/* The two halves of the wordmark. Owner: "mar command should be the black for
+   Mar and the blue for Command."
+
+   BOTH HALVES ARE TOKENS, AND BOTH ARE THEME-AWARE — which is the whole reason
+   a literal near-black hex would have been wrong. `--theme-text-primary` is
+   #0A1628 in light and #FFFFFF in dark, so "Mar" is his black on the light page
+   and stays legible when the page inverts instead of vanishing into it.
+   `--theme-accent-text` is #0C6FC9 in light and #1590FF (--color-primary) in
+   dark; both were already tuned against `--theme-bg-primary`, which is exactly
+   what `.mc-live` paints its background with. Measured sampled-pixel contrast
+   for all four combinations is in the report — every one clears 4.5:1.
+
+   `--color-primary-strong-hover` (#0B68BE) was the alternative for "Command".
+   Not used: it is only defined once, with no dark-theme counterpart, so it
+   would have held a mid-dark blue on the #0A1628 dark page. */
+.mc-live__wm--a {
+  color: var(--theme-text-primary);
+}
+
+.mc-live__wm--b {
+  color: var(--theme-accent-text);
+}
+
+/* The proprietary line. This is body text under the title, not a second
+   heading — it carries no heading semantics so the section keeps exactly one
+   <h2> and the document outline is unchanged. */
+.mc-live__lede {
+  margin: 0;
+  color: var(--theme-text-secondary);
+  font-size: 1.125rem;
+  line-height: 1.55;
+  /* The measure the heading used to carry, re-expressed in THIS element's own
+     `ch` now that the sentence lives here at body size. 46ch puts the
+     57-character line on two lines from 1280 up and lets it use the full
+     column on a phone, where the viewport is the real constraint. */
+  max-width: 46ch;
+}
+
+/* ------------------------------------------------------------
+   Stage card
+   No backdrop-filter (iOS composites it every frame of a 15s
+   loop) and no box-shadow on anything inside — ADR-0015
+   decision 1 is flat 2D, no depth.
+   ------------------------------------------------------------ */
+.mc-live__stage-card {
+  position: relative;
+  margin-top: 40px;
+  padding: 24px;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-card);
+}
+
+.mc-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1200 / 680;
+  overflow: hidden;
+}
+
+.mc-stage__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* One tree, two CSS-toggled groups (§3.2). No JS decides which
+   renders, so there is no hydration branch by construction. */
+.mc-stage__narrow {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Mobile height budget. The block is dominated by head copy (measured 412px
+     at 390, 496px at 320 — far above the 280/340 the plan estimated), so the
+     chrome around it is tightened rather than shrinking the stage: the stage
+     scales the whole diagram via `slice` while the sprite stays a fixed 58px,
+     so shrinking it would change their relative size, not just the height. */
+  /* Mobile typography. The head copy is the block's largest term — measured 398px
+     at 390 and 482px at 320, against the plan's 280/340 estimates. The words are
+     the client's and are NOT cut; the type is set a step tighter instead, which
+     is what the surrounding sections already do by width. 17px body with 1.55
+     leading is still at iOS's default reading size. */
+  .mc-live__heading {
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+
+  /* One step tighter, the same way the heading is — the head copy is this
+     block's largest term on a phone and the words are the client's, so the
+     type is set down rather than the sentence cut. 17px with 1.5 leading is
+     still at iOS's default reading size. */
+  .mc-live__lede {
+    font-size: 1.0625rem;
+    line-height: 1.5;
+  }
+
+  .mc-live__stage-card {
+    margin-top: 28px;
+    padding: 16px;
+  }
+
+  .mc-live__claim {
+    margin: 10px 0 0;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    text-align: center;
+    color: var(--theme-text-muted);
+  }
+
+  /* The mobile outcome figures. Text, not SVG — see the note in the component. */
+  .mc-live__outcomes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 14px 0 0;
+    padding: 0;
+  }
+
+  .mc-live__outcome {
+    text-align: center;
+  }
+
+  .mc-live__outcomes dt {
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--theme-text-muted);
+  }
+
+  .mc-live__outcomes dd {
+    margin: 2px 0 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--theme-text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mc-stage {
+    /* PORTRAIT HUB RESTORED (3478cb4): 390/620, the space the narrow group is
+       actually authored in. The 390/300 ledge that stood here belonged to the
+       sparse one-card rebuild the owner rejected; with the six-card hub back,
+       620 is not optional — it is the height the composition is drawn at, and
+       cropping to 300 would slice the top and bottom card rows off.
+       The max-width cap below is what keeps that height in check. */
+    aspect-ratio: 390 / 620;
+
+    /* The narrow profile is authored in a 390x620 space and had no upper
+       bound, so it magnified without limit up to the breakpoint. Measured on
+       the built page: at a 768px viewport the stage is 688px wide — a 1.764x
+       blow-up of a phone composition, a 1094px-tall card taller than the
+       viewport, and 28.2px dial labels. Capping the stage box holds the
+       magnification at 1.10x (430px wide, 683px tall, 17.6px labels) and
+       leaves 390px untouched, where the stage is 310px and already under
+       the cap. Centred so the card does not go lopsided. */
+    max-width: 430px;
+    margin-inline: auto;
+  }
+
+  .mc-stage__wide {
+    display: none;
+  }
+
+  .mc-stage__narrow {
+    display: block;
+  }
+}
+
+/* ------------------------------------------------------------
+   THE HUB LAYER'S SHIPPED STATE.
+
+   The pad, the six spokes, the hub link and the two live rails
+   ship HIDDEN. GSAP's `tl.set(hubLayer, {opacity: 1}, 0)`
+   immediately winds them back at t=0, so on a normal visit this
+   value is never seen; it only decides the still that a
+   reduced-motion or JS-failed visitor gets.
+
+   This is a class rather than `style={{opacity: 0}}` repeated on
+   nine nodes, so the shipped state is stated once and a future
+   reader can find it. The VALUE is unconditional, and that is
+   deliberate — I tried scoping it to `no-preference` so that
+   reduced-motion visitors would get the rails too, and rendering
+   it proved that wrong:
+
+     the five unlit cards ship at opacity 0 as well
+     (marcommand-live-stage.tsx:479), so revealing the rails
+     without them drew six spokes and a pad radiating out to
+     cards that are not on screen — the exact "lines that start
+     and stop without meeting anything" the client complained
+     about, reintroduced in the one composition nobody animates.
+
+   The hub-hidden still is the coherent one: the room is open,
+   the lit card is above it, the three dials read their
+   post-change values and Elara stands at the Daily budget dial
+   on RISER 0's own entry leg ("M110,240 H28 V312 H70" passes
+   under his feet at y=312, he is at x=49) — so he is standing on
+   a drawn wire, not floating, with no hub layer needed.
+   Measured in a reduced-motion render, not assumed.
+   ------------------------------------------------------------ */
+.mc-hub-off {
+  opacity: 0;
+}
+
+/* ------------------------------------------------------------
+   Stage furniture
+   ------------------------------------------------------------ */
+.mc-card__face {
+  fill: var(--theme-bg-card);
+  stroke: var(--theme-border);
+  stroke-width: 1.5;
+}
+
+.mc-card--lit .mc-card__face {
+  fill: var(--color-primary-glow);
+  stroke: var(--color-primary);
+  stroke-width: 3;
+}
+
+.mc-card__cap {
+  fill: var(--theme-text-secondary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  text-anchor: middle;
+}
+
+.mc-pad__fill {
+  fill: var(--theme-bg-card);
+}
+
+.mc-pad__ring {
+  fill: none;
+  stroke: var(--theme-border);
+  stroke-width: 2;
+}
+
+/* Rails. The idle spoke is a grey line; the "live" copy is the
+   identical path drawn on top in the accent and revealed with
+   stroke-dashoffset, so the recolour is a geometry reveal rather
+   than a per-frame colour tween. */
+.mc-rail {
+  fill: none;
+  stroke: var(--theme-border);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mc-rail--live {
+  stroke: var(--color-primary);
+}
+
+.mc-wire {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ------------------------------------------------------------
+   Dials — §4.2
+   ------------------------------------------------------------ */
+/* The knob face. This was `var(--color-dark-surface)`, a FIXED #0F1D30 that is
+   not theme-aware: in dark mode it equalled the surface behind it and the knob
+   vanished (~1.00:1). --theme-bg-surface is the inverting token — #0A1628 in
+   light, #F6F9FC in dark — so the face contrasts in both. NOT --theme-bg-card:
+   that is #FFFFFF in light and the stage card is also #FFFFFF, which would be
+   the same bug flipped. */
+.mc-dial__body {
+  fill: var(--theme-bg-surface);
+  stroke: var(--mc-dial-ring);
+  stroke-width: 1.5;
+}
+
+.mc-dial__arc {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: var(--mc-arc) 100;
+}
+
+.mc-dial__needle {
+  stroke: var(--color-text-dark-secondary);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.mc-dial__label {
+  fill: var(--theme-text-secondary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  text-anchor: middle;
+}
+
+.mc-dial__value {
+  fill: var(--theme-accent-text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+/* ------------------------------------------------------------
+   Keywords / chips tile
+   ------------------------------------------------------------ */
+.mc-tile__box {
+  fill: var(--theme-bg-secondary);
+  stroke: var(--theme-border);
+  stroke-width: 1.5;
+}
+
+.mc-tile__title {
+  fill: var(--theme-text-muted);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.mc-pill__box {
+  fill: var(--theme-bg-card);
+  stroke: var(--theme-border);
+  stroke-width: 1.5;
+}
+
+.mc-pill__text {
+  fill: var(--theme-text-secondary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+}
+
+.mc-pill--new .mc-pill__box {
+  stroke: var(--color-primary);
+  stroke-width: 2;
+}
+
+/* The new chip is distinguished by outline AND by being the only
+   chip whose text carries the accent — never by hue alone (§7). */
+.mc-pill--new .mc-pill__text {
+  fill: var(--theme-accent-text);
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------
+   Elara
+   The anchor is the full size of the stage, so a percentage
+   translate on it is a percentage of the STAGE, not of the
+   sprite. That is what lets the figure track a fluid SVG using
+   transform only.
+   ------------------------------------------------------------ */
+.mc-elara-anchor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  /* Wide end-state (§6): standing at the Daily budget dial. Must stay in step
+     with ELARA_MARKS.wide.dial — this is the still a reduced-motion or
+     JS-failed visitor sees, and it is the one frame nobody ever animates into
+     place, so a stale value here is invisible in review and obvious on the page. */
+  --mc-x: 33.75%;
+  --mc-y: 65%;
+
+  transform: translate3d(var(--mc-x), var(--mc-y), 0);
+  -webkit-transform: translate3d(var(--mc-x), var(--mc-y), 0);
+  will-change: transform;
+}
+
+.mc-elara {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 96px;
+  height: 116px;
+
+  background-image: url("/images/marcommand/elara-sheet.webp");
+  background-repeat: no-repeat;
+  background-size: 400% 100%;
+  background-position-x: calc(var(--mc-frame) * 33.3333%);
+  background-position-y: 0;
+
+  image-rendering: pixelated;
+
+  /*
+    KNOCKOUT, NOT A SHADOW.
+
+    The client's "weird overlapping lines on the robot dude": he is already the
+    last child of .mc-stage and paints above the whole SVG, so nothing is drawn
+    over him — but he is a pixel sprite with transparent gaps, and he walks ON
+    the rails. Measured mid-walk1 at 1440 and 1920, both themes: THREE visible
+    wires cross his inner body box, and read as a blue line skewering him and
+    emerging between his legs while a grey rail runs into his chest.
+
+    Two drop-shadows at zero offset in the card colour paint a ~2px halo around
+    his own alpha silhouette, so wires stop just short of touching him instead
+    of appearing to enter him. It follows his actual shape, not a box, and it
+    carries no depth cue: zero offset, no blur-tint, background colour only.
+    Paint-only — no layout, and it does not disturb the --mc-frame background
+    -position steps or image-rendering: pixelated.
+
+    --theme-bg-primary, NOT --theme-card-bg. The card token is
+    `rgba(255,255,255,0.03)` in dark mode, i.e. effectively transparent, so a
+    halo painted in it did nothing at all in dark and the blue rail still ran
+    up between his legs — the same one-theme-only failure as the original
+    .mc-dial__body bug. --theme-bg-primary is solid in both (#FFFFFF light,
+    #0A1628 dark); the dark card composites to rgb(17,29,47), a 7-unit
+    difference that is invisible across a 2px halo.
+  */
+  filter:
+    drop-shadow(0 0 2px var(--theme-bg-primary))
+    drop-shadow(0 0 2px var(--theme-bg-primary))
+    drop-shadow(0 0 1px var(--theme-bg-primary));
+
+  /* -100% y puts his FEET on the point, which is what every stage coordinate in
+     the component means. That part was always right: measured on the sheet, the
+     drawn artwork touches the BOTTOM row of every one of the four cells
+     (padBottom = 0 for frames 0-3 of the 768x232 sheet), and a screenshot diff
+     of the rendered page — sprite visible minus sprite hidden — puts the drawn
+     bottom at 0.00 CSS px from the box bottom at 1440 and 0.50 px at 390.
+
+     The X was NOT right, and this is the fix.
+
+     `-50%` centres the sprite CELL on the mark. But the feet do not sit in the
+     middle of the cell: measured per frame, the sole band occupies horizontal
+     fraction 0.1510 -> 0.6615 of the cell (identical in all four frames, since
+     only the arm changes), so the feet's centre is at 0.40625 — the cell carries
+     its slack on the RIGHT, where the reaching arm needs room. Centring the cell
+     therefore parked his feet 0.09375 of the sprite width LEFT of the mark:
+     9.0 CSS px at 1440 and 4.5 px at 390. On a 50 px rail run that is the
+     difference between both feet on the line and his left foot over the corner.
+
+     The correction is 9.375% of the sprite width, and it must FLIP with him:
+     scaleX(-1) mirrors the artwork inside the box, so the slack moves to the
+     left and the offset has to change sign. Hence the multiply by --mc-flip
+     rather than a constant.
+
+     If the sheet is ever redrawn, re-measure the sole band and update 9.375%.
+     --mc-bob is the two-step walk hop. */
+  transform:
+    translate3d(calc(-50% + 9.375% * var(--mc-flip)), calc(-100% + var(--mc-bob)), 0)
+    scaleX(var(--mc-flip));
+  -webkit-transform:
+    translate3d(calc(-50% + 9.375% * var(--mc-flip)), calc(-100% + var(--mc-bob)), 0)
+    scaleX(var(--mc-flip));
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .mc-elara-anchor {
+    /* Portrait end-state: at the Daily budget dial, (49,312) in the 390x620
+       space. Must stay in step with ELARA_MARKS.narrow.dial — this is the still
+       that a reduced-motion or JS-failed visitor sees, so it is load-bearing
+       and not decorative. */
+    --mc-x: 12.5641%;
+    --mc-y: 50.3226%;
+  }
+
+  .mc-elara {
+    /* 58px, a quarter of the 232px sheet cell, so the sprite lands on exact
+       source pixels under image-rendering: pixelated. The 78px sprite that
+       stood here was sized for the sparse ledge, where he was the only object;
+       in the restored hub he stands between two 84u cards on a 390u stage and
+       at 78px tall he covered the "Google Ads" caption. Width follows the cell
+       ratio: 58 * 192/232 = 48. */
+    width: 48px;
+    height: 58px;
+  }
+}
+
+/*
+  THE WIDE SPRITE IS THE QUARTER-SCALE CELL UNTIL THE STAGE IS BIG ENOUGH FOR
+  THE HALF-SCALE ONE.
+
+  Elara is a fixed CSS-pixel div on a FLUID stage, so his height IN STAGE UNITS
+  is `px * 1200 / stageWidth` — it GROWS as the viewport shrinks. The narrow
+  profile is capped at `max-width: 430px` for exactly this reason; the wide one
+  has no such cap, and measured on the built page the wide stage is
+  `min(viewport - 98, 1102)` px:
+
+      viewport   stage    96x116 sprite   worst caption occlusion
+        769px    671px       207.5u       Instagram 100%, Google Ads 68%
+        800px    702px       198.3u       Instagram 100%, Google Ads 62.2%
+        900px    802px       173.6u       Instagram 100%, Google Ads 46.5%
+       1000px    902px       154.3u       Instagram 100%, Google Ads 34.3%
+       1100px   1002px       138.9u       Google Ads 24.6%, Instagram 12.6%
+       1200px+  1102px       126.3u       0%
+
+  So the M3 reroute holds only where the sprite is ~126u. Below 1200px he grows
+  until, at 769px, he is 207u tall and 172u wide and blankets the Instagram card
+  from the pad itself. Capping the stage's max-width cannot fix this — the stage
+  is already too SMALL here, not too large — so the sprite has to come down.
+
+  232 and 192 only divide cleanly by 2 and 4, so 96x116 and 48x58 are the only
+  sizes that stay crisp under `image-rendering: pixelated`; 64x77.33 is not an
+  integer and would blur. 48x58 puts him at 103.7u at 769px and 63.2u at 1199px,
+  clear of the caption band at every width in between.
+
+  The switch is at 1200px because that is where the container stops growing and
+  the stage pins at 1102px — the same 126.3u as 1440px, which is the width the
+  M3 fix was measured clean at. It is a real boundary in this layout, not a
+  round number chosen by eye.
+
+  Nothing else has to change: the -100% feet anchor, the 9.375% feet-centring
+  and the --mc-x/--mc-y marks are all percentages of the sprite or the stage, so
+  they rescale themselves. This is the same substitution the narrow profile
+  already makes.
+*/
+@media (min-width: 769px) and (max-width: 1199px) {
+  .mc-elara {
+    width: 48px;
+    height: 58px;
+  }
+}
+
+/* ------------------------------------------------------------
+   Pause control — WCAG 2.2 SC 2.2.2 / SC 2.5.8
+   The visible glyph is 20px; the hit area is 44x44.
+   ------------------------------------------------------------ */
+.mc-live__pause {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+
+  padding: 0;
+  border-radius: 999px;
+  background: var(--theme-carousel-btn-bg);
+  border: 1px solid var(--theme-carousel-btn-border);
+  color: var(--theme-carousel-btn-color);
+  transition:
+    background-color 200ms var(--ease-standard),
+    border-color 200ms var(--ease-standard);
+}
+
+.mc-live__pause:hover {
+  border-color: var(--color-primary);
+}
+
+.mc-live__pause:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.mc-live__pause svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 768px) {
+  /*
+    At portrait the stage's bottom-right corner is occupied by the Local
+    Services card and its caption, and a 44x44 control anchored to the card's
+    bottom-right lands on top of it — measured as a 10.5 x 14 px overlap at
+    390px, which clipped the caption's final "s" so it read "Local Service".
+
+    The control does NOT shrink: 44x44 is WCAG 2.2 SC 2.5.8 and is not
+    negotiable. Instead the card grows a bottom gutter and the button sits in
+    it, below the stage entirely, overlapping nothing. Costs 56px of card
+    height on mobile, which is the correct trade.
+  */
+  .mc-live__stage-card {
+    padding-bottom: 72px;
+  }
+
+  .mc-live__pause {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+/* ------------------------------------------------------------
+   Funnel band (ADR-0010)
+
+   Sits above the agent stage inside the same card, so the two
+   halves of the MarCommand live surface read as one surface.
+   Same two-group / one-viewBox discipline as the stage.
+   ------------------------------------------------------------ */
+.mc-fn {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1200 / 240;
+  overflow: hidden;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--theme-card-border);
+}
+
+.mc-fn__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mc-fn__narrow {
+  display: none;
+}
+
+/* Exactly one description is in the a11y tree at a time; display:none removes
+   the other from it entirely. Mirrors the .mc-fn__wide / __narrow switch. */
+.mc-live__sr--narrow {
+  display: none;
+}
+
+/* Desktop carries these figures in the funnel figure instead.
+   MUST be media-scoped, not a bare rule: this sheet is unlayered, so a bare
+   `display:none` here would sit LATER in source than the mobile grid rule and
+   win at every width — which is exactly what it did on the first attempt. */
+@media (min-width: 769px) {
+  .mc-live__outcomes {
+    display: none;
+  }
+
+  /* Desktop keeps the claim, sized to the wider measure. */
+  .mc-live__claim {
+    margin: 14px 0 0;
+    font-size: 0.8125rem;
+    color: var(--theme-text-muted);
+  }
+}
+
+@media (max-width: 768px) {
+  /*
+    MOBILE DROPS THE STANDALONE FUNNEL FIGURE.
+
+    This is the height defect, and it is arithmetic rather than styling: the
+    block stacked a 390/620 stage on top of a 390/400 funnel, so at 390px wide
+    the figures alone were 1,020px before a single line of copy. The narrow
+    funnel is authored as two rows of three channels plus five stacked rows,
+    so it cannot be made short without crowding it.
+
+    The client asked for "just the animation" on mobile. The funnel keeps its
+    own figure on desktop, where the vertical room exists.
+  */
+  .mc-fn {
+    display: none;
+  }
+
+  .mc-fn--unused {
+    aspect-ratio: 390 / 400;
+    /* Same cap and centring as the stage: the narrow profile is authored for a
+       ~310px box and would otherwise magnify without bound up to 768px. */
+    max-width: 430px;
+    margin-inline: auto;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+  }
+
+  .mc-fn__wide {
+    display: none;
+  }
+
+  .mc-fn__narrow {
+    display: block;
+  }
+
+  .mc-live__sr--wide {
+    display: none;
+  }
+
+  .mc-live__sr--narrow {
+    display: block;
+  }
+}
+
+/* Ribbons. The dash pattern is the flow; the timeline slides
+   `stroke-dashoffset` by an exact multiple of the pattern period so the loop
+   repeat is seamless. Paint-only, no layout, no filter. */
+/*
+   The muted ribbons carry MEANING, so they owe 3:1 like the bars did.
+
+   Judged, not assumed. The visually-hidden text alternative states that six
+   advertising channels "flow into your business" — the ribbon is the only thing
+   on screen that encodes that flow; without it the band is six labelled dots and
+   an unrelated disc. ADR-0010 decision 3 also makes muted-vs-accent a STATE cue
+   (the accent ribbon is the channel the agent is working, matching the lit card
+   on the stage below), and a state you cannot see is not a state. So these are
+   not decorative and WCAG 1.4.11 binds.
+
+   Measured from rendered pixels, scanning the whole path so the sample lands on
+   a drawn dash rather than in a 10-unit gap: --theme-border gave 1.233:1 light
+   and 1.250:1 dark. Same token, same failure, same fix as .mc-fn__bar.
+
+   The live ribbon stays --color-primary (measured 3.248:1 light / 5.203:1 dark,
+   already passing). It now has slightly LOWER contrast than its muted siblings
+   in light mode, which is fine and deliberate: it is distinguished by hue, by
+   being the only 3.5-wide ribbon, and by being the only filled dot — three cues,
+   none of which is contrast, so the hierarchy does not depend on the thing that
+   changed.
+*/
+.mc-fn__ribbon {
+  fill: none;
+  stroke: var(--theme-text-muted);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 6 10;
+}
+
+/* ADR-0010 decision 3 in its resting state: the channel the agent is working
+   is the one carrying the accent, and it is the same channel that is lit on
+   the stage below. Never hue alone — it is also the only thicker ribbon and
+   the only filled dot. */
+.mc-fn__ribbon--live {
+  stroke: var(--color-primary);
+  stroke-width: 3.5;
+}
+
+/* The dot is the ribbon's terminus. Raising the ribbon and leaving the dot at
+   1.233:1 would put a visible line into an invisible object — the exact "lines
+   that start and stop without meeting anything" defect this component already
+   fixed on the stage. It moves with the ribbon or not at all. */
+.mc-fn__dot {
+  fill: var(--theme-bg-card);
+  stroke: var(--theme-text-muted);
+  stroke-width: 2;
+}
+
+.mc-fn__dot--live {
+  fill: var(--color-primary-glow);
+  stroke: var(--color-primary);
+  stroke-width: 3;
+}
+
+.mc-fn__dot-cap {
+  fill: var(--theme-text-muted);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+}
+
+/* The client disc. The "glow" is a wider ring, not a filter — a filter is a
+   per-frame composite on a looping section and iOS pays for it every frame. */
+.mc-fn__tip-glow {
+  fill: var(--color-primary-glow);
+  stroke: none;
+}
+
+/* NO MONOGRAM. The plan called for an `HA` <text> here — the synthetic demo
+   tenant's initials. That is right in the product, where the tip carries the
+   TENANT's mark, and wrong here: the caption directly below reads "Your
+   business", so initials inside the disc tell a visitor their business is HA.
+   An empty ring was the defect; a filled disc that makes no claim is the fix. */
+.mc-fn__tip-disc {
+  fill: var(--color-primary);
+  stroke: var(--color-primary);
+  stroke-width: 3;
+}
+
+.mc-fn__tip-cap {
+  fill: var(--theme-text-secondary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  text-anchor: middle;
+}
+
+/* The spine is what makes the five stages read as DOWNSTREAM of the funnel
+   rather than as a second, unrelated chart parked beside it — it starts at the
+   client disc on purpose. Same argument as the ribbon, same token.
+
+   Scope note: --theme-border is still correct on the STAGE below (.mc-rail,
+   .mc-card__face, .mc-pad__ring, .mc-tile__box, .mc-pill__box). That surface is
+   aria-hidden decoration whose meaning lives in the copy and in the text
+   alternative, its idle rails are deliberately subordinate to the lit accent
+   rail, and the independent audit accepted them. Only the funnel band's three
+   information-carrying strokes moved. */
+.mc-fn__spine {
+  fill: none;
+  stroke: var(--theme-text-muted);
+  stroke-width: 2;
+}
+
+/*
+   THE BAR IS THE FUNNEL. Its LENGTH is the only thing encoding "the audience
+   filters down" — the counts merely label what the bars already say — so under
+   WCAG 1.4.11 it is a graphical object required to understand the content and
+   owes 3:1 against the panel it sits on.
+
+   It did not pay. Measured on the built page from rendered pixels, sampled at
+   deviceScaleFactor 3 against the panel background inside `.mc-fn`:
+
+       fill   --theme-bg-secondary   1.057:1 light   1.003:1 dark
+       stroke --theme-border         1.233:1 light   1.250:1 dark
+
+   In dark mode `--theme-bg-secondary` (#0F1D30) against the stage card
+   (rgba(255,255,255,0.03) over #0A1628, which renders as rgb(18,29,47)) is
+   1.003:1 — the same colour to three decimal places. The four flow bars were
+   not faint, they were absent, and the band read as a row of empty input
+   boxes with five blue numbers floating over it.
+
+   The fix is VALUE, not hue, so the taper still reads in greyscale and for a
+   visitor who cannot separate blue from grey:
+     - flow bars carry a solid muted fill with a secondary-text edge;
+     - the outcome bar is the only ACCENT-filled bar and the only 2.5 stroke,
+       so it is distinguished twice over and never by colour alone (§7).
+
+   Every value here is a token from globals.css. No new hex — and do not
+   "soften" these back toward the border/bg-secondary pair, which is the exact
+   change that made the graphic invisible.
+*/
+.mc-fn__bar {
+  fill: var(--theme-text-muted);
+  stroke: var(--theme-text-secondary);
+  stroke-width: 1.5;
+}
+
+/* The outcome stage. Distinguished by fill AND by border weight, not by hue. */
+.mc-fn__bar--out {
+  fill: var(--theme-accent-text);
+  stroke: var(--theme-text-secondary);
+  stroke-width: 2.5;
+}
+
+/* NO `text-anchor` on these two classes, deliberately. A CSS declaration BEATS
+   the `text-anchor` presentation attribute in SVG, so declaring it here silently
+   overrode the per-element `textAnchor="start"` / `"end"` that the portrait rows
+   need — every label and count snapped back to centre and the rows rendered as
+   text sitting across its own bar. Caught on the built page at 390px, not in
+   review. Anchor is set at each call site instead. */
+.mc-fn__count {
+  fill: var(--theme-accent-text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+}
+
+.mc-fn__label {
+  fill: var(--theme-text-secondary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+}
+
+/* ------------------------------------------------------------
+   Reduced motion — belt and braces (§6).
+   The markup already ships in the end-state and the component
+   returns before importing GSAP at all, so there is nothing to
+   stop; this only guarantees it.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  /* Named explicitly rather than leaning on any blanket `*` rule. The rebuilt
+     mobile nodes (ledge, single dial, single card) live inside .mc-stage so they
+     are already covered, but they are listed by their own selectors so that a
+     future change to the stage's structure cannot silently drop them. The real
+     protection is upstream: the component returns before importing GSAP at all
+     when reduce is set, so no timeline is ever constructed. */
+  .mc-stage *,
+  .mc-stage__narrow *,
+  .mc-fn *,
+  .mc-live__outcomes,
+  .mc-live__claim,
+  .mc-elara-anchor,
+  .mc-elara {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .mc-live__pause {
+    display: none;
+  }
+}

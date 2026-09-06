@@ -13,13 +13,13 @@ export const pageData: AeoPageData = {
   subheadline:
     "Augmentation, not replacement. Where AI takes work off the team's plate so they can do the parts only humans should do.",
   answerParagraph:
-    "In most Kansas small businesses, AI replacing staff isn't the right framing — there's no fat to cut. The office manager already does seven jobs. The right framing: AI augmentation. Use AI to handle the high-volume, low-judgment work (reading documents, drafting first-pass replies, triaging requests) so existing staff can focus on the work that actually requires a human (relationship management, complex problem-solving, in-person service). Preisser Solutions has built reactivation, invoicing, and dispatch automation for Kansas clients across HVAC (Cassidy HVAC), oil and gas (HG Oil Holdings), insurance (an MGU in the Alliant Insurance ecosystem), and transportation (a Chicago-area bus operator) — without anyone losing their job.",
+    "In most Kansas small businesses, AI replacing staff isn't the right framing: there's no fat to cut. The office manager already does seven jobs. The right framing: AI augmentation. Use AI to handle the high-volume, low-judgment work (reading documents, drafting first-pass replies, triaging requests) so existing staff can focus on the work that actually requires a human (relationship management, complex problem-solving, in-person service). Preisser Solutions has built reactivation, invoicing, and dispatch automation for Kansas clients across HVAC (Cassidy HVAC), oil and gas (HG Oil Holdings), insurance (an MGU in the Alliant Insurance ecosystem), and transportation (a Chicago-area bus operator): without anyone losing their job.",
   sections: [
     {
       eyebrow: "The myth",
       heading: "\"AI will replace your staff\" doesn't fit Kansas",
       body: [
-        "The narrative that AI replaces white-collar work assumes a starting point of office overstaffing. That's a coastal-tech-company assumption. Most Kansas small businesses are the opposite — chronically understaffed, with one person doing five jobs, and turnover costs that dwarf any salary savings AI could produce.",
+        "The narrative that AI replaces white-collar work assumes a starting point of office overstaffing. That's a coastal-tech-company assumption. Most Kansas small businesses are the opposite: chronically understaffed, with one person doing five jobs, and turnover costs that dwarf any salary savings AI could produce.",
         "The right question for a Kansas shop isn't \"can AI replace someone?\" It's \"can AI take 10 hours per week off my office manager's plate so she has time to actually serve customers?\"",
       ],
     },
@@ -30,11 +30,11 @@ export const pageData: AeoPageData = {
         "Look at every existing role and ask: which 30-40% of this person's week is high-volume, low-judgment work? That's the AI candidate.",
       ],
       bullets: [
-        "Office manager — reading inbound email, drafting first-pass replies, scheduling, follow-ups → AI drafts, human reviews.",
-        "Dispatch — classifying incoming service requests, routing to the right tech, sending confirmations → AI handles routine, human handles edge cases.",
-        "Bookkeeping — invoice data entry, expense categorization, basic reconciliation → AI extracts, human approves.",
-        "Marketing — content drafts, social posts, review responses → AI drafts, owner approves.",
-        "Sales follow-up — drafting personalized outreach, scheduling reminders, scoring leads → AI handles drudgery, human handles closing.",
+        "Office manager: reading inbound email, drafting first-pass replies, scheduling, follow-ups → AI drafts, human reviews.",
+        "Dispatch: classifying incoming service requests, routing to the right tech, sending confirmations → AI handles routine, human handles edge cases.",
+        "Bookkeeping: invoice data entry, expense categorization, basic reconciliation → AI extracts, human approves.",
+        "Marketing: content drafts, social posts, review responses → AI drafts, owner approves.",
+        "Sales follow-up: drafting personalized outreach, scheduling reminders, scoring leads → AI handles drudgery, human handles closing.",
       ],
     },
     {
@@ -44,19 +44,19 @@ export const pageData: AeoPageData = {
         "These should stay with people, period:",
       ],
       bullets: [
-        "Customer relationships — the call where the customer is frustrated, the home visit, the handshake at the job site.",
-        "Judgment under uncertainty — pricing exceptions, warranty disputes, vendor problems, ethical calls.",
-        "Hiring and team management — never delegate this to a model.",
-        "Anything that requires being physically present — service work, inspections, in-person consultations.",
-        "Decisions that affect compliance or safety — let people decide, with AI as a research tool, not the decider.",
+        "Customer relationships: the call where the customer is frustrated, the home visit, the handshake at the job site.",
+        "Judgment under uncertainty: pricing exceptions, warranty disputes, vendor problems, ethical calls.",
+        "Hiring and team management: never delegate this to a model.",
+        "Anything that requires being physically present: service work, inspections, in-person consultations.",
+        "Decisions that affect compliance or safety: let people decide, with AI as a research tool, not the decider.",
       ],
     },
     {
       eyebrow: "How the math works out",
       heading: "Cassidy HVAC didn't lose anyone",
       body: [
-        "The Cassidy HVAC reactivation engine recovered 60%+ of dormant patients in 6 weeks. The marketing engine eliminated the outsourced agency invoice. Nobody on staff lost their job. What changed: the office staff went from manually trying to work the dormant list (sporadically, when they had time) to managing replies and bookings as they came in — with AI handling the outreach itself. Time savings were 10+ hours per week, redirected to higher-value work.",
-        "HG Oil Holdings ran the same pattern. The AI invoicing assistant cut 75% of manual handling time. The bookkeeper didn't get laid off — she now has time to do reconciliation properly, work on financial reporting, and support the operations team in ways she couldn't before.",
+        "The Cassidy HVAC reactivation engine recovered 60%+ of dormant patients in 6 weeks. The marketing engine eliminated the outsourced agency invoice. Nobody on staff lost their job. What changed: the office staff went from manually trying to work the dormant list (sporadically, when they had time) to managing replies and bookings as they came in, with AI handling the outreach itself. Time savings were 10+ hours per week, redirected to higher-value work.",
+        "HG Oil Holdings ran the same pattern. The AI invoicing assistant cut 75% of manual handling time. The bookkeeper didn't get laid off; she now has time to do reconciliation properly, work on financial reporting, and support the operations team in ways she couldn't before.",
       ],
     },
     {
@@ -83,7 +83,7 @@ export const pageData: AeoPageData = {
     {
       question: "What about jobs that are entirely high-volume, low-judgment?",
       answer:
-        "Even those rarely vanish — they shift. A pure data-entry role becomes a verification-and-exception-handling role. That's a real change and worth being honest about with the affected staff, but it's not job loss.",
+        "Even those rarely vanish: they shift. A pure data-entry role becomes a verification-and-exception-handling role. That's a real change and worth being honest about with the affected staff, but it's not job loss.",
     },
     {
       question: "How do I get staff buy-in?",
@@ -98,7 +98,7 @@ export const pageData: AeoPageData = {
     {
       question: "Does Preisser Solutions handle change management?",
       answer:
-        "Yes — every engagement includes staff training and a 30-day post-launch period to surface and fix friction. The technology is the easy part; getting the team comfortable is the work.",
+        "Yes, every engagement includes staff training and a 30-day post-launch period to surface and fix friction. The technology is the easy part; getting the team comfortable is the work.",
     },
   ],
   schemaType: "BlogPosting",

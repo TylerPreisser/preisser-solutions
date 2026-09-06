@@ -7,11 +7,11 @@ export const pageData: AeoPageData = {
   dateModified: "2026-05-15",
   metaTitle: "Best Automations for Trucking Fleets",
   metaDescription:
-    "Dispatch, driver communication, BOL/rate-con parsing, mileage tracking — lessons from the Kansas trucking ops automation build.",
+    "Dispatch, driver communication, BOL/rate-con parsing, mileage tracking: lessons from the Kansas trucking ops automation build.",
   eyebrow: "Blog · Industry Playbooks",
   h1: "The Best Automations for Trucking and Logistics Operators",
   subheadline:
-    "From the Chicago-area bus transportation engagement. What pays back for small-to-mid trucking operators — and what's mostly hype.",
+    "From the Chicago-area bus transportation engagement. What pays back for small-to-mid trucking operators, and what's mostly hype.",
   answerParagraph:
     "Trucking and logistics operations live or die on paperwork velocity. The transportation operator engagement (a Chicago-area bus transportation operator) Preisser Solutions shipped covered dispatch, driver paperwork automation, AI BOL/rate-confirmation parsing, and back-office reconciliation. Result: weekly admin load reduced by approximately one full FTE of work, reconciliation time dropped from a full day to a 15-minute exception queue, and the principal had real-time load profitability visibility for the first time. The highest-ROI trucking automations for small-to-mid operators are: dispatch communication, document parsing, mileage and HOS tracking integration, and profitability dashboards.",
   sections: [
@@ -53,7 +53,7 @@ export const pageData: AeoPageData = {
       eyebrow: "#4",
       heading: "Profitability dashboards (real-time per-load and per-driver)",
       body: [
-        "Most small-to-mid operators don't know their per-load profitability until weeks after the load runs — sometimes never. Real-time profitability requires: revenue (from rate-con), variable cost (fuel from IFTA/fuel-card data, driver pay per CPM, tolls, repairs), fixed cost allocation.",
+        "Most small-to-mid operators don't know their per-load profitability until weeks after the load runs, sometimes never. Real-time profitability requires: revenue (from rate-con), variable cost (fuel from IFTA/fuel-card data, driver pay per CPM, tolls, repairs), fixed cost allocation.",
         "When this lands in a dashboard the principal sees daily, the entire business posture changes. The Chicago-area bus operator: the principal saw real-time load profitability for the first time, which directly drove decisions on lane mix and rate negotiations.",
       ],
     },
@@ -72,8 +72,8 @@ export const pageData: AeoPageData = {
       ],
       bullets: [
         "Custom is justified when: operation is mixed-fleet (LTL + truckload + flatbed + reefer in same business), TMS workflows don't fit, you've maxed out TMS customization but still have manual gaps.",
-        "Custom is justified when: principal needs real-time visibility the TMS doesn't deliver — load-level profitability, driver utilization, lane performance.",
-        "Custom is justified when: integration ceiling of the TMS limits what you can build on top — bolted-on automations break with TMS updates, brittle.",
+        "Custom is justified when: principal needs real-time visibility the TMS doesn't deliver (load-level profitability, driver utilization, lane performance).",
+        "Custom is justified when: integration ceiling of the TMS limits what you can build on top (bolted-on automations break with TMS updates, brittle).",
         "Custom is NOT justified for most single-mode small operators. Stay with productized.",
       ],
     },
@@ -82,17 +82,17 @@ export const pageData: AeoPageData = {
     {
       question: "What TMS do you typically integrate with?",
       answer:
-        "Whatever the client is running — McLeod, TMW, AscendTMS, Tailwind, Truckstop ITS. We've also done builds where the custom system effectively replaced the TMS for clients whose TMS was the bottleneck. CRM/TMS-agnostic on builds.",
+        "Whatever the client is running: McLeod, TMW, AscendTMS, Tailwind, Truckstop ITS. We've also done builds where the custom system effectively replaced the TMS for clients whose TMS was the bottleneck. CRM/TMS-agnostic on builds.",
     },
     {
       question: "Does this work for owner-operators?",
       answer:
-        "Less ROI at owner-operator scale — the build cost outweighs the time saved. Owner-operators are better off picking a good lightweight tool (RTS Pro, TruckBytes, ITS Dispatch) and stopping there. Custom builds make sense at 5+ trucks.",
+        "Less ROI at owner-operator scale: the build cost outweighs the time saved. Owner-operators are better off picking a good lightweight tool (RTS Pro, TruckBytes, ITS Dispatch) and stopping there. Custom builds make sense at 5+ trucks.",
     },
     {
       question: "How does the transportation client compare to other shops?",
       answer:
-        "The Chicago-area bus operator is a mixed-fleet operation — not a single-mode shop. That's why custom paid off. Your operational profile matters more than your truck count.",
+        "The Chicago-area bus operator is a mixed-fleet operation, not a single-mode shop. That's why custom paid off. Your operational profile matters more than your truck count.",
     },
     {
       question: "How long did the transportation build take?",
@@ -130,5 +130,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a build scoped for your operation?",
   ctaSubcopy:
-    "Free 30-minute call. We'll map your fleet, your TMS, and your back-office workflow — and quote a fixed price.",
+    "Free 30-minute call. We'll map your fleet, your TMS, and your back-office workflow, and quote a fixed price.",
 };

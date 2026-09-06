@@ -6,7 +6,7 @@ export const caseStudy: CaseStudyData = {
   slug: "custom-local-ai-models",
   metaTitle: "Custom Local AI Models",
   metaDescription:
-    "Custom AI models that run locally — no cloud dependency, no data leaving the network — tuned for specific business operations with proprietary logic.",
+    "Custom AI models that run locally (no cloud dependency, no data leaving the network): tuned for specific business operations with proprietary logic.",
   datePublished: "2026-04-10",
   dateModified: "2026-05-20",
 
@@ -15,7 +15,7 @@ export const caseStudy: CaseStudyData = {
   clientNameDisplay: "Capability",
   industry: "Local AI model deployment and custom training",
 
-  h1: "Custom Local AI Models — No Cloud, No Data Leaving the Network",
+  h1: "Custom Local AI Models: No Cloud, No Data Leaving the Network",
   subheadline:
     "Local AI models tuned for specific business operations. No cloud dependency, no third-party data egress, and full control over the proprietary logic that runs on top.",
   oneLine: "Custom AI models that run locally with no data leaving your network",
@@ -28,18 +28,18 @@ export const caseStudy: CaseStudyData = {
   ],
 
   before: {
-    heading: "Cloud AI is fast — and not always the right answer.",
+    heading: "Cloud AI is fast: and not always the right answer.",
     body: [
       "Sending business data through a third-party AI provider is the default path. It is also the wrong path in plenty of cases. Regulated industries restrict where data can travel. Trade-secret-heavy operations have proprietary logic they cannot expose. Air-gapped facilities cannot route through anyone's API. The general-purpose model is also rarely tuned for the operation being modeled.",
-      "Local AI changes that. The model lives on hardware you control, trained on your data, and the proprietary logic that sits on top stays in-house. The trade-off is engineering complexity — local deployment is not a check-the-box workflow.",
+      "Local AI changes that. The model lives on hardware you control, trained on your data, and the proprietary logic that sits on top stays in-house. The trade-off is engineering complexity, local deployment is not a check-the-box workflow.",
     ],
   },
 
   built: {
     heading: "Locally deployed models, custom-tuned, proprietary logic on top.",
     body: [
-      "Preisser Solutions builds custom AI models that run on the client's own infrastructure — on-premises servers, dedicated machines, or edge devices. The model is fine-tuned on the client's business-specific data so the output reflects the actual operation rather than a generic baseline.",
-      "Proprietary logic — business rules, scoring frameworks, escalation criteria — integrates directly on top of the local model. Nothing leaves the network. Updates and re-training cycles happen on the client's schedule, in the client's environment. The pattern fits regulated industries, secrecy-heavy operations, and air-gapped facilities where cloud AI is structurally off the table.",
+      "Preisser Solutions builds custom AI models that run on the client's own infrastructure: on-premises servers, dedicated machines, or edge devices. The model is fine-tuned on the client's business-specific data so the output reflects the actual operation rather than a generic baseline.",
+      "Proprietary logic (business rules, scoring frameworks, escalation criteria): integrates directly on top of the local model. Nothing leaves the network. Updates and re-training cycles happen on the client's schedule, in the client's environment. The pattern fits regulated industries, secrecy-heavy operations, and air-gapped facilities where cloud AI is structurally off the table.",
     ],
   },
 
@@ -66,7 +66,7 @@ export const caseStudy: CaseStudyData = {
       {
         title: "What clients control",
         items: [
-          "Training data — never leaves the network",
+          "Training data: never leaves the network",
           "Proprietary logic on top of the base model",
           "Update and re-training cadence",
           "Access policies and audit logs",
@@ -80,7 +80,7 @@ export const caseStudy: CaseStudyData = {
       value: "Local",
       label: "Deployment with no cloud dependency",
       context:
-        "The model runs on the client's hardware — server, dedicated machine, or edge device. Cloud services are not in the loop.",
+        "The model runs on the client's hardware: server, dedicated machine, or edge device. Cloud services are not in the loop.",
     },
     {
       value: "0",

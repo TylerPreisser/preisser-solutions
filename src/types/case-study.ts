@@ -85,6 +85,19 @@ export interface CaseStudyData {
    */
   hub?: HubCardCopy;
 
+  // ── Live product ───────────────────────────────────────────
+  /**
+   * Outbound link to the shipped product, rendered in the hero. Only set it
+   * where the product is genuinely public and live — a dead link on a case
+   * study costs more than the link earns.
+   */
+  liveLink?: {
+    /** Visible label, e.g. "See it live at farm-books.com". */
+    label: string;
+    /** Absolute https URL. */
+    href: string;
+  };
+
   // ── Body sections ──────────────────────────────────────────
   before: {
     heading: string;

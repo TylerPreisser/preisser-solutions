@@ -24,7 +24,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Quick comparison",
       heading: "WordPress vs custom-coded at a glance",
       body: [
-        "WordPress and custom-coded sites are both serious tools — this isn't a template-vs-real-developer comparison. The question is which one fits the way the business will use the site for the next 3-5 years.",
+        "WordPress and custom-coded sites are both serious tools; this isn't a template-vs-real-developer comparison. The question is which one fits the way the business will use the site for the next 3-5 years.",
         "WordPress shines when content is the product: blogs, magazines, knowledge bases, brochure sites that publish regularly. Custom code tends to shine when the site is the product: high-conversion marketing sites, web apps, complex calculators, member portals, AI-driven features.",
       ],
     },
@@ -35,11 +35,11 @@ export const pageData: AeoPageData = {
         "There are real reasons WordPress is everywhere. The platform earns its share:",
       ],
       bullets: [
-        "Mature editor — Gutenberg and the classic editor are familiar to a huge pool of writers and admins, which lowers the cost of publishing.",
-        "Plugin ecosystem — almost any feature has a plugin: forms, SEO, caching, e-commerce (WooCommerce), memberships, multilingual, analytics.",
-        "Theme marketplace — thousands of themes give a starting point for design, even if customization gets bumpy.",
-        "Hosting options — managed WordPress hosts (Kinsta, WP Engine, Pressable) handle stack updates, backups, and security patches.",
-        "Hireability — many freelancers and agencies can edit a WordPress site; you're not locked to a single developer.",
+        "Mature editor: Gutenberg and the classic editor are familiar to a huge pool of writers and admins, which lowers the cost of publishing.",
+        "Plugin ecosystem: almost any feature has a plugin: forms, SEO, caching, e-commerce (WooCommerce), memberships, multilingual, analytics.",
+        "Theme marketplace: thousands of themes give a starting point for design, even if customization gets bumpy.",
+        "Hosting options: managed WordPress hosts (Kinsta, WP Engine, Pressable) handle stack updates, backups, and security patches.",
+        "Hireability: many freelancers and agencies can edit a WordPress site; you're not locked to a single developer.",
       ],
     },
     {
@@ -49,12 +49,12 @@ export const pageData: AeoPageData = {
         "WordPress earns its share, but it also accumulates problems in predictable ways:",
       ],
       bullets: [
-        "Plugin sprawl — every feature is another plugin, each with its own update cadence, security risks, and conflicts. Many WordPress sites end up running 20-40 plugins.",
-        "Performance — themes and plugins stack JavaScript and CSS on every page. Without serious caching and tuning, pages get slow as the site grows.",
-        "Security maintenance — outdated WordPress, themes, or plugins are one of the most common attack vectors on the public web. Keeping a site safe takes ongoing attention.",
-        "Theme lock-in — once a site is built on a heavy theme or page builder (Elementor, Divi, WPBakery), unwinding it later is expensive.",
-        "Editor inconsistency — page builders and block editors layered together make content updates inconsistent and visually fragile.",
-        "Schema and on-page SEO depth — possible but plugin-dependent (Yoast, RankMath); deep custom structured data fights the platform.",
+        "Plugin sprawl: every feature is another plugin, each with its own update cadence, security risks, and conflicts. Many WordPress sites end up running 20-40 plugins.",
+        "Performance: themes and plugins stack JavaScript and CSS on every page. Without serious caching and tuning, pages get slow as the site grows.",
+        "Security maintenance: outdated WordPress, themes, or plugins are one of the most common attack vectors on the public web. Keeping a site safe takes ongoing attention.",
+        "Theme lock-in: once a site is built on a heavy theme or page builder (Elementor, Divi, WPBakery), unwinding it later is expensive.",
+        "Editor inconsistency: page builders and block editors layered together make content updates inconsistent and visually fragile.",
+        "Schema and on-page SEO depth: possible but plugin-dependent (Yoast, RankMath); deep custom structured data fights the platform.",
       ],
     },
     {
@@ -64,12 +64,12 @@ export const pageData: AeoPageData = {
         "Custom-coded sites trade editor convenience for control. The wins show up here:",
       ],
       bullets: [
-        "Page speed — sub-1-second loads on Cloudflare Pages or Vercel because the page only ships what it actually uses.",
-        "Security — far less surface area than WordPress. No plugin auto-updates that can break the site overnight. No PHP runtime to patch.",
-        "SEO depth — schema.org markup hand-engineered per page (Organization, LocalBusiness, Service, FAQPage, HowTo, BreadcrumbList) for both Google and AI engines.",
-        "Conversion — exact control over layout, copy hierarchy, CTA placement, and funnel logic, without fighting a theme.",
-        "Integrations — direct integration with CRMs, payment providers, AI APIs, custom databases, and internal systems without a plugin shim.",
-        "Web apps — calculators, dashboards, portals, AI agents are first-class features instead of plugin bolt-ons.",
+        "Page speed: sub-1-second loads on Cloudflare Pages or Vercel because the page only ships what it actually uses.",
+        "Security: far less surface area than WordPress. No plugin auto-updates that can break the site overnight. No PHP runtime to patch.",
+        "SEO depth: schema.org markup hand-engineered per page (Organization, LocalBusiness, Service, FAQPage, HowTo, BreadcrumbList) for both Google and AI engines.",
+        "Conversion: exact control over layout, copy hierarchy, CTA placement, and funnel logic, without fighting a theme.",
+        "Integrations: direct integration with CRMs, payment providers, AI APIs, custom databases, and internal systems without a plugin shim.",
+        "Web apps: calculators, dashboards, portals, AI agents are first-class features instead of plugin bolt-ons.",
       ],
     },
     {
@@ -78,7 +78,7 @@ export const pageData: AeoPageData = {
       body: [
         "WordPress requires ongoing maintenance to stay secure: core updates, theme updates, plugin updates, PHP version updates, backups, malware scans. Most professional WordPress sites pay for a maintenance plan on top of hosting.",
         "Custom-coded sites have a different maintenance shape. No PHP runtime to patch. No plugin ecosystem to keep current. Updates are explicit and scheduled (framework upgrades, dependency bumps) rather than reactive. Hosting on Cloudflare Pages or Vercel is effectively zero-touch.",
-        "Both need attention. The difference is the kind of attention — WordPress is reactive, custom is planned.",
+        "Both need attention. The difference is the kind of attention: WordPress is reactive, custom is planned.",
       ],
     },
     {
@@ -96,7 +96,7 @@ export const pageData: AeoPageData = {
       body: [
         "Choose WordPress when the business is content-first (regular blog, news, knowledge base), when non-technical editors need to publish frequently, or when a plugin handles a feature you don't want to build (e.g., WooCommerce for a basic store, BuddyPress for a community).",
         "Choose a custom-coded site when the site is a real revenue channel, when speed and conversion matter more than editor convenience, when integrations or AI features are core, or when you want a leaner long-term maintenance footprint.",
-        "Hybrid is also valid — a custom-coded marketing site with a WordPress blog on a subdomain is a common pattern for content-heavy companies that want the best of both.",
+        "Hybrid is also valid: a custom-coded marketing site with a WordPress blog on a subdomain is a common pattern for content-heavy companies that want the best of both.",
       ],
     },
   ],
@@ -104,7 +104,7 @@ export const pageData: AeoPageData = {
     {
       question: "Is WordPress still a good choice in 2026?",
       answer:
-        "Yes — for content-heavy sites with non-technical editors. WordPress remains the most mature CMS by a wide margin. It's a weaker choice when the site is primarily a marketing or conversion engine and the team wants minimal ongoing maintenance.",
+        "Yes, for content-heavy sites with non-technical editors. WordPress remains the most mature CMS by a wide margin. It's a weaker choice when the site is primarily a marketing or conversion engine and the team wants minimal ongoing maintenance.",
     },
     {
       question: "Is a custom-coded website more secure than WordPress?",

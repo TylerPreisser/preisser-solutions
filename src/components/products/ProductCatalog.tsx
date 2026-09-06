@@ -19,9 +19,9 @@ export function ProductCatalog({ products }: ProductCatalogProps) {
     "@type": "CollectionPage",
     "@id": "https://preissersolutions.com/products#collection",
     url: "https://preissersolutions.com/products",
-    name: "Product Catalog — Preisser Solutions",
+    name: "Product Catalog: Preisser Solutions",
     description:
-      "Production-grade AI products built from real client engagements. Each product is a packaged capability — scope it for your business and deploy.",
+      "Production-grade AI products built from real client engagements. Each product is a packaged capability; scope it for your business and deploy.",
     inLanguage: "en-US",
     isPartOf: { "@id": "https://preissersolutions.com/#website" },
     mainEntity: {

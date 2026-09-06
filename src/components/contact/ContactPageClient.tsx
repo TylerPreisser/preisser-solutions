@@ -19,7 +19,7 @@ const contactFaqs = [
   {
     question: "How does pricing work?",
     answer:
-      "Every engagement is scoped individually. We share a fixed-price proposal after a short scoping conversation — scope, deliverables, timeline, and total cost all stated up front.",
+      "Every engagement is scoped individually. We share a fixed-price proposal after a short scoping conversation: scope, deliverables, timeline, and total cost all stated up front.",
   },
   {
     question: "Does Preisser Solutions work outside Hays?",
@@ -29,7 +29,7 @@ const contactFaqs = [
   {
     question: "What should I include in my message?",
     answer:
-      "Your business, what you want fixed or built, and how to reach you. A few sentences is enough — we ask the detailed questions on the call, not on the form.",
+      "Your business, what you want fixed or built, and how to reach you. A few sentences is enough; we ask the detailed questions on the call, not on the form.",
   },
 ];
 
@@ -42,7 +42,7 @@ const NEED_OPTIONS = [
   "AI integration",
   "New website or redesign",
   "Local SEO / AI search visibility",
-  "Something else — or not sure yet",
+  "Something else, or not sure yet",
 ];
 
 const TIMELINE_OPTIONS = [
@@ -77,6 +77,12 @@ const initialForm: FormState = {
 type RequiredField = "name" | "email" | "need" | "details";
 
 type Errors = Partial<Record<RequiredField, string>>;
+
+/** How the enquiry actually left — or "idle", meaning it has not. */
+type Delivery = "idle" | "sent" | "mailto";
+
+/** Minimum plausible human fill time, measured from FIRST INTERACTION. */
+const MIN_FILL_MS = 3000;
 
 // Deliberately permissive: something@something.something. Strict RFC-5322
 // matching rejects addresses that are actually valid and deliverable, which
@@ -116,11 +122,25 @@ export function ContactPageClient() {
   // the truth about this: "we've got it" and "your mail app should have opened"
   // are different instructions, and showing the wrong one either strands a
   // visitor waiting on a reply or makes them send a duplicate.
-  const [delivery, setDelivery] = useState<"sent" | "mailto">("sent");
+  // "idle" is the ONLY safe initial value. This previously defaulted to "sent",
+  // which meant every early `return` in handleSubmit inherited a success state
+  // and the visitor was shown "Message sent. It's in our inbox" while nothing
+  // had been sent at all. A state machine whose initial state claims success
+  // will eventually lie; this one starts by claiming nothing.
+  const [delivery, setDelivery] = useState<Delivery>("idle");
+  // A blocking problem that is not attached to one field (spam gates, network).
+  // Never silent: if a submit does not proceed, this says why.
+  const [formError, setFormError] = useState<string | null>(null);
+  // Set once the too-fast gate has warned the visitor, so a second deliberate
+  // press goes through. A bot that fires and leaves never gets here.
+  const [confirmed, setConfirmed] = useState(false);
   // Honeypot — bots fill this, humans never see it
   const [honeypot, setHoneypot] = useState("");
-  // Track when the form was rendered to catch instant-submit bots
-  const loadTime = useRef(Date.now());
+  // When the visitor FIRST touched the form — not when the page rendered. The
+  // old version measured from mount, so anyone who autofilled and submitted
+  // promptly (or landed on a pre-scrolled page and typed fast) was classified
+  // as a bot. Time-to-fill is only meaningful from the moment filling starts.
+  const firstInteraction = useRef<number | null>(null);
 
   // Refs for GSAP scroll reveals
   const heroRef = useRef<HTMLDivElement>(null);
@@ -202,7 +222,9 @@ export function ContactPageClient() {
     >
   ) => {
     const { name, value } = e.target;
+    if (firstInteraction.current === null) firstInteraction.current = Date.now();
     setForm((prev) => ({ ...prev, [name]: value }));
+    setFormError(null);
 
     // Clear a field's error as soon as the visitor starts fixing it. Errors
     // re-appear on the next submit if the field is still invalid — nobody
@@ -218,11 +240,9 @@ export function ContactPageClient() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validation runs BEFORE the spam gates on purpose. The gates fake a
-    // success screen rather than reporting anything, so a real visitor who trips
-    // one would otherwise be shown "sent" while their incomplete form was
-    // silently dropped. Checking first means a human always gets real feedback;
-    // a bot that fills every field correctly still hits the gates below.
+    // Validation runs BEFORE the spam gates on purpose: a human always gets
+    // real, per-field feedback first. The gates below no longer fake a success
+    // screen — see each one for what it does instead.
     //
     // The form previously carried `noValidate` with no JS validation behind it,
     // so an empty form submitted happily and produced an empty enquiry. Move
@@ -239,18 +259,32 @@ export function ContactPageClient() {
       return;
     }
 
-    // Spam gate 1: honeypot field was filled — silent discard
+    // Spam gate 1: honeypot filled. The field is off-screen, aria-hidden and
+    // tabIndex={-1}, so a human effectively cannot trip this — but if one
+    // somehow does, they get a route to us instead of a lie. The enquiry is
+    // still not transmitted, so the gate keeps its teeth.
     if (honeypot) {
-      setSubmitted(true);
+      setFormError(
+        `We couldn't send that message. Please email ${siteConfig.contact.email} directly and we'll pick it up.`
+      );
       return;
     }
 
-    // Spam gate 2: form submitted in under 3 seconds — bot behaviour
-    if (Date.now() - loadTime.current < 3000) {
-      setSubmitted(true);
+    // Spam gate 2: submitted implausibly fast, measured from first interaction.
+    // This CONFIRMS rather than discards. A scripted submit fires once and
+    // leaves, so it never gets past this; a human reads one line and presses
+    // again. Either way nobody is told their message was sent when it was not.
+    const startedAt = firstInteraction.current;
+    const tooFast = startedAt === null || Date.now() - startedAt < MIN_FILL_MS;
+    if (tooFast && !confirmed) {
+      setConfirmed(true);
+      setFormError(
+        "That was quick; press \u201cSend message\u201d once more to confirm you're human."
+      );
       return;
     }
 
+    setFormError(null);
     setSubmitting(true);
 
     // POST to our own Cloudflare Pages Function, which emails the enquiry via
@@ -273,6 +307,10 @@ export function ContactPageClient() {
       setDelivery("sent");
       setSubmitted(true);
     } catch (error) {
+      // The endpoint is unreachable or errored. Hand off to the mail client so
+      // the enquiry is not lost, and say so honestly — the success screen shows
+      // the "Ready to send" copy, never "Message sent", because at this point
+      // nothing has reached us and the visitor still has to press send.
       console.error("[contact] falling back to mailto", error);
       setDelivery("mailto");
       setSubmitted(true);
@@ -296,13 +334,13 @@ export function ContactPageClient() {
     const body = [
       lines.join("\n"),
       `Project details:\n${form.details}`,
-      "— sent from preissersolutions.com/contact",
+      "-- sent from preissersolutions.com/contact",
     ].join("\n\n");
 
     return (
       `mailto:${siteConfig.contact.email}` +
       `?subject=${encodeURIComponent(
-        `New project enquiry — ${form.company || form.name || "a visitor"}`
+        `New project enquiry: ${form.company || form.name || "a visitor"}`
       )}` +
       `&body=${encodeURIComponent(body)}`
     );
@@ -370,7 +408,7 @@ export function ContactPageClient() {
                 noValidate
                 aria-label="Contact form"
               >
-                {submitted ? (
+                {submitted && delivery !== "idle" ? (
                   <div className="ps-contact-success" role="alert" aria-live="polite">
                     <div className="ps-contact-success-check" aria-hidden="true">
                       <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
@@ -382,7 +420,7 @@ export function ContactPageClient() {
                       <>
                         <h3 className="ps-contact-success__heading">Message sent.</h3>
                         <p className="ps-contact-success__body">
-                          It&rsquo;s in our inbox &mdash; we read every one ourselves,
+                          It&rsquo;s in our inbox; we read every one ourselves,
                           and you&rsquo;ll hear back from the person who&rsquo;d
                           actually build it.
                         </p>
@@ -552,7 +590,7 @@ export function ContactPageClient() {
                           name="details"
                           value={form.details}
                           onChange={handleChange}
-                          placeholder="The problem, in your own words — what's slow, breaking, manual, or costing you. A few sentences is plenty."
+                          placeholder="The problem, in your own words: what's slow, breaking, manual, or costing you. A few sentences is plenty."
                           rows={5}
                           className={fieldClass("ps-contact-field__textarea", "details")}
                           {...errorProps("details")}
@@ -565,6 +603,19 @@ export function ContactPageClient() {
                       </div>
 
                     </div>
+
+                    {/* Form-level problem. role="alert" so assistive tech is told
+                        immediately, and it sits directly above the button that
+                        produced it rather than at the top of a long form. */}
+                    {formError && (
+                      <p
+                        className="ps-contact-field__error"
+                        role="alert"
+                        style={{ marginTop: 16 }}
+                      >
+                        {formError}
+                      </p>
+                    )}
 
                     <div className="ps-contact-form-footer">
                       <button

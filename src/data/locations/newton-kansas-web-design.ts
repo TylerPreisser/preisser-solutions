@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Newton, KS Web Design & Software",
   metaDescription:
-    "Custom software, web apps, and AI automation for Newton, Kansas — built by a Hays-based firm for the Harvey County manufacturing and healthcare market.",
+    "Custom software, web apps, and AI automation for Newton, Kansas: built by a Hays-based firm for the Harvey County manufacturing and healthcare market.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -19,9 +19,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Newton, Kansas",
     h1: "Custom Software and Websites for Newton Businesses",
     subheadline:
-      "Custom web apps, AI automation, and websites for Harvey County's manufacturing and healthcare economy — 25 miles north of Wichita.",
+      "Custom web apps, AI automation, and websites for Harvey County's manufacturing and healthcare economy: 25 miles north of Wichita.",
     answerParagraph:
-      "Preisser Solutions serves Newton, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Newton anchors Harvey County's economy and sits in the transition zone between the Wichita metro and central Kansas agricultural markets. That mix of manufacturing supply-chain, healthcare, and trades creates diverse demand for custom operational tooling. Based in Hays — roughly 145 miles northwest — we deliver remotely and travel for projects of sufficient scope.",
+      "Preisser Solutions serves Newton, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Newton anchors Harvey County's economy and sits in the transition zone between the Wichita metro and central Kansas agricultural markets. That mix of manufacturing supply-chain, healthcare, and trades creates diverse demand for custom operational tooling. Based in Hays (roughly 145 miles northwest): we deliver remotely and travel for projects of sufficient scope.",
   },
 
   nearbyAreas: [
@@ -39,7 +39,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Newton's manufacturing and healthcare economy needs custom internal tools and operational automation — not marketing agency retainers.",
+    "Newton's manufacturing and healthcare economy needs custom internal tools and operational automation, not marketing agency retainers.",
     "Kansas-based at Kansas economics. Wichita-metro proximity does not mean Wichita-metro pricing.",
     "Custom code with full ownership at launch. Healthcare-adjacent builds follow proper architecture for data handling from the ground up.",
   ],

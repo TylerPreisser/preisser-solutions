@@ -56,16 +56,42 @@ export function CtaSection() {
       {/* Radial glow */}
       <div className="ps-cta-glow" aria-hidden="true" />
 
-      <div className="ps-cta-content" ref={contentRef}>
+      <div className="ps-cta-content ps-cta-content--no-body" ref={contentRef}>
         <div className="ps-eyebrow">Get in Touch</div>
         <h2 id="cta-heading" className="ps-cta-heading">
-          Tell us what&apos;s slowing your business down.
+          Find out how we can help your business.
         </h2>
-        <p className="ps-cta-body">
-          Bring the one workflow that costs your team the most time. You&apos;ll get a
-          straight answer on what it takes to fix it &mdash; scope, cost, and timeline
-          &mdash; from the person who would actually build it.
-        </p>
+        {/* NO BODY COPY HERE, BY INSTRUCTION. The owner reduced this section
+            to its heading on 2026-09-05: he asked for it to say
+            "Find out how we can help your business." and said it twice,
+            identically. The h2 above ALREADY was that string byte for byte,
+            so the reduction was a deletion, not a rewrite. Nothing was
+            reworded.
+
+            This supersedes the ADR-0009 note that used to sit here telling
+            future passes not to tighten his paragraph. That note was right
+            until he changed his mind; it is not a veto on his own later
+            instruction.
+
+            WHERE THE PARAGRAPH WENT. Its opening claim, "We start by
+            listening, finding out how we can help you achieve your
+            business's biggest goals, or even solve your business's biggest
+            problems.", was moved VERBATIM into Why Us, which is where he
+            asked for it. See why-us.tsx.
+
+            WHAT WAS NOT CARRIED OVER, so it is findable if he wants it back:
+              - "We have a very effective, unique approach: experience in
+                enterprise software and consulting, as well as development."
+              - "We are the ones who ideate with you and come up with
+                solutions, and the same person who builds it works with you
+                every step of the way."
+            The second of those is echoed elsewhere on the site
+            (data/locations/hays-kansas.ts and data/aeo/
+            premium-web-development-kansas.ts) but no longer appears anywhere
+            on the HOME page. The first appears nowhere else at all.
+
+            Do not re-add copy here to "fill" the section. If it looks empty,
+            that is a spacing problem: see .ps-cta-content--no-body. */}
         <div className="ps-cta-buttons">
           <Link href="/contact" className="ps-btn ps-btn-primary-dark">
             Reach out

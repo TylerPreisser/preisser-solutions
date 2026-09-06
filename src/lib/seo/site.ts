@@ -29,7 +29,7 @@ export const seoSite = {
   description:
     "Preisser Solutions is a founder-led custom business software, automation, and AI integration company based in Hays, Kansas.",
   shortDescription:
-    "Custom business software, workflow automation, and AI integration — admin dashboards, databases, and document pipelines for Kansas businesses.",
+    "Custom business software, workflow automation, and AI integration: admin dashboards, databases, and document pipelines for Kansas businesses.",
   // Geographic markets explicitly served. Used by LocalBusiness.areaServed
   // and as a discoverability hint for AI engines listing geographic coverage.
   areaServed: [

@@ -5,15 +5,20 @@ import { buildBreadcrumbs } from "@/lib/breadcrumbs";
 export const metadata: Metadata = {
   title: "All Services",
   description:
-    "Every service Preisser Solutions builds for Kansas businesses — websites, AI automation, local SEO, AI search optimization, CRM, dashboards, integrations, and more.",
+    "Every service Preisser Solutions builds for Kansas businesses: websites, AI automation, local SEO, AI search optimization, CRM, dashboards, integrations, and more.",
   alternates: {
     canonical: "https://preissersolutions.com/services",
   },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: "All Services",
     description:
-      "Every service Preisser Solutions builds for Kansas businesses — websites, AI automation, local SEO, AI search optimization, CRM, dashboards, integrations, and more.",
+      "Every service Preisser Solutions builds for Kansas businesses: websites, AI automation, local SEO, AI search optimization, CRM, dashboards, integrations, and more.",
     url: "https://preissersolutions.com/services",
+    type: "website",
+    images: [
+      { url: "/images/og-image-v2.jpg", width: 1200, height: 630, alt: "Preisser Solutions" },
+    ],
   },
 };
 
@@ -158,7 +163,7 @@ const groups: ServiceGroup[] = [
         // URL inside this page's ItemList JSON-LD.
         href: "/services/crm-systems",
         description:
-          "Custom CRM systems built for how your team actually works — not how HubSpot says they should.",
+          "Custom CRM systems built for how your team actually works, not how HubSpot says they should.",
       },
       {
         title: "API Integration",
@@ -294,7 +299,7 @@ export default function ServicesPage() {
               Not sure which service fits?
             </h2>
             <p className="ps-cta-body">
-              Start with a conversation. We will help you scope it before quoting it — pricing is fixed once we agree on what we are building.
+              Start with a conversation. We will help you scope it before quoting it; pricing is fixed once we agree on what we are building.
             </p>
             <div className="ps-cta-buttons">
               <Link href="/contact" prefetch={false} className="ps-btn ps-btn-primary-dark">

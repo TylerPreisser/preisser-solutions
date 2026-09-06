@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "SEO & AI Search in Topeka, KS",
   metaDescription:
-    "Local SEO and AI search optimization for Topeka, Kansas businesses — get found on Google, ChatGPT, Perplexity, and Gemini.",
+    "Local SEO and AI search optimization for Topeka, Kansas businesses: get found on Google, ChatGPT, Perplexity, and Gemini.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -23,9 +23,9 @@ export const locationData: LocationPageData = {
     eyebrow: "SEO & AI Search in Topeka, Kansas",
     h1: "Local SEO and AI Search Optimization for Topeka",
     subheadline:
-      "Get found on Google, Google AI Overviews, ChatGPT, Perplexity, and Gemini — local SEO and AI-search optimization for Topeka businesses.",
+      "Get found on Google, Google AI Overviews, ChatGPT, Perplexity, and Gemini: local SEO and AI-search optimization for Topeka businesses.",
     answerParagraph:
-      "Preisser Solutions delivers local SEO and AI-search optimization for businesses in Topeka, Kansas — the state capital and Shawnee County seat, a metro of approximately 127,000. Services include Google Business Profile optimization, local pack strategy, citation building, schema markup, and AI-search citation engineering — so your Topeka business is cited when AI answer engines respond to questions about your industry.",
+      "Preisser Solutions delivers local SEO and AI-search optimization for businesses in Topeka, Kansas, the state capital and Shawnee County seat, a metro of approximately 127,000. Services include Google Business Profile optimization, local pack strategy, citation building, schema markup, and AI-search citation engineering, so your Topeka business is cited when AI answer engines respond to questions about your industry.",
   },
 
   nearbyAreas: [
@@ -43,9 +43,9 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Topeka's government and healthcare sector creates high-value local search demand — the right SEO strategy captures it.",
+    "Topeka's government and healthcare sector creates high-value local search demand, the right SEO strategy captures it.",
     "AI-search visibility is distinct from traditional SEO and requires engineering, not just content publishing.",
-    "Preisser Solutions builds SEO infrastructure in code — not configured through plugins that can break on an update.",
+    "Preisser Solutions builds SEO infrastructure in code, not configured through plugins that can break on an update.",
   ],
 
   industriesServed: [
@@ -61,7 +61,7 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions offer local SEO for Topeka businesses?",
       answer:
-        "Yes. Local SEO — Google Business Profile, local pack optimization, citation building, schema markup — and AI-search citation engineering are both offered for Topeka businesses.",
+        "Yes. Local SEO (Google Business Profile, local pack optimization, citation building, schema markup), and AI-search citation engineering are both offered for Topeka businesses.",
     },
     {
       question: "What is AI search optimization for Topeka businesses?",
@@ -76,17 +76,17 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions get a Topeka healthcare provider ranked on Google?",
       answer:
-        "Local SEO for healthcare providers is within standard capability — including Google Business Profile, local pack, schema markup, and compliance-aware content strategy.",
+        "Local SEO for healthcare providers is within standard capability, including Google Business Profile, local pack, schema markup, and compliance-aware content strategy.",
     },
     {
       question: "Does Preisser Solutions handle Google Business Profile for Topeka?",
       answer:
-        "Yes. Google Business Profile optimization — categories, attributes, posts, Q&A, review strategy — is part of every local SEO engagement.",
+        "Yes. Google Business Profile optimization (categories, attributes, posts, Q&A, review strategy) is part of every local SEO engagement.",
     },
     {
       question: "How does Preisser Solutions price SEO for Topeka clients?",
       answer:
-        "Initial SEO builds use fixed-price proposals. Ongoing work is scoped separately as optional retainers — never required.",
+        "Initial SEO builds use fixed-price proposals. Ongoing work is scoped separately as optional retainers, never required.",
     },
   ],
 

@@ -109,18 +109,71 @@ Never deploy from GitHub Actions — that workflow validates only.
 
 ## Decisions
 
-`DECISIONS/` is the source of truth for settled intent; walk up to
-`~/.claude-shared/DECISIONS/` for GLOBAL ADRs, which win on conflict. Accepted
-ADRs are immutable — supersede with the next number, never edit
-(`ADR_SUPERSEDE=1`). Conformance to an Accepted ADR is never a defect;
-objections go in a non-blocking "Decision Concerns" note citing the ADR. When
-the owner settles a question, write the ADR immediately as `Status: Accepted` —
-do not ask first. Deterministic gates live in `.claude/hooks/` (live-deploy
-block, ADR/secret protection); this file is advisory, the hooks are not.
+`DECISIONS/` is the source of truth for settled intent; review agents read it before reviewing.
+Walk up from the working directory to find it (a parent workspace may own it); `~/.claude-shared/DECISIONS/` holds GLOBAL ADRs, which win on conflict.
+
+- **Conformance to an Accepted ADR is NEVER a defect.** Do not "fix", re-add, or recommend re-adding what an ADR removed.
+- **If you believe a settled decision is wrong, DO NOT change code or file a bug** — put a note under "Decision Concerns" in your review output citing the ADR number. Nothing more.
+- **Accepted ADRs are immutable — supersede, never edit.** New decision = next number; the old file gets one line: `Status: Superseded by ADR-000N`.
+- Deterministic gates live in `.claude/hooks/` (live-deploy block, ADR/secret protection); this file is advisory, the hooks are not.
+
+### Record decisions as they happen — do not wait to be asked
+When the owner settles a question, WRITE THE ADR IMMEDIATELY as `Status: Accepted`, then say in
+one line what you recorded and its number. Do not ask permission first.
+- **Settled** = he picks between real alternatives, reverses something previously settled, or
+  rules a course of action in or out. Architecture, libraries, schemas, boundaries, security
+  posture, scope, workflow and tooling all count.
+- **Not settled** = task direction ("fix this bug"), questions, thinking aloud, an option still
+  being weighed. If he has not landed on it, there is nothing to record.
+- Next free `NNNN`, never reused; start from `DECISIONS/0000-template.md`. Quote what he actually
+  said and cite where. Say under "Open / not yet decided" what the ADR does NOT settle.
+- A wrong capture is fixed by SUPERSEDING, not editing (that write needs `ADR_SUPERSEDE=1`).
+- `/decide` forces a capture on demand; the rule above is automatic and does not need it.
 
 ## graphify
 
-Knowledge graph at `graphify-out/`. For codebase questions, run
-`graphify query "<question>"` first (or `graphify path`/`graphify explain`);
-fall back to `graphify-out/GRAPH_REPORT.md` only for broad architecture
-review. Run `graphify update .` after changing code.
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
+
+## Browser + viewport matrix — binding on every viewer/audit agent
+
+Any agent that screenshots, visually reviews, or QAs a rendered page sweeps **all four engines and
+all fourteen viewports**, and reports every finding with its engine and viewport named. A pass that
+covers one engine at three widths is not a pass. Four consecutive single-engine passes on the sister
+project reported a page clean that the owner called "horrible".
+
+**Engines.** `chromium`, `webkit`, `firefox` via Playwright — import by ABSOLUTE path from this
+repo's `node_modules/playwright`. **Python Playwright is NOT installed on this machine.** Plus
+**real Safari**, via `scratchpad/safari-harness/safari-shots.mjs` (selenium-webdriver + safaridriver;
+Safari > Settings > Developer > "Allow remote automation" must stay ticked).
+
+**Playwright's WebKit is not Safari.** No dynamic toolbar, no real safe-area insets, different
+`vh`/`svh`/`lvh`/`dvh` behaviour, no rubber-banding, and **it does not composite `backdrop-filter`
+at all** — so it both misses and overstates defects. Where the two disagree, real Safari wins.
+
+**Viewports.** 320×568 · 360×640 · 375×667 · 390×844 · 393×659 · 393×852 · 414×896 · 430×932 ·
+768×1024 · 820×1180 · 1024×768 · 1280×800 · 1440×900 · 1920×1080. `deviceScaleFactor: 3` and
+`hasTouch`/`isMobile` on phones. Both themes at every size. Sweep both sides of breakpoint
+boundaries — **639/640/641 and 939/940/941** change the bento grid's column count.
+**393×659 and 393×852 are the same phone with Safari's toolbar collapsed vs expanded** — include
+both or viewport-unit bugs stay hidden.
+
+**Traps that have produced falsely-green passes here. All of these actually happened:**
+- Measuring instead of looking. **Read every screenshot with the Read tool and say what you saw.**
+  A contrast probe scored a corner 14.32:1 while the glyph was invisible navy-on-navy; a fill probe
+  reported 106% for every card while one had a dead bottom third; a sprite probe read 0.0px while
+  the artwork floated, because it sampled the bounding box.
+- `data-theme` set via `addInitScript` is **overwritten by `layout.tsx`** — set it post-load and
+  assert the background actually changed before trusting a "dark" run.
+- `scroll-behavior: smooth` on `<html>` means probing scroll right after a click or Tab samples
+  mid-animation and makes working navigation look broken.
+- Programmatic `.focus()` does not match `:focus-visible` — walk with real Tab.
+- `grep -c` on `out/index.html` returns 1 because the file is 14 lines. Use `grep -o … | wc -l`.
+- **Fingerprint the served build by asset hash before measuring.** Port 8912 is squatted by a server
+  that fails to bind *silently*, and orphaned `next start` processes from deleted worktrees have
+  answered 200 on 9004/9005/9006 with foreign builds.

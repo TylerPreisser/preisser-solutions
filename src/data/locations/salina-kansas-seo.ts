@@ -13,7 +13,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Local SEO in Salina, Kansas",
   metaDescription:
-    "Local SEO and AI-search optimization for Salina, Kansas businesses — built by a Hays-based custom software firm.",
+    "Local SEO and AI-search optimization for Salina, Kansas businesses: built by a Hays-based custom software firm.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -22,9 +22,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Local SEO in Salina, Kansas",
     h1: "Local SEO and AI Search for Salina Businesses",
     subheadline:
-      "Engineered visibility on Google AND on AI search engines — ChatGPT, Perplexity, Gemini.",
+      "Engineered visibility on Google AND on AI search engines: ChatGPT, Perplexity, Gemini.",
     answerParagraph:
-      "Preisser Solutions delivers local SEO and AI-search optimization for Salina, Kansas businesses. Based in Hays, an hour and a half west on I-70. The work layers schema architecture, citation work, content engineering, and AI-search optimization on top of fast custom websites — engineered for results, not retainer-forever billing.",
+      "Preisser Solutions delivers local SEO and AI-search optimization for Salina, Kansas businesses. Based in Hays, an hour and a half west on I-70. The work layers schema architecture, citation work, content engineering, and AI-search optimization on top of fast custom websites: engineered for results, not retainer-forever billing.",
   },
 
   nearbyAreas: [
@@ -42,8 +42,8 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Engineered for the AI-search era — schema, content architecture, and citation work that actually moves rankings.",
-    "Custom websites and SEO from the same team — no agency hand-off, no broken implementation.",
+    "Engineered for the AI-search era: schema, content architecture, and citation work that actually moves rankings.",
+    "Custom websites and SEO from the same team: no agency hand-off, no broken implementation.",
     "Reported on a monthly cadence; no retainer-forever billing.",
   ],
 
@@ -58,12 +58,12 @@ export const locationData: LocationPageData = {
     {
       question: "What is AI search optimization?",
       answer:
-        "Engineering a site, content, schema, and citation footprint so AI engines — ChatGPT, Perplexity, Gemini, Google AI Overviews — cite it when users ask relevant questions.",
+        "Engineering a site, content, schema, and citation footprint so AI engines (ChatGPT, Perplexity, Gemini, Google AI Overviews): cite it when users ask relevant questions.",
     },
     {
       question: "How do you measure Salina SEO results?",
       answer:
-        "Citation tracking on AI engines, Google rank positions, organic traffic, and lead volume — all reported on a monthly cadence.",
+        "Citation tracking on AI engines, Google rank positions, organic traffic, and lead volume: all reported on a monthly cadence.",
     },
     {
       question: "How long does SEO take to show results?",

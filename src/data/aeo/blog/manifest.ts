@@ -21,7 +21,7 @@ export const blogManifest: BlogManifestEntry[] = [
     slug: "what-is-ai-search-optimization",
     title: "What Is AI Search Optimization? (AEO / GEO Explained)",
     excerpt:
-      "How AI Overviews, ChatGPT, Perplexity, and Claude pick which sources to cite — and the concrete page-level changes that move you into that citation set.",
+      "How AI Overviews, ChatGPT, Perplexity, and Claude pick which sources to cite, and the concrete page-level changes that move you into that citation set.",
     datePublished: "2026-05-15",
     category: "AI Search",
   },
@@ -53,7 +53,7 @@ export const blogManifest: BlogManifestEntry[] = [
     slug: "ai-automation-cost-kansas",
     title: "What Does AI Automation Actually Cost in Kansas?",
     excerpt:
-      "Real ranges for missed-call follow-up, customer reactivation, AI invoicing, and custom CRM builds for Kansas small businesses — no \"contact us for pricing.\"",
+      "Real ranges for missed-call follow-up, customer reactivation, AI invoicing, and custom CRM builds for Kansas small businesses: no \"contact us for pricing.\"",
     datePublished: "2026-05-05",
     category: "Pricing & ROI",
   },
@@ -77,7 +77,7 @@ export const blogManifest: BlogManifestEntry[] = [
     slug: "what-is-an-ai-native-website",
     title: "What Is an AI-Native Website?",
     excerpt:
-      "Beyond a chatbot in the corner. The architectural choices that let your website think — and the ones that just look like they do.",
+      "Beyond a chatbot in the corner. The architectural choices that let your website think, and the ones that just look like they do.",
     datePublished: "2026-04-24",
     category: "AI Automation",
   },
@@ -109,7 +109,7 @@ export const blogManifest: BlogManifestEntry[] = [
     slug: "reactivate-old-leads",
     title: "How To Reactivate Old Leads (SMS + Email + CRM Playbook)",
     excerpt:
-      "The exact reactivation sequence Preisser Solutions ships for HVAC, dental, veterinary, and trades operators — including the Cassidy HVAC 60% reactivation case.",
+      "The exact reactivation sequence Preisser Solutions ships for HVAC, dental, veterinary, and trades operators, including the Cassidy HVAC 60% reactivation case.",
     datePublished: "2026-04-04",
     category: "AI Automation",
   },
@@ -117,7 +117,7 @@ export const blogManifest: BlogManifestEntry[] = [
     slug: "best-automations-contractors",
     title: "The 5 Highest-ROI Automations for Contractors (HVAC, Plumbing, Roofing)",
     excerpt:
-      "Missed-call follow-up, online booking, customer reactivation, review automation, and AI invoicing — ranked by payback period.",
+      "Missed-call follow-up, online booking, customer reactivation, review automation, and AI invoicing: ranked by payback period.",
     datePublished: "2026-03-28",
     category: "Industry Playbooks",
   },
@@ -125,7 +125,7 @@ export const blogManifest: BlogManifestEntry[] = [
     slug: "best-automations-insurance",
     title: "The Best Automations for Independent Insurance Agencies",
     excerpt:
-      "Quote workflow, renewal follow-up, claims status, and lead nurture — what worked in the Western Kansas insurance CRM build.",
+      "Quote workflow, renewal follow-up, claims status, and lead nurture: what worked in the Western Kansas insurance CRM build.",
     datePublished: "2026-03-21",
     category: "Industry Playbooks",
   },
@@ -133,7 +133,7 @@ export const blogManifest: BlogManifestEntry[] = [
     slug: "best-automations-trucking",
     title: "The Best Automations for Trucking and Logistics Operators",
     excerpt:
-      "Dispatch, driver communication, BOL/rate-con parsing, mileage tracking — lessons from the Kansas trucking ops automation build.",
+      "Dispatch, driver communication, BOL/rate-con parsing, mileage tracking: lessons from the Kansas trucking ops automation build.",
     datePublished: "2026-03-14",
     category: "Industry Playbooks",
   },
@@ -141,7 +141,7 @@ export const blogManifest: BlogManifestEntry[] = [
     slug: "local-seo-checklist-kansas",
     title: "Local SEO Checklist for Kansas Small Businesses (30+ Items)",
     excerpt:
-      "Google Business Profile, citations, reviews, NAP consistency, schema, content, local backlinks, and Kansas-specific directories — in priority order.",
+      "Google Business Profile, citations, reviews, NAP consistency, schema, content, local backlinks, and Kansas-specific directories: in priority order.",
     datePublished: "2026-03-07",
     category: "Local SEO",
   },
@@ -165,7 +165,7 @@ export const blogManifest: BlogManifestEntry[] = [
     slug: "website-redesign-checklist",
     title: "Website Redesign Checklist: Don't Skip These 8 Audits",
     excerpt:
-      "IA, content, schema, performance, accessibility, AI-readability — the audits to run before anyone writes a line of new design.",
+      "IA, content, schema, performance, accessibility, AI-readability: the audits to run before anyone writes a line of new design.",
     datePublished: "2026-02-12",
     category: "Web Strategy",
   },

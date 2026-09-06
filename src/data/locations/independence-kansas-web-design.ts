@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Independence, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Independence, Kansas businesses — Kansas-based firm with fixed-price proposals.",
+    "Custom websites, web apps, and AI automation for Independence, Kansas businesses: Kansas-based firm with fixed-price proposals.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Web design, AI automation, and custom applications for Montgomery County businesses along US-75 and US-160 in southeast Kansas.",
     answerParagraph:
-      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Independence, Kansas — the county seat of Montgomery County in southeast Kansas, approximately 100 miles east of Wichita. Independence Community College and manufacturing anchor the local economy. Remote delivery with on-site travel available.",
+      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Independence, Kansas, the county seat of Montgomery County in southeast Kansas, approximately 100 miles east of Wichita. Independence Community College and manufacturing anchor the local economy. Remote delivery with on-site travel available.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Southeast Kansas regional context — Montgomery County manufacturing, education, and ag operations.",
+    "Southeast Kansas regional context: Montgomery County manufacturing, education, and ag operations.",
     "Custom code with full ownership at launch. No SaaS platform fees after handoff.",
     "Remote-first delivery with on-site travel available for projects requiring in-person collaboration.",
   ],

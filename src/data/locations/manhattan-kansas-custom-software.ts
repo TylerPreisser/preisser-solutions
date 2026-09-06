@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Manhattan, KS Custom Software",
   metaDescription:
-    "Custom software, web applications, and AI automation built for Manhattan, Kansas businesses — fixed-price proposals, full code ownership.",
+    "Custom software, web applications, and AI automation built for Manhattan, Kansas businesses: fixed-price proposals, full code ownership.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web applications, dashboards, and AI automation built for Manhattan's university, agribusiness, defense, and professional-services markets.",
     answerParagraph:
-      "Preisser Solutions builds custom software for businesses in Manhattan, Kansas — a Riley County city of approximately 55,000 and home to Kansas State University, Fort Riley, and a significant agribusiness and technology sector. Custom web applications, internal tools, research-facing portals, and AI automation are the core offering. Fixed-price proposals, full code ownership at launch.",
+      "Preisser Solutions builds custom software for businesses in Manhattan, Kansas, a Riley County city of approximately 55,000 and home to Kansas State University, Fort Riley, and a significant agribusiness and technology sector. Custom web applications, internal tools, research-facing portals, and AI automation are the core offering. Fixed-price proposals, full code ownership at launch.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Manhattan's KSU and Fort Riley context — custom tools for research operations, agribusiness workflows, and defense-adjacent contractors.",
+    "Manhattan's KSU and Fort Riley context: custom tools for research operations, agribusiness workflows, and defense-adjacent contractors.",
     "Custom code with full ownership at launch. No SaaS platform or vendor dependency after handoff.",
     "Remote delivery from Hays with on-site travel for projects of sufficient scope.",
   ],

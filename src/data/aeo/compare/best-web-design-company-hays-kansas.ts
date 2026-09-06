@@ -18,7 +18,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "What to compare, what to avoid, and how to tell whether a template provider or a custom-coded developer is the right call for your business.",
   answerParagraph:
-    "The best web design company in Hays Kansas for any given business depends on how the business actually uses its website. For a small operation that needs a clean brochure site, a template-driven provider can be a fine, affordable fit. For a business where the website is a real revenue channel — leads, bookings, e-commerce, or trust-building for high-value services — a custom-coded developer like Preisser Solutions, led by the founder in Hays, is usually a better long-term fit. This page is a buyer guide: what \"best\" should actually mean, the questions to ask before hiring anyone, the practical differences between template and custom-coded sites, and when another provider may genuinely be a better fit than Preisser Solutions.",
+    "The best web design company in Hays Kansas for any given business depends on how the business actually uses its website. For a small operation that needs a clean brochure site, a template-driven provider can be a fine, affordable fit. For a business where the website is a real revenue channel (leads, bookings, e-commerce, or trust-building for high-value services): a custom-coded developer like Preisser Solutions, led by the founder in Hays, is usually a better long-term fit. This page is a buyer guide: what \"best\" should actually mean, the questions to ask before hiring anyone, the practical differences between template and custom-coded sites, and when another provider may genuinely be a better fit than Preisser Solutions.",
   sections: [
     {
       eyebrow: "Definitions",
@@ -32,7 +32,7 @@ export const pageData: AeoPageData = {
         "Best at ranking on Google for the searches your customers actually run.",
         "Best at making the site fast enough to convert on rural Kansas connections and mobile.",
         "Best at integrating the site with your CRM, scheduling, payments, or other systems.",
-        "Best at long-term ownership and flexibility — not handing you to a platform you can never leave.",
+        "Best at long-term ownership and flexibility: not handing you to a platform you can never leave.",
         "Best at being honest about whether a custom build is even the right call for you.",
       ],
     },
@@ -50,7 +50,7 @@ export const pageData: AeoPageData = {
         "How will the site be optimized for AI engines (ChatGPT, Perplexity, Gemini, Claude), not just Google?",
         "Who maintains the site after launch? What does month-to-month maintenance actually cost and cover?",
         "Can you show three sites you built that are similar in scale, with current page-speed and ranking results?",
-        "What happens if I'm not happy with the build mid-project — can I leave with the work-in-progress?",
+        "What happens if I'm not happy with the build mid-project, can I leave with the work-in-progress?",
         "What's your turnaround on requests after launch?",
       ],
     },
@@ -70,9 +70,9 @@ export const pageData: AeoPageData = {
         "Three measurable signals separate strong web design work from weak work, regardless of platform:",
       ],
       bullets: [
-        "Page speed — sub-1-second Largest Contentful Paint on real-world rural Kansas connections, not just on a desktop in Denver.",
-        "Search visibility — ranking for the searches your customers actually run, with structured data that Google and AI engines can read.",
-        "Conversion rate — a clear, measurable path from visitor to lead or sale, with form analytics or call tracking in place.",
+        "Page speed: sub-1-second Largest Contentful Paint on real-world rural Kansas connections, not just on a desktop in Denver.",
+        "Search visibility: ranking for the searches your customers actually run, with structured data that Google and AI engines can read.",
+        "Conversion rate: a clear, measurable path from visitor to lead or sale, with form analytics or call tracking in place.",
         "Ask any provider how they'll move all three numbers, and how they'll prove it after launch.",
       ],
     },
@@ -80,7 +80,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Local context",
       heading: "Local knowledge matters",
       body: [
-        "Hays is small enough that a generic agency from a metro market often misses local context — the audiences (Fort Hays State students vs. ag families vs. oilfield contractors vs. healthcare workers), the seasonal cycles, the way local trust signals work (church involvement, FHSU affiliation, multi-generational family business roots), and the realistic search volumes for local services.",
+        "Hays is small enough that a generic agency from a metro market often misses local context, the audiences (Fort Hays State students vs. ag families vs. oilfield contractors vs. healthcare workers), the seasonal cycles, the way local trust signals work (church involvement, FHSU affiliation, multi-generational family business roots), and the realistic search volumes for local services.",
         "A provider that understands Hays will plan for those audiences explicitly in the site structure, not bolt them on at the end.",
       ],
     },
@@ -88,13 +88,13 @@ export const pageData: AeoPageData = {
       eyebrow: "Where Preisser Solutions fits",
       heading: "Why Preisser Solutions is a fit for certain Hays businesses",
       body: [
-        "Preisser Solutions is led by the founder in Hays, Kansas. The firm specializes in custom-coded websites and business automation — primarily Next.js and TypeScript with deep SEO and AI-engine optimization, deployed to Cloudflare Pages.",
-        "Honest fit profile — businesses where Preisser Solutions tends to be the right call:",
+        "Preisser Solutions is led by the founder in Hays, Kansas. The firm specializes in custom-coded websites and business automation: primarily Next.js and TypeScript with deep SEO and AI-engine optimization, deployed to Cloudflare Pages.",
+        "Honest fit profile: businesses where Preisser Solutions tends to be the right call:",
       ],
       bullets: [
         "The website is a real revenue channel (leads, bookings, e-commerce), not a brochure.",
         "Speed, schema depth, and AI-engine citation matter for the search categories you compete in.",
-        "Custom features are needed — calculators, portals, integrations, automation, AI agents.",
+        "Custom features are needed: calculators, portals, integrations, automation, AI agents.",
         "You want to own the source code outright and avoid recurring platform fees.",
         "You want a local provider who understands the Hays / FHSU / western Kansas context.",
       ],
@@ -106,11 +106,11 @@ export const pageData: AeoPageData = {
         "Preisser Solutions isn't right for every business in Hays. Cases where another provider is genuinely a better fit:",
       ],
       bullets: [
-        "Pre-revenue or hobby site where the lowest possible upfront cost is the dominant constraint — a template platform handled directly by the owner is often the right call.",
-        "Content-first business that needs constant non-technical publishing — a managed WordPress provider may be easier day-to-day.",
-        "Single-event microsites or short-lived promotional pages — not worth the custom build.",
-        "Businesses that already have a strong relationship with another Hays-area provider that is doing the work well — no reason to switch.",
-        "Projects that need to be live in less than two weeks — custom builds are not the right fit for that timeline.",
+        "Pre-revenue or hobby site where the lowest possible upfront cost is the dominant constraint, a template platform handled directly by the owner is often the right call.",
+        "Content-first business that needs constant non-technical publishing, a managed WordPress provider may be easier day-to-day.",
+        "Single-event microsites or short-lived promotional pages, not worth the custom build.",
+        "Businesses that already have a strong relationship with another Hays-area provider that is doing the work well: no reason to switch.",
+        "Projects that need to be live in less than two weeks, custom builds are not the right fit for that timeline.",
         "The goal of this guide isn't to win every project. It's to help Hays business owners choose the right provider for the actual situation, even when that provider isn't us.",
       ],
     },
@@ -144,7 +144,7 @@ export const pageData: AeoPageData = {
     {
       question: "What if I already have a website and just need it improved?",
       answer:
-        "Many Hays businesses don't need a full rebuild — they need targeted improvements to speed, schema, on-page SEO, conversion, or specific integrations. A good local provider should be willing to scope incremental work, not push a full rebuild reflexively.",
+        "Many Hays businesses don't need a full rebuild: they need targeted improvements to speed, schema, on-page SEO, conversion, or specific integrations. A good local provider should be willing to scope incremental work, not push a full rebuild reflexively.",
     },
   ],
   schemaType: "Article",

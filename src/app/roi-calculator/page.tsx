@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     canonical: "https://preissersolutions.com/roi-calculator",
   },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: "Automation ROI Calculator | Estimate Your Annual Savings",
     description:
       "Estimate the time and money custom automation could save your business. Enter your team size and roles for an instant annual savings figure.",
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
         url: "/images/og-image-v2.jpg",
         width: 1200,
         height: 630,
-        alt: "Preisser Solutions — Automation ROI Calculator",
+        alt: "Preisser Solutions Automation ROI Calculator",
       },
     ],
   },

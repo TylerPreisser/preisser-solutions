@@ -7,13 +7,13 @@ export const pageData: AeoPageData = {
   dateModified: "2026-05-15",
   metaTitle: "5 Automations for HVAC & Plumbing Pros",
   metaDescription:
-    "Missed-call follow-up, online booking, customer reactivation, review automation, and AI invoicing — ranked by payback period.",
+    "Missed-call follow-up, online booking, customer reactivation, review automation, and AI invoicing: ranked by payback period.",
   eyebrow: "Blog · Industry Playbooks",
   h1: "The 5 Highest-ROI Automations for Contractors (HVAC, Plumbing, Roofing)",
   subheadline:
-    "Ranked by payback period. Start at #1 and work down — most shops never need all five.",
+    "Ranked by payback period. Start at #1 and work down, most shops never need all five.",
   answerParagraph:
-    "For Kansas contractors — HVAC, plumbing, electrical, roofing, garage door, landscaping — five automations deliver outsized ROI: missed-call text-back, online booking, customer reactivation, review request automation, and AI invoicing. The Cassidy HVAC engagement Preisser Solutions shipped demonstrates the reactivation pattern with 60%+ dormant patient recovery in 6 weeks. Start with missed-call text-back (low-cost SaaS, pays back fast) and work down the list. Most shops never need all five — the first two or three solve 80% of the operational pain.",
+    "For Kansas contractors (HVAC, plumbing, electrical, roofing, garage door, landscaping): five automations deliver outsized ROI: missed-call text-back, online booking, customer reactivation, review request automation, and AI invoicing. The Cassidy HVAC engagement Preisser Solutions shipped demonstrates the reactivation pattern with 60%+ dormant patient recovery in 6 weeks. Start with missed-call text-back (low-cost SaaS, pays back fast) and work down the list. Most shops never need all five, the first two or three solve 80% of the operational pain.",
   sections: [
     {
       eyebrow: "#1",
@@ -51,7 +51,7 @@ export const pageData: AeoPageData = {
       heading: "AI invoicing assistant (HG Oil Holdings pattern)",
       body: [
         "For shops with high invoice volume from suppliers, vendors, subs. AI reads incoming invoices, extracts vendor/amount/line items, drops them into QuickBooks (or your accounting system) for review. HG Oil Holdings (oil and gas, similar back-office pattern): 75% reduction in manual handling time.",
-        "Less universal than #1-#4 — only relevant for shops with high enough invoice volume that data entry is a real time cost.",
+        "Less universal than #1-#4: only relevant for shops with high enough invoice volume that data entry is a real time cost.",
       ],
     },
     {
@@ -63,7 +63,7 @@ export const pageData: AeoPageData = {
       bullets: [
         "Solve a problem most shops don't actually have (you're not running 200 trucks).",
         "Are productized features already in your CRM (route optimization is in ServiceTitan, Housecall Pro, Jobber).",
-        "Aren't actually AI — they're rules-based products with AI-adjacent marketing.",
+        "Aren't actually AI: they're rules-based products with AI-adjacent marketing.",
         "Don't have the ROI math to justify the build cost at small-shop volume.",
       ],
     },
@@ -82,7 +82,7 @@ export const pageData: AeoPageData = {
     {
       question: "What CRM do you recommend?",
       answer:
-        "For shops <10 trucks: Housecall Pro or Jobber. For shops 10-50 trucks: ServiceTitan or FieldEdge. Above that, conversation is more nuanced. We're CRM-agnostic on builds — we integrate with what you have.",
+        "For shops <10 trucks: Housecall Pro or Jobber. For shops 10-50 trucks: ServiceTitan or FieldEdge. Above that, conversation is more nuanced. We're CRM-agnostic on builds; we integrate with what you have.",
     },
     {
       question: "How much total monthly cost should I expect?",
@@ -92,7 +92,7 @@ export const pageData: AeoPageData = {
     {
       question: "Does Preisser Solutions ship these?",
       answer:
-        "Yes — typically as a packaged engagement covering #1 through #3 in 6-8 weeks. We set up the SaaS pieces (no markup) and custom-build the reactivation engine. Fixed-price proposal after a 30-minute call.",
+        "Yes, typically as a packaged engagement covering #1 through #3 in 6-8 weeks. We set up the SaaS pieces (no markup) and custom-build the reactivation engine. Fixed-price proposal after a 30-minute call.",
     },
   ],
   schemaType: "BlogPosting",
@@ -113,8 +113,6 @@ export const pageData: AeoPageData = {
     { label: "AI customer service systems", href: "/services/ai-customer-service" },
     { label: "Customer reactivation engine", href: "/services/customer-reactivation" },
     { label: "HVAC industry", href: "/industries/hvac" },
-    { label: "Plumbing industry", href: "/industries/plumbing" },
-    { label: "Roofing industry", href: "/industries/roofing" },
     { label: "Cassidy HVAC case study", href: "/case-studies/cassidy-hvac-reactivation" },
     { label: "How to reactivate old leads", href: "/blog/reactivate-old-leads" },
     { label: "Missed-call ROI calculator (article)", href: "/blog/missed-call-roi-calculator" },

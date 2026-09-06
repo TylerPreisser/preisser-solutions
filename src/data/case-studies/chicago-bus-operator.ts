@@ -4,7 +4,7 @@ import type { CaseStudyData } from "@/types/case-study";
 // DO NOT name the company, personnel, or SOW value.
 export const caseStudy: CaseStudyData = {
   slug: "chicago-bus-operator",
-  metaTitle: "Bus Operator — Ops Automation & BI",
+  metaTitle: "Bus Operator: Ops Automation & BI",
   metaDescription:
     "A Chicago-area bus operator cut weekly reconciliation from a full day to a 15-minute exception queue with five Power BI dashboards plus AI ops automation.",
   datePublished: "2026-03-15",
@@ -17,7 +17,7 @@ export const caseStudy: CaseStudyData = {
 
   h1: "Five Power BI Dashboards + Ops Automation for a Bus Operator",
   subheadline:
-    "Workforce, revenue, safety, goals, and routes — plus AI BOL parsing, rate-confirmation parsing, and back-office reconciliation automation.",
+    "Workforce, revenue, safety, goals, and routes: plus AI BOL parsing, rate-confirmation parsing, and back-office reconciliation automation.",
   oneLine: "Reconciliation: full day to a 15-minute exception queue",
 
   headlineResults: [
@@ -32,14 +32,14 @@ export const caseStudy: CaseStudyData = {
       "There was no live view of financials or operations across branches, load-level profitability did not exist as a number anyone could look up, and weekly reconciliation ate a full day of admin time.",
     built:
       "Five operational dashboards covering workforce, revenue, safety, goals and routes, sitting on an automated back-office layer that parses bills of lading and rate confirmations and reconciles the week.",
-    outcome: "A full day of weekly reconciliation became a 15-minute exception queue — about one full-time role of admin work",
+    outcome: "A full day of weekly reconciliation became a 15-minute exception queue, about one full-time role of admin work",
   },
 
   before: {
     heading: "No real-time visibility into financials, operations, or load-level profit.",
     body: [
       "Before the engagement, the operator had no real-time visibility into financials or operations across branches. Load-level profitability did not exist as a number anyone could look up. Manual reconciliation consumed full days of admin time every week.",
-      "Decisions had to wait on month-end reports. The principal could not see — in any given moment — which routes, branches, or customer accounts were actually making money.",
+      "Decisions had to wait on month-end reports. The principal could not see (in any given moment): which routes, branches, or customer accounts were actually making money.",
     ],
   },
 
@@ -47,18 +47,18 @@ export const caseStudy: CaseStudyData = {
     heading: "Five dashboards and an AI back-office layer that runs in real time.",
     body: [
       "Tyler Preisser and Tim Wright designed and built five Power BI dashboards covering workforce planning, revenue and EBITDA, safety, fiscal-year goals, and route operations between late 2025 and March 2026.",
-      "Underneath the dashboards, the team built an AI back-office layer — automated bill-of-lading parsing, rate-confirmation parsing, dispatch workflow support, and back-office reconciliation. Weekly reconciliation dropped from a full day to a 15-minute exception queue, and the principal gained the first real-time load-level profitability view the company had ever had.",
+      "Underneath the dashboards, the team built an AI back-office layer: automated bill-of-lading parsing, rate-confirmation parsing, dispatch workflow support, and back-office reconciliation. Weekly reconciliation dropped from a full day to a 15-minute exception queue, and the principal gained the first real-time load-level profitability view the company had ever had.",
     ],
   },
 
   specifications: {
     heading: "The five dashboards and the automation layer.",
     bullets: [
-      "Workforce Planning — CDL and non-CDL driver counts, payroll data, branch-level staffing",
-      "Revenue and EBITDA — branch comparison, gross profit, budget vs. actual, YoY trending",
-      "Safety Scorecard — safety metrics rolled up across operations",
-      "FY26 Goals Tracking — goal progress visualization for the leadership team",
-      "Routes and Runs — EZRoute data, trip counts, vehicle assignments, CPS school district codes",
+      "Workforce Planning: CDL and non-CDL driver counts, payroll data, branch-level staffing",
+      "Revenue and EBITDA: branch comparison, gross profit, budget vs. actual, YoY trending",
+      "Safety Scorecard: safety metrics rolled up across operations",
+      "FY26 Goals Tracking: goal progress visualization for the leadership team",
+      "Routes and Runs: EZRoute data, trip counts, vehicle assignments, CPS school district codes",
       "AI BOL parsing + AI rate-confirmation parsing + back-office reconciliation automation",
     ],
     subsections: [

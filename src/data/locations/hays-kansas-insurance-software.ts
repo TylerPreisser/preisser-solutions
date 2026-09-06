@@ -70,7 +70,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Agency management dashboards, AI policy and document automation, renewal workflows, and websites for insurance agencies in Hays and western Kansas.",
     answerParagraph:
-      "Preisser Solutions builds custom software for insurance agencies in Hays, Kansas — agency management dashboards, AI-powered ACORD form processing, policy renewal workflows, certificate delivery automation, and agent websites. Hays is the regional commercial center for western Kansas with a significant insurance industry serving agricultural, energy, and commercial markets. Based locally, available for in-person consultation.",
+      "Preisser Solutions builds custom software for insurance agencies in Hays, Kansas: agency management dashboards, AI-powered ACORD form processing, policy renewal workflows, certificate delivery automation, and agent websites. Hays is the regional commercial center for western Kansas with a significant insurance industry serving agricultural, energy, and commercial markets. Based locally, available for in-person consultation.",
   },
 
   nearbyAreas: [
@@ -89,7 +89,7 @@ export const locationData: LocationPageData = {
 
   whyLocal: [
     "We are headquartered in Hays and serve the local insurance market directly. In-person scoping is practical.",
-    "Insurance agencies have high-volume, repetitive document workflows — exactly the work AI automation is built for.",
+    "Insurance agencies have high-volume, repetitive document workflows: exactly the work AI automation is built for.",
     "Custom code with full ownership at launch. No per-user AMS licensing after handoff.",
   ],
 

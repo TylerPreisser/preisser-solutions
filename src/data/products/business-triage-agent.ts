@@ -4,7 +4,7 @@ export const product: ProductData = {
   slug: "business-triage-agent",
   metaTitle: "Business Triage Agent",
   metaDescription:
-    "Ingests website forms, Google reviews, SMS, phone calls, and email — classifies each by urgency, routes urgent items to on-call staff in real time, queues the rest.",
+    "Ingests website forms, Google reviews, SMS, phone calls, and email: classifies each by urgency, routes urgent items to on-call staff in real time, queues the rest.",
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
 
@@ -15,15 +15,15 @@ export const product: ProductData = {
   status: "deployable",
   industries: ["HVAC services", "Field services", "Home services", "B2B services", "Local retail"],
 
-  h1: "Every inbound touchpoint caught, classified, and routed — automatically.",
+  h1: "Every inbound touchpoint caught, classified, and routed: automatically.",
   subheadline:
-    "An AI triage system that ingests across all channels — website forms, Google reviews, text messages, phone calls, emails — classifies each by urgency, and routes to the right person or queue in real time.",
+    "An AI triage system that ingests across all channels (website forms, Google reviews, text messages, phone calls, emails): classifies each by urgency, and routes to the right person or queue in real time.",
   oneLine:
     "Ingests every inbound touchpoint across all channels, classifies urgency, and routes to on-call staff or a managed queue.",
 
   whatItDoes: [
     "Most businesses are losing inbound from too many directions at once. A Google review goes unresponded to for days. An after-hours SMS sits in an inbox. A contact form submission reaches a generic email nobody checks. A phone call after hours goes to voicemail. Each channel has its own missed-response problem, and no single person or process is watching all of them.",
-    "The Business Triage Agent ingests across ALL channels — website form submissions, Google review posts, inbound SMS, inbound phone calls (transcribed), inbound emails. Each item is classified by urgency using AI: a broken furnace call is not the same as a quote request, and a one-star Google review is not the same as a product question. Urgent items route to on-call staff immediately via SMS or Slack with full context from the original touchpoint. Non-urgent items queue in a dashboard for next-business-day follow-up.",
+    "The Business Triage Agent ingests across ALL channels: website form submissions, Google review posts, inbound SMS, inbound phone calls (transcribed), inbound emails. Each item is classified by urgency using AI: a broken furnace call is not the same as a quote request, and a one-star Google review is not the same as a product question. Urgent items route to on-call staff immediately via SMS or Slack with full context from the original touchpoint. Non-urgent items queue in a dashboard for next-business-day follow-up.",
     "An optional app or web UI surfaces the full triage queue with status, channel, urgency tier, and response history. Auto-response templates can acknowledge the customer immediately regardless of channel. Daily digest summarizes overnight volume for staff arriving in the morning. Supports multi-business configurations for operators managing more than one location.",
   ],
   capabilities: [
@@ -35,12 +35,12 @@ export const product: ProductData = {
     {
       title: "AI urgency classification",
       description:
-        "Evaluates each item for urgency based on content signals — service type, sentiment, channel, and language — and assigns a priority tier that drives routing.",
+        "Evaluates each item for urgency based on content signals (service type, sentiment, channel, and language), and assigns a priority tier that drives routing.",
     },
     {
       title: "Intelligent routing rules per channel",
       description:
-        "Applies different routing logic per channel — a Google review may trigger a response workflow while an urgent SMS triggers an on-call page.",
+        "Applies different routing logic per channel: a Google review may trigger a response workflow while an urgent SMS triggers an on-call page.",
     },
     {
       title: "On-call staff escalation",
@@ -50,12 +50,12 @@ export const product: ProductData = {
     {
       title: "Dashboard UI for triage queue",
       description:
-        "Optional web interface surfaces the full queue with urgency tier, channel, contact data, and response status — replacing inbox-hunting across multiple platforms.",
+        "Optional web interface surfaces the full queue with urgency tier, channel, contact data, and response status, replacing inbox-hunting across multiple platforms.",
     },
     {
       title: "Auto-response templates",
       description:
-        "Sends immediate acknowledgment responses to customers by channel, confirming receipt and setting expectations — reducing the silence that drives customers to competitors.",
+        "Sends immediate acknowledgment responses to customers by channel, confirming receipt and setting expectations, reducing the silence that drives customers to competitors.",
     },
     {
       title: "Multi-business support",
@@ -83,7 +83,7 @@ export const product: ProductData = {
     {
       step: "Multi-channel intake",
       description:
-        "The agent monitors all configured channels — forms, reviews, SMS, calls, email — and routes every inbound item through a single classification layer.",
+        "The agent monitors all configured channels (forms, reviews, SMS, calls, email), and routes every inbound item through a single classification layer.",
     },
     {
       step: "Urgency classification",
@@ -107,8 +107,8 @@ export const product: ProductData = {
     },
   ],
   useCases: [
-    "Use this when your team is missing inbound from too many channels — forms, reviews, texts, calls, and email all creating separate blind spots.",
-    "Use this when after-hours coverage is inconsistent — some nights urgent items get caught, some nights they don't.",
+    "Use this when your team is missing inbound from too many channels: forms, reviews, texts, calls, and email all creating separate blind spots.",
+    "Use this when after-hours coverage is inconsistent: some nights urgent items get caught, some nights they don't.",
     "Use this when urgent leads sit in inboxes for hours before anyone responds and you know competitors are calling them back first.",
     "Use this when on-call staff are being paged for everything because there's no classification layer in front of the escalation.",
     "Use this when you want a logged, centralized record of every inbound touchpoint across all channels.",

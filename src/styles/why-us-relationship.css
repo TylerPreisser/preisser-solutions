@@ -1,0 +1,100 @@
+/* ============================================================
+   why-us-relationship.css
+   Split out of globals.css deliberately, following the existing
+   `@import "./card-visuals.css"` precedent, so the 2026-09-03
+   homepage overhaul could be built by several agents at once
+   without them serializing on one 8,400-line stylesheet.
+   Tokens only — every color here must be a var() from the :root
+   block in globals.css. No new hex values.
+   ============================================================ */
+
+/* ── Why Us: one calm, static relationship statement ────────────
+   SPECIFICITY NOTE. This file is @imported at the TOP of globals.css, so
+   every rule here loses a same-specificity tie to the ~8,400 lines that
+   follow — including `.ps-why { padding: ... }` at globals.css:2920 and its
+   768px override. Every selector below is therefore written at 0,2,0 (two
+   classes) so it wins on specificity and not on source order.
+   `.ps-why` itself is left untouched: it still supplies the theme-switchable
+   background (`--theme-bg-primary`) and the 300ms background transition. */
+
+/* .ps-why is `padding: var(--section-py-desktop) 0 72px` — the 72px bottom was
+   clearance for the old carousel's detail panel. A centered statement block
+   wants symmetric air. padding-block only touches top/bottom, leaving the
+   shorthand's padding-inline: 0 in place for .ps-container to handle. */
+.ps-why.ps-why--relationship {
+  padding-block: var(--section-py-desktop);
+}
+
+.ps-why--relationship .ps-why-relationship {
+  /* Was 720px (design-system.md §4 "narrow (text-focused)"). Raised to 900px
+     on 2026-09-05 so the enlarged tagline still sets on ONE line at desktop:
+     at 60px it measures 817px, which 720px could not hold. This does not widen
+     the reading copy — .__copy self-limits at `max-width: 62ch`, which computes
+     to 704.03px (>=820px vw) and 664.92px (768px vw), both already below 720.
+     MEASURED before/after at 768/820/939/1024/1280/1440/1920: copy box width
+     and line count identical. The eyebrow is shrink-to-fit and centered, so it
+     does not move either. Display type overhanging the reading measure is the
+     point: the tagline is the anchor now that the logo is gone. */
+  max-width: 900px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;                 /* spacing scale: lg */
+}
+
+/* .ps-eyebrow carries `margin-bottom: 20px` (globals.css:284); the flex gap
+   owns the rhythm here, so zero it out rather than stack the two. */
+.ps-why--relationship .ps-why-relationship__eyebrow {
+  margin-bottom: 0;
+}
+
+.ps-why--relationship .ps-why-relationship__tagline {
+  margin: 0;
+  /* Was clamp(2rem, 4vw, 3rem) = 32px -> 48px. The logo that shared this
+     section's visual weight was removed 2026-09-05 on the owner's instruction
+     ("just make the text itself bigger"), so the tagline absorbs it: 36px on
+     phones (+12.5%) and 60px from 1000px up (+25%). Not larger at the small
+     end on purpose — at 320px the content box is 288px and the longest line
+     ("is our success.") measures 254px at 36px = 88% fill; 38px would be 93%,
+     which leaves no tolerance if the webfont swaps to a fallback. MEASURED at
+     320/360/375/390/414/430/639/640/641/768/820/939/940/941/1024/1280/1440/
+     1920: no overflow, no rebreak, last line is never a one-word orphan. */
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--theme-text-primary);
+  text-wrap: balance;                  /* keeps the 390px wrap off a widow */
+}
+
+/* Same accent device the hero and footer taglines use. --theme-accent-text is
+   the exact logo blue on dark (5.58:1) and #0C6FC9 on light (5.08:1) — never
+   raw --color-primary on white, which is 3.25:1. */
+.ps-why--relationship .ps-why-relationship__accent {
+  color: var(--theme-accent-text);
+}
+
+.ps-why--relationship .ps-why-relationship__copy {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 1.125rem;                 /* Body Default, 18px */
+  line-height: 1.7;
+  color: var(--theme-text-secondary);  /* 7.0:1 dark, 7.5:1 light */
+  text-wrap: pretty;
+}
+
+@media (max-width: 768px) {
+  .ps-why.ps-why--relationship {
+    padding-block: var(--section-py-mobile);
+  }
+
+  .ps-why--relationship .ps-why-relationship {
+    gap: 20px;
+  }
+
+  .ps-why--relationship .ps-why-relationship__copy {
+    font-size: 1.0625rem;
+  }
+}

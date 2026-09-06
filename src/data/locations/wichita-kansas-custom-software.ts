@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Wichita, KS Custom Software Development",
   metaDescription:
-    "Custom software, web applications, and AI automation built for Wichita, Kansas businesses — fixed-price proposals, full code ownership.",
+    "Custom software, web applications, and AI automation built for Wichita, Kansas businesses: fixed-price proposals, full code ownership.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web applications, dashboards, internal tools, and AI automation built for Wichita's aerospace, manufacturing, healthcare, and professional-services markets.",
     answerParagraph:
-      "Preisser Solutions builds custom software for businesses in Wichita, Kansas — a Sedgwick County metro of approximately 397,000 and Kansas's largest city, anchored by aviation and aerospace manufacturing (Spirit AeroSystems, Textron Aviation, Bombardier Learjet), healthcare, and professional services. Custom web applications, operational tools, dashboards, and AI automation are the core offering. Fixed-price proposals, full code ownership at launch.",
+      "Preisser Solutions builds custom software for businesses in Wichita, Kansas, a Sedgwick County metro of approximately 397,000 and Kansas's largest city, anchored by aviation and aerospace manufacturing (Spirit AeroSystems, Textron Aviation, Bombardier Learjet), healthcare, and professional services. Custom web applications, operational tools, dashboards, and AI automation are the core offering. Fixed-price proposals, full code ownership at launch.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Wichita aerospace and manufacturing context — capability in custom tools for production, inventory, and operational workflows.",
+    "Wichita aerospace and manufacturing context: capability in custom tools for production, inventory, and operational workflows.",
     "Custom code with full ownership at launch. No SaaS platform or per-seat licensing after handoff.",
     "Remote delivery from Hays with on-site travel for projects of sufficient scope.",
   ],

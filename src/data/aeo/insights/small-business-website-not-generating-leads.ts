@@ -38,9 +38,9 @@ export const pageData: AeoPageData = {
         "Fix this by rewriting the hero with concrete language. Replace abstract phrases with specific outcomes. \"Same-day furnace repair in Hays. Most calls answered within ten minutes.\" That kind of language converts because the visitor immediately knows whether the page fits their situation.",
       ],
       bullets: [
-        "Name the service and the geography in the hero — no abstract taglines",
+        "Name the service and the geography in the hero: no abstract taglines",
         "State what's included so the visitor doesn't have to guess",
-        "Show pricing or a price range if you can — vague pricing kills calls",
+        "Show pricing or a price range if you can: vague pricing kills calls",
         "Anchor with one piece of real proof: a customer name, a result, a photo",
       ],
     },
@@ -60,13 +60,13 @@ export const pageData: AeoPageData = {
       body: [
         "Every field on a form costs you leads. Industry research is consistent: longer forms convert worse, even when the fields seem reasonable.",
         "Audit your current form. Count the required fields. If you ask for company name, role, employee count, project budget, and project timeline on the first form a stranger ever sees, you are asking for a small business RFP from someone who just wanted to see if you serve their zip code.",
-        "Reduce the first form to name, contact method (phone or email — let them pick), and the one detail you genuinely need to scope a response. Push everything else to a follow-up call or a longer intake form after the lead is captured.",
+        "Reduce the first form to name, contact method (phone or email: let them pick), and the one detail you genuinely need to scope a response. Push everything else to a follow-up call or a longer intake form after the lead is captured.",
       ],
       bullets: [
         "Three required fields is usually the sweet spot for cold leads",
         "Don't ask for both phone and email unless one is optional",
-        "Skip captchas with image puzzles — they cost more leads than they block spam",
-        "Send the form submission to an email you actually check the same day — slow response is the same as no response",
+        "Skip captchas with image puzzles: they cost more leads than they block spam",
+        "Send the form submission to an email you actually check the same day, slow response is the same as no response",
       ],
     },
     {
@@ -85,7 +85,7 @@ export const pageData: AeoPageData = {
         "If you can only spend one weekend on this, do it in this order:",
       ],
       bullets: [
-        "Rewrite the hero of your top page in concrete language — service, geography, outcome",
+        "Rewrite the hero of your top page in concrete language: service, geography, outcome",
         "Make the phone number a tap-to-call link in the header, visible without scrolling",
         "Cut every non-essential field from your primary form",
         "Add the primary CTA in three places on long pages: hero, midway, end",
@@ -96,7 +96,7 @@ export const pageData: AeoPageData = {
         {
           heading: "When traffic actually is the problem",
           body: [
-            "Sometimes conversion is fine and the real issue is volume. If your site converts at 2-4% on real intent traffic but only sees 100 visits a month, the page is doing its job — you need to feed it more qualified visitors. That's where local SEO, Google Business Profile work, and intent-matched ads make sense. But check conversion first. Pouring traffic into a leaky page wastes money.",
+            "Sometimes conversion is fine and the real issue is volume. If your site converts at 2-4% on real intent traffic but only sees 100 visits a month, the page is doing its job; you need to feed it more qualified visitors. That's where local SEO, Google Business Profile work, and intent-matched ads make sense. But check conversion first. Pouring traffic into a leaky page wastes money.",
           ],
         },
       ],
@@ -106,7 +106,7 @@ export const pageData: AeoPageData = {
     {
       question: "What is a good conversion rate for a small business website?",
       answer:
-        "For local service businesses with intent-matched traffic, 2-5% is typical and 5-10% is achievable with a focused hero, clear pricing range, short forms, and tap-to-call enabled. E-commerce and lower-intent industries trend lower. The point is to measure and improve, not chase an industry average — your own baseline is the meaningful benchmark.",
+        "For local service businesses with intent-matched traffic, 2-5% is typical and 5-10% is achievable with a focused hero, clear pricing range, short forms, and tap-to-call enabled. E-commerce and lower-intent industries trend lower. The point is to measure and improve, not chase an industry average: your own baseline is the meaningful benchmark.",
     },
     {
       question: "Should I add a chat widget to my website?",
@@ -116,7 +116,7 @@ export const pageData: AeoPageData = {
     {
       question: "Will pop-ups increase my lead generation?",
       answer:
-        "Sometimes a single, well-timed exit-intent pop-up with a relevant offer can lift conversion modestly. Multiple pop-ups, immediate pop-ups, or interstitials that block content tend to lower trust and hurt SEO. If you add one, keep it minimal, easy to close, and on desktop only — Google penalizes intrusive mobile pop-ups.",
+        "Sometimes a single, well-timed exit-intent pop-up with a relevant offer can lift conversion modestly. Multiple pop-ups, immediate pop-ups, or interstitials that block content tend to lower trust and hurt SEO. If you add one, keep it minimal, easy to close, and on desktop only: Google penalizes intrusive mobile pop-ups.",
     },
     {
       question: "Do testimonials really increase conversion?",
@@ -126,12 +126,12 @@ export const pageData: AeoPageData = {
     {
       question: "Should I A/B test my website?",
       answer:
-        "For small business sites with under 500 visits a month, A/B testing rarely produces statistically meaningful results — the sample size is too small. Until you reach significant volume, use direct fixes based on conversion fundamentals rather than experiments. Once you're past about 2,000 monthly visits, structured testing starts to pay off.",
+        "For small business sites with under 500 visits a month, A/B testing rarely produces statistically meaningful results: the sample size is too small. Until you reach significant volume, use direct fixes based on conversion fundamentals rather than experiments. Once you're past about 2,000 monthly visits, structured testing starts to pay off.",
     },
     {
       question: "How long should I wait before deciding the website is broken?",
       answer:
-        "If you have at least 300 visits a month and zero leads over 60 days, the page is broken. If you have under 100 visits a month, you may have a traffic problem rather than a conversion problem — fix the offer and tracking first, then drive more traffic and re-evaluate at 300+ visits.",
+        "If you have at least 300 visits a month and zero leads over 60 days, the page is broken. If you have under 100 visits a month, you may have a traffic problem rather than a conversion problem: fix the offer and tracking first, then drive more traffic and re-evaluate at 300+ visits.",
     },
   ],
   schemaType: "Article",
@@ -155,7 +155,7 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a conversion review of your site?",
   ctaSubcopy:
-    "Send us the URL and we'll mark up the page with the five highest-impact changes — no proposal pitch, no upsell.",
+    "Send us the URL and we'll mark up the page with the five highest-impact changes: no proposal pitch, no upsell.",
   primaryCta: {
     label: "Request a Conversion Review",
     href: "/contact",

@@ -5,6 +5,7 @@ import "@/styles/globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { SERVICE_PILLARS } from "@/lib/seo/pillars";
 import {
   organizationSchema,
   localBusinessSchema,
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
     template: "%s | Preisser Solutions",
   },
   description:
-    "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
+    "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses: dashboards, databases, and document pipelines.",
   metadataBase: new URL("https://preissersolutions.com"),
   // NOTE: `keywords` meta intentionally omitted. Google explicitly ignores it,
   // and Bing treats stuffed keyword meta as a spam signal. Topical relevance is
@@ -90,7 +91,7 @@ export const metadata: Metadata = {
     siteName: "Preisser Solutions",
     title: "Business Software, Automation & AI | Preisser Solutions",
     description:
-      "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
+      "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses: dashboards, databases, and document pipelines.",
     images: [
       {
         url: "/images/og-image-v2.jpg",
@@ -104,7 +105,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Business Software, Automation & AI | Preisser Solutions",
     description:
-      "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
+      "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses: dashboards, databases, and document pipelines.",
     images: ["/images/og-image-v2.jpg"],
     creator: "@tylerpreisser",
   },
@@ -181,7 +182,7 @@ const organization = {
   // unrelated brands. Long-form prose belongs in layout.tsx, not the generic
   // helper, because it is brand-specific (not a reusable shape).
   disambiguatingDescription:
-    "Preisser Solutions (preissersolutions.com) is the custom business software, automation, and AI integration consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Solutions' or similar — we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Solutions builds admin dashboards, customer and member databases, document-processing pipelines, and the automations and AI integrations that connect them, exclusively for small and mid-sized companies — not vehicles, instruments, or hardware. Contact: tyler@preissersolutions.com.",
+    "Preisser Solutions (preissersolutions.com) is the custom business software, automation, and AI integration consultancy founded by Tyler Preisser in Hays, Kansas. This entity is distinct from: (1) any automotive tuning or vehicle performance company using the name 'Preisser Solutions' or similar; we do not tune, modify, or service vehicles, (2) Helios-Preisser GmbH, the German precision-measuring-instruments manufacturer founded in 1921 (helios-preisser.de), (3) PresserTech / pressertech.us, an unrelated automotive aftermarket business, (4) Preiser Inc, a model railroad accessory manufacturer, (5) Preiser Scientific, a laboratory supply company, or (6) any other Preisser-named business. Preisser Solutions builds admin dashboards, customer and member databases, document-processing pipelines, and the automations and AI integrations that connect them, exclusively for small and mid-sized companies, not vehicles, instruments, or hardware. Contact: tyler@preissersolutions.com.",
   // Service-tier price catalog. Lives on the Organization (homepage) so AI
   // engines surfacing pricing have an authoritative source. Per-service prices
   // are stable enough to live in code rather than data — and short enough to
@@ -193,47 +194,27 @@ const organization = {
   // form — the full 15-city list already sits on the LocalBusiness node, and
   // repeating it three more times multiplies payload on all 234 pages for no
   // added signal.
-  makesOffer: [
-    {
-      "@type": "Offer",
-      availability: "https://schema.org/InStock",
-      itemOffered: {
-        "@type": "Service",
-        name: "Business Software",
-        serviceType: "Custom business software development",
-        description:
-          "Admin dashboards, customer and member databases, client portals, and internal tools — the platform your team actually logs into, built for how your business works.",
-        provider: { "@id": ORG_ID },
-        areaServed: PILLAR_AREA_SERVED,
-      },
+  // Built from SERVICE_PILLARS (src/lib/seo/pillars.ts) rather than hand-written
+  // here. Two reasons:
+  //   1. This array previously listed only 3 of the 5 pillars — engines reading
+  //      our Organization node saw a firm that does not build websites and does
+  //      not do search work.
+  //   2. The fifth pillar is being renamed to "SEO AI Visibility Ad Management".
+  //      Sourcing the names from one constant means that rename is a one-line
+  //      change that propagates to all 232 pages instead of a string hunt.
+  makesOffer: SERVICE_PILLARS.map((pillar) => ({
+    "@type": "Offer",
+    availability: "https://schema.org/InStock",
+    itemOffered: {
+      "@type": "Service",
+      name: pillar.name,
+      serviceType: pillar.serviceType,
+      description: pillar.description,
+      url: `https://preissersolutions.com${pillar.path}`,
+      provider: { "@id": ORG_ID },
+      areaServed: PILLAR_AREA_SERVED,
     },
-    {
-      "@type": "Offer",
-      availability: "https://schema.org/InStock",
-      itemOffered: {
-        "@type": "Service",
-        name: "Business Automation",
-        serviceType: "Business process automation",
-        description:
-          "Workflow automation for document pipelines, scheduled jobs, notifications and confirmations, and the system integrations that connect them — the work that happens without anyone doing it.",
-        provider: { "@id": ORG_ID },
-        areaServed: PILLAR_AREA_SERVED,
-      },
-    },
-    {
-      "@type": "Offer",
-      availability: "https://schema.org/InStock",
-      itemOffered: {
-        "@type": "Service",
-        name: "AI Integration",
-        serviceType: "AI integration",
-        description:
-          "AI put exactly where it earns its place: reading and classifying documents, drafting with a human approval gate, and joining an existing workflow — never replacing judgment on anything that matters.",
-        provider: { "@id": ORG_ID },
-        areaServed: PILLAR_AREA_SERVED,
-      },
-    },
-  ],
+  })),
 };
 
 const person = {
@@ -254,7 +235,7 @@ const homeWebPage = {
   url: "https://preissersolutions.com",
   name: "Business Software, Automation & AI | Preisser Solutions",
   description:
-    "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses — dashboards, databases, and document pipelines.",
+    "Preisser Solutions builds custom business software, automation, and AI integrations for Kansas businesses: dashboards, databases, and document pipelines.",
   isPartOf: { "@id": WEBSITE_ID },
   about: { "@id": ORG_ID },
   author: { "@id": PERSON_ID },
@@ -313,6 +294,19 @@ export default function RootLayout({
         <main id="main-content">{children}</main>
         <Footer />
         <Script src="/agent-tools.js" strategy="afterInteractive" />
+        {/* MarCommand first-party telemetry (client "Preisser Solutions", site 1).
+            The write key is PUBLIC BY DESIGN — it ships in browser JavaScript on
+            every page, so it is not a secret (see siteConfig.ts in marcommand). It is
+            origin-locked: the collector rejects any beacon whose Origin is not on the
+            site's allowed_origins ("rejected:forged_origin"), and it rotates in one
+            call (POST /telemetry/sites/1/rotate). NEXT_PUBLIC_MC_WRITE_KEY overrides
+            it with no code change.
+            Contract: docs/phases/INSTALL-CONTRACT-telemetry.md */}
+        <Script
+          src="https://marcommand.tylerpreisser.workers.dev/mc.js"
+          strategy="afterInteractive"
+          data-mc-key={process.env.NEXT_PUBLIC_MC_WRITE_KEY ?? "mcw_jHsUyqYDp3pcH4z5d9MdnX_CQYAwTW5V"}
+        />
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <>
             <Script

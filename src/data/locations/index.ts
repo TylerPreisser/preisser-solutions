@@ -11,7 +11,7 @@
  *   Tier-1 cities (>20k pop, primary economic gravity): <city>-kansas
  *   Tier-2/3 re-entry after doorway redirect, OR small cities targeting
  *     a specific service SERP: <city>-kansas-<service>
- *     (services: web-design, custom-software, seo, digital-marketing,
+ * (services: web-design, custom-software, seo, digital-marketing,
  *      web-applications, web-development)
  *   Regional roll-up: <region>-kansas-web-design
  *   Border-state: <city>-<state-name>-<service>
@@ -222,7 +222,7 @@ export const LOCATION_REGIONS: LocationRegion[] = [
   {
     name: "Western Kansas",
     blurb:
-      "The home region. Hays headquarters and the I-70 / US-283 service radius — plus the northwest Kansas corridor.",
+      "The home region. Hays headquarters and the I-70 / US-283 service radius, plus the northwest Kansas corridor.",
     slugs: [
       "hays-kansas",
       "hays-kansas-custom-software",
@@ -253,7 +253,7 @@ export const LOCATION_REGIONS: LocationRegion[] = [
   {
     name: "Central Kansas",
     blurb:
-      "The I-70 and I-135 corridor — Great Bend, Salina, Hutchinson, and the surrounding counties.",
+      "The I-70 and I-135 corridor: Great Bend, Salina, Hutchinson, and the surrounding counties.",
     slugs: [
       "great-bend-kansas",
       "great-bend-kansas-web-design",
@@ -270,7 +270,7 @@ export const LOCATION_REGIONS: LocationRegion[] = [
   {
     name: "Southwest Kansas",
     blurb:
-      "The southwest plains — Garden City, Dodge City, and the ag and energy operators between them.",
+      "The southwest plains: Garden City, Dodge City, and the ag and energy operators between them.",
     slugs: [
       "garden-city-kansas",
       "garden-city-kansas-web-design",
@@ -284,7 +284,7 @@ export const LOCATION_REGIONS: LocationRegion[] = [
   {
     name: "South-Central Kansas",
     blurb:
-      "The largest economy in Kansas — Wichita, Derby, and the surrounding metro.",
+      "The largest economy in Kansas: Wichita, Derby, and the surrounding metro.",
     slugs: [
       "wichita-kansas",
       "wichita-kansas-custom-software",
@@ -299,7 +299,7 @@ export const LOCATION_REGIONS: LocationRegion[] = [
   {
     name: "Southeast Kansas",
     blurb:
-      "The southeast corridor — Coffeyville, Chanute, Parsons, Pittsburg, and Montgomery and Crawford counties.",
+      "The southeast corridor: Coffeyville, Chanute, Parsons, Pittsburg, and Montgomery and Crawford counties.",
     slugs: [
       "coffeyville-kansas-web-design",
       "independence-kansas-web-design",
@@ -311,7 +311,7 @@ export const LOCATION_REGIONS: LocationRegion[] = [
   {
     name: "Northeast Kansas & Flint Hills",
     blurb:
-      "The eastern half of the state — Manhattan, Junction City, Lawrence, Topeka, Emporia, and the Flint Hills corridor.",
+      "The eastern half of the state: Manhattan, Junction City, Lawrence, Topeka, Emporia, and the Flint Hills corridor.",
     slugs: [
       "manhattan-kansas",
       "manhattan-kansas-custom-software",
@@ -331,7 +331,7 @@ export const LOCATION_REGIONS: LocationRegion[] = [
   {
     name: "Kansas City Metro",
     blurb:
-      "Johnson County, the eastern Kansas metro, and the Missouri side — Olathe, Overland Park, Lenexa, and Kansas City, MO.",
+      "Johnson County, the eastern Kansas metro, and the Missouri side: Olathe, Overland Park, Lenexa, and Kansas City, MO.",
     slugs: [
       "olathe-kansas-custom-software",
       "overland-park-kansas-custom-software",
@@ -342,7 +342,7 @@ export const LOCATION_REGIONS: LocationRegion[] = [
   {
     name: "Border Markets",
     blurb:
-      "Regional remote-delivery markets — Oklahoma, Colorado, Nebraska, and Missouri. On-site travel available for material engagements.",
+      "Regional remote-delivery markets: Oklahoma, Colorado, Nebraska, and Missouri. On-site travel available for material engagements.",
     slugs: [
       "oklahoma-city-oklahoma-custom-software",
       "tulsa-oklahoma-web-design",

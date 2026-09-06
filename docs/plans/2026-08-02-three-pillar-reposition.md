@@ -25,6 +25,14 @@
 > Also since: the tagline is now the three pillars themselves (geography was
 > dropped as positioning), and `--color-primary` is the exact logo blue
 > `#1590FF` sampled from `public/images/ps-logo.webp`.
+>
+> **CORRECTION 2026-08-27 — the "$92.57 line vision recovered that OCR dropped"
+> receipt below (§9 and this block) is DEAD.** Azure Document Intelligence was
+> removed from FarmBooks on 2026-07-23 and Claude Vision is now the sole reader,
+> so the dual-read mechanism it described no longer exists; the shipped homepage
+> copy was replaced with the verified two-cent reconciliation and line-conservation
+> guarantees (`src/farmbooks/pipeline/validate.py:22,95-96` ·
+> `src/farmbooks/pipeline/__init__.py:134-143`). Do not quote the $92.57 figure.
 
 Date: 2026-08-02
 Status: **in build**
@@ -198,6 +206,7 @@ the site.
 - 1,069 Python engine tests collected; 505 web tests passing across 59 files
 - 23 photographed real bills in the test corpus
 - Vision recovered a **$92.57** line that OCR alone dropped
+  <!-- CORRECTED 2026-08-27: dead receipt, do not quote — see CORRECTION note at the top of this file. -->
 - Output: formula-driven `.xlsx` (Month Summary + Ledger, live SUMIF rollups) with
   two-way SharePoint sync where human edits win
 - Handwritten bills are **always** routed to human review, never auto-posted

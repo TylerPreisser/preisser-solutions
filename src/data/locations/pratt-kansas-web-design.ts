@@ -10,7 +10,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Pratt, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Pratt, Kansas — built by a Hays-based firm for the US-54 hub market.",
+    "Custom websites, web apps, and AI automation for Pratt, Kansas: built by a Hays-based firm for the US-54 hub market.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -21,7 +21,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for Pratt County's agriculture, energy services, and trades economy at the US-54 crossroads.",
     answerParagraph:
-      "Preisser Solutions serves Pratt, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Pratt County sits at the junction of US-54 and US-281, serving as a south-central Kansas hub for the surrounding ag and energy corridor. Based in Hays — roughly 110 miles north — we deliver remotely and travel for projects of sufficient scope.",
+      "Preisser Solutions serves Pratt, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Pratt County sits at the junction of US-54 and US-281, serving as a south-central Kansas hub for the surrounding ag and energy corridor. Based in Hays (roughly 110 miles north): we deliver remotely and travel for projects of sufficient scope.",
   },
 
   nearbyAreas: [
@@ -39,7 +39,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Pratt County's ag and energy-services economy is familiar operating territory — no orientation required to understand the context of a custom grain-marketing tool or field-service management app.",
+    "Pratt County's ag and energy-services economy is familiar operating territory: no orientation required to understand the context of a custom grain-marketing tool or field-service management app.",
     "South-central Kansas is underserved digitally. A custom website with proper local SEO can achieve dominant local visibility quickly.",
     "Custom code with full ownership at launch. No recurring license fees on production software.",
   ],
@@ -71,7 +71,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions build a custom website for a Pratt ag-services operator?",
       answer:
-        "Yes. Custom websites for ag-services businesses — built for speed, conversion, and AI-search visibility — are a standard engagement. Local SEO and AI-search citations are available as part of the same scope.",
+        "Yes. Custom websites for ag-services businesses (built for speed, conversion, and AI-search visibility) are a standard engagement. Local SEO and AI-search citations are available as part of the same scope.",
     },
     {
       question: "Do you offer AI automation for Pratt-area energy services businesses?",

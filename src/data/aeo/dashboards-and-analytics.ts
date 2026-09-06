@@ -12,17 +12,17 @@ export const pageData: AeoPageData = {
   metaDescription:
     "Real-time custom business dashboards built by Preisser Solutions in Hays, Kansas. Live KPIs, operational visibility, financial reporting, and analytics.",
   eyebrow: "Dashboards & Analytics",
-  h1: "Real-Time Business Dashboards — Built Custom in Kansas",
+  h1: "Real-Time Business Dashboards: Built Custom in Kansas",
   subheadline:
     "Live dashboards that surface key metrics, track KPIs, and give owners and operators a real-time view of operations. Custom-built by Preisser Solutions in Hays, Kansas.",
   answerParagraph:
-    "Preisser Solutions builds custom real-time business dashboards for Kansas businesses, based in Hays, Kansas. Dashboards pull live data from your existing tools (QuickBooks, ServiceTitan, OGsys, custom databases), surface the metrics that actually drive your business, and update automatically — no exporting to Excel, no waiting for end-of-week reports. Common dashboards include revenue and pipeline tracking, field operations visibility, inventory and production monitoring, financial reporting for ownership, and KPI scorecards for management.",
+    "Preisser Solutions builds custom real-time business dashboards for Kansas businesses, based in Hays, Kansas. Dashboards pull live data from your existing tools (QuickBooks, ServiceTitan, OGsys, custom databases), surface the metrics that actually drive your business, and update automatically: no exporting to Excel, no waiting for end-of-week reports. Common dashboards include revenue and pipeline tracking, field operations visibility, inventory and production monitoring, financial reporting for ownership, and KPI scorecards for management.",
   sections: [
     {
       eyebrow: "Why custom dashboards win",
       heading: "Off-the-shelf BI tools fall short for most Kansas businesses",
       body: [
-        "Power BI, Tableau, Looker — these are excellent platforms for large enterprises with full data warehouses and dedicated BI teams. For most Kansas SMBs, they're overpowered, overpriced, and require a person whose only job is keeping the dashboards running.",
+        "Power BI, Tableau, Looker: these are excellent platforms for large enterprises with full data warehouses and dedicated BI teams. For most Kansas SMBs, they're overpowered, overpriced, and require a person whose only job is keeping the dashboards running.",
         "Preisser Solutions builds custom dashboards that connect directly to your existing systems, show only the metrics that matter for your business, and require zero ongoing maintenance from your team. The dashboard is a tool you use, not a project you manage.",
       ],
     },
@@ -33,14 +33,14 @@ export const pageData: AeoPageData = {
         "Common dashboard projects:",
       ],
       bullets: [
-        "Revenue and pipeline dashboards — live view of bookings, revenue, deal stage, and forecast for owners and sales leadership",
-        "Operations dashboards — field service status, dispatch, technician utilization, work order completion, jobs-in-flight",
-        "Financial dashboards — cash position, AR aging, AP commitments, P&L by location or service line, budget-to-actual",
-        "Inventory and production dashboards — live inventory counts, reorder thresholds, production rates, equipment uptime",
-        "Customer dashboards — retention, churn, lifetime value, satisfaction scores, support ticket trends",
-        "Marketing dashboards — lead source attribution, conversion funnel, campaign ROI, website analytics integrated with CRM",
-        "Executive scorecards — top-level KPIs for ownership, designed for at-a-glance decisions",
-        "Industry-specific dashboards — HVAC fleet utilization, oilfield production, healthcare clinic throughput, manufacturing OEE",
+        "Revenue and pipeline dashboards: live view of bookings, revenue, deal stage, and forecast for owners and sales leadership",
+        "Operations dashboards: field service status, dispatch, technician utilization, work order completion, jobs-in-flight",
+        "Financial dashboards: cash position, AR aging, AP commitments, P&L by location or service line, budget-to-actual",
+        "Inventory and production dashboards: live inventory counts, reorder thresholds, production rates, equipment uptime",
+        "Customer dashboards: retention, churn, lifetime value, satisfaction scores, support ticket trends",
+        "Marketing dashboards: lead source attribution, conversion funnel, campaign ROI, website analytics integrated with CRM",
+        "Executive scorecards: top-level KPIs for ownership, designed for at-a-glance decisions",
+        "Industry-specific dashboards: HVAC fleet utilization, oilfield production, healthcare clinic throughput, manufacturing OEE",
       ],
     },
     {
@@ -64,7 +64,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Where dashboards live",
       heading: "Built for the people who actually use them",
       body: [
-        "Preisser Solutions dashboards are typically delivered as private web applications — secure, password-protected, accessible from any device. We can also deliver embedded dashboards inside existing internal tools, mobile-optimized views for field workers, large-screen views for ops centers and break rooms, and scheduled email summaries for owners who want a daily snapshot in their inbox.",
+        "Preisser Solutions dashboards are typically delivered as private web applications: secure, password-protected, accessible from any device. We can also deliver embedded dashboards inside existing internal tools, mobile-optimized views for field workers, large-screen views for ops centers and break rooms, and scheduled email summaries for owners who want a daily snapshot in their inbox.",
       ],
     },
   ],
@@ -72,12 +72,12 @@ export const pageData: AeoPageData = {
     {
       question: "How can dashboards improve my business operations?",
       answer:
-        "A real-time business dashboard gives you a live view of the metrics that matter most — revenue, leads, inventory, production rates, employee performance, or anything specific to your operation. Instead of pulling reports manually or waiting for end-of-week summaries, you see what's happening right now. Kansas business owners with dashboards make faster decisions, catch problems earlier, and spend less time compiling data.",
+        "A real-time business dashboard gives you a live view of the metrics that matter most: revenue, leads, inventory, production rates, employee performance, or anything specific to your operation. Instead of pulling reports manually or waiting for end-of-week summaries, you see what's happening right now. Kansas business owners with dashboards make faster decisions, catch problems earlier, and spend less time compiling data.",
     },
     {
       question: "What's the difference between a custom dashboard and Power BI?",
       answer:
-        "Power BI is a general-purpose BI platform — flexible but requires significant setup, ongoing maintenance, and often a dedicated BI specialist. A custom dashboard from Preisser Solutions is purpose-built for your specific business, automatically connects to your specific tools, shows only the metrics you actually need, and requires zero ongoing maintenance from your team. For most Kansas SMBs, custom dashboards are dramatically more cost-effective.",
+        "Power BI is a general-purpose BI platform: flexible but requires significant setup, ongoing maintenance, and often a dedicated BI specialist. A custom dashboard from Preisser Solutions is purpose-built for your specific business, automatically connects to your specific tools, shows only the metrics you actually need, and requires zero ongoing maintenance from your team. For most Kansas SMBs, custom dashboards are dramatically more cost-effective.",
     },
     {
       question: "How much does a custom dashboard cost?",
@@ -102,7 +102,7 @@ export const pageData: AeoPageData = {
     {
       question: "Who can access the dashboard?",
       answer:
-        "Access is fully customizable — typically owners, executives, and managers see the full view, with role-based access for staff who only need certain sections. All dashboards are password-protected and use modern authentication. Multi-factor authentication is available for sensitive financial data.",
+        "Access is fully customizable: typically owners, executives, and managers see the full view, with role-based access for staff who only need certain sections. All dashboards are password-protected and use modern authentication. Multi-factor authentication is available for sensitive financial data.",
     },
     {
       question: "Can I view the dashboard on my phone?",

@@ -4,7 +4,7 @@ export const product: ProductData = {
   slug: "customer-reactivation-agent",
   metaTitle: "Customer Reactivation Agent",
   metaDescription:
-    "AI-powered SMS and email engine that cleans dormant customer lists, segments by service history, and runs hyper-personalized outreach daily — 60%+ reactivation rate.",
+    "AI-powered SMS and email engine that cleans dormant customer lists, segments by service history, and runs hyper-personalized outreach daily: 60%+ reactivation rate.",
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
 
@@ -15,7 +15,7 @@ export const product: ProductData = {
   status: "production",
   industries: ["HVAC services", "Field services", "Home services", "B2B services"],
 
-  h1: "Reactivate your dormant customers — automatically.",
+  h1: "Reactivate your dormant customers: automatically.",
   subheadline:
     "An AI engine that scrubs broken customer data, segments records by service history and equipment age, and runs personalized outreach across SMS and email every day without staff input.",
   oneLine:
@@ -26,8 +26,8 @@ export const product: ProductData = {
   },
 
   whatItDoes: [
-    "Most businesses are sitting on tens of thousands of dormant customer records — scattered across dispatch systems, CRMs, and spreadsheets, with broken contact data that makes them unusable. The Customer Reactivation Agent starts by cleaning that data: extracting usable records from multiple source systems, deduplicating, and enriching with the context that makes outreach relevant.",
-    "Once the data is clean, the agent segments customers into cohorts by service history, equipment age, seasonal context, and behavioral signals. Every outreach message is crafted against that context — not a generic blast, but a message that references the specific service the customer received and the reason returning now makes sense for them.",
+    "Most businesses are sitting on tens of thousands of dormant customer records: scattered across dispatch systems, CRMs, and spreadsheets, with broken contact data that makes them unusable. The Customer Reactivation Agent starts by cleaning that data: extracting usable records from multiple source systems, deduplicating, and enriching with the context that makes outreach relevant.",
+    "Once the data is clean, the agent segments customers into cohorts by service history, equipment age, seasonal context, and behavioral signals. Every outreach message is crafted against that context, not a generic blast, but a message that references the specific service the customer received and the reason returning now makes sense for them.",
     "The agent runs on a daily autonomous schedule. It splits-tests message variants automatically, promotes winners, logs every response and booking back to the CRM, and handles opt-outs cleanly. Staff involvement after deployment is zero.",
   ],
   capabilities: [
@@ -64,7 +64,7 @@ export const product: ProductData = {
     {
       title: "Daily autonomous execution",
       description:
-        "Runs on a configured schedule with no staff involvement post-deployment — no daily queue to manage, no sends to approve.",
+        "Runs on a configured schedule with no staff involvement post-deployment: no daily queue to manage, no sends to approve.",
     },
   ],
   inputs: [
@@ -95,7 +95,7 @@ export const product: ProductData = {
     {
       step: "Generate personalized messages",
       description:
-        "For each cohort and individual record, the agent crafts an outreach message referencing the customer's specific service context — not a template blast.",
+        "For each cohort and individual record, the agent crafts an outreach message referencing the customer's specific service context, not a template blast.",
     },
     {
       step: "Send and split-test",
@@ -105,14 +105,14 @@ export const product: ProductData = {
     {
       step: "Log outcomes and iterate",
       description:
-        "Every outcome — response, booking, opt-out, no-response — writes back to the CRM. Winners are promoted; losing variants are retired. The cycle repeats daily.",
+        "Every outcome (response, booking, opt-out, no-response): writes back to the CRM. Winners are promoted; losing variants are retired. The cycle repeats daily.",
     },
   ],
   useCases: [
     "Use this when your business has 1,000+ dormant customer records that haven't been contacted in 12+ months and no automated process for reaching them.",
     "Use this when your office staff are spending hours per week on manual reminder calls and follow-up emails that could be fully automated.",
     "Use this when you're running seasonal businesses (HVAC, landscaping, pest control) that have predictable reactivation windows and time-sensitive prompts.",
-    "Use this when you have multi-system data fragmentation preventing consistent outreach — dispatch in one system, contacts in another, service notes in a third.",
+    "Use this when you have multi-system data fragmentation preventing consistent outreach: dispatch in one system, contacts in another, service notes in a third.",
     "Use this when you want A/B-tested, performance-tracked messaging without a dedicated marketing operations team.",
   ],
   techStack: [
@@ -132,7 +132,7 @@ export const product: ProductData = {
   cta: {
     heading: "Want this agent running against your customer list?",
     subcopy:
-      "Preisser Solutions scopes reactivation engines from existing data in days. The first conversation is a review of your list and your systems — no commitment.",
+      "Preisser Solutions scopes reactivation engines from existing data in days. The first conversation is a review of your list and your systems: no commitment.",
     buttonLabel: "Scope this for my business",
     buttonHref: "/contact?product=customer-reactivation-agent",
   },

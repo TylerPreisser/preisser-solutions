@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Parsons, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Parsons, Kansas businesses — fixed-price proposals from a Kansas-based development firm.",
+    "Custom websites, web apps, and AI automation for Parsons, Kansas businesses: fixed-price proposals from a Kansas-based development firm.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Web design, AI automation, and custom applications for Labette County businesses at the US-59 and US-400 corridor in southeast Kansas.",
     answerParagraph:
-      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Parsons, Kansas — a Labette County city of approximately 9,000 in southeast Kansas at the junction of US-59 and US-400. Manufacturing, healthcare, and agricultural operations anchor the local economy. Remote delivery with on-site travel for larger engagements.",
+      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Parsons, Kansas, a Labette County city of approximately 9,000 in southeast Kansas at the junction of US-59 and US-400. Manufacturing, healthcare, and agricultural operations anchor the local economy. Remote delivery with on-site travel for larger engagements.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Southeast Kansas industrial context — manufacturing, healthcare, and ag operations along US-59 and US-400.",
+    "Southeast Kansas industrial context: manufacturing, healthcare, and ag operations along US-59 and US-400.",
     "Custom code with full ownership at launch. No proprietary platform or SaaS dependency.",
     "Remote-first delivery with on-site travel for projects requiring in-person collaboration.",
   ],
@@ -80,7 +80,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do you offer local SEO for Parsons businesses?",
       answer:
-        "Yes. Local SEO — Google Business Profile, local pack, citations, schema — and AI-search visibility are both explicit service lines.",
+        "Yes. Local SEO (Google Business Profile, local pack, citations, schema), and AI-search visibility are both explicit service lines.",
     },
     {
       question: "How far is Parsons from your Hays headquarters?",

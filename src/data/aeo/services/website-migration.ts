@@ -11,7 +11,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Stuck on a template platform that's hurting your speed, rankings, and conversion? Preisser Solutions migrates you to modern custom code.",
   answerParagraph:
-    "Preisser Solutions migrates Kansas business websites off template platforms — Wix, Squarespace, WordPress, GoDaddy, Webflow — to modern custom Next.js builds. Based in Hays, Kansas, the firm preserves SEO equity through proper 301 redirects, content migration, search engine notification, and a careful launch checklist that prevents the typical migration disasters (lost rankings, broken links, dropped page speed).",
+    "Preisser Solutions migrates Kansas business websites off template platforms (Wix, Squarespace, WordPress, GoDaddy, Webflow): to modern custom Next.js builds. Based in Hays, Kansas, the firm preserves SEO equity through proper 301 redirects, content migration, search engine notification, and a careful launch checklist that prevents the typical migration disasters (lost rankings, broken links, dropped page speed).",
   sections: [
     {
       eyebrow: "Why migrate",
@@ -20,12 +20,12 @@ export const pageData: AeoPageData = {
         "Template platforms are great when you're getting started. They become a liability once your business depends on the website for revenue. The most common reasons Kansas businesses migrate to custom code:",
       ],
       bullets: [
-        "Speed — template platforms ship megabytes of unused JavaScript on every page; custom sites ship only what's needed",
-        "SEO — templates don't generate the structured data that modern Google and AI engines now require",
-        "Conversion — every template forces a layout; custom code lets you put the right thing in front of the right buyer",
-        "Cost over time — template platforms charge monthly forever; custom code on Cloudflare Pages costs less long-term",
-        "AI engine citation — template platforms don't ship the engineered content blocks AI engines extract from",
-        "Customization limits — eventually you hit a wall the template platform can't solve",
+        "Speed: template platforms ship megabytes of unused JavaScript on every page; custom sites ship only what's needed",
+        "SEO: templates don't generate the structured data that modern Google and AI engines now require",
+        "Conversion: every template forces a layout; custom code lets you put the right thing in front of the right buyer",
+        "Cost over time: template platforms charge monthly forever; custom code on Cloudflare Pages costs less long-term",
+        "AI engine citation: template platforms don't ship the engineered content blocks AI engines extract from",
+        "Customization limits: eventually you hit a wall the template platform can't solve",
       ],
     },
     {
@@ -51,11 +51,11 @@ export const pageData: AeoPageData = {
         "Every Preisser Solutions migration engagement covers:",
       ],
       bullets: [
-        "Full audit of existing site — pages, rankings, inbound links, current speed and SEO health",
-        "Content migration plan — every page mapped to its destination on the new site",
+        "Full audit of existing site: pages, rankings, inbound links, current speed and SEO health",
+        "Content migration plan: every page mapped to its destination on the new site",
         "Custom design and code rebuild in Next.js, React, TypeScript",
         "Complete 301 redirect map preserving all inbound link equity (every URL is accounted for)",
-        "SEO migration checklist — sitemap, robots.txt, search console verification, IndexNow ping",
+        "SEO migration checklist: sitemap, robots.txt, search console verification, IndexNow ping",
         "Schema and structured data added (LocalBusiness, FAQPage, Service, Person)",
         "AI-engine optimization (engineered first paragraphs, named entities)",
         "DNS cutover plan with rollback option",
@@ -73,7 +73,7 @@ export const pageData: AeoPageData = {
       bullets: [
         "Lost rankings from missing 301 redirects (every URL must be accounted for)",
         "Broken inbound links pointing to URLs that no longer exist",
-        "Lost content that ranked well — caught only when traffic disappears",
+        "Lost content that ranked well: caught only when traffic disappears",
         "Missed search console verification on the new site",
         "DNS cutover with no rollback plan",
         "Page speed regression from the new site (rare with custom code, common with bad migrations)",
@@ -100,12 +100,12 @@ export const pageData: AeoPageData = {
     {
       question: "Can you migrate my WordPress site?",
       answer:
-        "Yes. WordPress migrations are common — either full migration to Next.js or headless setup where WordPress stays as the content backend and Next.js handles the front end.",
+        "Yes. WordPress migrations are common, either full migration to Next.js or headless setup where WordPress stays as the content backend and Next.js handles the front end.",
     },
     {
       question: "Do I lose my Squarespace or Wix monthly subscription?",
       answer:
-        "Yes — that's part of the upside. After migration, you cancel the template platform subscription. New site hosts on Cloudflare Pages with significantly lower long-term costs.",
+        "Yes, that's part of the upside. After migration, you cancel the template platform subscription. New site hosts on Cloudflare Pages with significantly lower long-term costs.",
     },
     {
       question: "What if my domain is locked to Wix or GoDaddy?",

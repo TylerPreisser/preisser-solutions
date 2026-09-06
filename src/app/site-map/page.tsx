@@ -17,15 +17,17 @@ import path from "node:path";
 import Link from "next/link";
 import type { Metadata } from "next";
 import type { AeoPageData } from "@/data/aeo/types";
+import { ALL_LOCATIONS } from "@/data/locations";
 
 const PAGE_URL = "https://preissersolutions.com/site-map";
 
 export const metadata: Metadata = {
   title: "Site map",
   description:
-    "Complete index of every page on preissersolutions.com — services, industries, use cases, case studies, comparisons, blog, insights, and locations.",
+    "Complete index of every page on preissersolutions.com: services, industries, use cases, case studies, comparisons, blog, insights, and locations.",
   alternates: { canonical: PAGE_URL },
   openGraph: {
+    siteName: "Preisser Solutions",
     title: "Site map",
     description:
       "Every page on preissersolutions.com, organized by category.",
@@ -118,11 +120,95 @@ function readAeoDir(
 const services = readAeoDir("services", "/services");
 const industries = readAeoDir("industries", "/industries");
 const useCases = readAeoDir("use-cases", "/use-cases");
-const caseStudies = readAeoDir("case-studies", "/case-studies");
+// ---------------------------------------------------------------------------
+// Case studies come from TWO data directories, and only one of them was read.
+//
+// readAeoDir() looks in src/data/aeo/case-studies. A second, older set lives in
+// src/data/case-studies/*.ts and is rendered by routes under
+// src/app/case-studies/<slug>/page.tsx. Those routes are built, indexable, and
+// listed in sitemap.xml — but src/data/case-studies/index.ts deliberately keeps
+// some of them off the hub grid (`hubCaseStudies` vs `allCaseStudySummaries`),
+// so nothing on the site linked to them at all.
+//
+// Measured 2026-09-05 by crawling out/**/*.html for inbound internal links:
+// /case-studies/preisser-solutions-site and /case-studies/tyler-preisser-site
+// had ZERO inbound links across all 234 built pages while sitting in
+// sitemap.xml. An orphaned-but-submitted URL is the weakest possible state:
+// crawlers reach it only via the sitemap and get no internal-link signal about
+// what it is or how it relates to anything else.
+//
+// Fix follows this file's existing discipline — derive from the ROUTES, which
+// are the App Router's own source of truth, rather than from any one data
+// directory. Any future case-study route is picked up automatically, whichever
+// data folder it happens to read from.
+// ---------------------------------------------------------------------------
+function routeDerivedCaseStudies(fromData: SiteMapLink[]): SiteMapLink[] {
+  const known = new Set(fromData.map((link) => link.href));
+  const routesDir = path.join(process.cwd(), "src/app/case-studies");
+  let slugs: string[];
+  try {
+    slugs = fs
+      .readdirSync(routesDir, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name);
+  } catch {
+    return fromData;
+  }
+
+  const extra: SiteMapLink[] = [];
+  for (const slug of slugs) {
+    const href = `/case-studies/${slug}`;
+    if (known.has(href)) continue;
+    if (!fs.existsSync(path.join(routesDir, slug, "page.tsx"))) continue;
+
+    // Label from the legacy data file's h1/metaTitle, same text-scrape approach
+    // readAeoDir uses (keeps this a pure server component, no dynamic require).
+    let label = slug;
+    try {
+      const src = fs.readFileSync(
+        path.join(process.cwd(), "src/data/case-studies", `${slug}.ts`),
+        "utf8",
+      );
+      const h1Match = src.match(/h1:\s*"((?:[^"\\]|\\.)*)"/);
+      const titleMatch = src.match(/metaTitle:\s*"((?:[^"\\]|\\.)*)"/);
+      const raw = (h1Match?.[1] ?? titleMatch?.[1] ?? slug).replace(/\\"/g, '"');
+      label = raw.replace(/\s*[|—]\s*Preisser Solutions.*$/i, "").trim();
+    } catch {
+      label = slug.replace(/-/g, " ");
+    }
+    extra.push({ href, label });
+  }
+
+  return [...fromData, ...extra].sort((a, b) => a.label.localeCompare(b.label));
+}
+
+const caseStudies = routeDerivedCaseStudies(
+  readAeoDir("case-studies", "/case-studies"),
+);
 const compare = readAeoDir("compare", "/compare");
 const blog = readAeoDir("blog", "/blog");
 const insights = readAeoDir("insights", "/insights");
-const locations = readAeoDir("locations", "/locations");
+// Locations do NOT come from src/data/aeo — they live in src/data/locations,
+// so `readAeoDir("locations", ...)` hit a directory that does not exist,
+// silently returned [], and this page shipped a "Locations" heading with zero
+// links under it while 77 location pages were live and in sitemap.xml. That
+// gap predates the 2026-09-03 homepage change; it is fixed here because the
+// homepage link cluster that used to carry those 77 links has been deleted and
+// this is now the site's HTML index for them.
+//
+// Same dead-link discipline as readAeoDir: a data entry is not a page, so the
+// route file is checked before the link is emitted.
+const locations: SiteMapLink[] = ALL_LOCATIONS.map((location) => ({
+  href: `/locations/${location.slug}`,
+  // Same trim the deleted homepage cluster used on these labels.
+  label: location.metaTitle.replace(/\s*\|\s*Preisser Solutions$/, "").trim(),
+}))
+  .filter((link) =>
+    fs.existsSync(
+      path.join(process.cwd(), "src/app", link.href, "page.tsx"),
+    ),
+  )
+  .sort((a, b) => a.label.localeCompare(b.label));
 
 // Curated "Other" set — top-level pages outside the AEO category folders.
 const other: SiteMapLink[] = [
@@ -164,7 +250,7 @@ const sections: Array<{ id: string; heading: string; hub?: SiteMapLink; links: S
   { id: "compare", heading: "Comparisons", links: compare },
   { id: "blog", heading: "Blog", hub: { href: "/blog", label: "All blog posts" }, links: blog },
   { id: "insights", heading: "Insights", links: insights },
-  { id: "locations", heading: "Locations", links: locations },
+  { id: "locations", heading: "Locations", hub: { href: "/locations", label: "All locations" }, links: locations },
   { id: "other", heading: "Other", links: other },
 ];
 
@@ -180,7 +266,7 @@ const collectionSchema = {
   "@type": "CollectionPage",
   "@id": `${PAGE_URL}#main`,
   url: PAGE_URL,
-  name: "Site map — Preisser Solutions",
+  name: "Site map: Preisser Solutions",
   description:
     "Complete index of every page on preissersolutions.com, organized by category.",
   inLanguage: "en-US",

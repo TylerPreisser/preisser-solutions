@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface CaseStudyCard {
   title: string;
@@ -22,7 +22,60 @@ interface CaseStudyCard {
   logoClass?: string;
   /** Wordmark set under the logo, for marks that are an icon with no type in them. */
   logoWordmark?: string;
+  /** Our own internal case-study page. Never a third-party destination. */
   href?: string;
+  /**
+   * The client's own public site, opened in a new tab from the bottom of the
+   * revealed panel. Governed by DECISIONS/0002: a card only gets one when the
+   * URL resolves 2xx AND the client is not one we anonymize. Deliberately a
+   * separate field from `href` — several cards depend on `href` meaning "our
+   * case-study page", and overloading it would send visitors off-site from a
+   * link that reads as internal.
+   */
+  liveUrl?: string;
+  /**
+   * One outcome line shown on the CLOSED card face. Stage 2 of the conversion
+   * plan: the section is headed "Real Projects. Real Results." but a closed
+   * card showed only a logo and a tap affordance, putting every result one tap
+   * deep.
+   *
+   * Every value is a VERBATIM substring of that card's own `description` — no
+   * new copy is written here (ADR-0009). It is a separate field rather than a
+   * truncation of `description` for two reasons: `data-density` is computed
+   * from `description.length`, so a separate field leaves the size buckets
+   * untouched by construction; and a truncated description reads as a sentence
+   * cut off rather than a claim made.
+   *
+   * FarmBooks deliberately has none: every outcome sentence in it carries one
+   * of the three frozen claims, and repeating one on the closed face would
+   * change their built-HTML counts.
+   */
+  outcome?: string;
+  /**
+   * Per-icon vertical ink correction, as a length (e.g. "-7.32%").
+   *
+   * The icon BOX is centred exactly (verified: geomDY 0.00 on all 18 cards),
+   * but a few inline SVGs draw their artwork off-centre inside their own
+   * viewBox, so the drawn pixels land off-centre while the box is perfect.
+   * Only set this where the icon is a SINGLE visual mass that genuinely sits
+   * high or low. Do NOT set it to cancel an ink-bbox offset caused by a small
+   * badge or foot in one corner — on those the primary shape is already
+   * centred and a nudge would visibly push it off (cards 9, 10, 11, 15 and 16
+   * are all that case; measured, then confirmed by eye against a centre
+   * crosshair, 2026-09-05).
+   *
+   * Expressed in PERCENT of the icon's own box so it stays correct at both
+   * the 100px mobile and 120px desktop icon sizes.
+   */
+  iconNudgeY?: string;
+}
+
+/** "https://farm-books.com/" -> "farm-books.com", for a link label that says where it goes. */
+function liveUrlLabel(url: string): string {
+  return url
+    .replace(/^https?:\/\//, "")
+    .replace(/^www\./, "")
+    .replace(/\/+$/, "");
 }
 
 // Order is deliberate: the three shipped internal platforms lead, then the
@@ -33,14 +86,22 @@ const caseStudyCards: CaseStudyCard[] = [
   // FarmBooks — flagship. Document pipeline + Schedule-F-ready books.
   {
     title: "FarmBooks",
+    outcome: "Tax season stopped being a data-entry month.",
     tags: "Farming | Document Pipeline | Bookkeeping",
     description:
-      "A farm bookkeeper was retyping every co-op and dealer bill into a spreadsheet by hand, line by line, field by field, ahead of every tax season. Now a phone photo of the bill becomes categorized, Schedule-F-ready books. Anything the system is not certain about — and anything handwritten — goes to a person instead of being guessed at. Tax season stopped being a data-entry month.",
+      "A farm bookkeeper was retyping every co-op and dealer bill into a spreadsheet by hand, line by line, field by field, ahead of every tax season. Now a phone photo of the bill becomes categorized, Schedule-F-ready books. Anything the system is not certain about, and anything handwritten, goes to a person instead of being guessed at. Tax season stopped being a data-entry month.",
     // FarmBooks' own palette, not ours: its manifest declares #F2F2F7 and the
     // mark is gold #C9A227. Card runs light so the gold reads as the gold.
     gradient: "linear-gradient(150deg, #FDFCF7 0%, #F2F2F7 55%, #E8E4D6 100%)",
     lightCard: true,
-    href: "/case-studies/farmbooks",
+    // No `href` on purpose. The card used to carry a "Read the case study"
+    // link to /case-studies/farmbooks alongside the live link; the owner asked
+    // for the case-study link off this card (2026-09-03) — with the real
+    // product one tap away, a write-up about it is the weaker destination.
+    // The /case-studies/farmbooks ROUTE still exists and stays in the sitemap;
+    // only the card's link to it is gone. Do not "restore" this href.
+    // Verified 2026-09-03: https://farm-books.com -> 200. See DECISIONS/0002.
+    liveUrl: "https://farm-books.com",
     // Real FarmBooks mark — the actual PWA icon shipped at farm-books.com
     // (web/app/icon.svg, declared in web/app/manifest.ts).
     caseLogo: "/images/case-studies/farmbooks-logo.svg",
@@ -52,9 +113,10 @@ const caseStudyCards: CaseStudyCard[] = [
   // Alliant Insurance ecosystem MGU: AI Submission Processing (anonymized per privacy rules)
   {
     title: "An MGU Within the Alliant Insurance Ecosystem",
+    outcome: "Zero missed renewals in the first six months.",
     tags: "AI Submission Processing | Insurance | Salesforce + Azure AI",
     description:
-      "AI engine reads broker submissions — 7–15 documents per submission — extracts structured data using dual competing AI models (Claude Opus + GPT cross-validation), and auto-populates Salesforce records. Eliminated manual data entry across systems where the same data was previously entered 3–5 times. Zero missed renewals in the first six months.",
+      "AI engine reads broker submissions (7–15 documents per submission), extracts structured data using dual competing AI models (Claude Opus + GPT cross-validation), and auto-populates Salesforce records. Eliminated manual data entry across systems where the same data was previously entered 3–5 times. Zero missed renewals in the first six months.",
     gradient: "linear-gradient(135deg, #0a1f3c 0%, #1590FF 100%)",
     caseLogo: "/images/case-studies/astrus-logo.png",
     caseLogoWidth: 2066,
@@ -63,9 +125,10 @@ const caseStudyCards: CaseStudyCard[] = [
   // Chicago-area bus transportation operator: Power BI + Ops Automation (anonymized per privacy rules)
   {
     title: "A Chicago-Area Bus Transportation Operator",
+    outcome: "Weekly reconciliation dropped from a full day",
     tags: "Power BI Dashboards | Ops Automation | Dispatch + AI Parsing",
     description:
-      "Five Power BI dashboards — workforce planning, revenue/EBITDA, safety scorecard, FY26 goals, and routes/runs — plus AI BOL parsing, rate-confirmation parsing, and back-office reconciliation automation. Weekly reconciliation dropped from a full day to a 15-minute exception queue, with real-time load-level profitability for the first time.",
+      "Five Power BI dashboards (workforce planning, revenue/EBITDA, safety scorecard, FY26 goals, and routes/runs), plus AI BOL parsing, rate-confirmation parsing, and back-office reconciliation automation. Weekly reconciliation dropped from a full day to a 15-minute exception queue, with real-time load-level profitability for the first time.",
     gradient: "linear-gradient(135deg, #0F2744 0%, #1a3a6e 100%)",
     caseLogo: "/images/case-studies/sunrise-transportation-logo.svg",
     caseLogoWidth: 150,
@@ -74,20 +137,24 @@ const caseStudyCards: CaseStudyCard[] = [
   // Iron and Oak Podcast
   {
     title: "The Iron and Oak Podcast",
+    outcome: "Designed and built the full cinematic media brand",
     tags: "Custom Media Brand | 134 Pages | GSAP Cinematic",
     description:
-      "Designed and built the full cinematic media brand from concept to launch — custom design system, 134 pre-rendered pages, GSAP-powered smooth scroll, dark and light modes, and a content architecture spanning 12 episodes and 109 questions.",
+      "Designed and built the full cinematic media brand from concept to launch: custom design system, 134 pre-rendered pages, GSAP-powered smooth scroll, dark and light modes, and a content architecture spanning 12 episodes and 109 questions.",
     gradient: "linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0f2010 100%)",
     image: "iron-oak.webp",
     imageWidth: 2048,
     imageHeight: 2048,
+    // Verified 2026-09-03: https://theironandoakpodcast.com -> 200. See DECISIONS/0002.
+    liveUrl: "https://theironandoakpodcast.com",
   },
   // Cassidy HVAC: Customer Reactivation
   {
     title: "AI Customer Reactivation Engine",
+    outcome: "Reactivated 60%+ of dormant Cassidy HVAC customers within six weeks.",
     tags: "AI Outreach | Cassidy HVAC | Revenue Recovery",
     description:
-      "Reactivated 60%+ of dormant Cassidy HVAC customers within six weeks. CRM-integrated AI generated hyper-personalized SMS and email outreach using each customer's service history, equipment age, and seasonal context — driving a 45%+ booking conversion lift.",
+      "Reactivated 60%+ of dormant Cassidy HVAC customers within six weeks. CRM-integrated AI generated hyper-personalized SMS and email outreach using each customer's service history, equipment age, and seasonal context, driving a 45%+ booking conversion lift.",
     gradient: "linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%)",
     image: "cassidy-hvac-nobg.webp",
     imageWidth: 505,
@@ -97,6 +164,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // HG Oil Holdings: Inventory
   {
     title: "Automated Inventory System",
+    outcome: "95% reduction in back-office logistics time",
     tags: "Custom App | HG Oil Holdings | Live Tracking",
     description:
       "95% reduction in back-office logistics time and 75%+ accuracy improvement on inventory counts and transfers. Live counts, full audit trails, and codified markup formulas turned HG Oil Holdings' inventory function from a loss center into a profit center.",
@@ -109,9 +177,10 @@ const caseStudyCards: CaseStudyCard[] = [
   // Wife Supply Co
   {
     title: "Wife Supply Co",
+    outcome: "Built the entire AI-powered gifting platform",
     tags: "AI Commerce | Custom Build | Full Deployment",
     description:
-      "Built the entire AI-powered gifting platform from concept to launch — a custom AI gift-matching engine, custom commerce front end, conversion-optimized funnels, and a brand-engineered design system that doesn't look like another Shopify store.",
+      "Built the entire AI-powered gifting platform from concept to launch: a custom AI gift-matching engine, custom commerce front end, conversion-optimized funnels, and a brand-engineered design system that doesn't look like another Shopify store.",
     gradient: "linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%)",
     image: "wife-supply.webp",
     imageWidth: 1024,
@@ -121,6 +190,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // Our own site (Preisser Solutions)
   {
     title: "PreisserSolutions.com",
+    outcome: "A website built to work as a sales tool.",
     tags: "Custom Website | Lead Pipeline | Local + AI SEO",
     description:
       "Our own flagship site, built the same way we build yours: custom-coded in Next.js, React, and TypeScript, engineered for local SEO and AI search citation, and connected straight into the lead pipeline. A website built to work as a sales tool.",
@@ -131,10 +201,11 @@ const caseStudyCards: CaseStudyCard[] = [
   },
   // Alpha Matrix
   {
-    title: "Alpha Matrix — Multi-Agent AI",
+    title: "Alpha Matrix: Multi-Agent AI",
+    outcome: "Six autonomous AI agents running in parallel",
     tags: "AI Architecture | Multi-Agent | Autonomous",
     description:
-      "Six autonomous AI agents running in parallel — scanning, analyzing, scoring, and producing strategic output without human intervention. Developed in-house at Preisser Solutions as a working demonstration of multi-agent analytical infrastructure.",
+      "Six autonomous AI agents running in parallel: scanning, analyzing, scoring, and producing strategic output without human intervention. Developed in-house at Preisser Solutions as a working demonstration of multi-agent analytical infrastructure.",
     gradient: "linear-gradient(135deg, #0A1628 0%, #1a1040 50%, #0A1628 100%)",
     image: "preisser-solutions.webp",
     imageWidth: 1024,
@@ -144,9 +215,10 @@ const caseStudyCards: CaseStudyCard[] = [
   // After-Hours Call Triage
   {
     title: "After-Hours Call Triage",
+    outcome: "This system answers calls, handles texts, qualifies urgency",
     tags: "AI Automation | Lead Capture | Routing",
     description:
-      "Every call that goes to voicemail after 5 PM is a customer choosing your competitor by 8 AM. This system answers calls, handles texts, qualifies urgency, and routes the right ones to you — so you stop losing jobs while you sleep.",
+      "Every call that goes to voicemail after 5 PM is a customer choosing your competitor by 8 AM. This system answers calls, handles texts, qualifies urgency, and routes the right ones to you, so you stop losing jobs while you sleep.",
     gradient: "linear-gradient(135deg, #1590FF 0%, #00D4AA 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -163,9 +235,10 @@ const caseStudyCards: CaseStudyCard[] = [
   // AI Invoice Processing
   {
     title: "AI Invoice Processing",
+    outcome: "A proven pattern that eliminates the invoice backlog",
     tags: "Document Processing | AI Automation | Back-Office",
     description:
-      "AI extracts vendor, line items, totals, and GL codes from any invoice format in seconds — no manual data entry, no missed approvals, no need to hire additional office staff to keep up with volume. A proven pattern that eliminates the invoice backlog without adding headcount.",
+      "AI extracts vendor, line items, totals, and GL codes from any invoice format in seconds: no manual data entry, no missed approvals, no need to hire additional office staff to keep up with volume. A proven pattern that eliminates the invoice backlog without adding headcount.",
     gradient: "linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -183,9 +256,10 @@ const caseStudyCards: CaseStudyCard[] = [
   // AI Document Analysis
   {
     title: "AI Document Analysis",
+    outcome: "Stop paying skilled people to do copy-paste work.",
     tags: "AI Automation | Workflow Integration | Efficiency",
     description:
-      "This system reads contracts, invoices, permits, and any other document your team currently re-types by hand — then extracts the data and puts it exactly where it needs to go. Stop paying skilled people to do copy-paste work.",
+      "This system reads contracts, invoices, permits, and any other document your team currently re-types by hand, then extracts the data and puts it exactly where it needs to go. Stop paying skilled people to do copy-paste work.",
     gradient: "linear-gradient(135deg, #1E293B 0%, #334155 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -203,9 +277,13 @@ const caseStudyCards: CaseStudyCard[] = [
   // Custom AI Fitness Agent
   {
     title: "Custom AI Fitness Agent",
+    // Ink measured +8.68px off the card centre at 390x844; the artwork sits
+    // low inside its own viewBox while the box itself is centred exactly.
+    iconNudgeY: "-8.68%",
+    outcome: "We built an AI agent that generates personalized fitness and nutrition regimens",
     tags: "Custom AI Agent | Personalization | Data",
     description:
-      "We built an AI agent that generates personalized fitness and nutrition regimens — work that previously required a human expert for every client. This is a proof of concept for any business where expert knowledge gets repeated hundreds of times a day.",
+      "We built an AI agent that generates personalized fitness and nutrition regimens, work that previously required a human expert for every client. This is a proof of concept for any business where expert knowledge gets repeated hundreds of times a day.",
     gradient: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -224,9 +302,10 @@ const caseStudyCards: CaseStudyCard[] = [
   // AI Email Digest System
   {
     title: "AI Email Digest System",
+    outcome: "One briefing. Every morning.",
     tags: "AI Automation | Email Management | Productivity",
     description:
-      "One briefing. Every morning. Every important email from the last 24 hours — summarized, prioritized, and ready for decisions. Built for the business owner who loses their first productive hour to an inbox full of noise.",
+      "One briefing. Every morning. Every important email from the last 24 hours: summarized, prioritized, and ready for decisions. Built for the business owner who loses their first productive hour to an inbox full of noise.",
     gradient: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -242,9 +321,13 @@ const caseStudyCards: CaseStudyCard[] = [
   // Hiring Pipeline & AI Screener
   {
     title: "Hiring Pipeline & AI Screener",
+    // Ink measured -7.32px off the card centre at 390x844; the artwork sits
+    // high inside its own viewBox while the box itself is centred exactly.
+    iconNudgeY: "7.32%",
+    outcome: "Applications come in, the AI ranks and screens them against your criteria",
     tags: "Google Workspace | Apps Script | AI Agent",
     description:
-      "Applications come in, the AI ranks and screens them against your criteria, and qualified candidates surface to the top — automatically. No more spreadsheet tracking, no more \"I think we already called that one,\" no more losing good applicants because nobody followed up fast enough.",
+      "Applications come in, the AI ranks and screens them against your criteria, and qualified candidates surface to the top, automatically. No more spreadsheet tracking, no more \"I think we already called that one,\" no more losing good applicants because nobody followed up fast enough.",
     gradient: "linear-gradient(135deg, #0EA5E9 0%, #2563EB 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -261,9 +344,10 @@ const caseStudyCards: CaseStudyCard[] = [
   // Agentic AI Coding Specialists
   {
     title: "Agentic AI Coding Specialists",
+    outcome: "This is the toolset behind our speed.",
     tags: "AI Architecture | Agentic Coding | Claude Code",
     description:
-      "Built specialized agentic coding models \u2014 AI systems that don\u2019t just generate code, they architect, debug, and ship entire projects autonomously. Each agent is tuned for a specific domain: web development, automation pipelines, data analysis. This is the toolset behind our speed.",
+      "Built specialized agentic coding models: AI systems that don\u2019t just generate code, they architect, debug, and ship entire projects autonomously. Each agent is tuned for a specific domain: web development, automation pipelines, data analysis. This is the toolset behind our speed.",
     gradient: "linear-gradient(135deg, #7C3AED 0%, #2563EB 50%, #1590FF 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -279,9 +363,10 @@ const caseStudyCards: CaseStudyCard[] = [
   // Custom Local AI Models
   {
     title: "Custom Local AI Models",
+    outcome: "Designed and deployed custom AI models that run locally",
     tags: "AI Engineering | Local Deployment | Custom Training",
     description:
-      "Designed and deployed custom AI models that run locally \u2014 no cloud dependency, no data leaving your network. Tuned for specific business operations with proprietary logic built in. When off-the-shelf AI doesn\u2019t fit the problem, we build one that does.",
+      "Designed and deployed custom AI models that run locally: no cloud dependency, no data leaving your network. Tuned for specific business operations with proprietary logic built in. When off-the-shelf AI doesn\u2019t fit the problem, we build one that does.",
     gradient: "linear-gradient(135deg, #0F172A 0%, #1E293B 40%, #7C3AED 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -300,9 +385,10 @@ const caseStudyCards: CaseStudyCard[] = [
   // AI Trend & Behavioral Analysis
   {
     title: "AI Trend & Behavioral Analysis",
+    outcome: "Built AI models that calculate economic trends",
     tags: "AI Research | Predictive Modeling | Economics",
     description:
-      "Built AI models that calculate economic trends and map psychological behavior patterns \u2014 systems that process market signals, consumer data, and behavioral indicators to surface insights no spreadsheet or manual analysis can produce.",
+      "Built AI models that calculate economic trends and map psychological behavior patterns: systems that process market signals, consumer data, and behavioral indicators to surface insights no spreadsheet or manual analysis can produce.",
     gradient: "linear-gradient(135deg, #1590FF 0%, #6366F1 50%, #EC4899 100%)",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -320,8 +406,73 @@ const caseStudyCards: CaseStudyCard[] = [
 
 export function CaseStudies() {
   const trackRef = useRef<HTMLDivElement>(null);
-  // Track which card is tapped on mobile (null = none active)
-  const [activeMobileCard, setActiveMobileCard] = useState<number | null>(null);
+  // Which card's detail panel is open. One at a time, every viewport — the
+  // reveal is no longer mobile-only, so this is not "activeMobileCard".
+  const [openCard, setOpenCard] = useState<number | null>(null);
+  // scrollLeft at the moment a card was opened. Focusing the toggle button can
+  // make the browser scroll the card into view, which fires onScroll and used
+  // to slam the panel shut on the very click that opened it. Only a real user
+  // scroll (> 24px away from where we started) counts as "moving on".
+  const scrollAtOpenRef = useRef(0);
+
+  // Entry fade for the bottom affordance + its scrim.
+  //
+  // A 240ms fade was authored on .ps-work-card__bob in globals.css, but its
+  // ONLY triggers were :hover — gated behind `pointer: fine` — and
+  // :focus-visible. On a phone neither ever fires, so the label and its
+  // gradient simply translated in at the scroll's own speed (measured
+  // 34.0px/frame, settled by t~293ms). The owner called that "it jerks one in
+  // real quick instead of fading it in" (2026-09-04).
+  //
+  // A `data-` attribute, not a class: this element's className is a React
+  // prop that CHANGES when the card opens (see the className array below), so
+  // a class added via classList.add would be wiped on the very first tap and
+  // — the observer having already unobserved — would never come back. React
+  // does not touch attributes it did not set. Same reasoning and same idiom
+  // as hero.tsx:137-139.
+  //
+  // The arming class goes on the TRACK so the hidden state cannot exist
+  // without JS: no script, no `--reveal`, nothing is ever at opacity 0.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const cards = Array.from(
+      track.querySelectorAll<HTMLElement>(".ps-work-card")
+    );
+    if (cards.length === 0) return;
+
+    track.classList.add("ps-work-track--reveal");
+
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    // Reduced motion short-circuits to the final state in the effect AND in
+    // CSS, matching card-visuals-backup.tsx:860-868.
+    if (prefersReduced || typeof IntersectionObserver === "undefined") {
+      cards.forEach((card) => {
+        card.dataset.revealed = "true";
+      });
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          (entry.target as HTMLElement).dataset.revealed = "true";
+          io.unobserve(entry.target);
+        });
+      },
+      // Viewport, not the track: with the track as root, every card that is
+      // horizontally in view would reveal while the section is still below
+      // the fold, and the first fade would be spent unseen.
+      { threshold: 0.35 }
+    );
+
+    cards.forEach((card) => io.observe(card));
+    return () => io.disconnect();
+  }, []);
 
   function scrollTrack(direction: "left" | "right") {
     if (!trackRef.current) return;
@@ -332,15 +483,18 @@ export function CaseStudies() {
     });
   }
 
-  function handleCardTap(index: number) {
-    // Toggle: tap same card to close, tap different card to switch
-    setActiveMobileCard((prev) => (prev === index ? null : index));
+  function handleCardToggle(index: number) {
+    scrollAtOpenRef.current = trackRef.current?.scrollLeft ?? 0;
+    // Toggle: activate the same card to close, a different card to switch
+    setOpenCard((prev) => (prev === index ? null : index));
   }
 
-  // Close overlay when user scrolls the track (they're moving on)
+  // Close the panel when the user scrolls the track (they're moving on)
   function handleTrackScroll() {
-    if (activeMobileCard !== null) {
-      setActiveMobileCard(null);
+    if (openCard === null) return;
+    const now = trackRef.current?.scrollLeft ?? 0;
+    if (Math.abs(now - scrollAtOpenRef.current) > 24) {
+      setOpenCard(null);
     }
   }
 
@@ -390,9 +544,50 @@ export function CaseStudies() {
 
       <div className="ps-work-track" ref={trackRef} role="list" onScroll={handleTrackScroll}>
         {caseStudyCards.map((study, index) => {
-          const isMobileActive = activeMobileCard === index;
-          const cardContent = (
-            <>
+          const isOpen = openCard === index;
+          const panelId = `ps-work-panel-${index}`;
+          // Per-card type scale, from the client's 2026-09-04 note: the
+          // panel should be "sized to fit the card on a card by card basis".
+          // Copy runs 219-377 characters across the eighteen cards, so one
+          // fixed size has to serve the longest and leaves the other
+          // fifteen under-set — which is what made the panel look
+          // bottom-weighted and half-empty.
+          //
+          // Computed from the static data at render, so this is baked into
+          // the SSG HTML: no runtime measuring, no reflow, no flash of
+          // wrong size. Boundaries sit inside natural gaps in the length
+          // distribution (290|339 and 261|275), not next to a real value,
+          // so a copy edit of a character or two cannot flip a card into a
+          // different size. If you change a description, re-check the
+          // bucket AND re-run the 320x568 clipping check.
+          const copyLength = study.description.length;
+          const density =
+            copyLength >= 300 ? "long" : copyLength >= 268 ? "mid" : "short";
+          // NOTE: `outcome` deliberately does NOT feed `density` — density is
+          // computed from `description.length` only, so adding an outcome line
+          // cannot move a card between size buckets.
+          // Defensive: `href` is meant to be an internal route, but if one is
+          // ever absolute it must still get the new-tab treatment.
+          const hrefIsExternal = study.href ? /^https?:\/\//.test(study.href) : false;
+          return (
+            <article
+              key={`${study.title}-${index}`}
+              className={[
+                "ps-work-card",
+                study.lightCard ? "ps-work-card--light" : "",
+                isOpen ? "ps-work-card--open" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              data-density={density}
+              data-has-outcome={study.outcome ? "true" : undefined}
+              style={
+                study.iconNudgeY
+                  ? ({ "--ps-icon-nudge-y": study.iconNudgeY } as React.CSSProperties)
+                  : undefined
+              }
+              role="listitem"
+            >
               {/* Gradient background layer */}
               <div
                 className="ps-work-card-bg"
@@ -432,70 +627,94 @@ export function CaseStudies() {
                 <div className="ps-work-card-icon" aria-hidden="true">{study.svgIcon}</div>
               ) : null}
 
-              {/* Overlay with full details — hover on desktop, tap on mobile.
-                  Title lives here now (resting-state title was replaced by the
-                  pulse affordance below). Overlay uses opacity:0, not display:none,
-                  so the title text stays in the SSG HTML for AI crawlers. */}
-              <div
-                className="ps-work-card-overlay"
-                aria-label={`${study.title} case study details`}
-              >
-                <h3 className="ps-work-card-overlay-title">{study.title}</h3>
-                <p className="ps-work-card-result">{study.description}</p>
-                <span className="ps-visually-hidden">{study.tags}</span>
+              {/* The card is NOT an anchor any more. It used to be, on the two
+                  cards with an `href`, which made a click navigate instead of
+                  inform and made it impossible to put a link in the panel
+                  without nesting <a> inside <a>. The whole card face is now a
+                  disclosure button, and every link lives inside the panel as a
+                  sibling of that button — so no anchor is ever nested. */}
+              <button
+                type="button"
+                className="ps-work-card__toggle"
+                aria-expanded={isOpen}
+                aria-controls={panelId}
+                aria-label={`Details for ${study.title}`}
+                onClick={() => handleCardToggle(index)}
+              />
+
+              {/* Detail panel. Kept at opacity 0 rather than display:none so the
+                  title and description stay in the SSG HTML for AI crawlers;
+                  aria-hidden + tabIndex -1 keep the collapsed copy out of the
+                  screen-reader flow and out of the tab order, so nothing is
+                  focusable while invisible. */}
+              <div id={panelId} className="ps-work-card__panel" aria-hidden={!isOpen || undefined}>
+                <div className="ps-work-card__panel-scroll">
+                  <h3 className="ps-work-card__panel-title">{study.title}</h3>
+                  <span className="ps-visually-hidden">{study.tags}</span>
+                  <p className="ps-work-card__panel-body">{study.description}</p>
+                </div>
+
+                {(study.href || study.liveUrl) && (
+                  <div className="ps-work-card__panel-links">
+                    {study.href && (
+                      <a
+                        className="ps-work-card__panel-link ps-work-card__panel-link--case"
+                        href={study.href}
+                        target={hrefIsExternal ? "_blank" : undefined}
+                        rel={hrefIsExternal ? "noopener noreferrer" : undefined}
+                        aria-label={`Read the ${study.title} case study`}
+                        tabIndex={isOpen ? undefined : -1}
+                      >
+                        Read the case study
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                          <path d="M3 8h10M9 3l5 5-5 5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </a>
+                    )}
+                    {study.liveUrl && (
+                      <a
+                        className="ps-work-card__panel-link ps-work-card__panel-link--live"
+                        href={study.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        tabIndex={isOpen ? undefined : -1}
+                      >
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                          <path d="M6.5 9.5a3 3 0 0 0 4.24 0l2.12-2.12a3 3 0 0 0-4.24-4.24l-.7.7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                          <path d="M9.5 6.5a3 3 0 0 0-4.24 0L3.14 8.62a3 3 0 0 0 4.24 4.24l.7-.7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        </svg>
+                        Visit {liveUrlLabel(study.liveUrl)}
+                        <span className="ps-visually-hidden"> (opens in a new tab)</span>
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
 
-              {/* "Hover for more" affordance — bottom-left, text-only with
-                  a subtle vertical bob. On touch devices, label reads
-                  "Tap for more" (toggled via CSS @media (hover: none)).
-                  Decorative only (aria-hidden); a11y handled by card aria-label. */}
+              {/* Affordance — bottom-left, text-only with a subtle vertical bob.
+                  Reveal is click/tap driven on every viewport now, so the
+                  pointer-device label says "Click for more"; touch devices get
+                  "Tap for more" via CSS @media (hover: none).
+                  Decorative only (aria-hidden); a11y is on the toggle button. */}
+              {/* Outcome line on the CLOSED face. A SIBLING of the panel, not a
+                  child: the panel is opacity:0 / pointer-events:none as a unit,
+                  so anything inside it would either stay invisible or reveal the
+                  whole story and kill the tap. Hidden while the card is open so
+                  it never double-prints under the revealed copy.
+                  aria-hidden because the identical words are already in the
+                  panel, which is opacity:0 rather than display:none and is
+                  therefore already read by assistive tech — announcing them
+                  twice would be worse than not announcing them here. */}
+              {study.outcome ? (
+                <p className="ps-work-card__outcome" aria-hidden="true">
+                  {study.outcome}
+                </p>
+              ) : null}
+
               <div className="ps-work-card__bob" aria-hidden="true">
-                <span className="ps-work-card__bob-label ps-work-card__bob-label--hover">Hover for more</span>
+                <span className="ps-work-card__bob-label ps-work-card__bob-label--hover">Click for more</span>
                 <span className="ps-work-card__bob-label ps-work-card__bob-label--tap">Tap for more</span>
               </div>
-            </>
-          );
-
-          if (study.href) {
-            // Internal case-study routes stay in the same tab; only genuinely
-            // external destinations get a new tab.
-            const isExternal = /^https?:\/\//.test(study.href);
-            return (
-              <a
-                key={`${study.title}-${index}`}
-                href={study.href}
-                target={isExternal ? "_blank" : undefined}
-                rel={isExternal ? "noopener noreferrer" : undefined}
-                aria-label={`${study.title} case study`}
-                className={[
-                  "ps-work-card",
-                  study.lightCard ? "ps-work-card--light" : "",
-                  isMobileActive ? "ps-work-card--tapped" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                role="listitem"
-                onClick={() => handleCardTap(index)}
-              >
-                {cardContent}
-              </a>
-            );
-          }
-
-          return (
-            <article
-              key={`${study.title}-${index}`}
-              className={[
-                "ps-work-card",
-                study.lightCard ? "ps-work-card--light" : "",
-                isMobileActive ? "ps-work-card--tapped" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              role="listitem"
-              onClick={() => handleCardTap(index)}
-            >
-              {cardContent}
             </article>
           );
         })}

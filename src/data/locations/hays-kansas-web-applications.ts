@@ -18,7 +18,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Web Applications in Hays, Kansas",
   metaDescription:
-    "Custom web applications for Hays, Kansas businesses — dashboards, internal tools, custom CRMs. Built locally.",
+    "Custom web applications for Hays, Kansas businesses: dashboards, internal tools, custom CRMs. Built locally.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -27,9 +27,9 @@ export const locationData: LocationPageData = {
     eyebrow: "Web Applications in Hays, Kansas",
     h1: "Custom Web Applications for Hays Businesses",
     subheadline:
-      "Dashboards, internal tools, custom CRMs — purpose-built for the way your operation actually works.",
+      "Dashboards, internal tools, custom CRMs: purpose-built for the way your operation actually works.",
     answerParagraph:
-      "Preisser Solutions is a Hays, Kansas custom-software firm that builds full-stack web applications for local businesses — internal tools, dashboards, custom CRMs, and ops platforms. Next.js, React, and TypeScript on modern infrastructure. Fixed-price proposals, full code ownership at launch.",
+      "Preisser Solutions is a Hays, Kansas custom-software firm that builds full-stack web applications for local businesses: internal tools, dashboards, custom CRMs, and ops platforms. Next.js, React, and TypeScript on modern infrastructure. Fixed-price proposals, full code ownership at launch.",
   },
 
   nearbyAreas: [
@@ -49,8 +49,8 @@ export const locationData: LocationPageData = {
   caseStudies: [HG_OIL_INVENTORY_CARD, HG_OIL_INVOICE_CARD],
 
   whyLocal: [
-    "Direct experience building operator-side applications — HG Oil Holdings' inventory platform and AI invoice processor are documented examples.",
-    "Local team — in-person scoping calls and site visits are routine.",
+    "Direct experience building operator-side applications, HG Oil Holdings' inventory platform and AI invoice processor are documented examples.",
+    "Local team: in-person scoping calls and site visits are routine.",
     "Modern stack, full code ownership at launch, no platform lock-in.",
   ],
 
@@ -65,7 +65,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do you build for non-technical operators?",
       answer:
-        "Yes. The applications are designed for the people who actually run the operation — field crews, office staff, owners — not for engineers.",
+        "Yes. The applications are designed for the people who actually run the operation (field crews, office staff, owners), not for engineers.",
     },
     {
       question: "What technology stack do you use?",
@@ -75,12 +75,12 @@ export const locationData: LocationPageData = {
     {
       question: "Do I own the code when the project ships?",
       answer:
-        "Yes. Full code ownership transferred at launch — your repo, your infrastructure, no proprietary platform.",
+        "Yes. Full code ownership transferred at launch: your repo, your infrastructure, no proprietary platform.",
     },
     {
       question: "Do you build AI agents as part of these applications?",
       answer:
-        "Yes. AI agents — document processing, decision support, customer service — are routinely embedded into the broader application.",
+        "Yes. AI agents (document processing, decision support, customer service) are routinely embedded into the broader application.",
     },
     {
       question: "Are you local to Hays?",

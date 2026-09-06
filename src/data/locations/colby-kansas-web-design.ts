@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Colby, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Colby, Kansas — built by a nearby Hays-based firm.",
+    "Custom websites, web apps, and AI automation for Colby, Kansas: built by a nearby Hays-based firm.",
 
   datePublished: "2026-05-20",
   dateModified: "2026-05-20",
@@ -80,7 +80,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do you offer local SEO and AI search in Colby?",
       answer:
-        "Yes. Local SEO and AI-search visibility — citations on Google AI Overviews, ChatGPT, Perplexity, and Gemini — are an explicit service line.",
+        "Yes. Local SEO and AI-search visibility (citations on Google AI Overviews, ChatGPT, Perplexity, and Gemini) are an explicit service line.",
     },
     {
       question: "What is the difference between Preisser Solutions and a Kansas marketing agency?",

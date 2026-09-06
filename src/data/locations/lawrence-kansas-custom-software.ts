@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Lawrence, KS Custom Software",
   metaDescription:
-    "Custom software, web applications, and AI automation built for Lawrence, Kansas businesses — fixed-price proposals, full code ownership.",
+    "Custom software, web applications, and AI automation built for Lawrence, Kansas businesses: fixed-price proposals, full code ownership.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web applications, dashboards, and AI automation built for Lawrence's University of Kansas community, startups, and professional-services market.",
     answerParagraph:
-      "Preisser Solutions builds custom software for businesses in Lawrence, Kansas — a Douglas County city of approximately 95,000 and home to the University of Kansas. Lawrence's economy features education, healthcare, technology startups, and creative industries. Custom web applications, internal tools, research portals, and AI automation are the core offering. Fixed-price proposals, full code ownership at launch.",
+      "Preisser Solutions builds custom software for businesses in Lawrence, Kansas, a Douglas County city of approximately 95,000 and home to the University of Kansas. Lawrence's economy features education, healthcare, technology startups, and creative industries. Custom web applications, internal tools, research portals, and AI automation are the core offering. Fixed-price proposals, full code ownership at launch.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Lawrence's KU community and startup ecosystem creates demand for custom tools — portals, dashboards, research applications.",
+    "Lawrence's KU community and startup ecosystem creates demand for custom tools: portals, dashboards, research applications.",
     "Custom code with full ownership at launch. No SaaS dependency or vendor lock-in after handoff.",
     "Remote delivery from Hays with on-site travel for projects of sufficient scope.",
   ],

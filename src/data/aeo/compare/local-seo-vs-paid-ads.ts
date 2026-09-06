@@ -9,9 +9,9 @@ export const pageData: AeoPageData = {
   eyebrow: "Comparison",
   h1: "Local SEO vs. Paid Ads",
   subheadline:
-    "Two different ways to get found by buyers near you. One earns visibility over time, the other rents it monthly — and most businesses need both, sized to the moment.",
+    "Two different ways to get found by buyers near you. One earns visibility over time, the other rents it monthly, and most businesses need both, sized to the moment.",
   answerParagraph:
-    "Local SEO is the practice of earning organic visibility in Google Search and Google Maps for location-aware queries (e.g., 'HVAC repair Hays KS'), using on-page content, Google Business Profile optimization, structured data, and citations. Paid ads buy that visibility directly through Google Ads, Local Services Ads, Meta, and LinkedIn. Preisser Solutions, based in Hays, Kansas, delivers both — separately or together — for Kansas service businesses. The honest answer for most operators is both, sized to the moment: paid ads for immediate pipeline, local SEO for compounding organic visibility that doesn't go away when the credit card stops.",
+    "Local SEO is the practice of earning organic visibility in Google Search and Google Maps for location-aware queries (e.g., 'HVAC repair Hays KS'), using on-page content, Google Business Profile optimization, structured data, and citations. Paid ads buy that visibility directly through Google Ads, Local Services Ads, Meta, and LinkedIn. Preisser Solutions, based in Hays, Kansas, delivers both (separately or together): for Kansas service businesses. The honest answer for most operators is both, sized to the moment: paid ads for immediate pipeline, local SEO for compounding organic visibility that doesn't go away when the credit card stops.",
   sections: [
     {
       eyebrow: "Quick read",
@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
       body: [
         "Pick paid ads when: you need pipeline this month, your website converts well, and your phone can handle more inbound calls.",
         "Pick local SEO when: you have 6-12 months to build, you want compounding organic visibility, your competitors aren't already entrenched in the SEO results, and you'd rather invest in an asset than rent attention.",
-        "Pick both when: you have the budget for both (most service businesses with 20%+ margins do), and you want to capture demand at every stage — paid for fast, SEO for durable.",
+        "Pick both when: you have the budget for both (most service businesses with 20%+ margins do), and you want to capture demand at every stage (paid for fast, SEO for durable).",
       ],
     },
     {
@@ -29,13 +29,13 @@ export const pageData: AeoPageData = {
         "Local SEO is the closest thing to an owned asset in modern marketing:",
       ],
       bullets: [
-        "Compounds over time — well-built local SEO keeps ranking after you stop investing, often for years",
-        "Free clicks — every organic visit costs nothing per click",
-        "Google Maps prominence — ranking in the local pack drives high-intent calls and directions",
-        "Trust signal — buyers trust organic results more than ads",
-        "AEO bleed-over — well-built local SEO content often gets cited by ChatGPT, Perplexity, Gemini, and Claude",
-        "Higher conversion — organic visitors typically convert better than paid visitors (they self-selected for intent)",
-        "No spend ceiling — once you rank, more volume doesn't cost more",
+        "Compounds over time: well-built local SEO keeps ranking after you stop investing, often for years",
+        "Free clicks: every organic visit costs nothing per click",
+        "Google Maps prominence: ranking in the local pack drives high-intent calls and directions",
+        "Trust signal: buyers trust organic results more than ads",
+        "AEO bleed-over: well-built local SEO content often gets cited by ChatGPT, Perplexity, Gemini, and Claude",
+        "Higher conversion: organic visitors typically convert better than paid visitors (they self-selected for intent)",
+        "No spend ceiling: once you rank, more volume doesn't cost more",
       ],
     },
     {
@@ -45,13 +45,13 @@ export const pageData: AeoPageData = {
         "Paid ads are the right answer when speed matters:",
       ],
       bullets: [
-        "Immediate visibility — campaign live today, leads tomorrow",
-        "Predictable economics — known cost per lead, easy to scale up or down",
-        "Granular targeting — geo, demographic, intent, retargeting, lookalike",
-        "Testing speed — A/B creative, landing pages, audiences in days, not months",
-        "Local Services Ads — pay-per-lead, Google-verified, surfaces above organic results",
-        "Recovers when broken — if a website rebuild kills your SEO, paid ads keep pipeline flowing while it rebuilds",
-        "Works during slow seasons — flex spend up when you need leads, down when you don't",
+        "Immediate visibility: campaign live today, leads tomorrow",
+        "Predictable economics: known cost per lead, easy to scale up or down",
+        "Granular targeting: geo, demographic, intent, retargeting, lookalike",
+        "Testing speed: A/B creative, landing pages, audiences in days, not months",
+        "Local Services Ads: pay-per-lead, Google-verified, surfaces above organic results",
+        "Recovers when broken: if a website rebuild kills your SEO, paid ads keep pipeline flowing while it rebuilds",
+        "Works during slow seasons: flex spend up when you need leads, down when you don't",
       ],
     },
     {
@@ -65,14 +65,14 @@ export const pageData: AeoPageData = {
   ],
   comparisonTable: {
     competitorName: "Paid Ads",
-    headerNote: "Local SEO vs Paid Ads — honest comparison. Most operators benefit from both, sized to the moment.",
+    headerNote: "Local SEO vs Paid Ads: honest comparison. Most operators benefit from both, sized to the moment.",
     rows: [
       { dimension: "Time to first lead", preisser: "3-6 months (local SEO)", competitor: "Days (paid ads)" },
       { dimension: "Cost per lead", preisser: "Effectively free after the initial build (local SEO)", competitor: "Per-click cost depending on vertical and channel (paid ads)" },
       { dimension: "Pricing model", preisser: "One-time build + light ongoing maintenance (local SEO)", competitor: "Monthly ad spend + management retainer (paid ads)" },
-      { dimension: "Stays working when you stop investing", preisser: "Yes, for months to years (local SEO)", competitor: "No — pipeline stops when spend stops (paid ads)" },
+      { dimension: "Stays working when you stop investing", preisser: "Yes, for months to years (local SEO)", competitor: "No, pipeline stops when spend stops (paid ads)" },
       { dimension: "Predictability", preisser: "Compounds slowly; less predictable short-term (local SEO)", competitor: "Highly predictable; known CPL after first 30-60 days (paid ads)" },
-      { dimension: "Scales with budget", preisser: "Doesn't — ranking caps at #1 (local SEO)", competitor: "Yes — more spend = more leads, up to channel saturation (paid ads)" },
+      { dimension: "Scales with budget", preisser: "Doesn't: ranking caps at #1 (local SEO)", competitor: "Yes, more spend = more leads, up to channel saturation (paid ads)" },
       { dimension: "Best for", preisser: "Long-term durable visibility (local SEO)", competitor: "Immediate pipeline, testing, recovery from SEO loss (paid ads)" },
       { dimension: "Risk", preisser: "Algorithm updates can shift ranking (local SEO)", competitor: "Cost-per-click inflation, account suspensions (paid ads)" },
       { dimension: "Owned vs rented", preisser: "Owned asset (local SEO)", competitor: "Rented attention (paid ads)" },
@@ -82,7 +82,7 @@ export const pageData: AeoPageData = {
     {
       question: "If I can only pick one, which should I pick?",
       answer:
-        "Depends on cash flow and timeline. If you need pipeline within 60 days, pick paid ads. If you have 6+ months of runway and want to build a durable asset, pick local SEO. If your phone is already ringing but you want growth, both — paid ads for new volume, SEO for compounding.",
+        "Depends on cash flow and timeline. If you need pipeline within 60 days, pick paid ads. If you have 6+ months of runway and want to build a durable asset, pick local SEO. If your phone is already ringing but you want growth, both: paid ads for new volume, SEO for compounding.",
     },
     {
       question: "Can paid ads hurt my local SEO?",

@@ -19,7 +19,7 @@ export const locationData: LocationPageData = {
     eyebrow: "Serving Overland Park, Kansas",
     h1: "Custom Software Development for Overland Park Businesses",
     subheadline:
-      "Custom web applications, AI automation, and financial-services tooling for Johnson County's largest city — built at Kansas pricing, not coastal agency rates.",
+      "Custom web applications, AI automation, and financial-services tooling for Johnson County's largest city: built at Kansas pricing, not coastal agency rates.",
     answerParagraph:
       "Preisser Solutions serves Overland Park, Kansas businesses with custom software, AI automation, custom web applications, dashboards, and local SEO and AI-search optimization. Overland Park is Kansas's largest city and the center of gravity for Johnson County's financial services, insurance, and corporate services economy. That concentration of professional-services and financial firms generates strong demand for custom document automation, client portals, and operational dashboards. Based in Hays, roughly 285 miles west, we deliver remotely and travel for projects of meaningful scope.",
   },
@@ -39,7 +39,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Overland Park's financial services and insurance sector needs custom client portals, compliance-document automation, and reporting dashboards — builds where engineering depth matters more than design trend.",
+    "Overland Park's financial services and insurance sector needs custom client portals, compliance-document automation, and reporting dashboards: builds where engineering depth matters more than design trend.",
     "A Kansas-based firm structurally less expensive than a KC metro or national agency. The same engineering quality at costs built around a non-metro economics.",
     "Custom code with full ownership. Financial services clients benefit especially from owning the software that handles client data rather than embedding it in a third-party SaaS platform.",
   ],
@@ -71,7 +71,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions build AI automation for an Overland Park insurance or financial firm?",
       answer:
-        "Yes. Document processing automation — extracting structured data from applications, contracts, and forms — is a production-ready capability well-suited to insurance and financial services workflows.",
+        "Yes. Document processing automation (extracting structured data from applications, contracts, and forms) is a production-ready capability well-suited to insurance and financial services workflows.",
     },
     {
       question: "Does Preisser Solutions build custom reporting dashboards for Overland Park corporate clients?",

@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Chanute, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Chanute, Kansas businesses — Kansas-based firm with fixed-price proposals and full code ownership.",
+    "Custom websites, web apps, and AI automation for Chanute, Kansas businesses: Kansas-based firm with fixed-price proposals and full code ownership.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Web design, AI automation, and custom applications for Neosho County businesses along US-169 in southeast Kansas.",
     answerParagraph:
-      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Chanute, Kansas — the county seat of Neosho County in southeast Kansas, approximately 100 miles southeast of Wichita on US-169. Neosho County College and regional manufacturing anchor the local economy. Remote delivery with on-site travel available.",
+      "Preisser Solutions builds custom websites, web applications, dashboards, and AI automation for businesses in Chanute, Kansas, the county seat of Neosho County in southeast Kansas, approximately 100 miles southeast of Wichita on US-169. Neosho County College and regional manufacturing anchor the local economy. Remote delivery with on-site travel available.",
   },
 
   nearbyAreas: [
@@ -43,7 +43,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Southeast Kansas context — Neosho County manufacturing, education, and agriculture along US-169.",
+    "Southeast Kansas context: Neosho County manufacturing, education, and agriculture along US-169.",
     "Custom code with full ownership at launch. No proprietary platform or ongoing licensing.",
     "Remote-first delivery with on-site travel for projects requiring in-person collaboration.",
   ],
@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "Do you offer local SEO for Chanute businesses?",
       answer:
-        "Yes. Local SEO — Google Business Profile, local pack, citations, schema — and AI-search visibility are both explicit service lines.",
+        "Yes. Local SEO (Google Business Profile, local pack, citations, schema), and AI-search visibility are both explicit service lines.",
     },
     {
       question: "How far is Chanute from Hays?",

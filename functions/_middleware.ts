@@ -141,6 +141,38 @@ function isPageRequest(pathname: string) {
   return pathname === "/" || !lastSegment.includes(".") || pathname.endsWith(".html");
 }
 
+/**
+ * Pages Function API routes (`functions/api/*.ts`).
+ *
+ * These are NOT content and must never be treated as a canonical-host or
+ * content-negotiation concern. A canonical-host 301 on `/api/*` silently
+ * destroys form submissions, because a 301 does two fatal things to a POST:
+ *
+ *   1. The browser CORS-rejects the cross-origin hop. The footer signup posts
+ *      `content-type: application/json`, which is not a CORS-safelisted value,
+ *      and `/api/subscribe` emits no `Access-Control-Allow-Origin`, so the
+ *      redirected request fails before it is ever handled.
+ *   2. If it were followed, Fetch §4.4 (HTTP-redirect fetch, step 11) rewrites
+ *      POST to GET and drops the body on a 301. That GET lands on the method
+ *      dispatcher in `functions/api/subscribe.ts` and shows the visitor the
+ *      literal string "Method not allowed."
+ *
+ * Either way the address is lost. Verified against production 2026-09-05:
+ *   curl -X POST https://www.preissersolutions.com/api/contact \
+ *     -H 'content-type: application/json' --data '{}'
+ *   -> HTTP/2 301  location: https://preissersolutions.com/api/contact
+ *
+ * The SEO reason for the host redirect is untouched: it exists to consolidate
+ * indexable CONTENT on one hostname. `/api/*` returns `application/json` with
+ * `cache-control: no-store`, is not in sitemap.xml, is not linked from any
+ * page, and is not indexable by anything — so exempting it removes exactly
+ * zero duplicate-content signal. Every page request on `www` and on
+ * `preisser-solutions.pages.dev` still 301s to the apex, unchanged.
+ */
+function isApiRequest(pathname: string) {
+  return pathname === "/api" || pathname.startsWith("/api/");
+}
+
 // Explicit maximum-permissive robots signal. Applied to every response that
 // flows through this middleware so AI agents and crawlers see an affirmative
 // "yes, index everything, take everything" header in addition to the open
@@ -216,11 +248,21 @@ export const onRequest = async (context: MiddlewareContext) => {
     return redirectToCanonical(url);
   }
 
-  if (DUPLICATE_HOSTS.has(host)) {
+  // Duplicate-host consolidation. Exempts `/api/*` only — see isApiRequest().
+  // Page requests on www / pages.dev still 301 to the apex.
+  if (DUPLICATE_HOSTS.has(host) && !isApiRequest(url.pathname)) {
     return redirectToCanonical(url);
   }
 
-  if (acceptsMarkdown(context.request) && isPageRequest(url.pathname)) {
+  // `isPageRequest("/api/subscribe")` is TRUE on its own — the last segment has
+  // no dot — so without the API guard an `Accept: text/markdown` POST to the
+  // signup endpoint is answered with the contents of /llms.txt and the address
+  // is discarded. Same failure mode as the 301 above, different door.
+  if (
+    acceptsMarkdown(context.request) &&
+    isPageRequest(url.pathname) &&
+    !isApiRequest(url.pathname)
+  ) {
     return serveMarkdownForAgents(context, url);
   }
 

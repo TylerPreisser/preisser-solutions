@@ -24,8 +24,8 @@ export const pageData: AeoPageData = {
       eyebrow: "How local search actually works",
       heading: "Local SEO is how Hays customers find you",
       body: [
-        "For most Hays buyers, the journey starts in one of three places: a Google search like 'HVAC near me', a Google Maps search for the service plus a town, or — increasingly — a question typed into ChatGPT, Perplexity, or Google AI Overviews. The businesses that get the call are the ones that show up at the top of those answers.",
-        "Local SEO is the discipline of being one of those businesses. The signals are specific — proximity, Google Business Profile completeness, review count and velocity, citation consistency across the web, local content on the site itself — and they overlap heavily with what AI engines use to surface local recommendations.",
+        "For most Hays buyers, the journey starts in one of three places: a Google search like 'HVAC near me', a Google Maps search for the service plus a town, or (increasingly): a question typed into ChatGPT, Perplexity, or Google AI Overviews. The businesses that get the call are the ones that show up at the top of those answers.",
+        "Local SEO is the discipline of being one of those businesses. The signals are specific (proximity, Google Business Profile completeness, review count and velocity, citation consistency across the web, local content on the site itself), and they overlap heavily with what AI engines use to surface local recommendations.",
         "Preisser Solutions handles all of it together because there is no value in optimizing one signal while three others suppress the listing.",
       ],
     },
@@ -33,11 +33,11 @@ export const pageData: AeoPageData = {
       eyebrow: "GBP is the foundation",
       heading: "Google Business Profile work",
       body: [
-        "Google Business Profile (GBP) is the single most important asset in local SEO. For most Hays businesses, the GBP is partially set up and then left alone — categories are wrong, services are missing, photos are stale, posts have never been used, and review velocity is uneven. Each gap is a ranking suppressor.",
+        "Google Business Profile (GBP) is the single most important asset in local SEO. For most Hays businesses, the GBP is partially set up and then left alone: categories are wrong, services are missing, photos are stale, posts have never been used, and review velocity is uneven. Each gap is a ranking suppressor.",
         "Preisser Solutions audits the entire profile, fixes the taxonomy, builds a content cadence the owner can actually sustain, and ties review collection into the existing workflow so every completed job has a chance to become a review.",
       ],
       bullets: [
-        "Primary and secondary categories audited and corrected — wrong primary category alone can suppress local pack rank",
+        "Primary and secondary categories audited and corrected, wrong primary category alone can suppress local pack rank",
         "Services and products list fully filled out, with primary keyword anchoring inside the descriptions",
         "Photo library refresh with real on-site, in-Hays photography",
         "Sustainable weekly or bi-weekly GBP post cadence the owner can keep up after the engagement ends",
@@ -50,14 +50,14 @@ export const pageData: AeoPageData = {
       heading: "Reviews, citations, and local relevance",
       body: [
         "Google reads the wider web to corroborate what a Hays business says about itself. If the name, address, and phone number (NAP) differ across Yelp, Apple Maps, Bing Places, Facebook, the BBB, and industry-specific directories, Google treats that inconsistency as a confidence drag and quietly suppresses the listing.",
-        "Preisser Solutions runs a full citation audit, cleans up incorrect data across the top directories, and builds out the industry-specific citations that matter for the vertical — HVAC directories for HVAC contractors, medical directories for clinics, oilfield databases for energy services. Review collection is automated against the CRM so it runs even when the owner is busy.",
+        "Preisser Solutions runs a full citation audit, cleans up incorrect data across the top directories, and builds out the industry-specific citations that matter for the vertical: HVAC directories for HVAC contractors, medical directories for clinics, oilfield databases for energy services. Review collection is automated against the CRM so it runs even when the owner is busy.",
       ],
     },
     {
       eyebrow: "On-site work",
       heading: "Website changes that support map rankings",
       body: [
-        "The Google Business Profile and the website are linked rankings systems. Google reads the website to corroborate what the GBP says about the business — services offered, areas served, hours, named entities, and trust signals. If the website is slow, missing LocalBusiness schema, or has no content for the cities and services the business actually serves, the GBP cannot pull above its weight in the local pack no matter how well it is managed.",
+        "The Google Business Profile and the website are linked rankings systems. Google reads the website to corroborate what the GBP says about the business: services offered, areas served, hours, named entities, and trust signals. If the website is slow, missing LocalBusiness schema, or has no content for the cities and services the business actually serves, the GBP cannot pull above its weight in the local pack no matter how well it is managed.",
         "Preisser Solutions makes the on-site changes that matter for local search:",
       ],
       bullets: [
@@ -65,7 +65,7 @@ export const pageData: AeoPageData = {
         "Service area pages for Hays, Ellis County, and the broader western Kansas region as the strategy calls for",
         "NAP consistency across header, footer, contact page, schema markup, and every directory listing",
         "Embedded Google Map on the contact page, pulling from the GBP location data",
-        "Core Web Vitals tuned — fast pages rank higher in local search too",
+        "Core Web Vitals tuned: fast pages rank higher in local search too",
         "Internal linking from service pages to location pages and back, so the topical signal is unambiguous to Google",
         "Image alt text, file names, and metadata anchored to the city + service combinations the business is targeting",
         "On-page FAQ blocks that answer the exact buyer questions that drive local searches",
@@ -78,16 +78,16 @@ export const pageData: AeoPageData = {
         "Every engagement is scoped to the specific business, but the pattern is consistent. A typical Hays local SEO engagement runs in three phases:",
       ],
       bullets: [
-        "Phase 1 — Audit. Free in-person review of the existing Google Business Profile, citations, reviews, and on-site local SEO. We deliver a written audit identifying the biggest gaps and the highest-leverage fixes",
-        "Phase 2 — Foundation. Fix the GBP, clean up citations, set up review automation, deploy LocalBusiness schema, and build any service area pages the strategy calls for. Usually four to eight weeks",
-        "Phase 3 — Ongoing. Monthly GBP content, review monitoring, citation maintenance, and reporting tied to phone calls and form fills. Optional, scoped as a flat monthly retainer when it makes sense",
+        "Phase 1: Audit. Free in-person review of the existing Google Business Profile, citations, reviews, and on-site local SEO. We deliver a written audit identifying the biggest gaps and the highest-leverage fixes",
+        "Phase 2: Foundation. Fix the GBP, clean up citations, set up review automation, deploy LocalBusiness schema, and build any service area pages the strategy calls for. Usually four to eight weeks",
+        "Phase 3: Ongoing. Monthly GBP content, review monitoring, citation maintenance, and reporting tied to phone calls and form fills. Optional, scoped as a flat monthly retainer when it makes sense",
       ],
     },
     {
       eyebrow: "AI engines also recommend local",
       heading: "How AI search changes local discovery",
       body: [
-        "When a buyer asks ChatGPT 'who's the best HVAC company in Hays Kansas' or Perplexity 'recommend a dentist in Hays', the AI returns a recommendation. The mechanics overlap heavily with local pack mechanics — consistent named-entity data, structured data, named clients, third-party citations.",
+        "When a buyer asks ChatGPT 'who's the best HVAC company in Hays Kansas' or Perplexity 'recommend a dentist in Hays', the AI returns a recommendation. The mechanics overlap heavily with local pack mechanics: consistent named-entity data, structured data, named clients, third-party citations.",
         "That overlap is good news. Doing local SEO right is also doing AI search optimization right. Preisser Solutions engineers websites and Google Business Profiles to be cited by both Google's local pack and the major AI engines. No one can guarantee an AI citation, but the structure is built for it.",
       ],
     },
@@ -106,17 +106,17 @@ export const pageData: AeoPageData = {
     {
       question: "How is this different from your other Hays SEO page?",
       answer:
-        "/services/seo-hays-ks covers broad SEO — technical SEO, content, schema, and AI search readiness for Hays businesses. This page focuses specifically on local SEO — Google Maps, the local pack, GBP, citations, and reviews. Most Hays engagements combine both, but the focus differs.",
+        "/services/seo-hays-ks covers broad SEO: technical SEO, content, schema, and AI search readiness for Hays businesses. This page focuses specifically on local SEO: Google Maps, the local pack, GBP, citations, and reviews. Most Hays engagements combine both, but the focus differs.",
     },
     {
       question: "Do I need to switch CRMs to automate review requests?",
       answer:
-        "No. Preisser Solutions builds the review request automation against whatever CRM or invoicing system you already use — ServiceTitan, Housecall Pro, Jobber, QuickBooks, or a custom system. Switching CRMs is rarely the right answer.",
+        "No. Preisser Solutions builds the review request automation against whatever CRM or invoicing system you already use: ServiceTitan, Housecall Pro, Jobber, QuickBooks, or a custom system. Switching CRMs is rarely the right answer.",
     },
     {
       question: "Will local SEO help me show up in ChatGPT and Perplexity?",
       answer:
-        "It can. AI engines rely on the same underlying signals as the local pack — consistent NAP, structured data, named clients, third-party citations. Doing local SEO right makes the business easier to cite. No firm can guarantee AI citations, but the structure is built for them.",
+        "It can. AI engines rely on the same underlying signals as the local pack: consistent NAP, structured data, named clients, third-party citations. Doing local SEO right makes the business easier to cite. No firm can guarantee AI citations, but the structure is built for them.",
     },
     {
       question: "Do you serve businesses outside Hays?",
@@ -149,5 +149,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Win the local pack in Hays",
   ctaSubcopy:
-    "Free local SEO audit — GBP, citations, reviews, and AI-search visibility reviewed in person. Fixed-price proposal follows.",
+    "Free local SEO audit: GBP, citations, reviews, and AI-search visibility reviewed in person. Fixed-price proposal follows.",
 };

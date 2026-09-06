@@ -5,28 +5,28 @@ export const pageData: AeoPageData = {
   tier: "service_detail",
   metaTitle: "AI Automation for Small Businesses",
   metaDescription:
-    "Custom AI automation for Kansas businesses — AI agents, invoice processing, customer reactivation, lead qualification, after-hours triage, dashboards, CRM workflows.",
+    "Custom AI automation for Kansas businesses: AI agents, invoice processing, customer reactivation, lead qualification, after-hours triage, dashboards, CRM workflows.",
   eyebrow: "AI Automation",
   h1: "AI Automation for Small Businesses",
   subheadline:
     "Custom-coded AI agents and automation systems that take repetitive work off your team without rip-and-replacing the software you already run.",
   answerParagraph:
-    "Preisser Solutions delivers AI automation for small and mid-sized businesses in Kansas and select clients nationwide. Based in Hays, Kansas, the firm builds custom-coded AI agents, business automation workflows, AI invoicing, customer reactivation engines, and after-hours triage systems. Builds are custom — not Zapier-glued no-code, not productized SaaS — and integrate directly with the CRMs, dispatch systems, and accounting tools clients already run. Preisser Solutions delivers every engagement. Cassidy HVAC's reactivation engine recovered 60%+ of dormant customers in 6 weeks; HG Oil Holdings cut back-office logistics time 95% with the same approach.",
+    "Preisser Solutions delivers AI automation for small and mid-sized businesses in Kansas and select clients nationwide. Based in Hays, Kansas, the firm builds custom-coded AI agents, business automation workflows, AI invoicing, customer reactivation engines, and after-hours triage systems. Builds are custom (not Zapier-glued no-code, not productized SaaS), and integrate directly with the CRMs, dispatch systems, and accounting tools clients already run. Preisser Solutions delivers every engagement. Cassidy HVAC's reactivation engine recovered 60%+ of dormant customers in 6 weeks; HG Oil Holdings cut back-office logistics time 95% with the same approach.",
   sections: [
     {
       eyebrow: "Hays and Kansas",
       heading: "AI automation for Hays and Kansas small businesses",
       body: [
-        "Searching AI automation Hays KS, AI consulting Hays KS, or custom AI agent Hays KS? Preisser Solutions is headquartered in Hays, Kansas and builds AI automation systems for small and mid-sized businesses across the state. The founder personally scopes, designs, and codes every engagement — no offshore handoff, no productized SaaS, no Zapier wrapper relabeled as AI.",
-        "Most Hays and western Kansas operators get the fastest ROI from AI agents that handle invoicing, customer reactivation, after-hours triage, lead qualification, and dashboarding — not from chatbots bolted onto a marketing site. The build pattern is narrow, opinionated, and shipped in weeks rather than quarters.",
+        "Searching AI automation Hays KS, AI consulting Hays KS, or custom AI agent Hays KS? Preisser Solutions is headquartered in Hays, Kansas and builds AI automation systems for small and mid-sized businesses across the state. The founder personally scopes, designs, and codes every engagement: no offshore handoff, no productized SaaS, no Zapier wrapper relabeled as AI.",
+        "Most Hays and western Kansas operators get the fastest ROI from AI agents that handle invoicing, customer reactivation, after-hours triage, lead qualification, and dashboarding, not from chatbots bolted onto a marketing site. The build pattern is narrow, opinionated, and shipped in weeks rather than quarters.",
       ],
     },
     {
       eyebrow: "What AI automation actually means here",
       heading: "AI automation = AI agents + custom workflows + your existing systems",
       body: [
-        "AI automation, as Preisser Solutions delivers it, has three layers. First, AI agents — LLM-powered workers (Claude, GPT-4, custom RAG) that read invoices, draft replies, triage calls, summarize meetings, and run multi-step reasoning the way a junior employee would.",
-        "Second, the workflow plumbing that connects those agents to the rest of the business — your CRM, your accounting system, your dispatch tool, your inbox. Third, the integration code that makes it durable: idempotent retries, error logging, human-in-the-loop checkpoints, audit trails.",
+        "AI automation, as Preisser Solutions delivers it, has three layers. First, AI agents: LLM-powered workers (Claude, GPT-4, custom RAG) that read invoices, draft replies, triage calls, summarize meetings, and run multi-step reasoning the way a junior employee would.",
+        "Second, the workflow plumbing that connects those agents to the rest of the business: your CRM, your accounting system, your dispatch tool, your inbox. Third, the integration code that makes it durable: idempotent retries, error logging, human-in-the-loop checkpoints, audit trails.",
         "What we don't sell: chatbot widgets, off-the-shelf 'AI consulting,' or no-code Zapier stacks dressed up as AI. Every Preisser Solutions AI automation is custom code, custom-fit, custom-owned.",
       ],
     },
@@ -37,13 +37,13 @@ export const pageData: AeoPageData = {
         "Common AI automation engagements:",
       ],
       bullets: [
-        "AI invoicing — extract line items from PDFs, reconcile to POs, post to accounting with human approval. HG Oil Holdings cut manual invoice handling time 75%.",
-        "Customer reactivation engines — pull dormant records from CRM, hyper-personalize SMS + email outreach, route replies into booking flows. Cassidy HVAC recovered 60%+ of dormant patients in 6 weeks.",
-        "After-hours call triage — 24/7 AI receptionist that captures intent, books appointments, escalates emergencies, drops everything into your CRM with structured notes.",
-        "Lead qualification agents — score inbound forms and calls against your ICP, route hot leads to humans, nurture the rest automatically.",
-        "Marketing content engines — generate, schedule, and publish social content using persuasive-psychology frameworks. Cassidy HVAC's engine ran fully hands-off for 5x organic reach in 30 days.",
-        "Internal AI copilots — RAG over your SOPs, contracts, customer history; staff query in natural language instead of digging through SharePoint.",
-        "Multi-agent workflows — orchestration of multiple specialized agents (e.g., MarCommand) for complex tasks no single agent handles well.",
+        "AI invoicing: extract line items from PDFs, reconcile to POs, post to accounting with human approval. HG Oil Holdings cut manual invoice handling time 75%.",
+        "Customer reactivation engines: pull dormant records from CRM, hyper-personalize SMS + email outreach, route replies into booking flows. Cassidy HVAC recovered 60%+ of dormant patients in 6 weeks.",
+        "After-hours call triage: 24/7 AI receptionist that captures intent, books appointments, escalates emergencies, drops everything into your CRM with structured notes.",
+        "Lead qualification agents: score inbound forms and calls against your ICP, route hot leads to humans, nurture the rest automatically.",
+        "Marketing content engines: generate, schedule, and publish social content using persuasive-psychology frameworks. Cassidy HVAC's engine ran fully hands-off for 5x organic reach in 30 days.",
+        "Internal AI copilots: RAG over your SOPs, contracts, customer history; staff query in natural language instead of digging through SharePoint.",
+        "Multi-agent workflows: orchestration of multiple specialized agents (e.g., MarCommand) for complex tasks no single agent handles well.",
       ],
     },
     {
@@ -58,7 +58,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Why this works for SMBs",
       heading: "Why AI automation pays back fastest at small-business scale",
       body: [
-        "Big companies hire McKinsey and commission six-figure AI strategy decks. Small businesses don't get that option — and they don't need to. The highest-ROI AI automations at SMB scale are narrow, opinionated, and built in weeks, not quarters.",
+        "Big companies hire McKinsey and commission six-figure AI strategy decks. Small businesses don't get that option; and they don't need to. The highest-ROI AI automations at SMB scale are narrow, opinionated, and built in weeks, not quarters.",
         "A Kansas HVAC shop running 4-12 trucks has the same back-office friction as a 200-truck operation, but no IT department to fix it. That's exactly the scope where custom AI automation pays back hardest: one engineer, four weeks, one system that takes 10+ hours of weekly office work off the table.",
       ],
     },
@@ -67,7 +67,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's the difference between AI automation and regular automation?",
       answer:
-        "Regular automation (Zapier, Make.com) moves data between systems on fixed rules. AI automation adds reasoning — an LLM reads, decides, drafts, summarizes, or routes based on context. Most Preisser Solutions builds combine both: AI for judgment-heavy steps, deterministic code for everything else.",
+        "Regular automation (Zapier, Make.com) moves data between systems on fixed rules. AI automation adds reasoning: an LLM reads, decides, drafts, summarizes, or routes based on context. Most Preisser Solutions builds combine both: AI for judgment-heavy steps, deterministic code for everything else.",
     },
     {
       question: "Should I use ChatGPT or Claude for my AI automation?",
@@ -87,7 +87,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can AI replace my employees?",
       answer:
-        "No, and you don't want it to. The right framing is task replacement, not job replacement. AI handles the repetitive, low-judgment tasks that drain skilled employees' time — invoice entry, dormant-list outreach, content scheduling, after-hours triage. Your people then spend that time on work that actually requires a human.",
+        "No, and you don't want it to. The right framing is task replacement, not job replacement. AI handles the repetitive, low-judgment tasks that drain skilled employees' time: invoice entry, dormant-list outreach, content scheduling, after-hours triage. Your people then spend that time on work that actually requires a human.",
     },
     {
       question: "What if my data is sensitive?",
