@@ -249,94 +249,224 @@ function V4Lock() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CARD 3 — AI Integration.  "The page fills the form in by itself."
+   CARD 3 — AI Integration.  "THE SEAM."
 
-   Pain, in the owner's own words, service-pillars.tsx:352 (`painPoints[0]`,
-   and already the selected `hookIndex: 0` at :349):
-     "Someone here retypes the same information off a PDF every single day."
+   A T-JOINT FILLET WELD, SEEN OBLIQUELY. One steel plate lies flat and
+   another stands up out of it at a right angle; the weld runs along the
+   inside corner where they meet, molten at the arc and a finished stack of
+   ripples behind it. Two plates at ninety degrees, one bead joining them.
 
-   Subject: a PDF the visitor RECEIVED. Not our assistant, not our chat, not
-   our approval queue. The AI is depicted by BEHAVIOUR - the page is read into
-   the record, in order, once - never by iconography. No sparkle, no bubble,
-   no first-person voice.
+   WHY THE JOINT CHANGED, AND IT IS THE WHOLE FIX. This card was drawn three
+   times as a BUTT weld seen face-on — two plates edge to edge with the bead
+   running straight down the middle of the frame. Photographed, every version
+   read as a lit skyscraper, a rocket launch or a zipper, and no amount of
+   colour tuning moved it. The reason is geometric, and it is worth writing
+   down so nobody re-derives it:
 
-   The capture marks are a soft FILL, never an outline. A rectangle outline on
-   a document is the universal sign for `flagged`, which is exactly how v3's
-   red-bordered block read. A tint behind the bar is the universal sign for
-   `highlighted while reading`. Same geometry, opposite meaning.
+     · A bead viewed straight down its own length is a ribbed vertical line,
+       and a ribbed vertical line is a zipper. That is not a tuning problem.
+     · A butt weld joins two COPLANAR plates, so there is no second surface
+       to show. Tilting the camera cannot rescue it — there is nothing to
+       reveal, because both halves lie in the same plane.
+
+   A T-joint fixes both at once. The plates are at ninety degrees, so you see
+   TWO SURFACES at two angles catching the light differently, and the bead
+   runs diagonally across the frame instead of straight down it. The diagonal
+   breaks the column silhouette that caused the rocket read.
+
+   THE STILL IS THE DELIVERABLE. Ahead of the arc, toward the top right, the
+   corner is still OPEN — the two faces meet with nothing joining them.
+   Behind it the bead is laid. The picture therefore says two-becoming-one
+   with no motion at all, which is what a reduced-motion visitor and every
+   screenshot get.
+
+   LIGHT MODE IS NOT DARK MODE WITH A PALER CARD. In dark the plates are navy
+   steel on a navy ground. In light THE PLATES LIGHTEN to daylight steel while
+   the corner shadow, the bead and the oxide stay dark and hot, so the card
+   reads as a light surface with a dark glowing seam through it — the shape
+   card 4 uses (predominantly light, one deliberate dark band). Held fully
+   dark in light theme this card punched a black hole in a row of four pale
+   ones.
+
+   FULL BLEED, NO FRAME. The artwork is the card's own surface and runs to all
+   four edges. An inset rectangle read as a video thumbnail dropped into the
+   layout — the only artwork in the row with a hard edge.
+
+   GEOMETRY, measured not assumed: the visual fills 412x442 at desktop and
+   354x332 on a phone. The arc sits near the middle of the frame, clear of the
+   frosted button that floats over the TOP-RIGHT corner and clear of the title
+   scrim across the bottom. Both plates run off the edges so the assembly
+   reads as a crop of something bigger, not an object floating in space.
+
+   NO Math.random ANYWHERE. This is server-rendered; a procedurally scattered
+   bead would desynchronise server and client markup and throw a hydration
+   mismatch. Every ripple below is an authored literal.
    ───────────────────────────────────────────────────────────── */
 
-/* Body-bar widths on the received page. Rows 1,2,4,5 are the four that get
-   captured, so the marks are not a contiguous block - a reader should see the
-   page being read selectively, not a highlighter dragged down it. */
-const V4_PAGE_ROWS = [
-  { w: "88%", mark: 0 },
-  { w: "72%", mark: 1 },
-  { w: "54%", mark: -1 },
-  { w: "80%", mark: 2 },
-  { w: "66%", mark: 3 },
-  { w: "44%", mark: -1 },
-  { w: "82%", mark: -1 },
-  { w: "60%", mark: -1 },
-  { w: "76%", mark: -1 },
-  { w: "84%", mark: -1 },
-  { w: "58%", mark: -1 },
-  { w: "70%", mark: -1 },
-  { w: "48%", mark: -1 },
-  { w: "78%", mark: -1 },
+/* The fillet ripples, in BEAD-LOCAL coordinates: `d` is the distance back
+   along the corner from the arc, `r` the crescent rise. The rise is
+   deliberately uneven — a constant rise is what made the previous pass read
+   as a machine-stamped zipper. */
+const C3_RIPPLES = [
+  { d: 6, r: 9.5 }, { d: 19, r: 11.0 }, { d: 32, r: 9.8 }, { d: 44, r: 11.6 },
+  { d: 57, r: 10.2 }, { d: 69, r: 12.0 }, { d: 82, r: 9.6 }, { d: 94, r: 11.2 },
+  { d: 107, r: 10.6 }, { d: 119, r: 11.8 }, { d: 132, r: 9.9 }, { d: 144, r: 11.4 },
+  { d: 157, r: 10.4 }, { d: 169, r: 12.2 }, { d: 182, r: 10.0 }, { d: 194, r: 11.5 },
+  { d: 207, r: 9.7 }, { d: 219, r: 11.9 }, { d: 232, r: 10.7 }, { d: 244, r: 11.9 }, { d: 256, r: 9.8 }, { d: 268, r: 11.3 }, { d: 280, r: 10.5 }, { d: 292, r: 12.1 }, { d: 304, r: 9.9 }, { d: 316, r: 11.6 }, { d: 328, r: 10.7 },
 ] as const;
+
 
 export function AutomationVisual() {
   const containerRef = useRevealOnce<HTMLDivElement>();
 
   return (
-    <div ref={containerRef} className="ps-v4-root ps-v4-root--read" aria-hidden="true">
-      <div className="ps-v4-read">
-        {/* LEFT ~54% - the page. Its bottom edge runs off the composition;
-            the crop passes through BARS ONLY, never through a glyph. That is
-            the rule card 4 obeys and the rule v3's ghost documents broke on
-            three separate edges. */}
-        <div className="ps-v4-sheets">
-          <div className="ps-v4-sheet ps-v4-sheet--back" />
-          <div className="ps-v4-sheet">
-            <span className="ps-v4-pdf">PDF</span>
-            <i className="ps-v4-pbar ps-v4-pbar--head" />
-            <i className="ps-v4-pbar ps-v4-pbar--sub" />
-            {/* A marked row is a bar INSIDE its highlight, never a bar with a
-                highlight positioned near it — sized independently the two drift
-                apart the moment the sheet changes width. */}
-            {V4_PAGE_ROWS.map((r, i) => (
-              <span className="ps-v4-prow" key={i}>
-                {r.mark >= 0 ? (
-                  <span className="ps-v4-hl" style={{ width: r.w, "--i": r.mark } as React.CSSProperties}>
-                    <i className="ps-v4-pbar" />
-                  </span>
-                ) : (
-                  <i className="ps-v4-pbar" style={{ width: r.w }} />
-                )}
-              </span>
-            ))}
-          </div>
-        </div>
+    <div ref={containerRef} className="ps-c3-root" aria-hidden="true">
+      <svg
+        className="ps-c3-svg"
+        viewBox="0 0 412 442"
+        preserveAspectRatio="xMidYMid slice"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          {/* Every id is ps-c3- prefixed. Five inline SVGs share this page and
+              a defs collision is SILENT — the wrong gradient is picked up with
+              no error and no console message. */}
+          <linearGradient id="ps-c3-face-v" x1="0" y1="0" x2="0.4" y2="1">
+            <stop offset="0%" className="ps-c3-s-va" />
+            <stop offset="100%" className="ps-c3-s-vb" />
+          </linearGradient>
+          <linearGradient id="ps-c3-face-b" x1="0.1" y1="0" x2="0.6" y2="1">
+            <stop offset="0%" className="ps-c3-s-ba" />
+            <stop offset="100%" className="ps-c3-s-bb" />
+          </linearGradient>
 
-        {/* RIGHT ~46% - the record. Asymmetric against the page on purpose so
-            this card does not read as card 2 drawn twice. */}
-        <div className="ps-v4-panel ps-v4-panel--record">
-          <div className="ps-v4-chrome">
-            <span className="ps-v4-dots"><i /><i /><i /></span>
-            <span className="ps-v4-pill" />
-          </div>
-          <div className="ps-v4-rows">
-            {[0, 1, 2, 3].map((i) => (
-              <span className="ps-v4-row" key={i}>
-                <i className="ps-v4-label" />
-                <i className="ps-v4-slot ps-v4-slot--read"
-                   style={{ "--i": i } as React.CSSProperties} />
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
+          <linearGradient id="ps-c3-bead" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" className="ps-c3-s-b0" />
+            <stop offset="45%" className="ps-c3-s-b1" />
+            <stop offset="100%" className="ps-c3-s-b2" />
+          </linearGradient>
+          <linearGradient id="ps-c3-rip" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" className="ps-c3-s-r0" />
+            <stop offset="50%" className="ps-c3-s-r1" />
+            <stop offset="100%" className="ps-c3-s-r2" />
+          </linearGradient>
+
+          {/* Heat-affected zone: straw nearest the weld, then violet, then
+              indigo, then nothing. It sits in the PARENT METAL either side of
+              the bead, which is where heat actually goes. An earlier pass ran
+              it down the bead itself and that inverted the physics. */}
+          <linearGradient id="ps-c3-haz-up" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stopColor="#E8A63C" stopOpacity="0.55" />
+            <stop offset="24%" stopColor="#C77BC4" stopOpacity="0.34" />
+            <stop offset="55%" stopColor="#5560C6" stopOpacity="0.20" />
+            <stop offset="100%" stopColor="#2A3E63" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="ps-c3-haz-dn" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#E8A63C" stopOpacity="0.55" />
+            <stop offset="24%" stopColor="#C77BC4" stopOpacity="0.34" />
+            <stop offset="55%" stopColor="#5560C6" stopOpacity="0.20" />
+            <stop offset="100%" stopColor="#2A3E63" stopOpacity="0" />
+          </linearGradient>
+
+          <radialGradient id="ps-c3-pool">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="26%" stopColor="#E6F8FF" />
+            <stop offset="52%" stopColor="#80E9FF" />
+            <stop offset="78%" stopColor="#1590FF" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#1590FF" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="ps-c3-glare">
+            <stop offset="0%" stopColor="#1590FF" stopOpacity="0.5" />
+            <stop offset="52%" stopColor="#1590FF" stopOpacity="0.14" />
+            <stop offset="100%" stopColor="#1590FF" stopOpacity="0" />
+          </radialGradient>
+
+
+
+          <filter id="ps-c3-soft" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="10" />
+          </filter>
+          <filter id="ps-c3-bloom" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="15" />
+          </filter>
+
+          {/* Clip each plate to its own face so grain cannot leak across the
+              corner onto the other plate. */}
+          <clipPath id="ps-c3-clip-v">
+            <path d="M-40 238 L472 28 L458 -166 L-56 66 Z" />
+          </clipPath>
+          <clipPath id="ps-c3-clip-b">
+            <path d="M-40 238 L472 28 L496 268 L-16 498 Z" />
+          </clipPath>
+        </defs>
+
+        {/* ── THE STANDING PLATE. Runs off the top and both sides. ── */}
+        <path d="M-40 238 L472 28 L458 -166 L-56 66 Z" fill="url(#ps-c3-face-v)" />
+
+        {/* ── THE FLAT PLATE. Runs off the bottom and both sides. Darker,
+              because it lies away from the light. ── */}
+        <path d="M-40 238 L472 28 L496 268 L-16 498 Z" fill="url(#ps-c3-face-b)" />
+
+        {/* ── Everything below lives in BEAD-LOCAL space: origin on the corner,
+              +x running up the corner toward the top right. One rotate, applied
+              as an ATTRIBUTE so it uses user space — a CSS rotate would need
+              transform-box: fill-box or it spins about the SVG origin. ── */}
+        <g transform="translate(40 205.2) rotate(-22.3)">
+          {/* the inside corner: a dark contact shadow running the whole length,
+              which is what seats the two plates against each other */}
+          <rect x="-160" y="-3" width="620" height="6" className="ps-c3-corner" />
+
+          {/* HEAT, in the parent metal either side, only where the arc has
+              already passed. */}
+          <g className="ps-c3-haz" filter="url(#ps-c3-soft)">
+            <rect x="-160" y="-64" width="346" height="58" fill="url(#ps-c3-haz-up)" />
+            <rect x="-160" y="6" width="346" height="58" fill="url(#ps-c3-haz-dn)" />
+          </g>
+
+          {/* AHEAD OF THE ARC the corner is still OPEN — no bead, just the two
+              faces meeting. This is the half of the picture that says the
+              plates are still two things. */}
+          <path d="M186 -2.5 L440 -2.5" className="ps-c3-open" />
+          <path d="M186 3.5 L440 3.5" className="ps-c3-open" />
+
+          {/* BEHIND IT, the laid bead. */}
+          <path className="ps-c3-bead" d="M-160 -19 L182 -19 L182 19 L-160 19 Z" fill="url(#ps-c3-bead)" />
+          <path d="M-160 -19.5 L180 -19.5" className="ps-c3-toe" />
+          <path d="M-160 19.5 L180 19.5" className="ps-c3-toe" />
+
+          {/* Ripples: ONE faint stroke each. No dark outline, no specular
+              ridge. The outline+highlight pairing is precisely what made an
+              earlier pass read as a zip fastener — the crescents became teeth
+              because each was individually delineated. Here they are tonal
+              variation ON a continuous fillet, not separate objects. */}
+          <g className="ps-c3-ripples">
+            {C3_RIPPLES.map((rp, i) => {
+              const x = 174 - rp.d;
+              return (
+                <path
+                  key={rp.d}
+                  className="ps-c3-ripple"
+                  style={{ "--i": i } as React.CSSProperties}
+                  d={`M ${x} -17 Q ${x - rp.r * 0.55} 0 ${x} 17`}
+                />
+              );
+            })}
+          </g>
+
+          {/* THE ARC, on the corner — middle of the frame, clear of the
+              frosted button in the top-right. */}
+          <g className="ps-c3-arc">
+            <circle className="ps-c3-glare" cx="180" cy="0" r="118" fill="url(#ps-c3-glare)" filter="url(#ps-c3-bloom)" />
+            <ellipse className="ps-c3-pool" cx="180" cy="0" rx="30" ry="22" fill="url(#ps-c3-pool)" />
+            <ellipse className="ps-c3-core" cx="179" cy="0" rx="9.5" ry="6.5" fill="#FFFFFF" />
+          </g>
+        </g>
+
+
+        {/* The lit top edge of the standing plate, drawn last so it reads as
+            the brightest thing after the arc. */}
+        <path d="M-56 66 L458 -166" className="ps-c3-edge" />
+      </svg>
     </div>
   );
 }
