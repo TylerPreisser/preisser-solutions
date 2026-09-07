@@ -442,7 +442,7 @@ export function CardVisualBusinessChat() {
         x="22"
         y="74"
         fontFamily="inherit"
-        fontSize="13"
+        fontSize="14"
         fontWeight="500"
         fill="currentColor"
         fillOpacity="0.72"
@@ -458,7 +458,7 @@ export function CardVisualBusinessChat() {
               x="22"
               y={y}
               fontFamily="inherit"
-              fontSize="13"
+              fontSize="14"
               fontWeight="500"
               fill="currentColor"
               fillOpacity="0.62"

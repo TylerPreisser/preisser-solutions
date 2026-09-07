@@ -5497,6 +5497,15 @@ ul, ol {
     padding-right: 58px;
   }
 
+  /* Cosmetic consequence of the rule above, not a second fix: the nav is now
+     58px inboard while the track still ran to the panel edge, so there was
+     dead space to the right of the next chevron at rest. Matching the track
+     keeps both right edges on one line. This is trailing scroll space on a
+     horizontal scroller, so no tile is hidden by it. */
+  .ps-carousel-track {
+    padding-right: 58px;
+  }
+
   .ps-dialog-panel {
     /* dvh avoids the iOS Safari 100vh bug (excludes browser chrome) */
     max-height: 95dvh;
