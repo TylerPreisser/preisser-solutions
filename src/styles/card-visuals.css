@@ -2362,34 +2362,33 @@
   .ps-sr-row { padding: 2px 4px; }
 }
 
-/* ── CARD 3 · AI Integration — "THE SEAM" ────────────────────────
-   A T-joint fillet weld seen obliquely. Namespace `ps-c3-*`.
+/* ── CARD 3 · AI Integration — "THE GRAFT" ───────────────────────
+   Namespace `ps-c3-*`.
 
-   APPENDED AT THE END OF THIS FILE ON PURPOSE. Three other teams are editing
-   this stylesheet concurrently and a mid-file edit is how you get a conflict.
-   NOTHING in the `ps-v4-*` family above is modified or deleted — card 3
-   simply stopped rendering that markup. Seven of those ten classes are shared
-   with cards 1 and 2, so deleting any of them would break a sibling.
+   APPENDED AT THE END OF THIS FILE ON PURPOSE. Other teams are editing this
+   stylesheet concurrently and a mid-file edit is how you get a conflict.
+   NOTHING in the `ps-v4-*` family above is modified or deleted — card 3 simply
+   stopped rendering that markup. Seven of those ten classes are shared with
+   cards 1 and 2, so deleting any of them would break a sibling.
 
-   WHY THE GRADIENT STOPS ARE CLASSES AND NOT ATTRIBUTES. An SVG `<stop>`
-   takes `stop-color` from CSS, so keeping the stops here is what lets the
-   plates re-theme. Hardcode them in the JSX and light mode cannot change
-   them without a second copy of the whole drawing.
+   WHY THE GRADIENT STOPS ARE CLASSES AND NOT ATTRIBUTES. An SVG `<stop>` takes
+   `stop-color` from CSS, so keeping the stops here is what lets the wood
+   re-theme. Hardcode them in the JSX and light mode cannot change them
+   without a second copy of the whole drawing.
 
-   THE LIGHT-MODE RULE, which is easy to get backwards. In DARK the plates are
-   navy steel on a navy ground. In LIGHT the plates LIGHTEN to daylight steel
-   and the seam — corner shadow, bead, toes, oxide — stays dark and hot, so
-   the card reads as a light surface with a dark glowing seam through it.
-   That is the shape card 4 uses: predominantly light, one deliberate dark
-   band. Held fully dark in light theme, this card punched a black hole in a
-   row of four pale ones. THE DARK ANCHOR IS THE SEAM, NOT THE WHOLE TILE.
+   THE LIGHT-MODE RULE. The ROOTSTOCK STAYS DARK IN BOTH THEMES — it is this
+   card's permanent dark anchor, the structure card 4 uses (predominantly
+   light, one deliberate dark mass). The ground and the scion lighten; the old
+   wood does not. A card that goes all-pale in light and all-dark in dark has
+   no anchor in either.
 
    MOTION. Zero @keyframes, matching every other card in this file. One
-   `in-view` class, added once by useRevealOnce at 25% visibility and never
-   removed, with a 1200ms failsafe. The two plates, the grain, the open corner
-   and the corner shadow are NEVER gated — the composition is complete before
-   any transition runs, so a visitor whose observer never fires still sees a
-   finished picture and nothing can be stranded invisible.
+   `in-view` class added once by useRevealOnce at 25% visibility and never
+   removed, with a 1200ms failsafe. THE STOCK, THE CUT FACE AND THE SCION ARE
+   NEVER GATED — the composition is complete before any transition runs, so a
+   visitor whose observer never fires still sees a finished picture and
+   nothing can be stranded invisible. Only the tape, the lit join and the new
+   growth arrive, because those are the things that say the graft TOOK.
    ────────────────────────────────────────────────────────────── */
 
 .ps-c3-root {
@@ -2397,217 +2396,194 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  /* Full bleed: no padding, no border, no inset frame. The artwork IS the
-     card's surface. An inset rectangle read as a video thumbnail dropped
-     into the layout — the only artwork in the row with a hard edge. */
+  /* Full bleed: the artwork IS the card's surface. An inset rectangle read as
+     a video thumbnail dropped into the layout. */
   background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
 }
 
 [data-theme="light"] .ps-c3-root {
-  background: linear-gradient(160deg, #F0F4F8 0%, #E8EDF3 100%);
+  background: linear-gradient(160deg, #F0F4F8 0%, #E4EBF2 100%);
 }
 
-.ps-c3-svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
+.ps-c3-svg { display: block; width: 100%; height: 100%; }
 
-/* ── The two plate faces. The standing plate catches the light; the flat
-      plate lies away from it and is a full stop darker. That tonal step is
-      half of what says "two things", so do NOT harmonise these. ── */
-.ps-c3-s-va { stop-color: #3E648F; }
-.ps-c3-s-vb { stop-color: #26426B; }
-.ps-c3-s-ba { stop-color: #2B4260; }
-.ps-c3-s-bb { stop-color: #1D3149; }
+/* ── OLD WOOD. Dark in both themes. Warm-shifted navy so it reads as bark
+      rather than as painted metal, without leaving the brand palette. ── */
+.ps-c3-s-st0 { stop-color: #151E2A; }
+.ps-c3-s-st1 { stop-color: #2C3A4C; }
+.ps-c3-s-st2 { stop-color: #0A1017; }
+[data-theme="light"] .ps-c3-s-st0 { stop-color: #26303D; }
+[data-theme="light"] .ps-c3-s-st1 { stop-color: #43525F; }
+[data-theme="light"] .ps-c3-s-st2 { stop-color: #141A22; }
 
-[data-theme="light"] .ps-c3-s-va { stop-color: #E4EDF5; }
-[data-theme="light"] .ps-c3-s-vb { stop-color: #C2D3E2; }
-[data-theme="light"] .ps-c3-s-ba { stop-color: #A9BCCE; }
-[data-theme="light"] .ps-c3-s-bb { stop-color: #8CA0B5; }
+/* ── NEW WOOD. Clearly paler than the stock in BOTH themes — two woods of
+      visibly different colour is what makes this a graft and not a branch. ── */
+.ps-c3-s-sc0 { stop-color: #5A6C88; }
+.ps-c3-s-sc1 { stop-color: #93A8C4; }
+.ps-c3-s-sc2 { stop-color: #43536F; }
+[data-theme="light"] .ps-c3-s-sc0 { stop-color: #A8B9CE; }
+[data-theme="light"] .ps-c3-s-sc1 { stop-color: #E2EAF3; }
+[data-theme="light"] .ps-c3-s-sc2 { stop-color: #8395AC; }
 
-/* ── The bead. In LIGHT it is deliberately DARKER than both plates, so the
-      weld is the dark band running through a light card. ── */
-.ps-c3-s-b0 { stop-color: #B6D0E8; }
-.ps-c3-s-b1 { stop-color: #6D8CAC; }
-.ps-c3-s-b2 { stop-color: #2B4160; }
-.ps-c3-s-r0 { stop-color: #C8DEF1; }
-.ps-c3-s-r1 { stop-color: #89A8C6; }
-.ps-c3-s-r2 { stop-color: #52708D; }
+/* The cut face — pale heartwood, the warm light in the lower half and the
+   cue that the stock was CUT rather than simply ending. */
+.ps-c3-s-cut0 { stop-color: #C6A97E; }
+.ps-c3-s-cut1 { stop-color: #8E7452; }
+[data-theme="light"] .ps-c3-s-cut0 { stop-color: #E4CDA4; }
+[data-theme="light"] .ps-c3-s-cut1 { stop-color: #B0906A; }
 
-[data-theme="light"] .ps-c3-s-b0 { stop-color: #8CA9C7; }
-[data-theme="light"] .ps-c3-s-b1 { stop-color: #647F9F; }
-[data-theme="light"] .ps-c3-s-b2 { stop-color: #3E5878; }
-[data-theme="light"] .ps-c3-s-r0 { stop-color: #D3E3F2; }
-[data-theme="light"] .ps-c3-s-r1 { stop-color: #93AEC9; }
-[data-theme="light"] .ps-c3-s-r2 { stop-color: #5E7B98; }
+/* ── WAXED TAPE. The warm channel, and the sign that a person did this on
+      purpose. Amber in both themes. ── */
+.ps-c3-s-tp0 { stop-color: #B0762A; }
+.ps-c3-s-tp1 { stop-color: #EFBB63; }
+.ps-c3-s-tp2 { stop-color: #8A5A1A; }
+[data-theme="light"] .ps-c3-s-tp0 { stop-color: #C8862F; }
+[data-theme="light"] .ps-c3-s-tp1 { stop-color: #F7CD82; }
+[data-theme="light"] .ps-c3-s-tp2 { stop-color: #96631F; }
 
-/* The inside corner. A dark contact shadow the whole length of the joint —
-   this is what seats the two plates against each other rather than letting
-   them look like two flat shapes that happen to touch. Dark in BOTH themes:
-   it is the card's dark anchor. */
-.ps-c3-corner { fill: #05090F; opacity: 0.85; }
-[data-theme="light"] .ps-c3-corner { fill: #1B3048; opacity: 0.72; }
-
-/* Ahead of the arc: the two plate faces meeting with NOTHING joining them.
-   Deliberately thin and quiet — it must read as an unfilled corner, not as
-   another weld. Delete these two lines and the card stops saying "two". */
-.ps-c3-open {
-  fill: none;
-  stroke: rgba(148,178,208,0.30);
-  stroke-width: 1.1;
+.ps-c3-tape {
+  stroke: rgba(0, 0, 0, 0.28);
+  stroke-width: 0.8;
   vector-effect: non-scaling-stroke;
 }
-[data-theme="light"] .ps-c3-open { stroke: rgba(40,66,96,0.28); }
 
-/* The toes, where the bead meets each plate. This is what sits the weld ON
-   the steel rather than floating it above the steel. */
-.ps-c3-toe {
+.ps-c3-fissure {
   fill: none;
-  stroke: rgba(3,8,16,0.55);
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
-}
-[data-theme="light"] .ps-c3-toe { stroke: rgba(24,44,68,0.38); }
-
-/* The lit top edge of the standing plate — the brightest thing after the
-   arc, and the cue that the plate has real thickness. */
-.ps-c3-edge {
-  fill: none;
-  stroke: rgba(190,216,240,0.45);
-  stroke-width: 1.6;
-  vector-effect: non-scaling-stroke;
-}
-[data-theme="light"] .ps-c3-edge { stroke: rgba(255,255,255,0.85); }
-
-/* NO PLATE GRAIN, DELIBERATELY. Ruled lines across these two large quads have
-   now produced a wrong read twice: at high opacity in light mode they were
-   RULED NOTEBOOK PAPER, and at low opacity a critic reading the pixels called
-   the striping PHOTOVOLTAIC BUSBARS and named the card "solar panel" in five
-   of eight renders. A repeating parallel rule over a big flat plane is simply
-   a strong pattern cue and it beats the subject. The brushed quality is
-   carried by the face gradients instead. Do not reintroduce ruling here. */
-
-/* Ripples. ONE faint stroke, no dark outline, no specular ridge.
-   THIS IS THE FIX FOR THE ZIPPER READ AND IT MUST NOT BE UNDONE. An earlier
-   pass drew each crescent with a hard dark outline AND a bright specular
-   ridge; individually delineating each crescent is exactly what turns a weld
-   bead into a row of teeth, and a critic reading the pixels called it "a zip
-   fastener and its slider" three versions running. Ripples belong as tonal
-   variation ON a continuous fillet, never as separate outlined objects.
-   If you are tempted to add contrast here, add it to the fillet's
-   cross-section gradient instead. */
-.ps-c3-ripple {
-  fill: none;
-  stroke: #CFE2F4;
-  stroke-opacity: 0.16;
-  stroke-width: 2.4;
+  stroke: #05090F;
+  stroke-opacity: 0.34;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
 }
-[data-theme="light"] .ps-c3-ripple { stroke: #24405E; stroke-opacity: 0.14; }
+[data-theme="light"] .ps-c3-fissure { stroke: #0A1017; stroke-opacity: 0.26; }
+
+/* ── THE LIT JOIN. The payoff, and the only pure brand blue on the card. ── */
+.ps-c3-cambium {
+  fill: none;
+  stroke: url(#ps-c3-cambium);
+  stroke-width: 4.4;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.ps-c3-cambium-glow {
+  fill: none;
+  stroke: #1590FF;
+  stroke-width: 13;
+  stroke-linecap: round;
+  opacity: 0.9;
+  vector-effect: non-scaling-stroke;
+}
+[data-theme="light"] .ps-c3-cambium-glow { opacity: 0.62; }
+
+/* ── NEW GROWTH. Proof the graft took. ── */
+.ps-c3-shoot {
+  fill: none;
+  stroke: #6E86A6;
+  stroke-width: 5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+[data-theme="light"] .ps-c3-shoot { stroke: #7C90AB; }
+
+.ps-c3-leaf { fill: #00D4AA; opacity: 0.92; }
+[data-theme="light"] .ps-c3-leaf { fill: #0B7A61; opacity: 0.9; }
+
+/* The stem. Small, but it is what attaches the blade to the branch — without
+   it the leaves float and the whole drawing reads as clip art. */
+.ps-c3-stem {
+  fill: none;
+  stroke: #6E86A6;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+[data-theme="light"] .ps-c3-stem { stroke: #7C90AB; }
+
+/* Highlight along the upper edge of each tape band, so the band reads as a
+   wound surface catching light rather than as a flat slat. */
+.ps-c3-tape-hi {
+  fill: none;
+  stroke: rgba(255, 240, 208, 0.5);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
+[data-theme="light"] .ps-c3-tape-hi { stroke: rgba(255, 250, 235, 0.75); }
+
+/* ── REVEAL. Transitions only. The stock, the cut face and the scion are NOT
+      gated: the still is complete without JS. Only the things that say the
+      graft TOOK arrive — the tape is wound on, the join lights, the growth
+      extends. One way, then it holds. ── */
+.ps-c3-tapegrp {
+  opacity: 0;
+  transform: translateX(-7px);
+  transition: opacity 320ms ease, transform 380ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition-delay: calc(120ms + var(--i, 0) * 60ms);
+}
+.ps-c3-join { opacity: 0; transition: opacity 460ms ease; transition-delay: 430ms; }
+.ps-c3-shoot {
+  opacity: 0;
+  transition: opacity 420ms ease;
+  transition-delay: 560ms;
+}
+.ps-c3-leafgrp {
+  opacity: 0;
+  /* scales about the stem's attachment point (the group's own 0,0), so the
+     blade grows OUT of the branch rather than swelling in place */
+  transform: scale(0.55);
+  transform-origin: 0 0;
+  transition: opacity 300ms ease, transform 380ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition-delay: calc(660ms + var(--i, 0) * 70ms);
+}
+
+.ps-c3-root.in-view .ps-c3-tapegrp { opacity: 1; transform: translateX(0); }
+.ps-c3-root.in-view .ps-c3-join { opacity: 1; }
+.ps-c3-root.in-view .ps-c3-shoot { opacity: 1; }
+.ps-c3-root.in-view .ps-c3-leafgrp { opacity: 1; transform: scale(1); }
 
 
-/* ── FOOT VEIL. Fixes a MEASURED AA failure, and it lives in CSS ANCHORED TO
-      THE ELEMENT'S BOTTOM — deliberately NOT inside the SVG.
-
-      WHY THAT MATTERS, because the obvious implementation is broken. The SVG
-      uses preserveAspectRatio="xMidYMid slice", which crops the viewBox
-      VERTICALLY whenever the box is wide relative to its height. At a
-      wide-but-short breakpoint the bottom of the viewBox is cropped off — so
-      a veil painted at the foot of the viewBox is removed exactly where it is
-      needed, and the contrast numbers would pass at the widths you happened
-      to test and fail at the ones you did not. That is the same shape as the
-      original 1.96:1 failure this veil exists to fix. Anchoring to the
-      element's bottom edge makes it crop-proof at every breakpoint.
-
-      The failure it fixes: at 390 the crop puts the dark weld bead behind
-      "AI INTEGRATION." and the title measured 1.96:1 against a 4.5:1 floor,
-      while the SAME markup passed at 1440 only because the pale plate
-      happened to fall there instead.
-
-      Scoped to card 3. The shared .ps-bento-card__text scrim belongs to all
-      five cards and three other teams, so it is not ours to strengthen. ── */
+/* Foot veil, CSS-anchored to the ELEMENT'S BOTTOM and sized in FIXED PX.
+   Two reasons it is not in the SVG and not a percentage:
+   · `xMidYMid slice` crops the viewBox VERTICALLY at wide breakpoints, so a
+     veil painted at the foot of the viewBox is removed exactly where it is
+     needed and the contrast numbers pass only at the widths you happened to
+     test;
+   · a percentage veil is systematically WEAKEST ON THE SMALLEST CARD — this
+     box is 442px tall at 1440 but 332px at 390, so the same percentage covers
+     ~50px less of the text band precisely where the crop is tightest.
+   150px covers the 59-63px text block identically at every breakpoint. */
 .ps-c3-root::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* FIXED px, NOT a percentage. A percentage veil is systematically WEAKEST ON
-     THE SMALLEST CARD: this box is 442px tall at 1440 but only 332px at 600
-     and 390, so the same percentage covers ~50px less of the text band exactly
-     where the `slice` crop is tightest and the artwork behind the title is
-     darkest. 150px covers the 59-63px text block identically at every
-     breakpoint, and as a SHARE of a shorter card it is automatically more
-     coverage where the problem is worse. Held solid to 40% for the same
-     reason. */
+  left: 0; right: 0; bottom: 0;
   height: 150px;
   pointer-events: none;
   background: linear-gradient(
     to top,
-    rgba(10, 22, 40, 0.55) 0%,
-    rgba(10, 22, 40, 0.44) 40%,
+    rgba(10, 22, 40, 0.80) 0%,
+    rgba(10, 22, 40, 0.62) 40%,
     rgba(10, 22, 40, 0) 100%
   );
 }
-
 [data-theme="light"] .ps-c3-root::after {
   background: linear-gradient(
     to top,
-    rgba(238, 243, 248, 0.72) 0%,
-    rgba(238, 243, 248, 0.58) 40%,
-    rgba(238, 243, 248, 0) 100%
+    rgba(236, 241, 247, 0.92) 0%,
+    rgba(236, 241, 247, 0.76) 40%,
+    rgba(236, 241, 247, 0) 100%
   );
 }
-
-/* ── THE ARC. The bloom has a HARD CEILING in light theme: at full strength
-      it blows out a pale card and fights the "AI INTEGRATION." title, which
-      sits under a scrim at the bottom of the same box. ── */
-.ps-c3-glare { opacity: 0.76; }
-[data-theme="light"] .ps-c3-glare { opacity: 0.30; }
-.ps-c3-core { opacity: 0.88; }
-
-/* ── REVEAL. Transitions only, no keyframes. The plates, grain, corner
-      shadow and open corner are NOT gated, so the still is complete without
-      JS and no element can be left permanently invisible. ── */
-.ps-c3-haz,
-.ps-c3-arc { opacity: 0; transition: opacity 420ms ease; }
-.ps-c3-bead { opacity: 0; transition: opacity 380ms ease; }
-.ps-c3-ripple {
-  opacity: 0;
-  transform: translateX(6px);
-  transition:
-    opacity 360ms ease,
-    transform 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  /* the bead lays itself down BEHIND the travelling arc, so the ripple
-     nearest the arc arrives first and the run builds away from it */
-  /* 22ms, not 46ms. There are 27 ripples: at 46ms the last one landed at
-     ~1456ms and the weld — the SUBJECT of the card — was still assembling
-     well over a second after the card appeared. Measured at 390/dark, the
-     bead, arc, heat and ripples were ALL at opacity 0 at both t=0 and t=150,
-     so the first quarter-second showed two bare plates and no weld at all.
-     A reveal whose subject arrives last is a reveal that reads as a card
-     failing to load. */
-  transition-delay: calc(150ms + var(--i, 0) * 22ms);
-}
-
-.ps-c3-root.in-view .ps-c3-bead { opacity: 1; transition-delay: 40ms; }
-.ps-c3-root.in-view .ps-c3-arc { opacity: 1; transition-delay: 90ms; }
-.ps-c3-root.in-view .ps-c3-haz { opacity: 1; transition-delay: 380ms; }
-.ps-c3-root.in-view .ps-c3-ripple { opacity: 1; transform: translateX(0); }
 
 /* Both layers of the reduced-motion guard. useRevealOnce already adds
    `in-view` and returns before the observer is constructed; this pins every
    gated element to its FINISHED frame so nothing is stranded invisible. */
 @media (prefers-reduced-motion: reduce) {
-  .ps-c3-haz,
-  .ps-c3-arc,
-  .ps-c3-bead,
-  .ps-c3-ripple {
+  .ps-c3-tapegrp,
+  .ps-c3-join,
+  .ps-c3-shoot,
+  .ps-c3-leafgrp {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
     transition-delay: 0s !important;
   }
+
 }

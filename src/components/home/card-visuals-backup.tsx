@@ -249,75 +249,193 @@ function V4Lock() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CARD 3 — AI Integration.  "THE SEAM."
+   CARD 3 — AI Integration.  "THE GRAFT."
 
-   A T-JOINT FILLET WELD, SEEN OBLIQUELY. One steel plate lies flat and
-   another stands up out of it at a right angle; the weld runs along the
-   inside corner where they meet, molten at the arc and a finished stack of
-   ripples behind it. Two plates at ninety degrees, one bead joining them.
+   A thick old rootstock rises out of the bottom of the frame and is cut off
+   at a clean slant. Bound onto that slant with a spiral of amber waxed tape
+   is a scion of paler wood, and along the meeting faces the cambium line
+   glows a hot electric blue. Above the union the scion throws two shoots
+   into the headroom. One tree-shaped silhouette; two pieces of wood.
 
-   WHY THE JOINT CHANGED, AND IT IS THE WHOLE FIX. This card was drawn three
-   times as a BUTT weld seen face-on — two plates edge to edge with the bead
-   running straight down the middle of the frame. Photographed, every version
-   read as a lit skyscraper, a rocket launch or a zipper, and no amount of
-   colour tuning moved it. The reason is geometric, and it is worth writing
-   down so nobody re-derives it:
+   WHY THIS AND NOT THE WELD. Card 3 was drawn SIX times as a weld and
+   rejected every time, three times by a critic reading pixels. The last three
+   were rejected for the same reason in the same words — "a zip fastener and
+   its slider", a rope, a ribbed tube. The cause turned out to be structural
+   rather than tonal: a weld bead is a row of regular crescents along a line,
+   and a row of regular crescents along a line IS a zipper. Changing the joint
+   from a butt weld to a T-joint fillet, deleting the per-crescent outline and
+   specular ridge, removing the plate grain and fixing the plane values all
+   made it a better picture and none of them made it stop being a zipper.
+   At 390 in light theme — the most-viewed case — it read as a ribbed grey
+   hose with a light on the end.
 
-     · A bead viewed straight down its own length is a ribbed vertical line,
-       and a ribbed vertical line is a zipper. That is not a tuning problem.
-     · A butt weld joins two COPLANAR plates, so there is no second surface
-       to show. Tilting the camera cannot rescue it — there is nothing to
-       reveal, because both halves lie in the same plane.
+   A graft does the same conceptual work and cannot collapse into a fastener,
+   because its silhouette is a TREE, which is the most instantly recognisable
+   shape available. That instant recognisability is the exact quality the weld
+   failed at six times.
 
-   A T-joint fixes both at once. The plates are at ninety degrees, so you see
-   TWO SURFACES at two angles catching the light differently, and the bead
-   runs diagonally across the frame instead of straight down it. The diagonal
-   breaks the column silhouette that caused the rocket read.
+   WHY IT MEANS "AI INTEGRATION". The old plant keeps its roots and its whole
+   history, and the new growth is genuinely fed by them. The seam is a callus,
+   not a bracket. That is precisely the claim: AI built into the system a
+   business already runs, drawing on what is already there, rather than a
+   product bolted on beside it.
 
-   THE STILL IS THE DELIVERABLE. Ahead of the arc, toward the top right, the
-   corner is still OPEN — the two faces meet with nothing joining them.
-   Behind it the bead is laid. The picture therefore says two-becoming-one
-   with no motion at all, which is what a reduced-motion visitor and every
-   screenshot get.
+   THE STILL IS THE DELIVERABLE. Two woods of visibly different colour, a
+   taped collar, and a lit join — all present with no motion at all, which is
+   what a reduced-motion visitor and every screenshot get.
 
-   LIGHT MODE IS NOT DARK MODE WITH A PALER CARD. In dark the plates are navy
-   steel on a navy ground. In light THE PLATES LIGHTEN to daylight steel while
-   the corner shadow, the bead and the oxide stay dark and hot, so the card
-   reads as a light surface with a dark glowing seam through it — the shape
-   card 4 uses (predominantly light, one deliberate dark band). Held fully
-   dark in light theme this card punched a black hole in a row of four pale
-   ones.
+   THE NAMED RISK, from the concept brief, and how it is handled: "a thin
+   scion silhouette makes it read as a stick taped to a log". So the scion is
+   drawn with REAL GIRTH — 62px against the stock's 92px at the union, not a
+   twig. Two members of comparable mass reads as a graft; a wire on a log
+   reads as a repair.
 
-   FULL BLEED, NO FRAME. The artwork is the card's own surface and runs to all
-   four edges. An inset rectangle read as a video thumbnail dropped into the
-   layout — the only artwork in the row with a hard edge.
+   LIGHT MODE. The rootstock stays dark in BOTH themes. That is this card's
+   permanent dark anchor, the same structure card 4 uses (predominantly light
+   with one deliberate dark mass). Held fully dark in light theme a card
+   punches a hole in a row of pale ones; held fully pale it has no anchor.
 
-   GEOMETRY, measured not assumed: the visual fills 412x442 at desktop and
-   354x332 on a phone. The arc sits near the middle of the frame, clear of the
-   frosted button that floats over the TOP-RIGHT corner and clear of the title
-   scrim across the bottom. Both plates run off the edges so the assembly
-   reads as a crop of something bigger, not an object floating in space.
+   GEOMETRY, measured: the visual fills 412x442 at desktop and 354x332 on a
+   phone, cropped by `xMidYMid slice`. The union — the taped collar, where the
+   eye stops — sits at y=252, which is the middle of the frame, clear of the
+   frosted button over the TOP-RIGHT corner and above the bottom 150px where
+   the title scrim sits. The trunk runs off the bottom edge on purpose.
 
-   NO Math.random ANYWHERE. This is server-rendered; a procedurally scattered
-   bead would desynchronise server and client markup and throw a hydration
-   mismatch. Every ripple below is an authored literal.
+   NO Math.random ANYWHERE. Server-rendered; every fissure, tape band and leaf
+   below is an authored literal.
    ───────────────────────────────────────────────────────────── */
 
-/* The fillet ripples, in BEAD-LOCAL coordinates: `d` is the distance back
-   along the corner from the arc, `r` the crescent rise. The rise is
-   deliberately uneven — a constant rise is what made the previous pass read
-   as a machine-stamped zipper. */
-const C3_RIPPLES = [
-  { d: 6, r: 9.5 }, { d: 19, r: 11.0 }, { d: 32, r: 9.8 }, { d: 44, r: 11.6 },
-  { d: 57, r: 10.2 }, { d: 69, r: 12.0 }, { d: 82, r: 9.6 }, { d: 94, r: 11.2 },
-  { d: 107, r: 10.6 }, { d: 119, r: 11.8 }, { d: 132, r: 9.9 }, { d: 144, r: 11.4 },
-  { d: 157, r: 10.4 }, { d: 169, r: 12.2 }, { d: 182, r: 10.0 }, { d: 194, r: 11.5 },
-  { d: 207, r: 9.7 }, { d: 219, r: 11.9 }, { d: 232, r: 10.7 }, { d: 244, r: 11.9 }, { d: 256, r: 9.8 }, { d: 268, r: 11.3 }, { d: 280, r: 10.5 }, { d: 292, r: 12.1 }, { d: 304, r: 9.9 }, { d: 316, r: 11.6 }, { d: 328, r: 10.7 },
+/* Bark fissures on the rootstock: x offset from the trunk centre, top y,
+   bottom y, and width. Authored, never generated — see the hydration note. */
+const C3_FISSURES = [
+  { x: -34, y1: 292, y2: 438, w: 3.0 }, { x: -20, y1: 268, y2: 452, w: 2.2 },
+  { x: -8, y1: 300, y2: 446, w: 2.6 }, { x: 6, y1: 276, y2: 458, w: 2.0 },
+  { x: 19, y1: 296, y2: 442, w: 2.8 }, { x: 32, y1: 284, y2: 450, w: 2.2 },
+  { x: -27, y1: 350, y2: 462, w: 1.8 }, { x: 13, y1: 340, y2: 466, w: 1.8 },
 ] as const;
 
+/* The waxed-tape spiral across the union. Each band is a parallelogram
+   following the slant of the cut. */
+const C3_TAPE = [
+  { y: 288, h: 11 }, { y: 302, h: 12 }, { y: 316, h: 12 },
+  { y: 330, h: 11 }, { y: 343, h: 10 },
+] as const;
+
+/* Leaf blades on the two shoots: tip x/y, angle, length. Geometric, not
+   botanical — clean blades read at 330px, a drawn leaf does not. */
+/* Leaves as LENS blades — two arcs meeting at a point at each end — each hung
+   off a short stem from a named anchor ON its shoot. `ax/ay` is where the stem
+   leaves the branch, `a` the blade angle, `l` its length. Ellipses were tried
+   first and read as floating lily pads: a leaf with no visible attachment is
+   the single clearest clip-art tell there is. */
+const C3_LEAVES = [
+  { ax: 142, ay: 72, a: -52, l: 26 }, { ax: 150, ay: 86, a: -24, l: 21 },
+  { ax: 164, ay: 104, a: -6, l: 17 }, { ax: 224, ay: 80, a: 50, l: 26 },
+  { ax: 214, ay: 94, a: 24, l: 21 }, { ax: 199, ay: 108, a: 6, l: 17 },
+] as const;
+
+/* A leaf blade: from the stem end, two symmetric quadratic arcs out to a tip
+   and back, so BOTH ends come to a point. */
+function c3Leaf(l: number) {
+  const b = l * 0.34;
+  return `M0 0 Q ${l * 0.42} ${-b} ${l} 0 Q ${l * 0.42} ${b} 0 0 Z`;
+}
+
+/* Card 3's OWN reveal hook. Deliberately NOT the shared `useRevealOnce`
+   above, and this is a bug fix rather than a preference.
+
+   THE BUG IN THE SHARED HOOK: its 1200ms failsafe fires whether or not the
+   card is on screen. Card 3 sits well below the fold, so the entire reveal
+   ran on a timer at page load and had already locked before anyone scrolled
+   to it. The choreography was correct and permanently invisible. It also
+   explains a defect a critic measured here and neither of us could account
+   for — the card photographed as a flat empty rectangle at t=63 and t=186ms
+   while its neighbours were painted: that was the tail of an animation that
+   had already run off-screen.
+
+   THE SHARED HOOK IS NOT MODIFIED. Cards 2 and 5 depend on it and other teams
+   are in this file; changing it would alter their timing without their
+   knowledge. Card 3 gets its own copy instead.
+
+   Two differences from the shared one:
+     · threshold 0.3 rather than 0.25, so the reveal starts when the card is
+       meaningfully on screen rather than at its first pixel;
+     · a safety net that is VIEWPORT-CONDITIONAL rather than a bare timeout.
+       At 1200ms the shared hook's timer was not a safety net at all, it was
+       the primary trigger. Simply lengthening it to 8000ms would only move
+       the same bug later. See the comment on the net itself below. */
+function usePsC3Reveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(el);
+
+    /* THE SAFETY NET, and its shape matters more than its duration.
+       A plain timeout — at 1200ms or at 8000ms — still fires whether or not
+       the card is on screen, so it does not remove the bug, it only moves it
+       later: a visitor who takes nine seconds to reach this section still
+       finds the entrance already spent. So after the delay this does NOT
+       reveal unconditionally; it reveals only if the element is ACTUALLY IN
+       THE VIEWPORT, and otherwise re-checks every 400ms.
+       The guarantee it exists for is preserved: if IntersectionObserver never
+       fires for any reason, the artwork still cannot be stranded invisible,
+       because the poll will catch the element the moment it is on screen. */
+    let poll = 0;
+    const onScreen = () => {
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      return r.top < vh && r.bottom > 0;
+    };
+    const settle = () => {
+      if (onScreen()) {
+        el.classList.add("in-view");
+        observer.disconnect();
+        window.clearInterval(poll);
+      }
+    };
+    const failsafe = window.setTimeout(() => {
+      settle();
+      if (!el.classList.contains("in-view")) {
+        poll = window.setInterval(settle, 400);
+      }
+    }, 8000);
+
+    return () => {
+      window.clearTimeout(failsafe);
+      window.clearInterval(poll);
+      observer.disconnect();
+    };
+  }, []);
+
+  return ref;
+}
 
 export function AutomationVisual() {
-  const containerRef = useRevealOnce<HTMLDivElement>();
+  const containerRef = usePsC3Reveal<HTMLDivElement>();
 
   return (
     <div ref={containerRef} className="ps-c3-root" aria-hidden="true">
@@ -328,144 +446,142 @@ export function AutomationVisual() {
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          {/* Every id is ps-c3- prefixed. Five inline SVGs share this page and
-              a defs collision is SILENT — the wrong gradient is picked up with
+          {/* Every id ps-c3- prefixed: five inline SVGs share this page and a
+              defs collision is SILENT — the wrong gradient is picked up with
               no error and no console message. */}
-          <linearGradient id="ps-c3-face-v" x1="0" y1="0" x2="0.4" y2="1">
-            <stop offset="0%" className="ps-c3-s-va" />
-            <stop offset="100%" className="ps-c3-s-vb" />
+          <linearGradient id="ps-c3-stock" x1="0" y1="0" x2="1" y2="0.2">
+            <stop offset="0%" className="ps-c3-s-st0" />
+            <stop offset="38%" className="ps-c3-s-st1" />
+            <stop offset="100%" className="ps-c3-s-st2" />
           </linearGradient>
-          <linearGradient id="ps-c3-face-b" x1="0.1" y1="0" x2="0.6" y2="1">
-            <stop offset="0%" className="ps-c3-s-ba" />
-            <stop offset="100%" className="ps-c3-s-bb" />
+          <linearGradient id="ps-c3-scion" x1="0" y1="0" x2="1" y2="0.2">
+            <stop offset="0%" className="ps-c3-s-sc0" />
+            <stop offset="38%" className="ps-c3-s-sc1" />
+            <stop offset="100%" className="ps-c3-s-sc2" />
           </linearGradient>
-
-          <linearGradient id="ps-c3-bead" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" className="ps-c3-s-b0" />
-            <stop offset="45%" className="ps-c3-s-b1" />
-            <stop offset="100%" className="ps-c3-s-b2" />
+          <linearGradient id="ps-c3-tape" x1="0" y1="0" x2="1" y2="0.3">
+            <stop offset="0%" className="ps-c3-s-tp0" />
+            <stop offset="34%" className="ps-c3-s-tp1" />
+            <stop offset="100%" className="ps-c3-s-tp2" />
           </linearGradient>
-          <linearGradient id="ps-c3-rip" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" className="ps-c3-s-r0" />
-            <stop offset="50%" className="ps-c3-s-r1" />
-            <stop offset="100%" className="ps-c3-s-r2" />
-          </linearGradient>
-
-          {/* Heat-affected zone: straw nearest the weld, then violet, then
-              indigo, then nothing. It sits in the PARENT METAL either side of
-              the bead, which is where heat actually goes. An earlier pass ran
-              it down the bead itself and that inverted the physics. */}
-          <linearGradient id="ps-c3-haz-up" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0%" stopColor="#E8A63C" stopOpacity="0.55" />
-            <stop offset="24%" stopColor="#C77BC4" stopOpacity="0.34" />
-            <stop offset="55%" stopColor="#5560C6" stopOpacity="0.20" />
-            <stop offset="100%" stopColor="#2A3E63" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id="ps-c3-haz-dn" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#E8A63C" stopOpacity="0.55" />
-            <stop offset="24%" stopColor="#C77BC4" stopOpacity="0.34" />
-            <stop offset="55%" stopColor="#5560C6" stopOpacity="0.20" />
-            <stop offset="100%" stopColor="#2A3E63" stopOpacity="0" />
+          {/* the cut face of the rootstock — pale heartwood, the one warm
+              light in the lower half */}
+          <linearGradient id="ps-c3-cut" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" className="ps-c3-s-cut0" />
+            <stop offset="100%" className="ps-c3-s-cut1" />
           </linearGradient>
 
-          <radialGradient id="ps-c3-pool">
-            <stop offset="0%" stopColor="#FFFFFF" />
-            <stop offset="26%" stopColor="#E6F8FF" />
-            <stop offset="52%" stopColor="#80E9FF" />
-            <stop offset="78%" stopColor="#1590FF" stopOpacity="0.8" />
+          <linearGradient id="ps-c3-cambium" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#1590FF" stopOpacity="0" />
+            <stop offset="18%" stopColor="#80E9FF" stopOpacity="0.95" />
+            <stop offset="52%" stopColor="#FFFFFF" stopOpacity="1" />
+            <stop offset="84%" stopColor="#1590FF" stopOpacity="0.9" />
             <stop offset="100%" stopColor="#1590FF" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="ps-c3-glare">
-            <stop offset="0%" stopColor="#1590FF" stopOpacity="0.5" />
-            <stop offset="52%" stopColor="#1590FF" stopOpacity="0.14" />
-            <stop offset="100%" stopColor="#1590FF" stopOpacity="0" />
-          </radialGradient>
+          </linearGradient>
 
-
-
+          <filter id="ps-c3-glow" x="-120%" y="-400%" width="340%" height="900%">
+            <feGaussianBlur stdDeviation="7" />
+          </filter>
           <filter id="ps-c3-soft" x="-60%" y="-60%" width="220%" height="220%">
-            <feGaussianBlur stdDeviation="10" />
-          </filter>
-          <filter id="ps-c3-bloom" x="-80%" y="-80%" width="260%" height="260%">
-            <feGaussianBlur stdDeviation="15" />
+            <feGaussianBlur stdDeviation="9" />
           </filter>
 
-          {/* Clip each plate to its own face so grain cannot leak across the
-              corner onto the other plate. */}
-          <clipPath id="ps-c3-clip-v">
-            <path d="M-40 238 L472 28 L458 -166 L-56 66 Z" />
-          </clipPath>
-          <clipPath id="ps-c3-clip-b">
-            <path d="M-40 238 L472 28 L496 268 L-16 498 Z" />
+          <clipPath id="ps-c3-clip-stock">
+            <path d="M124 470 L130 274 L226 250 L236 470 Z" />
           </clipPath>
         </defs>
 
-        {/* ── THE STANDING PLATE. Runs off the top and both sides. ── */}
-        <path d="M-40 238 L472 28 L458 -166 L-56 66 Z" fill="url(#ps-c3-face-v)" />
-
-        {/* ── THE FLAT PLATE. Runs off the bottom and both sides. Darker,
-              because it lies away from the light. ── */}
-        <path d="M-40 238 L472 28 L496 268 L-16 498 Z" fill="url(#ps-c3-face-b)" />
-
-        {/* ── Everything below lives in BEAD-LOCAL space: origin on the corner,
-              +x running up the corner toward the top right. One rotate, applied
-              as an ATTRIBUTE so it uses user space — a CSS rotate would need
-              transform-box: fill-box or it spins about the SVG origin. ── */}
-        <g transform="translate(40 205.2) rotate(-22.3)">
-          {/* the inside corner: a dark contact shadow running the whole length,
-              which is what seats the two plates against each other */}
-          <rect x="-160" y="-3" width="620" height="6" className="ps-c3-corner" />
-
-          {/* HEAT, in the parent metal either side, only where the arc has
-              already passed. */}
-          <g className="ps-c3-haz" filter="url(#ps-c3-soft)">
-            <rect x="-160" y="-64" width="346" height="58" fill="url(#ps-c3-haz-up)" />
-            <rect x="-160" y="6" width="346" height="58" fill="url(#ps-c3-haz-dn)" />
-          </g>
-
-          {/* AHEAD OF THE ARC the corner is still OPEN — no bead, just the two
-              faces meeting. This is the half of the picture that says the
-              plates are still two things. */}
-          <path d="M186 -2.5 L440 -2.5" className="ps-c3-open" />
-          <path d="M186 3.5 L440 3.5" className="ps-c3-open" />
-
-          {/* BEHIND IT, the laid bead. */}
-          <path className="ps-c3-bead" d="M-160 -19 L182 -19 L182 19 L-160 19 Z" fill="url(#ps-c3-bead)" />
-          <path d="M-160 -19.5 L180 -19.5" className="ps-c3-toe" />
-          <path d="M-160 19.5 L180 19.5" className="ps-c3-toe" />
-
-          {/* Ripples: ONE faint stroke each. No dark outline, no specular
-              ridge. The outline+highlight pairing is precisely what made an
-              earlier pass read as a zip fastener — the crescents became teeth
-              because each was individually delineated. Here they are tonal
-              variation ON a continuous fillet, not separate objects. */}
-          <g className="ps-c3-ripples">
-            {C3_RIPPLES.map((rp, i) => {
-              const x = 174 - rp.d;
-              return (
-                <path
-                  key={rp.d}
-                  className="ps-c3-ripple"
-                  style={{ "--i": i } as React.CSSProperties}
-                  d={`M ${x} -17 Q ${x - rp.r * 0.55} 0 ${x} 17`}
-                />
-              );
-            })}
-          </g>
-
-          {/* THE ARC, on the corner — middle of the frame, clear of the
-              frosted button in the top-right. */}
-          <g className="ps-c3-arc">
-            <circle className="ps-c3-glare" cx="180" cy="0" r="118" fill="url(#ps-c3-glare)" filter="url(#ps-c3-bloom)" />
-            <ellipse className="ps-c3-pool" cx="180" cy="0" rx="30" ry="22" fill="url(#ps-c3-pool)" />
-            <ellipse className="ps-c3-core" cx="179" cy="0" rx="9.5" ry="6.5" fill="#FFFFFF" />
-          </g>
+        {/* ── THE ROOTSTOCK. Runs off the bottom edge; cut at a slant just
+              below centre. Stays dark in BOTH themes — the card's anchor. ── */}
+        <path
+          className="ps-c3-stock"
+          d="M124 470 L130 274 L226 250 L236 470 Z"
+          fill="url(#ps-c3-stock)"
+        />
+        <g clipPath="url(#ps-c3-clip-stock)">
+          {C3_FISSURES.map((f) => (
+            <path
+              key={f.x}
+              className="ps-c3-fissure"
+              d={`M${176 + f.x} ${f.y1} C${176 + f.x - 3} ${f.y1 + 46} ${176 + f.x + 3} ${f.y1 + 92} ${176 + f.x} ${f.y2}`}
+              style={{ strokeWidth: f.w }}
+            />
+          ))}
         </g>
 
+        {/* The slant cut face — pale heartwood. This is what makes the stock
+            read as CUT rather than merely ending. */}
+        <path className="ps-c3-cut" d="M130 274 L226 250 L222 238 L126 262 Z" fill="url(#ps-c3-cut)" />
 
-        {/* The lit top edge of the standing plate, drawn last so it reads as
-            the brightest thing after the arc. */}
-        <path d="M-56 66 L458 -166" className="ps-c3-edge" />
+        {/* ── THE SCION. Real girth on purpose: 62px against the stock's 92px.
+              A twig here reads as a stick taped to a log, not as a graft. ── */}
+        <path
+          className="ps-c3-scion"
+          d="M152 259 L212 245 L202 116 L158 122 Z"
+          fill="url(#ps-c3-scion)"
+        />
+
+        {/* ── THE CAMBIUM LINE. The join itself, lit. This is the payoff and
+              the only pure brand-blue in the composition. ── */}
+        <g className="ps-c3-join">
+          <path
+            className="ps-c3-cambium-glow"
+            d="M150 261 L213 247"
+            filter="url(#ps-c3-glow)"
+          />
+          <path className="ps-c3-cambium" d="M150 261 L213 247" />
+        </g>
+
+        {/* ── THE WAXED TAPE, spiralling across the union. Amber: the warm
+              channel that stops the card reading cold, and the thing that
+              says a PERSON did this deliberately. ── */}
+        <g className="ps-c3-tapes">
+          {C3_TAPE.map((t, i) => (
+            <g key={t.y} className="ps-c3-tapegrp" style={{ "--i": i } as React.CSSProperties}>
+              {/* Each band BOWS across the trunk instead of running straight.
+                  A straight band reads as a crate slat; a bowed one reads as
+                  something wound around a cylinder. */}
+              <path
+                className="ps-c3-tape"
+                d={`M${120 + i * 1.1} ${t.y} Q 176 ${t.y - 18} ${234 - i * 0.9} ${t.y - 26} L ${234 - i * 0.9} ${t.y - 26 + t.h} Q 176 ${t.y - 18 + t.h} ${120 + i * 1.1} ${t.y + t.h} Z`}
+                fill="url(#ps-c3-tape)"
+              />
+              <path
+                className="ps-c3-tape-hi"
+                d={`M${120 + i * 1.1} ${t.y} Q 176 ${t.y - 18} ${234 - i * 0.9} ${t.y - 26}`}
+              />
+            </g>
+          ))}
+        </g>
+
+        {/* ── THE SHOOTS. Proof the graft TOOK — new growth fed by old roots.
+              Two branches, geometric leaf blades. ── */}
+        <g className="ps-c3-shoots">
+          <path className="ps-c3-shoot" d="M176 124 C170 100 156 84 140 68" />
+          <path className="ps-c3-shoot" d="M186 122 C196 100 210 88 226 76" />
+          {C3_LEAVES.map((lf, i) => (
+            /* TWO NESTED GROUPS, DELIBERATELY. A CSS `transform` on an SVG
+               element REPLACES its `transform` attribute rather than composing
+               with it — putting the reveal's scale() on the same <g> that
+               carries translate/rotate silently threw every leaf to the SVG
+               origin and out of frame. The outer <g> owns placement as an
+               attribute; the inner one owns the animated scale in CSS. */
+            <g
+              key={`${lf.ax}-${lf.ay}`}
+              transform={`translate(${lf.ax} ${lf.ay}) rotate(${lf.a})`}
+            >
+              <g className="ps-c3-leafgrp" style={{ "--i": i } as React.CSSProperties}>
+                {/* the stem. Without it the blade floats free of the branch. */}
+                <path className="ps-c3-stem" d={`M0 0 L ${lf.l * 0.3} 0`} />
+                <path
+                  className="ps-c3-leaf"
+                  d={c3Leaf(lf.l)}
+                  transform={`translate(${lf.l * 0.3} 0)`}
+                />
+              </g>
+            </g>
+          ))}
+        </g>
       </svg>
     </div>
   );
