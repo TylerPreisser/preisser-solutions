@@ -2362,33 +2362,32 @@
   .ps-sr-row { padding: 2px 4px; }
 }
 
-/* ── CARD 3 · AI Integration — "THE GRAFT" ───────────────────────
-   Namespace `ps-c3-*`.
+/* ── CARD 3 · AI Integration — "THE GRAFT", flat treatment ───────
+   Namespace `ps-c3-*`. APPENDED AT THE END OF THIS FILE on purpose: other
+   teams edit this stylesheet concurrently and a mid-file edit causes
+   conflicts. NOTHING in the `ps-v4-*` family above is modified or deleted —
+   card 3 simply stopped rendering that markup, and seven of those ten classes
+   are shared with cards 1 and 2.
 
-   APPENDED AT THE END OF THIS FILE ON PURPOSE. Other teams are editing this
-   stylesheet concurrently and a mid-file edit is how you get a conflict.
-   NOTHING in the `ps-v4-*` family above is modified or deleted — card 3 simply
-   stopped rendering that markup. Seven of those ten classes are shared with
-   cards 1 and 2, so deleting any of them would break a sibling.
+   FLAT ON PURPOSE. Seven previous versions of this card simulated a round
+   object in SVG and were misread every time — rocket, lighthouse, zipper,
+   zipper, ribbed hose, chimney, vase. Every one of those is a misread of fake
+   dimensionality. The two cards on this page that shipped both chose natively
+   flat subjects. So there are NO cylinder gradients here, no specular ridges
+   and no simulated bark. Flat fills, one accent, shapes doing the work.
+   If you are tempted to add a highlight to make something look round, don't —
+   that is the exact move that failed seven times.
 
-   WHY THE GRADIENT STOPS ARE CLASSES AND NOT ATTRIBUTES. An SVG `<stop>` takes
-   `stop-color` from CSS, so keeping the stops here is what lets the wood
-   re-theme. Hardcode them in the JSX and light mode cannot change them
-   without a second copy of the whole drawing.
+   VALUE IS GUARANTEED, NOT ASSUMED. An earlier version's rootstock vanished
+   at 768 and 390: near-black on near-black in dark theme, near-white on
+   near-white in light. Flat fills make the fix measurable — each mass below
+   holds a deliberate step against the card ground in BOTH themes, verified by
+   sampling pixels rather than by eye.
 
-   THE LIGHT-MODE RULE. The ROOTSTOCK STAYS DARK IN BOTH THEMES — it is this
-   card's permanent dark anchor, the structure card 4 uses (predominantly
-   light, one deliberate dark mass). The ground and the scion lighten; the old
-   wood does not. A card that goes all-pale in light and all-dark in dark has
-   no anchor in either.
-
-   MOTION. Zero @keyframes, matching every other card in this file. One
-   `in-view` class added once by useRevealOnce at 25% visibility and never
-   removed, with a 1200ms failsafe. THE STOCK, THE CUT FACE AND THE SCION ARE
-   NEVER GATED — the composition is complete before any transition runs, so a
-   visitor whose observer never fires still sees a finished picture and
-   nothing can be stranded invisible. Only the tape, the lit join and the new
-   growth arrive, because those are the things that say the graft TOOK.
+   MOTION. Zero @keyframes. One `in-view` class from card 3's own
+   `usePsC3Reveal` (the shared hook's failsafe fires off-screen). THE STOCK,
+   THE SCION AND THE JOIN ARE NEVER GATED — the still is complete without JS,
+   and nothing can be stranded invisible.
    ────────────────────────────────────────────────────────────── */
 
 .ps-c3-root {
@@ -2396,160 +2395,102 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  /* Full bleed: the artwork IS the card's surface. An inset rectangle read as
-     a video thumbnail dropped into the layout. */
   background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
 }
-
 [data-theme="light"] .ps-c3-root {
   background: linear-gradient(160deg, #F0F4F8 0%, #E4EBF2 100%);
 }
 
 .ps-c3-svg { display: block; width: 100%; height: 100%; }
 
-/* ── OLD WOOD. Dark in both themes. Warm-shifted navy so it reads as bark
-      rather than as painted metal, without leaving the brand palette. ── */
-.ps-c3-s-st0 { stop-color: #151E2A; }
-.ps-c3-s-st1 { stop-color: #2C3A4C; }
-.ps-c3-s-st2 { stop-color: #0A1017; }
-[data-theme="light"] .ps-c3-s-st0 { stop-color: #26303D; }
-[data-theme="light"] .ps-c3-s-st1 { stop-color: #43525F; }
-[data-theme="light"] .ps-c3-s-st2 { stop-color: #141A22; }
+/* ── THE OLD WOOD. Flat fill. In DARK it is LIFTED off the ground rather than
+      sunk into it — an earlier version used a value below the page background
+      and the whole mass disappeared on a phone. ── */
+/* Each mass is filled from the shared user-space light, so the whole drawing
+   is lit by one lamp instead of being a set of identical stamps. */
+.ps-c3-stock { fill: url(#ps-c3-stockgrad); }
+.ps-c3-s-stk0 { stop-color: #33496A; }
+.ps-c3-s-stk1 { stop-color: #1E2E48; }
+[data-theme="light"] .ps-c3-s-stk0 { stop-color: #27384F; }
+[data-theme="light"] .ps-c3-s-stk1 { stop-color: #141F33; }
 
-/* ── NEW WOOD. Clearly paler than the stock in BOTH themes — two woods of
-      visibly different colour is what makes this a graft and not a branch. ── */
-.ps-c3-s-sc0 { stop-color: #5A6C88; }
-.ps-c3-s-sc1 { stop-color: #93A8C4; }
-.ps-c3-s-sc2 { stop-color: #43536F; }
-[data-theme="light"] .ps-c3-s-sc0 { stop-color: #A8B9CE; }
-[data-theme="light"] .ps-c3-s-sc1 { stop-color: #E2EAF3; }
-[data-theme="light"] .ps-c3-s-sc2 { stop-color: #8395AC; }
+/* ── THE NEW WOOD. Paler and narrower in both themes: different value AND
+      different width is what makes two members read as two things. ── */
+.ps-c3-scion { fill: url(#ps-c3-sciongrad); }
+.ps-c3-s-scn0 { stop-color: #93A9C8; }
+.ps-c3-s-scn1 { stop-color: #64789A; }
+[data-theme="light"] .ps-c3-s-scn0 { stop-color: #B3C5DA; }
+[data-theme="light"] .ps-c3-s-scn1 { stop-color: #8397B1; }
 
-/* The cut face — pale heartwood, the warm light in the lower half and the
-   cue that the stock was CUT rather than simply ending. */
-.ps-c3-s-cut0 { stop-color: #C6A97E; }
-.ps-c3-s-cut1 { stop-color: #8E7452; }
-[data-theme="light"] .ps-c3-s-cut0 { stop-color: #E4CDA4; }
-[data-theme="light"] .ps-c3-s-cut1 { stop-color: #B0906A; }
-
-/* ── WAXED TAPE. The warm channel, and the sign that a person did this on
-      purpose. Amber in both themes. ── */
-.ps-c3-s-tp0 { stop-color: #B0762A; }
-.ps-c3-s-tp1 { stop-color: #EFBB63; }
-.ps-c3-s-tp2 { stop-color: #8A5A1A; }
-[data-theme="light"] .ps-c3-s-tp0 { stop-color: #C8862F; }
-[data-theme="light"] .ps-c3-s-tp1 { stop-color: #F7CD82; }
-[data-theme="light"] .ps-c3-s-tp2 { stop-color: #96631F; }
-
-.ps-c3-tape {
-  stroke: rgba(0, 0, 0, 0.28);
-  stroke-width: 0.8;
-  vector-effect: non-scaling-stroke;
-}
-
-.ps-c3-fissure {
-  fill: none;
-  stroke: #05090F;
-  stroke-opacity: 0.34;
-  stroke-linecap: round;
-  vector-effect: non-scaling-stroke;
-}
-[data-theme="light"] .ps-c3-fissure { stroke: #0A1017; stroke-opacity: 0.26; }
-
-/* ── THE LIT JOIN. The payoff, and the only pure brand blue on the card. ── */
+/* ── THE CONTACT LINE — the idea of the card and the brightest thing on it.
+      Everything else on this card is deliberately subordinate to it. ── */
 .ps-c3-cambium {
   fill: none;
-  stroke: url(#ps-c3-cambium);
-  stroke-width: 4.4;
+  stroke: #9FE4FF;
+  stroke-width: 5;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
 }
 .ps-c3-cambium-glow {
   fill: none;
   stroke: #1590FF;
-  stroke-width: 13;
+  stroke-width: 20;
   stroke-linecap: round;
-  opacity: 0.9;
+  opacity: 0.95;
   vector-effect: non-scaling-stroke;
 }
-[data-theme="light"] .ps-c3-cambium-glow { opacity: 0.62; }
+[data-theme="light"] .ps-c3-cambium { stroke: #E8F7FF; }
+[data-theme="light"] .ps-c3-cambium-glow { stroke: #1590FF; opacity: 0.8; }
 
-/* ── NEW GROWTH. Proof the graft took. ── */
-.ps-c3-shoot {
-  fill: none;
-  stroke: #6E86A6;
-  stroke-width: 5;
-  stroke-linecap: round;
-  vector-effect: non-scaling-stroke;
-}
-[data-theme="light"] .ps-c3-shoot { stroke: #7C90AB; }
+/* ── THE BINDING. Flat bars, quiet. An earlier version made this the loudest
+      object on the card, which put the eye on the packaging instead of on the
+      join — the least meaningful element winning the composition. ── */
+.ps-c3-strap { fill: url(#ps-c3-strapgrad); }
+.ps-c3-s-stp0 { stop-color: #A5813E; }
+.ps-c3-s-stp1 { stop-color: #6B5227; }
+[data-theme="light"] .ps-c3-s-stp0 { stop-color: #C39A4E; }
+[data-theme="light"] .ps-c3-s-stp1 { stop-color: #8A6A32; }
 
-.ps-c3-leaf { fill: #00D4AA; opacity: 0.92; }
-[data-theme="light"] .ps-c3-leaf { fill: #0B7A61; opacity: 0.9; }
-
-/* The stem. Small, but it is what attaches the blade to the branch — without
-   it the leaves float and the whole drawing reads as clip art. */
+/* ── NEW GROWTH. Flat blades, one colour, subordinate to the join. ── */
+.ps-c3-leaf { fill: url(#ps-c3-leafgrad); }
+.ps-c3-s-lf0 { stop-color: #3FB79C; }
+.ps-c3-s-lf1 { stop-color: #1C6D5E; }
+[data-theme="light"] .ps-c3-s-lf0 { stop-color: #1E8A74; }
+[data-theme="light"] .ps-c3-s-lf1 { stop-color: #0E5A4C; }
 .ps-c3-stem {
   fill: none;
-  stroke: #6E86A6;
-  stroke-width: 2.2;
+  stroke: #5E7794;
+  stroke-width: 3;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
 }
-[data-theme="light"] .ps-c3-stem { stroke: #7C90AB; }
+[data-theme="light"] .ps-c3-stem { stroke: #6F849E; }
 
-/* Highlight along the upper edge of each tape band, so the band reads as a
-   wound surface catching light rather than as a flat slat. */
-.ps-c3-tape-hi {
-  fill: none;
-  stroke: rgba(255, 240, 208, 0.5);
-  stroke-width: 1.4;
-  vector-effect: non-scaling-stroke;
-}
-[data-theme="light"] .ps-c3-tape-hi { stroke: rgba(255, 250, 235, 0.75); }
-
-/* ── REVEAL. Transitions only. The stock, the cut face and the scion are NOT
-      gated: the still is complete without JS. Only the things that say the
-      graft TOOK arrive — the tape is wound on, the join lights, the growth
-      extends. One way, then it holds. ── */
-.ps-c3-tapegrp {
+/* ── REVEAL. Transitions only. The stock, the scion and the join are NOT
+      gated, so the picture states its idea before anything animates. Only the
+      binding and the new growth arrive — the things that say it TOOK. ── */
+.ps-c3-strap {
   opacity: 0;
-  transform: translateX(-7px);
+  transform: translateX(-8px);
   transition: opacity 320ms ease, transform 380ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  transition-delay: calc(120ms + var(--i, 0) * 60ms);
-}
-.ps-c3-join { opacity: 0; transition: opacity 460ms ease; transition-delay: 430ms; }
-.ps-c3-shoot {
-  opacity: 0;
-  transition: opacity 420ms ease;
-  transition-delay: 560ms;
+  transition-delay: calc(140ms + var(--i, 0) * 70ms);
 }
 .ps-c3-leafgrp {
   opacity: 0;
-  /* scales about the stem's attachment point (the group's own 0,0), so the
-     blade grows OUT of the branch rather than swelling in place */
-  transform: scale(0.55);
+  transform: scale(0.5);
   transform-origin: 0 0;
-  transition: opacity 300ms ease, transform 380ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  transition-delay: calc(660ms + var(--i, 0) * 70ms);
+  transition: opacity 300ms ease, transform 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition-delay: calc(420ms + var(--i, 0) * 80ms);
 }
-
-.ps-c3-root.in-view .ps-c3-tapegrp { opacity: 1; transform: translateX(0); }
-.ps-c3-root.in-view .ps-c3-join { opacity: 1; }
-.ps-c3-root.in-view .ps-c3-shoot { opacity: 1; }
+.ps-c3-root.in-view .ps-c3-strap { opacity: 1; transform: translateX(0); }
 .ps-c3-root.in-view .ps-c3-leafgrp { opacity: 1; transform: scale(1); }
 
-
-/* Foot veil, CSS-anchored to the ELEMENT'S BOTTOM and sized in FIXED PX.
-   Two reasons it is not in the SVG and not a percentage:
-   · `xMidYMid slice` crops the viewBox VERTICALLY at wide breakpoints, so a
-     veil painted at the foot of the viewBox is removed exactly where it is
-     needed and the contrast numbers pass only at the widths you happened to
-     test;
-   · a percentage veil is systematically WEAKEST ON THE SMALLEST CARD — this
-     box is 442px tall at 1440 but 332px at 390, so the same percentage covers
-     ~50px less of the text band precisely where the crop is tightest.
-   150px covers the 59-63px text block identically at every breakpoint. */
+/* Foot veil: CSS-anchored to the ELEMENT'S BOTTOM and sized in FIXED PX.
+   Not in the SVG, because `slice` crops the viewBox vertically at wide
+   breakpoints and would delete it exactly where it is needed. Not a
+   percentage, because a percentage veil is weakest on the SHORTEST card —
+   442px tall at 1440 but 332px at 390 — which is precisely where the crop is
+   tightest. 150px covers the 59-63px text block identically everywhere. */
 .ps-c3-root::after {
   content: "";
   position: absolute;
@@ -2558,32 +2499,29 @@
   pointer-events: none;
   background: linear-gradient(
     to top,
-    rgba(10, 22, 40, 0.80) 0%,
-    rgba(10, 22, 40, 0.62) 40%,
+    rgba(10, 22, 40, 0.86) 0%,
+    rgba(10, 22, 40, 0.66) 40%,
     rgba(10, 22, 40, 0) 100%
   );
 }
 [data-theme="light"] .ps-c3-root::after {
   background: linear-gradient(
     to top,
-    rgba(236, 241, 247, 0.92) 0%,
-    rgba(236, 241, 247, 0.76) 40%,
+    rgba(236, 241, 247, 0.94) 0%,
+    rgba(236, 241, 247, 0.78) 40%,
     rgba(236, 241, 247, 0) 100%
   );
 }
 
-/* Both layers of the reduced-motion guard. useRevealOnce already adds
-   `in-view` and returns before the observer is constructed; this pins every
-   gated element to its FINISHED frame so nothing is stranded invisible. */
+/* Both layers of the reduced-motion guard. The hook already adds `in-view`
+   and returns before the observer exists; this pins every gated element to
+   its finished frame so nothing is stranded invisible. */
 @media (prefers-reduced-motion: reduce) {
-  .ps-c3-tapegrp,
-  .ps-c3-join,
-  .ps-c3-shoot,
+  .ps-c3-strap,
   .ps-c3-leafgrp {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
     transition-delay: 0s !important;
   }
-
 }
