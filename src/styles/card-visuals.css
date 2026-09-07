@@ -2361,3 +2361,265 @@
   .ps-sr-ai-line { height: 3px; }
   .ps-sr-row { padding: 2px 4px; }
 }
+
+/* ═════════════════════════════════════════════════════════════
+   CARD 5 — FILINGS HALO  (`ps-c5-*`)
+
+   Appended at the END of this stylesheet on purpose: three teams are
+   editing card-visuals.css concurrently and appending is the only edit
+   that cannot conflict with a change above it.
+
+   NOTHING IS DELETED HERE. The previous card-5 artwork's `.ps-sr-*`
+   rules (from :1844) are left exactly as they were and are simply no
+   longer rendered by SearchVisual. Three of them are GROUPED with
+   `.ps-cb-*` selectors that card 4's sibling still depends on
+   (:2141, :2148, and the prefers-reduced-motion block at :2213), so
+   deleting them wholesale would break another card. The single
+   cleanup sweep is the coordinator's and happens once, at the end.
+   ───────────────────────────────────────────────────────────── */
+
+.ps-c5-root {
+  /* FULL BLEED — house treatment for the conceptual cards. `.ps-bento-
+     card__content-inner > *` (globals.css:1901) already makes this
+     absolute at inset:0, so the ONLY thing that was insetting the
+     artwork was this element's own padding. Removing it lets the field
+     run to all four card edges and read as a crop of something larger
+     rather than an illustration floating on a panel.
+
+     Safe because the title carries its own scrim: `.ps-bento-card__text`
+     is z-index 2 with a `linear-gradient(to top, rgba(10,22,40,.88) ...)`
+     (globals.css:1965+), so type stays legible over live artwork. The
+     32px expand icon at top:16/right:16 has its own frosted disc. Both
+     verified from renders, not assumed. */
+  padding: 0;
+  overflow: hidden;
+  background: linear-gradient(160deg, #0a1628 0%, #0c1e3a 100%);
+
+  /* DARK THEME: near-black navy ground, so the filings must be LIGHTER
+     than it or they vanish. Figure is light, ground is dark. */
+  --c5-t0: #27456a;
+  --c5-t1: #365f8c;
+  --c5-t2: #4a8ad0;
+  --c5-t3: #1590ff;
+}
+
+/* LIGHT THEME — and this is a genuinely DIFFERENT image, not the dark
+   one tinted. Card 4 in light mode is predominantly LIGHT with one
+   dark band; it does not go dark edge-to-edge. So here the GROUND
+   stays pale and the DASHES become the dark figure on it: dark marks
+   on a pale field, denser and bluer toward the pole. That is also what
+   iron filings on paper actually look like.
+
+   v1 failed this: its light dashes were too pale and too sparse to
+   mass into anything, and the card measured 90.97% near-white — WORSE
+   than the 83.34% of the mockup it replaced. */
+[data-theme="light"] .ps-c5-root {
+  /* Very slightly deeper than card 4's #F0F4F8 -> #E8EDF3. Card 4 gets
+     its contrast from a big white browser panel sitting ON the ground;
+     this card has no panel, so the ground itself has to give the
+     filings something to sit against. Still unmistakably a light card. */
+  background: linear-gradient(160deg, #eaeff5 0%, #dee6ef 100%);
+
+  /* Dark FIGURE on a pale ground. v3's light dashes were too pale to
+     hold their own beside four neighbours built from solid panels —
+     in the row render card 5 read as washed out. These are deep navy. */
+  --c5-t0: #35507a;
+  --c5-t1: #1f3a63;
+  --c5-t2: #0e2340;
+  --c5-t3: #0c6fc9; /* NOT #1590FF: 3.25:1 on a light ground fails AA */
+}
+
+.ps-c5-svg {
+  /* Full bleed: fills the CARD box, not the content box. The height caps
+     that used to live here existed to clear the bottom-anchored title;
+     with bleed the field passes UNDER the title and the title's own
+     scrim handles legibility, so the caps are gone rather than tuned. */
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: hidden;
+}
+
+/* BOTTOM FADE — required by the full bleed, LIGHT THEME ONLY.
+
+   Bleeding the field to the card's bottom edge put dark navy filings
+   directly behind the title, and in light mode the type is ALSO dark
+   navy: read on the row screenshot, dashes ran straight through
+   "AD MANAGEMENT". The shared `.ps-bento-card__text` scrim is
+   `rgba(10,22,40,...)` — a DARK scrim, which does its job in dark mode
+   and does nothing for dark-on-light.
+
+   Scoped to `.ps-c5-root` rather than fixing the shared scrim: four
+   other cards depend on that rule and three teams are editing this
+   stylesheet concurrently. Sits above the field and below the title,
+   which is z-index 2 in its own stacking context (globals.css:1965).
+
+   Dark mode deliberately has none — the existing scrim already
+   resolves white type over the field, verified on the dark render. */
+/* FOOT VEIL — CSS, anchored to the element's BOTTOM, in FIXED PIXELS.
+   Two independent ways a veil fails here, both avoided deliberately:
+
+   1. IN SVG SPACE IT GETS CROPPED. This veil WAS an SVG gradient, and
+      `preserveAspectRatio="slice"` scales to COVER — at 768 the card is
+      720x380, slice scales by 2.0, so only the middle 190 of the
+      320-unit viewBox paints and the veil's bottom never appeared.
+      Measured worst-case title contrast there was 5.39:1, the weakest
+      of any width, for exactly that reason.
+
+   2. AS A PERCENTAGE it is weakest on the SMALLEST card — the same
+      percentage covers fewer pixels of the text band precisely where
+      the crop is tightest. A fixed 150px covers the 59-84px title block
+      identically at every breakpoint.
+
+   Held SOLID to 40% before ramping out, so the whole text block sits on
+   flat ground rather than mid-gradient.
+
+   Card-scoped on purpose: `.ps-bento-card__text`'s scrim is a bento-wide
+   component all five cards share, and it is a DARK scrim — useless for
+   dark-navy type on a light ground. */
+.ps-c5-root::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 150px;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(10, 22, 40, 0.72) 0%,
+    rgba(10, 22, 40, 0.72) 40%,
+    rgba(10, 22, 40, 0.36) 72%,
+    rgba(10, 22, 40, 0) 100%
+  );
+}
+
+/* Never `transparent` as the end stop: it is rgba(0,0,0,0), and engines
+   that interpolate non-premultiplied drag the ramp through grey. Always
+   the same colour at zero alpha. */
+[data-theme="light"] .ps-c5-root::after {
+  background: linear-gradient(
+    to top,
+    rgba(234, 239, 245, 0.82) 0%,
+    rgba(234, 239, 245, 0.82) 40%,
+    rgba(234, 239, 245, 0.46) 72%,
+    rgba(234, 239, 245, 0) 100%
+  );
+}
+
+.ps-c5-dash--t0 { fill: var(--c5-t0); }
+.ps-c5-dash--t1 { fill: var(--c5-t1); }
+.ps-c5-dash--t2 { fill: var(--c5-t2); }
+.ps-c5-dash--t3 { fill: var(--c5-t3); }
+
+.ps-c5-dash {
+  /* Without transform-box/transform-origin a CSS rotate on an SVG
+     child pivots about the SVG ORIGIN and throws the dash off-frame. */
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(var(--c5-r0));
+  opacity: 0;
+  transition:
+    transform 380ms cubic-bezier(0.165, 0.84, 0.44, 1),
+    opacity 380ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition-delay: calc(460ms + var(--c5-i) * 90ms);
+}
+
+/* One sweep: the filings fade in scattered, rotate into alignment, and
+   STOP. No @keyframes anywhere in this card by design — the owner has
+   rejected looping, keyframe-heavy motion, and card 5's one-shot
+   timing is the one thing about it never complained about. Resolves by
+   460 + 4*90 + 380 = 1180ms. */
+.ps-c5-root.in-view .ps-c5-dash {
+  transform: rotate(var(--c5-r1));
+  opacity: var(--c5-o);
+}
+
+/* Reduced motion is handled TWICE — useRevealOnce short-circuits in JS
+   and adds .in-view immediately, and this pins the final state. Never
+   leave an element permanently invisible. */
+@media (prefers-reduced-motion: reduce) {
+  .ps-c5-dash {
+    opacity: var(--c5-o, 1) !important;
+    transform: rotate(var(--c5-r1)) !important;
+    transition: none !important;
+  }
+}
+
+/* NO responsive height caps. They existed to clear the bottom-anchored
+   title while the artwork was inset; with FULL BLEED the field runs
+   under the title by design and the foot veil above handles legibility.
+   Re-adding a cap here would un-bleed the card on every phone. */
+
+/* ── THE OCCUPIED FOCAL POINT ────────────────────────────────────
+   Both adversaries rejected the empty void independently. The
+   executive: "absence reads as absence" — a homepage gets two seconds,
+   not a paragraph. The critic: the centre was "a ~12px comma-shaped
+   curl that reads as the spiral running out", gone entirely at 390px,
+   and the whole card had "no mass — heaviest mark is a 3px dash".
+
+   So the centre is now occupied and carries real weight: a solid disc
+   with a ring around it, in brand blue. It is the client's business —
+   the one lit thing the whole field points at. It lands LAST in the
+   reveal, after the filings have aligned, so the picture reads as
+   "everything turned toward you" rather than "here is a dot with
+   decoration around it". */
+.ps-c5-halo {
+  fill: none;
+  stroke: #1590ff;
+  stroke-width: 1.6;
+  /* BROKEN, not continuous. A solid brand-blue dot inside a solid
+     concentric ring on a pale ground is the Google Maps "current
+     location" puck almost exactly — and map pins were explicitly banned
+     from this card. Rendering the ring as arcs keeps the emission read
+     and removes the Maps signature. Strongest risk was light mode at
+     390px, where the disc is proportionally largest. */
+  stroke-dasharray: 4.2 3.4;
+  stroke-linecap: round;
+  opacity: 0;
+  transform: scale(0.55);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    opacity 400ms cubic-bezier(0.165, 0.84, 0.44, 1),
+    transform 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition-delay: 940ms;
+}
+
+.ps-c5-core {
+  fill: #1590ff;
+  opacity: 0;
+  transform: scale(0.4);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    opacity 360ms cubic-bezier(0.165, 0.84, 0.44, 1),
+    transform 360ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition-delay: 900ms;
+}
+
+/* #1590FF is 3.25:1 on a light ground and fails AA; #0C6FC9 is the
+   companion that passes. This is the one saturated mark on the card,
+   so it is the one that has to be right. */
+[data-theme="light"] .ps-c5-core { fill: #0c6fc9; }
+[data-theme="light"] .ps-c5-halo { stroke: #0c6fc9; }
+
+.ps-c5-root.in-view .ps-c5-core,
+.ps-c5-root.in-view .ps-c5-halo {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ps-c5-root.in-view .ps-c5-halo { opacity: 0.55; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ps-c5-core,
+  .ps-c5-halo {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .ps-c5-halo { opacity: 0.55 !important; }
+}

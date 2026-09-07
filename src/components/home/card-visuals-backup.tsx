@@ -779,11 +779,222 @@ export function CustomBuildVisual() {
      the citation chip arriving, which illustrates the capability
      ("get cited") without asserting a result.
    ───────────────────────────────────────────────────────────── */
-export function SearchVisual() {
-  const containerRef = useRef<HTMLDivElement>(null);
+/* ═════════════════════════════════════════════════════════════
+   CARD 5 — "SEO. AI VISIBILITY. AD MANAGEMENT."
+   FILINGS HALO.
+
+   WHAT THIS DRAWS, and why it is not the thing that was rejected
+   three times: a dense field of iron filings, every one of them turned
+   to point at a single lit mark at the centre. EVERYTHING IS POINTING
+   AT YOU. That is what being found looks like.
+
+   THE CENTRE IS OCCUPIED, AND THAT REVERSES THE ORIGINAL BRIEF.
+   This card was first built with the focal point drawn as *nothing* —
+   an empty void the field organised itself around. It was elegant and
+   it failed, for a reason worth keeping on the record. The business
+   review, judging from renders: "the argument that the void means 'the
+   thing everyone points at' is a paragraph of explanation, and a
+   homepage visitor gets two seconds, not a paragraph. ABSENCE READS AS
+   ABSENCE. A firm charging real money to get you found should not
+   illustrate that service with a hole." In the five-card row it was the
+   only card showing nothing, and read as the box that ran out of ideas.
+
+   So the void got an occupant: one bright mark the whole field bends
+   toward, standing for the client's business. Same field, same craft,
+   legible claim. Do not empty it again.
+
+   Also gone: a soft radial bloom that sat on the centre in v1. It made
+   the pole the brightest thing on the card by accident rather than by
+   decision. The solid mark now does that job deliberately.
+
+   The previous occupant of this component was a SERP mockup — search
+   box, "AI Overview" block, result rows, an Ad chip, map pins. Its CSS
+   (`.ps-sr-*`, card-visuals.css:1844+) is deliberately LEFT IN PLACE
+   and simply no longer rendered; three teams are editing that
+   stylesheet concurrently and a single cleanup sweep happens at the
+   end, owned by the coordinator. Do not strip it here.
+   ───────────────────────────────────────────────────────────── */
+
+/* Deterministic PRNG (mulberry32). This MUST NOT be Math.random().
+   The component is server-rendered by Next.js, and a field generated
+   with different numbers on the server than in the browser is a React
+   hydration mismatch — which produces no error in dev and a differently
+   drawn graphic on every request in production. Seeded once at module
+   scope so both sides emit byte-identical markup. */
+function psC5Rng(seed: number) {
+  let a = seed >>> 0;
+  return function () {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* Drawn at 360x240 (1.50), which is the measured desktop safe-paint
+   aspect (376x259 = 1.45). preserveAspectRatio keeps it centred and
+   uncropped as the card swings 1.12 -> 2.99 across breakpoints, so the
+   composition never bleeds to an edge — the edges move. */
+const PS_C5_W = 360;
+const PS_C5_H = 320;
+
+type PsC5Dash = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  r0: number;
+  r1: number;
+  o: number;
+  t: number;
+  i: number;
+};
+
+const PS_C5_DASHES: PsC5Dash[] = (() => {
+  const rand = psC5Rng(20260907);
+  const out: PsC5Dash[] = [];
+  /* DELIBERATELY LARGER THAN THE 360x240 viewBox (half-extents 180x120).
+     The field is generated well beyond the frame so dashes run OFF all
+     four sides. A field that stops inside the frame with a tidy margin
+     reads as a decal or a logo; card 4 fills its box and lets its phone
+     overhang the edge. Combined with preserveAspectRatio="slice" below,
+     the picture always covers the card edge-to-edge. */
+  const RX = 215;
+  const RY = 190;
+  const RINGS = 13;
+  /* The void. Small and precise — "a small clean void the arcs bend
+     around". v2 had this at 0.21 and the empty middle read as a hole in
+     the picture rather than as a point everything is organised about. */
+  const INNER = 0.085;
+
+  for (let ring = 0; ring < RINGS; ring++) {
+    const f = INNER + (1 - INNER) * (ring / (RINGS - 1));
+    /* Density rises with radius so the field reads as an even mass
+       rather than a bullseye. v1 used 220 dashes over this area and
+       looked timid and washy; this is ~460. */
+    const count = Math.round(10 + 44 * f);
+    for (let k = 0; k < count; k++) {
+      /* HEAVY jitter, on purpose. With tight jitter the rings stayed
+         visible as concentric ridges and the whole thing read as a
+         FINGERPRINT — whorled ridges around a centre. Scattering the
+         radius hard breaks the ridge regularity so it reads as a
+         settled field of loose filings instead of a printed whorl. */
+      const step = (Math.PI * 2) / count;
+      const a = k * step + (rand() - 0.5) * step * 1.25;
+      const jr = 1 + (rand() - 0.5) * 0.26;
+      const x = Math.cos(a) * RX * f * jr;
+      const y = Math.sin(a) * RY * f * jr;
+      const r2 = x * x + y * y;
+      if (r2 < 1) continue;
+
+      /* RADIAL CONVERGENCE on one marked point.
+
+         Two earlier geometries were built and both were rejected from
+         renders, for reasons worth keeping:
+
+         - A true magnetic DIPOLE (Bx = 3xy/r^2, By = 3y^2/r^2 - 1).
+           Physically correct and beautiful, but a dipole has TWO lobes,
+           so the picture had two focal points. This card is about ONE
+           thing.
+         - A tangential VORTEX (tangent leaned 22 degrees inward). Read
+           as a whirlpool by one reviewer and a fingerprint by two others
+           — and, fatally, concentric rotation means things are pulled IN
+           AND SWALLOWED. That is the opposite of the metaphor. Rotation
+           reads as a drain; convergence reads as being found.
+
+         So the dashes now lie ALONG the radius, leaned only 12 degrees
+         so the field breathes rather than snapping into a rigid
+         starburst. Everything in the picture points at one place, and
+         that place is occupied and lit. "Everything turned toward you"
+         is the sentence the card has to say. */
+      const r1 = (Math.atan2(y, x) * 180) / Math.PI + 12;
+
+      /* Softer falloff than v1, which faded the outer sixth of the
+         field to literally zero and threw away the frame. The field
+         now thins toward the edge but never disappears mid-picture. */
+      let o = 1 - 0.22 * f;
+      if (f > 0.88) o *= Math.max(0.48, 1 - (f - 0.88) / 0.24);
+
+      /* LENGTH TAPERS WITH RADIUS, and the direction of the taper is the
+         whole argument of the picture.
+
+         Uniform-length dashes read as a BURST radiating outward — a
+         starburst, a dandelion clock, fireworks — because nothing tells
+         the eye which way the flow goes. That is the opposite claim from
+         the one this card makes.
+
+         So: LONG and FAINT at the rim, SHORT and DENSE toward the centre.
+         That is what a converging flow looks like — marks compressing as
+         they arrive, the way motion trails shorten when something slows
+         into a stop. The still image now states "everything is pointing
+         at you" on its own, without the animation. That matters: a
+         screenshot, a slow connection and `prefers-reduced-motion` all
+         get the still and nothing else.
+
+         The random component stays, because identical marks in even arcs
+         are exactly what a printed fingerprint ridge looks like. */
+      const w = +((2.6 + 6.0 * f) * (0.82 + rand() * 0.42)).toFixed(2);
+      const h = +(1.7 + rand() * 0.9).toFixed(2);
+
+      /* Colour tier: blue lives near the pole ONLY, outer field stays
+         navy. Mass first, chroma second — card 4 is well under 5%
+         strongly-coloured and all of it is point chroma. */
+      const t = f < 0.34 ? 3 : f < 0.52 ? 2 : f < 0.74 ? 1 : 0;
+
+      /* Stagger band, centre outward. Kept to 5 bands so the whole
+         reveal resolves by ~1180ms rather than running for 40s, which
+         is what a per-element index would do with 460 dashes. */
+      const i = Math.min(4, Math.floor((ring * 5) / RINGS));
+
+      out.push({
+        x: +(PS_C5_W / 2 + x).toFixed(2),
+        y: +(PS_C5_H / 2 + y).toFixed(2),
+        w,
+        h,
+        r0: +(r1 + (rand() * 2 - 1) * 75).toFixed(1),
+        r1: +r1.toFixed(1),
+        o: +o.toFixed(3),
+        t,
+        i,
+      });
+    }
+  }
+  return out;
+})();
+
+/* CARD-SCOPED REVEAL. Deliberately NOT the shared `useRevealOnce`.
+
+   THE BUG IN THE SHARED HOOK, reproduced on this card before it was
+   fixed (`c5-tools/revealtiming.js`): its failsafe is an unconditional
+   `setTimeout(..., 1200)`, so `.in-view` lands whether or not the card
+   is on screen. Card 5 sits in the BOTTOM row. Measured at 1440x900:
+
+     t=400ms   onScreen=false  inView=false  cardTop=1641  dashOpacity=0
+     t=1600ms  onScreen=false  inView=TRUE   cardTop=1641  dashOpacity=0
+     t=3600ms  onScreen=false  inView=TRUE   cardTop=1641  dashOpacity=0.981
+     after scrolling to it:    inView=true                 dashOpacity=0.981
+
+   The choreography ran to completion 1641px below the fold. Every real
+   visitor arrived at the settled still, so the reveal had never actually
+   been seen. That matters more here than on the other cards, because the
+   sequence IS the idea: the field organises, and then the subject
+   arrives — the disc lands last, on purpose.
+
+   A viewport sweep cannot catch this. `in-view` is true and nothing is
+   permanently invisible; it fires, just in the wrong place.
+
+   THE FIX: the safety net may never pre-fire below the fold. It waits
+   8s, then reveals ONLY if the element is actually on screen, and
+   otherwise re-checks. So the art can still never be left permanently
+   invisible if the observer fails, but it also cannot burn its entrance
+   while nobody is looking.
+
+   `useRevealOnce` is NOT modified — cards 2 and 3 depend on it. */
+function usePsC5Reveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
 
   useEffect(() => {
-    const el = containerRef.current;
+    const el = ref.current;
     if (!el) return;
 
     const prefersReduced =
@@ -795,104 +1006,112 @@ export function SearchVisual() {
       return;
     }
 
+    let done = false;
+    let timer = 0;
+
+    const show = () => {
+      if (done) return;
+      done = true;
+      el.classList.add("in-view");
+      observer.disconnect();
+      window.clearTimeout(timer);
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            el.classList.add("in-view");
-            observer.unobserve(el);
-          }
+          if (entry.isIntersecting) show();
         });
       },
-      { threshold: 0.25 }
+      { threshold: 0.3 }
     );
-
     observer.observe(el);
-    return () => observer.disconnect();
+
+    /* Safety net. Long, and gated on actually being visible. */
+    const tick = () => {
+      if (done) return;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || 0;
+      if (r.top < vh && r.bottom > 0) show();
+      else timer = window.setTimeout(tick, 400);
+    };
+    timer = window.setTimeout(tick, 8000);
+
+    return () => {
+      done = true;
+      observer.disconnect();
+      window.clearTimeout(timer);
+    };
   }, []);
 
+  return ref;
+}
+
+export function SearchVisual() {
+  const containerRef = usePsC5Reveal<HTMLDivElement>();
+
   return (
-    <div ref={containerRef} className="ps-sr-root" aria-hidden="true">
-      <div className="ps-sr-panel">
-        {/* Chrome bar. Two jobs, both load-bearing:
-            1. .ps-bento-card__expand is a frosted WHITE circle at top:16
-               right:16 (globals.css:1703) sitting at z-index 3, i.e. ON TOP
-               of this visual. On a 390px card this panel reaches that corner,
-               and a white icon on a white panel is an invisible affordance.
-               A dark strip along the top puts contrast back under it — the
-               same thing .ps-browser-chrome does for WebsiteVisual.
-            2. It makes the panel read as a surface with depth rather than a
-               white slab, which is what it looked like without one. */}
-        <div className="ps-sr-chrome">
-          <span className="ps-sr-chrome-dots"><i /><i /><i /></span>
-          <span className="ps-sr-chrome-pill" />
-        </div>
-
-        {/* Query field */}
-        <div className="ps-sr-field">
-          <svg className="ps-sr-glass" viewBox="0 0 16 16" fill="none">
-            <circle cx="7" cy="7" r="4.6" stroke="currentColor" strokeWidth="1.4" />
-            <path d="M10.6 10.6L14 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-          </svg>
-          <span className="ps-sr-query">[your service] near me</span>
-        </div>
-
-        {/* AI answer block */}
-        <div className="ps-sr-ai">
-          <div className="ps-sr-ai-head">
-            <svg className="ps-sr-spark" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M8 1.5l1.5 4L13.5 7l-4 1.5L8 12.5 6.5 8.5 2.5 7l4-1.5z"
-                fill="currentColor"
-              />
-            </svg>
-            <span className="ps-sr-ai-label">AI Overview</span>
-          </div>
-          <span className="ps-sr-ai-line" style={{ "--sr-i": 0 } as React.CSSProperties} />
-          <span className="ps-sr-ai-line" style={{ "--sr-i": 1 } as React.CSSProperties} />
-          <span className="ps-sr-ai-line ps-sr-ai-line--short" style={{ "--sr-i": 2 } as React.CSSProperties} />
-          <span className="ps-sr-cite">yourcompany.com</span>
-        </div>
-
-        {/* Results list. The first row is a paid placement and the two
-            below it are the organic local pack — which is the actual shape
-            of the page this card is about, and the only way the card's own
-            title ("Search and Ads.") is honest: without the Ad row the
-            picture depicts two of its three destinations and silently drops
-            /services/paid-ads. Still no rank numbers and no rank-rise
-            animation — see the claims note above this component. */}
-        <div className="ps-sr-pack">
-          <span className="ps-sr-pack-label">Results</span>
-          <div className="ps-sr-row ps-sr-row--ad" style={{ "--sr-i": 0 } as React.CSSProperties}>
-            <span className="ps-sr-ad-badge">Ad</span>
-            <span className="ps-sr-row-lines">
-              <i className="ps-sr-row-name" />
-              <i className="ps-sr-row-meta" />
-            </span>
-          </div>
-          {[1, 2].map((row) => (
-            <div
-              className={`ps-sr-row${row === 1 ? " ps-sr-row--lead" : ""}`}
-              key={`sr-row-${row}`}
-              style={{ "--sr-i": row } as React.CSSProperties}
-            >
-              <span className="ps-sr-pin">
-                <svg viewBox="0 0 12 14" fill="none">
-                  <path
-                    d="M6 .8a4.6 4.6 0 00-4.6 4.6C1.4 8.8 6 13.2 6 13.2s4.6-4.4 4.6-7.8A4.6 4.6 0 006 .8z"
-                    fill="currentColor"
-                  />
-                  <circle cx="6" cy="5.3" r="1.7" fill="#0A1628" />
-                </svg>
-              </span>
-              <span className="ps-sr-row-lines">
-                <i className="ps-sr-row-name" />
-                <i className="ps-sr-row-meta" />
-              </span>
-            </div>
+    <div ref={containerRef} className="ps-c5-root" aria-hidden="true">
+      <svg
+        className="ps-c5-svg"
+        viewBox={`0 0 ${PS_C5_W} ${PS_C5_H}`}
+        /* slice, not meet: COVER the box and crop, so the field always
+           reaches every edge as the card swings 1.12 -> 2.99. `meet`
+           letterboxes and leaves the tidy margin that makes artwork
+           read as a decal. */
+        preserveAspectRatio="xMidYMid slice"
+        fill="none"
+      >
+        {/* No <defs>: the foot veil that used to live here was an
+            SVG-space gradient, and preserveAspectRatio="slice" CROPS IT
+            AWAY at wide breakpoints — at 768 the card is 720x380, slice
+            scales by 2.0, and only the middle 190 of the 320-unit viewBox
+            is visible, so the veil's bottom never painted. It is now a
+            CSS ::after anchored to the element's bottom edge in fixed px.
+            If anything is added back here, namespace ids `ps-c5-*`. */}
+        <g className="ps-c5-field">
+          {PS_C5_DASHES.map((d, n) => (
+            <rect
+              key={`ps-c5-d-${n}`}
+              className={`ps-c5-dash ps-c5-dash--t${d.t}`}
+              x={d.x - d.w / 2}
+              y={d.y - d.h / 2}
+              width={d.w}
+              height={d.h}
+              rx={d.h / 2}
+              style={
+                {
+                  "--c5-r0": `${d.r0}deg`,
+                  "--c5-r1": `${d.r1}deg`,
+                  "--c5-o": d.o,
+                  "--c5-i": d.i,
+                } as React.CSSProperties
+              }
+            />
           ))}
-        </div>
-      </div>
+        </g>
+
+        {/* THE OCCUPANT — variant B.
+            The executive review rejected the empty void: "absence reads
+            as absence", and on a homepage the viewer has two seconds,
+            not a paragraph. This is the client's business: the one lit
+            thing the whole field is organised around. It lands LAST in
+            the reveal, after the filings have aligned, so the picture
+            reads as "everything turned toward you" rather than "here is
+            a dot with decoration". */}
+        <circle
+          className="ps-c5-halo"
+          cx={PS_C5_W / 2}
+          cy={PS_C5_H / 2}
+          r={15}
+        />
+        <circle
+          className="ps-c5-core"
+          cx={PS_C5_W / 2}
+          cy={PS_C5_H / 2}
+          r={7.5}
+        />
+      </svg>
     </div>
   );
 }
