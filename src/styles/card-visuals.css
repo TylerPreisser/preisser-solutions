@@ -26,7 +26,7 @@
  * All visual-specific CSS for the service card animations.
  * Extracted from globals.css — classes prefixed with:
  *   ps-visual-, ps-wb-, ps-browser-, ps-iphone-, ps-site-,
- *   ps-app-, ps-asst-, ps-cb-, ps-doc-, ps-ge-, ps-sr-
+ *   ps-v4- (bento cards 1-3), ps-cb-, ps-ge-, ps-sr-
  *
  * Also includes all @keyframes for these visuals and the
  * prefers-reduced-motion overrides block.
@@ -404,1080 +404,815 @@
 }
 
 /* ═════════════════════════════════════════════════════════════
-   VISUALS 2, 3 & 4 — REBUILT 2026-09-06
+   VISUALS 2, 3 & 4 — v3, SUPERSEDED BY v4 ON 2026-09-06
 
-   These three replace `.ps-gate-*` (AI Integration), `.ps-run-*`
-   (Business Automation) and `.ps-dbc-*` (Business Software), which were
-   deleted with them. Prefixes are NEW on purpose: `.ps-dbc-root` and
-   `.ps-dbc-layout` are ALSO declared in globals.css, and because
-   globals.css @imports this file on its second line, the globals copies
-   win at equal specificity. Reusing those names would have meant fighting
-   a sheet this change has no business editing. Verified before choosing:
-   `ps-app-`, `ps-doc-` and `ps-asst-` have zero occurrences anywhere in
-   src/. (`ps-ai-` was rejected — 48 hits in globals.css for an unrelated
-   AI landing page.)
+   The ~100 lines of design law that stood here described `.ps-app-*`,
+   `.ps-doc-*` and `.ps-asst-*`, which no longer exist. v3 restyled cards 1-3
+   to match cards 4/5 and the row still did not read as one row, because the
+   mismatch was never styling — it was SUBJECT. v3 drew our application; 4/5
+   draw an artifact the visitor already owns. See the v4 block below.
 
-   DO NOT wrap this file, or any part of it, in `@layer components`. See
-   the header at the top of this file: it was tried on 2026-09-03, it
-   produced 925,871 differing pixels, and it was reverted (07906a1).
+   Two v3 findings were kept because they are about the CARD, not the artwork,
+   and both are restated where v4 uses them:
+     - the title scrim starts 80px ABOVE the text box
+       (`globals.css` `.ps-bento-card__text::before`), so a payoff's clearance
+       must be judged by its rendered RGB, never by a pixel gap;
+     - the chrome strip under `.ps-bento-card__expand` must FLIP with the
+       theme or the affordance disappears in one of them.
 
-   THE DESIGN LAW THESE THREE OBEY, derived from WebsiteVisual and
-   SearchVisual — the only two cards the owner approves of:
-
-     - FILLS ONLY. Zero structural strokes. Strokes appear solely as
-       sub-16px icon glyphs at stroke-width 1.4 inside a filled container.
-       Depth is 0 24px 60px rgba(0,0,0,.5) shadows on filled mass, never
-       an outline.
-     - PALETTE: navy #0A1628 -> #0C1E3A, white/#f8fafc, three greys
-       (#cbd5e1 #e2e8f0 #94A3B8, plus #64748B for emphasis) and brand blue.
-       NO semantic colour: nothing is green because it succeeded and
-       nothing is amber because it is pending. No hue encodes state.
-     - A LITERAL, RECOGNISABLE CUSTOMER SURFACE at wireframe fidelity.
-       Chrome is real; all content is a grey placeholder bar. Between the
-       three cards there are five readable strings in total.
-     - BLEED AND TWO PLANES. Each primary object is cropped by a card
-       edge, and a second object overlaps it at 5deg with a
-       0 20px 50px rgba(0,0,0,.6) shadow. 5deg is the grid's ONLY
-       rotation angle (WebsiteVisual's .ps-phone). Do not add a second.
-     - ONE PAYOFF OBJECT per card, solid brand blue, arriving last.
-     - MOTION: opacity + translateY(5px) only, 360ms, easeOutQuart,
-       90ms stagger off --sr-i, one-shot `.in-view`, plus one payoff at
-       420ms/520ms delay that is the ONLY thing that scales (0.94 -> 1).
-       Longest timeline is 940ms. Zero @keyframes. Zero infinite loops.
-       Zero overshoot easings. Zero rotation animation.
-     - HOVER: the second plane lifts 6px, the first lifts 2px — the 3:1
-       parallax WebsiteVisual uses at card-visuals.css:92 and :401.
-
-   Chrome strips FLIP WITH THE THEME. `.ps-bento-card__expand` is a 32px
-   circle at top:16 right:16 z-index 3 drawn OVER the artwork — white on
-   frosted white in dark mode, #0A1628 navy in light (globals.css:1617).
-   Whatever sits under it must be dark in dark mode and light in light
-   mode or the affordance vanishes in one of them. Measured both ways on
-   2026-09-03; a strip left dark in light mode hid the icon completely.
-   The navy RAIL and the document LETTERHEAD do not flip — a chrome rail
-   is dark in a lit room too, same as `.ps-site-nav`.
+   A dead `@media (scripting: none)` block naming eight PRE-rebuild classes
+   (`.ps-app-chart`, `.ps-app-save`, `.ps-doc-send`, `.ps-asst-bubble` …) was
+   removed with it; v4 carries its own resting-state pins.
    ═════════════════════════════════════════════════════════════ */
 
-/* ── COMPOSITION, CORRECTED 2026-09-06 (adjustment pass 1) ────────
-   Two measured findings changed the geometry below; both contradict the
-   brief these cards were built to, so the reasoning is recorded here.
+/* ═════════════════════════════════════════════════════════════
+   BENTO CARDS 1-3 — v4 SHARED FRAME
 
-   1. NOTHING IS CROPPED BY THE CARD FRAME ANY MORE. Binding requirement 7
-      said "the primary object must be cropped by at least one card edge; no
-      inset panel with margin on all four sides". Measured on the approved
-      cards, that is backwards: card 4's browser has 205.5px of clear navy to
-      its card's right edge, and card 5 IS an inset panel with margin on all
-      four sides -- both spill 0px on all four sides at all fourteen
-      viewports. In the approved language the crop is ONE OBJECT OCCLUDING
-      ANOTHER. Obeying requirement 7 gave these three 24-36px of frame
-      amputation and made them read as zoomed-in fragments beside two cards
-      that read as whole objects. Plane 1 now sits wholly inside the card and
-      plane 2 does all the cropping.
+   Spec: ~/.claude/agent-reports/cards-v4-concept.md §2.
 
-   2. PLANE 2 IS TOP-ANCHORED, NOT BOTTOM-ANCHORED. globals.css:7451 puts the
-      title scrim on `.ps-bento-card__text::before` at `top: -80px`, still at
-      alpha 0.86 where the text box begins -- so scrim onset is 80px ABOVE the
-      datum a "clearance" measurement uses. Bottom-anchored payoffs sat in the
-      darkest band: card 2's Send sampled (17,73,127) at 768x1024 against card
-      5's cite pill at (20,116,203) -- 35-40% of the brand blue extinguished,
-      dark theme only, and dark is the default. Card 5 puts its payoff at ~45%
-      of card height, so these do too. The acceptance test is the payoff's
-      rendered RGB against (20,116,203), NOT a pixel gap; a box-geometry probe
-      cannot see a dimmed pill.
-   ───────────────────────────────────────────────────────────────── */
+   EVERY VALUE IN THIS BLOCK IS COPIED FROM CARD 5's `.ps-sr-*`
+   (card-visuals.css:2169+), not reinvented. That is the whole point: three
+   previous rounds tried to make cards 1-3 match 4/5 by restyling them against
+   a parallel system, and the row still did not read as one row. If you need a
+   number here, take it from `.ps-sr-*` or do not add it.
 
-/* ── NO-SCRIPT RESTING STATE ──────────────────────────────────────
-   From the concurrent session's 2026-09-06 working tree, kept because it is
-   correct. The content bases at `opacity: 0` and is revealed by a class the
-   JS adds; with scripting unavailable that class never arrives and all three
-   render as empty shells. Pins them to the finished state -- no keyframes
-   (this file's design law forbids them), no flash, no effect on the scripted
-   path. Pairs with the 1200ms failsafe in `useRevealOnce`. */
-@media (scripting: none) {
-  .ps-app-chart,
-  .ps-app-row,
-  .ps-app-save,
-  .ps-doc-row,
-  .ps-doc-total,
-  .ps-doc-send,
-  .ps-asst-bubble,
-  .ps-asst-reply {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
+   THE WASH RULE. v3's loudest defect was that cards 1-3 painted a BLUE wash
+   while 4/5 sat on neutral grey — at 768x1024 card 3 and card 4 land in the
+   same row and plainly did not match. The scene DOES carry a background; it
+   just has to be card 5's. Dark `#0A1628 -> #0C1E3A` (:2177), light
+   `#F0F4F8 -> #E8EDF3` (:2450). Verbatim, below.
 
-/* ── VISUAL 2: AI Integration — the docked assistant ──────────── */
+   `align-items: flex-start`, NOT center — see the note at `.ps-sr-root`: centring
+   an over-tall child sends half the overflow UP under the expand icon.
 
-.ps-asst-root {
+   Scoped entirely to `.ps-v4-*`, which exists nowhere else in src/.
+   ───────────────────────────────────────────────────────────── */
+
+.ps-v4-root {
   display: flex;
-  flex-direction: column;
-  /* top 62 clears the 32px expand circle at top:16; bottom 58 clears the
-     measured title block (62.8px mobile / 58.9px desktop) with the card's
-     own bottom inset. Same budget .ps-sr-root proved at 320-1920. */
-  padding: 56px 24px 78px 24px;
-  background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
-  overflow: hidden;
-}
+  /* STRETCH, not flex-start. Card 5 gets away with `flex-start` because its
+     panel is intrinsically ~246px tall and fills 63-65% of its card. The v4
+     compositions are intrinsically SHORTER (a table, two forms, a page), and
+     content-sized panels under `flex-start` measured 10-32% fill with a
+     132-267px hole between the artwork and the title — the exact defect v3
+     was rejected for on card 3, reproduced on all three.
 
-.ps-asst-stage {
-  position: relative;
-  flex: 0 0 auto;
-  width: 100%;
-}
-
-/* PLANE 1 — the customer's own screen. `width: calc(100% + 28px)` is the
-   bleed: it runs past the stage and is cropped by the card edge, like
-   .ps-wb-browser's third content card.
-
-   HEIGHT COMES FROM THE CONTENT, and the root centres it — the same call
-   .ps-wb-browser makes with `min-height: 260px` inside a centred
-   .ps-visual-website. TWO WRONG ANSWERS WERE MEASURED BEFORE THIS ONE:
-   stretching the panel to the tile spaced its children out until the
-   middle went hollow (defect 5 on the card this replaces), and letting
-   the rows flex to absorb the height turned each row into a 90px band
-   with a 4px bar floating in it — the same hollow, one level down. Fixed
-   row heights on a content-sized panel is the only version where ink
-   density is a property of the artwork rather than of the tile. */
-.ps-asst-app {
-  position: relative;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #f8fafc;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow:
-    0 24px 60px rgba(0,0,0,0.5),
-    0 6px 20px rgba(0,0,0,0.32);
-  transform: translateY(0);
-  transition: transform 300ms ease;
-}
-
-.ps-asst-app-chrome {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex: 0 0 auto;
-  padding: 6px 9px;
-  background: linear-gradient(180deg, #20314f 0%, #182743 100%);
-}
-
-.ps-asst-app-dots {
-  display: flex;
-  gap: 3px;
-  flex: 0 0 auto;
-}
-
-.ps-asst-app-dots i {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.22);
-}
-
-.ps-asst-app-pill {
-  flex: 1;
-  height: 5px;
-  border-radius: 3px;
-  background: rgba(255,255,255,0.12);
-}
-
-.ps-asst-app-body {
-  flex: 0 0 auto;
-  display: flex;
-  gap: 9px;
-  padding: 9px 10px;
-}
-
-/* The navy rail: the large dark mass, unchanged by theme. */
-.ps-asst-app-rail {
-  flex: 0 0 auto;
-  align-self: stretch;
-  width: 24px;
-  border-radius: 5px;
-  background: linear-gradient(170deg, #0A1628 0%, #0C1E3A 100%);
-}
-
-/* Plane 1 is a LIST, not five bare lines. Bare lines spread across a tile
-   read as an empty sheet; rows with an avatar block and two bars carry ink
-   and read as "the system you already use". */
-/* Bordered container, same reason as `.ps-doc-rows`. In light theme the app
-   window's own right and bottom edges were imperceptible, so the navy rail
-   read as a detached near-black rectangle floating in a white field with no
-   container around it -- the owner's original card-1 complaint with the
-   polarity inverted. */
-.ps-asst-app-list {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 6px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-}
-
-.ps-asst-app-item {
-  flex: 0 0 auto;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 6px;
-  border-radius: 4px;
-  background: rgba(10,22,40,0.05);
-}
-
-.ps-asst-app-av {
-  flex: 0 0 auto;
-  width: 9px;
-  height: 9px;
-  border-radius: 3px;
-  background: #cbd5e1;
-}
-
-.ps-asst-app-name {
-  flex: 0 0 auto;
-  width: 42%;
-  height: 4px;
-  border-radius: 2px;
-  background: #94A3B8;
-}
-
-.ps-asst-app-meta {
-  flex: 0 0 auto;
-  margin-left: auto;
-  width: 24px;
-  height: 4px;
-  border-radius: 2px;
-  background: #e2e8f0;
-}
-
-/* PLANE 2 — the assistant, docked over plane 1 at 5deg. */
-/* Capped width. Unbounded, the bubbles stretch to 500px and stop reading
-   as bubbles — they become bars. */
-.ps-asst-panel {
-  position: absolute;
-  /* Inset from plane 1's own top-left rather than flush to the stage. At
-     left:0/top:6% the 5deg rotation lifted this panel's left corner ABOVE the
-     window's top edge and it covered the chrome strip almost completely, so
-     card 3 lost the real-chrome signal the other four cards keep -- the
-     window stopped reading as a window. Plane 2 may overlap plane 1 (card 4's
-     phone does), but it must not erase the chrome that makes plane 1
-     recognisable. */
-  left: 4%;
-  /* Top-anchored: the payoff lands at ~45% of card height, out of the scrim
-     band. See COMPOSITION note at the head of this section. */
-  top: 12%;
-  width: 74%;
-  min-width: 172px;
-  max-width: 252px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 8px 10px 10px;
-  border-radius: 10px;
-  background: #ffffff;
-  border: 1px solid rgba(255,255,255,0.14);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-  transform: rotate(5deg);
-  transition: transform 300ms ease;
-}
-
-.ps-asst-head {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.ps-asst-spark {
-  width: 9px;
-  height: 9px;
-  flex: 0 0 auto;
-  color: var(--color-primary-strong);
-}
-
-.ps-asst-label {
-  font-size: 7px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-primary-strong);
-}
-
-.ps-asst-thread {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 5px;
-}
-
-.ps-asst-bubble {
-  display: block;
-  width: 72%;
-  height: 15px;
-  border-radius: 9px 9px 9px 3px;
-  background: #e2e8f0;
-  opacity: 0;
-  transform: translateY(5px);
-}
-
-.ps-asst-bubble--short { width: 50%; }
-.ps-asst-bubble--wide  { width: 86%; background: #cbd5e1; }
-
-.ps-asst-root.in-view .ps-asst-bubble {
-  opacity: 1;
-  transform: translateY(0);
-  transition:
-    opacity 360ms ease calc(var(--sr-i, 0) * 90ms),
-    transform 360ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--sr-i, 0) * 90ms);
-}
-
-/* PAYOFF — the reply the assistant wrote. Solid brand blue, arrives
-   last, and it is the only element in this card that scales. */
-.ps-asst-reply {
-  align-self: flex-end;
-  width: 68%;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 7px 9px;
-  border-radius: 9px 9px 3px 9px;
-  background: var(--color-primary-strong);
-  opacity: 0;
-  transform: translateY(5px) scale(0.94);
-}
-
-.ps-asst-reply i {
-  display: block;
-  height: 3px;
-  border-radius: 2px;
-  background: rgba(255,255,255,0.62);
-}
-
-.ps-asst-reply i:last-child {
-  width: 56%;
-  background: rgba(255,255,255,0.38);
-}
-
-.ps-asst-root.in-view .ps-asst-reply {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  transition:
-    opacity 420ms ease 520ms,
-    transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) 520ms;
-}
-
-/* Hover: 6px on the near plane, 2px on the far one. */
-.ps-bento-card:hover .ps-asst-panel { transform: rotate(5deg) translateY(-6px); }
-.ps-bento-card:hover .ps-asst-app   { transform: translateY(-2px); }
-
-/* ── VISUAL 3: Business Automation — the document that sends itself ── */
-
-.ps-doc-root {
-  display: flex;
-  flex-direction: column;
-  /* Content-sized and centred — see the note on .ps-asst-app. */
+     Stretching makes the panel's bottom edge a FUNCTION of the card rather
+     than of the content, so the clear band above the title is the scene's
+     bottom padding and nothing else, at every card height and every
+     breakpoint. Trailing space inside the panel is correct for the subject:
+     a browser window and a form both have room below their last row. */
+  align-items: stretch;
   justify-content: center;
-  padding: 56px 24px 78px 24px;
   background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
+  /* Title clearance is THIS padding, not a per-card nudge. The single value is
+     why card 5 has ~36px of clear air above its title. v3 had card 1 at ~18px
+     (cramped) and card 3 at ~70px (a hole) — the same rule broken in opposite
+     directions, which is why no single token fixed both.
+
+     With a STRETCHED scene the clear band is exactly `padding-bottom minus the
+     title block's height`, so it is worth writing the measurement down:
+     `.ps-bento-card__text` is 63px tall below 940 and 59px at and above it, at
+     every width in the matrix (320/360/390/430/640/768 -> 63;
+     940/1024/1280/1440/1920 -> 59). 85px therefore buys a 22px band on phones
+     and tablets and 26px on desktop — inside card 5's 13-34px range at every
+     stop. Card 5's own 68px works only because its panel is content-sized and
+     stops short; copying that number onto a stretched scene closed the band to
+     3px, which is why this one is 85 and not 68. */
+  padding: 68px 18px 85px;
   overflow: hidden;
 }
 
-.ps-doc-stage {
-  position: relative;
-  flex: 0 0 auto;
-  width: 100%;
-}
-
-/* PLANE 1 — the document. `margin-left: -18px` is the bleed: the sheet's
-   left edge is cropped by the card, the way .ps-wb-browser's content runs
-   off frame on purpose. Height comes from the line items — see the note
-   on .ps-asst-app for the versions measured and rejected before this. */
-.ps-doc-sheet {
-  position: relative;
-  /* margin-left:-18px removed. It ran the sheet off the card's left edge, and
-     it took `.ps-doc-mark` -- the 12px #1590FF square that is this card's ONLY
-     plane-1 brand accent -- entirely off-card at every width >=640
-     (measured box left:-12 right:0 visibleW:0). No display/opacity/inside-box
-     probe can see that; only the screenshot could. */
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #f8fafc;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow:
-    0 24px 60px rgba(0,0,0,0.5),
-    0 6px 20px rgba(0,0,0,0.32);
-  transform: translateY(0);
-  transition: transform 300ms ease;
-}
-
-/* Letterhead. Doubles as the contrast bed under .ps-bento-card__expand. */
-.ps-doc-head {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 11px;
-  background: linear-gradient(180deg, #20314f 0%, #182743 100%);
-}
-
-.ps-doc-mark {
-  width: 12px;
-  height: 12px;
-  flex: 0 0 auto;
-  border-radius: 3px;
-  background: #1590FF;
-}
-
-.ps-doc-kicker {
-  font-size: 7px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.72);
-}
-
-.ps-doc-body {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 11px 13px 12px;
-}
-
-.ps-doc-title {
-  display: block;
-  flex: 0 0 auto;
-  width: 44%;
-  height: 6px;
-  border-radius: 3px;
-  background: #64748B;
-}
-
-.ps-doc-sub {
-  display: block;
-  flex: 0 0 auto;
-  width: 28%;
-  height: 4px;
-  border-radius: 2px;
-  background: #cbd5e1;
-}
-
-/* Bordered container. This is `.ps-sr-pack`'s exact device
-   (`border: 1px solid #e2e8f0` on white) and it is why card 5 survives light
-   theme: its panel is full of BORDERED sub-containers, so when the backdrop
-   flips to #F0F4F8 and panel-to-backdrop contrast falls to ~1.07:1, the
-   internal structure still carries the figure. Without it this sheet measured
-   mean L 0.929 / 98.4% near-white in light theme -- a featureless wash with no
-   perceptible edge. A 1px seam is permitted by the form language; it separates
-   stacked surfaces and never carries structure. */
-.ps-doc-rows {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-top: 4px;
-  padding: 6px 7px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-}
-
-/* Every line item is a grey bar. There is no currency figure and no
-   quantity anywhere in this card — see the claims note in the TSX.
-   Fixed 24px bands with a zebra fill: the band is the ink. */
-.ps-doc-row {
-  flex: 0 0 auto;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 6px;
-  border-radius: 3px;
-  opacity: 0;
-  transform: translateY(5px);
-}
-
-.ps-doc-row:nth-child(odd) {
-  background: rgba(10,22,40,0.045);
-}
-
-.ps-doc-row-name {
-  flex: 1 1 auto;
-  height: 5px;
-  border-radius: 2px;
-  background: #e2e8f0;
-}
-
-.ps-doc-row:nth-child(1) .ps-doc-row-name { width: 62%; flex: 0 0 auto; }
-.ps-doc-row:nth-child(2) .ps-doc-row-name { width: 48%; flex: 0 0 auto; }
-.ps-doc-row:nth-child(3) .ps-doc-row-name { width: 57%; flex: 0 0 auto; }
-.ps-doc-row:nth-child(4) .ps-doc-row-name { width: 41%; flex: 0 0 auto; }
-.ps-doc-row:nth-child(5) .ps-doc-row-name { width: 53%; flex: 0 0 auto; }
-
-.ps-doc-row-val {
-  flex: 0 0 auto;
-  margin-left: auto;
-  width: 22px;
-  height: 5px;
-  border-radius: 2px;
-  background: #cbd5e1;
-}
-
-.ps-doc-total {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 6px;
-  padding: 8px 6px 0;
-  border-top: 1px solid #e2e8f0;
-  opacity: 0;
-  transform: translateY(5px);
-}
-
-.ps-doc-total-name {
-  flex: 0 0 auto;
-  width: 30%;
-  height: 5px;
-  border-radius: 2px;
-  background: #94A3B8;
-}
-
-.ps-doc-total-val {
-  flex: 0 0 auto;
-  margin-left: auto;
-  width: 30px;
-  height: 5px;
-  border-radius: 2px;
-  background: #64748B;
-}
-
-.ps-doc-root.in-view .ps-doc-row,
-.ps-doc-root.in-view .ps-doc-total {
-  opacity: 1;
-  transform: translateY(0);
-  transition:
-    opacity 360ms ease calc(var(--sr-i, 0) * 90ms),
-    transform 360ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--sr-i, 0) * 90ms);
-}
-
-/* PLANE 2 — the counterweight, at the right, occluding the sheet's edge.
-   Same role .ps-phone plays against .ps-wb-browser: asymmetric, one
-   object over the other, weight low. */
-.ps-doc-mail {
-  position: absolute;
-  right: 6px;
-  /* Top-anchored -- see the COMPOSITION note. This also un-collides it from
-     the total row's value chip, which it used to bisect with a hard white
-     edge at 1440 (a 30px chip half-eaten by a 200px lozenge reads as a
-     collision, not as depth). */
-  top: 34%;
-  z-index: 2;
-  width: 58%;
-  min-width: 148px;
-  max-width: 200px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 9px;
-  border-radius: 9px;
-  background: #ffffff;
-  border: 1px solid rgba(255,255,255,0.14);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-  transform: rotate(5deg);
-  transition: transform 300ms ease;
-}
-
-.ps-doc-mail-icon {
-  flex: 0 0 auto;
-  width: 13px;
-  height: 13px;
-  display: flex;
-  color: #94A3B8;
-}
-
-.ps-doc-mail-icon svg {
-  width: 100%;
-  height: 100%;
-}
-
-.ps-doc-mail-lines {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.ps-doc-mail-lines i {
-  display: block;
-  height: 3px;
-  border-radius: 2px;
-  background: #cbd5e1;
-}
-
-.ps-doc-mail-lines i:last-child {
-  width: 58%;
-  background: #e2e8f0;
-}
-
-/* PAYOFF — solid brand blue, arrives last, the only scale in this card. */
-.ps-doc-send {
-  flex: 0 0 auto;
-  font-size: 7px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: #ffffff;
-  background: var(--color-primary-strong);
-  padding: 3px 8px;
-  border-radius: 999px;
-  line-height: 1.35;
-  opacity: 0;
-  transform: translateY(5px) scale(0.94);
-}
-
-.ps-doc-root.in-view .ps-doc-send {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  transition:
-    opacity 420ms ease 520ms,
-    transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) 520ms;
-}
-
-.ps-bento-card:hover .ps-doc-mail  { transform: rotate(5deg) translateY(-6px); }
-.ps-bento-card:hover .ps-doc-sheet { transform: translateY(-2px); }
-
-/* ── VISUAL 4: Business Software — your own back-office app ──── */
-
-.ps-app-root {
-  display: flex;
-  flex-direction: column;
-  padding: 56px 24px 78px 24px;
-  background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
-  overflow: hidden;
-}
-
-.ps-app-stage {
-  position: relative;
-  flex: 1 1 auto;
-  min-height: 0;
-  width: 100%;
-}
-
-/* PLANE 1 — the app window, cropped by the card's right edge. */
-.ps-app-window {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  border-radius: 9px;
-  overflow: hidden;
-  background: #f8fafc;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow:
-    0 24px 60px rgba(0,0,0,0.5),
-    0 6px 20px rgba(0,0,0,0.32);
-  transform: translateY(0);
-  transition: transform 300ms ease;
-}
-
-.ps-app-chrome {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex: 0 0 auto;
-  padding: 6px 9px;
-  background: linear-gradient(180deg, #20314f 0%, #182743 100%);
-}
-
-.ps-app-dots {
-  display: flex;
-  gap: 3px;
-  flex: 0 0 auto;
-}
-
-.ps-app-dots i {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.22);
-}
-
-.ps-app-chrome-pill {
-  flex: 1;
-  height: 5px;
-  border-radius: 3px;
-  background: rgba(255,255,255,0.12);
-}
-
-.ps-app-body {
-  flex: 1 1 auto;
-  min-height: 0;
-  display: flex;
-}
-
-/* The navy rail: the large dark mass. Stays navy in both themes, the
-   same call .ps-site-nav makes at card-visuals.css:2331. */
-.ps-app-rail {
-  flex: 0 0 auto;
-  width: 34px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 7px;
-  padding: 9px 0;
-  background: linear-gradient(170deg, #0A1628 0%, #0C1E3A 100%);
-}
-
-.ps-app-rail-mark {
-  width: 13px;
-  height: 13px;
-  border-radius: 4px;
-  background: #1590FF;
-  margin-bottom: 2px;
-}
-
-.ps-app-rail-item {
-  width: 15px;
-  height: 5px;
-  border-radius: 2px;
-  background: rgba(255,255,255,0.13);
-}
-
-.ps-app-rail-item--on {
-  background: rgba(255,255,255,0.42);
-}
-
-.ps-app-main {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 9px 10px 10px;
-}
-
-.ps-app-toolbar {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.ps-app-tab {
-  font-size: 7px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #64748B;
-  white-space: nowrap;
-}
-
-.ps-app-toolbar-pill {
-  flex: 1 1 auto;
-  height: 4px;
-  border-radius: 2px;
-  background: #e2e8f0;
-}
-
-/* The chart is the MASS. It is the one thing recovered from the
-   pre-8c7c955 card, which had the confidence with a big saturated fill
-   that the whole current set lacks. Non-monotonic by design — a rising
-   chart is an outcome claim as artwork (WRITER-AGENT-PROMPT.md:31). */
-.ps-app-chart {
-  flex: 1 1 auto;
-  min-height: 42px;
-  display: flex;
-  align-items: flex-end;
-  gap: 5px;
-  opacity: 0;
-  transform: translateY(5px);
-}
-
-.ps-app-bar {
-  flex: 1 1 0;
-  min-width: 0;
-  height: calc(var(--bar-h, 0.5) * 100%);
-  border-radius: 3px 3px 1px 1px;
-  background: linear-gradient(180deg, #1590FF 0%, rgba(21,144,255,0.68) 100%);
-}
-
-.ps-app-rows {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.ps-app-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 3px 4px;
-  border-radius: 4px;
-  background: rgba(10,22,40,0.04);
-  opacity: 0;
-  transform: translateY(5px);
-}
-
-.ps-app-row-av {
-  flex: 0 0 auto;
-  width: 9px;
-  height: 9px;
-  border-radius: 3px;
-  background: #cbd5e1;
-}
-
-.ps-app-row-name {
-  flex: 0 0 auto;
-  width: 38%;
-  height: 4px;
-  border-radius: 2px;
-  background: #94A3B8;
-}
-
-.ps-app-row-meta {
-  flex: 0 0 auto;
-  margin-left: auto;
-  width: 26px;
-  height: 4px;
-  border-radius: 2px;
-  background: #e2e8f0;
-}
-
-.ps-app-root.in-view .ps-app-chart,
-.ps-app-root.in-view .ps-app-row {
-  opacity: 1;
-  transform: translateY(0);
-  transition:
-    opacity 360ms ease calc(var(--sr-i, 0) * 90ms),
-    transform 360ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--sr-i, 0) * 90ms);
-}
-
-/* PLANE 2 — the record you opened, over the window at 5deg. */
-.ps-app-sheet {
-  position: absolute;
-  right: 10px;
-  /* Top-anchored -- see the COMPOSITION note. */
-  top: 14%;
-  z-index: 2;
-  width: 42%;
-  min-width: 116px;
-  max-width: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 5px;
-  padding: 9px 10px 10px;
-  border-radius: 9px;
-  background: #ffffff;
-  border: 1px solid rgba(255,255,255,0.14);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-  transform: rotate(5deg);
-  transition: transform 300ms ease;
-}
-
-.ps-app-sheet-bar {
-  display: block;
-  width: 78%;
-  height: 4px;
-  border-radius: 2px;
-  background: #cbd5e1;
-}
-
-.ps-app-sheet-bar--short {
-  width: 52%;
-  background: #e2e8f0;
-}
-
-/* PAYOFF — solid brand blue, arrives last, the only scale in this card. */
-.ps-app-save {
-  margin-top: 2px;
-  font-size: 7px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: #ffffff;
-  background: var(--color-primary-strong);
-  padding: 3px 9px;
-  border-radius: 999px;
-  line-height: 1.35;
-  opacity: 0;
-  transform: translateY(5px) scale(0.94);
-}
-
-.ps-app-root.in-view .ps-app-save {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  transition:
-    opacity 420ms ease 520ms,
-    transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) 520ms;
-}
-
-.ps-bento-card:hover .ps-app-sheet  { transform: rotate(5deg) translateY(-6px); }
-.ps-bento-card:hover .ps-app-window { transform: translateY(-2px); }
-
-/* ── Light mode for visuals 2, 3 & 4 ──────────────────────────
-   Only the backdrop, the chrome strips and the shadows change. The
-   panels stay light in both themes (a screen is lit in a dark room too)
-   and the navy rail / letterhead stay navy — same calls .ps-site-layout
-   and .ps-site-nav make for WebsiteVisual.
-
-   The old cards failed exactly here: their panels were a theme-invariant
-   rgb(248,250,252) with NO flipping backdrop, so on a #0A1628 page they
-   read as a white slab. The flip below is what fixes that. */
-
-[data-theme="light"] .ps-asst-root,
-[data-theme="light"] .ps-doc-root,
-[data-theme="light"] .ps-app-root {
+[data-theme="light"] .ps-v4-root {
   background: linear-gradient(160deg, #F0F4F8 0%, #E8EDF3 100%);
 }
 
-[data-theme="light"] .ps-asst-app-chrome,
-[data-theme="light"] .ps-doc-head,
-[data-theme="light"] .ps-app-chrome {
+/* Panels stay light in BOTH themes, exactly like `.ps-sr-panel` and
+   `.ps-site-layout` — "a device screen is lit in a dark room too"
+   (card-visuals.css:2450). This is also what stops v4 repeating v3's dark-mode
+   inversion, where card 1's ghost documents kept their light-mode near-white
+   fills against `rgb(10,22,40)` and became the brightest object on the card.
+   Nothing in v4 carries a near-white fill that is not INSIDE a panel. */
+.ps-v4-panel {
+  width: 100%;
+  max-width: 330px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 10px 11px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f8fafc;
+  border: 1px solid rgba(255,255,255,0.1);
+  transform: translateY(0);
+  transition: transform 300ms ease;
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.5),
+    0 6px 20px rgba(0,0,0,0.32);
+}
+
+.ps-bento-card:hover .ps-v4-panel {
+  transform: translateY(-6px);
+}
+
+/* Full-bleed chrome strip. It flips with the theme — that is what keeps the
+   frosted `.ps-bento-card__expand` icon visible where a panel reaches the
+   top-right corner. A strip left dark in light mode hid the icon completely
+   (measured 2026-09-03, note at card-visuals.css:2456). */
+.ps-v4-chrome {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 -10px 2px;
+  padding: 6px 9px;
+  background: linear-gradient(180deg, #20314f 0%, #182743 100%);
+}
+
+[data-theme="light"] .ps-v4-chrome {
   background: linear-gradient(180deg, #E8EDF3 0%, #DDE4EC 100%);
   border-bottom: 1px solid #CBD5E1;
 }
 
-[data-theme="light"] .ps-asst-app-dots i,
-[data-theme="light"] .ps-app-dots i {
-  background: rgba(10,22,40,0.18);
+.ps-v4-dots { display: flex; gap: 3px; flex: 0 0 auto; }
+
+.ps-v4-dots i {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.22);
 }
 
-[data-theme="light"] .ps-asst-app-pill,
-[data-theme="light"] .ps-app-chrome-pill {
-  background: rgba(10,22,40,0.09);
+[data-theme="light"] .ps-v4-dots i { background: rgba(10,22,40,0.18); }
+
+.ps-v4-pill {
+  flex: 1;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.12);
 }
 
-/* The letterhead flips, so its kicker has to stop being white-on-white. */
-[data-theme="light"] .ps-doc-kicker {
+[data-theme="light"] .ps-v4-pill { background: rgba(10,22,40,0.10); }
+
+/* A favicon square. On card 2 the two hues are LOAD-BEARING — see the note in
+   the TSX. Never harmonise them. */
+.ps-v4-fav {
+  flex: 0 0 auto;
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  background: #94A3B8;
+}
+
+.ps-v4-fav--a { background: var(--color-primary-strong); }
+.ps-v4-fav--b { background: #8B5CF6; }
+
+/* Bars and slots — the only "content" any of these cards has.
+   `.ps-sr-ai-line` is 4px/2px/#cbd5e1 (:2266). Same here. */
+.ps-v4-rows {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 8px;
+  padding: 2px 0 4px;
+}
+
+.ps-v4-row { display: flex; align-items: center; gap: 7px; }
+
+.ps-v4-label {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 6px;
+  border-radius: 3px;
+  background: #cbd5e1;
+}
+
+/* The empty slot. Fill only — NO border, NO dash. A dashed or outlined empty
+   slot reads as an ERROR, which is precisely how v3's red dashed rail and
+   `no source` chip read. Emptiness here means "not filled in yet". */
+.ps-v4-slot {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(10,22,40,0.05);
+}
+
+/* ── CARD 1 · Business Software — five tabs, one table ───────── */
+
+.ps-v4-tabs {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  margin: 0 -10px 0;
+  padding: 6px 8px 0;
+  background: linear-gradient(180deg, #20314f 0%, #182743 100%);
+}
+
+[data-theme="light"] .ps-v4-tabs {
+  background: linear-gradient(180deg, #E8EDF3 0%, #DDE4EC 100%);
+}
+
+.ps-v4-tab {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 5px;
+  border-radius: 5px 5px 0 0;
+  background: rgba(255,255,255,0.06);
+}
+
+[data-theme="light"] .ps-v4-tab { background: rgba(10,22,40,0.06); }
+
+/* The active tab is RAISED — it is the one place that already has an answer,
+   and it is the column that is filled at rest in the table below. */
+.ps-v4-tab--on { background: #f8fafc; padding-top: 7px; }
+
+.ps-v4-tabbar {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.22);
+}
+
+[data-theme="light"] .ps-v4-tabbar { background: rgba(10,22,40,0.16); }
+.ps-v4-tab--on .ps-v4-tabbar { background: #cbd5e1; }
+
+.ps-v4-url {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+/* The one string on this card, and it is the same string cards 4 and 5 use.
+   #475569 on #ffffff = 7.58:1. */
+.ps-v4-host {
+  font-size: 8px;
+  letter-spacing: 0.01em;
+  color: #475569;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ps-v4-table {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 9px 10px 10px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+/* THE HEADER ROW IS LOAD-BEARING. Without it five columns of grey bars are
+   indistinguishable from this site's placeholder idiom — the trap v3's
+   seven-bar sparkline fell into. A header row plus visibly-empty cells is a
+   state a placeholder never has. Do not remove it to save height. */
+.ps-v4-thead { display: flex; gap: 5px; padding-bottom: 6px; border-bottom: 1px solid #eef2f7; }
+
+.ps-v4-thead i {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 4px;
+  border-radius: 2px;
+  background: #e2e8f0;
+}
+
+/* Distributes the data rows over whatever height the stretched panel has.
+   Without it the table sat in the top third of the window and left ~260px of
+   blank white below — a browser window with nothing in it. */
+.ps-v4-tbody {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.ps-v4-tr { display: flex; gap: 5px; }
+
+.ps-v4-td {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 6px;
+  border-radius: 3px;
+}
+
+.ps-v4-td--seed { background: #cbd5e1; border-left: 4px solid transparent; }
+
+/* Empty at rest; the tab's hue arrives as a 3px left edge only — chroma as an
+   index, never as the content. */
+.ps-v4-td--join {
+  background: rgba(10,22,40,0.05);
+  border-left: 4px solid transparent;
+}
+
+/* ── CARD 2 · Business Automation — the same form, entered twice ───
+
+   GEOMETRY IS THE ARGUMENT. The two sheets are inset from OPPOSITE pairs of
+   edges of one box by the SAME offset, so they are the same width and the
+   same height by construction — not by two numbers an editor can drift apart.
+   Change `--dx` / `--dy` and they both move; nothing else needs touching, and
+   that is the whole reason the compact ramp is two lines.
+
+     src :  left 0     top 0     right --dx  bottom --dy
+     copy:  left --dx  top --dy  right 0     bottom 0
+
+   The offset is a MISREGISTERED PHOTOCOPY, not a layout gap. Two panels in a
+   34px gutter — the previous composition — read as "two documents". A
+   duplicate-icon silhouette reads as "one thing, entered twice", and that is
+   the pain named at service-pillars.tsx:240. THE OFFSET NEVER CLOSES: it is
+   the pain, and the pain is not animated away.
+   ──────────────────────────────────────────────────────────────── */
+
+.ps-v4-dup {
+  /* THE OFFSET IS MOSTLY VERTICAL, AND THAT IS A CORRECTION, NOT A TASTE CALL.
+     A 34px/40px diagonal offset was tried first and photographed: the only
+     part of the record left exposed was a 34px strip down its left edge, which
+     clips every label bar to the same stub. Six identical stubs destroy the
+     one cue the card cannot do without — that the two forms have the SAME row
+     widths in the SAME order. Offsetting down instead exposes a full-width
+     band of the record: its chrome and its first rows COMPLETE, labels and
+     values, sitting directly above the copy's identical rows 18px away, where
+     a reader can compare them without being asked to.
+     `--dy` is a clamped percentage so the band is a constant fraction of the
+     scene instead of eating a fixed 100px out of a short card. */
+  /* `--dx: 0` was built and photographed (`r4-chromium-1440x900-light-card2.png`)
+     and it FAILS: with both sheets on the same left and right edges the pair
+     reads as ONE tall window with a second address bar stuck in its middle.
+     The horizontal offset has to survive. 24px is the smallest value that
+     still shows a window edge rather than a seam. */
+  --dx: 24px;
+  --dy: clamp(70px, 36%, 112px);
+  position: relative;
+  width: 100%;
+  max-width: 330px;
+  align-self: stretch;
+}
+
+.ps-v4-sheetx {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 10px 11px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f8fafc;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.5),
+    0 6px 20px rgba(0,0,0,0.32);
+}
+
+.ps-v4-sheetx--src  { left: 0;       top: 0;       right: var(--dx); bottom: var(--dy); }
+.ps-v4-sheetx--copy { left: var(--dx); top: var(--dy); right: 0;      bottom: 0; }
+
+/* Both chrome strips must be the SAME HEIGHT or the two sheets stop being the
+   same sheet and the whole card collapses. The copy carries an address bar
+   with `yourcompany.com`; the source carries the same bar, empty. */
+.ps-v4-sheetx .ps-v4-pill { height: 14px; border-radius: 999px; }
+
+.ps-v4-chromeurl {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 14px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid rgba(10,22,40,0.10);
+}
+
+/* Card 2's rows carry the whole card, so they are drawn heavier than the
+   shared 6px default — at 6px six rows on a sheet this size read as lint. */
+.ps-v4-sheetx .ps-v4-label { width: auto; flex: 0 0 auto; height: 8px; border-radius: 4px; }
+.ps-v4-sheetx .ps-v4-slot  { height: 8px; border-radius: 4px; }
+
+/* The slot's own opacity is what animates, so anything that must be visible
+   while the slot is still EMPTY — the caret — cannot live inside it. */
+.ps-v4-slotbox {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* The record that already exists. Painted at t=0, never gated: a source is
+   not something that has to arrive, and an ungated source means a failed
+   observer degrades to a composed card instead of an empty one. */
+.ps-v4-slot--src { background: #cbd5e1; }
+
+/* THE CARET. The smallest element on the card and the one that converts
+   "two documents" into "somebody is retyping this right now". Without it the
+   empty rows are just empty rows. #334155 on rgba(10,22,40,0.05)-over-#f8fafc
+   is a decorative rule, not text — but it is drawn dark enough to survive a
+   phone screenshot at 3x, which a 1px hairline did not. */
+.ps-v4-caret {
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  width: 2px;
+  height: 14px;
+  margin-top: -7px;
+  border-radius: 1px;
+  background: #334155;
+}
+
+/* THE SEAM RAIL — the payoff, drawn as the payoff. It replaces a 34px 1.5px
+   hairline floating in a gutter, which was the faintest mark on the card and
+   the one element that had to be the loudest. This is card 5's own
+   `AI OVERVIEW` left rail (`.ps-sr-ai-box`, 2px `--color-primary-strong`) at
+   sheet height, sitting exactly on the edge where the copy overlaps the
+   record. Inset 8px top and bottom so it clears the 10px corner radius. */
+.ps-v4-rail {
+  position: absolute;
+  left: var(--dx);
+  top: calc(var(--dy) + 8px);
+  bottom: 8px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--color-primary-strong);
+  transform: scaleY(0);
+  transform-origin: center top;
+}
+
+/* ── CARD 3 · AI Integration — a page read into a record ─────── */
+
+/* THE RECORD OVERLAPS THE PAGE. Side by side with a 12px gutter, the two
+   objects read as two unrelated documents — the lead's words, and confirmed
+   off `base-chromium-1440x900-light-card3.png`, where the page and the window
+   share no edge, no line and no overlap, and the whole lower-right quadrant of
+   the card is empty background. Depth is the cheapest relationship there is,
+   it needs no connector, and it is already house language: card 4 lays a phone
+   over its browser. This is that, not card 2's rail repeated. */
+.ps-v4-read {
+  position: relative;
+  width: 100%;
+  max-width: 330px;
+  overflow: hidden;
+}
+
+.ps-v4-sheets { position: absolute; inset: 0 40% 0 0; overflow: hidden; }
+
+/* The page. Its bottom edge runs off the composition — the crop is what makes
+   it a document RECEIVED rather than a document we drew, and it passes through
+   bars only, never a glyph. An implementer who "tidies" this into a fully
+   visible sheet during polish destroys the card's reading. */
+.ps-v4-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 12px 12px 0;
+  justify-content: flex-start;
+  /* Taller than its box on purpose: the bottom edge runs off the
+     composition and `.ps-v4-read` clips it. THE CROP IS THE POINT. */
+  height: calc(100% + 22px);
+  box-sizing: border-box;
+  border-radius: 6px 6px 0 0;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-bottom: none;
+  /* Rotating about `bottom left` swung the top-left corner outside the scene
+     and amputated the `PDF` label at the card edge — the same severed-type
+     class of defect v3 was rejected for. A centre origin keeps the swing
+     symmetrical and the 4px inset absorbs it. */
+  transform: rotate(-2deg);
+  transform-origin: center center;
+  margin: 0 4px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.28);
+}
+
+.ps-v4-sheet--back {
+  position: absolute;
+  left: 6px; top: 4px; right: -6px;
+  opacity: 0.5;
+}
+
+/* The only furniture label in the three cards. A format, not a brand and not a
+   claim — the same role `AD` plays on card 5. #475569 on #fff = 7.58:1. */
+.ps-v4-pdf {
+  align-self: flex-start;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: #475569;
 }
 
-/* A REAL EDGE, not a shadow. rgba(0,0,0,0.1) against a #F0F4F8 backdrop was
-   invisible: measured panel-to-backdrop contrast 1.07:1 at the gradient's top,
-   so separation rested entirely on a 12% shadow and cards 2 and 3 dissolved
-   into the field. #C3CFDD is a drawn boundary at ~1.35:1 against the panel,
-   which is what card 5's bordered sub-containers give it for free. */
-[data-theme="light"] .ps-asst-app,
-[data-theme="light"] .ps-doc-sheet,
-[data-theme="light"] .ps-app-window {
-  border-color: #C3CFDD;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.14), 0 4px 12px rgba(0,0,0,0.08);
+.ps-v4-pbar {
+  flex-shrink: 0;
+  height: 5px;
+  width: 70%;
+  border-radius: 3px;
+  background: #cbd5e1;
 }
 
-[data-theme="light"] .ps-doc-rows,
-[data-theme="light"] .ps-asst-app-list {
-  border-color: #D5DEE9;
+.ps-v4-pbar--head { height: 7px; width: 62%; background: #94A3B8; }
+.ps-v4-pbar--sub  { width: 40%; background: #e2e8f0; }
+
+.ps-v4-prow { position: relative; display: flex; align-items: center; flex-shrink: 0; }
+
+/* A soft FILL, never an outline. An outline on a document means `flagged`;
+   a tint behind the text means `highlighted while reading`. Opposite meaning,
+   same geometry — this is the single most important line on card 3. */
+/* The highlight WRAPS its bar — sized independently the two drift apart the
+   moment the sheet changes width, which is what happened at 1440. */
+.ps-v4-hl {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 3px 5px;
+  margin: -3px -5px;
+  border-radius: 3px;
+  background: rgba(12,111,201,0.14);
+  transform: scaleX(0.86);
+  transform-origin: left center;
 }
 
-[data-theme="light"] .ps-asst-panel,
-[data-theme="light"] .ps-doc-mail,
-[data-theme="light"] .ps-app-sheet {
-  border-color: #C3CFDD;
-  box-shadow: 0 14px 34px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.1);
+.ps-v4-hl .ps-v4-pbar { width: 100%; }
+
+/* Anchored to the BOTTOM RIGHT and overlapping the page. Two things were
+   wrong with centring it: the relationship to the page was invisible, and the
+   dead space split into two pools, one above the panel and one below. Pinning
+   it to the bottom-right corner fills the lower right, puts it on top of the
+   page, and leaves a single pool of clear air at the top right — which is
+   where card 5 has its clear air too. `top: 44%` rather than a content height,
+   so the panel is an object with presence instead of a 100px chip floating in
+   a 278px scene. */
+.ps-v4-panel--record {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  top: 44%;
+  width: 56%;
+  max-width: none;
 }
 
-/* ── Reduced motion: pin all three to their finished frame ───── */
-@media (prefers-reduced-motion: reduce) {
-  .ps-asst-bubble,
-  .ps-asst-reply,
-  .ps-doc-row,
-  .ps-doc-total,
-  .ps-doc-send,
-  .ps-app-chart,
-  .ps-app-row,
-  .ps-app-save {
+.ps-v4-panel--record .ps-v4-rows {
+  flex: 1 1 auto;
+  min-height: 0;
+  justify-content: space-around;
+  gap: 9px;
+  padding: 6px 0 4px;
+}
+
+/* ══ REVEAL ══════════════════════════════════════════════════════
+   Split easing, house pattern: `transform` on cubic-bezier(0.165,0.84,0.44,1),
+   `opacity` on flat `ease`. Durations 360/380/420ms, stagger 90ms off an inline
+   `--i`. Transitions only — ZERO @keyframes, nothing loops, motion resolves and
+   stops. The shell paints at t=0; only payoffs are gated, so a failed observer
+   degrades to a composed card rather than an empty one.
+   ══════════════════════════════════════════════════════════════ */
+
+.ps-v4-td--seed,
+.ps-v4-td--join,
+.ps-v4-slot--typed,
+.ps-v4-slot--joined,
+.ps-v4-slot--read,
+.ps-v4-hl { opacity: 0; }
+
+/* CARD 1 phase A — the one column that already has the answer, 0->630ms. */
+.ps-v4-td--seed { transform: translateY(4px); }
+
+.ps-v4-root.in-view .ps-v4-td--seed {
+  opacity: 1;
+  transform: translateY(0);
+  border-left-color: var(--hue, transparent);
+  transition:
+    opacity 360ms ease calc(var(--i, 0) * 90ms),
+    transform 360ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--i, 0) * 90ms),
+    border-left-color 360ms ease calc(var(--i, 0) * 90ms);
+}
+
+/* CARD 1 phase B — the payoff. Columns 2-5 come DOWN AND RIGHT out of their
+   tab, one column per beat, 460->1150ms. Against a phase A ending at 630ms
+   that is 27% overlap, inside the >=25% rule. */
+.ps-v4-td--join { transform: translate(-5px, -7px); }
+
+.ps-v4-root.in-view .ps-v4-td--join {
+  opacity: 1;
+  transform: translate(0, 0);
+  border-left-color: var(--hue, transparent);
+  transition:
+    opacity 420ms ease calc(460ms + var(--i, 0) * 90ms),
+    transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(460ms + var(--i, 0) * 90ms),
+    border-left-color 420ms ease calc(460ms + var(--i, 0) * 90ms);
+}
+
+/* CARD 2 phase A — the rows a PERSON typed, one beat each, 0->540ms.
+   `--i` runs 0..2 (V4_TYPED = 3), so this is 2*90 + 360. */
+.ps-v4-slot--typed { transform: translateY(4px); }
+
+.ps-v4-root.in-view .ps-v4-slot--typed {
+  opacity: 1;
+  transform: translateY(0);
+  background: #cbd5e1;
+  transition:
+    opacity 360ms ease calc(var(--i, 0) * 90ms),
+    transform 360ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--i, 0) * 90ms);
+}
+
+/* CARD 2 phase B — THE SEAM RAIL, 400->820ms. Phase A ends at 540ms, so the
+   overlap is (540-400)/420 = 33%, inside the >=25% rule. Drawn top to bottom
+   down the edge where the copy overlaps the record. `scaleY`, because the
+   offset never closes and the rail is never horizontal at any width. */
+.ps-v4-root.in-view .ps-v4-rail {
+  transform: scaleY(1);
+  transition: transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) 400ms;
+}
+
+/* CARD 2 phase C — ONE beat, 700->1080ms. Every remaining row together, NO
+   stagger: the contrast between a staggered fill (a person, three beats) and
+   a simultaneous fill (not a person, one beat) IS the value proposition, and
+   it needs no words. Against a rail ending at 820ms that is (820-700)/380 =
+   32% overlap. DO NOT ADD A STAGGER HERE.
+
+   The 3px left edge is card 1's idiom — chroma as an INDEX of where a value
+   came from, never as the content — and it is what keeps the still readable
+   after the motion stops: rows without it were typed, rows with it arrived. */
+.ps-v4-slot--joined { transform: translateY(3px); }
+
+.ps-v4-root.in-view .ps-v4-slot--joined {
+  opacity: 1;
+  transform: translateY(0);
+  /* PLAIN #cbd5e1, AND THE BLUE ARRIVAL TICK IS DELIBERATELY GONE.
+     Two versions of an "this value arrived on the rail" marker were built and
+     photographed: a 3px `border-left` (`r1-chromium-1440x900-light-card2.png`
+     — a blue crescent floating mid-row) and a 4px background segment
+     (`r2-chromium-390x844-light-card2.png` — three blue half-discs at three
+     different x-positions, because the label widths differ per row). Both
+     read as stray bullets. Nothing on the card decodes them, and they were
+     the second-loudest chroma after the rail, which is the one mark that has
+     to be loudest. The rail carries the resolution alone. */
+  background: #cbd5e1;
+  transition:
+    opacity 380ms ease 700ms,
+    transform 380ms cubic-bezier(0.165, 0.84, 0.44, 1) 700ms;
+}
+
+/* The caret is visible FIRST and gone LAST. It has to be there while the rows
+   are still empty — that is the entire point of it — and it must not end up
+   sitting on top of a filled bar. 760->1060ms, under phase C. */
+.ps-v4-root.in-view .ps-v4-caret {
+  opacity: 0;
+  transition: opacity 300ms ease 760ms;
+}
+
+/* CARD 3 — four capture marks land on the page, 0->630ms, then recede.
+   The recede is a BACKGROUND-COLOR transition, not a second opacity one, so
+   both stages live on one element without a @keyframe. */
+.ps-v4-root.in-view .ps-v4-hl {
+  opacity: 1;
+  transform: scaleX(1);
+  /* 0.06 was invisible. Read off `base-chromium-1440x900-light-card3.png`:
+     after the recede the four capture marks cannot be seen at all, so the one
+     thing the card claims — that the page was read SELECTIVELY, four lines out
+     of fourteen — survives only for the 1.3s the transition runs. Same disease
+     card 2 was rejected for. 0.13 recedes behind the filled record without
+     disappearing from the still. */
+  background: rgba(12,111,201,0.13);
+  transition:
+    opacity 360ms ease calc(var(--i, 0) * 90ms),
+    transform 360ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--i, 0) * 90ms),
+    background-color 300ms ease 1000ms;
+}
+
+/* The record fills in the SAME ORDER as the marks, 460->1150ms. */
+.ps-v4-slot--read { transform: translateX(-6px); }
+
+.ps-v4-root.in-view .ps-v4-slot--read {
+  opacity: 1;
+  transform: translateX(0);
+  background: #cbd5e1;
+  transition:
+    opacity 420ms ease calc(460ms + var(--i, 0) * 90ms),
+    transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(460ms + var(--i, 0) * 90ms);
+}
+
+/* NO-SCRIPT and REDUCED-MOTION RESTING STATE.
+   Both pin every gated element to its FINISHED frame. `transition: none` alone
+   is not enough — it would leave the rail at `scaleX(0)` and every slot at
+   `opacity: 0`, i.e. a permanently empty card. */
+@media (scripting: none) {
+  .ps-v4-td--seed, .ps-v4-td--join,
+  .ps-v4-slot--typed, .ps-v4-slot--joined, .ps-v4-slot--read,
+  .ps-v4-hl {
     opacity: 1 !important;
     transform: none !important;
-    transition: none !important;
   }
+  .ps-v4-slot--typed, .ps-v4-slot--joined, .ps-v4-slot--read { background: #cbd5e1 !important; }
+  .ps-v4-td--join, .ps-v4-td--seed { border-left-color: var(--hue, transparent) !important; }
+  .ps-v4-hl { background: rgba(12,111,201,0.13) !important; }
+  .ps-v4-rail { transform: scaleY(1) !important; }
+  /* The caret must NOT survive into the resting frame: every slot below is
+     pinned filled, and a caret parked on a filled bar reads as a defect. */
+  .ps-v4-caret { opacity: 0 !important; }
+}
 
-  .ps-asst-panel,
-  .ps-doc-mail,
-  .ps-app-sheet,
-  .ps-bento-card:hover .ps-asst-panel,
-  .ps-bento-card:hover .ps-doc-mail,
-  .ps-bento-card:hover .ps-app-sheet {
-    /* The 5deg stays — it is composition, not motion. Only the lift goes. */
-    transform: rotate(5deg) !important;
-    transition: none !important;
-  }
-
-  .ps-asst-app,
-  .ps-doc-sheet,
-  .ps-app-window,
-  .ps-bento-card:hover .ps-asst-app,
-  .ps-bento-card:hover .ps-doc-sheet,
-  .ps-bento-card:hover .ps-app-window {
+@media (prefers-reduced-motion: reduce) {
+  .ps-v4-root * { transition: none !important; animation: none !important; }
+  .ps-v4-td--seed, .ps-v4-td--join,
+  .ps-v4-slot--typed, .ps-v4-slot--joined, .ps-v4-slot--read,
+  .ps-v4-hl {
+    opacity: 1 !important;
     transform: none !important;
-    transition: none !important;
   }
+  .ps-v4-slot--typed, .ps-v4-slot--joined, .ps-v4-slot--read { background: #cbd5e1 !important; }
+  .ps-v4-td--join, .ps-v4-td--seed { border-left-color: var(--hue, transparent) !important; }
+  .ps-v4-hl { background: rgba(12,111,201,0.13) !important; }
+  .ps-v4-rail { transform: scaleY(1) !important; }
+  /* The caret must NOT survive into the resting frame: every slot below is
+     pinned filled, and a caret parked on a filled bar reads as a defect. */
+  .ps-v4-caret { opacity: 0 !important; }
 }
 
-/* ── Mobile: 1 column, card ~342x320. Tighten, never truncate ──
-   Nothing is display:none'd at any width. Every element in all three
-   cards survives 320x568 — that is the bar SearchVisual set at 7/7, and
-   it is the specific failure of the card this replaces (2 of 6 rows gone
-   at 393px, and a payoff badge that vanished below 1200px entirely). */
-@media (max-width: 639px) {
-  /* PAYOFF CLEARANCE, measured on the rendered page rather than assumed.
-     `.ps-bento-card__text` is a constant 62.8px block on mobile and it
-     paints a scrim OVER the artwork. At 54px of bottom padding the
-     measured gap from the payoff's bottom edge to the title's top edge
-     was card1 +8px and card3 -1px — card 3's blue reply bubble sat UNDER
-     the scrim and rendered as dark navy-on-navy. The reference card 5
-     runs +123px there. Re-measure with the clearance probe before
-     changing these: a dimmed payoff is invisible to every box-geometry
-     check and shows up only in a screenshot. */
-  /* Side padding is now symmetric because nothing is cropped by the card
-     frame. Bottom padding came DOWN from 74-76px: it used to be carrying the
-     payoff clearance, and the payoff is top-anchored now, so the space goes
-     back to the artwork instead. Top stays >=52 so the expand circle
-     (card-y 16->48) never lands on plane 1. */
-  .ps-asst-root { padding: 52px 16px 68px 16px; }
-  .ps-doc-root  { padding: 52px 16px 68px 16px; }
-  .ps-app-root  { padding: 52px 16px 68px 16px; }
+/* ══ THE COMPACT RAMP — KEYED TO THE CARD, NOT THE VIEWPORT ══════
+   CARD WIDTH IS NOT A MONOTONIC FUNCTION OF VIEWPORT WIDTH. Measured:
+     320x568  1 col  ~272px  <- narrowest anywhere
+     390x844  1 col  ~342px
+     639x900  1 col   591px
+     640x900  2 col   288px  <- second narrowest, and ABOVE the phone ramp
+     940x900  3 col  286.7px <- narrowest of all three bands
+     1440x900 3 col  ~600px
+   The card collapses THREE times. The legacy ramp is `@media (max-width:639px)`
+   and catches only the FIRST. So at 640 and 940 a ~287px card was receiving the
+   WIDE composition — narrower than the 375px phone's 327px card, which
+   correctly got the compact one.
 
-  .ps-asst-app-body { gap: 8px; padding: 8px; }
-  .ps-asst-app-rail { width: 20px; }
-  .ps-asst-app-list { gap: 5px; padding: 5px; }
-  .ps-asst-app-item { height: 19px; padding: 3px 5px; }
-  .ps-asst-panel { min-width: 168px; max-width: 232px; gap: 5px; padding: 7px 9px 9px; }
-  .ps-asst-bubble { height: 12px; }
-  .ps-asst-reply { padding: 6px 8px; }
+   Three disjoint viewport bands cannot be expressed as one media query, and
+   this project has already been bitten trying (A4-stage1-painpoints.md: "a
+   third breakpoint cannot resolve it"). A container query is the correct tool
+   and keeps the rule to ONE declaration. `.ps-bento-card` declares
+   `container: bentocard / inline-size` in globals.css — ONE declaration, which
+   is also what lets card 5's overrun at 940 be fixed WITHOUT touching its
+   markup. 300px is chosen deliberately: it catches 272 / 288 / 286.7 and
+   nothing else, so cards at 312-382px (the 360-430 phones) keep the wide
+   composition they render correctly at today.
+   ══════════════════════════════════════════════════════════════ */
 
-  .ps-doc-body { padding: 9px 10px 10px; gap: 5px; }
-  .ps-doc-rows { gap: 3px; padding: 5px 6px; }
-  .ps-doc-row { height: 19px; }
-  .ps-doc-mail { min-width: 142px; max-width: 184px; padding: 7px 8px; gap: 6px; }
+@container bentocard (max-width: 300px) {
+  .ps-v4-root { padding: 68px 14px 85px; }
+  .ps-v4-panel { gap: 4px; padding: 0 8px 8px; }
+  .ps-v4-chrome { margin: 0 -8px 1px; padding: 5px 8px; }
+  .ps-v4-tabs { margin: 0 -8px 0; padding: 4px 6px 0; }
+  .ps-v4-url { padding: 4px 7px; }
+  .ps-v4-table { padding: 5px 6px 6px; gap: 3px; }
+  .ps-v4-rows { gap: 4px; }
+  .ps-v4-label, .ps-v4-slot, .ps-v4-td, .ps-v4-pbar { height: 3px; }
+  .ps-v4-pbar--head { height: 3px; }
 
-  .ps-app-rail { width: 28px; }
-  .ps-app-main { padding: 8px 8px 9px; gap: 6px; }
-  .ps-app-chart { min-height: 36px; gap: 4px; }
-  .ps-app-sheet { min-width: 108px; padding: 8px 9px 9px; right: 6px; }
-}
+  /* FIVE NEVER BECOMES FOUR. A table ROW goes; a COLUMN never does, because
+     the meaning depends on the count of columns. Reduce from the END so the
+     90ms stagger stays contiguous. */
+  .ps-v4-tr:last-of-type { display: none; }
 
-/* 320px is the narrowest viewport in the matrix and the card is ~288px
-   wide there. These are the only rules below 360; they shrink, they do
-   not remove. */
-@media (max-width: 359px) {
-  .ps-asst-root, .ps-doc-root, .ps-app-root { padding-left: 12px; padding-right: 12px; }
-  .ps-asst-panel { min-width: 156px; max-width: 208px; }
-  .ps-asst-app-item { height: 17px; }
-  .ps-doc-row    { height: 17px; }
-  .ps-doc-mail   { min-width: 132px; max-width: 168px; }
-  .ps-app-sheet  { min-width: 100px; max-width: 124px; }
-  .ps-app-rail   { width: 24px; }
-  .ps-app-rail-item { width: 12px; }
-  .ps-app-rail-mark { width: 11px; height: 11px; }
+  /* CARD 2 DOES NOT STACK AND DOES NOT CHANGE COMPOSITION. The offset is the
+     card's whole argument, so it shrinks - it never becomes a layout gap and
+     the sheets never separate. Two custom properties move both sheets and the
+     rail together; there is nothing else to keep in step. Row counts stay
+     EQUAL in the two sheets at every width, and the caret's row (index 3)
+     survives the drop. */
+  .ps-v4-dup { --dx: 14px; --dy: clamp(52px, 34%, 78px); }
+  .ps-v4-sheetx { gap: 4px; padding: 0 8px 8px; }
+  .ps-v4-sheetx .ps-v4-label,
+  .ps-v4-sheetx .ps-v4-slot { height: 5px; border-radius: 3px; }
+  .ps-v4-sheetx .ps-v4-pill,
+  .ps-v4-chromeurl { height: 11px; }
+  .ps-v4-caret { height: 10px; margin-top: -5px; }
+  .ps-v4-sheetx .ps-v4-row:last-of-type { display: none; }
+  .ps-v4-rail { width: 2px; top: calc(var(--dy) + 6px); bottom: 6px; }
+
+  /* CARD 3 DOES NOT STACK. Stacking it was tried and measured: at 320 the card
+     is 320px tall, the scene 167px, and a stacked page (148px) plus record
+     (~90px) needs 258px — the record was clipped to its chrome strip alone.
+     Side-by-side fits at every width because both columns STRETCH to the scene
+     rather than adding their heights, and it also honours the rule this file
+     already states: the composition must not change by breakpoint.
+
+     `.ps-v4-pdf` is also a <span>, so the prows are spans 2..15 and `n+9` drops
+     from the 8th prow on — keeping marked rows 1,2,4,5. Capture marks stay at 4
+     and record slots stay at 4; those two counts must match at every width. */
+  .ps-v4-sheets { inset: 0 44% 0 0; }
+  .ps-v4-panel--record { top: 40%; width: 60%; }
+  .ps-v4-sheet { gap: 7px; padding: 9px 9px 0; }
+  .ps-v4-prow:nth-of-type(n+9) { display: none; }
+  .ps-v4-panel--record .ps-v4-rows { gap: 7px; padding: 4px 0 2px; }
+  .ps-v4-panel--record .ps-v4-label { width: 22px; }
 }
 
 /* ── VISUAL 5: Revenue Growth Engine ───────────────────────── */
@@ -2567,3 +2302,62 @@
    CARD and says nothing about this link list, so removing it conflicts with
    no accepted decision. ADR-0005 decision 3 protects the crawler-facing
    <details> links in page.tsx -- a DIFFERENT surface, still present. */
+
+/* ── THE 640 / 940 GAP — CARD 5 AND CARD 6, FIXED BY CARD WIDTH ──
+   `@media (max-width: 639px)` above compacts `.ps-sr-*` and `.ps-cb-*` for
+   PHONES. It misses the other two bands where the grid hands these cards an
+   equally narrow box: 640x900 (2 columns, 288px) and 940x900 (3 columns,
+   286.7px). At 940 the consequence is visible and was filed against a frozen
+   card — card 5's `RESULTS` panel overruns its own card's rounded bottom into
+   `SEO AI VISIBILITY AD MANAGEMENT.` with essentially no clear band.
+
+   This re-applies the SAME declarations, keyed to the card's own inline size,
+   so card 5's and card 6's markup stay byte-identical. 300px is chosen so it
+   fires at 272 / 288 / 286.7 and nowhere else: the 360-430 phones (312-382px)
+   keep the composition they already render correctly.
+
+   Duplication rather than a shared class is deliberate — rewriting the media
+   query into a container query would change phone behaviour on two frozen
+   cards, which is not a trade this change is allowed to make. */
+@container bentocard (max-width: 300px) {
+  .ps-cb-root { padding: 68px 12px 54px; }
+  .ps-cb-editor { flex-basis: 45%; height: 172px; }
+  .ps-cb-code { gap: 4px; padding: 8px 8px 10px; }
+  .ps-cb-preview { flex-basis: 58%; height: 204px; margin-left: -12px; }
+
+  .ps-sr-root { padding: 68px 16px 60px; }
+  .ps-sr-panel { max-width: 268px; gap: 4px; padding: 0 8px 8px; }
+  .ps-sr-chrome { margin: 0 -8px 1px; padding: 5px 8px; }
+  .ps-sr-field { padding: 5px 8px; }
+  .ps-sr-ai, .ps-sr-pack { padding: 4px 7px 5px; gap: 3px; }
+  .ps-sr-ai-line { height: 3px; }
+  .ps-sr-row { padding: 2px 4px; }
+}
+
+/* ── THE OTHER HALF OF THE SAME BUG: CARD 5 WHEN IT SPANS ────────
+   The block above catches the card when the grid makes it NARROW. This one
+   catches it when the grid makes it WIDE but leaves it just as short.
+
+   At 640-939 `.ps-bento-card--search-ads` takes `grid-column: 1 / -1`, so the
+   card is 592-891px across and 380px tall, and the `@media (max-width: 639px)`
+   ramp stops one pixel before it. The wide composition's 246px panel plus an
+   84px two-line title does not fit 380px: measured gap -11px at 640x900, i.e.
+   the panel overruns `SEO AI VISIBILITY AD MANAGEMENT.`
+
+   VERIFIED PRE-EXISTING, not caused by the container work: A/B at 640x900 with
+   `container-type` forced back to `normal` gives -11 either way. (The same A/B
+   at 940x900 gives -4 without and +34 with, which is the overrun the critic
+   filed.) Card 5's markup is untouched by both blocks.
+
+   480px is the discriminator: card 5 is 591-891px wide exactly when it spans a
+   row, 272-400px otherwise, and card 4's spanning case uses `.ps-visual-website`
+   so nothing here reaches it. */
+@container bentocard (min-width: 480px) {
+  .ps-sr-root { padding: 68px 16px 60px; }
+  .ps-sr-panel { max-width: 268px; gap: 4px; padding: 0 8px 8px; }
+  .ps-sr-chrome { margin: 0 -8px 1px; padding: 5px 8px; }
+  .ps-sr-field { padding: 5px 8px; }
+  .ps-sr-ai, .ps-sr-pack { padding: 4px 7px 5px; gap: 3px; }
+  .ps-sr-ai-line { height: 3px; }
+  .ps-sr-row { padding: 2px 4px; }
+}

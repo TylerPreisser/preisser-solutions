@@ -75,7 +75,12 @@
 
   /* Accent */
   --color-cyan:          #80E9FF;
-  --color-green:         #00D4AA;
+  --color-green:         #00D4AA;  /* 1.91:1 with white — decorative fills only, never text */
+  /* Added 2026-09-06. `--color-green` cannot carry text: measured 1.91:1 on
+     white, 1.81:1 on --color-light, 1.72:1 on #EEF4FB. This is the darkened
+     companion, named to match --color-primary-strong beside it. Ratios below
+     recomputed here with the WCAG 2.x relative-luminance formula, not copied. */
+  --color-green-strong:  #0B7A61;  /* 5.29:1 white · 5.01:1 #F6F9FC · 4.78:1 #EEF4FB · 3.43:1 #0A1628 (large graphic only on dark) */
   /* Error/invalid state. Specified in docs/design-system.md but never actually
      declared — the contact form's validation was the first thing to need it. */
   --color-danger:        #DF1B41;
@@ -1729,6 +1734,22 @@ ul, ol {
 
   /* Stacking context */
   isolation: isolate;
+
+  /* CARD WIDTH IS NOT MONOTONIC IN VIEWPORT WIDTH. The grid collapses the card
+     THREE times — ~272px at 320, ~288px at 640 (2 cols) and ~286.7px at 940
+     (3 cols) — but every compact ramp in card-visuals.css is keyed to
+     `@media (max-width: 639px)`, which catches only the first. So at 640 and
+     940 a ~287px card was being handed the WIDE composition, narrower than the
+     375px phone's 327px card that correctly gets the compact one. That is the
+     live defect behind card 5's panel overrunning its own card into the title
+     at 940x900.
+
+     Three disjoint viewport bands cannot be written as one media query. This
+     one declaration lets every card ask its OWN width instead — see the
+     `@container bentocard` blocks in card-visuals.css. Safe here because the
+     card is already `position: relative` + `isolation: isolate`, so the
+     containment this implies changes no existing containing block. */
+  container: bentocard / inline-size;
 }
 
 @media (max-width: 639px) {
@@ -7656,6 +7677,24 @@ body:has(.ps-contact2-hero) .ps-header-blur {
      them without touching protected artwork — which is what the rule below
      does. See it for the numbers. */
   .ps-bento-card--search-ads { min-height: 380px; }
+
+  /* REMOVED 2026-09-06 with the v4 card rebuild: the `--automation` and
+     `--websites` phone height lifts that stood here.
+
+     Both were added for v3 artwork that no longer exists. The automation one
+     existed because card 3's gate row carried `Approve` into the dark title
+     scrim and lost 52% of its blue; v4 has no `Approve`, no gate row and no
+     button anywhere. The websites one existed because card 1's five
+     overlapping ghost documents plus a content-sized panel could not fit;
+     v4 has no ghost documents.
+
+     Keeping them would have cost exactly what they bought: with a v4 scene
+     that stretches to its frame, a 380px phone card produced a 132-151px hole
+     between the artwork and the title, against 27px on card 5. Both cards now
+     take the base 320px, which is what card 4 uses at this width.
+
+     `--search-ads` KEEPS its lift above: card 5 is frozen and its artwork's
+     bottom edge really is pinned at 269.8px. */
 }
 
 

@@ -209,120 +209,131 @@ function useRevealOnce<T extends HTMLElement>() {
   return ref;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   VISUAL 2 — AI Integration card face: the DOCKED ASSISTANT
+/* ═════════════════════════════════════════════════════════════
+   BENTO CARDS 1-3 — v4: DRAW THE VISITOR'S ARTIFACT, NOT OUR APP
 
-   IDENTITY WARNING, unchanged by this rebuild: this component renders the
-   **AI Integration** tile. `variant` does not match `type` — the AI pillar
-   is `type: "ai"` with `variant: "automation"`, so its class is
-   `.ps-bento-card--automation` (service-pillars.tsx:333-341). The card
-   titled "Business Automation" is `SystemFixesVisual` /
-   `.ps-bento-card--systems`. Key off the component, never the class name.
+   Spec: ~/.claude/agent-reports/cards-v4-concept.md (sections 2-5).
 
-   REBUILT 2026-09-06. The thing this replaces was a node-and-edge
-   architecture diagram (EMAIL -> EXTRACT -> AI READ, forking to SEND and
-   HOLD). Each reason below was read off a render, not inferred:
+   v3 drew our application — a `TODAY` dashboard, an `ACCOUNTS RECEIVABLE`
+   ledger, a `HELD - NOT SENT` approval queue — shrunk to fit, with invented
+   company names, dollar amounts, red status chips and fake primary buttons in
+   the real CTA's blue. Cards 4 and 5 do the opposite: they draw an artifact the
+   visitor ALREADY OWNS, at poster scale, with everything except one idea
+   abstracted to bars. That difference is subject, not styling, which is why
+   three rounds of restyling did not close it.
 
-   1. WRONG ABSTRACTION. Cards 4 and 5 — the two the owner approves of —
-      each depict a surface the BUYER USES: a browser window and a phone,
-      a Google results page. This depicted an internal topology the buyer
-      will never see. It was the only diagram on a grid of pictures, and
-      nobody buys a flowchart.
-   2. HAIRLINES, NO MASS. 15 SVG nodes at stroke-width 1.1-2 with almost
-      no filled area anywhere. WebsiteVisual contains ZERO structural
-      strokes and is 100% filled mass. That contrast is the literal source
-      of "unsatisfying": there was nothing to look at, only lines to trace.
-   3. THE BRAND COLOUR WAS ABSENT and the loudest pixel on the page was a
-      saturated amber HOLD branch — a hue that exists nowhere else on the
-      site. SearchVisual makes #1590FF do every job.
-   4. A PERPETUAL LOOP. `ps-dash-flow 1.4s linear infinite` was the only
-      infinite animation in the whole grid. Cards 4/5 settle and stop.
-   5. THE PAYOFF WAS A NEGATIVE — "AI PROPOSED · NOT SENT", a dimmed SEND
-      branch, "HELD FOR YOU". The climax was that the thing did not happen.
+   THE CAP, and it is checkable by grepping this file:
+     <= 4 content words, <= 2 furniture labels per card, and ZERO numbers,
+     currency, percentages, dates, company names, person names, BUTTON LABELS,
+     first-person sentences or status words.
+   These three spend, in total: one placeholder domain (`yourcompany.com`, the
+   identical string cards 4 and 5 already use - the repetition is the point),
+   zero words, and one furniture label (`PDF`).
 
-   SUBJECT NOW: your assistant, docked into the screen you already use.
-   Plane 1 is your own app — real window chrome, content as grey bars.
-   Plane 2 is the assistant panel, tilted 5deg and occluding it, and the
-   payoff is the solid brand-blue reply it wrote. One readable string
-   ("Assistant"), which is the same budget WebsiteVisual runs on.
+   No buttons. No red. No window title that is an app status - cards 4/5 title
+   their windows with a URL or a search box, and that is the rule.
 
-   Note the reply bubble carries no text. A bubble you can READ is a claim
-   about what the model said; a filled blue mass with two placeholder bars
-   is the capability drawn as artwork. Same discipline as SearchVisual's
-   "no rank numbers" note at :991.
+   All three share `.ps-v4-*` primitives whose values are COPIED from card 5's
+   `.ps-sr-*` (card-visuals.css:2169+), not reinvented, so the row is one row.
    ───────────────────────────────────────────────────────────── */
+
+/* The lock glyph is lifted verbatim from WebsiteVisual (:52-55) so card 1's
+   URL pill and card 4's browser chrome are the same object. */
+function V4Lock() {
+  return (
+    <svg width="8" height="9" viewBox="0 0 8 9" fill="none" aria-hidden="true">
+      <rect x="1" y="4" width="6" height="4" rx="1" fill="#94A3B8" />
+      <path d="M2.5 4V2.5a1.5 1.5 0 013 0V4" stroke="#94A3B8" strokeWidth="1" fill="none" />
+    </svg>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CARD 3 — AI Integration.  "The page fills the form in by itself."
+
+   Pain, in the owner's own words, service-pillars.tsx:352 (`painPoints[0]`,
+   and already the selected `hookIndex: 0` at :349):
+     "Someone here retypes the same information off a PDF every single day."
+
+   Subject: a PDF the visitor RECEIVED. Not our assistant, not our chat, not
+   our approval queue. The AI is depicted by BEHAVIOUR - the page is read into
+   the record, in order, once - never by iconography. No sparkle, no bubble,
+   no first-person voice.
+
+   The capture marks are a soft FILL, never an outline. A rectangle outline on
+   a document is the universal sign for `flagged`, which is exactly how v3's
+   red-bordered block read. A tint behind the bar is the universal sign for
+   `highlighted while reading`. Same geometry, opposite meaning.
+   ───────────────────────────────────────────────────────────── */
+
+/* Body-bar widths on the received page. Rows 1,2,4,5 are the four that get
+   captured, so the marks are not a contiguous block - a reader should see the
+   page being read selectively, not a highlighter dragged down it. */
+const V4_PAGE_ROWS = [
+  { w: "88%", mark: 0 },
+  { w: "72%", mark: 1 },
+  { w: "54%", mark: -1 },
+  { w: "80%", mark: 2 },
+  { w: "66%", mark: 3 },
+  { w: "44%", mark: -1 },
+  { w: "82%", mark: -1 },
+  { w: "60%", mark: -1 },
+  { w: "76%", mark: -1 },
+  { w: "84%", mark: -1 },
+  { w: "58%", mark: -1 },
+  { w: "70%", mark: -1 },
+  { w: "48%", mark: -1 },
+  { w: "78%", mark: -1 },
+] as const;
+
 export function AutomationVisual() {
   const containerRef = useRevealOnce<HTMLDivElement>();
 
   return (
-    <div ref={containerRef} className="ps-asst-root" aria-hidden="true">
-      <div className="ps-asst-stage">
-        {/* PLANE 1 — the customer's own screen. Deliberately generic: a
-            window, a rail, five content bars. It is the thing being
-            integrated INTO, so it must not compete for attention, and it
-            must not read as WebsiteVisual's browser (no traffic lights,
-            no URL bar, no phone). It runs off the right card edge. */}
-        <div className="ps-asst-app">
-          {/* Chrome strip. It FLIPS WITH THE THEME, and the reason written
-              here first was wrong: measured, .ps-bento-card__expand spans
-              card-y 16->48 while plane 1's top edge is at 54-56, so the
-              frosted circle never touches this strip on any of the three
-              cards at any of the fourteen viewports — it sits on the root
-              backdrop. The flip is still required, for the ordinary reason:
-              a permanently dark strip is the only dark object in an
-              otherwise light composition in light theme, and reads as
-              artwork imported from another site. */}
-          <div className="ps-asst-app-chrome">
-            <span className="ps-asst-app-dots"><i /><i /><i /></span>
-            <span className="ps-asst-app-pill" />
-          </div>
-          <div className="ps-asst-app-body">
-            <span className="ps-asst-app-rail" />
-            <span className="ps-asst-app-list">
-              {[0, 1, 2, 3, 4, 5].map((r) => (
-                <i className="ps-asst-app-item" key={`asst-item-${r}`}>
-                  <b className="ps-asst-app-av" />
-                  <b className="ps-asst-app-name" />
-                  <b className="ps-asst-app-meta" />
-                </i>
-              ))}
-            </span>
+    <div ref={containerRef} className="ps-v4-root ps-v4-root--read" aria-hidden="true">
+      <div className="ps-v4-read">
+        {/* LEFT ~54% - the page. Its bottom edge runs off the composition;
+            the crop passes through BARS ONLY, never through a glyph. That is
+            the rule card 4 obeys and the rule v3's ghost documents broke on
+            three separate edges. */}
+        <div className="ps-v4-sheets">
+          <div className="ps-v4-sheet ps-v4-sheet--back" />
+          <div className="ps-v4-sheet">
+            <span className="ps-v4-pdf">PDF</span>
+            <i className="ps-v4-pbar ps-v4-pbar--head" />
+            <i className="ps-v4-pbar ps-v4-pbar--sub" />
+            {/* A marked row is a bar INSIDE its highlight, never a bar with a
+                highlight positioned near it — sized independently the two drift
+                apart the moment the sheet changes width. */}
+            {V4_PAGE_ROWS.map((r, i) => (
+              <span className="ps-v4-prow" key={i}>
+                {r.mark >= 0 ? (
+                  <span className="ps-v4-hl" style={{ width: r.w, "--i": r.mark } as React.CSSProperties}>
+                    <i className="ps-v4-pbar" />
+                  </span>
+                ) : (
+                  <i className="ps-v4-pbar" style={{ width: r.w }} />
+                )}
+              </span>
+            ))}
           </div>
         </div>
 
-        {/* PLANE 2 — the assistant, docked over plane 1 at 5deg. This is
-            the second plane the reference language requires: it OCCLUDES
-            the first and carries the deep shadow, the way .ps-phone
-            overlaps .ps-wb-browser at card-visuals.css:82-99. 5deg is the
-            grid's only rotation angle; do not introduce a second one. */}
-        <div className="ps-asst-panel">
-          <div className="ps-asst-head">
-            <svg className="ps-asst-spark" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M8 1.5l1.5 4L13.5 7l-4 1.5L8 12.5 6.5 8.5 2.5 7l4-1.5z"
-                fill="currentColor"
-              />
-            </svg>
-            <span className="ps-asst-label">Assistant</span>
+        {/* RIGHT ~46% - the record. Asymmetric against the page on purpose so
+            this card does not read as card 2 drawn twice. */}
+        <div className="ps-v4-panel ps-v4-panel--record">
+          <div className="ps-v4-chrome">
+            <span className="ps-v4-dots"><i /><i /><i /></span>
+            <span className="ps-v4-pill" />
           </div>
-
-          <div className="ps-asst-thread">
-            <span className="ps-asst-bubble" style={{ "--sr-i": 0 } as React.CSSProperties} />
-            <span
-              className="ps-asst-bubble ps-asst-bubble--short"
-              style={{ "--sr-i": 1 } as React.CSSProperties}
-            />
-            <span
-              className="ps-asst-bubble ps-asst-bubble--wide"
-              style={{ "--sr-i": 2 } as React.CSSProperties}
-            />
-
-            {/* PAYOFF. Solid brand blue, arrives last, scales 0.94 -> 1
-                exactly once — the single permitted scale in the language
-                (card-visuals.css:3088, .ps-sr-cite). */}
-            <span className="ps-asst-reply">
-              <i /><i />
-            </span>
+          <div className="ps-v4-rows">
+            {[0, 1, 2, 3].map((i) => (
+              <span className="ps-v4-row" key={i}>
+                <i className="ps-v4-label" />
+                <i className="ps-v4-slot ps-v4-slot--read"
+                   style={{ "--i": i } as React.CSSProperties} />
+              </span>
+            ))}
           </div>
         </div>
       </div>
@@ -331,250 +342,197 @@ export function AutomationVisual() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   VISUAL 3 — Business Automation card face: the DOCUMENT THAT SENDS ITSELF
+   CARD 2 — Business Automation.  "The same form, twice, by hand."
 
-   REBUILT 2026-09-06. What this replaces was a timestamped invoice-run
-   log. Reasons:
+   Pain, service-pillars.tsx:240 (`painPoints[1]`, selected `hookIndex: 1`):
+     "We're still copying data between systems by hand."
 
-   1. 236 CHARACTERS OF READABLE PROSE — the worst violation in the grid,
-      4x SearchVisual's 61. Six timestamped sentences plus AUTO/SENT/YOU/
-      QUEUED/CLOSED/PAID and two dollar figures. A changelog, not a
-      graphic. It could not be parsed at card scale and could not survive
-      a 320px column.
-   2. A LIVE BUG. `card-visuals.css:2166` hid `.ps-run-doc` below 1200px
-      but left `.ps-run-stamp` visible, so at 1024x768 a green PAID badge
-      was stamped onto empty space with nothing under it — reproduced in
-      chromium, webkit AND firefox. The payoff object did not exist at the
-      width where most tablets sit. Cards 4/5's payoff exists everywhere.
-   3. FIVE HUE FAMILIES AND TWO GREENS, including a dark saturated green
-      that appears nowhere else on the site. The language permits navy,
-      white, three greys, #1590FF and at most three DESATURATED decorative
-      accents — and no semantic colour at all.
-   4. `rotate(-8deg) scale(1.3) -> scale(1)` on a bounce easing: a stamp
-      SLAM, the most violent gesture in the grid, and a second rotation
-      angle against WebsiteVisual's single 5deg.
-   5. NO ARTWORK HOVER. Both reference cards answer the cursor.
+   WHY THIS IS A REWRITE AND NOT A TWEAK. The previous composition put two
+   equal panels side by side in a 34px gap and let the MOTION carry the whole
+   message: the left filled in five beats, the right in one. Photographed at
+   rest — which is what a reduced-motion visitor, a scrolled-past-and-back
+   visitor and every screenshot sees — it was two identical filled slabs and a
+   1.5px hairline. The meaning was 100% temporal, and a card whose meaning
+   evaporates when the transition ends has no meaning. Card 5 can be read from
+   a still. So must this one.
 
-   SUBJECT NOW: the document your business sends, produced and delivered
-   without you touching it. Plane 1 is the document itself, cropped by the
-   card's right and bottom edges. Plane 2 is the outgoing message, tilted
-   5deg over it, and the payoff is its solid brand-blue Send control.
+   THE STILL, and it is the deliverable:
+     · The SAME form drawn twice, offset down-and-right like a misregistered
+       photocopy. Both sheets are the same size BY CONSTRUCTION (each is
+       inset from the opposite two edges of one box by the same offset), and
+       both carry the identical row rhythm and identical label widths, so the
+       back sheet's exposed rows sit a visible half-step above the front
+       sheet's. That misregistration is what says DUPLICATE. Two panels in a
+       gap say "two documents"; a duplicate-icon silhouette says "one thing,
+       entered twice", which is the pain.
+     · The back sheet is the record that already exists. The front sheet is
+       the copy a person is making of it — its later rows are still empty and
+       a TEXT CARET sits in the first one. The caret is the smallest element
+       on the card and the one that converts "two documents" into "somebody is
+       retyping this right now".
+     · Two favicon hues. LOAD-BEARING, NOT DECORATIVE — the only thing
+       carrying "different SYSTEMS" on a card with no sentences. An
+       implementer who harmonises these to one brand blue turns the card into
+       "one form, twice", which is nonsense. DO NOT HARMONISE.
 
-   CLAIMS DISCIPLINE (docs/WRITER-AGENT-PROMPT.md:31): every line item and
-   every total is a GREY BAR. There is no currency figure, no quantity, no
-   date and no company name anywhere in this card. Two readable strings,
-   both chrome: "Invoice" (a document kicker) and "Send" (a button). A
-   real number here would be a fabricated outcome drawn as artwork, which
-   is the trap RevenueVisual is shelved for.
+   THE RESOLUTION IS ADDITIVE, NEVER SUBTRACTIVE. Nothing that carries the
+   pain is animated away — the offset never closes, the duplicate never
+   merges. What arrives is the JOIN: a full-height rail down the seam where
+   the copy meets the record, and the empty rows filling behind it in one
+   beat. The rail is the payoff so it is drawn as the payoff — it is card 5's
+   own 2px `AI OVERVIEW` left rail, at sheet height, not the 34px hairline it
+   replaced.
+
+   WORD BUDGET. 0 content words, 0 furniture labels, 1 placeholder domain —
+   `yourcompany.com`, the identical string cards 1, 4 and 5 carry. The old
+   composition spent zero, and paid for it: with no chrome title at all the
+   panels read as slabs rather than as windows, and card 2 was the only one of
+   the five with no family signal.
    ───────────────────────────────────────────────────────────── */
+
+/* Label-bar widths. IDENTICAL in both sheets - that identity is the entire
+   argument. If the two forms differ, "copied by hand" evaporates. */
+const V4_FORM_ROWS = ["64%", "48%", "72%", "40%", "56%", "68%"] as const;
+
+/* Rows 0..2 were typed by hand (they arrive one beat at a time, because a
+   person is doing it). Rows 3.. arrive together on the rail, because that is
+   not a person. The caret sits on row V4_TYPED — the first one still empty. */
+const V4_TYPED = 3;
+
 export function SystemFixesVisual() {
   const containerRef = useRevealOnce<HTMLDivElement>();
 
-  return (
-    <div ref={containerRef} className="ps-doc-root" aria-hidden="true">
-      <div className="ps-doc-stage">
-        {/* PLANE 1 — the document, sitting wholly inside the card frame.
-            An earlier version ran it off the card's left edge on the strength
-            of binding requirement 7 ("cropped by at least one card edge").
-            That requirement misreads its own reference: measured, card 4's
-            browser has 205px of clear navy to the card's right edge and card 5
-            is an inset panel with margin on all four sides. In the approved
-            language the crop is ONE OBJECT OCCLUDING ANOTHER, never the card
-            frame amputating the artwork. Plane 2 does the cropping here. */}
-        <article className="ps-doc-sheet">
-          {/* The dark band is both the document's letterhead AND the
-              contrast bed for .ps-bento-card__expand. Flips with theme. */}
-          <div className="ps-doc-head">
-            <span className="ps-doc-mark" />
-            <span className="ps-doc-kicker">Invoice</span>
-          </div>
-
-          <div className="ps-doc-body">
-            <span className="ps-doc-title" />
-            <span className="ps-doc-sub" />
-
-            <div className="ps-doc-rows">
-              {[0, 1, 2, 3, 4].map((row) => (
-                <span
-                  className="ps-doc-row"
-                  key={`doc-row-${row}`}
-                  style={{ "--sr-i": row } as React.CSSProperties}
-                >
-                  <i className="ps-doc-row-name" />
-                  <i className="ps-doc-row-val" />
-                </span>
-              ))}
-            </div>
-
-            <span className="ps-doc-total" style={{ "--sr-i": 5 } as React.CSSProperties}>
-              <i className="ps-doc-total-name" />
-              <i className="ps-doc-total-val" />
+  const sheet = (side: "src" | "copy") => (
+    <div className={`ps-v4-sheetx ps-v4-sheetx--${side}`}>
+      <div className="ps-v4-chrome">
+        <i className={`ps-v4-fav ps-v4-fav--${side === "src" ? "a" : "b"}`} />
+        {side === "copy" ? (
+          /* The window title is a URL, exactly like cards 1 and 4. Never an
+             app status. */
+          <span className="ps-v4-chromeurl">
+            <V4Lock />
+            <span className="ps-v4-host">yourcompany.com</span>
+          </span>
+        ) : (
+          <span className="ps-v4-pill" />
+        )}
+      </div>
+      <div className="ps-v4-rows">
+        {V4_FORM_ROWS.map((w, i) => (
+          <span className="ps-v4-row" key={i}>
+            <i className="ps-v4-label" style={{ width: w }} />
+            <span className="ps-v4-slotbox">
+              {side === "src" ? (
+                /* The record that already exists. Painted at t=0, not gated —
+                   the source is not something that has to arrive. */
+                <i className="ps-v4-slot ps-v4-slot--src" />
+              ) : (
+                <>
+                  <i
+                    className={`ps-v4-slot ps-v4-slot--${i < V4_TYPED ? "typed" : "joined"}`}
+                    style={{ "--i": i } as React.CSSProperties}
+                  />
+                  {/* The caret. Outside the slot on purpose: it has to be
+                      visible while the slot is still EMPTY, and the slot's
+                      opacity is the thing being animated. */}
+                  {i === V4_TYPED ? <i className="ps-v4-caret" /> : null}
+                </>
+              )}
             </span>
-          </div>
-        </article>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 
-        {/* PLANE 2 — it leaves by itself. Occludes the sheet's lower-left,
-            carries the 0 20px 50px rgba(0,0,0,0.6) shadow, tilted 5deg. */}
-        <div className="ps-doc-mail">
-          <span className="ps-doc-mail-icon">
-            <svg viewBox="0 0 16 16" fill="none">
-              <path
-                d="M2 4.6h12v7.2H2z"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M2.4 5L8 9.1 13.6 5"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-          <span className="ps-doc-mail-lines">
-            <i /><i />
-          </span>
-          {/* PAYOFF. Solid brand blue, last in, 0.94 -> 1. */}
-          <span className="ps-doc-send">Send</span>
-        </div>
+  return (
+    <div ref={containerRef} className="ps-v4-root ps-v4-root--dup" aria-hidden="true">
+      <div className="ps-v4-dup">
+        {sheet("src")}
+        {sheet("copy")}
+        {/* The seam. Full sheet height, on the edge where the copy overlaps
+            the record, drawn top to bottom. It is the payoff, so it is the
+            largest single mark on the card - not a hairline in a gap. */}
+        <i className="ps-v4-rail" />
       </div>
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────
-   VISUAL 4 — Business Software card face: YOUR OWN BACK-OFFICE APP
+   CARD 1 — Business Software.  "Five places, one picture."
 
-   REBUILT 2026-09-06. What this replaces was a member-records panel.
-   Reasons, all measured on a render:
+   Pain, service-pillars.tsx:148 (`painPoints[1]`, selected `hookIndex: 1`):
+     "Our data lives in five different places and nobody has a complete picture."
 
-   1. 18 READABLE STRINGS where the language allows <=5 — MEMBERS, MEMBER
-      RECORDS, 1,248, SIGN-UPS, six avatar initials, five ACTIVE pills,
-      PENDING, New member, SAVE. The card had to be READ, so it could not
-      be RECOGNISED. Cards 4/5 are recognised in ~200ms without reading.
-   2. SEMANTIC COLOUR, which the language forbids: green ACTIVE x5, amber
-      PENDING, six pastel avatar chips, 28 distinct colour tokens. In the
-      reference cards accents are decorative, identically sized, and never
-      encode state.
-   3. A WHITE SLAB IN DARK MODE. The panel was `rgb(248,250,252)` and did
-      not change with theme, so on a #0A1628 page it glared. The fix had
-      been applied to the wrong axis — the panel was made BRIGHTER to
-      separate from a light card.
-   4. FRAME 1 WAS AN EMPTY WHITE BOX. At t=0 the panel was blank but for
-      "MEMBER RECORDS 0". Nothing in the reference language ever presents
-      an empty container: card 4 is complete at t=0, card 5 draws all its
-      chrome at t=0 and reveals only content.
-   5. IT AMPUTATED UNDER PRESSURE — 2 of 6 rows gone at 393px. Card 5
-      keeps 7 of 7 elements at 393px. That is the bar.
-   6. 26 keyframe animations, including a 0 -> 1,084 -> 1,248 rAF counter
-      on `cubic-bezier(0.34,1.56,0.64,1)` — an overshoot easing that
-      appears nowhere in cards 4/5.
+   Subject: the visitor's OWN browser, with five tabs open - the thing they are
+   looking at right now to answer one question, and the reason they cannot.
+   Same material as card 4: chrome, dots, a lock, and `yourcompany.com`.
 
-   SUBJECT NOW: the software itself. A desktop app window with a navy rail,
-   one chart widget and a list, cropped by the right card edge, and the
-   record you opened floating over it at 5deg.
+   NAMED RISK, carried over from the spec: five columns of grey bars sit near
+   this site's own idiom for UNLOADED CONTENT - the exact trap v3's seven
+   equal-height sparkline bars fell into. Two things keep it out: the bars live
+   inside a table WITH A HEADER ROW, and half of them are visibly EMPTY at
+   rest, which is a state a placeholder never has. If review still reads it as
+   "failed to load", raise the column-1 fill contrast. Do not add words.
 
-   THE CHART IS THE ONE THING RECOVERED FROM THE PRE-8c7c955 VERSION. That
-   card had a large saturated filled bar mass, which is exactly the weight
-   the whole current set lacks and exactly what WebsiteVisual has. It is
-   NOT abstract data-viz here — the reason the old chart card was replaced
-   was that it stood alone on a grid of UI mockups; inside an app window it
-   is a widget, which is what a buyer recognises.
-
-   CLAIMS DISCIPLINE: the bars are deliberately NON-MONOTONIC and carry no
-   axis, no labels and no values. A rising chart is an outcome claim drawn
-   as artwork — the thing docs/WRITER-AGENT-PROMPT.md:31 gates and the
-   reason RevenueVisual is shelved under ADR-0006 decision 4. Two readable
-   strings, both chrome: "Dashboard" (a nav tab) and "Save" (a button).
+   FIVE NEVER BECOMES FOUR. The meaning depends on the count, so the count may
+   not be reduced at any width (card-visuals.css: "the composition must not
+   change by breakpoint"). The compact ramp drops a table ROW, never a column.
    ───────────────────────────────────────────────────────────── */
 
-/* Bar heights as a fraction of the plot box. Shuffled on purpose: no
-   trend, no story, no claim. Read the claims note above before "fixing"
-   these into an ascending series. */
-const APP_BARS = [0.54, 0.78, 0.43, 0.9, 0.61, 0.83, 0.5] as const;
+/* The five tabs. Colour is an INDEX, never the content - the same level cards
+   4 and 5 use chroma at. Tab 1 is the active one. */
+const V4_TABS = ["var(--color-primary-strong)", "#8B5CF6", "#00D4AA", "#94A3B8", "#CBD5E1"] as const;
+const V4_TABLE_ROWS = [0, 1, 2, 3, 4, 5] as const;
 
 export function DashboardVisual() {
   const containerRef = useRevealOnce<HTMLDivElement>();
 
   return (
-    <div ref={containerRef} className="ps-app-root" aria-hidden="true">
-      <div className="ps-app-stage">
-        {/* PLANE 1 — the app window. Wider than the stage on purpose: it
-            is cropped by the card's right edge, which is the reference
-            language's "bleed" and the opposite of the timid inset panel
-            this replaces. */}
-        <div className="ps-app-window">
-          {/* Chrome strip: contrast bed for .ps-bento-card__expand, and it
-              is what makes the window read as a surface with depth rather
-              than a slab. Flips with the theme. */}
-          <div className="ps-app-chrome">
-            <span className="ps-app-dots"><i /><i /><i /></span>
-            <span className="ps-app-chrome-pill" />
-          </div>
-
-          <div className="ps-app-body">
-            {/* The navy rail is the large dark mass the language requires.
-                It stays navy in BOTH themes, exactly like .ps-site-nav
-                (card-visuals.css:2331) — a chrome rail is dark in a lit
-                room too. What flips is the ROOT backdrop and the chrome
-                strip, which is where the old card got it wrong. */}
-            <div className="ps-app-rail">
-              <span className="ps-app-rail-mark" />
-              <span className="ps-app-rail-item ps-app-rail-item--on" />
-              <span className="ps-app-rail-item" />
-              <span className="ps-app-rail-item" />
-              <span className="ps-app-rail-item" />
-            </div>
-
-            <div className="ps-app-main">
-              <div className="ps-app-toolbar">
-                <span className="ps-app-tab">Dashboard</span>
-                <span className="ps-app-toolbar-pill" />
-              </div>
-
-              {/* One animated unit, not seven. Bars are drawn at full
-                  height inside it — a scaleY(0)->1 grow per bar is the
-                  "data is loading" gesture the reference cards never
-                  make, and it costs six animated elements. */}
-              <div className="ps-app-chart" style={{ "--sr-i": 0 } as React.CSSProperties}>
-                {APP_BARS.map((h, i) => (
-                  <span
-                    className="ps-app-bar"
-                    key={`app-bar-${i}`}
-                    style={{ "--bar-h": h } as React.CSSProperties}
-                  />
-                ))}
-              </div>
-
-              <div className="ps-app-rows">
-                {[0, 1, 2].map((row) => (
-                  <span
-                    className="ps-app-row"
-                    key={`app-row-${row}`}
-                    style={{ "--sr-i": row + 1 } as React.CSSProperties}
-                  >
-                    <i className="ps-app-row-av" />
-                    <i className="ps-app-row-name" />
-                    <i className="ps-app-row-meta" />
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
+    <div ref={containerRef} className="ps-v4-root ps-v4-root--tabs" aria-hidden="true">
+      <div className="ps-v4-panel ps-v4-panel--browser">
+        {/* Five tabs. No tab text - the five colours are the whole claim. */}
+        <div className="ps-v4-tabs">
+          {V4_TABS.map((hue, i) => (
+            <span className={`ps-v4-tab${i === 0 ? " ps-v4-tab--on" : ""}`} key={i}>
+              <i className="ps-v4-fav" style={{ background: hue }} />
+              <i className="ps-v4-tabbar" />
+            </span>
+          ))}
         </div>
 
-        {/* PLANE 2 — the record you opened. Occludes the window, 5deg,
-            deep shadow. This is what the old card's "New member / SAVE"
-            chip was reaching for and missed: that one sat in the GUTTER
-            BESIDE the panel instead of over it, so in dark mode it was a
-            detached white blob with no surface behind it. */}
-        <div className="ps-app-sheet">
-          <span className="ps-app-sheet-bar" />
-          <span className="ps-app-sheet-bar ps-app-sheet-bar--short" />
-          {/* PAYOFF. Solid brand blue, last in, 0.94 -> 1. */}
-          <span className="ps-app-save">Save</span>
+        {/* The window's title is a URL, exactly like card 4's. Never a status. */}
+        <div className="ps-v4-url">
+          <V4Lock />
+          <span className="ps-v4-host">yourcompany.com</span>
+        </div>
+
+        <div className="ps-v4-table">
+          <div className="ps-v4-thead">
+            {V4_TABS.map((_, c) => <i key={c} />)}
+          </div>
+          {/* `.ps-v4-tbody` distributes the rows over whatever height the
+              stretched panel has. Without it the table sat in the top third
+              and left ~260px of blank white below — a browser window with
+              nothing in it, which is not the subject. */}
+          <div className="ps-v4-tbody">
+          {V4_TABLE_ROWS.map((r) => (
+            <div className="ps-v4-tr" key={r}>
+              {/* Column 1 is the one place that already has the answer. */}
+              <i className="ps-v4-td ps-v4-td--seed"
+                 style={{ "--i": r, "--hue": V4_TABS[0] } as React.CSSProperties} />
+              {/* Columns 2-5 arrive DOWN AND RIGHT out of their tab, one
+                  column per beat, so the five tabs visibly become the five
+                  columns of one row. The tab's hue appears only as a 3px left
+                  edge - as an index, never as the content. */}
+              {V4_TABS.slice(1).map((hue, c) => (
+                <i className="ps-v4-td ps-v4-td--join" key={c}
+                   style={{ "--i": c, "--hue": hue } as React.CSSProperties} />
+              ))}
+            </div>
+          ))}
+          </div>
         </div>
       </div>
     </div>

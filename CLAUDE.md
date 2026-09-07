@@ -148,7 +148,11 @@ covers one engine at three widths is not a pass. Four consecutive single-engine 
 project reported a page clean that the owner called "horrible".
 
 **Engines.** `chromium`, `webkit`, `firefox` via Playwright — import by ABSOLUTE path from this
-repo's `node_modules/playwright`. **Python Playwright is NOT installed on this machine.** Plus
+repo's `node_modules/playwright`. **Do not reach for Python Playwright.** A `playwright` package directory exists under
+`~/Library/Python/3.9/lib/python/site-packages/`, but it is NOT importable from the default
+`python3` (`ModuleNotFoundError`), so `import playwright` fails and the driver binary is a
+dead end. Verified 2026-09-06 — the earlier note said it was simply "not installed", which
+sent agents looking for it when they saw the directory. Plus
 **real Safari**, via `scratchpad/safari-harness/safari-shots.mjs` (selenium-webdriver + safaridriver;
 Safari > Settings > Developer > "Allow remote automation" must stay ticked).
 
