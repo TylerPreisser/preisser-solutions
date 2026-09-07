@@ -371,9 +371,33 @@ const NARROW_MARK_TOP = -0.18;
 const NARROW_OVERHANG = 0.18;
 
 /* ===========================================================================
- * §39, 2026-09-06 — ADR: THE HERO MARK IS A MAGNIFIED FRAGMENT, IN BOTH
- * REGIMES. This block replaces the phone constants above AND re-points the
- * wide branch of layout(). Read it before changing any number in this file.
+ * §39-R, 2026-09-06 — READ THIS FIRST. THE SCOPE BELOW WAS CUT TO PHONES.
+ *
+ * §39 (below) originally applied the magnified crop to BOTH regimes and
+ * re-pointed layout()'s wide branch at a mark-derived stage. THE OWNER
+ * REVERSED THAT THE SAME DAY, verbatim:
+ *     "The P is too big now."
+ *     "IT IS ONLY SUPPOSED TO BE THAT BIG ON MOBILE BTW"
+ *
+ * So: the wide branch is BACK to §37's `contained` contain-fit with the ink
+ * guard armed — a whole, modest, centred glyph, ~408x360 at 1440x900. The
+ * magnified crop is NARROW ONLY, W < NARROW_MAX (768). The regime boundary is
+ * the 768 breakpoint, NOT an orientation test: §39 briefly split on `H > W`,
+ * which sent portrait TABLETS (768x1024, 820x1180) down the phone path, and
+ * tablets are not "mobile".
+ *
+ * This also vindicates the instruction already in this file at ~:299-300 and
+ * in commit 60c08fb — "these P changes were only supposed to be for mobile".
+ * That note was overridden by an orchestrator decision (D3 in CROP-ANCHOR.md)
+ * and the note was right. Weight it accordingly before widening scope again.
+ *
+ * Everything in §39 below still describes the PHONE composition accurately and
+ * is unchanged for W < 768. Only its scope claim is superseded. See ADR-0011.
+ * ===========================================================================
+ *
+ * §39, 2026-09-06 — ADR: THE HERO MARK IS A MAGNIFIED FRAGMENT.
+ * SCOPE: PHONES ONLY (W < 768) per §39-R above. This block replaces the phone
+ * constants above. Read it before changing any number in this file.
  *
  * WHO ASKED, AND WHEN. The owner, 2026-09-06 19:42, verbatim:
  *     "the leg and more bottom left of the P is what should be shoing in
@@ -412,9 +436,11 @@ const NARROW_OVERHANG = 0.18;
  * bottom 57% of the hero is empty. 0.9 is not a cautious version of this
  * number, it is the composition that has now been rejected three times.
  *
- * WHY THE SPLIT IS ORIENTATION AND NOT THE 768 BREAKPOINT. 768x1024 and
- * 820x1180 are PORTRAIT heroes that run through layout()'s wide path. They take
- * the portrait numbers. Do not conflate the two boundaries.
+ * THE SPLIT IS THE 768 BREAKPOINT. (§39 originally split on orientation,
+ * `H > W`; §39-R reverted that.) 768x1024 and 820x1180 are portrait heroes but
+ * they are TABLETS, so they take the restored `contained` desktop path, not
+ * this crop. Below 768, `portrait` still selects hF/jF for a rotated phone —
+ * that is a proportion choice inside this regime, not a regime boundary.
  *
  * LEGIBILITY IS CARRIED BY THE KEEP-OUT AND THE CROP, NEVER BY SHRINKING THE P.
  * The platePush keep-out at :1199/:1387-1391 is WCAG-LOAD-BEARING and STAYS at
@@ -1337,24 +1363,28 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        THIS BLOCK IS THE PHONE COMPOSITION THE CLIENT HAS ACCEPTED. §37 changed
        nothing in it — not one constant, not one term. If you are here to change
        desktop, the branch you want is `contained` below. */
-    /* §39. ONE MARK-DERIVED STAGE, BOTH REGIMES. Replaces §33-P's `bleeding`
-       (phone) and §37's `contained` (desktop) with a single stage built from
-       the mark outwards and anchored on the glyph's own landmarks.
+    /* §39, NARROW ONLY (see §39-R). The mark-derived stage that produces the
+       magnified crop: bowl off the TOP, leg and bottom-left terminal in frame.
+       It replaces §33-P's `bleeding`, and it is reached ONLY when
+       `narrow === true`, i.e. W < NARROW_MAX (768).
 
        Three things about this are load-bearing and are NOT interchangeable with
-       the shapes they replaced:
+       the shape it replaced:
 
        1. The stage's w/h ARE the mark's own w/h, so fitInto()'s Math.min at
           ~:1109 returns exactly s0 and both of its centring terms evaluate to
           zero. The placement IS the geometry, not the outcome of a contain-fit
-          negotiation. §37's `contained` handed fitInto a FRAME-INSET rect, which
-          made the glyph mathematically unable to exceed the hero at any value of
-          any constant — that is why desktop had no size knob to turn.
+          negotiation.
        2. `y` anchors the BOWL/STEM JUNCTION, not the ink top. fitInto's vertical
           centring is incompatible with the target: enlarging a centred glyph
           pushes the bowl off the top AND the terminal off the bottom together,
           which is the exact opposite of "show me the leg".
-       3. `x` is a fraction of W, not of the mark's width. See terminalX(). */
+       3. `x` is a fraction of W, not of the mark's width. See terminalX().
+
+       `portrait` here is NOT a regime boundary — the regime boundary is the 768
+       breakpoint above. It only selects the crop's proportions for a phone that
+       has been ROTATED, which is a shorter hero needing a slightly taller
+       multiple. Every phone in the test matrix is portrait. */
     const portrait = H > W;
     const hF = portrait ? MARK_HF_PORTRAIT : MARK_HF_LANDSCAPE;
     const jF = portrait ? MARK_JF_PORTRAIT : MARK_JF_LANDSCAPE;
@@ -1374,17 +1404,18 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        have back, and the reason it is a rect handed to fitInto() rather than a
        mark-derived stage is that "contained" is exactly what a contain-fit
        against a frame-inset rect means. */
-    /* §39. DEAD. `contained` is no longer reachable: the wide branch now takes
-       the same mark-derived stage as the phone branch. Kept for one release as
-       the §37 decision record, and `void`ed so it cannot be silently re-armed.
-       Re-pointing `primary` at this rect reinstates the contain-fit and, with
-       it, "a whole legible P shrunk to fit inside the hero" — measured at
-       1440x900 as 410x362 at 4.5% coverage, which is the render CROP-ANCHOR.md
-       rejects by name. */
-    const contained = { x: floor, y: STAGE_PAD, w: W - STAGE_PAD - floor, h: H - STAGE_PAD * 2 };
-    void contained; void floor;
+    /* §37, RESTORED BY §39-R. WIDE, verbatim from 6fcfd65:365 — the pre-rebuild
+       desktop stage. The full hero height inset by STAGE_PAD, in the column
+       running from `floor` (the x where the light-theme scrim has released) to
+       W - STAGE_PAD. fitInto() CONTAIN-fits the mark inside it, so the glyph is
+       whole and no edge of it leaves the frame.
 
-    const primary = bleeding;
+       §39 briefly re-pointed this branch at the mark-derived stage above. The
+       owner reversed that on 2026-09-06: "The P is too big now" / "IT IS ONLY
+       SUPPOSED TO BE THAT BIG ON MOBILE BTW". See §39-R and ADR-0011. */
+    const contained = { x: floor, y: STAGE_PAD, w: W - STAGE_PAD - floor, h: H - STAGE_PAD * 2 };
+
+    const primary = narrow ? bleeding : contained;
     // Step 3: the same recipe the narrow regime already uses — drop clear of the
     // headline's ink entirely. For narrow this is identical to `primary`, so the
     // loop simply falls through to the shrink step.
@@ -1436,32 +1467,25 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        client rejected in words on 2026-09-05. Empty here means the loop returns
        `primary` on its first iteration, i.e. the phone path is bit-for-bit what
        it was before §37. */
-    /* §39. THE GUARD IS NOW EMPTY IN BOTH REGIMES, and this is the single
-       change without which none of the rest of §39 survives to the screen.
+    /* §37, RESTORED BY §39-R. THE GUARD IS ARMED ON WIDE AND EMPTY ON NARROW.
 
-       The target REQUIRES the mark to overlap the headline's ink — it is a
-       background layer that the type sits on top of. §37's `narrow ? [] : rects`
-       fed the wide branch every headline ink box, so `inkOverlap(...) !== 0` on
-       every iteration; the loop below would then shrink the glyph 12 times by
-       0.96^k and, still colliding, relocate it to `dropped` — a small band BELOW
-       the headline. That path was NOT hypothetical: measured on this build it
-       fired at 768x1024, 820x1180 and 1024x768 (whole P, dropped under the
-       type), and shrank 1280x800 seven times to 0.96^7 = 0.75. An enlargement
-       made anywhere else in this file is silently eaten here, with no error and
-       no visual clue that a fallback shipped.
+       Wide gets `rects` — every headline line, ink-vs-ink, exactly as
+       6fcfd65:378 had it. That is what arms the two mechanisms below: the
+       `dropped` stage and the 12-step 0.96 shrink. Without it the restored
+       `contained` stage would sit on the headline with nothing to push it clear.
 
-       WHAT REPLACES IT AS THE LEGIBILITY MECHANISM: the platePush keep-out,
-       which erases the mark from the headline's ink entirely rather than moving
-       the mark out of its way. That is strictly stronger for contrast — it
-       yields alpha EXACTLY 0 over every headline line — and it is the reason
-       the guard can go. Verified after this change: max plate alpha inside every
-       .ps-hero-line ink rect is 0 at all 14 viewports in both themes.
+       NARROW KEEPS THE EMPTY GUARD. The phone mark is SUPPOSED to sit behind
+       the type; re-arming it there would push the phone mark back below the
+       headline, which the client rejected in words on 2026-09-05. Empty here
+       means the loop returns `primary` on its first iteration, so the phone
+       path is bit-for-bit the §39 crop.
 
-       With the array empty, inkOverlap returns 0 on iteration 1 and layout()
-       returns `primary` unshrunk. `dropped` and the shrink loop are therefore
-       unreachable; they are left in place as the fallback for a future stage
-       that can collide, not as live geometry. */
-    const guard: typeof rects = [];
+       §39 briefly emptied this on wide too, to stop the shrink/drop loop eating
+       the desktop enlargement. The owner reversed that enlargement, so the
+       guard goes back with it — see §39-R. Legibility on BOTH paths is still
+       carried by the platePush keep-out, which yields plate alpha exactly 0
+       over every headline line and is unchanged throughout. */
+    const guard: typeof rects = narrow ? [] : rects;
     let last = fitInto(primary, 1);
     for (const st of [primary, dropped]) {
       if (!(st.w > 0 && st.h > 0)) continue;
@@ -1924,34 +1948,29 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   // swaps in. Without this the mark is laid out against the fallback metrics.
   if (document.fonts?.ready) document.fonts.ready.then(() => rebuild());
 
-  /* Same problem, different mover: hero-entrance.css translates .ps-hero-ctas
-     while the entrance plays, and stage() candidate B is anchored to that
-     element's rect — so a build() that runs mid-entrance reads ctasBottom too
-     low and places the mark under it. Measured 2026-09-04 at 390x844:
-     mark box [102,608,287,772] (185x164) mid-entrance against [99,592,290,760]
-     (191x168) at rest; a forced rebuild converged to the latter, so the
-     geometry was right and only the timing was wrong. Rebuild once when the
-     CTAs settle. Only stage B is affected (390 and the 768-940 band); stage A
-     is anchored to the headline, which does not move. No-op under
-     prefers-reduced-motion, where no animation runs and no event ever fires.
-     stage() reads BOTH .ps-hero-ctas (for `ctasBottom`) and .ps-hero-cue__btn
-     (for `cueTop`), and the entrance translates the cue too — by 12px, finishing
-     ~340ms AFTER the CTAs — so listening only for the CTAs left `cueTop`
-     readable mid-flight. Rebuild on either; rebuild() is idempotent and costs
-     1-2ms, so firing twice is cheap insurance and firing once is correct.
-     NOTE: under prefers-reduced-motion NO animationend ever fires. That path is
-     correct without this listener — nothing is transformed there, so the very
-     first build() already measures both elements at rest — and this listener
-     must never become the only thing producing a correct build. Verified. */
-  /* .ps-hero-line is in this list because layout() now measures the HEADLINE's
-     ink, and hero-entrance.css translates those lines by 24px while the entrance
-     plays. The other two remain harmless no-ops. */
-  /* `.ps-hero-ctas` is display:none below 768 (§26.2) and a display:none element
-     NEVER fires animationend — so an anchor set that waits on it would hang the
-     rebuild on exactly the viewport this all exists for. Any ONE rendered anchor
-     resolving is enough, and offsetParent === null is the cheap test for "not
-     rendered". rebuild() is idempotent, so firing on several is harmless. */
-  const ENTRANCE_ANCHORS = ["ps-hero-line", "ps-hero-ctas", "ps-hero-cue__btn"];
+  /* Rebuild once the entrance settles. hero-entrance.css TRANSFORMS the hero's
+     elements while it plays, and layout() measures the headline's INK — so a
+     build() that lands mid-entrance measures the lines 24px low and lays the
+     keep-out out against a position they do not end up in.
+
+     §39-R2: the original note here described stage() candidate B being anchored
+     to `.ps-hero-ctas`'s rect via `ctasBottom`. BOTH are gone — stage() was
+     replaced by layout() in §39, and the CTAs were removed on 2026-09-07 — so
+     that reasoning no longer describes this code and has been cut rather than
+     left to mislead. What remains true and load-bearing:
+       - `.ps-hero-line` is the anchor that matters; the headline moves 24px.
+       - `.ps-hero-cue__btn` moves 12px and finishes last; rebuilding on it too
+         is cheap insurance, and rebuild() is idempotent (1-2ms).
+       - Under prefers-reduced-motion NO animationend EVER fires. That path must
+         be correct without this listener — nothing is transformed there, so the
+         first build() already measures everything at rest. This listener must
+         never become the only thing producing a correct build. Verified. */
+  /* §39-R2: `ps-hero-ctas` was a third anchor here. The hero CTAs were REMOVED
+     on the owner's instruction of 2026-09-07, so that element no longer exists
+     and the entry could only ever be a dead string. `ps-hero-line` is the
+     load-bearing anchor — layout() measures the HEADLINE's ink and
+     hero-entrance.css translates those lines by 24px while the entrance plays. */
+  const ENTRANCE_ANCHORS = ["ps-hero-line", "ps-hero-cue__btn"];
   const onEntranceEnd = (e: AnimationEvent) => {
     if (!e.animationName.startsWith("ps-hero-rise")) return;
     const el = e.target as HTMLElement;

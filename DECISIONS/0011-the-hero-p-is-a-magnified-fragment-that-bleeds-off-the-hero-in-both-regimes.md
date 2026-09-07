@@ -1,6 +1,6 @@
 # ADR-0011: The hero "P" is a magnified fragment of the letterform — bleeding off the top and right, leg and bottom-left terminal in frame — in BOTH viewport regimes
 Status: Accepted — 2026-09-06 (owner instruction, mid-run, recorded verbatim in `CROP-ANCHOR.md`) — Owner: Tyler Preisser
-Supersedes / Superseded by: supersedes the desktop half of `60c08fb` and the phone constants of `f2f5cc7`/`60c08fb` (§35/§37/§38 in `src/components/home/hero-mark-light.ts`). Not superseded.
+Supersedes / Superseded by: **Status: Superseded by ADR-0012** (desktop scope reversed by the owner, 2026-09-07; the phone geometry recorded here survives). Supersedes the phone constants of `f2f5cc7`/`60c08fb` (§35/§38 in `src/components/home/hero-mark-light.ts`).
 
 ## Context
 
