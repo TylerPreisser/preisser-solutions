@@ -460,81 +460,158 @@ export function SystemFixesVisual() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CARD 1 — Business Software.  "Five places, one picture."
+   CARD 1 — Business Software.  "THE KEYSTONE."
 
    Pain, service-pillars.tsx:148 (`painPoints[1]`, selected `hookIndex: 1`):
      "Our data lives in five different places and nobody has a complete picture."
 
-   Subject: the visitor's OWN browser, with five tabs open - the thing they are
-   looking at right now to answer one question, and the reason they cannot.
-   Same material as card 4: chrome, dots, a lock, and `yourcompany.com`.
+   Subject: a masonry WALL with an arched opening cut through it. Eleven
+   voussoirs of UNEQUAL width ring the opening; one lit keystone sits at the
+   crown; a dark passage runs through. An arch is many separate parts that
+   cannot stand alone, and the keystone is the single piece that locks them
+   into one structure that carries load. That is what an operations platform
+   does to a business, and it is the answer to the pain sentence above.
 
-   NAMED RISK, carried over from the spec: five columns of grey bars sit near
-   this site's own idiom for UNLOADED CONTENT - the exact trap v3's seven
-   equal-height sparkline bars fell into. Two things keep it out: the bars live
-   inside a table WITH A HEADER ROW, and half of them are visibly EMPTY at
-   rest, which is a state a placeholder never has. If review still reads it as
-   "failed to load", raise the column-1 fill contrast. Do not add words.
+   WHY NOT A UI. Three previous versions of this card drew a browser: chrome, a
+   URL bar, tabs and rows of grey placeholder pills. They read as the LOADING
+   STATE of card 4 below them. This is deliberately a different family of image
+   — an object with mass, lit from one side — not a screenshot.
 
-   FIVE NEVER BECOMES FOUR. The meaning depends on the count, so the count may
-   not be reduced at any width (card-visuals.css: "the composition must not
-   change by breakpoint"). The compact ramp drops a table ROW, never a column.
+   TWO MISREADS THIS GEOMETRY EXISTS TO DEFEAT, both found by rendering:
+   1. A toothed disc reads as a GEAR, a generic engineering icon, no matter how
+      it is cropped or lit. Four renders failed on this before the object was
+      changed. Do not reintroduce a wheel.
+   2. An arc of EQUAL segments with one highlighted reads as a PROGRESS RING —
+      a UI cliché, which on this card is worse than the gear was. Two things
+      keep it out and neither is decorative: the voussoir widths are UNEQUAL
+      (the array below), and the coursed masonry runs edge to edge BEHIND the
+      ring. A gauge is a ring on empty ground; this is a wall with a hole in it.
+      If review ever reads it as a loading indicator, widen the width variance
+      or strengthen the courses. Do not add words.
+
+   THE THEME RULE, and it is the fix for this card's 46.7% near-white failure:
+   THE WALL CARRIES THE THEME; THE RING AND THE PASSAGE STAY DARK IN BOTH.
+   A pale passage in light mode renders as a large white blob, which is the
+   exact failure this rebuild exists to remove. But making everything dark in
+   both themes kills the re-theming and leaves a dark slab among pale cards.
+   Wall-themes / ring-and-passage-stay-dark is the resolution. See
+   card-visuals.css `.ps-c1-*`.
+
+   Geometry is fully AUTHORED — no Math.random anywhere. This is server-rendered;
+   a random value at render time desynchronises server and client markup.
    ───────────────────────────────────────────────────────────── */
 
-/* The five tabs. Colour is an INDEX, never the content - the same level cards
-   4 and 5 use chroma at. Tab 1 is the active one. */
-const V4_TABS = ["var(--color-primary-strong)", "#8B5CF6", "#00D4AA", "#94A3B8", "#CBD5E1"] as const;
-const V4_TABLE_ROWS = [0, 1, 2, 3, 4, 5] as const;
+/* Eleven voussoirs, widths deliberately unequal so no two blocks match — the
+   single cheapest thing separating an arch from a gauge. Generated once from
+   centre (200,262), inner r=128, outer r=196, 1deg mortar joint. `i` is the
+   distance from the keystone and drives the reveal stagger. */
+const PS_C1_VOUSSOIRS = [
+  { d: "M72,260.88L4.01,260.29A196,196 0 0,1 10.58,211.65L76.3,229.12A128,128 0 0,0 72,260.88Z", i: 5 },
+  { d: "M76.89,226.97L11.48,208.35A196,196 0 0,1 38.03,151.64L94.22,189.93A128,128 0 0,0 76.89,226.97Z", i: 4 },
+  { d: "M95.49,188.09L39.98,148.83A196,196 0 0,1 67.58,117.49L113.52,167.63A128,128 0 0,0 95.49,188.09Z", i: 3 },
+  { d: "M115.18,166.13L70.13,115.2A196,196 0 0,1 117.29,84.31L145.98,145.96A128,128 0 0,0 115.18,166.13Z", i: 2 },
+  { d: "M148.02,145.03L120.4,82.89A196,196 0 0,1 164.28,69.28L176.67,136.14A128,128 0 0,0 148.02,145.03Z", i: 1 },
+  { d: "M223.33,136.14L235.72,69.28A196,196 0 0,1 279.6,82.89L251.98,145.03A128,128 0 0,0 223.33,136.14Z", i: 1 },
+  { d: "M254.02,145.96L282.71,84.31A196,196 0 0,1 329.87,115.2L284.82,166.13A128,128 0 0,0 254.02,145.96Z", i: 2 },
+  { d: "M286.48,167.63L332.42,117.49A196,196 0 0,1 360.02,148.83L304.51,188.09A128,128 0 0,0 286.48,167.63Z", i: 3 },
+  { d: "M305.78,189.93L361.97,151.64A196,196 0 0,1 388.52,208.35L323.11,226.97A128,128 0 0,0 305.78,189.93Z", i: 4 },
+  { d: "M323.7,229.12L389.42,211.65A196,196 0 0,1 395.99,260.29L328,260.88A128,128 0 0,0 323.7,229.12Z", i: 5 },
+] as const;
+
+/* The keystone. Separate from the array because it arrives last and is the
+   only chroma in the image. */
+const PS_C1_KEYSTONE =
+  "M178.87,135.76L167.65,68.69A196,196 0 0,1 232.35,68.69L221.13,135.76A128,128 0 0,0 178.87,135.76Z";
+
+/* The opening: semicircular head over a shaft that runs off the bottom edge. */
+const PS_C1_OPENING = "M72,420L72,262A128,128 0 0,1 328,262L328,420Z";
+
+/* Coursed masonry behind the ring. Deterministic loops, not random: courses
+   every 46 units, perpends staggered half a block on alternate courses. This
+   is what stops the ring reading as a free-standing gauge. */
+const PS_C1_COURSES: number[] = [];
+for (let y = 44; y < 400; y += 46) PS_C1_COURSES.push(y);
+const PS_C1_PERPENDS: Array<[number, number]> = [];
+PS_C1_COURSES.forEach((y, row) => {
+  const offset = row % 2 ? 0 : 46;
+  for (let x = -20 + offset; x < 420; x += 92) PS_C1_PERPENDS.push([x, y]);
+});
 
 export function DashboardVisual() {
   const containerRef = useRevealOnce<HTMLDivElement>();
 
   return (
-    <div ref={containerRef} className="ps-v4-root ps-v4-root--tabs" aria-hidden="true">
-      <div className="ps-v4-panel ps-v4-panel--browser">
-        {/* Five tabs. No tab text - the five colours are the whole claim. */}
-        <div className="ps-v4-tabs">
-          {V4_TABS.map((hue, i) => (
-            <span className={`ps-v4-tab${i === 0 ? " ps-v4-tab--on" : ""}`} key={i}>
-              <i className="ps-v4-fav" style={{ background: hue }} />
-              <i className="ps-v4-tabbar" />
-            </span>
-          ))}
-        </div>
+    <div ref={containerRef} className="ps-c1-root" aria-hidden="true">
+      <svg
+        className="ps-c1-svg"
+        viewBox="0 0 400 400"
+        preserveAspectRatio="xMidYMid slice"
+        focusable="false"
+      >
+        <defs>
+          {/* Every id is namespaced `ps-c1-`: five inline SVGs share this page
+              and a duplicate defs id resolves to the wrong gradient silently. */}
+          <linearGradient id="ps-c1-wall" x1="0.1" y1="0" x2="0.75" y2="1">
+            <stop offset="0%" className="ps-c1-wall-a" />
+            <stop offset="100%" className="ps-c1-wall-b" />
+          </linearGradient>
+          <linearGradient id="ps-c1-stone" x1="0.2" y1="0" x2="0.7" y2="1">
+            <stop offset="0%" className="ps-c1-stone-a" />
+            <stop offset="100%" className="ps-c1-stone-b" />
+          </linearGradient>
+          <radialGradient id="ps-c1-beyond" cx="0.5" cy="0.86" r="0.95">
+            <stop offset="0%" className="ps-c1-beyond-a" />
+            <stop offset="100%" className="ps-c1-beyond-b" />
+          </radialGradient>
+          <linearGradient id="ps-c1-key" x1="0.2" y1="0" x2="0.8" y2="1">
+            <stop offset="0%" stopColor="#4FA8FF" />
+            <stop offset="60%" stopColor="#1590FF" />
+            <stop offset="100%" stopColor="#0B5FB8" />
+          </linearGradient>
+          <filter id="ps-c1-keyglow" x="-160%" y="-160%" width="420%" height="420%">
+            <feGaussianBlur stdDeviation="9" />
+          </filter>
+          <mask id="ps-c1-wallmask">
+            <rect x="0" y="0" width="400" height="400" fill="#fff" />
+            <path d={PS_C1_OPENING} fill="#000" />
+          </mask>
+        </defs>
 
-        {/* The window's title is a URL, exactly like card 4's. Never a status. */}
-        <div className="ps-v4-url">
-          <V4Lock />
-          <span className="ps-v4-host">yourcompany.com</span>
-        </div>
+        {/* The passage seen through the opening. Dark in BOTH themes. */}
+        <path d={PS_C1_OPENING} fill="url(#ps-c1-beyond)" />
 
-        <div className="ps-v4-table">
-          <div className="ps-v4-thead">
-            {V4_TABS.map((_, c) => <i key={c} />)}
-          </div>
-          {/* `.ps-v4-tbody` distributes the rows over whatever height the
-              stretched panel has. Without it the table sat in the top third
-              and left ~260px of blank white below — a browser window with
-              nothing in it, which is not the subject. */}
-          <div className="ps-v4-tbody">
-          {V4_TABLE_ROWS.map((r) => (
-            <div className="ps-v4-tr" key={r}>
-              {/* Column 1 is the one place that already has the answer. */}
-              <i className="ps-v4-td ps-v4-td--seed"
-                 style={{ "--i": r, "--hue": V4_TABS[0] } as React.CSSProperties} />
-              {/* Columns 2-5 arrive DOWN AND RIGHT out of their tab, one
-                  column per beat, so the five tabs visibly become the five
-                  columns of one row. The tab's hue appears only as a 3px left
-                  edge - as an index, never as the content. */}
-              {V4_TABS.slice(1).map((hue, c) => (
-                <i className="ps-v4-td ps-v4-td--join" key={c}
-                   style={{ "--i": c, "--hue": hue } as React.CSSProperties} />
-              ))}
-            </div>
+        {/* The wall, with the opening masked out of it. */}
+        <g mask="url(#ps-c1-wallmask)">
+          <rect x="0" y="0" width="400" height="400" fill="url(#ps-c1-wall)" />
+          <g className="ps-c1-joints">
+            {PS_C1_COURSES.map((y) => (
+              <line key={`c${y}`} x1="0" y1={y} x2="400" y2={y} />
+            ))}
+            {PS_C1_PERPENDS.map(([x, y]) => (
+              <line key={`p${x}-${y}`} x1={x} y1={y} x2={x} y2={y + 46} />
+            ))}
+          </g>
+        </g>
+
+        {/* The voussoir ring, sitting proud of the wall. */}
+        <g className="ps-c1-ring">
+          {PS_C1_VOUSSOIRS.map((b, n) => (
+            <path
+              key={n}
+              className="ps-c1-vou"
+              style={{ "--i": b.i } as React.CSSProperties}
+              d={b.d}
+              fill="url(#ps-c1-stone)"
+            />
           ))}
-          </div>
-        </div>
-      </div>
+        </g>
+
+        {/* The keystone drops in last and locks the arch. */}
+        <g className="ps-c1-key">
+          <path d={PS_C1_KEYSTONE} fill="#1590FF" filter="url(#ps-c1-keyglow)" opacity="0.34" />
+          <path d={PS_C1_KEYSTONE} fill="url(#ps-c1-key)" />
+        </g>
+      </svg>
     </div>
   );
 }
