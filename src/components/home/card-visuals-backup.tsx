@@ -290,16 +290,16 @@ function V4Lock() {
    least meaningful thing on the card and an earlier version let it become the
    loudest object on it. */
 const C3_STRAPS = [
-  { y: 318, h: 8 }, { y: 340, h: 8 },
+  { y: 288, h: 7 }, { y: 305, h: 7 },
 ] as const;
 
 /* Leaves, as flat blades on their own short stems, coming off the SCION's
    sides. `ax/ay` is where the stem leaves the stem, `a` the blade angle,
    `l` its length. */
 const C3_LEAVES = [
-  { ax: 199, ay: 170, a: -150, l: 48 }, { ax: 202, ay: 124, a: -168, l: 40 },
-  { ax: 196, ay: 216, a: -128, l: 38 }, { ax: 247, ay: 160, a: 30, l: 48 },
-  { ax: 245, ay: 112, a: 10, l: 40 }, { ax: 250, ay: 206, a: 48, l: 38 },
+  { ax: 181, ay: 158, a: -142, l: 42 }, { ax: 158, ay: 120, a: -163, l: 31 },
+  { ax: 213, ay: 152, a: -101, l: 27 }, { ax: 211, ay: 96, a: -68, l: 36 },
+  { ax: 251, ay: 158, a: 38, l: 45 }, { ax: 273, ay: 118, a: 16, l: 33 },
 ] as const;
 
 /* A leaf blade: two symmetric arcs meeting at a point at each end. */
@@ -435,7 +435,7 @@ export function AutomationVisual() {
               makes two members read as two. ── */}
         <path
           className="ps-c3-scion"
-          d="M190 282 L256 266 L246 82 L202 82 Z"
+          d="M186 292 L246 272 L238 198 L196 202 Z"
         />
 
         {/* ── THE CONTACT LINE. The idea of the card, and the brightest thing
@@ -457,7 +457,17 @@ export function AutomationVisual() {
           ))}
         </g>
 
-        {/* ── NEW GROWTH, off the scion's own sides. Proof the graft took. ── */}
+        {/* ── THE FORK. Three stems out of the scion's head. A branching top
+              is the one silhouette that cannot be read as an obelisk, and
+              nineteen versions of a straight tapering top were read as one
+              eight times running. ── */}
+        <g className="ps-c3-fork">
+          <path className="ps-c3-stem-main" d="M204 206 C192 176 168 142 142 98" />
+          <path className="ps-c3-stem-main" d="M215 204 C215 170 212 130 210 68" />
+          <path className="ps-c3-stem-main" d="M228 202 C242 176 266 140 290 94" />
+        </g>
+
+        {/* ── NEW GROWTH, at NODES on those stems. Proof the graft took. ── */}
         <g className="ps-c3-leaves">
           {C3_LEAVES.map((lf, i) => (
             /* TWO NESTED GROUPS: a CSS `transform` on an SVG element REPLACES

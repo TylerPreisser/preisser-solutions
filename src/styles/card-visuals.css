@@ -2408,19 +2408,16 @@
       and the whole mass disappeared on a phone. ── */
 /* Each mass is filled from the shared user-space light, so the whole drawing
    is lit by one lamp instead of being a set of identical stamps. */
-.ps-c3-stock { fill: url(#ps-c3-stockgrad); }
-.ps-c3-s-stk0 { stop-color: #33496A; }
-.ps-c3-s-stk1 { stop-color: #1E2E48; }
-[data-theme="light"] .ps-c3-s-stk0 { stop-color: #27384F; }
-[data-theme="light"] .ps-c3-s-stk1 { stop-color: #141F33; }
+/* FIX 2: lifted in DARK theme. At 390 and 768 the old wood dropped to near
+   card-background value and the half of the picture that carries the meaning
+   disappeared, leaving a leafy fork emerging from nothing. */
+.ps-c3-stock { fill: #38547F; }
+[data-theme="light"] .ps-c3-stock { fill: #1B2B44; }
 
 /* ── THE NEW WOOD. Paler and narrower in both themes: different value AND
       different width is what makes two members read as two things. ── */
-.ps-c3-scion { fill: url(#ps-c3-sciongrad); }
-.ps-c3-s-scn0 { stop-color: #93A9C8; }
-.ps-c3-s-scn1 { stop-color: #64789A; }
-[data-theme="light"] .ps-c3-s-scn0 { stop-color: #B3C5DA; }
-[data-theme="light"] .ps-c3-s-scn1 { stop-color: #8397B1; }
+.ps-c3-scion { fill: #A8BCD6; }
+[data-theme="light"] .ps-c3-scion { fill: #92A8C2; }
 
 /* ── THE CONTACT LINE — the idea of the card and the brightest thing on it.
       Everything else on this card is deliberately subordinate to it. ── */
@@ -2457,14 +2454,32 @@
 .ps-c3-s-lf1 { stop-color: #1C6D5E; }
 [data-theme="light"] .ps-c3-s-lf0 { stop-color: #1E8A74; }
 [data-theme="light"] .ps-c3-s-lf1 { stop-color: #0E5A4C; }
+.ps-c3-stem-main {
+  fill: none;
+  stroke: #A8BCD6;
+  stroke-width: 9;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+[data-theme="light"] .ps-c3-stem-main { stroke: #92A8C2; }
+
 .ps-c3-stem {
   fill: none;
-  stroke: #5E7794;
+  stroke: #7C93B4;
   stroke-width: 3;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
 }
-[data-theme="light"] .ps-c3-stem { stroke: #6F849E; }
+[data-theme="light"] .ps-c3-stem-main {
+  fill: none;
+  stroke: #A8BCD6;
+  stroke-width: 9;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.ps-c3-stem { stroke: #6F849E; }
 
 /* ── REVEAL. Transitions only. The stock, the scion and the join are NOT
       gated, so the picture states its idea before anything animates. Only the
@@ -2475,6 +2490,13 @@
   transition: opacity 320ms ease, transform 380ms cubic-bezier(0.165, 0.84, 0.44, 1);
   transition-delay: calc(140ms + var(--i, 0) * 70ms);
 }
+.ps-c3-fork {
+  opacity: 0;
+  transition: opacity 380ms ease;
+  transition-delay: 300ms;
+}
+.ps-c3-root.in-view .ps-c3-fork { opacity: 1; }
+
 .ps-c3-leafgrp {
   opacity: 0;
   transform: scale(0.5);
@@ -2490,7 +2512,11 @@
    breakpoints and would delete it exactly where it is needed. Not a
    percentage, because a percentage veil is weakest on the SHORTEST card —
    442px tall at 1440 but 332px at 390 — which is precisely where the crop is
-   tightest. 150px covers the 59-63px text block identically everywhere. */
+   tightest. 100px covers the 59-63px text block at every breakpoint AND leaves
+   an unveiled band of trunk above it: at 150px this veil stacked on the card's
+   own title scrim and the two together dissolved the whole base, which a
+   computed-style probe cannot see because a declared fill knows nothing about
+   what is composited over it. Sample pixels, not styles. */
 .ps-c3-root::after {
   content: "";
   position: absolute;
@@ -2499,16 +2525,16 @@
   pointer-events: none;
   background: linear-gradient(
     to top,
-    rgba(10, 22, 40, 0.86) 0%,
-    rgba(10, 22, 40, 0.66) 40%,
+    rgba(10, 22, 40, 0.44) 0%,
+    rgba(10, 22, 40, 0.30) 40%,
     rgba(10, 22, 40, 0) 100%
   );
 }
 [data-theme="light"] .ps-c3-root::after {
   background: linear-gradient(
     to top,
-    rgba(236, 241, 247, 0.94) 0%,
-    rgba(236, 241, 247, 0.78) 40%,
+    rgba(236, 241, 247, 0.90) 0%,
+    rgba(236, 241, 247, 0.72) 40%,
     rgba(236, 241, 247, 0) 100%
   );
 }
@@ -2518,6 +2544,7 @@
    its finished frame so nothing is stranded invisible. */
 @media (prefers-reduced-motion: reduce) {
   .ps-c3-strap,
+  .ps-c3-fork,
   .ps-c3-leafgrp {
     opacity: 1 !important;
     transform: none !important;
