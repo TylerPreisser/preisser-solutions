@@ -2489,9 +2489,9 @@
   pointer-events: none;
   background: linear-gradient(
     to top,
-    rgba(10, 22, 40, 0.94) 0%,
-    rgba(10, 22, 40, 0.94) 40%,
-    rgba(10, 22, 40, 0.55) 72%,
+    rgba(10, 22, 40, 0.72) 0%,
+    rgba(10, 22, 40, 0.72) 40%,
+    rgba(10, 22, 40, 0.36) 72%,
     rgba(10, 22, 40, 0) 100%
   );
 }
@@ -2502,9 +2502,9 @@
 [data-theme="light"] .ps-c5-root::after {
   background: linear-gradient(
     to top,
-    rgba(234, 239, 245, 0.97) 0%,
-    rgba(234, 239, 245, 0.97) 40%,
-    rgba(234, 239, 245, 0.72) 72%,
+    rgba(234, 239, 245, 0.82) 0%,
+    rgba(234, 239, 245, 0.82) 40%,
+    rgba(234, 239, 245, 0.46) 72%,
     rgba(234, 239, 245, 0) 100%
   );
 }
@@ -2570,6 +2570,14 @@
   fill: none;
   stroke: #1590ff;
   stroke-width: 1.6;
+  /* BROKEN, not continuous. A solid brand-blue dot inside a solid
+     concentric ring on a pale ground is the Google Maps "current
+     location" puck almost exactly — and map pins were explicitly banned
+     from this card. Rendering the ring as arcs keeps the emission read
+     and removes the Maps signature. Strongest risk was light mode at
+     390px, where the disc is proportionally largest. */
+  stroke-dasharray: 4.2 3.4;
+  stroke-linecap: round;
   opacity: 0;
   transform: scale(0.55);
   transform-box: fill-box;
