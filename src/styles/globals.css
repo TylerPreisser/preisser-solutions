@@ -5720,13 +5720,34 @@ body {
     bottom: calc(24px + env(safe-area-inset-bottom, 0px) + (100lvh - 100svh));
   }
 
-  /* ITEM 2 — the hero CTAs go on mobile. The mark's stage anchors to the
-     headline's ink and the cue, never to the CTAs, so its layout is unaffected.
-     `.ps-hero .ps-btn-secondary`'s opaque fill STAYS: it is still load-bearing
-     at >=768 where the buttons remain. */
-  .ps-hero .ps-hero-ctas {
-    display: none;
-  }
+  /* ITEM 2 IS REVERSED, 2026-09-06. It read: "the hero CTAs go on mobile", and
+     hid them with `.ps-hero .ps-hero-ctas { display: none }` here.
+
+     WHY IT IS BACK. This is a lead-generation site and the rule left the mobile
+     hero with nothing tappable above the fold: measured, both buttons were
+     0x0 at 390 against 193x48 and 220x48 at 1440. Worse, they stayed
+     `display:inline-flex; visibility:visible; opacity:1` on the buttons
+     themselves — only the PARENT was `display:none` — so every property probe
+     reported them visible while they drew no pixels. Do not re-hide them by
+     restoring this rule; if the mobile hero ever needs to lose them again, take
+     it to the owner first, because "nothing to tap in the hero" is a
+     conversion decision and not a layout one.
+
+     ITEM 2's other two claims were checked and both still hold, so nothing else
+     here needed to move:
+       - the mark's stage anchors to the headline's measured ink and the cue,
+         never to the CTAs, so un-hiding them cannot disturb the P's layout;
+       - `.ps-hero .ps-btn-secondary`'s opaque fill was described as load-bearing
+         "at >=768 where the buttons remain". It is now load-bearing at phone
+         widths too, and that is exactly what makes the pair legible over the
+         filled mark: since f2f5cc7 the P is a solid mass, and after 60c08fb's
+         NARROW_MARK_TOP -0.18 it sits lower on a phone, i.e. closer to these
+         buttons than it ever was under ITEM 2.
+
+     The phone stacking these buttons need already exists and was never removed
+     with them: `flex-direction: column` / `align-items: stretch` plus
+     `.ps-btn { width: 100% }` at max-width 639px, and a row again between 641
+     and 768. Un-hiding is genuinely the whole change. */
 
   /* ITEM 3 — the cue reads as incidental. 52px target and a transform-only bob.
      On the ICON, deliberately: the button owns the entrance (hero-entrance.css)
