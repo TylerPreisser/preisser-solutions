@@ -99,11 +99,57 @@ md5 -q <build-dir>/out/_next/static/chunks/app/<chunk>.js
 curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' https://preissersolutions.com
 curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' https://www.preissersolutions.com
 curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' https://preisser-solutions.pages.dev
+
+# 5. Served text surfaces must carry zero em dashes (ADR-0009 decision 5).
+#    /robots.txt MUST be cache-busted or read after the TTL -- see below.
+curl -s -H 'Cache-Control: no-cache' "https://preissersolutions.com/robots.txt?cb=$RANDOM" \
+  | grep -c $'\u2014'
+for f in llms.txt llms-full.txt feed.xml ai.txt; do
+  printf '%s ' "$f"; curl -s "https://preissersolutions.com/$f" | grep -c $'\u2014'
+done
+# Two traps in that one line. `grep -c` prints the LINE count, not the
+# occurrence count -- zero is zero either way, which is all this step asserts,
+# but use `grep -o ... | wc -l` if you need the real total. And `grep -c` EXITS
+# 1 when the count is zero, i.e. on success here, so never chain this with
+# `&&` or read its exit status as the verdict. Read the printed number.
 ```
 
 If step 1 says `Preview`, the deploy did not go to production no matter what
 Wrangler printed. If step 3's hashes differ, the apex is serving something you
 did not build.
+
+## /robots.txt lies for five minutes after a deploy — cache-bust it or wait
+
+**A stale `/robots.txt` inside ~5 minutes of a successful deploy is expected, not
+a failure.** Verify it with a cache-busted request, or re-read it after the TTL
+drains. Do not conclude the deploy failed, and above all **do not re-deploy to
+"fix" something that already shipped** — that is how you end up racing another
+session over a change that was already live.
+
+Why: `/robots.txt` is not a static file. `functions/_middleware.ts` intercepts
+the path and answers from a template literal with
+`cache-control: public, max-age=300`, so the edge keeps serving the previous
+body for up to five minutes. The four genuinely static text surfaces
+(`llms.txt`, `llms-full.txt`, `feed.xml`, `ai.txt`) carry no such TTL from the
+middleware and flip immediately.
+
+| Surface | Source | Flips |
+|---|---|---|
+| `/robots.txt` | `functions/_middleware.ts` (`OPEN_ROBOTS_TXT`, and `LEGACY_ROBOTS_TXT` on legacy hosts) | after `max-age=300` |
+| `/llms.txt`, `/llms-full.txt`, `/feed.xml`, `/ai.txt` | static `public/`, byte-copied into `out/` | immediately |
+| HTML pages and `_next` chunks | static `out/` | immediately |
+
+Observed 2026-09-07 on deployment `2e63cc6c`, which changed the robots header
+line. A plain `curl` returned the OLD body at t+1m while a cache-busted request
+returned the NEW one; the plain read flipped between **t+1m and t+2m** and was
+correct at every check thereafter. So: cache-bust, or wait two minutes and
+re-read.
+
+This is the same class of false signal as "exit code 0 proves nothing", pointed
+the other way — a **true-looking failure that is really just stale cache.**
+
+Note also that `public/robots.txt` is **never served**; the middleware overrides
+it. Editing that file changes nothing on the apex. Its own header says so.
 
 Never deploy from GitHub Actions — that workflow validates only, it does not
 push to Pages.
