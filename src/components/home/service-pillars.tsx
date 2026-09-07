@@ -2345,6 +2345,12 @@ function PillarCrawlerContent() {
                   <strong>{tile.title}</strong>
                 )}
                 {": "}
+                {/* The category label a human sees top-left on the tile face.
+                    Emitted here too because it is the term a visitor would
+                    actually search for and the one an answer engine matches
+                    on -- without this it exists only in the client bundle,
+                    which is the one string on the card machines cannot read. */}
+                {tile.product ? `(${tile.product}) ` : ""}
                 {tile.description}
               </li>
             ))}
