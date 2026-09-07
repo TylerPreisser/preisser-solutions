@@ -2487,18 +2487,35 @@
     ),
     linear-gradient(160deg, #C9D5E3 0%, #A7B7CA 100%);
 }
-/* Same stone as the wall, ~12% lighter. NOT navy — see the rule above. */
-[data-theme="light"] .ps-c1-stone-a  { stop-color: #FBFDFF; }
-[data-theme="light"] .ps-c1-stone-mid{ stop-color: #E7EEF6; }
-[data-theme="light"] .ps-c1-stone-b  { stop-color: #DCE6F1; }
+/* LIGHT IS THE INVERSION OF DARK, AND IT IS PHYSICALLY CORRECT.
+   An arch seen from inside, looking out toward daylight, has DARK stonework
+   and a BRIGHT opening. That is what every photograph of a portal looks like,
+   and it is card 4's own structure: a predominantly light card carrying one
+   real dark mass.
+
+   It is also the only thing that fixes the light-mode misreads, and the reason
+   is contrast arithmetic rather than taste. WHATEVER HAS THE HIGHEST LOCAL
+   CONTRAST IS THE SUBJECT. Through four passes the void held it — near-black,
+   then mid-slate, then mid-slate with a softened floor — so the void kept
+   reading as the figure and the card kept reading as a slab, a headstone, or
+   a dial hub. No amount of tuning the wall or the stones could beat it,
+   because none of those changed which element won. Inverting does: the stones
+   become the dark mass, the opening becomes light beyond, and the keystone is
+   the only saturated element against dark stone, so it wins on contrast
+   instead of being asked to. */
+[data-theme="light"] .ps-c1-stone-a  { stop-color: #3E5F8C; }
+[data-theme="light"] .ps-c1-stone-mid{ stop-color: #2A456B; }
+[data-theme="light"] .ps-c1-stone-b  { stop-color: #16294A; }
 /* The void stays dark in light theme. This is the card's dark mass. */
-[data-theme="light"] .ps-c1-beyond-a { stop-color: #16304F; }
-[data-theme="light"] .ps-c1-beyond-b { stop-color: #93A8C1; }
+/* Daylight beyond the opening — brightest at the crown, settling toward the
+   floor. Pale, so it can never read as a slab standing in front of the wall. */
+[data-theme="light"] .ps-c1-beyond-a { stop-color: #FCFDFF; }
+[data-theme="light"] .ps-c1-beyond-b { stop-color: #DDE7F2; }
 
 /* The joints between voussoirs. With the stones now close in value to the
    wall, the blocks need an edge or the ring dissolves. */
 .ps-c1-vou { stroke: rgba(0, 0, 0, 0.28); stroke-width: 0.9; }
-[data-theme="light"] .ps-c1-vou { stroke: rgba(10, 22, 40, 0.30); }
+[data-theme="light"] .ps-c1-vou { stroke: rgba(255, 255, 255, 0.22); }
 
 /* ── MOTION — reveals ONCE and settles ─────────────────────────
    Zero @keyframes, transitions only, gated on the `in-view` class the
