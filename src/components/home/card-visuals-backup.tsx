@@ -576,6 +576,32 @@ function usePsC1Reveal<T extends HTMLElement>() {
   return ref;
 }
 
+/* SECOND GEOMETRY — the wide/short crop.
+   At <=700px the plinth lands on the semicircular arch's springing and what
+   remains is a perfect half-disc of near-uniform trapezoids on a baseline,
+   which reads as a DIAL whichever part is darker: the driver is geometry plus
+   repetition, not value. This elliptical arch raises the springing ABOVE the
+   plinth so the opening's straight LEGS are visible, and a portal with legs
+   cannot be a half-disc.
+   The ellipse necessarily makes the blocks more unequal than the circular set.
+   DO NOT NORMALISE THEM BACK. Near-uniform segments are the other half of the
+   dial grammar; the unequal widths are load-bearing, not a rendering accident. */
+const PS_C1_WIDE_VOUSSOIRS = [
+  { d: "M20.01,134.18L-54.99,133.8A255,125 0 0,1 -46.5,103L26,113.24A180,85 0 0,0 20.01,134.18Z", i: 5 },
+  { d: "M26.92,111.66L-45.2,100.68A255,125 0 0,1 -10.86,64.7L51.16,87.2A180,85 0 0,0 26.92,111.66Z", i: 4 },
+  { d: "M53.13,85.86L-8.07,62.73A255,125 0 0,1 27.56,42.91L78.28,72.38A180,85 0 0,0 53.13,85.86Z", i: 3 },
+  { d: "M80.85,71.29L31.2,41.31A255,125 0 0,1 92.19,21.72L123.9,57.97A180,85 0 0,0 80.85,71.29Z", i: 2 },
+  { d: "M127.04,57.3L96.64,20.73A255,125 0 0,1 153.31,12.11L167.04,51.44A180,85 0 0,0 127.04,57.3Z", i: 1 },
+  { d: "M232.96,51.44L246.69,12.11A255,125 0 0,1 303.36,20.73L272.96,57.3A180,85 0 0,0 232.96,51.44Z", i: 1 },
+  { d: "M276.1,57.97L307.81,21.72A255,125 0 0,1 368.8,41.31L319.15,71.29A180,85 0 0,0 276.1,57.97Z", i: 2 },
+  { d: "M321.72,72.38L372.44,42.91A255,125 0 0,1 408.07,62.73L346.87,85.86A180,85 0 0,0 321.72,72.38Z", i: 3 },
+  { d: "M348.84,87.2L410.86,64.7A255,125 0 0,1 445.2,100.68L373.08,111.66A180,85 0 0,0 348.84,87.2Z", i: 4 },
+  { d: "M374,113.24L446.5,103A255,125 0 0,1 454.99,133.8L379.99,134.18A180,85 0 0,0 374,113.24Z", i: 5 },
+] as const;
+const PS_C1_WIDE_KEYSTONE =
+  "M170.45,51.15L158.13,11.7A255,125 0 0,1 241.87,11.7L229.55,51.15A180,85 0 0,0 170.45,51.15Z";
+const PS_C1_WIDE_OPENING = "M20,400L20,135A180,85 0 0,1 380,135L380,400Z";
+
 export function DashboardVisual() {
   const containerRef = usePsC1Reveal<HTMLDivElement>();
 
@@ -644,7 +670,10 @@ export function DashboardVisual() {
           </filter>
         </defs>
 
-        {/* The void. The only permanently dark mass in the image. */}
+        {/* Two arches, one per breakpoint. The hidden variant is display:none
+            so it neither paints nor animates. */}
+        <g className="ps-c1-arch ps-c1-arch--tall">
+        {/* The void: daylight beyond in light, an unlit passage in dark. */}
         <path d={PS_C1_OPENING} fill="url(#ps-c1-beyond)" />
 
         {/* The ring, cut from the same stone as the wall. */}
@@ -664,6 +693,24 @@ export function DashboardVisual() {
         <g className="ps-c1-key">
           <path d={PS_C1_KEYSTONE} fill="#1590FF" filter="url(#ps-c1-keyglow)" opacity="0.3" />
           <path d={PS_C1_KEYSTONE} fill="url(#ps-c1-key)" />
+        </g>
+        </g>
+
+        <g className="ps-c1-arch ps-c1-arch--wide">
+          <path d={PS_C1_WIDE_OPENING} fill="url(#ps-c1-beyond)" />
+          {PS_C1_WIDE_VOUSSOIRS.map((b, n) => (
+            <path
+              key={n}
+              className="ps-c1-vou"
+              style={{ "--i": b.i } as React.CSSProperties}
+              d={b.d}
+              fill="url(#ps-c1-stone)"
+            />
+          ))}
+          <g className="ps-c1-key">
+            <path d={PS_C1_WIDE_KEYSTONE} fill="#1590FF" filter="url(#ps-c1-keyglow)" opacity="0.3" />
+            <path d={PS_C1_WIDE_KEYSTONE} fill="url(#ps-c1-key)" />
+          </g>
         </g>
       </svg>
 

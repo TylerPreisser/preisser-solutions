@@ -2419,6 +2419,22 @@
   display: block;
 }
 
+/* ARCH GEOMETRY IS ART-DIRECTED BY BREAKPOINT.
+   The semicircular arch is correct at desktop. At <=700px the plinth lands on
+   its springing and what is left is a perfect half-disc of near-uniform
+   trapezoids on a baseline, which reads as a DIAL whichever part is darker.
+   The elliptical arch raises the springing above the plinth so the opening's
+   straight legs show, and a portal with legs cannot be a half-disc. The same
+   ellipse at desktop would fill the card with opening and lose the wall, so
+   each is used only where it works.
+   The hidden variant is display:none — no paint, no animation, no cost. */
+.ps-c1-arch--wide { display: none; }
+
+@media (max-width: 700px) {
+  .ps-c1-arch--tall { display: none; }
+  .ps-c1-arch--wide { display: block; }
+}
+
 /* ── THE PLINTH ──
    The base course the wall stands on. Architectural, not a scrim: a solid
    band with a crisp top edge, so the arch's legs terminate ON something. It
