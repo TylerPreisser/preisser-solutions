@@ -261,94 +261,240 @@ function V4Lock() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CARD 3 — AI Integration.  "The page fills the form in by itself."
+   CARD 3 — AI Integration.  "THE GRAFT."
 
-   Pain, in the owner's own words, service-pillars.tsx:352 (`painPoints[0]`,
-   and already the selected `hookIndex: 0` at :349):
-     "Someone here retypes the same information off a PDF every single day."
+   A grafted stem drawn as a FLAT GRAPHIC, not as a photograph. An old
+   rootstock rises from the bottom edge and is cut on a long diagonal; a
+   paler scion is set on that cut and carries on upward; the contact line
+   between them is lit; three binding straps hold the union; new leaves come
+   off the scion's own sides.
 
-   Subject: a PDF the visitor RECEIVED. Not our assistant, not our chat, not
-   our approval queue. The AI is depicted by BEHAVIOUR - the page is read into
-   the record, in order, once - never by iconography. No sparkle, no bubble,
-   no first-person voice.
+   WHY IT IS FLAT, AND THIS IS THE WHOLE POINT OF THIS VERSION.
+   This card was drawn SEVEN times as a dimensional object and misread every
+   single time — rocket, lighthouse, zipper, zipper, ribbed hose, chimney,
+   vase. Every one of those is a misread of a ROUND THING FAKED IN SVG. The
+   two cards on this page that succeeded both chose natively flat subjects (a
+   river seen from the air; a field of marks around a disc), where flatness is
+   the correct treatment rather than a compromise.
+   So this version stops simulating round wood. No cylinder gradients, no
+   specular ridges, no fake bark relief. Flat silhouettes, one accent, and the
+   shapes doing the work — the way a woodcut or a botanical plate does it.
+   There is no dimensional object here to misread.
 
-   The capture marks are a soft FILL, never an outline. A rectangle outline on
-   a document is the universal sign for `flagged`, which is exactly how v3's
-   red-bordered block read. A tint behind the bar is the universal sign for
-   `highlighted while reading`. Same geometry, opposite meaning.
+   WHY IT MEANS "AI INTEGRATION". The old plant keeps its roots and its whole
+   history and the new growth is genuinely fed by them; the join is a callus,
+   not a bracket. AI built INTO the system a business already runs, rather
+   than bolted on beside it.
+
+   THE STILL IS THE DELIVERABLE. Two woods of different colour and width, a
+   lit contact line and a bound union — all readable with no motion at all.
+
+   VALUE IS GUARANTEED, NOT ASSUMED. A previous version's rootstock vanished
+   at 768 and 390 — near-black on near-black in dark theme and near-white on
+   near-white in light. Flat fills make that measurable and fixable: the stock
+   holds a deliberate step against the card ground in BOTH themes, and it is
+   verified by sampling pixels rather than by looking.
+
+   NO Math.random ANYWHERE. Server-rendered; every strap and leaf is a literal.
    ───────────────────────────────────────────────────────────── */
 
-/* Body-bar widths on the received page. Rows 1,2,4,5 are the four that get
-   captured, so the marks are not a contiguous block - a reader should see the
-   page being read selectively, not a highlighter dragged down it. */
-const V4_PAGE_ROWS = [
-  { w: "88%", mark: 0 },
-  { w: "72%", mark: 1 },
-  { w: "54%", mark: -1 },
-  { w: "80%", mark: 2 },
-  { w: "66%", mark: 3 },
-  { w: "44%", mark: -1 },
-  { w: "82%", mark: -1 },
-  { w: "60%", mark: -1 },
-  { w: "76%", mark: -1 },
-  { w: "84%", mark: -1 },
-  { w: "58%", mark: -1 },
-  { w: "70%", mark: -1 },
-  { w: "48%", mark: -1 },
-  { w: "78%", mark: -1 },
+/* Binding straps across the union. Flat bars, no highlight — the tape is the
+   least meaningful thing on the card and an earlier version let it become the
+   loudest object on it. */
+const C3_STRAPS = [
+  { y: 288, h: 7 }, { y: 305, h: 7 },
 ] as const;
 
+/* Leaves, as flat blades on their own short stems, coming off the SCION's
+   sides. `ax/ay` is where the stem leaves the stem, `a` the blade angle,
+   `l` its length. */
+const C3_LEAVES = [
+  { ax: 181, ay: 158, a: -142, l: 42 }, { ax: 158, ay: 120, a: -163, l: 31 },
+  { ax: 213, ay: 152, a: -101, l: 27 }, { ax: 211, ay: 96, a: -68, l: 36 },
+  { ax: 251, ay: 158, a: 38, l: 45 }, { ax: 273, ay: 118, a: 16, l: 33 },
+] as const;
+
+/* A leaf blade: two symmetric arcs meeting at a point at each end. */
+function c3Leaf(l: number) {
+  const b = l * 0.3;
+  return `M0 0 Q ${l * 0.44} ${-b} ${l} 0 Q ${l * 0.44} ${b} 0 0 Z`;
+}
+
+/* Card 3's OWN reveal hook. Deliberately NOT the shared `useRevealOnce`.
+
+   THE BUG IN THE SHARED HOOK: its 1200ms failsafe fires whether or not the
+   card is on screen. This card sits below the fold, so the whole reveal ran
+   on a timer at page load and had already locked before anyone scrolled to
+   it — correct choreography, permanently invisible.
+
+   THE SHARED HOOK IS NOT MODIFIED; cards 2 and 5 depend on it. Card 3 keeps
+   its own copy, with a viewport-CONDITIONAL net: simply lengthening a bare
+   timeout would move the same bug later rather than remove it. */
+function usePsC3Reveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+
+    let poll = 0;
+    const onScreen = () => {
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      return r.top < vh && r.bottom > 0;
+    };
+    const settle = () => {
+      if (onScreen()) {
+        el.classList.add("in-view");
+        observer.disconnect();
+        window.clearInterval(poll);
+      }
+    };
+    /* After the delay this reveals ONLY IF the element is actually on screen,
+       and otherwise re-checks. It still cannot strand the artwork invisible if
+       the observer never fires, and it cannot spend the entrance unwatched. */
+    const failsafe = window.setTimeout(() => {
+      settle();
+      if (!el.classList.contains("in-view")) poll = window.setInterval(settle, 400);
+    }, 8000);
+
+    return () => {
+      window.clearTimeout(failsafe);
+      window.clearInterval(poll);
+      observer.disconnect();
+    };
+  }, []);
+
+  return ref;
+}
+
 export function AutomationVisual() {
-  const containerRef = useRevealOnce<HTMLDivElement>();
+  const containerRef = usePsC3Reveal<HTMLDivElement>();
 
   return (
-    <div ref={containerRef} className="ps-v4-root ps-v4-root--read" aria-hidden="true">
-      <div className="ps-v4-read">
-        {/* LEFT ~54% - the page. Its bottom edge runs off the composition;
-            the crop passes through BARS ONLY, never through a glyph. That is
-            the rule card 4 obeys and the rule v3's ghost documents broke on
-            three separate edges. */}
-        <div className="ps-v4-sheets">
-          <div className="ps-v4-sheet ps-v4-sheet--back" />
-          <div className="ps-v4-sheet">
-            <span className="ps-v4-pdf">PDF</span>
-            <i className="ps-v4-pbar ps-v4-pbar--head" />
-            <i className="ps-v4-pbar ps-v4-pbar--sub" />
-            {/* A marked row is a bar INSIDE its highlight, never a bar with a
-                highlight positioned near it — sized independently the two drift
-                apart the moment the sheet changes width. */}
-            {V4_PAGE_ROWS.map((r, i) => (
-              <span className="ps-v4-prow" key={i}>
-                {r.mark >= 0 ? (
-                  <span className="ps-v4-hl" style={{ width: r.w, "--i": r.mark } as React.CSSProperties}>
-                    <i className="ps-v4-pbar" />
-                  </span>
-                ) : (
-                  <i className="ps-v4-pbar" style={{ width: r.w }} />
-                )}
-              </span>
-            ))}
-          </div>
-        </div>
+    <div ref={containerRef} className="ps-c3-root" aria-hidden="true">
+      <svg
+        className="ps-c3-svg"
+        viewBox="0 0 412 442"
+        preserveAspectRatio="xMidYMid slice"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          {/* Every id ps-c3- prefixed — five inline SVGs share this page and a
+              defs collision is SILENT. */}
 
-        {/* RIGHT ~46% - the record. Asymmetric against the page on purpose so
-            this card does not read as card 2 drawn twice. */}
-        <div className="ps-v4-panel ps-v4-panel--record">
-          <div className="ps-v4-chrome">
-            <span className="ps-v4-dots"><i /><i /><i /></span>
-            <span className="ps-v4-pill" />
-          </div>
-          <div className="ps-v4-rows">
-            {[0, 1, 2, 3].map((i) => (
-              <span className="ps-v4-row" key={i}>
-                <i className="ps-v4-label" />
-                <i className="ps-v4-slot ps-v4-slot--read"
-                   style={{ "--i": i } as React.CSSProperties} />
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
+          {/* ONE LIGHT, in USER SPACE, spanning the whole drawing. Each set
+              below samples this same coordinate space, so a strap near the top
+              and a strap near the bottom take different values from the SAME
+              lamp. With the default objectBoundingBox units each shape would
+              instead get its own identical copy and the set would read as
+              stamped repeats — the mechanical cause of "barrel hoops" and
+              "flat mint lozenges". DO NOT drop userSpaceOnUse from these. */}
+          <linearGradient id="ps-c3-stockgrad" gradientUnits="userSpaceOnUse" x1="120" y1="250" x2="300" y2="470">
+            <stop offset="0%" className="ps-c3-s-stk0" />
+            <stop offset="100%" className="ps-c3-s-stk1" />
+          </linearGradient>
+          <linearGradient id="ps-c3-sciongrad" gradientUnits="userSpaceOnUse" x1="160" y1="70" x2="270" y2="300">
+            <stop offset="0%" className="ps-c3-s-scn0" />
+            <stop offset="100%" className="ps-c3-s-scn1" />
+          </linearGradient>
+          <linearGradient id="ps-c3-strapgrad" gradientUnits="userSpaceOnUse" x1="130" y1="255" x2="290" y2="360">
+            <stop offset="0%" className="ps-c3-s-stp0" />
+            <stop offset="100%" className="ps-c3-s-stp1" />
+          </linearGradient>
+          <linearGradient id="ps-c3-leafgrad" gradientUnits="userSpaceOnUse" x1="130" y1="70" x2="300" y2="240">
+            <stop offset="0%" className="ps-c3-s-lf0" />
+            <stop offset="100%" className="ps-c3-s-lf1" />
+          </linearGradient>
+
+          <filter id="ps-c3-glow" x="-140%" y="-600%" width="380%" height="1300%">
+            <feGaussianBlur stdDeviation="9" />
+          </filter>
+        </defs>
+
+        {/* ── THE ROOTSTOCK. One flat silhouette, running off the bottom edge
+              and cut on a long diagonal. No gradient: this is the version that
+              stopped pretending to be round. ── */}
+        <path
+          className="ps-c3-stock"
+          d="M138 470 L146 296 L268 262 L276 470 Z"
+        />
+
+        {/* ── THE SCION. Narrower and paler, set on the diagonal and carrying
+              on upward. Different WIDTH and different VALUE — that is what
+              makes two members read as two. ── */}
+        <path
+          className="ps-c3-scion"
+          d="M186 292 L246 272 L238 198 L196 202 Z"
+        />
+
+        {/* ── THE CONTACT LINE. The idea of the card, and the brightest thing
+              on it. Everything else is subordinate to this. ── */}
+        <g className="ps-c3-join">
+          <path className="ps-c3-cambium-glow" d="M144 300 L270 264" filter="url(#ps-c3-glow)" />
+          <path className="ps-c3-cambium" d="M144 300 L270 264" />
+        </g>
+
+        {/* ── THE BINDING. Flat bars, quiet on purpose. ── */}
+        <g className="ps-c3-straps">
+          {C3_STRAPS.map((t, i) => (
+            <path
+              key={t.y}
+              className="ps-c3-strap"
+              style={{ "--i": i } as React.CSSProperties}
+              d={`M${140 + i * 1.6} ${t.y} L${272 - i * 1.4} ${t.y - 30} L${272 - i * 1.4} ${t.y - 30 + t.h} L${140 + i * 1.6} ${t.y + t.h} Z`}
+            />
+          ))}
+        </g>
+
+        {/* ── THE FORK. Three stems out of the scion's head. A branching top
+              is the one silhouette that cannot be read as an obelisk, and
+              nineteen versions of a straight tapering top were read as one
+              eight times running. ── */}
+        <g className="ps-c3-fork">
+          <path className="ps-c3-stem-main" d="M204 206 C192 176 168 142 142 98" />
+          <path className="ps-c3-stem-main" d="M215 204 C215 170 212 130 210 68" />
+          <path className="ps-c3-stem-main" d="M228 202 C242 176 266 140 290 94" />
+        </g>
+
+        {/* ── NEW GROWTH, at NODES on those stems. Proof the graft took. ── */}
+        <g className="ps-c3-leaves">
+          {C3_LEAVES.map((lf, i) => (
+            /* TWO NESTED GROUPS: a CSS `transform` on an SVG element REPLACES
+               its `transform` attribute rather than composing with it, so
+               placement and the animated scale cannot live on the same node —
+               they silently collapse to the SVG origin if they do. */
+            <g key={`${lf.ax}-${lf.ay}`} transform={`translate(${lf.ax} ${lf.ay}) rotate(${lf.a})`}>
+              <g className="ps-c3-leafgrp" style={{ "--i": i } as React.CSSProperties}>
+                <path className="ps-c3-stem" d={`M0 0 L ${lf.l * 0.26} 0`} />
+                <path className="ps-c3-leaf" d={c3Leaf(lf.l)} transform={`translate(${lf.l * 0.26} 0)`} />
+              </g>
+            </g>
+          ))}
+        </g>
+      </svg>
     </div>
   );
 }
