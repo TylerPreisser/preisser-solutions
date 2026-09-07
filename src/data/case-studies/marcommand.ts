@@ -2,7 +2,8 @@ import type { CaseStudyData } from "@/types/case-study";
 
 // Canonical project #9 — MarCommand Multi-Agent Marketing Engine.
 // Internal Preisser Solutions tool. Powers the marketing service offering.
-// Clients never log in. See docs/CANONICAL-PROJECTS.md.
+// Clients receive the output plus a single cross-channel ROI dashboard.
+// See docs/CANONICAL-PROJECTS.md.
 export const caseStudy: CaseStudyData = {
   slug: "marcommand",
   metaTitle: "MarCommand: Marketing Automation",
@@ -40,7 +41,7 @@ export const caseStudy: CaseStudyData = {
     heading: "Eight agents, one orchestrator, every channel in scope.",
     body: [
       "MarCommand ingests Google Ads, Meta, TikTok, YouTube, LinkedIn, MailChimp, Local Service Ads, geofencing, and organic (every channel a client runs), and scores each one by actual dollar ROI. Eight specialized agents coordinate under a central orchestrator: a Content Strategist decides what to create and when, a Copywriter generates persuasion-aware copy, a Designer produces visuals, a Paid Ads Manager runs budget and bid strategy, an AEO Agent optimizes for AI search citation, an Analyst tracks performance and calculates ROI by channel, a Quality Reviewer gates anything before it goes live, and the Central Orchestrator coordinates everything end-to-end.",
-      "MarCommand is not a SaaS product. Clients never log in. The engine sits behind the marketing service offering: clients pay for output, not for tooling. Optional auto-execution within client guardrails turns the daily reallocation recommendations into live changes. A dashboard mockup is integrated into the preissersolutions.com homepage so prospects can see what the engine produces without ever needing access to it.",
+      "MarCommand is not a SaaS product you buy and configure. The engine sits behind the marketing service offering: clients pay for output, not for tooling, and get one dashboard reporting every channel's spend, return and cost per customer won. Optional auto-execution within client guardrails turns the daily reallocation recommendations into live changes.",
     ],
   },
 
@@ -52,7 +53,7 @@ export const caseStudy: CaseStudyData = {
       "Daily dollar-ROI scoring per channel with projected lift on reallocation",
       "Optional auto-execution within client-defined guardrails",
       "QA gate runs before any output goes live",
-      "Internal-only: clients never log in, never see the tool",
+      "Cross-channel ROI dashboard reporting spend, return and cost per customer",
     ],
     subsections: [
       {
@@ -100,10 +101,10 @@ export const caseStudy: CaseStudyData = {
         "Channel performance is scored daily in actual dollars and surfaced as concrete reallocation recommendations with projected lift.",
     },
     {
-      value: "0",
-      label: "Client logins required",
+      value: "One",
+      label: "Dashboard covering every channel",
       context:
-        "MarCommand is the engine behind the service. Clients receive output and outcomes; they never touch the tool.",
+        "Every channel a client runs reports into a single view of spend, return and what a customer actually cost to win, rather than impressions and clicks.",
     },
   ],
 

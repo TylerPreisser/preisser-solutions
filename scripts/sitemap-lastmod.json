@@ -1,926 +1,926 @@
 {
   "/": {
-    "hash": "6743794ebfba54a7",
+    "hash": "57c4e93421b74d38",
     "lastmod": "2026-09-07"
   },
   "/about": {
-    "hash": "c9825f36b3df7864",
-    "lastmod": "2026-09-05"
+    "hash": "c4b9345f124e9773",
+    "lastmod": "2026-09-07"
   },
   "/ai-agents": {
-    "hash": "541af2def4b483ab",
-    "lastmod": "2026-09-05"
+    "hash": "abf92650e6ff3268",
+    "lastmod": "2026-09-07"
   },
   "/blog": {
-    "hash": "fa554968ba23287f",
-    "lastmod": "2026-09-05"
+    "hash": "5d8690205cdb25ff",
+    "lastmod": "2026-09-07"
   },
   "/blog/aeo-vs-geo-vs-seo": {
-    "hash": "6d46d3fa8e836176",
-    "lastmod": "2026-09-05"
+    "hash": "2c681dd7482ad39b",
+    "lastmod": "2026-09-07"
   },
   "/blog/ai-automation-cost-kansas": {
-    "hash": "0a41f721c9a9120a",
-    "lastmod": "2026-09-05"
+    "hash": "93a966b2eda19ba5",
+    "lastmod": "2026-09-07"
   },
   "/blog/ai-vs-traditional-workflow-automation": {
-    "hash": "c9f5ab5a4321957c",
-    "lastmod": "2026-09-05"
+    "hash": "58c2344b8cdf5f3f",
+    "lastmod": "2026-09-07"
   },
   "/blog/ai-without-replacing-staff-kansas": {
-    "hash": "f596c0c04600b6f3",
-    "lastmod": "2026-09-05"
+    "hash": "ac98eed57ade39d1",
+    "lastmod": "2026-09-07"
   },
   "/blog/best-automations-contractors": {
-    "hash": "ac01b1ccc82a0016",
-    "lastmod": "2026-09-05"
+    "hash": "0a5962dd5163e51b",
+    "lastmod": "2026-09-07"
   },
   "/blog/best-automations-insurance": {
-    "hash": "abf1ff9d7f85befd",
-    "lastmod": "2026-09-05"
+    "hash": "1286948049e4de89",
+    "lastmod": "2026-09-07"
   },
   "/blog/best-automations-trucking": {
-    "hash": "0663f99ea4bec9c1",
-    "lastmod": "2026-09-05"
+    "hash": "4ba5116773e6eb11",
+    "lastmod": "2026-09-07"
   },
   "/blog/custom-crm-vs-hubspot-vs-salesforce": {
-    "hash": "93e619c844fd0798",
-    "lastmod": "2026-09-05"
+    "hash": "074fe7d2b731800f",
+    "lastmod": "2026-09-07"
   },
   "/blog/gbp-optimization-guide": {
-    "hash": "f64f8ffcf8408205",
-    "lastmod": "2026-09-05"
+    "hash": "bca5ea0b00739f03",
+    "lastmod": "2026-09-07"
   },
   "/blog/local-seo-checklist-kansas": {
-    "hash": "9970bcce2173aa5e",
-    "lastmod": "2026-09-05"
+    "hash": "93a234569dc9d544",
+    "lastmod": "2026-09-07"
   },
   "/blog/missed-call-roi-calculator": {
-    "hash": "cf19c5c23311edb0",
-    "lastmod": "2026-09-05"
+    "hash": "1a456fdfaf340353",
+    "lastmod": "2026-09-07"
   },
   "/blog/reactivate-old-leads": {
-    "hash": "1b270208a464eb54",
-    "lastmod": "2026-09-05"
+    "hash": "b6d09f70f54284ff",
+    "lastmod": "2026-09-07"
   },
   "/blog/track-marketing-roi": {
-    "hash": "84fd9d4ae85addc3",
-    "lastmod": "2026-09-05"
+    "hash": "a1f2a671d4200f8a",
+    "lastmod": "2026-09-07"
   },
   "/blog/website-for-ai-search": {
-    "hash": "0e5ef274a56732fb",
-    "lastmod": "2026-09-05"
+    "hash": "9dc7f0a71d8b9481",
+    "lastmod": "2026-09-07"
   },
   "/blog/website-redesign-checklist": {
-    "hash": "1168be711bb927b8",
-    "lastmod": "2026-09-05"
+    "hash": "d26933fa3f30b37c",
+    "lastmod": "2026-09-07"
   },
   "/blog/what-is-ai-automation-for-small-businesses": {
-    "hash": "d24403097e5511e7",
-    "lastmod": "2026-09-05"
+    "hash": "66f4de2cfe240cf6",
+    "lastmod": "2026-09-07"
   },
   "/blog/what-is-ai-search-optimization": {
-    "hash": "db8d0b64167c59f5",
-    "lastmod": "2026-09-05"
+    "hash": "d6b00b8e651cbdf9",
+    "lastmod": "2026-09-07"
   },
   "/blog/what-is-an-ai-native-website": {
-    "hash": "1040fe9ab3db161b",
-    "lastmod": "2026-09-05"
+    "hash": "3b18a81cffab52cc",
+    "lastmod": "2026-09-07"
   },
   "/blog/what-is-llms-txt": {
-    "hash": "ab7e1b7a96afc3ba",
-    "lastmod": "2026-09-05"
+    "hash": "48c59da2e0d1fc6b",
+    "lastmod": "2026-09-07"
   },
   "/blog/when-to-build-custom-dashboard": {
-    "hash": "dc2ae6262e8e8e2b",
-    "lastmod": "2026-09-05"
+    "hash": "6ecf704476533c2b",
+    "lastmod": "2026-09-07"
   },
   "/blog/why-small-business-sites-dont-convert": {
-    "hash": "191d8de80a929196",
-    "lastmod": "2026-09-05"
+    "hash": "39ef6f01ce4fe03d",
+    "lastmod": "2026-09-07"
   },
   "/business-automation": {
-    "hash": "4153fbb710c41a95",
-    "lastmod": "2026-09-05"
+    "hash": "9f2a600582dd6471",
+    "lastmod": "2026-09-07"
   },
   "/case-studies": {
-    "hash": "da2f01d1668d1f3c",
-    "lastmod": "2026-09-05"
+    "hash": "fd1b8e7daa422830",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/after-hours-call-triage": {
-    "hash": "6698f8e69349562d",
-    "lastmod": "2026-09-05"
+    "hash": "e7606af48d91fd45",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/agentic-coding-specialists": {
-    "hash": "f9a7bca94fa6e3b4",
-    "lastmod": "2026-09-05"
+    "hash": "4edc2f9ac481dc39",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/ai-document-analysis": {
-    "hash": "90d9ec8b6d35e4ae",
-    "lastmod": "2026-09-05"
+    "hash": "2e18851767d1eb4b",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/ai-email-digest": {
-    "hash": "568846596b31a3e4",
-    "lastmod": "2026-09-05"
+    "hash": "91dd02f1c90c682f",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/ai-fitness-wellness-agent": {
-    "hash": "2b69a0a7317aa93f",
-    "lastmod": "2026-09-05"
+    "hash": "5e016d925aaad644",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/ai-invoice-processing-platform": {
-    "hash": "7cbd29ae2323937c",
-    "lastmod": "2026-09-05"
+    "hash": "93129f348047b4f3",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/ai-trend-behavioral-analysis": {
-    "hash": "7df8462b5a9920e1",
-    "lastmod": "2026-09-05"
+    "hash": "f8d2b9561c34649f",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/alliant-mgu-insurance": {
-    "hash": "0771ec516b9693b7",
-    "lastmod": "2026-09-05"
+    "hash": "390401e0318647e3",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/alpha-matrix": {
-    "hash": "6082d49f006929d9",
-    "lastmod": "2026-09-05"
+    "hash": "b07e39b6c8831118",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/cassidy-hvac-marketing-engine": {
-    "hash": "0adf35c7fc77b715",
-    "lastmod": "2026-09-05"
+    "hash": "b8029a320217c626",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/cassidy-hvac-reactivation": {
-    "hash": "fb642bc62669096e",
-    "lastmod": "2026-09-05"
+    "hash": "c8f2c82797d5c158",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/chicago-bus-operator": {
-    "hash": "283b4c4c714c8219",
-    "lastmod": "2026-09-05"
+    "hash": "42f89f2df954772e",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/contact-form-crm-pipeline": {
-    "hash": "0dfc526fab9cb36b",
-    "lastmod": "2026-09-05"
+    "hash": "f1ac3ce84881a1eb",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/custom-local-ai-models": {
-    "hash": "34f2889c221c86ff",
-    "lastmod": "2026-09-05"
+    "hash": "9bae0a96fc3ee5da",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/farmbooks": {
-    "hash": "ac930ab750a53d7e",
-    "lastmod": "2026-09-05"
+    "hash": "e29d52900e42e41e",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/hg-oil-ai-invoice-processing": {
-    "hash": "589f9eb37edba090",
-    "lastmod": "2026-09-05"
+    "hash": "6ccd1e9bc35e1459",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/hg-oil-inventory-system": {
-    "hash": "e02d93e2577baa1d",
-    "lastmod": "2026-09-05"
+    "hash": "22c9a3afdbfad809",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/hiring-pipeline-robin": {
-    "hash": "4a47f893e40fd3ff",
-    "lastmod": "2026-09-05"
+    "hash": "d2c83f8680cf795e",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/iron-and-oak-podcast": {
-    "hash": "8af56282314e2165",
-    "lastmod": "2026-09-05"
+    "hash": "a238f20e1cabddef",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/marcommand": {
-    "hash": "42c67528afcb8521",
-    "lastmod": "2026-09-05"
+    "hash": "3178622626907cec",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/marcommand-engine": {
-    "hash": "5a56f5c2abfc96cf",
-    "lastmod": "2026-09-05"
+    "hash": "36493083b5e8dfe2",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/preisser-solutions-site": {
-    "hash": "c7966205d241c464",
-    "lastmod": "2026-09-05"
+    "hash": "7eec3fcca5911b48",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/query-dominance": {
-    "hash": "9a3042a0a0dbe4fa",
-    "lastmod": "2026-09-05"
+    "hash": "3421c73a3dc83ffe",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/tyler-preisser-site": {
-    "hash": "e0fd712eb04034a2",
-    "lastmod": "2026-09-05"
+    "hash": "bd5f0069a3425142",
+    "lastmod": "2026-09-07"
   },
   "/case-studies/wife-supply-co": {
-    "hash": "f595e4a3638b63e5",
-    "lastmod": "2026-09-05"
+    "hash": "8c5b565f8d8296c4",
+    "lastmod": "2026-09-07"
   },
   "/compare/adams-brown": {
-    "hash": "717e86a08c0ebd95",
-    "lastmod": "2026-09-05"
+    "hash": "c31befd3bbafc117",
+    "lastmod": "2026-09-07"
   },
   "/compare/ai-search-optimization-vs-traditional-seo": {
-    "hash": "6322a8c69c417dde",
-    "lastmod": "2026-09-05"
+    "hash": "09a0f86d9dd28676",
+    "lastmod": "2026-09-07"
   },
   "/compare/akeratos": {
-    "hash": "53242c88abdac4b4",
-    "lastmod": "2026-09-05"
+    "hash": "f26f105f0445074c",
+    "lastmod": "2026-09-07"
   },
   "/compare/best-web-design-company-hays-kansas": {
-    "hash": "d0a40ab2cc4645a5",
-    "lastmod": "2026-09-05"
+    "hash": "51b81a87f98540d6",
+    "lastmod": "2026-09-07"
   },
   "/compare/bubble-vs-custom-coded": {
-    "hash": "8db57a263b854e97",
-    "lastmod": "2026-09-05"
+    "hash": "118b8072090f3790",
+    "lastmod": "2026-09-07"
   },
   "/compare/csg-media": {
-    "hash": "1d6bb3a51604c3ac",
-    "lastmod": "2026-09-05"
+    "hash": "c5d33c74669c06fb",
+    "lastmod": "2026-09-07"
   },
   "/compare/flutterflow-vs-custom-coded": {
-    "hash": "48cb7b1ae19d6981",
-    "lastmod": "2026-09-05"
+    "hash": "4f9ce14bbebea4a6",
+    "lastmod": "2026-09-07"
   },
   "/compare/hubspot-vs-custom-crm": {
-    "hash": "830910ede8b54d3d",
-    "lastmod": "2026-09-05"
+    "hash": "070ad8bfddbf3868",
+    "lastmod": "2026-09-07"
   },
   "/compare/kc-web-designer": {
-    "hash": "2fc7a86ba1cfc19f",
-    "lastmod": "2026-09-05"
+    "hash": "02718e14530bb8c3",
+    "lastmod": "2026-09-07"
   },
   "/compare/local-seo-vs-paid-ads": {
-    "hash": "eb3cb749c566cddb",
-    "lastmod": "2026-09-05"
+    "hash": "8d34d3ac325abf79",
+    "lastmod": "2026-09-07"
   },
   "/compare/make-com-vs-custom-automation": {
-    "hash": "b700dbbc45d4d638",
-    "lastmod": "2026-09-05"
+    "hash": "c7f1d92e4815b6ad",
+    "lastmod": "2026-09-07"
   },
   "/compare/pluto-sites": {
-    "hash": "cf41de96ee1ad375",
-    "lastmod": "2026-09-05"
+    "hash": "3fa01418df96ed35",
+    "lastmod": "2026-09-07"
   },
   "/compare/salesforce-vs-custom-crm": {
-    "hash": "fc1adce3d513dded",
-    "lastmod": "2026-09-05"
+    "hash": "42e038035a5fe7da",
+    "lastmod": "2026-09-07"
   },
   "/compare/shopify-vs-custom-ecommerce": {
-    "hash": "f6a798a5adbdd546",
-    "lastmod": "2026-09-05"
+    "hash": "7188b9af48dc99bc",
+    "lastmod": "2026-09-07"
   },
   "/compare/squarespace-vs-custom": {
-    "hash": "3234433d07624609",
-    "lastmod": "2026-09-05"
+    "hash": "6ffde94f8a176f1a",
+    "lastmod": "2026-09-07"
   },
   "/compare/vs-kc-ai-pro": {
-    "hash": "ef716a2013682095",
-    "lastmod": "2026-09-05"
+    "hash": "f32a0ee199445d0e",
+    "lastmod": "2026-09-07"
   },
   "/compare/vs-lithium-marketing": {
-    "hash": "37eeaef1de02a40e",
-    "lastmod": "2026-09-05"
+    "hash": "2c104a5e47524df6",
+    "lastmod": "2026-09-07"
   },
   "/compare/vs-marketing-agency": {
-    "hash": "a365de10c703adbf",
-    "lastmod": "2026-09-05"
+    "hash": "e89effb396e12fa5",
+    "lastmod": "2026-09-07"
   },
   "/compare/vs-opinosis": {
-    "hash": "605a1bed0b4c673b",
-    "lastmod": "2026-09-05"
+    "hash": "689cd7cc280a9b6b",
+    "lastmod": "2026-09-07"
   },
   "/compare/vs-virtual-assistant": {
-    "hash": "9057da09ad10ff06",
-    "lastmod": "2026-09-05"
+    "hash": "2faddca47b09df79",
+    "lastmod": "2026-09-07"
   },
   "/compare/webflow-vs-custom-coded": {
-    "hash": "bb58644fb244d7b4",
-    "lastmod": "2026-09-05"
+    "hash": "032bd0660493a573",
+    "lastmod": "2026-09-07"
   },
   "/compare/wix-vs-custom": {
-    "hash": "56be34bff286a302",
-    "lastmod": "2026-09-05"
+    "hash": "6addb61c27a975cf",
+    "lastmod": "2026-09-07"
   },
   "/compare/wordpress-vs-custom-coded-website": {
-    "hash": "7a4cb527d747e805",
-    "lastmod": "2026-09-05"
+    "hash": "1d9c835a01ad2160",
+    "lastmod": "2026-09-07"
   },
   "/compare/zapier-vs-custom-automation-small-business": {
-    "hash": "03955936661f3286",
-    "lastmod": "2026-09-05"
+    "hash": "20d4c4912f0732d7",
+    "lastmod": "2026-09-07"
   },
   "/contact": {
-    "hash": "af0baade699efa94",
-    "lastmod": "2026-09-05"
+    "hash": "67b8c5b3ef48f038",
+    "lastmod": "2026-09-07"
   },
   "/faq": {
-    "hash": "78edc92600567bd3",
-    "lastmod": "2026-09-05"
+    "hash": "3c3c5f738bb964d5",
+    "lastmod": "2026-09-07"
   },
   "/industries/hvac": {
-    "hash": "901fbd5a7190fdcd",
-    "lastmod": "2026-09-05"
+    "hash": "6c4d52cb3194f6b4",
+    "lastmod": "2026-09-07"
   },
   "/industries/hvac-ai-receptionist": {
-    "hash": "1dcf9862ef2ed9e5",
-    "lastmod": "2026-09-05"
+    "hash": "fe037e14ca805f1f",
+    "lastmod": "2026-09-07"
   },
   "/industries/hvac-local-seo-kansas": {
-    "hash": "8fb23d1cd518e593",
-    "lastmod": "2026-09-05"
+    "hash": "dbe8c4eae959c968",
+    "lastmod": "2026-09-07"
   },
   "/industries/insurance-financial": {
-    "hash": "81461657bfec11f7",
-    "lastmod": "2026-09-05"
+    "hash": "134754ca8eb8aa86",
+    "lastmod": "2026-09-07"
   },
   "/industries/manufacturing": {
-    "hash": "1b6ade4d2ed136ff",
-    "lastmod": "2026-09-05"
+    "hash": "d95f9767c197d7e5",
+    "lastmod": "2026-09-07"
   },
   "/industries/oil-gas": {
-    "hash": "d971f0aea4dec074",
-    "lastmod": "2026-09-05"
+    "hash": "08ffd4477867c105",
+    "lastmod": "2026-09-07"
   },
   "/industries/retail": {
-    "hash": "01557d7fde93546a",
-    "lastmod": "2026-09-05"
+    "hash": "6d70420ddfdcbf58",
+    "lastmod": "2026-09-07"
   },
   "/industries/trucking-logistics": {
-    "hash": "739c0a7b2561b925",
-    "lastmod": "2026-09-05"
+    "hash": "0eb684163a4d4488",
+    "lastmod": "2026-09-07"
   },
   "/insights/business-website-not-getting-traffic": {
-    "hash": "7726150c3d8106ce",
-    "lastmod": "2026-09-05"
+    "hash": "e899c573141f3f71",
+    "lastmod": "2026-09-07"
   },
   "/insights/get-more-local-customers-from-google": {
-    "hash": "48429e8e9cd18e5b",
-    "lastmod": "2026-09-05"
+    "hash": "742fe6d05a26356c",
+    "lastmod": "2026-09-07"
   },
   "/insights/google-business-profile-not-getting-calls": {
-    "hash": "be72a0a83a5929b5",
-    "lastmod": "2026-09-05"
+    "hash": "e3b323ca82b534b1",
+    "lastmod": "2026-09-07"
   },
   "/insights/llms-txt-small-business-website": {
-    "hash": "41d1ac4f9dc9b882",
-    "lastmod": "2026-09-05"
+    "hash": "0c1e9c22a02318a2",
+    "lastmod": "2026-09-07"
   },
   "/insights/small-business-website-not-generating-leads": {
-    "hash": "ccc8e5b33f87ecf5",
-    "lastmod": "2026-09-05"
+    "hash": "b3471f2119c07923",
+    "lastmod": "2026-09-07"
   },
   "/insights/website-loads-slow-on-mobile": {
-    "hash": "20dcc04188eccbd2",
-    "lastmod": "2026-09-05"
+    "hash": "fcec8acaeebe5978",
+    "lastmod": "2026-09-07"
   },
   "/insights/website-not-showing-up-on-google": {
-    "hash": "1ef1d9f0465ecffa",
-    "lastmod": "2026-09-05"
+    "hash": "74a7a960fdfc9c0f",
+    "lastmod": "2026-09-07"
   },
   "/integrations": {
-    "hash": "1c0c7bfdddc7a528",
-    "lastmod": "2026-09-05"
+    "hash": "cedfcfe2971caa75",
+    "lastmod": "2026-09-07"
   },
   "/locations": {
-    "hash": "a5a58318fa18c0e1",
-    "lastmod": "2026-09-05"
+    "hash": "8d4ebc360f275588",
+    "lastmod": "2026-09-07"
   },
   "/locations/arkansas-city-kansas-web-design": {
-    "hash": "4b50ab03ccad7d43",
-    "lastmod": "2026-09-05"
+    "hash": "97e6b2dcb84d5b16",
+    "lastmod": "2026-09-07"
   },
   "/locations/atchison-kansas-web-design": {
-    "hash": "36a1d0e2eb2d3e7d",
-    "lastmod": "2026-09-05"
+    "hash": "d97d9adf975200a3",
+    "lastmod": "2026-09-07"
   },
   "/locations/beloit-kansas-web-design": {
-    "hash": "58000bf4bec0afc8",
-    "lastmod": "2026-09-05"
+    "hash": "8de788685d32a58a",
+    "lastmod": "2026-09-07"
   },
   "/locations/chanute-kansas-web-design": {
-    "hash": "4a673d3ed32dcea7",
-    "lastmod": "2026-09-05"
+    "hash": "e6c8e41768f333cc",
+    "lastmod": "2026-09-07"
   },
   "/locations/coffeyville-kansas-web-design": {
-    "hash": "913bd85b02ea6241",
-    "lastmod": "2026-09-05"
+    "hash": "51f8c0a31c0a5280",
+    "lastmod": "2026-09-07"
   },
   "/locations/colby-kansas-web-design": {
-    "hash": "47232e61a6413910",
-    "lastmod": "2026-09-05"
+    "hash": "8a344eefae3935fb",
+    "lastmod": "2026-09-07"
   },
   "/locations/colorado-springs-colorado-web-design": {
-    "hash": "eeb21d7d787241ce",
-    "lastmod": "2026-09-05"
+    "hash": "67a5335bcb1391a0",
+    "lastmod": "2026-09-07"
   },
   "/locations/denver-colorado-web-design": {
-    "hash": "5df98b7043b7895d",
-    "lastmod": "2026-09-05"
+    "hash": "8a1afdbff6e1e094",
+    "lastmod": "2026-09-07"
   },
   "/locations/derby-kansas-web-design": {
-    "hash": "bf26a18b1a72bc5f",
-    "lastmod": "2026-09-05"
+    "hash": "d0ab58ea683f78d4",
+    "lastmod": "2026-09-07"
   },
   "/locations/dodge-city-kansas": {
-    "hash": "dfb6c1bc86612361",
-    "lastmod": "2026-09-05"
+    "hash": "de624dfdf2eeed14",
+    "lastmod": "2026-09-07"
   },
   "/locations/dodge-city-kansas-seo": {
-    "hash": "7fe9c01df7f9e8b7",
-    "lastmod": "2026-09-05"
+    "hash": "744c85496ea5b523",
+    "lastmod": "2026-09-07"
   },
   "/locations/dodge-city-kansas-web-design": {
-    "hash": "2918928400eac81c",
-    "lastmod": "2026-09-05"
+    "hash": "06bce17e6f02d15e",
+    "lastmod": "2026-09-07"
   },
   "/locations/ellis-kansas-web-design": {
-    "hash": "7af89f414f5d09b2",
-    "lastmod": "2026-09-05"
+    "hash": "8db3b00889286550",
+    "lastmod": "2026-09-07"
   },
   "/locations/emporia-kansas-web-design": {
-    "hash": "c5fdf0b198b81ab3",
-    "lastmod": "2026-09-05"
+    "hash": "50196d91d3cc0276",
+    "lastmod": "2026-09-07"
   },
   "/locations/garden-city-kansas": {
-    "hash": "dbfba30dd1af58d5",
-    "lastmod": "2026-09-05"
+    "hash": "cf608df04a6a07de",
+    "lastmod": "2026-09-07"
   },
   "/locations/garden-city-kansas-seo": {
-    "hash": "bfd78325f52b25e1",
-    "lastmod": "2026-09-05"
+    "hash": "b5875d673ab4f023",
+    "lastmod": "2026-09-07"
   },
   "/locations/garden-city-kansas-web-design": {
-    "hash": "d58327c5a2376643",
-    "lastmod": "2026-09-05"
+    "hash": "449707236174833d",
+    "lastmod": "2026-09-07"
   },
   "/locations/goodland-kansas-web-design": {
-    "hash": "96cff9aff45b011f",
-    "lastmod": "2026-09-05"
+    "hash": "614f6aaf6163fc77",
+    "lastmod": "2026-09-07"
   },
   "/locations/great-bend-kansas": {
-    "hash": "4ea8313d70d90101",
-    "lastmod": "2026-09-05"
+    "hash": "246288dc8a406584",
+    "lastmod": "2026-09-07"
   },
   "/locations/great-bend-kansas-digital-marketing": {
-    "hash": "7367af927d252299",
-    "lastmod": "2026-09-05"
+    "hash": "080402a216dd7613",
+    "lastmod": "2026-09-07"
   },
   "/locations/great-bend-kansas-web-design": {
-    "hash": "c6d688c0668ae3d4",
-    "lastmod": "2026-09-05"
+    "hash": "4065e1d3dd68b5d0",
+    "lastmod": "2026-09-07"
   },
   "/locations/hays-kansas": {
-    "hash": "7d8efaeeab276d32",
-    "lastmod": "2026-09-05"
+    "hash": "a310c87492f6465b",
+    "lastmod": "2026-09-07"
   },
   "/locations/hays-kansas-custom-software": {
-    "hash": "f36e08dcb9f9a67c",
-    "lastmod": "2026-09-05"
+    "hash": "e9520d0ca206b938",
+    "lastmod": "2026-09-07"
   },
   "/locations/hays-kansas-digital-marketing": {
-    "hash": "fdf97177be006c63",
-    "lastmod": "2026-09-05"
+    "hash": "4f066de3d48b3b5a",
+    "lastmod": "2026-09-07"
   },
   "/locations/hays-kansas-healthcare-software": {
-    "hash": "d9061dd256609009",
-    "lastmod": "2026-09-05"
+    "hash": "6aeedff01b0418c6",
+    "lastmod": "2026-09-07"
   },
   "/locations/hays-kansas-hvac-software": {
-    "hash": "55e0e83524a24df2",
-    "lastmod": "2026-09-05"
+    "hash": "680d262e032fc011",
+    "lastmod": "2026-09-07"
   },
   "/locations/hays-kansas-insurance-software": {
-    "hash": "1375b50199cdef2e",
-    "lastmod": "2026-09-05"
+    "hash": "213ca631f3895a0b",
+    "lastmod": "2026-09-07"
   },
   "/locations/hays-kansas-oil-gas-software": {
-    "hash": "63a6651556bfc785",
-    "lastmod": "2026-09-05"
+    "hash": "98bece7c53648b58",
+    "lastmod": "2026-09-07"
   },
   "/locations/hays-kansas-restaurant-marketing": {
-    "hash": "bda1200e5fa39c87",
-    "lastmod": "2026-09-05"
+    "hash": "265556f7156b2450",
+    "lastmod": "2026-09-07"
   },
   "/locations/hays-kansas-seo": {
-    "hash": "256bf4734b452f27",
-    "lastmod": "2026-09-05"
+    "hash": "d851fe148112481e",
+    "lastmod": "2026-09-07"
   },
   "/locations/hays-kansas-trucking-software": {
-    "hash": "73901b9cc27095b9",
-    "lastmod": "2026-09-05"
+    "hash": "850925ff073b8591",
+    "lastmod": "2026-09-07"
   },
   "/locations/hays-kansas-web-applications": {
-    "hash": "123151c134041c8e",
-    "lastmod": "2026-09-05"
+    "hash": "e6f7eb32eb42097d",
+    "lastmod": "2026-09-07"
   },
   "/locations/hays-kansas-web-design": {
-    "hash": "e85e0d3c13819755",
-    "lastmod": "2026-09-05"
+    "hash": "e3e854b28198de9e",
+    "lastmod": "2026-09-07"
   },
   "/locations/hays-kansas-web-development": {
-    "hash": "6316a125b10ba626",
-    "lastmod": "2026-09-05"
+    "hash": "4d80b857e02a5f06",
+    "lastmod": "2026-09-07"
   },
   "/locations/hill-city-kansas-web-design": {
-    "hash": "2c5128ba692ea2e9",
-    "lastmod": "2026-09-05"
+    "hash": "382467d0596764bb",
+    "lastmod": "2026-09-07"
   },
   "/locations/hutchinson-kansas-web-design": {
-    "hash": "a5972a039afc19bf",
-    "lastmod": "2026-09-05"
+    "hash": "484b106b94d0d948",
+    "lastmod": "2026-09-07"
   },
   "/locations/independence-kansas-web-design": {
-    "hash": "1f13863006d288b0",
-    "lastmod": "2026-09-05"
+    "hash": "4492411c2fc1a09f",
+    "lastmod": "2026-09-07"
   },
   "/locations/junction-city-kansas-web-design": {
-    "hash": "8bcbd6320dfc355d",
-    "lastmod": "2026-09-05"
+    "hash": "0bfd388681dec437",
+    "lastmod": "2026-09-07"
   },
   "/locations/kansas-city-missouri-custom-software": {
-    "hash": "f1026105129709a1",
-    "lastmod": "2026-09-05"
+    "hash": "023ff0748cdd7b09",
+    "lastmod": "2026-09-07"
   },
   "/locations/lawrence-kansas-custom-software": {
-    "hash": "7e0d345d0afdb8f2",
-    "lastmod": "2026-09-05"
+    "hash": "65c9a839e9ef53a4",
+    "lastmod": "2026-09-07"
   },
   "/locations/lawrence-kansas-web-design": {
-    "hash": "c1be66786ae9b1e4",
-    "lastmod": "2026-09-05"
+    "hash": "b44eb80a69b9099c",
+    "lastmod": "2026-09-07"
   },
   "/locations/lenexa-kansas-custom-software": {
-    "hash": "a0c226a25e7a7065",
-    "lastmod": "2026-09-05"
+    "hash": "998e7baa1fbce7ea",
+    "lastmod": "2026-09-07"
   },
   "/locations/liberal-kansas-web-design": {
-    "hash": "b67b22fe4091f8f5",
-    "lastmod": "2026-09-05"
+    "hash": "03d7b067553ce73c",
+    "lastmod": "2026-09-07"
   },
   "/locations/lincoln-nebraska-web-design": {
-    "hash": "b16ba1c22049a26b",
-    "lastmod": "2026-09-05"
+    "hash": "b347c494c30f42c4",
+    "lastmod": "2026-09-07"
   },
   "/locations/manhattan-kansas": {
-    "hash": "c131cc4c97352920",
-    "lastmod": "2026-09-05"
+    "hash": "a8aeb35fcfcff80b",
+    "lastmod": "2026-09-07"
   },
   "/locations/manhattan-kansas-custom-software": {
-    "hash": "44d5a15d50ce4860",
-    "lastmod": "2026-09-05"
+    "hash": "061a2c993a1adadc",
+    "lastmod": "2026-09-07"
   },
   "/locations/manhattan-kansas-seo": {
-    "hash": "b53fc2f3fe43dea5",
-    "lastmod": "2026-09-05"
+    "hash": "4d07e9fac1027607",
+    "lastmod": "2026-09-07"
   },
   "/locations/mcpherson-kansas-web-design": {
-    "hash": "fe09bf2a7a14afaa",
-    "lastmod": "2026-09-05"
+    "hash": "9f5a161511e9ee1f",
+    "lastmod": "2026-09-07"
   },
   "/locations/newton-kansas-web-design": {
-    "hash": "adf2ad06838259c4",
-    "lastmod": "2026-09-05"
+    "hash": "72e1c68ef1def12d",
+    "lastmod": "2026-09-07"
   },
   "/locations/norton-kansas-web-design": {
-    "hash": "fd06108a7b5ba296",
-    "lastmod": "2026-09-05"
+    "hash": "6c85de38de7408b8",
+    "lastmod": "2026-09-07"
   },
   "/locations/oakley-kansas-web-design": {
-    "hash": "853b3823733f6075",
-    "lastmod": "2026-09-05"
+    "hash": "1dc0cffdd65dbdcb",
+    "lastmod": "2026-09-07"
   },
   "/locations/oklahoma-city-oklahoma-custom-software": {
-    "hash": "f44ea01e48e0335e",
-    "lastmod": "2026-09-05"
+    "hash": "e858365fa91c7637",
+    "lastmod": "2026-09-07"
   },
   "/locations/olathe-kansas-custom-software": {
-    "hash": "a435acdbd75ef7d1",
-    "lastmod": "2026-09-05"
+    "hash": "14c83340bb677f5a",
+    "lastmod": "2026-09-07"
   },
   "/locations/omaha-nebraska-web-design": {
-    "hash": "3072548f14f15639",
-    "lastmod": "2026-09-05"
+    "hash": "8e5bd76def1675b1",
+    "lastmod": "2026-09-07"
   },
   "/locations/ottawa-kansas-web-design": {
-    "hash": "a8161a22b6da2146",
-    "lastmod": "2026-09-05"
+    "hash": "31c881f936f93dc2",
+    "lastmod": "2026-09-07"
   },
   "/locations/overland-park-kansas-custom-software": {
-    "hash": "db6d77119705f833",
-    "lastmod": "2026-09-05"
+    "hash": "807cc03124975e77",
+    "lastmod": "2026-09-07"
   },
   "/locations/parsons-kansas-web-design": {
-    "hash": "d4cf878d9b18ea10",
-    "lastmod": "2026-09-05"
+    "hash": "81c4ae3bea9c56b7",
+    "lastmod": "2026-09-07"
   },
   "/locations/phillipsburg-kansas-web-design": {
-    "hash": "f8768edec95029ee",
-    "lastmod": "2026-09-05"
+    "hash": "b97fa792ca2febab",
+    "lastmod": "2026-09-07"
   },
   "/locations/pittsburg-kansas-web-design": {
-    "hash": "98d633e3a6238b76",
-    "lastmod": "2026-09-05"
+    "hash": "c7aca12cde1121bf",
+    "lastmod": "2026-09-07"
   },
   "/locations/plainville-kansas-web-design": {
-    "hash": "acd4910f94657e21",
-    "lastmod": "2026-09-05"
+    "hash": "bc45d58dab2d6ef4",
+    "lastmod": "2026-09-07"
   },
   "/locations/pratt-kansas-web-design": {
-    "hash": "f7a6dfc085fc7739",
-    "lastmod": "2026-09-05"
+    "hash": "b78692a2c3c67916",
+    "lastmod": "2026-09-07"
   },
   "/locations/salina-kansas": {
-    "hash": "96fcd29bdcbc97dc",
-    "lastmod": "2026-09-05"
+    "hash": "014af824610dee53",
+    "lastmod": "2026-09-07"
   },
   "/locations/salina-kansas-seo": {
-    "hash": "ca7c47a285c97e15",
-    "lastmod": "2026-09-05"
+    "hash": "0c08b3c401c4bad6",
+    "lastmod": "2026-09-07"
   },
   "/locations/salina-kansas-web-design": {
-    "hash": "65f7ce400c3f877c",
-    "lastmod": "2026-09-05"
+    "hash": "46122f8ff7ed01d9",
+    "lastmod": "2026-09-07"
   },
   "/locations/topeka-kansas": {
-    "hash": "8cc75af7ce30672c",
-    "lastmod": "2026-09-05"
+    "hash": "668e8c189bf0a5ce",
+    "lastmod": "2026-09-07"
   },
   "/locations/topeka-kansas-custom-software": {
-    "hash": "70a76f996cd9a298",
-    "lastmod": "2026-09-05"
+    "hash": "00d5156f5a663b6b",
+    "lastmod": "2026-09-07"
   },
   "/locations/topeka-kansas-digital-marketing": {
-    "hash": "0b50e98774c09049",
-    "lastmod": "2026-09-05"
+    "hash": "d6e5e4e0187fb087",
+    "lastmod": "2026-09-07"
   },
   "/locations/topeka-kansas-seo": {
-    "hash": "91ce60ad5031de5c",
-    "lastmod": "2026-09-05"
+    "hash": "620bd60be503c728",
+    "lastmod": "2026-09-07"
   },
   "/locations/tulsa-oklahoma-web-design": {
-    "hash": "65a41350b9aed0af",
-    "lastmod": "2026-09-05"
+    "hash": "525f970c4c9624c7",
+    "lastmod": "2026-09-07"
   },
   "/locations/wakeeney-kansas-web-design": {
-    "hash": "3af781fb173bf003",
-    "lastmod": "2026-09-05"
+    "hash": "4aed73273f5ac90a",
+    "lastmod": "2026-09-07"
   },
   "/locations/western-kansas-web-design": {
-    "hash": "2d5d7f67872fa137",
-    "lastmod": "2026-09-05"
+    "hash": "684477d3846b59c7",
+    "lastmod": "2026-09-07"
   },
   "/locations/wichita-kansas": {
-    "hash": "118e0c99f00af4fb",
-    "lastmod": "2026-09-05"
+    "hash": "2b81901d5acb8cee",
+    "lastmod": "2026-09-07"
   },
   "/locations/wichita-kansas-custom-software": {
-    "hash": "b684b1e88d5d65c5",
-    "lastmod": "2026-09-05"
+    "hash": "261cd622d179f593",
+    "lastmod": "2026-09-07"
   },
   "/locations/wichita-kansas-digital-marketing": {
-    "hash": "9838605d89959855",
-    "lastmod": "2026-09-05"
+    "hash": "915c9c2ca9067b99",
+    "lastmod": "2026-09-07"
   },
   "/locations/wichita-kansas-seo": {
-    "hash": "d4442c3da18253b8",
-    "lastmod": "2026-09-05"
+    "hash": "48c1f297bf6e3334",
+    "lastmod": "2026-09-07"
   },
   "/locations/wichita-kansas-web-applications": {
-    "hash": "5446a7465e84a3b3",
-    "lastmod": "2026-09-05"
+    "hash": "620b9c6881b5614d",
+    "lastmod": "2026-09-07"
   },
   "/locations/winfield-kansas-web-design": {
-    "hash": "18eb1cafee60b6d7",
-    "lastmod": "2026-09-05"
+    "hash": "0dc177e5b32880bb",
+    "lastmod": "2026-09-07"
   },
   "/preisser-solutions": {
-    "hash": "0f624141c206f85d",
-    "lastmod": "2026-09-05"
+    "hash": "5f1aa0ed4938c5cd",
+    "lastmod": "2026-09-07"
   },
   "/premium-web-development-kansas": {
-    "hash": "912c931330fec231",
-    "lastmod": "2026-09-05"
+    "hash": "3f5263f4937aced8",
+    "lastmod": "2026-09-07"
   },
   "/press": {
-    "hash": "b3a5ab5f2a0c8a0a",
-    "lastmod": "2026-09-05"
+    "hash": "b39cc5bbe13f0885",
+    "lastmod": "2026-09-07"
   },
   "/pricing": {
-    "hash": "94f74239f473e18c",
-    "lastmod": "2026-09-05"
+    "hash": "7a8ed61fe05e8a1f",
+    "lastmod": "2026-09-07"
   },
   "/privacy": {
-    "hash": "4adf25d0b7e301da",
-    "lastmod": "2026-09-05"
+    "hash": "aaafae0a7536e94d",
+    "lastmod": "2026-09-07"
   },
   "/process": {
-    "hash": "179b209e6af1c141",
-    "lastmod": "2026-09-05"
+    "hash": "1ccf44a7f4bf8922",
+    "lastmod": "2026-09-07"
   },
   "/products": {
-    "hash": "151112587e9f698d",
-    "lastmod": "2026-09-05"
+    "hash": "a78b6787943ba82b",
+    "lastmod": "2026-09-07"
   },
   "/products/agentic-coding-specialists": {
-    "hash": "82a26a1cbc44e118",
-    "lastmod": "2026-09-05"
+    "hash": "619476e5d298e7f1",
+    "lastmod": "2026-09-07"
   },
   "/products/ai-bookkeeper": {
-    "hash": "9ba2302d58edb90f",
-    "lastmod": "2026-09-05"
+    "hash": "6ac1359b832b8495",
+    "lastmod": "2026-09-07"
   },
   "/products/ai-digital-receptionist": {
-    "hash": "4721357fc8a8c6e3",
-    "lastmod": "2026-09-05"
+    "hash": "47f6088bf0294391",
+    "lastmod": "2026-09-07"
   },
   "/products/business-forecast-agent": {
-    "hash": "b18ea91350c28605",
-    "lastmod": "2026-09-05"
+    "hash": "751e94891138b9f0",
+    "lastmod": "2026-09-07"
   },
   "/products/business-triage-agent": {
-    "hash": "32273949bdebe2e4",
-    "lastmod": "2026-09-05"
+    "hash": "896fb8eec62cc802",
+    "lastmod": "2026-09-07"
   },
   "/products/compliance-agent": {
-    "hash": "fc16ad149a33687f",
-    "lastmod": "2026-09-05"
+    "hash": "c3a141ecc5bb1cfe",
+    "lastmod": "2026-09-07"
   },
   "/products/custom-agent-development": {
-    "hash": "9f0da0884e4c340f",
-    "lastmod": "2026-09-05"
+    "hash": "d1f8a65b51642461",
+    "lastmod": "2026-09-07"
   },
   "/products/customer-reactivation-agent": {
-    "hash": "d0baee6769e09e4e",
-    "lastmod": "2026-09-05"
+    "hash": "b959b7bfd56dc71a",
+    "lastmod": "2026-09-07"
   },
   "/products/customer-research-agent": {
-    "hash": "17512acdbda50631",
-    "lastmod": "2026-09-05"
+    "hash": "6d7bd349159163bf",
+    "lastmod": "2026-09-07"
   },
   "/products/industry-specific-agent": {
-    "hash": "a3144fc1a9c8a9d4",
-    "lastmod": "2026-09-05"
+    "hash": "b6c10c5bc3e321fa",
+    "lastmod": "2026-09-07"
   },
   "/products/intelligent-inventory-monitoring": {
-    "hash": "a74824df88170067",
-    "lastmod": "2026-09-05"
+    "hash": "1eb5b6f842071127",
+    "lastmod": "2026-09-07"
   },
   "/products/invoice-processing-agent": {
-    "hash": "68e99126d0cdfce7",
-    "lastmod": "2026-09-05"
+    "hash": "53bb9a3a3209e45b",
+    "lastmod": "2026-09-07"
   },
   "/products/local-ai-deployment-agent": {
-    "hash": "a3e85787b037f6a9",
-    "lastmod": "2026-09-05"
+    "hash": "438c7f344c075af2",
+    "lastmod": "2026-09-07"
   },
   "/products/marcommand-engine": {
-    "hash": "d2d1a91d940af494",
-    "lastmod": "2026-09-05"
+    "hash": "0bf7a12d68636fe0",
+    "lastmod": "2026-09-07"
   },
   "/products/outbound-sales-agent": {
-    "hash": "45eb7e0bee882ebd",
-    "lastmod": "2026-09-05"
+    "hash": "aa6d760b8e920ba3",
+    "lastmod": "2026-09-07"
   },
   "/products/social-marketing-agent": {
-    "hash": "9b127ffbb7b9aaa0",
-    "lastmod": "2026-09-05"
+    "hash": "aaf08938d2323cac",
+    "lastmod": "2026-09-07"
   },
   "/resources": {
-    "hash": "a50419cd51ee005a",
-    "lastmod": "2026-09-05"
+    "hash": "51db635a1a06a08b",
+    "lastmod": "2026-09-07"
   },
   "/roi-calculator": {
-    "hash": "d60347f12d6d10bb",
-    "lastmod": "2026-09-05"
+    "hash": "be97cba3d254aacd",
+    "lastmod": "2026-09-07"
   },
   "/services": {
-    "hash": "6d20eaa591906fbc",
-    "lastmod": "2026-09-05"
+    "hash": "dc159b28409110d8",
+    "lastmod": "2026-09-07"
   },
   "/services/ai-automation": {
-    "hash": "2357541dd760c1a7",
-    "lastmod": "2026-09-05"
+    "hash": "744ad0b68f759d4c",
+    "lastmod": "2026-09-07"
   },
   "/services/ai-automation-hays-ks": {
-    "hash": "0fa0d639ad7bc4ed",
-    "lastmod": "2026-09-05"
+    "hash": "318b21a04f2de9d9",
+    "lastmod": "2026-09-07"
   },
   "/services/ai-consulting-hays-ks": {
-    "hash": "046495158969c538",
-    "lastmod": "2026-09-05"
+    "hash": "1c4e95e3d331f214",
+    "lastmod": "2026-09-07"
   },
   "/services/ai-customer-service": {
-    "hash": "496632577d62781b",
-    "lastmod": "2026-09-05"
+    "hash": "f1690d77b376c7ba",
+    "lastmod": "2026-09-07"
   },
   "/services/ai-invoicing": {
-    "hash": "baca280582c02548",
-    "lastmod": "2026-09-05"
+    "hash": "ca1014568a62e3a1",
+    "lastmod": "2026-09-07"
   },
   "/services/ai-search-optimization": {
-    "hash": "ca499af32d10f256",
-    "lastmod": "2026-09-05"
+    "hash": "00e5f39a9c05651b",
+    "lastmod": "2026-09-07"
   },
   "/services/api-integration": {
-    "hash": "fb8636d7acf49ec4",
-    "lastmod": "2026-09-05"
+    "hash": "03a8e66663bfa729",
+    "lastmod": "2026-09-07"
   },
   "/services/business-automation-hays-ks": {
-    "hash": "7dd75f325ed52001",
-    "lastmod": "2026-09-05"
+    "hash": "6600781bf439010c",
+    "lastmod": "2026-09-07"
   },
   "/services/client-portal": {
-    "hash": "0ea5eeb7a7066d1d",
-    "lastmod": "2026-09-05"
+    "hash": "7abd8b8d6ed36dac",
+    "lastmod": "2026-09-07"
   },
   "/services/conversion-optimization": {
-    "hash": "1edfdc77db9ce00f",
-    "lastmod": "2026-09-05"
+    "hash": "4c3bdfdfac7c6450",
+    "lastmod": "2026-09-07"
   },
   "/services/crm-systems": {
-    "hash": "e832639f741a60ed",
-    "lastmod": "2026-09-05"
+    "hash": "7008705e906c8389",
+    "lastmod": "2026-09-07"
   },
   "/services/custom-ai-agents-hays-ks": {
-    "hash": "859c7d0b17844f5f",
-    "lastmod": "2026-09-05"
+    "hash": "c35b78d764a5ea0d",
+    "lastmod": "2026-09-07"
   },
   "/services/custom-crm-small-business-kansas": {
-    "hash": "cb1e0cc335e87438",
-    "lastmod": "2026-09-05"
+    "hash": "a4bca841c2879ad1",
+    "lastmod": "2026-09-07"
   },
   "/services/custom-websites": {
-    "hash": "fbb01dcdf9afa7fe",
-    "lastmod": "2026-09-05"
+    "hash": "81c2c6479b6c5a3f",
+    "lastmod": "2026-09-07"
   },
   "/services/customer-reactivation": {
-    "hash": "0e83b589f7d27aee",
-    "lastmod": "2026-09-05"
+    "hash": "035c5b4c826f029a",
+    "lastmod": "2026-09-07"
   },
   "/services/dashboards-and-analytics": {
-    "hash": "70b13e58ac33a6f0",
-    "lastmod": "2026-09-05"
+    "hash": "127f5a50caa176af",
+    "lastmod": "2026-09-07"
   },
   "/services/digital-marketing-hays-ks": {
-    "hash": "795e65e30e849634",
-    "lastmod": "2026-09-05"
+    "hash": "1153941a175ce390",
+    "lastmod": "2026-09-07"
   },
   "/services/google-ads-local-seo-service-business": {
-    "hash": "260c3b7ddb27fa57",
-    "lastmod": "2026-09-05"
+    "hash": "bdfcffc1261285ec",
+    "lastmod": "2026-09-07"
   },
   "/services/local-seo": {
-    "hash": "505eab55cc6dfb22",
-    "lastmod": "2026-09-05"
+    "hash": "20d93d7b4459598e",
+    "lastmod": "2026-09-07"
   },
   "/services/local-seo-hays-ks": {
-    "hash": "65e29207ccec27be",
-    "lastmod": "2026-09-05"
+    "hash": "7711825dbe8e4643",
+    "lastmod": "2026-09-07"
   },
   "/services/paid-ads": {
-    "hash": "ff0ef892c3e0da8d",
-    "lastmod": "2026-09-05"
+    "hash": "bf069f83526ff076",
+    "lastmod": "2026-09-07"
   },
   "/services/seo-hays-ks": {
-    "hash": "f158e9c393ae72b9",
-    "lastmod": "2026-09-05"
+    "hash": "3d8d5cce86a92935",
+    "lastmod": "2026-09-07"
   },
   "/services/website-migration": {
-    "hash": "724cdfb5dc545c6c",
-    "lastmod": "2026-09-05"
+    "hash": "b4ecbf1e6d14612b",
+    "lastmod": "2026-09-07"
   },
   "/services/website-redesign": {
-    "hash": "677f92f00bac4a4d",
-    "lastmod": "2026-09-05"
+    "hash": "130390c426c9c72d",
+    "lastmod": "2026-09-07"
   },
   "/site-map": {
-    "hash": "e4f546a18685f6cd",
-    "lastmod": "2026-09-05"
+    "hash": "ebfb7f8d928988cb",
+    "lastmod": "2026-09-07"
   },
   "/terms": {
-    "hash": "dc98f262817eaedd",
-    "lastmod": "2026-09-05"
+    "hash": "c0759a3848d23c82",
+    "lastmod": "2026-09-07"
   },
   "/tyler-preisser": {
-    "hash": "eef825ec4fb851cc",
-    "lastmod": "2026-09-05"
+    "hash": "b1a6b08341fb65ae",
+    "lastmod": "2026-09-07"
   },
   "/use-cases/after-hours-ai-receptionist-small-business": {
-    "hash": "94f7870816a8cac3",
-    "lastmod": "2026-09-05"
+    "hash": "324af500b45081cd",
+    "lastmod": "2026-09-07"
   },
   "/use-cases/ai-invoice-processing-small-business": {
-    "hash": "c0a82f4ea2ee93b3",
-    "lastmod": "2026-09-05"
+    "hash": "4355ea11a5573b10",
+    "lastmod": "2026-09-07"
   },
   "/use-cases/automate-customer-follow-up": {
-    "hash": "cef0f5d13be47cb4",
-    "lastmod": "2026-09-05"
+    "hash": "34732e277cab6150",
+    "lastmod": "2026-09-07"
   },
   "/use-cases/automate-data-entry-small-business": {
-    "hash": "00be90127e8b1d93",
-    "lastmod": "2026-09-05"
+    "hash": "3d2648cd2b4c6761",
+    "lastmod": "2026-09-07"
   },
   "/web-applications": {
-    "hash": "1f55123dc95a1ec8",
-    "lastmod": "2026-09-05"
+    "hash": "2fa7dd9a1e0e201c",
+    "lastmod": "2026-09-07"
   },
   "/why-automation": {
-    "hash": "286847c3e9da8768",
-    "lastmod": "2026-09-05"
+    "hash": "bf746efb86494679",
+    "lastmod": "2026-09-07"
   }
 }

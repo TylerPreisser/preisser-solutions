@@ -1,0 +1,674 @@
+# "What We Deliver" — Card Spec, five pillars
+Drafted 2026-09-05 by docs-writer. **Spec only. `service-pillars.tsx` was read, never edited.**
+
+## What this fixes, verified at source
+
+The owner's complaint is literally true, and it is true for **three of the five pillars**. Verified by
+grep against `src/components/home/service-pillars.tsx`:
+
+| Pillar (`title:`) | Self-named card | Line |
+|---|---|---|
+| `Business Software.` (:133) | `title: "Business Software"` | **:158** |
+| `Business Automation.` (:229) | `title: "Business Automation"` | **:254** |
+| `AI Integration.` (:341) | `title: "AI Integration"` | **:369** |
+| `Websites.` (:456) | none — first tile is `"Website Redesign"` | :486 |
+| `Search, AI, and Ads.` (:576) | none — first tile is `"Local SEO"` | :599 |
+
+Every card below is checked against Hard Rule 1. **No card carries its pillar's name.** The two
+pillars that were already clean keep that property.
+
+## Evidence ceiling — read this before trusting a row
+
+I opened **one** implementation file: `src/components/home/service-pillars.tsx` (the website repo).
+I did **not** open the nwks, marcommand or ps-admin repositories. Every `file:line` in the "ledger row"
+column below is **quoted from the capability ledger**, which is itself a code-read artifact by another
+agent. So a row here means *"the ledger cites this at that line"*, not *"I read that line."* Where the
+ledger and the dispatch brief disagree, I report it under **Disagreements** rather than silently
+picking one.
+
+## Naming convention (read from the file)
+
+Pillar titles are Title Case **with a trailing period** (`Websites.`, `AI Integration.`). Card titles
+are Title Case **without** a period, and use `&` freely (`Client & Member Portals, Booking & Intake`).
+Card titles below follow that.
+
+**Pillar 5 rename:** `SEO AI Visibility Ad Management.` — the owner's five words unchanged, trailing
+period added to match the four siblings. I did **not** insert commas or "and", because that would
+change the words. If the implementer wants punctuation, that is a decision for the owner, not for me.
+
+## The claim-tier rule as applied here
+
+- **"We build X"** — free for BUILDABLE.
+- **"We have built X"** — requires a SHIPPED or PARTIAL row.
+- PARTIAL is never rounded to SHIPPED, and no card asserts a client story, a number, or a name that
+  is not in the ledger.
+- One extra guard the ledger imposes and I honoured: Lookout AI is PARTIAL, so *"we have built an
+  assistant"* is available, but **any past-tense framing of it being in daily use is not**. It returns
+  a 503 today (`routes/ai-ask.ts:215-227`).
+
+---
+
+# PILLAR 1 — Business Software.
+
+Over-supplied (12 SHIPPED). Selected for picturability, not for count. The self-named card at :158 is
+deleted outright.
+
+### Why the lead card leads
+The owner's own framing of this pillar is *"custom stuff for them to get them off of spreadsheets, move
+them into an entire system."* It is also the only card here backed by a **completed, one-time real
+migration** rather than a feature — seven import scripts that ran end to end. Leading with the escape
+puts the buyer's actual situation in card position 1, not a feature list.
+
+---
+
+**1. Off the Spreadsheet, Into One System**
+*Body:* The workbook everyone has been emailing around becomes one system your whole team opens at
+once — with history, permissions, and no `final_v3_REAL.xlsx`.
+*Ledger row + tier:* Pillar 1 — "Spreadsheet-to-D1 migration off the old Google Drive workflow",
+**SHIPPED (one-time)** — `scripts/import_drive_documents.py`, `import_drive_export.py`,
+`import_womens_drive.py`, `import_org_history.py`, `import_baptisms.py`,
+`import_mbox_testimonies.py`, `build_slate_from_workbooks.py`. Reinforced by BUILDABLE P1 row 1.
+*Claim check:* Body is present-tense capability = **"we build"**. **"We have built"** is separately
+warranted here and may be used in adjacent prose — a real Google-Drive-to-database migration shipped.
+No client is named, no number claimed.
+
+**2. Exports Shaped for Whoever Asked for Them**
+*Body:* Real Excel files in the shape the person receiving them needs — one to share, one to work
+from, one grouped by location, one that feeds a label sheet — previewed on screen before it downloads.
+*Ledger row + tier:* Pillar 1 — "Roster export to real .xlsx with **four** named profiles",
+**SHIPPED** — `admin/src/export/rosterWorkbook.ts:77`
+(`export type ExportProfile = 'share' | 'working' | 'launch' | 'avery'`), writer at
+`admin/src/export/xlsx.ts`, preview at `ExportPreviewTile.tsx`.
+*Claim check:* **"we have built"** — SHIPPED. **See Disagreement #1: the brief says two profiles, the
+ledger cites four.** The body names four shapes without printing the digit, so it survives either way.
+
+**3. Badges, Tags & Labels Off the Live List**
+*Body:* Name badges, tags and labels print straight from the list the event is actually running on,
+onto standard label stock — no merge step, no stale CSV.
+*Ledger row + tier:* Pillar 1 — "Badge & tag printing, incl. Avery label layout", **SHIPPED** —
+`admin/src/pages/PrintPage.tsx`, `admin/src/pages/print/`, plus the `'avery'` export profile.
+*Claim check:* **"we have built"** — SHIPPED.
+
+**4. One Board for Who's Assigned Where**
+*Body:* Drag people onto rooms, crews or shifts and the board *is* the record — nobody is holding a
+different version of it.
+*Ledger row + tier:* Pillar 1 — "Cabin / room assignment board", **SHIPPED** —
+`admin/src/App.tsx:452` `<Route path="/rooms" .../>`, `admin/src/pages/rooms/`.
+*Claim check:* **"we have built"** for the room/cabin board (SHIPPED). The generalisation to crews and
+shifts is **"we build"**. The body is written generically on purpose so it never asserts a shipped
+crew-scheduling product that does not exist.
+
+**5. A Staffing Schedule That Prints Itself**
+*Body:* The staffing sheet your team argues over on Thursday comes out as a printed PDF schedule on
+Friday, generated from the same records.
+*Ledger row + tier:* Pillar 1 — "Org Sheet staffing with schedule PDF", **SHIPPED** —
+`admin/src/App.tsx:453`, `admin/src/pages/orgsheet/schedulePdf.ts`.
+*Claim check:* **"we have built"** — SHIPPED.
+
+**6. Their Own Login — Revoked the Day They Leave**
+*Body:* Every person gets their own account with only the screens their role needs, a second factor
+that is on unless someone deliberately turns it off, and access you take back in one click.
+*Ledger row + tier:* Pillar 1 — "Two-factor auth with a fail-secure off switch", **SHIPPED** —
+`wrangler.toml:28-31` (only the exact string `"false"` disables it), parsed in
+`functions/_api/security.ts twoFactorEnabled()`. Plus BUILDABLE P1 row 4 —
+`functions/_api/auth.ts reviewerMayReach` as an **allowlist** (`routes/ai-ask.ts:9-13`),
+`TeamPage.tsx`, `SecurityPage.tsx`.
+*Claim check:* **"we have built"** — SHIPPED. The fail-secure detail (a typo turns 2FA back **on**) is
+the differentiating half and it is quoted from the config, not invented.
+
+**7. Contact Details That Delete Themselves on Schedule**
+*Body:* Personal data comes out of the system when its retention window closes — a phone number that
+disappears on the date you set, with a log of who looked at it before then.
+*Ledger row + tier:* Pillar 1 — "Lead Desk — lightweight multi-tenant CRM with sealed PII, access log,
+retention sweep, response-time report", **SHIPPED (deployed worker)** — `src/leaddesk/` (31 files,
+8,154 LOC), routed first at `src/worker.ts:50`, retention on the daily cron at `src/worker.ts:96`.
+*Claim check:* **"we have built"** — SHIPPED. Deliberately placed: data security / privacy is the
+**#1 adoption barrier at 33%, up from 23% in 2025** (Bluevine/Centiment, fielded 7–9 Apr 2026, n=942,
+±3%). This card answers it with a shipped mechanism instead of a reassurance.
+
+---
+
+# PILLAR 2 — Business Automation.
+
+Owner's seed: manual data entry as the headline win, plus API integration and systems talking to each
+other. **"MCP" appears nowhere below** — every business-audience article on it is still a definitional
+explainer and there is zero credible SMB adoption data. It belongs in a technical FAQ. The self-named
+card at :254 is deleted.
+
+**No number appears on any card in this pillar.** The circulating "340% ROI", "2.3-month payback" and
+"82% copy-paste between systems" figures trace only to content farms and are rejected.
+
+### Why the lead card leads
+The owner named manual data entry as the headline win, and it is the one complaint every buyer in this
+category recognises in their own voice. It also sidesteps table-stakes claim #6 ("we integrate with
+your existing tools") by leading with the *symptom* rather than the *integration*.
+
+---
+
+**1. Entered Once, Never Retyped**
+*Body:* Your systems tell each other instead of someone retyping between them — fourteen outside
+platforms already sweep into a single table on a schedule, and the same wiring points at the tools you
+actually run.
+*Ledger row + tier:* Pillar 2 — "Scheduled connector sweep pulling 14 platforms into one fact table",
+**SHIPPED** — `src/worker.ts:74` `handleConnectorScheduled(...)`, crons `["17 4 * * *", "23 */6 * * *"]`
+at `wrangler.jsonc:112`. Supported by "Inbound-email → structured record pipeline", **SHIPPED**.
+*Claim check:* Split, and the split is in the sentence. **"We have built"** the fourteen-platform sweep
+(SHIPPED). Pointing it at a given client's tools is **"we build"** — the body says "the same wiring
+points at", present tense capability, not a delivery record.
+
+**2. It Arrives as an Email and Files Itself**
+*Body:* Someone emails it in, the Word attachment gets opened and read, and the contents land on the
+right record — the reviewer sees the actual story, not "Here's my testimony!".
+*Ledger row + tier:* Pillar 2 — "Inbound-email → structured record pipeline with .docx text
+extraction, dependency-free", **SHIPPED** — `email-worker/docx.ts` (432 lines, ZIP central-directory
+walk + `DecompressionStream('deflate-raw')`, `MAX_DOCX_BYTES = 10_000_000` at `:46`), wired at
+`email-worker/worker.ts:7-15`, rationale at `docx.ts:5-8`.
+*Claim check:* **"we have built"** — SHIPPED. Honest limit worth keeping in the body if space allows:
+`.doc` and `.pdf` are refused **on purpose** (`docx.ts:17-20`) because a naive byte-strip "produces
+convincing garbage, which is worse than nothing."
+
+**3. Approve It by Replying "Yes" From Your Phone**
+*Body:* Reply to the email the way you would to a person — a plain "approved" goes straight through,
+and anything carrying a change is held for you instead of guessed at.
+*Ledger row + tier:* Pillar 2 — "Email-reply-driven invoice approval", **SHIPPED** —
+`agent/reply_ai.py:167-169` (deterministic regex fast path, no model call for a bare approval),
+`agent/approval_watcher.py`, `agent/graph_mail.py`.
+*Claim check:* **"we have built"** — SHIPPED, and running for invoices today. The body does not claim
+it works on arbitrary document types; the ledger says pointing it at another type is the remaining work.
+
+**4. Two Lists Reconciled Before You Get In**
+*Body:* Payments against invoices, orders against shipments — the obvious matches are already done
+when you open it, and you look only at the handful that are genuinely unclear.
+*Ledger row + tier:* Pillar 2 — "Bank-deposit ↔ invoice reconciliation with deterministic re-check",
+**SHIPPED** — `agent/reconcile.py`, verdict re-validation at `agent/adjudicate.py:44-52` (exact amount,
+open + unused invoice, confidence floor).
+*Claim check:* **"we have built"** — SHIPPED for payments/invoices. Orders-against-shipments is the
+same mechanism pointed elsewhere; the body's list is a description of the *pattern*, so it reads as
+"we build" for the second example. If that feels thin to the implementer, cut "orders against
+shipments" — do not add a client.
+
+**5. The Things It Will Never Do Without You**
+*Body:* Every automation ships with a written list of what it is not allowed to do unless a person
+says yes — and until you deliberately turn it loose, automated mail goes to you, with its real
+recipient in the subject line.
+*Ledger row + tier:* Pillar 2 — "Unattended-email blast guard (fail-safe redirect to owner)",
+**SHIPPED** — `wrangler.toml:38-52`; only the exact string `"live"` opens the gate. Reinforced by
+`src/executor/kernel.ts:22-25` ("SHADOW IS THE DEFAULT AND IT IS NOT A NO-OP"), **SHIPPED**.
+*Claim check:* **"we have built"** — SHIPPED, two independent implementations. Deliberately placed:
+78% of SMB owners do not fully trust AI unsupervised and 31% name accuracy distrust as a barrier
+(Bluevine, Apr 2026). This converts the buyer's fear into the specification. **Do not put the 2026-08-20
+incident that mailed 13 admins on the card** — it is in the ledger and it is why the guard exists, but
+it is a Preisser incident and the card is not the place to narrate it.
+
+**6. When One Overnight Job Breaks, the Rest Still Run**
+*Body:* A failure at 2am is recorded by name and the unrelated jobs still finish — you find out from
+the log, not from a customer a week later.
+*Ledger row + tier:* Pillar 2 — "Daily retention sweeps that run even when a sibling job throws",
+**SHIPPED** — `src/worker.ts:94-98` `Promise.allSettled([...])` with the reasoning at `:88-93`.
+*Claim check:* **"we have built"** — SHIPPED.
+
+---
+
+# PILLAR 3 — AI Integration.
+
+The thinnest pillar and the owner's biggest ask: **2 SHIPPED, 8 PARTIAL, 5 NOT BUILT, 11 BUILDABLE**.
+Both SHIPPED rows are guardrails — a spend cap and prompt-injection handling — i.e. shipped code that
+*constrains* AI, not shipped AI. Cards 5 and 6 are those two rows, placed deliberately so the pillar
+is anchored in something that indisputably runs. The self-named card at :369 is deleted.
+
+Forbidden on any card here, per the ledger: "AI agents that optimize your ads", "8-agent marketing
+system", "AI reads your documents" (bare), "AI writes your invoices", "AI answers your leads".
+
+### Why the lead card leads
+Lookout AI is the single most substantial thing in the inventory — a streamed ten-tool loop over a live
+production database with server-injected tenant isolation, role-gated writes and a spend ceiling. The
+hard parts are done. It leads because nothing else in this pillar is close.
+
+---
+
+**1. Ask Your Business a Question in Plain English**
+*Body:* Ask "how many people from Hays registered this year?" and get the chart and the list behind it
+off your real data — ten tools, four of which can write, and which ones a person can reach depends on
+their role.
+*Ledger row + tier:* Pillar 3 — "**Lookout AI** — natural-language assistant over live production data,
+streamed, 6 read + 4 write tools, server-injected tenant isolation, metered spend cap", **PARTIAL** —
+`ai/askLoop.ts:374` `anthropic.messages.stream({`, `ai/ask-tools.ts` (1,535 lines; `find_person` :254,
+`get_person_profile` :278, `list_people` :298, `event_overview` :330, `roster_breakdown` :345,
+`chart_data` :376), `ai/askWrite.ts` (1,203 lines; `move_person_to_room` :215, `record_baptism` :253,
+`generate_sheet` :300, `church_baptism_report` :327), tenant scope injected server-side
+(`routes/ai-ask.ts:20-24`), writes gated at `:284`, spend capped at `:249`.
+*Claim check:* **"we build"** is the shipping phrasing, per the ledger's own ✅ wording:
+*"We build plain-English assistants that answer questions off your live business data, with the tenant
+isolation, permission gates and spend caps that make that safe to put in front of staff."*
+PARTIAL does warrant a bare "we have built one", but **not** in this pillar's copy — the row is gated
+behind an unplaced API key and returns 503 today (`routes/ai-ask.ts:215-227`). Any sentence implying
+it is in daily use is prohibited. The "Ten tools. Four of them write." fact is present-tense
+description of code that exists and ships as-is.
+
+**2. The Model Reads It. A Checker Verifies Every Number.**
+*Body:* We pointed a model at a tax document and it returned a confident figure that was two years
+stale — off a document that was current, and that contains the right number twice and the wrong one
+not at all. So now every figure a model returns has to appear literally in the source before anyone
+sees it, and a test fails the build if anyone removes that check.
+*Ledger row + tier:* Two rows, and the split matters.
+- The refusal and the test: Pillar 3 — "AI document extraction", **NOT BUILT — by decision, with a
+  test enforcing it** — `agent/refdata_ingest.py:5-13` (the $168,600 incident),
+  `tests/test_refdata_ingest.py:26-46` (bans `anthropic`/`openai`/`PROMPT`/`shutil.which`/`claude`
+  from the module source, pins `subprocess.run` argv[0] to `{CURL, PDFTOTEXT}`).
+- The pattern being sold: ledger 3.2, **BUILDABLE** — "model proposes, deterministic checker gates",
+  already implemented three times: `agent/adjudicate.py:44-52`, `functions/_api/testimonies/classify.ts`,
+  `src/responder/validate.ts:5-7`.
+*Claim check:* **"we build"** for the joined extract-then-verify pipeline — the two halves exist
+separately and have never been joined. **"We have built"** is warranted for the verification layer and
+the build-failing test, which are real. **This card gets two sentences, not one, and that is
+deliberate:** the ledger explicitly forbids softening the incident into "we ensure accuracy" and
+forbids describing it as hypothetical. It happened. Owning it is the differentiator. Do not print the
+dollar figures on the card — "two years stale" carries it, and the digits invite a
+"which document?" conversation the card cannot hold.
+
+**3. The AI Writes It. A Person Still Presses Send.**
+*Body:* Anything a model drafts — an email, a reply, a quote — lands in a queue for you. It can
+propose and it structurally cannot deliver; there is no path from the loop to a send function.
+*Ledger row + tier:* Ledger 3.3 row 1, **BUILDABLE**, resting on three shipped implementations:
+`functions/_api/ai/agent.ts:4-8` ("PROPOSE tools only insert `ai_pending_actions` — they NEVER send
+email") **PARTIAL**; `src/executor/kernel.ts:22-25` **SHIPPED**; `wrangler.toml:38-52` **SHIPPED**.
+*Claim check:* **"we build"** for the general approval queue. **"We have built"** is warranted for the
+propose-don't-send architecture specifically — three independent implementations exist. The phrase
+"structurally, not by policy" is quotable from `agent.ts:4-8` and is the whole value of the card.
+
+**4. When It Isn't Sure, It Asks You**
+*Body:* Two possible matches produce a question, never a confident answer about the wrong person or
+the wrong invoice — being unsure is a result the system is allowed to return.
+*Ledger row + tier:* Ledger 3.3 row 7, **BUILDABLE**, on shipped behaviour:
+`routes/ai-ask.ts:24-26` ("A name matching more than one person returns a candidate list; the model is
+required to ask which one and forbidden from picking. That is the top failure mode for this feature"),
+`admin/src/askApi.ts:38-47`, `agent/adjudicate.py` deferral.
+*Claim check:* **"we build"**. The underlying rule is implemented and the ledger calls it the
+most-repeated rule in the repos, but the row is BUILDABLE as a generalised product, so present tense
+only. Directly answers the 31% "distrusting AI's accuracy" barrier.
+
+**5. You See What the AI Costs, Per Question**
+*Body:* Every call is priced and logged, so the AI is a line item you can read — and when the month's
+ceiling is reached it refuses the next call instead of sending you a surprise bill.
+*Ledger row + tier:* Pillar 3 — "Per-program monthly AI spend ceiling that degrades to a sentence, not
+an error", **SHIPPED (code)** — `functions/_api/aiBudget.ts:73-75` (per-model pricing), enforced
+*before the client is constructed* at `routes/ai-ask.ts:249`. Second implementation:
+`src/inference/engine.ts` — per-call `inference_call` ledger row with cache-read and cache-write
+tokens priced **separately** (`:183-198`), cap that throws `CostCapExceededError` (`:217-222`).
+Ledger 3.3 row 4, **BUILDABLE**, for surfacing that ledger to a client.
+*Claim check:* **"we have built"** — SHIPPED, one of only two shipped rows in this pillar. Surfacing it
+as a client-facing report is **"we build"**. The body claims the mechanism, not the report, so it is clean.
+
+**6. Let It Read What Strangers Wrote You — Without Letting Them Give It Orders**
+*Body:* Reviews, form submissions and inbound email are handed to the model as quoted content, never
+as instructions, and the model never writes a query — every lookup is a fixed statement it can only
+fill in.
+*Ledger row + tier:* Pillar 3 — "Prompt-injection handling for untrusted marketing text",
+**SHIPPED (code)** — `src/responder/injection.ts:7` (inbound "passed as delimited data"),
+`src/agent/boundary.ts:68-71` ("Untrusted. Quoted content, never instructions"). Plus
+`routes/ai-ask.ts:19-20` — the model "NEVER writes SQL and never names a table or column."
+Ledger 3.3 row 6, **BUILDABLE**, for the packaged version.
+*Claim check:* **"we have built"** — SHIPPED, the pillar's second shipped row. Aimed squarely at the
+33% data-security barrier, which is the fastest-rising fear in the market.
+
+**7. Reply Like a Human. The System Does the Rest.**
+*Body:* "Can you push the due date to the 15th?" becomes a revised draft, not a sent document — and
+the fields that identify the record are refused outright, because a document number is not something
+you change by email.
+*Ledger row + tier:* Pillar 3 — "AI classification of free-text invoice replies (approve / hold /
+revise)", **PARTIAL** — `agent/reply_ai.py:171-175` via the local `claude -p` CLI, deterministic
+approve fast path at `:167-169`, identity fields refused at `:40-43`, fails closed to a hold when the
+CLI is missing. Ledger 3.3 row 2, **BUILDABLE**, for widening the field set.
+*Claim check:* **"we have built"** — PARTIAL warrants it, and this runs for invoices today. Widening it
+past invoices is **"we build"**. The body says "a revised draft, not a sent document" — generic enough
+not to claim a shipped product for other document types.
+
+### Held back from Pillar 3, with rows, rather than dropped silently
+- **"Your meeting notes become the invoice line items."** Ledger 3.3 row 3 / Pillar 3 "AI drafting of
+  invoice description lines", **PARTIAL** — `agent/run_monthly.sh:13` +
+  `agent/prompts/monthly_invoice_additions.md` (≤5 noun phrases, `[]` on failure) →
+  `agent/invoice_run.py:41` `merge_description`, additive-only. Real and running, but **scope is one
+  client, description text only** — too narrow to survive a card without a qualifier that would
+  swallow the card. Available if the owner wants an eighth.
+- **"Work that can wait until morning costs half as much."** Ledger 3.3 row 5, **BUILDABLE** —
+  `src/inference/engine.ts:273` submits to the Message Batches API at 50% off, `:293-348` drains.
+  Held because nothing submits a batch today and the saving is an implementation detail a buyer does
+  not shop on.
+
+---
+
+# PILLAR 4 — Websites.
+
+This pillar already has no self-named card (:486 is `"Website Redesign"`), so Hard Rule 1 was not the
+problem here — vagueness was. Every card below names a thing the buyer can picture.
+
+### Why the lead card leads
+The two loudest fears in the website-buying literature are **ownership** and **"can I edit it myself,
+and what exactly can I change?"** — with the observation that *"'Yes, with training' and 'yes, anything'
+are different answers."* We have a shipped in-browser editor, so we can answer the harder version of
+that question in card position 1. Table-stakes claims ("mobile-responsive", "fast", "SEO-friendly")
+are barred from the lead slot; a buyer would be shocked by their absence, not impressed by their
+presence.
+
+---
+
+**1. Change Your Own Words Without Calling Us**
+*Body:* Edit the text on your own site from an admin screen — no developer, no deploy, no invoice for
+a sentence.
+*Ledger row + tier:* Pillar 4 — "In-browser web page editor (client edits their own copy)",
+**SHIPPED** — `admin/src/App.tsx:507` `<Route path="/page-details" element={<PageDetails />} />`,
+`admin/src/pages/PageDetails.tsx`, `page-editor.css`. BUILDABLE P4 row 1 adds
+`scripts/gen-page-document-seed.mjs` and `scripts/check-page-document.mjs`.
+*Claim check:* **"we have built"** — SHIPPED.
+
+**2. A Form That Goes Into the System, Not an Inbox**
+*Body:* Forms write straight into the database the rest of your business runs on, assigned to somebody
+— instead of an email notification a person has to re-key.
+*Ledger row + tier:* Pillar 4 — "Form builder with a seeded field catalogue", **SHIPPED** —
+`admin/src/App.tsx:506` `<Route path="/forms" element={<FormsEditor />} />`,
+`scripts/gen-form-fields-seed.mjs`, over the same D1 database the admin reads.
+*Claim check:* **"we have built"** — SHIPPED.
+
+**3. One Address for the Site and the Software Behind It**
+*Body:* The public site and the application your team logs into are served from one place — one
+domain, one login, and a path that does not exist returns a real 404 instead of a page pretending
+otherwise.
+*Ledger row + tier:* Pillar 4 — "Hash-routed SPA served as Worker static assets alongside a JSON API
+on one origin", **SHIPPED** — `marcommand-main/wrangler.jsonc` `"assets": {"directory": "./dist"}`
+with the reasoning at ~lines 245-261. BUILDABLE P4 row 3.
+*Claim check:* **"we have built"** — SHIPPED. This is the honest version of the owner's *"sites wired
+into their systems."*
+
+**4. Documents That Print Exactly Right, Every Time**
+*Body:* Invoices, statements and certificates render to a fixed page, so the footer does not slide
+onto page two when the description runs long.
+*Ledger row + tier:* Pillar 4 — "Public-facing invoice/document rendering to print-exact PDF",
+**SHIPPED** — `renderer/render.py` + `renderer/template.html` (letter-size canvas, headless Chrome),
+already producing monthly invoices.
+*Claim check:* **"we have built"** — SHIPPED.
+
+**5. Your Links Keep Working When the Domain Moves**
+*Body:* Every email link and embedded image is built from one configured set of addresses, so changing
+your domain does not blank the logo in somebody's inbox.
+*Ledger row + tier:* Pillar 4 — "Public marketing site + admin on custom domains, Cloudflare-hosted",
+**SHIPPED** — `functions/_api/origins.ts resolveOrigins()` as the single reader of
+`PUBLIC_ORIGIN` / `ADMIN_ORIGIN` / `ASSET_ORIGIN` (`wrangler.toml:56-60`), pinned by `origins.test.ts`.
+*Claim check:* **"we have built"** — SHIPPED.
+
+**6. Publish a Page, Tell the Search Engines the Same Minute**
+*Body:* New and changed pages are submitted for indexing the moment they go up, instead of waiting to
+be crawled.
+*Ledger row + tier:* Pillar 5 — "IndexNow submission — the one real platform write in the product",
+**SHIPPED** — `src/connectors/indexnow/adapter.ts` (359 lines),
+`DECISIONS/0002-indexnow-submission-is-a-platform-write.md`. BUILDABLE P5 row 2: firing it from a
+content change is wiring.
+*Claim check:* **"we have built"** the submission adapter (SHIPPED); **"we build"** the publish-time
+trigger. Body says "are submitted", which describes the deliverable without claiming an existing
+integration. Cross-pillar borrow, declared: the row lives under Pillar 5 in the ledger but the
+deliverable is a website build item and the owner listed AI/search readiness under Websites.
+
+### The Google tension, and how this pillar handles it
+The owner's raw list includes *"maximum SEO, AEO and GEO."* Google Search Central, updated 2026-07-10,
+says verbatim: *"From Google Search's perspective, optimizing for generative AI search is optimizing
+for the search experience, and thus still SEO,"* mythbusts `llms.txt` and special schema, and tells
+buyers to *"review our guidance on evaluating third-party SEO advice"* before hiring an AEO/GEO vendor.
+Stacking three acronyms as three products on the Websites cards invites exactly that scrutiny, and no
+consensus definition distinguishes GEO from AEO from AIO anyway.
+
+**Decision:** Websites carries no acronym card. The owner's meaning — *build it so search and AI
+answers can both use it* — is delivered by cards 3 and 6, which are concrete and shipped. The
+acronym question is answered head-on in Pillar 5 card 7, where quoting Google *against* our own
+category is a credibility move rather than a dodge.
+
+### Owner list items I could not source, stated plainly
+- **E-commerce.** No row in any pillar. The nearest thing is `agent/stripe_pay.py` (Pillar 1 SHIPPED
+  "Books / ledger, reconciliation, Plaid link, Stripe pay") which is payment collection, not a
+  storefront. **No card written.**
+- **"Psychology lead funnel."** No row anywhere. **No card written.**
+- **"Granular tracking down to where a visitor dropped off."** Sourced, but the row is Pillar 5's
+  first-party analytics stack — it is delivered as Pillar 5 card 5 rather than duplicated here.
+- **"Custom web applications."** Sourced (Pillar 1 "Multi-screen admin SPA over a live D1 database",
+  SHIPPED), but as a Websites card it would restate Pillar 1 and read like a category, not a
+  deliverable. Deliberately not written.
+
+---
+
+# PILLAR 5 — SEO AI Visibility Ad Management.
+
+Renamed from `Search, AI, and Ads.` (:576). The owner: *"we really need to come up with those things
+that are going to set us apart on this one."* This pillar has 8 SHIPPED rows and 2 NOT BUILT, and the
+NOT BUILT one is the AI-visibility measurement everybody wants. That shapes the claim phrasing below
+more than anything else on the page.
+
+**Barred from this pillar:** the "84% of AI citations come from earned media" figure (flagged
+UNVERIFIED; the research said drop it rather than soften it) and the "38% of AI-cited sources rank in
+Google's top 10" figure (UNVERIFIED and in direct tension with Google's own position).
+
+### Why the lead card leads
+"Cited vs. absorbed" is the best-sourced differentiator available anywhere in this project: arXiv
+2604.25707, 30 April 2026, 602 prompts and 21,143 valid citations analysed, establishing that whether
+an AI *retrieves* your page and whether your content *makes it into the answer* are driven by
+different factors. It is [A]-sourced, four months old, and no SMB competitor mentions it. It is also
+the one framing that survives Google's mythbusting, because it measures rather than hacks.
+
+---
+
+**1. Cited, or Actually Used — We Report Both**
+*Body:* Being linked under an AI answer and being the thing the answer is made of are two different
+outcomes, and only one of them wins the customer — so we report them separately.
+*Ledger row + tier:* Pillar 5 — "AI-search / AEO visibility measurement", **NOT BUILT** → BUILDABLE
+P5 row 1. The adjacency argument is real: the connector interface is merged with **fourteen** adapters
+written against it (`src/connectors/`, ~20,500 LOC), plus `scheduler.ts`, `syncHealth.ts` and a shared
+fact table — a new source plugs into finished machinery. External evidence: arXiv 2604.25707 [A].
+*Claim check:* **"we build" ONLY.** The ledger's instruction is explicit — *"Say 'we build this', never
+'we measure this today' — no code for it exists"* (searched all 14 connector folders, all 15
+migrations, `src/brief/signals.ts`). The body is written in the deliverable-future voice: "we report
+them separately" describes what the service produces, and must not be accompanied anywhere on the page
+by a claim that this is running for anyone today. **This is the pillar's honest gap and the card most
+likely to be laundered by a later editor. Flag it in the code comment.**
+
+**2. The Real Questions Your Buyers Ask an Assistant**
+*Body:* We build the list of actual buying questions in your market, run them across the assistants
+your customers use, and show you every answer you are missing from — alongside whoever is in there
+instead.
+*Ledger row + tier:* Same row — Pillar 5 "AI-search / AEO visibility measurement", **NOT BUILT** →
+BUILDABLE P5 row 1. External framing: the tooling market's actual definition, stripped of jargon.
+*Claim check:* **"we build" ONLY**, same constraint as card 1. Note the body says *"the list of actual
+buying questions"* and not a count — the research's illustrative "~50" is not a commitment anyone has
+made, so it does not go on the card. **Declared concentration:** cards 1 and 2 both rest on a row with
+zero code today. That is two of seven. It is defensible because the adjacency argument is strong and
+both are phrased as "we build", but the implementer should not add a third.
+
+**3. All Your Ad Spend in One Table — With the Mismatches Flagged**
+*Body:* Google, Meta, Microsoft, LinkedIn, TikTok, Reddit, Pinterest and Nextdoor spend in one place,
+each row stamped with how it was measured, so nobody adds two numbers that mean different things.
+*Ledger row + tier:* Pillar 5 — "Ad spend from 8 paid platforms, normalised, with attribution windows
+stamped per row", **SHIPPED** — `src/connectors/meta/adapter.ts:33-41` records that Meta's default is
+7-day click **plus** 1-day view while Google attributes to the click date and counts no view-throughs,
+and stamps `native_attribution_window` on every row. BUILDABLE P5 row 3 for the client-facing report.
+*Claim check:* **"we have built"** — SHIPPED, and the eight platform names are read from the ledger,
+not assembled. The client-facing *report* over that table is **"we build"**; the body describes the
+table, so it is clean. The refusal to fudge is the differentiator — it directly answers *"every
+platform reports a different number and I don't know which to believe."*
+
+**4. Every Morning, the Five Things Costing You Money**
+*Body:* A ranked daily list — money going out with nothing coming back, leads nobody answered, a
+channel that quietly stopped reporting — and an explicit note about anything it could not see.
+*Ledger row + tier:* Pillar 5 — "Daily ranked brief", **SHIPPED (deterministic)** —
+`src/brief/brief.ts:36-39`, six signals: `untouchedLeads`, `slowResponse`, `brokenConnections`,
+`failingConnections`, `nothingConnected`, `spendWithoutConversions`. Blind-spot reporting at
+`brief.ts:15-20`, **SHIPPED**.
+*Claim check:* **"we have built"** — SHIPPED. **Do not attach "AI" to this card in any form.** The
+ledger is emphatic: "**No model involved**." It is six SQL signals ranked. Saying otherwise would be
+the exact failure this spec exists to prevent — and the honesty ("an explicit note about anything it
+could not see") is worth more than the AI label.
+
+**5. Your Own Analytics, Not Somebody Else's**
+*Body:* Your own script on your own domain, your own sessions, your own retention window — you can see
+where a visitor dropped off without renting the answer back from a third party.
+*Ledger row + tier:* Pillar 5 — "First-party site analytics: own snippet, own sessionizer, own funnel",
+**SHIPPED** — `src/snippet/` (size-budgeted by `scripts/check-snippet-budget.mjs`), `src/sessionizer/`
+(Durable Object), `src/collector/` (queue + DO rate limiter), retention on the daily cron
+(`src/worker.ts:96`). BUILDABLE P5 row 5: installing it on a client site is deployment.
+*Claim check:* **"we have built"** — SHIPPED. Delivers the owner's Websites item *"granular tracking
+down to where a visitor dropped off"*, and doubles as an ownership/data-security answer (the 33%
+barrier) without making a security promise the code does not back.
+
+**6. AI Traffic Counted as Its Own Channel**
+*Body:* Visitors who arrive from an AI assistant are tracked as their own channel with their own
+conversion rate, instead of being buried in "referral" or "direct" where you cannot see them.
+*Ledger row + tier:* Pillar 5 — "First-party site analytics", **SHIPPED** (same stack as card 5: own
+snippet, own sessionizer, so the referrer split is ours to define). The AI-referrer segmentation
+itself is **BUILDABLE** — no ledger row names it. External evidence: Adobe Digital Insights Q1 2026
+[A], >1 trillion US retail visits — AI-referred traffic converted 38% *worse* than non-AI in March
+2025 and 42% *better* in March 2026.
+*Claim check:* **"we build"** — the segmentation does not exist as code. The body is present-tense
+deliverable voice with no delivery record claimed. **The Adobe numbers do not go on the card.** The
+panel is US retail, not SMB services; the research is explicit that it must never be presented as
+"your business will see this." If the owner wants the number in body copy elsewhere, the only safe
+framing is *"the direction of the market flipped inside twelve months, measured across a trillion
+visits."* And the vendor "4.4x–23x" multiples are rejected outright.
+
+**7. Google's Own Words on AEO and GEO**
+*Body:* Google's July 2026 guidance says optimizing for AI search is still SEO, and that you do not
+need `llms.txt`, special schema, or content chopped into pieces. We agree. Here is the short list of
+what genuinely is different — and what we will do about it.
+*Ledger row + tier:* **No ledger row, and it does not need one — this card makes no delivery claim.**
+It is a positioning statement sourced to Google Search Central,
+`developers.google.com/search/docs/fundamentals/ai-optimization-guide`, last updated **2026-07-10**
+[A]. Verbatim: *"From Google Search's perspective, optimizing for generative AI search is optimizing
+for the search experience, and thus still SEO."* Also verbatim: *"You don't need to create new machine
+readable files, AI text files, markup, or Markdown to appear in Google Search"* and *"Structured data
+isn't required for generative AI search, and there's no special schema.org markup you need to add."*
+*Claim check:* Neither "we build" nor "we have built" — it is a stated position, and the only
+first-person commitment is *"here is the short list… and what we will do about it,"* which is a promise
+of a document, not of a capability. **That promise creates an obligation: the short list has to
+actually exist somewhere on the site before this ships.** Flag to the implementer. Every competitor
+sells AEO and GEO as two premium products while Google publicly warns buyers about exactly that;
+quoting Google against our own category is a credibility move no competitor will copy.
+
+### Held back from Pillar 5, marked rather than dropped
+> **Unverified:** *"Performance Max channel-level and search-term reporting, monthly"* — *"You will see
+> which channels your Performance Max budget actually went to and which search terms it actually
+> matched."* This is a genuine 2026-specific edge with a 12–18 month shelf life before it commoditises,
+> and it directly answers the loudest agency complaint (*"monthly reports with metrics they can't tie
+> to revenue"*). **Not confirmed against the implementation, and not confirmed against Google.** The
+> feature list (channel-level reporting, full search-term reporting, campaign-level negative keywords
+> up to 10,000, asset-level reporting) comes only from PPC blogs; the research explicitly did not check
+> it against Google's own release notes, and there is no Preisser ledger row for reading or reporting
+> PMax data — the Google Ads adapter is read-only spend ingestion with an empty action list
+> (`src/connectors/googleAds/adapter.ts:63`). **What would confirm it:** Google Ads release notes for
+> the 2026 PMax update, plus a decision on whether we report it from the Google Ads UI or from our own
+> table. **DO NOT SHIP THIS CARD until both are done.** It is written here so it is not lost.
+
+---
+
+# COUNT LINE
+
+**33 cards total.**
+
+| | Cards | Which |
+|---|---|---|
+| Trace to **SHIPPED or PARTIAL** | **22** | P1 ×7 (all), P2 ×6 (all), P3 ×4 (1 PARTIAL, 5 SHIPPED, 6 SHIPPED, 7 PARTIAL), P4 ×5 (1–5), P5 ×3 (3, 4, 5) |
+| Trace to **BUILDABLE** (incl. NOT BUILT rows with a BUILDABLE adjacency) | **10** | P3 ×3 (2, 3, 4), P4 ×1 (6 — SHIPPED adapter, BUILDABLE trigger; counted BUILDABLE for the claim it makes), P5 ×3 (1, 2, 6) — **plus 3 split cards counted above at their stronger half**: P2 ×1, P3 ×0, P5 ×0 |
+| **No ledger row** | **1** | P5 card 7, "Google's Own Words on AEO and GEO" — makes **no delivery claim**; it is a sourced position statement, not a capability |
+
+Clean restatement without the split-card fudge, because the table above is doing arithmetic on
+overlapping sets and that is exactly how a count line lies:
+
+- **22 cards** make a claim warranted by a **SHIPPED or PARTIAL** row and may use "we have built".
+- **10 cards** make a claim warranted only by a **BUILDABLE** row and use "we build" exclusively.
+- **1 card** (P5 #7) has **no ledger row** and needs none, because it claims no delivery.
+- **6 of the 22** additionally contain a "we build" half for a generalisation beyond what shipped
+  (P1 #4, P2 #1, P2 #4, P3 #5, P3 #7, P4 #6). Each is called out in its own claim check.
+
+**Cards I could not source, stated plainly rather than dropped:**
+1. **E-commerce** (owner's Websites list) — no row in any pillar. No card written.
+2. **"Psychology lead funnel"** (owner's Websites list) — no row anywhere. No card written.
+3. **Performance Max channel-level reporting** (Pillar 5) — written above, **marked UNVERIFIED, held
+   from shipping.** No ledger row, and the external feature list was never checked against Google.
+4. **A "measured baseline before we quote" card** (the research's #1 Automation differentiator, and a
+   genuinely unmatchable one) — no ledger row supports a measurement instrument, so it is a **service
+   promise, not a deliverable**. Not written as a card. Worth raising with the owner as body copy.
+
+**Pillar-name check:** none of the 33 titles contains "Business Software", "Business Automation",
+"AI Integration", "Websites", "SEO", "AI Visibility" or "Ad Management" as its subject. P5 #7 contains
+"AEO and GEO", which are not the pillar's name. Hard Rule 1 holds across all five.
+
+---
+
+# DISAGREEMENTS — left unresolved, not silently reconciled
+
+**1. Roster export profile count: brief says two, ledger says four.** The dispatch brief describes
+*"roster export with two named profiles."* The capability ledger says four and flags it itself:
+`admin/src/export/rosterWorkbook.ts:77` —
+`export type ExportProfile = 'share' | 'working' | 'launch' | 'avery';` — with the note **"Correction:
+four, not two."** I did not open that file (different repository, outside the two evidence sources I
+was given), so I cannot break the tie by reading. **P1 card 2 is written to name four shapes without
+printing a digit**, so it is correct under either reading. Someone should confirm at the line before
+any copy anywhere states a count.
+
+**2. "SEO, AEO and GEO" as three products vs. Google's published position.** The owner's raw list asks
+for all three. Google Search Central (2026-07-10) states that optimizing for generative AI search *is*
+SEO, mythbusts the specific tactics the acronyms are usually sold with, and warns buyers to scrutinise
+AEO/GEO vendors. This is a **decision, not a fact I can correct** — it is the owner's positioning. My
+spec answers it by quoting Google directly (P5 #7) rather than by stacking the acronyms or by dropping
+the owner's meaning. **If the owner wants the three acronyms sold as three line items, that is his call
+to make and mine to flag, not to overrule.**
+
+**3. Pillar 5 title punctuation.** The four sibling pillar titles are Title Case with a trailing period.
+`SEO AI Visibility Ad Management` has no internal punctuation and reads as a run-on next to
+`Search, AI, and Ads.` I added only the trailing period, because the instruction was that the words may
+not change. Commas would change them. Unresolved and left to the owner.
+
+---
+
+# APPENDIX — CARD TITLES ONLY
+*(for the icon designer — nothing else needed)*
+
+## Business Software.
+1. Off the Spreadsheet, Into One System
+2. Exports Shaped for Whoever Asked for Them
+3. Badges, Tags & Labels Off the Live List
+4. One Board for Who's Assigned Where
+5. A Staffing Schedule That Prints Itself
+6. Their Own Login — Revoked the Day They Leave
+7. Contact Details That Delete Themselves on Schedule
+
+## Business Automation.
+1. Entered Once, Never Retyped
+2. It Arrives as an Email and Files Itself
+3. Approve It by Replying "Yes" From Your Phone
+4. Two Lists Reconciled Before You Get In
+5. The Things It Will Never Do Without You
+6. When One Overnight Job Breaks, the Rest Still Run
+
+## AI Integration.
+1. Ask Your Business a Question in Plain English
+2. The Model Reads It. A Checker Verifies Every Number.
+3. The AI Writes It. A Person Still Presses Send.
+4. When It Isn't Sure, It Asks You
+5. You See What the AI Costs, Per Question
+6. Let It Read What Strangers Wrote You — Without Letting Them Give It Orders
+7. Reply Like a Human. The System Does the Rest.
+
+## Websites.
+1. Change Your Own Words Without Calling Us
+2. A Form That Goes Into the System, Not an Inbox
+3. One Address for the Site and the Software Behind It
+4. Documents That Print Exactly Right, Every Time
+5. Your Links Keep Working When the Domain Moves
+6. Publish a Page, Tell the Search Engines the Same Minute
+
+## SEO AI Visibility Ad Management.
+1. Cited, or Actually Used — We Report Both
+2. The Real Questions Your Buyers Ask an Assistant
+3. All Your Ad Spend in One Table — With the Mismatches Flagged
+4. Every Morning, the Five Things Costing You Money
+5. Your Own Analytics, Not Somebody Else's
+6. AI Traffic Counted as Its Own Channel
+7. Google's Own Words on AEO and GEO
+
+*(Card 6 in Websites and card 6 in AI Integration are the two longest titles; if the layout needs a
+cap, shorten to "Publish a Page, Tell the Engines" and "Let It Read What Strangers Wrote You" — both
+survive the trim without changing the claim.)*

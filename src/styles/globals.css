@@ -3066,6 +3066,20 @@ ul, ol {
   height: 100%;
 }
 
+/* Opt-in wide graphic slot. ONE tile uses it: the AI pillar's business-chat
+   visual, which is a small UI mockup rather than a 48x48 glyph and turns to
+   mush at the default 80px. Sizes measured in the real card over the real
+   gradient, all four engines: 208x166 at a 320px viewport (23px clearance),
+   248x196 from 375px up (42-65px clearance). Both above the 150px floor the
+   graphic needs to stay legible. Do not apply this to a normal icon -- the
+   other 46 are drawn for 80px and go soft when scaled up. */
+.ps-carousel-card-graphic--wide {
+  width: min(248px, calc(100% - 32px));
+  height: auto;
+  aspect-ratio: 320 / 240;
+  transform: translate(-50%, -72%);
+}
+
 .ps-carousel-card-overlay {
   position: absolute;
   inset: 0;

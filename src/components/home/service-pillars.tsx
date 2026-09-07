@@ -18,6 +18,33 @@ import {
   // the Websites card, which keeps WebsiteVisual. Neither file is pruned.
   SearchVisual,
 } from "@/components/home/card-visuals-backup";
+import {
+  CardVisualBusinessChat,
+  IconAfterHoursAiAgent,
+  IconAgencyGradeBuild,
+  IconAiFindableSeo,
+  IconAiReadablePage,
+  IconAiSafetyEngineering,
+  IconBuiltForYouOnly,
+  IconConversionPath,
+  IconDecisionsEncoded,
+  IconDocExtraction,
+  IconFreedCapacity,
+  IconGranularTracking,
+  IconInboxRouted,
+  IconMarCommandEngine,
+  IconOngoingCadence,
+  IconPlatformMigration,
+  IconPrivateAiInstance,
+  IconQuoteFromHistory,
+  IconReviewFunnel,
+  IconSharedSuccess,
+  IconSnappyAndSecure,
+  IconSpreadsheetMigration,
+  IconSystemsConnected,
+  IconThreeSecondRead,
+  IconTrueAcquisitionCost,
+} from "@/components/home/card-icons-v3";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { LOCAL_BIZ_ID } from "@/lib/seo/schema";
 import { seoSite } from "@/lib/seo/site";
@@ -47,6 +74,8 @@ interface ServiceTile {
    */
   href?: string;
   icon?: React.ReactNode;
+  /** Opt-in wider graphic slot. Only the AI chat visual uses it. */
+  wideGraphic?: boolean;
 }
 
 interface Differentiator {
@@ -99,10 +128,17 @@ interface ServicePillar {
   /**
    * Which painPoints entry shows on the CARD FACE as the visible hook.
    *
-   * These 30 sentences are the only copy on the homepage written in the
-   * visitor's own voice, and until 2026-09-04 every one of them rendered ONLY
-   * inside the aria-hidden crawler mirror -- Googlebot read them, no human
-   * ever did. The card now renders ONE of them a second time, visibly.
+   * STALE AS WRITTEN, corrected 2026-09-07. This block used to claim the card
+   * face renders one painPoint visibly. It does not, and may never have:
+   * measured against a fresh build in chromium, webkit and firefox, every
+   * card face is the pillar title plus "Click for more" and nothing else.
+   * `ps-bento-card__hook` and `hookIndex` each appear ZERO times in the
+   * served HTML, and pillar 1's painPoints[1] appears exactly once in the
+   * whole document -- inside the aria-hidden mirror. So this field is
+   * currently inert: it is required, it is set on all five pillars, and it
+   * changes nothing a visitor sees. Left in place rather than removed
+   * because removing it is a wider change than this copy pass; do not cite
+   * it as load-bearing until something actually renders it.
    *
    * An INDEX, not a string, on purpose: the visible hook can never drift from
    * the crawler copy, and swapping which sentence ships is a one-character
@@ -152,52 +188,42 @@ const services: ServicePillar[] = [
       "We paid someone to build our system years ago and we haven't been able to change it since.",
     ],
     serviceTiles: [
-      // Card set placed 2026-09-05 from card-spec-v2.md (7 cards), which replaces
-      // card-spec.md Revision 3 wholesale. Order is deliberate: #1 leads because it is
-      // the owner's own calibration phrase and the widest-reach pain in the inventory.
-      // A card must never carry its own pillar's name. Do not reintroduce one.
       {
         title: "Your Whole Business on One Screen",
         description:
-          "The five or six numbers that actually decide your week (jobs, invoices, payments, who owes you), pulled from the systems you already run and updated on their own. It opens on your phone.",
+          "Every number that decides your week (jobs, invoices, payments, who owes you) pulled from the systems you already run and kept current on its own. One screen, built around how you make decisions, and it opens on your phone.",
         href: "/web-applications",
         icon: <IconOneScreenKpis />,
       },
       {
-        title: "The Business Runs the Week You're Not There",
+        title: "Know Exactly What's Going On in 3 Seconds",
         description:
-          "Approvals, pricing rules, who's on what job: the decisions that currently live in your head get written into the system, so the work keeps moving on the week you're gone.",
-        icon: <IconWeekRunsWithoutYou />,
+          "This is the standard we build every dashboard to. An owner's time is the most expensive time in the building, so your key numbers sit on one screen, current and readable at a glance: what's coming in, what's owed, what's booked, and which jobs and service lines actually made you money.",
+        icon: <IconThreeSecondRead />,
       },
       {
-        title: "When Someone Leaves, Their Access Leaves With Them",
+        title: "Quit Repeating Yourself",
         description:
-          "Everyone gets their own login and only the screens their job needs. The day they go you take it back in one click, and you can show exactly what they could see while they were here.",
-        icon: <IconLoginRevoked />,
+          "We build your decisions into your business's software. The approvals, the pricing rules, who goes on which job: written in as steps the system carries out on its own, so the answer is already there and the work keeps moving without you being asked again.",
+        icon: <IconDecisionsEncoded />,
       },
       {
-        title: "The Spreadsheet Everyone's Afraid to Touch",
+        title: "Get Out of Spreadsheet Chaos",
         description:
-          "The workbook half the company runs on becomes a system with real logins, real history and rules you can see, so more than one person can safely operate it and nobody has to work out which copy is the real one.",
-        icon: <IconSpreadsheetToSystem />,
+          "We map your entire current workflow first, every sheet, every formula and every rule someone worked out along the way, then build it into real software and bring the data across with it. A clean move over, with nothing left behind and nothing rebuilt from memory.",
+        icon: <IconSpreadsheetMigration />,
       },
       {
-        title: "Whoever Answers the Phone Has the Whole History",
+        title: "Every Customer's Entire History in One Record",
         description:
-          "One record per customer carrying every quote, job, invoice, note and photo, so the person picking up can answer \"what did you do for us last spring\" without digging through email, the shared drive and the old system.",
+          "Every quote, job, invoice, note, photo and conversation you have ever had with a customer, imported from wherever it lives today into one record. Whoever picks up the phone has the whole relationship in front of them.",
         icon: <IconCustomerHistoryOnCall />,
       },
       {
-        title: "It Stops Living in One Person's Head",
+        title: "Completely Custom to Your Business",
         description:
-          "The quote logic, the pricing rules, the checklist, the approval path: built into the software as steps the system requires, so the process survives the person and a new hire can run it in their first week.",
-        icon: <IconProcessOutOfHead />,
-      },
-      {
-        title: "Know Which Jobs Made Money Before You Quote the Next One",
-        description:
-          "Cost and revenue tracked per job, customer and service line, so the report showing your worst-margin work builds itself instead of being reconstructed from four exports.",
-        icon: <IconPerJobMargin />,
+          "Every dashboard, panel and workflow we build is mapped to how your business actually runs and how your industry actually works. No template that a thousand other companies are already sitting on, and no software you can tell was designed for somebody else and sold to you anyway.",
+        icon: <IconBuiltForYouOnly />,
       },
     ],
     differentiators: [
@@ -244,74 +270,42 @@ const services: ServicePillar[] = [
       "Our best people are buried in busywork instead of the work we hired them for.",
     ],
     serviceTiles: [
-      // Card set placed 2026-09-05 from card-spec-v2.md (7 cards).
-      // Lead is #1 (unpaid invoices, the only Tier-A pain at scale in this pillar);
-      // the owner-language data-entry card sits at #2 by design.
-      // --- Get Paid Without Ever Chasing an Invoice Yourself ---
-      // CARD 1 CLAIM SPLIT, from the spec and non-negotiable: issuing, rendering,
-      // approving and reconciling invoices are SHIPPED. The escalating-reminder half
-      // has NO ledger row -- it ships as "we solve exactly this", present tense only.
-      // Do not rewrite this body into a past-tense claim about reminders.
       {
-        title: "Get Paid Without Ever Chasing an Invoice Yourself",
+        title: "Invoices That Send and Chase Themselves",
         description:
-          "The invoice goes out the day the work is finished, the reminders escalate on their own, every message carries a payment link, and one live list shows who owes what and for how long. You stop being the collections department.",
+          "The invoice goes out the moment the work is done, the reminders escalate on their own, and every message carries a payment link. The system becomes your collections department, so getting paid stops depending on anyone remembering to ask.",
         icon: <IconInvoiceAutoSend />,
       },
-      // --- Your Systems Talk to Each Other Instead of Somebody Retyping ---
-      // PERMANENT PROHIBITION -- NO STATISTIC MAY EVER ATTACH TO THIS CARD.
-      // The entire numeric literature for manual data entry collapses to one
-      // self-promotional blog cluster. The attributions behind it -- "McKinsey 2024
-      // SMB Automation Survey" and "Salesforce's SMB research division" -- are
-      // attributions to organisations and studies THAT DO NOT EXIST. Recognition
-      // sells this card. Do not add a percentage, a dollar figure or a time saved,
-      // here or in any supporting copy that names this card.
-      // The word "website" must never appear here either: the first capture belongs
-      // to Pillar 4 #3. This card says "whatever the customer gave you the first time".
       {
-        title: "Your Systems Talk to Each Other Instead of Somebody Retyping",
+        title: "Eliminate Manual Data Entry",
         description:
-          "Entered once and it shows up everywhere it's needed: the won deal becomes the scheduled job, the supplier invoice's numbers land against the order, and the customer never gets asked for their address a third time. Anything that doesn't match gets flagged instead of going in silently wrong.",
+          "We build the flows that carry information everywhere it needs to go the moment it is entered once. The won deal becomes the scheduled job, the supplier invoice lands against the order, and the same details stop being typed into four systems that were never introduced to each other.",
         href: "/business-automation",
         icon: <IconEnteredOnce />,
       },
       {
-        title: "The Last Week of Every Month Stops Disappearing",
+        title: "Free Up Your People for Work That Actually Matters",
         description:
-          "Bank activity, payments and invoices matched overnight, with only the handful that genuinely don't line up put in front of a person, and every automatic match re-checked on the exact amount before it's accepted.",
-        icon: <IconTwoListsReconciled />,
+          "The repeating work, the copying, the chasing, the filing and the checking, is exactly what automation is good at. We take it off your team so the people you hired for judgment spend their day using it.",
+        icon: <IconFreedCapacity />,
       },
       {
-        title: "Nothing That Comes In at 9pm Waits Until Morning",
+        title: "After-Hours Customers Don't Fall Through the Cracks",
         description:
-          "Every after-hours enquiry gets an acknowledgement straight away and is sorted by urgency: a real emergency reaches a person, everything else is queued with its context for the morning, with follow-up that keeps going until someone replies.",
+          "We build the triage that answers, sorts and routes everything arriving outside business hours. Urgent reaches a person, everything else is acknowledged and queued with its context, so the job that came in at 9pm is still yours in the morning.",
         icon: <IconAfterHoursTriage />,
       },
-      // --- Proposals and Contracts That Build Themselves From the Job ---
-      // CLAIM SPLIT: print-exact rendering is SHIPPED. Generation-from-record and the
-      // signature step are forward claims, and the ledger explicitly CUT e-signature --
-      // do not imply an existing e-signature integration.
       {
-        title: "Proposals and Contracts That Build Themselves From the Job",
+        title: "Get All Your Systems Talking to One Another",
         description:
-          "The document is generated from the real record with the right pricing and terms already in it, sent for signature and filed against the job, so nothing goes out as last week's proposal with the names changed.",
+          "We start with an audit of how work actually moves through your business, every tool, every handoff and every connection holding two systems together, then wire up what should be connected and retire what should not exist. One flow instead of ten that do not speak.",
+        icon: <IconSystemsConnected />,
+      },
+      {
+        title: "Paperwork That Fills Itself Out",
+        description:
+          "Proposals, contracts and work orders generated from the real job record with the right pricing and terms already in them, sent out and filed against the job automatically.",
         icon: <IconDocumentFromRecord />,
-      },
-      {
-        title: "Nothing Expires Without You Knowing Weeks Ahead",
-        description:
-          "Every certificate, licence, insurance renewal and contract date tracked in one place, with the warning early enough to act on and the renewal assigned to a named person, instead of finding out at a customer's gate.",
-        icon: <IconExpiryEarlyWarning />,
-      },
-      // --- Nothing Goes Out to a Customer at 3am That You Haven't Seen ---
-      // SHIPPED, and the strongest proof row in this pillar. Do not name the
-      // organisation the 2026-08-20 incident happened to, and do not reproduce the
-      // owner's quote from wrangler.toml on a public page.
-      {
-        title: "Nothing Goes Out to a Customer at 3am That You Haven't Seen",
-        description:
-          "Every automated message is held at a gate you open deliberately. Until you do, it comes to you instead, with the real recipient named in the subject, so you see exactly what the system was about to do. Visible, never quietly dropped.",
-        icon: <IconGuardrailList />,
       },
     ],
     differentiators: [
@@ -356,67 +350,49 @@ const services: ServicePillar[] = [
       "A build like this used to be a three-month quote we couldn't justify.",
     ],
     serviceTiles: [
-      // Card set placed 2026-09-05 from card-spec-v2.md (EIGHT cards, one more than
-      // its siblings -- deliberate, per the spec: AI is the stated priority and the
-      // pillar's two best items sell to opposite halves of the same anxious buyer.
-      // If layout ever demands seven, cut #8 and fold its sentence into #7.
       {
-        title: "It Shows Its Work, and Never Makes the Big Call Without You",
+        title: "Get Answers About Your Business in Seconds",
         description:
-          "The model proposes and a person presses send. Where the stakes are real there's an approval step and a hard limit on what it may do alone, and every answer arrives with the numbers and the sources it used.",
+          "We build a custom agent that knows your business, your operations, your numbers and your customer database, and give your team a chat window to ask it real executive questions. It tracks the answer down across your own data and comes back in seconds.",
         href: "/services/ai-automation",
-        icon: <IconApprovalGate />,
+        icon: <CardVisualBusinessChat />,
+        wideGraphic: true,
       },
       {
-        title: "Your Team Is Already Using AI. We Make That Safe.",
+        title: "Secure AI for Your Business",
         description:
-          "Find out which tools your people are actually pasting into, give them approved ones that are safe for company data, write the one page of rules everyone will actually read, and keep the sensitive material out of the public models.",
-        icon: <IconApprovedAiTools />,
-      },
-      // --- Ask a Question About Your Own Business, Get the Real Number ---
-      // PARTIAL: the assistant returns a 503 today because nobody has placed the key.
-      // "Admins use it every day" is NOT warranted. No past-tense usage framing may
-      // appear anywhere near this card.
-      {
-        title: "Ask a Question About Your Own Business, Get the Real Number",
-        description:
-          "Ask in plain English (how did last month go, who hasn't paid, which crew is behind) and get the answer off your live data with the figures behind it, so you can check it instead of trusting it.",
-        icon: <IconPlainEnglishQuery />,
+          "Most businesses do not realise the free tools their team is using are training on everything pasted into them. We build you a private, secure instance instead: your data stays yours, it never becomes training material, and your people get AI that is genuinely safe to use.",
+        icon: <IconPrivateAiInstance />,
       },
       {
-        title: "You Know Where Your Data Goes, in Writing",
+        title: "We Know How to Harness AI Safely",
         description:
-          "Your information stays in systems you control, one client's question can never reach another client's records, and you get a written answer to where it goes, who can see it, and what is never sent anywhere.",
-        icon: <IconDataHandlingStatement />,
-      },
-      // --- It Reads the Paperwork, Then Checks Every Number Against the Page ---
-      // CLAIM SPLIT: the verification layer and the test that keeps it there are
-      // SHIPPED. The joined extractor is BUILDABLE, not built. Never write the
-      // extraction capability bare with the verification implicit, and never describe
-      // the incident as hypothetical.
-      {
-        title: "It Reads the Paperwork, Then Checks Every Number Against the Page",
-        description:
-          "The model pulls the figures out of the invoice, the form or the contract, and a second pass proves every one of them appears literally in the document before anyone sees it. Anything that doesn't match goes to a person, never a plausible guess.",
-        icon: <IconNumberVerification />,
+          "We spent years building enterprise-grade AI infrastructure in environments where a mistake was not survivable. That is where you learn which guardrails actually hold, what a model should never be allowed to do alone, and exactly where a person belongs in the loop.",
+        icon: <IconAiSafetyEngineering />,
       },
       {
-        title: "Put the AI on the Paperwork, Not in Front of Your Customers",
+        title: "Eliminate Entering Data Off Documents",
         description:
-          "The chasing, the retyping, the filing and the summarising get automated. The person who calls your business still gets a person, because that is what they came to you for.",
-        icon: <IconAiOnPaperworkHumanOnPhone />,
+          "AI document extraction pulls the figures straight off the invoice, the form or the contract, and a second pass proves every number appears literally on the page before it goes anywhere. The typing stops and nothing gets quietly guessed.",
+        icon: <IconDocExtraction />,
       },
       {
-        title: "Nobody Here Has to Learn to Run It",
+        title: "An After-Hours AI Agent That Books the Next Day",
         description:
-          "We build it, we run it, and we're the ones who fix it when it breaks. No new hire, no internal owner, and no half-configured tool going stale the month after the person who set it up leaves.",
-        icon: <IconWeRunAndFixIt />,
+          "An agent that genuinely helps the person who arrives at 10pm: it answers what they actually asked, then moves them toward an appointment in business hours. Useful to your customer, and it hands you a booked job instead of a missed call.",
+        icon: <IconAfterHoursAiAgent />,
       },
       {
-        title: "Start With One Job, Measure What It Saves, Then Decide",
+        title: "Quote Faster Using What Your Past Jobs Already Know",
         description:
-          "Pick one process, measure what it costs you now, automate that one, and measure again. You decide about the second one with your own numbers instead of somebody's ROI slide.",
-        icon: <IconMeasureOneProcess />,
+          "Every job you have completed is data about what the work really costs you. We put AI on top of that history so a new quote starts from your own numbers: real materials, real hours, real margins, instead of a guess.",
+        icon: <IconQuoteFromHistory />,
+      },
+      {
+        title: "Nothing Gets Missed in the Inbox",
+        description:
+          "AI reads what comes in, email, forms and attachments, works out what it is and who it belongs to, files it against the right customer and job, and raises what needs a person, so nothing waits on someone noticing it.",
+        icon: <IconInboxRouted />,
       },
     ],
     differentiators: [
@@ -497,67 +473,50 @@ const services: ServicePillar[] = [
     // PillarCrawlerContent, which IS server-rendered, still emits every
     // href-bearing tile, so ADR-0007 decision 3 is satisfied unchanged.)
     serviceTiles: [
-      // Card set placed 2026-09-05 from card-spec-v2.md (SEVEN cards, down from eight).
-      // BOUNDARY: the word "website" appears in this pillar and nowhere else on the
-      // page. Automation and Software cards say "whatever the customer gave you the
-      // first time" instead.
-      // ADR-0007 decision 3 (href-bearing tiles must keep reaching the homepage) is
-      // satisfied by re-attaching every one of the eight unique /services hrefs to its
-      // nearest v2 card; none was dropped. PillarCrawlerContent still emits them all.
       {
-        title: "Change Your Own Hours, Prices and Photos in a Minute",
+        title: "Fortune 500 Quality, Built by Someone in Kansas",
         description:
-          "The things that actually change (hours, prices, staff, service areas, photos), you edit yourself from a screen and it's live. No email to a guy, no three-day wait, no invoice for fixing a phone number.",
-        href: "/services/website-redesign",
-        icon: <IconEditOwnCopy />,
-      },
-      // --- You Own the Domain, the Site and the Accounts ---
-      // OWNER CONFIRMATION REQUIRED. This is an operational commitment, not a
-      // capability -- honest only if it is actually how handovers work.
-      {
-        title: "You Own the Domain, the Site and the Accounts",
-        description:
-          "Registrar, DNS, hosting and the code are in your name from the first day, and the credentials are handed to you in writing. If you ever want to leave, you can. That's on purpose.",
+          "Every site is written from the ground up in raw code, custom to your business, using the most current languages and frameworks available. That buys you the design, the animation, the polish and the security you would expect on a Fortune 500 site, from someone whose name and face are right here.",
         href: "/services/custom-websites",
-        icon: <IconYouOwnTheAssets />,
-      },
-      // --- What Happens on Your Site Shows Up Where You Actually Work ---
-      // PERMANENT PROHIBITION -- [NO NUMBER]. This card sells on recognition only and
-      // may NEVER carry a statistic. Its pain (W5/W4) has no source located, and the
-      // adjacent recognition-only card (P2 #2) has none either; propping either one up
-      // would imply a shared research base that does not exist.
-      // This card is the W5 boundary resolution: Websites owns the FIRST hop (the form
-      // or booking the site produces), Automation owns everything downstream.
-      {
-        title: "What Happens on Your Site Shows Up Where You Actually Work",
-        description:
-          "A form or a booking on your site lands in the CRM, calendar or inbox the business already runs on: assigned to a person, with a state you can mark handled, not on an island and not in a shared inbox nobody opens.",
-        icon: <IconFormToRecord />,
+        icon: <IconAgencyGradeBuild />,
       },
       {
-        title: "See Exactly Where People Give Up, and Fix That Step",
+        title: "Every Page Engineered to Produce a Customer",
         description:
-          "Your own analytics on the three pages that matter, read back to you as a plain story of where people quit, then one change to that spot, and the number after it.",
+          "We psychologically design the path of every website we build: what the eye lands on first, the order the argument arrives in, and where the decision gets made. Every page is laid out to move a visitor toward a booking or a sale.",
         href: "/services/conversion-optimization",
-        icon: <IconFunnelDropOff />,
+        icon: <IconConversionPath />,
       },
       {
-        title: "A Site That Produces Something You Can Count",
+        title: "Built to Be Found Inside AI Conversations",
         description:
-          "Pick the one outcome that matters (calls, booked jobs, quote requests), wire the site to it, and get that number every month next to last month's. A good-looking brochure is not the goal.",
-        icon: <IconCountedOutcome />,
+          "People ask ChatGPT, Claude and Gemini for recommendations now. We build every site so those assistants can read it cleanly, understand what you do and quote you in the answer, with the structured data and plain statements of fact they rely on.",
+        icon: <IconAiReadablePage />,
       },
       {
-        title: "We'll Tell You If Your Site Is Fine. Sometimes It Is.",
+        title: "We Know When and Where People Clicked Off Your Website",
         description:
-          "An honest written look at what is actually wrong, that is allowed to end with \"keep it and change these three things\", instead of every quote turning out to be a rebuild.",
-        icon: <IconHonestSiteAudit />,
+          "We build granular tracking into every site, so you can see the exact page and the exact moment a visitor left. The patterns show up over the first few months, and we make the changes those patterns point to.",
+        icon: <IconGranularTracking />,
       },
       {
-        title: "Hand Your Phone to a Customer Without Wincing",
+        title: "Snappy and Secure",
         description:
-          "Checked on the phone sizes your customers actually hold, with tap targets you can hit and type you can read, and the screenshots to show you it was checked.",
-        icon: <IconPhoneTapTargets />,
+          "Your pages run on the fastest infrastructure available, everywhere in the world a visitor can click, and the code is written with security as a first concern rather than a plugin bolted on later. Load time decides whether someone stays or leaves.",
+        icon: <IconSnappyAndSecure />,
+      },
+      {
+        title: "We Migrate Your SEO Equity and All Your Content",
+        description:
+          "Coming off Wix, Squarespace, WordPress, GoDaddy or Webflow, we carry your search equity across with you: every old URL mapped to its new home, the structured data rebuilt, and every piece of your existing content moved over for you.",
+        href: "/services/website-redesign",
+        icon: <IconPlatformMigration />,
+      },
+      {
+        title: "Every Site Routed Straight Into Your Business Software",
+        description:
+          "Every enquiry, form and booking is routed automatically into the systems your business actually runs on, and assigned where it belongs. Nothing lands in one person's inbox to be discovered on Thursday.",
+        icon: <IconFormToRecord />,
       },
     ],
     differentiators: [
@@ -578,7 +537,7 @@ const services: ServicePillar[] = [
   {
     type: "search-ads",
     variant: "search-ads",
-    title: "SEO AI Visibility Ad Management.",
+    title: "AI and Search Engine Visibility.",
     description:
       "Getting found on the three surfaces that matter now: the Google local pack, the AI assistants people ask instead of typing into Google, and paid placement for when you need volume sooner than SEO can deliver it. Audit first, then a plan, then the work.",
     href: "/contact",
@@ -600,69 +559,43 @@ const services: ServicePillar[] = [
       "Our reviews trickle in and nobody has ever asked a customer for one.",
     ],
     serviceTiles: [
-      // Card set placed 2026-09-05 from card-spec-v2.md (7 cards).
-      // Lead is #1 because Google publicly tells buyers to scrutinise this exact
-      // category, in writing, dated 2026-07-10 -- a credibility move competitors
-      // structurally cannot copy.
-      // --- Google Says Be Careful Who You Hire for This. We'll Show You the Page. ---
-      // Quotes Google Search Central (published 2026-05-15, last updated 2026-07-10).
-      // If longer copy quotes Google, it uses ONLY the two sentences a researcher
-      // confirmed verbatim. Do not use the disputed llms.txt sentence. No card in this
-      // pillar sells "AEO" or "GEO" as a product.
       {
-        title: "Google Says Be Careful Who You Hire for This. We'll Show You the Page.",
+        title: "MarCommand: Your Whole Marketing Operation as One Engine",
         description:
-          "Google's own guidance warns you about anyone promising rankings or claiming inside access to its systems. We'll put that page in front of you and explain, in plain English, what we're doing and why, with no proprietary scores.",
-        icon: <IconOfficialGuidance />,
+          "MarCommand is our own multi-agent marketing engine, and it runs behind every marketing engagement we take. It ingests every channel you run and coordinates the strategy, the copy, the creative, the paid spend and the reporting as a single system.",
+        icon: <IconMarCommandEngine />,
       },
-      // --- We Ask ChatGPT About Your Business and Show You What It Says ---
-      // Forward claim, and it must stay one. AI-search visibility measurement is NOT
-      // BUILT -- no adapter, table or query anywhere. Say "we build this", never
-      // "we measure this today".
       {
-        title: "We Ask ChatGPT About Your Business and Show You What It Says",
+        title: "What's Your Real ROI on Ad Spend?",
         description:
-          "We put the questions your customers would actually ask to the major assistants, screenshot what comes back, and hand you the answers with everything wrong about you marked.",
+          "Every channel you run reports into one dashboard showing what you spent, what came back, and what a customer actually cost you to win. One place, current, with the real number instead of impressions and clicks.",
+        icon: <IconTrueAcquisitionCost />,
+      },
+      {
+        title: "We Defend Your Position Every Single Month",
+        description:
+          "Search and AI visibility move constantly, so the work never stops. Every few weeks we are making changes, re-checking what the assistants say about you and correcting whatever slipped. This is not a project that gets delivered and then left alone.",
+        icon: <IconOngoingCadence />,
+      },
+      {
+        title: "World-Class SEO, Built to Be Found by AI",
+        description:
+          "We do the SEO work to a genuinely high standard, and we build for how people search now: assistants that answer rather than list. Your pages, your profiles and your plain facts get structured so a search engine and an AI model can both find you and name you.",
         href: "/services/ai-search-optimization",
-        icon: <IconAssistantAnswers />,
+        icon: <IconAiFindableSeo />,
       },
       {
-        title: "When AI Gets Your Address, Hours or Services Wrong, We Fix the Source",
+        title: "Google Reviews That Arrive Without Anyone Asking",
         description:
-          "We correct what the assistants are reading (your Google profile, the directories, and the plain statements of fact on your own pages), then re-check and show you what changed.",
-        icon: <IconFixTheSource />,
+          "An automated funnel asks every customer at the moment the work is finished and they are happiest, and points them at the profile that moves what people see when they look you up. Nobody on your team has to remember to do it.",
+        icon: <IconReviewFunnel />,
       },
-      // --- First We Make Your Ads Countable. Then We Stop Paying for Clicks That Never Call. ---
-      // SHIPPED for reading and reconciling spend. NOT warranted: any automated bid or
-      // budget change -- GOOGLE_ADS_ACTIONS is an empty array and an attempted mutation
-      // writes a refused row.
       {
-        title: "First We Make Your Ads Countable. Then We Stop Paying for Clicks That Never Call.",
+        title: "Your Success Is Our Success",
         description:
-          "Conversion tracking before anything else, then the search terms actually buying you clicks, reported as cost per real enquiry, with the platforms whose numbers aren't comparable saying so on their face.",
+          "Plenty of firms will hand you a report full of impressions and clicks that never turned into a single sale. That is not a result. If the work is not bringing you real leads, real customers and real awareness of your brand, it is not doing its job.",
         href: "/services/paid-ads",
-        icon: <IconAdsMadeCountable />,
-      },
-      {
-        title: "Your Traffic Dropped and It Probably Wasn't Your Fault",
-        description:
-          "We separate what you actually lost from what the whole category lost, name the part that is recoverable, and stop scoring you on sessions alone.",
-        icon: <IconCategoryVsYou />,
-      },
-      {
-        title: "Being Found Isn't Being Quoted",
-        description:
-          "Getting your page fetched is not the same as getting your business named in the answer. We write the pages so they can be quoted: direct answers, real numbers, comparisons, the actual steps.",
-        icon: <IconCitedVsAnswer />,
-      },
-      // --- We Report Booked Work, Not Rankings — and What We Couldn't See ---
-      // SHIPPED for the brief and its named blind spots. NOT warranted: any claim that
-      // a model is involved -- the brief is deterministic SQL, no model participates.
-      {
-        title: "We Report Booked Work, Not Rankings (and What We Couldn't See)",
-        description:
-          "The monthly report starts with enquiries and booked jobs, names who did the work and what they did, and says out loud where the numbers were missing instead of quietly leaving a gap.",
-        icon: <IconBookedWorkReport />,
+        icon: <IconSharedSuccess />,
       },
     ],
     differentiators: [
@@ -1451,7 +1384,7 @@ function IconFunnelDropOff() {
   );
 }
 
-/* ── PILLAR 5: SEO / AI VISIBILITY / AD MANAGEMENT ── */
+/* ── PILLAR 5: AI AND SEARCH ENGINE VISIBILITY ── */
 
 /* P5-2 "We Ask ChatGPT About Your Business and Show You What It Says": one
    real customer question, the assistants' answers, and what they got wrong. */
@@ -1732,7 +1665,10 @@ function ServiceCarousel({ tiles }: ServiceCarouselProps) {
               style={{ background: CARD_GRADIENTS[i % CARD_GRADIENTS.length] }}
             />
             {tile.icon && (
-              <div className="ps-carousel-card-graphic" aria-hidden="true">
+              <div
+                className={`ps-carousel-card-graphic${tile.wideGraphic ? " ps-carousel-card-graphic--wide" : ""}`}
+                aria-hidden="true"
+              >
                 {tile.icon}
               </div>
             )}

@@ -199,7 +199,7 @@ const organization = {
   //   1. This array previously listed only 3 of the 5 pillars — engines reading
   //      our Organization node saw a firm that does not build websites and does
   //      not do search work.
-  //   2. The fifth pillar is being renamed to "SEO AI Visibility Ad Management".
+  //   2. The fifth pillar is being renamed to "AI and Search Engine Visibility".
   //      Sourcing the names from one constant means that rename is a one-line
   //      change that propagates to all 232 pages instead of a string hunt.
   makesOffer: SERVICE_PILLARS.map((pillar) => ({

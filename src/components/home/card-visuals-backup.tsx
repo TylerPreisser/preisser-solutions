@@ -1232,7 +1232,7 @@ export function CustomBuildVisual() {
      ("get cited") without asserting a result.
    ───────────────────────────────────────────────────────────── */
 /* ═════════════════════════════════════════════════════════════
-   CARD 5 — "SEO. AI VISIBILITY. AD MANAGEMENT."
+   CARD 5 — "AI AND SEARCH ENGINE VISIBILITY."
    FILINGS HALO.
 
    WHAT THIS DRAWS, and why it is not the thing that was rejected

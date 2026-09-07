@@ -21,7 +21,7 @@
  * The pillar name ALSO appears once in presentation code, owned by another
  * team, as `title` in the `services` array of:
  *
- *     src/components/home/service-pillars.tsx   title: "SEO AI Visibility Ad Management."
+ *     src/components/home/service-pillars.tsx   title: "AI and Search Engine Visibility."
  *
  * (That pointer deliberately carries NO line number any more. It said `:542`
  * while the title actually sat at `:547`, which is how a prose invariant rots:
@@ -101,7 +101,7 @@ export const SERVICE_PILLARS: readonly ServicePillarSeo[] = [
     // Renamed 2026-09-05 to "SEO AI Visibility Ad Management", in the same commit
     // as the visible title in service-pillars.tsx, per the file header.
     type: "search-ads",
-    name: "SEO AI Visibility Ad Management",
+    name: "AI and Search Engine Visibility",
     serviceType: "Search engine optimization and answer engine optimization",
     description:
       "Getting found on the surfaces that matter now: the Google local pack, the AI assistants people ask instead of searching, and paid placement when volume is needed sooner than SEO can deliver it. Audit first, then a plan, then the work.",
