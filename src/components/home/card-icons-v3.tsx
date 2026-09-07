@@ -831,11 +831,11 @@ export function IconReviewFunnel() {
       <path d="M38 16.5c5 4.5 4.5 13-2 16.5H29" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
       <path d="M31.5 30.5L29 33l2.5 2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
       {/* What people actually wrote */}
-      <rect x="3" y="20" width="21" height="8" rx="2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
-      <line x1="6.5" y1="24" x2="19" y2="24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.55" />
+      <rect x="3" y="19" width="21" height="8" rx="2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
+      <line x1="6.5" y1="23" x2="19" y2="23" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.55" />
       {/* ACCENT: the one that just landed */}
-      <rect x="3" y="30" width="21" height="8" rx="2.5" fill="currentColor" fillOpacity="0.88" />
-      <rect x="3" y="40" width="21" height="8" rx="2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
+      <rect x="3" y="29" width="21" height="8" rx="2.5" fill="currentColor" fillOpacity="0.88" />
+      <rect x="3" y="39" width="21" height="8" rx="2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
     </svg>
   );
 }
@@ -894,44 +894,51 @@ export function IconBusinessAnswers() {
    saturated gradient. That is the only condition that counts.
    ═════════════════════════════════════════════════════════════ */
 
-/* B3-1 "Completely Custom to Your Business": your operation as a
-   panel with a slot of a particular size cut into its edge, the part
-   that was made for that slot going into it, and two round
-   off-the-shelf blanks that could never enter it. Both terms are in
-   frame -- the template and the bespoke -- because the contrast IS
-   the card. Round peg, square hole, and we cut the square one.
+/* B3-1 "Completely Custom to Your Business": a jigsaw piece, cut to
+   the one socket in your operation that it fits. SIXTH attempt, and
+   this time the frank cliche, on the owner's instruction and my own
+   recommendation -- an object a stranger can name beats five rounds
+   of original shapes that nobody could.
 
-   FIFTH attempt. Every previous one died in a render, and the
-   failures are worth keeping because they are all the same failure:
+   The five that failed, all killed by a render and all the same
+   failure -- a mating relationship too small to survive 80px:
      1. L-socket with the piece NESTED inside at an even 3-unit gap.
-        At 80px that gap is 5px; outline and fill merged into a blob
-        that read as a letter P. Concentric outline-inside-fill does
-        not survive this size.
+        At 80px that gap is 5px; outline and fill merged and it read
+        as a letter P.
      2. The profile cut as a notch in the TOP MIDDLE of a solid mass.
         A symmetrical bite reads as a trough.
      3. Four floating squares over a hard-cornered filled step
-        polygon. The live-site critic called it "an accidental blob":
-        that step was the only unstroked, unrounded shape among all
-        31 icons, so it read as a rendering fault, not an object.
-     4. The part parked BESIDE the slot with a 4-unit gap. In the
-        render the lit piece simply floated near the notch instead of
-        mating with it, and the two circles read as decorative dots.
-        Adjacency is not enough; the relationship has to be an ACTION.
-   So the part now enters the slot and protrudes past it. A tab going
-   into a slot is a thing a stranger can name, which is the whole
-   bar. Stroked, rounded, one modest fill: the house vocabulary. */
+        polygon -- "an accidental blob", and the only unstroked,
+        unrounded shape among all 31 icons.
+     4. The part parked BESIDE the slot. It floated instead of mating.
+     5. A 14u tab entering a 6u notch: 9 of its 14 units protruded, so
+        it read as a pill lying next to the panel, and at true 80px
+        the shallow notch flattened into the outline and the
+        relationship vanished entirely. It read WORSE at real size
+        than magnified, which is the trap this whole batch kept
+        falling into.
+   The fix is that the interlock is now the LARGEST feature in the
+   frame, not a detail of it: an 8-unit knob seating into an 8-unit
+   socket, ~13px across at true 80px, on a boundary shared by two
+   shapes of comparable mass (board 22x30, piece 18x18). Round six's
+   first cut made the piece only 12x14 against a 24x30 board and at
+   true 80px it read as a small tag clipped to a document rather than
+   as an interlock -- the piece has to be a HALF, not an accessory.
+
+   The template term is deliberately gone. Rounds 3-5 carried
+   off-the-shelf blanks as circles and the live critic called them
+   "pure noise"; the piece being the single lit, uniquely-profiled
+   thing in the frame carries "made for you" on its own. */
 export function IconBuiltForYouOnly() {
   return (
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Your operation, and the shape of it is not up for negotiation */}
-      <path d="M6 8H30V18H24V30H30V40H6Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <line x1="10" y1="13" x2="25" y2="13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.55" />
-      <line x1="10" y1="35" x2="25" y2="35" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.55" />
-      {/* Off the shelf: round, identical, and no use to that opening */}
-      <circle cx="40" cy="10" r="3.5" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.55" />
-      <circle cx="40" cy="38" r="3.5" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.55" />
-      {/* ACCENT: the one that was cut for it, going in */}
-      <rect x="25" y="20.5" width="14" height="7" rx="2.5" fill="currentColor" fillOpacity="0.88" />
+      {/* Your operation, with exactly one hole in it shaped like this */}
+      <path d="M4 9H26V20A4 4 0 1 0 26 28V39H4Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="8" y="13" width="9" height="3.5" rx="1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
+      <line x1="8" y1="24" x2="19" y2="24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.55" />
+      <line x1="8" y1="32" x2="19" y2="32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.55" />
+      {/* ACCENT: the piece that was cut for it, and for nothing else */}
+      <path d="M26 15H31A4 4 0 1 1 39 15H44V33H26V28A4 4 0 1 0 26 20Z" fill="currentColor" fillOpacity="0.88" />
     </svg>
   );
 }
