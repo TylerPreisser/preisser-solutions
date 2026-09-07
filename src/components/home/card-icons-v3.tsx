@@ -256,8 +256,14 @@ export function IconPrivateAiInstance() {
 export function IconAfterHoursAiAgent() {
   return (
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Eleven at night */}
-      <path d="M8.4 4.4a5.3 5.3 0 100 10.2 5.9 5.9 0 010-10.2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
+      {/* Eleven at night. This is the SAME crescent glyph as the
+          existing IconAfterHoursTriage (service-pillars.tsx) -- identical
+          radii 6.6/7.4 and identical sweep, translated only. The live
+          critic found the two moons differed in size and corner crop and
+          asked for the glyph to be normalised across both, NOT for them
+          to be differentiated: both cards genuinely mean "after hours",
+          so the shared motif is correct and the mismatch was the defect. */}
+      <path d="M11 3.5a6.6 6.6 0 100 12.8 7.4 7.4 0 010-12.8z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
       {/* Somebody asks anyway */}
       <rect x="3" y="18" width="19" height="13" rx="3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M8 31v4.5l5-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -888,77 +894,84 @@ export function IconBusinessAnswers() {
    saturated gradient. That is the only condition that counts.
    ═════════════════════════════════════════════════════════════ */
 
-/* B3-1 "Completely Custom to Your Business": four identical modules in
-   a row -- the template a thousand other businesses are all running --
-   over one solid mass that is plainly not any of them. The lit shape
-   is asymmetric on purpose: it has a shoulder on one side and not the
-   other, because it was cut to one operation and there is no reason
-   for it to be symmetrical.
+/* B3-1 "Completely Custom to Your Business": your operation as a
+   panel with a slot of a particular size cut into its edge, the part
+   that was made for that slot going into it, and two round
+   off-the-shelf blanks that could never enter it. Both terms are in
+   frame -- the template and the bespoke -- because the contrast IS
+   the card. Round peg, square hole, and we cut the square one.
 
-   REBUILT TWICE, both times from the render. Round one nested an
-   L-shaped socket and the piece seated inside it at an even
-   three-unit gap, on the theory that the evenness of the gap WAS the
-   drawing; at 80px three units is five pixels and the two merged into
-   a blob that read as a letter P. Round two cut the profile as a
-   notch in the TOP MIDDLE of the mass, which turned it into a trough
-   -- four circles sitting above a tub. Symmetrical bites read as
-   containers. An asymmetric side step reads as a shaped part.
-
-   Round three also carried two dimension ticks between the modules
-   and the mass, to say "somebody measured this". At 170px they read
-   as two stray dashes and at 80px they were invisible, so they are
-   gone: five elements, and the contrast carries it without them. */
+   FIFTH attempt. Every previous one died in a render, and the
+   failures are worth keeping because they are all the same failure:
+     1. L-socket with the piece NESTED inside at an even 3-unit gap.
+        At 80px that gap is 5px; outline and fill merged into a blob
+        that read as a letter P. Concentric outline-inside-fill does
+        not survive this size.
+     2. The profile cut as a notch in the TOP MIDDLE of a solid mass.
+        A symmetrical bite reads as a trough.
+     3. Four floating squares over a hard-cornered filled step
+        polygon. The live-site critic called it "an accidental blob":
+        that step was the only unstroked, unrounded shape among all
+        31 icons, so it read as a rendering fault, not an object.
+     4. The part parked BESIDE the slot with a 4-unit gap. In the
+        render the lit piece simply floated near the notch instead of
+        mating with it, and the two circles read as decorative dots.
+        Adjacency is not enough; the relationship has to be an ACTION.
+   So the part now enters the slot and protrudes past it. A tab going
+   into a slot is a thing a stranger can name, which is the whole
+   bar. Stroked, rounded, one modest fill: the house vocabulary. */
 export function IconBuiltForYouOnly() {
   return (
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Off the shelf: four of the same module, evenly spaced, and
-          every one of them interchangeable with the others */}
-      <rect x="6" y="6" width="8" height="8" rx="2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
-      <rect x="15" y="6" width="8" height="8" rx="2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
-      <rect x="24" y="6" width="8" height="8" rx="2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
-      <rect x="33" y="6" width="8" height="8" rx="2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
-      {/* ACCENT: cut to that, and to nothing else. Not one of the four. */}
-      <path d="M9 23H24V29H39V40H9Z" fill="currentColor" fillOpacity="0.88" />
+      {/* Your operation, and the shape of it is not up for negotiation */}
+      <path d="M6 8H30V18H24V30H30V40H6Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="10" y1="13" x2="25" y2="13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.55" />
+      <line x1="10" y1="35" x2="25" y2="35" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.55" />
+      {/* Off the shelf: round, identical, and no use to that opening */}
+      <circle cx="40" cy="10" r="3.5" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.55" />
+      <circle cx="40" cy="38" r="3.5" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.55" />
+      {/* ACCENT: the one that was cut for it, going in */}
+      <rect x="25" y="20.5" width="14" height="7" rx="2.5" fill="currentColor" fillOpacity="0.88" />
     </svg>
   );
 }
 
-/* B3-7 "Snappy and Secure": the wall IS the accent. One solid mass in
-   two pieces, running off the top and bottom edges so it has no ends
-   and no way round, with a single slot through it -- and one unbroken
-   run from the request, through the slot, to a delivery that is
-   already sitting on the far side. Security is the mass. Speed is
-   that the slot is ON the path: nothing queues in front of the wall
-   and there is no second gate behind it.
+/* B3-7 "Snappy and Secure": a closed padlock with a bolt in its body.
+   Yes, both halves are on my own banned-cliche list. They are here
+   deliberately, and this is the fourth title of this icon.
 
-   No speedometer, no lightning bolt, no padlock. REBUILT FOUR TIMES,
-   every time from the render and never from the source:
-     1. A rounded strongbox with a pinned seam. The pin was r=1.8 and
-        vanished at 80px; the shell read as a container, very nearly
-        as a battery.
-     2. Four thin full-weight lines with a break in them. At 80px four
-        hairlines read as a pause glyph.
-     3. Two 9-wide outlined blocks, 10-unit gap. The gap was so wide
-        relative to the blocks that they read as two small objects.
-     4. Twelve-wide outlined blocks with courses ruled across them.
-        Still two objects, now reading as two stacked cards.
-   The lesson, and it is the lesson of this whole batch: an OUTLINED
-   rect cannot carry mass at 80px under rgba(255,255,255,.6). Only a
-   fill can. So the wall takes the one accent this family allows and
-   the delivery is the outlined thing -- the inverse of where I
-   started, and the only version that reads. Two subpaths in one
-   <path> keep it to a single accent element. */
+   An independent critic swept the LIVE site and called the previous
+   version "not a recognizable object" -- and it was right. That
+   version was a slotted wall: two axis-aligned filled rects with NO
+   diagonals, so nothing read as speed, and a bare rounded rect with
+   NO shackle, so nothing read as a lock. It had three further faults
+   I had not seen:
+     - 4 shapes, the fewest of any icon in the set (range 4-18);
+     - both fills bled y=2 -> 46, breaking the family's 3-44 optical
+       box that all 30 other icons respect. I did that on purpose for
+       "crop discipline" and it was simply wrong here;
+     - it was one of only two icons dominated by large unstroked
+       fills, so it clashed with the 1.5px stroke vocabulary of the
+       rest of the set.
+
+   So: an honest cliche that reads beats an original that does not.
+   The shackle is closed and arrives first, which is the security.
+   The bolt has real diagonal vertices, which is the speed. The
+   accent is now ~40 square units instead of 429, so the icon reads
+   as stroked line-work with one lit detail, like its siblings. */
 export function IconSnappyAndSecure() {
   return (
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Asked for, with nothing standing between it and the way in */}
-      <rect x="3" y="20" width="8" height="8" rx="2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
-      {/* ACCENT: the wall, off both edges, with the one slot through it */}
-      <path d="M17 2H28V21.5H17Z M17 26.5H28V46H17Z" fill="currentColor" fillOpacity="0.88" />
-      {/* One straight run, and it goes clean through */}
-      <line x1="11.5" y1="24" x2="31" y2="24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      {/* Delivered, already the other side of it */}
-      <rect x="31.5" y="18.5" width="12.5" height="11" rx="3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Shut, and the closed shackle is the first thing you see */}
+      <path d="M17.5 21v-4a6.5 6.5 0 0113 0v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      {/* The body */}
+      <rect x="11" y="21" width="26" height="20" rx="3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Ribs, so the body reads as a case and not as another panel */}
+      <line x1="15" y1="28" x2="15" y2="34" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.55" />
+      <line x1="33" y1="28" x2="33" y2="34" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.55" />
+      {/* ACCENT: and it is quick. Diagonals, because a bolt without
+          them is just a slab -- which is exactly what went live. */}
+      <path d="M26 24l-6 8h3.5L22 38l6-8h-3.5z" fill="currentColor" fillOpacity="0.88" />
     </svg>
   );
 }
