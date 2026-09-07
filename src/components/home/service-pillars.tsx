@@ -1302,7 +1302,7 @@ function IconFormToRecord() {
       <path d="M25.5 19.5L28 22l-2.5 2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       {/* Not an inbox */}
       <rect x="22.5" y="32" width="7" height="5" rx="1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.55" />
-      <path d="M22 37.8l8-6.6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M22 37.8l6.8-5.61" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       {/* Landing on a record with a name against it */}
       <rect x="30" y="12" width="13" height="24" rx="2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       <circle cx="36.5" cy="19" r="3" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.55" />

@@ -398,7 +398,7 @@ export function AutomationVisual() {
       <svg
         className="ps-c3-svg"
         viewBox="0 0 412 442"
-        preserveAspectRatio="xMidYMid slice"
+        preserveAspectRatio="xMidYMin slice"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
