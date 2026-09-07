@@ -291,34 +291,62 @@ const NARROW_MARK_H = 0.95;
 /** §33-P. The phone's WIDE_MARK_TOP. Slightly under the desktop's 0.14 because
  *  a phone hero is tall and the headline sits low in it (y 381..479 in an 844
  *  hero at 390), so less lift is needed to clear the top bar off the frame. */
-const NARROW_MARK_TOP = 0.05;
-/** §33-P. The phone's WIDE_OVERHANG_TALL, and it is much larger — 0.48 against
- *  the tablet's 0.34 and the desktop's 0.12.
+/** §38, 2026-09-06. NARROW_MARK_TOP 0.05 -> -0.18, NARROW_OVERHANG 0.12 -> 0.18.
+ *  Settles what §36 left open, and settles it the way §36 said to: by looking at
+ *  a FILLED render, which nobody had until f2f5cc7 shipped.
  *
- *  Same reasoning as WIDE_OVERHANG_TALL, taken further because a phone frame is
- *  narrower still. At 0.34 the 390x844 window lands on mark x 328..676, and the
- *  tail — which at those y values sits at mark x 140..300 — falls off the left
- *  edge, leaving the bottom 28% of the hero with no ink at all (measured: plate
- *  ink box bottom 611 in an 844px hero). 0.48 slides the window to x 202..550,
- *  which is the band the wedge, the counter's left wall and the tail all pass
- *  through, so ink reaches within ~19% of the bottom instead of 28%.
+ *  Note the sign. Placement is `y = -NARROW_MARK_TOP * H`, so a NEGATIVE value
+ *  pushes the mark DOWN. -0.18 is a down-shift, which is what the client asked
+ *  for ("JUST NEEDED SHIFTED DOWN A BIT") and what §35's 0.05 did not deliver:
+ *  at 0.05 the ink sat entirely ABOVE the headline with the bottom ~45% of the
+ *  hero empty white. The client's words were "behind the hero text", not above.
  *
- *  IT CANNOT REACH 0%, AND NOT BECAUSE IT IS UNDER-TUNED. The glyph's ink runs
- *  top-right to bottom-left; on a 0.46-aspect frame no axis-aligned window
- *  contains both the bowl at the top and the tail at the bottom. Sliding
- *  further left (0.59+) does catch the tail all the way down, but at that point
- *  the mark's left edge lands at x ~= 0 and the letterform stops being cropped
- *  on the left at all — trading one of the client's three asks for another. */
-/** §35, 2026-09-06. 0.48 -> 0.12. THIS CONSTANT IS WHY NO PHONE EVER SHOWED A
- *  LETTERFORM. At 0.48 the frame slides off the bowl entirely and keeps only
- *  the tail and the wedge, which rasterise as two diagonal bands — precisely
- *  the "abstract planes" reading §31 was rejected for, arriving on phones by a
- *  different route. Verified by screenshot at 390x844 and 393x852 in both
- *  themes: at 0.12 the bowl, its counter and the tail are all in frame and the
- *  mark reads as a P; at 0.48-0.50 it does not. The desktop's own
- *  MARK_OVERHANG is 0.12 and always was — this brings the phone into line with
- *  it rather than inventing a phone-specific number. */
-const NARROW_OVERHANG = 0.12;
+ *  Chosen from six real builds screenshotted at 390x844 and compared by eye,
+ *  not argued from the constants:
+ *    A  top -0.12 over 0.12  clear P, top-heavy, bottom ~35% empty
+ *    B  top -0.25 over 0.22  fills the hero, but dissolves into an abstract
+ *                            swoosh - the letter is gone
+ *    C  top -0.38 over 0.22  worst: top 38% empty AND unreadable
+ *    D  top -0.18 over 0.12  clear P, well centred vertically, not moved right
+ *    E  top -0.12 over 0.18  clear P, moved right, still top-heavy
+ *    F  top -0.18 over 0.18  <- shipped. D's vertical balance + E's shift right.
+ *
+ *  THE REAL CONSTRAINT, and why "way farther right" is not taken literally:
+ *  B and C confirm the raster finding recorded in §36 - past roughly 0.20 the
+ *  bowl and counter leave the frame and the mark stops reading as a P. So
+ *  "farther right" and "still a letter" are in direct conflict above ~0.20.
+ *  0.18 is the most rightward value that keeps the glyph. Going further is
+ *  available and was rejected on the evidence above, not on taste.
+ *
+ *  The headline lands inside the COUNTER (white), so type contrast is carried
+ *  by the counter rather than by the scrim - which matters, because §29 records
+ *  that the plate and beam paint ABOVE .ps-hero-overlay and the scrim therefore
+ *  buffers nothing. Do not "fix" a future type collision here by lowering alpha;
+ *  the compositing proof in this file (R = 246 - 142a, 2.98:1 at a = 0.03) shows
+ *  that cannot work. Move the mark instead. */
+const NARROW_MARK_TOP = -0.18;
+/** §36, 2026-09-06. COMMENT ROT REPAIR. The block that stood here was §33-P's
+ *  argument FOR 0.48 ("at 0.48-0.50 it does not [fall off]"), left in place when
+ *  §35 changed the value under it to 0.12. It read as an endorsement of a number
+ *  the file no longer used, on the most-rewritten constant in the repo. Replaced
+ *  rather than amended, because the next reader needs one claim, not two.
+ *
+ *  What this actually controls: how far the mark's stage runs PAST the right
+ *  viewport edge, as a fraction of mark width. LARGER pushes the visible crop
+ *  RIGHT across the glyph. See the placement math at ~:1104.
+ *
+ *  The measured constraint, from rasterising the polygons across 0.04..0.62:
+ *  the BOWL and its COUNTER leave the frame between 0.20 and 0.30. Above that
+ *  only the wedge and tail remain on screen and the mark stops reading as a P.
+ *  0.48 was therefore not "further right", it was "mostly gone".
+ *
+ *  OPEN, and deliberately not settled here: the client asked for the phone P
+ *  "way farther right", which points above 0.12, while the raster says the
+ *  glyph dies above ~0.30. Both were argued against a build that painted the
+ *  mark as HAIRLINE OUTLINES (fixed in f2f5cc7, unshipped at the time), so
+ *  nobody has yet judged position against a P they could actually see. Re-judge
+ *  on a filled render before moving this again. */
+const NARROW_OVERHANG = 0.18;
 /** §31, 2026-09-05. How far the mark's stage runs PAST the right viewport edge,
  *  as a fraction of the hero's width. The client asked for the mark "bigger and
  *  less prominent, with less opacity and hanging off the right side of the page
@@ -514,6 +542,24 @@ const WIDE_OVERHANG_TALL = 0.12;
  *  raising it but start trading the counter for the tail, and the tail alone is
  *  the abstract sweep §30-B recorded as rejected. */
 const WIDE_MARK_TOP = 0.14;
+/* ===========================================================================
+ * §37 RETIRES THE FIVE CONSTANTS ABOVE. WIDE_MARK_W, WIDE_MARK_H,
+ * WIDE_OVERHANG_TALL, WIDE_MARK_TOP and MARK_OVERHANG were the whole of the
+ * desktop bleed regime and nothing reads any of them now. They are voided
+ * rather than deleted, on the MARK_RIGHT_BLEED precedent at ~:348: the comment
+ * blocks attached to them are the §31-§33 decision record, and §32(c) in
+ * particular — "the overhang has to be measured against the thing being
+ * cropped" — is still the load-bearing lesson behind NARROW_OVERHANG.
+ *
+ * DO NOT re-point the wide branch at these to "restore" desktop size. The
+ * client's instruction was the opposite direction. If desktop is ever asked to
+ * bleed again, write a §38 and say who asked.
+ *
+ * They stay ONLY as documentation. The live phone equivalents are
+ * NARROW_BLEED_W, NARROW_MARK_H, NARROW_MARK_TOP and NARROW_OVERHANG.
+ * =========================================================================== */
+void WIDE_MARK_W; void WIDE_MARK_H; void WIDE_OVERHANG_TALL; void WIDE_MARK_TOP;
+void MARK_OVERHANG;
 /** §32(e), REPLACED BY §33(c). THE TEXT-COLUMN ALPHA RAMP — and this time it
  *  covers the beam as well as the plate.
  *
@@ -653,6 +699,78 @@ const KEEPOUT_FEATHER_MIN = 76;  // css px floor, for narrow viewports
 /** How long the beam takes to cross the whole off-screen arc, regardless of how
  *  much of it is off-screen. See the time remap in build(). */
 const HIDDEN_TRAVERSE_MS = 350;
+/* ===========================================================================
+ * §37 — 2026-09-06. DESKTOP GOES BACK. The P changes were only ever for mobile.
+ *
+ * The client, twice, verbatim:
+ *   "all these P chnanges were only supposed to be for mobile dude. you need to
+ *    put desktop back to the way it was before all of this"
+ *   "just teh P not all the other stuf obviously"
+ *
+ * He is right, and it had never been done. §31 through §35 read his phone
+ * feedback as site-wide feedback and applied every round of it to desktop as
+ * well. Nothing in §31-§35 records him asking for a desktop change; §32's own
+ * header even notes his correction "names no viewport". Five rounds of growing
+ * the desktop mark were inferred, not requested.
+ *
+ * WHAT "BEFORE ALL OF THIS" IS, EXACTLY. Commit 6fcfd65, the pre-rebuild
+ * baseline: a 752-line file with NO WIDE_* constants at all. Its desktop mark
+ * was CONTAINED — layout() built a stage inset by STAGE_PAD, running from
+ * `floor` (W * SCRIM_CLEAR) to W - STAGE_PAD, and handed it to fitInto(), which
+ * contain-fits. The whole glyph sat inside the hero with air around it. That
+ * rect is restored verbatim as `contained` in layout(); see 6fcfd65:365.
+ *
+ * WHAT CHANGED, AND IT IS ONLY THESE THREE THINGS
+ *   (a) layout()'s wide branch is 6fcfd65's `contained` stage again, instead of
+ *       the mark-derived bleeding stage §33(a) built from WIDE_MARK_W/_H.
+ *   (b) The ink guard is re-armed for wide only — `narrow ? [] : rects`. This
+ *       is not decoration. With the guard empty at every viewport since §33,
+ *       the `dropped` stage and the 12-step Math.pow(0.96, k) shrink below it
+ *       were unreachable code. Restoring a contained stage without them would
+ *       have put a whole glyph straight under the headline with no mechanism to
+ *       move it. The guard, the drop and the shrink are one instrument.
+ *   (c) WIDE_MARK_W, WIDE_MARK_H, WIDE_OVERHANG_TALL, WIDE_MARK_TOP and
+ *       MARK_OVERHANG are voided. See the retirement block at ~:512.
+ *
+ * WHAT WAS DELIBERATELY *NOT* REVERTED — "just teh P not all the other stuf".
+ * The client scoped this himself and the scope is narrow. Untouched:
+ *   - THE FILL FIX (f2f5cc7) AND ITS ALPHAS. MARK_FILL_A_* / MARK_EDGE_A_* stay
+ *     at §35's fill-dominant values. This is the most important non-reversion in
+ *     the section. 6fcfd65 painted the mark as hairline CONTOURS at roughly a
+ *     10/255 delta, i.e. invisible — which is the actual reason four consecutive
+ *     rounds of resizing it changed nothing anybody could see. Taking the old
+ *     geometry back while also taking the old alphas back would have restored
+ *     the defect along with the layout. GEOMETRY ONLY: every alpha in palette()
+ *     is exactly what it was before §37.
+ *   - the beam, both beam gains, BEAM_STEPS*, BEAM_PERIOD_MS*, the plate, the
+ *     offscreen-plate/dirty-rect paint order, the DPR caps, the reduced-motion
+ *     park point (§33(e)), the keep-outs and their feather (§33(c)/§35).
+ *   - EVERY NARROW_* CONSTANT AND THE ENTIRE NARROW BRANCH. See below.
+ *
+ * MOBILE IS UNTOUCHED, AND HERE IS WHY THAT IS STRUCTURALLY TRUE RATHER THAN
+ * JUST INTENDED. The two edits in layout() are both `narrow ?` ternaries whose
+ * narrow arm is the pre-§37 expression verbatim: NARROW_BLEED_W, NARROW_MARK_H,
+ * NARROW_MARK_TOP and NARROW_OVERHANG feed `bleeding` with the same terms in
+ * the same order, and the guard's narrow arm is still the empty array, so the
+ * loop still returns `primary` on iteration one without ever calling
+ * inkOverlap(). There is no path by which a phone reaches `contained`.
+ * Verified by render, not by reading: 390x844 light and dark, chromium,
+ * before and after — 0 differing pixels out of 2,962,440.
+ *
+ * §36 IS NOT CONTRADICTED. It records NARROW_OVERHANG = 0.12 as OPEN, pending a
+ * judgment of phone position against a FILLED render rather than the hairline
+ * one the client was shown. §37 does not move that constant, does not settle
+ * that question, and does not touch anything on the phone path. That judgment
+ * is still owed.
+ *
+ * THE ONE TRAP IF YOU REVISIT THIS. Do not try to keep the desktop mark clear of
+ * the headline by lowering its alpha. §29 put the plate and beam ABOVE
+ * .ps-hero-overlay (globals.css:1198-1204), so the scrim does not buffer the
+ * type from the mark, and the compositing arithmetic in §32 is decisive:
+ * R = 246 - 142a gives only 2.98:1 even at a = 0.03. Type collisions are solved
+ * by the guard, the `dropped` stage and the shrink loop. That is what they are
+ * for and it is why §37 restored them together.
+ * =========================================================================== */
 const SCRIM_CLEAR = 0.70;
 /* NOTE, kept because it corrects a false claim that lived here: the phone scrim
  * is NOT "a flat veil with no horizontal ramp". It is a 90deg ramp exactly like
@@ -1083,31 +1201,40 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
       feather = 0; beamPush = []; platePush = [];
     }
 
-    /* §33(a)+(b). Sized off BOTH axes and anchored by its INK TOP, in both
-       regimes. s is the scale in css px per mark-box unit. On landscape the
-       width term binds; on portrait tablets and on every phone the height term
-       does. The stage's width and height are the mark's own, so fitInto()'s
-       contain-fit is exact and the placement below IS the geometry rather than
-       the result of a negotiation. */
-    const kw = narrow ? NARROW_BLEED_W : WIDE_MARK_W;
-    const kh = narrow ? NARROW_MARK_H : WIDE_MARK_H;
-    const sW = kw * W / MARK_W;
-    const sH = kh * H / MARK_H;
-    /* `tall` is not a breakpoint — it is "which axis actually bound the fit".
-       It goes true exactly when the frame is too tall for the width term to
-       fill, which is the case WIDE_OVERHANG_TALL exists for. Every phone in the
-       matrix is tall by this test; 1024x768 and wider are not. */
-    const tall = sH > sW;
+    /* §33(a)+(b), NOW NARROW ONLY — see §37. Sized off BOTH axes and anchored by
+       its INK TOP. s0 is the scale in css px per mark-box unit; on every phone in
+       the matrix the HEIGHT term binds (at 390x844, sH 1.12 against sW 0.63), so
+       NARROW_BLEED_W is the floor §33-P describes and NARROW_MARK_H is the live
+       lever. The stage's width and height are the mark's own, so fitInto()'s
+       contain-fit is exact and this placement IS the geometry rather than the
+       result of a negotiation.
+
+       THIS BLOCK IS THE PHONE COMPOSITION THE CLIENT HAS ACCEPTED. §37 changed
+       nothing in it — not one constant, not one term. If you are here to change
+       desktop, the branch you want is `contained` below. */
+    const sW = NARROW_BLEED_W * W / MARK_W;
+    const sH = NARROW_MARK_H * H / MARK_H;
     const s0 = Math.max(sW, sH);
     const markW = MARK_W * s0;
     const markH = MARK_H * s0;
-    const overhang = narrow ? NARROW_OVERHANG : tall ? WIDE_OVERHANG_TALL : MARK_OVERHANG;
-    const stageX = W + overhang * markW - markW;
-    const primary = {
+    const stageX = W + NARROW_OVERHANG * markW - markW;
+    const bleeding = {
       x: stageX,
-      y: -(narrow ? NARROW_MARK_TOP : WIDE_MARK_TOP) * H,
+      y: -NARROW_MARK_TOP * H,
       w: markW, h: markH,
     };
+
+    /* §37. WIDE, restored verbatim from 6fcfd65:365 — the pre-rebuild desktop
+       stage. The full hero height inset by STAGE_PAD, in the column running from
+       `floor` (the x where the light-theme scrim has released) to W - STAGE_PAD.
+       fitInto() CONTAIN-fits the mark inside it, so the glyph is whole and no
+       edge of it leaves the frame. This is the composition the client asked to
+       have back, and the reason it is a rect handed to fitInto() rather than a
+       mark-derived stage is that "contained" is exactly what a contain-fit
+       against a frame-inset rect means. */
+    const contained = { x: floor, y: STAGE_PAD, w: W - STAGE_PAD - floor, h: H - STAGE_PAD * 2 };
+
+    const primary = narrow ? bleeding : contained;
     // Step 3: the same recipe the narrow regime already uses — drop clear of the
     // headline's ink entirely. For narrow this is identical to `primary`, so the
     // loop simply falls through to the shrink step.
@@ -1145,7 +1272,21 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        the entire headline, and the top 57% of the hero, had no mark behind it at
        all. Two passes have now shipped that. The guard goes; legibility on
        phones is defended by the same measured keep-out as on desktop. */
-    const guard: typeof rects = [];
+    /* §37. THE GUARD IS BACK ON DESKTOP AND STILL OFF ON PHONES.
+       Wide gets `rects` — every headline line, ink-vs-ink, exactly as 6fcfd65:378
+       had it. That is what re-arms the two mechanisms below: the `dropped` stage
+       and the 12-step 0.96 shrink. Under §33 this array was empty at every
+       viewport, so `inkOverlap(...) === 0` was true on the first iteration and
+       BOTH mechanisms were dead code. Restoring the contained stage without
+       restoring this would have left the desktop mark sitting on the headline
+       with nothing to push it clear.
+       NARROW KEEPS THE EMPTY GUARD. §33-P deleted it deliberately — the phone
+       mark is SUPPOSED to sit behind the type — and re-arming it there would
+       push the phone mark back below the headline, which is the composition the
+       client rejected in words on 2026-09-05. Empty here means the loop returns
+       `primary` on its first iteration, i.e. the phone path is bit-for-bit what
+       it was before §37. */
+    const guard: typeof rects = narrow ? [] : rects;
     let last = fitInto(primary, 1);
     for (const st of [primary, dropped]) {
       if (!(st.w > 0 && st.h > 0)) continue;
