@@ -2838,3 +2838,224 @@
   .ps-c2-wash-rect { transform: translateX(520px) !important; }
   .ps-c2-svg { transform: none !important; }
 }
+/* ═════════════════════════════════════════════════════════════
+   CARD 1 — "BUSINESS SOFTWARE." — THE KEYSTONE          (.ps-c1-*)
+
+   Markup: card-visuals-backup.tsx, `DashboardVisual`. APPENDED block —
+   nothing above this line is modified, and every `.ps-v4-*` rule is left
+   intact because cards 2 and 3 still render them.
+
+   DARK IS THE BASE in this codebase; `[data-theme="light"]` is the override.
+   Base rules below are the DARK theme.
+
+   ── THE TWO RULES THAT MATTER ──
+   1. THE VOID CARRIES THE DARK MASS. The passage is dark in both themes
+      because a void is dark. It is the card's dark anchor in light mode, which
+      is what stops the near-white failure the previous build measured at 46.7%.
+   2. THE ARCH IS MADE OF THE WALL. The voussoirs are cut from the same stone
+      value as the wall, ~12% lighter because their faces catch light. When
+      they were dark navy against a pale wall the card read as a half-donut
+      CHART pasted onto brick — a gauge, which on this project is a worse
+      cliché than the gear it replaced. If it ever reads as a chart again, this
+      relationship has drifted. Do not darken the ring to "add contrast".
+   ───────────────────────────────────────────────────────────── */
+
+.ps-c1-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ── THE WALL ──
+   A CSS layer, not an SVG rect, for two reasons. It is always full-bleed at
+   every aspect, which lets the SVG use `meet` so the KEYSTONE IS NEVER CROPPED
+   (a `slice` build sliced it off at 600px — the one element the concept
+   depends on). And its coursing is abstract stratification rather than drawn
+   brickwork: the literal masonry read as "construction firm", so the courses
+   are now wide bands, no vertical perpends. */
+.ps-c1-wall {
+  position: absolute;
+  inset: 0;
+  background-color: #16273F;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.30) 0 1.5px,
+      transparent 1.5px 48px
+    ),
+    linear-gradient(160deg, #1D3252 0%, #0C1A2E 100%);
+}
+
+.ps-c1-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ARCH GEOMETRY IS ART-DIRECTED BY BREAKPOINT.
+   The semicircular arch is correct at desktop. At <=700px the plinth lands on
+   its springing and what is left is a perfect half-disc of near-uniform
+   trapezoids on a baseline, which reads as a DIAL whichever part is darker.
+   The elliptical arch raises the springing above the plinth so the opening's
+   straight legs show, and a portal with legs cannot be a half-disc. The same
+   ellipse at desktop would fill the card with opening and lose the wall, so
+   each is used only where it works.
+   The hidden variant is display:none — no paint, no animation, no cost. */
+.ps-c1-arch--wide { display: none; }
+
+@media (max-width: 700px) {
+  .ps-c1-arch--tall { display: none; }
+  .ps-c1-arch--wide { display: block; }
+}
+
+/* ── THE PLINTH ──
+   The base course the wall stands on. Architectural, not a scrim: a solid
+   band with a crisp top edge, so the arch's legs terminate ON something. It
+   replaces a grey-to-white gradient wash that dissolved the legs into nothing
+   and read as an unfinished mask at 600px.
+
+   IT IS ALSO THE TITLE'S BACKGROUND, and that is measured, not assumed. The
+   title is dark navy rgb(10,22,40) in light theme and sits over this artwork.
+   With a percentage-height gradient veil this card measured 8.27:1 at 1440 but
+   FAILED at 4.37:1 (600) and 4.42:1 (390) — the card box is 442px tall at 1440
+   and only 332px at 600/390, so a PERCENTAGE veil is systematically weakest on
+   the smallest card. A FIXED height covers the 59-63px text block identically
+   at every breakpoint. Do not convert this back to a percentage. */
+.ps-c1-plinth {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 104px;
+  pointer-events: none;
+  background: var(--ps-c1-plinth-face);
+  border-top: 2px solid var(--ps-c1-plinth-edge);
+  box-shadow: inset 0 3px 8px -3px var(--ps-c1-plinth-shade);
+}
+
+/* A short falloff ABOVE the plinth so the hard edge does not read as a cut.
+   16px only — enough to seat the band, not enough to wash the legs out. */
+.ps-c1-plinth::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 10px;
+  background: linear-gradient(to top, var(--ps-c1-plinth-shade), transparent);
+}
+
+/* ── DARK (base) ───────────────────────────────────────────── */
+.ps-c1-root {
+  --ps-c1-ground: #0A1628;
+  --ps-c1-plinth-face: #0C1A2E;
+  --ps-c1-plinth-edge: rgba(255, 255, 255, 0.16);
+  --ps-c1-plinth-shade: rgba(0, 0, 0, 0.55);
+}
+/* Stones are LIGHTER than the wall: light falls on the arch face. */
+.ps-c1-stone-a  { stop-color: #4E7099; }
+.ps-c1-stone-mid{ stop-color: #33507A; }
+.ps-c1-stone-b  { stop-color: #1B2E4A; }
+.ps-c1-beyond-a { stop-color: #04090F; }
+.ps-c1-beyond-b { stop-color: #2B4362; }
+
+/* ── LIGHT (override) ──────────────────────────────────────── */
+[data-theme="light"] .ps-c1-root {
+  --ps-c1-ground: #EEF2F7;
+  --ps-c1-plinth-face: #D6DFEA;
+  --ps-c1-plinth-edge: rgba(255, 255, 255, 0.85);
+  --ps-c1-plinth-shade: rgba(10, 22, 40, 0.22);
+}
+[data-theme="light"] .ps-c1-wall {
+  background-color: #B5C3D4;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(10, 22, 40, 0.17) 0 1.5px,
+      transparent 1.5px 48px
+    ),
+    linear-gradient(160deg, #C9D5E3 0%, #A7B7CA 100%);
+}
+/* LIGHT IS THE INVERSION OF DARK, AND IT IS PHYSICALLY CORRECT.
+   An arch seen from inside, looking out toward daylight, has DARK stonework
+   and a BRIGHT opening. That is what every photograph of a portal looks like,
+   and it is card 4's own structure: a predominantly light card carrying one
+   real dark mass.
+
+   It is also the only thing that fixes the light-mode misreads, and the reason
+   is contrast arithmetic rather than taste. WHATEVER HAS THE HIGHEST LOCAL
+   CONTRAST IS THE SUBJECT. Through four passes the void held it — near-black,
+   then mid-slate, then mid-slate with a softened floor — so the void kept
+   reading as the figure and the card kept reading as a slab, a headstone, or
+   a dial hub. No amount of tuning the wall or the stones could beat it,
+   because none of those changed which element won. Inverting does: the stones
+   become the dark mass, the opening becomes light beyond, and the keystone is
+   the only saturated element against dark stone, so it wins on contrast
+   instead of being asked to. */
+[data-theme="light"] .ps-c1-stone-a  { stop-color: #3E5F8C; }
+[data-theme="light"] .ps-c1-stone-mid{ stop-color: #2A456B; }
+[data-theme="light"] .ps-c1-stone-b  { stop-color: #16294A; }
+/* The void stays dark in light theme. This is the card's dark mass. */
+/* Daylight beyond the opening — brightest at the crown, settling toward the
+   floor. Pale, so it can never read as a slab standing in front of the wall. */
+[data-theme="light"] .ps-c1-beyond-a { stop-color: #FCFDFF; }
+[data-theme="light"] .ps-c1-beyond-b { stop-color: #DDE7F2; }
+
+/* The joints between voussoirs. With the stones now close in value to the
+   wall, the blocks need an edge or the ring dissolves. */
+.ps-c1-vou { stroke: rgba(0, 0, 0, 0.28); stroke-width: 0.9; }
+[data-theme="light"] .ps-c1-vou { stroke: rgba(255, 255, 255, 0.22); }
+
+/* ── MOTION — reveals ONCE and settles ─────────────────────────
+   Zero @keyframes, transitions only, gated on the `in-view` class the
+   card-scoped observer adds once (see `usePsC1Reveal`). The voussoirs settle
+   inward staggered by distance from the crown, THEN the keystone drops in and
+   locks the arch. One reveal, then still. */
+.ps-c1-vou {
+  opacity: 0;
+  transform: translateY(-9px);
+  transform-box: view-box;
+  transition:
+    opacity 380ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--i) * 140ms),
+    transform 400ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--i) * 140ms);
+}
+
+.ps-c1-key {
+  opacity: 0;
+  transform: translateY(-42px);
+  transform-box: view-box;
+  transition:
+    opacity 320ms 980ms,
+    transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1) 980ms;
+}
+
+.ps-c1-root.in-view .ps-c1-vou,
+.ps-c1-root.in-view .ps-c1-key {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reduced motion is handled TWICE — the hook short-circuits and adds `in-view`
+   immediately, and this pins every gated element to its FINISHED frame.
+   Nothing may ever be left permanently invisible. */
+@media (prefers-reduced-motion: reduce) {
+  .ps-c1-vou,
+  .ps-c1-key {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* If JS never runs, `in-view` never arrives. Show the finished frame. */
+@media (scripting: none) {
+  .ps-c1-vou,
+  .ps-c1-key {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
