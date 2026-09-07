@@ -54,6 +54,16 @@ import { seoSite } from "@/lib/seo/site";
    ───────────────────────────────────────────────────────────── */
 
 interface ServiceTile {
+  /**
+   * Short category label shown top-left on the tile face.
+   *
+   * The title is the OUTCOME the owner buys; this is the THING it is. Both
+   * earn their place: the outcome persuades, the category is what a visitor
+   * scans for and what they would have typed into a search box. Plain noun
+   * phrase, 2-4 words. Two tiles in one pillar must never carry the same
+   * label -- if they do, they are the same product and one should be cut.
+   */
+  product?: string;
   title: string;
   description: string;
   /**
@@ -189,6 +199,7 @@ const services: ServicePillar[] = [
     ],
     serviceTiles: [
       {
+        product: "Custom Admin Panel",
         title: "Your Whole Business on One Screen",
         description:
           "Every number that decides your week (jobs, invoices, payments, who owes you) pulled from the systems you already run and kept current on its own. One screen, built around how you make decisions, and it opens on your phone.",
@@ -196,30 +207,35 @@ const services: ServicePillar[] = [
         icon: <IconOneScreenKpis />,
       },
       {
+        product: "Executive Dashboard",
         title: "Know Exactly What's Going On in 3 Seconds",
         description:
           "This is the standard we build every dashboard to. An owner's time is the most expensive time in the building, so your key numbers sit on one screen, current and readable at a glance: what's coming in, what's owed, what's booked, and which jobs and service lines actually made you money.",
         icon: <IconThreeSecondRead />,
       },
       {
+        product: "Rules & Approvals Engine",
         title: "Quit Repeating Yourself",
         description:
           "We build your decisions into your business's software. The approvals, the pricing rules, who goes on which job: written in as steps the system carries out on its own, so the answer is already there and the work keeps moving without you being asked again.",
         icon: <IconDecisionsEncoded />,
       },
       {
+        product: "Spreadsheet Replacement",
         title: "Get Out of Spreadsheet Chaos",
         description:
           "We map your entire current workflow first, every sheet, every formula and every rule someone worked out along the way, then build it into real software and bring the data across with it. A clean move over, with nothing left behind and nothing rebuilt from memory.",
         icon: <IconSpreadsheetMigration />,
       },
       {
+        product: "Customer Record System",
         title: "Every Customer's Entire History in One Record",
         description:
           "Every quote, job, invoice, note, photo and conversation you have ever had with a customer, imported from wherever it lives today into one record. Whoever picks up the phone has the whole relationship in front of them.",
         icon: <IconCustomerHistoryOnCall />,
       },
       {
+        product: "Built-to-Fit Platform",
         title: "Completely Custom to Your Business",
         description:
           "Every dashboard, panel and workflow we build is mapped to how your business actually runs and how your industry actually works. No template that a thousand other companies are already sitting on, and no software you can tell was designed for somebody else and sold to you anyway.",
@@ -271,12 +287,14 @@ const services: ServicePillar[] = [
     ],
     serviceTiles: [
       {
+        product: "Invoicing & Collections",
         title: "Invoices That Send and Chase Themselves",
         description:
           "The invoice goes out the moment the work is done, the reminders escalate on their own, and every message carries a payment link. The system becomes your collections department, so getting paid stops depending on anyone remembering to ask.",
         icon: <IconInvoiceAutoSend />,
       },
       {
+        product: "System Integration",
         title: "Eliminate Manual Data Entry",
         description:
           "We build the flows that carry information everywhere it needs to go the moment it is entered once. The won deal becomes the scheduled job, the supplier invoice lands against the order, and the same details stop being typed into four systems that were never introduced to each other.",
@@ -284,24 +302,28 @@ const services: ServicePillar[] = [
         icon: <IconEnteredOnce />,
       },
       {
+        product: "Task Automation",
         title: "Free Up Your People for Work That Actually Matters",
         description:
           "The repeating work, the copying, the chasing, the filing and the checking, is exactly what automation is good at. We take it off your team so the people you hired for judgment spend their day using it.",
         icon: <IconFreedCapacity />,
       },
       {
+        product: "After-Hours Triage",
         title: "After-Hours Customers Don't Fall Through the Cracks",
         description:
           "We build the triage that answers, sorts and routes everything arriving outside business hours. Urgent reaches a person, everything else is acknowledged and queued with its context, so the job that came in at 9pm is still yours in the morning.",
         icon: <IconAfterHoursTriage />,
       },
       {
+        product: "Process Audit & Integration",
         title: "Get All Your Systems Talking to One Another",
         description:
           "We start with an audit of how work actually moves through your business, every tool, every handoff and every connection holding two systems together, then wire up what should be connected and retire what should not exist. One flow instead of ten that do not speak.",
         icon: <IconSystemsConnected />,
       },
       {
+        product: "Document Generation",
         title: "Paperwork That Fills Itself Out",
         description:
           "Proposals, contracts and work orders generated from the real job record with the right pricing and terms already in them, sent out and filed against the job automatically.",
@@ -351,6 +373,7 @@ const services: ServicePillar[] = [
     ],
     serviceTiles: [
       {
+        product: "Custom AI Business Agent",
         title: "Get Answers About Your Business in Seconds",
         description:
           "We build a custom agent that knows your business, your operations, your numbers and your customer database, and give your team a chat window to ask it real executive questions. It tracks the answer down across your own data and comes back in seconds.",
@@ -359,36 +382,42 @@ const services: ServicePillar[] = [
         wideGraphic: true,
       },
       {
+        product: "Private AI Instance",
         title: "Secure AI for Your Business",
         description:
           "Most businesses do not realise the free tools their team is using are training on everything pasted into them. We build you a private, secure instance instead: your data stays yours, it never becomes training material, and your people get AI that is genuinely safe to use.",
         icon: <IconPrivateAiInstance />,
       },
       {
+        product: "AI Guardrails & Governance",
         title: "We Know How to Harness AI Safely",
         description:
           "We spent years building enterprise-grade AI infrastructure in environments where a mistake was not survivable. That is where you learn which guardrails actually hold, what a model should never be allowed to do alone, and exactly where a person belongs in the loop.",
         icon: <IconAiSafetyEngineering />,
       },
       {
+        product: "AI Document Extraction",
         title: "Eliminate Entering Data Off Documents",
         description:
           "AI document extraction pulls the figures straight off the invoice, the form or the contract, and a second pass proves every number appears literally on the page before it goes anywhere. The typing stops and nothing gets quietly guessed.",
         icon: <IconDocExtraction />,
       },
       {
+        product: "AI Booking Agent",
         title: "An After-Hours AI Agent That Books the Next Day",
         description:
           "An agent that genuinely helps the person who arrives at 10pm: it answers what they actually asked, then moves them toward an appointment in business hours. Useful to your customer, and it hands you a booked job instead of a missed call.",
         icon: <IconAfterHoursAiAgent />,
       },
       {
+        product: "AI-Assisted Quoting",
         title: "Quote Faster Using What Your Past Jobs Already Know",
         description:
           "Every job you have completed is data about what the work really costs you. We put AI on top of that history so a new quote starts from your own numbers: real materials, real hours, real margins, instead of a guess.",
         icon: <IconQuoteFromHistory />,
       },
       {
+        product: "AI Inbox Triage",
         title: "Nothing Gets Missed in the Inbox",
         description:
           "AI reads what comes in, email, forms and attachments, works out what it is and who it belongs to, files it against the right customer and job, and raises what needs a person, so nothing waits on someone noticing it.",
@@ -474,6 +503,7 @@ const services: ServicePillar[] = [
     // href-bearing tile, so ADR-0007 decision 3 is satisfied unchanged.)
     serviceTiles: [
       {
+        product: "Custom Website Build",
         title: "Fortune 500 Quality, Built by Someone in Kansas",
         description:
           "Every site is written from the ground up in raw code, custom to your business, using the most current languages and frameworks available. That buys you the design, the animation, the polish and the security you would expect on a Fortune 500 site, from someone whose name and face are right here.",
@@ -481,6 +511,7 @@ const services: ServicePillar[] = [
         icon: <IconAgencyGradeBuild />,
       },
       {
+        product: "Conversion-Focused Design",
         title: "Every Page Engineered to Produce a Customer",
         description:
           "We psychologically design the path of every website we build: what the eye lands on first, the order the argument arrives in, and where the decision gets made. Every page is laid out to move a visitor toward a booking or a sale.",
@@ -488,24 +519,28 @@ const services: ServicePillar[] = [
         icon: <IconConversionPath />,
       },
       {
+        product: "AI-Readable Structure",
         title: "Built to Be Found Inside AI Conversations",
         description:
           "People ask ChatGPT, Claude and Gemini for recommendations now. We build every site so those assistants can read it cleanly, understand what you do and quote you in the answer, with the structured data and plain statements of fact they rely on.",
         icon: <IconAiReadablePage />,
       },
       {
+        product: "Behavioural Analytics",
         title: "We Know When and Where People Clicked Off Your Website",
         description:
           "We build granular tracking into every site, so you can see the exact page and the exact moment a visitor left. The patterns show up over the first few months, and we make the changes those patterns point to.",
         icon: <IconGranularTracking />,
       },
       {
+        product: "Performance & Security",
         title: "Snappy and Secure",
         description:
           "Your pages run on the fastest infrastructure available, everywhere in the world a visitor can click, and the code is written with security as a first concern rather than a plugin bolted on later. Load time decides whether someone stays or leaves.",
         icon: <IconSnappyAndSecure />,
       },
       {
+        product: "Platform Migration",
         title: "We Migrate Your SEO Equity and All Your Content",
         description:
           "Coming off Wix, Squarespace, WordPress, GoDaddy or Webflow, we carry your search equity across with you: every old URL mapped to its new home, the structured data rebuilt, and every piece of your existing content moved over for you.",
@@ -513,6 +548,7 @@ const services: ServicePillar[] = [
         icon: <IconPlatformMigration />,
       },
       {
+        product: "Systems Integration",
         title: "Every Site Routed Straight Into Your Business Software",
         description:
           "Every enquiry, form and booking is routed automatically into the systems your business actually runs on, and assigned where it belongs. Nothing lands in one person's inbox to be discovered on Thursday.",
@@ -560,24 +596,28 @@ const services: ServicePillar[] = [
     ],
     serviceTiles: [
       {
+        product: "Multi-Agent Marketing Engine",
         title: "MarCommand: Your Whole Marketing Operation as One Engine",
         description:
           "MarCommand is our own multi-agent marketing engine, and it runs behind every marketing engagement we take. It ingests every channel you run and coordinates the strategy, the copy, the creative, the paid spend and the reporting as a single system.",
         icon: <IconMarCommandEngine />,
       },
       {
+        product: "Cross-Channel ROI Dashboard",
         title: "What's Your Real ROI on Ad Spend?",
         description:
           "Every channel you run reports into one dashboard showing what you spent, what came back, and what a customer actually cost you to win. One place, current, with the real number instead of impressions and clicks.",
         icon: <IconTrueAcquisitionCost />,
       },
       {
+        product: "Ongoing Visibility Management",
         title: "We Defend Your Position Every Single Month",
         description:
           "Search and AI visibility move constantly, so the work never stops. Every few weeks we are making changes, re-checking what the assistants say about you and correcting whatever slipped. This is not a project that gets delivered and then left alone.",
         icon: <IconOngoingCadence />,
       },
       {
+        product: "SEO & Answer Engine Optimisation",
         title: "World-Class SEO, Built to Be Found by AI",
         description:
           "We do the SEO work to a genuinely high standard, and we build for how people search now: assistants that answer rather than list. Your pages, your profiles and your plain facts get structured so a search engine and an AI model can both find you and name you.",
@@ -585,12 +625,14 @@ const services: ServicePillar[] = [
         icon: <IconAiFindableSeo />,
       },
       {
+        product: "Automated Review Funnel",
         title: "Google Reviews That Arrive Without Anyone Asking",
         description:
           "An automated funnel asks every customer at the moment the work is finished and they are happiest, and points them at the profile that moves what people see when they look you up. Nobody on your team has to remember to do it.",
         icon: <IconReviewFunnel />,
       },
       {
+        product: "Outcome-Based Reporting",
         title: "Your Success Is Our Success",
         description:
           "Plenty of firms will hand you a report full of impressions and clicks that never turned into a single sale. That is not a result. If the work is not bringing you real leads, real customers and real awareness of your brand, it is not doing its job.",
@@ -1673,6 +1715,9 @@ function ServiceCarousel({ tiles }: ServiceCarouselProps) {
               </div>
             )}
             {/* Title always visible at bottom-left */}
+            {tile.product && (
+              <span className="ps-carousel-card-product">{tile.product}</span>
+            )}
             <div className="ps-carousel-card-label">
               <span className="ps-carousel-card-title-text">{tile.title}</span>
               <span className="ps-carousel-card-hint">Tap for details</span>

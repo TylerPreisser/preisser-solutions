@@ -3073,6 +3073,27 @@ ul, ol {
    248x196 from 375px up (42-65px clearance). Both above the 150px floor the
    graphic needs to stay legible. Do not apply this to a normal icon -- the
    other 46 are drawn for 80px and go soft when scaled up. */
+/* Category label, top-left of the tile face. The title below it is the
+   outcome; this says what the thing actually is, which is what a visitor
+   scans for. Sits above the graphic in z-order and, like the title, stays
+   visible at rest -- it is deliberately NOT faded with the graphic on
+   hover, because the overlay that replaces it repeats the title but not
+   the category. */
+.ps-carousel-card-product {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  right: 16px;
+  z-index: 2;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.35;
+  pointer-events: none;
+}
+
 .ps-carousel-card-graphic--wide {
   width: min(248px, calc(100% - 32px));
   height: auto;
