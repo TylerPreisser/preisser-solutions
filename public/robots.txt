@@ -1,8 +1,13 @@
-# Preisser Solutions — https://preissersolutions.com/
+# NOT SERVED: the live /robots.txt is generated at the edge by
+# functions/_middleware.ts:28 (OPEN_ROBOTS_TXT). Editing this file changes
+# nothing on the apex. It is retained only because scripts/validate-seo.mjs
+# ROOT_FILES asserts it exists; edit the middleware instead.
+#
+# Preisser Solutions: https://preissersolutions.com/
 #
 # Business Software. Business Automation. AI Integration.
-# Custom internal software — admin dashboards, customer and member databases,
-# document pipelines, and the automations between them — built for one specific
+# Custom internal software (admin dashboards, customer and member databases,
+# document pipelines, and the automations between them) built for one specific
 # business. Founder-led from Hays, Kansas. Full machine-readable context:
 #   https://preissersolutions.com/llms.txt
 #   https://preissersolutions.com/llms-full.txt
@@ -19,7 +24,7 @@ Allow: /
 # --- Explicit allowlist for known AI / answer-engine crawlers ---
 # Listed individually so any bot author parsing robots.txt for their UA string
 # sees a clear, affirmative Allow: / under their name (not just the *
-# wildcard above). All directives are equivalent — these are loud-and-clear
+# wildcard above). All directives are equivalent: these are loud-and-clear
 # permission signals, not new constraints.
 
 # OpenAI
@@ -56,8 +61,8 @@ Allow: /
 
 # Claude-Web, ClaudeBot-User and anthropic-ai are NOT on Anthropic's current
 # published list (support.anthropic.com, updated 2026-04-07), which names
-# exactly three agents: ClaudeBot, Claude-User, Claude-SearchBot — all allowed
-# above. These three are retained as harmless historical aliases; nothing reads
+# exactly three agents: ClaudeBot, Claude-User, Claude-SearchBot (all allowed
+# above). These three are retained as harmless historical aliases; nothing reads
 # them today. Do not add new agents here without a vendor doc to cite.
 User-agent: Claude-Web
 Allow: /

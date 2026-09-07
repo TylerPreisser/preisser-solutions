@@ -25,7 +25,7 @@ Allow: /
 Sitemap: https://preissersolutions.com/sitemap.xml
 `;
 
-const OPEN_ROBOTS_TXT = `# Preisser Solutions — maximum-permissive crawler policy
+const OPEN_ROBOTS_TXT = `# Preisser Solutions: maximum-permissive crawler policy
 # Search indexing, AI retrieval, and AI training are allowed.
 
 User-agent: *

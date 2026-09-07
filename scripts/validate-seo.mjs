@@ -250,7 +250,21 @@ const COPY_TEXT_FILES = [
   path.join(PUBLIC_DIR, "llms-full.txt"),
   path.join(PUBLIC_DIR, "feed.xml"),
   path.join(PUBLIC_DIR, "ai.txt"),
+  // Kept in this list even though the apex never serves it: the edge overrides
+  // /robots.txt (see EDGE_TEXT_BODIES below). It stays because ROOT_FILES in
+  // section 1 asserts it exists, and an unserved file full of em dashes is
+  // still the trap the next editor falls into.
+  path.join(PUBLIC_DIR, "robots.txt"),
 ];
+
+// The robots.txt a crawler actually receives is built at the edge, not read
+// from public/. `functions/_middleware.ts` intercepts /robots.txt and answers
+// from one of two template literals, so those two strings are served prose that
+// no file-based scan would ever see. Only the literals are scanned, not the
+// module: the surrounding code carries 7 em dashes in ordinary `//` comments
+// which are not user-visible and are out of ADR-0009's scope.
+const EDGE_TEXT_FILE = path.join(PROJECT_ROOT, "functions", "_middleware.ts");
+const EDGE_TEXT_BODIES = ["OPEN_ROBOTS_TXT", "LEGACY_ROBOTS_TXT"];
 
 /** Every em dash in a plain-text/XML content file, as `{ line, snippet }`. */
 function findTextEmDashes(source) {
@@ -385,6 +399,36 @@ function walkCopyFiles(dir, acc = []) {
     }
   }
 
+  if (!fs.existsSync(EDGE_TEXT_FILE)) {
+    copyGateFail([
+      `❌ EM DASHES: ${path.relative(PROJECT_ROOT, EDGE_TEXT_FILE)} is missing, so the`,
+      "   served robots.txt body is UNVERIFIED. An unreadable gate must fail.",
+    ]);
+  }
+  {
+    const edgeRel = path.relative(PROJECT_ROOT, EDGE_TEXT_FILE);
+    const edgeSource = fs.readFileSync(EDGE_TEXT_FILE, "utf8");
+    for (const name of EDGE_TEXT_BODIES) {
+      const found = new RegExp(`const ${name} = \`([^\`]*)\``).exec(edgeSource);
+      if (!found) {
+        copyGateFail([
+          "❌ EM DASHES: could not find the template literal for " +
+            `${name} in ${edgeRel},`,
+          "   so the body it serves is UNVERIFIED. An unreadable gate must fail, not",
+          "   pass silently. If the constant was renamed, update EDGE_TEXT_BODIES.",
+        ]);
+      }
+      // Line of the literal's opening backtick, so the report points at real
+      // source rather than at an offset inside a string.
+      const base = edgeSource.slice(0, found.index).split("\n").length;
+      found[1].split("\n").forEach((text, i) => {
+        for (let at = text.indexOf(EM_DASH); at !== -1; at = text.indexOf(EM_DASH, at + 1)) {
+          offenders.push({ rel: `${edgeRel} (${name})`, line: base + i, snippet: text.trim() });
+        }
+      });
+    }
+  }
+
   if (offenders.length > 0) {
     const files = new Set(offenders.map((o) => o.rel));
     const lines = [
@@ -408,7 +452,8 @@ function walkCopyFiles(dir, acc = []) {
 
   console.log(
     `✅ no em dashes in rendered copy — ${copyFiles.length} source files under src/ ` +
-      `plus ${COPY_TEXT_FILES.length} served text files clean ` +
+      `plus ${COPY_TEXT_FILES.length} served text files and ` +
+      `${EDGE_TEXT_BODIES.length} edge-served robots bodies clean ` +
       "(ADR-0009 decision 5; comments and regex literals excluded)",
   );
 }
