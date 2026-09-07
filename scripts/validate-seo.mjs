@@ -234,6 +234,35 @@ const EM_DASH = "—";
 const COPY_DIR = path.join(PROJECT_ROOT, "src");
 const COPY_EXTS = new Set([".ts", ".tsx"]);
 
+// Served static prose, added 2026-09-07. These four are hand-maintained, are
+// git-tracked, have no generator, and are copied byte-for-byte from public/
+// into out/, so nothing about a build makes them self-correct. llms.txt and
+// llms-full.txt exist so AI systems read and paraphrase the owner's prose back
+// to a prospect, which makes them brand voice rather than incidental metadata;
+// feed.xml is read by humans in feed readers. They held 147 em dashes between
+// them, invisible to the src/ scan above.
+//
+// Scanned whole. Unlike a .ts file there is no comment or regex syntax here:
+// every byte is content that ships, including ai.txt's leading `#` lines, which
+// are the policy document itself and not commentary about code.
+const COPY_TEXT_FILES = [
+  path.join(PUBLIC_DIR, "llms.txt"),
+  path.join(PUBLIC_DIR, "llms-full.txt"),
+  path.join(PUBLIC_DIR, "feed.xml"),
+  path.join(PUBLIC_DIR, "ai.txt"),
+];
+
+/** Every em dash in a plain-text/XML content file, as `{ line, snippet }`. */
+function findTextEmDashes(source) {
+  const hits = [];
+  source.split("\n").forEach((text, i) => {
+    for (let at = text.indexOf(EM_DASH); at !== -1; at = text.indexOf(EM_DASH, at + 1)) {
+      hits.push({ line: i + 1, snippet: text.trim() });
+    }
+  });
+  return hits;
+}
+
 /**
  * Every em dash in `source` that can reach a visitor's screen, as
  * `{ line, snippet }`.
@@ -341,6 +370,21 @@ function walkCopyFiles(dir, acc = []) {
     }
   }
 
+  const missing = COPY_TEXT_FILES.filter((f) => !fs.existsSync(f));
+  if (missing.length > 0) {
+    copyGateFail([
+      "❌ EM DASHES: served text file(s) missing, so their copy is UNVERIFIED.",
+      "   An unreadable gate must fail, not pass silently.",
+      ...missing.map((f) => `   ${path.relative(PROJECT_ROOT, f)}`),
+    ]);
+  }
+  for (const file of COPY_TEXT_FILES) {
+    const rel = path.relative(PROJECT_ROOT, file);
+    for (const hit of findTextEmDashes(fs.readFileSync(file, "utf8"))) {
+      offenders.push({ rel, ...hit });
+    }
+  }
+
   if (offenders.length > 0) {
     const files = new Set(offenders.map((o) => o.rel));
     const lines = [
@@ -364,7 +408,8 @@ function walkCopyFiles(dir, acc = []) {
 
   console.log(
     `✅ no em dashes in rendered copy — ${copyFiles.length} source files under src/ ` +
-      "clean (ADR-0009 decision 5; comments and regex literals excluded)",
+      `plus ${COPY_TEXT_FILES.length} served text files clean ` +
+      "(ADR-0009 decision 5; comments and regex literals excluded)",
   );
 }
 

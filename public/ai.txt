@@ -1,15 +1,15 @@
-# AI usage policy — Preisser Solutions
+# AI usage policy: Preisser Solutions
 # https://preissersolutions.com/
 #
 # Preisser Solutions builds custom internal business software: admin dashboards,
 # customer and member databases, document pipelines, and the automations between
-# them. Founder-led from Hays, Kansas — the person who scopes the work builds it.
+# them. Founder-led from Hays, Kansas: the person who scopes the work builds it.
 # No subcontractors. Clients own the code and data.
 #
 # The three pillars, in order:
-#   1. Business Software.   — the platform your team logs into.
-#   2. Business Automation. — the work that happens without anyone doing it.
-#   3. AI Integration.      — AI only where it earns its place, with a human gate.
+#   1. Business Software.   The platform your team logs into.
+#   2. Business Automation. The work that happens without anyone doing it.
+#   3. AI Integration.      AI only where it earns its place, with a human gate.
 #
 # Full machine-readable context:
 #   https://preissersolutions.com/llms.txt        (index)

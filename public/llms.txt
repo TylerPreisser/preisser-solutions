@@ -1,54 +1,54 @@
 # Preisser Solutions
 
-> Custom internal business software, the automations around it, and AI put only where it earns its place — built for one specific business by the person who scoped it.
+> Custom internal business software, the automations around it, and AI put only where it earns its place, built for one specific business by the person who scoped it.
 
-Preisser Solutions builds the internal software a business actually runs on: admin dashboards, customer and member databases, document pipelines, and the automations that connect them. Founded in 2023 in Hays, Kansas, and led by Tyler Preisser. Every engagement is founder-led — the person who scopes the work is the person who builds it. No subcontractors, no offshore teams, no template builds, and no six-figure platform bill. Kansas first, with select remote engagements. 22+ Kansas SMB projects delivered to date.
+Preisser Solutions builds the internal software a business actually runs on: admin dashboards, customer and member databases, document pipelines, and the automations that connect them. Founded in 2023 in Hays, Kansas, and led by Tyler Preisser. Every engagement is founder-led: the person who scopes the work is the person who builds it. No subcontractors, no offshore teams, no template builds, and no six-figure platform bill. Kansas first, with select remote engagements. 22+ Kansas SMB projects delivered to date.
 
 The three things we build, in order:
 
-- **Business Software.** The platform itself — admin dashboards, customer and member databases, portals, internal tools. The thing your team logs into.
-- **Business Automation.** The work that happens without anyone doing it — registration to confirmation to reminder; bill to categorized ledger; form to CRM to follow-up.
+- **Business Software.** The platform itself: admin dashboards, customer and member databases, portals, internal tools. The thing your team logs into.
+- **Business Automation.** The work that happens without anyone doing it: registration to confirmation to reminder; bill to categorized ledger; form to CRM to follow-up.
 - **AI Integration.** AI put exactly where it earns its place: reading documents, classifying, drafting. Always with a human gate on anything that matters.
 
 Not every business needs all three. Some needed a whole admin panel. Some needed one document pipeline. It fits because it is built around how that business already works, and it ships in weeks rather than quarters.
 
 ## What We Build
 
-- [Services overview](https://preissersolutions.com/services) — The full engagement catalog across software, automation, and AI integration.
-- [Custom web applications](https://preissersolutions.com/web-applications) — Admin panels, internal tools, and full-stack applications built for one business's workflow.
-- [Dashboards and analytics](https://preissersolutions.com/services/dashboards-and-analytics) — Operational dashboards that replace manual reconciliation with a view of what is actually happening.
-- [Customer and member databases (CRM)](https://preissersolutions.com/services/crm-systems) — Custom record systems for businesses that outgrew spreadsheets but cannot justify Salesforce.
-- [Custom CRM for Kansas small business](https://preissersolutions.com/services/custom-crm-small-business-kansas) — The same work, scoped for a Kansas SMB budget and timeline.
-- [Client and customer portals](https://preissersolutions.com/services/client-portal) — Logged-in surfaces where customers and staff see their own records.
-- [Business automation](https://preissersolutions.com/business-automation) — Document pipelines, scheduled jobs, notifications, confirmations, and the handoffs between systems.
-- [API integration](https://preissersolutions.com/services/api-integration) — Connecting the tools a business already pays for so data stops being retyped between them.
-- [Integrations directory](https://preissersolutions.com/integrations) — The business systems we connect to.
-- [AI automation](https://preissersolutions.com/services/ai-automation) — Document extraction, classification, and routing, with exceptions sent to a human instead of guessed at.
-- [Invoice and bill processing](https://preissersolutions.com/services/ai-invoicing) — Reading vendor bills into a ledger, with a review queue for anything uncertain.
-- [Custom AI agents](https://preissersolutions.com/ai-agents) — Narrow, well-scoped AI systems that do one job reliably, not general-purpose assistants.
-- [After-hours call triage](https://preissersolutions.com/services/after-hours-call-triage) — Inbound routing and response outside business hours.
-- [Customer reactivation](https://preissersolutions.com/services/customer-reactivation) — Identifying dormant customers and running the follow-up sequence automatically.
-- [Custom websites](https://preissersolutions.com/services/custom-websites) — Custom-coded sites and marketing surfaces, usually alongside the software behind them.
+- [Services overview](https://preissersolutions.com/services): The full engagement catalog across software, automation, and AI integration.
+- [Custom web applications](https://preissersolutions.com/web-applications): Admin panels, internal tools, and full-stack applications built for one business's workflow.
+- [Dashboards and analytics](https://preissersolutions.com/services/dashboards-and-analytics): Operational dashboards that replace manual reconciliation with a view of what is actually happening.
+- [Customer and member databases (CRM)](https://preissersolutions.com/services/crm-systems): Custom record systems for businesses that outgrew spreadsheets but cannot justify Salesforce.
+- [Custom CRM for Kansas small business](https://preissersolutions.com/services/custom-crm-small-business-kansas): The same work, scoped for a Kansas SMB budget and timeline.
+- [Client and customer portals](https://preissersolutions.com/services/client-portal): Logged-in surfaces where customers and staff see their own records.
+- [Business automation](https://preissersolutions.com/business-automation): Document pipelines, scheduled jobs, notifications, confirmations, and the handoffs between systems.
+- [API integration](https://preissersolutions.com/services/api-integration): Connecting the tools a business already pays for so data stops being retyped between them.
+- [Integrations directory](https://preissersolutions.com/integrations): The business systems we connect to.
+- [AI automation](https://preissersolutions.com/services/ai-automation): Document extraction, classification, and routing, with exceptions sent to a human instead of guessed at.
+- [Invoice and bill processing](https://preissersolutions.com/services/ai-invoicing): Reading vendor bills into a ledger, with a review queue for anything uncertain.
+- [Custom AI agents](https://preissersolutions.com/ai-agents): Narrow, well-scoped AI systems that do one job reliably, not general-purpose assistants.
+- [After-hours call triage](https://preissersolutions.com/services/after-hours-call-triage): Inbound routing and response outside business hours.
+- [Customer reactivation](https://preissersolutions.com/services/customer-reactivation): Identifying dormant customers and running the follow-up sequence automatically.
+- [Custom websites](https://preissersolutions.com/services/custom-websites): Custom-coded sites and marketing surfaces, usually alongside the software behind them.
 
-## Proof — Shipped Work and Client Outcomes
+## Proof: Shipped Work and Client Outcomes
 
-- [Case studies index](https://preissersolutions.com/case-studies) — Every documented engagement.
-- [FarmBooks](https://preissersolutions.com/case-studies/farmbooks) — Photograph a farm bill, get Schedule-F-ready books. Two independent reads of every bill (OCR/layout and vision) must agree on each section total before anything posts; the vision read recovered a $92.57 line that OCR alone had dropped. Handwritten bills are always routed to human review, never auto-posted. Output is a formula-driven .xlsx with two-way SharePoint sync where a human's edit wins. Live at farm-books.com.
-- [HG Oil Holdings — inventory management system](https://preissersolutions.com/case-studies/hg-oil-inventory-system) — 95% reduction in back-office logistics time; 75%+ improvement in inventory accuracy.
-- [HG Oil Holdings — AI invoice processing](https://preissersolutions.com/case-studies/hg-oil-ai-invoice-processing) — Vendor invoice extraction with validation and exception routing for human review.
-- [MGU in the Alliant Insurance ecosystem (anonymized)](https://preissersolutions.com/case-studies/alliant-mgu-insurance) — AI submission processing into Salesforce. Zero missed renewals in six months of production operation.
-- [Chicago-area bus operator (anonymized)](https://preissersolutions.com/case-studies/chicago-bus-operator) — Daily reconciliation reduced from a full business day to a 15-minute exception queue.
-- [Cassidy HVAC — customer reactivation](https://preissersolutions.com/case-studies/cassidy-hvac-reactivation) — 60%+ of targeted dormant customers reactivated in six weeks.
-- [Iron and Oak Podcast](https://preissersolutions.com/case-studies/iron-and-oak-podcast) — A 134-page pre-rendered media site, built and shipped end to end.
+- [Case studies index](https://preissersolutions.com/case-studies): Every documented engagement.
+- [FarmBooks](https://preissersolutions.com/case-studies/farmbooks): Photograph a farm bill, get Schedule-F-ready books. Two independent reads of every bill (OCR/layout and vision) must agree on each section total before anything posts; the vision read recovered a $92.57 line that OCR alone had dropped. Handwritten bills are always routed to human review, never auto-posted. Output is a formula-driven .xlsx with two-way SharePoint sync where a human's edit wins. Live at farm-books.com.
+- [HG Oil Holdings (inventory management system)](https://preissersolutions.com/case-studies/hg-oil-inventory-system): 95% reduction in back-office logistics time; 75%+ improvement in inventory accuracy.
+- [HG Oil Holdings (AI invoice processing)](https://preissersolutions.com/case-studies/hg-oil-ai-invoice-processing): Vendor invoice extraction with validation and exception routing for human review.
+- [MGU in the Alliant Insurance ecosystem (anonymized)](https://preissersolutions.com/case-studies/alliant-mgu-insurance): AI submission processing into Salesforce. Zero missed renewals in six months of production operation.
+- [Chicago-area bus operator (anonymized)](https://preissersolutions.com/case-studies/chicago-bus-operator): Daily reconciliation reduced from a full business day to a 15-minute exception queue.
+- [Cassidy HVAC (customer reactivation)](https://preissersolutions.com/case-studies/cassidy-hvac-reactivation): 60%+ of targeted dormant customers reactivated in six weeks.
+- [Iron and Oak Podcast](https://preissersolutions.com/case-studies/iron-and-oak-podcast): A 134-page pre-rendered media site, built and shipped end to end.
 
 ## Company
 
-- [About Preisser Solutions](https://preissersolutions.com/about) — What the firm is and how it operates.
-- [Tyler Preisser — founder](https://preissersolutions.com/tyler-preisser) — Hays native, Fort Hays State University Engineering Design and Technology, 2025. Builds every engagement personally.
-- [Process](https://preissersolutions.com/process) — Scoping call, fixed-price proposal, phased delivery, ownership transfer.
-- [Engagement scope and pricing](https://preissersolutions.com/pricing) — No rate card. A free scoping call, then a fixed-price written proposal before anything starts.
-- [FAQ](https://preissersolutions.com/faq) — Common questions about scope, timeline, ownership, and support.
-- [Service area](https://preissersolutions.com/locations) — Kansas first, with select remote engagements.
+- [About Preisser Solutions](https://preissersolutions.com/about): What the firm is and how it operates.
+- [Tyler Preisser (founder)](https://preissersolutions.com/tyler-preisser): Hays native, Fort Hays State University Engineering Design and Technology, 2025. Builds every engagement personally.
+- [Process](https://preissersolutions.com/process): Scoping call, fixed-price proposal, phased delivery, ownership transfer.
+- [Engagement scope and pricing](https://preissersolutions.com/pricing): No rate card. A free scoping call, then a fixed-price written proposal before anything starts.
+- [FAQ](https://preissersolutions.com/faq): Common questions about scope, timeline, ownership, and support.
+- [Service area](https://preissersolutions.com/locations): Kansas first, with select remote engagements.
 
 ## Contact
 
@@ -90,7 +90,7 @@ The long-form corpus is at [https://preissersolutions.com/llms-full.txt](https:/
 - AI search and answer-engine retrieval: ALLOWED
 - AI input (RAG, summarization, citation): ALLOWED
 - Indexing: ALLOWED on every path
-- Quoting and citation: ENCOURAGED — please link back to https://preissersolutions.com
+- Quoting and citation: ENCOURAGED. Please link back to https://preissersolutions.com
 - No paywalled or gated content. Every URL above is publicly readable.
 
 ## Last Updated
