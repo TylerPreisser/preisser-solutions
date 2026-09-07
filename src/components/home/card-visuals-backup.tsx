@@ -394,8 +394,91 @@ export function AutomationVisual() {
    right, and stops. It never loops.
    ───────────────────────────────────────────────────────────── */
 
+/* CARD-SCOPED REVEAL GATE.  Deliberately NOT `useRevealOnce`.
+
+   The shared hook's 1200ms failsafe fires whether or not the card is on
+   screen, so on a page where this section sits below the fold the whole
+   reveal completes before anyone scrolls to it — correct choreography,
+   never seen. That is a nuisance for a card whose motion is decoration; it
+   is fatal for THIS one, whose entire idea is a wash filling left to right,
+   many threads becoming one. A visitor arriving after the failsafe sees only
+   the settled still — which is exactly the frame reviewers kept reading as
+   "a lake".
+
+   So: same contract, same `.in-view` class, threshold raised to 0.3, and the
+   safety net moved out to 8s — long enough that it is a genuine last resort
+   rather than a timer that beats the scroll. `useRevealOnce` is untouched:
+   cards 1, 3 and 5 depend on it and three teams are in this file. */
+function usePsC2Reveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    // Reduced motion short-circuits to the finished frame before the observer
+    // is ever built, so the art is never left invisible.
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+
+    /* THE FAILSAFE MUST BE GATED ON VISIBILITY, NOT ONLY ON TIME.
+       A bare timer — at 1200ms or at 8000ms — does not remove the failure, it
+       schedules it. A visitor reading the hero, on a slow connection, or on a
+       phone where this section sits further down, arrives after it has fired
+       and meets the settled still. That is the entire defect, just later.
+
+       So: after the delay, reveal ONLY if the card is actually on screen, and
+       otherwise keep looking every 400ms. It still cannot leave the artwork
+       permanently invisible if the observer never works — which is the only
+       thing a failsafe owes us — but it also cannot spend the entrance on an
+       empty room. This card's entrance IS its argument: a wash filling left to
+       right, many threads becoming one. Burning it unwatched loses the idea. */
+    let poll = 0;
+    const onScreen = () => {
+      const r = el.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
+    };
+    const settle = () => {
+      if (el.classList.contains("in-view")) return;
+      if (onScreen()) {
+        el.classList.add("in-view");
+        observer.disconnect();
+        return;
+      }
+      poll = window.setTimeout(settle, 400);
+    };
+    const failsafe = window.setTimeout(settle, 8000);
+
+    return () => {
+      window.clearTimeout(failsafe);
+      window.clearTimeout(poll);
+      observer.disconnect();
+    };
+  }, []);
+
+  return ref;
+}
+
 export function SystemFixesVisual() {
-  const containerRef = useRevealOnce<HTMLDivElement>();
+  const containerRef = usePsC2Reveal<HTMLDivElement>();
 
   return (
     <div ref={containerRef} className="ps-c2-root" aria-hidden="true">
