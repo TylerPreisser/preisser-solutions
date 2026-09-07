@@ -479,7 +479,7 @@ export function CardVisualBusinessChat() {
         x="22"
         y="180"
         fontFamily="inherit"
-        fontSize="11"
+        fontSize="14"
         fontWeight="500"
         fill="currentColor"
         fillOpacity="0.55"

@@ -5483,6 +5483,20 @@ ul, ol {
 
 /* ── Dialog / Bottom Sheet: dvh fix + show close button on mobile ── */
 @media (max-width: 768px) {
+  /* The docked close button (.ps-dialog-close-btn, 40px wide at right:18px,
+     z-index 5) shares its x-band with the carousel's "next" arrow, because
+     .ps-carousel-header is justify-content:space-between so the nav sits
+     flush right. At rest they are far apart vertically; once the sheet is
+     scrolled the header rises under the button and the CLOSE BUTTON WINS THE
+     HIT TEST -- tapping "next" dismissed the dialog. Reproduced live at
+     320x568, 360x640 and 393x659 in chromium, webkit, firefox and real
+     Safari, where the chevron was entirely hidden behind the x.
+     Reserving the button's footprint (40px + 18px) separates them on the x
+     axis, so it holds at every scroll position rather than only at rest. */
+  .ps-carousel-header {
+    padding-right: 58px;
+  }
+
   .ps-dialog-panel {
     /* dvh avoids the iOS Safari 100vh bug (excludes browser chrome) */
     max-height: 95dvh;
