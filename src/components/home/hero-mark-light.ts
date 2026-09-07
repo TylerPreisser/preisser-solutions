@@ -287,6 +287,8 @@ const NARROW_BLEED_W = 1.45;
  *  then pushed off the top of the frame. 0.95 keeps the whole bowl and its
  *  counter inside the crop. §30-B records a very large phone mark rejected
  *  TWICE for reading as a smudge, so this deliberately moves DOWN, not up. */
+/** §39 RETIRES THIS CONSTANT. Superseded by MARK_HF_PORTRAIT / MARK_HF_LANDSCAPE
+ *  below. Nothing reads it. Kept as the decision record only — see §39. */
 const NARROW_MARK_H = 0.95;
 /** §33-P. The phone's WIDE_MARK_TOP. Slightly under the desktop's 0.14 because
  *  a phone hero is tall and the headline sits low in it (y 381..479 in an 844
@@ -300,6 +302,15 @@ const NARROW_MARK_H = 0.95;
  *  for ("JUST NEEDED SHIFTED DOWN A BIT") and what §35's 0.05 did not deliver:
  *  at 0.05 the ink sat entirely ABOVE the headline with the bottom ~45% of the
  *  hero empty white. The client's words were "behind the hero text", not above.
+ *
+ *  §39 SUPERSEDES THE INSTRUCTION QUOTED ABOVE. "JUST NEEDED SHIFTED DOWN A BIT"
+ *  is NO LONGER THE LIVE REQUIREMENT and must not be read as a settled
+ *  constraint. The owner's later instruction of 2026-09-06 19:42 is directly
+ *  contrary — "the leg and more bottom left of the P is what should be shoing in
+ *  hero tbh" — i.e. the bowl now leaves the TOP of the frame and the leg and its
+ *  bottom-left terminal are the subject. That is an UP-shift and then some: the
+ *  junction is pinned at the hero's top edge. See the §39 block below for the
+ *  authority, the numbers and what replaced this constant.
  *
  *  Chosen from six real builds screenshotted at 390x844 and compared by eye,
  *  not argued from the constants:
@@ -332,8 +343,19 @@ const NARROW_MARK_TOP = -0.18;
  *  rather than amended, because the next reader needs one claim, not two.
  *
  *  What this actually controls: how far the mark's stage runs PAST the right
- *  viewport edge, as a fraction of mark width. LARGER pushes the visible crop
- *  RIGHT across the glyph. See the placement math at ~:1104.
+ *  viewport edge, as a fraction of mark width.
+ *
+ *  §39, 2026-09-06 — DIRECTION CORRECTED IN PLACE. The sentence that stood here
+ *  read "LARGER pushes the visible crop RIGHT across the glyph." THAT WAS
+ *  BACKWARDS, on the most-rewritten constant in the file, on the exact axis the
+ *  next editor has to reason about. The source is `stageX = W + NARROW_OVERHANG
+ *  * markW - markW`: raising the constant raises stageX, which slides the GLYPH
+ *  right under a fixed frame [0, W], so the frame therefore exposes material
+ *  further LEFT along the letterform. LARGER => THE VISIBLE CROP MOVES LEFT
+ *  ACROSS THE GLYPH, toward the leg and the bottom-left terminal.
+ *  The measured claim in the next paragraph was always correct and corroborates
+ *  this: the bowl is the glyph's RIGHTMOST ink, so it is what leaves the frame
+ *  as the constant grows. Only the directional wording was inverted.
  *
  *  The measured constraint, from rasterising the polygons across 0.04..0.62:
  *  the BOWL and its COUNTER leave the frame between 0.20 and 0.30. Above that
@@ -347,6 +369,135 @@ const NARROW_MARK_TOP = -0.18;
  *  nobody has yet judged position against a P they could actually see. Re-judge
  *  on a filled render before moving this again. */
 const NARROW_OVERHANG = 0.18;
+
+/* ===========================================================================
+ * §39-R, 2026-09-06 — READ THIS FIRST. THE SCOPE BELOW WAS CUT TO PHONES.
+ *
+ * §39 (below) originally applied the magnified crop to BOTH regimes and
+ * re-pointed layout()'s wide branch at a mark-derived stage. THE OWNER
+ * REVERSED THAT THE SAME DAY, verbatim:
+ *     "The P is too big now."
+ *     "IT IS ONLY SUPPOSED TO BE THAT BIG ON MOBILE BTW"
+ *
+ * So: the wide branch is BACK to §37's `contained` contain-fit with the ink
+ * guard armed — a whole, modest, centred glyph, ~408x360 at 1440x900. The
+ * magnified crop is NARROW ONLY, W < NARROW_MAX (768). The regime boundary is
+ * the 768 breakpoint, NOT an orientation test: §39 briefly split on `H > W`,
+ * which sent portrait TABLETS (768x1024, 820x1180) down the phone path, and
+ * tablets are not "mobile".
+ *
+ * This also vindicates the instruction already in this file at ~:299-300 and
+ * in commit 60c08fb — "these P changes were only supposed to be for mobile".
+ * That note was overridden by an orchestrator decision (D3 in CROP-ANCHOR.md)
+ * and the note was right. Weight it accordingly before widening scope again.
+ *
+ * Everything in §39 below still describes the PHONE composition accurately and
+ * is unchanged for W < 768. Only its scope claim is superseded. See ADR-0011.
+ * ===========================================================================
+ *
+ * §39, 2026-09-06 — ADR: THE HERO MARK IS A MAGNIFIED FRAGMENT.
+ * SCOPE: PHONES ONLY (W < 768) per §39-R above. This block replaces the phone
+ * constants above. Read it before changing any number in this file.
+ *
+ * WHO ASKED, AND WHEN. The owner, 2026-09-06 19:42, verbatim:
+ *     "the leg and more bottom left of the P is what should be shoing in
+ *      hero tbh"
+ * recorded in CROP-ANCHOR.md alongside four binding decisions D1-D4.
+ *
+ * §37's note at ~:554 says: "DO NOT re-point the wide branch at these to
+ * 'restore' desktop size. The client's instruction was the opposite direction.
+ * If desktop is ever asked to bleed again, write a §38 and say who asked."
+ * THIS IS THAT WRITE-UP (§38 was taken by the phone constants, so: §39), and
+ * the answer to "who asked" is the owner, at the timestamp above. §37's
+ * instruction was correct for its date and is now SUPERSEDED, not violated.
+ *
+ * TWO CEILINGS ARE REVOKED, on the owner's authority, per D2:
+ *   - NARROW_OVERHANG's "~0.20 or the mark stops reading as a P" (:314-319,
+ *     :338-341), and
+ *   - the scale ceiling at :247-262 (§30-B's two "smudge" rejections).
+ * Both were TASTE constraints predicated on the mark still reading as a whole
+ * letter. CROP-ANCHOR.md inverts that premise in as many words: "Not a whole
+ * letter... The viewer sees a magnified fragment of a letterform." A complete,
+ * legible P sitting inside the hero is now a FAILING render, at every width.
+ *
+ * THE COMPOSITION, in three numbers, defined against the hero's live W x H and
+ * against the glyph's own landmarks (measured off the rasterised polygons, not
+ * read off the vertex lists):
+ *   hF  ink height as a multiple of the hero's height  -> s  = hF * H / MARK_H
+ *   jF  where the BOWL/STEM JUNCTION sits, as a fraction of H
+ *                                                      -> oy = jF*H - 569*s
+ *   fTx where the BOTTOM-LEFT TERMINAL sits, as a fraction of W
+ *                                                      -> ox = fTx*W - 85*s
+ * hF > 1 IS NOT A TYPO. The glyph is over twice the hero's height and bleeds
+ * off the TOP and the RIGHT. It is forced, not chosen: with the junction at the
+ * top edge, terminal_y/H = jF + (905-569)*hF/790, so putting the terminal near
+ * the bottom of the frame REQUIRES hF ~ 2.05. There is no value <= 1 that
+ * satisfies the crop at all; at hF = 1 the terminal reaches 0.43H and the
+ * bottom 57% of the hero is empty. 0.9 is not a cautious version of this
+ * number, it is the composition that has now been rejected three times.
+ *
+ * THE SPLIT IS THE 768 BREAKPOINT. (§39 originally split on orientation,
+ * `H > W`; §39-R reverted that.) 768x1024 and 820x1180 are portrait heroes but
+ * they are TABLETS, so they take the restored `contained` desktop path, not
+ * this crop. Below 768, `portrait` still selects hF/jF for a rotated phone —
+ * that is a proportion choice inside this regime, not a regime boundary.
+ *
+ * LEGIBILITY IS CARRIED BY THE KEEP-OUT AND THE CROP, NEVER BY SHRINKING THE P.
+ * The platePush keep-out at :1199/:1387-1391 is WCAG-LOAD-BEARING and STAYS at
+ * KEEPOUT_MARGIN 14 and feather max(0.14*W, 76), over EVERY headline line.
+ * Light-theme "AI Integration." measures 3.07:1 with ZERO plate alpha over its
+ * ink — 0.02 above the 3:1 large-text floor. ANY plate alpha over that line
+ * fails WCAG. Do not narrow the keep-out, do not scope it to the accent line,
+ * and do not try to buy contrast back by lowering alpha: the compositing proof
+ * at ~:583 (R = 246 - 142a, still 2.98:1 at a = 0.03) shows that cannot work.
+ * =========================================================================== */
+
+/** The bowl/stem junction, in mark-box units: the last row of the glyph that
+ *  still contains TWO ink segments, i.e. the row at which the counter closes.
+ *  Measured from a standalone raster of MARK_BODY + MARK_WEDGE at 1024. This is
+ *  the vertical ANCHOR — the wide branch used to centre on the ink box, which
+ *  is why enlarging it pushed the bowl and the terminal off TOGETHER. */
+const JUNCTION_Y = 569;
+/** Ink height as a multiple of the hero's height. See §39 for why these exceed
+ *  1 and why that is the whole point rather than an overshoot. */
+const MARK_HF_PORTRAIT = 2.05;
+const MARK_HF_LANDSCAPE = 2.20;
+/** Where the junction sits as a fraction of H. 0 pins it exactly on the hero's
+ *  top edge; the landscape hero is shorter, so it lifts slightly further. */
+const MARK_JF_PORTRAIT = 0.0;
+const MARK_JF_LANDSCAPE = -0.05;
+/** Where the bottom-left TERMINAL sits as a fraction of W. Wider heroes see a
+ *  wider slice of the glyph, so the terminal moves right to keep the leg's
+ *  flank in frame; these anchor the ramp in `terminalX()` below. */
+const TERM_X_PHONE = 0.150;      // W <= 430
+const TERM_X_TABLET = 0.220;     // W == 768, portrait
+const TERM_X_LAND_NEAR = 0.340;  // W == 1024, landscape
+const TERM_X_LAND_FAR = 0.380;   // W == 1920, landscape
+
+/** §39. The horizontal anchor, as a fraction of the hero's width.
+ *
+ *  THIS REPLACES NARROW_OVERHANG'S PARAMETERISATION, AND IT HAD TO. The old
+ *  form was `stageX = W + OVERHANG*markW - markW`, i.e. the anchor was a
+ *  fraction of the MARK's width — and markW is driven by H while W varies
+ *  independently, so a single overhang constant resolves to a different
+ *  fraction of W at every aspect ratio. Measured: the one value that puts the
+ *  terminal at 0.150*W on a 390x844 phone puts it at 0.342*W on a 393x659 one —
+ *  the SAME PHONE with its toolbar collapsed. No single value of NARROW_OVERHANG
+ *  can hold the crop across the matrix. Anchoring on W directly is what makes
+ *  the composition toolbar-invariant. */
+function terminalX(w: number, portrait: boolean): number {
+  if (portrait) {
+    const t = TERM_X_PHONE + Math.max(0, w - 430) * (TERM_X_TABLET - TERM_X_PHONE) / (768 - 430);
+    return Math.min(0.40, Math.max(TERM_X_PHONE, t));
+  }
+  const t = TERM_X_LAND_NEAR + (w - 1024) * (TERM_X_LAND_FAR - TERM_X_LAND_NEAR) / (1920 - 1024);
+  return Math.min(0.40, Math.max(0.20, t));
+}
+
+/* §39 retires the four NARROW_* constants above, on the §37/WIDE_* precedent:
+   voided rather than deleted, because their comment blocks are the §30-§38
+   decision record. NOTHING READS THEM. Editing them is a silent no-op. */
+void NARROW_BLEED_W; void NARROW_MARK_H; void NARROW_MARK_TOP; void NARROW_OVERHANG;
 /** §31, 2026-09-05. How far the mark's stage runs PAST the right viewport edge,
  *  as a fraction of the hero's width. The client asked for the mark "bigger and
  *  less prominent, with less opacity and hanging off the right side of the page
@@ -1212,16 +1363,37 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        THIS BLOCK IS THE PHONE COMPOSITION THE CLIENT HAS ACCEPTED. §37 changed
        nothing in it — not one constant, not one term. If you are here to change
        desktop, the branch you want is `contained` below. */
-    const sW = NARROW_BLEED_W * W / MARK_W;
-    const sH = NARROW_MARK_H * H / MARK_H;
-    const s0 = Math.max(sW, sH);
-    const markW = MARK_W * s0;
-    const markH = MARK_H * s0;
-    const stageX = W + NARROW_OVERHANG * markW - markW;
+    /* §39, NARROW ONLY (see §39-R). The mark-derived stage that produces the
+       magnified crop: bowl off the TOP, leg and bottom-left terminal in frame.
+       It replaces §33-P's `bleeding`, and it is reached ONLY when
+       `narrow === true`, i.e. W < NARROW_MAX (768).
+
+       Three things about this are load-bearing and are NOT interchangeable with
+       the shape it replaced:
+
+       1. The stage's w/h ARE the mark's own w/h, so fitInto()'s Math.min at
+          ~:1109 returns exactly s0 and both of its centring terms evaluate to
+          zero. The placement IS the geometry, not the outcome of a contain-fit
+          negotiation.
+       2. `y` anchors the BOWL/STEM JUNCTION, not the ink top. fitInto's vertical
+          centring is incompatible with the target: enlarging a centred glyph
+          pushes the bowl off the top AND the terminal off the bottom together,
+          which is the exact opposite of "show me the leg".
+       3. `x` is a fraction of W, not of the mark's width. See terminalX().
+
+       `portrait` here is NOT a regime boundary — the regime boundary is the 768
+       breakpoint above. It only selects the crop's proportions for a phone that
+       has been ROTATED, which is a shorter hero needing a slightly taller
+       multiple. Every phone in the test matrix is portrait. */
+    const portrait = H > W;
+    const hF = portrait ? MARK_HF_PORTRAIT : MARK_HF_LANDSCAPE;
+    const jF = portrait ? MARK_JF_PORTRAIT : MARK_JF_LANDSCAPE;
+    const s0 = hF * H / MARK_H;
     const bleeding = {
-      x: stageX,
-      y: -NARROW_MARK_TOP * H,
-      w: markW, h: markH,
+      x: terminalX(W, portrait) * W,
+      y: jF * H - (JUNCTION_Y - MARK_Y0) * s0,
+      w: MARK_W * s0,
+      h: MARK_H * s0,
     };
 
     /* §37. WIDE, restored verbatim from 6fcfd65:365 — the pre-rebuild desktop
@@ -1232,6 +1404,15 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        have back, and the reason it is a rect handed to fitInto() rather than a
        mark-derived stage is that "contained" is exactly what a contain-fit
        against a frame-inset rect means. */
+    /* §37, RESTORED BY §39-R. WIDE, verbatim from 6fcfd65:365 — the pre-rebuild
+       desktop stage. The full hero height inset by STAGE_PAD, in the column
+       running from `floor` (the x where the light-theme scrim has released) to
+       W - STAGE_PAD. fitInto() CONTAIN-fits the mark inside it, so the glyph is
+       whole and no edge of it leaves the frame.
+
+       §39 briefly re-pointed this branch at the mark-derived stage above. The
+       owner reversed that on 2026-09-06: "The P is too big now" / "IT IS ONLY
+       SUPPOSED TO BE THAT BIG ON MOBILE BTW". See §39-R and ADR-0011. */
     const contained = { x: floor, y: STAGE_PAD, w: W - STAGE_PAD - floor, h: H - STAGE_PAD * 2 };
 
     const primary = narrow ? bleeding : contained;
@@ -1286,6 +1467,24 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        client rejected in words on 2026-09-05. Empty here means the loop returns
        `primary` on its first iteration, i.e. the phone path is bit-for-bit what
        it was before §37. */
+    /* §37, RESTORED BY §39-R. THE GUARD IS ARMED ON WIDE AND EMPTY ON NARROW.
+
+       Wide gets `rects` — every headline line, ink-vs-ink, exactly as
+       6fcfd65:378 had it. That is what arms the two mechanisms below: the
+       `dropped` stage and the 12-step 0.96 shrink. Without it the restored
+       `contained` stage would sit on the headline with nothing to push it clear.
+
+       NARROW KEEPS THE EMPTY GUARD. The phone mark is SUPPOSED to sit behind
+       the type; re-arming it there would push the phone mark back below the
+       headline, which the client rejected in words on 2026-09-05. Empty here
+       means the loop returns `primary` on its first iteration, so the phone
+       path is bit-for-bit the §39 crop.
+
+       §39 briefly emptied this on wide too, to stop the shrink/drop loop eating
+       the desktop enlargement. The owner reversed that enlargement, so the
+       guard goes back with it — see §39-R. Legibility on BOTH paths is still
+       carried by the platePush keep-out, which yields plate alpha exactly 0
+       over every headline line and is unchanged throughout. */
     const guard: typeof rects = narrow ? [] : rects;
     let last = fitInto(primary, 1);
     for (const st of [primary, dropped]) {
@@ -1333,6 +1532,18 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     const s = sCss * dpr;
     const tx = pl.ox * dpr;
     const ty = pl.oy * dpr;
+
+    /* §39. Publish the placement actually used to paint. The keep-out punch
+       erases the mark wherever the headline is, so the painted ink's bounding
+       box is NOT the placement and cannot be inverted to recover it — a render
+       can satisfy an ink-bbox target exactly while showing almost nothing. This
+       is the only way to check the geometry criterion against what shipped
+       rather than against what the constants imply. Data attribute only: no
+       layout, no paint, no reflow, and #ps-hero-canvas is pointer-events:none
+       and aria-hidden already. */
+    canvas.dataset.placement = JSON.stringify({
+      sCss: +sCss.toFixed(4), ox: +pl.ox.toFixed(2), oy: +pl.oy.toFixed(2), w: W, h: H,
+    });
 
     // A degenerate stage (a very short viewport) means there is nowhere honest
     // to put the mark. Paint nothing rather than a sliver.
@@ -1708,15 +1919,28 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
      this stops the canvas reacting even if some other height source moves.
      `lastW` is seeded from W AFTER the first build() above, because build() is
      what sets W. */
+  /* §39 — WIDTH-ONLY IS NOW A BUG AND THIS WATCHES HEIGHT TOO. The premise
+     above ("the mark's scale is driven by width") was true under §37 and is
+     FALSE under §39: s0 is `hF * H / MARK_H` and the vertical anchor is
+     `jF * H`, so EVERY term of the new placement is driven by HEIGHT. Under the
+     old guard a height-only change — an iOS toolbar collapsing, a desktop window
+     dragged shorter — left the mark at a stale scale until some unrelated width
+     or theme change happened to fire a rebuild. Reproduced before this change on
+     a live page: resizing 393x852 -> 393x659 by height alone left the mark
+     painted at the 852 scale, and the composition drifted by 0.19 of H.
+     The 150ms debounce is unchanged, so a toolbar transition still coalesces
+     into one rebuild rather than one per resize event. */
   let lastW = W;
+  let lastH = H;
   let resizeTimer = 0;
   const onResize = () => {
-    if (Math.round(container.getBoundingClientRect().width) === lastW) return;
+    const box = container.getBoundingClientRect();
+    if (Math.round(box.width) === lastW && Math.round(box.height) === lastH) return;
     clearTimeout(resizeTimer);
     // rebuild() FIRST: build() is the only thing that writes W, so reading
     // lastW before it left lastW permanently stale and the width guard dead
     // after a single width change.
-    resizeTimer = window.setTimeout(() => { rebuild(); lastW = W; }, 150);
+    resizeTimer = window.setTimeout(() => { rebuild(); lastW = W; lastH = H; }, 150);
   };
   window.addEventListener("resize", onResize);
 
@@ -1724,34 +1948,29 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   // swaps in. Without this the mark is laid out against the fallback metrics.
   if (document.fonts?.ready) document.fonts.ready.then(() => rebuild());
 
-  /* Same problem, different mover: hero-entrance.css translates .ps-hero-ctas
-     while the entrance plays, and stage() candidate B is anchored to that
-     element's rect — so a build() that runs mid-entrance reads ctasBottom too
-     low and places the mark under it. Measured 2026-09-04 at 390x844:
-     mark box [102,608,287,772] (185x164) mid-entrance against [99,592,290,760]
-     (191x168) at rest; a forced rebuild converged to the latter, so the
-     geometry was right and only the timing was wrong. Rebuild once when the
-     CTAs settle. Only stage B is affected (390 and the 768-940 band); stage A
-     is anchored to the headline, which does not move. No-op under
-     prefers-reduced-motion, where no animation runs and no event ever fires.
-     stage() reads BOTH .ps-hero-ctas (for `ctasBottom`) and .ps-hero-cue__btn
-     (for `cueTop`), and the entrance translates the cue too — by 12px, finishing
-     ~340ms AFTER the CTAs — so listening only for the CTAs left `cueTop`
-     readable mid-flight. Rebuild on either; rebuild() is idempotent and costs
-     1-2ms, so firing twice is cheap insurance and firing once is correct.
-     NOTE: under prefers-reduced-motion NO animationend ever fires. That path is
-     correct without this listener — nothing is transformed there, so the very
-     first build() already measures both elements at rest — and this listener
-     must never become the only thing producing a correct build. Verified. */
-  /* .ps-hero-line is in this list because layout() now measures the HEADLINE's
-     ink, and hero-entrance.css translates those lines by 24px while the entrance
-     plays. The other two remain harmless no-ops. */
-  /* `.ps-hero-ctas` is display:none below 768 (§26.2) and a display:none element
-     NEVER fires animationend — so an anchor set that waits on it would hang the
-     rebuild on exactly the viewport this all exists for. Any ONE rendered anchor
-     resolving is enough, and offsetParent === null is the cheap test for "not
-     rendered". rebuild() is idempotent, so firing on several is harmless. */
-  const ENTRANCE_ANCHORS = ["ps-hero-line", "ps-hero-ctas", "ps-hero-cue__btn"];
+  /* Rebuild once the entrance settles. hero-entrance.css TRANSFORMS the hero's
+     elements while it plays, and layout() measures the headline's INK — so a
+     build() that lands mid-entrance measures the lines 24px low and lays the
+     keep-out out against a position they do not end up in.
+
+     §39-R2: the original note here described stage() candidate B being anchored
+     to `.ps-hero-ctas`'s rect via `ctasBottom`. BOTH are gone — stage() was
+     replaced by layout() in §39, and the CTAs were removed on 2026-09-07 — so
+     that reasoning no longer describes this code and has been cut rather than
+     left to mislead. What remains true and load-bearing:
+       - `.ps-hero-line` is the anchor that matters; the headline moves 24px.
+       - `.ps-hero-cue__btn` moves 12px and finishes last; rebuilding on it too
+         is cheap insurance, and rebuild() is idempotent (1-2ms).
+       - Under prefers-reduced-motion NO animationend EVER fires. That path must
+         be correct without this listener — nothing is transformed there, so the
+         first build() already measures everything at rest. This listener must
+         never become the only thing producing a correct build. Verified. */
+  /* §39-R2: `ps-hero-ctas` was a third anchor here. The hero CTAs were REMOVED
+     on the owner's instruction of 2026-09-07, so that element no longer exists
+     and the entry could only ever be a dead string. `ps-hero-line` is the
+     load-bearing anchor — layout() measures the HEADLINE's ink and
+     hero-entrance.css translates those lines by 24px while the entrance plays. */
+  const ENTRANCE_ANCHORS = ["ps-hero-line", "ps-hero-cue__btn"];
   const onEntranceEnd = (e: AnimationEvent) => {
     if (!e.animationName.startsWith("ps-hero-rise")) return;
     const el = e.target as HTMLElement;

@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-import Link from "next/link";
 import { siteConfig } from "@/data/site-config";
 import { mountMarkLight } from "./hero-mark-light";
 
@@ -199,40 +198,13 @@ export function Hero() {
           ))}
         </h1>
 
-        <div className="ps-hero-ctas">
-          {/* prefetch={false}: eager prefetch on above-the-fold CTAs was the
-              root cause of a 4.1s -> 0.8s mobile navigation regression. */}
-          <Link
-            href={siteConfig.hero.primaryCta.href}
-            prefetch={false}
-            className="ps-btn ps-btn-primary-dark"
-          >
-            {siteConfig.hero.primaryCta.label}
-            <svg
-              className="ps-btn-arrow"
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path
-                d="M1 8h14M9 2l6 6-6 6"
-                stroke="currentColor"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
-          <Link
-            href={siteConfig.hero.secondaryCta.href}
-            prefetch={false}
-            className="ps-btn ps-btn-secondary"
-          >
-            {siteConfig.hero.secondaryCta.label}
-          </Link>
-        </div>
+        {/* The hero CTA pair was REMOVED on the owner's explicit instruction,
+            2026-09-07: asked directly whether to keep or remove them, he said
+            "remove ctas". They had been added by 21b1346 ("fix(home): restore
+            the hero CTAs at phone widths"). This is deliberate and
+            owner-directed — see DECISIONS/0011. Do not restore them without a
+            superseding ADR. The site's conversion path is the header "Reach
+            out" button and the scroll cue below. */}
       </div>
 
       {/* Trigger distance for the dismiss-on-scroll observer above. Its height

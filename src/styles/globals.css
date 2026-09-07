@@ -1473,22 +1473,11 @@ ul, ol {
   color: var(--color-text-light-secondary);
 }
 
-.ps-hero-ctas {
-  opacity: 0;
-  transform: translateY(16px);
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
 /* Reduced motion: guarantee the hero paints without any JS at all.
    The GSAP effect short-circuits to the same end state (hero.tsx). */
 @media (prefers-reduced-motion: reduce) {
   .ps-hero-line,
-  .ps-hero-subtitle,
-  .ps-hero-ctas {
+  .ps-hero-subtitle {
     opacity: 1;
     transform: none;
   }
@@ -5410,21 +5399,9 @@ ul, ol {
   /* Mobile hero content paints from CSS — it must never wait on the GSAP
      chunk. The performance audit is explicit about this. */
   .ps-hero-line,
-  .ps-hero-subtitle,
-  .ps-hero-ctas {
+  .ps-hero-subtitle {
     opacity: 1;
     transform: none;
-  }
-
-  .ps-hero-ctas {
-    /* Stack buttons vertically on small screens */
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .ps-hero-ctas .ps-btn {
-    justify-content: center;
-    width: 100%;
   }
 }
 
@@ -7282,18 +7259,6 @@ input#contact-website {
    line length. */
 .ps-hero-headline { max-width: 20ch; }
 .ps-hero-subtitle { max-width: 62ch; }
-
-/* Full-width stacked CTA slabs are a phone treatment. At 768px they were
-   640px-wide blocks under a near-desktop 57px headline. */
-@media (min-width: 641px) and (max-width: 768px) {
-  .ps-hero-ctas {
-    flex-direction: row;
-    align-items: center;
-  }
-  .ps-hero-ctas .ps-btn {
-    width: auto;
-  }
-}
 
 /* The header is a translucent white slab; over the dark /contact hero it
    composited to ~rgb(145,150,158) and read as a broken backdrop-filter. */
