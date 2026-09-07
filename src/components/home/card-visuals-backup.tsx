@@ -962,8 +962,93 @@ const PS_C5_DASHES: PsC5Dash[] = (() => {
   return out;
 })();
 
+/* CARD-SCOPED REVEAL. Deliberately NOT the shared `useRevealOnce`.
+
+   THE BUG IN THE SHARED HOOK, reproduced on this card before it was
+   fixed (`c5-tools/revealtiming.js`): its failsafe is an unconditional
+   `setTimeout(..., 1200)`, so `.in-view` lands whether or not the card
+   is on screen. Card 5 sits in the BOTTOM row. Measured at 1440x900:
+
+     t=400ms   onScreen=false  inView=false  cardTop=1641  dashOpacity=0
+     t=1600ms  onScreen=false  inView=TRUE   cardTop=1641  dashOpacity=0
+     t=3600ms  onScreen=false  inView=TRUE   cardTop=1641  dashOpacity=0.981
+     after scrolling to it:    inView=true                 dashOpacity=0.981
+
+   The choreography ran to completion 1641px below the fold. Every real
+   visitor arrived at the settled still, so the reveal had never actually
+   been seen. That matters more here than on the other cards, because the
+   sequence IS the idea: the field organises, and then the subject
+   arrives — the disc lands last, on purpose.
+
+   A viewport sweep cannot catch this. `in-view` is true and nothing is
+   permanently invisible; it fires, just in the wrong place.
+
+   THE FIX: the safety net may never pre-fire below the fold. It waits
+   8s, then reveals ONLY if the element is actually on screen, and
+   otherwise re-checks. So the art can still never be left permanently
+   invisible if the observer fails, but it also cannot burn its entrance
+   while nobody is looking.
+
+   `useRevealOnce` is NOT modified — cards 2 and 3 depend on it. */
+function usePsC5Reveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    let done = false;
+    let timer = 0;
+
+    const show = () => {
+      if (done) return;
+      done = true;
+      el.classList.add("in-view");
+      observer.disconnect();
+      window.clearTimeout(timer);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) show();
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+
+    /* Safety net. Long, and gated on actually being visible. */
+    const tick = () => {
+      if (done) return;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || 0;
+      if (r.top < vh && r.bottom > 0) show();
+      else timer = window.setTimeout(tick, 400);
+    };
+    timer = window.setTimeout(tick, 8000);
+
+    return () => {
+      done = true;
+      observer.disconnect();
+      window.clearTimeout(timer);
+    };
+  }, []);
+
+  return ref;
+}
+
 export function SearchVisual() {
-  const containerRef = useRevealOnce<HTMLDivElement>();
+  const containerRef = usePsC5Reveal<HTMLDivElement>();
 
   return (
     <div ref={containerRef} className="ps-c5-root" aria-hidden="true">
