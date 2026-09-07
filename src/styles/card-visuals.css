@@ -2623,3 +2623,218 @@
   }
   .ps-c5-halo { opacity: 0.55 !important; }
 }
+
+/* ═════════════════════════════════════════════════════════════
+   CARD 2 — BUSINESS AUTOMATION.  Braided river.   `ps-c2-*`
+
+   Namespaced away from `ps-v4-*` on purpose: ten of those classes are shared
+   live by cards 1 and 3, so card 2's rebuild adds a prefix rather than editing
+   one. The old `ps-v4-*` rules for this card are now dead and are deliberately
+   LEFT IN PLACE — deleting one breaks a sibling card.
+
+   FULL BLEED. `position:absolute; inset:0` resolves against the padding box of
+   `.ps-bento-card__inner`, which escapes that element's own `68px 18px 85px`
+   padding and lets the scene run edge to edge. Framed inside the padding it
+   read as an inset illustration floating on a panel; bled, it reads as an
+   image. The card box is 327x442 -> 564x432 across breakpoints (aspect
+   0.74 -> 1.31), so the SVG uses `xMidYMid slice` and the convergence is
+   composed to complete near the centre, where no crop can remove it.
+
+   COLOUR. The land carries the texture and the water stays flat, because
+   rivers do not emit light — the first pass glowed and read as fibre optic.
+   Light mode LIGHTENS: pale terrain with the river as the dark saturated
+   figure, which is card 4's balance. A card that is dark edge-to-edge in both
+   themes reads as a hole in the row, which is just the white-slab failure
+   wearing the opposite coat. `#0C6FC9` on the light ground, not `#1590FF`,
+   which is only 3.25:1 on white.
+
+   MOTION. ZERO @keyframes, by contract — the two cards the owner keeps have
+   none. One transform transition on the wash mask fills the river once, left
+   to right, then stops. It never loops.
+   ═════════════════════════════════════════════════════════════ */
+
+.ps-c2-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+
+  /* DARK (default). Scene gradient verbatim from `.ps-visual-website` —
+     nothing in this card floats on flat colour. */
+  background: linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%);
+
+  --c2-ease: cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  --c2-land-a: #0A1628;
+  --c2-land-b: #102A4C;
+  --c2-terr: #16325A;
+  --c2-terr-op: 0.55;
+  --c2-scour: #1B3C69;
+  --c2-scour-op: 0.32;
+
+  /* The carve. NOT near-black: at #040914 / 0.92 the water's lower edge drew a
+     hard dark silhouette line, and in dark mode that reads as a RIDGELINE with
+     sky above it rather than a riverbank seen from above. An aerial view has no
+     horizon, so nothing in this scene may look like one. A softer, bluer bank
+     still gives the incision without the silhouette. */
+  --c2-bank: #0B1A30;
+  --c2-bank-op: 0.55;
+  --c2-lit: #2C5590;
+  --c2-lit-op: 0.40;
+
+  /* the water, upstream -> downstream */
+  --c2-water-a: #1477E0;
+  --c2-water-b: #2E9BFF;
+
+  /* bars: land standing IN the water */
+  --c2-bar-a: #14294A;
+  --c2-bar-b: #1B3A63;
+  --c2-bar-shadow-op: 0.5;
+
+  --c2-zoom: 1;
+}
+
+[data-theme="light"] .ps-c2-root {
+  background: linear-gradient(160deg, #F0F4F8 0%, #E8EDF3 100%);
+
+  --c2-land-a: #F4F7FA;
+  --c2-land-b: #C6D5E4;
+  --c2-terr: #AEC1D6;
+  --c2-terr-op: 0.8;
+  --c2-scour: #93AAC4;
+  --c2-scour-op: 0.55;
+
+  --c2-bank: #4A6685;
+  --c2-bank-op: 0.45;
+  --c2-lit: #FFFFFF;
+  --c2-lit-op: 0.75;
+
+  /* #0C6FC9, not #1590FF — the brighter blue is 3.25:1 on white and vanishes */
+  --c2-water-a: #0C6FC9;
+  --c2-water-b: #1481DD;
+
+  --c2-bar-a: #DCE6F0;
+  --c2-bar-b: #B9CBDE;
+  --c2-bar-shadow-op: 0.3;
+}
+
+.ps-c2-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: scale(var(--c2-zoom));
+  transform-origin: center;
+  transition: transform 620ms var(--c2-ease);
+  will-change: transform;
+}
+
+/* gradient stops read the custom properties, so the theme is one override
+   block rather than a second stylesheet */
+.ps-c2-land-a { stop-color: var(--c2-land-a); }
+.ps-c2-land-b { stop-color: var(--c2-land-b); }
+.ps-c2-bar-a  { stop-color: var(--c2-bar-a); }
+.ps-c2-bar-b  { stop-color: var(--c2-bar-b); }
+.ps-c2-water-a,
+.ps-c2-water-b { transition: stop-color 480ms var(--c2-ease); }
+.ps-c2-water-a { stop-color: var(--c2-water-a); }
+.ps-c2-water-b { stop-color: var(--c2-water-b); }
+
+/* THE LAND carries the texture: broad silt terraces, then the fine grain of
+   channels the river has abandoned. */
+.ps-c2-terraces { fill: var(--c2-terr); opacity: var(--c2-terr-op); transition: opacity 480ms var(--c2-ease); }
+.ps-c2-scours {
+  fill: none;
+  stroke: var(--c2-scour);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  opacity: var(--c2-scour-op);
+  transition: opacity 480ms var(--c2-ease);
+}
+
+/* THE CARVE — shadow under the wet edge, lit lip above it. Depth here comes
+   from occlusion, not from a drop shadow. */
+.ps-c2-bank-shadow { fill: var(--c2-bank); opacity: var(--c2-bank-op); }
+.ps-c2-bank-lit { fill: var(--c2-lit); opacity: var(--c2-lit-op); }
+
+.ps-c2-bar-shadow {
+  fill: var(--c2-bank);
+  opacity: var(--c2-bar-shadow-op);
+  transform: translateY(2.1px);
+}
+
+/* FOOT VEIL — restores title/cue contrast over the full-bleed artwork.
+   Measured, not assumed: the cue's worst background pixel was rgb(218,227,237)
+   giving 4.33:1 against a contained sibling's 4.74:1, i.e. this card's own art
+   pushed it under the 4.5 floor. Anchored to the element's bottom rather than
+   placed in the SVG, because `slice` crops the viewBox vertically at wide
+   breakpoints and would remove the veil exactly where it is needed. */
+.ps-c2-veil {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* 40%, not 46%, and it stays light until it reaches the text band. The taller
+     stronger veil was washing out the TRUNK'S FAR BANK — the mouth's bottom
+     edge sits around y=224-247 in viewBox space and the old veil began at 238,
+     so it erased the very bank that makes the channel read as a channel rather
+     than as open water. Both critics read "lake / bay / sky" for that reason. */
+  height: 40%;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(240, 244, 248, 0) 0%,
+    rgba(240, 244, 248, 0.22) 40%,
+    rgba(240, 244, 248, 0.85) 72%,
+    rgba(240, 244, 248, 0.97) 100%
+  );
+}
+[data-theme="dark"] .ps-c2-veil {
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 22, 40, 0) 0%,
+    rgba(10, 22, 40, 0.18) 40%,
+    rgba(10, 22, 40, 0.80) 72%,
+    rgba(10, 22, 40, 0.95) 100%
+  );
+}
+
+/* THE WASH — the river fills ONCE. The mask rect sits off-frame to the left
+   at rest and translates across on `.in-view`. A transition on transform;
+   there is no @keyframes anywhere in this card. */
+.ps-c2-wash-rect {
+  transform: translateX(0);
+  transition: transform 980ms var(--c2-ease);
+  transition-delay: 300ms;
+}
+.ps-c2-root.in-view .ps-c2-wash-rect { transform: translateX(520px); }
+
+/* HOVER — the image RESOLVES under the cursor. The water brightens and
+   saturates, the terrain contrast lifts, and the whole scene pushes in
+   slightly. Card 2 was the most inert card on the grid (2.01% of pixels moved
+   on hover, against card 4's 26.8%); this moves the frame. */
+.ps-bento-card:hover .ps-c2-root {
+  --c2-water-a: #2E9BFF;
+  --c2-water-b: #7CC6FF;
+  --c2-terr-op: 0.72;
+  --c2-scour-op: 0.46;
+  --c2-zoom: 1.055;
+}
+[data-theme="light"] .ps-bento-card:hover .ps-c2-root {
+  --c2-water-a: #0A5FB0;
+  --c2-water-b: #1590FF;
+  --c2-terr-op: 0.95;
+  --c2-scour-op: 0.7;
+}
+
+/* REDUCED MOTION, second layer. The hook already short-circuits in JS and adds
+   `.in-view` immediately; this pins the finished frame in CSS as well, so the
+   river is filled and nothing is left invisible. A transition that is merely
+   un-triggered is not the same as one that cannot run. */
+@media (prefers-reduced-motion: reduce) {
+  .ps-c2-root,
+  .ps-c2-root * {
+    transition: none !important;
+    animation: none !important;
+  }
+  .ps-c2-wash-rect { transform: translateX(520px) !important; }
+  .ps-c2-svg { transform: none !important; }
+}

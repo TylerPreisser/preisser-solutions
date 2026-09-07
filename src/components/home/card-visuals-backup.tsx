@@ -31,6 +31,18 @@
  */
 
 import React, { useEffect, useRef, useState } from "react";
+// Card 2's braided-river geometry. Generated at BUILD time by a seeded PRNG
+// (proto-lead/gen.mjs) and shipped as static literals, so nothing in this
+// module calls Math.random() during render — that would desync SSR hydration.
+import {
+  C2_VIEWBOX,
+  C2_ENVELOPE,
+  C2_BANK_SHADOW,
+  C2_BANK_LIT,
+  C2_BARS,
+  C2_TERRACES,
+  C2_SCOURS,
+} from "./c2-braided-paths";
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 1 — Websites & Applications
@@ -342,119 +354,227 @@ export function AutomationVisual() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CARD 2 — Business Automation.  "The same form, twice, by hand."
+   CARD 2 — Business Automation.  "Braided river."
 
    Pain, service-pillars.tsx:240 (`painPoints[1]`, selected `hookIndex: 1`):
      "We're still copying data between systems by hand."
 
-   WHY THIS IS A REWRITE AND NOT A TWEAK. The previous composition put two
-   equal panels side by side in a 34px gap and let the MOTION carry the whole
-   message: the left filled in five beats, the right in one. Photographed at
-   rest — which is what a reduced-motion visitor, a scrolled-past-and-back
-   visitor and every screenshot sees — it was two identical filled slabs and a
-   1.5px hairline. The meaning was 100% temporal, and a card whose meaning
-   evaporates when the transition ends has no meaning. Card 5 can be read from
-   a still. So must this one.
+   THE IMAGE. An aerial river delta. Twenty-odd threads of water enter at the
+   left, wander, split and rejoin, and consolidate rightward into ONE broad
+   channel that leaves the frame carrying everything. The land between is
+   navy, terraced with silt and scarred by channels the river has abandoned.
 
-   THE STILL, and it is the deliverable:
-     · The SAME form drawn twice, offset down-and-right like a misregistered
-       photocopy. Both sheets are the same size BY CONSTRUCTION (each is
-       inset from the opposite two edges of one box by the same offset), and
-       both carry the identical row rhythm and identical label widths, so the
-       back sheet's exposed rows sit a visible half-step above the front
-       sheet's. That misregistration is what says DUPLICATE. Two panels in a
-       gap say "two documents"; a duplicate-icon silhouette says "one thing,
-       entered twice", which is the pain.
-     · The back sheet is the record that already exists. The front sheet is
-       the copy a person is making of it — its later rows are still empty and
-       a TEXT CARET sits in the first one. The caret is the smallest element
-       on the card and the one that converts "two documents" into "somebody is
-       retyping this right now".
-     · Two favicon hues. LOAD-BEARING, NOT DECORATIVE — the only thing
-       carrying "different SYSTEMS" on a card with no sentences. An
-       implementer who harmonises these to one brand blue turns the card into
-       "one form, twice", which is nonsense. DO NOT HARMONISE.
+   THE IDEA. Twenty messy manual paths, each one somebody's undocumented
+   habit, resolve into a single channel that carries all of it.
 
-   THE RESOLUTION IS ADDITIVE, NEVER SUBTRACTIVE. Nothing that carries the
-   pain is animated away — the offset never closes, the duplicate never
-   merges. What arrives is the JOIN: a full-height rail down the seam where
-   the copy meets the record, and the empty rows filling behind it in one
-   beat. The rail is the payoff so it is drawn as the payoff — it is card 5's
-   own 2px `AI OVERVIEW` left rail, at sheet height, not the 34px hairline it
-   replaced.
+   WHY IT IS BUILT THIS WAY — the failure that produced this rebuild.
+   Three previous attempts drew the UI of an automation tool: browser chrome,
+   step rows on a spine, status chips, grey placeholder bars. The owner's
+   verdict was that they imaged a webpage rather than the title. So this card
+   contains no rectangle, no right angle, no straight line, no text and no
+   numeral. It is a landscape.
 
-   WORD BUDGET. 0 content words, 0 furniture labels, 1 placeholder domain —
-   `yourcompany.com`, the identical string cards 1, 4 and 5 carry. The old
-   composition spent zero, and paid for it: with no chrome title at all the
-   panels read as slabs rather than as windows, and card 2 was the only one of
-   the five with no family signal.
+   AND THE FAILURE INSIDE THE REBUILD, which matters more. The first pass drew
+   ~20 independent ribbons that CROSSED OVER one another. That reads as cable,
+   not water, because crossing is what cable does and merging is what water
+   does. A braided river seen from the air is ONE connected wet region with
+   elongated bars standing in it. So the geometry here is a single wet
+   envelope — wide and ragged upstream, one clean channel downstream — with
+   lens-shaped bars punched out of it. Dense bars upstream read as many
+   threads; their absence downstream reads as one channel. The convergence is
+   a property of the geometry rather than something choreographed, and nothing
+   can ever cross, because nothing is a separate ribbon.
+
+   SSR. Every path is a STATIC literal in `./c2-braided-paths`, generated at
+   build time by a seeded PRNG. Nothing here calls Math.random() during
+   render, which would desync server and client in this app.
+
+   MOTION. Zero @keyframes, by contract — the two cards the owner keeps have
+   none. One transform transition on a wash mask fills the river once, left to
+   right, and stops. It never loops.
    ───────────────────────────────────────────────────────────── */
 
-/* Label-bar widths. IDENTICAL in both sheets - that identity is the entire
-   argument. If the two forms differ, "copied by hand" evaporates. */
-const V4_FORM_ROWS = ["64%", "48%", "72%", "40%", "56%", "68%"] as const;
+/* CARD-SCOPED REVEAL GATE.  Deliberately NOT `useRevealOnce`.
 
-/* Rows 0..2 were typed by hand (they arrive one beat at a time, because a
-   person is doing it). Rows 3.. arrive together on the rail, because that is
-   not a person. The caret sits on row V4_TYPED — the first one still empty. */
-const V4_TYPED = 3;
+   The shared hook's 1200ms failsafe fires whether or not the card is on
+   screen, so on a page where this section sits below the fold the whole
+   reveal completes before anyone scrolls to it — correct choreography,
+   never seen. That is a nuisance for a card whose motion is decoration; it
+   is fatal for THIS one, whose entire idea is a wash filling left to right,
+   many threads becoming one. A visitor arriving after the failsafe sees only
+   the settled still — which is exactly the frame reviewers kept reading as
+   "a lake".
+
+   So: same contract, same `.in-view` class, threshold raised to 0.3, and the
+   safety net moved out to 8s — long enough that it is a genuine last resort
+   rather than a timer that beats the scroll. `useRevealOnce` is untouched:
+   cards 1, 3 and 5 depend on it and three teams are in this file. */
+function usePsC2Reveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    // Reduced motion short-circuits to the finished frame before the observer
+    // is ever built, so the art is never left invisible.
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+
+    /* THE FAILSAFE MUST BE GATED ON VISIBILITY, NOT ONLY ON TIME.
+       A bare timer — at 1200ms or at 8000ms — does not remove the failure, it
+       schedules it. A visitor reading the hero, on a slow connection, or on a
+       phone where this section sits further down, arrives after it has fired
+       and meets the settled still. That is the entire defect, just later.
+
+       So: after the delay, reveal ONLY if the card is actually on screen, and
+       otherwise keep looking every 400ms. It still cannot leave the artwork
+       permanently invisible if the observer never works — which is the only
+       thing a failsafe owes us — but it also cannot spend the entrance on an
+       empty room. This card's entrance IS its argument: a wash filling left to
+       right, many threads becoming one. Burning it unwatched loses the idea. */
+    let poll = 0;
+    const onScreen = () => {
+      const r = el.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
+    };
+    const settle = () => {
+      if (el.classList.contains("in-view")) return;
+      if (onScreen()) {
+        el.classList.add("in-view");
+        observer.disconnect();
+        return;
+      }
+      poll = window.setTimeout(settle, 400);
+    };
+    const failsafe = window.setTimeout(settle, 8000);
+
+    return () => {
+      window.clearTimeout(failsafe);
+      window.clearTimeout(poll);
+      observer.disconnect();
+    };
+  }, []);
+
+  return ref;
+}
 
 export function SystemFixesVisual() {
-  const containerRef = useRevealOnce<HTMLDivElement>();
-
-  const sheet = (side: "src" | "copy") => (
-    <div className={`ps-v4-sheetx ps-v4-sheetx--${side}`}>
-      <div className="ps-v4-chrome">
-        <i className={`ps-v4-fav ps-v4-fav--${side === "src" ? "a" : "b"}`} />
-        {side === "copy" ? (
-          /* The window title is a URL, exactly like cards 1 and 4. Never an
-             app status. */
-          <span className="ps-v4-chromeurl">
-            <V4Lock />
-            <span className="ps-v4-host">yourcompany.com</span>
-          </span>
-        ) : (
-          <span className="ps-v4-pill" />
-        )}
-      </div>
-      <div className="ps-v4-rows">
-        {V4_FORM_ROWS.map((w, i) => (
-          <span className="ps-v4-row" key={i}>
-            <i className="ps-v4-label" style={{ width: w }} />
-            <span className="ps-v4-slotbox">
-              {side === "src" ? (
-                /* The record that already exists. Painted at t=0, not gated —
-                   the source is not something that has to arrive. */
-                <i className="ps-v4-slot ps-v4-slot--src" />
-              ) : (
-                <>
-                  <i
-                    className={`ps-v4-slot ps-v4-slot--${i < V4_TYPED ? "typed" : "joined"}`}
-                    style={{ "--i": i } as React.CSSProperties}
-                  />
-                  {/* The caret. Outside the slot on purpose: it has to be
-                      visible while the slot is still EMPTY, and the slot's
-                      opacity is the thing being animated. */}
-                  {i === V4_TYPED ? <i className="ps-v4-caret" /> : null}
-                </>
-              )}
-            </span>
-          </span>
-        ))}
-      </div>
-    </div>
-  );
+  const containerRef = usePsC2Reveal<HTMLDivElement>();
 
   return (
-    <div ref={containerRef} className="ps-v4-root ps-v4-root--dup" aria-hidden="true">
-      <div className="ps-v4-dup">
-        {sheet("src")}
-        {sheet("copy")}
-        {/* The seam. Full sheet height, on the edge where the copy overlaps
-            the record, drawn top to bottom. It is the payoff, so it is the
-            largest single mark on the card - not a hairline in a gap. */}
-        <i className="ps-v4-rail" />
-      </div>
+    <div ref={containerRef} className="ps-c2-root" aria-hidden="true">
+      <svg
+        className="ps-c2-svg"
+        viewBox={C2_VIEWBOX}
+        preserveAspectRatio="xMidYMid slice"
+        focusable="false"
+      >
+        <defs>
+          {/* Every id is namespaced `ps-c2-*`: five inline SVGs land on this
+              page and id collisions across them are SILENT. */}
+          <linearGradient id="ps-c2-land" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" className="ps-c2-land-a" />
+            <stop offset="1" className="ps-c2-land-b" />
+          </linearGradient>
+
+          {/* The water gains colour downstream, so the single channel is the
+              most saturated thing in the frame. That is the whole argument. */}
+          <linearGradient id="ps-c2-water" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" className="ps-c2-water-a" />
+            <stop offset="1" className="ps-c2-water-b" />
+          </linearGradient>
+
+          <linearGradient id="ps-c2-bar" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" className="ps-c2-bar-a" />
+            <stop offset="1" className="ps-c2-bar-b" />
+          </linearGradient>
+
+          {/* THE WASH. A hard-edged mask rect translated ONCE across the
+              frame. Transition on transform — no keyframes, no loop. */}
+          <mask id="ps-c2-wash" maskUnits="userSpaceOnUse" x="-40" y="-40" width="560" height="540">
+            <rect
+              className="ps-c2-wash-rect"
+              x="-520" y="-60" width="520" height="580"
+              fill="#fff"
+            />
+          </mask>
+        </defs>
+
+        {/* THE LAND — carries all the texture. Rivers do not emit light, so
+            the terrain holds the tonal variation and the water stays flat. */}
+        <rect x="0" y="0" width="100%" height="100%" fill="url(#ps-c2-land)" />
+
+        <g className="ps-c2-terraces">
+          {C2_TERRACES.map((d, i) => (
+            <path key={i} d={d} />
+          ))}
+        </g>
+        {/* Abandoned channels. Each carries its OWN stroke width — they were
+            all exactly 1.1px, and at that width a round cap is visually
+            identical to a blunt one, so every line simply stopped. */}
+        <g className="ps-c2-scours">
+          {C2_SCOURS.map(([d, w], i) => (
+            <path key={i} d={d} strokeWidth={w} />
+          ))}
+        </g>
+
+        {/* THE CARVE. Shadow below the wet edge and a lit lip above it, so the
+            water reads as cut INTO the terrain instead of painted on top. */}
+        <path className="ps-c2-bank-shadow" d={C2_BANK_SHADOW} />
+        <path className="ps-c2-bank-lit" d={C2_BANK_LIT} />
+
+        {/* THE WATER, revealed once by the wash. */}
+        <g mask="url(#ps-c2-wash)">
+          <path className="ps-c2-water" d={C2_ENVELOPE} fill="url(#ps-c2-water)" />
+
+          {/* THE BARS — land standing in the water. Each casts into the
+              river first, or in light mode they sit at the land's value and
+              the braid dissolves into a pale wash. */}
+          <g className="ps-c2-bar-shadow">
+            {C2_BARS.map((d, i) => (
+              <path key={i} d={d} />
+            ))}
+          </g>
+          <g className="ps-c2-bars" fill="url(#ps-c2-bar)">
+            {C2_BARS.map((d, i) => (
+              <path key={i} d={d} />
+            ))}
+          </g>
+        </g>
+      </svg>
+
+      {/* FOOT VEIL. The artwork is full-bleed, so the card's own title and cue
+          sit ON it. Measured worst-pixel: that darkened the cue's background
+          from rgb(233,236,240) on a contained card to rgb(218,227,237) here,
+          taking it from 4.74:1 to 4.33:1 — under the 4.5 floor. This ramps the
+          foot of the artwork back toward the card's ground colour.
+
+          It lives in CSS, anchored to the ELEMENT's bottom, not in the SVG:
+          `xMidYMid slice` crops the viewBox vertically at wide breakpoints
+          (at 600px the scaled height is 539 into a 432 box), so a veil placed
+          in viewBox coordinates would be cropped away exactly where it is
+          needed. Card-scoped by design — `.ps-bento-card__text`'s own scrim is
+          shared by all five cards and three teams are editing it. */}
+      <i className="ps-c2-veil" />
     </div>
   );
 }
