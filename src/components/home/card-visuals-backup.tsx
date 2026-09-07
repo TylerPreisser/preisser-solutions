@@ -290,16 +290,16 @@ function V4Lock() {
    least meaningful thing on the card and an earlier version let it become the
    loudest object on it. */
 const C3_STRAPS = [
-  { y: 300, h: 9 }, { y: 318, h: 9 }, { y: 336, h: 8 },
+  { y: 318, h: 8 }, { y: 340, h: 8 },
 ] as const;
 
 /* Leaves, as flat blades on their own short stems, coming off the SCION's
    sides. `ax/ay` is where the stem leaves the stem, `a` the blade angle,
    `l` its length. */
 const C3_LEAVES = [
-  { ax: 180, ay: 170, a: -150, l: 48 }, { ax: 186, ay: 124, a: -168, l: 40 },
-  { ax: 176, ay: 216, a: -128, l: 38 }, { ax: 244, ay: 160, a: 30, l: 48 },
-  { ax: 240, ay: 112, a: 10, l: 40 }, { ax: 248, ay: 206, a: 48, l: 38 },
+  { ax: 199, ay: 170, a: -150, l: 48 }, { ax: 202, ay: 124, a: -168, l: 40 },
+  { ax: 196, ay: 216, a: -128, l: 38 }, { ax: 247, ay: 160, a: 30, l: 48 },
+  { ax: 245, ay: 112, a: 10, l: 40 }, { ax: 250, ay: 206, a: 48, l: 38 },
 ] as const;
 
 /* A leaf blade: two symmetric arcs meeting at a point at each end. */
@@ -435,7 +435,7 @@ export function AutomationVisual() {
               makes two members read as two. ── */}
         <path
           className="ps-c3-scion"
-          d="M178 286 L248 265 L238 82 L190 82 Z"
+          d="M190 282 L256 266 L246 82 L202 82 Z"
         />
 
         {/* ── THE CONTACT LINE. The idea of the card, and the brightest thing
