@@ -465,101 +465,159 @@ export function SystemFixesVisual() {
    Pain, service-pillars.tsx:148 (`painPoints[1]`, selected `hookIndex: 1`):
      "Our data lives in five different places and nobody has a complete picture."
 
-   Subject: a masonry WALL with an arched opening cut through it. Eleven
-   voussoirs of UNEQUAL width ring the opening; one lit keystone sits at the
-   crown; a dark passage runs through. An arch is many separate parts that
-   cannot stand alone, and the keystone is the single piece that locks them
-   into one structure that carries load. That is what an operations platform
-   does to a business, and it is the answer to the pain sentence above.
+   Subject: a wall with an arched opening cut through it. Eleven voussoirs of
+   UNEQUAL width ring the opening; one lit keystone sits at the crown; a dark
+   passage runs through. An arch is many separate parts that cannot stand
+   alone, and the keystone is the piece that locks them into one structure that
+   carries load. That is what an operations platform does to a business.
 
-   WHY NOT A UI. Three previous versions of this card drew a browser: chrome, a
-   URL bar, tabs and rows of grey placeholder pills. They read as the LOADING
-   STATE of card 4 below them. This is deliberately a different family of image
-   — an object with mass, lit from one side — not a screenshot.
+   WHY NOT A UI. Three previous versions drew a browser — chrome, a URL bar,
+   tabs, rows of grey placeholder pills — and read as the LOADING STATE of card
+   4 below them. This is deliberately a different family of image.
 
-   TWO MISREADS THIS GEOMETRY EXISTS TO DEFEAT, both found by rendering:
-   1. A toothed disc reads as a GEAR, a generic engineering icon, no matter how
-      it is cropped or lit. Four renders failed on this before the object was
-      changed. Do not reintroduce a wheel.
-   2. An arc of EQUAL segments with one highlighted reads as a PROGRESS RING —
-      a UI cliché, which on this card is worse than the gear was. Two things
-      keep it out and neither is decorative: the voussoir widths are UNEQUAL
-      (the array below), and the coursed masonry runs edge to edge BEHIND the
-      ring. A gauge is a ring on empty ground; this is a wall with a hole in it.
-      If review ever reads it as a loading indicator, widen the width variance
-      or strengthen the courses. Do not add words.
+   ── THREE MISREADS THIS GEOMETRY EXISTS TO DEFEAT, all found by rendering ──
+   1. A toothed disc reads as a GEAR. Four renders died on it. No wheel.
+   2. An arc of EQUAL segments with one highlighted reads as a PROGRESS RING.
+      Defeated by unequal voussoir widths plus the coursing behind the ring.
+   3. THE ONE THAT NEARLY SHIPPED: dark voussoirs on a pale wall read as a
+      HALF-DONUT CHART pasted onto brick. The fix is material, not shape — the
+      voussoirs are cut from the SAME STONE as the wall, a little lighter
+      because their faces catch the light. An arch is MADE OF the wall it sits
+      in. If it ever reads as a chart again, that relationship has drifted.
 
-   THE THEME RULE, and it is the fix for this card's 46.7% near-white failure:
-   THE WALL CARRIES THE THEME; THE RING AND THE PASSAGE STAY DARK IN BOTH.
-   A pale passage in light mode renders as a large white blob, which is the
-   exact failure this rebuild exists to remove. But making everything dark in
-   both themes kills the re-theming and leaves a dark slab among pale cards.
-   Wall-themes / ring-and-passage-stay-dark is the resolution. See
-   card-visuals.css `.ps-c1-*`.
+   ── THE THEME RULE ──
+   THE VOID CARRIES THE DARK MASS; THE STONE CARRIES THE THEME.
+   The passage is dark in both themes because a void is dark. Everything else
+   is stone and follows the theme. An earlier build made the ring near-black in
+   light mode and it became roughly twice the visual weight of any other card
+   in the row — the inverse of the white-slab failure it was fixing.
 
-   Geometry is fully AUTHORED — no Math.random anywhere. This is server-rendered;
-   a random value at render time desynchronises server and client markup.
+   ── WHY NOT `useRevealOnce` ──
+   That shared hook (tsx:159) carries a 1200ms failsafe which fires whether or
+   not the card is on screen, so the whole choreography completed before a
+   visitor ever scrolled to it — measured at 0.21/0.69/0.88/0.96/0.99 mid-fade
+   with the section still below the fold. The hook is CORRECT for cards 2 and 3
+   and is not modified. This card uses its own observer with a much longer
+   safety net so the reveal is actually seen. Nothing is ever left invisible:
+   reduced-motion short-circuits, and `@media (scripting: none)` covers no-JS.
+
+   Geometry is fully AUTHORED — no Math.random. This is server-rendered and a
+   random value at render time desynchronises server and client markup.
    ───────────────────────────────────────────────────────────── */
 
-/* Eleven voussoirs, widths deliberately unequal so no two blocks match — the
-   single cheapest thing separating an arch from a gauge. Generated once from
-   centre (200,262), inner r=128, outer r=196, 1deg mortar joint. `i` is the
-   distance from the keystone and drives the reveal stagger. */
+/* Ten voussoirs plus the keystone. Widths deliberately unequal so no two
+   blocks match. Centre (200,226), inner r=128, outer r=196, 1deg joint.
+   `i` is distance from the keystone and drives the reveal stagger. */
 const PS_C1_VOUSSOIRS = [
-  { d: "M72,260.88L4.01,260.29A196,196 0 0,1 10.58,211.65L76.3,229.12A128,128 0 0,0 72,260.88Z", i: 5 },
-  { d: "M76.89,226.97L11.48,208.35A196,196 0 0,1 38.03,151.64L94.22,189.93A128,128 0 0,0 76.89,226.97Z", i: 4 },
-  { d: "M95.49,188.09L39.98,148.83A196,196 0 0,1 67.58,117.49L113.52,167.63A128,128 0 0,0 95.49,188.09Z", i: 3 },
-  { d: "M115.18,166.13L70.13,115.2A196,196 0 0,1 117.29,84.31L145.98,145.96A128,128 0 0,0 115.18,166.13Z", i: 2 },
-  { d: "M148.02,145.03L120.4,82.89A196,196 0 0,1 164.28,69.28L176.67,136.14A128,128 0 0,0 148.02,145.03Z", i: 1 },
-  { d: "M223.33,136.14L235.72,69.28A196,196 0 0,1 279.6,82.89L251.98,145.03A128,128 0 0,0 223.33,136.14Z", i: 1 },
-  { d: "M254.02,145.96L282.71,84.31A196,196 0 0,1 329.87,115.2L284.82,166.13A128,128 0 0,0 254.02,145.96Z", i: 2 },
-  { d: "M286.48,167.63L332.42,117.49A196,196 0 0,1 360.02,148.83L304.51,188.09A128,128 0 0,0 286.48,167.63Z", i: 3 },
-  { d: "M305.78,189.93L361.97,151.64A196,196 0 0,1 388.52,208.35L323.11,226.97A128,128 0 0,0 305.78,189.93Z", i: 4 },
-  { d: "M323.7,229.12L389.42,211.65A196,196 0 0,1 395.99,260.29L328,260.88A128,128 0 0,0 323.7,229.12Z", i: 5 },
+  { d: "M72,224.88L4.01,224.29A196,196 0 0,1 10.58,175.65L76.3,193.12A128,128 0 0,0 72,224.88Z", i: 5 },
+  { d: "M76.89,190.97L11.48,172.35A196,196 0 0,1 38.03,115.64L94.22,153.93A128,128 0 0,0 76.89,190.97Z", i: 4 },
+  { d: "M95.49,152.09L39.98,112.83A196,196 0 0,1 67.58,81.49L113.52,131.63A128,128 0 0,0 95.49,152.09Z", i: 3 },
+  { d: "M115.18,130.13L70.13,79.2A196,196 0 0,1 117.29,48.31L145.98,109.96A128,128 0 0,0 115.18,130.13Z", i: 2 },
+  { d: "M148.02,109.03L120.4,46.89A196,196 0 0,1 164.28,33.28L176.67,100.14A128,128 0 0,0 148.02,109.03Z", i: 1 },
+  { d: "M223.33,100.14L235.72,33.28A196,196 0 0,1 279.6,46.89L251.98,109.03A128,128 0 0,0 223.33,100.14Z", i: 1 },
+  { d: "M254.02,109.96L282.71,48.31A196,196 0 0,1 329.87,79.2L284.82,130.13A128,128 0 0,0 254.02,109.96Z", i: 2 },
+  { d: "M286.48,131.63L332.42,81.49A196,196 0 0,1 360.02,112.83L304.51,152.09A128,128 0 0,0 286.48,131.63Z", i: 3 },
+  { d: "M305.78,153.93L361.97,115.64A196,196 0 0,1 388.52,172.35L323.11,190.97A128,128 0 0,0 305.78,153.93Z", i: 4 },
+  { d: "M323.7,193.12L389.42,175.65A196,196 0 0,1 395.99,224.29L328,224.88A128,128 0 0,0 323.7,193.12Z", i: 5 },
 ] as const;
 
-/* The keystone. Separate from the array because it arrives last and is the
-   only chroma in the image. */
 const PS_C1_KEYSTONE =
-  "M178.87,135.76L167.65,68.69A196,196 0 0,1 232.35,68.69L221.13,135.76A128,128 0 0,0 178.87,135.76Z";
+  "M178.87,99.76L167.65,32.69A196,196 0 0,1 232.35,32.69L221.13,99.76A128,128 0 0,0 178.87,99.76Z";
 
-/* The opening: semicircular head over a shaft that runs off the bottom edge. */
-const PS_C1_OPENING = "M72,420L72,262A128,128 0 0,1 328,262L328,420Z";
+/* The passage. Ends at y=400 (the viewBox floor) so it is never clipped. */
+const PS_C1_OPENING = "M72,400L72,226A128,128 0 0,1 328,226L328,400Z";
 
-/* Coursed masonry behind the ring. Deterministic loops, not random: courses
-   every 46 units, perpends staggered half a block on alternate courses. This
-   is what stops the ring reading as a free-standing gauge. */
-const PS_C1_COURSES: number[] = [];
-for (let y = 44; y < 400; y += 46) PS_C1_COURSES.push(y);
-const PS_C1_PERPENDS: Array<[number, number]> = [];
-PS_C1_COURSES.forEach((y, row) => {
-  const offset = row % 2 ? 0 : 46;
-  for (let x = -20 + offset; x < 420; x += 92) PS_C1_PERPENDS.push([x, y]);
-});
+/* usePsC1Reveal — card-scoped. See the note above on why the shared hook's
+   1200ms failsafe is wrong for this card. Deliberately NOT exported and NOT a
+   modification of `useRevealOnce`, which cards 2 and 3 still depend on. */
+function usePsC1Reveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+
+    /* Safety net so the card can never sit permanently blank if the observer
+       fails. Long — 8s, not 1.2s — because a short one fires before the
+       visitor arrives and spends the whole reveal off-screen, which is the
+       exact bug this hook exists to avoid. */
+    const failsafe = window.setTimeout(() => {
+      el.classList.add("in-view");
+      observer.disconnect();
+    }, 8000);
+
+    return () => {
+      window.clearTimeout(failsafe);
+      observer.disconnect();
+    };
+  }, []);
+
+  return ref;
+}
 
 export function DashboardVisual() {
-  const containerRef = useRevealOnce<HTMLDivElement>();
+  const containerRef = usePsC1Reveal<HTMLDivElement>();
 
   return (
     <div ref={containerRef} className="ps-c1-root" aria-hidden="true">
+      {/* The wall is a CSS layer, not an SVG rect: it is always full-bleed at
+          every aspect, and its coursing is abstract stratification rather than
+          literal brickwork. The SVG can then use `meet`, so the arch — and
+          above all the keystone — is NEVER cropped at any breakpoint. An
+          earlier `slice` build sliced the keystone off at 600px, cutting the
+          one element the whole concept depends on. */}
+      <div className="ps-c1-wall" />
+
       <svg
         className="ps-c1-svg"
         viewBox="0 0 400 400"
-        preserveAspectRatio="xMidYMid slice"
+        preserveAspectRatio="xMidYMin meet"
         focusable="false"
       >
         <defs>
-          {/* Every id is namespaced `ps-c1-`: five inline SVGs share this page
-              and a duplicate defs id resolves to the wrong gradient silently. */}
-          <linearGradient id="ps-c1-wall" x1="0.1" y1="0" x2="0.75" y2="1">
-            <stop offset="0%" className="ps-c1-wall-a" />
-            <stop offset="100%" className="ps-c1-wall-b" />
-          </linearGradient>
-          <linearGradient id="ps-c1-stone" x1="0.2" y1="0" x2="0.7" y2="1">
+          {/* Every id namespaced: five inline SVGs share this page and a
+              duplicate defs id resolves to the wrong gradient silently. */}
+          {/* userSpaceOnUse, NOT the default objectBoundingBox. With bounding-box
+              units every voussoir gets its own identical copy of the gradient,
+              so eleven blocks render as eleven IDENTICAL segments — which is
+              the visual grammar of a progress ring, and this card has degraded
+              into a gauge three separate times. Spanning the gradient across
+              the whole arch in user space instead means one light direction
+              falls over the entire ring: the left blocks sit in shade, the
+              right blocks catch the light. That reads as one lit object rather
+              than a repeated UI element, and it is the cheapest structural
+              defence against the gauge misread. */}
+          <linearGradient
+            id="ps-c1-stone"
+            gradientUnits="userSpaceOnUse"
+            x1="20" y1="40" x2="380" y2="250"
+          >
             <stop offset="0%" className="ps-c1-stone-a" />
+            <stop offset="55%" className="ps-c1-stone-mid" />
             <stop offset="100%" className="ps-c1-stone-b" />
           </linearGradient>
-          <radialGradient id="ps-c1-beyond" cx="0.5" cy="0.86" r="0.95">
+          <radialGradient id="ps-c1-beyond" cx="0.5" cy="0.9" r="0.95">
             <stop offset="0%" className="ps-c1-beyond-a" />
             <stop offset="100%" className="ps-c1-beyond-b" />
           </radialGradient>
@@ -569,31 +627,14 @@ export function DashboardVisual() {
             <stop offset="100%" stopColor="#0B5FB8" />
           </linearGradient>
           <filter id="ps-c1-keyglow" x="-160%" y="-160%" width="420%" height="420%">
-            <feGaussianBlur stdDeviation="9" />
+            <feGaussianBlur stdDeviation="8" />
           </filter>
-          <mask id="ps-c1-wallmask">
-            <rect x="0" y="0" width="400" height="400" fill="#fff" />
-            <path d={PS_C1_OPENING} fill="#000" />
-          </mask>
         </defs>
 
-        {/* The passage seen through the opening. Dark in BOTH themes. */}
+        {/* The void. The only permanently dark mass in the image. */}
         <path d={PS_C1_OPENING} fill="url(#ps-c1-beyond)" />
 
-        {/* The wall, with the opening masked out of it. */}
-        <g mask="url(#ps-c1-wallmask)">
-          <rect x="0" y="0" width="400" height="400" fill="url(#ps-c1-wall)" />
-          <g className="ps-c1-joints">
-            {PS_C1_COURSES.map((y) => (
-              <line key={`c${y}`} x1="0" y1={y} x2="400" y2={y} />
-            ))}
-            {PS_C1_PERPENDS.map(([x, y]) => (
-              <line key={`p${x}-${y}`} x1={x} y1={y} x2={x} y2={y + 46} />
-            ))}
-          </g>
-        </g>
-
-        {/* The voussoir ring, sitting proud of the wall. */}
+        {/* The ring, cut from the same stone as the wall. */}
         <g className="ps-c1-ring">
           {PS_C1_VOUSSOIRS.map((b, n) => (
             <path
@@ -608,10 +649,18 @@ export function DashboardVisual() {
 
         {/* The keystone drops in last and locks the arch. */}
         <g className="ps-c1-key">
-          <path d={PS_C1_KEYSTONE} fill="#1590FF" filter="url(#ps-c1-keyglow)" opacity="0.34" />
+          <path d={PS_C1_KEYSTONE} fill="#1590FF" filter="url(#ps-c1-keyglow)" opacity="0.3" />
           <path d={PS_C1_KEYSTONE} fill="url(#ps-c1-key)" />
         </g>
       </svg>
+
+      {/* The plinth the wall stands on. Architectural, not a mask: a solid base
+          course with a crisp top edge, so the arch's legs terminate ON
+          something. It replaces a grey-to-white gradient wash that dissolved
+          the legs into nothing and read as an unfinished mask at 600px. It is
+          also what keeps the title legible over the artwork — see the measured
+          contrast note in card-visuals.css. */}
+      <div className="ps-c1-plinth" />
     </div>
   );
 }

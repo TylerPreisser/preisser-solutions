@@ -2361,27 +2361,26 @@
   .ps-sr-ai-line { height: 3px; }
   .ps-sr-row { padding: 2px 4px; }
 }
-
 /* ═════════════════════════════════════════════════════════════
    CARD 1 — "BUSINESS SOFTWARE." — THE KEYSTONE          (.ps-c1-*)
 
-   A masonry wall with an arched opening. Markup: card-visuals-backup.tsx,
-   `DashboardVisual`. APPENDED block — nothing above this line is modified,
-   and in particular every `.ps-v4-*` rule is left intact because cards 2 and
-   3 still render them.
+   Markup: card-visuals-backup.tsx, `DashboardVisual`. APPENDED block —
+   nothing above this line is modified, and every `.ps-v4-*` rule is left
+   intact because cards 2 and 3 still render them.
 
-   THE THEME RULE, which is this card's whole reason for existing:
-   THE WALL CARRIES THE THEME; THE RING AND THE PASSAGE STAY DARK IN BOTH.
-   The previous version of this card measured 46.7% near-white in dark mode and
-   read as a white slab. A pale passage in light mode reintroduces exactly that
-   failure; making everything dark in both themes removes the re-theming and
-   leaves a dark slab among pale cards. Wall-themes / ring-and-passage-dark is
-   the resolution, and it is card 4's "always one dark mass on screen" trick
-   sourced from the subject rather than bolted on as a band.
+   DARK IS THE BASE in this codebase; `[data-theme="light"]` is the override.
+   Base rules below are the DARK theme.
 
-   DARK IS THE BASE in this codebase and `[data-theme="light"]` is the
-   override — the opposite of the usual convention. Base rules below are the
-   DARK theme.
+   ── THE TWO RULES THAT MATTER ──
+   1. THE VOID CARRIES THE DARK MASS. The passage is dark in both themes
+      because a void is dark. It is the card's dark anchor in light mode, which
+      is what stops the near-white failure the previous build measured at 46.7%.
+   2. THE ARCH IS MADE OF THE WALL. The voussoirs are cut from the same stone
+      value as the wall, ~12% lighter because their faces catch light. When
+      they were dark navy against a pale wall the card read as a half-donut
+      CHART pasted onto brick — a gauge, which on this project is a worse
+      cliché than the gear it replaced. If it ever reads as a chart again, this
+      relationship has drifted. Do not darken the ring to "add contrast".
    ───────────────────────────────────────────────────────────── */
 
 .ps-c1-root {
@@ -2389,13 +2388,27 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  /* Full bleed. `inset: 0` on the svg resolves against this element, which sits
-     inside `.ps-bento-card__inner` (padding 0, overflow hidden), so the artwork
-     runs edge to edge and the card clips it. Deliberately NOT the 68/18/85
-     padding the `.ps-v4-root` cards use: that padding costs 153px of the short
-     axis and caps a centred subject at ~51% frame fill, which is why every
-     inset object read as timid. */
-  --ps-c1-veil: #0A1628;
+  isolation: isolate;
+}
+
+/* ── THE WALL ──
+   A CSS layer, not an SVG rect, for two reasons. It is always full-bleed at
+   every aspect, which lets the SVG use `meet` so the KEYSTONE IS NEVER CROPPED
+   (a `slice` build sliced it off at 600px — the one element the concept
+   depends on). And its coursing is abstract stratification rather than drawn
+   brickwork: the literal masonry read as "construction firm", so the courses
+   are now wide bands, no vertical perpends. */
+.ps-c1-wall {
+  position: absolute;
+  inset: 0;
+  background-color: #16273F;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.30) 0 1.5px,
+      transparent 1.5px 48px
+    ),
+    linear-gradient(160deg, #1D3252 0%, #0C1A2E 100%);
 }
 
 .ps-c1-svg {
@@ -2406,87 +2419,124 @@
   display: block;
 }
 
-/* FOOT VEIL — ramps the bottom of the artwork toward the card's ground colour
-   so the title never sits dark-navy-on-dark-navy. The passage is dark in both
-   themes and sits at the bottom centre, directly under "BUSINESS SOFTWARE.",
-   which in light theme is rgb(10,22,40). A sibling card measured this exact
-   shape at 1.96:1 against a 4.5:1 floor.
+/* FULL BLEED AT NARROW WIDTHS.
+   `meet` guarantees the keystone is never cropped, but at <=700px it also
+   letterboxes the arch into the middle of the frame, where it floats as an
+   isolated ring in a striped field — the badge/gauge idiom the whole design
+   exists to avoid. Scaling the SVG up past the frame restores the bleed
+   (springing runs off both edges) WITHOUT reintroducing `slice`, which is what
+   sliced the keystone off the top edge at 600px.
+   Origin is above centre so the growth pushes the arch sideways and down,
+   never up over the crown. */
+@media (max-width: 700px) {
+  .ps-c1-svg {
+    transform: scale(1.42);
+    transform-origin: 50% 26%;
+  }
+}
 
-   A CSS overlay, NOT a gradient inside the SVG: `preserveAspectRatio="slice"`
-   crops the viewBox vertically at the 1.70 letterbox and would crop an
-   SVG-internal veil out of frame precisely where it is needed most.
+/* ── THE PLINTH ──
+   The base course the wall stands on. Architectural, not a scrim: a solid
+   band with a crisp top edge, so the arch's legs terminate ON something. It
+   replaces a grey-to-white gradient wash that dissolved the legs into nothing
+   and read as an unfinished mask at 600px.
 
-   Reads as haze where the base of a wall meets the ground, which is
-   architecturally natural rather than an obvious scrim. */
-.ps-c1-root::after {
-  content: "";
+   IT IS ALSO THE TITLE'S BACKGROUND, and that is measured, not assumed. The
+   title is dark navy rgb(10,22,40) in light theme and sits over this artwork.
+   With a percentage-height gradient veil this card measured 8.27:1 at 1440 but
+   FAILED at 4.37:1 (600) and 4.42:1 (390) — the card box is 442px tall at 1440
+   and only 332px at 600/390, so a PERCENTAGE veil is systematically weakest on
+   the smallest card. A FIXED height covers the 59-63px text block identically
+   at every breakpoint. Do not convert this back to a percentage. */
+.ps-c1-plinth {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  /* FIXED PIXELS, NOT A PERCENTAGE, and this is a measured fix rather than a
-     taste one. A 34% veil passed at 1440 (8.27:1) and FAILED at 600 and 390
-     (4.37:1 and 4.42:1) because the card is 332px tall at those widths instead
-     of 442, so the same percentage covered ~35px less of the text band. A fixed
-     height covers the title identically at every breakpoint, and as a share of
-     a shorter card it is automatically MORE coverage where the crop is tighter.
-     The text block measures 59-63px; 150px with the ramp held solid to 40%
-     gives a fully-grounded 60px under the glyphs plus 90px of falloff. */
-  height: 150px;
+  height: 104px;
   pointer-events: none;
-  background: linear-gradient(
-    to top,
-    var(--ps-c1-veil) 0%,
-    var(--ps-c1-veil) 40%,
-    transparent 100%
-  );
+  background: var(--ps-c1-plinth-face);
+  border-top: 2px solid var(--ps-c1-plinth-edge);
+  box-shadow: inset 0 3px 8px -3px var(--ps-c1-plinth-shade);
+}
+
+/* A short falloff ABOVE the plinth so the hard edge does not read as a cut.
+   16px only — enough to seat the band, not enough to wash the legs out. */
+.ps-c1-plinth::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 10px;
+  background: linear-gradient(to top, var(--ps-c1-plinth-shade), transparent);
 }
 
 /* ── DARK (base) ───────────────────────────────────────────── */
-.ps-c1-wall-a   { stop-color: #1B2E4C; }
-.ps-c1-wall-b   { stop-color: #0A1524; }
-.ps-c1-stone-a  { stop-color: #33527E; }
-.ps-c1-stone-b  { stop-color: #101F38; }
-.ps-c1-beyond-a { stop-color: #16294A; }
-.ps-c1-beyond-b { stop-color: #060E1A; }
-.ps-c1-joints line { stroke: rgba(0, 0, 0, 0.42); stroke-width: 1.6; }
+.ps-c1-root {
+  --ps-c1-ground: #0A1628;
+  --ps-c1-plinth-face: #0C1A2E;
+  --ps-c1-plinth-edge: rgba(255, 255, 255, 0.16);
+  --ps-c1-plinth-shade: rgba(0, 0, 0, 0.55);
+}
+/* Stones are LIGHTER than the wall: light falls on the arch face. */
+.ps-c1-stone-a  { stop-color: #4E7099; }
+.ps-c1-stone-mid{ stop-color: #33507A; }
+.ps-c1-stone-b  { stop-color: #1B2E4A; }
+.ps-c1-beyond-a { stop-color: #0D1B30; }
+.ps-c1-beyond-b { stop-color: #050C16; }
 
 /* ── LIGHT (override) ──────────────────────────────────────── */
-[data-theme="light"] .ps-c1-root { --ps-c1-veil: #E8EDF3; }
-[data-theme="light"] .ps-c1-wall-a   { stop-color: #DCE4EE; }
-[data-theme="light"] .ps-c1-wall-b   { stop-color: #B9C6D6; }
-/* The ring stays dark: this is the near-white fix, not a styling choice. */
-[data-theme="light"] .ps-c1-stone-a  { stop-color: #20406A; }
-[data-theme="light"] .ps-c1-stone-b  { stop-color: #0A1628; }
-/* The passage stays dark too: you look INTO a passage. */
-[data-theme="light"] .ps-c1-beyond-a { stop-color: #16294A; }
-[data-theme="light"] .ps-c1-beyond-b { stop-color: #070F1C; }
-[data-theme="light"] .ps-c1-joints line { stroke: rgba(0, 0, 0, 0.30); }
+[data-theme="light"] .ps-c1-root {
+  --ps-c1-ground: #EEF2F7;
+  --ps-c1-plinth-face: #D6DFEA;
+  --ps-c1-plinth-edge: rgba(255, 255, 255, 0.85);
+  --ps-c1-plinth-shade: rgba(10, 22, 40, 0.22);
+}
+[data-theme="light"] .ps-c1-wall {
+  background-color: #B5C3D4;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(10, 22, 40, 0.17) 0 1.5px,
+      transparent 1.5px 48px
+    ),
+    linear-gradient(160deg, #C9D5E3 0%, #A7B7CA 100%);
+}
+/* Same stone as the wall, ~12% lighter. NOT navy — see the rule above. */
+[data-theme="light"] .ps-c1-stone-a  { stop-color: #FBFDFF; }
+[data-theme="light"] .ps-c1-stone-mid{ stop-color: #E7EEF6; }
+[data-theme="light"] .ps-c1-stone-b  { stop-color: #DCE6F1; }
+/* The void stays dark in light theme. This is the card's dark mass. */
+[data-theme="light"] .ps-c1-beyond-a { stop-color: #47648A; }
+[data-theme="light"] .ps-c1-beyond-b { stop-color: #29456A; }
+
+/* The joints between voussoirs. With the stones now close in value to the
+   wall, the blocks need an edge or the ring dissolves. */
+.ps-c1-vou { stroke: rgba(0, 0, 0, 0.28); stroke-width: 0.9; }
+[data-theme="light"] .ps-c1-vou { stroke: rgba(10, 22, 40, 0.30); }
 
 /* ── MOTION — reveals ONCE and settles ─────────────────────────
-   Zero @keyframes, transitions only, gated on the single `in-view` class the
-   shared `useRevealOnce` observer adds once at threshold 0.25 and never
-   removes (with a 1200ms failsafe so the card can never render empty).
-
-   The beat: the voussoirs settle inward from the springing, staggered by
-   distance from the crown, and THEN the keystone drops in and locks the arch.
-   One reveal, then still — no looping, no continuous motion. */
+   Zero @keyframes, transitions only, gated on the `in-view` class the
+   card-scoped observer adds once (see `usePsC1Reveal`). The voussoirs settle
+   inward staggered by distance from the crown, THEN the keystone drops in and
+   locks the arch. One reveal, then still. */
 .ps-c1-vou {
   opacity: 0;
   transform: translateY(-9px);
   transform-box: view-box;
   transition:
-    opacity 360ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--i) * 70ms),
-    transform 380ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--i) * 70ms);
+    opacity 380ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--i) * 140ms),
+    transform 400ms cubic-bezier(0.165, 0.84, 0.44, 1) calc(var(--i) * 140ms);
 }
 
 .ps-c1-key {
   opacity: 0;
-  transform: translateY(-40px);
+  transform: translateY(-42px);
   transform-box: view-box;
   transition:
-    opacity 280ms 640ms,
-    transform 520ms cubic-bezier(0.165, 0.84, 0.44, 1) 640ms;
+    opacity 320ms 980ms,
+    transform 600ms cubic-bezier(0.165, 0.84, 0.44, 1) 980ms;
 }
 
 .ps-c1-root.in-view .ps-c1-vou,
@@ -2495,9 +2545,9 @@
   transform: translateY(0);
 }
 
-/* Reduced motion is handled TWICE — the JS hook short-circuits and adds
-   `in-view` immediately, and this block pins every gated element to its
-   FINISHED frame. Nothing may ever be left permanently invisible. */
+/* Reduced motion is handled TWICE — the hook short-circuits and adds `in-view`
+   immediately, and this pins every gated element to its FINISHED frame.
+   Nothing may ever be left permanently invisible. */
 @media (prefers-reduced-motion: reduce) {
   .ps-c1-vou,
   .ps-c1-key {
