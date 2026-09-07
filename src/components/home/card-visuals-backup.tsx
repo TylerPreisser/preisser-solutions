@@ -592,7 +592,7 @@ export function DashboardVisual() {
       <svg
         className="ps-c1-svg"
         viewBox="0 0 400 400"
-        preserveAspectRatio="xMidYMin meet"
+        preserveAspectRatio="xMidYMin slice"
         focusable="false"
       >
         <defs>
@@ -617,10 +617,23 @@ export function DashboardVisual() {
             <stop offset="55%" className="ps-c1-stone-mid" />
             <stop offset="100%" className="ps-c1-stone-b" />
           </linearGradient>
-          <radialGradient id="ps-c1-beyond" cx="0.5" cy="0.9" r="0.95">
+          {/* VERTICAL, and this is the difference between a passage and a slab.
+              A flat mid-tone fill bounded by an equally crisp edge on every
+              side reads as a solid object standing IN FRONT of the wall — and
+              with the plinth beneath it, as a headstone. Grading the value
+              down the opening (darkest at the crown where no light reaches,
+              lifting toward the floor) reads as depth, so the eye travels
+              THROUGH rather than stopping on a surface. userSpaceOnUse so the
+              ramp is measured in the arch's own coordinates, not the path's
+              bounding box. */}
+          <linearGradient
+            id="ps-c1-beyond"
+            gradientUnits="userSpaceOnUse"
+            x1="200" y1="98" x2="200" y2="400"
+          >
             <stop offset="0%" className="ps-c1-beyond-a" />
             <stop offset="100%" className="ps-c1-beyond-b" />
-          </radialGradient>
+          </linearGradient>
           <linearGradient id="ps-c1-key" x1="0.2" y1="0" x2="0.8" y2="1">
             <stop offset="0%" stopColor="#4FA8FF" />
             <stop offset="60%" stopColor="#1590FF" />

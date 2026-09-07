@@ -2419,22 +2419,6 @@
   display: block;
 }
 
-/* FULL BLEED AT NARROW WIDTHS.
-   `meet` guarantees the keystone is never cropped, but at <=700px it also
-   letterboxes the arch into the middle of the frame, where it floats as an
-   isolated ring in a striped field — the badge/gauge idiom the whole design
-   exists to avoid. Scaling the SVG up past the frame restores the bleed
-   (springing runs off both edges) WITHOUT reintroducing `slice`, which is what
-   sliced the keystone off the top edge at 600px.
-   Origin is above centre so the growth pushes the arch sideways and down,
-   never up over the crown. */
-@media (max-width: 700px) {
-  .ps-c1-svg {
-    transform: scale(1.42);
-    transform-origin: 50% 26%;
-  }
-}
-
 /* ── THE PLINTH ──
    The base course the wall stands on. Architectural, not a scrim: a solid
    band with a crisp top edge, so the arch's legs terminate ON something. It
@@ -2483,8 +2467,8 @@
 .ps-c1-stone-a  { stop-color: #4E7099; }
 .ps-c1-stone-mid{ stop-color: #33507A; }
 .ps-c1-stone-b  { stop-color: #1B2E4A; }
-.ps-c1-beyond-a { stop-color: #0D1B30; }
-.ps-c1-beyond-b { stop-color: #050C16; }
+.ps-c1-beyond-a { stop-color: #04090F; }
+.ps-c1-beyond-b { stop-color: #2B4362; }
 
 /* ── LIGHT (override) ──────────────────────────────────────── */
 [data-theme="light"] .ps-c1-root {
@@ -2508,8 +2492,8 @@
 [data-theme="light"] .ps-c1-stone-mid{ stop-color: #E7EEF6; }
 [data-theme="light"] .ps-c1-stone-b  { stop-color: #DCE6F1; }
 /* The void stays dark in light theme. This is the card's dark mass. */
-[data-theme="light"] .ps-c1-beyond-a { stop-color: #47648A; }
-[data-theme="light"] .ps-c1-beyond-b { stop-color: #29456A; }
+[data-theme="light"] .ps-c1-beyond-a { stop-color: #16304F; }
+[data-theme="light"] .ps-c1-beyond-b { stop-color: #93A8C1; }
 
 /* The joints between voussoirs. With the stones now close in value to the
    wall, the blocks need an edge or the ring dissolves. */
