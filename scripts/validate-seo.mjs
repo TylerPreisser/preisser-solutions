@@ -172,6 +172,203 @@ function pillarGateFail(lines) {
 }
 
 // ---------------------------------------------------------------------------
+// 0. SOURCE PREFLIGHT — no em dashes in rendered copy, per ADR-0009 decision 5
+//    (added 2026-09-06)
+//
+// WHY THIS RUNS BEFORE THE BUILD-FRESHNESS INTERLOCK BELOW
+//
+// Same reasoning as the pillar-name gate above: this grades SOURCE, not out/,
+// so build staleness cannot make its answer wrong, and it is at its most
+// useful on exactly the tree the interlock rejects — copy edited, out/ not
+// rebuilt yet.
+//
+// WHAT IT ENFORCES
+//
+// ADR-0009 decision 5: "No em dashes anywhere in the restored copy; commas and
+// colons only. The site is at zero site-wide and stays there." Commit 63398ef
+// took the tree to zero and its message recorded the standing scope: the only
+// em dashes left were "in source comments and one regex in
+// src/app/site-map/page.tsx that strips em dashes from page titles".
+//
+// The rule then rotted anyway. `8c7c955` ("rebuild homepage") reintroduced 31
+// em dashes into src/components/home/service-pillars.tsx, and the live apex
+// served them for two days, because nothing in this validator looked. An ADR
+// that only a human remembers is not enforced — hence a check that fails the
+// build.
+//
+// SCOPE, AND WHY IT IS src/ ONLY
+//
+// src/ is where rendered copy lives. Deliberately NOT scanned:
+//   - source comments        — not user-visible; the tree holds ~1,700 of them
+//                              and the ADR governs copy, not commentary.
+//   - regex literals         — src/app/site-map/page.tsx:92,175 match ON an em
+//                              dash to strip it from page titles. Flagging the
+//                              tool that enforces the rule would be perverse.
+//   - functions/             — server code. The em dashes there are an empty
+//                              field placeholder in the notification email to
+//                              the owner and a comment inside a robots.txt
+//                              body: owner- and machine-facing, not site copy.
+//                              They predate the zero-site-wide state and were
+//                              left in place by 63398ef.
+//   - public/                — llms.txt, llms-full.txt, ai.txt, feed.xml and
+//                              the .well-known set are machine-facing and were
+//                              likewise untouched by 63398ef. Bringing them in
+//                              scope is a copy decision for the owner, not
+//                              something to smuggle in via a lint rule.
+//
+// EN DASHES (U+2013) ARE NOT CHECKED. The ADR names em dashes only, and the
+// site's en dashes are all numeric ranges ("6am–9pm", "7–15 documents"), which
+// is correct typography. Widening this to U+2013 would be inventing a rule the
+// owner never set.
+// ---------------------------------------------------------------------------
+function copyGateFail(lines) {
+  for (const line of lines) console.log(line);
+  console.log("");
+  console.log("---------------------------------------------------------------");
+  console.log("❌ SEO validation aborted: em dashes in rendered copy");
+  console.log("---------------------------------------------------------------");
+  process.exit(1);
+}
+
+const EM_DASH = "—";
+const COPY_DIR = path.join(PROJECT_ROOT, "src");
+const COPY_EXTS = new Set([".ts", ".tsx"]);
+
+/**
+ * Every em dash in `source` that can reach a visitor's screen, as
+ * `{ line, snippet }`.
+ *
+ * Skips comments and regex literals and flags EVERYTHING else, rather than
+ * looking only inside string literals. Copy reaches the page two ways in this
+ * codebase — as a quoted string in a data object and as bare JSX text between
+ * tags — and a string-only scan would be blind to the second. An em dash can
+ * appear in neither an identifier nor a number, so "not a comment and not a
+ * regex" is the whole of the user-visible surface.
+ */
+function findRenderedEmDashes(source) {
+  const hits = [];
+  const n = source.length;
+  let i = 0;
+  let line = 1;
+  // Last significant code character, to tell a regex literal `/.../` from a
+  // division operator. `a / b` cannot start a regex; `.replace(/.../)` can.
+  let prevSig = "";
+
+  const record = (at) => {
+    const from = source.lastIndexOf("\n", at) + 1;
+    let to = source.indexOf("\n", at);
+    if (to === -1) to = n;
+    hits.push({ line, snippet: source.slice(from, to).trim() });
+  };
+
+  while (i < n) {
+    const c = source[i];
+    const nx = i + 1 < n ? source[i + 1] : "";
+
+    if (c === "\n") { line += 1; i += 1; continue; }
+
+    if (c === "/" && nx === "/") {
+      while (i < n && source[i] !== "\n") i += 1;
+      continue;
+    }
+    if (c === "/" && nx === "*") {
+      i += 2;
+      while (i < n && !(source[i] === "*" && source[i + 1] === "/")) {
+        if (source[i] === "\n") line += 1;
+        i += 1;
+      }
+      i += 2;
+      continue;
+    }
+    if (c === "/" && !/[A-Za-z0-9_$)\]]/.test(prevSig)) {
+      i += 1;
+      let inClass = false;
+      while (i < n) {
+        const d = source[i];
+        if (d === "\\") { i += 2; continue; }
+        if (d === "\n") { line += 1; break; }
+        if (d === "[") inClass = true;
+        else if (d === "]") inClass = false;
+        else if (d === "/" && !inClass) { i += 1; break; }
+        i += 1;
+      }
+      prevSig = "/";
+      continue;
+    }
+    if (c === '"' || c === "'" || c === "`") {
+      i += 1;
+      while (i < n) {
+        const d = source[i];
+        if (d === "\\") { i += 2; continue; }
+        if (d === c) { i += 1; break; }
+        if (d === "\n") line += 1;
+        if (d === EM_DASH) record(i);
+        i += 1;
+      }
+      prevSig = c;
+      continue;
+    }
+    if (c === EM_DASH) record(i);
+    if (!/\s/.test(c)) prevSig = c;
+    i += 1;
+  }
+  return hits;
+}
+
+function walkCopyFiles(dir, acc = []) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) walkCopyFiles(full, acc);
+    else if (COPY_EXTS.has(path.extname(entry.name))) acc.push(full);
+  }
+  return acc;
+}
+
+{
+  const copyFiles = walkCopyFiles(COPY_DIR).sort();
+  if (copyFiles.length === 0) {
+    copyGateFail([
+      "❌ EM DASHES: found no source files under src/, so the copy is UNVERIFIED.",
+      "   An unreadable gate must fail, not pass silently.",
+    ]);
+  }
+
+  const offenders = [];
+  for (const file of copyFiles) {
+    const rel = path.relative(PROJECT_ROOT, file);
+    for (const hit of findRenderedEmDashes(fs.readFileSync(file, "utf8"))) {
+      offenders.push({ rel, ...hit });
+    }
+  }
+
+  if (offenders.length > 0) {
+    const files = new Set(offenders.map((o) => o.rel));
+    const lines = [
+      `❌ EM DASHES: ${offenders.length} em dash(es) in rendered copy across ${files.size} file(s).`,
+      "",
+      "   ADR-0009 decision 5: no em dashes anywhere in the site's copy, commas",
+      "   and colons only. The site is at zero site-wide and stays there.",
+      "",
+    ];
+    for (const o of offenders) {
+      lines.push(`   ${o.rel}:${o.line}`);
+      lines.push(`     ${o.snippet.length > 160 ? `${o.snippet.slice(0, 157)}...` : o.snippet}`);
+    }
+    lines.push("");
+    lines.push("   Replace each with the punctuation the sentence actually wants: a colon");
+    lines.push("   where the dash introduces a list or an explanation, a comma for a light");
+    lines.push("   aside, parentheses for a true parenthetical, or a full stop where it is");
+    lines.push("   splicing two independent clauses. Do NOT blanket-substitute.");
+    copyGateFail(lines);
+  }
+
+  console.log(
+    `✅ no em dashes in rendered copy — ${copyFiles.length} source files under src/ ` +
+      "clean (ADR-0009 decision 5; comments and regex literals excluded)",
+  );
+}
+
+// ---------------------------------------------------------------------------
 // 0. BUILD-FRESHNESS INTERLOCK (added 2026-09-05)
 //
 // This runs BEFORE every other check and exits the process the moment it trips.

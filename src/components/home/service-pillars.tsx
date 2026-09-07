@@ -159,38 +159,38 @@ const services: ServicePillar[] = [
       {
         title: "Your Whole Business on One Screen",
         description:
-          "The five or six numbers that actually decide your week — jobs, invoices, payments, who owes you — pulled from the systems you already run and updated on their own. It opens on your phone.",
+          "The five or six numbers that actually decide your week (jobs, invoices, payments, who owes you), pulled from the systems you already run and updated on their own. It opens on your phone.",
         href: "/web-applications",
         icon: <IconOneScreenKpis />,
       },
       {
         title: "The Business Runs the Week You're Not There",
         description:
-          "Approvals, pricing rules, who's on what job — the decisions that currently live in your head get written into the system, so the work keeps moving on the week you're gone.",
+          "Approvals, pricing rules, who's on what job: the decisions that currently live in your head get written into the system, so the work keeps moving on the week you're gone.",
         icon: <IconWeekRunsWithoutYou />,
       },
       {
         title: "When Someone Leaves, Their Access Leaves With Them",
         description:
-          "Everyone gets their own login and only the screens their job needs. The day they go you take it back in one click — and you can show exactly what they could see while they were here.",
+          "Everyone gets their own login and only the screens their job needs. The day they go you take it back in one click, and you can show exactly what they could see while they were here.",
         icon: <IconLoginRevoked />,
       },
       {
         title: "The Spreadsheet Everyone's Afraid to Touch",
         description:
-          "The workbook half the company runs on becomes a system with real logins, real history and rules you can see — so more than one person can safely operate it and nobody has to work out which copy is the real one.",
+          "The workbook half the company runs on becomes a system with real logins, real history and rules you can see, so more than one person can safely operate it and nobody has to work out which copy is the real one.",
         icon: <IconSpreadsheetToSystem />,
       },
       {
         title: "Whoever Answers the Phone Has the Whole History",
         description:
-          "One record per customer carrying every quote, job, invoice, note and photo — so the person picking up can answer \"what did you do for us last spring\" without digging through email, the shared drive and the old system.",
+          "One record per customer carrying every quote, job, invoice, note and photo, so the person picking up can answer \"what did you do for us last spring\" without digging through email, the shared drive and the old system.",
         icon: <IconCustomerHistoryOnCall />,
       },
       {
         title: "It Stops Living in One Person's Head",
         description:
-          "The quote logic, the pricing rules, the checklist, the approval path — built into the software as steps the system requires, so the process survives the person and a new hire can run it in their first week.",
+          "The quote logic, the pricing rules, the checklist, the approval path: built into the software as steps the system requires, so the process survives the person and a new hire can run it in their first week.",
         icon: <IconProcessOutOfHead />,
       },
       {
@@ -271,20 +271,20 @@ const services: ServicePillar[] = [
       {
         title: "Your Systems Talk to Each Other Instead of Somebody Retyping",
         description:
-          "Entered once and it shows up everywhere it's needed — the won deal becomes the scheduled job, the supplier invoice's numbers land against the order, and the customer never gets asked for their address a third time. Anything that doesn't match gets flagged instead of going in silently wrong.",
+          "Entered once and it shows up everywhere it's needed: the won deal becomes the scheduled job, the supplier invoice's numbers land against the order, and the customer never gets asked for their address a third time. Anything that doesn't match gets flagged instead of going in silently wrong.",
         href: "/business-automation",
         icon: <IconEnteredOnce />,
       },
       {
         title: "The Last Week of Every Month Stops Disappearing",
         description:
-          "Bank activity, payments and invoices matched overnight, with only the handful that genuinely don't line up put in front of a person — and every automatic match re-checked on the exact amount before it's accepted.",
+          "Bank activity, payments and invoices matched overnight, with only the handful that genuinely don't line up put in front of a person, and every automatic match re-checked on the exact amount before it's accepted.",
         icon: <IconTwoListsReconciled />,
       },
       {
         title: "Nothing That Comes In at 9pm Waits Until Morning",
         description:
-          "Every after-hours enquiry gets an acknowledgement straight away and is sorted by urgency — a real emergency reaches a person, everything else is queued with its context for the morning, with follow-up that keeps going until someone replies.",
+          "Every after-hours enquiry gets an acknowledgement straight away and is sorted by urgency: a real emergency reaches a person, everything else is queued with its context for the morning, with follow-up that keeps going until someone replies.",
         icon: <IconAfterHoursTriage />,
       },
       // --- Proposals and Contracts That Build Themselves From the Job ---
@@ -294,13 +294,13 @@ const services: ServicePillar[] = [
       {
         title: "Proposals and Contracts That Build Themselves From the Job",
         description:
-          "The document is generated from the real record with the right pricing and terms already in it, sent for signature and filed against the job — so nothing goes out as last week's proposal with the names changed.",
+          "The document is generated from the real record with the right pricing and terms already in it, sent for signature and filed against the job, so nothing goes out as last week's proposal with the names changed.",
         icon: <IconDocumentFromRecord />,
       },
       {
         title: "Nothing Expires Without You Knowing Weeks Ahead",
         description:
-          "Every certificate, licence, insurance renewal and contract date tracked in one place, with the warning early enough to act on and the renewal assigned to a named person — instead of finding out at a customer's gate.",
+          "Every certificate, licence, insurance renewal and contract date tracked in one place, with the warning early enough to act on and the renewal assigned to a named person, instead of finding out at a customer's gate.",
         icon: <IconExpiryEarlyWarning />,
       },
       // --- Nothing Goes Out to a Customer at 3am That You Haven't Seen ---
@@ -310,7 +310,7 @@ const services: ServicePillar[] = [
       {
         title: "Nothing Goes Out to a Customer at 3am That You Haven't Seen",
         description:
-          "Every automated message is held at a gate you open deliberately. Until you do, it comes to you instead — with the real recipient named in the subject, so you see exactly what the system was about to do. Visible, never quietly dropped.",
+          "Every automated message is held at a gate you open deliberately. Until you do, it comes to you instead, with the real recipient named in the subject, so you see exactly what the system was about to do. Visible, never quietly dropped.",
         icon: <IconGuardrailList />,
       },
     ],
@@ -380,7 +380,7 @@ const services: ServicePillar[] = [
       {
         title: "Ask a Question About Your Own Business, Get the Real Number",
         description:
-          "Ask in plain English — how did last month go, who hasn't paid, which crew is behind — and get the answer off your live data with the figures behind it, so you can check it instead of trusting it.",
+          "Ask in plain English (how did last month go, who hasn't paid, which crew is behind) and get the answer off your live data with the figures behind it, so you can check it instead of trusting it.",
         icon: <IconPlainEnglishQuery />,
       },
       {
@@ -397,13 +397,13 @@ const services: ServicePillar[] = [
       {
         title: "It Reads the Paperwork, Then Checks Every Number Against the Page",
         description:
-          "The model pulls the figures out of the invoice, the form or the contract, and a second pass proves every one of them appears literally in the document before anyone sees it. Anything that doesn't match goes to a person — never a plausible guess.",
+          "The model pulls the figures out of the invoice, the form or the contract, and a second pass proves every one of them appears literally in the document before anyone sees it. Anything that doesn't match goes to a person, never a plausible guess.",
         icon: <IconNumberVerification />,
       },
       {
         title: "Put the AI on the Paperwork, Not in Front of Your Customers",
         description:
-          "The chasing, the retyping, the filing and the summarising get automated. The person who calls your business still gets a person — because that is what they came to you for.",
+          "The chasing, the retyping, the filing and the summarising get automated. The person who calls your business still gets a person, because that is what they came to you for.",
         icon: <IconAiOnPaperworkHumanOnPhone />,
       },
       {
@@ -507,7 +507,7 @@ const services: ServicePillar[] = [
       {
         title: "Change Your Own Hours, Prices and Photos in a Minute",
         description:
-          "The things that actually change — hours, prices, staff, service areas, photos — you edit yourself from a screen and it's live. No email to a guy, no three-day wait, no invoice for fixing a phone number.",
+          "The things that actually change (hours, prices, staff, service areas, photos), you edit yourself from a screen and it's live. No email to a guy, no three-day wait, no invoice for fixing a phone number.",
         href: "/services/website-redesign",
         icon: <IconEditOwnCopy />,
       },
@@ -531,32 +531,32 @@ const services: ServicePillar[] = [
       {
         title: "What Happens on Your Site Shows Up Where You Actually Work",
         description:
-          "A form or a booking on your site lands in the CRM, calendar or inbox the business already runs on — assigned to a person, with a state you can mark handled, not on an island and not in a shared inbox nobody opens.",
+          "A form or a booking on your site lands in the CRM, calendar or inbox the business already runs on: assigned to a person, with a state you can mark handled, not on an island and not in a shared inbox nobody opens.",
         icon: <IconFormToRecord />,
       },
       {
         title: "See Exactly Where People Give Up, and Fix That Step",
         description:
-          "Your own analytics on the three pages that matter, read back to you as a plain story of where people quit — then one change to that spot, and the number after it.",
+          "Your own analytics on the three pages that matter, read back to you as a plain story of where people quit, then one change to that spot, and the number after it.",
         href: "/services/conversion-optimization",
         icon: <IconFunnelDropOff />,
       },
       {
         title: "A Site That Produces Something You Can Count",
         description:
-          "Pick the one outcome that matters — calls, booked jobs, quote requests — wire the site to it, and get that number every month next to last month's. A good-looking brochure is not the goal.",
+          "Pick the one outcome that matters (calls, booked jobs, quote requests), wire the site to it, and get that number every month next to last month's. A good-looking brochure is not the goal.",
         icon: <IconCountedOutcome />,
       },
       {
         title: "We'll Tell You If Your Site Is Fine. Sometimes It Is.",
         description:
-          "An honest written look at what is actually wrong, that is allowed to end with \"keep it and change these three things\" — instead of every quote turning out to be a rebuild.",
+          "An honest written look at what is actually wrong, that is allowed to end with \"keep it and change these three things\", instead of every quote turning out to be a rebuild.",
         icon: <IconHonestSiteAudit />,
       },
       {
         title: "Hand Your Phone to a Customer Without Wincing",
         description:
-          "Checked on the phone sizes your customers actually hold, with tap targets you can hit and type you can read — and the screenshots to show you it was checked.",
+          "Checked on the phone sizes your customers actually hold, with tap targets you can hit and type you can read, and the screenshots to show you it was checked.",
         icon: <IconPhoneTapTargets />,
       },
     ],
@@ -612,7 +612,7 @@ const services: ServicePillar[] = [
       {
         title: "Google Says Be Careful Who You Hire for This. We'll Show You the Page.",
         description:
-          "Google's own guidance warns you about anyone promising rankings or claiming inside access to its systems. We'll put that page in front of you and explain, in plain English, what we're doing and why — with no proprietary scores.",
+          "Google's own guidance warns you about anyone promising rankings or claiming inside access to its systems. We'll put that page in front of you and explain, in plain English, what we're doing and why, with no proprietary scores.",
         icon: <IconOfficialGuidance />,
       },
       // --- We Ask ChatGPT About Your Business and Show You What It Says ---
@@ -629,7 +629,7 @@ const services: ServicePillar[] = [
       {
         title: "When AI Gets Your Address, Hours or Services Wrong, We Fix the Source",
         description:
-          "We correct what the assistants are reading — your Google profile, the directories, and the plain statements of fact on your own pages — then re-check and show you what changed.",
+          "We correct what the assistants are reading (your Google profile, the directories, and the plain statements of fact on your own pages), then re-check and show you what changed.",
         icon: <IconFixTheSource />,
       },
       // --- First We Make Your Ads Countable. Then We Stop Paying for Clicks That Never Call. ---
@@ -639,7 +639,7 @@ const services: ServicePillar[] = [
       {
         title: "First We Make Your Ads Countable. Then We Stop Paying for Clicks That Never Call.",
         description:
-          "Conversion tracking before anything else, then the search terms actually buying you clicks, reported as cost per real enquiry — with the platforms whose numbers aren't comparable saying so on their face.",
+          "Conversion tracking before anything else, then the search terms actually buying you clicks, reported as cost per real enquiry, with the platforms whose numbers aren't comparable saying so on their face.",
         href: "/services/paid-ads",
         icon: <IconAdsMadeCountable />,
       },
@@ -652,14 +652,14 @@ const services: ServicePillar[] = [
       {
         title: "Being Found Isn't Being Quoted",
         description:
-          "Getting your page fetched is not the same as getting your business named in the answer. We write the pages so they can be quoted — direct answers, real numbers, comparisons, the actual steps.",
+          "Getting your page fetched is not the same as getting your business named in the answer. We write the pages so they can be quoted: direct answers, real numbers, comparisons, the actual steps.",
         icon: <IconCitedVsAnswer />,
       },
       // --- We Report Booked Work, Not Rankings — and What We Couldn't See ---
       // SHIPPED for the brief and its named blind spots. NOT warranted: any claim that
       // a model is involved -- the brief is deterministic SQL, no model participates.
       {
-        title: "We Report Booked Work, Not Rankings — and What We Couldn't See",
+        title: "We Report Booked Work, Not Rankings (and What We Couldn't See)",
         description:
           "The monthly report starts with enquiries and booked jobs, names who did the work and what they did, and says out loud where the numbers were missing instead of quietly leaving a gap.",
         icon: <IconBookedWorkReport />,

@@ -144,7 +144,7 @@ export function Footer() {
     const startedAt = firstInteraction.current;
     if ((startedAt === null || Date.now() - startedAt < MIN_FILL_MS) && !confirmed) {
       setConfirmed(true);
-      setError("That was quick — press Subscribe once more to confirm you're human.");
+      setError("That was quick. Press Subscribe once more to confirm you're human.");
       return;
     }
 
