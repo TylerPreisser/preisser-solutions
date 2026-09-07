@@ -31,6 +31,18 @@
  */
 
 import React, { useEffect, useRef, useState } from "react";
+// Card 2's braided-river geometry. Generated at BUILD time by a seeded PRNG
+// (proto-lead/gen.mjs) and shipped as static literals, so nothing in this
+// module calls Math.random() during render — that would desync SSR hydration.
+import {
+  C2_VIEWBOX,
+  C2_ENVELOPE,
+  C2_BANK_SHADOW,
+  C2_BANK_LIT,
+  C2_BARS,
+  C2_TERRACES,
+  C2_SCOURS,
+} from "./c2-braided-paths";
 
 /* ─────────────────────────────────────────────────────────────
    VISUAL 1 — Websites & Applications
@@ -249,292 +261,732 @@ function V4Lock() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CARD 3 — AI Integration.  "The page fills the form in by itself."
+   CARD 3 — AI Integration.  "THE GRAFT."
 
-   Pain, in the owner's own words, service-pillars.tsx:352 (`painPoints[0]`,
-   and already the selected `hookIndex: 0` at :349):
-     "Someone here retypes the same information off a PDF every single day."
+   A grafted stem drawn as a FLAT GRAPHIC, not as a photograph. An old
+   rootstock rises from the bottom edge and is cut on a long diagonal; a
+   paler scion is set on that cut and carries on upward; the contact line
+   between them is lit; three binding straps hold the union; new leaves come
+   off the scion's own sides.
 
-   Subject: a PDF the visitor RECEIVED. Not our assistant, not our chat, not
-   our approval queue. The AI is depicted by BEHAVIOUR - the page is read into
-   the record, in order, once - never by iconography. No sparkle, no bubble,
-   no first-person voice.
+   WHY IT IS FLAT, AND THIS IS THE WHOLE POINT OF THIS VERSION.
+   This card was drawn SEVEN times as a dimensional object and misread every
+   single time — rocket, lighthouse, zipper, zipper, ribbed hose, chimney,
+   vase. Every one of those is a misread of a ROUND THING FAKED IN SVG. The
+   two cards on this page that succeeded both chose natively flat subjects (a
+   river seen from the air; a field of marks around a disc), where flatness is
+   the correct treatment rather than a compromise.
+   So this version stops simulating round wood. No cylinder gradients, no
+   specular ridges, no fake bark relief. Flat silhouettes, one accent, and the
+   shapes doing the work — the way a woodcut or a botanical plate does it.
+   There is no dimensional object here to misread.
 
-   The capture marks are a soft FILL, never an outline. A rectangle outline on
-   a document is the universal sign for `flagged`, which is exactly how v3's
-   red-bordered block read. A tint behind the bar is the universal sign for
-   `highlighted while reading`. Same geometry, opposite meaning.
+   WHY IT MEANS "AI INTEGRATION". The old plant keeps its roots and its whole
+   history and the new growth is genuinely fed by them; the join is a callus,
+   not a bracket. AI built INTO the system a business already runs, rather
+   than bolted on beside it.
+
+   THE STILL IS THE DELIVERABLE. Two woods of different colour and width, a
+   lit contact line and a bound union — all readable with no motion at all.
+
+   VALUE IS GUARANTEED, NOT ASSUMED. A previous version's rootstock vanished
+   at 768 and 390 — near-black on near-black in dark theme and near-white on
+   near-white in light. Flat fills make that measurable and fixable: the stock
+   holds a deliberate step against the card ground in BOTH themes, and it is
+   verified by sampling pixels rather than by looking.
+
+   NO Math.random ANYWHERE. Server-rendered; every strap and leaf is a literal.
    ───────────────────────────────────────────────────────────── */
 
-/* Body-bar widths on the received page. Rows 1,2,4,5 are the four that get
-   captured, so the marks are not a contiguous block - a reader should see the
-   page being read selectively, not a highlighter dragged down it. */
-const V4_PAGE_ROWS = [
-  { w: "88%", mark: 0 },
-  { w: "72%", mark: 1 },
-  { w: "54%", mark: -1 },
-  { w: "80%", mark: 2 },
-  { w: "66%", mark: 3 },
-  { w: "44%", mark: -1 },
-  { w: "82%", mark: -1 },
-  { w: "60%", mark: -1 },
-  { w: "76%", mark: -1 },
-  { w: "84%", mark: -1 },
-  { w: "58%", mark: -1 },
-  { w: "70%", mark: -1 },
-  { w: "48%", mark: -1 },
-  { w: "78%", mark: -1 },
+/* Binding straps across the union. Flat bars, no highlight — the tape is the
+   least meaningful thing on the card and an earlier version let it become the
+   loudest object on it. */
+const C3_STRAPS = [
+  { y: 288, h: 7 }, { y: 305, h: 7 },
 ] as const;
 
+/* Leaves, as flat blades on their own short stems, coming off the SCION's
+   sides. `ax/ay` is where the stem leaves the stem, `a` the blade angle,
+   `l` its length. */
+const C3_LEAVES = [
+  { ax: 181, ay: 158, a: -142, l: 42 }, { ax: 158, ay: 120, a: -163, l: 31 },
+  { ax: 213, ay: 152, a: -101, l: 27 }, { ax: 211, ay: 96, a: -68, l: 36 },
+  { ax: 251, ay: 158, a: 38, l: 45 }, { ax: 273, ay: 118, a: 16, l: 33 },
+] as const;
+
+/* A leaf blade: two symmetric arcs meeting at a point at each end. */
+function c3Leaf(l: number) {
+  const b = l * 0.3;
+  return `M0 0 Q ${l * 0.44} ${-b} ${l} 0 Q ${l * 0.44} ${b} 0 0 Z`;
+}
+
+/* Card 3's OWN reveal hook. Deliberately NOT the shared `useRevealOnce`.
+
+   THE BUG IN THE SHARED HOOK: its 1200ms failsafe fires whether or not the
+   card is on screen. This card sits below the fold, so the whole reveal ran
+   on a timer at page load and had already locked before anyone scrolled to
+   it — correct choreography, permanently invisible.
+
+   THE SHARED HOOK IS NOT MODIFIED; cards 2 and 5 depend on it. Card 3 keeps
+   its own copy, with a viewport-CONDITIONAL net: simply lengthening a bare
+   timeout would move the same bug later rather than remove it. */
+function usePsC3Reveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+
+    let poll = 0;
+    const onScreen = () => {
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      return r.top < vh && r.bottom > 0;
+    };
+    const settle = () => {
+      if (onScreen()) {
+        el.classList.add("in-view");
+        observer.disconnect();
+        window.clearInterval(poll);
+      }
+    };
+    /* After the delay this reveals ONLY IF the element is actually on screen,
+       and otherwise re-checks. It still cannot strand the artwork invisible if
+       the observer never fires, and it cannot spend the entrance unwatched. */
+    const failsafe = window.setTimeout(() => {
+      settle();
+      if (!el.classList.contains("in-view")) poll = window.setInterval(settle, 400);
+    }, 8000);
+
+    return () => {
+      window.clearTimeout(failsafe);
+      window.clearInterval(poll);
+      observer.disconnect();
+    };
+  }, []);
+
+  return ref;
+}
+
 export function AutomationVisual() {
-  const containerRef = useRevealOnce<HTMLDivElement>();
+  const containerRef = usePsC3Reveal<HTMLDivElement>();
 
   return (
-    <div ref={containerRef} className="ps-v4-root ps-v4-root--read" aria-hidden="true">
-      <div className="ps-v4-read">
-        {/* LEFT ~54% - the page. Its bottom edge runs off the composition;
-            the crop passes through BARS ONLY, never through a glyph. That is
-            the rule card 4 obeys and the rule v3's ghost documents broke on
-            three separate edges. */}
-        <div className="ps-v4-sheets">
-          <div className="ps-v4-sheet ps-v4-sheet--back" />
-          <div className="ps-v4-sheet">
-            <span className="ps-v4-pdf">PDF</span>
-            <i className="ps-v4-pbar ps-v4-pbar--head" />
-            <i className="ps-v4-pbar ps-v4-pbar--sub" />
-            {/* A marked row is a bar INSIDE its highlight, never a bar with a
-                highlight positioned near it — sized independently the two drift
-                apart the moment the sheet changes width. */}
-            {V4_PAGE_ROWS.map((r, i) => (
-              <span className="ps-v4-prow" key={i}>
-                {r.mark >= 0 ? (
-                  <span className="ps-v4-hl" style={{ width: r.w, "--i": r.mark } as React.CSSProperties}>
-                    <i className="ps-v4-pbar" />
-                  </span>
-                ) : (
-                  <i className="ps-v4-pbar" style={{ width: r.w }} />
-                )}
-              </span>
-            ))}
-          </div>
-        </div>
+    <div ref={containerRef} className="ps-c3-root" aria-hidden="true">
+      <svg
+        className="ps-c3-svg"
+        viewBox="0 0 412 442"
+        preserveAspectRatio="xMidYMid slice"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          {/* Every id ps-c3- prefixed — five inline SVGs share this page and a
+              defs collision is SILENT. */}
 
-        {/* RIGHT ~46% - the record. Asymmetric against the page on purpose so
-            this card does not read as card 2 drawn twice. */}
-        <div className="ps-v4-panel ps-v4-panel--record">
-          <div className="ps-v4-chrome">
-            <span className="ps-v4-dots"><i /><i /><i /></span>
-            <span className="ps-v4-pill" />
-          </div>
-          <div className="ps-v4-rows">
-            {[0, 1, 2, 3].map((i) => (
-              <span className="ps-v4-row" key={i}>
-                <i className="ps-v4-label" />
-                <i className="ps-v4-slot ps-v4-slot--read"
-                   style={{ "--i": i } as React.CSSProperties} />
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
+          {/* ONE LIGHT, in USER SPACE, spanning the whole drawing. Each set
+              below samples this same coordinate space, so a strap near the top
+              and a strap near the bottom take different values from the SAME
+              lamp. With the default objectBoundingBox units each shape would
+              instead get its own identical copy and the set would read as
+              stamped repeats — the mechanical cause of "barrel hoops" and
+              "flat mint lozenges". DO NOT drop userSpaceOnUse from these. */}
+          <linearGradient id="ps-c3-stockgrad" gradientUnits="userSpaceOnUse" x1="120" y1="250" x2="300" y2="470">
+            <stop offset="0%" className="ps-c3-s-stk0" />
+            <stop offset="100%" className="ps-c3-s-stk1" />
+          </linearGradient>
+          <linearGradient id="ps-c3-sciongrad" gradientUnits="userSpaceOnUse" x1="160" y1="70" x2="270" y2="300">
+            <stop offset="0%" className="ps-c3-s-scn0" />
+            <stop offset="100%" className="ps-c3-s-scn1" />
+          </linearGradient>
+          <linearGradient id="ps-c3-strapgrad" gradientUnits="userSpaceOnUse" x1="130" y1="255" x2="290" y2="360">
+            <stop offset="0%" className="ps-c3-s-stp0" />
+            <stop offset="100%" className="ps-c3-s-stp1" />
+          </linearGradient>
+          <linearGradient id="ps-c3-leafgrad" gradientUnits="userSpaceOnUse" x1="130" y1="70" x2="300" y2="240">
+            <stop offset="0%" className="ps-c3-s-lf0" />
+            <stop offset="100%" className="ps-c3-s-lf1" />
+          </linearGradient>
+
+          <filter id="ps-c3-glow" x="-140%" y="-600%" width="380%" height="1300%">
+            <feGaussianBlur stdDeviation="9" />
+          </filter>
+        </defs>
+
+        {/* ── THE ROOTSTOCK. One flat silhouette, running off the bottom edge
+              and cut on a long diagonal. No gradient: this is the version that
+              stopped pretending to be round. ── */}
+        <path
+          className="ps-c3-stock"
+          d="M138 470 L146 296 L268 262 L276 470 Z"
+        />
+
+        {/* ── THE SCION. Narrower and paler, set on the diagonal and carrying
+              on upward. Different WIDTH and different VALUE — that is what
+              makes two members read as two. ── */}
+        <path
+          className="ps-c3-scion"
+          d="M186 292 L246 272 L238 198 L196 202 Z"
+        />
+
+        {/* ── THE CONTACT LINE. The idea of the card, and the brightest thing
+              on it. Everything else is subordinate to this. ── */}
+        <g className="ps-c3-join">
+          <path className="ps-c3-cambium-glow" d="M144 300 L270 264" filter="url(#ps-c3-glow)" />
+          <path className="ps-c3-cambium" d="M144 300 L270 264" />
+        </g>
+
+        {/* ── THE BINDING. Flat bars, quiet on purpose. ── */}
+        <g className="ps-c3-straps">
+          {C3_STRAPS.map((t, i) => (
+            <path
+              key={t.y}
+              className="ps-c3-strap"
+              style={{ "--i": i } as React.CSSProperties}
+              d={`M${140 + i * 1.6} ${t.y} L${272 - i * 1.4} ${t.y - 30} L${272 - i * 1.4} ${t.y - 30 + t.h} L${140 + i * 1.6} ${t.y + t.h} Z`}
+            />
+          ))}
+        </g>
+
+        {/* ── THE FORK. Three stems out of the scion's head. A branching top
+              is the one silhouette that cannot be read as an obelisk, and
+              nineteen versions of a straight tapering top were read as one
+              eight times running. ── */}
+        <g className="ps-c3-fork">
+          <path className="ps-c3-stem-main" d="M204 206 C192 176 168 142 142 98" />
+          <path className="ps-c3-stem-main" d="M215 204 C215 170 212 130 210 68" />
+          <path className="ps-c3-stem-main" d="M228 202 C242 176 266 140 290 94" />
+        </g>
+
+        {/* ── NEW GROWTH, at NODES on those stems. Proof the graft took. ── */}
+        <g className="ps-c3-leaves">
+          {C3_LEAVES.map((lf, i) => (
+            /* TWO NESTED GROUPS: a CSS `transform` on an SVG element REPLACES
+               its `transform` attribute rather than composing with it, so
+               placement and the animated scale cannot live on the same node —
+               they silently collapse to the SVG origin if they do. */
+            <g key={`${lf.ax}-${lf.ay}`} transform={`translate(${lf.ax} ${lf.ay}) rotate(${lf.a})`}>
+              <g className="ps-c3-leafgrp" style={{ "--i": i } as React.CSSProperties}>
+                <path className="ps-c3-stem" d={`M0 0 L ${lf.l * 0.26} 0`} />
+                <path className="ps-c3-leaf" d={c3Leaf(lf.l)} transform={`translate(${lf.l * 0.26} 0)`} />
+              </g>
+            </g>
+          ))}
+        </g>
+      </svg>
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CARD 2 — Business Automation.  "The same form, twice, by hand."
+   CARD 2 — Business Automation.  "Braided river."
 
    Pain, service-pillars.tsx:240 (`painPoints[1]`, selected `hookIndex: 1`):
      "We're still copying data between systems by hand."
 
-   WHY THIS IS A REWRITE AND NOT A TWEAK. The previous composition put two
-   equal panels side by side in a 34px gap and let the MOTION carry the whole
-   message: the left filled in five beats, the right in one. Photographed at
-   rest — which is what a reduced-motion visitor, a scrolled-past-and-back
-   visitor and every screenshot sees — it was two identical filled slabs and a
-   1.5px hairline. The meaning was 100% temporal, and a card whose meaning
-   evaporates when the transition ends has no meaning. Card 5 can be read from
-   a still. So must this one.
+   THE IMAGE. An aerial river delta. Twenty-odd threads of water enter at the
+   left, wander, split and rejoin, and consolidate rightward into ONE broad
+   channel that leaves the frame carrying everything. The land between is
+   navy, terraced with silt and scarred by channels the river has abandoned.
 
-   THE STILL, and it is the deliverable:
-     · The SAME form drawn twice, offset down-and-right like a misregistered
-       photocopy. Both sheets are the same size BY CONSTRUCTION (each is
-       inset from the opposite two edges of one box by the same offset), and
-       both carry the identical row rhythm and identical label widths, so the
-       back sheet's exposed rows sit a visible half-step above the front
-       sheet's. That misregistration is what says DUPLICATE. Two panels in a
-       gap say "two documents"; a duplicate-icon silhouette says "one thing,
-       entered twice", which is the pain.
-     · The back sheet is the record that already exists. The front sheet is
-       the copy a person is making of it — its later rows are still empty and
-       a TEXT CARET sits in the first one. The caret is the smallest element
-       on the card and the one that converts "two documents" into "somebody is
-       retyping this right now".
-     · Two favicon hues. LOAD-BEARING, NOT DECORATIVE — the only thing
-       carrying "different SYSTEMS" on a card with no sentences. An
-       implementer who harmonises these to one brand blue turns the card into
-       "one form, twice", which is nonsense. DO NOT HARMONISE.
+   THE IDEA. Twenty messy manual paths, each one somebody's undocumented
+   habit, resolve into a single channel that carries all of it.
 
-   THE RESOLUTION IS ADDITIVE, NEVER SUBTRACTIVE. Nothing that carries the
-   pain is animated away — the offset never closes, the duplicate never
-   merges. What arrives is the JOIN: a full-height rail down the seam where
-   the copy meets the record, and the empty rows filling behind it in one
-   beat. The rail is the payoff so it is drawn as the payoff — it is card 5's
-   own 2px `AI OVERVIEW` left rail, at sheet height, not the 34px hairline it
-   replaced.
+   WHY IT IS BUILT THIS WAY — the failure that produced this rebuild.
+   Three previous attempts drew the UI of an automation tool: browser chrome,
+   step rows on a spine, status chips, grey placeholder bars. The owner's
+   verdict was that they imaged a webpage rather than the title. So this card
+   contains no rectangle, no right angle, no straight line, no text and no
+   numeral. It is a landscape.
 
-   WORD BUDGET. 0 content words, 0 furniture labels, 1 placeholder domain —
-   `yourcompany.com`, the identical string cards 1, 4 and 5 carry. The old
-   composition spent zero, and paid for it: with no chrome title at all the
-   panels read as slabs rather than as windows, and card 2 was the only one of
-   the five with no family signal.
+   AND THE FAILURE INSIDE THE REBUILD, which matters more. The first pass drew
+   ~20 independent ribbons that CROSSED OVER one another. That reads as cable,
+   not water, because crossing is what cable does and merging is what water
+   does. A braided river seen from the air is ONE connected wet region with
+   elongated bars standing in it. So the geometry here is a single wet
+   envelope — wide and ragged upstream, one clean channel downstream — with
+   lens-shaped bars punched out of it. Dense bars upstream read as many
+   threads; their absence downstream reads as one channel. The convergence is
+   a property of the geometry rather than something choreographed, and nothing
+   can ever cross, because nothing is a separate ribbon.
+
+   SSR. Every path is a STATIC literal in `./c2-braided-paths`, generated at
+   build time by a seeded PRNG. Nothing here calls Math.random() during
+   render, which would desync server and client in this app.
+
+   MOTION. Zero @keyframes, by contract — the two cards the owner keeps have
+   none. One transform transition on a wash mask fills the river once, left to
+   right, and stops. It never loops.
    ───────────────────────────────────────────────────────────── */
 
-/* Label-bar widths. IDENTICAL in both sheets - that identity is the entire
-   argument. If the two forms differ, "copied by hand" evaporates. */
-const V4_FORM_ROWS = ["64%", "48%", "72%", "40%", "56%", "68%"] as const;
+/* CARD-SCOPED REVEAL GATE.  Deliberately NOT `useRevealOnce`.
 
-/* Rows 0..2 were typed by hand (they arrive one beat at a time, because a
-   person is doing it). Rows 3.. arrive together on the rail, because that is
-   not a person. The caret sits on row V4_TYPED — the first one still empty. */
-const V4_TYPED = 3;
+   The shared hook's 1200ms failsafe fires whether or not the card is on
+   screen, so on a page where this section sits below the fold the whole
+   reveal completes before anyone scrolls to it — correct choreography,
+   never seen. That is a nuisance for a card whose motion is decoration; it
+   is fatal for THIS one, whose entire idea is a wash filling left to right,
+   many threads becoming one. A visitor arriving after the failsafe sees only
+   the settled still — which is exactly the frame reviewers kept reading as
+   "a lake".
+
+   So: same contract, same `.in-view` class, threshold raised to 0.3, and the
+   safety net moved out to 8s — long enough that it is a genuine last resort
+   rather than a timer that beats the scroll. `useRevealOnce` is untouched:
+   cards 1, 3 and 5 depend on it and three teams are in this file. */
+function usePsC2Reveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    // Reduced motion short-circuits to the finished frame before the observer
+    // is ever built, so the art is never left invisible.
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+
+    /* THE FAILSAFE MUST BE GATED ON VISIBILITY, NOT ONLY ON TIME.
+       A bare timer — at 1200ms or at 8000ms — does not remove the failure, it
+       schedules it. A visitor reading the hero, on a slow connection, or on a
+       phone where this section sits further down, arrives after it has fired
+       and meets the settled still. That is the entire defect, just later.
+
+       So: after the delay, reveal ONLY if the card is actually on screen, and
+       otherwise keep looking every 400ms. It still cannot leave the artwork
+       permanently invisible if the observer never works — which is the only
+       thing a failsafe owes us — but it also cannot spend the entrance on an
+       empty room. This card's entrance IS its argument: a wash filling left to
+       right, many threads becoming one. Burning it unwatched loses the idea. */
+    let poll = 0;
+    const onScreen = () => {
+      const r = el.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
+    };
+    const settle = () => {
+      if (el.classList.contains("in-view")) return;
+      if (onScreen()) {
+        el.classList.add("in-view");
+        observer.disconnect();
+        return;
+      }
+      poll = window.setTimeout(settle, 400);
+    };
+    const failsafe = window.setTimeout(settle, 8000);
+
+    return () => {
+      window.clearTimeout(failsafe);
+      window.clearTimeout(poll);
+      observer.disconnect();
+    };
+  }, []);
+
+  return ref;
+}
 
 export function SystemFixesVisual() {
-  const containerRef = useRevealOnce<HTMLDivElement>();
-
-  const sheet = (side: "src" | "copy") => (
-    <div className={`ps-v4-sheetx ps-v4-sheetx--${side}`}>
-      <div className="ps-v4-chrome">
-        <i className={`ps-v4-fav ps-v4-fav--${side === "src" ? "a" : "b"}`} />
-        {side === "copy" ? (
-          /* The window title is a URL, exactly like cards 1 and 4. Never an
-             app status. */
-          <span className="ps-v4-chromeurl">
-            <V4Lock />
-            <span className="ps-v4-host">yourcompany.com</span>
-          </span>
-        ) : (
-          <span className="ps-v4-pill" />
-        )}
-      </div>
-      <div className="ps-v4-rows">
-        {V4_FORM_ROWS.map((w, i) => (
-          <span className="ps-v4-row" key={i}>
-            <i className="ps-v4-label" style={{ width: w }} />
-            <span className="ps-v4-slotbox">
-              {side === "src" ? (
-                /* The record that already exists. Painted at t=0, not gated —
-                   the source is not something that has to arrive. */
-                <i className="ps-v4-slot ps-v4-slot--src" />
-              ) : (
-                <>
-                  <i
-                    className={`ps-v4-slot ps-v4-slot--${i < V4_TYPED ? "typed" : "joined"}`}
-                    style={{ "--i": i } as React.CSSProperties}
-                  />
-                  {/* The caret. Outside the slot on purpose: it has to be
-                      visible while the slot is still EMPTY, and the slot's
-                      opacity is the thing being animated. */}
-                  {i === V4_TYPED ? <i className="ps-v4-caret" /> : null}
-                </>
-              )}
-            </span>
-          </span>
-        ))}
-      </div>
-    </div>
-  );
+  const containerRef = usePsC2Reveal<HTMLDivElement>();
 
   return (
-    <div ref={containerRef} className="ps-v4-root ps-v4-root--dup" aria-hidden="true">
-      <div className="ps-v4-dup">
-        {sheet("src")}
-        {sheet("copy")}
-        {/* The seam. Full sheet height, on the edge where the copy overlaps
-            the record, drawn top to bottom. It is the payoff, so it is the
-            largest single mark on the card - not a hairline in a gap. */}
-        <i className="ps-v4-rail" />
-      </div>
+    <div ref={containerRef} className="ps-c2-root" aria-hidden="true">
+      <svg
+        className="ps-c2-svg"
+        viewBox={C2_VIEWBOX}
+        preserveAspectRatio="xMidYMid slice"
+        focusable="false"
+      >
+        <defs>
+          {/* Every id is namespaced `ps-c2-*`: five inline SVGs land on this
+              page and id collisions across them are SILENT. */}
+          <linearGradient id="ps-c2-land" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" className="ps-c2-land-a" />
+            <stop offset="1" className="ps-c2-land-b" />
+          </linearGradient>
+
+          {/* The water gains colour downstream, so the single channel is the
+              most saturated thing in the frame. That is the whole argument. */}
+          <linearGradient id="ps-c2-water" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" className="ps-c2-water-a" />
+            <stop offset="1" className="ps-c2-water-b" />
+          </linearGradient>
+
+          <linearGradient id="ps-c2-bar" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" className="ps-c2-bar-a" />
+            <stop offset="1" className="ps-c2-bar-b" />
+          </linearGradient>
+
+          {/* THE WASH. A hard-edged mask rect translated ONCE across the
+              frame. Transition on transform — no keyframes, no loop. */}
+          <mask id="ps-c2-wash" maskUnits="userSpaceOnUse" x="-40" y="-40" width="560" height="540">
+            <rect
+              className="ps-c2-wash-rect"
+              x="-520" y="-60" width="520" height="580"
+              fill="#fff"
+            />
+          </mask>
+        </defs>
+
+        {/* THE LAND — carries all the texture. Rivers do not emit light, so
+            the terrain holds the tonal variation and the water stays flat. */}
+        <rect x="0" y="0" width="100%" height="100%" fill="url(#ps-c2-land)" />
+
+        <g className="ps-c2-terraces">
+          {C2_TERRACES.map((d, i) => (
+            <path key={i} d={d} />
+          ))}
+        </g>
+        {/* Abandoned channels. Each carries its OWN stroke width — they were
+            all exactly 1.1px, and at that width a round cap is visually
+            identical to a blunt one, so every line simply stopped. */}
+        <g className="ps-c2-scours">
+          {C2_SCOURS.map(([d, w], i) => (
+            <path key={i} d={d} strokeWidth={w} />
+          ))}
+        </g>
+
+        {/* THE CARVE. Shadow below the wet edge and a lit lip above it, so the
+            water reads as cut INTO the terrain instead of painted on top. */}
+        <path className="ps-c2-bank-shadow" d={C2_BANK_SHADOW} />
+        <path className="ps-c2-bank-lit" d={C2_BANK_LIT} />
+
+        {/* THE WATER, revealed once by the wash. */}
+        <g mask="url(#ps-c2-wash)">
+          <path className="ps-c2-water" d={C2_ENVELOPE} fill="url(#ps-c2-water)" />
+
+          {/* THE BARS — land standing in the water. Each casts into the
+              river first, or in light mode they sit at the land's value and
+              the braid dissolves into a pale wash. */}
+          <g className="ps-c2-bar-shadow">
+            {C2_BARS.map((d, i) => (
+              <path key={i} d={d} />
+            ))}
+          </g>
+          <g className="ps-c2-bars" fill="url(#ps-c2-bar)">
+            {C2_BARS.map((d, i) => (
+              <path key={i} d={d} />
+            ))}
+          </g>
+        </g>
+      </svg>
+
+      {/* FOOT VEIL. The artwork is full-bleed, so the card's own title and cue
+          sit ON it. Measured worst-pixel: that darkened the cue's background
+          from rgb(233,236,240) on a contained card to rgb(218,227,237) here,
+          taking it from 4.74:1 to 4.33:1 — under the 4.5 floor. This ramps the
+          foot of the artwork back toward the card's ground colour.
+
+          It lives in CSS, anchored to the ELEMENT's bottom, not in the SVG:
+          `xMidYMid slice` crops the viewBox vertically at wide breakpoints
+          (at 600px the scaled height is 539 into a 432 box), so a veil placed
+          in viewBox coordinates would be cropped away exactly where it is
+          needed. Card-scoped by design — `.ps-bento-card__text`'s own scrim is
+          shared by all five cards and three teams are editing it. */}
+      <i className="ps-c2-veil" />
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CARD 1 — Business Software.  "Five places, one picture."
+   CARD 1 — Business Software.  "THE KEYSTONE."
 
    Pain, service-pillars.tsx:148 (`painPoints[1]`, selected `hookIndex: 1`):
      "Our data lives in five different places and nobody has a complete picture."
 
-   Subject: the visitor's OWN browser, with five tabs open - the thing they are
-   looking at right now to answer one question, and the reason they cannot.
-   Same material as card 4: chrome, dots, a lock, and `yourcompany.com`.
+   Subject: a wall with an arched opening cut through it. Eleven voussoirs of
+   UNEQUAL width ring the opening; one lit keystone sits at the crown; a dark
+   passage runs through. An arch is many separate parts that cannot stand
+   alone, and the keystone is the piece that locks them into one structure that
+   carries load. That is what an operations platform does to a business.
 
-   NAMED RISK, carried over from the spec: five columns of grey bars sit near
-   this site's own idiom for UNLOADED CONTENT - the exact trap v3's seven
-   equal-height sparkline bars fell into. Two things keep it out: the bars live
-   inside a table WITH A HEADER ROW, and half of them are visibly EMPTY at
-   rest, which is a state a placeholder never has. If review still reads it as
-   "failed to load", raise the column-1 fill contrast. Do not add words.
+   WHY NOT A UI. Three previous versions drew a browser — chrome, a URL bar,
+   tabs, rows of grey placeholder pills — and read as the LOADING STATE of card
+   4 below them. This is deliberately a different family of image.
 
-   FIVE NEVER BECOMES FOUR. The meaning depends on the count, so the count may
-   not be reduced at any width (card-visuals.css: "the composition must not
-   change by breakpoint"). The compact ramp drops a table ROW, never a column.
+   ── THREE MISREADS THIS GEOMETRY EXISTS TO DEFEAT, all found by rendering ──
+   1. A toothed disc reads as a GEAR. Four renders died on it. No wheel.
+   2. An arc of EQUAL segments with one highlighted reads as a PROGRESS RING.
+      Defeated by unequal voussoir widths plus the coursing behind the ring.
+   3. THE ONE THAT NEARLY SHIPPED: dark voussoirs on a pale wall read as a
+      HALF-DONUT CHART pasted onto brick. The fix is material, not shape — the
+      voussoirs are cut from the SAME STONE as the wall, a little lighter
+      because their faces catch the light. An arch is MADE OF the wall it sits
+      in. If it ever reads as a chart again, that relationship has drifted.
+
+   ── THE THEME RULE ──
+   THE VOID CARRIES THE DARK MASS; THE STONE CARRIES THE THEME.
+   The passage is dark in both themes because a void is dark. Everything else
+   is stone and follows the theme. An earlier build made the ring near-black in
+   light mode and it became roughly twice the visual weight of any other card
+   in the row — the inverse of the white-slab failure it was fixing.
+
+   ── WHY NOT `useRevealOnce` ──
+   That shared hook (tsx:159) carries a 1200ms failsafe which fires whether or
+   not the card is on screen, so the whole choreography completed before a
+   visitor ever scrolled to it — measured at 0.21/0.69/0.88/0.96/0.99 mid-fade
+   with the section still below the fold. The hook is CORRECT for cards 2 and 3
+   and is not modified. This card uses its own observer with a much longer
+   safety net so the reveal is actually seen. Nothing is ever left invisible:
+   reduced-motion short-circuits, and `@media (scripting: none)` covers no-JS.
+
+   Geometry is fully AUTHORED — no Math.random. This is server-rendered and a
+   random value at render time desynchronises server and client markup.
    ───────────────────────────────────────────────────────────── */
 
-/* The five tabs. Colour is an INDEX, never the content - the same level cards
-   4 and 5 use chroma at. Tab 1 is the active one. */
-const V4_TABS = ["var(--color-primary-strong)", "#8B5CF6", "#00D4AA", "#94A3B8", "#CBD5E1"] as const;
-const V4_TABLE_ROWS = [0, 1, 2, 3, 4, 5] as const;
+/* Ten voussoirs plus the keystone. Widths deliberately unequal so no two
+   blocks match. Centre (200,226), inner r=128, outer r=196, 1deg joint.
+   `i` is distance from the keystone and drives the reveal stagger. */
+const PS_C1_VOUSSOIRS = [
+  { d: "M72,224.88L4.01,224.29A196,196 0 0,1 10.58,175.65L76.3,193.12A128,128 0 0,0 72,224.88Z", i: 5 },
+  { d: "M76.89,190.97L11.48,172.35A196,196 0 0,1 38.03,115.64L94.22,153.93A128,128 0 0,0 76.89,190.97Z", i: 4 },
+  { d: "M95.49,152.09L39.98,112.83A196,196 0 0,1 67.58,81.49L113.52,131.63A128,128 0 0,0 95.49,152.09Z", i: 3 },
+  { d: "M115.18,130.13L70.13,79.2A196,196 0 0,1 117.29,48.31L145.98,109.96A128,128 0 0,0 115.18,130.13Z", i: 2 },
+  { d: "M148.02,109.03L120.4,46.89A196,196 0 0,1 164.28,33.28L176.67,100.14A128,128 0 0,0 148.02,109.03Z", i: 1 },
+  { d: "M223.33,100.14L235.72,33.28A196,196 0 0,1 279.6,46.89L251.98,109.03A128,128 0 0,0 223.33,100.14Z", i: 1 },
+  { d: "M254.02,109.96L282.71,48.31A196,196 0 0,1 329.87,79.2L284.82,130.13A128,128 0 0,0 254.02,109.96Z", i: 2 },
+  { d: "M286.48,131.63L332.42,81.49A196,196 0 0,1 360.02,112.83L304.51,152.09A128,128 0 0,0 286.48,131.63Z", i: 3 },
+  { d: "M305.78,153.93L361.97,115.64A196,196 0 0,1 388.52,172.35L323.11,190.97A128,128 0 0,0 305.78,153.93Z", i: 4 },
+  { d: "M323.7,193.12L389.42,175.65A196,196 0 0,1 395.99,224.29L328,224.88A128,128 0 0,0 323.7,193.12Z", i: 5 },
+] as const;
+
+const PS_C1_KEYSTONE =
+  "M178.87,99.76L167.65,32.69A196,196 0 0,1 232.35,32.69L221.13,99.76A128,128 0 0,0 178.87,99.76Z";
+
+/* The passage. Ends at y=400 (the viewBox floor) so it is never clipped. */
+const PS_C1_OPENING = "M72,400L72,226A128,128 0 0,1 328,226L328,400Z";
+
+/* usePsC1Reveal — card-scoped. See the note above on why the shared hook's
+   1200ms failsafe is wrong for this card. Deliberately NOT exported and NOT a
+   modification of `useRevealOnce`, which cards 2 and 3 still depend on. */
+function usePsC1Reveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      el.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+
+    /* Safety net so the card can never sit permanently blank if the observer
+       fails. Long — 8s, not 1.2s — because a short one fires before the
+       visitor arrives and spends the whole reveal off-screen, which is the
+       exact bug this hook exists to avoid. */
+    const failsafe = window.setTimeout(() => {
+      el.classList.add("in-view");
+      observer.disconnect();
+    }, 8000);
+
+    return () => {
+      window.clearTimeout(failsafe);
+      observer.disconnect();
+    };
+  }, []);
+
+  return ref;
+}
+
+/* SECOND GEOMETRY — the wide/short crop.
+   At <=700px the plinth lands on the semicircular arch's springing and what
+   remains is a perfect half-disc of near-uniform trapezoids on a baseline,
+   which reads as a DIAL whichever part is darker: the driver is geometry plus
+   repetition, not value. This elliptical arch raises the springing ABOVE the
+   plinth so the opening's straight LEGS are visible, and a portal with legs
+   cannot be a half-disc.
+   The ellipse necessarily makes the blocks more unequal than the circular set.
+   DO NOT NORMALISE THEM BACK. Near-uniform segments are the other half of the
+   dial grammar; the unequal widths are load-bearing, not a rendering accident. */
+const PS_C1_WIDE_VOUSSOIRS = [
+  { d: "M20.01,134.18L-54.99,133.8A255,125 0 0,1 -46.5,103L26,113.24A180,85 0 0,0 20.01,134.18Z", i: 5 },
+  { d: "M26.92,111.66L-45.2,100.68A255,125 0 0,1 -10.86,64.7L51.16,87.2A180,85 0 0,0 26.92,111.66Z", i: 4 },
+  { d: "M53.13,85.86L-8.07,62.73A255,125 0 0,1 27.56,42.91L78.28,72.38A180,85 0 0,0 53.13,85.86Z", i: 3 },
+  { d: "M80.85,71.29L31.2,41.31A255,125 0 0,1 92.19,21.72L123.9,57.97A180,85 0 0,0 80.85,71.29Z", i: 2 },
+  { d: "M127.04,57.3L96.64,20.73A255,125 0 0,1 153.31,12.11L167.04,51.44A180,85 0 0,0 127.04,57.3Z", i: 1 },
+  { d: "M232.96,51.44L246.69,12.11A255,125 0 0,1 303.36,20.73L272.96,57.3A180,85 0 0,0 232.96,51.44Z", i: 1 },
+  { d: "M276.1,57.97L307.81,21.72A255,125 0 0,1 368.8,41.31L319.15,71.29A180,85 0 0,0 276.1,57.97Z", i: 2 },
+  { d: "M321.72,72.38L372.44,42.91A255,125 0 0,1 408.07,62.73L346.87,85.86A180,85 0 0,0 321.72,72.38Z", i: 3 },
+  { d: "M348.84,87.2L410.86,64.7A255,125 0 0,1 445.2,100.68L373.08,111.66A180,85 0 0,0 348.84,87.2Z", i: 4 },
+  { d: "M374,113.24L446.5,103A255,125 0 0,1 454.99,133.8L379.99,134.18A180,85 0 0,0 374,113.24Z", i: 5 },
+] as const;
+const PS_C1_WIDE_KEYSTONE =
+  "M170.45,51.15L158.13,11.7A255,125 0 0,1 241.87,11.7L229.55,51.15A180,85 0 0,0 170.45,51.15Z";
+const PS_C1_WIDE_OPENING = "M20,400L20,135A180,85 0 0,1 380,135L380,400Z";
 
 export function DashboardVisual() {
-  const containerRef = useRevealOnce<HTMLDivElement>();
+  const containerRef = usePsC1Reveal<HTMLDivElement>();
 
   return (
-    <div ref={containerRef} className="ps-v4-root ps-v4-root--tabs" aria-hidden="true">
-      <div className="ps-v4-panel ps-v4-panel--browser">
-        {/* Five tabs. No tab text - the five colours are the whole claim. */}
-        <div className="ps-v4-tabs">
-          {V4_TABS.map((hue, i) => (
-            <span className={`ps-v4-tab${i === 0 ? " ps-v4-tab--on" : ""}`} key={i}>
-              <i className="ps-v4-fav" style={{ background: hue }} />
-              <i className="ps-v4-tabbar" />
-            </span>
-          ))}
-        </div>
+    <div ref={containerRef} className="ps-c1-root" aria-hidden="true">
+      {/* The wall is a CSS layer, not an SVG rect: it is always full-bleed at
+          every aspect, and its coursing is abstract stratification rather than
+          literal brickwork. The SVG can then use `meet`, so the arch — and
+          above all the keystone — is NEVER cropped at any breakpoint. An
+          earlier `slice` build sliced the keystone off at 600px, cutting the
+          one element the whole concept depends on. */}
+      <div className="ps-c1-wall" />
 
-        {/* The window's title is a URL, exactly like card 4's. Never a status. */}
-        <div className="ps-v4-url">
-          <V4Lock />
-          <span className="ps-v4-host">yourcompany.com</span>
-        </div>
+      <svg
+        className="ps-c1-svg"
+        viewBox="0 0 400 400"
+        preserveAspectRatio="xMidYMin slice"
+        focusable="false"
+      >
+        <defs>
+          {/* Every id namespaced: five inline SVGs share this page and a
+              duplicate defs id resolves to the wrong gradient silently. */}
+          {/* userSpaceOnUse, NOT the default objectBoundingBox. With bounding-box
+              units every voussoir gets its own identical copy of the gradient,
+              so eleven blocks render as eleven IDENTICAL segments — which is
+              the visual grammar of a progress ring, and this card has degraded
+              into a gauge three separate times. Spanning the gradient across
+              the whole arch in user space instead means one light direction
+              falls over the entire ring: the left blocks sit in shade, the
+              right blocks catch the light. That reads as one lit object rather
+              than a repeated UI element, and it is the cheapest structural
+              defence against the gauge misread. */}
+          <linearGradient
+            id="ps-c1-stone"
+            gradientUnits="userSpaceOnUse"
+            x1="20" y1="40" x2="380" y2="250"
+          >
+            <stop offset="0%" className="ps-c1-stone-a" />
+            <stop offset="55%" className="ps-c1-stone-mid" />
+            <stop offset="100%" className="ps-c1-stone-b" />
+          </linearGradient>
+          {/* VERTICAL, and this is the difference between a passage and a slab.
+              A flat mid-tone fill bounded by an equally crisp edge on every
+              side reads as a solid object standing IN FRONT of the wall — and
+              with the plinth beneath it, as a headstone. Grading the value
+              down the opening (darkest at the crown where no light reaches,
+              lifting toward the floor) reads as depth, so the eye travels
+              THROUGH rather than stopping on a surface. userSpaceOnUse so the
+              ramp is measured in the arch's own coordinates, not the path's
+              bounding box. */}
+          <linearGradient
+            id="ps-c1-beyond"
+            gradientUnits="userSpaceOnUse"
+            x1="200" y1="98" x2="200" y2="400"
+          >
+            <stop offset="0%" className="ps-c1-beyond-a" />
+            <stop offset="100%" className="ps-c1-beyond-b" />
+          </linearGradient>
+          <linearGradient id="ps-c1-key" x1="0.2" y1="0" x2="0.8" y2="1">
+            <stop offset="0%" stopColor="#4FA8FF" />
+            <stop offset="60%" stopColor="#1590FF" />
+            <stop offset="100%" stopColor="#0B5FB8" />
+          </linearGradient>
+          <filter id="ps-c1-keyglow" x="-160%" y="-160%" width="420%" height="420%">
+            <feGaussianBlur stdDeviation="8" />
+          </filter>
+        </defs>
 
-        <div className="ps-v4-table">
-          <div className="ps-v4-thead">
-            {V4_TABS.map((_, c) => <i key={c} />)}
-          </div>
-          {/* `.ps-v4-tbody` distributes the rows over whatever height the
-              stretched panel has. Without it the table sat in the top third
-              and left ~260px of blank white below — a browser window with
-              nothing in it, which is not the subject. */}
-          <div className="ps-v4-tbody">
-          {V4_TABLE_ROWS.map((r) => (
-            <div className="ps-v4-tr" key={r}>
-              {/* Column 1 is the one place that already has the answer. */}
-              <i className="ps-v4-td ps-v4-td--seed"
-                 style={{ "--i": r, "--hue": V4_TABS[0] } as React.CSSProperties} />
-              {/* Columns 2-5 arrive DOWN AND RIGHT out of their tab, one
-                  column per beat, so the five tabs visibly become the five
-                  columns of one row. The tab's hue appears only as a 3px left
-                  edge - as an index, never as the content. */}
-              {V4_TABS.slice(1).map((hue, c) => (
-                <i className="ps-v4-td ps-v4-td--join" key={c}
-                   style={{ "--i": c, "--hue": hue } as React.CSSProperties} />
-              ))}
-            </div>
+        {/* Two arches, one per breakpoint. The hidden variant is display:none
+            so it neither paints nor animates. */}
+        <g className="ps-c1-arch ps-c1-arch--tall">
+        {/* The void: daylight beyond in light, an unlit passage in dark. */}
+        <path d={PS_C1_OPENING} fill="url(#ps-c1-beyond)" />
+
+        {/* The ring, cut from the same stone as the wall. */}
+        <g className="ps-c1-ring">
+          {PS_C1_VOUSSOIRS.map((b, n) => (
+            <path
+              key={n}
+              className="ps-c1-vou"
+              style={{ "--i": b.i } as React.CSSProperties}
+              d={b.d}
+              fill="url(#ps-c1-stone)"
+            />
           ))}
-          </div>
-        </div>
-      </div>
+        </g>
+
+        {/* The keystone drops in last and locks the arch. */}
+        <g className="ps-c1-key">
+          <path d={PS_C1_KEYSTONE} fill="#1590FF" filter="url(#ps-c1-keyglow)" opacity="0.3" />
+          <path d={PS_C1_KEYSTONE} fill="url(#ps-c1-key)" />
+        </g>
+        </g>
+
+        <g className="ps-c1-arch ps-c1-arch--wide">
+          <path d={PS_C1_WIDE_OPENING} fill="url(#ps-c1-beyond)" />
+          {PS_C1_WIDE_VOUSSOIRS.map((b, n) => (
+            <path
+              key={n}
+              className="ps-c1-vou"
+              style={{ "--i": b.i } as React.CSSProperties}
+              d={b.d}
+              fill="url(#ps-c1-stone)"
+            />
+          ))}
+          <g className="ps-c1-key">
+            <path d={PS_C1_WIDE_KEYSTONE} fill="#1590FF" filter="url(#ps-c1-keyglow)" opacity="0.3" />
+            <path d={PS_C1_WIDE_KEYSTONE} fill="url(#ps-c1-key)" />
+          </g>
+        </g>
+      </svg>
+
+      {/* The plinth the wall stands on. Architectural, not a mask: a solid base
+          course with a crisp top edge, so the arch's legs terminate ON
+          something. It replaces a grey-to-white gradient wash that dissolved
+          the legs into nothing and read as an unfinished mask at 600px. It is
+          also what keeps the title legible over the artwork — see the measured
+          contrast note in card-visuals.css. */}
+      <div className="ps-c1-plinth" />
     </div>
   );
 }
@@ -779,11 +1231,222 @@ export function CustomBuildVisual() {
      the citation chip arriving, which illustrates the capability
      ("get cited") without asserting a result.
    ───────────────────────────────────────────────────────────── */
-export function SearchVisual() {
-  const containerRef = useRef<HTMLDivElement>(null);
+/* ═════════════════════════════════════════════════════════════
+   CARD 5 — "SEO. AI VISIBILITY. AD MANAGEMENT."
+   FILINGS HALO.
+
+   WHAT THIS DRAWS, and why it is not the thing that was rejected
+   three times: a dense field of iron filings, every one of them turned
+   to point at a single lit mark at the centre. EVERYTHING IS POINTING
+   AT YOU. That is what being found looks like.
+
+   THE CENTRE IS OCCUPIED, AND THAT REVERSES THE ORIGINAL BRIEF.
+   This card was first built with the focal point drawn as *nothing* —
+   an empty void the field organised itself around. It was elegant and
+   it failed, for a reason worth keeping on the record. The business
+   review, judging from renders: "the argument that the void means 'the
+   thing everyone points at' is a paragraph of explanation, and a
+   homepage visitor gets two seconds, not a paragraph. ABSENCE READS AS
+   ABSENCE. A firm charging real money to get you found should not
+   illustrate that service with a hole." In the five-card row it was the
+   only card showing nothing, and read as the box that ran out of ideas.
+
+   So the void got an occupant: one bright mark the whole field bends
+   toward, standing for the client's business. Same field, same craft,
+   legible claim. Do not empty it again.
+
+   Also gone: a soft radial bloom that sat on the centre in v1. It made
+   the pole the brightest thing on the card by accident rather than by
+   decision. The solid mark now does that job deliberately.
+
+   The previous occupant of this component was a SERP mockup — search
+   box, "AI Overview" block, result rows, an Ad chip, map pins. Its CSS
+   (`.ps-sr-*`, card-visuals.css:1844+) is deliberately LEFT IN PLACE
+   and simply no longer rendered; three teams are editing that
+   stylesheet concurrently and a single cleanup sweep happens at the
+   end, owned by the coordinator. Do not strip it here.
+   ───────────────────────────────────────────────────────────── */
+
+/* Deterministic PRNG (mulberry32). This MUST NOT be Math.random().
+   The component is server-rendered by Next.js, and a field generated
+   with different numbers on the server than in the browser is a React
+   hydration mismatch — which produces no error in dev and a differently
+   drawn graphic on every request in production. Seeded once at module
+   scope so both sides emit byte-identical markup. */
+function psC5Rng(seed: number) {
+  let a = seed >>> 0;
+  return function () {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* Drawn at 360x240 (1.50), which is the measured desktop safe-paint
+   aspect (376x259 = 1.45). preserveAspectRatio keeps it centred and
+   uncropped as the card swings 1.12 -> 2.99 across breakpoints, so the
+   composition never bleeds to an edge — the edges move. */
+const PS_C5_W = 360;
+const PS_C5_H = 320;
+
+type PsC5Dash = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  r0: number;
+  r1: number;
+  o: number;
+  t: number;
+  i: number;
+};
+
+const PS_C5_DASHES: PsC5Dash[] = (() => {
+  const rand = psC5Rng(20260907);
+  const out: PsC5Dash[] = [];
+  /* DELIBERATELY LARGER THAN THE 360x240 viewBox (half-extents 180x120).
+     The field is generated well beyond the frame so dashes run OFF all
+     four sides. A field that stops inside the frame with a tidy margin
+     reads as a decal or a logo; card 4 fills its box and lets its phone
+     overhang the edge. Combined with preserveAspectRatio="slice" below,
+     the picture always covers the card edge-to-edge. */
+  const RX = 215;
+  const RY = 190;
+  const RINGS = 13;
+  /* The void. Small and precise — "a small clean void the arcs bend
+     around". v2 had this at 0.21 and the empty middle read as a hole in
+     the picture rather than as a point everything is organised about. */
+  const INNER = 0.085;
+
+  for (let ring = 0; ring < RINGS; ring++) {
+    const f = INNER + (1 - INNER) * (ring / (RINGS - 1));
+    /* Density rises with radius so the field reads as an even mass
+       rather than a bullseye. v1 used 220 dashes over this area and
+       looked timid and washy; this is ~460. */
+    const count = Math.round(10 + 44 * f);
+    for (let k = 0; k < count; k++) {
+      /* HEAVY jitter, on purpose. With tight jitter the rings stayed
+         visible as concentric ridges and the whole thing read as a
+         FINGERPRINT — whorled ridges around a centre. Scattering the
+         radius hard breaks the ridge regularity so it reads as a
+         settled field of loose filings instead of a printed whorl. */
+      const step = (Math.PI * 2) / count;
+      const a = k * step + (rand() - 0.5) * step * 1.25;
+      const jr = 1 + (rand() - 0.5) * 0.26;
+      const x = Math.cos(a) * RX * f * jr;
+      const y = Math.sin(a) * RY * f * jr;
+      const r2 = x * x + y * y;
+      if (r2 < 1) continue;
+
+      /* RADIAL CONVERGENCE on one marked point.
+
+         Two earlier geometries were built and both were rejected from
+         renders, for reasons worth keeping:
+
+         - A true magnetic DIPOLE (Bx = 3xy/r^2, By = 3y^2/r^2 - 1).
+           Physically correct and beautiful, but a dipole has TWO lobes,
+           so the picture had two focal points. This card is about ONE
+           thing.
+         - A tangential VORTEX (tangent leaned 22 degrees inward). Read
+           as a whirlpool by one reviewer and a fingerprint by two others
+           — and, fatally, concentric rotation means things are pulled IN
+           AND SWALLOWED. That is the opposite of the metaphor. Rotation
+           reads as a drain; convergence reads as being found.
+
+         So the dashes now lie ALONG the radius, leaned only 12 degrees
+         so the field breathes rather than snapping into a rigid
+         starburst. Everything in the picture points at one place, and
+         that place is occupied and lit. "Everything turned toward you"
+         is the sentence the card has to say. */
+      const r1 = (Math.atan2(y, x) * 180) / Math.PI + 12;
+
+      /* Softer falloff than v1, which faded the outer sixth of the
+         field to literally zero and threw away the frame. The field
+         now thins toward the edge but never disappears mid-picture. */
+      let o = 1 - 0.22 * f;
+      if (f > 0.88) o *= Math.max(0.48, 1 - (f - 0.88) / 0.24);
+
+      /* LENGTH TAPERS WITH RADIUS, and the direction of the taper is the
+         whole argument of the picture.
+
+         Uniform-length dashes read as a BURST radiating outward — a
+         starburst, a dandelion clock, fireworks — because nothing tells
+         the eye which way the flow goes. That is the opposite claim from
+         the one this card makes.
+
+         So: LONG and FAINT at the rim, SHORT and DENSE toward the centre.
+         That is what a converging flow looks like — marks compressing as
+         they arrive, the way motion trails shorten when something slows
+         into a stop. The still image now states "everything is pointing
+         at you" on its own, without the animation. That matters: a
+         screenshot, a slow connection and `prefers-reduced-motion` all
+         get the still and nothing else.
+
+         The random component stays, because identical marks in even arcs
+         are exactly what a printed fingerprint ridge looks like. */
+      const w = +((2.6 + 6.0 * f) * (0.82 + rand() * 0.42)).toFixed(2);
+      const h = +(1.7 + rand() * 0.9).toFixed(2);
+
+      /* Colour tier: blue lives near the pole ONLY, outer field stays
+         navy. Mass first, chroma second — card 4 is well under 5%
+         strongly-coloured and all of it is point chroma. */
+      const t = f < 0.34 ? 3 : f < 0.52 ? 2 : f < 0.74 ? 1 : 0;
+
+      /* Stagger band, centre outward. Kept to 5 bands so the whole
+         reveal resolves by ~1180ms rather than running for 40s, which
+         is what a per-element index would do with 460 dashes. */
+      const i = Math.min(4, Math.floor((ring * 5) / RINGS));
+
+      out.push({
+        x: +(PS_C5_W / 2 + x).toFixed(2),
+        y: +(PS_C5_H / 2 + y).toFixed(2),
+        w,
+        h,
+        r0: +(r1 + (rand() * 2 - 1) * 75).toFixed(1),
+        r1: +r1.toFixed(1),
+        o: +o.toFixed(3),
+        t,
+        i,
+      });
+    }
+  }
+  return out;
+})();
+
+/* CARD-SCOPED REVEAL. Deliberately NOT the shared `useRevealOnce`.
+
+   THE BUG IN THE SHARED HOOK, reproduced on this card before it was
+   fixed (`c5-tools/revealtiming.js`): its failsafe is an unconditional
+   `setTimeout(..., 1200)`, so `.in-view` lands whether or not the card
+   is on screen. Card 5 sits in the BOTTOM row. Measured at 1440x900:
+
+     t=400ms   onScreen=false  inView=false  cardTop=1641  dashOpacity=0
+     t=1600ms  onScreen=false  inView=TRUE   cardTop=1641  dashOpacity=0
+     t=3600ms  onScreen=false  inView=TRUE   cardTop=1641  dashOpacity=0.981
+     after scrolling to it:    inView=true                 dashOpacity=0.981
+
+   The choreography ran to completion 1641px below the fold. Every real
+   visitor arrived at the settled still, so the reveal had never actually
+   been seen. That matters more here than on the other cards, because the
+   sequence IS the idea: the field organises, and then the subject
+   arrives — the disc lands last, on purpose.
+
+   A viewport sweep cannot catch this. `in-view` is true and nothing is
+   permanently invisible; it fires, just in the wrong place.
+
+   THE FIX: the safety net may never pre-fire below the fold. It waits
+   8s, then reveals ONLY if the element is actually on screen, and
+   otherwise re-checks. So the art can still never be left permanently
+   invisible if the observer fails, but it also cannot burn its entrance
+   while nobody is looking.
+
+   `useRevealOnce` is NOT modified — cards 2 and 3 depend on it. */
+function usePsC5Reveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
 
   useEffect(() => {
-    const el = containerRef.current;
+    const el = ref.current;
     if (!el) return;
 
     const prefersReduced =
@@ -795,104 +1458,112 @@ export function SearchVisual() {
       return;
     }
 
+    let done = false;
+    let timer = 0;
+
+    const show = () => {
+      if (done) return;
+      done = true;
+      el.classList.add("in-view");
+      observer.disconnect();
+      window.clearTimeout(timer);
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            el.classList.add("in-view");
-            observer.unobserve(el);
-          }
+          if (entry.isIntersecting) show();
         });
       },
-      { threshold: 0.25 }
+      { threshold: 0.3 }
     );
-
     observer.observe(el);
-    return () => observer.disconnect();
+
+    /* Safety net. Long, and gated on actually being visible. */
+    const tick = () => {
+      if (done) return;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || 0;
+      if (r.top < vh && r.bottom > 0) show();
+      else timer = window.setTimeout(tick, 400);
+    };
+    timer = window.setTimeout(tick, 8000);
+
+    return () => {
+      done = true;
+      observer.disconnect();
+      window.clearTimeout(timer);
+    };
   }, []);
 
+  return ref;
+}
+
+export function SearchVisual() {
+  const containerRef = usePsC5Reveal<HTMLDivElement>();
+
   return (
-    <div ref={containerRef} className="ps-sr-root" aria-hidden="true">
-      <div className="ps-sr-panel">
-        {/* Chrome bar. Two jobs, both load-bearing:
-            1. .ps-bento-card__expand is a frosted WHITE circle at top:16
-               right:16 (globals.css:1703) sitting at z-index 3, i.e. ON TOP
-               of this visual. On a 390px card this panel reaches that corner,
-               and a white icon on a white panel is an invisible affordance.
-               A dark strip along the top puts contrast back under it — the
-               same thing .ps-browser-chrome does for WebsiteVisual.
-            2. It makes the panel read as a surface with depth rather than a
-               white slab, which is what it looked like without one. */}
-        <div className="ps-sr-chrome">
-          <span className="ps-sr-chrome-dots"><i /><i /><i /></span>
-          <span className="ps-sr-chrome-pill" />
-        </div>
-
-        {/* Query field */}
-        <div className="ps-sr-field">
-          <svg className="ps-sr-glass" viewBox="0 0 16 16" fill="none">
-            <circle cx="7" cy="7" r="4.6" stroke="currentColor" strokeWidth="1.4" />
-            <path d="M10.6 10.6L14 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-          </svg>
-          <span className="ps-sr-query">[your service] near me</span>
-        </div>
-
-        {/* AI answer block */}
-        <div className="ps-sr-ai">
-          <div className="ps-sr-ai-head">
-            <svg className="ps-sr-spark" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M8 1.5l1.5 4L13.5 7l-4 1.5L8 12.5 6.5 8.5 2.5 7l4-1.5z"
-                fill="currentColor"
-              />
-            </svg>
-            <span className="ps-sr-ai-label">AI Overview</span>
-          </div>
-          <span className="ps-sr-ai-line" style={{ "--sr-i": 0 } as React.CSSProperties} />
-          <span className="ps-sr-ai-line" style={{ "--sr-i": 1 } as React.CSSProperties} />
-          <span className="ps-sr-ai-line ps-sr-ai-line--short" style={{ "--sr-i": 2 } as React.CSSProperties} />
-          <span className="ps-sr-cite">yourcompany.com</span>
-        </div>
-
-        {/* Results list. The first row is a paid placement and the two
-            below it are the organic local pack — which is the actual shape
-            of the page this card is about, and the only way the card's own
-            title ("Search and Ads.") is honest: without the Ad row the
-            picture depicts two of its three destinations and silently drops
-            /services/paid-ads. Still no rank numbers and no rank-rise
-            animation — see the claims note above this component. */}
-        <div className="ps-sr-pack">
-          <span className="ps-sr-pack-label">Results</span>
-          <div className="ps-sr-row ps-sr-row--ad" style={{ "--sr-i": 0 } as React.CSSProperties}>
-            <span className="ps-sr-ad-badge">Ad</span>
-            <span className="ps-sr-row-lines">
-              <i className="ps-sr-row-name" />
-              <i className="ps-sr-row-meta" />
-            </span>
-          </div>
-          {[1, 2].map((row) => (
-            <div
-              className={`ps-sr-row${row === 1 ? " ps-sr-row--lead" : ""}`}
-              key={`sr-row-${row}`}
-              style={{ "--sr-i": row } as React.CSSProperties}
-            >
-              <span className="ps-sr-pin">
-                <svg viewBox="0 0 12 14" fill="none">
-                  <path
-                    d="M6 .8a4.6 4.6 0 00-4.6 4.6C1.4 8.8 6 13.2 6 13.2s4.6-4.4 4.6-7.8A4.6 4.6 0 006 .8z"
-                    fill="currentColor"
-                  />
-                  <circle cx="6" cy="5.3" r="1.7" fill="#0A1628" />
-                </svg>
-              </span>
-              <span className="ps-sr-row-lines">
-                <i className="ps-sr-row-name" />
-                <i className="ps-sr-row-meta" />
-              </span>
-            </div>
+    <div ref={containerRef} className="ps-c5-root" aria-hidden="true">
+      <svg
+        className="ps-c5-svg"
+        viewBox={`0 0 ${PS_C5_W} ${PS_C5_H}`}
+        /* slice, not meet: COVER the box and crop, so the field always
+           reaches every edge as the card swings 1.12 -> 2.99. `meet`
+           letterboxes and leaves the tidy margin that makes artwork
+           read as a decal. */
+        preserveAspectRatio="xMidYMid slice"
+        fill="none"
+      >
+        {/* No <defs>: the foot veil that used to live here was an
+            SVG-space gradient, and preserveAspectRatio="slice" CROPS IT
+            AWAY at wide breakpoints — at 768 the card is 720x380, slice
+            scales by 2.0, and only the middle 190 of the 320-unit viewBox
+            is visible, so the veil's bottom never painted. It is now a
+            CSS ::after anchored to the element's bottom edge in fixed px.
+            If anything is added back here, namespace ids `ps-c5-*`. */}
+        <g className="ps-c5-field">
+          {PS_C5_DASHES.map((d, n) => (
+            <rect
+              key={`ps-c5-d-${n}`}
+              className={`ps-c5-dash ps-c5-dash--t${d.t}`}
+              x={d.x - d.w / 2}
+              y={d.y - d.h / 2}
+              width={d.w}
+              height={d.h}
+              rx={d.h / 2}
+              style={
+                {
+                  "--c5-r0": `${d.r0}deg`,
+                  "--c5-r1": `${d.r1}deg`,
+                  "--c5-o": d.o,
+                  "--c5-i": d.i,
+                } as React.CSSProperties
+              }
+            />
           ))}
-        </div>
-      </div>
+        </g>
+
+        {/* THE OCCUPANT — variant B.
+            The executive review rejected the empty void: "absence reads
+            as absence", and on a homepage the viewer has two seconds,
+            not a paragraph. This is the client's business: the one lit
+            thing the whole field is organised around. It lands LAST in
+            the reveal, after the filings have aligned, so the picture
+            reads as "everything turned toward you" rather than "here is
+            a dot with decoration". */}
+        <circle
+          className="ps-c5-halo"
+          cx={PS_C5_W / 2}
+          cy={PS_C5_H / 2}
+          r={15}
+        />
+        <circle
+          className="ps-c5-core"
+          cx={PS_C5_W / 2}
+          cy={PS_C5_H / 2}
+          r={7.5}
+        />
+      </svg>
     </div>
   );
 }
