@@ -1,6 +1,6 @@
 # Workspace Source Of Truth
 
-Last updated: 2026-05-22.
+Last updated: 2026-09-06.
 
 ## Canonical Workspace
 
@@ -119,6 +119,15 @@ happened on 2026-09-04 (deployment `9c173db9`, Preview, branch
 live apex HTML against local `out/index.html`. Exit code 0 is not proof of a
 production release.
 
+Build the `out/` you upload from a clean `git archive` export of the commit you
+intend to ship, not from the working tree. The tree's `out/` has been poisoned
+before (new CSS and SSR HTML alongside a stale client JS chunk, so the page
+hydrated back to a rejected design while every check passed), and other sessions
+leave uncommitted work here. Run Wrangler and Git from the canonical workspace
+above; only the build directory moves. A non-git export gives Wrangler no branch
+to infer, which makes `--branch main` doubly necessary. Full procedure and
+verification steps: `.claude/rules/cloudflare-deploy-gate.md`.
+
 Then verify:
 
 ```bash
@@ -138,67 +147,108 @@ On 2026-05-22, old Cloudflare Pages deployments for this project were deleted
 with current Wrangler deployment deletion support. The Cloudflare Pages project
 itself was preserved.
 
-Current expected deployment state:
+Current expected deployment state (verified live 2026-09-06):
 
 - Project: `preisser-solutions`
-- Current live production deployment: `ebc9213b` (deployed 2026-09-04, source
-  `6fcfd65`), which serves Next.js `BUILD_ID = Qw5SIlrjZuQVgzEeP5psE`,
-  CSS `_next/static/css/946ec399be138d9d.css` (+ `41ced62a3916091e.css`) and
-  JS `_next/static/chunks/app/page-62aede1f99531b3d.js`
-- `22+ Kansas SMB projects delivered` is INTENTIONALLY absent from the homepage
-  as of this deploy; it lived inside the removed "Built for your business"
-  paragraph. Verified live 1 -> 0. Not a regression.
+- Current live production deployment: `5a342e45-1328-41a2-ad5d-eaf335a7b21f`,
+  listed by `wrangler pages deployment list` as **`Production | main`** (not
+  Preview).
+- Source commit: `5aa93bc0e0556ba2b5e92bdb1259dedc9d014a18` on `main`
+  ("feat(home): redraw bento cards 1-3 as the visitor's own artifact").
+- Built from a clean `git archive` export of that commit in `/tmp`, NOT from the
+  working tree. Because that export is not a git repo, Wrangler could infer no
+  branch and the `Source` column for this deployment is **empty** — expected for
+  a clean-export deploy, and the reason `--branch main` was mandatory. See
+  `.claude/rules/cloudflare-deploy-gate.md`.
+- Served homepage JS chunk: `_next/static/chunks/app/page-ca3f61cbe0d59f37.js`,
+  md5 `c563a5e859517a5c130308d1a3880289` (164,894 B).
+- Served CSS: `_next/static/css/74405730033a259d.css` and
+  `_next/static/css/41ced62a3916091e.css`.
+- Verified live and re-verified stable 86 minutes later. `preissersolutions.com`
+  returns HTTP 200; `www.preissersolutions.com` and
+  `preisser-solutions.pages.dev` both 301 to the apex.
+  `https://5a342e45.preisser-solutions.pages.dev/` serves the same chunk as the
+  apex, tying the apex to this deployment id.
+- Supersedes `ebc9213b` (2026-09-04, source `6fcfd65`, BUILD_ID
+  `Qw5SIlrjZuQVgzEeP5psE`, chunk `page-62aede1f99531b3d.js`), which this entry
+  replaced. Also supersedes `f2ea80a5`, `60387210`, `e94d5d78`, `bad98893`,
+  `618f82f8`.
+
+> **Unverified:** the Next.js `BUILD_ID` of the current deployment. No
+> `"buildId"` string is present in the served homepage HTML, so it could not be
+> read the way earlier entries recorded it. Confirming it would need
+> `out/BUILD_ID` from the exact build directory, or a `_buildManifest` path from
+> the served asset graph.
+
+> **Caution:** the working tree's `out/` does NOT match production. At the time
+> of writing it contains `page-c816620a4ded6a29.js`, while the apex serves
+> `page-ca3f61cbe0d59f37.js`. Do not treat local `out/` as a record of what is
+> live, and do not diff against it to "verify" a deploy.
+
+### OPEN DISAGREEMENT — em dashes (do not silently resolve)
+
+ADR-0009 states the invariant plainly
+(`DECISIONS/0009-the-owners-supplied-copy-ships-verbatim-superseding-adr-0008s-agent-authored-tagline.md:25`):
+
+> **No em dashes** anywhere in the restored copy; commas and colons only. The
+> site is at zero site-wide and stays there.
+
+The previous state entry likewise recorded "zero em dashes" verified live on
+2026-09-04. **The current live homepage contains 62 em dashes in visible body
+copy** (for example: "The five or six numbers that actually decide your week —
+jobs, invoices, payments, who owes you — pulled from the system"). This was
+measured against the served apex HTML on 2026-09-06.
+
+This is recorded, not resolved. It is either a copy regression introduced with
+the bento redesign or a deliberate reversal of ADR-0009 that was never written
+down. Tyler rules on which. `npm run validate:seo`
+(`scripts/validate-seo.mjs`) does **not** check for em dashes, so nothing
+mechanical catches this either way.
+
+### Notes carried forward from the `ebc9213b` entry
+
+Re-verified against the current live apex HTML on 2026-09-06:
+
 - Bento/work-card cues are `Click for more` / `Tap for more` in the DOM
-  (sentence case), rendered uppercase by `text-transform:uppercase` on
-  `.ps-bento-card__cue`, toggled by `@media (hover:none)`. Grep the DOM in
-  sentence case; the all-caps form exists only on screen.
-- Crawler mirror `<section class="ps-visually-hidden ps-pillar-crawler-content">`
-  carries 13 anchors (bare `<a href tabindex="-1">`, no class) and 30
-  pain-point items in five `<h4>The pain we hear</h4>` blocks of six. Three
-  further `tabindex="-1"` anchors are work-card panel links OUTSIDE the mirror,
-  so a raw `grep -c 'tabindex="-1"'` reads 16/17, not 13.
+  (sentence case, 23 occurrences each), rendered uppercase by
+  `text-transform:uppercase` on `.ps-bento-card__cue`, toggled by
+  `@media (hover:none)`. Grep the DOM in sentence case; the all-caps form
+  exists only on screen.
+- The owner's Why Us tagline ("Your success is / our success.", ADR-0009) is
+  present; `In it for the` is 0, `<canvas` is 0, `ps-caps` is 0.
 - The hero mark is created at RUNTIME (`document.createElement("canvas")`,
   `src/components/home/hero-mark-light.ts:204,209`) and appears in NO JSX.
   Therefore `grep '<canvas' out/index.html` is 0 whether the mark is present or
   absent, and is not evidence either way. To check the mark ships, grep the
   built JS for `ps-hero-canvas` / `ps-hero-beam` / `createElement("canvas")`.
-- Frozen-claim counts are now `Schedule-F-ready` 1 / `tax season` 3 /
-  `134 pre-rendered` 1. The FarmBooks closing sentence also renders on its
-  closed card face; deliberate duplication, no frozen string was altered.
-- Includes the sprite knockout halo: `.mc-elara` carries three zero-offset
-  `drop-shadow(... var(--theme-bg-primary))` filters, verified live in
-  `_next/static/css/5aa149ff5a104dfb.css`. The token is opaque in BOTH themes
-  (`:root` `#0a1628`, `[data-theme=light]` `#fff`) — an earlier attempt used a
-  near-transparent token and the halo did nothing in dark, so check the token's
-  alpha, not just the presence of the filter.
-- This deployment restores the animated MarCommand character: the four static
-  WebP captures are gone, and the sprite ships as a single
-  `/images/marcommand/elara-sheet.webp` (6,376 B, HTTP 200 live) referenced from
-  CSS (`src/styles/marcommand-live.css:445`), NOT from JS. Grep the CSS bundle,
-  not the JS chunks, when checking whether the sprite is wired up.
-- Verified live on 2026-09-04: `https://preissersolutions.com` returns HTTP/2 200
-  and its homepage HTML contains that BUILD_ID, the owner's own Why Us tagline
-  ("Your success is / our success.", ADR-0009), zero `In it for the`, zero
-  `<canvas>`, zero `ps-caps`, zero em dashes, and `100svh` with zero `100dvh`
-  across both CSS bundles. `www.` and `preisser-solutions.pages.dev` both 301
-  to the apex.
-- Supersedes `f2ea80a5` (BUILD_ID `SRn-vNY_v_NXWuSGjKBrC`) and `60387210`
-  (BUILD_ID `NDGZP95g6U-XdB9IY40ux`).
-- Supersedes `e94d5d78` (BUILD_ID `HMPsuSbj1OHQ_5C0doZuh`), which was built
-  four minutes before the knockout fix landed and shipped without it.
-- Supersedes `bad98893` (BUILD_ID `D0AkNYivpAmaJCcN0wMDd`) and `618f82f8`
-  (BUILD_ID `mx-0H1WmgLJlecK060PZR`); the latter shipped the rejected
-  agent-authored tagline.
+
+> **Unverified against the current deployment.** The following were recorded for
+> `ebc9213b` and were NOT re-checked for `5a342e45`. They are kept because the
+> grep guidance stays useful, but do not cite them as current fact without
+> re-running the check named in each.
+>
+> - `22+ Kansas SMB projects delivered` intentionally absent from the homepage.
+> - Crawler mirror `<section class="ps-visually-hidden ps-pillar-crawler-content">`
+>   carrying 13 anchors and 30 pain-point items in five `<h4>The pain we hear</h4>`
+>   blocks of six; a raw `grep -c 'tabindex="-1"'` reads 16/17, not 13, because
+>   three such anchors sit outside the mirror.
+> - Frozen-claim counts `Schedule-F-ready` 1 / `tax season` 3 / `134 pre-rendered` 1.
+> - The `.mc-elara` sprite knockout halo (three zero-offset `drop-shadow(...
+>   var(--theme-bg-primary))` filters); the token must be opaque in BOTH themes.
+> - The animated MarCommand sprite shipping as a single
+>   `/images/marcommand/elara-sheet.webp` referenced from CSS
+>   (`src/styles/marcommand-live.css:445`), not from JS.
+> - `100svh` with zero `100dvh` across both CSS bundles.
+
 - Known, accepted: `public/contact-critical-v20260522.css:66` contains one em
   dash inside a CSS COMMENT. It is not rendered copy, predates this work
-  (committed in `28b9c09`), and is already live. The "zero em dashes" rule is
-  about HTML/JS output; do not treat this one as a regression.
-- Current live source: uncommitted working tree on branch
-  `feature/mobile-and-marcommand-overhaul`, uploaded from local `out/` with
-  `--branch main`. NOTE: production is therefore ahead of any committed `main`
-  commit; the shipped source exists only in this workspace until it is committed.
-- Deployment list now contains both Production and Preview entries (the earlier
-  "Production 1 / Preview 0" expectation no longer holds).
+  (committed in `28b9c09`), and is already live. ADR-0009's rule is about
+  HTML/JS output; do not treat this one as a regression. (It is also not the
+  source of the 62 count above, which are in served HTML body copy.)
+- Deployment list contains both Production and Preview entries (the earlier
+  "Production 1 / Preview 0" expectation no longer holds). The Preview entries
+  `9c173db9` and `678148b7` on branch `feature/mobile-and-marcommand-overhaul`
+  are the failed-deploy artifacts described under Deploy Command; leave them.
 
 Do not delete the current live deployment. Do not delete or recreate the Pages
 project unless Tyler explicitly asks for full project deletion.
