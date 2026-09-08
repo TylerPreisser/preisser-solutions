@@ -1034,10 +1034,45 @@ void MARK_OVERHANG;
  * from light does not preserve the fill-to-edge relationship. That asymmetry is
  * load-bearing and §24 documents it in the dark branch of palette().
  */
-const MARK_FILL_A_LIGHT = 0.55;
-const MARK_EDGE_A_LIGHT = 0.68;
-const MARK_FILL_A_DARK = 0.285;
-const MARK_EDGE_A_DARK = 0.484;
+/* ===========================================================================
+ * §43, 2026-09-07 - "WAYYYY LESS OPAQUE". The owner, verbatim:
+ *   "The hero I told you that the P mark is supposed to be wayyyyy ess opaque
+ *    and whatever in the background so that the text stands out just fine on
+ *    top of it."
+ * His test is the last clause, so it is the one that was judged: rendered at
+ * his §42 sizes and looked at, both themes, not argued from the numbers.
+ *
+ * light fill 0.55 -> 0.20, light EDGE 0.68 -> 0.20, dark fill 0.285 -> 0.104,
+ * dark edge 0.484 -> 0.142.
+ *
+ * THE EDGE TAKES THE BIGGEST CUT (3.4x) AND THAT IS THE POINT. §35 made the
+ * mark fill-dominant at edge = 1.24 * fill to kill a hairline-wireframe
+ * reading. At §42's scale that inverts: the contour is now an enormous polygon
+ * outline drawn across the whole hero, and an outline is what makes a watermark
+ * assert itself. edge = fill exactly, so the stroke only firms the boundary and
+ * no longer draws a line. The stroke is NOT removed - it still stops the mass
+ * dissolving at its own edge - but it no longer reads as one.
+ *
+ * DARK IS DERIVED, NOT TASTED. §24's cross-theme match on mean dRGB is
+ * preserved exactly: darkFill = 0.5182 * lightFill = 0.1036, darkEdge =
+ * 0.7117 * lightEdge = 0.1423. Do not "tidy" the four into one pair; light uses
+ * two different colours for fill and edge and dark uses one, which is why a
+ * proportional scale from light does not work. See §35.
+ *
+ * WHY 0.20 AND NOT LOWER. 0.12/0.12 was also built and rendered. §32's register
+ * was 0.0975/0.1875 and the owner rejected it three times as a ghost, so this
+ * deliberately stops above that floor. 0.20 measured as a plainly faint
+ * watermark at 1440 and 393 in both themes with the headline fully dominant,
+ * which is his stated test. If he says fainter again, 0.12 is the next step and
+ * it is rendered.
+ *
+ * NOT COMPENSATED FOR. The mark was not enlarged and the stroke was not
+ * thickened to offset this. It is supposed to recede.
+ * =========================================================================== */
+const MARK_FILL_A_LIGHT = 0.20;
+const MARK_EDGE_A_LIGHT = 0.20;
+const MARK_FILL_A_DARK = 0.104;
+const MARK_EDGE_A_DARK = 0.142;
 /** §35: 10 -> 14. A filled mass is a far heavier occluder than a hairline, so
  *  the protected ink needs more slack before the feather starts. */
 const KEEPOUT_MARGIN = 14;
