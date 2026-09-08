@@ -1,0 +1,1297 @@
+/* ============================================================
+   card2-candidates.css  -  Team C. Bento card 2, "Business Automation."
+   The late-payment / accounts-receivable chase, drawn as a flow.
+
+   >> READ THIS FIRST. THIS FILE WAS REBUILT ON THE OWNER'S VERDICT.
+   His words on the previous build: "the business automation is SOOOOOO
+   confucinga dn sucks", against a benchmark of "the cleaness that the websites
+   bento card has". The defect was DENSITY, not colour and not contrast: eight
+   nodes, two decision diamonds and nine strings at 9.5px inside a 400x430 box.
+   Every element was individually correct and the picture as a whole was
+   unreadable.
+
+   The rebuild removes five nodes, both diamonds and five strings, and nearly
+   doubles the type. What is left is four plates and one loop.
+
+   CLEANLINESS IS SPACING, NOT EMPTINESS. The plates HUG THEIR TEXT
+   (align-self: center, natural height) and the air goes BETWEEN them. The
+   previous build stretched every plate to fill its grid row, so each one was
+   about 85% void with a tiny label in the corner - fat boxes with no breathing
+   room between them, which is the opposite of clean.
+
+   >> NO APPLICATION CHROME, AND THAT RULE IS NOT NEGOTIABLE HERE. Card 4 is a
+   literal browser window because its subject IS a browser. This card's subject
+   is a PROCESS. There is no window, no title bar, no traffic lights, no
+   sidebar, no URL field, no dot-grid builder canvas and no chip-on-a-board
+   anywhere in this file. Card 4 is this card's reference for ANIMATION STYLE
+   only; none of its form transfers.
+
+   NOT WRAPPED IN @layer, deliberately. D2, the 925,871-pixel rule.
+
+   >> IMPORTED EXACTLY ONCE, from globals.css:13. The component used to import
+   it as well, so Next emitted this sheet into TWO chunks - about 31KB
+   duplicated through two PostCSS passes, with the cascade winner decided by
+   load order rather than by anything written here. Do not add a component-level
+   import back.
+
+   GEOMETRY. One element renders into two boxes 3.4x apart in aspect and the
+   container CLIPS, it never scales (service-pillars.tsx:1916 card face, :2214
+   dialog; no object-fit, no aspect-ratio on the art box). Measured, not
+   derived: art box 412x442 for a 400x430 card, so THE OUTER 6px RING IS
+   PERMANENTLY CLIPPED on the face; the dialog has no bleed at all and caps at
+   900x400. Every concept root is its own SIZE CONTAINER and reflows in three
+   regimes:
+
+     narrow   default                     card face at every width
+     compact  <=519w and <=300h           the phone-width dialog, 280px tall
+     wide     >=520w AND aspect >=8/5     the LANDSCAPE dialog only
+
+   >> THE ASPECT TEST IN THE WIDE REGIME IS LOAD-BEARING. On min-width alone it
+   also matched a ONE-COLUMN CARD FACE (524x432 at a 560px viewport, 603x432 at
+   639px), and the landscape layout crushed into a portrait box broke three
+   labels MID-WORD. Measured boxes separate with an empty band between them:
+   card faces top out at 1.40, dialogs bottom out at 1.79. 8/5 sits in the gap.
+
+   The container is declared on OUR OWN root, so it works in both mounts; the
+   same element resolved 412x442 and 900x400 in the same page, verified in
+   Chromium, WebKit, Firefox and real Safari 26.6.2.
+
+   VERTICAL BUDGET. The card face covers its bottom 15-24% with the title band
+   and the dialog fades its bottom 120px (globals.css:2710). So the chart lives
+   in the top 356px (narrow), 184px (compact) or 278px (wide).
+
+   COLOUR. R5's palette, tokens only, each with a per-theme literal fallback.
+   docs/design-system.md was NOT used - it is stale for colour - and
+   card-visuals.css was not read for idiom (32% of it is dead). Dark is the
+   unprefixed base, light is a [data-theme="light"] override.
+
+   >> SMALL TEXT ON THE GROUND IS INK, NEVER A HUE. One rule, and it is an
+   accessibility fix measured from rendered pixels with the ink masked out and
+   the WORST backdrop pixel taken. Accent at 9.5px on the ground measured
+   ~3.6:1 dark / ~4.1:1 light; role 6 green at 8px on the ground measured
+   4.33:1 light. Both under 4.5:1. Colour is carried by the WEDGE, the STUB and
+   the GLYPH, which are shapes, and never by a word.
+
+   >> MOTION: NONE, BY RULING, AND NOTHING HERE IS EVER HIDDEN. Zero
+   @keyframes, zero transitions, zero transition-delays, zero `opacity: 0`
+   start states, no `.in-view` gate and no reveal hook. M4's measured card-4
+   spec is "exactly one thing animates: the card itself" - the artwork rides in
+   on the parent as one rigid unit, 0.65s power3.out, once. No internal
+   stagger, no draw-on, NO PATH TRACING. Read the banner at the foot of this
+   file before adding anything back.
+   ============================================================ */
+
+/* ── Tokens local to this card ─────────────────────────────── */
+.ps-c2-root {
+  /* >> BUILD SENTINEL. Read with getComputedStyle(root).getPropertyValue.
+     If this sheet 404s or a stale chunk is served, the property resolves to
+     the empty string and every screenshot taken against it is worthless.
+     Gate on it before trusting any capture. Bump on every material edit. */
+  --c2-build: "d-flow-7";
+
+  /* No motion tokens. There is no motion in this file - see the banner at the
+     foot. The card's own 0.65s power3.out arrival is owned by the grid. */
+
+  /* Dark base. Fallbacks are R5's exact dark values. */
+  --c2-ground-a: var(--theme-art-ground-a, #0A1628);
+  --c2-ground-b: var(--theme-art-ground-b, #0C1E3A);
+  /* >> THE PLATES ARE A LIFTED SURFACE, NOT ROLE 8, AND THAT IS MEASURED.
+     They were --theme-bg-primary (#0A1628 in dark), which is DARKER than the
+     ground, so every plate was a recess and the whole card sank. Measured on
+     the five live cards as element screenshots in one page load, dark theme:
+
+       Business Software   near-white 7.89%  mean luminance 0.241
+       Websites  (owner's cleanliness benchmark)  14.87%  0.258
+       AI and Search Engine Visibility            17.15%  0.292
+       AI Integration                              1.00%  0.162
+       Business Automation (this card, before)     1.00%  0.129  <- darkest
+
+     "Clean" in this set is not saturation - Websites has the LOWEST chroma of
+     the five at 0.82% saturated pixels - it is BRIGHTNESS AND LARGE FORMS. So
+     the plates lift off the ground instead of sinking into it. This is a
+     derived value in the ground's own hue, not a new colour: role 8 is still
+     used for every knockout, halo and occlusion, which is what role 8 is
+     actually for. Nowhere near white, so the 46.7%-near-white failure this
+     project has already shipped stays unreachable. */
+  --c2-slab: color-mix(in srgb, var(--c2-ink) 9%, var(--theme-art-ground-b, #0C1E3A));
+  --c2-hair: rgba(255, 255, 255, 0.16);
+  --c2-rail: rgba(148, 163, 184, 0.38);
+  --c2-accent: var(--theme-accent-text, #1590FF);
+  --c2-good: var(--theme-success-text, #00D4AA);
+  --c2-ink: var(--theme-text-primary, #FFFFFF);
+  --c2-ink-2: var(--theme-text-secondary, #94A3B8);
+  /* The lit top edge is what turns a 1px-outlined box into a slab with a
+     surface. Without it, at #0A1628 on a #0C1E3A ground, every plate reads as
+     an outline beside siblings made of filled mass. */
+  --c2-lit: inset 0 1px 0 0 rgba(255, 255, 255, 0.11);
+  --c2-cast: 0 3px 10px rgba(0, 0, 0, 0.5);
+  --c2-cast-lift: 0 10px 26px rgba(0, 0, 0, 0.55);
+  --c2-pool-rgb: 21, 144, 255;
+
+  /* TYPE. 16px on the card face, up from 9.5px. This is the owner fix and it
+     is also the accessibility fix: at this size every label clears 4.5:1 with
+     an order of magnitude to spare instead of scraping it. */
+  --c2-fs: 17px;
+  --c2-fs-2: 16px;
+  /* THE EDGE LABELS. "yes" and "no", 15px, role 7 ink. Not 9.5px, and not an
+     accent hue: that exact combination was this card's measured SC 1.4.3
+     failure (~3.6:1 dark, ~4.1:1 light) and it is not coming back. Two
+     characters and three characters, so 15px costs the layout nothing. */
+  --c2-fs-tag: 15px;
+  --c2-pad: 14px 18px;
+  --c2-radius: 9px;
+  --c2-loop-w: 3px;
+  --c2-row-gap: 34px;
+  /* Base value so a regime that forgets to set it still resolves. */
+  --c2-branch: 34px;
+
+  /* >> FLOW CHART GEOMETRY. Every one of these is a track size or a stroke
+     width that a connector is measured FROM, never a nudge applied to a
+     connector after the fact. The vertical budget on the card face is
+     442 - 88 (title band) - 18 (top pad) = 336px at >=1024, and
+     432 - 88 - 18 = 326px below it, so the seven tracks below must sum
+     under 326.
+       trigger  e1  chase  e2  diamond  fork  outcomes
+     50.4 + 22 + 50.4 + 34 + 72 + 42 + 49.2 = 320, inside 326.            */
+  --c2-col-gap: 12px;
+  --c2-e1: 22px;        /* trigger -> chase   */
+  --c2-e2: 34px;        /* chase -> decision, and the retry loop hangs here */
+  --c2-e3: 42px;        /* the fork row       */
+  --c2-fork-drop: 17px; /* stem length before the crossbar splits */
+  /* The retry loop: a U hanging off the chase plate's bottom-left. */
+  --c2-loop-drop: 24px;
+  --c2-loop-w-span: 96px;
+  --c2-loop-inset: 22px;
+  --c2-dia-w: 168px;
+  --c2-dia-h: 72px;
+  --c2-dia-stroke-w: 3px;
+  /* The diamond is the same MATERIAL as the plates (slab face, hairline
+     stroke) and only its SHAPE and SIZE mark it as the decision. Contrast
+     from value, not from a fourth hue. */
+  --c2-dia-stroke: color-mix(in srgb, var(--c2-ink) 34%, var(--c2-rail));
+  --c2-dia-shadow: 0 5px 14px rgba(0, 0, 0, 0.5);
+  /* Arrowheads. 11 wide x 8 tall reads as a head at 17px type without
+     becoming a shape of its own. */
+  --c2-head-w: 11px;
+  --c2-head-h: 8px;
+
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  container-type: size;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+[data-theme="light"] .ps-c2-root {
+  --c2-ground-a: var(--theme-art-ground-a, #F0F4F8);
+  --c2-ground-b: var(--theme-art-ground-b, #E8EDF3);
+  /* Light already lifts: white plates on a pale grey ground. */
+  --c2-slab: var(--theme-bg-primary, #FFFFFF);
+  --c2-hair: rgba(10, 22, 40, 0.14);
+  --c2-rail: rgba(71, 85, 105, 0.4);
+  --c2-lit: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+  --c2-cast: 0 3px 10px rgba(10, 22, 40, 0.1);
+  --c2-cast-lift: 0 10px 24px rgba(10, 22, 40, 0.14);
+  --c2-dia-shadow: 0 5px 14px rgba(10, 22, 40, 0.16);
+}
+
+/* ── Ground. 160deg, two stops, ground-a -> ground-b. ── */
+.ps-c2-ground {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, var(--c2-ground-a) 0%, var(--c2-ground-b) 100%);
+}
+
+/* ── Foot pool. Atmosphere only, and deliberately in the dead zone the title
+      band and the dialog fade already cover. Zero-alpha rgba, never the
+      `transparent` keyword, which premultiplies to a black seam. ── */
+.ps-c2-pool {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  bottom: -14%;
+  height: 54%;
+  background: radial-gradient(
+    ellipse at 50% 100%,
+    rgba(var(--c2-pool-rgb), 0.26) 0%,
+    rgba(var(--c2-pool-rgb), 0.09) 44%,
+    rgba(var(--c2-pool-rgb), 0) 100%
+  );
+}
+[data-theme="light"] .ps-c2-pool {
+  background: radial-gradient(
+    ellipse at 50% 100%,
+    rgba(var(--c2-pool-rgb), 0.2) 0%,
+    rgba(var(--c2-pool-rgb), 0.06) 44%,
+    rgba(var(--c2-pool-rgb), 0) 100%
+  );
+}
+
+/* ── A single soft mass behind the flow. Atmosphere; carries no meaning. Its
+      one job is to stop four plates reading as four unrelated objects. ── */
+.ps-c2-body {
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  top: -10%;
+  height: 76%;
+  border-radius: 0 0 30% 30%;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.022) 100%);
+}
+[data-theme="light"] .ps-c2-body {
+  background: linear-gradient(160deg, rgba(10, 22, 40, 0.07) 0%, rgba(10, 22, 40, 0.014) 100%);
+}
+
+/* ── Labels. Every visible string is now role 7 (--theme-text-primary), which
+      is opaque in both themes and measures 14:1 or better on every surface in
+      this file. There is no secondary label ink left, because there is no
+      secondary label left. ── */
+.ps-c2-lbl {
+  display: block;
+  font-size: var(--c2-fs);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.004em;
+  color: var(--c2-ink);
+  text-align: left;
+  overflow-wrap: break-word;
+}
+.ps-c2-lbl--strong {
+  color: var(--c2-ink);
+  font-weight: 680;
+}
+/* The outcome that names the promise is the longest string in the file. One
+   step down keeps it on a single line in the banner instead of orphaning the
+   word "you" on a line of its own. */
+.ps-c2b-st--exception .ps-c2-lbl,
+.ps-c2a-slot--exception .ps-c2-lbl,
+.ps-c2c-p--out .ps-c2-lbl { font-size: var(--c2-fs-2); }
+.ps-c2-glyph {
+  display: block;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin-bottom: 5px;
+}
+
+/* ── THE THREE NUDGES. The dunning ladder, drawn instead of written. Growing
+      left to right, so they read as escalation rather than as three of a
+      thing. This is what replaced the string "Reminders, days 3-14". ── */
+.ps-c2-nudges {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+}
+.ps-c2-nudge {
+  display: block;
+  width: calc(6px + var(--n) * 3px);
+  height: calc(6px + var(--n) * 3px);
+  border-radius: 50%;
+  background: var(--c2-accent);
+  opacity: calc(0.45 + var(--n) * 0.275);
+}
+
+/* ── PLATES. Opaque slabs with a hairline and a cast, so each sits ABOVE the
+      ground rather than being drawn on it - the craft the siblings share.
+      They HUG THEIR TEXT; the grid gives them the air. ── */
+.ps-c2b-st,
+.ps-c2a-slot,
+.ps-c2c-p {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  min-width: 0;
+  padding: var(--c2-pad);
+  border-radius: var(--c2-radius);
+  background: var(--c2-slab);
+  border: 1px solid var(--c2-hair);
+  box-shadow: var(--c2-lit), var(--c2-cast);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONCEPT A  -  THE SORTER
+
+   Gravity. Mouth, one wedge, two bins, and the chase arc carrying the unpaid
+   one back up to the same wedge on the outside of the machine.
+   ═══════════════════════════════════════════════════════════ */
+.ps-c2a-machine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(100% - 86px);
+  box-sizing: border-box;
+  padding: 0 14px 0 14px;
+  display: grid;
+  column-gap: 12px;
+  row-gap: 14px;
+  grid-template-columns: 26px minmax(0, 0.86fr) minmax(0, 1.14fr);
+  grid-template-rows:
+    minmax(52px, 0.9fr)
+    minmax(26px, 0.42fr)
+    minmax(58px, 1.1fr)
+    minmax(58px, 1.05fr);
+  grid-template-areas:
+    "mouth mouth  mouth"
+    "arc   sp     sp"
+    "arc   chase  settled"
+    ".     exc    exc";
+}
+
+/* THE MOUTH. A trapezoid bleeding past three edges: the work arrives from
+   outside the picture. */
+.ps-c2a-mouth {
+  grid-area: mouth;
+  position: relative;
+  margin: -26px -26px 0 -34px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 10px;
+  background: linear-gradient(
+    170deg,
+    color-mix(in srgb, var(--c2-ink) 22%, var(--c2-ground-b)) 0%,
+    color-mix(in srgb, var(--c2-ink) 7%, var(--c2-ground-b)) 100%
+  );
+  clip-path: polygon(0% 0%, 100% 0%, 84% 100%, 16% 100%);
+}
+.ps-c2a-mouth .ps-c2-lbl { text-align: center; }
+
+/* THE SPLIT. A solid wedge. The fork IS the decision; no word asks it. */
+.ps-c2a-sp {
+  grid-area: sp;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ps-c2a-wedge {
+  display: block;
+  width: 30px;
+  height: 22px;
+  background: var(--c2-accent);
+  clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+}
+
+.ps-c2a-slot--chase { grid-area: chase; }
+.ps-c2a-slot--settled { grid-area: settled; }
+.ps-c2a-slot--exception { grid-area: exc; }
+.ps-c2a-slot--settled .ps-c2-glyph { color: var(--c2-good); }
+.ps-c2a-slot--settled { border-color: color-mix(in srgb, var(--c2-good) 48%, var(--c2-hair)); }
+.ps-c2a-slot--exception {
+  border-color: color-mix(in srgb, var(--c2-accent) 60%, var(--c2-hair));
+  box-shadow: var(--c2-lit), var(--c2-cast-lift);
+}
+.ps-c2a-slot--exception .ps-c2-glyph { color: var(--c2-accent); }
+
+/* THE CHASE ARC. Grid-placed across the wedge and chase rows, bleeding off the
+   left edge, so the loop is bigger than the frame. */
+.ps-c2a-arc {
+  grid-area: arc;
+  align-self: stretch;
+  justify-self: stretch;
+  /* Extends RIGHT under the plates, never left past the clipped bleed ring.
+     At margin-left: -20px in a 26px gutter the bracket's own vertical side
+     landed 10px OUTSIDE the visible card, so all that showed were two
+     horizontal stubs floating at the edge with nothing joining them. */
+  margin: 10px -20px 10px 0;
+  border: var(--c2-loop-w) solid var(--c2-accent);
+  border-right: 0;
+  border-radius: 16px 0 0 16px;
+  opacity: 0.9;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONCEPT B  -  THE FLOW CHART       (the default concept)
+
+   >> REBUILT A SECOND TIME on the owner's second request: "fr business
+   automation why dont you just do what we used to have originally that flow
+   chart?" Build 1's defect was DENSITY AT 9.5px, not the flow chart form.
+   Build 2 fixed density by deleting the form and stopped reading as a flow
+   chart. This build restores the FORM at build 2's SIZE: process nodes, ONE
+   true decision diamond with two labelled outgoing edges, and an arrowhead on
+   every connector.
+
+   CHARACTER COUNT, because that is what density actually is:
+     build 1   9 strings  ~150 chars   9.5px
+     build 2   4 strings   ~62 chars   17px
+     build 3   7 strings   ~60 chars   17px   <- this one, FEWER than build 2
+   Three strings were added ("Paid?", "yes", "no") and two long ones shrank,
+   because the "no" edge label says "unpaid" so the outcome plate no longer
+   has to.
+
+   >> THE CONNECTOR RULE, WRITTEN AFTER TWO FLOATING-CONNECTOR FAILURES IN
+   THIS FILE. Nothing here is positioned by a guessed percentage:
+     - straight edges own a GRID TRACK and STRETCH into it, so the line
+       physically spans the gap it is drawn in;
+     - the fork is `grid-template-columns: subgrid` over the two outcome
+       columns, so each arm's own 50% IS its plate's centre BY CONSTRUCTION;
+     - arrowheads are pseudo elements OF THE TARGET PLATE, measured from the
+       thing they point at, so they cannot drift when the box resizes.
+   `row-gap` is 0 in this layout on purpose: the gaps ARE the edge tracks, and
+   a gap that is not a track is a gap a connector can fall into.
+   ═══════════════════════════════════════════════════════════ */
+.ps-c2b-flow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(100% - 88px);
+  box-sizing: border-box;
+  /* 18px top and 16px sides. The art box is 12px larger than the visible card
+     and the outer 6px ring is clipped, so these are 12px and 10px of REAL
+     clearance. Measured, not assumed. */
+  padding: 18px 16px 0 16px;
+  display: grid;
+  column-gap: var(--c2-col-gap);
+  row-gap: 0;
+  /* col 1 is the retry loop's channel. cols 2 and 3 are EQUAL, which is what
+     makes the fork subgrid land dead centre on each outcome plate. */
+  /* TWO EQUAL COLUMNS AND NOTHING ELSE. There was a third, a 34px channel on
+     the left holding the retry loop, and it pushed the entire chart 23px right
+     of the card's centre line: 56px of air on the left of the plates against
+     10px on the right, measured off the render. The loop moved UNDER the chase
+     node instead, which costs no column, lets all three full-width plates span
+     the real width, and leaves the composition symmetric. Equal columns are
+     also what makes the fork subgrid land dead centre on each outcome plate. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows:
+    auto            /* trigger  */
+    var(--c2-e1)    /* edge 1   */
+    auto            /* chase    */
+    var(--c2-e2)    /* edge 2, and the retry loop hangs into it */
+    var(--c2-dia-h) /* decision */
+    var(--c2-e3)    /* fork     */
+    auto;           /* outcomes */
+  grid-template-areas:
+    "trig  trig"
+    "e1    e1"
+    "chase chase"
+    "e2    e2"
+    "dia   dia"
+    "fork  fork"
+    "paid  exc";
+}
+
+.ps-c2b-st--trigger { grid-area: trig; }
+.ps-c2b-st--chase { grid-area: chase; }
+.ps-c2b-st--settled { grid-area: paid; }
+.ps-c2b-st--exception { grid-area: exc; }
+
+/* >> KEEP-CLEAR. The surface puts an expand control in the top-right corner:
+   a 44x44 disc inset 12px (a 56x56 keep-clear box) at every width <=768, and
+   32x32 inset 16 from 769. In ART coordinates that box is
+   x = [artW-62, artW-6], y = [6, 62]. This plate's right edge sits at
+   artW-16-56 = artW-72, so it clears the box by 10px at every width. Only the
+   row that collides pays for it; the grid is not padded. */
+.ps-c2b-st--trigger { margin-right: 56px; }
+
+/* ── DIRECTED EDGES. One per straight connector, each owning its own grid
+      track and stretched into it. `justify-self: center` centres the stroke on
+      the two content columns, which is exactly where the full-width plates
+      above and below are centred. ── */
+.ps-c2b-edge {
+  position: relative;
+  z-index: 0;
+  align-self: stretch;
+  justify-self: center;
+  width: var(--c2-loop-w);
+  border-radius: 2px;
+  background: var(--c2-rail);
+}
+.ps-c2b-edge--1 { grid-area: e1; }
+.ps-c2b-edge--2 { grid-area: e2; }
+/* THE ARROWHEAD. A solid triangle at the head of the stroke. This is the part
+   build 2 did not have, and without it four lines are a bracket, not a flow. */
+.ps-c2b-edge::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: var(--c2-head-w);
+  height: var(--c2-head-h);
+  margin-left: calc(var(--c2-head-w) / -2);
+  background: var(--c2-rail);
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+/* ── THE DECISION. A real diamond: a clipped outer shape in the stroke colour
+      with a clipped inner face inset from it, which is how you draw a stroked
+      polygon without an SVG (and therefore without an id that could collide
+      across the card/dialog double mount). The drop-shadow filter follows the
+      clipped silhouette, so it reads as a solid object rather than a cutout.
+      It is the LARGEST SINGLE SHAPE in the frame, and that is its emphasis -
+      no new hue was added to make it the focal point. ── */
+.ps-c2b-dia {
+  grid-area: dia;
+  position: relative;
+  z-index: 1;
+  justify-self: center;
+  align-self: center;
+  box-sizing: border-box;
+  width: var(--c2-dia-w);
+  height: var(--c2-dia-h);
+  display: grid;
+  place-items: center;
+  background: var(--c2-dia-stroke);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  filter: drop-shadow(var(--c2-dia-shadow));
+}
+.ps-c2b-dia::before {
+  content: "";
+  position: absolute;
+  inset: var(--c2-dia-stroke-w);
+  background: var(--c2-slab);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+.ps-c2-lbl--dia {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* ── THE FORK. `grid-template-columns: subgrid` inherits the parent's column
+      lines, so arm--yes occupies the settled plate's OWN column and arm--no
+      the exception plate's. Each arm's 50% is its plate's centre line by
+      construction. This is the third attempt at this fork; the first two used
+      arithmetic and both missed - one by 3px, one by 40px. ── */
+.ps-c2b-fork {
+  grid-area: fork;
+  position: relative;
+  z-index: 0;
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+/* THE STEM out of the diamond's bottom vertex, down to the crossbar. The
+   fork spans both content columns, so its 50% is the diamond's centre. */
+.ps-c2b-fork::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--c2-loop-w);
+  height: var(--c2-fork-drop);
+  margin-left: calc(var(--c2-loop-w) / -2);
+  border-radius: 2px;
+  background: var(--c2-rail);
+}
+.ps-c2b-arm {
+  position: relative;
+  display: block;
+}
+.ps-c2b-arm--yes { grid-column: 1; }
+.ps-c2b-arm--no { grid-column: 2; }
+/* Each arm is an elbow: a horizontal run at the crossbar height and a riser
+   dropping into its own plate. `right: calc(-1 * var(--c2-col-gap) / 2)` on
+   the yes arm reaches exactly half the column gap past its own column edge,
+   which IS the flow's centre line and therefore the stem. Same on the other
+   side, mirrored. Nothing is tuned. */
+.ps-c2b-arm::before {
+  content: "";
+  position: absolute;
+  top: var(--c2-fork-drop);
+  bottom: 0;
+  border-style: solid;
+  border-width: 0;
+}
+.ps-c2b-arm--yes::before {
+  left: 50%;
+  right: calc(-1 * var(--c2-col-gap) / 2);
+  border-left-width: var(--c2-loop-w);
+  border-top-width: var(--c2-loop-w);
+  border-color: var(--c2-good);
+  border-top-left-radius: 11px;
+}
+.ps-c2b-arm--no::before {
+  left: calc(-1 * var(--c2-col-gap) / 2);
+  right: 50%;
+  border-right-width: var(--c2-loop-w);
+  border-top-width: var(--c2-loop-w);
+  border-color: var(--c2-accent);
+  border-top-right-radius: 11px;
+}
+
+/* ── THE TWO LABELLED OUTGOING EDGES. "yes" and "no", sitting above their own
+      crossbar next to the stem, which is where a flow chart puts them. Role 7
+      ink at 15px, never an accent hue at 9.5px - that combination was this
+      card's measured SC 1.4.3 failure and it is not coming back. ── */
+.ps-c2b-tag {
+  position: absolute;
+  top: 0;
+  /* >> NOT ITALIC. The arms are <i> elements (they carry no semantics; <i> is
+     the cheapest inline box that takes a subgrid column) and the first render
+     came back with "yes" and "no" in italic, inherited. Caught in the
+     screenshot, invisible to every geometry probe. */
+  font-style: normal;
+  font-size: var(--c2-fs-tag);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  color: var(--c2-ink);
+  white-space: nowrap;
+}
+.ps-c2b-arm--yes .ps-c2b-tag { right: 9px; }
+.ps-c2b-arm--no .ps-c2b-tag { left: 9px; }
+
+/* ── ARROWHEADS INTO THE OUTCOMES. Pseudo elements OF THE PLATE, so they are
+      measured from the target and cannot float. ── */
+.ps-c2b-st--settled::before,
+.ps-c2b-st--exception::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(-1 * var(--c2-head-h) + 1px);
+  width: var(--c2-head-w);
+  height: var(--c2-head-h);
+  margin-left: calc(var(--c2-head-w) / -2);
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+.ps-c2b-st--settled::before { background: var(--c2-good); }
+.ps-c2b-st--exception::before { background: var(--c2-accent); }
+
+.ps-c2b-st--settled { border-color: color-mix(in srgb, var(--c2-good) 48%, var(--c2-hair)); }
+.ps-c2b-st--settled .ps-c2-glyph { color: var(--c2-good); }
+/* The one plate that reaches a person: the only lifted shadow in the picture,
+   so it is where the eye lands last and stays. */
+.ps-c2b-st--exception {
+  border-color: color-mix(in srgb, var(--c2-accent) 60%, var(--c2-hair));
+  box-shadow: var(--c2-lit), var(--c2-cast-lift);
+}
+.ps-c2b-st--exception .ps-c2-glyph { color: var(--c2-accent); }
+
+/* ── THE RETRY LOOP. A self loop on the chase node: it leaves the plate's
+      bottom-left, runs off the LEFT EDGE OF THE FRAME, comes back up and
+      re-enters the same plate head first. Placed in the loop channel of the
+      chase row, so it is measured from the plate's own grid cell and cannot
+      drift. The negative left margin is the crop: the chase is bigger than
+      the frame, which is the true thing about it. ── */
+.ps-c2b-loop {
+  /* >> IT SHARES THE CHASE PLATE'S OWN GRID CELL, which is the whole reason it
+     cannot drift: it is positioned off the plate it belongs to, not off the
+     flow. `align-self: end` pins it to the plate's bottom edge and the
+     negative bottom margin hangs it into the edge-2 track below.
+     TWO EARLIER ATTEMPTS FAILED HERE. One put it in a left-hand channel with
+     -34px of bleed, and its entire vertical run landed outside the card's
+     clip at art x=6, so what rendered was two orphan horizontal stubs poking
+     out of the left edge - a rendering bug to look at, and completely
+     invisible to a bounding-box probe because the element box was correct. */
+  grid-area: chase;
+  position: relative;
+  z-index: 0;
+  align-self: end;
+  justify-self: start;
+  width: var(--c2-loop-w-span);
+  height: var(--c2-loop-drop);
+  margin: 0 0 calc(-1 * var(--c2-loop-drop)) var(--c2-loop-inset);
+  box-sizing: border-box;
+  border: var(--c2-loop-w) solid var(--c2-accent);
+  border-top: 0;
+  border-radius: 0 0 15px 15px;
+  opacity: 0.95;
+}
+/* The head, pointing UP into the chase plate's bottom edge. This is the part
+   that makes it a directed retry edge rather than a decorative bracket. */
+.ps-c2b-loop::after {
+  content: "";
+  position: absolute;
+  /* >> BELOW THE PLATE EDGE, NOT ABOVE IT. The first attempt put this at
+     top: -head-h so the head sat INSIDE the plate - and the plate is z-index 1
+     against the loop's 0, so the plate painted straight over it and the retry
+     edge shipped with no head at all. It looked like a stray bracket. Caught
+     in the screenshot; a geometry probe would have reported the head present
+     and correctly sized, because it was. The tip now touches the plate's
+     bottom edge from underneath. */
+  right: calc(var(--c2-loop-w) / 2 - var(--c2-head-w) / 2);
+  top: 0;
+  width: var(--c2-head-w);
+  height: var(--c2-head-h);
+  background: var(--c2-accent);
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONCEPT C  -  MANY BECOMING ONE
+   ═══════════════════════════════════════════════════════════ */
+.ps-c2c-stage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(100% - 86px);
+  box-sizing: border-box;
+  /* 18px top and 16px sides. The art box is 12px larger than the visible card
+     and the outer 6px ring is clipped, so these are 12px and 10px of REAL
+     clearance - the file's own keep-off rule. Measured, not assumed: at 14px
+     sides the plates sat 8px inside the card. */
+  padding: 20px 16px 0 16px;
+  display: grid;
+  column-gap: 12px;
+  row-gap: 12px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr);
+  grid-template-rows:
+    minmax(58px, 1.1fr)
+    18px
+    minmax(46px, 0.7fr)
+    minmax(58px, 1.15fr);
+  grid-template-areas:
+    "field   field"
+    "bar     bar"
+    "chase   chase"
+    "settled out";
+}
+
+/* THE STACK. Five bars, not nine. Nine thin grey bars read as loading-skeleton
+   placeholder rows, which is on the owner's own list of things he hates. */
+.ps-c2c-field {
+  grid-area: field;
+  position: relative;
+  margin: -22px -30px 0 -32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding-left: 32px;
+}
+/* >> A PILE, NOT A LIST OF BARS. The previous two builds drew flat rounded
+   pills stacked in a column, which is the exact shape of a loading skeleton -
+   "rows of grey placeholder pills" is on the owner's own list of things he
+   hates, and it read that way in the render even after the bars were made
+   fewer and taller. Overlapping, fanned, cast slabs read as a pile of paper
+   instead, which is what a receivables ledger actually looks like. */
+.ps-c2c-slab {
+  display: block;
+  width: var(--w);
+  max-width: 100%;
+  height: 30px;
+  margin-top: -13px;
+  border-radius: 5px;
+  background: linear-gradient(160deg,
+    color-mix(in srgb, var(--c2-ink) 13%, var(--theme-art-ground-b, #0C1E3A)) 0%,
+    color-mix(in srgb, var(--c2-ink) 5%, var(--theme-art-ground-b, #0C1E3A)) 100%);
+  border: 1px solid var(--c2-hair);
+  box-shadow: var(--c2-lit), var(--c2-cast);
+  transform-origin: left center;
+  /* --i drives GEOMETRY here, not timing: the fan angle and the offset of each
+     sheet in the pile. It is authored, never Math.random (SSR). */
+  transform: rotate(calc((var(--i) - 2) * 1.5deg)) translateX(calc(var(--i) * 4px));
+}
+.ps-c2c-slab:first-child { margin-top: 0; }
+
+/* THE MECHANISM. Edge to edge and out of the frame on both sides. */
+.ps-c2c-bar {
+  grid-area: bar;
+  align-self: center;
+  justify-self: stretch;
+  margin: 0 -30px;
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--c2-accent) 70%, var(--c2-ground-b)) 0%,
+    var(--c2-accent) 55%,
+    color-mix(in srgb, var(--c2-accent) 70%, var(--c2-ground-b)) 100%);
+}
+
+/* THE AFTER. One broad settled mass instead of a stack. */
+.ps-c2c-mass {
+  grid-column: 1 / 2;
+  grid-row: 4 / 5;
+  align-self: stretch;
+  justify-self: stretch;
+  margin: -6px 6px -30px -32px;
+  /* THE AFTER: the pile has become ONE slab, in the same material as the
+     plates, just far larger and tinted settled-green. A flat green rectangle
+     read as a colour field lying behind the card rather than as an object. */
+  border-radius: 0 14px 0 0;
+  border: 1px solid color-mix(in srgb, var(--c2-good) 40%, var(--c2-hair));
+  border-left: 0;
+  border-bottom: 0;
+  box-shadow: var(--c2-lit), var(--c2-cast);
+  background: linear-gradient(150deg,
+    color-mix(in srgb, var(--c2-good) 26%, var(--theme-art-ground-b, #0C1E3A)) 0%,
+    color-mix(in srgb, var(--c2-good) 9%, var(--theme-art-ground-b, #0C1E3A)) 100%);
+}
+
+.ps-c2c-p--issue { grid-area: field; align-self: start; justify-self: start; margin-top: 2px; }
+.ps-c2c-p--chase { grid-area: chase; justify-self: start; }
+.ps-c2c-p--settled { grid-area: settled; align-self: end; margin-bottom: 4px; }
+.ps-c2c-p--settled .ps-c2-glyph { color: var(--c2-good); }
+.ps-c2c-p--settled { border-color: color-mix(in srgb, var(--c2-good) 48%, var(--c2-hair)); }
+.ps-c2c-p--out {
+  grid-area: out;
+  align-self: end;
+  margin-bottom: 4px;
+  border-color: color-mix(in srgb, var(--c2-accent) 60%, var(--c2-hair));
+  box-shadow: var(--c2-lit), var(--c2-cast-lift);
+}
+.ps-c2c-p--out .ps-c2-glyph { color: var(--c2-accent); }
+
+/* ═══════════════════════════════════════════════════════════
+   NARROW FACE  -  the card face on phones and the 2-up tablet grid.
+
+   MEASURED, not guessed. The card face art box is 412x442 at >=1024 and
+   drops to 284x432 (320 viewport), 339x432 (375), 357x432 (393), 364x432
+   (768) and 394x432 (430) below it. So the tight case is a 284px-wide box
+   that is also 10px SHORTER, and the base tokens sum to 320 against a 326px
+   budget there - which leaves nothing for the outcome label wrapping to a
+   second line, and at 284 it does. One step down on type and padding buys
+   back the line and keeps every string on one line instead.
+
+   >> STILL NOWHERE NEAR 9.5px. 16px face type, 14px edge labels. The whole
+   point of this rebuild is that the flow chart came back WITHOUT the type
+   going back.
+   ═══════════════════════════════════════════════════════════ */
+@container (max-width: 345px) {
+  /* Tokens go on the INNER wrapper, never on .ps-c2-root - that element IS
+     the container and a @container block cannot style it. */
+  .ps-c2b-flow {
+    --c2-fs: 16px;
+    --c2-fs-2: 15px;
+    --c2-fs-tag: 14px;
+    --c2-pad: 13px 14px;
+    --c2-col-gap: 10px;
+    --c2-e1: 22px;
+    --c2-e2: 34px;
+    --c2-e3: 40px;
+    --c2-fork-drop: 15px;
+    --c2-loop-drop: 22px;
+    --c2-loop-w-span: 84px;
+    --c2-loop-inset: 18px;
+    --c2-dia-w: 152px;
+    --c2-dia-h: 68px;
+    --c2-head-w: 10px;
+    --c2-head-h: 7px;
+  }
+  .ps-c2b-flow { padding: 16px 14px 0 14px; }
+  .ps-c2-glyph { width: 15px; height: 15px; margin-bottom: 4px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COMPACT  -  the phone-width dialog, 280px tall.
+   Same vertical reading, tighter rhythm, type down to 14px.
+   ═══════════════════════════════════════════════════════════ */
+@container (max-width: 519px) and (max-height: 300px) {
+  /* >> TOKENS GO ON THE INNER WRAPPERS, NEVER ON .ps-c2-root, AND THIS IS THE
+     SINGLE EASIEST WAY TO BREAK THIS FILE. `.ps-c2-root` IS the container. A
+     @container block styles the container's DESCENDANTS; it cannot style the
+     container itself. Setting --c2-fs on .ps-c2-root inside one of these
+     blocks silently does nothing, so the dialog quietly keeps the card face's
+     type size and every derived value falls back or, worse, resolves to an
+     invalid var() - which is exactly how the two branch connectors ended up
+     computing `height: 0px` and vanishing. Caught by probing the computed
+     style after the screenshot showed nothing there. */
+  .ps-c2b-flow,
+  .ps-c2a-machine,
+  .ps-c2c-stage {
+    --c2-fs: 14px;
+    --c2-fs-2: 13.5px;
+    --c2-pad: 9px 12px;
+    --c2-radius: 8px;
+    --c2-row-gap: 14px;
+  }
+  .ps-c2-glyph { width: 14px; height: 14px; margin-bottom: 3px; }
+  .ps-c2-nudges { margin-top: 5px; gap: 4px; }
+
+  /* ---- B, THE FLOW CHART ----
+     The phone dialog art box measures 320x280 through 430x280. The chart keeps
+     its vertical reading and every part of its grammar - diamond, two labelled
+     edges, arrowheads, retry loop - at one more step down in size. Seven
+     tracks against a 224px budget:
+       34.2 + 14 + 34.2 + 26 + 52 + 28 + 33.6 = 222.                        */
+  .ps-c2b-flow {
+    --c2-fs: 13.5px;
+    --c2-fs-2: 13px;
+    --c2-fs-tag: 12px;
+    --c2-pad: 8px 11px;
+    --c2-radius: 8px;
+    --c2-col-gap: 10px;
+    --c2-e1: 14px;
+    --c2-e2: 26px;
+    --c2-e3: 28px;
+    --c2-fork-drop: 10px;
+    --c2-loop-drop: 16px;
+    --c2-loop-w-span: 64px;
+    --c2-loop-inset: 14px;
+    --c2-dia-w: 132px;
+    --c2-dia-h: 52px;
+    --c2-dia-stroke-w: 2.5px;
+    --c2-loop-w: 2.5px;
+    --c2-head-w: 9px;
+    --c2-head-h: 6.5px;
+    height: calc(100% - 56px);
+    padding: 12px 12px 0 12px;
+  }
+  .ps-c2b-st--trigger { margin-right: 56px; }
+
+
+  .ps-c2a-machine {
+    height: calc(100% - 92px);
+    row-gap: 10px;
+    grid-template-rows: minmax(38px, 0.8fr) minmax(20px, 0.36fr) minmax(44px, 1.05fr) minmax(44px, 1fr);
+  }
+  .ps-c2a-mouth { margin: -18px -22px 0 -28px; padding-bottom: 6px; }
+  .ps-c2a-wedge { width: 24px; height: 17px; }
+
+  .ps-c2c-stage {
+    height: calc(100% - 92px);
+    padding: 12px 12px 0 12px;
+    row-gap: 8px;
+    grid-template-rows: minmax(44px, 1fr) 12px minmax(34px, 0.66fr) minmax(44px, 1.05fr);
+  }
+  .ps-c2c-slab { height: 22px; margin-top: -10px; }
+  .ps-c2c-bar { height: 8px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   WIDE  -  the LANDSCAPE dialog only (>=520 wide AND aspect >=8/5).
+   The flow turns on its side and runs left to right; the loop turns with it
+   and comes back UNDER the line. One reading direction, one fork.
+   ═══════════════════════════════════════════════════════════ */
+@container (min-width: 520px) and (min-aspect-ratio: 8/5) {
+  /* >> TOKENS GO ON THE INNER WRAPPERS, NEVER ON .ps-c2-root, AND THIS IS THE
+     SINGLE EASIEST WAY TO BREAK THIS FILE. `.ps-c2-root` IS the container. A
+     @container block styles the container's DESCENDANTS; it cannot style the
+     container itself. Setting --c2-fs on .ps-c2-root inside one of these
+     blocks silently does nothing, so the dialog quietly keeps the card face's
+     type size and every derived value falls back or, worse, resolves to an
+     invalid var() - which is exactly how the two branch connectors ended up
+     computing `height: 0px` and vanishing. Caught by probing the computed
+     style after the screenshot showed nothing there. */
+  .ps-c2b-flow,
+  .ps-c2a-machine,
+  .ps-c2c-stage {
+    --c2-fs: 20px;
+    --c2-fs-2: 19px;
+    --c2-pad: 16px 20px;
+    --c2-radius: 11px;
+    --c2-loop-w: 3px;
+    --c2-branch: 27px;
+  }
+  .ps-c2-glyph { width: 19px; height: 19px; margin-bottom: 6px; }
+  .ps-c2-nudges { margin-top: 10px; gap: 7px; }
+  .ps-c2-nudge {
+    width: calc(8px + var(--n) * 4px);
+    height: calc(8px + var(--n) * 4px);
+  }
+
+  /* ---- B, THE FLOW CHART, TURNED ON ITS SIDE ----
+
+     >> THE EDGES ARE COLUMNS HERE, NOT ROWS, AND THAT IS THE ONLY THING THAT
+     CHANGES. `--c2-e1/e2/e3` are track sizes; in the portrait card face they
+     size rows and in the landscape dialog they size columns. The connector
+     elements themselves are the same elements, still stretched into their own
+     track, so they still cannot float.
+
+     >> `row-gap: 0` IS LOAD BEARING. With two equal rows and no gap, the
+     boundary between them is EXACTLY the flow's vertical midline, which is
+     exactly where the diamond's right vertex sits. The fork arms are a
+     `grid-template-rows: subgrid`, so arm--yes's bottom edge IS that midline
+     and its top IS the Paid plate's own centre line. Both ends of both elbows
+     are grid lines. The separation between the outcome plates comes from
+     their own margins, not from a gap, so no connector has to know about it.
+
+     A previous landscape attempt put the return loop in a third grid row: it
+     landed 120px below the line it was meant to rejoin, the horizontal welds
+     were missing entirely, and the two outcome drops met each other so the
+     picture said "Paid, THEN reaches you". All three were caught by opening
+     the screenshot, none by a probe. */
+  .ps-c2b-flow {
+    --c2-fs: 20px;
+    --c2-fs-2: 19px;
+    --c2-fs-tag: 17px;
+    --c2-pad: 15px 20px;
+    --c2-radius: 11px;
+    --c2-e1: 28px;
+    --c2-e2: 28px;
+    --c2-e3: 40px;
+    --c2-dia-w: 172px;
+    --c2-dia-h: 118px;
+    --c2-loop-drop: 26px;
+    --c2-loop-w-span: 74px;
+    --c2-loop-inset: 20px;
+    --c2-head-w: 12px;
+    --c2-head-h: 9px;
+    height: calc(100% - 122px);
+    /* 78px on the right: the dialog's own close button owns that corner. */
+    padding: 0 78px 0 0;
+    column-gap: 0;
+    row-gap: 0;
+    grid-template-columns:
+      minmax(0, 0.92fr)
+      var(--c2-e1)
+      minmax(0, 1fr)
+      var(--c2-e2)
+      var(--c2-dia-w)
+      var(--c2-e3)
+      minmax(0, 1.3fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "trig e1 chase e2 dia fork paid"
+      "trig e1 chase e2 dia fork exc";
+  }
+
+  .ps-c2b-st--trigger { margin-right: 0; align-self: center; }
+  .ps-c2b-st--chase { align-self: center; }
+  /* The gap between the two outcomes is their own margin, so row-gap can stay
+     0 and the midline can stay exact. */
+  .ps-c2b-st--settled { align-self: end; margin-bottom: 15px; }
+  .ps-c2b-st--exception { align-self: start; margin-top: 15px; }
+
+  /* STRAIGHT EDGES, now horizontal. Same elements, same stretch, head turned. */
+  .ps-c2b-edge {
+    align-self: center;
+    justify-self: stretch;
+    width: auto;
+    height: var(--c2-loop-w);
+  }
+  .ps-c2b-edge::after {
+    left: auto;
+    right: 0;
+    bottom: auto;
+    top: 50%;
+    width: var(--c2-head-h);
+    height: var(--c2-head-w);
+    margin-left: 0;
+    margin-top: calc(var(--c2-head-w) / -2);
+    clip-path: polygon(100% 50%, 0 0, 0 100%);
+  }
+
+  .ps-c2b-dia { align-self: center; justify-self: center; }
+
+  /* THE FORK, turned. Rows instead of columns, and no stem: with column-gap 0
+     the fork track's left edge IS the diamond's right vertex, so both elbows
+     start on the vertex itself. */
+  .ps-c2b-fork {
+    grid-template-columns: none;
+    grid-template-rows: subgrid;
+  }
+  .ps-c2b-fork::before { content: none; }
+  .ps-c2b-arm--yes { grid-column: auto; grid-row: 1; }
+  .ps-c2b-arm--no { grid-column: auto; grid-row: 2; }
+  .ps-c2b-arm::before {
+    top: auto;
+    bottom: auto;
+    left: 0;
+    right: 0;
+  }
+  .ps-c2b-arm--yes::before {
+    top: 50%;
+    bottom: 0;
+    border-left-width: var(--c2-loop-w);
+    border-top-width: var(--c2-loop-w);
+    border-bottom-width: 0;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 0;
+  }
+  .ps-c2b-arm--no::before {
+    top: 0;
+    bottom: 50%;
+    border-left-width: var(--c2-loop-w);
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: var(--c2-loop-w);
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 12px;
+  }
+  /* The edge labels ride just inside the corner of their own elbow. */
+  .ps-c2b-arm .ps-c2b-tag { top: auto; }
+  .ps-c2b-arm--yes .ps-c2b-tag {
+    right: auto;
+    left: calc(var(--c2-loop-w) + 7px);
+    bottom: calc(50% + 6px);
+  }
+  .ps-c2b-arm--no .ps-c2b-tag {
+    left: calc(var(--c2-loop-w) + 7px);
+    top: calc(50% + 6px);
+  }
+
+  /* ARROWHEADS INTO THE OUTCOMES, now pointing right. Still pseudo elements OF
+     THE PLATE, so they are measured from the target they point at. */
+  .ps-c2b-st--settled::before,
+  .ps-c2b-st--exception::before {
+    left: calc(-1 * var(--c2-head-h) + 1px);
+    top: 50%;
+    width: var(--c2-head-h);
+    height: var(--c2-head-w);
+    margin-left: 0;
+    margin-top: calc(var(--c2-head-w) / -2);
+    clip-path: polygon(100% 50%, 0 0, 0 100%);
+  }
+
+  /* ---- A ---- */
+  .ps-c2a-machine {
+    height: calc(100% - 122px);
+    padding: 0 40px 0 0;
+    column-gap: 20px;
+    row-gap: 14px;
+    grid-template-columns: minmax(0, 1fr) 46px minmax(0, 1.06fr) minmax(0, 1.3fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "mouth sp chase settled"
+      "mouth sp chase exc";
+  }
+  .ps-c2a-mouth {
+    margin: 0 0 0 -40px;
+    align-items: center;
+    padding-bottom: 0;
+    padding-left: 46px;
+    clip-path: polygon(0% 0%, 100% 16%, 100% 84%, 0% 100%);
+  }
+  .ps-c2a-mouth .ps-c2-lbl { text-align: left; }
+  .ps-c2a-sp { justify-content: center; align-items: center; }
+  .ps-c2a-wedge {
+    width: 24px;
+    height: 32px;
+    clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+  }
+  .ps-c2a-slot--chase { align-self: center; }
+  .ps-c2a-slot--settled { align-self: end; margin-bottom: 20px; }
+  .ps-c2a-slot--exception { align-self: start; margin-top: 20px; }
+  .ps-c2a-arc {
+    position: absolute;
+    z-index: 0;
+    grid-area: auto;
+    left: -34px;
+    width: 52%;
+    top: 50%;
+    height: 74px;
+    margin: 0;
+    border: var(--c2-loop-w) solid var(--c2-accent);
+    border-top: 0;
+    border-right: var(--c2-loop-w) solid var(--c2-accent);
+    border-radius: 0 0 22px 22px;
+  }
+
+  /* ---- C ---- */
+  .ps-c2c-stage {
+    height: calc(100% - 122px);
+    padding: 16px 40px 0 0;
+    column-gap: 22px;
+    row-gap: 14px;
+    grid-template-columns: minmax(0, 1.05fr) 26px minmax(0, 1fr) minmax(0, 1.2fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "field bar chase settled"
+      "field bar chase out";
+  }
+  .ps-c2c-field {
+    margin: -20px 0 -20px -34px;
+    padding-left: 34px;
+    justify-content: center;
+    gap: 12px;
+  }
+  .ps-c2c-slab { height: 34px; margin-top: -14px; }
+  .ps-c2c-bar {
+    grid-area: bar;
+    align-self: stretch;
+    justify-self: center;
+    margin: -10px 0;
+    width: 10px;
+    height: auto;
+    border-radius: 5px;
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--c2-accent) 70%, var(--c2-ground-b)) 0%,
+      var(--c2-accent) 55%,
+      color-mix(in srgb, var(--c2-accent) 70%, var(--c2-ground-b)) 100%);
+  }
+  .ps-c2c-mass {
+    grid-column: 4 / 5;
+    grid-row: 1 / 3;
+    margin: -20px -40px -20px -14px;
+    border-radius: 22px 0 0 22px;
+  }
+  .ps-c2c-p--issue { grid-area: field; align-self: center; justify-self: start; margin-top: 0; }
+  .ps-c2c-p--chase { grid-area: chase; align-self: center; justify-self: start; }
+  .ps-c2c-p--settled { grid-area: settled; align-self: end; margin-bottom: 10px; }
+  .ps-c2c-p--out { grid-area: out; align-self: start; margin: 10px 0 0 0; }
+}
+
+/* WIDE but SHORT (the <=768px landscape dialog, 280px tall). */
+@container (min-width: 520px) and (min-aspect-ratio: 8/5) and (max-height: 320px) {
+  .ps-c2a-machine,
+  .ps-c2c-stage {
+    --c2-fs: 16px;
+    --c2-fs-2: 15px;
+    --c2-pad: 11px 14px;
+    --c2-branch: 19px;
+  }
+  .ps-c2-glyph { width: 15px; height: 15px; margin-bottom: 4px; }
+  .ps-c2-nudges { margin-top: 6px; gap: 5px; }
+  .ps-c2-nudge {
+    width: calc(6px + var(--n) * 3px);
+    height: calc(6px + var(--n) * 3px);
+  }
+  /* ---- B ---- 768x280 landscape dialog: 184px of flow, two 92px rows. */
+  .ps-c2b-flow {
+    --c2-fs: 16px;
+    --c2-fs-2: 15px;
+    --c2-fs-tag: 14px;
+    --c2-pad: 11px 14px;
+    --c2-e1: 24px;
+    --c2-e2: 24px;
+    --c2-e3: 34px;
+    --c2-dia-w: 150px;
+    --c2-dia-h: 88px;
+    --c2-loop-drop: 20px;
+    --c2-loop-w-span: 62px;
+    --c2-loop-inset: 16px;
+    --c2-head-w: 11px;
+    --c2-head-h: 8px;
+    height: calc(100% - 96px);
+    row-gap: 0;
+  }
+  .ps-c2b-st--settled { margin-bottom: 10px; }
+  .ps-c2b-st--exception { margin-top: 10px; }
+  .ps-c2a-machine { height: calc(100% - 96px); row-gap: 10px; }
+  .ps-c2c-stage { height: calc(100% - 96px); padding-top: 12px; row-gap: 10px; }
+  .ps-c2a-slot--settled { margin-bottom: 14px; }
+  .ps-c2a-slot--exception { margin-top: 14px; }
+  .ps-c2a-arc { height: 50px; }
+  .ps-c2c-slab { height: 26px; margin-top: -11px; }
+}
+
+/* ============================================================
+   >> THERE IS NO REDUCED-MOTION BLOCK AND NO `scripting: none` BLOCK IN THIS
+   FILE, AND THEIR ABSENCE IS THE POINT. DO NOT ADD THEM BACK.
+
+   There is nothing to pin, because nothing in this artwork is ever hidden.
+   Every element above is drawn at its resting opacity, position and transform
+   at FIRST PAINT. There is no `opacity: 0` start state, no `.in-view` gate, no
+   transition-delay, no stagger and no @keyframes anywhere in this stylesheet.
+
+   Two rulings meet here and both point the same way:
+
+   1. M4's measured card-4 spec. "Exactly one thing animates: the card itself."
+      The artwork is fully drawn and correctly positioned at opacity 0 and rides
+      in on the PARENT as one rigid unit - the grid-level GSAP tween on
+      `.ps-bento-card`, 0.65s power3.out, once. No internal stagger, no draw-on,
+      no sweep, NO PATH TRACING. And card 4's own reduced-motion handling is to
+      never set the entrance up at all (service-pillars.tsx:2459-2465): it does
+      not disable an animation that started from opacity 0, it never sets
+      opacity 0 in the first place. Copy that exactly.
+
+   2. The hide-by-default failure a sibling actually shipped: a WebKit capture
+      came back a BLANK NAVY CARD because one /_next/static/ chunk 404'd and a
+      hide-by-default reveal had nothing left to turn it back on. A shared
+      .next corrupted three times on this project in one day, and a corrupted
+      dev server answers 200 with perfect markup and dead JavaScript - under
+      which a hide-by-default card is invisible and looks exactly like broken
+      art. THIS FILE CANNOT PRODUCE THAT FAILURE, because JavaScript is not
+      what makes the picture appear.
+
+   Verified with JavaScript fully disabled: the finished flow chart renders
+   complete. Verified with reduced motion forced on: identical to the normal
+   render, because they are the same render.
+
+   >> IF YOU ADD MOTION HERE LATER, DO NOT START FROM `opacity: 0`. Animate a
+   property whose default is the finished state, or gate the state and the
+   animation together in JS before first paint, the way card 4 does.
+   ============================================================ */

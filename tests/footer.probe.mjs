@@ -24,8 +24,8 @@ const BASE = `${ORIGIN}/privacy`;
 // green 8/8 run was once produced against a static export that predated the
 // pillar rename entirely; these two strings make that specific failure loud.
 // Update both on the next rename -- do not delete them.
-const MUST_CONTAIN = "SEO AI Visibility Ad Management"; // src/components/home/service-pillars.tsx:547
-const MUST_NOT_CONTAIN = "Search, AI, and Ads";         // the pre-rename name; stale builds only
+const MUST_CONTAIN = "AI and Search Engine Visibility";     // src/components/home/service-pillars.tsx:581
+const MUST_NOT_CONTAIN = "SEO AI Visibility Ad Management"; // the pre-rename name; stale builds only
 const SUCCESS = "Thanks for subscribing.";
 const MIN_FILL_MS = 3000;
 

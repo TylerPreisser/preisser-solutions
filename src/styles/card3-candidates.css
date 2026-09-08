@@ -1,0 +1,1659 @@
+/* ============================================================================
+   CARD 3 - "AI Integration." - three candidate graphics.
+   Paired with src/components/home/card3-candidates.tsx.
+
+   APPEND-ONLY. NOT wrapped in @layer (D2, the 925,871-pixel rule).
+
+   THIS SHEET IS IMPORTED EXACTLY ONCE, from src/styles/globals.css:14, which is
+   Team A's line (D28d). The component does NOT import it. It used to, and the
+   result was Next emitting the sheet into two chunks - ~31KB duplicated through
+   two separate PostCSS passes, with the cascade winner decided by load order.
+
+   ---------------------------------------------------------------------------
+   COLOUR
+   Every colour here is one of R5's nine token roles. docs/design-system.md is
+   stale for colour and was not consulted.
+     ground A/B        --theme-art-ground-a / -b
+     primary stroke    --theme-text-secondary
+     secondary stroke  --theme-text-muted
+     accent            --theme-accent-text
+     text-on-art       --theme-text-primary
+     KNOCKOUT          --theme-bg-primary        <- role 8, mandatory
+     DEPICTED LIT SURFACE --color-white          <- role 9, and see BRIGHTNESS
+     veil ramp         --theme-art-veil-rgb
+
+   BRIGHTNESS IS THE HOUSE'S DEFINITION OF "CLEAN", AND IT IS NOT COLOUR.
+   Measured across the row: card 4, the owner's benchmark, has the LOWEST chroma
+   of the five and the HIGHEST luminance. It reads clean because it is bright,
+   and it is bright because it depicts a large LIT WHITE SURFACE - role 9, which
+   is #FFFFFF in BOTH themes. That is the lever this card uses too: concept A's
+   doorway is a depicted lit surface, not a coloured panel, which is why it
+   raises luminance in dark as well as in light.
+
+   THEME
+   Dark is the unprefixed base; light is a [data-theme="light"] override (D9).
+   No prefers-color-scheme anywhere.
+
+   ---------------------------------------------------------------------------
+   MOTION - CARD 4's LANGUAGE, PER M4-animation-style.md
+
+   Card 4 arrives as ONE finished object over 0.65s on a hard ease-out and then
+   holds perfectly still. Nothing inside it animates separately; it is all fully
+   drawn and correctly positioned before the card moves.
+
+   So on this card the SET NEVER ANIMATES. The ground, the floor, the volume,
+   the doorway, the wall, the strata, the light - all of it is simply there, and
+   it rides in on the parent card's own GSAP entrance as one rigid unit.
+
+   Only the four NARRATIVE beats move, once, as a brief flourish after arrival:
+     1  the question types          0 -> 460ms
+     2  the agent arrives         200 -> 620ms   (sprite frame cuts at 640ms)
+     3  the record comes out      480 -> 880ms
+     4  the answer returns        580 -> 1080ms
+   Total resolve 1.08s. Longest single duration 500ms. ZERO @keyframes, zero
+   loops, one easing, no bounce, no overshoot. Card 4 settles by ~750ms and this
+   is meant to feel like part of that arrival, not a performance after it.
+
+   THE GATING IS INVERTED, AND THAT IS THE POINT.
+   Every rule below states the SETTLED value as its default. The pre-state
+   exists only under `.ps-c3-arm:not(.ps-c3-go)`, and `ps-c3-arm` is added by
+   JavaScript only when JavaScript is alive. No JS, dead JS, a 404'd chunk,
+   reduced motion, no observer -> the finished picture, every time. A sibling
+   card shipped a blank navy rectangle in WebKit because it did it the other way
+   round.
+
+   ---------------------------------------------------------------------------
+   GEOMETRY
+   This artwork renders TWICE from one element: the card face (412x442 art box
+   at 1440, down to 284x332 at 320) and the portal dialog (900x400, aspect
+   2.25). Measured, all three engines agreeing to 0.5px.
+
+   The card face lays the art out 12px larger than the card and permanently
+   clips the outer 6px ring; the dialog has no bleed. Nothing load-bearing is
+   within 6px of any edge. Full-bleed elements bleed SYMMETRICALLY (-6px on
+   every side) or not at all - never one-sided. The one element cropped by a
+   single edge is concept A's volume, and that is intended crop discipline on an
+   OBJECT, not a shaved plate: it carries no border, so there is no edge to lose.
+
+   There is not a single @container query in this file, and no width query is
+   used to tell the card face from the dialog. If one is ever needed, gate it on
+   `min-aspect-ratio: 8/5` - measured, card faces top out at 1.40 and dialogs
+   bottom out at 1.79 - never on a width, and never on the root itself, because
+   a @container block cannot style its own container.
+   ========================================================================= */
+
+.ps-c3-k-root {
+  /* BUILD SENTINEL. Bumped on every meaningful change to this file.
+
+     A stale compiled module renders the PREVIOUS version of a card while every
+     guard we have is green: status 200, zero /_next/static/ 404s, React
+     hydrated, positive ink, styles applied. A positive style assertion proves
+     that CSS applied, never WHICH CSS. This custom property is the only thing
+     in the file that proves the served page is running the code on disk, so the
+     capture harness reads it and refuses to shoot unless it matches. */
+  --c3-build: 15;
+
+  --c3-ease: cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  /* Foot clearance: the card face loses ~65px to the title band plus the 6px
+     bleed, and the dialog fades its bottom 120px. */
+  --c3-foot: 84px;
+
+  /* Height of concept C's layered mass. --c3-mass, --c3-door and --c3-doorx
+     were removed with concept A's doorway; nothing consumes them now, and a
+     declared-but-unused custom property is a trap for the next reader.
+     Concept A's own dimensions live on `.ps-c3-a-root`. */
+  --c3-strata: 146px;
+
+  /* Object tones, mixed INTO the ground so they sit in the same light in both
+     themes. Never a raw hex: every one resolves to an R5 role. */
+  --c3-face: color-mix(in srgb, var(--theme-text-muted) 15%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-face2: color-mix(in srgb, var(--theme-text-muted) 24%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-seam: color-mix(in srgb, var(--theme-bg-primary, #0a1628) 78%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-bevel: color-mix(in srgb, var(--theme-text-secondary) 34%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-pull: color-mix(in srgb, var(--theme-text-secondary) 52%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-veil0: rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0);
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(
+    160deg,
+    var(--theme-art-ground-a, #0a1628) 0%,
+    var(--theme-art-ground-b, #0c1e3a) 100%
+  );
+}
+
+/* LIGHT IS NOT A MIRROR OF DARK, AND THIS BLOCK IS A DELIBERATE DECISION.
+
+   Measured on the artifact: this card came back the darkest of the five in
+   light by a wide margin, and an independent critic reading it in real Safari
+   recorded its honest first impression as "that card failed to load". The house
+   light idiom is a near-white ground with the ink CONCENTRATED; a full-bleed
+   mid-value field breaks the row, and the owner has named cleanliness by name.
+
+   The fix is luminance, not hue. Object faces sit 5-11% ink into the ground
+   instead of 15-24%, and the scene veil runs to 0.99 alpha of the near-white
+   ground at the corners, so mass is present only where the subject is. */
+[data-theme="light"] .ps-c3-k-root {
+  --c3-face: color-mix(in srgb, var(--theme-text-muted) 5%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-face2: color-mix(in srgb, var(--theme-text-muted) 11%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-seam: color-mix(in srgb, var(--theme-text-secondary) 30%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-bevel: var(--color-white, #ffffff);
+  --c3-pull: color-mix(in srgb, var(--theme-text-secondary) 46%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-veil0: rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0);
+
+  background: linear-gradient(
+    160deg,
+    var(--theme-art-ground-a, #f0f4f8) 0%,
+    var(--theme-art-ground-b, #e8edf3) 100%
+  );
+}
+
+/* Foot veil. Fixed px, never a percentage: a percentage veil is systematically
+   weakest on the shortest card (card-visuals.css:2923-2929). Never
+   `transparent` as an end stop - always the ground colour at zero alpha. */
+.ps-c3-k-root::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 150px;
+  pointer-events: none;
+  z-index: 5;
+  background: linear-gradient(
+    to top,
+    rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0.72) 0%,
+    rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0.72) 40%,
+    rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0.36) 72%,
+    rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0) 100%
+  );
+}
+
+[data-theme="light"] .ps-c3-k-root::after {
+  background: linear-gradient(
+    to top,
+    rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0.72) 0%,
+    rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0.72) 40%,
+    rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0.36) 72%,
+    rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0) 100%
+  );
+}
+
+/* ============================================================================
+   THE SET - present from the first paint, never animated.
+
+   Card 4's entrance animates exactly one thing: the card. Everything inside is
+   already drawn and rides in as one rigid unit. So none of the elements in this
+   section carries a transition or a pre-state. They arrive with the card.
+   ========================================================================= */
+
+/* THE GROUND PLANE. Without it every scene ended in a hard horizontal cut where
+   the mass stopped, which the 900x400 dialog render showed as a seam across the
+   picture rather than as a floor. It is a lit plane falling away from the
+   viewer with the mass's contact shadow along its top edge - that shadow is
+   what makes the mass SIT on something instead of float above nothing. */
+.ps-c3-k-ground {
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  height: calc(var(--c3-foot) + 6px);
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--theme-text-muted) 11%, var(--theme-art-ground-a, #0a1628)) 0%,
+    var(--theme-art-ground-a, #0a1628) 100%
+  );
+}
+
+.ps-c3-k-ground::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 26px;
+  background: linear-gradient(
+    to bottom,
+    var(--c3-seam) 0%,
+    rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0) 100%
+  );
+  opacity: 0.9;
+}
+
+[data-theme="light"] .ps-c3-k-ground {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--theme-text-muted) 8%, var(--theme-art-ground-a, #f0f4f8)) 0%,
+    var(--theme-art-ground-a, #f0f4f8) 100%
+  );
+}
+
+[data-theme="light"] .ps-c3-k-ground::before {
+  background: linear-gradient(
+    to bottom,
+    var(--c3-seam) 0%,
+    rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0) 100%
+  );
+  opacity: 0.55;
+}
+
+/* The ground line. Quiet - the accent belongs to the answer, and the white
+   belongs to the light and to the one record that mattered. */
+.ps-c3-k-floor {
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  bottom: var(--c3-foot);
+  height: 2px;
+  z-index: 2;
+  background: var(--theme-text-secondary);
+  opacity: 0.42;
+}
+
+/* The scene veil. Depth, and the light-theme answer: it dissolves the mass
+   outward from the figure so the subject sits in the only fully lit part of the
+   frame. Never `transparent` as an end stop. */
+.ps-c3-k-scenefade {
+  position: absolute;
+  inset: -6px;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(
+    84% 126% at 33% 74%,
+    var(--c3-veil0) 0%,
+    rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0.58) 40%,
+    rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0.95) 100%
+  );
+}
+
+/* CONCEPT A RE-CENTRES THE FALLOFF ON THE DOORWAY. The shared veil is aimed at
+   concept B's figure at 33%/74%; in A that put the wall the door is cut into
+   inside the veil's outer ring and washed it out, which is why the first render
+   showed a glowing rectangle with no wall around it. Light falls off from the
+   light source, so the falloff is centred on the light source. */
+.ps-c3-a-root .ps-c3-k-scenefade {
+  background: radial-gradient(
+    112% 138% at 64% 78%,
+    var(--c3-veil0) 0%,
+    var(--c3-veil0) 30%,
+    rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0.12) 58%,
+    rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0.62) 100%
+  );
+}
+
+[data-theme="light"] .ps-c3-a-root .ps-c3-k-scenefade {
+  background: radial-gradient(
+    108% 134% at 64% 78%,
+    var(--c3-veil0) 0%,
+    var(--c3-veil0) 28%,
+    rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0.3) 56%,
+    rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0.97) 100%
+  );
+}
+
+[data-theme="light"] .ps-c3-k-scenefade {
+  background: radial-gradient(
+    80% 122% at 33% 74%,
+    var(--c3-veil0) 0%,
+    rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0.74) 40%,
+    rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0.99) 100%
+  );
+}
+
+/* ============================================================================
+   THE PAPER - beats 1 and 4, and the correspondence between them.
+
+   THE BRIEF (owner, 2026-09-07): "show the robot grabbing the answer from the
+   database and displaying it as an answer to the question that the user dropped
+   in." Four beats, all four legible in the STILL frame.
+
+   WHAT THIS BLOCK REPLACES, AND WHY. It replaces `.ps-c3-k-chat`, `-k-ask` and
+   `-k-ans`: an outlined rounded bubble top-left, a solid accent rounded bubble
+   right-aligned below it, and a typing caret. Read in the row at 1440x900 that
+   is a screenshot of a messaging app, and this row already ships a browser, a
+   dashboard and a search results page. It also floated free of the scene - the
+   two bubbles sat in the top third with no line of sight to the figure or to
+   the machine, so beats 2, 3 and 4 were simply not in the picture.
+
+   A DOCKET IS ONE OBJECT TYPE IN TWO STATES, and that is the whole device:
+
+     QUESTION  paper knocked back toward the ground, no accent, tipped -2.2deg,
+               DESCENDING, its foot swallowed by the slot it is posted into.
+     ANSWER    pure role-9 white, a solid accent bar along its bottom edge, a
+               soft accent glow, tipped +1.6deg, ASCENDING out of the machine.
+
+   Same stock, same 2px corner, same perforation pitch, same shadow geometry.
+   Object identity carries "these two things belong to each other"; the states
+   and the mirrored direction carry "one went in and the other came out"; and
+   the words themselves carry the pairing, because each answer candidate answers
+   its question candidate directly. Three redundant channels, and not one label,
+   legend or arrow anywhere - a graphic that needs a caption is a diagram.
+
+   WHY PAPER. Beats 1 and 3 are only depictable if the question is a THING that
+   can be posted into a slot and the answer is a THING that can be pulled out of
+   a drawer. A perforated docket is the cheapest object that reads as paper at
+   11px type: one repeating radial-gradient on a 7px strip, no row of spans.
+
+   INK IN BOTH THEMES. There is no single token that is dark on white in both
+   themes, so the ink is taken from the two roles that happen to resolve to
+   #0A1628 in their own theme: --theme-art-ground-a in dark, --theme-text-primary
+   in light. Never a raw hex, and 16.1:1 on white either way.
+   ========================================================================= */
+
+/* OBJECT TONES FOR THE MACHINE AND THE PAPER.
+
+   Declared here rather than in the root block above so this rebuild appends
+   instead of rewriting the cascade under it. Later wins at equal specificity
+   and this sheet is deliberately not in @layer (D2).
+
+   THE LIGHT VALUES ARE THE POINT OF THIS BLOCK. The previous machine was built
+   from --c3-face/-face2, which are 5% and 11% ink into a near-white ground; in
+   light theme the render showed the robot standing in an empty white void with
+   a faint rectangle beside him, so beats 2 and 3 were invisible in one of the
+   two themes. Card 4, the owner's cleanliness benchmark, holds up in light for
+   exactly the opposite reason: its browser body is a DEEP NAVY MASS on a
+   near-white ground. So in light the machine is now built from
+   --theme-text-primary (#0A1628), i.e. ink CONCENTRATED where the subject is,
+   which is the house light idiom. In dark it has to run the other way - lighter
+   than the ground - so it is mixed up from --theme-text-muted. */
+.ps-c3-k-root {
+  --c3-vault: color-mix(in srgb, var(--theme-text-muted) 30%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-vault2: color-mix(in srgb, var(--theme-text-muted) 44%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-vaultcap: color-mix(in srgb, var(--theme-text-secondary) 52%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-vaultdk: color-mix(in srgb, var(--theme-bg-primary, #0a1628) 66%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-portdark: color-mix(in srgb, var(--theme-bg-primary, #0a1628) 88%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-paperdull: color-mix(in srgb, var(--theme-text-muted) 17%, var(--color-white, #fff));
+  --c3-ink: var(--theme-art-ground-a, #0a1628);
+  --c3-cast: rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0.66);
+}
+
+[data-theme="light"] .ps-c3-k-root {
+  --c3-vault: color-mix(in srgb, var(--theme-text-primary) 88%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-vault2: color-mix(in srgb, var(--theme-text-primary) 72%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-vaultcap: color-mix(in srgb, var(--theme-text-primary) 54%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-vaultdk: var(--theme-text-primary);
+  --c3-portdark: color-mix(in srgb, var(--theme-text-primary) 92%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-paperdull: color-mix(in srgb, var(--theme-text-muted) 13%, var(--color-white, #fff));
+  --c3-ink: var(--theme-text-primary);
+  --c3-cast: rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0.9);
+}
+
+/* THE DOCKET. */
+.ps-c3-k-docket {
+  position: relative;
+  z-index: 1;
+  padding: 11px 12px 12px;
+  border-radius: 2px;
+  background: var(--color-white, #ffffff);
+  color: var(--c3-ink);
+  font-size: 13px;
+  line-height: 1.34;
+  letter-spacing: 0.1px;
+}
+
+[data-theme="light"] .ps-c3-k-docket {
+  color: var(--c3-ink);
+}
+
+/* THE PERFORATION. One repeating radial-gradient, not a row of spans. It reads
+   as a tear line in paper, which is the single cheapest signal that this object
+   is a physical docket and not a UI panel. Sits inside the paper so it is
+   theme-safe wherever the docket overlaps - it never has to match whatever is
+   behind the card. */
+.ps-c3-k-tear {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 4px;
+  height: 3px;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle at 1.5px 1.5px,
+    var(--c3-seam) 0 1.5px,
+    rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0) 1.6px
+  );
+  background-size: 7px 3px;
+  background-repeat: repeat-x;
+  opacity: 0.5;
+}
+
+[data-theme="light"] .ps-c3-k-tear {
+  background-image: radial-gradient(
+    circle at 1.5px 1.5px,
+    var(--c3-seam) 0 1.5px,
+    rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0) 1.6px
+  );
+  opacity: 0.85;
+}
+
+.ps-c3-k-dtext {
+  display: block;
+}
+
+/* House precedent for a placeholder figure: ship it, and label it a
+   demonstration in the graphic itself (marcommand-live.tsx:1391, :1462). */
+.ps-c3-k-demo {
+  display: block;
+  margin-top: 5px;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  opacity: 0.66;
+}
+
+/* ---- THE QUESTION STATE. Dull, and going down. ---- */
+.ps-c3-k-docket--q {
+  background: var(--c3-paperdull);
+  transform: rotate(-1.2deg);
+  box-shadow:
+    0 0 0 1px var(--c3-seam),
+    0 6px 14px -6px var(--c3-cast);
+}
+
+[data-theme="light"] .ps-c3-k-docket--q {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--theme-text-muted) 34%, var(--color-white, #fff)),
+    0 8px 16px -8px color-mix(in srgb, var(--theme-text-primary) 26%, var(--theme-art-ground-a, #f0f4f8));
+}
+
+/* ---- THE ANSWER STATE. Lit, accented, and coming up. ----
+
+   The accent bar is an INSET on the bottom edge rather than a left rail
+   deliberately: a white panel with a coloured left rail is the house shape of a
+   toast/alert component, and the one thing this card must not look like is a
+   piece of interface. A bar along the bottom edge reads as a stamped docket and
+   it matches the record the previous version put in the figure's hand. */
+.ps-c3-k-docket--a {
+  transform: rotate(1.6deg);
+  box-shadow:
+    inset 0 -4px 0 0 var(--theme-accent-text),
+    0 0 0 1px var(--c3-seam),
+    0 10px 22px -8px var(--c3-cast),
+    0 0 26px -4px color-mix(in srgb, var(--theme-accent-text) 58%, transparent);
+  padding-bottom: 15px;
+}
+
+[data-theme="light"] .ps-c3-k-docket--a {
+  box-shadow:
+    inset 0 -4px 0 0 var(--theme-accent-text),
+    0 0 0 1px color-mix(in srgb, var(--theme-text-muted) 30%, var(--color-white, #fff)),
+    0 12px 26px -10px color-mix(in srgb, var(--theme-text-primary) 34%, var(--theme-art-ground-a, #f0f4f8));
+}
+
+/* ---- THE TWO BEATS, AS TRANSITIONS ON THE PLACEMENT WRAPPERS ----
+
+   Rotation lives on the docket and translation lives on the wrapper, so the
+   flourish can never fight the paper's resting tilt - pinning a rotated
+   element's transform to `none` stands it upright, which is the bug the old
+   concept C comment records.
+
+   SETTLED IS THE DEFAULT. Nothing here is hidden unless `ps-c3-arm` is present,
+   and JavaScript only adds that when JavaScript is alive. No JS, dead JS, a
+   404'd chunk, reduced motion, no observer -> the finished picture. */
+.ps-c3-a-q,
+.ps-c3-b-q,
+.ps-c3-c-q,
+.ps-c3-a-a,
+.ps-c3-b-a,
+.ps-c3-c-a {
+  position: absolute;
+  z-index: 5;
+  opacity: 1;
+  transform: none;
+}
+
+/* BEAT 1 - the question drops in. */
+.ps-c3-arm .ps-c3-a-q,
+.ps-c3-arm .ps-c3-b-q,
+.ps-c3-arm .ps-c3-c-q {
+  transition:
+    opacity 420ms var(--c3-ease) 0ms,
+    transform 420ms var(--c3-ease) 0ms;
+}
+
+.ps-c3-arm:not(.ps-c3-go) .ps-c3-a-q,
+.ps-c3-arm:not(.ps-c3-go) .ps-c3-b-q,
+.ps-c3-arm:not(.ps-c3-go) .ps-c3-c-q {
+  opacity: 0;
+  transform: translateY(-14px);
+  transition: none;
+}
+
+/* BEAT 4 - the answer rises out. Mirror of beat 1, and the mirroring is doing
+   narrative work: down on the left, up on the right. */
+.ps-c3-arm .ps-c3-a-a,
+.ps-c3-arm .ps-c3-b-a,
+.ps-c3-arm .ps-c3-c-a {
+  transition:
+    opacity 500ms var(--c3-ease) 580ms,
+    transform 500ms var(--c3-ease) 580ms;
+}
+
+.ps-c3-arm:not(.ps-c3-go) .ps-c3-a-a,
+.ps-c3-arm:not(.ps-c3-go) .ps-c3-b-a,
+.ps-c3-arm:not(.ps-c3-go) .ps-c3-c-a {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: none;
+}
+
+/* ============================================================================
+   BEAT 2 - the agent arrives.
+
+   ELARA, EXACTLY AS HE ALREADY SHIPS. Same sheet, same 96x116 box, same
+   background-size, same image-rendering. He is a raster with 30 baked-in
+   colours, is not theme-aware, and is never recoloured or smoothed (ADR-0015).
+
+   96x116 is exactly half of the 192x232 source cell and one of only two sizes
+   that stay crisp under image-rendering: pixelated. 48x58 is the other.
+
+   THE KNOCKOUT USES --theme-bg-primary AND NOTHING ELSE (role 8). It is opaque
+   in both themes (#0A1628 dark, #FFFFFF light). --theme-card-bg is
+   rgba(255,255,255,0.03) in dark, so a halo painted in it does literally
+   nothing - the bug recorded verbatim at marcommand-live.css:540-546.
+
+   The frame swaps ONCE, idle -> full reach, at 640ms: a 1ms steps(1, end)
+   transition on background-position-x is a hard cut, which is what a sprite
+   wants and what a keyframe ban permits. THE SETTLED POSE IS THE REACH, so the
+   default frame - the one a no-JS visitor sees - already has his arm in the
+   company's data.
+   ========================================================================= */
+
+.ps-c3-k-elara {
+  position: absolute;
+  z-index: 3;
+  width: 96px;
+  height: 116px;
+  background-image: url("/images/marcommand/elara-sheet.webp");
+  background-repeat: no-repeat;
+  background-size: 400% 100%;
+  /* FRAME 4 OF 4 - THE FULL REACH, and it is the RESTING pose.
+     The sheet runs arms-down (0%) -> 33.3333% -> 66.6667% -> full reach (100%).
+     The previous version rested on frame 2, a half extension, which put his
+     hand in open air 90px short of the artwork it was supposed to be touching.
+     Beat 2 is "reaches into the database", so the still frame needs the deepest
+     extension the sheet has. Read through a variable so the reduced-motion pin
+     below can restate the resting value instead of duplicating the number. */
+  --c3-frame: 100%;
+  background-position-x: var(--c3-frame);
+  background-position-y: 0;
+  image-rendering: pixelated;
+  opacity: 1;
+  transform: none;
+}
+
+.ps-c3-arm .ps-c3-k-elara {
+  transition:
+    opacity 420ms var(--c3-ease) 200ms,
+    transform 420ms var(--c3-ease) 200ms,
+    background-position-x 1ms steps(1, end) 640ms;
+}
+
+.ps-c3-arm:not(.ps-c3-go) .ps-c3-k-elara {
+  opacity: 0;
+  transform: translateX(-20px);
+  background-position-x: 0%;
+  transition: none;
+}
+
+/* THE KNOCKOUT - role 8, and only where something actually passes behind him.
+   Concept B stands him against a wall of drawer fronts, which is exactly the
+   case the knockout exists for. A and C stand him on open ground, and the
+   render showed the halo there as a ragged dark fringe on his pixel edge with
+   nothing to separate him from. A knockout with nothing behind it is
+   decoration, and this sprite is 96px wide, so the decoration is visible. */
+.ps-c3-b-elara {
+  filter: drop-shadow(0 0 2px var(--theme-bg-primary, #0a1628))
+    drop-shadow(0 0 2px var(--theme-bg-primary, #0a1628))
+    drop-shadow(0 0 1px var(--theme-bg-primary, #0a1628));
+}
+
+/* LIGHT NEEDS LESS, AND THE RENDER PROVED IT. Three stacked 2px shadows in
+   #FFFFFF put a white sticker outline round a 96px sprite on a near-white
+   ground - clearly visible in Chromium and heavy in WebKit at 393x659. In light
+   his own #08132A outline already separates him at roughly 10:1, so one 1px
+   pass is all he needs. Still role 8, still --theme-bg-primary. */
+[data-theme="light"] .ps-c3-b-elara {
+  filter: drop-shadow(0 0 1px var(--theme-bg-primary, #ffffff));
+}
+
+/* ============================================================================
+   THE RECORD LANGUAGE - why none of these three is a chart.
+
+   The first pass drew "the company's data" as vertical bars of varying height.
+   That is a bar chart, which is the dashboard read this card must not have -
+   and card 1 IS a dashboard and card 5 is a bar chart, so the collision was
+   real. Equalising the heights removed the chart and produced a field of
+   identical stripes, which reads as WALLPAPER.
+
+   So the data is made of OBJECTS WITH DEPTH rather than of measured lengths:
+
+     A  a solid volume with a lit doorway cut into it   - the threshold
+     B  a wall of identical drawer fronts, one pulled   - the index
+     C  a layered mass with a section opened through it - the cut
+
+   Nothing in any of the three varies in LENGTH along an axis, which is the
+   property that makes a set of shapes read as a quantity. Every one contains a
+   bevel, a shadow or an occlusion, which is what makes a shape read as an
+   object.
+   ========================================================================= */
+
+/* ============================================================================
+   CONCEPT A - THE ERRAND   (DEFAULT)
+
+   Two apertures, one journey, and the eye goes DOWN on the left and UP on the
+   right.
+
+   TOP LEFT, cropped by the frame edge so it plainly comes from outside the
+   picture: a deposit console with a dark mouth in its top face, and the user's
+   question docket standing in that mouth, tipped, its foot already swallowed.
+   Beat 1, and it is literal - the thing is being dropped in.
+
+   BOTTOM RIGHT: the database as a physical drum stack. A domed platter cap, two
+   elliptical course seams, a base ellipse, and a contact shadow on the floor.
+   It has weight and it sits on something, which is the difference between an
+   object and an icon. A port is open in its near face at exactly arm height and
+   the robot's arm is INSIDE it, past the wrist, with the white interior light
+   spilling past him onto the floor. Beats 2 and 3.
+
+   RISING OUT OF THAT PORT, overlapping the platter cap and casting its shadow
+   down onto it: the answer docket. Same paper as the question, now lit, accent
+   bar along its bottom edge, standing in a soft column of the machine's own
+   light. Beat 4.
+
+   WHY THIS DEPICTS THE SUBJECT. Integration is having a way IN. A general model
+   stands outside a company's systems and can only guess; this one has a port,
+   an arm in it past the wrist, and something in the frame that was not in the
+   question. The retrieval is the middle of the picture and it has an arm in it.
+
+   ---------------------------------------------------------------------------
+   WHY IT IS A DRUM STACK AND NOT A DOORWAY.
+
+   The version this replaces cut a doorway into a slab and lit it. Three
+   problems, all read off the render rather than the source: the lit rectangle
+   was the largest single shape on the card and depicted nothing; it read as a
+   blank display panel, not as a store of records; and the figure stood roughly
+   90px clear of it, touching nothing, so there was no retrieval in the picture
+   at all. The owner asked for a DATABASE by name. A stack of platters with a
+   domed cap is what a database looks like, and building it with real course
+   seams, a base, a rim light and a contact shadow is what keeps it an object
+   with mass rather than a flat mark.
+
+   It is NOT cropped by the right edge, and that is a deliberate trade against
+   this file's own crop-discipline habit: an ellipse only reads as a cylinder if
+   BOTH ends of its arc are visible, so cropping the dome turns the cylinder
+   back into a rounded rectangle. Legibility of the subject beats the house
+   crop, and the console at the top left takes the frame-edge crop instead.
+
+   NOTHING VARIES IN LENGTH ALONG AN AXIS, which is the property that makes a
+   set of shapes read as a chart - card 1 is a dashboard and card 5 is a bar
+   chart, so the collision would have been real. The courses are identical and
+   the depth cues are all bevels, seams and occlusions.
+   ========================================================================= */
+
+.ps-c3-a-root {
+  /* ONE VARIABLE PER DIMENSION so nothing keyed to the machine can drift out of
+     register with it. Every part below is positioned from these and from
+     --c3-foot, never from an independent percentage - the bug the old concept A
+     comment records is exactly that: the figure and the record he carried were
+     anchored to 38% independently, and at 320 the clamp moved one and not the
+     other and put the record flat on his chest. */
+  --c3-vw: min(53%, 236px);
+  --c3-vh: 240px;
+  --c3-vr: 12px;
+  --c3-pw: 88px;
+  --c3-ph: 54px;
+
+  /* Arm height, measured off the sprite. In the 96x116 box the extended arm
+     runs from roughly 41px to 54px above his feet, so the port's 50px opening
+     is centred at foot + 47px. */
+  --c3-pb: calc(var(--c3-foot) + 22px);
+
+  /* The figure's overlap INTO the machine. 30px puts his hand past the port's
+     front lip rather than on it - contact, not proximity. */
+  --c3-poke: 30px;
+}
+
+/* THE DRUM STACK BODY. Cylinder shading runs light on the left, where the port
+   and the scene light are, to dark on the right. */
+.ps-c3-a-vault {
+  position: absolute;
+  right: var(--c3-vr);
+  bottom: var(--c3-foot);
+  width: var(--c3-vw);
+  height: var(--c3-vh);
+  z-index: 2;
+  border-radius: 0 0 50% 50% / 0 0 15px 15px;
+  background: linear-gradient(
+    to right,
+    var(--c3-vault2) 0%,
+    var(--c3-vault) 34%,
+    var(--c3-vault) 62%,
+    var(--c3-vaultdk) 100%
+  );
+}
+
+/* THE PLATTER CAP - the top face, and the shape that makes the whole mass read
+   as a cylinder rather than a wall. Rim light along the top arc. */
+.ps-c3-a-vault::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -15px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(
+    to bottom,
+    var(--c3-vaultcap) 0%,
+    var(--c3-vault2) 62%,
+    var(--c3-vault) 100%
+  );
+  box-shadow: inset 0 1px 0 0 var(--c3-bevel);
+}
+
+/* THE CONTACT SHADOW. Without it the mass floats, which the 900x400 dialog
+   render of the previous version showed plainly. */
+.ps-c3-a-vault::after {
+  content: "";
+  position: absolute;
+  left: -14px;
+  right: -14px;
+  bottom: -13px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(
+    50% 62% at 50% 34%,
+    var(--c3-cast) 0%,
+    rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0) 100%
+  );
+}
+
+[data-theme="light"] .ps-c3-a-vault::after {
+  background: radial-gradient(
+    50% 62% at 50% 34%,
+    color-mix(in srgb, var(--theme-text-primary) 30%, var(--theme-art-ground-a, #f0f4f8)) 0%,
+    rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0) 100%
+  );
+}
+
+/* THE COURSE SEAMS. `border-top` on a 50%-radius box draws only the top arc, so
+   one element is one elliptical seam - the front edge of one platter. Two of
+   them plus the cap is three courses, which is enough to read as a stack and
+   few enough that it never reads as a measured series. */
+.ps-c3-a-ring {
+  position: absolute;
+  right: var(--c3-vr);
+  width: var(--c3-vw);
+  height: 26px;
+  z-index: 2;
+  border-radius: 50%;
+  border-top: 2px solid var(--c3-vaultcap);
+  background: linear-gradient(
+    to bottom,
+    var(--c3-vault2) 0%,
+    rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0) 78%
+  );
+  opacity: 0.95;
+}
+
+[data-theme="light"] .ps-c3-a-ring {
+  border-top-color: color-mix(in srgb, var(--theme-text-primary) 34%, var(--theme-art-ground-a, #f0f4f8));
+  background: linear-gradient(
+    to bottom,
+    var(--c3-vault2) 0%,
+    rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0) 78%
+  );
+  opacity: 0.9;
+}
+
+.ps-c3-a-ring--1 {
+  bottom: calc(var(--c3-foot) + var(--c3-vh) * 0.63);
+}
+
+.ps-c3-a-ring--2 {
+  bottom: calc(var(--c3-foot) + var(--c3-vh) * 0.31);
+}
+
+/* THE OPEN PORT - beat 3's aperture, and the card's DEPICTED LIT SURFACE.
+
+   Role 9 (--color-white) is #FFFFFF in BOTH themes, and it is the lever card 4
+   uses to read clean: card 4 has the lowest chroma and the highest luminance of
+   the five because it depicts a large lit white surface. So the brightest thing
+   on this card is not a coloured panel, it is light, and it raises luminance in
+   dark as well as in light.
+
+   The bright core sits at 86% - deep INSIDE the machine, away from the viewer -
+   so the light reads as coming out towards us past the arm that is in it. The
+   front lip is a hard inset bevel, which is what makes the opening read as cut
+   into a surface rather than painted on one. */
+.ps-c3-a-port {
+  position: absolute;
+  right: calc(var(--c3-vr) + var(--c3-vw) - var(--c3-pw));
+  bottom: var(--c3-pb);
+  width: var(--c3-pw);
+  height: var(--c3-ph);
+  z-index: 4;
+  border-radius: 3px 27px 27px 3px / 3px 25px 25px 3px;
+  background: radial-gradient(
+    74% 126% at 68% 50%,
+    var(--color-white, #ffffff) 0%,
+    var(--color-white, #ffffff) 12%,
+    color-mix(in srgb, var(--theme-accent-text) 30%, var(--color-white, #fff)) 32%,
+    color-mix(in srgb, var(--theme-accent-text) 56%, var(--c3-portdark)) 62%,
+    var(--c3-portdark) 92%
+  );
+  box-shadow:
+    inset 0 5px 7px -2px var(--c3-portdark),
+    inset 0 -5px 7px -2px var(--c3-portdark),
+    inset 7px 0 10px -4px var(--c3-portdark),
+    0 -1px 0 0 var(--c3-vaultcap),
+    0 0 32px 2px color-mix(in srgb, var(--theme-accent-text) 50%, transparent);
+  opacity: 1;
+}
+
+/* THE LIGHT ON THE FLOOR. The port is a light source, so it has to put light on
+   something - otherwise it is a bright rectangle, which is what the previous
+   version was. Anchored to the port, never to a percentage. */
+.ps-c3-a-spill {
+  position: absolute;
+  right: calc(var(--c3-vr) + var(--c3-vw) - var(--c3-pw) - 30px);
+  bottom: calc(var(--c3-foot) - 8px);
+  width: calc(var(--c3-pw) + 66px);
+  height: 34px;
+  z-index: 4;
+  border-radius: 50%;
+  background: radial-gradient(
+    54% 100% at 68% 26%,
+    color-mix(in srgb, var(--theme-accent-text) 34%, var(--color-white, #fff)) 0%,
+    var(--c3-veil0) 100%
+  );
+  opacity: 0.42;
+}
+
+[data-theme="light"] .ps-c3-a-spill {
+  opacity: 0.6;
+}
+
+/* THE COLUMN OF THE MACHINE'S OWN LIGHT that the answer stands in. This is the
+   connective tissue between beat 3 and beat 4: the answer is not floating near
+   the machine, it is standing in the machine's light, on the machine's axis,
+   directly above the hole it came out of.
+
+   It sits ABOVE the scene veil (z 4 against the veil's 3) because the veil's
+   whole job is to dissolve everything that is not the subject, and this is the
+   subject. It is a radial anchored at its own bottom centre, so it is a dome of
+   light rising rather than a bar, and a bar would read as a diagram connector. */
+.ps-c3-a-beam {
+  position: absolute;
+  right: calc(var(--c3-vr) + var(--c3-vw) - var(--c3-pw) + 4px);
+  bottom: calc(var(--c3-pb) + var(--c3-ph) - 10px);
+  width: calc(var(--c3-pw) - 4px);
+  height: 150px;
+  z-index: 4;
+  pointer-events: none;
+  background: radial-gradient(
+    42% 100% at 54% 100%,
+    var(--theme-accent-text) 0%,
+    var(--c3-veil0) 100%
+  );
+  opacity: 0.42;
+}
+
+[data-theme="light"] .ps-c3-a-beam {
+  opacity: 0.2;
+}
+
+/* THE FIGURE. Anchored from the RIGHT, off the same three variables as the
+   machine, so his hand stays inside the port at every width instead of drifting
+   with a percentage. --c3-poke is the overlap. */
+.ps-c3-a-elara {
+  right: calc(var(--c3-vr) + var(--c3-vw) - var(--c3-poke));
+  bottom: var(--c3-foot);
+  z-index: 4;
+}
+
+/* THE KNOCKOUT - role 8, and now earned. The previous concept A stood him on
+   open ground, where the halo was a ragged dark fringe separating him from
+   nothing; here his right side overlaps the machine and his arm crosses a lit
+   opening, which is exactly the case the knockout exists for. Values are
+   card 3's existing measured ones: three 2px passes in dark, one 1px in light,
+   because three white passes put a sticker outline round a 96px sprite on a
+   near-white ground. */
+.ps-c3-a-elara {
+  filter: drop-shadow(0 0 2px var(--theme-bg-primary, #0a1628))
+    drop-shadow(0 0 2px var(--theme-bg-primary, #0a1628))
+    drop-shadow(0 0 1px var(--theme-bg-primary, #0a1628));
+}
+
+[data-theme="light"] .ps-c3-a-elara {
+  filter: drop-shadow(0 0 1px var(--theme-bg-primary, #ffffff));
+}
+
+/* THE PORT LIGHT AND THE SPILL are beat 3: they come up when the record is
+   found. Settled is the default; the pre-state is the exception. */
+.ps-c3-arm .ps-c3-a-port,
+.ps-c3-arm .ps-c3-a-spill,
+.ps-c3-arm .ps-c3-a-beam {
+  transition: opacity 400ms var(--c3-ease) 480ms;
+}
+
+.ps-c3-arm:not(.ps-c3-go) .ps-c3-a-port,
+.ps-c3-arm:not(.ps-c3-go) .ps-c3-a-spill,
+.ps-c3-arm:not(.ps-c3-go) .ps-c3-a-beam {
+  opacity: 0;
+  transition: none;
+}
+
+/* ---------------------------------------------------------------------------
+   THE DEPOSIT CONSOLE AND THE QUESTION IN IT.
+
+   The console is built out of the QUESTION WRAPPER'S OWN PSEUDO-ELEMENTS rather
+   than as a sibling span, and that is a correctness decision, not a DOM saving.
+   The docket's height is not knowable in CSS - the three question candidates
+   wrap to one, two or three lines depending on width and type step - so a
+   sibling console positioned by `top` would meet the paper's foot at exactly
+   one viewport and float away from it at all the others. As children of the
+   wrapper they are positioned from the wrapper's own bottom edge, so the slot
+   meets the foot at every width and every copy candidate, by construction.
+
+   Occlusion order inside the wrapper, back to front:
+     ::before  the console slab              (behind the paper)
+     .docket   the question, z-index 1
+     ::after   the slot's near lip, z-index 2 (in front of the paper's foot)
+
+   That near lip in front of the foot is the entire "it is IN the slot rather
+   than standing in front of it" cue. Both pseudo-elements run left to the
+   frame's bleed edge, so the console is cropped by the card - it comes from the
+   user's side, outside the picture.
+   ------------------------------------------------------------------------ */
+
+.ps-c3-a-q {
+  left: 14px;
+  top: 16px;
+  width: min(58%, 222px);
+  padding-bottom: 24px;
+}
+
+/* THE CONSOLE SLAB. Lit top face, then the front face falling into shadow. */
+.ps-c3-a-q::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  right: -76px;
+  bottom: 0;
+  height: 32px;
+  z-index: 0;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(
+    to bottom,
+    var(--c3-vaultcap) 0 2px,
+    var(--c3-portdark) 2px 12px,
+    var(--c3-vault2) 12px 15px,
+    var(--c3-vault) 15px 22px,
+    var(--c3-vaultdk) 22px 100%
+  );
+  box-shadow:
+    inset 0 6px 6px -4px var(--c3-portdark),
+    0 12px 20px -8px var(--c3-cast);
+}
+
+/* THE SLOT'S NEAR LIP. A 7px band in front of the paper's foot, with the dark
+   mouth above it and the lit top face below it - so what you read is a gap in a
+   surface with paper standing in the gap. */
+.ps-c3-a-q::after {
+  content: "";
+  position: absolute;
+  left: -20px;
+  right: -76px;
+  bottom: 17px;
+  height: 6px;
+  z-index: 2;
+  background: linear-gradient(
+    to bottom,
+    var(--c3-vaultcap) 0 1px,
+    var(--c3-vault2) 1px 3px,
+    var(--c3-vault) 3px 100%
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   THE ANSWER, COMING UP OUT OF THE MACHINE.
+
+   Right-anchored off the same --c3-vr as the machine and lifted to sit 40px
+   PROUD OF THE PLATTER CAP, so it overlaps the mass and casts its own shadow
+   down onto it. That overlap is the depth cue that makes it read as being in
+   front of the machine, i.e. as having just left it, rather than as a caption
+   floating above it. It is on the port's axis and inside the port's light
+   column.
+   ------------------------------------------------------------------------ */
+
+.ps-c3-a-a {
+  right: var(--c3-vr);
+  bottom: calc(var(--c3-foot) + 118px);
+  width: min(62%, 244px);
+}
+
+/* ============================================================================
+   CONCEPT B - THE ARCHIVE WALL
+
+   The whole frame is the company's index: a wall of identical drawer fronts,
+   each with a bevelled top edge and a pull, running off every edge. One drawer
+   is out - proud of the wall, lit, with the recess it came from behind it - and
+   the agent is at it with his hand still on it.
+
+   WHY IT IS A GRID AND NOT A ROW OF BARS. A chart needs one axis of variation;
+   a grid of identical cells has none in either direction, so there is nothing to
+   read as a quantity. The bevel and the pull are what make each cell an object
+   rather than a swatch, and the whole wall is FIVE BACKGROUND LAYERS ON ONE
+   ELEMENT - zero DOM. The version this replaces was 26 spans and read as
+   stripes.
+
+   It is no longer the default. See concept A's banner for why, and note that
+   this is a set-level judgement rather than a verdict on the picture.
+   ========================================================================= */
+
+.ps-c3-b-wall {
+  --cw: 38px;
+  --ch: 27px;
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  top: -6px;
+  bottom: var(--c3-foot);
+  z-index: 1;
+  background-color: var(--c3-face);
+  background-image:
+    /* the drawer pull: a highlight over its own shadow, so it is a handle and
+       not a blob. Two tiled layers, one per cell, zero DOM. */
+    radial-gradient(ellipse 11px 2px at 50% 66%, var(--c3-pull) 0 100%, var(--c3-veil0) 100%),
+    radial-gradient(ellipse 11px 2px at 50% 71%, var(--c3-seam) 0 100%, var(--c3-veil0) 100%),
+    /* the lit top edge of each drawer front - this is what makes it a solid */
+    repeating-linear-gradient(to bottom, var(--c3-bevel) 2px 3px, var(--c3-veil0) 3px var(--ch)),
+    /* seams */
+    repeating-linear-gradient(to bottom, var(--c3-seam) 0 2px, var(--c3-veil0) 2px var(--ch)),
+    repeating-linear-gradient(to right, var(--c3-seam) 0 2px, var(--c3-veil0) 2px var(--cw)),
+    /* THE BAYS. A perfectly even grid of identical cells is the thing that reads
+       as a UI, so the wall is divided into banks of cabinets: a heavier upright
+       every five columns and a rail every four rows, both at periods that are
+       NOT the cell period. That is what an archive wall actually looks like and
+       it is what stops the texture repeating flat. */
+    repeating-linear-gradient(
+      to right,
+      var(--c3-seam) 0 5px,
+      var(--c3-veil0) 5px calc(var(--cw) * 5)
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--c3-bevel) 0 2px,
+      var(--c3-seam) 2px 7px,
+      var(--c3-veil0) 7px calc(var(--ch) * 4)
+    ),
+    linear-gradient(152deg, var(--c3-face2) 0%, var(--c3-face) 70%);
+  background-size:
+    var(--cw) var(--ch), var(--cw) var(--ch),
+    auto, auto, auto, auto, auto, auto;
+}
+
+/* THE LIGHT ON THE WALL. One pool, centred on the figure, so the archive is lit
+   where the work is happening and falls away everywhere else. */
+.ps-c3-b-wall::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    50% 42% at 34% 74%,
+    var(--c3-face2) 0%,
+    var(--c3-veil0) 100%
+  );
+  opacity: 0.6;
+}
+
+/* THE RECESS. The drawer is out, so there is a hole.
+
+   THIS ELEMENT IS A WORKED EXAMPLE OF D25a. A recess must be DARKER than its
+   surround in BOTH themes, and no single R5 role does that:
+     --theme-bg-primary    role 8, #0A1628 dark / #FFFFFF light -> a bright blank
+                           rectangle in the light wall. This is the exact shape
+                           of the bug at marcommand-live.css:540-546.
+     --theme-art-ground-a  #0A1628 dark / #F0F4F8 light -> I shipped this and the
+                           LIGHT RENDER SHOWED THE RECESS WAS INVISIBLE.
+   A token being opaque is not the same as a token being right. So it is an
+   explicit two-token fork, both from R5's table, both opaque, both checked in a
+   render: role 8 in dark, role 3 in light. */
+.ps-c3-b-void {
+  position: absolute;
+  left: calc(38% + 6px);
+  bottom: calc(var(--c3-foot) + 64px);
+  width: 46px;
+  height: 32px;
+  z-index: 2;
+  border-radius: 2px;
+  background: var(--theme-bg-primary, #0a1628);
+  border: 1px solid color-mix(in srgb, var(--theme-text-muted) 55%, var(--theme-bg-primary, #0a1628));
+  opacity: 1;
+}
+
+[data-theme="light"] .ps-c3-b-void {
+  background: var(--theme-text-secondary);
+  border-color: color-mix(in srgb, var(--theme-text-secondary) 70%, var(--color-white, #fff));
+}
+
+.ps-c3-arm .ps-c3-b-void {
+  transition: opacity 400ms var(--c3-ease) 480ms;
+}
+
+.ps-c3-arm:not(.ps-c3-go) .ps-c3-b-void {
+  opacity: 0;
+  transition: none;
+}
+
+/* THE DRAWER THAT IS OUT. Sits proud, overlapping the recess and the wall, with
+   a visible top face - that overlap is the whole depth cue. Its front is the
+   lit surface (role 9) in both themes; its pull is the accent, which ties it to
+   the answer bubble without adding a second blue mass. */
+.ps-c3-b-drawer {
+  position: absolute;
+  left: calc(38% - 14px);
+  bottom: calc(var(--c3-foot) + 44px);
+  width: 66px;
+  height: 34px;
+  z-index: 4;
+  border-radius: 2px;
+  background: var(--color-white, #ffffff);
+  box-shadow:
+    inset 0 -4px 0 0 var(--theme-accent-text),
+    3px 5px 0 0 var(--c3-seam),
+    0 0 0 1px var(--c3-seam);
+  opacity: 1;
+  transform: none;
+}
+
+[data-theme="light"] .ps-c3-b-drawer {
+  box-shadow:
+    inset 0 -4px 0 0 var(--theme-accent-text),
+    3px 5px 0 0 color-mix(in srgb, var(--theme-text-muted) 40%, var(--theme-art-ground-a, #f0f4f8)),
+    0 0 0 1px color-mix(in srgb, var(--theme-text-secondary) 42%, var(--theme-art-ground-a, #f0f4f8));
+}
+
+/* The top face of the drawer, seen because it is out and we are above it. */
+.ps-c3-b-drawer::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: -4px;
+  top: -8px;
+  height: 8px;
+  background: var(--c3-bevel);
+  clip-path: polygon(0 100%, 8px 0, 100% 0, calc(100% - 8px) 100%);
+}
+
+/* In light --c3-bevel is white, and a white top face on a white drawer front is
+   no face at all - the render showed a plain rounded rectangle, which is a UI
+   card, which is the read this card must not have. */
+[data-theme="light"] .ps-c3-b-drawer::before {
+  background: color-mix(in srgb, var(--theme-text-muted) 26%, var(--color-white, #fff));
+}
+
+.ps-c3-arm .ps-c3-b-drawer {
+  transition:
+    opacity 400ms var(--c3-ease) 480ms,
+    transform 400ms var(--c3-ease) 480ms;
+}
+
+.ps-c3-arm:not(.ps-c3-go) .ps-c3-b-drawer {
+  opacity: 0;
+  transform: translateX(14px) translateY(4px);
+  transition: none;
+}
+
+.ps-c3-b-elara {
+  left: max(12px, calc(38% - 108px));
+  bottom: var(--c3-foot);
+}
+
+/* ============================================================================
+   CONCEPT C - THE CUT
+
+   The floor of the frame is the company's systems seen edge on: a solid layered
+   mass, one course per system, laid down over time and running off both sides.
+   A section has been opened through it and the agent is standing at the lip with
+   one record just lifted out of the courses.
+
+   Why this depicts the subject: this is the only one of the three that shows HOW
+   FAR DOWN the answer came from.
+
+   THREE THINGS THE RENDER KILLED HERE, IN ORDER:
+     1. Thin low-opacity bands with gaps rendered as RULED NOTEBOOK LINES.
+     2. A 13px upright segmented bar rendered as a THERMOMETER.
+     3. Widening that bar to a 66px tilted slab made it a MONOLITH on a plinth,
+        and at 900x400 it read as a leaning tablet.
+   The lesson that generalises: this sprite's only pose is a reach, so if the
+   subject of the picture is not AT HIS HAND, the picture has no action in it.
+   ========================================================================= */
+
+.ps-c3-c-strata {
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  bottom: var(--c3-foot);
+  height: var(--c3-strata);
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    var(--c3-bevel) 0 2px,
+    var(--c3-face2) 2px 26px,
+    var(--c3-face) 26px 52px,
+    color-mix(in srgb, var(--theme-text-muted) 30%, var(--theme-art-ground-b, #0c1e3a)) 52px 84px,
+    var(--c3-seam) 84px 100%
+  );
+}
+
+[data-theme="light"] .ps-c3-c-strata {
+  background: linear-gradient(
+    to bottom,
+    var(--c3-bevel) 0 2px,
+    var(--c3-face) 2px 26px,
+    var(--c3-face2) 26px 52px,
+    color-mix(in srgb, var(--theme-text-muted) 26%, var(--theme-art-ground-a, #f0f4f8)) 52px 84px,
+    color-mix(in srgb, var(--theme-text-secondary) 36%, var(--theme-art-ground-a, #f0f4f8)) 84px 100%
+  );
+}
+
+/* THE CUT. The same courses seen in shadow, so the section is unmistakably the
+   same material as the surface it is cut into, with a lit lip along the top
+   where the surface has been broken. Same two-token fork as concept B's recess,
+   and checked in a render for the same reason. */
+.ps-c3-c-cut {
+  position: absolute;
+  left: calc(47% - 10px);
+  bottom: var(--c3-foot);
+  width: 128px;
+  height: var(--c3-strata);
+  z-index: 2;
+  border-top: 3px solid var(--c3-bevel);
+  background:
+    linear-gradient(to right, var(--c3-seam) 0 9px, rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0) 9px 100%),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--theme-text-muted) 8%, var(--theme-bg-primary, #0a1628)) 0 26px,
+      color-mix(in srgb, var(--theme-text-muted) 5%, var(--theme-bg-primary, #0a1628)) 26px 52px,
+      color-mix(in srgb, var(--theme-text-muted) 3%, var(--theme-bg-primary, #0a1628)) 52px 84px,
+      var(--theme-bg-primary, #0a1628) 84px 100%
+    );
+}
+
+[data-theme="light"] .ps-c3-c-cut {
+  background:
+    linear-gradient(to right, color-mix(in srgb, var(--theme-text-primary) 55%, var(--theme-text-secondary)) 0 9px, rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0) 9px 100%),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--theme-text-secondary) 62%, var(--theme-art-ground-a, #f0f4f8)) 0 26px,
+      color-mix(in srgb, var(--theme-text-secondary) 74%, var(--theme-art-ground-a, #f0f4f8)) 26px 52px,
+      color-mix(in srgb, var(--theme-text-secondary) 86%, var(--theme-art-ground-a, #f0f4f8)) 52px 84px,
+      var(--theme-text-secondary) 84px 100%
+    );
+}
+
+/* The courses still legible down in the shadow: the records that are still in
+   there. Same period as the surface courses, much quieter. */
+.ps-c3-c-cut::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--c3-face) 0 1px,
+    rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0) 1px 13px
+  );
+  opacity: 0.34;
+}
+
+/* CONCEPT C'S LIFTED RECORD WAS REMOVED, NOT MOVED.
+   It was a 44x30 white card in the figure's hand. The rebuilt concept C makes
+   the ANSWER DOCKET the thing at his hand and puts it on the return rail, so a
+   second white object beside it would split the eye between two candidates for
+   "the thing he found" - and only one of them carries the answer. Its rules
+   are deleted rather than left inert: the element is gone from the component,
+   so they could never match, and 40 lines of unmatchable CSS is a trap. */
+
+.ps-c3-c-elara {
+  left: max(12px, calc(47% - 100px));
+  bottom: calc(var(--c3-foot) + var(--c3-strata) - 2px);
+}
+
+/* ============================================================================
+   B AND C - THE SAME FOUR BEATS, DIFFERENT RETRIEVAL MECHANISM.
+
+   The paper, the states and the two transitions are shared; only the machine
+   and the geometry of the journey differ. These are three MECHANISMS, not three
+   colourways of one drawing:
+
+     A  two apertures - posted in on the left, drawn out on the right
+     B  ONE aperture  - in and out of the same open drawer
+     C  a LOOP        - parallel rails, in on the low one, back on the high one
+
+   B and C are selectable at ?c3=b and ?c3=c. They are built to the same brief
+   and to the same standard of legibility, but A is the one finished against the
+   full engine and viewport matrix, and A is the default.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------------
+   CONCEPT B - THE SAME MOUTH.
+
+   There is exactly one hole in this picture, and both the question and the
+   answer pass through it. The question docket is posted into a slot cut in the
+   wall of drawer fronts directly above the open drawer; the answer comes out of
+   the open drawer itself, which is the one the figure has his hand in.
+
+   In and out of the SAME mouth is the tightest correspondence available and it
+   needs no second object to carry it. The cost is that the two ends of the
+   journey are close together, so the picture has less travel in it than A.
+   ------------------------------------------------------------------------ */
+
+.ps-c3-b-q {
+  left: 14px;
+  top: 18px;
+  width: min(56%, 214px);
+  padding-bottom: 16px;
+}
+
+/* THE SLOT IN THE WALL. B's ground is already a wall of drawer fronts, so the
+   mouth is cut straight into it and needs no console. Same occlusion order as
+   A: mouth behind, paper, near lip in front of the paper's foot. */
+.ps-c3-b-q::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  right: -20px;
+  bottom: 0;
+  height: 18px;
+  z-index: 0;
+  border-radius: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--c3-portdark) 0%,
+    var(--c3-portdark) 56%,
+    var(--c3-bevel) 56%,
+    var(--c3-vault) 100%
+  );
+  box-shadow: 0 6px 14px -7px var(--c3-cast);
+}
+
+.ps-c3-b-q::after {
+  content: "";
+  position: absolute;
+  left: -14px;
+  right: -20px;
+  bottom: 0;
+  height: 8px;
+  z-index: 2;
+  background: linear-gradient(to bottom, var(--c3-bevel) 0 1px, var(--c3-vault2) 1px 100%);
+}
+
+/* THE ANSWER, out of the open drawer. `.ps-c3-b-drawer` sits at
+   left: calc(38% - 14px), bottom: calc(var(--c3-foot) + 44px), 66x34, so the
+   paper is lifted to clear its top face and left-anchored to the same 38% the
+   whole scene is built on. */
+.ps-c3-b-a {
+  left: max(12px, calc(38% - 96px));
+  bottom: calc(var(--c3-foot) + 88px);
+  width: min(72%, 274px);
+}
+
+/* ---------------------------------------------------------------------------
+   CONCEPT C - THE RETURN LINE.
+
+   A circuit rather than an errand. A rail runs in from the left carrying the
+   question docket down toward the intake cut into the layered mass; a second
+   rail, above it, carries the answer back out to the left, lit. The question
+   and the answer travel the same route in opposite directions, so here the
+   correspondence is the SHAPE OF THE PATH.
+
+   It is also the concept that holds up best at the dialog's 900x400, because a
+   loop wants width and A's machine is anchored hard to the right edge.
+   ------------------------------------------------------------------------ */
+
+/* THE INTAKE RAIL. Cropped by the left edge - it comes from the user's side,
+   outside the picture - and it runs to the lip of the cut. */
+.ps-c3-c-railin {
+  position: absolute;
+  left: -6px;
+  right: calc(53% - 4px);
+  bottom: calc(var(--c3-foot) + var(--c3-strata) + 18px);
+  height: 7px;
+  z-index: 2;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(
+    to bottom,
+    var(--c3-vaultcap) 0 1px,
+    var(--c3-vault2) 1px 4px,
+    var(--c3-vaultdk) 4px 100%
+  );
+}
+
+/* THE RETURN RAIL. Higher, shorter, and carrying the accent, because the thing
+   travelling on it is the one lit event in the picture. */
+.ps-c3-c-railout {
+  position: absolute;
+  left: -6px;
+  right: calc(47% - 22px);
+  bottom: calc(var(--c3-foot) + var(--c3-strata) + 104px);
+  height: 7px;
+  z-index: 2;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(
+    to bottom,
+    var(--c3-vaultcap) 0 1px,
+    var(--c3-vault2) 1px 4px,
+    var(--c3-vaultdk) 4px 100%
+  );
+  box-shadow: 0 0 16px -2px color-mix(in srgb, var(--theme-accent-text) 46%, transparent);
+}
+
+.ps-c3-c-q {
+  left: 12px;
+  top: 16px;
+  width: min(54%, 206px);
+}
+
+.ps-c3-c-a {
+  left: 12px;
+  bottom: calc(var(--c3-foot) + var(--c3-strata) + 111px);
+  width: min(70%, 266px);
+}
+
+/* C's figure keeps its own left anchor at the lip of the cut, and now earns the
+   knockout for the same reason A does: the rails and the mass pass behind him. */
+.ps-c3-c-elara {
+  filter: drop-shadow(0 0 2px var(--theme-bg-primary, #0a1628))
+    drop-shadow(0 0 2px var(--theme-bg-primary, #0a1628))
+    drop-shadow(0 0 1px var(--theme-bg-primary, #0a1628));
+}
+
+[data-theme="light"] .ps-c3-c-elara {
+  filter: drop-shadow(0 0 1px var(--theme-bg-primary, #ffffff));
+}
+
+/* ---------------------------------------------------------------------------
+   SMALL BOXES.
+   The dialog is 280px tall at <=768px and the card face drops to a 332px art
+   box, and both lose their foot clearance out of that. Tighten the foot, the
+   type and every scene's vertical mass rather than letting anything overrun.
+   ------------------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+  .ps-c3-k-root {
+    --c3-foot: 72px;
+    --c3-strata: 74px;
+  }
+
+  .ps-c3-a-root {
+    --c3-vh: 186px;
+    --c3-ph: 48px;
+    --c3-pw: 78px;
+    --c3-pb: calc(var(--c3-foot) + 20px);
+  }
+
+  .ps-c3-k-docket {
+    font-size: 12px;
+    padding: 10px 11px 11px;
+  }
+
+  .ps-c3-k-docket--a {
+    padding-bottom: 14px;
+  }
+
+  .ps-c3-a-beam {
+    height: 116px;
+  }
+
+  .ps-c3-b-wall {
+    --cw: 34px;
+    --ch: 24px;
+  }
+
+  .ps-c3-c-cut {
+    width: 108px;
+  }
+}
+
+/* PHONE CARD FACES, 272-382px wide.
+
+   KEEP-CLEAR IS THE BINDING CONSTRAINT HERE, not height. An expand control
+   occupies a 56x56 corner at the top right at every width <=768 (a 44x44 disc
+   inset 12px, globals.css:5430-5435), and 32x32 inset 16 from 769 up. Card 3
+   measured 0.0 px2 of overlap before this rebuild and has to keep it.
+
+   Both dockets are therefore anchored away from that corner BY CONSTRUCTION
+   rather than by a measured fudge: the question is left-anchored and capped at
+   58% of the art box, so at the narrowest card face (284px art box) its right
+   edge lands at 178px against a keep-clear zone that starts at 222px; and the
+   answer is anchored to the machine near the FLOOR, roughly 120px below the
+   zone. Neither can reach the corner at any width the card has.
+
+   Type steps down to 11px so the longest question candidate ("Why are we
+   winning fewer jobs than last month?") stays inside three lines. */
+@media (max-width: 400px) {
+  .ps-c3-k-docket {
+    font-size: 11px;
+    padding: 9px 10px 10px;
+    line-height: 1.32;
+  }
+
+  .ps-c3-k-docket--a {
+    padding-bottom: 13px;
+  }
+
+  .ps-c3-k-root {
+    --c3-strata: 62px;
+  }
+
+  .ps-c3-a-root {
+    --c3-vh: 160px;
+    --c3-ph: 44px;
+    --c3-pw: 70px;
+    --c3-poke: 26px;
+  }
+
+  .ps-c3-a-q {
+    left: 12px;
+    top: 14px;
+  }
+
+  .ps-c3-a-beam {
+    height: 98px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   REDUCED MOTION.
+
+   There is almost nothing to do here, and that is the whole point of inverting
+   the gate. The settled frame is what the CSS says by DEFAULT, and the hook
+   never adds `ps-c3-arm` when reduce is set, so no element is ever hidden and
+   nothing has to be restored. That is card 4's own approach
+   (service-pillars.tsx:2459-2465) and it is strictly safer than a per-card pin,
+   because a pin still depends on something running.
+
+   This block is belt and braces only: if `ps-c3-arm` ever lands anyway - a
+   cached class, a future refactor, a user toggling the OS setting after mount -
+   it neutralises every pre-state and every delay. The global reset at
+   globals.css:4556 collapses durations but does NOT zero transition-delay, so
+   the delays are zeroed here explicitly.
+
+   AND THE STILL FRAME IS THE WHOLE PICTURE. With motion off, a viewer sees the
+   question standing in the console slot, the figure with his arm inside the lit
+   port, and the answer proud of the platter cap in the machine's light. All
+   four beats, no animation required - the flourish only ever tells you the
+   order you were going to read them in anyway.
+   ------------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .ps-c3-arm .ps-c3-k-elara,
+  .ps-c3-arm .ps-c3-a-q,
+  .ps-c3-arm .ps-c3-a-a,
+  .ps-c3-arm .ps-c3-b-q,
+  .ps-c3-arm .ps-c3-b-a,
+  .ps-c3-arm .ps-c3-c-q,
+  .ps-c3-arm .ps-c3-c-a,
+  .ps-c3-arm .ps-c3-a-port,
+  .ps-c3-arm .ps-c3-a-spill,
+  .ps-c3-arm .ps-c3-a-beam,
+  .ps-c3-arm .ps-c3-b-void,
+  .ps-c3-arm .ps-c3-b-drawer,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-k-elara,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-a-q,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-a-a,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-b-q,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-b-a,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-c-q,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-c-a,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-a-port,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-a-spill,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-a-beam,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-b-void,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-b-drawer {
+    transition: none !important;
+    transition-delay: 0s !important;
+  }
+
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-a-q,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-a-a,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-b-q,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-b-a,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-c-q,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-c-a,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-a-port,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-a-spill,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-b-void,
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-b-drawer {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* The beam and the elara frame are pinned to their own resting VALUES, not to
+     `none`/`1`, because both have a resting value that is not the initial one:
+     the beam rests at a per-theme opacity and the sprite rests on frame 4. */
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-a-beam {
+    opacity: 0.42 !important;
+    transform: none !important;
+  }
+
+  [data-theme="light"] .ps-c3-arm:not(.ps-c3-go) .ps-c3-a-beam {
+    opacity: 0.2 !important;
+  }
+
+  .ps-c3-arm:not(.ps-c3-go) .ps-c3-k-elara {
+    opacity: 1 !important;
+    transform: none !important;
+    background-position-x: var(--c3-frame) !important;
+  }
+}

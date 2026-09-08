@@ -18,6 +18,10 @@ import {
   // the Websites card, which keeps WebsiteVisual. Neither file is pruned.
   SearchVisual,
 } from "@/components/home/card-visuals-backup";
+import { DashboardVisualPick } from "@/components/home/card1-candidates";
+import { SystemFixesVisualPick } from "@/components/home/card2-candidates";
+import { AutomationVisualPick } from "@/components/home/card3-candidates";
+import { SearchVisualPick } from "@/components/home/card5-candidates";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { LOCAL_BIZ_ID } from "@/lib/seo/schema";
 import { seoSite } from "@/lib/seo/site";
@@ -134,7 +138,7 @@ const services: ServicePillar[] = [
     description:
       "The platform your team logs into. Admin dashboards, customer and member databases, client portals, and the internal tools that replace the shared spreadsheet. Real-time views of the numbers that actually run your business. Built for owners, not analysts.",
     href: "/contact",
-    visual: <DashboardVisual />,
+    visual: <DashboardVisualPick fallback={<DashboardVisual />} />,
     bullets: [
       "Admin dashboards and internal tools",
       "Customer and member databases",
@@ -226,7 +230,7 @@ const services: ServicePillar[] = [
     description:
       "The work that happens without anyone doing it. Registration → confirmation → reminder. Bill → categorized ledger. Form → CRM → follow-up. Scheduled jobs, notifications, and the integrations that make the tools you already pay for talk to each other.",
     href: "/contact",
-    visual: <SystemFixesVisual />,
+    visual: <SystemFixesVisualPick fallback={<SystemFixesVisual />} />,
     bullets: [
       "Scheduled jobs, reminders, and notifications",
       "Form and document intake routing",
@@ -338,7 +342,7 @@ const services: ServicePillar[] = [
     description:
       "AI put exactly where it earns its place (reading documents, classifying, drafting), with a human gate on anything that matters. It isn't a product you buy from us. It's how the work gets done, and where it belongs inside your system.",
     href: "/contact",
-    visual: <AutomationVisual />,
+    visual: <AutomationVisualPick fallback={<AutomationVisual />} />,
     bullets: [
       "Document extraction and classification",
       "AI-assisted drafting with approval gates",
@@ -578,11 +582,11 @@ const services: ServicePillar[] = [
   {
     type: "search-ads",
     variant: "search-ads",
-    title: "SEO AI Visibility Ad Management.",
+    title: "AI and Search Engine Visibility.",
     description:
       "Getting found on the three surfaces that matter now: the Google local pack, the AI assistants people ask instead of typing into Google, and paid placement for when you need volume sooner than SEO can deliver it. Audit first, then a plan, then the work.",
     href: "/contact",
-    visual: <SearchVisual />,
+    visual: <SearchVisualPick fallback={<SearchVisual />} />,
     bullets: [
       "Google Business Profile and local pack",
       "Cited by ChatGPT, Perplexity, Gemini, and Claude",
@@ -1927,6 +1931,25 @@ function BentoCard({ service, onClick }: BentoCardProps) {
    content reveal, scroll-lock with scrollbar compensation.
    ───────────────────────────────────────────────────────────── */
 
+/* Longest transition on an element, in ms, read from the CASCADE rather than
+   duplicated as a constant in JS. `transitionDuration` and `transitionDelay`
+   are comma separated per property and may list different counts, so they are
+   paired by index (delays cycling, per spec) and the slowest pair wins.
+   Computed values are always in seconds. */
+function longestTransitionMs(el: HTMLElement | null): number {
+  if (!el) return 0;
+  const style = window.getComputedStyle(el);
+  const durations = style.transitionDuration.split(",");
+  const delays = style.transitionDelay.split(",");
+  let longest = 0;
+  for (let i = 0; i < durations.length; i += 1) {
+    const delay = delays.length > 0 ? delays[i % delays.length] : "0s";
+    const total = (parseFloat(durations[i]) + parseFloat(delay)) * 1000;
+    if (Number.isFinite(total) && total > longest) longest = total;
+  }
+  return longest;
+}
+
 interface BottomSheetDialogProps {
   service: ServicePillar;
   onClose: () => void;
@@ -1940,6 +1963,10 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
   const releaseBackgroundRef = useRef<(() => void) | null>(null);
   const touchStartY = useRef(0);
   const touchCurrentY = useRef(0);
+  // Close is driven by transitionend with a derived-duration safety net; both
+  // are cancelled on unmount. See handleClose.
+  const closeTimer = useRef<number | null>(null);
+  const isClosing = useRef(false);
 
   // Mount → next frame → add open class (drives CSS transitions)
   useEffect(() => {
@@ -2093,6 +2120,12 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
       document.removeEventListener("keydown", handleKey);
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
+      // A parent unmount or route change can land before the close settles;
+      // drop the pending timer so it cannot fire against a torn-down tree.
+      if (closeTimer.current !== null) {
+        clearTimeout(closeTimer.current);
+        closeTimer.current = null;
+      }
       // Safety net for an unmount that did NOT come through handleClose —
       // a parent unmount or a route change. Idempotent, so the normal path
       // having already released is a no-op.
@@ -2101,10 +2134,64 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Animate out, then call onClose after transition completes
+  // Animate out, then call onClose after the transition ACTUALLY completes
   function handleClose() {
+    /* Idempotent. The overlay click, Escape and the swipe dismiss all route
+       here, and under reduced motion the settle below is about one frame
+       instead of 720ms, so a double invocation now genuinely interleaves two
+       release/onClose pairs instead of being masked by a long wait. */
+    if (isClosing.current) return;
+    isClosing.current = true;
+
+    const panel = panelRef.current;
+
     setIsOpen(false);
-    setTimeout(() => {
+
+    /* WHY THIS IS NOT A CONSTANT ANY MORE.
+
+       This was `setTimeout(..., 720)`, picked to clear the 700ms transform on
+       .ps-dialog-panel. It was wrong for anyone browsing with
+       `prefers-reduced-motion: reduce`: globals.css collapses every transition
+       to `transition-duration: 0.01ms !important`, so the sheet was visually
+       gone in one frame while the background stayed `inert` for the rest of
+       the 720ms. .ps-dialog-overlay is inset:0 / z-index:1000 / opacity:0 with
+       NO `pointer-events: none`, and opacity 0 does not stop hit testing, so
+       an invisible sheet went on swallowing every click. Measured at t+300ms
+       under reduce at 360x640: panel already at translateY(588px), overlay
+       opacity 0, 6 inert body children, elementFromPoint over a card returned
+       .ps-dialog-overlay, the card would not take focus and a click on it did
+       nothing. Normal motion hid all of it behind the visible slide.
+
+       `transitionend` is the primary signal rather than any computed number,
+       because it is the only thing that cannot disagree with the stylesheet.
+       Filtered on `transform` AND on `e.target === panel`: the panel also
+       transitions background-color, and the .ps-dialog-reveal children have
+       transitions of their own that bubble through here.
+
+       `transitioncancel` is deliberately NOT treated as completion, and this
+       is load-bearing. Closing while the 700ms OPEN slide is still running
+       cancels that in-flight transition, so a cancel handler fired within a
+       frame of the click and released the background at ~t+168ms instead of
+       ~700ms: measured, an injected click then reopened the sheet mid-close.
+       Removing `--open` starts a FRESH transform transition from wherever the
+       open slide had reached, and that one ends normally, so transitionend
+       alone is the correct signal.
+
+       The timer is now only a SAFETY NET, for the case where the event never
+       arrives at all: a transition that never starts fires nothing.
+       Its length is derived from the cascade, so it also tracks reduce. Both
+       elements are measured because the panel carries the longest transition
+       today (transform 700ms) but the overlay's opacity is what gates
+       clickability, so the net waits for whichever is slower, plus a frame. */
+    let settled = false;
+    const settle = () => {
+      if (settled) return;
+      settled = true;
+      if (closeTimer.current !== null) {
+        clearTimeout(closeTimer.current);
+        closeTimer.current = null;
+      }
+      panel?.removeEventListener("transitionend", onPanelEnd);
       /* Release the background BEFORE handing control back to the parent, and
          NOT in the unmount cleanup where this started.
 
@@ -2118,11 +2205,27 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
          precisely why this cannot be left to timing.
 
          Releasing here is deterministic: the background stays inert for the
-         whole 720ms close animation, right up to the statement before the
-         parent is told to restore focus. */
+         whole close animation, right up to the statement before the parent is
+         told to restore focus. THIS ORDERING IS LOAD-BEARING. Release must
+         stay BEFORE onClose(); moving it after, or alongside, reintroduces
+         that 360x640 focus bug while still looking correct on desktop. */
       releaseBackgroundRef.current?.();
       onClose();
-    }, 720);
+    };
+
+    function onPanelEnd(e: TransitionEvent) {
+      if (e.target !== panel || e.propertyName !== "transform") return;
+      settle();
+    }
+
+    panel?.addEventListener("transitionend", onPanelEnd);
+
+    const net =
+      Math.max(
+        longestTransitionMs(panel),
+        longestTransitionMs(overlayRef.current)
+      ) + 20;
+    closeTimer.current = window.setTimeout(settle, net);
   }
 
   function handleTouchStart(e: React.TouchEvent) {
@@ -2480,26 +2583,75 @@ export function ServicePillars() {
     import("@/lib/gsap").then(({ gsap, ScrollTrigger }) => {
       if (!gridRef.current) return;
 
-      gsap.fromTo(
-        cards,
-        { opacity: 0, y: 28 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.65,
-          stagger: 0.1,
-          ease: "power3.out",
-          clearProps: "transform",
-          scrollTrigger: {
-            trigger: gridRef.current,
-            start: "top 82%",
-            once: true,
-          },
-        }
-      );
+      /* ONE TRIGGER PER CARD, not one on the whole grid.
+
+         This was a single fromTo across all five cards with `stagger: 0.1`
+         and one ScrollTrigger on gridRef, so the entire sequence fired when
+         the GRID crossed the start line and most of it played where nobody
+         could see it. Sampled on-screen mask during the tween, wall clock:
+         1 1 1 0 0 at 1440x900, and 1 0 0 0 0 at 393x852, where cards 2 to 5
+         animated between 994px and 1904px down a 852px viewport. A phone
+         visitor saw exactly one of five entrances; the other four were spent
+         before they reached the screen.
+
+         Each card now waits for its OWN arrival. The original 0.1s stagger is
+         preserved WITHIN a row, because cards sharing a row do still arrive
+         together: index-in-row is counted off offsetTop, so the single-column
+         phone layout gives every card delay 0 and each animates on its own
+         scroll. `once: true` per card, as before. */
+      const seenInRow = new Map<number, number>();
+
+      cards.forEach((el) => {
+        const row = Math.round(el.offsetTop);
+        const indexInRow = seenInRow.get(row) ?? 0;
+        seenInRow.set(row, indexInRow + 1);
+
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 28 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.65,
+            delay: indexInRow * 0.1,
+            ease: "power3.out",
+            clearProps: "transform",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 82%",
+              once: true,
+            },
+          }
+        );
+      });
 
       return () => ScrollTrigger.getAll().forEach((t) => t.kill());
-    });
+    })
+      .catch((err) => {
+        /* FAIL VISIBLE. Never drop this silently.
+
+           The cards are pre-set to opacity 0 just above so GSAP can animate
+           them in, so a chunk that never arrives (offline, a blocked or
+           evicted asset, a bad deploy) made that inline opacity PERMANENT and
+           the whole services section rendered as a blank white void. Measured
+           with the chunk aborted: all 5 cards still at opacity 0 six seconds
+           after entering view, holding 826px of empty layout height. An
+           unanimated section is a cosmetic loss; an invisible one loses the
+           content outright, so the fallback puts the cards in the same
+           resting state the reduced-motion branch above uses.
+
+           Chained after .then rather than passed to import().catch so it also
+           covers a throw from inside the callback. Same shape as the guard in
+           marcommand-live.tsx. */
+        cards.forEach((el) => {
+          el.style.opacity = "1";
+          el.style.transform = "";
+        });
+        console.error(
+          "[service-pillars] GSAP chunk failed to load; showing cards unanimated",
+          err
+        );
+      });
   }, []);
 
   return (

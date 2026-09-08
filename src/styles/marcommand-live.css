@@ -749,15 +749,24 @@
   display: none;
 }
 
-/* Desktop carries these figures in the funnel figure instead.
-   MUST be media-scoped, not a bare rule: this sheet is unlayered, so a bare
-   `display:none` here would sit LATER in source than the mobile grid rule and
-   win at every width — which is exactly what it did on the first attempt. */
-@media (min-width: 769px) {
-  .mc-live__outcomes {
-    display: none;
-  }
+/* >> DESKTOP NO LONGER HIDES THE OUTCOME FIGURES. This block used to carry
+   `.mc-live__outcomes { display: none }` at >= 769px, on the reasoning quoted
+   in its old comment: "Desktop carries these figures in the funnel figure
+   instead."
 
+   That reasoning died with the funnel. It was removed on the owner's
+   instruction, and the hide rule survived it, so desktop shipped with NO
+   outcome figures at all while mobile kept its three. Caught by a verifier
+   comparing two builds with checkVisibility(), not by reading either file:
+   the rule lives here and the deletion happened in the component, so neither
+   file on its own shows the defect.
+
+   The `display: grid` in the mobile block now applies at every width. That
+   block is EARLIER in source and this sheet is unlayered, which is why the
+   original had to be media-scoped to win at all - deleting it simply returns
+   the grid to every width rather than leaving a bare rule fighting for
+   precedence. */
+@media (min-width: 769px) {
   /* Desktop keeps the claim, sized to the wider measure. */
   .mc-live__claim {
     margin: 14px 0 0;

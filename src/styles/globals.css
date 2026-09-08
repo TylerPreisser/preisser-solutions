@@ -7,6 +7,12 @@
 @import "./work-card-reveal.css";
 @import "./marcommand-live.css";
 @import "./hero-entrance.css";
+/* Per-card candidate stylesheets (D28a). Appended after the sheets above so they
+   win on order. Read the cascade-layer prohibition banner directly below (D2). */
+@import "./card1-candidates.css";
+@import "./card2-candidates.css";
+@import "./card3-candidates.css";
+@import "./card5-candidates.css";
 
 /* ============================================================
    DO NOT WRAP THE SHEETS ABOVE — OR ANY PART OF THIS FILE —
@@ -156,6 +162,16 @@
   --theme-carousel-btn-bg: rgba(255,255,255,0.08);
   --theme-carousel-btn-border: rgba(255,255,255,0.12);
   --theme-carousel-btn-color: rgba(255,255,255,0.8);
+
+  /* Card-art scene tokens. R5's palette is the authority (D25/D25b); these three
+     formalise values already present in the live art rather than introducing new
+     colour. Ground A/B are the two stops of a 160deg full-bleed scene gradient --
+     never use `transparent` as an end stop. The veil triplet is an RGB triplet, not
+     a colour, and is consumed as rgba(var(--theme-art-veil-rgb), <alpha>) by the
+     bottom title-clearance veil only. */
+  --theme-art-ground-a: #0A1628;
+  --theme-art-ground-b: #0C1E3A;
+  --theme-art-veil-rgb: 10, 22, 40;
 }
 
 /* ── Light mode overrides ──────────────────────────────────── */
@@ -206,6 +222,11 @@
   --theme-carousel-btn-bg: #FFFFFF;
   --theme-carousel-btn-border: rgba(0,0,0,0.12);
   --theme-carousel-btn-color: #0A1628;
+
+  /* Card-art scene tokens, light. See the :root block for the contract. */
+  --theme-art-ground-a: #F0F4F8;
+  --theme-art-ground-b: #E8EDF3;
+  --theme-art-veil-rgb: 236, 241, 247;
 }
 
 /* ── Reset & Base ──────────────────────────────────────────── */
@@ -1421,7 +1442,21 @@ ul, ol {
      the floor takes over, and 22px * 10.38em = 228px still fits.
      Upper bound 3.75rem = 60px -> 623px, inside the 812px content box. */
 .ps-hero-headline {
-  font-size: clamp(1.375rem, 7.5vw, 5.5rem);
+  /* §T3/ADR-0014. Ceiling 5.5rem -> 5.15rem (88px -> 82.4px), DESKTOP ONLY BY
+     CONSTRUCTION: the ceiling only binds where 7.5vw exceeds it, i.e. W >= 1099,
+     so below that the 7.5vw term still governs and the phone/tablet headline is
+     bit-identical. Why it exists: this line is pinned at its ceiling for every
+     W >= 1173, so the longest line ("Business Automation.") measures a CONSTANT
+     910.2px and headlineRight = W/2 + 334.2 does NOT scale with the viewport,
+     while the hero mark's stage floor (0.70*W) does. They cross at W ~= 1670, and
+     below that the P's bbox interleaves the headline's. Because the mark's desktop
+     stage is {x: floor, w: W - 24 - floor} contain-fitted, `floor` sets the glyph's
+     left edge AND its width -- one degree of freedom, trading 1:1 -- so no value of
+     SCRIM_CLEAR can make the P both bigger and further right. Shortening THIS line
+     by 46.9px is what buys the separation at zero cost to the P, and at 1280 it
+     also stops the polygon overlap that was firing the 12-step 0.96 shrink guard
+     (k 9 -> 0), which makes the P 44% larger there. See hero-mark-light.ts :1284. */
+  font-size: clamp(1.375rem, 7.5vw, 5.15rem);
   font-weight: 800;
   /* Tighter than the old 1.15 so the three lines read as one block. */
   line-height: 1.07;
@@ -2063,9 +2098,23 @@ ul, ol {
   transition: color 300ms ease, opacity 300ms ease;
 }
 
-/* On hover the title brightens slightly to acknowledge the cue */
+/* On hover the title brightens slightly to acknowledge the cue.
+
+   SCOPED TO DARK. Unscoped, this rule was (0,3,0) and outranked the (0,2,0)
+   `[data-theme="light"] .ps-bento-card__title` above, so all five card titles
+   went white on hover in LIGHT theme, over the #E8EDF3 card content: 1.18:1,
+   an AA failure on the primary interaction of the homepage's primary
+   component. Light theme keeps its #0A1628 title and still signals hover
+   through the card grow and the title shift below.
+
+   Written as html:not(...) rather than [data-theme="dark"] because the
+   theme-init script in layout.tsx sets the attribute inside a try/catch; if
+   sessionStorage throws, no attribute is set and the page renders dark. The
+   `html` anchor is required, NOT optional: a bare :not([data-theme="light"])
+   would still match in light theme via body/main/div, none of which carry
+   the attribute. */
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .ps-bento-card:hover .ps-bento-card__title {
+  html:not([data-theme="light"]) .ps-bento-card:hover .ps-bento-card__title {
     color: #ffffff;
   }
 }

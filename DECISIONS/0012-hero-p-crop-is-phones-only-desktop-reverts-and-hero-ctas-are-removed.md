@@ -1,6 +1,6 @@
 # ADR-0012: The magnified hero "P" crop is PHONES ONLY, desktop returns to the contained fit, and the hero CTA buttons are removed
-Status: Accepted — 2026-09-07 (owner instruction, relayed verbatim mid-run) — Owner: Tyler Preisser
-Supersedes / Superseded by: **Supersedes ADR-0011.** Not superseded.
+Status: Superseded by ADR-0013 (phone clause `:50-51`) and ADR-0014 (desktop clause `:79-84`), 2026-09-07. Originally Accepted 2026-09-07 (owner instruction, relayed verbatim mid-run), Owner: Tyler Preisser
+Supersedes / Superseded by: **Supersedes ADR-0011.** **Superseded IN PART by ADR-0013** (clause 5 bullet 3, the "byte-identical" phone clause at `:50-51`) **and by ADR-0014** (the "modest desktop P is intentional" clause at `:79-84`). Every other clause of this ADR remains in force, including `:33-38`, `:43-45`, `:47`, `:48-49` and `:55-59`.
 
 ## Context
 

@@ -1,0 +1,1141 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   CARD 5 -- "AI and Search Engine Visibility." -- CANDIDATE ARTWORK
+   Prefix `ps-c5r-`. Read the banner in card5-candidates.tsx first; this
+   sheet records only what is true about the CSS.
+
+   `ps-c5-` belongs to the artwork this replaces (card-visuals.css:2366-2600,
+   still live as ?c5=orig) and `ps-c5x-` to the round that was rejected, so a
+   third prefix keeps all three switchable with no cascade contact.
+
+   ── WHAT THIS IS NOT ──────────────────────────────────────────────────
+   NOT a webpage. There is no browser window, no URL bar, no traffic
+   lights, no chrome of any kind around anything. The card next door is a
+   browser window because ITS subject is websites; copying that form is the
+   mistake this project has already paid for three times.
+   What is drawn instead is the ELEMENTS, at a size where a stranger names
+   them in one second: a search field with a real question typed in it, a
+   ranked result, a chat exchange, pages that give a reader nothing. The
+   previous round refused the elements as well as the chrome -- "a trough
+   and a caret" -- and the owner did not recognise any of it.
+
+   ── MOTION: NONE. THIS FILE DECLARES NO transition, NO animation AND NO
+   @keyframes ANYWHERE, AND THAT IS THE SPEC. ───────────────────────────
+   M4-animation-style.md characterised card 4 over 60 frames: exactly one
+   thing animates and it is THE CARD, as one rigid unit, opacity 0->1 with
+   translateY(28px)->0 over 0.65s on power3.out, then absolute stillness.
+   Measured here in the real page: `.ps-bento-card--search-ads` computes to
+   opacity 0 / matrix(1,0,0,1,0,28) before the grid's ScrollTrigger fires,
+   0.513 / 13.64px at t+650ms, and 1 / none settled, with animationName
+   `none` at every sample. The artwork inside rides that entrance and does
+   nothing of its own.
+   Therefore there is no reduced-motion block at the foot of this file, and
+   its absence is the point: card 4's entrance is never SET UP rather than
+   set up and then reversed, so it cannot hide and then fail to unhide.
+   An earlier round of this file staggered its parts, and a WebKit capture
+   caught exactly that failure -- one 404'd chunk, no hydration, a blank
+   navy card. Nothing here can do that now.
+
+   ── SIZE STATES: @container ON THIS ARTWORK'S OWN BOX ─────────────────
+   The root carries `container-type: size`, so every regime below is keyed
+   to the box the artwork is ACTUALLY in, not to the viewport. That matters
+   here more than anywhere else on the grid, because card 5 SPANS BOTH
+   COLUMNS from 640 to 939 and reaches 903x392 -- an aspect of 2.30, WIDER
+   THAN ANY DIALOG. Any "wide means dialog" rule keyed to the viewport is
+   guaranteed to misfire on this card's own face. Measured boxes:
+     face   284x392 (320vw) · 339x392 (375) · 394x392 (430) · 604x392 (640)
+            732x392 (768) · 784x392 (820) · 903x392 (939) · 298.7x392 (940)
+            326.7x392 (1024) · 412x392 (1280+)
+     dialog ~300x281 · ~345x281 · ~700x281 (to 768vw) · W x400 (from 769)
+            capped 900x400. Zero bleed.
+   Regimes: STACK is the default; SPREAD is two grid columns and needs BOTH
+   `min-aspect-ratio: 3/2` AND `min-width: 560px`. 3/2 rather than 8/5
+   because the face is CONTINUOUS across the 639/640 grid change -- art runs
+   284 -> 627 as one column, then 604 -> 903 as two -- and a 1.6 gate put the
+   604x392 box (1.54) back into a stack that overran its own foot by a pixel
+   at exactly the width where the card is widest; size steps at 340 and 460
+   inline, and at 820 inline inside SPREAD; the 280-tall dialog is caught by
+   `max-height: 320px`, which the 392-tall face can never match.
+   The ONE thing a container query cannot know is whether the card prints a
+   title under the art, because that is a property of the mount and not of
+   the box -- the face is 392 tall and the tall dialog is 400, four pixels
+   apart. So the foot reserve, and only the foot reserve, is set through
+   `.ps-dialog-visual-art`, which is certain.
+
+   COLOUR: R5 tokens for every role a token actually means -- ground is
+   --theme-art-ground-a/b, accent is --theme-accent-text, a lit page is
+   --color-white (role 9). DEPICTED MATERIALS are written per theme by hand,
+   because --theme-bg-secondary is #0F1D30 in dark and #F6F9FC in light, so
+   an unlit result built from it would turn WHITE in light mode and the lit
+   page would stop being the only lit thing in the frame. Card 4 forks for
+   the same reason: its phone bezel stays dark in light mode because a bezel
+   is dark (card-visuals.css:1301-1380).
+
+   BLEED: none, on any edge. The art box is the card +6px all round and the
+   outer ring is clipped; every object here sits inside the padding, so
+   there is no one-sided cut to get wrong.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. ROOT: THE SIZE CONTAINER AND THE GROUND ──────────────────────── */
+
+.ps-c5r-root {
+  /* FRESHNESS SENTINEL. Bumped by hand on every edit to this file, and read
+     back by the capture harness before any screenshot is trusted. It exists
+     because a dev server served a STALE compiled module during this run:
+     the render came back styled, gradient present, radii present, zero
+     404s, `status 200` -- and it was the previous version of concept C. A
+     positive style assertion proves CSS applied; only a value that CHANGES
+     with the edit proves WHICH CSS applied. */
+  --c5r-build: 18;
+
+  /* Its own size container. Safe because the root is position:absolute /
+     inset:0, so neither axis depends on its contents. Queried by name so a
+     future container elsewhere cannot capture these rules. */
+  container-type: size;
+  container-name: c5art;
+
+  /* roles that are genuinely tokens */
+  --c5r-accent: var(--theme-accent-text);
+  --c5r-page: var(--color-white);
+  --c5r-ground-a: var(--theme-art-ground-a, #0a1628);
+  --c5r-ground-b: var(--theme-art-ground-b, #0c1e3a);
+
+  /* depicted materials -- DARK is the base, light forks in section 8 */
+  --c5r-rule: #e2e8f0;          /* a grey rule printed on a white page */
+  --c5r-rule-2: #cbd5e1;
+  --c5r-dim-a: #16243c;         /* an unlit result, top of its wash */
+  --c5r-dim-b: #101e34;         /* and its foot */
+  --c5r-dim-edge: rgba(148, 163, 184, 0.14);
+  --c5r-dim-rule: rgba(148, 163, 184, 0.4);
+  --c5r-dim-rule-2: rgba(148, 163, 184, 0.22);
+  --c5r-cross: rgba(148, 163, 184, 0.62);
+  --c5r-strike: #94a3b8;
+  --c5r-field-bg: rgba(255, 255, 255, 0.07);
+  --c5r-field-bd: rgba(255, 255, 255, 0.16);
+  --c5r-field-ink: #e6edf6;
+  --c5r-mag-ink: #94a3b8;
+  --c5r-reply-a: #13233b;
+  --c5r-reply-b: #0e1b2f;
+  --c5r-reply-bd: rgba(255, 255, 255, 0.12);
+  --c5r-lift: 0 14px 34px rgba(0, 0, 0, 0.5), 0 3px 10px rgba(0, 0, 0, 0.3);
+  --c5r-lift-sm: 0 8px 20px rgba(0, 0, 0, 0.42);
+
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(
+    160deg,
+    var(--c5r-ground-a) 0%,
+    var(--c5r-ground-b) 100%
+  );
+}
+
+/* ── 2. THE STAGE, AND EVERY SIZE VARIABLE ───────────────────────────
+   The metrics live HERE, on a descendant, because `@container` styles the
+   container's children and can never style the container itself. Children
+   of the stage inherit them. */
+
+.ps-c5r-stage {
+  --c5r-pad-x: 20px;
+  --c5r-pad-t: 26px;
+  --c5r-foot: 100px;
+  --c5r-keep: 68px;
+
+  --c5r-field-h: 40px;
+  /* 9px of padding and a 10.5px query, not 11 and 11. Audited at 22 widths:
+     at the 284px art box the query needed 138px and had 133, so it clipped
+     -- and at 324 it had exactly 138 with zero margin. Both now clear by
+     about nine pixels. This is the ~30-character ceiling being enforced by
+     measurement rather than by hope. */
+  --c5r-field-px: 9px;
+  --c5r-q: 10.5px;
+  --c5r-mag-s: 14px;
+
+  --c5r-stack: 15px;
+  --c5r-gap: 8px;
+  --c5r-ours-h: 76px;
+  --c5r-rest-h: 44px;
+  --c5r-row-r: 10px;
+  --c5r-row-px: 12px;
+  --c5r-mark: 17px;
+  --c5r-mark-r: 5px;
+  --c5r-title-h: 8px;
+  --c5r-line-h: 5px;
+
+  /* THE NAME. Its own size, smaller than the query, because a result title
+     is smaller than what you typed into the field. */
+  --c5r-name: 11px;
+  --c5r-turn-r: 12px;
+  --c5r-turn-px: 10px;
+  --c5r-turn-py: 6px;
+  --c5r-avatar: 18px;
+  --c5r-input-h: 28px;
+  --c5r-panel-gap: 10px;
+
+  --c5r-bub-r: 16px;
+  --c5r-bub-px: 13px;
+  --c5r-bub-py: 9px;
+  --c5r-tile-h: 74px;
+  --c5r-tile-r: 8px;
+
+  position: absolute;
+  top: var(--c5r-pad-t);
+  right: var(--c5r-pad-x);
+  bottom: var(--c5r-foot);
+  left: var(--c5r-pad-x);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--c5r-stack);
+}
+
+/* KEEP-CLEAR, and this one IS a viewport query on purpose: the control it
+   avoids is itself viewport-keyed. The card's expand button is 32px at
+   top/right 16px (globals.css:2106-2118) and grows to a 44px touch target
+   at top/right 12px below 768 (:5448-5459); the dialog's close button is
+   40px at top/right 18px (:2737-2741). Against the art box, which is the
+   card +6px on every edge, the worst case is a 62x62 dead corner. Measured
+   at 1024 the field's right end had come within six pixels of it. */
+@media (max-width: 768px) {
+  /* 70, not 74: the 44px touch target starts 62px in from the art edge, so
+     70 clears it by eight pixels and hands the other four back to the query
+     at the width where the query has none to spare. */
+  .ps-c5r-stage { --c5r-keep: 70px; }
+}
+
+/* THE FOOT. On the face the art has to clear the title band, which takes
+   two lines at 320-768 and again at 940-1023 (83.6px) and one line
+   elsewhere. 100px covers the worst case at every width and the eight
+   pixels it costs at the one-line widths are invisible. The dialog prints
+   no title, so it only has to clear the opaque half of its own 120px fade.
+   This is the one thing keyed to the MOUNT rather than to the box, because
+   the face is 392 tall and the tall dialog is 400 and four pixels is not a
+   threshold anyone should build on. */
+.ps-dialog-visual-art .ps-c5r-stage {
+  --c5r-foot: 84px;
+  --c5r-pad-t: 52px;
+  --c5r-pad-x: 6%;
+}
+
+/* Size step one: the mid faces (354-412) and mid dialogs. */
+@container c5art (min-width: 340px) {
+  .ps-c5r-stage {
+    --c5r-pad-x: 22px;
+    --c5r-field-h: 44px;
+    --c5r-field-px: 13px;
+    --c5r-q: 13px;
+    --c5r-mag-s: 16px;
+    --c5r-stack: 16px;
+    --c5r-ours-h: 84px;
+    --c5r-rest-h: 48px;
+    --c5r-mark: 19px;
+    --c5r-title-h: 9px;
+    --c5r-line-h: 5.5px;
+    --c5r-tile-h: 80px;
+  }
+}
+
+/* Size step two: a wide box that is still a single column -- the 604x392
+   two-column face at 640vw, and mid dialogs. */
+@container c5art (min-width: 460px) {
+  .ps-c5r-stage {
+    --c5r-pad-x: 6%;
+    --c5r-field-h: 48px;
+    --c5r-field-px: 16px;
+    --c5r-q: 15px;
+    --c5r-mag-s: 18px;
+    --c5r-stack: 14px;
+    --c5r-gap: 7px;
+    --c5r-ours-h: 84px;
+    --c5r-rest-h: 48px;
+    --c5r-mark: 21px;
+    --c5r-tile-h: 88px;
+    --c5r-bub-px: 16px;
+    --c5r-bub-py: 11px;
+  }
+}
+
+/* Size step three: the biggest boxes, 820 inline and up -- the 903x392
+   banner face and the 900x400 dialog. */
+@container c5art (min-width: 820px) {
+  .ps-c5r-stage {
+    --c5r-q: 17px;
+    --c5r-field-h: 56px;
+    --c5r-field-px: 18px;
+    --c5r-mag-s: 20px;
+    --c5r-stack: 20px;
+    --c5r-gap: 11px;
+    --c5r-ours-h: 100px;
+    --c5r-rest-h: 54px;
+    --c5r-row-r: 12px;
+    --c5r-row-px: 16px;
+    --c5r-mark: 24px;
+    --c5r-title-h: 10px;
+    --c5r-line-h: 6px;
+    --c5r-tile-h: 108px;
+    --c5r-tile-r: 10px;
+    --c5r-bub-r: 20px;
+    --c5r-bub-px: 20px;
+    --c5r-bub-py: 13px;
+  }
+}
+
+/* THE SHORT BOX: the 280-tall dialog, and nothing else -- the face is 392
+   tall at every width so it can never match. Declared after the size steps
+   so it wins, and at two classes so it also beats the dialog foot above. */
+@container c5art (max-height: 320px) {
+  /* NO DEAD ENDS IN THE SHORT DIALOG. Usable height there is 186px and the
+     ranked list alone is 168 of it (74 + 40 + 40 + two 7px gaps), so the
+     band would be 7px tall. Measured, not assumed. */
+  .ps-dialog-visual-art .ps-c5r-deadends { display: none; }
+
+  .ps-dialog-visual-art .ps-c5r-stage {
+    --c5r-foot: 64px;
+    --c5r-pad-t: 30px;
+    --c5r-q: 13px;
+    --c5r-field-h: 42px;
+    --c5r-field-px: 13px;
+    --c5r-mag-s: 16px;
+    --c5r-stack: 11px;
+    --c5r-gap: 7px;
+    --c5r-ours-h: 74px;
+    --c5r-rest-h: 40px;
+    --c5r-mark: 16px;
+    --c5r-title-h: 7px;
+    --c5r-line-h: 4.5px;
+    --c5r-tile-h: 68px;
+  }
+}
+
+.ps-c5r-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--c5r-gap);
+}
+
+/* THE DEAD-END GROUP EXISTS ONLY IN THE WIDE SLOT, AND THE REASON IS
+   MEASURED, NOT PREFERRED. Concept A's single column already uses 256 of
+   its 266 usable pixels at the 412x392 box (field 44 + stack 16 + 84 + 8 +
+   48 + 8 + 48) and 235 of 266 at the 284x392 box. Two more rows need
+   another 104-112px, which no STACK box has, and the overrun would land in
+   the title band. The wide slot is the opposite case: there the field is a
+   fixed 231px object in the left grid column and the lower left of the
+   frame was measured EMPTY -- a 231 x 186 hole, 0.2% ink in the left-middle
+   cell and 0.0-6.1% across the whole bottom row, against card 4's 24-36% in
+   the same 380-tall geometry. So the rows appear exactly where there is
+   room for them and exactly where the picture needed something. Hidden
+   rather than absent so the markup stays one reading order and the
+   JS-dead render is complete in every regime. */
+.ps-c5r-deadends {
+  display: none;
+  flex-direction: column;
+  gap: var(--c5r-gap);
+}
+
+/* ── 3. THE SEARCH FIELD (symptom #7) ────────────────────────────────
+   A recess with a rounded end, a magnifier, a real question, and a caret
+   still parked after the last letter because the person is mid-thought.
+   No page around it and no browser frame: the FORM is the recognition, and
+   there is no third-party mark anywhere near it. */
+
+.ps-c5r-field {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--c5r-field-px) * 0.62);
+  flex: 0 0 auto;
+  height: var(--c5r-field-h);
+  margin-right: max(0px, calc(var(--c5r-keep) - var(--c5r-pad-x)));
+  padding: 0 var(--c5r-field-px);
+  border: 1px solid var(--c5r-field-bd);
+  border-radius: calc(var(--c5r-field-h) / 2);
+  background: var(--c5r-field-bg);
+  overflow: hidden;
+}
+
+.ps-c5r-mag {
+  display: block;
+  flex: 0 0 auto;
+  width: var(--c5r-mag-s);
+  height: var(--c5r-mag-s);
+  color: var(--c5r-mag-ink);
+}
+
+.ps-c5r-q {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-size: var(--c5r-q);
+  line-height: 1.1;
+  font-weight: 450;
+  letter-spacing: 0.005em;
+  color: var(--c5r-field-ink);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* A resting bar, not a blink. A blinking caret is a loop, and the whole
+   grid has zero of those. */
+.ps-c5r-caret {
+  flex: 0 0 auto;
+  width: 2px;
+  height: calc(var(--c5r-q) * 1.25);
+  margin-left: 3px;
+  border-radius: 1px;
+  background: var(--c5r-accent);
+}
+
+/* ── 4. RESULT ROWS (symptoms #8, #10 and #11) ───────────────────────
+   A result is a site mark beside a domain, a link-coloured title under it,
+   and a snippet under that. Drawing it in that order is what makes five
+   rectangles read as a search result rather than as a content card -- an
+   earlier round centred the mark on the left of a block of rules and the
+   render said "card", not "result".
+   OURS is lit. THE REST are the same object unlit. A `--dead` rest row is
+   crossed out where its title should be: it came back, and it hands a
+   reader nothing. Ranking is stated by POSITION and by LIGHT; there is no
+   numeral, no score and no rank readout in this file, because the product
+   does not measure that. */
+
+.ps-c5r-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: calc(var(--c5r-line-h) * 1.05);
+  padding: 0 var(--c5r-row-px);
+  border-radius: var(--c5r-row-r);
+}
+
+.ps-c5r-rowhead {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--c5r-row-px) * 0.62);
+  margin-bottom: calc(var(--c5r-line-h) * 0.5);
+}
+
+.ps-c5r-row--ours {
+  height: var(--c5r-ours-h);
+  background: var(--c5r-page);
+  box-shadow: var(--c5r-lift);
+}
+
+/* The name sits where the title bar used to, so it inherits the row's own
+   gap rhythm and needs no offset of its own. On the lit row it is read on
+   white in both themes, so the link colour is the one that has to work on
+   white -- which is what --c5r-accent already is on this row. */
+.ps-c5r-row--ours .ps-c5r-biz { margin: 1px 0; }
+
+.ps-c5r-row--ours .ps-c5r-title { background: var(--c5r-accent); }
+.ps-c5r-row--ours .ps-c5r-domain { background: var(--c5r-rule-2); }
+.ps-c5r-row--ours .ps-c5r-line { background: var(--c5r-rule); }
+.ps-c5r-row--ours .ps-c5r-line--b { background: var(--c5r-rule-2); }
+
+/* The unlit rows carry a top hairline: the wash alone sat within two or
+   three values of the ground and the render lost them. */
+.ps-c5r-row--rest {
+  height: var(--c5r-rest-h);
+  width: var(--w, 100%);
+  background: linear-gradient(180deg, var(--c5r-dim-a) 0%, var(--c5r-dim-b) 100%);
+  border-top: 1px solid var(--c5r-dim-edge);
+}
+
+.ps-c5r-row--rest .ps-c5r-title { background: var(--c5r-dim-rule); width: 52%; }
+.ps-c5r-row--rest .ps-c5r-domain { background: var(--c5r-dim-rule-2); }
+.ps-c5r-row--rest .ps-c5r-mark { background: var(--c5r-dim-rule-2); }
+
+/* A COMPACT unlit row. Same object with its snippet dropped and its head
+   laid out on one line, because the two-surface composition has to fit a
+   whole search panel AND a whole conversation into 266px of usable height.
+   Measured: at the 412x392 box the full-height rows made the two panels
+   248 + 114 = 362 in a 266 stage. */
+.ps-c5r-row--compact {
+  height: calc(var(--c5r-rest-h) * 0.46);
+  justify-content: center;
+}
+
+.ps-c5r-row--compact .ps-c5r-rowhead {
+  margin-bottom: 0;
+  gap: calc(var(--c5r-row-px) * 0.5);
+}
+
+.ps-c5r-row--compact .ps-c5r-mark {
+  width: calc(var(--c5r-mark) * 0.62);
+  height: calc(var(--c5r-mark) * 0.62);
+  border-radius: calc(var(--c5r-mark-r) * 0.7);
+}
+
+.ps-c5r-row--compact .ps-c5r-domain { display: none; }
+
+.ps-c5r-row--compact .ps-c5r-title {
+  height: calc(var(--c5r-title-h) * 0.78);
+  width: 58%;
+}
+
+/* Two steps of recession, not five: the point is only that the rest of the
+   page falls away behind the first position. */
+.ps-c5r-results .ps-c5r-row--rest:last-child { opacity: 0.6; }
+
+/* A dead end. The row is there and the site is there, and where the
+   readable part should be there is a cross INSTEAD of a title -- it sits in
+   the flow, in the title's own place, at the title's own left edge. The
+   first attempt put it absolutely at the row's bottom-left where it landed
+   under the site mark at 15px and read as a smudge; substituting it for the
+   title is what makes the row say "this one came back with nothing". */
+.ps-c5r-row--dead .ps-c5r-x {
+  position: relative;
+  flex: 0 0 auto;
+  width: calc(var(--c5r-title-h) * 2);
+  aspect-ratio: 1;
+  align-self: flex-start;
+}
+
+/* STRUCK OUT. The row is a whole result -- site mark, domain, title -- with
+   a rule driven through the readable part of it. Value only, never hue: the
+   rule is `--c5r-cross`, the same slate the crosses already use, and there
+   is no new colour anywhere in this file. It is the TITLE's own
+   pseudo-element rather than a node of its own, so two struck rows cost
+   nothing but the rows themselves. It overhangs the title by 6% each side
+   because a rule that stops exactly at the bar's ends reads as part of the
+   bar instead of through it. */
+/* WIDER THAN AN UNLIT TITLE, and read off a crop rather than guessed: at
+   the unlit 52% these rows are 325px of plate carrying 250px of content and
+   they repeated, at row scale, the same "mostly empty" problem the band
+   exists to fix. At 80% the readable part is the row, and the rule that
+   goes through it is long enough to be a gesture rather than a tick. */
+.ps-c5r-row--struck .ps-c5r-title {
+  position: relative;
+  width: 80%;
+}
+
+.ps-c5r-row--struck .ps-c5r-title::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  /* Overhang in PIXELS, not per cent, and half the row's own padding: at
+     -9% of an 80%-wide bar the rule reached 21px past the bar's left end
+     inside 12px of row padding and poked out through the plate's rounded
+     left edge, which looks like a rendering fault rather than a gesture.
+     Half the padding always clears the bar and never leaves the plate. */
+  left: calc(var(--c5r-row-px) * -0.5);
+  right: calc(var(--c5r-row-px) * -0.5);
+  /* Value, not hue: this is the same slate the crosses are drawn in, at
+     full alpha instead of 0.62. Read off the first render at 2.2px and
+     0.62 the rule sat within a few values of the bar it was crossing and
+     looked like a highlight ON the bar rather than a line THROUGH it. */
+  height: max(2px, calc(var(--c5r-line-h) * 0.5));
+  margin-top: calc(max(2px, calc(var(--c5r-line-h) * 0.5)) / -2);
+  border-radius: 1px;
+  background: var(--c5r-strike);
+}
+
+/* A TILT WAS TRIED AND REJECTED FROM THE RENDER. -2.4deg on a rule 260px
+   long is an 11px rise: it left the bar at both ends and crossed the row's
+   own bottom edge, which reads as a broken shape rather than as a struck
+   one. Horizontal, longer than the bar, and brighter than it does the job.
+   Recorded so it is not tried again. */
+
+.ps-c5r-mark {
+  flex: 0 0 auto;
+  width: var(--c5r-mark);
+  height: var(--c5r-mark);
+  border-radius: var(--c5r-mark-r);
+  background: var(--c5r-accent);
+}
+
+.ps-c5r-domain {
+  height: calc(var(--c5r-line-h) * 0.95);
+  width: 30%;
+  border-radius: calc(var(--c5r-line-h) / 2);
+}
+
+.ps-c5r-title {
+  height: var(--c5r-title-h);
+  width: 62%;
+  border-radius: calc(var(--c5r-title-h) / 2);
+}
+
+.ps-c5r-line {
+  height: var(--c5r-line-h);
+  border-radius: calc(var(--c5r-line-h) / 2);
+}
+
+.ps-c5r-line--a { width: 92%; }
+.ps-c5r-line--b { width: 64%; }
+
+/* Concept C states a size hierarchy that A does not: A is a RANKING, so
+   its results are near-peers with one of them lit; C is about LEGIBILITY,
+   so the page that can be read is much bigger than the ones that cannot.
+   Same parts, deliberately different shape. */
+.ps-c5r-c .ps-c5r-row--ours { height: calc(var(--c5r-ours-h) * 1.28); }
+.ps-c5r-c .ps-c5r-row--rest { height: calc(var(--c5r-rest-h) * 0.92); }
+
+/* ── 4b. THE TWO PANELS (the owner's picture) ─────────────────────────
+   A panel is a LAYOUT, not an object: no border, no fill, no shadow, no
+   radius of its own. Drawing a frame around each half would have made the
+   card two little windows side by side, and a window is card 4's picture
+   because ITS subject is websites. Recognition here comes from the objects
+   -- a magnifier field over ranked rows on one side, alternating turns over
+   an input row on the other. `space-between` is what puts the input row and
+   the last result on the stage floor, which is also what keeps the bottom
+   band of the wide slot from going back to the empty navy it was. */
+
+.ps-c5r-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  gap: var(--c5r-panel-gap);
+}
+
+/* >> NOT `space-between`, AND THE FIRST RENDER IS WHY. Spread across 266px
+   with three items, the conversation came apart into three fragments with
+   voids between them and the search panel had a 200px hole between its
+   field and its first result. Each panel now sits at the TOP of its column
+   with its own rhythm, and only the composer is pushed to the floor --
+   which is where a composer lives anyway, so the space above it reads as
+   room for the conversation to continue rather than as a hole. */
+.ps-c5r-panel {
+  justify-content: flex-start;
+}
+
+.ps-c5r-panel--chat .ps-c5r-input { margin-top: auto; }
+
+/* >> THE STACKED REGIME IS THE TIGHT ONE AND EVERY NUMBER HERE IS MEASURED.
+   The narrow slot gives 266px of usable height for BOTH surfaces. The first
+   attempt used the roomy sizes and overflowed catastrophically: the user's
+   turn landed on top of the second result row, escaped the card's right
+   edge, and the composer crossed into the title band. Budget as built:
+   field 40 + 6 + lit 52 + 5 + row 16 + 5 + row 16 = 140, panel gap 10,
+   turn 26 + 6 + answer 38 + composer 24 = 94.  140 + 10 + 94 = 244 of 266.
+   Scoped to `.ps-c5r-a` throughout so concepts B and C keep the sizes they
+   were gated at. */
+.ps-c5r-a .ps-c5r-stage {
+  --c5r-panel-gap: 6px;
+  --c5r-stack: 10px;
+  --c5r-input-h: 24px;
+  --c5r-name: 11px;
+  --c5r-turn-py: 5px;
+  --c5r-avatar: 16px;
+}
+
+.ps-c5r-a .ps-c5r-row--ours { height: 52px; }
+.ps-c5r-a .ps-c5r-row--compact { height: 16px; }
+
+/* One snippet rule, not two, in the stacked regime: the lit row is 52px and
+   two rules plus the name plus the head do not fit in it. */
+.ps-c5r-a .ps-c5r-row--ours .ps-c5r-line--b,
+.ps-c5r-a .ps-c5r-answer .ps-c5r-line--b {
+  display: none;
+}
+
+/* THE NAME, in both panels, drawn identically in both because it is the
+   same page being surfaced twice. Link colour, because that is the colour a
+   result title is; `--c5r-page` behind it in the lit row means it is read
+   on white in both themes, exactly like the rules printed on that row. */
+.ps-c5r-biz {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-size: var(--c5r-name);
+  line-height: 1.15;
+  font-weight: 650;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  color: var(--c5r-accent);
+}
+
+/* ── 4c. THE CONVERSATION, GENERIC BY CONSTRUCTION ───────────────────
+   Two ALTERNATING turns, an avatar on the assistant's side only, and an
+   input row at the foot. That is the whole vocabulary and none of it is
+   anybody's product: no wordmark, no logo, no branded chrome, no sidebar,
+   no model picker. The person's turn is filled and hugs the right edge; the
+   assistant's is unfilled and starts at the left. */
+
+.ps-c5r-turn {
+  display: flex;
+  flex: 0 0 auto;
+  min-width: 0;
+  gap: calc(var(--c5r-turn-px) * 0.7);
+}
+
+.ps-c5r-turn--user {
+  align-self: flex-end;
+  max-width: 92%;
+  padding: var(--c5r-turn-py) var(--c5r-turn-px);
+  border-radius: var(--c5r-turn-r) var(--c5r-turn-r) 3px var(--c5r-turn-r);
+  background: var(--c5r-accent);
+  box-shadow: var(--c5r-lift-sm);
+}
+
+.ps-c5r-turn--user .ps-c5r-q {
+  display: block;
+  color: #ffffff;
+}
+
+.ps-c5r-turn--bot {
+  align-self: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* A circle, not the square a site mark uses, so the two never read as the
+   same thing; a small accent diamond inside it and nothing else. It is an
+   avatar because of WHERE it sits -- beside a turn -- not because of any
+   glyph, which is how it stays generic. No face, no robot, no spark. */
+.ps-c5r-avatar {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--c5r-avatar);
+  height: var(--c5r-avatar);
+  border-radius: 50%;
+  background: var(--c5r-dim-a);
+  border: 1px solid var(--c5r-dim-edge);
+}
+
+.ps-c5r-avatar::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--c5r-avatar) * 0.34);
+  height: calc(var(--c5r-avatar) * 0.34);
+  border-radius: 1px;
+  background: var(--c5r-accent);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.ps-c5r-answer {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: calc(var(--c5r-line-h) * 1.15);
+  padding: calc(var(--c5r-turn-py) * 0.6) 0 0;
+}
+
+.ps-c5r-answer .ps-c5r-line { background: var(--c5r-dim-rule); }
+.ps-c5r-answer .ps-c5r-line--b { background: var(--c5r-dim-rule-2); }
+
+/* THE RECOMMENDATION, INSIDE THE ANSWER. It is indented under the answer's
+   own lines and shares their left edge, so it reads as the last thing the
+   assistant wrote rather than as a badge dropped on top of the turn. Same
+   coloured square and same name as first position in the other panel. */
+.ps-c5r-cite {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  max-width: 100%;
+  min-width: 0;
+  gap: calc(var(--c5r-turn-px) * 0.55);
+  margin-top: calc(var(--c5r-line-h) * 0.7);
+  padding: calc(var(--c5r-turn-py) * 0.7) calc(var(--c5r-turn-px) * 0.8);
+  border-radius: calc(var(--c5r-turn-r) * 0.62);
+  background: var(--c5r-page);
+  box-shadow: var(--c5r-lift-sm);
+}
+
+.ps-c5r-cite .ps-c5r-mark {
+  width: calc(var(--c5r-mark) * 0.8);
+  height: calc(var(--c5r-mark) * 0.8);
+  border-radius: calc(var(--c5r-mark-r) * 0.8);
+}
+
+/* Where the next question would go. A rounded trough, a resting placeholder
+   rule and one stroked chevron. */
+.ps-c5r-input {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: var(--c5r-turn-px);
+  height: var(--c5r-input-h);
+  padding: 0 calc(var(--c5r-turn-px) * 0.9);
+  border: 1px solid var(--c5r-field-bd);
+  border-radius: calc(var(--c5r-input-h) / 2);
+  background: var(--c5r-field-bg);
+}
+
+.ps-c5r-inputline {
+  flex: 1 1 auto;
+  height: var(--c5r-line-h);
+  border-radius: calc(var(--c5r-line-h) / 2);
+  background: var(--c5r-dim-rule-2);
+}
+
+.ps-c5r-send {
+  display: block;
+  flex: 0 0 auto;
+  width: calc(var(--c5r-input-h) * 0.5);
+  height: calc(var(--c5r-input-h) * 0.5);
+  color: var(--c5r-accent);
+}
+
+/* ── 5. THE CONVERSATION (symptoms #9 and #11) ───────────────────────
+   A filled bubble on the right is a person talking; a tailed panel on the
+   left is the thing answering. An earlier round drew both as plain rounded
+   panels with one squared corner and the render did not read as a
+   conversation at all -- the reply looked like a second, dimmer search
+   result. Both now carry a real TAIL, which is the single shape that makes
+   a rounded rectangle mean speech. The tail is a rotated square owned by
+   the bubble and painted with the bubble's own fill, so it cannot drift out
+   of register at any aspect and costs no extra node. */
+
+.ps-c5r-bubble {
+  position: relative;
+  flex: 0 0 auto;
+  padding: var(--c5r-bub-py) var(--c5r-bub-px);
+  border-radius: var(--c5r-bub-r);
+}
+
+.ps-c5r-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: calc(var(--c5r-bub-r) * -0.12);
+  width: calc(var(--c5r-bub-r) * 0.56);
+  height: calc(var(--c5r-bub-r) * 0.56);
+  border-radius: 2px;
+}
+
+.ps-c5r-bubble--ask {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--c5r-line-h) * 1.1);
+  align-self: flex-end;
+  max-width: 86%;
+  margin-right: max(0px, calc(var(--c5r-keep) - var(--c5r-pad-x)));
+  background: var(--c5r-accent);
+  box-shadow: var(--c5r-lift-sm);
+}
+
+.ps-c5r-bubble--ask::after {
+  right: calc(var(--c5r-bub-r) * 0.42);
+  background: var(--c5r-accent);
+  transform: rotate(45deg) skew(6deg, 6deg);
+}
+
+.ps-c5r-bubble--ask .ps-c5r-q {
+  display: block;
+  color: #ffffff;
+}
+
+/* What was said, when the sentence itself is already on screen. */
+.ps-c5r-said {
+  display: block;
+  height: var(--c5r-line-h);
+  border-radius: calc(var(--c5r-line-h) / 2);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.ps-c5r-said--a { width: calc(var(--c5r-q) * 9); }
+.ps-c5r-said--b { width: calc(var(--c5r-q) * 5.6); }
+
+.ps-c5r-bubble--reply {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--c5r-line-h) * 1.05);
+  align-self: flex-start;
+  width: 88%;
+  background: linear-gradient(180deg, var(--c5r-reply-a) 0%, var(--c5r-reply-b) 100%);
+  border: 1px solid var(--c5r-reply-bd);
+  box-shadow: var(--c5r-lift-sm);
+}
+
+.ps-c5r-bubble--reply::after {
+  left: calc(var(--c5r-bub-r) * 0.42);
+  background: var(--c5r-reply-b);
+  border-right: 1px solid var(--c5r-reply-bd);
+  border-bottom: 1px solid var(--c5r-reply-bd);
+  transform: rotate(45deg) skew(-6deg, -6deg);
+}
+
+.ps-c5r-bubble--reply .ps-c5r-title { background: var(--c5r-accent); width: 56%; }
+.ps-c5r-bubble--reply .ps-c5r-domain { background: var(--c5r-dim-rule-2); }
+.ps-c5r-bubble--reply .ps-c5r-line { background: var(--c5r-dim-rule); }
+.ps-c5r-bubble--reply .ps-c5r-line--b { background: var(--c5r-dim-rule-2); }
+
+/* ── 6. THE PAGES IT OPENS (symptom #10) ─────────────────────────────
+   Four small pages, each with a header and a body. Three give the reader
+   nothing and are crossed out. One is lit, and everything it came for is
+   sitting in plain rows it can lift straight out. */
+
+.ps-c5r-scan {
+  display: flex;
+  align-items: stretch;
+  flex: 0 0 auto;
+  gap: calc(var(--c5r-gap) * 1.2);
+  height: var(--c5r-tile-h);
+}
+
+.ps-c5r-tile {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--c5r-tile-r);
+  overflow: hidden;
+}
+
+.ps-c5r-tile-head {
+  display: block;
+  flex: 0 0 auto;
+  /* Capped: in SPREAD the page stretches to the height of the whole
+     conversation beside it and a proportional header became a 40px band. */
+  height: clamp(7px, calc(var(--c5r-tile-h) * 0.17), 17px);
+}
+
+.ps-c5r-tile--dead {
+  background: linear-gradient(180deg, var(--c5r-dim-a) 0%, var(--c5r-dim-b) 100%);
+}
+
+.ps-c5r-tile--dead .ps-c5r-tile-head {
+  background: rgba(148, 163, 184, 0.14);
+}
+
+.ps-c5r-tile--live {
+  /* Stands proud of the row it is in, by margin rather than by transform,
+     so nothing in this file needs a transform at all. */
+  margin-top: calc(var(--c5r-tile-h) * -0.07);
+  margin-bottom: calc(var(--c5r-tile-h) * 0.07);
+  background: var(--c5r-page);
+  box-shadow: var(--c5r-lift);
+}
+
+.ps-c5r-tile--live .ps-c5r-tile-head {
+  background: var(--c5r-accent);
+}
+
+.ps-c5r-tile-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: calc(var(--c5r-line-h) * 1.15);
+  flex: 1 1 auto;
+  /* Under the header, not floating in the middle: on a tall page a centred
+     block of rules read as a fragment rather than as a page. */
+  padding: calc(var(--c5r-line-h) * 2) calc(var(--c5r-row-px) * 0.62) 0;
+}
+
+.ps-c5r-tile-body span {
+  display: block;
+  height: var(--c5r-line-h);
+  border-radius: calc(var(--c5r-line-h) / 2);
+  background: var(--c5r-rule);
+}
+
+.ps-c5r-tile-body span:nth-child(2) { width: 84%; background: var(--c5r-rule-2); }
+.ps-c5r-tile-body span:nth-child(3) { width: 56%; background: var(--c5r-rule-2); }
+.ps-c5r-tile-body span:nth-child(4) { width: 92%; }
+.ps-c5r-tile-body span:nth-child(5) { width: 66%; background: var(--c5r-rule-2); }
+
+/* Three rules on a 74px page, five on a tall one. Five on the short page is
+   mush; three on a tall page is a blank sheet with a caption. */
+.ps-c5r-tile-body span:nth-child(n + 4) { display: none; }
+
+/* The cross. Two bars owned by one node. */
+.ps-c5r-tile .ps-c5r-x {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + var(--c5r-tile-h) * 0.085);
+  /* Sized off the page's WIDTH: in SPREAD the page stretches vertically and
+     a height-derived cross grew with it. */
+  width: 38%;
+  max-width: 42px;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+
+.ps-c5r-x::before,
+.ps-c5r-x::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 1px;
+  background: var(--c5r-cross);
+}
+
+.ps-c5r-x::before { transform: rotate(45deg); }
+.ps-c5r-x::after { transform: rotate(-45deg); }
+
+/* ── 7. SPREAD: TWO COLUMNS, KEYED TO THIS ARTWORK'S OWN BOX ─────────
+   CSS GRID, not a second DOM: the markup stays in reading order and the
+   spread state re-places the same items into areas. A wrapper per column
+   would have forced B's stack order to be ask -> answer -> pages, which is
+   not the sequence.
+   The gate is `min-aspect-ratio: 3/2 AND min-width: 560px`, both against
+   the artwork's own container. Aspect alone is not enough: a small wide box
+   cannot hold two columns. Width alone is not enough either, and on THIS
+   card a viewport rule would be actively wrong, because the face reaches
+   903x392 -- wider than any dialog. */
+
+@container c5art (min-aspect-ratio: 3/2) and (min-width: 560px) {
+  .ps-c5r-a .ps-c5r-stage,
+  .ps-c5r-b .ps-c5r-stage,
+  .ps-c5r-c .ps-c5r-stage {
+    display: grid;
+    /* TWO ALIGNMENTS DOING TWO DIFFERENT JOBS, and both were read off
+       renders. `align-items: start` aligns the field's top edge with the
+       first result's top edge -- centring two objects of very different
+       heights against each other left a hole in the lower left. But
+       `align-content: center` then centres the whole grid as a block in the
+       frame, because top-aligning the block as well left a third of the
+       604x392 banner empty under it. Tops aligned to each other, block
+       centred in the box. */
+    align-items: start;
+    align-content: center;
+    /* In SPREAD it is the right-hand column, not the field, that reaches
+       the top-right corner, so the keep-clear moves to the stage. Caught in
+       the 768 dialog render, where the white result's top-right corner sat
+       under the close button. */
+    right: max(var(--c5r-pad-x), var(--c5r-keep));
+  }
+
+  /* THE ASKING COLUMN IS SIZED BY ITS CONTENT, NOT BY A PERCENTAGE.
+     At 42% of the 604x392 banner the column was 254px and the query
+     clipped to "who insures oilfiel" with the caret gone -- the precise
+     failure the copy ceiling exists to prevent, and a percentage column
+     will always find some width where it happens. `auto` takes the field's
+     own max-content width and `minmax(0, 1fr)` gives every remaining pixel
+     to the results, which is also the better composition: the input is a
+     fixed object and the list is what should grow. */
+  .ps-c5r-c .ps-c5r-stage {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "field results";
+    column-gap: 6%;
+  }
+
+  /* >> CONCEPT A IN THE WIDE SLOT: THE TWO SURFACES SIT SIDE BY SIDE, and
+     each one runs from the top of the frame to the stage floor. Two things
+     follow from that and both were measured, not chosen. First, the "AND"
+     in the card's title is the composition: the search and the assistant
+     are equal halves, so the columns are 1fr each rather than content-sized.
+     Second, the bottom band cannot be reached any other way -- the stage
+     ends 94px above the card's bottom and the bottom third starts 126.7px
+     above it, so 32.7px is all the art can ever occupy down there and
+     anything that does not touch the stage floor scores zero. Both panels
+     use `space-between`, so the last unlit result and the input row land on
+     that floor. That is what keeps the 0.0% empty band from coming back. */
+  .ps-c5r-a .ps-c5r-stage {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "serp chat";
+    column-gap: 5%;
+    align-items: stretch;
+    align-content: stretch;
+  }
+
+  .ps-c5r-a .ps-c5r-panel--serp { grid-area: serp; }
+  .ps-c5r-a .ps-c5r-panel--chat { grid-area: chat; }
+
+  /* THE WIDE SLOT HAS THE ROOM, SO THE OBJECTS GET BIGGER RATHER THAN
+     FURTHER APART. Budget at the 772x380 card: field 48 + 12 + lit 104 +
+     8 + row 30 + 8 + row 30 = 240 of 266, and the composer sits on the
+     floor with the conversation above it. Filling a column by growing what
+     is in it is the difference between a composition and a scatter. */
+  .ps-c5r-a .ps-c5r-stage {
+    --c5r-panel-gap: 12px;
+    --c5r-input-h: 30px;
+    --c5r-name: 13px;
+    --c5r-turn-py: 7px;
+    --c5r-avatar: 22px;
+  }
+
+  .ps-c5r-a .ps-c5r-row--ours { height: 104px; }
+  .ps-c5r-a .ps-c5r-row--compact { height: 30px; }
+
+  .ps-c5r-a .ps-c5r-row--ours .ps-c5r-line--b,
+  .ps-c5r-a .ps-c5r-answer .ps-c5r-line--b {
+    display: block;
+  }
+
+  .ps-c5r-field { grid-area: field; margin-right: 0; }
+  .ps-c5r-results { grid-area: results; }
+
+
+  .ps-c5r-bubble--ask {
+    grid-area: ask;
+    align-self: start;
+    justify-self: end;
+    width: max-content;
+    max-width: 100%;
+    margin-right: 0;
+  }
+
+  .ps-c5r-bubble--reply { grid-area: reply; align-self: start; width: 100%; }
+
+  .ps-c5r-scan {
+    grid-area: scan;
+    align-self: stretch;
+    height: auto;
+    /* Capped: stretched to the full height of the conversation beside it, a
+       page became a 1:5 sliver and read as a blank panel. */
+    max-height: calc(var(--c5r-tile-h) * 1.8);
+  }
+
+  .ps-c5r-tile-body span:nth-child(n + 4) { display: block; }
+}
+
+/* Narrow SPREAD, 560-819 inline. The 460 step's 15px query is too wide for
+   an asking column here: at the tightest spread box it left the results
+   under 200px. 13px keeps both columns usable, and 820 and up takes the
+   large step's 17px. */
+@container c5art (min-aspect-ratio: 3/2) and (min-width: 560px) and (max-width: 819px) {
+  .ps-c5r-stage {
+    --c5r-q: 13px;
+    --c5r-field-h: 44px;
+    --c5r-field-px: 14px;
+    --c5r-mag-s: 16px;
+  }
+}
+
+/* ── 8. LIGHT THEME ──────────────────────────────────────────────────
+   The ground flips through its own tokens. What is written here is the
+   depicted material: a lit page stays white in both themes (R5 role 9), the
+   rules printed on it stay grey, and everything UNLIT becomes a flat pale
+   panel rather than a dark one, so the lit page is still the only lit thing
+   in the frame. */
+
+[data-theme="light"] .ps-c5r-root {
+  /* Deepened from #E4EAF2/#DBE3ED after reading the light SET shot: on the
+     pale ground the unlit rows read as ghosts rather than as results, and
+     the rest of the page has to be present for first position to mean
+     anything. */
+  --c5r-dim-a: #dee7f1;
+  --c5r-dim-b: #d4dfec;
+  --c5r-dim-edge: rgba(15, 23, 42, 0.06);
+  --c5r-dim-rule: #aebbcc;
+  --c5r-dim-rule-2: #cbd5e1;
+  --c5r-cross: #93a2b6;
+  --c5r-strike: #64748b;
+  --c5r-field-bg: #ffffff;
+  --c5r-field-bd: #cbd5e1;
+  --c5r-field-ink: #1e293b;
+  --c5r-mag-ink: #64748b;
+  /* PALE, not white. The reply panel came out the same white as the page it
+     was citing and the render lost the one thing that must stay unique. */
+  --c5r-reply-a: #f1f5fa;
+  --c5r-reply-b: #e9eff7;
+  --c5r-reply-bd: #d3dce8;
+  --c5r-lift: 0 10px 26px rgba(15, 23, 42, 0.13), 0 2px 6px rgba(15, 23, 42, 0.07);
+  --c5r-lift-sm: 0 6px 18px rgba(15, 23, 42, 0.1);
+}
+
+/* A white card on a near-white ground still needs an edge. */
+[data-theme="light"] .ps-c5r-row--ours,
+[data-theme="light"] .ps-c5r-tile--live {
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+[data-theme="light"] .ps-c5r-tile--dead .ps-c5r-tile-head {
+  background: rgba(71, 85, 105, 0.14);
+}
+
+/* ── 9. THERE IS NO SECTION 9 ────────────────────────────────────────
+   No reveal, no transition, no @keyframes, no reduced-motion pin and no
+   `scripting: none` fallback -- because nothing in this file is ever
+   hidden, delayed or animated. The card's own 0.65s entrance is the whole
+   motion budget, exactly as it is for card 4, and a stylesheet with nothing
+   to reverse cannot strand anything invisible. That absence is the spec
+   being met, not a section left unwritten. */

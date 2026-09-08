@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { MarCommandFunnel } from "@/components/home/marcommand-funnel";
 import {
   MarCommandLiveStage,
   ELARA_MARKS,
@@ -1347,18 +1346,25 @@ export function MarCommandLive() {
 
         <div className="mc-live__stage-card">
           {/*
-            The funnel and the agent stage are the two halves of the MarCommand
-            live surface and they share one card, so the section reads as one
-            product rather than two graphics. The funnel ships in its end state
-            and its only motion is the ribbon flow, which lives on the SAME
-            timeline as the stage — so the pause control, the ScrollTrigger gate
-            and `visibilitychange` all already govern it, and the loop's
-            wall-clock budget is unchanged.
-          */}
-          <div className="mc-fn" aria-hidden="true">
-            <MarCommandFunnel />
-          </div>
+            >> THE FUNNEL IS REMOVED, ON THE OWNER'S INSTRUCTION: "remove this
+            flow chart from the marcommand thing", marked on a render of this
+            card. It was `<MarCommandFunnel />` in a `.mc-fn` wrapper, sitting
+            above the stage: six channel nodes converging on "Your business",
+            then a five-step funnel reading Reached / Visited / Interested /
+            Leads / Validated.
 
+            This card used to be two halves sharing one surface so the section
+            read as one product. It is now the agent stage alone, which is the
+            half that actually demonstrates the thing. The funnel's only motion
+            was the ribbon flow and it rode the SAME timeline as the stage, so
+            the pause control, the ScrollTrigger gate and `visibilitychange`
+            still govern everything that is left, and the loop's wall-clock
+            budget only goes down.
+
+            `marcommand-funnel.tsx` is left on disk, unused and unimported, the
+            same way `RevenueVisual` is kept in `card-visuals-backup.tsx`. Do
+            not re-wire it without asking him.
+          */}
           <div className="mc-stage">
             <MarCommandLiveStage />
 
@@ -1440,15 +1446,20 @@ export function MarCommandLive() {
           replaces. `display: none` removes the inactive one from the
           accessibility tree, so exactly one is ever announced.
         */}
+        {/*
+          >> THE FUNNEL SENTENCE IS GONE FROM THIS ONE. The funnel graphic was
+          removed on the owner's instruction, and a description that narrates
+          six channels flowing through five stages now announces content that
+          is not on anyone's screen. That is the exact defect the note above
+          warns about, arriving from the other direction: the visual left and
+          the description stayed.
+        */}
         <p className="ps-visually-hidden mc-live__sr mc-live__sr--wide">
-          MarCommand is a marketing channel optimization platform. This animation shows two
-          things. First, an acquisition funnel: six advertising channels (Facebook, Instagram,
-          Google Ads, TikTok, direct mail and Google Local Services) flow into your business,
-          and the audience is then counted through five stages: reached, visited, interested,
-          leads, and validated. Second, the agent at work: it walks to the Google Ads channel,
-          opens its control panel, and adjusts the real controls that platform offers: daily
-          budget, audience demographic, targeting radius, ad schedule and the keyword list. The
-          figures shown are a demonstration.
+          MarCommand is a marketing channel optimization platform. This animation shows the
+          agent at work: it walks to the Google Ads channel, opens its control panel, and
+          adjusts the real controls that platform offers: daily budget, audience demographic,
+          targeting radius, ad schedule and the keyword list. The figures shown are a
+          demonstration.
         </p>
         <p className="ps-visually-hidden mc-live__sr mc-live__sr--narrow">
           MarCommand is a marketing channel optimization platform. This animation shows the

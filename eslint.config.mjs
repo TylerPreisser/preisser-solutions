@@ -26,11 +26,15 @@ const eslintConfig = [
     // Deliberately scoped to the worktree root, NOT to `**/.next/**`. Widening
     // the pattern itself would also silence a real `.next` committed anywhere
     // in src/, which should still be an error.
+    //
+    // `work-tmp/**` is the same category: untracked scratch from concurrent agent
+    // sessions, where one render probe blocked the whole deploy gate. Not source.
     ignores: [
       "node_modules/**",
       ".next/**",
       "out/**",
       ".claude/worktrees/**",
+      "work-tmp/**",
       "next-env.d.ts",
     ],
   },

@@ -78,8 +78,25 @@ const DPR_CAP_NARROW = 1.25;      // fewer pixels to clear/blit per frame
  *  the shorter visit. Smoothness is not the thing being bought here — at a 9s
  *  lap and 30fps the head advances 4.4% of the beam's own length per frame,
  *  which is far below the point where a low-opacity background line steps. */
-const BEAM_PERIOD_MS = 11000;
-const BEAM_PERIOD_MS_NARROW = 9000;
+/* Lap shortened 11000 -> 4000 (narrow 9000 -> 3400, same 0.85 ratio that keeps
+   apparent speed matched across regimes). At 11s a viewer who looks at the hero
+   for two or three seconds sees a stationary sliver rather than a circuit, so
+   the beam read as a static highlight and the owner reported no beam at all.
+   The full outline is now traced inside the time someone actually looks.
+
+   >> 4000 WAS TOO INSISTENT AND I MEASURED IT BY WATCHING, NOT BY PROBING. A full
+   60s observation at 1440 dark gave 14.98 centroid turns = 4.01s per pass, i.e.
+   15 passes per minute, a bright head (a>120) present 62.2% of the minute, and
+   the head crossing the bowl/top-right quadrant — the air immediately beside the
+   headline — 31 times. That is a bright streak in the reader's sightline every
+   ~2s on an element that sits BEHIND the type, next to cards that hold perfectly
+   still (card 4: arrive once, zero loops). 6500 keeps a pass plainly perceptible
+   in a 2-3s glance (~40% of the outline traversed) while cutting passes to ~9/min
+   and quadrant crossings to ~19. It is still 1.7x faster than the 11000 the owner
+   called invisible, and the visibility win came mostly from BEAM_HEAD_FRAC (2.1x)
+   and the weight gains, not from speed. */
+const BEAM_PERIOD_MS = 6500;
+const BEAM_PERIOD_MS_NARROW = 5500;
 const FRAME_GAP_MS_NARROW = 30;   // ~30fps on a 60Hz or 120Hz phone
 /* Beam weight multipliers. Added 2026-09-03: at the original alpha 0.55 /
    width 0.9-2.0 the beam measured 1.03:1 against the page on a light-theme
@@ -101,7 +118,10 @@ const FRAME_GAP_MS_NARROW = 30;   // ~30fps on a 60Hz or 120Hz phone
    a stage that sits where the light-theme scrim has already released (see
    `stage()` below), so 1.85 put the peak at 0.55*1.85 = 1.0 clamped — a fully
    saturated #1590FF hairline on near-white, which reads as harsh un-veiled. */
-const ALPHA_GAIN_LIGHT = 1.15;   // peak 0.63
+/* §41. 1.15 -> 1.45 (peak 0.55*1.45 = 0.80). Deliberately kept well under the
+   1.85 that §24 recorded as clamping to a fully saturated #1590FF hairline and
+   reading harsh; 1.45 leaves headroom below that clamp. */
+const ALPHA_GAIN_LIGHT = 1.30;   // peak 0.72
 /* DARK LOWERED 1.25 -> 1.00 on 2026-09-04, as a direct consequence of §24: that
    change lowered the dark EDGE to 0.27 and released the veil that was also
    dimming the beam, so the mark got fainter and the beam got brighter from one
@@ -113,11 +133,45 @@ const ALPHA_GAIN_LIGHT = 1.15;   // peak 0.63
    raised the dark EDGE too (1.93 -> 2.13), so the ratio's denominator moved as
    well as its numerator. Measured 1.00 -> 1.64x, 0.85 -> 1.55x, 0.75 -> 1.46x,
    which lands on light's own 1.46x. */
-const ALPHA_GAIN_DARK = 0.75;    // peak 0.413
-const WIDTH_GAIN_NARROW = 1.9;
-const WIDTH_GAIN_WIDE = 1.5;
-const BEAM_STEPS = 72;
-const BEAM_STEPS_NARROW = 44;     // the beam covers fewer css px on a phone
+/* §41. 0.75 -> 1.35 (peak 0.74). Dark had the most headroom of the two and was
+   the case where the beam read as a static sheen rather than a light. */
+const ALPHA_GAIN_DARK = 1.10;    // peak 0.61
+/* §41. Width raised further than alpha, on this file's own finding at ~:110:
+   "Widening the stroke is doing more of the work than raising alpha - on a 3x
+   screen a bright hairline still reads as a hairline." Both values are still
+   read in the two coupled places (the stroke and the dirty-rect `pad`), which
+   derive from the constant, so the blit still covers the wider stroke.
+
+   >> CEILING FOUND BY LOOKING AT A ZOOMED CROP, NOT BY MEASURING. drawBeam
+   strokes BEAM_STEPS separate segments each at its own globalAlpha, and with
+   BUTT caps consecutive segments OVERLAP by (lineWidth - segmentLength). Where
+   they overlap the composited alpha exceeds either segment's, so every join
+   becomes a brighter ridge — at width 3.0 / alpha 1.35 that read as a regular
+   ladder of ticks across the stroke at 3x zoom (H3b-shots/BEAMZOOM-1440-dark.png).
+   The artifact scales with BOTH width and alpha, and RAISING BEAM_STEPS makes it
+   worse, not better, because it adds overlaps. 2.2 / 1.10 keeps the beam clearly
+   readable as a moving light while holding the ridging below visibility at 1x.
+   A genuinely wider beam needs one gradient-stroked path instead of N
+   alpha-stroked segments — a rewrite, not a constant. */
+const WIDTH_GAIN_NARROW = 2.5;
+const WIDTH_GAIN_WIDE = 2.2;
+/** §41. The comet head's length as a fraction of the whole outline, and it is
+ *  read in TWO places: the stroke in drawBeam() and the reduced-motion PARK
+ *  SCORER, which samples this exact run to find a head whose span is actually
+ *  painted (§33(e)). It was an inline 0.085 in both. Raising one without the
+ *  other parks the still frame on a run that is mostly off-canvas or inside the
+ *  keep-out hole — which is the documented failure §33(e) exists to prevent.
+ *  0.085 -> 0.18: at 8.5% the comet was too short to register as a beam of
+ *  light at the glyph's scale. Coupled to BEAM_STEPS* below, which must scale
+ *  with it to hold segment length constant. */
+const BEAM_HEAD_FRAC = 0.18;
+/* Raised with the head length above to hold SEGMENT length
+   roughly constant: 72 steps over 8.5% of the outline and 150 over 18% are the
+   same css px per segment (0.00118 vs 0.00120 of the outline), so the sin()
+   falloff stays smooth and the segment joins do not become visible. Do not
+   raise BEAM_HEAD_FRAC without raising these. */
+const BEAM_STEPS = 150;
+const BEAM_STEPS_NARROW = 92;     // the beam covers fewer css px on a phone
 
 /** The mark's ink extent inside its 1024 box (verified against the webp at
  *  IoU 0.9924 — see the header note). */
@@ -460,16 +514,16 @@ const NARROW_OVERHANG = 0.18;
 const JUNCTION_Y = 569;
 /** Ink height as a multiple of the hero's height. See §39 for why these exceed
  *  1 and why that is the whole point rather than an overshoot. */
-const MARK_HF_PORTRAIT = 2.05;
+const MARK_HF_PORTRAIT = 0.41;
 const MARK_HF_LANDSCAPE = 2.20;
 /** Where the junction sits as a fraction of H. 0 pins it exactly on the hero's
  *  top edge; the landscape hero is shorter, so it lifts slightly further. */
-const MARK_JF_PORTRAIT = 0.0;
+const MARK_JF_PORTRAIT = 0.8;
 const MARK_JF_LANDSCAPE = -0.05;
 /** Where the bottom-left TERMINAL sits as a fraction of W. Wider heroes see a
  *  wider slice of the glyph, so the terminal moves right to keep the leg's
  *  flank in frame; these anchor the ramp in `terminalX()` below. */
-const TERM_X_PHONE = 0.150;      // W <= 430
+const TERM_X_PHONE = 0;      // W <= 430
 const TERM_X_TABLET = 0.220;     // W == 768, portrait
 const TERM_X_LAND_NEAR = 0.340;  // W == 1024, landscape
 const TERM_X_LAND_FAR = 0.380;   // W == 1920, landscape
@@ -494,10 +548,158 @@ function terminalX(w: number, portrait: boolean): number {
   return Math.min(0.40, Math.max(0.20, t));
 }
 
+/* ===========================================================================
+ * §42, 2026-09-07 - THE PLACEMENT IS NOW A MEASURED TABLE, NOT A DERIVED RULE.
+ *
+ * WHO ASKED, AND WITH WHAT. The owner opened the real glyph in a drag-and-drop
+ * tool, sized and dragged it against the real headline metrics at SEVEN
+ * viewports, and handed back the resulting tight ink box for each one. He wants
+ * it MUCH bigger than §39/§37 ship. Origin is the top-left of the viewport,
+ * which is also the top-left of `.ps-hero`: measured 2026-09-07, the hero's
+ * client rect is exactly {top:0,left:0,w:W,h:H} at all fourteen matrix
+ * viewports, so his numbers are container coordinates unchanged.
+ *
+ *   viewport    x     y     w     h    right gap
+ *   393x852     54   100   743   656     -404
+ *   430x932     53   172   739   653     -362
+ *   768x1024   218   142   878   775     -328
+ *   1024x768   606   130   580   512     -161
+ *   1280x800   834   170   535   472      -90
+ *   1440x900   858   148   688   608     -106
+ *   1920x1080  996   205   755   667     +169
+ *
+ * A NEGATIVE RIGHT GAP IS THE INSTRUCTION, NOT A DEFECT. Six of the seven bleed
+ * off the right edge; only 1920 is contained. Every w/h pair reproduces the
+ * glyph's native 895:790 to within a pixel, so he scaled uniformly and the
+ * table is internally consistent.
+ *
+ * WHY THIS REPLACES BOTH EXISTING STAGE SYSTEMS RATHER THAN RETUNING THEM.
+ * §37/§39-R left the file with two unrelated placements: a mark-derived,
+ * junction-anchored crop below 768 (`bleeding`, driven by MARK_HF_*, MARK_JF_*
+ * and terminalX) and a contain-fit inside [floor, W-STAGE_PAD] at and above it
+ * (`contained`). Neither can express this table.
+ *   - `contained` cannot reach it AT ALL, and not by a small margin. At 1440 its
+ *     stage is x 1008..1416, so the contain-fit gives a 408px glyph pinned right
+ *     of the headline column. The target is 688px wide with its LEFT edge at
+ *     858, i.e. 150px LEFT of where the current stage even begins. No value of
+ *     SCRIM_CLEAR or STAGE_PAD produces a stage the mark can overflow, because
+ *     contain-fitting is by definition the operation that prevents overflow.
+ *   - `bleeding` could hit any ONE row and no two. Its size term is hF*H and its
+ *     horizontal term is a fraction of W ramped on width, so a single (hF, jF,
+ *     termX) triple resolves to a different ink box at every aspect ratio. That
+ *     is the same failure mode §39 recorded when it retired NARROW_OVERHANG for
+ *     being a fraction of the MARK's width.
+ * The owner measured the OUTPUT, so the honest parameterisation is the output:
+ * store his ink box as fractions of W and H and interpolate between his rows.
+ * At each of his seven widths the render IS his number; between them it is a
+ * linear blend of the two he bracketed it with.
+ *
+ * WHY FRACTIONS OF H AND NOT ABSOLUTE PX. 393x852 and 393x659 are the same phone
+ * with Safari's toolbar expanded and collapsed, and the matrix requires both.
+ * Pinning absolute pixels would push the glyph 193px further down a hero that
+ * just lost 193px of height. hF/yF against the live H keeps the composition
+ * toolbar-invariant, which is the property §39's terminalX() was written to buy
+ * on the other axis.
+ *
+ * WHAT THE ANCHOR IS. The glyph's TIGHT INK BOX top-left, not the mark box and
+ * not the bowl/stem junction. That is what he dragged, so that is what is
+ * pinned: `stage.x/y` land the ink's corner and `stage.w/h` are the mark box's
+ * own dimensions, which makes fitInto()'s Math.min return exactly s0 and both
+ * of its centring terms evaluate to zero. The placement IS the geometry, the
+ * same property §39 relied on and for the same reason.
+ *
+ * THE GROWTH, HONESTLY, BECAUSE A ROUND-UP HERE IS HOW THREE PASSES FAILED.
+ * Measured ink width before -> after: 396 -> 743 at 393 (1.88x linear), 433 ->
+ * 739 at 430 (1.71x), 422 -> 878 at 768 (2.08x), 254 -> 580 at 1024 (2.29x),
+ * 360 -> 535 at 1280 (1.49x), 408 -> 688 at 1440 (1.69x), 552 -> 755 at 1920
+ * (1.37x). That is 1.9x to 5.2x by AREA, not the 8x the brief estimated. The
+ * table is the target and it is what shipped; 8x was an estimate of the table,
+ * not a separate instruction, and the two disagree.
+ *
+ * THE TABLE IS NOT MONOTONIC AND THAT IS PRESERVED DELIBERATELY. hF runs 0.770,
+ * 0.700, 0.757, 0.667, 0.590, 0.675, 0.617 - it dips at 1280 and recovers at
+ * 1440. He eyeballed seven independent placements rather than sampling a curve,
+ * so smoothing them would be substituting a rule of mine for a measurement of
+ * his at every one of his own data points. Interpolation between his rows is
+ * the only invention here.
+ *
+ * >> LEGIBILITY IS UNCHANGED BY THIS, AND THE REASON IS STRUCTURAL RATHER THAN
+ * >> LUCKY. The platePush/beamPush keep-out is built from the MEASURED ink boxes
+ * >> of .ps-hero-line grown by KEEPOUT_MARGIN, so its geometry does not depend
+ * >> on the mark's size at all: punch() drives plate alpha to exactly 0 inside
+ * >> every headline line's box no matter how much mark is behind it, and
+ * >> keepFactor() does the same for the beam per segment. A bigger mark means
+ * >> more of it is erased, not less of the type protected. Do NOT buy contrast
+ * >> back by lowering the alphas if this is ever revisited - §32's compositing
+ * >> proof (R = 246 - 142a, still 2.98:1 at a = 0.03) shows that cannot work.
+ * >> Measured after this change, light theme, worst of 24 frames spanning a full
+ * >> beam lap, sampled UNDER THE GLYPH'S OWN COVERAGE MASK: see the §42 numbers
+ * >> in the run report. A bounding-rect sample averages in the mark and returns
+ * >> a wrong (flattering) number - do not re-measure that way.
+ *
+ * TREATMENT IS UNTOUCHED, ON THE OWNER'S WORDS: "Should be behind the text and
+ * lighter opacity on all just like it used to be". That is what already ships.
+ * MARK_FILL_A_LIGHT/MARK_EDGE_A_LIGHT/MARK_FILL_A_DARK/MARK_EDGE_A_DARK, the
+ * layer order (overlay, plate, beam, type) and the keep-out are all unchanged by
+ * §42. If the mark reads heavier behind the type at this size, the alphas are
+ * the lever and moving them is a separate, stated decision.
+ * =========================================================================== */
+/** §42. One row per viewport the owner measured. `hF` is the ink box's HEIGHT
+ *  as a fraction of the hero's height, `xF`/`yF` its top-left corner as
+ *  fractions of the hero's width and height. hF is derived from his `w` through
+ *  the glyph's native 895:790 rather than from his `h`, because his w and h
+ *  disagree by up to 0.2px and w is the axis the right-edge bleed is measured
+ *  on. */
+type MarkAnchor = { vw: number; hF: number; xF: number; yF: number };
+const MARK_ANCHORS: MarkAnchor[] = [
+  { vw: 393,  hF: 0.76976, xF: 0.13740, yF: 0.11737 },
+  { vw: 430,  hF: 0.69989, xF: 0.12326, yF: 0.18455 },
+  { vw: 768,  hF: 0.75683, xF: 0.28385, yF: 0.13867 },
+  { vw: 1024, hF: 0.66661, xF: 0.59180, yF: 0.16927 },
+  { vw: 1280, hF: 0.59029, xF: 0.65156, yF: 0.21250 },
+  { vw: 1440, hF: 0.67476, xF: 0.59583, yF: 0.16444 },
+  { vw: 1920, hF: 0.61706, xF: 0.51875, yF: 0.18981 },
+];
+/** §42. Piecewise-linear on the hero's WIDTH, CLAMPED at both ends.
+ *
+ *  Clamped rather than extrapolated on purpose. Below 393 the matrix still has
+ *  320, 360, 375 and 390, and linear extrapolation off the 393/430 pair runs hF
+ *  the WRONG way there (that pair descends with width, so extrapolating down
+ *  would make a 320 phone's glyph taller than a 393 one's). Holding the 393 row
+ *  keeps the composition proportional instead. Above 1920 the same argument
+ *  applies in reverse. */
+function markAnchor(w: number): MarkAnchor {
+  const a = MARK_ANCHORS;
+  if (w <= a[0].vw) return a[0];
+  if (w >= a[a.length - 1].vw) return a[a.length - 1];
+  for (let i = 1; i < a.length; i++) {
+    if (w <= a[i].vw) {
+      const lo = a[i - 1], hi = a[i];
+      const t = (w - lo.vw) / (hi.vw - lo.vw);
+      return {
+        vw: w,
+        hF: lo.hF + t * (hi.hF - lo.hF),
+        xF: lo.xF + t * (hi.xF - lo.xF),
+        yF: lo.yF + t * (hi.yF - lo.yF),
+      };
+    }
+  }
+  return a[a.length - 1];
+}
+
 /* §39 retires the four NARROW_* constants above, on the §37/WIDE_* precedent:
    voided rather than deleted, because their comment blocks are the §30-§38
    decision record. NOTHING READS THEM. Editing them is a silent no-op. */
 void NARROW_BLEED_W; void NARROW_MARK_H; void NARROW_MARK_TOP; void NARROW_OVERHANG;
+/* §42 retires the §39 crop parameterisation on the same voided-not-deleted
+   precedent: JUNCTION_Y, the four hF/jF proportion constants and terminalX()
+   were the whole of the mark-derived stage that §42's measured anchor table
+   replaces. Their comment blocks are the §33-§39 decision record - in
+   particular terminalX()'s note that an anchor expressed in the MARK's width
+   resolves to a different fraction of W at every aspect ratio, which is
+   precisely why §42 anchors on W and H directly. NOTHING READS THEM. */
+void JUNCTION_Y; void MARK_HF_PORTRAIT; void MARK_HF_LANDSCAPE;
+void MARK_JF_PORTRAIT; void MARK_JF_LANDSCAPE; void terminalX;
 /** §31, 2026-09-05. How far the mark's stage runs PAST the right viewport edge,
  *  as a fraction of the hero's width. The client asked for the mark "bigger and
  *  less prominent, with less opacity and hanging off the right side of the page
@@ -1386,12 +1588,23 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        has been ROTATED, which is a shorter hero needing a slightly taller
        multiple. Every phone in the test matrix is portrait. */
     const portrait = H > W;
-    const hF = portrait ? MARK_HF_PORTRAIT : MARK_HF_LANDSCAPE;
-    const jF = portrait ? MARK_JF_PORTRAIT : MARK_JF_LANDSCAPE;
-    const s0 = hF * H / MARK_H;
-    const bleeding = {
-      x: terminalX(W, portrait) * W,
-      y: jF * H - (JUNCTION_Y - MARK_Y0) * s0,
+    /* §42. THE ONE STAGE, AT EVERY WIDTH. `bleeding` (the §39 junction-anchored
+       phone crop) is gone and so is the narrow/wide split in `primary` below.
+       The owner measured the glyph's tight ink box at seven viewports; markAnchor()
+       returns that box as fractions of the live W and H, interpolated on width.
+
+       THE TWO TERMS THAT MAKE THIS EXACT, and neither is incidental:
+         1. `w`/`h` are the MARK BOX's own dimensions at scale s0, so fitInto()'s
+            Math.min returns exactly s0 and both of its centring terms are zero.
+         2. `x`/`y` are therefore the INK box's corner directly, because fitInto
+            subtracts MARK_X0*s / MARK_Y0*s from them. That is the quantity the
+            owner dragged, so it is the quantity that is pinned.
+       Change either and the render stops being his measurement. */
+    const anc = markAnchor(W);
+    const s0 = anc.hF * H / MARK_H;
+    const anchored = {
+      x: anc.xF * W,
+      y: anc.yF * H,
       w: MARK_W * s0,
       h: MARK_H * s0,
     };
@@ -1415,11 +1628,51 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        SUPPOSED TO BE THAT BIG ON MOBILE BTW". See §39-R and ADR-0011. */
     const contained = { x: floor, y: STAGE_PAD, w: W - STAGE_PAD - floor, h: H - STAGE_PAD * 2 };
 
-    const primary = narrow ? bleeding : contained;
+    /* §42. ONE stage at every width, and `contained` is retired with the same
+       void-not-delete treatment the rest of this file uses - its comment block
+       above is the §37/§39-R decision record for the desktop revert. It cannot
+       express the owner's table: contain-fitting is by definition the operation
+       that prevents the overflow six of his seven rows require, and its stage
+       starts at `floor` (0.70*W = 1008 at 1440) which is already 150px RIGHT of
+       his target left edge of 858. See the §42 block. */
+    void contained;
+    const primary = anchored;
     // Step 3: the same recipe the narrow regime already uses — drop clear of the
     // headline's ink entirely. For narrow this is identical to `primary`, so the
     // loop simply falls through to the shrink step.
-    const dropped = { x: STAGE_PAD, y: headBottom + 8, w: W - STAGE_PAD * 2, h: H - STAGE_PAD - (headBottom + 8) };
+    /* §T4. THE DROP STAGE NOW RIGHT-ALIGNS ON LANDSCAPE, and this is the owner's
+       sentence rather than a preference: "it should be under and to teh right
+       side of it". `dropped` already put the mark UNDER the headline; what it did
+       not do was put it to the RIGHT, because a full-width stage handed to
+       fitInto() CENTRES the glyph. Measured before this change at 1120x900: ink
+       319px wide at x=401 — dead centre, directly beneath the three headline
+       lines and colliding with the scroll cue. That is the "its now under the
+       text" state.
+
+       WHY IT MATTERS MORE THAN IT LOOKS: `dropped` is not a rare fallback. It is
+       reached at EVERY landscape width below ~1150 (1024x768 measured x0=384.7,
+       1099 x0=390.4, 1120 x0=400.9, 1145 x0=413.4), because `contained` starts at
+       floor = 0.70*W, which sits inside the headline's own column there, so all
+       twelve 0.96 shrink steps still collide and the loop falls through. HD-0012's
+       note that `dropped` "is never reached on desktop" holds only for >=1280.
+
+       SCOPED TO LANDSCAPE ON PURPOSE. Portrait tablets (768x1024, 820x1180) also
+       reach `dropped`, and a CENTRED mark under the headline is the right
+       composition for a portrait hero — that is the state R6's baseline captured
+       and nobody has objected to. `portrait` is the existing regime flag, so this
+       reuses a boundary the file already trusts rather than inventing a width. */
+    const dropH = H - STAGE_PAD - (headBottom + 8);
+    const dropWFull = W - STAGE_PAD * 2;
+    /* The fit is height-bound here (dropH is a band under the headline, dropWFull
+       is most of the viewport), so MARK_W * dropS is the glyph's natural width at
+       that scale. Making the stage exactly that wide and pinning it to the right
+       edge leaves fitInto()'s centring term at zero, so the glyph lands flush
+       right with STAGE_PAD of air — the same "placement IS the geometry" property
+       the narrow crop relies on. Math.min keeps it honest if the width ever binds. */
+    const dropS = dropH > 0 ? Math.min(dropWFull / MARK_W, dropH / MARK_H) : 0;
+    const dropW = portrait ? dropWFull : Math.min(dropWFull, MARK_W * dropS);
+    const dropped = { x: portrait ? STAGE_PAD : Math.max(STAGE_PAD, W - STAGE_PAD - dropW),
+                      y: headBottom + 8, w: dropW, h: dropH };
 
     /* §32. WIDE is tested against LINE 1 ONLY. The guard's job changed with the
        client's ruling: it used to mean "the mark may not touch the headline",
@@ -1485,7 +1738,34 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        guard goes back with it — see §39-R. Legibility on BOTH paths is still
        carried by the platePush keep-out, which yields plate alpha exactly 0
        over every headline line and is unchanged throughout. */
-    const guard: typeof rects = narrow ? [] : rects;
+    /* §42. THE INK GUARD IS OFF AT EVERY WIDTH NOW, and this is a deliberate
+       reversal of §37/§39-R's re-arming, not an oversight.
+
+       The guard's whole job is to push the mark OUT of the headline's ink. Six
+       of the owner's seven rows place a 500-880px glyph starting at 0.12-0.65 of
+       W with the headline directly on top of it, so the guard is now a test for
+       the opposite of what was asked. Left armed, `inkOverlap` would be non-zero
+       on iteration one at every viewport, the loop would fall through to
+       `dropped` and then shrink 4% per step twelve times, and the shipped mark
+       would be neither his size nor his position. §39 emptied it for exactly
+       this reason; §39-R re-armed it only because the owner reversed the
+       ENLARGEMENT, and he has now reversed that reversal with measurements.
+
+       WHAT CARRIES LEGIBILITY INSTEAD. The platePush keep-out, unchanged: built
+       from the measured ink boxes of every .ps-hero-line grown by
+       KEEPOUT_MARGIN, punched to alpha 0 with a feather of
+       max(0.14*W, KEEPOUT_FEATHER_MIN). Its geometry is derived from the TYPE,
+       not from the mark, so it does not need to grow when the mark does - it
+       already covers every headline line at every viewport by construction. The
+       beam gets the same rects per segment through keepFactor(). Re-measured
+       after §42 under the glyph's own coverage mask; the figure is in the run
+       report. Do not narrow it, do not scope it to the accent line, and do not
+       lower the alphas to buy contrast (§32: R = 246 - 142a, 2.98:1 at a = 0.03).
+
+       `dropped` stays referenced in the loop below and is now unreachable: an
+       empty guard makes inkOverlap() return 0 on the first iteration, so
+       layout() returns `primary` at k = 0 at every viewport. */
+    const guard: typeof rects = [];
     let last = fitInto(primary, 1);
     for (const st of [primary, dropped]) {
       if (!(st.w > 0 && st.h > 0)) continue;
@@ -1633,7 +1913,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        still frame parked on a beam nobody could see. The obvious repair —
        "rightmost vertex that is ON canvas" — MEASURED ZERO BEAM PIXELS at
        390x844 and 768x1024 in both themes. It is not enough, because the beam
-       is not a point: it is a RUN of the outline `total * 0.085` long ending at
+       is not a point: it is a RUN of the outline `total * BEAM_HEAD_FRAC` long ending at
        the head, and it is attenuated per segment by the keep-out. A head can
        sit on canvas while the whole run behind it is off-frame or inside the
        hole punched over the headline, and then nothing is drawn.
@@ -1644,7 +1924,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     parkDist = 0;
     let parkIdx = 0;
     {
-      const spanLen = total * 0.085;
+      const spanLen = total * BEAM_HEAD_FRAC;   // §41: must equal drawBeam's head
       const CANDIDATES = 96, PROBES = 16;
       let bestScore = -1, bestX = -Infinity;
       const atIdx = (d: number) => {
@@ -1726,7 +2006,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     while (lo < hi - 1) { const mid = (lo + hi) >> 1; if (segT[mid] <= t) lo = mid; else hi = mid; }
     const span = segT[hi] - segT[lo] || 1;
     const head = cumulative[lo] + (cumulative[hi] - cumulative[lo]) * ((t - segT[lo]) / span);
-    const len = total * 0.085;
+    const len = total * BEAM_HEAD_FRAC;
     const steps = narrow ? BEAM_STEPS_NARROW : BEAM_STEPS;
     /* Half the widest stroke, plus the round cap, plus a pixel of slack. This
        MUST track the `widthGain` used when stroking below: the beam's widest
@@ -1796,7 +2076,8 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     const alphaGain = isLight() ? ALPHA_GAIN_LIGHT : ALPHA_GAIN_DARK;
 
     /* BUTT caps, except on the two ends of the beam. (§27)
-       The beam is 72 separate segments, each `total * 0.085 / 72` long. A ROUND
+       The beam is BEAM_STEPS separate segments, each `total * BEAM_HEAD_FRAC /
+       BEAM_STEPS` long. A ROUND
        cap extends lineWidth/2 past each endpoint — which is LONGER than the
        segments themselves — so every cap overlapped its neighbour and 71
        source-over composites accumulated as 1-(1-a)^n. Measured on the beam
@@ -1822,7 +2103,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
          and it is the half that matters most: the beam is #1590FF at up to 0.63
          alpha, and unattenuated it measured 1.34:1 against #1590FF headline type
          on light and 2.10:1 against WHITE type on dark. Sampled at the segment's
-         MIDPOINT, not its start: a segment is total*0.085/72 long, so an endpoint
+         MIDPOINT, not its start: a segment is total*BEAM_HEAD_FRAC/BEAM_STEPS long, so an endpoint
          test lets the far end of the last unattenuated segment sit inside the
          hole. `ax`/`bx` are device px; keepFactor works in css px. */
       const rx = keepFactor((ax + bx) / 2 / dpr, (ay + by) / 2 / dpr, beamPush);

@@ -1,0 +1,1086 @@
+/* ============================================================================
+   CARD 1 — "Business Software." — candidate stylesheet.
+   Team D, run bento-2026-09-07, SECOND PASS.
+   Module: src/components/home/card1-candidates.tsx
+
+   Read that module's header comment first; it carries the brief, the rulings
+   and the geometry. This file carries only the paint.
+
+   THREE ARRANGEMENTS, ONE MARKUP TREE, and the order of the blocks below is
+   load-bearing:
+     1. base                                    -> the PORTRAIT card face
+     2. @container bentocard (max-width: 320px)  -> the TIGHT card face
+     3. @container bentocard (min-width: 480px)  -> the one WIDE-SHORT face
+                                                    (591x320 at 639vw)
+     4. .ps-dialog-visual-art <descendant>       -> the 900x400 LANDSCAPE dialog
+   `container: bentocard / inline-size` is declared only on `.ps-bento-card`
+   (globals.css:1762), so blocks 2 and 3 are unconditionally FALSE inside the
+   portal dialog, which has no container ancestor. That is why block 4 exists
+   as a plain descendant selector and repeats block 3's arrangement: a
+   container query can never reach the dialog. Block 4 also wins on
+   specificity (0,2,0 vs 0,1,0), so it is safe wherever it sits.
+
+   COLOUR. Every value comes from R5's nine prescribed roles via tokens
+   (globals.css :root 45-159 dark = the DEFAULT, [data-theme="light"] 164-209).
+   `docs/design-system.md` is STALE for colour and was not used. Two token
+   inversions do the heavy lifting and are deliberate, not accidental:
+     - `--theme-bg-primary` is #0A1628 dark / #FFFFFF light. That is R5's
+       role 8, knockout, and it is exactly the ink a LIT panel needs, since a
+       lit panel is white on the dark theme and dark navy on the light one.
+     - `--theme-art-veil-rgb` is the ground triplet in each theme, so
+       `rgba(var(--theme-art-veil-rgb), 0.6)` is a correct muted label ON a lit
+       panel in BOTH themes without a single cross-theme literal.
+   The ground is a 160deg two-stop ramp from `--theme-art-ground-a` to
+   `--theme-art-ground-b`, and no gradient anywhere uses the `transparent`
+   keyword as an end stop.
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   1. ROOT, GROUND, LIFT
+   --------------------------------------------------------------------------- */
+
+.ps-c1x-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+
+  /* >> TRANSPARENT, ON THE OWNER'S INSTRUCTION: "instead put on a transparent
+     background". The art no longer paints its own ground; the card's own
+     surface shows through.
+
+     What this used to be: linear-gradient(160deg, --theme-art-ground-a 0%,
+     --theme-art-ground-b 100%), the same ramp card 4 paints. Measured, the
+     card surface underneath is FLAT rather than that ramp, so the card reads
+     slightly flatter than it did. That is the trade he asked for, and it is
+     the honest consequence rather than a mistake: removing a gradient the
+     card behind it does not reproduce cannot be visually free.
+
+     The chroma and luminance figures recorded for this card were measured
+     against the painted ground that no longer exists, so they describe an
+     earlier state and must be re-measured before being cited again. */
+  background: transparent;
+
+  /* Layout, per-arrangement. Every measurement below is in ART coordinates,
+     which are the card box plus 6px on all four edges. */
+  --c1-pad: 20px;   /* side inset: 6px clipped bleed + 14px of real air */
+  --c1-top: 26px;   /* 6px bleed + 20px; the expand disc lives at 22..54 */
+  --c1-bot: 92px;   /* 6px bleed + 58.89px title block + note + air */
+  --c1-gap: 10px;
+  --c1-radius: 10px;
+
+  /* THE TOP-RIGHT KEEP-CLEAR, MEASURED, AND R7'S TABLE IS WRONG ABOUT IT.
+     R7 recorded the expand affordance as "32x32 inset 16px from the top and
+     right, at every width, on every card, in every engine". Measured on this
+     build in Chromium at 320/375/430/639/640/700/767/768 it is 44x44 inset
+     12px, and only from 769 up is it 32x32 inset 16px. So the corner to keep
+     clear is 56x56 on every phone and small tablet, not 48x48, and a layout
+     built to R7's figure puts a panel under the disc at every width <=768.
+     It bisects to exactly the same 768/769 boundary as the bottom text block,
+     so one media query carries both. */
+  --c1-disc-zone: 48px;
+
+  /* >> BUILD SENTINEL. Bump on every meaningful change to either card-1 file.
+     A stale compiled module passes every other guard we have: HTTP 200, zero
+     /_next/static/ 404s, React hydrated, styles applied, positive ink, a
+     byte-stable render. A positive style assertion proves that CSS applied,
+     never WHICH CSS. So the capture harness reads this value off the SERVED
+     page and refuses to screenshot unless it matches the value on disk.
+     History: 1 = zero motion, no-bleed chart, terminal dot.
+              2 = interlock proven able to FAIL (served 1 vs disk 2, exit 4)
+                  before being trusted to pass.
+              3 = chroma round 1: neutral lift, brighter panel fill, lighter
+                  area stop.
+              4 = chroma round 2: area fill to 0.17, the share rail's mint
+                  segment to a neutral step, value steps brightened so the
+                  desaturation does not read as a darkening.
+              5 = area fill trial at 0.10 (rejected: the metric moved 1.1pp,
+                  so the fill was never the driver).
+              6 = panels opaque on a role-8 knockout, which is the actual
+                  mechanism behind card 4's low chroma: coverage, not hue.
+              7 = panel white raised 0.075 -> 0.125 so the opacity change does
+                  not read as a darkening. Both metrics move together.
+              8 = the shell band stops at the card edge on BOTH sides, so the
+                  only thing crossing the card box is the ground itself. */
+  --c1r-build: 8;
+
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The bottom text block is 62.8px up to 768vw and 58.89px above it (R7's
+   measured table), so the only viewport-keyed rule in this file is the 4px
+   of extra bottom clearance the narrow band needs. */
+@media (max-width: 768px) {
+  .ps-c1x-root {
+    --c1-bot: 96px;
+    --c1-disc-zone: 56px;
+  }
+}
+
+/* ONE soft lift behind the panels, off-centre to the top left so the empty
+   bottom-left ground the card title sits on stays the darkest part of the
+   frame.
+
+   >> NEUTRAL, NOT BLUE, AND THAT IS A MEASURED CORRECTION. This wash was
+   `rgba(21,144,255,.17)` and, being the largest single area in the frame, it
+   was the biggest contributor to a chroma reading of 16.9-20.4% against card
+   4's 10.76% at the same mean luminance. "Clean" in this set is BRIGHTNESS,
+   not colour: card 4 is the brightest and the least colourful card of the
+   five. A white lift raises luminance toward the benchmark and removes the
+   hue at the same time, and it costs the picture nothing, because a
+   large-area tint carries no information. */
+.ps-c1x-lift {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      118% 82% at 24% 6%,
+      rgba(255, 255, 255, 0.07) 0%,
+      rgba(255, 255, 255, 0) 62%
+    );
+}
+
+[data-theme="light"] .ps-c1x-lift {
+  background:
+    radial-gradient(
+      118% 82% at 24% 6%,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 0) 62%
+    );
+}
+
+/* ---------------------------------------------------------------------------
+   2. PANEL SURFACES
+   Four calm panels and exactly ONE lit one, which is how card 4 distributes
+   value: a dark elevated shell carrying most of the frame, one bright band for
+   mass. In light theme the lit panel inverts to dark navy, because card 4's
+   light render keeps its dark hero band for precisely that reason: a dashboard
+   of white tiles on a pale ground has no value structure at all.
+   --------------------------------------------------------------------------- */
+
+.ps-c1x-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 0;
+  padding: 10px 12px;
+  overflow: hidden;
+  border-radius: var(--c1-radius);
+  /* >> OPAQUE, NOT GLASS, AND THIS IS THE ONE HONEST WAY TO CLOSE THE CHROMA
+     GAP TO CARD 4.  Measured: card 4 paints the IDENTICAL ground ramp
+     (card-visuals.css:59, `linear-gradient(160deg, #0A1628 0%, #0C1E3A 100%)`),
+     and its bare ground reads 18.9% chroma against this card's 17.2% at the
+     same spot.  So the whole-frame gap was never hue in the drawing; it is
+     COVERAGE.  Card 4 hides ~30% of its frame under achromatic mass (a
+     near-black phone body and flat white cards) which dilutes its average,
+     while a translucent panel keeps the ground's hue showing through.
+     A panel laid on an opaque role-8 knockout of the ground, then lifted with
+     white, covers that hue the way card 4's browser window does, and it reads
+     as a SURFACE rather than as tinted glass.  Role 8 (`--theme-bg-primary`)
+     is R5's prescribed occlusion token and it inverts correctly with the
+     theme, so this is one declaration rather than a fork.
+     >> AND THE WHITE IS 0.125, NOT 0.075, BECAUSE THE FIRST ATTEMPT TRADED
+     CHROMA FOR DARKNESS.  Making the panel opaque replaced a ground that
+     ramps to #0C1E3A with a flat #0A1628 base, so mean luminance fell 0.249 ->
+     0.230 while chroma fell 14.49 -> 13.59.  Both metrics have to move the
+     right way at once: 12.5% white restores the panel's previous value on a
+     base that still covers the ground's hue.  Solved rather than guessed:
+     lum(0A1628 + x*white) = (20.74 + 234.2x)/255, and x = 0.125 returns 0.196
+     for the panel, which is where it was. */
+  background:
+    linear-gradient(0deg, rgba(255, 255, 255, 0.125), rgba(255, 255, 255, 0.125)),
+    var(--theme-bg-primary);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.045) inset;
+
+  --p-ink: var(--theme-text-primary);
+  --p-key: var(--theme-text-muted);
+  --p-rule: rgba(255, 255, 255, 0.11);
+  --p-bar: rgba(255, 255, 255, 0.3);
+  --p-step: rgba(255, 255, 255, 0.5);
+}
+
+.ps-c1x-panel--lit {
+  background: var(--color-white);
+  border-color: rgba(255, 255, 255, 0.42);
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.34),
+    0 2px 0 rgba(255, 255, 255, 0.55) inset;
+
+  --p-ink: var(--theme-bg-primary);
+  --p-key: rgba(var(--theme-art-veil-rgb), 0.62);
+  --p-rule: rgba(var(--theme-art-veil-rgb), 0.12);
+  --p-bar: rgba(var(--theme-art-veil-rgb), 0.2);
+  --p-step: rgba(var(--theme-art-veil-rgb), 0.4);
+}
+
+[data-theme="light"] .ps-c1x-panel {
+  background: var(--color-white);   /* already opaque; nothing to knock out */
+  border-color: var(--theme-card-border);
+  box-shadow: 0 6px 16px rgba(10, 22, 40, 0.06);
+
+  --p-rule: rgba(10, 22, 40, 0.08);
+  --p-bar: rgba(10, 22, 40, 0.2);
+  --p-step: rgba(10, 22, 40, 0.42);
+}
+
+[data-theme="light"] .ps-c1x-panel--lit {
+  /* #0A1628 — the same navy as the dark theme's ground, reached through the
+     light theme's own primary-text token rather than a literal. */
+  background: var(--theme-text-primary);
+  border-color: rgba(10, 22, 40, 0.9);
+  box-shadow: 0 16px 30px rgba(10, 22, 40, 0.18);
+
+  --p-ink: var(--theme-bg-primary);
+  --p-key: rgba(var(--theme-art-veil-rgb), 0.66);
+  --p-rule: rgba(var(--theme-art-veil-rgb), 0.16);
+  --p-bar: rgba(var(--theme-art-veil-rgb), 0.26);
+  --p-step: rgba(var(--theme-art-veil-rgb), 0.5);
+}
+
+.ps-c1x-panel__head {
+  display: flex;
+  flex: none;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* ---------------------------------------------------------------------------
+   3. TYPE
+   --------------------------------------------------------------------------- */
+
+.ps-c1x-k {
+  display: block;
+  flex: none;
+  font-size: 9.5px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--p-key);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ps-c1x-k--dim {
+  opacity: 0.72;
+  font-weight: 500;
+}
+
+.ps-c1x-figline {
+  display: flex;
+  flex: none;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ps-c1x-v {
+  display: block;
+  flex: none;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.025em;
+  color: var(--p-ink);
+}
+
+.ps-c1x-v--sm { font-size: 24px; }
+.ps-c1x-v--xs { font-size: 19px; }
+
+.ps-c1x-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--theme-success-text);
+  white-space: nowrap;
+}
+
+.ps-c1x-delta__mark {
+  display: block;
+  width: 7px;
+  height: 5px;
+  fill: currentColor;
+}
+
+/* On a lit panel the mint does not have the value contrast to sit on white, so
+   the chip inverts into a solid positive pill instead of tinted text. */
+.ps-c1x-panel--lit .ps-c1x-delta {
+  padding: 3px 6px 3px 5px;
+  border-radius: 999px;
+  background: var(--theme-success-text);
+  color: var(--color-white);
+}
+
+[data-theme="light"] .ps-c1x-panel--lit .ps-c1x-delta {
+  color: var(--color-white);
+}
+
+.ps-c1x-note {
+  position: absolute;
+  left: var(--c1-pad);
+  right: var(--c1-pad);
+  bottom: calc(var(--c1-bot) - 22px);
+  margin: 0;
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  /* RIGHT-aligned. Left-aligned it sat 20px directly above "BUSINESS
+     SOFTWARE." and read as a subtitle to the card title rather than as a
+     caption on the artwork. The card title owns the bottom LEFT. */
+  text-align: right;
+  color: var(--theme-text-muted);
+  opacity: 0.78;
+}
+
+/* ---------------------------------------------------------------------------
+   4. CHART TYPE 1 — AREA TREND
+   --------------------------------------------------------------------------- */
+
+.ps-c1x-trend {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  /* >> NO BLEED, DELIBERATELY, AND THIS IS A FIX.
+     The previous pass ran the chart 12px past its panel on both sides AND
+     composed the series 14 user-units past both ends of its own viewBox. In the
+     900x400 dialog that put the drawing 32.2px wider than the frame, and the
+     set critic proved from ink that it was amputated flush at the modal edge:
+     a hard vertical seam, no end cap, no terminal data point, and what was cut
+     was the TERMINUS of the rise, which is the payload of the chart. Card 1 was
+     the only card in the set bleeding on ONE side (5 right / 0 left).
+     Now: every data point sits inside 0..400 x 0..110, and the chart box sits
+     inside its panel. Nothing can be amputated at any aspect, and the fix is
+     structural so the card face needs no dialog override. */
+  margin: 2px 0 0;
+}
+
+/* The terminal data point. `--end-y` is the last point's y as a percentage,
+   authored in the module so it tracks the series rather than being guessed.
+   A CSS circle, not an SVG <circle>: the chart stretches with
+   preserveAspectRatio="none" and an SVG circle would be an ellipse in the
+   900x400 dialog. */
+.ps-c1x-trend__end {
+  position: absolute;
+  top: var(--end-y, 6%);
+  right: 0;
+  width: 8px;
+  height: 8px;
+  margin: -4px -4px 0 0;
+  border-radius: 50%;
+  background: var(--theme-accent-text);
+  box-shadow: 0 0 0 2.5px var(--theme-bg-primary);
+}
+
+/* On a lit panel the halo must knock out against the LIT surface, not against
+   the page. R5 role 8 is the knockout token and it inverts with the theme
+   exactly as the lit panel does, so this is one declaration, not a fork. */
+.ps-c1x-panel--lit .ps-c1x-trend__end {
+  box-shadow: 0 0 0 2.5px var(--color-white);
+}
+
+.ps-c1x-trend__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ps-c1x-grid line {
+  stroke: var(--p-rule);
+  stroke-width: 1;
+}
+
+/* 0.17 at the top, down from 0.34 over two rounds. The area under the line is
+   the largest tinted region left in the frame and it is FURNITURE: the line,
+   the terminal dot and the gridlines carry the chart, and the fill only says
+   "under here". Card 4 has no equivalent region at all. Cutting it is the
+   single biggest chroma saving available that costs the picture nothing. */
+.ps-c1x-trend__stop-a { stop-color: var(--theme-accent-text); stop-opacity: 0.15; }
+.ps-c1x-trend__stop-b { stop-color: var(--theme-accent-text); stop-opacity: 0.03; }
+
+.ps-c1x-trend__line {
+  stroke: var(--theme-accent-text);
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------------------------------------------------------------------------
+   5. CHART TYPE 2 — RING
+   --------------------------------------------------------------------------- */
+
+.ps-c1x-ring {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.ps-c1x-ring__dial {
+  position: relative;
+  /* NEVER SHRINK. In concept B's 124x50 phone tile the dial shrank from 44px
+     to ~26px while the figure inside it stayed 12px, so "96%" rendered wider
+     than its own ring and crossed the stroke on both sides. It read as a
+     broken component. */
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 auto;
+  min-height: 0;
+  width: 58px;
+  height: 58px;
+}
+
+.ps-c1x-ring__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ps-c1x-ring__track {
+  stroke: var(--p-bar);
+  stroke-width: 6;
+}
+
+.ps-c1x-ring__arc {
+  stroke: var(--theme-accent-text);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.ps-c1x-ring__value {
+  position: relative;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--p-ink);
+}
+
+.ps-c1x-ring__label {
+  flex: none;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--p-key);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+   6. CHART TYPE 3 — COLUMNS, and 3b PAIRED COLUMNS
+   CSS boxes, not SVG rects: these panels stretch across a 3.4x aspect swing
+   and an SVG `rx` visibly ovalises when it does.
+   --------------------------------------------------------------------------- */
+
+.ps-c1x-cols {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: 2px;
+}
+
+.ps-c1x-col {
+  /* FIXED WIDTH, not `flex: 1`. At `flex: 1 1 0` six columns in a 230px panel
+     came out 33px wide and 20-47px tall, so the short ones rendered WIDER than
+     they were tall and read as a row of grey pills, which is the exact
+     vocabulary three earlier rounds were rejected for. A column chart has to
+     be taller than it is wide to read as one. */
+  flex: 0 1 24px;
+  min-width: 6px;
+  height: var(--h, 50%);
+  min-height: 4px;
+  border-radius: 3px 3px 2px 2px;
+  background: var(--p-bar);
+}
+
+.ps-c1x-col--accent {
+  background: var(--theme-accent-text);
+}
+
+.ps-c1x-pairs {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 7px;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: 4px;
+}
+
+.ps-c1x-pair {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+}
+
+.ps-c1x-pair__now,
+.ps-c1x-pair__was {
+  flex: 1 1 0;
+  min-width: 0;
+  /* Capped, or the 900px dialog gives each bar 45px of width against 90px of
+     height and the chart reads as a row of blocks rather than as columns. */
+  max-width: 34px;
+  height: var(--h, 50%);
+  border-radius: 3px 3px 2px 2px;
+}
+
+.ps-c1x-pair__now { background: var(--theme-accent-text); }
+.ps-c1x-pair__was { background: var(--p-bar); }
+
+/* ---------------------------------------------------------------------------
+   7. CHART TYPE 4 — SPARKLINE, and TYPE 5 — SEGMENTED SHARE RAIL
+   --------------------------------------------------------------------------- */
+
+.ps-c1x-spark {
+  display: block;
+  flex: 0 1 auto;
+  width: 100%;
+  height: 18px;
+  margin-top: auto;
+  stroke: var(--theme-accent-text);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ps-c1x-rail {
+  flex: none;
+  /* ONE continuous bar. At `gap: 4px` with a 999px radius the three shares read
+     as three unrelated pills rather than as one quantity divided three ways,
+     which is the whole point of a share chart. 2px of separation and a small
+     radius keeps the divisions legible without breaking the bar apart. */
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  height: 13px;
+  margin-top: 4px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ps-c1x-rail__seg {
+  width: var(--w, 33%);
+  border-radius: 2px;
+}
+
+.ps-c1x-rail__seg--0 { background: var(--theme-accent-text); }
+/* >> NEUTRAL, not the mint positive. A share-of-total bar's second segment
+   carries no direction and no state, so a second hue on it was decoration. One
+   accent plus two neutral steps reads as the same chart and removes an entire
+   hue from concepts B and C. The mint is kept where it MEANS something: the
+   delta chip, where it says "up". */
+.ps-c1x-rail__seg--1 { background: var(--p-step); }
+.ps-c1x-rail__seg--2 { background: var(--p-bar); }
+
+/* ---------------------------------------------------------------------------
+   8. CONCEPT A — "the executive brief". Base = portrait card face.
+   Six columns so the top row can stop one column short of the right edge and
+   leave the 32x32 expand disc sitting on clean ground.
+   --------------------------------------------------------------------------- */
+
+.ps-c1a-grid {
+  position: absolute;
+  inset: var(--c1-top) var(--c1-pad) var(--c1-bot);
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: auto minmax(0, 1.12fr) minmax(0, 1.08fr);
+  gap: var(--c1-gap);
+}
+
+/* >> THE ELEVATED SHELL BAND IS DELETED, ON THE OWNER'S INSTRUCTION. It was
+   `.ps-c1a-grid::before`: a full-width rgba(255,255,255,0.028) plate inset
+   -13px/-14px vertically, carrying a 1px hairline on its top and bottom edges.
+   Those two hairlines are what he marked in red on the render and called
+   "these lines or weird background", and the plate is the "background" half of
+   the same sentence.
+
+   It existed as card 4's depth strategy read from its render: one shell
+   carrying the whole subject and running past the frame rather than sitting
+   inside it. That reading was defensible and it is still recorded in
+   ADR-0014, but it is not what he wants on this card, and a lit plate whose
+   only visible evidence is two hairlines is paying a legibility cost for
+   almost no depth.
+
+   Do not reinstate it. The panels carry their own elevation; they do not need
+   a shell behind them. */
+
+.ps-c1a-hero  { grid-column: 1 / 4; }
+.ps-c1a-side  {
+  grid-column: 4 / -1;
+  /* The reserve is measured from the CARD's right edge: the disc zone, less
+     the grid's own side inset (pad minus the 6px clipped bleed), plus 8px of
+     air. Correct at pad 20 and pad 14 with no second breakpoint. */
+  margin-right: calc(var(--c1-disc-zone) - var(--c1-pad) + 14px);
+}
+.ps-c1a-trend { grid-column: 1 / -1; gap: 2px; justify-content: flex-start; }
+.ps-c1a-ring  { grid-column: 1 / 3; }
+.ps-c1a-cols  { grid-column: 3 / -1; padding: 12px 14px; }
+
+.ps-c1a-hero { padding: 12px 14px; }
+
+/* ---------------------------------------------------------------------------
+   9. CONCEPT B — "the status wall". Base = portrait card face.
+   --------------------------------------------------------------------------- */
+
+.ps-c1b-root {
+  /* One clean band of ground above the board, sized so the disc never lands on
+     the top-right tile: 68px at >=769vw, 76px at <=768 where the disc is 44px. */
+  --c1-top: calc(var(--c1-disc-zone) + 20px);
+}
+
+.ps-c1b-head {
+  position: absolute;
+  top: 24px;
+  left: var(--c1-pad);
+  display: flex;
+  align-items: center;
+}
+
+.ps-c1b-chip {
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--theme-text-secondary);
+  white-space: nowrap;
+}
+
+[data-theme="light"] .ps-c1b-chip {
+  border-color: var(--theme-card-border);
+  background: var(--color-white);
+  color: var(--theme-text-secondary);
+}
+
+.ps-c1b-wall {
+  position: absolute;
+  inset: var(--c1-top) var(--c1-pad) var(--c1-bot);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: var(--c1-gap);
+}
+
+.ps-c1b-tile { padding: 9px 11px; gap: 5px; }
+.ps-c1b-tile--c { justify-content: flex-start; }
+
+/* ---------------------------------------------------------------------------
+   10. CONCEPT C — "the focus board". Base = portrait card face.
+   --------------------------------------------------------------------------- */
+
+.ps-c1c-root {
+  /* 62px at >=769vw, 70px at <=768: the focus panel is the top-right element,
+     so it has to start below the disc. */
+  --c1-top: calc(var(--c1-disc-zone) + 14px);
+}
+
+.ps-c1c-grid {
+  position: absolute;
+  inset: var(--c1-top) var(--c1-pad) var(--c1-bot);
+  display: grid;
+  grid-template-columns: 0.84fr 1.16fr;
+  grid-template-rows: repeat(3, minmax(0, 1fr)) auto;
+  gap: var(--c1-gap);
+}
+
+.ps-c1c-k1    { grid-area: 1 / 1; }
+.ps-c1c-k2    { grid-area: 2 / 1; }
+.ps-c1c-k3    { grid-area: 3 / 1; }
+.ps-c1c-focus { grid-area: 1 / 2 / 4 / 3; gap: 2px; justify-content: flex-start; }
+.ps-c1c-rail  { grid-area: 4 / 1 / 5 / 3; gap: 6px; }
+
+.ps-c1c-k1 { padding: 10px 12px; }
+.ps-c1c-k1 .ps-c1x-figline { flex-wrap: wrap; row-gap: 4px; }
+
+/* ---------------------------------------------------------------------------
+   11. THE TIGHT CARD FACE — container width 320px and under.
+   Reaches the 272px (320vw), 288px (2-col at 640vw) and 314.66px (3-col at
+   1024vw) faces. Same five or six panels, smaller type, tighter air: nothing
+   is dropped, because a dashboard that loses its panels on a phone is not the
+   thing the owner asked for.
+   --------------------------------------------------------------------------- */
+
+@container bentocard (max-width: 320px) {
+  .ps-c1x-root {
+    --c1-pad: 14px;
+    --c1-top: 22px;
+    --c1-gap: 7px;
+    --c1-radius: 8px;
+  }
+
+  .ps-c1x-panel { padding: 7px 9px; gap: 4px; }
+  .ps-c1x-k { font-size: 8px; letter-spacing: 0.05em; }
+  .ps-c1x-v { font-size: 24px; }
+  .ps-c1x-v--sm { font-size: 17px; }
+  .ps-c1x-v--xs { font-size: 15px; }
+  .ps-c1x-delta { font-size: 9px; gap: 2px; }
+  .ps-c1x-panel--lit .ps-c1x-delta { padding: 2px 5px 2px 4px; }
+  .ps-c1x-note { font-size: 8px; bottom: calc(var(--c1-bot) - 20px); }
+
+  .ps-c1x-ring { gap: 4px; }
+  .ps-c1x-ring__dial { width: 44px; height: 44px; }
+  .ps-c1x-ring__track,
+  .ps-c1x-ring__arc { stroke-width: 6.5; }
+  .ps-c1x-ring__value { font-size: 11px; }
+  .ps-c1x-ring__label { font-size: 8px; }
+
+  /* Concept B's wall tile is only ~50px tall on a 272px card, which will not
+     hold a stacked 44px dial plus a label, so the ring lies down there. */
+  .ps-c1b-tile--b .ps-c1x-ring { flex-direction: row; gap: 7px; }
+  .ps-c1b-tile--b .ps-c1x-ring__dial { width: 34px; height: 34px; }
+  .ps-c1b-tile--b .ps-c1x-ring__track,
+  .ps-c1b-tile--b .ps-c1x-ring__arc { stroke-width: 6; }
+  .ps-c1b-tile--b .ps-c1x-ring__value { font-size: 9.5px; }
+
+
+  .ps-c1x-cols { gap: 3px; }
+  .ps-c1x-col { flex-basis: 13px; }
+  .ps-c1x-rail { height: 10px; }
+  .ps-c1x-pairs { gap: 4px; }
+  .ps-c1x-pair { gap: 2px; }
+  .ps-c1x-spark { height: 13px; }
+  .ps-c1x-rail { height: 8px; gap: 3px; }
+  .ps-c1x-trend { margin: 1px 0 0; }
+  .ps-c1x-trend__end { width: 6px; height: 6px; margin: -3px -3px 0 0; box-shadow: 0 0 0 2px var(--theme-bg-primary); }
+
+  .ps-c1a-hero { padding: 8px 10px; }
+  .ps-c1b-root { --c1-top: calc(var(--c1-disc-zone) + 12px); }
+  .ps-c1b-head { top: 18px; }
+  .ps-c1b-chip { padding: 3px 7px; font-size: 8px; }
+  .ps-c1b-tile { padding: 6px 8px; gap: 3px; }
+  .ps-c1c-root { --c1-top: calc(var(--c1-disc-zone) + 8px); }
+  .ps-c1c-k1 { padding: 7px 9px; }
+}
+
+/* ONE LABEL PER PANEL HEAD BELOW A 400px FACE. Concept C's focus panel is only
+   ~55% of the card, so its head's secondary period label overflowed the panel's
+   border box by 11.1px at a 327px face and was cut mid-word with no ellipsis:
+   the element was not overflowing ITSELF, so a scrollWidth check could never
+   see it. Keyed at 399 because the 400px face at 1280 and up measures clean. */
+@container bentocard (max-width: 399px) {
+  .ps-c1x-k--dim { display: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   12. THE WIDE-SHORT CARD FACE — container width 480px and up.
+   Exactly one cell hits this: 591x320 at 639vw, the single-column band's
+   widest face, aspect 1.85. The portrait row stack squeezes the trend panel to
+   ~50px there, so this band gets the landscape arrangement instead.
+   BLOCK 13 REPEATS THIS FOR THE DIALOG. Keep the two in step.
+   --------------------------------------------------------------------------- */
+
+@container bentocard (min-width: 480px) {
+  /* In the landscape arrangement the top-right element is the RING panel, not
+     the side KPI, so the reserve moves from a right margin to the top inset and
+     the margin is zeroed. */
+  .ps-c1x-root { --c1-top: calc(var(--c1-disc-zone) + 14px); }
+  .ps-c1a-side { margin-right: 0; }
+  .ps-c1x-v { font-size: 28px; }
+  .ps-c1x-v--sm { font-size: 20px; }
+
+  .ps-c1a-grid {
+    grid-template-columns: 1.05fr 1.55fr 1.15fr;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .ps-c1a-hero  { grid-area: 1 / 1 / 2 / 2; }
+  .ps-c1a-side  { grid-area: 2 / 1 / 3 / 2; }
+  .ps-c1a-trend { grid-area: 1 / 2 / 3 / 3; }
+  .ps-c1a-ring  { grid-area: 1 / 3 / 2 / 4; }
+  .ps-c1a-cols  { grid-area: 2 / 3 / 3 / 4; }
+  .ps-c1x-ring { flex-direction: row; gap: 10px; }
+
+  .ps-c1b-wall {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+  }
+
+  .ps-c1c-grid { grid-template-columns: 0.62fr 1.38fr; }
+  .ps-c1x-col { flex-basis: 22px; }
+}
+
+/* ---------------------------------------------------------------------------
+   12b. THE SHORT CARD, and this is a HEIGHT problem a container query cannot
+   see. `container: bentocard / inline-size` (globals.css:1762) gives inline
+   size only, so `@container (max-height: ...)` is unavailable and the card's
+   HEIGHT is what runs out here: the single-column band is 320px tall against
+   420 in the two-column band and 430 in the three. Card height is a pure
+   function of the viewport band, so the one honest way to key on it is
+   `@media (max-width: 639px)`, which selects exactly the 320-tall band.
+
+   Measured before this block existed: concept C's three KPI strips plus a rail
+   needed ~200px of panel room and had 166, so every strip overflowed its own
+   panel by 16.1px, and concept B's lit tile overflowed by 1.9px. Both were
+   invisible to a screenshot at a glance and obvious to a probe that compares
+   each text box against its panel's BORDER box.
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 639px) {
+  .ps-c1b-tile { padding: 6px 9px; gap: 3px; }
+  .ps-c1b-tile .ps-c1x-v { font-size: 18px; }
+  .ps-c1b-tile .ps-c1x-v--sm { font-size: 16px; }
+  .ps-c1b-tile .ps-c1x-delta { font-size: 9px; }
+  .ps-c1b-tile.ps-c1x-panel--lit .ps-c1x-delta { padding: 2px 5px 2px 4px; }
+
+  /* Concept C drops from three KPI strips to two on a 320-tall card. The strip
+     that goes is a plain number, so all three CHART types survive: nothing is
+     lost from the mix the owner asked for, only a repeated instrument. */
+  .ps-c1c-k3 { display: none; }
+  .ps-c1c-grid {
+    grid-template-rows: repeat(2, minmax(0, 1fr)) auto;
+    gap: 8px;
+  }
+  .ps-c1c-focus { grid-area: 1 / 2 / 3 / 3; }
+  .ps-c1c-rail  { grid-area: 3 / 1 / 4 / 3; }
+  .ps-c1c-k1,
+  .ps-c1c-k2 { padding: 7px 10px; }
+  .ps-c1c-k1 .ps-c1x-v--sm { font-size: 19px; }
+  .ps-c1c-k2 .ps-c1x-v--xs { font-size: 17px; }
+}
+
+/* ---------------------------------------------------------------------------
+   13. THE DIALOG — up to 900x400, aspect 2.25, ZERO bleed.
+   `@container` cannot reach here: `container: bentocard / inline-size` is set
+   only on `.ps-bento-card` (globals.css:1762) and the portal dialog has no
+   container ancestor, so block 12 is unconditionally false in this subtree.
+   Hence a descendant selector, which also outranks block 12 on specificity.
+   Two dialog-specific facts drive the numbers:
+     - the close button is 40x40 inset 18px, so the payload starts at y=68;
+     - `.ps-dialog-visual::after` (globals.css:2711) veils the BOTTOM 120px
+       with a gradient to the dialog background, so nothing load-bearing may
+       sit below y~300. --c1-bot: 104px puts the panel floor at 296 and the
+       demonstration note at 318, where the veil is still nearly clear.
+   --------------------------------------------------------------------------- */
+
+.ps-dialog-visual-art .ps-c1x-root {
+  --c1-disc-zone: 58px;
+  --c1-pad: 36px;
+  --c1-top: 68px;
+  --c1-bot: 104px;
+  --c1-gap: 12px;
+  --c1-radius: 12px;
+}
+
+.ps-dialog-visual-art .ps-c1x-note {
+  font-size: 10px;
+  bottom: calc(var(--c1-bot) - 26px);
+}
+
+.ps-dialog-visual-art .ps-c1x-v { font-size: 42px; }
+.ps-dialog-visual-art .ps-c1x-v--sm { font-size: 28px; }
+.ps-dialog-visual-art .ps-c1x-v--xs { font-size: 24px; }
+.ps-dialog-visual-art .ps-c1x-k { font-size: 10px; }
+.ps-dialog-visual-art .ps-c1x-delta { font-size: 12px; }
+.ps-dialog-visual-art .ps-c1x-panel { padding: 12px 16px; }
+.ps-dialog-visual-art .ps-c1x-ring { flex-direction: row; gap: 12px; }
+.ps-dialog-visual-art .ps-c1x-ring__dial { width: 62px; height: 62px; }
+.ps-dialog-visual-art .ps-c1x-ring__value { font-size: 16px; }
+.ps-dialog-visual-art .ps-c1x-ring__label { font-size: 10px; }
+.ps-dialog-visual-art .ps-c1x-spark { height: 24px; }
+.ps-dialog-visual-art .ps-c1x-rail { height: 12px; }
+.ps-dialog-visual-art .ps-c1x-cols { gap: 9px; }
+.ps-dialog-visual-art .ps-c1x-col { flex-basis: 28px; }
+.ps-dialog-visual-art .ps-c1x-pairs { gap: 12px; }
+.ps-dialog-visual-art .ps-c1x-pair { gap: 4px; }
+.ps-dialog-visual-art .ps-c1x-trend { margin: 4px 0 0; }
+.ps-dialog-visual-art .ps-c1x-trend__end { width: 10px; height: 10px; margin: -5px -5px 0 0; box-shadow: 0 0 0 3px var(--theme-bg-primary); }
+
+.ps-dialog-visual-art .ps-c1a-grid {
+  grid-template-columns: 1.05fr 1.55fr 1.15fr;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+.ps-dialog-visual-art .ps-c1a-side  { margin-right: 0; }
+.ps-dialog-visual-art .ps-c1a-hero  { grid-area: 1 / 1 / 2 / 2; padding: 14px 18px; }
+.ps-dialog-visual-art .ps-c1a-side  { grid-area: 2 / 1 / 3 / 2; }
+.ps-dialog-visual-art .ps-c1a-trend { grid-area: 1 / 2 / 3 / 3; }
+.ps-dialog-visual-art .ps-c1a-ring  { grid-area: 1 / 3 / 2 / 4; }
+.ps-dialog-visual-art .ps-c1a-cols  { grid-area: 2 / 3 / 3 / 4; }
+
+.ps-dialog-visual-art .ps-c1b-root { --c1-top: 96px; }
+.ps-dialog-visual-art .ps-c1b-head { top: 60px; }
+.ps-dialog-visual-art .ps-c1b-chip { font-size: 10px; padding: 5px 11px; }
+.ps-dialog-visual-art .ps-c1b-wall {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.ps-dialog-visual-art .ps-c1c-root { --c1-top: 76px; }
+.ps-dialog-visual-art .ps-c1c-grid { grid-template-columns: 0.58fr 1.42fr; }
+.ps-dialog-visual-art .ps-c1c-k1,
+.ps-dialog-visual-art .ps-c1c-k2,
+.ps-dialog-visual-art .ps-c1c-k3 { padding: 9px 14px; }
+.ps-dialog-visual-art .ps-c1c-grid .ps-c1x-v--sm { font-size: 24px; }
+.ps-dialog-visual-art .ps-c1c-grid .ps-c1x-v--xs { font-size: 21px; }
+
+/* ---------------------------------------------------------------------------
+   13b. THE SHORT DIALOG. Measured, and it is NOT the 900x400 everyone assumes:
+   `.ps-dialog-visual` is **W x 280** at every width up to 768 and only becomes
+   W x 400 from 769. The 120px bottom veil does not shrink with it, and the
+   40x40 close button is NOT hidden on mobile despite the comment at
+   globals.css:2738 saying so (measured `display: flex` at 393x852). So the
+   usable box on a phone is roughly W x 130, less than a third of the desktop
+   dialog's, and the demonstration note cannot live at the foot: it would sit
+   under 70% veil. It moves to the top band instead, where the close button is
+   far to the right and cannot collide with it.
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .ps-dialog-visual-art .ps-c1x-root {
+    --c1-pad: 20px;
+    --c1-top: 62px;
+    --c1-bot: 88px;
+    --c1-gap: 8px;
+    --c1-radius: 9px;
+  }
+
+  .ps-dialog-visual-art .ps-c1x-note {
+    top: 24px;
+    bottom: auto;
+    /* Stops 58px short of the right edge so the block can never reach under
+       the 40x40 close button, which sits 18px in. Its box overlapped the
+       button's box even while the left-aligned glyphs did not, and a box that
+       can collide will collide the day the string changes. */
+    right: calc(var(--c1-pad) + 58px);
+    text-align: left;
+    font-size: 9px;
+  }
+
+  .ps-dialog-visual-art .ps-c1x-panel { padding: 8px 10px; gap: 4px; }
+  .ps-dialog-visual-art .ps-c1x-k { font-size: 8.5px; }
+  .ps-dialog-visual-art .ps-c1x-v { font-size: 26px; }
+  .ps-dialog-visual-art .ps-c1x-v--sm { font-size: 19px; }
+  .ps-dialog-visual-art .ps-c1x-v--xs { font-size: 17px; }
+  .ps-dialog-visual-art .ps-c1x-delta { font-size: 9.5px; }
+  .ps-dialog-visual-art .ps-c1x-ring { flex-direction: row; gap: 8px; }
+  .ps-dialog-visual-art .ps-c1x-ring__dial { width: 42px; height: 42px; }
+  .ps-dialog-visual-art .ps-c1x-ring__track,
+  .ps-dialog-visual-art .ps-c1x-ring__arc { stroke-width: 6; }
+  /* 9.5px, not 10.5: at 10.5 the figure was wider than the dial's inner
+     diameter and the glyphs crossed the arc on both sides. */
+  .ps-dialog-visual-art .ps-c1x-ring__value { font-size: 9.5px; }
+  .ps-dialog-visual-art .ps-c1x-ring__label { font-size: 8.5px; }
+  .ps-dialog-visual-art .ps-c1x-spark { height: 14px; }
+  .ps-dialog-visual-art .ps-c1x-rail { height: 10px; }
+  .ps-dialog-visual-art .ps-c1x-col { flex-basis: 16px; }
+  .ps-dialog-visual-art .ps-c1x-cols { gap: 5px; }
+  .ps-dialog-visual-art .ps-c1x-pairs { gap: 6px; }
+  .ps-dialog-visual-art .ps-c1x-trend { margin: 2px 0 0; }
+  .ps-dialog-visual-art .ps-c1x-trend__end { width: 7px; height: 7px; margin: -3.5px -3.5px 0 0; box-shadow: 0 0 0 2px var(--theme-bg-primary); }
+  .ps-dialog-visual-art .ps-c1a-hero { padding: 8px 11px; }
+
+  /* The period chip has no band to sit in once the note takes the top strip. */
+  .ps-dialog-visual-art .ps-c1b-root { --c1-top: 62px; }
+  .ps-dialog-visual-art .ps-c1b-head { display: none; }
+
+  .ps-dialog-visual-art .ps-c1c-root { --c1-top: 62px; }
+  .ps-dialog-visual-art .ps-c1c-k3 { display: none; }
+  .ps-dialog-visual-art .ps-c1c-k1,
+  .ps-dialog-visual-art .ps-c1c-k2 { padding: 6px 11px; }
+  .ps-dialog-visual-art .ps-c1c-grid .ps-c1x-v--sm { font-size: 19px; }
+  .ps-dialog-visual-art .ps-c1c-grid .ps-c1x-v--xs { font-size: 17px; }
+  .ps-dialog-visual-art .ps-c1c-grid {
+    grid-template-rows: repeat(2, minmax(0, 1fr)) auto;
+  }
+  .ps-dialog-visual-art .ps-c1c-focus { grid-area: 1 / 2 / 3 / 3; }
+  .ps-dialog-visual-art .ps-c1c-rail  { grid-area: 3 / 1 / 4 / 3; }
+}
+
+/* ---------------------------------------------------------------------------
+   13c. THE NARROW SHORT DIALOG. On a phone the bottom sheet is only as wide as
+   the viewport, so at 393 the three-column landscape arrangement gave the hero
+   panel 94px of box and 74px of content: "Jobs completed" ellipsised to
+   "JOBS COMPL..." and the delta pill was sliced to "8." by the panel's own
+   overflow. The head's period label was cut mid-word for the same reason, and
+   the `@container` rule that hides it on a narrow CARD cannot reach the dialog.
+   Below 520 the dialog therefore drops to two columns and four panels. The one
+   that goes is the sparkline KPI, so all four CHART types survive: a KPI with a
+   delta, an area trend, a ring and columns.
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 519px) {
+  .ps-dialog-visual-art .ps-c1x-k--dim { display: none; }
+
+  .ps-dialog-visual-art .ps-c1a-grid {
+    grid-template-columns: 1.18fr 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .ps-dialog-visual-art .ps-c1a-hero  { grid-area: 1 / 1 / 2 / 2; }
+  .ps-dialog-visual-art .ps-c1a-ring  { grid-area: 1 / 2 / 2 / 3; }
+  .ps-dialog-visual-art .ps-c1a-trend { grid-area: 2 / 1 / 3 / 2; }
+  .ps-dialog-visual-art .ps-c1a-cols  { grid-area: 2 / 2 / 3 / 3; }
+  .ps-dialog-visual-art .ps-c1a-side  { display: none; }
+
+  .ps-dialog-visual-art .ps-c1b-wall {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+  }
+  .ps-dialog-visual-art .ps-c1b-tile--d,
+  .ps-dialog-visual-art .ps-c1b-tile--f { display: none; }
+
+  /* The rail column widens from 29% to 45% of the sheet: at 320 wide it was
+     81px, and a KPI carrying a figure and a delta pill cannot live in 81px. */
+  .ps-dialog-visual-art .ps-c1c-grid { grid-template-columns: 0.9fr 1.1fr; }
+  .ps-dialog-visual-art .ps-c1c-k1,
+  .ps-dialog-visual-art .ps-c1c-k2 { padding: 6px 9px; }
+  .ps-dialog-visual-art .ps-c1c-k1 .ps-c1x-figline { flex-wrap: nowrap; }
+}
+
+/* ---------------------------------------------------------------------------
+   14. MOTION: NONE. THIS SECTION IS DELIBERATELY EMPTY AND MUST STAY EMPTY.
+
+   The measured card-4 animation style is "arrive once as a single finished
+   object over 0.65s on a hard ease-out, then hold perfectly still". Exactly one
+   thing animates and it is THE CARD, driven by a single grid-level
+   ScrollTrigger at service-pillars.tsx:2483-2499 which this stylesheet does not
+   own and must not duplicate. Everything in here rides in as one rigid unit.
+
+   So there is NO `transition`, NO `animation`, NO `@keyframes` and NO
+   `opacity: 0` anywhere in this file, and the previous pass's five-panel
+   stagger, area grow, line draw-on, arc draw-on, column rise and rail wipe are
+   all DELETED rather than gated.
+
+   Three consequences, all of them improvements:
+     - REDUCED MOTION IS CORRECT BY CONSTRUCTION. There is nothing to gate, so
+       the reduced-motion render is byte-identical to the normal one and the
+       per-card `transition-delay` pin that D23b warns about is unnecessary
+       rather than merely present. The global reset at globals.css:4556 has
+       nothing here to reset.
+     - THE ART NEEDS NO JAVASCRIPT. Nothing starts hidden, so a 404'd
+       /_next/static/ chunk, a blocked script or a corrupted .next cannot ship
+       a blank card. A sibling shipped a blank navy rectangle in WebKit from
+       exactly that cause.
+     - THERE IS NO HOVER END-STATE TO SNAP. This file adds no hover behaviour,
+       so the defect M4 records on card 4 (transition gated under reduced
+       motion, end-state not) cannot exist here.
+
+   If a future pass adds motion: gate BOTH the transition and the end state on
+   `no-preference`, never set `opacity: 0` as a start state, and bump
+   `--c1r-build`.
+   --------------------------------------------------------------------------- */
