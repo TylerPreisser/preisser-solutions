@@ -3115,6 +3115,41 @@ ul, ol {
   height: 100%;
 }
 
+/* Opt-in wide graphic slot. ONE tile uses it: the AI pillar's business-chat
+   visual, which is a small UI mockup rather than a 48x48 glyph and turns to
+   mush at the default 80px. Sizes measured in the real card over the real
+   gradient, all four engines: 208x166 at a 320px viewport (23px clearance),
+   248x196 from 375px up (42-65px clearance). Both above the 150px floor the
+   graphic needs to stay legible. Do not apply this to a normal icon -- the
+   other 46 are drawn for 80px and go soft when scaled up. */
+/* Category label, top-left of the tile face. The title below it is the
+   outcome; this says what the thing actually is, which is what a visitor
+   scans for. Sits above the graphic in z-order and, like the title, stays
+   visible at rest -- it is deliberately NOT faded with the graphic on
+   hover, because the overlay that replaces it repeats the title but not
+   the category. */
+.ps-carousel-card-product {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  right: 16px;
+  z-index: 2;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.35;
+  pointer-events: none;
+}
+
+.ps-carousel-card-graphic--wide {
+  width: min(248px, calc(100% - 32px));
+  height: auto;
+  aspect-ratio: 320 / 240;
+  transform: translate(-50%, -72%);
+}
+
 .ps-carousel-card-overlay {
   position: absolute;
   inset: 0;
@@ -5497,6 +5532,29 @@ ul, ol {
 
 /* ── Dialog / Bottom Sheet: dvh fix + show close button on mobile ── */
 @media (max-width: 768px) {
+  /* The docked close button (.ps-dialog-close-btn, 40px wide at right:18px,
+     z-index 5) shares its x-band with the carousel's "next" arrow, because
+     .ps-carousel-header is justify-content:space-between so the nav sits
+     flush right. At rest they are far apart vertically; once the sheet is
+     scrolled the header rises under the button and the CLOSE BUTTON WINS THE
+     HIT TEST -- tapping "next" dismissed the dialog. Reproduced live at
+     320x568, 360x640 and 393x659 in chromium, webkit, firefox and real
+     Safari, where the chevron was entirely hidden behind the x.
+     Reserving the button's footprint (40px + 18px) separates them on the x
+     axis, so it holds at every scroll position rather than only at rest. */
+  .ps-carousel-header {
+    padding-right: 58px;
+  }
+
+  /* Cosmetic consequence of the rule above, not a second fix: the nav is now
+     58px inboard while the track still ran to the panel edge, so there was
+     dead space to the right of the next chevron at rest. Matching the track
+     keeps both right edges on one line. This is trailing scroll space on a
+     horizontal scroller, so no tile is hidden by it. */
+  .ps-carousel-track {
+    padding-right: 58px;
+  }
+
   .ps-dialog-panel {
     /* dvh avoids the iOS Safari 100vh bug (excludes browser chrome) */
     max-height: 95dvh;
