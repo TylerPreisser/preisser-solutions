@@ -85,7 +85,7 @@
      404s, `status 200` -- and it was the previous version of concept C. A
      positive style assertion proves CSS applied; only a value that CHANGES
      with the edit proves WHICH CSS applied. */
-  --c5r-build: 18;
+  --c5r-build: 33;
 
   /* Its own size container. Safe because the root is position:absolute /
      inset:0, so neither axis depends on its contents. Queried by name so a
@@ -95,6 +95,32 @@
 
   /* roles that are genuinely tokens */
   --c5r-accent: var(--theme-accent-text);
+
+  /* ═══ INK FOR TYPE PRINTED ON THE DEPICTED WHITE PAGE, AND IT IS A
+     SEPARATE ROLE FROM `--c5r-accent` FOR A MEASURED REASON.
+     `--theme-accent-text` is correct for anything drawn on the CARD's
+     ground, which flips with the theme. The winning result does not flip:
+     a depicted white page is white in both themes (R5 role 9, and the same
+     rule that keeps card 4's phone bezel dark in light mode). So in dark
+     theme `--theme-accent-text` resolved to `--color-primary` #1590FF and
+     printed it on WHITE, where it measures 3.27:1 by calculation and 3.25:1
+     off the rendered pixels -- below AA, on the one string the whole card
+     exists to deliver ("the top one will pop up and say your business").
+
+     `--color-primary-strong` (`globals.css:65`) is the same logo hue
+     darkened for exactly this, carries its own "5.08:1 with white" note,
+     and is declared OUTSIDE any [data-theme] block, so it is the one accent
+     in the system that does not change under a surface that also does not
+     change. Light theme is unaffected: `--theme-accent-text` was already
+     #0C6FC9 there, so this makes the two themes agree rather than moving
+     one of them. NOT `#0D95E8` (superseded, forbidden at globals.css:53-55)
+     and NOT a new hex -- this file gains no colour value from this fix.
+
+     The site MARK deliberately keeps `--c5r-accent` and stays the brighter
+     blue. It is a favicon, not type; on a real results page the site's mark
+     and the link title are different blues, and holding them apart is what
+     stops the row reading as one blue blob. */
+  --c5r-page-ink: var(--color-primary-strong);
   --c5r-page: var(--color-white);
   --c5r-ground-a: var(--theme-art-ground-a, #0a1628);
   --c5r-ground-b: var(--theme-art-ground-b, #0c1e3a);
@@ -106,6 +132,15 @@
   --c5r-dim-b: #101e34;         /* and its foot */
   --c5r-dim-edge: rgba(148, 163, 184, 0.14);
   --c5r-dim-rule: rgba(148, 163, 184, 0.4);
+  /* THE ONE NEW MATERIAL THIS CHANGE NEEDED: an ink for depicted text on an
+     unlit row. Every unlit thing in this file used to be a BAR, and a bar
+     has no legibility requirement; "Other Business" is type and does. The
+     existing rules are far too faint to carry it -- --c5r-dim-rule is
+     0.4 alpha slate, which measures about 2.4:1 on the row it sits on.
+     Measured against the unlit row's own gradient mid-point (#131f35 dark,
+     #d9e3ef light): 7.5:1 dark and 5.4:1 light. Slate, like the six values
+     above it; no new hue enters the file. */
+  --c5r-dim-ink: #9fb0c6;
   --c5r-dim-rule-2: rgba(148, 163, 184, 0.22);
   --c5r-cross: rgba(148, 163, 184, 0.62);
   --c5r-strike: #94a3b8;
@@ -200,6 +235,61 @@
      70 clears it by eight pixels and hands the other four back to the query
      at the width where the query has none to spare. */
   .ps-c5r-stage { --c5r-keep: 70px; }
+
+  /* ═══ THE DARK PHONE SCRIM, AND IT IS THE ONE THING THAT NEARLY SHIPPED
+     THIS CARD BROKEN. `[data-theme="dark"] .ps-bento-card__text::before`
+     (`globals.css:7565-7590`) is a near-opaque navy plate over the bottom of
+     every card face at this width: `inset: -80px 0 0`, so it starts EIGHTY
+     PIXELS ABOVE the title box and holds rgba(10,22,40,0.86) all the way to
+     the card's foot, fading out only across those top 80px. Measured on this
+     card: the title takes two lines at 320-768, the text box starts at card
+     y 296, so the scrim owns y 216 to 380 -- and the stage floor is 286,
+     which is SEVENTY PIXELS INSIDE IT.
+
+     It is invisible to every probe that usually finds this. It is
+     `pointer-events: none`, so `elementsFromPoint` never returns it; it is a
+     pseudo-element, so a walk over `querySelectorAll('*')` never sees it;
+     `getComputedStyle` on the row still reports opacity 1 and the ink still
+     reports rgb(159,176,198). Only the PIXELS show it. Read back off
+     per-row element screenshots at 375 dark, the three named rows measured
+     7.29 : 6.98 : 3.10 against 7.29 : 7.29 : 7.29 with the pseudo-element
+     hidden -- the third row composited at about 55% scrim, and the second
+     clipped its bottom edge.
+
+     NO INK CAN FIX IT: solved against the composited plate, even pure white
+     text reaches only 4.23:1 under 55% of that scrim. The geometry has to
+     move, so it moves.
+
+     140, NOT 100: it puts the stage floor at card y 246, where the scrim is
+     about 0.32 and the named row's own type sits nearer 0.17 -- 5.6:1, read
+     the same way. Taking the floor all the way to 216 would clear the scrim
+     completely and cost 70px of a 266px stage, which forced a 56px lit row
+     and 24px results: legible, and much worse to look at.
+
+     Light theme is deliberately untouched -- it measured 5.42 : 5.42 : 5.42
+     with the scrim in place, because the light scrim and the light unlit row
+     are within a few values of each other. So is every width above 768,
+     where this pseudo-element does not exist at all (checked at 820, 939,
+     940, 1024, 1280, 1440 and 1920: `content` computes to none).
+
+     SCOPED TO THE CARD FACE. The dialog mount sets its own `--c5r-foot` at
+     equal specificity earlier in this file, so an unscoped rule here would
+     silently win on source order and break the sheet it was not aimed at.
+     ═══════════════════════════════════════════════════════════════════ */
+  .ps-bento-card__content-inner .ps-c5r-a .ps-c5r-stage {
+    --c5r-foot: 140px;
+  }
+
+  /* AND TWO NAMED ROWS, NOT THREE, ON THE FACE AT THIS WIDTH. The lifted
+     floor leaves a 226px stage: two rows land at 39.5px each at the 284 art
+     box and 33px at the 412, both above the floor a mark and a name need.
+     Three would be 23.7px and would have overrun. The owner's words allow
+     it outright -- "the other two or three below it" -- and it matches what
+     the short phone dialog already shows, so a phone viewer sees the same
+     count on the card and in the sheet it opens. */
+  .ps-bento-card__content-inner .ps-c5r-a .ps-c5r-row--named:last-child {
+    display: none;
+  }
 }
 
 /* THE FOOT. On the face the art has to clear the title band, which takes
@@ -232,6 +322,19 @@
     --c5r-line-h: 5.5px;
     --c5r-tile-h: 80px;
   }
+
+  /* >> THE STACKED BUDGET IS 5px TIGHTER AT THIS STEP THAN AT THE BASE, and
+     it was measured rather than reasoned: the step's bigger field (44 vs 40)
+     and taller rules put the 412x392 box at scrollHeight 271 against a 266
+     stage, which pushed the composer 5px through the stage floor. The base
+     boxes (284, 298.7, 326.7) fit at 266/266. Trimmed here and only here;
+     the wide slot overrides all three of these later in the file. */
+  .ps-c5r-a .ps-c5r-stage {
+    --c5r-stack: 8px;
+    --c5r-panel-gap: 5px;
+  }
+
+  .ps-c5r-a .ps-c5r-row--ours { min-height: 46px; }
 }
 
 /* Size step two: a wide box that is still a single column -- the 604x392
@@ -287,6 +390,82 @@
      ranked list alone is 168 of it (74 + 40 + 40 + two 7px gaps), so the
      band would be 7px tall. Measured, not assumed. */
   .ps-dialog-visual-art .ps-c5r-deadends { display: none; }
+
+  /* TWO NAMED ROWS HERE, NOT THREE, AND THIS IS THE ONE BOX WHERE THAT IS
+     TRUE. The 280-tall dialog gives 186px of stage: field 42 + stack 11
+     leaves 133 for the list, and the lit row takes 62 of it. Three rows in
+     the remaining 57 would be 14px each -- below the 24px floor a mark and
+     a name need -- so the list would have overrun the stage by about 45px.
+     The owner's words allow it explicitly ("the other two or three below
+     it"), and dropping the row in CSS rather than in markup keeps one
+     reading order in the DOM at every size. */
+  /* ═══ AND THE DIALOG HAS ITS OWN FADE, MEASURED THE SAME WAY. The card
+     face's problem was `.ps-bento-card__text::before`; the sheet's is
+     `.ps-dialog-visual::after` (`globals.css:2738-2755`) -- a 120px band
+     pinned to the bottom of the visual, `linear-gradient(to bottom,
+     transparent 0%, var(--theme-dialog-bg) 100%)`. In the 280-tall phone
+     sheet it owns art y 160 to 280, and the stage floor stood at 216, so
+     the second named row's type sat at about 34% fade.
+
+     THAT ONE IS WORSE IN LIGHT, WHICH IS THE OPPOSITE OF THE CARD FACE, and
+     the arithmetic says why: the card scrim is dark on a dark plate with
+     pale ink, so it darkens the plate faster than the ink and contrast only
+     sags. This fade is WHITE, and in light theme it pulls a #4b5a6e ink and
+     a #dee7f1 plate toward the same white together, so contrast collapses
+     instead of sagging. Read off per-row element screenshots at seven phone
+     widths: 4.06 dark and 2.74 light on the last row against 6.9 and 5.03
+     on the first.
+
+     Solved against the composited pair rather than tuned by eye: 4.5:1
+     needs the type at 8% fade or less, which is art y 170, which is a row
+     bottom near 184, which is `--c5r-foot: 96`. Everything else here is the
+     budget that leaves: a 158px stage carries field 40 + stack 10 + a 52px
+     lit row + two 21px named rows + two 7px gaps. The lit row loses its
+     second snippet rule to buy those pixels -- at 52px it holds a head, a
+     name and one rule, and a second would have overrun it. */
+  /* RE-BUDGETED AFTER THE LAYOUT COLLAPSE, AND BOTH REASONS ARE MEASURED.
+     (1) Concept A stopped taking the grid, so in the 768-wide short sheet it
+     inherited the stacked block's field 48 and gap 9 and overran the stage
+     by 10px -- `scrollHeight - clientHeight`, at that one box. Declaring the
+     sizes here, at three classes, puts them back under the sheet's control.
+     (2) The floor went 96 -> 104. At 96 the last row's type sat at about 12%
+     of `.ps-dialog-visual::after` and measured 3.99:1 in light at 640 and
+     768 and 4.80 on phones -- the wide one failing, the narrow one passing
+     with almost nothing to spare. At 104 the type sits near 4% and both
+     read about 5.6. Every number below is what 150px of stage holds:
+     38 + 8 + 46 + 6 + 23 + 6 + 23 = 150 exactly. */
+  .ps-dialog-visual-art .ps-c5r-a .ps-c5r-stage {
+    --c5r-pad-t: 26px;
+    --c5r-foot: 104px;
+    --c5r-field-h: 38px;
+    --c5r-stack: 8px;
+    --c5r-gap: 6px;
+    /* 54 and 11, NOT 46 and 14. The stacked wide block sets `--c5r-name: 14px`
+       for the banner and the sheet inherited it, which is what put a 16.1px
+       line box in a row that had 44px of light-theme content height to spend
+       on a 16px head, a name, a snippet rule and two gaps. At 11px the name
+       needs 14.65 and the row needs 46.85, so the row goes to 54 and the two
+       named rows take 19 each -- the list still ends on the same floor, so
+       the fade clearance measured for build 32 is untouched. */
+    --c5r-ours-h: 54px;
+    --c5r-name: 11px;
+    --c5r-named-min: 19px;
+  }
+
+  .ps-dialog-visual-art .ps-c5r-a .ps-c5r-row--ours .ps-c5r-line--b {
+    display: none;
+  }
+
+  /* TWO NAMED ROWS HERE, NOT THREE, AND THIS IS THE ONE BOX WHERE THAT IS
+     TRUE OF THE SHEET. 158px of stage cannot carry three above the fade;
+     the third would be 11px. The owner's words allow it explicitly ("the
+     other two or three below it"), it matches what the card face behind
+     this sheet already shows at the same width, and dropping the row in CSS
+     rather than in markup keeps one reading order in the DOM at every
+     size. */
+  .ps-dialog-visual-art .ps-c5r-a .ps-c5r-row--named:last-child {
+    display: none;
+  }
 
   .ps-dialog-visual-art .ps-c5r-stage {
     --c5r-foot: 64px;
@@ -420,11 +599,12 @@
 
 /* The name sits where the title bar used to, so it inherits the row's own
    gap rhythm and needs no offset of its own. On the lit row it is read on
-   white in both themes, so the link colour is the one that has to work on
-   white -- which is what --c5r-accent already is on this row. */
+   white in BOTH themes, so the link colour is the one that has to work on
+   white -- which is `--c5r-page-ink`, and section 1 records why that is a
+   different token from `--c5r-accent` rather than the same one. */
 .ps-c5r-row--ours .ps-c5r-biz { margin: 1px 0; }
 
-.ps-c5r-row--ours .ps-c5r-title { background: var(--c5r-accent); }
+.ps-c5r-row--ours .ps-c5r-title { background: var(--c5r-page-ink); }
 .ps-c5r-row--ours .ps-c5r-domain { background: var(--c5r-rule-2); }
 .ps-c5r-row--ours .ps-c5r-line { background: var(--c5r-rule); }
 .ps-c5r-row--ours .ps-c5r-line--b { background: var(--c5r-rule-2); }
@@ -447,25 +627,25 @@
    whole search panel AND a whole conversation into 266px of usable height.
    Measured: at the 412x392 box the full-height rows made the two panels
    248 + 114 = 362 in a 266 stage. */
-.ps-c5r-row--compact {
+.ps-c5r-a .ps-c5r-results .ps-c5r-row--rest {
   height: calc(var(--c5r-rest-h) * 0.46);
   justify-content: center;
 }
 
-.ps-c5r-row--compact .ps-c5r-rowhead {
+.ps-c5r-a .ps-c5r-results .ps-c5r-row--rest .ps-c5r-rowhead {
   margin-bottom: 0;
   gap: calc(var(--c5r-row-px) * 0.5);
 }
 
-.ps-c5r-row--compact .ps-c5r-mark {
+.ps-c5r-a .ps-c5r-results .ps-c5r-row--rest .ps-c5r-mark {
   width: calc(var(--c5r-mark) * 0.62);
   height: calc(var(--c5r-mark) * 0.62);
   border-radius: calc(var(--c5r-mark-r) * 0.7);
 }
 
-.ps-c5r-row--compact .ps-c5r-domain { display: none; }
+.ps-c5r-a .ps-c5r-results .ps-c5r-row--rest .ps-c5r-domain { display: none; }
 
-.ps-c5r-row--compact .ps-c5r-title {
+.ps-c5r-a .ps-c5r-results .ps-c5r-row--rest .ps-c5r-title {
   height: calc(var(--c5r-title-h) * 0.78);
   width: 58%;
 }
@@ -560,6 +740,11 @@
 
 .ps-c5r-line--a { width: 92%; }
 .ps-c5r-line--b { width: 64%; }
+/* Prose widths for the assistant's answer. Uneven, and none of them full,
+   because a paragraph does not have a straight right edge. */
+.ps-c5r-line--c { width: 84%; }
+.ps-c5r-line--d { width: 90%; }
+.ps-c5r-line--e { width: 58%; }
 
 /* Concept C states a size hierarchy that A does not: A is a RANKING, so
    its results are near-peers with one of them lit; C is about LEGIBILITY,
@@ -568,69 +753,102 @@
 .ps-c5r-c .ps-c5r-row--ours { height: calc(var(--c5r-ours-h) * 1.28); }
 .ps-c5r-c .ps-c5r-row--rest { height: calc(var(--c5r-rest-h) * 0.92); }
 
-/* ── 4b. THE TWO PANELS (the owner's picture) ─────────────────────────
-   A panel is a LAYOUT, not an object: no border, no fill, no shadow, no
-   radius of its own. Drawing a frame around each half would have made the
-   card two little windows side by side, and a window is card 4's picture
-   because ITS subject is websites. Recognition here comes from the objects
-   -- a magnifier field over ranked rows on one side, alternating turns over
-   an input row on the other. `space-between` is what puts the input row and
-   the last result on the stage floor, which is also what keeps the bottom
-   band of the wide slot from going back to the empty navy it was. */
+/* ── 4b. CONCEPT A'S SIZING ────────────────────────────────────────
+   THIS BLOCK USED TO SIZE TWO PANELS INTO ONE COLUMN AND IT NOW SIZES ONE.
+   The `.ps-c5r-panel` wrapper is gone with the conversation it existed to
+   separate: A's field and results are direct children of the stage, exactly
+   like C's, which is also what lets both concepts share one spread rule
+   instead of two.
 
-.ps-c5r-panel {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
+   THE STACKED BUDGET, MEASURED AT THE 284x392 ART FACE (266px usable):
+   field 40 + stack 15 + lit row 76 + gap 8 + three named rows at 37 + two
+   gaps at 8 = 245 of 266. That measurement is the reason there are THREE
+   named rows and not two: two would leave 74px of empty navy under the
+   list, which is the "dead band" defect that started this job. The one box
+   that genuinely cannot hold three is the 280-tall phone dialog, and it
+   drops the last row in the short-box query near the top of this file. */
+
+/* THE LIT ROW IS FIXED AND THE NAMED ROWS TAKE THE SLACK, and that division
+   is read off a render rather than chosen. Letting the LIT row absorb the
+   column's spare height made it 150px of white plate around 52px of
+   content -- a slab with a dead bottom half, the card-scale defect
+   reproduced inside a single object. Growing the three unlit rows instead
+   costs nothing, because a taller unlit row simply looks like a result. */
+.ps-c5r-a .ps-c5r-results {
+  flex: 1 1 auto;
   min-height: 0;
-  gap: var(--c5r-panel-gap);
 }
 
-/* >> NOT `space-between`, AND THE FIRST RENDER IS WHY. Spread across 266px
-   with three items, the conversation came apart into three fragments with
-   voids between them and the search panel had a 200px hole between its
-   field and its first result. Each panel now sits at the TOP of its column
-   with its own rhythm, and only the composer is pushed to the floor --
-   which is where a composer lives anyway, so the space above it reads as
-   room for the conversation to continue rather than as a hole. */
-.ps-c5r-panel {
-  justify-content: flex-start;
+.ps-c5r-a .ps-c5r-row--ours {
+  flex: 0 0 auto;
+  height: var(--c5r-ours-h);
+  min-height: 0;
 }
 
-.ps-c5r-panel--chat .ps-c5r-input { margin-top: auto; }
-
-/* >> THE STACKED REGIME IS THE TIGHT ONE AND EVERY NUMBER HERE IS MEASURED.
-   The narrow slot gives 266px of usable height for BOTH surfaces. The first
-   attempt used the roomy sizes and overflowed catastrophically: the user's
-   turn landed on top of the second result row, escaped the card's right
-   edge, and the composer crossed into the title band. Budget as built:
-   field 40 + 6 + lit 52 + 5 + row 16 + 5 + row 16 = 140, panel gap 10,
-   turn 26 + 6 + answer 38 + composer 24 = 94.  140 + 10 + 94 = 244 of 266.
-   Scoped to `.ps-c5r-a` throughout so concepts B and C keep the sizes they
-   were gated at. */
-.ps-c5r-a .ps-c5r-stage {
-  --c5r-panel-gap: 6px;
-  --c5r-stack: 10px;
-  --c5r-input-h: 24px;
-  --c5r-name: 11px;
-  --c5r-turn-py: 5px;
-  --c5r-avatar: 16px;
+.ps-c5r-a .ps-c5r-results .ps-c5r-row--rest {
+  flex: 1 1 auto;
+  height: auto;
+  /* The floor is what a mark and a name need on one line; the ceiling stops
+     three rows from stretching into three panels in a tall dialog. */
+  min-height: var(--c5r-named-min, 28px);
+  max-height: var(--c5r-rest-h);
+  justify-content: center;
 }
 
-.ps-c5r-a .ps-c5r-row--ours { height: 52px; }
-.ps-c5r-a .ps-c5r-row--compact { height: 16px; }
-
-/* One snippet rule, not two, in the stacked regime: the lit row is 52px and
-   two rules plus the name plus the head do not fit in it. */
-.ps-c5r-a .ps-c5r-row--ours .ps-c5r-line--b,
-.ps-c5r-a .ps-c5r-answer .ps-c5r-line--b {
-  display: none;
+/* A NAMED ROW IS ONE LINE: mark, then name. The head loses its bottom
+   margin because there is nothing under it to clear, and the mark steps
+   down to 0.74 so it reads as a favicon beside type rather than as a tile
+   with a caption. */
+.ps-c5r-a .ps-c5r-results .ps-c5r-row--rest .ps-c5r-rowhead {
+  margin-bottom: 0;
+  gap: calc(var(--c5r-row-px) * 0.55);
 }
+
+.ps-c5r-a .ps-c5r-results .ps-c5r-row--rest .ps-c5r-mark {
+  width: calc(var(--c5r-mark) * 0.74);
+  height: calc(var(--c5r-mark) * 0.74);
+  border-radius: calc(var(--c5r-mark-r) * 0.8);
+}
+
+/* THE LAST ROW NO LONGER FADES, AND THE REASON IS LEGIBILITY, NOT TASTE.
+   `:last-child { opacity: 0.6 }` was correct when the row's brightest mark
+   was a grey bar. It is wrong now that the row carries type: 0.6 takes the
+   measured 7.5:1 down to about 4.0:1 dark and 5.4:1 to under 3:1 light, and
+   the owner asked for the same words three times -- "Other business. Other
+   business. Other business." -- not for one of them to trail off. The
+   recession is carried entirely by plate width (100 / 92 / 84) and by the
+   fact that none of the three is lit. */
+.ps-c5r-a .ps-c5r-results .ps-c5r-row--rest:last-child { opacity: 1; }
 
 /* THE NAME, in both panels, drawn identically in both because it is the
    same page being surfaced twice. Link colour, because that is the colour a
    result title is; `--c5r-page` behind it in the lit row means it is read
    on white in both themes, exactly like the rules printed on that row. */
+/* ═══ TYPE IS NEVER A SHRINK VICTIM, AND THIS ONE LINE IS THE WHOLE FIX FOR
+   A DEFECT NO GEOMETRY PROBE COULD SEE. `.ps-c5r-biz` sits in a fixed-height
+   flex column and carries `overflow: hidden`. Flex items shrink by default,
+   so when `.ps-c5r-row--ours` ran short the browser did not overflow the row
+   -- it COMPRESSED THE TEXT BOX and the hidden overflow sliced the bottom
+   off every glyph. Measured in the sheet at build 32: an 11.19px box against
+   a 16.1px line box, a 30.5% deficit, and the row itself reported
+   `scrollHeight - clientHeight = 0` and a NEGATIVE bottom-past-row the whole
+   time. Every probe pointed at the row read clean because the row WAS clean.
+
+   Worse in light for a reason worth writing down: `[data-theme="light"]
+   .ps-c5r-row--ours` adds a 1px border, so the light row has 2px less
+   content height than the dark one at the same declared height. That 2px is
+   the entire difference between 19.3% and 31.7% at 560-768, and it is why
+   every dark sample looked fine.
+
+   `flex: 0 0 auto` converts a SILENT CLIP into a VISIBLE OVERFLOW. That is
+   the point: the failure becomes something `scrollHeight - clientHeight`
+   reports, so the probes that were blind to it now catch it. The boxes it
+   then overflowed are re-budgeted at their own rules below. */
+.ps-c5r-biz,
+.ps-c5r-other {
+  flex: 0 0 auto;
+}
+
 .ps-c5r-biz {
   display: block;
   min-width: 0;
@@ -641,133 +859,35 @@
   font-weight: 650;
   letter-spacing: -0.005em;
   white-space: nowrap;
-  color: var(--c5r-accent);
+  color: var(--c5r-page-ink);
 }
 
-/* ── 4c. THE CONVERSATION, GENERIC BY CONSTRUCTION ───────────────────
-   Two ALTERNATING turns, an avatar on the assistant's side only, and an
-   input row at the foot. That is the whole vocabulary and none of it is
-   anybody's product: no wordmark, no logo, no branded chrome, no sidebar,
-   no model picker. The person's turn is filled and hugs the right edge; the
-   assistant's is unfilled and starts at the left. */
-
-.ps-c5r-turn {
-  display: flex;
-  flex: 0 0 auto;
-  min-width: 0;
-  gap: calc(var(--c5r-turn-px) * 0.7);
-}
-
-.ps-c5r-turn--user {
-  align-self: flex-end;
-  max-width: 92%;
-  padding: var(--c5r-turn-py) var(--c5r-turn-px);
-  border-radius: var(--c5r-turn-r) var(--c5r-turn-r) 3px var(--c5r-turn-r);
-  background: var(--c5r-accent);
-  box-shadow: var(--c5r-lift-sm);
-}
-
-.ps-c5r-turn--user .ps-c5r-q {
+/* SOMEBODY ELSE'S NAME, on an unlit row. Deliberately the SAME face, the
+   same weight and the same size as the lit row's name and deliberately NOT
+   the same colour: identical type is what makes the rows read as peers on
+   one results page, and colour alone is what makes one of them the answer.
+   Nowrap with hidden overflow like `.ps-c5r-biz`, and measured rather than
+   trusted -- "Other Business" is 84px at 11px Inter 650 against a 208px
+   plate at the narrowest card, so it does not truncate at any width. */
+.ps-c5r-other {
   display: block;
-  color: #ffffff;
-}
-
-.ps-c5r-turn--bot {
-  align-self: flex-start;
-  align-items: flex-start;
-  width: 100%;
-}
-
-/* A circle, not the square a site mark uses, so the two never read as the
-   same thing; a small accent diamond inside it and nothing else. It is an
-   avatar because of WHERE it sits -- beside a turn -- not because of any
-   glyph, which is how it stays generic. No face, no robot, no spark. */
-.ps-c5r-avatar {
-  position: relative;
-  flex: 0 0 auto;
-  width: var(--c5r-avatar);
-  height: var(--c5r-avatar);
-  border-radius: 50%;
-  background: var(--c5r-dim-a);
-  border: 1px solid var(--c5r-dim-edge);
-}
-
-.ps-c5r-avatar::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: calc(var(--c5r-avatar) * 0.34);
-  height: calc(var(--c5r-avatar) * 0.34);
-  border-radius: 1px;
-  background: var(--c5r-accent);
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.ps-c5r-answer {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
   min-width: 0;
-  gap: calc(var(--c5r-line-h) * 1.15);
-  padding: calc(var(--c5r-turn-py) * 0.6) 0 0;
+  overflow: hidden;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-size: var(--c5r-name);
+  line-height: 1.15;
+  font-weight: 650;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  color: var(--c5r-dim-ink);
 }
 
-.ps-c5r-answer .ps-c5r-line { background: var(--c5r-dim-rule); }
-.ps-c5r-answer .ps-c5r-line--b { background: var(--c5r-dim-rule-2); }
-
-/* THE RECOMMENDATION, INSIDE THE ANSWER. It is indented under the answer's
-   own lines and shares their left edge, so it reads as the last thing the
-   assistant wrote rather than as a badge dropped on top of the turn. Same
-   coloured square and same name as first position in the other panel. */
-.ps-c5r-cite {
-  display: flex;
-  align-items: center;
-  align-self: flex-start;
-  max-width: 100%;
-  min-width: 0;
-  gap: calc(var(--c5r-turn-px) * 0.55);
-  margin-top: calc(var(--c5r-line-h) * 0.7);
-  padding: calc(var(--c5r-turn-py) * 0.7) calc(var(--c5r-turn-px) * 0.8);
-  border-radius: calc(var(--c5r-turn-r) * 0.62);
-  background: var(--c5r-page);
-  box-shadow: var(--c5r-lift-sm);
-}
-
-.ps-c5r-cite .ps-c5r-mark {
-  width: calc(var(--c5r-mark) * 0.8);
-  height: calc(var(--c5r-mark) * 0.8);
-  border-radius: calc(var(--c5r-mark-r) * 0.8);
-}
-
-/* Where the next question would go. A rounded trough, a resting placeholder
-   rule and one stroked chevron. */
-.ps-c5r-input {
-  display: flex;
-  align-items: center;
-  flex: 0 0 auto;
-  gap: var(--c5r-turn-px);
-  height: var(--c5r-input-h);
-  padding: 0 calc(var(--c5r-turn-px) * 0.9);
-  border: 1px solid var(--c5r-field-bd);
-  border-radius: calc(var(--c5r-input-h) / 2);
-  background: var(--c5r-field-bg);
-}
-
-.ps-c5r-inputline {
-  flex: 1 1 auto;
-  height: var(--c5r-line-h);
-  border-radius: calc(var(--c5r-line-h) / 2);
-  background: var(--c5r-dim-rule-2);
-}
-
-.ps-c5r-send {
-  display: block;
-  flex: 0 0 auto;
-  width: calc(var(--c5r-input-h) * 0.5);
-  height: calc(var(--c5r-input-h) * 0.5);
-  color: var(--c5r-accent);
-}
+/* THE SNIPPET UNDER A NAMED ROW IS OFF BY DEFAULT. In the stacked regime a
+   named row is 28-37px and holds one line; it is turned back on in the
+   spread block, where the same row is 60px and would otherwise be a plate
+   with a dead lower half -- the card-scale defect this whole job began as,
+   reproduced inside one object. */
+.ps-c5r-row--named .ps-c5r-title { display: none; }
 
 /* ── 5. THE CONVERSATION (symptoms #9 and #11) ───────────────────────
    A filled bubble on the right is a person talking; a tailed panel on the
@@ -847,7 +967,7 @@
   transform: rotate(45deg) skew(-6deg, -6deg);
 }
 
-.ps-c5r-bubble--reply .ps-c5r-title { background: var(--c5r-accent); width: 56%; }
+.ps-c5r-bubble--reply .ps-c5r-title { background: var(--c5r-page-ink); width: 56%; }
 .ps-c5r-bubble--reply .ps-c5r-domain { background: var(--c5r-dim-rule-2); }
 .ps-c5r-bubble--reply .ps-c5r-line { background: var(--c5r-dim-rule); }
 .ps-c5r-bubble--reply .ps-c5r-line--b { background: var(--c5r-dim-rule-2); }
@@ -960,6 +1080,58 @@
 .ps-c5r-x::before { transform: rotate(45deg); }
 .ps-c5r-x::after { transform: rotate(-45deg); }
 
+/* THE TALL SHEET HAS THE SAME FADE AND NEEDED THE SAME LEVER. Gated on
+   `min-height: 321px` rather than written as a plain dialog rule, because
+   the short-box query above already owns every value at the same three
+   classes and a later unscoped rule would have silently taken them back.
+   The two queries cannot both match.
+
+   `.ps-dialog-visual::after` is 120px tall in this box too, so it owns art
+   y 280 to 400. The floor stood at 316 and the last row's type landed near
+   13% of it: 4.39-4.40:1 in light at 820 through 1920, read off per-run
+   crops. 104 puts the floor at 296 and the type within a pixel of the
+   fade's own top edge -- about 4% -- and it reads 6.0. The 244px stage that
+   leaves is spent 48 + 14 + 76 + 9 + three 29px rows + two more 9s; the lit
+   row gives up 8px so the three named rows can each stay above the 28px
+   floor a mark and a name need. */
+@container c5art (min-height: 321px) {
+  /* The lit row drops its second snippet rule in the sheet. At 820+ the row
+     wants 24 head + 3 + 18.1 name + two 6px rules + three 6.3 gaps = 76 in a
+     76px row -- which is 74 once light theme's 1px border is counted, so
+     light sheared by 6.8% and dark did not. One rule instead of two leaves
+     63.7 in 74, which is margin rather than a coin flip. */
+  .ps-dialog-visual-art .ps-c5r-a .ps-c5r-row--ours .ps-c5r-line--b {
+    display: none;
+  }
+
+  .ps-dialog-visual-art .ps-c5r-a .ps-c5r-stage {
+    --c5r-foot: 104px;
+    --c5r-ours-h: 76px;
+    /* THREE gaps, not two -- four children in the list, and counting the
+       wrong number of them is what put the first cut of this rule 5px
+       through the stage floor at every tall sheet from 769 to 1920.
+       48 + 14 + 76 + 3x7 + 3x28 = 243 in a 244px stage. */
+    --c5r-gap: 7px;
+  }
+}
+
+/* THE NARROW SHORT DIALOG, AND IT IS THE ONLY BOX WHERE THE QUERY DOES NOT
+   FIT. Measured, not guessed: at 320 the dialog art is the full 320 wide,
+   the stage is 282 after 6% padding, the keep-clear takes 50.8 off the
+   field's right end, and the 231px field left 174px of inner room for a
+   string that sets 177px at 13px Inter -- a 3px overrun, reported by
+   `scrollWidth - clientWidth` on `.ps-c5r-q` and by nothing else, at that
+   one viewport out of fifteen. 12px clears it by about 17px. Everything
+   from 360 up already measured zero overrun and is deliberately untouched;
+   this query cannot reach them. */
+@container c5art (max-height: 320px) and (max-width: 344px) {
+  .ps-dialog-visual-art .ps-c5r-stage {
+    --c5r-q: 12px;
+    --c5r-field-px: 11px;
+    --c5r-mag-s: 15px;
+  }
+}
+
 /* ── 7. SPREAD: TWO COLUMNS, KEYED TO THIS ARTWORK'S OWN BOX ─────────
    CSS GRID, not a second DOM: the markup stays in reading order and the
    spread state re-places the same items into areas. A wrapper per column
@@ -995,59 +1167,87 @@
 
   /* THE ASKING COLUMN IS SIZED BY ITS CONTENT, NOT BY A PERCENTAGE.
      At 42% of the 604x392 banner the column was 254px and the query
-     clipped to "who insures oilfiel" with the caret gone -- the precise
+     clipped to "who insures oil fiel" with the caret gone -- the precise
      failure the copy ceiling exists to prevent, and a percentage column
      will always find some width where it happens. `auto` takes the field's
      own max-content width and `minmax(0, 1fr)` gives every remaining pixel
      to the results, which is also the better composition: the input is a
-     fixed object and the list is what should grow. */
+     fixed object and the list is what should grow.
+
+     A AND C NOW SHARE THIS RULE. They used to need two, because A was two
+     panels side by side and C was one; with A's conversation deleted the
+     two concepts have the same parts in the same order and there is nothing
+     left to say twice. */
   .ps-c5r-c .ps-c5r-stage {
     grid-template-columns: auto minmax(0, 1fr);
     grid-template-areas: "field results";
     column-gap: 6%;
   }
 
-  /* >> CONCEPT A IN THE WIDE SLOT: THE TWO SURFACES SIT SIDE BY SIDE, and
-     each one runs from the top of the frame to the stage floor. Two things
-     follow from that and both were measured, not chosen. First, the "AND"
-     in the card's title is the composition: the search and the assistant
-     are equal halves, so the columns are 1fr each rather than content-sized.
-     Second, the bottom band cannot be reached any other way -- the stage
-     ends 94px above the card's bottom and the bottom third starts 126.7px
-     above it, so 32.7px is all the art can ever occupy down there and
-     anything that does not touch the stage floor scores zero. Both panels
-     use `space-between`, so the last unlit result and the input row land on
-     that floor. That is what keeps the 0.0% empty band from coming back. */
+  /* ═══ CONCEPT A DOES NOT TAKE THE GRID AT ALL, AND THAT IS THIS ROUND'S
+     CORRECTION. Deleting the chat panel removed the CONTENT of the second
+     column but left the two-column TRACK, and the search field is a 44-56px
+     pill: it filled about a fifth of a full-height column and left the rest
+     empty navy. Read off the render at 640, 768, 820 and 939 on the face
+     and in the 768 and 1440 sheet -- 78.8 to 83.5% of that column carried
+     no ink, and the 900x400 sheet was 57.1% empty overall. A card that
+     reads as though a panel is missing is exactly the impression deleting
+     the panel was supposed to remove.
+
+     So the layout collapses with the content: ONE surface gets the space
+     one surface needs. A stays a flex column at every width -- field over
+     results, which is the shape a results page actually has -- and the wide
+     box is used by making the objects BIGGER and by capping the column so
+     the rows stay result-shaped instead of stretching into 20:1 bars. The
+     cap is centred, so the space either side reads as framing rather than
+     as a hole beneath something.
+
+     `--c5r-stage` is still gridded for B and C; only A opts out. */
   .ps-c5r-a .ps-c5r-stage {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: "serp chat";
-    column-gap: 5%;
-    align-items: stretch;
-    align-content: stretch;
+    display: flex;
+
+    /* KEEP-CLEAR STAYS ON THE STAGE, AND THE FIRST CUT OF THIS RULE GOT IT
+       WRONG. I moved it back onto the field and then centred the field with
+       `margin-inline: auto`, which cancelled the very margin that was doing
+       the clearing -- at 640 the render put the search pill straight under
+       the expand button. Read off the screenshot, not off a probe.
+       On the stage it cannot be cancelled by the centring, and it is
+       correct for both cases: when the column is capped and centred it is
+       already nowhere near the corner, and when the box is too narrow to
+       cap, the whole column stops 70px short of the art's right edge --
+       against a control that starts 62px in. */
+    right: max(var(--c5r-pad-x), var(--c5r-keep));
+
+    /* THE VERTICAL BUDGET, MEASURED AT THE 903x392 BANNER (266px stage).
+       The 820+ size step's own numbers (field 56, stack 20, lit 100) leave
+       79px for three rows and two gaps -- 19px each, which is under the
+       floor a mark and a name need. Trimmed here to field 48 + stack 14 +
+       lit 84 + four 9px gaps, which leaves 93 for three rows: 31px each,
+       and they end exactly on the stage floor. */
+    --c5r-field-h: 48px;
+    --c5r-field-px: 16px;
+    --c5r-mag-s: 18px;
+    --c5r-stack: 14px;
+    --c5r-gap: 9px;
+    --c5r-ours-h: 84px;
+    --c5r-name: 14px;
   }
 
-  .ps-c5r-a .ps-c5r-panel--serp { grid-area: serp; }
-  .ps-c5r-a .ps-c5r-panel--chat { grid-area: chat; }
-
-  /* THE WIDE SLOT HAS THE ROOM, SO THE OBJECTS GET BIGGER RATHER THAN
-     FURTHER APART. Budget at the 772x380 card: field 48 + 12 + lit 104 +
-     8 + row 30 + 8 + row 30 = 240 of 266, and the composer sits on the
-     floor with the conversation above it. Filling a column by growing what
-     is in it is the difference between a composition and a scatter. */
-  .ps-c5r-a .ps-c5r-stage {
-    --c5r-panel-gap: 12px;
-    --c5r-input-h: 30px;
-    --c5r-name: 13px;
-    --c5r-turn-py: 7px;
-    --c5r-avatar: 22px;
-  }
-
-  .ps-c5r-a .ps-c5r-row--ours { height: 104px; }
-  .ps-c5r-a .ps-c5r-row--compact { height: 30px; }
-
-  .ps-c5r-a .ps-c5r-row--ours .ps-c5r-line--b,
-  .ps-c5r-a .ps-c5r-answer .ps-c5r-line--b {
-    display: block;
+  /* THE CAP, AND WHY IT IS A CAP RATHER THAN A PERCENTAGE. At the 891px
+     banner an uncapped row is 781px long and 31px tall -- 25:1, which reads
+     as a bar, which is the exact failure the file's own note about even
+     widths records. 560 puts the rows near 18:1, which is the proportion a
+     real result has. `min()` means every box narrower than the cap is
+     untouched and keeps its full width, so this rule can only ever act on
+     the wide slot it was written for. */
+  .ps-c5r-a .ps-c5r-field,
+  .ps-c5r-a .ps-c5r-results {
+    width: min(100%, 560px);
+    /* `margin-inline` and not `margin-right`, so the field and the results
+       share one centre line and one left edge. Their base rules differ --
+       the field carries the stacked keep-clear margin and the results carry
+       none -- and centring only one of them would have staggered them. */
+    margin-inline: auto;
   }
 
   .ps-c5r-field { grid-area: field; margin-right: 0; }
@@ -1109,6 +1309,19 @@
   --c5r-dim-rule-2: #cbd5e1;
   --c5r-cross: #93a2b6;
   --c5r-strike: #64748b;
+  /* DARKENED FROM #4b5a6e AFTER THE FADE MEASUREMENT, and the reason it is
+     the light value that moved and not the dark one is in the note on
+     `.ps-dialog-visual::after` below: a white fade pulls ink and plate
+     toward the same white together, so light theme is the side that loses
+     contrast fastest under it. Read off per-row screenshots at eight phone
+     widths, the last row in the sheet went 2.74 -> 4.36 with the geometry
+     fix and 4.36 -> 4.64 with this. Unfaded it reads 6.05:1, which is above
+     "Your Business" at 5.08:1 and deliberately so: on this card the lit row
+     is separated by a white plate, a drop shadow, twice the height, the top
+     position and a hue, not by out-darkening its neighbours -- which is
+     also how a real results page reads, every title the same weight and one
+     of them first. */
+  --c5r-dim-ink: #445366;
   --c5r-field-bg: #ffffff;
   --c5r-field-bd: #cbd5e1;
   --c5r-field-ink: #1e293b;

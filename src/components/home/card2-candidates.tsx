@@ -111,7 +111,7 @@
  * the shared one. Do not add it back.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 /* ─────────────────────────────────────────────────────────────
    >> THERE IS NO REVEAL HOOK IN THIS FILE, AND THAT IS THE RULING, NOT AN
@@ -411,13 +411,19 @@ export function SystemFixesVisualB() {
 
         <div className="ps-c2b-st ps-c2b-st--chase">
           <span className="ps-c2-lbl ps-c2-lbl--strong">{L.chase}</span>
+          {/* THE RETRY LOOP, AND IT IS A CHILD OF THE PLATE ON PURPOSE. It
+              leaves the chase node, drops below it and comes back into the
+              same node head first: the automation doing it again without you,
+              which is what replaced the three dots.
+              >> IT USED TO BE A SIBLING sharing the plate's grid cell, and in
+              the landscape dialog that cell spans BOTH rows while the plate is
+              centred in it - so `align-self: end` pinned the loop to the cell
+              floor and it rendered 120px adrift, a blue squiggle lying on the
+              ground under an unrelated part of the chart. As a child it is
+              measured from the plate itself and is correct in every regime
+              without a single regime-specific rule. */}
+          <i className="ps-c2b-loop" />
         </div>
-
-        {/* THE RETRY LOOP. Leaves the chase node, runs off the frame, and
-            comes back into the same node head first. This is the automation
-            doing it again without you, and it is why there are no longer
-            three dots trying to say the same thing in a corner. */}
-        <i className="ps-c2b-loop" />
 
         <i className="ps-c2b-edge ps-c2b-edge--2" />
 
@@ -526,17 +532,905 @@ export function SystemFixesVisualC() {
    with no query parameter is concept B - stated and argued in the report.
    ───────────────────────────────────────────────────────────── */
 type Card2Choice = "a" | "b" | "c" | "orig";
+type Card2Flow = "1" | "2" | "3" | "4" | "5";
 
+/* ═════════════════════════════════════════════════════════════
+   THE CAROUSEL CONTRACT          for whoever builds symptoms #6 and #7
+   ═════════════════════════════════════════════════════════════
+   >> THESE FIVE ARE SLIDES, NOT CANDIDATES, AND THE DISTINCTION IS THE WHOLE
+   REASON THIS EXPORT EXISTS. `?c2=a|b|c` picks ONE concept to ship. `?c2flow=`
+   does NOT do the same job: a visitor cannot swipe a query string and a query
+   string does not advance itself every five seconds. The query parameter below
+   is a DEVELOPMENT AND REVIEW AFFORDANCE ONLY - it lets a verifier deep link to
+   flow 4 - and it must never be how a visitor reaches a flow.
+
+   WHAT THE IMPLEMENTER GETS, and what it may rely on:
+
+     1  FIVE INDEPENDENT UNITS. Each entry renders a complete, self contained
+        graphic. None reads another's state, none shares a ref, none registers
+        a listener, none holds a timer, and none touches the document. Mounting
+        and unmounting any subset in any order is safe.
+
+     2  UNIFORM OUTER DIMENSIONS, BY CONSTRUCTION AND NOT BY AGREEMENT. Every
+        root is `position: absolute; inset: 0` on `.ps-c2-root`, so all five are
+        exactly the size of whatever box they are placed in. A carousel whose
+        slides differ in height jumps on advance; these cannot, because none of
+        them has an intrinsic height at all. The slide container needs a
+        position other than `static` and nothing else.
+
+     3  THE BOX THEY MUST BE GIVEN, MEASURED not assumed. The art box is 12px
+        WIDER AND TALLER THAN THE VISIBLE CARD in every regime, and the outer
+        6px ring is permanently clipped by the card's own `overflow: hidden`.
+        A carousel that positions slides against the art box rather than the
+        visible card will read 6px off on every edge. Measured, chromium:
+            320 -> card 272x420, art 284x432
+            393 / 430 -> card 345x420 / 382x420, art 394x432
+            640 -> card 288x420, art 300x432
+            940 -> card 287x430, art 299x442   <- NARROWEST, and note that a
+                   940px desktop card is NARROWER than a 430px phone card
+            1280+ -> card 400x430, art 412x442
+        299x344 is the design envelope all five are drawn to.
+
+     4  EACH IS ITS OWN SIZE CONTAINER. `.ps-c2-root` declares
+        `container-type: size`, so a slide reflows to the box it is given rather
+        than to the viewport. Slides parked off screen at full size therefore
+        render correctly; slides given zero size render nothing, so do not
+        collapse an inactive slide to 0x0 and expect it to be right on advance.
+
+     5  NO MOTION OF THEIR OWN. Zero keyframes, zero transitions, zero hidden
+        start states, nothing that waits for JavaScript. Whatever the carousel
+        animates, it animates alone, and a slide is fully drawn the instant it
+        exists. Under `prefers-reduced-motion` these render identically, so the
+        reduced-motion path is entirely the carousel's to own.
+
+     6  ALL FIVE ARE `aria-hidden="true"` decorative artwork carrying no
+        accessible name. The carousel owns the accessible story: the slide
+        labels below are for its control names and live region, NOT for
+        display - none of these strings is rendered by the artwork.
+   ═════════════════════════════════════════════════════════════ */
+export type Card2FlowSlide = {
+  /* Stable across reorders; use as the React key. */
+  id: "get-paid" | "reviews" | "expiry" | "refill" | "retry";
+  /* For the carousel's own control name and live region. NOT drawn. */
+  label: string;
+  render: () => React.ReactElement;
+};
+
+export const CARD2_FLOW_SLIDES: readonly Card2FlowSlide[] = [
+  { id: "get-paid", label: "Invoices that chase themselves", render: () => <AutoFlowGetPaid /> },
+  { id: "reviews", label: "A review after every job", render: () => <AutoFlowReviews /> },
+  { id: "expiry", label: "Nothing expires on you", render: () => <AutoFlowExpiry /> },
+  { id: "refill", label: "Cancellations refilled", render: () => <AutoFlowRefill /> },
+  { id: "retry", label: "Failed payments retried", render: () => <AutoFlowRetry /> },
+];
+
+/* ═════════════════════════════════════════════════════════════
+   THE CAROUSEL              symptoms #6 (swipe) and #7 (auto-advance)
+   ═════════════════════════════════════════════════════════════
+
+   >> IT IS A NATIVE SCROLL-SNAP TRACK, WHICH IS THIS REPO'S EXISTING IDIOM
+   AND NOT A NEW ONE. Two hand-rolled swipe surfaces already ship on this
+   page - `.ps-work-track` (globals.css:3993, `display:flex` +
+   `overflow-x:auto` + `scroll-snap-type: x mandatory` + `scrollbar-width:none`)
+   and `.ps-carousel-track` (globals.css:3059, the same five declarations).
+   Neither uses a library and neither uses a gesture handler for the swipe
+   itself. This is the third instance of that same idiom, not a fourth idiom.
+   What it adds is precisely the two things the owner asked for and neither
+   existing track has: auto-advance, and a swipe surface on the card face.
+
+   >> EVERY OFFSET IS READ FROM `track.clientWidth`. NEVER FROM THE VIEWPORT,
+   AND THAT IS NOT A STYLE PREFERENCE. This card's width is NOT MONOTONIC in
+   viewport width - measured 272px at 320, 288px at 640, 286.7px at 940, 400px
+   at 1280 - so a 940px DESKTOP card is NARROWER than a 430px PHONE card. Any
+   arithmetic of the form `slide * viewportWidth` is wrong at exactly the two
+   breakpoints, and wrong in a way that looks fine everywhere else. There is no
+   viewport read anywhere in this component. `clientWidth` is the container's
+   own content width, so it is right by construction in every regime including
+   both dialog boxes.
+
+   >> AND EVERY SLIDE IS THE ART BOX, NOT THE VISIBLE CARD. The art box is 12px
+   larger than the card and the outer 6px ring is permanently clipped by the
+   card's own `overflow: hidden`. The track is `position:absolute; inset:0` on
+   the art root, so a slide IS the art box - which is symmetric about the card,
+   so a slide snapped to the track's edge is centred on the CARD by
+   construction. The five flows were authored to the art box; giving them
+   anything else would move every one of them 6px.
+
+   >> THE MID-BEAT PROBLEM DOES NOT EXIST HERE, AND THAT IS MEASURED. The brief
+   asked whether a slide could be swapped part way through its own animation.
+   `card2-candidates.css` contains zero `@keyframes` blocks, zero `animation`
+   declarations and zero `transition` declarations - the three matches for the
+   string "@keyframes" in the file are all inside comments saying there are
+   none. The five flows are STATIC DIAGRAMS. There is no beat, so nothing can
+   be cut off mid-beat, and no dwell has to divide into anything. Flow 1's
+   green terminal is a resting SHAPE, not a resting STATE: it is fully drawn
+   the instant the slide exists and it never reaches a completion the carousel
+   could wait for. So all five advance on the same 5s timer, uniformly. If a
+   flow ever gains an internal cycle, this decision has to be revisited, and
+   that is the reason this paragraph is here rather than in a report.
+
+   >> REDUCED MOTION IS GUARDED IN JAVASCRIPT, BECAUSE IT HAS TO BE. The
+   stylesheet catch-all at globals.css:4639 crushes `animation-duration` and
+   `transition-duration`; it cannot touch a `setInterval` and it cannot touch
+   `scrollTo`. Under `reduce` the timer is never armed at all - not armed and
+   ignored, never created - so the card rests on one slide, and swipe still
+   works. The listener is live, so toggling the OS setting takes effect
+   without a reload.
+
+   >> NO DOTS, NO ARROWS, AND THAT IS DELIBERATE. This artwork mounts in two
+   places and BOTH are inside an aria-hidden subtree: the card face is inside
+   the `<button>` at service-pillars.tsx:1901, and the dialog art is
+   `aria-hidden="true"` at service-pillars.tsx:2299. A real control would
+   therefore be either an interactive element nested inside a button, or a
+   focusable element inside an aria-hidden subtree - both are defects, and
+   neither is fixable from this file. Nor is there anywhere to put one: the
+   flow box's seven tracks already sum to 320px of a 326px budget in the narrow
+   regime, and the only empty band on the card face is y=348..371, which does
+   not exist in the compact dialog (a 280px art box) and whose equivalent
+   position sits inside `.ps-dialog-visual::after`'s 120px fade. The
+   auto-advance IS the affordance: a card that visibly changes every five
+   seconds announces that there is more than one.
+
+   >> THE TRACK IS `tabIndex={-1}` ON PURPOSE. A scroll container is
+   keyboard-focusable by default in Firefox and in Chrome's focusable-scroller
+   behaviour. Inside an aria-hidden subtree that is a focusable element with no
+   accessible name, which is exactly the failure the paragraph above exists to
+   avoid. Removing that attribute reintroduces it.
+   ───────────────────────────────────────────────────────────── */
+
+/* The dwell. The owner said "every like five seconds". */
+const C2CAR_INTERVAL_MS = 5000;
+/* How long a deliberate interaction holds the timer off. Longer than the
+   dwell, so a swipe is never immediately overridden by the very next tick. */
+const C2CAR_RESUME_MS = 7000;
+/* A horizontal drag past this many px is a swipe, not a tap. */
+const C2CAR_DRAG_PX = 10;
+
+function AutoFlowCarousel({ start }: { start: number }) {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  /* The live slide index lives in a ref, not in state. Nothing renders from
+     it, and putting it in state would tear the autoplay effect down and build
+     it back up on every scroll frame - which restarts the 5s clock and means
+     the card never advances at all while a finger is moving. */
+  const indexRef = useRef(start);
+  const resumeRef = useRef<number | null>(null);
+  const dragRef = useRef({ x: 0, y: 0, swiped: false });
+  /* >> IT TURNS ROUND AT THE ENDS RATHER THAN REWINDING, AND THAT IS FROM A
+     MEASUREMENT. Wrapping 4 -> 0 is a 1648px smooth scroll: sampled at rAF it
+     took 660ms and whipped backwards through slides 3, 2 and 1 on the way,
+     against 325ms for every single-step advance. Turning round instead makes
+     every transition in the cycle the same one-slide, ~325ms move, and there
+     is no rewind to look at. Nothing in the artwork implies a direction, and
+     with no dots there is no position indicator to contradict. */
+  const dirRef = useRef(1);
+
+  const [reduced, setReduced] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [held, setHeld] = useState(false);
+  /* Off screen, hidden tab, or covered by the dialog. Starts TRUE: the
+     IntersectionObserver below fires on `observe`, so the true value arrives
+     within a frame, and starting false would arm a timer for that frame on a
+     card that may be nowhere near the viewport. */
+  const [gated, setGated] = useState(true);
+
+  /* ── Reduced motion, live ── */
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduced(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  /* ── Anchor, and RE-anchor whenever the container resizes.
+        Crossing 640 or 940 changes the card's width by more than 100px in one
+        step. Without this the track keeps its old pixel scrollLeft and lands
+        part way between two slides; scroll-snap re-settles it eventually in
+        some engines and not in others, and "eventually" is a screenshot of a
+        half-slide. The ResizeObserver watches the TRACK, so it fires for the
+        dialog's own box too, which no viewport listener would. ── */
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const place = () => {
+      const w = track.clientWidth;
+      if (!w) return;
+      const left = indexRef.current * w;
+      if (Math.abs(track.scrollLeft - left) > 1) track.scrollLeft = left;
+    };
+    place();
+    const ro = new ResizeObserver(place);
+    ro.observe(track);
+    return () => ro.disconnect();
+  }, []);
+
+  /* ── THE THREE GATES THE STYLESHEET CANNOT REACH.
+        `prefers-reduced-motion` is handled above and hover/hold below, but
+        globals.css:4653's catch-all reaches `animation-duration` and
+        `transition-duration` and NOTHING ELSE - it cannot crush a
+        `setInterval`, so every remaining condition has to be answered in
+        JavaScript. Card 3 solves exactly this at card3-candidates.tsx:1414 and
+        this is the same four-gate shape.
+
+        THE COVERED CASE IS THE ONE THAT IS EASY TO MISS. This visual mounts
+        TWICE AT ONCE - service-pillars.tsx:275 hands the same element to the
+        card face and to the dialog - so opening the dialog does not replace
+        the face's carousel, it adds a second one. Without `covered()` there
+        are two 5s intervals running two smooth scrolls, one of them on a
+        carousel nobody can see, for as long as the sheet is open. ── */
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const inDialog = !!el.closest(".ps-dialog-visual-art");
+    let onScreen = false;
+    const covered = () =>
+      !inDialog && !!document.querySelector(".ps-dialog-visual-art");
+    const sync = () =>
+      setGated(
+        !(onScreen && document.visibilityState === "visible" && !covered())
+      );
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        onScreen = entries.some((e) => e.isIntersecting);
+        sync();
+      },
+      { threshold: 0.2 }
+    );
+    io.observe(el);
+
+    /* The dialog is `createPortal`'d onto the body (service-pillars.tsx:2236,
+       container at :2335), so its arrival and departure are a body child-list
+       change and nothing else - no event, no ref, nothing this component is
+       otherwise told about. */
+    const mo = new MutationObserver(sync);
+    mo.observe(document.body, { childList: true });
+
+    document.addEventListener("visibilitychange", sync);
+
+    return () => {
+      io.disconnect();
+      mo.disconnect();
+      document.removeEventListener("visibilitychange", sync);
+    };
+  }, []);
+
+  /* ── AUTO-ADVANCE ── */
+  useEffect(() => {
+    if (reduced || hovered || held || gated) return;
+    const id = window.setInterval(() => {
+      const track = trackRef.current;
+      if (!track) return;
+      const w = track.clientWidth;
+      if (!w) return;
+      const last = CARD2_FLOW_SLIDES.length - 1;
+      /* Read the CURRENT slide off the track rather than off `indexRef`, so a
+         swipe the visitor just made is what the next advance continues from. */
+      const cur = Math.min(last, Math.max(0, Math.round(track.scrollLeft / w)));
+      if (cur >= last) dirRef.current = -1;
+      else if (cur <= 0) dirRef.current = 1;
+      const next = Math.min(last, Math.max(0, cur + dirRef.current));
+      indexRef.current = next;
+      track.scrollTo({ left: next * w, behavior: "smooth" });
+    }, C2CAR_INTERVAL_MS);
+    return () => window.clearInterval(id);
+  }, [reduced, hovered, held, gated]);
+
+  useEffect(
+    () => () => {
+      if (resumeRef.current !== null) window.clearTimeout(resumeRef.current);
+    },
+    []
+  );
+
+  /* Any deliberate interaction stops the clock and restarts it later. */
+  function hold() {
+    setHeld(true);
+    if (resumeRef.current !== null) window.clearTimeout(resumeRef.current);
+    resumeRef.current = window.setTimeout(() => setHeld(false), C2CAR_RESUME_MS);
+  }
+
+  function handleScroll() {
+    const track = trackRef.current;
+    if (!track) return;
+    const w = track.clientWidth;
+    if (!w) return;
+    const i = Math.round(track.scrollLeft / w);
+    indexRef.current = Math.min(CARD2_FLOW_SLIDES.length - 1, Math.max(0, i));
+  }
+
+  return (
+    <div
+      className="ps-c2car"
+      ref={rootRef}
+      aria-hidden="true"
+      /* Hover pause is MOUSE ONLY. `pointerenter` also fires for the first
+         touch of a tap, and treating that as hover would leave a phone
+         permanently paused with no pointerleave ever coming. */
+      onPointerEnter={(e) => {
+        if (e.pointerType === "mouse") setHovered(true);
+      }}
+      onPointerLeave={(e) => {
+        if (e.pointerType === "mouse") setHovered(false);
+      }}
+      onPointerDown={hold}
+      onWheel={hold}
+      onTouchStart={(e) => {
+        const t = e.touches[0];
+        dragRef.current = { x: t.clientX, y: t.clientY, swiped: false };
+        hold();
+      }}
+      onTouchMove={(e) => {
+        const t = e.touches[0];
+        const dx = Math.abs(t.clientX - dragRef.current.x);
+        const dy = Math.abs(t.clientY - dragRef.current.y);
+        if (dx > C2CAR_DRAG_PX && dx > dy) dragRef.current.swiped = true;
+      }}
+      /* THE SWIPE MUST NOT OPEN THE DIALOG. This artwork sits inside the
+         card's own <button>; a touch that ends as a horizontal drag would
+         otherwise reach it as a click and the card would open every time
+         somebody changed slide. Most engines suppress the click after a
+         scroll gesture, but not all of them and not always, so the guard is
+         explicit. Capture phase, so it never reaches the button. Reset on
+         every touchstart, so a real tap is never swallowed. */
+      onClickCapture={(e) => {
+        if (!dragRef.current.swiped) return;
+        dragRef.current.swiped = false;
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    >
+      <div
+        className="ps-c2car-track"
+        ref={trackRef}
+        onScroll={handleScroll}
+        tabIndex={-1}
+      >
+        {CARD2_FLOW_SLIDES.map((slide) => (
+          <div className="ps-c2car-slide" key={slide.id}>
+            {slide.render()}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* >> THE DEFAULT IS FLOW 1, WHICH IS THE SHIPPED CHART RESTRUCTURED. The old
+   concepts are not deleted and not edited - ?c2=b still serves
+   SystemFixesVisualB byte for byte, which is what makes a before / after
+   capture in one page load possible. ?c2 wins when it is present, so nothing
+   that was reachable before stopped being reachable. */
 export function SystemFixesVisualPick({ fallback }: { fallback: React.ReactNode }) {
-  const [choice, setChoice] = useState<Card2Choice>("b");
+  const [choice, setChoice] = useState<Card2Choice | null>(null);
+  const [flow, setFlow] = useState<Card2Flow>("1");
+  const [car, setCar] = useState<"on" | "off">("on");
 
   useEffect(() => {
-    const raw = new URLSearchParams(window.location.search).get("c2");
+    const q = new URLSearchParams(window.location.search);
+    const raw = q.get("c2");
     if (raw === "a" || raw === "b" || raw === "c" || raw === "orig") setChoice(raw);
+    const f = q.get("c2flow");
+    if (f === "1" || f === "2" || f === "3" || f === "4" || f === "5") setFlow(f);
+    if (q.get("c2car") === "off") setCar("off");
   }, []);
 
   if (choice === "orig") return <>{fallback}</>;
   if (choice === "a") return <SystemFixesVisualA />;
+  if (choice === "b") return <SystemFixesVisualB />;
   if (choice === "c") return <SystemFixesVisualC />;
-  return <SystemFixesVisualB />;
+
+  /* >> THE CAROUSEL IS THE SHIPPING PATH. `?c2flow=N` survives as what it
+     always was - a deep link - but it now chooses the slide the carousel
+     STARTS on rather than the only slide that exists. `?c2car=off` renders
+     that one slide alone with no track and no timer, which is how a single
+     flow gets captured in isolation and how the pre-carousel state stays
+     reachable for a before / after in one page load. */
+  if (car === "off") return CARD2_FLOW_SLIDES[Number(flow) - 1].render();
+  /* KEYED ON `flow`. `start` is only read as a ref initialiser, and `flow`
+     arrives one render late because the query string is read in an effect and
+     not during render (this is a statically exported site; reading location
+     during render is a hydration mismatch). Without the key, `?c2flow=4` would
+     mount the carousel at slide 1 and never move. */
+  return <AutoFlowCarousel key={flow} start={Number(flow) - 1} />;
+}
+
+/* ═════════════════════════════════════════════════════════════
+   THE FIVE AUTOMATION FLOWS        ?c2flow=1|2|3|4|5, default 1
+   ═════════════════════════════════════════════════════════════
+
+   >> THIS IS A REFINEMENT, NOT A REPLACEMENT, AND THAT IS THE WHOLE BRIEF.
+   The arrow flow chart already on this card is the ONE graphic on this
+   homepage the owner has praised ("Arrow section looks better"). The directed
+   edge language - plates, one true diamond, a solid arrowhead on every
+   connector, coloured branches, a return that runs round the outside - is
+   KEPT UNCHANGED and extended to four more flows. SystemFixesVisualB is left
+   exactly as it shipped and stays reachable at ?c2=b, so the before state can
+   be put beside the after in one page load.
+
+   WHAT CHANGED IN FLOW 1, and only this: the owner specified a different
+   branch structure from the one on the card today. Today it draws
+   `Invoice sent -> Chased for you -> Paid? -> yes | no` with a self loop on
+   the chase node. He asked for:
+
+       Invoice sent -> Paid? --yes--> Yes        (green, and it ENDS there)
+                         |
+                         +---no----> Email reminder sent --+
+                         ^                                 |
+                         +---------------------------------+
+
+   So: the yes branch TERMINATES, the no branch returns TO THE DECISION rather
+   than to the start, and the reminder reads as repeating rather than as one
+   failed step.
+
+   >> MATCH CRAFT, NEVER FORM. This project has burned three rounds of work on
+   graphics that copied a NEIGHBOURING CARD'S FORM. Card 4 is a browser window
+   because card 4's subject IS a browser; that literalness does not transfer to
+   an abstract subject, and copying it is how you end up with five screenshots
+   of software and zero ideas. What IS taken from card 4 is craft and nothing
+   else: restrained palette, flat ground, one accent plus a green, everything
+   else neutral, crisp edges, soft shadow separation, no gloss and no texture.
+   There is no window, title bar, traffic light, sidebar, URL field, toolbar,
+   panel or placeholder row anywhere in these five.
+
+   >> TOPOLOGY IS THE POINT. The five were chosen for FIVE DIFFERENT LOOP
+   MECHANISMS. If all five were drawn as one shape the card would say "we send
+   reminders" five times and argue against its own headline, so each gets a
+   form that expresses its own mechanism while staying inside one grammar:
+
+     1  GET PAID              decision return. Yes is a leaf and stops.
+     2  REVIEW AFTER EVERY JOB decision return, symmetric fork, two beat lead
+                              in, and the return comes back up the RIGHT.
+                              Honestly the same mechanism as 1, because it is.
+     3  NOTHING EXPIRES ON YOU a GATE. A barrier spans the frame with one gap;
+                              the cleared lane goes through it and the other
+                              lane DEAD ENDS on the bar with a flat cap.
+     4  CANCELLATION REFILLED  the loop ADVANCES. It re-enters a stack one row
+                              lower and the rows already passed are spent.
+     5  PAYMENT RETRIED        a closed ORBIT on the node itself, ticked at
+                              EQUAL intervals. No human in the loop; the
+                              person is the exit.
+
+   ONE GRAMMAR, so a reader who understands the first understands the rest:
+     process beat      rounded slab, label left
+     decision          diamond, label centred
+     terminal          STADIUM, green, and nothing ever leaves one
+     forward edge      3px rail, solid 11x8 arrowhead
+     branch edge       the same, coloured: green settles, accent acts
+     blocked edge      the same, ending in a FLAT CAP and no head
+     return edge       accent, runs round the OUTSIDE, head first into the
+                       node it returns to
+     repeats           growing dots for a human ladder, equal dots for a
+                       machine schedule
+
+   >> NO INVENTED DATA anywhere in the five: no amount, date, client name,
+   count or percentage. Flow 4's list is deliberately unlabelled mass, because
+   naming its rows would mean inventing people.
+
+   >> NO SVG defs, NO GENERATED IDS, NO url(#...). Same ruling as the rest of
+   this file, and it matters more here than anywhere: these mount TWICE at
+   once, on the card face and in the bottom sheet dialog. Every rail,
+   arrowhead, diamond, stadium, barrier and orbit is CSS. The id collision is
+   structurally unreachable rather than merely namespaced.
+
+   >> MOTION: NONE. Nothing here is ever hidden, so reduced motion and normal
+   are the same render and the blank-card failure mode cannot occur.
+   ═════════════════════════════════════════════════════════════ */
+
+/* The three growing dots, the card's own dunning ladder. Authored, never
+   Math.random - this is server rendered and a random value desynchronises. */
+function C2Nudges() {
+  return (
+    <span className="ps-c2-nudges">
+      {C2_NUDGES.map((n) => (
+        <i key={n} className="ps-c2-nudge" style={{ "--n": n } as React.CSSProperties} />
+      ))}
+    </span>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FLOW 1  -  GET PAID
+   ───────────────────────────────────────────────────────────── */
+export function AutoFlowGetPaid() {
+  return (
+    <div className="ps-c2f-root ps-c2-root" aria-hidden="true">
+      {/* >> `.ps-c2-body` AND `.ps-c2-pool` ARE GONE FROM ALL FIVE, AND THAT IS
+          SYMPTOM #8. What they were: a pale wash 76% of the art tall with
+          `border-radius: 0 0 30% 30%`, whose bottom edge swept a wide elliptical
+          arc across the card just above the branch row - a bell jar horizon with
+          no referent, grouping nothing and crossing the flow at an unrelated
+          angle - and beneath it a blue radial glow reading as a stage light. The
+          other four cards sit on a flat even field where every lighter shape is
+          a DEPICTED OBJECT; this was the only card carrying ambient,
+          non-representational atmosphere behind a flat vector diagram.
+
+          >> `.ps-c2-ground` STAYS, AND THAT IS A DECISION, NOT AN OMISSION.
+          Removing it moves 0.01% of pixels at max delta 3/255, because a legacy
+          `.ps-c2-root` rule (card-visuals.css:2656, from the abandoned braided
+          river, light at :2696) paints an identical ramp underneath it - so
+          deleting it would look like a failed edit rather than a change.
+          Keeping it means THIS file owns its own ground explicitly instead of
+          silently inheriting a dead component's gradient. Going properly flat to
+          match the siblings needs a SECOND edit in card-visuals.css, which is
+          not this team's file; recommended and routed separately. Nothing below
+          depends on which of the two is painting: the plates separate from the
+          ground by value and cast shadow, not by contrast against a backdrop. */}
+      <div className="ps-c2-ground" />
+
+      <div className="ps-c2f-flow ps-c2f1-flow">
+        <div className="ps-c2f-node ps-c2f1-trig ps-c2f-keepclear">
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Invoice sent</span>
+        </div>
+
+        <i className="ps-c2f-edge ps-c2f1-e1" />
+
+        {/* THE DECISION. It fills its column, so its left and right vertices
+            are grid lines and every rail that meets it lands by construction. */}
+        <div className="ps-c2f-dia ps-c2f1-dia">
+          <span className="ps-c2-lbl ps-c2-lbl--dia">Paid?</span>
+        </div>
+
+        {/* THE YES BRANCH, AND IT IS A LEAF. A green rail off the right vertex
+            into a STADIUM, the flow chart terminator shape. Nothing leaves it,
+            here or anywhere else in the file. That is how "ends right there"
+            is drawn instead of claimed. */}
+        <div className="ps-c2f1-yes">
+          {/* NO "yes" TAG HERE. It sat straight under the stadium in the
+              first render, and it is redundant beside a green box whose whole
+              content is the word "Yes". See the note in the stylesheet. */}
+          <i className="ps-c2f-hrail ps-c2f-hrail--good" />
+          <div className="ps-c2f-term ps-c2f-term--fromleft">
+            <C2Settled cls="ps-c2-glyph" />
+            <span className="ps-c2-lbl ps-c2-lbl--strong">Yes</span>
+          </div>
+        </div>
+
+        {/* THE NO BRANCH. Straight down out of the bottom vertex. */}
+        <i className="ps-c2f-edge ps-c2f-edge--act ps-c2f1-e2">
+          <span className="ps-c2f-tag">no</span>
+        </i>
+
+        {/* THE REMINDER, AND IT REPEATS. The three growing dots are the
+            dunning ladder the shipped chart already uses for exactly this
+            meaning: again, and again, and harder. Without them this reads as
+            one reminder that failed rather than as a loop. */}
+        <div className="ps-c2f-node ps-c2f-drop ps-c2f-drop--left ps-c2f1-act">
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Email reminder sent</span>
+          <C2Nudges />
+        </div>
+
+        {/* THE RETURN, AND IT GOES BACK TO THE DECISION. Its top run sits at
+            half the decision row's height, which is the diamond's LEFT VERTEX.
+            It cannot reach "Invoice sent": that plate is two tracks higher and
+            outside this element's grid area entirely. */}
+        <i className="ps-c2f-ret ps-c2f-ret--left ps-c2f1-ret" />
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FLOW 2  -  REVIEW AFTER EVERY JOB
+   Same mechanism as flow 1, and drawn as such on purpose: it IS a nudge
+   loop, and giving it a different shape would misrepresent how it works.
+   The composition differs so the two are not the same picture - a two beat
+   lead in, the shipped chart's own symmetric fork, and a return that comes
+   back up the RIGHT channel instead of the left.
+   ───────────────────────────────────────────────────────────── */
+export function AutoFlowReviews() {
+  return (
+    <div className="ps-c2f-root ps-c2-root" aria-hidden="true">
+      {/* >> `.ps-c2-body` AND `.ps-c2-pool` ARE GONE FROM ALL FIVE, AND THAT IS
+          SYMPTOM #8. What they were: a pale wash 76% of the art tall with
+          `border-radius: 0 0 30% 30%`, whose bottom edge swept a wide elliptical
+          arc across the card just above the branch row - a bell jar horizon with
+          no referent, grouping nothing and crossing the flow at an unrelated
+          angle - and beneath it a blue radial glow reading as a stage light. The
+          other four cards sit on a flat even field where every lighter shape is
+          a DEPICTED OBJECT; this was the only card carrying ambient,
+          non-representational atmosphere behind a flat vector diagram.
+
+          >> `.ps-c2-ground` STAYS, AND THAT IS A DECISION, NOT AN OMISSION.
+          Removing it moves 0.01% of pixels at max delta 3/255, because a legacy
+          `.ps-c2-root` rule (card-visuals.css:2656, from the abandoned braided
+          river, light at :2696) paints an identical ramp underneath it - so
+          deleting it would look like a failed edit rather than a change.
+          Keeping it means THIS file owns its own ground explicitly instead of
+          silently inheriting a dead component's gradient. Going properly flat to
+          match the siblings needs a SECOND edit in card-visuals.css, which is
+          not this team's file; recommended and routed separately. Nothing below
+          depends on which of the two is painting: the plates separate from the
+          ground by value and cast shadow, not by contrast against a backdrop. */}
+      <div className="ps-c2-ground" />
+
+      <div className="ps-c2f-flow ps-c2f2-flow">
+        <div className="ps-c2f-node ps-c2f2-trig ps-c2f-keepclear">
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Job complete</span>
+        </div>
+
+        <i className="ps-c2f-edge ps-c2f2-e1" />
+
+        <div className="ps-c2f-node ps-c2f2-mid">
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Ask sent</span>
+        </div>
+
+        <i className="ps-c2f-edge ps-c2f2-e1b" />
+
+        <div className="ps-c2f-dia ps-c2f2-dia">
+          <span className="ps-c2-lbl ps-c2-lbl--dia">Reviewed?</span>
+        </div>
+
+        {/* THE SHIPPED CHART'S OWN FORK, reused rule for rule. Its arms are a
+            subgrid over the two outcome columns, so each arm's own 50% IS its
+            plate's centre line by construction rather than by arithmetic. */}
+        <i className="ps-c2b-fork">
+          <i className="ps-c2b-arm ps-c2b-arm--yes">
+            <span className="ps-c2b-tag">yes</span>
+          </i>
+          <i className="ps-c2b-arm ps-c2b-arm--no">
+            <span className="ps-c2b-tag">no</span>
+          </i>
+        </i>
+
+        {/* THE LEAF. A stadium, and nothing leaves it. */}
+        <div className="ps-c2f-term ps-c2f-term--fromtop ps-c2f-out ps-c2f2-outa">
+          <C2Settled cls="ps-c2-glyph" />
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Review posted</span>
+        </div>
+
+        <div className="ps-c2f-node ps-c2f-node--fromtop ps-c2f-drop ps-c2f-drop--right ps-c2f-out ps-c2f2-outb">
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Asked again</span>
+        </div>
+
+        <i className="ps-c2f-ret ps-c2f-ret--right ps-c2f2-ret" />
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FLOW 3  -  NOTHING EXPIRES ON YOU          the gate
+   The one flow whose "no" branch does not message anybody again: it HOLDS
+   THE WORK BACK. So the picture is a barrier, and the held lane dead ends on
+   it under a flat cap with no arrowhead.
+   ───────────────────────────────────────────────────────────── */
+export function AutoFlowExpiry() {
+  return (
+    <div className="ps-c2f-root ps-c2-root" aria-hidden="true">
+      {/* >> `.ps-c2-body` AND `.ps-c2-pool` ARE GONE FROM ALL FIVE, AND THAT IS
+          SYMPTOM #8. What they were: a pale wash 76% of the art tall with
+          `border-radius: 0 0 30% 30%`, whose bottom edge swept a wide elliptical
+          arc across the card just above the branch row - a bell jar horizon with
+          no referent, grouping nothing and crossing the flow at an unrelated
+          angle - and beneath it a blue radial glow reading as a stage light. The
+          other four cards sit on a flat even field where every lighter shape is
+          a DEPICTED OBJECT; this was the only card carrying ambient,
+          non-representational atmosphere behind a flat vector diagram.
+
+          >> `.ps-c2-ground` STAYS, AND THAT IS A DECISION, NOT AN OMISSION.
+          Removing it moves 0.01% of pixels at max delta 3/255, because a legacy
+          `.ps-c2-root` rule (card-visuals.css:2656, from the abandoned braided
+          river, light at :2696) paints an identical ramp underneath it - so
+          deleting it would look like a failed edit rather than a change.
+          Keeping it means THIS file owns its own ground explicitly instead of
+          silently inheriting a dead component's gradient. Going properly flat to
+          match the siblings needs a SECOND edit in card-visuals.css, which is
+          not this team's file; recommended and routed separately. Nothing below
+          depends on which of the two is painting: the plates separate from the
+          ground by value and cast shadow, not by contrast against a backdrop. */}
+      <div className="ps-c2-ground" />
+
+      <div className="ps-c2f-flow ps-c2f3-flow">
+        <div className="ps-c2f-node ps-c2f3-trig ps-c2f-keepclear">
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Expiry near</span>
+        </div>
+
+        <i className="ps-c2f-edge ps-c2f3-e1" />
+
+        <div className="ps-c2f-dia ps-c2f3-dia">
+          <span className="ps-c2-lbl ps-c2-lbl--dia">Renewed?</span>
+        </div>
+
+        <i className="ps-c2b-fork">
+          <i className="ps-c2b-arm ps-c2b-arm--yes">
+            <span className="ps-c2b-tag">yes</span>
+          </i>
+          <i className="ps-c2b-arm ps-c2b-arm--no">
+            <span className="ps-c2b-tag">no</span>
+          </i>
+        </i>
+
+        {/* WHAT THE AUTOMATION DOES WHILE THE WORK IS HELD. */}
+        <div className="ps-c2f-node ps-c2f-node--fromtop ps-c2f-drop ps-c2f-drop--right ps-c2f-out ps-c2f3-hold">
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Request sent</span>
+        </div>
+
+        {/* THE HELD LANE. It carries no arrowhead, because it does not arrive
+            anywhere. It ends in a FLAT CAP sitting on the bar. */}
+        <i className="ps-c2f-edge ps-c2f-edge--act ps-c2f-edge--stop ps-c2f3-stop" />
+
+        {/* THE BARRIER, IN TWO PIECES WITH ONE OPENING BETWEEN THEM. The
+            right piece runs off the edge of the frame; the left piece carries
+            the gap the cleared lane goes through. */}
+        <i className="ps-c2f3-bar" />
+        <i className="ps-c2f3-barl" />
+
+        {/* THE CLEARED LANE. It passes the bar because on this side the bar
+            is simply not there. */}
+        <i className="ps-c2f-edge ps-c2f-edge--good ps-c2f3-yes" />
+
+        <div className="ps-c2f-term ps-c2f3-term">
+          <C2Settled cls="ps-c2-glyph" />
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Cleared</span>
+        </div>
+
+        <i className="ps-c2f-ret ps-c2f-ret--right ps-c2f3-ret" />
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FLOW 4  -  CANCELLATION REFILLED           the loop advances
+   Every other loop here returns to where it was. This one makes progress:
+   the rows it has already been through are spent, and the return leaves the
+   row BELOW the live one.
+   ───────────────────────────────────────────────────────────── */
+export function AutoFlowRefill() {
+  return (
+    <div className="ps-c2f-root ps-c2-root" aria-hidden="true">
+      {/* >> `.ps-c2-body` AND `.ps-c2-pool` ARE GONE FROM ALL FIVE, AND THAT IS
+          SYMPTOM #8. What they were: a pale wash 76% of the art tall with
+          `border-radius: 0 0 30% 30%`, whose bottom edge swept a wide elliptical
+          arc across the card just above the branch row - a bell jar horizon with
+          no referent, grouping nothing and crossing the flow at an unrelated
+          angle - and beneath it a blue radial glow reading as a stage light. The
+          other four cards sit on a flat even field where every lighter shape is
+          a DEPICTED OBJECT; this was the only card carrying ambient,
+          non-representational atmosphere behind a flat vector diagram.
+
+          >> `.ps-c2-ground` STAYS, AND THAT IS A DECISION, NOT AN OMISSION.
+          Removing it moves 0.01% of pixels at max delta 3/255, because a legacy
+          `.ps-c2-root` rule (card-visuals.css:2656, from the abandoned braided
+          river, light at :2696) paints an identical ramp underneath it - so
+          deleting it would look like a failed edit rather than a change.
+          Keeping it means THIS file owns its own ground explicitly instead of
+          silently inheriting a dead component's gradient. Going properly flat to
+          match the siblings needs a SECOND edit in card-visuals.css, which is
+          not this team's file; recommended and routed separately. Nothing below
+          depends on which of the two is painting: the plates separate from the
+          ground by value and cast shadow, not by contrast against a backdrop. */}
+      <div className="ps-c2-ground" />
+
+      <div className="ps-c2f-flow ps-c2f4-flow">
+        <div className="ps-c2f-node ps-c2f4-trig ps-c2f-keepclear">
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Slot opens</span>
+        </div>
+
+        <i className="ps-c2f-edge ps-c2f4-e1" />
+
+        <div className="ps-c2f-node ps-c2f4-mid">
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Offered</span>
+        </div>
+
+        <i className="ps-c2f-edge ps-c2f4-e1b" />
+
+        <div className="ps-c2f-dia ps-c2f4-dia">
+          <span className="ps-c2-lbl ps-c2-lbl--dia">Taken?</span>
+        </div>
+
+        <i className="ps-c2b-fork">
+          <i className="ps-c2b-arm ps-c2b-arm--yes">
+            <span className="ps-c2b-tag">yes</span>
+          </i>
+          <i className="ps-c2b-arm ps-c2b-arm--no">
+            <span className="ps-c2b-tag">no</span>
+          </i>
+        </i>
+
+        <div className="ps-c2f-term ps-c2f-term--fromtop ps-c2f-out ps-c2f4-outa">
+          <C2Settled cls="ps-c2-glyph" />
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Slot filled</span>
+        </div>
+
+        {/* THE LIST. Its rows carry no text on purpose: naming them would
+            mean inventing people. Two spent, one live, one still to come. */}
+        <div className="ps-c2f-node ps-c2f-node--fromtop ps-c2f-out ps-c2f4-list">
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Next in line</span>
+          <span className="ps-c2f4-rows">
+            <i className="ps-c2f4-slot ps-c2f4-slot--spent" />
+            <i className="ps-c2f4-slot ps-c2f4-slot--spent" />
+            <i className="ps-c2f4-slot ps-c2f4-slot--live" />
+            <i className="ps-c2f4-slot" />
+            <i className="ps-c2f4-exit" />
+          </span>
+        </div>
+
+        <i className="ps-c2f-ret ps-c2f-ret--right ps-c2f4-ret" />
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FLOW 5  -  PAYMENT RETRIED                 the machine
+   No human is in this loop, so there is no return channel: the loop is a
+   closed orbit on the node itself, ticked at EQUAL intervals against flow
+   1's GROWING dots. The person is the exit, not the loop.
+   ───────────────────────────────────────────────────────────── */
+export function AutoFlowRetry() {
+  return (
+    <div className="ps-c2f-root ps-c2-root" aria-hidden="true">
+      {/* >> `.ps-c2-body` AND `.ps-c2-pool` ARE GONE FROM ALL FIVE, AND THAT IS
+          SYMPTOM #8. What they were: a pale wash 76% of the art tall with
+          `border-radius: 0 0 30% 30%`, whose bottom edge swept a wide elliptical
+          arc across the card just above the branch row - a bell jar horizon with
+          no referent, grouping nothing and crossing the flow at an unrelated
+          angle - and beneath it a blue radial glow reading as a stage light. The
+          other four cards sit on a flat even field where every lighter shape is
+          a DEPICTED OBJECT; this was the only card carrying ambient,
+          non-representational atmosphere behind a flat vector diagram.
+
+          >> `.ps-c2-ground` STAYS, AND THAT IS A DECISION, NOT AN OMISSION.
+          Removing it moves 0.01% of pixels at max delta 3/255, because a legacy
+          `.ps-c2-root` rule (card-visuals.css:2656, from the abandoned braided
+          river, light at :2696) paints an identical ramp underneath it - so
+          deleting it would look like a failed edit rather than a change.
+          Keeping it means THIS file owns its own ground explicitly instead of
+          silently inheriting a dead component's gradient. Going properly flat to
+          match the siblings needs a SECOND edit in card-visuals.css, which is
+          not this team's file; recommended and routed separately. Nothing below
+          depends on which of the two is painting: the plates separate from the
+          ground by value and cast shadow, not by contrast against a backdrop. */}
+      <div className="ps-c2-ground" />
+
+      <div className="ps-c2f-flow ps-c2f5-flow">
+        <div className="ps-c2f-node ps-c2f5-trig ps-c2f-keepclear">
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Card declined</span>
+        </div>
+
+        <i className="ps-c2f-edge ps-c2f5-e1" />
+
+        <div className="ps-c2f-node ps-c2f5-mid">
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Retried</span>
+          <span className="ps-c2f-ticks">
+            <i className="ps-c2f-tick" />
+            <i className="ps-c2f-tick" />
+            <i className="ps-c2f-tick" />
+          </span>
+          {/* THE ORBIT. A child of the plate, so it is measured from the plate
+              and cannot drift. It runs off the left edge of the frame. */}
+          <i className="ps-c2f5-orbit" />
+        </div>
+
+        <i className="ps-c2f-edge ps-c2f5-e1b" />
+
+        <div className="ps-c2f-dia ps-c2f5-dia">
+          <span className="ps-c2-lbl ps-c2-lbl--dia">Cleared?</span>
+        </div>
+
+        <i className="ps-c2b-fork">
+          <i className="ps-c2b-arm ps-c2b-arm--yes">
+            <span className="ps-c2b-tag">yes</span>
+          </i>
+          <i className="ps-c2b-arm ps-c2b-arm--no">
+            <span className="ps-c2b-tag">no</span>
+          </i>
+        </i>
+
+        <div className="ps-c2f-term ps-c2f-term--fromtop ps-c2f-out ps-c2f5-outa">
+          <C2Settled cls="ps-c2-glyph" />
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Back on</span>
+        </div>
+
+        {/* THE ONLY PLACE A PERSON APPEARS, and it is a leaf, not the loop. */}
+        <div className="ps-c2f-node ps-c2f-node--handoff ps-c2f-node--fromtop ps-c2f-out ps-c2f5-outb">
+          <C2HandOff cls="ps-c2-glyph" />
+          <span className="ps-c2-lbl ps-c2-lbl--strong">Update asked</span>
+        </div>
+      </div>
+    </div>
+  );
 }

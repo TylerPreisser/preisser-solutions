@@ -87,7 +87,24 @@
      If this sheet 404s or a stale chunk is served, the property resolves to
      the empty string and every screenshot taken against it is worthless.
      Gate on it before trusting any capture. Bump on every material edit. */
-  --c2-build: "d-flow-7";
+  /* >> BUMPED, AND AN UNBUMPED SENTINEL IS WORSE THAN NO SENTINEL. This read
+     "d-flow-8" while the file was being rewritten under a hot reloading dev
+     server, so every capture gated on it came back green certifying a build
+     that no longer existed. Absent, you know you cannot verify; stale, you
+     believe you have verified and you have not. Bump on EVERY material edit
+     and quote the value beside every screenshot. */
+  /* >> THIS SENTINEL IS CONTENDED AND CERTIFIES NOTHING. Two teams write this
+     one file. It was bumped to "d-flow-9-bodypool-removed" by the flow work and
+     overwritten by the carousel work a minute later - one property, two writers,
+     last write wins - so for a window it named a build whose markup had already
+     moved. A capture gated on it read 0.10% of pixels changed across a removal
+     that actually moved 66.87% of them, and would have shipped as a correct
+     looking negative result.
+     GATE ON YOUR OWN, and quote both: the five flows publish `--c2f-build` on
+     `.ps-c2f-root`, the carousel publishes `--c2car-build` on `.ps-c2car`.
+     A sentinel that trails its own change by even one edit is worse than none,
+     because it certifies confidently and wrongly. */
+  --c2-build: "CONTENDED-do-not-gate-read-c2f-build-and-c2car-build";
 
   /* No motion tokens. There is no motion in this file - see the banner at the
      foot. The card's own 0.65s power3.out arrival is owned by the grid. */
@@ -297,9 +314,15 @@
 /* ── PLATES. Opaque slabs with a hairline and a cast, so each sits ABOVE the
       ground rather than being drawn on it - the craft the siblings share.
       They HUG THEIR TEXT; the grid gives them the air. ── */
+/* >> .ps-c2f-node IS ON THIS SELECTOR DELIBERATELY. The five flows do not
+      copy the shipped chart's plate treatment, they SHARE THE RULE, so a
+      change to the slab, hairline, lit edge, cast or radius moves all of them
+      together and the set cannot drift apart. Craft is inherited by
+      construction; only the topology differs. */
 .ps-c2b-st,
 .ps-c2a-slot,
-.ps-c2c-p {
+.ps-c2c-p,
+.ps-c2f-node {
   position: relative;
   z-index: 1;
   box-sizing: border-box;
@@ -684,14 +707,12 @@
      clip at art x=6, so what rendered was two orphan horizontal stubs poking
      out of the left edge - a rendering bug to look at, and completely
      invisible to a bounding-box probe because the element box was correct. */
-  grid-area: chase;
-  position: relative;
+  position: absolute;
+  top: calc(100% + 1px);
+  left: var(--c2-loop-inset);
   z-index: 0;
-  align-self: end;
-  justify-self: start;
   width: var(--c2-loop-w-span);
   height: var(--c2-loop-drop);
-  margin: 0 0 calc(-1 * var(--c2-loop-drop)) var(--c2-loop-inset);
   box-sizing: border-box;
   border: var(--c2-loop-w) solid var(--c2-accent);
   border-top: 0;
@@ -703,6 +724,7 @@
 .ps-c2b-loop::after {
   content: "";
   position: absolute;
+  z-index: 1;
   /* >> BELOW THE PLATE EDGE, NOT ABOVE IT. The first attempt put this at
      top: -head-h so the head sat INSIDE the plate - and the plate is z-index 1
      against the loop's 0, so the plate painted straight over it and the retry
@@ -854,22 +876,29 @@
      the container and a @container block cannot style it. */
   .ps-c2b-flow {
     --c2-fs: 16px;
-    --c2-fs-2: 15px;
     --c2-fs-tag: 14px;
-    --c2-pad: 13px 14px;
+    --c2-fs-2: 14px;
+    --c2-pad: 12px 13px;
     --c2-col-gap: 10px;
-    --c2-e1: 22px;
-    --c2-e2: 34px;
-    --c2-e3: 40px;
-    --c2-fork-drop: 15px;
-    --c2-loop-drop: 22px;
-    --c2-loop-w-span: 84px;
-    --c2-loop-inset: 18px;
-    --c2-dia-w: 152px;
-    --c2-dia-h: 68px;
+    --c2-e1: 18px;
+    --c2-e2: 30px;
+    --c2-e3: 34px;
+    --c2-fork-drop: 13px;
+    --c2-loop-drop: 20px;
+    --c2-loop-w-span: 78px;
+    --c2-loop-inset: 16px;
+    --c2-dia-w: 148px;
+    --c2-dia-h: 62px;
     --c2-head-w: 10px;
     --c2-head-h: 7px;
   }
+  /* >> THE CHART MUST END ABOVE THE TITLE SCRIM, NOT MERELY INSIDE THE FLOW
+     BOX. At 320 the seven tracks summed to 324px and the flow box is 344px
+     tall, so nothing overflowed and every geometry probe was green - but the
+     card's own title scrim starts fading around y=300, and the two outcome
+     plates shipped with their labels visibly GREY against the bright white of
+     the plates above them. It read as a rendering fault. The tracks now sum
+     to 278 and finish at 294, clear of it. */
   .ps-c2b-flow { padding: 16px 14px 0 14px; }
   .ps-c2-glyph { width: 15px; height: 15px; margin-bottom: 4px; }
 }
@@ -1011,7 +1040,7 @@
     --c2-radius: 11px;
     --c2-e1: 28px;
     --c2-e2: 28px;
-    --c2-e3: 40px;
+    --c2-e3: 56px;
     --c2-dia-w: 172px;
     --c2-dia-h: 118px;
     --c2-loop-drop: 26px;
@@ -1102,15 +1131,19 @@
     border-bottom-left-radius: 12px;
   }
   /* The edge labels ride just inside the corner of their own elbow. */
-  .ps-c2b-arm .ps-c2b-tag { top: auto; }
+  /* >> BOTH TAGS CLUSTER AT THE FORK POINT, not out at the far end of their
+     own elbow. Sat on the horizontal runs they ended up 140px apart at
+     opposite corners of the frame, and "yes" overflowed the 40px fork track
+     and printed on top of the Paid plate. At the vertex they read as the two
+     answers to the question the diamond just asked, which is what they are. */
+  .ps-c2b-arm .ps-c2b-tag { top: auto; right: auto; }
   .ps-c2b-arm--yes .ps-c2b-tag {
-    right: auto;
-    left: calc(var(--c2-loop-w) + 7px);
-    bottom: calc(50% + 6px);
+    left: calc(var(--c2-loop-w) + 6px);
+    bottom: 5px;
   }
   .ps-c2b-arm--no .ps-c2b-tag {
-    left: calc(var(--c2-loop-w) + 7px);
-    top: calc(50% + 6px);
+    left: calc(var(--c2-loop-w) + 6px);
+    top: 5px;
   }
 
   /* ARROWHEADS INTO THE OUTCOMES, now pointing right. Still pseudo elements OF
@@ -1295,3 +1328,1662 @@
    property whose default is the finished state, or gate the state and the
    animation together in JS before first paint, the way card 4 does.
    ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   THE FIVE AUTOMATION FLOWS          ?c2flow=1|2|3|4|5
+   ═══════════════════════════════════════════════════════════
+
+   Flow 1 is the shipped flow chart RESTRUCTURED on the owner's instruction:
+   "the loop should be invoice sent -> paid? -> yes = Ends right there on green
+   Yes box. No = email reminder sent, looping until invoice paid". Flows 2-5
+   are four new sequences that read as its siblings.
+
+   >> CRAFT IS COPIED, FORM IS NOT. Every plate here is literally the SAME
+   RULE as the shipped chart's plates (the selector list is shared, so a change
+   to one changes all). Same 3px rail, same 11x8 solid arrowhead, same 9px
+   radius, same slab / hairline / lit-edge / cast, same 17px role 7 ink, same
+   tokens. What differs between the five is TOPOLOGY, because the five loops
+   are genuinely different mechanisms and drawing them all as one shape would
+   throw away the reason they were chosen:
+
+     1  DECISION RETURN   the no branch acts, then returns TO THE DECISION.
+                          The yes branch is a leaf and stops.
+     2  DECISION RETURN, symmetric fork, and the return comes back up the
+                          RIGHT channel instead of the left, off a two-beat
+                          lead-in. Same mechanism as 1, honestly drawn as
+                          such - it IS a nudge loop and pretending otherwise
+                          would be a lie about the mechanism.
+     3  GATE              a BARRIER spanning the frame with ONE gap in it. The
+                          cleared lane passes through the gap; the other lane
+                          DEAD ENDS on the bar with a FLAT CAP and no
+                          arrowhead, which is the whole difference between
+                          "asked again" and "held back".
+     4  ITERATE A LIST    the loop does not come back to where it left. It
+                          re-enters a stack ONE ROW LOWER, and the rows it has
+                          already passed are spent and dimmed. Forward motion,
+                          not repetition.
+     5  MACHINE RETRY     the loop is a closed ORBIT on the node itself, with
+                          EVENLY SPACED ticks (a schedule) against flow 1's
+                          GROWING dots (a human ladder). No human is in the
+                          loop at all; the person is the EXIT, not the loop.
+
+   >> THE ONE INVARIANT THAT MAKES EVERY CONNECTOR DETERMINISTIC. In all five,
+   the decision diamond STRETCHES TO FILL ITS GRID COLUMN. Its left and right
+   vertices are therefore GRID LINES, not arithmetic, so a rail that reaches
+   `calc(-1 * var(--c2-col-gap))` past a column edge lands exactly on a vertex
+   in every regime and at every width. This is the same discipline as the
+   shipped chart's subgrid fork, applied to the horizontal.
+
+   >> NEW GRAMMAR, THREE ADDITIONS, AND EACH IS LOAD BEARING:
+     TERMINAL  = a STADIUM (radius 999px). Real flow chart language: rectangle
+                 is a process, diamond is a decision, stadium is a terminator.
+                 It is how "ends right there" is drawn rather than asserted.
+                 Nothing ever leaves a stadium in this file.
+     BLOCKED   = a rail ending in a FLAT CAP, never an arrowhead. An arrow
+                 says "goes to"; a flat cap says "stops here". Flow 3 only.
+     REPEATS   = a marker on the node that repeats. GROWING dots for a human
+                 ladder (the shipped card's own idiom, .ps-c2-nudges), EQUAL
+                 dots for a machine schedule.
+
+   >> MOTION: NONE. Zero @keyframes, zero transitions, zero `opacity: 0` start
+   states, no reveal gate. Reduced motion and normal are the same render, so
+   the permanently-invisible-at-opacity-0 failure is structurally unreachable
+   here exactly as it is in the rest of this file. Read the banner above.
+
+   >> NO SVG defs, NO ids, NO url(#...). Same ruling as the rest of the file.
+   Every rail, arrowhead, diamond, stadium, barrier and orbit below is CSS, so
+   the card-face / dialog DOUBLE MOUNT cannot collide on an id. The only SVG
+   is the two shared attribute-only glyphs.
+
+   >> NO INVENTED DATA. No amounts, no dates, no client names, no counts, no
+   percentages. The list in flow 4 is unlabelled MASS on purpose: naming its
+   rows would mean inventing people.
+   ═══════════════════════════════════════════════════════════ */
+
+.ps-c2f-root {
+  /* Build sentinel for the five flows, read the same way as --c2-build. */
+  --c2f-build: "f-set-7-compact-taglift-6-diamond-clear";
+
+  /* The return channel. A rail that runs around the OUTSIDE of the chart. */
+  --c2-ret: 26px;
+  /* How far below the looping node the return's bottom run sits. Its own
+     grid track, never a negative margin, so nothing can fall into it. */
+  --c2-retdrop: 22px;
+  /* The side column that carries a hung terminal. Fixed, because an `auto`
+     track here fights the diamond for width and the diamond always wins. */
+  --c2-side: 104px;
+  --c2-elbow: 11px;
+  /* THE BARRIER, flow 3 only. */
+  --c2-bar-h: 9px;
+  /* The two tracks either side of the barrier. Tokens, not literals, because
+     the compact dialog has 224px of height and the first build of flow 3 put
+     the "Cleared" terminal 22px past the box and straight into the dialog's
+     own bottom fade - the label rendered grey against bright plates and read
+     as a rendering fault, which is a failure this file has already shipped
+     once. Caught in the screenshot; the overflow probe found it too, but only
+     because it was asked about the flow box rather than the card. */
+  --c2-gate-lane: 16px;
+  --c2-gate-gap: 20px;
+  --c2-bar: color-mix(in srgb, var(--c2-ink) 40%, var(--c2-rail));
+  /* THE LIST, flow 4 only. */
+  /* >> THIN RULES, NOT PILLS. At 15px tall with a 4px radius the first render
+     of flow 4's list read as a row of grey loading-skeleton placeholders,
+     which is on this owner's own list of things he hates. At 11px with a 3px
+     radius, an arrow entering the stack and an arrow leaving one specific
+     row, it reads as a queue. */
+  --c2-slot-h: 11px;
+  --c2-slot-gap: 8px;
+}
+
+/* ── The flow box. Same envelope as .ps-c2b-flow: the top of the art, above
+      the title band the card face paints over the bottom 88px. ── */
+/* >> EVERY EDGE TRACK IS `minmax(base, 1fr)` AND EVERY NODE ROW IS `auto`,
+      AND THAT ORDER IS THE FIX FOR A REAL DEFECT. With plain fixed tracks the
+      grid's own align-content stretched the AUTO rows to soak up the leftover
+      height, so a node sat centred in a row 40px taller than itself while its
+      connectors were still measured from the row edges - and every arrowhead
+      and return stub in the set detached by 20 to 40px. Caught in the
+      screenshot; a bounding box probe reported every element correct, because
+      every element WAS correct. Slack now lands in the connector tracks,
+      which are built to stretch and carry their head at the head end. */
+.ps-c2f-flow {
+  align-content: start;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(100% - 88px);
+  box-sizing: border-box;
+  padding: 18px 16px 0 16px;
+  display: grid;
+  column-gap: var(--c2-col-gap);
+  row-gap: 0;
+}
+
+/* ── KEEP-CLEAR. The surface puts a 44x44 expand disc inset 12px in the art's
+      top-right (a 56x56 box) at <=768, 32x32 inset 16 above it. Only the row
+      that collides pays for it. Same value the shipped chart uses. ── */
+.ps-c2f-keepclear { margin-right: 56px; }
+
+/* ── STRAIGHT EDGES. Own a grid track and stretch into it, so the line
+      physically spans the gap it is drawn in. Arrowhead at the head, on the
+      edge itself - identical to .ps-c2b-edge. ── */
+.ps-c2f-edge {
+  position: relative;
+  z-index: 0;
+  align-self: stretch;
+  justify-self: center;
+  width: var(--c2-loop-w);
+  border-radius: 2px;
+  background: var(--c2-rail);
+}
+.ps-c2f-edge::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: var(--c2-head-w);
+  height: var(--c2-head-h);
+  margin-left: calc(var(--c2-head-w) / -2);
+  background: var(--c2-rail);
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+/* Coloured branch edges. The colour IS the branch, exactly as on the shipped
+   chart: green settles, accent acts. */
+.ps-c2f-edge--good, .ps-c2f-edge--good::after { background: var(--c2-good); }
+.ps-c2f-edge--act, .ps-c2f-edge--act::after { background: var(--c2-accent); }
+
+/* >> THE BLOCKED EDGE. No ::after at all, and a FLAT CAP instead - a wide
+   short crossbar sitting on the barrier. An arrow says "goes to". This says
+   "stops here", and it is the only way the gate reads as a gate. */
+.ps-c2f-edge--stop::after {
+  left: 50%;
+  bottom: 0;
+  width: 26px;
+  height: var(--c2-loop-w);
+  margin-left: -13px;
+  border-radius: 2px;
+  clip-path: none;
+}
+
+/* ── A HORIZONTAL RAIL, for a terminal hung off a diamond's side vertex. It
+      reaches back across the column gap so its tail lands ON the vertex. ── */
+.ps-c2f-hrail {
+  display: block;
+  flex: 0 0 auto;
+  height: var(--c2-loop-w);
+  width: calc(var(--c2-col-gap) + 15px);
+  margin-left: calc(-1 * var(--c2-col-gap));
+  border-radius: 2px;
+  background: var(--c2-rail);
+}
+.ps-c2f-hrail--good { background: var(--c2-good); }
+
+/* ── EDGE LABELS. Role 7 ink at 15px, never an accent hue at small size -
+      that combination was this card's measured SC 1.4.3 failure. Not italic:
+      the edges are <i> elements and the first render of the shipped chart
+      came back with "yes" and "no" leaning. ── */
+.ps-c2f-tag {
+  position: absolute;
+  font-style: normal;
+  font-size: var(--c2-fs-tag);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  color: var(--c2-ink);
+  white-space: nowrap;
+}
+
+/* ── THE DECISION. Same material and same construction as .ps-c2b-dia - a
+      clipped outer shape in the stroke colour with a clipped inner face inset
+      from it - but it STRETCHES to fill its column, which is what turns its
+      left and right vertices into grid lines. ── */
+.ps-c2f-dia {
+  position: relative;
+  z-index: 1;
+  justify-self: stretch;
+  align-self: center;
+  box-sizing: border-box;
+  height: var(--c2-dia-h);
+  display: grid;
+  place-items: center;
+  background: var(--c2-dia-stroke);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  filter: drop-shadow(var(--c2-dia-shadow));
+}
+.ps-c2f-dia::before {
+  content: "";
+  position: absolute;
+  inset: var(--c2-dia-stroke-w);
+  background: var(--c2-slab);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+/* ── THE TERMINAL. A STADIUM, and that is the whole point: in flow chart
+      language a rectangle is a process and a stadium is a terminator, so the
+      shape itself says the flow ENDS here. Green border, green check, and
+      NOTHING LEAVES IT in any of the five. ── */
+.ps-c2f-term {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: var(--c2-slab);
+  border: 1px solid color-mix(in srgb, var(--c2-good) 55%, var(--c2-hair));
+  box-shadow: var(--c2-lit), var(--c2-cast-lift);
+  color: var(--c2-good);
+}
+.ps-c2f-term .ps-c2-glyph { margin-bottom: 0; }
+/* >> A FORK OUTCOME IS TOP ALIGNED, NEVER CENTRED. The two outcomes are
+   different heights (a stadium beside a plate, a plate beside a list), so the
+   row is as tall as the taller one. Centred, the shorter one drops away from
+   the arm pointing at it and its arrowhead floats in the gap - which is
+   exactly what flow 4 shipped in its first render. */
+.ps-c2f-out { align-self: start; }
+/* Arrowheads INTO a terminal are pseudo elements OF THE TERMINAL, measured
+   from the thing they point at, so they cannot drift when the box resizes. */
+.ps-c2f-term--fromleft::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(-1 * var(--c2-head-h));
+  width: var(--c2-head-h);
+  height: var(--c2-head-w);
+  margin-top: calc(var(--c2-head-w) / -2);
+  background: var(--c2-good);
+  clip-path: polygon(100% 50%, 0 0, 0 100%);
+}
+.ps-c2f-term--fromtop::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(-1 * var(--c2-head-h) + 1px);
+  width: var(--c2-head-w);
+  height: var(--c2-head-h);
+  margin-left: calc(var(--c2-head-w) / -2);
+  background: var(--c2-good);
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+/* ── THE HAND-OFF PLATE. The one outcome that reaches a person. Accent
+      border and the only lifted shadow on its own flow, so it is where the
+      eye lands last. Straight from the shipped chart's --exception. ── */
+.ps-c2f-node--handoff {
+  border-color: color-mix(in srgb, var(--c2-accent) 60%, var(--c2-hair));
+  box-shadow: var(--c2-lit), var(--c2-cast-lift);
+}
+.ps-c2f-node--handoff .ps-c2-glyph { color: var(--c2-accent); }
+.ps-c2f-node--fromtop::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(-1 * var(--c2-head-h) + 1px);
+  width: var(--c2-head-w);
+  height: var(--c2-head-h);
+  margin-left: calc(var(--c2-head-w) / -2);
+  background: var(--c2-accent);
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+/* ── THE RETURN. A three sided box, open toward the flow: it leaves the
+      looping node, runs out into a channel, up the outside of the chart, and
+      back in at the decision's side vertex, head first. It owns grid tracks
+      on every side, so no part of it is placed by a guessed percentage.
+      `margin-top: dia-h / 2` puts its top run exactly on the decision's mid
+      line, which IS the side vertex, because the diamond fills its column. ── */
+.ps-c2f-ret {
+  position: relative;
+  z-index: 0;
+  align-self: stretch;
+  justify-self: stretch;
+  box-sizing: border-box;
+  margin-top: calc(var(--c2-dia-h) / 2 - var(--c2-loop-w) / 2);
+  border: var(--c2-loop-w) solid var(--c2-accent);
+  opacity: 0.95;
+}
+/* Left-hand return: rail on the left, opening to the right. */
+/* The extra stroke-width on the reach is a MITRE, not a fudge. Without it the
+   return's bottom run butts against the drop stub at exactly the plate's left
+   edge and leaves a 3x3px notch at the outside of the corner - invisible at
+   1x, an obvious chipped corner at deviceScaleFactor 3, and the kind of thing
+   that reads as a rendering fault rather than a drawing. The same 3px carries
+   the arrowhead tip 3px past the decision's vertex, which is inside the
+   diamond's own opaque fill and is how an arrowhead should meet a shape. */
+.ps-c2f-ret--left {
+  margin-right: calc(-1 * var(--c2-col-gap) - var(--c2-loop-w));
+  border-right: 0;
+  border-radius: var(--c2-elbow) 0 0 var(--c2-elbow);
+}
+.ps-c2f-ret--left::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: calc(var(--c2-loop-w) / -2 - var(--c2-head-w) / 2 + var(--c2-loop-w) / 2);
+  width: var(--c2-head-h);
+  height: var(--c2-head-w);
+  background: var(--c2-accent);
+  clip-path: polygon(100% 50%, 0 0, 0 100%);
+}
+/* Right-hand return: rail on the right, opening to the left. */
+.ps-c2f-ret--right {
+  margin-left: calc(-1 * var(--c2-col-gap) - var(--c2-loop-w));
+  border-left: 0;
+  border-radius: 0 var(--c2-elbow) var(--c2-elbow) 0;
+}
+.ps-c2f-ret--right::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(var(--c2-loop-w) / -2 - var(--c2-head-w) / 2 + var(--c2-loop-w) / 2);
+  width: var(--c2-head-h);
+  height: var(--c2-head-w);
+  background: var(--c2-accent);
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+}
+/* THE STUB that joins the looping node's bottom edge down to the return's
+   bottom run. A pseudo element OF THE NODE, so it is measured from the plate
+   it leaves and cannot drift - the lesson the shipped chart's retry loop
+   already paid for once, at 120px.
+
+   >> AND THE PLATE THAT OWNS ONE MUST FILL ITS GRID ROW, WHICH IS THE OTHER
+   HALF OF THE SAME CONTRACT. The stub's height is a FIXED --c2-retdrop and
+   `row-gap` is 0, so it lands on the return's bottom run only when the plate's
+   bottom edge IS its row's bottom edge. In flows 1 and 3 the drop plate is
+   alone in sizing its `auto` row, so it already was and this declaration is a
+   no-op there. In flow 2 it is NOT: "Asked again" shares the outcomes row with
+   "Review posted", which wraps to two lines and made the row 66.78px against
+   the plate's own 48.39px, so the stub stopped 15.39px short and the return
+   connector was drawn SEVERED - on a picture whose entire subject is loop-backs.
+   Measured on the card face: stub ended y=335.61, the return's 3px bottom run
+   began y=351. Stretching keeps the top edge exactly where `.ps-c2f-out`'s
+   `align-self: start` puts it, so the arm's arrowhead still meets the plate's
+   top; it only moves the bottom edge down to the row line the stub is measured
+   against. Verified after the change at -3px, i.e. the stub overlapping the
+   return's bottom border by its own stroke width, which is what flows 1 and 3
+   already measured. */
+.ps-c2f-drop { align-self: stretch; }
+.ps-c2f-drop::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  height: var(--c2-retdrop);
+  width: var(--c2-loop-w);
+  background: var(--c2-accent);
+}
+.ps-c2f-drop--left::after { left: 0; }
+.ps-c2f-drop--right::after { right: 0; }
+
+/* ── REPEAT MARKERS. Two of them, and the difference is the meaning.
+      GROWING dots = a human being asked again, harder (the shipped card's own
+      .ps-c2-nudges, reused unchanged). EQUAL dots = a machine on a schedule.
+      Same family, opposite mechanism, and that contrast is the only thing
+      that stops flow 5 reading as flow 1. ── */
+.ps-c2f-ticks {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+.ps-c2f-tick {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c2-accent);
+  opacity: 0.85;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FLOW 1  -  GET PAID          decision return, yes terminates
+   ═══════════════════════════════════════════════════════════
+   The owner's structure, verbatim: "invoice sent -> paid? -> yes = Ends right
+   there on green Yes box. No = email reminder sent, looping until invoice
+   paid".
+
+   Three things a reader has to be able to see, so three things are built
+   rather than asserted:
+     1  YES IS A LEAF. It is a STADIUM, the flow chart terminator shape, and
+        it is the only node in the frame with nothing leaving it. Read the
+        markup: it has no outgoing rail because it has no outgoing rail.
+     2  NO RETURNS TO THE DECISION, NOT TO THE START. The return's top run
+        sits at `dia-h / 2` from the top of the decision row, which is the
+        diamond's LEFT VERTEX, because the diamond fills its column. It
+        cannot land on "Invoice sent": that node is two tracks higher.
+     3  IT REPEATS UNTIL PAID. Three GROWING dots on the reminder plate - the
+        dunning ladder, the card's own existing idiom - plus the return. One
+        reminder that failed would be a single beat; a ladder that comes back
+        to the same question is a loop that only leaves through the green.
+   ═══════════════════════════════════════════════════════════ */
+.ps-c2f1-flow {
+  --c2-e1: 30px;
+  --c2-e2: 40px;
+  grid-template-columns: var(--c2-ret) minmax(0, 1fr) var(--c2-side);
+  grid-template-rows:
+    auto                          /* trigger  */
+    minmax(var(--c2-e1), 1fr)     /* edge 1   */
+    var(--c2-dia-h)               /* decision */
+    minmax(var(--c2-e2), 1fr)     /* the no edge */
+    auto                          /* reminder */
+    var(--c2-retdrop);            /* the return's bottom run */
+  grid-template-areas:
+    ".    trig trig"
+    ".    e1   ."
+    "ret  dia  yes"
+    "ret  e2   ."
+    "ret  act  act"
+    "ret  .    .";
+}
+.ps-c2f1-trig { grid-area: trig; }
+.ps-c2f1-e1 { grid-area: e1; }
+.ps-c2f1-dia { grid-area: dia; }
+.ps-c2f1-yes { grid-area: yes; }
+.ps-c2f1-e2 { grid-area: e2; }
+.ps-c2f1-act { grid-area: act; }
+.ps-c2f1-ret { grid-area: ret; }
+
+/* THE YES BRANCH. A flex row pinned to the decision row's middle, so its rail
+   sits on the diamond's right vertex. The rail reaches back across the column
+   gap to touch it. Nothing continues past the stadium. */
+.ps-c2f1-yes {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: center;
+  justify-self: start;
+  position: relative;
+  min-width: 0;
+}
+/* >> THERE IS NO "yes" TAG ON THIS ARM AND THAT IS DELIBERATE. The first
+   render put one here and the stadium sat straight on top of it: half a word
+   showing from behind a pill, which reads as a rendering bug. It is also
+   redundant - the arm is green and it arrives at a box whose entire content
+   is the word "Yes". Labelling it "yes" as well is the diagram narrating
+   itself, which this file already rejected once for the same reason. The "no"
+   tag stays, because the no arm arrives at "Email reminder sent", which does
+   not say no. */
+.ps-c2f1-e2 .ps-c2f-tag { top: 3px; left: calc(50% + 9px); }
+.ps-c2f1-act .ps-c2-nudges { margin-top: 7px; }
+
+/* ═══════════════════════════════════════════════════════════
+   FLOW 2  -  REVIEW AFTER EVERY JOB     decision return, mirrored
+   ═══════════════════════════════════════════════════════════
+   Same MECHANISM as flow 1 and drawn as such, because it IS a nudge loop and
+   inventing a different shape for it would be a lie about how it works. What
+   differs is composition, so the two are not the same picture: a TWO BEAT
+   lead in, a SYMMETRIC fork instead of a terminal hung off the side, and the
+   return comes back up the RIGHT channel.
+
+   >> THE FORK IS THE SHIPPED CHART'S OWN FORK. Not a copy of it - the actual
+   .ps-c2b-fork / .ps-c2b-arm rules, reused unchanged, subgrid and all. That
+   is the strongest possible guarantee that this reads as its sibling.
+   ═══════════════════════════════════════════════════════════ */
+.ps-c2f2-flow {
+  --c2-fs: 16px;
+  --c2-dia-h: 64px;
+  --c2-e1: 20px;
+  --c2-e3: 36px;
+  --c2-pad: 11px 15px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) var(--c2-ret);
+  grid-template-rows:
+    auto                        /* Job complete */
+    minmax(var(--c2-e1), 1fr)
+    auto                        /* Ask sent     */
+    minmax(var(--c2-e1), 1fr)
+    var(--c2-dia-h)             /* Reviewed?    */
+    var(--c2-e3)                /* fork         */
+    auto                        /* outcomes     */
+    var(--c2-retdrop);
+  grid-template-areas:
+    "trig trig trig"
+    "e1   e1   ."
+    "mid  mid  mid"
+    "e1b  e1b  ."
+    "dia  dia  ret"
+    "fork fork ret"
+    "outa outb ret"
+    ".    .    ret";
+}
+.ps-c2f2-trig { grid-area: trig; }
+.ps-c2f2-e1 { grid-area: e1; }
+.ps-c2f2-mid { grid-area: mid; }
+.ps-c2f2-e1b { grid-area: e1b; }
+.ps-c2f2-dia { grid-area: dia; }
+.ps-c2f2-outa { grid-area: outa; justify-self: center; }
+.ps-c2f2-outb { grid-area: outb; }
+.ps-c2f2-ret { grid-area: ret; }
+
+/* ═══════════════════════════════════════════════════════════
+   FLOW 3  -  NOTHING EXPIRES ON YOU               THE GATE
+   ═══════════════════════════════════════════════════════════
+   NOT a nudge loop, and the drawing has to say so. The "no" branch does not
+   message someone again, it HOLDS THE WORK BACK, so the picture is a BARRIER:
+   a heavy bar that runs from the middle of the frame off the right edge, with
+   the held lane DEAD ENDING ON IT under a flat cap and no arrowhead. The
+   cleared lane passes to the left of the bar untouched, because the bar is
+   simply not there on that side. An arrow says "goes to". A flat cap on a bar
+   says "stops here", and that is the entire difference between this flow and
+   flow 1.
+
+   The bar bleeds past the right padding on purpose: the gate is bigger than
+   the frame, which is the true thing about it.
+   ═══════════════════════════════════════════════════════════ */
+.ps-c2f3-flow {
+  --c2-fs: 16px;
+  --c2-dia-h: 64px;
+  --c2-e1: 20px;
+  --c2-e3: 34px;
+  --c2-pad: 11px 15px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) var(--c2-ret);
+  grid-template-rows:
+    auto                        /* Expiry near   */
+    minmax(var(--c2-e1), 1fr)
+    var(--c2-dia-h)             /* Renewed?      */
+    var(--c2-e3)       /* fork          */
+    auto                  /* Request sent  */
+    var(--c2-retdrop)     /* return's bottom run */
+    var(--c2-gate-lane)   /* the held lane running at the bar */
+    var(--c2-bar-h)       /* THE BARRIER   */
+    var(--c2-gate-gap)    /* below the bar, cleared lane only */
+    auto;                 /* ( Cleared )   */
+  grid-template-areas:
+    "trig trig trig"
+    "e1   e1   ."
+    "dia  dia  ret"
+    "fork fork ret"
+    "yes  hold ret"
+    "yes  stop ret"
+    "yes  stop ."
+    "yes  bar  bar"
+    "yes  .    ."
+    "term .    .";
+}
+.ps-c2f3-trig { grid-area: trig; }
+.ps-c2f3-e1 { grid-area: e1; }
+.ps-c2f3-dia { grid-area: dia; }
+.ps-c2f3-hold { grid-area: hold; }
+.ps-c2f3-stop { grid-area: stop; }
+.ps-c2f3-yes { grid-area: yes; }
+.ps-c2f3-term { grid-area: term; justify-self: center; }
+.ps-c2f3-ret { grid-area: ret; }
+
+/* THE BARRIER. A grid item, so its left end is a grid line and the cleared
+   lane's column is simply not covered by it. Bleeds off the right edge. */
+.ps-c2f3-bar {
+  grid-area: bar;
+  z-index: 0;
+  align-self: center;
+  justify-self: stretch;
+  height: var(--c2-bar-h);
+  /* >> IT USED TO BLEED -18px AND IT MUST NOT. Together with the left piece's
+     matching -18px the two halves ran from 8px OUTSIDE the card's left edge to
+     8px outside its right edge: a 9px full-bleed grey slab drawn edge to edge
+     across the card face, measured -2px..414px against a card occupying
+     6px..406px of the same 412px art box. On the carousel that is a quarter of
+     the cycle (slide 3 of 5, ping-ponged, so 2 appearances in 8 steps) and it
+     read as a divider or a rendering fault rather than as a gate. The bar is
+     now INSET by one column gap at both ends - 28px..384px, so 22px of
+     daylight either side - which is the same drawing with two visible ends.
+     What is lost is the note above about the gate being "bigger than the
+     frame"; that reading is what produced the defect, and a barrier the flow
+     dead-ends on does not need to leave the frame to say "stops here". The
+     flat cap sits at 274px..277px and is still well inside. */
+  margin-right: var(--c2-col-gap);
+  margin-left: calc(-1 * var(--c2-col-gap) / 2);
+  background: var(--c2-bar);
+}
+/* >> THE GAP IS THE GATE, AND IT HAS TO BE VISIBLY A GAP. The first render
+   put the bar only on the held side, 86px clear of the cleared lane, and it
+   read as a bar sitting on the right rather than as a barrier with one
+   opening. This piece fills the cleared lane's OWN column, so the element's
+   50% IS that lane's centre line - the lane is `justify-self: center` in the
+   same column - and a transparent band centred at 50% is therefore centred on
+   the lane by construction, at every width, with no arithmetic. Placed by
+   explicit line numbers rather than by an area name so that it may overlap
+   the lane's own track. */
+.ps-c2f3-barl {
+  grid-column: 1;
+  grid-row: 8;
+  z-index: 0;
+  align-self: center;
+  justify-self: stretch;
+  height: var(--c2-bar-h);
+  /* >> INSET BY ONE COLUMN GAP, NOT BLEEDING -18px. See the note on the right
+     piece: the two -18px bleeds together were the full-bleed slab. */
+  margin-left: var(--c2-col-gap);
+  margin-right: calc(-1 * var(--c2-col-gap) / 2);
+  /* The element starts one column gap `g` inside its column and still bleeds
+     half a column gap past it on the right, so its own 50% lands 3g/4 RIGHT of
+     the lane's centre line and the correction is negative. Derived, not
+     eyeballed, and derived in terms of `g` so it survives the three regimes
+     that each set their own --c2-col-gap:
+
+       col 1      = [L, L + w]          lane centre = L + w/2
+       barl box   = [L + g, L + w + g/2]
+       barl 50%   = L + g + (w - g/2)/2 = L + w/2 + 3g/4
+       correction = lane centre - barl 50% = -3g/4
+
+     At the narrow g of 12px that is -9px, and the measured lane centre is
+     98.5px against a corrected gate centre of 98.5px. The superseded value was
+     +6px, correct only while this piece bled -18px.
+     Zero-alpha rgba, never the `transparent` keyword, which premultiplies to a
+     black seam against a coloured stop. */
+  --c2-gate-off: calc(-0.75 * var(--c2-col-gap));
+  background: linear-gradient(
+    90deg,
+    var(--c2-bar) 0 calc(50% + var(--c2-gate-off) - 15px),
+    rgba(0, 0, 0, 0) calc(50% + var(--c2-gate-off) - 15px) calc(50% + var(--c2-gate-off) + 15px),
+    var(--c2-bar) calc(50% + var(--c2-gate-off) + 15px) 100%
+  );
+}
+/* The cleared lane paints ABOVE the bar, so it is visibly running through the
+   opening rather than stopping behind it. */
+.ps-c2f3-yes { z-index: 1; }
+
+/* ═══════════════════════════════════════════════════════════
+   FLOW 4  -  CANCELLATION REFILLED         THE LOOP ADVANCES
+   ═══════════════════════════════════════════════════════════
+   Every other loop in the set comes back to where it was. This one makes
+   PROGRESS each time round, and that is the only interesting thing about it,
+   so it is the thing that is drawn: the "no" branch enters a STACK at the
+   top, the rows it has already been through are SPENT AND DIMMED, and the
+   return leaves the row BELOW the live one. The offer moves down the list.
+
+   >> THE ROWS CARRY NO TEXT, DELIBERATELY. Naming them would mean inventing
+   people, and invented data on a real site outlives whoever added it. They
+   are mass, and mass is enough: three states, one reading.
+
+   >> HONEST LIMIT, STATED HERE SO NOBODY HAS TO REDISCOVER IT. The OUTER
+   topology of this flow is decision return, the same as 1 and 2. At 299px of
+   frame there is no room to give the descent its own outer structure, so the
+   iterate-down-a-list mechanism is carried INSIDE the loop node instead of by
+   the connector layout. That is a compromise the frame forced, not a claim
+   that this is a fourth topology.
+   ═══════════════════════════════════════════════════════════ */
+.ps-c2f4-flow {
+  --c2-fs: 16px;
+  /* Shared by the plate padding AND by the exit rail that has to reach the
+     plate's own edges. One token, so the two cannot disagree. */
+  --c2-f4-padx: 15px;
+  --c2-f4-pady: 11px;
+  --c2-dia-h: 58px;
+  --c2-e1: 16px;
+  --c2-e3: 28px;
+  --c2-pad: 11px 15px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) var(--c2-ret);
+  grid-template-rows:
+    auto                        /* Slot opens */
+    minmax(var(--c2-e1), 1fr)
+    auto                        /* Offered    */
+    minmax(var(--c2-e1), 1fr)
+    var(--c2-dia-h)             /* Taken?     */
+    var(--c2-e3)      /* fork       */
+    auto              /* outcomes   */
+    var(--c2-retdrop);
+  grid-template-areas:
+    "trig trig trig"
+    "e1   e1   ."
+    "mid  mid  mid"
+    "e1b  e1b  ."
+    "dia  dia  ret"
+    "fork fork ret"
+    "outa outb ret"
+    ".    .    ret";
+}
+.ps-c2f4-trig { grid-area: trig; }
+.ps-c2f4-e1 { grid-area: e1; }
+.ps-c2f4-mid { grid-area: mid; }
+.ps-c2f4-e1b { grid-area: e1b; }
+.ps-c2f4-dia { grid-area: dia; }
+.ps-c2f4-outa { grid-area: outa; justify-self: center; }
+.ps-c2f4-list { grid-area: outb; }
+.ps-c2f4-ret { grid-area: ret; }
+
+/* THE LIST. Fixed row height and fixed gap, which is what lets the return's
+   head land on a NAMED ROW rather than on a guessed percentage. */
+.ps-c2f4-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--c2-slot-gap);
+  margin-top: 8px;
+}
+.ps-c2f4-slot {
+  display: block;
+  height: var(--c2-slot-h);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--c2-ink) 34%, transparent);
+}
+/* SPENT. Already offered, already passed. Dimmed, not deleted - the list is
+   the memory of where the automation has been. */
+.ps-c2f4-slot--spent { background: color-mix(in srgb, var(--c2-ink) 14%, transparent); }
+/* LIVE. The one the offer is with right now. */
+.ps-c2f4-slot--live {
+  background: var(--c2-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c2-accent) 22%, transparent);
+}
+/* The return leaves the row BELOW the live one, which is the whole idea. Its
+   position is `n * (row + gap) + row / 2` from the top of the stack - all
+   fixed lengths, so it cannot drift. */
+/* THE EXIT. An elbow leaving the row BELOW the live one: a short run out to
+   the plate's right edge, then down to meet the return's bottom track. It is
+   a child of the ROWS container, whose row height and gap are fixed lengths,
+   so `3 rows + 3 gaps + half a row` IS the fourth row's centre line by
+   construction. Nothing here is a guessed percentage. */
+.ps-c2f4-exit {
+  position: absolute;
+  /* Which row the offer moves ON TO. A token, because a regime that hides a
+     row has to move the exit with it or the arrow leaves a row that is not
+     there. Zero indexed: 3 is the fourth row. */
+  --c2-exit-row: 3;
+  top: calc(var(--c2-exit-row) * (var(--c2-slot-h) + var(--c2-slot-gap)) + var(--c2-slot-h) / 2 - var(--c2-loop-w) / 2);
+  right: calc(-1 * var(--c2-f4-padx));
+  bottom: calc(-1 * (var(--c2-f4-pady) + var(--c2-retdrop) + var(--c2-loop-w)));
+  width: 26px;
+  border-top: var(--c2-loop-w) solid var(--c2-accent);
+  border-right: var(--c2-loop-w) solid var(--c2-accent);
+  border-top-right-radius: var(--c2-elbow);
+  opacity: 0.95;
+}
+.ps-c2f4-list { padding: var(--c2-f4-pady) var(--c2-f4-padx); }
+.ps-c2f4-rows { position: relative; }
+
+/* ═══════════════════════════════════════════════════════════
+   FLOW 5  -  PAYMENT RETRIED                  THE MACHINE
+   ═══════════════════════════════════════════════════════════
+   The only flow in the set with NO HUMAN IN THE LOOP, so it is the only one
+   with no return channel: the loop is a closed ORBIT on the node itself,
+   wrapped tight and running off the left edge of the frame. The person is the
+   EXIT, not the loop - "Update asked" is a leaf that reaches a human, drawn
+   with the shipped chart's own hand-off treatment.
+
+   >> EQUAL TICKS AGAINST GROWING DOTS, AND THAT CONTRAST IS THE WHOLE POINT.
+   Flow 1's reminder plate carries three GROWING dots: a human ladder, pushed
+   harder each time. This one carries three EQUAL dots: a machine on a
+   schedule, indifferent. Same visual family, opposite mechanism, and without
+   it flow 5 would read as flow 1 in different words.
+   ═══════════════════════════════════════════════════════════ */
+.ps-c2f5-flow {
+  /* THE ORBIT'S CHANNEL. Flows 1 to 4 keep a channel on one side for the
+     return that runs round the outside; this flow's loop is on the node, so
+     the channel holds the orbit instead. Same rhythm, different mechanism. */
+  padding-left: 46px;
+  --c2-fs: 16px;
+  --c2-dia-h: 64px;
+  --c2-e1: 20px;
+  --c2-e3: 36px;
+  --c2-pad: 11px 15px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows:
+    auto                        /* Card declined */
+    minmax(var(--c2-e1), 1fr)
+    auto                        /* Retried       */
+    minmax(var(--c2-e1), 1fr)
+    var(--c2-dia-h)             /* Cleared?      */
+    var(--c2-e3)      /* fork          */
+    auto;             /* outcomes      */
+  grid-template-areas:
+    "trig trig"
+    "e1   e1"
+    "mid  mid"
+    "e1b  e1b"
+    "dia  dia"
+    "fork fork"
+    "outa outb";
+}
+.ps-c2f5-trig { grid-area: trig; }
+.ps-c2f5-e1 { grid-area: e1; }
+/* >> THE PLATE CARRIES THE ORBIT'S ROOM IN ITS OWN PADDING. The orbit is a
+   child of this plate and therefore paints inside the plate's stacking
+   context, above its face - so with normal padding the ring sat straight
+   across the "R" of "Retried" and across the first tick. Extra left padding
+   is the fix, and it also gives the correct read: the loop passes through the
+   node rather than being parked beside it. */
+.ps-c2f5-mid { grid-area: mid; padding-left: 44px; }
+.ps-c2f5-e1b { grid-area: e1b; }
+.ps-c2f5-dia { grid-area: dia; }
+.ps-c2f5-outa { grid-area: outa; justify-self: center; }
+.ps-c2f5-outb { grid-area: outb; }
+
+/* THE ORBIT. A child of the plate it belongs to, so it is measured from that
+   plate and cannot drift - the lesson the shipped chart's retry loop already
+   paid for once, at 120px adrift in the landscape dialog. It runs off the
+   left edge of the frame: the retrying is bigger than the box. */
+.ps-c2f5-orbit {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: -25px;
+  width: 50px;
+  height: 50px;
+  margin-top: -25px;
+  box-sizing: border-box;
+  border: var(--c2-loop-w) solid var(--c2-accent);
+  border-radius: 50%;
+  opacity: 0.95;
+}
+/* >> THE HEAD SITS ON TOP OF THE ORBIT, AT THE PLATE'S LEFT EDGE, POINTING
+   IN. The first render put it at the orbit's right side, INSIDE the plate -
+   and the plate is z-index 1 against the orbit's 0, so it painted straight
+   over it. What shipped was a stray blue "C" bumped against a box with a
+   white notch in it: a rendering bug to look at, and invisible to a geometry
+   probe because the element was exactly where it was asked to be. It is now
+   at the top of the arc, where the tangent is horizontal and a right pointing
+   head is the correct direction, and it is outside the plate. */
+.ps-c2f5-orbit::after {
+  content: "";
+  position: absolute;
+  left: calc(50% - var(--c2-head-h) + var(--c2-loop-w) / 2);
+  top: calc(-1 * var(--c2-loop-w));
+  width: var(--c2-head-h);
+  height: var(--c2-head-w);
+  background: var(--c2-accent);
+  clip-path: polygon(100% 50%, 0 0, 0 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   THE FIVE FLOWS  -  NARROW FACE          @container max-width 345px
+   ═══════════════════════════════════════════════════════════
+   The card face on phones, on the 2-up tablet grid, AND on desktop between
+   640 and 1023, because the card's width is NOT monotonic: measured on this
+   build, 284px art at a 320 viewport, 394px at 430, 300px at 640 and 299px at
+   940. A 940px desktop card is NARROWER than a 430px phone card, so this
+   block is a desktop regime as much as a phone one.
+
+   >> TOKENS GO ON THE INNER WRAPPER, NEVER ON .ps-c2-root. That element IS
+   the container and a @container block cannot style it; setting --c2-fs there
+   silently does nothing and every derived value falls back or resolves to an
+   invalid var(). This file has already lost two connectors to exactly that.
+   ═══════════════════════════════════════════════════════════ */
+/* >> 400, NOT 345, AND THE EXTRA 55px IS A MEASUREMENT. The shipped chart's
+   own narrow block stops at 345 because that is where ITS layout needs to
+   change. These five need the smaller scale sooner: at the 394px art box
+   (viewports 375 to 430) the base 16px scale makes the natural chart height
+   exceed even the shortened box, so the last plate overflowed and its label
+   probed 210 out of 255 against the card's title scrim while every label
+   above it read 255. At the 15px scale it clears. This block contains ONLY
+   `.ps-c2f-*` selectors, so widening its query cannot touch the shipped
+   chart, which keeps its own 345 boundary untouched above. */
+@container (max-width: 400px) {
+  .ps-c2f-flow {
+    --c2-fs: 15px;
+    --c2-fs-2: 14px;
+    --c2-fs-tag: 13px;
+    --c2-pad: 10px 12px;
+    --c2-radius: 8px;
+    --c2-col-gap: 10px;
+    --c2-ret: 20px;
+    --c2-retdrop: 18px;
+    --c2-side: 88px;
+    --c2-elbow: 9px;
+    --c2-head-w: 10px;
+    --c2-head-h: 7px;
+    --c2-bar-h: 8px;
+    /* >> THE FORK STEM MUST ALWAYS BE SHORTER THAN THE FORK TRACK. The arms
+       are `top: var(--c2-fork-drop); bottom: 0` inside the track, so a stem
+       longer than the track computes a NEGATIVE height and the elbow
+       collapses to nothing - which is exactly what the compact dialog shipped
+       in its first render: a floating arrowhead over an unconnected plate,
+       with the horizontal run simply absent. The base stem is 17px and the
+       compact fork track is 16px, so every regime that shrinks --c2-e3 must
+       shrink this with it. */
+    --c2-fork-drop: 11px;
+    padding: 16px 14px 0 14px;
+  }
+  .ps-c2f-flow .ps-c2-glyph { width: 15px; height: 15px; }
+  .ps-c2f-hrail { width: calc(var(--c2-col-gap) + 12px); }
+  .ps-c2f-term { padding: 10px 16px; gap: 7px; }
+
+  /* >> THE EDGE LABELS NEED LIFTING OFF THEIR CROSSBAR HERE TOO, and this
+     regime never had a rule at all. Measured by counting near-white ink
+     strictly below the bar inside the tag's own x-range: 13 ink px at `top: 0`,
+     0 at -2px. -3px is taken for margin.
+     "The card face is clean" was only ever true at the DESKTOP face - this
+     block is the phone face AND the 640-1023 desktop face, and both crossed.
+     The instrument is validated against the desktop face, which must read 0. */
+  /* -5px, not the -3px that first read CLEAR. A zero ink count proves the tail
+     is not CROSSING; it does not prove the gap matches the control. Measured as
+     a magnitude: the desktop control clears its bar by 1.0 CSS px, and -3px here
+     cleared by 0.0 - touching, not crossing. -5px gives 1.33px below with 2.33px
+     still above to the diamond, so this regime reaches control parity outright. */
+  .ps-c2f-flow .ps-c2b-arm .ps-c2b-tag { top: -5px; }
+
+  .ps-c2f1-flow { --c2-dia-h: 58px; --c2-e1: 22px; --c2-e2: 28px; }
+  .ps-c2f2-flow { --c2-dia-h: 56px; --c2-e1: 16px; --c2-e3: 28px; }
+  /* Flow 3 is the tallest of the five below the barrier, because it is the only
+     one with two tracks between the bar and its terminal. At the values above
+     its "Cleared" plate bottomed out 3px INSIDE the dark phone scrim's ramp -
+     harmless in the pixels (green and label both still read full) but a claim I
+     would have had to qualify. Eight pixels off the gate tracks makes the
+     clearance positive for all five and costs the drawing nothing. */
+  .ps-c2f3-flow {
+    --c2-dia-h: 52px;
+    --c2-e1: 15px;
+    --c2-e3: 22px;
+    --c2-gate-lane: 11px;
+    --c2-gate-gap: 14px;
+  }
+
+  /* Flow 4 is the tallest of the five because the list is a node with four
+     rows inside it, so it is the only one that needs its own trim. */
+  .ps-c2f4-flow {
+    --c2-fs: 14px;
+    --c2-pad: 9px 11px;
+    --c2-f4-padx: 11px;
+    --c2-f4-pady: 9px;
+    --c2-dia-h: 52px;
+    --c2-e1: 14px;
+    --c2-e3: 24px;
+    --c2-slot-h: 8px;
+    --c2-slot-gap: 5px;
+  }
+  .ps-c2f4-rows { margin-top: 6px; }
+
+  .ps-c2f5-flow { --c2-dia-h: 56px; --c2-e1: 16px; --c2-e3: 28px; padding-left: 40px; }
+  .ps-c2f5-mid { padding-left: 38px; }
+  .ps-c2f5-orbit { left: -21px; width: 42px; height: 42px; margin-top: -21px; }
+  .ps-c2f-ticks { gap: 5px; margin-top: 6px; }
+  .ps-c2f-tick { width: 6px; height: 6px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   THE FIVE FLOWS  -  COMPACT     the phone-width dialog, 280px tall
+   ═══════════════════════════════════════════════════════════
+   Same vertical reading, one more step down in size. The dialog fades its own
+   bottom, so the flow box is shorter here than on the card face.
+   ═══════════════════════════════════════════════════════════ */
+@container (max-width: 519px) and (max-height: 300px) {
+  /* >> SAME INVERSION AS THE LANDSCAPE BLOCK, SAME FIX, TIGHTER CEILING. The
+     phone card face is 15px and this was 13.5px, so tapping for more detail
+     made the words smaller here too.
+
+     >> 16px IS THE MEASURED CEILING AND THE WORST CASE DOES NOT MOVE AT ALL.
+     This box is 390x280 and its flow box already extends 24px into the fade
+     before anything changes, so the criterion is again the lowest LABEL's depth
+     into the 120px ramp, not box overflow. Measured, worst label across all
+     five:
+
+         --c2-fs   13.5px  15.0%   14px  15.0%   15px  15.0%
+                   16px    15.0%   17px  26.3%
+
+     15.0% is "Update asked" in flow 5 and it is the SAME 15.0% the build
+     already shipped at 13.5px - the label that governs is not the one that
+     grows fastest, so 2.5px of type costs nothing here. 17px is the cliff:
+     "Review posted" wraps to a second line and jumps to 26.3%. So 16px, one
+     step below the cliff, and no further.
+
+     For scale: the critic measured this trade in decoded pixels and found the
+     dialog terminals still reading (0,212,170) with phone flow 3 at
+     (0,206,165) - a 6/255 loss. That is the cost of 15.0%, and 16px does not
+     increase it. */
+  /* >> THE SAME EDGE-LABEL LIFT AS THE LANDSCAPE BLOCK, AND THIS REGIME NEEDED
+     MORE OF IT. Captured at 4x, the control at the pre-change 12px tag already
+     had the rail running through the bottom of "yes" and "no" here, so this is
+     a defect that was already shipping in both dialog regimes and raising the
+     type only made it obvious. Ladder at the shipped 14px: -3px still touches
+     the "y" tail, -5px grazes it, -6px is the first that clears both glyphs,
+     and -7px starts crowding the diamond above. So -6px, not the -5px the
+     landscape block uses: the value is set by the fork track's own geometry in
+     each regime, not by the type size, which is why there are two measured
+     numbers here instead of one em-relative one.
+     The card face is clean at every width and is not touched. */
+  /* Measured: 18 ink px below the bar at -6px, 0 at -8px. -9px for margin.
+     The earlier -6px was a value read off a ladder BY EYE at 3x; counting ink
+     instead of judging a crop is what found it was 2px short. */
+  /* >> -9px, AND THIS REGIME CANNOT REACH THE CONTROL'S 1.0px GAP EITHER.
+     -10px DOES give a 1.0px gap below the bar - and puts the glyphs straight
+     through the diamond's lower stroke. That collision was invisible to the
+     numeric gap-above probe, which returned a constant -0.67 at every lift
+     because it was detecting the diamond's own edge inside the clip rather than
+     a varying distance; a pinned reading is a probe that has stopped measuring,
+     and it should have been discarded rather than worked around. The screenshot
+     showed it immediately.
+
+         lift    gap below to the bar    diamond above
+         -9px           0.0              clear
+         -10px          1.0              GLYPHS THROUGH THE STROKE
+
+     So 0.0px below, which is clear of the bar - ink strictly below it is zero in
+     all four flows in both themes - but touching rather than the control's 1.0px
+     of daylight. The 280px-tall dialog does not have the room; buying more here
+     means changing the fork track, not the tag. */
+  /* >> -6px, NOT -9px, AND THE -9px WAS CHOSEN BY A PROBE THAT HAD STOPPED
+     MEASURING. The note above is kept because it is the honest record, but its
+     conclusion is wrong and this is why. Its gap-ABOVE probe returned a
+     constant -0.67 at every lift; it was flagged as suspect and used anyway,
+     -10px was tried, a screenshot showed the diamond's stroke through the
+     glyphs, and it reverted one step. So -9px was chosen because -10px visibly
+     failed, never because -9px was shown to pass. The independent check that
+     followed measured ink BELOW the bar - the other collision - and passed it
+     32/32, which is true and does not speak to this.
+
+     Measured with a probe proven to move: the reading tracks the lift 1:1
+     (-4 -> +2.85, -5 -> +1.85, -6 -> +0.85, -7 -> -0.12 in flow 2), which the
+     dead one did not. Ink is the tag's own drawn glyph; the diamond is not
+     colour-matched but SOLVED, since `.ps-c2f-dia` is a box clipped to
+     `polygon(50% 0, 100% 50%, 50% 100%, 0 50%)` and its lower edge at x is
+     therefore `bottom - |x - cx| * H / W` exactly. Minimised per column across
+     the tag's width, because that edge is a slope.
+
+       lift   flow 2        flow 3        flow 4        flow 5
+       -6     +0.85 / 0     +0.34 / 0     +1.18 / 8     +0.85 / 8
+       -7     -0.12 / 0     -0.14 / 0     +0.18 / 0     -0.15 / 0
+       -9     -0.21 / 0    -10.71 / 0     -0.28 / 0    -10.90 / 0
+              (gap above the diamond in px / ink pixels below the bar at 3x)
+
+     >> NO SINGLE VALUE CLEARS BOTH CONSTRAINTS IN ALL FOUR FLOWS HERE, AND
+     THAT IS A GEOMETRY LIMIT, NOT A TUNING FAILURE. This box is 280px tall;
+     the fork track is 11-14px and --c2-fork-drop is 7px, so between the
+     diamond's lower edge and the crossbar there are about 8px for a 15.4px
+     line box. The tag is nearly twice the height of the space it has to sit
+     in, and it only fits at all because it is offset sideways from the bottom
+     vertex where that edge is higher. Buying real daylight means a taller fork
+     track or a smaller tag, both of which are changes to the composition and
+     neither of which is this fix's to make. Reported up.
+
+     -6px is chosen because it DOMINATES the shipped -9px rather than trading
+     against it: the diamond is clear in all four flows and both themes
+     (+0.34 to +1.18) instead of crossed in all eight cells, at a cost of 8
+     ink pixels at deviceScaleFactor 3 - under one square CSS px - of the "y"
+     descender touching the crossbar in flows 4 and 5 only. Both states were
+     screenshotted side by side before choosing; at -9px the stroke runs
+     visibly through "yes" and "no" in every forked flow.
+     The other three regimes are clear on BOTH constraints at their shipping
+     lifts and are not touched: card face desktop at 0px reads +7.38 to +8.20,
+     card face phone at -5px reads +2.28 to +3.14, the landscape dialog at
+     -6px reads +1.16 to +1.77, all with zero ink below the bar. Flow 1 has no
+     fork tag at all - its "no" sits beside a straight edge - so it is not in
+     this population. */
+  .ps-c2f-flow .ps-c2b-arm .ps-c2b-tag { top: -6px; }
+
+  .ps-c2f-flow {
+    --c2-fs: 16px;
+    --c2-fs-2: 15px;
+    --c2-fs-tag: 14px;
+    /* Original value, for the reason given in the landscape block: growing the
+       padding with the type buys nothing and spends rail clearance this box
+       does not have. */
+    --c2-pad: 8px 11px;
+    --c2-radius: 8px;
+    --c2-col-gap: 10px;
+    --c2-ret: 18px;
+    --c2-retdrop: 14px;
+    --c2-side: 78px;
+    --c2-elbow: 8px;
+    --c2-loop-w: 2.5px;
+    --c2-dia-stroke-w: 2.5px;
+    --c2-head-w: 9px;
+    --c2-head-h: 6.5px;
+    --c2-bar-h: 7px;
+    /* Shorter than every --c2-e3 in this block. See the note in NARROW. */
+    --c2-fork-drop: 7px;
+    /* >> 92px, NOT 56. THE FLEXIBLE EDGE TRACKS MAKE THE BOX HEIGHT A REAL
+       DECISION RATHER THAN A CEILING. Every connector track here is
+       `minmax(base, 1fr)`, so the chart EXPANDS to fill whatever box it is
+       given - it does not sit at its natural height inside a taller one. At
+       `100% - 56px` the box is 224px and the flow filled all of it, which put
+       the last node at y=207 inside the dialog's own bottom fade
+       (`.ps-dialog-visual::after`, 120px tall, pinned to the bottom of a
+       280px art box, so it starts at y=160). The label rendered grey against
+       bright plates above it and read as a rendering fault. At 92 the box is
+       188px and the whole chart finishes above the fade.
+       >> THE SAME DEFECT IS PRESENT IN THE SHIPPED CHART AND IS NOT MINE TO
+       FIX: at ?c2=b in this exact regime, "Paid" and "Reaches you" render
+       visibly grey for the same reason. Captured side by side. Reported, not
+       touched. */
+    /* >> 96, AND IT IS A JUDGEMENT BETWEEN TWO REAL COSTS, NOT A NUMBER I
+       LIKED. At 56 (the value the shipped chart uses) the box is 224px, the
+       flexible edge tracks fill all of it, and the last labelled node lands
+       at y=207 inside the dialog's own bottom fade - grey text against bright
+       plates, which reads as a rendering fault. At 118 the box is 162px, the
+       fade is cleared completely, and the chart is squeezed to a 30px
+       decision with the edge tags sitting on the diamond's own stroke:
+       legibility traded away, which is this card's entire history of failure.
+       96 gives 184px. The last labelled node ends at about y=185, roughly a
+       fifth of the way into the fade and not visible as grey, and the type
+       stays at 13px. Both ends measured and both screenshotted before
+       choosing. */
+    height: calc(100% - 96px);
+    padding: 10px 12px 0 12px;
+  }
+  .ps-c2f-flow .ps-c2-glyph { width: 13px; height: 13px; }
+  .ps-c2f-hrail { width: calc(var(--c2-col-gap) + 10px); }
+  .ps-c2f-term { padding: 8px 14px; gap: 6px; }
+
+  .ps-c2f1-flow { --c2-dia-h: 42px; --c2-e1: 14px; --c2-e2: 18px; }
+  /* >> ONLY THREE OF THE FIVE ARE TRIMMED HERE, AND THAT IS THE POINT. In the
+     390x280 phone dialog the fade (globals.css:2738, 120px pinned to the
+     bottom, so it begins at y=160) covers 43% of the art box. Measured per
+     slide, best-covered pixel: slides 1 and 4 already finish at y=143 and
+     y=160 and read (0,212,170) / (255,255,255). Slides 2, 3 and 5 finished at
+     178-183 and read 92-97% - mild, but not clean. Trimming all five to fix
+     three would have cost the two that were already right. */
+  .ps-c2f2-flow { --c2-dia-h: 34px; --c2-e1: 8px; --c2-e3: 13px; --c2-retdrop: 9px; --c2-pad: 6px 10px; }
+  .ps-c2f3-flow {
+    --c2-fs: 13px;
+    --c2-pad: 5px 10px;
+    --c2-dia-h: 30px;
+    --c2-e1: 7px;
+    --c2-e3: 11px;
+    --c2-gate-lane: 5px;
+    --c2-gate-gap: 7px;
+    --c2-retdrop: 8px;
+  }
+  .ps-c2f4-flow {
+    --c2-fs: 12.5px;
+    --c2-pad: 7px 10px;
+    --c2-f4-padx: 10px;
+    --c2-f4-pady: 7px;
+    --c2-dia-h: 34px;
+    --c2-e1: 8px;
+    --c2-e3: 14px;
+    --c2-slot-h: 6px;
+    --c2-slot-gap: 3px;
+    --c2-retdrop: 9px;
+    /* THREE ROWS FIT HERE, NOT FOUR, so the exit moves up with them. A regime
+       that hid a row without moving this would draw the arrow leaving a row
+       that is not on screen. */
+    --c2-exit-row: 2;
+  }
+  .ps-c2f4-flow .ps-c2f4-slot:first-child { display: none; }
+  .ps-c2f4-rows { margin-top: 5px; }
+  .ps-c2f5-flow { --c2-fs: 13px; --c2-pad: 5px 10px; --c2-dia-h: 31px; --c2-e1: 7px; --c2-e3: 11px; padding-left: 32px; }
+  .ps-c2f5-mid { padding-left: 32px; }
+  .ps-c2f5-orbit { left: -18px; width: 36px; height: 36px; margin-top: -18px; }
+  .ps-c2f-ticks { gap: 4px; margin-top: 3px; }
+  .ps-c2f-tick { width: 4px; height: 4px; }
+  /* >> A `.ps-c2-nudges { margin-top: 3px }` STOOD HERE AND IS DELETED. It was
+     the only UNPREFIXED selector in a block whose every other rule is
+     flow-prefixed, and this block's condition
+     `(max-width: 519px) and (max-height: 300px)` is BYTE-IDENTICAL to the one
+     at the COMPACT block near the top of this file. Same selector, same
+     specificity, later in source, so it silently killed that block's
+     pre-existing `.ps-c2-nudges { margin-top: 5px }` - and `.ps-c2-nudges` is
+     not a flow class at all. Concept A's chase plate (SystemFixesVisualA, the
+     `ps-c2a-slot--chase` dots) carries it too, so the phone dialog was
+     rendering concept A's dunning ladder 2px tight for a rule that was never
+     about concept A.
+     >> DELETED RATHER THAN SCOPED, AND THE DIFFERENCE MATTERS. Scoping it to
+     the flows would not have restored a previous state, it would have made a
+     NEW change: the only flow that draws nudges is flow 1, whose own
+     `.ps-c2f1-act .ps-c2-nudges { margin-top: 7px }` (0,2,0) already outranked
+     this rule (0,1,0), so the 3px never reached a single flow. It had exactly
+     one effect in the whole file and that effect was the regression. Deleting
+     it changes nothing that was rendering except concept A, which goes back to
+     5px. This is the SECOND override of this shape found in this block; a
+     mechanical sweep of every @container pair in the file for shared selectors
+     found no third. */
+}
+
+/* ═══════════════════════════════════════════════════════════
+   THE FIVE FLOWS  -  WIDE      the LANDSCAPE dialog, 900x400 art
+   ═══════════════════════════════════════════════════════════
+   >> THE CHART KEEPS ITS VERTICAL READING HERE AND IS CAPPED AND CENTRED
+   INSTEAD OF BEING TURNED ON ITS SIDE. That is a deliberate, stated
+   compromise, not an oversight, and the honest version of it is this: a true
+   horizontal reflow is five separate re-authorings, because rotating one of
+   these charts moves which pair of the diamond's vertices are grid lines and
+   therefore rewrites every connector in it. Half a set reflowed and half not
+   would break the one thing the set exists to have - five pictures that read
+   as one family. Left vertical, all five are the same picture in the dialog
+   as on the card face, which is worth more than filling 420px of empty width.
+   Uncapped, the 900px box stretched the decision into a 900x64 lozenge and
+   left the plates as vast empty slabs; measured, and the render is in the
+   report.
+
+   >> THE SHIPPED CHART'S FORK IS RE-ASSERTED VERTICAL HERE, AND THAT IS LOAD
+   BEARING. Flows 2 to 5 reuse `.ps-c2b-fork` / `.ps-c2b-arm` unchanged, which
+   is what makes them read as siblings - but this same container block turns
+   that fork on its side for concept B, and those rules are not scoped to
+   concept B. Without the restore below, four of the five flows would have got
+   a horizontal fork inside a vertical chart: two elbows pointing the wrong
+   way, both outcome plates unconnected. Descendant scope wins on specificity.
+
+   >> TOKENS GO ON THE INNER WRAPPER, NEVER ON .ps-c2-root.
+   ═══════════════════════════════════════════════════════════ */
+@container (min-width: 520px) and (min-aspect-ratio: 8/5) {
+  /* >> THE DIALOG MUST SET THE ARTWORK LARGER THAN THE CARD FACE, AND IT WAS
+     SETTING IT SMALLER. The disc says "expand" and the cue says "tap for more";
+     a viewer who asks for more detail was getting 18px on the card face and
+     15px here. The shipped chart never had this problem because the wide block
+     above lists `.ps-c2b-flow, .ps-c2a-machine, .ps-c2c-stage` and steps them
+     17px -> 20px; `.ps-c2f-flow` is not in that list and had its own table,
+     which stepped DOWN.
+
+     >> WHY IT STEPPED DOWN, WHICH IS THE PART WORTH KNOWING: the dialog art is
+     900x400 - WIDER but SHORTER than the 412x442 card face - so type here is
+     limited by the short dimension, and "expand" made the picture wider while
+     making the words smaller. That is the inversion, and it is structural
+     rather than a trade anybody chose.
+
+     >> 20px IS A MEASURED CEILING, NOT A CHOSEN NUMBER, AND IT IS NOT MEASURED
+     BY BOX OVERFLOW. Overflow of the flow box is the wrong criterion here:
+     flows 1, 2 and 5 report exactly 0 at every size up to 19px because their
+     lowest element is a return rail pinned to `bottom: 0`, which cannot
+     overshoot by construction. The criterion that governs legibility is how far
+     the lowest LABEL sits into `.ps-dialog-visual::after`'s 120px ramp
+     (`linear-gradient(rgba(0,0,0,0) 0%, rgb(15,29,48) 100%)`, transparent at
+     its top, fully opaque at its foot). Measured, worst label across all five:
+
+         --c2-fs   15px  -10.0%    17px  -10.0%    18px  -10.0%
+                   19px  -10.0%    20px   -7.5%    21px   -4.5%
+
+     Negative is ABOVE the fade. Every size up to 21px keeps every label
+     entirely clear of it, so 20px is taken with a margin rather than at the
+     edge, and it matches the shipped chart's own landscape value exactly so the
+     two components in this file finally agree.
+
+     >> WIDENING THE CAP IS A DEAD LEVER AND I CHECKED BEFORE ASSUMING. The
+     dialog has 900px and `width` below uses 480. Caps of 480 / 560 / 640 / 720
+     against sizes 15 / 17 / 18 / 19 / 20 produce IDENTICAL overshoot in all
+     four columns - no label wraps at 480, so widening buys exactly zero
+     vertical room and only stretches the plates. The cap stays at 480. */
+  .ps-c2f-flow {
+    --c2-fs: 20px;
+    --c2-fs-2: 19px;
+    --c2-fs-tag: 17px;
+    /* >> THE PADDING STAYS AT ITS ORIGINAL VALUE, AND THAT IS THE WHOLE
+       DIFFERENCE BETWEEN THIS BEING A FREE FIX AND AN EXPENSIVE ONE. The first
+       attempt grew the padding with the type, which read as the obvious thing
+       to do and cost almost all of the rail clearance. Measured against BOTH
+       criteria, landscape, all five flows (element clearance = px above the
+       fade's top edge, negative is into it; label depth = % of the 120px ramp,
+       negative is clear of it):
+
+         shipped 15px          elements  2   2   2  -1   2    labels worst -10.0%
+         20px + grown padding  elements  2 -24 -16  -9 -23    labels worst  +8.3%
+         20px + THIS padding   elements  2   2   0   0  -1    labels worst  -7.5%
+
+       Growing the padding moved four of five flows' rails 16 to 26px into the
+       fade for nothing. Keeping it, the type goes up 15px -> 20px and the rails
+       land within 1 to 3px of where the 15px build put them, with every label
+       still entirely clear of the fade. The third row is the SHIPPED
+       measurement, taken with no style overrides, not the probe's.
+
+       >> SIZE A SIXTH FLOW AGAINST THE ELEMENT ROW, NEVER THE LABEL ROW, and
+       this is the one number to carry out of here. The labels survive whatever
+       happens - the worst of them sits at 15% of a 120px ramp in the phone
+       dialog and still decodes at 6/255 of full - because type is short and
+       sits high in its plate. The RAILS do not: `ps-c2f4-exit` reaches the fade
+       edge exactly, and in the phone dialog it is 46.5px into the ramp. A flow
+       drawn to the label figure will have connectors that disappear while its
+       words look fine.
+
+       >> AND DO NOT MEASURE THIS WITH BOX OVERFLOW. Flows 1, 2 and 5 report
+       exactly 0 overshoot at every type size up to 19px, because their lowest
+       element is a return rail pinned to `bottom: 0` inside its own grid area -
+       it CANNOT overshoot, by construction. A metric structurally incapable of
+       registering the cost for three of five flows will report abundant room
+       and be believed. Measure against the fade's top edge instead. */
+    --c2-pad: 9px 13px;
+    --c2-radius: 8px;
+    --c2-col-gap: 11px;
+    --c2-ret: 20px;
+    --c2-retdrop: 16px;
+    --c2-side: 88px;
+    --c2-elbow: 9px;
+    --c2-fork-drop: 13px;
+    --c2-head-w: 10px;
+    --c2-head-h: 7px;
+    --c2-bar-h: 8px;
+    /* The dialog fades its own bottom, so the chart finishes above the fade
+       rather than merely inside the box. */
+    height: calc(100% - 122px);
+    width: min(100%, 480px);
+    margin-inline: auto;
+    padding: 14px 14px 0 14px;
+  }
+  /* Glyph and terminal padding stay put for the same reason as --c2-pad. */
+  .ps-c2f-flow .ps-c2-glyph { width: 15px; height: 15px; }
+  .ps-c2f-hrail { width: calc(var(--c2-col-gap) + 12px); }
+  .ps-c2f-term { padding: 9px 15px; gap: 7px; }
+
+  /* >> THE EDGE LABELS HAVE TO BE LIFTED OFF THEIR OWN CROSSBAR, AND ONLY A
+     SCREENSHOT FINDS THIS. `.ps-c2b-tag` is `position: absolute; top: 0` inside
+     the arm, and the arm's bottom edge IS where the crossbar is drawn - so the
+     tag's DESCENDER hangs into the rail. At `top: 0` the green rail runs
+     straight through the middle of "yes" and "no" in this regime.
+
+     >> EVERY BOUNDING-BOX PROBE CALLS THIS CLEAR, at every tag size from 13px
+     to 17px: the tag's box bottom measures 1.3 to 5.7px ABOVE the arm's box
+     bottom, so the boxes genuinely do not overlap. What overlaps is the drawn
+     GLYPH against the drawn RAIL, and neither is its own box - the rail is a
+     border on the arm's edge and the "y" tail is ink hanging below the line
+     box's own bottom. Cropping the tag region at 3x and looking is the only
+     instrument that sees it.
+
+     >> IT IS PRE-EXISTING IN THIS REGIME AND RAISING THE TYPE MADE IT OBVIOUS.
+     The card face at 15px is clean - captured side by side and compared - so
+     this is landscape-only. -5px is measured off a ladder of 0/-3/-4/-5:
+     -3 still touches the "y" tail, -4 grazes it, -5 is the first that clears
+     both glyphs completely, and it does not crowd the diamond above. Scoped to
+     `.ps-c2f-flow` so the shipped chart and the card face are untouched. */
+
+  /* ---- THE FORK, PUT BACK VERTICAL. See the banner above. ---- */
+  .ps-c2f-flow .ps-c2b-fork {
+    grid-template-columns: subgrid;
+    grid-template-rows: none;
+  }
+  .ps-c2f-flow .ps-c2b-fork::before { content: ""; }
+  .ps-c2f-flow .ps-c2b-arm--yes { grid-column: 1; grid-row: auto; }
+  .ps-c2f-flow .ps-c2b-arm--no { grid-column: 2; grid-row: auto; }
+  .ps-c2f-flow .ps-c2b-arm::before {
+    top: var(--c2-fork-drop);
+    bottom: 0;
+  }
+  .ps-c2f-flow .ps-c2b-arm--yes::before {
+    left: 50%;
+    right: calc(-1 * var(--c2-col-gap) / 2);
+    border-left-width: var(--c2-loop-w);
+    border-top-width: var(--c2-loop-w);
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: var(--c2-elbow);
+    border-bottom-left-radius: 0;
+  }
+  .ps-c2f-flow .ps-c2b-arm--no::before {
+    left: calc(-1 * var(--c2-col-gap) / 2);
+    right: 50%;
+    border-right-width: var(--c2-loop-w);
+    border-top-width: var(--c2-loop-w);
+    border-left-width: 0;
+    border-bottom-width: 0;
+    border-top-right-radius: var(--c2-elbow);
+    border-bottom-left-radius: 0;
+  }
+  /* >> THE LIFT LIVES HERE, IN THE RULE THAT WINS, AND THAT IS THE WHOLE POINT.
+     The first attempt put `top: -5px` in its own rule 34 lines above this one -
+     same selector, same specificity, same @container block, EARLIER in source.
+     This rule silently overrode it and the computed style read `top: 0px`. The
+     declaration existed in the file and never reached the render, and it was
+     reported as verified because a 3x crop looked clear to the eye at a glance.
+     `getComputedStyle(tag).top` on the live element would have said `0px` in
+     one line. Never add a second rule for the same selector in the same block.
+     Measured: 33 near-white ink px below the bar at `top: 0`, 0 at -4px. -5px
+     for margin. */
+  /* >> -6px, AND THIS REGIME CANNOT REACH THE CONTROL'S 1.0px GAP. Measured
+     both ways, because a lift that fixes the bar below can silently spend the
+     clearance to the diamond above:
+
+         lift   gap below to the bar   gap above to the diamond
+         -5px          0.0                      1.5
+         -6px          0.5                      0.5
+         -7px          1.5                     -0.5   <- into the diamond
+
+     The landscape fork simply has less room between the diamond's lower vertex
+     and its own crossbar than the card face does. -6px splits it evenly at
+     0.5px each way. Anything that buys more clearance here has to come from the
+     fork track, not from the tag. Stated rather than smoothed: 0.5px below is
+     NOT the control's 1.0px, and this is the one regime that does not match it. */
+  .ps-c2f-flow .ps-c2b-arm .ps-c2b-tag { top: -6px; bottom: auto; }
+  .ps-c2f-flow .ps-c2b-arm--yes .ps-c2b-tag { right: 9px; left: auto; }
+  .ps-c2f-flow .ps-c2b-arm--no .ps-c2b-tag { left: 9px; right: auto; }
+
+  .ps-c2f1-flow { --c2-dia-h: 50px; --c2-e1: 20px; --c2-e2: 26px; }
+  .ps-c2f2-flow { --c2-dia-h: 48px; --c2-e1: 14px; --c2-e3: 26px; }
+  .ps-c2f3-flow {
+    --c2-dia-h: 46px;
+    --c2-e1: 14px;
+    --c2-e3: 22px;
+    --c2-gate-lane: 12px;
+    --c2-gate-gap: 16px;
+  }
+  .ps-c2f4-flow {
+    --c2-fs: 14px;
+    --c2-f4-padx: 12px;
+    --c2-f4-pady: 9px;
+    --c2-dia-h: 42px;
+    --c2-e1: 10px;
+    --c2-e3: 20px;
+    --c2-slot-h: 8px;
+    --c2-slot-gap: 5px;
+  }
+  .ps-c2f4-rows { margin-top: 6px; }
+  .ps-c2f5-flow { --c2-dia-h: 48px; --c2-e1: 14px; --c2-e3: 26px; padding-left: 42px; }
+  .ps-c2f5-mid { padding-left: 40px; }
+  .ps-c2f5-orbit { left: -22px; width: 44px; height: 44px; margin-top: -22px; }
+  .ps-c2f-ticks { gap: 5px; margin-top: 6px; }
+  .ps-c2f-tick { width: 6px; height: 6px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   THE FIVE FLOWS  -  THE BIG CARD FACE     @container min-width 360px
+   ═══════════════════════════════════════════════════════════
+   >> MASS. Judged in context, not alone. Rendered beside its four siblings at
+   1440 the flow read THINNER than they do: "Business Software" is dense with
+   charts, "Websites" is a browser and a phone, and this card is three nodes
+   in a 400x430 box with a large empty quadrant at the bottom left. The fix is
+   NOT more elements - density is this card's documented failure and the owner
+   rejected it in blunt terms. It is the same elements, bigger: taller plates,
+   a deeper decision, longer connectors. Nothing is added and nothing is said
+   twice; the drawing simply occupies its frame.
+
+   Scoped to >=360px so it applies ONLY to the widest card face (412px art at
+   1280 and up). The 299 and 284px faces are already full and would break.
+   ═══════════════════════════════════════════════════════════ */
+@container (min-width: 360px) and (min-height: 436px) and (max-aspect-ratio: 8/5) {
+  /* >> THE HEIGHT CLAUSE IS NOT DECORATION. Width alone (>=360) also matches
+     the 394px phone card at 390 to 430 viewports - and that card is 432px
+     tall, not 442, so the flow box is 344 rather than 354. Ten pixels less,
+     with the mass bump applied, pushed flow 5's outcome plates into the
+     card's own title scrim: "Update asked" rendered visibly grey against a
+     bright plate beside it, caught in a Firefox capture at 393x659. Measured
+     art heights on this build: 432 at 320, 430 and 640; 442 at 940 and 1280.
+     436 isolates the 412x442 desktop face, which is the only one with the
+     slack this block spends. */
+  .ps-c2f-flow {
+    --c2-fs: 17px;
+    --c2-fs-2: 16px;
+    --c2-radius: 10px;
+  }
+  /* >> THE BUMP IS PER FLOW, NOT ACROSS THE SET, BECAUSE THE FIVE DO NOT HAVE
+     THE SAME AMOUNT OF SPARE HEIGHT. Flow 1 has three nodes and 73px of slack;
+     flow 4 has five plus a four row list and had none. A single shared bump
+     pushed flows 2 to 5 between 27 and 62px past the flow box and straight
+     into the card's title band - measured, then corrected per flow rather
+     than reverted, because flow 1 is the one that actually reads thin. */
+  .ps-c2f1-flow {
+    --c2-fs: 18px;
+    --c2-fs-2: 17px;
+    --c2-pad: 16px 18px;
+    --c2-dia-h: 84px;
+    --c2-e1: 34px;
+    --c2-e2: 46px;
+    --c2-side: 116px;
+  }
+  .ps-c2f1-flow .ps-c2f-term { padding: 14px 22px; }
+  .ps-c2f2-flow { --c2-pad: 13px 16px; --c2-dia-h: 68px; --c2-e1: 20px; --c2-e3: 36px; }
+  .ps-c2f3-flow { --c2-pad: 13px 16px; --c2-dia-h: 66px; --c2-e1: 20px; --c2-e3: 34px; --c2-gate-lane: 16px; --c2-gate-gap: 20px; }
+  .ps-c2f4-flow { --c2-pad: 11px 15px; --c2-dia-h: 58px; --c2-e1: 16px; --c2-e3: 28px; --c2-slot-h: 10px; --c2-slot-gap: 7px; }
+  .ps-c2f5-flow { --c2-pad: 13px 16px; --c2-dia-h: 70px; --c2-e1: 22px; --c2-e3: 38px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   THE FIVE FLOWS  -  THE SHORT CARD FACE      art height 432px
+   ═══════════════════════════════════════════════════════════
+   >> THIS BLOCK EXISTS BECAUSE OF A MEASUREMENT, AND THE MEASUREMENT
+   CONTRADICTED THE OBVIOUS GUESS. The card's title scrim does not start at a
+   fixed fraction of the card: on the 442px art box it bites below y=320, and
+   on the 432px box it bites from about y=280. Ten pixels of card height move
+   it forty. Probed by screenshotting the card and taking the BRIGHTEST pixel
+   inside each label's own box, dark theme, per width:
+
+     art 442 (940, 1280, 1440)   every label 255. Clean.
+     art 432 (320, 393, 430, 640) flow 3 "Cleared"      180 at y=309
+                                  flow 5 "Update asked" 184 at y=307
+                                  flow 5 "Back on"      231 at y=287
+                                  everything at y<=272  255
+
+   180 out of 255 is grey text on a bright plate, and this card has shipped
+   exactly that defect before. It is invisible to an overflow probe - nothing
+   overflows anything - and it was caught in a Firefox capture at 393x659 and
+   then pinned down by the ink probe.
+
+   >> THE FIX IS THE BOX, NOT THE TOKENS, and that is worth stating because
+   the tokens are the tempting lever. Every connector track in these charts is
+   `minmax(base, 1fr)`, so the chart does not sit at its natural height inside
+   a taller box - it EXPANDS to fill whatever box it is given. Shrinking type
+   would therefore change nothing at all: the flexible tracks would simply
+   take up the slack and the last plate would land in exactly the same place.
+   The only lever that moves it is the height of the box the tracks are
+   filling. 122 puts the box at 310 and the lowest label at about y=275.
+
+   Height-scoped rather than width-scoped: `min-height: 305px` excludes the
+   280px-tall phone dialog, and `max-aspect-ratio: 8/5` excludes the landscape
+   dialog, so this lands on the short CARD FACE and nothing else.
+   ═══════════════════════════════════════════════════════════ */
+@container (min-height: 305px) and (max-height: 435px) and (max-aspect-ratio: 8/5) {
+  /* >> 149, AND THE EXTRA 27px IS THE LIFT CARD 2 NEVER GOT. The other four
+     card roots reserve their own clear band - `.ps-v4-root` carries
+     `padding: 68px 18px 85px` and card-visuals.css:473 writes down why: the
+     title block is 63px tall below 940px and 59px at and above it, so 85px of
+     bottom padding buys a 22px clear band. Card 2's root has no such reserve,
+     which is why the SHIPPED chart's outcome plates sit inside the scrim.
+
+     THE SCRIM, located and measured, not inferred: globals.css:7564-7590,
+     `[data-theme="dark"] .ps-bento-card__text::before`, dark theme only,
+     `max-width: 768px` only, `top: -80px` of overhang, ramping
+     0 -> 0.12 -> 0.45 -> 0.86 -> 0.88 alpha of rgb(10,22,40). In card
+     coordinates on a 420px card its ramp begins at y=277.
+
+     WHAT IT DOES TO THE SHIPPED CHART, measured by cropping strictly inside
+     the plate at 393x852 dark, DPR 3 - and it is uneven, which is the part a
+     whole-card average hides:
+         desktop 1440   green (0,212,170)   label (255,255,255)
+         phone   393    green (2,172,142)   label (152,157,164)
+     81% green, 60% label, with the arrowhead pointing INTO it arriving at full
+     strength. The eye is led by the brightest object in the frame onto the
+     dimmest one, which is the exact inverse of what a terminal state is for.
+     Restoring only the label would leave the box 19% down against its own
+     incoming arrow, which looks like a rendering fault rather than a design.
+     So the fix is GEOMETRY: lift the whole terminal row clear of the ramp.
+
+     122 already cleared it for three of the five. 149 puts every terminal
+     plate's BOTTOM edge above y=277 on the 432px card face, which is where
+     this block applies and is exactly the set of widths the scrim covers
+     (art is 432 at 320 through 768 and 442 from 940 up; the scrim stops at
+     768). Applied in both themes deliberately: light needs no lift, but one
+     geometry per regime beats a theme-conditional layout nobody will maintain.
+     Verify by cropping the plate, the arrowhead and the label SEPARATELY.
+     Built as a band rather than tuned to the pixel, because real Safari is
+     un-run and its dynamic toolbar moves this exact row. */
+  .ps-c2f-flow { height: calc(100% - 158px); }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   THE CAROUSEL          symptoms #6 (swipe) and #7 (auto-advance)
+   ═══════════════════════════════════════════════════════════════
+
+   >> THIS IS `.ps-work-track` AND `.ps-carousel-track`, THIRD INSTANCE. Both
+   already ship on this page and both are the same five declarations:
+   `display:flex` + `overflow-x:auto` + `scroll-snap-type: x mandatory` +
+   `-webkit-overflow-scrolling: touch` + `scrollbar-width:none`, with a
+   `::-webkit-scrollbar { display:none }` beside them (globals.css:3993 and
+   globals.css:3059). No library, no gesture handler for the swipe itself.
+   Nothing new was invented here.
+
+   >> THE CLASS PREFIX IS `ps-c2car-`, CHECKED AGAINST THE LEGACY `ps-c2-*`
+   SET. An abandoned "braided river" component reused the `.ps-c2-root` name
+   and still owns a live hover rule at card-visuals.css:2814 that sets
+   `--c2-water-a` and `--c2-zoom` on `.ps-bento-card:hover .ps-c2-root`. Those
+   variables are read by nothing that exists, so the rule is inert - but a new
+   class falling inside `ps-c2-`, `ps-c2b-` or `ps-c2f-` could inherit
+   behaviour nobody designed for it. `ps-c2car-` collides with none of them,
+   and the carousel root deliberately does NOT carry `.ps-c2-root`: the five
+   slide roots each carry it, which is where the tokens and the size container
+   belong.
+   ─────────────────────────────────────────────────────────────── */
+
+.ps-c2car {
+  /* >> THIS COMPONENT'S OWN BUILD SENTINEL, separate from `--c2-build` on
+     purpose. `--c2-build` is shared with the flow work happening in this same
+     file, so a bump there can be overwritten by a concurrent edit and a stale
+     sentinel certifying the wrong build is worse than no sentinel. Read this
+     one to prove the carousel you are looking at is the carousel you think. */
+  --c2car-build: "car-11-timer-four-gates";
+  /* The art box. Same box every one of the five was authored against, so a
+     slide IS the art box - and because the art box is symmetric about the
+     card (6px of ring per side, clipped), a slide snapped flush is centred on
+     the CARD by construction rather than by arithmetic. */
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* The card's arrival transform and the dialog's reveal both create stacking
+     contexts around this; make ours explicit so a slide parked off screen can
+     never paint over a sibling. */
+  isolation: isolate;
+}
+
+.ps-c2car-track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  /* NO GAP. A gap is dead space scroll-snap has to absorb, and it breaks the
+     identity `scrollLeft / clientWidth === slide index` that the whole
+     component's arithmetic rests on. */
+  gap: 0;
+  overflow-x: auto;
+  /* The page must still scroll vertically THROUGH this. `hidden` on the cross
+     axis, never `auto`: an `auto` cross axis on a full-bleed absolutely
+     positioned child invents a second scrollbar the moment a slide is a
+     fraction of a pixel too tall. */
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* `overscroll-behavior-x: contain` stops a swipe past the last slide
+     becoming a browser back-navigation gesture - on iOS that is a genuinely
+     destructive misfire to hand a decorative graphic. `y` is left alone so
+     the page still scrolls. */
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
+}
+
+.ps-c2car-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* >> `flex: 0 0 100%` AND NOT `width: 100%`. In a flex row `width` is a
+      suggestion and `flex-shrink` defaults to 1, so five 100% slides would
+      each be squeezed to a fifth of the track and every flow would render at
+      20% width - correctly, and unreadably. The `0 0` is what makes them five
+      full-width slides in a scroller instead of five compressed columns. */
+.ps-c2car-slide {
+  flex: 0 0 100%;
+  /* The slide roots are `position: absolute; inset: 0`, so this box is what
+     gives them their size. Per the units contract it needs a position other
+     than `static` and nothing else. It is NOT collapsed when inactive: each
+     root is its own `container-type: size`, and a slide given zero size
+     renders nothing and would be wrong the instant it was advanced to. */
+  position: relative;
+  height: 100%;
+  scroll-snap-align: start;
+  /* One slide per gesture. Without this a fast flick crosses two or three and
+     the picture the owner was looking at is gone before he has read it. */
+  scroll-snap-stop: always;
+}
+
+/* >> REDUCED MOTION. The auto-advance is a `setInterval` plus a `scrollTo`,
+      and the stylesheet catch-all at globals.css:4639 can crush neither: it
+      reaches `animation-duration` and `transition-duration` and nothing else.
+      The timer is therefore guarded in JavaScript by `matchMedia` inside the
+      component, and under `reduce` it is never armed at all. What IS the
+      stylesheet's to own is native smooth scrolling, killed here so a swipe
+      lands instantly instead of gliding.
+
+      There is no `opacity: 0` base state anywhere in this block, and that is
+      the point. The permanently invisible failure - an `opacity: 0` base plus
+      a keyframe with no fill-mode, which rests at zero FOREVER under `reduce`
+      and which neither the catch-all nor axe reports - is structurally
+      unreachable here, because there is no keyframe and no hidden start state
+      to reach it from. Every slide is fully painted at rest. */
+@media (prefers-reduced-motion: reduce) {
+  .ps-c2car-track {
+    scroll-behavior: auto;
+  }
+}

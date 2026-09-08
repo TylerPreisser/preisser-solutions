@@ -463,6 +463,12 @@
   stroke: var(--theme-accent-text);
   stroke-width: 6;
   stroke-linecap: round;
+  /* BASE = FINISHED, like everything else in this file. The same two numbers
+     the module writes as the `stroke-dasharray` ATTRIBUTE, restated as CSS so
+     section 14's reveal has a value it can transition to. Both are emitted
+     server-side, so the no-JavaScript render is the completed 96% arc either
+     way. */
+  stroke-dasharray: var(--arc-dash) var(--arc-gap);
 }
 
 .ps-c1x-ring__value {
@@ -1084,3 +1090,238 @@
    `no-preference`, never set `opacity: 0` as a start state, and bump
    `--c1r-build`.
    --------------------------------------------------------------------------- */
+
+
+/* ============================================================================
+   14. THE SCROLL REVEAL — ARM -> GO -> DISARM.
+   Spec: .work-order/specs/reveal-motion.md sections 3, 5, 6, 7 and 9.
+   Gate: `usePsC1xReveal` in src/components/home/card1-candidates.tsx — read
+   its comment for the architecture and for why the polarity is inverted.
+
+   THREE SYMPTOMS, AND WHAT ANSWERS EACH:
+     1. "each number or line or metric ... should just fade in"  -> `opacity`,
+        staggered by PANEL, no translate. He said JUST fade in.
+     2. "draw the line for the line graphs"                      -> clip sweep.
+     3. "animate from left to right for the bar charts"          -> clip sweep,
+        the SAME mechanism, not a second one.
+
+   >> EVERYTHING BELOW IS KEYED ON `.ps-c1x-armed`, WHICH ONLY JAVASCRIPT EVER
+   ADDS.  Nothing in blocks 1-13 hides anything, so the card with no script, a
+   404'd chunk, `prefers-reduced-motion: reduce`, or an art root already on
+   screen is the FINISHED dashboard and not a blank rectangle.  This is the
+   load-bearing property of the whole design and it is why the reveal is not
+   written the way the repo's `.in-view` cards are written.
+
+   >> WHY NOT `stroke-dasharray` FOR THE LINE DRAW, WHICH IS THE OBVIOUS
+   TECHNIQUE.  It was built and measured and it breaks across engines.
+   `.ps-c1x-trend__line` and `.ps-c1x-spark` both carry
+   `vector-effect: non-scaling-stroke` inside `preserveAspectRatio="none"`, and
+   under that combination FIREFOX COMPUTES THE DASH PATTERN IN SCREEN SPACE
+   WHILE CHROMIUM AND WEBKIT USE USER SPACE.  Stretched to the 900px dialog, a
+   dasharray of 436.27 (the path's own `getTotalLength()`) hid the line in
+   chromium and webkit and left 3326 ink pixels against a 1519 floor in
+   Firefox.  Overshooting to 1000 hides it everywhere but then completes the
+   draw at 56% of the declared duration, so the last 44% is dead time.
+   `pathLength="100"` left the first fifth of the line plainly painted in all
+   three.  There is no value that is both safe in Firefox and honest about its
+   duration.
+
+   >> THE CLIP SWEEP INSTEAD, AND IT IS ONE MECHANISM FOR BOTH SYMPTOM 2 AND
+   SYMPTOM 3.  `inset()` percentages are percentages of the element's own box,
+   so the technique is unit-independent and the non-scaling-stroke problem
+   cannot reach it.
+
+   Re-measured on this build at 1440x900, dark AND light, chromium / webkit /
+   firefox, counting drawn blue pixels in the trend rect against a
+   `visibility: hidden` floor of 26 (the terminal dot, which is a CSS span
+   OUTSIDE the svg) and untouched baselines of 937 / 933 / 946 dark:
+
+     inset from right    100%      75%      50%      25%       0%
+     chromium              26      257      485      722      937  (= baseline)
+     webkit                26      262      491      725      933  (= baseline)
+     firefox               26      265      494      732      946  (= baseline)
+
+   100% reaches the floor exactly and 0% restores the baseline exactly in all
+   three engines and both themes.  Normalised to each engine's own baseline the
+   cross-engine spread at the midpoint is 1.68% for the trend and 1.13% for the
+   columns.  The dasharray figures above are the design spec's; that experiment
+   was not re-run here.  The clip sweep also reveals the line, its area fill and
+   its gridlines TOGETHER, which a dash draw cannot — that one draws a line
+   across an area fill that is already sitting there.
+
+   >> THE SWEEP IS ON `.ps-c1x-trend__svg`, NEVER ON THE `.ps-c1x-trend`
+   WRAPPER.  `.ps-c1x-trend__end` is `right: 0; margin: -4px -4px 0 0` (section
+   4) and protrudes past the wrapper, so clipping the wrapper would shave the
+   terminal dot's halo AT REST.  The dot fades on its own instead, arriving as
+   the line reaches it.
+
+   >> AND THE RING IS THE ONE SVG HERE THAT DASH-ANIMATES CORRECTLY: computed
+   `vector-effect: none`, `preserveAspectRatio="xMidYMid meet"`, uniform scale.
+   A left-to-right clip across a circle reads wrong, so the arc GROWS.
+   ============================================================================ */
+
+.ps-c1x-root {
+  /* Default stagger index, so the `calc()`s below always resolve on a node
+     that sits outside a panel (concept B's period chip). */
+  --i: 0;
+
+  /* THE FIRST DURATION TOKENS IN THIS PROJECT. They are scoped to this art
+     root and NOT to `:root`, deliberately: `--card-duration`, `--card-ease`,
+     `--card-radius` and `--card-shift-x/y` are read 28 times in globals.css
+     and declared nowhere, so a global declaration here would retroactively
+     change bento motion at globals.css:1911/:2125 and radius at :1756.
+     Nothing in this block is named `--card-*`.
+
+     The curve is `--ease-out-quart`, declared at globals.css:133-136 as part of
+     this work order. It ratifies the incumbent rather than introducing a shape:
+     `cubic-bezier(0.165, 0.84, 0.44, 1)` already appears as a literal 30 times
+     at HEAD, 25 of them in `card-visuals.css`, and it is the value the bento's
+     own undeclared `--card-ease` already falls back to. Counted with
+     `grep -rEo ... | wc -l`, never `grep -c`, which counts lines. Those 30
+     literals are deliberately NOT swept: most sit in a stylesheet shared by all
+     nine card roots while three other cards are under active edit, so a rename
+     there would collide with in-flight work for no behavioural gain. The token
+     accrues readers the clean way instead, starting here. */
+  --c1-rv-ease:      var(--ease-out-quart);
+  --c1-rv-fade:      380ms;  /* metric text                              */
+  --c1-rv-step:       60ms;  /* per-PANEL stagger                        */
+  --c1-rv-lead:       80ms;  /* a panel's chart starts after its numbers */
+  --c1-rv-spark:     600ms;
+  --c1-rv-cols:      640ms;
+  --c1-rv-ring:      760ms;
+  --c1-rv-trend:     820ms;
+  --c1-rv-dot:       240ms;
+  --c1-rv-dot-delay: 900ms;
+}
+
+/* ── ARM ──────────────────────────────────────────────────────────────────
+   The hidden frame, and `transition: none` so arming is instantaneous rather
+   than a reveal played backwards. The module forces a reflow immediately
+   after adding this class so the frame is committed before `go` can land. */
+
+.ps-c1x-armed .ps-c1x-k,
+.ps-c1x-armed .ps-c1x-v,
+.ps-c1x-armed .ps-c1x-delta,
+.ps-c1x-armed .ps-c1x-ring__value,
+.ps-c1x-armed .ps-c1x-ring__label,
+.ps-c1x-armed .ps-c1b-chip,
+.ps-c1x-armed .ps-c1x-trend__end {
+  opacity: 0;
+  transition: none;
+}
+
+.ps-c1x-armed .ps-c1x-trend__svg,
+.ps-c1x-armed .ps-c1x-spark,
+.ps-c1x-armed .ps-c1x-cols,
+.ps-c1x-armed .ps-c1x-pairs,
+.ps-c1x-armed .ps-c1x-rail {
+  clip-path: inset(0 100% 0 0);
+  transition: none;
+}
+
+.ps-c1x-armed .ps-c1x-ring__arc {
+  stroke-dasharray: 0 var(--arc-total);
+  transition: none;
+}
+
+/* ── GO ───────────────────────────────────────────────────────────────────
+   Both classes are on the root at this point, so these are written at
+   `.ps-c1x-armed.ps-c1x-go` and win on specificity rather than on source
+   order. Delays come from the PANEL's `--i`, which every child inherits:
+   text at `--i * 60ms`, that panel's chart 80ms behind its own numbers.
+
+     panel  --i   text      chart              ends
+     hero    0    0 -> 380  —                   380
+     side    1   60 -> 440  spark 140 -> 740    740
+     trend   2  120 -> 500  svg   200 -> 1020  1140 (with the dot)
+     ring    3  180 -> 560  arc   260 -> 1020  1020
+     cols    4    —         cols  320 -> 960    960
+
+   Every metric has finished fading before any chart has finished drawing, so
+   the reveal reinforces the still card's hierarchy instead of reordering it:
+   "142" first, the trend line and its dot second, the ring and the accent
+   column third. Total 1140ms; the module disarms at 1300ms. Nothing loops,
+   nothing repeats, nothing is scroll-scrubbed. */
+
+.ps-c1x-armed.ps-c1x-go .ps-c1x-k,
+.ps-c1x-armed.ps-c1x-go .ps-c1x-v,
+.ps-c1x-armed.ps-c1x-go .ps-c1x-delta,
+.ps-c1x-armed.ps-c1x-go .ps-c1x-ring__value,
+.ps-c1x-armed.ps-c1x-go .ps-c1x-ring__label,
+.ps-c1x-armed.ps-c1x-go .ps-c1b-chip {
+  opacity: 1;
+  transition: opacity var(--c1-rv-fade) var(--c1-rv-ease)
+              calc(var(--i) * var(--c1-rv-step));
+}
+
+.ps-c1x-armed.ps-c1x-go .ps-c1x-trend__svg {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path var(--c1-rv-trend) var(--c1-rv-ease)
+              calc(var(--i) * var(--c1-rv-step) + var(--c1-rv-lead));
+}
+
+.ps-c1x-armed.ps-c1x-go .ps-c1x-spark {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path var(--c1-rv-spark) var(--c1-rv-ease)
+              calc(var(--i) * var(--c1-rv-step) + var(--c1-rv-lead));
+}
+
+/* The columns sweep as ONE element, not six. Growing each bar out of its axis
+   would mean six animated elements and six composited layers against a budget
+   whose dominant cost is Layerize + Commit rather than scripting, and it
+   distorts each bar's `border-radius: 3px 3px 2px 2px` (section 6) all the way
+   up. One property on one element, the same mechanism as the line draw, and
+   the more literal reading of "animate from left to right".
+   `.ps-c1x-rail` needs no special case: `.ps-c1x-rail__seg` is driven by
+   `--w` and the rail is already horizontal, so the sweep fills it left to
+   right as one continuous bar. */
+.ps-c1x-armed.ps-c1x-go .ps-c1x-cols,
+.ps-c1x-armed.ps-c1x-go .ps-c1x-pairs,
+.ps-c1x-armed.ps-c1x-go .ps-c1x-rail {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path var(--c1-rv-cols) var(--c1-rv-ease)
+              calc(var(--i) * var(--c1-rv-step) + var(--c1-rv-lead));
+}
+
+.ps-c1x-armed.ps-c1x-go .ps-c1x-ring__arc {
+  stroke-dasharray: var(--arc-dash) var(--arc-gap);
+  transition: stroke-dasharray var(--c1-rv-ring) var(--c1-rv-ease)
+              calc(var(--i) * var(--c1-rv-step) + var(--c1-rv-lead));
+}
+
+/* Linear, and last. The terminal data point is the end of the rise; it lands
+   as the line reaches it rather than easing in beside it. */
+.ps-c1x-armed.ps-c1x-go .ps-c1x-trend__end {
+  opacity: 1;
+  transition: opacity var(--c1-rv-dot) linear var(--c1-rv-dot-delay);
+}
+
+/* ── ONE SUPPRESSION, AND IT IS TEMPORARY ───────────────────────
+   >> DELETE THIS RULE AND ITS GUARD ONCE THE 375-430px DIAL COLLAPSE IS FIXED.
+   It exists only so this reveal does not draw attention to a defect it did not
+   cause — pre-existing, out of scope, and owned by `responsive-mobile-adapter`.
+
+   `ps-c1x-no-arc` is added by `usePsC1xReveal` at arm time, and ONLY when the
+   ring's rendered diameter `min(width, height)` is under 24px.  Read that
+   hook's comment for why the measurement is a diameter rather than a container
+   width or an aspect ratio: container width does not track the defect (345px
+   is broken, 314.66 and 352 are healthy, so the broken case sits BETWEEN two
+   healthy ones), and a ratio rule would wrongly suppress the perfectly good
+   letterboxed 44x34.6 dial at 320 and 360.
+
+   THIS REPLACES an earlier `@container bentocard (max-width: 400px)` rule from
+   the design spec.  That rule was wrong in KIND, not by one pixel: a width
+   threshold against a HEIGHT defect, and inclusive at exactly 400.00px, which
+   is the bento container's width at 1280, 1440 AND 1920 — so it silenced the
+   arc on every primary desktop view while still over-suppressing at 768, 820
+   and 1024 where the dial is square.  The guard above suppresses at 375-430
+   and nowhere else.
+
+   The ring's value and label still fade with their panel, and the clip sweeps
+   are untouched — a sweep across a short panel still reads correctly.
+
+   Four classes deep so it cannot lose to the `go` rule on source order. */
+.ps-c1x-root.ps-c1x-no-arc.ps-c1x-armed .ps-c1x-ring__arc {
+  stroke-dasharray: var(--arc-dash) var(--arc-gap);
+  transition: none;
+}

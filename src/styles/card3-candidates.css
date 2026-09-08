@@ -91,7 +91,7 @@
      that CSS applied, never WHICH CSS. This custom property is the only thing
      in the file that proves the served page is running the code on disk, so the
      capture harness reads it and refuses to shoot unless it matches. */
-  --c3-build: 15;
+  --c3-build: 32;
 
   --c3-ease: cubic-bezier(0.165, 0.84, 0.44, 1);
 
@@ -366,6 +366,7 @@
   --c3-vaultcap: color-mix(in srgb, var(--theme-text-secondary) 52%, var(--theme-art-ground-b, #0c1e3a));
   --c3-vaultdk: color-mix(in srgb, var(--theme-bg-primary, #0a1628) 66%, var(--theme-art-ground-b, #0c1e3a));
   --c3-portdark: color-mix(in srgb, var(--theme-bg-primary, #0a1628) 88%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-vaultedge: color-mix(in srgb, var(--theme-bg-primary, #0a1628) 96%, var(--theme-art-ground-b, #0c1e3a));
   --c3-paperdull: color-mix(in srgb, var(--theme-text-muted) 17%, var(--color-white, #fff));
   --c3-ink: var(--theme-art-ground-a, #0a1628);
   --c3-cast: rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0.66);
@@ -377,6 +378,7 @@
   --c3-vaultcap: color-mix(in srgb, var(--theme-text-primary) 54%, var(--theme-art-ground-a, #f0f4f8));
   --c3-vaultdk: var(--theme-text-primary);
   --c3-portdark: color-mix(in srgb, var(--theme-text-primary) 92%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-vaultedge: var(--theme-text-primary);
   --c3-paperdull: color-mix(in srgb, var(--theme-text-muted) 13%, var(--color-white, #fff));
   --c3-ink: var(--theme-text-primary);
   --c3-cast: rgba(var(--theme-art-veil-rgb, 236, 241, 247), 0.9);
@@ -726,14 +728,16 @@
   bottom: var(--c3-foot);
   width: var(--c3-vw);
   height: var(--c3-vh);
-  z-index: 2;
+  z-index: 4;
   border-radius: 0 0 50% 50% / 0 0 15px 15px;
   background: linear-gradient(
     to right,
-    var(--c3-vault2) 0%,
+    var(--c3-vaultcap) 0 1px,
+    var(--c3-vault2) 1px 9%,
     var(--c3-vault) 34%,
-    var(--c3-vault) 62%,
-    var(--c3-vaultdk) 100%
+    var(--c3-vault) 54%,
+    var(--c3-vaultdk) 88%,
+    var(--c3-vaultedge) 100%
   );
 }
 
@@ -747,13 +751,16 @@
   top: -15px;
   height: 30px;
   border-radius: 50%;
-  background: linear-gradient(
-    to bottom,
-    var(--c3-vaultcap) 0%,
-    var(--c3-vault2) 62%,
-    var(--c3-vault) 100%
-  );
-  box-shadow: inset 0 1px 0 0 var(--c3-bevel);
+  background:
+    linear-gradient(
+      100deg,
+      var(--c3-vaultcap) 0%,
+      var(--c3-vault2) 46%,
+      var(--c3-vaultdk) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 0 var(--c3-bevel),
+    inset 0 -6px 8px -4px var(--c3-vaultedge);
 }
 
 /* THE CONTACT SHADOW. Without it the mass floats, which the 900x400 dialog
@@ -790,7 +797,7 @@
   right: var(--c3-vr);
   width: var(--c3-vw);
   height: 26px;
-  z-index: 2;
+  z-index: 4;
   border-radius: 50%;
   border-top: 2px solid var(--c3-vaultcap);
   background: linear-gradient(
@@ -992,7 +999,7 @@
   background: linear-gradient(
     to bottom,
     var(--c3-vaultcap) 0 2px,
-    var(--c3-portdark) 2px 12px,
+    var(--c3-vaultedge) 2px 12px,
     var(--c3-vault2) 12px 15px,
     var(--c3-vault) 15px 22px,
     var(--c3-vaultdk) 22px 100%
@@ -1010,14 +1017,14 @@
   position: absolute;
   left: -20px;
   right: -76px;
-  bottom: 17px;
+  bottom: 22px;
   height: 6px;
   z-index: 2;
   background: linear-gradient(
     to bottom,
-    var(--c3-vaultcap) 0 1px,
-    var(--c3-vault2) 1px 3px,
-    var(--c3-vault) 3px 100%
+    var(--c3-vaultcap) 0 2px,
+    var(--c3-vault2) 2px 4px,
+    var(--c3-vault) 4px 100%
   );
 }
 
@@ -1035,7 +1042,7 @@
 .ps-c3-a-a {
   right: var(--c3-vr);
   bottom: calc(var(--c3-foot) + 118px);
-  width: min(62%, 244px);
+  width: min(60%, 236px);
 }
 
 /* ============================================================================
@@ -1656,4 +1663,1608 @@
     transform: none !important;
     background-position-x: var(--c3-frame) !important;
   }
+}
+
+/* ============================================================================
+   THE MARKS  -  form only.
+
+   Sizing lives here; POSITION does not. `.ps-c3-m` sets the box the SVG fills
+   and nothing else, so the scene can place these anywhere without fighting a
+   margin it did not write.
+
+   NO KEYFRAMES IN THIS BLOCK, and that is the point rather than an omission.
+   These are the RESTING forms. Anything that moves is the scene's, and the
+   reduced-motion trap is what makes that boundary matter: a base rule of
+   `opacity: 0` plus a keyframe with no fill-mode rests at opacity 0 FOREVER
+   under `prefers-reduced-motion: reduce`, and neither the stylesheet catch-all
+   nor axe reports it. Every rule below is the visible state.
+   ========================================================================= */
+
+.ps-c3-m {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* PROOF SHEET ONLY - `?c3=marks`. Crude placement, deliberately: it exists to
+   let the marks be judged from pixels at real size, not to propose a
+   composition. */
+.ps-c3-m-slot {
+  position: absolute;
+  z-index: 2;
+}
+
+/* SCALE, TESTED IN CONTEXT RATHER THAN GUESSED. The first proof sheet put the
+   database at 34% of the frame and the agent at 27%, and the five-card render
+   settled it: card 3 was the only card in the row with a large empty field in
+   it. Every sibling fills its frame - card 4's phone runs off the edge, card
+   2's boxes are full-bleed, card 1's panels touch both sides. Two small objects
+   floating in a 400x430 box read as underweight next to that, however well
+   drawn they are. These are the widths at which the pair holds its own. */
+.ps-c3-m-slot--db {
+  left: 16px;
+  top: 16px;
+  width: 52px;
+}
+
+/* REV-3 ANCHOR + C2's WRAPPER FIX, reproduced for measurement.
+
+   C2's repair is `.ps-c3s-wrap { inset: var(--c3s-bleed) }` with --c3s-bleed
+   6px on the card face and 0 in the dialog, so the agent's own `right: 64px`
+   is then resolved in CARD space. I have no wrap element here, so the
+   numerically identical reproduction on the bleeding root is 64 + 6 = 70.
+   That equivalence is the only reason this reads 70; the SHIPPING fix is the
+   wrapper, not this constant. Patching the constant would have left the other
+   card-space numbers - the 245/305/359 floors, --c3s-foot, the paddings - still
+   displaced by the same 6px, with the symptom that would have exposed them
+   removed. */
+.ps-c3-m-slot--agent {
+  position: absolute;
+  right: 70px;
+  top: 12px;
+  width: 42px;
+}
+
+/* Proof sheet only: the second agent concept, parked below the first so the
+   two can be read against each other in one frame. Never shipped. */
+.ps-c3-m-slot--agent2 {
+  right: 8%;
+  top: 48%;
+  width: 27%;
+  max-width: 104px;
+}
+
+.ps-c3-m-slot--bead {
+  right: 44%;
+  top: 26%;
+  width: 16px;
+}
+
+.ps-c3-m-label {
+  display: block;
+  margin-top: 2px;
+  text-align: center;
+  color: var(--theme-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* SIZE LADDER - `?c3=marks&sz=1`. Diagnostic only. Every width is a number from
+   the scene spec's own tier table (§5.2), so the question it answers is "does
+   the mark survive the size it is actually allocated", not "does it survive a
+   size I picked". */
+.ps-c3-m-ladder {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 18px;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px 12px;
+}
+
+.ps-c3-m-rung {
+  flex: 0 0 auto;
+}
+
+/* Tier steps for the rev-2 anchor reproduction. */
+@container bentocard (min-width: 300px) {
+  .ps-c3-m-slot--agent { top: 14px; width: 46px; }
+  .ps-c3-m-slot--db { left: 14px; top: 14px; width: 50px; }
+}
+
+@container bentocard (min-width: 360px) {
+  .ps-c3-m-slot--agent { top: 16px; width: 52px; }
+  .ps-c3-m-slot--db { left: 16px; top: 16px; width: 56px; }
+}
+
+/* ============================================================================
+   THE SCENE  -  `ps-c3s-`.  Card 3, "AI Integration.", the five-beat agent
+   scene. Built to `.work-order/specs/ai-integration-scene.md`.
+
+   THE ONE RULE THAT ORDERS EVERYTHING BELOW: the base cascade in this block IS
+   THE FINISHED RESTING FRAME (spec 9.1). Question fully typed, panel open with
+   the answer, both bars at full width, agent lit 0.55, database lit 0.5, both
+   wires present at 0.35, leader line drawn. Nothing here starts hidden that
+   has to end visible.
+
+   That is not a stylistic preference. R8 measured five animation shapes against
+   this page's live cascade and shape C - an `opacity: 0` base plus a keyframe
+   with no fill-mode - rests at opacity 0 PERMANENTLY under
+   `prefers-reduced-motion: reduce`, and NEITHER the `globals.css:4639` catch-all
+   NOR axe reports it. `globals.css:4639` sets `animation-duration: 0.01ms`; it
+   cannot touch a JS-driven class change. So the safety here is structural:
+   every animated rule is a descendant of `.ps-c3s-run`, that class is added by
+   JavaScript only when the scene is actually going to move, and the JS
+   short-circuits on `reduce` before it writes anything.
+
+   No JS, dead chunk, reduce, off-screen, dialog-open, server render -> the
+   selector never matches and the reader gets the whole story in one frame.
+   ========================================================================= */
+
+.ps-c3s-root {
+  /* BUILD SENTINEL FOR THE SCENE, separate from `--c3-build` on
+     `.ps-c3-k-root` because that one belongs to the marks and another agent
+     bumps it. Bumped on every change to the scene block below.
+
+     It is not ceremony. A hot-reloading dev server can answer 200 with the
+     PREVIOUS compile while every guard is green, and the tell is subtle: after
+     a geometry fix the leader-line probe returned -41.00 / -40.50 / -37.00 /
+     -48.00 px, byte-identical to the run before the fix. Identical numbers
+     across a real change are the signature of a stale artifact, not of a fix
+     that did nothing. Every capture asserts this value. */
+  --c3s-build: 9;
+
+  /* SCALE TIER S is the base, and every larger tier is added by a CONTAINER
+     query below. Never a media query: at a 940px viewport this card is 286.7px
+     wide - NARROWER than the same card on a 430px phone - so a `min-width:
+     640px` media query would hand desktop metrics to a 288px box. */
+  --c3s-p: 12px;
+  --c3s-fs: 11px;
+  --c3s-lab: 9.5px;
+  --c3s-dbw: 40px;
+  --c3s-agw: 42px;
+  --c3s-inh: 34px;
+  --c3s-bub: 9px;
+  --c3s-blob: 14px;
+  --c3s-gap: 12px;
+
+  /* Foot clearance. (card height - title-band top) + 12, one number per mount,
+     so the vertical layout never has to know the column count or the height.
+     Measured floors: 245 / 305 / 359 on the three card-face heights; 76 clears
+     all three (244 / 304 / 354) and satisfies the >= 12px title-band gap
+     (13 / 13 / 17). */
+  --c3s-foot: 76px;
+
+  /* The art root is the card box + 12px: `.ps-bento-card__inner` is
+     `inset: calc(-1 * var(--card-grow-y, 6px))` (globals.css:1890) and clips
+     back to the card with `clip-path: inset(6px ...)`, opening to `inset(0)` on
+     hover. So root-space y=0 is card-space y=-6. The scene lays out in
+     CARD-space; without this the input lands 6px inside the title band, which
+     was a measured defect in the designer's own first pass (input bottom 251
+     against a 245 floor). The dialog mount has no bleed and sets this to 0. */
+  --c3s-bleed: 6px;
+
+  /* EXPAND-BUTTON CLEARANCE, and it is the one number in this block that is a
+     viewport media query rather than a container query - because the button
+     itself is. `.ps-bento-card__expand` is 44x44 at top/right 12px below 769px
+     (globals.css:5514) and 32x32 at top/right 16px above it (globals.css:2134).
+     The spec anchors the agent at (-p, p), which is the same pixels. The button
+     is shared by all five cards and is interactive, so it does not move; the
+     agent insets clear of it HORIZONTALLY, because clearing it vertically costs
+     52px and the tightest box has 9.2px of slack between a 113px stage and a
+     103.8px answer panel. */
+  --c3s-agent-right: 64px;
+  --c3s-agent-gap: calc(var(--c3s-agent-right) - var(--c3s-p));
+
+  /* DURATIONS. No duration tokens exist in this codebase - `globals.css`
+     declares only `--ease-out-expo` (:131) and `--ease-standard` (:132) - so
+     these are local and deliberately not promoted to globals. */
+  --c3s-d-type: 1100ms;
+  --c3s-d-fly: 620ms;
+  --c3s-d-absorb: 480ms;
+  --c3s-d-textin: 240ms;
+  --c3s-d-wire: 520ms;
+  --c3s-d-lit: 260ms;
+  --c3s-d-unlit: 380ms;
+  --c3s-d-swap: 260ms;
+  --c3s-d-morph: 420ms;
+  --c3s-d-bars: 520ms;
+  /* THE HOUSE CURVE IS A TOKEN AND THIS BLOCK NO LONGER RE-DECLARES IT.
+     `--ease-out-quart` (globals.css:136) is Team A's ratified name for
+     `cubic-bezier(0.165, 0.84, 0.44, 1)` and has existed since 23:18:40. Every
+     transition in this block that the spec wrote as `--ease-out-expo` now
+     references that token directly, so the card carries ONE easing convention
+     and zero copies of the curve. The local `--c3s-e-wire` alias that used to
+     sit here was itself a copy of the literal, which is the thing the token
+     exists to prevent, and it is gone. `--ease-standard` is untouched - a
+     different curve doing a different job, not a competing convention.
+     `--c3s-e-bar` stays a literal because no token names that curve. */
+  --c3s-e-bar: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Measured once per layout by the driver, never per frame:
+     the question span's width, the wire's length, and the blob's start point
+     and delta. Fallbacks keep the no-JS frame sane. */
+  --c3s-qw: 0px;
+  /* The typewriter's step count is the current pair's character count, so the
+     whole timing function travels as ONE custom property. `steps(var(--n), end)`
+     substitutes a bare integer into a functional notation, which is the fragile
+     form; a property holding a complete <easing-function> is not. */
+  --c3s-steps: steps(31, end);
+  --c3s-wire-len: 0px;
+  --c3s-blob-x: 0px;
+  --c3s-blob-y: 0px;
+  --c3s-blob-dx: 0px;
+  --c3s-blob-dy: 0px;
+}
+
+@container bentocard (min-width: 300px) {
+  .ps-c3s-root {
+    --c3s-p: 14px;
+    --c3s-fs: 12px;
+    --c3s-lab: 10px;
+    --c3s-dbw: 46px;
+    --c3s-agw: 48px;
+    --c3s-inh: 38px;
+    --c3s-bub: 10px;
+    --c3s-blob: 15px;
+  }
+}
+
+@container bentocard (min-width: 360px) {
+  .ps-c3s-root {
+    --c3s-p: 16px;
+    --c3s-fs: 13px;
+    --c3s-lab: 10.5px;
+    --c3s-dbw: 52px;
+    --c3s-agw: 54px;
+    --c3s-inh: 40px;
+    --c3s-bub: 11px;
+    --c3s-blob: 16px;
+  }
+}
+
+/* THE SHORT CARD, and this one IS a viewport media query on purpose.
+
+   The scale tiers above key on `inline-size`, which is right for everything the
+   width governs and WRONG for the three metrics that govern height. Below 640px
+   the bento grid is one column and the card is 320px tall at EVERY width in the
+   band - 272px wide at 320 and 591px wide at 639, same 320px height. So tier L
+   was landing its 52/54/40px marks and pill on a 320-tall card, and the answer
+   panel came out 11.4px TALLER THAN THE STAGE: measured 6.3px of clearance to
+   the input at 414, 430 and 639, and 7.5px at 360, against a >= 8px floor.
+
+   The card's HEIGHT is the grid's and the grid's is the viewport's, so a
+   viewport query is the correct instrument for it - the spec's warning is about
+   deriving the card's WIDTH from the viewport, which is the thing that is
+   genuinely not derivable (286.7px at a 940px viewport is narrower than 382px
+   at a 430px one). Pad and font-size stay on the container tier; only the three
+   metrics that eat vertical space are held down.
+
+   Measured after: 13.2px at 414/430/639 and 9.7px at 360, worst box on the
+   whole card face. Nothing at 640 and above moved. */
+@media (max-width: 639px) {
+  .ps-c3s-root {
+    --c3s-lab: 10px;
+    --c3s-dbw: 44px;
+    --c3s-agw: 46px;
+    --c3s-inh: 36px;
+  }
+}
+
+/* THE DIALOG MOUNT. `@container bentocard` cannot reach here - the dialog is
+   `createPortal`'d to the body, so there is no `.ps-bento-card` ancestor and no
+   `bentocard` container, and every container query above simply fails to match.
+   These selectors are (0,2,0) against the tier rules' (0,1,0), so they win
+   whatever the container does. */
+.ps-dialog-visual-art .ps-c3s-root {
+  --c3s-bleed: 0px;
+  --c3s-p: 20px;
+  --c3s-fs: 15px;
+  --c3s-lab: 11px;
+  --c3s-dbw: 64px;
+  --c3s-agw: 66px;
+  --c3s-inh: 44px;
+  --c3s-bub: 13px;
+  --c3s-blob: 18px;
+  --c3s-foot: 130px;
+
+  /* THE SECOND CORNER COLLISION, and it is a different control from the card
+     face's in a different place, so the card face's constant does not transfer.
+
+     `.ps-dialog-close-btn` is 40x40 docked at top/right 14px on desktop
+     (globals.css:7633) and 44x44 at top 10 / right 12 below 769px (:7645). It
+     is the sheet's PRIMARY EXIT: `pointer-events: auto`, `z-index: 5`, and
+     unlike the card face's painted expand cue it carries a real focus ring
+     (3px outline at 3px offset). So the clearance has to cover the ring, not
+     just the box: 56 + 6 + 8 = 70 at <=768, 54 + 6 + 8 = 68 above. 72 covers
+     both with slack.
+
+     My first pass used 62/64 - derived from the box alone, before the ring was
+     accounted for - and it measured 0% occlusion but only 6px of gap, which is
+     EXACTLY 0 once the focus ring is drawn. Zero overlap is not the same as
+     clearance when the control can grow a ring on focus. */
+  --c3s-agent-right: 72px;
+}
+
+/* THE SHORT DIALOG. `.ps-dialog-visual` is 280px tall below 769px
+   (globals.css:2942, :5567, :5692) and 400px above. 280 leaves a 190px usable
+   band once the dialog's own 120px `::after` veil is accounted for, and the
+   answer panel WITH the bar pair measures 55.1px in a 52px stage - it overflows
+   by 3.1px. So this mount ships the rest frame only, sentence without bars, and
+   does not loop. That is the spec's decision, not a limitation worked around. */
+@media (max-width: 768px) {
+  .ps-dialog-visual-art .ps-c3s-root {
+    --c3s-p: 14px;
+    --c3s-fs: 12px;
+    --c3s-lab: 10px;
+    --c3s-dbw: 34px;
+    --c3s-agw: 36px;
+    --c3s-inh: 36px;
+    --c3s-bub: 10px;
+    --c3s-foot: 90px;
+  }
+}
+
+/* ---- structure ---------------------------------------------------------- */
+
+/* z-index 6 clears `.ps-c3-k-root::after` (this file, :157), the 150px foot
+   veil that ramps to 0.72 alpha at z-index 5. Anything under 5 in the bottom
+   150px is washed, and the input pill lives there. */
+.ps-c3s-wrap {
+  position: absolute;
+  inset: var(--c3s-bleed);
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  padding: var(--c3s-p) var(--c3s-p) var(--c3s-foot);
+}
+
+/* THE BAND'S HEIGHT IS DECLARED, NOT INFERRED, and that is what lets the leader
+   line find the agent.
+
+   Left to `flex: 0 0 auto` the band is as tall as its tallest child, which is
+   always the database block - mark, 6px gap, label - because the agent is
+   shifted UP to put its aperture on the wire. So the band's bottom sits 15-26px
+   BELOW the agent's bottom, and a leader line starting at the stage's top edge
+   starts that far below the agent: measured 25.8px at 1440 and 22.6px at 320
+   against the specified 4px, which renders as a stray vertical mark floating in
+   open space rather than as a connector.
+
+   Declaring the height in the same terms the leader can read closes it:
+     database mark   = dbw * 110/96          (its own viewBox aspect)
+     label block     = 6px gap + lab * 1.35  (its declared line-height)
+   The agent's bottom, measured from the band's top, is its own shift plus its
+   height: `(dbw*0.3385 - agw*0.51691) + agw`, i.e. `dbw*0.3385 + agw*0.48309`.
+   Getting that sign wrong the first time put the line 41px ABOVE the agent
+   instead of 4px below it, and the container's rect was correct throughout. Asserted, not assumed: the database block is the
+   taller child at every tier (69.9 vs 54.9 at S, 79.8 vs 64.3 at L, 94.2 vs
+   78.4 in the dialog), so the declared height never clips the agent. */
+.ps-c3s-marks {
+  position: relative;
+  flex: 0 0 auto;
+  height: calc(var(--c3s-dbw) * 1.14583 + 6px + var(--c3s-lab) * 1.35);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+/* The stage is the flex remainder. The panel is centred by two empty siblings
+   that share the leftover space, rather than by `align-items: center` - because
+   the LEADER LINE has to be exactly the gap between the agent and the panel's
+   top edge, and making that gap a real box is the only way to draw it without
+   knowing the panel's height. */
+.ps-c3s-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ps-c3s-leader,
+.ps-c3s-stagefoot {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.ps-c3s-leader {
+  position: relative;
+}
+
+/* THE ATTRIBUTION LINE. Everything in the stage panel is the agent speaking,
+   and this says so. It never travels and never pulses - that vocabulary is the
+   database wire's alone, so the two lines can never be confused.
+
+   The negative `top` reaches back up out of the stage into the marks band, so
+   the line begins exactly 4px under the AGENT rather than 4px under the band.
+   Verify this on the drawn 2px line, never on its 368px-wide container: the
+   container's rect is correct either way, which is the same shape of error as
+   an anchor fraction being wrong inside a correctly-placed mark. */
+.ps-c3s-leader::before {
+  content: "";
+  position: absolute;
+  top: calc(
+    4px + (var(--c3s-dbw) * 0.3385 + var(--c3s-agw) * 0.48309) -
+      (var(--c3s-dbw) * 1.14583 + 6px + var(--c3s-lab) * 1.35)
+  );
+  bottom: 4px;
+  right: calc(var(--c3s-agent-gap) + var(--c3s-agw) / 2 - 1px);
+  width: 2px;
+  border-radius: 1px;
+  background: var(--theme-accent-text);
+  opacity: 0.55;
+  transform-origin: top center;
+}
+
+/* ---- the marks ---------------------------------------------------------- */
+
+.ps-c3s-mark {
+  position: relative;
+  display: block;
+}
+
+.ps-c3s-db {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--c3s-dbw);
+}
+
+.ps-c3s-agent {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--c3s-agw);
+  margin-right: var(--c3s-agent-gap);
+}
+
+/* THE LIT LAYER, AND IT IS A PRE-RENDERED SIBLING ON PURPOSE.
+
+   "Lights up blue" is a second copy of the same mark with the `--c3-vault*`
+   roles remapped to accent mixes, sitting exactly on top of the neutral one.
+   ONLY `opacity` animates. Never `box-shadow`, never `filter`, never
+   `background-color`: R7 measured compositing (Layerize + Commit), not
+   scripting, as this page's dominant cost, and each of those three forces a
+   repaint every frame.
+
+   The colour is `--theme-accent-text` - #1590FF dark (globals.css:70 -> :56),
+   #0C6FC9 light (:203). The superseded mid-blue that globals.css:53-55
+   forbids in terms is NOT used here and is deliberately not spelled out, so a
+   sweep for that literal stays clean across this file. */
+.ps-c3s-lit {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  --c3-vault: color-mix(in srgb, var(--theme-accent-text) 30%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-vault2: color-mix(in srgb, var(--theme-accent-text) 48%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-vaultcap: color-mix(in srgb, var(--theme-accent-text) 82%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-vaultdk: color-mix(in srgb, var(--theme-accent-text) 20%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-portdark: color-mix(in srgb, var(--theme-accent-text) 12%, var(--theme-art-ground-b, #0c1e3a));
+  --c3-vaultedge: color-mix(in srgb, var(--theme-accent-text) 9%, var(--theme-art-ground-b, #0c1e3a));
+}
+
+[data-theme="light"] .ps-c3s-lit {
+  --c3-vault: color-mix(in srgb, var(--theme-accent-text) 62%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-vault2: color-mix(in srgb, var(--theme-accent-text) 46%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-vaultcap: color-mix(in srgb, var(--theme-accent-text) 30%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-vaultdk: color-mix(in srgb, var(--theme-accent-text) 84%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-portdark: color-mix(in srgb, var(--theme-accent-text) 90%, var(--theme-art-ground-a, #f0f4f8));
+  --c3-vaultedge: var(--theme-accent-text);
+}
+
+/* The lit copy sits ABOVE its own glow. Both are positioned, so DOM order
+   would already do it, but the explicit z-index survives the parent gaining and
+   losing a stacking context as its opacity crosses 1. */
+.ps-c3s-lit > .ps-c3-m {
+  position: relative;
+  z-index: 1;
+}
+
+/* The glow, depicted rather than filtered: one gradient-filled box behind the
+   lit copy. `--c3-veil0` is the ground at zero alpha - never `transparent`,
+   which is rgba(0,0,0,0) and interpolates through black, putting a grey bruise
+   under the mark in light theme. */
+.ps-c3s-lit::before {
+  content: "";
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--theme-accent-text) 34%, var(--c3-veil0)) 0%,
+    color-mix(in srgb, var(--theme-accent-text) 12%, var(--c3-veil0)) 58%,
+    var(--c3-veil0) 100%
+  );
+}
+
+/* THE REST OPACITIES ARE THE BASE VALUES, and this is the whole reduced-motion
+   argument in three declarations. The story at rest is: someone asked, the
+   agent queried the database, this is the answer. Both marks carry the light
+   that says so. */
+.ps-c3s-db .ps-c3s-lit {
+  opacity: 0.5;
+}
+
+.ps-c3s-agent .ps-c3s-lit {
+  opacity: 0.55;
+}
+
+/* The label. `--theme-text-secondary`, NOT `--theme-text-muted`: muted measures
+   4.27:1 on the light ground (#64748B on #F0F4F8; the arithmetic agrees at
+   4.31:1) and fails the 4.5 floor. globals.css:198 already records this exact
+   failure for this very card's title. Secondary is 6.80:1 light / 7.00:1 dark. */
+.ps-c3s-dblabel {
+  display: block;
+  margin-top: 6px;
+  color: var(--theme-text-secondary);
+  font-size: var(--c3s-lab);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ---- the wire ----------------------------------------------------------- */
+
+/* GEOMETRY DERIVED FROM THE MARKS' OWN PORTS, RE-DERIVED AGAINST THE CURRENT
+   SOURCE - the marks were re-cut mid-build and the first set of constants went
+   stale silently.
+
+   `.ps-c3-m` is `width: 100%; height: auto`, so a mark's render scale is
+   width / viewBox-width and EVERY constant below is a viewBox coordinate over
+   the viewBox WIDTH. Read off the paths, not off a comment:
+
+     C3Database, viewBox 96x110
+       dock port rect x=40..72, y=27..38  ->  right edge 72, mid-line 32.5
+       x = 72/96 = 0.75      y = 32.5/96 = 0.3385
+
+     C3AgentColumn, viewBox 104x104, banked `rotate(-11 51 84)`
+       slot rect y=38..54 -> centre 46; the BODY's left outline at y 46 is x 14
+       (the path runs straight from `M14 42` to `14 60`), so the aperture leaves
+       the silhouette at local (14, 46). After the bank, with cos -11 = 0.98163
+       and sin -11 = -0.19081:
+         x' = 51 - 37(0.98163) - 38(0.19081) =  7.43  ->  7.43/104 = 0.07143
+         y' = 84 + 37(0.19081) - 38(0.98163) = 53.76  -> 53.76/104 = 0.51691
+
+   THE TWO PORTS ARE NOT AT THE SAME HEIGHT, and with both marks top-aligned
+   they are ~10px apart at tier L. A horizontal line cannot reach both, and the
+   gap is larger than either opening, so the line would arrive on the shell
+   beside the hole. The agent is shifted UP by exactly the difference instead of
+   the database being shifted down: the agent is banked and drawn floating clear
+   of its own shadow, so it carries a vertical offset without looking dropped -
+   and, unlike moving the database, it costs the stage nothing, because the
+   marks band's height is set by the database block plus its label either way.
+   Measured after: the band is unchanged at every box. */
+.ps-c3s-agent {
+  margin-top: calc(var(--c3s-dbw) * 0.3385 - var(--c3s-agw) * 0.51691);
+}
+
+.ps-c3s-wire {
+  position: absolute;
+  top: calc(var(--c3s-dbw) * 0.3385 - 1px);
+  left: calc(var(--c3s-dbw) * 0.75);
+  right: calc(var(--c3s-agent-gap) + var(--c3s-agw) * 0.92857);
+  height: 2px;
+}
+
+.ps-c3s-wire__out,
+.ps-c3s-wire__back {
+  position: absolute;
+  inset: 0;
+  border-radius: 1px;
+  background: var(--theme-accent-text);
+  opacity: 0.35;
+}
+
+.ps-c3s-wire__back {
+  z-index: 1;
+}
+
+.ps-c3s-packet {
+  position: absolute;
+  top: -0.5px;
+  left: 0;
+  z-index: 2;
+  width: 10px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--theme-accent-text);
+  opacity: 0;
+}
+
+/* ---- the stage panel ---------------------------------------------------- */
+
+/* ONE BOX ACROSS BEATS 2, 4 AND 5. It opens once at T2 and closes once at T6;
+   it does not appear and disappear between the three, because that would be
+   four cuts in the middle of the sequence. Its height morphs instead.
+
+   Dark surface is `--theme-art-ground-b` FLAT, with no lift toward white. The
+   lift was measured out: at 6% white the accent numerals `30%` and `1%` sit at
+   4.27:1, under the 4.5 floor. Dropping it gives 5.12:1. */
+.ps-c3s-panel {
+  position: relative;
+  width: 100%;
+  display: grid;
+  padding: var(--c3s-bub) calc(var(--c3s-bub) + 1px);
+  border-radius: 10px;
+  background: var(--theme-art-ground-b, #0c1e3a);
+  border: 1px solid color-mix(in srgb, var(--theme-text-secondary) 26%, var(--theme-art-ground-b, #0c1e3a));
+  color: var(--theme-text-secondary);
+  font-size: var(--c3s-fs);
+  line-height: 1.38;
+  transform-origin: center top;
+}
+
+[data-theme="light"] .ps-c3s-panel {
+  background: var(--color-white, #ffffff);
+  border-color: var(--theme-border);
+}
+
+/* THE HEIGHT MORPH, and it is the one place this scene is allowed to cost
+   layout. `grid-template-rows: 0fr -> 1fr` is self-measuring - no JS reads a
+   height, nothing has to be re-measured when the copy or the box changes - and
+   it was verified interpolating in all three engines (chromium 151, webkit
+   26.5, firefox 153) against a known-bad control with the transition removed,
+   which snapped instead. Only ONE slot is open at a time, so the panel's height
+   is the open slot's height.
+
+   IT IS ALSO THE WHOLE OF THIS SCENE'S LayoutCount, AND THAT IS NOT A BUG.
+   A performance audit read 212 forced layouts per 16s against 0 on the build
+   before this scene existed, attributed them here because they stop exactly when
+   the loop stops, and prescribed the standard cure: find the geometry read that
+   follows a style write in the same frame and batch it. There is no such read.
+   Measured by patching `getBoundingClientRect`, `offsetWidth/Height/Top` and
+   `clientWidth/Height` and counting every call during 32s of the running loop:
+
+     getBoundingClientRect   20   all of them in `AutomationVisualScene`'s
+                                  once-per-layout `measure`, 10 per cycle
+     offset*                  0
+     client*                234   228 of which are `handleScroll` in
+                                  card2-candidates.tsx - a different card
+
+   Zero per-frame reads. What the counter is seeing is an animated layout
+   PROPERTY: 91% of the layouts fall in exactly t2, t4 and t5 - these three
+   morphs - at ~126/s, which is one per animation frame, and there are ZERO in
+   every transform and clip-path beat and zero in b5. Re-measured at build 8:
+   147 per 16s, three consecutive runs, all 147.
+
+   And the count is the wrong number to optimise. Same 32s window:
+
+     layout        298 layouts,    28.6ms    0.09% of wall time
+     style recalc  3,843 recalcs, 358.4ms    12x the layout cost
+
+   `contain: layout style` on the panel moved layout duration 28.6 -> 24.4ms and
+   the COUNT not at all, so it was not shipped. Replacing this morph with a
+   compositor-only technique would cut the count and is an animation-architecture
+   change on a frozen card that the measured cost does not justify - and it would
+   give back the panel jump between the thought, the calculating line and the
+   answer that this mechanism exists to remove. Accepted as documented rather
+   than fixed; do not "fix" it without re-measuring both columns above. */
+.ps-c3s-slot {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.ps-c3s-slot > * {
+  min-height: 0;
+}
+
+/* The answer slot is the OPEN one in the base cascade. This single pair of
+   declarations is what makes the reduced-motion render, the no-JS render, the
+   server render and the off-screen render all show the finished answer. */
+.ps-c3s-slot--ans {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.ps-c3s-ans__line {
+  color: var(--theme-text-primary);
+}
+
+/* Weight AS WELL AS colour. Meaning is never carried by hue alone, and these
+   two numerals are the only place in the scene where it could have been. */
+.ps-c3s-ans__line b {
+  color: var(--theme-accent-text);
+  font-weight: 700;
+}
+
+.ps-c3s-bars {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 4px 8px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.ps-c3s-bars__lab {
+  color: var(--theme-text-secondary);
+  white-space: nowrap;
+}
+
+/* The middle column when the two quantities do not share a unit. It occupies
+   the track's grid cell and draws nothing, so the row count, the column axis
+   and the panel's height are identical with and without the bars - which is
+   what stops the rotation from jolting as it passes the mixed-unit pair. */
+.ps-c3s-bars__nobar {
+  display: block;
+  height: 5px;
+}
+
+.ps-c3s-bars__track {
+  position: relative;
+  height: 5px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--theme-text-secondary) 16%, var(--theme-art-ground-b, #0c1e3a));
+}
+
+[data-theme="light"] .ps-c3s-bars__track {
+  background: color-mix(in srgb, var(--theme-text-secondary) 16%, var(--color-white, #ffffff));
+}
+
+/* A NEGATIVE VALUE IS NOT DRAWN AS A SHORTER POSITIVE ONE.
+   `-12%` and `+40%` used to render as two bars from the same left edge, 30% and
+   100% long, in the same direction: a chart asserting that both moved the same
+   way, contradicting the figure printed at the end of its own row. This card's
+   spec already settled the principle when it refused to draw a proportional bar
+   between `9%` and `14 days` - a bar that cannot be read as the data must not be
+   drawn as if it can.
+
+   So when ANY row of a pair is negative the track becomes a ZERO AXIS: positives
+   grow right of centre, negatives grow LEFT of it, and the sign is carried by
+   direction - not by hue, which this file forbids as a sole carrier, and not by
+   the printed figure alone. Pairs whose rows are all positive are untouched and
+   render exactly as they shipped, full-width from the left edge, so three of the
+   four bar-drawing pairs are pixel-identical to build 7. The magnitudes stay
+   true: each half is `value / max * 50%` of the same track. */
+.ps-c3s-bars--signed .ps-c3s-bars__track::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  bottom: -2px;
+  width: 1px;
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--theme-text-secondary) 55%, transparent);
+}
+
+.ps-c3s-bars--signed .ps-c3s-bars__fill {
+  inset: 0 auto 0 50%;
+}
+
+.ps-c3s-bars--signed .ps-c3s-bars__fill--neg {
+  inset: 0 50% 0 auto;
+  transform-origin: right center;
+}
+
+/* scaleX from a left origin, so the bar GROWS from the label rather than
+   sliding in. Base is `transform: none`, i.e. the final width - the keyframe
+   runs 0 -> 1 and rests at 1. A negative bar grows the other way, from the axis
+   outward, because its origin is flipped above. */
+.ps-c3s-bars__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  height: 100%;
+  border-radius: 3px;
+  transform-origin: left center;
+}
+
+/* True 30:1. The width is `value / max * 100%` and comes from the pair data as
+   a server-rendered inline style, so the proportion is the sentence's own two
+   figures drawn to scale - not a new number, and not a number JavaScript has to
+   be alive to supply. */
+.ps-c3s-bars__fill--a {
+  background: var(--theme-accent-text);
+}
+
+.ps-c3s-bars__fill--b {
+  background: var(--theme-text-secondary);
+}
+
+.ps-c3s-bars__fig {
+  color: var(--theme-text-primary);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* THE 900x400 DIALOG GOES TWO-COLUMN. Stacked, the panel is 115.3px and
+   overlaps the input by 20.3px; side by side it is 67.4px with 22.3px of
+   clearance. */
+@media (min-width: 769px) {
+  .ps-dialog-visual-art .ps-c3s-ans {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .ps-dialog-visual-art .ps-c3s-bars {
+    margin-top: 0;
+  }
+}
+
+/* Bars dropped where the usable band is under 200px. The 30:1 magnitude then
+   has to be read from the sentence, which is the cost of the panel not
+   overflowing its 52px stage by a measured 3.1px. */
+@media (max-width: 768px) {
+  .ps-dialog-visual-art .ps-c3s-bars {
+    display: none;
+  }
+}
+
+/* ---- the input pill ----------------------------------------------------- */
+
+.ps-c3s-input {
+  flex: 0 0 auto;
+  margin-top: var(--c3s-gap);
+}
+
+.ps-c3s-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--c3s-inh);
+  padding: 0 calc(var(--c3s-inh) * 0.78) 0 calc(var(--c3s-inh) * 0.34);
+  border-radius: calc(var(--c3s-inh) / 2);
+  border: 1px solid color-mix(in srgb, var(--theme-text-primary) 20%, var(--theme-art-ground-b, #0c1e3a));
+
+  /* THE PILL IS A RECESSED WELL, NOT A LIFTED SURFACE, and the difference is a
+     measured contrast decision rather than a look.
+
+     The spec asks for `color-mix(text-primary 8%, art-ground-b)` - a surface
+     lifted slightly OFF the ground. `[data-theme="dark"]
+     .ps-bento-card__text::before` (globals.css:7570) paints a 142.8px scrim over
+     the card's text band to keep the title legible over the artwork; it is
+     shared by five cards, it is outside `.ps-bento-card__inner`'s stacking
+     context so nothing here can z-index above it, and on the 320- and 380-tall
+     cards it covers this pill. Under it the question measured 5.51:1 against
+     13.29:1 on the 430-tall card, where the scrim's `::before` height is 0.
+
+     Lifting the pill clear of the scrim was measured and rejected: the panel is
+     centred in the stage, so `panel->pill = (stage - panel)/2 + gap` and every
+     pixel of lift costs half a pixel of clearance. The binding box is 360x640
+     with 9.7px, so 3.4px is all that is available - worth 0.5:1 - and the ~50px
+     the question actually needs drives the pill 11.8px INTO the answer panel.
+
+     Dropping the lift instead costs nothing and goes the other way: the scrim
+     compresses text and surface together, so a darker surface widens the range
+     that survives it. Measured, question in situ, dark:
+
+       surface                    430 (under scrim)   1440 (no scrim)
+       text-primary 8% (spec)          5.51 : 1          13.29 : 1
+       art-ground-b flat               5.99 : 1          16.63 : 1
+       bg-primary 100%  <- shipped     6.22 : 1          18.13 : 1
+
+     The border moves 16% -> 20% so the pill's edge still reads against a fill
+     that is now darker than the ground it sits on. Light theme is untouched -
+     the scrim's selector is `[data-theme="dark"]` and the light pill is white at
+     18.13:1 at every width. */
+  background: var(--theme-bg-primary, #0a1628);
+  font-size: var(--c3s-fs);
+  line-height: 1.2;
+  overflow: hidden;
+}
+
+[data-theme="light"] .ps-c3s-pill {
+  background: var(--color-white, #ffffff);
+  border-color: var(--theme-border);
+  box-shadow: 0 1px 3px rgba(10, 22, 40, 0.06);
+}
+
+.ps-c3s-qwrap {
+  position: relative;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+/* THE FULL QUESTION IS IN THE DOM AT ALL TIMES and is never assembled
+   character-by-character in JavaScript. The typewriter read is a `clip-path`
+   sweep on `steps(N)` over text that is already there. That is what makes the
+   rest frame, the no-JS frame and the reduce frame correct for free, and it
+   avoids a per-frame text mutation on a page R7 already measured at 11.6% of
+   idle main thread. */
+.ps-c3s-qtext {
+  display: inline-block;
+  color: var(--theme-text-primary);
+  white-space: nowrap;
+}
+
+.ps-c3s-caret {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1.5px;
+  height: 1.05em;
+  margin-top: -0.525em;
+  background: var(--theme-accent-text);
+  opacity: 0;
+}
+
+.ps-c3s-ghost {
+  position: absolute;
+  left: calc(var(--c3s-inh) * 0.34);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--theme-text-muted);
+  white-space: nowrap;
+  opacity: 0;
+}
+
+/* DECORATION, NOT A TARGET. The whole card is one <button>
+   (service-pillars.tsx:1822); the scene has no interactive part and must not
+   look like it has one. This glyph reads as a button and is not one - it is
+   21-27px, far under the 44px touch idiom, and the real target is the entire
+   card underneath it, so a mis-aim still opens the dialog. */
+.ps-c3s-send {
+  position: absolute;
+  right: calc(var(--c3s-inh) * 0.19);
+  top: 50%;
+  width: calc(var(--c3s-inh) * 0.62);
+  height: calc(var(--c3s-inh) * 0.62);
+  margin-top: calc(var(--c3s-inh) * -0.31);
+  border-radius: 50%;
+  background: var(--theme-accent-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ps-c3s-send svg {
+  display: block;
+  width: 56%;
+  height: 56%;
+}
+
+/* ---- the blob ----------------------------------------------------------- */
+
+/* TWO NESTED ELEMENTS SO THE PATH BENDS WITH PURE TRANSFORMS. The outer element
+   animates translateX on one curve, the inner translateY on a different one;
+   two different curves on the two axes is a curved path, with no `offset-path`
+   support question and no layout at any frame. */
+.ps-c3s-blob {
+  position: absolute;
+  left: var(--c3s-blob-x);
+  top: var(--c3s-blob-y);
+  width: var(--c3s-blob);
+  height: calc(var(--c3s-blob) * 0.607);
+  margin: calc(var(--c3s-blob) * -0.304) 0 0 calc(var(--c3s-blob) / -2);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ps-c3s-blob__in {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================================================
+   RUN STATE.  Everything below this line requires `.ps-c3s-run`, which the
+   driver adds only when it has already cleared `prefers-reduced-motion`, the
+   card is at least 20% on screen, the tab is visible, and no dialog is covering
+   it. Remove the class and every rule below evaporates back to the frame above.
+   ========================================================================= */
+
+/* Layer budget: R7 measured compositing as the dominant cost, so promotion is
+   scoped to the five elements that actually move on a transform and is dropped
+   the moment the driver stops. A permanently promoted layer is a permanent
+   cost. */
+.ps-c3s-run .ps-c3s-blob,
+.ps-c3s-run .ps-c3s-blob__in,
+.ps-c3s-run .ps-c3s-packet {
+  will-change: transform;
+}
+
+.ps-c3s-run .ps-c3s-lit {
+  will-change: opacity;
+}
+
+/* ---- T0: the scene rewinds --------------------------------------------- */
+
+/* THE PANEL DOES NOT SHUT BETWEEN CYCLES, AND THAT IS THE FIX FOR THE HOLE.
+   It used to. The panel was `opacity: 0` and the answer slot was collapsed to
+   `0fr` across t0, b0, t1 and b1, so from the moment one answer left until the
+   next thought arrived the card was two unlit vessels, a floating bead and an
+   empty middle. Sampled on the live card at 1440x900 light every ~33ms across
+   the WHOLE cycle rather than at the five beats: 139 of 550 frames - 25.3% -
+   had the panel gone and both marks dark, in one unbroken 3.2s run from T6 to
+   T2. Every beat-sampling pass this card has had reported it clean.
+
+   So the inter-cycle state now rests on the COMPLETED ANSWER - the exact frame
+   `prefers-reduced-motion`, no-JS, off-screen and the server render already
+   produce. The last answer stays up while the next question is typed, and it
+   clears at T2, when the question is absorbed and the machine starts thinking,
+   by MORPHING into the thought on the same `grid-template-rows` machinery T4
+   and T5 already use. The base cascade did not change: two departures from it
+   were deleted, which is strictly fewer overrides than before.
+
+   Beats 0 and 1 still rewind the MACHINE - both marks dark, wire not drawn yet
+   - because beat 3 has to be able to light them. What they no longer rewind is
+   the answer. */
+
+/* Marks go dark and the wire goes away; the leader stays, because the panel it
+   tethers stays. */
+.ps-c3s-run[data-beat="t0"] .ps-c3s-lit,
+.ps-c3s-run[data-beat="b0"] .ps-c3s-lit,
+.ps-c3s-run[data-beat="t1"] .ps-c3s-lit,
+.ps-c3s-run[data-beat="b1"] .ps-c3s-lit,
+.ps-c3s-run[data-beat="t2"] .ps-c3s-db .ps-c3s-lit,
+.ps-c3s-run[data-beat="b2"] .ps-c3s-db .ps-c3s-lit,
+.ps-c3s-run[data-beat="t3"] .ps-c3s-db .ps-c3s-lit {
+  opacity: 0;
+}
+
+.ps-c3s-run[data-beat="t0"] .ps-c3s-lit {
+  transition: opacity 460ms var(--ease-standard);
+}
+
+.ps-c3s-run[data-beat="t0"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="t0"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="b0"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="b0"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="b1"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="b1"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="t1"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="t1"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="t2"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="t2"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="b2"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="b2"] .ps-c3s-wire__back {
+  opacity: 0;
+}
+
+.ps-c3s-run[data-beat="t0"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="t0"] .ps-c3s-wire__back {
+  transition: opacity 460ms var(--ease-standard);
+}
+
+/* The question un-types rather than being cut: the sweep runs BACKWARDS, from
+   the right, on the same steps() it was written with. */
+/* `inset(0 100% 0 0)` cuts 100% from the RIGHT, so the sweep to `inset(0)`
+   opens from the LEFT edge rightward - a typewriter. The mirror form,
+   `inset(0 0 0 100%)`, opens from the right edge and renders the SENTENCE'S
+   TAIL first; it was shipped that way for one capture and the screenshot read
+   "s our ROI down this month?". Every geometry and contrast probe passed on
+   that frame. */
+.ps-c3s-run[data-beat="t0"] .ps-c3s-qtext,
+.ps-c3s-run[data-beat="b0"] .ps-c3s-qtext,
+.ps-c3s-run[data-beat="t6"] .ps-c3s-qtext {
+  clip-path: inset(0 100% 0 0);
+}
+
+.ps-c3s-run[data-beat="t0"] .ps-c3s-qtext {
+  transition: clip-path 400ms var(--c3s-steps) 60ms;
+}
+
+/* ---- beat 0: the full stop --------------------------------------------- */
+
+.ps-c3s-run[data-beat="b0"] .ps-c3s-ghost {
+  opacity: 1;
+  transition: opacity 200ms var(--ease-standard);
+}
+
+/* ---- T1: the question types -------------------------------------------- */
+
+.ps-c3s-run[data-beat="t1"] .ps-c3s-qtext {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path var(--c3s-d-type) var(--c3s-steps);
+}
+
+.ps-c3s-run[data-beat="t1"] .ps-c3s-caret {
+  opacity: 1;
+  transform: translateX(var(--c3s-qw));
+  transition: transform var(--c3s-d-type) var(--c3s-steps);
+  animation: ps-c3s-blink 1060ms steps(2, end) infinite;
+}
+
+@keyframes ps-c3s-blink {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ---- beat 1: the blob flies -------------------------------------------- */
+
+/* Spawns on the send glyph at scale 0.4 and appears over 80ms, travels for
+   620ms, and over the last 120ms is EATEN - scale 1 -> 0.2, opacity 1 -> 0 -
+   while the agent's processing tint ramps in. It does not land and sit. */
+.ps-c3s-run[data-beat="b1"] .ps-c3s-blob {
+  opacity: 1;
+  transform: translateX(var(--c3s-blob-dx));
+  transition:
+    opacity 80ms var(--ease-out-quart),
+    transform var(--c3s-d-fly) var(--c3s-e-bar);
+}
+
+.ps-c3s-run[data-beat="b1"] .ps-c3s-blob__in {
+  transform: translateY(var(--c3s-blob-dy));
+  transition: transform var(--c3s-d-fly) var(--ease-out-quart);
+}
+
+.ps-c3s-run[data-beat="t2"] .ps-c3s-blob {
+  opacity: 0;
+  transform: translateX(var(--c3s-blob-dx)) scale(0.2);
+  transition:
+    opacity 120ms var(--ease-standard),
+    transform 120ms var(--ease-standard);
+}
+
+.ps-c3s-run[data-beat="t2"] .ps-c3s-blob__in {
+  transform: translateY(var(--c3s-blob-dy));
+}
+
+/* ---- T2: absorb, then speak -------------------------------------------- */
+
+/* The agent's PROCESSING tint - a third level, between rest and lit, because
+   #13 (thinking) and #14 (the data came back) are different events and must not
+   look the same. */
+.ps-c3s-run[data-beat="t2"] .ps-c3s-agent .ps-c3s-lit,
+.ps-c3s-run[data-beat="b2"] .ps-c3s-agent .ps-c3s-lit,
+.ps-c3s-run[data-beat="t3"] .ps-c3s-agent .ps-c3s-lit,
+.ps-c3s-run[data-beat="b3a"] .ps-c3s-agent .ps-c3s-lit,
+.ps-c3s-run[data-beat="b3b"] .ps-c3s-agent .ps-c3s-lit {
+  opacity: 0.3;
+}
+
+.ps-c3s-run[data-beat="t2"] .ps-c3s-agent .ps-c3s-lit {
+  transition: opacity 320ms var(--ease-out-quart);
+}
+
+/* ---- beat 2: the thought ------------------------------------------------ */
+
+.ps-c3s-run[data-beat="t2"] .ps-c3s-slot--thought,
+.ps-c3s-run[data-beat="b2"] .ps-c3s-slot--thought,
+.ps-c3s-run[data-beat="t3"] .ps-c3s-slot--thought,
+.ps-c3s-run[data-beat^="b3"] .ps-c3s-slot--thought {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.ps-c3s-run[data-beat="t2"] .ps-c3s-slot--thought {
+  transition:
+    grid-template-rows var(--c3s-d-absorb) var(--ease-out-quart),
+    opacity var(--c3s-d-textin) var(--ease-standard) 40ms;
+}
+
+/* THE PREVIOUS ANSWER LEAVES BY MORPHING, NOT BY BEING CUT. It is on screen when
+   T2 starts now, so its slot has to collapse on the same duration and curve the
+   thought's slot opens on - the panel's height is the sum of the two, and the
+   two must cross - and its opacity has to carry the text out with it. Without
+   the opacity leg the sentence vanished on one frame and the box shrank
+   afterwards. */
+.ps-c3s-run[data-beat="t2"] .ps-c3s-slot--ans {
+  transition:
+    grid-template-rows var(--c3s-d-absorb) var(--ease-out-quart),
+    opacity 160ms var(--ease-standard);
+}
+
+.ps-c3s-run[data-beat="t2"] .ps-c3s-slot--ans,
+.ps-c3s-run[data-beat="b2"] .ps-c3s-slot--ans,
+.ps-c3s-run[data-beat="t3"] .ps-c3s-slot--ans,
+.ps-c3s-run[data-beat^="b3"] .ps-c3s-slot--ans,
+.ps-c3s-run[data-beat="t4"] .ps-c3s-slot--ans,
+.ps-c3s-run[data-beat="b4"] .ps-c3s-slot--ans {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+/* ---- T3 and beat 3: the wire goes out, lights, and comes back ----------- */
+
+/* DIRECTION IS CARRIED BY GROWTH AND BY A PACKET, NEVER BY A FADE.
+
+   `clip-path: inset(0 0 0 100%) -> inset(0 0 0 0)` cuts in from the LEFT, so
+   the visible region opens from the right edge leftward: the leading edge
+   travels agent -> database. The return leg cuts from the right instead and
+   travels database -> agent. The mechanism is clip-path and NOT
+   `stroke-dasharray`, which was measured failing across engines on this page's
+   SVGs (firefox computes dashes in screen space while chromium and webkit use
+   user space) - clip-path measured 0.87% cross-engine spread. */
+/* SCOPED TO THE BEATS THAT PRECEDE THE QUERY, and the scoping is the bug fix
+   rather than tidiness. Written as a bare `.ps-c3s-run` base these two rules
+   clipped the wire away during the 1400ms REST HOLD, which is the first thing
+   any viewer sees and the frame the whole reduced-motion argument rests on.
+   Caught in a screenshot, not in a measurement: every geometry probe still
+   reported a correctly positioned 236px wire, because the element was there and
+   the right size - it was simply clipped to zero width. */
+.ps-c3s-run[data-beat="t0"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="b0"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="t1"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="b1"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="t2"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="b2"] .ps-c3s-wire__out {
+  clip-path: inset(0 0 0 100%);
+}
+
+.ps-c3s-run[data-beat="t0"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="b0"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="t1"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="b1"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="t2"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="b2"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="t3"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="b3a"] .ps-c3s-wire__back {
+  clip-path: inset(0 100% 0 0);
+}
+
+.ps-c3s-run[data-beat="t3"] .ps-c3s-wire__out {
+  clip-path: inset(0 0 0 0);
+  opacity: 0.9;
+  transition:
+    clip-path var(--c3s-d-wire) var(--ease-out-quart),
+    opacity 100ms linear;
+}
+
+.ps-c3s-run[data-beat^="b3"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="t4"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="b4"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="t5"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="b5"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="t6"] .ps-c3s-wire__out {
+  clip-path: inset(0 0 0 0);
+}
+
+.ps-c3s-run[data-beat="b3a"] .ps-c3s-wire__out {
+  opacity: 0.9;
+}
+
+/* The out leg dims underneath the return leg, so the brighter line on top is
+   unmistakably the one that is moving. */
+.ps-c3s-run[data-beat="b3b"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="b3c"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="b3d"] .ps-c3s-wire__out {
+  opacity: 0.3;
+  transition: opacity var(--c3s-d-wire) var(--ease-out-quart);
+}
+
+.ps-c3s-run[data-beat="b3b"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="b3c"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="b3d"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="t4"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="b4"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="t5"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="b5"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="t6"] .ps-c3s-wire__back {
+  clip-path: inset(0 0 0 0);
+}
+
+.ps-c3s-run[data-beat="b3b"] .ps-c3s-wire__back {
+  opacity: 1;
+  transition:
+    clip-path var(--c3s-d-wire) var(--ease-out-quart),
+    opacity 100ms linear;
+}
+
+.ps-c3s-run[data-beat="b3c"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="b3d"] .ps-c3s-wire__back {
+  opacity: 1;
+}
+
+/* THE PACKET is what makes direction unmistakable at a glance rather than on
+   inspection: on the out leg it moves toward the database, on the return leg
+   toward the agent. `--c3s-wire-len` is measured once per layout by the driver,
+   never per frame. */
+.ps-c3s-run .ps-c3s-packet {
+  transform: translateX(calc(var(--c3s-wire-len) - 10px));
+  opacity: 0;
+}
+
+.ps-c3s-run[data-beat="t3"] .ps-c3s-packet {
+  transform: translateX(0);
+  opacity: 1;
+  transition:
+    transform var(--c3s-d-wire) var(--ease-out-quart),
+    opacity 100ms linear;
+}
+
+.ps-c3s-run[data-beat="b3a"] .ps-c3s-packet {
+  transform: translateX(0);
+  opacity: 0;
+  transition: opacity 160ms linear;
+}
+
+.ps-c3s-run[data-beat="b3b"] .ps-c3s-packet {
+  transform: translateX(calc(var(--c3s-wire-len) - 10px));
+  opacity: 1;
+  transition:
+    transform var(--c3s-d-wire) var(--ease-out-quart),
+    opacity 100ms linear;
+}
+
+.ps-c3s-run[data-beat="b3c"] .ps-c3s-packet,
+.ps-c3s-run[data-beat="b3d"] .ps-c3s-packet {
+  transform: translateX(calc(var(--c3s-wire-len) - 10px));
+  opacity: 0;
+  transition: opacity 200ms linear;
+}
+
+/* The database lights when the query lands, and un-lights as the data leaves.
+   In on the house curve at 260ms, out on `--ease-standard` at 380ms - the
+   asymmetry is the difference between arriving and departing. */
+.ps-c3s-run[data-beat="b3a"] .ps-c3s-db .ps-c3s-lit {
+  opacity: 1;
+  transition: opacity var(--c3s-d-lit) var(--ease-out-quart);
+}
+
+.ps-c3s-run[data-beat="b3b"] .ps-c3s-db .ps-c3s-lit,
+.ps-c3s-run[data-beat="b3c"] .ps-c3s-db .ps-c3s-lit,
+.ps-c3s-run[data-beat="b3d"] .ps-c3s-db .ps-c3s-lit {
+  opacity: 0.5;
+  transition: opacity var(--c3s-d-unlit) var(--ease-standard);
+}
+
+.ps-c3s-run[data-beat="b3c"] .ps-c3s-agent .ps-c3s-lit,
+.ps-c3s-run[data-beat="b3d"] .ps-c3s-agent .ps-c3s-lit,
+.ps-c3s-run[data-beat="t4"] .ps-c3s-agent .ps-c3s-lit,
+.ps-c3s-run[data-beat="b4"] .ps-c3s-agent .ps-c3s-lit {
+  opacity: 1;
+}
+
+.ps-c3s-run[data-beat="b3c"] .ps-c3s-agent .ps-c3s-lit {
+  transition: opacity var(--c3s-d-lit) var(--ease-out-quart);
+}
+
+/* ---- T4 and beat 4: the text swap -------------------------------------- */
+
+/* A cross-fade inside the panel, not a cut: the outgoing line leaves upward
+   while the incoming one arrives from below, and the panel's height morphs on
+   the same 260ms so the box never jumps. */
+.ps-c3s-run[data-beat="t4"] .ps-c3s-slot--thought,
+.ps-c3s-run[data-beat="b4"] .ps-c3s-slot--thought,
+.ps-c3s-run[data-beat="t5"] .ps-c3s-slot--thought,
+.ps-c3s-run[data-beat="b5"] .ps-c3s-slot--thought,
+.ps-c3s-run[data-beat="t6"] .ps-c3s-slot--thought {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+.ps-c3s-run[data-beat="t4"] .ps-c3s-slot--thought {
+  transition:
+    grid-template-rows var(--c3s-d-swap) var(--ease-standard),
+    opacity 160ms var(--ease-standard);
+}
+
+.ps-c3s-run[data-beat="t4"] .ps-c3s-thought,
+.ps-c3s-run[data-beat="t4"] .ps-c3s-calc {
+  transition:
+    opacity 160ms var(--ease-standard),
+    transform 160ms var(--ease-standard);
+}
+
+.ps-c3s-run[data-beat="t4"] .ps-c3s-thought {
+  transform: translateY(-4px);
+}
+
+.ps-c3s-run[data-beat="t4"] .ps-c3s-slot--calc,
+.ps-c3s-run[data-beat="b4"] .ps-c3s-slot--calc {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.ps-c3s-run[data-beat="t4"] .ps-c3s-slot--calc {
+  transition:
+    grid-template-rows var(--c3s-d-swap) var(--ease-standard),
+    opacity 160ms var(--ease-standard) 100ms;
+}
+
+.ps-c3s-calc {
+  transform: translateY(4px);
+}
+
+.ps-c3s-run[data-beat="b4"] .ps-c3s-calc {
+  transform: translateY(0);
+  transition: transform 160ms var(--ease-standard);
+}
+
+.ps-c3s-calc__caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1.05em;
+  margin-left: 3px;
+  vertical-align: -0.14em;
+  background: var(--theme-accent-text);
+}
+
+.ps-c3s-run[data-beat="b4"] .ps-c3s-calc__caret {
+  animation: ps-c3s-blink 1060ms steps(2, end) infinite;
+}
+
+/* ---- T5 and beat 5: the answer arrives --------------------------------- */
+
+.ps-c3s-run[data-beat="t5"] .ps-c3s-slot--calc,
+.ps-c3s-run[data-beat="b5"] .ps-c3s-slot--calc,
+.ps-c3s-run[data-beat="t6"] .ps-c3s-slot--calc {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+.ps-c3s-run[data-beat="t5"] .ps-c3s-slot--calc {
+  transition:
+    grid-template-rows var(--c3s-d-morph) var(--ease-out-quart),
+    opacity 160ms var(--ease-standard);
+}
+
+.ps-c3s-run[data-beat="t5"] .ps-c3s-slot--ans,
+.ps-c3s-run[data-beat="b5"] .ps-c3s-slot--ans {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.ps-c3s-run[data-beat="t5"] .ps-c3s-slot--ans {
+  transition: grid-template-rows var(--c3s-d-morph) var(--ease-out-quart);
+}
+
+.ps-c3s-run[data-beat="t2"] .ps-c3s-ans__line,
+.ps-c3s-run[data-beat="b2"] .ps-c3s-ans__line,
+.ps-c3s-run[data-beat="t3"] .ps-c3s-ans__line,
+.ps-c3s-run[data-beat^="b3"] .ps-c3s-ans__line,
+.ps-c3s-run[data-beat="t4"] .ps-c3s-ans__line,
+.ps-c3s-run[data-beat="b4"] .ps-c3s-ans__line {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.ps-c3s-run[data-beat="t5"] .ps-c3s-ans__line,
+.ps-c3s-run[data-beat="b5"] .ps-c3s-ans__line {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--c3s-d-swap) var(--ease-standard) 120ms,
+    transform var(--c3s-d-swap) var(--ease-standard) 120ms;
+}
+
+/* The bars are the size of the answer, so they draw at the moment the answer
+   is read: 520ms, left origin, staggered 90ms, on the same curve the blob's X
+   axis used. */
+.ps-c3s-run[data-beat="t2"] .ps-c3s-bars__fill,
+.ps-c3s-run[data-beat="b2"] .ps-c3s-bars__fill,
+.ps-c3s-run[data-beat="t3"] .ps-c3s-bars__fill,
+.ps-c3s-run[data-beat^="b3"] .ps-c3s-bars__fill,
+.ps-c3s-run[data-beat="t4"] .ps-c3s-bars__fill,
+.ps-c3s-run[data-beat="b4"] .ps-c3s-bars__fill {
+  transform: scaleX(0);
+}
+
+.ps-c3s-run[data-beat="t5"] .ps-c3s-bars__fill--a,
+.ps-c3s-run[data-beat="b5"] .ps-c3s-bars__fill--a {
+  transform: scaleX(1);
+  transition: transform var(--c3s-d-bars) var(--c3s-e-bar);
+}
+
+.ps-c3s-run[data-beat="t5"] .ps-c3s-bars__fill--b,
+.ps-c3s-run[data-beat="b5"] .ps-c3s-bars__fill--b {
+  transform: scaleX(1);
+  transition: transform var(--c3s-d-bars) var(--c3s-e-bar) 90ms;
+}
+
+.ps-c3s-run[data-beat="t2"] .ps-c3s-bars__fig,
+.ps-c3s-run[data-beat="b2"] .ps-c3s-bars__fig,
+.ps-c3s-run[data-beat="t3"] .ps-c3s-bars__fig,
+.ps-c3s-run[data-beat^="b3"] .ps-c3s-bars__fig,
+.ps-c3s-run[data-beat="t4"] .ps-c3s-bars__fig,
+.ps-c3s-run[data-beat="b4"] .ps-c3s-bars__fig {
+  opacity: 0;
+}
+
+.ps-c3s-run[data-beat="t5"] .ps-c3s-bars__fig,
+.ps-c3s-run[data-beat="b5"] .ps-c3s-bars__fig {
+  opacity: 1;
+  transition: opacity 200ms var(--ease-standard) 300ms;
+}
+
+/* THE SQUINT TEST OVERRULED THE INTENT AND THE RENDER WINS. Downscaled to 96px,
+   beat 5 put the LIT AGENT first and the answer second. The agent stays lit -
+   it is still the speaker - but hands primacy to the answer at the moment the
+   answer arrives. */
+.ps-c3s-run[data-beat="t5"] .ps-c3s-agent .ps-c3s-lit,
+.ps-c3s-run[data-beat="b5"] .ps-c3s-agent .ps-c3s-lit {
+  opacity: 0.55;
+  transition: opacity var(--c3s-d-unlit) var(--ease-standard);
+}
+
+/* ---- T6: the loop's return to rest ------------------------------------- */
+
+/* T6 RETURNS THE MACHINE TO REST, NOT THE CARD TO EMPTY. The panel used to fade
+   out here and stay out until T2. It now stays, holding the answer this cycle
+   just produced, which is the frame the reduce path renders. What rewinds is the
+   machine: the question un-types, both marks go dark, and the wire fades out so
+   beat 3 has something to draw. The answer slot needs no override here any more
+   - `1fr / 1` is what the base cascade says, and nothing is overriding it. */
+.ps-c3s-run[data-beat="t6"] .ps-c3s-qtext {
+  transition: clip-path 400ms var(--c3s-steps) 240ms;
+}
+
+/* The wire was previously CUT on the first frame of b0, which nobody saw while
+   a panel was collapsing over it. With the panel holding still it is the only
+   thing moving there, so it leaves on the same 380ms the marks go dark on. */
+.ps-c3s-run[data-beat="t6"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="t6"] .ps-c3s-wire__back {
+  opacity: 0;
+  transition: opacity var(--c3s-d-unlit) var(--ease-standard);
+}
+
+.ps-c3s-run[data-beat="t6"] .ps-c3s-agent .ps-c3s-lit {
+  opacity: 0;
+  transition: opacity var(--c3s-d-unlit) var(--ease-standard);
+}
+
+.ps-c3s-run[data-beat="t6"] .ps-c3s-db .ps-c3s-lit {
+  opacity: 0;
+  transition: opacity var(--c3s-d-unlit) var(--ease-standard);
+}
+
+/* ---- leaving: snap back to the rest frame ------------------------------ */
+
+/* The driver sets `data-beat="rest"` and waits 200ms before dropping
+   `.ps-c3s-run` entirely, so the card settles into the base frame on a curve
+   instead of jumping to it. After the class is gone there is no `.ps-c3s-run`
+   rule left in the cascade and the DOM is byte-identical to a page that never
+   ran any JavaScript - which is the only way to prove it. */
+.ps-c3s-run[data-beat="rest"] .ps-c3s-panel,
+.ps-c3s-run[data-beat="rest"] .ps-c3s-lit,
+.ps-c3s-run[data-beat="rest"] .ps-c3s-wire__out,
+.ps-c3s-run[data-beat="rest"] .ps-c3s-wire__back,
+.ps-c3s-run[data-beat="rest"] .ps-c3s-slot,
+.ps-c3s-run[data-beat="rest"] .ps-c3s-ans__line,
+.ps-c3s-run[data-beat="rest"] .ps-c3s-bars__fill,
+.ps-c3s-run[data-beat="rest"] .ps-c3s-bars__fig,
+.ps-c3s-run[data-beat="rest"] .ps-c3s-qtext,
+.ps-c3s-run[data-beat="rest"] .ps-c3s-leader::before {
+  transition-duration: 200ms;
+  transition-timing-function: var(--ease-standard);
+  transition-property: opacity, transform, clip-path, grid-template-rows;
+}
+
+/* THE STYLESHEET CANNOT SAVE THIS AND IS NOT ASKED TO.
+   `globals.css:4639`/`:4646` set `animation-duration: 0.01ms`, which cannot
+   touch a class-driven transition and cannot stop a setTimeout chain. The
+   driver's own `matchMedia` guard is what stops this scene - see
+   `usePsC3Scene`. This block is belt-and-braces for the case where the class
+   somehow survives a preference change mid-flight. */
+@media (prefers-reduced-motion: reduce) {
+  .ps-c3s-root,
+  .ps-c3s-root * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* PORT-COLLINEARITY RIG - `?c3=marks&sz=2`. Diagnostic only.
+
+   C2's tier S, card 272x320, reproduced in ROOT space. The root bleeds 6px on
+   every side, so every card-space number below carries +6.
+     card space: p 12 | agent 42 wide at right 64, top 12
+                 db 40 wide at left 12, top 12 + 2.817 = 14.817
+     wire y (card space) = 12 + 0.389*42 = 28.34
+   C2's offset:  calc(p + 0.389*agent-w - 0.295*1.14583*db-w) = 14.817
+   Predicted db port y = 14.817 + 0.295*(1.14583*40) = 28.34 - the same value,
+   which is the whole point of the offset. The wire is drawn AT that y. */
+.ps-c3-m-rig-db {
+  position: absolute;
+  left: 18px;
+  top: 26.17px;   /* card-space 20.17 + 6 bleed; CORRECTED 0.5169 fraction */
+  width: 40px;
+}
+
+.ps-c3-m-rig-agent {
+  position: absolute;
+  right: 70px;
+  top: 18px;
+  width: 42px;
+}
+
+/* The wire, at the computed y, spanning the two ports. If either port is off
+   this line the offset is wrong and it shows without a probe. */
+.ps-c3-m-rig-wire {
+  position: absolute;
+  left: 48px;
+  right: 112px;
+  top: 39.71px;   /* card-space 33.71 + 6 bleed = agent top + 0.5169*42 */
+  height: 2px;
+  background: var(--theme-accent-text);
+  opacity: 0.55;
 }

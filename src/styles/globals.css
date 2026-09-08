@@ -130,6 +130,10 @@
   /* Easing */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
+  /* Ratifies the incumbent: this exact curve already appears as a literal 30x at HEAD
+     (25 of them in card-visuals.css) and is the fallback the undeclared --card-ease
+     resolves to. A name for what the bento already does, not a new opinion. */
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
 
   /* ── Themeable tokens — dark mode (default) ────────────────
      These drive all sections that switch with the theme.

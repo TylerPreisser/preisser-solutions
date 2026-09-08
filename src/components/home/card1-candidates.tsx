@@ -196,7 +196,224 @@
    as ?c1=orig.
    ============================================================================ */
 
-import React, { useEffect, useId, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
+
+/* ============================================================================
+   THE SCROLL REVEAL — ARM -> GO -> DISARM.
+   Spec: .work-order/specs/reveal-motion.md sections 3, 7 and 8.
+   Paint: src/styles/card1-candidates.css section 14.
+
+   THE POLARITY IS INVERTED FROM THE REPO'S NORMAL `.in-view` IDIOM, and that
+   is the whole design.  The usual shape bases content at `opacity: 0` and has
+   JS add a class to reveal it.  Applied here it would destroy this card's
+   no-JavaScript completeness -- no script, no class, blank panels -- which is
+   exactly the blank-navy-rectangle failure the header comment above records a
+   sibling card shipping.  So:
+
+     base    CSS, unchanged .... the FINISHED dashboard.  No `opacity: 0` and
+                                 no `clip-path` anywhere in the base cascade.
+     arm     JS adds `ps-c1x-armed` .... hides and undraws, `transition: none`.
+     go      JS adds `ps-c1x-go` ....... transitions everything to rest.
+     disarm  JS removes BOTH ........... the element returns to its own base.
+
+   Every failure mode therefore lands on the finished card: no script, a 404'd
+   chunk, `prefers-reduced-motion: reduce`, an art root already on screen.  The
+   reduced-motion guard returns BEFORE the hidden state is ever written, so the
+   hidden state never exists; the stylesheet catch-all at globals.css:4639 is
+   not relied upon, which is the R8 finding.
+
+   DISARM IS NOT TIDINESS.  Measured: leaving the two classes on leaves the
+   resting card 863px (chromium) / 813 (webkit) / 808 (firefox) different from
+   pristine, because the opacity transition promotes the "THIS MONTH" label to
+   a composited layer and swaps subpixel antialiasing for grayscale.  Measured
+   here against a never-armed render of the same build: leaving the classes on
+   costs 249-287 differing pixels at up to delta 43 in every engine and theme;
+   after disarm it is 0 in webkit and firefox at every viewport measured, and
+   0-2 in chromium on phones.
+
+   ONE RESIDUE SURVIVES AND IS REPORTED RATHER THAN HIDDEN: chromium at
+   1440x900 keeps 23 pixels at max delta 17 (3 in light), in three ~4px clumps
+   on the trend panel's own rounded-corner antialiasing.  It is a stale raster
+   and not a stale style — the classes are gone, `clip-path` computes to
+   `none`, and `getAnimations({subtree:true})` returns 0 — and forcing a repaint
+   clears it to 0.  It is NOT caused by the end value: `inset(0 0 0 0)` and
+   `inset(0 -2% 0 0)` produce it identically.  `will-change: clip-path` while
+   armed was tried and bought nothing (firefox p95 26ms either way), so no
+   layer was added for it.  The pre-change build shows 0, so it is ours.
+
+   THE DIALOG MOUNT NEVER ARMS, and it needs its own guard rather than the
+   already-on-screen rule the spec proposed.  `.ps-dialog-panel` bases at
+   `transform: translateX(-50%) translateY(100%)` (globals.css:2696) and only
+   gains `--open` on the frame after mount, so at the moment this effect runs
+   the dialog art is BELOW the viewport and the geometric test would arm it.
+   Mount identity comes from `.ps-dialog-visual-art`, the same selector the
+   stylesheet already uses for it, and never from a rect or an aspect.
+
+   THE FAILSAFE IS GATED ON VISIBILITY, NOT ON TIME ALONE.  A bare 1200ms
+   timer -- the literal reading of the spec -- would release the reveal for a
+   card that sits at y~1195 against a 900px fold before any visitor could
+   plausibly have scrolled to it, so the reveal would play to an empty room
+   and every real visitor would see a still card.  That is the failure
+   card3-candidates.tsx:186-192 records in this repo: "a bare timer does not
+   remove the failure, it schedules it".  The timer therefore starts the
+   fallback rather than firing it: from 1200ms on, release as soon as the art
+   is on screen, polled every 250ms, plus a passive scroll listener for the
+   case where IntersectionObserver itself is what is broken.  Staying armed
+   while off screen costs nothing, because nobody is looking at it.
+   ============================================================================ */
+function usePsC1xReveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    /* Reduced motion: return before anything hidden is written. */
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    /* The dialog mount renders finished. See the note above. */
+    if (el.closest(".ps-dialog-visual-art")) return;
+
+    /* Already on screen at hydration: leave the finished picture alone. You do
+       not play a scroll reveal on something the visitor is already reading. */
+    if (el.getBoundingClientRect().top <= window.innerHeight * 0.9) return;
+
+    /* RING ARC SUPPRESSION, AND IT IS MEASURED AT ARM TIME RATHER THAN KEYED
+       ON A WIDTH.  Across 375-430px the ring dial renders 58 x 7.9px -- an 86%
+       vertical collapse, a circle drawn into a 7.9px box -- and growing an arc
+       inside that animates a defect and walks the eye straight to it.  That
+       collapse is pre-existing, out of this work order's scope, and owned by
+       `responsive-mobile-adapter`; this only declines to animate it.
+
+       WHY NOT A CONTAINER QUERY, WHICH IS THE OBVIOUS SHAPE AND WAS TRIED.
+       Container width does not track the defect.  Measured across ten
+       viewports: container 314.66 (1024vw) is healthy at 44x44, container 345
+       (393vw) is BROKEN at 58x7.9, container 352 (768vw) is healthy at 58x57.
+       The broken case sits BETWEEN two healthy ones, so no width threshold can
+       express it -- and `max-width: 400px` additionally suppressed the arc on
+       every primary desktop view, because the bento container is exactly
+       400.00px at 1280/1440/1920 and container queries are inclusive.  The
+       stylesheet already says why in its own words at
+       card1-candidates.css:830: this is a HEIGHT problem a container query
+       cannot see.
+
+       SO THE INSTRUMENT IS THE RENDERED DIAMETER, and the threshold is stated
+       before it is trusted.  `min(width, height) < 24px`:
+
+         58 x 7.9  (375-430px)  -> 7.9   suppressed
+         44 x 34.6 (320, 360)   -> 34.6  animates
+         44 x 44   (1024)       -> 44    animates
+         58 x 57   (768)        -> 57    animates
+         58 x 58   (desktop)    -> 58    animates
+
+       4.4x separation between the broken case and the nearest healthy one.
+       NOT keyed on aspect ratio: 44x34.6 is ratio 0.786 and is NOT a defect --
+       the ring svg is `preserveAspectRatio="xMidYMid meet"`, so it letterboxes
+       into a smaller circle rather than distorting.  A ratio rule would have
+       wrongly suppressed it; a diameter rule does not.
+
+       IT SELF-DISABLES.  Fix the collapse and every dial clears 24px, so this
+       stops firing without anyone remembering to delete it.  A missing dial
+       measures 0 and suppresses, which is the safe direction. */
+    const dial = el.querySelector(".ps-c1x-ring__dial");
+    if (dial) {
+      const d = dial.getBoundingClientRect();
+      if (Math.min(d.width, d.height) < 24) el.classList.add("ps-c1x-no-arc");
+    }
+
+    el.classList.add("ps-c1x-armed");
+    /* Commit the hidden frame before `go` can be added in the same frame. */
+    void el.offsetWidth;
+
+    let released = false;
+    let disarmed = false;
+    let poll = 0;
+    let disarmTimer = 0;
+
+    const onScreen = () => {
+      const r = el.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
+    };
+
+    function disarm() {
+      if (disarmed) return;
+      disarmed = true;
+      window.clearTimeout(disarmTimer);
+      el!.removeEventListener("transitionend", onTransitionEnd);
+      el!.classList.remove("ps-c1x-armed", "ps-c1x-go", "ps-c1x-no-arc");
+    }
+
+    function onTransitionEnd() {
+      if (!released) return;
+      /* Disarm on the LAST transition in the subtree to finish, whichever
+         element that is. A transition still inside its delay reports
+         `running`, so this cannot fire between beats. If the API is missing
+         the 1300ms cap below still runs, so the teardown is never skipped. */
+      if (typeof el!.getAnimations !== "function") return;
+      if (el!.getAnimations({ subtree: true }).some((a) => a.playState === "running")) return;
+      disarm();
+    }
+
+    function release() {
+      if (released) return;
+      released = true;
+      window.clearTimeout(poll);
+      el!.addEventListener("transitionend", onTransitionEnd);
+      el!.classList.add("ps-c1x-go");
+      /* Total reveal is 1140ms; the cap is the guarantee, transitionend is the
+         optimisation. */
+      disarmTimer = window.setTimeout(disarm, 1300);
+    }
+
+    /* Threshold 0.25 -- the same value the nine `.in-view` consumers use, so
+       no new convention. Observing the ART ROOT rather than the bento card:
+       the art root is 332-442px tall at every width measured, so 0.25 is
+       reachable even on a phone where the whole card exceeds the viewport. */
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            release();
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(el);
+
+    const settle = () => {
+      if (released) return;
+      if (onScreen()) {
+        release();
+        observer.disconnect();
+        return;
+      }
+      poll = window.setTimeout(settle, 250);
+    };
+    poll = window.setTimeout(settle, 1200);
+
+    const onScroll = () => {
+      if (released) return;
+      if (onScreen()) {
+        release();
+        observer.disconnect();
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.clearTimeout(poll);
+      window.clearTimeout(disarmTimer);
+      window.removeEventListener("scroll", onScroll);
+      el.removeEventListener("transitionend", onTransitionEnd);
+      observer.disconnect();
+      el.classList.remove("ps-c1x-armed", "ps-c1x-go", "ps-c1x-no-arc");
+    };
+  }, []);
+
+  return ref;
+}
 
 /* A delta chip: triangle plus a percentage. */
 function Delta({ value }: { value: string }) {
@@ -285,10 +502,23 @@ function Ring({ pct, label }: { pct: number; label: string }) {
       <div className="ps-c1x-ring__dial">
         <svg className="ps-c1x-ring__svg" viewBox="0 0 64 64" preserveAspectRatio="xMidYMid meet" focusable="false">
           <circle className="ps-c1x-ring__track" cx="32" cy="32" r={r} fill="none" />
+          {/* The arc is the ONE svg in this card that is safe to animate by
+              dash: computed `vector-effect: none` and
+              `preserveAspectRatio="xMidYMid meet"`, so it scales uniformly and
+              a dash is the same unit in all three engines. The trend and the
+              spark are not (see the stylesheet's section 14).
+              CSS cannot read an attribute, so the same two numbers go out as
+              custom properties for the reveal to interpolate between. The
+              attribute stays as the no-CSS floor. */}
           <circle
             className="ps-c1x-ring__arc"
             cx="32" cy="32" r={r} fill="none"
             strokeDasharray={`${dash.toFixed(2)} ${(circ - dash).toFixed(2)}`}
+            style={{
+              "--arc-dash": dash.toFixed(2),
+              "--arc-gap": (circ - dash).toFixed(2),
+              "--arc-total": circ.toFixed(2),
+            } as React.CSSProperties}
             transform="rotate(-90 32 32)"
           />
         </svg>
@@ -380,11 +610,17 @@ function Rail() {
    ============================================================================ */
 export function DashboardVisualA() {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
+  const root = usePsC1xReveal<HTMLDivElement>();
 
+  /* `--i` is the PANEL's stagger index, never an element's. A label and its
+     number are one metric and must fade together; staggering them separately
+     makes a label arrive before the number it labels, which reads as broken
+     rather than as sequenced. The order below is the hierarchy order: the lit
+     "142" panel first, the trend second, the ring and columns last. */
   return (
-    <div className="ps-c1x-root ps-c1a-root" aria-hidden="true">
+    <div className="ps-c1x-root ps-c1a-root" aria-hidden="true" ref={root}>
       <div className="ps-c1a-grid">
-        <div className="ps-c1x-panel ps-c1x-panel--lit ps-c1a-hero">
+        <div className="ps-c1x-panel ps-c1x-panel--lit ps-c1a-hero" style={{ "--i": 0 } as React.CSSProperties}>
           <span className="ps-c1x-k">Jobs completed</span>
           <span className="ps-c1x-figline">
             <span className="ps-c1x-v">142</span>
@@ -392,13 +628,13 @@ export function DashboardVisualA() {
           </span>
         </div>
 
-        <div className="ps-c1x-panel ps-c1a-side">
+        <div className="ps-c1x-panel ps-c1a-side" style={{ "--i": 1 } as React.CSSProperties}>
           <span className="ps-c1x-k">Invoices</span>
           <span className="ps-c1x-v ps-c1x-v--sm">64</span>
           <Spark />
         </div>
 
-        <div className="ps-c1x-panel ps-c1a-trend">
+        <div className="ps-c1x-panel ps-c1a-trend" style={{ "--i": 2 } as React.CSSProperties}>
           <span className="ps-c1x-panel__head">
             <span className="ps-c1x-k">Jobs per week</span>
             <span className="ps-c1x-k ps-c1x-k--dim">This month</span>
@@ -406,14 +642,14 @@ export function DashboardVisualA() {
           <Trend uid={uid} part="a-area" />
         </div>
 
-        <div className="ps-c1x-panel ps-c1a-ring">
+        <div className="ps-c1x-panel ps-c1a-ring" style={{ "--i": 3 } as React.CSSProperties}>
           <Ring pct={96} label="On time" />
         </div>
 
         {/* NO LABEL on this one, deliberately. A column chart reads as a column
             chart without being told, and the 13px the label cost was 13px the
             columns needed in order to be taller than they are wide. */}
-        <div className="ps-c1x-panel ps-c1a-cols">
+        <div className="ps-c1x-panel ps-c1a-cols" style={{ "--i": 4 } as React.CSSProperties}>
           <Columns />
         </div>
       </div>
@@ -434,14 +670,16 @@ export function DashboardVisualA() {
    share rail / plain KPI.
    ============================================================================ */
 export function DashboardVisualB() {
+  const root = usePsC1xReveal<HTMLDivElement>();
+
   return (
-    <div className="ps-c1x-root ps-c1b-root" aria-hidden="true">
+    <div className="ps-c1x-root ps-c1b-root" aria-hidden="true" ref={root}>
       <div className="ps-c1b-head">
         <span className="ps-c1b-chip">This month</span>
       </div>
 
       <div className="ps-c1b-wall">
-        <div className="ps-c1x-panel ps-c1x-panel--lit ps-c1b-tile ps-c1b-tile--a">
+        <div className="ps-c1x-panel ps-c1x-panel--lit ps-c1b-tile ps-c1b-tile--a" style={{ "--i": 0 } as React.CSSProperties}>
           <span className="ps-c1x-k">Jobs completed</span>
           <span className="ps-c1x-figline">
             <span className="ps-c1x-v">142</span>
@@ -449,27 +687,27 @@ export function DashboardVisualB() {
           </span>
         </div>
 
-        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--b">
+        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--b" style={{ "--i": 1 } as React.CSSProperties}>
           <Ring pct={96} label="On time" />
         </div>
 
-        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--c">
+        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--c" style={{ "--i": 2 } as React.CSSProperties}>
           <span className="ps-c1x-k">By service</span>
           <Columns />
         </div>
 
-        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--d">
+        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--d" style={{ "--i": 3 } as React.CSSProperties}>
           <span className="ps-c1x-k">Invoices</span>
           <span className="ps-c1x-v ps-c1x-v--sm">64</span>
           <Spark />
         </div>
 
-        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--e">
+        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--e" style={{ "--i": 4 } as React.CSSProperties}>
           <span className="ps-c1x-k">Work in progress</span>
           <Rail />
         </div>
 
-        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--f">
+        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--f" style={{ "--i": 5 } as React.CSSProperties}>
           <span className="ps-c1x-k">Open jobs</span>
           <span className="ps-c1x-v ps-c1x-v--sm">18</span>
         </div>
@@ -491,10 +729,12 @@ export function DashboardVisualB() {
    Chart mix: three KPI strips / paired columns / segmented share rail.
    ============================================================================ */
 export function DashboardVisualC() {
+  const root = usePsC1xReveal<HTMLDivElement>();
+
   return (
-    <div className="ps-c1x-root ps-c1c-root" aria-hidden="true">
+    <div className="ps-c1x-root ps-c1c-root" aria-hidden="true" ref={root}>
       <div className="ps-c1c-grid">
-        <div className="ps-c1x-panel ps-c1x-panel--lit ps-c1c-k1">
+        <div className="ps-c1x-panel ps-c1x-panel--lit ps-c1c-k1" style={{ "--i": 0 } as React.CSSProperties}>
           <span className="ps-c1x-k">Jobs completed</span>
           <span className="ps-c1x-figline">
             <span className="ps-c1x-v ps-c1x-v--sm">142</span>
@@ -502,17 +742,17 @@ export function DashboardVisualC() {
           </span>
         </div>
 
-        <div className="ps-c1x-panel ps-c1c-k2">
+        <div className="ps-c1x-panel ps-c1c-k2" style={{ "--i": 1 } as React.CSSProperties}>
           <span className="ps-c1x-k">On time</span>
           <span className="ps-c1x-v ps-c1x-v--xs">96%</span>
         </div>
 
-        <div className="ps-c1x-panel ps-c1c-k3">
+        <div className="ps-c1x-panel ps-c1c-k3" style={{ "--i": 2 } as React.CSSProperties}>
           <span className="ps-c1x-k">Open jobs</span>
           <span className="ps-c1x-v ps-c1x-v--xs">18</span>
         </div>
 
-        <div className="ps-c1x-panel ps-c1c-focus">
+        <div className="ps-c1x-panel ps-c1c-focus" style={{ "--i": 3 } as React.CSSProperties}>
           <span className="ps-c1x-panel__head">
             <span className="ps-c1x-k">Jobs by service</span>
             <span className="ps-c1x-k ps-c1x-k--dim">This month</span>
@@ -520,7 +760,7 @@ export function DashboardVisualC() {
           <PairedColumns />
         </div>
 
-        <div className="ps-c1x-panel ps-c1c-rail">
+        <div className="ps-c1x-panel ps-c1c-rail" style={{ "--i": 4 } as React.CSSProperties}>
           <span className="ps-c1x-k">Work in progress</span>
           <Rail />
         </div>

@@ -2,7 +2,7 @@
 
 /* ═══════════════════════════════════════════════════════════════════════
    CARD 5 -- "AI and Search Engine Visibility." -- THREE CANDIDATE VISUALS
-   REBUILD 2026-09-07 (round C). LITERAL, BY INSTRUCTION.
+   REBUILD 2026-09-07 (round D). COLLAPSED TO ONE SURFACE, BY INSTRUCTION.
    ═══════════════════════════════════════════════════════════════════════
 
    WHAT CHANGED AND WHY, because the previous file argued the opposite.
@@ -29,6 +29,26 @@
      #9  a chat exchange -- filled ask bubble, tailed reply bubble
      #10 pages the assistant opens that give it nothing: crossed out
      #11 the one page it can read, and the answer it hands back
+
+   ROUND D, AND IT REVERSES PART OF THE ABOVE. The owner saw round C live
+   and cut the card in half: "on AI and search engine visibility. That bento
+   card. Just have one don't do Google and chat gbt. Just have it." So the
+   DEFAULT concept, A, is now the search surface alone -- beats #7 and #8,
+   with beats #9 to #11 still standing in concepts B and C behind `?c5=`.
+   The chat panel, its turns, its avatar, its composer and its send glyph
+   are deleted from this file, not hidden, and section 4c of the stylesheet
+   went with them. Two more instructions landed with it and both are
+   answered below: the typed question is now a specific buyer's question
+   ("who insures oil field crews"), and the rows under first position say
+   "Other Business" instead of showing a redacted grey bar.
+
+   AND THE THING THAT NEARLY SHIPPED THIS BROKEN: putting real type in the
+   lower half of the card ran it into two fades that no probe reports. See
+   the two long notes in `card5-candidates.css` -- one for
+   `.ps-bento-card__text::before` on the phone card face, one for
+   `.ps-dialog-visual::after` in the phone sheet. Both were found by reading
+   pixels off per-row screenshots, not by `getComputedStyle`, which reports
+   `opacity: 1` and the correct ink through both of them.
 
    THE ONE LINE THAT STAYS: no third-party brand marks. No wordmark, no
    logo, no product name. Recognisable BY FORM. A rounded input with a
@@ -93,8 +113,9 @@
    page is white in both themes (role 9), and the grey rules printed on it
    are printed on white in both themes.
 
-   COPY: one string, the typed query, capped at ~30 characters (measured).
-   Lowercase, because that is how people type. No em dash anywhere.
+   COPY: two strings now, the typed query and the results' names. The query
+   is capped at ~30 characters (measured) and lowercase, because that is how
+   people type. No em dash anywhere.
    ═══════════════════════════════════════════════════════════════════════ */
 
 import { useEffect, useState } from "react";
@@ -102,10 +123,24 @@ import { useEffect, useState } from "react";
 /* ── COPY BLOCK C4 -- the typed query. Three candidates, owner picks. ──
    Measured ceiling ~30 characters at 17 widths; longer drafts clipped the
    caret at every width except the 640-939 banner. The same string is used
-   as the chat question in concepts B and C, so the person asking a search
-   engine and the person asking an assistant are asking the same thing --
-   which is the whole point of the card. */
-const C5R_QUERY_A = "who insures oilfield crews";
+   as the chat question in concept B, so the person asking a search engine
+   and the person asking an assistant are asking the same thing.
+
+   THE BRIEF FOR THIS STRING, in the owner's words: "the search box say who
+   insures oil field [crews] or something much more relatable to a
+   business." Two halves, and the second half is him opening it up rather
+   than replacing the first. What all three candidates hold in common is the
+   part that is not negotiable: each is a QUESTION A BUYER TYPES, not a
+   keyword string and not a slogan, and each names one unglamorous, specific
+   trade. The specificity IS the point -- "who does insurance near me" would
+   be the same sentence with the argument taken out of it.
+
+   A is his own, kept verbatim except for the space he said and the previous
+   round dropped: "oil field", not "oilfield". It is the pick. It is the
+   only one of the three he has actually said out loud, it is the most
+   concrete, and 27 characters clears the measured ceiling. B and C are held
+   as live alternates and switch by editing one line. */
+const C5R_QUERY_A = "who insures oil field crews";
 const C5R_QUERY_B = "who hauls oversized loads";
 const C5R_QUERY_C = "who services rooftop units";
 
@@ -119,6 +154,17 @@ const C5R_QUERY = C5R_QUERY_A;
    returns and once inside the answer an assistant gives -- because the
    whole point of the card is that the two surfaces reach the same place. */
 const C5R_BIZ = "Your Business";
+
+/* AND EVERYBODY ELSE. The owner's words for this beat, verbatim: "the top
+   one will pop up and say your business. That's it. And then the other two
+   or three below it will say other business. Other business. Other
+   business." So the rows under first position stopped being redacted grey
+   bars and started saying what they are. Three of them, not two, and the
+   count is measured rather than preferred -- see the stacked budget in
+   `card5-candidates.css`. An invented competitor name would assert
+   something about a real company; "Other Business" asserts nothing, exactly
+   like "Your Business" above it. */
+const C5R_OTHER = "Other Business";
 
 export const C5R_QUERY_CANDIDATES = [
   C5R_QUERY_A,
@@ -196,13 +242,13 @@ function ResultRow({
   ours = false,
   dead = false,
   struck = false,
-  compact = false,
+  label,
   w,
 }: {
   ours?: boolean;
   dead?: boolean;
   struck?: boolean;
-  compact?: boolean;
+  label?: string;
   w?: string;
 }) {
   if (ours) {
@@ -223,16 +269,27 @@ function ResultRow({
       </div>
     );
   }
+  /* A NAMED rest row. The site mark and the name sit on ONE line, and the
+     redacted domain bar that used to sit beside the mark is gone, because
+     the name has taken its place -- a row cannot carry a name AND a
+     stand-in for a name. The snippet bar under it is declared here and
+     hidden in the stacked regime (see `.ps-c5r-row--named .ps-c5r-title`),
+     so a tall row in the wide slot has something in its lower half instead
+     of a dead band. */
   return (
     <div
-      className={`ps-c5r-row ps-c5r-row--rest${dead ? " ps-c5r-row--dead" : ""}${
-        struck ? " ps-c5r-row--struck" : ""
-      }${compact ? " ps-c5r-row--compact" : ""}`}
+      className={`ps-c5r-row ps-c5r-row--rest${label ? " ps-c5r-row--named" : ""}${
+        dead ? " ps-c5r-row--dead" : ""
+      }${struck ? " ps-c5r-row--struck" : ""}`}
       style={{ "--w": w } as Vars}
     >
       <span className="ps-c5r-rowhead">
         <span className="ps-c5r-mark" />
-        <span className="ps-c5r-domain" />
+        {label ? (
+          <span className="ps-c5r-other">{label}</span>
+        ) : (
+          <span className="ps-c5r-domain" />
+        )}
       </span>
       {dead ? <span className="ps-c5r-x" /> : <span className="ps-c5r-title" />}
     </div>
@@ -312,123 +369,62 @@ function ReplyBubble({ compact = false }: { compact?: boolean }) {
   );
 }
 
-/* THE SEND AFFORDANCE. One stroked chevron, no fill, no ids -- what turns a
-   rounded row into somewhere you type and send. */
-function SendGlyph() {
-  return (
-    <svg
-      className="ps-c5r-send"
-      viewBox="0 0 16 16"
-      fill="none"
-      preserveAspectRatio="xMidYMid meet"
-      aria-hidden="true"
-    >
-      <path
-        d="M3.4 8h8.4"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-      />
-      <path
-        d="M8.4 4.6 11.8 8l-3.4 3.4"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
+/* ═══ CONCEPT A -- ONE SEARCH, AND WHO IS FIRST ════════════════════
+   COLLAPSED FROM TWO SURFACES TO ONE, BY INSTRUCTION. The round before this
+   one drew the owner's earlier picture literally: a search engine on the
+   left and an assistant conversation on the right, the same question typed
+   into both. He looked at it and reversed himself -- "on AI and search
+   engine visibility. That bento card. Just have one don't do Google and
+   chat gbt. Just have it." So the conversation half is gone: no chat
+   panel, no turns, no avatar, no composer, no send glyph. The parts it
+   owned are deleted rather than hidden, and the CSS that sized them went
+   with them.
 
-/* ═══ PANEL ONE -- THE SEARCH, AND WHO IS FIRST ═══════════════
-   A field with the question typed in it, and the list it returned. The top
-   row is lit, tallest, and carries the name. The two rows under it are the
-   rest of the page falling away -- they are not decoration, they are what
-   makes first position mean anything. No frame around any of it: a panel
-   border would turn two recognisable objects into two little windows, and
-   a window is card 4's picture, not this one.
-   ════════════════════════════════════════════════════════════════════ */
-function SerpPanel() {
-  return (
-    <div className="ps-c5r-panel ps-c5r-panel--serp">
-      <SearchField />
-      <div className="ps-c5r-results">
-        <ResultRow ours />
-        <ResultRow w="88%" compact />
-        <ResultRow w="76%" compact />
-      </div>
-    </div>
-  );
-}
+   WHICH HALF SURVIVED, AND WHY IT WAS THE SEARCH ONE. Neither half ever
+   carried a wordmark -- a regex over the rendered DOM for google, chatgpt,
+   openai, gemini, perplexity and bing returned zero matches before this
+   change and returns zero after it, and the ban at the top of this file is
+   why. So "don't do Google and chat gbt" is about depicted FORM, and the
+   two forms were: a magnifier field over a ranked list, and alternating
+   bubbles over a composer. The card's remaining beats -- "the top one will
+   pop up and say your business ... the other two or three below it will say
+   other business" -- are a RANKED LIST. A conversation has no first
+   position to be in. The ranked list is the only half those words can be
+   drawn in, so the ranked list is the half that stayed.
 
-/* ═══ PANEL TWO -- THE SAME QUESTION ASKED OF AN ASSISTANT ══════════
-   A conversation, and it has to read as one from the FORM, because it must
-   not carry anybody's wordmark. Three things do that and all three are
-   generic: two ALTERNATING turns (the person's is filled and hugs the right
-   edge, the assistant's is unfilled and starts at the left), a small round
-   avatar beside the assistant's turn only, and an input row waiting at the
-   foot. No logo, no product name, no branded chrome anywhere.
-
-   The recommendation sits INSIDE the answer, not on top of it: the
-   assistant writes two lines and then cites a result, and that cited result
-   is the SAME OBJECT as first position in panel one -- same coloured site
-   mark, same name, same type. That repetition is the card's whole argument.
-   ════════════════════════════════════════════════════════════════════ */
-function ChatPanel() {
-  return (
-    <div className="ps-c5r-panel ps-c5r-panel--chat">
-      <div className="ps-c5r-turn ps-c5r-turn--user">
-        <span className="ps-c5r-q">{C5R_QUERY}</span>
-      </div>
-      <div className="ps-c5r-turn ps-c5r-turn--bot">
-        <span className="ps-c5r-avatar" />
-        <span className="ps-c5r-answer">
-          <span className="ps-c5r-line ps-c5r-line--a" />
-          <span className="ps-c5r-line ps-c5r-line--b" />
-          <span className="ps-c5r-cite">
-            <span className="ps-c5r-mark" />
-            <span className="ps-c5r-biz">{C5R_BIZ}</span>
-          </span>
-        </span>
-      </div>
-      <div className="ps-c5r-input">
-        <span className="ps-c5r-inputline" />
-        <SendGlyph />
-      </div>
-    </div>
-  );
-}
-
-/* ═══ CONCEPT A -- TWO SURFACES, ONE OUTCOME ════════════════════════════
-   THE OWNER'S OWN PICTURE, verbatim: "it needs to show one side of the good
-   search and then the first thing that pops up there and the top result
-   should show Your Business. Then some way to show when a person is having
-   a conversation with a chat gpt interface and the top result pops up and
-   says Your Business".
-
-   So: two surfaces side by side, and the SAME question typed into both.
-   On the left a search engine returns a ranked list and the first row is
-   the viewer's business. On the right an assistant answers in a
-   conversation and the thing it cites is the same business. The card is
-   called "AI AND Search Engine Visibility" and the AND is the picture --
-   neither half means much without the other beside it.
-
-   The name is printed in both panels deliberately. It is the same object in
-   two places, drawn the same way both times (coloured site mark, the name
-   in the link colour), because that repetition is the argument.
+   WHAT IS ON SCREEN NOW: the question, and the page it came back on. One
+   lit result carrying the viewer's own name, and three unlit ones under it
+   carrying somebody else's. First position is stated three ways and none of
+   them is a numeral -- topmost, only lit, tallest. No score, no rank
+   readout, no percentage, because the product does not measure that.
 
    "pops up" is in his words and it is NOT motion here. The finished state
-   is drawn at rest: the result has already arrived. Nothing in this file
+   is drawn at rest: the results have already arrived. Nothing in this file
    animates, so the still frame is the whole picture -- which it has to be,
    since below 940px card 4's hover group does not exist and one 0.65s card
    entrance is all a phone viewer ever sees.
-   ═══════════════════════════════════════════════════════════════════════ */
+   ═════════════════════════════════════════════════════════════════════════ */
 export function SearchVisualA() {
   return (
     <div className="ps-c5r-root ps-c5r-a" aria-hidden="true">
       <div className="ps-c5r-stage">
-        <SerpPanel />
-        <ChatPanel />
+        <SearchField />
+        {/* THREE unlit rows, not two. Both counts are inside what the owner
+            asked for ("the other two or three below it"), and three is what
+            the measured box holds: at the 284x392 art face the stacked
+            budget comes to 245 of 266 usable pixels with three, and the
+            short 280-tall phone dialog -- the one box that cannot take a
+            third -- drops the last one in CSS rather than in markup, so the
+            reading order stays one thing everywhere. Stepping the plate
+            widths 100 / 92 / 84 is the page falling away behind first
+            position; it is not decoration, it is what makes first position
+            mean anything. */}
+        <div className="ps-c5r-results">
+          <ResultRow ours />
+          <ResultRow label={C5R_OTHER} w="100%" />
+          <ResultRow label={C5R_OTHER} w="92%" />
+          <ResultRow label={C5R_OTHER} w="84%" />
+        </div>
       </div>
     </div>
   );
