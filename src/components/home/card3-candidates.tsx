@@ -48,8 +48,23 @@
  * rendered by src/styles/marcommand-live.css:515 on the div at
  * src/components/home/marcommand-live.tsx:1368-1370): a pixel-art robot, amber
  * body, teal screen face, four frames from arms-down to full reach. He is used
- * AS-IS - same sheet, same 96x116 box, same image-rendering: pixelated, same
- * knockout token. Never smoothed, never redrawn, never recoloured (ADR-0015).
+ * AS-IS - same sheet, same image-rendering: pixelated, same knockout token.
+ * Never smoothed, never redrawn, never recoloured.
+ *
+ * THE ORANGE CHARACTER IS THE CARD-3 AGENT. That is the owner's decision of
+ * 2026-09-08, taken after a build replaced him with an abstract hull: "the
+ * agent needs to be the orange dude we had before". He is in the shipping
+ * scene, not only in these concepts - see `AutomationVisualScene` below and
+ * `.ps-c3s-elara` in the stylesheet. Do not swap him for a mark again.
+ *
+ * A previous version of this block cited "(ADR-0015)" for the never-recoloured
+ * rule. THAT CITATION WAS FALSE and is removed: DECISIONS/0015 is about
+ * hero-paragraph placement and no ADR governs this character. The reason not to
+ * recolour him is a pixel fact, not a decision record - the sheet bakes 30
+ * colours and `filter`/`mix-blend-mode`/`opacity` hit all 30, so a hue-rotate
+ * for the amber body equally shifts the teal face and the navy outline. Light
+ * AROUND him is the technique that works, because `drop-shadow` composites
+ * outside the glyph.
  *
  * Every composition here puts the machine on Elara's RIGHT, because the only
  * arm he can extend is the one on the viewer's right. That is a pixel fact
@@ -1625,16 +1640,36 @@ export function AutomationVisualScene() {
 
       const sx = s.left + s.width / 2 - w.left;
       const sy = s.top + s.height / 2 - w.top;
-      /* Aim at the APERTURE, not the agent's bounding box - and at the LIT BAR
-         inside it rather than at the slot's outer lip, so the message is eaten
-         by the light rather than parked on the rim. The bar is `rect x=8 y=41.5
-         w=38 h=9`, centre local (27, 46); after the mark's `rotate(-11 51 84)`
-         bank that is (20.19, 51.28) of a 104-wide viewBox = 0.1941 / 0.4931 of
-         the mark's width. Re-derived after the mark was re-cut - the previous
-         pair, 0.42 / 0.4509, was computed against a 104x132 viewBox banked -7deg
-         and quietly stopped describing anything. */
-      const ax = a.left + a.width * 0.1941 - w.left;
-      const ay = a.top + a.width * 0.4931 - w.top;
+      /* AIM AT HIS HAND. RE-DERIVED FOR ELARA, NOT ADAPTED FROM THE MARK.
+         The old pair 0.1941 / 0.4931 described `C3AgentColumn`'s lit slot bar
+         inside a 104-wide viewBox banked -11deg. The agent is now a 192x232
+         pixel-art cell with no viewBox and no bank, so those numbers describe
+         nothing here - and the file already records this exact error happening
+         once undetectably (see `C3AgentColumn`: the wire went 5.07px off at
+         tier S and the DOM rect could not see it, because the rect was right
+         and the fraction inside it was wrong).
+
+         Derived by reading the DRAWN ALPHA of frame 4 - the resting frame, so
+         the docking point is correct in the still card, the `reduce` card, the
+         no-JS card and the server render, all four of which show frame 4. On a
+         canvas at native size, the teal hand at the end of the extended right
+         arm is the pixels with green > red + 20 and green > 90 at x >= 150:
+         115 of them, bbox x 154..173, y 132..148, centroid (161.887, 138.009).
+
+           x = 161.887 / 192 = 0.8432      y = 138.009 / 232 = 0.5949
+
+         NOTE THE SECOND TERM READS `a.height`. It used to read `a.width` for
+         both axes and that was correct while the agent was a square; Elara is
+         48x58, so the same fraction on the wrong axis lands (58-48)*0.5949 =
+         5.94px HIGH of his hand - a miss no `getBoundingClientRect` assertion
+         can see, because the rect would be right and the fraction inside it
+         wrong. Verified on drawn pixels instead: rendered at deviceScaleFactor
+         4 so the cell maps 1:1 to device pixels, the predicted point sits
+         0.008px in x and 0.257px in y from the teal hand's measured centroid,
+         worst case over ten viewports in both themes. 0.25px is one device
+         pixel at that scale, i.e. the floor of the instrument. */
+      const ax = a.left + a.width * 0.8432 - w.left;
+      const ay = a.top + a.height * 0.5949 - w.top;
       el.style.setProperty("--c3s-blob-x", sx.toFixed(2) + "px");
       el.style.setProperty("--c3s-blob-y", sy.toFixed(2) + "px");
       el.style.setProperty("--c3s-blob-dx", (ax - sx).toFixed(2) + "px");
@@ -1673,11 +1708,27 @@ export function AutomationVisualScene() {
             <span className="ps-c3s-packet" />
           </div>
 
+          {/* THE AGENT IS ELARA - the same sprite that ships lower on this
+              page, at the same pixel scale discipline, unmirrored.
+
+              UNMIRRORED IS A GEOMETRY DECISION, NOT A PREFERENCE. The only arm
+              the sheet extends is on the viewer's RIGHT, and the send glyph is
+              pinned to the right edge of the question pill while the agent is
+              inset 64px from the card's right - so the message always arrives
+              from his lower right (`--c3s-blob-dx` measured negative at all
+              sixteen boxes, -66.09 to -82.20). Unmirrored, the incoming bead
+              meets the hand that is reaching for it. Mirrored on this layout it
+              would fly PAST his body to a hand on his far side.
+
+              Two copies, exactly as the database has two: the base sprite and
+              the lit sprite. The lit one is byte-identical and carries only
+              accent drop-shadows, because 30 colours are baked into the sheet
+              and a filter that tints the amber equally tints the teal face. */}
           <div className="ps-c3s-agent">
-            <span className="ps-c3s-mark">
-              <C3AgentColumn />
+            <span className="ps-c3s-mark ps-c3s-mark--elara">
+              <span className="ps-c3s-elara" />
               <span className="ps-c3s-lit">
-                <C3AgentColumn />
+                <span className="ps-c3s-elara" />
               </span>
             </span>
           </div>
@@ -1761,6 +1812,16 @@ export function AutomationVisualScene() {
             <C3Bead />
           </span>
         </span>
+
+        {/* THE IMPACT RING - "and then splashes into place". It needs NOTHING
+            from JavaScript: the docking point is `(--c3s-blob-x +
+            --c3s-blob-dx, --c3s-blob-y + --c3s-blob-dy)`, which `measure()`
+            already writes for the bead, so the ring is a pure `calc()` over
+            four properties that exist. It is deliberately absent from
+            `measure()`'s five-`querySelector` guard: adding a sixth would
+            create a new early return, and that fallback freezes the caret and
+            flattens every question to 31 steps. */}
+        <span className="ps-c3s-splash" aria-hidden="true" />
       </div>
     </div>
   );

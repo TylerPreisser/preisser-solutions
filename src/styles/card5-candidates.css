@@ -85,7 +85,7 @@
      404s, `status 200` -- and it was the previous version of concept C. A
      positive style assertion proves CSS applied; only a value that CHANGES
      with the edit proves WHICH CSS applied. */
-  --c5r-build: 33;
+  --c5r-build: 35;
 
   /* Its own size container. Safe because the root is position:absolute /
      inset:0, so neither axis depends on its contents. Queried by name so a
@@ -1345,10 +1345,212 @@
   background: rgba(71, 85, 105, 0.14);
 }
 
-/* ── 9. THERE IS NO SECTION 9 ────────────────────────────────────────
-   No reveal, no transition, no @keyframes, no reduced-motion pin and no
-   `scripting: none` fallback -- because nothing in this file is ever
-   hidden, delayed or animated. The card's own 0.65s entrance is the whole
-   motion budget, exactly as it is for card 4, and a stylesheet with nothing
-   to reverse cannot strand anything invisible. That absence is the spec
-   being met, not a section left unwritten. */
+/* ── 9. THE SEARCH LOOP (symptom #10) ────────────────────────────────
+   THIS SECTION USED TO SAY "THERE IS NO SECTION 9". It argued that this
+   stylesheet declares no transition, no animation and no @keyframes, so
+   it has nothing to reverse and cannot strand anything invisible. The
+   owner has since asked for the loop -- "it animates in/types in the
+   first thing and then it shows a little loading animation and then the
+   results pop in with your buisnes at the top there of course. but then
+   it backspaces what is in the search box and searches something new" --
+   so the ban is lifted. The GUARANTEE it was protecting is not, and every
+   rule below is written to keep it:
+
+     THE BASE CASCADE IS THE FINISHED RESTING FRAME. Nothing in this file
+     starts hidden and has to end visible. Every rule that moves is a
+     descendant of `.ps-c5r-run`, a class only JS adds, and the JS returns
+     before allocating anything under `prefers-reduced-motion: reduce`.
+
+   That is card 3's structural guard (`card3-candidates.css:1786-1806`)
+   and it is what makes reduce, no JS, a 404'd chunk, a server render, an
+   unopened dialog and an unfired ScrollTrigger all land on the same
+   legible picture. It is also the constructive fix for the blank-navy-card
+   WebKit failure recorded at `card5-candidates.tsx:105-108`: a
+   stylesheet whose resting state is the finished frame has no hidden
+   state to be stranded in.
+
+   THE ONE KNOWN-BAD SHAPE THIS SECTION MUST NEVER TAKE, because E1 built
+   it and measured it: `opacity: 0` in the base cascade plus an
+   `animation` with no `fill-mode`. When the animation ends the element
+   reverts to its cascade value and VANISHES -- it fails at rest under
+   NORMAL motion as well as under reduce, which is why a reduce-vs-normal
+   pixel diff scores 0.00000 differing pixels on it and certifies it as
+   correct. Three plausible criteria are blind to it. Hence: no rule below
+   sets a base `opacity: 0` on anything that must end up visible, and the
+   row entrance fills BACKWARDS out of a resting `opacity: 1`.
+
+   NOTHING HERE TOUCHES `height`, `margin` OR `padding`, at any width, in
+   any beat. `scrollHeight === height` at all eight measured widths and
+   the rest rows already compress 44px -> 31px, so there is no vertical
+   pixel to spend: the loading indicator is a hairline INSIDE the field
+   and the rows load inside their own existing boxes.
+
+   Durations are literals in milliseconds because this design system has
+   no duration token and inventing one is out of bounds. Easing is the
+   three tokens that exist: `--ease-standard` for the hairline and the ink
+   cross-fade, `--ease-out-expo` for the rows arriving. */
+
+/* The hairline's containing block. `position: relative` creates no layout
+   and moves nothing; `overflow: hidden` was already here, and it is what
+   clips the hairline to the pill's own rounded end. */
+.ps-c5r-field {
+  position: relative;
+}
+
+/* THE LOADING HAIRLINE, and its resting state is invisible BY DESIGN
+   rather than by accident -- it is the one thing in this card that is
+   supposed to be absent at rest, it carries no information when it is not
+   running, and it is not part of any criterion's ink population. Inset
+   from both ends by more than the pill's cap curve so it reads as a
+   drawn line rather than as a clipped sliver. */
+.ps-c5r-load {
+  position: absolute;
+  left: calc(var(--c5r-field-px) * 1.4);
+  right: calc(var(--c5r-field-px) * 1.4);
+  bottom: 0;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--c5r-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* An ANIMATION rather than a transition, and the reason is the pause
+   contract: `animation-play-state: paused` freezes a keyframe animation
+   exactly where it stands, and there is no equivalent for a transition.
+   The loop pauses on hover, on `:focus-within`, out of view and in a
+   backgrounded tab, and it must resume IN PLACE. */
+.ps-c5r-run[data-c5r-beat="loading"] .ps-c5r-load {
+  opacity: 1;
+  animation: ps-c5r-hair 520ms var(--ease-standard) forwards;
+}
+
+@keyframes ps-c5r-hair {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* SKELETON PLATES. The rows keep their own existing boxes -- the white
+   plate stays a white plate, the unlit rows stay unlit -- and only the
+   INK inside them goes: mark, domain, name, title bar, snippet rules.
+   Same geometry, same box, zero reflow, and the composition never loses
+   the shape of who is first even in the one 520ms window per cycle that
+   is not fully legible. `forwards` holds the faded state for the rest of
+   the beat; when the beat becomes `resolving` this selector stops
+   matching and the ink is back at its resting opacity in one frame,
+   carried in by the row's own entrance instead of by a second fade. */
+.ps-c5r-run[data-c5r-beat="loading"] .ps-c5r-results
+  :is(
+    .ps-c5r-mark,
+    .ps-c5r-domain,
+    .ps-c5r-title,
+    .ps-c5r-line,
+    .ps-c5r-biz,
+    .ps-c5r-other
+  ) {
+  animation: ps-c5r-inkout 160ms var(--ease-standard) forwards;
+}
+
+@keyframes ps-c5r-inkout {
+  to {
+    opacity: 0;
+  }
+}
+
+/* THE RESULTS ARRIVING, OURS FIRST. 260ms per row on a 70ms top-down
+   stagger, so the stack completes in 470ms where four rows show and 400ms
+   where the fourth is `display: none`. `--n` is authored in the markup and
+   `ours` is 0, which makes the viewer's own result the first thing on
+   screen: a fourth statement of first position, in time, and still with no
+   numeral, no score and no percentage anywhere in this card.
+
+   `backwards` is doing the load-bearing work. The keyframe declares only
+   `from`, so the animation's end value is whatever the cascade already
+   says -- `opacity: 1` -- and the fill holds the invisible `from` state
+   during the stagger delay only. There is no state in which a finished
+   animation can leave a row hidden. */
+.ps-c5r-run[data-c5r-beat="resolving"] .ps-c5r-results > .ps-c5r-row {
+  animation: ps-c5r-rowin 260ms var(--ease-out-expo) backwards;
+  animation-delay: calc(var(--n, 0) * 70ms);
+}
+
+/* `translate`, NOT `transform`, and this is a house rule with a measured
+   reason behind it. B5 found `.ps-phone` on card 4 already ships
+   `transform: rotate(5deg)`, so the shared interior primitive animates
+   `translate` precisely so it COMPOSES with an existing static transform
+   instead of silently erasing it (`card-visuals.css:3474`). No
+   `.ps-c5r-row` carries a transform today -- I grepped, the only
+   transforms in this sheet are on `.ps-c5r-x` and its pseudo-elements --
+   but a row that gains one later must not be broken by this animation,
+   and matching the primitive costs nothing. */
+@keyframes ps-c5r-rowin {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}
+
+/* PAUSE. Hover, `:focus-within`, out of view, hidden tab -- the JS
+   freezes the one pending timer with its remainder intact and adds this
+   class in the same tick, so the beat and its animations stop together
+   and resume together. No reset: every frame of this loop is legible, so
+   resuming mid-cycle cannot show a broken state, and a reset would
+   re-trigger typing on every scroll wobble. */
+.ps-c5r-hold .ps-c5r-load,
+.ps-c5r-hold .ps-c5r-results > .ps-c5r-row,
+.ps-c5r-hold .ps-c5r-results
+  :is(
+    .ps-c5r-mark,
+    .ps-c5r-domain,
+    .ps-c5r-title,
+    .ps-c5r-line,
+    .ps-c5r-biz,
+    .ps-c5r-other
+  ) {
+  animation-play-state: paused;
+}
+
+/* REDUCED MOTION, AS DEFENCE IN DEPTH RATHER THAN AS THE MECHANISM. The
+   real guarantee is that `.ps-c5r-run` is never added under reduce, so
+   none of the rules above can match. This block exists because the
+   catch-all at `globals.css:4644-4651` zeroes `animation-duration` and
+   `animation-iteration-count` but NOT the delay -- so if the class ever
+   did leak in, a 70/140/210ms stagger delay against a 0.01ms duration
+   would leave the lower rows invisible for up to 210ms. That is exactly
+   the delay-leak known-bad E1 built, which left 2 of 4 rows at 0.00000
+   ink. Precedents for zeroing it locally: `card-visuals.css:3250` and
+   `card3-candidates.css:1632`. */
+@media (prefers-reduced-motion: reduce) {
+  .ps-c5r-run .ps-c5r-load {
+    animation: none;
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .ps-c5r-run .ps-c5r-results > .ps-c5r-row,
+  .ps-c5r-run .ps-c5r-results
+    :is(
+      .ps-c5r-mark,
+      .ps-c5r-domain,
+      .ps-c5r-title,
+      .ps-c5r-line,
+      .ps-c5r-biz,
+      .ps-c5r-other
+    ) {
+    animation: none !important;
+    animation-delay: 0ms !important;
+    opacity: 1;
+    /* `translate: none`, NEVER `transform: none`. B5 measured that a
+       reduce block writing `transform: none !important` DELETES an
+       existing static transform and moves an element that was correct at
+       rest -- a reduced-motion "fix" that introduces a defect. Reset only
+       the property this animation actually writes. */
+    translate: none;
+  }
+}

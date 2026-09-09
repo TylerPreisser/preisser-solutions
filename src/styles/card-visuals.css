@@ -3250,3 +3250,482 @@
     transition-delay: 0s !important;
   }
 }
+
+/* ═════════════════════════════════════════════════════════════
+   CARD 4 "Websites." — PHONE MOCK CLIPPED BY THE CARD'S RIGHT EDGE
+   Added 2026-09-08 (Team B, clearance lane). Appended at the END of
+   this sheet for the same reason as the card-5 block above: three
+   teams are editing this file this run and an append cannot conflict.
+
+   THE DEFECT, measured on the live DOM (chromium, 127.0.0.1:3117,
+   light theme, painted-content box vs the card's border box):
+
+     CARD W   VIEWPORT   FREE RIGHT
+     272.00   320x568    -2.81   <- `.ps-phone-body` cut by the card edge
+     288.00   640x900    -0.01   <- flush to the hundredth of a pixel
+     311.00   359x640    +4.02
+     312.00   360x640    +4.19
+     327.00   375x667    +6.82
+
+   NOTHING CAN BE REPOSITIONED TO FIX IT. The painted box is 266.49px
+   wide inside a 272.00px card, so the total horizontal slack is 5.51px
+   -- 2.76px per side at best. Shifting the row (asymmetric padding, a
+   bigger negative margin) only trades the right clip for a left one.
+   The composition has to get smaller, and only at the narrow cards.
+
+   THE GEOMETRY, and this is where the 29.5 and the 21 come from.
+   `.ps-visual-website` is `padding: 40px 24px`, its root is the card
+   +12px (`.ps-bento-card__inner` is inset -6px), so the content box is
+   `cardW - 36`. The row is `.ps-wb-browser` at 65% of that, then
+   `.ps-phone` at `margin-left: -18px`, centred:
+
+     rowW = 0.65*(cardW - 36) - 18 + phoneW
+
+   `.ps-phone` carries `rotate(5deg)` on a `9/19.5` box, and a rotation
+   changes the BOUNDING BOX without changing layout, so the painted box
+   is wider than the row by, per side:
+
+     k = (cos5 - 1 + (19.5/9)*sin5) / 2 = 0.09252   x phoneW
+       = 11.10px at the current phoneW of 120
+
+   which gives, with the row centred on the card's own centre line:
+
+     free right = 0.175*cardW + 20.7 - 0.59252*phoneW
+
+   That model returns -2.80 / 0.00 / +4.03 for the 272 / 288 / 311 cards
+   against the measured -2.81 / -0.01 / +4.02, so it is the mechanism.
+   Solving it for a floor of 8px:
+
+     phoneW <= 0.29535*cardW + 21.43     ->   29.5cqw + 21px
+
+   `cqw` is the card's own inline size: `.ps-bento-card` declares
+   `container: bentocard / inline-size` (globals.css:1780). That is the
+   whole reason a container query is used here rather than a media query
+   -- CARD WIDTH IS NOT MONOTONIC IN VIEWPORT WIDTH. This tile is 272px
+   at a 320 viewport and 288px at a 640 one, and no single `max-width`
+   media query catches both while leaving the 327px card at 375 alone.
+   The note above `@container bentocard (max-width: 300px)` at :1168
+   makes the same point for card 1.
+
+   335px IS THE CROSSOVER, NOT A ROUND NUMBER. At phoneW 120 the model
+   clears 8px from cardW 333.7 up, and `29.5cqw + 21px` evaluates to
+   119.8px at cardW 335 -- so the ramp meets the 120px cap continuously
+   and there is no step at the boundary. The `min()` pins it there.
+
+   REACH: `.ps-phone` and `.ps-wb-browser` exist only inside
+   `WebsiteVisual` (card-visuals-backup.tsx:51-141), which is rendered
+   only by the card titled "Websites." (service-pillars.tsx:475-479 --
+   matched on the TITLE, because this card's `variant` is `web` while
+   `websites` belongs to Business Software). No other card is reached.
+   The block is scoped `@container bentocard` so it also cannot reach the
+   bottom-sheet mount, which has no card ancestor and would otherwise
+   resolve `cqw` against the viewport.
+
+   The browser's `min-height` tracks the phone's body height so the two
+   keep the relationship they have today (260px = 120 * 19.5/9). Only the
+   scale changes; the proportion, the tilt and the overlap do not. */
+@container bentocard (max-width: 335px) {
+  .ps-phone {
+    width: min(120px, calc(29.5cqw + 21px));
+  }
+
+  .ps-wb-browser {
+    min-height: calc(min(120px, 29.5cqw + 21px) * 19.5 / 9);
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   CARD 4 "Websites." — THE MOCK URL IS SHEARED MID-GLYPH ON THE
+   NARROW CARDS. Added 2026-09-08 (Team B, clearance lane).
+   Appended at the END of this sheet for the same reason as the two
+   blocks above: several teams are editing this file this run and an
+   append cannot conflict.
+
+   THE DEFECT, measured on the live DOM (chromium, 127.0.0.1:3117,
+   light theme, `.ps-browser-url` scrollWidth vs clientWidth, and the
+   visible substring found by walking a Range over the text node):
+
+     CARD W   VIEWPORT   clientW  scrollW  OVERFLOW  READS AS
+     272.00   320x568       89      109     -20      "yourcompany.c"
+     282.00   330x568       96      109     -13      "yourcompany."
+     287.00   335x568       99      109     -10      "yourcompany.c"
+     288.00   640x900      100      109      -9      "yourcompany.co"
+     312.00   360x640      115      115       0      "yourcompany.com"
+     327.00   375x667      125      125       0      "yourcompany.com"
+
+   `.ps-browser-url` is `white-space: nowrap; overflow: hidden` with
+   `text-overflow: clip` (:270-284), so the string is not elided -- it
+   is CUT THROUGH A LETTERFORM. The render at 320 shows a half `c`
+   against the pill's edge, which reads as a rendering fault rather
+   than as a browser's own truncation. Confirmed by eye at 320 and 640.
+
+   NOT FIXED BY SHRINKING THE TEXT. The font is already 9px; the string
+   needs 109px and 8px type would still leave the 272px card short at
+   some engines' metrics. The space is being spent on CHROME PADDING,
+   not on the text, so the fix is to give the text the padding back.
+
+   THE BUDGET, at the 272px card, adding up to the 20px that is short:
+     .ps-browser-chrome padding-inline  10 -> 6   = +8px
+     .ps-browser-chrome gap              8 -> 4   = +4px
+     .ps-browser-url    padding-inline   8 -> 4   = +8px
+     .ps-browser-url    gap              4 -> 3   = +1px
+     .ps-browser-dots   gap              4 -> 3   = +2px  (2 gaps)
+                                                   -------
+                                                    +23px
+   which lands clientW at 112 against a 109px string -- the full
+   `yourcompany.com` reads at every card width, with 3px spare at the
+   very narrowest. The traffic-light dots keep their 8px diameter; only
+   the air between them closes up.
+
+   300px IS THE HOUSE BOUNDARY, NOT A NEW ONE. It is the same
+   `@container bentocard (max-width: 300px)` used at :1168 for card 1,
+   chosen there for exactly this reason: it catches the 272 / 286.7 /
+   288 / 298 cards and nothing else, so the 312-382px cards (the
+   360-430 phones), which already render the full string, are untouched.
+   A MEDIA query cannot express this -- the 320 viewport gives a 272px
+   card and the 640 viewport gives a 288px one, so both need the rule
+   while the 360-430 viewports in between must not get it.
+
+   REACH: `.ps-browser-chrome`, `.ps-browser-url` and `.ps-browser-dots`
+   exist only inside `WebsiteVisual` (card-visuals-backup.tsx:51-141),
+   rendered only by the card titled "Websites." No other card is
+   reached, and the `@container bentocard` scope also keeps it off the
+   bottom-sheet mount, which has no card ancestor. */
+@container bentocard (max-width: 300px) {
+  .ps-browser-chrome {
+    padding: 8px 6px;
+    gap: 4px;
+  }
+
+  .ps-browser-dots {
+    gap: 3px;
+  }
+
+  .ps-browser-url {
+    padding: 4px;
+    gap: 3px;
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   BENTO INTERIOR REVEAL — the shared `ps-rv-*` primitive.
+   Added 2026-09-08 (Team B, interior-choreography lane) for symptom #12:
+   "it is not just the business software tile that should animate it is al
+   of the bento cards ... you must find a tastefull way to animate each one".
+   Spec: teams/B/B3-interior-choreography.md §3.1 and §3.3.
+
+   Appended at the END of this sheet for the same reason as the two card-4
+   blocks above it: several teams are editing this file this run and an
+   append cannot conflict.
+
+   WHAT THIS IS. Idiom A's stagger arithmetic (`calc(var(--i) * step)`,
+   globals.css `.in-view`) inside idiom B's ARM/GO safety shape
+   (`card1-candidates.css:1202-1291`), using card 1's own numbers -- 380ms
+   and `--ease-out-quart` (`card1-candidates.css:1185-1186`). No sixth
+   vocabulary and no new token: the two cards read as one system because
+   they share the numbers.
+
+   The hidden frame is reachable ONLY while `.ps-rv-arm` is on the card
+   root, and ONLY JavaScript ever writes that class
+   (service-pillars.tsx, the effect that already owns the box reveal).
+   Nothing in the base cascade hides anything.
+
+   NO @keyframes. EVER. A keyframe without `fill-mode` rests at its
+   from-value permanently, and neither the globals.css:4644 catch-all nor
+   axe reports it -- reproduced live as 5/5 cards at opacity 0 forever
+   (B3 §4, arm `badA`). A transition has no such resting state: its
+   from-value exists only while the ARM class is present.
+
+   CONSEQUENCE, AND IT IS THE WHOLE SAFETY PROPERTY: removing
+   `.ps-rv-arm` at ANY moment -- early, late, mid-flight -- lands on the
+   base cascade, WHICH IS THE FINISHED RESTING FRAME. A disarm that fires
+   too early is a cosmetic snap; it can never be an invisibility.
+   Removing `.ps-rv-go` alone does the opposite: it leaves ARM
+   authoritative and strands everything at 0. Measured, single variable,
+   same 120ms mid-flight moment: GO-only -> 5/5 at opacity 0;
+   ARM+GO -> 5/5 at opacity 1. REMOVE BOTH OR NEITHER.
+
+   ── WHY `translate`, NOT `transform` (B5, and it is a correction) ──
+   The spec wrote `transform: translateY(var(--rv-lift)) -> none`. On this
+   page that is unsafe, for a reason nobody had quantified:
+
+     `.ps-phone` ALREADY CARRIES A BASE TRANSFORM -- `rotate(5deg)` at
+     card-visuals.css:87 -- and a hover lift on top of it,
+     `rotate(5deg) translateY(-6px)` at :92.
+
+   CSS `transform` is a SINGLE property, so a `transform`-based entrance
+   would have overwritten the 5deg tilt for the whole entrance (the phone
+   un-rotates, then snaps back at disarm) and fought the hover rule
+   mid-flight. `translate` is an independent property that composes with
+   `transform` (CSS Transforms L2: translate/rotate/scale are applied
+   before the `transform` matrix), so:
+     base tilt (transform) + hover lift (transform) + entrance lift
+     (translate) all compose, with no specificity contest at all.
+   Measured mid-flight hover on card 4: tilt kept, hover lift kept,
+   entrance lift kept, no snap. See B5-interior-build.md.
+
+   This is also why the reduce block below resets `translate` and NOT
+   `transform`: a `transform: none !important` there would have deleted
+   the phone's 5deg tilt.
+
+   ── EXACTLY TWO KNOBS. Nothing else is per-card. ──
+     --rv-step  default  70ms  per-element stagger, multiplied by `--i`
+     --rv-lift  default   6px  the lift distance; 0px for a scroll
+                               container or a positioned stage
+   Fixed for every card: duration 380ms, easing `var(--ease-out-quart)`,
+   property set `opacity` + `translate` only.
+
+   ── OPT-IN IS PER ELEMENT, WHICH IS WHY CARD 3 NEEDS NO GUARD ──
+   `.ps-rv-arm` lands on all five card roots from the shared loop. Card 3
+   ("AI Integration.") animates NOTHING because `.ps-rv-i` matches zero
+   elements inside it -- its base cascade is already the finished frame
+   (card3-candidates.css:1790-1794). There is no `:not()`, no exception
+   and no comment for a future agent to forget.
+   ═════════════════════════════════════════════════════════════ */
+
+/* `.ps-c2car` is listed by SELECTOR rather than carrying `.ps-rv-i` in
+   markup because card2-candidates.tsx belongs to another agent this run
+   (Part 1 git hygiene / file ownership). Card 2's whole interior answer is
+   ONE fade of the outer art box: its only art-root child is
+   `.ps-c2car-track`, a live `scroll-snap` scroller
+   (card2-candidates.css:2922-2946), and its five slides are five copies
+   of one flow with four off-stage -- there is no stagger axis to use.
+   Whoever next owns that file may add `ps-rv-i` to the element and delete
+   this selector; behaviour is identical either way. */
+.ps-rv-arm:not(.ps-rv-go) .ps-rv-i,
+.ps-rv-arm:not(.ps-rv-go) .ps-c2car {
+  opacity: 0;
+  translate: 0 var(--rv-lift, 6px);
+  transition: none;      /* arming is instantaneous, not a reveal played backwards */
+}
+
+.ps-rv-arm.ps-rv-go .ps-rv-i,
+.ps-rv-arm.ps-rv-go .ps-c2car {
+  --rv-delay: calc(var(--i, 0) * var(--rv-step, 70ms));
+  opacity: 1;
+  translate: none;
+  transition: opacity 380ms var(--ease-out-quart) var(--rv-delay),
+              translate 380ms var(--ease-out-quart) var(--rv-delay);
+}
+
+/* `.ps-phone` ships `transition: transform 300ms ease` at :88, and the
+   shorthand above would REPLACE it for the ~1.3s the classes are on --
+   making a hover that lands mid-entrance snap 6px instead of easing.
+   Restored alongside the primitive's own two properties. `transform` is
+   deliberately NOT given the primitive's delay: a staggered hover lift
+   would read as lag. */
+.ps-rv-arm.ps-rv-go .ps-phone {
+  transition: opacity 380ms var(--ease-out-quart) var(--rv-delay),
+              translate 380ms var(--ease-out-quart) var(--rv-delay),
+              transform 300ms ease;
+}
+
+/* `transition-delay` is NOT covered by the globals.css:4644 catch-all
+   (which zeroes animation-duration, animation-iteration-count and
+   transition-duration only), so it is zeroed here -- the same remedy
+   card-visuals.css:3250 and card3-candidates.css:1632-1633 already use.
+   `transition: none` also zeroes `transition-property`, which is belt and
+   braces: nothing can transition whatever a duration says.
+   MEASURED, because the cascade here is easy to get backwards: this sheet
+   is @import-ed at globals.css:2, i.e. BEFORE the catch-all, so order
+   would favour the catch-all -- but `!important` declarations are resolved
+   by SPECIFICITY first and only tie-broken by order, and (0,3,0) beats the
+   catch-all's `*` at (0,0,0). Computed under `reduce` with ARM on, both
+   themes: `transition-property: none`, `transition-duration: 0s`,
+   `transition-delay: 0s`. (Without ARM the block does not match at all and
+   the catch-all's 0.01ms is what you read -- which is also fine, since
+   nothing is hidden.) See B5-interior-build.md.
+   Reduced, not removed: every element ends visible and in place, which
+   is also exactly where it started. */
+@media (prefers-reduced-motion: reduce) {
+  .ps-rv-arm .ps-rv-i,
+  .ps-rv-arm.ps-rv-go .ps-rv-i,
+  .ps-rv-arm .ps-c2car,
+  .ps-rv-arm.ps-rv-go .ps-c2car {
+    opacity: 1 !important;
+    translate: none !important;
+    transition: none !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* ── Per-card knobs. Two properties, no third vocabulary. ────────── */
+
+/* Card 2 "Business Automation." -- one fade, no lift. A `translate` on a
+   `scroll-snap` scroller's containing block is the shape to avoid; the
+   target is the outer `.ps-c2car`, and even there the lift is 0.
+   Clearance against the 5,000ms carousel (card2-candidates.tsx:682) is
+   >= 3,870ms: this entrance ends <= 1,130ms after the card's trigger. */
+.ps-c2car {
+  --rv-lift: 0px;
+}
+
+/* Card 4 "Websites." -- browser, THEN phone. 300ms, not the 70ms default,
+   and the number is measured rather than chosen: the two boxes OVERLAP by
+   6221-7567 px^2 (19.7-22.8% of the smaller) at every width from 320 to
+   1920, so at 70ms the phone (opacity 0.16) mushed over the browser
+   (0.65) and the navy hero band washed to muddy slate -- two
+   semi-transparent layers of different artwork read as a rendering
+   defect, not as motion. At 300ms with a 380ms `--ease-out-quart` fade
+   the phone stays at 0.00 until the browser reaches 0.97.
+   Card 5's pair is disjoint (0 px^2 at all widths), which is why the
+   default 70ms is right there and wrong here.
+   `--i` is carried in markup at card-visuals-backup.tsx:55 and :105. */
+.ps-visual-website {
+  --rv-step: 300ms;
+}
+
+/* ═════════════════════════════════════════════════════════════
+   CARD 4 "Websites." — THE PHONE'S TOP-RIGHT CORNER SITS UNDER THE
+   EXPAND AFFORDANCE. Added 2026-09-08 (Phase 3, F1). Appended at the
+   END of this sheet for the same reason as the three blocks above it:
+   several teams are editing this file this run and an append cannot
+   conflict.
+
+   THE DEFECT, measured as DRAWN PIXELS -- not as a bounding box. Per
+   width, per engine: pause everything, hide `.ps-bento-card__expand`,
+   screenshot clipped to the button's own rect at dsf 2, hide the
+   artwork, screenshot the same clip, diff, count pixels whose summed
+   RGB delta > 150. Percentage of the affordance's own area covered by
+   solid artwork (firefox / chromium / webkit):
+
+     320   6.33 / 6.99 / 6.78 %      639   0.05 / 0.05 / 0.05 %
+     393  12.50 / 12.89 / 12.95 %    640   8.51 / 9.07 / 8.68 %   <- worst at 393
+     768   8.43 / 8.79 / 8.46 %      769   6.47 / 7.35 / 6.47 %
+     940   0 (clean)                1440   0 (clean)
+
+   All three engines agree to the third significant figure; this is not
+   an engine defect. A BOUNDING-BOX probe is useless for this question --
+   `.ps-phone` carries `rotate(5deg)`, which inflates its children's
+   rects by ~11px of EMPTY corner, so a bbox test flags cards 1, 3 and 5
+   at nearly every width when they have literally zero ink there.
+
+   WHY IT IS THE PHONE AND ONLY THE PHONE. The affordance's corner
+   keep-out square is `inset + size` = 56x56 at <=768px and 48x48 at
+   >=769px (globals.css: the base `.ps-bento-card__expand` rule and its
+   `@media (max-width: 768px)` override). `.ps-wb-browser` is 65% of the
+   content box and sits at the LEFT; its right edge is 289px clear of
+   the button at 393 and further at every other width. The phone is the
+   only element that reaches the corner.
+
+   ── WHY `margin-top` ON `.ps-phone`, AND NOT ANY OF THE ALTERNATIVES ──
+
+   NOT `transform`: `.ps-phone` already owns `transform: rotate(5deg)`
+   at :86 and `rotate(5deg) translateY(-6px)` on hover at :93. `transform`
+   is a single property; writing it here deletes the tilt.
+
+   NOT `translate`, AND THIS ONE WAS MEASURED BECAUSE IT WAS ASKED FOR
+   TWICE. That property is SPENT: the interior-reveal primitive animates
+   `translate` on `.ps-rv-i` (this sheet, the `ps-rv-*` block) and
+   `.ps-phone` carries `ps-rv-i` -- asserted live, `ph.matches(
+   '.ps-rv-arm:not(.ps-rv-go) .ps-rv-i')` is TRUE. Those rules are
+   specificity (0,3,0); any rule that could live here is at most (0,2,0),
+   so they WIN. Shipping `translate: 0 28px` on this selector, traced per
+   frame at 393x852 with no `!important` anywhere:
+
+     t=   1  arm=1 go=0  translate: 0px 6px      phoneTop 35.27  <- primitive
+     t= 351  arm=1 go=1  translate: 0px 6px      phoneTop 35.27
+     t=1035  arm=1 go=1  translate: none         phoneTop 29.27  <- WORSE
+                                                    than the unfixed 35.27
+     t=1252  arm=0 go=0  translate: 0px 28px     phoneTop 57.27  <- +28.00px
+                                                    IN ONE FRAME
+
+   So `translate` leaves the defect in place for the whole ~1.25s
+   entrance -- at a phone top of 29.27, which is 6px HIGHER than the
+   35.27 this block exists to fix -- and then snaps 28px downward at
+   disarm. It is not a smaller version of this fix; it is a worse bug.
+
+   The reason `translate` is mandated elsewhere is that `transform` would
+   delete `.ps-phone`'s static `rotate(5deg)`. `margin-top` is not
+   `transform` either, so that requirement is met, and it is MEASURED
+   rather than assumed: under `prefers-reduced-motion: reduce`, both
+   themes, all three engines, `.ps-phone`'s computed transform reads
+   `matrix(0.996195, 0.0871557, -0.0871557, 0.996195, 0, 0)` -- exactly
+   rotate(5deg) -- with `margin-top: 28px` applied. The hover
+   `rotate(5deg) translateY(-6px)` composes unchanged.
+
+   NOT resizing the phone: `freeRight` is already only 8.32-11.30px at
+   the narrow cards -- the `@container bentocard (max-width: 335px)`
+   block above already spent every pixel of horizontal slack there.
+
+   NOT moving the affordance: it is page-wide and would reopen the
+   clearance numbers on all five cards.
+
+   NOT moving the whole artwork down: the browser mock would go with it,
+   and its bottom clearance to the title is the thing the 2026-09-05
+   clearance fix bought (globals.css, `@media (max-width: 767px)`,
+   `.ps-visual-website { padding-bottom: 104px }` -- "phone -17.53,
+   pad-bottom 80 -> 104"). Moving the pair down by the required amount
+   spends that clearance down to +2.2px. Moving ONLY the phone leaves it
+   untouched at +29.6px (393) / +17.6px (768), because the phone is
+   76px to the RIGHT of where the title's glyphs end (measured with a
+   Range over the title's text node: glyph right edge 116.83px from the
+   card's left at every width; `.ps-phone` starts at 143.72px at 320 and
+   192.82px at 393).
+
+   ── THE NUMBER, AND IT IS MEASURED, NOT CHOSEN ──
+   `align-self: flex-start` pins the phone's layout top to the visual's
+   content-box top (34px from the card top: `-6px` inner inset + 40px
+   padding-top) instead of centring it against the browser, so the offset
+   below is width-independent. The phone's rotated bbox reaches
+   0.0395 x phoneWidth above that (4.74px at the full 120px phone), so:
+
+     phone bbox top = 34 + margin-top - 0.0395 * phoneWidth
+
+   The ink threshold was swept, firefox at 393 and 768 (the two worst
+   widths), injecting the candidate through addStyleTag so no file moved:
+
+     phone top 43.27 -> INK 5.26 %
+     phone top 47.27 -> INK 0.41 %
+     phone top 48.27 -> INK 0.00 %     <- the INK boundary is between these
+     phone top 50.27 -> INK 0.00 %
+
+   ZERO INK IS NOT THE TARGET, THOUGH -- THE BOUNDING BOX IS, AND THAT IS
+   A DELIBERATE CHOICE. A first version used 22px, which put the phone's
+   top at 51.26 and measured 0% ink at all 8 widths in all 3 engines. It
+   was still wrong, for two reasons that have nothing to do with what a
+   viewer sees today:
+
+     - a 1px sweep put strong ink back at 2px (320), 3px (393) and 4px
+       (768) of upward drift, so any later font, padding or DPR change
+       silently reopened the defect;
+     - `freeTop 51.26 < K 56` means NO BOUNDING-BOX REGRESSION CHECK CAN
+       EVER GO GREEN on this card, so every future verifier flags it and
+       eventually someone "fixes" it by loosening the check.
+
+   28px satisfies the verifier's own overlap model outright --
+   `overlap <=> freeRight < K AND freeTop < K`, K = 56 at <=768px and 48
+   at >=769px -- at every width:
+
+     320  57.99      393  57.26      639  57.26      640  57.81
+     768  57.26      769  57.26      940  57.26     1440  57.26
+
+   All >= 56, with ~9.5px of margin over the measured ink boundary on top
+   of that. The formula is `34 + margin-top - 0.0395 * phoneWidth`; the
+   spread across widths is the container query scaling the phone below a
+   335px card, and it moves the answer by less than a pixel.
+
+   WHY 56 IS REACHABLE HERE AND WOULD NOT HAVE BEEN IF THE WHOLE ARTWORK
+   MOVED. Card 4's vertical budget is fixed: `freeTop + roomToTitle =
+   47.74px` at every width where the phone is full size, so a whole-artwork
+   push to freeTop 56 is arithmetically impossible (56 + 269.46 = 325.46 >
+   the title's 317.2). Moving ONLY the phone escapes that because the
+   phone is 76px to the RIGHT of where the title's glyphs end, so its
+   descent is bounded by the scrim rather than by the title.
+
+   The phone's bottom lands at 326.74, i.e. 9.5px into the TOP of
+   `.ps-bento-card__text`'s scrim. That scrim is `linear-gradient(to top,
+   ...0.88, ...0.6 at 60%, transparent 100%)` (globals.css) -- FULLY
+   TRANSPARENT at exactly that edge -- so the veil ramps from 0 to alpha
+   ~0.23 over the phone's last 9.5px and is the same navy as the scene in
+   dark. Read on screenshots at 320/393/768/1440, light and dark, not
+   inferred.
+
+   REACH: scoped under `.ps-bento-card` so it cannot touch the
+   bottom-sheet mount, which has no card ancestor -- the same
+   containment the `@container bentocard` block above relies on. */
+.ps-bento-card .ps-phone {
+  align-self: flex-start;
+  margin-top: 28px;
+}

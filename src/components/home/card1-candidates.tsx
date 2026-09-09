@@ -64,27 +64,33 @@
    the pages that carry money figures; this card carries none.
 
    ============================================================================
-   >> ZERO MOTION.  THIS IS THE BIGGEST CHANGE FROM THE PREVIOUS PASS AND IT IS
-   A DELETION, NOT AN ADDITION.
+   >> MOTION.  THE TWO PARAGRAPHS THAT USED TO SIT HERE WERE FALSE AND ARE
+   CORRECTED IN PLACE (Phase 3 G2).  They said "ZERO MOTION", "Exactly ONE
+   thing animates and it is THE CARD", and "this module has NO reveal hook, NO
+   IntersectionObserver, NO `--i` stagger index, and its stylesheet has NO
+   transition, NO animation and NO @keyframes."  Every one of those clauses is
+   contradicted by the code below it: `usePsC1xReveal` is a reveal hook, it
+   constructs an `IntersectionObserver`, and `card1-candidates.css` section 14
+   carries the transitions the ARM -> GO -> DISARM cycle drives.  Two verifiers
+   cited the old text as fact; it is deleted rather than annotated.
 
-   The measured card-4 style is: "arrive once as a single finished object over
-   0.65s on a hard ease-out, then hold perfectly still."  Exactly ONE thing
-   animates and it is THE CARD, driven by a single grid-level ScrollTrigger at
-   service-pillars.tsx:2483-2499 that this file does not own and must not
-   duplicate.  Everything inside rides in as one rigid unit.
+   WHAT IS ACTUALLY TRUE.  The measured card-4 style is: "arrive once as a
+   single finished object over 0.65s on a hard ease-out, then hold perfectly
+   still."  THE CARD BOX is animated by a grid-level ScrollTrigger this file
+   does not own and must not duplicate (`service-pillars.tsx`, the `fromTo`
+   whose `onUpdate` fires `ps-rv-go` at `RV_GO_AT_PROGRESS`).  THIS file adds a
+   second, smaller thing: the sub-tiles inside the art root wipe in behind the
+   box, once, and then hold still forever.  The owner asked for that
+   explicitly ("the sub tiles in the Business Software card don't animate when
+   you scroll to them").  It is a subordinate movement, and the gate below is
+   what keeps it subordinate: it can no longer start before its own card has
+   arrived.  The previous pass ALSO counted numbers up and grew bars out of
+   their axis; that part really is deleted and stays deleted, because a
+   dashboard that counts up its numbers reads as BUSY.
 
-   So this module has NO reveal hook, NO IntersectionObserver, NO `.in-view`
-   class, NO `--i` stagger index, and its stylesheet has NO transition, NO
-   animation and NO @keyframes.  The previous pass staggered five panels, grew
-   an area from its baseline, drew a trend line along its own path, drew a ring
-   arc and grew six columns out of their axis.  All of that is now deleted.  A
-   dashboard that counts up its numbers and grows its bars reads as BUSY, which
-   is the opposite of what was asked for, and a chart drawing itself is the
-   single most obvious flourish for this subject and precisely what card 4's
-   style forbids.
-
-   THREE THINGS FALL OUT OF THAT DELETION, and they are why it is the right
-   engineering answer as well as the right design answer:
+   THREE THINGS STILL FALL OUT OF THE BASE-CASCADE-IS-FINISHED POLARITY, and
+   they are why it is the right engineering answer as well as the right design
+   answer:
 
    1. >> THE ART RENDERS COMPLETE WITH NO JAVASCRIPT.  Nothing here starts at
       `opacity: 0`, so nothing depends on a script to become visible.  A
@@ -198,6 +204,37 @@
 
 import React, { useEffect, useId, useRef, useState } from "react";
 
+/* HOW MUCH OF THE ART ROOT MUST BE ON SCREEN BEFORE THE REVEAL IS RELEASED.
+   Read by all three release paths in usePsC1xReveal -- the observer's
+   threshold, the failsafe poll and the scroll listener -- so there is exactly
+   one definition of "visible" in this file.  The rationale for the value, and
+   for why the observer's original 0.25 is NOT the fix, is at the release test
+   inside the hook.  A reveal gate tests a visible FRACTION; it never tests a
+   boolean "is any part of it on screen". */
+const C1X_REVEAL_MIN_VISIBLE = 0.5;
+
+/* HOW LONG THE SUB-TILES WILL WAIT FOR THEIR OWN CARD BOX BEFORE GIVING UP AND
+   LANDING ON THE FINISHED PICTURE ANYWAY.  This is a FAIL-VISIBLE NET, not the
+   ordering mechanism -- the ordering mechanism is the `ps-interior-reveal`
+   event, and a constant can never be one (a fixed delay re-creates the very
+   bug this fixes at a different viewport height; see the gate below).  It only
+   ever runs when the box's reveal contract produced NOTHING: no event, no
+   `data-ps-reveal="done"`, and no settled inline style.  That is the case
+   where `service-pillars`' effect never ran at all, which no failure path
+   inside that file can signal, and the alternative is sub-tiles hidden
+   forever -- exactly the blank-card outcome this file's polarity exists to
+   prevent.
+
+   THE VALUE IS AN UPPER BOUND ON A MEASURED QUANTITY, not a guess.  The box's
+   own trigger (`start: "top 82%"`) is crossed BEFORE this art root reaches
+   C1X_REVEAL_MIN_VISIBLE at every viewport measured (art-root top 679 at the
+   release point against an entrance line of 738 at 1440x900, 402 against 466
+   at 320x568 -- the numbers at the release test below).  From that trigger the
+   box needs at most its stagger (0.2s at index 2) plus half of its 0.65s tween
+   to fire the event: ~525ms.  1500ms is that with a 3x margin, so a healthy
+   build never reaches this timer, and the harness asserts it did not. */
+const C1X_BOX_WAIT_MAX = 1500;
+
 /* ============================================================================
    THE SCROLL REVEAL — ARM -> GO -> DISARM.
    Spec: .work-order/specs/reveal-motion.md sections 3, 7 and 8.
@@ -257,9 +294,12 @@ import React, { useEffect, useId, useRef, useState } from "react";
    card3-candidates.tsx:186-192 records in this repo: "a bare timer does not
    remove the failure, it schedules it".  The timer therefore starts the
    fallback rather than firing it: from 1200ms on, release as soon as the art
-   is on screen, polled every 250ms, plus a passive scroll listener for the
-   case where IntersectionObserver itself is what is broken.  Staying armed
-   while off screen costs nothing, because nobody is looking at it.
+   is at least C1X_REVEAL_MIN_VISIBLE visible, polled every 250ms, plus a
+   passive scroll listener for the case where IntersectionObserver itself is
+   what is broken.  Staying armed while off screen costs nothing, because
+   nobody is looking at it.  All three paths test that same fraction; when
+   the two loose ones tested "any 1px" instead they made the observer's
+   threshold dead code -- see the release test below.
    ============================================================================ */
 function usePsC1xReveal<T extends HTMLElement>() {
   const ref = useRef<T>(null);
@@ -329,16 +369,178 @@ function usePsC1xReveal<T extends HTMLElement>() {
     let disarmed = false;
     let poll = 0;
     let disarmTimer = 0;
+    /* THE TWO HALVES OF THE RELEASE CONDITION. Both latch; neither releases on
+       its own; whichever lands second does the release, so there is no added
+       latency in either order. See the gate below. */
+    let boxRevealed = false;
+    let visibleSeen = false;
+    let boxWaitTimer = 0;
+    /* `let` + null, not a `const` further down, for the reason
+       `service-pillars.tsx` documents against its own tween holder: a function
+       declared above a `const` and called before that `const` initialises is a
+       TDZ ReferenceError, not `undefined`. `release()` is declared before the
+       observer is built and tears it down. Nothing can call it that early
+       today -- every caller is asynchronous -- but the cost of being sure is
+       one `?.`. */
+    let observer: IntersectionObserver | null = null;
 
-    const onScreen = () => {
+    /* THE RELEASE TEST IS A VISIBLE FRACTION, NOT "IS ANY PART ON SCREEN",
+       AND ALL THREE RELEASE PATHS TEST THE SAME NUMBER.
+
+       What was here read `r.top < window.innerHeight && r.bottom > 0` -- true
+       at ANY ONE PIXEL of intersection.  Both loose call sites below (the
+       failsafe poll and the scroll listener) beat the IntersectionObserver
+       every time, so the observer's threshold was unreachable dead code and
+       the reveal played where nobody could see it.  Measured on the shipping
+       default at 12px/frame: GO at 5% visible (1440x900), 6% (1280x800) and
+       0% (393x852 and 390x844, where the art root's top is still exactly at
+       `innerHeight`), metric opacity still 0, and on a phone the whole 1141ms
+       ran between 0% and 38% visibility.
+
+       WHY 0.5 AND NOT THE 0.25 THE OBSERVER ALREADY ASKED FOR.  0.25 is the
+       obvious fix and it is also broken, for a different reason: the bento
+       card's OWN box entrance fires at `start: "top 82%"`, and 25% of this
+       art root is reached BEFORE that line at every viewport measured -- art
+       root top 790 at 0.25 against an entrance line of 738 at 1440x900 -- so
+       the sub-tile stagger would play inside a card still at `opacity: 0`.
+       0.5 clears the entrance everywhere measured (679 vs 738 at the
+       tightest, 402 vs 466 at 320x568) and still completes the 1140ms reveal
+       with the card fully visible at a normal 400px/s read-scroll (84% at
+       320x568).  The honest limit, recorded rather than chased: at 1200px/s
+       no threshold saves it -- a 900px viewport is crossed in 750ms, less
+       than the reveal's own 1140ms -- and the authored cadence is NOT
+       shortened to serve a fling, during which nobody is reading the card.
+
+       Fraction is measured VERTICALLY off the rect rather than taken from
+       `entry.intersectionRatio`, because the two loose paths have no entry to
+       read and every path must answer the same question the same way. */
+    const visibleFraction = () => {
       const r = el.getBoundingClientRect();
-      return r.top < window.innerHeight && r.bottom > 0;
+      if (r.height <= 0) return 0;
+      const shown = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+      return Math.max(0, shown) / r.height;
     };
+
+    const visibleEnough = () => visibleFraction() >= C1X_REVEAL_MIN_VISIBLE;
+
+    /* ========================================================================
+       THE ORDERING GATE.  THE ONE THING THIS ROUND CHANGED.
+
+       THE DEFECT.  The sub-tiles used to release on visibility ALONE, and the
+       card BOX arrives on a completely different geometric test -- a GSAP
+       ScrollTrigger at `start: "top 82%"` on the card, against this file's
+       50%-of-the-art-root.  Two independent geometries means the ORDER BETWEEN
+       THEM IS A FUNCTION OF VIEWPORT HEIGHT, and nothing anywhere enforced it.
+       Measured on 127.0.0.1:3117 before this change (V2-entrance-reverify, all
+       three engines): the tiles fired 259-359ms before the box reached opacity
+       0.95 at EVERY viewport, and at 393x852 and 820x1180 they fired 9-25ms
+       before the box painted its FIRST non-zero frame -- box opacity 0.0000 at
+       the instant the tiles started. Sub-tiles animating onto a card that has
+       not appeared yet.
+
+       WHAT WAS REJECTED, ON EVIDENCE, BEFORE THIS:
+         - Lowering the threshold to 0.25. Already tried. It fires EARLIER, not
+           later: 25% of the art root is reached at art-top 790 against the
+           card's own entrance line of 738 at 1440x900. Wrong direction.
+         - A fixed delay after visibility. A constant cannot express a
+           relationship between two moving geometries; it re-creates the same
+           inversion at a different viewport height. That is the whole defect,
+           restated.
+
+       THE FIX, AND ITS PRECEDENT IS ALREADY IN THIS TREE.  Card 5 gates its
+       search loop on `service-pillars`' public reveal contract
+       (`card5-candidates.tsx:642`): the bubbling `ps-interior-reveal`
+       CustomEvent plus the `data-ps-reveal="done"` latch, fired from
+       `markRevealed` inside the box tween's own `onUpdate` at
+       `RV_GO_AT_PROGRESS` AND from all four of its failure paths. Card 1 now
+       gates on the same event.
+
+       AND IT IS AN ADDITIONAL CONDITION, NOT A REPLACEMENT.  Release requires
+       BOTH:
+         (a) the card box has revealed  -- ordering, from the event; and
+         (b) a release path has observed the art root at least
+             C1X_REVEAL_MIN_VISIBLE visible -- "the visitor can actually see
+             it", which is the property the three paths below exist to
+             establish and the reason a bare event is not enough.
+       Both latch, and `maybeRelease()` is called from both sides, so whichever
+       arrives second releases immediately. No polling delay in either order.
+
+       WHY (b) IS A LATCH SET ONLY BY THE THREE PATHS, AND NOT A
+       `visibleEnough()` CALL INSIDE THE EVENT HANDLER.  Those look equivalent
+       and they are not. If the event handler tested visibility itself, then
+       suppressing all three release paths would STILL release the reveal --
+       the event would have quietly become a fourth, unkillable path, and the
+       load-bearing property ("with IO, poll and scroll all suppressed it never
+       releases") would be gone while every green test stayed green. Writing
+       the flag from the paths and only READING it here keeps that property
+       exactly: no path, no flag, no release, no matter what the box does.
+
+       WHAT THIS GUARANTEES, STATED PRECISELY, BECAUSE "after the card arrives"
+       is ambiguous and two different promises were being conflated: GO lands
+       AFTER the frame on which the box tween crossed `RV_GO_AT_PROGRESS`, at
+       which point the box's opacity is `1 - 0.5^4 = 0.9375` and rising --
+       `power3.out` is a QUART, not a cubic. It is therefore NOT "after the box
+       reaches 0.95"; 0.95 arrives at progress 0.5271, about 18ms later. The
+       promise delivered is "after box opacity >= 0.9375", which is strictly
+       after first paint and is what the box's own interior primitive already
+       promises its own `.ps-rv-i` children. Deliberately the same instant as
+       the rest of the system rather than a stricter one -- card 1's tiles now
+       start when every other card's interior starts.
+       ======================================================================== */
+    const box = el.closest<HTMLElement>(".ps-bento-card");
+    let boxMo: MutationObserver | null = null;
+
+    /* FALLBACK SIGNAL, card 5's, for the case where the event contract is
+       reverted but the tween still runs: inline `opacity: 1` with the inline
+       transform cleared is what `clearProps: "transform"` leaves behind. */
+    const boxSettled = () =>
+      !!box && box.style.opacity === "1" && box.style.transform === "";
+
+    function stopWatchingBox() {
+      window.clearTimeout(boxWaitTimer);
+      if (boxMo) {
+        boxMo.disconnect();
+        boxMo = null;
+      }
+      if (box) box.removeEventListener("ps-interior-reveal", onBoxRevealed);
+    }
+
+    function maybeRelease() {
+      if (released) return;
+      if (!boxRevealed || !visibleSeen) return;
+      release();
+    }
+
+    /* Idempotent: four paths can call this and only the first one counts. */
+    function onBoxRevealed() {
+      if (boxRevealed) return;
+      boxRevealed = true;
+      stopWatchingBox();
+      maybeRelease();
+    }
+
+    function onBoxStyle() {
+      if (boxSettled()) onBoxRevealed();
+    }
+
+    /* Written ONLY from the three release paths. Never from the box event --
+       see the paragraph above; that distinction is the safety property. */
+    function noteVisible() {
+      if (visibleSeen) return;
+      visibleSeen = true;
+      if (!boxRevealed) {
+        /* Start the fail-visible net only now. Starting it at arm time would
+           make it a timer racing the box on a card nobody has scrolled to. */
+        boxWaitTimer = window.setTimeout(onBoxRevealed, C1X_BOX_WAIT_MAX);
+      }
+      maybeRelease();
+    }
 
     function disarm() {
       if (disarmed) return;
       disarmed = true;
       window.clearTimeout(disarmTimer);
+      stopWatchingBox();
       el!.removeEventListener("transitionend", onTransitionEnd);
       el!.classList.remove("ps-c1x-armed", "ps-c1x-go", "ps-c1x-no-arc");
     }
@@ -358,6 +560,11 @@ function usePsC1xReveal<T extends HTMLElement>() {
       if (released) return;
       released = true;
       window.clearTimeout(poll);
+      /* Teardown of every input moved HERE from the three call sites, because
+         there are now four of them and a site that forgot one would leave a
+         live observer on a released card. */
+      observer?.disconnect();
+      stopWatchingBox();
       el!.addEventListener("transitionend", onTransitionEnd);
       el!.classList.add("ps-c1x-go");
       /* Total reveal is 1140ms; the cap is the guarantee, transitionend is the
@@ -365,49 +572,73 @@ function usePsC1xReveal<T extends HTMLElement>() {
       disarmTimer = window.setTimeout(disarm, 1300);
     }
 
-    /* Threshold 0.25 -- the same value the nine `.in-view` consumers use, so
-       no new convention. Observing the ART ROOT rather than the bento card:
-       the art root is 332-442px tall at every width measured, so 0.25 is
-       reachable even on a phone where the whole card exceeds the viewport. */
-    const observer = new IntersectionObserver(
+    /* Threshold is the same C1X_REVEAL_MIN_VISIBLE the poll and the scroll
+       listener test, so no path can undercut another -- that mismatch is what
+       this fix removes.  Observing the ART ROOT rather than the bento card:
+       the art root is 332-442px tall at every width measured against a fold
+       of 568px or more, so half of it is reachable even on the smallest phone
+       where the whole card exceeds the viewport.
+
+       `intersectionRatio` rather than `isIntersecting`: at a non-zero
+       threshold the observer also fires on the way OUT, where `isIntersecting`
+       is still true while the ratio has fallen back below the threshold. */
+    observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            release();
-            observer.disconnect();
-          }
+          if (entry.intersectionRatio >= C1X_REVEAL_MIN_VISIBLE) noteVisible();
         });
       },
-      { threshold: 0.25 }
+      { threshold: C1X_REVEAL_MIN_VISIBLE }
     );
     observer.observe(el);
 
+    /* The poll now re-arms until RELEASE rather than until visibility, because
+       visibility is no longer the whole condition: it must keep ticking while
+       the gate waits on the box, or a build whose event contract vanished
+       would have no second chance. Cleared in `release()`. */
     const settle = () => {
       if (released) return;
-      if (onScreen()) {
-        release();
-        observer.disconnect();
-        return;
-      }
+      if (visibleEnough()) noteVisible();
+      if (released) return;
       poll = window.setTimeout(settle, 250);
     };
     poll = window.setTimeout(settle, 1200);
 
     const onScroll = () => {
       if (released) return;
-      if (onScreen()) {
-        release();
-        observer.disconnect();
-      }
+      if (visibleEnough()) noteVisible();
     };
     window.addEventListener("scroll", onScroll, { passive: true });
+
+    /* THE CONTRACT'S OWN ORDER: read the attribute first, THEN subscribe. A
+       consumer that mounts late -- this art root also renders inside the
+       portal dialog, and a re-mount after the grid has already revealed is
+       ordinary -- would otherwise wait forever for an event that already
+       fired. `service-pillars.tsx` states that requirement itself at the
+       `markRevealed` it dispatches from.
+       Child effects run BEFORE parent effects, so on a first mount this
+       subscription is installed before the grid's effect has even built the
+       tween; the attribute branch is for every other case. */
+    if (!box) {
+      /* No box means no box tween and therefore no ordering to enforce -- the
+         dialog mount already returned above, so this is a shape this card is
+         not rendered in today. Fail OPEN, never hidden. */
+      boxRevealed = true;
+    } else if (box.dataset.psReveal === "done" || boxSettled()) {
+      onBoxRevealed();
+    } else {
+      box.addEventListener("ps-interior-reveal", onBoxRevealed);
+      boxMo = new MutationObserver(onBoxStyle);
+      boxMo.observe(box, { attributes: true, attributeFilter: ["style"] });
+    }
 
     return () => {
       window.clearTimeout(poll);
       window.clearTimeout(disarmTimer);
       window.removeEventListener("scroll", onScroll);
       el.removeEventListener("transitionend", onTransitionEnd);
-      observer.disconnect();
+      stopWatchingBox();
+      observer?.disconnect();
       el.classList.remove("ps-c1x-armed", "ps-c1x-go", "ps-c1x-no-arc");
     };
   }, []);

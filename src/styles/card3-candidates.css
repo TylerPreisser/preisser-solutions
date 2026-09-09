@@ -91,7 +91,7 @@
      that CSS applied, never WHICH CSS. This custom property is the only thing
      in the file that proves the served page is running the code on disk, so the
      capture harness reads it and refuses to shoot unless it matches. */
-  --c3-build: 32;
+  --c3-build: 35;
 
   --c3-ease: cubic-bezier(0.165, 0.84, 0.44, 1);
 
@@ -1818,7 +1818,7 @@
      -48.00 px, byte-identical to the run before the fix. Identical numbers
      across a real change are the signature of a stale artifact, not of a fix
      that did nothing. Every capture asserts this value. */
-  --c3s-build: 9;
+  --c3s-build: 12;
 
   /* SCALE TIER S is the base, and every larger tier is added by a CONTAINER
      query below. Never a media query: at a 940px viewport this card is 286.7px
@@ -1828,11 +1828,56 @@
   --c3s-fs: 11px;
   --c3s-lab: 9.5px;
   --c3s-dbw: 40px;
-  --c3s-agw: 42px;
+
+  /* THE AGENT IS ELARA, AND HIS BOX IS A CONSTANT, NOT A SCALE TIER.
+     He is a 192x232 pixel-art cell under `image-rendering: pixelated`, so only
+     an integer fraction of the cell lands source pixels on whole device pixels:
+     96x116 and 48x58 are the only two sizes the sheet has without re-exporting
+     it. 96x116 does not fit - the marks band is 58.5-94.2px tall across the
+     five mounts and the mobile dialog's band is 58.5px, so a 116px figure would
+     stand through the answer panel. 48x58 fits every mount, including that one,
+     with the band unchanged. So `--c3s-agw` stops being a tier value and every
+     tier below drops its override; `--c3s-agh` is new because the agent is no
+     longer square and the four formulas that used to read `agw` for both axes
+     would silently apply a width to a height. */
+  --c3s-agw: 48px;
+  --c3s-agh: 58px;
   --c3s-inh: 34px;
   --c3s-bub: 9px;
   --c3s-blob: 14px;
   --c3s-gap: 12px;
+
+  /* THE IMPACT RING'S DIAMETER, AND IT IS SIZED OFF THE TARGET, NOT THE BEAD.
+     RESOLVED FROM RENDERS, NOT FROM ARITHMETIC - four candidates shot at
+     deviceScaleFactor 4 and looked at, frozen at the keyframe's peak (scale
+     1.04), dark and light, at 320 / 940 / 1440:
+
+       blob * 1.9  = 26.6-34.2px   its left edge crosses his far arm, its top
+                                   crosses his EYES and its bottom passes his
+                                   hips. It reads as a bubble containing the
+                                   figure, not as an impact on his hand. At the
+                                   dialog tier it is 71% of his 48px box.
+       blob * 1.5  = 21-27px       still cuts through his chest and reaches his
+                                   jaw.
+       agw * 0.42  = 20.16px       centred on the hand, clear of his head and
+                                   his legs, wide enough to read as an expanding
+                                   ring. SHIPPED.
+       blob * 1.0  = 14-18px       barely wider than the hand and forearm; reads
+                                   as a bubble sitting on the hand.
+
+     AND IT IS A CONSTANT, BECAUSE THE TARGET IS A CONSTANT. Elara is 48x58 at
+     every mount - the only two crisp sizes his sheet has are 96x116 and 48x58,
+     and 96 does not fit - so `--c3s-agw` no longer scales. A ring sized off
+     `--c3s-blob` would be 17.5px against a 48px figure at tier S and 22.5px
+     against the SAME 48px figure in the dialog: a 29% swing in how much of him
+     the impact covers, driven by a projectile size he is no longer proportional
+     to. The ring lands on HIM, so it is measured against him.
+
+     0.42 of 48px puts the ring's edge 10.08px from his hand's centroid, which
+     is 2.6px past his box's right edge and 24.4px below his box's top - inside
+     both the 7.17px worst-case headroom and the 12.75px worst-case gap to the
+     expand button, so it cannot collide and cannot clip. */
+  --c3s-splash-d: calc(var(--c3s-agw) * 0.42);
 
   /* Foot clearance. (card height - title-band top) + 12, one number per mount,
      so the vertical layout never has to know the column count or the height.
@@ -1887,6 +1932,39 @@
      `--c3s-e-bar` stays a literal because no token names that curve. */
   --c3s-e-bar: cubic-bezier(0.22, 1, 0.36, 1);
 
+  /* THE VERTICAL FLIGHT CURVE, AND SWAPPING IT IN IS THE WHOLE SEND FIX.
+
+     `.ps-c3s-blob` animates X and `.ps-c3s-blob__in` animates Y, so the
+     two-element, two-curve decomposition that produces a bent, distorting path
+     was already here - and both axes were running ease-outs with y1 near 1, so
+     the two progress curves never parted by more than 0.0701 of travel
+     (measured on this build, max at t=199ms) and the path was straight. Against
+     `--c3s-e-bar` on X, this curve parts by 0.4049: at t=0.2 X is 67% travelled
+     while Y is 27%, so the bead swings out first and then rises. THAT
+     DIVERGENCE IS THE MORPH. Nothing else in the flight changes.
+
+     It also removes the stall the owner was looking at. Y used to reach 95% of
+     its travel at t=0.59 of the beat - 374ms of 620, measured frame by frame -
+     and then crawl the last 15px at under half a pixel per frame; on this curve
+     it reaches 95% at t=0.80 (497ms), so the last 5% of the vertical costs 20%
+     of the duration instead of 45%.
+
+     The value is Telegram's vertical send curve
+     (`ChatMessageTransitionNode.swift:177`), kept at full precision because it
+     is a numeric fit to a spring simulation and not a hand-typed curve: y1 =
+     0.0106 is a near-stalled start, hard acceleration through the middle, a
+     decelerating finish. Its horizontal partner there is
+     `cubic-bezier(0.23, 1, 0.32, 1)`, which `--c3s-e-bar` above already matches
+     to within 0.011 of travel - 0.45px over the longest X run this card has -
+     so X needs NO new literal, and this block's stated allergy to duplicate
+     easing literals is respected: exactly one curve is added. */
+  --c3s-e-fly-y: cubic-bezier(
+    0.19919472913616398,
+    0.010644531250000006,
+    0.27920937042459737,
+    0.91025390625
+  );
+
   /* Measured once per layout by the driver, never per frame:
      the question span's width, the wire's length, and the blob's start point
      and delta. Fallbacks keep the no-JS frame sane. */
@@ -1909,7 +1987,6 @@
     --c3s-fs: 12px;
     --c3s-lab: 10px;
     --c3s-dbw: 46px;
-    --c3s-agw: 48px;
     --c3s-inh: 38px;
     --c3s-bub: 10px;
     --c3s-blob: 15px;
@@ -1922,7 +1999,6 @@
     --c3s-fs: 13px;
     --c3s-lab: 10.5px;
     --c3s-dbw: 52px;
-    --c3s-agw: 54px;
     --c3s-inh: 40px;
     --c3s-bub: 11px;
     --c3s-blob: 16px;
@@ -1952,7 +2028,6 @@
   .ps-c3s-root {
     --c3s-lab: 10px;
     --c3s-dbw: 44px;
-    --c3s-agw: 46px;
     --c3s-inh: 36px;
   }
 }
@@ -1968,7 +2043,6 @@
   --c3s-fs: 15px;
   --c3s-lab: 11px;
   --c3s-dbw: 64px;
-  --c3s-agw: 66px;
   --c3s-inh: 44px;
   --c3s-bub: 13px;
   --c3s-blob: 18px;
@@ -2004,7 +2078,6 @@
     --c3s-fs: 12px;
     --c3s-lab: 10px;
     --c3s-dbw: 34px;
-    --c3s-agw: 36px;
     --c3s-inh: 36px;
     --c3s-bub: 10px;
     --c3s-foot: 90px;
@@ -2090,11 +2163,15 @@
   content: "";
   position: absolute;
   top: calc(
-    4px + (var(--c3s-dbw) * 0.3385 + var(--c3s-agw) * 0.48309) -
+    4px + (var(--c3s-dbw) * 0.3385 + var(--c3s-agh) * 0.6832) -
       (var(--c3s-dbw) * 1.14583 + 6px + var(--c3s-lab) * 1.35)
   );
   bottom: 4px;
-  right: calc(var(--c3s-agent-gap) + var(--c3s-agw) / 2 - 1px);
+  /* 0.40, not 0.5. The box is the 192x232 sprite CELL and the figure is not
+     centred in it: his drawn content stops at x=173 and his legs span x 29..126
+     on frame 4, centre 77.5 -> 0.4036 of the cell. At the box centre the line
+     came out from under his right heel. Read off the drawn pixels, not the box. */
+  right: calc(var(--c3s-agent-gap) + var(--c3s-agw) * 0.6 - 1px);
   width: 2px;
   border-radius: 1px;
   background: var(--theme-accent-text);
@@ -2119,7 +2196,104 @@
   position: relative;
   flex: 0 0 auto;
   width: var(--c3s-agw);
+  height: var(--c3s-agh);
   margin-right: var(--c3s-agent-gap);
+}
+
+/* ============================================================================
+   THE AGENT IS ELARA. He is not new artwork and he is not a redraw: the same
+   `public/images/marcommand/elara-sheet.webp` that already ships lower on this
+   page (`marcommand-live.css:515`), same four 192x232 cells, same knockout
+   token, never recoloured. The abstract hull that used to stand here was
+   correct for a mark set and mute as a character - the owner's word for it was
+   that the agent needs to be "the orange dude", and the site's own CSS already
+   quotes him calling this sprite "the robot dude".
+
+   THREE PIXEL FACTS GOVERN EVERYTHING BELOW.
+
+   1. HE CANNOT TWEEN. `background-size: 400% 100%` over a four-cell strip has
+      no intermediate states; interpolating `background-position-x` continuously
+      slides two half-frames into the box. Every frame change here is a 1ms
+      `steps(1, end)` hard cut, which is what a sprite wants.
+   2. COLOUR IS IN THE PIXELS - 30 baked colours and no orange token exists.
+      `filter: hue-rotate`, `mix-blend-mode` and `opacity` all hit every pixel,
+      so tinting the amber body equally shifts the teal face and the navy
+      outline. THE ONLY THING THAT WORKS IS LIGHT AROUND HIM, and `drop-shadow`
+      composites outside the glyph, so all 30 colours survive it.
+   3. HIS RESTING FRAME IS FRAME 4, THE FULL REACH. That is the base cascade
+      here, so the still card, the no-JS card, the server render and
+      `prefers-reduced-motion` all get the finished pose for free. Motion is
+      opt-in under `.ps-c3s-run`; a blanket `animation: none` would reset him to
+      frame 1, arms down, and lose the pose the still frame depends on.
+   ========================================================================= */
+
+/* The wrapper has to CARRY the box. `.ps-c3s-mark` gets its height from the
+   in-flow `<svg>` the two other marks put inside it; a raster laid in with
+   `position: absolute` gives it nothing, and the first render came back with
+   the wire and the leader line drawn to an empty 48x0 box - the figure was
+   simply not there. */
+.ps-c3s-mark--elara {
+  height: 100%;
+}
+
+.ps-c3s-elara {
+  position: absolute;
+  inset: 0;
+  background-image: url("/images/marcommand/elara-sheet.webp");
+  background-repeat: no-repeat;
+  background-size: 400% 100%;
+  /* FRAME 4 OF 4. Read through a variable so the beat rules and the
+     reduced-motion pin restate a value instead of duplicating a number. */
+  --c3s-frame: 100%;
+  background-position-x: var(--c3s-frame);
+  background-position-y: 0;
+  image-rendering: pixelated;
+}
+
+/* THE GROUND HE STANDS ON. Both SVG marks in this scene carry a cast ellipse
+   inside their own artwork ("the shadow it is NOT standing on"); a raster
+   cannot, and without one he floated a pixel-crisp figure on an untouched
+   ground while the database beside him sat in light. One gradient box, no
+   filter, no extra node in the tree - it is a pseudo-element on the wrapper.
+   Sized off the DRAWN pixels: his feet span x 29..126 of 192 on frame 4, so the
+   ellipse runs 13% to 67% of the box and not edge to edge. */
+.ps-c3s-mark--elara::after {
+  content: "";
+  position: absolute;
+  left: 13%;
+  right: 33%;
+  bottom: -2px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(2, 8, 20, 0.5), rgba(2, 8, 20, 0));
+}
+
+[data-theme="light"] .ps-c3s-mark--elara::after {
+  background: radial-gradient(closest-side, rgba(15, 30, 55, 0.22), rgba(15, 30, 55, 0));
+}
+
+/* THE LIT COPY IS THE SAME SPRITE AGAIN, AND THAT IS THE WHOLE TRICK.
+   The database's lit layer is a recoloured copy of its own SVG. A raster has no
+   roles to remap, so the agent's lit layer is a byte-identical second Elara
+   carrying accent `drop-shadow` passes. The sheet's alpha is binary - measured,
+   the only two alpha values in the file are 0 and 255 - so the copy laid
+   exactly on the original is colour-neutral at every opacity: 0.55 of a pixel
+   over the identical pixel is that pixel. What fades in is only what is OUTSIDE
+   his silhouette: the shadows, and the radial glow `.ps-c3s-lit::before`
+   already paints. So the existing 0 / 0.3 / 0.55 opacity ladder - dark,
+   thinking, answered - drives him with no new animated property. */
+.ps-c3s-lit > .ps-c3s-elara {
+  z-index: 1;
+  filter: drop-shadow(0 0 1.5px var(--theme-accent-text)) drop-shadow(0 0 4px var(--theme-accent-text));
+}
+
+/* The shared radial glow is cut to two thirds behind him. At -18% it is sized
+   for a mark that fills its own box; Elara's drawn pixels stop 19 columns short
+   of the cell's right edge, so the same inset threw the halo well past his
+   silhouette and the render came back reading as a sticker rather than a lit
+   figure. */
+.ps-c3s-mark--elara .ps-c3s-lit::before {
+  inset: -6%;
 }
 
 /* THE LIT LAYER, AND IT IS A PRE-RENDERED SIBLING ON PURPOSE.
@@ -2223,32 +2397,49 @@
        dock port rect x=40..72, y=27..38  ->  right edge 72, mid-line 32.5
        x = 72/96 = 0.75      y = 32.5/96 = 0.3385
 
-     C3AgentColumn, viewBox 104x104, banked `rotate(-11 51 84)`
-       slot rect y=38..54 -> centre 46; the BODY's left outline at y 46 is x 14
-       (the path runs straight from `M14 42` to `14 60`), so the aperture leaves
-       the silhouette at local (14, 46). After the bank, with cos -11 = 0.98163
-       and sin -11 = -0.19081:
-         x' = 51 - 37(0.98163) - 38(0.19081) =  7.43  ->  7.43/104 = 0.07143
-         y' = 84 + 37(0.19081) - 38(0.98163) = 53.76  -> 53.76/104 = 0.51691
+     Elara, the sprite CELL 192x232, no viewBox and no bank. THE OLD PAIR IS
+     GONE, NOT ADAPTED: 0.07143 / 0.51691 described C3AgentColumn's banked slot
+     and means nothing on a raster.
+
+   HE HAS A REAL PORT AND IT IS DRAWN INTO THE SHEET. Reading the alpha of
+   frame 4 off a canvas row by row, rows y 58..89 are the only ones on his whole
+   left side whose outline reaches x = 0: a 32-row, 7-column box proud of the
+   head, navy outline `#08132A`, salmon interior `#D7675A` - a side-mounted jack
+   on the left of his head. Nothing else about him sticks out that far. So the
+   wire does not stop beside him and it does not stop on his jaw; it plugs in:
+
+       y = (58 + 89) / 2 = 73.5   ->  73.5 / 232 = 0.3168
+       x = 0                      ->  the wire ends at the box's left edge
+
+   THE SHIFT HAS A CEILING AND THIS PORT CLEARS IT. The agent is shifted up by
+   `dbw*0.3385 - agh*PORT` so its port meets the database's, and `.ps-c3s-wrap`'s
+   border box IS the clip box (`.ps-bento-card__inner` clips at `inset(6px)`;
+   see the `--c3s-bleed` note above), so a shift steeper than `--c3s-p` cuts the
+   top off his head. 0.3168 leaves 7.2px of headroom at the base tier and 7.1px
+   in the mobile dialog, the two tightest. The first pass aimed the line at his
+   jaw (y 97, 0.42) and left 1.18px - a render that read as clipped. His chest,
+   the row his extended arm sits on, needs 0.59 and clips by ~10px.
 
    THE TWO PORTS ARE NOT AT THE SAME HEIGHT, and with both marks top-aligned
    they are ~10px apart at tier L. A horizontal line cannot reach both, and the
    gap is larger than either opening, so the line would arrive on the shell
    beside the hole. The agent is shifted UP by exactly the difference instead of
-   the database being shifted down: the agent is banked and drawn floating clear
-   of its own shadow, so it carries a vertical offset without looking dropped -
-   and, unlike moving the database, it costs the stage nothing, because the
-   marks band's height is set by the database block plus its label either way.
-   Measured after: the band is unchanged at every box. */
+   the database being shifted down: unlike moving the database, it costs the
+   stage nothing, because the marks band's height is set by the database block
+   plus its label either way. Checked at all six mounts after the swap: his box
+   bottom sits `dbw*0.3385 + agh*0.58` below the band top - 45.2px in the mobile
+   dialog against a 58.5px band, 55.3px in the desktop dialog against 94.2px -
+   so he is inside the declared band at every one of them and the leader line's
+   negative `top` stays negative. */
 .ps-c3s-agent {
-  margin-top: calc(var(--c3s-dbw) * 0.3385 - var(--c3s-agw) * 0.51691);
+  margin-top: calc(var(--c3s-dbw) * 0.3385 - var(--c3s-agh) * 0.3168);
 }
 
 .ps-c3s-wire {
   position: absolute;
   top: calc(var(--c3s-dbw) * 0.3385 - 1px);
   left: calc(var(--c3s-dbw) * 0.75);
-  right: calc(var(--c3s-agent-gap) + var(--c3s-agw) * 0.92857);
+  right: calc(var(--c3s-agent-gap) + var(--c3s-agw));
   height: 2px;
 }
 
@@ -2551,6 +2742,31 @@
   overflow: hidden;
 }
 
+ /* THE PILL ACKNOWLEDGES THE SEND WITHOUT ITS BOX MOVING BY ONE PIXEL.
+   "It bounces out of the text box", so the box has to react - and it may not
+   change size. Three measured reasons: the pill carries the question text and a
+   `border-radius: calc(var(--c3s-inh) / 2)`, so a scale distorts both; it is
+   `flex: 0 0 auto` under the stage, so a height change moves the answer panel,
+   whose clearance to this pill is 9.7px at 360x640; and its fill was tuned to
+   6.22:1 under the shared 142.8px scrim, which a transform would not preserve.
+
+   So the cue is a pseudo-element and ONLY `opacity` animates on it. Not
+   `box-shadow` on the pill itself: that would repaint a text-bearing box every
+   frame AND overwrite the light theme's own `0 1px 3px` shadow for the duration
+   of the animation. An overlay leaves both alone, inherits the radius, and is
+   clipped by the pill's own `overflow: hidden`. The pill's
+   `getBoundingClientRect()` is byte-identical at every frame of the send - that
+   is asserted, not assumed. */
+.ps-c3s-pill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--theme-accent-text) 22%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
 [data-theme="light"] .ps-c3s-pill {
   background: var(--color-white, #ffffff);
   border-color: var(--theme-border);
@@ -2644,6 +2860,64 @@
   height: 100%;
 }
 
+/* ---- the impact ring ---------------------------------------------------- */
+
+/* "AND THEN SPLASHES INTO PLACE." This is the one beat of the four with no
+   reference implementation to read: iMessage has no default-send impact (the
+   only splash on any iOS version examined is the opt-in Slam effect, an impact
+   manager plus a particle emitter). Slam's STRUCTURE - impact, then emission -
+   is the borrowed part; the numbers are authored.
+
+   IT NEEDS NO NEW MEASUREMENT. `measure()` already writes the origin
+   (`--c3s-blob-x/y`) and the travel vector (`--c3s-blob-dx/dy`), so the docking
+   point is `(x + dx, y + dy)` in `.ps-c3s-wrap` space and is derivable in pure
+   CSS. That is the same expression the bead itself flies to, verified against
+   DRAWN pixels rather than a rect: 0.008px in x and 0.257px in y from the teal
+   hand's measured centroid, worst case over ten viewports in both themes. So
+   the ring lands on the hand at every mount, and NOTHING new is written into
+   the measure effect - which is the constraint that protects the frozen
+   question-typing cadence.
+
+   `opacity: 0` AT REST IS CORRECT AND IS NOT THE "shape C" TRAP. That trap
+   (see the reduced-motion note above) is fatal for an element carrying
+   CONTENT, whose unfilled keyframe leaves it invisible for ever under
+   `prefers-reduced-motion`. This ring is decoration with nothing inside it:
+   invisible IS its resting state, in the still card, the no-JS card, the server
+   render and `reduce` alike, and every visible state it has comes from a
+   one-shot keyframe that only exists under `.ps-c3s-run`. */
+.ps-c3s-splash {
+  position: absolute;
+  left: calc(var(--c3s-blob-x) + var(--c3s-blob-dx));
+  top: calc(var(--c3s-blob-y) + var(--c3s-blob-dy));
+  width: var(--c3s-splash-d);
+  height: var(--c3s-splash-d);
+  margin: calc(var(--c3s-splash-d) / -2) 0 0 calc(var(--c3s-splash-d) / -2);
+  /* 2px, NOT 1.5px, AND THE REASON IS MEASURED RATHER THAN AESTHETIC.
+     `getComputedStyle(...).borderTopWidth` on the mounted ring returns **1px in
+     Chromium and 1px in Firefox** and only WebKit keeps **1.5px** - both at
+     deviceScaleFactor 2, where 1.5px is exactly representable. Two of the three
+     engines were therefore drawing a HAIRLINE, and the ink measurement follows:
+     at the frozen keyframe peak WebKit laid down 57.6 units of ink against
+     Chromium's 39.7 for the identical geometry. An integer width removes the
+     snap and makes the three engines agree.
+
+     It costs nothing in clearance. Tailwind Preflight's `box-sizing:
+     border-box` is in force (verified at the element: `boxSizing:
+     "border-box"`), so the stroke thickens INWARD and the ring's outer diameter
+     is still exactly `--c3s-splash-d` = 20.16px. The margin to
+     `.ps-bento-card__expand` is set by that outer box and is unchanged.
+
+     A `drop-shadow` glow was built and measured as an alternative. It renders in
+     all three engines, but it pushed DRAWN ink 2.5-3.0px past the ring's own
+     box, which at 320 and 768 would have spent 60% of the 5.03px that is the
+     only thing separating this decoration from the card's one control. Rejected
+     on that measurement, not on taste. */
+  border: 2px solid var(--theme-accent-text);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ============================================================================
    RUN STATE.  Everything below this line requires `.ps-c3s-run`, which the
    driver adds only when it has already cleared `prefers-reduced-motion`, the
@@ -2657,12 +2931,44 @@
    cost. */
 .ps-c3s-run .ps-c3s-blob,
 .ps-c3s-run .ps-c3s-blob__in,
+.ps-c3s-run .ps-c3-m-bead,
+.ps-c3s-run .ps-c3s-splash,
 .ps-c3s-run .ps-c3s-packet {
   will-change: transform;
 }
 
 .ps-c3s-run .ps-c3s-lit {
   will-change: opacity;
+}
+
+/* HE PUTS HIS HAND OUT WHEN THE MESSAGE IS SENT, AND IT IS A CUT.
+   Frame 1 is arms-down, frame 4 is the full reach, and there is nothing between
+   them a browser could interpolate - `background-size: 400% 100%` over a
+   four-cell strip has no half states, so a continuous transition slides two
+   frames into the box at once. 1ms `steps(1, end)` is the whole animation.
+
+   THE DEFAULT IS THE REACH AND THIS IS THE EXCEPTION, not the other way round.
+   Only the three beats before the send drop him to frame 1: t0 and b0 are the
+   rewind, t1 is the question typing. He goes to frame 4 on the first frame of
+   b1, which is the frame the bead leaves the send glyph - so the reach and the
+   throw start together and the bead lands in a hand that is already there. Beat
+   ends, he holds the reach for the remaining 14.1s of the cycle, which is the
+   pose the still card, the server render and `reduce` already show.
+
+   NOTHING HERE TOUCHES `.ps-c3s-agent`. The swap is a paint on a descendant:
+   no transform, no layout, no change to the measured box - which matters
+   because `measure()` re-reads `.ps-c3s-agent.getBoundingClientRect()` at every
+   b0 and a transform in flight on that element would corrupt the send geometry
+   and the caret width together. Any future recoil belongs on
+   `.ps-c3s-mark--elara`, never on the agent box. */
+.ps-c3s-run .ps-c3s-elara {
+  transition: background-position-x 1ms steps(1, end);
+}
+
+.ps-c3s-run[data-beat="t0"] .ps-c3s-elara,
+.ps-c3s-run[data-beat="b0"] .ps-c3s-elara,
+.ps-c3s-run[data-beat="t1"] .ps-c3s-elara {
+  --c3s-frame: 0%;
 }
 
 /* ---- T0: the scene rewinds --------------------------------------------- */
@@ -2783,7 +3089,261 @@
 
 .ps-c3s-run[data-beat="b1"] .ps-c3s-blob__in {
   transform: translateY(var(--c3s-blob-dy));
-  transition: transform var(--c3s-d-fly) var(--ease-out-quart);
+  /* THE HIGHEST-VALUE LINE IN THIS FILE'S SEND. Was `--ease-out-quart`, which
+     is within 0.0701 of `--c3s-e-bar` on X and made the two-axis split inert.
+     See `--c3s-e-fly-y`. */
+  transition: transform var(--c3s-d-fly) var(--c3s-e-fly-y);
+}
+
+/* ============================================================================
+   THE SEND IS FOUR BEATS, AND THREE OF THEM START ON THE SAME FRAME.
+
+   The owner's words: "it bounces out of the text box and morphes into a blue
+   blob and then splashes into place. that is what it needs to do with the
+   agent." Four beats, in his order:
+
+     1 LAUNCH   0 -> 260ms   the glyph presses and releases; the pill flinches
+     2 MORPH    0 -> 620ms   the bead distorts along travel and RESOLVES on
+                             arrival
+     3 FLIGHT   0 -> 620ms   the two-axis bent path above
+     4 SPLASH 620 -> 880ms   an impact ring on his hand, and he takes the hit
+
+   1, 2 and 3 are simultaneous by design - beat 1 is the shortest so it reads
+   as the first event, and beat 2's distortion is what makes beat 3's path read
+   as a morph rather than a move, so those two are fully co-timed and resolve on
+   the same frame. Beat 4 is butt-jointed to the `b1` -> `t2` boundary, because
+   the impact IS the arrival and not a reaction to it.
+
+   THE SUM FITS INSIDE TWO TIMELINE ROWS THAT ALREADY EXIST: `b1` is 620ms and
+   `t2` is 480ms, so 880ms of choreography uses 1,100ms of envelope with 220ms
+   of slack. Not one row of `C3S_TIMELINE` changes, so the cycle stays 16,600ms
+   and the typing basis that is pinned to it cannot move.
+
+   ELAPSED TIME DOES NOT GROW: the old send was 620ms of flight of which ~230ms
+   was perceptible, then it sat still. This is 880ms of which all 880ms moves.
+
+   AND THESE ARE THE SCENE'S FIRST NON-TRIVIAL @keyframes, WHICH IS ALLOWED. The
+   "zero keyframes, no overshoot" rule at the top of this file governs the
+   `.ps-c3-k-*` marks language, not the `.ps-c3s-*` scene: the scene is a later
+   system with its own build sentinel, it is an infinite loop, and it already
+   ships `@keyframes ps-c3s-blink`. The no-overshoot half of that rule DOES
+   still bind anything drawn on the sprite itself - see beat 4's recoil, which
+   goes out and comes back and does nothing more.
+   ========================================================================= */
+
+/* ---- BEAT 1: LAUNCH - "it bounces out of the text box" ----------------- */
+
+/* A uniform scale is safe on THIS element and, in this scene, only on this
+   element: the send glyph is a `border-radius: 50%` disc containing a stroked
+   path, so there is no corner radius to distort and no glyph to squash. The
+   squash is a FACTOR and not a pixel delta - the disc is
+   `calc(var(--c3s-inh) * 0.62)`, 21.1px to 27.3px across the mounts - so a
+   taller pill presses by more pixels on its own, which is the same relationship
+   iOS expresses by computing its squash from the compose field's size.
+
+   Deepest at 23% (60ms), so the first visible feedback lands inside the 100ms
+   window even though nobody triggered this send; releases 6% proud at 58%
+   (151ms) and settles at 260ms. 6% of 22.3px is 1.3px - small, and it is the
+   difference between a glyph that fired and a glyph that did nothing at all,
+   which is what shipped. */
+.ps-c3s-run[data-beat="b1"] .ps-c3s-send {
+  animation: ps-c3s-send-fire 260ms 1;
+}
+
+@keyframes ps-c3s-send-fire {
+  0% {
+    transform: scale(1);
+    animation-timing-function: ease-in;
+  }
+  23% {
+    transform: scale(0.86);
+    animation-timing-function: ease-out;
+  }
+  58% {
+    transform: scale(1.06);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.ps-c3s-run[data-beat="b1"] .ps-c3s-pill::after {
+  animation: ps-c3s-pill-press 260ms 1;
+}
+
+@keyframes ps-c3s-pill-press {
+  0% {
+    opacity: 0;
+    animation-timing-function: ease-in;
+  }
+  23% {
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---- BEAT 2: MORPH - "morphes into a blue blob" ------------------------ */
+
+/* THE SIZE HAS TO DISTORT ALONG THE VELOCITY VECTOR, AND TRAVEL HERE IS 82-89%
+   VERTICAL, so the stretch is `scaleY` and the squeeze is `scaleX`. The two
+   flight curves cannot supply this: they put the snappy curve on the MINOR
+   axis, so driving the bead's height off `--c3s-e-fly-y` would make it wider
+   and flatter mid-flight - a pancake broadside to travel. So the size runs on a
+   THIRD element with its own timeline, and it needs no new DOM: the bead SVG is
+   already a child of `.ps-c3s-blob__in`.
+
+   NON-UNIFORM SCALE IS PERMITTED HERE AND NOWHERE ELSE IN THIS SCENE. `C3Bead`
+   is an SVG lozenge with no text and no corner radius, so scaling it
+   non-uniformly is visually identical to interpolating its frame - which is
+   what the reference does - and costs nothing. Animating `width`/`height`
+   instead would be the literal reading and the wrong call: it puts a layout
+   property inside this page's second infinite loop, on a page whose dominant
+   measured cost is compositing.
+
+   IT RESOLVES TO scale(1) AT 100%, ON THE FRAME BEAT 3 LANDS, AND THAT IS NOT
+   OPTIONAL. A pointer entering the card parks the beat chain at a BOUNDARY, so
+   the arrived frame can be held as a still for as long as the mouse stays - a
+   bead frozen at the 68% stop would be a visibly squashed blob parked on his
+   hand. The base cascade is `transform: none`, so `fill: none` (the default)
+   also lands on the resting frame, which is what keeps the still card, the
+   no-JS card, the server render and `reduce` correct for free. */
+.ps-c3s-run[data-beat="b1"] .ps-c3-m-bead {
+  animation: ps-c3s-bead-morph var(--c3s-d-fly) var(--ease-out-quart) 1;
+}
+
+@keyframes ps-c3s-bead-morph {
+  /* emerging from the glyph, ~6px wide */
+  0% {
+    transform: scaleX(0.42) scaleY(0.42);
+  }
+  /* t=87ms  LAUNCHED: stretched along travel, narrowed across it */
+  14% {
+    transform: scaleX(0.72) scaleY(1.34);
+  }
+  /* t=236ms the counter-stretch - this is the wobble that reads as "blob" */
+  38% {
+    transform: scaleX(1.14) scaleY(0.92);
+  }
+  /* t=422ms second, damped */
+  68% {
+    transform: scaleX(0.94) scaleY(1.06);
+  }
+  /* t=620ms RESOLVED, exactly on arrival */
+  100% {
+    transform: scaleX(1) scaleY(1);
+  }
+}
+
+/* ---- BEAT 4: SPLASH - "and then splashes into place" ------------------- */
+
+/* Fired from `t2` as a one-shot ANIMATION, not a transition: `t2` starts on the
+   exact frame `b1` ends, so the attribute flip already is the arrival and needs
+   no new driver machinery, and an animation runs to completion independently of
+   the transitions the same flip starts. `t2` is 480ms and this is 260ms, so it
+   finishes with 220ms of slack inside its own beat, alongside the 320ms
+   absorption tint and the 120ms bead-eat that already ship. */
+.ps-c3s-run[data-beat="t2"] .ps-c3s-splash {
+  animation: ps-c3s-splash 260ms 1;
+}
+
+/* THE ALPHA RUNS WITH THE EXPANSION, NOT AGAINST IT.
+
+   The first version of this curve was 0.62 -> 0.20 -> 0, which made the ring
+   MOST OPAQUE WHEN IT WAS SMALLEST: peak alpha landed at scale 0.34, a 6.9px
+   object, and by the time it reached its full 20.96px it was down to 0.20 over
+   a near-white card. Measured against a paired ring-hidden frame of the same
+   static scene, that peaked at a contrast of 1.31-1.36:1 in every engine and
+   both themes - which is why it was called invisible in light, and why it read
+   as "a small pale dot" even in the theme that flatters it.
+
+   A shockwave is bright as it travels. So: born at 0.45 while it is still
+   small, up to full alpha by 18% (t=47ms) as it clears the hand, held at 0.88
+   through the size peak, then dumped to 0. The measured ink peak moves off
+   t=100-140ms and onto t=161ms - the ring is now most visible exactly when it
+   is largest, which is the beat.
+
+   THE GEOMETRY AND THE CLOCK ARE UNTOUCHED. 260ms, one shot, scale 0.34 ->
+   1.04 at 62% (t=161.2ms) -> 1.00, so the peak diameter is still 20.96px, the
+   ring is still gone by 260ms inside a 480ms `t2`, and every clearance figure
+   measured against the expand affordance still holds. Only alpha moved.
+
+   The 62% -> 100% segment inherits `ease-out` from the 62% keyframe, as before;
+   the fade is the only thing that got faster. */
+@keyframes ps-c3s-splash {
+  0% {
+    transform: scale(0.34);
+    opacity: 0.45;
+    animation-timing-function: ease-out;
+  }
+  /* t=47ms - full alpha while the ring is still inside the hand. */
+  18% {
+    transform: scale(0.62);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  /* t=161ms - 4% proud, then settles. Apple's own calibration puts 0.15 at
+     "not very bouncy", 0.30 at "noticeable" and cautions above 0.4; this is
+     0.22 character on a ring, deliberately under the launch's. */
+  62% {
+    transform: scale(1.04);
+    opacity: 0.88;
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* HE TAKES THE HIT, AND IT IS TWO INTEGER POSITIONS - NEVER A TWEEN.
+
+   Everything about this sprite forbids the obvious version. He cannot be
+   recoloured (30 colours are baked into the sheet; any filter that shifts the
+   amber equally shifts the teal face and the navy outline) and he cannot be
+   tweened (`background-size: 400% 100%` over a four-cell strip has no
+   intermediate frames). And `image-rendering: pixelated` means the figure
+   shimmers on any fractional device offset: a smooth 90ms tween would pass
+   through about eleven of them.
+
+   So: `steps(1, end)`, which holds the START value of each segment and then
+   cuts. He is displaced by exactly (-1px, -2px) for 88ms and then cut back to
+   zero - two positions, both integers, no intermediate frame to resample. That
+   is also the sheet's own idiom; its single state change is a 1ms
+   `steps(1, end)` cut.
+
+   THE DIRECTION IS THE BEAD'S MOMENTUM, NOT A GENERIC BOUNCE. `--c3s-blob-dx`
+   is negative at all sixteen boxes and `-dy` is 82-89% of travel, so the
+   message arrives from his lower right travelling up and to the left; the hit
+   pushes him up and to the left. Out and back, no overshoot - the marks
+   language forbids overshoot on the figure and it is right to.
+
+   THE TRANSFORM IS ON THE SPRITE LAYERS, NOT ON THE WRAPPER AND NOT ON
+   `.ps-c3s-agent`. Not the agent box, because `measure()` differences that
+   element's rect and a transform in flight on it would corrupt the send
+   geometry and the caret width together. Not the wrapper, because the wrapper
+   carries the cast contact shadow: moving that too would read as a hop rather
+   than as a figure rocking on the spot. This selector matches both the base
+   sprite and the byte-identical lit copy, so they stay in register. It touches
+   `transform` only - never `--c3s-frame`, so the frame-4 reach is untouched -
+   and there is no competing `transform` transition on this element. */
+.ps-c3s-run[data-beat="t2"] .ps-c3s-mark--elara .ps-c3s-elara {
+  animation: ps-c3s-elara-jolt 260ms steps(1, end) 1;
+}
+
+@keyframes ps-c3s-elara-jolt {
+  0% {
+    transform: translate(-1px, -2px);
+  }
+  34% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 .ps-c3s-run[data-beat="t2"] .ps-c3s-blob {
@@ -3204,6 +3764,34 @@
    instead of jumping to it. After the class is gone there is no `.ps-c3s-run`
    rule left in the cascade and the DOM is byte-identical to a page that never
    ran any JavaScript - which is the only way to prove it. */
+/* `.ps-c3s-blob`, `.ps-c3s-blob__in` AND `.ps-c3s-splash` WERE MISSING FROM
+   THIS GROUP, AND ON A SEND THAT NOW HAS A DISTORTING BLOB AND A RING THAT
+   MATTERS. The blob's base opacity is 0, so dropping `[data-beat="b1"]` snapped
+   it 1 -> 0 in ONE FRAME while every other element in the scene curved out over
+   200ms. Nobody noticed on a 16px pale lozenge; a blob mid-distortion and a
+   half-expanded ring are a visible cut. Both axes are listed, not just the
+   outer one: the group transitions `transform`, and with only `.ps-c3s-blob`
+   in it the horizontal would have curved back over 200ms while the vertical
+   snapped home in a frame - a worse artifact than the one being fixed.
+
+   MEASURED AFTER: opacity 1.000 -> 0.977 -> 0.779 -> 0.510 -> 0.296 -> 0.162 ->
+   0.078 -> 0.028 -> 0.004 across ~180ms, with both transform axes unwinding
+   together. Before, it was 1 -> 0 on one frame.
+
+   `.ps-c3s-splash` IS DELIBERATELY NOT IN THIS GROUP, AND THAT IS A
+   MEASUREMENT, NOT AN OVERSIGHT. Adding it does nothing: every visible value
+   the ring has comes from a one-shot `animation`, and its DECLARED opacity is 0
+   in both the `t2` state and the rest state, so there is no property change for
+   a transition to run. Instrumented on a halt fired 26ms into the splash, with
+   the ring in the group: computed opacity went 0.302 -> 0.000 on a single
+   frame, exactly as it does without the rule. Cancelling the animation is what
+   ends the ring, and removing `[data-beat="t2"]` from the selector already does
+   that - so an `animation: none` rule under `rest` would be equally inert. The
+   residue is a 20px ring at <= 0.32 opacity disappearing in one frame on a card
+   that is by then under 20% on screen; it is left as it is rather than papered
+   over with a rule that does not work. */
+.ps-c3s-run[data-beat="rest"] .ps-c3s-blob,
+.ps-c3s-run[data-beat="rest"] .ps-c3s-blob__in,
 .ps-c3s-run[data-beat="rest"] .ps-c3s-panel,
 .ps-c3s-run[data-beat="rest"] .ps-c3s-lit,
 .ps-c3s-run[data-beat="rest"] .ps-c3s-wire__out,

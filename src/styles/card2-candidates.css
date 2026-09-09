@@ -1534,31 +1534,6 @@
   white-space: nowrap;
 }
 
-/* ── THE DECISION. Same material and same construction as .ps-c2b-dia - a
-      clipped outer shape in the stroke colour with a clipped inner face inset
-      from it - but it STRETCHES to fill its column, which is what turns its
-      left and right vertices into grid lines. ── */
-.ps-c2f-dia {
-  position: relative;
-  z-index: 1;
-  justify-self: stretch;
-  align-self: center;
-  box-sizing: border-box;
-  height: var(--c2-dia-h);
-  display: grid;
-  place-items: center;
-  background: var(--c2-dia-stroke);
-  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
-  filter: drop-shadow(var(--c2-dia-shadow));
-}
-.ps-c2f-dia::before {
-  content: "";
-  position: absolute;
-  inset: var(--c2-dia-stroke-w);
-  background: var(--c2-slab);
-  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
-}
-
 /* ── THE TERMINAL. A STADIUM, and that is the whole point: in flow chart
       language a rectangle is a process and a stadium is a terminator, so the
       shape itself says the flow ENDS here. Green border, green check, and
@@ -1781,7 +1756,6 @@
 }
 .ps-c2f1-trig { grid-area: trig; }
 .ps-c2f1-e1 { grid-area: e1; }
-.ps-c2f1-dia { grid-area: dia; }
 .ps-c2f1-yes { grid-area: yes; }
 .ps-c2f1-e2 { grid-area: e2; }
 .ps-c2f1-act { grid-area: act; }
@@ -1853,7 +1827,6 @@
 .ps-c2f2-e1 { grid-area: e1; }
 .ps-c2f2-mid { grid-area: mid; }
 .ps-c2f2-e1b { grid-area: e1b; }
-.ps-c2f2-dia { grid-area: dia; }
 .ps-c2f2-outa { grid-area: outa; justify-self: center; }
 .ps-c2f2-outb { grid-area: outb; }
 .ps-c2f2-ret { grid-area: ret; }
@@ -1905,7 +1878,6 @@
 }
 .ps-c2f3-trig { grid-area: trig; }
 .ps-c2f3-e1 { grid-area: e1; }
-.ps-c2f3-dia { grid-area: dia; }
 .ps-c2f3-hold { grid-area: hold; }
 .ps-c2f3-stop { grid-area: stop; }
 .ps-c2f3-yes { grid-area: yes; }
@@ -2039,7 +2011,6 @@
 .ps-c2f4-e1 { grid-area: e1; }
 .ps-c2f4-mid { grid-area: mid; }
 .ps-c2f4-e1b { grid-area: e1b; }
-.ps-c2f4-dia { grid-area: dia; }
 .ps-c2f4-outa { grid-area: outa; justify-self: center; }
 .ps-c2f4-list { grid-area: outb; }
 .ps-c2f4-ret { grid-area: ret; }
@@ -2145,7 +2116,6 @@
    node rather than being parked beside it. */
 .ps-c2f5-mid { grid-area: mid; padding-left: 44px; }
 .ps-c2f5-e1b { grid-area: e1b; }
-.ps-c2f5-dia { grid-area: dia; }
 .ps-c2f5-outa { grid-area: outa; justify-self: center; }
 .ps-c2f5-outb { grid-area: outb; }
 
@@ -2905,7 +2875,7 @@
      file, so a bump there can be overwritten by a concurrent edit and a stale
      sentinel certifying the wrong build is worse than no sentinel. Read this
      one to prove the carousel you are looking at is the carousel you think. */
-  --c2car-build: "car-11-timer-four-gates";
+  --c2car-build: "car-12-five-gates-focus";
   /* The art box. Same box every one of the five was authored against, so a
      slide IS the art box - and because the art box is symmetric about the
      card (6px of ring per side, clipped), a slide snapped flush is centred on
@@ -2986,4 +2956,303 @@
   .ps-c2car-track {
     scroll-behavior: auto;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE NODE GRAPH SET   -   card2-candidates.tsx `C2FlowGraph`
+   symptoms #4 (stretched diamonds) and #5 (n8n's flow-chart language)
+   ═══════════════════════════════════════════════════════════════════════════
+
+   >> THIS SHEET DECLARES ALMOST NO GEOMETRY, AND THAT IS THE POINT. The
+   defect it replaces was geometry expressed in CSS grid tracks: a
+   `justify-self: stretch` box with a fixed `height` takes its width from
+   whatever column it lands in, so the old decision diamond's aspect ratio was
+   a function of the viewport and ran from 2.21:1 up to 9.19:1 across the five
+   slides and eighteen measured widths. Everything below the veil now lives in
+   one inline SVG with a fixed `viewBox` of 400 x 310, so every ratio in the
+   picture is frozen and the card's width changes only the scale factor. There
+   is no CSS length in this block that any shape's proportions depend on.
+
+   >> NO NEW `@layer`. NO `--card-*` DECLARATION. Both are prohibited
+   (globals.css:288-460 owns the layer set; the `--card-*` family has 20
+   `var()` uses and zero declarations by design, per card1-candidates.css:1167).
+   Every custom property below is namespaced `--c2g-*`, local to
+   `.ps-c2g-root`, and every colour resolves to a token declared in
+   globals.css - `--theme-text-primary`, `--theme-text-secondary`,
+   `--theme-accent-text`, `--theme-success-text`, `--theme-art-ground-b`,
+   `--theme-art-veil-rgb`. No token is added, changed, or invented.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.ps-c2g-root {
+  /* >> THIS SET'S OWN BUILD SENTINEL, and it is deliberately NOT `--c2-build`.
+     That one is written by two teams in this same file - one property, two
+     writers, last write wins - and it has already certified a build whose
+     markup had moved. Gate on this one, and quote it beside every capture. */
+  --c2g-build: "g-10-vb-top-reserve-22";
+
+  /* ── COLOUR. One neutral carries every outline, every connector and every
+        port, at one weight. Chroma appears exactly twice in the whole picture:
+        the accent on the trigger's bolt, and the success tone inside the
+        settled outcome's tick. The research is explicit that this is the
+        structure - "one neutral for every node outline, connector and port;
+        chroma only from service marks plus one accent". Node outlines stay
+        neutral even on the good outcome, which is why `--c2g-ok` is used on a
+        glyph and nowhere else. ── */
+  /* >> THESE THREE WERE RAISED FROM 44 / 9 / 76 AFTER READING THE WHOLE BENTO
+     SET IN ONE FRAME, WHICH IS THE ONLY PLACE THE PROBLEM WAS VISIBLE. On its
+     own the card looked right. Beside its four siblings it was the quietest
+     object on the page by a wide margin: card 1 is dense dashboard slabs, card
+     3 is filled bars and a chat bubble, card 4 is a bright browser-and-phone
+     mockup, card 5 is a filled search result stack - all solid mass, all
+     carrying real chroma - and a one-neutral hairline diagram beside them read
+     as pale and under-weight rather than as restrained.
+     The correction is VALUE ONLY: no fourth hue, no gradient, no node shadow,
+     still one neutral at one weight. That keeps every craft rule the research
+     set while giving the nodes enough presence to hold their own in the row.
+     Contrast here comes from value, which is also the cheapest thing to get
+     right in both themes at once. */
+  --c2g-line: color-mix(in srgb, var(--theme-text-primary, #FFFFFF) 54%, transparent);
+  --c2g-face: color-mix(in srgb, var(--theme-text-primary, #FFFFFF) 15%, var(--theme-art-ground-b, #0C1E3A));
+  --c2g-ink: color-mix(in srgb, var(--theme-text-primary, #FFFFFF) 88%, transparent);
+  --c2g-accent: var(--theme-accent-text, #1590FF);
+  --c2g-ok: var(--theme-success-text, #00D4AA);
+
+  /* ONE weight, held constant in CSS pixels by `non-scaling-stroke` because
+     this picture renders at scale 0.71 through 1.11 depending on card width. A
+     scaled 1.5 hairline would be 0.8px on a phone and would read as a broken
+     line rather than as a thin one. */
+  --c2g-w: 1.5px;
+
+  /* The reveal. Zero keyframes: the interior entrance is two transitions and a
+     dash offset, which is the smallest vocabulary that can express "the nodes
+     arrive in flow order and each edge draws after its own endpoints". */
+  --c2g-lead: 90ms;
+  --c2g-step: 78ms;
+  --c2g-dur: 420ms;
+
+  position: absolute;
+  inset: 0;
+  /* No background of its own. The card's ground shows through, which is what
+     makes the veil below able to dissolve the art INTO it rather than onto a
+     second surface. */
+}
+
+/* ── THE CANVAS. The SVG box is the art band - the same envelope the five
+      grid flows used, `100% - 88px`, the region above the band the card face
+      paints its title over. `xMidYMid meet` CENTRES the graph in that band
+      and scales it to fit without ever distorting it:
+
+      >> IT WAS `yMin` AND A RENDER CHANGED IT, FOR A REASON NO RATIO WOULD
+      HAVE PREDICTED. `.ps-bento-card__expand` is a FIXED 44 x 44 affordance at
+      a fixed 12px inset from the card's top-right corner - 32 x 32 at 16px
+      above 940 - and it does NOT scale with the card. The artwork does. So the
+      narrower the card, the smaller the graph and the proportionally LARGER
+      that button; at 320x568 the settled-outcome node's top-right corner ran
+      underneath it, measured as a real rect intersection at x >= 216, y <= 56
+      inside a 272px card. It appeared at exactly ONE of five probed viewports,
+      and no clearance measurement previously recorded on this card would have
+      caught it - every one of them asked about the title band, which is where
+      this card's other two defects lived. The expand affordance is part of the
+      safe area, and it was not in anybody's safe area until this capture.
+      Centring the composition in the art band clears it at every width, and
+      fixes what the same capture also showed: top-anchored, the picture left
+      146px of dead card between the loop's floor and the title at 320px.
+
+        `meet` is what guarantees #4 cannot return. It scales uniformly. There
+        is no combination of card width and height that can make a 1:1 node
+        anything other than a square, or the composition anything other than
+        1.3566:1. Those are two different constants and both are correct: the
+        NODE is 56 x 56 viewBox units (aspect 1.0000) and the whole drawn
+        COMPOSITION is 369 x 272 units (aspect 1.3566). Reconciling them cost
+        an hour of one review round; do not "fix" either to match the other.
+
+      >> THE `88px` IS LOAD BEARING AND IT IS NOT A GUESS. `.ps-bento-card__text`
+      starts 68.80px above the face's bottom edge at <=639 and 64.89px above it
+      at >=640 (measured, all three engines, 2026-09-08). 88px of reserve plus
+      the 20 viewBox units still held below the ink is what produces the
+      artwork-to-title clearance Phase 1 bought - 40.31px before this change,
+      41.11px worst case after it, against a 37.28px floor. Cutting the reserve
+      to 82px puts the clearance at 35.49px and FAILS. The reserve and the
+      viewBox's bottom margin are interchangeable: clearance = reserve - 68.80
+      + (bottom units x scale). Move either one and you are spending the same
+      budget twice.
+
+      Measured fill, chromium/webkit, after the viewBox's top reserve went
+      34 -> 22 units (art width / art height as a % of the 12px-larger art
+      box; the VISIBLE card is 12px narrower than this box, so card-relative
+      width fill is ~4 points higher):
+
+        320   92.25 / 44.70   unchanged - width-bound, and already maximal
+        470   92.25 / 68.30   was 89.72 / 66.44
+        639   67.04 / 68.98   was 64.57 / 66.44
+        900   92.25 / 67.69   was 90.55 / 66.44
+        939   89.93 / 68.98   was 86.62 / 66.44
+        940   92.25 / 45.95   unchanged - width-bound, and already maximal
+        1440  92.25 / 63.38   unchanged - width-bound, and already maximal
+
+      >> THE THREE "UNCHANGED" ROWS ARE NOT AN OVERSIGHT, THEY ARE THE CEILING.
+      At those widths the picture is WIDTH-bound: it already spans 96.3% of the
+      visible card and its leftmost label sits 1.81px inside the card's clip
+      edge in chromium and webkit, 0.75px in firefox. It cannot be scaled up.
+      Their remaining dead
+      air - 150px of it at 320 - is a 1.3566:1 composition in a 272 x 420
+      portrait card, and only a different composition aspect reaches it. That
+      is a design decision, not a CSS one. ── */
+.ps-c2g-svg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: calc(100% - 88px);
+  display: block;
+  /* The graph is authored to reach very close to its own viewBox edges - that
+     is the mass the owner's "it can be smaller and actually fit" is NOT asking
+     to give up; he asked for the DIAMOND to fit, and the diamond is gone.
+     `visible` lets the trigger bolt and the outer labels sit in the art box's
+     6px bleed ring rather than being sheared by an SVG clip. */
+  overflow: visible;
+}
+
+/* ── STRUCTURE. One neutral, one weight, flat fills, and no shadow anywhere.
+      The research counted zero gradients and zero node shadows across all four
+      of n8n's marketing illustrations; a drop shadow under a node is the single
+      quickest way to make a flat diagram read as a UI surface. ── */
+.ps-c2g-box {
+  fill: var(--c2g-face);
+  stroke: var(--c2g-line);
+  stroke-width: var(--c2g-w);
+  vector-effect: non-scaling-stroke;
+}
+
+.ps-c2g-ico {
+  fill: none;
+  stroke: var(--c2g-line);
+  stroke-width: 1.6px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+/* The settled outcome's tick, and the trigger's bolt. The only two chromatic
+   objects in the picture. */
+.ps-c2g-ico--ok { stroke: var(--c2g-ok); }
+.ps-c2g-bolt {
+  fill: var(--c2g-accent);
+  stroke: none;
+}
+
+.ps-c2g-e {
+  stroke: var(--c2g-line);
+  stroke-width: var(--c2g-w);
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+/* >> NO ARROWHEADS ON ANY CONNECTOR, and that is measured rather than chosen:
+   the research found zero marker elements in 4 of 4 of n8n's illustrations.
+   Direction is carried by the port - a solid dot on the output edge, a "|>"
+   marker on the input edge - which is the same information without a glyph
+   that reads as a diagram convention. */
+.ps-c2g-port {
+  fill: var(--c2g-line);
+  stroke: none;
+}
+.ps-c2g-tick {
+  stroke: var(--c2g-line);
+  stroke-width: var(--c2g-w);
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.ps-c2g-arrow {
+  fill: var(--c2g-line);
+  stroke: none;
+}
+.ps-c2g-lbl {
+  fill: var(--c2g-ink);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 550;
+  letter-spacing: 0.005em;
+  /* `px` inside a viewBox is a USER UNIT, not a CSS pixel - so the type scales
+     with the picture and its ratio to the node side is fixed at 21.4%. That is
+     deliberately larger than n8n's 16.7% product ratio: their smallest flow
+     surface is four times this card's width, and honouring the ratio would put
+     the label under 9px on a 320px phone. */
+}
+
+/* ── THE DISSOLVE. n8n never lets flow art meet a hard rectangular boundary:
+      the homepage `object-cover`s a loose artboard and masks it with
+      `radial-gradient(95% 95%, #fff 0 28%, #fff0 85%)`, because a crisp
+      rectangular edge reads as a screenshot boundary even with nothing else in
+      the frame. A bento card IS a hard rectangle, so this is the one piece of
+      the recipe that has to be imported wholesale.
+
+      >> IT IS A VEIL, NOT A MASK, AND THAT IS THE REPO'S EXISTING IDIOM
+      RATHER THAN A NEW ONE. `--theme-art-veil-rgb` is the ground triplet in
+      each theme - 10,22,40 dark and 236,241,247 light, globals.css:178 and
+      :233 - so painting it over the art at increasing opacity fades the art
+      into the card's own ground. It already has 40 uses here;
+      card3-candidates.css:115 builds the identical ramp as `--c3-veil0`.
+
+      >> TUNED DOWN FROM n8n's OWN NUMBERS, ON PURPOSE. Their artboards carry
+      120-160px of EMPTY margin, so their 28%-to-85% dissolve only ever eats
+      blank space. This composition reaches close to its own viewBox edges, so
+      their curve would have taken 43% out of the outer labels - and a label
+      rendered grey reads as a rendering fault, which is a failure this card
+      has already shipped once. So the ramp starts further out and stops short
+      of opaque: the four CORNERS - the strongest rectangular tell - lose most
+      of their weight, the edge midpoints soften, and the central 60% of the
+      picture is untouched. ── */
+.ps-c2g-veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(118% 106% at 50% 44%,
+      rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0) 0%,
+      rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0) 56%,
+      rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0.42) 79%,
+      rgba(var(--theme-art-veil-rgb, 10, 22, 40), 0.82) 100%);
+}
+
+/* ── NO INTERIOR MOTION, AND THAT IS B3b's DECISION RATHER THAN MINE.
+      An interior reveal lived here: `[data-c2g-rv]` / `.in-view` hooks, a
+      per-node opacity+translate stagger on `transition-delay`, and a
+      `pathLength="1"` dash draw-on for the connectors. It was built, measured
+      working (nodes at 0.86 / 0.64 / 0.14 / 0 / 0 at t+260ms, trigger first)
+      and then DELETED.
+
+      `teams/B/B3-interior-choreography.md` rejects "a per-node/per-edge
+      stagger for card 2's flow graph" by name at :683, and settles card 2 at
+      :283 as `.ps-c2car` fading with the shared primitive, `--rv-lift: 0px`,
+      "and does nothing else" - because this card already carries the
+      carousel's 5,000ms auto-advance and a staggered interior on top of that
+      is the over-animation the owner has already reported. :727: "card 2 and
+      card 3 need zero action from C and D."
+
+      >> THE DELETION MATTERED, IT WAS NOT JUST TIDYING. One of the two hooks
+      was `.in-view .ps-c2g-root .ps-c2g-n`, keyed on `useRevealOnce`'s class
+      (idiom A). That class is written by an ANCESTOR, so the stagger would
+      have armed itself the moment any wrapper above this card gained
+      `.in-view` - firing a five-step interior cascade underneath Team B's
+      single 380ms fade, with nothing in this file to disable it. A dormant
+      selector waiting on someone else's class is not inert.
+
+      There is therefore no `@keyframes`, no `animation` and no `transition`
+      anywhere in this artwork, and consequently nothing here needs a
+      `prefers-reduced-motion` block: a static picture is already correct under
+      `reduce`. The shared primitive owns its own reduced-motion behaviour and
+      targets `.ps-c2car`, which this file does not touch. ── */
+
+/* ── LIGHT THEME. Only the three derived neutrals move; the two chromatic
+      tokens are already themed at their source (`--theme-accent-text`
+      #1590FF -> #0C6FC9, `--theme-success-text` --color-green -> #07795F), so
+      they are not restated here. A node face of `--theme-bg-primary` on a
+      `--theme-art-ground-a/-b` field is the same figure/ground relationship
+      the dark theme gets from a 9% lift, rather than the same arithmetic
+      applied blindly to an inverted ground. ── */
+[data-theme="light"] .ps-c2g-root {
+  --c2g-line: color-mix(in srgb, var(--theme-text-primary, #0A1628) 48%, transparent);
+  --c2g-face: var(--theme-bg-primary, #FFFFFF);
+  --c2g-ink: color-mix(in srgb, var(--theme-text-primary, #0A1628) 90%, transparent);
 }

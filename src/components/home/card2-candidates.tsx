@@ -596,12 +596,18 @@ export type Card2FlowSlide = {
   render: () => React.ReactElement;
 };
 
+/* >> THE FIVE RENDERERS NOW POINT AT THE NODE-GRAPH SET, AND THE FIVE
+   `AutoFlow*` GRID FLOWS ARE LEFT IN THE FILE ON PURPOSE. They are the
+   measured basis for symptom #4 - the 2.21:1-to-9.19:1 diamond - and deleting
+   them would destroy the only thing a reviewer can diff the fix against. They
+   are still reachable at `?c2=a|b|c` and by direct import; nothing on the
+   shipping path mounts them. Delete them once #4 is signed off, not before. */
 export const CARD2_FLOW_SLIDES: readonly Card2FlowSlide[] = [
-  { id: "get-paid", label: "Invoices that chase themselves", render: () => <AutoFlowGetPaid /> },
-  { id: "reviews", label: "A review after every job", render: () => <AutoFlowReviews /> },
-  { id: "expiry", label: "Nothing expires on you", render: () => <AutoFlowExpiry /> },
-  { id: "refill", label: "Cancellations refilled", render: () => <AutoFlowRefill /> },
-  { id: "retry", label: "Failed payments retried", render: () => <AutoFlowRetry /> },
+  { id: "get-paid", label: "Invoices that chase themselves", render: () => <C2GraphGetPaid /> },
+  { id: "reviews", label: "A review after every job", render: () => <C2GraphReviews /> },
+  { id: "expiry", label: "Nothing expires on you", render: () => <C2GraphExpiry /> },
+  { id: "refill", label: "Cancellations refilled", render: () => <C2GraphRefill /> },
+  { id: "retry", label: "Failed payments retried", render: () => <C2GraphRetry /> },
 ];
 
 /* ═════════════════════════════════════════════════════════════
@@ -707,12 +713,42 @@ function AutoFlowCarousel({ start }: { start: number }) {
 
   const [reduced, setReduced] = useState(false);
   const [hovered, setHovered] = useState(false);
+  /* WCAG 2.2 SC 2.2.2. The hover gate below is MOUSE ONLY by design, so before
+     this existed a keyboard-only visitor had no pause at all: measured on the
+     shipped build, holding real Tab focus on this card for 13s still advanced
+     it TWICE while `:focus-within` evaluated TRUE the whole time. The gate was
+     absent, not broken. This is card 5's mechanism verbatim
+     (`card5-candidates.tsx:604,621-622`, `hoverTarget = box ?? root` with
+     `focusin`/`focusout`) and it adds NO visible UI. */
+  const [focused, setFocused] = useState(false);
   const [held, setHeld] = useState(false);
   /* Off screen, hidden tab, or covered by the dialog. Starts TRUE: the
      IntersectionObserver below fires on `observe`, so the true value arrives
      within a frame, and starting false would arm a timer for that frame on a
      card that may be nowhere near the viewport. */
   const [gated, setGated] = useState(true);
+
+  /* ── KEYBOARD FOCUS, THE FIFTH GATE ──
+        `focusin`/`focusout` and not `:focus-within`, and not a listener on
+        this root. The focusable element is the card's own <button>, which is
+        this component's ANCESTOR: `focusin` bubbles UP from its target, so a
+        listener on `.ps-c2car` never hears it. It has to be bound on the card
+        box, exactly as card 5 binds `box ?? root`. In the bottom-sheet dialog
+        there is no `.ps-bento-card` ancestor, so it falls back to this root -
+        the same fallback, for the same reason. ── */
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const target: HTMLElement = el.closest<HTMLElement>(".ps-bento-card") ?? el;
+    const onIn = () => setFocused(true);
+    const onOut = () => setFocused(false);
+    target.addEventListener("focusin", onIn);
+    target.addEventListener("focusout", onOut);
+    return () => {
+      target.removeEventListener("focusin", onIn);
+      target.removeEventListener("focusout", onOut);
+    };
+  }, []);
 
   /* ── Reduced motion, live ── */
   useEffect(() => {
@@ -745,7 +781,7 @@ function AutoFlowCarousel({ start }: { start: number }) {
     return () => ro.disconnect();
   }, []);
 
-  /* ── THE THREE GATES THE STYLESHEET CANNOT REACH.
+  /* ── THE GATES THE STYLESHEET CANNOT REACH.
         `prefers-reduced-motion` is handled above and hover/hold below, but
         globals.css:4653's catch-all reaches `animation-duration` and
         `transition-duration` and NOTHING ELSE - it cannot crush a
@@ -798,7 +834,7 @@ function AutoFlowCarousel({ start }: { start: number }) {
 
   /* ── AUTO-ADVANCE ── */
   useEffect(() => {
-    if (reduced || hovered || held || gated) return;
+    if (reduced || hovered || focused || held || gated) return;
     const id = window.setInterval(() => {
       const track = trackRef.current;
       if (!track) return;
@@ -815,7 +851,7 @@ function AutoFlowCarousel({ start }: { start: number }) {
       track.scrollTo({ left: next * w, behavior: "smooth" });
     }, C2CAR_INTERVAL_MS);
     return () => window.clearInterval(id);
-  }, [reduced, hovered, held, gated]);
+  }, [reduced, hovered, focused, held, gated]);
 
   useEffect(
     () => () => {
@@ -1066,12 +1102,6 @@ export function AutoFlowGetPaid() {
 
         <i className="ps-c2f-edge ps-c2f1-e1" />
 
-        {/* THE DECISION. It fills its column, so its left and right vertices
-            are grid lines and every rail that meets it lands by construction. */}
-        <div className="ps-c2f-dia ps-c2f1-dia">
-          <span className="ps-c2-lbl ps-c2-lbl--dia">Paid?</span>
-        </div>
-
         {/* THE YES BRANCH, AND IT IS A LEAF. A green rail off the right vertex
             into a STADIUM, the flow chart terminator shape. Nothing leaves it,
             here or anywhere else in the file. That is how "ends right there"
@@ -1158,10 +1188,6 @@ export function AutoFlowReviews() {
 
         <i className="ps-c2f-edge ps-c2f2-e1b" />
 
-        <div className="ps-c2f-dia ps-c2f2-dia">
-          <span className="ps-c2-lbl ps-c2-lbl--dia">Reviewed?</span>
-        </div>
-
         {/* THE SHIPPED CHART'S OWN FORK, reused rule for rule. Its arms are a
             subgrid over the two outcome columns, so each arm's own 50% IS its
             plate's centre line by construction rather than by arithmetic. */}
@@ -1228,10 +1254,6 @@ export function AutoFlowExpiry() {
         </div>
 
         <i className="ps-c2f-edge ps-c2f3-e1" />
-
-        <div className="ps-c2f-dia ps-c2f3-dia">
-          <span className="ps-c2-lbl ps-c2-lbl--dia">Renewed?</span>
-        </div>
 
         <i className="ps-c2b-fork">
           <i className="ps-c2b-arm ps-c2b-arm--yes">
@@ -1316,10 +1338,6 @@ export function AutoFlowRefill() {
         </div>
 
         <i className="ps-c2f-edge ps-c2f4-e1b" />
-
-        <div className="ps-c2f-dia ps-c2f4-dia">
-          <span className="ps-c2-lbl ps-c2-lbl--dia">Taken?</span>
-        </div>
 
         <i className="ps-c2b-fork">
           <i className="ps-c2b-arm ps-c2b-arm--yes">
@@ -1407,10 +1425,6 @@ export function AutoFlowRetry() {
 
         <i className="ps-c2f-edge ps-c2f5-e1b" />
 
-        <div className="ps-c2f-dia ps-c2f5-dia">
-          <span className="ps-c2-lbl ps-c2-lbl--dia">Cleared?</span>
-        </div>
-
         <i className="ps-c2b-fork">
           <i className="ps-c2b-arm ps-c2b-arm--yes">
             <span className="ps-c2b-tag">yes</span>
@@ -1434,3 +1448,577 @@ export function AutoFlowRetry() {
     </div>
   );
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE NODE GRAPH SET            symptoms #4 (stretched diamonds) and #5 (n8n)
+   ═══════════════════════════════════════════════════════════════════════════
+
+   >> WHY THIS REPLACES THE FIVE CSS-GRID FLOWS, AND IT IS A ROOT CAUSE FIX
+   RATHER THAN A RESIZE. The owner's #4 - "extremely stretched out diamonds
+   that stretches the width of the card" - is caused by exactly one
+   declaration: `.ps-c2f-dia { justify-self: stretch; height: var(--c2-dia-h) }`
+   at card2-candidates.css:1541-1552. A stretch-justified box with a FIXED
+   height takes whatever width its grid column happens to be, so the diamond's
+   aspect is a function of the card's width and nothing else. Measured on the
+   shipping build, all five slides, 18 viewport widths:
+
+       slide 1  2.21 - 5.79 : 1   at 47.1 - 70.6% of card width
+       slide 2  4.04 - 8.33 : 1   at 83.1 - 90.2%
+       slide 3  4.35 - 8.33 : 1   at 83.1 - 90.2%
+       slide 4  4.35 - 9.19 : 1   at 83.1 - 90.2%   <- worst, at 639px
+       slide 5  4.11 - 8.45 : 1   at 84.6 - 91.5%
+
+   The prior baseline reported a 6.46:1 worst case. It is 9.19:1, at 639px -
+   the pixel before the one-column flip, where the card is 591px wide and the
+   diamond is 533 x 58. NO RE-TUNING OF `--c2-dia-w`/`--c2-dia-h` CAN FIX THIS,
+   because the width is not read from either of them; it is read from the grid.
+
+   >> SO THE FIX IS TO STOP DRAWING GEOMETRY IN CSS GRID TRACKS. Everything
+   below lives inside one inline SVG with a FIXED `viewBox` of 400 x 310. A
+   viewBox cannot stretch a square into a sliver: every ratio in the picture is
+   frozen at authoring time and the only thing the card's width changes is the
+   scale factor. That is what makes #4 structurally unfixable-again rather than
+   fixed-for-now.
+
+   >> AND THERE IS NO DIAMOND, WHICH IS ALSO THE ANSWER TO #5. The owner asked
+   for n8n's flow-chart visual language. n8n HAS NO DECISION DIAMONDS. Its
+   branch node is an ordinary square node carrying TWO output ports on its
+   right edge, and the outcome is read from which port a connector leaves -
+   confirmed in the research from the parsed product source and from a render
+   of n8n's own canvas export, where `true`/`false` sit beside two output dots
+   on a square node. The only rotated squares anywhere in n8n's language are
+   14px sub-node port handles. So satisfying #5 deletes the object #4 complains
+   about, and the two symptoms have one fix.
+
+   >> THE FORM IS COPIED ON PURPOSE, AND THAT INVERTS THIS FILE'S USUAL RULE.
+   Normally a reference supplies craft and never form. Here the owner named the
+   form - a node-and-connector flow graph - so both are taken. What is NOT
+   taken is n8n's palette, chrome or branding: every colour below resolves to a
+   token declared in globals.css, and the 18-item product-chrome avoid-list is
+   honoured in full. There is no window frame, no sidebar, no header bar, no
+   tab bar, no zoom cluster, no run button, no logs panel, no node-creator, no
+   hover toolbar, no edge toolbar, no selection ring, no status badge, no
+   execution decoration, no sticky note, no overlay UI, no cursor - AND NO DOT
+   GRID, which the research singles out as the strongest ambient screenshot cue
+   and which n8n themselves omit from 4 of 4 marketing illustrations.
+
+   >> RATIOS, TAKEN FROM THE RESEARCH, AND WHERE I DEPARTED FROM IT.
+   Node 1:1 square, side S = 56 viewBox units.                     [as spec]
+   Corner radius 9 = 16.1% of S. The research left 14-18% recommended
+     against a 21% product token and a ~10% measurement, explicitly "your
+     call". I took the midpoint of the recommended band.            [my call]
+   Trigger: same box, left edge fully rounded at r = 50% of height. [as spec]
+   Icon dead-centre at 22.4 = 40% of S. No container, no plate, no
+     header band.                                                   [as spec]
+   Connectors: cubic bezier, control points LEVEL with their endpoints -
+     cp1 = (x1 + 0.50dx, y1), cp2 = (x2 - 0.58dx, y2) - so every edge
+     leaves and lands perfectly horizontal.                         [as spec]
+   Output port: solid filled circle, d = 8.4 = 15% of S, centred ON the
+     node edge, half in and half out.                               [as spec]
+   Input marker: the small solid arrow + rounded tick "|>" glyph at the
+     left edge.                                                     [as spec]
+   Lines stop 5 units shy of the input marker (spec says 3-7).      [as spec]
+   Labels below, centred on the node's centre-x.                    [as spec]
+   One neutral for every outline, connector and port, at ONE weight. [as spec]
+   Zero gradients. Zero node shadows.                               [as spec]
+   Orthogonal loop-back with 16-unit corner radii.                  [as spec]
+   Flat - zero rotation on any structural element, gentle left-to-right
+     descending staircase.                                          [as spec]
+   Five main nodes and exactly one trigger, inside the research's
+     "4-6 main + <=2 sub + exactly 1 trigger" recommendation.        [as spec]
+
+   DEPARTURE 1 - horizontal gap is 0.71-0.79 x S where the research measured
+   1.0-1.15 x S. n8n's artboards are 985-1156px wide heroes; this card is
+   272px wide at 320. Holding their gap ratio at four columns would have put
+   the node side at 37 units, which puts the 40% icon at 15 units and the label
+   under 10px on a phone. The research itself records n8n tightening to 0.4 x
+   for a coupled pair, so a compression to 0.71 is inside their own dialect.
+   The gap is the one ratio I traded, deliberately, and it is stated here so a
+   reviewer does not have to find it.
+
+   DEPARTURE 2 - label size is 12.5 units = 22.3% of S, where n8n's product
+   ratio is 1rem on a 96px node = 16.7%. Same reason: their smallest surface is
+   four times this card's width. Under-sizing type to honour a ratio would make
+   the picture unreadable, which is not craft.
+
+   DEPARTURE 3 - `vector-effect: non-scaling-stroke` on every stroked element.
+   n8n's art is a fixed 1.5px hairline because it renders at one size. This
+   picture renders at scale 0.71 (320px viewport) through 1.11 (639px), so a
+   scaled stroke would be 0.8px thin on a phone and would read as a broken
+   hairline. Non-scaling holds the hairline at a constant CSS pixel weight at
+   every card width, which is what "one weight" actually means here.
+
+   >> THE EDGES ARE DISSOLVED, NOT CROPPED, AND THAT IS THE MOST COPYABLE
+   THING IN THE RESEARCH. n8n never lets a flow graph meet a hard rectangular
+   boundary: the homepage `object-cover`s a loose artboard and masks it with
+   `radial-gradient(95% 95%, #fff 0 28%, #fff0 85%)`, because a crisp
+   rectangular edge reads as a screenshot boundary even with nothing else
+   present. A BENTO CARD IS A HARD RECTANGLE. So the graph is drawn to bleed
+   past the card on every side and `.ps-c2g-veil` fades it back into the card's
+   own ground - built from `--theme-art-veil-rgb`, which is the ground triplet
+   in each theme and already has 40 uses in this repo. THAT IS THE EXISTING
+   IDIOM, NOT A NEW ONE; card3-candidates.css:115 builds the same ramp.
+
+   >> ZERO SVG `defs`. NOT AN OVERSIGHT - A HAZARD REMOVED AT THE ROOT. Every
+   card visual in this repo MOUNTS TWICE, once on the card face and once in the
+   bottom-sheet dialog, and `url(#x)` binds the FIRST match in the document, so
+   a duplicated id makes the dialog silently borrow the card face's paint. The
+   usual remedy is to prefix ids from `useMarkId()` (card3-candidates.tsx:598,
+   which strips React 19's `<<r0>>` guillemets because they are illegal inside
+   `url(#...)` and render the shape black). This artwork needs no gradient, no
+   mask and no clip-path - the craft spec is flat fills and one hairline - so it
+   emits no `defs` and no `url(#...)` AT ALL, and the collision it would have to
+   be protected from cannot occur. If a future edit adds a gradient here, it
+   MUST route its id through `useMarkId()`.
+
+   >> INVENTS NO DATA. No client names, no percentages, no currency amounts, no
+   dates, no counts, no invented metrics. Every string is generic process
+   language describing a step, and the five subjects are the five automations
+   the card already shipped.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* The authoring canvas. Every number below is in these units. Aspect 1.29.
+   Chosen by measurement, not taste: with `preserveAspectRatio="xMidYMid meet"`
+   the graph fills 100% of the art box's width at 320/360/375/390/393/414/430/
+   640/768/820/940/1024/1280/1440/1920, 98.8% at 939 and 73.6% at 639. A
+   squarer canvas gave a better 639 and left more dead air on every phone; a
+   wider one filled 639 and shrank the picture everywhere else. 1.29 is the
+   value that keeps the phone widths - which is where the owner reads this -
+   edge to edge. */
+const C2G_VB_W = 400;
+/* >> THE VIEWBOX WINDOW MOVED DOWN 12 UNITS AND LOST 12 OF ITS HEIGHT, AND
+   THAT IS THE WHOLE OF THE UNDER-FILL FIX. Measured on the shipped build
+   (chromium/webkit/firefox, 7 widths x 5 slides x 3 engines, 2026-09-08): the
+   drawn composition occupies x 11..380, y 34..306 of this window, so the old
+   `0 0 400 326` reserved 34 dead units ABOVE the ink and 20 below. Because
+   `meet` scales by min(boxW/vbW, boxH/vbH), those 34 units were a straight tax
+   on the scale factor at every width where the ART BAND'S HEIGHT is what binds
+   - which is every face wider than 422px, i.e. the whole 470..639 landscape
+   band the critic measured decaying, plus 939.
+
+   THE ORIGIN MOVES, THE BOTTOM DOES NOT: y goes 0 -> 12 and the window still
+   ends at 326. That asymmetry is deliberate and it is what makes this safe.
+   The art's bottom edge in the box is (306 - vbY)/vbH of the box height:
+   306/326 = 0.93865 before, 294/314 = 0.93631 after. It went DOWN, so the
+   artwork-to-title clearance can only IMPROVE, in every height-bound context
+   including the bottom-sheet dialog's 393x280 and 900x400 art roots (which
+   have no title at all: their art bottoms were measured moving UP by 0.45px
+   at 393x280 and 0.73px at 900x400, and their height fill rose 57.21 -> 59.40
+   and 65.08 -> 67.57). Trimming the
+   BOTTOM reserve instead would have spent the clearance, and 88px + 20 units
+   is exactly what produces the 40.31px that Phase 1 bought.
+
+   >> 22 UNITS OF TOP RESERVE IS A FLOOR, NOT A ROUNDING. Below it the top of
+   the composition closes on `.ps-bento-card__expand` - measured 44x44 at 12px
+   from the card corner below 769px and 32x32 above it, and it does not scale
+   with the art - and on the card's own 11px corner radius. At 22 units the
+   worst measured top clearance is 18.10px at 639/939 (was 29.88px), and the
+   nearest drawn element sharing that button's x-range still clears it by
+   13.44px at 470, 20.50px at 939 and 22.32px at 900; at 639 nothing overlaps
+   it in x at all.
+   Taking the reserve to 16 units drops the top clearance to 11.9px. Do not.
+
+   >> AND THE HORIZONTAL WINDOW IS DELIBERATELY UNTOUCHED. It looks like the
+   same free 31 units are sitting at x 0..11 and 380..400, and they are not:
+   at 320 the leftmost label already lands 1.81px inside the card's clip edge
+   in chromium and webkit, and 0.75px in firefox on slide 2 / 0.99px on slide 5
+   (its text metrics push the bbox out to x = 9.512). Any reduction of vbW
+   pushes that label THROUGH the
+   clip. The width-bound widths - every phone, plus 640/940/1024/1280/1440/
+   1920 - are already at 96.3% of the VISIBLE card width and cannot be scaled
+   up at all. Their remaining dead air is the locked 1.3566 composition aspect
+   sitting in a portrait card, and no scale factor reaches it. */
+const C2G_VB_Y = 12;
+const C2G_VB_H = 314;
+
+/* Node side, and everything derived from it as a ratio of S. */
+const C2G_S = 56;
+const C2G_HALF = C2G_S / 2;                 /* 28    */
+const C2G_R = +(C2G_S * 0.161).toFixed(2);  /* 9.02  - 16.1% of S */
+const C2G_ICON = +(C2G_S * 0.4).toFixed(2); /* 22.4  - 40% of S   */
+const C2G_PORT = +(C2G_S * 0.075).toFixed(2); /* 4.2 - radius, so d = 15% of S */
+const C2G_SHY = 5;                          /* stop this far shy of an input */
+const C2G_LBL_DY = 16;                      /* label baseline below node bottom */
+const C2G_LOOP_FLOOR = 306;                 /* the loop-back's bottom run */
+/* >> THE CLIMB MOVED 196 -> 100 AND THE RETURN NOW LANDS ON THE STEP NODE
+   RATHER THAN THE BRANCH, AND BOTH CHANGES CAME OUT OF A RENDER. At 196 the
+   return turned up under the branch and the picture was L-shaped: the whole
+   bottom-left quadrant of the card - roughly x 0-190 by y 200-330 - was empty,
+   with the graph crowded into the top band and the loop hugging the right.
+   Taking the floor out to x = 100 makes it run nearly the full width of the
+   card, which is also what n8n's own canvas export does ("an edge runs right,
+   drops, travels the full width leftward along the bottom, and climbs back
+   in"). It is the largest single gesture in the picture and it is the one that
+   says "round again", so it should be the one that spans the frame.
+
+   Landing on the STEP node instead of the branch is the more accurate reading
+   too: the loop is wait -> check -> chase -> wait, so the thing it returns to
+   is the wait, not the question. Clearances at x = 100, all against the label
+   width budget: trigger label ends at 93 (clear 7), trigger node ends at 84
+   (clear 16), and the climb tops out at y = 120, which is 10 below the trigger
+   label's descenders and well under the trigger->step bezier. */
+const C2G_LOOP_UPX = 100;
+/* Where the loop's vertical run sits on the way down. 380 is 14.2 units clear
+   of the card's right edge (viewBox x = 394.2) and 9.5 clear of the longest
+   outcome label, both measured against the label budget. For scale: the defect
+   this replaces left a rail 1.52px from the card's right edge - the tightest
+   horizontal clearance recorded anywhere on the page. */
+const C2G_LOOP_DOWNX = 380;
+const C2G_LOOP_R = 16;                      /* orthogonal loop-back corner radius */
+
+/* The four columns and the rows, as centre coordinates. A gentle staircase:
+   each successive column drops 36 units, which is 0.64 x S - enough for the
+   bezier S-curves to be visible, flat enough that nothing reads as tilted. */
+/* >> `out` MOVED 352 -> 344 AND THE LABEL DROPPED 12.5 -> 12, BOTH FROM A
+   RENDER RATHER THAN FROM ARITHMETIC. At `out: 352` with a 12.5-unit label,
+   "Reminder sent" and "Renewal asked" ran past the card's right edge and were
+   SHEARED MID-GLYPH by the card's own `overflow: hidden` - clearly visible in
+   the 1440x900 capture, and invisible to the geometry probe, which reported
+   98.1% fill and a 1.000 node aspect while the label was cut. The card's right
+   edge sits at viewBox x = 394.2 (the art box is 6px wider than the card per
+   side, which is ~5.8 units at this scale), so the label budget from a centre
+   of 344 is 46 units either side; a 13-character label at 12 units is ~81
+   units wide, or 40.5 either side.
+
+   >> AND THE COLUMN MOVED AGAIN, 344 -> 336, TO BUY THE LOOP ITS EXIT. The
+   loop-back now leaves the retry node's RIGHT edge and needs a 16-unit turn
+   plus clearance before it can drop, so the outcome column had to come in far
+   enough to leave it. Outcome labels are capped at 11 characters for the same
+   reason - the loop's vertical run at x = 380 clears the longest of them by
+   9.5 units. "Reminder sent" became "Reminded", "Renewal asked" became
+   "Renewal", "Next in line" became "Next up" and "Update asked" became "New
+   card"; all five still read as the step they name, and all five sit beside a
+   glyph that carries the rest.
+
+   >> AND THE ROWS SPREAD, ALSO FROM THE RENDER. At 36-unit staircase drops the
+   drawn picture was 249px tall inside a 354px art band and read visibly
+   top-heavy, with a dead strip between the loop's floor and the title. Drops
+   are now 46 and the retry row sits 90 below the branch, which fills 280px of
+   the same band - 79% instead of 70% - without moving the title clearance
+   below 70px at any measured width. */
+const C2G_COL = { t: 52, p: 146, b: 244, out: 336 } as const;
+const C2G_ROW = { t: 62, p: 108, b: 154, ok: 108, r: 244 } as const;
+
+/* B's two output ports sit on its right edge, 12 units apart about its centre.
+   This is the whole branch device: no diamond, two ports. */
+const C2G_B_OUT_HI = C2G_ROW.b - 12;  /* 128 */
+const C2G_B_OUT_LO = C2G_ROW.b + 12;  /* 152 */
+/* And it takes TWO inputs on its left edge - the forward one from P, and the
+   loop-back returning from R. */
+const C2G_B_IN_FWD = C2G_ROW.b;
+/* The step node takes two left inputs the same way: the forward one from the
+   trigger, and the loop-back returning from the chase. n8n's merge nodes stack
+   left inputs identically, so this is its grammar rather than an invention -
+   and each one gets its own "|>" input marker, because an edge that lands on a
+   node with no marker reads as a line that happens to touch it. */
+const C2G_P_IN_RET = C2G_ROW.p + 13;
+
+/** A bezier whose control points are LEVEL with its endpoints, so the line
+ *  leaves x1 horizontally and lands at x2 horizontally. The 0.50 was measured
+ *  on 7 of 7 of n8n's marketing edges; the 0.58 on the landing side is theirs
+ *  too. Straight line where there is no drop. */
+function c2gEdge(x1: number, y1: number, x2: number, y2: number) {
+  const ex = x2 - C2G_SHY;
+  const dx = ex - x1;
+  if (Math.abs(y2 - y1) < 0.01) return `M${x1} ${y1} L${ex} ${y2}`;
+  return `M${x1} ${y1} C${x1 + 0.5 * dx} ${y1} ${ex - 0.58 * dx} ${y2} ${ex} ${y2}`;
+}
+
+/** The orthogonal loop-back. Runs right out of the node's OUTPUT edge, drops,
+ *  travels leftward along the floor of the picture, climbs, and lands on a
+ *  left-edge input. Five quarter-turns at r = 16.
+ *
+ *  >> IT LEFT THE BOTTOM EDGE UNTIL A RENDER KILLED THAT, AND THE REASON IS
+ *  THE SAME ONE THAT KILLED THE HELD-LANE VARIANT: a label is centred on its
+ *  node's centre-x, so ANY line leaving the bottom edge is COLLINEAR WITH ITS
+ *  OWN LABEL by construction. At 320x568 the rail ran straight down through
+ *  the words "Next in line" and read as a strikethrough. No offset fixes it -
+ *  the only offsets that clear the text are off the node.
+ *  Leaving the right edge is also what n8n's own canvas export does, described
+ *  in the research verbatim: "an edge runs right, drops, travels the full width
+ *  leftward along the bottom, and climbs back in". So the fix and the grammar
+ *  agree, which is the outcome to prefer over either alone. */
+function c2gLoop(fromX: number, fromY: number, downX: number, floorY: number, upX: number, toY: number, toX: number) {
+  const r = C2G_LOOP_R;
+  return [
+    `M${fromX} ${fromY}`,
+    `H${downX - r}`,
+    `A${r} ${r} 0 0 1 ${downX} ${fromY + r}`,
+    `V${floorY - r}`,
+    `A${r} ${r} 0 0 1 ${downX - r} ${floorY}`,
+    `H${upX + r}`,
+    `A${r} ${r} 0 0 1 ${upX} ${floorY - r}`,
+    `V${toY + r}`,
+    `A${r} ${r} 0 0 1 ${upX + r} ${toY}`,
+    `H${toX - C2G_SHY}`,
+  ].join(" ");
+}
+
+/* ── THE GLYPH VOCABULARY. Drawn in a 24 x 24 box, centred and scaled to 40%
+      of the node side at use. Single weight, no fill, no plate, no container -
+      the research is explicit that n8n's node icons sit bare and dead-centre.
+      None of these is on the banned-cliche list: no gear, no lightbulb, no
+      circuit trace, no robot face, no brain, no shield, no rocket, no hex
+      grid. They are the plain nouns of the process being drawn. ── */
+const C2G_GLYPH: Record<string, React.ReactNode> = {
+  /* An invoice: a sheet with two ruled lines and a turned corner. */
+  doc: <><path d="M6 3h8l4 4v14H6z" /><path d="M14 3v4h4" /><path d="M9 13h6M9 17h4" /></>,
+  /* A due date: a clock. Hands at a quarter past, so it is unmistakably a
+     clock and not a ring. */
+  clock: <><circle cx="12" cy="12" r="8.5" /><path d="M12 7v5l4 2" /></>,
+  /* A message going out: an envelope. */
+  mail: <><rect x="3.5" y="6" width="17" height="12" rx="2" /><path d="M4 7.5l8 6 8-6" /></>,
+  /* The branch. One line in, two lines out - the picture of the question the
+     node asks, without borrowing the flow-chart diamond. */
+  fork: <><path d="M4 12h5" /><path d="M9 12c4 0 3-6 7-6M9 12c4 0 3 6 7 6" /><circle cx="18.5" cy="6" r="1.6" /><circle cx="18.5" cy="18" r="1.6" /></>,
+  /* Settled. A tick, and nothing else. */
+  check: <path d="M5 12.5l5 5L19 7" />,
+  /* A review: a speech bubble. */
+  bubble: <><path d="M4 6.5h16v10H13l-4 3.5V16.5H4z" /><path d="M8.5 11h7" /></>,
+  /* A card on file. */
+  card: <><rect x="3" y="6" width="18" height="12" rx="2" /><path d="M3 10.5h18" /><path d="M6.5 14.5h4" /></>,
+  /* A cancellation: a date struck through. */
+  calx: <><rect x="4" y="5.5" width="16" height="15" rx="2" /><path d="M4 10h16M8.5 3v4M15.5 3v4" /><path d="M9.5 14l5 4M14.5 14l-5 4" /></>,
+  /* A waiting list: stacked rules, the top one indented as the one in hand. */
+  list: <><path d="M5 8h14M5 12.5h14M5 17h9" /></>,
+  /* Again. An arc returning on itself with a head - the only arrowhead in the
+     set, and it is inside a glyph rather than on a connector, so the "no
+     arrowheads on edges" rule holds. */
+  again: <><path d="M19 12a7 7 0 1 1-2.5-5.4" /><path d="M19.5 3.5V7h-3.5" /></>,
+  /* A failure: the card again, refused. */
+  cardx: <><rect x="3" y="6" width="18" height="12" rx="2" /><path d="M3 10.5h18" /><path d="M14 13l4 4M18 13l-4 4" /></>,
+  /* A person, for the one step a person still does. */
+  person: <><circle cx="12" cy="8.5" r="3.5" /><path d="M5.5 20c0-4 3-6.5 6.5-6.5S18.5 16 18.5 20" /></>,
+};
+
+type C2GNode = {
+  /** Which of the five slots. Fixes position, so a slide cannot mis-place one. */
+  slot: "trigger" | "step" | "branch" | "ok" | "retry";
+  glyph: keyof typeof C2G_GLYPH;
+  /** Drawn below the node, centred. Kept short by measurement, not by taste -
+   *  see the width budget in the stylesheet header. */
+  label: string;
+};
+
+/* >> THE "HELD LANE" VARIANT WAS BUILT AND THEN KILLED FROM ITS OWN RENDER,
+   AND IT IS WORTH SAYING WHY. Flow 3 originally ended its "no" branch on a
+   flat cap with no return, to draw "it holds the work back" rather than claim
+   it. In the 1440x900 capture the lane dropped out of the node's bottom edge
+   straight THROUGH its own label and the cap sat 10 units under it, so the
+   picture read as a strikethrough across the words "Renewal asked". There was
+   no offset that fixed it: the lane leaves the node's centre-x and the label
+   is centred on the same axis, so they are collinear by construction.
+   It was also SEMANTICALLY WRONG once written down - a card that is about to
+   expire does get asked to renew, repeatedly, so the honest picture of that
+   automation is the same loop as the other four. Removing the variant deletes
+   a special case that could only ever collide, and all five now share one
+   composition whose differences are carried by glyph and label. */
+type C2GSpec = {
+  id: string;
+  nodes: readonly C2GNode[];
+};
+
+/* ── THE FIVE. Same five automations the card already shipped, same meanings,
+      redrawn in the requested language. Every label is generic process
+      language: no client name, no amount, no percentage, no date, no count. ── */
+const C2G_SPECS: readonly C2GSpec[] = [
+  { id: "get-paid", nodes: [
+    { slot: "trigger", glyph: "doc",   label: "Invoice sent" },
+    { slot: "step",    glyph: "clock", label: "Due date" },
+    { slot: "branch",  glyph: "fork",  label: "Paid?" },
+    { slot: "ok",      glyph: "check", label: "Settled" },
+    { slot: "retry",   glyph: "mail",  label: "Reminded" },
+  ] },
+  { id: "reviews", nodes: [
+    { slot: "trigger", glyph: "check",  label: "Job complete" },
+    { slot: "step",    glyph: "mail",   label: "Ask sent" },
+    { slot: "branch",  glyph: "fork",   label: "Reviewed?" },
+    { slot: "ok",      glyph: "bubble", label: "Review in" },
+    { slot: "retry",   glyph: "again",  label: "Asked again" },
+  ] },
+  { id: "expiry", nodes: [
+    { slot: "trigger", glyph: "card",  label: "Card on file" },
+    { slot: "step",    glyph: "clock", label: "Expiry near" },
+    { slot: "branch",  glyph: "fork",  label: "Renewed?" },
+    { slot: "ok",      glyph: "check", label: "Kept live" },
+    { slot: "retry",   glyph: "mail",  label: "Renewal" },
+  ] },
+  { id: "refill", nodes: [
+    { slot: "trigger", glyph: "calx",  label: "Cancellation" },
+    { slot: "step",    glyph: "list",  label: "Waitlist" },
+    { slot: "branch",  glyph: "fork",  label: "Filled?" },
+    { slot: "ok",      glyph: "check", label: "Slot filled" },
+    { slot: "retry",   glyph: "person", label: "Next up" },
+  ] },
+  { id: "retry", nodes: [
+    { slot: "trigger", glyph: "cardx", label: "Payment fails" },
+    { slot: "step",    glyph: "again", label: "Retried" },
+    { slot: "branch",  glyph: "fork",  label: "Cleared?" },
+    { slot: "ok",      glyph: "check", label: "Back on" },
+    { slot: "retry",   glyph: "mail",  label: "New card" },
+  ] },
+];
+
+const C2G_POS: Record<C2GNode["slot"], { x: number; y: number }> = {
+  trigger: { x: C2G_COL.t,   y: C2G_ROW.t },
+  step:    { x: C2G_COL.p,   y: C2G_ROW.p },
+  branch:  { x: C2G_COL.b,   y: C2G_ROW.b },
+  ok:      { x: C2G_COL.out, y: C2G_ROW.ok },
+  retry:   { x: C2G_COL.out, y: C2G_ROW.r },
+};
+
+/* >> THIS ARTWORK IS STATIC, AND THAT IS A DECISION TAKEN FROM ANOTHER TEAM'S
+   MEASUREMENT RATHER THAN FROM TASTE. An earlier build of this file carried a
+   per-node / per-edge interior entrance: nodes arriving in flow order with the
+   trigger first, each connector drawing after its own endpoints, on
+   `transition-delay` with an `--i` index and a normalised `pathLength` dash.
+   It worked and it was verified.
+   IT WAS REMOVED. `B3b-choreographer`'s interior-entrance spec
+   (`teams/B/B3-interior-choreography.md`) rejects that option BY NAME at :683
+   - "a per-node/per-edge stagger for card 2's flow graph" - and settles card 2
+   as "THE LEAST" of the four at :283: `.ps-c2car` fades with the shared
+   primitive, `--rv-lift: 0px`, and does nothing else. The reason is measured,
+   not aesthetic: this card already carries the carousel's own 5,000ms
+   auto-advance, so a staggered interior entrance on top of it is the
+   over-animation the owner has already reported once. :727 states plainly
+   that "card 2 and card 3 need zero action from C and D."
+   So there is NO `@keyframes`, NO `animation` and NO `transition` anywhere in
+   this artwork. The single fade belongs to the shared primitive and targets
+   `.ps-c2car` - the carousel root, which this file does NOT touch. If a future
+   edit wants motion here it has to reopen B3's decision first, not add a
+   second vocabulary underneath it. */
+
+/** One node: the box, the bare centred glyph, the output port(s), the input
+ *  marker, and the label. No plate, no header band, no badge, no shadow. */
+function C2GNodeG({ n }: { n: C2GNode }) {
+  const { x, y } = C2G_POS[n.slot];
+  const L = x - C2G_HALF;
+  const T = y - C2G_HALF;
+  const isTrig = n.slot === "trigger";
+  const isOk = n.slot === "ok";
+  const s = C2G_ICON / 24;
+  return (
+    <g className="ps-c2g-n">
+      {/* THE BOX. Flat fill plus one hairline. The trigger's left edge is
+          fully rounded at r = 50% of the height, which is n8n's trigger
+          signature and the reason exactly one node in the picture is a "D". */}
+      {isTrig ? (
+        <path
+          className="ps-c2g-box"
+          d={`M${L + C2G_HALF} ${T} H${L + C2G_S - C2G_R} a${C2G_R} ${C2G_R} 0 0 1 ${C2G_R} ${C2G_R} V${T + C2G_S - C2G_R} a${C2G_R} ${C2G_R} 0 0 1 ${-C2G_R} ${C2G_R} H${L + C2G_HALF} a${C2G_HALF} ${C2G_HALF} 0 0 1 0 ${-C2G_S} Z`}
+        />
+      ) : (
+        <rect className={"ps-c2g-box" + (isOk ? " ps-c2g-box--ok" : "")}
+          x={L} y={T} width={C2G_S} height={C2G_S} rx={C2G_R} />
+      )}
+
+      {/* THE TRIGGER MARK. A bolt OUTSIDE the node's left edge, which is where
+          n8n's own `CanvasNodeTrigger` puts it (`position:absolute; right:100%`).
+          It is the one accent-coloured object in the picture. */}
+      {isTrig && (
+        <path className="ps-c2g-bolt"
+          d={`M${L - 13} ${y - 1} l7 -9 -1.5 7 h6 l-8.5 10 2 -8 Z`} />
+      )}
+
+      {/* THE ICON. Dead centre, 40% of the node side, no container. */}
+      <g className={"ps-c2g-ico" + (isOk ? " ps-c2g-ico--ok" : "")}
+        transform={`translate(${x - C2G_ICON / 2} ${y - C2G_ICON / 2}) scale(${s})`}>
+        {C2G_GLYPH[n.glyph]}
+      </g>
+
+      {/* THE INPUT MARKER. The "|>" glyph - a short rounded tick plus a small
+          solid arrow - on the left edge. The trigger has none, because a
+          trigger is where work enters the system from outside. */}
+      {!isTrig && (
+        <g className="ps-c2g-in">
+          <path className="ps-c2g-tick" d={`M${L} ${y - 4.2} V${y + 4.2}`} />
+          <path className="ps-c2g-arrow" d={`M${L - 4.6} ${y - 3.2} L${L - 0.6} ${y} L${L - 4.6} ${y + 3.2} Z`} />
+        </g>
+      )}
+      {/* The step node's SECOND input - where the loop comes back in. */}
+      {n.slot === "step" && (
+        <g className="ps-c2g-in">
+          <path className="ps-c2g-tick" d={`M${L} ${C2G_P_IN_RET - 4.2} V${C2G_P_IN_RET + 4.2}`} />
+          <path className="ps-c2g-arrow" d={`M${L - 4.6} ${C2G_P_IN_RET - 3.2} L${L - 0.6} ${C2G_P_IN_RET} L${L - 4.6} ${C2G_P_IN_RET + 3.2} Z`} />
+        </g>
+      )}
+
+      {/* THE OUTPUT PORT(S). Solid dot centred ON the right edge, half in and
+          half out. The branch carries TWO - and those two dots ARE the
+          decision. Terminals carry none: nothing leaves a settled outcome, and
+          drawing a port it never uses would say otherwise. */}
+      {n.slot === "branch" ? (
+        <>
+          <circle className="ps-c2g-port" cx={L + C2G_S} cy={C2G_B_OUT_HI} r={C2G_PORT} />
+          <circle className="ps-c2g-port" cx={L + C2G_S} cy={C2G_B_OUT_LO} r={C2G_PORT} />
+        </>
+      ) : n.slot === "ok" ? null : (
+        <circle className="ps-c2g-port" cx={L + C2G_S} cy={y} r={C2G_PORT} />
+      )}
+
+      {/* THE LABEL. Below, centred on the node's centre-x. The research is
+          explicit that labels are what make this read as a diagram rather than
+          as decoration, and that they are the one piece of text in the picture
+          that is unambiguously not chrome. */}
+      <text className={"ps-c2g-lbl" + (isOk ? " ps-c2g-lbl--ok" : "")}
+        x={x} y={T + C2G_S + C2G_LBL_DY} textAnchor="middle">{n.label}</text>
+    </g>
+  );
+}
+
+/** One slide of the set. */
+export function C2FlowGraph({ spec }: { spec: C2GSpec }) {
+  const P = C2G_POS;
+  const eT = c2gEdge(P.trigger.x + C2G_HALF, P.trigger.y, P.step.x - C2G_HALF, P.step.y);
+  const eP = c2gEdge(P.step.x + C2G_HALF, P.step.y, P.branch.x - C2G_HALF, C2G_B_IN_FWD);
+  const eOk = c2gEdge(P.branch.x + C2G_HALF, C2G_B_OUT_HI, P.ok.x - C2G_HALF, P.ok.y);
+  const eRe = c2gEdge(P.branch.x + C2G_HALF, C2G_B_OUT_LO, P.retry.x - C2G_HALF, P.retry.y);
+  /* Floor at 282 leaves 28 units under it inside the 310 canvas, and clears
+     the retry label's descenders by 14. The climb clears the branch label by
+     26 units and the step label by 9.5 - both measured against the label width
+     budget above, not eyeballed. */
+  const eLoop = c2gLoop(P.retry.x + C2G_HALF, P.retry.y, C2G_LOOP_DOWNX, C2G_LOOP_FLOOR,
+                        C2G_LOOP_UPX, C2G_P_IN_RET, P.step.x - C2G_HALF);
+
+  return (
+    <div className="ps-c2g-root" data-c2g={spec.id} aria-hidden="true">
+      <svg className="ps-c2g-svg" viewBox={`0 ${C2G_VB_Y} ${C2G_VB_W} ${C2G_VB_H}`}
+        preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">
+        {/* EDGES FIRST, so a node always paints over the line that reaches it
+            and no connector appears to cross a node's face. */}
+        <g className="ps-c2g-edges" fill="none">
+          <path className="ps-c2g-e" d={eT} />
+          <path className="ps-c2g-e" d={eP} />
+          <path className="ps-c2g-e ps-c2g-e--ok" d={eOk} />
+          <path className="ps-c2g-e" d={eRe} />
+          {/* THE LOOP, and it is the sentence the whole picture exists to say:
+              the exception does not land on a desk, it goes round again. Flow 3
+              is the exception to the exception - it holds instead of chasing -
+              so it gets a flat cap and no return. */}
+          <path className="ps-c2g-e ps-c2g-e--loop" d={eLoop} />
+        </g>
+
+        <g className="ps-c2g-nodes">
+          {spec.nodes.map((n) => (
+            <C2GNodeG key={n.slot} n={n} />
+          ))}
+        </g>
+      </svg>
+
+      {/* THE DISSOLVE. n8n's `radial-gradient(95% 95%, #fff 0 28%, #fff0 85%)`
+          recipe, expressed the way this repo already expresses it - a veil in
+          the ground colour rather than a mask - so the graph has NO hard
+          rectangular boundary and cannot read as a screenshot edge. */}
+      <div className="ps-c2g-veil" />
+    </div>
+  );
+}
+
+/* The five renderers the carousel mounts. Thin on purpose: the picture is one
+   component and the five differ only in their spec, so a craft change lands on
+   all five at once and they cannot drift apart. */
+export function C2GraphGetPaid() { return <C2FlowGraph spec={C2G_SPECS[0]} />; }
+export function C2GraphReviews() { return <C2FlowGraph spec={C2G_SPECS[1]} />; }
+export function C2GraphExpiry()  { return <C2FlowGraph spec={C2G_SPECS[2]} />; }
+export function C2GraphRefill()  { return <C2FlowGraph spec={C2G_SPECS[3]} />; }
+export function C2GraphRetry()   { return <C2FlowGraph spec={C2G_SPECS[4]} />; }

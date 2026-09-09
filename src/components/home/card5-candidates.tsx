@@ -118,7 +118,7 @@
    people type. No em dash anywhere.
    ═══════════════════════════════════════════════════════════════════════ */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /* ── COPY BLOCK C4 -- the typed query. Three candidates, owner picks. ──
    Measured ceiling ~30 characters at 17 widths; longer drafts clipped the
@@ -174,6 +174,504 @@ export const C5R_QUERY_CANDIDATES = [
 
 type Vars = React.CSSProperties & Record<string, string | number>;
 
+/* ═══════════════════════════════════════════════════════════════════════
+   THE SEARCH LOOP -- symptom #10, built to `E1-search-loop-spec.md`.
+   ═══════════════════════════════════════════════════════════════════════
+
+   THIS REVERSES THE "MOTION: NONE OF MY OWN" NOTE ABOVE, AND ONLY THAT
+   NOTE. The owner asked for it in his own words: "I would like for the ai
+   and search engine visibilty it to loop different searches ... it
+   animates in/types in the first thing and then it shows a little loading
+   animation and then the results pop in with your buisnes at the top ...
+   but then it backspaces what is in the search box and searches something
+   new and then loads in again". Everything the old note got RIGHT is kept:
+   the still frame is still the whole picture (§ the base cascade below),
+   the card still holds absolutely still under `prefers-reduced-motion`,
+   and no second decorative gesture was added anywhere.
+
+   FIVE BEATS, IN THIS ORDER, EVERY CYCLE. Durations are E1's, measured
+   against the 258.66 x 266.00 stage at 940px -- the binding worst case,
+   where this card drops 891.00 -> 286.66px in one pixel of viewport.
+
+     backspace 22ms/char  ->  240ms empty gap  ->  type 40ms/char (+80ms
+     after each space)  ->  320ms submitted pause  ->  520ms loading  ->
+     resolve 260ms/row on a 70ms stagger, OURS FIRST  ->  2200ms dwell
+
+   Set 1, whose three strings were already in this file: mean cycle
+   5,629ms, full three-query rotation 16,886ms.
+
+   THE TWO MEASUREMENTS THAT SHAPED THE IMPLEMENTATION, both E1's:
+
+   1. THERE IS NO VERTICAL SLOT. `scrollHeight === height` at all eight
+      widths and the rest rows are ALREADY compressed below their declared
+      size (`--c5r-rest-h: 44px` renders at 31px at 768). So the loading
+      indicator gets no row of its own: it is a 2px hairline INSIDE the
+      field, and the rows load in their own existing boxes. Nothing in
+      this loop touches `height`, `margin` or `padding`.
+
+   2. THE QUERY IS GATED BY RENDERED INK, NOT BY CHARACTER COUNT. The
+      ceiling is 149.42px at the 320 box; two different 26-character
+      strings sit on opposite sides of it. The "~30 characters" note in
+      the copy block above is WRONG and E1 disproved it. Do not add or
+      edit a query string without measuring it with `measureText` against
+      `.ps-c5r-q`'s resolved font. Set 1 measures 133.03 / 132.72 /
+      133.23px -- inside 0.51px of each other, which is why the field's
+      ink block looks like the same person asking three questions.
+
+   THE RESULTS DO NOT BLANK BETWEEN QUERIES, AND THAT IS LOAD-BEARING.
+   They hold at FULL STRENGTH through backspace, the gap, typing and the
+   submitted pause, and become blank plates for the 520ms loading beat
+   only. That is what puts 82.4% of every cycle on a complete, legible,
+   full-strength ranked list. E1 measured the alternative: clearing them
+   between queries takes the not-legible share from 17.6% to 60.9% and
+   turns the card into a mostly-empty box. It also re-opens the contrast
+   defect that `--c5r-foot: 140px` exists to fix, because an alpha dim
+   over the phone scrim once composited these rows to 3.10:1. Anyone
+   "tidying up" the stale hold is breaking the argument, not the look.
+
+   THE TRIGGER IS AN EVENT, NEVER A CONSTANT, AND NEVER PAGE LOAD.
+   `interiorSettled` is `(indexInRow * 100ms) + 650ms + 450ms` -- 1,100ms
+   in the one- and two-column regimes but 1,200ms at >=940px, where this
+   card shares row 2 with `Websites.` and inherits a 100ms box delay. A
+   hard-coded 1,100ms would start typing 100ms BEFORE the results settle
+   on every desktop width. So this hooks the box tween's completion
+   directly (see `boxSettled` below) and adds 450ms, which is right in all
+   three regimes with no table lookup. Page load is not an option at all:
+   at 393x852 this card's box does not reveal within 2.6s (its own
+   ScrollTrigger has not crossed `top 82%`, which is designed), so a
+   load-keyed loop would be mid-cycle or finished before a phone visitor
+   ever saw the card.
+
+   AND IT CANNOT STRAND ANYTHING INVISIBLE. The base cascade IS the
+   finished resting frame -- query typed, caret parked, every row
+   resolved, `Your Business` first -- exactly what shipped before this
+   change. Every animated rule is a descendant of `.ps-c5r-run`, which
+   only JS adds, and the effect returns before allocating anything at all
+   under `reduce`. So reduce, no JS, a 404'd chunk, a server render, an
+   unopened dialog and an unfired ScrollTrigger all land on the same
+   legible frame. This is also the fix for the blank-navy-card WebKit
+   failure the note above records at this file's own :105-108.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* SET 1. E1's recommendation, and all three strings were already here. */
+const C5R_LOOP_QUERIES = [C5R_QUERY_A, C5R_QUERY_B, C5R_QUERY_C] as const;
+
+/* Every value is a literal in milliseconds because there is no duration
+   token in this design system and inventing one is out of bounds. The
+   easing lives in the stylesheet and uses the three tokens that exist. */
+const C5R_T = {
+  /* box-tween completion -> interior settled. B3's number: 70ms step +
+     380ms fade. Measured from THIS CARD's ScrollTrigger, not from load. */
+  settle: 450,
+  /* Longer than the in-loop dwell on purpose: a visitor who has just
+     arrived reads the finished picture before anything moves. */
+  firstDwell: 2600,
+  back: 22,
+  gap: 240,
+  type: 40,
+  space: 80,
+  submit: 320,
+  loading: 520,
+  rowDur: 260,
+  rowStep: 70,
+  dwell: 2200,
+} as const;
+
+/* One string, used by the mount guard and by the live listener, so the two
+   cannot drift apart. */
+const C5R_REDUCE_MQ = "(prefers-reduced-motion: reduce)";
+
+/* THE MACHINE. One pending step at a time, which is what makes
+   pause-and-resume-in-place exact rather than approximate: freezing is
+   "cancel the one timer and keep what was left of it", and resuming is
+   "re-arm it with the remainder". No wall-clock arithmetic survives a
+   pause, so a backgrounded tab cannot desynchronise the loop from its own
+   animations -- the animations are paused by the same class change.
+
+   Text is written with `textContent` on a ref'd node rather than through
+   React state. Two reasons, both deliberate: a 27-character query at
+   40ms/char would otherwise be 27 re-renders of the whole card visual,
+   and -- the load-bearing one -- the rendered JSX stays the FINISHED
+   frame, so the server render, the reduce path and the no-JS path are all
+   the same legible picture with no divergence to maintain. */
+function useSearchLoop(rootRef: React.RefObject<HTMLDivElement | null>) {
+  /* THE PREFERENCE IS A QUERY, NOT A SNAPSHOT OF ONE. It used to be read
+     exactly once, at mount, so a visitor who turned reduced motion ON
+     mid-visit kept a typing loop running for the rest of the visit -- and
+     no CSS media query can stop a `setTimeout`. The same one-shot bug was
+     fixed on the hero mark in this diff (`hero-mark-light.ts:1300-1305`,
+     parked live on a `change` listener); the house idiom for the React
+     side of it is `card2-candidates.tsx:717-724`. Flipping this state
+     re-runs the effect below, and the effect's own cleanup is what lands
+     the card back on its legible resting frame: it clears every timer,
+     drops `.ps-c5r-run`/`.ps-c5r-hold`, deletes `data-c5r-beat` and puts
+     the resting query text back. */
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia(C5R_REDUCE_MQ);
+    const sync = () => setReduced(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || typeof window === "undefined") return;
+
+    /* REDUCE: return before allocating ANYTHING. No observer, no
+       listener, no timer, no class. The resting frame is the answer.
+
+       BOTH HALVES ARE LOAD-BEARING. `reduced` is the live value and is
+       what makes a mid-visit toggle stop the loop. The direct read is
+       what keeps the "allocate nothing" promise at FIRST mount: the state
+       above starts `false` (it has to -- the server has no matchMedia),
+       so a reduce visitor would otherwise build an observer and four
+       listeners for the one commit before the sync effect lands. */
+    if (reduced || window.matchMedia(C5R_REDUCE_MQ).matches) return;
+
+    const q = root.querySelector<HTMLElement>(".ps-c5r-q");
+    const results = root.querySelector<HTMLElement>(".ps-c5r-results");
+    if (!q || !results) return;
+
+    const rows = Array.from(
+      results.querySelectorAll<HTMLElement>(".ps-c5r-row")
+    );
+    if (rows.length === 0) return;
+
+    let disposed = false;
+    let armed = false;
+
+    /* EVERY timer id in one collection, all cleared in the return. One
+       in-flight timer surviving unmount re-enters a dead component and
+       mutates a detached node. */
+    const timers = new Set<number>();
+    /* Pause is a SET of reasons, not a boolean. Hover, focus-within,
+       out-of-view and a hidden tab can overlap, and leaving one must not
+       resume the loop while another still holds it. */
+    const holds = new Set<string>();
+
+    let pend: { fn: () => void; ms: number; at: number; id: number } | null =
+      null;
+
+    const armPend = () => {
+      if (disposed || !pend || pend.id) return;
+      const step = pend;
+      step.at = performance.now();
+      const id = window.setTimeout(() => {
+        timers.delete(id);
+        if (disposed || pend !== step) return;
+        pend = null;
+        step.fn();
+      }, step.ms);
+      step.id = id;
+      timers.add(id);
+    };
+
+    const after = (ms: number, fn: () => void) => {
+      pend = { fn, ms, at: 0, id: 0 };
+      if (holds.size === 0) armPend();
+    };
+
+    const freeze = () => {
+      if (!pend || !pend.id) return;
+      window.clearTimeout(pend.id);
+      timers.delete(pend.id);
+      pend.ms = Math.max(0, pend.ms - (performance.now() - pend.at));
+      pend.id = 0;
+    };
+
+    const setHold = (reason: string, on: boolean) => {
+      const before = holds.size > 0;
+      if (on) holds.add(reason);
+      else holds.delete(reason);
+      const now = holds.size > 0;
+      if (now === before) return;
+      /* The class pauses the CSS animations in the same tick the timer
+         freezes, so the hairline and the row stagger stop where the
+         beat stopped. */
+      root.classList.toggle("ps-c5r-hold", now);
+      if (now) freeze();
+      else armPend();
+    };
+
+    const beat = (name: string) => {
+      root.dataset.c5rBeat = name;
+    };
+
+    /* `resolve` is the one beat whose length is width-dependent, and it
+       follows the ROW COUNT rather than a media query: 470ms at >=940px
+       where four rows show, 400ms at <=768px where the fourth is
+       `display: none`. Counted off the live computed style so the dialog
+       mount's own row-count rule is honoured too. */
+    const visibleRows = () =>
+      rows.filter((r) => window.getComputedStyle(r).display !== "none").length;
+
+    let qi = 0;
+
+    const erase = () => {
+      const t = q.textContent ?? "";
+      if (t.length === 0) {
+        beat("empty");
+        after(C5R_T.gap, startType);
+        return;
+      }
+      q.textContent = t.slice(0, -1);
+      after(C5R_T.back, erase);
+    };
+
+    const startCycle = () => {
+      beat("erasing");
+      erase();
+    };
+
+    const typeNext = (i: number) => {
+      const target = C5R_LOOP_QUERIES[qi];
+      if (i >= target.length) {
+        beat("submitted");
+        after(C5R_T.submit, load);
+        return;
+      }
+      q.textContent = target.slice(0, i + 1);
+      /* +80ms after a space. A fixed cadence reads as a machine; the
+         word gap is what makes it read as a person, and it is
+         deterministic so a reviewer can measure it. */
+      after(C5R_T.type + (target[i] === " " ? C5R_T.space : 0), () =>
+        typeNext(i + 1)
+      );
+    };
+
+    const startType = () => {
+      qi = (qi + 1) % C5R_LOOP_QUERIES.length;
+      beat("typing");
+      typeNext(0);
+    };
+
+    const load = () => {
+      beat("loading");
+      after(C5R_T.loading, resolveRows);
+    };
+
+    const resolveRows = () => {
+      beat("resolving");
+      const n = Math.max(1, visibleRows());
+      after(C5R_T.rowDur + (n - 1) * C5R_T.rowStep, dwell);
+    };
+
+    const dwell = () => {
+      beat("dwell");
+      after(C5R_T.dwell, startCycle);
+    };
+
+    const start = () => {
+      if (armed || disposed) return;
+      armed = true;
+      root.classList.add("ps-c5r-run");
+      beat("dwell");
+      after(C5R_T.firstDwell, startCycle);
+    };
+
+    /* ── THE TRIGGER: AN EVENT, AND NEVER A CONSTANT ──────────────────
+       PRIMARY -- service-pillars' public reveal contract, which was
+       written for this card by name (`service-pillars.tsx:2566-2592`):
+
+         `data-ps-reveal="done"` latched on the card element, plus a
+         bubbling `ps-interior-reveal` CustomEvent, fired from the box
+         tween's `onComplete` (`:2740-2747`) AND from all four of its
+         failure paths -- the reduced-motion branch, the chunk-reject
+         `.catch`, the hanging-import failsafe and the unmount cleanup.
+
+       Its own instruction is "read the attribute first, then subscribe",
+       because a consumer that mounts late would miss a bare event, and
+       that is what happens below. Firing from the failure paths as well
+       is what stops a GSAP failure -- or a cleanup that kills the tween
+       before `onComplete` can run -- from stranding this loop unstarted.
+
+       FALLBACK -- the tween's own DOM signature, watched with one
+       MutationObserver on the box's `style` attribute: inline
+       `opacity: 1` WITH the inline transform cleared, which is what
+       `clearProps: "transform"` (`:2764`) leaves behind, and also what
+       `showUnanimated()` writes. This exists because the contract above
+       is one uncommitted edit old; if it is reverted, the loop still
+       arms off the real tween rather than silently never starting.
+       Whichever fires first wins and the other is torn down.
+
+       Why NOT the computed opacity, by either route: child effects run
+       BEFORE parent effects, so at first mount this box has no inline
+       opacity at all and computes to 1. Reading the computed value would
+       arm instantly and key the loop to page load -- the one thing
+       forbidden here, because at 393x852 this card's box does not reveal
+       within 2.6s at all.
+
+       And if the box never settles by either route, nothing arms and the
+       card holds the finished still frame. Fail-visible, like every
+       other path in this file. */
+    const box = root.closest<HTMLElement>(".ps-bento-card");
+
+    const boxSettled = () =>
+      !!box && box.style.opacity === "1" && box.style.transform === "";
+
+    let mo: MutationObserver | null = null;
+
+    const stopWatchingBox = () => {
+      if (mo) {
+        mo.disconnect();
+        mo = null;
+      }
+      if (box) box.removeEventListener("ps-interior-reveal", onRevealed);
+    };
+
+    /* Idempotent: five paths can call this and only the first one counts. */
+    function onRevealed() {
+      if (disposed || armed || pend) return;
+      stopWatchingBox();
+      after(C5R_T.settle, start);
+    }
+
+    const onBoxStyle = () => {
+      if (disposed || armed || !boxSettled()) return;
+      onRevealed();
+    };
+
+    /* Out of view: pause, and resume IN PLACE. Every frame of this loop
+       is legible, so resuming mid-cycle can never show a broken state,
+       and a reset would re-trigger typing on every scroll wobble. */
+    const io = new IntersectionObserver(
+      (entries) => {
+        const e = entries[entries.length - 1];
+        if (!e) return;
+        setHold("offscreen", !e.isIntersecting);
+        /* THE DIALOG MOUNT. This card is mounted twice -- card face and
+           bottom-sheet dialog -- and the dialog copy has no
+           `.ps-bento-card` box to hook, so it arms on its own first real
+           visibility instead. That is exactly the condition wanted: the
+           dialog instance must not run while the sheet is closed, or two
+           loops run for one visitor and the hidden one is motion nobody
+           asked for. */
+        if (e.isIntersecting && !box) onRevealed();
+      },
+      { threshold: 0.25 }
+    );
+
+    /* Hover is when a visitor is READING, and it is also when the expand
+       button is being aimed at; yanking the query out from under someone
+       mid-read is the worst thing this loop can do. `focusin`/`focusout`
+       bubble from the card's own focusable child, which is `:focus-within`
+       by another name and gives keyboard users the mechanism that hover
+       cannot give a touch visitor. */
+    /* ── COVERED BY THE BOTTOM SHEET: THE FIFTH PAUSE SOURCE ─────────
+       The IO comment above says two loops must never run for one visitor,
+       and it only ever covered HALF of that. It stops the DIALOG copy
+       running while the sheet is CLOSED. Nothing stopped the CARD FACE
+       running while the sheet is OPEN, so from the moment a visitor taps
+       this card there were two unheld loops typing different queries at
+       each other -- measured on this build at every viewport from 320 to
+       1440, in all three engines, ~112 extra `setTimeout` arms per 9s
+       (P2-performance §4c-2, P2-browser-tester F-1).
+
+       WHY `body.dataset.psDialog` AND NOT CARD 3'S `.ps-dialog-visual-art`
+       (`card3-candidates.tsx:1471`). Both work; this one is the contract
+       written FOR THIS CARD BY NAME (`service-pillars.tsx:1959-1987`,
+       "Requested by E2-search-loop-build for card 5's search loop") and
+       until now it had zero consumers. It states its own value ("open"),
+       its own absence rule (the attribute is REMOVED, never set to
+       "closed", so `=== "open"` is the whole test), its own lifetime --
+       the sheet's full portal life INCLUDING the close animation, so the
+       face resumes only once the sheet is really gone -- and its own
+       change mechanism, an attribute MutationObserver. A class on an
+       interior wrapper carries none of that and is a styling hook that
+       may be renamed by anyone restyling the sheet. It is also cheaper:
+       one dataset read against a `document.querySelector` per callback,
+       and one narrow `attributeFilter` observer against card 3's
+       `childList` observer on <body>, which wakes for every portal.
+
+       This is a HOLD, not a stop: it joins the same reason set as hover,
+       focus, offscreen and hidden, so closing the sheet resumes the face
+       loop IN PLACE with the pending step's remainder intact -- no reset,
+       no re-typed query, exactly as the other four already behave. */
+    const inDialog = !box;
+    const sheetOpen = () => document.body.dataset.psDialog === "open";
+    const syncCovered = () => {
+      /* The dialog copy is the one the visitor is looking at; it must
+         never hold itself for being in the very sheet that is open. */
+      if (inDialog) return;
+      setHold("covered", sheetOpen());
+    };
+    const sheetMo = new MutationObserver(syncCovered);
+
+    const hoverTarget: HTMLElement = box ?? root;
+    const onEnter = () => setHold("hover", true);
+    const onLeave = () => setHold("hover", false);
+    const onFocusIn = () => setHold("focus", true);
+    const onFocusOut = () => setHold("focus", false);
+    /* setTimeout is throttled but NOT stopped in a background tab, so
+       without this the loop desynchronises from its own animations and
+       comes back mid-garbage. */
+    const onVis = () =>
+      setHold("hidden", document.visibilityState === "hidden");
+
+    holds.add("offscreen");
+    root.classList.add("ps-c5r-hold");
+
+    io.observe(root);
+    hoverTarget.addEventListener("mouseenter", onEnter);
+    hoverTarget.addEventListener("mouseleave", onLeave);
+    hoverTarget.addEventListener("focusin", onFocusIn);
+    hoverTarget.addEventListener("focusout", onFocusOut);
+    document.addEventListener("visibilitychange", onVis);
+    onVis();
+    /* Attribute first, then subscribe -- the same order as the reveal
+       contract above, and for the same reason: this mount may be created
+       while a sheet is already open. */
+    syncCovered();
+    if (!inDialog) {
+      sheetMo.observe(document.body, {
+        attributes: true,
+        attributeFilter: ["data-ps-dialog"],
+      });
+    }
+
+    if (box) {
+      /* Attribute first, then subscribe -- the contract's own order, and
+         the reason is a consumer that mounts after the event fired. */
+      if (box.dataset.psReveal === "done" || boxSettled()) {
+        onRevealed();
+      } else {
+        box.addEventListener("ps-interior-reveal", onRevealed);
+        mo = new MutationObserver(onBoxStyle);
+        mo.observe(box, { attributes: true, attributeFilter: ["style"] });
+      }
+    }
+
+    /* THE CLEANUP IS RETURNED FROM THE EFFECT BODY'S OWN CLOSURE. Not
+       from inside a `.then()`, not from a callback, not conditionally --
+       `service-pillars.tsx:2615` does the first of those and leaks five
+       ScrollTriggers for it. Idempotent, so React's StrictMode double
+       invoke is safe, and it restores the resting frame rather than
+       leaving a half-typed query behind. */
+    return () => {
+      disposed = true;
+      for (const id of timers) window.clearTimeout(id);
+      timers.clear();
+      pend = null;
+      holds.clear();
+      io.disconnect();
+      sheetMo.disconnect();
+      stopWatchingBox();
+      hoverTarget.removeEventListener("mouseenter", onEnter);
+      hoverTarget.removeEventListener("mouseleave", onLeave);
+      hoverTarget.removeEventListener("focusin", onFocusIn);
+      hoverTarget.removeEventListener("focusout", onFocusOut);
+      document.removeEventListener("visibilitychange", onVis);
+      root.classList.remove("ps-c5r-run", "ps-c5r-hold");
+      delete root.dataset.c5rBeat;
+      q.textContent = C5R_QUERY;
+    };
+  }, [rootRef, reduced]);
+}
+
 /* ── PARTS ────────────────────────────────────────────────────────────
    Every part is drawn as the object it is. There are NO `<defs>` anywhere
    in this file and no `url(#…)` reference, so D28c's namespacing rule is
@@ -209,10 +707,29 @@ function Magnifier() {
    is the recognition. */
 function SearchField() {
   return (
-    <div className="ps-c5r-field">
+    /* `ps-rv-i` + `--i: 0` opt this element into B5's shared interior
+       reveal (`card-visuals.css:3480-3545`). Opt-in is per ELEMENT, so
+       these two markers are the whole of card 5's interior entrance:
+       FIELD FIRST, results 70ms behind it at the primitive's default
+       step. That order is the card's own logic -- you search, then you
+       rank -- and the pair is disjoint at every width, so the default
+       overlapping stagger needs no per-card knob. Opacity only: the lift
+       is zeroed on the root, per this card's spec.
+       B5 could not add these because this file is mine, and until they
+       existed card 5 shipped with NO interior entrance. */
+    <div className="ps-c5r-field ps-rv-i" style={{ "--i": 0 } as Vars}>
       <Magnifier />
       <span className="ps-c5r-q">{C5R_QUERY}</span>
       <span className="ps-c5r-caret" />
+      {/* THE LOADING BEAT, AND IT HAS NO ROW OF ITS OWN ON PURPOSE. A 2px
+          hairline absolutely positioned inside the field's own bottom
+          edge, so it costs zero vertical pixels -- which is mandatory,
+          because `scrollHeight === height` at all eight widths and the
+          rest rows are already compressing 44px -> 31px. Rendered at
+          every mount and invisible at rest (`scaleX(0)`, opacity 0), so
+          the loop never adds or removes a node mid-cycle and the static
+          frame is unchanged. It is the only new element in this card. */}
+      <span className="ps-c5r-load" />
     </div>
   );
 }
@@ -244,16 +761,25 @@ function ResultRow({
   struck = false,
   label,
   w,
+  n,
 }: {
   ours?: boolean;
   dead?: boolean;
   struck?: boolean;
   label?: string;
   w?: string;
+  /* Position in the stack, and the ONLY thing it drives is the resolve
+     stagger's `animation-delay` (`--n * 70ms`). `ours` is 0, so the
+     viewer's own result is the first one to arrive -- a fourth statement
+     of first position, in time, still with no numeral anywhere. */
+  n?: number;
 }) {
   if (ours) {
     return (
-      <div className="ps-c5r-row ps-c5r-row--ours">
+      <div
+        className="ps-c5r-row ps-c5r-row--ours"
+        style={n === undefined ? undefined : ({ "--n": n } as Vars)}
+      >
         <span className="ps-c5r-rowhead">
           <span className="ps-c5r-mark" />
           <span className="ps-c5r-domain" />
@@ -281,7 +807,11 @@ function ResultRow({
       className={`ps-c5r-row ps-c5r-row--rest${label ? " ps-c5r-row--named" : ""}${
         dead ? " ps-c5r-row--dead" : ""
       }${struck ? " ps-c5r-row--struck" : ""}`}
-      style={{ "--w": w } as Vars}
+      style={
+        n === undefined
+          ? ({ "--w": w } as Vars)
+          : ({ "--w": w, "--n": n } as Vars)
+      }
     >
       <span className="ps-c5r-rowhead">
         <span className="ps-c5r-mark" />
@@ -405,8 +935,26 @@ function ReplyBubble({ compact = false }: { compact?: boolean }) {
    entrance is all a phone viewer ever sees.
    ═════════════════════════════════════════════════════════════════════════ */
 export function SearchVisualA() {
+  /* The loop reads and writes through this root and nothing outside it, so
+     the card face and the dialog sheet each drive their own copy with
+     their own observer, listeners and timers. */
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  useSearchLoop(rootRef);
+
   return (
-    <div className="ps-c5r-root ps-c5r-a" aria-hidden="true">
+    /* `--rv-lift: 0px` — B5's second and only other knob, and it is set
+       here on this card's authority as its owner rather than to fix a
+       clipping defect (B3 checked, and 6px would not clip). This card's
+       interior is a positioned stage with `scrollHeight === height` at
+       every measured width and rest rows already compressing 44px ->
+       31px, so it takes the quietest entrance of the four: opacity only,
+       no offset, the interior arriving as one rigid unit. */
+    <div
+      className="ps-c5r-root ps-c5r-a"
+      ref={rootRef}
+      style={{ "--rv-lift": "0px" } as Vars}
+      aria-hidden="true"
+    >
       <div className="ps-c5r-stage">
         <SearchField />
         {/* THREE unlit rows, not two. Both counts are inside what the owner
@@ -419,11 +967,11 @@ export function SearchVisualA() {
             widths 100 / 92 / 84 is the page falling away behind first
             position; it is not decoration, it is what makes first position
             mean anything. */}
-        <div className="ps-c5r-results">
-          <ResultRow ours />
-          <ResultRow label={C5R_OTHER} w="100%" />
-          <ResultRow label={C5R_OTHER} w="92%" />
-          <ResultRow label={C5R_OTHER} w="84%" />
+        <div className="ps-c5r-results ps-rv-i" style={{ "--i": 1 } as Vars}>
+          <ResultRow ours n={0} />
+          <ResultRow label={C5R_OTHER} w="100%" n={1} />
+          <ResultRow label={C5R_OTHER} w="92%" n={2} />
+          <ResultRow label={C5R_OTHER} w="84%" n={3} />
         </div>
       </div>
     </div>

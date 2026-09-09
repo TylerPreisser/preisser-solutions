@@ -1956,6 +1956,36 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
     document.body.style.overflow = "hidden";
     document.body.style.paddingRight = `${scrollbarWidth}px`;
 
+    /* `data-ps-dialog="open"` ON THE BODY, for the DUPLICATE-MOUNT problem.
+
+       A card's art can be mounted TWICE at once: once on the card face in the
+       grid, and once inside this sheet, which is `createPortal`'d onto
+       `document.body`. Any card art running its own loop therefore runs it
+       twice while the sheet is open. They stay in lockstep so nothing looks
+       wrong, but it is duplicated work and a latent divergence, so a card that
+       animates can pause its OFF-SCREEN copy on this flag.
+
+       Requested by `E2-search-loop-build` for card 5's search loop.
+
+       CONTRACT, so nobody has to read this code to use it:
+         attribute : data-ps-reveal's sibling, `data-ps-dialog` on <body>
+         value     : the string "open" while a bottom sheet is mounted
+         absent    : no bottom sheet is mounted -- the attribute is REMOVED,
+                     not set to "closed", so `body.dataset.psDialog === "open"`
+                     is the whole test and `!body.dataset.psDialog` is the
+                     other side of it
+         lifetime  : this sheet's full portal lifetime, which INCLUDES the
+                     close animation. Deliberately conservative: a consumer
+                     resumes only once the sheet is really gone.
+         changes   : observe with a MutationObserver on <body> attributes if
+                     you need an edge rather than a poll.
+
+       Set here rather than in a new effect because this effect already owns
+       exactly the sheet's open lifetime and already has the symmetric cleanup
+       below -- so the flag cannot outlive the sheet without the scroll lock
+       outliving it too, which would be immediately visible. */
+    document.body.dataset.psDialog = "open";
+
     /* MODAL SEMANTICS — SC 2.4.3 / 2.4.11.
 
        Scroll-lock stopped the page MOVING behind the sheet; it never stopped
@@ -2101,6 +2131,9 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
       document.removeEventListener("keydown", handleKey);
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
+      // Paired with the write above. REMOVED, not set to "closed" -- see the
+      // contract there.
+      delete document.body.dataset.psDialog;
       // A parent unmount or route change can land before the close settles;
       // drop the pending timer so it cannot fire against a torn-down tree.
       if (closeTimer.current !== null) {
@@ -2482,6 +2515,33 @@ function PillarCrawlerContent() {
   );
 }
 
+/* THE ONE NUMBER THAT DECIDES WHEN A CARD'S INTERIOR STARTS.
+
+   A fraction of the card BOX tween's progress, not a delay in milliseconds:
+   change the box's 0.65s duration and this point moves with it.
+
+   READ THIS BEFORE CHANGING IT -- the obvious arithmetic is wrong. GSAP's
+   `power3` is QUART, not cubic (`power1` Quad, `power2` Cubic, `power3` Quart,
+   `power4` Quint), so the box's opacity at progress p is 1-(1-p)^4, NOT
+   1-(1-p)^3. The consequences are not academic:
+
+     the box reaches opacity 0.95 at p = 0.5271, not at p = 0.632
+
+   A first pass at this fix used 0.6 on the cubic assumption and measured a
+   RESIDUAL blank window of 42.5-63.9ms -- it failed the >=0.95-with-no-ink
+   criterion at 1440x900 light, because 0.6 is 47ms LATER than the box crossing
+   0.95, not 21ms earlier. The box opacity the rAF trace read at the frame GO
+   landed was 0.9744-0.9774, which is 1-0.4^4 to three decimals and is how the
+   error was caught. Trust that measurement over any easing table.
+
+   0.5 is therefore the LATEST value that satisfies the criterion at all: it
+   fires 17.6ms before the box reaches 0.95, which is about one style recalc
+   plus one frame -- exactly the latency the interior's transition needs to
+   leave zero. Box opacity at that instant is 1-0.5^4 = 0.9375.
+   Module scope so the value a verifier reads is the value that ships; the full
+   argument is at the `onUpdate` that consumes it. */
+const RV_GO_AT_PROGRESS = 0.5;
+
 /* ─────────────────────────────────────────────────────────────
    MAIN EXPORT
    ───────────────────────────────────────────────────────────── */
@@ -2553,22 +2613,179 @@ export function ServicePillars() {
 
     const cards = Array.from(gridRef.current.children) as HTMLElement[];
 
+    /* THE INTERIOR REVEAL'S PUBLIC EVENT, and it is deliberately paired with
+       an ATTRIBUTE rather than being an event alone.
+
+       Card 5's search loop starts at this card's own reveal + 450ms
+       (teams/E/E1-search-loop-spec.md; Part 24). A hard-coded constant is a
+       trap there: the settle time is 1,100ms below 940px but 1,200ms at and
+       above it, because card 5 only shares row 2 with `Websites.` in the
+       3-column regime and only then carries a 100ms box delay. So the number
+       must be an EVENT, not a literal.
+
+       A consumer that mounts LATE would miss a bare event, so the same fact is
+       also latched on the element: `data-ps-reveal="done"`. Read the attribute
+       first, then subscribe. The event bubbles, so a listener may sit on the
+       card root or on any ancestor.
+
+       Fired from every path that ends in a visible card -- the tween's
+       onComplete, the reduced-motion branch, the chunk-reject .catch, the
+       hanging-import failsafe and the unmount cleanup -- so a downstream loop
+       cannot be stranded by a GSAP failure. */
+    const markRevealed = (el: HTMLElement) => {
+      if (el.dataset.psReveal === "done") return;
+      el.dataset.psReveal = "done";
+      el.dispatchEvent(
+        new CustomEvent("ps-interior-reveal", { bubbles: true })
+      );
+    };
+
+    /* REMOVE BOTH CLASSES OR NEITHER. This is not tidiness, it is the safety
+       property, and it was measured as a single-variable pair on the live page
+       at the identical 120ms mid-flight moment:
+
+         remove `ps-rv-go` only        -> 5/5 interiors rest at opacity 0 FOREVER
+         remove `ps-rv-arm` AND `-go`  -> 5/5 interiors rest at opacity 1
+
+       Because the hidden frame lives behind `.ps-rv-arm` and nowhere else, the
+       BASE CASCADE IS THE FINISHED RESTING FRAME. Dropping ARM lands on it.
+       Dropping GO leaves ARM authoritative and strands the interior. */
+    const disarm = (el: HTMLElement) => {
+      el.classList.remove("ps-rv-arm", "ps-rv-go");
+    };
+
     if (prefersReduced) {
       cards.forEach((el) => {
         el.style.opacity = "1";
         el.style.transform = "";
+        markRevealed(el);
       });
       return;
     }
+
+    /* FAIL VISIBLE, which means the RESTING state and not the hidden one. The
+       .catch below already covers a chunk that REJECTS; this is the shared
+       helper both that and the hanging-import failsafe use, so the two cannot
+       drift apart. Same resting values the reduced-motion branch writes.
+
+       It now also drops the interior reveal's ARM/GO pair and latches the
+       reveal event, so the interior is covered by the SAME one line that
+       already covers the box for all three of those paths. */
+    const showOneUnanimated = (el: HTMLElement) => {
+      el.style.opacity = "1";
+      el.style.transform = "";
+      disarm(el);
+      markRevealed(el);
+    };
+
+    const showUnanimated = () => {
+      cards.forEach(showOneUnanimated);
+    };
 
     // Initial hidden state — GSAP will animate these in
     cards.forEach((el) => {
       el.style.opacity = "0";
       el.style.transform = "translateY(28px)";
+      /* ARM the card's INTERIOR reveal in the same breath as the box's, and
+         from JavaScript only. Nothing in the base cascade hides any interior
+         element; the hidden frame is reachable exclusively through this class
+         -- UNDER `prefers-reduced-motion: no-preference` ONLY. Read that
+         qualifier before acting on this comment: under `reduce`,
+         card-visuals.css:3541 matches `.ps-rv-arm .ps-rv-i` (ARM ALONE, no
+         `:not(.ps-rv-go)`) with `opacity: 1 !important`, so ARM there means
+         VISIBLE, not hidden -- deliberately, so a reduced-motion visitor can
+         never be stranded at 0 whatever happens to GO. The earlier wording
+         omitted that and read as "ARM always hides", which sent four separate
+         agents chasing a CRITICAL that does not exist; three independent
+         measurements confirm the reduce behaviour is correct. The hiding rule
+         is card-visuals.css:3495 (`.ps-rv-arm:not(.ps-rv-go)`), inside the
+         `ps-rv-*` block at the foot of that sheet, and it is the only one.
+         Card 3 gets the class too and animates nothing, because `.ps-rv-i`
+         matches zero elements inside it -- opt-in is per ELEMENT, so "card 3
+         does nothing" needs no guard that a later agent could forget. */
+      el.classList.add("ps-rv-arm");
     });
 
-    import("@/lib/gsap").then(({ gsap, ScrollTrigger }) => {
-      if (!gridRef.current) return;
+    /* A HANGING IMPORT IS NOT A REJECTED IMPORT, AND ONLY ONE OF THEM HAS A
+       FALLBACK WITHOUT THIS.
+
+       The inline `opacity: 0` above is written BEFORE the dynamic import
+       resolves, and the `.catch` below only ever runs on a rejection. On a
+       stalled connection -- a request that neither completes nor errors, which
+       is the normal shape of a flaky mobile network -- nothing rejects, so all
+       five cards stay invisible for as long as the socket hangs, holding their
+       full layout height as an empty void. Measured with the chunk aborted (a
+       rejection) the .catch recovers it; a hang has no such edge.
+
+       THE FAILSAFE IS GATED ON VISIBILITY, NOT ON TIME ALONE -- the same shape
+       card1-candidates.tsx already ships for its sub-tile reveal: first check
+       at 1200ms, then every 250ms, and it only fires once a card has actually
+       reached the line where its entrance should have played. A bare timer
+       would burn the entrance for every visitor still reading the hero, since
+       the grid sits ~1170px down a 900px fold; gating it means a merely SLOW
+       import still gets to animate, and only a card the visitor can see forces
+       the unanimated resting state.
+
+       AND IT IS PER CARD, IN BOTH DIRECTIONS. The first version tested the
+       line with `cards.some(...)` and then called `showUnanimated()`, which
+       reveals ALL FIVE, and latched a single `shownWithoutGsap` boolean that
+       made the late-arriving chunk stand down for the whole grid. Measured on
+       a stalled chunk at 393x852: scrolling far enough for card 1 alone
+       revealed 5/5 cards, four of them ~1,000-3,900px below the fold, and the
+       chunk arriving afterwards animated NOTHING, ever. Both halves were wrong
+       for the same reason -- the gate is a per-card question and the answer was
+       stored per grid. So:
+
+         - each card is tested against the line and revealed on its OWN
+           crossing (`shownWithoutGsap` is now a Set of elements);
+         - the poll keeps running until every card has been dealt with, so a
+           visitor who keeps scrolling on a hung chunk still gets each card as
+           it arrives (the recovery a verifier confirmed at 5/5 in 9/9 cells is
+           preserved -- it now needs the scroll that reaches those cards, which
+           is the same scroll that would have played their entrance);
+         - the late arrival only stands down FOR THE CARDS ALREADY UP.
+           Re-running the fromTo on those would flash them back to 0, which is
+           the real constraint; it never applied to a card still hidden. The
+           skip lives in the tween loop below, keyed off this same Set.
+
+       0.82 is not a new number: it is the same `start: "top 82%"` line the
+       per-card ScrollTriggers below use. */
+    let gsapArrived = false;
+    const shownWithoutGsap = new Set<HTMLElement>();
+    let poll = 0;
+
+    const settle = () => {
+      if (gsapArrived) return;
+      const line = window.innerHeight * 0.82;
+      let firedNow = 0;
+      cards.forEach((el) => {
+        if (shownWithoutGsap.has(el)) return;
+        if (el.getBoundingClientRect().top > line) return;
+        shownWithoutGsap.add(el);
+        showOneUnanimated(el);
+        firedNow++;
+      });
+      if (firedNow > 0) {
+        console.error(
+          `[service-pillars] GSAP chunk has not arrived after 1200ms; showing ${firedNow} card(s) unanimated (${shownWithoutGsap.size}/${cards.length} so far)`
+        );
+      }
+      if (shownWithoutGsap.size < cards.length) {
+        poll = window.setTimeout(settle, 250);
+      }
+    };
+    poll = window.setTimeout(settle, 1200);
+
+    /* Every ScrollTrigger this effect creates, so the cleanup can kill exactly
+       those and nothing else. See the cleanup at the end of the effect. */
+    const tweens: gsap.core.Tween[] = [];
+    const disarmTimers: number[] = [];
+    let cancelled = false;
+
+    import("@/lib/gsap").then(({ gsap }) => {
+      gsapArrived = true;
+      window.clearTimeout(poll);
+      if (cancelled || !gridRef.current) return;
 
       /* ONE TRIGGER PER CARD, not one on the whole grid.
 
@@ -2593,7 +2810,34 @@ export function ServicePillars() {
         const indexInRow = seenInRow.get(row) ?? 0;
         seenInRow.set(row, indexInRow + 1);
 
-        gsap.fromTo(
+        /* The card is already up, unanimated, because the hanging-import
+           failsafe reached it. Re-running the fromTo would flash it back to
+           opacity 0. Skipped AFTER the row bookkeeping above so the surviving
+           cards keep the delays they would have had. */
+        if (shownWithoutGsap.has(el)) return;
+
+        /* GO IS FIRED FROM THE BOX TWEEN'S OWN onUpdate, AT A FIXED FRACTION
+           OF ITS PROGRESS. Idempotent, so the onComplete belt-and-braces
+           below cannot double-fire the disarm timer. */
+        const fireGo = () => {
+          if (el.classList.contains("ps-rv-go")) return;
+          el.classList.add("ps-rv-go");
+          markRevealed(el);
+          disarmTimers.push(window.setTimeout(() => disarm(el), 900));
+        };
+
+        /* Written into a holder rather than read from a `const tw` in the
+           closure ON PURPOSE. `fromTo` has `immediateRender: true`, so GSAP
+           can render -- and therefore call onUpdate -- DURING the constructor
+           call, before any `const`/`let` binding on the left-hand side is
+           initialised. That is a TDZ ReferenceError inside a dynamic import's
+           .then(), i.e. an unhandled rejection that unmounts nothing visibly
+           and leaves all five cards at opacity 0. An object property is
+           `undefined` at that moment instead of throwing, and the guard below
+           reads it defensively. */
+        const held: { tw?: gsap.core.Tween } = {};
+
+        held.tw = gsap.fromTo(
           el,
           { opacity: 0, y: 28 },
           {
@@ -2603,6 +2847,77 @@ export function ServicePillars() {
             delay: indexInRow * 0.1,
             ease: "power3.out",
             clearProps: "transform",
+            /* WHY HALF OF THE BOX TWEEN AND NOT ITS COMPLETION.
+               (Phase 3 F1; supersedes the "GO on onComplete" rule, keeping
+               the property that rule existed to protect.)
+
+               The original argument was right about the risk and wrong about
+               where to draw the line. `power3.out` is QUART (see
+               RV_GO_AT_PROGRESS), so the box is at 0.95 opacity by p=0.5271 --
+               barely past half way -- and visually indistinguishable from 1
+               long before `onComplete`. Chaining the interior at completion
+               therefore left the card FULLY OPAQUE, TITLED, TAPPABLE AND EMPTY
+               for the whole back half of the tween. Measured by per-frame rAF
+               trace on 127.0.0.1:3117, box>=0.95 with every interior target
+               <0.02:
+
+                 393x852 light  card 2   298.9ms (36 frames)
+                 393x852 light  card 4   298.9ms
+                 1440x900 dark  card 2   313.1ms   card 4 320.8ms   card 5 313.1ms
+                                and THREE cards in that state in the same frame
+
+               In light -- the shipping default -- that does not read as
+               negative space, it reads as artwork that failed to load.
+
+               The original concern was that an interior fading inside a
+               still-fading box MULTIPLIES two curves and leaves nothing
+               independently measurable. That concern is answered by BOUNDING
+               the product rather than by waiting for it to vanish. At p=0.5
+               the box is at 1-0.5^4 = 0.9375, and it only rises from there, so
+               for the whole interior fade the composite is the interior's own
+               opacity times a factor in [0.9375, 1] -- within 6.25%, and the
+               remaining box travel is 28*(1-0.9375) = 1.75px of y, gone 18ms
+               later when the box passes 0.95. Nothing a verifier reads is
+               ambiguous by more than that.
+
+               WHAT A STRANGER CHECKS, and it is stronger than the old rule,
+               not weaker:
+                 - GO is added ONLY from inside this tween's onUpdate. A tween
+                   never calls onUpdate before its first render, so
+                   `ps-rv-go` provably cannot appear before the box tween
+                   starts. The ordering is a structural property of where the
+                   call site is, not of a timer that happens to line up.
+                 - the threshold is a single named number, and the box's
+                   opacity at the frame GO lands is >= 0.9375 and < 1 -- two
+                   reads on one frame, no trace needed:
+                     `getComputedStyle(card).opacity` at the first frame with
+                     `.ps-rv-go`.
+                   Measured across four cells it read 0.9375-0.945, the spread
+                   being one rAF of tween travel between GSAP's ticker writing
+                   the class and the sampler reading the frame.
+                 - the finish is unchanged: interior at 0 when GO lands, at 1
+                   380ms later.
+               A `gsap.delayedCall` at 0.325s would produce the same pixels and
+               NONE of that, because a separate timer is not ordered against
+               this tween by construction. That is why it is onUpdate.
+
+               DISARM at +900ms = 300 (the largest step, card 4) + 380 (the
+               fade) + 220 slack, and it is now measured from a point 325ms
+               earlier in the box tween, so the slack only grows. Nothing
+               depends on `transitionend`, which does not fire on a throttled
+               or display:none element; if this timer never runs, ARM+GO simply
+               stay on and `.ps-rv-arm.ps-rv-go` IS opacity 1 with no
+               translate. */
+            onUpdate: () => {
+              const tw = held.tw;
+              if (tw && tw.progress() >= RV_GO_AT_PROGRESS) fireGo();
+            },
+            /* Belt and braces for one real case: a frame long enough that the
+               tween renders straight past 0.6 to 1 -- a backgrounded tab, a
+               long task -- would otherwise land on an onUpdate at progress 1,
+               which fireGo already covers, but a tween completed by a
+               `.progress(1)` seek does not guarantee an onUpdate. Idempotent. */
+            onComplete: fireGo,
             scrollTrigger: {
               trigger: el,
               start: "top 82%",
@@ -2610,9 +2925,9 @@ export function ServicePillars() {
             },
           }
         );
-      });
 
-      return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+        tweens.push(held.tw);
+      });
     })
       .catch((err) => {
         /* FAIL VISIBLE. Never drop this silently.
@@ -2629,16 +2944,67 @@ export function ServicePillars() {
 
            Chained after .then rather than passed to import().catch so it also
            covers a throw from inside the callback. Same shape as the guard in
-           marcommand-live.tsx. */
-        cards.forEach((el) => {
-          el.style.opacity = "1";
-          el.style.transform = "";
-        });
+           marcommand-live.tsx. A HANG rather than a rejection is covered
+           separately, by the visibility-gated failsafe above. */
+        gsapArrived = true;
+        window.clearTimeout(poll);
+        showUnanimated();
         console.error(
           "[service-pillars] GSAP chunk failed to load; showing cards unanimated",
           err
         );
       });
+
+    /* THE CLEANUP HAD TO MOVE, AND IT COULD NOT MOVE VERBATIM.
+
+       It used to be `return () => ScrollTrigger.getAll().forEach(t => t.kill())`
+       returned from INSIDE the .then callback, where its value became the
+       resolution value of a promise chain nothing consumes. React never saw it,
+       so the five triggers this effect creates survived every unmount: one leak
+       set per client-side visit to the homepage. Proven at the language level --
+       the same shape returns `undefined` to React, while a variable plus a real
+       return from the effect body returns a function.
+
+       BUT `ScrollTrigger.getAll()` IS A GLOBAL REGISTRY, NOT THIS EFFECT'S.
+       Moving that line verbatim into this return would have been a new bug in
+       place of the old one: three components on this page create ScrollTriggers
+       -- this one, marcommand-live.tsx:1213 and cta-section.tsx:38-42, all
+       mounted from src/app/page.tsx -- so a global kill on unmount tears down
+       siblings' triggers too. This kills only the instances this effect made,
+       held in `tweens` as they were created.
+
+       Shape follows marcommand-live.tsx:125-130 + :1286-1289 (a `cancelled`
+       flag plus a real return from the effect body); what it kills does not
+       follow marcommand-live.tsx:1272, which is that same over-broad global
+       sweep. `hero-mark-light.ts:2185-2189` is a different remedy (a
+       `destroyed` flag for an rAF loop) for a different shape and is not the
+       precedent here. */
+    return () => {
+      cancelled = true;
+      window.clearTimeout(poll);
+      disarmTimers.forEach((t) => window.clearTimeout(t));
+      disarmTimers.length = 0;
+      tweens.forEach((tween) => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
+      });
+      tweens.length = 0;
+
+      /* THE HOLE THAT ACTUALLY BIT, and it only exists because the interior
+         chains off `onComplete`. Killing a tween does not run its onComplete,
+         so an unmount mid-flight -- a client-side nav off the homepage, a
+         Fast Refresh, React 18 StrictMode's double-invoke in dev -- left every
+         armed card with `ps-rv-arm` on and `ps-rv-go` never added. Reproduced
+         on the live page: 5 of 5 interiors at opacity 0 forever.
+
+         Routing it through showUnanimated() is what closes it, and routing
+         rather than inlining is the point: the same one call already covers
+         the chunk-reject and hanging-import paths, so the three cannot drift
+         apart. It removes BOTH classes -- see disarm() above for why the
+         direction of removal is the entire safety property. Ordered AFTER the
+         tween kills so GSAP cannot write the hidden state back afterwards. */
+      showUnanimated();
+    };
   }, []);
 
   return (

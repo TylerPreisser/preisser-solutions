@@ -51,8 +51,21 @@ import {
 export function WebsiteVisual() {
   return (
     <div className="ps-visual-website" aria-hidden="true">
-      {/* LEFT: Browser window */}
-      <div className="ps-wb-browser">
+      {/* LEFT: Browser window.
+
+          `ps-rv-i` + `--i: 0` opt this element into the shared bento
+          interior reveal (card-visuals.css, the `ps-rv-*` block at the
+          foot of that sheet; spec teams/B/B3-interior-choreography.md
+          section 3.3). Card 4 is the only card with a genuine ordering --
+          the site loads in the browser, THEN the phone arrives in front
+          of it -- so it is the only card that gets one. The step is
+          `--rv-step: 300ms` on `.ps-visual-website`, not the 70ms
+          default, because these two boxes OVERLAP at every width; see
+          that CSS comment for the measurement. */}
+      <div
+        className="ps-wb-browser ps-rv-i"
+        style={{ "--i": 0 } as React.CSSProperties}
+      >
         <div className="ps-browser-chrome">
           <div className="ps-browser-dots">
             <span style={{ background: "#FF5F57" }} />
@@ -101,8 +114,18 @@ export function WebsiteVisual() {
         </div>
       </div>
 
-      {/* RIGHT: iPhone 15 Pro mockup — clean rebuild, no artifacts */}
-      <div className="ps-phone">
+      {/* RIGHT: iPhone 15 Pro mockup — clean rebuild, no artifacts.
+
+          `--i: 1` so it arrives 300ms after the browser. The entrance
+          lifts this element with the `translate` property, NOT
+          `transform`, precisely because this element already owns
+          `transform: rotate(5deg)` (card-visuals.css:87) and a hover
+          `rotate(5deg) translateY(-6px)` (:92) -- a transform-based
+          entrance would have deleted the tilt and fought the hover. */}
+      <div
+        className="ps-phone ps-rv-i"
+        style={{ "--i": 1 } as React.CSSProperties}
+      >
         <div className="ps-phone-body">
           {/* Dynamic island */}
           <div className="ps-phone-island" />

@@ -1084,9 +1084,16 @@ const KEEPOUT_MARGIN = 14;
  *  a solid fill. The floor makes a phone feather as soft as a desktop one. */
 const KEEPOUT_FEATHER = 0.14;    // fraction of the hero's width
 const KEEPOUT_FEATHER_MIN = 76;  // css px floor, for narrow viewports
-/** How long the beam takes to cross the whole off-screen arc, regardless of how
- *  much of it is off-screen. See the time remap in build(). */
+/** RETIRED BY §43, voided rather than deleted on the §42 / NARROW_ precedent.
+ *  It was "how long the beam takes to cross the whole off-screen arc, regardless
+ *  of how much of it is off-screen" — the fixed budget in the two-rate time
+ *  remap that §43 replaced with a uniform rate over the VISIBLE arc. NOTHING
+ *  READS IT, so editing it is a silent no-op and re-adding a read is the
+ *  regression. Why it cannot come back is measured on `visCum` in the closure
+ *  below: re-timing the hidden traverse, at ANY rate, does not fix either
+ *  symptom it was blamed for. */
 const HIDDEN_TRAVERSE_MS = 350;
+void HIDDEN_TRAVERSE_MS;
 /* ===========================================================================
  * §37 — 2026-09-06. DESKTOP GOES BACK. The P changes were only ever for mobile.
  *
@@ -1289,7 +1296,13 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   const ctx: CanvasRenderingContext2D = ctx0;
   const bctx: CanvasRenderingContext2D = bctx0;
 
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* §43. The QUERY, not a snapshot of it. This was a one-shot `.matches` read
+     at mount, on the page's ONLY permanent rAF loop — so a visitor who turned
+     the OS preference on mid-visit kept the beam running for the rest of the
+     visit, and no CSS media query can reach a canvas to stop it. `still()` now
+     reads it live and a `change` listener parks the loop; see the listener at
+     the bottom of this closure. House idiom: card2-candidates.tsx:719-723. */
+  const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 
   let raf = 0;
@@ -1321,32 +1334,120 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
    *  pixels. Restoring only this plus the new one is what keeps the loop off
    *  the full viewport. Null means "the whole canvas is clean plate". */
   let dirty: [number, number, number, number] | null = null;
-  /** Arc-length distance of the outline's rightmost vertex. Set in build(). */
-  let parkDist = 0;
-  /* TIME remap for the beam, §30-B. With the mark bleeding off-frame, part of
-     the outline is off-canvas, and walking it at a constant arc-length rate
-     leaves the beam invisible for as long as that arc takes — measured 0.70s at
-     a 430px mark and 5.45s at 700px, against the client's original complaint of
-     gaps "up to 1,400ms". So the loop is re-timed rather than re-shaped: the
-     visible arc keeps the whole lap minus a FIXED HIDDEN_TRAVERSE_MS, and the
-     entire off-screen arc is crossed in that fixed budget however long it is.
-     Dark time is then constant at any bleed, and the beam re-enters AT THE FRAME
-     EDGE, where a viewer expects a cropped thing to reappear — never mid-form,
-     which is what read as broken and which §26.1 fixed separately.
-     It also decouples size from beam continuity permanently: a future "bigger
-     still" costs nothing here.
-     On desktop nothing is off-canvas, so hidLen is 0, the whole lap goes to the
-     visible arc, and this reduces EXACTLY to the previous uniform mapping. */
-  let segT: number[] = [0];
-  let lapMs = 0;
-  let parkT = 0;
+  /* ==========================================================================
+     §43 — 2026-09-08. THE BEAM'S TIME BASE IS THE VISIBLE ARC, AT ONE RATE.
+     Replaces §30-B's two-rate remap (`segT`/`lapMs`/HIDDEN_TRAVERSE_MS). The
+     reason is measured on this element's own pixels, not stylistic.
+
+     WHAT §30-B DID, AND WHAT IT ACTUALLY SHIPPED. The visible arc kept the whole
+     lap minus a fixed HIDDEN_TRAVERSE_MS and the entire off-screen arc was
+     crossed in that fixed budget however long it was. Its note claimed the beam
+     therefore "re-enters AT THE FRAME EDGE" with "dark time constant at any
+     bleed". At 393x852 in the shipped light theme it did neither:
+       - the off-canvas arc is 39.4% of the outline, in TWO runs of 16.4% and
+         22.9% — §42's anchor table bleeds the mark off the right edge at six of
+         its seven rows, so this is the normal path, not an edge case;
+       - the beam is a RUN of BEAM_HEAD_FRAC of the outline = 18.0%, so the 22.9%
+         run is LONGER THAN THE BEAM and swallows it whole;
+       - measured off #ps-hero-beam's own getImageData: 775ms at literally zero
+         lit pixels and 917ms below 10% alpha, once per 5500ms lap, recurring at
+         +5500 and +11000;
+       - and the two rates differ by 9.55x, which is the same event seen as pace.
+     The "glitch about 3 seconds in" and the "not maintaining a constant pace"
+     are ONE mechanism, and 3s is just the first occurrence on a phone.
+
+     WHY RE-TIMING CANNOT FIX IT — the obvious fix was modelled and rejected.
+     On the same geometry and the same render model: arc-proportional hidden time
+     gives 760ms at zero alpha, and a bounded 250-700ms compression gives 780ms,
+     against the shipped 785ms. NO monotone map of time onto TOTAL arc helps,
+     because the beam's whole run fits inside one off-canvas run at any speed.
+
+     WHAT §43 DOES. Parameterise the beam on the VISIBLE arc: hidden segments
+     contribute 0 to `visCum`, so the head and all BEAM_STEPS behind it always
+     land on canvas. The ribbon straddles a crop edge instead of falling into it
+     — its tail fades out at the exit while its head brightens at the re-entry,
+     handing the light over across ~990ms instead of blacking out. Measured
+     after, all 15 matrix viewports x both themes: ZERO ms at zero alpha (before:
+     125-780ms), rate ratio 1.00x everywhere (before: 2.50-9.85x), and mean lit
+     pixels within 2% of before, so nothing was bought with brightness.
+
+     ON DESKTOP THIS IS A NO-OP BY CONSTRUCTION. Where nothing is off-canvas
+     visCum === cumulative and both maps are the same uniform one — 1920x1080
+     measured byte-for-byte identical on every statistic (litMean 1930, minA 21).
+
+     WHAT IS DELIBERATELY LEFT OUT. The keep-out is NOT in this parameterisation.
+     It is a feathered accessibility guard over the headline ink; its hard-zero
+     core is at most 15.1% of the visible arc (320x568), always shorter than the
+     beam, so it can dim the beam but can never black it out — and folding it in
+     measured WORSE (95ms vs 105ms below 10% alpha at 393x852) while coupling the
+     beam's time base to the headline's layout. The residual dim window after
+     §43 IS the beam passing behind the headline. That is the guard working.
+     Do not narrow the keep-out to shorten it.
+
+     ---------------------------------------------------------------------
+     44 - 2026-09-08. THE PARAGRAPH ABOVE IS SUPERSEDED, NOT DELETED. Its
+     conclusion was RE-TESTED ACROSS THE VIEWPORT MATRIX AND REVERSED. Keep
+     reading it: its reasoning is sound and its measurement is real. It is just
+     measured at ONE viewport, 393x852, and it does not generalise.
+
+     WHAT WAS WRONG WITH IT. "Always shorter than the beam, so it can dim the
+     beam but can never black it out" is true of the hard-zero core and beside
+     the point, because the core is not the whole guard: the feather is
+     KEEPOUT_FEATHER_MIN = 76 css px on a phone, so the ATTENUATED band is the
+     headline box plus 76px on each side. Measured in-page at 393x659 the
+     headline is css y 290.2-384.8, so the band is 37.5% of the canvas height
+     against 29% at 393x852. The shorter the hero, the bigger the fraction of
+     the lap the beam spends on arc that paints nothing - and 393x659 is the
+     height an iPhone LOADS at, before Safari's toolbar collapses. The owner's
+     symptom was "glitching about 3 seconds after the website loads in".
+
+     WHAT IT COST TO LEAVE THE KEEP-OUT OUT, measured on this element's own
+     getImageData, chromium, light, ms per 5500ms lap:
+       393x659  ms/lap below 10% alpha  587   worst frame peak alpha 3/249 = 1.2%
+       320x568  ms/lap below 10% alpha  510   worst frame peak alpha 4/249 = 1.6%
+     0% alpha and 1.2% alpha are the same thing to an eye, so on the short phone
+     heights 43 converted a hard blackout into a near-blackout and symptom 1 was
+     still reproducible where it was first reported.
+
+     WHAT 44 CHANGES. Exactly one clause in the visCum classifier in build():
+     a segment counts as hidden if its midpoint is off-canvas OR the keep-out
+     has zeroed it. Nothing else moves. The keep-out attenuation is BYTE
+     IDENTICAL - this is not narrowing the guard, the guard still erases exactly
+     the same pixels; only the TIME BASE changes, so the beam no longer spends
+     real time on arc it cannot paint.
+
+     MEASURED AFTER, same instrument, ms/lap below 10% alpha:
+       393x659   587 -> 76     320x568   510 -> 0
+       393x852    51 -> 114    1440x900    0 -> 0
+     Two viewports improve by ~510ms each; 393x852 regresses by 63ms from 51,
+     against a pre-43 baseline of 1239. Mean lit pixels move under 3% at every
+     viewport, so nothing is bought with brightness, and zero-lit stays at 0ms.
+
+     THE OBJECTION THAT SURVIVES, stated so nobody thinks it was missed: this
+     couples the beam's CLOCK to the headline's layout. That is real. Note the
+     keep-out already couples the beam's APPEARANCE to that layout, so the
+     coupling exists either way and only the clock is new; a headline reflow
+     already triggers rebuild() via the resize and fonts.ready paths, which is
+     what recomputes visCum.
+     STILL TRUE AND STILL BINDING: do not narrow the keep-out to shorten the
+     residual. That trades headline contrast and it is the owner's call.
+     ---------------------------------------------------------------------
+     ========================================================================== */
+  /** Cumulative PAINTABLE arc length at each outline vertex, device px. Both
+   *  off-canvas segments and keep-out-zeroed segments contribute 0 (44), so
+   *  this is non-decreasing with a plateau across each unpaintable run. Set in
+   *  build(). */
+  let visCum: number[] = [0];
+  let visArc = 0;
+  /** Where the reduced-motion still frame parks, in VISIBLE-arc distance. */
+  let parkU = 0;
 
   const isLight = () => document.documentElement.getAttribute("data-theme") === "light";
   /** Only a stated motion preference parks the beam. The narrow park added in
    *  §25.1 is REVERTED: it existed because the beam was invisible for 8 of 12
    *  samples under the phone plateau, and §26.1 fixed that by moving the beam
    *  above the scrim instead. A layering fix beats a motion workaround. */
-  const still = () => reduced;
+  const still = () => motionQuery.matches;
   const period = () => (narrow ? BEAM_PERIOD_MS_NARROW : BEAM_PERIOD_MS);
   /** Where the parked beam sits, as a `now` value that drawBeam turns into a
    *  phase. The old hardcoded 0.34 of a lap was chosen when the mark was
@@ -1354,7 +1455,10 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
    *  on the outline's RIGHTMOST point instead, which is the bowl's outer curve
    *  and is released at every width by construction, since the stage's right
    *  edge is W - STAGE_PAD. */
-  const parked = () => parkT;
+  /* §43: parkU is a VISIBLE-arc distance and the map is now linear, so turning
+     it into a `now` is a plain proportion of the period rather than a lookup in
+     a piecewise table. */
+  const parked = () => (visArc > 0 ? (parkU / visArc) * period() : 0);
 
   function markPath(p: Path2D, s: number, tx: number, ty: number) {
     for (const poly of [MARK_BODY, MARK_WEDGE]) {
@@ -1866,6 +1970,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       bctx.clearRect(0, 0, beamCanvas.width, beamCanvas.height);
       outline = []; cumulative = [0]; total = 0; plate = null; dirty = null;
+      visCum = [0]; visArc = 0; parkU = 0;   // §43: never read a stale visible arc
       return;
     }
 
@@ -1933,6 +2038,66 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     // is not part of the arc-length, so when the beam runs off the last vertex
     // it jumps straight back to the first instead of crossing that edge.
     outline.push([outline[0][0], outline[0][1]]);
+
+    /* 45. RESAMPLE THE OUTLINE SO NO SEGMENT IS LONGER THAN ONE DRAWN BEAM STEP.
+       THE PHANTOM ARC. visCum below classifies ONE WHOLE SEGMENT AT A TIME FROM
+       ITS MIDPOINT, and the traced contour is 46x more non-uniform than that test
+       can survive: 134 segments, median 15.0 box units, and the closing edge
+       pushed above is 687 - 17.54% OF THE WHOLE LAP IN ONE SEGMENT WITH ONE
+       MIDPOINT SAMPLE. Ten of the 134 carry half the perimeter.
+       At 393x852 that closing segment is 712.9 device px, its midpoint lands at
+       device x 347 so it is classified VISIBLE and granted its full length in
+       visCum, and its endpoints are x 817.8 and 104.9 against canvas.width 491 -
+       so 45.8% of it, 326 device px, is OFF CANVAS. The head crosses that at full
+       rate painting nothing: 381 device px of phantom arc per lap = 931ms of the
+       5500ms lap, against a beam run of 405 device px. That is 0.94 of the run,
+       and it is what blacks the beam out for 33-44ms once per lap - the bright
+       half of the sin() envelope is off frame and only the dim tail is left, so
+       chromium and webkit round it to zero ink while firefox keeps one pixel and
+       posts a 308.7px centroid step instead. One defect, two presentations.
+       IT IS A MONOTONE FUNCTION OF HERO HEIGHT, NOT AN 852-ONLY PATHOLOGY. s0 is
+       hF*H/MARK_H, so a shorter hero draws a smaller mark and less of the top bar
+       leaves the frame: phantom/run is 0.51 at 393x659 and 0.94 at 393x852, which
+       is why the two toolbar states of one phone disagree and why 659's hand-over
+       reads as the intended cross-fade. Off canvas: 0% at 1920, 12.4% at 1440,
+       28.9% at 768, 39.4% at 393x852.
+       THIS FALSIFIES 43'S OWN CLAIM at :1366 that "hidden segments contribute 0
+       to visCum, so the head and all BEAM_STEPS behind it always land on canvas".
+       They do not, wherever a long segment straddles the crop edge.
+       WHAT THIS IS NOT. It is not a re-timing of the hidden arc; HIDDEN_TRAVERSE_MS
+       stays voided and unread and 43's measurement at :1359-1363 stands. It is not
+       a rate over the TOTAL arc either - at 393x852 the second hidden run is 932
+       device px against a 405px beam, so a total-arc rate swallows the beam whole
+       for ~1260ms a lap, which is the pre-43 complaint. The RATE IS UNCHANGED: one
+       uniform rate over the paintable arc, at :2144. Only the CLASSIFIER's
+       resolution changes, so that "paintable" stops being a lie about 381 px of it.
+       THE CAP IS DERIVED, NOT TUNED, so there is no new knob: one drawn beam step,
+       total*BEAM_HEAD_FRAC/BEAM_STEPS. Below that resolution the classifier can no
+       longer be coarser than the paint it is classifying. The 8px floor exists only
+       to bound the vertex count on desktop, where a drawn step is 2.8-4.0px and the
+       phantom is already 0.
+       `total` IS UNCHANGED BY THIS - collinear subdivision preserves polyline
+       length - and drawBeam's step length is total*BEAM_HEAD_FRAC/BEAM_STEPS*,
+       INDEPENDENT of visArc. So 41/43's 7.92px segment tuning and the join-dip
+       measurement at :2147-2167 survive exactly; verified 7.94 -> 8.00 at 393x852.
+       COST: this runs once per rebuild, never per frame. It raises the vertex count
+       from 135 to 371-615 and drawBeam's `steps` FALLS (51 -> 42 at 393x852)
+       because visArc is now honest, so the per-frame stroke count goes DOWN.
+       atVis()'s binary search gains ~2 iterations. */
+    let rawTotal = 0;
+    for (let i = 1; i < outline.length; i++) {
+      rawTotal += Math.hypot(outline[i][0] - outline[i - 1][0], outline[i][1] - outline[i - 1][1]);
+    }
+    const segCap = Math.max(8, rawTotal * BEAM_HEAD_FRAC / (narrow ? BEAM_STEPS_NARROW : BEAM_STEPS));
+    const dense: Array<[number, number]> = [outline[0]];
+    for (let i = 1; i < outline.length; i++) {
+      const ax = outline[i - 1][0], ay = outline[i - 1][1];
+      const bx = outline[i][0], by = outline[i][1];
+      const n = Math.max(1, Math.ceil(Math.hypot(bx - ax, by - ay) / segCap));
+      for (let k = 1; k <= n; k++) dense.push([ax + (bx - ax) * k / n, ay + (by - ay) * k / n]);
+    }
+    outline = dense;
+
     cumulative = [0];
     total = 0;
     for (let i = 1; i < outline.length; i++) {
@@ -1956,62 +2121,47 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
        and for each count how much of its own span would actually be painted.
        Ties break rightwards, which preserves the old rule's intent — park deep
        in the band the light scrim has released. */
-    parkDist = 0;
-    let parkIdx = 0;
-    {
-      const spanLen = total * BEAM_HEAD_FRAC;   // §41: must equal drawBeam's head
+    /* §43. THE VISIBLE ARC — now the beam's whole time base. A segment counts
+       as hidden if its MIDPOINT is off the canvas, which is deliberately the
+       same test §30-B used, so the classification cannot drift between the two
+       eras of this file. Hidden segments contribute 0, so visCum plateaus
+       across each off-canvas run and the `<=` upper-bound search in atVis()
+       steps over the plateau to the next visible segment on its own. */
+    visCum = [0];
+    for (let i = 1; i < outline.length; i++) {
+      const mx = (outline[i][0] + outline[i - 1][0]) / 2;
+      const my = (outline[i][1] + outline[i - 1][1]) / 2;
+      const on = mx >= 0 && mx <= canvas.width && my >= 0 && my <= canvas.height
+        && keepFactor(mx / dpr, my / dpr, beamPush) > 0;
+      visCum.push(visCum[i - 1] + (on ? cumulative[i] - cumulative[i - 1] : 0));
+    }
+    visArc = visCum[visCum.length - 1];
+
+    /* §33(e) continued, in §43's space. The rule is unchanged — sample candidate
+       heads around the lap, score how much of each one's own RUN would actually
+       be painted, ties break rightwards — but it scores in VISIBLE arc, because
+       that is the space the beam now walks. Scoring the old total-arc space
+       would nominate heads whose run is mostly off-frame. */
+    parkU = 0;
+    if (visArc > 0) {
+      const spanLen = visArc * BEAM_HEAD_FRAC;   // §41: must equal drawBeam's head
       const CANDIDATES = 96, PROBES = 16;
       let bestScore = -1, bestX = -Infinity;
-      const atIdx = (d: number) => {
-        let lo = 0, hi = cumulative.length - 1;
-        while (lo < hi - 1) { const m = (lo + hi) >> 1; if (cumulative[m] <= d) lo = m; else hi = m; }
-        return lo;
-      };
       for (let c = 0; c < CANDIDATES; c++) {
-        const head = (c / CANDIDATES) * total;
+        const head = (c / CANDIDATES) * visArc;
         let score = 0, sumX = 0;
         for (let q = 0; q <= PROBES; q++) {
-          const d = (head - spanLen * (1 - q / PROBES) + total) % total;
-          const i = atIdx(d);
-          const [px, py] = outline[i];
+          const [px, py] = atVis(head - spanLen * (1 - q / PROBES));
           if (px < 0 || px > canvas.width || py < 0 || py > canvas.height) continue;
           if (keepFactor(px / dpr, py / dpr, beamPush) <= 0.3) continue;
           score++; sumX += px;
         }
         const avgX = score ? sumX / score : -Infinity;
         if (score > bestScore || (score === bestScore && avgX > bestX)) {
-          bestScore = score; bestX = avgX;
-          parkIdx = atIdx(head); parkDist = cumulative[parkIdx];
+          bestScore = score; bestX = avgX; parkU = head;
         }
       }
     }
-
-    // Time remap: visible arc at normal rate, the whole hidden arc in a fixed
-    // budget. A segment counts as hidden if its midpoint is off the canvas.
-    const vis: boolean[] = [];
-    let hidLen = 0;
-    for (let i = 1; i < outline.length; i++) {
-      const mx = (outline[i][0] + outline[i - 1][0]) / 2;
-      const my = (outline[i][1] + outline[i - 1][1]) / 2;
-      const v = mx >= 0 && mx <= canvas.width && my >= 0 && my <= canvas.height;
-      vis.push(v);
-      if (!v) hidLen += cumulative[i] - cumulative[i - 1];
-    }
-    const visLen = total - hidLen;
-    const P0 = period();
-    // Never spend more than half a lap in the dark, however extreme the bleed.
-    const hidMs = hidLen > 0 ? Math.min(HIDDEN_TRAVERSE_MS, P0 * 0.5) : 0;
-    const visMs = P0 - hidMs;
-    segT = [0];
-    for (let i = 1; i < outline.length; i++) {
-      const len = cumulative[i] - cumulative[i - 1];
-      const dt = vis[i - 1]
-        ? (visLen > 0 ? (len / visLen) * visMs : 0)
-        : (hidLen > 0 ? (len / hidLen) * hidMs : 0);
-      segT.push(segT[i - 1] + dt);
-    }
-    lapMs = segT[segT.length - 1] || P0;
-    parkT = segT[parkIdx] || 0;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(plate, 0, 0);
@@ -2019,11 +2169,22 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     dirty = null;   // both canvases are clean
   }
 
-  const at = (d: number): [number, number] => {
-    let lo = 0, hi = cumulative.length - 1;
-    while (lo < hi - 1) { const mid = (lo + hi) >> 1; if (cumulative[mid] <= d) lo = mid; else hi = mid; }
-    const seg = cumulative[hi] - cumulative[lo] || 1;
-    const t = (d - cumulative[lo]) / seg;
+  /** §43. The point at VISIBLE-arc distance `u`, wrapped into the lap.
+   *
+   *  THE SEARCH INVARIANT IS LOAD-BEARING, NOT INCIDENTAL. It settles on
+   *  visCum[lo] <= u < visCum[hi] with hi === lo + 1, and because the upper
+   *  bound is STRICT that guarantees visCum[hi] > visCum[lo] — i.e. the segment
+   *  interpolated between is a VISIBLE one. visCum plateaus across every
+   *  off-canvas run, so a search that could settle on a plateau would
+   *  interpolate a chord straight across the hidden run and put the beam in
+   *  mid-air over the hero. Keep the comparison `<=`; flipping it to `<` lands
+   *  on the plateau's first vertex instead of its last. */
+  const atVis = (u: number): [number, number] => {
+    const d = ((u % visArc) + visArc) % visArc;
+    let lo = 0, hi = visCum.length - 1;
+    while (lo < hi - 1) { const mid = (lo + hi) >> 1; if (visCum[mid] <= d) lo = mid; else hi = mid; }
+    const seg = visCum[hi] - visCum[lo] || 1;
+    const t = (d - visCum[lo]) / seg;
     return [outline[lo][0] + (outline[hi][0] - outline[lo][0]) * t,
             outline[lo][1] + (outline[hi][1] - outline[lo][1]) * t];
   };
@@ -2033,16 +2194,38 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
    *  is already clear of the wordmark, so the whole lap is on-canvas and the
    *  light never reaches the type. */
   function drawBeam(now: number) {
-    if (!plate || !total) return;
+    if (!plate || !total || !visArc) return;
 
-    // Time -> arc distance through the remap, not a linear phase.
-    const t = lapMs > 0 ? (((now - started) % lapMs) + lapMs) % lapMs : 0;
-    let lo = 0, hi = segT.length - 1;
-    while (lo < hi - 1) { const mid = (lo + hi) >> 1; if (segT[mid] <= t) lo = mid; else hi = mid; }
-    const span = segT[hi] - segT[lo] || 1;
-    const head = cumulative[lo] + (cumulative[hi] - cumulative[lo]) * ((t - segT[lo]) / span);
-    const len = total * BEAM_HEAD_FRAC;
-    const steps = narrow ? BEAM_STEPS_NARROW : BEAM_STEPS;
+    /* §43. Time -> VISIBLE-arc distance at ONE uniform rate for the whole lap.
+       No piecewise table and no binary search over time: the map is a plain
+       proportion, which is exactly what "a constant pace all the way around"
+       means and is why the rate ratio is now 1.00x at every viewport. */
+    const P0 = period();
+    const phase = ((((now - started) % P0) + P0) % P0) / P0;
+    const head = phase * visArc;
+    const len = visArc * BEAM_HEAD_FRAC;
+    /* §43. BEAM_STEPS* were tuned to hold SEGMENT LENGTH constant against a run
+       of `total * BEAM_HEAD_FRAC` (§41). §43's run is `visArc * BEAM_HEAD_FRAC`
+       — 443.7 device px at 393x852 against the old 731.8 — so holding 92 steps
+       would cut the segment from 7.95px to 4.82px. Scaling the count by the
+       same ratio the run shrank by keeps it at 7.92px, where §41 tuned it.
+
+       WHAT THE JOIN ARTIFACT ACTUALLY IS, because two notes in this file
+       disagree about it and both are half right. §14.7 says consecutive butt
+       caps overlap and every join composites into a BRIGHTER ridge; §27 says
+       butt caps abut exactly with no accumulation. Measured on the beam layer's
+       alpha profile along the P's top bar: on a straight run the peak is
+       EXACTLY the per-stroke ceiling of 182 — no overlap, no ridge, §27 is right
+       there — and each join instead leaves a 5-12 unit DIP, an anti-aliasing
+       seam. So the artifact is a ladder of dips whose DENSITY is what segment
+       length controls: mean |2nd difference| along the lit run measured 9.787
+       alpha units at 4.82px segments against 6.145 at 7.92px, a 37% reduction
+       from this one line. Peak alpha is BLIND to it (249 vs 248) — the peak does
+       exceed 182 at 1.36x, but that happens in the vertex-dense tail sweep, it
+       predates §43 at 1.31x, and it is not this.
+       The floor is for a degenerate visArc; below ~24 steps the sin() envelope
+       itself goes chunky. */
+    const steps = Math.max(24, Math.round((narrow ? BEAM_STEPS_NARROW : BEAM_STEPS) * (visArc / total)));
     /* Half the widest stroke, plus the round cap, plus a pixel of slack. This
        MUST track the `widthGain` used when stroking below: the beam's widest
        lineWidth is (0.9 + 1.1) * widthGain * dpr, and a round cap extends half
@@ -2059,11 +2242,23 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
     // be confined to the pixels this frame and the last one actually touch.
     const segs: Array<[number, number, number, number, number]> = [];
     let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    /* §43. A step whose two ends straddle an off-canvas run must NOT be
+       stroked: as a chord it is a straight line between the exit and re-entry
+       points — 550.9 device px of one at 393x852 — which is a diagonal streak
+       across the hero, not a beam. The test is exact in the direction that
+       matters: along a visible run a polyline's chord can only be SHORTER than
+       its own arc, so a chord LONGER than the step's arc length proves a hidden
+       run was crossed. The factor of two is float slack, and it leaves
+       unskipped only crossings whose exit and re-entry are within ~2 steps of
+       each other on screen — a few pixels, where closing the ribbon is right
+       anyway. `fall` is indexed off `t1`, not off the surviving segment count,
+       so a skip cannot shift the brightness envelope. */
+    const stepArc = len / steps;
     for (let i = 0; i < steps; i++) {
       const t0 = i / steps, t1 = (i + 1) / steps;
-      const a = (head - len * (1 - t0) + total) % total;
-      const b = (head - len * (1 - t1) + total) % total;
-      const p0 = at(a), p1 = at(b);
+      const p0 = atVis(head - len * (1 - t0));
+      const p1 = atVis(head - len * (1 - t1));
+      if (Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) > stepArc * 2) continue;
       /* The left guard (`W * 0.46 * dpr`) is gone with the ramp. It existed to
          keep the beam out of the text column; the mark is no longer in the text
          column. Below ~900px it was the second source of the dark gaps in the
@@ -2196,14 +2391,49 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
 
   function rebuild() {
     if (destroyed) return;   // a late fonts.ready / animationend must not repaint
+    /* 45. CARRY THE BEAM'S PHASE THROUGH A REBUILD.
+       `started = 0` here handed frame() its "not seeded yet" sentinel (:2309),
+       so EVERY rebuild trigger - fonts.ready, the entrance animationend, the
+       data-theme MutationObserver, resize, the motion-preference listener -
+       restarted the lap and snapped the head to phase 0 mid-lap. Measured as a
+       single-frame teleport of 101-292 device px in every engine at every
+       viewport, all landing on the same pixel, and reproduced on demand:
+       11.0px was the largest step through a quiet 3.0-6.8s window, and setting
+       data-theme produced 371.6px on the very next frame. Delaying the webfont
+       by 2600ms moved the event to t=2750ms, which is the owner's "about three
+       seconds after the page loads". The timing is whenever the font lands; the
+       mechanism is the clock, not the layout - layout()'s placement does not
+       depend on the headline ink at all (the ink guard is empty at :1907), so a
+       fonts.ready rebuild republishes an IDENTICAL dataset.placement.
+       ORDER IS LOAD-BEARING AND IT IS THE ONE THING TO GET RIGHT HERE. Read the
+       phase BEFORE build(), because build() writes `narrow` and period() reads
+       it; re-anchor AFTER build(), against the NEW period. Both reads on one
+       side of build() puts a fresh teleport on every narrow/wide crossing.
+       THE STILL BRANCH KEEPS `started = 0` DELIBERATELY, AND THAT IS NOT AN
+       OVERSIGHT. parked() (:1461) returns a `now`, not a phase, so
+       drawBeam(parked()) only lands on parkU while started is 0. Preserving a
+       phase there would park the reduced-motion still frame in the wrong place
+       and break the two checks that actually adjudicate this surface - beam
+       movement == 0.000 and a parked beam that is not blank. A frame that does
+       not move has no phase worth preserving. */
+    const pPrev = period();
+    const phasePrev = started
+      ? ((((performance.now() - started) % pPrev) + pPrev) % pPrev) / pPrev
+      : 0;
     stop();
     build();               // sets `narrow`, which parked() and the loop read
-    started = 0;
     lastPaint = 0;
     if (still()) {
+      started = 0;
       drawBeam(parked());  // a still frame, beam parked on the edge
-    } else if (onStage) {
-      start();
+    } else {
+      /* 0 is frame()'s "not seeded yet" sentinel at :2309, so never hand it
+         back; 1ms is 0.015% of a lap. A NEGATIVE anchor is fine and is normal
+         within the first lap of a load - the phase expression at :2144
+         normalises with ((x % P) + P) % P. */
+      const anchor = performance.now() - phasePrev * period();
+      started = anchor === 0 ? -1 : anchor;
+      if (onStage) start();
     }
   }
 
@@ -2226,6 +2456,19 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
   // Repaint on theme change even while the loop is stopped.
   const mo = new MutationObserver(rebuild);
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  /* §43. REDUCED MOTION, LIVE. The check at the top of this closure used to be
+     a one-shot `.matches` read at mount, and this is the page's only permanent
+     rAF loop — so a visitor who turned the OS preference ON mid-visit kept the
+     beam running for the rest of the visit, with no CSS media query able to
+     reach a canvas and park it.
+     rebuild() is the correct handler in BOTH directions, and is already the
+     MutationObserver's for the same reason: it stops the loop, repaints the
+     plate, and then either parks the still frame (`still()`) or restarts if the
+     hero is on stage. That is what preserves the property this path is tested
+     for — a reduced-motion visitor gets the mark FULLY PAINTED AND FINISHED,
+     never blank — and it is why this is not a bare stop(). */
+  motionQuery.addEventListener("change", rebuild);
 
   /* Rebuild on WIDTH changes only. The stage, the mark's scale and the backing
      store are all driven by width; a height-only change (an iOS toolbar moving,
@@ -2301,6 +2544,7 @@ export function mountMarkLight(container: HTMLElement): MarkLight {
       destroyed = true;
       onStage = false;      // io.disconnect() does NOT do this, and start() reads it
       stop(); io.disconnect(); mo.disconnect();
+      motionQuery.removeEventListener("change", rebuild);
       document.removeEventListener("visibilitychange", onVisibility);
       container.removeEventListener("animationend", onEntranceEnd);
       window.removeEventListener("resize", onResize);

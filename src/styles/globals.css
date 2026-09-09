@@ -2730,11 +2730,18 @@ ul, ol {
   display: none;
 }
 
-/* Visual area inside the dialog — large, dark background */
+/* Visual area inside the dialog — the card artwork's ground, both themes.
+   This was the literal `#0A1628` with no light variant, so the sheet put
+   theme-aware card art on a fixed navy ground in light mode. Card 2's flow
+   graph derives its ink from --theme-text-primary (#0A1628 in light), so all
+   five labels and all five connectors measured 1.005:1 against that ground —
+   invisible — in chromium, WebKit and firefox at all 14 viewports.
+   --theme-art-ground-a IS #0A1628 in dark (:176), so this is a byte-identical
+   no-op there and verified as 0 differing pixels across 210 dark screenshots. */
 .ps-dialog-visual {
   position: relative;
   height: 400px;
-  background: #0A1628;
+  background: var(--theme-art-ground-a);
   overflow: hidden;
   border-radius: 20px 20px 0 0;
 }
@@ -5512,9 +5519,29 @@ ul, ol {
   }
 }
 
-/* ── Bento Cards: expand touch target for expand icon on mobile ── */
+/* ── Bento Cards: enlarge the expand GLYPH on mobile ─────────────
+   CORRECTED 2026-09-08 (Phase 3 F1). The old heading and the old inner
+   comment both said "44px touch target". They are describing an effect this
+   rule cannot have: `.ps-bento-card__expand` carries `pointer-events: none`
+   in its base rule (globals.css, the `Card Expand Icon` block above), so it
+   is not a hit target at any width and never was. It cannot receive a tap.
+
+   The real hit target is the whole card, which IS the `<button>`
+   (`button.ps-bento-card`, `aria-label="... Open details"`) and measures
+   272x320 at its smallest -- comfortably past WCAG 2.5.8 either way. This
+   rule only grows the decorative frosted circle from 32x32 @ inset 16 to
+   44x44 @ inset 12 below 769px, which is a VISUAL weight change; the 44 is a
+   coincidence of the number chosen, not a target size that this rule sets.
+
+   Measured, all three engines, identical to 0.01px: 44.00x44.00 @ top/right
+   12px at 320/393/640/768, and 32.00x32.00 @ top/right 16px at 769/940/1440,
+   with `pointer-events: none` computed at every one of those widths
+   (P2-geometry §1.2). Behaviour deliberately unchanged -- comment only. */
 @media (max-width: 768px) {
-  /* Expand icon: increase to 44px touch target */
+  /* Grows the decorative circle to 44x44 and pulls it 4px nearer the corner.
+     NOT a touch target: see the note above. Anything reasoning about
+     clearance must use the corner keep-out envelope this creates,
+     `inset + size` = 56x56 here and 48x48 at >=769px. */
   .ps-bento-card__expand {
     width: 44px;
     height: 44px;
@@ -7771,6 +7798,73 @@ body:has(.ps-contact2-hero) .ps-header-blur {
 
      `--search-ads` KEEPS its lift above: card 5 is frozen and its artwork's
      bottom edge really is pinned at 269.8px. */
+}
+
+/* ─────────────────────────────────────────────────────────────
+   WEBSITES TILE (`.ps-bento-card--web`) — TOP-EDGE CLIP AND TITLE
+   COLLISION AT ONE COLUMN. Added 2026-09-08. CLEARANCE ONLY.
+
+   Measured, chromium, dev server at 127.0.0.1:3117, light theme (the
+   default `data-theme` this page renders), painted-content box vs the
+   card's border box — NOT read off the CSS:
+
+     WIDTH   CARD      ART TOP   ART BOTTOM -> TITLE TOP
+     320     272x320   -6.73     -5.53
+     359     311x320   -6.73     -5.53
+     375     327x320   -6.73     -5.53
+     390     342x320   -6.73     -5.53
+     393     345x320   -6.73     -5.53   (both 659 and 852 heights)
+     414     366x320   -6.73     -5.53
+     430     382x320   -6.73     -5.53
+     639     591x320   -6.73     -5.53
+
+   Both numbers are NEGATIVE at every one-column width: `.ps-phone-body`
+   is sheared flat across the phone's top bezel by the card's own
+   `overflow: hidden`, and the browser mock's bottom edge sits under
+   `WEBSITES.`'s first line. `.ps-wb-browser` is clipped too, at -2.00px,
+   which the worst-offender number above hides.
+
+   WHY HEIGHT IS THE LEVER **ON THIS TILE**, when it is not on the others.
+   `.ps-visual-website` is `align-items: center`, so its content is
+   CENTRED in the band the root's padding leaves. The phone is 120px wide
+   with `aspect-ratio: 9/19.5` and `rotate(5deg)`, so its bounding box is
+   120 * (19.5/9 * cos5 + sin5) = 269.47px tall -- taller than the 257.20px
+   this card has between its top edge and its title. Centring therefore
+   splits the 12.27px deficit and pushes the artwork out of BOTH ends at
+   once. That is why the two defects always appear together and always
+   with the same pair of numbers.
+
+   The other four tiles are top-anchored, and for them a taller card only
+   grows a band the artwork never reaches (measured 76-152px of it). This
+   one is centred, so the extra height is split between the top edge and
+   the title -- exactly where its two defects are. Derivation with
+   `padding: 40px 24px 104px` and a 62.80px title block, H = card height:
+
+     free top  = H/2 - 32    - 269.47/2 = H/2 - 166.75
+     art->title = H/2 - 30.8 - 269.47/2 = H/2 - 165.55
+
+   H=320 reproduces -6.75 / -5.55, i.e. the measured -6.73 / -5.53 to
+   0.02px, so the model is the mechanism and not a coincidence.
+   H=380 gives +23.25 / +24.45 -- confirmed by measurement, and identical
+   to what 640x900 already renders, because that width is this same tile
+   at 380px.
+
+   380 IS NOT A NEW MAGIC NUMBER: it is the height `.ps-bento-card--web`
+   already takes at every width from 640 up (the base rule at :1867 and
+   the row-2 rule at :1881), so the tile is being given back a height it
+   already has elsewhere. Same reasoning, same value, same file as the
+   `--search-ads` lift above.
+
+   SCOPED TO <=639 deliberately. At 640 and up this tile is already 380px
+   from the base rule, so a wider scope would be inert; and the two-column
+   and three-column compositions measure +23.27/+24.47 and +35.27/+16.37,
+   which nobody has objected to.
+
+   The artwork is NOT touched by this rule. The phone and the browser keep
+   their exact size and their exact relationship; the root's own gradient
+   fills the extra 60px, and the composition lands centred in it. */
+@media (max-width: 639px) {
+  .ps-bento-card--web { min-height: 380px; }
 }
 
 
