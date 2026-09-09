@@ -1818,7 +1818,7 @@
      -48.00 px, byte-identical to the run before the fix. Identical numbers
      across a real change are the signature of a stale artifact, not of a fix
      that did nothing. Every capture asserts this value. */
-  --c3s-build: 12;
+  --c3s-build: 14;
 
   /* SCALE TIER S is the base, and every larger tier is added by a CONTAINER
      query below. Never a media query: at a 940px viewport this card is 286.7px
@@ -2381,6 +2381,104 @@
 .ps-c3s-dblabel {
   display: block;
   margin-top: 6px;
+  color: var(--theme-text-secondary);
+  font-size: var(--c3s-lab);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* THE AGENT'S LABEL, AND IT IS THE ONE ABOVE TWICE OVER: same token, same size
+   ramp, same weight, tracking and casing. The owner asked for the agent to be
+   "labeled AI Agent on the animation"; the scene already had exactly one way of
+   naming a thing, so this is the second half of a pair rather than a new type
+   treatment. Contrast therefore inherits the note above - 4.5:1 applies (9.5px
+   to 11px at 600 is nowhere near the 18.66px-bold large-text bracket), and
+   `--theme-text-muted` is as wrong here as it is there.
+
+   IT CANNOT CHANGE THE AGENT'S BOX, AND THAT IS THE WHOLE REASON IT IS
+   ABSOLUTE. `.ps-c3s-agent` declares both `--c3s-agw` and `--c3s-agh`, so an
+   out-of-flow child contributes nothing to its rect - and that rect is what
+   `measure()` differences to place `--c3s-blob-dx/dy`. The same call writes
+   `--c3s-qw` and `--c3s-steps`, the frozen typing interaction, so a label that
+   grew the agent would have reached the one thing on this card nobody restyles.
+
+   TWO CONSTANTS, BOTH RE-DERIVED, NEITHER GUESSED.
+
+   `top` puts it on the DATABASE label's own row, written in the terms
+   `.ps-c3s-marks` already uses for its declared height. The band's label row
+   starts `dbw*1.14583 + 6px` below the band's top; this box's top is the band's
+   top plus the agent's own shift, `dbw*0.3385 - agh*0.3168`, so the offset from
+   HERE is the difference:
+
+       dbw*(1.14583 - 0.3385) + 6px + agh*0.3168
+     = dbw*0.80733 + 6px + agh*0.3168
+
+   Measured against the rendered `.ps-c3s-dblabel` after the edit, the two label
+   boxes' tops agree to 0.01px at every mount. Its bottom is then exactly the
+   band's declared bottom, the same as the database label's - so it inherits
+   that label's clearance to the answer panel and can never be the box that
+   overflows.
+
+   `right` STOPS THE LABEL AT HIS BOX'S LEFT EDGE, and that constant was NOT
+   free-chosen - it is the only value the sprite's own alpha allows.
+
+   THE FIRST PASS PUT IT UNDER HIM, at `agw*0.6 + 7px`, six pixels clear of the
+   leader line. That is correct at five of the seven mounts and WRONG at two,
+   and the reason is that `--c3s-dbw` scales from 34px to 64px while
+   `--c3s-agw`/`--c3s-agh` are frozen at 48x58. The label's row is `dbw`-driven;
+   his feet are not. Where `dbw` is small the row rides UP into him:
+
+       label top, agent-local = dbw*0.80733 + 24.37    (from the `top` above)
+       his box bottom         = agh = 58
+
+     dbw 64 (dialog >=769)  -> 76.0   clear by 18.0
+     dbw 52 (1280 / 1440)   -> 66.4   clear by 8.4
+     dbw 46 (768 face)      ->  61.5  clear by 3.5
+     dbw 44 (<=639 face)    ->  59.9  clear by 1.9
+     dbw 40 (tier S face,   ->  56.7  OVERLAPS his last 1.3px
+             seen at 940)
+     dbw 34 (dialog <=768)  ->  51.8  OVERLAPS his last 6.2px
+
+   RENDERED AND LOOKED AT, NOT INFERRED: at 768 in the dialog the "T" of AGENT
+   sits on his left foot, and at 940 on the card face the glyph is one pixel off
+   his outline. The pixel histogram over the label's own box is what caught it -
+   its highest-contrast colour came back `rgb(252,174,48)`, his amber, and
+   `rgb(3,15,39)`, his navy outline. A box-vs-box gate against the leader line
+   and the answer panel passed both of those cells.
+
+   RAISING `top` INSTEAD DOES NOT WORK. Pushing the label to `100% + 4px` at
+   those two tiers puts its bottom 10.18px below the band's declared bottom, and
+   the mobile dialog has 7.22px there - it would land in the answer panel. Even
+   `100% + 1px` leaves 0.04px. There is no vertical room; the clearance has to
+   be horizontal.
+
+   SO IT CLEARS HIM SIDEWAYS, AT EVERY TIER, AND THE BOUND COMES OFF THE SHEET.
+   Frame 4's alpha read column by column: his left arm reaches x = 0 - the box's
+   own left edge - for rows y 162..193 of 232 (CSS y 40.50..48.25 of his 58px
+   box), so any label whose box entered that band would have NO horizontal
+   clearance at all. Below it the silhouette retreats: leftmost drawn column is
+   13 (CSS 3.25) at y 194, 26-27 (CSS 6.50-6.75) through y 218, 33 (CSS 8.25) to
+   y 224, 46 (CSS 11.50) at the last row. The label's top never rises above CSS
+   51.82 (the dbw-34 case above), so the binding minimum over its whole possible
+   band is CSS 6.50.
+
+   `right: calc(100% - 3px)` puts its right edge 3px INSIDE his box from the
+   left, i.e. 3.50px clear of the nearest drawn pixel in the worst case and
+   8.50px clear at the tier where it is actually adjacent to him. `100%` here is
+   `--c3s-agw`, so the one number this rule hard-codes is the 3px gap itself.
+   The leader line - 2px wide, left edge at `agw*0.6 + 1` in from his right,
+   i.e. CSS 18.20 - is then 15.20px to the label's right and cannot be crossed;
+   centred, it splits "AI" from "AGENT", which was rendered as the control.
+   The mirror placement to the RIGHT of the line was rendered too: it collides
+   with his other foot at the same two tiers and drifts under the expand disc,
+   so it is not the fallback either. */
+.ps-c3s-aglabel {
+  position: absolute;
+  top: calc(var(--c3s-dbw) * 0.80733 + 6px + var(--c3s-agh) * 0.3168);
+  right: calc(100% - 3px);
+  white-space: nowrap;
   color: var(--theme-text-secondary);
   font-size: var(--c3s-lab);
   font-weight: 600;

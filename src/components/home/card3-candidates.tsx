@@ -1731,6 +1731,21 @@ export function AutomationVisualScene() {
                 <span className="ps-c3s-elara" />
               </span>
             </span>
+            {/* HIS NAMEPLATE, and it is the DATABASE label's twin. The owner
+                asked for the agent to be "labeled AI Agent on the animation",
+                and the scene already owns exactly one way of naming a thing:
+                `.ps-c3s-dblabel`. Same token, same size ramp, same weight,
+                tracking and casing - so this is the second half of a pair the
+                card was already half-way through, not a new type treatment.
+
+                It is `position: absolute` INSIDE a box whose width and height
+                are both declared (`--c3s-agw` / `--c3s-agh`), so
+                `.ps-c3s-agent.getBoundingClientRect()` cannot move - and that
+                rect is what `measure()` differences to place the bead's
+                docking point. A label that changed the agent's box would move
+                the send geometry, and `measure()` writes the frozen typing
+                vars in the same call. */}
+            <span className="ps-c3s-aglabel">AI Agent</span>
           </div>
         </div>
 

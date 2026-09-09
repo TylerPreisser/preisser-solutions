@@ -170,7 +170,7 @@ export default function AboutPage() {
                     fontSize: "clamp(1.8rem, 3vw, 2.5rem)",
                     fontWeight: "700",
                     letterSpacing: "-0.025em",
-                    color: "var(--color-text-dark)",
+                    color: "var(--theme-text-primary)",
                     marginBottom: "20px",
                     lineHeight: "1.15",
                   }}
@@ -181,7 +181,7 @@ export default function AboutPage() {
                   style={{
                     fontSize: "17px",
                     lineHeight: "1.75",
-                    color: "var(--color-text-body)",
+                    color: "var(--theme-text-primary)",
                     marginBottom: "32px",
                   }}
                 >
@@ -208,7 +208,7 @@ export default function AboutPage() {
                       fontSize: "clamp(1.4rem, 2.4vw, 1.875rem)",
                       fontWeight: "700",
                       letterSpacing: "-0.02em",
-                      color: "var(--color-text-dark)",
+                      color: "var(--theme-text-primary)",
                       marginBottom: 16,
                       lineHeight: 1.2,
                     }}
@@ -221,7 +221,7 @@ export default function AboutPage() {
                       style={{
                         fontSize: 17,
                         lineHeight: 1.75,
-                        color: "var(--color-text-body)",
+                        color: "var(--theme-text-primary)",
                         marginBottom: 16,
                       }}
                     >
@@ -242,7 +242,7 @@ export default function AboutPage() {
                           style={{
                             fontSize: 17,
                             lineHeight: 1.75,
-                            color: "var(--color-text-body)",
+                            color: "var(--theme-text-primary)",
                             marginBottom: 10,
                           }}
                         >
@@ -298,7 +298,7 @@ export default function AboutPage() {
                   fontSize: "clamp(1.5rem, 2.6vw, 2rem)",
                   fontWeight: 700,
                   letterSpacing: "-0.02em",
-                  color: "var(--color-text-dark)",
+                  color: "var(--theme-text-primary)",
                   marginBottom: 24,
                   lineHeight: 1.2,
                 }}
@@ -317,7 +317,7 @@ export default function AboutPage() {
                     style={{
                       fontSize: 18,
                       fontWeight: 600,
-                      color: "var(--color-text-dark)",
+                      color: "var(--theme-text-primary)",
                       cursor: "pointer",
                       listStyle: "none",
                     }}
@@ -328,7 +328,7 @@ export default function AboutPage() {
                     style={{
                       fontSize: 17,
                       lineHeight: 1.65,
-                      color: "var(--color-text-body)",
+                      color: "var(--theme-text-primary)",
                       margin: "12px 0 0",
                     }}
                   >

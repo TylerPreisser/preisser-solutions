@@ -1456,7 +1456,7 @@ const C2G_SPECS: readonly C2GSpec[] = [
     { slot: "step",    glyph: "list",  label: "Categorized" },
     { slot: "branch",  glyph: "fork",  label: "Matches?" },
     { slot: "ok",      glyph: "check", label: "Reconciled" },
-    { slot: "retry",   glyph: "again", label: "Flagged" },
+    { slot: "retry",   glyph: "person", label: "Flagged" },
   ] },
   /* RENEW. The honest version of the credit-card-expiry slide this replaces.
      `aeo/blog/best-automations-insurance.ts:20` heads it "Renewal follow-up

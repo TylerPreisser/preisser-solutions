@@ -131,14 +131,14 @@ export default function WhyAutomationPage() {
                     style={{
                       fontSize: "17px",
                       fontWeight: "600",
-                      color: "var(--color-text-dark)",
+                      color: "var(--theme-text-primary)",
                       lineHeight: "1.3",
                     }}
                   >
                     {benefit.title}
                   </h3>
                 </div>
-                <p style={{ fontSize: "15px", lineHeight: "1.65", color: "var(--color-text-body)" }}>
+                <p style={{ fontSize: "15px", lineHeight: "1.65", color: "var(--theme-text-primary)" }}>
                   {benefit.description}
                 </p>
               </div>
