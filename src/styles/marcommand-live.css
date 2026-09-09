@@ -486,7 +486,7 @@
   width: 96px;
   height: 116px;
 
-  background-image: url("/images/marcommand/elara-sheet.webp");
+  background-image: url("/images/marcommand/elara-sheet.39d2c92d.webp");
   background-repeat: no-repeat;
   background-size: 400% 100%;
   background-position-x: calc(var(--mc-frame) * 33.3333%);

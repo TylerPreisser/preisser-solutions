@@ -570,7 +570,7 @@
   z-index: 3;
   width: 96px;
   height: 116px;
-  background-image: url("/images/marcommand/elara-sheet.webp");
+  background-image: url("/images/marcommand/elara-sheet.39d2c92d.webp");
   background-repeat: no-repeat;
   background-size: 400% 100%;
   /* FRAME 4 OF 4 - THE FULL REACH, and it is the RESTING pose.
@@ -2208,7 +2208,7 @@
 
 /* ============================================================================
    THE AGENT IS ELARA. He is not new artwork and he is not a redraw: the same
-   `public/images/marcommand/elara-sheet.webp` that already ships lower on this
+   `public/images/marcommand/elara-sheet.39d2c92d.webp` that already ships lower on this
    page (`marcommand-live.css:515`), same four 192x232 cells, same knockout
    token, never recoloured. The abstract hull that used to stand here was
    correct for a mark set and mute as a character - the owner's word for it was
@@ -2245,7 +2245,7 @@
 .ps-c3s-elara {
   position: absolute;
   inset: 0;
-  background-image: url("/images/marcommand/elara-sheet.webp");
+  background-image: url("/images/marcommand/elara-sheet.39d2c92d.webp");
   background-repeat: no-repeat;
   background-size: 400% 100%;
   /* FRAME 4 OF 4. Read through a variable so the beat rules and the

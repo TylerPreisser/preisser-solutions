@@ -44,7 +44,7 @@
  * ---------------------------------------------------------------------------
  * THE CHARACTER IS NOT INVENTED, AND HE IS ALREADY A ROBOT.
  *
- * Elara ships on this homepage today (public/images/marcommand/elara-sheet.webp,
+ * Elara ships on this homepage today (public/images/marcommand/elara-sheet.39d2c92d.webp,
  * rendered by src/styles/marcommand-live.css:515 on the div at
  * src/components/home/marcommand-live.tsx:1368-1370): a pixel-art robot, amber
  * body, teal screen face, four frames from arms-down to full reach. He is used

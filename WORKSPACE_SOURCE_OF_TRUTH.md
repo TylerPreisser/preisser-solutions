@@ -236,7 +236,7 @@ Re-verified against the current live apex HTML on 2026-09-06:
 > - The `.mc-elara` sprite knockout halo (three zero-offset `drop-shadow(...
 >   var(--theme-bg-primary))` filters); the token must be opaque in BOTH themes.
 > - The animated MarCommand sprite shipping as a single
->   `/images/marcommand/elara-sheet.webp` referenced from CSS
+>   `/images/marcommand/elara-sheet.39d2c92d.webp` referenced from CSS
 >   (`src/styles/marcommand-live.css:445`), not from JS.
 > - `100svh` with zero `100dvh` across both CSS bundles.
 
