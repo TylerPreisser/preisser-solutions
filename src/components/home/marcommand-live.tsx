@@ -289,12 +289,14 @@ export function MarCommandLive() {
 
             `hubPath` — the pad, the Google Ads spoke, the blue live rail drawn over
             it, and (portrait) the pad's link up to the trunk — is the ground Elara
-            is standing on. It cannot go on the light beat: on portrait he taps from
-            the pad and the first two legs of walk2 run across the pad and up the hub
-            link, so dropping it early leaves him walking on an invisible line for
-            about 1.6s (0.35 tap + 0.15 light + 0.4 card lift + 0.7 room + the first
-            33% of walk2 — measured from the beat table). It fades once he is demonstrably
-            off it and onto the bus, and comes back before walk5 needs it.*/
+            is standing on, so when it leaves depends on where he is standing next.
+            On LANDSCAPE it goes with the furniture on the light beat: the bus
+            covers y=220 from x=900 to x=964 and walk2's first leg runs 932 -> 900,
+            entirely inside it, so the replacement is already under his feet. On
+            PORTRAIT it cannot: he taps from the pad and then rides up with the
+            card, so dropping it on the light beat would take the floor out from
+            under the ride. Portrait fades it across the ride instead. Both
+            variants get it back before walk5 needs it.*/
           const hubFurniture = [
             ...cards.filter((c) => c !== litCard),
             ...spokes.filter((sp) => sp !== liveSpoke),
@@ -444,35 +446,49 @@ export function MarCommandLive() {
 
           // ---- 3. The tap lights the card (never a timer) -----------------
           tl.call(() => litCard?.classList.add("mc-card--lit"), undefined, t);
+          const tLight = t;
           /*
-            THE PAD FADES HERE TOO, NOT DURING walk2.
+            WHAT LEAVES ON THE LIGHT BEAT, AND WHY THE TARGET DIFFERS BY VARIANT.
 
-            This is the client's "stray grey ring". `.mc-pad__ring` is a 96px
-            circle stroked in --theme-border (rgb(226,232,240)) and it lived in
-            `hubPath`, which fades ~33% into walk2 — while the unlit cards and
-            spokes fade here, at the light beat. For ~1.4s the pad was therefore
-            the only hub object still on screen, alone in empty space, which is
-            exactly what reads as a stray ring. He is already at the card by this
-            beat, so fading it here costs nothing.
+            BOTH variants drop the five unlit cards, their spokes, and the pad
+            here. The pad's 96px `.mc-pad__ring` (stroked --theme-border,
+            rgb(226,232,240)) used to be held back with the rest of `hubPath`
+            until a third of the way into walk2, which left it alone on an empty
+            stage for ~1.4s — the client's "stray grey ring". A TIMING bug, not a
+            styling one: nothing about the ring's appearance is wrong, only when
+            it is still visible. He is already at the card by this beat, so fading
+            it here costs nothing.
 
-            It is a TIMING bug, not a styling one: nothing about the ring's
-            appearance is wrong, only when it is still visible.
+            LANDSCAPE ALSO DROPS THE REST OF hubPath HERE, so the whole `hubLayer`
+            goes at once. Owner, verbatim: "it doesn't make the current line that
+            he was walking on go away fast enough. It needs to go away right away,
+            and then the new line needs to come in right now." Holding it into
+            walk2 kept the rail he arrived on at full opacity for 2.76s after the
+            tap while the replacement room finished drawing at ~1.96s: ~840ms with
+            both lines at 100%, and then — once the pad had gone at ~2.11s — 2.24s
+            of a blue L terminating in empty space at (652,340), a line connected
+            to nothing. Leaving on the same 0.15s beat the room arrives on makes
+            the swap a deliberate crossfade over the 64 units of ground he is
+            standing on rather than a handover with a hole in it.
+
+            OPACITY, and both paths together. NOT a `strokeDashoffset` retraction:
+            that erases from the card end first, i.e. out from under his feet, and
+            `liveRail`'s dashoffset is already driven in this same loop (walk1 in,
+            walk5 out). NOT the blue rail before the grey spoke either: the two
+            carry the same `d`, so dropping the blue alone exposes grey at
+            srgb(226,232,240) — a new stray line in place of the old one.
+
+            PORTRAIT KEEPS ITS PATH past this beat: he taps from the pad and rides
+            up with the card, so the pad and the hub link are still ground he is
+            using. It fades across the ride, in the branch below.
           */
-          tl.to(
-            [...hubFurniture, ...(pad ? [pad] : [])],
-            { opacity: 0, duration: B.light, ease: "none" },
-            t
-          );
+          const lightBeatExit =
+            variant === "wide" ? hubLayer : [...hubFurniture, ...(pad ? [pad] : [])];
+          tl.to(lightBeatExit, { opacity: 0, duration: B.light, ease: "none" }, tLight);
           /*
-            PORTRAIT ALSO DROPS THE REST OF THE HUB PATH HERE, over the ride
-            rather than in one snap.
-
-            hubPath is the ground he was standing on — the Google Ads spoke, the
-            blue live rail, and the pad's link up to the trunk. On wide it has to
-            survive into walk2 because he walks out along it. On portrait he does
-            not: the very next thing he does is leave the floor with the card, so
-            the moment the ride starts nothing on the hub is under him again until
-            walk5 brings him home. Fading it across the first half of the ride
+            PORTRAIT DROPS THE REST OF THE HUB PATH OVER THE RIDE, not in one snap.
+            The moment the ride starts nothing on the hub is under him again until
+            walk5 brings him home, so fading it across the first half of the ride
             hands the stage over to the room in one continuous movement instead of
             leaving a lone grey ring behind him.
           */
@@ -642,16 +658,53 @@ export function MarCommandLive() {
             );
             t += B.cardMove * 0.6;
           }
-          t += B.light;
+          /*
+            PORTRAIT ALONE STILL SPENDS THE LIGHT BEAT BEFORE THE ROOM OPENS.
+
+            On landscape this advance was a frozen frame: samples at 2.75 / 2.79 /
+            2.83 / 2.87 are byte-identical on every position, opacity and
+            dashoffset. The room now starts on the light beat anyway, so the
+            landscape cursor is recomputed from `tLight` below rather than summed.
+            Portrait's spacing is coupled to its own exit timing and stays put.
+          */
+          if (variant === "narrow") t += B.light;
 
           // ---- 4. The room draws outward FROM the card -------------------
-          tl.to(wires, { strokeDashoffset: 0, duration: B.room, ease: "power3.out" }, t);
+          /*
+            LANDSCAPE DRAWS THE ROOM FROM THE TAP, UNDERNEATH THE OLD LINE'S EXIT.
+
+            It used to wait out the ride and the light beat, so the replacement
+            wiring did not finish until ~1.96s after the tap while the rail he
+            arrived on was still at full opacity — the owner's "the new line needs
+            to come in right now". Starting it on the light beat puts first ink
+            down ~0.35s after the tap: `power3.out` covers the ground under his
+            feet at x=932 within ~0.025s of the draw beginning.
+
+            The duration is NOT shortened. He asked for it to start now, not to go
+            faster, and B.room stays 0.9 with its `power3.out` and 0.06 stagger.
+            The consequence is that the ride now OVERLAPS the room draw, which is
+            fine: the ride is the owner's other requested beat and is untouched.
+          */
+          const tRoom = variant === "wide" ? tLight : t;
+          tl.to(wires, { strokeDashoffset: 0, duration: B.room, ease: "power3.out" }, tRoom);
           tl.to(
             controls,
             { opacity: 1, scale: 1, duration: B.room, stagger: 0.06, ease: "power3.out" },
-            t
+            tRoom
           );
-          t += B.room;
+          /*
+            The ride and the room run together on landscape, so the cursor is
+            whichever finishes last rather than a sum. `B.cardMove * 1.6` is his
+            landing time EXACTLY — the ride is `cardMove` plus a descent of
+            `cardMove * 0.6` — not an approximation, which is what keeps walk2
+            from starting before his feet are back on the rail if the beat ever
+            changes. Break-even is cardMove 0.5625; below it the room is the long
+            pole (today: 0.9 vs 0.8), above it the ride is.
+          */
+          t =
+            variant === "wide"
+              ? tLight + Math.max(B.room, B.cardMove * 1.6)
+              : t + B.room;
 
           // ---- 5. Walk to the Daily budget dial --------------------------
           /*
@@ -676,26 +729,25 @@ export function MarCommandLive() {
           tl.call(() => setFlip(1), undefined, t + B.walk2 * 0.95);
           walk(tl, R.walk2, B.walk2, t, aspect);
           /*
-            LANDSCAPE ONLY. He is on the bus by 40% of walk2 on wide, so the
-            ground he came in on can go now — not a beat earlier (see hubPath).
+            NEITHER VARIANT FADES THE HUB DURING walk2 ANY MORE. Do not put it back.
 
-            Portrait no longer fades hubPath here, and it MUST not: walk2 on
-            portrait now starts at (110,112), beside the lifted card, because he
-            rode up with it. He left the spoke a whole beat ago and never touches
-            the pad or the hub link again until walk5. Leaving the fade here would
-            have held the pad's 96px `.mc-pad__ring` — the client's "stray grey
-            ring" — on screen alone for ride(1.0) + light(0.15) + room(0.7) +
-            0.4*walk2 = about 2.25s, which is longer than the window that was
-            reported as a defect in the first place. Portrait fades it on the tap
-            instead, in the block above.
+            Landscape used to, on the argument that he walks out along the ground
+            he came in on so it had to survive into walk2. That argument is dead:
+            the bus covers y=220 from x=900 to x=964 and walk2's first leg runs
+            932 -> 900, entirely inside it, so the new line is already under his
+            feet the moment it draws. Holding the old one here instead kept the
+            rail he arrived on at full opacity for 2.76s after the tap. It leaves
+            on the light beat now, with the rest of `hubLayer`.
+
+            Portrait must not fade here either: walk2 on portrait starts at
+            (110,112), beside the lifted card, because he rode up with it. He left
+            the spoke a whole beat ago and never touches the pad or the hub link
+            again until walk5. A fade here would hold the pad's 96px
+            `.mc-pad__ring` — the client's "stray grey ring" — on screen alone for
+            ride(1.0) + light(0.15) + room(0.7) + 0.4*walk2 = about 2.25s, which is
+            longer than the window that was reported as a defect in the first
+            place. Portrait fades it on the tap instead, over the ride.
           */
-          if (variant === "wide") {
-            tl.to(
-              hubPath,
-              { opacity: 0, duration: B.walk2 * 0.25, ease: "none" },
-              t + B.walk2 * 0.4
-            );
-          }
           t += B.walk2;
 
           // ---- 6. Grip and turn ------------------------------------------
