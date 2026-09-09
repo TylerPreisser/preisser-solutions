@@ -486,10 +486,28 @@
   width: 96px;
   height: 116px;
 
-  background-image: url("/images/marcommand/elara-sheet.39d2c92d.webp");
+  background-image: url("/images/marcommand/elara-sheet.1273b05a.webp");
   background-repeat: no-repeat;
-  background-size: 400% 100%;
-  background-position-x: calc(var(--mc-frame) * 33.3333%);
+  background-size: 800% 100%;
+
+  /*
+    STEP BY WHOLE PIXELS, NOT BY A PERCENTAGE.
+
+    The obvious analogue of the 33.3333% this replaces is `--mc-frame *
+    14.2857%` (100/7 across eight cells), and on this sheet it is wrong.
+    Measured in chromium 151 / webkit 26.5 / firefox 153, both themes, at both
+    sprite sizes: with percentage stepping FIREFOX resamples ~7% of the cell
+    with a 1px edge shift on frames 1, 2, 5 and 6 — 779/780/834/832 pixels
+    differing from chromium at 96px — which reads as a 1px outline shimmer
+    between frames. The shipped 4-cell sheet never did this; eight cells is
+    what exposes it. Stepping by a whole cell in px measures 0 differing pixels
+    on all 8 frames in all 3 engines.
+
+    --mc-cell is therefore the RENDERED cell width and has to be restated
+    everywhere the sprite is resized, or that width shows the wrong cell.
+  */
+  --mc-cell: 96px;
+  background-position-x: calc(var(--mc-frame) * -1 * var(--mc-cell));
   background-position-y: 0;
 
   image-rendering: pixelated;
@@ -526,8 +544,9 @@
 
   /* -100% y puts his FEET on the point, which is what every stage coordinate in
      the component means. That part was always right: measured on the sheet, the
-     drawn artwork touches the BOTTOM row of every one of the four cells
-     (padBottom = 0 for frames 0-3 of the 768x232 sheet), and a screenshot diff
+     drawn artwork touches the BOTTOM row of every one of the eight cells
+     (padBottom = 0 for all frames of the 1536x232 sheet: the walk frames plant a
+     sole on the last row too, they never hover), and a screenshot diff
      of the rendered page — sprite visible minus sprite hidden — puts the drawn
      bottom at 0.00 CSS px from the box bottom at 1440 and 0.50 px at 390.
 
@@ -535,7 +554,7 @@
 
      `-50%` centres the sprite CELL on the mark. But the feet do not sit in the
      middle of the cell: measured per frame, the sole band occupies horizontal
-     fraction 0.1510 -> 0.6615 of the cell (identical in all four frames, since
+     fraction 0.1510 -> 0.6615 of the cell (identical across frames 0-3, since
      only the arm changes), so the feet's centre is at 0.40625 — the cell carries
      its slack on the RIGHT, where the reaching arm needs room. Centring the cell
      therefore parked his feet 0.09375 of the sprite width LEFT of the mark:
@@ -547,8 +566,14 @@
      left and the offset has to change sign. Hence the multiply by --mc-flip
      rather than a constant.
 
-     If the sheet is ever redrawn, re-measure the sole band and update 9.375%.
-     --mc-bob is the two-step walk hop. */
+     Re-measured on the 8-cell sheet: the walk frames open the stance by moving
+     the near boot one logical px left and the far boot one right, which is
+     symmetric, so both edges of the band shift by the same amount and its
+     centre stays at 0.40625 in all eight cells. 9.375% is unchanged. If the
+     sheet is redrawn again, re-measure it again.
+
+     --mc-bob is the ride step-off hop. The walk itself no longer uses it --
+     the footfall is drawn into the art now, see walk() in marcommand-live.tsx. */
   transform:
     translate3d(calc(-50% + 9.375% * var(--mc-flip)), calc(-100% + var(--mc-bob)), 0)
     scaleX(var(--mc-flip));
@@ -577,6 +602,7 @@
        ratio: 58 * 192/232 = 48. */
     width: 48px;
     height: 58px;
+    --mc-cell: 48px;
   }
 }
 
@@ -622,6 +648,7 @@
   .mc-elara {
     width: 48px;
     height: 58px;
+    --mc-cell: 48px;
   }
 }
 

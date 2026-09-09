@@ -210,20 +210,32 @@ export function MarCommandLive() {
             cursor += legDur;
           }
 
-          // 0.34s two-step hop, held as discrete steps so it reads as pixel-art
-          // footfall rather than a smooth float. One bob across the whole route.
-          tl.to(
-            sprite,
-            {
-              "--mc-bob": "-3px",
-              duration: 0.17,
-              repeat: Math.max(1, Math.round(dur / 0.17) - 1),
-              yoyo: true,
-              ease: "steps(1)",
-            },
-            at
-          );
-          tl.set(sprite, { "--mc-bob": "0px" }, at + dur);
+          /*
+            THE LEGS, NOT A HOP.
+
+            --mc-frame is never tweened, only set (`setFrame` above writes an
+            inline custom property), so the cycle is a run of discrete `call`
+            cues — the same shape the grip beat uses. 110ms a frame is a 440ms
+            loop, about 4.5 steps a second, which is brisk enough for a 58px
+            robot without strobing.
+
+            The -3px --mc-bob hop that used to live here is deliberately GONE.
+            The one-pixel footfall is drawn INTO the art on the contact frames
+            now, with the soles staying planted, which is what a walk does. The
+            CSS hop lifts the whole sprite including his feet, so keeping both
+            gave a double bob and floated him off the rail — the levitation the
+            feet-anchor comment in marcommand-live.css warns about. --mc-bob is
+            still the ride step-off's hop; a step-off is not a walk.
+          */
+          tl.set(sprite, { "--mc-bob": "0px" }, at);
+          const frames = Math.floor(dur / 0.11);
+          for (let i = 0; i < frames; i += 1) {
+            const f = FRAME.walk[i % FRAME.walk.length];
+            tl.call(() => setFrame(f), undefined, at + i * 0.11);
+          }
+          // Land on idle: every stationary beat that can follow a walk — tap,
+          // grip, face, pocket — assumes it is starting from the idle pose.
+          tl.call(() => setFrame(FRAME.idle), undefined, at + dur);
         };
 
         const build = (variant: Variant) => {

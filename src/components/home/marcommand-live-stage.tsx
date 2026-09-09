@@ -1117,8 +1117,19 @@ export const ROUTES = {
   },
 } as const;
 
-/** Sprite sheet frame indices. Sheet order is idle, reach, grip-a, grip-b. */
-export const FRAME = { idle: 0, reach: 1, gripA: 2, gripB: 3 } as const;
+/**
+ * Sprite sheet frame indices. Sheet order is idle, reach, grip-a, grip-b, then
+ * the four-beat walk cycle: contact, passing, contact-opposite, passing-opposite.
+ * `walk` is a PLAY ORDER, not a range — step through it and return to `idle` at
+ * the end of the walk, or the next stationary beat starts from a mid-stride leg.
+ */
+export const FRAME = {
+  idle: 0,
+  reach: 1,
+  gripA: 2,
+  gripB: 3,
+  walk: [4, 5, 6, 7],
+} as const;
 
 /** Gauge helpers, shared with the timeline. */
 export const DIAL_MATH = { arcDash, needleAngle };
