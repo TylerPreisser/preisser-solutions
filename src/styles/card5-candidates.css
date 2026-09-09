@@ -223,15 +223,19 @@
   gap: var(--c5r-stack);
 }
 
-/* KEEP-CLEAR, and this one IS a viewport query on purpose: the control it
-   avoids is itself viewport-keyed. The card's expand button is 32px at
-   top/right 16px (globals.css:2106-2118) and grows to a 44px touch target
-   at top/right 12px below 768 (:5448-5459); the dialog's close button is
+/* KEEP-CLEAR, and this one IS a viewport query on purpose: the thing it
+   avoids is itself viewport-keyed. The card's expand DISC is 32px at
+   top/right 16px (globals.css:2138-2163) and grows to 44px at top/right 12px
+   at <=768 (:5540-5551). It is NOT a touch target - it carries
+   `pointer-events: none` (globals.css:2162) and `aria-hidden="true"`, and the
+   CARD is the button - but it is painted, so the artwork still clears it. The
+   "44px touch target" wording this note used to carry was wrong; the 44px is a
+   VISUAL weight change, not a hit area. The dialog's close button is
    40px at top/right 18px (:2737-2741). Against the art box, which is the
    card +6px on every edge, the worst case is a 62x62 dead corner. Measured
    at 1024 the field's right end had come within six pixels of it. */
 @media (max-width: 768px) {
-  /* 70, not 74: the 44px touch target starts 62px in from the art edge, so
+  /* 70, not 74: the 44px disc's keep-out starts 62px in from the art edge, so
      70 clears it by eight pixels and hands the other four back to the query
      at the width where the query has none to spare. */
   .ps-c5r-stage { --c5r-keep: 70px; }

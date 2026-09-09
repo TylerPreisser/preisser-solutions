@@ -1,208 +1,173 @@
 "use client";
 
 /* ============================================================================
-   CARD 1 — "Business Software." — three candidate visuals.
-   Team D, run bento-2026-09-07, THIRD pass.
+   CARD 1 — "Business Software." — the executive dashboard.
    Styles: src/styles/card1-candidates.css
 
-   THE OWNER'S SPEC, verbatim, and it is the whole of the assignment:
-     "the business software is supposed to be an executive dashbaord with
-      panels iwht different types of charts or graphs or KPI's"
-   What shipped and was rejected was ONE GIANT SEGMENTED SEMICIRCULAR GAUGE
-   (that is `?c1=orig`, the masonry arch in card-visuals-backup.tsx, whose own
-   source comment records it degrading into a gauge three separate times).
-   So: panels, PLURAL, each holding a DIFFERENT instrument, with KPI tiles.
+   THE BRIEF, VERBATIM, AND IT IS TWO SENTENCES FROM THE OWNER.
+     2026-09-07: "creating the bsusiness software bento graphic. it should be
+                  the worlds cleanest exectutive dashbaord that fits the theme
+                  of the website."
+     2026-09-09: "the business software bento shows invoices as a panel. I
+                  also told u what to change it to."
 
-   >> CARD 4 IS THE REFERENCE FOR ANIMATION STYLE ONLY.  Nothing else about it
-   transfers.  The owner: "they should not be a fricken webpage like websites
-   they should just be kinda the same animation style in what they are doing
-   ... but not matching any specifics or anything else about it at all other
-   than animation style."  An earlier instruction to make this card literal and
-   browser-like the way card 4 is literal and browser-like was a FORM copy, and
-   form copying off a neighbour is the documented cause of three rounds of
-   rejected browser mockups on this project.  Card 4's form is a browser window
-   because its subject is websites.  Card 1's form is a dashboard because its
-   subject is business software.  Neither borrows the other's object, and this
-   file borrows nothing from card 4 except its stillness.
+   >> WHY THE INVOICE PANEL WAS WRONG, AND IT IS NOT "MERELY UNINSPIRED".
+   The invoice story belongs to CARD 2, "Business Automation.", whose entire
+   artwork is a branching invoice-to-payment flow the owner dictated word for
+   word (Invoice sent -> Due date -> Paid? -> Settled / Reminded, rendered in
+   `card2-candidates.tsx`).  The previous pass of this card carried an
+   "INVOICES / 64 / sparkline" panel, so card 1 was duplicating its
+   neighbour's subject from 400px away in the same row.  Verified in the
+   render before it was removed, not inferred: the two cards sat side by side
+   at 1440x900 with "INVOICES 64" and "Invoice sent" 300px apart.
 
-   WHAT "CLEAN" MEANS HERE, since he asked for card 4's cleanliness: it is a
-   CRAFT standard, not a shape.  Measured across the row, card 4 is the
-   BRIGHTEST and the LEAST COLOURFUL card in the set.  Bright, not vivid;
-   calm, uncluttered, confident, generously spaced.  A dense dashboard can be
-   clean.  That is the target, and it is measured in the report rather than
-   asserted.
+   THERE IS THEREFORE NOTHING IN THE ARTWORK ABOUT INVOICES, RECEIPTS,
+   AGEING, PAYMENT STATE, WHO OWES WHAT, OR REMINDERS, IN ANY FORM.  Stated
+   precisely, because the loose version of this sentence is falsified by the
+   paragraph you are reading: the words occur in THIS COMMENT and nowhere else
+   in the module, and the check that matters is run against the RENDER — the
+   art root's own `textContent` matched against
+   /invoice|receipt|paid|overdue|due|remind|payment|\$/i in 54 card-face runs
+   (3 engines x 9 viewports x 2 themes) and 48 dialog runs (3 engines x 8
+   viewports x 2 themes, both the 900x400 landscape and the phone sheet),
+   returning zero every time.  If a future pass needs a money read on this card, it collides
+   with card 2 and needs the owner's ruling first.
 
-   RULING 1, ACCEPTED DELIBERATELY.  The graphic-designer kill-test ("could
-   this be mistaken for a screenshot of software?") carves itself out where the
-   subject IS literally software.  Card 1's subject is literally business
-   software, and the owner has now ruled three times that a dashboard is the
-   answer.  All three concepts below are dashboards that look like dashboards.
-   I did not sand this toward abstraction and I did not substitute a metaphor.
-   Banned throughout anyway, because it is the vocabulary that got three
-   earlier rounds rejected: no browser chrome, no window frame, no URL bar, no
-   traffic-light dots, no device bezel, no sidebar, no rows of grey placeholder
-   pills.
-
-   RULING 4 (AMENDED) — read, and followed.  Placeholder figures are permitted
-   and he asked for KPIs, so there are numbers.  Every figure is a placeholder
-   inside a depicted product UI: round, unremarkable for a small service
-   business, never framed as a Preisser Solutions or client result, and no
-   invented company names.  NO CURRENCY, keeping my predecessor's call, because
-   a dollar figure is an unresolved disagreement in this repo.  One placeholder
-   set is shared by all three concepts because all three depict one business:
-     142 jobs completed · 8.4% up · 96% on time · 18 open · 64 invoices ·
-     "This month" · a 13-point weekly series · six service columns · a 46/31/23
-     share split.
-   >> THE "figures shown are a demonstration" LABEL IS GONE, ON THE OWNER'S
-   INSTRUCTION: "remove 'the figures shown are a demonstration' from business
-   software bento".  The figures stay and the label goes.  That is consistent
-   rather than contradictory: he had already overridden the fabricated-figures
-   restriction for these cards earlier the same evening ("we are overriding the
-   forbidding of fabricating numbers as some of these cards will need
-   placeholder values"), so the disclaimer was guarding a rule he had already
-   lifted.  D11's precedent at marcommand-live.tsx:1391,1462 still stands for
-   the pages that carry money figures; this card carries none.
+   WHAT THE DASHBOARD SHOWS INSTEAD, AND WHERE THE CONTENT COMES FROM.  The
+   owner's own reference for this card is the NWKS administration panel: "We
+   built that whole administration panel ... some really cool custom stuff for
+   them to get them off of spreadsheets, move them into a tier, into an entire
+   system."  Its own service tiles in `service-pillars.tsx:207-243` name the
+   same thing four different ways: "Your Whole Business on One Screen", "Know
+   Exactly What's Going On in 3 Seconds", "Get Out of Spreadsheet Chaos",
+   "Every Customer's Entire History in One Record".  So the reads are
+   OPERATIONAL: the shape of the work over time and the work split by service
+   line.  Not SaaS-marketing filler and not a money panel.  The first of those
+   four tile titles, at `service-pillars.tsx:255`, is also where the card's one
+   sentence comes from -- see `SAY` below.
 
    ============================================================================
-   >> MOTION.  THE TWO PARAGRAPHS THAT USED TO SIT HERE WERE FALSE AND ARE
-   CORRECTED IN PLACE (Phase 3 G2).  They said "ZERO MOTION", "Exactly ONE
-   thing animates and it is THE CARD", and "this module has NO reveal hook, NO
-   IntersectionObserver, NO `--i` stagger index, and its stylesheet has NO
-   transition, NO animation and NO @keyframes."  Every one of those clauses is
-   contradicted by the code below it: `usePsC1xReveal` is a reveal hook, it
-   constructs an `IntersectionObserver`, and `card1-candidates.css` section 14
-   carries the transitions the ARM -> GO -> DISARM cycle drives.  Two verifiers
-   cited the old text as fact; it is deleted rather than annotated.
+   >> NO INVENTED DATA, AND THIS ART CARRIES NO NUMERALS AT ALL.
 
-   WHAT IS ACTUALLY TRUE.  The measured card-4 style is: "arrive once as a
-   single finished object over 0.65s on a hard ease-out, then hold perfectly
-   still."  THE CARD BOX is animated by a grid-level ScrollTrigger this file
-   does not own and must not duplicate (`service-pillars.tsx`, the `fromTo`
-   whose `onUpdate` fires `ps-rv-go` at `RV_GO_AT_PROGRESS`).  THIS file adds a
-   second, smaller thing: the sub-tiles inside the art root wipe in behind the
-   box, once, and then hold still forever.  The owner asked for that
-   explicitly ("the sub tiles in the Business Software card don't animate when
-   you scroll to them").  It is a subordinate movement, and the gate below is
-   what keeps it subordinate: it can no longer start before its own card has
-   arrived.  The previous pass ALSO counted numbers up and grew bars out of
-   their axis; that part really is deleted and stays deleted, because a
-   dashboard that counts up its numbers reads as BUSY.
+   The standing ruling forbids invented client names, fabricated amounts,
+   made-up dates, fabricated percentages presented as results, and any number
+   a viewer could mistake for a real Preisser Solutions or client figure.  It
+   permits structural and categorical labels, "relative shape without an axis
+   that asserts a value", and obviously generic placeholder glyphs.
 
-   THREE THINGS STILL FALL OUT OF THE BASE-CASCADE-IS-FINISHED POLARITY, and
-   they are why it is the right engineering answer as well as the right design
-   answer:
+   The previous pass leaned on an earlier, narrower override ("we are
+   overriding the forbidding of fabricating numbers as some of these cards will
+   need placeholder values") and shipped 142 / 8.4% / 96% / 64 / 18 as display
+   figures.  Those are exactly the numbers the ruling names: a viewer has no
+   way to know 142 jobs and 96% on time are not a client's results.  They are
+   gone, and NOT replaced with rounder fakes.
 
-   1. >> THE ART RENDERS COMPLETE WITH NO JAVASCRIPT.  Nothing here starts at
-      `opacity: 0`, so nothing depends on a script to become visible.  A
-      sibling card shipped a BLANK NAVY RECTANGLE in WebKit because one
-      /_next/static/ chunk 404'd and its hide-by-default reveal had nothing to
-      turn it back on.  A shared .next has corrupted three times today,
-      answering HTTP 200 with perfect markup and dead JavaScript.  Under that
-      exact condition this card still draws the whole dashboard.  Verified with
-      JavaScript fully disabled, not assumed.
+   Every value in this card is now carried by SHAPE: a weekly series with no
+   axis and no scale, and six service columns with no counts.  Every word in
+   the shipped card is a CATEGORY -- "Jobs per week", "By service" -- plus one
+   SENTENCE, the proposition below.  Nothing states how much of anything there
+   is.
+   >> THIS IS ALSO THE CLEANEST READING OF THE BRIEF, not merely the safest
+   one: the rejected art's five numerals were most of its density.
 
-   2. >> REDUCED MOTION IS CORRECT BY CONSTRUCTION.  M4's rule is "render the
-      final state at first paint, never opacity: 0".  With no transitions to
-      gate there is nothing to pin and nothing to fail: the reduced-motion
-      render is byte-identical to the normal one, which is asserted in the
-      report by hash rather than claimed.
-
-   3. There is no hover end-state to snap, because this card adds no hover
-      behaviour at all.  M4 records card 4 snapping on hover exit because its
-      transition is gated and its end-state is not; that defect cannot exist
-      here.
+   >> THE RULING WAS THEN EXTENDED TO GEOMETRY, AND THAT COST THE THIRD
+   INSTRUMENT.  An earlier version of this pass still carried a proportion dial
+   whose arc ran at exactly 78.00% of its own track.  Zero numerals was
+   satisfied to the letter and the claim was still being made -- an arc against
+   a COMPLETE track is a percentage, because the track is the axis, and a
+   viewer reads "most of this business's jobs land on schedule" off it as
+   surely as off the digits that used to sit in its centre.  There is no way to
+   draw a proportion against a complete reference without asserting the
+   proportion, so the dial is deleted rather than restyled.
+   The trend and the columns survive the same test because neither has a
+   reference that completes: no axis under the series, no total under the
+   columns.  Shape and distribution are what the ruling explicitly permits.
 
    ============================================================================
-   >> THE ART PAINTS NO BACKGROUND OF ITS OWN.  Owner, from a screenshot of the
-   dark card face: "remove these lines or weird background and instead put on a
-   transparent background", with a thin band across the top of the card and a
-   matching one across the bottom boxed in red.
+   >> FORM IS NOT COPIED FROM ANY SIBLING, AND FOUR OF THEM HAVE CHROME.
+   Card 2 is a node-and-connector flow, card 3 has a prompt field and a
+   response panel, card 4 IS a browser window and a phone, card 5 is a search
+   field over result rows.  This card is none of those: no window frame, no URL
+   bar, no traffic lights, no device bezel, no sidebar, no prompt input, no
+   full-width result rows with leading squares, and no rows of grey placeholder
+   pills.  What IS taken from the set is craft, measured off the siblings'
+   renders: the flat navy ground, opaque panels on a role-8 knockout lifted
+   12.5% with white, 1px hairline borders, 10-12px radii, 9.5px uppercase
+   letterspaced labels, exactly ONE accent hue, and exactly ONE bright surface
+   carrying the mass the way card 4 does.
 
-   Identified by inspecting the render rather than by assuming: those two strips
-   were `.ps-c1a-grid::before`, a full-width `rgba(255,255,255,0.027)` slab with
-   1px borders top and bottom at `rgba(255,255,255,0.055)`.  Its lower border
-   sat directly above the disclaimer, which is why the two read as one defect.
-   It is deleted, along with the root's own 160deg ground ramp and the radial
-   `.ps-c1x-lift` wash, so the panels now sit directly on the card's native
-   surface.
-
-   >> ONE CONSEQUENCE THAT IS REPORTED RATHER THAN HIDDEN.  The surface under
-   the art is NOT the same ramp the art was painting.  Measured:
-   `.ps-bento-card__content` is a FLAT `rgb(10,22,40)` in dark and a FLAT
-   `rgb(232,237,243)` in light, while the art was painting
-   `#0A1628 -> #0C1E3A` and `#F0F4F8 -> #E8EDF3`.  So the face loses its
-   gradient and becomes flat, and in light theme it settles on the ramp's
-   darker end stop.  Card 4 paints its own copy of that ramp at
-   card-visuals.css:59 and therefore keeps its gradient, so the two cards now
-   differ in ground treatment.  That is the owner's instruction, followed
-   exactly; it is flagged in the report so it is a decision and not a surprise.
-
-   >> AND ONE PLACE THE GROUND IS KEPT, DELIBERATELY.  `.ps-dialog-visual` is
-   `background: #0A1628` in BOTH themes (globals.css, no light override), so a
-   transparent art layer in the light-theme dialog would put white panels and
-   dark ink on a navy ground.  The dialog therefore keeps an explicit
-   theme-correct ground, scoped through `.ps-dialog-visual-art`.  The owner was
-   looking at the card FACE; this keeps his instruction there without opening a
-   light-theme bug in a mount he was not shown.
+   RULING ACCEPTED DELIBERATELY: the graphic-designer kill test ("could this be
+   mistaken for a screenshot of software?") is carved out here, because the
+   subject IS literally business software and the owner has ruled four times
+   that a dashboard is the correct image.  It is a dashboard and it looks like
+   one.
 
    ============================================================================
-   >> SYMMETRIC BLEED, OR NONE.  THE CHART NOW BLEEDS NOT AT ALL.
+   THE THREE CONCEPTS, and all three were built, rendered at 1440x900 and
+   375x667 in both themes, and read from the PNGs before one was chosen.  The
+   two rejected ones stay live behind `?c1=b` and `?c1=c` so the owner can see
+   what was on the table; the default is A and only A is swept across the full
+   engine/viewport matrix.
 
-   The set critic proved from INK that the previous pass composed the trend
-   32.2px wider than its frame and had it amputated flush at the modal edge in
-   the 900x400 dialog: a hard vertical seam, no end cap, no terminal data
-   point, and what was removed was the TERMINUS of the "142 up 8.4%" rise — the
-   payload of the chart.  Reproduced in Chromium, WebKit and Firefox and in
-   both themes.  Card 1 was the only card in the set bleeding on ONE side
-   (5 right / 0 left, where every other card is symmetric or clean), and a
-   one-sided cut is the only kind that loses something.
-
-   The fix is structural rather than a scoped override: the series now runs
-   from x=0 to x=400 INSIDE its own viewBox, the chart box no longer bleeds
-   past its panel on either side, and the last data point carries a visible
-   terminal dot so the end of the rise is the thing the eye lands on.  There is
-   nothing left to amputate at any aspect, so no `.ps-dialog-visual-art`
-   override is needed for it and the card face is untouched.
-   The dot is a CSS circle rather than an SVG <circle>, because the chart
-   stretches with preserveAspectRatio="none" and an SVG circle would render as
-   an ellipse at the dialog's aspect.
+     A  "THE THREE-SECOND READ" -- SHIPPED.  One label strip on bare ground,
+        one full-width trend panel, and one row of two tiles beneath it: a LIT
+        column-chart tile and the card's proposition.  Three panels, two bands,
+        zero numerals.  It is the only one of the three that clears the 44x44
+        expand disc without spending 56px of vertical room on a top margin,
+        the only one that still reads at the 287x202 art box of a 320-tall
+        phone card, and the one whose value structure matches the set: one
+        bright surface, everything else quiet.
+     B  "THE OPERATIONS BOARD" -- rejected.  Three workflow lanes (Scheduled /
+        In progress / Complete) holding record chips.  Closest to the
+        spreadsheet-escape story and structurally the boldest, but the chips
+        read as rows of grey placeholder pills at every size below the dialog,
+        which is the exact vocabulary three earlier rounds of this project
+        were rejected for.
+     C  "THE QUADRANT BRIEF" -- rejected.  An even 2x2 of four instruments,
+        no hierarchy.  Clean at 400x430 and cramped on a phone: the 2x2 has to
+        start below the disc, which costs 56px of a 202px art box and leaves
+        four ~70px tiles.  It also has no answer-first hierarchy, which is the
+        one thing an executive dashboard is for.
 
    ============================================================================
-   GEOMETRY (R7's measured table, plus two corrections I measured myself).
-   Card 1's face: 272x320 at 320vw, 591x320 at 639vw, 288-437x420 in the
-   two-column band, 400x430 from 1280.  Art box = card +6px on all four edges,
-   outer 6px permanently clipped.  Bottom text block = 62.8px to 768vw,
-   58.89px above.
-   >> CORRECTION 1: the expand disc is 44x44 inset 12px at EVERY width <= 768
-   (a 56x56 corner), and 32x32 inset 16px only from 769.  R7 recorded 32/16
-   everywhere.  Confirmed in Chromium and in real Safari.
-   >> CORRECTION 2: the dialog is W x 280 at every width <= 768 and W x 400
-   only from 769, capped 900x400, with ZERO bleed; `.ps-dialog-visual::after`
-   veils the bottom 120px at both heights, and the 40x40 close button is NOT
-   hidden on mobile despite globals.css:2738 saying it is.
+   GEOMETRY, measured on this build rather than assumed.  Card 1's face is
+   400x430 at 1280/1440/1920 (`service-pillars.tsx:183`, rendered box measured
+   at 1440x900), 272x320 at 320vw, 327x320 at 375vw, 288-437x420 in the
+   two-column band, 314.66x430 in the three-column band, and 591x320 at 639vw.
+   The art box is the card plus 6px on all four edges with the outer 6px
+   permanently clipped.  The expand disc is 44x44 inset 12px at every width
+   <= 768 (a 56x56 corner to keep clear) and 32x32 inset 16px from 769 up.
+   The dialog is W x 280 up to 768 and W x 400 from 769, capped 900x400, with
+   its bottom 120px veiled.
 
-   Three arrangements, one markup tree:
-     - base CSS  = the portrait card face;
-     - @container bentocard (max-width: 320px)  = the tight face;
-     - @container bentocard (min-width: 480px)  = the one wide-short face;
-     - `.ps-dialog-visual-art` descendant rules = the dialog, because
-       `container: bentocard / inline-size` is declared only on
-       `.ps-bento-card` (globals.css:1762) and the portal dialog has NO
-       container ancestor, so a container query can never reach it.  Mount
-       identity comes from that selector and never from an aspect threshold:
-       this card's face and dialog aspect ranges overlap.
+   Four arrangements, one markup tree, and the CSS blocks are in this order:
+   base = the portrait face; `@container bentocard (max-width: 320px)` = the
+   tight face; `@container bentocard (min-width: 480px)` = the wide-short face;
+   `.ps-dialog-visual-art` descendants = the dialog, because
+   `container: bentocard / inline-size` is declared only on `.ps-bento-card`
+   (globals.css:1762) and the portal dialog has no container ancestor, so a
+   container query can never reach it.
 
-   IDS.  Every defs id is `ps-c1-${uid}-<part>` with uid from useId(), because
-   the same node renders twice — card face (service-pillars.tsx:1916) and
-   portal dialog (:2214) — and a hand-typed literal prefix collides silently
-   (D28c).  Only concept A emits a gradient at all.
+   IDS.  THERE IS NOT ONE `defs`, ONE `url(#…)` OR ONE GENERATED ID IN THIS
+   ARTWORK, and that is a deliberate outcome of the pass rather than luck: the
+   only thing that needed one was the trend's area gradient, and the area is
+   deleted (see the note on the trend below — it was rendering as a floating
+   pale rectangle inside its panel, read from the render in both themes).  The
+   whole double-mount id-collision class therefore cannot occur here.
+   >> IF YOU ADD A `defs`, IT MUST GO THROUGH A `useMarkId()`-STYLE PREFIX
+   (`card3-candidates.tsx:613`), because this art root mounts TWICE while a
+   card is open — card face at `service-pillars.tsx:1916`, portal dialog at
+   :2214 — and `url(#x)` binds the FIRST match in document order, so the
+   dialog copy would silently take the card face's gradient.  And it must strip
+   `[^a-zA-Z0-9]`, because React 19's raw `useId()` returns `«r0»`, whose
+   guillemets are illegal unescaped inside `url(#...)` and render the filled
+   shape BLACK.
 
-   CLASSES.  `ps-c1x-` shared, `ps-c1a-/b-/c-` per concept.  NOT `ps-c1-`,
-   which the old arch art still owns in card-visuals.css and which stays live
-   as ?c1=orig.
+   CLASSES.  `ps-c1x-` shared, `ps-c1a-/b-/c-` per concept.  Never `ps-c1-`,
+   which the superseded arch art still owns in `card-visuals.css` and which is
+   still live as `?c1=orig`.
    ============================================================================ */
-
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 /* HOW MUCH OF THE ART ROOT MUST BE ON SCREEN BEFORE THE REVEAL IS RELEASED.
    Read by all three release paths in usePsC1xReveal -- the observer's
@@ -646,43 +611,50 @@ function usePsC1xReveal<T extends HTMLElement>() {
   return ref;
 }
 
-/* A delta chip: triangle plus a percentage. */
-function Delta({ value }: { value: string }) {
-  return (
-    <span className="ps-c1x-delta">
-      <svg className="ps-c1x-delta__mark" viewBox="0 0 10 7" preserveAspectRatio="xMidYMid meet" focusable="false">
-        <path d="M5 0 L10 7 L0 7 Z" />
-      </svg>
-      {value}
-    </span>
-  );
-}
-
 /* ---------------------------------------------------------------------------
-   THE CHART TYPES.  Five genuinely different instruments, shared by the
-   concepts that use them.  Columns and rails are CSS boxes rather than SVG:
-   these panels stretch across a 3.4x aspect swing and an SVG `rx` visibly
-   ovalises when they do.  Only the trend and the ring are SVG, because only
-   they need real curves.
+   THE INSTRUMENTS.  Four are defined here and the SHIPPED concept A uses two
+   of them -- the trend and the columns.  The dial and the rail are kept
+   because concept C consumes both at `?c1=c`; deleting them would break a
+   variant the owner still has a live link to.  NONE of the four prints a
+   figure.  Columns and rails are CSS boxes rather than SVG, because these
+   panels stretch across a 3.4x aspect swing and an SVG `rx` visibly ovalises
+   when they do; only the trend and the dial are SVG, because only they need
+   real curves.
+   >> KNOWN AND DELIBERATELY LEFT: the dial at `?c1=c` still draws its arc at
+   78% of its track, which is the geometry assertion the shipped concept just
+   deleted.  Concept C does not ship and exists only as the rejected option the
+   owner can look at, the same way card 2 keeps `?c2=b`.  If concept C is ever
+   promoted, the arc has to go with it.
    --------------------------------------------------------------------------- */
 
-/* 1. TREND — a 13-point weekly series with a dip.
-   Every x sits INSIDE 0..400 and every y inside 0..110, so the drawing cannot
-   be clipped by its own viewBox at any aspect. The first point is one step off
-   the baseline rather than on it, so the closed area has a 10px left edge
-   instead of a 45px vertical wall; the last point is the peak and carries the
-   terminal dot. TREND_END_PCT hands that y to CSS as a percentage so the dot
-   sits exactly on it however the box stretches. */
+/* 1. TREND — a 13-point weekly series, unlabelled and unscaled.  There is no
+   axis, no tick and no value anywhere on it, so it states the SHAPE of the
+   work and never a quantity.
+   Every x sits inside 0..400 and every y inside 0..110, so the drawing cannot
+   be clipped by its own viewBox at any aspect — the previous pass composed it
+   32.2px wider than the dialog frame and had the terminus of the rise
+   amputated flush at the modal edge.  The first point is one step off the
+   baseline rather than on it, so the closed area has a 10px left edge instead
+   of a 45px vertical wall; the last point is the peak and carries the terminal
+   dot.  TREND_END_PCT hands that y to CSS as a percentage so the dot sits
+   exactly on it however the box stretches. */
 const TREND_PTS: Array<[number, number]> = [
   [0, 99], [33, 79], [66, 85], [99, 62], [132, 68], [165, 46], [198, 52],
-  [231, 32], [264, 40], [297, 22], [330, 28], [363, 14], [400, 7],
+  [231, 32], [264, 40], [297, 22], [330, 28], [363, 14], [394, 7],
 ];
 const TREND_LINE = TREND_PTS.map((p, i) => `${i ? "L" : "M"} ${p[0]} ${p[1]}`).join(" ");
-const TREND_AREA = `${TREND_LINE} L 400 110 L 0 110 Z`;
+/* The area closes by running FLAT from the terminus to x=400 and then down the
+   right edge, so the fill reaches the panel's own border on both sides and at
+   the floor while the LINE still stops 6 units short with its dot on it. That
+   is what makes the fill seam-free: its rectangle edges coincide with the
+   panel's edges instead of floating 12-14px inside them. */
+const TREND_AREA = `${TREND_LINE} L 400 7 L 400 110 L 0 110 Z`;
 const TREND_END_PCT = `${((7 / 110) * 100).toFixed(2)}%`;
+/* x of the terminus as a percentage from the RIGHT, handed to CSS so the dot
+   tracks the series at every aspect. */
+const TREND_END_X_PCT = `${(((400 - 394) / 400) * 100).toFixed(2)}%`;
 
-function Trend({ uid, part }: { uid: string; part: string }) {
-  const grad = `ps-c1-${uid}-${part}`;
+function Trend() {
   return (
     <div className="ps-c1x-trend">
       <svg
@@ -691,18 +663,18 @@ function Trend({ uid, part }: { uid: string; part: string }) {
         preserveAspectRatio="none"
         focusable="false"
       >
-        <defs>
-          <linearGradient id={grad} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" className="ps-c1x-trend__stop-a" />
-            <stop offset="100%" className="ps-c1x-trend__stop-b" />
-          </linearGradient>
-        </defs>
         <g className="ps-c1x-grid">
           <line x1="0" y1="28" x2="400" y2="28" vectorEffect="non-scaling-stroke" />
           <line x1="0" y1="62" x2="400" y2="62" vectorEffect="non-scaling-stroke" />
           <line x1="0" y1="96" x2="400" y2="96" vectorEffect="non-scaling-stroke" />
         </g>
-        <path className="ps-c1x-trend__area" d={TREND_AREA} fill={`url(#${grad})`} />
+        {/* FLAT TINT, NOT A GRADIENT, and that is deliberate: a gradient needs
+            a `defs` id, this art root mounts twice while a card is open, and
+            `url(#x)` binds the first match in document order. A flat
+            `fill-opacity` needs no id at all, so the whole collision class
+            stays closed. It also carries the same ink from top to bottom
+            instead of fading out of visibility at the floor. */}
+        <path className="ps-c1x-trend__area" d={TREND_AREA} />
         <path
           className="ps-c1x-trend__line"
           d={TREND_LINE}
@@ -715,16 +687,19 @@ function Trend({ uid, part }: { uid: string; part: string }) {
           preserveAspectRatio="none" across a 3.4x aspect swing. */}
       <span
         className="ps-c1x-trend__end"
-        style={{ "--end-y": TREND_END_PCT } as React.CSSProperties}
+        style={{ "--end-y": TREND_END_PCT, "--end-x": TREND_END_X_PCT } as React.CSSProperties}
       />
     </div>
   );
 }
 
-/* 2. RING — one arc on a track, with the figure inside it. `meet`, so the
-   circle stays a circle at every aspect. The arc is drawn at its final length;
-   there is no draw-on. */
-function Ring({ pct, label }: { pct: number; label: string }) {
+/* 2. DIAL — one arc on a track, and its centre is EMPTY.  The percentage that
+   used to sit inside it is deleted along with every other numeral (see the
+   header): an arc against a full track is a proportion the eye reads directly,
+   and the figure was the part that made a claim.
+   `meet`, so the circle stays a circle at every aspect.  The arc is drawn at
+   its final length; `pct` is a geometry input, never rendered as text. */
+function Dial({ pct, label }: { pct: number; label: string }) {
   const r = 26;
   const circ = 2 * Math.PI * r;
   const dash = (circ * pct) / 100;
@@ -736,11 +711,11 @@ function Ring({ pct, label }: { pct: number; label: string }) {
           {/* The arc is the ONE svg in this card that is safe to animate by
               dash: computed `vector-effect: none` and
               `preserveAspectRatio="xMidYMid meet"`, so it scales uniformly and
-              a dash is the same unit in all three engines. The trend and the
-              spark are not (see the stylesheet's section 14).
-              CSS cannot read an attribute, so the same two numbers go out as
-              custom properties for the reveal to interpolate between. The
-              attribute stays as the no-CSS floor. */}
+              a dash is the same unit in all three engines. The trend is not
+              (see the stylesheet's section 14).  CSS cannot read an attribute,
+              so the same two numbers go out as custom properties for the
+              reveal to interpolate between; the attribute stays as the
+              no-JavaScript floor. */}
           <circle
             className="ps-c1x-ring__arc"
             cx="32" cy="32" r={r} fill="none"
@@ -753,15 +728,15 @@ function Ring({ pct, label }: { pct: number; label: string }) {
             transform="rotate(-90 32 32)"
           />
         </svg>
-        <span className="ps-c1x-ring__value">{pct}%</span>
       </div>
       <span className="ps-c1x-ring__label">{label}</span>
     </div>
   );
 }
 
-/* 3. COLUMNS — six service columns, one carrying the accent. Heights are
-   percentages of the panel, so they stretch without distortion. */
+/* 3. COLUMNS — six service lines, one carrying the accent.  Heights are
+   percentages of the panel, so they stretch without distortion, and there is
+   no axis and no count against any of them. */
 const COLS = [38, 56, 46, 88, 64, 74];
 const COL_ACCENT = 3;
 
@@ -779,39 +754,40 @@ function Columns() {
   );
 }
 
-/* 3b. PAIRED COLUMNS — the same comparison read as this period against last.
-   Only concept C uses it; it is a different chart from Columns, not a restyle,
-   because it asserts a relation between two series rather than one ranking. */
-const PAIRS: Array<[number, number]> = [
-  [46, 34], [62, 52], [54, 41], [88, 70], [72, 58], [80, 66],
-];
+/* 3b. THE PROPOSITION — the one piece of NATURAL LANGUAGE in this artwork, and
+   it is the card's own claim rather than a caption on the picture beside it.
 
-function PairedColumns() {
-  return (
-    <div className="ps-c1x-pairs">
-      {PAIRS.map((p, n) => (
-        <span key={n} className="ps-c1x-pair">
-          <span className="ps-c1x-pair__now" style={{ "--h": `${p[0]}%` } as React.CSSProperties} />
-          <span className="ps-c1x-pair__was" style={{ "--h": `${p[1]}%` } as React.CSSProperties} />
-        </span>
-      ))}
-    </div>
-  );
+   >> WHY IT EXISTS.  Read in one frame with its siblings, card 1 was the only
+   card in the set carrying no sentence and making no proposition: card 2 is
+   labelled (`Invoice sent`, `Paid?`), card 3 asks *"why is our ROI down this
+   month?"*, card 5 searches *"who insures oil field crews"*, and card 1 had
+   four uppercase field labels.  Four field labels are what every SaaS
+   dashboard has, so the genericness charge against this card was never the
+   chart shapes — it was the absence of the client's voice.  Captured and
+   looked at, not inferred: shots/base-set-dark.png.
+
+   >> WHERE THE WORDS COME FROM, AND THEY ARE NOT MINE.  `service-pillars.tsx:255`
+   — this pillar's own first service tile, `title: "Your Whole Business on One
+   Screen"`.  Sentence-cased so it reads as the owner speaking rather than as a
+   heading, and left otherwise alone.  Nothing here is invented copy.
+
+   >> WHY IT IS NOT ONE OF THE NEIGHBOURS' SUBJECTS.  It names the platform and
+   the single screen, which is this pillar's subject (`:233`, "the internal
+   tools that replace the shared spreadsheet").  It says nothing about
+   invoices, payment state or reminders (card 2), nothing about reading a
+   document (card 3), and nothing about reviews or search (card 5).
+   `PHASE1-BRIEFING-PACK.md` §39.55 binds those boundaries.
+
+   >> AND IT CARRIES NO FIGURE.  "One screen" is a word, not a numeral; the
+   card's zero-numerals property is unchanged and still measured from the
+   render rather than from this comment. */
+const SAY = "Your whole business on one screen.";
+
+function Say() {
+  return <p className="ps-c1x-say">{SAY}</p>;
 }
 
-/* 4. SPARK — a small line for a KPI tile, no fill, no axis. Inset one unit on
-   every side so the round line caps are not clipped by the viewBox. */
-const SPARK = "M 1 20 L 15 15 L 29 17 L 43 11 L 57 13 L 71 7 L 85 9 L 97 4";
-
-function Spark() {
-  return (
-    <svg className="ps-c1x-spark" viewBox="0 0 98 24" preserveAspectRatio="none" focusable="false">
-      <path d={SPARK} fill="none" vectorEffect="non-scaling-stroke" />
-    </svg>
-  );
-}
-
-/* 5. RAIL — a segmented horizontal bar: a share-of-total chart. */
+/* 4. RAIL — one bar divided three ways: a share-of-total with no total. */
 const RAIL = [46, 31, 23];
 
 function Rail() {
@@ -828,136 +804,131 @@ function Rail() {
   );
 }
 
-/* ============================================================================
-   CONCEPT A — "The executive brief."
-   FIVE PANELS, five different readings, one hierarchy.  A lit hero KPI tile
-   and a second smaller KPI tile across the top; one wide trend panel with
-   gridlines, an area under the line and a terminal point; a ring panel and a
-   column panel beneath.  This is the arrangement a real executive summary
-   uses: the answer first at display size, the shape of the month second, the
-   two supporting reads last.  Calm comes from ONE bright surface, four quiet
-   ones, and a third of the frame left as empty ground.
-   Chart mix: KPI + delta / KPI + sparkline / area trend / ring / columns.
-   ============================================================================ */
-export function DashboardVisualA() {
-  const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
-  const root = usePsC1xReveal<HTMLDivElement>();
-
-  /* `--i` is the PANEL's stagger index, never an element's. A label and its
-     number are one metric and must fade together; staggering them separately
-     makes a label arrive before the number it labels, which reads as broken
-     rather than as sequenced. The order below is the hierarchy order: the lit
-     "142" panel first, the trend second, the ring and columns last. */
+/* 5. STACK — concept B's lane of record chips.  Heights vary so the lane reads
+   as a column of individual records of different sizes rather than as a row of
+   identical pills; that is also the reason concept B was rejected, because
+   below the dialog it stops working (see the header). */
+function Stack({ chips, accent }: { chips: number[]; accent?: boolean }) {
   return (
-    <div className="ps-c1x-root ps-c1a-root" aria-hidden="true" ref={root}>
-      <div className="ps-c1a-grid">
-        <div className="ps-c1x-panel ps-c1x-panel--lit ps-c1a-hero" style={{ "--i": 0 } as React.CSSProperties}>
-          <span className="ps-c1x-k">Jobs completed</span>
-          <span className="ps-c1x-figline">
-            <span className="ps-c1x-v">142</span>
-            <Delta value="8.4%" />
-          </span>
-        </div>
-
-        <div className="ps-c1x-panel ps-c1a-side" style={{ "--i": 1 } as React.CSSProperties}>
-          <span className="ps-c1x-k">Invoices</span>
-          <span className="ps-c1x-v ps-c1x-v--sm">64</span>
-          <Spark />
-        </div>
-
-        <div className="ps-c1x-panel ps-c1a-trend" style={{ "--i": 2 } as React.CSSProperties}>
-          <span className="ps-c1x-panel__head">
-            <span className="ps-c1x-k">Jobs per week</span>
-            <span className="ps-c1x-k ps-c1x-k--dim">This month</span>
-          </span>
-          <Trend uid={uid} part="a-area" />
-        </div>
-
-        <div className="ps-c1x-panel ps-c1a-ring" style={{ "--i": 3 } as React.CSSProperties}>
-          <Ring pct={96} label="On time" />
-        </div>
-
-        {/* NO LABEL on this one, deliberately. A column chart reads as a column
-            chart without being told, and the 13px the label cost was 13px the
-            columns needed in order to be taller than they are wide. */}
-        <div className="ps-c1x-panel ps-c1a-cols" style={{ "--i": 4 } as React.CSSProperties}>
-          <Columns />
-        </div>
-      </div>
-
+    <div className={"ps-c1x-stack" + (accent ? " ps-c1x-stack--accent" : "")}>
+      {chips.map((h, n) => (
+        <span key={n} className="ps-c1x-chip" style={{ "--h": `${h}%` } as React.CSSProperties} />
+      ))}
     </div>
   );
 }
 
 /* ============================================================================
-   CONCEPT B — "The status wall."
-   SIX PANELS OF EQUAL WEIGHT, deliberately no hierarchy — the wall-mounted
-   board a business leaves up all day.  Structurally the opposite of A: an even
-   mosaic instead of a pyramid, and every tile is a different instrument, so
-   the variety IS the composition.  The board is shifted down off the top of
-   the frame, leaving one clean band of ground above it, which is what keeps
-   six panels from reading as clutter.
-   Chart mix: big number + delta / ring / columns / sparkline KPI / segmented
-   share rail / plain KPI.
+   CONCEPT A — "THE THREE-SECOND READ".  SHIPPED.
+   One label strip on bare ground, one full-width trend panel, one row of two
+   tiles.  The label strip is what buys the trend panel its full width: it
+   stops short of the expand disc, so nothing else has to.
+   `--i` is the PANEL's stagger index and never an element's — a label and the
+   picture it labels are one metric and must arrive together.  Order is the
+   hierarchy order: the question first, the shape of the work second, the two
+   supporting reads last.
    ============================================================================ */
+export function DashboardVisualA() {
+  const root = usePsC1xReveal<HTMLDivElement>();
+
+  return (
+    <div className="ps-c1x-root ps-c1a-root" aria-hidden="true" ref={root}>
+      <div className="ps-c1a-grid">
+        {/* ONE LABEL, NOT TWO, AND THE SECOND ONE IS NOT COMING BACK.  The strip
+            used to carry a dimmed `This quarter` beside this label.  It computed
+            to `display: none` at every container width under 400px — which is
+            every phone face, every tablet face and the 287px three-column
+            desktop face — so the artwork's word list was three words on most of
+            the viewports anyone actually sees and four on the rest, while the
+            dimmed colour measured 2.48:1 (light) and 3.90:1 (dark) against a
+            4.5:1 requirement at 9.5px wherever it WAS visible.  A label that is
+            both conditional and unreadable is not a period qualifier, so the
+            period is gone and this is a three-label composition on purpose. */}
+        <div className="ps-c1a-head" style={{ "--i": 0 } as React.CSSProperties}>
+          <span className="ps-c1x-k">Jobs per week</span>
+        </div>
+
+        <div className="ps-c1x-panel ps-c1a-trend" style={{ "--i": 1 } as React.CSSProperties}>
+          <Trend />
+        </div>
+
+        <div className="ps-c1x-panel ps-c1x-panel--lit ps-c1a-cols" style={{ "--i": 2 } as React.CSSProperties}>
+          <span className="ps-c1x-k">By service</span>
+          <Columns />
+        </div>
+
+        {/* THE DIAL USED TO BE HERE AND IT WAS DELETED FOR ASSERTING A NUMBER
+            IT HAD NO RIGHT TO.  Every numeral in this artwork was removed under
+            the no-invented-data ruling, but the dial's arc still ran
+            `stroke-dasharray: 127.42px, 35.94px` — 78.00% of its own track —
+            and an arc measured against a FULL track is a percentage whether or
+            not the digits are printed.  The track is the axis.  Geometry is not
+            an exemption from a ruling about fabricated results, so the read
+            that claimed "78% of this business's jobs land on schedule" is gone
+            rather than restyled.  There is no way to draw a proportion against
+            a complete reference and not assert the proportion; the honest move
+            was to stop drawing one.
+
+            THE TREND AND THE COLUMNS SURVIVE THE SAME TEST for a reason worth
+            writing down: neither has a reference that completes.  The series
+            has no axis and no scale, so it states a SHAPE (work rising week
+            over week) and no quantity; the six columns have no counts and no
+            total, so they state a DISTRIBUTION (one service line leads) and no
+            quantity.  The ruling permits exactly that and forbids exactly what
+            the arc was doing.
+
+            Deleting it also breaks up rising-line + grey-columns + donut, which
+            is the single most template-like trio in B2B marketing and half of
+            why this card read as any SaaS dashboard. */}
+        <div className="ps-c1x-panel ps-c1a-say" style={{ "--i": 3 } as React.CSSProperties}>
+          <Say />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================================
+   CONCEPT B — "THE OPERATIONS BOARD".  REJECTED, kept live at `?c1=b`.
+   Three workflow lanes holding record chips, the middle lane lit.  The idea is
+   the right one — consolidated records sitting in a workflow state, which is
+   the spreadsheet-escape story — and the execution fails: read from the render
+   at 375x667 the chips are wider than they are tall and read as rows of grey
+   placeholder pills.
+   ============================================================================ */
+const B_LANES: Array<{ label: string; chips: number[]; lit?: boolean; accent?: boolean }> = [
+  { label: "Scheduled", chips: [21, 15, 18] },
+  { label: "In progress", chips: [18, 24, 16, 13], lit: true, accent: true },
+  { label: "Complete", chips: [16, 13, 19] },
+];
+
 export function DashboardVisualB() {
   const root = usePsC1xReveal<HTMLDivElement>();
 
   return (
     <div className="ps-c1x-root ps-c1b-root" aria-hidden="true" ref={root}>
-      <div className="ps-c1b-head">
-        <span className="ps-c1b-chip">This month</span>
+      <div className="ps-c1b-board">
+        {B_LANES.map((lane, n) => (
+          <div
+            key={lane.label}
+            className={"ps-c1x-panel ps-c1b-lane" + (lane.lit ? " ps-c1x-panel--lit" : "")}
+            style={{ "--i": n } as React.CSSProperties}
+          >
+            <span className="ps-c1x-k">{lane.label}</span>
+            <Stack chips={lane.chips} accent={lane.accent} />
+          </div>
+        ))}
       </div>
-
-      <div className="ps-c1b-wall">
-        <div className="ps-c1x-panel ps-c1x-panel--lit ps-c1b-tile ps-c1b-tile--a" style={{ "--i": 0 } as React.CSSProperties}>
-          <span className="ps-c1x-k">Jobs completed</span>
-          <span className="ps-c1x-figline">
-            <span className="ps-c1x-v">142</span>
-            <Delta value="8.4%" />
-          </span>
-        </div>
-
-        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--b" style={{ "--i": 1 } as React.CSSProperties}>
-          <Ring pct={96} label="On time" />
-        </div>
-
-        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--c" style={{ "--i": 2 } as React.CSSProperties}>
-          <span className="ps-c1x-k">By service</span>
-          <Columns />
-        </div>
-
-        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--d" style={{ "--i": 3 } as React.CSSProperties}>
-          <span className="ps-c1x-k">Invoices</span>
-          <span className="ps-c1x-v ps-c1x-v--sm">64</span>
-          <Spark />
-        </div>
-
-        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--e" style={{ "--i": 4 } as React.CSSProperties}>
-          <span className="ps-c1x-k">Work in progress</span>
-          <Rail />
-        </div>
-
-        <div className="ps-c1x-panel ps-c1b-tile ps-c1b-tile--f" style={{ "--i": 5 } as React.CSSProperties}>
-          <span className="ps-c1x-k">Open jobs</span>
-          <span className="ps-c1x-v ps-c1x-v--sm">18</span>
-        </div>
-      </div>
-
     </div>
   );
 }
 
 /* ============================================================================
-   CONCEPT C — "The focus board."
-   FIVE PANELS on a third arrangement: a vertical rail of three narrow KPI
-   strips down the left, ONE large chart panel filling the right two thirds,
-   and a full-width share rail beneath.  Where A is a pyramid and B is a
-   mosaic, C is a rail plus a focus — the layout of a dashboard that has an
-   opinion about which chart matters today.  Its big chart is the one type
-   neither of the others uses: paired columns, this period against last, which
-   asserts a comparison rather than a trend or a ranking.
-   Chart mix: three KPI strips / paired columns / segmented share rail.
+   CONCEPT C — "THE QUADRANT BRIEF".  REJECTED, kept live at `?c1=c`.
+   Four instruments on an even 2x2, deliberately no hierarchy.  It is clean at
+   400x430 and cramped on a phone: with a tile in the top-right corner the
+   whole grid has to start below the 44x44 expand disc, which costs 56px out of
+   a 202px art box.
    ============================================================================ */
 export function DashboardVisualC() {
   const root = usePsC1xReveal<HTMLDivElement>();
@@ -965,38 +936,25 @@ export function DashboardVisualC() {
   return (
     <div className="ps-c1x-root ps-c1c-root" aria-hidden="true" ref={root}>
       <div className="ps-c1c-grid">
-        <div className="ps-c1x-panel ps-c1x-panel--lit ps-c1c-k1" style={{ "--i": 0 } as React.CSSProperties}>
-          <span className="ps-c1x-k">Jobs completed</span>
-          <span className="ps-c1x-figline">
-            <span className="ps-c1x-v ps-c1x-v--sm">142</span>
-            <Delta value="8.4%" />
-          </span>
+        <div className="ps-c1x-panel ps-c1x-panel--lit ps-c1c-t1" style={{ "--i": 0 } as React.CSSProperties}>
+          <span className="ps-c1x-k">Jobs per week</span>
+          <Trend />
         </div>
 
-        <div className="ps-c1x-panel ps-c1c-k2" style={{ "--i": 1 } as React.CSSProperties}>
-          <span className="ps-c1x-k">On time</span>
-          <span className="ps-c1x-v ps-c1x-v--xs">96%</span>
+        <div className="ps-c1x-panel ps-c1c-t2" style={{ "--i": 1 } as React.CSSProperties}>
+          <span className="ps-c1x-k">By service</span>
+          <Columns />
         </div>
 
-        <div className="ps-c1x-panel ps-c1c-k3" style={{ "--i": 2 } as React.CSSProperties}>
-          <span className="ps-c1x-k">Open jobs</span>
-          <span className="ps-c1x-v ps-c1x-v--xs">18</span>
+        <div className="ps-c1x-panel ps-c1c-t3" style={{ "--i": 2 } as React.CSSProperties}>
+          <Dial pct={78} label="On time" />
         </div>
 
-        <div className="ps-c1x-panel ps-c1c-focus" style={{ "--i": 3 } as React.CSSProperties}>
-          <span className="ps-c1x-panel__head">
-            <span className="ps-c1x-k">Jobs by service</span>
-            <span className="ps-c1x-k ps-c1x-k--dim">This month</span>
-          </span>
-          <PairedColumns />
-        </div>
-
-        <div className="ps-c1x-panel ps-c1c-rail" style={{ "--i": 4 } as React.CSSProperties}>
+        <div className="ps-c1x-panel ps-c1c-t4" style={{ "--i": 3 } as React.CSSProperties}>
           <span className="ps-c1x-k">Work in progress</span>
           <Rail />
         </div>
       </div>
-
     </div>
   );
 }
@@ -1012,17 +970,13 @@ export function DashboardVisualC() {
    hydration mismatch, and the query swaps it afterwards.  The parse accepts
    exactly four values and ignores anything else.
 
-   NOTE ON THE NO-JAVASCRIPT PATH: this effect is the ONLY JavaScript in the
-   module, and it exists solely to honour the owner's own comparison switch.
+   NOTE ON THE NO-JAVASCRIPT PATH: this effect and the reveal hook are the only
+   JavaScript in the module, and neither one is what makes the art visible.
    With scripts dead the server-rendered default concept still paints in full —
-   it is not gated on anything — so a failed chunk costs the ?c1= switch, never
-   the artwork.
+   nothing in the base cascade is hidden — so a failed chunk costs the `?c1=`
+   switch and the reveal, never the artwork.
 
-   DEFAULT with no query = concept A, "the executive brief".  It is the one of
-   the three that answers both halves of the spec at once: five panels with
-   five different instruments in them, and the calmest value structure of the
-   three, because a single lit hero tile carries the mass while the other four
-   panels stay quiet.
+   DEFAULT with no query = concept A, "the three-second read".
    ============================================================================ */
 type C1Choice = "a" | "b" | "c" | "orig";
 

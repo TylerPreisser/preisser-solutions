@@ -576,7 +576,7 @@
 
 /* ── Entry fade for the affordance + its scrim ────────────────── */
 /* Driven by an IntersectionObserver in case-studies.tsx, in the house idiom
-   (card-visuals-backup.tsx:856-885, imported live by service-pillars.tsx:15).
+   (card-visuals.tsx:856-885, imported live by service-pillars.tsx:15).
    `.ps-work-track--reveal` is added by that effect, so with JS off nothing is
    ever hidden.
 
@@ -977,4 +977,73 @@
 .ps-work,
 .ps-work-card {
   scroll-margin-top: calc(var(--nav-height) + 24px);
+}
+
+/* ============================================================
+   TWO-COLOUR SECTION HEADING — "Real Projects. Real Results."
+   Requested 2026-09-09: "real projects should be white and the
+   real results should be the blue if that works."
+
+   Taken as: first half = the heading's OWN colour, second half =
+   the accent. A literal #FFFFFF first half would be white on
+   --theme-bg-primary #FFFFFF in light theme (globals.css:185) —
+   invisible. `.ps-section-heading--light` already resolves to
+   --theme-text-primary, which IS white on dark and #0A1628 on
+   light, so the lead span needs no colour of its own and
+   inherits: 18.1:1 in both themes.
+
+   The accent is --theme-accent-text, the site's existing
+   text-safe accent: #1590FF on #0A1628 = 5.58:1 dark, #0C6FC9
+   on #FFFFFF = 5.08:1 light. Both clear the 4.5:1 normal-text
+   floor, and this heading is 32-56px/700 so the applicable bar
+   is the 3:1 large-text one. Never raw --color-primary here —
+   3.25:1 on white — and never --color-primary-strong, which is
+   #0C6FC9 in BOTH themes and so is not theme-aware.
+
+   Specificity, per the CASCADE NOTE at the top of this file:
+   this file is @imported FIRST, so it loses every tie. Scoped
+   with `.ps-work` for (0,2,0); globals carries no rule for
+   either class, and a direct colour on the span beats the h2's
+   inherited one regardless. Confirmed with getComputedStyle on
+   the rendered page in all three engines, both themes.
+
+   Layout-neutral: colour only. No display/white-space change,
+   so the heading wraps exactly where it wrapped before.
+   ============================================================ */
+.ps-work .ps-work-heading__accent {
+  color: var(--theme-accent-text);
+  transition: color 300ms ease;  /* matches .ps-section-heading--light */
+}
+
+/* WRAP CONTROL — the reason both halves carry a class.
+   Measured before this rule, at 375x667 and 393x852 in all three
+   engines and both themes, the heading laid out as
+
+     Real Projects. Real
+     Results.
+
+   i.e. the BLUE half straddled the line break ("Real" on line 1,
+   "Results." on line 2). One phrase in one colour split across two
+   lines reads as a mistake; single-colour text hid it. Verified from
+   getClientRects: the accent span returned TWO rects, {t:210,l:230,
+   w:63} and {t:245,l:24,w:119}.
+
+   inline-block, not `white-space: nowrap`. Each half becomes a
+   shrink-to-fit box, so the break opportunity at the space BETWEEN
+   the halves is taken first and the line splits on the sentence:
+
+     Real Projects.
+     Real Results.
+
+   Unlike nowrap this still degrades gracefully -- a half narrower
+   than its own box would wrap internally rather than overflow the
+   section. Max-content widths are 200px and 189px at the 32px floor
+   of the clamp, against 272px of content box at 320px wide, so
+   neither half is forced to break at any viewport this site targets.
+   Colour and line assignment now agree, which is the whole point of
+   splitting the heading. Nothing else moves: >=768px still renders
+   on one line, byte-identical geometry to before. */
+.ps-work .ps-work-heading__lead,
+.ps-work .ps-work-heading__accent {
+  display: inline-block;
 }

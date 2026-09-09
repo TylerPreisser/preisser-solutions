@@ -590,24 +590,27 @@ type Card2Flow = "1" | "2" | "3" | "4" | "5";
    ═════════════════════════════════════════════════════════════ */
 export type Card2FlowSlide = {
   /* Stable across reorders; use as the React key. */
-  id: "get-paid" | "reviews" | "expiry" | "refill" | "retry";
+  id: "get-paid" | "entered-once" | "after-hours" | "bill-ledger" | "renewal";
   /* For the carousel's own control name and live region. NOT drawn. */
   label: string;
   render: () => React.ReactElement;
 };
 
-/* >> THE FIVE RENDERERS NOW POINT AT THE NODE-GRAPH SET, AND THE FIVE
-   `AutoFlow*` GRID FLOWS ARE LEFT IN THE FILE ON PURPOSE. They are the
-   measured basis for symptom #4 - the 2.21:1-to-9.19:1 diamond - and deleting
-   them would destroy the only thing a reviewer can diff the fix against. They
-   are still reachable at `?c2=a|b|c` and by direct import; nothing on the
-   shipping path mounts them. Delete them once #4 is signed off, not before. */
+/* >> THE FIVE RENDERERS POINT AT THE NODE-GRAPH SET, AND THE FIVE `AutoFlow*`
+   CSS-GRID FLOWS THEY REPLACED ARE DELETED. They were the measured basis for
+   symptom #4 - the 2.21:1-to-9.19:1 stretched diamond - and were kept only
+   until #4 was signed off; they were removed once it was, in their own commit.
+   They were never reachable from any URL: `?c2=a|b|c` resolves to
+   `SystemFixesVisualA/B/C` and no query string falls through to the carousel,
+   which renders the `C2Graph*` set below. The pre-fix render is recoverable
+   from git history, not from this file. `AutoFlowCarousel` is NOT one of the
+   deleted five - it is the shipping default renderer; see its own note. */
 export const CARD2_FLOW_SLIDES: readonly Card2FlowSlide[] = [
   { id: "get-paid", label: "Invoices that chase themselves", render: () => <C2GraphGetPaid /> },
-  { id: "reviews", label: "A review after every job", render: () => <C2GraphReviews /> },
-  { id: "expiry", label: "Nothing expires on you", render: () => <C2GraphExpiry /> },
-  { id: "refill", label: "Cancellations refilled", render: () => <C2GraphRefill /> },
-  { id: "retry", label: "Failed payments retried", render: () => <C2GraphRetry /> },
+  { id: "entered-once", label: "Entered once, everywhere it belongs", render: () => <C2GraphEnteredOnce /> },
+  { id: "after-hours", label: "After-hours inquiries triaged", render: () => <C2GraphAfterHours /> },
+  { id: "bill-ledger", label: "Bills into a categorized ledger", render: () => <C2GraphBillLedger /> },
+  { id: "renewal", label: "Renewals that do not lapse", render: () => <C2GraphRenewal /> },
 ];
 
 /* ═════════════════════════════════════════════════════════════
@@ -972,483 +975,6 @@ export function SystemFixesVisualPick({ fallback }: { fallback: React.ReactNode 
   return <AutoFlowCarousel key={flow} start={Number(flow) - 1} />;
 }
 
-/* ═════════════════════════════════════════════════════════════
-   THE FIVE AUTOMATION FLOWS        ?c2flow=1|2|3|4|5, default 1
-   ═════════════════════════════════════════════════════════════
-
-   >> THIS IS A REFINEMENT, NOT A REPLACEMENT, AND THAT IS THE WHOLE BRIEF.
-   The arrow flow chart already on this card is the ONE graphic on this
-   homepage the owner has praised ("Arrow section looks better"). The directed
-   edge language - plates, one true diamond, a solid arrowhead on every
-   connector, coloured branches, a return that runs round the outside - is
-   KEPT UNCHANGED and extended to four more flows. SystemFixesVisualB is left
-   exactly as it shipped and stays reachable at ?c2=b, so the before state can
-   be put beside the after in one page load.
-
-   WHAT CHANGED IN FLOW 1, and only this: the owner specified a different
-   branch structure from the one on the card today. Today it draws
-   `Invoice sent -> Chased for you -> Paid? -> yes | no` with a self loop on
-   the chase node. He asked for:
-
-       Invoice sent -> Paid? --yes--> Yes        (green, and it ENDS there)
-                         |
-                         +---no----> Email reminder sent --+
-                         ^                                 |
-                         +---------------------------------+
-
-   So: the yes branch TERMINATES, the no branch returns TO THE DECISION rather
-   than to the start, and the reminder reads as repeating rather than as one
-   failed step.
-
-   >> MATCH CRAFT, NEVER FORM. This project has burned three rounds of work on
-   graphics that copied a NEIGHBOURING CARD'S FORM. Card 4 is a browser window
-   because card 4's subject IS a browser; that literalness does not transfer to
-   an abstract subject, and copying it is how you end up with five screenshots
-   of software and zero ideas. What IS taken from card 4 is craft and nothing
-   else: restrained palette, flat ground, one accent plus a green, everything
-   else neutral, crisp edges, soft shadow separation, no gloss and no texture.
-   There is no window, title bar, traffic light, sidebar, URL field, toolbar,
-   panel or placeholder row anywhere in these five.
-
-   >> TOPOLOGY IS THE POINT. The five were chosen for FIVE DIFFERENT LOOP
-   MECHANISMS. If all five were drawn as one shape the card would say "we send
-   reminders" five times and argue against its own headline, so each gets a
-   form that expresses its own mechanism while staying inside one grammar:
-
-     1  GET PAID              decision return. Yes is a leaf and stops.
-     2  REVIEW AFTER EVERY JOB decision return, symmetric fork, two beat lead
-                              in, and the return comes back up the RIGHT.
-                              Honestly the same mechanism as 1, because it is.
-     3  NOTHING EXPIRES ON YOU a GATE. A barrier spans the frame with one gap;
-                              the cleared lane goes through it and the other
-                              lane DEAD ENDS on the bar with a flat cap.
-     4  CANCELLATION REFILLED  the loop ADVANCES. It re-enters a stack one row
-                              lower and the rows already passed are spent.
-     5  PAYMENT RETRIED        a closed ORBIT on the node itself, ticked at
-                              EQUAL intervals. No human in the loop; the
-                              person is the exit.
-
-   ONE GRAMMAR, so a reader who understands the first understands the rest:
-     process beat      rounded slab, label left
-     decision          diamond, label centred
-     terminal          STADIUM, green, and nothing ever leaves one
-     forward edge      3px rail, solid 11x8 arrowhead
-     branch edge       the same, coloured: green settles, accent acts
-     blocked edge      the same, ending in a FLAT CAP and no head
-     return edge       accent, runs round the OUTSIDE, head first into the
-                       node it returns to
-     repeats           growing dots for a human ladder, equal dots for a
-                       machine schedule
-
-   >> NO INVENTED DATA anywhere in the five: no amount, date, client name,
-   count or percentage. Flow 4's list is deliberately unlabelled mass, because
-   naming its rows would mean inventing people.
-
-   >> NO SVG defs, NO GENERATED IDS, NO url(#...). Same ruling as the rest of
-   this file, and it matters more here than anywhere: these mount TWICE at
-   once, on the card face and in the bottom sheet dialog. Every rail,
-   arrowhead, diamond, stadium, barrier and orbit is CSS. The id collision is
-   structurally unreachable rather than merely namespaced.
-
-   >> MOTION: NONE. Nothing here is ever hidden, so reduced motion and normal
-   are the same render and the blank-card failure mode cannot occur.
-   ═════════════════════════════════════════════════════════════ */
-
-/* The three growing dots, the card's own dunning ladder. Authored, never
-   Math.random - this is server rendered and a random value desynchronises. */
-function C2Nudges() {
-  return (
-    <span className="ps-c2-nudges">
-      {C2_NUDGES.map((n) => (
-        <i key={n} className="ps-c2-nudge" style={{ "--n": n } as React.CSSProperties} />
-      ))}
-    </span>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────
-   FLOW 1  -  GET PAID
-   ───────────────────────────────────────────────────────────── */
-export function AutoFlowGetPaid() {
-  return (
-    <div className="ps-c2f-root ps-c2-root" aria-hidden="true">
-      {/* >> `.ps-c2-body` AND `.ps-c2-pool` ARE GONE FROM ALL FIVE, AND THAT IS
-          SYMPTOM #8. What they were: a pale wash 76% of the art tall with
-          `border-radius: 0 0 30% 30%`, whose bottom edge swept a wide elliptical
-          arc across the card just above the branch row - a bell jar horizon with
-          no referent, grouping nothing and crossing the flow at an unrelated
-          angle - and beneath it a blue radial glow reading as a stage light. The
-          other four cards sit on a flat even field where every lighter shape is
-          a DEPICTED OBJECT; this was the only card carrying ambient,
-          non-representational atmosphere behind a flat vector diagram.
-
-          >> `.ps-c2-ground` STAYS, AND THAT IS A DECISION, NOT AN OMISSION.
-          Removing it moves 0.01% of pixels at max delta 3/255, because a legacy
-          `.ps-c2-root` rule (card-visuals.css:2656, from the abandoned braided
-          river, light at :2696) paints an identical ramp underneath it - so
-          deleting it would look like a failed edit rather than a change.
-          Keeping it means THIS file owns its own ground explicitly instead of
-          silently inheriting a dead component's gradient. Going properly flat to
-          match the siblings needs a SECOND edit in card-visuals.css, which is
-          not this team's file; recommended and routed separately. Nothing below
-          depends on which of the two is painting: the plates separate from the
-          ground by value and cast shadow, not by contrast against a backdrop. */}
-      <div className="ps-c2-ground" />
-
-      <div className="ps-c2f-flow ps-c2f1-flow">
-        <div className="ps-c2f-node ps-c2f1-trig ps-c2f-keepclear">
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Invoice sent</span>
-        </div>
-
-        <i className="ps-c2f-edge ps-c2f1-e1" />
-
-        {/* THE YES BRANCH, AND IT IS A LEAF. A green rail off the right vertex
-            into a STADIUM, the flow chart terminator shape. Nothing leaves it,
-            here or anywhere else in the file. That is how "ends right there"
-            is drawn instead of claimed. */}
-        <div className="ps-c2f1-yes">
-          {/* NO "yes" TAG HERE. It sat straight under the stadium in the
-              first render, and it is redundant beside a green box whose whole
-              content is the word "Yes". See the note in the stylesheet. */}
-          <i className="ps-c2f-hrail ps-c2f-hrail--good" />
-          <div className="ps-c2f-term ps-c2f-term--fromleft">
-            <C2Settled cls="ps-c2-glyph" />
-            <span className="ps-c2-lbl ps-c2-lbl--strong">Yes</span>
-          </div>
-        </div>
-
-        {/* THE NO BRANCH. Straight down out of the bottom vertex. */}
-        <i className="ps-c2f-edge ps-c2f-edge--act ps-c2f1-e2">
-          <span className="ps-c2f-tag">no</span>
-        </i>
-
-        {/* THE REMINDER, AND IT REPEATS. The three growing dots are the
-            dunning ladder the shipped chart already uses for exactly this
-            meaning: again, and again, and harder. Without them this reads as
-            one reminder that failed rather than as a loop. */}
-        <div className="ps-c2f-node ps-c2f-drop ps-c2f-drop--left ps-c2f1-act">
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Email reminder sent</span>
-          <C2Nudges />
-        </div>
-
-        {/* THE RETURN, AND IT GOES BACK TO THE DECISION. Its top run sits at
-            half the decision row's height, which is the diamond's LEFT VERTEX.
-            It cannot reach "Invoice sent": that plate is two tracks higher and
-            outside this element's grid area entirely. */}
-        <i className="ps-c2f-ret ps-c2f-ret--left ps-c2f1-ret" />
-      </div>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────
-   FLOW 2  -  REVIEW AFTER EVERY JOB
-   Same mechanism as flow 1, and drawn as such on purpose: it IS a nudge
-   loop, and giving it a different shape would misrepresent how it works.
-   The composition differs so the two are not the same picture - a two beat
-   lead in, the shipped chart's own symmetric fork, and a return that comes
-   back up the RIGHT channel instead of the left.
-   ───────────────────────────────────────────────────────────── */
-export function AutoFlowReviews() {
-  return (
-    <div className="ps-c2f-root ps-c2-root" aria-hidden="true">
-      {/* >> `.ps-c2-body` AND `.ps-c2-pool` ARE GONE FROM ALL FIVE, AND THAT IS
-          SYMPTOM #8. What they were: a pale wash 76% of the art tall with
-          `border-radius: 0 0 30% 30%`, whose bottom edge swept a wide elliptical
-          arc across the card just above the branch row - a bell jar horizon with
-          no referent, grouping nothing and crossing the flow at an unrelated
-          angle - and beneath it a blue radial glow reading as a stage light. The
-          other four cards sit on a flat even field where every lighter shape is
-          a DEPICTED OBJECT; this was the only card carrying ambient,
-          non-representational atmosphere behind a flat vector diagram.
-
-          >> `.ps-c2-ground` STAYS, AND THAT IS A DECISION, NOT AN OMISSION.
-          Removing it moves 0.01% of pixels at max delta 3/255, because a legacy
-          `.ps-c2-root` rule (card-visuals.css:2656, from the abandoned braided
-          river, light at :2696) paints an identical ramp underneath it - so
-          deleting it would look like a failed edit rather than a change.
-          Keeping it means THIS file owns its own ground explicitly instead of
-          silently inheriting a dead component's gradient. Going properly flat to
-          match the siblings needs a SECOND edit in card-visuals.css, which is
-          not this team's file; recommended and routed separately. Nothing below
-          depends on which of the two is painting: the plates separate from the
-          ground by value and cast shadow, not by contrast against a backdrop. */}
-      <div className="ps-c2-ground" />
-
-      <div className="ps-c2f-flow ps-c2f2-flow">
-        <div className="ps-c2f-node ps-c2f2-trig ps-c2f-keepclear">
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Job complete</span>
-        </div>
-
-        <i className="ps-c2f-edge ps-c2f2-e1" />
-
-        <div className="ps-c2f-node ps-c2f2-mid">
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Ask sent</span>
-        </div>
-
-        <i className="ps-c2f-edge ps-c2f2-e1b" />
-
-        {/* THE SHIPPED CHART'S OWN FORK, reused rule for rule. Its arms are a
-            subgrid over the two outcome columns, so each arm's own 50% IS its
-            plate's centre line by construction rather than by arithmetic. */}
-        <i className="ps-c2b-fork">
-          <i className="ps-c2b-arm ps-c2b-arm--yes">
-            <span className="ps-c2b-tag">yes</span>
-          </i>
-          <i className="ps-c2b-arm ps-c2b-arm--no">
-            <span className="ps-c2b-tag">no</span>
-          </i>
-        </i>
-
-        {/* THE LEAF. A stadium, and nothing leaves it. */}
-        <div className="ps-c2f-term ps-c2f-term--fromtop ps-c2f-out ps-c2f2-outa">
-          <C2Settled cls="ps-c2-glyph" />
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Review posted</span>
-        </div>
-
-        <div className="ps-c2f-node ps-c2f-node--fromtop ps-c2f-drop ps-c2f-drop--right ps-c2f-out ps-c2f2-outb">
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Asked again</span>
-        </div>
-
-        <i className="ps-c2f-ret ps-c2f-ret--right ps-c2f2-ret" />
-      </div>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────
-   FLOW 3  -  NOTHING EXPIRES ON YOU          the gate
-   The one flow whose "no" branch does not message anybody again: it HOLDS
-   THE WORK BACK. So the picture is a barrier, and the held lane dead ends on
-   it under a flat cap with no arrowhead.
-   ───────────────────────────────────────────────────────────── */
-export function AutoFlowExpiry() {
-  return (
-    <div className="ps-c2f-root ps-c2-root" aria-hidden="true">
-      {/* >> `.ps-c2-body` AND `.ps-c2-pool` ARE GONE FROM ALL FIVE, AND THAT IS
-          SYMPTOM #8. What they were: a pale wash 76% of the art tall with
-          `border-radius: 0 0 30% 30%`, whose bottom edge swept a wide elliptical
-          arc across the card just above the branch row - a bell jar horizon with
-          no referent, grouping nothing and crossing the flow at an unrelated
-          angle - and beneath it a blue radial glow reading as a stage light. The
-          other four cards sit on a flat even field where every lighter shape is
-          a DEPICTED OBJECT; this was the only card carrying ambient,
-          non-representational atmosphere behind a flat vector diagram.
-
-          >> `.ps-c2-ground` STAYS, AND THAT IS A DECISION, NOT AN OMISSION.
-          Removing it moves 0.01% of pixels at max delta 3/255, because a legacy
-          `.ps-c2-root` rule (card-visuals.css:2656, from the abandoned braided
-          river, light at :2696) paints an identical ramp underneath it - so
-          deleting it would look like a failed edit rather than a change.
-          Keeping it means THIS file owns its own ground explicitly instead of
-          silently inheriting a dead component's gradient. Going properly flat to
-          match the siblings needs a SECOND edit in card-visuals.css, which is
-          not this team's file; recommended and routed separately. Nothing below
-          depends on which of the two is painting: the plates separate from the
-          ground by value and cast shadow, not by contrast against a backdrop. */}
-      <div className="ps-c2-ground" />
-
-      <div className="ps-c2f-flow ps-c2f3-flow">
-        <div className="ps-c2f-node ps-c2f3-trig ps-c2f-keepclear">
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Expiry near</span>
-        </div>
-
-        <i className="ps-c2f-edge ps-c2f3-e1" />
-
-        <i className="ps-c2b-fork">
-          <i className="ps-c2b-arm ps-c2b-arm--yes">
-            <span className="ps-c2b-tag">yes</span>
-          </i>
-          <i className="ps-c2b-arm ps-c2b-arm--no">
-            <span className="ps-c2b-tag">no</span>
-          </i>
-        </i>
-
-        {/* WHAT THE AUTOMATION DOES WHILE THE WORK IS HELD. */}
-        <div className="ps-c2f-node ps-c2f-node--fromtop ps-c2f-drop ps-c2f-drop--right ps-c2f-out ps-c2f3-hold">
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Request sent</span>
-        </div>
-
-        {/* THE HELD LANE. It carries no arrowhead, because it does not arrive
-            anywhere. It ends in a FLAT CAP sitting on the bar. */}
-        <i className="ps-c2f-edge ps-c2f-edge--act ps-c2f-edge--stop ps-c2f3-stop" />
-
-        {/* THE BARRIER, IN TWO PIECES WITH ONE OPENING BETWEEN THEM. The
-            right piece runs off the edge of the frame; the left piece carries
-            the gap the cleared lane goes through. */}
-        <i className="ps-c2f3-bar" />
-        <i className="ps-c2f3-barl" />
-
-        {/* THE CLEARED LANE. It passes the bar because on this side the bar
-            is simply not there. */}
-        <i className="ps-c2f-edge ps-c2f-edge--good ps-c2f3-yes" />
-
-        <div className="ps-c2f-term ps-c2f3-term">
-          <C2Settled cls="ps-c2-glyph" />
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Cleared</span>
-        </div>
-
-        <i className="ps-c2f-ret ps-c2f-ret--right ps-c2f3-ret" />
-      </div>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────
-   FLOW 4  -  CANCELLATION REFILLED           the loop advances
-   Every other loop here returns to where it was. This one makes progress:
-   the rows it has already been through are spent, and the return leaves the
-   row BELOW the live one.
-   ───────────────────────────────────────────────────────────── */
-export function AutoFlowRefill() {
-  return (
-    <div className="ps-c2f-root ps-c2-root" aria-hidden="true">
-      {/* >> `.ps-c2-body` AND `.ps-c2-pool` ARE GONE FROM ALL FIVE, AND THAT IS
-          SYMPTOM #8. What they were: a pale wash 76% of the art tall with
-          `border-radius: 0 0 30% 30%`, whose bottom edge swept a wide elliptical
-          arc across the card just above the branch row - a bell jar horizon with
-          no referent, grouping nothing and crossing the flow at an unrelated
-          angle - and beneath it a blue radial glow reading as a stage light. The
-          other four cards sit on a flat even field where every lighter shape is
-          a DEPICTED OBJECT; this was the only card carrying ambient,
-          non-representational atmosphere behind a flat vector diagram.
-
-          >> `.ps-c2-ground` STAYS, AND THAT IS A DECISION, NOT AN OMISSION.
-          Removing it moves 0.01% of pixels at max delta 3/255, because a legacy
-          `.ps-c2-root` rule (card-visuals.css:2656, from the abandoned braided
-          river, light at :2696) paints an identical ramp underneath it - so
-          deleting it would look like a failed edit rather than a change.
-          Keeping it means THIS file owns its own ground explicitly instead of
-          silently inheriting a dead component's gradient. Going properly flat to
-          match the siblings needs a SECOND edit in card-visuals.css, which is
-          not this team's file; recommended and routed separately. Nothing below
-          depends on which of the two is painting: the plates separate from the
-          ground by value and cast shadow, not by contrast against a backdrop. */}
-      <div className="ps-c2-ground" />
-
-      <div className="ps-c2f-flow ps-c2f4-flow">
-        <div className="ps-c2f-node ps-c2f4-trig ps-c2f-keepclear">
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Slot opens</span>
-        </div>
-
-        <i className="ps-c2f-edge ps-c2f4-e1" />
-
-        <div className="ps-c2f-node ps-c2f4-mid">
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Offered</span>
-        </div>
-
-        <i className="ps-c2f-edge ps-c2f4-e1b" />
-
-        <i className="ps-c2b-fork">
-          <i className="ps-c2b-arm ps-c2b-arm--yes">
-            <span className="ps-c2b-tag">yes</span>
-          </i>
-          <i className="ps-c2b-arm ps-c2b-arm--no">
-            <span className="ps-c2b-tag">no</span>
-          </i>
-        </i>
-
-        <div className="ps-c2f-term ps-c2f-term--fromtop ps-c2f-out ps-c2f4-outa">
-          <C2Settled cls="ps-c2-glyph" />
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Slot filled</span>
-        </div>
-
-        {/* THE LIST. Its rows carry no text on purpose: naming them would
-            mean inventing people. Two spent, one live, one still to come. */}
-        <div className="ps-c2f-node ps-c2f-node--fromtop ps-c2f-out ps-c2f4-list">
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Next in line</span>
-          <span className="ps-c2f4-rows">
-            <i className="ps-c2f4-slot ps-c2f4-slot--spent" />
-            <i className="ps-c2f4-slot ps-c2f4-slot--spent" />
-            <i className="ps-c2f4-slot ps-c2f4-slot--live" />
-            <i className="ps-c2f4-slot" />
-            <i className="ps-c2f4-exit" />
-          </span>
-        </div>
-
-        <i className="ps-c2f-ret ps-c2f-ret--right ps-c2f4-ret" />
-      </div>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────
-   FLOW 5  -  PAYMENT RETRIED                 the machine
-   No human is in this loop, so there is no return channel: the loop is a
-   closed orbit on the node itself, ticked at EQUAL intervals against flow
-   1's GROWING dots. The person is the exit, not the loop.
-   ───────────────────────────────────────────────────────────── */
-export function AutoFlowRetry() {
-  return (
-    <div className="ps-c2f-root ps-c2-root" aria-hidden="true">
-      {/* >> `.ps-c2-body` AND `.ps-c2-pool` ARE GONE FROM ALL FIVE, AND THAT IS
-          SYMPTOM #8. What they were: a pale wash 76% of the art tall with
-          `border-radius: 0 0 30% 30%`, whose bottom edge swept a wide elliptical
-          arc across the card just above the branch row - a bell jar horizon with
-          no referent, grouping nothing and crossing the flow at an unrelated
-          angle - and beneath it a blue radial glow reading as a stage light. The
-          other four cards sit on a flat even field where every lighter shape is
-          a DEPICTED OBJECT; this was the only card carrying ambient,
-          non-representational atmosphere behind a flat vector diagram.
-
-          >> `.ps-c2-ground` STAYS, AND THAT IS A DECISION, NOT AN OMISSION.
-          Removing it moves 0.01% of pixels at max delta 3/255, because a legacy
-          `.ps-c2-root` rule (card-visuals.css:2656, from the abandoned braided
-          river, light at :2696) paints an identical ramp underneath it - so
-          deleting it would look like a failed edit rather than a change.
-          Keeping it means THIS file owns its own ground explicitly instead of
-          silently inheriting a dead component's gradient. Going properly flat to
-          match the siblings needs a SECOND edit in card-visuals.css, which is
-          not this team's file; recommended and routed separately. Nothing below
-          depends on which of the two is painting: the plates separate from the
-          ground by value and cast shadow, not by contrast against a backdrop. */}
-      <div className="ps-c2-ground" />
-
-      <div className="ps-c2f-flow ps-c2f5-flow">
-        <div className="ps-c2f-node ps-c2f5-trig ps-c2f-keepclear">
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Card declined</span>
-        </div>
-
-        <i className="ps-c2f-edge ps-c2f5-e1" />
-
-        <div className="ps-c2f-node ps-c2f5-mid">
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Retried</span>
-          <span className="ps-c2f-ticks">
-            <i className="ps-c2f-tick" />
-            <i className="ps-c2f-tick" />
-            <i className="ps-c2f-tick" />
-          </span>
-          {/* THE ORBIT. A child of the plate, so it is measured from the plate
-              and cannot drift. It runs off the left edge of the frame. */}
-          <i className="ps-c2f5-orbit" />
-        </div>
-
-        <i className="ps-c2f-edge ps-c2f5-e1b" />
-
-        <i className="ps-c2b-fork">
-          <i className="ps-c2b-arm ps-c2b-arm--yes">
-            <span className="ps-c2b-tag">yes</span>
-          </i>
-          <i className="ps-c2b-arm ps-c2b-arm--no">
-            <span className="ps-c2b-tag">no</span>
-          </i>
-        </i>
-
-        <div className="ps-c2f-term ps-c2f-term--fromtop ps-c2f-out ps-c2f5-outa">
-          <C2Settled cls="ps-c2-glyph" />
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Back on</span>
-        </div>
-
-        {/* THE ONLY PLACE A PERSON APPEARS, and it is a leaf, not the loop. */}
-        <div className="ps-c2f-node ps-c2f-node--handoff ps-c2f-node--fromtop ps-c2f-out ps-c2f5-outb">
-          <C2HandOff cls="ps-c2-glyph" />
-          <span className="ps-c2-lbl ps-c2-lbl--strong">Update asked</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ═══════════════════════════════════════════════════════════════════════════
    THE NODE GRAPH SET            symptoms #4 (stretched diamonds) and #5 (n8n)
    ═══════════════════════════════════════════════════════════════════════════
@@ -1457,7 +983,10 @@ export function AutoFlowRetry() {
    RATHER THAN A RESIZE. The owner's #4 - "extremely stretched out diamonds
    that stretches the width of the card" - is caused by exactly one
    declaration: `.ps-c2f-dia { justify-self: stretch; height: var(--c2-dia-h) }`
-   at card2-candidates.css:1541-1552. A stretch-justified box with a FIXED
+   which stood at card2-candidates.css:1541-1552 in the pre-fix tree. THAT RULE
+   NO LONGER EXISTS - it went with the five `AutoFlow*` grid flows and their
+   1,509 lines of stylesheet, deleted once #4 was signed off; read it from git
+   history at `fb0f6f1`, not from this file. A stretch-justified box with a FIXED
    height takes whatever width its grid column happens to be, so the diamond's
    aspect is a function of the card's width and nothing else. Measured on the
    shipping build, all five slides, 18 viewport widths:
@@ -1818,10 +1347,66 @@ type C2GSpec = {
   nodes: readonly C2GNode[];
 };
 
-/* ── THE FIVE. Same five automations the card already shipped, same meanings,
-      redrawn in the requested language. Every label is generic process
-      language: no client name, no amount, no percentage, no date, no count. ── */
+/* ── THE FIVE. Every label is generic process language: no client name, no
+      amount, no percentage, no date, no count.
+
+   >> FOUR OF THE FIVE WERE REPLACED ON EVIDENCE, AND FLOW 1 WAS NOT TOUCHED.
+   The owner's doubt was "idk that those examples are what business owners
+   actually pain ab", and the check that settled it was mechanical: grep his
+   whole `src/data` plus `service-pillars.tsx` for the subjects the old slides
+   drew. `waitlist`, `cancellation`, `card on file`, `failed payment` and
+   `dunning` return ZERO hits each. Three of the four depicted automations this
+   firm does not sell, to an ICP it does not serve (they presuppose a
+   card-on-file subscription business; the documented clients are HVAC, oil
+   field, bus transport and an insurance MGU). The fourth, the review chase,
+   is real work but its own copy says "Google Business Profile", which is
+   CARD 5's subject. Meanwhile the card's own subtitle at
+   `service-pillars.tsx:273` names "Bill -> categorized ledger", and its
+   card-face hook is pinned by `hookIndex: 1` (`:283`) to "We're still copying
+   data between systems by hand" - and nothing on the card drew either.
+
+   >> THE FIVE MECHANISMS ARE DELIBERATELY DIFFERENT: chase, propagate, route,
+   match, renew. That constraint is the reason quote follow-up is NOT here
+   despite being his own ranked-first follow-up workflow: written in this shape
+   it is flow 1 wearing a different hat (send a document, wait, nudge), and two
+   of five sharing one mechanism lets a sceptic read the firm as mainly sending
+   reminder emails. The renewal beat took its slot instead - it is what the old
+   card-expiry slide should always have been, and it sits on the real client
+   base (`aeo/industries/hvac.ts:28` "expired maintenance plans";
+   `aeo/blog/best-automations-insurance.ts:20-29` "Renewal follow-up sequences
+   (the biggest revenue protector)").
+
+   >> LABEL WIDTHS ARE A HARD CONSTRAINT, NOT A PREFERENCE, and they were
+   re-measured with getBBox in all three engines rather than counted. The
+   trigger label must end before the loop's climb at x = 100, the step label
+   must START after it, and the retry label must end before its drop at
+   x = 380 (see the budget notes at the C2G_COL / C2G_LOOP declarations).
+   FIREFOX IS THE BINDING ENGINE AND IT IS NOT CLOSE: its text metrics run
+   about 5.2 user units wider than chromium's and webkit's on a 12-13
+   character label, and only firefox ever gets near a line. The step label
+   originally read "Pushed across", which chromium and webkit drew at 86.3 /
+   86.5 units - fine - while firefox drew it at 91.54, putting its left edge
+   at x = 100.23, i.e. ON the climb, at every width and in both themes.
+   "Carried over" is the same sentence's own verb ("carry information
+   everywhere it needs to go", service-pillars.tsx:304) and measures 77.95 in
+   firefox, clearing the climb by 7.0. The widest label now shipping is
+   "Renewal sent" at 83.37 firefox units, narrower than both of the labels it
+   replaced ("Job complete" 84.80, "Payment fails" 84.11).
+
+   >> THE GLYPHS WERE RE-PICKED FROM THE EXISTING VOCABULARY, and nothing was
+   drawn. No path data, no geometry and no colour changed; only which of the
+   twelve already-defined `C2G_GLYPH` entries each node points at. That is not
+   redesign, it is the other half of the content: leaving them alone would have
+   put a struck-through calendar beside "Inquiry lands" and a declined credit
+   card beside "Bill lands", which are the opposite pictures. `card`, `calx`
+   and `cardx` are now unused by the shipping set and are LEFT DEFINED - they
+   are still the vocabulary, and the legacy `?c2=a|b|c` concepts are not to be
+   disturbed. ── */
 const C2G_SPECS: readonly C2GSpec[] = [
+  /* CHASE. The owner dictated this one verbatim and confirmed it as the only
+     keeper: "invoice sent -> paid? -> yes = Ends right there on green Yes box.
+     No = email reminder sent, looping until invoice paid". Byte-identical to
+     what shipped; do not touch it. */
   { id: "get-paid", nodes: [
     { slot: "trigger", glyph: "doc",   label: "Invoice sent" },
     { slot: "step",    glyph: "clock", label: "Due date" },
@@ -1829,33 +1414,66 @@ const C2G_SPECS: readonly C2GSpec[] = [
     { slot: "ok",      glyph: "check", label: "Settled" },
     { slot: "retry",   glyph: "mail",  label: "Reminded" },
   ] },
-  { id: "reviews", nodes: [
-    { slot: "trigger", glyph: "check",  label: "Job complete" },
-    { slot: "step",    glyph: "mail",   label: "Ask sent" },
-    { slot: "branch",  glyph: "fork",   label: "Reviewed?" },
-    { slot: "ok",      glyph: "bubble", label: "Review in" },
-    { slot: "retry",   glyph: "again",  label: "Asked again" },
+  /* PROPAGATE. His own #1 pain, chosen by his own `hookIndex`. Both end labels
+     are lifts from the "Eliminate Manual Data Entry" tile at
+     `service-pillars.tsx:304`: "The won deal becomes the scheduled job" and
+     "the moment it is entered once". It is system-to-system sync on purpose -
+     a document reader would be card 3's subject (`:359`, `:367`). The retry is
+     a re-send until consistent, not a chase of a human, which is what makes it
+     mechanically unlike flow 1. */
+  { id: "entered-once", nodes: [
+    { slot: "trigger", glyph: "check", label: "Deal won" },
+    { slot: "step",    glyph: "list",  label: "Carried over" },
+    { slot: "branch",  glyph: "fork",  label: "In sync?" },
+    { slot: "ok",      glyph: "check", label: "Entered once" },
+    { slot: "retry",   glyph: "again", label: "Re-sent" },
   ] },
-  { id: "expiry", nodes: [
-    { slot: "trigger", glyph: "card",  label: "Card on file" },
-    { slot: "step",    glyph: "clock", label: "Expiry near" },
-    { slot: "branch",  glyph: "fork",  label: "Renewed?" },
-    { slot: "ok",      glyph: "check", label: "Kept live" },
-    { slot: "retry",   glyph: "mail",  label: "Renewal" },
+  /* ROUTE. His own card-2 tile, `service-pillars.tsx:316-319`: "the triage
+     that answers, sorts and routes everything arriving outside business hours.
+     Urgent reaches a person, everything else is acknowledged and queued." And
+     a real canonical project behind it, `case-studies/after-hours-call-triage.ts`
+     - `:31` "Leads going to voicemail at 7 p.m. were leads going to a
+     competitor", `:42` "route straight to on-call personnel", which is where
+     `Escalated` and its `person` glyph come from. The label says "Triaged" and
+     not anything AI-flavoured because "classifying" belongs to card 3. */
+  { id: "after-hours", nodes: [
+    { slot: "trigger", glyph: "mail",   label: "Inquiry lands" },
+    { slot: "step",    glyph: "list",   label: "Triaged" },
+    { slot: "branch",  glyph: "fork",   label: "Answered?" },
+    { slot: "ok",      glyph: "check",  label: "Booked in" },
+    { slot: "retry",   glyph: "person", label: "Escalated" },
   ] },
-  { id: "refill", nodes: [
-    { slot: "trigger", glyph: "calx",  label: "Cancellation" },
-    { slot: "step",    glyph: "list",  label: "Waitlist" },
-    { slot: "branch",  glyph: "fork",  label: "Filled?" },
-    { slot: "ok",      glyph: "check", label: "Slot filled" },
-    { slot: "retry",   glyph: "person", label: "Next up" },
+  /* MATCH. The card's own description names this flow verbatim at
+     `service-pillars.tsx:273` - "Bill -> categorized ledger" - and its own
+     third differentiator at `:348` advertises the result: "A Chicago-area bus
+     operator: reconciliation from a full day to a 15-minute exception queue"
+     (`case-studies/chicago-bus-operator.ts:97`). `Flagged` is his product
+     copy, `products/ai-bookkeeper.ts:26`: "Standard transactions categorize
+     automatically. Anomalies ... are flagged for human review before posting."
+     Neither figure appears in a label; quantities stay out of the artwork. */
+  { id: "bill-ledger", nodes: [
+    { slot: "trigger", glyph: "doc",   label: "Bill lands" },
+    { slot: "step",    glyph: "list",  label: "Categorized" },
+    { slot: "branch",  glyph: "fork",  label: "Matches?" },
+    { slot: "ok",      glyph: "check", label: "Reconciled" },
+    { slot: "retry",   glyph: "again", label: "Flagged" },
   ] },
-  { id: "retry", nodes: [
-    { slot: "trigger", glyph: "cardx", label: "Payment fails" },
-    { slot: "step",    glyph: "again", label: "Retried" },
-    { slot: "branch",  glyph: "fork",  label: "Cleared?" },
-    { slot: "ok",      glyph: "check", label: "Back on" },
-    { slot: "retry",   glyph: "mail",  label: "New card" },
+  /* RENEW. The honest version of the credit-card-expiry slide this replaces.
+     `aeo/blog/best-automations-insurance.ts:20` heads it "Renewal follow-up
+     sequences (the biggest revenue protector)", `:22` "Every policy that
+     lapses without renewal is recurring revenue lost", `:25` "Pulls policies
+     expiring in ... day windows", `:26-27` generates and sends the outreach;
+     `aeo/industries/hvac.ts:28` names "expired maintenance plans" as one of
+     the seams where money leaks in his core industry. `Plan` covers the HVAC
+     maintenance plan and the insurance policy without naming either vertical,
+     and the windows and the "zero missed renewals" result stay out of the
+     artwork. */
+  { id: "renewal", nodes: [
+    { slot: "trigger", glyph: "clock",  label: "Plan expiring" },
+    { slot: "step",    glyph: "mail",   label: "Renewal sent" },
+    { slot: "branch",  glyph: "fork",   label: "Renewed?" },
+    { slot: "ok",      glyph: "check",  label: "Plan kept" },
+    { slot: "retry",   glyph: "person", label: "Followed up" },
   ] },
 ];
 
@@ -2017,8 +1635,8 @@ export function C2FlowGraph({ spec }: { spec: C2GSpec }) {
 /* The five renderers the carousel mounts. Thin on purpose: the picture is one
    component and the five differ only in their spec, so a craft change lands on
    all five at once and they cannot drift apart. */
-export function C2GraphGetPaid() { return <C2FlowGraph spec={C2G_SPECS[0]} />; }
-export function C2GraphReviews() { return <C2FlowGraph spec={C2G_SPECS[1]} />; }
-export function C2GraphExpiry()  { return <C2FlowGraph spec={C2G_SPECS[2]} />; }
-export function C2GraphRefill()  { return <C2FlowGraph spec={C2G_SPECS[3]} />; }
-export function C2GraphRetry()   { return <C2FlowGraph spec={C2G_SPECS[4]} />; }
+export function C2GraphGetPaid()     { return <C2FlowGraph spec={C2G_SPECS[0]} />; }
+export function C2GraphEnteredOnce() { return <C2FlowGraph spec={C2G_SPECS[1]} />; }
+export function C2GraphAfterHours()  { return <C2FlowGraph spec={C2G_SPECS[2]} />; }
+export function C2GraphBillLedger()  { return <C2FlowGraph spec={C2G_SPECS[3]} />; }
+export function C2GraphRenewal()     { return <C2FlowGraph spec={C2G_SPECS[4]} />; }

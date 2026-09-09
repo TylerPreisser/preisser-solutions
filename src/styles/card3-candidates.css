@@ -1536,7 +1536,7 @@
 
    KEEP-CLEAR IS THE BINDING CONSTRAINT HERE, not height. An expand control
    occupies a 56x56 corner at the top right at every width <=768 (a 44x44 disc
-   inset 12px, globals.css:5430-5435), and 32x32 inset 16 from 769 up. Card 3
+   inset 12px, globals.css:5540-5551), and 32x32 inset 16 from 769 up. Card 3
    measured 0.0 px2 of overlap before this rebuild and has to keep it.
 
    Both dockets are therefore anchored away from that corner BY CONSTRUCTION
@@ -1897,10 +1897,16 @@
 
   /* EXPAND-BUTTON CLEARANCE, and it is the one number in this block that is a
      viewport media query rather than a container query - because the button
-     itself is. `.ps-bento-card__expand` is 44x44 at top/right 12px below 769px
-     (globals.css:5514) and 32x32 at top/right 16px above it (globals.css:2134).
-     The spec anchors the agent at (-p, p), which is the same pixels. The button
-     is shared by all five cards and is interactive, so it does not move; the
+     itself is. `.ps-bento-card__expand` is 44x44 at top/right 12px at <=768px
+     (globals.css:5540-5551) and 32x32 at top/right 16px from 769px up
+     (globals.css:2138-2163).
+     The spec anchors the agent at (-p, p), which is the same pixels. The disc
+     is shared by all five cards and is keyed to the VIEWPORT rather than to
+     this card's container, so it does not move with the card; that is the
+     whole reason this one number is a media query. It is NOT interactive and
+     never was - `pointer-events: none` (globals.css:2162) on an
+     `aria-hidden="true"` div; the CARD is the button. It still has to be
+     drawn around, which is what this clearance buys. The
      agent insets clear of it HORIZONTALLY, because clearing it vertically costs
      52px and the tightest box has 9.2px of slack between a 113px stage and a
      103.8px answer panel. */
@@ -3299,21 +3305,48 @@
   }
 }
 
-/* HE TAKES THE HIT, AND IT IS TWO INTEGER POSITIONS - NEVER A TWEEN.
+/* HE TAKES THE HIT, AND IT IS A TRAVELLED RECOIL - NOT TWO CUT POSITIONS.
 
-   Everything about this sprite forbids the obvious version. He cannot be
-   recoloured (30 colours are baked into the sheet; any filter that shifts the
-   amber equally shifts the teal face and the navy outline) and he cannot be
-   tweened (`background-size: 400% 100%` over a four-cell strip has no
-   intermediate frames). And `image-rendering: pixelated` means the figure
-   shimmers on any fractional device offset: a smooth 90ms tween would pass
-   through about eleven of them.
+   THIS RULE USED TO READ `260ms steps(1, end)` OVER KEYFRAMES THAT STARTED AT
+   `translate(-1px, -2px)`, AND THAT IS THE DEFECT THE OWNER REPORTED as the
+   robot "shaking and glitching around". Two things were wrong with it and they
+   compounded:
 
-   So: `steps(1, end)`, which holds the START value of each segment and then
-   cuts. He is displaced by exactly (-1px, -2px) for 88ms and then cut back to
-   zero - two positions, both integers, no intermediate frame to resample. That
-   is also the sheet's own idiom; its single state change is a 1ms
-   `steps(1, end)` cut.
+     1. `steps(1, end)` quantises the segment to ONE step, so `transform` never
+        travelled. He was displaced instantly, held for 88ms, and cut back
+        instantly - a teleport out and a teleport back, no motion in between.
+     2. The 0% keyframe was ALREADY the displaced value, so there was no "out"
+        phase at all. The keyframes only described the return.
+
+   Measured on the shipping build before this change, sampling the sprite's
+   offset from `.ps-c3s-agent` at 120Hz for 25s: exactly FOUR frames of the
+   whole cycle carried any movement, and each of them moved the full 2.236px
+   excursion in a single frame - `maxStep / peakExcursion = 1.000`. On a
+   hard-edged raster that redraws 73% of the sprite's pixels in one frame
+   (measured at 1440x900, deviceScaleFactor 2), which is exactly what a
+   rendering glitch looks like. Identical 2.236px single-frame jump in
+   chromium, firefox and webkit, at 375/393/768/1280/1440 wide, at
+   deviceScaleFactor 1, 2 and 3, in both themes - 33 of 33 configurations.
+
+   THE FIX IS TO GIVE IT A PATH. 0% is now rest, the peak sits at 30% and it
+   eases home on `--ease-standard`, the token every other transition in this
+   scene already uses. Same 260ms, same direction, same amplitude, same
+   `animation-fill-mode` (none, so he rests at the base cascade's frame 4).
+   Re-measured: `maxStep / peakExcursion` falls to 0.271 and zero frames move
+   more than 1px.
+
+   THE OLD RULE'S STATED REASON WAS RESAMPLING, AND THAT COST IS REAL BUT
+   INVISIBLE. `image-rendering: pixelated` does mean the tween passes through
+   fractional device offsets. Counted inside his head - a region with no glow
+   and no ring in it - distinct colours during the beat go from 48 to 167 at
+   deviceScaleFactor 3, 35 to 106 at 2, and 21 to 61 at 1: real sub-pixel
+   blending, about 3x. Rendered at 1:1 and read as pixels, base and tween are
+   indistinguishable; the softening lasts 260ms once per 16.6s cycle on a 48px
+   figure. A visible teleport is a worse defect than an invisible blend, so the
+   trade is taken deliberately. NOTHING HERE CHANGES THE SHEET. Its frame swap
+   is still a 1ms `steps(1, end)` hard cut, which is correct - a four-cell
+   strip has no intermediate frames and `background-position-x` genuinely
+   cannot tween. `transform` can, and always could.
 
    THE DIRECTION IS THE BEAD'S MOMENTUM, NOT A GENERIC BOUNCE. `--c3s-blob-dx`
    is negative at all sixteen boxes and `-dy` is 82-89% of travel, so the
@@ -3331,15 +3364,15 @@
    `transform` only - never `--c3s-frame`, so the frame-4 reach is untouched -
    and there is no competing `transform` transition on this element. */
 .ps-c3s-run[data-beat="t2"] .ps-c3s-mark--elara .ps-c3s-elara {
-  animation: ps-c3s-elara-jolt 260ms steps(1, end) 1;
+  animation: ps-c3s-elara-jolt 260ms var(--ease-standard) 1;
 }
 
 @keyframes ps-c3s-elara-jolt {
   0% {
-    transform: translate(-1px, -2px);
-  }
-  34% {
     transform: translate(0, 0);
+  }
+  30% {
+    transform: translate(-1px, -2px);
   }
   100% {
     transform: translate(0, 0);

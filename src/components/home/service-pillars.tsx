@@ -12,12 +12,12 @@ import {
   // grid structure without losing the animations". This is that rebuild.
   WebsiteVisual,
   // RevenueVisual and CustomBuildVisual are deliberately NOT imported -- see
-  // the note in card-visuals-backup.tsx, which is an explicit shelf for
+  // the note in card-visuals.tsx, which is an explicit shelf for
   // visuals with no current card, not dead code. CustomBuildVisual joined it
   // on 2026-09-04 when ADR-0007 merged the Custom Websites card it drew into
   // the Websites card, which keeps WebsiteVisual. Neither file is pruned.
   SearchVisual,
-} from "@/components/home/card-visuals-backup";
+} from "@/components/home/card-visuals";
 import { DashboardVisualPick } from "@/components/home/card1-candidates";
 import { SystemFixesVisualPick } from "@/components/home/card2-candidates";
 import { AutomationVisualPick } from "@/components/home/card3-candidates";
@@ -169,6 +169,54 @@ interface ServicePillar {
 
 /* ─────────────────────────────────────────────────────────────
    SERVICE DATA
+   ─────────────────────────────────────────────────────────────
+
+   ⚠ READ THIS BEFORE YOU TRUST A `variant` STRING. FOUR OF THE FIVE ARE
+   OFFSET FROM THEIR CARD'S TITLE, AND THREE OF THEM NAME A DIFFERENT CARD
+   IN THIS SAME ARRAY. Every agent on this project has had to be warned
+   about it by name, so it is written down here instead.
+
+     card title                          variant        variant / title
+     ──────────────────────────────────────────────────────────────────
+     "Business Software."                 `websites`     :226 / :231  offset
+     "Business Automation."               `systems`      :316 / :319  offset
+     "AI Integration."                    `automation`   :404 / :405  offset
+     "Websites."                          `web`          :522 / :523  offset
+     "AI and Search Engine Visibility."   `search-ads`   :627 / :628  aligned
+
+   So: the card titled "Business Software." is `websites`, while the card
+   actually titled "Websites." is `web`. The card titled "Business
+   Automation." is `systems`, while the card titled "AI Integration." is
+   `automation`. THE IDENTIFIER DOES NOT NAME ITS OWN CARD.
+
+   >> WHY IT IS LIKE THIS, AND WHY IT IS NOT A TYPO TO FIX IN PASSING. The
+   string is interpolated straight into a class at :1872
+   (`ps-bento-card--${service.variant}`), so it is not a label - it selects a
+   LAYOUT VARIANT that predates the current card set. The comments at :225,
+   :314 and :402 record the deliberate reuse. Renaming a variant is therefore
+   a CSS change, not a rename: 21 boundary-matched sites live in
+   `globals.css` and this file, and the `globals.css` ones sit inside media
+   queries that control grid span and `min-height` - `globals.css:1791`
+   (`--websites`), `:1795` (`--systems`), `:1799` (`--automation`), `:1809`
+   / `:1867` / `:1881` / `:7867` (`--web`), `:1813` / `:1868` / `:1875` /
+   `:7782` (`--search-ads`) and `:5788` (`--systems`).
+
+   >> AND THERE IS A PREFIX TRAP THAT MAKES A SWEEP ACTIVELY DANGEROUS.
+   `ps-bento-card--web` is a SUBSTRING of `ps-bento-card--websites`, and the
+   two belong to DIFFERENT CARDS. A find-and-replace on `--web` rewrites the
+   `--websites` rules too, which silently moves layout from one card to the
+   other - and the build stays green, because these are only class strings.
+   Any future rename must match on a word boundary and must be verified with
+   a per-card pixel diff, not with a typecheck.
+
+   >> ALSO: at least one other file deliberately identifies this card by its
+   TITLE rather than its variant for exactly this reason - see
+   `card-visuals.css:3317-3318`. A rename has to find those workarounds too.
+
+   Deliberately NOT renamed on 2026-09-09: the change is worth zero pixels
+   and zero behaviour, and the ways to get it wrong are all silent. This
+   block is the fix for the actual problem, which was that the mapping was
+   undocumented.
    ───────────────────────────────────────────────────────────── */
 
 const services: ServicePillar[] = [

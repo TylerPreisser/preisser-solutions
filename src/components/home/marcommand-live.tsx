@@ -1362,7 +1362,7 @@ export function MarCommandLive() {
             budget only goes down.
 
             `marcommand-funnel.tsx` is left on disk, unused and unimported, the
-            same way `RevenueVisual` is kept in `card-visuals-backup.tsx`. Do
+            same way `RevenueVisual` is kept in `card-visuals.tsx`. Do
             not re-wire it without asking him.
           */}
           <div className="mc-stage">
@@ -1377,36 +1377,41 @@ export function MarCommandLive() {
           </div>
 
           {/*
-            MOBILE OUTCOMES — real DOM text, deliberately NOT a third SVG block.
-            Stacking figures is what made this section 176% of the viewport
-            before; a <dl> costs only its own line-height, is selectable, and is
-            read natively rather than through a text alternative. Hidden above
-            768 because the desktop funnel figure already carries these numbers.
-          */}
-          <dl className="mc-live__outcomes">
-            <div className="mc-live__outcome">
-              <dt>Reached</dt>
-              <dd>1,625,100</dd>
-            </div>
-            <div className="mc-live__outcome">
-              <dt>Leads</dt>
-              <dd>1,482</dd>
-            </div>
-            <div className="mc-live__outcome">
-              <dt>Revenue</dt>
-              <dd>$156,740</dd>
-            </div>
-          </dl>
+            >> THE OUTCOME FIGURES ARE REMOVED, ON THE OWNER'S INSTRUCTION:
+            "Get rid of this crap. I do not want to see this at all", marked on
+            a desktop render of this card. It was a `.mc-live__outcomes` <dl>
+            reading Reached 1,625,100 / Leads 1,482 / Revenue $156,740, with a
+            `.mc-live__claim` caption underneath reading "Demonstration figures,
+            not client data."
 
-          {/*
-            The synthetic-data claim, restored. The pre-capture source did not
-            carry a visible one, and it matters MORE here than it did over a
-            screenshot: these outcome figures are now crisp, selectable DOM text
-            with no visual cue that they are a demonstration. Kept to one short
-            line so it costs ~26px rather than the ~46px the full sentence wraps
-            to at 320.
+            Two independent reasons, either one sufficient:
+
+            1. IT WAS BROKEN AS SHIPPED. The <dl> was only ever styled inside
+               `@media (max-width: 768px)`. When the desktop `display: none`
+               was deleted so the figures would show above 769, the grid rules
+               that made them read as three centred columns stayed behind in
+               the mobile block, so desktop rendered a bare <dl>: six lines of
+               unstyled text flush against the card's left padding edge,
+               183.6px tall, in an otherwise empty band below the stage.
+               Measured at 1440x900 and 1920x1080 in both themes before
+               deletion.
+
+            2. THE NUMBERS WERE INVENTED. They are fabricated dollar amounts
+               and counts a viewer would read as this business's results, which
+               his standing content ruling forbids outright. The caption existed
+               only to excuse them, so it goes with them rather than being left
+               to disclaim nothing.
+
+            The claim caption is NOT needed by anything that remains: no visible
+            copy states a figure any more. The dial readouts inside the stage
+            are still demonstration values and the two visually-hidden
+            descriptions below still say so in their own last sentence.
+
+            Nothing animated into these nodes. The two GSAP counters in this
+            file (`:734` budget, `:1098` radius) write `textContent` on SVG
+            readouts inside the stage, never on this <dl>, so the timeline has
+            no beat here and loses no step. Do not re-add either element.
           */}
-          <p className="mc-live__claim">Demonstration figures, not client data.</p>
 
           {motion && (
             <button
@@ -1440,8 +1445,10 @@ export function MarCommandLive() {
 
           One shared paragraph cannot be true of both any more: the desktop
           surface is a six-channel funnel plus a four-dial control room, and the
-          mobile surface is a ledge with ONE dial and ONE card plus three outcome
-          figures. Describing the funnel to a phone user announces content that
+          mobile surface is a ledge with ONE dial and ONE card. (The three
+          outcome figures this used to also name are gone; see the deletion note
+          on the stage card above.) Describing the funnel to a phone user
+          announces content that
           is not on their screen, which is a worse defect than the vague text it
           replaces. `display: none` removes the inactive one from the
           accessibility tree, so exactly one is ever announced.
@@ -1469,8 +1476,7 @@ export function MarCommandLive() {
           swaps the keyword duct cleaning for heat pump, closes the panel, and then repeats the
           whole sequence on a second channel, TikTok, where it widens the targeting radius from
           25 to 40 miles. The panel also shows an audience demographic dial reading age 45 and
-          over. Below the animation are the outcomes it is working toward: 1,625,100 reached,
-          1,482 leads, and $156,740 in revenue. The figures shown are a demonstration.
+          over. The figures shown are a demonstration.
         </p>      </div>
     </section>
   );

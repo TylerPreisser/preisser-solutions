@@ -282,8 +282,8 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                   height: "100%",
                   objectFit: "cover",
                   borderRadius: "50%",
-                  border: "3px solid rgba(13, 149, 232, 0.5)",
-                  boxShadow: "0 0 0 6px rgba(13, 149, 232, 0.12), 0 20px 60px rgba(0, 0, 0, 0.5)",
+                  border: "3px solid rgba(var(--color-primary-rgb), 0.5)",
+                  boxShadow: "0 0 0 6px rgba(var(--color-primary-rgb), 0.12), 0 20px 60px rgba(0, 0, 0, 0.5)",
                   display: "block",
                 }}
               />
@@ -394,7 +394,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
                             width: 6,
                             height: 6,
                             borderRadius: 999,
-                            background: "var(--color-primary, #0D95E8)",
+                            background: "var(--color-primary, #1590FF)",
                           }}
                         />
                         {d}
@@ -708,7 +708,7 @@ export function AeoPage({ data }: { data: AeoPageData }) {
               borderRadius: 999,
               fontWeight: 600,
               fontSize: 16,
-              boxShadow: "0 4px 12px rgba(13, 149, 232, 0.35)",
+              boxShadow: "0 4px 12px rgba(var(--color-primary-rgb), 0.35)",
             }}
           >
             {data.primaryCta?.label ?? "Reach out"}

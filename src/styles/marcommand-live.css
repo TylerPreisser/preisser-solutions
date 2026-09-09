@@ -238,41 +238,15 @@
     padding: 16px;
   }
 
-  .mc-live__claim {
-    margin: 10px 0 0;
-    font-size: 0.75rem;
-    line-height: 1.4;
-    text-align: center;
-    color: var(--theme-text-muted);
-  }
-
-  /* The mobile outcome figures. Text, not SVG — see the note in the component. */
-  .mc-live__outcomes {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin: 14px 0 0;
-    padding: 0;
-  }
-
-  .mc-live__outcome {
-    text-align: center;
-  }
-
-  .mc-live__outcomes dt {
-    font-size: 0.6875rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--theme-text-muted);
-  }
-
-  .mc-live__outcomes dd {
-    margin: 2px 0 0;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--theme-text-primary);
-    font-variant-numeric: tabular-nums;
-  }
+  /* >> THE OUTCOME FIGURES AND THEIR CAPTION ARE GONE (owner's instruction).
+     `.mc-live__outcomes`, `.mc-live__outcome`, its dt/dd rules and
+     `.mc-live__claim` stood here. They styled a three-figure <dl> and its
+     synthetic-data caption, both deleted from
+     `marcommand-live.tsx`; the full reasoning is in that file, on the stage
+     card. These rules were the mobile half of the defect: they were the ONLY
+     styling those elements ever had, and they were scoped to this media block,
+     so once desktop stopped hiding the <dl> it painted unstyled at >= 769px.
+     Nothing else in this sheet or the component uses those class names. */
 
   .mc-stage {
     /* PORTRAIT HUB RESTORED (3478cb4): 390/620, the space the narrow group is
@@ -749,31 +723,25 @@
   display: none;
 }
 
-/* >> DESKTOP NO LONGER HIDES THE OUTCOME FIGURES. This block used to carry
-   `.mc-live__outcomes { display: none }` at >= 769px, on the reasoning quoted
-   in its old comment: "Desktop carries these figures in the funnel figure
-   instead."
+/* >> THE >= 769px BLOCK THAT STOOD HERE IS GONE with the outcome figures.
+   It held one rule, `.mc-live__claim`, sizing the synthetic-data caption for
+   the wider measure; the element no longer exists, so the media query had
+   nothing left in it.
 
-   That reasoning died with the funnel. It was removed on the owner's
-   instruction, and the hide rule survived it, so desktop shipped with NO
-   outcome figures at all while mobile kept its three. Caught by a verifier
-   comparing two builds with checkVisibility(), not by reading either file:
-   the rule lives here and the deletion happened in the component, so neither
-   file on its own shows the defect.
+   THE ROOT CAUSE OF THE DESKTOP DEFECT IS RECORDED HERE because it is the
+   trap this file set twice. A `.mc-live__outcomes { display: none }` used to
+   live in this block, on the reasoning "desktop carries these figures in the
+   funnel figure instead". The funnel was removed on the owner's instruction
+   and the hide rule outlived it, so desktop showed nothing. Deleting the hide
+   rule was then done on the belief that "the `display: grid` in the mobile
+   block now applies at every width" — and that was FALSE. Those grid rules
+   were inside `@media (max-width: 768px)`, so above 769 the <dl> had no
+   styling at all and painted as six lines of bare text against the card's
+   left edge. Measured at 1440x900 and 1920x1080, both themes.
 
-   The `display: grid` in the mobile block now applies at every width. That
-   block is EARLIER in source and this sheet is unlayered, which is why the
-   original had to be media-scoped to win at all - deleting it simply returns
-   the grid to every width rather than leaving a bare rule fighting for
-   precedence. */
-@media (min-width: 769px) {
-  /* Desktop keeps the claim, sized to the wider measure. */
-  .mc-live__claim {
-    margin: 14px 0 0;
-    font-size: 0.8125rem;
-    color: var(--theme-text-muted);
-  }
-}
+   The lesson, if a figure block is ever wanted here again: styling and
+   visibility for it lived in two different media blocks in this sheet, and
+   the markup lived in a third file, so no single file showed the defect. */
 
 @media (max-width: 768px) {
   /*
@@ -996,11 +964,12 @@
      future change to the stage's structure cannot silently drop them. The real
      protection is upstream: the component returns before importing GSAP at all
      when reduce is set, so no timeline is ever constructed. */
+  /* `.mc-live__outcomes` and `.mc-live__claim` were listed here and are gone
+     with those elements. Neither ever animated; they were named for the same
+     belt-and-braces reason as the rest of this list. */
   .mc-stage *,
   .mc-stage__narrow *,
   .mc-fn *,
-  .mc-live__outcomes,
-  .mc-live__claim,
   .mc-elara-anchor,
   .mc-elara {
     animation: none !important;

@@ -1,12 +1,20 @@
 "use client";
 
 /**
- * card-visuals-backup.tsx
+ * card-visuals.tsx
  *
- * NAME IS WRONG, FILE IS LIVE. Despite "backup", this module ships: it is
- * imported at service-pillars.tsx and five of its exports render the homepage
- * bento grid. Deleting it breaks the build. Not renamed here only because the
- * rename is a separate change from the one this file is carrying.
+ * THIS MODULE SHIPS. It is imported at service-pillars.tsx and five of its
+ * exports render the homepage bento grid; deleting it breaks the build. It is
+ * also the shelf for two visuals with no current card (see RevenueVisual and
+ * CustomBuildVisual below) — kept, unused, on purpose, not dead code.
+ *
+ * RENAMED 2026-09-09 from `card-visuals-backup.tsx`. The old name said
+ * "backup" and the file was live, which is why its header carried a
+ * "NAME IS WRONG, FILE IS LIVE" warning for months. The rename is that
+ * warning being retired. It now pairs with its stylesheet, card-visuals.css.
+ * Any citation elsewhere in the tree of the form `card-visuals-backup.tsx:NNN`
+ * predates the rename; the DECISIONS/ ADRs deliberately still carry the old
+ * name because they are dated historical records.
  *
  * Originally (2026-04-02) a backup of the 5 card visuals extracted from
  * service-pillars.tsx, "preserved here so they can be imported into a rebuilt
@@ -174,7 +182,7 @@ export function WebsiteVisual() {
    SHARED REVEAL GATE  (added 2026-09-06 with the card 1/2/3 rebuild)
 
    One-shot IntersectionObserver -> `.in-view`, lifted verbatim from
-   SearchVisual (card-visuals-backup.tsx:1003-1030) so the three rebuilt
+   SearchVisual (card-visuals.tsx:1003-1030) so the three rebuilt
    cards use the SAME convention as the two reference cards instead of
    introducing a second one.
 
@@ -1247,7 +1255,7 @@ export function CustomBuildVisual() {
      A real-looking query would name a vertical, and :29 bars
      industry claims without a canonical project behind them.
    - The cited domain is "yourcompany.com" — the same placeholder
-     WebsiteVisual already uses (card-visuals-backup.tsx:33).
+     WebsiteVisual already uses (card-visuals.tsx:33).
    - There is NO rank-rise animation and NO position numbers. A #3
      row climbing to #1 is an outcome claim drawn as artwork, which
      is the same trap RevenueVisual falls into. The only motion is

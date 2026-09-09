@@ -28,7 +28,6 @@
 | `--color-primary-glow` | `rgba(21, 144, 255, 0.2)` | Button hover shadow |
 | `--color-dark` | `#0A1628` | Hero/nav/dark sections (Stripe's navy influence) |
 | `--color-dark-surface` | `#0F1D30` | Cards on dark backgrounds |
-| `--color-dark-subtle` | `#132840` | Subtle dark section variation |
 | `--color-light` | `#F6F9FC` | Light section backgrounds (Stripe's off-white) |
 | `--color-white` | `#FFFFFF` | Card backgrounds, light sections |
 
@@ -38,31 +37,18 @@
 |-------|-----|---------|
 | `--color-text-dark` | `#0A1628` | Headings on light backgrounds |
 | `--color-text-body` | `#425466` | Body text on light (Stripe's slate gray) |
-| `--color-text-muted` | `#697386` | Secondary/caption text on light |
-| `--color-text-on-dark` | `#FFFFFF` | Headings on dark backgrounds |
-| `--color-text-on-dark-body` | `#ADBDCC` | Body text on dark backgrounds |
-| `--color-text-on-dark-muted` | `#8898AA` | Caption text on dark |
 
 ### Accent & State Colors
 
 | Token | Hex | Usage |
 |-------|-----|-------|
-| `--color-accent-cyan` | `#80E9FF` | Eyebrow labels on dark, gradient accent |
-| `--color-accent-green` | `#00D4AA` | Success states, highlights |
 | `--color-danger` | `#DF1B41` | Error states |
 | `--color-border-light` | `#E6EBF1` | Borders on light backgrounds |
 | `--color-border-dark` | `rgba(255, 255, 255, 0.08)` | Borders on dark backgrounds |
-| `--color-border-dark-hover` | `rgba(255, 255, 255, 0.15)` | Border hover on dark |
 
 ### Gradient Patterns
 
 ```css
-/* Hero gradient mesh — Stripe-inspired but with PS blue palette */
---gradient-color-1: #0D95E8;  /* PS primary blue */
---gradient-color-2: #0048E5;  /* Deep blue */
---gradient-color-3: #635BFF;  /* Purple accent */
---gradient-color-4: #80E9FF;  /* Cyan accent */
-
 /* CTA button gradient */
 background: linear-gradient(135deg, #0D95E8, #0B7BC0);
 

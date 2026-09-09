@@ -54,6 +54,7 @@
      #1590FF is the dominant chroma across ~190k of its pixels. It was #0D95E8,
      which was close but not the mark. Do not "correct" this to a rounder number. */
   --color-primary:       #1590FF;
+  --color-primary-rgb:   21, 144, 255;  /* #1590FF as a bare triplet so rgba(var(--color-primary-rgb), a) shares one source of truth with --color-primary. NOT a new colour, and theme-invariant because --color-primary is. Accent TEXT must use --theme-accent-text, which does vary by theme. Convention: --theme-art-veil-rgb. */
   --color-primary-hover: #0D76D6;
   --color-primary-glow:  rgba(21, 144, 255, 0.2);
 
@@ -113,7 +114,7 @@
   --shadow-md:   0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
   --shadow-lg:   0 12px 40px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.06);
   --shadow-xl:   0 24px 60px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.08);
-  --shadow-glow: 0 0 40px rgba(13, 149, 232, 0.2);
+  --shadow-glow: 0 0 40px rgba(var(--color-primary-rgb), 0.2);
 
   /* Layout */
   --nav-height:        88px;
@@ -153,7 +154,7 @@
   --theme-section-switchable: #0A1628;
   --theme-section-alt:        #0A1628;
   --theme-section-transparent: rgba(10, 22, 40, 0);
-  --ps-chip-active-shadow: 0 8px 30px rgba(13, 149, 232, 0.25);
+  --ps-chip-active-shadow: 0 8px 30px rgba(var(--color-primary-rgb), 0.25);
   --theme-card-bg:       rgba(255, 255, 255, 0.03);
   --theme-card-border:   rgba(255, 255, 255, 0.08);
   --theme-result-card-bg: #0F1D30;
@@ -213,7 +214,7 @@
   --theme-section-switchable: #FFFFFF;
   --theme-section-alt:        #FFFFFF;
   --theme-section-transparent: rgba(255, 255, 255, 0);
-  --ps-chip-active-shadow: 0 8px 30px rgba(13, 149, 232, 0.20);
+  --ps-chip-active-shadow: 0 8px 30px rgba(var(--color-primary-rgb), 0.20);
   --theme-card-bg:       #FFFFFF;
   --theme-card-border:   #E2E8F0;
   --theme-result-card-bg: #FFFFFF;
@@ -435,12 +436,12 @@ ul, ol {
   background-color: var(--color-primary-strong-hover);
   border-color: var(--color-primary-strong-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(13, 149, 232, 0.35);
+  box-shadow: 0 4px 16px rgba(var(--color-primary-rgb), 0.35);
 }
 
 .ps-btn-primary:active {
   transform: translateY(1px) scale(0.985);
-  box-shadow: 0 2px 8px rgba(13, 149, 232, 0.24);
+  box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.24);
 }
 
 /* Primary button on dark background */
@@ -454,12 +455,12 @@ ul, ol {
   background-color: var(--color-primary-strong-hover);
   border-color: var(--color-primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(13, 149, 232, 0.4);
+  box-shadow: 0 4px 20px rgba(var(--color-primary-rgb), 0.4);
 }
 
 .ps-btn-primary-dark:active {
   transform: translateY(1px) scale(0.985);
-  box-shadow: 0 2px 10px rgba(13, 149, 232, 0.28);
+  box-shadow: 0 2px 10px rgba(var(--color-primary-rgb), 0.28);
 }
 
 /* Secondary/outline button */
@@ -488,7 +489,7 @@ ul, ol {
 }
 
 .ps-btn-outline:hover {
-  background-color: rgba(13, 149, 232, 0.06);
+  background-color: rgba(var(--color-primary-rgb), 0.06);
   transform: translateY(-1px);
 }
 
@@ -675,7 +676,7 @@ ul, ol {
   }
 
   .ps-chip[for] {
-    --ps-chip-active-shadow: 0 5px 18px rgba(13, 149, 232, 0.18);
+    --ps-chip-active-shadow: 0 5px 18px rgba(var(--color-primary-rgb), 0.18);
   }
 }
 
@@ -1016,7 +1017,7 @@ ul, ol {
 .ps-header-cta:hover {
   background-color: var(--color-primary-strong-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(13, 149, 232, 0.35);
+  box-shadow: 0 4px 14px rgba(var(--color-primary-rgb), 0.35);
 }
 
 .ps-header-cta-arrow {
@@ -1984,7 +1985,7 @@ ul, ol {
 
   background: radial-gradient(
     circle,
-    #0D95E8,
+    var(--color-primary),
     #80E9FF 33%,
     rgba(255, 255, 255, 0.08) 66%
   );
@@ -2063,7 +2064,7 @@ ul, ol {
   text-transform: uppercase;
   line-height: 1;
   white-space: nowrap;
-  color: var(--color-primary, #0D95E8);
+  color: var(--color-primary, #1590FF);
   transition: color 300ms ease;
 }
 
@@ -2804,10 +2805,10 @@ ul, ol {
 
 .ps-dialog-close-btn:hover,
 .ps-dialog-close-btn:focus-visible {
-  background: rgba(13, 149, 232, 0.9);
+  background: rgba(var(--color-primary-rgb), 0.9);
   border-color: rgba(255, 255, 255, 0.36);
   transform: translateY(-1px);
-  box-shadow: 0 16px 36px rgba(13, 149, 232, 0.26);
+  box-shadow: 0 16px 36px rgba(var(--color-primary-rgb), 0.26);
 }
 
 .ps-dialog-close-btn:focus-visible {
@@ -2830,8 +2831,8 @@ ul, ol {
 
 [data-theme="light"] .ps-dialog-close-btn:hover,
 [data-theme="light"] .ps-dialog-close-btn:focus-visible {
-  background: #0D95E8;
-  border-color: rgba(13, 149, 232, 0.2);
+  background: var(--color-primary-strong);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
   color: #ffffff;
 }
 
@@ -3295,13 +3296,13 @@ ul, ol {
   text-decoration: none;
   letter-spacing: -0.01em;
   transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
-  box-shadow: 0 4px 14px rgba(13, 149, 232, 0.35);
+  box-shadow: 0 4px 14px rgba(var(--color-primary-rgb), 0.35);
 }
 
 .ps-dialog-cta-btn:hover {
   background: var(--color-primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(13, 149, 232, 0.45);
+  box-shadow: 0 8px 24px rgba(var(--color-primary-rgb), 0.45);
 }
 
 /* ── Responsive: dialog expanded sections ───────────────────── */
@@ -3657,7 +3658,7 @@ ul, ol {
 }
 
 .ps-fix-solution-bars span {
-  background: linear-gradient(90deg, rgba(64,217,172,0.92), rgba(13,149,232,0.82));
+  background: linear-gradient(90deg, rgba(64,217,172,0.92), rgba(var(--color-primary-rgb), 0.82));
   transform-origin: left;
   transform: scaleX(0.18);
 }
@@ -3709,7 +3710,7 @@ ul, ol {
   height: 100%;
   width: 0;
   border-radius: inherit;
-  background: linear-gradient(90deg, #0D95E8, #40D9AC);
+  background: linear-gradient(90deg, var(--color-primary), #40D9AC);
 }
 
 .ps-fix-root.in-view .ps-fix-footer-bar {
@@ -3747,7 +3748,7 @@ ul, ol {
   display: flex;
   flex-direction: column;
   background:
-    radial-gradient(circle at 20% 16%, rgba(13,149,232,0.12) 0%, rgba(13,149,232,0) 24%),
+    radial-gradient(circle at 20% 16%, rgba(var(--color-primary-rgb), 0.12) 0%, rgba(var(--color-primary-rgb), 0) 24%),
     radial-gradient(circle at 80% 82%, rgba(139,92,246,0.12) 0%, rgba(139,92,246,0) 28%),
     linear-gradient(180deg, #06080F 0%, #090D15 100%);
   padding: 0;
@@ -3838,7 +3839,7 @@ ul, ol {
 }
 
 .ps-dbc-bar {
-  background: linear-gradient(180deg, rgba(13,149,232,0.88) 0%, rgba(13,149,232,0.32) 100%);
+  background: linear-gradient(180deg, rgba(var(--color-primary-rgb), 0.88) 0%, rgba(var(--color-primary-rgb), 0.32) 100%);
   animation: ps-dbc-bar-grow 700ms cubic-bezier(0.34, 1.56, 0.64, 1) var(--bar-delay, 0s) both;
 }
 
@@ -3904,11 +3905,11 @@ ul, ol {
   animation-delay: var(--hm-cell-delay, 0s);
 }
 
-.ps-dbc-heatmap-cell--0 { background: rgba(13,149,232,0.08); }
-.ps-dbc-heatmap-cell--1 { background: rgba(13,149,232,0.2); }
-.ps-dbc-heatmap-cell--2 { background: rgba(13,149,232,0.34); }
-.ps-dbc-heatmap-cell--3 { background: rgba(13,149,232,0.54); }
-.ps-dbc-heatmap-cell--4 { background: rgba(13,149,232,0.82); }
+.ps-dbc-heatmap-cell--0 { background: rgba(var(--color-primary-rgb), 0.08); }
+.ps-dbc-heatmap-cell--1 { background: rgba(var(--color-primary-rgb), 0.2); }
+.ps-dbc-heatmap-cell--2 { background: rgba(var(--color-primary-rgb), 0.34); }
+.ps-dbc-heatmap-cell--3 { background: rgba(var(--color-primary-rgb), 0.54); }
+.ps-dbc-heatmap-cell--4 { background: rgba(var(--color-primary-rgb), 0.82); }
 
 @keyframes ps-dbc-heatmap-pulse {
   0%, 100% { opacity: 0.88; transform: translateY(0); }
@@ -3975,9 +3976,9 @@ ul, ol {
   width: 40px;
   height: 40px;
   border-radius: 8px;
-  background: rgba(13, 149, 232, 0.1);
-  color: #0D95E8;
-  border: 1px solid rgba(13, 149, 232, 0.15);
+  background: rgba(var(--color-primary-rgb), 0.1);
+  color: var(--theme-accent-text);
+  border: 1px solid rgba(var(--color-primary-rgb), 0.15);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -3990,8 +3991,8 @@ ul, ol {
 }
 
 .ps-work-nav-btn:hover {
-  background: rgba(13, 149, 232, 0.18);
-  border-color: rgba(13, 149, 232, 0.25);
+  background: rgba(var(--color-primary-rgb), 0.18);
+  border-color: rgba(var(--color-primary-rgb), 0.25);
   transform: translateY(-1px);
 }
 
@@ -4132,7 +4133,7 @@ ul, ol {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-primary, #0D95E8);
+  color: var(--color-primary, #1590FF);
   opacity: 0.78;
   white-space: nowrap;
   line-height: 1;
@@ -4230,7 +4231,7 @@ ul, ol {
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(13, 149, 232, 0.15) 0%,
+    rgba(var(--color-primary-rgb), 0.15) 0%,
     transparent 70%
   );
   pointer-events: none;
@@ -4578,7 +4579,7 @@ ul, ol {
 [data-theme="light"] .ps-cta-glow {
   background: radial-gradient(
     circle,
-    rgba(13, 149, 232, 0.08) 0%,
+    rgba(var(--color-primary-rgb), 0.08) 0%,
     transparent 70%
   );
 }
@@ -4621,7 +4622,7 @@ ul, ol {
 }
 
 [data-theme="light"] .ps-footer-social a:hover {
-  color: #0D95E8;
+  color: var(--theme-accent-text);
 }
 
 [data-theme="light"] .ps-footer-signup-heading,
@@ -4810,7 +4811,7 @@ ul, ol {
   background-color: var(--color-primary-hover);
   border-color: var(--color-primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(13, 149, 232, 0.35);
+  box-shadow: 0 4px 16px rgba(var(--color-primary-rgb), 0.35);
 }
 
 .ps-btn-primary:active {
@@ -4944,7 +4945,7 @@ ul, ol {
   height: 100%;
   background: radial-gradient(
     ellipse at 80% 30%,
-    rgba(13, 149, 232, 0.10) 0%,
+    rgba(var(--color-primary-rgb), 0.10) 0%,
     rgba(99, 91, 255, 0.06) 45%,
     transparent 70%
   );
@@ -5013,7 +5014,7 @@ ul, ol {
   background: linear-gradient(
     90deg,
     var(--color-primary) 0%,
-    rgba(13, 149, 232, 0.2) 40%,
+    rgba(var(--color-primary-rgb), 0.2) 40%,
     transparent 70%
   );
 }
@@ -5204,7 +5205,7 @@ ul, ol {
 .ps-contact-field__input:focus,
 .ps-contact-field__textarea:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(13, 149, 232, 0.18);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.18);
 }
 
 .ps-contact-field__input::placeholder,
@@ -6087,7 +6088,7 @@ html, body {
 }
 .ps-ai-page__header {
   padding: 96px 0 48px;
-  background: linear-gradient(180deg, rgba(13,149,232,0.04) 0%, transparent 100%);
+  background: linear-gradient(180deg, rgba(var(--color-primary-rgb), 0.04) 0%, transparent 100%);
 }
 .ps-ai-page__body {
   padding: 24px 0 96px;
@@ -6107,7 +6108,7 @@ html, body {
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #0D95E8;
+  color: var(--theme-accent-text);
   margin: 0 0 12px;
 }
 .ps-ai-h1 {
@@ -6139,7 +6140,7 @@ html, body {
   color: var(--theme-text-secondary, #475569);
 }
 .ps-ai-content a {
-  color: #0D95E8;
+  color: var(--theme-accent-text);
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
@@ -6152,7 +6153,7 @@ html, body {
 }
 .ps-ai-breadcrumbs ol { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 4px; }
 .ps-ai-breadcrumbs a { color: inherit; text-decoration: none; }
-.ps-ai-breadcrumbs a:hover { color: #0D95E8; }
+.ps-ai-breadcrumbs a:hover { color: var(--theme-accent-text); }
 .ps-ai-faqs { margin: 64px 0 32px; }
 .ps-ai-faqs dl { margin: 24px 0 0; padding: 0; }
 .ps-ai-faq {
@@ -6185,7 +6186,7 @@ html, body {
   font-weight: 500;
   font-size: 15px;
 }
-.ps-ai-related a:hover { border-color: #0D95E8; color: #0D95E8; }
+.ps-ai-related a:hover { border-color: var(--color-primary); color: var(--theme-accent-text); }
 .ps-ai-cta {
   margin: 64px 0 0;
   padding: 40px;
@@ -6321,7 +6322,7 @@ html, body {
 .ps-home-link-details[open] {
   border-color: color-mix(in srgb, var(--color-primary) 42%, var(--theme-card-border));
   background: color-mix(in srgb, var(--color-primary) 5%, var(--theme-card-bg));
-  box-shadow: 0 20px 46px rgba(13, 149, 232, 0.10);
+  box-shadow: 0 20px 46px rgba(var(--color-primary-rgb), 0.10);
 }
 
 .ps-home-link-details__summary {
@@ -6820,7 +6821,7 @@ html, body {
     105deg,
     transparent 0%,
     transparent 35%,
-    rgba(13, 149, 232, 0.22) 50%,
+    rgba(var(--color-primary-rgb), 0.22) 50%,
     transparent 65%,
     transparent 100%
   );
@@ -6959,7 +6960,7 @@ html, body {
   border: 1px solid var(--theme-card-border);
   border-radius: 16px;
   background:
-    linear-gradient(135deg, rgba(13, 149, 232, 0.12), rgba(0, 212, 170, 0.06)),
+    linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.12), rgba(0, 212, 170, 0.06)),
     var(--theme-card-bg);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
   overflow: hidden;
@@ -7027,7 +7028,7 @@ html, body {
 }
 
 .ps-product-flow__card--output rect {
-  fill: rgba(13, 149, 232, 0.12);
+  fill: rgba(var(--color-primary-rgb), 0.12);
   stroke: color-mix(in srgb, var(--flow-primary) 42%, rgba(255, 255, 255, 0.16));
 }
 
@@ -7047,7 +7048,7 @@ html, body {
 }
 
 .ps-product-flow__halo {
-  fill: rgba(13, 149, 232, 0.08);
+  fill: rgba(var(--color-primary-rgb), 0.08);
   stroke: rgba(128, 233, 255, 0.14);
   stroke-width: 1;
   animation: ps-product-flow-pulse 3.8s ease-in-out infinite;
@@ -7605,7 +7606,12 @@ body:has(.ps-contact2-hero) .ps-header-blur {
     left: 0;
     right: 0;
     bottom: 0;
-    /* The overhang IS the fix: the fade now completes above the type. */
+    /* The overhang IS the fix: the fade now completes above the type.
+       DO NOT shrink this to match the 32px ramp below. `top` sets the box, and
+       every stop is written `calc(100% - Npx)` — i.e. measured DOWN from the
+       box's top edge — so `calc(100% - 80px)` lands on the text box's top edge
+       ONLY while the overhang is exactly 80px. Change `top` without recomputing
+       every stop and the plateau slides down over the glyphs. */
     top: -80px;
     pointer-events: none;
     background: linear-gradient(
@@ -7614,9 +7620,30 @@ body:has(.ps-contact2-hero) .ps-header-blur {
       /* plateau holds to the top edge of the text box, so every glyph row
          — one line or two — is covered by construction, not by luck */
       rgba(10, 22, 40, 0.86) calc(100% - 80px),
-      rgba(10, 22, 40, 0.45) calc(100% - 48px),
-      rgba(10, 22, 40, 0.12) calc(100% - 16px),
-      rgba(10, 22, 40, 0) 100%
+      /* 2026-09-09 — RAMP SHORTENED, 80px → 32px. Everything at or below
+         `calc(100% - 80px)` is byte-identical, so every glyph still sits in the
+         0.88→0.86 plateau and no measured contrast moves; only the tail ABOVE
+         the type — which carries no text at all — was steepened.
+         WHY: this ramp was fading the bottom panel row of every card face. On a
+         320-tall face the veil ran 142.8px, 44.6% of the card. 0.86 was derived
+         (see the block above); the 80px overhang never was.
+         The lowest artwork sits 27.2px (websites' white BY SERVICE tile) and
+         13.2px (automation's prompt pill) above the text box, so the ramp has
+         to finish inside ~32px to clear it.
+         MEASURED chromium 393×852 dark, 90px band above the text box, ratio to
+         the same scene with the veil off, median of 5 in-scene-state reps —
+         mean luminance and detail energy (std of luminance), before → after:
+             websites     lum 68.4 → 99.4%   detail 75.5 → 99.3%
+             systems      lum 96.1 → 99.9%   detail 94.8 → 100.0%
+             automation   lum 53.3 → 94.5%   detail 28.4 → 94.3%
+             web          lum 69.9 → 99.8%   detail 75.7 → 99.9%
+             search-ads   lum 88.1 → 97.0%   detail 83.9 → 100.2%
+         Card faces above 768px and BOTH light-theme paths are untouched: this
+         rule only exists inside this max-width:768px block, and light theme
+         keeps its own box-height gradient at globals.css:1661. */
+      rgba(10, 22, 40, 0.45) calc(100% - 68px),
+      rgba(10, 22, 40, 0.12) calc(100% - 56px),
+      rgba(10, 22, 40, 0) calc(100% - 48px)
     );
   }
 }

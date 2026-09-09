@@ -2841,7 +2841,7 @@
 /* ═════════════════════════════════════════════════════════════
    CARD 1 — "BUSINESS SOFTWARE." — THE KEYSTONE          (.ps-c1-*)
 
-   Markup: card-visuals-backup.tsx, `DashboardVisual`. APPENDED block —
+   Markup: card-visuals.tsx, `DashboardVisual`. APPENDED block —
    nothing above this line is modified, and every `.ps-v4-*` rule is left
    intact because cards 2 and 3 still render them.
 
@@ -3313,7 +3313,7 @@
    and there is no step at the boundary. The `min()` pins it there.
 
    REACH: `.ps-phone` and `.ps-wb-browser` exist only inside
-   `WebsiteVisual` (card-visuals-backup.tsx:51-141), which is rendered
+   `WebsiteVisual` (card-visuals.tsx:51-141), which is rendered
    only by the card titled "Websites." (service-pillars.tsx:475-479 --
    matched on the TITLE, because this card's `variant` is `web` while
    `websites` belongs to Business Software). No other card is reached.
@@ -3387,7 +3387,7 @@
    while the 360-430 viewports in between must not get it.
 
    REACH: `.ps-browser-chrome`, `.ps-browser-url` and `.ps-browser-dots`
-   exist only inside `WebsiteVisual` (card-visuals-backup.tsx:51-141),
+   exist only inside `WebsiteVisual` (card-visuals.tsx:51-141),
    rendered only by the card titled "Websites." No other card is
    reached, and the `@container bentocard` scope also keeps it off the
    bottom-sheet mount, which has no card ancestor. */
@@ -3571,7 +3571,7 @@
    the phone stays at 0.00 until the browser reaches 0.97.
    Card 5's pair is disjoint (0 px^2 at all widths), which is why the
    default 70ms is right there and wrong here.
-   `--i` is carried in markup at card-visuals-backup.tsx:55 and :105. */
+   `--i` is carried in markup at card-visuals.tsx:55 and :105. */
 .ps-visual-website {
   --rv-step: 300ms;
 }

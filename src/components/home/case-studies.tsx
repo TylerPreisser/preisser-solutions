@@ -448,7 +448,7 @@ export function CaseStudies() {
     ).matches;
 
     // Reduced motion short-circuits to the final state in the effect AND in
-    // CSS, matching card-visuals-backup.tsx:860-868.
+    // CSS, matching card-visuals.tsx:860-868.
     if (prefersReduced || typeof IntersectionObserver === "undefined") {
       cards.forEach((card) => {
         card.dataset.revealed = "true";
@@ -503,8 +503,21 @@ export function CaseStudies() {
       <div className="ps-work-header">
         <div>
           <span className="ps-eyebrow ps-eyebrow--light">OUR WORK</span>
+          {/*
+            One heading, two colours. The h2's full text content is still
+            "Real Projects. Real Results." — the whitespace between the two
+            spans is preserved in the markup, so assistive tech announces one
+            heading, not two fragments (verified: ariaSnapshot returns a
+            single `heading "Real Projects. Real Results." [level=2]` in
+            Chromium, Firefox and WebKit, both themes). Do NOT split this into two headings
+            and do NOT add ARIA here; the accessible name is already correct.
+            Same accent device as the hero's final pillar line
+            (globals.css:1480) and the why-us tagline: first half keeps the
+            heading's own colour, second half takes --theme-accent-text.
+          */}
           <h2 id="work-heading" className="ps-section-heading ps-section-heading--light">
-            Real Projects. Real Results.
+            <span className="ps-work-heading__lead">Real Projects.</span>{" "}
+            <span className="ps-work-heading__accent">Real Results.</span>
           </h2>
         </div>
         {/* Nav arrows — hidden on mobile via CSS (touch scroll is native) */}
