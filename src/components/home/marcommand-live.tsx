@@ -264,10 +264,36 @@ export function MarCommandLive() {
             still the ride step-off's hop; a step-off is not a walk.
           */
           tl.set(sprite, { "--mc-bob": "0px" }, at);
-          const frames = Math.floor(dur / 0.11);
-          for (let i = 0; i < frames; i += 1) {
+          /*
+            THE STEP DIVIDES THE WALK EXACTLY. `Math.floor(dur / 0.11)` left the
+            remainder on the LAST pose, holding it up to 1.9x a normal frame
+            while the anchor kept translating. Measured on the live build at
+            1440: walk2 froze one pose for 181-202ms across 80.9 stage units —
+            74 CSS px, ~80% of his own width — with the per-sample step barely
+            decaying (33.5, 28.9, 28.9, 26.3), i.e. still near full walking
+            speed, and --mc-flip reversing INSIDE the frozen pose so he mirrored
+            mid-slide. That reads as a skate. walk4 was the same at 60% of body
+            width.
+
+            It is the cadence irregularity that shows, not the distance: a
+            normal frame on narrow walk3 covers 131% of his width at an even
+            cadence and reads fine. Where the remainder happened to land on a
+            leg he had already stopped on (narrow walk1/walk6, 2.1 units) it was
+            invisible — which is why floor() looked acceptable until someone
+            measured the walks where he is still moving.
+
+            Dividing by the rounded step count gives every frame the same
+            duration on every route: 0.1067-0.1125s across both beat tables,
+            never more than 3.3ms off the intended 110ms, and zero remainder
+            anywhere. The cadence is deliberately not phase-locked to anything
+            (see the sprite sheet's own note against locking it to the 0.17s
+            ride bob), so stretching it a few ms is free.
+          */
+          const steps = Math.max(1, Math.round(dur / 0.11));
+          const step = dur / steps;
+          for (let i = 0; i < steps; i += 1) {
             const f = FRAME.walk[i % FRAME.walk.length];
-            tl.call(() => setFrame(f), undefined, at + i * 0.11);
+            tl.call(() => setFrame(f), undefined, at + i * step);
           }
           // Land on idle: every stationary beat that can follow a walk — tap,
           // grip, face, pocket — assumes it is starting from the idle pose.
