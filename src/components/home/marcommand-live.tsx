@@ -82,6 +82,42 @@ const BEATS = {
   },
 } as const;
 
+/**
+ * PORTRAIT ONLY. Where in the ride the room may start, as a fraction of
+ * `cardMove`.
+ *
+ * `BUS_NARROW` is born at (195,112) — the midpoint of the lit card's BOTTOM EDGE
+ * once the card is parked at its (195,70) perch. The wire therefore cannot be
+ * drawn before the card has arrived over that point, or it sprouts out of empty
+ * canvas. That is the whole reason portrait's room cannot start on the light
+ * beat the way landscape's does: on landscape the bus's origin (964,176) is the
+ * Google Ads card's own corner and the card is already sitting there at the tap.
+ *
+ * DERIVED, NOT CHOSEN. The step-off carries the card 100 units, starts at
+ * `cardMove * 0.45` and runs for `cardMove * 0.55` on `power2.out`. The card
+ * face is `NARROW.cardSize` = 84, so half-width 42, and its edge reaches x=195
+ * at proxy progress 0.58. `power2.out` puts 0.58 at 0.251 of that leg, so the
+ * crossing is 0.45 + 0.55 * 0.251 = 0.589 of the ride — t = 2.139s at today's
+ * beats. Measured by seeking a replica of these two tweens in GSAP itself, not
+ * by eye. Arc 2 crosses at the same 0.589: same 100 units, same perch, same
+ * half-width, byte-identical schedule, only arc 1 arrives right-edge first and
+ * arc 2 left-edge first. ONE constant serves both stops, and it has to — a
+ * 0.15s divergence between the two is what makes the second stop read as a
+ * different animation.
+ *
+ * 0.6 clears that floor by 0.011s (3.5 stage units of card over the origin).
+ * The ceiling is ~0.65, past which the bare stage between the hub leaving and
+ * the room arriving grows beyond 0.5s. It is a FRACTION of `cardMove` and not a
+ * number of seconds precisely so that retiming the ride cannot silently
+ * invalidate it: the ride's own 0.45/0.55 split is fractional too, so the
+ * crossing fraction is invariant to `cardMove`.
+ *
+ * RE-DERIVE IF any of these move: BUS_NARROW's origin x, NARROW.cardSize, the
+ * (195,70) perch, the 0.45/0.55 ride split, or the step-off's ease. Changing
+ * `cardMove` alone does not.
+ */
+const NARROW_ROOM_RIDE_FRACTION = 0.6;
+
 const money = (v: number) => `$${Math.round(v).toLocaleString("en-US")}`;
 
 export function MarCommandLive() {
@@ -290,13 +326,17 @@ export function MarCommandLive() {
             `hubPath` — the pad, the Google Ads spoke, the blue live rail drawn over
             it, and (portrait) the pad's link up to the trunk — is the ground Elara
             is standing on, so when it leaves depends on where he is standing next.
-            On LANDSCAPE it goes with the furniture on the light beat: the bus
-            covers y=220 from x=900 to x=964 and walk2's first leg runs 932 -> 900,
-            entirely inside it, so the replacement is already under his feet. On
-            PORTRAIT it cannot: he taps from the pad and then rides up with the
-            card, so dropping it on the light beat would take the floor out from
-            under the ride. Portrait fades it across the ride instead. Both
-            variants get it back before walk5 needs it.*/
+            BOTH variants now drop it on the light beat, with the furniture.
+            On LANDSCAPE the bus covers y=220 from x=900 to x=964 and walk2's
+            first leg runs 932 -> 900, entirely inside it, so the replacement is
+            already under his feet. On PORTRAIT he is not standing on anything
+            after the tap: the next beat is the RIDE, and the climb from (160,310)
+            to (160,112) is the one movement in this build that deliberately
+            crosses bare canvas (see the DISCLOSED note in the ride block).
+            Holding the path through the ride was never supporting him — it only
+            kept the spoke, the rail and the hub link on screen for 0.36s after
+            the pad they hang off had already gone. Both variants get it back
+            before walk5 needs it.*/
           const hubFurniture = [
             ...cards.filter((c) => c !== litCard),
             ...spokes.filter((sp) => sp !== liveSpoke),
@@ -448,9 +488,9 @@ export function MarCommandLive() {
           tl.call(() => litCard?.classList.add("mc-card--lit"), undefined, t);
           const tLight = t;
           /*
-            WHAT LEAVES ON THE LIGHT BEAT, AND WHY THE TARGET DIFFERS BY VARIANT.
+            WHAT LEAVES ON THE LIGHT BEAT: THE WHOLE HUB, ON BOTH VARIANTS.
 
-            BOTH variants drop the five unlit cards, their spokes, and the pad
+            Both drop the five unlit cards, their spokes, and the pad
             here. The pad's 96px `.mc-pad__ring` (stroked --theme-border,
             rgb(226,232,240)) used to be held back with the rest of `hubPath`
             until a third of the way into walk2, which left it alone on an empty
@@ -459,17 +499,17 @@ export function MarCommandLive() {
             it is still visible. He is already at the card by this beat, so fading
             it here costs nothing.
 
-            LANDSCAPE ALSO DROPS THE REST OF hubPath HERE, so the whole `hubLayer`
-            goes at once. Owner, verbatim: "it doesn't make the current line that
+            THE REST OF hubPath GOES HERE TOO, so the whole `hubLayer` leaves as
+            one unit. Owner, verbatim: "it doesn't make the current line that
             he was walking on go away fast enough. It needs to go away right away,
-            and then the new line needs to come in right now." Holding it into
-            walk2 kept the rail he arrived on at full opacity for 2.76s after the
+            and then the new line needs to come in right now." On LANDSCAPE,
+            holding it into walk2 kept the rail he arrived on at full opacity for 2.76s after the
             tap while the replacement room finished drawing at ~1.96s: ~840ms with
             both lines at 100%, and then — once the pad had gone at ~2.11s — 2.24s
             of a blue L terminating in empty space at (652,340), a line connected
-            to nothing. Leaving on the same 0.15s beat the room arrives on makes
-            the swap a deliberate crossfade over the 64 units of ground he is
-            standing on rather than a handover with a hole in it.
+            to nothing. Landscape's room arrives on this same 0.15s beat, so
+            there the swap is a deliberate crossfade over the 64 units of ground
+            he is standing on rather than a handover with a hole in it.
 
             OPACITY, and both paths together. NOT a `strokeDashoffset` retraction:
             that erases from the card end first, i.e. out from under his feet, and
@@ -478,26 +518,24 @@ export function MarCommandLive() {
             carry the same `d`, so dropping the blue alone exposes grey at
             srgb(226,232,240) — a new stray line in place of the old one.
 
-            PORTRAIT KEEPS ITS PATH past this beat: he taps from the pad and rides
-            up with the card, so the pad and the hub link are still ground he is
-            using. It fades across the ride, in the branch below.
+            PORTRAIT LEAVES ON THE SAME BEAT, for a different reason. It used to
+            hold the path across the first half of the ride, on the argument that
+            he taps from the pad and rides up with the card so it is still ground
+            he is using. That argument is wrong twice over. The pad itself already
+            left here, so what was being held back was a spoke, a rail and a hub
+            link hanging off nothing; and the ride is not a walk — its climb
+            crosses bare canvas by design, so there was no floor under him to take
+            away. Measured on the built page at 390x844: furniture and pad gone at
+            1.71, `hubPath` still up until 2.07. That is 0.36s of orphan fragments,
+            twice a loop.
+
+            Portrait's room does NOT arrive on this beat — it cannot, see
+            NARROW_ROOM_RIDE_FRACTION — so portrait trades those orphans for a
+            ~0.45s bare stage, down from ~0.64s. Deliberate: closing it entirely
+            needs BUS_NARROW re-origined, which is new geometry, not a retime.
           */
-          const lightBeatExit =
-            variant === "wide" ? hubLayer : [...hubFurniture, ...(pad ? [pad] : [])];
-          tl.to(lightBeatExit, { opacity: 0, duration: B.light, ease: "none" }, tLight);
-          /*
-            PORTRAIT DROPS THE REST OF THE HUB PATH OVER THE RIDE, not in one snap.
-            The moment the ride starts nothing on the hub is under him again until
-            walk5 brings him home, so fading it across the first half of the ride
-            hands the stage over to the room in one continuous movement instead of
-            leaving a lone grey ring behind him.
-          */
+          tl.to(hubLayer, { opacity: 0, duration: B.light, ease: "none" }, tLight);
           if (variant === "narrow") {
-            tl.to(
-              hubPath.filter((el) => el !== pad),
-              { opacity: 0, duration: B.cardMove * 0.5, ease: "none" },
-              t
-            );
             /*
               ================================================================
               THE RIDE. HE GOES UP WITH THE CARD.
@@ -659,15 +697,15 @@ export function MarCommandLive() {
             t += B.cardMove * 0.6;
           }
           /*
-            PORTRAIT ALONE STILL SPENDS THE LIGHT BEAT BEFORE THE ROOM OPENS.
+            NEITHER VARIANT SPENDS A LIGHT BEAT HERE ANY MORE. Do not put it back.
 
-            On landscape this advance was a frozen frame: samples at 2.75 / 2.79 /
-            2.83 / 2.87 are byte-identical on every position, opacity and
-            dashoffset. The room now starts on the light beat anyway, so the
-            landscape cursor is recomputed from `tLight` below rather than summed.
-            Portrait's spacing is coupled to its own exit timing and stays put.
+            `t += B.light` was a pure cursor advance with nothing tweening under
+            it. On landscape, samples at 2.75 / 2.79 / 2.83 / 2.87 are
+            byte-identical on every position, opacity and dashoffset; portrait's
+            was the same 0.15s of frozen stage, and portrait paid it TWICE a loop,
+            once per arc. Both cursors are now computed from their own light beat
+            below rather than summed forward, so there is nothing left to advance.
           */
-          if (variant === "narrow") t += B.light;
 
           // ---- 4. The room draws outward FROM the card -------------------
           /*
@@ -684,8 +722,19 @@ export function MarCommandLive() {
             faster, and B.room stays 0.9 with its `power3.out` and 0.06 stagger.
             The consequence is that the ride now OVERLAPS the room draw, which is
             fine: the ride is the owner's other requested beat and is untouched.
+
+            PORTRAIT DRAWS IT THE MOMENT THE CARD IS OVER THE WIRE'S ORIGIN, which
+            is 0.6 of the ride and not the tap — `BUS_NARROW` starts at (195,112),
+            under the card's perch, so any earlier and the bus is born on empty
+            canvas. See NARROW_ROOM_RIDE_FRACTION for the derivation and for the
+            list of things that invalidate it. Portrait used to wait out the whole
+            ride AND a dead light beat (2.70); first ink is now at 2.15, 0.55s
+            earlier, and the draw finishes as walk2 begins instead of gating it.
           */
-          const tRoom = variant === "wide" ? tLight : t;
+          const tRoom =
+            variant === "wide"
+              ? tLight
+              : tLight + B.cardMove * NARROW_ROOM_RIDE_FRACTION;
           tl.to(wires, { strokeDashoffset: 0, duration: B.room, ease: "power3.out" }, tRoom);
           tl.to(
             controls,
@@ -693,18 +742,31 @@ export function MarCommandLive() {
             tRoom
           );
           /*
-            The ride and the room run together on landscape, so the cursor is
-            whichever finishes last rather than a sum. `B.cardMove * 1.6` is his
-            landing time EXACTLY — the ride is `cardMove` plus a descent of
-            `cardMove * 0.6` — not an approximation, which is what keeps walk2
-            from starting before his feet are back on the rail if the beat ever
-            changes. Break-even is cardMove 0.5625; below it the room is the long
-            pole (today: 0.9 vs 0.8), above it the ride is.
+            The ride and the room now overlap on BOTH variants, so the cursor is
+            whichever of the two finishes last rather than a sum. Every term is an
+            expression in the beats, never a literal: that is what keeps walk2
+            from starting before his feet are down if a beat is ever retimed.
+
+            LANDSCAPE: `B.cardMove * 1.6` is his landing time EXACTLY — the ride
+            is `cardMove` plus a descent of `cardMove * 0.6`. Break-even is
+            cardMove 0.5625; below it the room is the long pole (today: 0.9 vs
+            0.8), above it the ride is.
+
+            PORTRAIT: the room ends `cardMove * 0.6 + room` after the light beat
+            and the ride ends `cardMove` after it — max(1.30, 1.00) today, so
+            walk2 starts at 2.85 with the room as the long pole and he has been
+            standing on the bus elbow since 2.55. The `max` is the guard: shorten
+            `room` below 0.4 and the ride becomes the long pole, and without it
+            walk2 would start mid-ride.
           */
           t =
             variant === "wide"
               ? tLight + Math.max(B.room, B.cardMove * 1.6)
-              : t + B.room;
+              : tLight +
+                Math.max(
+                  B.cardMove * NARROW_ROOM_RIDE_FRACTION + B.room,
+                  B.cardMove
+                );
 
           // ---- 5. Walk to the Daily budget dial --------------------------
           /*
@@ -743,10 +805,10 @@ export function MarCommandLive() {
             (110,112), beside the lifted card, because he rode up with it. He left
             the spoke a whole beat ago and never touches the pad or the hub link
             again until walk5. A fade here would hold the pad's 96px
-            `.mc-pad__ring` — the client's "stray grey ring" — on screen alone for
-            ride(1.0) + light(0.15) + room(0.7) + 0.4*walk2 = about 2.25s, which is
-            longer than the window that was reported as a defect in the first
-            place. Portrait fades it on the tap instead, over the ride.
+            `.mc-pad__ring` — the client's "stray grey ring" — on screen alone
+            from the tap until cardMove*0.6 + room + 0.4*walk2 = 1.70s later,
+            which is longer than the window that was reported as a defect in the
+            first place. Portrait fades it on the light beat now, with landscape.
           */
           t += B.walk2;
 
@@ -1013,10 +1075,35 @@ export function MarCommandLive() {
             // ---- 17. The tap lights TikTok, and the card gets out of the
             //          way of the knob it is about to turn ------------------
             tl.call(() => litCard2?.classList.add("mc-card--lit"), undefined, t);
+            const tLight2 = t;
+            /*
+              ARC 2'S LIGHT BEAT DROPS THE WHOLE HUB, exactly as arc 1's does —
+              same 0.15s, same `ease: "none"`, same reasoning (beat 3 above). The
+              two stops have to spend this beat identically: a 0.15s divergence
+              between them is precisely what the second-arc note warns makes the
+              second stop look like a different animation.
+
+              THE TARGET IS NOT `hubLayer`, because `hubLayer` is split about the
+              card ARC 1 lights. Arc 2's hub is `hubFurniture2` (every card and
+              spoke except TikTok's) plus `hubPath2` (TikTok's spoke and rail, the
+              pad, the hub link) — the same split taken about TikTok instead.
+
+              `hubFurniture2` therefore INCLUDES the Google Ads card, and that is
+              both correct and load-bearing. Correct: it came home on walk5 and is
+              dead weight for the whole of arc 2, exactly like the four cards
+              beside it. Load-bearing: the loop head's `tl.set(hubLayer, {opacity:
+              1})` does NOT cover it, since `hubFurniture` is defined as
+              `cards.filter(c => c !== litCard)`, so the ONLY thing that returns
+              the Google Ads card to opacity 1 for the next repeat is the
+              `hubFurniture2` restore on walk8 below. That lands at 0.95 of walk8,
+              a full rest beat before the loop head, so repeats 2 and 3 open with
+              it visible. TikTok's own card is in neither list and is never faded
+              here, the same way arc 1 never fades the card it lit.
+            */
             tl.to(
-              [...hubFurniture2, ...(pad ? [pad] : [])],
+              [...hubFurniture2, ...hubPath2],
               { opacity: 0, duration: NB.light, ease: "none" },
-              t
+              tLight2
             );
             /*
               THE LIFT IS NOT DECORATION HERE, IT IS CLEARANCE.
@@ -1094,23 +1181,38 @@ export function MarCommandLive() {
               t + NB.cardMove * 0.45
             );
             tl.set(sprite, { "--mc-bob": "0px" }, t + NB.cardMove);
-            /* Arc 2's ground goes on the ride too, for the reason arc 1's does. */
-            tl.to(
-              hubPath2.filter((el) => el !== pad),
-              { opacity: 0, duration: NB.cardMove * 0.5, ease: "none" },
-              t
-            );
             t += NB.cardMove;
-            t += NB.light;
 
             // ---- 18. The room draws out of the TikTok card ---------------
-            tl.to(wires, { strokeDashoffset: 0, duration: NB.room, ease: "power3.out" }, t);
+            /*
+              THE SAME OFFSET AND THE SAME CONSTANT AS ARC 1, because this is arc
+              1's ride mirrored: both cards travel 100 units to the same (195,70)
+              perch, with the same 42 half-width and byte-identical schedules, so
+              the fraction of the ride at which the card covers `BUS_NARROW`'s
+              (195,112) origin is 0.589 for both. Arc 1 gets there with its RIGHT
+              edge, arc 2 with its LEFT. See NARROW_ROOM_RIDE_FRACTION.
+
+              The cursor has the same shape as arc 1's for the same reason: the
+              room and the ride overlap, so it is the later of the two, and the
+              `max` keeps walk7 from starting before he is off the ride.
+            */
+            const tRoom2 = tLight2 + NB.cardMove * NARROW_ROOM_RIDE_FRACTION;
+            tl.to(
+              wires,
+              { strokeDashoffset: 0, duration: NB.room, ease: "power3.out" },
+              tRoom2
+            );
             tl.to(
               controls,
               { opacity: 1, scale: 1, duration: NB.room, stagger: 0.06, ease: "power3.out" },
-              t
+              tRoom2
             );
-            t += NB.room;
+            t =
+              tLight2 +
+              Math.max(
+                NB.cardMove * NARROW_ROOM_RIDE_FRACTION + NB.room,
+                NB.cardMove
+              );
 
             // ---- 19. Walk to the Radius dial -----------------------------
             tl.call(() => {
@@ -1118,9 +1220,9 @@ export function MarCommandLive() {
               setFlip(1);
             }, undefined, t);
             walk(tl, NR.walk7, NB.walk7, t, aspect);
-            /* The hubPath2 fade moved to the ride, alongside arc 1's. Nothing
-               is left to fade here: walk7 now starts at (110,112) on the bus,
-               so the pad and TikTok's rail were already gone before he set off. */
+            /* Nothing is left to fade here: the whole of arc 2's hub went on the
+               light beat, alongside arc 1's, and walk7 starts at (110,112) out on
+               the bus — the pad and TikTok's rail were gone before he set off. */
             t += NB.walk7;
 
             // ---- 20. Grip and turn the SECOND knob -----------------------
