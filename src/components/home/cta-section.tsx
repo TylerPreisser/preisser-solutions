@@ -113,14 +113,6 @@ export function CtaSection() {
             </svg>
           </Link>
         </div>
-        <a
-          href="https://tylerpreisser.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ps-cta-portfolio-link"
-        >
-          More of our founder&apos;s projects &rarr;
-        </a>
       </div>
     </section>
   );

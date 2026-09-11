@@ -709,21 +709,6 @@ export function CaseStudies() {
                   pointer-device label says "Click for more"; touch devices get
                   "Tap for more" via CSS @media (hover: none).
                   Decorative only (aria-hidden); a11y is on the toggle button. */}
-              {/* Outcome line on the CLOSED face. A SIBLING of the panel, not a
-                  child: the panel is opacity:0 / pointer-events:none as a unit,
-                  so anything inside it would either stay invisible or reveal the
-                  whole story and kill the tap. Hidden while the card is open so
-                  it never double-prints under the revealed copy.
-                  aria-hidden because the identical words are already in the
-                  panel, which is opacity:0 rather than display:none and is
-                  therefore already read by assistive tech — announcing them
-                  twice would be worse than not announcing them here. */}
-              {study.outcome ? (
-                <p className="ps-work-card__outcome" aria-hidden="true">
-                  {study.outcome}
-                </p>
-              ) : null}
-
               <div className="ps-work-card__bob" aria-hidden="true">
                 <span className="ps-work-card__bob-label ps-work-card__bob-label--hover">Click for more</span>
                 <span className="ps-work-card__bob-label ps-work-card__bob-label--tap">Tap for more</span>
