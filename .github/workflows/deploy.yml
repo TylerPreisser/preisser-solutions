@@ -1,0 +1,121 @@
+# Production deploy to Cloudflare Pages (`preisser-solutions`).
+#
+# Runs only after "Validate Site" (pages.yml) has passed for a push to main.
+# workflow_run rather than a `needs:` job: pages.yml stays the single
+# validation gate (including the browser probe) without being edited into a
+# deploy file or duplicated here, and this workflow checks out exactly the
+# commit that gate validated (`workflow_run.head_sha`), not whatever main is now.
+#
+# The build reproduces the documented manual gate
+# (.claude/rules/cloudflare-deploy-gate.md:18-26, WORKSPACE_SOURCE_OF_TRUTH.md:93-110):
+# npm ci, build (which already runs strip-404-noindex and generate-sitemap),
+# lint, tsc, validate:seo, then `wrangler pages deploy out --branch main`.
+# IndexNow is NOT pinged here: it is a per-new-page action
+# (docs/seo-maintenance.md:174), not part of every deploy.
+#
+# Requires repo secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID.
+# Note: workflow_run triggers only use the copy of this file on the default
+# branch, so nothing deploys until this file is merged to main.
+
+name: Deploy Site
+
+on:
+  workflow_run:
+    workflows: ["Validate Site"]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.2
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      # Out-of-order guard. If main has moved on since this commit was validated,
+      # a newer Validate Site run owns the deploy; shipping this older commit
+      # after it would roll production back.
+      - name: Skip if main has moved past this commit
+        id: current
+        env:
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          git ls-remote origin refs/heads/main > /tmp/main-ref.txt
+          MAIN_SHA="$(cut -f1 /tmp/main-ref.txt)"
+          echo "validated=$HEAD_SHA main=$MAIN_SHA"
+          if [ -z "$MAIN_SHA" ]; then
+            echo "::error::could not read origin main"
+            exit 1
+          fi
+          if [ "$MAIN_SHA" = "$HEAD_SHA" ]; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::main is now $MAIN_SHA; skipping deploy of $HEAD_SHA"
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # 22.18+ required; see pages.yml and package.json "engines".
+      - if: steps.current.outputs.deploy == 'true'
+        uses: actions/setup-node@v6.4.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - if: steps.current.outputs.deploy == 'true'
+        run: npm ci
+      - if: steps.current.outputs.deploy == 'true'
+        run: npm run build
+      - if: steps.current.outputs.deploy == 'true'
+        run: npm run lint
+      - if: steps.current.outputs.deploy == 'true'
+        run: npx tsc --noEmit
+      - if: steps.current.outputs.deploy == 'true'
+        run: npm run validate:seo
+
+      # --branch main is REQUIRED: without it Cloudflare files the upload as a
+      # Preview and production keeps serving the old build while wrangler
+      # exits 0 (WORKSPACE_SOURCE_OF_TRUTH.md:113-120). Run from the repo root so
+      # functions/ is bundled alongside out/.
+      - name: Deploy to Cloudflare Pages
+        if: steps.current.outputs.deploy == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler@4.53.0 pages deploy out --project-name preisser-solutions --branch main
+
+      # Exit 0 from wrangler proves nothing. Require the apex to answer 200 AND
+      # serve the home page chunk this build produced.
+      - name: Verify the live apex serves this build
+        if: steps.current.outputs.deploy == 'true'
+        run: |
+          grep -o '_next/static/chunks/app/page-[a-f0-9]*\.js' out/index.html > /tmp/built-chunk.txt || true
+          CHUNK="$(head -n1 /tmp/built-chunk.txt)"
+          if [ -z "$CHUNK" ]; then
+            echo "::error::no app/page chunk found in out/index.html"
+            exit 1
+          fi
+          echo "expecting $CHUNK"
+          for attempt in $(seq 1 12); do
+            CODE="$(curl -sS -o /tmp/live.html -w '%{http_code}' -H 'Cache-Control: no-cache' "https://preissersolutions.com/?cb=${GITHUB_RUN_ID}-${attempt}" || echo 000)"
+            echo "attempt $attempt: HTTP $CODE"
+            if [ "$CODE" = "200" ] && grep -qF "$CHUNK" /tmp/live.html; then
+              echo "live apex serves $CHUNK"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::https://preissersolutions.com/ did not return 200 with $CHUNK"
+          exit 1
