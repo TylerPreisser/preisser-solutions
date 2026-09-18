@@ -1,7 +1,13 @@
-# Unshipped work pulled from the site 2026-08-03 — C3 Studio and NWKS
-# Encounter are not finished and should not be presented as delivered.
+# Unshipped work pulled from the site 2026-08-03 — C3 Studio is not finished
+# and should not be presented as delivered.
+#
+# NWKS Encounter was pulled in the same 2026-08-03 sweep and is now back: the
+# ministry's site went live on its own domain in the 2026-08-19 custom-domain
+# cutover (nwks-encounter-site wrangler.toml PUBLIC_ORIGIN) and both Encounters
+# now run their registration and administration on it. The 301 is removed
+# rather than repointed, because /case-studies/nwks-encounter is a real page
+# again and a redirect would hide it.
 /case-studies/c3-studio /case-studies 301
-/case-studies/nwks-encounter /case-studies 301
 
 # Agents → Products rename 2026-05-21
 /agents /products 301

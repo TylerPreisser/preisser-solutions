@@ -28,9 +28,10 @@ const EXCLUDED_HTML = new Set([
 // causes GSC "Page with redirect" errors (Google indexes the source, finds the
 // 301, marks it invalid). Mirror public/_redirects keys here.
 const EXCLUDED_PATHS = new Set([
-  // Unshipped work removed 2026-08-03 (301 -> /case-studies in _redirects)
+  // Unshipped work removed 2026-08-03 (301 -> /case-studies in _redirects).
+  // NWKS Encounter came off this list when the engagement shipped and its 301
+  // was removed — it is an indexable page again and must appear in the sitemap.
   "/case-studies/c3-studio",
-  "/case-studies/nwks-encounter",
   // Legacy case-study slugs (redirect to canonical anonymized framings)
   "/case-studies/astrus-insurance",
   "/case-studies/sunrise-transportation",

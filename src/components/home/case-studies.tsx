@@ -60,9 +60,14 @@ interface CaseStudyCard {
    * Only set this where the icon is a SINGLE visual mass that genuinely sits
    * high or low. Do NOT set it to cancel an ink-bbox offset caused by a small
    * badge or foot in one corner — on those the primary shape is already
-   * centred and a nudge would visibly push it off (cards 9, 10, 11, 15 and 16
-   * are all that case; measured, then confirmed by eye against a centre
-   * crosshair, 2026-09-05).
+   * centred and a nudge would visibly push it off (After-Hours Call Triage,
+   * AI Invoice Processing, AI Document Analysis, Agentic AI Coding Specialists
+   * and Custom Local AI Models are all that case; measured, then confirmed by
+   * eye against a centre crosshair, 2026-09-05).
+   *
+   * Named rather than numbered since 2026-09-18: this list used to read
+   * "cards 9, 10, 11, 15 and 16" as zero-based indices into the array below,
+   * which silently went stale the moment a card was inserted above them.
    *
    * Expressed in PERCENT of the icon's own box so it stays correct at both
    * the 100px mobile and 120px desktop icon sizes.
@@ -109,6 +114,45 @@ const caseStudyCards: CaseStudyCard[] = [
     caseLogoHeight: 48,
     logoClass: "ps-work-card-logo--farmbooks",
     logoWordmark: "FarmBooks",
+  },
+  // NWKS Encounter — the retreat website AND the administration system behind
+  // it. Sits second because it is the widest client engagement on this grid:
+  // the public site and the back office, both shipped.
+  //
+  // Named with the owner's approval, 2026-09-18 (docs/CANONICAL-PROJECTS.md).
+  // The ministry is nameable; the people in it are NOT. No attendee, volunteer
+  // or leader name, and no count read out of the live database, belongs on this
+  // card or in any copy derived from it.
+  {
+    title: "NWKS Encounter",
+    outcome: "The weekend's paperwork is produced, not retyped.",
+    tags: "Ministry | Registration + Admin Panel | Two Encounters",
+    // 370 chars -> the "long" density bucket (>=300), and deliberately UNDER
+    // FarmBooks' 377, which is the longest description this panel is proven to
+    // hold. A 607-character first draft rendered clipped mid-sentence at
+    // 1440x900 and never showed the outcome line at all; the reveal panel does
+    // not scroll. Re-check the bucket and the 320x568 clipping check if you
+    // edit this.
+    description:
+      "Two retreat weekends a year ran on a WordPress site and Google Forms, and everything after the form was retyped: the room plan rebuilt each cycle, then typed again onto 720 badges and tags on the last night. Now a planner drafts the beds, the teams come from the ministry's own 684 placements, and nobody retypes a name. The weekend's paperwork is produced, not retyped.",
+    // A soft prairie-sage light card: the ministry's wordmark is solid black, so
+    // it needs a light face, and this stays clear of FarmBooks' cream-and-gold
+    // directly above it.
+    gradient: "linear-gradient(135deg, #F7F8F5 0%, #EBEEE6 55%, #DCE1D2 100%)",
+    lightCard: true,
+    image: "nwks-encounter.webp",
+    imageWidth: 296,
+    imageHeight: 47,
+    // Verified 2026-09-18: https://nwksencounter.com -> 200, on the ministry's
+    // own domain since the 2026-08-19 custom-domain cutover. Satisfies both
+    // limbs of DECISIONS/0002 — the URL resolves 2xx and this client is not one
+    // we anonymize.
+    // No `href`, matching FarmBooks and Iron and Oak: every card that carries a
+    // live product link has its case-study link removed, per the owner's
+    // 2026-09-03 call that with the real thing one tap away a write-up about it
+    // is the weaker destination. /case-studies/nwks-encounter still exists, is
+    // in the sitemap, and is linked from the /case-studies grid.
+    liveUrl: "https://nwksencounter.com",
   },
   // Alliant Insurance ecosystem MGU: AI Submission Processing (anonymized per privacy rules)
   {

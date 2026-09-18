@@ -25,6 +25,12 @@ Last updated: 2026-05-22.
   revenue/customer metrics without confirming.
 - **Preisser Solutions** - this site itself and internal operating systems.
 - **Tyler Preisser** - founder bio and personal-site case study.
+- **NWKS Encounter** (Northwest Kansas Encounter, Men's and Women's Encounter) -
+  full name publishable. Approved by Tyler on 2026-09-18 for the case study.
+  The ministry is named; the people in the system never are. Do not publish an
+  attendee, leader, or admin name, do not publish any count read out of the live
+  database, and do not link the admin panel - it is a login for the ministry's
+  own team, not a demo.
 - **An MGU within the Alliant Insurance ecosystem** - anonymized insurance
   engagement. Do not publish private company or personnel names.
 - **A Chicago-area bus transportation operator** - anonymized transportation
@@ -43,6 +49,7 @@ SOW values, project ranges, hourly rates, or retainers.
 Use the active case-study data files in `src/data/case-studies/` as the canonical
 project records. The current public set includes:
 
+- NWKS Encounter - retreat website and the administration system behind it
 - Cassidy HVAC - AI customer reactivation
 - Cassidy HVAC - AI marketing engine
 - HG Oil Holdings - inventory system
