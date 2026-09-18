@@ -869,7 +869,7 @@
    Raising the height cap lets the lockup size off its own long axis. 76% keeps
    the bottom of the women's mark clear of the bob label and the top clear of
    the card edge, measured at 1440x900 and 390x844 in both themes. */
-.ps-work-card.ps-work-card .ps-work-card-logo[src$="nwks-encounter.webp"] {
+.ps-work-card.ps-work-card .ps-work-card-logo[src$="nwks-encounter-c4ccac09.webp"] {
   max-width: 58%;
   max-height: 76%;
 }

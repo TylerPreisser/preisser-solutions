@@ -159,7 +159,16 @@ const caseStudyCards: CaseStudyCard[] = [
     // taller than any other card asset, so it gets its own box in
     // work-card-reveal.css — the shared max-height: 50% would shrink it to ~92px
     // wide and make both marks illegible.
-    image: "nwks-encounter.webp",
+    // CONTENT-HASHED FILENAME, and it must stay that way. Shipped first as a
+    // bare "nwks-encounter.webp": the original wordmark had already been served
+    // under that name with `cache-control: public, max-age=2592000`, so after
+    // the deploy the edge kept answering HIT with the OLD 1,318-byte / 296x47
+    // wordmark (age 509s) while a cache-busted request returned the new
+    // 76,080-byte / 700x1359 lockup. Every real visitor saw the old mark, and
+    // the build, the deploy and a plain fetch all looked correct. Same fix as
+    // 580f1c8 on the elara sprite: new bytes get a new name, so the cache key
+    // changes with them. Re-hash the file if you ever regenerate it.
+    image: "nwks-encounter-c4ccac09.webp",
     imageWidth: 700,
     imageHeight: 1359,
     // Verified 2026-09-18: https://nwksencounter.com -> 200, on the ministry's
