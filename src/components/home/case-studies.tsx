@@ -125,24 +125,43 @@ const caseStudyCards: CaseStudyCard[] = [
   // card or in any copy derived from it.
   {
     title: "NWKS Encounter",
-    outcome: "The weekend's paperwork is produced, not retyped.",
-    tags: "Ministry | Registration + Admin Panel | Two Encounters",
-    // 370 chars -> the "long" density bucket (>=300), and deliberately UNDER
-    // FarmBooks' 377, which is the longest description this panel is proven to
-    // hold. A 607-character first draft rendered clipped mid-sentence at
-    // 1440x900 and never showed the outcome line at all; the reveal panel does
-    // not scroll. Re-check the bucket and the 320x568 clipping check if you
-    // edit this.
+    outcome: "Executive visibility into the ministry, and 90% of the busy work automated.",
+    tags: "Ministry | Admin Panel | AI + Automation",
+    // OWNER-SUPPLIED FRAMING, 2026-09-18. He rejected the agent-authored
+    // version outright ("the executive summary there is horrible... your
+    // wording's awful") and dictated the substance: who they are, that
+    // Preisser Solutions mapped their processes and busy work into one
+    // custom-built administration panel, executive visibility, AI integrations,
+    // and 90% of the busy work automated. Same precedent as ADR-0009 — the
+    // owner's own copy ships. The 90% is HIS figure about HIS engagement, not a
+    // measurement taken from the repository; do not attach a source to it and
+    // do not "correct" it.
+    //
+    // 345 chars -> the "long" density bucket (>=300), and under FarmBooks' 377,
+    // which is the longest description this panel is proven to hold. A
+    // 607-character draft rendered clipped mid-sentence and never showed the
+    // outcome line; the reveal panel does not scroll. Re-check the bucket and
+    // the 320x568 clipping check if you edit this.
     description:
-      "Two retreat weekends a year ran on a WordPress site and Google Forms, and everything after the form was retyped: the room plan rebuilt each cycle, then typed again onto 720 badges and tags on the last night. Now a planner drafts the beds, the teams come from the ministry's own 684 placements, and nobody retypes a name. The weekend's paperwork is produced, not retyped.",
-    // A soft prairie-sage light card: the ministry's wordmark is solid black, so
-    // it needs a light face, and this stays clear of FarmBooks' cream-and-gold
-    // directly above it.
+      "Northwest Kansas Encounter is a ministry in Northwest Kansas. Preisser Solutions mapped their business processes, use cases and busy work into one seamless, custom-built administration panel, with artificial intelligence integrations across the back office. The result: executive visibility into the ministry, and 90% of the busy work automated.",
+    // A soft prairie-sage light card. It has to carry BOTH marks: the women's
+    // lockup is solid black line art and the men's badge is yellow-and-white on
+    // its own olive disc, so only a light face lets both read. It also stays
+    // clear of FarmBooks' cream-and-gold directly above it.
     gradient: "linear-gradient(135deg, #F7F8F5 0%, #EBEEE6 55%, #DCE1D2 100%)",
     lightCard: true,
+    // The two real Encounter marks stacked, men's above women's (owner,
+    // 2026-09-18: "the actual men's and women's encounter logos on this, on top
+    // of one another, not just the words"). Composed from the ministry's own
+    // assets/men-logo-trim.jpg and assets/womens-mark.png: the men's stamp is
+    // masked to a circle so its square olive plate does not read as a block on
+    // the card, the women's mark is already transparent line art. 1:1.94 is far
+    // taller than any other card asset, so it gets its own box in
+    // work-card-reveal.css — the shared max-height: 50% would shrink it to ~92px
+    // wide and make both marks illegible.
     image: "nwks-encounter.webp",
-    imageWidth: 296,
-    imageHeight: 47,
+    imageWidth: 700,
+    imageHeight: 1359,
     // Verified 2026-09-18: https://nwksencounter.com -> 200, on the ministry's
     // own domain since the 2026-08-19 custom-domain cutover. Satisfies both
     // limbs of DECISIONS/0002 — the URL resolves 2xx and this client is not one
@@ -459,6 +478,33 @@ export function CaseStudies() {
   // scroll (> 24px away from where we started) counts as "moving on".
   const scrollAtOpenRef = useRef(0);
 
+  // Hover opens the panel on a real pointer; tap still toggles it on touch.
+  //
+  // Owner, 2026-09-18: "You shouldn't have to click for more when you hover on
+  // those tiles on desktop. It should pull up the thing, and then you click the
+  // actual link to go look at it."
+  //
+  // This drives the SAME `openCard` state a click does, deliberately, rather
+  // than revealing the panel in CSS off `:hover`. The panel's links are inert
+  // until the card is open — `pointer-events: auto` is gated on
+  // `.ps-work-card--open` (work-card-reveal.css:247) and the component gives
+  // them `tabIndex -1` / `aria-hidden` when closed. A CSS-only hover would
+  // paint the panel while leaving every link unclickable and unfocusable,
+  // which is precisely the failure being reported, pointed the other way.
+  //
+  // Gated on `(hover: hover) and (pointer: fine)` and read in an effect, not at
+  // module scope, because matchMedia does not exist during the static export's
+  // prerender. A coarse pointer keeps the tap-to-toggle behaviour, so nothing
+  // depends on a :hover that touch never clears.
+  const [hoverOpens, setHoverOpens] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const apply = () => setHoverOpens(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
   // Entry fade for the bottom affordance + its scrim.
   //
   // A 240ms fade was authored on .ps-work-card__bob in globals.css, but its
@@ -644,6 +690,15 @@ export function CaseStudies() {
                   : undefined
               }
               role="listitem"
+              onMouseEnter={hoverOpens ? () => {
+                scrollAtOpenRef.current = trackRef.current?.scrollLeft ?? 0;
+                setOpenCard(index);
+              } : undefined}
+              onMouseLeave={hoverOpens ? () => {
+                // Only close if this card is the one open, so a pointer leaving
+                // card A after the user has already hovered card B cannot shut B.
+                setOpenCard((prev) => (prev === index ? null : prev));
+              } : undefined}
             >
               {/* Gradient background layer */}
               <div

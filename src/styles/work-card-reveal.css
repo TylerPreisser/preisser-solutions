@@ -860,6 +860,20 @@
   transform: translate(-52.05%, -50%);
 }
 
+/* NWKS is the only STACKED lockup on the grid: two Encounter marks, one above
+   the other, at 700x1359 (1:1.94). Every other card asset is wide or roughly
+   square, so the shared `max-width: 60%; max-height: 50%` (globals.css:3526)
+   sizes them off their width. This one is height-bound instead: at 50% of a
+   396px card the box is 198px tall, which `object-fit: contain` renders just
+   102px wide — both marks unreadable, and the men's badge type gone entirely.
+   Raising the height cap lets the lockup size off its own long axis. 76% keeps
+   the bottom of the women's mark clear of the bob label and the top clear of
+   the card edge, measured at 1440x900 and 390x844 in both themes. */
+.ps-work-card.ps-work-card .ps-work-card-logo[src$="nwks-encounter.webp"] {
+  max-width: 58%;
+  max-height: 76%;
+}
+
 /* FarmBooks is a LOCKUP, not a lone mark: a wheat glyph with a separate
    wordmark under it, each independently anchored to the card's centre.
 
