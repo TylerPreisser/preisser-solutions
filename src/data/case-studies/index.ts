@@ -5,6 +5,7 @@ import type { CaseStudyData, CaseStudySummary } from "@/types/case-study";
 import { caseStudy as farmbooks } from "./farmbooks";
 
 // Named client engagements (canonical #1–8)
+import { caseStudy as nwksEncounter } from "./nwks-encounter";
 import { caseStudy as cassidyReactivation } from "./cassidy-hvac-reactivation";
 import { caseStudy as cassidyMarketing } from "./cassidy-hvac-marketing-engine";
 import { caseStudy as hgOilInventory } from "./hg-oil-inventory-system";
@@ -66,6 +67,7 @@ export const caseStudies: CaseStudyData[] = [
   farmbooks,
 
   // 1. Named client engagements
+  nwksEncounter,
   cassidyReactivation,
   cassidyMarketing,
   hgOilInventory,
@@ -131,9 +133,16 @@ export const hubSlugs: string[] = [
   "farmbooks",
 
   // Named client engagements.
+  //
+  // NWKS Encounter sits second on purpose: it is the widest engagement on the
+  // grid (the public site AND the administration system behind it), so it earns
+  // the position a visitor reads after the flagship. It also keeps the two HG
+  // Oil engagements non-adjacent, which is the constraint below.
+  //
   // The two HG Oil engagements are deliberately NOT adjacent — side by side in
   // the grid they read as duplicate cards before you notice the categories
   // differ (inventory operations vs. back-office automation).
+  "nwks-encounter",
   "hg-oil-inventory-system",
   "alliant-mgu-insurance",
   "chicago-bus-operator",

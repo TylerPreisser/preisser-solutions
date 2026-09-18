@@ -214,6 +214,46 @@ files; 23 photographed real bills in the test corpus.
 
 ---
 
+### NWKS Encounter: retreat website and administration system
+
+Northwest Kansas Encounter runs two volunteer-staffed retreat weekends a year, a men's and a
+women's. Sign-ups ran on a WordPress site pointed at Google Forms, which turned away anyone
+without a Google account, and everything after the form was retyped by hand. Room assignments
+were, in the ministry's own words, one hundred percent manual: a spreadsheet rebuilt from scratch
+every cycle, then typed again onto 720 printed pieces (288 name cards and 432 stickers) for 144
+people by one volunteer on the last night. The volunteer team sheet was a static workbook re-typed
+each cycle. Launch-point details were personally emailed to every new sign-up every one to two
+days. The women's Encounter could not sign a volunteer up online at all. And the ministry raised
+the real risk itself, unprompted: no security at all on a system collecting a lot of names and
+phone numbers.
+
+The engagement built both halves, judged against a tiebreak written into its own design documents:
+the design that means nobody retypes anything wins. The public site is one self-contained document
+with every stylesheet, script and image inlined, for a congregation largely registering on phones
+on rural signal. Registration opens at an announced instant and flips locally with no network call;
+a full weekend collects a waitlist on the same form, and a released seat is offered to the next
+person automatically with a day to accept. The administration side drafts rather than arranges: a
+weighted planner works roughly 144 bed assignments against seven ranked objectives so two
+volunteers can correct it in an evening, and the weekend's volunteer teams are drafted from 684
+placements across 14 Encounters between 2015 and 2026, turned into eleven measured rules. Handed a
+programme it has no history for, that engine refuses to draft at all rather than guess. The
+finished sheet is then read backwards against a decade of practice by eight checks that share no
+code with the engine that drafts it, so they can catch its drift.
+
+**The integrity constraint.** Two ministries share one system and their records cannot cross. It is
+enforced by the database itself, 127 triggers of which 113 are that separation, because the leak
+that actually happened came from an import script writing straight to the database: eighteen men's
+registrations under an invented women's event, surfacing in the women's administrators' panel. A
+standing test now fails the build if a new table is added without one.
+
+**Outcome.** The weekend's paperwork is produced rather than retyped. No hours-saved figure is
+claimed, because none was ever measured.
+
+[Full case study](https://preissersolutions.com/case-studies/nwks-encounter) |
+[Live site](https://nwksencounter.com)
+
+---
+
 ### HG Oil Holdings: inventory management system
 
 HG Oil Holdings, an oil and gas holdings company, tracked inventory across multiple assets
@@ -363,6 +403,7 @@ subcontractors and no white-labeling; and delivery measured in weeks rather than
 
 - https://preissersolutions.com/case-studies (Case studies index)
 - https://preissersolutions.com/case-studies/farmbooks (FarmBooks)
+- https://preissersolutions.com/case-studies/nwks-encounter (NWKS Encounter retreat platform)
 - https://preissersolutions.com/case-studies/hg-oil-inventory-system (HG Oil inventory system)
 - https://preissersolutions.com/case-studies/hg-oil-ai-invoice-processing (HG Oil invoice processing)
 - https://preissersolutions.com/case-studies/alliant-mgu-insurance (MGU submission processing)
