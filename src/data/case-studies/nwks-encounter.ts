@@ -68,9 +68,9 @@ export const caseStudy: CaseStudyData = {
 
   h1: "NWKS Encounter: Nobody Retypes Anything",
   subheadline:
-    "Two Encounters a year, a men's and a women's, taking their own registrations and building their own cabins, teams and printed rosters, on one system where the two ministries' data cannot cross.",
+    "A ministry's whole year of busy work, mapped into one custom-built administration panel: registration, cabins, volunteer teams, the weekend schedule and the printed rosters, with AI across the back office.",
   oneLine:
-    "Two retreat weekends a year, run end to end on one system",
+    "Executive visibility into the ministry, and 90% of the busy work automated",
 
   liveLink: {
     label: "See it live at nwksencounter.com",
@@ -84,12 +84,16 @@ export const caseStudy: CaseStudyData = {
     { value: "127 rules", label: "The database itself enforces, keeping the two ministries apart" },
   ],
 
+  // OWNER-SUPPLIED FRAMING, 2026-09-18, same as the homepage card. He dictated
+  // the substance and rejected the previous version; this is his emphasis, not
+  // a summary of the body below. The 90% is his figure about his own
+  // engagement. See the note on `description` in components/home/case-studies.
   hub: {
     problem:
-      "Two retreat weekends a year ran on a WordPress site pointed at Google Forms, and everything after the form was retyped by hand: the room plan rebuilt from scratch each cycle and typed again onto 720 badges and luggage tags on the last night, the volunteer teams re-keyed into a spreadsheet, launch details personally emailed to every new sign-up every one to two days, and, in the ministry's own words, no security at all on a list of names and phone numbers.",
+      "Northwest Kansas Encounter is a ministry in Northwest Kansas, running two retreat weekends a year on volunteer time. The leadership's year was spent on busy work: registrations taken on a borrowed form, a room plan rebuilt from scratch every cycle, the weekend's teams and its printed paper retyped by hand, and launch details emailed to every new sign-up one person at a time.",
     built:
-      "One system for both Encounters. Registration opens at an announced minute on its own and collects a waitlist instead of turning people away, a weighted planner drafts roughly 144 bed assignments for two volunteers to correct in an evening, the weekend's teams are drafted from the ministry's own eleven years of sheets, and the badges, tags and rosters print from the same records nobody has retyped.",
-    outcome: "The weekend's paperwork is produced, not retyped",
+      "Preisser Solutions mapped their business processes, use cases and busy work into one seamless, custom-built administration panel, with artificial intelligence integrations across the back office. Registration, cabins, volunteer teams, the weekend schedule, email and the printed rosters all run from the same place, on one system where the men's and women's data cannot cross.",
+    outcome: "Executive visibility into the ministry, and 90% of the busy work automated",
   },
 
   before: {

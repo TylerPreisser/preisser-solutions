@@ -3637,6 +3637,15 @@ ul, ol {
 /* Touch device variant */
 .ps-work-card__bob-label--tap { display: none; }
 
+/* "Click for more" is retired on pointer devices (owner, 2026-09-18: "it
+   shouldn't be 'click for more'"). Hovering a card now opens its panel
+   outright, so an instruction to click is both wrong and redundant — the
+   reveal is its own affordance, and the thing you click is the link inside.
+   Touch keeps "Tap for more", because a tap really is required there. */
+@media (hover: hover) and (pointer: fine) {
+  .ps-work-card__bob-label--hover { display: none; }
+}
+
 @media (hover: none) {
   .ps-work-card__bob-label--hover { display: none; }
   .ps-work-card__bob-label--tap { display: inline-block; }
