@@ -1,0 +1,86 @@
+# Per-branch preview builds for MarCommand's site work-order path (F4).
+#
+# The work-order runner on the owner's machine pushes `mc/wo-<id>`, then waits for a
+# rendered preview to show the owner beside the live page. That side-by-side is the
+# entire safety mechanism of the path: nothing reaches production until the owner has
+# looked at a picture of the outcome, not a description of an intention.
+#
+# Scoped to `mc/**` on purpose. Ordinary feature branches are untouched, so this cannot
+# spend build minutes on, or publish a preview of, work that is not a work order.
+#
+# It NEVER deploys production: `--branch <slug>` files the upload as a Preview, and only
+# deploy.yml passes `--branch main`. The slug must match what MarCommand computes in
+# previewOriginFor() (src/workorders/model.ts:103) and the runner's slug() — lowercase,
+# anything outside [a-z0-9-] to '-', collapsed, trimmed — because that is the URL
+# MarCommand will try to screenshot. `mc/wo-12` -> `mc-wo-12`.
+#
+# Requires repo secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID (already set for
+# deploy.yml).
+
+name: Preview Site
+
+# MANUAL FALLBACK ONLY (workspace CLAUDE.md §4a, 2026-09-24). CI is the local ci-local gate (scripts/ci-steps.sh,
+# posted as the ci-local commit status). This workflow no longer runs on push or pull_request; invoke it by
+# hand with `gh workflow run <file>` if the gate machine is down.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "preview-site-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.2
+
+      # 22.18+ required; see pages.yml and package.json "engines".
+      - uses: actions/setup-node@v6.4.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      # Same gate production passes. It reads the built `out/` tree, not a live URL, so a
+      # preview is held to the identical standard rather than a weaker one.
+      - run: npm run validate:seo
+
+      - name: Compute the preview slug MarCommand will look for
+        id: slug
+        run: |
+          slug=$(printf '%s' "$GITHUB_REF_NAME" | tr 'A-Z' 'a-z' \
+            | sed -E 's/[^a-z0-9-]+/-/g; s/-+/-/g; s/^-|-$//g')
+          echo "slug=$slug" >> "$GITHUB_OUTPUT"
+          echo "preview will be https://$slug.preisser-solutions.pages.dev"
+
+      # Run from the repo root so functions/ is bundled alongside out/, exactly as
+      # deploy.yml does. --branch <slug> keeps this a Preview deployment.
+      - name: Deploy preview to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx wrangler@4.53.0 pages deploy out \
+            --project-name preisser-solutions \
+            --branch "${{ steps.slug.outputs.slug }}"
+
+      # wrangler exiting 0 does not prove the preview serves. The runner is about to
+      # screenshot this URL; fail here rather than hand MarCommand a 404 to picture.
+      - name: Require the preview URL to actually answer
+        run: |
+          URL="https://${{ steps.slug.outputs.slug }}.preisser-solutions.pages.dev/"
+          for i in $(seq 1 12); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$URL" || true)
+            echo "attempt $i: $URL -> $code"
+            [ "$code" = "200" ] && exit 0
+            sleep 10
+          done
+          echo "::error::preview did not answer 200 at $URL"
+          exit 1
