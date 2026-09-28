@@ -86,6 +86,7 @@ function CollapsedRow({ id, ph }: { id: string; ph: boolean }) {
 }
 
 function ReviewGroup({ ph }: { ph: boolean }) {
+  const homeless = fixture.homeless;
   return (
     <>
       <div className="bo-chips">
@@ -98,12 +99,16 @@ function ReviewGroup({ ph }: { ph: boolean }) {
       </div>
       <div className="bo-group">
         <p className="bo-group__head">
-          Money in without a home <span>&middot; 3</span>
+          Money in without a home <span>&middot; {homeless.length}</span>
         </p>
         <ul className="bo-list">
-          <CollisionRow ph={ph} />
-          <CollapsedRow id="d6" ph={ph} />
-          <CollapsedRow id="d7" ph={ph} />
+          {homeless.map((o) =>
+            o.reason === "collision" ? (
+              <CollisionRow key={o.deposit.id} ph={ph} />
+            ) : (
+              <CollapsedRow key={o.deposit.id} id={o.deposit.id} ph={ph} />
+            ),
+          )}
         </ul>
       </div>
     </>
@@ -112,13 +117,18 @@ function ReviewGroup({ ph }: { ph: boolean }) {
 
 /**
  * The Screen beat: "Money · Review" recreated (spec-BO.md §4 "Screen").
- * Only the "Money in without a home" group (ReviewView.tsx `:597`), with the
- * three still-open rows: the collision (`d4`, expanded to its single "likely"
- * reading) and the unknown-sender / partial-amount rows (`d6`, `d7`,
- * collapsed with their "Pick the invoice" action). The three resolved
- * deposits and the pending one never reach this group (spec-BO.md §4,
- * ReviewView.tsx's own queue-membership rule). Not a stepped beat: this is
- * one recreated view, not a sequence, so it carries no `data-stage-step`.
+ * Only the "Money in without a home" group (ReviewView.tsx `:597`), driven
+ * by `fixture.homeless` (verify-BO.md N1) so the row set and its count can
+ * never drift from the fixture: the collision (`d4`, expanded to its single
+ * "likely" reading) plus every other still-unmatched, already-posted
+ * deposit — unknown-sender (`d6`), no-exact-amount (`d7`), and unexplained
+ * (`d8`, already paid elsewhere) — collapsed with their "Pick the invoice"
+ * action, matching `DepositRow`'s own rule (any row without exactly one
+ * reading gets that action, regardless of why). The three resolved deposits
+ * and the pending one never reach this group (spec-BO.md §4, ReviewView.tsx's
+ * own queue-membership rule: only posted, homeless rows are in `money_in`).
+ * Not a stepped beat: this is one recreated view, not a sequence, so it
+ * carries no `data-stage-step`.
  */
 export function ReviewScreen() {
   return (

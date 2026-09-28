@@ -266,6 +266,18 @@ export const fixture = {
   get queued() {
     return this.outcomes.filter((o): o is Extract<MatchOutcome, { kind: "queued" }> => o.kind === "queued");
   },
+  /**
+   * ps-admin's "Money in without a home" group (ReviewView.tsx `:597`,
+   * `ins`/`allIn.rows`): every deposit that has POSTED and has no invoice
+   * home, regardless of why — `"pending"` is excluded because a deposit
+   * that has not posted yet is never in the bank's own feed of settled
+   * transactions, so it never reaches that group's server-side row list
+   * either (verify-BO.md N1: the Screen recreation had omitted `d8`
+   * because it was hand-picked by ID instead of derived from this rule).
+   */
+  get homeless() {
+    return this.queued.filter((o) => o.reason !== "pending");
+  },
 } as const;
 
 function invariant(ok: boolean, msg: string): void {
@@ -295,6 +307,10 @@ invariant(
   fixture.queued.filter((q) => q.reason === "unexplained").length === 1,
   `expected exactly 1 unexplained row, got ${fixture.queued.filter((q) => q.reason === "unexplained").length}`,
 );
+// verify-BO.md N1: the Screen recreation's group must carry every posted,
+// homeless deposit (collision + no-counterparty + no-exact-amount +
+// unexplained), never the pending one.
+invariant(fixture.homeless.length === 4, `expected 4 homeless (posted, unmatched) deposits, got ${fixture.homeless.length}`);
 // Review MEDIUM-3: d7's "no open invoice for this client is this amount"
 // must be checked against a genuinely open invoice, not a vacuous empty pool.
 const noExactAmountRow = fixture.queued.find((q) => q.reason === "no-exact-amount");
