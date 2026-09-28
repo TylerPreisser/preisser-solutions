@@ -292,6 +292,39 @@ export function tourPanelGeometry(): {
   };
 }
 
+/**
+ * Geometry for the phone control-bar occlusion fix (critic-BO.md B1: "a step
+ * that reveals an element below the fold lands UNDER the sticky phone control
+ * bar"). Call via `track.evaluate(stepBarOcclusion)`, so `track` is the
+ * matched `[data-track]` element and the scoping matches
+ * `useStageTimeline.ts`'s own `own()` helper (elements whose closest
+ * `[data-track]` is this one, not a nested tabbed panel).
+ *
+ * Returns null when this track has no `.demo-controls` bar (should not
+ * happen; every track renders one) or the bar is not `position: sticky`
+ * (desktop, or a phone width the CSS treats as desktop) -- there is nothing
+ * to occlude with in that case.
+ */
+export function stepBarOcclusion(track: Element): { elBottom: number; barTop: number; occludedPx: number } | null {
+  const bar = track.querySelector<HTMLElement>(".demo-controls");
+  if (!bar || getComputedStyle(bar).position !== "sticky") return null;
+  const step = Number(track.getAttribute("data-track-step") ?? "0");
+  let el: Element | null = null;
+  let elStep = -1;
+  for (const e of Array.from(track.querySelectorAll("[data-stage-step]"))) {
+    if (e.closest("[data-track]") !== track) continue; // a nested tabbed panel's own step; tracks never nest, but be explicit
+    const k = Number((e as HTMLElement).dataset.stageStep);
+    if (k <= step && k > elStep) {
+      el = e;
+      elStep = k;
+    }
+  }
+  if (!el) return null;
+  const elBottom = el.getBoundingClientRect().bottom;
+  const barTop = bar.getBoundingClientRect().top;
+  return { elBottom, barTop, occludedPx: elBottom - barTop };
+}
+
 /** Negative control: force the real armed CSS onto a no-JS page. */
 export function armEverything(): number {
   for (const t of Array.from(document.querySelectorAll("[data-track]"))) {

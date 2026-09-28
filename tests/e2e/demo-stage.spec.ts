@@ -10,6 +10,7 @@ import {
   overflowViolations,
   parseRgb,
   renderedStageIds,
+  stepBarOcclusion,
   tapViolations,
   themeReadout,
   tourPanelGeometry,
@@ -368,6 +369,74 @@ for (const m of MANIFESTS) {
               geo.tab.right,
               `stop ${stop}: active tab (${prevLabel}) right ${geo.tab.right} is right of the tab list's own scroller (${geo.list.right})`,
             ).toBeLessThanOrEqual(geo.list.right + 1);
+          }
+        } finally {
+          await context.close();
+        }
+      });
+    }
+
+    for (const vp of [byName(320, 568), byName(375, 667), byName(393, 659), byName(390, 844)]) {
+      test(`${vpName(vp)} a step landing stays clear of the sticky phone control bar`, async ({ browser, browserName }) => {
+        test.setTimeout(60_000);
+        const { context, page } = await open(browser, browserName, vp);
+        try {
+          await page.goto(`${ORIGIN}${m.route}`, { waitUntil: "load" });
+          await hydrated(page);
+          const t = page.locator("[data-demo-stage] [data-track]:visible").first();
+          if ((await t.count()) === 0) {
+            test.skip(true, `${m.route}: no visible track on this route`);
+          }
+          // Scroll ONLY this one track to a natural viewing position and
+          // wait for it to finish its own entry autoplay (settleTrack, not
+          // settleVisibleTracks): settling every visible track in turn would
+          // leave the window wherever the LAST one settled, which can be far
+          // past THIS track -- off screen above, not below the bar -- and
+          // silently defeats the whole check.
+          await settleTrack(t);
+          const n = Number(await t.getAttribute("data-track-n"));
+          if (n < 1) {
+            test.skip(true, `${m.route}: track has no steps`);
+          }
+          // Rewind to step 0 (Back is a no-op once there), then step forward
+          // one at a time with Next -- the same control a real visitor uses,
+          // and what autoplay does on its own -- checking after every landing
+          // that the newly revealed row clears the sticky bar (critic-BO.md
+          // B1: "a step that reveals an element below the fold lands UNDER
+          // the sticky phone control bar").
+          // Real DOM clicks (`el.click()`), not Playwright's `.click()`: the
+          // latter auto-scrolls its target into view as part of its own
+          // actionability wait, which would bring the row above the bar by
+          // itself and mask a broken fix underneath (same trap as the
+          // tour-scroll test above, review-NW.md B3).
+          for (let i = 0; i < n; i++) {
+            await t.getByRole("button", { name: "Back", exact: true }).evaluate((el) => (el as HTMLButtonElement).click());
+          }
+          await expect(t).toHaveAttribute("data-track-step", "0");
+          for (let i = 0; i < n; i++) {
+            await t.getByRole("button", { name: "Next", exact: true }).evaluate((el) => (el as HTMLButtonElement).click());
+            await expect(t).toHaveAttribute("data-track-step", String(i + 1));
+            // Let the fix's own smooth scroll settle before measuring (same
+            // stability poll as the tour-scroll test above).
+            await page.waitForTimeout(200);
+            let lastY = -1;
+            await expect
+              .poll(
+                async () => {
+                  const y = await page.evaluate(() => window.scrollY);
+                  const stable = y === lastY;
+                  lastY = y;
+                  return stable;
+                },
+                { timeout: 5_000, message: "the page never stopped scrolling" },
+              )
+              .toBe(true);
+            const geo = await t.evaluate(stepBarOcclusion);
+            if (geo === null) continue; // no sticky bar at this width/track (e.g. a beat with no reachable [data-stage-step] yet)
+            expect(
+              geo.occludedPx,
+              `step ${i + 1}: revealed row bottom ${geo.elBottom.toFixed(1)} is ${geo.occludedPx.toFixed(1)}px under the bar top (${geo.barTop.toFixed(1)})`,
+            ).toBeLessThanOrEqual(1);
           }
         } finally {
           await context.close();
