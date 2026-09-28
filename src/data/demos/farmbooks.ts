@@ -180,7 +180,12 @@ export const WORKBOOK = {
   farm: business("coyote-draw-farms").name,
   period: "Jan–Dec 2026",
   lineItems: 61,
-  documents: 37,
+  // critic-FB M4: "documents read" for the whole year must never read lower than a single
+  // month's own bill count (MONTH_BILLS, "the books" beat, below) — derived from it, with a
+  // margin for the rest of the year, so the two figures can no longer disagree by construction.
+  get documents(): number {
+    return MONTH_BILLS + 4;
+  },
   categories: [
     { name: "Fertilizer & Lime", amount: 104174.93 },
     { name: "Seed & Plants", amount: 53345.63 },
