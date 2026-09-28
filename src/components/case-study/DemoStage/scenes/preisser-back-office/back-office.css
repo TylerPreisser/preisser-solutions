@@ -54,7 +54,20 @@
   padding: 4px 0;
 }
 .bo-paper__row + .bo-paper__row { border-top: 1px solid var(--bo-paper-edge); }
+/* One line per row, even for the longer invoice labels ("INV-2101, Larkspur
+   Fence & Supply"): unconstrained, a wrapped label doubled that row's height
+   and mostly cancelled the phone fold's savings below (critic-BO.md M4). */
+.bo-paper__row > span:first-child { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .bo-paper__amount { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bo-paper__more { display: none; margin: 8px 0 0; font-size: 0.75rem; color: var(--bo-paper-ink-2); }
+/* Phone: each panel shows its first 4 rows; the rest fold into a count
+   (critic-BO.md M4 — at 390 the refusal sat ~1,460px below the stage
+   heading with all 8 deposit and 9 invoice rows rendered in full). Desktop
+   has the room and keeps every row. */
+@media (max-width: 639px) {
+  .bo-paper__row:nth-of-type(n + 5) { display: none; }
+  .bo-paper__more { display: block; }
+}
 
 /* ── Read: the matcher deciding, one deposit at a time ── */
 .bo-read {
