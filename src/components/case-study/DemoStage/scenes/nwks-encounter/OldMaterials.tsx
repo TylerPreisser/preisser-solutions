@@ -81,7 +81,8 @@ export function OrgSheetBefore() {
               <th className="nwks-old-rn" />
               {cols.map((t) => (
                 <th key={t.id}>
-                  {t.name}
+                  <span className="nwks-old-th-full">{t.name}</span>
+                  <span className="nwks-old-th-short">{t.code === "FOOD" ? t.name : `TEAM ${t.code}`}</span>
                   <small>{t.job}</small>
                 </th>
               ))}
