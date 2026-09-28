@@ -44,6 +44,7 @@ import {
 } from "@/data/demos/farmbooks";
 import { money } from "./money";
 import { ProductScreen } from "../../ProductScreen";
+import { ReadFollow } from "./ReadFollow";
 
 const USD = (n: number) => money(n, { exact: true });
 const NUM = "font-[family-name:var(--fb-font-display)]";
@@ -69,7 +70,7 @@ function Body({ children }: { children: React.ReactNode }) {
  *  only this inner wrapper is gated by the step engine. */
 function Card({ step, children }: { step: number; children: React.ReactNode }) {
   return (
-    <div className="fb-read__card">
+    <div className="fb-read__card" data-fb-card={step}>
       <div data-stage-step={step} data-fx="rise">
         {children}
       </div>
@@ -239,6 +240,8 @@ export function TheRead() {
 function ReadDesk() {
   return (
     <div className="fb-read p-3 sm:p-4">
+      <ReadFollow />
+      <div className="fb-read__cover" aria-hidden />
       <div className="fb-read__photo-sticky">
         <div className="fb-read__photo">
           {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -83,6 +83,9 @@
   outline: 2px solid rgb(var(--fb-gold));
   outline-offset: -1px;
 }
+.fb-read__cover {
+  display: none;
+}
 .fb-read__cards {
   display: grid;
   gap: 10px;
@@ -118,33 +121,80 @@
   }
 }
 
-/* critic-FB M1/(c): on the phone, keep a small sticky photo above the current card so its gold
-   region box and the step's own words share the screen while stepping — matching the source's
-   own phone behavior (a sticky photo above one card and its caption). Reduced height (not the
-   full aspect-ratio frame) so a step's card is not pushed off-screen beneath it.
-   `.fb-read` (the shared parent) is `display: grid` with NO explicit `grid-template-columns` at
-   this width, which gives each child its own implicit grid ROW — and a grid item's containing
-   block for `position: sticky` is that item's own grid AREA, not the whole grid container. Since
-   the photo's row is only as tall as the photo, sticky had zero room to hold position: measured,
-   it scrolled fully off screen (top: -348px) instead of pinning at `top`. Switching to `display:
-   block` here makes the photo and the cards ordinary flow siblings sharing ONE containing block
-   (this element, as tall as photo + cards together), which is what gives the sticky photo room to
-   stay pinned while the cards scroll beneath it. `gap` doesn't apply to block layout, so the
-   photo's own bottom margin replaces it (unchanged 16px value, `.fb-read`'s own `gap`). */
+/* critic-FB M1/(c) + verify-FB item 1: on phones and tablets (< 1024px) the read follows the
+   original's phone pattern: a small photo pinned directly under the site header, and ONLY the
+   current step's card beneath it, so no earlier card can ever scroll behind the band.
+   - The band pins at `top: var(--nav-height)`, the header's own height token (globals.css:120,
+     80px under its <=767px breakpoint), not the old `+ 8px`, which left a see-through 8px strip
+     between the header pill and the photo where the previous card's caps showed. Its ground is
+     the screen's own opaque cream, and a short fade under it means text never meets a knife edge.
+   - While a track is ARMED (autoplay, or a visitor stepping with Next, Back or a step tap), the
+     six cards share ONE grid cell, the kit's swap-cell pattern (demo-stage.css `.demo-swap`,
+     BLUEPRINT.md §4): the cell is as tall as the tallest card, so the frame never resizes from
+     step to step, and every card but the one matching `data-track-step` is visibility-hidden.
+   - At REST (the track disarmed: after play, no JS, reduced motion, a failed chunk) nothing here
+     applies: the complete end frame, the photo with all eight boxes followed by all six cards in
+     reading order, sits in plain flow with no sticky band (ADR-0016 §3, nothing rests hidden).
+     Growing from the one-card cell back to the full record when play ends is anchored by the
+     browser for a reader already scrolled past (measured: Chromium 151, WebKit 26.5 and
+     Firefox 153 all hold scroll position when content above the viewport grows).
+   `.fb-read` (the shared parent) is `display: block` here, not grid: a grid item's sticky
+   containing block is its own grid AREA (only as tall as the photo, so sticky had no room to
+   hold), while block flow makes photo and cards share ONE containing block. `gap` does not apply
+   to block layout, so the band's own bottom margin replaces it. */
 @media (max-width: 1023px) {
   .fb-read {
     display: block;
   }
   .fb-read__photo-sticky {
-    position: sticky;
-    top: calc(var(--nav-height, 88px) + 8px);
-    z-index: 1;
     margin-bottom: 16px;
     padding-block: 6px;
     background: rgb(var(--fb-page));
   }
   .fb-read__photo-sticky .fb-read__photo {
     max-width: 132px;
+  }
+  [data-track-armed] .fb-read__photo-sticky {
+    position: sticky;
+    top: var(--nav-height, 80px);
+    z-index: 1;
+  }
+  /* The site header is a floating pill over a see-through strip, so a card scrolled up past the
+     band would reappear ABOVE it, around the pill. This cover pins at the viewport top in the
+     band's own cream, one header tall, and takes no space (negative margin): at its resting spot
+     it sits under the band's top edge; once the band pins, it fills the strip behind the header,
+     so nothing from the read ever shows between the header and the photo. It leaves with the
+     read. Painted under the band (earlier in DOM, same z-index) and over the cards. */
+  [data-track-armed] .fb-read__cover {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    height: var(--nav-height, 80px);
+    margin-bottom: calc(-1 * var(--nav-height, 80px));
+    background: rgb(var(--fb-page));
+  }
+  [data-track-armed] .fb-read__photo-sticky::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    height: 12px;
+    background: linear-gradient(rgb(var(--fb-page)), rgb(var(--fb-page) / 0));
+    pointer-events: none;
+  }
+  [data-track-armed] .fb-read__cards > .fb-read__card {
+    grid-area: 1 / 1;
+    align-self: start;
+    visibility: hidden;
+  }
+  [data-track-armed]:is([data-track-step="0"], [data-track-step="1"]) .fb-read__card[data-fb-card="1"],
+  [data-track-armed][data-track-step="2"] .fb-read__card[data-fb-card="2"],
+  [data-track-armed][data-track-step="3"] .fb-read__card[data-fb-card="3"],
+  [data-track-armed][data-track-step="4"] .fb-read__card[data-fb-card="4"],
+  [data-track-armed][data-track-step="5"] .fb-read__card[data-fb-card="5"],
+  [data-track-armed][data-track-step="6"] .fb-read__card[data-fb-card="6"] {
+    visibility: visible;
   }
 }
 
