@@ -36,6 +36,13 @@ const FIRST_STEP_DELAY_MS = 350;
 /** --demo-dur is 520ms in demo-stage.css. Change both together. */
 const SETTLE_MS = 800;
 const COUNT_MS = 700;
+/**
+ * The single band both the mount-time "already seen" check and the
+ * IntersectionObserver's start line use (critic-BO.md M2): a track must never
+ * arm at one line and start at a different, later one, or it can rest on
+ * screen armed and blank at a natural stopping point (a beat's end).
+ */
+const ENTRY_LINE = 0.9;
 
 export interface TimelineState {
   n: number;
@@ -183,7 +190,11 @@ export function useStageTimeline(
     if (typeof IntersectionObserver === "undefined") return;
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
     if (conn?.saveData) return;
-    if (root.getBoundingClientRect().top <= window.innerHeight * 0.9) return; // already seen
+    // The arm line and the start line MUST be the same band (critic-BO.md
+    // M2 / review-F.md follow-up): arming at 90% but starting only at 65%
+    // left a track resting ARMED AND BLANK whenever it stopped between the
+    // two, e.g. at the natural pause after the beat above it finishes.
+    if (root.getBoundingClientRect().top <= window.innerHeight * ENTRY_LINE) return; // already seen
     dispatch({ type: "arm" });
     const io = new IntersectionObserver(
       (entries) => {
@@ -191,9 +202,10 @@ export function useStageTimeline(
         io.disconnect();
         dispatch({ type: "start" });
       },
-      // Fires when the track's top crosses 65% of the viewport: reachable for a
-      // track of any height, unlike a ratio threshold on a tall phone beat.
-      { rootMargin: "0px 0px -35% 0px", threshold: 0 },
+      // Fires when the track's top crosses the SAME line as the arm check
+      // above: reachable for a track of any height, unlike a ratio threshold
+      // on a tall phone beat.
+      { rootMargin: `0px 0px -${Math.round((1 - ENTRY_LINE) * 100)}% 0px`, threshold: 0 },
     );
     io.observe(root);
     return () => io.disconnect();
