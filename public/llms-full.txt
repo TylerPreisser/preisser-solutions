@@ -190,7 +190,7 @@ nothing catches it until the books do not reconcile, usually months later.
 pass and a separate vision read at the same time, co-equally: neither is the fallback for
 the other. The two reads are required to independently agree on each section's printed
 total. When they disagree, the discrepancy surfaces for a human instead of a line silently
-vanishing into the ledger. In testing, the vision read recovered a **$92.57** line that OCR
+vanishing into the ledger. In testing, the vision read recovered a line that OCR
 alone had dropped.
 
 Vendor detection, line-item extraction, and allocation to the right farm field and entity
@@ -251,6 +251,26 @@ claimed, because none was ever measured.
 
 [Full case study](https://preissersolutions.com/case-studies/nwks-encounter) |
 [Live site](https://nwksencounter.com)
+
+---
+
+### The Preisser Solutions back office
+
+The administration panel Preisser Solutions runs its own business on, built the same way we
+build for clients. It carries proof stages that show the built system working on invented
+data, one problem at a time, added as each stage ships.
+
+**First stage: deposit-to-invoice matching.** Bank deposits arrive with almost nothing
+identifying who sent them, and an amount alone is not evidence of who paid. A daily matcher
+ties a deposit to an invoice only when the bank text names the client and the amount matches
+exactly one open invoice; anything else is left in a queue with the reason attached, never
+auto-posted on a guess. When an amount could belong to more than one open invoice for the
+same client, the matcher refuses outright rather than picking one, and a deposit that repeats
+one already paid ties to the existing invoice instead of paying it again.
+
+**Outcome.** A deposit is never assigned to the wrong client on the strength of a coincidence.
+
+[Full case study](https://preissersolutions.com/case-studies/preisser-back-office)
 
 ---
 
@@ -404,6 +424,7 @@ subcontractors and no white-labeling; and delivery measured in weeks rather than
 - https://preissersolutions.com/case-studies (Case studies index)
 - https://preissersolutions.com/case-studies/farmbooks (FarmBooks)
 - https://preissersolutions.com/case-studies/nwks-encounter (NWKS Encounter retreat platform)
+- https://preissersolutions.com/case-studies/preisser-back-office (The Preisser Solutions back office)
 - https://preissersolutions.com/case-studies/hg-oil-inventory-system (HG Oil inventory system)
 - https://preissersolutions.com/case-studies/hg-oil-ai-invoice-processing (HG Oil invoice processing)
 - https://preissersolutions.com/case-studies/alliant-mgu-insurance (MGU submission processing)
