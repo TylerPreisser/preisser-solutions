@@ -40,6 +40,9 @@ import { caseStudy as fitnessAgent } from "./ai-fitness-wellness-agent";
 import { caseStudy as preisserSolutionsSite } from "./preisser-solutions-site";
 import { caseStudy as tylerPreisserSite } from "./tyler-preisser-site";
 
+// 7. Own business (ADR-0018)
+import { caseStudy as preisserBackOffice } from "./preisser-back-office";
+
 /**
  * Every published case study — one entry per /case-studies/<slug> route.
  *
@@ -55,6 +58,8 @@ import { caseStudy as tylerPreisserSite } from "./tyler-preisser-site";
  *   4. Pure capability offerings (canonical #10, #11, #12, #18, #19)
  *   5. Proof of concept (canonical #13)
  *   6. Website builds (canonical #22, #23)
+ *   7. Own business (ADR-0018) — the Preisser Solutions back office, our own
+ *      administration panel, carrying Proof Stages (ADR-0016) as they ship
  *
  * Adding a new case study? Create a data file in this folder, import it here,
  * add it to the array in the correct group, and create the matching route
@@ -101,6 +106,9 @@ export const caseStudies: CaseStudyData[] = [
   // 6. Website builds
   preisserSolutionsSite,
   tylerPreisserSite,
+
+  // 7. Own business (ADR-0018)
+  preisserBackOffice,
 ];
 
 export const caseStudyBySlug: Record<string, CaseStudyData> = Object.fromEntries(
@@ -143,6 +151,11 @@ export const hubSlugs: string[] = [
   // the grid they read as duplicate cards before you notice the categories
   // differ (inventory operations vs. back-office automation).
   "nwks-encounter",
+
+  // Our own business (ADR-0018 §2). Third position keeps it right after the
+  // widest client engagement and keeps the two HG Oil cards below it non-adjacent.
+  "preisser-back-office",
+
   "hg-oil-inventory-system",
   "alliant-mgu-insurance",
   "chicago-bus-operator",
