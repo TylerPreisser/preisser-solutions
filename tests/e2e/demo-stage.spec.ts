@@ -65,10 +65,35 @@ async function setTheme(page: Page, theme: "dark" | "light") {
     .toEqual([...GROUND[theme]]);
 }
 
+/**
+ * Screenshots here are EVIDENCE, never the assertion: every call site captures
+ * only after its own real checks (renderedStageIds/endStateViolations/
+ * overflowViolations/contrast) already passed. A real six-tab stage stacks
+ * to ~11,880 CSS px without JS (review-NW.md, PR #12 `b8a5aab`); at
+ * deviceScaleFactor 3 (phone contexts, `open()` above) that is ~35,600
+ * device px, past Firefox's own 32,767px screenshot ceiling
+ * ("Cannot take screenshot larger than 32767") even though nothing is wrong
+ * with the page. `scale: "css"` renders one image pixel per CSS pixel,
+ * ignoring deviceScaleFactor, which stays under the ceiling for any
+ * page this site would ever ship; fall back to it instead of failing a test
+ * whose checks already passed. If even that throws, log and move on rather
+ * than lose the whole test to a screenshot.
+ */
 async function shot(page: Page, slug: string, engine: string, vp: Vp, theme: string, mode: string) {
   const file = path.join(SHOTS, slug, engine, `${vpName(vp)}-${theme}-${mode}.png`);
   fs.mkdirSync(path.dirname(file), { recursive: true });
-  await page.locator("[data-demo-section]").screenshot({ path: file, animations: "disabled" });
+  const target = page.locator("[data-demo-section]");
+  try {
+    await target.screenshot({ path: file, animations: "disabled" });
+  } catch (err) {
+    const msg = (err as Error).message.split("\n")[0];
+    console.warn(`[demo-stage.spec] ${engine} ${vpName(vp)} ${theme}/${mode}: full-resolution screenshot failed (${msg}); retrying at scale:"css"`);
+    try {
+      await target.screenshot({ path: file, animations: "disabled", scale: "css" });
+    } catch (err2) {
+      console.warn(`[demo-stage.spec] ${engine} ${vpName(vp)} ${theme}/${mode}: screenshot skipped entirely (${(err2 as Error).message.split("\n")[0]})`);
+    }
+  }
 }
 
 /**
