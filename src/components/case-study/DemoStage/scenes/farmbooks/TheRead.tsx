@@ -16,6 +16,19 @@
  * cards stack and accumulate as the beat plays — "everything the app read, as it read it" — which
  * is both simpler under the new engine and, on a phone read step by step, arguably the more
  * honest rendering of what "the read" means.
+ *
+ * critic-FB M2: each card now also carries the source's own step body sentence, restored from
+ * READ_STEP_BODIES (present in the fixture from the first pass but never rendered).
+ * critic-FB M3: each card's OUTER shell (`.fb-read__card`, border + background) always renders;
+ * only an INNER wrapper carries `data-stage-step`, so a not-yet-arrived card reads as a visible
+ * outline placeholder while autoplay is mid-flight, never a blank hole in the mat.
+ * critic-FB M1/(c): at phone widths the photo is `position: sticky` so it, its region box and
+ * the current card share the screen while stepping.
+ * critic-FB M9 (arithmetic honesty): the tape's own strip now says precisely what the engine
+ * checks — the LINE amounts against the printed total — never "the bill adds up" (the photo's
+ * own subtotal/tax do not reconcile; see SOURCE.md "inherited risks").
+ * critic-FB m1: the read's numerals now carry `--fb-font-display` (Fraunces), like every other
+ * beat's amounts.
  */
 import {
   READ_LINES,
@@ -24,6 +37,7 @@ import {
   READ_PRINTED_TOTAL,
   READ_REGIONS,
   READ_SORTED,
+  READ_STEP_BODIES,
   TICKET_ALT,
   TICKET_SRC,
   type ReadRegion,
@@ -32,6 +46,7 @@ import { money } from "./money";
 import { ProductScreen } from "../../ProductScreen";
 
 const USD = (n: number) => money(n, { exact: true });
+const NUM = "font-[family-name:var(--fb-font-display)]";
 
 const boxStyle = (b: ReadRegion["box"]) => ({
   left: `${b.x * 100}%`,
@@ -46,10 +61,27 @@ function PanelHead({ children }: { children: React.ReactNode }) {
   );
 }
 
+function Body({ children }: { children: React.ReactNode }) {
+  return <p className="mt-2 text-[12.5px] leading-relaxed text-[rgb(var(--fb-gray1))]">{children}</p>;
+}
+
+/** The outer shell always renders (border + background = the outline placeholder, M3);
+ *  only this inner wrapper is gated by the step engine. */
+function Card({ step, children }: { step: number; children: React.ReactNode }) {
+  return (
+    <div className="fb-read__card">
+      <div data-stage-step={step} data-fx="rise">
+        {children}
+      </div>
+    </div>
+  );
+}
+
 function CameraCheckCard() {
   return (
-    <div className="fb-read__card" data-stage-step={1} data-fx="rise">
+    <Card step={1}>
       <PanelHead>Before the shutter will fire</PanelHead>
+      <Body>{READ_STEP_BODIES[0]}</Body>
       <ul className="mt-3 grid gap-2">
         {[
           ["Light", "Enough of it, and no glare across the paper."],
@@ -62,30 +94,33 @@ function CameraCheckCard() {
           </li>
         ))}
       </ul>
-    </div>
+    </Card>
   );
 }
 
-function FieldTable({ rows, title }: { rows: readonly ReadRegion[]; title: string }) {
+function FieldTable({ rows, title, body }: { rows: readonly ReadRegion[]; title: string; body: string }) {
+  const step = rows[0]?.step ?? 1;
   return (
-    <div className="fb-read__card" data-stage-step={rows[0]?.step} data-fx="rise">
+    <Card step={step}>
       <PanelHead>{title}</PanelHead>
+      <Body>{body}</Body>
       <dl className="mt-3 grid grid-cols-[minmax(0,1fr)_auto] gap-x-4">
         {rows.map((r) => (
           <div key={r.id} className="col-span-2 grid grid-cols-subgrid items-baseline border-b border-[color:var(--fb-hairline)] py-[5px] last:border-b-0">
             <dt className="text-[12px] leading-snug text-[rgb(var(--fb-gray1))]">{r.label}</dt>
-            <dd className={`text-[13px] leading-snug text-[rgb(var(--fb-ink))] ${r.num ? "fb-tnum" : ""}`}>{r.value}</dd>
+            <dd className={`text-[13px] leading-snug text-[rgb(var(--fb-ink))] ${r.num ? `fb-tnum ${NUM}` : ""}`}>{r.value}</dd>
           </div>
         ))}
       </dl>
-    </div>
+    </Card>
   );
 }
 
 function CategoryCard() {
   return (
-    <div className="fb-read__card" data-stage-step={4} data-fx="rise">
+    <Card step={4}>
       <PanelHead>Where each line went</PanelHead>
+      <Body>{READ_STEP_BODIES[3]}</Body>
       <ul className="mt-3 grid gap-2">
         {READ_SORTED.map((row, i) => (
           <li
@@ -96,7 +131,7 @@ function CategoryCard() {
               <p className="font-mono italic text-[11px] text-[rgb(var(--fb-gray2))] [overflow-wrap:anywhere]">{row.printed}</p>
               <p className="mt-0.5 text-[13px] font-semibold leading-snug text-[rgb(var(--fb-ink))]">{row.category}</p>
             </div>
-            <p className="fb-tnum border-l border-[color:var(--fb-hairline)] pl-4 text-[14px] font-semibold text-[rgb(var(--fb-ink))]">
+            <p className={`fb-tnum ${NUM} border-l border-[color:var(--fb-hairline)] pl-4 text-[14px] font-semibold text-[rgb(var(--fb-ink))]`}>
               {USD(row.amount)}
             </p>
             <span className="sr-only">{`Line ${i + 1}`}</span>
@@ -106,7 +141,7 @@ function CategoryCard() {
       <p className="mt-3 text-[12px] leading-snug text-[rgb(var(--fb-gray1))]">
         Co-op shorthand gets translated. The words the vendor printed are kept beside the reading.
       </p>
-    </div>
+    </Card>
   );
 }
 
@@ -125,8 +160,9 @@ function ArithmeticTape() {
     { label: "Total printed on the bill", value: USD(READ_PRINTED_TOTAL), quiet: false, rule: true },
   ];
   return (
-    <div className="fb-read__card" data-stage-step={5} data-fx="rise">
+    <Card step={5}>
       <PanelHead>The arithmetic</PanelHead>
+      <Body>{READ_STEP_BODIES[4]}</Body>
       <dl className="mt-3 grid grid-cols-[minmax(0,1fr)_auto] gap-x-4">
         {rows.map((r) => (
           <div
@@ -140,7 +176,7 @@ function ArithmeticTape() {
             </dt>
             {r.count ? (
               <dd
-                className="fb-tnum text-[14px] font-semibold text-[rgb(var(--fb-ink))]"
+                className={`fb-tnum ${NUM} text-[14px] font-semibold text-[rgb(var(--fb-ink))]`}
                 data-stage-step={5}
                 data-count-to={READ_LINE_SUM_CENTS}
                 data-count-format="usd-cents"
@@ -148,7 +184,7 @@ function ArithmeticTape() {
                 {USD(READ_LINE_SUM)}
               </dd>
             ) : (
-              <dd className={`fb-tnum text-[14px] ${r.quiet ? "text-[rgb(var(--fb-gray1))]" : "font-semibold text-[rgb(var(--fb-ink))]"}`}>
+              <dd className={`fb-tnum ${NUM} text-[14px] ${r.quiet ? "text-[rgb(var(--fb-gray1))]" : "font-semibold text-[rgb(var(--fb-ink))]"}`}>
                 {r.value}
               </dd>
             )}
@@ -156,34 +192,39 @@ function ArithmeticTape() {
         ))}
       </dl>
       <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 rounded-xl border border-[rgb(var(--fb-ok))]/30 bg-[rgb(var(--fb-ok))]/[0.07] px-3 py-2.5">
-        <span className="fb-tnum text-[12px] font-semibold text-[rgb(var(--fb-ok))]">Difference {USD(0)}</span>
-        <span className="text-[12px] text-[rgb(var(--fb-gray1))]">the bill adds up</span>
+        {/* critic-FB M4/M9: the photo's own SUBTOTAL + TAX do not reconcile to its TOTAL (an
+            inherited, un-editable defect in the source photograph's pixels — SOURCE.md). The
+            claim here is scoped precisely to what the engine actually checks: the four LINE
+            amounts against the printed TOTAL, never a blanket "the bill adds up". */}
+        <span className={`fb-tnum ${NUM} text-[12px] font-semibold text-[rgb(var(--fb-ok))]`}>Difference {USD(0)}</span>
+        <span className="text-[12px] text-[rgb(var(--fb-gray1))]">the lines match the printed total</span>
       </div>
       <p className="mt-3 text-[12px] leading-snug text-[rgb(var(--fb-gray1))]">
         If these two disagree by more than two cents, the bill stops and waits for you.
       </p>
-    </div>
+    </Card>
   );
 }
 
 function BooksCard() {
   return (
-    <div className="fb-read__card" data-stage-step={6} data-fx="rise">
+    <Card step={6}>
       <PanelHead>In the books</PanelHead>
-      <p className="fb-tnum mt-3 text-[28px] font-semibold leading-none text-[rgb(var(--fb-ink))]">{USD(READ_PRINTED_TOTAL)}</p>
+      <Body>{READ_STEP_BODIES[5]}</Body>
+      <p className={`fb-tnum ${NUM} mt-3 text-[28px] font-semibold leading-none text-[rgb(var(--fb-ink))]`}>{USD(READ_PRINTED_TOTAL)}</p>
       <p className="mt-2 text-[12.5px] leading-snug text-[rgb(var(--fb-gray1))]">filed under four categories, from one photograph</p>
       <ul className="mt-4 grid gap-1.5 border-t border-[color:var(--fb-hairline)] pt-3">
         {READ_SORTED.map((row) => (
           <li key={row.category} className="flex items-baseline justify-between gap-3">
             <span className="text-[12.5px] text-[rgb(var(--fb-gray1))]">{row.category}</span>
-            <span className="fb-tnum text-[13px] font-semibold text-[rgb(var(--fb-ink))]">{USD(row.amount)}</span>
+            <span className={`fb-tnum ${NUM} text-[13px] font-semibold text-[rgb(var(--fb-ink))]`}>{USD(row.amount)}</span>
           </li>
         ))}
       </ul>
       <p className="mt-3 border-t border-[color:var(--fb-hairline)] pt-3 text-[12px] leading-snug text-[rgb(var(--fb-gray1))]">
         You typed none of it, and the bill it came from is one tap away for as long as you keep the farm.
       </p>
-    </div>
+    </Card>
   );
 }
 
@@ -198,17 +239,19 @@ export function TheRead() {
 function ReadDesk() {
   return (
     <div className="fb-read p-3 sm:p-4">
-      <div className="fb-read__photo">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={TICKET_SRC} alt={TICKET_ALT} />
-        {READ_REGIONS.map((r) => (
-          <span key={r.id} className="fb-read__box" data-stage-step={r.step} data-fx="pop" style={boxStyle(r.box)} aria-hidden />
-        ))}
+      <div className="fb-read__photo-sticky">
+        <div className="fb-read__photo">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={TICKET_SRC} alt={TICKET_ALT} />
+          {READ_REGIONS.map((r) => (
+            <span key={r.id} className="fb-read__box" data-stage-step={r.step} data-fx="pop" style={boxStyle(r.box)} aria-hidden />
+          ))}
+        </div>
       </div>
       <div className="fb-read__cards">
         <CameraCheckCard />
-        <FieldTable rows={VENDOR_ROWS} title="On the ticket" />
-        <FieldTable rows={READ_LINES} title="Every line" />
+        <FieldTable rows={VENDOR_ROWS} title="On the ticket" body={READ_STEP_BODIES[1]} />
+        <FieldTable rows={READ_LINES} title="Every line" body={READ_STEP_BODIES[2]} />
         <CategoryCard />
         <ArithmeticTape />
         <BooksCard />

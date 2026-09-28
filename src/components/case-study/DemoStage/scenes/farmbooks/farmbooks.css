@@ -88,12 +88,17 @@
   gap: 10px;
   min-width: 0;
 }
+/* critic-FB M3: the outer shell (border + background) ALWAYS renders — a card whose inner
+   content hasn't arrived yet reads as a visible outline placeholder, never a blank hole in the
+   mat while autoplay is mid-flight. Only the inner wrapper (TheRead.tsx's <Card>) carries
+   data-stage-step. */
 .fb-read__card {
   border-radius: 16px;
   border: 1px solid var(--fb-hairline);
   background: rgb(var(--fb-card));
   box-shadow: var(--fb-shadow-card);
   padding: 14px;
+  min-height: 44px;
 }
 @media (min-width: 1024px) {
   .fb-read {
@@ -104,6 +109,63 @@
   .fb-read__photo {
     max-width: none;
   }
+  /* critic-FB m7: the photo sits sticky within the read's own two-column frame at desktop
+     widths too, so it never leaves a large dead cream/card area beneath it once the cards
+     column runs taller than the photo. */
+  .fb-read__photo-sticky {
+    position: sticky;
+    top: 24px;
+  }
+}
+
+/* critic-FB M1/(c): on the phone, keep a small sticky photo above the current card so its gold
+   region box and the step's own words share the screen while stepping — matching the source's
+   own phone behavior (a sticky photo above one card and its caption). Reduced height (not the
+   full aspect-ratio frame) so a step's card is not pushed off-screen beneath it.
+   `.fb-read` (the shared parent) is `display: grid` with NO explicit `grid-template-columns` at
+   this width, which gives each child its own implicit grid ROW — and a grid item's containing
+   block for `position: sticky` is that item's own grid AREA, not the whole grid container. Since
+   the photo's row is only as tall as the photo, sticky had zero room to hold position: measured,
+   it scrolled fully off screen (top: -348px) instead of pinning at `top`. Switching to `display:
+   block` here makes the photo and the cards ordinary flow siblings sharing ONE containing block
+   (this element, as tall as photo + cards together), which is what gives the sticky photo room to
+   stay pinned while the cards scroll beneath it. `gap` doesn't apply to block layout, so the
+   photo's own bottom margin replaces it (unchanged 16px value, `.fb-read`'s own `gap`). */
+@media (max-width: 1023px) {
+  .fb-read {
+    display: block;
+  }
+  .fb-read__photo-sticky {
+    position: sticky;
+    top: calc(var(--nav-height, 88px) + 8px);
+    z-index: 1;
+    margin-bottom: 16px;
+    padding-block: 6px;
+    background: rgb(var(--fb-page));
+  }
+  .fb-read__photo-sticky .fb-read__photo {
+    max-width: 132px;
+  }
+}
+
+/* critic-FB M1(c)/m7: NEITHER sticky rule above actually held position — measured on both the
+   mobile and the desktop layout, the photo moved by the EXACT pixel amount scrolled (zero
+   stickiness) in every engine. Cause: `.demo-screen`'s own `overflow: hidden` (demo-stage.css,
+   kit-owned, never patched) is the nearest ancestor with non-visible overflow above the sticky
+   photo, and `position: sticky` computes relative to the NEAREST such ancestor. `.demo-screen`
+   never scrolls internally, so the sticky element just holds its static offset within it and
+   rides along with it instead of pinning to the viewport. `:has(.fb-read__photo-sticky)` scopes
+   this reopening to ONLY the read beat's own screen instance — it matches no other ProductScreen
+   on the site (books, year, or any other case study's stage), so nothing else is affected. The
+   chrome bar (`.demo-screen__chrome`) has no border-radius of its own and relied on the parent's
+   clip for its rounded top corners; restored directly here so removing the clip doesn't square
+   them off. Nothing else in this beat touches the frame's edge (the scene's own `p-3 sm:p-4`
+   padding insets photo and cards on every side), so no other clipping was needed. */
+.demo-screen:has(.fb-read__photo-sticky) {
+  overflow: visible;
+}
+.demo-screen:has(.fb-read__photo-sticky) .demo-screen__chrome {
+  border-radius: 12px 12px 0 0;
 }
 
 /* ---------------------------------------------------------------------------- the books: a month */
