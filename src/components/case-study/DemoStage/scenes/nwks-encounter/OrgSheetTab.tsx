@@ -95,14 +95,14 @@ function OrgCard({ s }: { s: Server }) {
 }
 
 /** The lane's own count, as the board draws it, for the step being shown. */
-function LaneCount({ t }: { t: Team }) {
+function LaneCount({ t, unit = false }: { t: Team; unit?: boolean }) {
   const finalN = teamServers(t.id).length;
   const values = Array.from(new Set(STEPS.map((k) => orgSheet.laneCountAt(t.id, k))));
   return (
     <Swap className="nwks-lane-count">
       {values.map((n) => (
         <At key={n} at={[...stepsWhere((k) => orgSheet.laneCountAt(t.id, k) === n), ...(n === finalN ? (["end"] as const) : [])]}>
-          {n}
+          {unit ? `${n} ${n === 1 ? "man" : "men"}` : n}
         </At>
       ))}
     </Swap>
@@ -116,10 +116,18 @@ function Lane({ t }: { t: Team }) {
     <div className="nwks-lane" style={{ ["--nw-lane-hue" as string]: `var(--nw-team-${t.hue})` }}>
       <div className="nwks-lane-head">
         <div className="nwks-lane-name">{t.name}</div>
+        {/* A lane with no job (FOOD TEAM, nwks-encounter.ts TEAMS) has no
+            separator to hang the count on; it reads "3 men" instead. */}
         <div className="nwks-lane-job">
-          {t.job ? <span>{t.job}</span> : null}
-          <span aria-hidden="true"> · </span>
-          <LaneCount t={t} />
+          {t.job ? (
+            <>
+              <span>{t.job}</span>
+              <span aria-hidden="true"> · </span>
+              <LaneCount t={t} />
+            </>
+          ) : (
+            <LaneCount t={t} unit />
+          )}
         </div>
       </div>
       {firstStep > 1 ? (
