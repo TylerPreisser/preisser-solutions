@@ -22,6 +22,9 @@ export function endStateViolations(): Violation[] {
     return o;
   };
   if (!document.querySelector("[data-demo-stage]")) V.push({ rule: "no-stage", detail: "no [data-demo-stage] on this page" });
+
+  // Named-slot check: a beat, a stepped element or the label must be RENDERED
+  // at all, and a stepped element's clip-path must be fully open at rest.
   const targets = document.querySelectorAll("[data-demo-stage] [data-beat], [data-demo-stage] [data-stage-step], [data-demo-label]");
   for (const el of Array.from(targets)) {
     if (el.getClientRects().length === 0) {
@@ -29,14 +32,40 @@ export function endStateViolations(): Violation[] {
       if (el.hasAttribute("data-beat") || el.hasAttribute("data-demo-label")) V.push({ rule: "not-rendered", detail: name(el) });
       continue;
     }
-    const o = effective(el);
-    if (o < 0.999) V.push({ rule: "opacity", detail: `${name(el)} effective opacity ${o.toFixed(3)}` });
-    const cs = getComputedStyle(el);
-    if (cs.visibility !== "visible") V.push({ rule: "visibility", detail: `${name(el)} is ${cs.visibility}` });
-    if (el.hasAttribute("data-stage-step") && cs.clipPath && cs.clipPath !== "none") {
-      V.push({ rule: "clip-path", detail: `${name(el)} ${cs.clipPath}` });
+    if (el.hasAttribute("data-stage-step")) {
+      const cs = getComputedStyle(el);
+      if (cs.clipPath && cs.clipPath !== "none") V.push({ rule: "clip-path", detail: `${name(el)} ${cs.clipPath}` });
     }
   }
+
+  // Whole-stage walk (review-F.md MEDIUM 3): a scene's own elements that carry
+  // no data-stage-* attribute at all -- e.g. a Framer motion.div in the
+  // FarmBooks scene, server-rendered with style="opacity:0" -- were invisible
+  // to the check above. Walk EVERY rendered descendant of a stage. An
+  // "invisible" threshold, not <0.999: the window-chrome dots are decorative
+  // at opacity 0.35 (demo-stage.css) and must not be flagged.
+  const INVISIBLE_OPACITY = 0.05;
+  const exempt = (el: Element) =>
+    Boolean(el.closest(".ps-visually-hidden, .demo-controls__buttons")) ||
+    (el.hasAttribute("data-stage-until") && !el.hasAttribute("data-live"));
+  for (const stage of Array.from(document.querySelectorAll("[data-demo-stage]"))) {
+    for (const el of Array.from(stage.querySelectorAll("*"))) {
+      if (exempt(el)) continue;
+      if (el.getClientRects().length === 0) continue; // display:none, a hidden tab panel, etc.: fine
+      const r = el.getBoundingClientRect();
+      const hasBox = r.width > 0 && r.height > 0;
+      const hasText = Boolean(el.textContent && el.textContent.trim());
+      if (!hasBox && !hasText) continue; // an empty structural wrapper; its children are checked on their own
+      const cs = getComputedStyle(el);
+      if (cs.visibility !== "visible") {
+        V.push({ rule: "visibility", detail: `${name(el)} is ${cs.visibility}` });
+        continue;
+      }
+      const o = effective(el);
+      if (o < INVISIBLE_OPACITY) V.push({ rule: "opacity", detail: `${name(el)} effective opacity ${o.toFixed(3)}` });
+    }
+  }
+
   for (const el of Array.from(document.querySelectorAll("[data-track-armed], [data-pending]"))) {
     V.push({ rule: "armed-at-rest", detail: name(el) });
   }
