@@ -174,10 +174,14 @@
    head, ~:340; critic-BO.md B2/item 7). */
 .bo-row__amount { flex: 0 0 auto; font-weight: 700; color: var(--skin-good); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bo-row__controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
-/* Desk: date as its own fixed column beside the name (ReviewView.tsx FACTS, :86). */
+/* Desk: date as its own fixed column BEFORE the name (ReviewView.tsx FACTS,
+   :86, `w-24` = 6rem) -- critic-BO.md M5: a 72px column wrapped "15 Mar /
+   2026" onto two lines, and DOM order put the date after the name. */
 .bo-row--desk .bo-row__head { flex-wrap: nowrap; }
-.bo-row--desk .bo-row__date { width: 72px; }
-.bo-row--desk .bo-row__controls { margin-top: 0; margin-left: auto; }
+.bo-row--desk .bo-row__date { order: 1; width: 6rem; flex: 0 0 auto; white-space: nowrap; }
+.bo-row--desk .bo-row__name { order: 2; }
+.bo-row--desk .bo-row__amount { order: 3; }
+.bo-row--desk .bo-row__controls { order: 4; margin-top: 0; margin-left: auto; }
 /* Phone: name and amount on one line, date under the name, the action button
    on its own line below that (spec-BO.md §1.8; review MEDIUM-6: the button
    must never render above the row it belongs to). */
