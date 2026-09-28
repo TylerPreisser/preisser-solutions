@@ -246,6 +246,31 @@
 .fb-books__row:first-child {
   border-top: 0;
 }
+/* verify-FB item 4: at 320 the label column was 58-68px, narrower than "Maintenance" at 15px, and
+   letting words break anywhere split them mid-letter. Below 360px (360 and up measured clean at
+   98-130px) the row gives the label room instead: a 28px icon, tighter padding and gaps, and one
+   type step down on label and amount, so every word wraps whole. Unlayered, so these beat the
+   Tailwind size utilities on the same elements. */
+@media (max-width: 359px) {
+  .fb-books {
+    padding: 16px;
+  }
+  .fb-books__row {
+    gap: 8px;
+    padding: 12px;
+  }
+  .fb-books__icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+  }
+  .fb-books__label {
+    font-size: 14px;
+  }
+  .fb-books__amount {
+    font-size: 13.5px;
+  }
+}
 /* critic-FB M3: the row itself (icon, label, bill count, amount) is ALWAYS visible — only this
    fill bar is gated by the step engine (data-stage-step + data-fx="sweep" in TheBooks.tsx, the
    kit's own generic mechanism, demo-stage.css). A reader who scrolls faster than the timer sees

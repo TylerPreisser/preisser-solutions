@@ -38,19 +38,19 @@ function LedgerRow({ label, amount, bills, step }: { label: string; amount: numb
         style={{ width: `${pct}%` }}
         aria-hidden
       />
-      <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[rgb(var(--fb-accent-wash))] text-[rgb(var(--fb-accent-deep))]">
+      <span className="fb-books__icon relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[rgb(var(--fb-accent-wash))] text-[rgb(var(--fb-accent-deep))]">
         <Icon size={17} strokeWidth={2} />
       </span>
       <span className="relative min-w-0 flex-1">
-        {/* critic-FB m3: "Repairs & Maintenance" is a two-word label whose second word alone
-            (11 characters) is wider than this column at 320px — a single unbreakable word
-            overflows a flex item's box rather than wrapping, so its glyphs ran into the amount
-            column even though the boxes themselves never overlapped. [overflow-wrap:anywhere]
-            lets a too-long word break instead of overflowing. */}
-        <span className="block text-[15px] font-medium leading-snug text-[rgb(var(--fb-ink))] [overflow-wrap:anywhere]">{label}</span>
+        {/* critic-FB m3 / verify-FB item 4: "Repairs & Maintenance" must wrap between WHOLE words
+            at 320. Letting any word break anywhere split it mid-letter ("Maintena/nce",
+            "Chemical/s"); instead, below 360px farmbooks.css tightens this row (smaller icon, one
+            type step down on label and amount), which widens the label column enough for its
+            longest word. */}
+        <span className="fb-books__label block text-[15px] font-medium leading-snug text-[rgb(var(--fb-ink))]">{label}</span>
         <span className="block text-[12px] text-[rgb(var(--fb-gray2))]">{bills === 1 ? "1 bill" : `${bills} bills`}</span>
       </span>
-      <span className="fb-tnum relative shrink-0 text-right text-[15px] font-semibold text-[rgb(var(--fb-ink))]">
+      <span className="fb-books__amount fb-tnum relative shrink-0 text-right text-[15px] font-semibold text-[rgb(var(--fb-ink))]">
         {money(amount, { show: true, exact: true })}
       </span>
     </div>
