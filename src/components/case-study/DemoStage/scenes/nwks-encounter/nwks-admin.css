@@ -115,7 +115,8 @@
 .demo-skin--nwks-mens .nwks-stat-l { font-size: 0.6875rem; color: var(--nw-ink-3); margin-top: 2px; }
 .demo-skin--nwks-mens .nwks-tiles { display: grid; gap: 10px; }
 @media (min-width: 640px) {
-.demo-skin--nwks-mens .nwks-tiles { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+/* align-items: start (critic-NW M6): a stretched Payment tile was ~70% empty beside Attendee depth. */
+.demo-skin--nwks-mens .nwks-tiles { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
 }
 .demo-skin--nwks-mens .nwks-tile { border: 1px solid var(--nw-rule); border-radius: 12px; background: var(--nw-paper); padding: 12px 14px; min-width: 0; }
 .demo-skin--nwks-mens .nwks-bar-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; margin-top: 6px; font-size: 0.8125rem; }
@@ -279,9 +280,25 @@
   .demo-skin--nwks-mens .nwks-rh-rules { display: block; font-size: 0.875rem; }
   .demo-skin--nwks-mens .nwks-rh-rule:not(:last-child)::after { content: "\00a0\00b7 "; }
 }
-/* The flagship board needs the window's full width (frames 04-07): stack
-   this tab's before/after at desk instead of the kit's 2fr/3fr split. */
-.demo-skin--nwks-mens .demo-tabs__journey:has(.nwks-orgstage) { grid-template-columns: minmax(0, 1fr); }
+/* ── Desk balance (critic-NW M6). The kit splits each journey 2fr/3fr at
+   1024px and up: a 230-376px "before" card in a 434px column beside a product
+   up to 1,460px tall left 600-1,100px of empty mat under it, the product got
+   60% of the width, and Lookout (no before card) sat in the 2fr column beside
+   an empty 3fr. Every tab now stacks: the before card is a short strip
+   across the top (its caption beside a capped crop of the old material,
+   fading out as it does on a phone), and the product window takes the full
+   width underneath. ── */
+@media (min-width: 1024px) {
+  .demo-skin--nwks-mens .demo-tabs__journey { grid-template-columns: minmax(0, 1fr); }
+  .demo-skin--nwks-mens .demo-tabs__before {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 32rem); column-gap: 28px; align-items: start;
+  }
+  .demo-skin--nwks-mens .demo-tabs__before-cap { margin: 0; font-size: 1rem; line-height: 1.55; }
+  .demo-skin--nwks-mens .demo-tabs__before > .nwks-old {
+    max-height: 13rem;
+    -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent); mask-image: linear-gradient(to bottom, #000 80%, transparent);
+  }
+}
 
 /* The product header (their Org sheet page: icon, encounter, dates, view toggle). */
 .demo-skin--nwks-mens .nwks-org-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
