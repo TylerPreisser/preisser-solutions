@@ -157,7 +157,7 @@ function ExportTable({ view }: { view: YearView }) {
   const isFields = view === "fields";
   const table = (
     <table className={`fb-year__export-table${isFields ? " fb-year__export-table--field" : ""}`}>
-      <caption className="sr-only">{`Farm-books-2026.xlsx, ${EXPORT_COLUMNS[view]} tab`}</caption>
+      <caption className="sr-only">{`FarmBooks-2026.xlsx, ${EXPORT_COLUMNS[view]} tab`}</caption>
       <thead>
         <tr>
           <th>{EXPORT_COLUMNS[view]}</th>
