@@ -136,7 +136,7 @@ function Body() {
         ))}
       </div>
 
-      <p className="nwks-h" data-stage-step="3">
+      <p className="nwks-h" data-stage-step="3" data-fx="ghost">
         Wait list
       </p>
       <StepNote tab="attendees" k={3} />
@@ -144,7 +144,7 @@ function Body() {
         {waitlist.map((a) => {
           const isOffered = a.status === "waitlist-offered" || offered.has(a.personId);
           return (
-            <div className="nwks-r-row" key={a.personId} data-stage-step={a.status === "waitlist-offered" ? "4" : "3"}>
+            <div className="nwks-r-row" key={a.personId} data-stage-step={a.status === "waitlist-offered" ? "4" : "3"} data-fx="ghost">
               <span className="nwks-avatar" aria-hidden="true">
                 {initials(a)}
               </span>

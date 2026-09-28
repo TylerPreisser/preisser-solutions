@@ -18,7 +18,7 @@ function Body() {
       </div>
       <StepNote tab="dashboard" k={1} />
 
-      <div className="nwks-stat-grid" data-stage-step="2" data-fx="rise">
+      <div className="nwks-stat-grid" data-stage-step="2" data-fx="ghost">
         <div className="nwks-stat">
           <div className="nwks-stat-n" data-stage-step="2" data-count-to={dashboard.attendeeCount}>
             {dashboard.attendeeCount}
@@ -65,7 +65,7 @@ function Body() {
             <div className="nwks-bar-track">
               <div
                 className="nwks-bar-fill"
-                style={{ transform: `scaleX(${dashboard.paidByCard / Math.max(1, dashboard.attendeeCount)})` }}
+                style={{ ["--nw-fill" as string]: dashboard.paidByCard / Math.max(1, dashboard.attendeeCount) }}
               />
             </div>
           </div>
@@ -76,11 +76,11 @@ function Body() {
         <div className="nwks-tile">
           <p className="nwks-h">Attendee Depth</p>
           {dashboard.depthBuckets.map((b) => (
-            <div className="nwks-bar-row" key={b.label} data-stage-step="3" data-fx="sweep">
+            <div className="nwks-bar-row" key={b.label} data-stage-step="3" data-fx="ghost">
               <span>{b.label}</span>
               <span className="nwks-stat-l">{b.count}</span>
               <div className="nwks-bar-track">
-                <div className="nwks-bar-fill" style={{ transform: `scaleX(${b.count / maxDepth})` }} />
+                <div className="nwks-bar-fill" style={{ ["--nw-fill" as string]: b.count / maxDepth }} />
               </div>
             </div>
           ))}
@@ -98,7 +98,7 @@ function Body() {
               role chip, and two facts from his own record. */}
           <div className="nwks-recent">
             {dashboard.recentRegistrations.map((a, i) => (
-              <div className="nwks-recent-row" key={a.personId} data-stage-step="2" data-fx="rise" style={{ transitionDelay: `${i * 60}ms` }}>
+              <div className="nwks-recent-row" key={a.personId} data-stage-step="2" data-fx="ghost" style={{ transitionDelay: `${i * 60}ms` }}>
                 <span className="nwks-r-name">{attendeeName(a)}</span>
                 <span className="nwks-pill">Attendee</span>
                 <span className="nwks-r-meta">
@@ -111,22 +111,22 @@ function Body() {
         <div className="nwks-tile">
           <p className="nwks-h">By Launch Location</p>
           {dashboard.byTown.map((t) => (
-            <div className="nwks-bar-row" key={t.id} data-stage-step="4" data-fx="sweep">
+            <div className="nwks-bar-row" key={t.id} data-stage-step="4" data-fx="ghost">
               <span>{t.name}</span>
               <span className="nwks-stat-l">{t.count}</span>
               <div className="nwks-bar-track">
-                <div className="nwks-bar-fill" style={{ transform: `scaleX(${t.count / maxTown})` }} />
+                <div className="nwks-bar-fill" style={{ ["--nw-fill" as string]: t.count / maxTown }} />
               </div>
             </div>
           ))}
-          <p className="nwks-sub" data-stage-step="4">
+          <p className="nwks-sub" data-stage-step="4" data-fx="ghost">
             Counts every attendee who has not dropped, by the launch point on their own record.
           </p>
         </div>
       </div>
       <StepNote tab="dashboard" k={4} />
 
-      <div className="nwks-tile" data-stage-step="4">
+      <div className="nwks-tile" data-stage-step="4" data-fx="ghost">
         <p className="nwks-h">Shirt Sizes</p>
         <div className="nwks-row" style={{ marginTop: 6 }}>
           {dashboard.shirtSizes.map((s) => (

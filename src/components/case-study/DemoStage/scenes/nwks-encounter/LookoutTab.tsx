@@ -24,12 +24,12 @@ function Body() {
             Checking the roster…
           </p>
           <StepNote tab="lookout" k={2} />
-          <p className="nwks-turn-a" data-stage-step="3">
+          <p className="nwks-turn-a" data-stage-step="3" data-fx="ghost">
             {lookout.resolvedAnswer}
           </p>
           <StepNote tab="lookout" k={3} />
         </div>
-        <div className="nwks-turn" data-stage-step="4" data-fx="rise">
+        <div className="nwks-turn" data-stage-step="4" data-fx="ghost">
           <p className="nwks-turn-q">{lookout.ambiguousQuestion}</p>
           <p className="nwks-turn-a">More than one man on the roster answers to that first name.</p>
           <div className="nwks-candidates">

@@ -121,7 +121,9 @@
 .demo-skin--nwks-mens .nwks-tile { border: 1px solid var(--nw-rule); border-radius: 12px; background: var(--nw-paper); padding: 12px 14px; min-width: 0; }
 .demo-skin--nwks-mens .nwks-bar-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; margin-top: 6px; font-size: 0.8125rem; }
 .demo-skin--nwks-mens .nwks-bar-track { grid-column: 1 / -1; height: 8px; border-radius: 999px; background: var(--nw-rule-2); overflow: hidden; }
-.demo-skin--nwks-mens .nwks-bar-fill { height: 100%; border-radius: 999px; background: var(--nw-brand); transform-origin: left; transition: transform var(--demo-dur, 520ms) var(--demo-ease, ease); }
+/* The fill's value is a custom property, not an inline transform: an inline
+   transform outranked the pending scaleX(0) below, so a bar never grew. */
+.demo-skin--nwks-mens .nwks-bar-fill { height: 100%; border-radius: 999px; background: var(--nw-brand); transform: scaleX(var(--nw-fill, 1)); transform-origin: left; transition: transform var(--demo-dur, 520ms) var(--demo-ease, ease); }
 .demo-skin--nwks-mens [data-stage-step][data-pending] .nwks-bar-fill { transform: scaleX(0); }
 
 /* ── Attendees / Roster ── */
