@@ -65,3 +65,7 @@ graphify-out/
 
 # Work-order recon artifacts — screenshots, traces, baselines (hundreds of MB)
 .work-order/
+
+# Proof Stage gate — Playwright test artifacts and reports (ADR-0016)
+/test-results/
+/playwright-report/
