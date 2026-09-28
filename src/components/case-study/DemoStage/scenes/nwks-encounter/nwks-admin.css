@@ -223,6 +223,11 @@
 .demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-at[data-at~="4"],
 .demo-skin--nwks-mens [data-track-armed][data-track-step="5"] .nwks-at[data-at~="5"],
 .demo-skin--nwks-mens [data-track-armed][data-track-step="6"] .nwks-at[data-at~="6"] { visibility: visible; }
+/* At rest (and without JS) the other variants are not part of the end frame
+   at all: out of layout, never parked invisible (ADR-0016 §3; the kit's
+   resting walk, tests/e2e/lib/checks.ts endStateViolations). They hold the
+   cell's size only while the track plays. */
+.demo-skin--nwks-mens [data-track]:not([data-track-armed]) .nwks-at:not([data-at~="end"]) { display: none; }
 /* The same, for notes that should take no room when absent. */
 .demo-skin--nwks-mens .nwks-atd { display: none; }
 .demo-skin--nwks-mens .nwks-atd[data-at~="end"] { display: block; }
@@ -539,9 +544,11 @@
 .demo-skin--nwks-mens .nwks-old-form { display: grid; gap: 8px; padding: 12px 14px 14px; border-top: 8px solid #5B6B8C; }
 .demo-skin--nwks-mens .nwks-old-form-title { font-size: 0.9375rem; font-weight: 600; }
 .demo-skin--nwks-mens .nwks-old-form-closed { padding: 6px 8px; border-radius: 4px; background: #FDECEA; color: #8A1C1C; font-weight: 600; }
-.demo-skin--nwks-mens .nwks-old-form-fields { display: grid; gap: 8px; opacity: 0.55; }
-.demo-skin--nwks-mens .nwks-old-form-field { display: grid; gap: 3px; color: #4A4F57; }
-.demo-skin--nwks-mens .nwks-old-form-field i { display: block; height: 14px; border-bottom: 1px solid #9AA0A6; }
+/* The closed form's fields read greyed-out by colour, never by opacity: the
+   end frame ships fully visible (ADR-0016 §3). */
+.demo-skin--nwks-mens .nwks-old-form-fields { display: grid; gap: 8px; }
+.demo-skin--nwks-mens .nwks-old-form-field { display: grid; gap: 3px; color: #80868B; }
+.demo-skin--nwks-mens .nwks-old-form-field i { display: block; height: 14px; border-bottom: 1px solid #C4C7CA; }
 .demo-skin--nwks-mens .nwks-old-form-radios { display: flex; gap: 12px; }
 .demo-skin--nwks-mens .nwks-old-form-submit { justify-self: start; padding: 5px 14px; border-radius: 4px; background: #E3E5E8; color: #5F6368; font-weight: 600; }
 /* The call-back notepad. */
