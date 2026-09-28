@@ -132,19 +132,15 @@
 .fb-books__row:first-child {
   border-top: 0;
 }
+/* critic-FB M3: the row itself (icon, label, bill count, amount) is ALWAYS visible — only this
+   fill bar is gated by the step engine (data-stage-step + data-fx="sweep" in TheBooks.tsx, the
+   kit's own generic mechanism, demo-stage.css). A reader who scrolls faster than the timer sees
+   every row's real content immediately; only the proportional tint sweeps in behind it. */
 .fb-books__fill {
   position: absolute;
   inset-block: 0;
   left: 0;
   background: rgb(var(--fb-accent-wash) / 0.55);
-  clip-path: inset(0 100% 0 0);
-  transition: clip-path var(--demo-dur, 520ms) var(--demo-ease, ease);
-}
-[data-track-armed] .fb-books__row[data-pending] .fb-books__fill {
-  clip-path: inset(0 100% 0 0);
-}
-.fb-books__row:not([data-pending]) .fb-books__fill {
-  clip-path: inset(0 0 0 0);
 }
 
 /* --------------------------------------------------------------------- what goes wrong: 3 cards */

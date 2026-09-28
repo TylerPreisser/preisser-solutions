@@ -7,8 +7,12 @@
  * WHAT DID NOT COME OVER: `Stage`/`Panel`/`useDeck`/`useStage3D` (the pointer-parallax CSS-3D
  * stage) in full — ADR-0016 §3 drops every scroll- or pointer-position-driven transform, not only
  * scroll scrubbing. `LedgerRow`'s own `onViewportEnter` fill becomes six `data-stage-step`
- * elements (one per category row), gated by the kit's own `[data-track-armed]`/`[data-pending]`
- * CSS in farmbooks.css (`.fb-books__fill`) instead of a `seen` boolean and a spring.
+ * elements (one per category row's fill bar), gated by the kit's own generic `data-fx="sweep"`
+ * mechanism (demo-stage.css) instead of a `seen` boolean and a spring.
+ *
+ * critic-FB M3: `data-stage-step` lives on the FILL BAR only, never the row — the row's icon,
+ * label, bill count and amount render immediately and unconditionally, so a reader who scrolls
+ * faster than the autoplay timer never meets a blank hole where a category should be.
  */
 import { categoryIcon } from "./category-icons";
 import { Doc } from "./icons";
@@ -24,13 +28,26 @@ function LedgerRow({ label, amount, bills, step }: { label: string; amount: numb
   const Icon = categoryIcon(label);
   const pct = monthFraction(amount) * 100;
   return (
-    <div className="fb-books__row" data-stage-step={step} data-fx="rise">
-      <span className="fb-books__fill" style={{ width: `${pct}%` }} aria-hidden />
+    <div className="fb-books__row">
+      {/* critic-FB M3: the row's own text is always visible; only this fill bar sweeps in,
+          so a fast scroll never meets a blank hole where a category row should be. */}
+      <span
+        className="fb-books__fill"
+        data-stage-step={step}
+        data-fx="sweep"
+        style={{ width: `${pct}%` }}
+        aria-hidden
+      />
       <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[rgb(var(--fb-accent-wash))] text-[rgb(var(--fb-accent-deep))]">
         <Icon size={17} strokeWidth={2} />
       </span>
       <span className="relative min-w-0 flex-1">
-        <span className="block text-[15px] font-medium leading-snug text-[rgb(var(--fb-ink))]">{label}</span>
+        {/* critic-FB m3: "Repairs & Maintenance" is a two-word label whose second word alone
+            (11 characters) is wider than this column at 320px — a single unbreakable word
+            overflows a flex item's box rather than wrapping, so its glyphs ran into the amount
+            column even though the boxes themselves never overlapped. [overflow-wrap:anywhere]
+            lets a too-long word break instead of overflowing. */}
+        <span className="block text-[15px] font-medium leading-snug text-[rgb(var(--fb-ink))] [overflow-wrap:anywhere]">{label}</span>
         <span className="block text-[12px] text-[rgb(var(--fb-gray2))]">{bills === 1 ? "1 bill" : `${bills} bills`}</span>
       </span>
       <span className="fb-tnum relative shrink-0 text-right text-[15px] font-semibold text-[rgb(var(--fb-ink))]">
