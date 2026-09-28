@@ -44,10 +44,11 @@ const OUT = path.resolve(process.env.PS_OUT_DIR || path.join(ROOT, "out"));
 const DENY_PATH = process.env.PS_DEMO_DENYLIST || path.join(os.homedir(), ".config", "preisser", "demo-denylist.txt");
 const INVENTED_DIR = path.join(ROOT, "src", "data", "demos", "invented");
 const COMMON_PATH = path.join(ROOT, "tests", "demo-privacy", "common-words.txt");
-const SOURCE_ROOTS = [
-  path.join(ROOT, "src", "data", "demos"),
-  path.join(ROOT, "src", "components", "case-study", "DemoStage"),
-];
+// Overridable so the self-test can plant a temp source root without touching
+// the real repo (review-F.md MEDIUM 4).
+const SOURCE_ROOTS = process.env.PS_SOURCE_ROOTS
+  ? process.env.PS_SOURCE_ROOTS.split(path.delimiter).filter(Boolean)
+  : [path.join(ROOT, "src", "data", "demos"), path.join(ROOT, "src", "components", "case-study", "DemoStage")];
 const LABELS = ["Demonstration data", "Recreation · demonstration data"];
 const FILE_TLDS = ["pdf", "xlsx", "xls", "csv", "png", "jpg", "jpeg", "webp", "svg", "txt", "docx", "json"];
 const RESERVED_VAR = /^--(color|theme|font|shadow|radius|tw|container|nav|ease|section|spacing|text|breakpoint)-/;
@@ -126,7 +127,12 @@ function checkDocument(cfg) {
   const phraseRes = [...new Set(cfg.phrases)].filter(Boolean).sort((a, b) => b.length - a.length).map(wordRe);
   const denyRes = cfg.deny.map((d) => ({ line: d.line, masked: maskTerm(d.term), re: wordRe(d.term) }));
   const words = new Set(cfg.words.map((w) => w.toLowerCase().replace(/\.$/, "")));
-  const ATTRS = ["alt", "aria-label", "aria-description", "title", "placeholder", "value", "content", "label"];
+  // href/src/srcset/action/xlink:href: a link target or a file reference must
+  // be readable by the domain and deny rules, not just visible prose (HIGH 2).
+  const ATTRS = [
+    "alt", "aria-label", "aria-description", "title", "placeholder", "value", "content", "label",
+    "href", "src", "srcset", "action", "xlink:href",
+  ];
   const at = (el) => {
     const beat = el.closest("[data-beat]")?.getAttribute("data-beat");
     return `${el.tagName.toLowerCase()}${beat ? ` in beat ${beat}` : ""}`;
@@ -173,18 +179,33 @@ function checkDocument(cfg) {
       for (const m of u.text.matchAll(/(?<!\d)(?:\d[ -]?){8,}\d(?!\d)/g)) {
         V.push({ rule: "routing", stage: id, detail: `${JSON.stringify(m[0])} in ${u.at}` });
       }
+
+      // Deny check runs on the RAW text, before any domain/filename stripping,
+      // so a denied real name riding inside a filename, an email local part or
+      // a link target (now read via ATTRS) is still caught (review-F.md HIGH 2).
+      for (const d of denyRes) {
+        d.re.lastIndex = 0;
+        if (d.re.test(u.text)) V.push({ rule: "deny", stage: id, detail: `deny-list line ${d.line} (${d.masked}) in ${u.at}` });
+      }
+
       const domRe = /\b[\w.+-]+@([a-z0-9-]+(?:\.[a-z0-9-]+)+)\b|\b((?:[a-z0-9-]+\.)+([a-z]{2,}))\b/gi;
+      const localParts = [];
       for (const m of u.text.matchAll(domRe)) {
         const isEmail = Boolean(m[1]);
         const d = (m[1] || m[2] || "").toLowerCase();
-        if (!isEmail && cfg.fileTlds.includes(d.split(".").pop())) continue;
-        if (!cfg.domains.includes(d)) V.push({ rule: "domain", stage: id, detail: `${JSON.stringify(m[0])} in ${u.at}` });
+        const isFilename = !isEmail && cfg.fileTlds.includes(d.split(".").pop());
+        if (!isFilename && !cfg.domains.includes(d)) {
+          V.push({ rule: "domain", stage: id, detail: `${JSON.stringify(m[0])} in ${u.at}` });
+        }
+        // The local part (an email's name before "@", or a filename's stem
+        // before its extension) still needs the same token scan as ordinary
+        // prose: a real surname must not escape by riding inside either shape.
+        const at = m[0].indexOf("@");
+        const local = at >= 0 ? m[0].slice(0, at) : m[0].replace(/\.[a-z0-9]+$/i, "");
+        localParts.push(local.replace(/[._-]/g, " "));
       }
       let t = u.text.replace(domRe, " ");
-      for (const d of denyRes) {
-        d.re.lastIndex = 0;
-        if (d.re.test(t)) V.push({ rule: "deny", stage: id, detail: `deny-list line ${d.line} (${d.masked}) in ${u.at}` });
-      }
+      if (localParts.length) t += " " + localParts.join(" ");
       for (const re of phraseRes) t = t.replace(re, " ");
       for (const m of t.matchAll(/\p{L}[\p{L}\p{N}'.-]*/gu)) {
         for (const part of m[0].split("-")) {
@@ -198,7 +219,7 @@ function checkDocument(cfg) {
 
   const skipOutside = (el) => Boolean(el.closest("[data-demo-stage], style, template, script:not([type='application/ld+json'])"));
   for (const u of units(document.documentElement, skipOutside)) {
-    if (/\$\s?\d|\bUSD\s?\d|\d\s?dollars?\b/i.test(u.text)) {
+    if (/\$\s?\d|\bUSD\s?\d|\d\s?USD\b|\d\s?dollars?\b/i.test(u.text)) {
       V.push({ rule: "dollar-outside", stage: null, detail: `${JSON.stringify(u.text.slice(0, 90))} in ${u.at}` });
     }
   }
@@ -327,6 +348,29 @@ const CASES = [
   { name: "deny-list term", html: PAGE("Qzxplanted paid."), deny: ["Qzxplanted"], expect: ["deny", "token"] },
   { name: "heading inside a stage", html: PAGE("<h2>Paid</h2>"), expect: ["heading"] },
   { name: "RSC references are not amounts", html: PAGE("Paid.", `<script>self.__next_f.push([1,"$L3 $1 $undefined"])</script>`), expect: [] },
+  // review-F.md HIGH 2: a denied real name must not escape by riding inside a
+  // filename, an email local part, or a link target (href was unread before).
+  { name: "filename carries a deny term", html: PAGE("See attached Whitcomb.pdf for the account."), deny: ["Whitcomb"], expect: ["deny"] },
+  { name: "hyphenated filename carries a deny term", html: PAGE("See whitcomb-march.pdf, attached."), deny: ["Whitcomb"], expect: ["deny"] },
+  { name: "capitalised filename, no deny entry", html: PAGE("Attached: Zorbanek.pdf"), expect: ["token"] },
+  {
+    name: "email local part carries a deny term (registered domain)",
+    html: PAGE("See whitcomb@harlanfeed.example for the account."),
+    deny: ["Whitcomb"],
+    expect: ["deny"],
+  },
+  {
+    name: "href to an unregistered admin domain",
+    html: PAGE('See <a href="https://realadmin.example.org">the admin panel</a>.'),
+    deny: ["realadmin.example.org"],
+    expect: ["deny", "domain"],
+  },
+  {
+    name: "mailto href to a real person",
+    html: PAGE('<a href="mailto:whitcomb@realclient.example.org">Email</a>'),
+    deny: ["Whitcomb"],
+    expect: ["deny", "domain"],
+  },
 ];
 
 async function runSelfTest() {
