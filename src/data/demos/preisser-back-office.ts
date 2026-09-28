@@ -312,6 +312,15 @@ invariant(
 );
 invariant(sumCents(invoices.map((i) => i.totalCents)) === 1_507_500, "the eight invoices must sum to $15,075.00");
 
+/** Small counting numbers spelled out for the narration, so its count of
+ * clean matches is DERIVED from `fixture.paid.length` (critic-BO.md M3:
+ * the narration hand-typed "two" while the fixture asserted three), never
+ * hand-typed again if the fixture changes. */
+const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight"];
+function countWord(n: number): string {
+  return NUMBER_WORDS[n] ?? String(n);
+}
+
 export const stages = defineStages([
   {
     shape: "beats",
@@ -324,12 +333,12 @@ export const stages = defineStages([
     narration: {
       label: "Demonstration data",
       description:
-        "This stage shows the Preisser Solutions back office matching bank deposits to open invoices. " +
-        "Deposits arrive, two are matched cleanly to a single invoice each, one amount matches an " +
-        "invoice exactly but also a combination of two smaller ones and is held rather than guessed, " +
-        "one deposit is still pending at the bank, one names no client the system recognizes, one " +
-        "matches no open invoice for its client, and one repeats an amount already paid and is left " +
-        "unexplained. The clients, invoices, and bank rows shown are an invented demonstration.",
+        `This stage shows the Preisser Solutions back office matching bank deposits to open invoices. ` +
+        `Deposits arrive, ${countWord(fixture.paid.length)} are matched cleanly to a single invoice each, ` +
+        "one amount matches an invoice exactly but also a combination of two smaller ones and is held " +
+        "rather than guessed, one deposit is still pending at the bank, one names no client the system " +
+        "recognizes, one matches no open invoice for its client, and one repeats an amount already paid " +
+        "and is left unexplained. The clients, invoices, and bank rows shown are an invented demonstration.",
     },
     beats: [
       {
@@ -346,9 +355,9 @@ export const stages = defineStages([
         steps: [
           { caption: "Bank rows come in for the day." },
           { caption: "One deposit's name and amount point at a single open invoice. It's marked paid." },
-          { caption: "A second deposit resolves the same clean way." },
-          { caption: "A third deposit matches an invoice exactly, and also two smaller ones combined." },
-          { caption: "A fourth deposit hasn't posted yet. Nothing is tied until it clears." },
+          { caption: "Two more resolve the same clean way." },
+          { caption: "The next deposit matches an invoice exactly, and also two smaller ones combined." },
+          { caption: "One more deposit hasn't posted yet. Nothing is tied until it clears." },
         ],
       },
       {
