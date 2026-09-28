@@ -91,6 +91,28 @@ async function settleTrack(t: ReturnType<Page["locator"]>): Promise<void> {
  * second defect: it scoped nothing and checked the whole page after playing
  * only the one track under test).
  */
+/**
+ * Waits until no [data-track] on the page is mid-animation: none reads
+ * data-track-state="playing" and none carries data-track-armed. A Back/Next
+ * click on one track can shift layout enough to cross an ADJACENT track's
+ * IntersectionObserver entry line, arming and autoplaying it after our own
+ * track has already settled -- observed on a real stage at 1440x900 with two
+ * short adjacent beats (Lane BO). Same 60s budget as the motion test.
+ */
+async function waitForAllTracksIdle(page: Page): Promise<void> {
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() =>
+          Array.from(document.querySelectorAll("[data-track]")).every(
+            (t) => t.getAttribute("data-track-state") !== "playing" && !t.hasAttribute("data-track-armed"),
+          ),
+        ),
+      { timeout: 60_000, message: "a [data-track] is still playing or armed" },
+    )
+    .toBe(true);
+}
+
 async function settleVisibleTracks(page: Page): Promise<{ total: number; armedBelowFold: number }> {
   const tracks = page.locator("[data-demo-stage] [data-track]");
   let armedBelowFold = 0;
@@ -226,6 +248,10 @@ for (const m of MANIFESTS) {
           await t.getByRole("button", { name: "Replay", exact: true }).click();
           await expect(t).toHaveAttribute("data-track-state", "playing");
           await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 60_000 });
+          // An adjacent short track can have armed itself off the interaction
+          // above; wait for the WHOLE page to go quiescent before the final
+          // page-wide assertion, not just the track under test.
+          await waitForAllTracksIdle(page);
           expect(await page.evaluate(endStateViolations)).toEqual([]);
         } finally {
           await context.close();
