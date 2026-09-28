@@ -150,15 +150,18 @@
 .bo-row__date { flex: 0 0 auto; font-size: 0.8125rem; color: var(--skin-ink-2); font-variant-numeric: tabular-nums; }
 .bo-row__amount { flex: 0 0 auto; font-weight: 700; color: var(--skin-ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bo-row__controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
-/* Desk: date as its own fixed column ahead of the name (ReviewView.tsx FACTS, :86). */
+/* Desk: date as its own fixed column beside the name (ReviewView.tsx FACTS, :86). */
 .bo-row--desk .bo-row__head { flex-wrap: nowrap; }
 .bo-row--desk .bo-row__date { width: 72px; }
 .bo-row--desk .bo-row__controls { margin-top: 0; margin-left: auto; }
-/* Phone: date under the name, controls on their own line (spec-BO.md §1.8). */
+/* Phone: name and amount on one line, date under the name, the action button
+   on its own line below that (spec-BO.md §1.8; review MEDIUM-6: the button
+   must never render above the row it belongs to). */
 .bo-row--ph .bo-row__head { flex-wrap: wrap; }
-.bo-row--ph .bo-row__name { flex-basis: 100%; order: 1; font-size: 1rem; }
-.bo-row__date--ph { flex-basis: 100%; order: 3; font-size: 0.8125rem; }
-.bo-row--ph .bo-row__amount { order: 2; }
+.bo-row--ph .bo-row__name { flex: 1 1 0; min-width: 0; order: 1; font-size: 1rem; }
+.bo-row--ph .bo-row__amount { flex: 0 0 auto; order: 1; }
+.bo-row__date--ph { flex-basis: 100%; order: 2; font-size: 0.8125rem; }
+.bo-row--ph .bo-row__controls { order: 3; flex-basis: 100%; }
 
 .bo-action {
   display: inline-flex;
