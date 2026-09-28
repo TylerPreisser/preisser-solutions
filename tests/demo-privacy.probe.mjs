@@ -350,7 +350,16 @@ const CASES = [
   { name: "routing-shaped number", html: PAGE("Routing 123 456 789"), expect: ["routing"] },
   { name: "amount outside the stage", html: PAGE("Paid.", `<meta name="description" content="Saved $4,200 a month">`), expect: ["dollar-outside"] },
   { name: "amount in JSON-LD", html: PAGE("Paid.", `<script type="application/ld+json">{"description":"Saved $4,200"}</script>`), expect: ["dollar-outside"] },
-  { name: "real-looking domain", html: PAGE("Mail billing@harlanfeed.com"), expect: ["domain"] },
+  // review-F2.md LOW B: was "billing@harlanfeed.com", which resolves to a real,
+  // registered third-party domain (dig: A 15.197.225.128 / 3.33.251.168) --
+  // wrong to have in this public repo even as a self-test fixture. The
+  // "domain" rule matches on the EXACT registered string (cfg.domains,
+  // populated from `domains` below), not on TLD reservedness -- see the
+  // ".example.org" cases further down, which still expect "domain" because
+  // they are not the literal registered "harlanfeed.example" string. So a
+  // second, unregistered ".example" address exercises the same code path
+  // with zero real-world resolution risk (RFC 2606).
+  { name: "similar but unregistered domain", html: PAGE("Mail billing@harlanfeed-billing.example"), expect: ["domain"] },
   { name: "deny-list term", html: PAGE("Qzxplanted paid."), deny: ["Qzxplanted"], expect: ["deny", "token"] },
   { name: "heading inside a stage", html: PAGE("<h2>Paid</h2>"), expect: ["heading"] },
   { name: "RSC references are not amounts", html: PAGE("Paid.", `<script>self.__next_f.push([1,"$L3 $1 $undefined"])</script>`), expect: [] },
