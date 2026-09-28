@@ -269,29 +269,26 @@ export function WheatAgent({ state, size = 96, className, still = false }: Wheat
         </linearGradient>
       </defs>
 
-      <motion.rect
-        x={19.5}
-        y={3}
-        width={9}
-        height={32}
-        rx={4.5}
-        fill={`url(#${sweepId})`}
-        style={{ x: 0 }}
-        animate={
-          state !== "scan"
-            ? { opacity: 0 }
-            : reduce
-              ? { x: 9, opacity: 0.5 }
-              : { x: [-16, 16], opacity: [0, 0.8, 0] }
-        }
-        transition={
-          state !== "scan"
-            ? { duration: 0.3, ease: EASE_OUT }
-            : reduce
-              ? { duration: 0 }
-              : { duration: 2.8, ease: EASE_IN_OUT, repeat: Infinity }
-        }
-      />
+      {/* review-FB3: this sweep is only ever visible for `state === "scan"` — for every
+          other state it used to stay mounted at `opacity: 0` forever, which reads as a
+          stage element resting invisible (ADR-0016 §3, tests/e2e/lib/checks.ts
+          endStateViolations "opacity" rule) at the caught beat's only call site
+          (WhatGoesWrong.tsx `state="flag"`). Not rendering it at all outside `scan`
+          removes the permanently-invisible element instead of animating something
+          decorative in just to satisfy a check; behavior for `scan` itself is unchanged. */}
+      {state === "scan" && (
+        <motion.rect
+          x={19.5}
+          y={3}
+          width={9}
+          height={32}
+          rx={4.5}
+          fill={`url(#${sweepId})`}
+          style={{ x: 0 }}
+          animate={reduce ? { x: 9, opacity: 0.5 } : { x: [-16, 16], opacity: [0, 0.8, 0] }}
+          transition={reduce ? { duration: 0 } : { duration: 2.8, ease: EASE_IN_OUT, repeat: Infinity }}
+        />
+      )}
 
       <motion.g variants={bookV} style={P_BOOK} stroke={GOLD_MARK}>
         <path d={BOOK} strokeWidth="2.2" />
