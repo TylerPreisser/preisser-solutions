@@ -316,23 +316,28 @@
 }
 
 /* The export: an HTML recreation of the .xlsx, never the source's real workbook-year.png
-   (spec-FB §6). Only this table scrolls sideways, and only past 342px of content. */
+   (spec-FB §6). review-FB BLOCKER B1: a single 960px min-width on every table hid every
+   category and vendor amount at rest, at every width, in every engine (only the field cut's
+   fourth column, $/acre, genuinely needs more room than 342px carries). Category and vendor
+   are two columns and fit the mat width with no scroller at all; only the field table scrolls,
+   with its name column pinned so a reader never loses which row they're on mid-swipe. */
 .fb-year__export {
   margin-top: 4px;
   border-top: 1px solid var(--fb-hairline);
   padding: 16px;
 }
 .fb-year__export-table {
-  min-width: 960px;
   width: 100%;
   border-collapse: collapse;
   font-size: 0.8125rem;
+  table-layout: fixed;
 }
 .fb-year__export-table th,
 .fb-year__export-table td {
-  padding: 6px 12px;
+  padding: 6px 8px;
   border-top: 1px solid var(--fb-hairline);
   text-align: left;
+  overflow-wrap: break-word;
 }
 .fb-year__export-table thead th {
   border-top: 0;
@@ -344,4 +349,38 @@
 .fb-year__export-table td:last-child,
 .fb-year__export-table th:last-child {
   text-align: right;
+}
+.fb-year__export-table th:first-child,
+.fb-year__export-table td:first-child {
+  width: 60%;
+}
+
+/* Only the field cut scrolls: Field, Acres, Amount, $/acre genuinely needs more than 342px.
+   min-width: 0 overrides the grid item default of min-width: auto — without it, this
+   scroller's own min-content size (560px, from .fb-year__export-table--field below) stretched
+   the WHOLE shared grid column (.fb-year__export's `grid gap-6`), so the plain category and
+   vendor tables sharing that column rendered 560px wide too and their own Amount column landed
+   off the right edge of the viewport (review-FB BLOCKER B1, found again after the first fix). */
+.fb-year__export-scroller {
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+}
+.fb-year__export-table--field {
+  min-width: 560px;
+  table-layout: auto;
+}
+.fb-year__export-table--field th:first-child,
+.fb-year__export-table--field td:first-child {
+  position: sticky;
+  left: 0;
+  width: auto;
+  background: rgb(var(--fb-page));
+}
+.fb-year__export-hint {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: rgb(var(--fb-gray2));
 }

@@ -154,36 +154,54 @@ const EXPORT_COLUMNS: Record<YearView, string> = {
 
 function ExportTable({ view }: { view: YearView }) {
   const rows = WORKBOOK[view];
-  return (
-    <table className="fb-year__export-table">
+  const isFields = view === "fields";
+  const table = (
+    <table className={`fb-year__export-table${isFields ? " fb-year__export-table--field" : ""}`}>
       <caption className="sr-only">{`Farm-books-2026.xlsx, ${EXPORT_COLUMNS[view]} tab`}</caption>
       <thead>
         <tr>
           <th>{EXPORT_COLUMNS[view]}</th>
-          {view === "fields" && <th>Acres</th>}
+          {isFields && <th>Acres</th>}
           <th>Amount</th>
-          {view === "fields" && <th>$/acre</th>}
+          {isFields && <th>$/acre</th>}
         </tr>
       </thead>
       <tbody>
         {rows.map((row) => (
           <tr key={row.name}>
             <td>{row.name}</td>
-            {view === "fields" && <td className="fb-tnum">{row.acres ? row.acres.toFixed(1) : (row.note ?? "–")}</td>}
+            {isFields && <td className="fb-tnum">{row.acres ? row.acres.toFixed(1) : (row.note ?? "–")}</td>}
             <td className="fb-tnum">{USD(row.amount)}</td>
-            {view === "fields" && <td className="fb-tnum">{row.acres ? USD(row.amount / row.acres) : "–"}</td>}
+            {isFields && <td className="fb-tnum">{row.acres ? USD(row.amount / row.acres) : "–"}</td>}
           </tr>
         ))}
       </tbody>
       <tfoot>
         <tr>
           <th>Matches the ledger total</th>
-          {view === "fields" && <td />}
+          {isFields && <td />}
           <td className="fb-tnum">{USD(WORKBOOK.totalSpent)}</td>
-          {view === "fields" && <td />}
+          {isFields && <td />}
         </tr>
       </tfoot>
     </table>
+  );
+  // review-FB BLOCKER B1: only the field cut needs more than 342px (a fourth column, $/acre).
+  // Category and vendor render plain, no scroller, amount visible at rest on any width.
+  if (!isFields) return table;
+  return (
+    <div className="min-w-0">
+      <div
+        className="fb-year__export-scroller"
+        data-stage-scroller
+        role="region"
+        aria-label="Field tab, at-a-glance export"
+        tabIndex={0}
+      >
+        {table}
+      </div>
+      <p className="fb-year__export-hint">Swipe to see acres and cost per acre.</p>
+    </div>
   );
 }
 
@@ -219,11 +237,12 @@ export function TheYear() {
   return (
     <div className="grid gap-6">
       <ProductScreen chrome="FarmBooks · Your year" tag="Demonstration data" desk={<YearDashboard />} />
-      <ProductScreen
-        chrome="farm-books-2026.xlsx"
-        desk={<ExportPane />}
-        scroll={{ label: "farm-books-2026.xlsx, at-a-glance export" }}
-      />
+      {/* critic-FB BLOCKER B1: no `scroll` prop here — that had widened the WHOLE export pane
+          (including the plain category/vendor tables) to match the field table's min-width, so
+          their own amount column rendered off-screen to the right even though neither table
+          declares a min-width of its own. Only the field table's own nested scroller
+          (.fb-year__export-scroller, data-stage-scroller) scrolls now. */}
+      <ProductScreen chrome="farm-books-2026.xlsx" tag="Demonstration data" desk={<ExportPane />} />
     </div>
   );
 }
