@@ -44,7 +44,16 @@ function Row({ row, view }: { row: WorkbookRow; view: YearView }) {
   const rate = view === "fields" && row.acres ? row.amount / row.acres : null;
   return (
     <div className="fb-year__row">
-      <span className="fb-year__row-fill" style={{ width: `${width * 100}%` }} aria-hidden />
+      {/* data-stage-step + data-fx="sweep" (the kit's own generic mechanism, demo-stage.css) so
+          the beat's one declared step has something to reveal: Back/Next/Replay actually move
+          this, per review-FB HIGH 4. Every row's fill sweeps in together on step 1. */}
+      <span
+        className="fb-year__row-fill"
+        data-stage-step={1}
+        data-fx="sweep"
+        style={{ width: `${width * 100}%` }}
+        aria-hidden
+      />
       <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[rgb(var(--fb-accent-wash))] text-[rgb(var(--fb-accent-deep))]">
         <Icon size={17} strokeWidth={2} />
       </span>
