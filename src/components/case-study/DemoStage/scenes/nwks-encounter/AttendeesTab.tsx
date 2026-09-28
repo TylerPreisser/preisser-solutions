@@ -81,7 +81,7 @@ function Body() {
             Dropped ({dropped.length})
           </button>
         </div>
-        <button type="button" className="nwks-btn">
+        <button type="button" className="nwks-btn nwks-desk-only">
           Export ▾
         </button>
       </div>

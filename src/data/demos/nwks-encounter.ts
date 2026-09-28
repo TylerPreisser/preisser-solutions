@@ -491,7 +491,7 @@ export const stages = defineStages([
           },
           {
             id: "lookout",
-            label: "Lookout AI",
+            label: "Lookout",
             description: "Lookout AI: a plain question about anyone on the roster, with ambiguous names offered as chips.",
             tourCaption: "Ask a plain question about anyone on the roster.",
             steps: [
