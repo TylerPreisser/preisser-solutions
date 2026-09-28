@@ -1,0 +1,344 @@
+/* scenes/farmbooks/farmbooks.css — LIGHT values only, verbatim triplets from
+   Farm Invoice Processing System/web/app/globals.css:22-61 @8cbbbb4 (see SOURCE.md).
+   This is a PINNED SNAPSHOT; it does not follow farm-books.com automatically.
+   Scoped under .demo-skin--farmbooks only — never @theme, never a site/Tailwind
+   variable name (skins.css §5.1 rule 3; the privacy probe's css-namespace rule
+   fails on either). Unlayered, like demo-stage.css. */
+.demo-skin--farmbooks {
+  /* neutrals */
+  --fb-page: 243 241 235; /* #F3F1EB */
+  --fb-card: 255 255 255; /* #FFFFFF */
+  --fb-cardsoft: 252 250 245; /* #FCFAF5 */
+  --fb-ink: 28 24 19; /* #1C1813 */
+  --fb-gray1: 107 98 85; /* #6B6255 */
+  --fb-gray2: 116 106 92; /* #746A5C */
+  --fb-chevron: 203 194 178; /* #CBC2B2 */
+
+  /* hairline + shadows: full CSS values, not triplets */
+  --fb-hairline: rgba(56, 46, 28, 0.1);
+  --fb-shadow-card: 0 1px 2px rgba(52, 42, 26, 0.05), 0 6px 20px -10px rgba(52, 42, 26, 0.16);
+  --fb-shadow-sheet: 0 24px 64px -16px rgba(36, 28, 14, 0.34);
+
+  /* signal colors */
+  --fb-amber: 168 88 0; /* #A85800 */
+  --fb-amber-bg: 251 238 214; /* #FBEED6 */
+  --fb-amber-edge: 231 165 77; /* #E7A54D */
+  --fb-ok: 46 158 86; /* #2E9E56 */
+  --fb-ok-bg: 232 244 236; /* PROVISIONAL, matching skins.css --skin-good-bg */
+
+  /* accent family */
+  --fb-accent: 176 138 40;
+  --fb-accent-deep: 122 92 22;
+  --fb-accent-soft: 231 214 166;
+  --fb-accent-wash: 246 237 214;
+
+  /* brand gold, tailwind.config.ts theme.extend.colors.gold literals as triplets */
+  --fb-gold: 192 152 43; /* #C0982B */
+  --fb-gold-deep: 138 106 28; /* #8A6A1C */
+  --fb-gold-soft: 231 214 166; /* #E7D6A6 */
+  --fb-gold-wash: 246 237 214; /* #F6EDD6 */
+
+  /* font-display: value set by the route via next/font/google (see page.tsx); this
+     file only declares the utility class name used in JSX. */
+}
+
+/* A bespoke, scene-scoped replacement for FarmBooks' own `.tnum` utility (its body was not
+   read past app/globals.css:140 in the read-only spec pass, see SOURCE.md risk #2).
+   Tabular-numeral behavior is standard and safe to reproduce directly. */
+.fb-tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------- the read: photo + region boxes */
+.fb-read {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+.fb-read__photo {
+  position: relative;
+  margin-inline: auto;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 1110 / 1440;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--fb-hairline);
+  background: rgb(var(--fb-ink));
+  box-shadow: var(--fb-shadow-sheet);
+}
+.fb-read__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.fb-read__box {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 3px;
+  box-shadow:
+    0 0 0 2px rgba(192, 152, 43, 0.28),
+    0 6px 18px -4px rgba(192, 152, 43, 0.45);
+  outline: 2px solid rgb(var(--fb-gold));
+  outline-offset: -1px;
+}
+.fb-read__cards {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.fb-read__card {
+  border-radius: 16px;
+  border: 1px solid var(--fb-hairline);
+  background: rgb(var(--fb-card));
+  box-shadow: var(--fb-shadow-card);
+  padding: 14px;
+}
+@media (min-width: 1024px) {
+  .fb-read {
+    grid-template-columns: minmax(0, 0.86fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 32px;
+  }
+  .fb-read__photo {
+    max-width: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------- the books: a month */
+.fb-books {
+  border-radius: 24px;
+  border: 1px solid var(--fb-hairline);
+  background: rgb(var(--fb-card));
+  box-shadow: var(--fb-shadow-card);
+  padding: 20px;
+  min-width: 0;
+}
+.fb-books__ledger {
+  margin-top: 12px;
+  border-radius: 16px;
+  border: 1px solid var(--fb-hairline);
+  overflow: hidden;
+}
+.fb-books__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--fb-hairline);
+}
+.fb-books__row:first-child {
+  border-top: 0;
+}
+.fb-books__fill {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  background: rgb(var(--fb-accent-wash) / 0.55);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--demo-dur, 520ms) var(--demo-ease, ease);
+}
+[data-track-armed] .fb-books__row[data-pending] .fb-books__fill {
+  clip-path: inset(0 100% 0 0);
+}
+.fb-books__row:not([data-pending]) .fb-books__fill {
+  clip-path: inset(0 0 0 0);
+}
+
+/* --------------------------------------------------------------------- what goes wrong: 3 cards */
+.fb-wrong {
+  display: grid;
+  gap: 20px;
+}
+.fb-wrong__card {
+  border-radius: 20px;
+  border: 1px solid var(--fb-hairline);
+  background: rgb(var(--fb-card));
+  box-shadow: var(--fb-shadow-card);
+  padding: 16px;
+  min-width: 0;
+}
+.fb-wrong__paper {
+  border-radius: 12px;
+  background: rgb(var(--fb-card));
+  border: 1px solid var(--fb-hairline);
+  padding: 12px;
+}
+.fb-wrong__line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-left: 2px solid rgb(var(--fb-chevron));
+  padding: 3px 0 3px 10px;
+  font-size: 0.8125rem;
+  color: rgb(var(--fb-gray1));
+}
+.fb-wrong__inset {
+  border-radius: 12px;
+  background: rgb(var(--fb-cardsoft));
+  border: 1px solid var(--fb-hairline);
+  padding: 14px;
+}
+.fb-wrong__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.fb-wrong__badge--amber {
+  background: rgb(var(--fb-amber-bg));
+  color: rgb(var(--fb-amber));
+  box-shadow: inset 0 0 0 1px rgb(var(--fb-amber-edge));
+}
+.fb-wrong__badge--ok {
+  background: rgb(var(--fb-ok-bg));
+  color: rgb(var(--fb-ok));
+  box-shadow: inset 0 0 0 1px rgb(var(--fb-ok) / 0.35);
+}
+
+/* ---------------------------------------------------------------------------- your year: the file */
+.fb-year {
+  border-radius: 24px;
+  border: 1px solid var(--fb-hairline);
+  background: rgb(var(--fb-card));
+  box-shadow: var(--fb-shadow-card);
+  overflow: hidden;
+  min-width: 0;
+}
+.fb-year__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 16px 14px;
+}
+.fb-year__tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--fb-hairline);
+  border-block: 1px solid var(--fb-hairline);
+}
+@media (min-width: 640px) {
+  .fb-year__tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.fb-year__tile {
+  background: rgb(var(--fb-card));
+  padding: 14px 16px;
+}
+
+/* The cut switcher: pure CSS radio tabs, no JS required (ADR-0017's "all cuts in the
+   markup" rule, applied without the kit's TabbedScreen so an export pane can sit
+   alongside the three cuts in one Screen beat). */
+.fb-year__cut-input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.fb-year__cut-bar {
+  /* Wraps rather than scrolls: three short labels never need a scroller (ADR-0016 §6's
+     phone-first rule is about PRODUCT SCREENS wider than the content column; three
+     44px-tall pill buttons read fine on two lines and never clip). */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 10px 0;
+}
+.fb-year__cut-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--fb-hairline);
+  color: rgb(var(--fb-gray2));
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.fb-year__cut-input:checked + .fb-year__cut-label {
+  border-color: rgb(var(--fb-gold));
+  color: rgb(var(--fb-ink));
+  background: rgb(var(--fb-accent-wash) / 0.5);
+}
+.fb-year__cut-input:focus-visible + .fb-year__cut-label {
+  outline: 2px solid rgb(var(--fb-accent-deep));
+  outline-offset: 2px;
+}
+.fb-year__panel {
+  display: none;
+}
+#fb-cut-categories:checked ~ .fb-year__panels [data-fb-cut="categories"],
+#fb-cut-vendors:checked ~ .fb-year__panels [data-fb-cut="vendors"],
+#fb-cut-fields:checked ~ .fb-year__panels [data-fb-cut="fields"] {
+  display: block;
+}
+.fb-year__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--fb-hairline);
+}
+.fb-year__row:first-child {
+  border-top: 0;
+}
+.fb-year__row-fill {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  background: rgb(var(--fb-accent-wash) / 0.4);
+}
+.fb-year__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--fb-hairline);
+  background: rgb(var(--fb-cardsoft));
+}
+
+/* The export: an HTML recreation of the .xlsx, never the source's real workbook-year.png
+   (spec-FB §6). Only this table scrolls sideways, and only past 342px of content. */
+.fb-year__export {
+  margin-top: 4px;
+  border-top: 1px solid var(--fb-hairline);
+  padding: 16px;
+}
+.fb-year__export-table {
+  min-width: 960px;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+.fb-year__export-table th,
+.fb-year__export-table td {
+  padding: 6px 12px;
+  border-top: 1px solid var(--fb-hairline);
+  text-align: left;
+}
+.fb-year__export-table thead th {
+  border-top: 0;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgb(var(--fb-gray2));
+}
+.fb-year__export-table td:last-child,
+.fb-year__export-table th:last-child {
+  text-align: right;
+}

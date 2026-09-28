@@ -1,6 +1,16 @@
 import type { Metadata } from "next";
+import { Fraunces } from "next/font/google";
 import { CaseStudyPage } from "@/components/case-study/CaseStudyPage";
+import { FarmBooksStages } from "@/components/case-study/DemoStage/scenes/farmbooks/FarmBooksStages";
 import { caseStudy } from "@/data/case-studies/farmbooks";
+
+// Fraunces ships only on this route (ADR-0016 §11 Lane FB): FarmBooks' own display face,
+// loaded here rather than in the site's root layout, which carries only Inter and JetBrains Mono.
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--fb-font-display",
+  display: "swap",
+});
 
 const url = `https://preissersolutions.com/case-studies/${caseStudy.slug}`;
 
@@ -33,5 +43,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <CaseStudyPage data={caseStudy} />;
+  return <CaseStudyPage data={caseStudy} demo={<FarmBooksStages fontVariable={fraunces.variable} />} />;
 }

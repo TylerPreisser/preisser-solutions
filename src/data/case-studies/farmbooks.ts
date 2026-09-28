@@ -1,4 +1,5 @@
 import type { CaseStudyData } from "@/types/case-study";
+import { stages } from "@/data/demos/farmbooks";
 
 // FarmBooks — flagship AI Integration + Business Automation platform.
 // Photograph a farm bill, get Schedule-F-ready books. Live at farm-books.com
@@ -158,6 +159,11 @@ export const caseStudy: CaseStudyData = {
   ],
 
   relatedSlugs: ["hg-oil-ai-invoice-processing", "hg-oil-inventory-system", "alliant-mgu-insurance"],
+
+  // ── Proof Stage (ADR-0016) ─────────────────────────────────
+  // The full farm-books.com showcase, transplanted as a labeled stage on invented data
+  // (src/data/demos/farmbooks.ts). See scenes/farmbooks/SOURCE.md for the transform list.
+  demo: stages,
 
   cta: {
     heading: "Buried in farm bills at tax time?",
