@@ -243,6 +243,55 @@ export function themeReadout(): { section: string; mat: string; matEdge: string;
   };
 }
 
+/**
+ * Geometry for the "Take the tour" scroll fix (review-NW.md B3): is the
+ * active panel's top just under the tab bar, and is the active tab visible
+ * inside the bar's own horizontal scroller (`.demo-tabs__list`, not the
+ * whole bar -- a tab can sit inside the bar's rect while scrolled out of the
+ * list's own clip region, which is the exact bug B3 measured: "Cabins at
+ * 356-436... against a list right edge of 365"). Returns null when the page
+ * has no tabbed screen to check (most stages).
+ *
+ * `floor` is the lower of the bar's own bottom and the tour-caption row's
+ * bottom (`.demo-tabs__tourcap`, which always reserves height via
+ * `min-height: 1.55em` whether or not it holds text): on phone/tablet the
+ * bar is `position: sticky` and paints BELOW the caption's own flow position
+ * (sticky repositions only the bar's own paint, not its siblings' layout, so
+ * the caption's rect can sit entirely inside the bar's, hidden underneath
+ * it -- a pre-existing overlap, not introduced by this fix); on desktop the
+ * bar is static and the caption sits below it, a real `.demo-beat { gap:
+ * 14px }` row away from the panel. Either way, `floor` is whichever one the
+ * panel must clear.
+ */
+export function tourPanelGeometry(): {
+  viewportH: number;
+  bar: { top: number; bottom: number };
+  list: { left: number; right: number };
+  tab: { top: number; bottom: number; left: number; right: number };
+  panelTop: number;
+  floor: number;
+} | null {
+  const bar = document.querySelector(".demo-tabs__bar");
+  const list = document.querySelector(".demo-tabs__list");
+  const tourcap = document.querySelector(".demo-tabs__tourcap");
+  const tab = document.querySelector('.demo-tabs__tab[aria-selected="true"]');
+  const panel = document.querySelector('[role="tabpanel"]:not([hidden])');
+  if (!bar || !list || !tourcap || !tab || !panel) return null;
+  const b = bar.getBoundingClientRect();
+  const l = list.getBoundingClientRect();
+  const c = tourcap.getBoundingClientRect();
+  const t = tab.getBoundingClientRect();
+  const p = panel.getBoundingClientRect();
+  return {
+    viewportH: window.innerHeight,
+    bar: { top: b.top, bottom: b.bottom },
+    list: { left: l.left, right: l.right },
+    tab: { top: t.top, bottom: t.bottom, left: t.left, right: t.right },
+    panelTop: p.top,
+    floor: Math.max(b.bottom, c.bottom),
+  };
+}
+
 /** Negative control: force the real armed CSS onto a no-JS page. */
 export function armEverything(): number {
   for (const t of Array.from(document.querySelectorAll("[data-track]"))) {
