@@ -290,6 +290,9 @@ export const invented: InventedSet = {
     "Was",
     "Changed",
     "Reason",
+    // The redesigned Attendees phone row (critic-NW B2).
+    "Awaiting",
+    "He",
     // Shirt sizes and single-letter UI codes (side letters, 5A/5B/5C suffixes).
     "S",
     "M",

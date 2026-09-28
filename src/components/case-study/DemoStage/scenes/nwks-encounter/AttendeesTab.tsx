@@ -27,6 +27,30 @@ function initials(a: Attendee): string {
   return `${p[0]?.[0] ?? ""}${p[1]?.[0] ?? ""}`.toLowerCase();
 }
 
+function timesText(n: number): string {
+  return n === 0 ? "first time" : `${n} time${n === 1 ? "" : "s"} before`;
+}
+
+// Three facts, never more (critic-NW B2): the row must read in one or two
+// lines at 320px. The inviter is on his record; the row does not repeat it.
+function Facts({ items }: { items: readonly string[] }) {
+  return (
+    <>
+      {items.map((f, i) => (
+        <span key={f}>
+          {i > 0 ? " · " : ""}
+          <span className="nwks-fact">{f}</span>
+        </span>
+      ))}
+    </>
+  );
+}
+
+function registeredMeta(a: Attendee): string[] {
+  const times = a.timesAttended === 0 ? "First time" : `${a.timesAttended} time${a.timesAttended === 1 ? "" : "s"} before`;
+  return [times, attendeeTown(a), `Size ${a.shirtSize}`];
+}
+
 function Body() {
   const registered = ATTENDEES.filter((a) => a.status === "registered");
   const waitlist = ATTENDEES.filter((a) => a.status.startsWith("waitlist"));
@@ -68,17 +92,21 @@ function Body() {
             <span className="nwks-avatar" aria-hidden="true">
               {initials(a)}
             </span>
-            <div style={{ minWidth: 0 }}>
-              <div className="nwks-r-name">{attendeeName(a)}</div>
+            <div className="nwks-r-main">
+              <div className="nwks-r-top">
+                <span className="nwks-r-name">{attendeeName(a)}</span>
+                <span className={`nwks-pill ${a.paid ? "nwks-pill--good" : "nwks-pill--warn"}`}>{a.paid ? "Paid" : "Not paid"}</span>
+              </div>
               <div className="nwks-r-meta">
-                {a.timesAttended === 0 ? "First time" : `${a.timesAttended} time${a.timesAttended === 1 ? "" : "s"} attended`} · {attendeeTown(a)}
-                {a.inviterId ? " · invited by a server" : ""} · {a.shirtSize}
+                <Facts items={registeredMeta(a)} />
               </div>
             </div>
             <div className="nwks-r-actions">
-              <button type="button" className="nwks-btn" disabled={a.paid}>
-                Mark paid
-              </button>
+              {a.paid ? null : (
+                <button type="button" className="nwks-btn">
+                  Mark paid
+                </button>
+              )}
               <button type="button" className="nwks-btn" onClick={() => setDropId(dropId === a.personId ? null : a.personId)}>
                 Drop
               </button>
@@ -109,35 +137,35 @@ function Body() {
         Wait list
       </p>
       <div className="nwks-roster" data-fx="rise">
-        {waitlist.map((a) => (
-          <div className="nwks-r-row" key={a.personId} style={{ gridTemplateColumns: "auto minmax(0,1fr)" }} data-stage-step={a.status === "waitlist-offered" ? "4" : "3"}>
-            <span className="nwks-avatar" aria-hidden="true">
-              {initials(a)}
-            </span>
-            <div style={{ minWidth: 0, display: "grid", gap: 4 }}>
-              <div className="nwks-row">
-                <span className="nwks-r-name">{attendeeName(a)}</span>
-                <span className="nwks-pill nwks-pill--warn">
-                  {a.status === "waitlist-pending" ? "Pending review" : a.status === "waitlist-offered" ? "Offer sent" : "Waitlisted"}
-                </span>
-                <span className="nwks-r-meta">Waiting {a.daysWaiting} days</span>
-              </div>
-              <div className="nwks-status-line">
-                {a.status === "waitlist-pending"
-                  ? "Waiting on you to decide."
-                  : a.status === "waitlist-position"
-                    ? offered.has(a.personId)
-                      ? "A seat was offered; his acceptance is pending."
-                      : `Waiting for a seat: number ${a.waitlistPosition} in line.`
-                    : "A seat was offered; his acceptance is pending."}
-              </div>
-              {a.reasonForReturning ? <div className="nwks-quote">&ldquo;{a.reasonForReturning}&rdquo;</div> : null}
-              {a.status === "waitlist-pending" && a.selfReportedTimes !== undefined ? (
-                <div className="nwks-r-meta">
-                  Times attended: he wrote {a.selfReportedTimes}, the record shows {a.timesAttended}, worth a look.
+        {waitlist.map((a) => {
+          const isOffered = a.status === "waitlist-offered" || offered.has(a.personId);
+          return (
+            <div className="nwks-r-row" key={a.personId} data-stage-step={a.status === "waitlist-offered" ? "4" : "3"}>
+              <span className="nwks-avatar" aria-hidden="true">
+                {initials(a)}
+              </span>
+              <div className="nwks-r-main">
+                <div className="nwks-r-top">
+                  <span className="nwks-r-name">{attendeeName(a)}</span>
+                  <span className={`nwks-pill ${isOffered ? "nwks-pill--good" : "nwks-pill--warn"}`}>
+                    {a.status === "waitlist-pending"
+                      ? "Needs your decision"
+                      : isOffered
+                        ? "Offer sent"
+                        : `No. ${a.waitlistPosition} in line`}
+                  </span>
                 </div>
-              ) : null}
-              <div className="nwks-row">
+                <div className="nwks-r-meta">
+                  <Facts items={[`Waiting ${a.daysWaiting} days`, attendeeTown(a), timesText(a.timesAttended)]} />
+                </div>
+                {a.status === "waitlist-pending" && a.selfReportedTimes !== undefined ? (
+                  <div className="nwks-r-meta nwks-r-flag">
+                    He wrote {a.selfReportedTimes} times; the record shows {a.timesAttended}
+                  </div>
+                ) : null}
+                {a.reasonForReturning ? <div className="nwks-quote">&ldquo;{a.reasonForReturning}&rdquo;</div> : null}
+              </div>
+              <div className="nwks-r-actions">
                 {a.status === "waitlist-pending" ? (
                   <>
                     <button type="button" className="nwks-btn nwks-btn--primary">
@@ -147,28 +175,21 @@ function Body() {
                       Ask for a reason
                     </button>
                   </>
-                ) : a.status === "waitlist-position" ? (
-                  offered.has(a.personId) ? (
-                    <span className="nwks-pill nwks-pill--good">Offer sent, awaiting reply</span>
-                  ) : (
-                    <button
-                      type="button"
-                      className="nwks-btn nwks-btn--primary"
-                      onClick={() => setOffered((s) => new Set(s).add(a.personId))}
-                    >
-                      Give the seat
-                    </button>
-                  )
+                ) : isOffered ? (
+                  <span className="nwks-status-line">Awaiting his reply</span>
                 ) : (
-                  <span className="nwks-pill nwks-pill--good">Offer sent, awaiting reply</span>
+                  <button
+                    type="button"
+                    className="nwks-btn nwks-btn--primary"
+                    onClick={() => setOffered((s) => new Set(s).add(a.personId))}
+                  >
+                    Give the seat
+                  </button>
                 )}
-                <button type="button" className="nwks-btn">
-                  Keep on waitlist
-                </button>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <p className="nwks-h">Dropped</p>
@@ -178,11 +199,13 @@ function Body() {
             <span className="nwks-avatar" aria-hidden="true">
               {initials(a)}
             </span>
-            <div style={{ minWidth: 0 }}>
-              <div className="nwks-r-name">{attendeeName(a)}</div>
+            <div className="nwks-r-main">
+              <div className="nwks-r-top">
+                <span className="nwks-r-name">{attendeeName(a)}</span>
+                {a.wasAlreadyPaid ? <span className="nwks-pill nwks-pill--warn">Was paid</span> : null}
+              </div>
               <div className="nwks-r-meta">{a.droppedReason}</div>
             </div>
-            {a.wasAlreadyPaid ? <span className="nwks-pill nwks-pill--warn">Was paid</span> : null}
           </div>
         ))}
       </div>
