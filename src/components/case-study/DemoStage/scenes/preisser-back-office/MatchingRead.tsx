@@ -43,7 +43,7 @@ export function MatchingRead() {
         <span className="bo-read__name">{d4.descriptor}</span>
         <span className="bo-read__amount">{usdCents(d4.cents)}</span>
         <span className="bo-read__tag bo-read__tag--held">Held for a person</span>
-        <p className="bo-read__note">Two open invoices for this client are exactly this amount. Nothing is chosen for you.</p>
+        <p className="bo-read__note">This deposit matches an invoice, but the amount is also two smaller invoices combined.</p>
       </div>
       <div className="bo-read__row" data-stage-step="5" data-fx="rise">
         <span className="bo-read__name">{d5.descriptor}</span>

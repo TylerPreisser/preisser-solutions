@@ -262,11 +262,12 @@ data, one problem at a time, added as each stage ships.
 
 **First stage: deposit-to-invoice matching.** Bank deposits arrive with almost nothing
 identifying who sent them, and an amount alone is not evidence of who paid. A daily matcher
-ties a deposit to an invoice only when the bank text names the client and the amount matches
-exactly one open invoice; anything else is left in a queue with the reason attached, never
-auto-posted on a guess. When an amount could belong to more than one open invoice for the
-same client, the matcher refuses outright rather than picking one, and a deposit that repeats
-one already paid ties to the existing invoice instead of paying it again.
+connects a deposit to an invoice only when the bank text names the client and the amount
+matches exactly one open invoice; anything else is left in a queue with the reason attached,
+never auto-posted on a guess. When a deposit's amount exactly matches one open invoice but is
+also exactly a combination of other open invoices for that client, the matcher will not pick
+a reading and flags it for a person, and a deposit that repeats an amount already paid matches
+nothing open and is left for a person rather than being guessed at.
 
 **Outcome.** A deposit is never assigned to the wrong client on the strength of a coincidence.
 

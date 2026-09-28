@@ -2,7 +2,7 @@
 
 import { ProductScreen } from "../../ProductScreen";
 import { fixture, type MatchOutcome } from "@/data/demos/preisser-back-office";
-import { usdCents, type Cents } from "@/data/demos/_money";
+import { usdCents } from "@/data/demos/_money";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -20,12 +20,22 @@ function outcomeOf(id: string): Extract<MatchOutcome, { kind: "queued" }> {
   return o;
 }
 
-function readingQuote(number: string, cents: Cents): string {
-  return `Same client, same amount: ${usdCents(cents)} for ${number}.`;
-}
-
+/**
+ * The collision row: ONE reading, not two (review-BO.md HIGH-1). The real
+ * matcher refuses to auto-pay a decomposing amount (agent/reconcile.py
+ * `_decomposes`), but the panel's proposal rail still describes the single
+ * exact-match invoice at "likely" confidence, because the amount is ALSO a
+ * combination of smaller open invoices (`propose_candidates` :805-825,
+ * `CandidateGroup.confidence` "repeated on screen as a WORD; nothing acts on
+ * it", bills/vm.ts :143-145). Every control here is DECORATIVE and
+ * non-focusable (review MEDIUM-5): `ProductScreen`'s body is
+ * `aria-hidden="true"`, and a real `<button>` inside it would still be a
+ * live keyboard tab stop that does nothing when pressed.
+ */
 function CollisionRow({ ph }: { ph: boolean }) {
   const o = outcomeOf("d4");
+  const exactInvoice = o.candidates.find((inv) => inv.totalCents === o.deposit.cents);
+  if (!exactInvoice) throw new Error("[deposit-matcher] the collision row has no exact-match invoice");
   const rowCls = ph ? "bo-row bo-row--ph" : "bo-row bo-row--desk";
   const dateCls = ph ? "bo-row__date bo-row__date--ph" : "bo-row__date";
   return (
@@ -35,29 +45,21 @@ function CollisionRow({ ph }: { ph: boolean }) {
         <span className={dateCls}>{dayWords(o.deposit.posted)}</span>
         <span className="bo-row__amount">{usdCents(o.deposit.cents)}</span>
         <div className="bo-row__controls">
-          <button type="button" className="bo-action" aria-expanded="true">
+          <span className="bo-action" tabIndex={-1} aria-hidden="true">
             Less
-          </button>
+          </span>
         </div>
       </div>
       <div className="bo-detail">
-        <p className="bo-law">
-          These readings are not ranked. Each is one way this deposit could be read, in the order the matcher wrote them.
-        </p>
-        <ul className="bo-readings">
-          {o.candidates.map((inv) => (
-            <li className="bo-reading" key={inv.number}>
-              <p className="bo-reading__line">
-                {inv.number} ({usdCents(inv.totalCents)})
-              </p>
-              <p className="bo-reading__quote">&ldquo;{readingQuote(inv.number, inv.totalCents)}&rdquo;</p>
-              <button type="button" className="bo-action bo-action--go">
-                It&apos;s invoice {inv.number}
-              </button>
-            </li>
-          ))}
-        </ul>
-        <p className="bo-basis">{o.basis} Nothing is accepted until a person picks one.</p>
+        <div className="bo-reading">
+          <p className="bo-reading__line">
+            {exactInvoice.number} ({usdCents(exactInvoice.totalCents)}) &middot; likely
+          </p>
+          <p className="bo-reading__quote">&ldquo;{o.basis}&rdquo;</p>
+          <span className="bo-action bo-action--go" tabIndex={-1} aria-hidden="true">
+            It&apos;s invoice {exactInvoice.number}
+          </span>
+        </div>
       </div>
     </li>
   );
@@ -74,9 +76,9 @@ function CollapsedRow({ id, ph }: { id: string; ph: boolean }) {
         <span className={dateCls}>{dayWords(o.deposit.posted)}</span>
         <span className="bo-row__amount">{usdCents(o.deposit.cents)}</span>
         <div className="bo-row__controls">
-          <button type="button" className="bo-action" aria-expanded="false">
+          <span className="bo-action" tabIndex={-1} aria-hidden="true">
             Pick the invoice
-          </button>
+          </span>
         </div>
       </div>
     </li>
@@ -111,9 +113,9 @@ function ReviewGroup({ ph }: { ph: boolean }) {
 /**
  * The Screen beat: "Money · Review" recreated (spec-BO.md §4 "Screen").
  * Only the "Money in without a home" group (ReviewView.tsx `:597`), with the
- * three still-open rows: the collision (`d4`, expanded — the multi-reading
- * UI is the point) and the unknown-sender / partial-amount rows (`d6`,
- * `d7`, collapsed with their "Pick the invoice" action). The three resolved
+ * three still-open rows: the collision (`d4`, expanded to its single "likely"
+ * reading) and the unknown-sender / partial-amount rows (`d6`, `d7`,
+ * collapsed with their "Pick the invoice" action). The three resolved
  * deposits and the pending one never reach this group (spec-BO.md §4,
  * ReviewView.tsx's own queue-membership rule). Not a stepped beat: this is
  * one recreated view, not a sequence, so it carries no `data-stage-step`.

@@ -1,7 +1,10 @@
 # SOURCE — `preisser-back-office` / `deposit-matcher`
 
-Lane BO, 2026-09-28. Read-only research; nothing in ps-admin or this website
-was modified in the course of building this stage.
+Lane BO, 2026-09-28, updated the same day after `review-BO.md` (PR #10,
+MERGE AFTER FIXES) found two invented outcomes — see "What this stage
+simplifies" below, "The collision" and "The repeat deposit". Read-only
+research; nothing in ps-admin or this website was modified in the course of
+building or fixing this stage.
 
 ## ps-admin sha
 
@@ -41,21 +44,20 @@ working tree (which is 131+ commits behind and has uncommitted edits).
 - `panel/src/screens/money/MoneyPhone.tsx` (full file) — the phone chrome:
   `T.title` "Money" (`:20`), pill caption "Money assistant · proposes, you
   confirm" (`:29`).
-- `agent/reconcile.py` — read via the ps-admin inventory's citations
-  (`:901-919` docstring, `:920-1000` matching loop, `:614-625`
-  `_has_evidence`, `:961-980` collision docstring, `:1017-1035`
-  `_decomposes`, `:1435` the `COLLISION ... left for Tyler` print). Not
-  re-read line-for-line at `389aa89` in this pass (spec-BO.md already did the
-  full read at `0bcb4ab`); the matching RULE these lines describe — exact
-  amount plus counterparty evidence, refuse on a second exact candidate — is
-  unchanged in spirit from the money-tab-v2 UI this stage recreates, which
-  WAS re-read at `389aa89` and confirms the same rule in its own words
-  (`ReviewView.tsx:10-24` header comment, current sha).
-- `panel/src/screens/money/bills/vm.ts` — `tiesRatherThanPays()` cited by
-  `ReviewView.tsx:167,176` at `389aa89` (not re-opened directly this pass;
-  its behavior is unchanged, confirmed by `TiesNote`'s current text at
-  `ReviewView.tsx:179-184`, which still reads "ties this deposit to it as
-  the payment... not paid again").
+- `agent/reconcile.py`, FULL FILE re-read at `389aa89` in the review-fix pass
+  (the original pass had only used the ps-admin inventory's citations against
+  an earlier sha, and got two outcomes wrong; see review-BO.md and "What this
+  stage simplifies" below): `match_payments()` docstring and body
+  (`:901-1032`), the collision guard and `_decomposes()` (`:648-670`, `:959`),
+  `_fifo_by_client()` (`:713-727`), the same-client FIFO application
+  (`:982-993`), the "unexplained credit" warn line (`:1020-1031`),
+  `propose_candidates()` and its four confidence levels (`:730-841`,
+  `"likely"` at `:815-820`).
+- `panel/src/screens/money/bills/vm.ts`, `tiesRatherThanPays()` and its doc
+  comment, re-read at `389aa89` in the review-fix pass (`:143-169`): a tie is
+  ONLY true when a PROPOSED reading names an invoice the OWNER hand-marked
+  `paid` with no deposit behind it — the opposite of a repeat deposit against
+  a normally-paid invoice, which this stage does not model.
 
 ## What this stage simplifies, and says so
 
@@ -67,16 +69,40 @@ working tree (which is 131+ commits behind and has uncommitted edits).
   hint table. The stage's captions say "the bank text has to name the
   client," never implying a database join is doing the work (spec-BO.md
   §2.1).
-- **The collision.** The real refusal (`_decomposes`) is a general subset-sum
-  check across every open invoice for a client. This fixture uses the
-  narrowest true instance of it — two open invoices for the same client at
-  the identical amount (`INV-2102`, `INV-2105`, both $4,200.00) — which is a
-  valid instance of "a different combination sums to the same target," not a
-  distortion (spec-BO.md §2.1).
-- **The tie.** `MatchOutcome`'s `"tied"` kind and the fixture's posted-date
-  processing order are LOCAL to this fixture file (spec-BO.md §3.4), never
-  added to `src/types/demo-stage.ts`. It paraphrases the real product's
-  `TiesNote` sentence, not a separate mechanism.
+- **The collision (corrected 2026-09-28, review-BO.md HIGH-1).** The
+  original fixture modeled a collision as two open invoices for the same
+  client at the identical amount. That is exactly the case
+  `_fifo_by_client` exists to AUTO-PAY (`reconcile.py :982-989`, "same client,
+  identical amounts ... apply FIFO to the oldest open invoice — standard AR
+  practice"), not refuse — the opposite of what the stage said. The real
+  refusal (`_decomposes`, `:648-670`) is a genuine subset-sum check: a
+  deposit equals one open invoice's face value AND a DIFFERENT combination of
+  at least two OTHER open invoices for that client also sums to it
+  (`:959-976`). The fixture now models exactly that shape: `d4` (Millbrook,
+  $4,200.00) equals `INV-2102` exactly, and `INV-2107` ($1,500.00) plus
+  `INV-2108` ($2,700.00) also sum to $4,200.00. Neither reading is applied
+  (`match_payments` never touches `remaining` for a collision); the panel's
+  own proposal rail (`propose_candidates`) still describes the single exact
+  invoice at `"likely"` confidence with the basis quoted in the fixture
+  (`:815-820`), so the Screen shows ONE reading, not two.
+- **The repeat deposit (corrected 2026-09-28, review-BO.md HIGH-2).** The
+  original fixture invented a `"tied"` `MatchOutcome` kind: a later deposit
+  matching an invoice an earlier deposit in the same run already paid was
+  said to "tie" to it automatically. The real product has no such path.
+  `match_payments` removes a paid invoice from `remaining` the moment it pays
+  (`:993`), so a later deposit for that amount has nothing open to match; it
+  falls through to the "unexplained credit ... needs Tyler" warn line
+  (`:1020-1031`) and is a person's problem, exactly like any other amount
+  nothing explains. A real tie (`bills/vm.ts` `tiesRatherThanPays`) only
+  happens when a PROPOSED reading names an invoice the OWNER hand-marked
+  `paid` with no matching deposit — accepting that proposal writes
+  `payment_matches` without re-touching the invoice. That is the opposite
+  situation from a repeat deposit against a normally-paid invoice, and this
+  fixture does not model it. `d8` is now `reason: "unexplained"`, and
+  `INV-2109` (Larkspur, never paid) stays open the whole fixture so `d7`'s
+  "no open invoice for this client is this amount" is checked against a real
+  invoice rather than an empty, already-fully-paid pool (review-BO.md
+  MEDIUM-3).
 - **Pending.** The real Review queue never shows a pending row at all
   (`money-tab-v2.md` §1's membership predicate excludes anything pending);
   this stage's Read beat shows `d5` arriving and staying unresolved as a fair
@@ -106,6 +132,16 @@ Recorded in `src/data/demos/invented/preisser-back-office.ts` per entry:
 bank's own generic phrase for an unidentified depositor, quoted directly from
 `agent/reconcile.py` and `bills/vm.ts` doc comments (per spec-BO.md §3.3),
 registered as plain `vocabulary` rather than a business.
+
+## Accessibility fix (2026-09-28, review-BO.md MEDIUM-5)
+
+Every control inside `ReviewScreen.tsx`'s recreation ("Less", "Pick the
+invoice", "It's invoice ...") is a decorative `<span>` with `tabIndex={-1}`
+and `aria-hidden="true"`, not a `<button>`. `ProductScreen`'s body is already
+`aria-hidden="true"` (`ProductScreen.tsx:5-7`, "Decorative to assistive
+tech"), so a real `<button>` inside it was a live keyboard tab stop hidden
+from screen readers that did nothing when pressed. The 44px `.bo-action`
+sizing is unchanged; only the element type changed.
 
 ## Privacy
 

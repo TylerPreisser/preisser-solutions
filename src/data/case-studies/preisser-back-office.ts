@@ -32,7 +32,7 @@ export const caseStudy: CaseStudyData = {
 
   headlineResults: [
     { value: "Evidence, not odds", label: "A deposit auto-pays only on a name match and an exact amount" },
-    { value: "Refuses, not guesses", label: "Two invoices at once amount left for a person, never picked" },
+    { value: "Flags, not guesses", label: "An amount that also fits a combination of other invoices is never auto-applied" },
     { value: "Nothing silent", label: "Every refusal is logged and later resolved by a person, not dropped" },
   ],
 
@@ -41,9 +41,9 @@ export const caseStudy: CaseStudyData = {
       "Bank deposits arrive with almost nothing identifying who sent them, and an amount alone is not " +
       "evidence of who paid.",
     built:
-      "A matcher that ties a deposit to an invoice only when the bank text names the client and the " +
-      "amount is exact, refuses outright when an amount could belong to more than one invoice, and " +
-      "leaves everything it cannot prove for a person to decide.",
+      "A matcher that connects a deposit to an invoice only when the bank text names the client and " +
+      "the amount is exact, flags rather than guesses when that same amount is also exactly a " +
+      "combination of other open invoices, and leaves everything it cannot prove for a person to decide.",
     outcome: "A deposit is never assigned to the wrong client on the strength of a coincidence.",
   },
 
@@ -66,10 +66,10 @@ export const caseStudy: CaseStudyData = {
         "invoices. A deposit only pays automatically when the bank text names that client and the " +
         "amount matches exactly one open invoice; anything else is left in a queue with the reason " +
         "attached, never auto-posted on a guess.",
-      "When an amount could belong to more than one open invoice for the same client, the matcher " +
-        "refuses outright rather than picking one. A person decides. The same discipline extends to a " +
-        "deposit that repeats one already paid: it ties to the existing invoice instead of paying it " +
-        "again.",
+      "When a deposit's amount exactly matches one open invoice but is also exactly a combination of " +
+        "other open invoices for that client, the matcher will not pick a reading. A person decides. " +
+        "The same discipline applies to a deposit that repeats an amount already paid: nothing open " +
+        "explains it, so it waits for a person rather than being guessed at.",
     ],
   },
 
@@ -77,8 +77,8 @@ export const caseStudy: CaseStudyData = {
     heading: "The deposit-to-invoice matcher, the first proof stage of the back office.",
     bullets: [
       "A daily matcher that ties a bank deposit to an invoice only on a name match and an exact amount",
-      "A hold queue for anything the matcher cannot prove: a competing amount, no counterparty, no exact match",
-      "A tie state that connects a deposit to an invoice already marked paid, without paying it twice",
+      "A hold queue for anything the matcher cannot prove: a competing combination, no counterparty, no exact match",
+      "A repeat deposit against an amount already paid matches nothing open, and is left for a person, never re-paid",
       // TODO(Lane BO / later stage, ADR-0018 §1): the monthly invoice run,
       // meeting filing, the client tool list, the advisor, the phase-plan
       // journey and the work board each add their own bullets here as they ship.
@@ -92,9 +92,9 @@ export const caseStudy: CaseStudyData = {
       context: "The bank text has to name the client and the amount has to match exactly: a coincidence never posts on its own.",
     },
     {
-      value: "Refuses, not guesses",
-      label: "Two invoices at once amount left for a person, never picked",
-      context: "When an amount fits more than one open invoice for the same client, the matcher refuses outright rather than choosing.",
+      value: "Flags, not guesses",
+      label: "An amount that also fits a combination of other invoices is never auto-applied",
+      context: "When a deposit's amount exactly matches one invoice but is also exactly a combination of others for that client, the matcher will not choose a reading and flags it for a person.",
     },
     {
       value: "Nothing silent",
