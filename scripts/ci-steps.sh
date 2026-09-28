@@ -12,8 +12,8 @@ ci_steps() {
   run lint . npm run lint
   run tsc . npx tsc --noEmit
   run validate-seo . npm run validate:seo
-  # The footer signup in a real browser against the static export. macOS has no apt, so no --with-deps.
-  run playwright-chromium . npx playwright install chromium
+  # Browsers for the footer probe AND the Proof Stage gate. macOS has no apt, so no --with-deps.
+  run playwright-browsers . npx playwright install chromium webkit firefox
   # A FREE port, never the workflow's fixed 4321: on this Mac other sessions' servers squat ports and answer
   # 200 with a foreign build (CLAUDE.md, browser matrix traps); the first gate run hit exactly that and the
   # probe refused ("NOT the current build"). The probe's copy check is the fingerprint that the served page
@@ -27,5 +27,11 @@ ci_steps() {
     # Hard assert the bind: a probe pointed at nothing must not pass as a probe that passed.
     curl -sf -o /dev/null "http://127.0.0.1:$PORT/privacy"
     PS_TEST_BASE_URL="http://127.0.0.1:$PORT" npm run test:e2e'
+  # Proof Stage (ADR-0016). The privacy guard proves it can fail before it is trusted, then scans
+  # out/. The real run reads the deny list at PS_DEMO_DENYLIST or ~/.config/preisser/demo-denylist.txt
+  # and FAILS CLOSED when it is missing.
+  run demo-privacy-selftest . node tests/demo-privacy.probe.mjs --self-test
+  run demo-privacy . node tests/demo-privacy.probe.mjs
+  run e2e-demo-stage . npx playwright test --config playwright.config.ts
 }
-ci_summary() { printf 'probes, build, lint, tsc, seo, browser e2e green'; }
+ci_summary() { printf 'probes, build, lint, tsc, seo, browser e2e, demo privacy, demo stage green'; }

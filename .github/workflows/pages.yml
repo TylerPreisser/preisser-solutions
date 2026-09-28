@@ -1,6 +1,6 @@
 # Validation only. This workflow does not deploy production.
 # Production deploys must run from:
-# /Users/tylerpreisser/Projects/Preisser Solutions/Website - Current
+# /Users/tylerpreisser/Desktop/Preisser Solutions/Preisser Solutions Website/Website - Current
 # with: npx wrangler pages deploy out --project-name preisser-solutions
 
 name: Validate Site
@@ -56,8 +56,8 @@ jobs:
       # Drives the footer signup in a real browser against the static export
       # produced by the build above. /api/subscribe is intercepted in-page, so
       # no email is ever sent.
-      - name: Install Chromium for the browser test
-        run: npx playwright install --with-deps chromium
+      - name: Install Playwright browsers (footer test + Proof Stage gate)
+        run: npx playwright install --with-deps chromium webkit firefox
 
       - name: Test the footer signup in a browser
         run: |
@@ -70,3 +70,20 @@ jobs:
           # probe pointed at nothing must not be mistaken for a probe that passed.
           curl -sf -o /dev/null http://127.0.0.1:4321/privacy
           PS_TEST_BASE_URL=http://127.0.0.1:4321 npm run test:e2e
+
+      # Proof Stage privacy guard (ADR-0016 §5): prove it can fail, then scan.
+      - name: Proof Stage privacy guard, self-test
+        run: node tests/demo-privacy.probe.mjs --self-test
+
+      # The deny list is never in this public repo. It comes from the DEMO_DENYLIST
+      # Actions secret; unset means an empty file, and the probe fails closed.
+      - name: Proof Stage privacy guard
+        env:
+          DEMO_DENYLIST: ${{ secrets.DEMO_DENYLIST }}
+        run: |
+          umask 077
+          printf '%s\n' "$DEMO_DENYLIST" > "$RUNNER_TEMP/demo-denylist.txt"
+          PS_DEMO_DENYLIST="$RUNNER_TEMP/demo-denylist.txt" node tests/demo-privacy.probe.mjs
+
+      - name: Proof Stage browser gate (chromium, webkit, firefox)
+        run: npx playwright test --config playwright.config.ts

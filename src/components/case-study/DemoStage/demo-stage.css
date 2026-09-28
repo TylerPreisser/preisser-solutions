@@ -1,0 +1,230 @@
+/* ============================================================
+   demo-stage.css — Proof Stage mat, beats, controls and the step
+   engine's states (ADR-0016). Imported by DemoStage.tsx, so it ships
+   only on routes that render a stage. UNLAYERED on purpose; never
+   wrap it in @layer (globals.css:16-40). Every selector is a .demo-*
+   class or a data-attribute used nowhere else. No @theme, ever.
+   ============================================================ */
+
+/* ── Mat tokens. Measured 2026-09-28, WCAG relative luminance:
+     dark   mat #101E33 on page #0A1628. Mat edge #5B6B82 is 3.34:1 against
+            the page. Screen edge #6B7A90 is 3.83:1 against the mat.
+     light  mat #F1F4F8 on page #FFFFFF. Mat edge #7C8BA1 is 3.46:1 against
+            the page. Screen edge #6B7A90 is 3.96:1 against the mat.
+   Mat text uses --theme-text-primary or --theme-text-secondary only:
+   --theme-text-muted is 4.31:1 on the light mat, under 4.5. ── */
+.demo-stage {
+  --demo-mat-bg: #101E33;
+  --demo-mat-edge: #5B6B82;
+  --demo-screen-edge: #6B7A90;
+  --demo-dur: 520ms; /* SETTLE_MS in useStageTimeline.ts is 800. Change both. */
+  --demo-ease: var(--ease-out-expo);
+}
+[data-theme="light"] .demo-stage {
+  --demo-mat-bg: #F1F4F8;
+  --demo-mat-edge: #7C8BA1;
+}
+
+/* ── Section ── */
+.demo-section { position: relative; padding-block: 96px; overflow-x: clip; }
+.demo-section__stages { display: grid; gap: 56px; margin-top: 40px; min-width: 0; }
+
+/* ── The mat ── */
+.demo-stage {
+  margin: 0;
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid var(--demo-mat-edge);
+  border-radius: var(--radius-card);
+  background: var(--demo-mat-bg);
+  color: var(--theme-text-primary);
+  transition: background-color 300ms ease, border-color 300ms ease;
+}
+.demo-stage__head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 20px; }
+.demo-stage__title { margin: 0; font-size: 1.375rem; line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; color: var(--theme-text-primary); }
+.demo-stage__label {
+  display: inline-flex; align-items: center; min-height: 28px; padding: 2px 10px;
+  border: 1px solid var(--demo-mat-edge); border-radius: 999px;
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; color: var(--theme-text-secondary);
+}
+.demo-stage__kicker { flex-basis: 100%; margin: 0; font-size: 1rem; line-height: 1.5; color: var(--theme-text-secondary); }
+.demo-stage__beats { display: grid; gap: 32px; min-width: 0; }
+
+/* ── Beats ── */
+.demo-beat { display: grid; gap: 14px; min-width: 0; }
+.demo-beat__head { display: grid; gap: 4px; min-width: 0; }
+.demo-beat__eyebrow {
+  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--theme-accent-text); /* 5.15:1 dark mat, 4.61:1 light mat */
+}
+.demo-beat__caption { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--theme-text-secondary); }
+.demo-beat__body { min-width: 0; }
+@media (min-width: 1024px) {
+  .demo-beat--stepped { grid-template-columns: minmax(0, 1fr) 300px; column-gap: 28px; align-items: start; }
+  .demo-beat--stepped > .demo-beat__head { grid-column: 1 / -1; }
+}
+
+/* ── Controls ── */
+.demo-controls { display: grid; gap: 12px; min-width: 0; }
+.demo-steps { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.demo-steps__item {
+  display: grid; grid-template-columns: 28px minmax(0, 1fr); align-items: center; gap: 10px;
+  width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid transparent; border-radius: var(--radius-sm);
+  background: none; text-align: left; font-size: 0.9375rem; line-height: 1.4; color: var(--theme-text-secondary);
+}
+.demo-steps__item:disabled { cursor: default; opacity: 1; }
+.demo-steps__item[data-reached] { color: var(--theme-text-primary); }
+.demo-steps__item[aria-current="step"] { border-color: var(--demo-mat-edge); background: var(--theme-card-bg); }
+.demo-steps__n {
+  display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 999px;
+  border: 1px solid var(--demo-mat-edge); font-size: 0.75rem; font-weight: 600;
+}
+.demo-steps__item[data-reached] .demo-steps__n { border-color: var(--theme-accent-text); color: var(--theme-accent-text); }
+.demo-controls__buttons { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+/* The buttons need JS; reserve their row so hydration shifts nothing. */
+[data-track]:not([data-track-js]) .demo-controls__buttons { visibility: hidden; }
+.demo-btn {
+  min-height: 44px; min-width: 44px; padding: 0 16px;
+  border: 1px solid var(--demo-mat-edge); border-radius: var(--radius-btn);
+  background: transparent; color: var(--theme-text-primary); font-size: 0.9375rem; font-weight: 500;
+}
+.demo-btn:disabled { cursor: default; color: var(--theme-text-secondary); }
+.demo-controls__count { margin-left: auto; font-size: 0.8125rem; color: var(--theme-text-secondary); font-variant-numeric: tabular-nums; }
+.demo-steps__item:focus-visible, .demo-btn:focus-visible, .demo-tabs__tab:focus-visible, .demo-screen__scroller:focus-visible {
+  outline: 2px solid var(--theme-accent-text); outline-offset: 2px;
+}
+
+/* ── Phone control bar (critic-BO.md B1): below the desk breakpoint the full
+   step list sits 909px below the product card it drives, so a visitor
+   stepping through sees no visible change. Once JS is interactive, collapse
+   the list to its current item and pin the controls to the bottom of the
+   beat's own container, so the thing that changes and the control that
+   changes it share one screen. No-JS is untouched: nothing carries
+   aria-current="step" without JS, so the full list (the complete story)
+   still shows, and this block does not apply before [data-track-js]. Desktop
+   (>=1024px, the .demo-beat--stepped two-column breakpoint) is unchanged. */
+@media (max-width: 1023px) {
+  [data-track-js] .demo-controls {
+    position: sticky;
+    bottom: 12px;
+    z-index: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--demo-mat-edge);
+    border-radius: var(--radius-card);
+    background: var(--demo-mat-bg);
+  }
+  [data-track-js] .demo-steps__item:not([aria-current="step"]) { display: none; }
+}
+
+/* ── The step engine (useStageTimeline.ts). Base = end frame; these rules
+   only exist while a track is armed. ── */
+[data-track-armed] [data-stage-step] {
+  transition: opacity var(--demo-dur) var(--demo-ease), transform var(--demo-dur) var(--demo-ease),
+    clip-path var(--demo-dur) var(--demo-ease);
+}
+[data-track-armed] [data-stage-step][data-pending] { opacity: 0; }
+[data-track-armed] [data-stage-step][data-pending][data-fx="rise"] { transform: translateY(8px); }
+[data-track-armed] [data-stage-step][data-pending][data-fx="pop"] { transform: scale(0.94); }
+[data-track-armed] [data-stage-step][data-pending][data-fx="ghost"] { opacity: 0.28; }
+/* Lines and bars: clip-path, never stroke-dasharray (reveal-motion.md:205-231, Firefox). */
+[data-track-armed] [data-stage-step][data-pending][data-fx="sweep"] { opacity: 1; clip-path: inset(0 100% 0 0); }
+/* Before-state-only elements: hidden at rest, shown while armed and before their step. */
+[data-stage-until] { visibility: hidden; }
+[data-track-armed] [data-stage-until][data-live] { visibility: visible; }
+[data-track-instant] [data-stage-step], [data-track-instant] [data-stage-until] { transition: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  [data-track-armed] [data-stage-step] { transition: none !important; }
+}
+/* A page printed mid-play prints the end frame. */
+@media print {
+  [data-track-armed] [data-stage-step][data-pending] { opacity: 1 !important; transform: none !important; clip-path: none !important; }
+  [data-track-armed] [data-stage-until][data-live] { visibility: hidden !important; }
+}
+/* Swap cell: a before-element and its replacement share one grid cell, so the row never resizes. */
+.demo-swap { display: inline-grid; }
+.demo-swap > * { grid-area: 1 / 1; }
+
+/* ── The product screen ── */
+.demo-screen {
+  min-width: 0; overflow: hidden;
+  border: 1px solid var(--demo-screen-edge); border-radius: 12px;
+  background: var(--skin-ground, #FFFFFF); color: var(--skin-ink, #0A1628);
+  font-family: var(--skin-font, inherit); font-size: 0.875rem; line-height: 1.45;
+}
+.demo-screen__chrome {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; min-height: 36px; padding: 6px 12px;
+  background: var(--skin-chrome, #0A1628); color: var(--skin-on-chrome, #FFFFFF); font-size: 0.8125rem; font-weight: 600;
+}
+.demo-screen__dots { display: inline-flex; gap: 5px; }
+.demo-screen__dots i { width: 8px; height: 8px; border-radius: 999px; background: currentColor; opacity: 0.35; }
+.demo-screen__title { min-width: 0; flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.demo-screen__tag { flex: 0 1 auto; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.04em; }
+.demo-screen__body { min-width: 0; }
+.demo-screen__scroller { overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+.demo-screen__phone { display: none; }
+
+/* ── Tabs (ADR-0017) ── */
+.demo-tabs__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; min-width: 0; }
+.demo-tabs__list {
+  display: flex; flex: 1 1 auto; gap: 6px; min-width: 0; padding-bottom: 2px;
+  overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-width: none;
+}
+.demo-tabs__list::-webkit-scrollbar { display: none; }
+.demo-tabs__tab {
+  flex: 0 0 auto; scroll-snap-align: start; min-height: 44px; padding: 0 14px;
+  border: 1px solid var(--demo-mat-edge); border-radius: var(--radius-btn); background: transparent;
+  color: var(--theme-text-secondary); font-size: 0.9375rem; font-weight: 500; white-space: nowrap;
+}
+.demo-tabs__tab[aria-selected="true"] { border-color: var(--theme-accent-text); background: var(--theme-card-bg); color: var(--theme-text-primary); }
+.demo-tabs__tourcap { margin: 0; min-height: 1.55em; font-size: 0.9375rem; color: var(--theme-text-secondary); }
+.demo-tabs__panel { display: grid; gap: 14px; min-width: 0; }
+.demo-tabs__panel[hidden] { display: none; }
+.demo-tabs__panel-label { display: none; }
+.demo-tabs__journey { display: grid; gap: 16px; min-width: 0; }
+.demo-tabs__before, .demo-tabs__after { min-width: 0; }
+.demo-tabs__before-cap { margin: 0 0 8px; font-size: 0.875rem; color: var(--theme-text-secondary); }
+/* Without JS: every panel, stacked, each named; no tab bar. */
+.demo-tabs:not([data-tabs-js]) .demo-tabs__bar,
+.demo-tabs:not([data-tabs-js]) .demo-tabs__tourcap { display: none; }
+.demo-tabs:not([data-tabs-js]) .demo-tabs__panel-label { display: block; font-weight: 600; color: var(--theme-text-primary); }
+.demo-tabs:not([data-tabs-js]) .demo-tabs__panel + .demo-tabs__panel { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--demo-mat-edge); }
+@media (min-width: 1024px) {
+  .demo-tabs__journey { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: start; }
+}
+
+/* ── Sticky tab bar below the desk breakpoint (review-NW.md MEDIUM 9): the
+   bar was `position: static`, so a journey could scroll it up to 2,843px
+   away from the step controls it drives (Attendees tab, 320px wide) --
+   nothing to switch tabs with while a panel plays. Pin it directly under the
+   site header: `top: var(--nav-height)` (globals.css:120, :1078) is the
+   SAME token the header's own height is kept equal to (see globals.css:1071-
+   1078's own note on that), and it already resolves to 88px on tablet/desktop
+   and 80px under the header's own <=767px breakpoint -- so one declaration
+   tracks the header at every width in this range with no overlap. Desktop
+   (>=1024px, the .demo-beat--stepped breakpoint just above) is unchanged:
+   the tab bar sits beside a shorter side-by-side panel there and never
+   travels far enough to need this. The inner `.demo-tabs__list` keeps doing
+   all the horizontal scrolling (demo-tabs__list, above); this bar itself
+   never scrolls sideways. z-index stays well under the header's 100. */
+@media (max-width: 1023px) {
+  .demo-tabs__bar {
+    position: sticky;
+    top: var(--nav-height);
+    z-index: 2;
+    padding-block: 8px;
+    background: var(--demo-mat-bg);
+  }
+}
+
+/* ── Phone first: everything above is the 390 layout except the two
+   min-width blocks; this block tightens it. ── */
+@media (max-width: 767px) {
+  .demo-section { padding-block: 64px; }
+  .demo-section__stages { gap: 40px; margin-top: 28px; }
+  .demo-stage { margin-inline: calc(var(--container-padding) / -2); padding: 16px 10px; border-radius: 14px; }
+  .demo-stage__beats { gap: 28px; }
+  .demo-screen__desk { display: none; }
+  .demo-screen__phone { display: block; }
+  .demo-screen__tag { flex-basis: 100%; }
+}

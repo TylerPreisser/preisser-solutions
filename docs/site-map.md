@@ -3,7 +3,7 @@
 Last updated: 2026-05-22 after a clean build.
 
 Source-of-truth workspace:
-`/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current`.
+`/Users/tylerpreisser/Desktop/Preisser Solutions/Preisser Solutions Website/Website - Current`.
 
 Do not update route counts from any non-canonical folder. Build and count only
 from the canonical workspace. GitHub push does not deploy production; Wrangler
@@ -51,7 +51,7 @@ Cloudflare Pages handles those with `public/_redirects` before static files are 
 Run this after changing routes:
 
 ```bash
-cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
+cd "/Users/tylerpreisser/Desktop/Preisser Solutions/Preisser Solutions Website/Website - Current"
 npm run build
 node -e "const fs=require('fs'); const s=fs.readFileSync('out/sitemap.xml','utf8'); console.log((s.match(/<url>/g)||[]).length)"
 find src/app -path '*/page.tsx' | wc -l

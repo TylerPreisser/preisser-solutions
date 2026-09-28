@@ -36,6 +36,8 @@ const eslintConfig = [
       ".claude/worktrees/**",
       "work-tmp/**",
       "next-env.d.ts",
+      "test-results/**",
+      "playwright-report/**",
     ],
   },
   ...compat.extends("next/core-web-vitals"),

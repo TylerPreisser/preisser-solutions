@@ -1,12 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { JsonLd } from "@/components/seo/JsonLd";
 import type { CaseStudyData } from "@/types/case-study";
 import { buildBreadcrumbs } from "@/lib/breadcrumbs";
+// Import the FILE, never a DemoStage barrel: DemoStage.tsx imports the stage CSS,
+// and pulling it in here would ship that CSS on all 25 case-study routes.
+import { DemoSection } from "@/components/case-study/DemoStage/DemoSection";
 
 /**
  * Case study detail renderer.
@@ -167,6 +170,15 @@ const RELATED_CARD_INDEX: Record<
     label: "Custom AI Fitness & Wellness Agent",
     oneLine: "Personalized regimens from body comp + live research",
     category: "Proof of Concept",
+  },
+
+  // ── 6. Own business (ADR-0018) ──────────────────────────────
+  // Copy is provisional; the back-office lane may reword it (voice rules apply).
+  "preisser-back-office": {
+    slug: "preisser-back-office",
+    label: "The Preisser Solutions Back Office",
+    oneLine: "Deposits tied to invoices only when nothing is left to guess",
+    category: "Internal Platform",
   },
 };
 
@@ -1007,7 +1019,17 @@ function CtaSection({ data }: { data: CaseStudyData }) {
 }
 
 // ── Top-level ────────────────────────────────────────────────
-export function CaseStudyPage({ data }: { data: CaseStudyData }) {
+export function CaseStudyPage({ data, demo }: { data: CaseStudyData; demo?: ReactNode }) {
+  // ADR-0016 §7: the script rides on data.demo, the drawing arrives as a slot.
+  // One without the other is a wiring error; throwing here fails `next build`
+  // during prerender instead of shipping half a stage.
+  const stageIds = data.demo?.map((s) => s.id) ?? [];
+  if ((stageIds.length > 0) !== (demo != null)) {
+    throw new Error(
+      `[CaseStudyPage] ${data.slug}: data.demo has ${stageIds.length} stage(s) but the route passed ` +
+        `${demo != null ? "a" : "no"} demo slot (ADR-0016 §7)`,
+    );
+  }
   const schema = buildSchema(data);
   // Case-study detail pages were the last class on the site without a
   // breadcrumb trail. buildBreadcrumbs prepends Home at position 1.
@@ -1026,6 +1048,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
       <MetricsRow data={data} />
       <BeforeSection data={data} />
       <BuiltSection data={data} />
+      {demo != null ? <DemoSection stageIds={stageIds}>{demo}</DemoSection> : null}
       <SpecsSection data={data} />
       <ResultsSection data={data} />
       <TechStackSection data={data} />

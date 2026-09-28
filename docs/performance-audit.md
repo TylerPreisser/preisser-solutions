@@ -7,7 +7,7 @@ Last updated: 2026-05-22.
 All performance work and cleanup must happen only in:
 
 ```text
-/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current
+/Users/tylerpreisser/Desktop/Preisser Solutions/Preisser Solutions Website/Website - Current
 ```
 
 Do not use any folder outside the canonical workspace as a performance baseline
@@ -91,7 +91,7 @@ locations and case studies.
 ## Required Validation
 
 ```bash
-cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
+cd "/Users/tylerpreisser/Desktop/Preisser Solutions/Preisser Solutions Website/Website - Current"
 npm ci
 npm run build
 npm run lint

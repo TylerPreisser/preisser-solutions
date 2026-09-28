@@ -662,6 +662,8 @@ const REQUIRED_ROUTES = [
   "/locations/western-kansas-web-design",
   "/use-cases/ai-invoice-processing-small-business",
   "/industries/hvac-ai-receptionist",
+  "/case-studies/farmbooks",
+  "/case-studies/nwks-encounter",
 ];
 
 const sitemapCandidates = [

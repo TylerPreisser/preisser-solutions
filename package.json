@@ -16,7 +16,10 @@
     "preview": "npx serve out",
     "indexnow": "node scripts/indexnow-ping.mjs",
     "strip-404-noindex": "node scripts/strip-404-noindex.mjs",
-    "validate:seo": "node scripts/validate-seo.mjs"
+    "validate:seo": "node scripts/validate-seo.mjs",
+    "test:privacy": "node tests/demo-privacy.probe.mjs",
+    "test:privacy:self": "node tests/demo-privacy.probe.mjs --self-test",
+    "test:stage": "playwright test --config playwright.config.ts"
   },
   "dependencies": {
     "framer-motion": "^12.0.0",

@@ -5,12 +5,16 @@
 // at /case-studies reads the same objects to build its grid.
 //
 // Privacy + voice rules (enforced by content, not by type):
-// - No dollar amounts in any string
+// - No dollar amounts in any string, with ONE exception: invented amounts
+//   from a stage fixture inside a labeled Proof Stage (`demo`, ADR-0016 §4).
+//   Never in copy, metadata, JSON-LD, the hub card or the results row.
 // - No emoji, no exclamation marks, no marketing clichés
 // - "Tyler" is not the subject of body copy — Preisser Solutions / we
 // - Astrus → "an MGU within the Alliant Insurance ecosystem"
 // - Sunrise → "a Chicago-area bus transportation operator"
 // See docs/CANONICAL-PROJECTS.md and docs/WRITER-AGENT-PROMPT.md.
+
+import type { DemoStage } from "./demo-stage";
 
 export interface HeadlineResult {
   /** The big number, e.g. "60%+", "5x", "75%". Kept short. */
@@ -130,4 +134,12 @@ export interface CaseStudyData {
 
   // Optional: a flag/note rendered as a small disclosure (e.g. Wife Supply Co status flag).
   statusNote?: string;
+
+  // ── Proof Stage (ADR-0016) ─────────────────────────────────
+  /**
+   * The stage SCRIPT: beats, captions, narration, skin. Serializable data only.
+   * The drawing is passed by the route as `<CaseStudyPage demo={<Scene/>} />`;
+   * CaseStudyPage throws at build if one is present without the other.
+   */
+  demo?: readonly DemoStage[];
 }

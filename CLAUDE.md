@@ -17,7 +17,10 @@ needed for those. This is a UI repo — Playwright MCP is wired in `.mcp.json`.
 ## Canonical workspace
 
 Only this path is active:
-`/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current`
+`/Users/tylerpreisser/Desktop/Preisser Solutions/Preisser Solutions Website/Website - Current`
+
+(Workspace rule, `~/Desktop/Preisser Solutions/CLAUDE.md` §2: every Preisser repo lives under its
+client folder there. The old `~/Projects/Preisser Solutions/Website - Current` path does not exist.)
 
 Do not work from, commit from, or deploy from any other local copy. Before any
 deploy, `pwd` must print exactly that path. Do not use external memories, copied
@@ -32,6 +35,9 @@ npm run build          # next build && strip-404-noindex.mjs && generate-sitemap
 npm run lint           # eslint . --max-warnings=0 (next/core-web-vitals)
 npx tsc --noEmit
 npm run validate:seo   # scripts/validate-seo.mjs
+npm run test:privacy:self   # the Proof Stage privacy guard must go red on planted strings
+npm run test:privacy        # scans out/ ; reads ~/.config/preisser/demo-denylist.txt, fails closed
+npm run test:stage          # Playwright: chromium, webkit, firefox x 14 viewports x both themes
 ```
 
 Full gate above must pass before any production deploy:
@@ -53,9 +59,10 @@ Never deploy from GitHub Actions — that workflow validates only.
 
 ## Key directories
 
-- `src/app/` — one directory per route; static-export App Router pages (232
-  `page.tsx` files as of last cleanup, and 232 canonical URLs in the sitemap —
-  the two counts must stay in step).
+- `src/app/` — one directory per route; static-export App Router pages (233
+  `page.tsx` files as of 2026-09-28, and 232 canonical URLs in the sitemap —
+  one page is a cross-canonical alias the sitemap generator excludes by design;
+  the two counts must stay in step apart from that one alias).
 - `src/data/locations/` — one file per city, feeds the location-page generator
   (`scripts/regenerate-location-routes.mjs`); mirror this shape for new cities.
 - `src/lib/seo/` — `metadata.ts`, `schema.ts`, `site.ts`: canonical SEO/schema

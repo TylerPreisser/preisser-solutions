@@ -410,6 +410,9 @@ gsap.fromTo(element,
 );
 ```
 
+Not inside a Proof Stage. A stage's base CSS is its end frame (ADR-0016 §3); use
+`data-stage-step` and `useStageTimeline`, never an `opacity: 0` base.
+
 ### Staggered Reveals (Card Grids)
 
 ```javascript
@@ -524,3 +527,95 @@ tl.from(".hero-eyebrow", { opacity: 0, y: 20, duration: 0.5 })
 - Icons: prefer SVG or lucide icons unless a bitmap asset is already required.
 - Portrait: rounded or circular crop, professional.
 - All images: lazy load below fold, optimized WebP where possible.
+
+---
+
+## 11. Proof Stage (ADR-0016, 0017, 0018)
+
+A case study may carry a Proof Stage: a recreation of the built system working
+on invented data, rendered between "What we built" and the specifications
+(`src/components/case-study/CaseStudyPage.tsx`, `DemoSection`/`DemoStage`,
+`src/data/demos/`).
+
+### 1. Anatomy
+- **Section** (`.demo-section`) — the page section, eyebrow "See it work", h2.
+- **Mat** (`.demo-stage`) — the Preisser frame around every stage: a `<figure>`
+  that follows `--theme-*` in both themes, with its own measured `--demo-mat-*`
+  border. The product ground never touches the page ground.
+- **Label** — the visible "Demonstration data" (or "Recreation · demonstration
+  data") badge, `data-demo-label`.
+- **Narration** — a visually hidden paragraph, `data-demo-narration`, whose last
+  sentence says the data is invented or a demonstration.
+- **Beats** — an ordered list: Before, The read, What it caught, The screen
+  (Screen and the narration are required; the rest are optional).
+- **Screen** — the product's own screen recreated in its skin, `ProductScreen`.
+- **Controls** — Back, Next, Replay and a tappable step list, `StepControls`.
+
+### 2. Mat tokens (measured 2026-09-28, WCAG relative luminance)
+| Theme | Mat on page | Mat edge vs page | Screen edge vs mat |
+|---|---|---|---|
+| Dark | `#101E33` on `#0A1628` | `#5B6B82`, 3.34:1 | `#6B7A90`, 3.83:1 |
+| Light | `#F1F4F8` on `#FFFFFF` | `#7C8BA1`, 3.46:1 | `#6B7A90`, 3.96:1 |
+
+Mat text uses `--theme-text-primary` or `--theme-text-secondary` only;
+`--theme-text-muted` falls under 4.5:1 on the light mat.
+
+### 3. Skin rules
+- The mat follows `--theme-*`; the **skin** class sits on `.demo-stage__beats`,
+  inside the mat's padding, so a product ground is always separated from the
+  page ground by the mat and a `--demo-screen-edge` border.
+- Skin values are `--skin-*` custom properties on `.demo-skin--<name>`. Never a
+  product's own variable name (e.g. never reuse ps-admin's `--color-primary`
+  for the site's `--color-primary`, which is a different colour).
+- Base set every skin defines: `--skin-ground --skin-surface --skin-ink
+  --skin-ink-2 --skin-rule --skin-accent --skin-action --skin-on-action
+  --skin-good --skin-good-bg --skin-attention --skin-attention-bg
+  --skin-chrome --skin-on-chrome --skin-radius [--skin-font]`.
+- No `@theme` in any stage file. Declaring `--color-*`, `--theme-*`, `--font-*`,
+  `--shadow-*`, `--radius-*`, `--tw-*`, `--container-*`, `--nav-*`, `--ease-*`,
+  `--section-*`, `--spacing-*`, `--text-*` or `--breakpoint-*` anywhere under
+  `DemoStage/` fails the privacy probe (rule `css-namespace`).
+
+### 4. Data-attribute vocabulary
+Engine-only (never authored by a scene): `data-demo-section`,
+`data-demo-expected`, `data-demo-stage`, `data-demo-label`, `data-demo-narration`,
+`data-beat`, `data-beat-kind`, `data-track`, `data-track-n`, `data-track-js`,
+`data-track-state`, `data-track-step`, `data-track-armed`, `data-track-instant`,
+`data-pending`, `data-live`, `data-tabs-js`.
+
+Authored by scenes: `data-stage-step` (with optional `data-fx`),
+`data-stage-until`, `data-count-to` / `data-count-from` / `data-count-format`,
+`data-stage-scroller`.
+
+### 5. Phone rules
+Design at 390px first, then 320px, then the rest of the repo's phone matrix.
+Content width available inside the mat: **342px at 390px**, **280px at
+320px**. A product screen wider than that needs a phone variant
+(`ProductScreen phone={...}`, shown below 768px) or an internal scroller
+(`ProductScreen scroll={{label}}`) — never both, never neither. No page-level
+horizontal scroll; tap targets stay 44x44.
+
+### 6. Motion
+Time-based, plays once on entry, with visible Next, Back and Replay controls
+that step the same timeline (`useStageTimeline`). No scroll scrubbing, no
+pinning. A tabbed screen (ADR-0017) adds "Take the tour", which auto-plays
+each tab in sequence and is also its own Stop. Lines and progress bars use
+`clip-path`, never `stroke-dasharray` (a measured Firefox bug).
+
+### 7. Voice inside a stage
+Invented amounts from the stage's own fixture may appear inside a labeled
+Proof Stage element only — never in body copy, metadata, JSON-LD, the hub
+card, the results row, or `llms.txt` (ADR-0016 §4). Every person, business,
+town and domain comes from the invented-name registry
+(`src/data/demos/_invented.ts`). No `h1` or `h2` inside a stage. Every string a
+stage can ever show is present in the server HTML — nothing is written by JS
+except number counters, which always end on the server's exact text.
+
+### 8. The gate
+```bash
+npm run test:privacy:self   # the Proof Stage privacy guard must go red on planted strings
+npm run test:privacy        # scans out/ ; reads ~/.config/preisser/demo-denylist.txt, fails closed
+npm run test:stage          # Playwright: chromium, webkit, firefox x 14 viewports x both themes
+```
+Screenshots land in `test-results/demo-stage-shots/<slug>/<engine>/<WxH>-<dark|light>-<nojs|rest>.png`;
+read them with the Read tool, per the repo's browser-matrix rule.

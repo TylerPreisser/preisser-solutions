@@ -1,7 +1,7 @@
 # Canonical Projects Inventory
 
 Operational source of truth:
-`/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current`.
+`/Users/tylerpreisser/Desktop/Preisser Solutions/Preisser Solutions Website/Website - Current`.
 
 Do not work outside the canonical workspace. GitHub push does not deploy
 production. Cloudflare Pages production deploys happen only when Wrangler uploads
@@ -36,6 +36,13 @@ Last updated: 2026-05-22.
 - **A Chicago-area bus transportation operator** - anonymized transportation
   engagement. Do not publish private company names, personnel names, or SOW
   values.
+- **The Preisser Solutions back office** - the owner's own administration panel,
+  one case study (`/case-studies/preisser-back-office`) with one Proof Stage per
+  business problem, added as each clears (ADR-0018). On the hub by explicit
+  exception as the owner's own business. Stages run on invented clients and
+  amounts only; no real client, amount, bank descriptor, routing or account
+  digit, meeting content, or panel fixture file may appear. Quantified results
+  must trace to a ps-admin file:line.
 
 ## Off-Limits
 
