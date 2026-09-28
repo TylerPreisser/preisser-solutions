@@ -416,35 +416,74 @@
 .demo-skin--nwks-mens .nwks-switch[data-switch-js] .nwks-plane:not([data-on]) { display: none; }
 .demo-skin--nwks-mens .nwks-switch-pill[aria-pressed="true"] { border-color: var(--nw-ink); box-shadow: inset 4px 0 0 var(--nw-lane-hue), 0 0 0 1px var(--nw-ink); }
 
-/* ── Cabins ── */
+/* ── Cabins: one cabin as their floor plan (critic-NW M7; rooms/CabinCard.tsx).
+   The plan scales down but is never cropped (spec-NW.md §2.4 "Phone"): at
+   320 each half is ~110px, two 28px plates to a bunk. Beside the plan once
+   the screen has room (a container query on the window, not the viewport:
+   the window is 60% of a desk layout). ── */
 .demo-skin--nwks-mens .nwks-cabin-readiness { font-size: 0.8125rem; color: var(--nw-ink-2); }
-.demo-skin--nwks-mens .nwks-cabin-plate {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 10px;
-  border: 1px solid var(--nw-rule);
-  border-radius: 12px;
-  background: var(--nw-paper);
-  padding: 12px;
+.demo-skin--nwks-mens .nwks-cabin-wrap { container-type: inline-size; min-width: 0; }
+.demo-skin--nwks-mens .nwks-cabin-board { display: grid; gap: 12px; min-width: 0; }
+@container (min-width: 560px) {
+  .demo-skin--nwks-mens .nwks-cabin-board { grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); align-items: start; }
 }
-.demo-skin--nwks-mens .nwks-cabin-side { min-width: 0; }
-.demo-skin--nwks-mens .nwks-cabin-side-h { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--nw-ink-3); margin-bottom: 6px; }
-.demo-skin--nwks-mens .nwks-beds { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 4px; }
-.demo-skin--nwks-mens .nwks-bed {
-  border: 1px solid var(--nw-rule);
-  border-radius: 6px;
-  background: var(--nw-wash);
-  min-height: 34px;
-  display: grid;
-  place-items: center;
-  font-size: 0.625rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--nw-ink-2);
-  transition: opacity var(--demo-dur, 520ms) var(--demo-ease, ease);
+.demo-skin--nwks-mens .nwks-cabin { width: 100%; max-width: 24rem; min-width: 0; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-cabin-roof { display: block; width: 100%; height: 16px; }
+.demo-skin--nwks-mens .nwks-cabin-h {
+  display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0 0 6px;
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--nw-ink);
 }
-.demo-skin--nwks-mens .nwks-bed--empty { background: transparent; border-style: dashed; color: var(--nw-ink-3); }
-.demo-skin--nwks-mens .nwks-bed--server { background: color-mix(in srgb, var(--nw-brand) 10%, var(--nw-paper)); }
+.demo-skin--nwks-mens .nwks-cabin-n { font-family: var(--nw-mono); letter-spacing: 0; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-cabin-walls {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr); gap: 0 9px;
+  padding: 8px 8px 20px; border: 2px solid var(--nw-ink-2); border-radius: 3px; background: var(--nw-paper);
+}
+.demo-skin--nwks-mens .nwks-cabin-divide { background: repeating-linear-gradient(to bottom, var(--nw-ink-3) 0 4px, transparent 4px 8px); }
+/* The door: a gap in the front wall, the leaf, and its swing. */
+.demo-skin--nwks-mens .nwks-cabin-door {
+  position: absolute; left: calc(50% - 1px); bottom: -2px; width: 17px; height: 17px;
+  border-left: 2px solid var(--nw-ink-2); border-top: 1px dashed var(--nw-ink-3); border-right: 1px dashed var(--nw-ink-3);
+  border-top-right-radius: 100%; background: linear-gradient(to top, var(--nw-paper) 2px, transparent 2px);
+}
+.demo-skin--nwks-mens .nwks-cabin-half { display: grid; gap: 5px; align-content: start; min-width: 0; }
+.demo-skin--nwks-mens .nwks-cabin-half-h {
+  display: flex; justify-content: space-between; margin: 0 0 1px; padding-inline: 2px;
+  font-family: var(--nw-mono); font-size: 0.6875rem; font-weight: 600; color: var(--nw-ink-2);
+}
+.demo-skin--nwks-mens .nwks-cabin-half-h b { color: var(--nw-ink); }
+.demo-skin--nwks-mens .nwks-bunk {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3px; padding: 3px;
+  border: 1px solid var(--nw-rule); border-radius: 5px; background: var(--nw-wash);
+}
+.demo-skin--nwks-mens .nwks-berth {
+  display: grid; place-items: center; min-width: 0; min-height: 36px;
+  border: 1px solid var(--nw-rule-2); border-radius: 4px; background: var(--nw-paper);
+}
+.demo-skin--nwks-mens .nwks-berth--open { border: 1px dashed var(--nw-edge); background: transparent; }
+.demo-skin--nwks-mens .nwks-plate {
+  position: relative; display: inline-grid; place-items: center; width: 28px; height: 28px;
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; color: var(--nw-ink);
+  transition: opacity var(--demo-dur, 520ms) var(--demo-ease, ease), transform var(--demo-dur, 520ms) var(--demo-ease, ease);
+}
+.demo-skin--nwks-mens .nwks-plate--attendee { border: 1px solid var(--nw-ink-3); border-radius: 5px; background: var(--nw-paper); }
+/* Servers are gold circles (their board). A pale gold fill keeps the initials legible: gold is 2.80:1 on white. */
+.demo-skin--nwks-mens .nwks-plate--server { border: 2px solid var(--nw-gold); border-radius: 999px; background: color-mix(in srgb, var(--nw-gold) 18%, var(--nw-paper)); }
+.demo-skin--nwks-mens .nwks-pin {
+  position: absolute; top: -4px; right: -4px; width: 10px; height: 10px; border-radius: 999px;
+  background: var(--nw-pin, var(--nw-team-0)); box-shadow: 0 0 0 1.5px var(--nw-paper);
+}
+.demo-skin--nwks-mens .nwks-cabin-side { display: grid; gap: 10px; align-content: start; min-width: 0; }
+/* Block swap cell: a before-state line and what replaces it share one cell. */
+.demo-skin--nwks-mens .nwks-swapb { display: grid; min-width: 0; }
+.demo-skin--nwks-mens .nwks-swapb > * { grid-area: 1 / 1; min-width: 0; }
+.demo-skin--nwks-mens .nwks-still-list { display: grid; gap: 6px; }
+.demo-skin--nwks-mens .nwks-still-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-still-hand { transition: opacity 240ms ease; }
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-still-hand { opacity: 0.45; }
+.demo-skin--nwks-mens .nwks-still-panel .nwks-still-hand[data-stage-until]:not([data-live]) { display: none; }
+.demo-skin--nwks-mens .nwks-legend-mark { display: inline-block; width: 10px; height: 10px; margin-right: 4px; vertical-align: -1px; box-sizing: border-box; }
+.demo-skin--nwks-mens .nwks-legend-mark.nwks-plate--server { border-width: 1.5px; }
+.demo-skin--nwks-mens .nwks-legend-pin { border-radius: 999px; background: var(--nw-team-0); }
 .demo-skin--nwks-mens .nwks-still-panel {
   border: 1px dashed var(--nw-rule);
   border-radius: 10px;
@@ -452,8 +491,7 @@
   display: grid;
   gap: 6px;
 }
-.demo-skin--nwks-mens .nwks-legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.6875rem; color: var(--nw-ink-3); }
-.demo-skin--nwks-mens .nwks-legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+.demo-skin--nwks-mens .nwks-legend { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 0.6875rem; color: var(--nw-ink-2); }
 
 /* ── Email ── */
 .demo-skin--nwks-mens .nwks-email-cols { display: grid; gap: 10px; }
@@ -664,5 +702,3 @@
 .demo-skin--nwks-mens [data-track-armed][data-track-step="6"] .nwks-note[data-note="6"] .nwks-note-n {
   border-color: #FFFFFF; color: #FFFFFF;
 }
-/* The two late arrivals' chips take no room once gone (critic-NW M8). */
-.demo-skin--nwks-mens .nwks-still-panel .nwks-org-card[data-stage-until]:not([data-live]) { display: none; }

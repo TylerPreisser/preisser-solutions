@@ -340,41 +340,70 @@ export const dashboard = {
 };
 
 // ── Cabins ──────────────────────────────────────────────────────────────
-// One cabin, two sides of 10 beds (matches the real per-side template,
-// spec-NW.md §2.4), a stage simplification from the real 6-cabin/144-bed
-// board, stated in SOURCE.md. A small waiting pool of unplaced people.
+// One cabin drawn as its floor plan (critic-NW M7; spec-NW.md §2.4,
+// rooms/CabinCard.tsx): two sides of five bunks, a lower and an upper bed in
+// each, so 10 beds a side, matching the real per-side template. A stage
+// simplification from the real 6-cabin/144-bed board, stated in SOURCE.md.
+// A PARTY is a registered attendee and the server who invited him
+// (`inviterId`); the board keeps a party on one bunk, and each party carries
+// its own pin. One man is not placed at rest: the attendee still pending
+// review, who sits in "Still to place" until his seat is confirmed.
 export const CABIN_SIDE_CAPACITY = 10;
+export const CABIN_BUNKS_PER_SIDE = CABIN_SIDE_CAPACITY / 2;
 
-interface CabinResident {
+export interface CabinResident {
   kind: "attendee" | "server";
   id: string; // personId
   side: "L" | "R";
+  bunk: number; // 0..CABIN_BUNKS_PER_SIDE-1, from the back wall to the door
+  berth: "lower" | "upper";
+  /** The inviting server's personId, shared by everyone in the party. */
+  party?: string;
 }
 
-const REGISTERED_ATTENDEES = ATTENDEES.filter((a) => a.status === "registered").map((a) => a.personId);
-const CAPTAIN_SERVERS = SERVERS.filter((s) => s.captain).map((s) => s.personId);
-const EXTRA_SERVERS = SERVERS.filter((s) => !s.captain)
-  .slice(0, 6)
+/** Registered attendees with an inviter, each paired with the server who invited him. */
+export const CABIN_PARTIES: readonly { server: string; attendee: string }[] = ATTENDEES.filter(
+  (a) => a.status === "registered" && a.inviterId,
+).map((a) => ({ server: a.inviterId as string, attendee: a.personId }));
+
+// Everyone else on the cabin, two to a bunk: the attendees who came alone,
+// then servers who are not bringing anyone. The last one in is the man the
+// visitor watches being placed by hand (step 4).
+const LONE_ATTENDEES = ATTENDEES.filter((a) => a.status === "registered" && !a.inviterId).map((a) => a.personId);
+const LONE_SERVERS = SERVERS.filter((s) => !CABIN_PARTIES.some((p) => p.server === s.personId) && !s.captain)
+  .slice(0, CABIN_SIDE_CAPACITY * 2 - CABIN_PARTIES.length * 2 - LONE_ATTENDEES.length)
   .map((s) => s.personId);
 
-// The two "still to place" servers (review finding 7): at REST the story is
-// already over, so they are SEATED like everyone else (side R, making it
-// 10/10) — the end frame must not contradict its own "everyone has a bed"
-// line. CabinsTab.tsx renders them a second time as a transient
-// `data-stage-until="4"` chip in the "Still to place" panel, visible only
-// while the track is animating and before step 4, per the kit's own
-// before/after swap-cell convention; that chip is never part of the resting
-// DOM, so there is no double-counting at rest, only during the demonstrated
-// drag.
-export const CABIN_LATE_IDS: readonly string[] = ["srv-glen-tolliver", "srv-roy-kasselman"];
+/** Placed by hand in the story's one drag move (step 4). */
+export const CABIN_HAND_PLACED_ID: string = LONE_SERVERS[LONE_SERVERS.length - 1];
 
-export const CABIN_RESIDENTS: readonly CabinResident[] = [
-  ...REGISTERED_ATTENDEES.slice(0, 4).map((id, i): CabinResident => ({ kind: "attendee", id, side: i % 2 === 0 ? "L" : "R" })),
-  ...CAPTAIN_SERVERS.slice(0, 4).map((id, i): CabinResident => ({ kind: "server", id, side: i % 2 === 0 ? "L" : "R" })),
-  ...REGISTERED_ATTENDEES.slice(4, 7).map((id, i): CabinResident => ({ kind: "attendee", id, side: (i + 4) % 2 === 0 ? "L" : "R" })),
-  ...EXTRA_SERVERS.slice(0, 6).map((id, i): CabinResident => ({ kind: "server", id, side: (i + 4) % 2 === 0 ? "L" : "R" })),
-  ...CABIN_LATE_IDS.map((id): CabinResident => ({ kind: "server", id, side: "R" })),
-];
+export const CABIN_RESIDENTS: readonly CabinResident[] = (() => {
+  const beds: CabinResident[] = [];
+  let slot = 0; // 0..19: side L bunks 0-4, then side R bunks 0-4, lower then upper
+  const seat = (kind: CabinResident["kind"], id: string, party?: string) => {
+    const bunkIndex = Math.floor(slot / 2);
+    beds.push({
+      kind,
+      id,
+      side: bunkIndex < CABIN_BUNKS_PER_SIDE ? "L" : "R",
+      bunk: bunkIndex % CABIN_BUNKS_PER_SIDE,
+      berth: slot % 2 === 0 ? "lower" : "upper",
+      party,
+    });
+    slot += 1;
+  };
+  // Parties first, one bunk each: the server below, his guest above.
+  for (const p of CABIN_PARTIES) {
+    seat("server", p.server, p.server);
+    seat("attendee", p.attendee, p.server);
+  }
+  for (const id of LONE_ATTENDEES) seat("attendee", id);
+  for (const id of LONE_SERVERS) seat("server", id);
+  return beds;
+})();
+
+/** The one person not placed at rest: pending review, so the board leaves him out until confirmed. */
+export const CABIN_UNPLACED: readonly Attendee[] = ATTENDEES.filter((a) => a.status === "waitlist-pending");
 
 {
   const seen = new Set<string>();
@@ -382,14 +411,26 @@ export const CABIN_RESIDENTS: readonly CabinResident[] = [
     if (seen.has(r.id)) throw new Error(`[nwks-encounter] cabin resident "${r.id}" is seated twice`);
     seen.add(r.id);
   }
+  // A party never splits: both members on the same bunk.
+  for (const p of CABIN_PARTIES) {
+    const a = CABIN_RESIDENTS.find((r) => r.id === p.server);
+    const b = CABIN_RESIDENTS.find((r) => r.id === p.attendee);
+    if (!a || !b || a.side !== b.side || a.bunk !== b.bunk) {
+      throw new Error(`[nwks-encounter] party of "${p.server}" is not on one bunk`);
+    }
+  }
+  if (CABIN_UNPLACED.length !== 1) throw new Error("[nwks-encounter] the cabin story needs exactly one man pending review");
+  if (CABIN_RESIDENTS.some((r) => r.id === CABIN_UNPLACED[0].personId)) {
+    throw new Error("[nwks-encounter] the man pending review must not have a bed");
+  }
 }
 
-export function cabinResidentName(r: CabinResident): string {
+export function cabinResidentName(r: Pick<CabinResident, "kind" | "id">): string {
   return r.kind === "attendee" ? attendeeName(ATTENDEES.find((a) => a.personId === r.id) as Attendee) : person(r.id).full;
 }
 
 export const cabins = {
-  /** Everyone with a bed at rest, including the two late arrivals. */
+  /** Everyone with a bed at rest, including the man placed by hand. */
   get placed() {
     return CABIN_RESIDENTS.length;
   },
@@ -399,16 +440,13 @@ export const cabins = {
   get totalBeds() {
     return CABIN_SIDE_CAPACITY * 2;
   },
-  /** Real, distinct figure (review finding 7): attendees whose seat is not
-   * yet confirmed — separate from the cabin-seating story above, so the
-   * readiness line never contradicts the board underneath it. */
+  /** Attendees whose seat is not yet confirmed: not placed until confirmed. */
   get stillPendingConfirmation() {
-    return ATTENDEES.filter((a) => a.status === "waitlist-pending").length;
+    return CABIN_UNPLACED.length;
   },
 };
 
-// Can fail: a side over capacity, unlike the old `placed + stillToPlace >
-// totalBeds` tautology (review finding 7's "replace the invariant").
+// Can fail: a side over capacity, a bunk over two beds.
 for (const side of ["L", "R"] as const) {
   if (cabins.sideResidents(side).length > CABIN_SIDE_CAPACITY) {
     throw new Error(`[nwks-encounter] cabin side "${side}" has more people than beds`);
@@ -566,7 +604,7 @@ export const stages = defineStages([
               { caption: "The board drafts on arrival: beds fill in." },
               { caption: "Still to place: a small remainder waits." },
               { caption: "One move, by hand: a chip lifts, then lands." },
-              { caption: "Everyone has a bed." },
+              { caption: "Everyone confirmed has a bed; one waits on review." },
             ],
           },
           {

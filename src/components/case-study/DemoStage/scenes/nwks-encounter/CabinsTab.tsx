@@ -1,47 +1,133 @@
 import { ProductScreen } from "../../ProductScreen";
 import { StepNote } from "./StepNote";
-import { CABIN_RESIDENTS, CABIN_LATE_IDS, CABIN_SIDE_CAPACITY, cabins, cabinResidentName } from "@/data/demos/nwks-encounter";
-
-const LATE = new Set(CABIN_LATE_IDS);
-const lateResidents = CABIN_RESIDENTS.filter((r) => LATE.has(r.id));
+import {
+  CABIN_RESIDENTS,
+  CABIN_PARTIES,
+  CABIN_UNPLACED,
+  CABIN_HAND_PLACED_ID,
+  CABIN_SIDE_CAPACITY,
+  CABIN_BUNKS_PER_SIDE,
+  cabins,
+  cabinResidentName,
+  attendeeName,
+  type CabinResident,
+} from "@/data/demos/nwks-encounter";
 
 /**
- * Cabins tab (spec-NW.md §2.4): one cabin, two sides of 10 beds, a stage
- * simplification from the real 6-cabin/144-bed board (SOURCE.md). Source:
- * admin/src/pages/RoomsPage.tsx, rooms/{CabinCard,legend}.tsx @6802623.
+ * Cabins tab (spec-NW.md §2.4; critic-NW M7): ONE cabin drawn as their floor
+ * plan seen from above (rooms/CabinCard.tsx @6802623): a gabled roof, the
+ * "CABIN 1 · 20/20" header with its lock, the L and R halves either side of
+ * the centre divide, five bunks a side with a lower and an upper bed, and the
+ * door. Servers are gold circles, attendees square plates; a party (an
+ * attendee and the server who invited him) shares a bunk and a pin. The one
+ * man pending review waits in "Still to place". A stage simplification from
+ * the real 6-cabin/144-bed board (SOURCE.md).
+ *
+ * Every bed slot is drawn at every step, so before the draft the plan reads
+ * as an empty cabin rather than a hole; each name pops into its slot.
  */
+const HAND = CABIN_RESIDENTS.find((r) => r.id === CABIN_HAND_PLACED_ID) as CabinResident;
+const WAITING = CABIN_UNPLACED[0];
+
+/** The step each resident's bed fills at (the draft, or the one move by hand). */
+const stepOf = (r: CabinResident) => (r.id === HAND.id ? 4 : 2);
+const STEPS = [0, 1, 2, 3, 4, 5] as const;
+
+/**
+ * A bed count as the board draws it at each step: 0/20 on the empty cabin,
+ * then what the draft filled, then full. Variants share one cell and key on
+ * the kit's own track attributes (the .nwks-at rules in nwks-admin.css), so
+ * at rest and without JS only the end count renders.
+ */
+function BedCount({ of, cap }: { of: readonly CabinResident[]; cap: number }) {
+  const at = (k: number) => of.filter((r) => stepOf(r) <= k).length;
+  const values = Array.from(new Set(STEPS.map(at)));
+  return (
+    <span className="nwks-swap">
+      {values.map((n) => (
+        <span key={n} className="nwks-at" data-at={[...STEPS.filter((k) => at(k) === n), ...(n === of.length ? ["end"] : [])].join(" ")}>
+          {n}/{cap}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/** One pin colour per party, in board order, from the product's own team ramp. */
+const PIN = new Map(CABIN_PARTIES.map((p, i) => [p.server, i % 8]));
+
 // Lowercase, shown capital by CSS (see AttendeesTab.tsx's `initials` for why).
 function initials(name: string): string {
   const p = name.split(" ");
   return `${p[0]?.[0] ?? ""}${p[1]?.[0] ?? ""}`.toLowerCase();
 }
 
-function Side({ label, side }: { label: string; side: "L" | "R" }) {
-  const beds = CABIN_RESIDENTS.filter((r) => r.side === side);
-  const empties = Math.max(0, CABIN_SIDE_CAPACITY - beds.length);
+function Bed({ r }: { r: CabinResident | undefined }) {
+  if (!r) return <span className="nwks-berth nwks-berth--open" />;
+  const name = cabinResidentName(r);
   return (
-    <div className="nwks-cabin-side">
-      <p className="nwks-cabin-side-h">
-        Side {label} · {beds.length}/{CABIN_SIDE_CAPACITY}
+    <span className="nwks-berth">
+      <span
+        className={`nwks-plate nwks-plate--${r.kind}`}
+        data-stage-step={stepOf(r)}
+        data-fx="pop"
+        style={{ transitionDelay: `${(r.bunk * 2 + (r.berth === "upper" ? 1 : 0)) * 35}ms` }}
+        title={name}
+      >
+        {initials(name)}
+        {r.party ? (
+          <i className="nwks-pin" style={{ ["--nw-pin" as string]: `var(--nw-team-${PIN.get(r.party)})` }} />
+        ) : null}
+      </span>
+    </span>
+  );
+}
+
+function Side({ side }: { side: "L" | "R" }) {
+  const here = cabins.sideResidents(side);
+  return (
+    <div className="nwks-cabin-half">
+      <p className="nwks-cabin-half-h">
+        <b>{side}</b>
+        <BedCount of={here} cap={CABIN_SIDE_CAPACITY} />
       </p>
-      <div className="nwks-beds">
-        {beds.map((r, i) => (
-          <div
-            className={`nwks-bed${r.kind === "server" ? " nwks-bed--server" : ""}`}
-            key={r.id}
-            data-stage-step={LATE.has(r.id) ? "4" : "2"}
-            data-fx="pop"
-            style={{ transitionDelay: `${i * 40}ms` }}
-            title={cabinResidentName(r)}
-          >
-            {initials(cabinResidentName(r))}
-          </div>
-        ))}
-        {Array.from({ length: empties }).map((_, i) => (
-          <div className="nwks-bed nwks-bed--empty" key={`empty-${label}-${i}`}>
-            ·
-          </div>
-        ))}
+      {Array.from({ length: CABIN_BUNKS_PER_SIDE }).map((_, bunk) => (
+        <div className="nwks-bunk" key={bunk}>
+          <Bed r={here.find((r) => r.bunk === bunk && r.berth === "lower")} />
+          <Bed r={here.find((r) => r.bunk === bunk && r.berth === "upper")} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+      <rect x="3" y="7" width="10" height="7" rx="1.5" />
+      <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
+    </svg>
+  );
+}
+
+function CabinPlan() {
+  return (
+    <div className="nwks-cabin">
+      <svg className="nwks-cabin-roof" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true">
+        <polyline points="1,9.5 50,1 99,9.5" fill="none" stroke="currentColor" strokeWidth="1.2" vectorEffect="non-scaling-stroke" />
+      </svg>
+      <p className="nwks-cabin-h">
+        <span>Cabin 1</span>
+        <span className="nwks-cabin-n">
+          <BedCount of={CABIN_RESIDENTS} cap={cabins.totalBeds} />
+        </span>
+        <LockIcon />
+      </p>
+      <div className="nwks-cabin-walls">
+        <Side side="L" />
+        <span className="nwks-cabin-divide" aria-hidden="true" />
+        <Side side="R" />
+        <span className="nwks-cabin-door" aria-hidden="true" />
       </div>
     </div>
   );
@@ -55,7 +141,7 @@ function Body() {
         review {cabins.stillPendingConfirmation === 1 ? "is" : "are"} not placed until confirmed
       </p>
       <StepNote tab="cabins" k={1} />
-      <div className="nwks-row">
+      <div className="nwks-row nwks-desk-only">
         <button type="button" className="nwks-btn">
           Rerun cabin assignment
         </button>
@@ -63,56 +149,63 @@ function Body() {
           Cabin assignment sheet
         </button>
       </div>
-      <div className="nwks-cabin-plate">
-        <Side label="L" side="L" />
-        <Side label="R" side="R" />
-      </div>
-      <StepNote tab="cabins" k={2} />
-
-      <div className="nwks-still-panel">
-        {/* Kept as a permanent panel label, matching the real product (spec-NW.md
-            §2.4: "a list of unplaced people or 'Everyone has a bed'") — the panel
-            heading stays even once the panel resolves; it never claims anyone is
-            still unplaced by itself. */}
-        <p className="nwks-h" data-stage-step="3">
-          Still to place
-        </p>
-        <StepNote tab="cabins" k={3} />
-        {/* Before step 4 lands (the chip's own bed pops in, above): each chip is a
-            before-state element, hidden at rest and after the move plays.
-            `data-stage-until` only (never paired with `data-stage-step` on the
-            same element): the engine's own e2e check reads computed visibility on
-            every `[data-stage-step]`, and visibility inherited from a hidden
-            `data-stage-until` ancestor would misreport as a bug (Expected/Found,
-            kit gap; not patched here per the lane's "never patch the kit" rule). */}
-        <div className="nwks-row">
-          {lateResidents.map((r) => (
-            <span className="nwks-org-card" key={r.id} data-stage-until="4">
-              {cabinResidentName(r)}
+      <div className="nwks-cabin-wrap">
+        <div className="nwks-cabin-board">
+        <CabinPlan />
+        <div className="nwks-cabin-side">
+          <StepNote tab="cabins" k={2} />
+          {/* "Still to place": their centre panel (spec-NW.md §2.4). Each
+              swap cell (.nwks-swapb) holds a before-state line and the thing
+              that replaces it in one grid cell, so the panel never rests as a
+              blank band while the story plays (lane NW5 item 4). */}
+          <div className="nwks-still-panel">
+            <p className="nwks-h">Still to place</p>
+            <div className="nwks-swapb">
+              <p className="nwks-sub" data-stage-until="3">
+                The draft places everyone it can first.
+              </p>
+              <div className="nwks-still-list" data-stage-step="3" data-fx="rise">
+                <span className="nwks-still-row">
+                  <span className="nwks-org-card">{attendeeName(WAITING)}</span>
+                  <span className="nwks-pill nwks-pill--warn">pending review</span>
+                </span>
+                {/* The man placed by hand: here until his move lands, faded
+                    ("in your hand", legend.tsx) while it does. */}
+                <span className="nwks-still-row nwks-still-hand" data-stage-until="5">
+                  <span className="nwks-org-card">{cabinResidentName(HAND)}</span>
+                  <span className="nwks-pill">no bed yet</span>
+                </span>
+              </div>
+            </div>
+            <StepNote tab="cabins" k={3} />
+            <StepNote tab="cabins" k={4} />
+            <div className="nwks-swapb">
+              <p className="nwks-sub" data-stage-until="5">
+                Drag a name onto any open bed.
+              </p>
+              <p className="nwks-sub" data-stage-step="5">
+                Everyone confirmed has a bed.
+              </p>
+            </div>
+            <StepNote tab="cabins" k={5} />
+          </div>
+          <div className="nwks-legend">
+            <span>
+              <i className="nwks-legend-mark nwks-plate--server" />
+              Server
             </span>
-          ))}
+            <span>
+              <i className="nwks-legend-mark nwks-plate--attendee" />
+              Attendee
+            </span>
+            <span>
+              <i className="nwks-legend-mark nwks-legend-pin" />
+              Same pin: came together
+            </span>
+            <span>Faded: still in your hand</span>
+          </div>
         </div>
-        <StepNote tab="cabins" k={4} />
-        <p className="nwks-sub" data-stage-step="5">
-          Everyone has a bed.
-        </p>
-        <StepNote tab="cabins" k={5} />
-      </div>
-
-      <div className="nwks-legend">
-        <span>
-          <span className="nwks-legend-dot" style={{ background: "var(--nw-brand)" }} />
-          Server
-        </span>
-        <span>
-          <span className="nwks-legend-dot" style={{ background: "var(--nw-wash)", border: "1px solid var(--nw-rule)" }} />
-          Attendee
-        </span>
-        <span>
-          <span className="nwks-legend-dot" style={{ border: "1px dashed var(--nw-rule)" }} />
-          No bed left this side
-        </span>
-        <span>Faded: still in your hand</span>
+        </div>
       </div>
     </div>
   );
