@@ -83,15 +83,24 @@ function PhoneSwitcher() {
 
 function DupCheck() {
   const misspelled = person("srv-gus-pemberdahl");
+  // The record's own history, not a typed literal (review finding 1): the
+  // correctly spelled record's `timesServed` from the fixture, via a getter.
+  const record = SERVERS.find((s) => s.personId === "srv-gus-pemberdahl") as Server;
+  const times = record.timesServed;
   return (
     <div className="nwks-dup-card" data-stage-step="6" data-fx="rise">
       <p className="nwks-h">The system checks its own sheet</p>
       <div className="nwks-dup-chip-row">
         <span className="nwks-pill">{misspelled.aliases?.[0]}, first time serving</span>
         <span aria-hidden="true">→</span>
-        <span className="nwks-pill nwks-pill--good">{misspelled.full}, eleven years of history</span>
+        <span className="nwks-pill nwks-pill--good">
+          {misspelled.full}, {times} record{times === 1 ? "" : "s"} on file
+        </span>
       </div>
-      <p className="nwks-sub">Same phone. Same town. Two letters swapped. Recognized as one man; the order is fixed in the engine.</p>
+      <p className="nwks-sub">
+        Two spellings, one likely man. The system lists the pair for a person to settle; it never
+        merges on its own.
+      </p>
     </div>
   );
 }
