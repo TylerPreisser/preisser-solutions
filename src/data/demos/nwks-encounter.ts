@@ -127,7 +127,7 @@ export const ATTENDEES: readonly Attendee[] = [
   { personId: "att-owen-bratcher", townId: "emberton", status: "registered", paid: false, shirtSize: "M" as const, timesAttended: 2 },
   { personId: "att-silas-kanaly", townId: "fallowfield", status: "registered", paid: true, shirtSize: "L", timesAttended: 0, inviterId: "srv-ken-mayfield" },
   { personId: "att-perry-wooldridge", townId: "birchwood-corners", status: "registered", paid: true, shirtSize: "S", timesAttended: 4 },
-  { personId: "att-nolan-streit", townId: "aldervale", status: "registered", paid: true, shirtSize: "M", timesAttended: 1, inviterId: "srv-dale-fenwright" },
+  { personId: "att-nolan-ferrick", townId: "aldervale", status: "registered", paid: true, shirtSize: "M", timesAttended: 1, inviterId: "srv-dale-fenwright" },
   // Waitlisted (3)
   {
     personId: "att-denny-aldous",

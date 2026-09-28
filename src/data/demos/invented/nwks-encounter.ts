@@ -8,19 +8,19 @@
 // NOTES.md), which was checked 0/155 matches against
 // NWKS-Org-Engine-Handoff.md by whole-word grep. The lead re-checked the six
 // launch towns by web search 2026-09-28 (spec-NW.md §3) and CLEARED all six.
-// The 12 attendees and their surnames are NEW this lane: no WebSearch tool was
-// available in this session, so they are UNCHECKED against a live search.
-// Every one is deliberately unusual-sounding and none reuses a server's
-// surname, a real Kansas town, or a name on the private deny list. Listed in
-// SOURCE.md for the lead to run the web check before this ships.
+// The 12 attendees and their surnames are NEW this lane. Web-checked by the
+// team lead 2026-09-28 ("<full name> Kansas"): eleven cleared as invented;
+// One originally invented attendee surname turned out to belong to a real
+// Wichita, Kansas person; it is not reproduced here, and was replaced with
+// "Nolan Ferrick" (checked, no match). None reuses a server's surname, a
+// real Kansas town, or a name on the private deny list.
 import type { InventedSet } from "../_invented";
 
 const STRIP_CHECKED =
   "reused verbatim from the approved concept strip (strip-nwks/fixture.js revision 3), " +
   "itself grepped 0/155 whole-word matches against NWKS-Org-Engine-Handoff.md, 2026-09-28";
-const NEW_UNCHECKED =
-  "2026-09-28: invented this session, no WebSearch tool available; not a server surname, " +
-  "not a real Kansas town, not on the private deny list; flagged in SOURCE.md for a web check";
+const ATTENDEE_CHECKED =
+  '2026-09-28 web (team lead): "<full name> Kansas", no match; CLEARED';
 const TOWN_CHECKED_CLEAR = "2026-09-28 web (team lead): no Kansas place of this name; CLEARED (spec-NW.md §3)";
 const TOWN_CHECKED_REPLACED =
   "2026-09-28 web (team lead): replaces a real Kansas place name found in the first pass; this " +
@@ -89,24 +89,28 @@ export const invented: InventedSet = {
     { id: "srv-dean-farquhar", first: "Dean", last: "Farquhar", checked: STRIP_CHECKED },
 
     // ── The 12 invented attendees (new this lane, disjoint from the roster) ──
+    // Web-checked by the team lead 2026-09-28 ("<full name> Kansas"); eleven
+    // cleared as invented, one originally invented surname turned out to be a
+    // real Wichita, Kansas person (not reproduced here) and was replaced with
+    // "Nolan Ferrick" (cleared, no match).
     // Registered (7)
-    { id: "att-grant-ashwell", first: "Grant", last: "Ashwell", checked: NEW_UNCHECKED },
-    { id: "att-miles-cordero", first: "Miles", last: "Cordero", checked: NEW_UNCHECKED },
+    { id: "att-grant-ashwell", first: "Grant", last: "Ashwell", checked: ATTENDEE_CHECKED },
+    { id: "att-miles-cordero", first: "Miles", last: "Cordero", checked: ATTENDEE_CHECKED },
     // Shares a first name with att-grant-ashwell on purpose: the Lookout AI
     // ambiguous-turn candidate pair (spec-NW.md §2.6, §3).
-    { id: "att-grant-petracek", first: "Grant", last: "Petracek", checked: NEW_UNCHECKED },
-    { id: "att-owen-bratcher", first: "Owen", last: "Bratcher", checked: NEW_UNCHECKED },
-    { id: "att-silas-kanaly", first: "Silas", last: "Kanaly", checked: NEW_UNCHECKED },
-    { id: "att-perry-wooldridge", first: "Perry", last: "Wooldridge", checked: NEW_UNCHECKED },
-    { id: "att-nolan-streit", first: "Nolan", last: "Streit", checked: NEW_UNCHECKED },
+    { id: "att-grant-petracek", first: "Grant", last: "Petracek", checked: ATTENDEE_CHECKED },
+    { id: "att-owen-bratcher", first: "Owen", last: "Bratcher", checked: ATTENDEE_CHECKED },
+    { id: "att-silas-kanaly", first: "Silas", last: "Kanaly", checked: ATTENDEE_CHECKED },
+    { id: "att-perry-wooldridge", first: "Perry", last: "Wooldridge", checked: ATTENDEE_CHECKED },
+    { id: "att-nolan-ferrick", first: "Nolan", last: "Ferrick", checked: ATTENDEE_CHECKED },
     // Waitlisted (3): one pending review (returning), one true wait-list
     // position, one mid-offer "given the seat".
-    { id: "att-denny-aldous", first: "Denny", last: "Aldous", checked: NEW_UNCHECKED },
-    { id: "att-hollis-vantrease", first: "Hollis", last: "Vantrease", checked: NEW_UNCHECKED },
-    { id: "att-emmett-sorenson", first: "Emmett", last: "Sorenson", checked: NEW_UNCHECKED },
+    { id: "att-denny-aldous", first: "Denny", last: "Aldous", checked: ATTENDEE_CHECKED },
+    { id: "att-hollis-vantrease", first: "Hollis", last: "Vantrease", checked: ATTENDEE_CHECKED },
+    { id: "att-emmett-sorenson", first: "Emmett", last: "Sorenson", checked: ATTENDEE_CHECKED },
     // Dropped (2): one carrying a "was already paid" warning.
-    { id: "att-barrett-lindeman", first: "Barrett", last: "Lindeman", checked: NEW_UNCHECKED },
-    { id: "att-corwin-haskell", first: "Corwin", last: "Haskell", checked: NEW_UNCHECKED },
+    { id: "att-barrett-lindeman", first: "Barrett", last: "Lindeman", checked: ATTENDEE_CHECKED },
+    { id: "att-corwin-haskell", first: "Corwin", last: "Haskell", checked: ATTENDEE_CHECKED },
   ],
 
   businesses: [],

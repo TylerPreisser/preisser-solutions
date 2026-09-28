@@ -65,17 +65,21 @@ by omission, which the `DemoTab.before?` contract already allows).
 - The 48-man roster is **reused verbatim** from the approved concept strip (revision 3), already
   grepped 0/155 whole-word matches against `NWKS-Org-Engine-Handoff.md`.
 - The 12 attendees, and the misspelled/aliased duplicate pairing, are all newly invented this lane.
-  **No WebSearch tool was available in this session**, so none of the 12 new surnames has been
-  web-checked. Every one was checked by hand against: every server surname (no collision), every
-  entry in the private deny list at `~/.config/preisser/demo-denylist.txt` (no collision with any
-  real NWKS staff name it carries — that file is not reproduced here, by design: this scene's own
-  `test:privacy` source-scan checks this very file tree against that list, so quoting a denied name
-  here to explain it is unused would itself be the leak), and the eight real Kansas launch points
-  named in production screenshots (none of the six invented towns matches any of them; one of the
-  eight is itself a deny-list entry, so it is likewise not reproduced here).
-  **The team lead should run the web check** (`src/data/demos/_invented.ts` "Registering a name,"
-  step 2) on: Ashwell, Cordero, Petracek, Bratcher, Kanaly, Wooldridge, Streit, Aldous, Vantrease,
-  Sorenson, Lindeman, Haskell (all as surnames + "Kansas"), before this ships.
+  No WebSearch tool was available in this session, so the 12 new names were first checked only by
+  hand: against every server surname (no collision), every entry in the private deny list at
+  `~/.config/preisser/demo-denylist.txt` (no collision with any real NWKS staff name it carries —
+  that file is not reproduced here, by design: this scene's own `test:privacy` source-scan checks
+  this very file tree against that list, so quoting a denied name here to explain it is unused would
+  itself be the leak), and the eight real Kansas launch points named in production screenshots (none
+  of the six invented towns matches any of them; one of the eight is itself a deny-list entry, so it
+  is likewise not reproduced here).
+  **The team lead ran the web check 2026-09-28** ("<full name> Kansas" per person): eleven cleared
+  as invented — Grant Ashwell, Miles Cordero, Grant Petracek, Owen Bratcher, Silas Kanaly, Perry
+  Wooldridge, Denny Aldous, Hollis Vantrease, Emmett Sorenson, Barrett Lindeman, Corwin Haskell.
+  **One originally invented attendee surname turned out to be a real person in Wichita, Kansas**
+  (not reproduced here, by the same rule as above) and has been replaced everywhere in this lane
+  with **"Nolan Ferrick"** (checked, no match; the registry id is now `att-nolan-ferrick`). All
+  twelve now carry the team lead's checked marker in `src/data/demos/invented/nwks-encounter.ts`.
 - The six launch towns (Aldervale, Kestrel Bend, Tollerton, Emberton, Fallowfield, Birchwood
   Corners) were already web-checked and cleared by the team lead 2026-09-28 (spec-NW.md §3); reused
   here unchanged.
