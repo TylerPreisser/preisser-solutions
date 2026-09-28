@@ -5,7 +5,8 @@
  *
  * Each of the three scenarios becomes ONE `data-stage-step` card (one per `DemoCaughtCard`),
  * arriving whole rather than staggering its three internal beats — a scenario was never three
- * distinct content states, only a stagger timing, so the reveal happens once, at the card.
+ * distinct content states, only a stagger timing, so the reveal happens once, at the card. The
+ * title stays outside the gate and the rest ghosts in (verify-FB item 2: no blank card mid-play).
  *
  * critic-FB M2: restores the source's three-part sequence inside each card — "What the paper
  * says", "What FarmBooks did" (the mechanism sentence, dropped in the first pass), "Where it
@@ -40,10 +41,11 @@ function Money({ amount, className = "" }: { amount: number; className?: string 
 function ScenarioA() {
   return (
     <div className="fb-wrong__card">
-      {/* critic-FB M3: the outer shell (border + background) always renders — a visible outline
-          placeholder while this card is pending, never a blank hole in the mat. */}
-      <div data-stage-step={1} data-fx="rise">
+      {/* verify-FB item 2: the shell and the scenario's title always render; everything under the
+          title is a faint `ghost` placeholder (opacity 0.28, its final height) while pending,
+          never a blank white card. */}
       <p className="text-[15px] font-semibold leading-snug text-[rgb(var(--fb-ink))]">The co-op billed you wrong.</p>
+      <div data-stage-step={1} data-fx="ghost">
       <p className="mt-1.5 text-[13.5px] leading-relaxed text-[rgb(var(--fb-gray1))]">
         Add up the co-op&rsquo;s own line items and you do not get the total printed at the bottom of their bill.
         The total is the number you would have paid.
@@ -106,8 +108,8 @@ function ScenarioB() {
   const landownerGrow = SHARE_LANDOWNER;
   return (
     <div className="fb-wrong__card">
-      <div data-stage-step={2} data-fx="rise">
       <p className="text-[15px] font-semibold leading-snug text-[rgb(var(--fb-ink))]">You were billed for ground you farm on shares.</p>
+      <div data-stage-step={2} data-fx="ghost">
       <p className="mt-1.5 text-[13.5px] leading-relaxed text-[rgb(var(--fb-gray1))]">
         The application is billed to you whole, because you are the one who ordered it. Two-thirds of that ground
         is not yours to pay for, and on the bill it looks exactly like your expense.
@@ -162,8 +164,8 @@ function ScenarioB() {
 function ScenarioC() {
   return (
     <div className="fb-wrong__card">
-      <div data-stage-step={3} data-fx="rise">
       <p className="text-[15px] font-semibold leading-snug text-[rgb(var(--fb-ink))]">The same load, billed twice.</p>
+      <div data-stage-step={3} data-fx="ghost">
       <p className="mt-1.5 text-[13.5px] leading-relaxed text-[rgb(var(--fb-gray1))]">
         You send the ticket in the day the load comes. At the end of the month the co-op&rsquo;s statement bills
         you for that same load again.

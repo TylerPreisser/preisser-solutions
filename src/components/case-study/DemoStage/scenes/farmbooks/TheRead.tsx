@@ -19,9 +19,8 @@
  *
  * critic-FB M2: each card now also carries the source's own step body sentence, restored from
  * READ_STEP_BODIES (present in the fixture from the first pass but never rendered).
- * critic-FB M3: each card's OUTER shell (`.fb-read__card`, border + background) always renders;
- * only an INNER wrapper carries `data-stage-step`, so a not-yet-arrived card reads as a visible
- * outline placeholder while autoplay is mid-flight, never a blank hole in the mat.
+ * critic-FB M3 / verify-FB item 2: each card's shell and title always render; only the body under
+ * the title carries `data-stage-step`, as a faint `ghost` placeholder while pending (see Card).
  * critic-FB M1/(c): at phone widths the photo is `position: sticky` so it, its region box and
  * the current card share the screen while stepping.
  * critic-FB M9 (arithmetic honesty): the tape's own strip now says precisely what the engine
@@ -66,12 +65,17 @@ function Body({ children }: { children: React.ReactNode }) {
   return <p className="mt-2 text-[12.5px] leading-relaxed text-[rgb(var(--fb-gray1))]">{children}</p>;
 }
 
-/** The outer shell always renders (border + background = the outline placeholder, M3);
- *  only this inner wrapper is gated by the step engine. */
-function Card({ step, children }: { step: number; children: React.ReactNode }) {
+/** verify-FB item 2: a card that has not arrived yet must never read as a blank white slab
+ *  (measured 213-455px tall at 390 during autoplay). The shell AND its title always render at
+ *  full strength; only the body below the title is gated, with the kit's `ghost` fx
+ *  (demo-stage.css: pending = opacity 0.28, never 0), so a pending card shows its own rows as a
+ *  faint placeholder at their final height and nothing resizes when it lands. At rest the
+ *  engine's attributes are gone and everything is at full opacity (ADR-0016 §3). */
+function Card({ step, title, children }: { step: number; title: string; children: React.ReactNode }) {
   return (
     <div className="fb-read__card" data-fb-card={step}>
-      <div data-stage-step={step} data-fx="rise">
+      <PanelHead>{title}</PanelHead>
+      <div data-stage-step={step} data-fx="ghost">
         {children}
       </div>
     </div>
@@ -80,8 +84,7 @@ function Card({ step, children }: { step: number; children: React.ReactNode }) {
 
 function CameraCheckCard() {
   return (
-    <Card step={1}>
-      <PanelHead>Before the shutter will fire</PanelHead>
+    <Card step={1} title="Before the shutter will fire">
       <Body>{READ_STEP_BODIES[0]}</Body>
       <ul className="mt-3 grid gap-2">
         {[
@@ -102,8 +105,7 @@ function CameraCheckCard() {
 function FieldTable({ rows, title, body }: { rows: readonly ReadRegion[]; title: string; body: string }) {
   const step = rows[0]?.step ?? 1;
   return (
-    <Card step={step}>
-      <PanelHead>{title}</PanelHead>
+    <Card step={step} title={title}>
       <Body>{body}</Body>
       <dl className="mt-3 grid grid-cols-[minmax(0,1fr)_auto] gap-x-4">
         {rows.map((r) => (
@@ -119,8 +121,7 @@ function FieldTable({ rows, title, body }: { rows: readonly ReadRegion[]; title:
 
 function CategoryCard() {
   return (
-    <Card step={4}>
-      <PanelHead>Where each line went</PanelHead>
+    <Card step={4} title="Where each line went">
       <Body>{READ_STEP_BODIES[3]}</Body>
       <ul className="mt-3 grid gap-2">
         {READ_SORTED.map((row, i) => (
@@ -161,8 +162,7 @@ function ArithmeticTape() {
     { label: "Total printed on the bill", value: USD(READ_PRINTED_TOTAL), quiet: false, rule: true },
   ];
   return (
-    <Card step={5}>
-      <PanelHead>The arithmetic</PanelHead>
+    <Card step={5} title="The arithmetic">
       <Body>{READ_STEP_BODIES[4]}</Body>
       <dl className="mt-3 grid grid-cols-[minmax(0,1fr)_auto] gap-x-4">
         {rows.map((r) => (
@@ -209,8 +209,7 @@ function ArithmeticTape() {
 
 function BooksCard() {
   return (
-    <Card step={6}>
-      <PanelHead>In the books</PanelHead>
+    <Card step={6} title="In the books">
       <Body>{READ_STEP_BODIES[5]}</Body>
       <p className={`fb-tnum ${NUM} mt-3 text-[28px] font-semibold leading-none text-[rgb(var(--fb-ink))]`}>{USD(READ_PRINTED_TOTAL)}</p>
       <p className="mt-2 text-[12.5px] leading-snug text-[rgb(var(--fb-gray1))]">filed under four categories, from one photograph</p>
