@@ -12,6 +12,7 @@ import {
   renderedStageIds,
   tapViolations,
   themeReadout,
+  trackEndStateViolations,
 } from "./lib/checks";
 
 /** One file per stage lane: tests/e2e/stages/<slug>.json = { route, stages }. */
@@ -91,28 +92,6 @@ async function settleTrack(t: ReturnType<Page["locator"]>): Promise<void> {
  * second defect: it scoped nothing and checked the whole page after playing
  * only the one track under test).
  */
-/**
- * Waits until no [data-track] on the page is mid-animation: none reads
- * data-track-state="playing" and none carries data-track-armed. A Back/Next
- * click on one track can shift layout enough to cross an ADJACENT track's
- * IntersectionObserver entry line, arming and autoplaying it after our own
- * track has already settled -- observed on a real stage at 1440x900 with two
- * short adjacent beats (Lane BO). Same 60s budget as the motion test.
- */
-async function waitForAllTracksIdle(page: Page): Promise<void> {
-  await expect
-    .poll(
-      () =>
-        page.evaluate(() =>
-          Array.from(document.querySelectorAll("[data-track]")).every(
-            (t) => t.getAttribute("data-track-state") !== "playing" && !t.hasAttribute("data-track-armed"),
-          ),
-        ),
-      { timeout: 60_000, message: "a [data-track] is still playing or armed" },
-    )
-    .toBe(true);
-}
-
 async function settleVisibleTracks(page: Page): Promise<{ total: number; armedBelowFold: number }> {
   const tracks = page.locator("[data-demo-stage] [data-track]");
   let armedBelowFold = 0;
@@ -225,8 +204,8 @@ for (const m of MANIFESTS) {
           await hydrated(page);
           // Settle EVERY visible track to "end" first, not just the one under
           // test: otherwise a second track still armed and pending below the
-          // fold makes the final whole-page endStateViolations() check red
-          // for a reason unrelated to Back/Next/Replay (review-F.md HIGH 1).
+          // fold makes a whole-page endStateViolations() check red for a
+          // reason unrelated to Back/Next/Replay (review-F.md HIGH 1).
           await settleVisibleTracks(page);
           const t = page.locator("[data-demo-stage] [data-track]:visible").first();
           await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 5_000 });
@@ -248,11 +227,15 @@ for (const m of MANIFESTS) {
           await t.getByRole("button", { name: "Replay", exact: true }).click();
           await expect(t).toHaveAttribute("data-track-state", "playing");
           await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 60_000 });
-          // An adjacent short track can have armed itself off the interaction
-          // above; wait for the WHOLE page to go quiescent before the final
-          // page-wide assertion, not just the track under test.
-          await waitForAllTracksIdle(page);
-          expect(await page.evaluate(endStateViolations)).toEqual([]);
+          // Scoped to the INTERACTED track's own subtree, not the whole page:
+          // useStageTimeline arms every below-the-fold track at mount by
+          // design, so an adjacent track the test never scrolled to is
+          // correctly still armed and pending here, which a page-wide check
+          // would misreport as a violation (review-F.md HIGH 1 follow-up;
+          // Lane FB's diagnosis on a 4-track stage). Whole-page end-state
+          // coverage belongs to the "every visible track plays once, ends,
+          // and disarms" test above, which scrolls and settles each in turn.
+          expect(await t.evaluate(trackEndStateViolations)).toEqual([]);
         } finally {
           await context.close();
         }
