@@ -41,10 +41,14 @@
   --nw-team-5: #3f7a63;
   --nw-team-6: #a0536a;
   --nw-team-7: #7a6a3f;
-  background: var(--nw-ground);
-  color: var(--nw-ink);
-  border-radius: var(--skin-radius);
-  padding: 2px;
+  /* No background, colour or padding here (critic-NW B1): this class sits on
+     .demo-stage__beats, which also wraps the KIT's chrome (beat head, tab bar,
+     tour caption, step list, Back/Next/Replay). Those follow the site's
+     --theme-* tokens in both themes (ADR-0016 §6), so the parchment ground
+     belongs to the product window only: .demo-screen paints --skin-ground
+     itself (demo-stage.css), and the drawn "before" materials paint their own
+     paper. Painting it here put light kit text on parchment in dark theme
+     (1.15:1). */
 }
 
 /* ── Shared: window body padding, section labels ── */
