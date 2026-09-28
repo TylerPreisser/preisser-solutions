@@ -46,8 +46,7 @@ export function endStateViolations(): Violation[] {
   // at opacity 0.35 (demo-stage.css) and must not be flagged.
   const INVISIBLE_OPACITY = 0.05;
   const exempt = (el: Element) =>
-    Boolean(el.closest(".ps-visually-hidden, .demo-controls__buttons")) ||
-    (el.hasAttribute("data-stage-until") && !el.hasAttribute("data-live"));
+    Boolean(el.closest(".ps-visually-hidden, .demo-controls__buttons, [data-stage-until]:not([data-live])"));
   for (const stage of Array.from(document.querySelectorAll("[data-demo-stage]"))) {
     for (const el of Array.from(stage.querySelectorAll("*"))) {
       if (exempt(el)) continue;
