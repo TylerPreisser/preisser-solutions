@@ -44,12 +44,22 @@ export function endStateViolations(): Violation[] {
   // to the check above. Walk EVERY rendered descendant of a stage.
   // ADR-0016 §3: the end frame ships FULLY VISIBLE, not merely non-zero, so a
   // resting element's computed ancestor-product opacity must be at least 0.9.
-  // The ONLY exemption is the resting before-state subtree (matched via
-  // closest(), so a plain child of a hidden [data-stage-until] element is
-  // covered too, not just the element carrying the attribute itself).
+  // Exemptions: the resting before-state subtree (matched via closest(), so a
+  // plain child of a hidden [data-stage-until] element is covered too, not
+  // just the element carrying the attribute itself); and an element that is
+  // EFFECTIVELY aria-hidden (itself or via an ancestor, e.g. the window-chrome
+  // dots sit under .demo-screen__chrome's aria-hidden, opacity 0.35 by design)
+  // AND is itself purely decorative: no text of its OWN and no img/svg/canvas/
+  // video descendant of its OWN. Checked on the tested element itself, not the
+  // whole aria-hidden ancestor's content -- the chrome bar's title text is a
+  // SIBLING of the dots under the same aria-hidden wrapper, and must stay
+  // checked; only the icon leaf itself is decorative.
   const RESTING_OPACITY_MIN = 0.9;
-  const exempt = (el: Element) =>
-    Boolean(el.closest(".ps-visually-hidden, .demo-controls__buttons, [data-stage-until]:not([data-live])"));
+  const exempt = (el: Element) => {
+    if (el.closest(".ps-visually-hidden, .demo-controls__buttons, [data-stage-until]:not([data-live])")) return true;
+    if (!el.closest('[aria-hidden="true"]')) return false;
+    return !(el.textContent && el.textContent.trim()) && !el.querySelector("img, svg, canvas, video");
+  };
   for (const stage of Array.from(document.querySelectorAll("[data-demo-stage]"))) {
     for (const el of Array.from(stage.querySelectorAll("*"))) {
       if (exempt(el)) continue;
@@ -100,8 +110,11 @@ export function trackEndStateViolations(track: Element): Violation[] {
     return o;
   };
   const RESTING_OPACITY_MIN = 0.9;
-  const exempt = (el: Element) =>
-    Boolean(el.closest(".ps-visually-hidden, .demo-controls__buttons, [data-stage-until]:not([data-live])"));
+  const exempt = (el: Element) => {
+    if (el.closest(".ps-visually-hidden, .demo-controls__buttons, [data-stage-until]:not([data-live])")) return true;
+    if (!el.closest('[aria-hidden="true"]')) return false;
+    return !(el.textContent && el.textContent.trim()) && !el.querySelector("img, svg, canvas, video");
+  };
   for (const el of [track, ...Array.from(track.querySelectorAll("*"))]) {
     if (exempt(el)) continue;
     if (el.getClientRects().length === 0) continue;
