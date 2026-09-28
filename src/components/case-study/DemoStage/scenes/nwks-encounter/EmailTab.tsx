@@ -16,10 +16,15 @@ function Body() {
   const [tpl, setTpl] = useState<(typeof EMAIL_TEMPLATES)[number]["id"]>(EMAIL_TEMPLATES[0].id);
   const [who, setWho] = useState<"Everyone" | "Attendees" | "Servers">("Servers");
   const [selectedTowns, setSelectedTowns] = useState<Set<string>>(new Set(["aldervale"]));
-  const [sent, setSent] = useState(false);
+  // Starts true (review finding 3): step 4's caption is "a confirmation
+  // follows," but the confirmation used to be gated behind a real click,
+  // which no-JS and the automated tour can never make, so step 4 had no
+  // element that changes. The confirmation is now the resting/end-frame
+  // state, matching every other tab's own end-state-first convention; the
+  // button still works, it just has nothing left to reveal.
+  const [sent, setSent] = useState(true);
 
-  const audience = Array.from(selectedTowns).flatMap((t) => email.audienceFor(t));
-  const count = who === "Servers" ? audience.length : 0;
+  const count = email.audienceCount(who, Array.from(selectedTowns));
 
   return (
     <div className="nwks-body">
@@ -57,17 +62,24 @@ function Body() {
             </span>
           </div>
           <div className="nwks-row" style={{ marginBottom: 8 }}>
+            {/* Real merge-field tokens, no inner spaces (review finding 11,
+                emailTokens.ts@6802623:43-47: {{first_name}}, {{event_title}},
+                {{start_date}}, {{end_date}}). `{{ encounter_dates }}`, a token
+                the product does not ship, is gone. */}
             <span className="nwks-field-pill" data-stage-step="2" data-fx="pop">
-              {"{{ first_name }}"}
+              {"{{first_name}}"}
             </span>
-            <span className="nwks-field-pill">{"{{ launch_point }}"}</span>
-            <span className="nwks-field-pill">{"{{ encounter_dates }}"}</span>
+            <span className="nwks-field-pill">{"{{launch_point}}"}</span>
+            <span className="nwks-field-pill">{"{{start_date}}"}</span>
+            <span className="nwks-field-pill">{"{{end_date}}"}</span>
           </div>
           <div className="nwks-letter-band">
             <div className="nwks-letter-brand">Men&apos;s Encounter 2027</div>
             <div className="nwks-letter-body">
-              <p>Dear {"{{ first_name }}"},</p>
-              <p>Your launch point is {"{{ launch_point }}"}. See you {"{{ encounter_dates }}"}.</p>
+              <p>Dear {"{{first_name}}"},</p>
+              <p>
+                Your launch point is {"{{launch_point}}"}. See you {"{{start_date}}"} to {"{{end_date}}"}.
+              </p>
             </div>
           </div>
           <div className="nwks-row" style={{ marginTop: 8 }}>
@@ -115,8 +127,18 @@ function Body() {
           <p className="nwks-sub" style={{ marginTop: 10 }}>
             Everyone else is left out of this send.
           </p>
-          <p className="nwks-audience-count" data-stage-step="3" data-count-to={count}>
-            This email goes to {count} people
+          <p className="nwks-audience-count">
+            This email goes to{" "}
+            {/* Keyed on the count itself (review finding 5): the kit's counter
+                overwrites this node's `textContent` directly, bypassing React,
+                so a stale count would otherwise survive a later, un-animated
+                change (toggling a town/audience control). A new key forces a
+                fresh DOM node per value, so the node's own text is always
+                already the current formatted value, matching the contract. */}
+            <span key={count} data-stage-step="3" data-count-to={count}>
+              {count}
+            </span>{" "}
+            people
           </p>
           <div className="nwks-row" style={{ marginTop: 10 }}>
             <button type="button" className="nwks-btn nwks-btn--primary" onClick={() => setSent(true)}>
@@ -126,7 +148,11 @@ function Body() {
               Schedule this send…
             </button>
           </div>
-          {sent ? <p className="nwks-pill nwks-pill--good">Send confirmed (demonstration only, no message leaves this recreation)</p> : null}
+          {sent ? (
+            <p className="nwks-pill nwks-pill--good" data-stage-step="4" data-fx="rise">
+              Send confirmed (demonstration only, no message leaves this recreation)
+            </p>
+          ) : null}
         </div>
       </div>
     </div>

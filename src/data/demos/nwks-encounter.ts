@@ -264,23 +264,31 @@ const EXTRA_SERVERS = SERVERS.filter((s) => !s.captain)
   .slice(0, 6)
   .map((s) => s.personId);
 
+// The two "still to place" servers (review finding 7): at REST the story is
+// already over, so they are SEATED like everyone else (side R, making it
+// 10/10) — the end frame must not contradict its own "everyone has a bed"
+// line. CabinsTab.tsx renders them a second time as a transient
+// `data-stage-until="4"` chip in the "Still to place" panel, visible only
+// while the track is animating and before step 4, per the kit's own
+// before/after swap-cell convention; that chip is never part of the resting
+// DOM, so there is no double-counting at rest, only during the demonstrated
+// drag.
+export const CABIN_LATE_IDS: readonly string[] = ["srv-glen-tolliver", "srv-roy-kasselman"];
+
 export const CABIN_RESIDENTS: readonly CabinResident[] = [
   ...REGISTERED_ATTENDEES.slice(0, 4).map((id, i): CabinResident => ({ kind: "attendee", id, side: i % 2 === 0 ? "L" : "R" })),
   ...CAPTAIN_SERVERS.slice(0, 4).map((id, i): CabinResident => ({ kind: "server", id, side: i % 2 === 0 ? "L" : "R" })),
   ...REGISTERED_ATTENDEES.slice(4, 7).map((id, i): CabinResident => ({ kind: "attendee", id, side: (i + 4) % 2 === 0 ? "L" : "R" })),
   ...EXTRA_SERVERS.slice(0, 6).map((id, i): CabinResident => ({ kind: "server", id, side: (i + 4) % 2 === 0 ? "L" : "R" })),
+  ...CABIN_LATE_IDS.map((id): CabinResident => ({ kind: "server", id, side: "R" })),
 ];
 
-// Two servers left in the waiting pool: unplaced until the drag move lands
-// them. Must be disjoint from CABIN_RESIDENTS (checked below) — a person is
-// either already in a bed or still waiting, never both.
-export const CABIN_WAITING: readonly CabinResident[] = [
-  { kind: "server", id: "srv-glen-tolliver", side: "L" },
-  { kind: "server", id: "srv-roy-kasselman", side: "L" },
-];
-
-if (CABIN_WAITING.some((w) => CABIN_RESIDENTS.some((r) => r.id === w.id))) {
-  throw new Error("[nwks-encounter] a cabin waiting-pool person is also already housed");
+{
+  const seen = new Set<string>();
+  for (const r of CABIN_RESIDENTS) {
+    if (seen.has(r.id)) throw new Error(`[nwks-encounter] cabin resident "${r.id}" is seated twice`);
+    seen.add(r.id);
+  }
 }
 
 export function cabinResidentName(r: CabinResident): string {
@@ -288,28 +296,33 @@ export function cabinResidentName(r: CabinResident): string {
 }
 
 export const cabins = {
+  /** Everyone with a bed at rest, including the two late arrivals. */
   get placed() {
     return CABIN_RESIDENTS.length;
   },
   sideResidents(side: "L" | "R") {
     return CABIN_RESIDENTS.filter((r) => r.side === side);
   },
-  get stillToPlace() {
-    return CABIN_WAITING.length;
-  },
   get totalBeds() {
     return CABIN_SIDE_CAPACITY * 2;
   },
-  get confirmedTotal() {
-    return this.placed + this.stillToPlace;
+  /** Real, distinct figure (review finding 7): attendees whose seat is not
+   * yet confirmed — separate from the cabin-seating story above, so the
+   * readiness line never contradicts the board underneath it. */
+  get stillPendingConfirmation() {
+    return ATTENDEES.filter((a) => a.status === "waitlist-pending").length;
   },
 };
 
-if (cabins.placed + cabins.stillToPlace > cabins.totalBeds) {
-  throw new Error("[nwks-encounter] the cabin fixture seats more people than the board has beds");
+// Can fail: a side over capacity, unlike the old `placed + stillToPlace >
+// totalBeds` tautology (review finding 7's "replace the invariant").
+for (const side of ["L", "R"] as const) {
+  if (cabins.sideResidents(side).length > CABIN_SIDE_CAPACITY) {
+    throw new Error(`[nwks-encounter] cabin side "${side}" has more people than beds`);
+  }
 }
-if (CABIN_RESIDENTS.filter((r) => r.side === "L").length > CABIN_SIDE_CAPACITY || CABIN_RESIDENTS.filter((r) => r.side === "R").length > CABIN_SIDE_CAPACITY) {
-  throw new Error("[nwks-encounter] a cabin side has more people than beds");
+if (cabins.placed > cabins.totalBeds) {
+  throw new Error("[nwks-encounter] the cabin fixture seats more people than the board has beds");
 }
 
 // ── Email ───────────────────────────────────────────────────────────────
@@ -328,16 +341,26 @@ export const email = {
   get automatedCount() {
     return EMAIL_TEMPLATES.filter((t) => !t.manual).length;
   },
-  /** "Servers · one launch point," narrowed to a small nonzero count (spec-NW.md §3). */
-  audienceFor(townId: string) {
-    return SERVERS.filter((s) => {
-      const a = ATTENDEES.find((x) => x.inviterId === s.personId && x.townId === townId);
-      return Boolean(a);
-    });
+  /** The servers who invited an attendee registered from one of these towns. */
+  serversFor(townIds: readonly string[]) {
+    return SERVERS.filter((s) => ATTENDEES.some((a) => a.status !== "dropped" && a.inviterId === s.personId && townIds.includes(a.townId)));
+  },
+  /** The (non-dropped) attendees registered from one of these towns. */
+  attendeesFor(townIds: readonly string[]) {
+    return ATTENDEES.filter((a) => a.status !== "dropped" && townIds.includes(a.townId));
+  },
+  /** Who this send reaches (review finding 6: this used to read 0 for
+   * Everyone and Attendees; every audience is now a real `.length` of the
+   * fixture, never a typed literal). "Servers · one launch point," narrowed
+   * to a small nonzero count (spec-NW.md §3). */
+  audienceCount(who: "Everyone" | "Attendees" | "Servers", townIds: readonly string[]) {
+    if (who === "Servers") return this.serversFor(townIds).length;
+    if (who === "Attendees") return this.attendeesFor(townIds).length;
+    return this.serversFor(townIds).length + this.attendeesFor(townIds).length;
   },
 };
 const EMAIL_DEMO_TOWN = "aldervale";
-if (email.audienceFor(EMAIL_DEMO_TOWN).length === 0) {
+if (email.audienceCount("Servers", [EMAIL_DEMO_TOWN]) === 0) {
   throw new Error("[nwks-encounter] the email audience demo needs at least one server matching the demo town");
 }
 

@@ -56,9 +56,10 @@ by omission, which the `DemoTab.before?` contract already allows).
   invented sender is `office@campmail.example`; the send action is stubbed (local state only, no
   network call — the stage's own scene has no server to send through in any case).
 - **Attendees inner segmented control** (Registered/Wait List/Dropped) is a client-side React
-  widget; without JavaScript only the Registered view renders (the page's default view). This is a
-  narrower no-JS guarantee than the kit's own tab-stacking contract, which the six OUTER tabs still
-  meet in full (every tab's content is in the server HTML, stacked, per `TabbedScreen`'s no-JS rule).
+  widget for its `aria-selected` styling only. All three groups — Registered, Wait List, Dropped —
+  are always in the server HTML, stacked, matching the kit's own tab-stacking contract one level
+  down (review finding 3: the groups used to be gated behind the control's own state, so without
+  JavaScript, and during the automated tour, only Registered ever rendered).
 
 ## Privacy
 

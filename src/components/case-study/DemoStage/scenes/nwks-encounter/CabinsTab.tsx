@@ -1,5 +1,8 @@
 import { ProductScreen } from "../../ProductScreen";
-import { CABIN_RESIDENTS, CABIN_WAITING, CABIN_SIDE_CAPACITY, cabins, cabinResidentName } from "@/data/demos/nwks-encounter";
+import { CABIN_RESIDENTS, CABIN_LATE_IDS, CABIN_SIDE_CAPACITY, cabins, cabinResidentName } from "@/data/demos/nwks-encounter";
+
+const LATE = new Set(CABIN_LATE_IDS);
+const lateResidents = CABIN_RESIDENTS.filter((r) => LATE.has(r.id));
 
 /**
  * Cabins tab (spec-NW.md §2.4): one cabin, two sides of 10 beds, a stage
@@ -25,7 +28,7 @@ function Side({ label, side }: { label: string; side: "L" | "R" }) {
           <div
             className={`nwks-bed${r.kind === "server" ? " nwks-bed--server" : ""}`}
             key={r.id}
-            data-stage-step="2"
+            data-stage-step={LATE.has(r.id) ? "4" : "2"}
             data-fx="pop"
             style={{ transitionDelay: `${i * 40}ms` }}
             title={cabinResidentName(r)}
@@ -47,8 +50,8 @@ function Body() {
   return (
     <div className="nwks-body">
       <p className="nwks-cabin-readiness" data-stage-step="1">
-        {cabins.confirmedTotal} confirmed people · {cabins.totalBeds} beds in camp · {cabins.stillToPlace} still pending are not
-        placed until confirmed
+        {cabins.placed} confirmed people · {cabins.totalBeds} beds in camp · {cabins.stillPendingConfirmation} still pending
+        review {cabins.stillPendingConfirmation === 1 ? "is" : "are"} not placed until confirmed
       </p>
       <div className="nwks-row">
         <button type="button" className="nwks-btn">
@@ -64,18 +67,23 @@ function Body() {
       </div>
 
       <div className="nwks-still-panel">
-        <p className="nwks-h">Still to place</p>
-        {/* Resolved once step 5 lands ("Everyone has a bed"): each chip is a
-            before-state element, hidden at rest and after the story's own
-            conclusion. `data-stage-until` only (never paired with
-            `data-stage-step` on the same element): the engine's own e2e
-            check reads computed visibility on every `[data-stage-step]`, and
-            visibility inherited from a hidden `data-stage-until` ancestor
-            would misreport as a bug (Expected/Found, kit gap; not patched
-            here per the lane's "never patch the kit" rule). */}
+        {/* Kept as a permanent panel label, matching the real product (spec-NW.md
+            §2.4: "a list of unplaced people or 'Everyone has a bed'") — the panel
+            heading stays even once the panel resolves; it never claims anyone is
+            still unplaced by itself. */}
+        <p className="nwks-h" data-stage-step="3">
+          Still to place
+        </p>
+        {/* Before step 4 lands (the chip's own bed pops in, above): each chip is a
+            before-state element, hidden at rest and after the move plays.
+            `data-stage-until` only (never paired with `data-stage-step` on the
+            same element): the engine's own e2e check reads computed visibility on
+            every `[data-stage-step]`, and visibility inherited from a hidden
+            `data-stage-until` ancestor would misreport as a bug (Expected/Found,
+            kit gap; not patched here per the lane's "never patch the kit" rule). */}
         <div className="nwks-row">
-          {CABIN_WAITING.map((r) => (
-            <span className="nwks-org-card" key={r.id} data-stage-until="5">
+          {lateResidents.map((r) => (
+            <span className="nwks-org-card" key={r.id} data-stage-until="4">
               {cabinResidentName(r)}
             </span>
           ))}

@@ -89,7 +89,7 @@ export const invented: InventedSet = {
     { id: "srv-nate-corbell", first: "Nate", last: "Corbell", checked: STRIP_CHECKED },
     { id: "srv-colt-ravenscroft", first: "Colt", last: "Ravenscroft", checked: STRIP_CHECKED },
     { id: "srv-walt-hensler", first: "Walt", last: "Hensler", checked: STRIP_CHECKED },
-    { id: "srv-trent-mabry", first: "Trent", last: "Mabry", checked: STRIP_CHECKED },
+    { id: "srv-trent-vossler", first: "Trent", last: "Vossler", checked: ROSTER_REPLACED },
     { id: "srv-jonah-pruett", first: "Jonah", last: "Pruett", checked: STRIP_CHECKED },
     { id: "srv-reid-castner", first: "Reid", last: "Castner", checked: STRIP_CHECKED },
     { id: "srv-micah-olander", first: "Micah", last: "Olander", checked: STRIP_CHECKED },
@@ -278,6 +278,18 @@ export const invented: InventedSet = {
     "Tap",
     "Everything",
     "Answered",
+    // Newly always-rendered Wait List / Dropped copy (review finding 3: the
+    // groups used to be hidden behind a client-only view toggle, so their
+    // text never reached the built HTML for this probe to see).
+    "Cancel",
+    "Came",
+    "Times",
+    "Keep",
+    "Waitlisted",
+    "Missed",
+    "Was",
+    "Changed",
+    "Reason",
     // Shirt sizes and single-letter UI codes (side letters, 5A/5B/5C suffixes).
     "S",
     "M",
