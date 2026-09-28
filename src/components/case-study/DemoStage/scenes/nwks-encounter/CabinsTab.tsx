@@ -1,4 +1,5 @@
 import { ProductScreen } from "../../ProductScreen";
+import { StepNote } from "./StepNote";
 import { CABIN_RESIDENTS, CABIN_LATE_IDS, CABIN_SIDE_CAPACITY, cabins, cabinResidentName } from "@/data/demos/nwks-encounter";
 
 const LATE = new Set(CABIN_LATE_IDS);
@@ -53,6 +54,7 @@ function Body() {
         {cabins.placed} confirmed people · {cabins.totalBeds} beds in camp · {cabins.stillPendingConfirmation} still pending
         review {cabins.stillPendingConfirmation === 1 ? "is" : "are"} not placed until confirmed
       </p>
+      <StepNote tab="cabins" k={1} />
       <div className="nwks-row">
         <button type="button" className="nwks-btn">
           Rerun cabin assignment
@@ -65,6 +67,7 @@ function Body() {
         <Side label="L" side="L" />
         <Side label="R" side="R" />
       </div>
+      <StepNote tab="cabins" k={2} />
 
       <div className="nwks-still-panel">
         {/* Kept as a permanent panel label, matching the real product (spec-NW.md
@@ -74,6 +77,7 @@ function Body() {
         <p className="nwks-h" data-stage-step="3">
           Still to place
         </p>
+        <StepNote tab="cabins" k={3} />
         {/* Before step 4 lands (the chip's own bed pops in, above): each chip is a
             before-state element, hidden at rest and after the move plays.
             `data-stage-until` only (never paired with `data-stage-step` on the
@@ -88,9 +92,11 @@ function Body() {
             </span>
           ))}
         </div>
+        <StepNote tab="cabins" k={4} />
         <p className="nwks-sub" data-stage-step="5">
           Everyone has a bed.
         </p>
+        <StepNote tab="cabins" k={5} />
       </div>
 
       <div className="nwks-legend">

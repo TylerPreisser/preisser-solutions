@@ -590,3 +590,37 @@
   display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; padding: 6px 0; border-top: 1px solid var(--nw-rule-2);
 }
 .demo-skin--nwks-mens .nwks-recent-row .nwks-r-meta { flex-basis: 100%; }
+
+/* ── Step notes (StepNote.tsx, critic-NW M3): each step's caption against
+   the element it changes, inside the product window. The window is light in
+   both site themes, so the note's colours are fixed: #0C6FC9 is the site's
+   light accent-text (5.08:1 on white), ink #0A1628. ── */
+.demo-skin--nwks-mens .nwks-note {
+  display: flex; align-items: flex-start; gap: 8px; margin: 0; min-width: 0;
+  padding: 6px 10px; border-left: 3px solid #0C6FC9; border-radius: 0 6px 6px 0;
+  background: #EEF5FC; color: #0A1628; font-size: 0.8125rem; line-height: 1.4; font-weight: 500;
+  transition: opacity var(--demo-dur, 520ms) var(--demo-ease, ease), transform var(--demo-dur, 520ms) var(--demo-ease, ease),
+    background-color 200ms ease, color 200ms ease;
+}
+.demo-skin--nwks-mens .nwks-note-n {
+  flex: 0 0 auto; display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 999px;
+  border: 1px solid #0C6FC9; color: #0C6FC9; font-size: 0.6875rem; font-weight: 700;
+}
+.demo-skin--nwks-mens [data-track-armed][data-track-step="1"] .nwks-note[data-note="1"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="2"] .nwks-note[data-note="2"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="3"] .nwks-note[data-note="3"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-note[data-note="4"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="5"] .nwks-note[data-note="5"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="6"] .nwks-note[data-note="6"] {
+  background: #0C6FC9; color: #FFFFFF;
+}
+.demo-skin--nwks-mens [data-track-armed][data-track-step="1"] .nwks-note[data-note="1"] .nwks-note-n,
+.demo-skin--nwks-mens [data-track-armed][data-track-step="2"] .nwks-note[data-note="2"] .nwks-note-n,
+.demo-skin--nwks-mens [data-track-armed][data-track-step="3"] .nwks-note[data-note="3"] .nwks-note-n,
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-note[data-note="4"] .nwks-note-n,
+.demo-skin--nwks-mens [data-track-armed][data-track-step="5"] .nwks-note[data-note="5"] .nwks-note-n,
+.demo-skin--nwks-mens [data-track-armed][data-track-step="6"] .nwks-note[data-note="6"] .nwks-note-n {
+  border-color: #FFFFFF; color: #FFFFFF;
+}
+/* The two late arrivals' chips take no room once gone (critic-NW M8). */
+.demo-skin--nwks-mens .nwks-still-panel .nwks-org-card[data-stage-until]:not([data-live]) { display: none; }

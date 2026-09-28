@@ -562,7 +562,7 @@ export const stages = defineStages([
             },
             tourCaption: "A camp seen from above: drag anyone, from a bed to another bed.",
             steps: [
-              { caption: "An empty cabin: nobody placed yet." },
+              { caption: "It starts from an empty cabin, before anyone is placed." },
               { caption: "The board drafts on arrival: beds fill in." },
               { caption: "Still to place: a small remainder waits." },
               { caption: "One move, by hand: a chip lifts, then lands." },
@@ -591,7 +591,7 @@ export const stages = defineStages([
             tourCaption: "Ask a plain question about anyone on the roster.",
             steps: [
               { caption: "A question is typed and sent." },
-              { caption: "A brief trace appears, then clears." },
+              { caption: "A brief trace shows what it checked." },
               { caption: "The answer streams in as prose." },
               { caption: "One name is ambiguous: two chips, unselected." },
             ],

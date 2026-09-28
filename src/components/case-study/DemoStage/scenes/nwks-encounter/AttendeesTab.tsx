@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ProductScreen } from "../../ProductScreen";
+import { StepNote } from "./StepNote";
 import { ATTENDEES, attendeeName, attendeeTown, type Attendee } from "@/data/demos/nwks-encounter";
 
 /**
@@ -86,6 +87,7 @@ function Body() {
         </button>
       </div>
 
+      <StepNote tab="attendees" k={1} />
       <div className="nwks-roster" data-stage-step="1" data-fx="rise">
         {registered.map((a) => (
           <div className="nwks-r-row" key={a.personId}>
@@ -127,6 +129,7 @@ function Body() {
                     Cancel
                   </button>
                 </div>
+                <StepNote tab="attendees" k={2} />
               </div>
             ) : null}
           </div>
@@ -136,6 +139,7 @@ function Body() {
       <p className="nwks-h" data-stage-step="3">
         Wait list
       </p>
+      <StepNote tab="attendees" k={3} />
       <div className="nwks-roster" data-fx="rise">
         {waitlist.map((a) => {
           const isOffered = a.status === "waitlist-offered" || offered.has(a.personId);
@@ -192,6 +196,7 @@ function Body() {
         })}
       </div>
 
+      <StepNote tab="attendees" k={4} />
       <p className="nwks-h">Dropped</p>
       <div className="nwks-roster">
         {dropped.map((a) => (

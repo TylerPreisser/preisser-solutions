@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ProductScreen } from "../../ProductScreen";
+import { StepNote } from "./StepNote";
 import { EMAIL_TEMPLATES, EMAIL_SENDER, email, ATTENDEES } from "@/data/demos/nwks-encounter";
 import { town } from "@/data/demos/_invented";
 
@@ -43,6 +44,7 @@ function Body() {
             These send themselves ({email.automatedCount})
           </p>
           <p className="nwks-sub">Sent history</p>
+          <StepNote tab="email" k={1} />
         </div>
 
         <div className="nwks-email-col">
@@ -73,6 +75,7 @@ function Body() {
             <span className="nwks-field-pill">{"{{start_date}}"}</span>
             <span className="nwks-field-pill">{"{{end_date}}"}</span>
           </div>
+          <StepNote tab="email" k={2} />
           <div className="nwks-letter-band">
             <div className="nwks-letter-brand">Men&apos;s Encounter 2027</div>
             <div className="nwks-letter-body">
@@ -140,6 +143,7 @@ function Body() {
             </span>{" "}
             people
           </p>
+          <StepNote tab="email" k={3} />
           <div className="nwks-row" style={{ marginTop: 10 }}>
             <button type="button" className="nwks-btn nwks-btn--primary" onClick={() => setSent(true)}>
               Send to {count} people
@@ -153,6 +157,7 @@ function Body() {
               Send confirmed (demonstration only, no message leaves this recreation)
             </p>
           ) : null}
+          <StepNote tab="email" k={4} />
         </div>
       </div>
     </div>

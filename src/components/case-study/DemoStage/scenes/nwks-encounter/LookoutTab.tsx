@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ProductScreen } from "../../ProductScreen";
+import { StepNote } from "./StepNote";
 import { lookout } from "@/data/demos/nwks-encounter";
 
 /**
@@ -18,12 +19,15 @@ function Body() {
       <div className="nwks-thread">
         <div className="nwks-turn" data-stage-step="1" data-fx="rise">
           <p className="nwks-turn-q">{lookout.resolvedQuestion}</p>
+          <StepNote tab="lookout" k={1} />
           <p className="nwks-trace" data-stage-step="2" data-fx="ghost">
             Checking the roster…
           </p>
+          <StepNote tab="lookout" k={2} />
           <p className="nwks-turn-a" data-stage-step="3">
             {lookout.resolvedAnswer}
           </p>
+          <StepNote tab="lookout" k={3} />
         </div>
         <div className="nwks-turn" data-stage-step="4" data-fx="rise">
           <p className="nwks-turn-q">{lookout.ambiguousQuestion}</p>
@@ -41,6 +45,7 @@ function Body() {
               </button>
             ))}
           </div>
+          <StepNote tab="lookout" k={4} />
           {picked ? <p className="nwks-turn-a">{picked}&apos;s launch point is on his own record above.</p> : null}
         </div>
       </div>

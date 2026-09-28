@@ -1,4 +1,5 @@
 import { ProductScreen } from "../../ProductScreen";
+import { StepNote } from "./StepNote";
 import { dashboard, attendeeName, attendeeTown } from "@/data/demos/nwks-encounter";
 
 /**
@@ -15,6 +16,7 @@ function Body() {
         <span className="nwks-pill nwks-pill--warn">Attendee sign-ups · Full</span>
         <span className="nwks-pill nwks-pill--good">Server sign-ups · Open</span>
       </div>
+      <StepNote tab="dashboard" k={1} />
 
       <div className="nwks-stat-grid" data-stage-step="2" data-fx="rise">
         <div className="nwks-stat">
@@ -54,6 +56,7 @@ function Body() {
           <div className="nwks-stat-l">Dietary &amp; health notes</div>
         </div>
       </div>
+      <StepNote tab="dashboard" k={2} />
 
       <div className="nwks-tiles">
         <div className="nwks-tile">
@@ -86,6 +89,7 @@ function Body() {
           </button>
         </div>
       </div>
+      <StepNote tab="dashboard" k={3} />
 
       <div className="nwks-tiles">
         <div className="nwks-tile">
@@ -120,6 +124,7 @@ function Body() {
           </p>
         </div>
       </div>
+      <StepNote tab="dashboard" k={4} />
 
       <div className="nwks-tile" data-stage-step="4">
         <p className="nwks-h">Shirt Sizes</p>
