@@ -33,6 +33,17 @@ export const invented: InventedSet = {
         "too close to a different real Kansas farm; full candidate history in spec-FB.md §5a (outside this repo).",
     },
     {
+      id: "john-smith-farms",
+      name: "John Smith Farms",
+      aliases: [],
+      checked:
+        "NOT independently web-searched this session (no WebSearch tool was available to this agent). " +
+        "Registered per team-lead instruction 2026-09-28 after PR #11 review (review-FB HIGH 3) found it " +
+        "printed twice in the photograph's own pixels (the FROM and BILLED TO blocks of fuel-ticket-photo.jpg) " +
+        "and unregistered. Flagged back to the lead in the same pass: run the same exact-phrase web check used " +
+        "for the other names before treating this as fully cleared.",
+    },
+    {
       id: "prairie-general-farm-supply",
       name: "Prairie General Farm Supply",
       aliases: [],
@@ -198,10 +209,14 @@ export const invented: InventedSet = {
       provenance:
         "Farm Invoice Processing System/web/public/samples/fuel-ticket-photo.jpg @8cbbbb4, a photograph the " +
         "FarmBooks team staged of an invented bill (invented vendor, invented amounts) on a truck tailgate. " +
-        "Copied byte-for-byte, not re-rendered. Two things print in its pixels that are not otherwise repeated " +
-        "in this scene's markup: a placeholder payer name and a small invented account number, and a short line " +
-        "of garbled, evidently AI-generation-artifact text near the bottom. All three are pre-existing in the " +
-        "source photograph; see SOURCE.md.",
+        "Copied byte-for-byte, not re-rendered. Things that print in its pixels and are not otherwise repeated " +
+        "in this scene's markup: the placeholder payer name \"John Smith Farms\" (twice: FROM and BILLED TO; " +
+        "registered above), the invoice number \"49813\", the account number \"CUSTOMER ID: 1045\", the scene's " +
+        "own \"TICKET 20441\" identifier (src/data/demos/farmbooks.ts RELIST_DOC, printed on the caught-scenario " +
+        "cards, not this photo), and a short line of garbled, evidently AI-generation-artifact text near the " +
+        "bottom. None of these identifiers has a registry slot (InventedSet has no identifiers/codes field, " +
+        "review-FB HIGH 3): recorded here in provenance rather than a schema change this lane's kit-gap rule " +
+        "forbids. All three photograph items are pre-existing in the source image; see SOURCE.md.",
     },
   ],
 };
