@@ -78,6 +78,62 @@ export function endStateViolations(): Violation[] {
 }
 
 /**
+ * Same rules as endStateViolations, scoped to ONE [data-track] element and
+ * its own subtree only. useStageTimeline arms every below-the-fold track at
+ * MOUNT by design (useStageTimeline.ts: `dispatch({type:"arm"})` before the
+ * IO even attaches), so a page-wide check after interacting with a single
+ * track sees every OTHER not-yet-scrolled-to track still armed and pending,
+ * which is correct, not a defect (review-F.md HIGH 1 follow-up; Lane FB's
+ * diagnosis on a 4-track stage). Call via `locator.evaluate(trackEndStateViolations)`,
+ * which passes the matched element as the first argument.
+ */
+export function trackEndStateViolations(track: Element): Violation[] {
+  const V: Violation[] = [];
+  const name = (el: Element) => {
+    const beat = el.closest("[data-beat]")?.getAttribute("data-beat");
+    const own = el.getAttribute("data-beat");
+    return `${el.tagName.toLowerCase()}${own ? `[data-beat=${own}]` : ""}${beat && !own ? ` in ${beat}` : ""}`;
+  };
+  const effective = (el: Element) => {
+    let o = 1;
+    for (let e: Element | null = el; e; e = e.parentElement) o *= Number(getComputedStyle(e).opacity);
+    return o;
+  };
+  const RESTING_OPACITY_MIN = 0.9;
+  const exempt = (el: Element) =>
+    Boolean(el.closest(".ps-visually-hidden, .demo-controls__buttons, [data-stage-until]:not([data-live])"));
+  for (const el of [track, ...Array.from(track.querySelectorAll("*"))]) {
+    if (exempt(el)) continue;
+    if (el.getClientRects().length === 0) continue;
+    const r = el.getBoundingClientRect();
+    const hasBox = r.width > 0 && r.height > 0;
+    const hasText = Boolean(el.textContent && el.textContent.trim());
+    if (!hasBox && !hasText) continue;
+    const cs = getComputedStyle(el);
+    if (cs.visibility !== "visible") {
+      V.push({ rule: "visibility", detail: `${name(el)} is ${cs.visibility}` });
+      continue;
+    }
+    const o = effective(el);
+    if (o < RESTING_OPACITY_MIN) V.push({ rule: "opacity", detail: `${name(el)} effective opacity ${o.toFixed(3)}` });
+  }
+  for (const el of Array.from(track.querySelectorAll("[data-stage-step]"))) {
+    const cs = getComputedStyle(el);
+    if (cs.clipPath && cs.clipPath !== "none") V.push({ rule: "clip-path", detail: `${name(el)} ${cs.clipPath}` });
+  }
+  if (track.hasAttribute("data-track-armed") || track.hasAttribute("data-pending")) {
+    V.push({ rule: "armed-at-rest", detail: name(track) });
+  }
+  for (const el of Array.from(track.querySelectorAll("[data-track-armed], [data-pending]"))) {
+    V.push({ rule: "armed-at-rest", detail: name(el) });
+  }
+  for (const el of Array.from(track.querySelectorAll("h1, h2"))) {
+    V.push({ rule: "heading", detail: name(el) });
+  }
+  return V;
+}
+
+/**
  * No page-level horizontal overflow, measured by boxes: body{overflow-x:hidden}
  * (globals.css:272) would clip an over-wide child silently, so scrollWidth
  * alone can read clean while content is cut off. Children of an internal
