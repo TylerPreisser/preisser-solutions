@@ -1,7 +1,7 @@
 import type { DemoBeat, DemoScreenBeat, DemoStage, DemoStep } from "@/types/demo-stage";
 
 const KEBAB = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const AMOUNT = /\$\s?\d|\bUSD\s?\d/;
+const AMOUNT = /\$\s?\d|\bUSD\s?\d|\d\s?USD\b/;
 
 function fail(stage: string, msg: string): never {
   throw new Error(`[demo stage "${stage}"] ${msg} (ADR-0016; src/data/demos/_define.ts)`);
@@ -55,6 +55,17 @@ function checkBeats(stage: string, beats: readonly DemoBeat[]): void {
   if (count.before > 1 || count.read > 1 || count.caught > 1) {
     fail(stage, `at most one before, one read and one caught beat`);
   }
+  // A stage with no stepped beat renders no [data-track] at all, so the
+  // motion gate's playback tests wait forever for a track that never exists
+  // (review-F.md LOW 6). Read and Caught always produce one (checkSteps and
+  // the card-count check above already require at least one step/card); a
+  // Screen only does if it has steps or tabs.
+  const hasTrack = beats.some(
+    (b) => b.kind === "read" || b.kind === "caught" || (b.kind === "screen" && ((b.steps && b.steps.length > 0) || Boolean(b.tabs))),
+  );
+  if (!hasTrack) {
+    fail(stage, `no beat produces a track (need a Read, a Caught, or a Screen with steps or tabs); every stage must move (ADR-0016 §3)`);
+  }
 }
 
 /**
@@ -85,6 +96,9 @@ export function defineStages<const T extends readonly DemoStage[]>(stages: T): T
         fail(s.id, `a loop wants 1 to 4 inputs and 1 to 4 outputs`);
       }
       checkScreen(s.id, s.screen);
+      if (!((s.screen.steps && s.screen.steps.length > 0) || s.screen.tabs)) {
+        fail(s.id, `the loop's Screen has no steps or tabs; every stage must move (ADR-0016 §3)`);
+      }
     }
   }
   return stages;
