@@ -125,13 +125,16 @@
 
 /* ── Attendees / Roster ── */
 .demo-skin--nwks-mens .nwks-seg { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 2px; max-width: 100%; min-width: 0; border: 1px solid var(--nw-rule); border-radius: 8px; background: var(--nw-paper); }
-.demo-skin--nwks-mens .nwks-seg button {
+.demo-skin--nwks-mens .nwks-seg button,
+.demo-skin--nwks-mens .nwks-seg .nwks-fake {
   border: 0; background: transparent; border-radius: 6px; padding: 6px 10px; font-size: 0.75rem; font-weight: 600; color: var(--nw-ink-3);
   min-height: 44px;
   min-width: 44px;
 }
+.demo-skin--nwks-mens .nwks-seg .nwks-fake { display: inline-flex; align-items: center; justify-content: center; }
 .demo-skin--nwks-mens .nwks-seg button[aria-selected="true"],
-.demo-skin--nwks-mens .nwks-seg button[aria-pressed="true"] { background: var(--nw-wash); color: var(--nw-ink); }
+.demo-skin--nwks-mens .nwks-seg button[aria-pressed="true"],
+.demo-skin--nwks-mens .nwks-seg .nwks-fake--on { background: var(--nw-wash); color: var(--nw-ink); }
 .demo-skin--nwks-mens .nwks-roster { display: grid; gap: 8px; }
 .demo-skin--nwks-mens .nwks-r-row {
   display: grid;
@@ -269,6 +272,12 @@
 @media (max-width: 767px) {
   .demo-skin--nwks-mens .nwks-rh-title { font-size: 1.1875rem; }
   .demo-skin--nwks-mens .nwks-rh-gloss { font-size: 0.9375rem; }
+  /* The resting four rules run as one line of text, not four stacked lines:
+     every headline shares one swap cell, and the stacked end frame (156px at
+     320 and 390) made the cell 57px taller than a rule's own headline, a
+     blank band under every rule while it played (lane NW5 item 4). */
+  .demo-skin--nwks-mens .nwks-rh-rules { display: block; font-size: 0.875rem; }
+  .demo-skin--nwks-mens .nwks-rh-rule:not(:last-child)::after { content: "\00a0\00b7 "; }
 }
 /* The flagship board needs the window's full width (frames 04-07): stack
    this tab's before/after at desk instead of the kit's 2fr/3fr split. */
@@ -386,6 +395,10 @@
   display: grid;
   gap: 6px;
 }
+.demo-skin--nwks-mens .nwks-dup-found { display: grid; gap: 6px; min-width: 0; }
+/* The finding's skeleton: its own pills, blank and dashed, while the check waits. */
+.demo-skin--nwks-mens .nwks-dup-skel .nwks-dup-chip-row { color: transparent; }
+.demo-skin--nwks-mens .nwks-dup-skel .nwks-pill { color: transparent; background: transparent; border: 1px dashed var(--nw-edge); }
 .demo-skin--nwks-mens .nwks-dup-chip-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 
 /* Phone lane switcher (ADR-0017 §6): a stage device, not a claim about the
@@ -475,7 +488,13 @@
 .demo-skin--nwks-mens .nwks-cabin-side { display: grid; gap: 10px; align-content: start; min-width: 0; }
 /* Block swap cell: a before-state line and what replaces it share one cell. */
 .demo-skin--nwks-mens .nwks-swapb { display: grid; min-width: 0; }
-.demo-skin--nwks-mens .nwks-swapb > * { grid-area: 1 / 1; min-width: 0; }
+.demo-skin--nwks-mens .nwks-swapb > * { grid-area: 1 / 1; justify-self: start; min-width: 0; }
+/* At rest a before-state twin takes no room at all, so the end frame is laid
+   out exactly as if it had never existed (it only reserves while playing). */
+.demo-skin--nwks-mens [data-track]:not([data-track-armed]) :is(.nwks-swapb, .demo-swap) > [data-stage-until] { display: none; }
+/* A control still to come is invisible while it waits; it must not take a tap
+   meant for the before-state drawn under it. */
+.demo-skin--nwks-mens [data-track-armed] .demo-screen [data-pending] { pointer-events: none; }
 .demo-skin--nwks-mens .nwks-still-list { display: grid; gap: 6px; }
 .demo-skin--nwks-mens .nwks-still-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
 .demo-skin--nwks-mens .nwks-still-hand { transition: opacity 240ms ease; }
@@ -526,7 +545,9 @@
   font-size: 0.75rem;
   color: var(--nw-ink-2);
 }
-.demo-skin--nwks-mens .nwks-toggle-chip[aria-pressed="true"] { background: var(--nw-brand); border-color: var(--nw-brand); color: #fff; }
+.demo-skin--nwks-mens .nwks-toggle-chip[aria-pressed="true"],
+.demo-skin--nwks-mens .nwks-toggle-chip.nwks-fake--on { background: var(--nw-brand); border-color: var(--nw-brand); color: #fff; }
+.demo-skin--nwks-mens span.nwks-toggle-chip { display: inline-flex; align-items: center; }
 .demo-skin--nwks-mens .nwks-audience-count { font-family: var(--nw-mono); font-size: 0.875rem; font-weight: 700; }
 
 /* ── Lookout AI ── */
@@ -584,7 +605,8 @@
    180px above the roster that step 1 fills. */
 @media (max-width: 767px) {
   .demo-skin--nwks-mens .nwks-desk-only { display: none; }
-  .demo-skin--nwks-mens .nwks-seg button { padding: 6px 8px; }
+  .demo-skin--nwks-mens .nwks-seg button,
+  .demo-skin--nwks-mens .nwks-seg .nwks-fake { padding: 6px 8px; }
 }
 
 /* ── The "before" pictures (OldMaterials.tsx, critic-NW M2): the ministry's

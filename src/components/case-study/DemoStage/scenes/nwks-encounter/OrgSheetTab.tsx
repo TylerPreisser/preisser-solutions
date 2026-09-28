@@ -243,6 +243,18 @@ function OrgHeader() {
   );
 }
 
+function Finding({ misspelled, correct, times }: { misspelled: string; correct: string; times: number }) {
+  return (
+    <div className="nwks-dup-chip-row">
+      <span className="nwks-pill">{misspelled}, first time serving</span>
+      <span aria-hidden="true">→</span>
+      <span className="nwks-pill nwks-pill--good">
+        {correct}, {times} record{times === 1 ? "" : "s"} on file
+      </span>
+    </div>
+  );
+}
+
 function DupCheck() {
   const misspelled = person("srv-gus-pemberdahl");
   // The record's own history, not a typed literal (review finding 1): the
@@ -250,16 +262,21 @@ function DupCheck() {
   const record = SERVERS.find((s) => s.personId === "srv-gus-pemberdahl") as Server;
   const times = record.timesServed;
   return (
-    <div className="nwks-dup-card" data-stage-step="6" data-fx="rise">
+    <div className="nwks-dup-card">
       <p className="nwks-h">The system checks its own sheet</p>
-      <div className="nwks-dup-chip-row">
-        <span className="nwks-pill">{misspelled.aliases?.[0]}, first time serving</span>
-        <span aria-hidden="true">→</span>
-        <span className="nwks-pill nwks-pill--good">
-          {misspelled.full}, {times} record{times === 1 ? "" : "s"} on file
-        </span>
+      {/* Swap cell (lane NW5 item 4): until the check lands, the card says
+          when it runs over an empty skeleton of the finding, the same pills
+          drawn blank, so the board never rests over a blank band. */}
+      <div className="nwks-swapb">
+        <div className="nwks-dup-found nwks-dup-skel" data-stage-until="6">
+          <Finding misspelled={misspelled.aliases?.[0] ?? ""} correct={misspelled.full} times={times} />
+          <p className="nwks-sub">It runs once every man is placed.</p>
+        </div>
+        <div className="nwks-dup-found" data-stage-step="6" data-fx="rise">
+          <Finding misspelled={misspelled.aliases?.[0] ?? ""} correct={misspelled.full} times={times} />
+          <p className="nwks-sub">Listed for a person to settle. It never merges on its own.</p>
+        </div>
       </div>
-      <p className="nwks-sub">Listed for a person to settle. It never merges on its own.</p>
     </div>
   );
 }

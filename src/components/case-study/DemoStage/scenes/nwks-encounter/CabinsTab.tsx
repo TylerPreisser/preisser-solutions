@@ -162,7 +162,7 @@ function Body() {
             <p className="nwks-h">Still to place</p>
             <div className="nwks-swapb">
               <p className="nwks-sub" data-stage-until="3">
-                The draft places everyone it can first.
+                The draft goes first.
               </p>
               <div className="nwks-still-list" data-stage-step="3" data-fx="rise">
                 <span className="nwks-still-row">

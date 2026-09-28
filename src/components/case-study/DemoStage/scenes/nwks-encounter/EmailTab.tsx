@@ -26,6 +26,8 @@ function Body() {
   const [sent, setSent] = useState(true);
 
   const count = email.audienceCount(who, Array.from(selectedTowns));
+  // The send before step 3 narrows it: everyone, every launch point.
+  const everyoneCount = email.audienceCount("Everyone", TOWN_IDS);
 
   return (
     <div className="nwks-body">
@@ -95,68 +97,109 @@ function Body() {
           </div>
         </div>
 
+        {/* Step 3 narrows the send. Until it lands, each control shows its
+            before-state in the same cell (lane NW5 item 4): Everyone, every
+            launch point, and that audience's count, so the column reads as
+            the send before narrowing rather than a blank band. The
+            before-state twins are drawn spans, never pressable. */}
         <div className="nwks-email-col">
           <p className="nwks-h">Who this goes to</p>
-          <div className="nwks-seg" style={{ marginTop: 6 }} data-stage-step="3">
-            {(["Everyone", "Attendees", "Servers"] as const).map((w) => (
-              <button key={w} type="button" aria-pressed={who === w} onClick={() => setWho(w)}>
-                {w}
-              </button>
-            ))}
+          <div className="nwks-swapb" style={{ marginTop: 6 }}>
+            <span className="nwks-seg" data-stage-until="3">
+              {(["Everyone", "Attendees", "Servers"] as const).map((w) => (
+                <span key={w} className={`nwks-fake${w === "Everyone" ? " nwks-fake--on" : ""}`}>
+                  {w}
+                </span>
+              ))}
+            </span>
+            <div className="nwks-seg" data-stage-step="3">
+              {(["Everyone", "Attendees", "Servers"] as const).map((w) => (
+                <button key={w} type="button" aria-pressed={who === w} onClick={() => setWho(w)}>
+                  {w}
+                </button>
+              ))}
+            </div>
           </div>
           <p className="nwks-sub" style={{ marginTop: 10 }}>
-            Launch points ({selectedTowns.size} of {TOWN_IDS.length})
+            Launch points (
+            <span className="demo-swap">
+              <span data-stage-until="3">{TOWN_IDS.length}</span>
+              <span data-stage-step="3">{selectedTowns.size}</span>
+            </span>{" "}
+            of {TOWN_IDS.length})
           </p>
-          <div className="nwks-toggle-grid" data-stage-step="3">
-            {TOWN_IDS.map((id) => (
-              <button
-                key={id}
-                type="button"
-                className="nwks-toggle-chip"
-                aria-pressed={selectedTowns.has(id)}
-                onClick={() =>
-                  setSelectedTowns((s) => {
-                    const next = new Set(s);
-                    if (next.has(id)) next.delete(id);
-                    else next.add(id);
-                    return next;
-                  })
-                }
-              >
-                {town(id).name}
-              </button>
-            ))}
+          <div className="nwks-swapb">
+            <div className="nwks-toggle-grid" data-stage-until="3">
+              {TOWN_IDS.map((id) => (
+                <span key={id} className="nwks-toggle-chip nwks-fake--on">
+                  {town(id).name}
+                </span>
+              ))}
+            </div>
+            <div className="nwks-toggle-grid" data-stage-step="3">
+              {TOWN_IDS.map((id) => (
+                <button
+                  key={id}
+                  type="button"
+                  className="nwks-toggle-chip"
+                  aria-pressed={selectedTowns.has(id)}
+                  onClick={() =>
+                    setSelectedTowns((s) => {
+                      const next = new Set(s);
+                      if (next.has(id)) next.delete(id);
+                      else next.add(id);
+                      return next;
+                    })
+                  }
+                >
+                  {town(id).name}
+                </button>
+              ))}
+            </div>
           </div>
           <p className="nwks-sub" style={{ marginTop: 10 }}>
             Everyone else is left out of this send.
           </p>
           <p className="nwks-audience-count">
             This email goes to{" "}
-            {/* Keyed on the count itself (review finding 5): the kit's counter
-                overwrites this node's `textContent` directly, bypassing React,
-                so a stale count would otherwise survive a later, un-animated
-                change (toggling a town/audience control). A new key forces a
-                fresh DOM node per value, so the node's own text is always
-                already the current formatted value, matching the contract. */}
-            <span key={count} data-stage-step="3" data-count-to={count}>
-              {count}
+            <span className="demo-swap">
+              <span data-stage-until="3">{everyoneCount}</span>
+              {/* Keyed on the count itself (review finding 5): the kit's counter
+                  overwrites this node's `textContent` directly, bypassing React,
+                  so a stale count would otherwise survive a later, un-animated
+                  change (toggling a town/audience control). A new key forces a
+                  fresh DOM node per value, so the node's own text is always
+                  already the current formatted value, matching the contract. */}
+              <span key={count} data-stage-step="3" data-count-to={count}>
+                {count}
+              </span>
             </span>{" "}
             people
           </p>
           <StepNote tab="email" k={3} />
           <div className="nwks-row" style={{ marginTop: 10 }}>
-            <button type="button" className="nwks-btn nwks-btn--primary" onClick={() => setSent(true)}>
-              Send to {count} people
-            </button>
+            <span className="demo-swap">
+              <span className="nwks-btn nwks-btn--primary" data-stage-until="3">
+                Send to {everyoneCount} people
+              </span>
+              <button type="button" className="nwks-btn nwks-btn--primary" data-stage-step="3" onClick={() => setSent(true)}>
+                Send to {count} people
+              </button>
+            </span>
             <button type="button" className="nwks-btn">
               Schedule this send…
             </button>
           </div>
-          {sent ? (
-            <p className="nwks-pill nwks-pill--good" data-stage-step="4" data-fx="rise">
-              Send confirmed (demonstration only, no message leaves this recreation)
+          <div className="nwks-swapb">
+            <p className="nwks-pill" data-stage-until="4">
+              Not sent yet
             </p>
-          ) : null}
+            {sent ? (
+              <p className="nwks-pill nwks-pill--good" data-stage-step="4" data-fx="rise">
+                Send confirmed (demonstration only, no message leaves this recreation)
+              </p>
+            ) : null}
+          </div>
           <StepNote tab="email" k={4} />
         </div>
       </div>

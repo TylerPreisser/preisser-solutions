@@ -115,7 +115,9 @@ export const ORG_RULE_HEADS: readonly OrgRuleHead[] = [
     kicker: "One rule at a time",
     tag: "History",
     title: "It reads the ministry\u2019s past sheets before it places anyone.",
-    gloss: "The captains the ministry named are already on the sheet. The engine never proposes one.",
+    // Kept to two lines at 320: every headline shares one swap cell, so the
+    // longest one sets the band under all the others (lane NW5 item 4).
+    gloss: "The ministry\u2019s captains are already placed; the engine never picks one.",
   },
   { at: [2], kicker: "Rule 1 of the 4 shown", tag: "F1", title: "Keep a returning server where they were.", gloss: "A returning server stays where he served last time." },
   {
