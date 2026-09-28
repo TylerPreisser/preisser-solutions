@@ -322,12 +322,3 @@ export function OrgSheetScreen() {
     </div>
   );
 }
-
-export function OrgSheetBefore() {
-  return (
-    <div className="nwks-tile" style={{ borderStyle: "dashed" }}>
-      <p className="nwks-h">Their old materials</p>
-      <p className="nwks-sub">A static workbook re-typed each cycle, names hand-keyed into a spare column so somebody had something to drag from.</p>
-    </div>
-  );
-}

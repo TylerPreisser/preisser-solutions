@@ -305,6 +305,12 @@ export const invented: InventedSet = {
     "Nobody",
     "Drag",
     "Listed",
+    // The drawn "before" materials (critic-NW M2): form, notepad, workbooks.
+    "Call",
+    "Invited",
+    "Name",
+    "SPARE",
+    "Submit",
     // Shirt sizes and single-letter UI codes (side letters, 5A/5B/5C suffixes).
     "S",
     "M",

@@ -1,5 +1,5 @@
 import { ProductScreen } from "../../ProductScreen";
-import { dashboard } from "@/data/demos/nwks-encounter";
+import { dashboard, attendeeName, attendeeTown } from "@/data/demos/nwks-encounter";
 
 /**
  * Dashboard tab (spec-NW.md §2.1): sign-up bands, six stat cards, payment,
@@ -90,10 +90,16 @@ function Body() {
       <div className="nwks-tiles">
         <div className="nwks-tile">
           <p className="nwks-h">Recent Registrations</p>
-          <div className="nwks-roster" style={{ gap: 4 }}>
+          {/* Four distinct rows from the fixture (critic-NW M5): the man, his
+              role chip, and two facts from his own record. */}
+          <div className="nwks-recent">
             {dashboard.recentRegistrations.map((a, i) => (
-              <div className="nwks-status-line" key={a.personId} data-stage-step="2" data-fx="rise" style={{ transitionDelay: `${i * 60}ms` }}>
-                A registration was just confirmed.
+              <div className="nwks-recent-row" key={a.personId} data-stage-step="2" data-fx="rise" style={{ transitionDelay: `${i * 60}ms` }}>
+                <span className="nwks-r-name">{attendeeName(a)}</span>
+                <span className="nwks-pill">Attendee</span>
+                <span className="nwks-r-meta">
+                  {attendeeTown(a)} · {a.timesAttended === 0 ? "first time" : "returning"}
+                </span>
               </div>
             ))}
           </div>
@@ -131,16 +137,4 @@ function Body() {
 
 export function DashboardScreen() {
   return <ProductScreen chrome="NWKS Admin · Dashboard" tag="Recreation" desk={<Body />} />;
-}
-
-export function DashboardBefore() {
-  return (
-    <div className="nwks-tile" style={{ borderStyle: "dashed" }}>
-      <p className="nwks-h">Their old materials</p>
-      <p className="nwks-sub">A Google Form embedded in a WordPress page. No dashboard existed to answer it.</p>
-      <div className="nwks-status-line" style={{ marginTop: 8 }}>
-        &ldquo;How full are we, and who is coming from where?&rdquo; Answered by opening the spreadsheet by hand.
-      </div>
-    </div>
-  );
 }

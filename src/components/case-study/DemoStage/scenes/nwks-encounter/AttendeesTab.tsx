@@ -216,15 +216,3 @@ function Body() {
 export function AttendeesScreen() {
   return <ProductScreen chrome="NWKS Admin · Attendees" tag="Recreation" desk={<Body />} />;
 }
-
-export function AttendeesBefore() {
-  return (
-    <div className="nwks-tile" style={{ borderStyle: "dashed" }}>
-      <p className="nwks-h">Their old materials</p>
-      <p className="nwks-sub">A Google Form on a WordPress page; overflow retyped into a spreadsheet by hand.</p>
-      <div className="nwks-status-line" style={{ marginTop: 8 }}>
-        A closed weekend turned people away, and the waitlist was worked by telephone.
-      </div>
-    </div>
-  );
-}

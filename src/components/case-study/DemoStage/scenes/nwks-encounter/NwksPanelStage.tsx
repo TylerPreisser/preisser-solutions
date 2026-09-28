@@ -1,11 +1,12 @@
 "use client";
 import { DemoStage } from "../../DemoStage";
 import { stages } from "@/data/demos/nwks-encounter";
-import { DashboardScreen, DashboardBefore } from "./DashboardTab";
-import { AttendeesScreen, AttendeesBefore } from "./AttendeesTab";
-import { OrgSheetScreen, OrgSheetBefore } from "./OrgSheetTab";
-import { CabinsScreen, CabinsBefore } from "./CabinsTab";
-import { EmailScreen, EmailBefore } from "./EmailTab";
+import { DashboardScreen } from "./DashboardTab";
+import { AttendeesScreen } from "./AttendeesTab";
+import { OrgSheetScreen } from "./OrgSheetTab";
+import { CabinsScreen } from "./CabinsTab";
+import { EmailScreen } from "./EmailTab";
+import { DashboardBefore, AttendeesBefore, OrgSheetBefore, CabinsBefore, EmailBefore } from "./OldMaterials";
 import { LookoutScreen } from "./LookoutTab";
 import "./nwks-admin.css";
 

@@ -115,12 +115,3 @@ function Body() {
 export function CabinsScreen() {
   return <ProductScreen chrome="NWKS Admin · Cabins" tag="Recreation" desk={<Body />} />;
 }
-
-export function CabinsBefore() {
-  return (
-    <div className="nwks-tile" style={{ borderStyle: "dashed" }}>
-      <p className="nwks-h">Their old materials</p>
-      <p className="nwks-sub">A spreadsheet rebuilt from scratch every cycle, grouped by who had invited whom and then by town, with three people touching it.</p>
-    </div>
-  );
-}

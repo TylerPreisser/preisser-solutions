@@ -524,7 +524,7 @@ export const stages = defineStages([
             label: "Attendees",
             description: "The attendee roster: registered, wait list and dropped, with a two-click drop confirm.",
             before: {
-              caption: "Everything after the form was somebody retyping it. A weekend that filled turned people away.",
+              caption: "Everything after the form was retyped by hand, and a full weekend turned men away by phone.",
             },
             tourCaption: "A waitlist that works itself, and a drop that never loses the paper trail.",
             steps: [

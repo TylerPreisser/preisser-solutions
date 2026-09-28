@@ -162,12 +162,3 @@ function Body() {
 export function EmailScreen() {
   return <ProductScreen chrome="NWKS Admin · Email" tag="Recreation" desk={<Body />} />;
 }
-
-export function EmailBefore() {
-  return (
-    <div className="nwks-tile" style={{ borderStyle: "dashed" }}>
-      <p className="nwks-h">Their old materials</p>
-      <p className="nwks-sub">Recurring letters sent for a decade from Word documents on somebody&apos;s laptop, one at a time.</p>
-    </div>
-  );
-}
