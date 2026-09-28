@@ -18,7 +18,14 @@ import type { InventedSet } from "../_invented";
 
 const STRIP_CHECKED =
   "reused verbatim from the approved concept strip (strip-nwks/fixture.js revision 3), " +
-  "itself grepped 0/155 whole-word matches against NWKS-Org-Engine-Handoff.md, 2026-09-28";
+  "itself grepped 0/155 whole-word matches against NWKS-Org-Engine-Handoff.md; independently " +
+  're-verified by the team lead 2026-09-28 via WebSearch ("<full name> Kansas"), CLEAR or ' +
+  "MATCH-ELSEWHERE (a private individual with no Kansas link, acceptable per the check's own " +
+  "rule); see names-check-NW.md";
+const ROSTER_REPLACED =
+  "the originally invented name matched a real Kansas resident or public figure by the team " +
+  "lead's web check 2026-09-28 (names-check-NW.md) and was replaced with this name, itself " +
+  "checked with no Kansas match";
 const ATTENDEE_CHECKED =
   '2026-09-28 web (team lead): "<full name> Kansas", no match; CLEARED';
 const TOWN_CHECKED_CLEAR = "2026-09-28 web (team lead): no Kansas place of this name; CLEARED (spec-NW.md §3)";
@@ -54,15 +61,15 @@ export const invented: InventedSet = {
     { id: "srv-vic-hallum", first: "Vic", last: "Hallum", checked: STRIP_CHECKED },
     { id: "srv-jed-morrow", first: "Jed", last: "Morrow", checked: STRIP_CHECKED },
     { id: "srv-earl-tunstall", first: "Earl", last: "Tunstall", checked: STRIP_CHECKED },
-    { id: "srv-frank-degraw", first: "Frank", last: "Degraw", checked: STRIP_CHECKED },
+    { id: "srv-frank-ostberg", first: "Frank", last: "Ostberg", checked: ROSTER_REPLACED },
     { id: "srv-neil-castellan", first: "Neil", last: "Castellan", checked: STRIP_CHECKED },
     { id: "srv-arlo-penner", first: "Arlo", last: "Penner", checked: STRIP_CHECKED },
     { id: "srv-sam-whitcomb", first: "Sam", last: "Whitcomb", checked: STRIP_CHECKED },
     { id: "srv-gary-lindqvist", first: "Gary", last: "Lindqvist", checked: STRIP_CHECKED },
-    { id: "srv-ken-mayfield", first: "Ken", last: "Mayfield", checked: STRIP_CHECKED },
+    { id: "srv-ken-ridgeley", first: "Ken", last: "Ridgeley", checked: ROSTER_REPLACED },
     { id: "srv-tyson-graber", first: "Tyson", last: "Graber", checked: STRIP_CHECKED },
     { id: "srv-blake-heinen", first: "Blake", last: "Heinen", checked: STRIP_CHECKED },
-    { id: "srv-cody-arnett", first: "Cody", last: "Arnett", checked: STRIP_CHECKED },
+    { id: "srv-cody-ambrust", first: "Cody", last: "Ambrust", checked: ROSTER_REPLACED },
     { id: "srv-luke-spangler", first: "Luke", last: "Spangler", checked: STRIP_CHECKED },
     { id: "srv-drew-ostermann", first: "Drew", last: "Ostermann", checked: STRIP_CHECKED },
     { id: "srv-kyle-barrington", first: "Kyle", last: "Barrington", checked: STRIP_CHECKED },
