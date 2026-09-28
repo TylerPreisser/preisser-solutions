@@ -21,7 +21,7 @@ export const caseStudy: CaseStudyData = {
 
   category: "Internal Platform",
   clientName: "Preisser Solutions back office (our own business)",
-  clientNameDisplay: "the Preisser Solutions back office",
+  clientNameDisplay: "The Preisser Solutions back office",
   industry: "Professional services back-office administration",
 
   h1: "The Back Office We Built to Run Our Own Business",
