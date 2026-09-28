@@ -93,6 +93,34 @@ total; the field cut vs. the category total).
   `workbook-dashboard.smoke.test.tsx:127-132`) were read for their real-name *inventory* only and
   are not transplanted as files; none of those strings appear anywhere in this directory.
 
+## Review-round fixes (critic-FB, 2026-09-28), for a future editor comparing this to an older copy
+
+- **The read's arithmetic-honesty wording.** The source photograph's own pixels print SUBTOTAL
+  $700.00 + TAX $67.00 = TOTAL $700.50 — an inherited, un-editable inconsistency in the
+  photograph itself (not fixable without re-shooting it, out of this lane's scope). The read
+  beat's arithmetic tape used to say "the bill adds up," which a reader who zoomed into the photo
+  could catch as false. It now says exactly what the engine checks: "the lines match the printed
+  total" (the four LINE amounts do sum to the printed TOTAL, `READ_LINE_SUM === READ_PRINTED_TOTAL`,
+  enforced at import time) — never a claim about the bill's own subtotal/tax math.
+- **`WORKBOOK.documents` is a getter, not a literal.** It used to read "37" while the month beat's
+  own `MONTH_BILLS` summed to 38 — the year's count read LOWER than one month's count. Now derived
+  as `MONTH_BILLS + 4`, so the two can no longer disagree by construction (same "derive, never
+  type" rule as every other total in this fixture).
+- **The read's sticky photo (phones and desktop) needed a scoped `overflow: visible` override.**
+  `.demo-screen`'s own `overflow: hidden` (the kit's `demo-stage.css`, never patched) is the
+  nearest ancestor with non-visible overflow above `.fb-read__photo-sticky`, and `position: sticky`
+  computes relative to the NEAREST such ancestor — since `.demo-screen` never scrolls internally,
+  the photo just held its static offset and rode along with the page scroll instead of pinning
+  (measured: moved by the exact pixel amount scrolled, in every engine). `farmbooks.css` reopens
+  `overflow` on `.demo-screen:has(.fb-read__photo-sticky)` only — this selector matches no other
+  ProductScreen anywhere on the site — and restores the chrome bar's rounded top corners directly,
+  since it had none of its own and relied on the parent's clip.
+- **`WheatAgent`'s `flag` state now settles.** Its body sway (`BODY.flag`) is a `repeat: Infinity`
+  loop with no built-in end condition, so it swayed forever instead of resolving to its own
+  declared `still` pose. `loopSettleMs` (WheatAgent.tsx) detects any looping part/limb transition
+  for the current state and settles to `still` after one cycle. The only edit to the source's own
+  pose values: none — `still` was already declared, just never reached on its own.
+
 ## Risks carried over from the read-only spec pass, still open here
 
 - `.tnum`'s exact CSS body (beyond `font-variant-numeric: tabular-nums`) was never read past
