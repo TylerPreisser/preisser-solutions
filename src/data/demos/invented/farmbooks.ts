@@ -161,11 +161,11 @@ export const invented: InventedSet = {
     "Corn",
     "Tractor",
     "Grange",
-    // Scene-local proper nouns and vocabulary that name no real, third-party entity.
-    "Prairie",
-    "General",
-    "Farm",
-    "Supply",
+    // "Prairie", "General", "Farm" and "Supply" were removed here (review-FB MEDIUM 5): with all
+    // four allowed standalone, the token rule let "Prairie Farm Supply" pass — a real Minnesota
+    // business the lead's own check found (spec-FB §5a). None of the four appears standalone in
+    // the built stage once "Prairie General Farm Supply" itself is removed by the phrase match;
+    // "Farm" survives only in "farm-books-2026.xlsx", which the domain/file-TLD rule strips first.
     // Ordinary sentence-initial or printed-bill words the copy in this stage uses; none name a
     // person, business or place. Registered here (rather than the shared common-words.txt, which
     // this lane does not edit) so a capitalised, generic English word doesn't read as an unknown name.
