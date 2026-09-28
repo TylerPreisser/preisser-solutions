@@ -193,6 +193,30 @@
   .demo-tabs__journey { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: start; }
 }
 
+/* ── Sticky tab bar below the desk breakpoint (review-NW.md MEDIUM 9): the
+   bar was `position: static`, so a journey could scroll it up to 2,843px
+   away from the step controls it drives (Attendees tab, 320px wide) --
+   nothing to switch tabs with while a panel plays. Pin it directly under the
+   site header: `top: var(--nav-height)` (globals.css:120, :1078) is the
+   SAME token the header's own height is kept equal to (see globals.css:1071-
+   1078's own note on that), and it already resolves to 88px on tablet/desktop
+   and 80px under the header's own <=767px breakpoint -- so one declaration
+   tracks the header at every width in this range with no overlap. Desktop
+   (>=1024px, the .demo-beat--stepped breakpoint just above) is unchanged:
+   the tab bar sits beside a shorter side-by-side panel there and never
+   travels far enough to need this. The inner `.demo-tabs__list` keeps doing
+   all the horizontal scrolling (demo-tabs__list, above); this bar itself
+   never scrolls sideways. z-index stays well under the header's 100. */
+@media (max-width: 1023px) {
+  .demo-tabs__bar {
+    position: sticky;
+    top: var(--nav-height);
+    z-index: 2;
+    padding-block: 8px;
+    background: var(--demo-mat-bg);
+  }
+}
+
 /* ── Phone first: everything above is the 390 layout except the two
    min-width blocks; this block tightens it. ── */
 @media (max-width: 767px) {
