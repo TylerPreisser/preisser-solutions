@@ -267,7 +267,7 @@ for (const m of MANIFESTS) {
       });
     }
 
-    test("the guards can fail: armed steps, an invisible ancestor, an over-wide child, an invisible inner scene element", async ({
+    test("the guards can fail: armed steps, an invisible ancestor, an over-wide child, an invisible inner scene element, an invisible graphic inside a screen body", async ({
       browser,
       browserName,
     }) => {
@@ -304,6 +304,26 @@ for (const m of MANIFESTS) {
           d.style.opacity = "0";
           document.querySelector("[data-demo-stage]")?.appendChild(d);
         });
+        expect((await page.evaluate(endStateViolations)).some((v) => v.rule === "opacity")).toBe(true);
+
+        // review-F2.md MEDIUM A: ProductScreen.tsx puts aria-hidden="true" on
+        // the WHOLE non-scroller screen body, so the decorative-graphic
+        // exemption must not follow "any aria-hidden ancestor" -- it is
+        // scoped to the kit's own .demo-screen__chrome only. A textless
+        // graphic resting at opacity 0 inside the screen BODY (not the
+        // chrome) must still go red.
+        await page.goto(url);
+        const plantedSvg = await page.evaluate(() => {
+          const body = document.querySelector(".demo-screen__body");
+          if (!body) return false;
+          const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          svg.setAttribute("width", "40");
+          svg.setAttribute("height", "40");
+          svg.setAttribute("style", "opacity:0");
+          body.appendChild(svg);
+          return true;
+        });
+        expect(plantedSvg, "no [data-demo-stage] .demo-screen__body on this page to plant into").toBe(true);
         expect((await page.evaluate(endStateViolations)).some((v) => v.rule === "opacity")).toBe(true);
       } finally {
         await context.close();

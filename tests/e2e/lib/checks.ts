@@ -46,19 +46,26 @@ export function endStateViolations(): Violation[] {
   // resting element's computed ancestor-product opacity must be at least 0.9.
   // Exemptions: the resting before-state subtree (matched via closest(), so a
   // plain child of a hidden [data-stage-until] element is covered too, not
-  // just the element carrying the attribute itself); and an element that is
-  // EFFECTIVELY aria-hidden (itself or via an ancestor, e.g. the window-chrome
-  // dots sit under .demo-screen__chrome's aria-hidden, opacity 0.35 by design)
-  // AND is itself purely decorative: no text of its OWN and no img/svg/canvas/
-  // video descendant of its OWN. Checked on the tested element itself, not the
-  // whole aria-hidden ancestor's content -- the chrome bar's title text is a
-  // SIBLING of the dots under the same aria-hidden wrapper, and must stay
-  // checked; only the icon leaf itself is decorative.
+  // just the element carrying the attribute itself); and the window-chrome's
+  // own purely decorative leaves (the three dots, opacity 0.35 by design) --
+  // see the exempt() comment below for why this is scoped to
+  // .demo-screen__chrome specifically, not to aria-hidden generally.
   const RESTING_OPACITY_MIN = 0.9;
   const exempt = (el: Element) => {
     if (el.closest(".ps-visually-hidden, .demo-controls__buttons, [data-stage-until]:not([data-live])")) return true;
-    if (!el.closest('[aria-hidden="true"]')) return false;
-    return !(el.textContent && el.textContent.trim()) && !el.querySelector("img, svg, canvas, video");
+    // review-F2.md MEDIUM A: this used to be "any effectively aria-hidden
+    // element with no text of its own", but ProductScreen.tsx:43 puts
+    // aria-hidden="true" on the WHOLE non-scroller screen body, so that
+    // let any textless graphic anywhere inside a screen -- a chart, a bar,
+    // an icon, an <img> -- rest at opacity 0 and stay green. ADR-0016 §3
+    // requires the end frame to ship FULLY VISIBLE; aria-hidden says
+    // nothing about whether sighted users can see it. Scope the decorative
+    // exemption to the kit's own window-chrome only (the three dots), not
+    // to aria-hidden generally: chrome's title text is a sibling of the
+    // dots under the same wrapper and must stay checked, which the no-text
+    // test below still guarantees.
+    if (!el.closest(".demo-screen__chrome")) return false;
+    return !(el.textContent && el.textContent.trim()) && !el.matches("img, svg, canvas, video") && !el.querySelector("img, svg, canvas, video");
   };
   for (const stage of Array.from(document.querySelectorAll("[data-demo-stage]"))) {
     for (const el of Array.from(stage.querySelectorAll("*"))) {
@@ -112,8 +119,19 @@ export function trackEndStateViolations(track: Element): Violation[] {
   const RESTING_OPACITY_MIN = 0.9;
   const exempt = (el: Element) => {
     if (el.closest(".ps-visually-hidden, .demo-controls__buttons, [data-stage-until]:not([data-live])")) return true;
-    if (!el.closest('[aria-hidden="true"]')) return false;
-    return !(el.textContent && el.textContent.trim()) && !el.querySelector("img, svg, canvas, video");
+    // review-F2.md MEDIUM A: this used to be "any effectively aria-hidden
+    // element with no text of its own", but ProductScreen.tsx:43 puts
+    // aria-hidden="true" on the WHOLE non-scroller screen body, so that
+    // let any textless graphic anywhere inside a screen -- a chart, a bar,
+    // an icon, an <img> -- rest at opacity 0 and stay green. ADR-0016 §3
+    // requires the end frame to ship FULLY VISIBLE; aria-hidden says
+    // nothing about whether sighted users can see it. Scope the decorative
+    // exemption to the kit's own window-chrome only (the three dots), not
+    // to aria-hidden generally: chrome's title text is a sibling of the
+    // dots under the same wrapper and must stay checked, which the no-text
+    // test below still guarantees.
+    if (!el.closest(".demo-screen__chrome")) return false;
+    return !(el.textContent && el.textContent.trim()) && !el.matches("img, svg, canvas, video") && !el.querySelector("img, svg, canvas, video");
   };
   for (const el of [track, ...Array.from(track.querySelectorAll("*"))]) {
     if (exempt(el)) continue;
