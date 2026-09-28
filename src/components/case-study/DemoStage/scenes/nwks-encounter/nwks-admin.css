@@ -388,6 +388,20 @@
   box-shadow: inset 4px 0 0 var(--nw-lane-hue);
   font-family: var(--nw-mono); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; color: var(--nw-ink);
 }
+/* A pill the current rule touched carries its lane tint (strip phone frames). */
+.demo-skin--nwks-mens [data-track-armed][data-track-step="1"] .nwks-switch-pill[data-touch~="1"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="2"] .nwks-switch-pill[data-touch~="2"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="3"] .nwks-switch-pill[data-touch~="3"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-switch-pill[data-touch~="4"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="5"] .nwks-switch-pill[data-touch~="5"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="6"] .nwks-switch-pill[data-touch~="6"] {
+  background: color-mix(in srgb, var(--nw-lane-hue) 16%, var(--nw-paper));
+}
+.demo-skin--nwks-mens .nwks-switch-pill .nwks-lane-count { margin-left: 4px; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-switch-lanes { display: grid; gap: 8px; }
+/* Without JS: no pills, every lane stacked. With JS: one lane, the switcher's. */
+.demo-skin--nwks-mens .nwks-switch:not([data-switch-js]) .nwks-switch-pills { display: none; }
+.demo-skin--nwks-mens .nwks-switch[data-switch-js] .nwks-plane:not([data-on]) { display: none; }
 .demo-skin--nwks-mens .nwks-switch-pill[aria-pressed="true"] { border-color: var(--nw-ink); box-shadow: inset 4px 0 0 var(--nw-lane-hue), 0 0 0 1px var(--nw-ink); }
 
 /* ── Cabins ── */

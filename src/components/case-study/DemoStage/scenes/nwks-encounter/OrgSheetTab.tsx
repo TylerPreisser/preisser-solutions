@@ -1,5 +1,5 @@
 "use client";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ProductScreen } from "../../ProductScreen";
 import { TEAMS, SERVERS, ORG_RULE_HEADS, ORG_END_HEAD, orgSheet, type Server, type Team } from "@/data/demos/nwks-encounter";
 import { person } from "@/data/demos/_invented";
@@ -194,7 +194,7 @@ function OrgHeader() {
         </span>
       </div>
       <div className="nwks-org-tools" aria-hidden="true">
-        <span className="nwks-org-toggle">
+        <span className="nwks-org-toggle nwks-desk-only">
           <span className="nwks-org-toggle-on">Teams</span>
           <span>Master schedule</span>
         </span>
@@ -249,11 +249,34 @@ function Body() {
   );
 }
 
+/**
+ * The phone's lane switcher (critic-NW M1): it follows the read, showing the
+ * lane the current rule touched most (orgSheet.laneFor), so each rule lands
+ * where the visitor is looking; a tap picks any lane. It follows the kit's own
+ * track attributes on the panel rather than duplicating the timeline. Every
+ * lane stays in the DOM (the kit manages each chip's pending state; a lane
+ * mounted later would miss it), and WITHOUT JS every lane renders stacked and
+ * the pills (which would do nothing) are hidden, so all the men appear.
+ */
 function PhoneSwitcher() {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [js, setJs] = useState(false);
   const [active, setActive] = useState(TEAMS[0].id);
-  const team = TEAMS.find((t) => t.id === active) as Team;
+  useEffect(() => {
+    setJs(true);
+    const root = ref.current?.closest("[data-track]");
+    if (!root) return;
+    const follow = () => {
+      if (root.hasAttribute("data-track-armed")) setActive(orgSheet.laneFor(Number(root.getAttribute("data-track-step"))));
+    };
+    follow();
+    const mo = new MutationObserver(follow);
+    mo.observe(root, { attributes: true, attributeFilter: ["data-track-armed", "data-track-step"] });
+    return () => mo.disconnect();
+  }, []);
+  const dupTeam = orgSheet.laneFor(6);
   return (
-    <div>
+    <div ref={ref} className="nwks-switch" data-switch-js={js ? "" : undefined}>
       <div className="nwks-switch-pills" aria-label="Teams">
         {TEAMS.map((t) => (
           <button
@@ -261,14 +284,21 @@ function PhoneSwitcher() {
             type="button"
             aria-pressed={t.id === active}
             className="nwks-switch-pill"
+            data-touch={[...stepsWhere((k) => orgSheet.touchedAt(k).includes(t.id)), ...(t.id === dupTeam ? [6] : [])].join(" ")}
             style={{ ["--nw-lane-hue" as string]: `var(--nw-team-${t.hue})` }}
             onClick={() => setActive(t.id)}
           >
-            {t.code === "FOOD" ? "FOOD TEAM" : `TEAM ${t.code}`}
+            {t.code === "FOOD" ? "FOOD TEAM" : `TEAM ${t.code}`} <LaneCount t={t} />
           </button>
         ))}
       </div>
-      <Lane t={team} />
+      <div className="nwks-switch-lanes">
+        {TEAMS.map((t) => (
+          <div className="nwks-plane" key={t.id} data-on={t.id === active ? "" : undefined}>
+            <Lane t={t} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -277,8 +307,8 @@ function PhoneBody() {
   return (
     <div className="nwks-body nwks-org">
       <OrgHeader />
-      <Waiting compact />
       <PhoneSwitcher />
+      <Waiting compact />
       <DupCheck />
     </div>
   );
