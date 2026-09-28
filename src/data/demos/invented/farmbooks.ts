@@ -37,11 +37,13 @@ export const invented: InventedSet = {
       name: "John Smith Farms",
       aliases: [],
       checked:
-        "NOT independently web-searched this session (no WebSearch tool was available to this agent). " +
-        "Registered per team-lead instruction 2026-09-28 after PR #11 review (review-FB HIGH 3) found it " +
-        "printed twice in the photograph's own pixels (the FROM and BILLED TO blocks of fuel-ticket-photo.jpg) " +
-        "and unregistered. Flagged back to the lead in the same pass: run the same exact-phrase web check used " +
-        "for the other names before treating this as fully cleared.",
+        "2026-09-28 web (lead's check, reported to this lane 2026-09-28): no exact-phrase match for " +
+        "\"John Smith Farms\" as a Kansas or US farm business. Two near-miss real operations turned up under " +
+        "the same generic personal name (one in South Carolina, one a historic New York farmstead), neither " +
+        "an exact match, and neither named here. Cleared to remain as printed in the photograph's own pixels " +
+        "(the FROM and BILLED TO blocks of fuel-ticket-photo.jpg, first registered per team-lead instruction " +
+        "2026-09-28 after PR #11 review, review-FB HIGH 3); the FarmBooks team's own placeholder payer name, " +
+        "kept rather than renamed because the photograph's pixels cannot be relabeled.",
     },
     {
       id: "prairie-general-farm-supply",
@@ -195,6 +197,7 @@ export const invented: InventedSet = {
     "Matches",
     "Plants",
     "Tailgate",
+    "Swipe",
   ],
   approved: [
     {
