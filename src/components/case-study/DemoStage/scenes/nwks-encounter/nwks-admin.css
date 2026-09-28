@@ -506,19 +506,32 @@
   gap: 4px;
 }
 
-/* ── The tab bar on a phone (critic-NW B3 / M4). Six tabs never fit one row
-   below the kit's 768px phone split: at 390 the bar is 344px and the six
-   labels alone need 361px of text at 14px, before padding. A sideways
-   scroller hid half of them, and the tour's active tab sat off-screen for
-   half the tour (the kit sets `active` without focus, so nothing scrolls it
-   in). A 3x2 segmented grid shows all six at every phone width, down to 320.
-   Only layout changes here; colours stay the kit's --theme-* tokens. ── */
-@media (max-width: 767px) {
+/* ── The tab bar on a phone (lane NW5 item 1). The kit pins this bar under the
+   site header below 1024px; as a 3x2 grid plus the tour button on its own row
+   it stood 162px tall at 320 and 390, so the product got a 105px band at
+   320x568 (lane-NW4 Expected/Found). Now ONE 44px row: the six tabs scroll
+   sideways INSIDE the bar (the kit's own .demo-tabs__list scroller, marked
+   data-stage-scroller), with a right-edge fade saying there is more, and
+   "Take the tour" compact at the row's end. TabFollow (NwksPanelStage.tsx)
+   scrolls the selected tab into the row when the tour moves on, which the
+   kit does not (it sets `active` without focus). Layout only; colours stay
+   the kit's --theme-* tokens. ── */
+@media (max-width: 1023px) {
+  .demo-skin--nwks-mens .demo-tabs__bar { flex-wrap: nowrap; gap: 6px; }
   .demo-skin--nwks-mens .demo-tabs__list {
-    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); flex-basis: 100%;
-    gap: 6px; overflow: visible; padding-bottom: 0;
+    flex: 1 1 auto; min-width: 0; gap: 4px; padding-bottom: 0;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 22px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 22px), transparent);
   }
-  .demo-skin--nwks-mens .demo-tabs__tab { min-width: 0; padding: 0 6px; font-size: 0.875rem; }
+  /* The last tab can scroll clear of the fade. */
+  .demo-skin--nwks-mens .demo-tabs__list::after { content: ""; flex: 0 0 18px; }
+  .demo-skin--nwks-mens .demo-tabs__tour { flex: 0 0 auto; white-space: nowrap; }
+  /* The row clips sideways, so the focus ring sits inside the tab. */
+  .demo-skin--nwks-mens .demo-tabs__tab:focus-visible { outline-offset: -4px; }
+}
+@media (max-width: 767px) {
+  .demo-skin--nwks-mens .demo-tabs__tab { padding: 0 10px; font-size: 0.8125rem; }
+  .demo-skin--nwks-mens .demo-tabs__tour { padding: 0 10px; font-size: 0.8125rem; }
 }
 
 /* Keep each panel's first animated region near the top on a phone (critic-NW
