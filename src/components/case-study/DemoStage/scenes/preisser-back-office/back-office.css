@@ -148,7 +148,10 @@
 .bo-row__head { display: flex; align-items: center; gap: 12px; }
 .bo-row__name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; color: var(--skin-ink); font-size: 0.875rem; }
 .bo-row__date { flex: 0 0 auto; font-size: 0.8125rem; color: var(--skin-ink-2); font-variant-numeric: tabular-nums; }
-.bo-row__amount { flex: 0 0 auto; font-weight: 700; color: var(--skin-ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* Every Screen row is a DEPOSIT (money in), never a charge: the real
+   DepositRow colours its amount GO.ink green, not navy (ReviewView.tsx
+   head, ~:340; critic-BO.md B2/item 7). */
+.bo-row__amount { flex: 0 0 auto; font-weight: 700; color: var(--skin-good); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bo-row__controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
 /* Desk: date as its own fixed column beside the name (ReviewView.tsx FACTS, :86). */
 .bo-row--desk .bo-row__head { flex-wrap: nowrap; }
