@@ -95,6 +95,28 @@
   outline: 2px solid var(--theme-accent-text); outline-offset: 2px;
 }
 
+/* ── Phone control bar (critic-BO.md B1): below the desk breakpoint the full
+   step list sits 909px below the product card it drives, so a visitor
+   stepping through sees no visible change. Once JS is interactive, collapse
+   the list to its current item and pin the controls to the bottom of the
+   beat's own container, so the thing that changes and the control that
+   changes it share one screen. No-JS is untouched: nothing carries
+   aria-current="step" without JS, so the full list (the complete story)
+   still shows, and this block does not apply before [data-track-js]. Desktop
+   (>=1024px, the .demo-beat--stepped two-column breakpoint) is unchanged. */
+@media (max-width: 1023px) {
+  [data-track-js] .demo-controls {
+    position: sticky;
+    bottom: 12px;
+    z-index: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--demo-mat-edge);
+    border-radius: var(--radius-card);
+    background: var(--demo-mat-bg);
+  }
+  [data-track-js] .demo-steps__item:not([aria-current="step"]) { display: none; }
+}
+
 /* ── The step engine (useStageTimeline.ts). Base = end frame; these rules
    only exist while a track is armed. ── */
 [data-track-armed] [data-stage-step] {
