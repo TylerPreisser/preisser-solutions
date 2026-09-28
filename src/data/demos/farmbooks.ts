@@ -274,21 +274,26 @@ export const stages = defineStages([
       },
       {
         kind: "screen",
+        // critic-FB M2: "books" and "year" both defaulted to the kind-based eyebrow "The
+        // screen"; each Screen beat now carries its own distinct label, and the caption is
+        // restored to the source's own section headline.
+        eyebrow: "The books",
         id: "books",
-        caption: "Every bill you sent in the month, read, sorted and totalled.",
+        caption: "Your whole June, added up.",
         chrome: "FarmBooks · Month",
         steps: MONTH_STEP_CAPTIONS.map((caption) => ({ caption, holdMs: 1500 })),
       },
       {
         kind: "caught",
         id: "caught",
-        caption: "None of this is carelessness: it is what a season does to hand-kept books.",
+        caption: "Three ways a bill costs you more than it should.",
         cards: CAUGHT_CARDS,
       },
       {
         kind: "screen",
+        eyebrow: "Your year",
         id: "year",
-        caption: "One year, three ways, one total, and the same year as a file you can open.",
+        caption: "The whole year, three ways, on one screen.",
         chrome: "FarmBooks · Your year",
         steps: [{ caption: "Every cut of the year adds to the same total.", holdMs: 2200 }],
         artifact: { label: "farm-books-2026.xlsx" },
