@@ -114,10 +114,12 @@
   }
   /* critic-FB m7: the photo sits sticky within the read's own two-column frame at desktop
      widths too, so it never leaves a large dead cream/card area beneath it once the cards
-     column runs taller than the photo. */
+     column runs taller than the photo. verify-FB item 3: it pins BELOW the site header (the
+     header's own height token, 88px here, plus the old 24px breathing room); at `top: 24px` the
+     88px header covered the photo's top and hid the vendor region box at 1024, 1440 and 1920. */
   .fb-read__photo-sticky {
     position: sticky;
-    top: 24px;
+    top: calc(var(--nav-height, 80px) + 24px);
   }
 }
 
