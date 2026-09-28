@@ -230,6 +230,16 @@
   background: rgb(var(--fb-card));
   padding: 14px 16px;
 }
+/* critic-FB m3: below 360px the two-column tile is ~107px of content, and
+   "$350,564.82" (11 characters) at the 22px base size measured 127px wide —
+   the 20px overflow was silently clipped by .fb-year's own overflow: hidden,
+   dropping the final digit. Only 320-359px needs the smaller size (measured:
+   360px already fits at the base size with room to spare). */
+@media (max-width: 359px) {
+  .fb-year__tile p:last-child {
+    font-size: 1.125rem;
+  }
+}
 
 /* The cut switcher: pure CSS radio tabs, no JS required (ADR-0017's "all cuts in the
    markup" rule, applied without the kit's TabbedScreen so an export pane can sit

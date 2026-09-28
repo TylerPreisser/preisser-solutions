@@ -1,17 +1,24 @@
 "use client";
 /**
  * The wheat agent — the FarmBooks logomark brought to life. Ported near-verbatim from
- * Farm Invoice Processing System/web/components/showcase/wheat-agent.tsx @8cbbbb4 (397 ln). The
- * ONLY edit is the import line: `./tokens` -> `./fb-motion` (spec-FB §1, §4). Every path below is
- * the shipped mark's own geometry; see the source file's docblock for the full anatomy and the
- * reduced-motion contract (every state resolves to a distinct static pose).
+ * Farm Invoice Processing System/web/components/showcase/wheat-agent.tsx @8cbbbb4 (397 ln): the
+ * import line (`./tokens` -> `./fb-motion`, spec-FB §1, §4) plus the `loopSettleMs`/`settled`
+ * addition below (critic-FB m4). Every path below is the shipped mark's own geometry; see the
+ * source file's docblock for the full anatomy and the reduced-motion contract (every state
+ * resolves to a distinct static pose).
+ *
+ * critic-FB m4: `flag`'s body sway looped forever (never reached its own declared still pose),
+ * reading as a bent stalk rather than wheat at rest after a few seconds of the "caught" beat's
+ * card sitting on screen. `loopSettleMs` + the `settled` state below settle the mark to its still
+ * pose after one loop, the same pose a reduced-motion visitor already sees, without touching the
+ * still-pose values themselves (spec-FB never asked those to change).
  *
  * Keeps Framer per spec-FB §4: this is the one file in the transplant that keeps its springs and
  * variants. The whole scene wraps in <MotionConfig reducedMotion="user"> in FarmBooksStages.tsx,
  * so this component's own `useReducedMotion()` read still resolves correctly for a reduced-motion
  * visitor without a second gate.
  */
-import { useId } from "react";
+import { useEffect, useId, useState } from "react";
 import { motion, useReducedMotion, type Transition, type Variants } from "framer-motion";
 import { AMBER_EYES, EASE_IN_OUT, EASE_OUT, GOLD_MARK, SPRING_SOFT } from "./fb-motion";
 
@@ -186,8 +193,45 @@ function partVariants(set: PartSet, reduce: boolean): Variants {
   return out;
 }
 
+/**
+ * critic-FB m4: `flag`'s body sway (`BODY.flag`, `loop(4.6)`) is `repeat: Infinity` — it never
+ * reaches its own declared `still` pose on its own, so a reader who watches it for more than a
+ * few seconds sees it lean and sway forever, reading as a bent stalk rather than wheat at rest.
+ * Every OTHER part/limb for `flag` already animates to a fixed, non-looping value (SPRING_SOFT or
+ * a single number, not an array) and simply holds there — only the body loops. This looks at
+ * every part/limb transition for a state and, if any of them repeats forever, returns the single
+ * cycle's length in ms; the component below settles to the `still` pose (the same values a
+ * reduced-motion visitor already sees) once that one cycle completes, rather than looping forever.
+ */
+function loopSettleMs(state: WheatAgentState): number | null {
+  const transitions: Transition[] = [
+    BODY[state].transition,
+    HEAD[state].transition,
+    BOOK_POSE[state].transition,
+    LEGS[state].transition,
+    MID[state].transition,
+    ARMS[state].transition,
+  ];
+  let ms = 0;
+  for (const t of transitions) {
+    if (t.repeat === Infinity && typeof t.duration === "number") {
+      ms = Math.max(ms, (t.duration + (t.delay ?? 0)) * 1000);
+    }
+  }
+  return ms > 0 ? ms : null;
+}
+
 export function WheatAgent({ state, size = 96, className, still = false }: WheatAgentProps) {
-  const reduce = useReducedMotion() === true || still;
+  const [settled, setSettled] = useState(false);
+  useEffect(() => {
+    setSettled(false);
+    const ms = loopSettleMs(state);
+    if (ms === null) return;
+    const t = window.setTimeout(() => setSettled(true), ms);
+    return () => window.clearTimeout(t);
+  }, [state]);
+
+  const reduce = useReducedMotion() === true || still || settled;
   const sweepId = `wheat-sweep-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
 
   const legL = limbVariants(LEGS, false, reduce);
