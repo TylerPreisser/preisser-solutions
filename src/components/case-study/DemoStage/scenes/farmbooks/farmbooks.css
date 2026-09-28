@@ -237,14 +237,13 @@
 
 /* The cut switcher: pure CSS radio tabs, no JS required (ADR-0017's "all cuts in the
    markup" rule, applied without the kit's TabbedScreen so an export pane can sit
-   alongside the three cuts in one Screen beat). */
-.fb-year__cut-input {
-  position: absolute;
-  opacity: 0;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
+   alongside the three cuts in one Screen beat). Visually hidden via the site's own
+   ps-visually-hidden class (globals.css), not opacity:0 — the foundation's end-state
+   walk requires resting opacity >= 0.9 on every rendered descendant, and its only
+   exemption is that class. The input stays focusable and keyboard-operable; selected
+   and focus-visible state is painted on the LABEL via the general-sibling combinator
+   into .fb-year__cut-bar, per fix for review-FB HIGH 1 (the inputs are not the
+   labels' adjacent siblings, so `+` never matched). */
 .fb-year__cut-bar {
   /* Wraps rather than scrolls: three short labels never need a scroller (ADR-0016 §6's
      phone-first rule is about PRODUCT SCREENS wider than the content column; three
@@ -267,12 +266,16 @@
   white-space: nowrap;
   cursor: pointer;
 }
-.fb-year__cut-input:checked + .fb-year__cut-label {
+#fb-cut-categories:checked ~ .fb-year__cut-bar [for="fb-cut-categories"],
+#fb-cut-vendors:checked ~ .fb-year__cut-bar [for="fb-cut-vendors"],
+#fb-cut-fields:checked ~ .fb-year__cut-bar [for="fb-cut-fields"] {
   border-color: rgb(var(--fb-gold));
   color: rgb(var(--fb-ink));
   background: rgb(var(--fb-accent-wash) / 0.5);
 }
-.fb-year__cut-input:focus-visible + .fb-year__cut-label {
+#fb-cut-categories:focus-visible ~ .fb-year__cut-bar [for="fb-cut-categories"],
+#fb-cut-vendors:focus-visible ~ .fb-year__cut-bar [for="fb-cut-vendors"],
+#fb-cut-fields:focus-visible ~ .fb-year__cut-bar [for="fb-cut-fields"] {
   outline: 2px solid rgb(var(--fb-accent-deep));
   outline-offset: 2px;
 }

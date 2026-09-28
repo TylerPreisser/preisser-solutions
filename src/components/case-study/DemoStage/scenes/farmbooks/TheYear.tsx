@@ -102,10 +102,12 @@ function YearDashboard() {
         <Tile label="Acres tracked">{WORKBOOK.acres.toFixed(0)}</Tile>
       </div>
 
-      {/* Pure-CSS radio tabs: every cut is always in the markup, so no-JS readers get all three. */}
-      <input type="radio" name="fb-year-cut" id="fb-cut-categories" className="fb-year__cut-input" defaultChecked />
-      <input type="radio" name="fb-year-cut" id="fb-cut-vendors" className="fb-year__cut-input" />
-      <input type="radio" name="fb-year-cut" id="fb-cut-fields" className="fb-year__cut-input" />
+      {/* Pure-CSS radio tabs: every cut is always in the markup, so no-JS readers get all three.
+          ps-visually-hidden (not opacity:0): the kit's end-state walk requires resting opacity
+          >= 0.9 on every rendered descendant and exempts only that class (review-FB HIGH 2). */}
+      <input type="radio" name="fb-year-cut" id="fb-cut-categories" className="ps-visually-hidden" defaultChecked />
+      <input type="radio" name="fb-year-cut" id="fb-cut-vendors" className="ps-visually-hidden" />
+      <input type="radio" name="fb-year-cut" id="fb-cut-fields" className="ps-visually-hidden" />
       <div className="fb-year__cut-bar" role="group" aria-label="How to slice the year">
         <label htmlFor="fb-cut-categories" className="fb-year__cut-label">
           By category
