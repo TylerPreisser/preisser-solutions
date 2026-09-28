@@ -175,14 +175,16 @@ export function useStageTimeline(
   const prevStep = useRef(s.step);
   const counters = useRef<Array<() => void>>([]);
   const wasArmed = useRef(false);
-  // Set right before a step-changing dispatch (tick/next/back/goto) ONLY --
-  // never before "arm"/"hydrate"/"start"/"settle", none of which is the
-  // visitor watching a step land. Read and cleared by the scroll effect
-  // below, so the initial arm-to-0 (mount, still off screen) and the
-  // IntersectionObserver's own "start" (entry autoplay's first frame, also
-  // step 0, nothing revealed yet) never scroll the page (critic-BO.md B1's
-  // "never on mount" the same way TabbedScreen's `interacted` gate does for
-  // the tour-panel fix).
+  // Set right before a DIRECT-action dispatch (next/back/goto/replay) ONLY --
+  // never before "tick" (an autoplay step) or "arm"/"hydrate"/"start"/
+  // "settle". AUTOPLAY NEVER SCROLLS THE WINDOW (lane F4, 2026-09-28): two
+  // tracks autoplaying near the same viewport position each moved
+  // window.scrollY toward its own target, and the two fought (Firefox
+  // measured: never settled inside a 5s poll). A track that starts playing
+  // because it entered the viewport must not scroll at all; its reserved
+  // layout (swap cells, `.demo-swap`) already keeps the revealed element
+  // where it was going to be. Only a visitor's own tap moves the page, once,
+  // which is what this flag scopes the scroll effect below to.
   const advanced = useRef(false);
 
   useEffect(() => {
@@ -233,7 +235,9 @@ export function useStageTimeline(
     }
   }, [s]);
 
-  // Auto-play: one step per hold; waits while the tab is hidden.
+  // Auto-play: one step per hold; waits while the tab is hidden. Never sets
+  // `advanced` -- AUTOPLAY NEVER SCROLLS THE WINDOW (see the ref's own
+  // comment above); the scroll effect below only runs for a direct tap.
   useEffect(() => {
     if (!s.auto) return;
     const hold = s.step === 0 ? FIRST_STEP_DELAY_MS : steps[s.step - 1]?.holdMs ?? DEFAULT_HOLD_MS;
@@ -242,20 +246,19 @@ export function useStageTimeline(
         t = window.setTimeout(fire, 500);
         return;
       }
-      advanced.current = true;
       dispatch({ type: "tick" });
     }, hold);
     return () => window.clearTimeout(t);
   }, [s.auto, s.step, steps]);
 
-  // Keep the step that just landed clear of the phone control bar
+  // Keep the step a visitor just asked for clear of the phone control bar
   // (demo-stage.css's `[data-track-js] .demo-controls { position: sticky;
   // bottom: 12px }`, critic-BO.md B1: "a step that reveals an element below
-  // the fold lands UNDER the sticky phone control bar", and the same bar
-  // plays autoplay behind it). Runs after every real step change
-  // (`advanced.current`, set only by tick/next/back/goto above and below --
-  // never by arm/hydrate/start/settle), so mount and the entry
-  // IntersectionObserver's first frame never scroll the page.
+  // the fold lands UNDER the sticky phone control bar"). Runs only after a
+  // DIRECT action (`advanced.current`, set only by next/back/goto/replay
+  // above and below -- never by tick/arm/hydrate/start/settle), so autoplay,
+  // mount and the entry IntersectionObserver's first frame never scroll the
+  // page.
   //
   // Targets the FRONTMOST revealed [data-stage-step] element (the highest
   // dataset.stageStep at or below the new step) rather than one matching the
@@ -333,7 +336,15 @@ export function useStageTimeline(
     advanced.current = true;
     dispatch({ type: "goto", step });
   }, []);
-  const replay = useCallback(() => dispatch({ type: "start" }), []);
+  const replay = useCallback(() => {
+    // A direct tap, listed with Next/Back: mark it, even though "start"
+    // resets to step 0 where nothing is revealed yet (own() below finds no
+    // element), so this is a harmless no-op scroll target today, not a
+    // behavior change -- kept for consistency should a future scene ever
+    // reveal something at step 0.
+    advanced.current = true;
+    dispatch({ type: "start" });
+  }, []);
   const stop = useCallback(() => dispatch({ type: "stop" }), []);
 
   return {
