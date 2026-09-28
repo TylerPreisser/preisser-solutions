@@ -7,21 +7,21 @@ Last updated: 2026-09-06.
 The only active local workspace for Preisser Solutions is:
 
 ```text
-/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current
+/Users/tylerpreisser/Desktop/Preisser Solutions/Preisser Solutions Website/Website - Current
 ```
 
 Future agents must not work from any other local copy. Before changing files,
 committing, validating, or deploying, run:
 
 ```bash
-cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
+cd "/Users/tylerpreisser/Desktop/Preisser Solutions/Preisser Solutions Website/Website - Current"
 pwd
 ```
 
 `pwd` must print exactly:
 
 ```text
-/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current
+/Users/tylerpreisser/Desktop/Preisser Solutions/Preisser Solutions Website/Website - Current
 ```
 
 Agent operating guide:
@@ -93,7 +93,7 @@ Inventory reports are in:
 Run the full gate before any production deploy:
 
 ```bash
-cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
+cd "/Users/tylerpreisser/Desktop/Preisser Solutions/Preisser Solutions Website/Website - Current"
 npm ci
 npm run build
 npm run lint
@@ -106,7 +106,7 @@ npm run validate:seo
 Deploy only from the canonical folder:
 
 ```bash
-cd "/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current"
+cd "/Users/tylerpreisser/Desktop/Preisser Solutions/Preisser Solutions Website/Website - Current"
 npx wrangler pages deploy out --project-name preisser-solutions --branch main
 ```
 

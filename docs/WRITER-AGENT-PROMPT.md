@@ -1,7 +1,7 @@
 # Preisser Solutions Writer-Agent System Prompt
 
 Operational source of truth:
-`/Users/tylerpreisser/Projects/Preisser Solutions/Website - Current`.
+`/Users/tylerpreisser/Desktop/Preisser Solutions/Preisser Solutions Website/Website - Current`.
 
 Do not work outside the canonical workspace. GitHub push does not deploy
 production. Cloudflare Pages production deploys happen only when Wrangler uploads
