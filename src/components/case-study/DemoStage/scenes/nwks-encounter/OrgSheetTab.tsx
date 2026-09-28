@@ -47,13 +47,43 @@ function stepsWhere(pred: (k: number) => boolean): number[] {
 }
 
 // ── Preisser's voice, above the product window ─────────────────────────
+/** "27 of 48 placed" beside the rule headline (strip frames 04-07): a filter over the invented roster per step. */
+function Placed() {
+  const total = SERVERS.length;
+  const values = Array.from(new Set(STEPS.map((k) => orgSheet.placedBy(k))));
+  return (
+    <span className="nwks-rh-placed">
+      <Swap className="nwks-rh-placed-n">
+        {values.map((n) => (
+          <At key={n} at={[...stepsWhere((k) => orgSheet.placedBy(k) === n), ...(n === total ? (["end"] as const) : [])]}>
+            {n}
+          </At>
+        ))}
+      </Swap>{" "}
+      of {total} placed
+    </span>
+  );
+}
+
 function RuleHead() {
   return (
     <div className="nwks-rh">
+      <div className="nwks-rh-top">
+        <Swap className="nwks-rh-kickers">
+          {ORG_RULE_HEADS.map((h) => (
+            <At key={h.tag} at={h.at} className="nwks-rh-kicker">
+              {h.kicker}
+            </At>
+          ))}
+          <At at={["end"]} className="nwks-rh-kicker">
+            The read
+          </At>
+        </Swap>
+        <Placed />
+      </div>
       <Swap className="nwks-rh-swap">
         {ORG_RULE_HEADS.map((h) => (
           <At key={h.tag} at={h.at} className="nwks-rh-v">
-            <span className="nwks-rh-kicker">{h.kicker}</span>
             <span className="nwks-rh-line">
               <span className="nwks-rh-tag">{h.tag}</span>
               <span className="nwks-rh-title">{h.title}</span>
@@ -62,7 +92,6 @@ function RuleHead() {
           </At>
         ))}
         <At at={["end"]} className="nwks-rh-v">
-          <span className="nwks-rh-kicker">The read</span>
           <span className="nwks-rh-line">
             <span className="nwks-rh-title">{ORG_END_HEAD.title}</span>
           </span>
@@ -202,7 +231,8 @@ function OrgHeader() {
         </span>
       </div>
       <div className="nwks-org-tools" aria-hidden="true">
-        <span className="nwks-org-toggle nwks-desk-only">
+        {/* The view toggle shows on a phone too (strip frame 10-phone); Print and Email stay desk-only. */}
+        <span className="nwks-org-toggle">
           <span className="nwks-org-toggle-on">Teams</span>
           <span>Master schedule</span>
         </span>

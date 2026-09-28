@@ -242,6 +242,13 @@
 
 /* Preisser's voice above the window: the site's own tokens, both themes. */
 .demo-skin--nwks-mens .nwks-orgstage { display: grid; gap: 14px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-rh { display: grid; gap: 6px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-rh-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 14px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-rh-placed {
+  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.02em;
+  color: var(--theme-text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.demo-skin--nwks-mens .nwks-rh-placed-n { justify-items: end; font-size: 1.125rem; font-weight: 700; color: var(--theme-text-primary); }
 .demo-skin--nwks-mens .nwks-rh-swap { display: grid; }
 .demo-skin--nwks-mens .nwks-rh-v { display: grid; gap: 6px; align-content: start; min-width: 0; }
 .demo-skin--nwks-mens .nwks-rh-kicker {
