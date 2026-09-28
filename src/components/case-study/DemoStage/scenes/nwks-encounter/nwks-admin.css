@@ -8,9 +8,10 @@
      admin/src/theme.ts, shared/print/programBrand.ts (colour)
    Every var(--color-...) and --org-... name is renamed to --nw-...
    here (ADR-0016 §6), including the product's own --lane-hue
-   (TeamLane.tsx), renamed --nw-lane-hue below. No @theme, no
-   --color-, --theme- or other reserved-prefix custom property
-   anywhere in this file.
+   (TeamLane.tsx), renamed --nw-lane-hue below. No @theme, and this
+   file DEFINES no --color-, --theme- or other reserved-prefix custom
+   property. It READS the site's --theme-* tokens only for Preisser's
+   own voice (the Org Sheet rule headline), never inside the product.
    ============================================================ */
 
 .demo-skin--nwks-mens {
@@ -204,58 +205,167 @@
 .demo-skin--nwks-mens .nwks-status-line { font-size: 0.8125rem; color: var(--nw-ink-2); }
 .demo-skin--nwks-mens .nwks-quote { font-size: 0.8125rem; font-style: italic; color: var(--nw-ink-2); border-left: 2px solid var(--nw-rule); padding-left: 8px; }
 
-/* ── Org Sheet ── */
-.demo-skin--nwks-mens .nwks-org-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
-.demo-skin--nwks-mens .nwks-org-ready { font-family: var(--nw-mono); font-size: 0.75rem; color: var(--nw-ink-3); }
-.demo-skin--nwks-mens .nwks-tiles-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
-@media (min-width: 720px) {
-.demo-skin--nwks-mens .nwks-tiles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* ── Org Sheet (strip frames 03-10, critic-NW B4) ── */
+
+/* Per-step swap cells. Variants share one grid cell, so nothing reflows as
+   the step changes. They key on the kit's own track attributes on the panel
+   (useStageTimeline.ts applyState): at rest and without JS only the "end"
+   variant shows, so the markup is the end frame (ADR-0016 §3). */
+.demo-skin--nwks-mens .nwks-swap { display: inline-grid; }
+.demo-skin--nwks-mens .nwks-swap > * { grid-area: 1 / 1; }
+.demo-skin--nwks-mens .nwks-at { visibility: hidden; }
+.demo-skin--nwks-mens .nwks-at[data-at~="end"] { visibility: visible; }
+.demo-skin--nwks-mens [data-track-armed] .nwks-at[data-at~="end"] { visibility: hidden; }
+.demo-skin--nwks-mens [data-track-armed][data-track-step="0"] .nwks-at[data-at~="0"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="1"] .nwks-at[data-at~="1"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="2"] .nwks-at[data-at~="2"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="3"] .nwks-at[data-at~="3"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-at[data-at~="4"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="5"] .nwks-at[data-at~="5"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="6"] .nwks-at[data-at~="6"] { visibility: visible; }
+/* The same, for notes that should take no room when absent. */
+.demo-skin--nwks-mens .nwks-atd { display: none; }
+.demo-skin--nwks-mens .nwks-atd[data-at~="end"] { display: block; }
+.demo-skin--nwks-mens [data-track-armed] .nwks-atd[data-at~="end"] { display: none; }
+.demo-skin--nwks-mens [data-track-armed][data-track-step="0"] .nwks-atd[data-at~="0"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="1"] .nwks-atd[data-at~="1"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="2"] .nwks-atd[data-at~="2"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="3"] .nwks-atd[data-at~="3"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-atd[data-at~="4"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="5"] .nwks-atd[data-at~="5"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="6"] .nwks-atd[data-at~="6"] { display: block; }
+
+/* Preisser's voice above the window: the site's own tokens, both themes. */
+.demo-skin--nwks-mens .nwks-orgstage { display: grid; gap: 14px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-rh-swap { display: grid; }
+.demo-skin--nwks-mens .nwks-rh-v { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.demo-skin--nwks-mens .nwks-rh-kicker {
+  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--theme-accent-text);
 }
-@media (min-width: 1100px) {
-.demo-skin--nwks-mens .nwks-tiles-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.demo-skin--nwks-mens .nwks-rh-line { display: flex; align-items: flex-start; gap: 10px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-rh-tag {
+  flex: 0 0 auto; margin-top: 3px; padding: 1px 7px; border: 1px solid var(--theme-accent-text); border-radius: 6px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.8125rem; font-weight: 600; color: var(--theme-accent-text);
+}
+.demo-skin--nwks-mens .nwks-rh-title {
+  min-width: 0; font-size: 1.375rem; line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; color: var(--theme-text-primary);
+}
+.demo-skin--nwks-mens .nwks-rh-gloss { font-size: 1rem; line-height: 1.5; color: var(--theme-text-secondary); }
+.demo-skin--nwks-mens .nwks-rh-rules { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 0.9375rem; line-height: 1.5; color: var(--theme-text-secondary); }
+.demo-skin--nwks-mens .nwks-rh-code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 600; color: var(--theme-accent-text); }
+@media (max-width: 767px) {
+  .demo-skin--nwks-mens .nwks-rh-title { font-size: 1.1875rem; }
+  .demo-skin--nwks-mens .nwks-rh-gloss { font-size: 0.9375rem; }
+}
+/* The flagship board needs the window's full width (frames 04-07): stack
+   this tab's before/after at desk instead of the kit's 2fr/3fr split. */
+.demo-skin--nwks-mens .demo-tabs__journey:has(.nwks-orgstage) { grid-template-columns: minmax(0, 1fr); }
+
+/* The product header (their Org sheet page: icon, encounter, dates, view toggle). */
+.demo-skin--nwks-mens .nwks-org-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
+.demo-skin--nwks-mens .nwks-org-id { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-org-icon {
+  flex: 0 0 auto; display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 999px;
+  background: var(--nw-brand); color: #fff;
+}
+.demo-skin--nwks-mens .nwks-org-titles { display: grid; min-width: 0; }
+.demo-skin--nwks-mens .nwks-org-kicker { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-org-title { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+.demo-skin--nwks-mens .nwks-org-dates { font-family: var(--nw-mono); font-size: 0.75rem; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-org-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.demo-skin--nwks-mens .nwks-org-toggle { display: inline-flex; padding: 3px; border: 1px solid var(--nw-rule); border-radius: 10px; background: var(--nw-wash); font-size: 0.8125rem; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-org-toggle > span { padding: 5px 12px; border-radius: 7px; }
+.demo-skin--nwks-mens .nwks-org-toggle-on { background: var(--nw-paper); color: var(--nw-ink); font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); }
+.demo-skin--nwks-mens .nwks-org-tool { padding: 6px 12px; border: 1px solid var(--nw-rule); border-radius: 8px; background: var(--nw-paper); font-size: 0.8125rem; font-weight: 600; color: var(--nw-ink-2); }
+
+/* The board: lanes in balanced columns (their masonry), the waiting column on the right. */
+.demo-skin--nwks-mens .nwks-board { display: grid; grid-template-columns: minmax(0, 1fr) minmax(12rem, 15rem); gap: 10px; align-items: start; min-width: 0; }
+.demo-skin--nwks-mens .nwks-board-lanes { display: grid; gap: 10px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-tiles-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; align-items: start; }
+.demo-skin--nwks-mens .nwks-tiles-col { display: grid; gap: 8px; min-width: 0; }
+/* Below the desk layout's room for four columns, the waiting column moves under the lanes. */
+@media (max-width: 1023px) {
+  .demo-skin--nwks-mens .nwks-board { grid-template-columns: minmax(0, 1fr); }
+  .demo-skin--nwks-mens .nwks-wait-list { max-height: 12rem; }
 }
 .demo-skin--nwks-mens .nwks-lane {
   --nw-lane-hue: var(--nw-team-0);
-  position: relative;
-  border: 1px solid var(--nw-rule);
-  border-radius: 10px;
-  background: var(--nw-paper);
-  padding: 10px 12px 10px 16px;
-  min-width: 0;
+  position: relative; display: grid; gap: 8px; min-width: 0;
+  border: 1px solid var(--nw-rule); border-radius: 10px; background: var(--nw-paper); padding: 10px 12px 12px 16px;
 }
 .demo-skin--nwks-mens .nwks-lane::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 4px;
-  background: var(--nw-lane-hue);
-  border-radius: 10px 0 0 10px;
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--nw-lane-hue); border-radius: 10px 0 0 10px;
 }
-.demo-skin--nwks-mens .nwks-lane-name { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; }
-.demo-skin--nwks-mens .nwks-lane-job { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--nw-ink-3); margin-top: 2px; }
-.demo-skin--nwks-mens .nwks-lane-count { font-family: var(--nw-mono); font-size: 0.75rem; color: var(--nw-ink-3); margin-left: 6px; }
-.demo-skin--nwks-mens .nwks-lane-cards { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.demo-skin--nwks-mens .nwks-lane-head { padding-bottom: 8px; border-bottom: 1px solid var(--nw-rule-2); }
+.demo-skin--nwks-mens .nwks-lane-name { font-size: 0.9375rem; font-weight: 700; letter-spacing: -0.01em; }
+.demo-skin--nwks-mens .nwks-lane-job { margin-top: 2px; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-lane-count { font-family: var(--nw-mono); letter-spacing: 0; }
+.demo-skin--nwks-mens .nwks-lane-empty { margin: 0; font-size: 0.6875rem; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-lane-cards { display: grid; gap: 4px; }
 .demo-skin--nwks-mens .nwks-org-card {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  border: 1px solid var(--nw-rule);
-  border-radius: 7px;
-  background: var(--nw-paper);
-  padding: 3px 7px;
-  font-size: 0.75rem;
-  transition: opacity var(--demo-dur, 520ms) var(--demo-ease, ease), background-color 300ms ease;
+  display: flex; align-items: center; justify-content: space-between; gap: 6px; max-width: 14rem; min-width: 0;
+  border: 1px solid var(--nw-rule); border-radius: 6px; background: var(--nw-paper); padding: 3px 8px;
+  font-size: 0.75rem; font-weight: 500;
+  transition: opacity var(--demo-dur, 520ms) var(--demo-ease, ease), transform var(--demo-dur, 520ms) var(--demo-ease, ease),
+    background-color 200ms ease, border-color 200ms ease;
 }
-.demo-skin--nwks-mens .nwks-org-card[data-just-placed] { background: color-mix(in srgb, var(--nw-lane-hue) 14%, var(--nw-paper)); border-color: var(--nw-lane-hue); }
-.demo-skin--nwks-mens .nwks-org-star { color: var(--nw-ink-3); font-size: 0.75rem; }
+.demo-skin--nwks-mens .nwks-org-card--captain { box-shadow: inset 3px 0 0 var(--nw-gold); }
+.demo-skin--nwks-mens .nwks-org-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.demo-skin--nwks-mens .nwks-org-marks { flex: 0 0 auto; display: inline-flex; gap: 6px; color: var(--nw-ink-3); }
+.demo-skin--nwks-mens .nwks-org-star { color: var(--nw-ink-3); }
 .demo-skin--nwks-mens .nwks-org-star--on { color: var(--nw-gold); }
-.demo-skin--nwks-mens .nwks-pool {
-  border: 1px dashed var(--nw-rule);
-  border-radius: 10px;
-  background: var(--nw-wash);
-  padding: 10px 12px;
-  min-width: 0;
+/* While the read plays, a man not yet placed takes no room, so a lane grows
+   as its rule lands instead of showing empty slots; each arrival pops in by
+   keyframe (a display change cannot transition). Only while armed: the
+   resting board is the full end frame. */
+.demo-skin--nwks-mens [data-track-armed] .nwks-org-card[data-pending] { display: none; }
+.demo-skin--nwks-mens [data-track-armed]:not([data-track-instant]) .nwks-org-card:not([data-pending]) { animation: nwks-arrive 360ms var(--demo-ease, ease) both; }
+@keyframes nwks-arrive { from { opacity: 0; transform: scale(0.94); } }
+@media (prefers-reduced-motion: reduce) {
+  .demo-skin--nwks-mens [data-track-armed] .nwks-org-card:not([data-pending]) { animation: none; }
 }
+/* Only the rule being applied lights its men, in their lane's hue (frames 04-06). */
+.demo-skin--nwks-mens [data-track-armed][data-track-step="1"] .nwks-org-card[data-stage-step="1"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="2"] .nwks-org-card[data-stage-step="2"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="3"] .nwks-org-card[data-stage-step="3"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-org-card[data-stage-step="4"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="5"] .nwks-org-card[data-stage-step="5"] {
+  background: color-mix(in srgb, var(--nw-lane-hue) 12%, var(--nw-paper));
+  border-color: color-mix(in srgb, var(--nw-lane-hue) 60%, var(--nw-paper));
+}
+
+/* "Not on a team yet": their PoolLane. Chips are before-state elements
+   (data-stage-until); here they also take no room once gone, so the column
+   drains upward as each rule places its men. */
+.demo-skin--nwks-mens .nwks-wait {
+  display: grid; gap: 8px; min-width: 0; padding: 10px 12px 12px;
+  border: 1px solid var(--nw-rule); border-left: 3px dotted var(--nw-ink-3); border-radius: 10px; background: var(--nw-wash);
+}
+.demo-skin--nwks-mens .nwks-wait-head { display: grid; }
+.demo-skin--nwks-mens .nwks-wait-kicker { font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-wait-title { font-size: 0.9375rem; font-weight: 700; }
+.demo-skin--nwks-mens .nwks-wait-count { font-family: var(--nw-mono); font-size: 0.75rem; font-weight: 600; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-wait-find { padding: 6px 8px; border: 1px solid var(--nw-rule); border-radius: 6px; background: var(--nw-paper); font-size: 0.75rem; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-wait-list {
+  display: grid; gap: 4px; max-height: 30rem; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 85%, transparent); mask-image: linear-gradient(to bottom, #000 85%, transparent);
+}
+.demo-skin--nwks-mens .nwks-wait-chip {
+  display: none; flex-direction: column; min-width: 0; padding: 4px 8px;
+  border: 1px solid var(--nw-rule); border-radius: 6px; background: var(--nw-paper); font-size: 0.75rem; font-weight: 500;
+}
+.demo-skin--nwks-mens [data-track-armed] .nwks-wait-chip[data-live] { display: flex; }
+.demo-skin--nwks-mens .nwks-wait-sub { font-size: 0.625rem; font-weight: 400; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-wait-done { margin: 6px 0; font-size: 0.75rem; text-align: center; color: var(--nw-ink-2); }
+/* Phone: a strip above the lanes, two rows of chips at most. */
+.demo-skin--nwks-mens .nwks-wait--compact .nwks-wait-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+.demo-skin--nwks-mens .nwks-wait--compact .nwks-wait-kicker,
+.demo-skin--nwks-mens .nwks-wait--compact .nwks-wait-find { display: none; }
+.demo-skin--nwks-mens .nwks-wait--compact .nwks-wait-list { display: flex; flex-wrap: wrap; max-height: 3.5rem; }
+.demo-skin--nwks-mens .nwks-wait--compact .nwks-wait-sub { display: none; }
+.demo-skin--nwks-mens .nwks-wait--compact .nwks-wait-done { margin: 0; text-align: left; }
+
 .demo-skin--nwks-mens .nwks-dup-card {
   border: 1px solid var(--nw-rule);
   border-radius: 10px;
@@ -268,26 +378,17 @@
 
 /* Phone lane switcher (ADR-0017 §6): a stage device, not a claim about the
    product's own narrow layout, which does not exist (MobileGate). Shown via
-   ProductScreen's own desk/phone split (demo-stage.css .demo-screen__phone),
-   not a media query of its own. */
-.demo-skin--nwks-mens .nwks-switch-pills { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
-.demo-skin--nwks-mens .nwks-switch-pills::-webkit-scrollbar { display: none; }
+   ProductScreen's own desk/phone split (demo-stage.css .demo-screen__phone).
+   Pills wrap and never scroll sideways; each carries its lane's hue bar. */
+.demo-skin--nwks-mens .nwks-switch-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
 .demo-skin--nwks-mens .nwks-switch-pill {
-  flex: 0 0 auto;
-  min-height: 44px;
-  min-width: 44px;
-  padding: 0 12px;
-  border: 1px solid var(--nw-rule);
-  border-radius: 999px;
-  background: var(--nw-paper);
-  font-family: var(--nw-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--nw-ink-2);
+  --nw-lane-hue: var(--nw-team-0);
+  flex: 0 0 auto; min-height: 44px; min-width: 44px; padding: 0 10px 0 12px;
+  border: 1px solid var(--nw-rule); border-radius: 6px; background: var(--nw-paper);
+  box-shadow: inset 4px 0 0 var(--nw-lane-hue);
+  font-family: var(--nw-mono); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; color: var(--nw-ink);
 }
-.demo-skin--nwks-mens .nwks-switch-pill[aria-current="true"] { background: var(--nw-brand); border-color: var(--nw-brand); color: #fff; }
-.demo-skin--nwks-mens .nwks-switch-pill[data-touched] { box-shadow: inset 0 0 0 2px var(--nw-lane-hue, var(--nw-brand)); }
-.demo-skin--nwks-mens .nwks-switch-lane { border: 1px solid var(--nw-rule); border-radius: 10px; background: var(--nw-paper); padding: 10px 12px; margin-top: 8px; }
+.demo-skin--nwks-mens .nwks-switch-pill[aria-pressed="true"] { border-color: var(--nw-ink); box-shadow: inset 4px 0 0 var(--nw-lane-hue), 0 0 0 1px var(--nw-ink); }
 
 /* ── Cabins ── */
 .demo-skin--nwks-mens .nwks-cabin-readiness { font-size: 0.8125rem; color: var(--nw-ink-2); }

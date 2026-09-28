@@ -97,6 +97,99 @@ export function serverName(s: Server): string {
   return person(s.personId).full;
 }
 
+// ── The Org Sheet read, one rule at a time (critic-NW B4, strip frames 03-10) ──
+// The page's own voice ("Preisser speaks"): each rule's F-code and its own
+// wording, then one qualitative line about THIS demonstration draft. No
+// measured fact, no count from the handoff or the live history (ADR-0017 §4).
+export interface OrgRuleHead {
+  /** Steps (0..6, the kit's `data-track-step`) this headline shows at. */
+  at: readonly number[];
+  kicker: string;
+  tag: string;
+  title: string;
+  gloss: string;
+}
+export const ORG_RULE_HEADS: readonly OrgRuleHead[] = [
+  {
+    at: [0, 1],
+    kicker: "One rule at a time",
+    tag: "History",
+    title: "It reads the ministry\u2019s past sheets before it places anyone.",
+    gloss: "The captains the ministry named are already on the sheet. The engine never proposes one.",
+  },
+  { at: [2], kicker: "Rule 1 of the 4 shown", tag: "F1", title: "Keep a returning server where they were.", gloss: "A returning server stays where he served last time." },
+  {
+    at: [3],
+    kicker: "Rule 2 of the 4 shown",
+    tag: "F8",
+    title: "A team that is a trade keeps its own men.",
+    gloss: "A trade team is filled from its own men before anyone new is placed there.",
+  },
+  { at: [4], kicker: "Rule 3 of the 4 shown", tag: "F10", title: "Size is the mode, not the median.", gloss: "Team size follows what the years show, not an average." },
+  {
+    at: [5],
+    kicker: "Rule 4 of the 4 shown",
+    tag: "F9",
+    title: "A new server only goes where new servers go.",
+    gloss: "First-timers land on the meal shifts, the teams that have always taken new men.",
+  },
+  {
+    at: [6],
+    kicker: "Then it checks",
+    tag: "Check",
+    title: "The system checks its own sheet.",
+    gloss: "Two spellings, one likely man: listed for a person to settle, never merged on its own.",
+  },
+];
+/** The resting headline (strip frame 07): the four rules on one line. */
+export const ORG_END_HEAD = {
+  title: "Every man placed. No trade team broken.",
+  rules: [
+    { tag: "F1", text: "stays where he served" },
+    { tag: "F8", text: "trades keep their men" },
+    { tag: "F10", text: "size follows the years" },
+    { tag: "F9", text: "new men where new men go" },
+  ],
+} as const;
+
+/** Every count below is a filter over the invented 48; nothing is typed. */
+export const orgSheet = {
+  /** Servers on a team once step k has landed (k = 0..6). */
+  placedBy(k: number) {
+    return SERVERS.filter((s) => s.step <= k).length;
+  },
+  waitingAt(k: number) {
+    return SERVERS.length - this.placedBy(k);
+  },
+  laneCountAt(teamId: string, k: number) {
+    return SERVERS.filter((s) => s.teamId === teamId && s.step <= k).length;
+  },
+  /** The lane step k touched most (ties: the lane it fills the largest share of, then board order). */
+  laneFor(k: number): string {
+    const dup = SERVERS.find((s) => s.personId === "srv-gus-pemberdahl") as Server;
+    if (k >= 6) return dup.teamId;
+    const step = Math.max(1, k);
+    let best = TEAMS[0].id;
+    let bestN = -1;
+    let bestShare = -1;
+    for (const t of TEAMS) {
+      const n = SERVERS.filter((s) => s.teamId === t.id && s.step === step).length;
+      const share = n / SERVERS.filter((s) => s.teamId === t.id).length;
+      if (n > bestN || (n === bestN && share > bestShare)) {
+        best = t.id;
+        bestN = n;
+        bestShare = share;
+      }
+    }
+    return best;
+  },
+  /** Lanes a step placed anyone on. */
+  touchedAt(k: number) {
+    return TEAMS.filter((t) => SERVERS.some((s) => s.teamId === t.id && s.step === k)).map((t) => t.id);
+  },
+};
+if (orgSheet.waitingAt(5) !== 0) throw new Error("[nwks-encounter] the four rules must place every server by step 5");
+
 // ── Attendees ───────────────────────────────────────────────────────────
 export type AttendeeStatus = "registered" | "waitlist-pending" | "waitlist-position" | "waitlist-offered" | "dropped";
 
@@ -448,7 +541,9 @@ export const stages = defineStages([
             before: {
               caption: "The volunteer team sheet was a workbook re-typed each cycle, names hand-keyed into a spare column.",
             },
-            tourCaption: "Eleven years of sheets, drafting this year's teams before anyone touches it.",
+            // No year count: how many past sheets the ministry has is a fact
+            // about the live history, never published (ADR-0017 §3).
+            tourCaption: "The ministry's own past sheets, drafting this year's teams before anyone touches it.",
             steps: [
               { caption: "It reads the ministry's past sheets before it places anyone." },
               { caption: "A returning server stays where he served last time." },

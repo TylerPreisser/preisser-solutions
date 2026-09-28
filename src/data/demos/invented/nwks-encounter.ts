@@ -293,6 +293,18 @@ export const invented: InventedSet = {
     // The redesigned Attendees phone row (critic-NW B2).
     "Awaiting",
     "He",
+    // The Org Sheet read (critic-NW B4): the rules' own F-codes, and the
+    // product's own Teams-board labels (PoolLane search, Master schedule
+    // toggle, empty-lane hint).
+    "F1",
+    "F8",
+    "F9",
+    "F10",
+    "Master",
+    "Find",
+    "Nobody",
+    "Drag",
+    "Listed",
     // Shirt sizes and single-letter UI codes (side letters, 5A/5B/5C suffixes).
     "S",
     "M",
