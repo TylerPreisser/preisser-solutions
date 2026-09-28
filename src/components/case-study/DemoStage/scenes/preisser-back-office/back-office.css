@@ -111,6 +111,14 @@
 .bo-caught__body { margin: 0; font-size: 0.8125rem; line-height: 1.5; color: var(--skin-ink-2); }
 
 /* ── Screen: "Money · Review" recreated ── */
+/* The kit's own `.demo-screen__body` (demo-stage.css) carries no padding, so
+   the chips, group label and list card sat flush against the screen edge,
+   drawing a doubled hairline where the list card's own border ran ~1px
+   inside it (critic-BO.md M1). Scoped here, not in the kit. */
+.demo-skin--psadmin .demo-screen__body { padding: 12px; }
+@media (min-width: 768px) {
+  .demo-skin--psadmin .demo-screen__body { padding: 16px 20px; }
+}
 .bo-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
 .bo-chip {
   display: inline-flex;
