@@ -29,7 +29,7 @@ function Tiles({ teams }: { teams: typeof TEAMS }) {
   return (
     <div className="nwks-tiles-grid">
       {teams.map((t) => (
-        <div className="nwks-lane" key={t.id} style={{ ["--lane-hue" as string]: `var(--nw-team-${t.hue})` }}>
+        <div className="nwks-lane" key={t.id} style={{ ["--nw-lane-hue" as string]: `var(--nw-team-${t.hue})` }}>
           <div className="nwks-lane-name">
             {t.name}
             <span className="nwks-lane-count" aria-label={`${teamServers(t.id).length} servers`} data-stage-step="2" data-count-to={teamServers(t.id).length}>
@@ -68,7 +68,7 @@ function PhoneSwitcher() {
           </button>
         ))}
       </div>
-      <div className="nwks-switch-lane" style={{ ["--lane-hue" as string]: `var(--nw-team-${team.hue})` }}>
+      <div className="nwks-switch-lane" style={{ ["--nw-lane-hue" as string]: `var(--nw-team-${team.hue})` }}>
         <div className="nwks-lane-name">{team.name}</div>
         {team.job ? <div className="nwks-lane-job">{team.job}</div> : null}
         <div className="nwks-lane-cards">
