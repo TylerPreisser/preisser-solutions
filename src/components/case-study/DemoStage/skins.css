@@ -1,0 +1,81 @@
+/* ============================================================
+   skins.css — product skins for Proof Stages (ADR-0016 §6).
+   Scoped custom properties ONLY. Never a product's own variable
+   names, never @theme, never inside @layer (globals.css:16-40).
+   Base set every skin defines:
+     --skin-ground --skin-surface --skin-ink --skin-ink-2 --skin-rule
+     --skin-accent --skin-action --skin-on-action --skin-good
+     --skin-good-bg --skin-attention --skin-attention-bg
+     --skin-chrome --skin-on-chrome --skin-radius [--skin-font]
+   ============================================================ */
+
+/* ps-admin, the Preisser back office. Source: ps-admin origin/main @0bcb4ab.
+   Navy on the site's navy dark ground is the hardest case: the navy lives in
+   the window chrome INSIDE the screen edge, which is 3.83:1 against the dark mat. */
+.demo-skin--psadmin {
+  --skin-ground: #EEF0F2;       /* --color-bg, panel/src/index.css:11 */
+  --skin-surface: #FFFFFF;      /* --color-surface, :12 */
+  --skin-ink: #0A1628;          /* --color-primary, :8 (navy) */
+  --skin-ink-2: #515966;        /* QUIET, screens/money/kit.tsx:28; 6.19:1 on the field */
+  --skin-ink-3: #434B57;        /* --color-tier23, index.css */
+  --skin-rule: #C9CED6;         /* PH_FIELD border, kit.tsx:43 */
+  --skin-accent: #0D95E8;       /* --color-accent, :13; marks only (3.24:1 as text) */
+  --skin-action: #0B6FD0;       /* --color-secondary, :9; white on it 5.00:1 */
+  --skin-on-action: #FFFFFF;
+  --skin-link: #0A5CAD;         /* --color-ink-blue, :10; 5.84:1 on the field */
+  --skin-good: #0B6B4F;         /* GO.ink, kit.tsx:26 */
+  --skin-good-bg: #E2F0EA;      /* GO.bg, kit.tsx:26 */
+  --skin-attention: #7A6000;    /* SEV.warn.ink, kit.tsx:23 ("Worth a look") */
+  --skin-attention-bg: #F7F0DC; /* SEV.warn.bg, kit.tsx:23 */
+  --skin-urgent: #B42318;       /* SEV.urgent.ink, kit.tsx:22 */
+  --skin-urgent-bg: #FBEBE9;    /* SEV.urgent.bg, kit.tsx:22 */
+  --skin-chrome: #0A1628;       /* the rail and phone tab bar paint --color-primary */
+  --skin-on-chrome: #FFFFFF;
+  --skin-on-chrome-2: rgba(255, 255, 255, 0.55); /* --color-on-bg, 6.10:1 on navy */
+  --skin-radius: 16px;          /* CARD "rounded-2xl", kit.tsx:31 */
+}
+
+/* NWKS Encounter, men's program (ADR-0017). Source: nwks-deploy-main @6802623. */
+.demo-skin--nwks-mens {
+  --skin-ground: #F2EFE6;       /* THEMES.mens.bg, admin/src/theme.ts:62 (parchment) */
+  --skin-surface: #FFFFFF;      /* THEMES.mens.surface, theme.ts:63 */
+  --skin-ink: #3D4127;          /* PROGRAM_BRAND.mens.primary, shared/print/programBrand.ts:48; 9.21:1 on parchment */
+  --skin-ink-2: #5C604A;        /* PROVISIONAL; 5.66:1 on parchment, 6.51:1 on white */
+  --skin-rule: #DAD5C6;         /* PROVISIONAL hairline; decorative */
+  --skin-accent: #6B7645;       /* PROGRAM_BRAND.mens.accent, programBrand.ts:49 */
+  --skin-gold: #B8972A;         /* THEMES.mens.secondary, theme.ts:61; marks only, 2.80:1 on white */
+  --skin-action: #3D4127;
+  --skin-on-action: #FFFFFF;    /* 10.59:1 */
+  --skin-good: #4E6522;         /* draft-1 ink, theme.ts:65-70; 5.93:1 on its soft */
+  --skin-good-bg: #F1F6E2;      /* draft-1 soft */
+  --skin-attention: #7C5D05;    /* draft-2 ink */
+  --skin-attention-bg: #FBF3DA; /* draft-2 soft */
+  --skin-draft-0: #9AA0A6;      /* DRAFT_NONE.strong, theme.ts */
+  --skin-draft-1: #86A83E;
+  --skin-draft-2: #C89A16;
+  --skin-draft-3: #4F5F2C;
+  --skin-chrome: #3D4127;
+  --skin-on-chrome: #FFFFFF;
+  --skin-radius: 12px;          /* PROVISIONAL: confirm from admin/tailwind.config.ts */
+}
+
+/* FarmBooks. Source: Farm Invoice Processing System/web @8cbbbb4, LIGHT values
+   only (FarmBooks pins light; its dark blocks must never go live here, critique 3a).
+   The full --fb-* token set lives in scenes/farmbooks/farmbooks.css. */
+.demo-skin--farmbooks {
+  --skin-ground: #F3F1EB;       /* --page, app/globals.css:22 */
+  --skin-surface: #FFFFFF;      /* --card, :23 */
+  --skin-ink: #1C1813;          /* --ink, :25 */
+  --skin-ink-2: #746A5C;        /* --gray2, :27; 4.70:1 on paper, 5.30:1 on white */
+  --skin-rule: rgba(56, 46, 28, 0.1); /* --hairline, :33 */
+  --skin-accent: #C9A227;       /* GOLD_MARK, components/showcase/tokens.ts */
+  --skin-action: #7A5C16;       /* --accent-deep; white on it 6.23:1 */
+  --skin-on-action: #FFFFFF;
+  --skin-good: #2E9E56;         /* --ok, :51; 3.42:1: marks only, text stays --skin-ink */
+  --skin-good-bg: #E8F4EC;      /* PROVISIONAL */
+  --skin-attention: #A85800;    /* --amber, :47 ("a human needs to look") */
+  --skin-attention-bg: #FBEED6; /* --amber-bg, :49; amber on it 4.51:1 */
+  --skin-chrome: #1C1813;
+  --skin-on-chrome: #F3F1EB;    /* 15.63:1 */
+  --skin-radius: 16px;
+}
