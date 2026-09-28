@@ -74,11 +74,11 @@ export function OrgSheetBefore() {
   const moved = person("srv-sam-whitcomb").full;
   return (
     <div className="nwks-old nwks-old-sheet" role="img" aria-label="A hand-kept spreadsheet of team columns, one name crossed out and rewritten in pen.">
-      <div className="nwks-old-sheet-scroll" aria-hidden="true">
-        <table className="nwks-old-grid">
+      <div aria-hidden="true">
+        <table className="nwks-old-grid nwks-old-grid--teams">
           <thead>
             <tr>
-              <th />
+              <th className="nwks-old-rn" />
               {cols.map((t) => (
                 <th key={t.id}>
                   {t.name}

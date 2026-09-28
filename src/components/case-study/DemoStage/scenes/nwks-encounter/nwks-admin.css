@@ -556,9 +556,13 @@
 .demo-skin--nwks-mens .nwks-old-pad-note { color: #4A5A7A; }
 /* The hand-kept workbooks. */
 .demo-skin--nwks-mens .nwks-old-sheet { padding: 0; }
-.demo-skin--nwks-mens .nwks-old-sheet-scroll { overflow: hidden; -webkit-mask-image: linear-gradient(to right, #000 80%, transparent); mask-image: linear-gradient(to right, #000 80%, transparent); }
-.demo-skin--nwks-mens .nwks-old-grid { border-collapse: collapse; font-size: 0.6875rem; white-space: nowrap; }
-.demo-skin--nwks-mens .nwks-old-grid--rooms { width: 100%; }
+/* The grid always fits its paper: fixed layout, cells ellipse. A picture that
+   only LOOKED cropped still had boxes 722px wide at 320 (the stage's overflow
+   guard, tests/e2e/lib/checks.ts, measures boxes, not paint). */
+.demo-skin--nwks-mens .nwks-old-grid { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 0.6875rem; white-space: nowrap; }
+.demo-skin--nwks-mens .nwks-old-grid th,
+.demo-skin--nwks-mens .nwks-old-grid td { overflow: hidden; text-overflow: ellipsis; }
+.demo-skin--nwks-mens .nwks-old-grid .nwks-old-rn { width: 1.75rem; }
 .demo-skin--nwks-mens .nwks-old-grid th,
 .demo-skin--nwks-mens .nwks-old-grid td { padding: 3px 7px; border: 1px solid #D9D9D9; text-align: left; }
 .demo-skin--nwks-mens .nwks-old-grid th { background: #F3F3F3; font-weight: 700; color: #3C4043; }
@@ -582,6 +586,8 @@
 @media (max-width: 767px) {
   .demo-skin--nwks-mens .nwks-old { max-height: 9rem; -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent); mask-image: linear-gradient(to bottom, #000 78%, transparent); }
   .demo-skin--nwks-mens .nwks-old-sheet { -webkit-mask-image: none; mask-image: none; }
+  /* On a phone the workbook shows Team 1, Team 2 (the struck name) and the spare column. */
+  .demo-skin--nwks-mens .nwks-old-grid--teams :is(th, td):nth-child(n + 4):not(:last-child) { display: none; }
 }
 
 /* Dashboard "Recent Registrations" (critic-NW M5). */
