@@ -41,10 +41,13 @@ export function endStateViolations(): Violation[] {
   // Whole-stage walk (review-F.md MEDIUM 3): a scene's own elements that carry
   // no data-stage-* attribute at all -- e.g. a Framer motion.div in the
   // FarmBooks scene, server-rendered with style="opacity:0" -- were invisible
-  // to the check above. Walk EVERY rendered descendant of a stage. An
-  // "invisible" threshold, not <0.999: the window-chrome dots are decorative
-  // at opacity 0.35 (demo-stage.css) and must not be flagged.
-  const INVISIBLE_OPACITY = 0.05;
+  // to the check above. Walk EVERY rendered descendant of a stage.
+  // ADR-0016 §3: the end frame ships FULLY VISIBLE, not merely non-zero, so a
+  // resting element's computed ancestor-product opacity must be at least 0.9.
+  // The ONLY exemption is the resting before-state subtree (matched via
+  // closest(), so a plain child of a hidden [data-stage-until] element is
+  // covered too, not just the element carrying the attribute itself).
+  const RESTING_OPACITY_MIN = 0.9;
   const exempt = (el: Element) =>
     Boolean(el.closest(".ps-visually-hidden, .demo-controls__buttons, [data-stage-until]:not([data-live])"));
   for (const stage of Array.from(document.querySelectorAll("[data-demo-stage]"))) {
@@ -61,7 +64,7 @@ export function endStateViolations(): Violation[] {
         continue;
       }
       const o = effective(el);
-      if (o < INVISIBLE_OPACITY) V.push({ rule: "opacity", detail: `${name(el)} effective opacity ${o.toFixed(3)}` });
+      if (o < RESTING_OPACITY_MIN) V.push({ rule: "opacity", detail: `${name(el)} effective opacity ${o.toFixed(3)}` });
     }
   }
 
