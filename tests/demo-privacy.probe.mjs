@@ -338,6 +338,12 @@ const PAGE = (inStage, head = "") =>
   `<p data-demo-narration>This stage shows a deposit tied to an invoice, one step at a time, on invented data. ` +
   `Nothing on it is real. The data is a demonstration.</p><div data-beat="b1"><p>${inStage}</p></div></figure></main></body></html>`;
 
+/** Full control over the label and narration, for review-F.md MEDIUM 4's label/narration cases. */
+const PAGE_STAGE = (label, narration) =>
+  `<!doctype html><html><head><title>Self test</title></head><body><main><p>Outside copy.</p>` +
+  `<figure data-demo-stage="kit"><figcaption><h3>A stage</h3>${label}</figcaption>` +
+  `${narration}<div data-beat="b1"><p>Paid.</p></div></figure></main></body></html>`;
+
 const CASES = [
   { name: "clean control", html: PAGE("Harlan Feed Co. paid INV-2031 for $1,250.00. Dale Whitcomb approved it. billing@harlanfeed.example"), expect: [] },
   { name: "unregistered name", html: PAGE("Zorbanek paid the invoice."), expect: ["token"] },
@@ -371,6 +377,13 @@ const CASES = [
     deny: ["Whitcomb"],
     expect: ["deny", "domain"],
   },
+  // review-F.md MEDIUM 4: label, narration and asset must each be shown red once.
+  { name: "no label at all", html: PAGE_STAGE("", `<p data-demo-narration>This stage shows a deposit tied to an invoice, one step at a time, on invented data. Nothing on it is real. The data is a demonstration.</p>`), expect: ["label"] },
+  { name: "wrong label text", html: PAGE_STAGE(`<span data-demo-label>wrong label</span>`, `<p data-demo-narration>This stage shows a deposit tied to an invoice, one step at a time, on invented data. Nothing on it is real. The data is a demonstration.</p>`), expect: ["label"] },
+  { name: "two labels", html: PAGE_STAGE(`<span data-demo-label>Demonstration data</span><span data-demo-label>Demonstration data</span>`, `<p data-demo-narration>This stage shows a deposit tied to an invoice, one step at a time, on invented data. Nothing on it is real. The data is a demonstration.</p>`), expect: ["label"] },
+  { name: "narration missing", html: PAGE_STAGE(`<span data-demo-label>Demonstration data</span>`, ""), expect: ["narration"] },
+  { name: "narration too short", html: PAGE_STAGE(`<span data-demo-label>Demonstration data</span>`, `<p data-demo-narration>not enough words here.</p>`), expect: ["narration"] },
+  { name: "unregistered image asset", html: PAGE('<img src="/images/demos/unregistered.jpg" alt="a screen">'), expect: ["asset"] },
 ];
 
 async function runSelfTest() {
@@ -411,6 +424,33 @@ async function runSelfTest() {
     say(r.status === 2, `${name} (got ${r.status})`);
   }
   fs.rmSync(tmp, { recursive: true, force: true });
+
+  // review-F.md MEDIUM 4: deny-site, css-namespace and the source-file deny
+  // check (sourceChecks) are not exercised by checkDocument at all — they read
+  // the filesystem directly. Spawn the real probe (not --self-test) against a
+  // planted temp export and a planted temp source root (PS_SOURCE_ROOTS), and
+  // confirm each rule fires at least once.
+  const fsTmp = fs.mkdtempSync(path.join(os.tmpdir(), "demo-privacy-fs-"));
+  fs.mkdirSync(path.join(fsTmp, "case-studies"));
+  fs.writeFileSync(path.join(fsTmp, "case-studies", "x.html"), PAGE("Paid."));
+  fs.writeFileSync(path.join(fsTmp, "leaked.txt"), "SelfTestSiteTerm appears in a served file.\n");
+  const srcTmp = path.join(fsTmp, "fake-source");
+  fs.mkdirSync(srcTmp);
+  fs.writeFileSync(srcTmp + "/bad.css", "/* planted css-namespace test file */\n.foo { --color-primary: #000; }\n@theme { }\n");
+  fs.writeFileSync(srcTmp + "/bad.ts", "// SelfTestSourceTerm should never be committed here\n");
+  const fsDeny = path.join(fsTmp, "deny.txt");
+  fs.writeFileSync(fsDeny, "SelfTestSourceTerm\nsite:SelfTestSiteTerm\n");
+  const fsRun = spawnSync(process.execPath, [SELF], {
+    env: { ...process.env, PS_OUT_DIR: fsTmp, PS_DEMO_DENYLIST: fsDeny, PS_SOURCE_ROOTS: srcTmp },
+    encoding: "utf8",
+  });
+  const fsOut = `${fsRun.stdout}\n${fsRun.stderr}`;
+  const fired = (rule) => new RegExp(`\\[${rule}\\]`).test(fsOut);
+  say(fsRun.status === 1, `planted filesystem-level run exits 1 (got ${fsRun.status})`);
+  say(fired("deny-site"), "  deny-site rule fired");
+  say(fired("css-namespace"), "  css-namespace rule fired");
+  say(fired("deny"), "  source-file deny rule fired (sourceChecks)");
+  fs.rmSync(fsTmp, { recursive: true, force: true });
 
   console.log(bad ? `\nFAIL  self-test: ${bad} case(s) did not behave` : "PASS  self-test: every planted string went red, the clean control stayed green");
   return bad ? 1 : 0;
