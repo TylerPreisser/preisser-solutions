@@ -253,6 +253,12 @@
   color: var(--theme-text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap;
 }
 .demo-skin--nwks-mens .nwks-rh-placed-n { justify-items: end; font-size: 1.125rem; font-weight: 700; color: var(--theme-text-primary); }
+/* Narrow phones: the counter always takes its own line. Beside the longest
+   kicker ("Rule 2 of the 4 shown") it wrapped while playing but not beside the
+   resting "The read", so the head shrank 27px at disarm (320). */
+@media (max-width: 479px) {
+  .demo-skin--nwks-mens .nwks-rh-placed { flex-basis: 100%; }
+}
 .demo-skin--nwks-mens .nwks-rh-swap { display: grid; }
 .demo-skin--nwks-mens .nwks-rh-v { display: grid; gap: 6px; align-content: start; min-width: 0; }
 .demo-skin--nwks-mens .nwks-rh-kicker {
