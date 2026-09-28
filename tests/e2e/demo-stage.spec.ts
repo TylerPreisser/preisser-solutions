@@ -70,16 +70,69 @@ async function shot(page: Page, slug: string, engine: string, vp: Vp, theme: str
   await page.locator("[data-demo-section]").screenshot({ path: file, animations: "disabled" });
 }
 
+/**
+ * Scrolls a track's top to a safe distance ABOVE the engine's entry line
+ * (useStageTimeline.ts: `rootMargin: "0px 0px -35% 0px"`, i.e. the track must
+ * cross 65% of the viewport height to start) and waits for it to settle at
+ * "end". `scrollIntoViewIfNeeded()` is a no-op when a track is already
+ * partly visible just below the fold, which left it sitting at "paused"
+ * forever (review-F.md HIGH 1).
+ */
+async function settleTrack(t: ReturnType<Page["locator"]>): Promise<void> {
+  await t.evaluate((el) => window.scrollBy(0, el.getBoundingClientRect().top - window.innerHeight * 0.3));
+  await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 60_000 });
+}
+
+/**
+ * Brings every VISIBLE track on the page to "end", one at a time, and
+ * reports how many started below the fold. Used by both the motion test and
+ * the Back/Next test, so the latter's whole-page endStateViolations() check
+ * never sees another track still armed and pending off screen (HIGH 1's
+ * second defect: it scoped nothing and checked the whole page after playing
+ * only the one track under test).
+ */
+async function settleVisibleTracks(page: Page): Promise<{ total: number; armedBelowFold: number }> {
+  const tracks = page.locator("[data-demo-stage] [data-track]");
+  let armedBelowFold = 0;
+  const total = await tracks.count();
+  for (let i = 0; i < total; i += 1) {
+    const t = tracks.nth(i);
+    if (!(await t.isVisible())) continue;
+    if ((await t.getAttribute("data-track-state")) === "paused") armedBelowFold += 1;
+    await settleTrack(t);
+  }
+  return { total, armedBelowFold };
+}
+
 test("every built stage route is declared in tests/e2e/stages, and every declared route is built", () => {
   const dir = path.join(OUT_DIR, "case-studies");
   expect(fs.existsSync(dir), `no export at ${dir}; run npm run build first`).toBe(true);
-  const built = fs
-    .readdirSync(dir)
-    .filter((f) => f.endsWith(".html"))
-    .filter((f) => fs.readFileSync(path.join(dir, f), "utf8").includes("data-demo-section"))
-    .map((f) => `/case-studies/${f.slice(0, -".html".length)}`)
+  const htmlBySlug = new Map<string, string>();
+  for (const f of fs.readdirSync(dir).filter((f) => f.endsWith(".html"))) {
+    htmlBySlug.set(f.slice(0, -".html".length), fs.readFileSync(path.join(dir, f), "utf8"));
+  }
+  const built = [...htmlBySlug.entries()]
+    .filter(([, html]) => html.includes("data-demo-section"))
+    .map(([slug]) => `/case-studies/${slug}`)
     .sort();
   expect(built).toEqual(MANIFESTS.map((m) => m.route).sort());
+
+  // Non-vacuous even at zero manifests (review-F.md HIGH 1): assert the built
+  // stage COUNT per route matches the manifest's declared count, not just the
+  // route set, and print how many stages this run actually exercised — so a
+  // gate with zero real stages is visibly a no-op, not silently identical to
+  // a passing one.
+  let exercised = 0;
+  for (const m of MANIFESTS) {
+    const slug = m.route.split("/").pop() as string;
+    const html = htmlBySlug.get(slug) ?? "";
+    const rendered = (html.match(/data-demo-stage="/g) ?? []).length;
+    expect(rendered, `${m.route}: built page has ${rendered} [data-demo-stage] element(s), manifest declares ${m.stages.length}`).toBe(
+      m.stages.length,
+    );
+    exercised += rendered;
+  }
+  console.log(`Proof Stage gate: ${MANIFESTS.length} route(s) declared, ${exercised} stage(s) exercised`);
 });
 
 for (const m of MANIFESTS) {
@@ -134,15 +187,7 @@ for (const m of MANIFESTS) {
         try {
           await page.goto(`${ORIGIN}${m.route}`, { waitUntil: "load" });
           await hydrated(page);
-          const tracks = page.locator("[data-demo-stage] [data-track]");
-          let armedBelowFold = 0;
-          for (let i = 0; i < (await tracks.count()); i += 1) {
-            const t = tracks.nth(i);
-            if (!(await t.isVisible())) continue;
-            if ((await t.getAttribute("data-track-state")) === "paused") armedBelowFold += 1;
-            await t.scrollIntoViewIfNeeded();
-            await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 60_000 });
-          }
+          const { armedBelowFold } = await settleVisibleTracks(page);
           expect(armedBelowFold, "no track armed below the fold: motion was never exercised").toBeGreaterThan(0);
           expect(await page.evaluate(endStateViolations)).toEqual([]);
         } finally {
@@ -156,9 +201,13 @@ for (const m of MANIFESTS) {
         try {
           await page.goto(`${ORIGIN}${m.route}`, { waitUntil: "load" });
           await hydrated(page);
+          // Settle EVERY visible track to "end" first, not just the one under
+          // test: otherwise a second track still armed and pending below the
+          // fold makes the final whole-page endStateViolations() check red
+          // for a reason unrelated to Back/Next/Replay (review-F.md HIGH 1).
+          await settleVisibleTracks(page);
           const t = page.locator("[data-demo-stage] [data-track]:visible").first();
-          await t.scrollIntoViewIfNeeded();
-          await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 60_000 });
+          await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 5_000 });
           const n = Number(await t.getAttribute("data-track-n"));
           await t.getByRole("button", { name: "Back", exact: true }).click();
           await expect(t).toHaveAttribute("data-track-step", String(n - 1));
@@ -184,7 +233,10 @@ for (const m of MANIFESTS) {
       });
     }
 
-    test("the guards can fail: armed steps, an invisible ancestor, an over-wide child", async ({ browser, browserName }) => {
+    test("the guards can fail: armed steps, an invisible ancestor, an over-wide child, an invisible inner scene element", async ({
+      browser,
+      browserName,
+    }) => {
       const { context, page } = await open(browser, browserName, byName(390, 844), { js: false });
       const url = `${ORIGIN}${m.route}`;
       try {
@@ -207,6 +259,18 @@ for (const m of MANIFESTS) {
           document.querySelector(".demo-stage__beats")?.appendChild(d);
         });
         expect((await page.evaluate(overflowViolations)).length).toBeGreaterThan(0);
+
+        // review-F.md MEDIUM 3: an inner scene element that carries no
+        // data-stage-* attribute at all (e.g. a Framer motion.div left at its
+        // opacity:0 initial state) must still be caught by the whole-stage walk.
+        await page.goto(url);
+        await page.evaluate(() => {
+          const d = document.createElement("div");
+          d.textContent = "planted invisible scene content";
+          d.style.opacity = "0";
+          document.querySelector("[data-demo-stage]")?.appendChild(d);
+        });
+        expect((await page.evaluate(endStateViolations)).some((v) => v.rule === "opacity")).toBe(true);
       } finally {
         await context.close();
       }
