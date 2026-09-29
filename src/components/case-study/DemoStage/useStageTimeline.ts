@@ -43,6 +43,17 @@ const COUNT_MS = 700;
  * screen armed and blank at a natural stopping point (a beat's end).
  */
 const ENTRY_LINE = 0.9;
+/**
+ * Designed clearance between a scrolled-to step's bottom and the pinned phone
+ * bar's top. Zero (the old flush landing) let the browser's rounding of the
+ * fractional scroll tip tall cards up to 2px under the bar (FarmBooks read at
+ * 320x568, fb-stage-gatefix-20260929.md); 8px is a visible gap no rounding
+ * closes. The scroll aims SCROLL_ROUNDING_PX further, because scrollIntoView
+ * itself lands up to 0.5px short of its target (measured at 8px: 7.5-7.99px
+ * in chromium, webkit and firefox at 320-393 wide), and 8px is the floor.
+ */
+const BAR_CLEARANCE_PX = 8;
+const SCROLL_ROUNDING_PX = 1;
 
 export interface TimelineState {
   n: number;
@@ -312,7 +323,7 @@ export function useStageTimeline(
       // bar is currently pinned, so this is correct even before the page
       // has scrolled the bar into its stuck position.
       const pinGap = parseFloat(getComputedStyle(bar).bottom) || 0;
-      el.style.scrollMarginBottom = `${barRect.height + pinGap}px`;
+      el.style.scrollMarginBottom = `${barRect.height + pinGap + BAR_CLEARANCE_PX + SCROLL_ROUNDING_PX}px`;
     } else {
       el.style.scrollMarginBottom = "0px";
     }

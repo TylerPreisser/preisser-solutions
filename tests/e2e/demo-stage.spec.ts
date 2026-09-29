@@ -456,10 +456,17 @@ for (const m of MANIFESTS) {
               .toBe(true);
             const geo = await t.evaluate(stepBarOcclusion);
             if (geo === null) continue; // no sticky bar at this width/track (e.g. a beat with no reachable [data-stage-step] yet)
+            // Designed clearance, not flush: the kit lands a tapped step's
+            // bottom BAR_CLEARANCE_PX (8px) above the bar's top. A flush
+            // landing let rounding tip tall FarmBooks cards up to 2px under
+            // the bar (fb-stage-gatefix-20260929.md), so "<= 1px under" was
+            // the wrong bar to clear.
+            const clearance = -geo.occludedPx;
+            console.log(`[clearance] ${m.route} ${browserName} ${vpName(vp)} step ${i + 1}: ${clearance.toFixed(2)}px (row bottom ${geo.elBottom.toFixed(2)}, bar top ${geo.barTop.toFixed(2)})`);
             expect(
-              geo.occludedPx,
-              `step ${i + 1}: revealed row bottom ${geo.elBottom.toFixed(1)} is ${geo.occludedPx.toFixed(1)}px under the bar top (${geo.barTop.toFixed(1)})`,
-            ).toBeLessThanOrEqual(1);
+              clearance,
+              `step ${i + 1}: revealed row bottom ${geo.elBottom.toFixed(1)} is only ${clearance.toFixed(1)}px above the bar top (${geo.barTop.toFixed(1)}); the design is at least 8px`,
+            ).toBeGreaterThanOrEqual(8);
           }
         } finally {
           await context.close();
