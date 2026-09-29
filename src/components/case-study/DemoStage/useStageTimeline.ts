@@ -62,6 +62,8 @@ const ENTRY_LINE = 0.9;
  * in chromium, webkit and firefox at 320-393 wide), and 8px is the floor.
  */
 export const BAR_CLEARANCE_PX = 8;
+/** How long after a tap the settle loop keeps re-checking the landing (row growth, smooth scroll). */
+const SETTLE_WINDOW_MS = 1500;
 const SCROLL_ROUNDING_PX = 1;
 /**
  * A tour-followed tick waits until the window has been still this long, so a
@@ -579,6 +581,43 @@ export function useStageTimeline(steps: readonly DemoStep[], options: TimelineOp
     el.style.scrollMarginTop = inset > 0 ? `${inset}px` : "";
     onScroll.current?.();
     el.scrollIntoView({ block: "nearest", behavior: s.reduced ? "instant" : "smooth" });
+    // Settle loop. The first scroll measures the element's box the instant
+    // the step changed, while the row is still growing (a caption arriving,
+    // a swap cell resizing to the current card), so WebKit in particular
+    // landed the row one caption's height under the bar (ci-local
+    // 1c2df11 and 712b4fc: FarmBooks 375x667 / 393x659, -43px). Re-measure
+    // on the following frames for up to SETTLE_WINDOW_MS and scroll again
+    // while the row's bottom sits below the bar's top minus the designed
+    // clearance. Bounded, so a page that cannot scroll further stops trying.
+    // Judge only once the page has been STILL for two frames: judging while
+    // the smooth scroll is in flight re-targets it mid-way, and after a few
+    // restarts the loop gave up short (WebKit landed +2.8px and -17.9px in
+    // the 3x repeat of the step-landing spec).
+    const barEl = bar;
+    const target = el;
+    const start = performance.now();
+    let rescrolls = 0;
+    let raf = 0;
+    let lastY = window.scrollY;
+    let stillFrames = 0;
+    const settle = () => {
+      if (performance.now() - start > SETTLE_WINDOW_MS || rescrolls >= 4) return;
+      const y = window.scrollY;
+      stillFrames = y === lastY ? stillFrames + 1 : 0;
+      lastY = y;
+      if (stillFrames >= 2 && getComputedStyle(barEl).position === "sticky") {
+        const barTop = barEl.getBoundingClientRect().top;
+        const bottom = target.getBoundingClientRect().bottom;
+        if (bottom > barTop - BAR_CLEARANCE_PX) {
+          rescrolls += 1;
+          stillFrames = 0;
+          target.scrollIntoView({ block: "nearest", behavior: s.reduced ? "instant" : "smooth" });
+        }
+      }
+      raf = requestAnimationFrame(settle);
+    };
+    raf = requestAnimationFrame(settle);
+    return () => cancelAnimationFrame(raf);
   }, [s.step, s.reduced]);
 
   // Disarm once the last step has settled.
