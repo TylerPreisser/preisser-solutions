@@ -267,13 +267,24 @@ for (const m of MANIFESTS) {
           await context.close();
         }
       });
+    }
 
-      test(`${vpName(vp)} "Take the tour" scrolls the active panel under the bar and keeps the active tab in view`, async ({
+    // Every tour stop, not the first three; with motion at a phone and a desk
+    // width, and once under reduced motion at the phone width (review-F4.md:
+    // Firefox + reduced motion landed the panel 140px under the pinned bar
+    // while every with-motion run passed).
+    for (const { vp, reduced } of [
+      { vp: byName(390, 844), reduced: false },
+      { vp: byName(1440, 900), reduced: false },
+      { vp: byName(390, 844), reduced: true },
+    ]) {
+      const mode = reduced ? " reduced motion:" : "";
+      test(`${vpName(vp)}${mode} "Take the tour" pins the bar, lands every panel just under it, and keeps the active tab in view`, async ({
         browser,
         browserName,
       }) => {
-        test.setTimeout(90_000);
-        const { context, page } = await open(browser, browserName, vp);
+        test.setTimeout(240_000);
+        const { context, page } = await open(browser, browserName, vp, { reduced });
         try {
           await page.goto(`${ORIGIN}${m.route}`, { waitUntil: "load" });
           await hydrated(page);
@@ -281,9 +292,11 @@ for (const m of MANIFESTS) {
           if ((await tabbed.count()) === 0) {
             test.skip(true, `${m.route}: no tabbed screen (ADR-0017) on this route`);
           }
-          // Start from an arbitrary scroll position, and fire a real DOM
-          // click (`el.click()`) rather than Playwright's `.click()`: the
-          // latter auto-scrolls its target into view as part of its own
+          const nTabs = await tabbed.getByRole("tab").count();
+          expect(nTabs, `${m.route}: a tabbed screen with fewer than two tabs has no tour to check`).toBeGreaterThan(1);
+          // Start from the top of the page, and fire a real DOM click
+          // (`el.click()`) rather than Playwright's `.click()`: the latter
+          // auto-scrolls its target into view as part of its own
           // actionability wait, which would scroll the bar into a
           // reasonable position by itself and mask a broken fix underneath
           // (review-NW.md B3 measured scrollY stuck at an ARBITRARY position
@@ -295,24 +308,22 @@ for (const m of MANIFESTS) {
 
           const activeLabel = () => page.locator('.demo-tabs__tab[aria-selected="true"]').first().textContent();
           let prevLabel = "";
-          for (let stop = 0; stop < 3; stop++) {
+          for (let stop = 0; stop < nTabs; stop++) {
             await expect
               .poll(async () => ((await activeLabel()) ?? "") !== prevLabel, {
-                timeout: 20_000,
+                timeout: 40_000,
                 message: `the tour never reached a new tab for stop ${stop}`,
               })
               .toBe(true);
             prevLabel = (await activeLabel()) ?? "";
             // Let a real (non-reduced) smooth scroll settle before measuring:
             // poll scrollY until two consecutive reads agree, rather than a
-            // fixed wait -- the distance from page load (nothing scrolled
-            // yet) to a stage many screens down took ~1.5s to settle in
-            // Chromium. A short wait FIRST, before the stability baseline: a
-            // poll started at scrollY 0 can catch two back-to-back reads
-            // before the browser's own scroll animation has begun (measured
-            // in WebKit, which starts smooth-scrolling faster than Chromium
-            // dispatches the next poll tick), reporting "stable" at the
-            // pre-scroll position.
+            // fixed wait -- the distance from page top to a stage many
+            // screens down took ~1.5s to settle in Chromium. A short wait
+            // FIRST, before the stability baseline: a poll started at
+            // scrollY 0 can catch two back-to-back reads before the
+            // browser's own scroll animation has begun (measured in WebKit),
+            // reporting "stable" at the pre-scroll position.
             await page.waitForTimeout(300);
             let lastY = -1;
             await expect
@@ -329,46 +340,58 @@ for (const m of MANIFESTS) {
             const g = await page.evaluate(tourPanelGeometry);
             expect(g, `${m.route} ${vpName(vp)} stop ${stop}: no tabbed-screen geometry to check`).not.toBeNull();
             const geo = g!;
-            // The relative checks below (floor/tab-in-list) hold regardless
-            // of scrollY -- the tabbed screen's own CSS layout does not move
-            // when a hidden sibling panel is swapped for another. Assert the
-            // bar and the panel are actually IN THE VIEWPORT too, or a
-            // no-op "fix" that never scrolls the page would still pass here.
-            expect(geo.bar.bottom, `stop ${stop}: bar bottom ${geo.bar.bottom} is above the viewport -- the page never scrolled`).toBeGreaterThan(
-              0,
-            );
-            expect(geo.bar.top, `stop ${stop}: bar top ${geo.bar.top} is below the viewport (${geo.viewportH}px) -- the page never scrolled`).toBeLessThan(
-              geo.viewportH,
-            );
-            expect(geo.panelTop, `stop ${stop}: panel top ${geo.panelTop} is below the viewport (${geo.viewportH}px)`).toBeLessThan(geo.viewportH);
+            const at = `stop ${stop} (${prevLabel})`;
+            // ABSOLUTE placement first (review-F4.md MEDIUM): relative checks
+            // alone passed while the whole tabbed screen rested half-way down
+            // the screen (panel top 443 of 844, the bar never pinned). The
+            // bar's top sits at the header's edge: pinned there by
+            // `position: sticky; top: var(--nav-height)` below 1024px, and
+            // placed there by TabPanel's own margin (bar-to-panel distance
+            // + header) on desktop, where the bar is static.
             expect(
-              geo.panelTop,
-              `stop ${stop} (${prevLabel}): active panel top ${geo.panelTop} is above the bar/caption row (${geo.floor}) -- it did not scroll under the bar`,
-            ).toBeGreaterThanOrEqual(geo.floor - 2);
-            // +16, not +8: on desktop the bar is not sticky (demo-stage.css
-            // `@media (max-width: 1023px) .demo-tabs__bar`), so a real
-            // `.demo-beat { gap: 14px }` row still separates the caption
-            // from the panel (measured 14.0px, 1440x900) even once the
-            // panel is scrolled to sit immediately below it -- lib/checks.ts
-            // `tourPanelGeometry` has the full explanation.
-            expect(
-              geo.panelTop,
-              `stop ${stop} (${prevLabel}): active panel top ${geo.panelTop} is more than 16px below the bar/caption row (${geo.floor}) -- it scrolled past the bar`,
-            ).toBeLessThanOrEqual(geo.floor + 16);
-            expect(geo.tab.top, `stop ${stop}: active tab top ${geo.tab.top} above the bar (${geo.bar.top})`).toBeGreaterThanOrEqual(
-              geo.bar.top - 1,
+              Math.abs(geo.bar.top - geo.nav),
+              `${at}: bar top ${geo.bar.top.toFixed(1)} is not at the header's edge (${geo.nav}) -- the tour did not bring the bar up`,
+            ).toBeLessThanOrEqual(1);
+            // The panel's top is in the top third of the viewport.
+            expect(geo.panelTop, `${at}: panel top ${geo.panelTop.toFixed(1)} is not in the top third of the viewport (${geo.viewportH}px)`).toBeLessThan(
+              geo.viewportH / 3,
             );
-            expect(geo.tab.bottom, `stop ${stop}: active tab bottom ${geo.tab.bottom} below the bar (${geo.bar.bottom})`).toBeLessThanOrEqual(
+            if (geo.sticky) {
+              // Phone/tablet: the panel starts just under the pinned bar
+              // (the tour-caption row is hidden under the bar there, see
+              // lib/checks.ts `tourPanelGeometry`).
+              expect(geo.panelTop, `${at}: panel top ${geo.panelTop.toFixed(1)} is under the pinned bar (bottom ${geo.bar.bottom.toFixed(1)})`).toBeGreaterThanOrEqual(
+                geo.bar.bottom - 1,
+              );
+              expect(
+                geo.panelTop,
+                `${at}: panel top ${geo.panelTop.toFixed(1)} is more than 8px below the bar's bottom (${geo.bar.bottom.toFixed(1)})`,
+              ).toBeLessThanOrEqual(geo.bar.bottom + 8);
+            } else {
+              // Desktop: the bar is static and the tour-caption row sits
+              // between it and the panel, a real `.demo-beat { gap: 14px }`
+              // away (measured 14.0px, 1440x900), so the tolerance is taken
+              // from the caption row's bottom (`floor`) with +16, not +8.
+              expect(geo.panelTop, `${at}: panel top ${geo.panelTop.toFixed(1)} is above the bar/caption row (${geo.floor.toFixed(1)})`).toBeGreaterThanOrEqual(
+                geo.floor - 2,
+              );
+              expect(
+                geo.panelTop,
+                `${at}: panel top ${geo.panelTop.toFixed(1)} is more than 16px below the bar/caption row (${geo.floor.toFixed(1)})`,
+              ).toBeLessThanOrEqual(geo.floor + 16);
+            }
+            // The active tab's box is inside the bar, and inside the tab
+            // list's own horizontal scroller (not clipped by it).
+            expect(geo.tab.top, `${at}: active tab top ${geo.tab.top} above the bar (${geo.bar.top})`).toBeGreaterThanOrEqual(geo.bar.top - 1);
+            expect(geo.tab.bottom, `${at}: active tab bottom ${geo.tab.bottom} below the bar (${geo.bar.bottom})`).toBeLessThanOrEqual(
               geo.bar.bottom + 1,
             );
-            expect(
-              geo.tab.left,
-              `stop ${stop}: active tab (${prevLabel}) left ${geo.tab.left} is left of the tab list's own scroller (${geo.list.left})`,
-            ).toBeGreaterThanOrEqual(geo.list.left - 1);
-            expect(
-              geo.tab.right,
-              `stop ${stop}: active tab (${prevLabel}) right ${geo.tab.right} is right of the tab list's own scroller (${geo.list.right})`,
-            ).toBeLessThanOrEqual(geo.list.right + 1);
+            expect(geo.tab.left, `${at}: active tab left ${geo.tab.left} is left of the tab list's own scroller (${geo.list.left})`).toBeGreaterThanOrEqual(
+              geo.list.left - 1,
+            );
+            expect(geo.tab.right, `${at}: active tab right ${geo.tab.right} is right of the tab list's own scroller (${geo.list.right})`).toBeLessThanOrEqual(
+              geo.list.right + 1,
+            );
           }
         } finally {
           await context.close();

@@ -262,9 +262,18 @@ export function themeReadout(): { section: string; mat: string; matEdge: string;
  * bar is static and the caption sits below it, a real `.demo-beat { gap:
  * 14px }` row away from the panel. Either way, `floor` is whichever one the
  * panel must clear.
+ *
+ * `nav` and `sticky` let the spec assert ABSOLUTE placement, not only the
+ * relative checks above (review-F4.md MEDIUM: those all held while the whole
+ * tabbed screen rested half-way down a 390x844 screen, panel top 443, the
+ * bar never pinned).
  */
 export function tourPanelGeometry(): {
   viewportH: number;
+  /** `--nav-height` in px: where a pinned bar's top sits (globals.css). */
+  nav: number;
+  /** The bar is `position: sticky` (below 1024px), so it must be PINNED at `nav`. */
+  sticky: boolean;
   bar: { top: number; bottom: number };
   list: { left: number; right: number };
   tab: { top: number; bottom: number; left: number; right: number };
@@ -284,6 +293,8 @@ export function tourPanelGeometry(): {
   const p = panel.getBoundingClientRect();
   return {
     viewportH: window.innerHeight,
+    nav: parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-height")) || 0,
+    sticky: getComputedStyle(bar).position === "sticky",
     bar: { top: b.top, bottom: b.bottom },
     list: { left: l.left, right: l.right },
     tab: { top: t.top, bottom: t.bottom, left: t.left, right: t.right },
