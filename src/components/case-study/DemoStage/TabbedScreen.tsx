@@ -82,6 +82,16 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
   // that competed with the panel effect's own, precise vertical scroll
   // (TabPanel below) for the same scroll animation, landing short of it.
   // Only touching `scrollLeft` cannot move the page.
+  //
+  // Always aligns the tab's START, on either side: the list snaps to tab
+  // starts (demo-stage.css `scroll-snap-type: x proximity` +
+  // `.demo-tabs__tab { scroll-snap-align: start }`), so any other offset --
+  // e.g. the tab's right edge flush with the list's -- is not a snap
+  // position and proximity snapping pulled it back to the previous tab's
+  // start, clipping the active tab again (review-F4.md HIGH 2: Org Sheet
+  // clipped 32.7px on the real NWKS tabs, all three engines). A start that
+  // is past the list's maximum scroll clamps to the end, which is always a
+  // valid snap position too.
   useEffect(() => {
     if (!interacted) return;
     const btn = tabRefs.current[active];
@@ -89,10 +99,8 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
     if (!btn || !list) return;
     const listRect = list.getBoundingClientRect();
     const btnRect = btn.getBoundingClientRect();
-    if (btnRect.left < listRect.left) {
-      list.scrollLeft -= listRect.left - btnRect.left;
-    } else if (btnRect.right > listRect.right) {
-      list.scrollLeft += btnRect.right - listRect.right;
+    if (btnRect.left < listRect.left || btnRect.right > listRect.right) {
+      list.scrollLeft += btnRect.left - listRect.left;
     }
   }, [active, interacted]);
 
