@@ -103,6 +103,31 @@
 .bo-read__tag--paid { color: var(--skin-good); background: var(--skin-good-bg); }
 .bo-read__tag--held { color: var(--skin-attention); background: var(--skin-attention-bg); }
 .bo-read__note { flex-basis: 100%; margin: 0; font-size: 0.8125rem; color: var(--skin-ink-2); }
+/* Row caption (final-BO.md item 3): below 1024px the kit's own step list
+   (StepControls) is dropped from the sticky phone control bar to keep it to
+   44px of controls (demo-stage.css "Phone control bar"), so each row prints
+   its own step's caption here instead -- the row already carries the data,
+   this is the sentence explaining it. Lives inside the row's own
+   data-stage-step element (MatchingRead.tsx), so it fades in and stays with
+   the row; no separate swap cell, since this beat's rows accumulate rather
+   than replace a before-state. Hidden at the same 1024px the two-column
+   `.demo-beat--stepped` layout and its full StepControls list begin
+   (demo-stage.css), so desktop is unchanged. */
+.bo-read__caption { flex-basis: 100%; margin: 2px 0 0; font-size: 0.8125rem; color: var(--skin-ink-2); transition: color 200ms ease; }
+@media (min-width: 1024px) {
+  .bo-read__caption { display: none; }
+}
+/* Highlighted while its step is current (mirrors nwks-admin.css's
+   StepNote highlight): one rule per step number, since more than one row
+   can share a step (d2/d3 both land on step 3). */
+.demo-skin--psadmin [data-track-armed][data-track-step="1"] .bo-read__row[data-stage-step="1"] .bo-read__caption,
+.demo-skin--psadmin [data-track-armed][data-track-step="2"] .bo-read__row[data-stage-step="2"] .bo-read__caption,
+.demo-skin--psadmin [data-track-armed][data-track-step="3"] .bo-read__row[data-stage-step="3"] .bo-read__caption,
+.demo-skin--psadmin [data-track-armed][data-track-step="4"] .bo-read__row[data-stage-step="4"] .bo-read__caption,
+.demo-skin--psadmin [data-track-armed][data-track-step="5"] .bo-read__row[data-stage-step="5"] .bo-read__caption {
+  color: var(--skin-ink);
+  font-weight: 600;
+}
 
 /* ── Caught: three cards, one refusal reason each ── */
 .bo-caught {
