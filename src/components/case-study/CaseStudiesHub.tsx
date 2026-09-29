@@ -314,19 +314,7 @@ function HubCard({
       : "from-[#00D4AA]/10 to-[#00D4AA]/0";
 
   return (
-    <div className="case-study-card relative" data-case-filter={filterSlug}>
-      {cs.demo && (
-        <Link
-          href={`/case-studies/${cs.slug}#see-it-work`}
-          prefetch={false}
-          className="see-it-work-pill absolute right-5 top-5 z-10 inline-flex min-h-[44px] items-center gap-2 rounded-full px-4 text-[13px] font-semibold text-white shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#80E9FF]"
-          style={{ background: "var(--color-primary-strong, #0C6FC9)" }}
-          aria-label={`See it work: ${cs.clientNameDisplay}`}
-        >
-          <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" /></svg>
-          See it work
-        </Link>
-      )}
+    <div className="case-study-card" data-case-filter={filterSlug}>
       <Link
         href={`/case-studies/${cs.slug}`}
         prefetch={false}
@@ -344,7 +332,7 @@ function HubCard({
         />
 
         <div
-          className={`text-[11px] font-medium uppercase tracking-[0.14em]${cs.demo ? " pr-36" : ""}`}
+          className="text-[11px] font-medium uppercase tracking-[0.14em]"
           style={{ color: "var(--theme-text-secondary)" }}
         >
           {cs.category}
