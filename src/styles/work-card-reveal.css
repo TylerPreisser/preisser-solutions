@@ -305,9 +305,10 @@
 }
 .ps-work-card__demo-badge:hover { background: var(--color-primary, #1590FF); }
 .ps-work-card__demo-badge:focus-visible { outline: 2px solid var(--color-cyan); outline-offset: 2px; }
-/* The badge stays where it is when the card opens (owner, 2026-09-29: a button
-   that vanishes on hover is useless); it sits above the panel and stays clickable. */
-.ps-work-card--open .ps-work-card__demo-badge { z-index: 5; }
+/* When the card opens, the panel's first button is the SAME See it work in
+   full width (uniform with the live-site button), so the face badge hands off
+   to it rather than overlapping the button column. */
+.ps-work-card--open .ps-work-card__demo-badge { opacity: 0; pointer-events: none; }
 
 /* The client's own live site. A filled pill, because this is the thing the
    owner asked for by name and it must not read as body text.
