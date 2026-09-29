@@ -268,48 +268,6 @@
 /* The Proof Stage link. A filled pill first in the row: the owner's whole
    point for these cards (2026-09-29) is a button that takes the visitor to
    SEE the thing working. Same contrast rule as the live-site pill. */
-/* Owner, 2026-09-29: the panel's buttons must be UNIFORM. The demo link takes
-   the exact same box as the live-site pill (full width, same fill, same
-   padding, same radius) so the two read as one set of controls. */
-.ps-work-card__panel-link--demo {
-  background: var(--color-primary-strong, #0C6FC9);
-  color: var(--color-white);
-  width: 100%;
-  justify-content: flex-start;
-  padding: 8px 16px;
-  text-align: left;
-}
-.ps-work-card__panel-link--demo:hover {
-  background: var(--color-primary-strong-hover, #0B68BE);
-}
-/* Closed-face badge: always visible (never gated on hover or device), so the
-   demo is discoverable without opening the panel; sits above the toggle. */
-.ps-work-card__demo-badge {
-  position: absolute;
-  right: 14px;
-  bottom: 14px;
-  z-index: 3;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 36px;
-  padding: 0 12px;
-  border-radius: 999px;
-  background: var(--color-primary-strong, #0C6FC9);
-  color: var(--color-white);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  text-decoration: none;
-  box-shadow: 0 6px 18px -8px rgba(12, 111, 201, 0.7);
-}
-.ps-work-card__demo-badge:hover { background: var(--color-primary, #1590FF); }
-.ps-work-card__demo-badge:focus-visible { outline: 2px solid var(--color-cyan); outline-offset: 2px; }
-/* When the card opens, the panel's first button is the SAME See it work in
-   full width (uniform with the live-site button), so the face badge hands off
-   to it rather than overlapping the button column. */
-.ps-work-card--open .ps-work-card__demo-badge { opacity: 0; pointer-events: none; }
-
 /* The client's own live site. A filled pill, because this is the thing the
    owner asked for by name and it must not read as body text.
    --color-primary-strong (#0C6FC9) not --color-primary (#1590FF): the logo

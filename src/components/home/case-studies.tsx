@@ -25,13 +25,6 @@ interface CaseStudyCard {
   /** Our own internal case-study page. Never a third-party destination. */
   href?: string;
   /**
-   * Deep link to the case study's Proof Stage (ADR-0016), `#see-it-work`.
-   * Owner, 2026-09-29: the whole point of these cards is a button that takes
-   * the visitor to SEE the thing working. Rendered as the first panel link and
-   * as a badge on the closed face, so it is discoverable without a hover.
-   */
-  demoHref?: string;
-  /**
    * The client's own public site, opened in a new tab from the bottom of the
    * revealed panel. Governed by DECISIONS/0002: a card only gets one when the
    * URL resolves 2xx AND the client is not one we anonymize. Deliberately a
@@ -114,9 +107,6 @@ const caseStudyCards: CaseStudyCard[] = [
     // only the card's link to it is gone. Do not "restore" this href.
     // Verified 2026-09-03: https://farm-books.com -> 200. See DECISIONS/0002.
     liveUrl: "https://farm-books.com",
-    // The Proof Stage on our own page is a different destination from the
-    // write-up: it is the demo itself (owner, 2026-09-29).
-    demoHref: "/case-studies/farmbooks#see-it-work",
     // Real FarmBooks mark — the actual PWA icon shipped at farm-books.com
     // (web/app/icon.svg, declared in web/app/manifest.ts).
     caseLogo: "/images/case-studies/farmbooks-logo.svg",
@@ -190,7 +180,6 @@ const caseStudyCards: CaseStudyCard[] = [
     // 2026-09-03 call that with the real thing one tap away a write-up about it
     // is the weaker destination. /case-studies/nwks-encounter still exists, is
     // in the sitemap, and is linked from the /case-studies grid.
-    demoHref: "/case-studies/nwks-encounter#see-it-work",
     liveUrl: "https://nwksencounter.com",
   },
   // Alliant Insurance ecosystem MGU: AI Submission Processing (anonymized per privacy rules)
@@ -205,7 +194,6 @@ const caseStudyCards: CaseStudyCard[] = [
       "Our own back office runs on the same kind of system we build for clients. Bank deposits arrive with almost nothing identifying who sent them, and an amount alone is not evidence of who paid. The matcher ties a deposit to an invoice only on the bank's own text plus an exact amount, and anything ambiguous waits for a person instead of being guessed at.",
     gradient: "linear-gradient(150deg, #0A1628 0%, #14243F 60%, #1F3558 100%)",
     href: "/case-studies/preisser-back-office",
-    demoHref: "/case-studies/preisser-back-office#see-it-work",
     svgIcon: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         {/* Ledger card */}
@@ -809,19 +797,8 @@ export function CaseStudies() {
                   <p className="ps-work-card__panel-body">{study.description}</p>
                 </div>
 
-                {(study.demoHref || study.href || study.liveUrl) && (
+                {(study.href || study.liveUrl) && (
                   <div className="ps-work-card__panel-links">
-                    {study.demoHref && (
-                      <a
-                        className="ps-work-card__panel-link ps-work-card__panel-link--demo"
-                        href={study.demoHref}
-                        aria-label={`See ${study.title} work on demonstration data`}
-                        tabIndex={isOpen ? undefined : -1}
-                      >
-                        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" /></svg>
-                        See it work
-                      </a>
-                    )}
                     {study.href && (
                       <a
                         className="ps-work-card__panel-link ps-work-card__panel-link--case"
@@ -862,16 +839,6 @@ export function CaseStudies() {
                   pointer-device label says "Click for more"; touch devices get
                   "Tap for more" via CSS @media (hover: none).
                   Decorative only (aria-hidden); a11y is on the toggle button. */}
-              {study.demoHref && (
-                <a
-                  className="ps-work-card__demo-badge"
-                  href={study.demoHref}
-                  aria-label={`See ${study.title} work on demonstration data`}
-                >
-                  <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" /></svg>
-                  See it work
-                </a>
-              )}
               <div className="ps-work-card__bob" aria-hidden="true">
                 <span className="ps-work-card__bob-label ps-work-card__bob-label--hover">Click for more</span>
                 <span className="ps-work-card__bob-label ps-work-card__bob-label--tap">Tap for more</span>
