@@ -4,12 +4,14 @@ import path from "node:path";
 import { ORIGIN, OUT_DIR, serveOut } from "./lib/serve-out";
 import { VIEWPORTS, vpName, type Vp } from "./lib/viewports";
 import {
+  aimAtNextStep,
   armEverything,
   contrast,
   endStateViolations,
   installRevealRecorder,
   overflowViolations,
   parseRgb,
+  revealInBand,
   renderedStageIds,
   stepBarOcclusion,
   tapViolations,
@@ -101,16 +103,32 @@ async function shot(page: Page, slug: string, engine: string, vp: Vp, theme: str
 }
 
 /**
- * Scrolls a track's top to a safe distance ABOVE the engine's entry line
- * (useStageTimeline.ts: `rootMargin: "0px 0px -35% 0px"`, i.e. the track must
- * cross 65% of the viewport height to start) and waits for it to settle at
- * "end". `scrollIntoViewIfNeeded()` is a no-op when a track is already
- * partly visible just below the fold, which left it sitting at "paused"
- * forever (review-F.md HIGH 1).
+ * Plays a track through the way a reader does. Scrolls its top a safe
+ * distance ABOVE the engine's entry line (`scrollIntoViewIfNeeded()` is a
+ * no-op when a track is already partly visible just below the fold, which
+ * left it sitting at "paused" forever, review-F.md HIGH 1), then, while it
+ * has not reached "end", brings each step it is HOLDING for into view
+ * (lane F7 item A: autoplay waits until the reader can see the step, so a
+ * track taller than the screen no longer finishes with nobody looking).
  */
+async function readTrack(t: ReturnType<Page["locator"]>): Promise<void> {
+  await installRecorder(t.page());
+  let nudge = 0;
+  await expect
+    .poll(
+      async () => {
+        const state = await t.getAttribute("data-track-state");
+        if (state !== "end") await t.evaluate(aimAtNextStep, nudge++);
+        return state;
+      },
+      { timeout: 60_000, intervals: [400], message: "the track never finished while its steps were brought into view" },
+    )
+    .toBe("end");
+}
+
 async function settleTrack(t: ReturnType<Page["locator"]>): Promise<void> {
-  await t.evaluate((el) => window.scrollBy(0, el.getBoundingClientRect().top - window.innerHeight * 0.3));
-  await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 60_000 });
+  await t.evaluate((el) => window.scrollBy({ top: el.getBoundingClientRect().top - window.innerHeight * 0.3, behavior: "instant" }));
+  await readTrack(t);
 }
 
 /**
@@ -264,7 +282,7 @@ for (const m of MANIFESTS) {
           await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 5_000 });
           await t.getByRole("button", { name: "Replay", exact: true }).click();
           await expect(t).toHaveAttribute("data-track-state", "playing");
-          await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 60_000 });
+          await readTrack(t);
           // Scoped to the INTERACTED track's own subtree, not the whole page:
           // useStageTimeline arms every below-the-fold track at mount by
           // design, so an adjacent track the test never scrolled to is
@@ -480,6 +498,80 @@ for (const m of MANIFESTS) {
           expect(await tourBtn.getAttribute("aria-pressed"), "the tour stopped instead of letting go of the scroll").toBe("true");
           const y2 = await page.evaluate(() => window.scrollY);
           expect(Math.abs(y2 - y1), `the tour moved the page ${(y2 - y1).toFixed(0)}px after the visitor scrolled 400px`).toBeLessThanOrEqual(1);
+        } finally {
+          await context.close();
+        }
+      });
+    }
+
+    // Lane F7 item A (final-BO.md B1 autoplay): a reader scrolling through
+    // the stage at reading speed, no taps. Every step autoplay reveals must
+    // be inside the band the reader can see AT THE MOMENT IT REVEALS -- below
+    // the header and anything pinned over it, above the phone control bar --
+    // or, for a step taller than that band, fill it. And autoplay itself
+    // never scrolls: no scroll call reaches the window from the kit. Speed:
+    // PS_READ_SPEED px/s (default 250 in the gate; the lane's proof ran 100).
+    for (const vp of [byName(320, 568), byName(375, 667), byName(393, 659), byName(390, 844)]) {
+      test(`${vpName(vp)} autoplay never reveals a step the reader cannot see, scrolling at reading speed`, async ({ browser, browserName }) => {
+        const speed = Number(process.env.PS_READ_SPEED ?? 250);
+        test.setTimeout(240_000);
+        const { context, page } = await open(browser, browserName, vp);
+        try {
+          await page.goto(`${ORIGIN}${m.route}`, { waitUntil: "load" });
+          await hydrated(page);
+          await installRecorder(page);
+          const run = await page.evaluate(async (speed) => {
+            const calls: string[] = [];
+            const scrollTo = window.scrollTo.bind(window);
+            const wrap = <T extends object>(obj: T, key: string, name: string) => {
+              const o = (obj as Record<string, unknown>)[key] as (...a: unknown[]) => unknown;
+              (obj as Record<string, unknown>)[key] = function (this: unknown, ...a: unknown[]) {
+                calls.push(`${name} ${JSON.stringify(a[0] ?? null)}`);
+                return o.apply(this, a);
+              };
+            };
+            wrap(window, "scrollTo", "window.scrollTo");
+            wrap(window, "scrollBy", "window.scrollBy");
+            wrap(window, "scroll", "window.scroll");
+            wrap(Element.prototype, "scrollIntoView", "scrollIntoView");
+            const stage = document.querySelector("[data-demo-stage]") as HTMLElement;
+            const r = stage.getBoundingClientRect();
+            const from = Math.max(0, window.scrollY + r.top - window.innerHeight);
+            const to = window.scrollY + r.bottom;
+            scrollTo({ top: from, behavior: "instant" });
+            await new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res)));
+            const t0 = performance.now();
+            await new Promise<void>((res) => {
+              const frame = () => {
+                const y = from + ((performance.now() - t0) / 1000) * speed;
+                if (y >= to) return res();
+                scrollTo({ top: y, behavior: "instant" });
+                requestAnimationFrame(frame);
+              };
+              requestAnimationFrame(frame);
+            });
+            await new Promise((res) => setTimeout(res, 500));
+            return { calls, from: Math.round(from), to: Math.round(to), secs: Math.round((performance.now() - t0) / 100) / 10 };
+          }, speed);
+          const recs = await page.evaluate(() => (window as unknown as { __reveals: RevealRecord[] }).__reveals);
+          console.log(
+            `[read] ${m.route} ${browserName} ${vpName(vp)} ${speed}px/s ${run.from}->${run.to} in ${run.secs}s: ${recs.length} reveals, ${run.calls.length} kit scroll calls`,
+          );
+          for (const r of recs) {
+            const v = revealInBand(r);
+            const gs = r.groups
+              .map((g) => `${g.host ? `on ${g.host} ` : ""}union ${g.union.top.toFixed(1)}..${g.union.bottom.toFixed(1)} band ${g.band.top.toFixed(1)}..${g.band.bottom.toFixed(1)} [${g.band.coveredBy}]`)
+              .join(" + ");
+            console.log(
+              `[reveal] ${m.route} ${browserName} ${vpName(vp)} ${r.track} s${r.step} ${r.els.length}el ${gs} ${v.fits ? "fits" : "taller"} ${v.ok ? "OK" : "OUT"}`,
+            );
+          }
+          expect(run.calls, "autoplay scrolled the window").toEqual([]);
+          expect(recs.length, "no step revealed while the reader scrolled the stage: nothing was exercised").toBeGreaterThan(0);
+          const out = recs
+            .filter((r) => !revealInBand(r).ok)
+            .map((r) => `${r.track} step ${r.step}: ${r.groups.map((g) => `union ${g.union.top.toFixed(1)}..${g.union.bottom.toFixed(1)}, band ${g.band.top.toFixed(1)}..${g.band.bottom.toFixed(1)}`).join(" + ")}`);
+          expect(out, "revealed outside the band the reader can see").toEqual([]);
         } finally {
           await context.close();
         }

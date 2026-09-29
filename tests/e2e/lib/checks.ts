@@ -374,6 +374,13 @@ export interface RevealRecord {
   band: Band;
   /** Every rendered [data-stage-step] element of this track that lost data-pending in this batch. */
   els: Array<Box & { label: string }>;
+  /**
+   * The step's elements split by the pinned element that CARRIES them (a
+   * region box drawn on the FarmBooks read's pinned photo), `host: null` for
+   * the ones in the page flow; each group with its own band. `union`/`band`
+   * above are the flow group's (or the only group's).
+   */
+  groups: Array<{ host: string | null; union: Box; band: Band }>;
   union: Box;
   /**
    * The element the kit scrolls to for this step (useStageTimeline.ts: the
@@ -401,9 +408,10 @@ export interface RevealRecord {
  * `page.evaluate(installRevealRecorder)`; read `window.__reveals`.
  *
  * The band is the reader's, stated independently of the kit: below the site
- * header (`--nav-height`) and any PINNED top-sticky element in the stage that
- * lies over the step (the tab bar; a scene's own pinned band, e.g. the
- * FarmBooks read's photo), and above this track's own sticky control bar.
+ * header (`--nav-height`) and any top-sticky element in the stage that lies
+ * over the step (the tab bar; a scene's own pinned band, e.g. the FarmBooks
+ * read's photo, pinned or being pushed out), and above this track's own
+ * sticky control bar.
  * A pinned element that CONTAINS a revealed element does not cover it -- it
  * carries it.
  *
@@ -418,6 +426,8 @@ export function installRevealRecorder(): void {
     __reveals?: RevealRecord[];
     __revealObserver?: MutationObserver;
     __tourPanelGeometry?: () => ReturnType<typeof tourPanelGeometry>;
+    __stageBand?: (track: Element, els: HTMLElement[], pinnedLine?: boolean) => Band;
+    __stageHost?: (el: Element) => HTMLElement | null;
   };
   if (w.__revealObserver) return;
   const log: RevealRecord[] = [];
@@ -427,20 +437,38 @@ export function installRevealRecorder(): void {
   const box = (r: DOMRect | Box): Box => ({ top: r.top, bottom: r.bottom });
   const ownOf = (track: Element, sel: string) => Array.from(track.querySelectorAll<HTMLElement>(sel)).filter((e) => e.closest("[data-track]") === track);
   const rendered = (e: Element) => e.getClientRects().length > 0;
-  const bandFor = (track: Element, els: HTMLElement[]): Band => {
+  // `pinnedLine`: take the band's bottom at the bar's PINNED line (viewport
+  // bottom less the bar and its gap), as the kit's hold does before a reveal;
+  // the default is the bar's actual box, the reader's truth at the reveal.
+  const bandFor = (track: Element, els: HTMLElement[], pinnedLine = false): Band => {
     const rects = els.map((e) => e.getBoundingClientRect());
     const left = Math.min(...rects.map((r) => r.left));
     const right = Math.max(...rects.map((r) => r.right));
+    const ubottom = Math.max(...rects.map((r) => r.bottom));
     const n = nav();
     let top = n;
     let coveredBy = "header";
     const stage = track.closest("[data-demo-stage]") ?? document.body;
-    for (const el of Array.from(stage.querySelectorAll<HTMLElement>("*"))) {
+    // Elements a pinned element carries are under nothing but the header: the
+    // carrier is the top layer of its stack (a sticky box resting in flow
+    // near it, e.g. the FarmBooks `.fb-read__cover`, is painted beneath it).
+    const carried = els.some((e) => {
+      for (let p = e.parentElement; p && p !== stage; p = p.parentElement) {
+        const pcs = getComputedStyle(p);
+        if (pcs.position === "sticky" && pcs.top !== "auto") return true;
+      }
+      return false;
+    });
+    for (const el of carried ? [] : Array.from(stage.querySelectorAll<HTMLElement>("*"))) {
       const cs = getComputedStyle(el);
       if (cs.position !== "sticky" || cs.top === "auto") continue;
       if (els.some((e) => el.contains(e))) continue;
       const r = el.getBoundingClientRect();
-      if (r.height === 0 || Math.abs(r.top - (parseFloat(cs.top) || 0)) > 1) continue; // not pinned: in flow, over nothing
+      // Bounds the band whenever it starts above the step's bottom: pinned,
+      // or pushed out by its container, it is over what slides under it (and
+      // past its top); resting in flow above the step it ends above it
+      // anyway. Only a box wholly below the step is ignored.
+      if (r.height === 0 || r.top >= ubottom) continue;
       if (r.right <= left || r.left >= right) continue; // beside the step, not over it
       if (r.bottom > top) {
         top = r.bottom;
@@ -451,9 +479,21 @@ export function installRevealRecorder(): void {
     const tabBar = tb && getComputedStyle(tb).position === "sticky" ? box(tb.getBoundingClientRect()) : null;
     const cb = ownOf(track, ".demo-controls")[0];
     const bar = cb && getComputedStyle(cb).position === "sticky" ? box(cb.getBoundingClientRect()) : null;
-    const bottom = Math.min(window.innerHeight, bar ? bar.top : Infinity);
+    const line = cb && bar ? window.innerHeight - (bar.bottom - bar.top) - (parseFloat(getComputedStyle(cb).bottom) || 0) : Infinity;
+    const bottom = Math.min(window.innerHeight, bar ? (pinnedLine ? line : bar.top) : Infinity);
     return { top, bottom, nav: n, tabBar, bar, coveredBy };
   };
+  w.__stageBand = bandFor;
+  /** The nearest top-sticky ancestor inside the stage: the pinned element that carries `el`, if any. */
+  const hostOf = (el: Element): HTMLElement | null => {
+    const stage = el.closest("[data-demo-stage]");
+    for (let e = el.parentElement; e && e !== stage; e = e.parentElement) {
+      const cs = getComputedStyle(e);
+      if (cs.position === "sticky" && cs.top !== "auto") return e;
+    }
+    return null;
+  };
+  w.__stageHost = hostOf;
   const targetOf = (track: Element): HTMLElement | null => {
     const step = Number(track.getAttribute("data-track-step") ?? "0");
     let el: HTMLElement | null = null;
@@ -516,6 +556,18 @@ export function installRevealRecorder(): void {
       const steps = els.map((e) => Number(e.dataset.stageStep));
       const rects = els.map((e) => e.getBoundingClientRect());
       const target = targetOf(track);
+      const byHost = new Map<HTMLElement | null, HTMLElement[]>();
+      for (const e of els) byHost.set(hostOf(e), [...(byHost.get(hostOf(e)) ?? []), e]);
+      const groups = Array.from(byHost.entries())
+        .sort(([a], [b]) => Number(a !== null) - Number(b !== null))
+        .map(([host, ge]) => {
+          const gr = ge.map((e) => e.getBoundingClientRect());
+          return {
+            host: host ? (host.getAttribute("class") || host.tagName).split(" ")[0] : null,
+            union: { top: Math.min(...gr.map((r) => r.top)), bottom: Math.max(...gr.map((r) => r.bottom)) },
+            band: bandFor(track, ge),
+          };
+        });
       const rec: RevealRecord = {
         seq: log.length,
         t: Math.round(performance.now() - t0),
@@ -524,9 +576,10 @@ export function installRevealRecorder(): void {
         state: track.getAttribute("data-track-state"),
         touring: touring(),
         scrollY: window.scrollY,
-        band: bandFor(track, els),
+        band: groups[0].band,
         els: els.map((e, i) => ({ ...box(rects[i]), label: label(e) })),
-        union: { top: Math.min(...rects.map((r) => r.top)), bottom: Math.max(...rects.map((r) => r.bottom)) },
+        groups,
+        union: groups[0].union,
         target: target ? box(target.getBoundingClientRect()) : null,
       };
       if (track.getAttribute("role") === "tabpanel" && rec.step === 1 && w.__tourPanelGeometry) rec.arrival = w.__tourPanelGeometry();
@@ -539,12 +592,72 @@ export function installRevealRecorder(): void {
 }
 
 /**
+ * The reader's next move on a track that is holding: scroll so the next
+ * pending step's rendered elements sit in the band (centred when they fit,
+ * top at the band's top when taller), measured with the recorder's own band
+ * (`installRevealRecorder` must be installed; it publishes
+ * `window.__stageBand`). Three passes, because a pinned element only pins
+ * once the page has moved. `nudge` shifts the aim a few px on alternate
+ * calls, so a fit that is a hair too tight is not retried at the same spot.
+ * Call via `track.evaluate(aimAtNextStep, n)`. Returns what it aimed at.
+ */
+export function aimAtNextStep(track: Element, nudge = 0): string {
+  const w = window as unknown as {
+    __stageBand?: (track: Element, els: HTMLElement[], pinnedLine?: boolean) => Band;
+    __stageHost?: (el: Element) => HTMLElement | null;
+  };
+  if (!w.__stageBand) throw new Error("aimAtNextStep: install the reveal recorder first");
+  const ownOf = (sel: string) =>
+    Array.from(track.querySelectorAll<HTMLElement>(sel)).filter((e) => e.closest("[data-track]") === track && e.getClientRects().length > 0);
+  const pending = ownOf("[data-stage-step][data-pending]");
+  if (pending.length === 0) return "nothing pending";
+  const k = Math.min(...pending.map((e) => Number(e.dataset.stageStep)));
+  const all = ownOf(`[data-stage-step="${k}"]`);
+  // Aim at the elements in the page flow; ones a pinned element carries come with it.
+  const flow = all.filter((e) => !w.__stageHost?.(e));
+  const els = flow.length ? flow : all;
+  const off = [0, -6, 6][nudge % 3];
+  for (let pass = 0; pass < 3; pass += 1) {
+    // The box each element takes before AND after it arrives, as the kit
+    // measures it (demo-stage.css: rise translateY(8px), pop scale(0.94)).
+    const spans = els.map((e) => {
+      const r = e.getBoundingClientRect();
+      let t = r.top;
+      let b = r.bottom;
+      if (e.dataset.fx === "rise") t -= 8;
+      else if (e.dataset.fx === "pop") {
+        const g = (r.height * (1 / 0.94 - 1)) / 2;
+        t -= g;
+        b += g;
+      }
+      return { t, b };
+    });
+    const top = Math.min(...spans.map((x) => x.t));
+    const bottom = Math.max(...spans.map((x) => x.b));
+    const band = w.__stageBand(track, els, true);
+    const h = bottom - top;
+    const bh = band.bottom - band.top;
+    // Fits: centred. Taller: its top just above the band's, so it covers it.
+    const dy = h <= bh ? top - (band.top + (bh - h) / 2 + off) : top - (band.top - 1);
+    if (Math.abs(dy) < 1) break;
+    window.scrollTo({ top: window.scrollY + dy, behavior: "instant" });
+  }
+  return `step ${k}`;
+}
+
+/**
  * Was this reveal inside the band? A step whose revealed elements fit the band
  * must sit wholly inside it; a step taller than the band cannot, so it must
  * FILL it (nothing of the band left uncovered). `tol` absorbs sub-pixel
  * rounding. Node side.
  */
-export function revealInBand(r: Pick<RevealRecord, "union" | "band">, tol = 1): { ok: boolean; fits: boolean; seenPx: number; heightPx: number; bandPx: number } {
+export function revealInBand(r: Pick<RevealRecord, "groups">, tol = 1): { ok: boolean; fits: boolean; seenPx: number; heightPx: number; bandPx: number } {
+  const all = r.groups.map((g) => boxInBand(g.union, g.band, tol));
+  return all.find((v) => !v.ok) ?? all[0];
+}
+
+function boxInBand(union: Box, band: Box, tol: number): { ok: boolean; fits: boolean; seenPx: number; heightPx: number; bandPx: number } {
+  const r = { union, band };
   const h = r.union.bottom - r.union.top;
   const bandPx = r.band.bottom - r.band.top;
   const seenPx = Math.max(0, Math.min(r.union.bottom, r.band.bottom) - Math.max(r.union.top, r.band.top));
