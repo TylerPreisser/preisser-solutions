@@ -60,6 +60,8 @@ export interface CaseStudySummary {
   oneLine: string;
   headlineResults: HeadlineResult[];
   hub?: HubCardCopy;
+  /** True when the page carries a Proof Stage (ADR-0016); the hub and home cards link to it. */
+  demo?: boolean;
 }
 
 export interface CaseStudyData {

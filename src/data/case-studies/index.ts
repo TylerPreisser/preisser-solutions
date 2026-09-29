@@ -179,6 +179,7 @@ export function toSummary(cs: CaseStudyData): CaseStudySummary {
     oneLine: cs.oneLine,
     headlineResults: cs.headlineResults,
     hub: cs.hub,
+    demo: Boolean(cs.demo && cs.demo.length > 0),
   };
 }
 

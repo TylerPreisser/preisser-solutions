@@ -12,11 +12,12 @@ import type { ReactNode } from "react";
 export function DemoSection({ stageIds, children }: { stageIds: readonly string[]; children: ReactNode }) {
   return (
     <section
+      id="see-it-work"
       className="demo-section"
       data-demo-section
       data-demo-expected={stageIds.join(" ")}
       aria-labelledby="demo-section-heading"
-      style={{ background: "var(--theme-section-alt)", transition: "background 300ms ease" }}
+      style={{ background: "var(--theme-section-alt)", transition: "background 300ms ease", scrollMarginTop: "calc(var(--nav-height, 80px) + 16px)" }}
     >
       <div className="ps-container">
         <div

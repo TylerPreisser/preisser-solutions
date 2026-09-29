@@ -633,8 +633,18 @@ for (const m of MANIFESTS) {
                 { timeout: 5_000, message: "the page never stopped scrolling" },
               )
               .toBe(true);
-            const geo = await t.evaluate(stepBarOcclusion);
+            let geo = await t.evaluate(stepBarOcclusion);
             if (geo === null) continue; // no sticky bar at this width/track (e.g. a beat with no reachable [data-stage-step] yet)
+            // The kit corrects a short landing within its settle window
+            // (useStageTimeline.ts SETTLE_WINDOW_MS, a late layout shift on a
+            // cold first load): if the first read is short, wait that window
+            // out once and read again. Still a real assertion: the second
+            // read must clear the bar by the designed 8px.
+            if (-geo.occludedPx < 8) {
+              await page.waitForTimeout(1_600);
+              geo = await t.evaluate(stepBarOcclusion);
+              if (geo === null) continue;
+            }
             // Designed clearance, not flush: the kit lands a tapped step's
             // bottom BAR_CLEARANCE_PX (8px) above the bar's top. A flush
             // landing let rounding tip tall FarmBooks cards up to 2px under
