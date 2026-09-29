@@ -182,6 +182,10 @@ export const invented: InventedSet = {
     "Subject",
     "Letter",
     "Letters",
+    // The phone before strip (BeforeStrip.tsx): its toggle and the Email title.
+    "Show",
+    "Hide",
+    "Emailed",
     "History",
     "Rule",
     "Rules",

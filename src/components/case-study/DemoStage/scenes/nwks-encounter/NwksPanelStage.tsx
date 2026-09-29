@@ -9,6 +9,7 @@ import { CabinsScreen } from "./CabinsTab";
 import { EmailScreen } from "./EmailTab";
 import { DashboardBefore, AttendeesBefore, OrgSheetBefore, CabinsBefore, EmailBefore } from "./OldMaterials";
 import { LookoutScreen } from "./LookoutTab";
+import { BeforeStrip } from "./BeforeStrip";
 import "./nwks-admin.css";
 
 /**
@@ -55,11 +56,11 @@ export function NwksPanelStage() {
         slots={{
           panel: {
             tabs: {
-              dashboard: { before: <DashboardBefore />, screen: <DashboardScreen /> },
-              attendees: { before: <AttendeesBefore />, screen: <AttendeesScreen /> },
-              "org-sheet": { before: <OrgSheetBefore />, screen: <OrgSheetScreen /> },
-              cabins: { before: <CabinsBefore />, screen: <CabinsScreen /> },
-              email: { before: <EmailBefore />, screen: <EmailScreen /> },
+              dashboard: { before: <BeforeStrip title="A form that shut when full"><DashboardBefore /></BeforeStrip>, screen: <DashboardScreen /> },
+              attendees: { before: <BeforeStrip title="A call-back list, by phone"><AttendeesBefore /></BeforeStrip>, screen: <AttendeesScreen /> },
+              "org-sheet": { before: <BeforeStrip title="A re-typed team workbook"><OrgSheetBefore /></BeforeStrip>, screen: <OrgSheetScreen /> },
+              cabins: { before: <BeforeStrip title="A rebuilt room spreadsheet"><CabinsBefore /></BeforeStrip>, screen: <CabinsScreen /> },
+              email: { before: <BeforeStrip title="Emailed by hand, one by one"><EmailBefore /></BeforeStrip>, screen: <EmailScreen /> },
               lookout: { screen: <LookoutScreen /> },
             },
           },
