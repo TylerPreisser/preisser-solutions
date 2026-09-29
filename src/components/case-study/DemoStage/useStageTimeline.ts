@@ -273,6 +273,15 @@ export function useStageTimeline(
   // [data-stage-step] of its own (e.g. a caption-only step), and `back()`
   // must re-reveal whichever element is now current, not necessarily one
   // tagged with the exact number just landed on.
+  //
+  // Within that step it takes the LAST element (`>=`), not the first: a step
+  // that reveals two rows (the back-office Read, step 3) scrolled only its
+  // upper row clear and left the lower one half under the bar at 320x568
+  // (final-BO.md item 2). The rows sit in order, so clearing the last clears
+  // the ones above it. Only rendered elements count: desk and phone variants
+  // both render (ProductScreen.tsx), and `>=` would otherwise land on the
+  // hidden variant's copy, a display:none box scrollIntoView cannot bring
+  // anywhere.
   useEffect(() => {
     if (!advanced.current) return;
     advanced.current = false;
@@ -283,8 +292,9 @@ export function useStageTimeline(
     let el: HTMLElement | null = null;
     let elStep = -1;
     for (const e of own(root, "[data-stage-step]")) {
+      if (e.getClientRects().length === 0) continue;
       const k = Number(e.dataset.stageStep);
-      if (k <= s.step && k > elStep) {
+      if (k <= s.step && k >= elStep) {
         el = e;
         elStep = k;
       }

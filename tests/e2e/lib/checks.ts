@@ -315,6 +315,12 @@ export function tourPanelGeometry(): {
  * happen; every track renders one) or the bar is not `position: sticky`
  * (desktop, or a phone width the CSS treats as desktop) -- there is nothing
  * to occlude with in that case.
+ *
+ * Measures the LAST element of the highest reached step (`>=`), the same one
+ * the kit scrolls to (useStageTimeline.ts): a step that reveals two rows
+ * (the back-office Read, step 3) must bring its lower row clear, and the
+ * first row sits above it (final-BO.md item 2: `>` measured the upper row,
+ * which cleared, while the lower one sat half under the bar at 320x568).
  */
 export function stepBarOcclusion(track: Element): { elBottom: number; barTop: number; occludedPx: number } | null {
   const bar = track.querySelector<HTMLElement>(".demo-controls");
@@ -324,8 +330,9 @@ export function stepBarOcclusion(track: Element): { elBottom: number; barTop: nu
   let elStep = -1;
   for (const e of Array.from(track.querySelectorAll("[data-stage-step]"))) {
     if (e.closest("[data-track]") !== track) continue; // a nested tabbed panel's own step; tracks never nest, but be explicit
+    if (e.getClientRects().length === 0) continue; // the hidden desk/phone variant has no box to measure
     const k = Number((e as HTMLElement).dataset.stageStep);
-    if (k <= step && k > elStep) {
+    if (k <= step && k >= elStep) {
       el = e;
       elStep = k;
     }
