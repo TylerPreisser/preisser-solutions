@@ -4,17 +4,21 @@ import path from "node:path";
 import { ORIGIN, OUT_DIR, serveOut } from "./lib/serve-out";
 import { VIEWPORTS, vpName, type Vp } from "./lib/viewports";
 import {
+  aimAtNextStep,
   armEverything,
   contrast,
   endStateViolations,
+  installRevealRecorder,
   overflowViolations,
   parseRgb,
+  revealInBand,
   renderedStageIds,
   stepBarOcclusion,
   tapViolations,
   themeReadout,
   tourPanelGeometry,
   trackEndStateViolations,
+  type RevealRecord,
 } from "./lib/checks";
 
 /** One file per stage lane: tests/e2e/stages/<slug>.json = { route, stages }. */
@@ -99,16 +103,32 @@ async function shot(page: Page, slug: string, engine: string, vp: Vp, theme: str
 }
 
 /**
- * Scrolls a track's top to a safe distance ABOVE the engine's entry line
- * (useStageTimeline.ts: `rootMargin: "0px 0px -35% 0px"`, i.e. the track must
- * cross 65% of the viewport height to start) and waits for it to settle at
- * "end". `scrollIntoViewIfNeeded()` is a no-op when a track is already
- * partly visible just below the fold, which left it sitting at "paused"
- * forever (review-F.md HIGH 1).
+ * Plays a track through the way a reader does. Scrolls its top a safe
+ * distance ABOVE the engine's entry line (`scrollIntoViewIfNeeded()` is a
+ * no-op when a track is already partly visible just below the fold, which
+ * left it sitting at "paused" forever, review-F.md HIGH 1), then, while it
+ * has not reached "end", brings each step it is HOLDING for into view
+ * (lane F7 item A: autoplay waits until the reader can see the step, so a
+ * track taller than the screen no longer finishes with nobody looking).
  */
+async function readTrack(t: ReturnType<Page["locator"]>): Promise<void> {
+  await installRecorder(t.page());
+  let nudge = 0;
+  await expect
+    .poll(
+      async () => {
+        const state = await t.getAttribute("data-track-state");
+        if (state !== "end") await t.evaluate(aimAtNextStep, nudge++);
+        return state;
+      },
+      { timeout: 60_000, intervals: [400], message: "the track never finished while its steps were brought into view" },
+    )
+    .toBe("end");
+}
+
 async function settleTrack(t: ReturnType<Page["locator"]>): Promise<void> {
-  await t.evaluate((el) => window.scrollBy(0, el.getBoundingClientRect().top - window.innerHeight * 0.3));
-  await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 60_000 });
+  await t.evaluate((el) => window.scrollBy({ top: el.getBoundingClientRect().top - window.innerHeight * 0.3, behavior: "instant" }));
+  await readTrack(t);
 }
 
 /**
@@ -130,6 +150,15 @@ async function settleVisibleTracks(page: Page): Promise<{ total: number; armedBe
     await settleTrack(t);
   }
   return { total, armedBelowFold };
+}
+
+/**
+ * Installs the reveal recorder (lib/checks.ts) and, for it to call at each
+ * tab panel's step 1, `tourPanelGeometry`. Both run in the page.
+ */
+async function installRecorder(page: Page) {
+  await page.evaluate(`window.__tourPanelGeometry = ${tourPanelGeometry.toString()}`);
+  await page.evaluate(installRevealRecorder);
 }
 
 test("every built stage route is declared in tests/e2e/stages, and every declared route is built", () => {
@@ -253,7 +282,7 @@ for (const m of MANIFESTS) {
           await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 5_000 });
           await t.getByRole("button", { name: "Replay", exact: true }).click();
           await expect(t).toHaveAttribute("data-track-state", "playing");
-          await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 60_000 });
+          await readTrack(t);
           // Scoped to the INTERACTED track's own subtree, not the whole page:
           // useStageTimeline arms every below-the-fold track at mount by
           // design, so an adjacent track the test never scrolled to is
@@ -269,21 +298,28 @@ for (const m of MANIFESTS) {
       });
     }
 
-    // Every tour stop, not the first three; with motion at a phone and a desk
-    // width, and once under reduced motion at the phone width (review-F4.md:
-    // Firefox + reduced motion landed the panel 140px under the pinned bar
-    // while every with-motion run passed).
+    // Every tour stop, not the first three; with motion at two phones and a
+    // desk width, and once under reduced motion at the phone width
+    // (review-F4.md: Firefox + reduced motion landed the panel 140px under
+    // the pinned bar while every with-motion run passed).
+    //
+    // Measured by the in-page reveal recorder (lib/checks.ts), not by polling
+    // after the fact: the tour now also scrolls each STEP clear (lane F7 item
+    // B), so "where the panel landed" only exists at the moment its step 1
+    // reveals -- the engine holds that tick until the panel scroll has come
+    // to rest -- and "where each step landed" once the window is still again.
     for (const { vp, reduced } of [
+      { vp: byName(320, 568), reduced: false },
       { vp: byName(390, 844), reduced: false },
       { vp: byName(1440, 900), reduced: false },
       { vp: byName(390, 844), reduced: true },
     ]) {
       const mode = reduced ? " reduced motion:" : "";
-      test(`${vpName(vp)}${mode} "Take the tour" pins the bar, lands every panel just under it, and keeps the active tab in view`, async ({
+      test(`${vpName(vp)}${mode} "Take the tour" pins the bar, lands every panel just under it, keeps the active tab in view, and scrolls every step clear`, async ({
         browser,
         browserName,
       }) => {
-        test.setTimeout(240_000);
+        test.setTimeout(300_000);
         const { context, page } = await open(browser, browserName, vp, { reduced });
         try {
           await page.goto(`${ORIGIN}${m.route}`, { waitUntil: "load" });
@@ -292,8 +328,9 @@ for (const m of MANIFESTS) {
           if ((await tabbed.count()) === 0) {
             test.skip(true, `${m.route}: no tabbed screen (ADR-0017) on this route`);
           }
-          const nTabs = await tabbed.getByRole("tab").count();
-          expect(nTabs, `${m.route}: a tabbed screen with fewer than two tabs has no tour to check`).toBeGreaterThan(1);
+          const tabs = await tabbed.getByRole("tab").evaluateAll((els) => els.map((e) => ({ label: e.textContent ?? "", panel: e.getAttribute("aria-controls") ?? "" })));
+          expect(tabs.length, `${m.route}: a tabbed screen with fewer than two tabs has no tour to check`).toBeGreaterThan(1);
+          await installRecorder(page);
           // Start from the top of the page, and fire a real DOM click
           // (`el.click()`) rather than Playwright's `.click()`: the latter
           // auto-scrolls its target into view as part of its own
@@ -301,46 +338,21 @@ for (const m of MANIFESTS) {
           // reasonable position by itself and mask a broken fix underneath
           // (review-NW.md B3 measured scrollY stuck at an ARBITRARY position
           // for the whole tour -- wherever a real click happened to leave it).
-          await page.evaluate(() => window.scrollTo(0, 0));
-          await tabbed
-            .getByRole("button", { name: "Take the tour" })
-            .evaluate((el) => (el as HTMLButtonElement).click());
+          await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+          const tourBtn = tabbed.locator(".demo-tabs__tour");
+          await tourBtn.evaluate((el) => (el as HTMLButtonElement).click());
+          await expect(tourBtn).toHaveAttribute("aria-pressed", "true");
+          await expect(tourBtn, "the tour never finished").toHaveAttribute("aria-pressed", "false", { timeout: 240_000 });
+          await page.waitForTimeout(1_000); // the last step's landing record
+          const recs = (await page.evaluate(() => (window as unknown as { __reveals: RevealRecord[] }).__reveals)).filter((r) => r.touring);
 
-          const activeLabel = () => page.locator('.demo-tabs__tab[aria-selected="true"]').first().textContent();
-          let prevLabel = "";
-          for (let stop = 0; stop < nTabs; stop++) {
-            await expect
-              .poll(async () => ((await activeLabel()) ?? "") !== prevLabel, {
-                timeout: 40_000,
-                message: `the tour never reached a new tab for stop ${stop}`,
-              })
-              .toBe(true);
-            prevLabel = (await activeLabel()) ?? "";
-            // Let a real (non-reduced) smooth scroll settle before measuring:
-            // poll scrollY until two consecutive reads agree, rather than a
-            // fixed wait -- the distance from page top to a stage many
-            // screens down took ~1.5s to settle in Chromium. A short wait
-            // FIRST, before the stability baseline: a poll started at
-            // scrollY 0 can catch two back-to-back reads before the
-            // browser's own scroll animation has begun (measured in WebKit),
-            // reporting "stable" at the pre-scroll position.
-            await page.waitForTimeout(300);
-            let lastY = -1;
-            await expect
-              .poll(
-                async () => {
-                  const y = await page.evaluate(() => window.scrollY);
-                  const stable = y === lastY;
-                  lastY = y;
-                  return stable;
-                },
-                { timeout: 10_000, message: "the page never stopped scrolling" },
-              )
-              .toBe(true);
-            const g = await page.evaluate(tourPanelGeometry);
-            expect(g, `${m.route} ${vpName(vp)} stop ${stop}: no tabbed-screen geometry to check`).not.toBeNull();
-            const geo = g!;
-            const at = `stop ${stop} (${prevLabel})`;
+          // 1. Arrival: every stop's panel landed under the pinned bar, with
+          // its tab in view, at the moment its first step revealed.
+          const arrivals = tabs.map(({ label, panel }) => ({ label, rec: recs.find((r) => r.arrival && r.track.endsWith(`#${panel}`)) }));
+          for (const [stop, { label, rec }] of arrivals.entries()) {
+            const at = `stop ${stop} (${label})`;
+            expect(rec?.arrival, `${m.route} ${vpName(vp)} ${at}: no step-1 reveal recorded for this panel`).toBeTruthy();
+            const geo = rec!.arrival!;
             // ABSOLUTE placement first (review-F4.md MEDIUM): relative checks
             // alone passed while the whole tabbed screen rested half-way down
             // the screen (panel top 443 of 844, the bar never pinned). The
@@ -352,7 +364,6 @@ for (const m of MANIFESTS) {
               Math.abs(geo.bar.top - geo.nav),
               `${at}: bar top ${geo.bar.top.toFixed(1)} is not at the header's edge (${geo.nav}) -- the tour did not bring the bar up`,
             ).toBeLessThanOrEqual(1);
-            // The panel's top is in the top third of the viewport.
             expect(geo.panelTop, `${at}: panel top ${geo.panelTop.toFixed(1)} is not in the top third of the viewport (${geo.viewportH}px)`).toBeLessThan(
               geo.viewportH / 3,
             );
@@ -381,18 +392,186 @@ for (const m of MANIFESTS) {
               ).toBeLessThanOrEqual(geo.floor + 16);
             }
             // The active tab's box is inside the bar, and inside the tab
-            // list's own horizontal scroller (not clipped by it).
-            expect(geo.tab.top, `${at}: active tab top ${geo.tab.top} above the bar (${geo.bar.top})`).toBeGreaterThanOrEqual(geo.bar.top - 1);
-            expect(geo.tab.bottom, `${at}: active tab bottom ${geo.tab.bottom} below the bar (${geo.bar.bottom})`).toBeLessThanOrEqual(
-              geo.bar.bottom + 1,
-            );
-            expect(geo.tab.left, `${at}: active tab left ${geo.tab.left} is left of the tab list's own scroller (${geo.list.left})`).toBeGreaterThanOrEqual(
-              geo.list.left - 1,
-            );
-            expect(geo.tab.right, `${at}: active tab right ${geo.tab.right} is right of the tab list's own scroller (${geo.list.right})`).toBeLessThanOrEqual(
-              geo.list.right + 1,
+            // list's own horizontal scroller (not clipped by it) -- read
+            // where it RESTS (`arrivalRest`), once the list's own smooth
+            // scroll has finished too.
+            const rest = rec!.arrivalRest;
+            expect(rest, `${at}: the step-1 reveal never came to rest`).toBeTruthy();
+            const { tab, list, bar } = rest!;
+            expect(tab.top, `${at}: active tab top ${tab.top} above the bar (${bar.top})`).toBeGreaterThanOrEqual(bar.top - 1);
+            expect(tab.bottom, `${at}: active tab bottom ${tab.bottom} below the bar (${bar.bottom})`).toBeLessThanOrEqual(bar.bottom + 1);
+            expect(tab.left, `${at}: active tab left ${tab.left} is left of the tab list's own scroller (${list.left})`).toBeGreaterThanOrEqual(list.left - 1);
+            expect(tab.right, `${at}: active tab right ${tab.right} is right of the tab list's own scroller (${list.right})`).toBeLessThanOrEqual(list.right + 1);
+          }
+
+          // 2. Every step of every stop (lane F7 item B, NWKS B3: the phone
+          // tour played steps 2+ behind the control bar): once the page is
+          // still, the element the step scrolled to sits between the pinned
+          // tab bar and the pinned control bar. Only where both are pinned
+          // (below 1024px); on desktop neither bar can cover a step. An
+          // element TALLER than that band (the Attendees roster, 1011px at
+          // 390x844) cannot fit, so it must start under the tab bar and fill
+          // the band down to the control bar -- its top is what the reader
+          // reads first.
+          const stepped = recs.filter((r) => r.landed && r.landed.band.bar && r.landed.band.tabBar && r.landed.target);
+          if (vp.w < 1024) {
+            const perStop = new Map<string, string[]>();
+            for (const r of stepped) {
+              const l = r.landed!;
+              const t = l.target!;
+              const below = l.band.bar!.top - t.bottom;
+              const under = t.top - l.band.tabBar!.bottom;
+              const tall = t.bottom - t.top > l.band.bar!.top - l.band.tabBar!.bottom;
+              const line = `s${r.step} ${tall ? "tall " : ""}${below.toFixed(1)}/${under.toFixed(1)}`;
+              perStop.set(r.track, [...(perStop.get(r.track) ?? []), line]);
+              expect(under, `${r.track} step ${r.step}: top ${t.top.toFixed(1)} is under the tab bar (bottom ${l.band.tabBar!.bottom.toFixed(1)})`).toBeGreaterThanOrEqual(-1);
+              if (tall) {
+                expect(below, `${r.track} step ${r.step}: a ${(t.bottom - t.top).toFixed(0)}px element ends ${below.toFixed(1)}px above the control bar, leaving the band part empty`).toBeLessThanOrEqual(1);
+              } else {
+                expect(below, `${r.track} step ${r.step}: bottom ${t.bottom.toFixed(1)} is under the control bar (top ${l.band.bar!.top.toFixed(1)})`).toBeGreaterThanOrEqual(-1);
+              }
+            }
+            for (const [track, lines] of perStop) console.log(`[tour-steps] ${browserName} ${vpName(vp)}${mode} ${track}: ${lines.join(" | ")}  (px above control bar / px below tab bar)`);
+            const reached = new Set(stepped.map((r) => r.track));
+            expect(reached.size, `only ${reached.size} of ${tabs.length} tour stops recorded a landed step`).toBe(tabs.length);
+          }
+        } finally {
+          await context.close();
+        }
+      });
+    }
+
+    for (const vp of [byName(390, 844)]) {
+      test(`${vpName(vp)} a visitor's own scroll of more than 300px takes the page back from the tour`, async ({ browser, browserName }) => {
+        test.setTimeout(120_000);
+        const { context, page } = await open(browser, browserName, vp);
+        try {
+          await page.goto(`${ORIGIN}${m.route}`, { waitUntil: "load" });
+          await hydrated(page);
+          const tabbed = page.locator(".demo-tabs").first();
+          if ((await tabbed.count()) === 0) {
+            test.skip(true, `${m.route}: no tabbed screen (ADR-0017) on this route`);
+          }
+          await installRecorder(page);
+          await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+          const tourBtn = tabbed.locator(".demo-tabs__tour");
+          await tourBtn.evaluate((el) => (el as HTMLButtonElement).click());
+          // Step 1 of the first stop has revealed and the page is at rest.
+          await expect
+            .poll(() => page.evaluate(() => (window as unknown as { __reveals: RevealRecord[] }).__reveals.some((r) => r.touring && r.landed)), {
+              timeout: 30_000,
+              message: "the tour never revealed and landed a step",
+            })
+            .toBe(true);
+          await page.waitForTimeout(400); // past the tour's own-scroll window
+          const y0 = await page.evaluate(() => window.scrollY);
+          // A REAL input, as the kit counts only a scroll that follows the
+          // visitor's own wheel/touch/key/pointer (layout-driven scroll
+          // anchoring moves the window too, with no input). Mobile WebKit has
+          // no mouse wheel in Playwright; it takes PageUp (~800px, smooth).
+          if (browserName === "webkit") {
+            await page.keyboard.press("PageUp");
+          } else {
+            await page.mouse.move(vp.w / 2, vp.h / 2);
+            await page.mouse.wheel(0, -400);
+          }
+          await page.waitForTimeout(300); // a smooth key scroll has started
+          let lastY = Number.NaN;
+          let reached = y0;
+          await expect
+            .poll(
+              async () => {
+                const y = await page.evaluate(() => window.scrollY);
+                reached = Math.min(reached, y);
+                const still = y === lastY;
+                lastY = y;
+                return still;
+              },
+              { timeout: 5_000, intervals: [150], message: "the visitor's scroll never came to rest" },
+            )
+            .toBe(true);
+          expect(y0 - reached, "the visitor's scroll did not move the page more than 300px").toBeGreaterThan(300);
+          const y1 = reached;
+          // Three step holds: without the guard, every followed step of the
+          // stop scrolls the page back down to itself.
+          await page.waitForTimeout(6_000);
+          expect(await tourBtn.getAttribute("aria-pressed"), "the tour stopped instead of letting go of the scroll").toBe("true");
+          const y2 = await page.evaluate(() => window.scrollY);
+          expect(Math.abs(y2 - y1), `the tour moved the page ${(y2 - y1).toFixed(0)}px after the visitor scrolled 400px`).toBeLessThanOrEqual(1);
+        } finally {
+          await context.close();
+        }
+      });
+    }
+
+    // Lane F7 item A (final-BO.md B1 autoplay): a reader scrolling through
+    // the stage at reading speed, no taps. Every step autoplay reveals must
+    // be inside the band the reader can see AT THE MOMENT IT REVEALS -- below
+    // the header and anything pinned over it, above the phone control bar --
+    // or, for a step taller than that band, fill it. And autoplay itself
+    // never scrolls: no scroll call reaches the window from the kit. Speed:
+    // PS_READ_SPEED px/s (default 250 in the gate; the lane's proof ran 100).
+    for (const vp of [byName(320, 568), byName(375, 667), byName(393, 659), byName(390, 844)]) {
+      test(`${vpName(vp)} autoplay never reveals a step the reader cannot see, scrolling at reading speed`, async ({ browser, browserName }) => {
+        const speed = Number(process.env.PS_READ_SPEED ?? 250);
+        test.setTimeout(240_000);
+        const { context, page } = await open(browser, browserName, vp);
+        try {
+          await page.goto(`${ORIGIN}${m.route}`, { waitUntil: "load" });
+          await hydrated(page);
+          await installRecorder(page);
+          const run = await page.evaluate(async (speed) => {
+            const calls: string[] = [];
+            const scrollTo = window.scrollTo.bind(window);
+            const wrap = <T extends object>(obj: T, key: string, name: string) => {
+              const o = (obj as Record<string, unknown>)[key] as (...a: unknown[]) => unknown;
+              (obj as Record<string, unknown>)[key] = function (this: unknown, ...a: unknown[]) {
+                calls.push(`${name} ${JSON.stringify(a[0] ?? null)}`);
+                return o.apply(this, a);
+              };
+            };
+            wrap(window, "scrollTo", "window.scrollTo");
+            wrap(window, "scrollBy", "window.scrollBy");
+            wrap(window, "scroll", "window.scroll");
+            wrap(Element.prototype, "scrollIntoView", "scrollIntoView");
+            const stage = document.querySelector("[data-demo-stage]") as HTMLElement;
+            const r = stage.getBoundingClientRect();
+            const from = Math.max(0, window.scrollY + r.top - window.innerHeight);
+            const to = window.scrollY + r.bottom;
+            scrollTo({ top: from, behavior: "instant" });
+            await new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res)));
+            const t0 = performance.now();
+            await new Promise<void>((res) => {
+              const frame = () => {
+                const y = from + ((performance.now() - t0) / 1000) * speed;
+                if (y >= to) return res();
+                scrollTo({ top: y, behavior: "instant" });
+                requestAnimationFrame(frame);
+              };
+              requestAnimationFrame(frame);
+            });
+            await new Promise((res) => setTimeout(res, 500));
+            return { calls, from: Math.round(from), to: Math.round(to), secs: Math.round((performance.now() - t0) / 100) / 10 };
+          }, speed);
+          const recs = await page.evaluate(() => (window as unknown as { __reveals: RevealRecord[] }).__reveals);
+          console.log(
+            `[read] ${m.route} ${browserName} ${vpName(vp)} ${speed}px/s ${run.from}->${run.to} in ${run.secs}s: ${recs.length} reveals, ${run.calls.length} kit scroll calls`,
+          );
+          for (const r of recs) {
+            const v = revealInBand(r);
+            const gs = r.groups
+              .map((g) => `${g.host ? `on ${g.host} ` : ""}union ${g.union.top.toFixed(1)}..${g.union.bottom.toFixed(1)} band ${g.band.top.toFixed(1)}..${g.band.bottom.toFixed(1)} [${g.band.coveredBy}]`)
+              .join(" + ");
+            console.log(
+              `[reveal] ${m.route} ${browserName} ${vpName(vp)} ${r.track} s${r.step} ${r.els.length}el ${gs} ${v.fits ? "fits" : "taller"} ${v.ok ? "OK" : "OUT"}`,
             );
           }
+          expect(run.calls, "autoplay scrolled the window").toEqual([]);
+          expect(recs.length, "no step revealed while the reader scrolled the stage: nothing was exercised").toBeGreaterThan(0);
+          const out = recs
+            .filter((r) => !revealInBand(r).ok)
+            .map((r) => `${r.track} step ${r.step}: ${r.groups.map((g) => `union ${g.union.top.toFixed(1)}..${g.union.bottom.toFixed(1)}, band ${g.band.top.toFixed(1)}..${g.band.bottom.toFixed(1)}`).join(" + ")}`);
+          expect(out, "revealed outside the band the reader can see").toEqual([]);
         } finally {
           await context.close();
         }
@@ -456,10 +635,17 @@ for (const m of MANIFESTS) {
               .toBe(true);
             const geo = await t.evaluate(stepBarOcclusion);
             if (geo === null) continue; // no sticky bar at this width/track (e.g. a beat with no reachable [data-stage-step] yet)
+            // Designed clearance, not flush: the kit lands a tapped step's
+            // bottom BAR_CLEARANCE_PX (8px) above the bar's top. A flush
+            // landing let rounding tip tall FarmBooks cards up to 2px under
+            // the bar (fb-stage-gatefix-20260929.md), so "<= 1px under" was
+            // the wrong bar to clear.
+            const clearance = -geo.occludedPx;
+            console.log(`[clearance] ${m.route} ${browserName} ${vpName(vp)} step ${i + 1}: ${clearance.toFixed(2)}px (row bottom ${geo.elBottom.toFixed(2)}, bar top ${geo.barTop.toFixed(2)})`);
             expect(
-              geo.occludedPx,
-              `step ${i + 1}: revealed row bottom ${geo.elBottom.toFixed(1)} is ${geo.occludedPx.toFixed(1)}px under the bar top (${geo.barTop.toFixed(1)})`,
-            ).toBeLessThanOrEqual(1);
+              clearance,
+              `step ${i + 1}: revealed row bottom ${geo.elBottom.toFixed(1)} is only ${clearance.toFixed(1)}px above the bar top (${geo.barTop.toFixed(1)}); the design is at least 8px`,
+            ).toBeGreaterThanOrEqual(8);
           }
         } finally {
           await context.close();

@@ -1,12 +1,68 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode, type RefObject } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode, type RefObject } from "react";
 import type { DemoScreenBeat, DemoTab } from "@/types/demo-stage";
 import { BeatHead } from "./Beat";
 import { StepControls } from "./StepControls";
-import { useStageTimeline } from "./useStageTimeline";
+import { BAR_CLEARANCE_PX, useStageTimeline } from "./useStageTimeline";
 
 const TOUR_DWELL_MS = 2200;
+/** A visitor's own scroll past this, while the tour runs, takes the page back from it. */
+const MANUAL_SCROLL_STOP_PX = 300;
+/**
+ * The tour's own scroll counts as "in flight" from its call until the window
+ * has been still this long (or OWN_SCROLL_START_MS passes with no scroll at
+ * all, e.g. a no-op scrollIntoView); scroll events inside that window are the
+ * tour's, never the visitor's.
+ */
+const OWN_SCROLL_IDLE_MS = 200;
+const OWN_SCROLL_START_MS = 400;
+/**
+ * A scroll is the visitor's only within this long of their own input (wheel,
+ * touch, key, pointer). Anything else that moves the window -- the browser's
+ * scroll anchoring when a panel above the fold changes height at rest -- is
+ * not a visitor's scroll (measured, WebKit, NWKS 320x568: the Org Sheet
+ * settling to its end frame moved the window ~1,046px with no input at all,
+ * and a scroll-only detector took the page away from the tour).
+ */
+const USER_INPUT_MS = 1500;
+/** The tab list's own scroll counts as at rest after this many still frames. */
+const LIST_STILL_FRAMES = 6;
+const LIST_REST_MAX_MS = 1500;
+const USER_INPUTS = ["wheel", "touchstart", "touchmove", "keydown", "pointerdown"] as const;
+/**
+ * The panel scroll's landing watch: frames of stillness that count as "came
+ * to rest", how many times a scroll that came to rest short is re-issued, and
+ * the watch's ceiling. Measured need (WebKit, NWKS, 320x568, Org Sheet ->
+ * Cabins): the tab switch's own layout shift jumped the window 32px in the
+ * same frame as the smooth panel scroll, and WebKit dropped the scroll, so
+ * the panel never came up.
+ */
+const LAND_STILL_FRAMES = 9;
+const LAND_RETRIES = 2;
+const LAND_MAX_MS = 4000;
+
+/**
+ * The tour's hold on the page's scroll (item B, lane F7). While `touring`, the
+ * tour scrolls each tab's panel in and each step of it clear (`follow`). A
+ * visitor who scrolls more than MANUAL_SCROLL_STOP_PX themselves -- measured
+ * from where the tour's own last scroll left the page -- clears `follow` for
+ * the rest of the tour: it keeps playing and changing tabs, but never moves
+ * the page again, and each step then waits to be seen like any autoplay.
+ */
+interface TourScroll {
+  /** The tour drives this panel's ticks: scroll each step clear. */
+  follows: () => boolean;
+  /** No tour scroll is travelling: a followed step may reveal (and scroll) now. */
+  settled: () => boolean;
+  /** The panel may scroll itself in: not touring (a tap), or a tour that still follows. */
+  mayScroll: () => boolean;
+  /** Call right before any kit scroll, so its scroll events are not the visitor's. */
+  markOwnScroll: () => void;
+  /** A scroll that stays the tour's own until `releaseOwnScroll` (the panel's landing watch). */
+  holdOwnScroll: () => void;
+  releaseOwnScroll: () => void;
+}
 
 export type TabbedScreenBeat = DemoScreenBeat & { tabs: readonly DemoTab[] };
 export interface TabSlots {
@@ -33,6 +89,34 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
   const barRef = useRef<HTMLDivElement | null>(null);
   const touringRef = useRef(false);
   const tourTimer = useRef(0);
+  const guard = useRef({ touring: false, follow: false, own: false, held: false, base: 0, timer: 0, input: -Infinity });
+  const tour = useMemo<TourScroll>(() => {
+    const g = guard.current;
+    const land = () => {
+      g.own = false;
+      g.base = window.scrollY;
+    };
+    return {
+      follows: () => g.touring && g.follow,
+      settled: () => !g.own,
+      mayScroll: () => !g.touring || g.follow,
+      markOwnScroll: () => {
+        g.own = true;
+        window.clearTimeout(g.timer);
+        if (!g.held) g.timer = window.setTimeout(land, OWN_SCROLL_START_MS);
+      },
+      holdOwnScroll: () => {
+        g.held = true;
+        g.own = true;
+        window.clearTimeout(g.timer);
+      },
+      releaseOwnScroll: () => {
+        g.held = false;
+        window.clearTimeout(g.timer);
+        land();
+      },
+    };
+  }, []);
   // Flips true on the FIRST tap or "Take the tour" and stays true: gates the
   // scroll effects below so mount and hydration (active === 0 already, no
   // visitor action) never scroll the page (review-NW.md B3).
@@ -44,6 +128,41 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
   }, [touring]);
   useEffect(() => () => window.clearTimeout(tourTimer.current), []);
 
+  // The visitor's own scroll, while the tour runs (see TourScroll above).
+  useEffect(() => {
+    if (!touring) return;
+    const g = guard.current;
+    if (!g.own) g.base = window.scrollY;
+    const onInput = () => {
+      g.input = performance.now();
+    };
+    const onScroll = () => {
+      if (g.own) {
+        if (g.held) return; // the landing watch releases it
+        window.clearTimeout(g.timer);
+        g.timer = window.setTimeout(() => {
+          g.own = false;
+          g.base = window.scrollY;
+        }, OWN_SCROLL_IDLE_MS);
+        return;
+      }
+      if (performance.now() - g.input > USER_INPUT_MS) {
+        g.base = window.scrollY; // moved by layout, not by the visitor
+        return;
+      }
+      if (g.follow && Math.abs(window.scrollY - g.base) > MANUAL_SCROLL_STOP_PX) g.follow = false;
+    };
+    for (const k of USER_INPUTS) window.addEventListener(k, onInput, { capture: true, passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      for (const k of USER_INPUTS) window.removeEventListener(k, onInput, { capture: true });
+      window.removeEventListener("scroll", onScroll);
+      window.clearTimeout(g.timer);
+      g.own = false;
+      g.held = false;
+    };
+  }, [touring]);
+
   const play = useCallback((i: number) => {
     played.current.add(i);
     setPlayKeys((keys) => keys.map((k, j) => (j === i ? k + 1 : k)));
@@ -51,6 +170,8 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
 
   const stopTour = useCallback(() => {
     window.clearTimeout(tourTimer.current);
+    guard.current.touring = false;
+    guard.current.follow = false;
     setTouring(false);
   }, []);
 
@@ -66,6 +187,9 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
 
   const startTour = useCallback(() => {
     window.clearTimeout(tourTimer.current);
+    guard.current.touring = true;
+    guard.current.follow = true;
+    guard.current.base = window.scrollY;
     setInteracted(true);
     setTouring(true);
     setActive(0);
@@ -92,22 +216,51 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
   // clipped 32.7px on the real NWKS tabs, all three engines). A start that
   // is past the list's maximum scroll clamps to the end, which is always a
   // valid snap position too.
+  //
+  // Then once more, when the list has come to rest: a scene's own smooth
+  // `list.scrollTo` (NWKS TabFollow) can still be travelling past the
+  // alignment above, and under load chromium measured it resting 1.2px past
+  // the Attendees tab's start at 320x568 (the tab clipped at rest). Checked
+  // after LIST_STILL_FRAMES frames with no horizontal movement, within
+  // LIST_REST_MAX_MS.
   useEffect(() => {
     if (!interacted) return;
     const btn = tabRefs.current[active];
     const list = btn?.closest<HTMLElement>(".demo-tabs__list");
     if (!btn || !list) return;
-    const listRect = list.getBoundingClientRect();
-    const btnRect = btn.getBoundingClientRect();
-    if (btnRect.left < listRect.left || btnRect.right > listRect.right) {
-      list.scrollLeft += btnRect.left - listRect.left;
-    }
+    const align = (slack: number) => {
+      const listRect = list.getBoundingClientRect();
+      const btnRect = btn.getBoundingClientRect();
+      if (btnRect.left < listRect.left - slack || btnRect.right > listRect.right + slack) {
+        list.scrollLeft += btnRect.left - listRect.left;
+      }
+    };
+    align(0);
+    const t0 = performance.now();
+    let raf = 0;
+    let still = 0;
+    let lastX = Number.NaN;
+    const frame = () => {
+      const x = list.scrollLeft;
+      still = x === lastX ? still + 1 : 0;
+      lastX = x;
+      if (still >= LIST_STILL_FRAMES) {
+        raf = 0;
+        align(0.5);
+        return;
+      }
+      raf = performance.now() - t0 < LIST_REST_MAX_MS ? requestAnimationFrame(frame) : 0;
+    };
+    raf = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(raf);
   }, [active, interacted]);
 
   const onPanelEnd = useCallback(
     (i: number) => {
       if (!touringRef.current) return;
       if (i >= beat.tabs.length - 1) {
+        guard.current.touring = false;
+        guard.current.follow = false;
         setTouring(false);
         return;
       }
@@ -184,6 +337,7 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
           onEnd={onPanelEnd}
           barRef={barRef}
           interacted={interacted}
+          tour={tour}
         />
       ))}
     </div>
@@ -201,11 +355,27 @@ function TabPanel(props: {
   onEnd: (index: number) => void;
   barRef: RefObject<HTMLDivElement | null>;
   interacted: boolean;
+  tour: TourScroll;
 }) {
-  const { beatId, tab, slots, index, active, hidden, playKey, onEnd, barRef, interacted } = props;
+  const { beatId, tab, slots, index, active, hidden, playKey, onEnd, barRef, interacted, tour } = props;
   const tl = useStageTimeline(tab.steps, {
     autoplay: index === 0 ? "entry" : "manual",
     onEnd: () => onEnd(index),
+    // Tour-driven steps scroll clear like a Next tap (NWKS B3: the phone
+    // tour played steps 2+ behind the control bar); only the ACTIVE panel,
+    // and only while the tour still owns the scroll.
+    follow: () => active && tour.follows(),
+    followReady: tour.settled,
+    onScroll: tour.markOwnScroll,
+    // A step scrolled to keeps its top clear of the pinned tab bar (phone and
+    // tablet, where the bar is sticky under the site header), with the same
+    // designed clearance the phone control bar gets at the bottom.
+    topInset: () => {
+      const bar = barRef.current;
+      if (!bar || getComputedStyle(bar).position !== "sticky") return 0;
+      const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-height")) || 0;
+      return nav + bar.getBoundingClientRect().height + BAR_CLEARANCE_PX;
+    },
   });
   const { replay, goto, trackProps } = tl;
   const panelRef = trackProps.ref;
@@ -238,6 +408,8 @@ function TabPanel(props: {
   //     rects move together), so it is safe to read before scrolling.
   useEffect(() => {
     if (!active || !interacted) return;
+    // A tour the visitor has taken the scroll back from never moves the page.
+    if (!tour.mayScroll()) return;
     const el = panelRef.current;
     const bar = barRef.current;
     if (!el || !bar) return;
@@ -259,8 +431,45 @@ function TabPanel(props: {
     el.style.transitionProperty = "none";
     el.style.scrollMarginTop = `${nav + offset}px`;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    el.scrollIntoView({ block: "start", behavior: reduced ? "instant" : "smooth" });
-  }, [active, interacted, panelRef, barRef]);
+    const behavior: ScrollBehavior = reduced ? "instant" : "smooth";
+    // Landing watch: the scroll stays the tour's own (no followed step
+    // reveals, no scroll event counts as the visitor's) until the panel's top
+    // sits at its margin, or the page cannot scroll any closer. A scroll that
+    // came to rest short -- dropped by the engine, see LAND_RETRIES -- is
+    // issued again.
+    tour.holdOwnScroll();
+    el.scrollIntoView({ block: "start", behavior });
+    const t0 = performance.now();
+    let raf = 0;
+    let still = 0;
+    let tries = 0;
+    let lastY = Number.NaN;
+    const frame = () => {
+      const y = window.scrollY;
+      still = y === lastY ? still + 1 : 0;
+      lastY = y;
+      const off = el.getBoundingClientRect().top - (nav + offset);
+      const maxY = document.documentElement.scrollHeight - window.innerHeight;
+      const arrived = Math.abs(off) <= 1 || (off > 0 && y >= maxY - 1) || (off < 0 && y <= 0);
+      if (arrived || performance.now() - t0 > LAND_MAX_MS) {
+        raf = 0;
+        tour.releaseOwnScroll();
+        return;
+      }
+      if (still >= LAND_STILL_FRAMES && tries < LAND_RETRIES) {
+        tries += 1;
+        still = 0;
+        el.scrollIntoView({ block: "start", behavior });
+      }
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+    return () => {
+      if (!raf) return;
+      cancelAnimationFrame(raf);
+      tour.releaseOwnScroll();
+    };
+  }, [active, interacted, panelRef, barRef, tour]);
   return (
     <div
       role="tabpanel"
