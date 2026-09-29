@@ -1,0 +1,618 @@
+/* scenes/farmbooks/farmbooks.css — LIGHT values only, verbatim triplets from
+   Farm Invoice Processing System/web/app/globals.css:22-61 @8cbbbb4 (see SOURCE.md).
+   This is a PINNED SNAPSHOT; it does not follow farm-books.com automatically.
+   Scoped under .demo-skin--farmbooks only — never @theme, never a site/Tailwind
+   variable name (skins.css §5.1 rule 3; the privacy probe's css-namespace rule
+   fails on either). Unlayered, like demo-stage.css. */
+.demo-skin--farmbooks {
+  /* neutrals */
+  --fb-page: 243 241 235; /* #F3F1EB */
+  --fb-card: 255 255 255; /* #FFFFFF */
+  --fb-cardsoft: 252 250 245; /* #FCFAF5 */
+  --fb-ink: 28 24 19; /* #1C1813 */
+  --fb-gray1: 107 98 85; /* #6B6255 */
+  --fb-gray2: 116 106 92; /* #746A5C */
+  --fb-chevron: 203 194 178; /* #CBC2B2 */
+
+  /* hairline + shadows: full CSS values, not triplets */
+  --fb-hairline: rgba(56, 46, 28, 0.1);
+  --fb-shadow-card: 0 1px 2px rgba(52, 42, 26, 0.05), 0 6px 20px -10px rgba(52, 42, 26, 0.16);
+  --fb-shadow-sheet: 0 24px 64px -16px rgba(36, 28, 14, 0.34);
+
+  /* signal colors */
+  --fb-amber: 168 88 0; /* #A85800 */
+  --fb-amber-bg: 251 238 214; /* #FBEED6 */
+  --fb-amber-edge: 231 165 77; /* #E7A54D */
+  --fb-ok: 46 158 86; /* #2E9E56 */
+  --fb-ok-bg: 232 244 236; /* PROVISIONAL, matching skins.css --skin-good-bg */
+
+  /* accent family */
+  --fb-accent: 176 138 40;
+  --fb-accent-deep: 122 92 22;
+  --fb-accent-soft: 231 214 166;
+  --fb-accent-wash: 246 237 214;
+
+  /* brand gold, tailwind.config.ts theme.extend.colors.gold literals as triplets */
+  --fb-gold: 192 152 43; /* #C0982B */
+  --fb-gold-deep: 138 106 28; /* #8A6A1C */
+  --fb-gold-soft: 231 214 166; /* #E7D6A6 */
+  --fb-gold-wash: 246 237 214; /* #F6EDD6 */
+
+  /* font-display: value set by the route via next/font/google (see page.tsx); this
+     file only declares the utility class name used in JSX. */
+}
+
+/* A bespoke, scene-scoped replacement for FarmBooks' own `.tnum` utility (its body was not
+   read past app/globals.css:140 in the read-only spec pass, see SOURCE.md risk #2).
+   Tabular-numeral behavior is standard and safe to reproduce directly. */
+.fb-tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------- the read: photo + region boxes */
+.fb-read {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+.fb-read__photo {
+  position: relative;
+  margin-inline: auto;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 1110 / 1440;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--fb-hairline);
+  background: rgb(var(--fb-ink));
+  box-shadow: var(--fb-shadow-sheet);
+}
+.fb-read__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.fb-read__box {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 3px;
+  box-shadow:
+    0 0 0 2px rgba(192, 152, 43, 0.28),
+    0 6px 18px -4px rgba(192, 152, 43, 0.45);
+  outline: 2px solid rgb(var(--fb-gold));
+  outline-offset: -1px;
+}
+.fb-read__cover {
+  display: none;
+}
+.fb-read__cards {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+/* critic-FB M3: the outer shell (border + background) ALWAYS renders — a card whose inner
+   content hasn't arrived yet reads as a visible outline placeholder, never a blank hole in the
+   mat while autoplay is mid-flight. Only the inner wrapper (TheRead.tsx's <Card>) carries
+   data-stage-step. */
+.fb-read__card {
+  border-radius: 16px;
+  border: 1px solid var(--fb-hairline);
+  background: rgb(var(--fb-card));
+  box-shadow: var(--fb-shadow-card);
+  padding: 14px;
+  min-height: 44px;
+}
+@media (min-width: 1024px) {
+  .fb-read {
+    grid-template-columns: minmax(0, 0.86fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 32px;
+  }
+  .fb-read__photo {
+    max-width: none;
+  }
+  /* critic-FB m7: the photo sits sticky within the read's own two-column frame at desktop
+     widths too, so it never leaves a large dead cream/card area beneath it once the cards
+     column runs taller than the photo. verify-FB item 3: it pins BELOW the site header (the
+     header's own height token, 88px here, plus the old 24px breathing room); at `top: 24px` the
+     88px header covered the photo's top and hid the vendor region box at 1024, 1440 and 1920. */
+  .fb-read__photo-sticky {
+    position: sticky;
+    top: calc(var(--nav-height, 80px) + 24px);
+  }
+}
+
+/* critic-FB M1/(c) + verify-FB item 1: on phones and tablets (< 1024px) the read follows the
+   original's phone pattern: a small photo pinned directly under the site header, and ONLY the
+   current step's card beneath it, so no earlier card can ever scroll behind the band.
+   - The band pins at `top: var(--nav-height)`, the header's own height token (globals.css:120,
+     80px under its <=767px breakpoint), not the old `+ 8px`, which left a see-through 8px strip
+     between the header pill and the photo where the previous card's caps showed. Its ground is
+     the screen's own opaque cream, and a short fade under it means text never meets a knife edge.
+   - While a track is ARMED (autoplay, or a visitor stepping with Next, Back or a step tap), the
+     six cards share ONE grid cell, the kit's swap-cell pattern (demo-stage.css `.demo-swap`,
+     BLUEPRINT.md §4): the cell is as tall as the tallest card, so the frame never resizes from
+     step to step, and every card but the one matching `data-track-step` is visibility-hidden.
+   - At REST (the track disarmed: after play, no JS, reduced motion, a failed chunk) nothing here
+     applies: the complete end frame, the photo with all eight boxes followed by all six cards in
+     reading order, sits in plain flow with no sticky band (ADR-0016 §3, nothing rests hidden).
+     Growing from the one-card cell back to the full record when play ends is anchored by the
+     browser for a reader already scrolled past (measured: Chromium 151, WebKit 26.5 and
+     Firefox 153 all hold scroll position when content above the viewport grows).
+   `.fb-read` (the shared parent) is `display: block` here, not grid: a grid item's sticky
+   containing block is its own grid AREA (only as tall as the photo, so sticky had no room to
+   hold), while block flow makes photo and cards share ONE containing block. `gap` does not apply
+   to block layout, so the band's own bottom margin replaces it. */
+@media (max-width: 1023px) {
+  .fb-read {
+    display: block;
+  }
+  .fb-read__photo-sticky {
+    margin-bottom: 16px;
+    padding-block: 6px;
+    background: rgb(var(--fb-page));
+  }
+  .fb-read__photo-sticky .fb-read__photo {
+    max-width: 132px;
+  }
+  [data-track-armed] .fb-read__photo-sticky {
+    position: sticky;
+    top: var(--nav-height, 80px);
+    z-index: 1;
+  }
+  /* The site header is a floating pill over a see-through strip, so a card scrolled up past the
+     band would reappear ABOVE it, around the pill. This cover pins at the viewport top in the
+     band's own cream, one header tall, and takes no space (negative margin): at its resting spot
+     it sits under the band's top edge; once the band pins, it fills the strip behind the header,
+     so nothing from the read ever shows between the header and the photo. It leaves with the
+     read. Painted under the band (earlier in DOM, same z-index) and over the cards. */
+  [data-track-armed] .fb-read__cover {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    height: var(--nav-height, 80px);
+    margin-bottom: calc(-1 * var(--nav-height, 80px));
+    background: rgb(var(--fb-page));
+  }
+  [data-track-armed] .fb-read__photo-sticky::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    height: 12px;
+    background: linear-gradient(rgb(var(--fb-page)), rgb(var(--fb-page) / 0));
+    pointer-events: none;
+  }
+  /* final-FB item 2: this used to be `grid-area: 1 / 1; align-self: start; visibility: hidden`,
+     one shared cell sized to the TALLEST of the six cards (`.fb-read__cards`'s own grid row
+     sizing counts every grid-area participant regardless of `visibility`, hidden or not) so the
+     frame never resized and the Next button never moved under a thumb. That reasoning no longer
+     applies: the kit's own bar is `position: sticky` at the viewport's bottom edge (via
+     `.demo-screen:has(.fb-read__photo-sticky){overflow:visible}` above, already reopening the
+     photo's own sticky containing block to the page), so the bar's position was ALREADY
+     independent of this beat's content height -- measured directly (`bars.mjs`, final-FB item 1):
+     it holds at the same viewport y regardless of which card is showing. The one thing the fixed
+     cell bought was never real; the one thing it cost was real: at 390, all three engines, both
+     themes, the two SHORTEST cards ("On the ticket" step 2, "Every line" step 3) left 137-232px of
+     empty cream between the card and the bar (final-FB item 2, `SHOTS/sheet-i2-read390.png`,
+     option (a): "size the cell to the current card").
+     FIRST ATTEMPT (reverted): `display: none` on every non-current card. It sized the column
+     correctly, but broke `demo-stage.spec.ts`'s own "Back, Next and Replay step the same
+     timeline" test at 390 in all three engines: that test presses Back from the last step and
+     polls for a `[data-pending]` element with `getClientRects().length > 0` (proof that the
+     kit's own not-yet-arrived-content ghost, `demo-stage.css`'s `[data-pending][data-fx="ghost"]
+     { opacity: 0.28 }`, is real DOM with real geometry, not a fully-detached node) -- `display:
+     none` removes an element from the render tree entirely, so its `getClientRects()` goes to
+     0, exactly what that guard exists to catch. `visibility: hidden` keeps a real box (hence
+     real client rects) while painting nothing, which is why the ORIGINAL shared-cell approach
+     passed that check; the fix here keeps `visibility: hidden` for that reason and instead
+     takes the six cards OUT of the container's own flow-height calculation with `position:
+     absolute` (an absolutely-positioned grid/flex/block child does not contribute to its
+     container's auto size, per spec), stacked at the container's own top (`inset-inline: 0; top:
+     0`, `.fb-read__cards` made `position: relative` as their containing block). Only the
+     CURRENT card returns to normal flow (`position: static`), so the container -- and the swap
+     "cell" -- is sized to exactly that one card, with the other five still real, rect-bearing,
+     visibility-hidden boxes layered underneath it. Verified: `getClientRects()` on a hidden
+     card's own `[data-pending]` div is still non-empty (Chromium devtools-style check via
+     `getBoundingClientRect()` returning a non-zero rect while `position: absolute`), and the
+     full spec passed 114/114 with this version (`display: none` version failed 3/114, the Back/
+     Next/Replay test in all three engines). No resize animation is added; the height change is
+     instant, same as any other reflow, so there is nothing to gate behind reduced motion. */
+  [data-track-armed] .fb-read__cards {
+    position: relative;
+  }
+  [data-track-armed] .fb-read__cards > .fb-read__card {
+    visibility: hidden;
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+  }
+  [data-track-armed]:is([data-track-step="0"], [data-track-step="1"]) .fb-read__card[data-fb-card="1"],
+  [data-track-armed][data-track-step="2"] .fb-read__card[data-fb-card="2"],
+  [data-track-armed][data-track-step="3"] .fb-read__card[data-fb-card="3"],
+  [data-track-armed][data-track-step="4"] .fb-read__card[data-fb-card="4"],
+  [data-track-armed][data-track-step="5"] .fb-read__card[data-fb-card="5"],
+  [data-track-armed][data-track-step="6"] .fb-read__card[data-fb-card="6"] {
+    visibility: visible;
+    position: static;
+  }
+}
+
+/* gate-fix (chore review, 320x568 chromium+webkit, PR #11): the kit's own step-landing scroll
+   (useStageTimeline.ts, never patched here) sets `el.style.scrollMarginBottom = barHeight(62) +
+   pinGap(12) = 74px` on the revealed row and calls `el.scrollIntoView({block:"nearest"})`. For a
+   row taller than the space between the pinned photo and the bar -- true of every phone width,
+   the read's cards run 250-550px tall against a ~215px window -- "nearest" ALWAYS lands the row's
+   own bottom edge flush with the bar's top, 0px of clearance BY DESIGN, not a bug: the algorithm
+   stops scrolling the instant the margin-expanded box first satisfies the viewport bound, so it
+   never overshoots into positive clearance. Confirmed empirically, not just reasoned: rebuilding
+   with the tallest card's (`CategoryCard`, step 4) own inner spacing cut by increasing amounts
+   (18px, then 75px total) left step 4's occludedPx IDENTICAL (`repro.mjs`) both times -- shrinking
+   the row does not change the target, because the target is always "flush with the bar",
+   independent of the row's own height. Shrinking the photo band above the cards was ALSO measured
+   to do nothing to this number (rebuilt with the photo shrunk to 40px width, step 4 still landed
+   over the bar). So the 8px of spare asked for is not reachable from the scene without either
+   patching the kit's scrollIntoView call (off limits) or cutting real rows out of the tallest
+   cards (also off limits, and it would still just make a DIFFERENT card the tallest and flush).
+   What IS real and scene-owned: at 320x568 specifically (the shortest tested viewport; 360x640
+   and up were already green), Chromium and WebKit's own ROUNDING of the fractional scroll amount
+   this flush target requires happened to round the WRONG way for cards 1 and 4, landing them
+   1.5-2.0px past flush instead of at or before it (measured pre-fix: chromium step 4 +1.515625px,
+   webkit +1.984375px; step 1 was already a near-miss at -0.234375px/-0.09375px). Tightening list
+   gaps, row padding and paragraph margins inside cards 1 and 4 (Tailwind classes beaten by this
+   unlayered file's cascade order, same pattern as the `.fb-books__row` rule above -- no rows or
+   words removed, only the whitespace around them) shifted which side of the flush line the
+   rounding lands on. Re-measured after this change (`repro.mjs`, stable across repeat runs of the
+   same build): chromium step 1 -0.234375px, step 4 -0.484375px; webkit step 1 +0.234375px
+   (passes the spec's 1px tolerance, does not clear a full 8px), step 4 -0.015625px. Only 320px
+   and below -- 360x640 and up never needed this. */
+@media (max-width: 360px) {
+  .fb-read__card[data-fb-card="1"] [data-stage-step] > p:first-child,
+  .fb-read__card[data-fb-card="4"] [data-stage-step] > p:first-child {
+    margin-top: 4px;
+  }
+  .fb-read__card[data-fb-card="1"] ul,
+  .fb-read__card[data-fb-card="4"] ul {
+    margin-top: 4px;
+    gap: 3px;
+  }
+  .fb-read__card[data-fb-card="1"] ul li,
+  .fb-read__card[data-fb-card="4"] ul li {
+    padding-block: 3px;
+  }
+  .fb-read__card[data-fb-card="4"] [data-stage-step] > p:last-child {
+    margin-top: 4px;
+  }
+}
+
+/* critic-FB M1(c)/m7: NEITHER sticky rule above actually held position — measured on both the
+   mobile and the desktop layout, the photo moved by the EXACT pixel amount scrolled (zero
+   stickiness) in every engine. Cause: `.demo-screen`'s own `overflow: hidden` (demo-stage.css,
+   kit-owned, never patched) is the nearest ancestor with non-visible overflow above the sticky
+   photo, and `position: sticky` computes relative to the NEAREST such ancestor. `.demo-screen`
+   never scrolls internally, so the sticky element just holds its static offset within it and
+   rides along with it instead of pinning to the viewport. `:has(.fb-read__photo-sticky)` scopes
+   this reopening to ONLY the read beat's own screen instance — it matches no other ProductScreen
+   on the site (books, year, or any other case study's stage), so nothing else is affected. The
+   chrome bar (`.demo-screen__chrome`) has no border-radius of its own and relied on the parent's
+   clip for its rounded top corners; restored directly here so removing the clip doesn't square
+   them off. Nothing else in this beat touches the frame's edge (the scene's own `p-3 sm:p-4`
+   padding insets photo and cards on every side), so no other clipping was needed. */
+.demo-screen:has(.fb-read__photo-sticky) {
+  overflow: visible;
+}
+.demo-screen:has(.fb-read__photo-sticky) .demo-screen__chrome {
+  border-radius: 12px 12px 0 0;
+}
+
+/* ---------------------------------------------------------------------------- the books: a month */
+.fb-books {
+  border-radius: 24px;
+  border: 1px solid var(--fb-hairline);
+  background: rgb(var(--fb-card));
+  box-shadow: var(--fb-shadow-card);
+  padding: 20px;
+  min-width: 0;
+}
+.fb-books__ledger {
+  margin-top: 12px;
+  border-radius: 16px;
+  border: 1px solid var(--fb-hairline);
+  overflow: hidden;
+}
+.fb-books__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--fb-hairline);
+}
+.fb-books__row:first-child {
+  border-top: 0;
+}
+/* verify-FB item 4: at 320 the label column was 58-68px, narrower than "Maintenance" at 15px, and
+   letting words break anywhere split them mid-letter. Below 360px (360 and up measured clean at
+   98-130px) the row gives the label room instead: a 28px icon, tighter padding and gaps, and one
+   type step down on label and amount, so every word wraps whole. Unlayered, so these beat the
+   Tailwind size utilities on the same elements. */
+@media (max-width: 359px) {
+  .fb-books {
+    padding: 16px;
+  }
+  .fb-books__row {
+    gap: 8px;
+    padding: 12px;
+  }
+  .fb-books__icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+  }
+  .fb-books__label {
+    font-size: 14px;
+  }
+  .fb-books__amount {
+    font-size: 13.5px;
+  }
+}
+/* critic-FB M3: the row itself (icon, label, bill count, amount) is ALWAYS visible — only this
+   fill bar is gated by the step engine (data-stage-step + data-fx="sweep" in TheBooks.tsx, the
+   kit's own generic mechanism, demo-stage.css). A reader who scrolls faster than the timer sees
+   every row's real content immediately; only the proportional tint sweeps in behind it. */
+.fb-books__fill {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  background: rgb(var(--fb-accent-wash) / 0.55);
+}
+
+/* --------------------------------------------------------------------- what goes wrong: 3 cards */
+.fb-wrong {
+  display: grid;
+  gap: 20px;
+}
+.fb-wrong__card {
+  border-radius: 20px;
+  border: 1px solid var(--fb-hairline);
+  background: rgb(var(--fb-card));
+  box-shadow: var(--fb-shadow-card);
+  padding: 16px;
+  min-width: 0;
+}
+.fb-wrong__paper {
+  border-radius: 12px;
+  background: rgb(var(--fb-card));
+  border: 1px solid var(--fb-hairline);
+  padding: 12px;
+}
+.fb-wrong__line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-left: 2px solid rgb(var(--fb-chevron));
+  padding: 3px 0 3px 10px;
+  font-size: 0.8125rem;
+  color: rgb(var(--fb-gray1));
+}
+.fb-wrong__inset {
+  border-radius: 12px;
+  background: rgb(var(--fb-cardsoft));
+  border: 1px solid var(--fb-hairline);
+  padding: 14px;
+}
+.fb-wrong__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.fb-wrong__badge--amber {
+  background: rgb(var(--fb-amber-bg));
+  color: rgb(var(--fb-amber));
+  box-shadow: inset 0 0 0 1px rgb(var(--fb-amber-edge));
+}
+.fb-wrong__badge--ok {
+  background: rgb(var(--fb-ok-bg));
+  color: rgb(var(--fb-ok));
+  box-shadow: inset 0 0 0 1px rgb(var(--fb-ok) / 0.35);
+}
+
+/* ---------------------------------------------------------------------------- your year: the file */
+.fb-year {
+  border-radius: 24px;
+  border: 1px solid var(--fb-hairline);
+  background: rgb(var(--fb-card));
+  box-shadow: var(--fb-shadow-card);
+  overflow: hidden;
+  min-width: 0;
+}
+.fb-year__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 16px 14px;
+}
+.fb-year__tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--fb-hairline);
+  border-block: 1px solid var(--fb-hairline);
+}
+@media (min-width: 640px) {
+  .fb-year__tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.fb-year__tile {
+  background: rgb(var(--fb-card));
+  padding: 14px 16px;
+}
+/* critic-FB m3: below 360px the two-column tile is ~107px of content, and
+   "$350,564.82" (11 characters) at the 22px base size measured 127px wide —
+   the 20px overflow was silently clipped by .fb-year's own overflow: hidden,
+   dropping the final digit. Only 320-359px needs the smaller size (measured:
+   360px already fits at the base size with room to spare). */
+@media (max-width: 359px) {
+  .fb-year__tile p:last-child {
+    font-size: 1.125rem;
+  }
+}
+
+/* The cut switcher: pure CSS radio tabs, no JS required (ADR-0017's "all cuts in the
+   markup" rule, applied without the kit's TabbedScreen so an export pane can sit
+   alongside the three cuts in one Screen beat). Visually hidden via the site's own
+   ps-visually-hidden class (globals.css), not opacity:0 — the foundation's end-state
+   walk requires resting opacity >= 0.9 on every rendered descendant, and its only
+   exemption is that class. The input stays focusable and keyboard-operable; selected
+   and focus-visible state is painted on the LABEL via the general-sibling combinator
+   into .fb-year__cut-bar, per fix for review-FB HIGH 1 (the inputs are not the
+   labels' adjacent siblings, so `+` never matched). */
+.fb-year__cut-bar {
+  /* Wraps rather than scrolls: three short labels never need a scroller (ADR-0016 §6's
+     phone-first rule is about PRODUCT SCREENS wider than the content column; three
+     44px-tall pill buttons read fine on two lines and never clip). */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 10px 0;
+}
+.fb-year__cut-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--fb-hairline);
+  color: rgb(var(--fb-gray2));
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+#fb-cut-categories:checked ~ .fb-year__cut-bar [for="fb-cut-categories"],
+#fb-cut-vendors:checked ~ .fb-year__cut-bar [for="fb-cut-vendors"],
+#fb-cut-fields:checked ~ .fb-year__cut-bar [for="fb-cut-fields"] {
+  border-color: rgb(var(--fb-gold));
+  color: rgb(var(--fb-ink));
+  background: rgb(var(--fb-accent-wash) / 0.5);
+}
+#fb-cut-categories:focus-visible ~ .fb-year__cut-bar [for="fb-cut-categories"],
+#fb-cut-vendors:focus-visible ~ .fb-year__cut-bar [for="fb-cut-vendors"],
+#fb-cut-fields:focus-visible ~ .fb-year__cut-bar [for="fb-cut-fields"] {
+  outline: 2px solid rgb(var(--fb-accent-deep));
+  outline-offset: 2px;
+}
+.fb-year__panel {
+  display: none;
+}
+#fb-cut-categories:checked ~ .fb-year__panels [data-fb-cut="categories"],
+#fb-cut-vendors:checked ~ .fb-year__panels [data-fb-cut="vendors"],
+#fb-cut-fields:checked ~ .fb-year__panels [data-fb-cut="fields"] {
+  display: block;
+}
+.fb-year__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--fb-hairline);
+}
+.fb-year__row:first-child {
+  border-top: 0;
+}
+.fb-year__row-fill {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  background: rgb(var(--fb-accent-wash) / 0.4);
+}
+.fb-year__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--fb-hairline);
+  background: rgb(var(--fb-cardsoft));
+}
+
+/* The export: an HTML recreation of the .xlsx, never the source's real workbook-year.png
+   (spec-FB §6). review-FB BLOCKER B1: a single 960px min-width on every table hid every
+   category and vendor amount at rest, at every width, in every engine (only the field cut's
+   fourth column, $/acre, genuinely needs more room than 342px carries). Category and vendor
+   are two columns and fit the mat width with no scroller at all; only the field table scrolls,
+   with its name column pinned so a reader never loses which row they're on mid-swipe. */
+.fb-year__export {
+  margin-top: 4px;
+  border-top: 1px solid var(--fb-hairline);
+  padding: 16px;
+}
+.fb-year__export-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  table-layout: fixed;
+}
+.fb-year__export-table th,
+.fb-year__export-table td {
+  padding: 6px 8px;
+  border-top: 1px solid var(--fb-hairline);
+  text-align: left;
+  overflow-wrap: break-word;
+}
+.fb-year__export-table thead th {
+  border-top: 0;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgb(var(--fb-gray2));
+}
+.fb-year__export-table td:last-child,
+.fb-year__export-table th:last-child {
+  text-align: right;
+}
+.fb-year__export-table th:first-child,
+.fb-year__export-table td:first-child {
+  width: 60%;
+}
+
+/* Only the field cut scrolls: Field, Acres, Amount, $/acre genuinely needs more than 342px.
+   min-width: 0 overrides the grid item default of min-width: auto — without it, this
+   scroller's own min-content size (560px, from .fb-year__export-table--field below) stretched
+   the WHOLE shared grid column (.fb-year__export's `grid gap-6`), so the plain category and
+   vendor tables sharing that column rendered 560px wide too and their own Amount column landed
+   off the right edge of the viewport (review-FB BLOCKER B1, found again after the first fix). */
+.fb-year__export-scroller {
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+}
+.fb-year__export-table--field {
+  min-width: 560px;
+  table-layout: auto;
+}
+.fb-year__export-table--field th:first-child,
+.fb-year__export-table--field td:first-child {
+  position: sticky;
+  left: 0;
+  width: auto;
+  background: rgb(var(--fb-page));
+}
+.fb-year__export-hint {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: rgb(var(--fb-gray2));
+}
