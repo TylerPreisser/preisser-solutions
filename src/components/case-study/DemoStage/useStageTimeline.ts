@@ -236,8 +236,9 @@ export function useStageTimeline(
   }, [s]);
 
   // Auto-play: one step per hold; waits while the tab is hidden. Never sets
-  // `advanced` -- AUTOPLAY NEVER SCROLLS THE WINDOW (see the ref's own
-  // comment above); the scroll effect below only runs for a direct tap.
+  // `advanced` and clears any stale one -- AUTOPLAY NEVER SCROLLS THE WINDOW
+  // (see the ref's own comment above); the scroll effect below only runs for
+  // a direct tap.
   useEffect(() => {
     if (!s.auto) return;
     const hold = s.step === 0 ? FIRST_STEP_DELAY_MS : steps[s.step - 1]?.holdMs ?? DEFAULT_HOLD_MS;
@@ -246,6 +247,12 @@ export function useStageTimeline(
         t = window.setTimeout(fire, 500);
         return;
       }
+      // Clear, not merely "don't set": a direct action whose dispatch leaves
+      // `s.step` unchanged (Replay or the tour's start at step 0, goto to the
+      // current step) never runs the scroll effect, so its flag would
+      // otherwise survive to THIS tick and scroll the window from autoplay
+      // (review-F4.md HIGH 1: measured 355-385 ms after the click, all engines).
+      advanced.current = false;
       dispatch({ type: "tick" });
     }, hold);
     return () => window.clearTimeout(t);
@@ -339,9 +346,10 @@ export function useStageTimeline(
   const replay = useCallback(() => {
     // A direct tap, listed with Next/Back: mark it, even though "start"
     // resets to step 0 where nothing is revealed yet (own() below finds no
-    // element), so this is a harmless no-op scroll target today, not a
-    // behavior change -- kept for consistency should a future scene ever
-    // reveal something at step 0.
+    // element), so there is nothing to scroll to today -- kept for
+    // consistency should a future scene ever reveal something at step 0.
+    // When "start" leaves the step at 0 the flag is never consumed here; the
+    // autoplay timer clears it before its first tick (above).
     advanced.current = true;
     dispatch({ type: "start" });
   }, []);
