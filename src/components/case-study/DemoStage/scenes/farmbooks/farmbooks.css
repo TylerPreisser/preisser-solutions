@@ -200,6 +200,53 @@
   }
 }
 
+/* gate-fix (chore review, 320x568 chromium+webkit, PR #11): the kit's own step-landing scroll
+   (useStageTimeline.ts, never patched here) sets `el.style.scrollMarginBottom = barHeight(62) +
+   pinGap(12) = 74px` on the revealed row and calls `el.scrollIntoView({block:"nearest"})`. For a
+   row taller than the space between the pinned photo and the bar -- true of every phone width,
+   the read's cards run 250-550px tall against a ~215px window -- "nearest" ALWAYS lands the row's
+   own bottom edge flush with the bar's top, 0px of clearance BY DESIGN, not a bug: the algorithm
+   stops scrolling the instant the margin-expanded box first satisfies the viewport bound, so it
+   never overshoots into positive clearance. Confirmed empirically, not just reasoned: rebuilding
+   with the tallest card's (`CategoryCard`, step 4) own inner spacing cut by increasing amounts
+   (18px, then 75px total) left step 4's occludedPx IDENTICAL (`repro.mjs`) both times -- shrinking
+   the row does not change the target, because the target is always "flush with the bar",
+   independent of the row's own height. Shrinking the photo band above the cards was ALSO measured
+   to do nothing to this number (rebuilt with the photo shrunk to 40px width, step 4 still landed
+   over the bar). So the 8px of spare asked for is not reachable from the scene without either
+   patching the kit's scrollIntoView call (off limits) or cutting real rows out of the tallest
+   cards (also off limits, and it would still just make a DIFFERENT card the tallest and flush).
+   What IS real and scene-owned: at 320x568 specifically (the shortest tested viewport; 360x640
+   and up were already green), Chromium and WebKit's own ROUNDING of the fractional scroll amount
+   this flush target requires happened to round the WRONG way for cards 1 and 4, landing them
+   1.5-2.0px past flush instead of at or before it (measured pre-fix: chromium step 4 +1.515625px,
+   webkit +1.984375px; step 1 was already a near-miss at -0.234375px/-0.09375px). Tightening list
+   gaps, row padding and paragraph margins inside cards 1 and 4 (Tailwind classes beaten by this
+   unlayered file's cascade order, same pattern as the `.fb-books__row` rule above -- no rows or
+   words removed, only the whitespace around them) shifted which side of the flush line the
+   rounding lands on. Re-measured after this change (`repro.mjs`, stable across repeat runs of the
+   same build): chromium step 1 -0.234375px, step 4 -0.484375px; webkit step 1 +0.234375px
+   (passes the spec's 1px tolerance, does not clear a full 8px), step 4 -0.015625px. Only 320px
+   and below -- 360x640 and up never needed this. */
+@media (max-width: 360px) {
+  .fb-read__card[data-fb-card="1"] [data-stage-step] > p:first-child,
+  .fb-read__card[data-fb-card="4"] [data-stage-step] > p:first-child {
+    margin-top: 4px;
+  }
+  .fb-read__card[data-fb-card="1"] ul,
+  .fb-read__card[data-fb-card="4"] ul {
+    margin-top: 4px;
+    gap: 3px;
+  }
+  .fb-read__card[data-fb-card="1"] ul li,
+  .fb-read__card[data-fb-card="4"] ul li {
+    padding-block: 3px;
+  }
+  .fb-read__card[data-fb-card="4"] [data-stage-step] > p:last-child {
+    margin-top: 4px;
+  }
+}
+
 /* critic-FB M1(c)/m7: NEITHER sticky rule above actually held position — measured on both the
    mobile and the desktop layout, the photo moved by the EXACT pixel amount scrolled (zero
    stickiness) in every engine. Cause: `.demo-screen`'s own `overflow: hidden` (demo-stage.css,
