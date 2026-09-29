@@ -1,0 +1,751 @@
+/* ============================================================
+   nwks-admin.css — the NWKS admin panel skin (ADR-0017). Every
+   rule below is nested under .demo-skin--nwks-mens (ADR-0016 §6).
+   Re-scoped from the real admin's own stylesheets
+   (nwks-deploy-main@6802623):
+     admin/src/pages/orgsheet/{teamBoard,orgsheet}.css (org-* vars,
+     .org-lane / .org-card shapes -> .nwks-lane / .nwks-card)
+     admin/src/theme.ts, shared/print/programBrand.ts (colour)
+   Every var(--color-...) and --org-... name is renamed to --nw-...
+   here (ADR-0016 §6), including the product's own --lane-hue
+   (TeamLane.tsx), renamed --nw-lane-hue below. No @theme, and this
+   file DEFINES no --color-, --theme- or other reserved-prefix custom
+   property. It READS the site's --theme-* tokens only for Preisser's
+   own voice (the Org Sheet rule headline), never inside the product.
+   ============================================================ */
+
+.demo-skin--nwks-mens {
+  /* Ink ramp, lifted from admin/src/pages/orgsheet/orgsheet.css:31-33,
+     renamed --org-ink* -> --nw-ink*. */
+  --nw-ink: var(--skin-ink);
+  --nw-ink-2: var(--skin-ink-2);
+  --nw-ink-3: #8e8e86;
+  --nw-rule: var(--skin-rule);
+  --nw-rule-2: #efeee9;
+  --nw-paper: var(--skin-surface);
+  --nw-ground: var(--skin-ground);
+  --nw-brand: var(--skin-ink);
+  --nw-gold: var(--skin-gold);
+  --nw-wash: color-mix(in srgb, var(--skin-ink) 5%, var(--nw-paper));
+  --nw-edge: color-mix(in srgb, var(--skin-ink) 18%, var(--nw-paper));
+  --nw-warn: var(--skin-attention);
+  --nw-warn-soft: var(--skin-attention-bg);
+  --nw-good: var(--skin-good);
+  --nw-good-soft: var(--skin-good-bg);
+  --nw-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  /* Team swatch ramp, orgsheet.css:86-93, --org-team-N -> --nw-team-N. */
+  --nw-team-0: #6b7645;
+  --nw-team-1: #b8972a;
+  --nw-team-2: #4e6e7a;
+  --nw-team-3: #8c5a4e;
+  --nw-team-4: #5e5a7a;
+  --nw-team-5: #3f7a63;
+  --nw-team-6: #a0536a;
+  --nw-team-7: #7a6a3f;
+  /* No background, colour or padding here (critic-NW B1): this class sits on
+     .demo-stage__beats, which also wraps the KIT's chrome (beat head, tab bar,
+     tour caption, step list, Back/Next/Replay). Those follow the site's
+     --theme-* tokens in both themes (ADR-0016 §6), so the parchment ground
+     belongs to the product window only: .demo-screen paints --skin-ground
+     itself (demo-stage.css), and the drawn "before" materials paint their own
+     paper. Painting it here put light kit text on parchment in dark theme
+     (1.15:1). */
+}
+
+/* ── Shared: window body padding, section labels ── */
+.demo-skin--nwks-mens .nwks-body { padding: 14px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-h {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--nw-ink-3);
+  text-transform: uppercase;
+}
+.demo-skin--nwks-mens .nwks-sub { margin: 2px 0 0; font-size: 0.8125rem; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--nw-rule);
+  border-radius: 8px;
+  background: var(--nw-paper);
+  color: var(--nw-ink-2);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.demo-skin--nwks-mens .nwks-btn--primary { background: var(--nw-brand); border-color: var(--nw-brand); color: var(--skin-on-action); }
+.demo-skin--nwks-mens .nwks-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--nw-rule);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--nw-ink-2);
+  background: var(--nw-paper);
+}
+.demo-skin--nwks-mens .nwks-pill--good { color: var(--nw-good); background: var(--nw-good-soft); border-color: transparent; }
+.demo-skin--nwks-mens .nwks-pill--warn { color: var(--nw-warn); background: var(--nw-warn-soft); border-color: transparent; }
+
+/* ── Dashboard ── */
+.demo-skin--nwks-mens .nwks-stat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+@media (min-width: 480px) {
+.demo-skin--nwks-mens .nwks-stat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 900px) {
+.demo-skin--nwks-mens .nwks-stat-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+.demo-skin--nwks-mens .nwks-stat {
+  border: 1px solid var(--nw-rule);
+  border-radius: 12px;
+  background: var(--nw-paper);
+  padding: 10px 12px;
+  min-width: 0;
+}
+.demo-skin--nwks-mens .nwks-stat-n { font-family: var(--nw-mono); font-size: 1.375rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.demo-skin--nwks-mens .nwks-stat-l { font-size: 0.6875rem; color: var(--nw-ink-3); margin-top: 2px; }
+.demo-skin--nwks-mens .nwks-tiles { display: grid; gap: 10px; }
+@media (min-width: 640px) {
+/* align-items: start (critic-NW M6): a stretched Payment tile was ~70% empty beside Attendee depth. */
+.demo-skin--nwks-mens .nwks-tiles { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+}
+.demo-skin--nwks-mens .nwks-tile { border: 1px solid var(--nw-rule); border-radius: 12px; background: var(--nw-paper); padding: 12px 14px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-bar-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; margin-top: 6px; font-size: 0.8125rem; }
+.demo-skin--nwks-mens .nwks-bar-track { grid-column: 1 / -1; height: 8px; border-radius: 999px; background: var(--nw-rule-2); overflow: hidden; }
+/* The fill's value is a custom property, not an inline transform: an inline
+   transform outranked the pending scaleX(0) below, so a bar never grew. */
+.demo-skin--nwks-mens .nwks-bar-fill { height: 100%; border-radius: 999px; background: var(--nw-brand); transform: scaleX(var(--nw-fill, 1)); transform-origin: left; transition: transform var(--demo-dur, 520ms) var(--demo-ease, ease); }
+.demo-skin--nwks-mens [data-stage-step][data-pending] .nwks-bar-fill { transform: scaleX(0); }
+
+/* ── Attendees / Roster ── */
+.demo-skin--nwks-mens .nwks-seg { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 2px; max-width: 100%; min-width: 0; border: 1px solid var(--nw-rule); border-radius: 8px; background: var(--nw-paper); }
+.demo-skin--nwks-mens .nwks-seg button,
+.demo-skin--nwks-mens .nwks-seg .nwks-fake {
+  border: 0; background: transparent; border-radius: 6px; padding: 6px 10px; font-size: 0.75rem; font-weight: 600; color: var(--nw-ink-3);
+  min-height: 44px;
+  min-width: 44px;
+}
+.demo-skin--nwks-mens .nwks-seg .nwks-fake { display: inline-flex; align-items: center; justify-content: center; }
+.demo-skin--nwks-mens .nwks-seg button[aria-selected="true"],
+.demo-skin--nwks-mens .nwks-seg button[aria-pressed="true"],
+.demo-skin--nwks-mens .nwks-seg .nwks-fake--on { background: var(--nw-wash); color: var(--nw-ink); }
+.demo-skin--nwks-mens .nwks-roster { display: grid; gap: 8px; }
+.demo-skin--nwks-mens .nwks-r-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--nw-rule);
+  border-radius: 10px;
+  background: var(--nw-paper);
+  padding: 8px 10px;
+  min-width: 0;
+}
+.demo-skin--nwks-mens .nwks-avatar {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--nw-wash);
+  color: var(--nw-ink-2);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  flex: 0 0 auto;
+}
+.demo-skin--nwks-mens .nwks-r-main { display: grid; gap: 2px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-r-top { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; min-width: 0; }
+/* A fact never splits across lines; the line breaks between facts. */
+.demo-skin--nwks-mens .nwks-fact { white-space: nowrap; }
+/* One line, always (critic-NW B2): a name never breaks; at worst it ellipses. */
+.demo-skin--nwks-mens .nwks-r-name {
+  min-width: 0; flex: 0 1 auto; font-size: 0.875rem; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.demo-skin--nwks-mens .nwks-r-top .nwks-pill { flex: 0 0 auto; white-space: nowrap; }
+/* Word-level wrapping only: `break-word` split words once the column went
+   narrower than a word (23px at 320, 17 fragments per row). */
+.demo-skin--nwks-mens .nwks-r-meta { font-size: 0.75rem; line-height: 1.4; color: var(--nw-ink-2); min-width: 0; }
+.demo-skin--nwks-mens .nwks-r-flag { color: var(--nw-warn); font-weight: 600; }
+.demo-skin--nwks-mens .nwks-r-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 6px; }
+.demo-skin--nwks-mens .nwks-r-row .nwks-quote { margin-top: 4px; }
+/* Phone (below the kit's 768px desk/phone split, and below 640 where the row
+   no longer has room for a third column): name + pill on line one, the facts
+   on line two, the actions on their own full-width line underneath. */
+@media (max-width: 767px) {
+  .demo-skin--nwks-mens .nwks-r-row { grid-template-columns: 32px minmax(0, 1fr); align-items: start; row-gap: 8px; }
+  .demo-skin--nwks-mens .nwks-r-actions { grid-column: 2 / -1; justify-content: flex-start; }
+  .demo-skin--nwks-mens .nwks-r-actions:empty { display: none; }
+  .demo-skin--nwks-mens .nwks-r-row .nwks-quote {
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+  }
+}
+.demo-skin--nwks-mens .nwks-drop-box {
+  grid-column: 1 / -1;
+  border-top: 1px dashed var(--nw-rule);
+  margin-top: 8px;
+  padding-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+.demo-skin--nwks-mens .nwks-drop-box textarea {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--nw-rule);
+  border-radius: 8px;
+  padding: 6px 8px;
+  font: inherit;
+  color: var(--nw-ink);
+  background: var(--nw-paper);
+}
+.demo-skin--nwks-mens .nwks-status-line { font-size: 0.8125rem; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-quote { font-size: 0.8125rem; font-style: italic; color: var(--nw-ink-2); border-left: 2px solid var(--nw-rule); padding-left: 8px; }
+
+/* ── Org Sheet (strip frames 03-10, critic-NW B4) ── */
+
+/* Per-step swap cells. Variants share one grid cell, so nothing reflows as
+   the step changes. They key on the kit's own track attributes on the panel
+   (useStageTimeline.ts applyState): at rest and without JS only the "end"
+   variant shows, so the markup is the end frame (ADR-0016 §3). */
+.demo-skin--nwks-mens .nwks-swap { display: inline-grid; }
+.demo-skin--nwks-mens .nwks-swap > * { grid-area: 1 / 1; }
+.demo-skin--nwks-mens .nwks-at { visibility: hidden; }
+.demo-skin--nwks-mens .nwks-at[data-at~="end"] { visibility: visible; }
+.demo-skin--nwks-mens [data-track-armed] .nwks-at[data-at~="end"] { visibility: hidden; }
+.demo-skin--nwks-mens [data-track-armed][data-track-step="0"] .nwks-at[data-at~="0"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="1"] .nwks-at[data-at~="1"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="2"] .nwks-at[data-at~="2"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="3"] .nwks-at[data-at~="3"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-at[data-at~="4"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="5"] .nwks-at[data-at~="5"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="6"] .nwks-at[data-at~="6"] { visibility: visible; }
+/* At rest (and without JS) the other variants are not part of the end frame
+   at all: out of layout, never parked invisible (ADR-0016 §3; the kit's
+   resting walk, tests/e2e/lib/checks.ts endStateViolations). They hold the
+   cell's size only while the track plays. */
+.demo-skin--nwks-mens [data-track]:not([data-track-armed]) .nwks-at:not([data-at~="end"]) { display: none; }
+/* The same, for notes that should take no room when absent. */
+.demo-skin--nwks-mens .nwks-atd { display: none; }
+.demo-skin--nwks-mens .nwks-atd[data-at~="end"] { display: block; }
+.demo-skin--nwks-mens [data-track-armed] .nwks-atd[data-at~="end"] { display: none; }
+.demo-skin--nwks-mens [data-track-armed][data-track-step="0"] .nwks-atd[data-at~="0"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="1"] .nwks-atd[data-at~="1"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="2"] .nwks-atd[data-at~="2"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="3"] .nwks-atd[data-at~="3"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-atd[data-at~="4"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="5"] .nwks-atd[data-at~="5"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="6"] .nwks-atd[data-at~="6"] { display: block; }
+
+/* Preisser's voice above the window: the site's own tokens, both themes. */
+.demo-skin--nwks-mens .nwks-orgstage { display: grid; gap: 14px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-rh { display: grid; gap: 6px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-rh-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 14px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-rh-placed {
+  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.02em;
+  color: var(--theme-text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.demo-skin--nwks-mens .nwks-rh-placed-n { justify-items: end; font-size: 1.125rem; font-weight: 700; color: var(--theme-text-primary); }
+/* Narrow phones: the counter always takes its own line. Beside the longest
+   kicker ("Rule 2 of the 4 shown") it wrapped while playing but not beside the
+   resting "The read", so the head shrank 27px at disarm (320). */
+@media (max-width: 479px) {
+  .demo-skin--nwks-mens .nwks-rh-placed { flex-basis: 100%; }
+}
+.demo-skin--nwks-mens .nwks-rh-swap { display: grid; }
+.demo-skin--nwks-mens .nwks-rh-v { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.demo-skin--nwks-mens .nwks-rh-kicker {
+  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--theme-accent-text);
+}
+.demo-skin--nwks-mens .nwks-rh-line { display: flex; align-items: flex-start; gap: 10px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-rh-tag {
+  flex: 0 0 auto; margin-top: 3px; padding: 1px 7px; border: 1px solid var(--theme-accent-text); border-radius: 6px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.8125rem; font-weight: 600; color: var(--theme-accent-text);
+}
+.demo-skin--nwks-mens .nwks-rh-title {
+  min-width: 0; font-size: 1.375rem; line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; color: var(--theme-text-primary);
+}
+.demo-skin--nwks-mens .nwks-rh-gloss { font-size: 1rem; line-height: 1.5; color: var(--theme-text-secondary); }
+.demo-skin--nwks-mens .nwks-rh-rules { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 0.9375rem; line-height: 1.5; color: var(--theme-text-secondary); }
+.demo-skin--nwks-mens .nwks-rh-code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 600; color: var(--theme-accent-text); }
+@media (max-width: 767px) {
+  .demo-skin--nwks-mens .nwks-rh-title { font-size: 1.1875rem; }
+  .demo-skin--nwks-mens .nwks-rh-gloss { font-size: 0.9375rem; }
+  /* The resting four rules run as one line of text, not four stacked lines:
+     every headline shares one swap cell, and the stacked end frame (156px at
+     320 and 390) made the cell 57px taller than a rule's own headline, a
+     blank band under every rule while it played (lane NW5 item 4). */
+  .demo-skin--nwks-mens .nwks-rh-rules { display: block; font-size: 0.875rem; }
+  .demo-skin--nwks-mens .nwks-rh-rule:not(:last-child)::after { content: "\00a0\00b7 "; }
+}
+/* ── Desk balance (critic-NW M6). The kit splits each journey 2fr/3fr at
+   1024px and up: a 230-376px "before" card in a 434px column beside a product
+   up to 1,460px tall left 600-1,100px of empty mat under it, the product got
+   60% of the width, and Lookout (no before card) sat in the 2fr column beside
+   an empty 3fr. Every tab now stacks: the before card is a short strip
+   across the top (its caption beside a capped crop of the old material,
+   fading out as it does on a phone), and the product window takes the full
+   width underneath. ── */
+@media (min-width: 1024px) {
+  .demo-skin--nwks-mens .demo-tabs__journey { grid-template-columns: minmax(0, 1fr); }
+  .demo-skin--nwks-mens .demo-tabs__before {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 32rem); column-gap: 28px; align-items: start;
+  }
+  .demo-skin--nwks-mens .demo-tabs__before-cap { margin: 0; font-size: 1rem; line-height: 1.55; }
+  .demo-skin--nwks-mens .demo-tabs__before > .nwks-old {
+    max-height: 13rem;
+    -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent); mask-image: linear-gradient(to bottom, #000 80%, transparent);
+  }
+}
+
+/* The product header (their Org sheet page: icon, encounter, dates, view toggle). */
+.demo-skin--nwks-mens .nwks-org-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
+.demo-skin--nwks-mens .nwks-org-id { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-org-icon {
+  flex: 0 0 auto; display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 999px;
+  background: var(--nw-brand); color: #fff;
+}
+.demo-skin--nwks-mens .nwks-org-titles { display: grid; min-width: 0; }
+.demo-skin--nwks-mens .nwks-org-kicker { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-org-title { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+.demo-skin--nwks-mens .nwks-org-dates { font-family: var(--nw-mono); font-size: 0.75rem; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-org-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.demo-skin--nwks-mens .nwks-org-toggle { display: inline-flex; padding: 3px; border: 1px solid var(--nw-rule); border-radius: 10px; background: var(--nw-wash); font-size: 0.8125rem; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-org-toggle > span { padding: 5px 12px; border-radius: 7px; }
+.demo-skin--nwks-mens .nwks-org-toggle-on { background: var(--nw-paper); color: var(--nw-ink); font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); }
+.demo-skin--nwks-mens .nwks-org-tool { padding: 6px 12px; border: 1px solid var(--nw-rule); border-radius: 8px; background: var(--nw-paper); font-size: 0.8125rem; font-weight: 600; color: var(--nw-ink-2); }
+
+/* The board: lanes in balanced columns (their masonry), the waiting column on the right. */
+.demo-skin--nwks-mens .nwks-board { display: grid; grid-template-columns: minmax(0, 1fr) minmax(12rem, 15rem); gap: 10px; align-items: start; min-width: 0; }
+.demo-skin--nwks-mens .nwks-board-lanes { display: grid; gap: 10px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-tiles-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; align-items: start; }
+.demo-skin--nwks-mens .nwks-tiles-col { display: grid; gap: 8px; min-width: 0; }
+/* Below the desk layout's room for four columns, the waiting column moves under the lanes. */
+@media (max-width: 1023px) {
+  .demo-skin--nwks-mens .nwks-board { grid-template-columns: minmax(0, 1fr); }
+  .demo-skin--nwks-mens .nwks-wait-list { max-height: 12rem; }
+}
+.demo-skin--nwks-mens .nwks-lane {
+  --nw-lane-hue: var(--nw-team-0);
+  position: relative; display: grid; gap: 8px; min-width: 0;
+  border: 1px solid var(--nw-rule); border-radius: 10px; background: var(--nw-paper); padding: 10px 12px 12px 16px;
+}
+.demo-skin--nwks-mens .nwks-lane::before {
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--nw-lane-hue); border-radius: 10px 0 0 10px;
+}
+.demo-skin--nwks-mens .nwks-lane-head { padding-bottom: 8px; border-bottom: 1px solid var(--nw-rule-2); }
+.demo-skin--nwks-mens .nwks-lane-name { font-size: 0.9375rem; font-weight: 700; letter-spacing: -0.01em; }
+.demo-skin--nwks-mens .nwks-lane-job { margin-top: 2px; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-lane-count { font-family: var(--nw-mono); letter-spacing: 0; }
+.demo-skin--nwks-mens .nwks-lane-empty { margin: 0; font-size: 0.6875rem; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-lane-cards { display: grid; gap: 4px; }
+.demo-skin--nwks-mens .nwks-org-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 6px; max-width: 14rem; min-width: 0;
+  border: 1px solid var(--nw-rule); border-radius: 6px; background: var(--nw-paper); padding: 3px 8px;
+  font-size: 0.75rem; font-weight: 500;
+  transition: opacity var(--demo-dur, 520ms) var(--demo-ease, ease), transform var(--demo-dur, 520ms) var(--demo-ease, ease),
+    background-color 200ms ease, border-color 200ms ease;
+}
+.demo-skin--nwks-mens .nwks-org-card--captain { box-shadow: inset 3px 0 0 var(--nw-gold); }
+.demo-skin--nwks-mens .nwks-org-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.demo-skin--nwks-mens .nwks-org-marks { flex: 0 0 auto; display: inline-flex; gap: 6px; color: var(--nw-ink-3); }
+.demo-skin--nwks-mens .nwks-org-star { color: var(--nw-ink-3); }
+.demo-skin--nwks-mens .nwks-org-star--on { color: var(--nw-gold); }
+/* While the read plays, a man not yet placed takes no room, so a lane grows
+   as its rule lands instead of showing empty slots; each arrival pops in by
+   keyframe (a display change cannot transition). Only while armed: the
+   resting board is the full end frame. */
+.demo-skin--nwks-mens [data-track-armed] .nwks-org-card[data-pending] { display: none; }
+.demo-skin--nwks-mens [data-track-armed]:not([data-track-instant]) .nwks-org-card:not([data-pending]) { animation: nwks-arrive 360ms var(--demo-ease, ease) both; }
+@keyframes nwks-arrive { from { opacity: 0; transform: scale(0.94); } }
+@media (prefers-reduced-motion: reduce) {
+  .demo-skin--nwks-mens [data-track-armed] .nwks-org-card:not([data-pending]) { animation: none; }
+}
+/* Only the rule being applied lights its men, in their lane's hue (frames 04-06). */
+.demo-skin--nwks-mens [data-track-armed][data-track-step="1"] .nwks-org-card[data-stage-step="1"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="2"] .nwks-org-card[data-stage-step="2"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="3"] .nwks-org-card[data-stage-step="3"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-org-card[data-stage-step="4"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="5"] .nwks-org-card[data-stage-step="5"] {
+  background: color-mix(in srgb, var(--nw-lane-hue) 12%, var(--nw-paper));
+  border-color: color-mix(in srgb, var(--nw-lane-hue) 60%, var(--nw-paper));
+}
+
+/* "Not on a team yet": their PoolLane. Chips are before-state elements
+   (data-stage-until); here they also take no room once gone, so the column
+   drains upward as each rule places its men. */
+.demo-skin--nwks-mens .nwks-wait {
+  display: grid; gap: 8px; min-width: 0; padding: 10px 12px 12px;
+  border: 1px solid var(--nw-rule); border-left: 3px dotted var(--nw-ink-3); border-radius: 10px; background: var(--nw-wash);
+}
+.demo-skin--nwks-mens .nwks-wait-head { display: grid; }
+.demo-skin--nwks-mens .nwks-wait-kicker { font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-wait-title { font-size: 0.9375rem; font-weight: 700; }
+.demo-skin--nwks-mens .nwks-wait-count { font-family: var(--nw-mono); font-size: 0.75rem; font-weight: 600; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-wait-find { padding: 6px 8px; border: 1px solid var(--nw-rule); border-radius: 6px; background: var(--nw-paper); font-size: 0.75rem; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-wait-list {
+  display: grid; gap: 4px; max-height: 30rem; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 85%, transparent); mask-image: linear-gradient(to bottom, #000 85%, transparent);
+}
+.demo-skin--nwks-mens .nwks-wait-chip {
+  display: none; flex-direction: column; min-width: 0; padding: 4px 8px;
+  border: 1px solid var(--nw-rule); border-radius: 6px; background: var(--nw-paper); font-size: 0.75rem; font-weight: 500;
+}
+.demo-skin--nwks-mens [data-track-armed] .nwks-wait-chip[data-live] { display: flex; }
+.demo-skin--nwks-mens .nwks-wait-sub { font-size: 0.625rem; font-weight: 400; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-wait-done { margin: 6px 0; font-size: 0.75rem; text-align: center; color: var(--nw-ink-2); }
+/* Phone: a strip above the lanes, two rows of chips at most. */
+.demo-skin--nwks-mens .nwks-wait--compact .nwks-wait-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+.demo-skin--nwks-mens .nwks-wait--compact .nwks-wait-kicker,
+.demo-skin--nwks-mens .nwks-wait--compact .nwks-wait-find { display: none; }
+.demo-skin--nwks-mens .nwks-wait--compact .nwks-wait-list { display: flex; flex-wrap: wrap; max-height: 3.5rem; }
+.demo-skin--nwks-mens .nwks-wait--compact .nwks-wait-sub { display: none; }
+.demo-skin--nwks-mens .nwks-wait--compact .nwks-wait-done { margin: 0; text-align: left; }
+
+.demo-skin--nwks-mens .nwks-dup-card {
+  border: 1px solid var(--nw-rule);
+  border-radius: 10px;
+  background: var(--nw-paper);
+  padding: 10px 12px;
+  display: grid;
+  gap: 6px;
+}
+.demo-skin--nwks-mens .nwks-dup-found { display: grid; gap: 6px; min-width: 0; }
+/* The finding's skeleton: its own pills, blank and dashed, while the check waits. */
+.demo-skin--nwks-mens .nwks-dup-skel .nwks-dup-chip-row { color: transparent; }
+.demo-skin--nwks-mens .nwks-dup-skel .nwks-pill { color: transparent; background: transparent; border: 1px dashed var(--nw-edge); }
+.demo-skin--nwks-mens .nwks-dup-chip-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+/* Phone lane switcher (ADR-0017 §6): a stage device, not a claim about the
+   product's own narrow layout, which does not exist (MobileGate). Shown via
+   ProductScreen's own desk/phone split (demo-stage.css .demo-screen__phone).
+   Pills wrap and never scroll sideways; each carries its lane's hue bar. */
+.demo-skin--nwks-mens .nwks-switch-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.demo-skin--nwks-mens .nwks-switch-pill {
+  --nw-lane-hue: var(--nw-team-0);
+  flex: 0 0 auto; min-height: 44px; min-width: 44px; padding: 0 10px 0 12px;
+  border: 1px solid var(--nw-rule); border-radius: 6px; background: var(--nw-paper);
+  box-shadow: inset 4px 0 0 var(--nw-lane-hue);
+  font-family: var(--nw-mono); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; color: var(--nw-ink);
+}
+/* A pill the current rule touched carries its lane tint (strip phone frames). */
+.demo-skin--nwks-mens [data-track-armed][data-track-step="1"] .nwks-switch-pill[data-touch~="1"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="2"] .nwks-switch-pill[data-touch~="2"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="3"] .nwks-switch-pill[data-touch~="3"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-switch-pill[data-touch~="4"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="5"] .nwks-switch-pill[data-touch~="5"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="6"] .nwks-switch-pill[data-touch~="6"] {
+  background: color-mix(in srgb, var(--nw-lane-hue) 16%, var(--nw-paper));
+}
+.demo-skin--nwks-mens .nwks-switch-pill .nwks-lane-count { margin-left: 4px; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-switch-lanes { display: grid; gap: 8px; }
+/* Without JS: no pills, every lane stacked. With JS: one lane, the switcher's. */
+.demo-skin--nwks-mens .nwks-switch:not([data-switch-js]) .nwks-switch-pills { display: none; }
+.demo-skin--nwks-mens .nwks-switch[data-switch-js] .nwks-plane:not([data-on]) { display: none; }
+.demo-skin--nwks-mens .nwks-switch-pill[aria-pressed="true"] { border-color: var(--nw-ink); box-shadow: inset 4px 0 0 var(--nw-lane-hue), 0 0 0 1px var(--nw-ink); }
+
+/* ── Cabins: one cabin as their floor plan (critic-NW M7; rooms/CabinCard.tsx).
+   The plan scales down but is never cropped (spec-NW.md §2.4 "Phone"): at
+   320 each half is ~110px, two 28px plates to a bunk. Beside the plan once
+   the screen has room (a container query on the window, not the viewport:
+   the window is 60% of a desk layout). ── */
+.demo-skin--nwks-mens .nwks-cabin-readiness { font-size: 0.8125rem; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-cabin-wrap { container-type: inline-size; min-width: 0; }
+.demo-skin--nwks-mens .nwks-cabin-board { display: grid; gap: 12px; min-width: 0; }
+@container (min-width: 560px) {
+  .demo-skin--nwks-mens .nwks-cabin-board { grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); align-items: start; }
+}
+.demo-skin--nwks-mens .nwks-cabin { width: 100%; max-width: 24rem; min-width: 0; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-cabin-roof { display: block; width: 100%; height: 16px; }
+.demo-skin--nwks-mens .nwks-cabin-h {
+  display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0 0 6px;
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--nw-ink);
+}
+.demo-skin--nwks-mens .nwks-cabin-n { font-family: var(--nw-mono); letter-spacing: 0; color: var(--nw-ink-2); }
+.demo-skin--nwks-mens .nwks-cabin-walls {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr); gap: 0 9px;
+  padding: 8px 8px 20px; border: 2px solid var(--nw-ink-2); border-radius: 3px; background: var(--nw-paper);
+}
+.demo-skin--nwks-mens .nwks-cabin-divide { background: repeating-linear-gradient(to bottom, var(--nw-ink-3) 0 4px, transparent 4px 8px); }
+/* The door: a gap in the front wall, the leaf, and its swing. */
+.demo-skin--nwks-mens .nwks-cabin-door {
+  position: absolute; left: calc(50% - 1px); bottom: -2px; width: 17px; height: 17px;
+  border-left: 2px solid var(--nw-ink-2); border-top: 1px dashed var(--nw-ink-3); border-right: 1px dashed var(--nw-ink-3);
+  border-top-right-radius: 100%; background: linear-gradient(to top, var(--nw-paper) 2px, transparent 2px);
+}
+.demo-skin--nwks-mens .nwks-cabin-half { display: grid; gap: 5px; align-content: start; min-width: 0; }
+.demo-skin--nwks-mens .nwks-cabin-half-h {
+  display: flex; justify-content: space-between; margin: 0 0 1px; padding-inline: 2px;
+  font-family: var(--nw-mono); font-size: 0.6875rem; font-weight: 600; color: var(--nw-ink-2);
+}
+.demo-skin--nwks-mens .nwks-cabin-half-h b { color: var(--nw-ink); }
+.demo-skin--nwks-mens .nwks-bunk {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3px; padding: 3px;
+  border: 1px solid var(--nw-rule); border-radius: 5px; background: var(--nw-wash);
+}
+.demo-skin--nwks-mens .nwks-berth {
+  display: grid; place-items: center; min-width: 0; min-height: 36px;
+  border: 1px solid var(--nw-rule-2); border-radius: 4px; background: var(--nw-paper);
+}
+.demo-skin--nwks-mens .nwks-berth--open { border: 1px dashed var(--nw-edge); background: transparent; }
+.demo-skin--nwks-mens .nwks-plate {
+  position: relative; display: inline-grid; place-items: center; width: 28px; height: 28px;
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; color: var(--nw-ink);
+  transition: opacity var(--demo-dur, 520ms) var(--demo-ease, ease), transform var(--demo-dur, 520ms) var(--demo-ease, ease);
+}
+.demo-skin--nwks-mens .nwks-plate--attendee { border: 1px solid var(--nw-ink-3); border-radius: 5px; background: var(--nw-paper); }
+/* Servers are gold circles (their board). A pale gold fill keeps the initials legible: gold is 2.80:1 on white. */
+.demo-skin--nwks-mens .nwks-plate--server { border: 2px solid var(--nw-gold); border-radius: 999px; background: color-mix(in srgb, var(--nw-gold) 18%, var(--nw-paper)); }
+.demo-skin--nwks-mens .nwks-pin {
+  position: absolute; top: -4px; right: -4px; width: 10px; height: 10px; border-radius: 999px;
+  background: var(--nw-pin, var(--nw-team-0)); box-shadow: 0 0 0 1.5px var(--nw-paper);
+}
+.demo-skin--nwks-mens .nwks-cabin-side { display: grid; gap: 10px; align-content: start; min-width: 0; }
+/* Block swap cell: a before-state line and what replaces it share one cell. */
+.demo-skin--nwks-mens .nwks-swapb { display: grid; min-width: 0; }
+.demo-skin--nwks-mens .nwks-swapb > * { grid-area: 1 / 1; justify-self: start; min-width: 0; }
+/* At rest a before-state twin takes no room at all, so the end frame is laid
+   out exactly as if it had never existed (it only reserves while playing). */
+.demo-skin--nwks-mens [data-track]:not([data-track-armed]) :is(.nwks-swapb, .demo-swap) > [data-stage-until] { display: none; }
+/* A control still to come is invisible while it waits; it must not take a tap
+   meant for the before-state drawn under it. */
+.demo-skin--nwks-mens [data-track-armed] .demo-screen [data-pending] { pointer-events: none; }
+.demo-skin--nwks-mens .nwks-still-list { display: grid; gap: 6px; }
+.demo-skin--nwks-mens .nwks-still-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-still-hand { transition: opacity 240ms ease; }
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-still-hand { opacity: 0.45; }
+.demo-skin--nwks-mens .nwks-still-panel .nwks-still-hand[data-stage-until]:not([data-live]) { display: none; }
+.demo-skin--nwks-mens .nwks-legend-mark { display: inline-block; width: 10px; height: 10px; margin-right: 4px; vertical-align: -1px; box-sizing: border-box; }
+.demo-skin--nwks-mens .nwks-legend-mark.nwks-plate--server { border-width: 1.5px; }
+.demo-skin--nwks-mens .nwks-legend-pin { border-radius: 999px; background: var(--nw-team-0); }
+.demo-skin--nwks-mens .nwks-still-panel {
+  border: 1px dashed var(--nw-rule);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: grid;
+  gap: 6px;
+}
+.demo-skin--nwks-mens .nwks-legend { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 0.6875rem; color: var(--nw-ink-2); }
+
+/* ── Email ── */
+.demo-skin--nwks-mens .nwks-email-cols { display: grid; gap: 10px; }
+@media (min-width: 1024px) {
+.demo-skin--nwks-mens .nwks-email-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr); }
+}
+.demo-skin--nwks-mens .nwks-email-col { border: 1px solid var(--nw-rule); border-radius: 10px; background: var(--nw-paper); padding: 10px 12px; min-width: 0; }
+.demo-skin--nwks-mens .nwks-tpl-item { display: block; width: 100%; text-align: left; padding: 6px 8px; border-radius: 8px; border: 0; background: transparent; font-size: 0.8125rem; color: var(--nw-ink-2); min-height: 44px; }
+.demo-skin--nwks-mens .nwks-tpl-item[aria-current="true"] { background: var(--nw-wash); color: var(--nw-ink); font-weight: 600; }
+.demo-skin--nwks-mens .nwks-letter-head { display: grid; gap: 4px; font-size: 0.75rem; color: var(--nw-ink-3); }
+.demo-skin--nwks-mens .nwks-letter-band { border: 1px solid var(--nw-rule); border-radius: 8px; overflow: hidden; }
+.demo-skin--nwks-mens .nwks-letter-brand { background: var(--nw-brand); color: #fff; padding: 8px 10px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.03em; }
+.demo-skin--nwks-mens .nwks-letter-body { padding: 10px; font-size: 0.8125rem; color: var(--nw-ink); }
+.demo-skin--nwks-mens .nwks-field-pill {
+  display: inline-flex;
+  border: 1px solid var(--nw-edge);
+  color: var(--nw-brand);
+  background: var(--nw-wash);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.demo-skin--nwks-mens .nwks-toggle-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.demo-skin--nwks-mens .nwks-toggle-chip {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--nw-rule);
+  background: var(--nw-paper);
+  font-size: 0.75rem;
+  color: var(--nw-ink-2);
+}
+.demo-skin--nwks-mens .nwks-toggle-chip[aria-pressed="true"],
+.demo-skin--nwks-mens .nwks-toggle-chip.nwks-fake--on { background: var(--nw-brand); border-color: var(--nw-brand); color: #fff; }
+.demo-skin--nwks-mens span.nwks-toggle-chip { display: inline-flex; align-items: center; }
+.demo-skin--nwks-mens .nwks-audience-count { font-family: var(--nw-mono); font-size: 0.875rem; font-weight: 700; }
+
+/* ── Lookout AI ── */
+.demo-skin--nwks-mens .nwks-thread { position: relative; padding-left: 18px; display: grid; gap: 14px; }
+.demo-skin--nwks-mens .nwks-thread::before { content: ""; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 1px; background: var(--nw-rule); }
+.demo-skin--nwks-mens .nwks-turn { position: relative; min-width: 0; }
+.demo-skin--nwks-mens .nwks-turn::before { content: ""; position: absolute; left: -18px; top: 4px; width: 8px; height: 8px; border-radius: 999px; background: var(--nw-brand); }
+.demo-skin--nwks-mens .nwks-turn-q { font-size: 0.875rem; font-weight: 600; }
+.demo-skin--nwks-mens .nwks-turn-a { font-size: 0.875rem; color: var(--nw-ink-2); margin-top: 4px; }
+.demo-skin--nwks-mens .nwks-trace { font-family: var(--nw-mono); font-size: 0.6875rem; color: var(--nw-ink-3); margin-top: 4px; }
+.demo-skin--nwks-mens .nwks-candidates { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+.demo-skin--nwks-mens .nwks-candidate-chip {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--nw-edge);
+  border-radius: 10px;
+  background: var(--nw-paper);
+  font-size: 0.8125rem;
+  color: var(--nw-ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ── The tab bar on a phone (lane NW5 item 1). The kit pins this bar under the
+   site header below 1024px; as a 3x2 grid plus the tour button on its own row
+   it stood 162px tall at 320 and 390, so the product got a 105px band at
+   320x568 (lane-NW4 Expected/Found). Now ONE 44px row: the six tabs scroll
+   sideways INSIDE the bar (the kit's own .demo-tabs__list scroller, marked
+   data-stage-scroller), with a right-edge fade saying there is more, and
+   "Take the tour" compact at the row's end. TabFollow (NwksPanelStage.tsx)
+   scrolls the selected tab into the row when the tour moves on, which the
+   kit does not (it sets `active` without focus). Layout only; colours stay
+   the kit's --theme-* tokens. ── */
+@media (max-width: 1023px) {
+  .demo-skin--nwks-mens .demo-tabs__bar { flex-wrap: nowrap; gap: 6px; }
+  .demo-skin--nwks-mens .demo-tabs__list {
+    flex: 1 1 auto; min-width: 0; gap: 4px; padding-bottom: 0;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 22px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 22px), transparent);
+  }
+  /* The last tab can scroll clear of the fade. */
+  .demo-skin--nwks-mens .demo-tabs__list::after { content: ""; flex: 0 0 18px; }
+  .demo-skin--nwks-mens .demo-tabs__tour { flex: 0 0 auto; white-space: nowrap; }
+  /* The row clips sideways, so the focus ring sits inside the tab. */
+  .demo-skin--nwks-mens .demo-tabs__tab:focus-visible { outline-offset: -4px; }
+}
+@media (max-width: 767px) {
+  .demo-skin--nwks-mens .demo-tabs__tab { padding: 0 10px; font-size: 0.8125rem; }
+  .demo-skin--nwks-mens .demo-tabs__tour { padding: 0 10px; font-size: 0.8125rem; }
+}
+
+/* Keep each panel's first animated region near the top on a phone (critic-NW
+   B3): the Attendees toolbar was two rows of segments plus an Export row,
+   180px above the roster that step 1 fills. */
+@media (max-width: 767px) {
+  .demo-skin--nwks-mens .nwks-desk-only { display: none; }
+  .demo-skin--nwks-mens .nwks-seg button,
+  .demo-skin--nwks-mens .nwks-seg .nwks-fake { padding: 6px 8px; }
+}
+
+/* ── The "before" pictures (OldMaterials.tsx, critic-NW M2): the ministry's
+   OLD tools, so neither NWKS's skin nor Preisser's. Plain paper and generic
+   office-software greys; pen notes in a hand face with a system fallback. ── */
+.demo-skin--nwks-mens .nwks-old {
+  position: relative; overflow: hidden; min-width: 0;
+  border-radius: 6px; background: #FFFFFF; color: #2B2B2B;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 8px 18px -10px rgba(0, 0, 0, 0.45);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: 0.75rem; line-height: 1.4;
+}
+.demo-skin--nwks-mens .nwks-old-pen { font-family: "Bradley Hand", "Segoe Print", "Marker Felt", "Comic Sans MS", cursive; color: #1F3FAE; }
+.demo-skin--nwks-mens .nwks-old-struck { text-decoration: line-through; text-decoration-color: #B42318; text-decoration-thickness: 2px; }
+/* The sign-up form, closed. */
+.demo-skin--nwks-mens .nwks-old-form { display: grid; gap: 8px; padding: 12px 14px 14px; border-top: 8px solid #5B6B8C; }
+.demo-skin--nwks-mens .nwks-old-form-title { font-size: 0.9375rem; font-weight: 600; }
+.demo-skin--nwks-mens .nwks-old-form-closed { padding: 6px 8px; border-radius: 4px; background: #FDECEA; color: #8A1C1C; font-weight: 600; }
+/* The closed form's fields read greyed-out by colour, never by opacity: the
+   end frame ships fully visible (ADR-0016 §3). */
+.demo-skin--nwks-mens .nwks-old-form-fields { display: grid; gap: 8px; }
+.demo-skin--nwks-mens .nwks-old-form-field { display: grid; gap: 3px; color: #80868B; }
+.demo-skin--nwks-mens .nwks-old-form-field i { display: block; height: 14px; border-bottom: 1px solid #C4C7CA; }
+.demo-skin--nwks-mens .nwks-old-form-radios { display: flex; gap: 12px; }
+.demo-skin--nwks-mens .nwks-old-form-submit { justify-self: start; padding: 5px 14px; border-radius: 4px; background: #E3E5E8; color: #5F6368; font-weight: 600; }
+/* The call-back notepad. */
+.demo-skin--nwks-mens .nwks-old-pad {
+  padding: 10px 12px 10px 34px; background: repeating-linear-gradient(#FFFEF4 0 23px, #CFDDEC 23px 24px);
+  line-height: 24px; font-size: 0.875rem;
+}
+.demo-skin--nwks-mens .nwks-old-pad::before { content: ""; position: absolute; inset: 0 auto 0 24px; width: 1px; background: #E8A1A1; }
+.demo-skin--nwks-mens .nwks-old-pad-head { font-weight: 700; }
+.demo-skin--nwks-mens .nwks-old-pad-lines { margin: 0; padding: 0; list-style: none; }
+.demo-skin--nwks-mens .nwks-old-pad-lines li { display: flex; flex-wrap: wrap; gap: 0 10px; }
+.demo-skin--nwks-mens .nwks-old-pad-note { color: #4A5A7A; }
+/* The hand-kept workbooks. */
+.demo-skin--nwks-mens .nwks-old-sheet { padding: 0; }
+/* The grid always fits its paper: fixed layout, cells ellipse. A picture that
+   only LOOKED cropped still had boxes 722px wide at 320 (the stage's overflow
+   guard, tests/e2e/lib/checks.ts, measures boxes, not paint). */
+.demo-skin--nwks-mens .nwks-old-grid { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 0.6875rem; white-space: nowrap; }
+.demo-skin--nwks-mens .nwks-old-grid th,
+.demo-skin--nwks-mens .nwks-old-grid td { overflow: hidden; text-overflow: ellipsis; }
+.demo-skin--nwks-mens .nwks-old-grid .nwks-old-rn { width: 1.75rem; }
+.demo-skin--nwks-mens .nwks-old-grid th,
+.demo-skin--nwks-mens .nwks-old-grid td { padding: 3px 7px; border: 1px solid #D9D9D9; text-align: left; }
+.demo-skin--nwks-mens .nwks-old-grid th { background: #F3F3F3; font-weight: 700; color: #3C4043; }
+.demo-skin--nwks-mens .nwks-old-th-short { display: none; }
+.demo-skin--nwks-mens .nwks-old-grid th small { display: block; font-size: 0.5625rem; font-weight: 600; letter-spacing: 0.04em; color: #5F6368; }
+.demo-skin--nwks-mens .nwks-old-rn { background: #F3F3F3; color: #5F6368; text-align: center; }
+.demo-skin--nwks-mens .nwks-old-spare { background: #FFF6D1; }
+.demo-skin--nwks-mens .nwks-old-group td { background: #EEF2F7; font-weight: 700; color: #3C4043; }
+.demo-skin--nwks-mens .nwks-old-grid td.nwks-old-pen { font-size: 0.875rem; }
+.demo-skin--nwks-mens .nwks-old-sheet-pen { display: block; width: fit-content; margin: 4px 0 6px 150px; transform: rotate(-3deg); font-size: 0.9375rem; }
+/* The Sent folder. */
+.demo-skin--nwks-mens .nwks-old-mail-head { padding: 6px 12px; background: #F1F3F4; border-bottom: 1px solid #DADCE0; font-weight: 700; color: #3C4043; }
+.demo-skin--nwks-mens .nwks-old-mail-list { margin: 0; padding: 0; list-style: none; }
+.demo-skin--nwks-mens .nwks-old-mail-list li {
+  display: grid; grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr) auto; gap: 8px; padding: 7px 12px;
+  border-bottom: 1px solid #ECEDEF;
+}
+.demo-skin--nwks-mens .nwks-old-mail-to { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.demo-skin--nwks-mens .nwks-old-mail-subj { color: #5F6368; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.demo-skin--nwks-mens .nwks-old-mail-day { color: #5F6368; }
+/* On a phone a picture is a crop, so the screen it leads to starts high (B3). */
+@media (max-width: 767px) {
+  .demo-skin--nwks-mens .nwks-old { max-height: 9rem; -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent); mask-image: linear-gradient(to bottom, #000 78%, transparent); }
+  .demo-skin--nwks-mens .nwks-old-sheet { -webkit-mask-image: none; mask-image: none; }
+  /* On a phone the workbook shows Team 1, Team 2 (the struck name) and the spare column. */
+  .demo-skin--nwks-mens .nwks-old-grid--teams :is(th, td):nth-child(n + 4):not(:last-child) { display: none; }
+  /* Chromium and Firefox cut "PRAYER TEAM 2" to "PRAYER TEA…" at phone widths
+     (WebKit's rounding fit it; lane-NW4). On a phone the header uses the
+     product's own short code, "TEAM 2" (its master-schedule pills), and the job
+     line may wrap between words. */
+  .demo-skin--nwks-mens .nwks-old-th-full { display: none; }
+  .demo-skin--nwks-mens .nwks-old-th-short { display: inline; }
+  .demo-skin--nwks-mens .nwks-old-grid th { padding-inline: 5px; vertical-align: bottom; }
+  .demo-skin--nwks-mens .nwks-old-grid th small { white-space: normal; letter-spacing: 0.01em; }
+}
+
+/* Dashboard "Recent Registrations" (critic-NW M5). */
+.demo-skin--nwks-mens .nwks-recent { display: grid; margin-top: 6px; }
+.demo-skin--nwks-mens .nwks-recent-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; padding: 6px 0; border-top: 1px solid var(--nw-rule-2);
+}
+.demo-skin--nwks-mens .nwks-recent-row .nwks-r-meta { flex-basis: 100%; }
+
+/* ── Step notes (StepNote.tsx, critic-NW M3): each step's caption against
+   the element it changes, inside the product window. The window is light in
+   both site themes, so the note's colours are fixed: #0C6FC9 is the site's
+   light accent-text (5.08:1 on white), ink #0A1628. ── */
+.demo-skin--nwks-mens .nwks-note {
+  display: flex; align-items: flex-start; gap: 8px; margin: 0; min-width: 0;
+  padding: 6px 10px; border-left: 3px solid #0C6FC9; border-radius: 0 6px 6px 0;
+  background: #EEF5FC; color: #0A1628; font-size: 0.8125rem; line-height: 1.4; font-weight: 500;
+  transition: opacity var(--demo-dur, 520ms) var(--demo-ease, ease), transform var(--demo-dur, 520ms) var(--demo-ease, ease),
+    background-color 200ms ease, color 200ms ease;
+}
+.demo-skin--nwks-mens .nwks-note-n {
+  flex: 0 0 auto; display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 999px;
+  border: 1px solid #0C6FC9; color: #0C6FC9; font-size: 0.6875rem; font-weight: 700;
+}
+.demo-skin--nwks-mens [data-track-armed][data-track-step="1"] .nwks-note[data-note="1"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="2"] .nwks-note[data-note="2"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="3"] .nwks-note[data-note="3"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-note[data-note="4"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="5"] .nwks-note[data-note="5"],
+.demo-skin--nwks-mens [data-track-armed][data-track-step="6"] .nwks-note[data-note="6"] {
+  background: #0C6FC9; color: #FFFFFF;
+}
+.demo-skin--nwks-mens [data-track-armed][data-track-step="1"] .nwks-note[data-note="1"] .nwks-note-n,
+.demo-skin--nwks-mens [data-track-armed][data-track-step="2"] .nwks-note[data-note="2"] .nwks-note-n,
+.demo-skin--nwks-mens [data-track-armed][data-track-step="3"] .nwks-note[data-note="3"] .nwks-note-n,
+.demo-skin--nwks-mens [data-track-armed][data-track-step="4"] .nwks-note[data-note="4"] .nwks-note-n,
+.demo-skin--nwks-mens [data-track-armed][data-track-step="5"] .nwks-note[data-note="5"] .nwks-note-n,
+.demo-skin--nwks-mens [data-track-armed][data-track-step="6"] .nwks-note[data-note="6"] .nwks-note-n {
+  border-color: #FFFFFF; color: #FFFFFF;
+}

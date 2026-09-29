@@ -1,4 +1,5 @@
 import type { CaseStudyData } from "@/types/case-study";
+import { stages } from "@/data/demos/nwks-encounter";
 
 // NWKS Encounter — the retreat website and the administration system behind it.
 // Live at nwksencounter.com (a single self-contained HTML document on Cloudflare
@@ -15,7 +16,8 @@ import type { CaseStudyData } from "@/types/case-study";
 // volunteer, leader or admin name, never a count read out of the live database,
 // and never link or screenshot the admin panel — it is the ministry's own login,
 // and the site's Contacts sections publish real phone numbers and emails by
-// design. This repo is PUBLIC.
+// design; a labeled recreation on invented data is not a screenshot (ADR-0017).
+// This repo is PUBLIC.
 //
 // SOURCE OF CLAIMS. Every sentence traces to one of four places:
 //   1. A file:line-cited fact sheet read off the PRODUCTION branch
@@ -186,6 +188,8 @@ export const caseStudy: CaseStudyData = {
         "113 of them keep the men's and women's records apart, after an import script wrote eighteen men's registrations under an invented women's event. A route can be forgotten and a trigger cannot, and a standing test now fails if a new table arrives without one.",
     },
   ],
+
+  demo: stages,
 
   techStack: [
     "Cloudflare Pages",
