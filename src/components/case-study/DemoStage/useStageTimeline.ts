@@ -600,24 +600,43 @@ export function useStageTimeline(steps: readonly DemoStep[], options: TimelineOp
     let raf = 0;
     let lastY = window.scrollY;
     let stillFrames = 0;
+    // The visitor owns the page the moment they touch it: any wheel, touch,
+    // pointer or key input ends the loop. Only real input counts: a scene's
+    // own instant scroll (FarmBooks ReadFollow) or a late layout shift is
+    // not the visitor and must not stop the correction. Without this the loop pulled the page back after a visitor's
+    // own 400px scroll during the tour (ci-local b415085, Firefox, NWKS).
+    let aborted = false;
+    const abort = () => {
+      aborted = true;
+    };
+    const inputEvents: Array<keyof WindowEventMap> = ["wheel", "touchstart", "touchmove", "keydown", "pointerdown"];
+    for (const ev of inputEvents) window.addEventListener(ev, abort, { passive: true });
     const settle = () => {
-      if (performance.now() - start > SETTLE_WINDOW_MS || rescrolls >= 4) return;
+      if (aborted || performance.now() - start > SETTLE_WINDOW_MS || rescrolls >= 4) return;
       const y = window.scrollY;
       stillFrames = y === lastY ? stillFrames + 1 : 0;
       lastY = y;
-      if (stillFrames >= 2 && getComputedStyle(barEl).position === "sticky") {
-        const barTop = barEl.getBoundingClientRect().top;
-        const bottom = target.getBoundingClientRect().bottom;
-        if (bottom > barTop - BAR_CLEARANCE_PX) {
-          rescrolls += 1;
-          stillFrames = 0;
-          target.scrollIntoView({ block: "nearest", behavior: s.reduced ? "instant" : "smooth" });
+      // Ignore stillness in the first 300 ms: a smooth scroll has not started
+      // moving yet, and a baseline taken there reads the kit's own scroll as
+      // the visitor's (first-load WebKit runs aborted at step 1).
+      if (stillFrames >= 2 && performance.now() - start > 300) {
+        if (getComputedStyle(barEl).position === "sticky") {
+          const barTop = barEl.getBoundingClientRect().top;
+          const bottom = target.getBoundingClientRect().bottom;
+          if (bottom > barTop - BAR_CLEARANCE_PX) {
+            rescrolls += 1;
+            stillFrames = 0;
+            target.scrollIntoView({ block: "nearest", behavior: s.reduced ? "instant" : "smooth" });
+          }
         }
       }
       raf = requestAnimationFrame(settle);
     };
     raf = requestAnimationFrame(settle);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      for (const ev of inputEvents) window.removeEventListener(ev, abort);
+    };
   }, [s.step, s.reduced]);
 
   // Disarm once the last step has settled.
