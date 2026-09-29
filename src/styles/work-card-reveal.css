@@ -268,14 +268,19 @@
 /* The Proof Stage link. A filled pill first in the row: the owner's whole
    point for these cards (2026-09-29) is a button that takes the visitor to
    SEE the thing working. Same contrast rule as the live-site pill. */
+/* Owner, 2026-09-29: the panel's buttons must be UNIFORM. The demo link takes
+   the exact same box as the live-site pill (full width, same fill, same
+   padding, same radius) so the two read as one set of controls. */
 .ps-work-card__panel-link--demo {
   background: var(--color-primary-strong, #0C6FC9);
   color: var(--color-white);
-  padding: 0 14px;
-  border-radius: 999px;
+  width: 100%;
+  justify-content: flex-start;
+  padding: 8px 16px;
+  text-align: left;
 }
 .ps-work-card__panel-link--demo:hover {
-  background: var(--color-primary, #1590FF);
+  background: var(--color-primary-strong-hover, #0B68BE);
 }
 /* Closed-face badge: always visible (never gated on hover or device), so the
    demo is discoverable without opening the panel; sits above the toggle. */
@@ -300,7 +305,9 @@
 }
 .ps-work-card__demo-badge:hover { background: var(--color-primary, #1590FF); }
 .ps-work-card__demo-badge:focus-visible { outline: 2px solid var(--color-cyan); outline-offset: 2px; }
-.ps-work-card--open .ps-work-card__demo-badge { opacity: 0; pointer-events: none; }
+/* The badge stays where it is when the card opens (owner, 2026-09-29: a button
+   that vanishes on hover is useless); it sits above the panel and stays clickable. */
+.ps-work-card--open .ps-work-card__demo-badge { z-index: 5; }
 
 /* The client's own live site. A filled pill, because this is the thing the
    owner asked for by name and it must not read as body text.
