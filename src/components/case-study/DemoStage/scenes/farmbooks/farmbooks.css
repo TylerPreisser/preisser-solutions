@@ -185,10 +185,49 @@
     background: linear-gradient(rgb(var(--fb-page)), rgb(var(--fb-page) / 0));
     pointer-events: none;
   }
+  /* final-FB item 2: this used to be `grid-area: 1 / 1; align-self: start; visibility: hidden`,
+     one shared cell sized to the TALLEST of the six cards (`.fb-read__cards`'s own grid row
+     sizing counts every grid-area participant regardless of `visibility`, hidden or not) so the
+     frame never resized and the Next button never moved under a thumb. That reasoning no longer
+     applies: the kit's own bar is `position: sticky` at the viewport's bottom edge (via
+     `.demo-screen:has(.fb-read__photo-sticky){overflow:visible}` above, already reopening the
+     photo's own sticky containing block to the page), so the bar's position was ALREADY
+     independent of this beat's content height -- measured directly (`bars.mjs`, final-FB item 1):
+     it holds at the same viewport y regardless of which card is showing. The one thing the fixed
+     cell bought was never real; the one thing it cost was real: at 390, all three engines, both
+     themes, the two SHORTEST cards ("On the ticket" step 2, "Every line" step 3) left 137-232px of
+     empty cream between the card and the bar (final-FB item 2, `SHOTS/sheet-i2-read390.png`,
+     option (a): "size the cell to the current card").
+     FIRST ATTEMPT (reverted): `display: none` on every non-current card. It sized the column
+     correctly, but broke `demo-stage.spec.ts`'s own "Back, Next and Replay step the same
+     timeline" test at 390 in all three engines: that test presses Back from the last step and
+     polls for a `[data-pending]` element with `getClientRects().length > 0` (proof that the
+     kit's own not-yet-arrived-content ghost, `demo-stage.css`'s `[data-pending][data-fx="ghost"]
+     { opacity: 0.28 }`, is real DOM with real geometry, not a fully-detached node) -- `display:
+     none` removes an element from the render tree entirely, so its `getClientRects()` goes to
+     0, exactly what that guard exists to catch. `visibility: hidden` keeps a real box (hence
+     real client rects) while painting nothing, which is why the ORIGINAL shared-cell approach
+     passed that check; the fix here keeps `visibility: hidden` for that reason and instead
+     takes the six cards OUT of the container's own flow-height calculation with `position:
+     absolute` (an absolutely-positioned grid/flex/block child does not contribute to its
+     container's auto size, per spec), stacked at the container's own top (`inset-inline: 0; top:
+     0`, `.fb-read__cards` made `position: relative` as their containing block). Only the
+     CURRENT card returns to normal flow (`position: static`), so the container -- and the swap
+     "cell" -- is sized to exactly that one card, with the other five still real, rect-bearing,
+     visibility-hidden boxes layered underneath it. Verified: `getClientRects()` on a hidden
+     card's own `[data-pending]` div is still non-empty (Chromium devtools-style check via
+     `getBoundingClientRect()` returning a non-zero rect while `position: absolute`), and the
+     full spec passed 114/114 with this version (`display: none` version failed 3/114, the Back/
+     Next/Replay test in all three engines). No resize animation is added; the height change is
+     instant, same as any other reflow, so there is nothing to gate behind reduced motion. */
+  [data-track-armed] .fb-read__cards {
+    position: relative;
+  }
   [data-track-armed] .fb-read__cards > .fb-read__card {
-    grid-area: 1 / 1;
-    align-self: start;
     visibility: hidden;
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
   }
   [data-track-armed]:is([data-track-step="0"], [data-track-step="1"]) .fb-read__card[data-fb-card="1"],
   [data-track-armed][data-track-step="2"] .fb-read__card[data-fb-card="2"],
@@ -197,6 +236,7 @@
   [data-track-armed][data-track-step="5"] .fb-read__card[data-fb-card="5"],
   [data-track-armed][data-track-step="6"] .fb-read__card[data-fb-card="6"] {
     visibility: visible;
+    position: static;
   }
 }
 
