@@ -245,6 +245,18 @@ function TabPanel(props: {
     const barRect = bar.getBoundingClientRect();
     const sticky = getComputedStyle(bar).position === "sticky";
     const offset = sticky ? barRect.height : el.getBoundingClientRect().top - barRect.top;
+    // No transition on the panel itself, or the margin below is not in
+    // force when scrollIntoView reads it: under reduced motion the site's
+    // blanket reset (globals.css `@media (prefers-reduced-motion: reduce)
+    // { *, *::before, *::after { transition-duration: 0.01ms !important } }`)
+    // gives every element a real transition on `transition-property: all`
+    // (the initial value), scroll-margin-top included. Firefox then reads
+    // the transition's START value (0px) in the same task and lands the
+    // panel 140px under the pinned bar (review-F4.md MEDIUM; measured
+    // computed 0px with the inline 140px set, and 140px once this is set).
+    // The panel animates nothing of its own; its steps carry their own
+    // transitions (demo-stage.css `[data-track-armed] [data-stage-step]`).
+    el.style.transitionProperty = "none";
     el.style.scrollMarginTop = `${nav + offset}px`;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     el.scrollIntoView({ block: "start", behavior: reduced ? "instant" : "smooth" });
