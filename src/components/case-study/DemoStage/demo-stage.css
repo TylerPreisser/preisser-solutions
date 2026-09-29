@@ -97,24 +97,38 @@
 
 /* ── Phone control bar (critic-BO.md B1): below the desk breakpoint the full
    step list sits 909px below the product card it drives, so a visitor
-   stepping through sees no visible change. Once JS is interactive, collapse
-   the list to its current item and pin the controls to the bottom of the
-   beat's own container, so the thing that changes and the control that
-   changes it share one screen. No-JS is untouched: nothing carries
-   aria-current="step" without JS, so the full list (the complete story)
-   still shows, and this block does not apply before [data-track-js]. Desktop
-   (>=1024px, the .demo-beat--stepped two-column breakpoint) is unchanged. */
+   stepping through sees no visible change. Once JS is interactive, pin the
+   controls to the bottom of the beat's own container, so the control that
+   changes a step and the thing it changes share one screen. No-JS is
+   untouched: nothing carries aria-current="step" without JS, so the full
+   list (the complete story) still shows, and this block does not apply
+   before [data-track-js]. Desktop (>=1024px, the .demo-beat--stepped
+   two-column breakpoint) is unchanged. */
 @media (max-width: 1023px) {
   [data-track-js] .demo-controls {
     position: sticky;
     bottom: 12px;
     z-index: 1;
-    padding: 10px 12px;
+    padding: 8px 10px;
     border: 1px solid var(--demo-mat-edge);
     border-radius: var(--radius-card);
     background: var(--demo-mat-bg);
   }
-  [data-track-js] .demo-steps__item:not([aria-current="step"]) { display: none; }
+  /* Compact bar (critic-NW.md BROKEN: the bar ran 158-209px tall on a phone,
+     mostly its own copy of the current step's caption, leaving as little as
+     105px/18% of a 320x568 screen for the product between it and the
+     sticky tab bar above). Every scene already prints its own caption
+     beside the element it changes (NWKS's per-tab StepNote, this kit's own
+     Read/Caught beats), so the bar drops the whole step list here and keeps
+     only the controls -- Back, Next, Replay and "Step n of m" -- in one
+     44px row: 44 + 8px padding top/bottom (16) + 1px border top/bottom (2)
+     = 62px, under the 64px target. Kept on one line (no wrap) by trimming
+     the buttons' own horizontal padding and the two labels' font-size;
+     min-height:44px on .demo-btn (unchanged) keeps the tap target legal. */
+  [data-track-js] .demo-steps { display: none; }
+  [data-track-js] .demo-controls__buttons { flex-wrap: nowrap; gap: 6px; }
+  [data-track-js] .demo-controls__buttons .demo-btn { padding: 0 10px; font-size: 0.8125rem; }
+  [data-track-js] .demo-controls__count { font-size: 0.75rem; white-space: nowrap; }
 }
 
 /* ── The step engine (useStageTimeline.ts). Base = end frame; these rules

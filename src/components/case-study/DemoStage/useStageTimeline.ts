@@ -175,6 +175,17 @@ export function useStageTimeline(
   const prevStep = useRef(s.step);
   const counters = useRef<Array<() => void>>([]);
   const wasArmed = useRef(false);
+  // Set right before a DIRECT-action dispatch (next/back/goto/replay) ONLY --
+  // never before "tick" (an autoplay step) or "arm"/"hydrate"/"start"/
+  // "settle". AUTOPLAY NEVER SCROLLS THE WINDOW (lane F4, 2026-09-28): two
+  // tracks autoplaying near the same viewport position each moved
+  // window.scrollY toward its own target, and the two fought (Firefox
+  // measured: never settled inside a 5s poll). A track that starts playing
+  // because it entered the viewport must not scroll at all; its reserved
+  // layout (swap cells, `.demo-swap`) already keeps the revealed element
+  // where it was going to be. Only a visitor's own tap moves the page, once,
+  // which is what this flag scopes the scroll effect below to.
+  const advanced = useRef(false);
 
   useEffect(() => {
     onEnd.current = options.onEnd;
@@ -224,7 +235,10 @@ export function useStageTimeline(
     }
   }, [s]);
 
-  // Auto-play: one step per hold; waits while the tab is hidden.
+  // Auto-play: one step per hold; waits while the tab is hidden. Never sets
+  // `advanced` and clears any stale one -- AUTOPLAY NEVER SCROLLS THE WINDOW
+  // (see the ref's own comment above); the scroll effect below only runs for
+  // a direct tap.
   useEffect(() => {
     if (!s.auto) return;
     const hold = s.step === 0 ? FIRST_STEP_DELAY_MS : steps[s.step - 1]?.holdMs ?? DEFAULT_HOLD_MS;
@@ -233,10 +247,67 @@ export function useStageTimeline(
         t = window.setTimeout(fire, 500);
         return;
       }
+      // Clear, not merely "don't set": a direct action whose dispatch leaves
+      // `s.step` unchanged (Replay or the tour's start at step 0, goto to the
+      // current step) never runs the scroll effect, so its flag would
+      // otherwise survive to THIS tick and scroll the window from autoplay
+      // (review-F4.md HIGH 1: measured 355-385 ms after the click, all engines).
+      advanced.current = false;
       dispatch({ type: "tick" });
     }, hold);
     return () => window.clearTimeout(t);
   }, [s.auto, s.step, steps]);
+
+  // Keep the step a visitor just asked for clear of the phone control bar
+  // (demo-stage.css's `[data-track-js] .demo-controls { position: sticky;
+  // bottom: 12px }`, critic-BO.md B1: "a step that reveals an element below
+  // the fold lands UNDER the sticky phone control bar"). Runs only after a
+  // DIRECT action (`advanced.current`, set only by next/back/goto/replay
+  // above and below -- never by tick/arm/hydrate/start/settle), so autoplay,
+  // mount and the entry IntersectionObserver's first frame never scroll the
+  // page.
+  //
+  // Targets the FRONTMOST revealed [data-stage-step] element (the highest
+  // dataset.stageStep at or below the new step) rather than one matching the
+  // step number exactly: a step can retire an element with no
+  // [data-stage-step] of its own (e.g. a caption-only step), and `back()`
+  // must re-reveal whichever element is now current, not necessarily one
+  // tagged with the exact number just landed on.
+  useEffect(() => {
+    if (!advanced.current) return;
+    advanced.current = false;
+    const root = ref.current;
+    if (!root) return;
+    const bar = root.querySelector<HTMLElement>(".demo-controls");
+    if (!bar) return;
+    let el: HTMLElement | null = null;
+    let elStep = -1;
+    for (const e of own(root, "[data-stage-step]")) {
+      const k = Number(e.dataset.stageStep);
+      if (k <= s.step && k > elStep) {
+        el = e;
+        elStep = k;
+      }
+    }
+    if (!el) return;
+    // Only phones and tablets pin the bar (demo-stage.css `@media
+    // (max-width: 1023px)`); desktop's `.demo-controls` is static, in flow
+    // below the content, so it never covers a step there and needs no
+    // margin. Read from the LIVE element, not a cached flag, so a resize
+    // across the breakpoint during a play stays correct.
+    if (getComputedStyle(bar).position === "sticky") {
+      const barRect = bar.getBoundingClientRect();
+      // getComputedStyle().bottom on a sticky box resolves the declared
+      // length (demo-stage.css: `bottom: 12px`) regardless of whether the
+      // bar is currently pinned, so this is correct even before the page
+      // has scrolled the bar into its stuck position.
+      const pinGap = parseFloat(getComputedStyle(bar).bottom) || 0;
+      el.style.scrollMarginBottom = `${barRect.height + pinGap}px`;
+    } else {
+      el.style.scrollMarginBottom = "0px";
+    }
+    el.scrollIntoView({ block: "nearest", behavior: s.reduced ? "instant" : "smooth" });
+  }, [s.step, s.reduced]);
 
   // Disarm once the last step has settled.
   useEffect(() => {
@@ -260,10 +331,28 @@ export function useStageTimeline(
     return () => list.forEach((stop) => stop());
   }, []);
 
-  const next = useCallback(() => dispatch({ type: "next" }), []);
-  const back = useCallback(() => dispatch({ type: "back" }), []);
-  const goto = useCallback((step: number) => dispatch({ type: "goto", step }), []);
-  const replay = useCallback(() => dispatch({ type: "start" }), []);
+  const next = useCallback(() => {
+    advanced.current = true;
+    dispatch({ type: "next" });
+  }, []);
+  const back = useCallback(() => {
+    advanced.current = true;
+    dispatch({ type: "back" });
+  }, []);
+  const goto = useCallback((step: number) => {
+    advanced.current = true;
+    dispatch({ type: "goto", step });
+  }, []);
+  const replay = useCallback(() => {
+    // A direct tap, listed with Next/Back: mark it, even though "start"
+    // resets to step 0 where nothing is revealed yet (own() below finds no
+    // element), so there is nothing to scroll to today -- kept for
+    // consistency should a future scene ever reveal something at step 0.
+    // When "start" leaves the step at 0 the flag is never consumed here; the
+    // autoplay timer clears it before its first tick (above).
+    advanced.current = true;
+    dispatch({ type: "start" });
+  }, []);
   const stop = useCallback(() => dispatch({ type: "stop" }), []);
 
   return {
