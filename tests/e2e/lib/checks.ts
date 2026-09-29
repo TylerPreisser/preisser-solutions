@@ -343,6 +343,218 @@ export function stepBarOcclusion(track: Element): { elBottom: number; barTop: nu
   return { elBottom, barTop, occludedPx: elBottom - barTop };
 }
 
+export interface Box {
+  top: number;
+  bottom: number;
+}
+
+/** What the reader can see at one moment, for one track (see `installRevealRecorder`). */
+export interface Band extends Box {
+  nav: number;
+  /** The pinned tab bar (sticky, below 1024px), when this track is a tab panel. */
+  tabBar: Box | null;
+  /** This track's own phone control bar, when it is sticky. */
+  bar: Box | null;
+  /** What set `top`: "header", or the class of a pinned element under it. */
+  coveredBy: string;
+}
+
+export interface RevealRecord {
+  seq: number;
+  /** ms since the recorder was installed. */
+  t: number;
+  /** data-beat of the track's beat, plus `#id` for a tab panel. */
+  track: string;
+  step: number;
+  /** data-track-state right after the reveal. */
+  state: string | null;
+  /** "Take the tour" was running when the step revealed. */
+  touring: boolean;
+  scrollY: number;
+  band: Band;
+  /** Every rendered [data-stage-step] element of this track that lost data-pending in this batch. */
+  els: Array<Box & { label: string }>;
+  union: Box;
+  /**
+   * The element the kit scrolls to for this step (useStageTimeline.ts: the
+   * LAST rendered own element of the highest reached step).
+   */
+  target: Box | null;
+  /** `window.__tourPanelGeometry()` at the reveal of a tab panel's step 1: where the tour's panel scroll landed. */
+  arrival?: ReturnType<typeof tourPanelGeometry>;
+  /**
+   * The same, once the window AND the tab list's own scroller are still: where
+   * the active tab rests. At the reveal itself a scene's smooth list scroll
+   * can still be travelling (NWKS TabFollow; chromium measured the Attendees
+   * tab 1.2px outside the list mid-scroll, -0.19px at rest).
+   */
+  arrivalRest?: ReturnType<typeof tourPanelGeometry>;
+  /** For a touring reveal: the same measures once the window has come to rest after it. */
+  landed?: { scrollY: number; band: Band; target: Box | null; els: Box[] };
+}
+
+/**
+ * Records every step REVEAL on the page as it happens: a MutationObserver sees
+ * each [data-stage-step] element lose `data-pending` (useStageTimeline.ts
+ * applyState), and reads its box, and the band the reader can see, in the
+ * same task -- before any later scroll moves either. Call once via
+ * `page.evaluate(installRevealRecorder)`; read `window.__reveals`.
+ *
+ * The band is the reader's, stated independently of the kit: below the site
+ * header (`--nav-height`) and any PINNED top-sticky element in the stage that
+ * lies over the step (the tab bar; a scene's own pinned band, e.g. the
+ * FarmBooks read's photo), and above this track's own sticky control bar.
+ * A pinned element that CONTAINS a revealed element does not cover it -- it
+ * carries it.
+ *
+ * For a reveal while the tour runs it also waits until the window (and the
+ * tab list's own scroller) has been still for 12 frames (at least 300ms after
+ * the reveal, so a smooth scroll has started) and records the same measures
+ * again as `landed`. To record the tour's arrival too, install
+ * `window.__tourPanelGeometry` first.
+ */
+export function installRevealRecorder(): void {
+  const w = window as unknown as {
+    __reveals?: RevealRecord[];
+    __revealObserver?: MutationObserver;
+    __tourPanelGeometry?: () => ReturnType<typeof tourPanelGeometry>;
+  };
+  if (w.__revealObserver) return;
+  const log: RevealRecord[] = [];
+  w.__reveals = log;
+  const t0 = performance.now();
+  const nav = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-height")) || 0;
+  const box = (r: DOMRect | Box): Box => ({ top: r.top, bottom: r.bottom });
+  const ownOf = (track: Element, sel: string) => Array.from(track.querySelectorAll<HTMLElement>(sel)).filter((e) => e.closest("[data-track]") === track);
+  const rendered = (e: Element) => e.getClientRects().length > 0;
+  const bandFor = (track: Element, els: HTMLElement[]): Band => {
+    const rects = els.map((e) => e.getBoundingClientRect());
+    const left = Math.min(...rects.map((r) => r.left));
+    const right = Math.max(...rects.map((r) => r.right));
+    const n = nav();
+    let top = n;
+    let coveredBy = "header";
+    const stage = track.closest("[data-demo-stage]") ?? document.body;
+    for (const el of Array.from(stage.querySelectorAll<HTMLElement>("*"))) {
+      const cs = getComputedStyle(el);
+      if (cs.position !== "sticky" || cs.top === "auto") continue;
+      if (els.some((e) => el.contains(e))) continue;
+      const r = el.getBoundingClientRect();
+      if (r.height === 0 || Math.abs(r.top - (parseFloat(cs.top) || 0)) > 1) continue; // not pinned: in flow, over nothing
+      if (r.right <= left || r.left >= right) continue; // beside the step, not over it
+      if (r.bottom > top) {
+        top = r.bottom;
+        coveredBy = (el.getAttribute("class") || el.tagName).split(" ")[0];
+      }
+    }
+    const tb = track.closest(".demo-tabs")?.querySelector<HTMLElement>(".demo-tabs__bar");
+    const tabBar = tb && getComputedStyle(tb).position === "sticky" ? box(tb.getBoundingClientRect()) : null;
+    const cb = ownOf(track, ".demo-controls")[0];
+    const bar = cb && getComputedStyle(cb).position === "sticky" ? box(cb.getBoundingClientRect()) : null;
+    const bottom = Math.min(window.innerHeight, bar ? bar.top : Infinity);
+    return { top, bottom, nav: n, tabBar, bar, coveredBy };
+  };
+  const targetOf = (track: Element): HTMLElement | null => {
+    const step = Number(track.getAttribute("data-track-step") ?? "0");
+    let el: HTMLElement | null = null;
+    let k0 = -1;
+    for (const e of ownOf(track, "[data-stage-step]")) {
+      if (!rendered(e)) continue;
+      const k = Number(e.dataset.stageStep);
+      if (k <= step && k >= k0) {
+        el = e;
+        k0 = k;
+      }
+    }
+    return el;
+  };
+  const touring = () => Boolean(document.querySelector('.demo-tabs__tour[aria-pressed="true"]'));
+  const label = (e: HTMLElement) => `${e.tagName.toLowerCase()}.${(e.getAttribute("class") || "").split(" ")[0]} "${(e.textContent || "").trim().slice(0, 24)}"`;
+
+  const land = (rec: RevealRecord, track: Element, els: HTMLElement[]) => {
+    const start = performance.now();
+    const list = document.querySelector(".demo-tabs__list");
+    let lastY = NaN;
+    let lastX = NaN;
+    let still = 0;
+    const frame = () => {
+      const y = window.scrollY;
+      const x = list ? list.scrollLeft : 0;
+      still = y === lastY && x === lastX ? still + 1 : 0;
+      lastY = y;
+      lastX = x;
+      const age = performance.now() - start;
+      if ((still >= 12 && age >= 300) || age > 6000) {
+        const target = targetOf(track);
+        rec.landed = {
+          scrollY: y,
+          band: bandFor(track, target ? [target] : els),
+          target: target ? box(target.getBoundingClientRect()) : null,
+          els: els.map((e) => box(e.getBoundingClientRect())),
+        };
+        if (rec.arrival && w.__tourPanelGeometry) rec.arrivalRest = w.__tourPanelGeometry();
+        return;
+      }
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  };
+
+  const mo = new MutationObserver((muts) => {
+    const byTrack = new Map<Element, Set<HTMLElement>>();
+    for (const m of muts) {
+      const el = m.target as HTMLElement;
+      if (m.attributeName !== "data-pending" || m.oldValue === null || el.hasAttribute("data-pending")) continue;
+      if (!el.hasAttribute("data-stage-step") || !rendered(el)) continue;
+      const track = el.closest("[data-track]");
+      if (!track) continue;
+      if (!byTrack.has(track)) byTrack.set(track, new Set());
+      byTrack.get(track)?.add(el);
+    }
+    for (const [track, set] of byTrack) {
+      const els = Array.from(set);
+      const steps = els.map((e) => Number(e.dataset.stageStep));
+      const rects = els.map((e) => e.getBoundingClientRect());
+      const target = targetOf(track);
+      const rec: RevealRecord = {
+        seq: log.length,
+        t: Math.round(performance.now() - t0),
+        track: `${track.closest("[data-beat]")?.getAttribute("data-beat") ?? "?"}${track.id ? `#${track.id}` : ""}`,
+        step: Math.max(...steps),
+        state: track.getAttribute("data-track-state"),
+        touring: touring(),
+        scrollY: window.scrollY,
+        band: bandFor(track, els),
+        els: els.map((e, i) => ({ ...box(rects[i]), label: label(e) })),
+        union: { top: Math.min(...rects.map((r) => r.top)), bottom: Math.max(...rects.map((r) => r.bottom)) },
+        target: target ? box(target.getBoundingClientRect()) : null,
+      };
+      if (track.getAttribute("role") === "tabpanel" && rec.step === 1 && w.__tourPanelGeometry) rec.arrival = w.__tourPanelGeometry();
+      log.push(rec);
+      if (rec.touring) land(rec, track, els);
+    }
+  });
+  mo.observe(document.body, { subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ["data-pending"] });
+  w.__revealObserver = mo;
+}
+
+/**
+ * Was this reveal inside the band? A step whose revealed elements fit the band
+ * must sit wholly inside it; a step taller than the band cannot, so it must
+ * FILL it (nothing of the band left uncovered). `tol` absorbs sub-pixel
+ * rounding. Node side.
+ */
+export function revealInBand(r: Pick<RevealRecord, "union" | "band">, tol = 1): { ok: boolean; fits: boolean; seenPx: number; heightPx: number; bandPx: number } {
+  const h = r.union.bottom - r.union.top;
+  const bandPx = r.band.bottom - r.band.top;
+  const seenPx = Math.max(0, Math.min(r.union.bottom, r.band.bottom) - Math.max(r.union.top, r.band.top));
+  const fits = h <= bandPx + tol;
+  const ok = fits
+    ? r.union.top >= r.band.top - tol && r.union.bottom <= r.band.bottom + tol
+    : r.union.top <= r.band.top + tol && r.union.bottom >= r.band.bottom - tol;
+  return { ok, fits, seenPx, heightPx: h, bandPx };
+}
+
 /** Negative control: force the real armed CSS onto a no-JS page. */
 export function armEverything(): number {
   for (const t of Array.from(document.querySelectorAll("[data-track]"))) {

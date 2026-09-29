@@ -52,8 +52,31 @@ const ENTRY_LINE = 0.9;
  * itself lands up to 0.5px short of its target (measured at 8px: 7.5-7.99px
  * in chromium, webkit and firefox at 320-393 wide), and 8px is the floor.
  */
-const BAR_CLEARANCE_PX = 8;
+export const BAR_CLEARANCE_PX = 8;
 const SCROLL_ROUNDING_PX = 1;
+/**
+ * A tour-followed tick waits until the window has been still this long, so a
+ * step never scrolls while the tour's own panel scroll is still travelling
+ * (a second smooth scrollIntoView replaces the first mid-flight, and the
+ * panel would never land under its tab bar).
+ */
+const SCROLL_IDLE_MS = 150;
+
+// When the window last scrolled, for SCROLL_IDLE_MS. One passive listener for
+// every track, attached on the first mount.
+let lastWindowScroll = -Infinity;
+let scrollClock = false;
+function startScrollClock(): void {
+  if (scrollClock) return;
+  scrollClock = true;
+  window.addEventListener(
+    "scroll",
+    () => {
+      lastWindowScroll = performance.now();
+    },
+    { passive: true },
+  );
+}
 
 export interface TimelineState {
   n: number;
@@ -175,19 +198,41 @@ export interface StageTimeline {
   stop: () => void;
 }
 
-export function useStageTimeline(
-  steps: readonly DemoStep[],
-  options: { autoplay?: "entry" | "manual"; onEnd?: () => void } = {},
-): StageTimeline {
+export interface TimelineOptions {
+  autoplay?: "entry" | "manual";
+  onEnd?: () => void;
+  /**
+   * Asked at every autoplay tick: true while a tour drives this track and
+   * still owns the page's scroll (TabbedScreen). A followed tick scrolls its
+   * step clear exactly like a Next tap; every other tick never scrolls.
+   */
+  follow?: () => boolean;
+  /** Asked before a followed tick fires: false while the tour's own scroll is still travelling. */
+  followReady?: () => boolean;
+  /** Called right before this track scrolls the window (a tap or a followed tick). */
+  onScroll?: () => void;
+  /**
+   * Px a scrolled-to step must keep clear at the viewport top, e.g. under a
+   * pinned tab bar. 0 (the default) leaves the top edge alone.
+   */
+  topInset?: () => number;
+}
+
+export function useStageTimeline(steps: readonly DemoStep[], options: TimelineOptions = {}): StageTimeline {
   const ref = useRef<HTMLDivElement | null>(null);
   const [s, dispatch] = useReducer(timelineReducer, steps.length, endState);
   const autoplay = options.autoplay ?? "entry";
   const onEnd = useRef(options.onEnd);
+  const follow = useRef(options.follow);
+  const followReady = useRef(options.followReady);
+  const onScroll = useRef(options.onScroll);
+  const topInset = useRef(options.topInset);
   const prevStep = useRef(s.step);
   const counters = useRef<Array<() => void>>([]);
   const wasArmed = useRef(false);
-  // Set right before a DIRECT-action dispatch (next/back/goto/replay) ONLY --
-  // never before "tick" (an autoplay step) or "arm"/"hydrate"/"start"/
+  // Set right before a DIRECT-action dispatch (next/back/goto/replay), and
+  // before a tick ONLY when a tour follows it (`options.follow`) -- never
+  // before any other "tick" (an autoplay step) or "arm"/"hydrate"/"start"/
   // "settle". AUTOPLAY NEVER SCROLLS THE WINDOW (lane F4, 2026-09-28): two
   // tracks autoplaying near the same viewport position each moved
   // window.scrollY toward its own target, and the two fought (Firefox
@@ -200,12 +245,17 @@ export function useStageTimeline(
 
   useEffect(() => {
     onEnd.current = options.onEnd;
+    follow.current = options.follow;
+    followReady.current = options.followReady;
+    onScroll.current = options.onScroll;
+    topInset.current = options.topInset;
   });
 
   // Mount: decide whether this track ever arms (marcommand-live.tsx:150, :159 order).
   useEffect(() => {
     const root = ref.current;
     if (!root) return;
+    startScrollClock();
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     dispatch({ type: "hydrate", reduced });
     if (reduced || autoplay !== "entry") return;
@@ -246,10 +296,11 @@ export function useStageTimeline(
     }
   }, [s]);
 
-  // Auto-play: one step per hold; waits while the tab is hidden. Never sets
-  // `advanced` and clears any stale one -- AUTOPLAY NEVER SCROLLS THE WINDOW
-  // (see the ref's own comment above); the scroll effect below only runs for
-  // a direct tap.
+  // Auto-play: one step per hold; waits while the tab is hidden. Sets
+  // `advanced` only for a tick a tour follows, and otherwise clears any stale
+  // one -- AUTOPLAY NEVER SCROLLS THE WINDOW on its own (see the ref's own
+  // comment above); the scroll effect below runs for a direct tap or a
+  // followed tick.
   useEffect(() => {
     if (!s.auto) return;
     const hold = s.step === 0 ? FIRST_STEP_DELAY_MS : steps[s.step - 1]?.holdMs ?? DEFAULT_HOLD_MS;
@@ -258,12 +309,19 @@ export function useStageTimeline(
         t = window.setTimeout(fire, 500);
         return;
       }
+      const followed = follow.current?.() ?? false;
+      // A followed tick lets the page come to rest first: the tour's panel
+      // scroll (TabbedScreen) is usually still travelling when step 1 is due.
+      if (followed && (!(followReady.current?.() ?? true) || performance.now() - lastWindowScroll < SCROLL_IDLE_MS)) {
+        t = window.setTimeout(fire, SCROLL_IDLE_MS);
+        return;
+      }
       // Clear, not merely "don't set": a direct action whose dispatch leaves
       // `s.step` unchanged (Replay or the tour's start at step 0, goto to the
       // current step) never runs the scroll effect, so its flag would
       // otherwise survive to THIS tick and scroll the window from autoplay
       // (review-F4.md HIGH 1: measured 355-385 ms after the click, all engines).
-      advanced.current = false;
+      advanced.current = followed;
       dispatch({ type: "tick" });
     }, hold);
     return () => window.clearTimeout(t);
@@ -273,10 +331,11 @@ export function useStageTimeline(
   // (demo-stage.css's `[data-track-js] .demo-controls { position: sticky;
   // bottom: 12px }`, critic-BO.md B1: "a step that reveals an element below
   // the fold lands UNDER the sticky phone control bar"). Runs only after a
-  // DIRECT action (`advanced.current`, set only by next/back/goto/replay
-  // above and below -- never by tick/arm/hydrate/start/settle), so autoplay,
-  // mount and the entry IntersectionObserver's first frame never scroll the
-  // page.
+  // DIRECT action or a tour-followed tick (`advanced.current`, set only by
+  // next/back/goto/replay below and by a tick `options.follow` claims --
+  // never by any other tick, nor arm/hydrate/start/settle), so plain
+  // autoplay, mount and the entry IntersectionObserver's first frame never
+  // scroll the page.
   //
   // Targets the FRONTMOST revealed [data-stage-step] element (the highest
   // dataset.stageStep at or below the new step) rather than one matching the
@@ -327,6 +386,12 @@ export function useStageTimeline(
     } else {
       el.style.scrollMarginBottom = "0px";
     }
+    // The top edge: clear of a pinned tab bar when the owner asks
+    // (TabbedScreen's topInset), so "nearest" never tucks the step's top
+    // under it; otherwise untouched, as before.
+    const inset = topInset.current?.() ?? 0;
+    el.style.scrollMarginTop = inset > 0 ? `${inset}px` : "";
+    onScroll.current?.();
     el.scrollIntoView({ block: "nearest", behavior: s.reduced ? "instant" : "smooth" });
   }, [s.step, s.reduced]);
 
