@@ -59,8 +59,8 @@ Never deploy from GitHub Actions — that workflow validates only.
 
 ## Key directories
 
-- `src/app/` — one directory per route; static-export App Router pages (233
-  `page.tsx` files as of 2026-09-28, and 232 canonical URLs in the sitemap —
+- `src/app/` — one directory per route; static-export App Router pages (234
+  `page.tsx` files as of 2026-09-28, and 233 canonical URLs in the sitemap —
   one page is a cross-canonical alias the sitemap generator excludes by design;
   the two counts must stay in step apart from that one alias).
 - `src/data/locations/` — one file per city, feeds the location-page generator

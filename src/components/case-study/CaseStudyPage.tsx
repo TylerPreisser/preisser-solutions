@@ -36,6 +36,20 @@ const RELATED_CARD_INDEX: Record<
   string,
   { slug: string; label: string; oneLine: string; category: string }
 > = {
+  // ── 0. Flagship platform and other named engagements not yet indexed ──
+  "farmbooks": {
+    slug: "farmbooks",
+    label: "FarmBooks: Photograph a Bill, Get Schedule-F-Ready Books",
+    oneLine: "Photograph a farm bill; deterministic checks turn it into Schedule-F-ready books",
+    category: "AI Integration • Business Automation",
+  },
+  "nwks-encounter": {
+    slug: "nwks-encounter",
+    label: "NWKS Encounter: Nobody Retypes Anything",
+    oneLine: "Executive visibility into the ministry, and 90% of the busy work automated",
+    category: "Business Software • Registration and Administration",
+  },
+
   // ── 1. Named client engagements (canonical #1–8) ────────────
   "cassidy-hvac-reactivation": {
     slug: "cassidy-hvac-reactivation",

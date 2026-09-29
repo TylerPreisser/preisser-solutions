@@ -664,6 +664,7 @@ const REQUIRED_ROUTES = [
   "/industries/hvac-ai-receptionist",
   "/case-studies/farmbooks",
   "/case-studies/nwks-encounter",
+  "/case-studies/preisser-back-office",
 ];
 
 const sitemapCandidates = [

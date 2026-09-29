@@ -1,0 +1,214 @@
+/* back-office.css — scene CSS for the `deposit-matcher` Proof Stage
+   (ADR-0016, ADR-0018). Scoped entirely under `.demo-skin--psadmin`
+   (design-system.md §11.3): every custom property here is `--skin-*`
+   (the base set, declared in ../../skins.css) or `--bo-*` (scene-local,
+   declared here). Never a site or Tailwind token, never `--color-*` or
+   `--theme-*`, never `@theme`. Phone-first (390px, then 320px). */
+
+.demo-skin--psadmin {
+  /* "Their materials" (the Before beat): a plain paper look, deliberately
+     NOT the product's own tokens, so the contrast with the Screen beat's
+     skin is visible. PROVISIONAL, this scene's own invention — not read
+     from any ps-admin source, because a bank statement and a spreadsheet
+     are the client's materials, not the product. */
+  --bo-paper-bg: #FAF9F6;
+  --bo-paper-ink: #2B2E33;
+  --bo-paper-ink-2: #6B6F76;
+  --bo-paper-edge: #D8D5CC;
+}
+
+/* ── Before: the bank statement and the invoice spreadsheet ── */
+.bo-paper {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+@media (min-width: 640px) {
+  .bo-paper { grid-template-columns: 1fr 1fr; }
+}
+.bo-paper__panel {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--bo-paper-edge);
+  border-radius: 10px;
+  background: var(--bo-paper-bg);
+  color: var(--bo-paper-ink);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+.bo-paper__head {
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--bo-paper-edge);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bo-paper-ink-2);
+}
+.bo-paper__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 0;
+}
+.bo-paper__row + .bo-paper__row { border-top: 1px solid var(--bo-paper-edge); }
+/* One line per row, even for the longer invoice labels ("INV-2101, Larkspur
+   Fence & Supply"): unconstrained, a wrapped label doubled that row's height
+   and mostly cancelled the phone fold's savings below (critic-BO.md M4). */
+.bo-paper__row > span:first-child { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bo-paper__amount { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bo-paper__more { display: none; margin: 8px 0 0; font-size: 0.75rem; color: var(--bo-paper-ink-2); }
+/* Phone: each panel shows its first 4 rows; the rest fold into a count
+   (critic-BO.md M4 — at 390 the refusal sat ~1,460px below the stage
+   heading with all 8 deposit and 9 invoice rows rendered in full). Desktop
+   has the room and keeps every row. */
+@media (max-width: 639px) {
+  .bo-paper__row:nth-of-type(n + 5) { display: none; }
+  .bo-paper__more { display: block; }
+}
+
+/* ── Read: the matcher deciding, one deposit at a time ── */
+.bo-read {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--skin-rule);
+  border-radius: var(--skin-radius);
+  background: var(--skin-surface);
+}
+.bo-read__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+.bo-read__row + .bo-read__row { border-top: 1px solid var(--skin-rule); }
+.bo-read__name { flex: 1 1 auto; min-width: 0; font-weight: 600; color: var(--skin-ink); }
+.bo-read__amount { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--skin-ink); white-space: nowrap; }
+.bo-read__tag {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.bo-read__tag--paid { color: var(--skin-good); background: var(--skin-good-bg); }
+.bo-read__tag--held { color: var(--skin-attention); background: var(--skin-attention-bg); }
+.bo-read__note { flex-basis: 100%; margin: 0; font-size: 0.8125rem; color: var(--skin-ink-2); }
+
+/* ── Caught: three cards, one refusal reason each ── */
+.bo-caught {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+@media (min-width: 640px) {
+  .bo-caught { grid-template-columns: repeat(3, 1fr); }
+}
+.bo-caught__card {
+  min-width: 0;
+  padding: 14px;
+  border-radius: var(--skin-radius);
+  background: var(--skin-attention-bg);
+  color: var(--skin-attention);
+}
+.bo-caught__title { margin: 0 0 6px; font-size: 0.9375rem; font-weight: 700; }
+.bo-caught__body { margin: 0; font-size: 0.8125rem; line-height: 1.5; color: var(--skin-ink-2); }
+
+/* ── Screen: "Money · Review" recreated ── */
+/* The kit's own `.demo-screen__body` (demo-stage.css) carries no padding, so
+   the chips, group label and list card sat flush against the screen edge,
+   drawing a doubled hairline where the list card's own border ran ~1px
+   inside it (critic-BO.md M1). Scoped here, not in the kit. */
+.demo-skin--psadmin .demo-screen__body { padding: 12px; }
+@media (min-width: 768px) {
+  .demo-skin--psadmin .demo-screen__body { padding: 16px 20px; }
+}
+.bo-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+.bo-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--skin-rule);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--skin-ink-2);
+}
+.bo-chip[data-active] { border-color: var(--skin-action); color: var(--skin-ink); background: var(--skin-good-bg); }
+
+.bo-group { min-width: 0; }
+.bo-group__head {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--skin-ink-2);
+}
+.bo-list {
+  border: 1px solid var(--skin-rule);
+  border-radius: var(--skin-radius);
+  background: var(--skin-surface);
+  overflow: hidden;
+}
+.bo-row { padding: 12px 14px; }
+.bo-row + .bo-row { border-top: 1px solid var(--skin-rule); }
+.bo-row__head { display: flex; align-items: center; gap: 12px; }
+.bo-row__name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; color: var(--skin-ink); font-size: 0.875rem; }
+.bo-row__date { flex: 0 0 auto; font-size: 0.8125rem; color: var(--skin-ink-2); font-variant-numeric: tabular-nums; }
+/* Every Screen row is a DEPOSIT (money in), never a charge: the real
+   DepositRow colours its amount GO.ink green, not navy (ReviewView.tsx
+   head, ~:340; critic-BO.md B2/item 7). */
+.bo-row__amount { flex: 0 0 auto; font-weight: 700; color: var(--skin-good); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bo-row__controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+/* Desk: date as its own fixed column BEFORE the name (ReviewView.tsx FACTS,
+   :86, `w-24` = 6rem) -- critic-BO.md M5: a 72px column wrapped "15 Mar /
+   2026" onto two lines, and DOM order put the date after the name. */
+.bo-row--desk .bo-row__head { flex-wrap: nowrap; }
+.bo-row--desk .bo-row__date { order: 1; width: 6rem; flex: 0 0 auto; white-space: nowrap; }
+.bo-row--desk .bo-row__name { order: 2; }
+.bo-row--desk .bo-row__amount { order: 3; }
+.bo-row--desk .bo-row__controls { order: 4; margin-top: 0; margin-left: auto; }
+/* Phone: name and amount on one line, date under the name, the action button
+   on its own line below that (spec-BO.md §1.8; review MEDIUM-6: the button
+   must never render above the row it belongs to). */
+.bo-row--ph .bo-row__head { flex-wrap: wrap; }
+.bo-row--ph .bo-row__name { flex: 1 1 0; min-width: 0; order: 1; font-size: 1rem; }
+.bo-row--ph .bo-row__amount { flex: 0 0 auto; order: 1; }
+.bo-row__date--ph { flex-basis: 100%; order: 2; font-size: 0.8125rem; }
+.bo-row--ph .bo-row__controls { order: 3; flex-basis: 100%; }
+
+.bo-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--skin-rule);
+  border-radius: var(--skin-radius);
+  background: transparent;
+  color: var(--skin-ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.bo-action--go { border-color: transparent; background: var(--skin-action); color: var(--skin-on-action); }
+
+.bo-detail { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--skin-rule); display: grid; gap: 10px; }
+.bo-reading { padding: 10px 12px; border: 1px solid var(--skin-rule); border-radius: 10px; display: grid; gap: 6px; }
+.bo-reading .bo-action { justify-self: start; }
+.bo-reading__line { margin: 0; font-size: 0.875rem; font-weight: 600; color: var(--skin-ink); }
+.bo-reading__quote { margin: 0; font-size: 0.8125rem; font-style: italic; color: var(--skin-ink-2); }
