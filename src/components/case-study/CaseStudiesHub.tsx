@@ -344,7 +344,7 @@ function HubCard({
         />
 
         <div
-          className="text-[11px] font-medium uppercase tracking-[0.14em]"
+          className={`text-[11px] font-medium uppercase tracking-[0.14em]${cs.demo ? " pr-36" : ""}`}
           style={{ color: "var(--theme-text-secondary)" }}
         >
           {cs.category}
