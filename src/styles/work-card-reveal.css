@@ -877,6 +877,16 @@
   max-height: 76%;
 }
 
+/* Hays Academy (4.1:1) and HG Oil Holdings (3.4:1) are wide LOCKUPS with fine
+   type: at the shared 60% width the Hays "OF HAIR DESIGN" line and the HG Oil
+   pumpjack render too small to read. Width-bound, so only max-width moves. */
+.ps-work-card.ps-work-card .ps-work-card-logo[src$="hays-academy-551b04de.webp"] {
+  max-width: 80%;
+}
+.ps-work-card.ps-work-card .ps-work-card-logo[src$="hg-oil-holdings-cd1a49d8.webp"] {
+  max-width: 74%;
+}
+
 /* FarmBooks is a LOCKUP, not a lone mark: a wheat glyph with a separate
    wordmark under it, each independently anchored to the card's centre.
 

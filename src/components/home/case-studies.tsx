@@ -182,6 +182,79 @@ const caseStudyCards: CaseStudyCard[] = [
     // in the sitemap, and is linked from the /case-studies grid.
     liveUrl: "https://nwksencounter.com",
   },
+  // Hays Academy, Duffer Golf and HG Oil: added on the owner's ask, 2026-10-13
+  // ("add a Hays Hair Academy card ... a Duffer Golf card ... an HG Oil card";
+  // "just have the most eye-catching, high-end description and then the website
+  // link"). Same shape as FarmBooks and NWKS: description plus one live link, no
+  // case-study link, no See it work. Every claim below is sourced; do not add a
+  // number that is not in the source named next to it.
+  //
+  // Hays Academy of Hair Design. Sources: hays-academy-redesign (site, lead
+  // relay, compliance rehost) and the MarCommand Hays go-live notes (GA4, Meta,
+  // Google Ads, client portal at portal.haysacademy.edu). No outcome number on
+  // purpose: the redesign has not replaced the production domain yet, so there
+  // is no before/after to quote.
+  {
+    title: "Hays Academy of Hair Design",
+    tags: "Beauty School | Website + CRM | MarCommand",
+    description:
+      "Hays Academy of Hair Design trains stylists on two Kansas campuses. Preisser Solutions rebuilt their web presence from the ground up, piped every inquiry straight into the school's CRM, and wired Google, Meta and Analytics into one MarCommand marketing engine, with a private portal where leadership sees which marketing actually produces leads.",
+    // Hays' own cream and blush tokens (site/src/styles/tokens.css), so the
+    // black lockup reads as it does on their site.
+    gradient: "linear-gradient(150deg, #FDFBF8 0%, #FAF6F0 55%, #F7DCE7 100%)",
+    lightCard: true,
+    // ha-lockup.png from the redesign, trimmed to ink. Content-hashed name.
+    image: "hays-academy-551b04de.webp",
+    imageWidth: 440,
+    imageHeight: 108,
+    // The redesign, not haysacademy.edu: on 2026-10-13 the apex still serves
+    // the school's old WordPress site, which is not our work. Swap to
+    // https://haysacademy.edu the day the production domain cuts over.
+    // Verified 2026-10-13: https://dev.haysacademy.edu -> 200. DECISIONS/0002.
+    liveUrl: "https://dev.haysacademy.edu",
+  },
+  // Duffer Golf. Sources: duffergolf-site (live on duffergolf.net since the
+  // 2026-10-05 cutover; the Lighthouse mobile scores 94/96/100 are from that
+  // cutover's measured pass), duffer-partner-program (partner program, QR
+  // course displays, Command Center) and the MarCommand Duffer notes.
+  {
+    title: "Duffer Golf",
+    tags: "E-Commerce | Partner Program | MarCommand",
+    description:
+      "Duffer Golf builds golf simulator enclosures in Hoxie, Kansas. Preisser Solutions replaced their old site with a custom storefront on live Stripe payments that scores 94 to 100 on Google's mobile audit, then built the business behind it: a partner program with QR-tracked course displays and a MarCommand engine that follows every visitor to the sale.",
+    // Duffer's own fabric and turf tokens (site/src/styles/global.css). Dark,
+    // because the mark is light grey (#E1E1E1) on transparent.
+    gradient: "linear-gradient(150deg, #17181A 0%, #1B2A1F 55%, #1B5A2C 100%)",
+    // duffer-logo-light.png from duffergolf-site, trimmed to ink.
+    image: "duffer-golf-12083041.webp",
+    imageWidth: 680,
+    imageHeight: 233,
+    // Verified 2026-10-13: https://duffergolf.net -> 200, serving our build
+    // (build.json). duffergolf.com is NOT theirs. DECISIONS/0002.
+    liveUrl: "https://duffergolf.net",
+  },
+  // HG Oil Holdings. Replaces the old "Automated Inventory System" card, which
+  // was this same client; one card per client. Claims are limited to the two
+  // HG Oil projects cleared in docs/CANONICAL-PROJECTS.md (inventory system,
+  // AI invoice processing); the 95% and loss-to-profit lines are carried over
+  // verbatim from the card it replaces. The SWD billing and COI engines are not
+  // cleared for public copy; do not add them without the owner's sign-off.
+  {
+    title: "HG Oil Holdings",
+    tags: "Oil + Gas | Inventory | AI Invoice Processing",
+    description:
+      "HG Oil Holdings is an oil and gas company. Preisser Solutions built live inventory tracking with full audit trails and codified markup formulas, plus AI invoice processing that reads every vendor bill. The result: 95% less back-office logistics time, and an inventory function turned from a loss center into a profit center.",
+    gradient: "linear-gradient(150deg, #FFFFFF 0%, #F0F4F8 55%, #DCE8F0 100%)",
+    lightCard: true,
+    // HG Oil's own header logo from hgoilholdings.com, restacked (pumpjack over
+    // the wordmark) because the 10:1 original renders too small to read.
+    image: "hg-oil-holdings-cd1a49d8.webp",
+    imageWidth: 900,
+    imageHeight: 265,
+    // Verified 2026-10-13: https://hgoilholdings.com -> 200 (www). Their own
+    // site, not built by us; it is the client link. DECISIONS/0002.
+    liveUrl: "https://hgoilholdings.com",
+  },
   // Alliant Insurance ecosystem MGU: AI Submission Processing (anonymized per privacy rules)
   // The Preisser Solutions back office — our own administration panel, on the
   // hub by ADR-0018. Invented data only on the stage; no client, amount or
@@ -253,19 +326,6 @@ const caseStudyCards: CaseStudyCard[] = [
     image: "cassidy-hvac-nobg.webp",
     imageWidth: 505,
     imageHeight: 100,
-    lightCard: true,
-  },
-  // HG Oil Holdings: Inventory
-  {
-    title: "Automated Inventory System",
-    outcome: "95% reduction in back-office logistics time",
-    tags: "Custom App | HG Oil Holdings | Live Tracking",
-    description:
-      "95% reduction in back-office logistics time and 75%+ accuracy improvement on inventory counts and transfers. Live counts, full audit trails, and codified markup formulas turned HG Oil Holdings' inventory function from a loss center into a profit center.",
-    gradient: "linear-gradient(135deg, #f0f4f8 0%, #dce8f0 100%)",
-    image: "hg-oil-icon.webp",
-    imageWidth: 180,
-    imageHeight: 150,
     lightCard: true,
   },
   // Wife Supply Co
