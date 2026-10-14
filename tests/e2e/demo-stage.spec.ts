@@ -509,6 +509,66 @@ for (const m of MANIFESTS) {
       });
     }
 
+    // The same rule DURING the tour's own scroll. A visitor who scrolls while
+    // the tour is still carrying the page (its smooth scroll in flight, or the
+    // landing watch holding it) used to be invisible to the guard: every scroll
+    // event in that window counted as the tour's, the hold's release re-based
+    // on the visitor's position, and the landing watch re-issued its scroll
+    // when the page came to rest short -- so the tour pulled the visitor back
+    // (gate log 616bd4e: "the tour moved the page -173px after the visitor
+    // scrolled 400px"). Here the visitor scrolls ~250ms into the tour's first
+    // panel scroll, from the top of the page, so the scroll is certainly still
+    // the tour's own when the visitor's lands.
+    for (const vp of [byName(390, 844)]) {
+      test(`${vpName(vp)} a visitor's scroll during the tour's own scroll also takes the page back`, async ({ browser, browserName }) => {
+        test.setTimeout(120_000);
+        const { context, page } = await open(browser, browserName, vp);
+        try {
+          await page.goto(`${ORIGIN}${m.route}`, { waitUntil: "load" });
+          await hydrated(page);
+          const tabbed = page.locator(".demo-tabs").first();
+          if ((await tabbed.count()) === 0) {
+            test.skip(true, `${m.route}: no tabbed screen (ADR-0017) on this route`);
+          }
+          await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+          const tourBtn = tabbed.locator(".demo-tabs__tour");
+          await tourBtn.evaluate((el) => (el as HTMLButtonElement).click());
+          // The tour's own panel scroll has started and is still travelling.
+          await expect.poll(() => page.evaluate(() => window.scrollY), { timeout: 5_000, intervals: [25] }).toBeGreaterThan(0);
+          await page.waitForTimeout(150);
+          if (browserName === "webkit") {
+            await page.keyboard.press("PageDown");
+          } else {
+            await page.mouse.move(vp.w / 2, vp.h / 2);
+            await page.mouse.wheel(0, 400);
+          }
+          // Wait for the page to come to rest after the visitor's scroll.
+          let lastY = Number.NaN;
+          await expect
+            .poll(
+              async () => {
+                const y = await page.evaluate(() => window.scrollY);
+                const still = y === lastY;
+                lastY = y;
+                return still;
+              },
+              { timeout: 8_000, intervals: [400], message: "the page never came to rest" },
+            )
+            .toBe(true);
+          const y1 = await page.evaluate(() => window.scrollY);
+          // Three step holds plus the landing watch's whole ceiling: without the
+          // fix the watch re-issues its scroll, or a followed step scrolls the
+          // page back down to itself.
+          await page.waitForTimeout(6_000);
+          expect(await tourBtn.getAttribute("aria-pressed"), "the tour stopped instead of letting go of the scroll").toBe("true");
+          const y2 = await page.evaluate(() => window.scrollY);
+          expect(Math.abs(y2 - y1), `the tour moved the page ${(y2 - y1).toFixed(0)}px after the visitor scrolled during its own scroll`).toBeLessThanOrEqual(1);
+        } finally {
+          await context.close();
+        }
+      });
+    }
+
     // Lane F7 item A (final-BO.md B1 autoplay): a reader scrolling through
     // the stage at reading speed, no taps. Every step autoplay reveals must
     // be inside the band the reader can see AT THE MOMENT IT REVEALS -- below
