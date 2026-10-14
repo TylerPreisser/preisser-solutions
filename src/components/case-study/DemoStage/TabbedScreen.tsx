@@ -37,10 +37,26 @@ const USER_INPUTS = ["wheel", "touchstart", "touchmove", "keydown", "pointerdown
  * movement is mixed into every scroll event, so the 300px measure cannot be
  * read, and the landing watch would otherwise re-issue its scroll and pull the
  * visitor back (gate log 616bd4e: the tour moved the page 173px after the
- * visitor scrolled 400px). A tap (touchstart, pointerdown) does not scroll,
- * so it is not one.
+ * visitor scrolled 400px). Only an input that moves the page counts: a wheel,
+ * a touch that has travelled past TOUCH_SLOP_PX (a tap's own jitter fires
+ * touchmove too), or a key that scrolls the page from outside the tab list and
+ * form fields (Tab, Escape or an arrow on the tabs moves nothing).
  */
-const SCROLL_GESTURES: ReadonlySet<string> = new Set(["wheel", "touchmove", "keydown"]);
+const SCROLL_KEYS: ReadonlySet<string> = new Set([" ", "PageDown", "PageUp", "Home", "End", "ArrowDown", "ArrowUp"]);
+const TOUCH_SLOP_PX = 10;
+function isScrollGesture(e: Event, touchStartY: number): boolean {
+  if (e.type === "wheel") return true;
+  if (e.type === "touchmove") {
+    const t = (e as TouchEvent).touches[0];
+    return t !== undefined && Math.abs(t.clientY - touchStartY) > TOUCH_SLOP_PX;
+  }
+  if (e.type === "keydown") {
+    const target = e.target as Element | null;
+    if (target?.closest?.('[role="tablist"], input, textarea, select, [contenteditable="true"]')) return false;
+    return SCROLL_KEYS.has((e as globalThis.KeyboardEvent).key);
+  }
+  return false;
+}
 /**
  * The panel scroll's landing watch: frames of stillness that count as "came
  * to rest", how many times a scroll that came to rest short is re-issued, and
@@ -100,7 +116,7 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
   const barRef = useRef<HTMLDivElement | null>(null);
   const touringRef = useRef(false);
   const tourTimer = useRef(0);
-  const guard = useRef({ touring: false, follow: false, own: false, held: false, base: 0, timer: 0, input: -Infinity, gesture: -Infinity, ownAt: Infinity });
+  const guard = useRef({ touring: false, follow: false, own: false, held: false, base: 0, timer: 0, input: -Infinity, gesture: -Infinity, ownAt: Infinity, touchY: 0 });
   const tour = useMemo<TourScroll>(() => {
     const g = guard.current;
     const land = () => {
@@ -148,12 +164,13 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
     if (!g.own) g.base = window.scrollY;
     const onInput = (e: Event) => {
       g.input = performance.now();
-      if (SCROLL_GESTURES.has(e.type)) g.gesture = g.input;
+      if (e.type === "touchstart") g.touchY = (e as TouchEvent).touches[0]?.clientY ?? 0;
+      if (isScrollGesture(e, g.touchY)) g.gesture = g.input;
     };
     const onScroll = () => {
       if (g.own && g.follow && g.gesture > g.ownAt) {
         // The visitor scrolled while the tour's own scroll was travelling:
-        // the page is theirs for the rest of the tour (SCROLL_GESTURES).
+        // the page is theirs for the rest of the tour (isScrollGesture).
         g.follow = false;
         g.own = false;
         g.held = false;

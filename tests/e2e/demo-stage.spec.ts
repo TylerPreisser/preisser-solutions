@@ -569,6 +569,55 @@ for (const m of MANIFESTS) {
       });
     }
 
+    // The other side of that rule: an input that moves nothing (here Escape)
+    // during the tour's own scroll is NOT the visitor taking the page, so the
+    // tour keeps carrying it to its later steps (review of 34b7c52: every
+    // keydown used to count, Tab and the tab list's arrows included).
+    for (const vp of [byName(390, 844)]) {
+      test(`${vpName(vp)} a key that does not scroll, during the tour's own scroll, leaves the page with the tour`, async ({ browser, browserName }) => {
+        test.setTimeout(120_000);
+        const { context, page } = await open(browser, browserName, vp);
+        try {
+          await page.goto(`${ORIGIN}${m.route}`, { waitUntil: "load" });
+          await hydrated(page);
+          const tabbed = page.locator(".demo-tabs").first();
+          if ((await tabbed.count()) === 0) {
+            test.skip(true, `${m.route}: no tabbed screen (ADR-0017) on this route`);
+          }
+          await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+          const tourBtn = tabbed.locator(".demo-tabs__tour");
+          await tourBtn.evaluate((el) => (el as HTMLButtonElement).click());
+          await expect.poll(() => page.evaluate(() => window.scrollY), { timeout: 5_000, intervals: [25] }).toBeGreaterThan(0);
+          await page.waitForTimeout(150);
+          await page.keyboard.press("Escape");
+          // Let the tour's in-flight scroll finish first: its own motion is not
+          // evidence either way. Only a LATER step's scroll shows the tour kept
+          // the page.
+          let lastY = Number.NaN;
+          await expect
+            .poll(
+              async () => {
+                const y = await page.evaluate(() => window.scrollY);
+                const still = y === lastY;
+                lastY = y;
+                return still;
+              },
+              { timeout: 8_000, intervals: [400], message: "the page never came to rest" },
+            )
+            .toBe(true);
+          const y1 = await page.evaluate(() => window.scrollY);
+          // The same window in which the visitor-scroll spec above holds the
+          // page still: here the tour must still be moving it.
+          await page.waitForTimeout(6_000);
+          expect(await tourBtn.getAttribute("aria-pressed"), "the tour stopped").toBe("true");
+          const y2 = await page.evaluate(() => window.scrollY);
+          expect(Math.abs(y2 - y1), "the tour let go of the page on a key that scrolls nothing").toBeGreaterThan(1);
+        } finally {
+          await context.close();
+        }
+      });
+    }
+
     // Lane F7 item A (final-BO.md B1 autoplay): a reader scrolling through
     // the stage at reading speed, no taps. Every step autoplay reveals must
     // be inside the band the reader can see AT THE MOMENT IT REVEALS -- below
