@@ -61,6 +61,8 @@ project records. The current public set includes:
 - Cassidy HVAC - AI marketing engine
 - HG Oil Holdings - inventory system
 - HG Oil Holdings - AI invoice processing
+- HG Oil Holdings - saltwater disposal (SWD) engine and vendor certificate-of-insurance (COI)
+  engine: the home-page card's subject, cleared by the owner 2026-10-13 (DECISIONS/0019)
 - An MGU within the Alliant Insurance ecosystem - AI submission processing
 - A Chicago-area bus transportation operator - dashboards and operations
   automation

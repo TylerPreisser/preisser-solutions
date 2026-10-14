@@ -233,17 +233,19 @@ const caseStudyCards: CaseStudyCard[] = [
     // (build.json). duffergolf.com is NOT theirs. DECISIONS/0002.
     liveUrl: "https://duffergolf.net",
   },
-  // HG Oil Holdings. Replaces the old "Automated Inventory System" card, which
-  // was this same client; one card per client. Claims are limited to the two
-  // HG Oil projects cleared in docs/CANONICAL-PROJECTS.md (inventory system,
-  // AI invoice processing); the 95% and loss-to-profit lines are carried over
-  // verbatim from the card it replaces. The SWD billing and COI engines are not
-  // cleared for public copy; do not add them without the owner's sign-off.
+  // HG Oil Holdings. One card per client (it replaced the old "Automated
+  // Inventory System" card). The OWNER chose what it describes, 2026-10-13:
+  // "The hg oil one should be the coo [COI] engine and SWD engine"
+  // (DECISIONS/0019). Sources: HG Oil/hg-swd README (74 disposal agreements;
+  // one calculation feeds the A/P import, GL journal and owner statements) and
+  // the ps-admin COI engine (AI reads each vendor's ACORD certificate, watches
+  // expirations, chases renewals; its purpose is that a premium audit never
+  // bills HG for an uninsured vendor). No outcome number: none is measured.
   {
     title: "HG Oil Holdings",
-    tags: "Oil + Gas | Inventory | AI Invoice Processing",
+    tags: "Oil + Gas | Saltwater Disposal Engine | COI Engine",
     description:
-      "HG Oil Holdings is an oil and gas company. Preisser Solutions built live inventory tracking with full audit trails and codified markup formulas, plus AI invoice processing that reads every vendor bill. The result: 95% less back-office logistics time, and an inventory function turned from a loss center into a profit center.",
+      "HG Oil Holdings runs 74 saltwater disposal agreements and a long roster of field vendors. Preisser Solutions built the two engines behind them: one turns each month's disposal volumes into the A/P import, GL journal and owner statements from a single calculation; the other reads every vendor's insurance certificate with AI and chases renewals before an audit can.",
     gradient: "linear-gradient(150deg, #FFFFFF 0%, #F0F4F8 55%, #DCE8F0 100%)",
     lightCard: true,
     // HG Oil's own header logo from hgoilholdings.com, restacked (pumpjack over
