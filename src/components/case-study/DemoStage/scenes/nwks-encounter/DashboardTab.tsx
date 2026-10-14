@@ -61,7 +61,7 @@ function Body() {
       <div className="nwks-tiles">
         <div className="nwks-tile">
           <p className="nwks-h">Payment</p>
-          <div className="nwks-bar-row" data-stage-step="1">
+          <div className="nwks-bar-row" data-stage-step="2">
             <div className="nwks-bar-track">
               <div
                 className="nwks-bar-fill"
