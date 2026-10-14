@@ -31,6 +31,17 @@ const LIST_STILL_FRAMES = 6;
 const LIST_REST_MAX_MS = 1500;
 const USER_INPUTS = ["wheel", "touchstart", "touchmove", "keydown", "pointerdown"] as const;
 /**
+ * The inputs that themselves scroll the page. One of these AFTER the tour's
+ * own scroll began means the visitor is moving the page under the tour, and
+ * the tour lets go at once: while the tour's scroll is in flight its own
+ * movement is mixed into every scroll event, so the 300px measure cannot be
+ * read, and the landing watch would otherwise re-issue its scroll and pull the
+ * visitor back (gate log 616bd4e: the tour moved the page 173px after the
+ * visitor scrolled 400px). A tap (touchstart, pointerdown) does not scroll,
+ * so it is not one.
+ */
+const SCROLL_GESTURES: ReadonlySet<string> = new Set(["wheel", "touchmove", "keydown"]);
+/**
  * The panel scroll's landing watch: frames of stillness that count as "came
  * to rest", how many times a scroll that came to rest short is re-issued, and
  * the watch's ceiling. Measured need (WebKit, NWKS, 320x568, Org Sheet ->
@@ -89,7 +100,7 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
   const barRef = useRef<HTMLDivElement | null>(null);
   const touringRef = useRef(false);
   const tourTimer = useRef(0);
-  const guard = useRef({ touring: false, follow: false, own: false, held: false, base: 0, timer: 0, input: -Infinity });
+  const guard = useRef({ touring: false, follow: false, own: false, held: false, base: 0, timer: 0, input: -Infinity, gesture: -Infinity, ownAt: Infinity });
   const tour = useMemo<TourScroll>(() => {
     const g = guard.current;
     const land = () => {
@@ -101,11 +112,13 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
       settled: () => !g.own,
       mayScroll: () => !g.touring || g.follow,
       markOwnScroll: () => {
+        if (!g.own) g.ownAt = performance.now();
         g.own = true;
         window.clearTimeout(g.timer);
         if (!g.held) g.timer = window.setTimeout(land, OWN_SCROLL_START_MS);
       },
       holdOwnScroll: () => {
+        if (!g.own) g.ownAt = performance.now();
         g.held = true;
         g.own = true;
         window.clearTimeout(g.timer);
@@ -133,10 +146,20 @@ export function TabbedScreen({ beat, panels }: { beat: TabbedScreenBeat; panels:
     if (!touring) return;
     const g = guard.current;
     if (!g.own) g.base = window.scrollY;
-    const onInput = () => {
+    const onInput = (e: Event) => {
       g.input = performance.now();
+      if (SCROLL_GESTURES.has(e.type)) g.gesture = g.input;
     };
     const onScroll = () => {
+      if (g.own && g.follow && g.gesture > g.ownAt) {
+        // The visitor scrolled while the tour's own scroll was travelling:
+        // the page is theirs for the rest of the tour (SCROLL_GESTURES).
+        g.follow = false;
+        g.own = false;
+        g.held = false;
+        window.clearTimeout(g.timer);
+        return;
+      }
       if (g.own) {
         if (g.held) return; // the landing watch releases it
         window.clearTimeout(g.timer);
@@ -451,7 +474,8 @@ function TabPanel(props: {
       const off = el.getBoundingClientRect().top - (nav + offset);
       const maxY = document.documentElement.scrollHeight - window.innerHeight;
       const arrived = Math.abs(off) <= 1 || (off > 0 && y >= maxY - 1) || (off < 0 && y <= 0);
-      if (arrived || performance.now() - t0 > LAND_MAX_MS) {
+      // A visitor who took the page mid-landing is never pulled back to it.
+      if (arrived || !tour.mayScroll() || performance.now() - t0 > LAND_MAX_MS) {
         raf = 0;
         tour.releaseOwnScroll();
         return;
