@@ -468,12 +468,17 @@ for (const m of MANIFESTS) {
           // A REAL input, as the kit counts only a scroll that follows the
           // visitor's own wheel/touch/key/pointer (layout-driven scroll
           // anchoring moves the window too, with no input). Mobile WebKit has
-          // no mouse wheel in Playwright; it takes PageUp (~800px, smooth).
+          // no mouse wheel in Playwright; it takes PageDown (~800px, smooth).
+          // DOWN, not up: the guard is direction-agnostic (TabbedScreen.tsx,
+          // Math.abs against the tour's base), and when the tour's first stop
+          // lands near the top of the page there is under 300px to scroll UP
+          // (measured 79-92px on the failing runs), so an upward scroll could
+          // not exercise the guard at all. A case-study page always has room below.
           if (browserName === "webkit") {
-            await page.keyboard.press("PageUp");
+            await page.keyboard.press("PageDown");
           } else {
             await page.mouse.move(vp.w / 2, vp.h / 2);
-            await page.mouse.wheel(0, -400);
+            await page.mouse.wheel(0, 400);
           }
           await page.waitForTimeout(300); // a smooth key scroll has started
           let lastY = Number.NaN;
@@ -482,7 +487,7 @@ for (const m of MANIFESTS) {
             .poll(
               async () => {
                 const y = await page.evaluate(() => window.scrollY);
-                reached = Math.min(reached, y);
+                reached = Math.max(reached, y);
                 const still = y === lastY;
                 lastY = y;
                 return still;
@@ -490,7 +495,7 @@ for (const m of MANIFESTS) {
               { timeout: 5_000, intervals: [150], message: "the visitor's scroll never came to rest" },
             )
             .toBe(true);
-          expect(y0 - reached, "the visitor's scroll did not move the page more than 300px").toBeGreaterThan(300);
+          expect(reached - y0, "the visitor's scroll did not move the page more than 300px").toBeGreaterThan(300);
           const y1 = reached;
           // Three step holds: without the guard, every followed step of the
           // stop scrolls the page back down to itself.
