@@ -158,6 +158,7 @@ export function Header() {
                 className="ps-header-cta"
                 onClick={() => {}}
                 aria-label="Reach out"
+                data-mc-intent="contact"
               >
                 Reach out
                 <svg
