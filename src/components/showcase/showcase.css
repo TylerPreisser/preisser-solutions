@@ -435,6 +435,14 @@
   transition-duration: 220ms;
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }
+/* The sheet is modal over a scrim: denser tint, so page text never ghosts
+   through where a browser draws no blur (Playwright WebKit showed it at 390). */
+.sc-sheet.sc-glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(246, 249, 252, 0.9));
+}
+[data-theme="dark"] .sc-sheet.sc-glass {
+  background: linear-gradient(180deg, rgba(24, 38, 62, 0.94), rgba(10, 22, 40, 0.92));
+}
 .sc-sheet__grip {
   width: 40px;
   height: 5px;
