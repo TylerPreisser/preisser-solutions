@@ -116,7 +116,7 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
         title: "Four models. Four prices. No “call for a quote.”",
         body:
           "Every price is on the page. The complete Duffer 10 is outlined and marked Featured, so that's where the eye lands. Hiding the price is the fastest way to lose a buyer who's already sold.",
-        desk: { y: 1420, focus: [954, 1680, 304, 622] },
+        desk: { y: 1500, focus: [954, 1680, 304, 622] },
         phone: { y: 1230, focus: [10, 1370, 370, 520] },
       },
       {
@@ -125,7 +125,7 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
         title: "Tate tells the story himself.",
         body:
           "He built the first one so he could practice all winter. Then his buddies wanted one. A family business in Hoxie should sound like one, and that's a reason to trust it.",
-        desk: { y: 2380, focus: [24, 2422, 620, 781] },
+        desk: { y: 2410, focus: [24, 2422, 620, 781] },
         phone: { y: 2300, focus: [16, 2355, 358, 781] },
       },
       {
@@ -212,7 +212,7 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
         title: "Each program is a photo of the work.",
         body:
           "Real students on the real floor, with hours, cost and the next start right on the card. She can compare the two programs without opening anything.",
-        desk: { y: 1080, focus: [24, 1160, 1232, 740] },
+        desk: { y: 1110, focus: [24, 1160, 1232, 740] },
         phone: { y: 1180, focus: [12, 1225, 366, 600] },
       },
       {

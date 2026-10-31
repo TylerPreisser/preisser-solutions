@@ -10,7 +10,7 @@ current home work section (main @ 24c8af8); the real Duffer Command Center on it
 (duffer-partner-program `panel/tests/harness.py`, Python Playwright); the real MarCommand client portal
 for Hays on its harness SAMPLE, never the captured Hays payloads (`packages/portal-ui/harness`); the live
 duffergolf.net and haysacademy.edu at 1280 and 390.
-**Served build fingerprint:** home chunk `app/page-a2a3e16f928ceec0.js` (prototype), `app/page-a378a500cab85375.js` (main baseline).
+**Served build fingerprint:** home chunk `app/page-75ac6ac47e34b823.js` (prototype, final), `app/page-a378a500cab85375.js` (main baseline).
 
 ## 1. The problem in the current design
 
@@ -87,6 +87,8 @@ active one without a marker.
 
 ## 6. Layout
 
+- Layering: window and sheet at z-index 1101, scrim 1100: above the site's floating nav and its
+  dialog layer (1000/1001), below the skip link (10000). The sheet is modal, so it covers the nav.
 - Window: 26px radius, 14/16px padding, 12px gap. Frames 14px radius, 34px chrome bar.
 - Command centers are drawn in their own units (`--dg-u`, `--ha-u` = container width / 1280 or / 390), so
   each scales as one picture and the SVG ribbons start exactly at their cards at every width.
@@ -124,7 +126,7 @@ Nothing rests at opacity 0: every animated element's resting frame is its final 
 
 ## 9. Accessibility decisions
 
-- Glass contrast, computed on the tint alone (WebKit and Firefox headless draw no blur, and Safari's
+- Glass contrast, computed on the tint alone (body of the window; the band behind the header is heavier) (WebKit and Firefox headless draw no blur, and Safari's
   blur strength varies): caption over the worst card behind it **7.23:1** dark, **7.08:1** light.
 - Targets: Close 44×44 in the sheet; tabs 36px tall in the sheet, 32px in the window (pointer context,
   ≥ 24px floor); CTAs 44px tall.
@@ -135,9 +137,25 @@ Nothing rests at opacity 0: every animated element's resting frame is its final 
 
 ## 10. Acceptance criteria — each measured before publication
 
-(filled in from `scratchpad/showcase/criteria.mjs`, Chromium 148, served build `app/page-a2a3e16f928ceec0.js`)
+Measured by `scratchpad/showcase/criteria.mjs` (session scratchpad, not in the repo), Chromium 148,
+served build `app/page-75ac6ac47e34b823.js`. Each criterion was run against the build AND a known-bad.
 
-CRITERIA_TABLE
+| # | Criterion | Instrument (what it physically samples) | Threshold + calibration | Reference (this build) | Rejected / known-bad |
+|---|---|---|---|---|---|
+| C1 | Resting the pointer on a showcase card at 1440×900 opens a window ≥ 600px wide holding the client-site capture | `getBoundingClientRect` of `.sc-pop`, `src` of its `img`, after a real `mouse.move` and 1.5s | ≥ 600px and a `/images/showcase/` src. Known-bad = today's behaviour on the same build (FarmBooks card) | 720px, `duffer-golf-site-desk-add02c14.webp` | FarmBooks: no window (0), in-card panel 300px. **Fails** |
+| C2 | On `/showcase/*` at 1440×900, every website chapter's ring is fully inside the frame's visible view | Intersection of `.sc-ring` and `.sc-frame__view` rects, 1.3s after centring each chapter | 100% for every chapter. Known-bad: frame transform forced to none | Duffer 100/100/100/100/100, Hays 100/100/100/100/100 (first run found 87%, 97%, 97%; scroll targets fixed) | 100/0/0/0/0. **Fails** |
+| C3 | At 390×844 the sheet's Close is fully on screen and ≥ 44×44, tabs fully on screen | Rects of `.sc-close` and `.sc-tabs` after a real tap | right ≤ viewport, w,h ≥ 44. Known-bad: the first-pass one-row header, re-injected | right 373/390, 44×44, tabs right 373 | Close squeezed to 16×44 (first render: off screen entirely). **Fails** |
+| C4 | The phone sheet fits short phones with no inner scroll | `scrollHeight − clientHeight` of `.sc-sheet`, its top edge | 0 overflow and top ≥ 0 at 320×568, 375×667, 393×659. Known-bad: phone frame forced to 100% width | 0 / 0 / 0 (tops 12, 58, 58) | 98px overflow at 320×568. **Fails** |
+| C5 | Reduced motion: no auto-advance, no pop transform, final frame visible | `data-slide` at 6.5s; computed `transition-duration`; live row opacity and the "15" after selecting the tab | slide stays 0, duration ≈ 0, row opacity 1, shows 15. Calibrated against the motion run | slide 0, 0.00001s, opacity 1, 15 | Motion run: slide 1 at 6.5s, 0.56s. (Discriminates; both end states visible) |
+| C6 | No sideways scroll anywhere the showcase lives | `scrollWidth − innerWidth` on both pages, and the open window/sheet's rect vs the viewport, at all 14 viewports | 0 everywhere. Known-bad: `.sc-tour{width:120vw}` | 0 offenders across 14 viewports × (2 pages + home window) | +78px. **Fails** |
+| C7 | Opening the window shifts nothing on the home page | `PerformanceObserver('layout-shift')` sum without recent input, over 5.6s from hover | ≤ 0.01. Known-bad: a 100px insert above the track while open | 0 | 0.0457. **Fails** |
+| C8 | Window text stays readable over any card with NO blur drawn | WCAG ratio of the caption (86% opacity) over the glass tint composited on the lightest/darkest card | ≥ 4.5:1. Known-bad: a 0.62 tint | 7.23:1 dark, 7.08:1 light (top band now heavier still) | 0.62 tint: 4.27:1. **Fails** |
+| C9 | No real name inside any command-center stage or its source | `npm run test:privacy` over `out/case-studies` + `out/showcase`, plus source roots | exit 0. Known-bad: a deny-listed real name planted in the built Duffer stage and in its fixture | PASS, 30 pages, 11 stages, 45 deny entries | exit 1: `[deny]` on `/showcase/duffer-golf` and on `src/data/demos/duffer-golf.ts`. **Fails** |
+| C10 | Home stays light | `next build` First Load JS for `/` | ≤ +2 kB over main. (Guard; main passes trivially) | 73.5 kB vs 72.2 kB (+1.3) | n/a |
+
+Set check: C3 and C4 bound different quantities (horizontal fit, vertical fit) and were solved together at
+320×568, the tightest case: Close right edge 303 ≤ 320 with 0px vertical overflow. C1 and C7 together: the
+window is 720px yet shifts 0, because it is `position: fixed` and never enters the flow.
 
 ## 11. What I removed, and what it cost
 

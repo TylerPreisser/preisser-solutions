@@ -157,7 +157,7 @@
    (Playwright WebKit/Firefox, which composite none). */
 .sc-glass {
   position: relative;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(246, 249, 252, 0.72));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0, rgba(255, 255, 255, 0.86) 72px, rgba(246, 249, 252, 0.74));
   -webkit-backdrop-filter: blur(28px) saturate(170%);
   backdrop-filter: blur(28px) saturate(170%);
   border: 1px solid rgba(255, 255, 255, 0.7);
@@ -169,7 +169,7 @@
   color: #0a1628;
 }
 [data-theme="dark"] .sc-glass {
-  background: linear-gradient(180deg, rgba(24, 38, 62, 0.84), rgba(10, 22, 40, 0.78));
+  background: linear-gradient(180deg, rgba(24, 38, 62, 0.92) 0, rgba(20, 33, 55, 0.86) 72px, rgba(10, 22, 40, 0.78));
   border-color: rgba(255, 255, 255, 0.14);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
@@ -196,7 +196,7 @@
 /* ── Popover (fine pointer, 900px and up) ───────────────────── */
 .sc-pop {
   position: fixed;
-  z-index: 60;
+  z-index: 1101;
   top: 0;
   left: 0;
   width: min(720px, calc(100vw - 48px));
@@ -405,7 +405,7 @@
 .sc-scrim {
   position: fixed;
   inset: 0;
-  z-index: 59;
+  z-index: 1100; /* above the site's floating nav: the sheet is modal */
   background: rgba(10, 22, 40, 0.45);
   opacity: 0;
   transition: opacity 300ms ease-out;
@@ -415,7 +415,7 @@
 }
 .sc-sheet {
   position: fixed;
-  z-index: 60;
+  z-index: 1101;
   left: 0;
   right: 0;
   bottom: 0;
