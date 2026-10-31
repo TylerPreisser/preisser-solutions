@@ -32,6 +32,16 @@ ci_steps() {
   # and FAILS CLOSED when it is missing.
   run demo-privacy-selftest . node tests/demo-privacy.probe.mjs --self-test
   run demo-privacy . node tests/demo-privacy.probe.mjs
-  run e2e-demo-stage . npx playwright test --config playwright.config.ts
+  # The Proof Stage matrix (3 browsers x 14 viewports x 2 themes) is the slow step. It runs when the change can
+  # reach the stage: its scenes and data, the case-study pages, shared layout/styles, or the test setup. A change
+  # elsewhere (a home card's copy or link) skips it; a full gate and the nightly always run it.
+  if ci_touched 'src/components/case-study/**' 'src/data/demos/**' 'src/data/case-studies/**' 'src/app/case-studies/**' \
+      'src/app/layout.tsx' 'src/app/globals.css' 'src/styles/**' 'src/components/layout/**' 'src/components/ui/**' \
+      'src/lib/**' 'tests/e2e/**' 'playwright.config.ts' 'package.json' 'package-lock.json' 'next.config.ts' \
+      'postcss.config.mjs' 'scripts/ci-steps.sh'; then
+    run e2e-demo-stage . npx playwright test --config playwright.config.ts
+  else
+    ci_skip e2e-demo-stage "the change does not reach the Proof Stage"
+  fi
 }
 ci_summary() { printf 'probes, build, lint, tsc, seo, browser e2e, demo privacy, demo stage green'; }
