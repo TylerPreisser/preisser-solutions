@@ -207,11 +207,10 @@ const caseStudyCards: CaseStudyCard[] = [
     image: "hays-academy-551b04de.webp",
     imageWidth: 440,
     imageHeight: 108,
-    // The redesign, not haysacademy.edu: on 2026-10-13 the apex still serves
-    // the school's old WordPress site, which is not our work. Swap to
-    // https://haysacademy.edu the day the production domain cuts over.
-    // Verified 2026-10-13: https://dev.haysacademy.edu -> 200. DECISIONS/0002.
-    liveUrl: "https://dev.haysacademy.edu",
+    // The production domain now serves our redesign (cut over from the old
+    // WordPress site). Verified 2026-10-31: https://haysacademy.edu -> 200,
+    // Cloudflare, no wp-content. DECISIONS/0002.
+    liveUrl: "https://haysacademy.edu",
   },
   // Duffer Golf. Sources: duffergolf-site (live on duffergolf.net since the
   // 2026-10-05 cutover; the Lighthouse mobile scores 94/96/100 are from that
