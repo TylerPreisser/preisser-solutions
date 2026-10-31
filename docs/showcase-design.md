@@ -59,8 +59,8 @@ only on intent (hover or tap warms it).
 
 Left out of every capture, on purpose: testimonials (real customer and student names), Duffer's Black
 Friday banner and band (dated), Duffer's owner-garage carousel, the Hays welcome collage (scroll-driven;
-it captures as ~1,000px of blank), Hays partner logos, both footers. Capture script and rects:
-`scratchpad/showcase/capture.py` (not in the repo; rects are in `src/data/showcase.ts`).
+it captures as ~1,000px of blank), Hays partner logos, both footers. Capture script: `~/.claude/agent-reports/showcase-design-2026-10-31/tools/capture.py` on the PC that
+built this (not in the repo); the rects it measured are in `src/data/showcase.ts`.
 
 ## 4. Sample data, by view
 
@@ -137,7 +137,7 @@ Nothing rests at opacity 0: every animated element's resting frame is its final 
 
 ## 10. Acceptance criteria — each measured before publication
 
-Measured by `scratchpad/showcase/criteria.mjs` (session scratchpad, not in the repo), Chromium 148,
+Measured by `~/.claude/agent-reports/showcase-design-2026-10-31/tools/criteria.mjs` (not in the repo; raw output beside it in `criteria-measured.json`), Chromium 148,
 served build `app/page-75ac6ac47e34b823.js`. Each criterion was run against the build AND a known-bad.
 
 | # | Criterion | Instrument (what it physically samples) | Threshold + calibration | Reference (this build) | Rejected / known-bad |
