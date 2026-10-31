@@ -1,0 +1,678 @@
+/* ============================================================
+   showcase.css — the product showcase (ADR-0020).
+   Frames (website capture + command center), the glass popover and
+   phone sheet, and the /showcase tour. Site tokens are READ here
+   (--theme-*, --color-primary, --nav-height); only --sc-* is declared.
+
+   Motion, all of it (docs/showcase-design.md §Motion):
+     pop        560ms cubic-bezier(0.22, 1.25, 0.36, 1)  card -> window
+     sheet      460ms cubic-bezier(0.32, 0.72, 0, 1)     phone sheet up
+     close      180ms cubic-bezier(0.4, 0, 1, 1)
+     pan        2800ms cubic-bezier(0.45, 0, 0.25, 1)    popover website scroll
+     chapter    760ms cubic-bezier(0.65, 0, 0.35, 1)     tour frame moves
+     slide      640ms cubic-bezier(0.65, 0, 0.35, 1)     website -> command center
+     ring       520ms cubic-bezier(0.65, 0, 0.35, 1)     spotlight follows
+   Reduced motion: every one of these is a cut (0ms) except opacity fades
+   of 120ms on open/close. Nothing rests hidden.
+   ============================================================ */
+
+.sc-root {
+  --sc-ease-move: cubic-bezier(0.65, 0, 0.35, 1);
+  --sc-ease-pop: cubic-bezier(0.22, 1.25, 0.36, 1);
+  --sc-ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --sc-ink: var(--theme-text-primary);
+  --sc-ink-2: var(--theme-text-secondary);
+  --sc-accent: var(--theme-accent-text);
+}
+
+/* ── Frames ─────────────────────────────────────────────────── */
+.sc-frame {
+  margin: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(10, 22, 40, 0.12),
+    0 18px 50px -18px rgba(10, 22, 40, 0.45);
+  position: relative;
+}
+.sc-frame__chrome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 34px;
+  padding: 0 12px;
+  background: #f1f3f6;
+  border-bottom: 1px solid #e0e4ea;
+  color: #475569;
+  font-size: 12px;
+}
+.sc-frame__dots {
+  display: inline-flex;
+  gap: 5px;
+}
+.sc-frame__dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #d3d8df;
+}
+.sc-frame__url {
+  flex: 1;
+  min-width: 0;
+  max-width: 260px;
+  margin: 0 auto;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #e0e4ea;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+.sc-frame__label {
+  flex: none;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #0a1628;
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.sc-frame__view,
+.sc-frame__cmd {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background: #fff;
+}
+.sc-frame__page {
+  position: absolute;
+  inset: 0 0 auto 0;
+  transition: transform var(--sc-pan-ms, 760ms) var(--sc-ease-move);
+  will-change: transform;
+}
+.sc-frame__page img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+}
+/* When the capture was taken: in the chrome, never over the site itself. */
+.sc-frame__when {
+  flex: none;
+  font-size: 10.5px;
+  color: #64748b;
+}
+.sc-frame--phone .sc-frame__when {
+  display: none;
+}
+.sc-frame__fit {
+  width: 100%;
+}
+
+/* The spotlight: one ring, the rest of the frame dimmed. It moves, it never blinks. */
+.sc-ring {
+  position: absolute;
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 5px rgba(var(--color-primary-rgb), 0.85),
+    0 0 0 100vmax rgba(10, 22, 40, 0.32);
+  transition:
+    left 520ms var(--sc-ease-move),
+    top 520ms var(--sc-ease-move),
+    width 520ms var(--sc-ease-move),
+    height 520ms var(--sc-ease-move);
+  pointer-events: none;
+}
+
+/* ── Stage: website and command center on one track ─────────── */
+.sc-stage {
+  overflow: hidden;
+  border-radius: 14px;
+  /* room for the frame's shadow without clipping it away */
+  padding: 2px;
+  margin: -2px;
+}
+.sc-stage__track {
+  display: flex;
+  width: 200%;
+  transition: transform var(--sc-slide-ms, 640ms) var(--sc-ease-move);
+}
+.sc-stage__slide {
+  width: 50%;
+  flex: none;
+  padding: 0 2px;
+  box-sizing: border-box;
+}
+
+/* ── Glass ──────────────────────────────────────────────────────
+   backdrop-filter on the REAL element (WebKit ignores it on a negative
+   z-index pseudo). Tint is heavy enough that text clears 4.5:1 over the
+   lightest and darkest card behind it even where no blur is drawn
+   (Playwright WebKit/Firefox, which composite none). */
+.sc-glass {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(246, 249, 252, 0.72));
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(10, 22, 40, 0.06),
+    0 40px 90px -30px rgba(10, 22, 40, 0.55),
+    0 10px 28px rgba(10, 22, 40, 0.18);
+  color: #0a1628;
+}
+[data-theme="dark"] .sc-glass {
+  background: linear-gradient(180deg, rgba(24, 38, 62, 0.84), rgba(10, 22, 40, 0.78));
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 40px 90px -30px rgba(0, 0, 0, 0.75),
+    0 10px 28px rgba(0, 0, 0, 0.35);
+  color: #fff;
+}
+/* Specular lip along the top edge, the thing that makes glass read as glass. */
+.sc-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(120% 60% at 20% 0%, rgba(255, 255, 255, 0.55), transparent 55%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+[data-theme="dark"] .sc-glass::before {
+  background: radial-gradient(120% 60% at 20% 0%, rgba(255, 255, 255, 0.14), transparent 55%);
+  opacity: 1;
+}
+
+/* ── Popover (fine pointer, 900px and up) ───────────────────── */
+.sc-pop {
+  position: fixed;
+  z-index: 60;
+  top: 0;
+  left: 0;
+  width: min(720px, calc(100vw - 48px));
+  border-radius: 26px;
+  padding: 14px 16px 16px;
+  display: grid;
+  gap: 12px;
+  transform-origin: center;
+  opacity: 0;
+}
+.sc-pop[data-phase="open"] {
+  opacity: 1;
+  transform: none !important;
+}
+.sc-pop[data-phase="measure"] {
+  visibility: hidden;
+  transform: none !important;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sc-pop[data-phase="open"] {
+    transition:
+      transform 560ms var(--sc-ease-pop),
+      opacity 200ms ease-out;
+  }
+  .sc-pop[data-phase="leave"] {
+    transition:
+      transform 180ms cubic-bezier(0.4, 0, 1, 1),
+      opacity 180ms cubic-bezier(0.4, 0, 1, 1);
+    transform: scale(0.97) !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sc-pop {
+    transition: opacity 120ms linear;
+  }
+  .sc-pop:not([data-phase="measure"]) {
+    transform: none !important;
+  }
+  .sc-stage__track,
+  .sc-frame__page,
+  .sc-ring,
+  .sc-sheet,
+  .sc-tabs__pill,
+  .sc-tour__chapter {
+    transition: none !important;
+  }
+}
+.sc-pop[data-phase="leave"] {
+  opacity: 0;
+}
+
+.sc-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+}
+.sc-head__name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+  white-space: nowrap;
+}
+.sc-close {
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(10, 22, 40, 0.12);
+  background: rgba(255, 255, 255, 0.6);
+  color: inherit;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+[data-theme="dark"] .sc-close {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+}
+.sc-close:focus-visible,
+.sc-tabs__tab:focus-visible,
+.sc-cta:focus-visible,
+.sc-live:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* Tabs: a sliding pill, with the auto-advance shown as a fill under the first tab. */
+.sc-tabs {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(10, 22, 40, 0.06);
+}
+[data-theme="dark"] .sc-tabs {
+  background: rgba(255, 255, 255, 0.07);
+}
+.sc-tabs__pill {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(10, 22, 40, 0.18);
+  transition: transform 420ms var(--sc-ease-move);
+}
+[data-theme="dark"] .sc-tabs__pill {
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.sc-tabs[data-slide="1"] .sc-tabs__pill {
+  transform: translateX(100%);
+}
+.sc-tabs__tab {
+  position: relative;
+  z-index: 1;
+  min-height: 32px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.sc-tabs__tab[aria-selected="true"] {
+  opacity: 1;
+}
+.sc-tabs__fill {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 4px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-primary);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sc-tabs[data-auto] .sc-tabs__fill {
+    animation: sc-fill var(--sc-dwell, 3700ms) linear forwards;
+  }
+}
+@keyframes sc-fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.sc-caption {
+  margin: 0;
+  min-height: 2.6em;
+  font-size: 14px;
+  line-height: 1.45;
+  color: inherit;
+  opacity: 0.86;
+}
+.sc-foot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.sc-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 8px 24px -8px rgba(var(--color-primary-rgb), 0.7);
+}
+.sc-cta:hover {
+  filter: brightness(1.06);
+}
+.sc-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(127, 140, 160, 0.6);
+}
+
+/* ── Phone sheet (touch, or under 900px) ────────────────────── */
+.sc-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 59;
+  background: rgba(10, 22, 40, 0.45);
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+.sc-scrim[data-phase="open"] {
+  opacity: 1;
+}
+.sc-sheet {
+  position: fixed;
+  z-index: 60;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: calc(100svh - 12px);
+  border-radius: 28px 28px 0 0;
+  padding: 10px 16px calc(16px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transform: translateY(105%);
+  transition: transform 460ms var(--sc-ease-sheet);
+}
+.sc-sheet[data-phase="open"] {
+  transform: none;
+}
+.sc-sheet[data-phase="leave"] {
+  transition-duration: 220ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+.sc-sheet__grip {
+  width: 40px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(127, 140, 160, 0.5);
+  margin: 0 auto 2px;
+}
+/* The phone stage is sized by the height it is given, so the whole sheet
+   fits a 568px-tall phone without scrolling. */
+.sc-sheet .sc-stage {
+  width: min(100%, calc((100svh - 330px) * 390 / 600));
+  min-width: 170px;
+}
+@media (min-width: 600px) {
+  .sc-sheet .sc-stage {
+    width: min(100%, calc((100svh - 330px) * 1.6), 860px);
+  }
+}
+.sc-sheet .sc-frame__chrome {
+  height: 28px;
+}
+/* Two rows on a phone: name and close, then the tabs across the full width. */
+.sc-sheet .sc-head {
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+.sc-sheet .sc-head__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  order: 1;
+}
+.sc-sheet .sc-close {
+  order: 2;
+  margin-left: 0;
+  width: 44px;
+  height: 44px;
+}
+.sc-sheet .sc-tabs {
+  order: 3;
+  flex-basis: 100%;
+}
+.sc-sheet .sc-tabs__tab {
+  min-height: 36px;
+}
+.sc-sheet__stage {
+  display: flex;
+  justify-content: center;
+}
+.sc-frame--phone .sc-frame__label {
+  font-size: 9.5px;
+  padding: 2px 7px;
+}
+.sc-frame--phone .sc-frame__chrome {
+  gap: 7px;
+  padding: 0 9px;
+}
+.sc-sheet .sc-caption {
+  text-align: center;
+  font-size: 13.5px;
+  min-height: 0;
+}
+.sc-sheet .sc-foot {
+  justify-content: center;
+}
+
+/* ── /showcase/<slug> page ──────────────────────────────────── */
+.sc-page {
+  background: var(--theme-bg-primary);
+  color: var(--sc-ink);
+}
+.sc-hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: calc(var(--nav-height) + 56px) 24px 40px;
+}
+.sc-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sc-accent);
+  margin: 0 0 14px;
+}
+.sc-hero h1 {
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  margin: 0 0 18px;
+}
+.sc-hero__lede {
+  max-width: 62ch;
+  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--sc-ink-2);
+  margin: 0 0 22px;
+}
+.sc-hero .sc-foot {
+  gap: 20px;
+}
+
+.sc-tour {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px 96px;
+}
+.sc-tour__chapters {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sc-tour__chapter {
+  margin: 0;
+}
+.sc-tour__tag {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sc-accent);
+  margin: 0 0 10px;
+}
+.sc-tour__title {
+  font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+.sc-tour__body {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--sc-ink-2);
+  margin: 0;
+  max-width: 44ch;
+}
+.sc-tour__break {
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+/* Stacked (no JS needed): under 1024px every chapter carries its own frame. */
+.sc-tour__sticky {
+  display: none;
+}
+.sc-tour__chapter {
+  display: grid;
+  gap: 18px;
+  padding: 36px 0;
+  border-top: 1px solid var(--theme-border);
+}
+.sc-tour__frame {
+  width: min(100%, 360px);
+  justify-self: center;
+}
+.sc-tour__break-row {
+  padding: 56px 0 8px;
+}
+
+@media (min-width: 1024px) {
+  .sc-tour {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 64px;
+    align-items: start;
+  }
+  .sc-tour__sticky {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: sticky;
+    top: calc(var(--nav-height) + 16px);
+    height: calc(100svh - var(--nav-height) - 32px);
+    /* the frame never runs under the bottom of a short laptop screen */
+    max-width: calc((100svh - var(--nav-height) - 96px) * 1.6);
+  }
+  .sc-tour__frame {
+    display: none;
+  }
+  .sc-tour__chapter {
+    min-height: 62svh;
+    align-content: center;
+    padding: 0;
+    border: 0;
+    opacity: 0.34;
+    transition: opacity 360ms ease-out;
+  }
+  .sc-tour__chapter[data-active] {
+    opacity: 1;
+  }
+  .sc-tour__chapter:last-child {
+    min-height: 80svh;
+  }
+  .sc-tour__break-row {
+    min-height: 30svh;
+    display: grid;
+    align-content: end;
+    padding: 0 0 24px;
+  }
+}
+
+.sc-progress {
+  display: flex;
+  gap: 6px;
+  margin-top: 16px;
+}
+.sc-progress i {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--theme-border);
+  transition: background 300ms ease-out;
+}
+.sc-progress i[data-on] {
+  background: var(--color-primary);
+}
+
+.sc-end {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 24px 120px;
+  text-align: center;
+}
+.sc-end h2 {
+  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+}
+.sc-end p {
+  color: var(--sc-ink-2);
+  margin: 0 auto 24px;
+  max-width: 52ch;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}

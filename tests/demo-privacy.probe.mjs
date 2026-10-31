@@ -297,6 +297,19 @@ async function main() {
   const hub = path.join(OUT, "case-studies.html");
   if (fs.existsSync(hub)) files.push(hub);
   if (files.length === 0) throw new ConfigError(`no case-study pages in ${dir}`);
+  // The product showcase pages (ADR-0020) carry the same command-center stages.
+  // When this repo's own export is scanned and the source route exists, the
+  // built pages must too: a missing out/showcase is a configuration error,
+  // never a silent skip. (A planted PS_OUT_DIR, as the self-test uses, scans
+  // whatever showcase pages it holds.)
+  const showcaseDir = path.join(OUT, "showcase");
+  const realExport = !process.env.PS_OUT_DIR;
+  if (fs.existsSync(showcaseDir) || (realExport && fs.existsSync(path.join(ROOT, "src", "app", "showcase")))) {
+    if (!fs.existsSync(showcaseDir)) throw new ConfigError(`src/app/showcase exists but ${showcaseDir} does not. Build first.`);
+    const shown = fs.readdirSync(showcaseDir).filter((f) => f.endsWith(".html")).map((f) => path.join(showcaseDir, f));
+    if (shown.length === 0) throw new ConfigError(`no showcase pages in ${showcaseDir}`);
+    files.push(...shown);
+  }
 
   const browser = await chromium.launch();
   const V = [];

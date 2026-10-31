@@ -1,6 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import { showcaseMeta, type ShowcaseSlug } from "@/data/showcase-meta";
+import type { LayerMode } from "../showcase/ShowcaseLayer";
+import { ShowcaseBoundary } from "../showcase/ShowcaseBoundary";
+
+// The showcase window (ADR-0020) is its own chunk, fetched on the first sign of
+// intent (a pointer resting on a showcase card, a tap, a key press), so the
+// home page pays nothing for it up front and nothing on it shifts.
+const loadShowcaseLayer = () => import("../showcase/ShowcaseLayer");
+const ShowcaseLayer = dynamic(loadShowcaseLayer, { ssr: false });
 
 interface CaseStudyCard {
   title: string;
@@ -73,6 +83,13 @@ interface CaseStudyCard {
    * the 100px mobile and 120px desktop icon sizes.
    */
   iconNudgeY?: string;
+  /**
+   * The card opens the product showcase instead of the in-card panel
+   * (ADR-0020): their website, then the command center we built them, in a
+   * glass window on desktop and a sheet on a phone. Only for a named client
+   * with a public site we built AND a command center (ADR-0002 still holds).
+   */
+  showcase?: ShowcaseSlug;
 }
 
 /** "https://farm-books.com/" -> "farm-books.com", for a link label that says where it goes. */
@@ -196,6 +213,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // is no before/after to quote.
   {
     title: "Hays Academy of Hair Design",
+    showcase: "hays-academy",
     tags: "Beauty School | Website + CRM | MarCommand",
     description:
       "Hays Academy of Hair Design trains stylists on two Kansas campuses. Preisser Solutions rebuilt their web presence from the ground up, piped every inquiry straight into the school's CRM, and wired Google, Meta and Analytics into one MarCommand marketing engine, with a private portal where leadership sees which marketing actually produces leads.",
@@ -218,6 +236,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // course displays, Command Center) and the MarCommand Duffer notes.
   {
     title: "Duffer Golf",
+    showcase: "duffer-golf",
     tags: "E-Commerce | Partner Program | MarCommand",
     description:
       "Duffer Golf builds golf simulator enclosures in Hoxie, Kansas. Preisser Solutions replaced their old site with a custom storefront on live Stripe payments that scores 94 to 100 on Google's mobile audit, then built the business behind it: a partner program with QR-tracked course displays and a MarCommand engine that follows every visitor to the sale.",
@@ -656,6 +675,52 @@ export function CaseStudies() {
     return () => io.disconnect();
   }, []);
 
+  // ── Showcase window state (ADR-0020) ───────────────────────────────
+  const [showcase, setShowcase] = useState<{ slug: ShowcaseSlug; anchor: HTMLElement; mode: LayerMode; leaving?: boolean } | null>(null);
+  const intentTimer = useRef<number | undefined>(undefined);
+  const leaveTimer = useRef<number | undefined>(undefined);
+  const inside = useRef({ card: false, layer: false });
+
+  const warm = useCallback((slug: ShowcaseSlug, wide: boolean) => {
+    loadShowcaseLayer().catch(() => {});
+    const img = new Image();
+    img.decoding = "async";
+    img.src = wide ? showcaseMeta[slug].desk : showcaseMeta[slug].phone;
+  }, []);
+
+  const scheduleLeave = useCallback(() => {
+    window.clearTimeout(leaveTimer.current);
+    leaveTimer.current = window.setTimeout(() => {
+      if (inside.current.card || inside.current.layer) return;
+      setShowcase((cur) => (cur && cur.mode === "hover" ? { ...cur, leaving: true } : cur));
+    }, 260);
+  }, []);
+
+  function showcaseEnter(slug: ShowcaseSlug, el: HTMLElement) {
+    if (window.innerWidth < 900) return;
+    inside.current.card = true;
+    window.clearTimeout(leaveTimer.current);
+    warm(slug, true);
+    if (showcase && showcase.slug === slug && !showcase.leaving) return;
+    window.clearTimeout(intentTimer.current);
+    // A resting pointer, not a sweep across the track: 280ms of intent first.
+    intentTimer.current = window.setTimeout(() => {
+      setShowcase({ slug, anchor: el, mode: "hover" });
+    }, 280);
+  }
+
+  function showcaseLeave() {
+    inside.current.card = false;
+    window.clearTimeout(intentTimer.current);
+    scheduleLeave();
+  }
+
+  function showcaseActivate(slug: ShowcaseSlug, el: HTMLElement) {
+    window.clearTimeout(intentTimer.current);
+    warm(slug, window.innerWidth >= 600);
+    setShowcase({ slug, anchor: el, mode: "pinned" });
+  }
+
   function scrollTrack(direction: "left" | "right") {
     if (!trackRef.current) return;
     const scrollAmount = 316; // card width (300) + gap (16)
@@ -782,11 +847,19 @@ export function CaseStudies() {
                   : undefined
               }
               role="listitem"
-              onMouseEnter={hoverOpens ? () => {
+              onMouseEnter={hoverOpens ? (e) => {
+                if (study.showcase) {
+                  showcaseEnter(study.showcase, e.currentTarget);
+                  return;
+                }
                 scrollAtOpenRef.current = trackRef.current?.scrollLeft ?? 0;
                 setOpenCard(index);
               } : undefined}
               onMouseLeave={hoverOpens ? () => {
+                if (study.showcase) {
+                  showcaseLeave();
+                  return;
+                }
                 // Only close if this card is the one open, so a pointer leaving
                 // card A after the user has already hovered card B cannot shut B.
                 setOpenCard((prev) => (prev === index ? null : prev));
@@ -837,14 +910,28 @@ export function CaseStudies() {
                   without nesting <a> inside <a>. The whole card face is now a
                   disclosure button, and every link lives inside the panel as a
                   sibling of that button — so no anchor is ever nested. */}
-              <button
-                type="button"
-                className="ps-work-card__toggle"
-                aria-expanded={isOpen}
-                aria-controls={panelId}
-                aria-label={`Details for ${study.title}`}
-                onClick={() => handleCardToggle(index)}
-              />
+              {study.showcase ? (
+                <button
+                  type="button"
+                  className="ps-work-card__toggle"
+                  aria-haspopup="dialog"
+                  aria-expanded={showcase?.slug === study.showcase}
+                  aria-label={`${study.title}: see the website and the ${showcaseMeta[study.showcase].commandName} we built`}
+                  onPointerEnter={(e) => {
+                    if (e.pointerType !== "mouse") warm(study.showcase!, window.innerWidth >= 600);
+                  }}
+                  onClick={(e) => showcaseActivate(study.showcase!, e.currentTarget.closest("article") as HTMLElement)}
+                />
+              ) : (
+                <button
+                  type="button"
+                  className="ps-work-card__toggle"
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
+                  aria-label={`Details for ${study.title}`}
+                  onClick={() => handleCardToggle(index)}
+                />
+              )}
 
               {/* Detail panel. Kept at opacity 0 rather than display:none so the
                   title and description stay in the SSG HTML for AI crawlers;
@@ -928,6 +1015,27 @@ export function CaseStudies() {
         </svg>
         Swipe to explore
       </p>
+
+      {showcase ? (
+        <ShowcaseBoundary key={showcase.slug} onFail={() => setShowcase(null)}>
+        <ShowcaseLayer
+          key={showcase.slug}
+          slug={showcase.slug}
+          anchor={showcase.anchor}
+          mode={showcase.mode}
+          dismissed={showcase.leaving}
+          onHoverChange={(inLayer) => {
+            inside.current.layer = inLayer;
+            if (inLayer) window.clearTimeout(leaveTimer.current);
+            else scheduleLeave();
+          }}
+          onClose={() => {
+            inside.current.layer = false;
+            setShowcase(null);
+          }}
+        />
+        </ShowcaseBoundary>
+      ) : null}
     </section>
   );
 }
