@@ -40,7 +40,11 @@ export function aiTimeline(beat: AiAskBeatData) {
     return r;
   });
   const answer = t + 200;
-  return { typed, press, ask, steps, answer, worked: answer + 900, pan: answer + 2900, total: answer + 6600 };
+  // The column scrolls down through "What we're doing next" and the sources at `pan`,
+  // then comes back up at `back` and HOLDS on the answer with its figures and chart:
+  // that is the resting frame, never the plan or the sources (critique r8 S1).
+  const pan = answer + 2900;
+  return { typed, press, ask, steps, answer, worked: answer + 900, pan, back: pan + 2700, total: pan + 6200 };
 }
 
 export const aiMs = (beat: AiAskBeatData) => aiTimeline(beat).total;
@@ -136,7 +140,7 @@ function Column({
   const [y, setY] = useState(0);
   const [clip, setClip] = useState({ top: 0, bottom: 0 });
   const [settle, setSettle] = useState(0);
-  const panned = t >= T.pan;
+  const panned = t >= T.pan && t < T.back;
   // Measured again whenever the column's size changes (the faces arriving re-wrap the question).
   const col = useBox(colRef);
   // Measure once more after the answer's blocks have finished arriving (they rise 6 px as they fade in).
@@ -214,7 +218,7 @@ function Column({
   );
 
   const card = answered ? (
-    <Answer beat={beat} cardRef={cardRef} y={phone ? 0 : y} clip={phone ? null : clip} />
+    <Answer beat={beat} cardRef={cardRef} y={phone ? 0 : y} clip={phone ? null : clip} phone={phone} />
   ) : (
     <LiveCard steps={beat.steps} t={t} T={T} waiting={!live} />
   );
@@ -226,7 +230,7 @@ function Column({
         ref={viewRef}
         style={{ height: h, clipPath: clip.bottom > 0 ? `inset(0 0 ${clip.bottom}px 0)` : undefined }}
       >
-        <div className="pt-ai__col" ref={colRef} style={{ transform: `translateY(${-y}px)` }}>
+        <div className="pt-ai__col" ref={colRef} style={{ transform: `translateY(${-y}px)`, transitionDuration: panned ? "2200ms" : undefined }}>
           {ask}
           <div className="pt-ai__right">{card}</div>
         </div>
@@ -333,16 +337,59 @@ function Answer({
   cardRef,
   y,
   clip,
+  phone,
 }: {
   beat: AiAskBeatData;
   cardRef: React.RefObject<HTMLDivElement | null>;
   y: number;
   clip: { top: number; bottom: number } | null;
+  phone: boolean;
 }) {
   const a = beat.answer;
   const max = a.chart.ticks[a.chart.ticks.length - 1];
   const fmt = (v: number) => (a.chart.money ? `$${v.toLocaleString("en-US")}` : v.toLocaleString("en-US"));
   const long = a.figures.some((f) => f.value.length > 5);
+  const figs = (
+    <dl className="aa-figs aa-in" data-n={a.figures.length} data-long={long ? "" : undefined} style={{ "--i": phone ? 2 : 1 } as CSSProperties}>
+      {a.figures.map((f) => (
+        <div key={f.label} className="aa-fig">
+          <dt>{f.label}</dt>
+          <dd>{f.value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+  const chart = (
+    <div className="aa-chart aa-in" style={{ "--i": phone ? 1 : 2 } as CSSProperties}>
+      <p className="ch-title">{a.chart.title}</p>
+      <div className="ch-bars" style={{ "--n": a.chart.bars.length } as CSSProperties}>
+        {a.chart.bars.map((b, i) => (
+          <div key={b.label} className="ch-row">
+            <span className="ch-label">{b.label}</span>
+            <span className="ch-track">
+              {a.chart.ticks.slice(1).map((k) => (
+                <i key={k} className="ch-grid" style={{ left: `${(k / max) * 100}%` }} />
+              ))}
+              <span className="ch-bar" style={{ width: `${(b.value / max) * 100}%`, "--b": i } as CSSProperties} />
+              <span className="ch-val" style={{ left: `${(b.value / max) * 100}%` }}>
+                {fmt(b.value)}
+              </span>
+            </span>
+          </div>
+        ))}
+        <div className="ch-row ch-axis">
+          <span className="ch-label" />
+          <span className="ch-track">
+            {a.chart.ticks.map((k) => (
+              <span key={k} className="ch-tick" style={{ left: `${(k / max) * 100}%` }}>
+                {fmt(k)}
+              </span>
+            ))}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
   return (
     <div className="ai-card ai-answer" ref={cardRef}>
       <div
@@ -352,43 +399,9 @@ function Answer({
         <p className="aa-head aa-in" style={{ "--i": 0 } as CSSProperties}>
           {a.headline}
         </p>
-        <dl className="aa-figs aa-in" data-n={a.figures.length} data-long={long ? "" : undefined} style={{ "--i": 1 } as CSSProperties}>
-          {a.figures.map((f) => (
-            <div key={f.label} className="aa-fig">
-              <dt>{f.label}</dt>
-              <dd>{f.value}</dd>
-            </div>
-          ))}
-        </dl>
-        <div className="aa-chart aa-in" style={{ "--i": 2 } as CSSProperties}>
-          <p className="ch-title">{a.chart.title}</p>
-          <div className="ch-bars" style={{ "--n": a.chart.bars.length } as CSSProperties}>
-            {a.chart.bars.map((b, i) => (
-              <div key={b.label} className="ch-row">
-                <span className="ch-label">{b.label}</span>
-                <span className="ch-track">
-                  {a.chart.ticks.slice(1).map((k) => (
-                    <i key={k} className="ch-grid" style={{ left: `${(k / max) * 100}%` }} />
-                  ))}
-                  <span className="ch-bar" style={{ width: `${(b.value / max) * 100}%`, "--b": i } as CSSProperties} />
-                  <span className="ch-val" style={{ left: `${(b.value / max) * 100}%` }}>
-                    {fmt(b.value)}
-                  </span>
-                </span>
-              </div>
-            ))}
-            <div className="ch-row ch-axis">
-              <span className="ch-label" />
-              <span className="ch-track">
-                {a.chart.ticks.map((k) => (
-                  <span key={k} className="ch-tick" style={{ left: `${(k / max) * 100}%` }}>
-                    {fmt(k)}
-                  </span>
-                ))}
-              </span>
-            </div>
-          </div>
-        </div>
+        {/* A phone has room for the answer and one more block: the chart comes first there, so the resting frame carries the sentence with its figures drawn (critique r8 S1, S2). */}
+        {phone ? chart : figs}
+        {phone ? figs : chart}
         <section className="aa-sec aa-in" style={{ "--i": 3 } as CSSProperties}>
           <p className="aa-k">What it likely means</p>
           <ul className="aa-means">
@@ -423,7 +436,7 @@ function Answer({
 }
 
 /** The answer's lines: every piece of text that must never be cut by an edge. */
-const LINES = ".aa-head, .aa-figs, .ch-title, .ch-row, .aa-k, .aa-means > li, .aa-next > li, .ai-sources";
+const LINES = ".aa-head, .aa-fig, .ch-title, .ch-row, .aa-k, .aa-means > li, .aa-next > li, .ai-sources";
 
 /** An element's top and bottom in `ref`'s own (unscaled) px. */
 function rel(el: HTMLElement, ref: HTMLElement) {
