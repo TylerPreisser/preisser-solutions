@@ -120,7 +120,7 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
         body:
           "The complete Duffer 10 is outlined and marked Featured, so that's where the eye lands. If someone's ready to buy, a hidden price just sends them somewhere else.",
         desk: { y: 1560, focus: [957, 1701, 305, 624] },
-        phone: { y: 1820, focus: [195, 1865, 185, 447] },
+        phone: { y: 1820, focus: [193, 1847, 189, 452] },
       },
       {
         kind: "website",
