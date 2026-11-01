@@ -295,12 +295,13 @@ export function CommandFrame({
         for (const ch of el.children) walk(ch);
         return;
       }
-      if (top < y0 - 0.5 && bottom > y0 + 0.5 && bottom > t) {
-        t = bottom;
+      // 1px past the row's edge, so not even its border line is left behind.
+      if (top < y0 - 0.5 && bottom > y0 + 0.5 && bottom + 1 > t) {
+        t = bottom + 1;
         bgT = bgOf(el.parentElement);
       }
-      if (top < y1 - 0.5 && bottom > y1 + 0.5 && top < b) {
-        b = top;
+      if (top < y1 - 0.5 && bottom > y1 + 0.5 && top - 1 < b) {
+        b = top - 1;
         bgB = bgOf(el.parentElement);
       }
     };

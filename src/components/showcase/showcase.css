@@ -600,9 +600,9 @@
   position: fixed;
   inset: 0;
   z-index: 1100; /* above the site's floating nav: the sheet is modal */
-  /* Near-opaque in the strip above the sheet (it sits at 12px), so the page's
+  /* Opaque in the strip above the sheet (it sits at 12px), so the page's
      giant headline never peeks out there (critique r2). */
-  background: linear-gradient(rgba(10, 22, 40, 0.97) 0, rgba(10, 22, 40, 0.97) 40px, rgba(10, 22, 40, 0.58) 120px);
+  background: linear-gradient(#0a1628 0, #0a1628 40px, rgba(10, 22, 40, 0.58) 120px);
   opacity: 0;
   transition: opacity 300ms ease-out;
 }
