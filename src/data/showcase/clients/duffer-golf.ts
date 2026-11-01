@@ -53,7 +53,7 @@ const client: ShowcaseClient = {
     {
       kind: "website",
       tab: "Website",
-      caption: "We built a storefront that shows the bay folding away for the car first, then every model with its price.",
+      caption: "The bay folds away so the car still fits, and every model shows its price.",
       captured: "Captured Nov 1, 2026",
       desk: {
         src: "/images/showcase/duffer-golf-site-desk-e28191de.webp",
@@ -78,7 +78,7 @@ const client: ShowcaseClient = {
     {
       kind: "funnel",
       tab: "Funnel",
-      caption: "Every scan at a partner course's counter runs into the same MarCommand funnel as the orders.",
+      caption: "A scan at a golf course counter and an order online land in the same funnel.",
       narration:
         "The MarCommand dashboard on demonstration data: partner golf courses, the scans at each course's display, and how many became visits, leads and orders. None of these courses are real.",
       funnel: {
@@ -112,10 +112,10 @@ const client: ShowcaseClient = {
     {
       kind: "ai-ask",
       tab: "AI",
-      caption: "Duffer asks which golf courses actually sell, because the whole partner program runs on that answer.",
+      caption: "Duffer asks which courses are selling, and gets names and numbers back.",
       narration:
         "The MarCommand AI tab on demonstration data: asked which golf courses send buyers, it reads scans and orders by course, checks every figure, and answers.",
-      question: "Which golf courses are actually sending us buyers?",
+      question: "Which golf courses are sending us buyers?",
       steps: [
         { label: "Reading your question", phase: 0, ms: 700 },
         { label: "Reading scans by course, last 30 days", phase: 1, ms: 900, chip: `${COURSES} rows` },

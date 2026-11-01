@@ -21,6 +21,18 @@ export const sceneBeats: readonly SceneBeatData[] = [
   },
 ];
 
+/** Men's title, logo, date, Enter button; women's title, logo, date, Enter button (y in the 390-wide capture). */
+const NWKS_PHONE_BANDS = [
+  [52, 69],
+  [96, 236],
+  [280, 296],
+  [316, 372],
+  [470, 487],
+  [511, 656],
+  [705, 725],
+  [740, 797],
+] as const;
+
 const client: ShowcaseClient = {
   slug: "nwks-encounter",
   name: "NWKS Encounter",
@@ -44,7 +56,7 @@ const client: ShowcaseClient = {
     {
       kind: "website",
       tab: "Website",
-      caption: "We built one front door for the men's and the women's weekends.",
+      caption: "The men's and women's weekends share one front door.",
       captured: "Captured Nov 1, 2026",
       desk: {
         src: "/images/showcase/nwks-encounter-site-desk-ff921ff6.webp",
@@ -56,7 +68,14 @@ const client: ShowcaseClient = {
         src: "/images/showcase/nwks-encounter-site-phone-8722795d.webp",
         width: 390,
         height: 844,
-        stops: [{ y: 0, holdMs: 3400 }],
+        // Two rests, and neither edge of either one cuts a logo, a title, a date or a
+        // button in half (critique r8 S6: the Women's Encounter logo was cut on every
+        // phone): the men's half, then the women's half to the capture's end. Bands
+        // measured from the capture's pixels, 2026-11-01.
+        stops: [
+          { y: 40, holdMs: 2400, avoid: NWKS_PHONE_BANDS },
+          { y: 422, holdMs: 2600, toEnd: true, avoid: NWKS_PHONE_BANDS },
+        ],
       },
     },
     ...sceneBeats,

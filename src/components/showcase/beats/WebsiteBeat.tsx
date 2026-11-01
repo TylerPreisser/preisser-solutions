@@ -35,7 +35,20 @@ export function WebsiteBeat({ client, beat, variant, active, fill, reduced }: Be
   // A stop near the end may scroll a little past the capture (the site's own white
   // space continues there), so a tall phone lands on the row asked for, not on a
   // sliced row above it.
-  const top = Math.max(0, Math.min(cap.stops[stop].y, cap.height - viewH * 0.55));
+  const want = cap.stops[stop];
+  const maxTop = cap.height - viewH * (want.toEnd ? 1 : 0.55);
+  let top = Math.max(0, Math.min(want.y, maxTop));
+  if (want.avoid && box.h > 0) {
+    const cuts = (t: number) => want.avoid!.some(([a, b]) => (t > a && t < b) || (t + viewH > a && t + viewH < b));
+    search: for (let d = 0; d <= 160; d += 1) {
+      for (const t of [top + d, top - d]) {
+        if (t >= 0 && t <= Math.max(0, maxTop) && !cuts(t)) {
+          top = t;
+          break search;
+        }
+      }
+    }
+  }
   const page = (
     <div className="sc-frame__page" style={{ transform: `translateY(-${(top / cap.height) * 100}%)`, "--sc-pan-ms": `${PAN_MS}ms` } as CSSProperties}>
       {/* eslint-disable-next-line @next/next/no-img-element */}

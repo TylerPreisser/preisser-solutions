@@ -5,8 +5,10 @@
 // Website capture: the DEV site https://hgoil-website-dev.tylerpreisser.workers.dev/
 // (the live site's carbon copy plus mobile and nav fixes), 2026-11-01,
 // Playwright Chromium, desk 1440 css at 1x, phone 390 at 2x. Two sections,
-// stitched: the home hero (the pumpjack at dusk) and the glass contact form
-// over the same video (/contact-us, below its header). "Visit" goes to the
+// stitched: the home hero (the pumpjack at dusk; it carries no headline) and
+// the About section below its header (/about: the drilling rig in a Kansas
+// field and "operates 329 producing wells in 35 counties"). Round 9 swapped
+// the empty contact form out for it (critique r8 N3). "Visit" goes to the
 // live site. Sample data for the scenes: src/data/demos/scenes/hg-oil.ts.
 import type { ShowcaseClient } from "../types";
 import type { SceneBeatData } from "@/components/showcase/scenes";
@@ -29,6 +31,26 @@ export const sceneBeats: readonly SceneBeatData[] = [
     narration: swdSummary,
   },
 ];
+
+/** The About section's title, the last strip of its photo, its text lines and its button (y in the 390-wide capture, measured from its pixels). */
+const HG_PHONE_BANDS = [
+  [860, 889],
+  [1130, 1172],
+  [1191, 1208],
+  [1215, 1232],
+  [1239, 1253],
+  [1263, 1277],
+  [1287, 1304],
+  [1311, 1328],
+  [1335, 1352],
+  [1359, 1376],
+  [1383, 1400],
+  [1407, 1424],
+  [1431, 1448],
+  [1455, 1472],
+  [1479, 1493],
+  [1511, 1562],
+] as const;
 
 const client: ShowcaseClient = {
   slug: "hg-oil",
@@ -53,24 +75,27 @@ const client: ShowcaseClient = {
     {
       kind: "website",
       tab: "Website",
-      caption: "We built HG Oil a site with the pumpjack at dusk front and center.",
+      caption: "HG Oil's site, from the pumpjack at dusk to the work they do in the field.",
       captured: "Captured Nov 1, 2026",
       desk: {
-        src: "/images/showcase/hg-oil-site-desk-6ef88481.webp",
+        src: "/images/showcase/hg-oil-site-desk-9bdaa234.webp",
         width: 1440,
         height: 1643,
         stops: [
           { y: 0, holdMs: 2400 },
-          { y: 743, holdMs: 2600 },
+          // The About section from its top; the page's own white runs on below it.
+          { y: 900, holdMs: 3000 },
         ],
       },
       phone: {
-        src: "/images/showcase/hg-oil-site-phone-2f27ceb5.webp",
+        src: "/images/showcase/hg-oil-site-phone-9b887afc.webp",
         width: 390,
         height: 1597,
+        // Neither edge of a rest cuts the title, a sliver of the photo, a line of the About text or its button.
         stops: [
           { y: 0, holdMs: 2400 },
-          { y: 844, holdMs: 2600 },
+          { y: 852, holdMs: 2200, avoid: HG_PHONE_BANDS },
+          { y: 1180, holdMs: 2800, toEnd: true, avoid: HG_PHONE_BANDS },
         ],
       },
     },

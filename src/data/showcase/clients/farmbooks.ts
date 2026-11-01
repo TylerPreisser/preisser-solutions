@@ -45,7 +45,7 @@ const client: ShowcaseClient = {
     {
       kind: "website",
       tab: "Website",
-      caption: "We built farm-books.com to show a farmer what goes wrong on a bill.",
+      caption: "farm-books.com walks a farmer through the mistakes that hide on a bill.",
       captured: "Captured Nov 1, 2026",
       desk: {
         src: "/images/showcase/farmbooks-site-desk-c886eb38.webp",

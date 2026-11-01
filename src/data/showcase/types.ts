@@ -67,7 +67,18 @@ export interface SiteCapture {
   width: number;
   height: number;
   /** Where the frame scrolls, in order, and how long each holds. The first is the hero. */
-  stops: readonly { y: number; holdMs: number }[];
+  stops: readonly {
+    y: number;
+    holdMs: number;
+    /** Never show past the capture's end: the view ends on its last row instead of going on into empty space. */
+    toEnd?: boolean;
+    /**
+     * Bands of the capture (y from, y to) that an edge of the view must never cut,
+     * such as a logo or a button: the stop moves to the nearest top (within 160 px)
+     * where neither the top nor the bottom edge falls inside one.
+     */
+    avoid?: readonly (readonly [number, number])[];
+  }[];
 }
 
 export interface WebsiteBeat extends BeatBase {

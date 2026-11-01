@@ -72,7 +72,7 @@ const client: ShowcaseClient = {
     {
       kind: "website",
       tab: "Website",
-      caption: "We put the next class date at the top of their site, and every program shows its price.",
+      caption: "Hays's next class date sits right up top, and every program shows its price.",
       captured: "Captured Nov 1, 2026",
       desk: {
         src: "/images/showcase/hays-academy-site-desk-7e175ee0.webp",
@@ -90,7 +90,8 @@ const client: ShowcaseClient = {
         height: 2180,
         stops: [
           { y: 0, holdMs: 2200 },
-          { y: 870, holdMs: 1500 },
+          // "Next class starts November 10" (y 762) rests with the stats under it (critique r8 N2).
+          { y: 720, holdMs: 2400 },
           { y: 1236, holdMs: 2600 },
         ],
       },
@@ -98,7 +99,7 @@ const client: ShowcaseClient = {
     {
       kind: "funnel",
       tab: "Funnel",
-      caption: "Every ad and every search runs into one MarCommand funnel, so Hays can see what actually brings in leads.",
+      caption: "Each ad dollar is followed through to the lead it brought in, or didn't.",
       narration:
         "The MarCommand dashboard on demonstration data: seven channels, the people each one sent to the website, and how many became leads. None of these numbers are real.",
       funnel: {
@@ -126,7 +127,7 @@ const client: ShowcaseClient = {
     {
       kind: "ai-ask",
       tab: "AI",
-      caption: "Hays can ask it anything about their numbers, starting with the question every school has about its ads.",
+      caption: "Hays asks if any ad is wasting money, and gets a yes with the numbers behind it.",
       narration:
         "The MarCommand AI tab on demonstration data: asked whether any ads are wasting money, it reads spend and leads by channel, checks every figure, and answers.",
       question: "Are we wasting money on any of our ads?",

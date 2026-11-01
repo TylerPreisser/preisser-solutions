@@ -224,5 +224,17 @@ invented names and vocabulary in `src/data/demos/invented/<slug>.ts`, and `showc
 card in `src/components/home/case-studies.tsx`. Then `npm run build && npm run test:privacy`.
 
 **Timing**: website beat = its stops' holds + 900ms per move; funnel 6.8s desk / 9.2s phone (camera);
-AI ask = typing (42ms a character) + the steps' own ms + the answer + 6.6s; the last beat stays.
+AI ask = typing (1.08 s at most) + the steps' own ms + the answer + 9.1s; the last beat stays.
 Reduced motion: no auto-advance, every beat at its end state, no camera, no flow.
+
+**Round 9 (2026-11-01), resting frames** (critique r8):
+- Website stops can carry `toEnd` (never scroll past the capture's end) and `avoid` (bands of the
+  capture, measured from its pixels, that neither edge of the view may cut; the stop moves to the
+  nearest clean top within 160 px). NWKS and HG use both.
+- Phone scenes: every shot is a `top` shot on the scene's CLEAN_TOPS, and the scene camera clips off
+  any line a resting edge would still cut (`useEdgeCut` in `SceneBeat.tsx`).
+- Phone funnel: opens on the ad spend and the channel cards at reading size (11 css px or more at
+  320), pans along the streams, ends on the stage band from a column's left edge to the mark
+  (`FocusRect` in `shared.tsx`). Reduced motion rests on the cards. Never the whole dashboard.
+- AI answer: passes down through "What we're doing next" and the sources, then comes back and holds on
+  the answer sentence with its chart (on a phone the chart sits right under the sentence).
