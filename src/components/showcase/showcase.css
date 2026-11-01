@@ -598,7 +598,9 @@
 /* ── Phone sheet (touch, or under 900px) ────────────────────── */
 .sc-scrim {
   position: fixed;
-  inset: 0;
+  /* -1px: Firefox snaps a fractionally scrolled page and this fixed layer
+     differently, leaving the page's top device-pixel row uncovered. */
+  inset: -1px 0 0 0;
   z-index: 1100; /* above the site's floating nav: the sheet is modal */
   /* Opaque in the strip above the sheet (it sits at 12px), so the page's
      giant headline never peeks out there (critique r2). */
