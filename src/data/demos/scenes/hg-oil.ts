@@ -111,7 +111,7 @@ export const coiCaptions = [
 export const coiCues = [250, 2300, 4700, 7300, 10600] as const;
 
 /**
- * The phone camera (300 x 460 picture; a 320 phone shows ~280 px): the wall
+ * The phone camera (300 x 520 picture; a 320 phone shows ~280 px): the wall
  * and the counts, then the card each step is about; at the end the green wall
  * and the two exceptions (also the reduced-motion frame).
  */
@@ -228,7 +228,7 @@ export const swdDeskCam = [
   { at: swdCues[4], ...WIDE, y: 112 },
 ] as const;
 
-/** Phone camera (300 x 460): the sheet and the Run bar, then the card each step is about. */
+/** Phone camera (300 x 520): the sheet and the Run bar, then the card each step is about. */
 export const swdCam = [
   { at: 0, y: 34, h: 280 },
   { at: swdCues[1], y: 236, h: 254, top: true },

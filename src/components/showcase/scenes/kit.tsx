@@ -6,7 +6,7 @@ import "./scenes.css";
 /**
  * Scene kit: what every "AI at work" / automation scene shares.
  *
- * A scene is one picture at a native size (desk 1280 x 800, phone 300 x 460,
+ * A scene is one picture at a native size (desk 1280 x 800, phone 300 x PHONE_H,
  * the same sizes the command-center frame scales), played as a timeline of
  * beats. Beat N is "on" once its cue has passed.
  *

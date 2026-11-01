@@ -845,7 +845,7 @@
   background: var(--scn-good);
 }
 
-/* ── COI phone, 300 x 460 (round 7) ────────────────────────────
+/* ── COI phone, 300 x 520 (round 7) ────────────────────────────
    Scaled to the sheet's width: 12 px native is the floor (critique r6 A4).
    The camera (coiCam) frames the wall, then the card each step is about. */
 .coi--phone .coi-left {

@@ -1,7 +1,7 @@
 // The showcase scenes: one picture per client story, played as beats.
 // Each takes SceneProps (layout "desk" 1280 x 800 or "phone") and
 // renders its final frame first (no JS, reduced motion, the privacy probe).
-// Layout "phone" is 300 x 460 since round 7 (see NATIVE_SIZE in ./kit).
+// Layout "phone" is 300 wide since round 7; each scene sets its height in PHONE_H.
 import type { ComponentType } from "react";
 import type { SceneProps } from "./kit";
 import { HgCoiScene } from "./HgCoiScene";

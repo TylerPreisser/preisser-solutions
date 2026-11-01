@@ -13,10 +13,10 @@
 // searched before this set ships; `checked` says so until then.
 // Round 7 (2026-11-01): four names were swapped because they sounded like
 // real people or a notorious case: the first sign-up's inviter (it read as the
-// real Women's Encounter admin) became Maren Kittredge, Danae became Greta,
-// Brandvik became Haverkamp, Holtzclaw became Ostrander. The new names were
-// checked against the deny list and the names in the NWKS memory notes: no
-// exact hit and no sound-alike.
+// real Women's Encounter admin) became Maren Kittredge, and the other three
+// became Greta, Haverkamp and Ostrander (the old spellings are not kept here).
+// The new names were checked against the deny list and the names in the NWKS
+// memory notes: no exact hit and no sound-alike.
 import type { InventedSet } from "../_invented";
 
 const PENDING =

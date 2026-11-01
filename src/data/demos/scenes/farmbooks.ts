@@ -72,7 +72,7 @@ export const fbCatch = { lineAt: 700, lineEvery: 420, printedAt: 2600, offAt: 31
 export const fbHoldMs = fbCatch.eyesAt + 600 + 4500;
 
 /**
- * The phone camera (300 x 460 picture; a 320 phone shows ~280 px of it): the
+ * The phone camera (300 x 516 picture; a 320 phone shows ~280 px of it): the
  * paper, then the card each step is about. The last shot is the held bill's
  * card with the caught total and the stamp above it, and the reduced-motion frame.
  */

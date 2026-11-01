@@ -118,7 +118,7 @@ export const bedsFill = { first: 500, step: 165 } as const;
 export const needLine = (n: number) => `${n} ${n === 1 ? "needs" : "need"} a bed`;
 
 /**
- * The phone camera (300 x 460 picture; a 320 phone shows ~280 px): the form,
+ * The phone camera (300 x 518 picture; a 320 phone shows ~280 px): the form,
  * then the list and the top of the cabin, then down the cabin as Auto-fill
  * runs, then the printed map (also the reduced-motion frame).
  */

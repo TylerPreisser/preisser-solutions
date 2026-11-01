@@ -771,7 +771,7 @@
   animation: swd-in 500ms var(--scn-ease) 900ms both;
 }
 
-/* Phone, 300 x 460: scaled to the sheet's width, 12 px native is the floor. */
+/* Phone, 300 x 520: scaled to the sheet's width, 12 px native is the floor. */
 .swd--phone .swd-left {
   left: 8px;
   right: 8px;

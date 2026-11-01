@@ -786,7 +786,7 @@
   }
 }
 
-/* ── Phone, 300 x 460 (round 7) ─────────────────────────────────
+/* ── Phone, 300 x 518 (round 7) ─────────────────────────────────
    The picture is scaled to the sheet's width, so 12 px native is the floor
    for every face (11.4 css px at 320; critique r6 A4). The camera
    (bedsCam) frames the list, then the cabin, then the printed map. */

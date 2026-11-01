@@ -82,7 +82,7 @@ built this (not in the repo); the rects it measured are in `src/data/showcase.ts
 | Duffer Command Center (desk 1280×800, phone 390×600) | 12 partners active, 9 displays, scans today 15, 30-day scans/leads/buy clicks derived from two 30-day series, attention bar "2 partners need display review", live feed of 5 events at 3 invented courses | `src/data/demos/duffer-golf.ts` | Duffer Golf, MarCommand |
 | Hays MarCommand portal (desk; phone shows the same parts stacked, because the real portal holds below 1024px) | 7 channels with visited/leads, stage band Reached 12,430 → Visited 2,180 → Interested 214 → Leads 38 → Validated 31 (all derived), ribbons sized by leads, "Preisser runs" chips | `src/data/demos/hays-academy.ts` | Google, Meta, MarCommand. **Not the school's name**: it is on the private deny list (a ps-admin client), so the recreation shows the HA mark |
 
-Invented courses and towns (`src/data/demos/invented/duffer-golf.ts`): Sumac Ridge Golf Club, Lone
+Invented courses and towns (`src/data/demos/invented/duffer-golf.ts`): Sumac Hollow Golf Club, Lone
 Cottonwood Golf Course, Wheatgrass Pines Golf Club; Tull Prairie, Brannick, Osgood Bend. Each checked by
 Bing exact-phrase search 2026-10-31: no course, club or Kansas town of the name surfaced. No people.
 No dollar amounts anywhere in either recreation.
