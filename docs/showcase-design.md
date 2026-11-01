@@ -1,6 +1,8 @@
 # Design: the product showcase (home card window + /showcase pages)
 
-Status: prototype on `feat/product-showcase`, draft PR, not merged. Decision record: `DECISIONS/0020`.
+Status: prototype on `feat/product-showcase`, draft PR, not merged. Decision records: `DECISIONS/0020`,
+then `DECISIONS/0021` (round 5, 2026-11-01), which replaces what the window shows and shelves the
+/showcase pages. Sections 1-12 below describe round 1-4; read "Round 5" at the end first.
 Owner's ask, 2026-10-31: hover a product, a glass window pops in showing their website, then slides
 to the command center we built them; or click through to a page with a "portal" that scrolls their
 website while it explains what each part is doing, and why it works on the person reading it.
@@ -202,3 +204,25 @@ window is 720px yet shifts 0, because it is `position: fixed` and never enters t
 - Real-device hover-intent feel, trackpad sweeps, and the 280ms dwell.
 - Core Web Vitals in the field. Measured locally: home first-load JS +1.3 kB; no layout shift on open.
 - The chunk-load-error state drops silently; there is no visible message (not rendered: I did not force a failed chunk).
+
+## Round 5 (2026-11-01): the wow sections (ADR-0021)
+
+The owner rejected what we chose to show. The window now plays a list of beats per client.
+
+**Files**
+- `src/data/showcase/types.ts`: the beat schema (`website`, `funnel`, `ai-ask`, `ai-at-work`).
+- `src/data/showcase/clients/<slug>.ts`: one client each (default export `ShowcaseClient`).
+- `src/data/showcase/index.ts`: `loadShowcase(slug)` (template import: one lazy chunk per client
+  file) and `warmShowcase(slug, wide)`.
+- `src/components/showcase/beats/`: one renderer per beat kind, `shared.tsx` (fit-to-box picture,
+  timelines, the labelled portal frame), `portal.css` (the MarCommand look on `--pt-*` tokens),
+  `fonts.ts` (Fraunces, Figtree, Bricolage Grotesque, loaded by the showcase chunk only).
+- `src/components/showcase/ShowcaseLayer.tsx`: the window and sheet; tabs from the beats.
+
+**Adding a client** (another lane): a capture pair in `public/images/showcase/`, a client file, the
+invented names and vocabulary in `src/data/demos/invented/<slug>.ts`, and `showcase: "<slug>"` on its
+card in `src/components/home/case-studies.tsx`. Then `npm run build && npm run test:privacy`.
+
+**Timing**: website beat = its stops' holds + 900ms per move; funnel 6.8s desk / 9.2s phone (camera);
+AI ask = typing (42ms a character) + the steps' own ms + the answer + 6.6s; the last beat stays.
+Reduced motion: no auto-advance, every beat at its end state, no camera, no flow.
