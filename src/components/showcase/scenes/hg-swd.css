@@ -17,6 +17,12 @@
   opacity: 1;
   transform: none;
 }
+/* Desk: once the tie-out and files cards sit over it, the sheet leaves. A
+   glass card's blur is not a reliable cover: engines that skip backdrop-filter
+   showed the sheet's rate column through it. */
+.swd--desk .swd-left.is-behind {
+  opacity: 0;
+}
 .swd--desk .swd-left {
   left: 40px;
   top: 96px;

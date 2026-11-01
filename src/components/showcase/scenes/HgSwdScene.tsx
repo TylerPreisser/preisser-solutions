@@ -292,7 +292,7 @@ export function HgSwdScene({ layout, playing = true, loop = true, label = true, 
           <span>Month-end close</span>
           <KindPill kind="auto" />
         </p>
-        <div className={step >= 1 ? "swd-left scn-glass is-in" : "swd-left scn-glass"}>
+        <div className={`swd-left scn-glass${step >= 1 ? " is-in" : ""}${step >= 4 ? " is-behind" : ""}`}>
           <Sheet step={step} rows={phone ? 3 : swdRows.length} />
           <RunBar step={step} />
         </div>
