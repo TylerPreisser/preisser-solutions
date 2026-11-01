@@ -1,0 +1,516 @@
+/* ============================================================
+   farmbooks.css — FarmBooks bill scene. FarmBooks' own palette:
+   cream ground, wheat gold, a serif for the money. Paper is paper
+   in both themes.
+   ============================================================ */
+
+.scn--fb {
+  --scn-gold: #e0b04a;
+  --scn-ink: #f5efe2;
+  --scn-ink-2: rgba(245, 239, 226, 0.74);
+  --scn-ink-3: rgba(245, 239, 226, 0.52);
+  --scn-glass: rgba(36, 30, 21, 0.76);
+  --scn-glass-edge: rgba(245, 225, 180, 0.18);
+  --scn-glass-hi: rgba(255, 240, 210, 0.08);
+  --scn-warn: #f5a524;
+  --scn-good: #7bd389;
+  --scn-kind-bg: #f3dfa8;
+  --scn-kind-ink: #3d2c06;
+  --scn-cap-bg: rgba(24, 19, 12, 0.88);
+  --scn-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  background: #16120c;
+}
+[data-theme="light"] .scn--fb {
+  --scn-gold: #8a6414;
+  --scn-ink: #1d1a15;
+  --scn-ink-2: #5a5246;
+  --scn-ink-3: #7c7364;
+  --scn-glass: rgba(255, 253, 248, 0.9);
+  --scn-glass-edge: rgba(120, 96, 50, 0.18);
+  --scn-glass-hi: rgba(255, 255, 255, 0.9);
+  --scn-warn: #b45d07;
+  --scn-good: #2f7d3b;
+  --scn-kind-bg: #8a6414;
+  --scn-kind-ink: #fff;
+  --scn-cap-bg: rgba(29, 26, 21, 0.9);
+  --scn-shadow: 0 24px 50px -28px rgba(60, 45, 20, 0.45);
+  background: #f2f0eb;
+}
+
+/* A field at evening: furrows running to the horizon, faint. */
+.fb-ground {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(80% 60% at 75% 0%, rgba(224, 176, 74, 0.2), transparent 70%),
+    repeating-linear-gradient(100deg, rgba(224, 176, 74, 0.06) 0 2px, transparent 2px 46px),
+    linear-gradient(180deg, #1d170f, #120e09);
+}
+[data-theme="light"] .fb-ground {
+  background:
+    radial-gradient(80% 60% at 75% 0%, rgba(224, 176, 74, 0.22), transparent 70%),
+    repeating-linear-gradient(100deg, rgba(138, 100, 20, 0.06) 0 2px, transparent 2px 46px),
+    linear-gradient(180deg, #f6f3ec, #ece7dc);
+}
+.fb-mark {
+  color: var(--scn-gold);
+}
+.fb {
+  position: absolute;
+  inset: 0;
+}
+
+/* ── The bill on the dash ───────────────────────────────────── */
+.fb-desk {
+  position: absolute;
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 600ms var(--scn-ease),
+    transform 600ms var(--scn-ease);
+}
+.fb-desk.is-in {
+  opacity: 1;
+  transform: none;
+}
+.fb--desk .fb-desk {
+  left: 56px;
+  top: 104px;
+  width: 500px;
+  height: 576px;
+}
+.fb--phone .fb-desk {
+  left: 14px;
+  right: 14px;
+  top: 48px;
+  height: 214px;
+}
+.fb-paper {
+  position: absolute;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background:
+    linear-gradient(170deg, rgba(0, 0, 0, 0.03), transparent 40%),
+    #fbf8f1;
+  color: #2b2620;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.05),
+    0 30px 60px -28px rgba(0, 0, 0, 0.7);
+  transition:
+    transform 700ms var(--scn-ease),
+    opacity 700ms ease;
+}
+.fb--desk .fb-paper {
+  inset: 10px 20px 40px 10px;
+  padding: 34px 32px 28px;
+  gap: 20px;
+  border-radius: 6px;
+  font-size: 20px;
+}
+.fb--phone .fb-paper {
+  inset: 2px 18px 6px 8px;
+  padding: 12px 14px 10px;
+  gap: 6px;
+  border-radius: 4px;
+  font-size: 9.5px;
+}
+.fb-paper--one {
+  transform: rotate(-1.6deg);
+}
+.fb-paper--one.is-away {
+  transform: translate(-6%, 7%) rotate(-5deg) scale(0.9);
+  opacity: 0.55;
+}
+.fb-paper--two {
+  transform: translate(10%, 110%) rotate(6deg);
+  opacity: 0;
+}
+.fb-paper--two.is-in {
+  transform: translate(3%, 3%) rotate(1.4deg);
+  opacity: 1;
+}
+.fb-paper__vendor {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.fb--desk .fb-paper__vendor {
+  font-size: 24px;
+}
+.fb-paper__foot {
+  margin-top: auto !important;
+  color: #8a8172;
+  font-size: 0.78em;
+}
+.fb-paper__meta {
+  display: flex;
+  gap: 0.8em;
+  color: #5b5348;
+}
+.fb-paper__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  padding: 0.6em 0;
+  border-top: 1.5px dashed #b7ad9c;
+  border-bottom: 1.5px dashed #b7ad9c;
+}
+.fb-paper__total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  padding: 0.2em 0.35em;
+  border-radius: 4px;
+}
+.fb-paper__total.is-caught {
+  box-shadow: inset 0 0 0 2.5px #d97706;
+  background: rgba(245, 165, 36, 0.16);
+}
+.fb-box {
+  display: inline-block;
+  padding: 0.12em 0.3em;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 2px transparent;
+}
+.fb-box.is-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
+.fb-box.is-on {
+  box-shadow: inset 0 0 0 2px #c9971f;
+  background: rgba(224, 176, 74, 0.13);
+}
+.fb-desk.is-in .fb-box.is-on {
+  animation: fb-snap 420ms var(--scn-ease) both;
+  animation-delay: calc(450ms + var(--scn-i, 0) * 240ms);
+}
+.fb-paper--two .fb-box.is-on {
+  animation: none !important;
+}
+@keyframes fb-snap {
+  from {
+    box-shadow: inset 0 0 0 2px transparent, 0 0 0 10px rgba(201, 151, 31, 0);
+    background: transparent;
+    transform: scale(1.08);
+  }
+  60% {
+    box-shadow: inset 0 0 0 2px #c9971f, 0 0 0 4px rgba(201, 151, 31, 0.35);
+  }
+}
+.fb-paper__scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 22%;
+  background: linear-gradient(180deg, transparent, rgba(224, 176, 74, 0.18) 70%, rgba(224, 176, 74, 0.7) 98%, transparent);
+  transform: translateY(-110%);
+  pointer-events: none;
+}
+.scn[data-step="1"] .fb-paper__scan {
+  animation: fb-scan 1.8s cubic-bezier(0.45, 0, 0.55, 1) 200ms both;
+}
+@keyframes fb-scan {
+  to {
+    transform: translateY(470%);
+  }
+}
+.fb-stamp {
+  position: absolute;
+  right: 8%;
+  bottom: 11%;
+  padding: 0.25em 0.6em;
+  border: 3px solid #d97706;
+  border-radius: 6px;
+  color: #b45309;
+  font-family: inherit;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transform: rotate(-11deg) scale(1.6);
+  opacity: 0;
+  transition:
+    transform 380ms cubic-bezier(0.3, 1.4, 0.5, 1) 1600ms,
+    opacity 200ms ease 1600ms;
+}
+.fb--desk .fb-stamp {
+  font-size: 22px;
+}
+.fb-stamp.is-on {
+  transform: rotate(-11deg);
+  opacity: 1;
+}
+.fb-stamp.is-good {
+  border-color: #2f7d3b;
+  color: #2f7d3b;
+  transition-delay: 900ms;
+}
+
+/* ── Cards (right) ──────────────────────────────────────────── */
+.fb-stage {
+  position: absolute;
+}
+.fb--desk .fb-stage {
+  left: 596px;
+  top: 104px;
+  width: 644px;
+  height: 576px;
+}
+.fb--phone .fb-stage {
+  left: 10px;
+  right: 10px;
+  top: 272px;
+  height: 262px;
+}
+.fb-card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+.fb--desk .fb-card {
+  padding: 30px 34px;
+  gap: 22px;
+  font-size: 25px;
+}
+.fb--phone .fb-card {
+  padding: 12px 13px;
+  gap: 8px;
+  font-size: 11.5px;
+}
+.fb-kicker {
+  color: var(--scn-gold);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.68em;
+}
+
+.fb-read__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1em;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid var(--scn-glass-edge);
+}
+.fb-read__row span {
+  color: var(--scn-ink-2);
+}
+.fb-read__row b {
+  font-family: var(--scn-serif);
+  font-size: 1.3em;
+  min-height: 1.25em;
+}
+.fb-read__note {
+  margin-top: auto !important;
+  color: var(--scn-ink-2);
+  font-style: italic;
+}
+
+.fb-line {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "printed amt"
+    "plain amt";
+  column-gap: 1em;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid var(--scn-glass-edge);
+}
+.fb-lines.is-on .fb-line {
+  animation: fb-fly 560ms var(--scn-ease) both;
+  animation-delay: calc(250ms + var(--scn-i) * 420ms);
+}
+@keyframes fb-fly {
+  from {
+    opacity: 0;
+    transform: translateX(-90px);
+  }
+}
+.fb-line__printed {
+  grid-area: printed;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  color: var(--scn-ink-3);
+  font-size: 0.72em;
+}
+.fb-line__plain {
+  grid-area: plain;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2em 0.55em;
+}
+.fb-line__amt {
+  grid-area: amt;
+  align-self: center;
+  font-family: var(--scn-serif);
+  font-weight: 700;
+  font-size: 1.05em;
+}
+.fb-cat {
+  background: rgba(224, 176, 74, 0.18);
+  color: var(--scn-gold);
+  font-size: 0.66em;
+}
+
+.fb-catch__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid var(--scn-glass-edge);
+}
+.fb-catch__row span {
+  color: var(--scn-ink-2);
+}
+.fb-catch__row b {
+  font-family: var(--scn-serif);
+  font-size: 1.45em;
+}
+.fb-catch__row.is-off span,
+.fb-catch__row.is-off b {
+  color: var(--scn-warn);
+}
+.fb-catch__row.is-off b {
+  font-size: 1.9em;
+}
+.fb-catch.is-on .fb-catch__row:nth-of-type(3) {
+  animation: fb-pop 520ms cubic-bezier(0.3, 1.3, 0.5, 1) 1700ms both;
+}
+.fb-catch.is-on .fb-catch__row:nth-of-type(4) {
+  animation: fb-pop 520ms cubic-bezier(0.3, 1.3, 0.5, 1) 2100ms both;
+}
+.fb-catch__eyes {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6em;
+  margin-top: auto !important;
+  color: var(--scn-ink-2);
+}
+.fb-eyes {
+  border: 1.5px solid var(--scn-warn);
+  color: var(--scn-warn);
+  background: rgba(245, 165, 36, 0.12);
+  font-size: 0.9em;
+}
+.fb-catch.is-on .fb-catch__eyes {
+  animation: fb-slide 600ms var(--scn-ease) 2600ms both;
+}
+@keyframes fb-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+@keyframes fb-slide {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+}
+
+.fb-split__total {
+  font-family: var(--scn-serif);
+  font-weight: 700;
+  font-size: 2.1em;
+  line-height: 1;
+}
+.fb-bar {
+  display: flex;
+  height: 1.5em;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--scn-glass-edge);
+}
+.fb-bar__farm {
+  width: var(--scn-farm);
+  background: var(--scn-gold);
+}
+.fb-bar__land {
+  flex: 1;
+  margin-left: 3px;
+  background: rgba(224, 176, 74, 0.32);
+}
+.fb-split.is-on .fb-bar__farm {
+  animation: fb-grow 700ms var(--scn-ease) 600ms both;
+}
+.fb-split.is-on .fb-bar__land {
+  animation: fb-fade 600ms ease 1100ms both;
+}
+@keyframes fb-grow {
+  from {
+    width: 100%;
+  }
+}
+@keyframes fb-fade {
+  from {
+    opacity: 0;
+  }
+}
+.fb-split__legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+}
+.fb-split__legend p {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.15em 0.45em;
+}
+.fb-split__legend b {
+  font-family: var(--scn-serif);
+}
+.fb-split__legend em {
+  color: var(--scn-ink-2);
+  font-size: 0.82em;
+}
+.fb-sw {
+  align-self: center;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 3px;
+}
+.fb-sw.is-farm {
+  background: var(--scn-gold);
+}
+.fb-sw.is-land {
+  background: rgba(224, 176, 74, 0.4);
+}
+.fb-year {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: auto !important;
+  padding-top: 0.6em;
+  border-top: 1px solid var(--scn-glass-edge);
+}
+.fb-year span {
+  color: var(--scn-ink-2);
+}
+.fb-year b {
+  font-family: var(--scn-serif);
+  font-size: 1.3em;
+  color: var(--scn-good);
+}
+
+.fb-filed {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6em;
+  color: var(--scn-ink-2);
+  font-size: 0.9em;
+}
+.fb-in {
+  border: 1.5px solid var(--scn-good);
+  color: var(--scn-good);
+  font-size: 0.9em;
+}
+.fb-split.is-on .fb-filed {
+  animation: fb-slide 520ms var(--scn-ease) 1500ms both;
+}
