@@ -30,7 +30,7 @@ import "./hg-swd.css";
  *  3 one formula, (31 - 0) x 103 x $0.20 = $638.60, and the invoice lines
  *  4 the tie-out: every vendor told exactly what they are paid; one is not
  *    (told $660.48, paid $330.24), it is held, fixed, and matches
- *  5 the files land with accounting; zero vendors emailed
+ *  5 the files land with accounting; nothing goes to a vendor until a person releases it
  */
 
 function Rate({ r }: { r: SwdRow }) {
@@ -270,12 +270,13 @@ function Files({ step }: { step: number }) {
           </span>
         </div>
       </div>
-      <p className="swd-took">
-        Closed in <b>{clock(swdElapsedSec)}</b>
-      </p>
-      <p className="swd-zero">
-        <b>0</b> vendors emailed.
-      </p>
+      {/* The outcome on its own card, never straight over the pumpjack art (critique r8 N4). */}
+      <div className="swd-outcome scn-glass">
+        <p className="swd-took">
+          Closed in <b>{clock(swdElapsedSec)}</b>
+        </p>
+        <p className="swd-zero">Nothing goes to a vendor until a person releases it.</p>
+      </div>
     </div>
   );
 }

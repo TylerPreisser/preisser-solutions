@@ -116,10 +116,10 @@ export const coiCues = [250, 2300, 4700, 7300, 10600] as const;
  * and the two exceptions (also the reduced-motion frame).
  */
 export const coiCam = [
-  { at: 0, y: 34, h: 280 },
-  { at: coiCues[1] + 200, y: 222, h: 290 },
-  { at: coiCues[4], y: 34, h: 280 },
-  { at: coiCues[4] + 1700, y: 160, h: 280 },
+  { at: 0, y: 34, h: 280, top: true },
+  { at: coiCues[1] + 200, y: 222, h: 290, top: true },
+  { at: coiCues[4], y: 34, h: 280, top: true },
+  { at: coiCues[4] + 1700, y: 160, h: 280, top: true },
 ] as const;
 
 export const coiSummary =
@@ -230,12 +230,12 @@ export const swdDeskCam = [
 
 /** Phone camera (300 x 520): the sheet and the Run bar, then the card each step is about. */
 export const swdCam = [
-  { at: 0, y: 34, h: 280 },
+  { at: 0, y: 40, h: 280, top: true },
   { at: swdCues[1], y: 236, h: 254, top: true },
 ] as const;
 
 export const swdSummary =
   "Demonstration: HG Oil's saltwater disposal close, run by automation. The field confirms a well's barrels per day in the water sheet, " +
   "one Run press works through six phases in under a minute, each invoice line comes from one formula, and the tie-out holds a vendor told $660.48 " +
-  "but paid $330.24 until it matches. The import files and a pack of 17 statements land with accounting and no vendor is emailed.";
+  "but paid $330.24 until it matches. The import files and a pack of 17 statements land with accounting, and nothing goes to a vendor until a person releases it.";
 

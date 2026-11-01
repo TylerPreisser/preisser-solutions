@@ -8,6 +8,8 @@
   --scn-accent: #8fc1ff;
   --scn-blue: #003a89;
   --scn-glass: rgba(10, 16, 30, 0.7);
+  /* The close's outcome card: dense enough that the dusk and the pumpjack never show through its text. */
+  --scn-glass-solid: rgba(10, 16, 30, 0.9);
   --scn-kind-bg: #cfe4ff;
   --scn-kind-ink: #002a66;
   background: #0b1424;
@@ -17,6 +19,7 @@
   --scn-ink-2: #3b4a5e;
   --scn-ink-3: #64748b;
   --scn-glass: rgba(255, 255, 255, 0.8);
+  --scn-glass-solid: rgba(255, 255, 255, 0.94);
   --scn-glass-edge: rgba(255, 255, 255, 0.9);
   --scn-glass-hi: rgba(255, 255, 255, 1);
   --scn-good: #0f9f6e;

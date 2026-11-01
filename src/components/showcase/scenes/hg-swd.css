@@ -920,6 +920,38 @@
 .swd--phone .swd-zero {
   font-size: 13px;
 }
+/* The outcome card: "Closed in 0:52" and who releases the files, on its own
+   glass, so the walking beam never runs into it (critique r8 N4). The card is
+   dense enough to read without backdrop blur (Playwright WebKit draws none). */
+.swd-outcome {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 14px;
+  background: var(--scn-glass-solid, var(--scn-glass));
+}
+.swd--phone .swd-outcome {
+  padding: 8px 10px;
+}
+.swd--desk .swd-outcome {
+  padding: 16px 22px;
+  gap: 8px;
+}
+.swd-outcome .swd-zero {
+  color: var(--scn-ink);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.swd--desk .swd-outcome .swd-zero {
+  font-size: 22px;
+  margin-top: 0 !important;
+}
+.swd--phone .swd-outcome .swd-zero {
+  font-size: 12.5px;
+}
+.swd-files.is-on .swd-outcome {
+  animation: swd-in 500ms var(--scn-ease) 900ms both;
+}
 /* Desk: opened wide over the sheet, the files card carries its own glass so
    nothing from the sheet shows through "Closed in 0:52". */
 .swd--desk .swd-files {
