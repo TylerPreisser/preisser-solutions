@@ -33,9 +33,10 @@ export const SCENE_MS: Record<SceneId, number> = {
 /** The phone picture is 300 wide; its height is per scene (the COI cards need more room). */
 export const PHONE_H: Record<SceneId, number> = {
   "hg-coi": 520,
-  "hg-swd": 494,
-  "farmbooks-bill": 460,
-  "nwks-beds": 460,
+  "hg-swd": 520,
+  // Tall enough that a `top` shot can start on its clean line on every short phone.
+  "farmbooks-bill": 516,
+  "nwks-beds": 518,
 };
 
 /**
@@ -49,7 +50,20 @@ export interface Shot {
   x?: number;
   w?: number;
   ms?: number;
+  /**
+   * A resting shot whose top edge must fall between lines of text: the view
+   * starts on the lowest of the scene's CLEAN_TOPS that still shows the rect's
+   * bottom (y + h), whatever the phone's height. Never centred.
+   */
+  top?: boolean;
 }
+
+/** Native y values on each phone picture that sit between lines of text (a view may start there without slicing a line). */
+export const CLEAN_TOPS: Partial<Record<SceneId, readonly number[]>> = {
+  "hg-swd": [0, 40, 78, 99, 135, 170, 196, 236],
+  "farmbooks-bill": [0, 38, 180],
+  "nwks-beds": [0, 34, 182],
+};
 
 /**
  * Where the camera looks, per scene and layout. Phone: the picture fills the

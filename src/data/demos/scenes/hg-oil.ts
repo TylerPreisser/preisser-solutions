@@ -231,7 +231,7 @@ export const swdDeskCam = [
 /** Phone camera (300 x 460): the sheet and the Run bar, then the card each step is about. */
 export const swdCam = [
   { at: 0, y: 34, h: 280 },
-  { at: swdCues[1], y: 200, h: 290 },
+  { at: swdCues[1], y: 236, h: 254, top: true },
 ] as const;
 
 export const swdSummary =

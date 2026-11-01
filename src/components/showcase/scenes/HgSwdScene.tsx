@@ -293,7 +293,7 @@ export function HgSwdScene({ layout, playing = true, loop = true, label = true, 
           <KindPill kind="auto" />
         </p>
         <div className={step >= 1 ? "swd-left scn-glass is-in" : "swd-left scn-glass"}>
-          <Sheet step={step} rows={phone ? 4 : swdRows.length} />
+          <Sheet step={step} rows={phone ? 3 : swdRows.length} />
           <RunBar step={step} />
         </div>
         <div className="swd-stage">

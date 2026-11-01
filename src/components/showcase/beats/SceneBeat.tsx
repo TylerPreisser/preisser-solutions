@@ -2,7 +2,7 @@
 
 import { useRef, type CSSProperties, type ReactNode } from "react";
 import type { SceneBeat as SceneBeatData } from "@/data/showcase/types";
-import { NATIVE_SIZE, PHONE_H, SCENE_CAM, SCENES, type Shot } from "@/components/showcase/scenes";
+import { CLEAN_TOPS, NATIVE_SIZE, PHONE_H, SCENE_CAM, SCENES, type Shot } from "@/components/showcase/scenes";
 import { Chrome, useBox, useSteps, type BeatProps } from "./shared";
 
 /**
@@ -41,7 +41,7 @@ export function SceneBeat({ client, beat, variant, active, fill, reduced, quiet,
         {beat.narration}
       </p>
       <div className="sc-frame__portal" style={fill ? undefined : { aspectRatio: `${n.w} / ${n.h}` }}>
-        <Camera w={n.w} h={n.h} shot={shot} cover={variant === "phone"}>
+        <Camera w={n.w} h={n.h} shot={shot} cover={variant === "phone"} clean={variant === "phone" ? CLEAN_TOPS[beat.scene] : undefined}>
           <Scene layout={variant} playing={active && !reduced} loop={false} label={false} caption={false} onCaption={active ? onCaption : undefined} />
         </Camera>
       </div>
@@ -56,9 +56,24 @@ const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v
  * critique r1 A2). `cover`: the phone picture fills the box's width and is
  * never letterboxed; with no shot it shows from the top. A shot is a native
  * rect: the camera scales in until it fills the box (never below the resting
- * scale) and centres on it; a shot taller than the box shows from its top.
+ * scale) and centres on it; a shot taller than the box shows from its top;
+ * a `top` shot starts on one of the scene's clean lines (CLEAN_TOPS).
  */
-function Camera({ w, h, shot, cover, children }: { w: number; h: number; shot: Shot | null; cover: boolean; children: ReactNode }) {
+function Camera({
+  w,
+  h,
+  shot,
+  cover,
+  clean,
+  children,
+}: {
+  w: number;
+  h: number;
+  shot: Shot | null;
+  cover: boolean;
+  clean?: readonly number[];
+  children: ReactNode;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const box = useBox(ref);
   const W = box.w || (cover ? 330 : 688);
@@ -73,6 +88,15 @@ function Camera({ w, h, shot, cover, children }: { w: number; h: number; shot: S
     s = Math.max(rest, Math.min(W / sw, H / shot.h));
     cx = sx + sw / 2;
     cy = shot.h * s > H + 0.5 ? shot.y + H / (2 * s) : shot.y + shot.h / 2;
+    if (shot.top) {
+      // Start on a clean line: the lowest one that still shows the rect's bottom, else the lowest that fits.
+      const vis = H / s;
+      const hi = Math.min(shot.y, h - vis);
+      const lo = Math.max(0, shot.y + shot.h - vis);
+      const tops = [...(clean ?? [shot.y])].sort((a, b) => b - a);
+      const start = tops.find((c) => c >= lo - 0.5 && c <= hi + 0.5) ?? tops.find((c) => c <= hi + 0.5) ?? hi;
+      cy = start + vis / 2;
+    }
   }
   const tx = w * s <= W ? (W - w * s) / 2 : clamp(W / 2 - cx * s, W - w * s, 0);
   const ty = h * s <= H ? (H - h * s) / 2 : clamp(H / 2 - cy * s, H - h * s, 0);
