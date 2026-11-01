@@ -108,6 +108,24 @@ export function themeStyle(t: PortalTheme): CSSProperties {
  * Chromium space glyphs apart in round 1 (critique A2). `focus` moves a camera
  * in: the picture fills the box's height and centres on native x.
  */
+/**
+ * A camera rect in the picture's native px, framed by its WIDTH (so type keeps
+ * one size whatever the phone's height). `h`: centred when the view is taller,
+ * else the top is pinned. `lefts`: the right edge is the picture's own and the
+ * left edge is the first of these whose view is no taller than the picture
+ * (a tall phone frames closer instead of showing empty ground). `clean`: y
+ * lines between rows; the bottom is clipped at the lowest one in view, so a
+ * row is never cut in half.
+ */
+export interface FocusRect {
+  left: number;
+  top: number;
+  w: number;
+  h?: number;
+  lefts?: readonly number[];
+  clean?: readonly number[];
+}
+
 export function Fit({
   w,
   h,
@@ -118,7 +136,7 @@ export function Fit({
 }: {
   w: number;
   h: number;
-  focus?: { x: number } | null;
+  focus?: { x: number } | FocusRect | null;
   moveMs?: number;
   className?: string;
   children: ReactNode;
@@ -131,13 +149,28 @@ export function Fit({
   let s = fit;
   let tx = (W - w * s) / 2;
   let ty = (H - h * s) / 2;
-  if (focus) {
+  let cut = 0;
+  if (focus && "w" in focus) {
+    const lefts = focus.lefts;
+    const left = lefts ? (lefts.find((l) => (H * (w - l)) / W <= h + 20) ?? lefts[lefts.length - 1]) : focus.left;
+    s = W / (lefts ? w - left : focus.w);
+    tx = Math.min(0, Math.max(W - w * s, -left * s));
+    const vis = H / s;
+    if (vis >= h) ty = (H - h * s) / 2;
+    else if (focus.h && vis >= focus.h) ty = Math.min(0, Math.max(H - h * s, H / 2 - (focus.top + focus.h / 2) * s));
+    else ty = -focus.top * s;
+    if (focus.clean) {
+      const bottom = -ty / s + vis;
+      const ok = [...focus.clean].filter((c) => c <= bottom + 0.5).sort((a, b) => b - a)[0];
+      if (ok !== undefined && bottom - ok > 0.5 && ok < h) cut = Math.round((bottom - ok) * s);
+    }
+  } else if (focus) {
     s = Math.min(H / h, fit * 3);
     tx = Math.min(0, Math.max(W - w * s, W / 2 - focus.x * s));
     ty = (H - h * s) / 2;
   }
   return (
-    <div ref={ref} className={`pt-fitbox${className ? ` ${className}` : ""}`}>
+    <div ref={ref} className={`pt-fitbox${className ? ` ${className}` : ""}`} style={cut ? { clipPath: `inset(0 0 ${cut}px 0)` } : undefined}>
       <div
         className="pt-fit"
         style={{ width: w, height: h, transform: `translate(${tx}px, ${ty}px) scale(${s})`, "--pt-move-ms": `${moveMs}ms` } as CSSProperties}

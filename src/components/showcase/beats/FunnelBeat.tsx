@@ -2,7 +2,7 @@
 
 import { useId, type CSSProperties } from "react";
 import type { Funnel, FunnelBeat as FunnelBeatData } from "@/data/showcase/types";
-import { Fit, Mark, PortalFrame, RailGlyph, TopBar, useCount, useSteps, type BeatProps } from "./shared";
+import { Fit, Mark, PortalFrame, RailGlyph, TopBar, useCount, useSteps, type BeatProps, type FocusRect } from "./shared";
 
 /**
  * The MarCommand Overview (marcommand-marketing-engine packages/portal-ui
@@ -21,11 +21,12 @@ const SEAL = { x: 892, r: 44 };
 /** How long the beat runs before the window moves on. */
 export const funnelMs = (phone: boolean) => (phone ? 9200 : 6800);
 
-function layout(f: Funnel) {
+function layout(f: Funnel, phone: boolean) {
   const n = f.rail.length;
   const step = Math.min(80, (RAIL.bottom - RAIL.top) / n);
   const cardH = step - 8;
-  const y0 = RAIL.top + ((RAIL.bottom - RAIL.top) - step * n) / 2 + 4;
+  // Phone: a short rail sits right under the ad spend, so the opening shot is never a few cards in empty ground.
+  const y0 = RAIL.top + (phone ? 0 : ((RAIL.bottom - RAIL.top) - step * n) / 2) + 4;
   const cy = (RAIL.top + RAIL.bottom) / 2;
   const colW = (BAND.x1 - BAND.x0) / f.stages.length;
   const colX = f.stages.map((_, i) => BAND.x0 + i * colW);
@@ -43,26 +44,36 @@ function ribbonPath(x0: number, y0: number, xe: number, ye: number, x1: number, 
 
 export function FunnelBeat({ client, beat, variant, active, fill, reduced, quiet }: BeatProps<FunnelBeatData>) {
   const f = beat.funnel;
-  const L = layout(f);
-  const gid = useId().replace(/:/g, "");
   const phone = variant === "phone";
+  const L = layout(f, phone);
+  const gid = useId().replace(/:/g, "");
 
   // 0 rest, 1 streams draw and numbers count, 2 the people flow.
   const play = useSteps(active, reduced, [[60, 1], [1100, 2]] as const, 0, 2);
-  // The phone's camera: the whole dashboard, then along the streams from the cards to the mark, then back out.
-  const cam = useSteps<{ x: number } | null>(
+  // The phone's camera (critique r8 S3): it never shows the whole dashboard as a
+  // thumbnail. It opens on the channel cards at reading size (every label 11 css
+  // px or more on a 320 phone), pans along the streams into the funnel, and ends
+  // on the stage band from "Visited" to the mark, its left edge just before a
+  // column so no number is cut there. Reduced motion rests on the cards.
+  // Opening: the ad spend and the cards. Between the lead and each card is a clean line for the bottom edge.
+  const railEnd = L.y0 + f.rail.length * L.step - 4;
+  const clean = [154, ...f.rail.map((_, i) => L.y0 + i * L.step + L.cardH + 4)];
+  const cards: FocusRect = { left: RAIL.x - 4, top: 52, w: RAIL.w + 8, h: railEnd - 52, clean };
+  // Then the first two stages and the streams leaving the cards.
+  const streams: FocusRect = { left: L.colX[0] - 10, top: 52, w: L.colX[2] - L.colX[0] };
+  // Last: from a stage column's left edge to the mark, as close as the phone's height allows.
+  const band: FocusRect = { left: L.colX[1] - 10, top: 52, w: W - L.colX[1] + 10, h: 388, lefts: [1, 2, 3].map((i) => L.colX[i] - 10) };
+  const cam = useSteps<FocusRect | null>(
     active && phone && fill,
     reduced || !(phone && fill),
     [
-      [1900, { x: 0 }],
-      [3700, { x: 560 }],
-      [5500, { x: 960 }],
-      [7600, null],
+      [2300, streams],
+      [4600, band],
     ] as const,
-    null,
-    null,
+    cards,
+    cards,
   );
-  const camMs = cam && cam.x === 0 ? 1100 : cam ? 1600 : 900;
+  const camMs = cam && cam.lefts ? 1500 : 1700;
 
   const maxW = Math.max(...f.rail.map((r) => r.weight));
   const hue = (h: 1 | 2) => (h === 1 ? "var(--pt-chart-1)" : "var(--pt-chart-2)");
@@ -70,8 +81,8 @@ export function FunnelBeat({ client, beat, variant, active, fill, reduced, quiet
 
   return (
     <PortalFrame client={client} stage="funnel" narration={beat.narration} variant={variant} fill={fill} quiet={quiet}>
-      <Fit w={W} h={H} focus={cam} moveMs={camMs}>
-        <div className="pt-screen pt-funnel" data-play={play}>
+      <Fit w={W} h={H} focus={phone && fill ? cam : null} moveMs={camMs}>
+        <div className={phone ? "pt-screen pt-funnel pt-funnel--phone" : "pt-screen pt-funnel"} data-play={play}>
           <TopBar tab="Overview" window={f.window} />
 
           <div className="pt-lead" style={{ left: RAIL.x, width: RAIL.w }}>

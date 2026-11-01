@@ -237,6 +237,26 @@
   font-weight: 700;
 }
 
+/* Phone: the camera opens on the cards at about 0.93x on a 320 phone, so their
+   small print is drawn bigger there and every label reads at 11 css px or more. */
+.pt-funnel--phone .pt-card__sub {
+  font-size: 12.5px;
+}
+.pt-funnel--phone .pt-card__fig {
+  width: 56px;
+}
+.pt-funnel--phone .pt-card__fig small {
+  font-size: 12px;
+  letter-spacing: 0;
+}
+.pt-funnel--phone .pt-lead .pt-k,
+.pt-funnel--phone .pt-lead__sub {
+  font-size: 12.5px;
+}
+.pt-funnel--phone .pt-band .pt-k {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+}
 /* ── Funnel: the rail's cards ─────────────────────────────── */
 .pt-card {
   position: absolute;
