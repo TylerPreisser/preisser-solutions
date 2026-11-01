@@ -133,6 +133,11 @@
      build, before/after crops in the round-2 proof folder. */
   text-rendering: geometricPrecision;
 }
+.sc-frame--fill .sc-frame__fit {
+  transition:
+    transform 900ms var(--sc-ease-move),
+    clip-path 900ms var(--sc-ease-move);
+}
 
 /* Website spotlight (critique A7, A8): the page goes quieter, never grey, and
    the part being talked about stays at full colour with a soft glow. It fades
@@ -595,7 +600,9 @@
   position: fixed;
   inset: 0;
   z-index: 1100; /* above the site's floating nav: the sheet is modal */
-  background: rgba(10, 22, 40, 0.58);
+  /* Near-opaque in the strip above the sheet (it sits at 12px), so the page's
+     giant headline never peeks out there (critique r2). */
+  background: linear-gradient(rgba(10, 22, 40, 0.97) 0, rgba(10, 22, 40, 0.97) 40px, rgba(10, 22, 40, 0.58) 120px);
   opacity: 0;
   transition: opacity 300ms ease-out;
 }

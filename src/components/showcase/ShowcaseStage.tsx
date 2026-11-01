@@ -255,6 +255,61 @@ export function CommandFrame({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focus, c.s, c.tx, c.ty]);
 
+  // A cropped phone picture never shows half a row (critique r2, A-r2-1).
+  // Once the camera has settled, any row the view's top or bottom edge would
+  // slice is clipped off, and the strip shows the app's own background, so the
+  // crop reads as padding. A "row" is the outermost block shorter than half the
+  // visible height (list items, labels, bars), found by walking down from the
+  // picture's root. Phone frames that crop (the sheet) only.
+  // The clip moves with the camera (same 900ms curve), so it is never cut mid-move either.
+  const [crop, setCrop] = useState<{ t: number; b: number; bgT: string; bgB: string } | null>(null);
+  useLayoutEffect(() => {
+    const fitEl = fitRef.current;
+    if (!fill || !fitEl || !box.h) return setCrop(null);
+    const a = fitEl.getBoundingClientRect();
+    const now = a.height / native.h;
+    if (!now) return;
+    const y0 = -c.ty / c.s;
+    const y1 = (vh - c.ty) / c.s;
+    const limit = (y1 - y0) * 0.5;
+    // The strip takes the colour of the screen behind the row (a full-width
+    // ancestor), not of the card the row sits in.
+    const bgOf = (el: Element | null) => {
+      for (let e = el; e && e !== fitEl; e = e.parentElement) {
+        if (e.getBoundingClientRect().width / now < native.w - 2) continue;
+        const bg = getComputedStyle(e).backgroundColor;
+        if (bg && bg !== "transparent" && !bg.endsWith(", 0)")) return bg;
+      }
+      return "#fff";
+    };
+    let t = y0;
+    let b = y1;
+    let bgT = "#fff";
+    let bgB = "#fff";
+    const walk = (el: Element) => {
+      const r = el.getBoundingClientRect();
+      const top = (r.top - a.top) / now;
+      const bottom = (r.bottom - a.top) / now;
+      if (r.height === 0 || bottom <= y0 || top >= y1) return;
+      if (bottom - top > limit) {
+        for (const ch of el.children) walk(ch);
+        return;
+      }
+      if (top < y0 - 0.5 && bottom > y0 + 0.5 && bottom > t) {
+        t = bottom;
+        bgT = bgOf(el.parentElement);
+      }
+      if (top < y1 - 0.5 && bottom > y1 + 0.5 && top < b) {
+        b = top;
+        bgB = bgOf(el.parentElement);
+      }
+    };
+    for (const ch of fitEl.children) walk(ch);
+    setCrop(t > y0 + 0.5 || b < y1 - 0.5 ? { t: Math.max(0, t), b: Math.min(native.h, b), bgT, bgB } : null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fill, c.s, c.tx, c.ty, vh, box.h]);
+  const clip = fill ? (crop ? `inset(${crop.t}px 0 ${native.h - crop.b}px 0)` : "inset(0px 0 0px 0)") : undefined;
+
   // The live event lands just after the camera does.
   const liveAt = zoom ? (reducedMotion() ? 0 : zoomAfterMs) + 1000 : 900;
   return (
@@ -269,11 +324,21 @@ export function CommandFrame({
       <p className="ps-visually-hidden" data-demo-narration>
         {show.narration}
       </p>
-      <div className="sc-frame__cmd" ref={viewRef} style={fill ? undefined : { aspectRatio: `${native.w} / ${native.h}` }}>
+      <div
+        className="sc-frame__cmd"
+        ref={viewRef}
+        style={
+          fill
+            ? crop
+              ? { background: `linear-gradient(${crop.bgT} 50%, ${crop.bgB} 50%)` }
+              : undefined
+            : { aspectRatio: `${native.w} / ${native.h}` }
+        }
+      >
         <div
           ref={fitRef}
           className="sc-frame__fit"
-          style={{ width: native.w, height: native.h, transform: `translate(${c.tx}px, ${c.ty}px) scale(${c.s})` }}
+          style={{ width: native.w, height: native.h, transform: `translate(${c.tx}px, ${c.ty}px) scale(${c.s})`, clipPath: clip }}
         >
           <Command layout={variant} />
         </div>
