@@ -123,10 +123,10 @@ export const needLine = (n: number) => `${n} ${n === 1 ? "needs" : "need"} a bed
  * runs, then the printed map (also the reduced-motion frame).
  */
 export const bedsCam = [
-  { at: 0, y: 176, h: 280 },
+  { at: 0, y: 182, h: 300 },
   { at: bedsCues[1], y: 34, h: 280 },
-  { at: bedsCues[2] + bedsFill.first + 8 * bedsFill.step, y: 176, h: 280, ms: 1400 },
-  { at: bedsCues[3] + 100, y: 176, h: 280 },
+  { at: bedsCues[2] + bedsFill.first + 8 * bedsFill.step, y: 182, h: 300, ms: 1400 },
+  { at: bedsCues[3] + 100, y: 182, h: 300 },
 ] as const;
 
 export const bedsSummary =

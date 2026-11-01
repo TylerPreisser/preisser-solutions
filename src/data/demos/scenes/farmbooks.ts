@@ -81,7 +81,8 @@ export const fbCam = [
   { at: 1700, y: 220, h: 236 },
   { at: fbCues[1], y: 0, h: 226 },
   { at: fbCues[1] + 1500, y: 220, h: 236 },
-  { at: fbCues[3] + 200, y: 176, h: 280 },
+  // Taller than a short phone shows, so it starts on the caught total, never mid-line.
+  { at: fbCues[3] + 200, y: 180, h: 300 },
 ] as const;
 
 export const fbSummary =

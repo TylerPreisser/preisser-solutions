@@ -82,7 +82,8 @@ export function AiAskBeat({ client, beat, variant, active, fill, reduced, quiet 
   return (
     <PortalFrame client={client} stage="ai" narration={beat.narration} variant={variant} fill={fill} quiet={quiet}>
       {phone && fill ? (
-        <FitWidth w={320}>{(h) => <div className="pt-screen pt-ai pt-ai--phone">{body(h)}</div>}</FitWidth>
+        // The column sits inside 12 px of padding: its view is the picture less 24 px, so its bottom edge is the edge you see.
+        <FitWidth w={320}>{(h) => <div className="pt-screen pt-ai pt-ai--phone">{body(h - 24)}</div>}</FitWidth>
       ) : (
         <Fit w={960} h={600}>
           <div className="pt-screen pt-ai pt-ai--desk">
@@ -141,8 +142,14 @@ function Column({
   // Measure once more after the answer's blocks have finished arriving (they rise 6 px as they fade in).
   useEffect(() => {
     if (!answered) return;
+    let on = true;
     const id = window.setTimeout(() => setSettle((n) => n + 1), 900);
-    return () => window.clearTimeout(id);
+    // The faces arriving re-wrap the lines: measure again once they have.
+    document.fonts?.ready.then(() => on && setSettle((n) => n + 1));
+    return () => {
+      on = false;
+      window.clearTimeout(id);
+    };
   }, [answered, panned]);
   useLayoutEffect(() => {
     const view = viewRef.current;

@@ -1025,3 +1025,8 @@
   font-weight: 700;
   color: var(--pt-ink);
 }
+/* The phone chart is narrow: only its first and last ticks are labelled, so
+   "$0 $100 $200 $300" never runs together. */
+.pt-ai--phone .ch-axis .ch-tick:not(:first-child):not(:last-child) {
+  visibility: hidden;
+}
