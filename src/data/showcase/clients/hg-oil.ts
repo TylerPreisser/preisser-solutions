@@ -12,6 +12,24 @@ import type { ShowcaseClient } from "../types";
 import type { SceneBeatData } from "@/components/showcase/scenes";
 import { coiSummary, swdSummary } from "@/data/demos/scenes/hg-oil";
 
+/** The product beats, for a `kind: "scene"` beat once the framework has one. */
+export const sceneBeats: readonly SceneBeatData[] = [
+  {
+    kind: "scene",
+    tab: "COI",
+    caption: "AI keeps every vendor's insurance current and hands a person only the exceptions.",
+    scene: "hg-coi",
+    narration: coiSummary,
+  },
+  {
+    kind: "scene",
+    tab: "Close",
+    caption: "The month-end close, done in a minute.",
+    scene: "hg-swd",
+    narration: swdSummary,
+  },
+];
+
 const client: ShowcaseClient = {
   slug: "hg-oil",
   name: "HG Oil Holdings",
@@ -56,25 +74,8 @@ const client: ShowcaseClient = {
         ],
       },
     },
+    ...sceneBeats,
   ],
 };
 
 export default client;
-
-/** The product beats, for a `kind: "scene"` beat once the framework has one. */
-export const sceneBeats: readonly SceneBeatData[] = [
-  {
-    kind: "scene",
-    tab: "COI",
-    caption: "AI keeps every vendor's insurance current and hands a person only the exceptions.",
-    scene: "hg-coi",
-    narration: coiSummary,
-  },
-  {
-    kind: "scene",
-    tab: "Close",
-    caption: "The month-end close, done in a minute.",
-    scene: "hg-swd",
-    narration: swdSummary,
-  },
-];

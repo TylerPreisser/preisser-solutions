@@ -108,6 +108,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // FarmBooks — flagship. Document pipeline + Schedule-F-ready books.
   {
     title: "FarmBooks",
+    showcase: "farmbooks",
     outcome: "Tax season stopped being a data-entry month.",
     tags: "Farming | Document Pipeline | Bookkeeping",
     description:
@@ -142,6 +143,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // card or in any copy derived from it.
   {
     title: "NWKS Encounter",
+    showcase: "nwks-encounter",
     outcome: "Executive visibility into the ministry, and 90% of the busy work automated.",
     tags: "Ministry | Admin Panel | AI + Automation",
     // OWNER-SUPPLIED FRAMING, 2026-09-18. He rejected the agent-authored
@@ -261,6 +263,7 @@ const caseStudyCards: CaseStudyCard[] = [
   // bills HG for an uninsured vendor). No outcome number: none is measured.
   {
     title: "HG Oil Holdings",
+    showcase: "hg-oil",
     tags: "Oil + Gas | Saltwater Disposal Engine | COI Engine",
     description:
       "HG Oil Holdings runs 74 saltwater disposal agreements and a long roster of field vendors. Preisser Solutions built the two engines behind them: one turns each month's disposal volumes into the A/P import, GL journal and owner statements from a single calculation; the other reads every vendor's insurance certificate with AI and chases renewals before an audit can.",

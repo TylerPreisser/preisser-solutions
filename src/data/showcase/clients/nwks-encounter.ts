@@ -10,6 +10,17 @@ import type { ShowcaseClient } from "../types";
 import type { SceneBeatData } from "@/components/showcase/scenes";
 import { bedsSummary } from "@/data/demos/scenes/nwks-encounter";
 
+/** The product beat, for a `kind: "scene"` beat once the framework has one. */
+export const sceneBeats: readonly SceneBeatData[] = [
+  {
+    kind: "scene",
+    tab: "Beds",
+    caption: "Built around how their camp actually runs, from sign-up to the cabin map.",
+    scene: "nwks-beds",
+    narration: bedsSummary,
+  },
+];
+
 const client: ShowcaseClient = {
   slug: "nwks-encounter",
   name: "NWKS Encounter",
@@ -48,18 +59,8 @@ const client: ShowcaseClient = {
         stops: [{ y: 0, holdMs: 3400 }],
       },
     },
+    ...sceneBeats,
   ],
 };
 
 export default client;
-
-/** The product beat, for a `kind: "scene"` beat once the framework has one. */
-export const sceneBeats: readonly SceneBeatData[] = [
-  {
-    kind: "scene",
-    tab: "Beds",
-    caption: "Built around how their camp actually runs, from sign-up to the cabin map.",
-    scene: "nwks-beds",
-    narration: bedsSummary,
-  },
-];

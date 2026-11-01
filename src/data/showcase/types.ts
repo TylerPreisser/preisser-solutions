@@ -20,6 +20,7 @@
 // Everything a reader sees here must read as the owner wrote it: no em dashes,
 // straight quotes only, no client staff names. Sample numbers are invented and
 // the funnel and AI beats are labelled "Demonstration data".
+import type { SceneId } from "@/components/showcase/scenes";
 
 /** A brand mark for the portal sidebar and the funnel's seal. */
 export type PortalMark =
@@ -170,7 +171,19 @@ export interface AiAtWorkBeat extends BeatBase {
   done: string;
 }
 
-export type Beat = WebsiteBeat | FunnelBeat | AiAskBeat | AiAtWorkBeat;
+/**
+ * A product picture drawn by one of the scene components in
+ * src/components/showcase/scenes (HG Oil, FarmBooks, NWKS): not the
+ * MarCommand portal. The scene owns its own beats, captions and labels.
+ */
+export interface SceneBeat extends BeatBase {
+  kind: "scene";
+  scene: SceneId;
+  /** Screen-reader narration for the stage (80+ characters). */
+  narration: string;
+}
+
+export type Beat = WebsiteBeat | FunnelBeat | AiAskBeat | AiAtWorkBeat | SceneBeat;
 export type BeatKind = Beat["kind"];
 
 export interface ShowcaseClient {

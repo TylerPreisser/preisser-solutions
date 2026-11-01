@@ -329,7 +329,7 @@ async function showcaseStages(browser) {
       await page.waitForFunction(() => document.querySelectorAll("[role=dialog] [data-demo-stage]").length > 0, null, { timeout: 15000 });
       await page.waitForTimeout(400);
       const html = await page.evaluate(() => `<!doctype html><html><body>${document.querySelector("[role=dialog]").outerHTML}</body></html>`);
-      const slug = await page.evaluate(() => (document.querySelector("[role=dialog] [data-demo-stage]")?.getAttribute("data-demo-stage") || "").replace(/-(funnel|ai|ai-work)$/, ""));
+      const slug = await page.evaluate(() => (document.querySelector("[role=dialog] [data-demo-stage]")?.getAttribute("data-demo-stage") || "").replace(/-(funnel|ai|ai-work|scene)$/, ""));
       docs.push({ slug, width, html });
       await page.keyboard.press("Escape");
       await page.waitForFunction(() => !document.querySelector("[role=dialog] .sc-beat"), null, { timeout: 5000 });

@@ -4,6 +4,8 @@ import type { Beat } from "@/data/showcase/types";
 import { AiAskBeat, aiMs } from "./AiAskBeat";
 import { AiWorkBeat, aiWorkMs } from "./AiWorkBeat";
 import { FunnelBeat, funnelMs } from "./FunnelBeat";
+import { SceneBeat } from "./SceneBeat";
+import { SCENE_MS } from "@/components/showcase/scenes";
 import { WebsiteBeat, websiteMs } from "./WebsiteBeat";
 import type { BeatProps } from "./shared";
 import "./portal.css";
@@ -22,6 +24,8 @@ export function BeatView(p: BeatProps<Beat>) {
       return <AiAskBeat {...p} beat={b} />;
     case "ai-at-work":
       return <AiWorkBeat {...p} beat={b} />;
+    case "scene":
+      return <SceneBeat {...p} beat={b} />;
   }
 }
 
@@ -36,5 +40,7 @@ export function beatMs(b: Beat, phone: boolean): number {
       return aiMs(b);
     case "ai-at-work":
       return aiWorkMs(b);
+    case "scene":
+      return SCENE_MS[b.scene];
   }
 }

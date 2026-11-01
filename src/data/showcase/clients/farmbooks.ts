@@ -11,6 +11,17 @@ import type { ShowcaseClient } from "../types";
 import type { SceneBeatData } from "@/components/showcase/scenes";
 import { fbSummary } from "@/data/demos/scenes/farmbooks";
 
+/** The product beat, for a `kind: "scene"` beat once the framework has one. */
+export const sceneBeats: readonly SceneBeatData[] = [
+  {
+    kind: "scene",
+    tab: "AI",
+    caption: "FarmBooks reads every bill and holds the ones that don't add up.",
+    scene: "farmbooks-bill",
+    narration: fbSummary,
+  },
+];
+
 const client: ShowcaseClient = {
   slug: "farmbooks",
   name: "FarmBooks",
@@ -58,18 +69,8 @@ const client: ShowcaseClient = {
         ],
       },
     },
+    ...sceneBeats,
   ],
 };
 
 export default client;
-
-/** The product beat, for a `kind: "scene"` beat once the framework has one. */
-export const sceneBeats: readonly SceneBeatData[] = [
-  {
-    kind: "scene",
-    tab: "AI",
-    caption: "FarmBooks reads every bill and holds the ones that don't add up.",
-    scene: "farmbooks-bill",
-    narration: fbSummary,
-  },
-];
