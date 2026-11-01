@@ -175,7 +175,13 @@ function Column({
       const top = box.top - Math.max(0, Math.min(10, (box.top - above) / 2));
       const room = box.bottom + 12 - viewH;
       const at = panned && !reduced && room > top ? snapTop(lines, room) : top;
-      const bottom = cleanBottom(lines, at + viewH);
+      let bottom = cleanBottom(lines, at + viewH);
+      // A section heading never ends the view on its own ("What it likely means" with nothing under it).
+      for (const k of card.querySelectorAll<HTMLElement>(".aa-k")) {
+        const hd = rel(k, column);
+        const after = lines.find((l) => l.top > hd.bottom - 0.5);
+        if (hd.top >= at && hd.bottom <= bottom + 0.5 && (!after || after.bottom > bottom + 0.5)) bottom = Math.min(bottom, hd.top - 1);
+      }
       setY(at);
       setClip({ top: 0, bottom: Math.max(0, at + viewH - bottom) });
     } else {
