@@ -49,6 +49,9 @@
   border-bottom: 1px solid #e0e4ea;
   color: #475569;
   font-size: 12px;
+  /* Small letter-spaced labels hit the same Chromium hinting gap as the
+     scaled pictures ("Demonstration d ata" at 320, DPR 3). */
+  text-rendering: geometricPrecision;
 }
 .sc-frame__dots {
   display: inline-flex;
