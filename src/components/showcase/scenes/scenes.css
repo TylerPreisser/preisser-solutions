@@ -4,9 +4,11 @@
    dark theme (default) and for [data-theme="light"].
 
    Motion (all of it eases out, nothing bounces past where it lands):
-     beat card in    560ms cubic-bezier(0.22, 0.9, 0.24, 1)
-     beat card out   380ms ease-in
-     caption swap    420ms ease
+     beat card out   200ms ease-in
+     beat card in    560ms cubic-bezier(0.22, 0.9, 0.24, 1), after 240ms
+     caption swap    out 180ms, in 420ms after 200ms
+   The outgoing card and caption are gone before the incoming ones show, so
+   two lines of text never sit on top of each other mid-swap.
      loop fade       420ms ease
    Reduced motion: no transitions, no keyframes; the final frame shows.
    ============================================================ */
@@ -184,8 +186,8 @@
   opacity: 0;
   transform: translateY(8px);
   transition:
-    opacity 420ms ease,
-    transform 420ms var(--scn-ease);
+    opacity 180ms ease-in,
+    transform 180ms ease-in;
 }
 .scn--desk .scn-caption__line {
   font-size: 25px;
@@ -198,6 +200,9 @@
 .scn-caption__line.is-on {
   opacity: 1;
   transform: none;
+  transition:
+    opacity 420ms ease 200ms,
+    transform 420ms var(--scn-ease) 200ms;
 }
 
 /* ── Beat cards: in from the right, out to the left ─────────── */
@@ -205,16 +210,16 @@
   opacity: 0;
   transform: translateX(36px) scale(0.98);
   transition:
-    opacity 380ms ease-in,
-    transform 380ms ease-in;
+    opacity 200ms ease-in,
+    transform 200ms ease-in;
   pointer-events: none;
 }
 .scn-beat.is-on {
   opacity: 1;
   transform: none;
   transition:
-    opacity 560ms var(--scn-ease),
-    transform 560ms var(--scn-ease);
+    opacity 560ms var(--scn-ease) 240ms,
+    transform 560ms var(--scn-ease) 240ms;
 }
 .scn-beat.is-past {
   opacity: 0;
