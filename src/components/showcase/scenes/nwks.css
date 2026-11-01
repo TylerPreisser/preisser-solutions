@@ -777,6 +777,13 @@
   font-weight: 700;
   color: #2a0f1a;
 }
+.nw-page__foot span {
+  white-space: nowrap;
+}
+.nw--phone .nw-pb__full {
+  background: #efe3e8;
+  color: #6b1f3a;
+}
 .nw-print.is-on .nw-page__foot {
   animation: nw-foot 500ms ease 900ms both;
 }

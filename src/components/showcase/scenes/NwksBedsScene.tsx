@@ -200,14 +200,18 @@ function Board({ step, placed, phone }: { step: number; placed: number; phone: b
 function Bunk({ side, n, phone }: { side: "left" | "right"; n: number; phone: boolean }) {
   const lower = at(side, `Lower ${n}`);
   const upper = at(side, `Upper ${n}`);
+  // Phone prints one letter per bunk (U / L). The full-size bed never prints
+  // "F" there: next to "nobody on the floor" it read as Floor (critique r8 N5),
+  // so on a phone the letter is dropped and the row spells "Full bed" instead.
   const line = (s: Sleeper | undefined, which: string) => (
     <p className={s ? "nw-pb" : "nw-pb is-empty"}>
-      <span className="nw-pb__which">{phone ? which[0] : which}</span>
+      <span className="nw-pb__which">{phone ? (which === "Full" ? "" : which[0]) : which}</span>
       {s ? (
         <>
           <b>{phone ? s.first : s.name}</b>
           {phone ? null : <em>{s.town}</em>}
           {s.server ? <span className="nw-server">Server</span> : null}
+          {phone && which === "Full" ? <span className="nw-server nw-pb__full">Full bed</span> : null}
         </>
       ) : (
         <em>Open</em>
@@ -253,7 +257,9 @@ function Print({ step, phone }: { step: number; phone: boolean }) {
           )}
         </p>
         <p className="nw-page__foot">
-          Left {bedCounts.left} of 10 · Right {bedCounts.right} of 10 · {bedCounts.floor === 0 ? "nobody" : bedCounts.floor} on the floor
+          {/* Kept in three unbreakable groups, so a phone never wraps "floor" onto a line of its own (critique r8 S7). */}
+          <span>Left {bedCounts.left} of 10 ·</span> <span>Right {bedCounts.right} of 10 ·</span>{" "}
+          <span>{bedCounts.floor === 0 ? "nobody" : bedCounts.floor} on the floor</span>
         </p>
       </div>
     </div>
@@ -284,7 +290,8 @@ function Body({ step, fading, layout, label, caption, onCaption }: { run: number
           <Board step={step} placed={placed} phone={phone} />
           <Print step={step} phone={phone} />
         </div>
-        <Caption lines={bedsCaptions} index={step} show={caption} onLine={onCaption} />
+        {/* The Auto-fill line arrives with the first woman placed, never ahead of the fill (critique r8 S8). */}
+        <Caption lines={bedsCaptions} index={step >= 3 && placed === 0 ? 2 : step} show={caption} onLine={onCaption} />
       </div>
     </SceneRoot>
   );

@@ -17,6 +17,10 @@
 // became Greta, Haverkamp and Ostrander (the old spellings are not kept here).
 // The new names were checked against the deny list and the names in the NWKS
 // memory notes: no exact hit and no sound-alike.
+// Round 9 (2026-11-01): two common first names that a Women's Encounter
+// reader could pause on were swapped for Sadie and Thea, which appear nowhere
+// in the deny list, the private Women's Encounter files or the NWKS notes
+// (the same search does find the two names they replace).
 import type { InventedSet } from "../_invented";
 
 const PENDING =
@@ -41,11 +45,11 @@ export const invented: InventedSet = {
     w("Corinne", "Vashaw"),
     w("Megan", "Strandquist"),
     w("Paige", "Lindholt"),
-    w("Renee", "Oberlander"),
+    w("Sadie", "Oberlander"),
     w("Tara", "Weisgerber"),
     w("Hollie", "Carvell"),
     w("Greta", "Fairbrother"),
-    w("Kristen", "Ahlgrimm"),
+    w("Thea", "Ahlgrimm"),
     w("Leah", "Sundgren"),
     w("Dawn", "Mettlach"),
     w("Joelle", "Haverkamp"),

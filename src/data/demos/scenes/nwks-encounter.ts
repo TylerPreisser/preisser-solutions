@@ -41,11 +41,11 @@ const rows: readonly [string, string, Slot, { server?: boolean; lower?: boolean;
   ["nwf-corinne-vashaw", "tollerton", L("Lower 4")],
   ["nwf-megan-strandquist", "emberton", L("Upper 4")],
   ["nwf-paige-lindholt", "fallowfield", R("Lower 1"), { lower: true }],
-  ["nwf-renee-oberlander", "fallowfield", R("Upper 1")],
+  ["nwf-sadie-oberlander", "fallowfield", R("Upper 1")],
   ["nwf-tara-weisgerber", "aldervale", R("Lower 2")],
   ["nwf-hollie-carvell", "kestrel-bend", R("Upper 2")],
   ["nwf-greta-fairbrother", "tollerton", R("Lower 3"), { server: true }],
-  ["nwf-kristen-ahlgrimm", "kestrel-bend", R("Upper 3")],
+  ["nwf-thea-ahlgrimm", "kestrel-bend", R("Upper 3")],
   ["nwf-leah-sundgren", "fallowfield", R("Lower 4"), { lower: true }],
   ["nwf-dawn-mettlach", "emberton", R("Upper 4")],
   ["nwf-joelle-haverkamp", "aldervale", R("Lower 5"), { server: true }],
@@ -69,7 +69,7 @@ export const sleepers: readonly Sleeper[] = rows.map(([pid, tid, slot, o]) => {
 /** The sign-up that types itself is the first sleeper. */
 export const signup = {
   who: sleepers[0],
-  sandwich: "Turkey, lettuce-wrapped unwich",
+  sandwich: "Turkey lettuce wrap",
   shirt: "M",
 } as const;
 
@@ -106,13 +106,13 @@ export const bedsCaptions = [
   "The sign-up asks the questions only their camp needs, like which sandwich she wants.",
   "She lands in the list of women who still need a bed.",
   "One press of Auto-fill puts all 18 in beds, with every lower-bunk request on a lower bed.",
-  "We built it around how their weekend actually runs, down to who needs a lower bunk.",
+  "We built it around how their weekend runs, down to who needs a lower bunk.",
 ] as const;
 
 export const bedsCues = [250, 3100, 5000, 9600] as const;
 
 /** Auto-fill, inside beat 3: one woman placed every STEP ms, the first at FIRST ms after the cue. */
-export const bedsFill = { first: 500, step: 165 } as const;
+export const bedsFill = { first: 180, step: 165 } as const;
 
 /** "1 needs a bed", "0 need a bed". */
 export const needLine = (n: number) => `${n} ${n === 1 ? "needs" : "need"} a bed`;
@@ -124,7 +124,7 @@ export const needLine = (n: number) => `${n} ${n === 1 ? "needs" : "need"} a bed
  */
 export const bedsCam = [
   { at: 0, y: 182, h: 274, top: true },
-  { at: bedsCues[1], y: 34, h: 280 },
+  { at: bedsCues[1], y: 34, h: 280, top: true },
   { at: bedsCues[2] + bedsFill.first + 8 * bedsFill.step, y: 182, h: 274, ms: 1400, top: true },
   { at: bedsCues[3] + 100, y: 182, h: 274, top: true },
 ] as const;
