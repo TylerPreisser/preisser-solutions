@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from "react";
 import type { SceneBeat as SceneBeatData } from "@/data/showcase/types";
 import { CLEAN_TOPS, NATIVE_SIZE, PHONE_H, SCENE_CAM, SCENES, type Shot } from "@/components/showcase/scenes";
 import { Chrome, useBox, useSteps, type BeatProps } from "./shared";
@@ -41,7 +41,7 @@ export function SceneBeat({ client, beat, variant, active, fill, reduced, quiet,
         {beat.narration}
       </p>
       <div className="sc-frame__portal" style={fill ? undefined : { aspectRatio: `${n.w} / ${n.h}` }}>
-        <Camera w={n.w} h={n.h} shot={shot} cover={variant === "phone"} clean={variant === "phone" ? CLEAN_TOPS[beat.scene] : undefined}>
+        <Camera w={n.w} h={n.h} shot={shot} cover={variant === "phone"} live={active} clean={variant === "phone" ? CLEAN_TOPS[beat.scene] : undefined}>
           <Scene layout={variant} playing={active && !reduced} loop={false} label={false} caption={false} onCaption={active ? onCaption : undefined} />
         </Camera>
       </div>
@@ -64,6 +64,7 @@ function Camera({
   h,
   shot,
   cover,
+  live,
   clean,
   children,
 }: {
@@ -71,10 +72,12 @@ function Camera({
   h: number;
   shot: Shot | null;
   cover: boolean;
+  live: boolean;
   clean?: readonly number[];
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const fitRef = useRef<HTMLDivElement>(null);
   const box = useBox(ref);
   const W = box.w || (cover ? 330 : 688);
   const H = box.h || W * (h / w);
@@ -94,15 +97,24 @@ function Camera({
       const hi = Math.min(shot.y, h - vis);
       const lo = Math.max(0, shot.y + shot.h - vis);
       const tops = [...(clean ?? [shot.y])].sort((a, b) => b - a);
-      const start = tops.find((c) => c >= lo - 0.5 && c <= hi + 0.5) ?? tops.find((c) => c <= hi + 0.5) ?? hi;
+      // A clean line that loses no more than 60 native px of the rect's bottom, else the rect's own bottom edge.
+      const below = tops.find((c) => c <= hi + 0.5);
+      const start = tops.find((c) => c >= lo - 0.5 && c <= hi + 0.5) ?? (below !== undefined && (lo > hi || below >= lo - 60) ? below : hi);
       cy = start + vis / 2;
     }
   }
   const tx = w * s <= W ? (W - w * s) / 2 : clamp(W / 2 - cx * s, W - w * s, 0);
   const ty = h * s <= H ? (H - h * s) / 2 : clamp(H / 2 - cy * s, H - h * s, 0);
+  const cut = useEdgeCut(cover, live, fitRef, h, s, ty, H);
   return (
-    <div ref={ref} className="pt-fitbox" data-cam={shot ? `${shot.at}` : "rest"}>
+    <div
+      ref={ref}
+      className="pt-fitbox"
+      data-cam={shot ? `${shot.at}` : "rest"}
+      style={cut[0] || cut[1] ? { clipPath: `inset(${cut[0]}px 0 ${cut[1]}px 0)` } : undefined}
+    >
       <div
+        ref={fitRef}
         className="pt-fit"
         style={{ width: w, height: h, transform: `translate(${tx}px, ${ty}px) scale(${s})`, "--pt-move-ms": `${shot?.ms ?? 900}ms` } as CSSProperties}
       >
@@ -110,4 +122,85 @@ function Camera({
       </div>
     </div>
   );
+}
+
+/**
+ * Phone only: no line of text is ever cut in half by the picture's top or
+ * bottom edge (critique r8 N1). The camera rests on a clean line where the
+ * scene lists one (CLEAN_TOPS); whatever a resting edge would still slice
+ * (a card that pops in later, an engine's taller line box, a shorter phone)
+ * is clipped off here instead, so the frame ends on the last whole line.
+ * Measured in native px against where the camera is GOING (s, ty), so the
+ * clip is already right while the camera moves, and re-measured while the
+ * scene plays because its cards come and go.
+ */
+function useEdgeCut(
+  on: boolean,
+  live: boolean,
+  fitRef: RefObject<HTMLDivElement | null>,
+  h: number,
+  s: number,
+  ty: number,
+  H: number,
+): readonly [number, number] {
+  const [cut, setCut] = useState<readonly [number, number]>([0, 0]);
+  useEffect(() => {
+    const fit = fitRef.current;
+    if (!on || !fit || !(s > 0) || !(H > 0)) {
+      setCut((c) => (c[0] || c[1] ? [0, 0] : c));
+      return;
+    }
+    const measure = () => {
+      const fr = fit.getBoundingClientRect();
+      const cur = fr.height / h;
+      if (!(cur > 0)) return;
+      const start = -ty / s;
+      const end = start + H / s;
+      const lines: [number, number][] = [];
+      const walk = document.createTreeWalker(fit, NodeFilter.SHOW_TEXT);
+      const range = document.createRange();
+      for (let t = walk.nextNode(); t; t = walk.nextNode()) {
+        if (!t.textContent || !t.textContent.trim()) continue;
+        const el = t.parentElement;
+        if (!el || !visible(el, fit)) continue;
+        range.selectNodeContents(t);
+        for (const q of range.getClientRects()) {
+          if (q.height < 2 || q.width < 1) continue;
+          lines.push([(q.top - fr.top) / cur, (q.bottom - fr.top) / cur]);
+        }
+      }
+      let b = end;
+      for (let i = 0; i < 12; i++) {
+        const crossing = lines.filter(([t0, t1]) => t0 + 0.5 < b && t1 - 0.5 > b);
+        if (!crossing.length) break;
+        b = Math.min(...crossing.map(([t0]) => t0)) - 0.5;
+      }
+      let a = start;
+      for (let i = 0; i < 12; i++) {
+        const crossing = lines.filter(([t0, t1]) => t0 + 0.5 < a && t1 - 0.5 > a);
+        if (!crossing.length) break;
+        a = Math.max(...crossing.map(([, t1]) => t1)) + 0.5;
+      }
+      const next = [Math.max(0, Math.round((a - start) * s)), Math.max(0, Math.round((end - b) * s))] as const;
+      setCut((c) => (c[0] === next[0] && c[1] === next[1] ? c : next));
+    };
+    measure();
+    if (!live) {
+      // Reduced motion / a still frame: once more after the fonts settle.
+      const t = window.setTimeout(measure, 400);
+      return () => window.clearTimeout(t);
+    }
+    const iv = window.setInterval(measure, 160);
+    return () => window.clearInterval(iv);
+  }, [on, live, fitRef, h, s, ty, H]);
+  return cut;
+}
+
+/** Drawn at all: not display:none, not hidden, not faded below 15% on the way up to the picture. */
+function visible(el: Element, root: Element) {
+  for (let e: Element | null = el; e && e !== root; e = e.parentElement) {
+    const cs = getComputedStyle(e);
+    if (cs.display === "none" || cs.visibility === "hidden" || parseFloat(cs.opacity) < 0.15) return false;
+  }
+  return true;
 }

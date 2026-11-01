@@ -60,8 +60,10 @@ export interface Shot {
 
 /** Native y values on each phone picture that sit between lines of text (a view may start there without slicing a line). */
 export const CLEAN_TOPS: Partial<Record<SceneId, readonly number[]>> = {
+  // Measured 2026-11-01 (round 9) at 390 in Chromium: 34 is under the "Vendor insurance · AI at work" header, 222 above the cards.
+  "hg-coi": [0, 34, 222],
   "hg-swd": [0, 40, 78, 99, 135, 170, 196, 236],
-  "farmbooks-bill": [0, 38, 180],
+  "farmbooks-bill": [0, 38, 180, 228],
   "nwks-beds": [0, 34, 182],
 };
 

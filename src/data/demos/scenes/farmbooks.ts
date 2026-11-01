@@ -77,10 +77,10 @@ export const fbHoldMs = fbCatch.eyesAt + 600 + 4500;
  * card with the caught total and the stamp above it, and the reduced-motion frame.
  */
 export const fbCam = [
-  { at: 0, y: 0, h: 226 },
-  { at: 1700, y: 220, h: 236 },
-  { at: fbCues[1], y: 0, h: 226 },
-  { at: fbCues[1] + 1500, y: 220, h: 236 },
+  { at: 0, y: 0, h: 226, top: true },
+  { at: 1700, y: 228, h: 236, top: true },
+  { at: fbCues[1], y: 0, h: 226, top: true },
+  { at: fbCues[1] + 1500, y: 228, h: 236, top: true },
   // Taller than a short phone shows, so it starts on the caught total, never mid-line.
   { at: fbCues[3] + 200, y: 180, h: 276, top: true },
 ] as const;
