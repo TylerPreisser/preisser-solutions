@@ -1,0 +1,750 @@
+/* ============================================================
+   showcase.css — the product showcase (ADR-0020).
+   Frames (website capture + command center), the glass popover and
+   phone sheet, and the /showcase tour. Site tokens are READ here
+   (--theme-*, --color-primary, --nav-height); only --sc-* is declared.
+
+   Motion, all of it (docs/showcase-design.md §Motion):
+     pop        640ms cubic-bezier(0.2, 1.32, 0.32, 1)   card -> window (about 4% overshoot)
+     sheen      1100ms ease-out, 160ms in                one light sweep across the glass on open
+     sheet      460ms cubic-bezier(0.32, 0.72, 0, 1)     phone sheet up
+     close      180ms cubic-bezier(0.4, 0, 1, 1)
+     pan        2800ms cubic-bezier(0.65, 0, 0.35, 1)    popover website scroll
+     chapter    760ms cubic-bezier(0.65, 0, 0.35, 1)     tour frame moves
+     slide      720ms cubic-bezier(0.22, 0.9, 0.24, 1)   command center slides over, website recedes
+     camera     900ms cubic-bezier(0.65, 0, 0.35, 1)     command center zooms onto the part that moves
+     focus      280ms ease-out                           spotlight fades in after the page lands
+   Reduced motion: every one of these is a cut (0ms) except opacity fades
+   of 120ms on open/close. Nothing rests hidden.
+   ============================================================ */
+
+.sc-root {
+  --sc-ease-move: cubic-bezier(0.65, 0, 0.35, 1);
+  --sc-ease-pop: cubic-bezier(0.2, 1.32, 0.32, 1);
+  --sc-ease-slide: cubic-bezier(0.22, 0.9, 0.24, 1);
+  --sc-ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --sc-ink: var(--theme-text-primary);
+  --sc-ink-2: var(--theme-text-secondary);
+  --sc-accent: var(--theme-accent-text);
+}
+
+/* ── Frames ─────────────────────────────────────────────────── */
+.sc-frame {
+  margin: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(10, 22, 40, 0.12),
+    0 18px 50px -18px rgba(10, 22, 40, 0.45);
+  position: relative;
+}
+.sc-frame__chrome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 34px;
+  padding: 0 12px;
+  background: #f1f3f6;
+  border-bottom: 1px solid #e0e4ea;
+  color: #475569;
+  font-size: 12px;
+  /* Small letter-spaced labels hit the same Chromium hinting gap as the
+     scaled pictures ("Demonstration d ata" at 320, DPR 3). */
+  text-rendering: geometricPrecision;
+}
+.sc-frame__dots {
+  display: inline-flex;
+  gap: 5px;
+}
+.sc-frame__dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #d3d8df;
+}
+.sc-frame__url {
+  flex: 1;
+  min-width: 0;
+  max-width: 260px;
+  margin: 0 auto;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #e0e4ea;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+.sc-frame__label {
+  flex: none;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #0a1628;
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.sc-frame__view,
+.sc-frame__portal {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background: #fff;
+}
+/* The portal's own ground fills any room around its picture. */
+.sc-frame .sc-frame__portal {
+  background: var(--pt-ground);
+}
+.sc-frame__page {
+  position: absolute;
+  inset: 0 0 auto 0;
+  transition: transform var(--sc-pan-ms, 760ms) var(--sc-ease-move);
+  will-change: transform;
+}
+.sc-frame__page img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+}
+/* When the capture was taken: in the chrome, never over the site itself. */
+.sc-frame__when {
+  flex: none;
+  font-size: 10.5px;
+  color: #64748b;
+}
+.sc-frame--phone .sc-frame__when {
+  display: none;
+}
+.sc-frame__fill {
+  flex: 1;
+}
+/* The website capture moves; nothing else on it does. */
+.sc-frame__shot {
+  transition: filter 360ms ease-out;
+}
+
+/* ── Stage: the beats stack in one cell; the one on screen slides in OVER the
+   last (W2 depth move): the one before recedes, smaller, softer and darker. */
+.sc-stage {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  border-radius: 14px;
+  /* room for the frame's shadow without clipping it away */
+  padding: 2px;
+  margin: -2px;
+}
+.sc-beat {
+  grid-area: 1 / 1;
+  min-width: 0;
+  min-height: 0;
+  transform-origin: 50% 50%;
+  transition:
+    transform 720ms var(--sc-ease-slide),
+    filter 720ms var(--sc-ease-slide),
+    opacity 720ms var(--sc-ease-slide);
+}
+.sc-beat[data-pos="next"] {
+  transform: translateX(calc(100% + 24px));
+}
+.sc-beat[data-pos="past"] {
+  transform: scale(0.94);
+  filter: blur(6px) brightness(0.85);
+  opacity: 0;
+}
+.sc-beat[data-pos="now"] {
+  z-index: 1;
+}
+.sc-beat[data-pos="now"] .sc-frame {
+  box-shadow:
+    0 0 0 1px rgba(10, 22, 40, 0.12),
+    -18px 0 40px -14px rgba(10, 22, 40, 0.45);
+}
+
+/* ── Glass ──────────────────────────────────────────────────────
+   backdrop-filter on the REAL element (WebKit ignores it on a negative
+   z-index pseudo). Tint is heavy enough that text clears 4.5:1 over the
+   lightest and darkest card behind it even where no blur is drawn
+   (Playwright WebKit/Firefox, which composite none). */
+.sc-glass {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0, rgba(255, 255, 255, 0.86) 72px, rgba(246, 249, 252, 0.74));
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(10, 22, 40, 0.06),
+    0 40px 90px -30px rgba(10, 22, 40, 0.55),
+    0 10px 28px rgba(10, 22, 40, 0.18);
+  color: #0a1628;
+}
+[data-theme="dark"] .sc-glass {
+  background: linear-gradient(180deg, rgba(24, 38, 62, 0.92) 0, rgba(20, 33, 55, 0.86) 72px, rgba(10, 22, 40, 0.78));
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 40px 90px -30px rgba(0, 0, 0, 0.75),
+    0 10px 28px rgba(0, 0, 0, 0.35);
+  color: #fff;
+}
+/* Specular lip along the top edge, the thing that makes glass read as glass. */
+.sc-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(120% 60% at 20% 0%, rgba(255, 255, 255, 0.55), transparent 55%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+[data-theme="dark"] .sc-glass::before {
+  background: radial-gradient(120% 60% at 20% 0%, rgba(255, 255, 255, 0.14), transparent 55%);
+  opacity: 1;
+}
+/* Specular rim (W2): a 1px edge that is bright where the light hits (top
+   left) and fades round the sides. In light theme it carries a navy shade at
+   the bottom right, so the window has an edge on a white page. */
+.sc-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(140deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.35) 30%, rgba(10, 22, 40, 0.06) 60%, rgba(10, 22, 40, 0.22) 100%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+[data-theme="dark"] .sc-glass::after {
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.12) 30%, rgba(255, 255, 255, 0.03) 60%, rgba(255, 255, 255, 0.14) 100%);
+}
+/* One sweep of light across the glass as it opens. */
+.sc-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+.sc-sheen::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5) 50%, transparent);
+  transform: translateX(-120%) skewX(-14deg);
+  opacity: 0;
+}
+[data-theme="dark"] .sc-sheen::before {
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.13) 50%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-phase="open"] > .sc-sheen::before {
+    animation: sc-sheen 1100ms ease-out 160ms both;
+  }
+}
+@keyframes sc-sheen {
+  0% {
+    transform: translateX(-120%) skewX(-14deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(320%) skewX(-14deg);
+    opacity: 1;
+  }
+}
+
+/* The section behind the window steps back. The heading above it stays clear,
+   and so does the card the window grew from (a hole in the veil). */
+.sc-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 320ms ease-out;
+}
+.sc-veil[data-phase="open"] {
+  opacity: 1;
+}
+.sc-veil__hole,
+.sc-veil__all {
+  position: fixed;
+  border-radius: 20px;
+  box-shadow: 0 0 0 200vmax rgba(255, 255, 255, 0.62);
+}
+.sc-veil__all {
+  inset: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: rgba(255, 255, 255, 0.62);
+}
+[data-theme="dark"] .sc-veil__hole {
+  box-shadow: 0 0 0 200vmax rgba(10, 22, 40, 0.55);
+}
+[data-theme="dark"] .sc-veil__all {
+  background: rgba(10, 22, 40, 0.55);
+}
+/* A card that opened in place hides under its window. */
+.sc-source {
+  opacity: 0 !important;
+  transition: opacity 200ms ease-out;
+}
+
+/* ── Popover (fine pointer, 900px and up) ───────────────────── */
+.sc-pop {
+  position: fixed;
+  z-index: 1101;
+  top: 0;
+  left: 0;
+  max-width: calc(100vw - 48px);
+  border-radius: 26px;
+  padding: 14px 16px 16px;
+  display: grid;
+  gap: 12px;
+  transform-origin: center;
+  opacity: 0;
+}
+.sc-pop[data-phase="open"] {
+  opacity: 1;
+  transform: none !important;
+}
+.sc-pop[data-phase="measure"] {
+  visibility: hidden;
+  transform: none !important;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sc-pop[data-phase="open"] {
+    transition:
+      transform 640ms var(--sc-ease-pop),
+      opacity 220ms ease-out;
+  }
+  .sc-pop[data-phase="leave"] {
+    transition:
+      transform 180ms cubic-bezier(0.4, 0, 1, 1),
+      opacity 180ms cubic-bezier(0.4, 0, 1, 1);
+    transform: scale(0.97) !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sc-pop {
+    transition: opacity 120ms linear;
+  }
+  .sc-pop:not([data-phase="measure"]) {
+    transform: none !important;
+  }
+  .sc-beat,
+  .sc-frame__page,
+  .sc-veil,
+  .sc-sheet,
+  .sc-tabs__pill {
+    transition: none !important;
+  }
+}
+.sc-pop[data-phase="leave"] {
+  opacity: 0;
+}
+
+.sc-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+}
+.sc-head__name {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sc-head .sc-tabs,
+.sc-head .sc-close {
+  flex: none;
+}
+/* A narrower window (1024px screens) tightens the tabs so the name keeps its room. */
+.sc-pop {
+  container-type: inline-size;
+}
+@container (max-width: 620px) {
+  .sc-pop .sc-tabs__tab {
+    padding: 0 11px;
+    font-size: 12.5px;
+  }
+  .sc-pop .sc-head {
+    gap: 10px;
+  }
+}
+.sc-close {
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(10, 22, 40, 0.12);
+  background: rgba(255, 255, 255, 0.6);
+  color: inherit;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+[data-theme="dark"] .sc-close {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+}
+.sc-close:focus-visible,
+.sc-tabs__tab:focus-visible,
+.sc-live:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* Tabs: a sliding pill, with the auto-advance shown as a fill under the first tab. */
+.sc-tabs {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: repeat(var(--sc-n, 2), 1fr);
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(10, 22, 40, 0.06);
+}
+[data-theme="dark"] .sc-tabs {
+  background: rgba(255, 255, 255, 0.07);
+}
+.sc-tabs__pill {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / var(--sc-n, 2));
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(10, 22, 40, 0.18);
+  transform: translateX(calc(100% * var(--sc-at, 0)));
+  transition: transform 420ms var(--sc-ease-move);
+}
+[data-theme="dark"] .sc-tabs__pill {
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.sc-tabs__tab {
+  position: relative;
+  z-index: 1;
+  min-height: 32px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.sc-tabs__tab[aria-selected="true"] {
+  opacity: 1;
+}
+.sc-tabs__fill {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 4px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-primary);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sc-tabs[data-auto] .sc-tabs__fill {
+    animation: sc-fill var(--sc-dwell, 3700ms) linear forwards;
+  }
+}
+@keyframes sc-fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.sc-caption {
+  margin: 0;
+  min-height: 2.6em;
+  font-size: 14px;
+  line-height: 1.45;
+  color: inherit;
+  opacity: 0.86;
+}
+.sc-foot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.sc-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(127, 140, 160, 0.6);
+}
+
+/* ── Phone sheet (touch, or under 900px) ────────────────────── */
+.sc-scrim {
+  position: fixed;
+  /* -1px: Firefox snaps a fractionally scrolled page and this fixed layer
+     differently, leaving the page's top device-pixel row uncovered. */
+  inset: -1px 0 0 0;
+  z-index: 1100; /* above the site's floating nav: the sheet is modal */
+  /* Opaque in the strip above the sheet (it sits at 12px), so the page's
+     giant headline never peeks out there (critique r2). */
+  background: linear-gradient(#0a1628 0, #0a1628 40px, rgba(10, 22, 40, 0.58) 120px);
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+.sc-scrim[data-phase="open"] {
+  opacity: 1;
+}
+/* Pinned to one top on every phone and every slug (critique A11). */
+.sc-sheet {
+  position: fixed;
+  z-index: 1101;
+  left: 0;
+  right: 0;
+  top: max(12px, env(safe-area-inset-top));
+  bottom: 0;
+  border-radius: 28px 28px 0 0;
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transform: translateY(105%);
+  transition: transform 460ms var(--sc-ease-sheet);
+}
+.sc-sheet[data-phase="open"] {
+  transform: none;
+}
+.sc-sheet[data-phase="leave"] {
+  transition-duration: 220ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+/* The sheet is modal over a scrim: denser tint, so page text never ghosts
+   through where a browser draws no blur (Playwright WebKit showed it at 390). */
+.sc-sheet.sc-glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(246, 249, 252, 0.9));
+}
+[data-theme="dark"] .sc-sheet.sc-glass {
+  background: linear-gradient(180deg, rgba(24, 38, 62, 0.94), rgba(10, 22, 40, 0.92));
+}
+.sc-sheet__grip {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 40px;
+  height: 5px;
+  margin-left: -20px;
+  border-radius: 3px;
+  background: rgba(127, 140, 160, 0.5);
+}
+/* The site nav steps back while the sheet is up, and the page under it stops scrolling. */
+html.sc-sheet-open {
+  overflow: hidden;
+}
+html.sc-sheet-open .ps-header {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease-out;
+}
+/* The stage gets exactly the height the header row, tab row, caption and
+   buttons leave, and the frame fits inside it: no overlap with the tabs at
+   320 (critique A3). Frame height = 28px chrome + width x 600/390. */
+.sc-sheet__stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  container-type: size;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Phones: the frames fill the stage and crop the picture vertically, so it
+   keeps a readable scale instead of shrinking the whole phone (at 320x568 a
+   fixed-ratio phone was 127px wide). */
+.sc-sheet .sc-stage--fill {
+  box-sizing: border-box;
+  width: calc(100cqw + 4px);
+  height: calc(100cqh + 4px);
+}
+.sc-stage--fill .sc-beat {
+  height: 100%;
+}
+.sc-frame--fill {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.sc-frame--fill .sc-frame__view,
+.sc-frame--fill .sc-frame__portal {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+@media (min-width: 600px) {
+  .sc-sheet .sc-stage {
+    width: min(100cqw, calc((100cqh - 32px) * 1.6), 860px);
+  }
+}
+.sc-sheet .sc-frame__chrome {
+  height: 28px;
+}
+/* Two rows on a phone: name and close, then the tabs across the full width. */
+.sc-sheet .sc-head {
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+.sc-sheet .sc-head__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  order: 1;
+}
+.sc-sheet .sc-close {
+  order: 2;
+  margin-left: 0;
+  width: 44px;
+  height: 44px;
+}
+.sc-sheet .sc-tabs {
+  order: 3;
+  flex-basis: 100%;
+}
+.sc-sheet .sc-tabs__tab {
+  min-height: 36px;
+}
+.sc-frame--phone .sc-frame__label {
+  font-size: 11.5px;
+  padding: 2px 8px;
+}
+.sc-frame--phone .sc-frame__chrome {
+  gap: 7px;
+  padding: 0 9px;
+}
+.sc-sheet .sc-caption {
+  flex: none;
+  text-align: center;
+  font-size: 13.5px;
+  /* three lines reserved, so the frame does not jump when the caption changes */
+  min-height: calc(3 * 1.45em);
+}
+.sc-sheet .sc-head,
+.sc-sheet .sc-foot {
+  flex: none;
+}
+.sc-sheet .sc-foot {
+  justify-content: center;
+}
+
+/* ── Their mobile site, in a phone (the sheet's website beat) ── */
+.sc-phone {
+  margin: 0 auto;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 30px;
+  border: 5px solid #0d0f12;
+  background: #fff;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 18px 44px -16px rgba(10, 22, 40, 0.55);
+}
+/* As wide as the stage allows, never wider than a phone is for its height. */
+.sc-stage--fill .sc-phone {
+  width: min(100%, max(calc((100cqh + 4px) * 0.62), 80%));
+}
+.sc-phone__status {
+  flex: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 26px;
+  padding: 0 18px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #0a0a0a;
+  background: #fff;
+  text-rendering: geometricPrecision;
+}
+.sc-phone__island {
+  position: absolute;
+  left: 50%;
+  top: 5px;
+  width: 64px;
+  height: 17px;
+  margin-left: -32px;
+  border-radius: 999px;
+  background: #0d0f12;
+}
+.sc-phone__icons {
+  display: inline-flex;
+  gap: 3px;
+}
+.sc-phone__icons i {
+  width: 13px;
+  height: 7px;
+  border-radius: 2px;
+  background: #0a0a0a;
+}
+.sc-phone__icons i:first-child {
+  width: 10px;
+  border-radius: 1px;
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+}
+.sc-phone__view {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.sc-phone__bar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  height: 34px;
+  background: #f4f5f7;
+  border-top: 1px solid #e3e6ea;
+}
+.sc-phone__bar span {
+  padding: 3px 14px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #e0e4ea;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #334155;
+  text-rendering: geometricPrecision;
+}

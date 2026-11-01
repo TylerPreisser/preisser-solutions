@@ -1,0 +1,1052 @@
+/* ============================================================
+   portal.css — the MarCommand portal, recreated for the showcase beats.
+   Source of the look: marcommand-marketing-engine packages/portal-ui
+   (overview/*.css, ai/ai.css, ai/answer.css, chart/chart.css), rendered on
+   its harness 2026-11-01. Every colour is a --pt-* token the client's theme
+   sets (themeStyle in shared.tsx); only --pt-* is declared here.
+
+   Motion:
+     streams   1100ms ease-out, 70ms apart      each stream draws from its card
+     people    1400ms linear, forever           dots flow along the wide streams
+     numbers   1100ms+ ease-out cubic           stage band counts up (JS)
+     camera    900-1500ms ease-in-out           phone: along the dashboard
+     answer    420ms, 110ms apart               blocks land one after another
+     bars      700ms ease-out                   chart bars grow
+   Reduced motion: none of it; every beat shows its end state.
+   ============================================================ */
+
+.sc-frame__portal {
+  background: var(--pt-ground);
+}
+.pt-root {
+  color: var(--pt-ink);
+  font-family: var(--pt-body);
+}
+.pt-fitbox {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.pt-fit {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  transition: transform var(--pt-move-ms, 1000ms) cubic-bezier(0.65, 0, 0.35, 1);
+  /* Chromium spaces hinted glyphs apart when a picture is scaled (critique A2). */
+  text-rendering: geometricPrecision;
+}
+.pt-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--pt-ground);
+  color: var(--pt-ink);
+  font-family: var(--pt-body);
+  font-size: 13px;
+  line-height: 1.35;
+  overflow: hidden;
+}
+.pt-screen p {
+  margin: 0;
+}
+.pt-k {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pt-ink-soft);
+}
+
+/* ── Top bar ──────────────────────────────────────────────── */
+.pt-top {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 10px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.pt-seg {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 9px;
+  background: var(--pt-ground-deep);
+}
+.pt-seg span {
+  padding: 4px 13px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--pt-ink-soft);
+}
+.pt-seg span.is-on {
+  background: var(--pt-card);
+  color: var(--pt-ink);
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+.pt-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--pt-ground-deep);
+  background: var(--pt-card);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.pt-chip--quiet {
+  font-weight: 500;
+  color: var(--pt-ink-soft);
+}
+.pt-chip--end {
+  margin-left: auto;
+  border-radius: 8px;
+}
+
+/* ── Funnel: stage band ───────────────────────────────────── */
+.pt-lead,
+.pt-band {
+  position: absolute;
+  top: 58px;
+  height: 92px;
+  border-bottom: 1px solid var(--pt-ground-deep);
+}
+.pt-lead__v {
+  margin-top: 6px !important;
+  font: 700 32px/1 var(--pt-display);
+  letter-spacing: -0.02em;
+}
+.pt-lead__sub {
+  margin-top: 9px !important;
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+  color: var(--pt-ink-soft);
+}
+.pt-lead__sub b {
+  color: var(--pt-ink);
+  font-weight: 700;
+}
+.pt-band {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+}
+.pt-stage__v {
+  margin-top: 6px !important;
+  font: 700 27px/1 var(--pt-display);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.pt-stage__note {
+  margin-top: 8px !important;
+  font-size: 11.5px;
+  color: var(--pt-ink-soft);
+}
+
+/* ── Funnel: streams, cone, mark ──────────────────────────── */
+.pt-flow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+}
+.pt-guide {
+  stroke: var(--pt-ink-soft);
+  stroke-opacity: 0.22;
+  stroke-width: 1;
+  stroke-dasharray: 2 5;
+}
+.pt-ring {
+  fill: var(--pt-accent);
+  fill-opacity: 0.04;
+  stroke: var(--pt-accent);
+  stroke-opacity: 0.45;
+  stroke-width: 1;
+}
+.pt-ribbon {
+  fill: none;
+  stroke-opacity: 0.88;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.pt-ribbon--halo {
+  stroke-opacity: 0.16;
+}
+.pt-funnel[data-play="1"] .pt-ribbon,
+.pt-funnel[data-play="2"] .pt-ribbon {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1100ms cubic-bezier(0.3, 0, 0.2, 1) var(--d, 0ms);
+}
+.pt-people {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-dasharray: 0.1 13;
+  opacity: 0;
+  transition: opacity 600ms ease-out;
+}
+.pt-funnel[data-play="2"] .pt-people {
+  opacity: 0.95;
+  animation: pt-flow 1400ms linear infinite;
+}
+@keyframes pt-flow {
+  to {
+    stroke-dashoffset: -13.1;
+  }
+}
+.pt-glow {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.pt-funnel[data-play="2"] .pt-glow {
+  animation: pt-pulse 2600ms ease-in-out infinite;
+}
+@keyframes pt-pulse {
+  50% {
+    transform: scale(1.12);
+    opacity: 0.7;
+  }
+}
+.pt-seal {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--pt-card);
+  color: var(--pt-ink);
+  box-shadow:
+    0 0 0 5px color-mix(in srgb, var(--pt-accent) 22%, var(--pt-card)),
+    0 6px 22px color-mix(in srgb, var(--pt-accent) 35%, transparent);
+}
+.pt-mark {
+  display: block;
+  color: var(--pt-ink);
+}
+.pt-mark--letters {
+  display: grid;
+  place-items: center;
+  font-family: var(--pt-display);
+  font-weight: 700;
+}
+
+/* Phone: the camera opens on the cards at about 0.93x on a 320 phone, so their
+   small print is drawn bigger there and every label reads at 11 css px or more. */
+.pt-funnel--phone .pt-card__sub {
+  font-size: 12.5px;
+}
+.pt-funnel--phone .pt-card__fig {
+  width: 56px;
+}
+.pt-funnel--phone .pt-card__fig small {
+  font-size: 12px;
+  letter-spacing: 0;
+}
+.pt-funnel--phone .pt-lead .pt-k,
+.pt-funnel--phone .pt-lead__sub {
+  font-size: 12.5px;
+}
+.pt-funnel--phone .pt-band .pt-k {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+}
+/* ── Funnel: the rail's cards ─────────────────────────────── */
+.pt-card {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: var(--pt-card);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--pt-ink) 7%, transparent),
+    0 2px 6px color-mix(in srgb, var(--pt-ink) 6%, transparent);
+}
+.pt-card__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  color: var(--pt-chart-2);
+  background: color-mix(in srgb, var(--pt-chart-2) 12%, var(--pt-card));
+}
+.pt-card__icon--1 {
+  color: var(--pt-accent-text);
+  background: color-mix(in srgb, var(--pt-chart-1) 13%, var(--pt-card));
+}
+.pt-card__text {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.pt-card__label {
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pt-card__sub {
+  font-size: 11px;
+  color: var(--pt-ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pt-card__fig {
+  flex: none;
+  width: 40px;
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+}
+.pt-card__fig b {
+  font: 700 19px/1 var(--pt-display);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.pt-card__fig small {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pt-ink-soft);
+}
+
+/* ── AI tab ───────────────────────────────────────────────── */
+.pt-ai__cols {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 56px;
+  bottom: 16px;
+  display: grid;
+  grid-template-columns: 372px minmax(0, 1fr);
+  gap: 24px;
+}
+.pt-ai__right {
+  position: relative;
+  min-height: 0;
+}
+.pt-ai--phone {
+  padding: 12px;
+  box-sizing: border-box;
+}
+.pt-ai__view {
+  position: relative;
+  overflow: hidden;
+  /* The column's bottom edge reads as the edge of a scroll, not a cut. */
+  -webkit-mask-image: linear-gradient(#000 calc(100% - 26px), transparent);
+  mask-image: linear-gradient(#000 calc(100% - 26px), transparent);
+}
+.pt-ai__col {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  transition: transform 1100ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+.pt-ai--phone .pt-ai__col {
+  padding-top: 2px;
+}
+/* The column is the card's offset parent, so its scroll is measured from the column. */
+.pt-ai--phone .pt-ai__right {
+  position: static;
+}
+.ai-ask {
+  display: flex;
+  gap: 8px;
+}
+.ai-ask__field {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  /* Two lines tall from the start: the whole question shows at every width,
+     wrapped, never clipped mid-word (critique r6 A2), and the field never jumps. */
+  height: 60px;
+  padding: 0 14px;
+  border: 1px solid var(--pt-ink-soft);
+  border-radius: 12px;
+  background: var(--pt-ground);
+  font-size: 15px;
+  line-height: 20px;
+  overflow: hidden;
+}
+.ai-ask.is-typing .ai-ask__field {
+  border-color: var(--pt-accent-text);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pt-accent) 18%, transparent);
+}
+.ai-ask__ph {
+  color: var(--pt-ink-soft);
+}
+.ai-ask__typed {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.ai-ask__caret {
+  display: inline-block;
+  vertical-align: -3px;
+  width: 1.5px;
+  height: 17px;
+  margin-left: 1px;
+  background: var(--pt-ink);
+  animation: pt-caret 900ms steps(1) infinite;
+}
+@keyframes pt-caret {
+  50% {
+    opacity: 0;
+  }
+}
+.ai-btn {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  height: 60px;
+  padding: 0 20px;
+  border-radius: 12px;
+  font-size: 14.5px;
+  font-weight: 700;
+  transition: transform 140ms ease-out;
+}
+.ai-btn-fill {
+  background: var(--pt-accent-text);
+  color: var(--pt-card);
+}
+.ai-btn.is-pressed {
+  transform: scale(0.94);
+  filter: brightness(0.9);
+}
+.ai-asked {
+  margin-top: 16px;
+}
+.pt-ai--phone .ai-asked {
+  margin-top: 0;
+}
+.ai-kicker {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pt-ink-soft);
+}
+.ai-question {
+  margin-top: 4px !important;
+  font: 700 20px/1.25 var(--pt-display);
+  letter-spacing: -0.01em;
+}
+.ai-working {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0 0 0 16px;
+  border-left: 2px solid var(--pt-ground-deep);
+  display: grid;
+  gap: 10px;
+  animation: pt-in 420ms ease-out both;
+}
+.ai-working li {
+  position: relative;
+  display: grid;
+  gap: 4px;
+}
+.ai-working li::before {
+  content: "";
+  position: absolute;
+  left: -22px;
+  top: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--pt-accent);
+}
+.ai-kind {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pt-accent-text);
+}
+.ai-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+.ai-chip,
+.aw-chip {
+  flex: none;
+  padding: 0 7px;
+  border: 1px solid var(--pt-ink-soft);
+  border-radius: 999px;
+  font-size: 10.5px;
+  line-height: 16px;
+  color: var(--pt-ink-soft);
+  white-space: nowrap;
+}
+.aw-chip {
+  margin-left: 8px;
+  border-color: var(--pt-ground-deep);
+  font-weight: 500;
+}
+.ai-card {
+  box-sizing: border-box;
+  background: var(--pt-card);
+  border: 1px solid var(--pt-ground-deep);
+  border-radius: 16px;
+  padding: 18px 20px;
+}
+.ai-empty {
+  height: 260px;
+  opacity: 0.6;
+}
+
+/* Working on it. Before the question is sent the card waits with its phase
+   rail at rest, so the answer column is never an empty box. */
+.aw-live.is-waiting .aw-kicker,
+.aw-live.is-waiting .aw-clock {
+  opacity: 0.55;
+}
+.pt-ai__view.is-clipped {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+.aw-live {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 300px;
+  animation: pt-in 260ms ease-out both;
+}
+.aw-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.aw-kicker {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pt-ink-soft);
+}
+.aw-clock {
+  font-size: 12.5px;
+  color: var(--pt-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.aw-phases {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+.aw-stop {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+.aw-bar {
+  position: relative;
+  height: 4px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--pt-ground-deep);
+}
+.aw-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--pt-accent-text);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+.aw-stop[data-stop="done"] .aw-bar::after {
+  transform: none;
+}
+.aw-stop[data-stop="now"] .aw-bar {
+  background: color-mix(in srgb, var(--pt-accent) 25%, var(--pt-card));
+}
+.aw-stop[data-stop="now"] .aw-bar::after {
+  background: var(--pt-accent);
+  animation: pt-run 1200ms cubic-bezier(0.3, 0, 0.2, 1) both;
+}
+@keyframes pt-run {
+  from {
+    transform: scaleX(0.05);
+  }
+  to {
+    transform: scaleX(0.85);
+  }
+}
+.aw-stop__label {
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--pt-ink-soft);
+}
+.aw-stop[data-stop="now"] .aw-stop__label {
+  color: var(--pt-ink);
+  font-weight: 700;
+}
+.aw-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+  align-content: start;
+}
+.aw-row {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  column-gap: 12px;
+  align-items: start;
+  padding: 6px 8px;
+  margin: 0 -8px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  line-height: 20px;
+  color: var(--pt-ink-soft);
+  animation: pt-in 200ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+.aw-row[data-step-state="running"] {
+  color: var(--pt-ink);
+  font-weight: 600;
+  background: color-mix(in srgb, var(--pt-accent) 8%, var(--pt-card));
+}
+.aw-glyph {
+  display: grid;
+  place-items: center;
+  height: 20px;
+  color: var(--pt-accent-text);
+  font-weight: 700;
+}
+.aw-t {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.aw-spin {
+  animation: pt-spin 800ms linear infinite;
+}
+@keyframes pt-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.aw-tick {
+  stroke-dasharray: 12;
+  stroke-dashoffset: 12;
+  animation: pt-draw 240ms ease-out forwards;
+}
+@keyframes pt-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pt-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* The answer (ai/answer.css, at the card's narrow container sizes). */
+.ai-answer {
+  overflow: hidden;
+  max-height: 100%;
+  padding: 18px 20px 16px;
+}
+.pt-ai--phone .ai-answer {
+  max-height: none;
+}
+.ai-answer__body {
+  transition: transform 2400ms cubic-bezier(0.45, 0, 0.3, 1);
+}
+.aa-in {
+  animation: pt-in 420ms cubic-bezier(0.2, 0, 0, 1) both;
+  animation-delay: calc(var(--i, 0) * 110ms);
+}
+.aa-head {
+  font: 700 21px/27px var(--pt-display);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.aa-figs {
+  margin: 14px 0 0;
+  display: grid;
+  grid-template-columns: repeat(var(--aa-cols, 4), minmax(0, 1fr));
+  border-top: 1px solid var(--pt-ground-deep);
+  border-bottom: 1px solid var(--pt-ground-deep);
+  overflow: hidden;
+}
+.aa-figs[data-n="3"] {
+  --aa-cols: 3;
+}
+.pt-ai--phone .aa-figs[data-n="4"] {
+  --aa-cols: 2;
+}
+.aa-fig {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 3px;
+  margin: 0;
+  padding: 10px 8px 10px 12px;
+  box-shadow:
+    -1px 0 0 var(--pt-ground-deep),
+    0 -1px 0 var(--pt-ground-deep);
+  min-width: 0;
+}
+.aa-fig:first-child,
+.pt-ai--phone .aa-fig:nth-child(odd) {
+  padding-left: 0;
+}
+.aa-fig dt {
+  font-size: 11.5px;
+  line-height: 15px;
+  color: var(--pt-ink-soft);
+}
+.aa-fig dd {
+  margin: 0;
+  font: 700 24px/28px var(--pt-display);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+}
+.aa-chart {
+  margin-top: 14px;
+}
+.ch-title {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px !important;
+}
+.ch-bars {
+  display: grid;
+  gap: 6px;
+}
+.ch-row {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr) 40px;
+  align-items: center;
+  column-gap: 10px;
+  font-size: 11.5px;
+}
+.ch-label {
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ch-track {
+  position: relative;
+  height: 18px;
+  border-left: 1px solid var(--pt-ink-soft);
+}
+.ch-grid {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 1px;
+  background: var(--pt-ground-deep);
+}
+.ch-bar {
+  position: absolute;
+  left: 0;
+  top: 1px;
+  bottom: 1px;
+  border-radius: 0 3px 3px 0;
+  background: var(--pt-chart-1);
+  transform-origin: left;
+  animation: pt-grow 700ms cubic-bezier(0.2, 0, 0, 1) both;
+  animation-delay: calc(240ms + var(--b, 0) * 90ms);
+}
+@keyframes pt-grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+.ch-val {
+  position: absolute;
+  top: 50%;
+  margin-left: 6px;
+  transform: translateY(-50%);
+  font-weight: 700;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.ch-axis .ch-track {
+  height: 14px;
+  border-left-color: transparent;
+}
+.ch-tick {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: 10.5px;
+  color: var(--pt-ink-soft);
+}
+.aa-sec {
+  margin-top: 14px;
+}
+.aa-k {
+  margin-bottom: 7px !important;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pt-ink-soft);
+}
+.aa-means {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.aa-means li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 13.5px;
+  line-height: 19px;
+  text-wrap: pretty;
+}
+.aa-means li::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pt-accent);
+}
+.aa-plan {
+  padding-top: 12px;
+  border-top: 1px solid var(--pt-ground-deep);
+}
+.aa-next {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 7px;
+  counter-reset: aa;
+}
+.aa-next li {
+  counter-increment: aa;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  column-gap: 10px;
+  font-size: 13.5px;
+  line-height: 19px;
+}
+.aa-next li::before {
+  content: counter(aa);
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--pt-accent-text);
+  color: var(--pt-accent-text);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: center;
+}
+.ai-sources {
+  margin-top: 12px !important;
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--pt-ink-soft);
+}
+.ai-sources strong {
+  color: var(--pt-ink);
+}
+
+/* ── AI at work: a queue ─────────────────────────────────── */
+.pt-aw--desk {
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+  gap: 24px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+.pt-aw--phone {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 12px;
+  box-sizing: border-box;
+}
+.pt-q {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.pt-q__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 10px;
+  row-gap: 2px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--pt-card);
+  border: 1px solid var(--pt-ground-deep);
+  opacity: 0.55;
+  transition: opacity 300ms ease-out;
+}
+.pt-q__item[data-state="now"] {
+  opacity: 1;
+  border-color: var(--pt-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pt-accent) 15%, transparent);
+}
+.pt-q__item[data-state="done"] {
+  opacity: 1;
+}
+.pt-q__src {
+  grid-row: span 2;
+  align-self: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--pt-ground-deep);
+}
+.pt-q__title {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pt-q__from {
+  font-size: 11.5px;
+  color: var(--pt-ink-soft);
+}
+.pt-q__result {
+  grid-column: 2;
+  justify-self: start;
+  margin-top: 4px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--pt-accent-text);
+  background: color-mix(in srgb, var(--pt-accent) 12%, var(--pt-card));
+}
+.pt-w {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+.pt-w__title {
+  font: 700 20px/1.25 var(--pt-display);
+}
+.pt-w__result {
+  justify-self: start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  color: var(--pt-card);
+  background: var(--pt-accent-text);
+  animation: pt-in 300ms ease-out both;
+}
+.pt-w__done {
+  font-weight: 600;
+  color: var(--pt-ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pt-root *,
+  .pt-root *::before,
+  .pt-root *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .pt-root .pt-ribbon {
+    stroke-dashoffset: 0;
+  }
+  .pt-root .pt-people {
+    opacity: 0.95;
+  }
+  .pt-root .aw-tick {
+    stroke-dashoffset: 0;
+  }
+  .pt-root .ai-answer,
+  .pt-root .pt-ai__view {
+    overflow: auto;
+  }
+}
+
+/* ── Phone AI column, 320 wide (round 7) ───────────────────────
+   Scaled to the sheet's width (0.89x at a 320 phone), so 12.5 px native is
+   the floor for every face (critique r6 A4, the owner's 11 css px floor). */
+.pt-ai--phone .ai-ask__field {
+  height: auto;
+  min-height: 62px;
+  padding: 8px 12px;
+  font-size: 14.5px;
+}
+.pt-ai--phone .ai-btn {
+  height: auto;
+  padding: 0 14px;
+}
+.pt-ai--phone .ai-kicker,
+.pt-ai--phone .aw-kicker,
+.pt-ai--phone .aw-clock,
+.pt-ai--phone .aw-stop__label,
+.pt-ai--phone .aw-t,
+.pt-ai--phone .aw-chip,
+.pt-ai--phone .ai-chip,
+.pt-ai--phone .aa-fig dt,
+.pt-ai--phone .ch-title,
+.pt-ai--phone .ch-row,
+.pt-ai--phone .ch-val,
+.pt-ai--phone .ch-tick,
+.pt-ai--phone .aa-k,
+.pt-ai--phone .ai-sources {
+  font-size: 12.5px;
+}
+.pt-ai--phone .aa-means li,
+.pt-ai--phone .aa-next li,
+.pt-ai--phone .aw-row {
+  font-size: 14px;
+}
+.aw-now {
+  display: none;
+}
+.pt-ai--phone .aw-stop__label {
+  display: none;
+}
+.pt-ai--phone .aw-now {
+  display: block;
+  margin-top: -4px !important;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--pt-ink);
+}
+/* The phone chart is narrow: only its first and last ticks are labelled, so
+   "$0 $100 $200 $300" never runs together. */
+.pt-ai--phone .ch-axis .ch-tick:not(:first-child):not(:last-child) {
+  visibility: hidden;
+}

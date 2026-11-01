@@ -287,6 +287,58 @@ function report(V, summary) {
   console.log(V.length ? `\nFAIL  ${V.length} violation(s). ${summary}` : `PASS  ${summary}`);
 }
 
+const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml", ".webp": "image/webp", ".png": "image/png", ".woff2": "font/woff2", ".txt": "text/plain" };
+
+/**
+ * Serves out/ at http://probe.local, opens the home page at a desktop and a
+ * phone width, clicks every showcase card ([aria-haspopup=dialog] toggles) and
+ * returns each window's HTML, with the client slug read from the stages.
+ */
+async function showcaseStages(browser) {
+  const docs = [];
+  let cards = 0;
+  for (const width of [1440, 390]) {
+    const context = await browser.newContext({
+      viewport: { width, height: width > 900 ? 900 : 844 },
+      reducedMotion: "reduce",
+      hasTouch: width < 900,
+      isMobile: width < 900,
+    });
+    await context.route("**/*", (r) => {
+      const u = new URL(r.request().url());
+      if (u.host !== "probe.local") return r.abort();
+      let f = path.join(OUT, decodeURIComponent(u.pathname));
+      if (!f.startsWith(OUT)) return r.abort();
+      if (fs.existsSync(f) && fs.statSync(f).isDirectory()) f = path.join(f, "index.html");
+      else if (!fs.existsSync(f) && fs.existsSync(`${f}.html`)) f = `${f}.html`;
+      if (!fs.existsSync(f)) return r.fulfill({ status: 404, body: "" });
+      return r.fulfill({ status: 200, body: fs.readFileSync(f), contentType: MIME[path.extname(f)] || "application/octet-stream" });
+    });
+    const page = await context.newPage();
+    await page.goto("http://probe.local/", { waitUntil: "load" });
+    const toggles = page.locator("article [aria-haspopup='dialog']");
+    const n = await toggles.count();
+    cards = Math.max(cards, n);
+    for (let i = 0; i < n; i++) {
+      const t = toggles.nth(i);
+      await t.evaluate((el) => el.closest("article").scrollIntoView({ block: "center" }));
+      await t.evaluate((el) => el.click());
+      const dlg = page.locator("[role=dialog] .sc-beat").first();
+      await dlg.waitFor({ state: "attached", timeout: 15000 });
+      // Every beat is drawn (only one is on screen); wait for the stages' end state.
+      await page.waitForFunction(() => document.querySelectorAll("[role=dialog] [data-demo-stage]").length > 0, null, { timeout: 15000 });
+      await page.waitForTimeout(400);
+      const html = await page.evaluate(() => `<!doctype html><html><body>${document.querySelector("[role=dialog]").outerHTML}</body></html>`);
+      const slug = await page.evaluate(() => (document.querySelector("[role=dialog] [data-demo-stage]")?.getAttribute("data-demo-stage") || "").replace(/-(funnel|ai|ai-work|scene)$/, ""));
+      docs.push({ slug, width, html });
+      await page.keyboard.press("Escape");
+      await page.waitForFunction(() => !document.querySelector("[role=dialog] .sc-beat"), null, { timeout: 5000 });
+    }
+    await context.close();
+  }
+  return { cards, docs };
+}
+
 async function main() {
   const dir = path.join(OUT, "case-studies");
   if (!fs.existsSync(dir)) throw new ConfigError(`no built export at ${dir}. Run \`npm run build\` first; this probe builds nothing.`);
@@ -297,10 +349,10 @@ async function main() {
   const hub = path.join(OUT, "case-studies.html");
   if (fs.existsSync(hub)) files.push(hub);
   if (files.length === 0) throw new ConfigError(`no case-study pages in ${dir}`);
-
   const browser = await chromium.launch();
   const V = [];
   let stageCount = 0;
+  let showcaseSummary = "";
   try {
     const { context, page } = await newPage(browser);
     for (const f of files) {
@@ -310,12 +362,27 @@ async function main() {
       const route = `/${path.relative(OUT, f).replace(/\.html$/, "")}`;
       for (const v of res.violations) V.push({ page: route, ...v });
     }
+    // The home page's product showcases (ADR-0020) render their stages only
+    // after a click, from a lazy chunk, so the static scan above cannot see
+    // them. Open every showcase card on the built home page and scan what the
+    // window draws, under reduced motion so every beat sits at its end state.
+    if (!process.env.PS_OUT_DIR) {
+      const shown = await showcaseStages(browser);
+      if (shown.cards === 0) throw new ConfigError("the built home page has no showcase card to open");
+      for (const s of shown.docs) {
+        const res = await checkHtml(page, s.html, cfgFor(s.slug, sets, common, deny));
+        stageCount += res.stages.length;
+        if (res.stages.length === 0) V.push({ page: `/ (${s.slug}, ${s.width}px)`, rule: "label", stage: null, detail: "the showcase window drew no stage" });
+        for (const v of res.violations) V.push({ page: `/ (${s.slug}, ${s.width}px)`, ...v });
+      }
+      showcaseSummary = `, ${shown.cards} showcase windows`;
+    }
     await context.close();
   } finally {
     await browser.close();
   }
   V.push(...sourceChecks(deny), ...siteChecks(deny));
-  report(V, `${files.length} pages, ${stageCount} stages, ${deny.length} deny entries, ${sets.length} registry sets`);
+  report(V, `${files.length} pages${showcaseSummary}, ${stageCount} stages, ${deny.length} deny entries, ${sets.length} registry sets`);
   return V.length ? 1 : 0;
 }
 

@@ -15,6 +15,11 @@ import { invented as shared } from "./invented/_shared";
 import { invented as backOffice } from "./invented/preisser-back-office";
 import { invented as farmbooks } from "./invented/farmbooks";
 import { invented as nwks } from "./invented/nwks-encounter";
+import { invented as dufferGolf } from "./invented/duffer-golf";
+import { invented as haysAcademy } from "./invented/hays-academy";
+import { invented as hgOil } from "./invented/hg-oil";
+import { invented as nwksBeds } from "./invented/nwks-encounter-beds";
+import { invented as farmbooksScene } from "./invented/farmbooks-scene";
 
 export type InventedDomain = `${string}.example`;
 
@@ -74,7 +79,7 @@ export interface InventedSet {
   assets: readonly StageAsset[];
 }
 
-export const INVENTED_SETS: readonly InventedSet[] = [shared, backOffice, farmbooks, nwks];
+export const INVENTED_SETS: readonly InventedSet[] = [shared, backOffice, farmbooks, nwks, dufferGolf, haysAcademy, hgOil, nwksBeds, farmbooksScene];
 
 function index<T extends { id: string }>(kind: string, pick: (s: InventedSet) => readonly T[]): Map<string, T> {
   const map = new Map<string, T>();

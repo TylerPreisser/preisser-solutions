@@ -1,0 +1,970 @@
+/* ============================================================
+   hg-swd.css — HG Oil saltwater close (automation). The sheet is
+   their spreadsheet, so it stays spreadsheet white in both themes.
+   ============================================================ */
+
+.swd-left {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 600ms var(--scn-ease),
+    transform 600ms var(--scn-ease);
+}
+.swd-left.is-in {
+  opacity: 1;
+  transform: none;
+}
+/* Desk: once the tie-out and files cards sit over it, the sheet leaves. A
+   glass card's blur is not a reliable cover: engines that skip backdrop-filter
+   showed the sheet's rate column through it. */
+.swd--desk .swd-left.is-behind {
+  opacity: 0;
+}
+.swd--desk .swd-left {
+  left: 40px;
+  top: 96px;
+  width: 620px;
+  height: 588px;
+  padding: 20px;
+  gap: 18px;
+}
+.swd--phone .swd-left {
+  left: 10px;
+  right: 10px;
+  top: 46px;
+  padding: 8px;
+  gap: 8px;
+}
+
+/* The sheet */
+.swd-sheet {
+  overflow: hidden;
+  background: #fff;
+  color: #1f2937;
+  border: 1px solid #d6dbe1;
+}
+.swd--desk .swd-sheet {
+  border-radius: 12px;
+  font-size: 18px;
+}
+.swd--desk .swd-sheet td {
+  padding-top: 0.78em !important;
+  padding-bottom: 0.78em !important;
+}
+.swd--phone .swd-sheet {
+  border-radius: 8px;
+  font-size: 9.5px;
+}
+.swd-sheet__tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.6em 0.8em;
+  background: #f3f6f4;
+  border-bottom: 1px solid #d6dbe1;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.swd--phone .swd-sheet__tab {
+  padding: 0.5em 0.7em;
+}
+.swd-xl {
+  display: inline-grid;
+  place-items: center;
+  width: 1.35em;
+  height: 1.35em;
+  border-radius: 0.25em;
+  background: #107c41;
+  color: #fff;
+  font-size: 0.85em;
+}
+.swd-sheet__meta {
+  margin-left: auto;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.swd-sheet table,
+.swd-tie table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.swd-sheet th,
+.swd-sheet td {
+  padding: 0.55em 0.7em;
+  border-bottom: 1px solid #e8ecef;
+  border-right: 1px solid #eef1f3;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.swd--phone .swd-sheet th,
+.swd--phone .swd-sheet td {
+  padding: 0.5em 0.6em;
+}
+.swd-sheet th {
+  background: #fafbfb;
+  color: #6b7280;
+  font-weight: 650;
+  font-size: 0.85em;
+}
+.swd-sheet th:nth-child(1) {
+  width: 44%;
+}
+.swd-sheet th:nth-child(3),
+.swd-sheet th:nth-child(4) {
+  width: 12%;
+}
+/* The disposal number would cost the vendor its name; the vendor is the disposal operator. */
+.swd-sheet .is-swd {
+  display: none;
+}
+.swd-rate__min {
+  display: block;
+  color: #6b7280;
+  font-size: 0.78em;
+}
+.swd--phone .swd-sheet th:nth-child(1) {
+  width: 46%;
+}
+.swd--phone .swd-sheet th:nth-child(3),
+.swd--phone .swd-sheet th:nth-child(4) {
+  width: 13%;
+}
+.is-num {
+  text-align: right !important;
+}
+.swd-sheet tr.is-caught td {
+  background: #fff7e6;
+}
+/* The field's correction: 98 gives way to 103, the cell lights up green. */
+.swd-edit {
+  position: relative;
+  overflow: visible !important;
+  background: #e8f7ef;
+  box-shadow: inset 0 0 0 2px #107c41;
+}
+.swd-edit__cell {
+  display: inline-grid;
+}
+.swd-edit__cell > * {
+  grid-area: 1 / 1;
+  text-align: right;
+}
+.swd-edit__was {
+  opacity: 0;
+}
+.swd-edit__now {
+  font-weight: 750;
+  color: #0b6b36;
+}
+.swd-edit__note {
+  display: table;
+  margin: 0.25em 0 0 auto;
+  padding: 0.12em 0.5em;
+  border-radius: 999px;
+  background: #107c41;
+  color: #fff;
+  font-size: 0.62em;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.scn[data-step="1"] .swd-edit {
+  animation: swd-cell 1.6s ease both;
+}
+.scn[data-step="1"] .swd-edit__was {
+  animation: swd-was 1.6s ease both;
+}
+.scn[data-step="1"] .swd-edit__now {
+  animation: swd-now 1.6s ease both;
+}
+.scn[data-step="1"] .swd-edit__note {
+  animation: swd-note 500ms var(--scn-ease) 900ms both;
+}
+@keyframes swd-cell {
+  0%,
+  45% {
+    background: #fff;
+    box-shadow: inset 0 0 0 2px #2563eb;
+  }
+}
+@keyframes swd-was {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes swd-now {
+  0%,
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes swd-note {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+/* The Run bar */
+.swd-run {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+}
+.swd--desk .swd-run {
+  gap: 18px;
+  font-size: 20px;
+}
+.swd--phone .swd-run {
+  gap: 8px;
+  font-size: 11px;
+}
+.swd-run__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.55em 1.1em 0.55em 0.85em;
+  border-radius: 999px;
+  background: #003a89;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 8px 20px -8px rgba(0, 58, 137, 0.8);
+}
+.swd-run__btn svg {
+  width: 1em;
+  height: 1em;
+}
+.swd-run__btn.is-pressed {
+  animation: swd-press 700ms ease both;
+}
+@keyframes swd-press {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(143, 193, 255, 0.9);
+  }
+  30% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 18px rgba(143, 193, 255, 0);
+  }
+}
+.swd-run__bar {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.3em;
+}
+.swd-seg {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+.swd-seg i {
+  display: block;
+  height: 0.5em;
+  border-radius: 999px;
+  background: var(--scn-glass-edge);
+  overflow: hidden;
+  position: relative;
+}
+.swd-seg i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--scn-good);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 600ms var(--scn-ease);
+  transition-delay: var(--scn-d, 0ms);
+}
+.swd-seg.is-done i::after {
+  transform: none;
+}
+.swd-seg b {
+  color: var(--scn-ink-3);
+  font-size: 0.72em;
+  font-weight: 650;
+  transition: color 300ms ease;
+  transition-delay: var(--scn-d, 0ms);
+}
+.swd-seg.is-done b {
+  color: var(--scn-ink);
+}
+.swd-run__clock {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-weight: 700;
+  font-size: 1.4em;
+  min-width: 2.6em;
+  text-align: right;
+}
+
+/* ── Beat cards (right) ─────────────────────────────────────── */
+.swd-stage {
+  position: absolute;
+}
+.swd--desk .swd-stage {
+  left: 684px;
+  top: 96px;
+  width: 556px;
+  height: 588px;
+}
+.swd--phone .swd-stage {
+  left: 10px;
+  right: 10px;
+  top: 246px;
+  height: 290px;
+}
+.swd-card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+.swd--desk .swd-card.scn-glass {
+  padding: 24px 26px;
+  gap: 18px;
+}
+.swd--phone .swd-card.scn-glass {
+  padding: 11px 12px;
+  gap: 8px;
+}
+/* On the phone a card is as tall as what it says, never a tall empty pane. */
+.swd--phone .swd-card {
+  bottom: auto;
+}
+.swd--phone .swd-tie__note {
+  margin-top: 4px !important;
+}
+.swd-card__kicker {
+  color: var(--scn-ink-2);
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.swd--desk .swd-card__kicker {
+  font-size: 15px;
+}
+.swd--phone .swd-card__kicker {
+  font-size: 8.5px;
+}
+.swd-mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Run log */
+.swd--desk .swd-log {
+  font-size: 21px;
+}
+.swd--phone .swd-log {
+  font-size: 11.5px;
+}
+.swd-log__field {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 500ms ease 800ms,
+    transform 500ms var(--scn-ease) 800ms;
+}
+.swd-log__field.is-on {
+  opacity: 1;
+  transform: none;
+}
+.swd-log__field b {
+  color: var(--scn-good);
+}
+.swd-dot {
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  background: var(--scn-good);
+}
+.swd-log__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+.swd--desk .swd-log__lines {
+  font-size: 18px;
+}
+.swd--phone .swd-log__lines {
+  font-size: 9.5px;
+}
+.swd-log__lines p {
+  display: flex;
+  color: var(--scn-ink-3);
+  justify-content: space-between;
+  gap: 0.6em;
+  padding: 0.55em 0.7em;
+  border-radius: 0.5em;
+  background: var(--scn-glass-hi);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 400ms ease,
+    transform 400ms var(--scn-ease);
+  transition-delay: calc(var(--scn-i) * 650ms + 300ms);
+}
+.swd-log__lines p.is-on {
+  opacity: 1;
+  transform: none;
+}
+.swd-log__lines p.is-done {
+  color: var(--scn-ink);
+}
+.swd-log__lines p .swd-ok {
+  opacity: 0;
+  transition: opacity 300ms ease;
+  transition-delay: inherit;
+}
+.swd-log__lines p.is-done .swd-ok {
+  opacity: 1;
+}
+.swd-ok {
+  color: var(--scn-good);
+  font-weight: 700;
+}
+
+/* The formula */
+.swd-eq {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.4em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.swd--desk .swd-eq {
+  font-size: 31px;
+}
+.swd--phone .swd-eq {
+  font-size: 15px;
+}
+.swd-eq span {
+  white-space: nowrap;
+}
+.swd-eq__is {
+  color: var(--scn-good);
+}
+.swd-formula.is-on .swd-eq span {
+  animation: swd-in 420ms var(--scn-ease) both;
+}
+.swd-formula.is-on .swd-eq span:nth-child(2) {
+  animation-delay: 200ms;
+}
+.swd-formula.is-on .swd-eq span:nth-child(3) {
+  animation-delay: 400ms;
+}
+.swd-formula.is-on .swd-eq span:nth-child(4) {
+  animation-delay: 750ms;
+}
+@keyframes swd-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+.swd-lines {
+  display: flex;
+  flex-direction: column;
+}
+.swd--desk .swd-lines {
+  font-size: 18px;
+}
+.swd--phone .swd-lines {
+  font-size: 10px;
+}
+.swd-lines p {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.8em;
+  padding: 0.42em 0;
+  border-bottom: 1px solid var(--scn-glass-edge);
+}
+.swd-lines p.is-first {
+  color: var(--scn-good);
+}
+.swd-lines__v {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.swd-lines__amt {
+  font-weight: 700;
+}
+.swd-lines__more {
+  display: block !important;
+  color: var(--scn-ink-2);
+  border-bottom: 0 !important;
+}
+.swd-formula.is-on .swd-lines p {
+  animation: swd-in 360ms var(--scn-ease) both;
+  animation-delay: calc(1000ms + var(--scn-i) * 170ms);
+}
+
+/* The tie-out */
+.swd-tie table {
+  color: var(--scn-ink);
+}
+.swd--desk .swd-tie table {
+  font-size: 18px;
+}
+.swd--phone .swd-tie table {
+  font-size: 10px;
+}
+.swd-tie th,
+.swd-tie td {
+  padding: 0.5em 0.35em;
+  border-bottom: 1px solid var(--scn-glass-edge);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.swd-tie th {
+  color: var(--scn-ink-2);
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.swd-tie th:nth-child(1) {
+  width: 44%;
+}
+.swd-tie th:nth-child(2),
+.swd-tie th:nth-child(3) {
+  width: 19%;
+}
+.swd-tie .is-st {
+  text-align: right;
+}
+.swd-st {
+  display: inline-block;
+  padding: 0.12em 0.55em;
+  border-radius: 999px;
+  background: rgba(52, 211, 153, 0.18);
+  color: var(--scn-good);
+  font-weight: 700;
+  font-size: 0.86em;
+}
+.swd-st.is-held {
+  background: var(--scn-bad);
+  color: #fff;
+}
+.swd-tie.is-on tbody tr {
+  animation: swd-in 360ms var(--scn-ease) both;
+  animation-delay: calc(var(--scn-i) * 130ms);
+}
+.swd-swap {
+  display: inline-grid;
+}
+.swd-swap > * {
+  grid-area: 1 / 1;
+}
+.swd-swap__bad {
+  opacity: 0;
+  color: var(--scn-bad);
+  font-weight: 700;
+}
+/* The catch is the peak of the close: "Held" stays up about 3.2 s before the fix. */
+.swd-tie.is-on .swd-swap__bad {
+  animation: swd-bad 4s ease both;
+  animation-delay: 500ms;
+}
+.swd-tie.is-on .swd-swap__good {
+  animation: swd-good 4.6s ease both;
+}
+.swd-tie.is-on .swd-tie__caught td {
+  animation: swd-flash 4.6s ease both;
+}
+@keyframes swd-bad {
+  0% {
+    opacity: 0;
+  }
+  8%,
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes swd-good {
+  0%,
+  92% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes swd-flash {
+  0%,
+  15% {
+    background: transparent;
+  }
+  22%,
+  80% {
+    background: rgba(248, 113, 113, 0.22);
+  }
+  100% {
+    background: transparent;
+  }
+}
+.swd-tie__note {
+  margin-top: auto !important;
+  font-weight: 650;
+}
+.swd--desk .swd-tie__note {
+  font-size: 20px;
+}
+.swd--phone .swd-tie__note {
+  font-size: 11px;
+}
+.swd-tie__note .swd-swap__good {
+  color: var(--scn-good);
+}
+
+/* The files land */
+.swd--desk .swd-files {
+  gap: 18px;
+}
+.swd--phone .swd-files {
+  gap: 8px;
+}
+.swd-drop {
+  display: flex;
+  flex-direction: column;
+}
+.swd--desk .swd-drop {
+  padding: 20px 24px;
+  gap: 14px;
+}
+.swd--phone .swd-drop {
+  padding: 10px 12px;
+  gap: 7px;
+}
+.swd-drop__to {
+  color: var(--scn-ink-2);
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.swd--desk .swd-drop__to {
+  font-size: 15px;
+}
+.swd--phone .swd-drop__to {
+  font-size: 8.5px;
+}
+.swd-drop__files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+.swd--desk .swd-drop__files {
+  font-size: 19px;
+}
+.swd--phone .swd-drop__files {
+  font-size: 10.5px;
+}
+.swd-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.45em 0.8em;
+  border-radius: 0.6em;
+  background: var(--scn-glass-hi);
+  border: 1px solid var(--scn-glass-edge);
+  font-weight: 650;
+}
+.swd-file i {
+  width: 0.8em;
+  height: 1em;
+  border-radius: 2px;
+  background: var(--scn-accent);
+  clip-path: polygon(0 0, 65% 0, 100% 30%, 100% 100%, 0 100%);
+}
+.swd-file.is-pack i {
+  background: var(--scn-warn);
+}
+.swd-files.is-on .swd-file {
+  animation: swd-land 560ms var(--scn-ease) both;
+  animation-delay: calc(250ms + var(--scn-i) * 180ms);
+}
+@keyframes swd-land {
+  from {
+    opacity: 0;
+    transform: translate(-80px, -30px) scale(0.85);
+  }
+}
+.swd-zero {
+  font-weight: 650;
+}
+.swd--desk .swd-zero {
+  font-size: 30px;
+  margin-top: 6px !important;
+}
+.swd--phone .swd-zero {
+  font-size: 12.5px;
+}
+.swd-zero b {
+  font-size: 1.6em;
+  color: var(--scn-good);
+  margin-right: 0.15em;
+}
+.swd-files.is-on .swd-zero {
+  animation: swd-in 500ms var(--scn-ease) 1200ms both;
+}
+
+/* ── Round 7 ──────────────────────────────────────────────────
+   Desk: the camera (swdDeskCam) pushes into the card each step is about,
+   so the held row reads at 14 css px or more and is the biggest thing on
+   screen (critique r6 C2); the spreadsheet is only read in step 1, when the
+   camera is on it. */
+.swd--desk .swd-tie__caught td {
+  font-size: 19.5px;
+  font-weight: 750;
+}
+.swd--desk .swd-tie__note {
+  margin-top: 6px !important;
+}
+.swd--desk .swd-sheet th:nth-child(1) {
+  width: 48%;
+}
+.swd--desk .swd-sheet th:nth-child(3) {
+  width: 10%;
+}
+.swd--desk .swd-sheet th:nth-child(4) {
+  width: 13%;
+}
+/* The tie-out and the files open wide over the sheet (the camera is off the
+   sheet by then), so no vendor name is cut and the held row has room to be big. */
+.swd--desk .swd-tie,
+.swd--desk .swd-files {
+  left: -170px;
+}
+.swd-took {
+  color: var(--scn-ink-2);
+  font-weight: 650;
+}
+.swd--desk .swd-took {
+  font-size: 26px;
+}
+.swd-took b {
+  margin-left: 0.2em;
+  font-size: 1.7em;
+  color: var(--scn-ink);
+  font-variant-numeric: tabular-nums;
+}
+.swd-files.is-on .swd-took {
+  animation: swd-in 500ms var(--scn-ease) 900ms both;
+}
+
+/* Phone, 300 x 520: scaled to the sheet's width, 12 px native is the floor. */
+.swd--phone .swd-left {
+  left: 8px;
+  right: 8px;
+  top: 40px;
+  padding: 7px;
+  gap: 7px;
+}
+.swd--phone .swd-sheet {
+  font-size: 12px;
+}
+.swd--phone .swd-sheet .is-swd,
+.swd--phone .swd-sheet th:nth-child(4),
+.swd--phone .swd-sheet td:nth-child(4) {
+  display: none;
+}
+.swd--phone .swd-sheet th:nth-child(3) {
+  width: 16%;
+}
+.swd--phone .swd-sheet th,
+.swd--phone .swd-sheet td {
+  padding: 3px 4px;
+  line-height: 1.2;
+}
+.swd--phone .swd-sheet th {
+  font-size: 12px;
+}
+.swd--phone .swd-sheet th:nth-child(1) {
+  width: 44%;
+}
+.swd--phone .swd-sheet td:first-child {
+  white-space: normal;
+}
+.swd--phone .swd-xl,
+.swd--phone .swd-edit__note,
+.swd--phone .swd-rate__min {
+  font-size: 12px;
+}
+.swd--phone .swd-rate__min {
+  display: none;
+}
+.swd--phone .swd-edit__note {
+  display: none;
+}
+.swd--phone .swd-run {
+  gap: 7px;
+  font-size: 12px;
+}
+.swd--phone .swd-seg b {
+  display: none;
+}
+.swd--phone .swd-run__clock {
+  font-size: 16px;
+}
+.swd--phone .swd-stage {
+  left: 8px;
+  right: 8px;
+  top: 240px;
+  height: 250px;
+}
+.swd--phone .swd-card.scn-glass {
+  padding: 9px 10px;
+  gap: 6px;
+}
+.swd--phone .swd-card__kicker,
+.swd--phone .swd-drop__to {
+  font-size: 12px;
+  letter-spacing: 0.03em;
+}
+.swd--phone .swd-log {
+  font-size: 13px;
+}
+.swd--phone .swd-log__lines {
+  font-size: 12px;
+}
+.swd--phone .swd-log__lines p {
+  padding: 3px 6px;
+}
+.swd--phone .swd-eq {
+  font-size: 16px;
+}
+.swd--phone .swd-lines {
+  font-size: 12px;
+}
+.swd--phone .swd-lines p {
+  gap: 6px;
+  padding: 3px 0;
+}
+.swd--phone .swd-lines__v {
+  white-space: normal;
+}
+.swd--phone .swd-tie table {
+  font-size: 12px;
+  table-layout: fixed;
+  width: 100%;
+}
+.swd--phone .swd-tie th {
+  font-size: 12px;
+  letter-spacing: 0;
+}
+.swd--phone .swd-tie th:nth-child(1) {
+  width: 37%;
+}
+.swd--phone .swd-tie th:nth-child(2),
+.swd--phone .swd-tie th:nth-child(3) {
+  width: 20.5%;
+}
+.swd--phone .swd-tie td,
+.swd--phone .swd-tie th {
+  text-overflow: clip;
+}
+.swd--phone .swd-tie th,
+.swd--phone .swd-tie td {
+  padding: 3px 3px;
+  line-height: 1.2;
+}
+.swd--phone .swd-tie td:first-child {
+  white-space: normal;
+}
+.swd--phone .swd-tie .swd-st {
+  font-size: 12px;
+  padding: 0 4px;
+}
+.swd--phone .swd-tie__caught td {
+  font-weight: 750;
+}
+.swd--phone .swd-tie__note {
+  font-size: 12px;
+  line-height: 1.25;
+}
+.swd--phone .swd-drop {
+  padding: 8px 10px;
+  gap: 6px;
+}
+.swd--phone .swd-drop__files {
+  font-size: 12px;
+}
+.swd--phone .swd-took {
+  font-size: 13px;
+}
+.swd--phone .swd-zero {
+  font-size: 13px;
+}
+/* The outcome card: "Closed in 0:52" and who releases the files, on its own
+   glass, so the walking beam never runs into it (critique r8 N4). The card is
+   dense enough to read without backdrop blur (Playwright WebKit draws none). */
+.swd-outcome {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 14px;
+  background: var(--scn-glass-solid, var(--scn-glass));
+}
+.swd--phone .swd-outcome {
+  padding: 8px 10px;
+}
+.swd--desk .swd-outcome {
+  padding: 16px 22px;
+  gap: 8px;
+}
+.swd-outcome .swd-zero {
+  color: var(--scn-ink);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.swd--desk .swd-outcome .swd-zero {
+  font-size: 22px;
+  margin-top: 0 !important;
+}
+.swd--phone .swd-outcome .swd-zero {
+  font-size: 12.5px;
+}
+.swd-files.is-on .swd-outcome {
+  animation: swd-in 500ms var(--scn-ease) 900ms both;
+}
+/* Desk: opened wide over the sheet, the files card carries its own glass so
+   nothing from the sheet shows through "Closed in 0:52". */
+.swd--desk .swd-files {
+  padding: 22px 24px;
+  border-radius: 22px;
+  background: var(--scn-glass);
+  border: 1px solid var(--scn-glass-edge);
+  box-shadow:
+    inset 0 1px 0 var(--scn-glass-hi),
+    var(--scn-shadow);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+}
+.swd--desk .swd-tie__caught .swd-st {
+  font-size: 1em;
+}
