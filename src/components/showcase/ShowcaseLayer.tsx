@@ -2,8 +2,13 @@
 
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
-import { showcases, type ShowcaseSlug } from "@/data/showcase";
-import { ShowcaseStage, VIEW_RATIO } from "./ShowcaseStage";
+import { loadShowcase, type ShowcaseSlug } from "@/data/showcase";
+import type { ShowcaseClient } from "@/data/showcase/types";
+import { BeatView, beatMs } from "./beats";
+import "./showcase.css";
+
+/** Every desk frame is a 1.6 : 1 picture (the 1280 x 800 site, the 960 x 600 portal). */
+const VIEW_RATIO = 0.625;
 
 /**
  * The home card's showcase (ADR-0020). Loaded only when a visitor shows intent
@@ -11,28 +16,19 @@ import { ShowcaseStage, VIEW_RATIO } from "./ShowcaseStage";
  * pays nothing for it up front.
  *
  *   popover  fine pointer and a viewport 900px or wider: a glass window that
- *            grows out of the card, shows the website scrolling, then slides
- *            to the command center. Hover-opened windows close when the pointer
- *            leaves both the card and the window; click- or key-opened ones are
+ *            grows out of the card and plays the client's beats in order
+ *            (src/data/showcase/types.ts): their website, then what we
+ *            built. Hover-opened windows close when the pointer leaves both
+ *            the card and the window; click- or key-opened ones are
  *            modal dialogs that close on Escape, the close button, or a click
  *            outside.
- *   sheet    touch, or narrower than 900px: the same two slides in a glass
- *            sheet from the bottom, inside a phone-sized frame. Swipe or tap
+ *   sheet    touch, or narrower than 900px: the same beats in a glass sheet
+ *            from the bottom; their real mobile site in a phone, the portal
+ *            beats in their desktop composition scaled to fit. Swipe or tap
  *            the tabs to move between them.
  */
 export type LayerMode = "hover" | "pinned";
 
-const DWELL_MS = 3700; // website slide, before the move to the command center
-const PAN_DELAY_MS = 420;
-const PAN_MS = 2800;
-const SLIDE_MS = 720;
-/** On the command center: the whole screen holds this long, then the camera moves in. */
-const OVERVIEW_MS = 1000;
-/** Where the camera goes on each command center: the part that moves. */
-const ZOOM: Record<ShowcaseSlug, Record<"desk" | "phone", string>> = {
-  "duffer-golf": { desk: "feed", phone: "feed" },
-  "hays-academy": { desk: "flow", phone: "flow" },
-};
 const GAP = 16; // between the card and the window
 const EDGE = 24; // between the window and the viewport edge
 const MIN_SIDE_W = 520; // narrower than this beside the card, and the card opens in place instead
@@ -45,14 +41,25 @@ export function isSheetLayout() {
   return typeof window !== "undefined" && (!window.matchMedia("(hover: hover) and (pointer: fine)").matches || window.innerWidth < 900);
 }
 
-export default function ShowcaseLayer({
-  slug,
-  anchor,
-  mode,
-  onClose,
-  onHoverChange,
-  dismissed,
-}: {
+export default function ShowcaseLayer(props: LayerProps) {
+  const [show, setShow] = useState<ShowcaseClient | null>(null);
+  const { slug } = props;
+  const closeRef = useRef(props.onClose);
+  closeRef.current = props.onClose;
+  useEffect(() => {
+    let on = true;
+    loadShowcase(slug).then(
+      (c) => on && setShow(c),
+      () => on && closeRef.current(),
+    );
+    return () => {
+      on = false;
+    };
+  }, [slug]);
+  return show ? <Layer {...props} show={show} /> : null;
+}
+
+interface LayerProps {
   slug: ShowcaseSlug;
   anchor: HTMLElement;
   mode: LayerMode;
@@ -61,15 +68,22 @@ export default function ShowcaseLayer({
   onHoverChange?: (inside: boolean) => void;
   /** The parent asks the window to leave (hover ended); it animates out, then calls onClose. */
   dismissed?: boolean;
-}) {
-  const show = showcases[slug];
+}
+
+function Layer({
+  show,
+  anchor,
+  mode,
+  onClose,
+  onHoverChange,
+  dismissed,
+}: LayerProps & { show: ShowcaseClient }) {
   const [sheet] = useState(isSheetLayout);
   const [reduced] = useState(prefersReduced);
   const [phase, setPhase] = useState<"measure" | "from" | "open" | "leave">(sheet ? "from" : "measure");
-  const [slide, setSlide] = useState<0 | 1>(0);
+  const [at, setAt] = useState(0);
   const [auto, setAuto] = useState(!reduced);
-  const [panY, setPanY] = useState(0);
-  const [live, setLive] = useState(false);
+  const beats = show.beats;
   const boxRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const [geo, setGeo] = useState<{ left: number; top: number; width: number; from: string; inPlace: boolean; hole: number[]; veilTop: number } | null>(null);
@@ -95,11 +109,11 @@ export default function ShowcaseLayer({
     const navBottom = 88;
     // Height that does not scale with width: head, caption, foot, padding, frame chrome.
     const w0 = box.offsetWidth;
-    const fixed = box.offsetHeight - (w0 - 32) * VIEW_RATIO.desk;
+    const fixed = box.offsetHeight - (w0 - 32) * VIEW_RATIO;
     const lo = Math.max(navBottom + 8, heading ? heading.bottom + 16 : 0);
-    const h720 = fixed + (720 - 32) * VIEW_RATIO.desk;
+    const h720 = fixed + (720 - 32) * VIEW_RATIO;
     const top = Math.round(Math.max(lo, Math.min(card.top, vh - 16 - h720)));
-    const wForHeight = (vh - 16 - top - fixed) / VIEW_RATIO.desk + 32;
+    const wForHeight = (vh - 16 - top - fixed) / VIEW_RATIO + 32;
     const roomR = vw - EDGE - (card.right + GAP);
     const roomL = card.left - GAP - EDGE;
     const right = roomR >= roomL;
@@ -116,7 +130,7 @@ export default function ShowcaseLayer({
       left = Math.min(Math.max(card.left + card.width / 2 - width / 2, EDGE), vw - width - EDGE);
     }
     left = Math.round(left);
-    const h = fixed + (width - 32) * VIEW_RATIO.desk;
+    const h = fixed + (width - 32) * VIEW_RATIO;
     const sx = card.width / width;
     const dx = card.left + card.width / 2 - (left + width / 2);
     const dy = card.top + card.height / 2 - (top + h / 2);
@@ -167,23 +181,14 @@ export default function ShowcaseLayer({
     };
   }, [place, sheet]);
 
-  // ── The timeline: pan the website, then move to the command center.
+  // ── The timeline: each beat plays, then the window moves to the next. The last one stays.
+  const phone = variant === "phone";
+  const dwell = beatMs(beats[at], phone);
   useEffect(() => {
-    if (phase !== "open" || !auto) return;
-    const t1 = window.setTimeout(() => setPanY(variant === "phone" ? show.pan.phone : show.pan.desk), PAN_DELAY_MS);
-    const t2 = window.setTimeout(() => setSlide(1), DWELL_MS);
-    return () => {
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
-    };
-  }, [phase, auto, variant, show]);
-
-  // The command center goes live once it has arrived, not while it slides in.
-  useEffect(() => {
-    if (slide !== 1) return setLive(false);
-    const t = window.setTimeout(() => setLive(true), reduced ? 0 : SLIDE_MS);
+    if (phase !== "open" || !auto || at >= beats.length - 1) return;
+    const t = window.setTimeout(() => setAt((i) => Math.min(i + 1, beats.length - 1)), dwell);
     return () => window.clearTimeout(t);
-  }, [slide, reduced]);
+  }, [phase, auto, at, dwell, beats.length]);
 
   // The source card hides behind a window that opened in place over it.
   useEffect(() => {
@@ -254,14 +259,14 @@ export default function ShowcaseLayer({
     return () => document.removeEventListener("keydown", onKey);
   }, [modal, close]);
 
-  // Swipe between the slides in the sheet.
+  // Swipe between the beats in the sheet.
   const swipe = useRef<{ x: number; y: number } | null>(null);
 
-  const choose = (s: 0 | 1) => {
+  const choose = (i: number) => {
     setAuto(false);
-    if (s === 0 && panY === 0) setPanY(variant === "phone" ? show.pan.phone : show.pan.desk);
-    setSlide(s);
+    setAt(Math.max(0, Math.min(beats.length - 1, i)));
   };
+  const opened = phase === "open" || phase === "leave";
 
   const body = (
     <>
@@ -269,15 +274,20 @@ export default function ShowcaseLayer({
         <p className="sc-head__name" id={titleId}>
           {show.short}
         </p>
-        <div className="sc-tabs" role="tablist" aria-label={`${show.name}: website or ${show.commandName}`} data-slide={slide} data-auto={auto && slide === 0 && phase === "open" ? "" : undefined} style={{ "--sc-dwell": `${DWELL_MS}ms` } as CSSProperties}>
+        <div
+          className="sc-tabs"
+          role="tablist"
+          aria-label={`${show.name}: ${beats.map((b) => b.tab).join(", ")}`}
+          data-auto={auto && phase === "open" && at < beats.length - 1 ? "" : undefined}
+          style={{ "--sc-dwell": `${dwell}ms`, "--sc-n": beats.length, "--sc-at": at } as CSSProperties}
+        >
           <span className="sc-tabs__pill" aria-hidden="true" />
-          <button type="button" role="tab" className="sc-tabs__tab" aria-selected={slide === 0} onClick={() => choose(0)}>
-            Website
-            <span className="sc-tabs__fill" aria-hidden="true" />
-          </button>
-          <button type="button" role="tab" className="sc-tabs__tab" aria-selected={slide === 1} onClick={() => choose(1)}>
-            {show.commandName}
-          </button>
+          {beats.map((b, i) => (
+            <button key={b.tab} type="button" role="tab" className="sc-tabs__tab" aria-selected={at === i} onClick={() => choose(i)}>
+              {b.tab}
+              {i === at ? <span key={`f${at}`} className="sc-tabs__fill" aria-hidden="true" /> : null}
+            </button>
+          ))}
         </div>
         <button type="button" className="sc-close" ref={closeRef} onClick={close} aria-label={`Close ${show.name}`}>
           <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
@@ -295,36 +305,33 @@ export default function ShowcaseLayer({
           swipe.current = null;
           if (!s) return;
           const dx = e.clientX - s.x;
-          if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(e.clientY - s.y)) choose(dx < 0 ? 1 : 0);
+          if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(e.clientY - s.y)) choose(at + (dx < 0 ? 1 : -1));
         }}
         className={sheet ? "sc-sheet__stage" : undefined}
         style={sheet ? { touchAction: "pan-y" } : undefined}
       >
-        <ShowcaseStage
-          show={show}
-          variant={variant}
-          slide={slide}
-          web={{ y: panY, panMs: auto ? PAN_MS : 760, lazy: false }}
-          cmd={{ zoom: ZOOM[show.slug][variant], zoomAfterMs: OVERVIEW_MS }}
-          live={live}
-          slideMs={SLIDE_MS}
-          fill={sheet && variant === "phone"}
-        />
+        <div className={sheet && phone ? "sc-stage sc-stage--fill" : "sc-stage"} data-at={at}>
+          {beats.map((b, i) => (
+            <div
+              key={b.tab}
+              className="sc-beat"
+              data-pos={i < at ? "past" : i === at ? "now" : "next"}
+              aria-hidden={i !== at || undefined}
+              inert={i !== at || undefined}
+            >
+              <BeatView client={show} beat={b} variant={variant} active={opened && i === at} fill={sheet && phone} reduced={reduced} />
+            </div>
+          ))}
+        </div>
       </div>
 
       <p className="sc-caption" aria-live="polite">
-        {slide === 1 && live ? show.captions.command : show.captions.website}
+        {beats[at].caption}
       </p>
 
       <div className="sc-foot">
-        <a className="sc-cta" href={`/showcase/${show.slug}`}>
-          Walk through it
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M3 8h10M9 3l5 5-5 5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </a>
-        <a className="sc-live" href={show.liveUrl} target="_blank" rel="noopener noreferrer">
-          Visit {show.liveLabel}
+        <a className="sc-live" href={show.live.url} target="_blank" rel="noopener noreferrer">
+          Visit {show.live.label}
           <span className="ps-visually-hidden"> (opens in a new tab)</span>
         </a>
       </div>

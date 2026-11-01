@@ -18,7 +18,6 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import type { AeoPageData } from "@/data/aeo/types";
 import { ALL_LOCATIONS } from "@/data/locations";
-import { showcaseList } from "@/data/showcase";
 
 const PAGE_URL = "https://preissersolutions.com/site-map";
 
@@ -183,11 +182,9 @@ function routeDerivedCaseStudies(fromData: SiteMapLink[]): SiteMapLink[] {
   return [...fromData, ...extra].sort((a, b) => a.label.localeCompare(b.label));
 }
 
-// The product showcases (ADR-0020) sit with the case studies: same kind of page.
-const caseStudies = [
-  ...routeDerivedCaseStudies(readAeoDir("case-studies", "/case-studies")),
-  ...showcaseList.map((s) => ({ href: `/showcase/${s.slug}`, label: `${s.name}: website and ${s.commandName}` })),
-].sort((a, b) => a.label.localeCompare(b.label));
+const caseStudies = routeDerivedCaseStudies(
+  readAeoDir("case-studies", "/case-studies"),
+);
 const compare = readAeoDir("compare", "/compare");
 const blog = readAeoDir("blog", "/blog");
 const insights = readAeoDir("insights", "/insights");

@@ -1,5 +1,5 @@
 // src/data/demos/invented/hays-academy.ts
-// Invented names for the /showcase page of the hair school ONLY (ADR-0016 §5, ADR-0020). Pure data:
+// Invented names for the hair school's showcase ONLY (ADR-0016 §5, ADR-0020). Pure data:
 // tests/demo-privacy.probe.mjs imports this file directly. No runtime imports.
 //
 // The school is a real, named client, but its name is on the private deny list
@@ -23,6 +23,9 @@ export const invented: InventedSet = {
     "Ads", "Social", "Search", "Direct", "Media", "Other", "Sites", "Email", "Days",
     "Spend", "Agency", "View", "Client", "Lead", "Desk", "Paid", "Organic", "Preisser", "Runs",
     "Listing", "Care", "Upkeep", "Follow-up", "Last", "Portal",
+    // The funnel and AI beats (round 5): the portal's AI tab and answer labels
+    // (portal-ui ai/copy.ts, chat/copy.ts KIND_WORDS) and the sample question.
+    "Ad", "Maps", "Ask", "Are", "Answer", "Pulled", "Compared", "Concluded", "Sources", "Cost", "Per",
   ],
   approved: [
     { name: "Google", source: "a channel named in the Hays card copy, src/components/home/case-studies.tsx" },

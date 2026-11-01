@@ -1,5 +1,5 @@
 // src/data/demos/invented/duffer-golf.ts
-// Invented names for /showcase/duffer-golf ONLY (ADR-0016 §5, ADR-0020). Pure data:
+// Invented names for the Duffer Golf showcase ONLY (ADR-0016 §5, ADR-0020). Pure data:
 // tests/demo-privacy.probe.mjs imports this file directly. No runtime imports.
 //
 // Duffer Golf is a real, named client (approved below). Every partner course and
@@ -33,6 +33,10 @@ export const invented: InventedSet = {
     "Lead", "Leads", "Visitors", "Buy", "Clicks", "Displays", "Live", "Feed", "Command", "Center",
     "Page", "View", "Still", "Reading", "KS", "iOS", "Android", "Oct", "More", "Network",
     "Days", "Central", "Needing", "Unique", "Last", "Refreshes", "Sign", "Owner",
+    // The MarCommand funnel and AI beats (round 5): the portal's tabs, stage
+    // labels and AI tab words (portal-ui overview, ai/copy.ts, chat/copy.ts).
+    "Overview", "Activity", "AI", "Partner", "Display", "Scanned", "Visited", "Orders", "Ask", "Answer",
+    "Pulled", "Compared", "Concluded", "Sources",
   ],
   approved: [
     { name: "Duffer Golf", source: "src/components/home/case-studies.tsx Duffer Golf card (owner, 2026-10-13); DECISIONS/0002" },

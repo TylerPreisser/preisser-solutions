@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { showcaseMeta, type ShowcaseSlug } from "@/data/showcase-meta";
+import { warmShowcase, type ShowcaseSlug } from "@/data/showcase";
 import type { LayerMode } from "../showcase/ShowcaseLayer";
 import { ShowcaseBoundary } from "../showcase/ShowcaseBoundary";
 
@@ -85,9 +85,9 @@ interface CaseStudyCard {
   iconNudgeY?: string;
   /**
    * The card opens the product showcase instead of the in-card panel
-   * (ADR-0020): their website, then the command center we built them, in a
-   * glass window on desktop and a sheet on a phone. Only for a named client
-   * with a public site we built AND a command center (ADR-0002 still holds).
+   * (ADR-0020): the beats in src/data/showcase/clients/<slug>.ts (their
+   * website, then what we built), in a glass window on desktop and a sheet on
+   * a phone. Only for a named client (ADR-0002 still holds).
    */
   showcase?: ShowcaseSlug;
 }
@@ -683,9 +683,7 @@ export function CaseStudies() {
 
   const warm = useCallback((slug: ShowcaseSlug, wide: boolean) => {
     loadShowcaseLayer().catch(() => {});
-    const img = new Image();
-    img.decoding = "async";
-    img.src = wide ? showcaseMeta[slug].desk : showcaseMeta[slug].phone;
+    warmShowcase(slug, wide);
   }, []);
 
   const scheduleLeave = useCallback(() => {
@@ -916,7 +914,7 @@ export function CaseStudies() {
                   className="ps-work-card__toggle"
                   aria-haspopup="dialog"
                   aria-expanded={showcase?.slug === study.showcase}
-                  aria-label={`${study.title}: see the website and the ${showcaseMeta[study.showcase].commandName} we built`}
+                  aria-label={`${study.title}: see their website and what we built them`}
                   onPointerEnter={(e) => {
                     if (e.pointerType !== "mouse") warm(study.showcase!, window.innerWidth >= 600);
                   }}

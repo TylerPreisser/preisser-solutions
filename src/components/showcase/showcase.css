@@ -89,11 +89,15 @@
   letter-spacing: 0.04em;
 }
 .sc-frame__view,
-.sc-frame__cmd {
+.sc-frame__portal {
   position: relative;
   overflow: hidden;
   width: 100%;
   background: #fff;
+}
+/* The portal's own ground fills any room around its picture. */
+.sc-frame .sc-frame__portal {
+  background: var(--pt-ground);
 }
 .sc-frame__page {
   position: absolute;
@@ -119,104 +123,44 @@
 .sc-frame__fill {
   flex: 1;
 }
-/* The command center: laid out at native size, scaled as one picture. */
-.sc-frame__fit {
-  position: absolute;
-  left: 0;
-  top: 0;
-  transform-origin: 0 0;
-  transition: transform 900ms var(--sc-ease-move);
-  /* The root cause of critique A2. Blink lays text out with hinted, whole-pixel
-     glyph advances, then draws it scaled without hinting, so letters drift
-     apart ("Refreshe s eve ry"). geometricPrecision makes the advances
-     fractional, and they scale with the picture. Measured: same frame, same
-     build, before/after crops in the round-2 proof folder. */
-  text-rendering: geometricPrecision;
-}
-.sc-frame--fill .sc-frame__fit {
-  transition:
-    transform 900ms var(--sc-ease-move),
-    clip-path 900ms var(--sc-ease-move);
-}
-
-/* Website spotlight (critique A7, A8): the page goes quieter, never grey, and
-   the part being talked about stays at full colour with a soft glow. It fades
-   in only after the page has landed. */
+/* The website capture moves; nothing else on it does. */
 .sc-frame__shot {
   transition: filter 360ms ease-out;
 }
-.sc-frame__page.is-spot .sc-frame__shot {
-  filter: saturate(0.7) brightness(0.84);
-}
-.sc-focus {
-  position: absolute;
-  overflow: hidden;
-  border-radius: 10px;
-  opacity: 0;
-  transition: opacity 280ms ease-out;
-  box-shadow:
-    0 0 0 1.5px rgba(var(--color-primary-rgb), 0.9),
-    0 0 0 6px rgba(var(--color-primary-rgb), 0.16),
-    0 10px 36px rgba(var(--color-primary-rgb), 0.35);
-  pointer-events: none;
-}
-.sc-focus.is-on {
-  opacity: 1;
-}
-.sc-focus img {
-  position: absolute;
-  max-width: none;
-  height: auto;
-  display: block;
-}
 
-/* Command-center focus: a glow edge on the part the camera framed. */
-.sc-ring {
-  position: absolute;
-  border-radius: 12px;
-  box-shadow:
-    0 0 0 1.5px rgba(var(--color-primary-rgb), 0.9),
-    0 0 0 6px rgba(var(--color-primary-rgb), 0.14),
-    0 0 30px rgba(var(--color-primary-rgb), 0.3);
-  transition:
-    left 900ms var(--sc-ease-move),
-    top 900ms var(--sc-ease-move),
-    width 900ms var(--sc-ease-move),
-    height 900ms var(--sc-ease-move);
-  pointer-events: none;
-}
-
-/* ── Stage: the command center slides in OVER the website (W2) ─ */
+/* ── Stage: the beats stack in one cell; the one on screen slides in OVER the
+   last (W2 depth move): the one before recedes, smaller, softer and darker. */
 .sc-stage {
   position: relative;
+  display: grid;
   overflow: hidden;
   border-radius: 14px;
   /* room for the frame's shadow without clipping it away */
   padding: 2px;
   margin: -2px;
 }
-.sc-stage__slide--web {
+.sc-beat {
+  grid-area: 1 / 1;
+  min-width: 0;
+  min-height: 0;
   transform-origin: 50% 50%;
   transition:
-    transform var(--sc-slide-ms, 720ms) var(--sc-ease-slide),
-    filter var(--sc-slide-ms, 720ms) var(--sc-ease-slide),
-    opacity var(--sc-slide-ms, 720ms) var(--sc-ease-slide);
+    transform 720ms var(--sc-ease-slide),
+    filter 720ms var(--sc-ease-slide),
+    opacity 720ms var(--sc-ease-slide);
 }
-.sc-stage[data-slide="1"] .sc-stage__slide--web {
+.sc-beat[data-pos="next"] {
+  transform: translateX(calc(100% + 24px));
+}
+.sc-beat[data-pos="past"] {
   transform: scale(0.94);
   filter: blur(6px) brightness(0.85);
-  opacity: 0.5;
+  opacity: 0;
 }
-.sc-stage__slide--cmd {
-  position: absolute;
-  inset: 2px;
-  transform: translateX(calc(100% + 24px));
-  transition: transform var(--sc-slide-ms, 720ms) var(--sc-ease-slide);
+.sc-beat[data-pos="now"] {
+  z-index: 1;
 }
-.sc-stage[data-slide="1"] .sc-stage__slide--cmd {
-  transform: none;
-}
-.sc-stage__slide--cmd .sc-frame {
+.sc-beat[data-pos="now"] .sc-frame {
   box-shadow:
     0 0 0 1px rgba(10, 22, 40, 0.12),
     -18px 0 40px -14px rgba(10, 22, 40, 0.45);
@@ -403,17 +347,11 @@
   .sc-pop:not([data-phase="measure"]) {
     transform: none !important;
   }
-  .sc-stage__slide--web,
-  .sc-stage__slide--cmd,
+  .sc-beat,
   .sc-frame__page,
-  .sc-frame__fit,
-  .sc-frame__shot,
-  .sc-focus,
   .sc-veil,
-  .sc-ring,
   .sc-sheet,
-  .sc-tabs__pill,
-  .sc-tour__chapter {
+  .sc-tabs__pill {
     transition: none !important;
   }
 }
@@ -474,7 +412,6 @@
 }
 .sc-close:focus-visible,
 .sc-tabs__tab:focus-visible,
-.sc-cta:focus-visible,
 .sc-live:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 3px;
@@ -484,7 +421,7 @@
 .sc-tabs {
   position: relative;
   display: inline-grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(var(--sc-n, 2), 1fr);
   padding: 4px;
   border-radius: 999px;
   background: rgba(10, 22, 40, 0.06);
@@ -497,18 +434,16 @@
   top: 4px;
   bottom: 4px;
   left: 4px;
-  width: calc(50% - 4px);
+  width: calc((100% - 8px) / var(--sc-n, 2));
   border-radius: 999px;
   background: #fff;
   box-shadow: 0 1px 3px rgba(10, 22, 40, 0.18);
+  transform: translateX(calc(100% * var(--sc-at, 0)));
   transition: transform 420ms var(--sc-ease-move);
 }
 [data-theme="dark"] .sc-tabs__pill {
   background: rgba(255, 255, 255, 0.16);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-.sc-tabs[data-slide="1"] .sc-tabs__pill {
-  transform: translateX(100%);
 }
 .sc-tabs__tab {
   position: relative;
@@ -564,23 +499,6 @@
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
-}
-.sc-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 20px;
-  border-radius: 999px;
-  background: var(--color-primary);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  box-shadow: 0 8px 24px -8px rgba(var(--color-primary-rgb), 0.7);
-}
-.sc-cta:hover {
-  filter: brightness(1.06);
 }
 .sc-live {
   display: inline-flex;
@@ -680,7 +598,7 @@ html.sc-sheet-open .ps-header {
   width: calc(100cqw + 4px);
   height: calc(100cqh + 4px);
 }
-.sc-stage--fill .sc-stage__slide--web {
+.sc-stage--fill .sc-beat {
   height: 100%;
 }
 .sc-frame--fill {
@@ -689,7 +607,7 @@ html.sc-sheet-open .ps-header {
   flex-direction: column;
 }
 .sc-frame--fill .sc-frame__view,
-.sc-frame--fill .sc-frame__cmd {
+.sc-frame--fill .sc-frame__portal {
   flex: 1 1 auto;
   min-height: 0;
 }
@@ -749,197 +667,84 @@ html.sc-sheet-open .ps-header {
   justify-content: center;
 }
 
-/* ── /showcase/<slug> page ──────────────────────────────────── */
-.sc-page {
-  background: var(--theme-bg-primary);
-  color: var(--sc-ink);
-}
-.sc-hero {
-  max-width: 1200px;
+/* ── Their mobile site, in a phone (the sheet's website beat) ── */
+.sc-phone {
   margin: 0 auto;
-  padding: calc(var(--nav-height) + 56px) 24px 40px;
-}
-.sc-eyebrow {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--sc-accent);
-  margin: 0 0 14px;
-}
-.sc-hero h1 {
-  font-size: clamp(2.25rem, 5vw, 3.75rem);
-  line-height: 1.04;
-  letter-spacing: -0.03em;
-  font-weight: 800;
-  margin: 0 0 18px;
-}
-.sc-hero__lede {
-  max-width: 62ch;
-  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
-  line-height: 1.55;
-  color: var(--sc-ink-2);
-  margin: 0 0 22px;
-}
-.sc-hero .sc-foot {
-  gap: 20px;
-}
-
-.sc-tour {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 24px 96px;
-}
-.sc-tour .sc-hero {
-  padding-left: 0;
-  padding-right: 0;
-}
-.sc-tour__side {
-  min-width: 0;
-}
-.sc-tour__chapters {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.sc-tour__chapter {
-  margin: 0;
-}
-.sc-tour__tag {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--sc-accent);
-  margin: 0 0 10px;
-}
-.sc-tour__title {
-  font-size: clamp(1.375rem, 2.2vw, 1.75rem);
-  line-height: 1.2;
-  letter-spacing: -0.015em;
-  font-weight: 700;
-  margin: 0 0 12px;
-}
-.sc-tour__body {
-  font-size: 1.0625rem;
-  line-height: 1.65;
-  color: var(--sc-ink-2);
-  margin: 0;
-  max-width: 44ch;
-}
-.sc-tour__break {
-  font-size: clamp(1.5rem, 2.6vw, 2rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin: 0;
-}
-
-/* Stacked (no JS needed): under 1024px every chapter carries its own frame. */
-.sc-tour__sticky {
-  display: none;
-}
-.sc-tour__chapter {
-  display: grid;
-  gap: 18px;
-  padding: 36px 0;
-  border-top: 1px solid var(--theme-border);
-}
-.sc-tour__frame {
-  width: min(100%, 360px);
-  min-width: 0;
+  height: 100%;
   max-width: 100%;
-  justify-self: center;
-}
-.sc-tour__break-row {
-  padding: 56px 0 8px;
-}
-
-@media (min-width: 1024px) {
-  .sc-tour {
-    display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: 64px;
-    align-items: start;
-  }
-  /* The first screen is the product beside its headline (critique A9). */
-  .sc-tour .sc-hero {
-    padding: calc(var(--nav-height) + 48px) 0 24px;
-    min-height: calc(100svh - 120px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .sc-tour .sc-hero h1 {
-    font-size: clamp(2.25rem, 3.4vw, 3.25rem);
-  }
-  .sc-tour__sticky {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: sticky;
-    top: calc(var(--nav-height) + 16px);
-    height: calc(100svh - var(--nav-height) - 32px);
-    /* the frame never runs under the bottom of a short laptop screen */
-    max-width: calc((100svh - var(--nav-height) - 96px) * 1.6);
-  }
-  .sc-tour__frame {
-    display: none;
-  }
-  .sc-tour__chapter {
-    min-height: 62svh;
-    align-content: center;
-    padding: 0;
-    border: 0;
-    opacity: 0.34;
-    transition: opacity 360ms ease-out;
-  }
-  .sc-tour__chapter[data-active] {
-    opacity: 1;
-  }
-  .sc-tour__chapter:last-child {
-    min-height: 80svh;
-  }
-  .sc-tour__break-row {
-    min-height: 30svh;
-    display: grid;
-    align-content: end;
-    padding: 0 0 24px;
-  }
-}
-
-.sc-progress {
+  aspect-ratio: auto;
   display: flex;
-  gap: 6px;
-  margin-top: 16px;
+  flex-direction: column;
+  border-radius: 30px;
+  border: 5px solid #0d0f12;
+  background: #fff;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 18px 44px -16px rgba(10, 22, 40, 0.55);
 }
-.sc-progress i {
-  flex: 1;
-  height: 3px;
+/* As wide as the stage allows, never wider than a phone is for its height. */
+.sc-stage--fill .sc-phone {
+  width: min(100%, max(calc((100cqh + 4px) * 0.62), 80%));
+}
+.sc-phone__status {
+  flex: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 26px;
+  padding: 0 18px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #0a0a0a;
+  background: #fff;
+  text-rendering: geometricPrecision;
+}
+.sc-phone__island {
+  position: absolute;
+  left: 50%;
+  top: 5px;
+  width: 64px;
+  height: 17px;
+  margin-left: -32px;
+  border-radius: 999px;
+  background: #0d0f12;
+}
+.sc-phone__icons {
+  display: inline-flex;
+  gap: 3px;
+}
+.sc-phone__icons i {
+  width: 13px;
+  height: 7px;
   border-radius: 2px;
-  background: var(--theme-border);
-  transition: background 300ms ease-out;
+  background: #0a0a0a;
 }
-.sc-progress i[data-on] {
-  background: var(--color-primary);
+.sc-phone__icons i:first-child {
+  width: 10px;
+  border-radius: 1px;
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
 }
-
-.sc-end {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px 24px 120px;
-  text-align: center;
+.sc-phone__view {
+  flex: 1 1 auto;
+  min-height: 0;
 }
-.sc-end h2 {
-  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
-  letter-spacing: -0.02em;
-  margin: 0 0 12px;
+.sc-phone__bar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  height: 34px;
+  background: #f4f5f7;
+  border-top: 1px solid #e3e6ea;
 }
-.sc-end p {
-  color: var(--sc-ink-2);
-  margin: 0 auto 24px;
-  max-width: 52ch;
-  font-size: 1.0625rem;
-  line-height: 1.6;
+.sc-phone__bar span {
+  padding: 3px 14px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #e0e4ea;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #334155;
+  text-rendering: geometricPrecision;
 }
