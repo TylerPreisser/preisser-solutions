@@ -124,13 +124,17 @@
   gap: 2px;
   padding: 4px 0;
 }
-/* Phone: the stamps sit top right, beside the date, so they never cover the total. */
+/* Phone: the clean bill's stamp sits in its empty lower half. The held bill
+   has no room for one without covering its own text, and on a phone the card
+   beside it already says it ("Off by", "1 bill needs your eyes"), so it has none. */
 .fb--phone .fb-stamp {
-  top: 30px;
-  right: 8px;
-  bottom: auto;
+  right: 12px;
+  bottom: 14px;
   font-size: 12px;
   border-width: 2px;
+}
+.fb--phone .fb-paper--one .fb-stamp {
+  display: none;
 }
 /* Beat 1: the clean bill is on the desk. Beat 2: it flies off to the books and
    the next bill comes up from below, in front. */
