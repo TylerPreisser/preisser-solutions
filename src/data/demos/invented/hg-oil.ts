@@ -47,6 +47,9 @@ export const invented: InventedSet = {
     "Annual", "Read", "Backup", "Month", "Water", "Figures", "Days", "Rate", "Fixed", "Min",
     "Barrels", "Invoice", "Invoices", "Says", "Not", "Searching", "Inbox", "Package", "Agent",
     "Subject", "Hi", "We're", "Could", "Thank", "Automation", "Close", "Sheet", "Field",
+    "Asking", "Certificates", "Confirmed", "Down", "General", "Matches", "Ready", "Tie",
+    // "A/P" splits into "A" and "P"; the sheet's spreadsheet tab mark is an "X".
+    "P", "X",
   ],
   approved: [
     { name: "HG Oil Holdings", source: "docs/CANONICAL-PROJECTS.md: HG Oil Holdings, full name publishable" },

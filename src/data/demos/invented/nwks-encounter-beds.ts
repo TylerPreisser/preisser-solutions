@@ -52,6 +52,8 @@ export const invented: InventedSet = {
     "Women's", "Encounter", "Cabin", "Cabins", "Lower", "Upper", "Floor", "Left", "Right", "Full",
     "Server", "SERVER", "Invited", "Auto-fill", "Needs", "Launch", "Sandwich", "Turkey", "T-shirt",
     "Shirt", "Sign", "Print", "Printed", "Beds", "Bed", "Free", "Name", "Bunk", "AI",
+    // "Auto-fill" and "T-shirt" split on the hyphen; "Women's" loses its "'s".
+    "Auto", "Custom", "Need", "T", "Women",
   ],
   approved: [],
   assets: [],
