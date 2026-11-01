@@ -24,7 +24,7 @@ export const sceneBeats: readonly SceneBeatData[] = [
   {
     kind: "scene",
     tab: "Close",
-    caption: "The month-end close, done in a minute.",
+    caption: "Their month-end close now runs in about a minute.",
     scene: "hg-swd",
     narration: swdSummary,
   },

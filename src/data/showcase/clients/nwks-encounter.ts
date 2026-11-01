@@ -15,7 +15,7 @@ export const sceneBeats: readonly SceneBeatData[] = [
   {
     kind: "scene",
     tab: "Beds",
-    caption: "Built around how their camp actually runs, from sign-up to the cabin map.",
+    caption: "Every sign-up finds a bed, and the cabin map prints itself.",
     scene: "nwks-beds",
     narration: bedsSummary,
   },

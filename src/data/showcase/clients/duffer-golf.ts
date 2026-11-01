@@ -17,9 +17,9 @@ import { count, sum } from "../format";
 type Course = { label: string; sub: string; scans: number; visits: number; leads: number; orders: number };
 
 /** Last 30 days, invented. Twelve partner courses: three named, nine together. */
-const sumac: Course = { label: "Sumac Ridge", sub: "Display 14 · Tull Prairie", scans: 61, visits: 44, leads: 9, orders: 3 };
+const sumac: Course = { label: "Sumac Hollow", sub: "Display 4 · Tull Prairie", scans: 61, visits: 44, leads: 9, orders: 3 };
 const cottonwood: Course = { label: "Lone Cottonwood", sub: "Display 9 · Brannick", scans: 38, visits: 27, leads: 5, orders: 1 };
-const wheatgrass: Course = { label: "Wheatgrass Pines", sub: "Display 21 · Osgood Bend", scans: 74, visits: 31, leads: 2, orders: 0 };
+const wheatgrass: Course = { label: "Wheatgrass Pines", sub: "Display 11 · Osgood Bend", scans: 74, visits: 31, leads: 2, orders: 0 };
 const others: Course = { label: "9 more courses", sub: "One display each", scans: 46, visits: 30, leads: 4, orders: 1 };
 const courses = [sumac, cottonwood, wheatgrass, others];
 const COURSES = 12;
@@ -53,7 +53,7 @@ const client: ShowcaseClient = {
     {
       kind: "website",
       tab: "Website",
-      caption: "The storefront we built. It answers the garage question first, then shows every model with its price.",
+      caption: "We built a storefront that shows the bay folding away for the car first, then every model with its price.",
       captured: "Captured Nov 1, 2026",
       desk: {
         src: "/images/showcase/duffer-golf-site-desk-e28191de.webp",
@@ -78,7 +78,7 @@ const client: ShowcaseClient = {
     {
       kind: "funnel",
       tab: "Funnel",
-      caption: "Duffer's partner courses in MarCommand. Every scan at a course counter runs into the same funnel as the orders.",
+      caption: "Every scan at a partner course's counter runs into the same MarCommand funnel as the orders.",
       narration:
         "The MarCommand dashboard on demonstration data: partner golf courses, the scans at each course's display, and how many became visits, leads and orders. None of these courses are real.",
       funnel: {
@@ -112,7 +112,7 @@ const client: ShowcaseClient = {
     {
       kind: "ai-ask",
       tab: "AI",
-      caption: "Duffer can ask it which golf courses actually sell. That's what the partner program runs on.",
+      caption: "Duffer asks which golf courses actually sell, because the whole partner program runs on that answer.",
       narration:
         "The MarCommand AI tab on demonstration data: asked which golf courses send buyers, it reads scans and orders by course, checks every figure, and answers.",
       question: "Which golf courses are actually sending us buyers?",
