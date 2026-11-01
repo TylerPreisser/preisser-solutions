@@ -137,9 +137,10 @@ export function Count({
 /**
  * A set of whole numbers that rolls together from one state to the next and
  * keeps the same total in every frame (the COI wall: Covered + Expiring + Not
- * covered + Needs you is 192 at every instant, critique r6 A1). One eased
- * progress drives every value; the rounding is shared out by largest
- * remainder, so the parts always add up to the whole.
+ * covered + Needs you is 192 at every instant, critique r6 A1). The change is
+ * a list of one-unit moves from the parts that fall to the parts that rise,
+ * spread evenly; one eased progress says how many have happened. So every
+ * part moves one way only and the parts always add up to the whole.
  */
 export function useRollSet(values: readonly number[], ms = 900): number[] {
   const key = values.join(",");
@@ -154,12 +155,19 @@ export function useRollSet(values: readonly number[], ms = 900): number[] {
       setShown(to);
       return;
     }
+    const moves = unitMoves(a, to);
     const t0 = performance.now();
     let raf = 0;
     const tick = (now: number) => {
       const p = Math.min(1, Math.max(0, (now - t0) / ms));
       const e = 1 - Math.pow(1 - p, 3);
-      setShown(shareOut(a.map((x, i) => x + (to[i] - x) * e), Math.round(to.reduce((s, x) => s + x, 0))));
+      const k = Math.round(moves.length * e);
+      const v = [...a];
+      for (let j = 0; j < k; j++) {
+        v[moves[j][0]] -= 1;
+        v[moves[j][1]] += 1;
+      }
+      setShown(v);
       if (p < 1) raf = requestAnimationFrame(tick);
       else from.current = to;
     };
@@ -172,13 +180,19 @@ export function useRollSet(values: readonly number[], ms = 900): number[] {
   return shown;
 }
 
-/** Round each part down, then hand the leftover units to the largest remainders, so the parts sum to `total`. */
-export function shareOut(parts: readonly number[], total: number): number[] {
-  const floor = parts.map((x) => Math.max(0, Math.floor(x)));
-  let left = total - floor.reduce((s, x) => s + x, 0);
-  const order = parts.map((x, i) => ({ i, r: x - Math.floor(x) })).sort((p, q) => q.r - p.r);
-  for (let k = 0; left > 0 && k < order.length; k++, left--) floor[order[k].i] += 1;
-  return floor;
+/** One-unit moves [from part, to part] that turn `a` into `b` (same total), each side spread evenly over the roll. */
+export function unitMoves(a: readonly number[], b: readonly number[]): [number, number][] {
+  const spread = (sign: 1 | -1) =>
+    a
+      .flatMap((x, i) => {
+        const d = (b[i] - x) * sign;
+        return Array.from({ length: Math.max(0, d) }, (_, k) => ({ i, at: (k + 0.5) / d }));
+      })
+      .sort((p, q) => p.at - q.at)
+      .map((u) => u.i);
+  const down = spread(-1);
+  const up = spread(1);
+  return down.slice(0, up.length).map((i, j) => [i, up[j]]);
 }
 
 /**
