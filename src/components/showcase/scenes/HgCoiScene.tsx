@@ -12,7 +12,7 @@ import {
   coiSummary,
   coiWallTotal,
 } from "@/data/demos/scenes/hg-oil";
-import { Caption, Count, KindPill, SceneRoot, seeded, useTimeline, whole, type SceneProps } from "./kit";
+import { Caption, KindPill, SceneRoot, seeded, useRollSet, useTimeline, whole, type SceneProps } from "./kit";
 import { HgBackdrop, HgMark } from "./hg-backdrop";
 import "./hg.css";
 
@@ -63,22 +63,24 @@ function Wall({ step, cols }: { step: number; cols: number }) {
 
 function Counters({ step }: { step: number }) {
   const c = coiCounts[Math.max(0, Math.min(coiCounts.length - 1, step - 1))];
+  // One roll for the four numbers, so they add up to 192 in every frame.
+  const [covered, expiring, missing, needs] = useRollSet([c.covered, c.expiring, c.missing, c.needs]);
   return (
-    <div className="coi-counts">
+    <div className="coi-counts" data-total={covered + expiring + missing + needs}>
       <div className="coi-count is-covered">
-        <Count value={c.covered} format={whole} />
+        <span className="scn-num">{whole(covered)}</span>
         <span>Covered</span>
       </div>
       <div className="coi-count is-expiring">
-        <Count value={c.expiring} format={whole} />
+        <span className="scn-num">{whole(expiring)}</span>
         <span>Expiring</span>
       </div>
       <div className="coi-count is-missing">
-        <Count value={c.missing} format={whole} />
+        <span className="scn-num">{whole(missing)}</span>
         <span>Not covered</span>
       </div>
       <div className={step >= 5 ? "coi-count is-needs is-shown" : "coi-count is-needs"}>
-        <Count value={c.needs} format={whole} />
+        <span className="scn-num">{whole(needs)}</span>
         <span>Needs you</span>
       </div>
     </div>
@@ -151,7 +153,7 @@ function Email({ step }: { step: number }) {
       <div className="coi-mail__head">
         <p>
           <span>From</span>
-          <b className="coi-mono">{coiEmail.from}</b>
+          <b>{coiEmail.from}</b>
         </p>
         <p>
           <span>To</span>

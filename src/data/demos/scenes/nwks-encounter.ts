@@ -32,11 +32,11 @@ const L = (bed: string): Slot => ({ side: "left", bed });
 const R = (bed: string): Slot => ({ side: "right", bed });
 
 const rows: readonly [string, string, Slot, { server?: boolean; lower?: boolean; invitedBy?: string }?][] = [
-  ["nwf-brynn-delacourt", "emberton", L("Lower 1"), { lower: true, invitedBy: "nwf-shauna-pettibone" }],
+  ["nwf-brynn-delacourt", "emberton", L("Lower 1"), { lower: true, invitedBy: "nwf-maren-kittredge" }],
   ["nwf-tessa-ammerling", "emberton", L("Upper 1")],
-  ["nwf-kendra-holtzclaw", "aldervale", L("Lower 2"), { lower: true }],
+  ["nwf-kendra-ostrander", "aldervale", L("Lower 2"), { lower: true }],
   ["nwf-lacey-mortell", "aldervale", L("Upper 2")],
-  ["nwf-shauna-pettibone", "emberton", L("Lower 3"), { server: true }],
+  ["nwf-maren-kittredge", "emberton", L("Lower 3"), { server: true }],
   ["nwf-alicia-dorrance", "tollerton", L("Upper 3")],
   ["nwf-corinne-vashaw", "tollerton", L("Lower 4")],
   ["nwf-megan-strandquist", "emberton", L("Upper 4")],
@@ -44,12 +44,12 @@ const rows: readonly [string, string, Slot, { server?: boolean; lower?: boolean;
   ["nwf-renee-oberlander", "fallowfield", R("Upper 1")],
   ["nwf-tara-weisgerber", "aldervale", R("Lower 2")],
   ["nwf-hollie-carvell", "kestrel-bend", R("Upper 2")],
-  ["nwf-danae-fairbrother", "tollerton", R("Lower 3"), { server: true }],
+  ["nwf-greta-fairbrother", "tollerton", R("Lower 3"), { server: true }],
   ["nwf-kristen-ahlgrimm", "kestrel-bend", R("Upper 3")],
   ["nwf-leah-sundgren", "fallowfield", R("Lower 4"), { lower: true }],
   ["nwf-dawn-mettlach", "emberton", R("Upper 4")],
-  ["nwf-joelle-brandvik", "aldervale", R("Lower 5"), { server: true }],
-  ["nwf-corrie-ashbaugh", "tollerton", { side: "floor", bed: "Floor" }],
+  ["nwf-joelle-haverkamp", "aldervale", R("Lower 5"), { server: true }],
+  ["nwf-corrie-ashbaugh", "tollerton", L("Upper 5")],
 ];
 
 export const sleepers: readonly Sleeper[] = rows.map(([pid, tid, slot, o]) => {
@@ -78,11 +78,18 @@ export const bedCounts = {
   right: sleepers.filter((s) => s.slot.side === "right").length,
   floor: sleepers.filter((s) => s.slot.side === "floor").length,
 };
-if (bedCounts.left !== 8 || bedCounts.right !== 9 || bedCounts.floor !== 1) {
-  throw new Error("[nwks scene] Cabin 1 must end Left 8 of 10 · Right 9 of 10 · 1 on the floor");
+// Auto-fill never puts anyone on a floor mattress while a bed is free
+// (critique r6 D1): all 18 are in beds, so the caption is literally true.
+if (bedCounts.left !== 9 || bedCounts.right !== 9 || bedCounts.floor !== 0) {
+  throw new Error("[nwks scene] Cabin 1 must end Left 9 of 10 · Right 9 of 10 · 0 on the floor");
 }
+if (bedCounts.floor > 0 && bedCounts.left + bedCounts.right < 20) throw new Error("[nwks scene] nobody sleeps on the floor while a bed is free");
 for (const s of sleepers) {
   if (s.lower && !(s.slot.side !== "floor" && s.slot.bed.startsWith("Lower"))) throw new Error(`[nwks scene] ${s.id} asked for a lower bunk`);
+}
+{
+  const taken = new Set(sleepers.map((s) => `${s.slot.side}:${s.slot.bed}`));
+  if (taken.size !== sleepers.length) throw new Error("[nwks scene] two women in one bed");
 }
 
 export const BEDS = ["Lower 1", "Upper 1", "Lower 2", "Upper 2", "Lower 3", "Upper 3", "Lower 4", "Upper 4", "Lower 5", "Upper 5"] as const;
@@ -95,16 +102,34 @@ export const launchPoints = (() => {
 })();
 
 export const bedsCaptions = [
-  "The sign-up asks the questions only your camp needs.",
-  "The sign-up asks the questions only your camp needs.",
-  "Each sign-up lands in the list of who still needs a bed.",
-  "Auto-fill puts all 18 in beds and keeps every lower-bunk request.",
-  "Then the cabin map prints, one page per building.",
+  "The sign-up asks the questions only their camp needs, like which sandwich she wants.",
+  "The sign-up asks the questions only their camp needs, like which sandwich she wants.",
+  "She lands in the list of women who still need a bed.",
+  "One press of Auto-fill puts all 18 in beds, with every lower-bunk request on a lower bed.",
+  "We built it around how their weekend actually runs, down to who needs a lower bunk.",
 ] as const;
 
-export const bedsCues = [250, 3100, 5000, 9200] as const;
+export const bedsCues = [250, 3100, 5000, 9600] as const;
+
+/** Auto-fill, inside beat 3: one woman placed every STEP ms, the first at FIRST ms after the cue. */
+export const bedsFill = { first: 500, step: 165 } as const;
+
+/** "1 needs a bed", "0 need a bed". */
+export const needLine = (n: number) => `${n} ${n === 1 ? "needs" : "need"} a bed`;
+
+/**
+ * The phone camera (300 x 460 picture; a 320 phone shows ~280 px): the form,
+ * then the list and the top of the cabin, then down the cabin as Auto-fill
+ * runs, then the printed map (also the reduced-motion frame).
+ */
+export const bedsCam = [
+  { at: 0, y: 176, h: 280 },
+  { at: bedsCues[1], y: 34, h: 280 },
+  { at: bedsCues[2] + bedsFill.first + 8 * bedsFill.step, y: 176, h: 280, ms: 1400 },
+  { at: bedsCues[3] + 100, y: 176, h: 280 },
+] as const;
 
 export const bedsSummary =
   "Demonstration: the NWKS Women's Encounter bed board. A sign-up form fills in a launch point, a sandwich choice, a shirt size and a lower-bunk request, " +
-  "the new sign-up joins 17 others in the list of who needs a bed, Auto-fill places all 18 in Cabin 1 with every lower-bunk request on a lower bed, " +
-  "and the cabin map prints: Left 8 of 10, Right 9 of 10, 1 on the floor.";
+  "the new sign-up joins 17 others in the list of who needs a bed, Auto-fill places all 18 in beds in Cabin 1 with every lower-bunk request on a lower bed, " +
+  "and the cabin map prints: Left 9 of 10, Right 9 of 10, nobody on the floor.";

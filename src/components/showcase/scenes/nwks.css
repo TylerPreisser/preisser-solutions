@@ -785,3 +785,183 @@
     opacity: 0;
   }
 }
+
+/* ── Phone, 300 x 460 (round 7) ─────────────────────────────────
+   The picture is scaled to the sheet's width, so 12 px native is the floor
+   for every face (11.4 css px at 320; critique r6 A4). The camera
+   (bedsCam) frames the list, then the cabin, then the printed map. */
+.nw--phone .nw-needs {
+  left: 8px;
+  right: 8px;
+  top: 40px;
+  height: 138px;
+  padding: 7px 9px 0;
+  gap: 5px;
+  font-size: 12px;
+}
+.nw--phone .nw-needs__head span {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+.nw--phone .nw-needs__head b {
+  font-size: 15px;
+}
+/* Even chip spacing (critique r6, Dawn and Joelle): margins, not flex gap, so
+   a collapsed chip (the pending sign-up, a placed woman) leaves no extra gap. */
+.nw--phone .nw-needs__list {
+  gap: 0;
+}
+.nw--phone .nw-row-p {
+  margin: 0 3px 3px 0 !important;
+  padding: 0 6px;
+  font-size: 12px;
+  line-height: 1.25;
+  transition-property: max-width, opacity, transform, padding, border-width, margin;
+  transition-duration: 220ms;
+  transition-delay: 0ms;
+}
+.nw--phone .nw-row-p.is-pending,
+.nw--phone .nw-row-p.is-placed {
+  margin: 0 !important;
+}
+.nw--phone .nw-person {
+  flex-wrap: nowrap;
+  gap: 4px;
+}
+.nw--phone .nw-person b {
+  font-size: 12px;
+}
+.nw--phone .nw-server {
+  font-size: 12px;
+  letter-spacing: 0;
+  padding: 0 4px;
+  line-height: 1.2;
+}
+.nw--phone .nw-all {
+  left: 9px;
+  bottom: 7px;
+  font-size: 12px;
+}
+.nw--phone .nw-stage {
+  left: 8px;
+  right: 8px;
+  top: 186px;
+  height: 270px;
+}
+.nw--phone .nw-form {
+  padding: 9px 11px;
+  gap: 6px;
+  font-size: 12px;
+}
+.nw--phone .nw-field--desk {
+  display: none;
+}
+.nw--phone .nw-form__head b {
+  font-size: 15px;
+}
+.nw--phone .nw-field > span {
+  font-size: 12px;
+}
+.nw--phone .nw-input,
+.nw--phone .nw-check {
+  min-height: 0;
+  padding: 3px 7px;
+  font-size: 13px;
+}
+.nw--phone .nw-check {
+  padding: 3px 0;
+}
+.nw--phone .nw-select {
+  padding-right: 22px;
+}
+.nw--phone .nw-seg i {
+  padding: 2px 0;
+  font-size: 12px;
+}
+.nw--phone .nw-row {
+  gap: 10px;
+}
+.nw--phone .nw-board {
+  padding: 7px 7px;
+  gap: 5px;
+  font-size: 12px;
+}
+.nw--phone .nw-board__head b {
+  font-size: 16px;
+}
+.nw--phone .nw-auto {
+  padding: 2px 8px;
+  font-size: 12px;
+}
+.nw--phone .nw-side {
+  gap: 2px;
+}
+.nw--phone .nw-side__head {
+  font-size: 12px;
+  padding: 0 2px 1px;
+}
+.nw--phone .nw-slot {
+  grid-template-columns: 2.3em 1fr;
+  min-height: 16px;
+  padding: 0 4px;
+}
+.nw--phone .nw-slot__bed,
+.nw--phone .nw-slot__free,
+.nw--phone .nw-slot__name b {
+  font-size: 12px;
+  line-height: 1.2;
+}
+.nw--phone .nw-slot__free,
+.nw--phone .nw-slot__name {
+  padding: 0 5px;
+}
+.nw--phone .nw-floor {
+  display: none;
+}
+.nw-floor__none {
+  color: var(--scn-ink-3);
+  font-size: 0.86em;
+}
+.nw--phone .nw-page {
+  padding: 7px 8px 6px;
+  gap: 4px;
+  font-size: 12px;
+}
+.nw--phone .nw-page__head {
+  padding-bottom: 2px;
+}
+.nw--phone .nw-page__head b {
+  font-size: 15px;
+}
+.nw--phone .nw-plan {
+  gap: 0 8px;
+}
+.nw--phone .nw-plan__side {
+  gap: 2px;
+}
+.nw--phone .nw-plan__label,
+.nw--phone .nw-pb__which {
+  font-size: 12px;
+}
+.nw--phone .nw-pb {
+  grid-template-columns: 0.8em minmax(0, 1fr) auto;
+  grid-template-areas: "which name pill";
+  column-gap: 4px;
+  padding: 0 4px;
+  line-height: 1.15;
+}
+.nw--phone .nw-pb b {
+  font-size: 12.5px;
+  overflow: visible;
+}
+.nw--phone .nw-pb.is-empty em {
+  font-size: 12px;
+}
+.nw--phone .nw-plan__floor {
+  display: none;
+}
+/* A placed woman leaves the list as the count drops, not 360 ms later. */
+.nw-row-p.is-placed {
+  transition-duration: 220ms;
+  transition-delay: 0ms;
+}

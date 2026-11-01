@@ -11,6 +11,12 @@
 // and Bing RSS ignores the quotes (a known-real control came back clear). A
 // check that cannot fail was not counted. Each name needs "<name>" Kansas
 // searched before this set ships; `checked` says so until then.
+// Round 7 (2026-11-01): four names were swapped because they sounded like
+// real people or a notorious case: the first sign-up's inviter (it read as the
+// real Women's Encounter admin) became Maren Kittredge, Danae became Greta,
+// Brandvik became Haverkamp, Holtzclaw became Ostrander. The new names were
+// checked against the deny list and the names in the NWKS memory notes: no
+// exact hit and no sound-alike.
 import type { InventedSet } from "../_invented";
 
 const PENDING =
@@ -28,9 +34,9 @@ export const invented: InventedSet = {
   people: [
     w("Brynn", "Delacourt"),
     w("Tessa", "Ammerling"),
-    w("Kendra", "Holtzclaw"),
+    w("Kendra", "Ostrander"),
     w("Lacey", "Mortell"),
-    w("Shauna", "Pettibone"),
+    w("Maren", "Kittredge"),
     w("Alicia", "Dorrance"),
     w("Corinne", "Vashaw"),
     w("Megan", "Strandquist"),
@@ -38,11 +44,11 @@ export const invented: InventedSet = {
     w("Renee", "Oberlander"),
     w("Tara", "Weisgerber"),
     w("Hollie", "Carvell"),
-    w("Danae", "Fairbrother"),
+    w("Greta", "Fairbrother"),
     w("Kristen", "Ahlgrimm"),
     w("Leah", "Sundgren"),
     w("Dawn", "Mettlach"),
-    w("Joelle", "Brandvik"),
+    w("Joelle", "Haverkamp"),
     w("Corrie", "Ashbaugh"),
   ],
   businesses: [],
@@ -54,6 +60,8 @@ export const invented: InventedSet = {
     "Shirt", "Sign", "Print", "Printed", "Beds", "Bed", "Free", "Name", "Bunk", "AI",
     // "Auto-fill" and "T-shirt" split on the hyphen; "Women's" loses its "'s".
     "Auto", "Custom", "Need", "T", "Women",
+    // The phone board's short bed names (L1 = Lower 1) and the printed map's U / L / F (Upper, Lower, Full).
+    "L1", "L2", "L3", "L4", "L5", "U1", "U2", "U3", "U4", "U5", "U", "L", "F", "None", "needed", "nobody", "No", "one", "floor",
   ],
   approved: [],
   assets: [],

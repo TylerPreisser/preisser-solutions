@@ -25,7 +25,7 @@ export const invented: InventedSet = {
     { id: "red-cedar-roustabout", name: "Red Cedar Roustabout", checked: PENDING },
     { id: "buckbrush-pipe-supply", name: "Buckbrush Pipe & Supply", checked: PENDING },
     { id: "quarry-hill-welding", name: "Quarry Hill Welding", checked: PENDING },
-    { id: "plainsview-insurance-group", name: "Plainsview Insurance Group", checked: PENDING },
+    { id: "marlowe-prairie-insurance-group", name: "Marlowe Prairie Insurance Group", checked: PENDING },
     // Saltwater close (SWD): disposal operators.
     { id: "cedar-draw-disposal", name: "Cedar Draw Disposal", checked: PENDING },
     { id: "kettle-creek-water", name: "Kettle Creek Water Services", checked: PENDING },

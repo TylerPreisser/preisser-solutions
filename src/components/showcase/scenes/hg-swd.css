@@ -725,3 +725,204 @@
 .swd-files.is-on .swd-zero {
   animation: swd-in 500ms var(--scn-ease) 1200ms both;
 }
+
+/* ── Round 7 ──────────────────────────────────────────────────
+   Desk: the camera (swdDeskCam) pushes into the card each step is about,
+   so the held row reads at 14 css px or more and is the biggest thing on
+   screen (critique r6 C2); the spreadsheet is only read in step 1, when the
+   camera is on it. */
+.swd--desk .swd-tie__caught td {
+  font-size: 19.5px;
+  font-weight: 750;
+}
+.swd--desk .swd-tie__note {
+  margin-top: 6px !important;
+}
+.swd--desk .swd-sheet th:nth-child(1) {
+  width: 48%;
+}
+.swd--desk .swd-sheet th:nth-child(3) {
+  width: 10%;
+}
+.swd--desk .swd-sheet th:nth-child(4) {
+  width: 13%;
+}
+/* The tie-out and the files open wide over the sheet (the camera is off the
+   sheet by then), so no vendor name is cut and the held row has room to be big. */
+.swd--desk .swd-tie,
+.swd--desk .swd-files {
+  left: -170px;
+}
+.swd-took {
+  color: var(--scn-ink-2);
+  font-weight: 650;
+}
+.swd--desk .swd-took {
+  font-size: 26px;
+}
+.swd-took b {
+  margin-left: 0.2em;
+  font-size: 1.7em;
+  color: var(--scn-ink);
+  font-variant-numeric: tabular-nums;
+}
+.swd-files.is-on .swd-took {
+  animation: swd-in 500ms var(--scn-ease) 900ms both;
+}
+
+/* Phone, 300 x 460: scaled to the sheet's width, 12 px native is the floor. */
+.swd--phone .swd-left {
+  left: 8px;
+  right: 8px;
+  top: 40px;
+  padding: 7px;
+  gap: 7px;
+}
+.swd--phone .swd-sheet {
+  font-size: 12px;
+}
+.swd--phone .swd-sheet .is-swd,
+.swd--phone .swd-sheet th:nth-child(4),
+.swd--phone .swd-sheet td:nth-child(4) {
+  display: none;
+}
+.swd--phone .swd-sheet th:nth-child(3) {
+  width: 16%;
+}
+.swd--phone .swd-sheet th,
+.swd--phone .swd-sheet td {
+  padding: 3px 4px;
+  line-height: 1.2;
+}
+.swd--phone .swd-sheet th {
+  font-size: 12px;
+}
+.swd--phone .swd-sheet th:nth-child(1) {
+  width: 44%;
+}
+.swd--phone .swd-sheet td:first-child {
+  white-space: normal;
+}
+.swd--phone .swd-xl,
+.swd--phone .swd-edit__note,
+.swd--phone .swd-rate__min {
+  font-size: 12px;
+}
+.swd--phone .swd-rate__min {
+  display: none;
+}
+.swd--phone .swd-edit__note {
+  display: none;
+}
+.swd--phone .swd-run {
+  gap: 7px;
+  font-size: 12px;
+}
+.swd--phone .swd-seg b {
+  display: none;
+}
+.swd--phone .swd-run__clock {
+  font-size: 16px;
+}
+.swd--phone .swd-stage {
+  left: 8px;
+  right: 8px;
+  top: 240px;
+  height: 250px;
+}
+.swd--phone .swd-card.scn-glass {
+  padding: 9px 10px;
+  gap: 6px;
+}
+.swd--phone .swd-card__kicker,
+.swd--phone .swd-drop__to {
+  font-size: 12px;
+  letter-spacing: 0.03em;
+}
+.swd--phone .swd-log {
+  font-size: 13px;
+}
+.swd--phone .swd-log__lines {
+  font-size: 12px;
+}
+.swd--phone .swd-log__lines p {
+  padding: 3px 6px;
+}
+.swd--phone .swd-eq {
+  font-size: 16px;
+}
+.swd--phone .swd-lines {
+  font-size: 12px;
+}
+.swd--phone .swd-lines p {
+  gap: 6px;
+  padding: 3px 0;
+}
+.swd--phone .swd-lines__v {
+  white-space: normal;
+}
+.swd--phone .swd-tie table {
+  font-size: 12px;
+  table-layout: fixed;
+  width: 100%;
+}
+.swd--phone .swd-tie th {
+  font-size: 12px;
+  letter-spacing: 0;
+}
+.swd--phone .swd-tie th:nth-child(1) {
+  width: 37%;
+}
+.swd--phone .swd-tie th:nth-child(2),
+.swd--phone .swd-tie th:nth-child(3) {
+  width: 20.5%;
+}
+.swd--phone .swd-tie td,
+.swd--phone .swd-tie th {
+  text-overflow: clip;
+}
+.swd--phone .swd-tie th,
+.swd--phone .swd-tie td {
+  padding: 3px 3px;
+  line-height: 1.2;
+}
+.swd--phone .swd-tie td:first-child {
+  white-space: normal;
+}
+.swd--phone .swd-tie .swd-st {
+  font-size: 12px;
+  padding: 0 4px;
+}
+.swd--phone .swd-tie__caught td {
+  font-weight: 750;
+}
+.swd--phone .swd-tie__note {
+  font-size: 12px;
+  line-height: 1.25;
+}
+.swd--phone .swd-drop {
+  padding: 8px 10px;
+  gap: 6px;
+}
+.swd--phone .swd-drop__files {
+  font-size: 12px;
+}
+.swd--phone .swd-took {
+  font-size: 13px;
+}
+.swd--phone .swd-zero {
+  font-size: 13px;
+}
+/* Desk: opened wide over the sheet, the files card carries its own glass so
+   nothing from the sheet shows through "Closed in 0:52". */
+.swd--desk .swd-files {
+  padding: 22px 24px;
+  border-radius: 22px;
+  background: var(--scn-glass);
+  border: 1px solid var(--scn-glass-edge);
+  box-shadow:
+    inset 0 1px 0 var(--scn-glass-hi),
+    var(--scn-shadow);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+}

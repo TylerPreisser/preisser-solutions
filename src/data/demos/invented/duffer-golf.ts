@@ -15,7 +15,7 @@ export const invented: InventedSet = {
   scope: "duffer-golf",
   people: [],
   businesses: [
-    { id: "sumac-ridge-gc", name: "Sumac Ridge Golf Club", aliases: ["Sumac Ridge"], checked: CHECK },
+    { id: "sumac-hollow-gc", name: "Sumac Hollow Golf Club", aliases: ["Sumac Hollow"], checked: CHECK },
     { id: "lone-cottonwood-gc", name: "Lone Cottonwood Golf Course", aliases: ["Lone Cottonwood"], checked: CHECK },
     { id: "wheatgrass-pines-gc", name: "Wheatgrass Pines Golf Club", aliases: ["Wheatgrass Pines"], checked: CHECK },
   ],

@@ -91,10 +91,15 @@
   font-size: 26px;
 }
 .scn--phone .scn-top {
-  top: 13px;
-  left: 12px;
+  top: 10px;
+  left: 10px;
   gap: 0.45em;
-  font-size: 13px;
+  font-size: 14px;
+}
+/* Phone: the picture is 300 wide and scaled to the sheet's width, so 12 px
+   native is the floor for every face (11.4 css px at 320, critique r6 A4). */
+.scn--phone .scn-kind {
+  font-size: 12px;
 }
 .scn-top__mark {
   flex: none;
@@ -149,9 +154,9 @@
   font-size: 15px;
 }
 .scn--phone .scn-label {
-  top: 16px;
-  right: 10px;
-  font-size: 8.5px;
+  top: 12px;
+  right: 8px;
+  font-size: 12px;
 }
 
 /* ── Caption: one line per beat, cross-faded in one grid cell ─ */
@@ -168,8 +173,8 @@
   width: 1120px;
 }
 .scn--phone .scn-caption {
-  bottom: 10px;
-  width: 362px;
+  bottom: 8px;
+  width: 284px;
 }
 .scn-caption__line {
   grid-area: 1 / 1;

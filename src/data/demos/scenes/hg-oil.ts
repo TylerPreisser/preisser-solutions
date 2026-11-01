@@ -44,7 +44,7 @@ export const coiWallTotal = TOTAL;
 
 /** The certificate the AI reads, field by field (ACORD 25 shape). */
 export const coiCertificate = {
-  producer: v("plainsview-insurance-group"),
+  producer: v("marlowe-prairie-insurance-group"),
   insured: `${v("chalk-bluff-hot-oil")}, LLC`,
   holder: "HG Oil Holdings, LLC",
   lines: [
@@ -58,8 +58,9 @@ export const coiCertificate = {
 } as const;
 
 export const coiEmail = {
-  from: "audit@",
-  to: v("plainsview-insurance-group"),
+  // A sender name, never a bare "audit@" (it read as a broken address, critique r6 B3).
+  from: "HG Oil vendor insurance",
+  to: v("marlowe-prairie-insurance-group"),
   subject: "Certificates for 50 of your clients",
   body: "Hi there. We're updating vendor insurance records at HG Oil Holdings. Could you send current certificates for the 50 clients listed below, with HG Oil Holdings, LLC as the certificate holder? Thank you.",
   chips: [v("ironweed-water-hauling"), v("red-cedar-roustabout"), v("buckbrush-pipe-supply")],
@@ -102,12 +103,24 @@ export const coiCaptions = [
   "50 of 192 vendors need a current certificate today.",
   "The AI reads each certificate field by field and checks it.",
   "One email to their insurance agent covers all 50 vendors.",
-  "The AI reads every reply. Told it was sent, it searches the inbox.",
-  "The wall turns green. Only the exceptions reach a person.",
+  "When an agent says it was already sent, the AI goes and finds it in the inbox.",
+  "By the end the wall is green, and only two exceptions are left for a person.",
 ] as const;
 
 /** Beat cues, ms from the start of a run. */
 export const coiCues = [250, 2300, 4700, 7300, 10600] as const;
+
+/**
+ * The phone camera (300 x 460 picture; a 320 phone shows ~280 px): the wall
+ * and the counts, then the card each step is about; at the end the green wall
+ * and the two exceptions (also the reduced-motion frame).
+ */
+export const coiCam = [
+  { at: 0, y: 34, h: 280 },
+  { at: coiCues[1] + 200, y: 222, h: 290 },
+  { at: coiCues[4], y: 34, h: 280 },
+  { at: coiCues[4] + 1700, y: 160, h: 280 },
+] as const;
 
 export const coiSummary =
   "Demonstration: HG Oil's vendor insurance, kept by AI. A wall of 192 vendors starts with 50 needing a certificate. " +
@@ -195,12 +208,34 @@ export const swdCaptions = [
   "One press of Run starts the close.",
   "Every invoice line comes from one formula.",
   "The tie-out holds a payment that doesn't match its statement.",
-  "The files land with accounting. A person releases every one.",
+  "The files land with accounting in under a minute, and a person still releases every one.",
 ] as const;
 
 export const swdCues = [250, 1900, 3300, 6100, 10500] as const;
+
+/**
+ * Desk camera (1280 x 800): the sheet while the field confirms the barrels,
+ * then the right-hand card each step is about, at about 1:1, so the tie-out's
+ * held row (told $660.48, paid $330.24) reads at 14 css px or more in every
+ * popover width (critique r6 C2). The last shot is the reduced-motion frame.
+ */
+const STAGE = { x: 662, w: 620, h: 388 } as const;
+const WIDE = { x: 514, w: 746, h: 466 } as const;
+export const swdDeskCam = [
+  { at: 0, x: 30, y: 88, w: 640, h: 400 },
+  { at: swdCues[1], ...STAGE, y: 92 },
+  { at: swdCues[3], ...WIDE, y: 96 },
+  { at: swdCues[4], ...WIDE, y: 112 },
+] as const;
+
+/** Phone camera (300 x 460): the sheet and the Run bar, then the card each step is about. */
+export const swdCam = [
+  { at: 0, y: 34, h: 280 },
+  { at: swdCues[1], y: 200, h: 290 },
+] as const;
 
 export const swdSummary =
   "Demonstration: HG Oil's saltwater disposal close, run by automation. The field confirms a well's barrels per day in the water sheet, " +
   "one Run press works through six phases in under a minute, each invoice line comes from one formula, and the tie-out holds a vendor told $660.48 " +
   "but paid $330.24 until it matches. The import files and a pack of 17 statements land with accounting and no vendor is emailed.";
+

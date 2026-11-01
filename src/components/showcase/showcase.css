@@ -645,8 +645,8 @@ html.sc-sheet-open .ps-header {
   min-height: 36px;
 }
 .sc-frame--phone .sc-frame__label {
-  font-size: 9.5px;
-  padding: 2px 7px;
+  font-size: 11.5px;
+  padding: 2px 8px;
 }
 .sc-frame--phone .sc-frame__chrome {
   gap: 7px;

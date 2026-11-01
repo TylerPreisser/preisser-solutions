@@ -844,3 +844,120 @@
   border-radius: 3px;
   background: var(--scn-good);
 }
+
+/* ── COI phone, 300 x 460 (round 7) ────────────────────────────
+   Scaled to the sheet's width: 12 px native is the floor (critique r6 A4).
+   The camera (coiCam) frames the wall, then the card each step is about. */
+.coi--phone .coi-left {
+  left: 8px;
+  right: 8px;
+  top: 40px;
+  padding: 9px 9px 10px;
+  gap: 8px;
+}
+.coi--phone .coi-counts {
+  gap: 4px;
+  align-items: start;
+}
+.coi--phone .coi-count .scn-num {
+  font-size: 21px;
+}
+.coi--phone .coi-count span:last-child {
+  font-size: 12px;
+  white-space: normal;
+  line-height: 1.15;
+}
+.coi--phone .coi-stage {
+  left: 8px;
+  right: 8px;
+  top: 228px;
+  height: 284px;
+}
+/* A phone card is as tall as what it says. */
+.coi--phone .coi-card {
+  bottom: auto;
+}
+.coi--phone .coi-wall {
+  gap: 2px;
+}
+.coi--phone .coi-today {
+  padding: 12px 13px;
+  gap: 8px;
+  font-size: 14px;
+}
+.coi--phone .coi-cert__paper {
+  padding: 8px 10px 7px;
+}
+.coi--phone .coi-cert__title {
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  padding-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.coi--phone .coi-cert__title b {
+  margin-right: 0.4em;
+}
+.coi--phone .coi-f {
+  grid-template-columns: 1fr;
+  gap: 0;
+  padding: 2px 20px 2px 4px;
+  line-height: 1.2;
+}
+.coi--phone .coi-f dt {
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+.coi--phone .coi-f dd {
+  font-size: 13px;
+}
+.coi--phone .coi-f__tick {
+  font-size: 13px;
+}
+.coi--phone .coi-verdict {
+  margin-top: 5px !important;
+  font-size: 13px;
+}
+.coi--phone .coi-mail {
+  padding: 9px 11px;
+  gap: 6px;
+}
+.coi--phone .coi-mail__head p,
+.coi--phone .coi-mail__body {
+  font-size: 12px;
+  line-height: 1.25;
+}
+.coi--phone .coi-mail__head p {
+  grid-template-columns: 4.4em 1fr;
+  padding: 2px 0;
+}
+.coi--phone .coi-mail__chips {
+  font-size: 15.5px;
+  gap: 4px;
+}
+.coi--phone .coi-mail__sent {
+  font-size: 16px;
+}
+.coi--phone .coi-replies {
+  gap: 6px;
+}
+.coi--phone .coi-reply {
+  padding: 6px 9px;
+  gap: 3px;
+}
+.coi--phone .coi-reply__said,
+.coi--phone .coi-reply__read {
+  font-size: 12px;
+  line-height: 1.25;
+}
+.coi--phone .coi-chip--heard {
+  font-size: 12px;
+}
+.coi--phone .coi-done {
+  gap: 6px;
+}
+.coi--phone .coi-x,
+.coi--phone .coi-pkg {
+  padding: 7px 9px;
+  font-size: 12px;
+}

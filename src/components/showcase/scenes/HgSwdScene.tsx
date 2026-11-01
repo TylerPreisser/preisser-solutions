@@ -270,6 +270,9 @@ function Files({ step }: { step: number }) {
           </span>
         </div>
       </div>
+      <p className="swd-took">
+        Closed in <b>{clock(swdElapsedSec)}</b>
+      </p>
       <p className="swd-zero">
         <b>0</b> vendors emailed.
       </p>

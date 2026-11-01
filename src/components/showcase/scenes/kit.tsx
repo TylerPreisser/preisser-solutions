@@ -6,7 +6,7 @@ import "./scenes.css";
 /**
  * Scene kit: what every "AI at work" / automation scene shares.
  *
- * A scene is one picture at a native size (desk 1280 x 800, phone 390 x 600,
+ * A scene is one picture at a native size (desk 1280 x 800, phone 300 x 460,
  * the same sizes the command-center frame scales), played as a timeline of
  * beats. Beat N is "on" once its cue has passed.
  *
@@ -37,9 +37,17 @@ export interface SceneProps {
   onCaption?: (line: string) => void;
 }
 
+/**
+ * Desk is the 1280 x 800 picture the popover scales. Phone is laid out 300
+ * wide (round 7): every phone sheet is 286 to 396 css px wide, so the picture
+ * is scaled to the sheet's WIDTH (1.0x or more at 320) and a 12 px native face
+ * never draws under 11 css px. It is taller than a short phone's sheet shows,
+ * so a camera moves down it step by step (SCENE_CAM in ./index.ts), the way
+ * the funnel's camera moves along the dashboard. No letterbox bars.
+ */
 export const NATIVE_SIZE: Record<SceneLayout, { w: number; h: number }> = {
   desk: { w: 1280, h: 800 },
-  phone: { w: 390, h: 600 },
+  phone: { w: 300, h: 460 },
 };
 
 const prefersReduced = () =>
@@ -106,10 +114,14 @@ export function Count({
     const a = from.current;
     const t0 = performance.now();
     let raf = 0;
+    const lo = Math.min(a, value);
+    const hi = Math.max(a, value);
     const tick = (now: number) => {
-      const p = Math.min(1, (now - t0) / ms);
+      // Clamped at 0: a rAF timestamp can be earlier than t0, and a negative
+      // progress rolled the number past where it started (critique r6 A1).
+      const p = Math.min(1, Math.max(0, (now - t0) / ms));
       const e = 1 - Math.pow(1 - p, 3);
-      setShown(a + (value - a) * e);
+      setShown(Math.max(lo, Math.min(hi, a + (value - a) * e)));
       if (p < 1) raf = requestAnimationFrame(tick);
       else from.current = value;
     };
@@ -120,6 +132,79 @@ export function Count({
     };
   }, [value, ms]);
   return <span className={className ? `scn-num ${className}` : "scn-num"}>{format(shown)}</span>;
+}
+
+/**
+ * A set of whole numbers that rolls together from one state to the next and
+ * keeps the same total in every frame (the COI wall: Covered + Expiring + Not
+ * covered + Needs you is 192 at every instant, critique r6 A1). One eased
+ * progress drives every value; the rounding is shared out by largest
+ * remainder, so the parts always add up to the whole.
+ */
+export function useRollSet(values: readonly number[], ms = 900): number[] {
+  const key = values.join(",");
+  const [shown, setShown] = useState<number[]>(() => [...values]);
+  const from = useRef<number[]>([...values]);
+  useEffect(() => {
+    const to = key.split(",").map(Number);
+    const a = from.current;
+    if (a.join(",") === key) return;
+    if (prefersReduced() || ms === 0) {
+      from.current = to;
+      setShown(to);
+      return;
+    }
+    const t0 = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      const p = Math.min(1, Math.max(0, (now - t0) / ms));
+      const e = 1 - Math.pow(1 - p, 3);
+      setShown(shareOut(a.map((x, i) => x + (to[i] - x) * e), Math.round(to.reduce((s, x) => s + x, 0))));
+      if (p < 1) raf = requestAnimationFrame(tick);
+      else from.current = to;
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      from.current = to;
+    };
+  }, [key, ms]);
+  return shown;
+}
+
+/** Round each part down, then hand the leftover units to the largest remainders, so the parts sum to `total`. */
+export function shareOut(parts: readonly number[], total: number): number[] {
+  const floor = parts.map((x) => Math.max(0, Math.floor(x)));
+  let left = total - floor.reduce((s, x) => s + x, 0);
+  const order = parts.map((x, i) => ({ i, r: x - Math.floor(x) })).sort((p, q) => q.r - p.r);
+  for (let k = 0; left > 0 && k < order.length; k++, left--) floor[order[k].i] += 1;
+  return floor;
+}
+
+/**
+ * How many of `count` items have landed: all of them when mounted on (the
+ * final frame, reduced motion), otherwise one every `every` ms from `at` after
+ * `on` turns true.
+ */
+export function useReveal(on: boolean, count: number, at: number, every: number) {
+  const [n, setN] = useState(on ? count : 0);
+  const was = useRef(on);
+  useEffect(() => {
+    if (!on) {
+      was.current = false;
+      setN(0);
+      return;
+    }
+    if (was.current) return;
+    was.current = true;
+    if (prefersReduced()) {
+      setN(count);
+      return;
+    }
+    const ts = Array.from({ length: count }, (_, i) => window.setTimeout(() => setN(i + 1), at + i * every));
+    return () => ts.forEach((t) => window.clearTimeout(t));
+  }, [on, count, at, every]);
+  return n;
 }
 
 export const money = (n: number) =>

@@ -80,10 +80,10 @@
   height: 576px;
 }
 .fb--phone .fb-desk {
-  left: 14px;
-  right: 14px;
-  top: 48px;
-  height: 214px;
+  left: 10px;
+  right: 12px;
+  top: 42px;
+  height: 182px;
 }
 .fb-paper {
   position: absolute;
@@ -110,25 +110,46 @@
   font-size: 20px;
 }
 .fb--phone .fb-paper {
-  inset: 2px 18px 6px 8px;
-  padding: 12px 14px 10px;
-  gap: 6px;
+  inset: 2px 6px 4px 2px;
+  padding: 10px 11px 9px;
+  gap: 5px;
   border-radius: 4px;
-  font-size: 9.5px;
+  font-size: 12px;
+  line-height: 1.2;
+}
+.fb--phone .fb-paper__foot {
+  display: none;
+}
+.fb--phone .fb-paper__lines {
+  gap: 2px;
+  padding: 4px 0;
+}
+/* Phone: the stamps sit top right, beside the date, so they never cover the total. */
+.fb--phone .fb-stamp {
+  top: 30px;
+  right: 8px;
+  bottom: auto;
+  font-size: 12px;
+  border-width: 2px;
+}
+/* Beat 1: the clean bill is on the desk. Beat 2: it flies off to the books and
+   the next bill comes up from below, in front. */
+.fb-paper--two {
+  z-index: 1;
+  transform: translate(3%, 3%) rotate(1.4deg);
+  opacity: 1;
+}
+.fb-paper--two.is-filed {
+  transform: translate(46%, -34%) rotate(9deg) scale(0.7);
+  opacity: 0;
 }
 .fb-paper--one {
-  transform: rotate(-1.6deg);
-}
-.fb-paper--one.is-away {
-  transform: translate(-6%, 7%) rotate(-5deg) scale(0.9);
-  opacity: 0.55;
-}
-.fb-paper--two {
+  z-index: 2;
   transform: translate(10%, 110%) rotate(6deg);
   opacity: 0;
 }
-.fb-paper--two.is-in {
-  transform: translate(3%, 3%) rotate(1.4deg);
+.fb-paper--one.is-in {
+  transform: rotate(-1.6deg);
   opacity: 1;
 }
 .fb-paper__vendor {
@@ -209,7 +230,7 @@
   transform: translateY(-110%);
   pointer-events: none;
 }
-.scn[data-step="1"] .fb-paper__scan {
+.scn[data-step="2"] .fb-paper__scan {
   animation: fb-scan 1.8s cubic-bezier(0.45, 0, 0.55, 1) 200ms both;
 }
 @keyframes fb-scan {
@@ -232,8 +253,8 @@
   transform: rotate(-11deg) scale(1.6);
   opacity: 0;
   transition:
-    transform 380ms cubic-bezier(0.3, 1.4, 0.5, 1) 1600ms,
-    opacity 200ms ease 1600ms;
+    transform 380ms cubic-bezier(0.3, 1.4, 0.5, 1) 3600ms,
+    opacity 200ms ease 3600ms;
 }
 .fb--desk .fb-stamp {
   font-size: 22px;
@@ -259,10 +280,10 @@
   height: 576px;
 }
 .fb--phone .fb-stage {
-  left: 10px;
-  right: 10px;
-  top: 272px;
-  height: 262px;
+  left: 8px;
+  right: 8px;
+  top: 230px;
+  height: 224px;
 }
 .fb-card {
   position: absolute;
@@ -276,9 +297,80 @@
   font-size: 25px;
 }
 .fb--phone .fb-card {
-  padding: 12px 13px;
-  gap: 8px;
-  font-size: 11.5px;
+  padding: 10px 11px;
+  gap: 6px;
+  font-size: 13px;
+}
+/* Phone: no face under 12 px (critique r6 A4); em sizes are floored. */
+.fb--phone .fb-kicker {
+  font-size: 12px;
+}
+.fb--phone .fb-read__row b {
+  font-size: 15px;
+}
+.fb--phone .fb-read__row {
+  padding-bottom: 6px;
+}
+.fb--phone .fb-lines {
+  gap: 5px;
+}
+.fb--phone .fb-line {
+  padding-bottom: 4px;
+}
+.fb--phone .fb-line__printed {
+  font-size: 12px;
+}
+.fb--phone .fb-line__plain b {
+  font-size: 13px;
+}
+.fb--phone .fb-line__amt {
+  font-size: 13px;
+}
+.fb--phone .fb-cat,
+.fb--phone .fb-in,
+.fb--phone .fb-eyes {
+  font-size: 12px;
+}
+.fb--phone .fb-cat {
+  display: none;
+}
+.fb--phone .fb-catch {
+  gap: 4px;
+}
+.fb--phone .fb-tape {
+  gap: 1px;
+}
+.fb--phone .fb-tape__row {
+  font-size: 12px;
+}
+.fb--phone .fb-catch__row {
+  padding-bottom: 3px;
+}
+.fb--phone .fb-catch__row b {
+  font-size: 15px;
+}
+.fb--phone .fb-catch__row.is-off b {
+  font-size: 19px;
+}
+.fb--phone .fb-catch__eyes {
+  gap: 6px;
+}
+.fb--phone .fb-catch__eyes > span:last-child {
+  display: none;
+}
+.fb--phone .fb-split {
+  gap: 7px;
+}
+.fb--phone .fb-split__total {
+  font-size: 24px;
+}
+.fb--phone .fb-split__legend em,
+.fb--phone .fb-filed,
+.fb--phone .fb-year span {
+  font-size: 12px;
+}
+.fb--phone .fb-split__legend em {
+  display: none;
 }
 .fb-kicker {
   color: var(--scn-gold);
@@ -377,11 +469,45 @@
 .fb-catch__row.is-off b {
   font-size: 1.9em;
 }
-.fb-catch.is-on .fb-catch__row:nth-of-type(3) {
-  animation: fb-pop 520ms cubic-bezier(0.3, 1.3, 0.5, 1) 1700ms both;
+/* The adding-machine tape: each line drops in as the sum ticks up with it. */
+.fb--desk .fb-catch {
+  gap: 12px;
 }
-.fb-catch.is-on .fb-catch__row:nth-of-type(4) {
-  animation: fb-pop 520ms cubic-bezier(0.3, 1.3, 0.5, 1) 2100ms both;
+.fb-tape {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+.fb-tape__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1em;
+  color: var(--scn-ink-2);
+  font-size: 0.86em;
+  opacity: 0;
+  transform: translateX(-24px);
+  transition:
+    opacity 320ms ease,
+    transform 420ms var(--scn-ease);
+}
+.fb-tape__row.is-in {
+  opacity: 1;
+  transform: none;
+}
+.fb-tape__row b {
+  font-family: var(--scn-serif);
+  color: var(--scn-ink);
+}
+.fb-catch__sum {
+  padding-top: 0.35em;
+  border-top: 1.5px solid var(--scn-ink-3);
+}
+.fb-catch.is-on .fb-catch__late {
+  animation: fb-slide 480ms var(--scn-ease) var(--scn-t) both;
+}
+.fb-catch.is-on .fb-catch__pop {
+  animation: fb-pop 520ms cubic-bezier(0.3, 1.3, 0.5, 1) var(--scn-t) both;
 }
 .fb-catch__eyes {
   display: flex;
@@ -398,7 +524,7 @@
   font-size: 0.9em;
 }
 .fb-catch.is-on .fb-catch__eyes {
-  animation: fb-slide 600ms var(--scn-ease) 2600ms both;
+  animation: fb-slide 600ms var(--scn-ease) var(--scn-t) both;
 }
 @keyframes fb-pop {
   from {
