@@ -212,7 +212,7 @@ function SplitCard({ step }: { step: number }) {
   );
 }
 
-export function FarmbooksBillScene({ layout, playing = true, loop = true, label = true }: SceneProps) {
+export function FarmbooksBillScene({ layout, playing = true, loop = true, label = true, caption = true, onCaption }: SceneProps) {
   const { run, step, fading } = useTimeline(fbCues, { playing, loop });
   return (
     <SceneRoot brand="fb" layout={layout} label={label} fading={fading} summary={fbSummary} scene="farmbooks-bill" step={step}>
@@ -233,7 +233,7 @@ export function FarmbooksBillScene({ layout, playing = true, loop = true, label 
           <CatchCard step={step} />
           <SplitCard step={step} />
         </div>
-        <Caption lines={fbCaptions} index={step} />
+        <Caption lines={fbCaptions} index={step} show={caption} onLine={onCaption} />
       </div>
     </SceneRoot>
   );

@@ -9,9 +9,11 @@ import { Chrome, Fit, type BeatProps } from "./shared";
  * vendor insurance and saltwater close, FarmBooks reading a bill, NWKS's bed
  * board. Not the MarCommand portal, so the chrome names the client, never
  * "MarCommand". The scene plays once while active and holds its final frame;
- * reduced motion shows the final frame with its caption.
+ * reduced motion shows the final frame. Its step captions go to the window's
+ * caption slot through `onCaption`, and the picture draws none of its own, so
+ * a reader never sees the line twice (reduced motion: the final step's line).
  */
-export function SceneBeat({ client, beat, variant, active, fill, reduced, quiet }: BeatProps<SceneBeatData>) {
+export function SceneBeat({ client, beat, variant, active, fill, reduced, quiet, onCaption }: BeatProps<SceneBeatData>) {
   const Scene = SCENES[beat.scene];
   const n = NATIVE_SIZE[variant];
   return (
@@ -26,7 +28,7 @@ export function SceneBeat({ client, beat, variant, active, fill, reduced, quiet 
       </p>
       <div className="sc-frame__portal" style={fill ? undefined : { aspectRatio: `${n.w} / ${n.h}` }}>
         <Fit w={n.w} h={n.h}>
-          <Scene layout={variant} playing={active && !reduced} loop={false} label={false} />
+          <Scene layout={variant} playing={active && !reduced} loop={false} label={false} caption={false} onCaption={active ? onCaption : undefined} />
         </Fit>
       </div>
     </figure>

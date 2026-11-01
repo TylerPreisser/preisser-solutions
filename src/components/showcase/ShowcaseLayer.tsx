@@ -84,6 +84,8 @@ function Layer({
   const [at, setAt] = useState(0);
   const [auto, setAuto] = useState(!reduced);
   const beats = show.beats;
+  // A scene beat's current step line, shown in the caption slot instead of the beat's own caption (one caption, never two).
+  const [live, setLive] = useState<{ at: number; line: string } | null>(null);
   const boxRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const [geo, setGeo] = useState<{ left: number; top: number; width: number; from: string; inPlace: boolean; hole: number[]; veilTop: number } | null>(null);
@@ -319,14 +321,22 @@ function Layer({
               aria-hidden={i !== at || undefined}
               inert={i !== at || undefined}
             >
-              <BeatView client={show} beat={b} variant={variant} active={opened && i === at} fill={sheet && phone} reduced={reduced} />
+              <BeatView
+                client={show}
+                beat={b}
+                variant={variant}
+                active={opened && i === at}
+                fill={sheet && phone}
+                reduced={reduced}
+                onCaption={i === at ? (line) => setLive((p) => (p && p.at === i && p.line === line ? p : { at: i, line })) : undefined}
+              />
             </div>
           ))}
         </div>
       </div>
 
       <p className="sc-caption" aria-live="polite">
-        {beats[at].caption}
+        {live && live.at === at ? live.line : beats[at].caption}
       </p>
 
       <div className="sc-foot">

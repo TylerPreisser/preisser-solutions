@@ -239,7 +239,7 @@ function Exceptions({ step }: { step: number }) {
   );
 }
 
-export function HgCoiScene({ layout, playing = true, loop = true, label = true }: SceneProps) {
+export function HgCoiScene({ layout, playing = true, loop = true, label = true, caption = true, onCaption }: SceneProps) {
   const { run, step, fading } = useTimeline(coiCues, { playing, loop });
   const phone = layout === "phone";
   return (
@@ -262,7 +262,7 @@ export function HgCoiScene({ layout, playing = true, loop = true, label = true }
           <Replies step={step} />
           <Exceptions step={step} />
         </div>
-        <Caption lines={coiCaptions} index={step} />
+        <Caption lines={coiCaptions} index={step} show={caption} onLine={onCaption} />
       </div>
     </SceneRoot>
   );

@@ -277,7 +277,7 @@ function Files({ step }: { step: number }) {
   );
 }
 
-export function HgSwdScene({ layout, playing = true, loop = true, label = true }: SceneProps) {
+export function HgSwdScene({ layout, playing = true, loop = true, label = true, caption = true, onCaption }: SceneProps) {
   const { run, step, fading } = useTimeline(swdCues, { playing, loop });
   const phone = layout === "phone";
   return (
@@ -299,7 +299,7 @@ export function HgSwdScene({ layout, playing = true, loop = true, label = true }
           <TieOut step={step} rows={phone ? 3 : 6} />
           <Files step={step} />
         </div>
-        <Caption lines={swdCaptions} index={step} />
+        <Caption lines={swdCaptions} index={step} show={caption} onLine={onCaption} />
       </div>
     </SceneRoot>
   );

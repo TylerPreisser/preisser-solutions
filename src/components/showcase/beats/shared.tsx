@@ -18,6 +18,8 @@ export interface BeatProps<B> {
   reduced: boolean;
   /** Not the first stage with this name on the page: hide it from assistive tech. */
   quiet?: boolean;
+  /** A beat whose line changes as it plays (a scene) reports it here; the window shows it in its caption slot. */
+  onCaption?: (line: string) => void;
 }
 
 export const prefersReduced = () =>

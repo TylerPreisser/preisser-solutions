@@ -251,7 +251,7 @@ function Print({ step }: { step: number }) {
   );
 }
 
-export function NwksBedsScene({ layout, playing = true, loop = true, label = true }: SceneProps) {
+export function NwksBedsScene({ layout, playing = true, loop = true, label = true, caption = true, onCaption }: SceneProps) {
   const { run, step, fading } = useTimeline(bedsCues, { playing, loop, holdMs: 3400 });
   const phone = layout === "phone";
   return (
@@ -269,7 +269,7 @@ export function NwksBedsScene({ layout, playing = true, loop = true, label = tru
           <Board step={step} />
           <Print step={step} />
         </div>
-        <Caption lines={bedsCaptions} index={step} />
+        <Caption lines={bedsCaptions} index={step} show={caption} onLine={onCaption} />
       </div>
     </SceneRoot>
   );

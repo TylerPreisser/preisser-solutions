@@ -28,6 +28,13 @@ export interface SceneProps {
    * surrounding frame already carries the one data-demo-label for its stage.
    */
   label?: boolean;
+  /**
+   * Draw the caption pill inside the picture. Off when a frame shows the line
+   * in its own caption slot (the showcase window): never both.
+   */
+  caption?: boolean;
+  /** Called with the current step's caption line whenever it changes. */
+  onCaption?: (line: string) => void;
 }
 
 export const NATIVE_SIZE: Record<SceneLayout, { w: number; h: number }> = {
@@ -158,9 +165,34 @@ export function Typed({ text, on, cps = 26, delay = 0 }: { text: string; on: boo
   );
 }
 
-/** The one caption line under the picture: one line per beat, cross-faded. */
-export function Caption({ lines, index }: { lines: readonly string[]; index: number }) {
+/**
+ * The one caption line: one line per beat, cross-faded. It reports the
+ * current line to `onLine` (the window's caption slot) and, when `show` is
+ * false, draws nothing itself, so a reader never sees the line twice.
+ */
+export function Caption({
+  lines,
+  index,
+  show = true,
+  onLine,
+}: {
+  lines: readonly string[];
+  index: number;
+  show?: boolean;
+  onLine?: (line: string) => void;
+}) {
   const at = Math.max(0, Math.min(lines.length - 1, index));
+  const report = useRef(onLine);
+  report.current = onLine;
+  const line = lines[at];
+  // Report on every new line, and again when a listener attaches (a beat
+  // becoming active under reduced motion keeps its final line, so the line
+  // itself does not change).
+  const listening = Boolean(onLine);
+  useEffect(() => {
+    if (listening) report.current?.(line);
+  }, [line, listening]);
+  if (!show) return null;
   return (
     <div className="scn-caption">
       {lines.map((l, i) => (
