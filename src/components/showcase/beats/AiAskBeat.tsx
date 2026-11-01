@@ -13,25 +13,33 @@ import { Fit, FitWidth, PortalFrame, TopBar, useBox, type BeatProps } from "./sh
  * answer, its figures, its chart, what it likely means and what we're doing next.
  *
  * Desk: the tab's two columns at 960 x 600, scaled as one picture. Phone: one
- * column 400 wide, as tall as the sheet allows; the column moves up to the
+ * column 320 wide (round 7: scaled to the sheet's width, so a 12.5 px face is
+ * never under 11 css px at 320), as tall as the sheet allows; the column moves up to the
  * answer and then down through it, the way a person would scroll.
  */
 const PHASES = ["Reading your question", "Reading your numbers", "Working it out", "Writing", "Checking every figure"] as const;
-const CHAR_MS = 42;
-const TYPE_AT = 500;
+const TYPE_AT = 120;
+/** The whole question types in 1.08 s or less, whatever its length (critique r6 A2). */
+const TYPE_MS = 1080;
+const charMs = (q: string) => Math.min(42, TYPE_MS / Math.max(1, q.length));
 
-/** Every moment of the ask, in ms from the beat's start. */
+/**
+ * Every moment of the ask, in ms from the beat's start. The answer column is
+ * never blank: it shows the waiting card from 0, the phase rail and the first
+ * step row the moment the question is sent, and the steps run until the
+ * answer replaces them.
+ */
 export function aiTimeline(beat: AiAskBeatData) {
-  const typed = TYPE_AT + beat.question.length * CHAR_MS;
-  const press = typed + 320;
-  const ask = press + 180;
-  let t = ask + 220;
+  const typed = TYPE_AT + beat.question.length * charMs(beat.question);
+  const press = typed + 140;
+  const ask = press + 120;
+  let t = ask;
   const steps = beat.steps.map((s) => {
     const r = { start: t, end: t + s.ms };
     t += s.ms;
     return r;
   });
-  const answer = t + 320;
+  const answer = t + 200;
   return { typed, press, ask, steps, answer, worked: answer + 900, pan: answer + 2900, total: answer + 6600 };
 }
 
@@ -60,7 +68,7 @@ export function AiAskBeat({ client, beat, variant, active, fill, reduced, quiet 
   const t = useClock(active, reduced, T.total);
   const phone = variant === "phone";
 
-  const typed = t < TYPE_AT ? 0 : Math.min(beat.question.length, Math.floor((t - TYPE_AT) / CHAR_MS) + 1);
+  const typed = t < TYPE_AT ? 0 : Math.min(beat.question.length, Math.floor((t - TYPE_AT) / charMs(beat.question)) + 1);
   const asked = t >= T.ask;
   const answered = t >= T.answer;
   const field = asked ? "" : beat.question.slice(0, typed);
@@ -74,7 +82,7 @@ export function AiAskBeat({ client, beat, variant, active, fill, reduced, quiet 
   return (
     <PortalFrame client={client} stage="ai" narration={beat.narration} variant={variant} fill={fill} quiet={quiet}>
       {phone && fill ? (
-        <FitWidth w={400}>{(h) => <div className="pt-screen pt-ai pt-ai--phone">{body(h)}</div>}</FitWidth>
+        <FitWidth w={320}>{(h) => <div className="pt-screen pt-ai pt-ai--phone">{body(h)}</div>}</FitWidth>
       ) : (
         <Fit w={960} h={600}>
           <div className="pt-screen pt-ai pt-ai--desk">
@@ -118,41 +126,73 @@ function Column({
 }) {
   // The scroll: phone moves the whole column up to the answer, then through it;
   // desk moves the answer card's body if the answer is taller than its place.
+  // Every resting stop has clean edges (critique r6 A3): the top stops on the
+  // top of a line, and the bottom is clipped above the first line that would
+  // be sliced, so no line of text is ever cut, in motion or reduced motion.
   const viewRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const colRef = useRef<HTMLDivElement>(null);
   const [y, setY] = useState(0);
+  const [clip, setClip] = useState({ top: 0, bottom: 0 });
+  const [settle, setSettle] = useState(0);
   const panned = t >= T.pan;
   // Measured again whenever the column's size changes (the faces arriving re-wrap the question).
   const col = useBox(colRef);
+  // Measure once more after the answer's blocks have finished arriving (they rise 6 px as they fade in).
+  useEffect(() => {
+    if (!answered) return;
+    const id = window.setTimeout(() => setSettle((n) => n + 1), 900);
+    return () => window.clearTimeout(id);
+  }, [answered, panned]);
   useLayoutEffect(() => {
     const view = viewRef.current;
     const card = cardRef.current;
-    if (!view || !card || !answered) return setY(0);
-    const viewH = view.clientHeight;
-    // The scroll stops on a block's top edge, never through a line of text (critique r2, A-r2-1).
-    const blocks = [...card.querySelectorAll<HTMLElement>(".ai-answer__body > *")];
-    const snap = (need: number, base: number) => {
-      const top = blocks.map((b) => base + b.offsetTop - 4).find((y) => y >= need);
-      return top ?? need;
-    };
+    if (!view || !card || !answered) {
+      setY(0);
+      setClip({ top: 0, bottom: 0 });
+      return;
+    }
     if (phone) {
-      const top = card.offsetTop - 10;
-      const room = card.offsetTop + card.offsetHeight + 12 - viewH;
-      setY(panned && !reduced && room > top ? snap(room, 0) : top);
+      const column = colRef.current;
+      if (!column) return;
+      const viewH = view.clientHeight;
+      const lines = linesOf(card, column);
+      const box = rel(card, column);
+      // The first stop shows the card's top edge, never a slice of the question above it.
+      const asked = column.querySelector<HTMLElement>(".ai-asked");
+      const above = asked ? rel(asked, column).bottom : box.top - 20;
+      const top = box.top - Math.max(0, Math.min(10, (box.top - above) / 2));
+      const room = box.bottom + 12 - viewH;
+      const at = panned && !reduced && room > top ? snapTop(lines, room) : top;
+      const bottom = cleanBottom(lines, at + viewH);
+      setY(at);
+      setClip({ top: 0, bottom: Math.max(0, at + viewH - bottom) });
     } else {
       const body = card.querySelector<HTMLElement>(".ai-answer__body");
-      const over = card.scrollHeight - viewH;
-      setY(panned && !reduced && over > 0 && body ? snap(over + 4, -body.offsetTop) : 0);
+      if (!body) return;
+      const cs = getComputedStyle(card);
+      const visH = card.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const lines = linesOf(body, body);
+      const over = body.offsetHeight - visH;
+      const at = panned && !reduced && over > 0 ? snapTop(lines, over) : 0;
+      const bottom = cleanBottom(lines, at + visH);
+      setY(at);
+      setClip({ top: at, bottom: Math.max(0, body.offsetHeight - bottom) });
     }
-  }, [answered, panned, phone, reduced, h, col.h]);
+  }, [answered, panned, phone, reduced, h, col.h, settle]);
 
   const ask = (
     <div className="pt-ai__left">
       <form className={`ai-ask${typing ? " is-typing" : ""}`} onSubmit={(e) => e.preventDefault()} aria-hidden="true">
         <span className="ai-ask__field">
-          {field ? <span className="ai-ask__typed">{field}</span> : <span className="ai-ask__ph">Ask about your numbers…</span>}
-          {typing ? <i className="ai-ask__caret" /> : null}
+          {field ? (
+            <span className="ai-ask__typed">
+              {field}
+              {typing ? <i className="ai-ask__caret" /> : null}
+            </span>
+          ) : (
+            <span className="ai-ask__ph">Ask about your numbers…</span>
+          )}
         </span>
         <span className={`ai-btn ai-btn-fill${pressing ? " is-pressed" : ""}`}>Ask</span>
       </form>
@@ -167,16 +207,18 @@ function Column({
   );
 
   const card = answered ? (
-    <Answer beat={beat} cardRef={cardRef} y={phone ? 0 : y} />
-  ) : live ? (
-    <LiveCard steps={beat.steps} t={t} T={T} />
+    <Answer beat={beat} cardRef={cardRef} y={phone ? 0 : y} clip={phone ? null : clip} />
   ) : (
-    <div className="ai-card ai-empty" />
+    <LiveCard steps={beat.steps} t={t} T={T} waiting={!live} />
   );
 
   if (phone) {
     return (
-      <div className="pt-ai__view" ref={viewRef} style={{ height: h }}>
+      <div
+        className={clip.bottom > 0 ? "pt-ai__view is-clipped" : "pt-ai__view"}
+        ref={viewRef}
+        style={{ height: h, clipPath: clip.bottom > 0 ? `inset(0 0 ${clip.bottom}px 0)` : undefined }}
+      >
         <div className="pt-ai__col" ref={colRef} style={{ transform: `translateY(${-y}px)` }}>
           {ask}
           <div className="pt-ai__right">{card}</div>
@@ -214,17 +256,21 @@ function Worked({ beat }: { beat: AiAskBeatData }) {
 
 const sec = (ms: number) => `${(ms / 1000).toFixed(1)} s`;
 
-/** "Working on it": the clock, the five phases, and the steps, newest first. */
-function LiveCard({ steps, t, T }: { steps: readonly AiStep[]; t: number; T: T }) {
+/**
+ * "Working on it": the clock, the five phases, and the steps, newest first.
+ * `waiting`: the question is still being typed, so the card shows its phase
+ * rail at rest instead of an empty box (critique r6 A2).
+ */
+function LiveCard({ steps, t, T, waiting }: { steps: readonly AiStep[]; t: number; T: T; waiting: boolean }) {
   const now = steps.findIndex((_, i) => t < T.steps[i].end);
   const running = now === -1 ? steps.length - 1 : now;
-  const phase = steps[running].phase;
-  const shown = steps.map((s, i) => ({ s, i })).filter(({ i }) => t >= T.steps[i].start);
-  const secs = Math.max(0, Math.floor((t - T.ask) / 1000));
+  const phase = waiting ? -1 : steps[running].phase;
+  const shown = waiting ? [] : steps.map((s, i) => ({ s, i })).filter(({ i }) => t >= T.steps[i].start);
+  const secs = waiting ? 0 : Math.max(0, Math.floor((t - T.ask) / 1000));
   return (
-    <div className="ai-card aw-live">
+    <div className={waiting ? "ai-card aw-live is-waiting" : "ai-card aw-live"}>
       <div className="aw-head">
-        <p className="aw-kicker">Working on it</p>
+        <p className="aw-kicker">{waiting ? "Ready for your question" : "Working on it"}</p>
         <span className="aw-clock">0:{String(secs).padStart(2, "0")}</span>
       </div>
       <ol className="aw-phases">
@@ -235,6 +281,8 @@ function LiveCard({ steps, t, T }: { steps: readonly AiStep[]; t: number; T: T }
           </li>
         ))}
       </ol>
+      {/* The phone shows only the phase that is running, on its own line, under the rail. */}
+      <p className="aw-now">{phase >= 0 ? (PHASES as readonly string[])[phase] : "\u00a0"}</p>
       <ol className="aw-list">
         {[...shown].reverse().map(({ s, i }) => {
           const done = t >= T.steps[i].end;
@@ -273,14 +321,27 @@ function Spin() {
 }
 
 /** The structured answer, block by block, as ai/AnswerBlocks.tsx lays it out. */
-function Answer({ beat, cardRef, y }: { beat: AiAskBeatData; cardRef: React.RefObject<HTMLDivElement | null>; y: number }) {
+function Answer({
+  beat,
+  cardRef,
+  y,
+  clip,
+}: {
+  beat: AiAskBeatData;
+  cardRef: React.RefObject<HTMLDivElement | null>;
+  y: number;
+  clip: { top: number; bottom: number } | null;
+}) {
   const a = beat.answer;
   const max = a.chart.ticks[a.chart.ticks.length - 1];
   const fmt = (v: number) => (a.chart.money ? `$${v.toLocaleString("en-US")}` : v.toLocaleString("en-US"));
   const long = a.figures.some((f) => f.value.length > 5);
   return (
     <div className="ai-card ai-answer" ref={cardRef}>
-      <div className="ai-answer__body" style={{ transform: `translateY(${-y}px)` }}>
+      <div
+        className="ai-answer__body"
+        style={{ transform: `translateY(${-y}px)`, clipPath: clip && (clip.top > 0 || clip.bottom > 0) ? `inset(${clip.top}px 0 ${clip.bottom}px 0)` : undefined }}
+      >
         <p className="aa-head aa-in" style={{ "--i": 0 } as CSSProperties}>
           {a.headline}
         </p>
@@ -352,4 +413,42 @@ function Answer({ beat, cardRef, y }: { beat: AiAskBeatData; cardRef: React.RefO
       </div>
     </div>
   );
+}
+
+/** The answer's lines: every piece of text that must never be cut by an edge. */
+const LINES = ".aa-head, .aa-figs, .ch-title, .ch-row, .aa-k, .aa-means > li, .aa-next > li, .ai-sources";
+
+/** An element's top and bottom in `ref`'s own (unscaled) px. */
+function rel(el: HTMLElement, ref: HTMLElement) {
+  const r0 = ref.getBoundingClientRect();
+  const k = r0.height / (ref.offsetHeight || 1) || 1;
+  const r = el.getBoundingClientRect();
+  return { top: (r.top - r0.top) / k, bottom: (r.bottom - r0.top) / k };
+}
+
+function linesOf(root: HTMLElement, ref: HTMLElement) {
+  return [...root.querySelectorAll<HTMLElement>(LINES)].map((e) => rel(e, ref)).sort((a, b) => a.top - b.top);
+}
+
+/** A scroll position at or below `need` that starts on the top of a line, with a little air above it. */
+function snapTop(lines: { top: number; bottom: number }[], need: number) {
+  const i = lines.findIndex((l) => l.top >= need);
+  if (i < 0) return need;
+  const above = i > 0 ? lines[i - 1].bottom : -Infinity;
+  return lines[i].top - Math.max(0, Math.min(4, (lines[i].top - above) / 2));
+}
+
+/** The lowest edge at or above `edge` that no line straddles. */
+function cleanBottom(lines: { top: number; bottom: number }[], edge: number) {
+  let e = edge;
+  for (let moved = true; moved; ) {
+    moved = false;
+    for (const l of lines) {
+      if (l.top < e - 0.5 && l.bottom > e + 0.5) {
+        e = l.top - 1;
+        moved = true;
+      }
+    }
+  }
+  return e;
 }

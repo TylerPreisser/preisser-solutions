@@ -353,13 +353,15 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  height: 46px;
+  /* Two lines tall from the start: the whole question shows at every width,
+     wrapped, never clipped mid-word (critique r6 A2), and the field never jumps. */
+  height: 60px;
   padding: 0 14px;
   border: 1px solid var(--pt-ink-soft);
   border-radius: 12px;
   background: var(--pt-ground);
   font-size: 15px;
-  white-space: nowrap;
+  line-height: 20px;
   overflow: hidden;
 }
 .ai-ask.is-typing .ai-ask__field {
@@ -370,14 +372,17 @@
   color: var(--pt-ink-soft);
 }
 .ai-ask__typed {
-  overflow: hidden;
-  text-overflow: clip;
-  direction: ltr;
+  display: block;
+  flex: 1;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 .ai-ask__caret {
-  flex: none;
+  display: inline-block;
+  vertical-align: -3px;
   width: 1.5px;
-  height: 19px;
+  height: 17px;
   margin-left: 1px;
   background: var(--pt-ink);
   animation: pt-caret 900ms steps(1) infinite;
@@ -391,7 +396,7 @@
   flex: none;
   display: inline-grid;
   place-items: center;
-  height: 46px;
+  height: 60px;
   padding: 0 20px;
   border-radius: 12px;
   font-size: 14.5px;
@@ -489,7 +494,16 @@
   opacity: 0.6;
 }
 
-/* Working on it */
+/* Working on it. Before the question is sent the card waits with its phase
+   rail at rest, so the answer column is never an empty box. */
+.aw-live.is-waiting .aw-kicker,
+.aw-live.is-waiting .aw-clock {
+  opacity: 0.55;
+}
+.pt-ai__view.is-clipped {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
 .aw-live {
   display: flex;
   flex-direction: column;
@@ -962,4 +976,52 @@
   .pt-root .pt-ai__view {
     overflow: auto;
   }
+}
+
+/* ── Phone AI column, 320 wide (round 7) ───────────────────────
+   Scaled to the sheet's width (0.89x at a 320 phone), so 12.5 px native is
+   the floor for every face (critique r6 A4, the owner's 11 css px floor). */
+.pt-ai--phone .ai-ask__field {
+  height: auto;
+  min-height: 62px;
+  padding: 8px 12px;
+  font-size: 14.5px;
+}
+.pt-ai--phone .ai-btn {
+  height: auto;
+  padding: 0 14px;
+}
+.pt-ai--phone .ai-kicker,
+.pt-ai--phone .aw-kicker,
+.pt-ai--phone .aw-clock,
+.pt-ai--phone .aw-stop__label,
+.pt-ai--phone .aw-t,
+.pt-ai--phone .aw-chip,
+.pt-ai--phone .ai-chip,
+.pt-ai--phone .aa-fig dt,
+.pt-ai--phone .ch-title,
+.pt-ai--phone .ch-row,
+.pt-ai--phone .ch-val,
+.pt-ai--phone .ch-tick,
+.pt-ai--phone .aa-k,
+.pt-ai--phone .ai-sources {
+  font-size: 12.5px;
+}
+.pt-ai--phone .aa-means li,
+.pt-ai--phone .aa-next li,
+.pt-ai--phone .aw-row {
+  font-size: 14px;
+}
+.aw-now {
+  display: none;
+}
+.pt-ai--phone .aw-stop__label {
+  display: none;
+}
+.pt-ai--phone .aw-now {
+  display: block;
+  margin-top: -4px !important;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--pt-ink);
 }

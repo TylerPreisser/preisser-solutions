@@ -72,9 +72,11 @@ export function useCount(to: number, on: boolean, ms: number, reduced: boolean) 
     let raf = 0;
     const t0 = performance.now();
     const tick = (t: number) => {
-      const k = Math.min(1, (t - t0) / ms);
+      // A rAF timestamp can be earlier than t0 (it is the frame's start), so
+      // progress is clamped at 0: a count never shows a negative (critique r6 A1).
+      const k = Math.min(1, Math.max(0, (t - t0) / ms));
       const e = 1 - Math.pow(1 - k, 3);
-      setN(Math.round(to * e));
+      setN(Math.max(0, Math.min(to, Math.round(to * e))));
       if (k < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
