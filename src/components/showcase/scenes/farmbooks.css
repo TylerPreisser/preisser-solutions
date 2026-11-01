@@ -485,15 +485,13 @@
   gap: 1em;
   color: var(--scn-ink-2);
   font-size: 0.86em;
-  opacity: 0;
-  transform: translateX(-24px);
-  transition:
-    opacity 320ms ease,
-    transform 420ms var(--scn-ease);
+  /* Every line is on the card from the start, dimmed, and lights up as the
+     sum takes it in: the card is never a mostly empty box. */
+  opacity: 0.3;
+  transition: opacity 320ms ease;
 }
 .fb-tape__row.is-in {
   opacity: 1;
-  transform: none;
 }
 .fb-tape__row b {
   font-family: var(--scn-serif);

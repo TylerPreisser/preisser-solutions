@@ -211,7 +211,7 @@ export const swdCaptions = [
   "The files land with accounting in under a minute, and a person still releases every one.",
 ] as const;
 
-export const swdCues = [250, 1900, 3300, 6100, 10500] as const;
+export const swdCues = [250, 1900, 3300, 6100, 11300] as const;
 
 /**
  * Desk camera (1280 x 800): the sheet while the field confirms the barrels,

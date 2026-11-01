@@ -577,15 +577,16 @@
   color: var(--scn-bad);
   font-weight: 700;
 }
+/* The catch is the peak of the close: "Held" stays up about 3.2 s before the fix. */
 .swd-tie.is-on .swd-swap__bad {
-  animation: swd-bad 2.9s ease both;
+  animation: swd-bad 4s ease both;
   animation-delay: 500ms;
 }
 .swd-tie.is-on .swd-swap__good {
-  animation: swd-good 3.5s ease both;
+  animation: swd-good 4.6s ease both;
 }
 .swd-tie.is-on .swd-tie__caught td {
-  animation: swd-flash 3.5s ease both;
+  animation: swd-flash 4.6s ease both;
 }
 @keyframes swd-bad {
   0% {
@@ -925,4 +926,7 @@
     var(--scn-shadow);
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
   backdrop-filter: blur(18px) saturate(1.4);
+}
+.swd--desk .swd-tie__caught .swd-st {
+  font-size: 1em;
 }
