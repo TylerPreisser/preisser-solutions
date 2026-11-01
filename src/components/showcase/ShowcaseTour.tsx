@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Showcase } from "@/data/showcase";
 import { CommandFrame, ShowcaseStage, WebsiteFrame } from "./ShowcaseStage";
 
@@ -14,13 +14,37 @@ import { CommandFrame, ShowcaseStage, WebsiteFrame } from "./ShowcaseStage";
  * center. The move is TIME-based (760ms) and fires when a chapter changes; the
  * page scroll never scrubs it, so a fast scroll cannot leave it half-way.
  *
+ * The page opens on the product (critique A9, W3): at 1024px and up the hero
+ * text sits in the right column beside the frame, and the frame scrolls once
+ * through the site on load, then settles on chapter 1 with its spotlight.
+ * Reduced motion skips that pass.
+ *
  * Under 1024px: no sticky frame. Each chapter carries its own small frame,
  * already showing its part of the site. That layout is pure CSS and is also
  * what a visitor with JavaScript off reads, chapter by chapter.
  */
-export function ShowcaseTour({ show }: { show: Showcase }) {
+const INTRO_PAN_MS = 2800;
+
+export function ShowcaseTour({ show, children }: { show: Showcase; children?: ReactNode }) {
   const [active, setActive] = useState(0);
   const listRef = useRef<HTMLOListElement>(null);
+  // The opening pass: down the site, then back to chapter 1.
+  const [intro, setIntro] = useState<"down" | "back" | null>(null);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.innerWidth < 1024) return;
+    let t2 = 0;
+    const t0 = window.setTimeout(() => setIntro("down"), 250);
+    const t1 = window.setTimeout(() => {
+      setIntro("back");
+      t2 = window.setTimeout(() => setIntro(null), 1300);
+    }, 250 + INTRO_PAN_MS + 300);
+    return () => {
+      window.clearTimeout(t0);
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+    };
+  }, []);
 
   useEffect(() => {
     const list = listRef.current;
@@ -29,7 +53,10 @@ export function ShowcaseTour({ show }: { show: Showcase }) {
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
-          if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.chapter));
+          if (e.isIntersecting) {
+            setActive(Number((e.target as HTMLElement).dataset.chapter));
+            setIntro(null);
+          }
         }
       },
       // A band across the middle of the screen: the chapter you are reading.
@@ -44,6 +71,9 @@ export function ShowcaseTour({ show }: { show: Showcase }) {
   const lastWeb = [...show.chapters].reverse().find((c) => c.kind === "website");
   const web = ch.kind === "website" ? ch : lastWeb;
   const deskWeb = web && web.kind === "website" ? web.desk : { y: 0, focus: null };
+  const webY = intro === "down" ? show.pan.desk : deskWeb.y;
+  const webPan = intro === "down" ? INTRO_PAN_MS : intro === "back" ? 1200 : 760;
+  const webFocus = ch.kind === "website" && intro !== "down" ? deskWeb.focus : null;
 
   return (
     <section className="sc-tour" aria-label={`${show.name}, section by section`}>
@@ -52,8 +82,8 @@ export function ShowcaseTour({ show }: { show: Showcase }) {
           show={show}
           variant="desk"
           slide={ch.kind === "command" ? 1 : 0}
-          web={{ y: deskWeb.y, focus: ch.kind === "website" ? deskWeb.focus : null, panMs: 760, lazy: false }}
-          commandFocus={ch.kind === "command" ? ch.focus : null}
+          web={{ y: webY, focus: webFocus, panMs: webPan, lazy: false }}
+          cmd={ch.kind === "command" ? { focus: ch.focus, zoom: ch.focus, zoomAfterMs: 280 } : undefined}
           live={ch.kind === "command"}
           slideMs={760}
         />
@@ -64,11 +94,14 @@ export function ShowcaseTour({ show }: { show: Showcase }) {
         </div>
       </div>
 
-      <ol className="sc-tour__chapters" ref={listRef}>
-        {show.chapters.map((c, i) => (
-          <ChapterItem key={c.title} show={show} index={i} active={i === active} breakBefore={i === firstCommand} />
-        ))}
-      </ol>
+      <div className="sc-tour__side">
+        {children}
+        <ol className="sc-tour__chapters" ref={listRef}>
+          {show.chapters.map((c, i) => (
+            <ChapterItem key={c.title} show={show} index={i} active={i === active} breakBefore={i === firstCommand} />
+          ))}
+        </ol>
+      </div>
     </section>
   );
 }

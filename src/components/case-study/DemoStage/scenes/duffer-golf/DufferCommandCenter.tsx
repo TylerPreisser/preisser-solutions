@@ -28,6 +28,7 @@ const NAV: { label: string; badge?: number; icon: keyof typeof ICONS }[] = [
   { label: "Commissions", icon: "coins" },
   { label: "QR Codes", icon: "qr" },
   { label: "MarCommand", icon: "megaphone" },
+  { label: "Account", icon: "people" },
 ];
 
 const ICONS = {
@@ -119,6 +120,10 @@ function Desk() {
             </li>
           ))}
         </ul>
+        <div className="dgcc-side__foot">
+          <b>Owner</b>
+          <u>Sign out</u>
+        </div>
       </aside>
 
       <div className="dgcc-main">
@@ -244,11 +249,10 @@ function Phone() {
   );
 }
 
-export function DufferCommandCenter() {
+export function DufferCommandCenter({ layout = "desk" }: { layout?: "desk" | "phone" }) {
   return (
     <div className="dgcc" aria-hidden="true">
-      <Desk />
-      <Phone />
+      {layout === "desk" ? <Desk /> : <Phone />}
     </div>
   );
 }

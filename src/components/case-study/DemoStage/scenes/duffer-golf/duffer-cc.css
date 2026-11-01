@@ -3,8 +3,10 @@
    Scoped --dg-* properties only (ADR-0016 §6). Values read off the
    real panel rendered on its own fixtures, 2026-10-31
    (duffer-partner-program panel/src, AppShellDesk + DashboardDesk).
-   One unit, --dg-u, is a 1280th (desk) or 390th (phone) of the
-   container, so each layout scales as a single picture.
+   Laid out at NATIVE size (desk 1280 x 800, phone 390 x 600) in whole
+   pixels with integer font sizes, then scaled as one picture by the frame
+   (ShowcaseStage's fit box). Sizing text through container units gave
+   fractional font sizes that Chromium spaced badly ("Go o gle", "S CANS").
    ============================================================ */
 .dgcc {
   --dg-ink: #1c1c1a;
@@ -22,7 +24,6 @@
   --dg-badge: #d9a53a;
   --dg-live: #3f7d3a;
   --dg-live-bg: #e6f0e2;
-  container-type: inline-size;
   width: 100%;
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   color: var(--dg-ink);
@@ -38,31 +39,20 @@
 }
 
 .dgcc-ico {
-  width: calc(var(--dg-u) * 17);
-  height: calc(var(--dg-u) * 17);
+  width: 17px;
+  height: 17px;
   flex: none;
 }
 
 /* ── Desk: a 1280 x 800 picture ─────────────────────────────── */
 .dgcc-desk {
-  --dg-u: calc(100cqw / 1280);
+  width: 1280px;
+  height: 800px;
   display: grid;
-  grid-template-columns: calc(var(--dg-u) * 224) 1fr;
-  aspect-ratio: 1280 / 800;
+  grid-template-columns: 224px 1fr;
   background: var(--dg-ground);
-  font-size: calc(var(--dg-u) * 14);
+  font-size: 14px;
   overflow: hidden;
-}
-.dgcc-phone {
-  display: none;
-}
-@container (max-width: 519px) {
-  .dgcc-desk {
-    display: none;
-  }
-  .dgcc-phone {
-    display: grid;
-  }
 }
 
 .dgcc-side {
@@ -72,66 +62,82 @@
   flex-direction: column;
 }
 .dgcc-side__brand {
-  padding: calc(var(--dg-u) * 22) calc(var(--dg-u) * 20) calc(var(--dg-u) * 18);
+  padding: 22px 20px 18px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 .dgcc-logo {
   display: block;
-  width: calc(var(--dg-u) * 136);
+  width: 136px;
   height: auto;
 }
 .dgcc-side__cc {
   display: block;
-  margin-top: calc(var(--dg-u) * 12);
-  font-size: calc(var(--dg-u) * 12);
+  margin-top: 12px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+.dgcc-side__foot {
+  margin-top: auto;
+  padding: 14px 20px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+  color: var(--dg-side-ink-2);
+  display: grid;
+  gap: 6px;
+}
+.dgcc-side__foot b {
+  color: var(--dg-side-ink);
+  font-weight: 600;
+}
+.dgcc-side__foot u {
+  text-underline-offset: 3px;
+}
 .dgcc-side__asof {
-  padding: calc(var(--dg-u) * 14) calc(var(--dg-u) * 20);
-  font-size: calc(var(--dg-u) * 12.5);
+  padding: 14px 20px;
+  font-size: 12px;
   color: var(--dg-side-ink-2);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 .dgcc-nav {
-  padding: calc(var(--dg-u) * 14) calc(var(--dg-u) * 8);
+  padding: 14px 8px;
   display: grid;
-  gap: calc(var(--dg-u) * 2);
+  gap: 2px;
 }
 .dgcc-nav__item {
   display: flex;
   align-items: center;
-  gap: calc(var(--dg-u) * 11);
-  padding: calc(var(--dg-u) * 9) calc(var(--dg-u) * 12);
-  border-radius: calc(var(--dg-u) * 6);
-  font-size: calc(var(--dg-u) * 14.5);
+  gap: 11px;
+  padding: 9px 12px;
+  border-radius: 6px;
+  font-size: 14px;
   color: var(--dg-side-ink);
 }
 .dgcc-nav__item--on {
   background: var(--dg-side-on);
-  box-shadow: inset calc(var(--dg-u) * 3) 0 0 var(--dg-go);
+  box-shadow: inset 3px 0 0 var(--dg-go);
   font-weight: 600;
 }
 .dgcc-nav__item em {
   margin-left: auto;
-  min-width: calc(var(--dg-u) * 18);
-  height: calc(var(--dg-u) * 18);
+  min-width: 18px;
+  height: 18px;
   border-radius: 999px;
   background: var(--dg-badge);
   color: var(--dg-ink);
   font-style: normal;
-  font-size: calc(var(--dg-u) * 11);
+  font-size: 11px;
   font-weight: 700;
   display: grid;
   place-items: center;
 }
 
 .dgcc-main {
-  padding: calc(var(--dg-u) * 26) calc(var(--dg-u) * 32);
+  padding: 26px 32px;
   display: flex;
   flex-direction: column;
-  gap: calc(var(--dg-u) * 16);
+  gap: 16px;
   min-width: 0;
 }
 .dgcc-head {
@@ -140,26 +146,26 @@
   align-items: flex-end;
 }
 .dgcc-head__title {
-  font-size: calc(var(--dg-u) * 25);
+  font-size: 25px;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 .dgcc-head__sub,
 .dgcc-head__right {
-  font-size: calc(var(--dg-u) * 13.5);
+  font-size: 14px;
   color: var(--dg-ink-2);
 }
 .dgcc-head__right {
   display: flex;
   align-items: center;
-  gap: calc(var(--dg-u) * 12);
+  gap: 12px;
 }
 .dgcc-btn {
   display: inline-flex;
   align-items: center;
-  padding: calc(var(--dg-u) * 8) calc(var(--dg-u) * 14);
+  padding: 8px 14px;
   border: 1px solid #b9b9b2;
-  border-radius: calc(var(--dg-u) * 6);
+  border-radius: 6px;
   background: var(--dg-surface);
   color: var(--dg-ink);
   font-weight: 600;
@@ -173,9 +179,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: calc(var(--dg-u) * 11) calc(var(--dg-u) * 16);
+  padding: 11px 16px;
   border: 1px solid var(--dg-attn);
-  border-radius: calc(var(--dg-u) * 8);
+  border-radius: 8px;
   background: var(--dg-surface);
   font-weight: 600;
 }
@@ -183,84 +189,84 @@
 .dgcc-stats {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: calc(var(--dg-u) * 12);
+  gap: 12px;
 }
 .dgcc-stat {
   background: var(--dg-surface);
   border: 1px solid var(--dg-rule);
-  border-radius: calc(var(--dg-u) * 8);
-  padding: calc(var(--dg-u) * 14) calc(var(--dg-u) * 14);
+  border-radius: 8px;
+  padding: 14px 14px;
   display: flex;
   flex-direction: column;
-  gap: calc(var(--dg-u) * 3);
-  min-height: calc(var(--dg-u) * 128);
+  gap: 3px;
+  min-height: 128px;
 }
 .dgcc-stat__k {
-  font-size: calc(var(--dg-u) * 13);
+  font-size: 13px;
   color: var(--dg-ink-2);
-  min-height: calc(var(--dg-u) * 34);
+  min-height: 34px;
 }
 .dgcc-stat__v {
-  font-size: calc(var(--dg-u) * 27);
+  font-size: 27px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  margin-bottom: calc(var(--dg-u) * 4);
+  margin-bottom: 4px;
 }
 .dgcc-stat__s {
-  font-size: calc(var(--dg-u) * 12);
+  font-size: 12px;
   color: var(--dg-ink-2);
 }
 
 .dgcc-lower {
   display: grid;
   grid-template-columns: 1.55fr 1fr;
-  gap: calc(var(--dg-u) * 16);
+  gap: 16px;
   flex: 1;
   min-height: 0;
 }
 .dgcc-card {
   background: var(--dg-surface);
   border: 1px solid var(--dg-rule);
-  border-radius: calc(var(--dg-u) * 8);
-  padding: calc(var(--dg-u) * 14) calc(var(--dg-u) * 16);
+  border-radius: 8px;
+  padding: 14px 16px;
   min-height: 0;
   overflow: hidden;
 }
 .dgcc-card__title {
   font-weight: 700;
-  font-size: calc(var(--dg-u) * 15);
+  font-size: 15px;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding-bottom: calc(var(--dg-u) * 10);
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--dg-rule);
 }
 .dgcc-card__title small {
   font-weight: 400;
-  font-size: calc(var(--dg-u) * 12);
+  font-size: 12px;
   color: var(--dg-ink-2);
 }
 .dgcc-chart__k {
-  margin-top: calc(var(--dg-u) * 12) !important;
-  font-size: calc(var(--dg-u) * 13);
+  margin-top: 12px !important;
+  font-size: 13px;
   font-weight: 600;
 }
 .dgcc-bars {
   display: flex;
   align-items: flex-end;
-  gap: calc(var(--dg-u) * 4);
-  height: calc(var(--dg-u) * 128);
-  margin-top: calc(var(--dg-u) * 8);
+  gap: 4px;
+  height: 214px;
+  margin-top: 8px;
   border-bottom: 1px solid var(--dg-rule);
 }
 .dgcc-bars__bar {
   flex: 1;
   background: var(--dg-ink);
-  border-radius: calc(var(--dg-u) * 1.5) calc(var(--dg-u) * 1.5) 0 0;
+  border-radius: 1.5px 1.5px 0 0;
   transform-origin: bottom;
 }
 .dgcc-bars--leads {
-  height: calc(var(--dg-u) * 58);
+  height: 92px;
 }
 .dgcc-bars--leads .dgcc-bars__bar {
   background: #2f5a2a;
@@ -271,9 +277,9 @@
 .dgcc-chart__axis {
   display: flex;
   justify-content: space-between;
-  font-size: calc(var(--dg-u) * 11.5);
+  font-size: 12px;
   color: var(--dg-ink-2);
-  margin-top: calc(var(--dg-u) * 6);
+  margin-top: 6px;
 }
 
 .dgcc-feed ul {
@@ -288,10 +294,10 @@
   overflow: hidden;
   min-height: 0;
   display: grid;
-  grid-template-columns: calc(var(--dg-u) * 76) 1fr;
-  gap: calc(var(--dg-u) * 10);
-  padding: calc(var(--dg-u) * 8) 0;
-  font-size: calc(var(--dg-u) * 13);
+  grid-template-columns: 76px 1fr;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 13px;
 }
 .dgcc-feed__time {
   color: var(--dg-ink-2);
@@ -300,12 +306,12 @@
 .dgcc-feed__what small {
   display: block;
   color: var(--dg-ink-2);
-  font-size: calc(var(--dg-u) * 11.5);
+  font-size: 12px;
 }
 .dgcc-feed__row--new .dgcc-feed__inner {
-  box-shadow: inset calc(var(--dg-u) * 3) 0 0 var(--dg-live);
-  padding-left: calc(var(--dg-u) * 8);
-  margin-left: calc(var(--dg-u) * -8);
+  box-shadow: inset 3px 0 0 var(--dg-live);
+  padding-left: 8px;
+  margin-left: -8px;
 }
 
 /* The tick: the end state (15) is what shows by default. */
@@ -321,11 +327,12 @@
 
 /* ── Phone: a 390 x 780 picture (DashboardPhone) ────────────── */
 .dgcc-phone {
-  --dg-u: calc(100cqw / 390);
+  display: grid;
+  width: 390px;
+  height: 600px;
   grid-template-rows: auto 1fr auto;
-  aspect-ratio: 390 / 600;
   background: var(--dg-ground);
-  font-size: calc(var(--dg-u) * 15);
+  font-size: 15px;
   overflow: hidden;
 }
 .dgcc-phone__bar {
@@ -334,47 +341,47 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: calc(var(--dg-u) * 14) calc(var(--dg-u) * 18);
-  font-size: calc(var(--dg-u) * 14);
+  padding: 14px 18px;
+  font-size: 14px;
   text-decoration: underline;
 }
 .dgcc-phone__bar .dgcc-logo {
-  width: calc(var(--dg-u) * 96);
+  width: 96px;
 }
 .dgcc-phone__body {
-  padding: calc(var(--dg-u) * 16);
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: calc(var(--dg-u) * 8);
+  gap: 8px;
   min-height: 0;
   overflow: hidden;
 }
 .dgcc-attn--phone {
-  font-size: calc(var(--dg-u) * 14);
-  gap: calc(var(--dg-u) * 10);
+  font-size: 14px;
+  gap: 10px;
 }
 .dgcc-phone__k {
-  margin-top: calc(var(--dg-u) * 8) !important;
-  font-size: calc(var(--dg-u) * 12);
+  margin-top: 8px !important;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--dg-ink-2);
 }
 .dgcc-phone__big {
-  font-size: calc(var(--dg-u) * 44);
+  font-size: 44px;
   font-weight: 800;
   line-height: 1;
 }
 .dgcc-phone__list {
   background: var(--dg-surface);
   border: 1px solid var(--dg-rule);
-  border-radius: calc(var(--dg-u) * 10);
+  border-radius: 10px;
 }
 .dgcc-phone__list li {
   display: flex;
   justify-content: space-between;
-  padding: calc(var(--dg-u) * 10) calc(var(--dg-u) * 14);
+  padding: 10px 14px;
   border-bottom: 1px solid var(--dg-rule);
   color: var(--dg-ink-2);
 }
@@ -387,12 +394,12 @@
 .dgcc-feed--phone {
   background: var(--dg-surface);
   border: 1px solid var(--dg-rule);
-  border-radius: calc(var(--dg-u) * 10);
-  padding: 0 calc(var(--dg-u) * 12);
+  border-radius: 10px;
+  padding: 0 12px;
 }
 .dgcc-feed--phone .dgcc-feed__inner {
-  grid-template-columns: calc(var(--dg-u) * 64) 1fr;
-  font-size: calc(var(--dg-u) * 12.5);
+  grid-template-columns: 64px 1fr;
+  font-size: 12px;
 }
 .dgcc-feed--phone .dgcc-feed__row:last-child {
   border-bottom: 0;
@@ -402,18 +409,18 @@
   color: var(--dg-side-ink-2);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  padding: calc(var(--dg-u) * 8) 0 calc(var(--dg-u) * 12);
-  font-size: calc(var(--dg-u) * 11);
+  padding: 8px 0 12px;
+  font-size: 11px;
   text-align: center;
 }
 .dgcc-phone__tab {
   display: grid;
   justify-items: center;
-  gap: calc(var(--dg-u) * 4);
+  gap: 4px;
 }
 .dgcc-phone__tab .dgcc-ico {
-  width: calc(var(--dg-u) * 20);
-  height: calc(var(--dg-u) * 20);
+  width: 20px;
+  height: 20px;
 }
 .dgcc-phone__tab--on {
   color: var(--dg-side-ink);
@@ -425,26 +432,26 @@
    The resting frame (no [data-live]) is already the final frame. */
 @media (prefers-reduced-motion: no-preference) {
   [data-live] .dgcc-feed__row--new {
-    animation: dgcc-row-in 520ms cubic-bezier(0.2, 0.8, 0.2, 1) 700ms both;
+    animation: dgcc-row-in 520ms cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--dg-live-at, 900ms) - 200ms) both;
   }
   [data-live] .dgcc-feed__row--new .dgcc-feed__inner {
-    animation: dgcc-row-flash 1600ms ease-out 700ms both;
+    animation: dgcc-row-flash 1600ms ease-out calc(var(--dg-live-at, 900ms) - 200ms) both;
   }
   [data-live] .dgcc-tick__was {
     visibility: visible;
-    animation: dgcc-tick-out 320ms cubic-bezier(0.4, 0, 0.2, 1) 900ms both;
+    animation: dgcc-tick-out 160ms cubic-bezier(0.4, 0, 1, 1) var(--dg-live-at, 900ms) both;
   }
   [data-live] .dgcc-tick__now {
-    animation: dgcc-tick-in 320ms cubic-bezier(0.2, 0.8, 0.2, 1) 900ms both;
+    animation: dgcc-tick-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--dg-live-at, 900ms) + 140ms) both;
   }
   [data-live] .dgcc-bars--leads {
-  height: calc(var(--dg-u) * 58);
+  height: 58px;
 }
 .dgcc-bars--leads .dgcc-bars__bar {
   background: #2f5a2a;
 }
 .dgcc-bars__bar--today {
-    animation: dgcc-bar-grow 420ms cubic-bezier(0.2, 0.8, 0.2, 1) 900ms both;
+    animation: dgcc-bar-grow 420ms cubic-bezier(0.2, 0.8, 0.2, 1) var(--dg-live-at, 900ms) both;
   }
 }
 @keyframes dgcc-row-in {

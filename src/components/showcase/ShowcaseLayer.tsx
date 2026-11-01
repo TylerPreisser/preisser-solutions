@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { showcases, type ShowcaseSlug } from "@/data/showcase";
-import { ShowcaseStage } from "./ShowcaseStage";
+import { ShowcaseStage, VIEW_RATIO } from "./ShowcaseStage";
 
 /**
  * The home card's showcase (ADR-0020). Loaded only when a visitor shows intent
@@ -25,6 +25,17 @@ export type LayerMode = "hover" | "pinned";
 const DWELL_MS = 3700; // website slide, before the move to the command center
 const PAN_DELAY_MS = 420;
 const PAN_MS = 2800;
+const SLIDE_MS = 720;
+/** On the command center: the whole screen holds this long, then the camera moves in. */
+const OVERVIEW_MS = 1000;
+/** Where the camera goes on each command center: the part that moves. */
+const ZOOM: Record<ShowcaseSlug, Record<"desk" | "phone", string>> = {
+  "duffer-golf": { desk: "feed", phone: "feed" },
+  "hays-academy": { desk: "flow", phone: "flow" },
+};
+const GAP = 16; // between the card and the window
+const EDGE = 24; // between the window and the viewport edge
+const MIN_SIDE_W = 520; // narrower than this beside the card, and the card opens in place instead
 
 function prefersReduced() {
   return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -61,28 +72,63 @@ export default function ShowcaseLayer({
   const [live, setLive] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
-  const [geo, setGeo] = useState<{ left: number; top: number; from: string } | null>(null);
+  const [geo, setGeo] = useState<{ left: number; top: number; width: number; from: string; inPlace: boolean; hole: number[]; veilTop: number } | null>(null);
+
   const titleId = useId();
   // A tablet-wide sheet has room for the desktop picture; a phone gets the phone one.
   const [variant] = useState<"desk" | "phone">(() => (sheet && window.innerWidth < 600 ? "phone" : "desk"));
   const modal = mode === "pinned" || sheet;
 
-  // ── Place the popover beside its card, then grow it out of the card (FLIP).
+  // ── Place the window (critique A1). It never covers the section heading or
+  // the card it came from: it opens beside the card, at the card row, on the
+  // side with more room, and shrinks to fit the height left under the heading.
+  // When neither side has room for a useful window (the middle card at
+  // 1024px), the card itself opens in place: the window grows out of it and the
+  // card hides behind it, so nothing is covered that the visitor was looking at.
   const place = useCallback(() => {
     const box = boxRef.current;
     if (!box || sheet) return;
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     const card = anchor.getBoundingClientRect();
-    const w = box.offsetWidth;
-    const h = box.offsetHeight;
+    const heading = document.getElementById("work-heading")?.getBoundingClientRect();
     const navBottom = 88;
-    const left = Math.round(Math.min(Math.max(card.left + card.width / 2 - w / 2, 24), vw - w - 24));
-    const top = Math.round(Math.min(Math.max(card.top + card.height / 2 - h / 2, navBottom + 8), Math.max(navBottom + 8, vh - h - 16)));
-    const sx = card.width / w;
-    const dx = card.left + card.width / 2 - (left + w / 2);
+    // Height that does not scale with width: head, caption, foot, padding, frame chrome.
+    const w0 = box.offsetWidth;
+    const fixed = box.offsetHeight - (w0 - 32) * VIEW_RATIO.desk;
+    const lo = Math.max(navBottom + 8, heading ? heading.bottom + 16 : 0);
+    const h720 = fixed + (720 - 32) * VIEW_RATIO.desk;
+    const top = Math.round(Math.max(lo, Math.min(card.top, vh - 16 - h720)));
+    const wForHeight = (vh - 16 - top - fixed) / VIEW_RATIO.desk + 32;
+    const roomR = vw - EDGE - (card.right + GAP);
+    const roomL = card.left - GAP - EDGE;
+    const right = roomR >= roomL;
+    const sideW = Math.floor(Math.min(720, wForHeight, right ? roomR : roomL));
+    let width: number;
+    let left: number;
+    let inPlace = false;
+    if (sideW >= MIN_SIDE_W) {
+      width = sideW;
+      left = right ? card.right + GAP : card.left - GAP - width;
+    } else {
+      inPlace = true;
+      width = Math.floor(Math.min(720, wForHeight, vw - EDGE * 2));
+      left = Math.min(Math.max(card.left + card.width / 2 - width / 2, EDGE), vw - width - EDGE);
+    }
+    left = Math.round(left);
+    const h = fixed + (width - 32) * VIEW_RATIO.desk;
+    const sx = card.width / width;
+    const dx = card.left + card.width / 2 - (left + width / 2);
     const dy = card.top + card.height / 2 - (top + h / 2);
-    setGeo({ left, top, from: `translate(${dx}px, ${dy}px) scale(${sx.toFixed(3)})` });
+    setGeo({
+      left,
+      top,
+      width,
+      inPlace,
+      from: `translate(${dx}px, ${dy}px) scale(${sx.toFixed(3)})`,
+      hole: [card.left, card.top, card.width, card.height],
+      veilTop: Math.max(0, heading ? heading.bottom + 8 : 0),
+    });
   }, [anchor, sheet]);
 
   useLayoutEffect(() => {
@@ -132,12 +178,27 @@ export default function ShowcaseLayer({
     };
   }, [phase, auto, variant, show]);
 
-  // The live scan replays only once the command center has arrived.
+  // The command center goes live once it has arrived, not while it slides in.
   useEffect(() => {
     if (slide !== 1) return setLive(false);
-    const t = window.setTimeout(() => setLive(true), reduced ? 0 : 640);
+    const t = window.setTimeout(() => setLive(true), reduced ? 0 : SLIDE_MS);
     return () => window.clearTimeout(t);
   }, [slide, reduced]);
+
+  // The source card hides behind a window that opened in place over it.
+  useEffect(() => {
+    if (!geo?.inPlace) return;
+    anchor.classList.add("sc-source");
+    return () => anchor.classList.remove("sc-source");
+  }, [geo?.inPlace, anchor]);
+
+  // The phone sheet is a full-screen modal: the site nav steps back and the page stops scrolling.
+  useEffect(() => {
+    if (!sheet) return;
+    const html = document.documentElement;
+    html.classList.add("sc-sheet-open");
+    return () => html.classList.remove("sc-sheet-open");
+  }, [sheet]);
 
   const close = useCallback(() => {
     setPhase("leave");
@@ -206,7 +267,7 @@ export default function ShowcaseLayer({
     <>
       <div className="sc-head">
         <p className="sc-head__name" id={titleId}>
-          {show.name}
+          {show.short}
         </p>
         <div className="sc-tabs" role="tablist" aria-label={`${show.name}: website or ${show.commandName}`} data-slide={slide} data-auto={auto && slide === 0 && phase === "open" ? "" : undefined} style={{ "--sc-dwell": `${DWELL_MS}ms` } as CSSProperties}>
           <span className="sc-tabs__pill" aria-hidden="true" />
@@ -244,12 +305,15 @@ export default function ShowcaseLayer({
           variant={variant}
           slide={slide}
           web={{ y: panY, panMs: auto ? PAN_MS : 760, lazy: false }}
+          cmd={{ zoom: ZOOM[show.slug][variant], zoomAfterMs: OVERVIEW_MS }}
           live={live}
+          slideMs={SLIDE_MS}
+          fill={sheet && variant === "phone"}
         />
       </div>
 
       <p className="sc-caption" aria-live="polite">
-        {slide === 0 ? show.captions.website : show.captions.command}
+        {slide === 1 && live ? show.captions.command : show.captions.website}
       </p>
 
       <div className="sc-foot">
@@ -279,6 +343,7 @@ export default function ShowcaseLayer({
         <div className="sc-scrim" data-phase={phase} onClick={close} aria-hidden="true" />
         <div ref={boxRef} className="sc-sheet sc-glass" data-phase={phase} {...dialogProps}>
           <div className="sc-sheet__grip" aria-hidden="true" />
+          <span className="sc-sheen" aria-hidden="true" />
           {body}
         </div>
       </div>,
@@ -289,11 +354,21 @@ export default function ShowcaseLayer({
   const style = {
     left: geo?.left ?? 0,
     top: geo?.top ?? 0,
+    width: phase === "measure" || !geo ? 720 : geo.width,
     transform: phase === "from" ? geo?.from : undefined,
   } as CSSProperties;
+  const hole = geo?.hole;
 
   return createPortal(
     <div className="sc-root">
+      {/* The rest of the section steps back; the heading stays clear, and so does the card the window came from. */}
+      <div className="sc-veil" data-phase={phase} aria-hidden="true" style={{ clipPath: `inset(${geo?.veilTop ?? 0}px 0 0 0)` }}>
+        {hole && !geo?.inPlace ? (
+          <span className="sc-veil__hole" style={{ left: hole[0], top: hole[1], width: hole[2], height: hole[3] }} />
+        ) : (
+          <span className="sc-veil__all" />
+        )}
+      </div>
       <div
         ref={boxRef}
         className="sc-pop sc-glass"
@@ -303,6 +378,7 @@ export default function ShowcaseLayer({
         onPointerLeave={() => onHoverChange?.(false)}
         {...dialogProps}
       >
+        <span className="sc-sheen" aria-hidden="true" />
         {body}
       </div>
     </div>,

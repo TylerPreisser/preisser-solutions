@@ -56,19 +56,19 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   return (
     <article className="sc-root sc-page">
       <JsonLd data={[schema, crumbs]} />
-      <header className="sc-hero">
-        <p className="sc-eyebrow">Our work</p>
-        <h1>{show.h1}</h1>
-        <p className="sc-hero__lede">{show.lede}</p>
-        <div className="sc-foot">
-          <a className="sc-live" href={show.liveUrl} target="_blank" rel="noopener noreferrer">
-            Visit {show.liveLabel}
-            <span className="ps-visually-hidden"> (opens in a new tab)</span>
-          </a>
-        </div>
-      </header>
-
-      <ShowcaseTour show={show} />
+      <ShowcaseTour show={show}>
+        <header className="sc-hero">
+          <p className="sc-eyebrow">Our work</p>
+          <h1>{show.h1}</h1>
+          <p className="sc-hero__lede">{show.lede}</p>
+          <div className="sc-foot">
+            <a className="sc-live" href={show.liveUrl} target="_blank" rel="noopener noreferrer">
+              Visit {show.liveLabel}
+              <span className="ps-visually-hidden"> (opens in a new tab)</span>
+            </a>
+          </div>
+        </header>
+      </ShowcaseTour>
 
       <section className="sc-end" aria-labelledby="sc-end-title">
         <h2 id="sc-end-title">Want one of these for your business?</h2>

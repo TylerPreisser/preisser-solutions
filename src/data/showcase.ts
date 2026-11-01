@@ -50,6 +50,8 @@ export interface Showcase {
   liveUrl: string;
   liveLabel: string;
   /** The page h1 and the one paragraph under it. metaTitle is <= 39 chars: the site template adds " | Preisser Solutions". */
+  /** Short name for the window header, where the full name would not fit. */
+  short: string;
   h1: string;
   lede: string;
   metaTitle: string;
@@ -70,6 +72,7 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
   "duffer-golf": {
     slug: "duffer-golf",
     name: "Duffer Golf",
+    short: "Duffer Golf",
     liveUrl: "https://duffergolf.net",
     liveLabel: "duffergolf.net",
     h1: "Duffer Golf",
@@ -85,8 +88,8 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
     },
     commandName: showcaseMeta["duffer-golf"].commandName,
     captions: {
-      website: "The storefront. It answers “will it fit?” before it asks for anything.",
-      command: "Tate's Command Center. Every course display, scan and lead, live.",
+      website: "The storefront we built. The first thing it answers is whether one will fit in your garage.",
+      command: "Duffer's Command Center. A golfer just scanned the counter display at Sumac Ridge.",
     },
     pan: { desk: 1240, phone: 1120 },
     narration:
@@ -106,25 +109,25 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
         tag: "Proof of fit",
         title: "You can see it in your own garage.",
         body:
-          "The drawing puts the bay beside a truck in a two-car garage. People buy what they can picture at home, and this gets them there before they measure anything.",
+          "The drawing puts the bay next to a truck in a two-car garage. You can picture it in yours before you ever get out a tape measure.",
         desk: { y: 760, focus: [740, 880, 470, 510] },
         phone: { y: 640, focus: [26, 860, 338, 360] },
       },
       {
         kind: "website",
         tag: "Price in the open",
-        title: "Four models. Four prices. No “call for a quote.”",
+        title: "Every model has its price right on the page.",
         body:
-          "Every price is on the page. The complete Duffer 10 is outlined and marked Featured, so that's where the eye lands. Hiding the price is the fastest way to lose a buyer who's already sold.",
-        desk: { y: 1500, focus: [954, 1680, 304, 622] },
-        phone: { y: 1230, focus: [10, 1370, 370, 520] },
+          "The complete Duffer 10 is outlined and marked Featured, so that's where the eye lands. If someone's ready to buy, a hidden price just sends them somewhere else.",
+        desk: { y: 1560, focus: [957, 1701, 305, 624] },
+        phone: { y: 1820, focus: [195, 1865, 185, 447] },
       },
       {
         kind: "website",
-        tag: "A person, not a brand",
-        title: "Tate tells the story himself.",
+        tag: "The founder's story",
+        title: "The founder tells the story himself.",
         body:
-          "He built the first one so he could practice all winter. Then his buddies wanted one. A family business in Hoxie should sound like one, and that's a reason to trust it.",
+          "He built the first one so he could practice all winter. Then his buddies wanted one. It's a family business in Hoxie, and the page sounds like one. People trust that.",
         desk: { y: 2410, focus: [24, 2422, 620, 781] },
         phone: { y: 2300, focus: [16, 2355, 358, 781] },
       },
@@ -142,23 +145,23 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
         tag: "Every scan, credited",
         title: "Each display has its own QR code.",
         body:
-          "A golfer scans the display on the counter at their course. The scan lands here, credited to the course that holds that display. Tate sees which courses are actually selling.",
+          "A golfer scans the display on the counter at their course. The scan lands here, credited to the course that holds that display. Duffer sees which courses are actually selling.",
         focus: "stats",
       },
       {
         kind: "command",
         tag: "Live",
-        title: "He sees it while it happens.",
+        title: "It shows up while it happens.",
         body:
-          "The feed refreshes every 15 seconds. A scan, a page view, a golfer still reading, then a lead. All of it on sample data here, all of it real in his.",
+          "The feed refreshes every 15 seconds: a scan, a page view, someone still reading, then a lead. What you're looking at here is sample data.",
         focus: "feed",
       },
       {
         kind: "command",
-        tag: "Only what needs him",
-        title: "One bar, and only when it matters.",
+        tag: "Just the exceptions",
+        title: "A bar shows up only when something needs a decision.",
         body:
-          "The bar at the top shows up when something needs a decision. Today that's two displays to review. The scans, leads and commissions are counted for him.",
+          "Today that's two partners whose displays need a look. The scans, leads and commissions are counted for them.",
         focus: "attention",
       },
     ],
@@ -166,6 +169,7 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
   "hays-academy": {
     slug: "hays-academy",
     name: "Hays Academy of Hair Design",
+    short: "Hays Academy",
     liveUrl: "https://haysacademy.edu",
     liveLabel: "haysacademy.edu",
     h1: "Hays Academy of Hair Design",
@@ -181,8 +185,8 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
     },
     commandName: showcaseMeta["hays-academy"].commandName,
     captions: {
-      website: "The website. It answers “is this real, and what does it cost?” up front.",
-      command: "Their MarCommand portal. Which marketing brings in leads.",
+      website: "Their website. Price, results and the next start date, all on the first page.",
+      command: "Their MarCommand portal. It shows which marketing brings in leads.",
     },
     pan: { desk: 760, phone: 800 },
     narration:
@@ -191,9 +195,9 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
       {
         kind: "website",
         tag: "A date on the first screen",
-        title: "“Someday” becomes a plan.",
+        title: "The next class date is right up top.",
         body:
-          "The next class date sits on the first screen. A real date makes beauty school feel like something you can start, and the button asks for info, the smallest step there is.",
+          "A real date makes beauty school feel like something you can start this year. The button on that screen only asks for info, which is about the smallest step there is.",
         desk: { y: 0, focus: [812, 280, 442, 186] },
         phone: { y: 120, focus: [16, 486, 358, 138] },
       },
@@ -202,7 +206,7 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
         tag: "Is this real?",
         title: "Results and price, on the home page.",
         body:
-          "Most beauty schools hide their results or their price. Hays puts both up front: pass rate, job placement and the all-in cost, with the source linked. That answers the two questions a student and her parents ask first.",
+          "Most beauty schools hide their results or their price. Hays puts both up front: pass rate, job placement and the all-in cost, with the source linked. Those are the first two things a student and their parents ask about.",
         desk: { y: 690, focus: [24, 860, 1232, 228] },
         phone: { y: 760, focus: [12, 860, 366, 300] },
       },
@@ -211,7 +215,7 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
         tag: "Picture yourself here",
         title: "Each program is a photo of the work.",
         body:
-          "Real students on the real floor, with hours, cost and the next start right on the card. She can compare the two programs without opening anything.",
+          "Real students on the real floor, with hours, cost and the next start right on the card. You can compare the two programs without opening anything.",
         desk: { y: 1110, focus: [24, 1160, 1232, 740] },
         phone: { y: 1180, focus: [12, 1225, 366, 600] },
       },
@@ -220,16 +224,16 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
         tag: "A finite path",
         title: "Six steps from a tour to a license.",
         body:
-          "When the whole distance is written down, it feels doable. The last step is filled in, so the end is the thing she sees.",
-        desk: { y: 2000, focus: [620, 2560, 640, 120] },
-        phone: { y: 2440, focus: [12, 3190, 366, 120] },
+          "When the whole distance is written down, it feels doable. The last step, Licensed, is filled in, so that's where your eye ends up.",
+        desk: { y: 2160, focus: [560, 2740, 688, 133] },
+        phone: { y: 2760, focus: [16, 3219, 358, 112] },
       },
       {
         kind: "website",
-        tag: "More than one way in",
-        title: "Apply, call, email, or book a haircut.",
+        tag: "The close",
+        title: "There's a way in for people who aren't ready to apply yet.",
         body:
-          "Some people are ready to apply. Some want to talk first. Some want to see the place as a salon guest. The close gives every one of them a door.",
+          "The bottom of the page lets them call, email or book a haircut first.",
         desk: { y: 2880, focus: [200, 3123, 880, 402] },
         phone: { y: 3300, focus: [12, 3397, 366, 510] },
       },
@@ -238,15 +242,15 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
         tag: "Where leads come from",
         title: "Every channel, and what it produced.",
         body:
-          "Leadership opens this and sees each channel on the left with the visits and leads it sent. The ribbons are those people moving toward the school. Thick ones are working.",
-        focus: "channels",
+          "Leadership opens this and sees each channel on the left with the visits and leads it sent. The ribbons are those people moving toward the school. The thick ones are working.",
+        focus: "flow",
       },
       {
         kind: "command",
-        tag: "Clicks aren't the goal",
-        title: "The last column is the one that counts.",
+        tag: "What counts",
+        title: "Validated leads are what the marketing is judged on.",
         body:
-          "Reached, visited, interested, leads, validated. Validated means a person at the school looked at the lead and it's real. That's the number the marketing is judged on.",
+          "Reached, visited, interested, leads, validated. Validated means a person at the school looked at the lead and it's real.",
         focus: "stages",
       },
       {
@@ -254,7 +258,7 @@ export const showcases: Record<ShowcaseSlug, Showcase> = {
         tag: "Nobody retypes a form",
         title: "Every inquiry lands in their CRM.",
         body:
-          "When a student fills out the form, it goes straight into the school's CRM with the channel it came from. Nobody copies anything by hand.",
+          "When someone fills out the form, it goes straight into the school's CRM with the channel it came from.",
         focus: "social-ads",
       },
     ],

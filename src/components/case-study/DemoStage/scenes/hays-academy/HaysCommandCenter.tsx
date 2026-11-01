@@ -13,9 +13,9 @@ const fraunces = Fraunces({ subsets: ["latin"], variable: "--ha-font-display", d
  * packages/portal-ui, rendered on its harness SAMPLE (never the captured Hays
  * payloads) for client hays-academy, 2026-10-31.
  *
- * Desk is drawn in a 1280 x 800 coordinate space: the HTML uses --ha-u (a
- * 1280th of the container) and the ribbons use an SVG viewBox of the same
- * size, so a ribbon starts exactly at its card at every width.
+ * Desk is drawn at its native 1280 x 800 in whole pixels, and the ribbons use
+ * an SVG viewBox of the same size, so a ribbon starts exactly at its card. The
+ * frame scales the whole picture (ShowcaseStage), never the font sizes.
  *
  * The real portal shows a hold screen below 1024px. The phone picture is
  * therefore not an invented phone app: it is the same stage band and channel
@@ -110,7 +110,7 @@ function Desk() {
             <span
               key={s.key}
               className={s.key === "validated" ? "hacc-band__col hacc-band__col--end" : "hacc-band__col"}
-              style={{ left: `calc(var(--ha-u) * ${STAGE_X[i]})` }}
+              style={{ left: STAGE_X[i] }}
             >
               <span className="hacc-caps">{s.label}</span>
               <span className="hacc-num">{s.value.toLocaleString("en-US")}</span>
@@ -155,12 +155,14 @@ function Desk() {
           <Mark className="hacc-mark" />
         </span>
 
+        {/* The part that moves: the channel cards, their ribbons and the seal they flow into. The showcase camera frames it. */}
+        <span className="hacc-zoom" data-focus="flow" aria-hidden="true" />
         <ul className="hacc-cards" data-focus="channels">
           {haysChannels.map((c, i) => (
             <li
               key={c.key}
               className="hacc-card"
-              style={{ top: `calc(var(--ha-u) * ${DESK.cardY0 + i * DESK.step})` }}
+              style={{ top: DESK.cardY0 + i * DESK.step }}
               data-focus={c.key === "social-ads" ? "social-ads" : undefined}
             >
               <span className={c.paid ? "hacc-card__ico hacc-card__ico--paid" : "hacc-card__ico"}>
@@ -211,7 +213,7 @@ function Phone() {
           </span>
         ))}
       </div>
-      <ul className="hacc-phone__cards" data-focus="channels">
+      <ul className="hacc-phone__cards" data-focus="flow">
         {haysChannels.slice(0, 5).map((c) => (
           <li key={c.key} className="hacc-card hacc-card--phone">
             <span className={c.paid ? "hacc-card__ico hacc-card__ico--paid" : "hacc-card__ico"}>
@@ -236,11 +238,10 @@ function Phone() {
   );
 }
 
-export function HaysCommandCenter() {
+export function HaysCommandCenter({ layout = "desk" }: { layout?: "desk" | "phone" }) {
   return (
     <div className={`hacc ${fraunces.variable}`} aria-hidden="true">
-      <Desk />
-      <Phone />
+      {layout === "desk" ? <Desk /> : <Phone />}
     </div>
   );
 }

@@ -5,20 +5,23 @@
    (--theme-*, --color-primary, --nav-height); only --sc-* is declared.
 
    Motion, all of it (docs/showcase-design.md §Motion):
-     pop        560ms cubic-bezier(0.22, 1.25, 0.36, 1)  card -> window
+     pop        640ms cubic-bezier(0.2, 1.32, 0.32, 1)   card -> window (about 4% overshoot)
+     sheen      1100ms ease-out, 160ms in                one light sweep across the glass on open
      sheet      460ms cubic-bezier(0.32, 0.72, 0, 1)     phone sheet up
      close      180ms cubic-bezier(0.4, 0, 1, 1)
-     pan        2800ms cubic-bezier(0.45, 0, 0.25, 1)    popover website scroll
+     pan        2800ms cubic-bezier(0.65, 0, 0.35, 1)    popover website scroll
      chapter    760ms cubic-bezier(0.65, 0, 0.35, 1)     tour frame moves
-     slide      640ms cubic-bezier(0.65, 0, 0.35, 1)     website -> command center
-     ring       520ms cubic-bezier(0.65, 0, 0.35, 1)     spotlight follows
+     slide      720ms cubic-bezier(0.22, 0.9, 0.24, 1)   command center slides over, website recedes
+     camera     900ms cubic-bezier(0.65, 0, 0.35, 1)     command center zooms onto the part that moves
+     focus      280ms ease-out                           spotlight fades in after the page lands
    Reduced motion: every one of these is a cut (0ms) except opacity fades
    of 120ms on open/close. Nothing rests hidden.
    ============================================================ */
 
 .sc-root {
   --sc-ease-move: cubic-bezier(0.65, 0, 0.35, 1);
-  --sc-ease-pop: cubic-bezier(0.22, 1.25, 0.36, 1);
+  --sc-ease-pop: cubic-bezier(0.2, 1.32, 0.32, 1);
+  --sc-ease-slide: cubic-bezier(0.22, 0.9, 0.24, 1);
   --sc-ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
   --sc-ink: var(--theme-text-primary);
   --sc-ink-2: var(--theme-text-secondary);
@@ -110,44 +113,105 @@
 .sc-frame--phone .sc-frame__when {
   display: none;
 }
+.sc-frame__fill {
+  flex: 1;
+}
+/* The command center: laid out at native size, scaled as one picture. */
 .sc-frame__fit {
-  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  transition: transform 900ms var(--sc-ease-move);
+  /* The root cause of critique A2. Blink lays text out with hinted, whole-pixel
+     glyph advances, then draws it scaled without hinting, so letters drift
+     apart ("Refreshe s eve ry"). geometricPrecision makes the advances
+     fractional, and they scale with the picture. Measured: same frame, same
+     build, before/after crops in the round-2 proof folder. */
+  text-rendering: geometricPrecision;
 }
 
-/* The spotlight: one ring, the rest of the frame dimmed. It moves, it never blinks. */
+/* Website spotlight (critique A7, A8): the page goes quieter, never grey, and
+   the part being talked about stays at full colour with a soft glow. It fades
+   in only after the page has landed. */
+.sc-frame__shot {
+  transition: filter 360ms ease-out;
+}
+.sc-frame__page.is-spot .sc-frame__shot {
+  filter: saturate(0.7) brightness(0.84);
+}
+.sc-focus {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 280ms ease-out;
+  box-shadow:
+    0 0 0 1.5px rgba(var(--color-primary-rgb), 0.9),
+    0 0 0 6px rgba(var(--color-primary-rgb), 0.16),
+    0 10px 36px rgba(var(--color-primary-rgb), 0.35);
+  pointer-events: none;
+}
+.sc-focus.is-on {
+  opacity: 1;
+}
+.sc-focus img {
+  position: absolute;
+  max-width: none;
+  height: auto;
+  display: block;
+}
+
+/* Command-center focus: a glow edge on the part the camera framed. */
 .sc-ring {
   position: absolute;
   border-radius: 12px;
   box-shadow:
-    0 0 0 2px #fff,
-    0 0 0 5px rgba(var(--color-primary-rgb), 0.85),
-    0 0 0 100vmax rgba(10, 22, 40, 0.32);
+    0 0 0 1.5px rgba(var(--color-primary-rgb), 0.9),
+    0 0 0 6px rgba(var(--color-primary-rgb), 0.14),
+    0 0 30px rgba(var(--color-primary-rgb), 0.3);
   transition:
-    left 520ms var(--sc-ease-move),
-    top 520ms var(--sc-ease-move),
-    width 520ms var(--sc-ease-move),
-    height 520ms var(--sc-ease-move);
+    left 900ms var(--sc-ease-move),
+    top 900ms var(--sc-ease-move),
+    width 900ms var(--sc-ease-move),
+    height 900ms var(--sc-ease-move);
   pointer-events: none;
 }
 
-/* ── Stage: website and command center on one track ─────────── */
+/* ── Stage: the command center slides in OVER the website (W2) ─ */
 .sc-stage {
+  position: relative;
   overflow: hidden;
   border-radius: 14px;
   /* room for the frame's shadow without clipping it away */
   padding: 2px;
   margin: -2px;
 }
-.sc-stage__track {
-  display: flex;
-  width: 200%;
-  transition: transform var(--sc-slide-ms, 640ms) var(--sc-ease-move);
+.sc-stage__slide--web {
+  transform-origin: 50% 50%;
+  transition:
+    transform var(--sc-slide-ms, 720ms) var(--sc-ease-slide),
+    filter var(--sc-slide-ms, 720ms) var(--sc-ease-slide),
+    opacity var(--sc-slide-ms, 720ms) var(--sc-ease-slide);
 }
-.sc-stage__slide {
-  width: 50%;
-  flex: none;
-  padding: 0 2px;
-  box-sizing: border-box;
+.sc-stage[data-slide="1"] .sc-stage__slide--web {
+  transform: scale(0.94);
+  filter: blur(6px) brightness(0.85);
+  opacity: 0.5;
+}
+.sc-stage__slide--cmd {
+  position: absolute;
+  inset: 2px;
+  transform: translateX(calc(100% + 24px));
+  transition: transform var(--sc-slide-ms, 720ms) var(--sc-ease-slide);
+}
+.sc-stage[data-slide="1"] .sc-stage__slide--cmd {
+  transform: none;
+}
+.sc-stage__slide--cmd .sc-frame {
+  box-shadow:
+    0 0 0 1px rgba(10, 22, 40, 0.12),
+    -18px 0 40px -14px rgba(10, 22, 40, 0.45);
 }
 
 /* ── Glass ──────────────────────────────────────────────────────
@@ -192,6 +256,102 @@
   background: radial-gradient(120% 60% at 20% 0%, rgba(255, 255, 255, 0.14), transparent 55%);
   opacity: 1;
 }
+/* Specular rim (W2): a 1px edge that is bright where the light hits (top
+   left) and fades round the sides. In light theme it carries a navy shade at
+   the bottom right, so the window has an edge on a white page. */
+.sc-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(140deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.35) 30%, rgba(10, 22, 40, 0.06) 60%, rgba(10, 22, 40, 0.22) 100%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+[data-theme="dark"] .sc-glass::after {
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.12) 30%, rgba(255, 255, 255, 0.03) 60%, rgba(255, 255, 255, 0.14) 100%);
+}
+/* One sweep of light across the glass as it opens. */
+.sc-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+.sc-sheen::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5) 50%, transparent);
+  transform: translateX(-120%) skewX(-14deg);
+  opacity: 0;
+}
+[data-theme="dark"] .sc-sheen::before {
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.13) 50%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-phase="open"] > .sc-sheen::before {
+    animation: sc-sheen 1100ms ease-out 160ms both;
+  }
+}
+@keyframes sc-sheen {
+  0% {
+    transform: translateX(-120%) skewX(-14deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(320%) skewX(-14deg);
+    opacity: 1;
+  }
+}
+
+/* The section behind the window steps back. The heading above it stays clear,
+   and so does the card the window grew from (a hole in the veil). */
+.sc-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 320ms ease-out;
+}
+.sc-veil[data-phase="open"] {
+  opacity: 1;
+}
+.sc-veil__hole,
+.sc-veil__all {
+  position: fixed;
+  border-radius: 20px;
+  box-shadow: 0 0 0 200vmax rgba(255, 255, 255, 0.62);
+}
+.sc-veil__all {
+  inset: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: rgba(255, 255, 255, 0.62);
+}
+[data-theme="dark"] .sc-veil__hole {
+  box-shadow: 0 0 0 200vmax rgba(10, 22, 40, 0.55);
+}
+[data-theme="dark"] .sc-veil__all {
+  background: rgba(10, 22, 40, 0.55);
+}
+/* A card that opened in place hides under its window. */
+.sc-source {
+  opacity: 0 !important;
+  transition: opacity 200ms ease-out;
+}
 
 /* ── Popover (fine pointer, 900px and up) ───────────────────── */
 .sc-pop {
@@ -199,7 +359,7 @@
   z-index: 1101;
   top: 0;
   left: 0;
-  width: min(720px, calc(100vw - 48px));
+  max-width: calc(100vw - 48px);
   border-radius: 26px;
   padding: 14px 16px 16px;
   display: grid;
@@ -218,8 +378,8 @@
 @media (prefers-reduced-motion: no-preference) {
   .sc-pop[data-phase="open"] {
     transition:
-      transform 560ms var(--sc-ease-pop),
-      opacity 200ms ease-out;
+      transform 640ms var(--sc-ease-pop),
+      opacity 220ms ease-out;
   }
   .sc-pop[data-phase="leave"] {
     transition:
@@ -235,8 +395,13 @@
   .sc-pop:not([data-phase="measure"]) {
     transform: none !important;
   }
-  .sc-stage__track,
+  .sc-stage__slide--web,
+  .sc-stage__slide--cmd,
   .sc-frame__page,
+  .sc-frame__fit,
+  .sc-frame__shot,
+  .sc-focus,
+  .sc-veil,
   .sc-ring,
   .sc-sheet,
   .sc-tabs__pill,
@@ -256,11 +421,32 @@
   min-height: 40px;
 }
 .sc-head__name {
+  flex: 0 1 auto;
+  min-width: 0;
   font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.01em;
   margin: 0;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sc-head .sc-tabs,
+.sc-head .sc-close {
+  flex: none;
+}
+/* A narrower window (1024px screens) tightens the tabs so the name keeps its room. */
+.sc-pop {
+  container-type: inline-size;
+}
+@container (max-width: 620px) {
+  .sc-pop .sc-tabs__tab {
+    padding: 0 11px;
+    font-size: 12.5px;
+  }
+  .sc-pop .sc-head {
+    gap: 10px;
+  }
 }
 .sc-close {
   margin-left: auto;
@@ -406,22 +592,23 @@
   position: fixed;
   inset: 0;
   z-index: 1100; /* above the site's floating nav: the sheet is modal */
-  background: rgba(10, 22, 40, 0.45);
+  background: rgba(10, 22, 40, 0.58);
   opacity: 0;
   transition: opacity 300ms ease-out;
 }
 .sc-scrim[data-phase="open"] {
   opacity: 1;
 }
+/* Pinned to one top on every phone and every slug (critique A11). */
 .sc-sheet {
   position: fixed;
   z-index: 1101;
   left: 0;
   right: 0;
+  top: max(12px, env(safe-area-inset-top));
   bottom: 0;
-  max-height: calc(100svh - 12px);
   border-radius: 28px 28px 0 0;
-  padding: 10px 16px calc(16px + env(safe-area-inset-bottom));
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -444,21 +631,59 @@
   background: linear-gradient(180deg, rgba(24, 38, 62, 0.94), rgba(10, 22, 40, 0.92));
 }
 .sc-sheet__grip {
+  position: absolute;
+  top: 6px;
+  left: 50%;
   width: 40px;
   height: 5px;
+  margin-left: -20px;
   border-radius: 3px;
   background: rgba(127, 140, 160, 0.5);
-  margin: 0 auto 2px;
 }
-/* The phone stage is sized by the height it is given, so the whole sheet
-   fits a 568px-tall phone without scrolling. */
-.sc-sheet .sc-stage {
-  width: min(100%, calc((100svh - 330px) * 390 / 600));
-  min-width: 170px;
+/* The site nav steps back while the sheet is up, and the page under it stops scrolling. */
+html.sc-sheet-open {
+  overflow: hidden;
+}
+html.sc-sheet-open .ps-header {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease-out;
+}
+/* The stage gets exactly the height the header row, tab row, caption and
+   buttons leave, and the frame fits inside it: no overlap with the tabs at
+   320 (critique A3). Frame height = 28px chrome + width x 600/390. */
+.sc-sheet__stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  container-type: size;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Phones: the frames fill the stage and crop the picture vertically, so it
+   keeps a readable scale instead of shrinking the whole phone (at 320x568 a
+   fixed-ratio phone was 127px wide). */
+.sc-sheet .sc-stage--fill {
+  box-sizing: border-box;
+  width: calc(100cqw + 4px);
+  height: calc(100cqh + 4px);
+}
+.sc-stage--fill .sc-stage__slide--web {
+  height: 100%;
+}
+.sc-frame--fill {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.sc-frame--fill .sc-frame__view,
+.sc-frame--fill .sc-frame__cmd {
+  flex: 1 1 auto;
+  min-height: 0;
 }
 @media (min-width: 600px) {
   .sc-sheet .sc-stage {
-    width: min(100%, calc((100svh - 330px) * 1.6), 860px);
+    width: min(100cqw, calc((100cqh - 32px) * 1.6), 860px);
   }
 }
 .sc-sheet .sc-frame__chrome {
@@ -489,10 +714,6 @@
 .sc-sheet .sc-tabs__tab {
   min-height: 36px;
 }
-.sc-sheet__stage {
-  display: flex;
-  justify-content: center;
-}
 .sc-frame--phone .sc-frame__label {
   font-size: 9.5px;
   padding: 2px 7px;
@@ -502,9 +723,15 @@
   padding: 0 9px;
 }
 .sc-sheet .sc-caption {
+  flex: none;
   text-align: center;
   font-size: 13.5px;
-  min-height: 0;
+  /* three lines reserved, so the frame does not jump when the caption changes */
+  min-height: calc(3 * 1.45em);
+}
+.sc-sheet .sc-head,
+.sc-sheet .sc-foot {
+  flex: none;
 }
 .sc-sheet .sc-foot {
   justify-content: center;
@@ -551,6 +778,13 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 24px 96px;
+}
+.sc-tour .sc-hero {
+  padding-left: 0;
+  padding-right: 0;
+}
+.sc-tour__side {
+  min-width: 0;
 }
 .sc-tour__chapters {
   list-style: none;
@@ -602,6 +836,8 @@
 }
 .sc-tour__frame {
   width: min(100%, 360px);
+  min-width: 0;
+  max-width: 100%;
   justify-self: center;
 }
 .sc-tour__break-row {
@@ -614,6 +850,17 @@
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     gap: 64px;
     align-items: start;
+  }
+  /* The first screen is the product beside its headline (critique A9). */
+  .sc-tour .sc-hero {
+    padding: calc(var(--nav-height) + 48px) 0 24px;
+    min-height: calc(100svh - 120px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .sc-tour .sc-hero h1 {
+    font-size: clamp(2.25rem, 3.4vw, 3.25rem);
   }
   .sc-tour__sticky {
     display: flex;

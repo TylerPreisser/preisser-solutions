@@ -32,7 +32,7 @@ export const invented: InventedSet = {
     "Commissions", "QR", "Codes", "Account", "Figures", "Refresh", "Review", "Scans", "Scan",
     "Lead", "Leads", "Visitors", "Buy", "Clicks", "Displays", "Live", "Feed", "Command", "Center",
     "Page", "View", "Still", "Reading", "KS", "iOS", "Android", "Oct", "More", "Network",
-    "Days", "Central", "Needing", "Unique", "Last", "Refreshes", "Sign",
+    "Days", "Central", "Needing", "Unique", "Last", "Refreshes", "Sign", "Owner",
   ],
   approved: [
     { name: "Duffer Golf", source: "src/components/home/case-studies.tsx Duffer Golf card (owner, 2026-10-13); DECISIONS/0002" },

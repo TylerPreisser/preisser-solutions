@@ -23,25 +23,36 @@ sentence each. That is the gap; the track itself (order, sizes, swipe) is sound 
 
 | Context | Trigger | What opens | Closes on |
 |---|---|---|---|
-| Fine pointer, viewport ≥ 900px | Pointer rests 280ms on a showcase card | **Glass window**, 720px wide (`min(720px, 100vw−48px)`), grows out of the card (FLIP from the card's rect), centred on the card, clamped below the nav (88px + 8) and 16px above the bottom | Pointer leaves card AND window for 260ms; Escape |
+| Fine pointer, viewport ≥ 900px | Pointer rests 280ms on a showcase card | **Glass window**, up to 720px wide, grows out of the card (FLIP from the card's rect). It never covers the section heading or the card it came from (round 2, critique A1): it opens BESIDE the card, on the side with more room, at the card row (`top = clamp(vh − 16 − h720, heading.bottom + 16, card.top)`), and its width is solved from the height left (`w = min(720, side room, (vh − 16 − top − fixed) / 0.625 + 32)`). If that leaves less than 520px (the middle card at 1024px), the card opens IN PLACE: the window grows out of it and the card hides under it. A veil (dark `rgba(10,22,40,.55)`, light `rgba(255,255,255,.62)`) steps the rest of the section back, starting under the heading, with a hole at the source card | Pointer leaves card AND window for 260ms; Escape |
 | Fine pointer, any width | Click or Enter/Space on the card | Same window as a **modal dialog**: focus to Close, Tab trapped, focus returned on close | Escape, Close, click outside |
-| Touch, or < 900px | Tap the card | **Glass sheet** from the bottom. < 600px: phone-shaped frame (phone capture, phone command center). ≥ 600px: the desktop picture | Close (44×44), scrim tap, Escape |
+| Touch, or < 900px | Tap the card | **Glass sheet** pinned at `max(12px, safe-area-top)` on every phone (round 2, A11); the site nav fades out and the page stops scrolling while it is up. < 600px: the frames FILL the stage (full width, the height the header, tabs, caption and buttons leave) and crop the picture vertically, so it stays readable at 320×568 instead of shrinking the whole phone (A3). No URL pill on the phone command slide. ≥ 600px: the desktop picture at its 16:10 ratio | Close (44×44), scrim tap, Escape |
 | Any | Inside: "Walk through it" | `/showcase/<slug>` | — |
 
 Inside the window, one timeline (motion allowed): 0ms pop → 420ms the website starts scrolling down
-their real home page for 2800ms → 3700ms it slides to the command center → 640ms later the newest
-event arrives live (a scan lands in the feed, Scans today 14 → 15). A blue fill under the Website tab
-counts down the 3.7s so the move is never a surprise. Any tab click stops the timeline for good.
+their real home page for 2800ms → 3700ms the command center slides in OVER the website, which recedes
+(scale .94, blur 6px, dimmed) → 720ms it lands and goes live, the caption changes now (not before) →
+it holds the whole screen 1000ms → the camera moves in over 900ms on the part that moves (Duffer: the
+live feed; Hays: the channel cards, ribbons and seal, `data-focus="flow"`) → the newest event lands as
+the camera arrives (`--dg-live-at` = 2000ms after live: the scan row drops in, Scans today 14 → 15).
+A blue fill under the Website tab counts down the 3.7s so the move is never a surprise. Any tab click
+stops the timeline for good. Reduced motion: no pan, no auto-advance; the command center tab cuts
+straight to the zoomed, final frame.
 
 Showcase cards no longer open their in-card text panel; the text stays in the HTML for crawlers.
 Every other card is unchanged.
 
 **`/showcase/<slug>`** (Duffer Golf, Hays Academy): h1, one paragraph in Tyler's voice, then the tour.
+- ≥ 1024px (round 2, A9/W3): the first screen is the frame beside the h1. The hero sits at the top of
+  the right column, the sticky frame on the left. On load the frame scrolls once down the site
+  (2800ms, from 250ms) and comes back (1200ms) to chapter 1, whose spotlight fades in when it lands.
+  Reduced motion skips that pass; scrolling to a chapter cancels it.
 - ≥ 1024px: website frame sticky on the left (7fr), narration on the right (5fr). The chapter crossing
   the middle 10% of the screen is active (IntersectionObserver, rootMargin −45%/−45%). The frame glides
-  (760ms) to that chapter's part of the site and a spotlight ring (520ms) dims the rest and rings the
-  exact element discussed. After the last website chapter the frame slides to the command center and the
-  ring moves between its parts. Time-based, never scroll-scrubbed (ADR-0020 §4).
+  (760ms) to that chapter's part of the site. The spotlight fades OUT when a move starts and back in
+  120ms after the page lands (A7): the page goes quieter (`saturate(.7) brightness(.84)`, A8) and the
+  exact element discussed is drawn at full colour on top, with a soft blue glow edge. After the last
+  website chapter the command center slides in and the camera moves in on each command chapter's part,
+  edged with the same glow. Time-based, never scroll-scrubbed (ADR-0020 §4).
 - < 1024px, and with JavaScript off: no sticky frame. Every chapter carries its own phone frame already
   at its section, ring drawn. Pure CSS; nothing depends on hydration.
 
@@ -90,13 +101,18 @@ active one without a marker.
 - Layering: window and sheet at z-index 1101, scrim 1100: above the site's floating nav and its
   dialog layer (1000/1001), below the skip link (10000). The sheet is modal, so it covers the nav.
 - Window: 26px radius, 14/16px padding, 12px gap. Frames 14px radius, 34px chrome bar.
-- Command centers are drawn in their own units (`--dg-u`, `--ha-u` = container width / 1280 or / 390), so
-  each scales as one picture and the SVG ribbons start exactly at their cards at every width.
+- Command centers are laid out at NATIVE size in whole pixels (desk 1280×800, phone 390×600) and scaled
+  as one picture by a single `translate() scale()` camera on `.sc-frame__fit` (round 2, A2). Round 1 drew
+  them in container units (`--dg-u`, `--ha-u`); Chromium spaced glyphs apart ("Lead s ubmitted"). Native
+  size alone did not cure it: the root cause is that Blink lays text out with hinted whole-pixel advances
+  and then draws it scaled without hinting. `text-rendering: geometricPrecision` on the fit box makes the
+  advances fractional; before/after crops of the same frame and build are in the round-2 proof folder.
 - Page: max 1280px, 24px gutters, 64px column gap ≥ 1024px; chapters `min-height: 62svh` (last 80svh);
   sticky frame `top: nav + 16px`, `height: 100svh − nav − 32px`, frame centred in it, width capped at
   `(100svh − nav − 96px) × 1.6` so a short laptop never cuts it.
-- Phone: sheet stage width `min(100%, (100svh − 330px) × 390/600)`, so the whole sheet fits a 320×568
-  screen with no scroll; 600px and up uses `(100svh − 330px) × 1.6`, max 860px.
+- Phone: the sheet is a column (header, tabs, stage, caption reserved at 3 lines, buttons); the stage
+  is `flex: 1` with `container-type: size`, and the frames fill it (< 600px). 600px and up: stage width
+  `min(100cqw, (100cqh − 32px) × 1.6, 860px)`.
 
 ## 7. State matrix
 
@@ -113,14 +129,17 @@ active one without a marker.
 
 | What | Trigger | Duration | Easing | Meaning | Reduced motion |
 |---|---|---|---|---|---|
-| Pop | window opens | 560ms transform, 200ms opacity | `cubic-bezier(0.22,1.25,0.36,1)` (slight overshoot) | the card *is* the window: it grows from where you pointed | 120ms opacity only |
+| Pop | window opens | 640ms transform, 220ms opacity | `cubic-bezier(0.2,1.32,0.32,1)` (about 4% overshoot) | the card *is* the window: it grows from where you pointed | 120ms opacity only |
+| Sheen + rim | window opens | 1100ms sweep from 160ms; the rim is static | ease-out | glass catches the light once; a 1px specular rim (bright top-left, navy shade bottom-right in light theme) gives the window an edge on a white page | sweep off; rim stays |
 | Sheet | tap | 460ms | `cubic-bezier(0.32,0.72,0,1)` | comes from the thumb's edge | cut |
 | Close | leave/close | 180ms (sheet 220ms) | `cubic-bezier(0.4,0,1,1)` | gets out of the way fast | 120ms opacity |
 | Pan | 420ms after open | 2800ms | `cubic-bezier(0.45,0,0.25,1)` | "this is a real site, and it's long" | none; rests at the top |
-| Slide | 3700ms, or tab | 640ms (page 760ms) | `cubic-bezier(0.65,0,0.35,1)` | same product, other side of the counter | cut, no auto-advance |
+| Slide (depth) | 3700ms, or tab | 720ms (page 760ms) | `cubic-bezier(0.22,0.9,0.24,1)` | the command center slides in over the website, which recedes (scale .94, blur 6px, 50% opacity): the thing behind the site | cut, no auto-advance |
+| Camera | 1000ms after the command center lands (page: 280ms) | 900ms | `cubic-bezier(0.65,0,0.35,1)` | moves in on the part that is moving | cut to the zoomed frame |
 | Live event | command center arrives | 520ms row, 320ms count | `cubic-bezier(0.2,0.8,0.2,1)` | it runs while you watch | final frame shown, no replay |
 | Ribbon flow (Hays) | while live | 2.4s loop | linear | people moving toward the school | static dashes |
-| Chapter move + ring | active chapter changes | 760ms / 520ms | `cubic-bezier(0.65,0,0.35,1)` | points at the exact thing the words describe | cut |
+| Chapter move + spotlight | active chapter changes | 760ms move; spotlight out at once, in 280ms after landing | move `cubic-bezier(0.65,0,0.35,1)`, fade ease-out | points at the exact thing the words describe, never before the page gets there | cut |
+| Page intro (≥ 1024px) | load | 2800ms down, 1200ms back | same move curve | the product is moving in the first second | skipped |
 
 Nothing rests at opacity 0: every animated element's resting frame is its final frame (ADR-0016 §3).
 
@@ -136,6 +155,13 @@ Nothing rests at opacity 0: every animated element's resting frame is its final 
   a labelled stage with a narration paragraph; repeats on the stacked page are `aria-hidden`.
 
 ## 10. Acceptance criteria — each measured before publication
+
+**Round 2 (2026-10-31).** The table below is round 1's, measured on build `75ac6ac…`. Round 2 adds,
+measured on the deployed preview and recorded item by item, with a proof screenshot per item, in
+`~/.claude/agent-reports/showcase-r2-changelog.md`: the window never overlaps `#work-heading` or its
+source card (A1); no letter-spaced words inside either recreation in Chromium (A2); the sheet top is
+12px on every phone and slug (A11, replacing C4's 12/58/58); `scrollWidth == viewport` on both pages
+at 320 **with `isMobile: true`** (A4; round 1's C6 ran without it and missed 333px).
 
 Measured by `~/.claude/agent-reports/showcase-design-2026-10-31/tools/criteria.mjs` (not in the repo; raw output beside it in `criteria-measured.json`), Chromium 148,
 served build `app/page-75ac6ac47e34b823.js`. Each criterion was run against the build AND a known-bad.

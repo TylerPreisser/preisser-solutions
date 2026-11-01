@@ -17,7 +17,6 @@
   --ha-violet: #5b57a8;
   --ha-violet-soft: #e7e6f4;
   --ha-serif: var(--ha-font-display), "Fraunces", Georgia, serif;
-  container-type: inline-size;
   width: 100%;
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   color: var(--ha-ink);
@@ -40,7 +39,7 @@
   letter-spacing: -0.01em;
 }
 .hacc-caps {
-  font-size: calc(var(--ha-u) * 11);
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -54,42 +53,31 @@
 
 /* ── Desk: 1280 x 800 ───────────────────────────────────────── */
 .hacc-desk {
-  --ha-u: calc(100cqw / 1280);
+  width: 1280px;
+  height: 800px;
   position: relative;
-  aspect-ratio: 1280 / 800;
   background: var(--ha-ground);
-  font-size: calc(var(--ha-u) * 14);
+  font-size: 14px;
   overflow: hidden;
-}
-.hacc-phone {
-  display: none;
-}
-@container (max-width: 519px) {
-  .hacc-desk {
-    display: none;
-  }
-  .hacc-phone {
-    display: flex;
-  }
 }
 
 .hacc-side {
   position: absolute;
   inset: 0 auto 0 0;
-  width: calc(var(--ha-u) * 240);
+  width: 240px;
   background: var(--ha-side);
   border-right: 1px solid var(--ha-rule);
-  padding: calc(var(--ha-u) * 14) calc(var(--ha-u) * 10);
+  padding: 14px 10px;
   display: flex;
   flex-direction: column;
-  gap: calc(var(--ha-u) * 12);
+  gap: 12px;
 }
 .hacc-side__client {
   display: flex;
   align-items: center;
-  gap: calc(var(--ha-u) * 10);
-  padding: 0 calc(var(--ha-u) * 4);
-  font-size: calc(var(--ha-u) * 13);
+  gap: 10px;
+  padding: 0 4px;
+  font-size: 13px;
 }
 .hacc-side__client b {
   display: block;
@@ -98,13 +86,13 @@
 }
 .hacc-side__client small {
   color: var(--ha-ink-2);
-  font-size: calc(var(--ha-u) * 11.5);
+  font-size: 12px;
 }
 .hacc-side__mark {
   flex: none;
-  width: calc(var(--ha-u) * 36);
-  height: calc(var(--ha-u) * 36);
-  border-radius: calc(var(--ha-u) * 9);
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
   background: var(--ha-surface);
   border: 1px solid var(--ha-rule);
   display: grid;
@@ -113,42 +101,42 @@
 .hacc-side__search {
   border: 1px solid var(--ha-rule);
   background: var(--ha-surface);
-  border-radius: calc(var(--ha-u) * 8);
-  padding: calc(var(--ha-u) * 8) calc(var(--ha-u) * 12);
+  border-radius: 8px;
+  padding: 8px 12px;
   color: var(--ha-ink-2);
 }
 .hacc-side__nav {
   background: var(--ha-pink-soft);
   color: var(--ha-pink-deep);
   font-weight: 600;
-  border-radius: calc(var(--ha-u) * 8);
-  padding: calc(var(--ha-u) * 9) calc(var(--ha-u) * 12);
+  border-radius: 8px;
+  padding: 9px 12px;
 }
 
 .hacc-main {
   position: absolute;
-  inset: 0 0 0 calc(var(--ha-u) * 240);
+  inset: 0 0 0 240px;
 }
 .hacc-top {
   position: absolute;
-  left: calc(var(--ha-u) * 32);
-  right: calc(var(--ha-u) * 24);
-  top: calc(var(--ha-u) * 14);
+  left: 32px;
+  right: 24px;
+  top: 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 .hacc-tabs {
   display: inline-flex;
-  gap: calc(var(--ha-u) * 4);
-  padding: calc(var(--ha-u) * 3);
-  border-radius: calc(var(--ha-u) * 8);
+  gap: 4px;
+  padding: 3px;
+  border-radius: 8px;
   background: #efe9e2;
-  font-size: calc(var(--ha-u) * 13);
+  font-size: 13px;
 }
 .hacc-tabs > * {
-  padding: calc(var(--ha-u) * 6) calc(var(--ha-u) * 14);
-  border-radius: calc(var(--ha-u) * 6);
+  padding: 6px 14px;
+  border-radius: 6px;
   color: var(--ha-ink-2);
 }
 .hacc-tabs b {
@@ -159,21 +147,21 @@
 .hacc-pill {
   border: 1px solid var(--ha-rule);
   background: var(--ha-surface);
-  border-radius: calc(var(--ha-u) * 8);
-  padding: calc(var(--ha-u) * 7) calc(var(--ha-u) * 14);
-  font-size: calc(var(--ha-u) * 13);
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
   font-weight: 600;
 }
 .hacc-title {
   position: absolute;
-  left: calc(var(--ha-u) * 32);
-  top: calc(var(--ha-u) * 82);
+  left: 32px;
+  top: 82px;
   display: grid;
-  gap: calc(var(--ha-u) * 4);
+  gap: 4px;
 }
 .hacc-title__v {
   font-family: var(--ha-serif);
-  font-size: calc(var(--ha-u) * 38);
+  font-size: 38px;
   font-weight: 460;
 }
 .hacc-title__v small {
@@ -189,13 +177,13 @@
 }
 .hacc-band__col {
   position: absolute;
-  top: calc(var(--ha-u) * 76);
-  margin-left: calc(var(--ha-u) * -240);
+  top: 76px;
+  margin-left: -240px;
   display: grid;
-  gap: calc(var(--ha-u) * 4);
+  gap: 4px;
 }
 .hacc-band__col .hacc-num {
-  font-size: calc(var(--ha-u) * 34);
+  font-size: 34px;
 }
 .hacc-band__col--end .hacc-caps {
   color: var(--ha-pink-deep);
@@ -204,9 +192,9 @@
 .hacc-flow {
   position: absolute;
   top: 0;
-  left: calc(var(--ha-u) * -240);
-  width: calc(var(--ha-u) * 1280);
-  height: calc(var(--ha-u) * 800);
+  left: -240px;
+  width: 1280px;
+  height: 800px;
   overflow: visible;
 }
 .hacc-flow__guide {
@@ -247,10 +235,10 @@
 }
 .hacc-seal {
   position: absolute;
-  left: calc(var(--ha-u) * (1188 - 240 - 34));
-  top: calc(var(--ha-u) * (436 - 34));
-  width: calc(var(--ha-u) * 68);
-  height: calc(var(--ha-u) * 68);
+  left: 914px; /* 1188 - 240 - 34 */
+  top: 402px; /* 436 - 34 */
+  width: 68px;
+  height: 68px;
   display: grid;
   place-items: center;
 }
@@ -259,26 +247,34 @@
   position: absolute;
   inset: 0;
 }
+.hacc-zoom {
+  position: absolute;
+  left: 16px;
+  top: 176px;
+  width: 992px;
+  height: 500px;
+  pointer-events: none;
+}
 .hacc-card {
   position: absolute;
-  left: calc(var(--ha-u) * 32);
-  width: calc(var(--ha-u) * 320);
-  height: calc(var(--ha-u) * 58);
+  left: 32px;
+  width: 320px;
+  height: 58px;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: calc(var(--ha-u) * 34) 1fr calc(var(--ha-u) * 70) calc(var(--ha-u) * 50);
+  grid-template-columns: 34px 1fr 70px 50px;
   align-items: center;
-  gap: calc(var(--ha-u) * 10);
-  padding: 0 calc(var(--ha-u) * 14) 0 calc(var(--ha-u) * 12);
+  gap: 10px;
+  padding: 0 14px 0 12px;
   background: var(--ha-surface);
   border: 1px solid var(--ha-rule);
-  border-radius: calc(var(--ha-u) * 10);
+  border-radius: 10px;
   box-shadow: 0 1px 2px rgba(60, 40, 30, 0.05);
 }
 .hacc-card__ico {
-  width: calc(var(--ha-u) * 32);
-  height: calc(var(--ha-u) * 32);
-  border-radius: calc(var(--ha-u) * 8);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   display: grid;
   place-items: center;
   background: var(--ha-violet-soft);
@@ -294,13 +290,13 @@
 }
 .hacc-card__name {
   font-weight: 600;
-  font-size: calc(var(--ha-u) * 14);
+  font-size: 14px;
   line-height: 1.15;
 }
 .hacc-card__name small {
   display: block;
   font-weight: 500;
-  font-size: calc(var(--ha-u) * 11.5);
+  font-size: 12px;
   color: var(--ha-ink-2);
 }
 .hacc-card__fig {
@@ -308,11 +304,11 @@
   justify-items: end;
 }
 .hacc-card__fig b {
-  font-size: calc(var(--ha-u) * 20);
+  font-size: 20px;
   line-height: 1;
 }
 .hacc-card__fig small {
-  font-size: calc(var(--ha-u) * 9.5);
+  font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ha-ink-2);
@@ -320,75 +316,76 @@
 
 .hacc-runs {
   position: absolute;
-  left: calc(var(--ha-u) * 32);
-  right: calc(var(--ha-u) * 24);
-  bottom: calc(var(--ha-u) * 22);
-  padding-top: calc(var(--ha-u) * 14);
+  left: 32px;
+  right: 24px;
+  bottom: 22px;
+  padding-top: 14px;
   border-top: 1px solid var(--ha-rule);
   display: flex;
   align-items: center;
-  gap: calc(var(--ha-u) * 10);
+  gap: 10px;
 }
 .hacc-chip {
   border: 1px solid var(--ha-rule);
   background: var(--ha-surface);
   border-radius: 999px;
-  padding: calc(var(--ha-u) * 6) calc(var(--ha-u) * 12);
-  font-size: calc(var(--ha-u) * 12.5);
+  padding: 6px 12px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 /* ── Phone: the same parts, stacked (390 wide) ─────────────── */
 .hacc-phone {
-  --ha-u: calc(100cqw / 390);
-  aspect-ratio: 390 / 600;
+  display: flex;
+  width: 390px;
+  height: 600px;
   flex-direction: column;
-  gap: calc(var(--ha-u) * 12);
-  padding: calc(var(--ha-u) * 18) calc(var(--ha-u) * 16);
+  gap: 12px;
+  padding: 18px 16px;
   box-sizing: border-box;
   background: var(--ha-ground);
-  font-size: calc(var(--ha-u) * 14);
+  font-size: 14px;
   overflow: hidden;
 }
 .hacc-phone__head {
   display: flex;
   align-items: center;
-  gap: calc(var(--ha-u) * 10);
-  font-size: calc(var(--ha-u) * 14);
+  gap: 10px;
+  font-size: 14px;
 }
 .hacc-phone__k {
-  margin-top: calc(var(--ha-u) * 6) !important;
+  margin-top: 6px !important;
 }
 .hacc-phone__band {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: calc(var(--ha-u) * 12) calc(var(--ha-u) * 8);
-  padding: calc(var(--ha-u) * 14);
+  gap: 12px 8px;
+  padding: 14px;
   background: var(--ha-surface);
   border: 1px solid var(--ha-rule);
-  border-radius: calc(var(--ha-u) * 12);
+  border-radius: 12px;
 }
 .hacc-phone__stage {
   display: grid;
-  gap: calc(var(--ha-u) * 2);
+  gap: 2px;
 }
 .hacc-phone__stage .hacc-caps {
-  font-size: calc(var(--ha-u) * 10);
+  font-size: 10px;
 }
 .hacc-phone__stage .hacc-num {
-  font-size: calc(var(--ha-u) * 26);
+  font-size: 26px;
 }
 .hacc-phone__stage--end .hacc-caps {
   color: var(--ha-pink-deep);
 }
 .hacc-phone__cards {
   display: grid;
-  gap: calc(var(--ha-u) * 8);
+  gap: 8px;
 }
 .hacc-card--phone {
   position: static;
   width: auto;
-  height: calc(var(--ha-u) * 60);
+  height: 60px;
 }
 
 /* ── Live: people flowing toward the school ─────────────────── */
