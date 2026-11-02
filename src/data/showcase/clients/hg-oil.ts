@@ -2,14 +2,18 @@
 // built them. Vendor insurance is AI at work; the saltwater close is
 // automation (there is no model in it) and is never captioned as AI.
 //
-// Website capture: the DEV site https://hgoil-website-dev.tylerpreisser.workers.dev/
-// (the live site's carbon copy plus mobile and nav fixes), 2026-11-01,
-// Playwright Chromium, desk 1440 css at 1x, phone 390 at 2x. Two sections,
-// stitched: the home hero (the pumpjack at dusk; it carries no headline) and
-// the About section below its header (/about: the drilling rig in a Kansas
-// field and "operates 329 producing wells in 35 counties"). Round 9 swapped
-// the empty contact form out for it (critique r8 N3). "Visit" goes to the
-// live site. Sample data for the scenes: src/data/demos/scenes/hg-oil.ts.
+// Website: the DEV site https://hgoil-website-dev.tylerpreisser.workers.dev/
+// (the live site's carbon copy plus mobile and nav fixes), its FRONT PAGE only
+// (owner, 2026-11-01): the home hero, a pumpjack working at dusk, which is the
+// site's own video /assets/video/hero-1920.mp4 (1920x1080, 22.9 s; the live
+// site serves the same file). The loop is cut from it, nothing added: 5.458 s
+// to 17.708 s, one full stroke (its first and last frames match), after the
+// birds that cross the sky at 2 to 4 s; 24 fps, muted, VP9 webm plus h264 mp4.
+// Phone: cropped to x 440-1780 of 1920 so the whole pumpjack and the dusk
+// show; desk: the whole frame. Above it, the site's own header bar, cut whole
+// from the round 9 capture (Playwright Chromium, phone 390 at 2x, desk 1440 at
+// 1x). "Visit" goes to the live site. Sample data for the scenes:
+// src/data/demos/scenes/hg-oil.ts.
 import type { ShowcaseClient } from "../types";
 import type { SceneBeatData } from "@/components/showcase/scenes";
 import { coiSummary, swdSummary } from "@/data/demos/scenes/hg-oil";
@@ -31,21 +35,6 @@ export const sceneBeats: readonly SceneBeatData[] = [
     narration: swdSummary,
   },
 ];
-
-/** Text lines and buttons in the 390-wide phone capture (y from, y to, css px), found in its own pixels (round 11: rows with text-like edges on a flat background, 1 px margin), plus round 9's last strip of the rig photo and the Contact button. */
-const HG_PHONE_BANDS = [
-  [33, 58], [327, 334], [367, 379], [401, 577], [585, 593], [616, 625], [862, 889], [1130, 1172],
-  [1192, 1205], [1216, 1229], [1240, 1253], [1264, 1277], [1288, 1301], [1312, 1325], [1336, 1349],
-  [1360, 1373], [1384, 1400], [1408, 1424], [1432, 1448], [1456, 1472], [1480, 1493], [1511, 1562],
-  [1531, 1544],
-] as const;
-
-/** Text lines, price rows and buttons in the 1440-wide desk capture (y from, y to, css px), found in its own pixels (round 11: rows with text-like edges on a flat background, 1 px margin). */
-const HG_DESK_BANDS = [
-  [20, 78], [121, 134], [339, 363], [374, 393], [418, 423], [428, 433], [495, 501], [579, 584],
-  [938, 968], [1132, 1148], [1163, 1183], [1193, 1209], [1223, 1239], [1253, 1273], [1284, 1300],
-  [1314, 1334], [1344, 1364], [1374, 1394], [1429, 1435], [1448, 1461], [1468, 1473], [1476, 1501],
-] as const;
 
 const client: ShowcaseClient = {
   slug: "hg-oil",
@@ -70,28 +59,40 @@ const client: ShowcaseClient = {
     {
       kind: "website",
       tab: "Website",
-      caption: "HG Oil's site, from the pumpjack at dusk to the work they do in the field.",
+      caption: "HG Oil's site opens on a pumpjack working at dusk.",
       captured: "Captured Nov 1, 2026",
       desk: {
-        src: "/images/showcase/hg-oil-site-desk-9bdaa234.webp",
+        src: "/images/showcase/hg-oil-site-desk-head-2fb3472a.webp",
         width: 1440,
-        height: 1643,
-        stops: [
-          { y: 0, holdMs: 2400, avoid: HG_DESK_BANDS },
-          // Ends on "About Us" and the rig photo; the view ends on the capture's last row, no white below (critique r10 MF5).
-          { y: 900, holdMs: 3000, toEnd: true, avoid: HG_DESK_BANDS },
-        ],
+        height: 157,
+        stops: [{ y: 0, holdMs: 4000 }],
+        video: {
+          webm: "/images/showcase/hg-oil-hero-desk-97e5697b.webm",
+          mp4: "/images/showcase/hg-oil-hero-desk-fc835b45.mp4",
+          poster: "/images/showcase/hg-oil-hero-desk-78a31ece.webp",
+          width: 1280,
+          height: 720,
+          fit: "cover",
+          sky: "#788c9a",
+          ground: "#050504",
+        },
       },
       phone: {
-        src: "/images/showcase/hg-oil-site-phone-9b887afc.webp",
+        src: "/images/showcase/hg-oil-site-phone-head-098f7029.webp",
         width: 390,
-        height: 1597,
-        stops: [
-          // The whole pumpjack and the orange dusk under it, below the header bar (critique r10 MF5).
-          { y: 230, holdMs: 2400, keep: [240, 700], avoid: HG_PHONE_BANDS },
-          // Ends on "About Us" and the drilling rig in the field; the paragraph stop is gone.
-          { y: 852, holdMs: 3000, keep: [858, 1175], avoid: HG_PHONE_BANDS },
-        ],
+        height: 91,
+        stops: [{ y: 0, holdMs: 4000 }],
+        // The whole frame shows: a taller phone gets more of the clip's own sky and ground around it.
+        video: {
+          webm: "/images/showcase/hg-oil-hero-phone-d493f65c.webm",
+          mp4: "/images/showcase/hg-oil-hero-phone-b58f82bb.mp4",
+          poster: "/images/showcase/hg-oil-hero-phone-c7c4e216.webp",
+          width: 1170,
+          height: 942,
+          fit: "width",
+          sky: "#7b8f9d",
+          ground: "#050505",
+        },
       },
     },
     ...sceneBeats,

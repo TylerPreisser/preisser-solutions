@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, type CSSProperties } from "react";
-import type { WebsiteBeat as WebsiteBeatData } from "@/data/showcase/types";
+import { useEffect, useRef, type CSSProperties } from "react";
+import type { SiteVideo, WebsiteBeat as WebsiteBeatData } from "@/data/showcase/types";
 import { Chrome, useBox, useSteps, type BeatProps } from "./shared";
 
 /**
@@ -56,7 +56,14 @@ export function WebsiteBeat({ client, beat, variant, active, fill, reduced }: Be
     };
     top = find((t) => holds(t) && !cuts(t), 400) ?? find((t) => !cuts(t), 160) ?? top;
   }
-  const page = (
+  const alt = `The ${client.live.label} ${variant === "phone" ? "mobile site" : "home page"}, as we built it.`;
+  const page = cap.video ? (
+    <div className="sc-frame__page sc-frame__page--video">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="sc-frame__head" src={cap.src} width={cap.width} height={cap.height} alt="" loading="eager" decoding="async" draggable={false} />
+      <HeroVideo video={cap.video} active={active} reduced={reduced} alt={alt} />
+    </div>
+  ) : (
     <div className="sc-frame__page" style={{ transform: `translateY(-${(top / cap.height) * 100}%)`, "--sc-pan-ms": `${PAN_MS}ms` } as CSSProperties}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -64,7 +71,7 @@ export function WebsiteBeat({ client, beat, variant, active, fill, reduced }: Be
         src={cap.src}
         width={cap.width}
         height={cap.height}
-        alt={`The ${client.live.label} ${variant === "phone" ? "mobile site" : "home page"}, as we built it.`}
+        alt={alt}
         loading="eager"
         decoding="async"
         draggable={false}
@@ -99,5 +106,37 @@ export function WebsiteBeat({ client, beat, variant, active, fill, reduced }: Be
         {page}
       </div>
     </figure>
+  );
+}
+
+/**
+ * The site's hero video, muted and looping from its first frame each time the
+ * beat comes on screen, paused when it leaves. Reduced motion gets the poster
+ * still and no motion at all.
+ */
+function HeroVideo({ video, active, reduced, alt }: { video: SiteVideo; active: boolean; reduced: boolean; alt: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    v.muted = true;
+    if (active) {
+      v.currentTime = 0;
+      void v.play().catch(() => {});
+    } else v.pause();
+  }, [active]);
+  const style = { "--sc-sky": video.sky, "--sc-ground": video.ground } as CSSProperties;
+  return (
+    <div className={`sc-frame__hero sc-frame__hero--${video.fit}`} style={style}>
+      {reduced ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={video.poster} width={video.width} height={video.height} alt={alt} loading="eager" decoding="async" draggable={false} />
+      ) : (
+        <video ref={ref} poster={video.poster} width={video.width} height={video.height} muted loop playsInline autoPlay preload="auto" aria-label={alt}>
+          <source src={video.webm} type="video/webm" />
+          <source src={video.mp4} type="video/mp4" />
+        </video>
+      )}
+    </div>
   );
 }

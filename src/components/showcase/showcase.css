@@ -127,6 +127,41 @@
 .sc-frame__shot {
   transition: filter 360ms ease-out;
 }
+/* A site whose hero is its own video: the header bar whole, the clip under it. */
+.sc-frame__page--video {
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+.sc-frame__page--video .sc-frame__head {
+  flex: none;
+}
+.sc-frame__hero {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  /* The clip's own sky above and its own ground below, when the whole frame shows. */
+  background: linear-gradient(var(--sc-sky) 50%, var(--sc-ground) 50%);
+}
+.sc-frame__hero > video,
+.sc-frame__hero > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+.sc-frame__hero--width > video,
+.sc-frame__hero--width > img {
+  inset: 50% 0 auto 0;
+  height: auto;
+  transform: translateY(-50%);
+  /* Its top and bottom rows feather into its own sky and ground, so no seam shows. */
+  -webkit-mask-image: linear-gradient(transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(transparent, #000 6%, #000 94%, transparent);
+}
 
 /* ── Stage: the beats stack in one cell; the one on screen slides in OVER the
    last (W2 depth move): the one before recedes, smaller, softer and darker. */

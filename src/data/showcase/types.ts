@@ -61,7 +61,31 @@ interface BeatBase {
 /** [x, y, width, height] in a capture's css pixels. */
 export type Rect = readonly [number, number, number, number];
 
+/**
+ * A site whose hero is its own video: a short muted loop cut from the real
+ * file, played under the site's header bar (the capture, `SiteCapture.src`).
+ */
+export interface SiteVideo {
+  webm: string;
+  mp4: string;
+  /** The clip's first frame: its poster, and the whole picture under reduced motion. */
+  poster: string;
+  /** The clip's pixel size. */
+  width: number;
+  height: number;
+  /**
+   * "width": the clip's full width, centred top to bottom; a taller view shows
+   * the clip's own sky above it and its own ground below (colours measured from
+   * its top and bottom rows), a shorter one loses a sliver of each. "cover": it
+   * fills the view.
+   */
+  fit: "width" | "cover";
+  sky: string;
+  ground: string;
+}
+
 export interface SiteCapture {
+  /** The page capture; with `video`, only the site's header bar above it. */
   src: string;
   /** css px; the file is drawn at 2x (phone) or 1.25x (desk). */
   width: number;
@@ -85,6 +109,7 @@ export interface SiteCapture {
      */
     keep?: readonly [number, number];
   }[];
+  video?: SiteVideo;
 }
 
 export interface WebsiteBeat extends BeatBase {

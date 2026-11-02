@@ -38,6 +38,14 @@
   ! Cache-Control
   Cache-Control: public, max-age=2592000
 
+/*.mp4
+  ! Cache-Control
+  Cache-Control: public, max-age=2592000
+
+/*.webm
+  ! Cache-Control
+  Cache-Control: public, max-age=2592000
+
 /*.png
   ! Cache-Control
   Cache-Control: public, max-age=2592000
