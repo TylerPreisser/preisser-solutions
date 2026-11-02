@@ -3,19 +3,13 @@
    their spreadsheet, so it stays spreadsheet white in both themes.
    ============================================================ */
 
+/* The water sheet is there from the first frame: the close opens on it, never
+   on an empty panel while the caption already talks about it (critique r10 S2). */
 .swd-left {
   position: absolute;
   display: flex;
   flex-direction: column;
-  opacity: 0;
-  transform: translateY(14px);
-  transition:
-    opacity 600ms var(--scn-ease),
-    transform 600ms var(--scn-ease);
-}
-.swd-left.is-in {
-  opacity: 1;
-  transform: none;
+  transition: opacity 600ms var(--scn-ease);
 }
 /* Desk: once the tie-out and files cards sit over it, the sheet leaves. A
    glass card's blur is not a reliable cover: engines that skip backdrop-filter

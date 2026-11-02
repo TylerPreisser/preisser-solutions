@@ -228,10 +228,15 @@ export const swdDeskCam = [
   { at: swdCues[4], ...WIDE, y: 112 },
 ] as const;
 
-/** Phone camera (300 x 520): the sheet and the Run bar, then the card each step is about. */
+/**
+ * Phone camera (300 x 520): the sheet and the Run bar, ending above the Run log's
+ * lines (they belong to the next step, critique r10 MF2); then the card each step
+ * is about; last, the files with the outcome card whole (r10 MF3).
+ */
 export const swdCam = [
-  { at: 0, y: 40, h: 280, top: true },
+  { at: 0, y: 40, h: 280, top: true, until: ".swd-log__lines" },
   { at: swdCues[1], y: 236, h: 254, top: true },
+  { at: swdCues[4], y: 236, h: 254, top: true, keep: ".swd-outcome" },
 ] as const;
 
 export const swdSummary =

@@ -56,6 +56,18 @@ export interface Shot {
    * bottom (y + h), whatever the phone's height. Never centred.
    */
   top?: boolean;
+  /**
+   * Phone: a selector inside the scene whose top the view must end above, for
+   * the whole shot (the HG close opens on the sheet and ends over its Run log,
+   * critique r10 MF2). Measured in the page, so every engine's line height counts.
+   */
+  until?: string;
+  /**
+   * Phone: a selector the view must show whole: the camera moves down until the
+   * element's measured bottom is in view, and the edge clip never cuts inside it
+   * (the HG close's outcome card, critique r10 MF3).
+   */
+  keep?: string;
 }
 
 /** Native y values on each phone picture that sit between lines of text (a view may start there without slicing a line). */

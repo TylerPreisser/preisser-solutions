@@ -28,6 +28,12 @@
   height: 100%;
   overflow: hidden;
 }
+/* Phone scenes: the edge clip (SceneBeat useEdgeCut) is on the text layer, the
+   scene's second child; the first is its ground (dusk, field, camp), which runs
+   on under a clipped line, so no window colour ever shows (critique r10 S3). */
+.pt-fit[data-cut] .scn > :not(:first-child) {
+  clip-path: inset(var(--pt-cut-t, 0px) 0 var(--pt-cut-b, 0px) 0);
+}
 .pt-fit {
   position: absolute;
   left: 0;

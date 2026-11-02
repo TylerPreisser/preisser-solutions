@@ -103,20 +103,36 @@ function Camera({
       cy = start + vis / 2;
     }
   }
+  // A `keep` element shows whole: move down until its measured bottom is in view.
+  const keepBottom = useNativeEdge(cover && !!shot?.keep, live, fitRef, h, shot?.keep, "bottom");
+  if (keepBottom !== null) {
+    const vis = H / s;
+    const start = cy - vis / 2;
+    if (keepBottom + 4 > start + vis) cy = Math.min(h - vis, keepBottom + 4 - vis) + vis / 2;
+  }
   const tx = w * s <= W ? (W - w * s) / 2 : clamp(W / 2 - cx * s, W - w * s, 0);
   const ty = h * s <= H ? (H - h * s) / 2 : clamp(H / 2 - cy * s, H - h * s, 0);
-  const cut = useEdgeCut(cover, live, fitRef, h, s, ty, H);
+  const until = useNativeEdge(cover && !!shot?.until, live, fitRef, h, shot?.until, "top");
+  const cut = useEdgeCut(cover, live, fitRef, h, s, ty, H, until);
+  // The clip is on the scene's text layer, not the box, so a clipped band shows
+  // the scene's own ground, never the window behind it (critique r10 S3).
+  const clipped = cut[0] > 0 || cut[1] < h;
   return (
-    <div
-      ref={ref}
-      className="pt-fitbox"
-      data-cam={shot ? `${shot.at}` : "rest"}
-      style={cut[0] || cut[1] ? { clipPath: `inset(${cut[0]}px 0 ${cut[1]}px 0)` } : undefined}
-    >
+    <div ref={ref} className="pt-fitbox" data-cam={shot ? `${shot.at}` : "rest"} data-cut={clipped ? `${cut[0]} ${cut[1]}` : undefined}>
       <div
         ref={fitRef}
         className="pt-fit"
-        style={{ width: w, height: h, transform: `translate(${tx}px, ${ty}px) scale(${s})`, "--pt-move-ms": `${shot?.ms ?? 900}ms` } as CSSProperties}
+        data-cut={clipped ? "" : undefined}
+        style={
+          {
+            width: w,
+            height: h,
+            transform: `translate(${tx}px, ${ty}px) scale(${s})`,
+            "--pt-move-ms": `${shot?.ms ?? 900}ms`,
+            "--pt-cut-t": `${cut[0]}px`,
+            "--pt-cut-b": `${h - cut[1]}px`,
+          } as CSSProperties
+        }
       >
         {children}
       </div>
@@ -132,7 +148,10 @@ function Camera({
  * is clipped off here instead, so the frame ends on the last whole line.
  * Measured in native px against where the camera is GOING (s, ty), so the
  * clip is already right while the camera moves, and re-measured while the
- * scene plays because its cards come and go.
+ * scene plays because its cards come and go. `until` (native y) ends the view
+ * above it whatever it holds. Text inside `[data-edge-keep]` is never clipped:
+ * the camera frames that element whole instead (Shot.keep).
+ * Returns the visible native band [top, bottom]; [0, h] is no clip.
  */
 function useEdgeCut(
   on: boolean,
@@ -142,12 +161,13 @@ function useEdgeCut(
   s: number,
   ty: number,
   H: number,
+  until: number | null,
 ): readonly [number, number] {
-  const [cut, setCut] = useState<readonly [number, number]>([0, 0]);
+  const [cut, setCut] = useState<readonly [number, number]>([0, h]);
   useEffect(() => {
     const fit = fitRef.current;
     if (!on || !fit || !(s > 0) || !(H > 0)) {
-      setCut((c) => (c[0] || c[1] ? [0, 0] : c));
+      setCut((c) => (c[0] === 0 && c[1] === h ? c : [0, h]));
       return;
     }
     const measure = () => {
@@ -162,14 +182,14 @@ function useEdgeCut(
       for (let t = walk.nextNode(); t; t = walk.nextNode()) {
         if (!t.textContent || !t.textContent.trim()) continue;
         const el = t.parentElement;
-        if (!el || !visible(el, fit)) continue;
+        if (!el || el.closest("[data-edge-keep]") || !visible(el, fit)) continue;
         range.selectNodeContents(t);
         for (const q of range.getClientRects()) {
           if (q.height < 2 || q.width < 1) continue;
           lines.push([(q.top - fr.top) / cur, (q.bottom - fr.top) / cur]);
         }
       }
-      let b = end;
+      let b = until !== null && until > start && until < end ? until - 1 : end;
       for (let i = 0; i < 12; i++) {
         const crossing = lines.filter(([t0, t1]) => t0 + 0.5 < b && t1 - 0.5 > b);
         if (!crossing.length) break;
@@ -181,7 +201,8 @@ function useEdgeCut(
         if (!crossing.length) break;
         a = Math.max(...crossing.map(([, t1]) => t1)) + 0.5;
       }
-      const next = [Math.max(0, Math.round((a - start) * s)), Math.max(0, Math.round((end - b) * s))] as const;
+      // Whole native px; no clip at all when nothing is cut.
+      const next = [a > start + 0.25 ? Math.floor(a) : 0, b < end - 0.25 ? Math.ceil(b) : h] as const;
       setCut((c) => (c[0] === next[0] && c[1] === next[1] ? c : next));
     };
     measure();
@@ -192,8 +213,49 @@ function useEdgeCut(
     }
     const iv = window.setInterval(measure, 160);
     return () => window.clearInterval(iv);
-  }, [on, live, fitRef, h, s, ty, H]);
+  }, [on, live, fitRef, h, s, ty, H, until]);
   return cut;
+}
+
+/**
+ * The native y of an element's top or bottom edge inside the picture, measured
+ * in the page (so each engine's own line heights count) and re-measured while
+ * the scene plays; null when off or not found. Changes under 3 px are ignored
+ * so an entrance animation does not jog the camera.
+ */
+function useNativeEdge(
+  on: boolean,
+  live: boolean,
+  fitRef: RefObject<HTMLDivElement | null>,
+  h: number,
+  selector: string | undefined,
+  edge: "top" | "bottom",
+): number | null {
+  const [y, setY] = useState<number | null>(null);
+  useEffect(() => {
+    const fit = fitRef.current;
+    if (!on || !fit || !selector) {
+      setY(null);
+      return;
+    }
+    const measure = () => {
+      const el = fit.querySelector(selector);
+      const fr = fit.getBoundingClientRect();
+      const cur = fr.height / h;
+      if (!el || !(cur > 0)) return;
+      const r = el.getBoundingClientRect();
+      const v = Math.round(((edge === "top" ? r.top : r.bottom) - fr.top) / cur);
+      setY((p) => (p !== null && Math.abs(p - v) < 3 ? p : v));
+    };
+    measure();
+    const t = window.setTimeout(measure, 400);
+    const iv = live ? window.setInterval(measure, 200) : 0;
+    return () => {
+      window.clearTimeout(t);
+      if (iv) window.clearInterval(iv);
+    };
+  }, [on, live, fitRef, h, selector, edge]);
+  return y;
 }
 
 /** Drawn at all: not display:none, not hidden, not faded below 15% on the way up to the picture. */

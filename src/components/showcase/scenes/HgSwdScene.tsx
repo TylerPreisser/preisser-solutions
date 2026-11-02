@@ -271,7 +271,7 @@ function Files({ step }: { step: number }) {
         </div>
       </div>
       {/* The outcome on its own card, never straight over the pumpjack art (critique r8 N4). */}
-      <div className="swd-outcome scn-glass">
+      <div className="swd-outcome scn-glass" data-edge-keep="">
         <p className="swd-took">
           Closed in <b>{clock(swdElapsedSec)}</b>
         </p>
