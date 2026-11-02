@@ -62,7 +62,8 @@ export function FunnelBeat({ client, beat, variant, active, fill, reduced, quiet
   // Then the first two stages and the streams leaving the cards.
   const streams: FocusRect = { left: L.colX[0] - 10, top: 52, w: L.colX[2] - L.colX[0] };
   // Last: from a stage column's left edge to the mark, as close as the phone's height allows.
-  const band: FocusRect = { left: L.colX[1] - 10, top: 52, w: W - L.colX[1] + 10, h: 388, lefts: [1, 2, 3].map((i) => L.colX[i] - 10) };
+  // Never starts inside the top bar: its "30 days" chip is whole or out (critique r10 S1).
+  const band: FocusRect = { left: L.colX[1] - 10, top: 52, w: W - L.colX[1] + 10, h: 388, lefts: [1, 2, 3].map((i) => L.colX[i] - 10), above: 50 };
   const cam = useSteps<FocusRect | null>(
     active && phone && fill,
     reduced || !(phone && fill),

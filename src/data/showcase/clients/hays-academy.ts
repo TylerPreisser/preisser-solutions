@@ -128,7 +128,7 @@ const client: ShowcaseClient = {
           { label: "Reached", value: reached, note: `${count(adClicks)} ad clicks` },
           { label: "Visited", value: visited },
           { label: "Interested", value: interested },
-          { label: "Leads", value: leads, note: `${forms} forms · ${calls} calls` },
+          { label: "Leads", value: leads, note: `${forms} forms\u00a0· ${calls} calls` },
           { label: "Validated", value: validated },
         ],
         railFigures: ["Visited", "Leads"],

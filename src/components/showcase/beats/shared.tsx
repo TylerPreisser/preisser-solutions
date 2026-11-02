@@ -124,6 +124,8 @@ export interface FocusRect {
   h?: number;
   lefts?: readonly number[];
   clean?: readonly number[];
+  /** A band at the top (the portal's top bar, 0 to `above`) the view never starts inside: it shows it whole instead. */
+  above?: number;
 }
 
 export function Fit({
@@ -159,6 +161,7 @@ export function Fit({
     if (vis >= h) ty = (H - h * s) / 2;
     else if (focus.h && vis >= focus.h) ty = Math.min(0, Math.max(H - h * s, H / 2 - (focus.top + focus.h / 2) * s));
     else ty = -focus.top * s;
+    if (focus.above && -ty / s > 0.5 && -ty / s < focus.above) ty = 0;
     if (focus.clean) {
       const bottom = -ty / s + vis;
       const ok = [...focus.clean].filter((c) => c <= bottom + 0.5).sort((a, b) => b - a)[0];
@@ -173,7 +176,7 @@ export function Fit({
     <div ref={ref} className={`pt-fitbox${className ? ` ${className}` : ""}`} style={cut ? { clipPath: `inset(0 0 ${cut}px 0)` } : undefined}>
       <div
         className="pt-fit"
-        style={{ width: w, height: h, transform: `translate(${tx}px, ${ty}px) scale(${s})`, "--pt-move-ms": `${moveMs}ms` } as CSSProperties}
+        style={{ width: w, height: h, transform: `translate(${tx}px, ${ty}px) scale(${s})`, "--pt-move-ms": `${moveMs}ms`, "--pt-s": s.toFixed(4) } as CSSProperties}
       >
         {children}
       </div>

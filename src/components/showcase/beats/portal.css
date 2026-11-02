@@ -248,6 +248,15 @@
 .pt-funnel--phone .pt-card__sub {
   font-size: 12.5px;
 }
+/* Phone: a name never ends in "…" on the first readable cards (critique r10 S5).
+   A card is 72 native px tall, room for a two-line name over a two-line place. */
+.pt-funnel--phone .pt-card__label,
+.pt-funnel--phone .pt-card__sub {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1.12;
+}
 .pt-funnel--phone .pt-card__fig {
   width: 56px;
 }
@@ -262,6 +271,29 @@
 .pt-funnel--phone .pt-band .pt-k {
   font-size: 13px;
   letter-spacing: 0.06em;
+}
+/* Phone: the end band is seen at the camera's scale (--pt-s, set by Fit), as low
+   as ~0.57 on a 320 phone; its small print grows by the inverse so it reads at
+   11 css px or more there (critique r10 S1), and keeps its size on the cards. */
+.pt-funnel--phone .pt-band .pt-k,
+.pt-funnel--phone .pt-stage__note,
+.pt-funnel--phone .pt-top .pt-chip {
+  transition: font-size var(--pt-move-ms, 1000ms) cubic-bezier(0.65, 0, 0.35, 1);
+}
+.pt-funnel--phone .pt-band .pt-k {
+  font-size: max(13px, calc(11.6px / var(--pt-s, 1)));
+  /* Grown, the caps of "Interested" would run into the next column of five: plain case reads in the width. */
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.pt-funnel--phone .pt-stage__note {
+  font-size: max(11.5px, calc(11.6px / var(--pt-s, 1)));
+  line-height: 1.1;
+  text-wrap: balance;
+}
+.pt-funnel--phone .pt-top .pt-chip {
+  font-size: max(11.5px, calc(11.6px / var(--pt-s, 1)));
 }
 /* ── Funnel: the rail's cards ─────────────────────────────── */
 .pt-card {
