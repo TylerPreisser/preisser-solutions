@@ -200,18 +200,18 @@ function Board({ step, placed, phone }: { step: number; placed: number; phone: b
 function Bunk({ side, n, phone }: { side: "left" | "right"; n: number; phone: boolean }) {
   const lower = at(side, `Lower ${n}`);
   const upper = at(side, `Upper ${n}`);
-  // Phone prints one letter per bunk (U / L). The full-size bed never prints
-  // "F" there: next to "nobody on the floor" it read as Floor (critique r8 N5),
-  // so on a phone the letter is dropped and the row spells "Full bed" instead.
-  const line = (s: Sleeper | undefined, which: string) => (
+  // Phone prints one letter per bunk (U / L). The full-size bed is a lower: it
+  // prints its L (critique r10 S6, as the Auto-fill list shows her on L1) and a
+  // "Full bed" pill; a lone "F" read as Floor next to "nobody on the floor" (r8 N5).
+  const line = (s: Sleeper | undefined, which: "Upper" | "Lower", full = false) => (
     <p className={s ? "nw-pb" : "nw-pb is-empty"}>
-      <span className="nw-pb__which">{phone ? (which === "Full" ? "" : which[0]) : which}</span>
+      <span className="nw-pb__which">{phone ? which[0] : which}</span>
       {s ? (
         <>
           <b>{phone ? s.first : s.name}</b>
           {phone ? null : <em>{s.town}</em>}
           {s.server ? <span className="nw-server">Server</span> : null}
-          {phone && which === "Full" ? <span className="nw-server nw-pb__full">Full bed</span> : null}
+          {full ? <span className="nw-server nw-pb__full">Full bed</span> : null}
         </>
       ) : (
         <em>Open</em>
@@ -221,7 +221,7 @@ function Bunk({ side, n, phone }: { side: "left" | "right"; n: number; phone: bo
   return (
     <div className="nw-bunk">
       {line(upper, "Upper")}
-      {line(lower, side === "left" && n === 1 ? "Full" : "Lower")}
+      {line(lower, "Lower", side === "left" && n === 1)}
     </div>
   );
 }

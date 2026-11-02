@@ -49,7 +49,7 @@ const rows: readonly [string, string, Slot, { server?: boolean; lower?: boolean;
   ["nwf-leah-sundgren", "fallowfield", R("Lower 4"), { lower: true }],
   ["nwf-dawn-mettlach", "emberton", R("Upper 4")],
   ["nwf-joelle-haverkamp", "aldervale", R("Lower 5"), { server: true }],
-  ["nwf-corrie-ashbaugh", "tollerton", L("Upper 5")],
+  ["nwf-corrie-ashbaugh", "tollerton", L("Lower 5")],
 ];
 
 export const sleepers: readonly Sleeper[] = rows.map(([pid, tid, slot, o]) => {
@@ -86,6 +86,13 @@ if (bedCounts.left !== 9 || bedCounts.right !== 9 || bedCounts.floor !== 0) {
 if (bedCounts.floor > 0 && bedCounts.left + bedCounts.right < 20) throw new Error("[nwks scene] nobody sleeps on the floor while a bed is free");
 for (const s of sleepers) {
   if (s.lower && !(s.slot.side !== "floor" && s.slot.bed.startsWith("Lower"))) throw new Error(`[nwks scene] ${s.id} asked for a lower bunk`);
+}
+// Lower before upper: nobody sleeps on an upper over an empty lower (critique r10 S6).
+for (const s of sleepers) {
+  if (s.slot.side === "floor" || !s.slot.bed.startsWith("Upper")) continue;
+  const side = s.slot.side;
+  const below = `Lower ${s.slot.bed.slice(6)}`;
+  if (!sleepers.some((o) => o.slot.side === side && o.slot.bed === below)) throw new Error(`[nwks scene] ${s.id} is on an upper over an empty lower`);
 }
 {
   const taken = new Set(sleepers.map((s) => `${s.slot.side}:${s.slot.bed}`));
