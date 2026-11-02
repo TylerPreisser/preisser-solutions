@@ -54,7 +54,94 @@ const LIMITS = {
 
 type FieldName = keyof typeof LIMITS;
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+/**
+ * The address becomes Resend's `reply_to`, so it must be exactly one plain
+ * address. Local part is a dot-atom and the domain a hostname: that character
+ * set has no whitespace, comma, semicolon, angle bracket, quote, backslash or
+ * control character, so it cannot carry a second recipient or a display name.
+ * (Same grammar as functions/api/subscribe.ts.)
+ */
+const ATOM = "[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+";
+const EMAIL_PATTERN = new RegExp(
+  `^${ATOM}(?:\\.${ATOM})*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\\.)+[A-Za-z]{2,63}$`
+);
+
+function hasControlChars(value: string): boolean {
+  for (let i = 0; i < value.length; i += 1) {
+    const code = value.charCodeAt(i);
+    if (code < 0x20 || code === 0x7f) return true;
+  }
+  return false;
+}
+
+/**
+ * Cap on the raw request body. Fields are truncated to ~6 KB of characters in
+ * total; 32 KiB leaves room for multi-byte text and JSON escaping while still
+ * refusing to buffer anything large.
+ */
+const MAX_BODY_BYTES = 32 * 1024;
+
+/** Hosts a legitimate submission can come from (apex, www, local dev). */
+const ALLOWED_HOSTS = new Set([
+  "preissersolutions.com",
+  "www.preissersolutions.com",
+  "localhost",
+  "127.0.0.1",
+]);
+
+function hostAllowed(value: string): boolean {
+  try {
+    return ALLOWED_HOSTS.has(new URL(value).hostname.toLowerCase());
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * The form posts same-origin from a browser, which always sends Origin on a
+ * POST. Accept an allowed Origin, or (no Origin) an allowed Referer; refuse
+ * anything else, including a request that carries neither.
+ */
+function fromOurSite(request: Request): boolean {
+  const fetchSite = request.headers.get("sec-fetch-site");
+  if (fetchSite && fetchSite.toLowerCase() === "cross-site") return false;
+
+  const origin = request.headers.get("origin");
+  if (origin) return hostAllowed(origin);
+
+  const referer = request.headers.get("referer");
+  if (referer) return hostAllowed(referer);
+
+  return false;
+}
+
+/** Reads the body as text, giving up once it exceeds MAX_BODY_BYTES. */
+async function readCapped(request: Request): Promise<string | null> {
+  const declared = Number(request.headers.get("content-length") ?? "0");
+  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) return null;
+  if (!request.body) return "";
+
+  const reader = request.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > MAX_BODY_BYTES) {
+      await reader.cancel().catch(() => undefined);
+      return null;
+    }
+    chunks.push(value);
+  }
+  const merged = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    merged.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return new TextDecoder().decode(merged);
+}
 
 function json(body: unknown, status: number) {
   return new Response(JSON.stringify(body), {
@@ -99,10 +186,27 @@ function singleLine(value: string): string {
 const handlePost = async (context: PagesContext) => {
   const { request, env } = context;
 
+  if (!fromOurSite(request)) {
+    return json({ ok: false, error: "This request did not come from our site." }, 403);
+  }
+
+  let raw: string | null;
+  try {
+    raw = await readCapped(request);
+  } catch {
+    return json({ ok: false, error: "Malformed request." }, 400);
+  }
+  if (raw === null) {
+    return json({ ok: false, error: "Request too large." }, 413);
+  }
+
   let payload: Record<string, unknown>;
   try {
-    payload = (await request.json()) as Record<string, unknown>;
+    payload = JSON.parse(raw) as Record<string, unknown>;
   } catch {
+    return json({ ok: false, error: "Malformed request." }, 400);
+  }
+  if (payload === null || typeof payload !== "object" || Array.isArray(payload)) {
     return json({ ok: false, error: "Malformed request." }, 400);
   }
 
@@ -132,7 +236,7 @@ const handlePost = async (context: PagesContext) => {
     return json({ ok: false, error: "Missing required fields.", fields: missing }, 400);
   }
 
-  if (!EMAIL_PATTERN.test(email)) {
+  if (hasControlChars(email) || !EMAIL_PATTERN.test(email)) {
     return json({ ok: false, error: "Invalid email address.", fields: ["email"] }, 400);
   }
 

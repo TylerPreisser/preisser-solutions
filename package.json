@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "test": "npm run test:unit",
-    "test:unit": "node tests/subscribe.probe.mjs && node tests/middleware.probe.mjs",
+    "test:unit": "node tests/subscribe.probe.mjs && node tests/middleware.probe.mjs && node tests/contact.probe.mjs",
     "test:e2e": "node tests/footer.probe.mjs",
     "preview": "npx serve out",
     "indexnow": "node scripts/indexnow-ping.mjs",
