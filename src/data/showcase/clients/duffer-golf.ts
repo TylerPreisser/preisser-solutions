@@ -10,7 +10,8 @@
 // Website captures: duffergolf.net, 2026-11-01, Playwright Chromium (desk 1280
 // at 1.25x, phone 390 at 2x, iPhone UA). Left out on purpose: the Black Friday
 // bar and band (dated) and the "Fits where a car was" band between the hero
-// and the models; the capture ends after the four models with their prices.
+// and the models; the capture ends after the four models with their prices
+// (round 11 trimmed the phone capture's 66 px of trailing white, critique r10 S9).
 import type { ShowcaseClient } from "../types";
 import { count, sum } from "../format";
 
@@ -29,6 +30,21 @@ const visits = sum(courses.map((c) => c.visits));
 const leads = sum(courses.map((c) => c.leads));
 const orders = sum(courses.map((c) => c.orders));
 const most = courses.reduce((a, b) => (b.scans > a.scans ? b : a));
+
+/** Text lines, price rows and buttons in the 390-wide phone capture (y from, y to, css px), found in its own pixels (round 11: rows with text-like edges on a flat background, 1 px margin). */
+const DUFFER_PHONE_BANDS = [
+  [27, 55], [87, 94], [435, 466], [473, 504], [511, 542], [573, 589], [691, 721], [741, 759],
+  [815, 822], [986, 1006], [1012, 1032], [1047, 1058], [1064, 1078], [1082, 1096], [1101, 1110],
+  [1131, 1154], [1167, 1213], [1241, 1270], [1433, 1453], [1459, 1479], [1494, 1507], [1511, 1522],
+  [1529, 1540], [1548, 1560], [1578, 1601], [1614, 1680],
+] as const;
+
+/** Text lines, price rows and buttons in the 1280-wide desk capture (y from, y to, css px), found in its own pixels (round 11: rows with text-like edges on a flat background, 1 px margin). */
+const DUFFER_DESK_BANDS = [
+  [46, 81], [455, 506], [517, 568], [579, 629], [658, 667], [697, 708], [891, 933], [953, 974],
+  [1029, 1075], [1348, 1377], [1382, 1410], [1427, 1444], [1448, 1465], [1468, 1485], [1509, 1541],
+  [1562, 1573], [1578, 1612], [1627, 1647],
+] as const;
 
 const client: ShowcaseClient = {
   slug: "duffer-golf",
@@ -60,18 +76,23 @@ const client: ShowcaseClient = {
         width: 1280,
         height: 1788,
         stops: [
-          { y: 0, holdMs: 2400 },
-          { y: 930, holdMs: 3200 },
+          { y: 0, holdMs: 2400, avoid: DUFFER_DESK_BANDS },
+          // "Choose your model." and all four models with their prices and buttons.
+          { y: 880, holdMs: 3200, keep: [890, 1650], avoid: DUFFER_DESK_BANDS },
         ],
       },
       phone: {
-        src: "/images/showcase/duffer-golf-site-phone-61f794ca.webp",
+        src: "/images/showcase/duffer-golf-site-phone-7ed25c02.webp",
         width: 390,
-        height: 1766,
+        height: 1700,
+        // The caption promises the prices: every stop rests with its band whole, at every phone height.
         stops: [
-          { y: 0, holdMs: 2400 },
-          { y: 738, holdMs: 1900 },
-          { y: 1290, holdMs: 2400 },
+          // "A full golf bay. Then it's a garage again." and its button, whole.
+          { y: 0, holdMs: 2400, keep: [430, 627], avoid: DUFFER_PHONE_BANDS },
+          // The two systems, name to price.
+          { y: 738, holdMs: 1900, keep: [985, 1156], avoid: DUFFER_PHONE_BANDS },
+          // The two Complete models, name to button; the capture ends under them.
+          { y: 1290, holdMs: 2400, toEnd: true, keep: [1430, 1684], avoid: DUFFER_PHONE_BANDS },
         ],
       },
     },

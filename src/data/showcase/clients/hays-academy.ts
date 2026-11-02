@@ -49,6 +49,23 @@ const validated = Math.round(leads * 0.8);
 const cplGoogle = google.spend / google.leads;
 const cplSocial = social.spend / social.leads;
 
+/** Text lines, price rows and buttons in the 390-wide phone capture (y from, y to, css px), found in its own pixels (round 11: rows with text-like edges on a flat background, 1 px margin). */
+const HAYS_PHONE_BANDS = [
+  [26, 55], [626, 653], [657, 684], [699, 713], [753, 770], [904, 933], [945, 963], [994, 1028],
+  [1035, 1053], [1060, 1076], [1101, 1113], [1123, 1138], [1146, 1161], [1251, 1258], [1514, 1542],
+  [1550, 1560], [1574, 1585], [1632, 1642], [1952, 1980], [1988, 1998], [2012, 2023], [2070, 2080],
+] as const;
+
+/** Text lines, price rows and buttons in the 1280-wide desk capture (y from, y to, css px), found in its own pixels (round 11: rows with text-like edges on a flat background, 1 px margin). */
+const HAYS_DESK_BANDS = [
+  [31, 85], [195, 253], [272, 345], [351, 427], [442, 461], [471, 490], [531, 546], [567, 590],
+  [623, 629], [631, 683], [935, 990], [1002, 1021], [1031, 1046], [1084, 1101], [1118, 1133],
+  [1685, 1730], [1742, 1755], [1801, 1812], [1826, 1848], [1890, 1901],
+] as const;
+
+/** The hero card above the class date: a resting top edge never lands in it (critique r10 S4). */
+const HAYS_HERO_CARD = [560, 743] as const;
+
 const client: ShowcaseClient = {
   slug: "hays-academy",
   name: "Hays Academy of Hair Design",
@@ -79,9 +96,9 @@ const client: ShowcaseClient = {
         width: 1280,
         height: 2099,
         stops: [
-          { y: 0, holdMs: 2200 },
-          { y: 860, holdMs: 1500 },
-          { y: 1190, holdMs: 2600 },
+          { y: 0, holdMs: 2200, avoid: HAYS_DESK_BANDS },
+          { y: 860, holdMs: 1500, avoid: HAYS_DESK_BANDS },
+          { y: 1190, holdMs: 2600, avoid: HAYS_DESK_BANDS },
         ],
       },
       phone: {
@@ -89,10 +106,12 @@ const client: ShowcaseClient = {
         width: 390,
         height: 2180,
         stops: [
-          { y: 0, holdMs: 2200 },
-          // "Next class starts November 10" (y 762) rests with the stats under it (critique r8 N2).
-          { y: 720, holdMs: 2400 },
-          { y: 1236, holdMs: 2600 },
+          { y: 0, holdMs: 2200, avoid: HAYS_PHONE_BANDS },
+          // "Next class starts November 10" rests at the top with the four stats under it (critique r8 N2),
+          // below the hero card's last row (r10 S4).
+          { y: 742, holdMs: 2400, keep: [750, 1062], avoid: [...HAYS_PHONE_BANDS, HAYS_HERO_CARD] },
+          // The Cosmetology Program card down to "See the program".
+          { y: 1236, holdMs: 2600, keep: [1240, 1650], avoid: HAYS_PHONE_BANDS },
         ],
       },
     },

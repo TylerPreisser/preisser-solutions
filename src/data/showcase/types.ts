@@ -78,6 +78,12 @@ export interface SiteCapture {
      * where neither the top nor the bottom edge falls inside one.
      */
     avoid?: readonly (readonly [number, number])[];
+    /**
+     * A band of the capture (y from, y to) the stop must show whole, such as a
+     * price row the caption promises: the stop takes the nearest top that holds
+     * it and cuts no `avoid` band. Taller than the view: the view centres on it.
+     */
+    keep?: readonly [number, number];
   }[];
 }
 

@@ -32,24 +32,19 @@ export const sceneBeats: readonly SceneBeatData[] = [
   },
 ];
 
-/** The About section's title, the last strip of its photo, its text lines and its button (y in the 390-wide capture, measured from its pixels). */
+/** Text lines and buttons in the 390-wide phone capture (y from, y to, css px), found in its own pixels (round 11: rows with text-like edges on a flat background, 1 px margin), plus round 9's last strip of the rig photo and the Contact button. */
 const HG_PHONE_BANDS = [
-  [860, 889],
-  [1130, 1172],
-  [1191, 1208],
-  [1215, 1232],
-  [1239, 1253],
-  [1263, 1277],
-  [1287, 1304],
-  [1311, 1328],
-  [1335, 1352],
-  [1359, 1376],
-  [1383, 1400],
-  [1407, 1424],
-  [1431, 1448],
-  [1455, 1472],
-  [1479, 1493],
-  [1511, 1562],
+  [33, 58], [327, 334], [367, 379], [401, 577], [585, 593], [616, 625], [862, 889], [1130, 1172],
+  [1192, 1205], [1216, 1229], [1240, 1253], [1264, 1277], [1288, 1301], [1312, 1325], [1336, 1349],
+  [1360, 1373], [1384, 1400], [1408, 1424], [1432, 1448], [1456, 1472], [1480, 1493], [1511, 1562],
+  [1531, 1544],
+] as const;
+
+/** Text lines, price rows and buttons in the 1440-wide desk capture (y from, y to, css px), found in its own pixels (round 11: rows with text-like edges on a flat background, 1 px margin). */
+const HG_DESK_BANDS = [
+  [20, 78], [121, 134], [339, 363], [374, 393], [418, 423], [428, 433], [495, 501], [579, 584],
+  [938, 968], [1132, 1148], [1163, 1183], [1193, 1209], [1223, 1239], [1253, 1273], [1284, 1300],
+  [1314, 1334], [1344, 1364], [1374, 1394], [1429, 1435], [1448, 1461], [1468, 1473], [1476, 1501],
 ] as const;
 
 const client: ShowcaseClient = {
@@ -82,20 +77,20 @@ const client: ShowcaseClient = {
         width: 1440,
         height: 1643,
         stops: [
-          { y: 0, holdMs: 2400 },
-          // The About section from its top; the page's own white runs on below it.
-          { y: 900, holdMs: 3000 },
+          { y: 0, holdMs: 2400, avoid: HG_DESK_BANDS },
+          // Ends on "About Us" and the rig photo; the view ends on the capture's last row, no white below (critique r10 MF5).
+          { y: 900, holdMs: 3000, toEnd: true, avoid: HG_DESK_BANDS },
         ],
       },
       phone: {
         src: "/images/showcase/hg-oil-site-phone-9b887afc.webp",
         width: 390,
         height: 1597,
-        // Neither edge of a rest cuts the title, a sliver of the photo, a line of the About text or its button.
         stops: [
-          { y: 0, holdMs: 2400 },
-          { y: 852, holdMs: 2200, avoid: HG_PHONE_BANDS },
-          { y: 1180, holdMs: 2800, toEnd: true, avoid: HG_PHONE_BANDS },
+          // The whole pumpjack and the orange dusk under it, below the header bar (critique r10 MF5).
+          { y: 230, holdMs: 2400, keep: [240, 700], avoid: HG_PHONE_BANDS },
+          // Ends on "About Us" and the drilling rig in the field; the paragraph stop is gone.
+          { y: 852, holdMs: 3000, keep: [858, 1175], avoid: HG_PHONE_BANDS },
         ],
       },
     },

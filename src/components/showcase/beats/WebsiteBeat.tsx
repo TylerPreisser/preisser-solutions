@@ -37,17 +37,24 @@ export function WebsiteBeat({ client, beat, variant, active, fill, reduced }: Be
   // sliced row above it.
   const want = cap.stops[stop];
   const maxTop = cap.height - viewH * (want.toEnd ? 1 : 0.55);
-  let top = Math.max(0, Math.min(want.y, maxTop));
-  if (want.avoid && box.h > 0) {
-    const cuts = (t: number) => want.avoid!.some(([a, b]) => (t > a && t < b) || (t + viewH > a && t + viewH < b));
-    search: for (let d = 0; d <= 160; d += 1) {
-      for (const t of [top + d, top - d]) {
-        if (t >= 0 && t <= Math.max(0, maxTop) && !cuts(t)) {
-          top = t;
-          break search;
-        }
+  const hi = Math.max(0, maxTop);
+  let top = Math.max(0, Math.min(want.y, hi));
+  if (box.h > 0 && (want.avoid || want.keep)) {
+    const avoid = want.avoid ?? [];
+    const keep = want.keep;
+    // A taller-than-the-view keep band: centre on it instead of holding it whole.
+    const fits = !keep || keep[1] - keep[0] <= viewH;
+    if (keep && !fits) top = Math.max(0, Math.min((keep[0] + keep[1] - viewH) / 2, hi));
+    const cuts = (t: number) => avoid.some(([a, b]) => (t > a && t < b) || (t + viewH > a && t + viewH < b));
+    const holds = (t: number) => !keep || !fits || (t <= keep[0] && t + viewH >= keep[1]);
+    // The nearest top that holds the keep band and cuts nothing; else the nearest that cuts nothing.
+    const find = (ok: (t: number) => boolean, reach: number) => {
+      for (let d = 0; d <= reach; d += 1) {
+        for (const t of [top + d, top - d]) if (t >= 0 && t <= hi && ok(t)) return t;
       }
-    }
+      return null;
+    };
+    top = find((t) => holds(t) && !cuts(t), 400) ?? find((t) => !cuts(t), 160) ?? top;
   }
   const page = (
     <div className="sc-frame__page" style={{ transform: `translateY(-${(top / cap.height) * 100}%)`, "--sc-pan-ms": `${PAN_MS}ms` } as CSSProperties}>
