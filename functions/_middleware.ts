@@ -223,6 +223,43 @@ async function serveMarkdownForAgents(context: MiddlewareContext, url: URL) {
   });
 }
 
+// Video byte ranges (2026-11-01). Pages answers a Range request for a static
+// asset with the whole file and a 200 (seen on the preview: `Range: bytes=0-1023`
+// on /images/showcase/hg-oil-hero-phone-*.mp4 -> 200, Content-Length 753213),
+// and iPhone Safari will not play a <video> source without 206 responses. The
+// showcase's hero clips are small (under 1.5 MB), so the asked-for range is cut
+// from the asset here. Every other path is untouched.
+const VIDEO_PATH = /\.(mp4|webm)$/i;
+
+async function withByteRange(request: Request, response: Response): Promise<Response> {
+  if (response.status !== 200) return response;
+  const headers = new Headers(response.headers);
+  headers.set("accept-ranges", "bytes");
+  const m = /^bytes=(\d*)-(\d*)$/.exec((request.headers.get("range") ?? "").trim());
+  if (!m || (!m[1] && !m[2]) || request.method !== "GET") {
+    return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+  }
+  const body = new Uint8Array(await response.arrayBuffer());
+  const size = body.byteLength;
+  let start: number;
+  let end: number;
+  if (m[1]) {
+    start = Number(m[1]);
+    end = m[2] ? Math.min(Number(m[2]), size - 1) : size - 1;
+  } else {
+    start = Math.max(0, size - Number(m[2]));
+    end = size - 1;
+  }
+  if (start >= size || start > end) {
+    headers.set("content-range", `bytes */${size}`);
+    headers.delete("content-length");
+    return new Response(null, { status: 416, headers });
+  }
+  headers.set("content-range", `bytes ${start}-${end}/${size}`);
+  headers.set("content-length", String(end - start + 1));
+  return new Response(body.slice(start, end + 1), { status: 206, headers });
+}
+
 export const onRequest = async (context: MiddlewareContext) => {
   const url = new URL(context.request.url);
   const host = url.hostname.toLowerCase();
@@ -267,6 +304,8 @@ export const onRequest = async (context: MiddlewareContext) => {
   }
 
   const response = await context.next();
+
+  if (VIDEO_PATH.test(url.pathname)) return withByteRange(context.request, response);
 
   // Tyler's directive (2026-05-11): ZERO restrictions on AI crawlers and
   // agents across preissersolutions.com. Every page, every path.

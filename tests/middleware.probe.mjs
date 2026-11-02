@@ -99,5 +99,54 @@ await check("robots.txt on www still served, not redirected", async () => {
   assert.equal(res.status, 200);
 });
 
+
+console.log("\n=== VIDEO BYTE RANGES (iPhone Safari needs 206) ===");
+// The real failure, 2026-11-01: the preview answered `Range: bytes=0-1023` on
+// /images/showcase/hg-oil-hero-phone-b58f82bb.mp4 with 200 and all 753213 bytes.
+const clip = new Uint8Array(1000).map((_, i) => i % 251);
+const vctx = (request, body = clip, type = "video/mp4") => ({
+  request,
+  env: {},
+  next: async () => new Response(body, { status: 200, headers: { "content-type": type, "cache-control": "public, max-age=2592000" } }),
+});
+const V = "https://preissersolutions.com/images/showcase/hg-oil-hero-phone-b58f82bb.mp4";
+await check("GET mp4 Range bytes=0-1 -> 206, 2 bytes, Content-Range", async () => {
+  const res = await onRequest(vctx(get(V, { range: "bytes=0-1" })));
+  assert.equal(res.status, 206);
+  assert.equal(res.headers.get("content-range"), "bytes 0-1/1000");
+  assert.equal(res.headers.get("content-length"), "2");
+  assert.equal(res.headers.get("content-type"), "video/mp4");
+  assert.equal(res.headers.get("cache-control"), "public, max-age=2592000");
+  assert.deepEqual([...new Uint8Array(await res.arrayBuffer())], [0, 1]);
+});
+await check("GET webm Range bytes=990- -> 206, the last 10 bytes", async () => {
+  const res = await onRequest(vctx(get(V.replace(".mp4", ".webm"), { range: "bytes=990-" }), clip, "video/webm"));
+  assert.equal(res.status, 206);
+  assert.equal(res.headers.get("content-range"), "bytes 990-999/1000");
+  assert.deepEqual([...new Uint8Array(await res.arrayBuffer())], [...clip.slice(990)]);
+});
+await check("GET mp4 Range bytes=-4 (suffix) -> 206, the last 4 bytes", async () => {
+  const res = await onRequest(vctx(get(V, { range: "bytes=-4" })));
+  assert.equal(res.status, 206);
+  assert.equal(res.headers.get("content-range"), "bytes 996-999/1000");
+});
+await check("GET mp4 Range past the end -> 416", async () => {
+  const res = await onRequest(vctx(get(V, { range: "bytes=5000-" })));
+  assert.equal(res.status, 416);
+  assert.equal(res.headers.get("content-range"), "bytes */1000");
+});
+await check("GET mp4 without Range -> 200 whole, Accept-Ranges: bytes", async () => {
+  const res = await onRequest(vctx(get(V)));
+  assert.equal(res.status, 200);
+  assert.equal(res.headers.get("accept-ranges"), "bytes");
+  assert.equal((await res.arrayBuffer()).byteLength, 1000);
+});
+await check("GET webp with Range -> untouched (no slicing outside video)", async () => {
+  const res = await onRequest(vctx(get(V.replace(".mp4", ".webp"), { range: "bytes=0-1" }), clip, "image/webp"));
+  assert.equal(res.status, 200);
+  assert.equal(res.headers.get("content-range"), null);
+  assert.equal((await res.arrayBuffer()).byteLength, 1000);
+});
+
 console.log(`\n===== ${pass} passed, ${fail} failed =====`);
 process.exit(fail === 0 ? 0 : 1);
