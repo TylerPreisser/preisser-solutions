@@ -75,13 +75,15 @@ function hasControlChars(value: string): boolean {
 }
 
 /**
- * Cap on the raw request body. Fields are truncated to ~6 KB of characters in
- * total; 32 KiB leaves room for multi-byte text and JSON escaping while still
- * refusing to buffer anything large.
+ * Cap on the raw request body. The textarea has no maxlength and the server
+ * truncates fields itself, so the cap sits well above any realistic paste
+ * (multi-byte text, JSON escaping) while still refusing to buffer anything large.
  */
-const MAX_BODY_BYTES = 32 * 1024;
+const MAX_BODY_BYTES = 128 * 1024;
 
-/** Hosts a legitimate submission can come from (apex, www, local dev). */
+/** Hosts a legitimate submission can come from (apex, www, local dev). Branch and
+ * hash previews (`<id>.preisser-solutions.pages.dev`) are allowed by suffix below:
+ * only this project's own deployments can live under that name. */
 const ALLOWED_HOSTS = new Set([
   "preissersolutions.com",
   "www.preissersolutions.com",
@@ -91,7 +93,8 @@ const ALLOWED_HOSTS = new Set([
 
 function hostAllowed(value: string): boolean {
   try {
-    return ALLOWED_HOSTS.has(new URL(value).hostname.toLowerCase());
+    const host = new URL(value).hostname.toLowerCase();
+    return ALLOWED_HOSTS.has(host) || host === "preisser-solutions.pages.dev" || host.endsWith(".preisser-solutions.pages.dev");
   } catch {
     return false;
   }

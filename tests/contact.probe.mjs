@@ -97,10 +97,17 @@ await check("no Origin but an allowed Referer is accepted", async () => {
   assert.equal(res.status, 200);
 });
 
+await check("a branch preview origin is accepted", async () => {
+  const res = await call(post(GOOD, { origin: "https://3f2a91c0.preisser-solutions.pages.dev" }));
+  assert.equal(res.status, 200);
+});
+
 console.log("=== ORIGIN CHECK ===");
 for (const [label, opts] of [
   ["foreign Origin", { origin: "https://evil.example" }],
   ["lookalike Origin", { origin: "https://preissersolutions.com.evil.example" }],
+  ["pages.dev lookalike Origin", { origin: "https://preisser-solutions.pages.dev.evil.example" }],
+  ["other pages.dev project Origin", { origin: "https://evil-preisser-solutions.pages.dev" }],
   ["Origin: null", { origin: "null" }],
   ["no Origin and no Referer", { origin: null }],
   ["foreign Referer, no Origin", { origin: null, referer: "https://evil.example/x" }],
@@ -118,6 +125,10 @@ await check("declared Content-Length over the cap -> 413, no send", async () => 
   const res = await call(post(GOOD, { contentLength: 10_000_000 }));
   assert.equal(res.status, 413);
   assert.equal(captured.length, 0);
+});
+await check("a long pasted message (60 KB) is still accepted", async () => {
+  const res = await call(post({ ...GOOD, details: "x".repeat(60_000) }));
+  assert.equal(res.status, 200);
 });
 await check("undeclared oversized body -> 413, no send", async () => {
   const res = await call(post({ ...GOOD, details: "x".repeat(200_000) }));
