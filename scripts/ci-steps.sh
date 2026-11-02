@@ -12,8 +12,9 @@ ci_steps() {
   run lint . npm run lint
   run tsc . npx tsc --noEmit
   run validate-seo . npm run validate:seo
-  # Browsers for the footer probe AND the Proof Stage gate. macOS has no apt, so no --with-deps.
-  run playwright-browsers . npx playwright install chromium webkit firefox
+  # The footer probe launches chromium only (tests/footer.probe.mjs). The other two browsers are the Proof Stage
+  # matrix's and are installed below, only when that step runs. macOS has no apt, so no --with-deps.
+  run playwright-chromium . npx playwright install chromium
   # A FREE port, never the workflow's fixed 4321: on this Mac other sessions' servers squat ports and answer
   # 200 with a foreign build (CLAUDE.md, browser matrix traps); the first gate run hit exactly that and the
   # probe refused ("NOT the current build"). The probe's copy check is the fingerprint that the served page
@@ -39,6 +40,7 @@ ci_steps() {
       'src/app/layout.tsx' 'src/app/globals.css' 'src/styles/**' 'src/components/layout/**' 'src/components/ui/**' \
       'src/lib/**' 'tests/e2e/**' 'playwright.config.ts' 'package.json' 'package-lock.json' 'next.config.ts' \
       'postcss.config.mjs' 'scripts/ci-steps.sh'; then
+    run playwright-stage-browsers . npx playwright install webkit firefox
     run e2e-demo-stage . npx playwright test --config playwright.config.ts
   else
     ci_skip e2e-demo-stage "the change does not reach the Proof Stage"
