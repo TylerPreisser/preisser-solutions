@@ -107,8 +107,9 @@ function Camera({
   const keepBottom = useNativeEdge(cover && !!shot?.keep, live, fitRef, h, shot?.keep, "bottom");
   if (keepBottom !== null) {
     const vis = H / s;
-    const start = cy - vis / 2;
-    if (keepBottom + 4 > start + vis) cy = Math.min(h - vis, keepBottom + 4 - vis) + vis / 2;
+    const need = keepBottom + 4 - vis;
+    // Move down to the first clean line that shows it whole, else to the picture's end.
+    if (need > cy - vis / 2) cy = Math.min(h - vis, [...(clean ?? [])].sort((a, b) => a - b).find((c) => c >= need) ?? h) + vis / 2;
   }
   const tx = w * s <= W ? (W - w * s) / 2 : clamp(W / 2 - cx * s, W - w * s, 0);
   const ty = h * s <= H ? (H - h * s) / 2 : clamp(H / 2 - cy * s, H - h * s, 0);
@@ -186,7 +187,10 @@ function useEdgeCut(
         range.selectNodeContents(t);
         for (const q of range.getClientRects()) {
           if (q.height < 2 || q.width < 1) continue;
-          lines.push([(q.top - fr.top) / cur, (q.bottom - fr.top) / cur]);
+          // A pill, button or log row around one line is that line: clip at its box, never through its padding.
+          const pill = pillAround(el, fit, q.height);
+          const r = pill ?? q;
+          lines.push([(r.top - fr.top) / cur, (r.bottom - fr.top) / cur]);
         }
       }
       let b = until !== null && until > start && until < end ? until - 1 : end;
@@ -256,6 +260,19 @@ function useNativeEdge(
     };
   }, [on, live, fitRef, h, selector, edge]);
   return y;
+}
+
+/** The box of a filled or bordered element (up to two levels up) no taller than ~2.6 lines of `lineH`: a pill, a button, a log row. */
+function pillAround(el: Element, root: Element, lineH: number): DOMRect | null {
+  let e: Element | null = el;
+  for (let i = 0; i < 3 && e && e !== root; i++, e = e.parentElement) {
+    const cs = getComputedStyle(e);
+    const filled = !/^(transparent|rgba\([^)]*,\s*0\))$/.test(cs.backgroundColor) || parseFloat(cs.borderTopWidth) > 0;
+    if (!filled) continue;
+    const r = e.getBoundingClientRect();
+    return r.height <= lineH * 2.6 ? r : null;
+  }
+  return null;
 }
 
 /** Drawn at all: not display:none, not hidden, not faded below 15% on the way up to the picture. */
