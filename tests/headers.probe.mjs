@@ -36,6 +36,14 @@ check("CSP is Report-Only with object-src and base-uri", () => {
   assert.match(h, /object-src 'none'/);
   assert.match(h, /base-uri 'self'/);
 });
+// Cloudflare injects its Web Analytics beacon at the edge; real Safari reported
+// script-src-elem violations for static.cloudflareinsights.com on every page.
+check("CSP allows Cloudflare's injected analytics beacon", () => {
+  const h = get("Content-Security-Policy-Report-Only") ?? "";
+  const dir = (name) => (h.split(";").map((d) => d.trim()).find((d) => d.startsWith(name + " ")) ?? "");
+  assert.match(dir("script-src"), /https:\/\/static\.cloudflareinsights\.com(\s|$)/);
+  assert.match(dir("connect-src"), /https:\/\/cloudflareinsights\.com(\s|$)/);
+});
 check("no ENFORCED CSP on /* (report-only phase)", () =>
   assert.equal(get("Content-Security-Policy"), undefined));
 
