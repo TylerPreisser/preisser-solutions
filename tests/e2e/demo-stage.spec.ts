@@ -278,7 +278,25 @@ for (const m of MANIFESTS) {
               ),
             { message: "Back changed the step but hid nothing: the last step has no visible [data-stage-step]" })
             .toBe(true);
+          // Back scrolls the window to the step it re-hid (smooth, plus the
+          // settle loop's re-scrolls). Click Next only once the page is still:
+          // under a loaded gate that scroll outlasted Playwright's stability
+          // check, the click landed off the button and the step stayed at n-1
+          // (ci-local bb2fc58, Firefox 1440x900: "paused", data-track-step=3 of 4).
+          let lastY = Number.NaN;
+          await expect
+            .poll(
+              async () => {
+                const y = await page.evaluate(() => window.scrollY);
+                const still = y === lastY;
+                lastY = y;
+                return still;
+              },
+              { timeout: 10_000, intervals: [150], message: "Back's scroll never came to rest" },
+            )
+            .toBe(true);
           await t.getByRole("button", { name: "Next", exact: true }).click();
+          await expect(t).toHaveAttribute("data-track-step", String(n));
           await expect(t).toHaveAttribute("data-track-state", "end", { timeout: 5_000 });
           await t.getByRole("button", { name: "Replay", exact: true }).click();
           await expect(t).toHaveAttribute("data-track-state", "playing");
