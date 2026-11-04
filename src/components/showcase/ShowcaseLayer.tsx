@@ -1,37 +1,38 @@
 "use client";
 
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { createPortal } from "react-dom";
 import { loadShowcase, type ShowcaseSlug } from "@/data/showcase";
 import type { ShowcaseClient } from "@/data/showcase/types";
-import { BeatView, beatMs } from "./beats";
+import { BeatView } from "./beats";
 import "./showcase.css";
 
-/** Every desk frame is a 1.6 : 1 picture (the 1280 x 800 site, the 960 x 600 portal). */
-const VIEW_RATIO = 0.625;
-
 /**
- * The home card's showcase (ADR-0020). Loaded only when a visitor shows intent
- * (pointer rests on a showcase card, or taps or presses it), so the home page
- * pays nothing for it up front.
+ * The home card's showcase (ADR-0020, ADR-0022, ADR-0023; design spec
+ * ~/.claude/agent-reports/ps-showcase-revamp-2026-11-03/design-spec.md §2-§4, §7).
+ * Loaded only when a visitor shows intent, so the home page pays nothing up front.
  *
- *   popover  fine pointer and a viewport 900px or wider: a glass window that
- *            grows out of the card and plays the client's beats in order
- *            (src/data/showcase/types.ts): their website, then what we
- *            built. Hover-opened windows close when the pointer leaves both
- *            the card and the window; click- or key-opened ones are
- *            modal dialogs that close on Escape, the close button, or a click
- *            outside.
- *   sheet    touch, or narrower than 900px: the same beats in a glass sheet
- *            from the bottom; their real mobile site in a phone, the portal
- *            beats in their desktop composition scaled to fit. Swipe or tap
- *            the tabs to move between them.
+ *   window   fine pointer and a viewport 900px or wider: a glass window centred
+ *            over a scrim, min(100% - 96, 1248) x min(100% - 64, 940), grown
+ *            out of the card. The client's live site renders inside it at its
+ *            desktop width. Nothing auto-advances: the visitor picks the tab.
+ *            Hover-opened ("hover"): stays open while the pointer is anywhere
+ *            inside it, including inside the client's site, and closes 400 ms
+ *            after the pointer leaves. Any pointerdown on our own chrome pins it.
+ *            Click- or key-opened ("pinned"): a modal dialog that closes only by
+ *            the close button, Escape or the scrim.
+ *   sheet    touch, or narrower than 900px: an opaque sheet from the bottom,
+ *            swiped down from its grip and title row to dismiss.
  */
 export type LayerMode = "hover" | "pinned";
 
-const GAP = 16; // between the card and the window
-const EDGE = 24; // between the window and the viewport edge
-const MIN_SIDE_W = 520; // narrower than this beside the card, and the card opens in place instead
+/** Hover window: how long the pointer may be outside it before it closes (the bezel is crossed on the way out). */
+const LEAVE_MS = 400;
+/** Sheet: drag further than this, or release faster than this, and it closes. */
+const DISMISS_PX = 96;
+const DISMISS_V = 0.6;
+/** Sheet: the drag zone is the grip and the name/close row. */
+const DRAG_ZONE = 72;
 
 function prefersReduced() {
   return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -61,97 +62,50 @@ export default function ShowcaseLayer(props: LayerProps) {
 
 interface LayerProps {
   slug: ShowcaseSlug;
+  /** The card the window grows out of. */
   anchor: HTMLElement;
   mode: LayerMode;
   onClose: () => void;
-  /** Hover mode: the pointer entered (true) or left (false) the window. */
-  onHoverChange?: (inside: boolean) => void;
-  /** The parent asks the window to leave (hover ended); it animates out, then calls onClose. */
-  dismissed?: boolean;
 }
 
-function Layer({
-  show,
-  anchor,
-  mode,
-  onClose,
-  onHoverChange,
-  dismissed,
-}: LayerProps & { show: ShowcaseClient }) {
+type Phase = "measure" | "from" | "open" | "leave";
+
+function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseClient }) {
   const [sheet] = useState(isSheetLayout);
   const [reduced] = useState(prefersReduced);
-  const [phase, setPhase] = useState<"measure" | "from" | "open" | "leave">(sheet ? "from" : "measure");
+  const [phase, setPhase] = useState<Phase>(sheet ? "from" : "measure");
   const [at, setAt] = useState(0);
-  const [auto, setAuto] = useState(!reduced);
-  const beats = show.beats;
-  // A scene beat's current step line, shown in the caption slot instead of the beat's own caption (one caption, never two).
-  const [live, setLive] = useState<{ at: number; line: string } | null>(null);
+  const [pinned, setPinned] = useState(mode === "pinned");
+  const [from, setFrom] = useState<string | undefined>(undefined);
+  // A scene's current step line, for screen readers only (the caption row is gone, spec §9).
+  const [line, setLine] = useState("");
   const boxRef = useRef<HTMLDivElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const [geo, setGeo] = useState<{ left: number; top: number; width: number; from: string; inPlace: boolean; hole: number[]; veilTop: number } | null>(null);
-
-  const titleId = useId();
-  // A tablet-wide sheet has room for the desktop picture; a phone gets the phone one.
+  /** The window's resting box (it is centred by CSS; read before the grow transform applies, and on resize). */
+  const finalBox = useRef<DOMRect | null>(null);
+  const closeBtn = useRef<HTMLButtonElement>(null);
+  const beats = show.beats;
+  const uid = useId();
+  const titleId = `${uid}-name`;
+  const tabId = (i: number) => `${uid}-tab-${i}`;
+  const panelId = (i: number) => `${uid}-panel-${i}`;
+  // A tablet-wide sheet has room for the desktop still; a phone gets the phone one.
   const [variant] = useState<"desk" | "phone">(() => (sheet && window.innerWidth < 600 ? "phone" : "desk"));
-  const modal = mode === "pinned" || sheet;
+  const modal = pinned || sheet;
 
-  // ── Place the window (critique A1). It never covers the section heading or
-  // the card it came from: it opens beside the card, at the card row, on the
-  // side with more room, and shrinks to fit the height left under the heading.
-  // When neither side has room for a useful window (the middle card at
-  // 1024px), the card itself opens in place: the window grows out of it and the
-  // card hides behind it, so nothing is covered that the visitor was looking at.
-  const place = useCallback(() => {
-    const box = boxRef.current;
-    if (!box || sheet) return;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const card = anchor.getBoundingClientRect();
-    const heading = document.getElementById("work-heading")?.getBoundingClientRect();
-    const navBottom = 88;
-    // Height that does not scale with width: head, caption, foot, padding, frame chrome.
-    const w0 = box.offsetWidth;
-    const fixed = box.offsetHeight - (w0 - 32) * VIEW_RATIO;
-    const lo = Math.max(navBottom + 8, heading ? heading.bottom + 16 : 0);
-    const h720 = fixed + (720 - 32) * VIEW_RATIO;
-    const top = Math.round(Math.max(lo, Math.min(card.top, vh - 16 - h720)));
-    const wForHeight = (vh - 16 - top - fixed) / VIEW_RATIO + 32;
-    const roomR = vw - EDGE - (card.right + GAP);
-    const roomL = card.left - GAP - EDGE;
-    const right = roomR >= roomL;
-    const sideW = Math.floor(Math.min(720, wForHeight, right ? roomR : roomL));
-    let width: number;
-    let left: number;
-    let inPlace = false;
-    if (sideW >= MIN_SIDE_W) {
-      width = sideW;
-      left = right ? card.right + GAP : card.left - GAP - width;
-    } else {
-      inPlace = true;
-      width = Math.floor(Math.min(720, wForHeight, vw - EDGE * 2));
-      left = Math.min(Math.max(card.left + card.width / 2 - width / 2, EDGE), vw - width - EDGE);
-    }
-    left = Math.round(left);
-    const h = fixed + (width - 32) * VIEW_RATIO;
-    const sx = card.width / width;
-    const dx = card.left + card.width / 2 - (left + width / 2);
-    const dy = card.top + card.height / 2 - (top + h / 2);
-    setGeo({
-      left,
-      top,
-      width,
-      inPlace,
-      from: `translate(${dx}px, ${dy}px) scale(${sx.toFixed(3)})`,
-      hole: [card.left, card.top, card.width, card.height],
-      veilTop: Math.max(0, heading ? heading.bottom + 8 : 0),
-    });
-  }, [anchor, sheet]);
-
+  // ── Open: the window's place is CSS (centred, spec §2.1); JS only measures where it grows from.
   useLayoutEffect(() => {
     if (sheet) return;
-    place();
+    const box = boxRef.current;
+    if (!box) return;
+    const w = box.getBoundingClientRect();
+    finalBox.current = w;
+    const c = anchor.getBoundingClientRect();
+    const sx = c.width / w.width;
+    const dx = c.left + c.width / 2 - (w.left + w.width / 2);
+    const dy = c.top + c.height / 2 - (w.top + w.height / 2);
+    setFrom(`translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(${sx.toFixed(3)})`);
     setPhase("from");
-  }, [place, sheet]);
+  }, [anchor, sheet]);
 
   useEffect(() => {
     if (phase !== "from") return;
@@ -166,186 +120,282 @@ function Layer({
     };
   }, [phase]);
 
-  // Keep the window on its card if the page scrolls while it is open.
   useEffect(() => {
     if (sheet) return;
-    let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(place);
+    const onResize = () => {
+      const box = boxRef.current;
+      if (box && phase === "open") finalBox.current = box.getBoundingClientRect();
     };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, [place, sheet]);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [sheet, phase]);
 
-  // ── The timeline: each beat plays, then the window moves to the next. The last one stays.
-  const phone = variant === "phone";
-  const dwell = beatMs(beats[at], phone);
+  // The page behind stops scrolling (a wheel at the end of a client page would chain into ours), without shifting sideways.
   useEffect(() => {
-    if (phase !== "open" || !auto || at >= beats.length - 1) return;
-    const t = window.setTimeout(() => setAt((i) => Math.min(i + 1, beats.length - 1)), dwell);
-    return () => window.clearTimeout(t);
-  }, [phase, auto, at, dwell, beats.length]);
-
-  // The source card hides behind a window that opened in place over it.
-  useEffect(() => {
-    if (!geo?.inPlace) return;
-    anchor.classList.add("sc-source");
-    return () => anchor.classList.remove("sc-source");
-  }, [geo?.inPlace, anchor]);
-
-  // The phone sheet is a full-screen modal: the site nav steps back and the page stops scrolling.
-  useEffect(() => {
-    if (!sheet) return;
     const html = document.documentElement;
-    html.classList.add("sc-sheet-open");
-    return () => html.classList.remove("sc-sheet-open");
+    // Keep the gutter only where a classic scrollbar takes room; an overlay scrollbar has none to keep.
+    const gutter = window.innerWidth - html.clientWidth > 0;
+    html.classList.add("sc-lock");
+    if (gutter) html.classList.add("sc-lock--gutter");
+    if (sheet) html.classList.add("sc-sheet-open");
+    return () => html.classList.remove("sc-lock", "sc-lock--gutter", "sc-sheet-open");
   }, [sheet]);
 
+  const closing = useRef(false);
   const close = useCallback(() => {
+    if (closing.current) return;
+    closing.current = true;
     setPhase("leave");
-    window.setTimeout(onClose, reduced ? 120 : sheet ? 230 : 190);
+    window.setTimeout(onClose, reduced ? 120 : sheet ? 230 : 180);
   }, [onClose, reduced, sheet]);
 
+  // ── Hover window: open while the pointer is inside (including inside the client's frame, where the
+  // parent sees no pointermove), closed 400 ms after it leaves. A leave at the viewport's edge is the
+  // visitor going to the dock or another app, not away from the window.
+  const inside = useRef(true);
+  const leaveTimer = useRef<number | undefined>(undefined);
+  const hover = !pinned && !sheet;
+  const armLeave = useCallback(() => {
+    if (leaveTimer.current !== undefined) return;
+    leaveTimer.current = window.setTimeout(() => {
+      leaveTimer.current = undefined;
+      if (!inside.current) close();
+    }, LEAVE_MS);
+  }, [close]);
+  const disarmLeave = () => {
+    window.clearTimeout(leaveTimer.current);
+    leaveTimer.current = undefined;
+  };
+  useEffect(() => () => window.clearTimeout(leaveTimer.current), []);
   useEffect(() => {
-    if (dismissed) close();
-  }, [dismissed, close]);
+    if (!hover) disarmLeave();
+  }, [hover]);
 
-  // ── Dialog behaviour for click/key/touch opens.
+  const onWinEnter = () => {
+    inside.current = true;
+    disarmLeave();
+  };
+  const onWinLeave = (e: ReactPointerEvent) => {
+    if (!hover) return;
+    const edge = e.clientX <= 0 || e.clientY <= 0 || e.clientX >= window.innerWidth - 1 || e.clientY >= window.innerHeight - 1;
+    if (edge) return;
+    inside.current = false;
+    armLeave();
+  };
+  // Over the scrim: the pointer is outside the window's final box (it may still be growing under the pointer).
+  const onScrimMove = (e: ReactPointerEvent) => {
+    if (!hover) return;
+    const fin = finalBox.current;
+    const inBox = fin ? e.clientX >= fin.left && e.clientX <= fin.right && e.clientY >= fin.top && e.clientY <= fin.bottom : false;
+    if (inBox) return;
+    inside.current = false;
+    armLeave();
+  };
+
+  // ── Keyboard: Escape closes either kind (while focus is in our document; Escape inside the client's site is theirs).
   useEffect(() => {
-    if (!modal) return;
-    const returnTo = document.activeElement as HTMLElement | null;
-    closeRef.current?.focus({ preventScroll: true });
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
         close();
       }
-      if (e.key === "Tab" && boxRef.current) {
-        const f = [...boxRef.current.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")].filter((el) => !el.closest("[inert]"));
-        if (f.length === 0) return;
-        const first = f[0];
-        const last = f[f.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
     };
-    const onDown = (e: PointerEvent) => {
-      if (sheet) return; // the sheet has its own scrim
-      if (boxRef.current && !boxRef.current.contains(e.target as Node) && !anchor.contains(e.target as Node)) close();
-    };
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("pointerdown", onDown);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("pointerdown", onDown);
-      returnTo?.focus?.({ preventScroll: true });
-    };
-  }, [modal, close, sheet, anchor]);
-
-  // A hover-opened window still closes on Escape, without stealing focus.
-  useEffect(() => {
-    if (modal) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [modal, close]);
+  }, [close]);
 
-  // Swipe between the beats in the sheet.
-  const swipe = useRef<{ x: number; y: number } | null>(null);
+  // A click-, key- or touch-opened window takes focus to its close button, and gives it back on close.
+  // (Not while measuring: the window is visibility:hidden then, and focus() on it is a no-op.)
+  const openedModal = useRef(modal);
+  const pinnedRef = useRef(pinned);
+  pinnedRef.current = pinned;
+  const focused = useRef(false);
+  useEffect(() => {
+    if (!openedModal.current || focused.current || phase === "measure") return;
+    focused.current = true;
+    closeBtn.current?.focus({ preventScroll: true });
+  }, [phase]);
+  useEffect(() => {
+    const returnTo = openedModal.current ? (document.activeElement as HTMLElement | null) : null;
+    return () => {
+      // A hover window pinned by a click returns focus to its card's button (it never took focus at open).
+      const back = returnTo ?? (pinnedRef.current ? anchor.querySelector<HTMLElement>('[aria-haspopup="dialog"]') : null);
+      back?.focus?.({ preventScroll: true });
+    };
+  }, [anchor]);
 
-  const choose = (i: number) => {
-    setAuto(false);
-    setAt(Math.max(0, Math.min(beats.length - 1, i)));
+  // The focus trap's two ends: Tab inside the client's frame cannot be seen, so the trap is two
+  // focusable sentinels, first and last, that send focus round to the other end.
+  const focusables = () =>
+    boxRef.current
+      ? [...boxRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex="0"]')].filter(
+          (el) => !el.closest("[inert]") && !el.hasAttribute("data-sentinel") && el.getClientRects().length > 0,
+        )
+      : [];
+  const toFirst = () => closeBtn.current?.focus();
+  const toLast = () => {
+    const f = focusables();
+    (f[f.length - 1] ?? closeBtn.current)?.focus();
   };
+
+  // ── Tabs (spec §4): roving tabindex, arrows wrap, Home/End.
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const choose = (i: number, focus = false) => {
+    const n = beats.length;
+    const k = ((i % n) + n) % n;
+    setAt(k);
+    if (focus) document.getElementById(tabId(k))?.focus();
+  };
+  const onTabKey = (e: ReactKeyboardEvent) => {
+    const key = e.key;
+    if (key === "ArrowRight") choose(at + 1, true);
+    else if (key === "ArrowLeft") choose(at - 1, true);
+    else if (key === "Home") choose(0, true);
+    else if (key === "End") choose(beats.length - 1, true);
+    else return;
+    e.preventDefault();
+  };
+
+  // The pill sits under the selected tab by measurement (tab widths are unequal), after the
+  // web font has loaded and again whenever the track resizes.
+  const [pill, setPill] = useState<{ x: number; w: number; ready: boolean } | null>(null);
+  useEffect(() => {
+    const track = tabsRef.current;
+    if (!track) return;
+    let live = true;
+    const measure = () => {
+      const t = track.querySelector<HTMLElement>(`[aria-selected="true"]`);
+      if (!t || !live) return;
+      setPill((p) => ({ x: t.offsetLeft, w: t.offsetWidth, ready: p !== null }));
+    };
+    measure();
+    document.fonts?.ready.then(measure).catch(() => {});
+    const ro = new ResizeObserver(measure);
+    ro.observe(track);
+    track.querySelectorAll(".sc-tabs__tab").forEach((t) => ro.observe(t));
+    return () => {
+      live = false;
+      ro.disconnect();
+    };
+  }, [at]);
+
+  // ── Sheet: swipe down to dismiss, from the grip and the name/close row only.
+  const drag = useRef<{ y0: number; y: number; t: number; v: number; id: number; moved: boolean } | null>(null);
+  const [dragY, setDragY] = useState<number | null>(null);
+  // Once the sheet is up, a short drag springs back in 240 ms instead of the 460 ms rise.
+  const [settled, setSettled] = useState(false);
+  useEffect(() => {
+    if (!sheet || phase !== "open") return;
+    const t = window.setTimeout(() => setSettled(true), 480);
+    return () => window.clearTimeout(t);
+  }, [sheet, phase]);
+  const onSheetDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const box = boxRef.current;
+    if (!box || phase !== "open") return;
+    const top = box.getBoundingClientRect().top;
+    if (e.clientY - top > DRAG_ZONE || (e.target as HTMLElement).closest(".sc-tabs")) return;
+    drag.current = { y0: e.clientY, y: e.clientY, t: e.timeStamp, v: 0, id: e.pointerId, moved: false };
+  };
+  const onSheetMove = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const d = drag.current;
+    if (!d || d.id !== e.pointerId) return;
+    const dt = Math.max(1, e.timeStamp - d.t);
+    d.v = (e.clientY - d.y) / dt;
+    d.y = e.clientY;
+    d.t = e.timeStamp;
+    const dy = Math.max(0, e.clientY - d.y0);
+    if (!d.moved && dy > 4) {
+      d.moved = true;
+      boxRef.current?.setPointerCapture(e.pointerId);
+    }
+    if (d.moved) setDragY(dy);
+  };
+  const onSheetUp = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const d = drag.current;
+    drag.current = null;
+    if (!d || !d.moved) return;
+    const dy = Math.max(0, e.clientY - d.y0);
+    // A finger that stopped before letting go has no release speed, however fast it moved earlier.
+    const v = e.timeStamp - d.t > 80 ? 0 : d.v;
+    if (dy > DISMISS_PX || v > DISMISS_V) {
+      close();
+      // Leave the inline drag position in place: the close transition runs from where the finger let go.
+    } else setDragY(null);
+  };
+
   const opened = phase === "open" || phase === "leave";
+  const scrimProps = {
+    className: `sc-scrim ${sheet ? "sc-scrim--sheet" : "sc-scrim--pop"}`,
+    "data-phase": phase,
+    "aria-hidden": true as const,
+    onPointerDown: close,
+    onPointerMove: sheet ? undefined : onScrimMove,
+  };
 
-  const body = (
-    <>
-      <div className="sc-head">
-        <p className="sc-head__name" id={titleId}>
-          {show.short}
-        </p>
-        <div
-          className="sc-tabs"
-          role="tablist"
-          aria-label={`${show.name}: ${beats.map((b) => b.tab).join(", ")}`}
-          data-auto={auto && phase === "open" && at < beats.length - 1 ? "" : undefined}
-          style={{ "--sc-dwell": `${dwell}ms`, "--sc-n": beats.length, "--sc-at": at } as CSSProperties}
-        >
-          <span className="sc-tabs__pill" aria-hidden="true" />
-          {beats.map((b, i) => (
-            <button key={b.tab} type="button" role="tab" className="sc-tabs__tab" aria-selected={at === i} onClick={() => choose(i)}>
-              {b.tab}
-              {i === at ? <span key={`f${at}`} className="sc-tabs__fill" aria-hidden="true" /> : null}
-            </button>
-          ))}
-        </div>
-        <button type="button" className="sc-close" ref={closeRef} onClick={close} aria-label={`Close ${show.name}`}>
-          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
-            <path d="M2 2l10 10M12 2 2 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
-        </button>
-      </div>
-
-      <div
-        onPointerDown={(e) => {
-          if (sheet) swipe.current = { x: e.clientX, y: e.clientY };
-        }}
-        onPointerUp={(e) => {
-          const s = swipe.current;
-          swipe.current = null;
-          if (!s) return;
-          const dx = e.clientX - s.x;
-          if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(e.clientY - s.y)) choose(at + (dx < 0 ? 1 : -1));
-        }}
-        className={sheet ? "sc-sheet__stage" : undefined}
-        style={sheet ? { touchAction: "pan-y" } : undefined}
-      >
-        <div className={sheet && phone ? "sc-stage sc-stage--fill" : "sc-stage"} data-at={at}>
-          {beats.map((b, i) => (
-            <div
-              key={b.tab}
-              className="sc-beat"
-              data-pos={i < at ? "past" : i === at ? "now" : "next"}
-              aria-hidden={i !== at || undefined}
-              inert={i !== at || undefined}
-            >
-              <BeatView
-                client={show}
-                beat={b}
-                variant={variant}
-                active={opened && i === at}
-                fill={sheet && phone}
-                reduced={reduced}
-                onCaption={i === at ? (line) => setLive((p) => (p && p.at === i && p.line === line ? p : { at: i, line })) : undefined}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <p className="sc-caption" aria-live="polite">
-        {live && live.at === at ? live.line : beats[at].caption}
+  const head = (
+    <div className="sc-head">
+      <button type="button" className="sc-close" ref={closeBtn} onClick={close} aria-label={`Close ${show.name}`}>
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+          <path d="M2 2l10 10M12 2 2 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        </svg>
+      </button>
+      <p className="sc-head__name" id={titleId}>
+        {show.short}
       </p>
-
-      <div className="sc-foot">
-        <a className="sc-live" href={show.live.url} target="_blank" rel="noopener noreferrer">
-          Visit {show.live.label}
-          <span className="ps-visually-hidden"> (opens in a new tab)</span>
-        </a>
+      <div className="sc-tabs" role="tablist" aria-label={show.name} ref={tabsRef} onKeyDown={onTabKey}>
+        <span
+          className="sc-tabs__pill"
+          data-ready={pill?.ready ? "" : undefined}
+          aria-hidden="true"
+          style={pill ? ({ width: pill.w, transform: `translateX(${pill.x}px)` } as CSSProperties) : { opacity: 0 }}
+        />
+        {beats.map((b, i) => (
+          <button
+            key={b.tab}
+            id={tabId(i)}
+            type="button"
+            role="tab"
+            className="sc-tabs__tab"
+            aria-selected={at === i}
+            aria-controls={panelId(i)}
+            tabIndex={at === i ? 0 : -1}
+            onClick={() => choose(i)}
+          >
+            {b.tab}
+          </button>
+        ))}
       </div>
-    </>
+    </div>
+  );
+
+  const panel = (
+    <div className="sc-panel">
+      {beats.map((b, i) => (
+        <div
+          key={b.tab}
+          id={panelId(i)}
+          className="sc-beat"
+          role="tabpanel"
+          aria-labelledby={tabId(i)}
+          data-on={i === at ? "" : undefined}
+          aria-hidden={i !== at || undefined}
+          inert={i !== at || undefined}
+        >
+          <BeatView
+            client={show}
+            beat={b}
+            variant={variant}
+            active={opened && i === at}
+            fill
+            reduced={reduced}
+            onCaption={i === at ? (l) => setLine((p) => (p === l ? p : l)) : undefined}
+          />
+        </div>
+      ))}
+      <p className="ps-visually-hidden" aria-live="polite">
+        {line}
+      </p>
+    </div>
   );
 
   const dialogProps = {
@@ -353,50 +403,62 @@ function Layer({
     "aria-modal": modal || undefined,
     "aria-labelledby": titleId,
   };
+  const sentinel = (to: () => void) =>
+    modal ? <span tabIndex={0} data-sentinel="" className="sc-sentinel" onFocus={to} aria-hidden="true" /> : null;
 
   if (sheet) {
+    const style = dragY !== null ? ({ transform: phase === "leave" ? undefined : `translateY(${dragY}px)` } as CSSProperties) : undefined;
     return createPortal(
       <div className="sc-root">
-        <div className="sc-scrim" data-phase={phase} onClick={close} aria-hidden="true" />
-        <div ref={boxRef} className="sc-sheet sc-glass" data-phase={phase} {...dialogProps}>
+        <div {...scrimProps} />
+        <div
+          ref={boxRef}
+          className="sc-sheet"
+          data-phase={phase}
+          data-drag={dragY !== null && phase !== "leave" ? "" : undefined}
+          data-settled={settled && phase === "open" ? "" : undefined}
+          style={style}
+          onPointerDown={onSheetDown}
+          onPointerMove={onSheetMove}
+          onPointerUp={onSheetUp}
+          onPointerCancel={onSheetUp}
+          {...dialogProps}
+        >
+          {sentinel(toLast)}
           <div className="sc-sheet__grip" aria-hidden="true" />
-          <span className="sc-sheen" aria-hidden="true" />
-          {body}
+          {head}
+          {panel}
+          {sentinel(toFirst)}
         </div>
       </div>,
       document.body,
     );
   }
 
-  const style = {
-    left: geo?.left ?? 0,
-    top: geo?.top ?? 0,
-    width: phase === "measure" || !geo ? 720 : geo.width,
-    transform: phase === "from" ? geo?.from : undefined,
-  } as CSSProperties;
-  const hole = geo?.hole;
-
+  const style = { transform: phase === "from" ? from : undefined } as CSSProperties;
   return createPortal(
     <div className="sc-root">
-      {/* The rest of the section steps back; the heading stays clear, and so does the card the window came from. */}
-      <div className="sc-veil" data-phase={phase} aria-hidden="true" style={{ clipPath: `inset(${geo?.veilTop ?? 0}px 0 0 0)` }}>
-        {hole && !geo?.inPlace ? (
-          <span className="sc-veil__hole" style={{ left: hole[0], top: hole[1], width: hole[2], height: hole[3] }} />
-        ) : (
-          <span className="sc-veil__all" />
-        )}
-      </div>
+      <div {...scrimProps} />
       <div
         ref={boxRef}
         className="sc-pop sc-glass"
         data-phase={phase}
+        data-mode={pinned ? "pinned" : "hover"}
         style={style}
-        onPointerEnter={() => onHoverChange?.(true)}
-        onPointerLeave={() => onHoverChange?.(false)}
+        onPointerEnter={onWinEnter}
+        onPointerLeave={onWinLeave}
+        onPointerDownCapture={() => {
+          // Using our own chrome (a tab, home, the strip) pins a hover window. Clicks inside the
+          // client's frame never reach us, and window blur differs by engine, so it is not used.
+          if (!pinned) setPinned(true);
+        }}
         {...dialogProps}
       >
+        {sentinel(toLast)}
         <span className="sc-sheen" aria-hidden="true" />
-        {body}
+        {head}
+        {panel}
+        {sentinel(toFirst)}
       </div>
     </div>,
     document.body,

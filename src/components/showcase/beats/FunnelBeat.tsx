@@ -51,10 +51,12 @@ export function FunnelBeat({ client, beat, variant, active, fill, reduced, quiet
   // 0 rest, 1 streams draw and numbers count, 2 the people flow.
   const play = useSteps(active, reduced, [[60, 1], [1100, 2]] as const, 0, 2);
   // The phone's camera (critique r8 S3): it never shows the whole dashboard as a
-  // thumbnail. It opens on the channel cards at reading size (every label 11 css
-  // px or more on a 320 phone), pans along the streams into the funnel, and ends
-  // on the stage band from "Visited" to the mark, its left edge just before a
-  // column so no number is cut there. Reduced motion rests on the cards.
+  // thumbnail. It opens on the stage band from the first stage to the mark, its
+  // left edge clear of a column so no number is cut there, follows the streams
+  // back to where they leave the cards, and RESTS on the channel cards at reading
+  // size (every label 11 css px or more on a 320 phone). Nothing auto-advances any
+  // more (ADR-0022 §2), so the resting frame is what a visitor reads: it must name
+  // the ribbons (critique 2026-11-04 #5). Reduced motion rests on the cards.
   // Opening: the ad spend and the cards. Between the lead and each card is a clean line for the bottom edge.
   const railEnd = L.y0 + f.rail.length * L.step - 4;
   const clean = [154, ...f.rail.map((_, i) => L.y0 + i * L.step + L.cardH + 4)];
@@ -63,18 +65,18 @@ export function FunnelBeat({ client, beat, variant, active, fill, reduced, quiet
   const streams: FocusRect = { left: L.colX[0] - 10, top: 52, w: L.colX[2] - L.colX[0] };
   // Last: from a stage column's left edge to the mark, as close as the phone's height allows.
   // Never starts inside the top bar: its "30 days" chip is whole or out (critique r10 S1).
-  const band: FocusRect = { left: L.colX[1] - 10, top: 52, w: W - L.colX[1] + 10, h: 388, lefts: [1, 2, 3].map((i) => L.colX[i] - 10), above: 50 };
+  const band: FocusRect = { left: L.colX[0] - 16, top: 52, w: W - L.colX[0] + 16, h: 388, lefts: [0, 1, 2, 3].map((i) => L.colX[i] - 16), above: 50 };
   const cam = useSteps<FocusRect | null>(
     active && phone && fill,
     reduced || !(phone && fill),
     [
-      [2300, streams],
-      [4600, band],
+      [2600, streams],
+      [4900, cards],
     ] as const,
-    cards,
+    band,
     cards,
   );
-  const camMs = cam && cam.lefts ? 1500 : 1700;
+  const camMs = 1700;
 
   const maxW = Math.max(...f.rail.map((r) => r.weight));
   const hue = (h: 1 | 2) => (h === 1 ? "var(--pt-chart-1)" : "var(--pt-chart-2)");

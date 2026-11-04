@@ -17,8 +17,19 @@ const PENDING =
 
 export const invented: InventedSet = {
   scope: "hg-oil",
-  people: [],
+  // The COI story's cast (ADR-0022 §4; coi-engine-flow.md section 6): the
+  // vendor's owner and his insurance agent. Invented.
+  people: [
+    { id: "hg-coi-dale", first: "Dale", last: "Wenberg", checked: PENDING },
+    { id: "hg-coi-marcy", first: "Marcy", last: "Tillotson", checked: PENDING },
+  ],
   businesses: [
+    // The COI story (src/data/showcase/scenes/hg-coi.ts): the vendor, its
+    // agency and the two insurers printed on its certificate.
+    { id: "prairie-dog-pumping", name: "Prairie Dog Pumping, LLC", aliases: ["Prairie Dog Pumping"], checked: PENDING },
+    { id: "smoky-valley-insurance", name: "Smoky Valley Insurance", checked: PENDING },
+    { id: "larkspur-ridge-casualty", name: "Larkspur Ridge Casualty Company", checked: PENDING },
+    { id: "ninebark-mutual", name: "Ninebark Mutual Insurance Company", checked: PENDING },
     // Vendor insurance (COI): vendors and the one insurance agency.
     { id: "chalk-bluff-hot-oil", name: "Chalk Bluff Hot Oil", checked: PENDING },
     { id: "ironweed-water-hauling", name: "Ironweed Water Hauling", checked: PENDING },
@@ -34,8 +45,19 @@ export const invented: InventedSet = {
     { id: "thornbush-water", name: "Thornbush Water Services", checked: PENDING },
     { id: "copper-flats-disposal", name: "Copper Flats Disposal", checked: PENDING },
   ],
-  towns: [],
-  domains: [],
+  towns: [
+    // Copied from the NWKS set, where both were web-checked clear (2026-09-28).
+    { id: "hg-aldervale", name: "Aldervale", checked: "invented; web-checked clear for the NWKS set 2026-09-28" },
+    { id: "hg-emberton", name: "Emberton", checked: "invented; web-checked clear for the NWKS set 2026-09-28" },
+    // The certificate holder's address is a placeholder on purpose: the
+    // scene never prints HG Oil's real mailing address (lead brief 2026-11-03).
+    { id: "hg-anytown", name: "Anytown", checked: "generic placeholder town, used so the holder block shows no real address" },
+  ],
+  domains: [
+    { id: "hg-coi-mailbox", domain: "hgoil.example" },
+    { id: "hg-coi-vendor", domain: "prairiedogpumping.example" },
+    { id: "hg-coi-agency", domain: "smokyvalley.example" },
+  ],
   // Capitalised UI and industry words these scenes print; none names a person,
   // business or place.
   vocabulary: [
@@ -50,10 +72,42 @@ export const invented: InventedSet = {
     "Asking", "Certificates", "Confirmed", "Down", "General", "Matches", "Ready", "Tie",
     // "A/P" splits into "A" and "P"; the sheet's spreadsheet tab mark is an "X".
     "P", "X",
+    // The COI story (src/data/showcase/scenes/hg-coi.ts): its step titles,
+    // controls, mail-client and panel words, the avatar initials of its
+    // invented cast and of the signature (Dale Wenberg, Marcy Tillotson,
+    // Tyler Preisser), and the generic address parts on the certificate.
+    "About", "Accepted", "Answers", "Asked", "Asks", "Best", "Build", "Cc", "Checked", "Dates",
+    "Ended", "Endorsements", "Filed", "Finds", "Form", "Highlighted", "I", "Insurers", "Invoiced",
+    "Keeps", "Last", "Meaning", "Never", "Oil", "Operations", "Passed", "Per", "Please", "Policies",
+    "Previous", "Quoted", "Re", "Readable", "Reads", "Remarks", "Reminder", "Still", "Thanks",
+    "Umbrella", "Verdict", "Written", "AM", "PM", "DW", "MT", "TP", "KS", "PO", "County", "Road",
+    "Main", "St", "W", "Box", "Files", "Follows",
+    // The printed ACORD 25 (2016/03) form's own labels and fine print, and the
+    // invented policy and certificate numbers typed on it.
+    "ABOVE", "ACCIDENT", "ACCORDANCE", "ADDL", "ADDRESS", "ADV", "AFFIRMATIVELY", "AFFORDED",
+    "AFFORDING", "AGG", "AGGREGATE", "ALTER", "AMEND", "APPLIES", "AS", "AUTHORIZED", "AUTOMOBILE",
+    "AUTOS", "B", "BA", "BE", "BEEN", "BELOW", "BETWEEN", "BODILY", "C", "CANCELLATION", "CANCELLED",
+    "CERTIFY", "CL2510417", "CL2611052", "CLAIMS", "COMBINED", "COMMERCIAL", "COMP", "COMPENSATION",
+    "CONDITION", "CONDITIONS", "CONFERS", "CONSTITUTE", "CONTRACT", "CORPORATION", "COVERAGE",
+    "COVERAGES", "CPP", "CU", "D", "DAMAGE", "DD", "DED", "DELIVERED", "DESCRIBED", "DESCRIPTION",
+    "DISEASE", "DOCUMENT", "DOES", "E", "E.L", "EFF", "EMPLOYEE", "EMPLOYERS", "ER", "EXCESS",
+    "EXCLUDED", "EXCLUSIONS", "EXECUTIVE", "EXP", "EXPIRATION", "EXTEND", "Ext", "F", "FAX", "GEN'L",
+    "HAVE", "HEREIN", "HIRED", "IMPORTANT", "INDICATED", "INFORMATION", "INJURY", "INSD", "INSR",
+    "INSURANCE", "INSURER", "IS", "ISSUED", "ISSUING", "JECT", "LIAB", "LIABILITY", "LIMIT", "LIMITS",
+    "LISTED", "LOC", "LOCATIONS", "LTR", "MADE", "MATTER", "MED", "MEMBER", "MM", "Mandatory", "N",
+    "NAIC", "NAME", "NAMED", "NEGATIVELY", "NH", "NON", "NOTICE", "NOTWITHSTANDING", "NUMBER", "OCCUR",
+    "OCCURRENCE", "OFFICER", "OP", "OPERATIONS", "OTH", "OWNED", "PARTNER", "PER", "PERIOD", "PERSONAL",
+    "PERTAIN", "PHONE", "POLICIES", "PREMISES", "PRO", "PRODUCTS", "PROPERTY", "PROPRIETOR",
+    "PROVISIONS", "REDUCED", "RENTED", "REPRESENTATIVE", "REQUIREMENT", "RESPECT", "RETENTION",
+    "REVISION", "RIGHTS", "S", "SCHEDULED", "SHOULD", "SHOWN", "SINGLE", "STATUTE", "SUBR",
+    "SUBROGATION", "SUCH", "TERM", "TERMS", "THEREOF", "TYPE", "UMBRELLA", "UPON", "VEHICLES",
+    "WAIVED", "WC", "WILL", "WVD", "Y", "YYYY",
   ],
   approved: [
     { name: "HG Oil Holdings", source: "docs/CANONICAL-PROJECTS.md: HG Oil Holdings, full name publishable" },
     { name: "HG Oil", source: "docs/CANONICAL-PROJECTS.md: HG Oil Holdings, full name publishable" },
+    // The COI emails are signed as the engine signs them (coiRules.js:78-79).
+    { name: "Tyler Preisser", source: "docs/CANONICAL-PROJECTS.md:27: Tyler Preisser, founder" },
   ],
   assets: [],
 };

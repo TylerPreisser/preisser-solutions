@@ -713,8 +713,9 @@
 .pt-ai--phone .ai-answer {
   max-height: none;
 }
-.ai-answer__body {
-  transition: transform 2400ms cubic-bezier(0.45, 0, 0.3, 1);
+/* A block that would not fit whole is not shown at all (never sliced, never panned to). */
+.ai-answer__body > [data-off] {
+  visibility: hidden;
 }
 .aa-in {
   animation: pt-in 420ms cubic-bezier(0.2, 0, 0, 1) both;

@@ -4,6 +4,7 @@ import type { Beat } from "@/data/showcase/types";
 import { AiAskBeat, aiMs } from "./AiAskBeat";
 import { AiWorkBeat, aiWorkMs } from "./AiWorkBeat";
 import { FunnelBeat, funnelMs } from "./FunnelBeat";
+import { ImpactBeat, impactMs } from "./ImpactBeat";
 import { SceneBeat } from "./SceneBeat";
 import { SCENE_MS } from "@/components/showcase/scenes";
 import { WebsiteBeat, websiteMs } from "./WebsiteBeat";
@@ -26,6 +27,8 @@ export function BeatView(p: BeatProps<Beat>) {
       return <AiWorkBeat {...p} beat={b} />;
     case "scene":
       return <SceneBeat {...p} beat={b} />;
+    case "impact":
+      return <ImpactBeat {...p} beat={b} />;
   }
 }
 
@@ -42,5 +45,7 @@ export function beatMs(b: Beat, phone: boolean): number {
       return aiWorkMs(b);
     case "scene":
       return SCENE_MS[b.scene];
+    case "impact":
+      return impactMs(b);
   }
 }

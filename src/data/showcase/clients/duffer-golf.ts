@@ -12,8 +12,17 @@
 // bar and band (dated) and the "Fits where a car was" band between the hero
 // and the models; the capture ends after the four models with their prices
 // (round 11 trimmed the phone capture's 66 px of trailing white, critique r10 S9).
+//
+// Impact (ADR-0022): REAL, unlike the funnel and AI beats above.
+// Impact (ADR-0022 §3): every number is a fact<oracle>() or figure<oracle>();
+// the oracle note is a type argument, checked at build and never shipped. The
+// precise citation for each is kept outside this public repo.
+// Duffer's partner network has no live results to show yet, so Impact leads
+// with what the Command Center does and claims no sales, scans, partner
+// counts or dollars: no figures and no `time` row.
 import type { ShowcaseClient } from "../types";
 import { count, sum } from "../format";
+import { fact, impactBeat } from "../impact";
 
 type Course = { label: string; sub: string; scans: number; visits: number; leads: number; orders: number };
 
@@ -46,6 +55,45 @@ const DUFFER_DESK_BANDS = [
   [1562, 1573], [1578, 1612], [1627, 1647],
 ] as const;
 
+export const impact = impactBeat("duffer-golf", {
+  tab: "Impact",
+  caption: "What the Command Center runs for Duffer's partners, dealers and course displays.",
+  shape: "loop",
+  kicker: "What we built",
+  chapters: [
+    {
+      name: "The Command Center",
+      hero: {
+        before: fact<"Our audit of the old site, Sep 13 2026">("The old site tracked nothing, and no order said who sent it."),
+        now: "Every scan and visit is credited to the partner who sent it.",
+      },
+      how: "The partner loop",
+      steps: [
+        { verb: "Signs up", text: "a new partner and links their course display on its own." },
+        { verb: "Prints", text: "a QR display for the course, tied to that partner." },
+        { verb: "Credits", text: fact<"How it is built">("every scan to that partner, and a returning golfer to the last display within 90 days.") },
+        { verb: "Follows", text: "the golfer to the buy button and checkout, with every visit in MarCommand." },
+        { verb: "Keeps", text: "each partner's commission ledger, and each dealer's stock." },
+      ],
+      pairs: [
+        {
+          label: "Tracking",
+          before: fact<"Our audit of the old site, Sep 13 2026">("No pixel and no analytics across 34 page loads."),
+          now: "Every visit, scan and buy-button tap recorded.",
+        },
+        {
+          label: "Referrals",
+          before: fact<"Our audit of the old site, Sep 13 2026">("A code field at checkout, and no record of who sent an order."),
+          now: "Partner codes, course displays and a commission ledger.",
+        },
+      ],
+    },
+  ],
+  closing: "A dealer network that keeps its own books.",
+  narration:
+    "What we built for Duffer Golf. The Command Center signs up partners and links their course displays, prints a QR display for each course, credits every scan and returning golfer to the partner who sent them, follows each golfer to checkout in MarCommand, and keeps the commission and dealer stock ledgers. The old site tracked nothing.",
+});
+
 const client: ShowcaseClient = {
   slug: "duffer-golf",
   name: "Duffer Golf",
@@ -68,6 +116,7 @@ const client: ShowcaseClient = {
   beats: [
     {
       kind: "website",
+      live: { src: "https://duffergolf.net/", origins: ["https://duffergolf.net"], frame: "handshake" },
       tab: "Website",
       caption: "The bay folds away so the car still fits, and every model shows its price.",
       captured: "Captured Nov 1, 2026",
@@ -98,7 +147,7 @@ const client: ShowcaseClient = {
     },
     {
       kind: "funnel",
-      tab: "Funnel",
+      tab: "MarCommand",
       caption: "A scan at a golf course counter and an order online land in the same funnel.",
       narration:
         "The MarCommand dashboard on demonstration data: partner golf courses, the scans at each course's display, and how many became visits, leads and orders. None of these courses are real.",
@@ -185,6 +234,7 @@ const client: ShowcaseClient = {
         ],
       },
     },
+    impact,
   ],
 };
 

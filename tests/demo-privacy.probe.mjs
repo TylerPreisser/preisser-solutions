@@ -15,7 +15,8 @@
  *   routing        a run of 9+ digits (single spaces or dashes allowed) in a stage
  *   domain         a domain or email in a stage that is not a registered *.example domain
  *   asset          an image in a stage that is not a registered /images/demos/ asset
- *   label          a stage without exactly one label from the closed vocabulary
+ *   label          a stage without exactly one label from the closed vocabulary,
+ *                  or a fact stage that carries one
  *   narration      a stage without a narration paragraph of 80+ characters
  *   heading        an h1 or h2 inside a stage (ADR-0016 §6)
  *   dollar-outside a "$<digit>" amount on a case-study page OUTSIDE every stage,
@@ -23,6 +24,10 @@
  *   deny           a PRIVATE deny-list term in a stage or in stage source files
  *   deny-site      a "site:" deny-list term anywhere in out/
  *   css-namespace  a stage stylesheet declaring a site or Tailwind variable, or @theme
+ *
+ * A FACT stage ([data-fact-stage], the showcase's Impact tab, ADR-0022 §3) is
+ * real copy, not demonstration data: it gets every rule above except that it
+ * must carry NO label, and a dollar amount inside it counts as outside.
  *
  * Deny list: PS_DEMO_DENYLIST, default ~/.config/preisser/demo-denylist.txt.
  * Missing or empty = exit 2. Hits print masked.
@@ -48,9 +53,11 @@ const COMMON_PATH = path.join(ROOT, "tests", "demo-privacy", "common-words.txt")
 // the real repo (review-F.md MEDIUM 4).
 const SOURCE_ROOTS = process.env.PS_SOURCE_ROOTS
   ? process.env.PS_SOURCE_ROOTS.split(path.delimiter).filter(Boolean)
-  : [path.join(ROOT, "src", "data", "demos"), path.join(ROOT, "src", "components", "case-study", "DemoStage")];
+  : // src/data/showcase whole: the scenes AND the client files, whose Impact copy is
+    // real and public (review-code-security M1: the clients were not scanned).
+    [path.join(ROOT, "src", "data", "demos"), path.join(ROOT, "src", "data", "showcase"), path.join(ROOT, "src", "components", "case-study", "DemoStage")];
 const LABELS = ["Demonstration data", "Recreation · demonstration data"];
-const FILE_TLDS = ["pdf", "xlsx", "xls", "csv", "png", "jpg", "jpeg", "webp", "svg", "txt", "docx", "json"];
+const FILE_TLDS = ["pdf", "xlsx", "xls", "csv", "png", "jpg", "jpeg", "webp", "svg", "txt", "docx", "json", "zip"];
 const RESERVED_VAR = /^--(color|theme|font|shadow|radius|tw|container|nav|ease|section|spacing|text|breakpoint)-/;
 
 class ConfigError extends Error {}
@@ -156,11 +163,13 @@ function checkDocument(cfg) {
     return out;
   };
 
-  const stages = [...document.querySelectorAll("[data-demo-stage]")];
+  const stageId = (st) => st.getAttribute("data-demo-stage") ?? st.getAttribute("data-fact-stage") ?? "(unnamed)";
+  const stages = [...document.querySelectorAll("[data-demo-stage], [data-fact-stage]")];
   for (const st of stages) {
-    const id = st.getAttribute("data-demo-stage") || "(unnamed)";
+    const id = stageId(st) || "(unnamed)";
+    const fact = !st.hasAttribute("data-demo-stage");
     const labels = [...st.querySelectorAll("[data-demo-label]")].map((e) => norm(e.textContent || ""));
-    if (labels.length !== 1 || !cfg.labels.includes(labels[0])) {
+    if (fact ? labels.length !== 0 : labels.length !== 1 || !cfg.labels.includes(labels[0])) {
       V.push({ rule: "label", stage: id, detail: `labels found: ${JSON.stringify(labels)}` });
     }
     const narration = st.querySelector("[data-demo-narration]");
@@ -223,7 +232,7 @@ function checkDocument(cfg) {
       V.push({ rule: "dollar-outside", stage: null, detail: `${JSON.stringify(u.text.slice(0, 90))} in ${u.at}` });
     }
   }
-  return { violations: V, stages: stages.map((s) => s.getAttribute("data-demo-stage")) };
+  return { violations: V, stages: stages.map(stageId) };
 }
 
 function* walk(dir) {
@@ -235,14 +244,38 @@ function* walk(dir) {
   }
 }
 
+/** A showcase client file (src/data/showcase/clients/<slug>.ts): it must name its own client. */
+const isClientFile = (f) => /[\\/]src[\\/]data[\\/]showcase[\\/]clients[\\/][^\\/]+\.ts$/.test(f);
+
+/**
+ * A client file names its own client by design: the window's title (`name`,
+ * `short`) and the live site it frames (URLs, `label`). Those strings, and only
+ * those, are removed before the deny check, so a deny-listed staff name or
+ * any other term anywhere else in the file (the Impact copy, a comment) still
+ * goes red.
+ */
+function withoutOwnIdentity(text) {
+  const own = new Set();
+  for (const m of text.matchAll(/^ {2}(?:name|short): "([^"]+)"/gm)) own.add(m[1]);
+  for (const m of text.matchAll(/https?:\/\/([a-z0-9.-]+)/gi)) {
+    own.add(m[1]);
+    own.add(m[1].replace(/^www\./i, ""));
+  }
+  for (const m of text.matchAll(/\blabel: "([a-z0-9-]+(?:\.[a-z0-9-]+)+)"/gi)) own.add(m[1]);
+  let out = text;
+  for (const o of [...own].sort((x, y) => y.length - x.length)) out = out.split(o).join(" ");
+  return out;
+}
+
 function sourceChecks(deny) {
   const V = [];
   const res = deny.map((d) => ({ ...d, re: phraseRe(d.term, "iu") }));
   for (const root of SOURCE_ROOTS) {
     for (const f of walk(root)) {
       if (!/\.(tsx?|css|json|md)$/.test(f)) continue;
-      const text = fs.readFileSync(f, "utf8");
+      const raw = fs.readFileSync(f, "utf8");
       const rel = path.relative(ROOT, f);
+      const text = isClientFile(f) ? withoutOwnIdentity(raw) : raw;
       for (const d of res) if (d.re.test(text)) V.push({ rule: "deny", stage: null, detail: `deny-list line ${d.line} (${mask(d.term)}) in ${rel}` });
       if (f.endsWith(".css")) {
         // Comments may name the rule ("never @theme"); only code counts.
@@ -326,10 +359,13 @@ async function showcaseStages(browser) {
       const dlg = page.locator("[role=dialog] .sc-beat").first();
       await dlg.waitFor({ state: "attached", timeout: 15000 });
       // Every beat is drawn (only one is on screen); wait for the stages' end state.
-      await page.waitForFunction(() => document.querySelectorAll("[role=dialog] [data-demo-stage]").length > 0, null, { timeout: 15000 });
+      await page.waitForFunction(() => document.querySelectorAll("[role=dialog] [data-demo-stage], [role=dialog] [data-fact-stage]").length > 0, null, { timeout: 15000 });
       await page.waitForTimeout(400);
       const html = await page.evaluate(() => `<!doctype html><html><body>${document.querySelector("[role=dialog]").outerHTML}</body></html>`);
-      const slug = await page.evaluate(() => (document.querySelector("[role=dialog] [data-demo-stage]")?.getAttribute("data-demo-stage") || "").replace(/-(funnel|ai|ai-work|scene)$/, ""));
+      const slug = await page.evaluate(() => {
+        const st = document.querySelector("[role=dialog] [data-demo-stage], [role=dialog] [data-fact-stage]");
+        return (st?.getAttribute("data-demo-stage") ?? st?.getAttribute("data-fact-stage") ?? "").replace(/-(funnel|ai|ai-work|scene|impact)$/, "");
+      });
       docs.push({ slug, width, html });
       await page.keyboard.press("Escape");
       await page.waitForFunction(() => !document.querySelector("[role=dialog] .sc-beat"), null, { timeout: 5000 });
@@ -411,6 +447,12 @@ const PAGE_STAGE = (label, narration) =>
   `<figure data-demo-stage="kit"><figcaption><h3>A stage</h3>${label}</figcaption>` +
   `${narration}<div data-beat="b1"><p>Paid.</p></div></figure></main></body></html>`;
 
+/** A fact stage (the showcase's Impact tab): real copy, no label. */
+const NARR = `<p data-demo-narration hidden>What we automated for a client, in plain words: the steps the engine takes and what each one replaced.</p>`;
+const FACT = (inStage, label = "", narration = NARR) =>
+  `<!doctype html><html><head><title>Self test</title></head><body><main><p>Outside copy.</p>` +
+  `<section data-fact-stage="kit-impact">${narration}${label}<h3>What we automated</h3><p>${inStage}</p></section></main></body></html>`;
+
 const CASES = [
   { name: "clean control", html: PAGE("Harlan Feed Co. paid INV-2031 for $1,250.00. Dale Whitcomb approved it. billing@harlanfeed.example"), expect: [] },
   { name: "unregistered name", html: PAGE("Zorbanek paid the invoice."), expect: ["token"] },
@@ -459,6 +501,12 @@ const CASES = [
   { name: "two labels", html: PAGE_STAGE(`<span data-demo-label>Demonstration data</span><span data-demo-label>Demonstration data</span>`, `<p data-demo-narration>This stage shows a deposit tied to an invoice, one step at a time, on invented data. Nothing on it is real. The data is a demonstration.</p>`), expect: ["label"] },
   { name: "narration missing", html: PAGE_STAGE(`<span data-demo-label>Demonstration data</span>`, ""), expect: ["narration"] },
   { name: "narration too short", html: PAGE_STAGE(`<span data-demo-label>Demonstration data</span>`, `<p data-demo-narration>not enough words here.</p>`), expect: ["narration"] },
+  // The fact stage (ADR-0022 §3): same scan, no label, $ counts as outside.
+  { name: "fact stage clean control", html: FACT("Harlan Feed Co. reads every bill."), expect: [] },
+  { name: "fact stage: unregistered name", html: FACT("Zorbanek reads every bill."), expect: ["token"] },
+  { name: "fact stage carrying a demo label", html: FACT("Harlan Feed Co. reads every bill.", "<span data-demo-label>Demonstration data</span>"), expect: ["label"] },
+  { name: "fact stage without narration", html: FACT("Harlan Feed Co. reads every bill.", "", ""), expect: ["narration"] },
+  { name: "fact stage with a dollar amount", html: FACT("Harlan Feed Co. saved $4,200 a month."), expect: ["dollar-outside"] },
   { name: "unregistered image asset", html: PAGE('<img src="/images/demos/unregistered.jpg" alt="a screen">'), expect: ["asset"] },
 ];
 
@@ -514,8 +562,16 @@ async function runSelfTest() {
   fs.mkdirSync(srcTmp);
   fs.writeFileSync(srcTmp + "/bad.css", "/* planted css-namespace test file */\n.foo { --color-primary: #000; }\n@theme { }\n");
   fs.writeFileSync(srcTmp + "/bad.ts", "// SelfTestSourceTerm should never be committed here\n");
+  // A showcase client file may name its own client (line 3 of the deny list
+  // below, as its `name`), but a deny-listed name in its copy (line 4) is red.
+  const clientDir = path.join(srcTmp, "src", "data", "showcase", "clients");
+  fs.mkdirSync(clientDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(clientDir, "planted.ts"),
+    'const client = {\n  name: "SelfTestClientName",\n  closing: "Ask SelfTestStaffName for the files.",\n};\n',
+  );
   const fsDeny = path.join(fsTmp, "deny.txt");
-  fs.writeFileSync(fsDeny, "SelfTestSourceTerm\nsite:SelfTestSiteTerm\n");
+  fs.writeFileSync(fsDeny, "SelfTestSourceTerm\nsite:SelfTestSiteTerm\nSelfTestClientName\nSelfTestStaffName\n");
   const fsRun = spawnSync(process.execPath, [SELF], {
     env: { ...process.env, PS_OUT_DIR: fsTmp, PS_DEMO_DENYLIST: fsDeny, PS_SOURCE_ROOTS: srcTmp },
     encoding: "utf8",
@@ -526,6 +582,8 @@ async function runSelfTest() {
   say(fired("deny-site"), "  deny-site rule fired");
   say(fired("css-namespace"), "  css-namespace rule fired");
   say(fired("deny"), "  source-file deny rule fired (sourceChecks)");
+  say(/deny-list line 4 \(\S+\) in \S*planted\.ts/.test(fsOut), "  a deny-listed name in a client file's copy is red");
+  say(!/deny-list line 3 \(\S+\) in \S*planted\.ts/.test(fsOut), "  the client file's own name is not");
   fs.rmSync(fsTmp, { recursive: true, force: true });
 
   console.log(bad ? `\nFAIL  self-test: ${bad} case(s) did not behave` : "PASS  self-test: every planted string went red, the clean control stayed green");

@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import type { AiAskBeat as AiAskBeatData, AiStep } from "@/data/showcase/types";
-import { Fit, FitWidth, PortalFrame, TopBar, useBox, type BeatProps } from "./shared";
+import { FitWidth, PortalFrame, TopBar, useBox, type BeatProps } from "./shared";
 
 /**
  * The MarCommand AI tab (marcommand-marketing-engine packages/portal-ui/ai:
@@ -12,10 +12,15 @@ import { Fit, FitWidth, PortalFrame, TopBar, useBox, type BeatProps } from "./sh
  * steps run, then the answer lands in the real answer layout: the one-sentence
  * answer, its figures, its chart, what it likely means and what we're doing next.
  *
- * Desk: the tab's two columns at 960 x 600, scaled as one picture. Phone: one
- * column 320 wide (round 7: scaled to the sheet's width, so a 12.5 px face is
- * never under 11 css px at 320), as tall as the sheet allows; the column moves up to the
- * answer and then down through it, the way a person would scroll.
+ * Desk: the tab's two columns laid out at the window's own size (960 to 1220
+ * css px wide, scaled down only below 960), so the answer has room to stand
+ * whole. Phone: one column 320 wide (round 7: scaled to the sheet's width, so a
+ * 12.5 px face is never under 11 css px at 320), as tall as the sheet allows;
+ * the column moves up once, to the answer, and rests there.
+ *
+ * The answer never scrolls by itself (critique 2026-11-04 #2: a pan hid the
+ * headline and left a blank band). It rests on its top, headline first; a
+ * block that would not fit whole is not shown at all, so no edge cuts a line.
  */
 const PHASES = ["Reading your question", "Reading your numbers", "Working it out", "Writing", "Checking every figure"] as const;
 const TYPE_AT = 120;
@@ -40,11 +45,7 @@ export function aiTimeline(beat: AiAskBeatData) {
     return r;
   });
   const answer = t + 200;
-  // The column scrolls down through "What we're doing next" and the sources at `pan`,
-  // then comes back up at `back` and HOLDS on the answer with its figures and chart:
-  // that is the resting frame, never the plan or the sources (critique r8 S1).
-  const pan = answer + 2900;
-  return { typed, press, ask, steps, answer, worked: answer + 900, pan, back: pan + 2700, total: pan + 6200 };
+  return { typed, press, ask, steps, answer, worked: answer + 900, total: answer + 3000 };
 }
 
 export const aiMs = (beat: AiAskBeatData) => aiTimeline(beat).total;
@@ -89,12 +90,15 @@ export function AiAskBeat({ client, beat, variant, active, fill, reduced, quiet 
         // The column sits inside 12 px of padding: its view is the picture less 24 px, so its bottom edge is the edge you see.
         <FitWidth w={320}>{(h) => <div className="pt-screen pt-ai pt-ai--phone">{body(h - 24)}</div>}</FitWidth>
       ) : (
-        <Fit w={960} h={600}>
-          <div className="pt-screen pt-ai pt-ai--desk">
-            <TopBar tab="AI" window="30 days" />
-            {body(600)}
-          </div>
-        </Fit>
+        // Laid out at the panel's width (960 to 1220), never the 960 x 600 picture blown up or squeezed.
+        <FitWidth w={[960, 1220]}>
+          {(h, w) => (
+            <div className="pt-screen pt-ai pt-ai--desk" data-wide={w >= 1100 ? "" : undefined}>
+              <TopBar tab="AI" window="30 days" />
+              {body(h)}
+            </div>
+          )}
+        </FitWidth>
       )}
     </PortalFrame>
   );
@@ -129,74 +133,59 @@ function Column({
   live: boolean;
   reduced: boolean;
 }) {
-  // The scroll: phone moves the whole column up to the answer, then through it;
-  // desk moves the answer card's body if the answer is taller than its place.
-  // Every resting stop has clean edges (critique r6 A3): the top stops on the
-  // top of a line, and the bottom is clipped above the first line that would
-  // be sliced, so no line of text is ever cut, in motion or reduced motion.
+  // Phone: the column moves up once, so the answer card's top (its headline) is at the top
+  // of the view, and rests there. Desk: the card stands where it is. On both, the answer's
+  // blocks that would not fit whole are hidden (`cut` = the first hidden block), so the
+  // resting frame always ends on a whole block and never on a sliced line.
   const viewRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const colRef = useRef<HTMLDivElement>(null);
   const [y, setY] = useState(0);
-  const [clip, setClip] = useState({ top: 0, bottom: 0 });
+  const [cut, setCut] = useState<number | null>(null);
   const [settle, setSettle] = useState(0);
-  const panned = t >= T.pan && t < T.back;
   // Measured again whenever the column's size changes (the faces arriving re-wrap the question).
   const col = useBox(colRef);
-  // Measure once more after the answer's blocks have finished arriving (they rise 6 px as they fade in).
   useEffect(() => {
     if (!answered) return;
     let on = true;
     const id = window.setTimeout(() => setSettle((n) => n + 1), 900);
-    // The faces arriving re-wrap the lines: measure again once they have.
     document.fonts?.ready.then(() => on && setSettle((n) => n + 1));
     return () => {
       on = false;
       window.clearTimeout(id);
     };
-  }, [answered, panned]);
+  }, [answered]);
   useLayoutEffect(() => {
     const view = viewRef.current;
     const card = cardRef.current;
-    if (!view || !card || !answered) {
+    const body = card?.querySelector<HTMLElement>(".ai-answer__body");
+    if (!view || !card || !body || !answered) {
       setY(0);
-      setClip({ top: 0, bottom: 0 });
+      setCut(null);
       return;
     }
+    const blocks = [...body.children] as HTMLElement[];
+    let at = 0;
+    let room: number;
     if (phone) {
       const column = colRef.current;
       if (!column) return;
-      const viewH = view.clientHeight;
-      const lines = linesOf(card, column);
       const box = rel(card, column);
-      // The first stop shows the card's top edge, never a slice of the question above it.
       const asked = column.querySelector<HTMLElement>(".ai-asked");
       const above = asked ? rel(asked, column).bottom : box.top - 20;
-      const top = box.top - Math.max(0, Math.min(10, (box.top - above) / 2));
-      const room = box.bottom + 12 - viewH;
-      const at = panned && !reduced && room > top ? snapTop(lines, room) : top;
-      let bottom = cleanBottom(lines, at + viewH);
-      // A section heading never ends the view on its own ("What it likely means" with nothing under it).
-      for (const k of card.querySelectorAll<HTMLElement>(".aa-k")) {
-        const hd = rel(k, column);
-        const after = lines.find((l) => l.top > hd.bottom - 0.5);
-        if (hd.top >= at && hd.bottom <= bottom + 0.5 && (!after || after.bottom > bottom + 0.5)) bottom = Math.min(bottom, hd.top - 1);
-      }
-      setY(at);
-      setClip({ top: 0, bottom: Math.max(0, at + viewH - bottom) });
+      at = Math.max(0, box.top - Math.max(0, Math.min(10, (box.top - above) / 2)));
+      // Room for the body below the card's top padding, inside the view.
+      room = at + view.clientHeight - (box.top + parseFloat(getComputedStyle(card).paddingTop)) - 14;
     } else {
-      const body = card.querySelector<HTMLElement>(".ai-answer__body");
-      if (!body) return;
       const cs = getComputedStyle(card);
-      const visH = card.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-      const lines = linesOf(body, body);
-      const over = body.offsetHeight - visH;
-      const at = panned && !reduced && over > 0 ? snapTop(lines, over) : 0;
-      const bottom = cleanBottom(lines, at + visH);
-      setY(at);
-      setClip({ top: at, bottom: Math.max(0, body.offsetHeight - bottom) });
+      room = (view.clientHeight || card.clientHeight) - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 2;
     }
-  }, [answered, panned, phone, reduced, h, col.h, settle]);
+    // Blocks are measured in the body's own layout, which a hidden block does not change. The body is
+    // not positioned, so its blocks and the body share an offsetParent: subtract the body's own top.
+    const first = blocks.findIndex((b) => b.offsetTop - body.offsetTop + b.offsetHeight > room + 0.5);
+    setY(at);
+    setCut(first < 0 ? null : Math.max(1, first));
+  }, [answered, phone, reduced, h, col.h, col.w, settle]);
 
   const ask = (
     <div className="pt-ai__left">
@@ -224,19 +213,15 @@ function Column({
   );
 
   const card = answered ? (
-    <Answer beat={beat} cardRef={cardRef} y={phone ? 0 : y} clip={phone ? null : clip} phone={phone} />
+    <Answer beat={beat} cardRef={cardRef} cut={cut} phone={phone} />
   ) : (
     <LiveCard steps={beat.steps} t={t} T={T} waiting={!live} />
   );
 
   if (phone) {
     return (
-      <div
-        className={clip.bottom > 0 ? "pt-ai__view is-clipped" : "pt-ai__view"}
-        ref={viewRef}
-        style={{ height: h, clipPath: clip.bottom > 0 ? `inset(0 0 ${clip.bottom}px 0)` : undefined }}
-      >
-        <div className="pt-ai__col" ref={colRef} style={{ transform: `translateY(${-y}px)`, transitionDuration: panned ? "2200ms" : undefined }}>
+      <div className={cut !== null ? "pt-ai__view is-clipped" : "pt-ai__view"} ref={viewRef} style={{ height: h }}>
+        <div className="pt-ai__col" ref={colRef} style={{ transform: `translateY(${-y}px)` }}>
           {ask}
           <div className="pt-ai__right">{card}</div>
         </div>
@@ -341,22 +326,25 @@ function Spin() {
 function Answer({
   beat,
   cardRef,
-  y,
-  clip,
+  cut,
   phone,
 }: {
   beat: AiAskBeatData;
   cardRef: React.RefObject<HTMLDivElement | null>;
-  y: number;
-  clip: { top: number; bottom: number } | null;
+  /** Index of the first block that does not fit whole: it and every block after it are hidden. */
+  cut: number | null;
   phone: boolean;
 }) {
   const a = beat.answer;
   const max = a.chart.ticks[a.chart.ticks.length - 1];
   const fmt = (v: number) => (a.chart.money ? `$${v.toLocaleString("en-US")}` : v.toLocaleString("en-US"));
   const long = a.figures.some((f) => f.value.length > 5);
+  // Hidden whole (visibility, so the layout and the measurement do not move) from the first block that does not fit.
+  const off = (i: number) => (cut !== null && i >= cut ? "" : undefined);
+  const figsAt = phone ? 2 : 1;
+  const chartAt = phone ? 1 : 2;
   const figs = (
-    <dl className="aa-figs aa-in" data-n={a.figures.length} data-long={long ? "" : undefined} style={{ "--i": phone ? 2 : 1 } as CSSProperties}>
+    <dl className="aa-figs aa-in" data-off={off(figsAt)} data-n={a.figures.length} data-long={long ? "" : undefined} style={{ "--i": phone ? 2 : 1 } as CSSProperties}>
       {a.figures.map((f) => (
         <div key={f.label} className="aa-fig">
           <dt>{f.label}</dt>
@@ -366,7 +354,7 @@ function Answer({
     </dl>
   );
   const chart = (
-    <div className="aa-chart aa-in" style={{ "--i": phone ? 1 : 2 } as CSSProperties}>
+    <div className="aa-chart aa-in" data-off={off(chartAt)} style={{ "--i": phone ? 1 : 2 } as CSSProperties}>
       <p className="ch-title">{a.chart.title}</p>
       <div className="ch-bars" style={{ "--n": a.chart.bars.length } as CSSProperties}>
         {a.chart.bars.map((b, i) => (
@@ -398,17 +386,14 @@ function Answer({
   );
   return (
     <div className="ai-card ai-answer" ref={cardRef}>
-      <div
-        className="ai-answer__body"
-        style={{ transform: `translateY(${-y}px)`, clipPath: clip && (clip.top > 0 || clip.bottom > 0) ? `inset(${clip.top}px 0 ${clip.bottom}px 0)` : undefined }}
-      >
-        <p className="aa-head aa-in" style={{ "--i": 0 } as CSSProperties}>
+      <div className="ai-answer__body">
+        <p className="aa-head aa-in" data-off={off(0)} style={{ "--i": 0 } as CSSProperties}>
           {a.headline}
         </p>
         {/* A phone has room for the answer and one more block: the chart comes first there, so the resting frame carries the sentence with its figures drawn (critique r8 S1, S2). */}
         {phone ? chart : figs}
         {phone ? figs : chart}
-        <section className="aa-sec aa-in" style={{ "--i": 3 } as CSSProperties}>
+        <section className="aa-sec aa-in" data-off={off(3)} style={{ "--i": 3 } as CSSProperties}>
           <p className="aa-k">What it likely means</p>
           <ul className="aa-means">
             {a.means.map((m) => (
@@ -416,7 +401,7 @@ function Answer({
             ))}
           </ul>
         </section>
-        <section className="aa-sec aa-plan aa-in" style={{ "--i": 4 } as CSSProperties}>
+        <section className="aa-sec aa-plan aa-in" data-off={off(4)} style={{ "--i": 4 } as CSSProperties}>
           <p className="aa-k">What we&apos;re doing next</p>
           <ol className="aa-next">
             {a.next.map((n) => (
@@ -426,7 +411,7 @@ function Answer({
             ))}
           </ol>
         </section>
-        <p className="ai-sources aa-in" style={{ "--i": 5 } as CSSProperties}>
+        <p className="ai-sources aa-in" data-off={off(5)} style={{ "--i": 5 } as CSSProperties}>
           <span>Sources: </span>
           {a.sources.map((s, i) => (
             <span key={s.label}>
@@ -441,40 +426,10 @@ function Answer({
   );
 }
 
-/** The answer's lines: every piece of text that must never be cut by an edge. */
-const LINES = ".aa-head, .aa-fig, .ch-title, .ch-row, .aa-k, .aa-means > li, .aa-next > li, .ai-sources";
-
 /** An element's top and bottom in `ref`'s own (unscaled) px. */
 function rel(el: HTMLElement, ref: HTMLElement) {
   const r0 = ref.getBoundingClientRect();
   const k = r0.height / (ref.offsetHeight || 1) || 1;
   const r = el.getBoundingClientRect();
   return { top: (r.top - r0.top) / k, bottom: (r.bottom - r0.top) / k };
-}
-
-function linesOf(root: HTMLElement, ref: HTMLElement) {
-  return [...root.querySelectorAll<HTMLElement>(LINES)].map((e) => rel(e, ref)).sort((a, b) => a.top - b.top);
-}
-
-/** A scroll position at or below `need` that starts on the top of a line, with a little air above it. */
-function snapTop(lines: { top: number; bottom: number }[], need: number) {
-  const i = lines.findIndex((l) => l.top >= need);
-  if (i < 0) return need;
-  const above = i > 0 ? lines[i - 1].bottom : -Infinity;
-  return lines[i].top - Math.max(0, Math.min(4, (lines[i].top - above) / 2));
-}
-
-/** The lowest edge at or above `edge` that no line straddles. */
-function cleanBottom(lines: { top: number; bottom: number }[], edge: number) {
-  let e = edge;
-  for (let moved = true; moved; ) {
-    moved = false;
-    for (const l of lines) {
-      if (l.top < e - 0.5 && l.bottom > e + 0.5) {
-        e = l.top - 1;
-        moved = true;
-      }
-    }
-  }
-  return e;
 }

@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from "react";
 import type { SceneBeat as SceneBeatData } from "@/data/showcase/types";
-import { CLEAN_TOPS, NATIVE_SIZE, PHONE_H, SCENE_CAM, SCENES, type Shot } from "@/components/showcase/scenes";
-import { Chrome, useBox, useSteps, type BeatProps } from "./shared";
+import { CLEAN_TOPS, FLUID_SCENES, isFluid, NATIVE_SIZE, PHONE_H, SCENE_CAM, SCENES, type FluidSceneId, type Shot } from "@/components/showcase/scenes";
+import { Chrome, themeStyle, useBox, useSteps, type BeatProps } from "./shared";
+import { fontVars } from "./fonts";
 
 /**
  * A product picture drawn by a scene (src/components/showcase/scenes): HG Oil's
@@ -18,8 +19,37 @@ import { Chrome, useBox, useSteps, type BeatProps } from "./shared";
  * phone it moves down a picture scaled to the sheet's width; on desk it pushes
  * in where small type carries the point (the HG close's tie-out).
  */
-export function SceneBeat({ client, beat, variant, active, fill, reduced, quiet, onCaption }: BeatProps<SceneBeatData>) {
-  const Scene = SCENES[beat.scene];
+export function SceneBeat(p: BeatProps<SceneBeatData>) {
+  const id = p.beat.scene;
+  return isFluid(id) ? <FluidSceneBeat {...p} scene={id} /> : <PictureSceneBeat {...p} scene={id} />;
+}
+
+/**
+ * A scene that lays itself out for the window (HG Oil's COI story, ADR-0022 §4):
+ * no camera, no native size; it fills the frame and carries its own controls.
+ * Using them tells the window to stay on this tab (`onHold`).
+ */
+function FluidSceneBeat({ client, beat, variant, active, fill, reduced, quiet, onCaption, onHold, scene }: BeatProps<SceneBeatData> & { scene: FluidSceneId }) {
+  const Scene = FLUID_SCENES[scene];
+  return (
+    <figure
+      className={`sc-frame sc-frame--portal sc-frame--${variant}${fill ? " sc-frame--fill" : ""}`}
+      data-demo-stage={`${client.slug}-scene`}
+      aria-hidden={quiet || undefined}
+    >
+      <Chrome label={variant === "desk" ? client.short : undefined} badge />
+      <p className="ps-visually-hidden" data-demo-narration>
+        {beat.narration}
+      </p>
+      <div className={`sc-frame__portal hgc-host ${fontVars}`} style={{ ...themeStyle(client.theme), ...(fill ? null : { aspectRatio: "1.6 / 1" }) }}>
+        <Scene variant={variant} active={active} reduced={reduced} onCaption={active ? onCaption : undefined} onHold={onHold} />
+      </div>
+    </figure>
+  );
+}
+
+function PictureSceneBeat({ client, beat, variant, active, fill, reduced, quiet, onCaption, scene }: BeatProps<SceneBeatData> & { scene: keyof typeof SCENES }) {
+  const Scene = SCENES[scene];
   const n = variant === "phone" ? { w: NATIVE_SIZE.phone.w, h: PHONE_H[beat.scene] } : NATIVE_SIZE.desk;
   const track = SCENE_CAM[beat.scene][variant] ?? [];
   const last = track.length ? track[track.length - 1] : null;

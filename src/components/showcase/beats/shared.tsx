@@ -20,6 +20,8 @@ export interface BeatProps<B> {
   quiet?: boolean;
   /** A beat whose line changes as it plays (a scene) reports it here; the window shows it in its caption slot. */
   onCaption?: (line: string) => void;
+  /** A beat with its own controls (the HG COI story) calls this when the visitor uses them: the window stops moving on. */
+  onHold?: () => void;
 }
 
 export const prefersReduced = () =>
@@ -184,17 +186,22 @@ export function Fit({
   );
 }
 
-/** Same idea, but the picture is laid out `w` wide and as tall as the box allows (the phone AI column). */
-export function FitWidth({ w, className, children }: { w: number; className?: string; children: (h: number) => ReactNode }) {
+/**
+ * Same idea, but the picture is laid out `w` wide and as tall as the box allows (the phone AI column).
+ * `w` may be a range [min, max]: the picture is then laid out at the box's own width within it, so a
+ * large window gets more room at the same type size instead of the same picture blown up.
+ */
+export function FitWidth({ w, className, children }: { w: number | readonly [number, number]; className?: string; children: (h: number, w: number) => ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const box = useBox(ref);
   const W = box.w || 330;
-  const s = W / w;
+  const lw = typeof w === "number" ? w : Math.round(Math.min(w[1], Math.max(w[0], W)));
+  const s = W / lw;
   const h = Math.max(200, Math.floor((box.h || 480) / s));
   return (
     <div ref={ref} className={`pt-fitbox${className ? ` ${className}` : ""}`}>
-      <div className="pt-fit" style={{ width: w, height: h, transform: `scale(${s})` }}>
-        {children(h)}
+      <div className="pt-fit" style={{ width: lw, height: h, transform: `scale(${s})` }}>
+        {children(h, lw)}
       </div>
     </div>
   );

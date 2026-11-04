@@ -7,8 +7,9 @@
   X-XSS-Protection: 1; mode=block
   # Report-Only: observes what an enforced policy would block, blocks nothing.
   # Framing is already refused by X-Frame-Options above (frame-ancestors is not
-  # honoured in a Report-Only policy).
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://marcommand.tylerpreisser.workers.dev https://www.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; media-src 'self' blob:; connect-src 'self' https://marcommand.tylerpreisser.workers.dev https://cloudflareinsights.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; object-src 'none'; base-uri 'self'; form-action 'self'
+  # honoured in a Report-Only policy). frame-src: the home showcase frames the
+  # client sites live (ADR-0022/0023), www and apex where a site redirects.
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://marcommand.tylerpreisser.workers.dev https://www.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; media-src 'self' blob:; connect-src 'self' https://marcommand.tylerpreisser.workers.dev https://cloudflareinsights.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; frame-src https://www.hgoilholdings.com https://hgoilholdings.com https://duffergolf.net https://haysacademy.edu https://nwksencounter.com https://www.nwksencounter.com https://farm-books.com https://www.farm-books.com; object-src 'none'; base-uri 'self'; form-action 'self'
   X-Robots-Tag: index, follow, archive, snippet, max-snippet:-1, max-image-preview:large, max-video-preview:-1
   Content-Signal: ai-train=yes, search=yes, ai-input=yes
   # Only "/" declared a Cache-Control, so every other page fell through to the

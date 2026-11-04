@@ -1,13 +1,11 @@
-// src/data/demos/scenes/hg-oil.ts — sample data for the two HG Oil showcase
-// scenes (vendor insurance and the saltwater close). Pure data: no React.
+// src/data/demos/scenes/hg-oil.ts — sample data for the HG Oil saltwater close
+// scene. Pure data: no React. (The vendor insurance scene's data lives in
+// src/data/showcase/scenes/hg-coi.ts since ADR-0022.)
 //
 // Every vendor, agency and disposal name is INVENTED and registered in
 // src/data/demos/invented/hg-oil.ts (web-checked). No real vendor, well,
 // lease, certificate number or person. Field shapes follow the real engines
 // (~/.claude/agent-reports/hg-wow-brief-2026-11-01.md sections 2, 3, 5):
-//   COI  ps-admin worker coi.js: vendor marks Covered / Expiring / Not covered,
-//        certificate fields of an ACORD 25, one bundled email per agent (R6),
-//        reply classes, the admin-inbox hunt, "Needs me" exceptions.
 //   SWD  hg-swd: the WATER FIGURES sheet, barrels = (days in month - days down)
 //        x BPD, rate FIXED / per barrel with a minimum, invoice WP+MMYY+seq,
 //        the six [n/6] phases, the tie-out VENDOR TOLD PAID DELTA STATUS.
@@ -15,117 +13,6 @@
 import { business } from "../_invented";
 
 const v = (id: string) => business(id).name;
-
-/* ── Vendor insurance (COI): the AI story ───────────────────────────────── */
-
-export interface WallCounts {
-  covered: number;
-  expiring: number;
-  missing: number;
-  needs: number;
-}
-
-const TOTAL = 192;
-
-/** The vendor wall at each beat. Every row sums to TOTAL (checked below). */
-export const coiCounts: readonly WallCounts[] = [
-  { covered: 142, expiring: 36, missing: 14, needs: 0 }, // beat 0-1: today
-  { covered: 143, expiring: 36, missing: 13, needs: 0 }, // beat 2: the certificate read is filed
-  { covered: 143, expiring: 36, missing: 13, needs: 0 }, // beat 3: one email to the agent
-  { covered: 145, expiring: 35, missing: 12, needs: 0 }, // beat 4: two replies filed (one expiring, one missing)
-  { covered: 190, expiring: 0, missing: 0, needs: 2 }, // beat 5: the replies are all in
-];
-for (const c of coiCounts) {
-  if (c.covered + c.expiring + c.missing + c.needs !== TOTAL) throw new Error("[hg-oil scene] vendor wall counts must sum to 192");
-}
-if (coiCounts[0].expiring + coiCounts[0].missing !== 50) throw new Error("[hg-oil scene] the one email must cover the 50 vendors due");
-
-export const coiWallTotal = TOTAL;
-
-/** The certificate the AI reads, field by field (ACORD 25 shape). */
-export const coiCertificate = {
-  producer: v("marlowe-prairie-insurance-group"),
-  insured: `${v("chalk-bluff-hot-oil")}, LLC`,
-  holder: "HG Oil Holdings, LLC",
-  lines: [
-    { kind: "General liability", limit: "$1,000,000 each / $2,000,000 total" },
-    { kind: "Auto", limit: "$1,000,000 combined" },
-    { kind: "Workers comp", limit: "Statutory, $1,000,000 each accident" },
-  ],
-  period: "03/01/2026 to 03/01/2027",
-  additionalInsured: "Yes",
-  verdict: "Covered through Mar 1, 2027",
-} as const;
-
-export const coiEmail = {
-  // A sender name, never a bare "audit@" (it read as a broken address, critique r6 B3).
-  from: "HG Oil vendor insurance",
-  to: v("marlowe-prairie-insurance-group"),
-  subject: "Certificates for 50 of your clients",
-  body: "Hi there. We're updating vendor insurance records at HG Oil Holdings. Could you send current certificates for the 50 clients listed below, with HG Oil Holdings, LLC as the certificate holder? Thank you.",
-  chips: [v("ironweed-water-hauling"), v("red-cedar-roustabout"), v("buckbrush-pipe-supply")],
-  more: 47,
-} as const;
-
-export interface CoiReply {
-  said: string;
-  heard: string;
-  did: string;
-  hunt?: boolean;
-}
-
-export const coiReplies: readonly CoiReply[] = [
-  {
-    said: `Attached is the new certificate for ${v("ironweed-water-hauling")}.`,
-    heard: "Certificate attached",
-    did: "Read it and filed it. Covered.",
-  },
-  {
-    said: `We sent ${v("red-cedar-roustabout")}'s certificate to your admin inbox last week.`,
-    heard: "Says it was sent",
-    did: "Found it in the admin inbox and filed it.",
-    hunt: true,
-  },
-  {
-    said: `${v("buckbrush-pipe-supply")} moved to another agency.`,
-    heard: "Not their agent",
-    did: "Contact updated. Asking the vendor directly.",
-  },
-];
-
-export const coiExceptions = [
-  { vendor: v("quarry-hill-welding"), why: "Certificate lists the wrong holder.", act: "Ask them again" },
-  { vendor: v("buckbrush-pipe-supply"), why: "Says a paper copy is in the mail.", act: "Mark received" },
-] as const;
-
-export const coiCaptions = [
-  "50 of 192 vendors need a current certificate today.",
-  "50 of 192 vendors need a current certificate today.",
-  "The AI reads each certificate field by field and checks it.",
-  "One email to their insurance agent covers all 50 vendors.",
-  "When an agent says it was already sent, the AI goes and finds it in the inbox.",
-  "By the end the wall is green, and only two exceptions are left for a person.",
-] as const;
-
-/** Beat cues, ms from the start of a run. */
-export const coiCues = [250, 2300, 4700, 7300, 10600] as const;
-
-/**
- * The phone camera (300 x 520 picture; a 320 phone shows ~280 px): the wall
- * and the counts, then the card each step is about; at the end the green wall
- * and the two exceptions (also the reduced-motion frame).
- */
-export const coiCam = [
-  { at: 0, y: 34, h: 280, top: true },
-  { at: coiCues[1] + 200, y: 222, h: 290, top: true },
-  { at: coiCues[4], y: 34, h: 280, top: true },
-  { at: coiCues[4] + 1700, y: 160, h: 280, top: true },
-] as const;
-
-export const coiSummary =
-  "Demonstration: HG Oil's vendor insurance, kept by AI. A wall of 192 vendors starts with 50 needing a certificate. " +
-  "The AI reads an incoming certificate field by field and files it, sends one email to an insurance agent covering 50 vendors, " +
-  "reads the replies and searches the admin inbox when told a certificate was already sent. The wall turns green and only two exceptions are left for a person.";
 
 /* ── Saltwater close (SWD): automation, not AI ──────────────────────────── */
 

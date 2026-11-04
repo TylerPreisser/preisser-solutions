@@ -1,25 +1,73 @@
-// NWKS Encounter's showcase: their front door, then a picture of the system we
-// built around how their camp runs (sign-up to bed to the printed cabin map).
-// Custom built: no AI is claimed for the bed board.
+// NWKS Encounter's showcase (ADR-0022): their front door, then Impact, the
+// story of what the system took off the volunteers' hands, told as text.
+// Custom built: no AI is claimed for any of it.
 //
 // Website capture: https://nwksencounter.com, 2026-11-01, Playwright Chromium,
 // desk 1440 css at 1x, phone 390 at 2x: the split Men's / Women's front door
-// (stacked on a phone). Sample data for the scene, every woman invented:
-// src/data/demos/scenes/nwks-encounter.ts.
+// (stacked on a phone).
+//
+// Impact (ADR-0022 §3): every number is a fact<oracle>() or figure<oracle>();
+// the oracle note is a type argument, checked at build and never shipped. The
+// precise citation for each is kept outside this public repo.
+// Left out on purpose: piece totals and people counts that were never counted,
+// the "90 percent" (no measurement behind it), and any live-database count.
+// Hours per weekend have no source yet, so there is no `time` row.
 import type { ShowcaseClient } from "../types";
-import type { SceneBeatData } from "@/components/showcase/scenes";
-import { bedsSummary } from "@/data/demos/scenes/nwks-encounter";
+import { fact, figure, impactBeat } from "../impact";
 
-/** The product beat, for a `kind: "scene"` beat once the framework has one. */
-export const sceneBeats: readonly SceneBeatData[] = [
-  {
-    kind: "scene",
-    tab: "Beds",
-    caption: "Every sign-up finds a bed, and the cabin map prints itself.",
-    scene: "nwks-beds",
-    narration: bedsSummary,
-  },
-];
+export const impact = impactBeat("nwks-encounter", {
+  tab: "Impact",
+  caption: "What the system does every weekend, and what the volunteers used to do by hand.",
+  shape: "pieces",
+  kicker: "What we automated",
+  chapters: [
+    {
+      name: "Every Encounter weekend",
+      hero: {
+        before: fact<"Client's words, Aug 19 2026">("A cabin plan the ministry called 100 percent manual."),
+        now: fact<"Measured live, Oct 8 2026">("Drafted in milliseconds. Volunteers only adjust it."),
+      },
+      figures: [
+        figure<"How it is built">("4", "launch letters per person, sent on their own dates"),
+        figure<"Owner, Aug 20 2026">("5", "printed pieces per person, made from registration"),
+        figure<"How it is built">("24 h", "for each waitlist offer before it passes on"),
+      ],
+      pairs: [
+        {
+          label: "Name tags",
+          before: fact<"Client's words, Aug 19 2026">("Typed one name at a time onto label sheets."),
+          now: "Printed from registration on the ministry's own label stock.",
+        },
+        {
+          label: "Luggage tags",
+          before: fact<"Client's words, Aug 19 2026">("Typed by hand with name and cabin, at the last minute."),
+          now: "Printed as stickers, each cabin read from the plan.",
+        },
+        {
+          label: "Launch letters",
+          before: fact<"Client's words, Aug 19 2026">("One person per program emailed every registrant, every day or two."),
+          now: "Sent on their own, on fixed dates.",
+        },
+        {
+          label: "The waitlist",
+          before: "Details retyped by hand, and offers made by phone.",
+          now: "The next person gets an email offer, then it passes on.",
+        },
+      ],
+      how: "How the weekend runs",
+      steps: [
+        { verb: "Opens", text: fact<"Client's words, Aug 19 2026">("registration at the announced minute, and turns the same form into a waitlist when it fills.") },
+        { verb: "Offers", text: "each freed seat to the next person on the waitlist, then passes it on." },
+        { verb: "Drafts", text: "the cabin plan: each man with the server who invited him, each town together." },
+        { verb: "Prints", text: "the name tags and luggage stickers on the ministry's own label stock." },
+        { verb: "Sends", text: "each server their own schedule, with a calendar file." },
+      ],
+    },
+  ],
+  closing: "Volunteers adjust the plan. They no longer type it.",
+  narration:
+    "What we automated for NWKS Encounter. The cabin plan, which the ministry built entirely by hand, is now drafted in moments for volunteers to adjust. Name tags and luggage stickers print from registration, launch letters go out on their own dates, and a freed seat is offered to the next person on the waitlist by email.",
+});
 
 /** Men's title, logo, date, Enter button; women's title, logo, date, Enter button (y in the 390-wide capture). */
 const NWKS_PHONE_BANDS = [
@@ -55,6 +103,7 @@ const client: ShowcaseClient = {
   beats: [
     {
       kind: "website",
+      live: { src: "https://nwksencounter.com/", origins: ["https://nwksencounter.com", "https://www.nwksencounter.com"], frame: "handshake" },
       tab: "Website",
       caption: "The men's and women's weekends share one front door.",
       captured: "Captured Nov 1, 2026",
@@ -78,7 +127,7 @@ const client: ShowcaseClient = {
         ],
       },
     },
-    ...sceneBeats,
+    impact,
   ],
 };
 

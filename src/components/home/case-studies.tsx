@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { warmShowcase, type ShowcaseSlug } from "@/data/showcase";
+import { loadShowcase, warmShowcase, type ShowcaseSlug } from "@/data/showcase";
 import type { LayerMode } from "../showcase/ShowcaseLayer";
 import { ShowcaseBoundary } from "../showcase/ShowcaseBoundary";
 
@@ -678,46 +678,69 @@ export function CaseStudies() {
     return () => io.disconnect();
   }, []);
 
-  // ── Showcase window state (ADR-0020) ───────────────────────────────
-  const [showcase, setShowcase] = useState<{ slug: ShowcaseSlug; anchor: HTMLElement; mode: LayerMode; leaving?: boolean } | null>(null);
+  // ── Showcase window state (ADR-0020, ADR-0023) ─────────────────────
+  // The window owns its own closing (hover: 400 ms after the pointer leaves it;
+  // pinned: close button, Escape, scrim). The card only decides when to open.
+  const [showcase, setShowcase] = useState<{ slug: ShowcaseSlug; anchor: HTMLElement; mode: LayerMode } | null>(null);
   const intentTimer = useRef<number | undefined>(undefined);
-  const leaveTimer = useRef<number | undefined>(undefined);
-  const inside = useRef({ card: false, layer: false });
+  // Hover intent (design spec §2.2): 280 ms after a REAL pointermove over the card, and no wheel or
+  // scroll in the last 400 ms. Without the last two, a visitor wheel-scrolling the page gets a
+  // page-sized window popped under a pointer that never moved (browsers send a synthetic move
+  // after a scroll), and the window then swallows the wheel.
+  const lastScroll = useRef(0);
+  useEffect(() => {
+    const mark = () => {
+      lastScroll.current = performance.now();
+      window.clearTimeout(intentTimer.current);
+      intentTimer.current = undefined;
+    };
+    window.addEventListener("wheel", mark, { passive: true });
+    window.addEventListener("scroll", mark, { passive: true, capture: true });
+    return () => {
+      window.removeEventListener("wheel", mark);
+      window.removeEventListener("scroll", mark, { capture: true });
+    };
+  }, []);
 
   const warm = useCallback((slug: ShowcaseSlug, wide: boolean) => {
     loadShowcaseLayer().catch(() => {});
     warmShowcase(slug, wide);
+    // Warm the connection to the client's live site (spec §3.3 idle): a preconnect only, no frame yet.
+    loadShowcase(slug)
+      .then((c) => {
+        const web = c.beats.find((b) => b.kind === "website");
+        if (!web || web.kind !== "website" || web.live.frame === "off") return;
+        const origin = new URL(web.live.src).origin;
+        if (document.head.querySelector(`link[rel="preconnect"][href="${origin}"]`)) return;
+        const link = document.createElement("link");
+        link.rel = "preconnect";
+        link.href = origin;
+        document.head.appendChild(link);
+      })
+      .catch(() => {});
   }, []);
 
-  const scheduleLeave = useCallback(() => {
-    window.clearTimeout(leaveTimer.current);
-    leaveTimer.current = window.setTimeout(() => {
-      if (inside.current.card || inside.current.layer) return;
-      setShowcase((cur) => (cur && cur.mode === "hover" ? { ...cur, leaving: true } : cur));
-    }, 260);
-  }, []);
-
-  function showcaseEnter(slug: ShowcaseSlug, el: HTMLElement) {
-    if (window.innerWidth < 900) return;
-    inside.current.card = true;
-    window.clearTimeout(leaveTimer.current);
+  function showcaseMove(slug: ShowcaseSlug, el: HTMLElement) {
+    if (window.innerWidth < 900 || showcase) return;
+    // A move this soon after a wheel or scroll is the browser's synthetic one, not the visitor's hand.
+    if (performance.now() - lastScroll.current < 400) return;
+    if (intentTimer.current !== undefined) return;
     warm(slug, true);
-    if (showcase && showcase.slug === slug && !showcase.leaving) return;
-    window.clearTimeout(intentTimer.current);
-    // A resting pointer, not a sweep across the track: 280ms of intent first.
     intentTimer.current = window.setTimeout(() => {
-      setShowcase({ slug, anchor: el, mode: "hover" });
+      intentTimer.current = undefined;
+      if (performance.now() - lastScroll.current < 400) return;
+      setShowcase((cur) => cur ?? { slug, anchor: el, mode: "hover" });
     }, 280);
   }
 
   function showcaseLeave() {
-    inside.current.card = false;
     window.clearTimeout(intentTimer.current);
-    scheduleLeave();
+    intentTimer.current = undefined;
   }
 
   function showcaseActivate(slug: ShowcaseSlug, el: HTMLElement) {
     window.clearTimeout(intentTimer.current);
+    intentTimer.current = undefined;
     warm(slug, window.innerWidth >= 600);
     setShowcase({ slug, anchor: el, mode: "pinned" });
   }
@@ -848,9 +871,10 @@ export function CaseStudies() {
                   : undefined
               }
               role="listitem"
+              onMouseMove={hoverOpens && study.showcase ? (e) => showcaseMove(study.showcase!, e.currentTarget) : undefined}
               onMouseEnter={hoverOpens ? (e) => {
                 if (study.showcase) {
-                  showcaseEnter(study.showcase, e.currentTarget);
+                  warm(study.showcase, true);
                   return;
                 }
                 scrollAtOpenRef.current = trackRef.current?.scrollLeft ?? 0;
@@ -1024,16 +1048,7 @@ export function CaseStudies() {
           slug={showcase.slug}
           anchor={showcase.anchor}
           mode={showcase.mode}
-          dismissed={showcase.leaving}
-          onHoverChange={(inLayer) => {
-            inside.current.layer = inLayer;
-            if (inLayer) window.clearTimeout(leaveTimer.current);
-            else scheduleLeave();
-          }}
-          onClose={() => {
-            inside.current.layer = false;
-            setShowcase(null);
-          }}
+          onClose={() => setShowcase(null)}
         />
         </ShowcaseBoundary>
       ) : null}

@@ -12,6 +12,8 @@
 //               phases light up, and the answer lands in its real layout.
 //   ai-at-work  the AI working a queue on its own: items come in, it reads
 //               each one, does the steps and files the result.
+//   impact      what we automated, as text: the before -> now contrast, the
+//               figures and the steps, only numbers with a source (ADR-0022 §3).
 //
 // One file per client in ./clients/<slug>.ts, default export a ShowcaseClient.
 // The window loads it with import(`./clients/${slug}`), so a new client is a
@@ -112,11 +114,33 @@ export interface SiteCapture {
   video?: SiteVideo;
 }
 
+/**
+ * The client's live site, framed in the window (ADR-0022 §2, ADR-0023, design
+ * spec §3). The frame counts as live only when the framed page posts
+ * `{ type: "ps-portal-ready" }` from one of `origins`: a frame the browser
+ * refused still fires `load`, so `load` alone proves nothing.
+ */
+export interface WebsiteLive {
+  /** The page the frame opens on, e.g. "https://duffergolf.net/". Also the "Open site" link. */
+  src: string;
+  /** Origins the ready message may come from (a site that redirects apex -> www lists both). */
+  origins: readonly string[];
+  /**
+   * "handshake": live only on the site's ready message (every client today).
+   * "load": interim, live on the iframe load event; allowed only while this repo's gate runs the header probe (spec §3.6).
+   * "off": never framed; the still picture with "Open <domain>".
+   */
+  frame: "handshake" | "load" | "off";
+}
+
 export interface WebsiteBeat extends BeatBase {
   kind: "website";
-  /** "Captured Nov 1, 2026": shown in the desktop frame's chrome. */
+  live: WebsiteLive;
+  /** "Captured Nov 1, 2026": the Preview chip's title attribute and the still's alt text, not on screen. */
   captured: string;
+  /** The still under (and instead of) the frame on desk windows: its first stop, or the video's poster under the header image. */
   desk: SiteCapture;
+  /** The still for the phone sheet. `stops` and the pan are no longer played. */
   phone: SiteCapture;
 }
 
@@ -225,7 +249,101 @@ export interface SceneBeat extends BeatBase {
   narration: string;
 }
 
-export type Beat = WebsiteBeat | FunnelBeat | AiAskBeat | AiAtWorkBeat | SceneBeat;
+/*
+ * The Impact tab (ADR-0022 §3, design spec §5, critic round 1 §3). Text tells
+ * the story: the before -> now contrast first at display size, then the
+ * figures, then how the engine does it, in a shape that comes from the
+ * client's own material.
+ *
+ * Every number a visitor can read is SOURCED, and the source never ships: it
+ * is a TYPE argument (fact<"Owner, Oct 23 2026">("..."), figure<...>(...)),
+ * checked by tsc and `next build` and erased from the bundle. Copy that holds
+ * a digit or a number word without one fails the type check (impact.ts). The
+ * precise citations are kept outside this public repo.
+ */
+
+/** Copy that carries a number or a claim, made by fact<source>() in ./impact.ts. */
+export interface ImpactFact {
+  readonly kind: "fact";
+  readonly text: string;
+}
+
+/** Copy: plain words, or a sourced fact. */
+export type ImpactCopy = string | ImpactFact;
+
+/** A number shown large, made by figure<source>() in ./impact.ts. */
+export interface ImpactFigure {
+  readonly kind: "figure";
+  /** As shown: "74", "24 h", "42-70 s". */
+  readonly value: string;
+  /** What it counts, sentence case, no trailing period. */
+  readonly label: string;
+}
+
+/** One step of how the engine works: "Reads" + "every certificate that arrives...". */
+export interface ImpactStep {
+  /** One capitalised verb or two-word verb phrase. */
+  verb: string;
+  /** Continues the verb, lower-case start, ends with a period. */
+  text: ImpactCopy;
+}
+
+/** A smaller before -> now pair: one piece of the work. */
+export interface ImpactPair {
+  label: string;
+  before: ImpactCopy;
+  now: ImpactCopy;
+}
+
+/** The hours (or people) story. BOTH sides or the row does not exist: half a comparison is a claim. */
+export interface ImpactTime {
+  label: string;
+  before: ImpactFigure;
+  now: ImpactFigure;
+}
+
+/**
+ * How the steps are drawn, from the client's own material:
+ *   chapters  each chapter its own section (HG: the month-end close, vendor insurance)
+ *   pieces    the pairs are the story, one card per piece of the work (NWKS's weekend)
+ *   path      the steps are stations a bill passes through (FarmBooks)
+ *   loop      the steps are a loop that comes back to the start (Duffer's partner loop)
+ */
+export type ImpactShape = "chapters" | "pieces" | "path" | "loop";
+
+export interface ImpactChapter {
+  /** "The month-end close". */
+  name: string;
+  /** "Every month"; omitted -> nothing after the name. */
+  cadence?: ImpactCopy;
+  /** The payoff, at display size: what it was, and what it is now. */
+  hero: { before: ImpactCopy; now: ImpactCopy };
+  /** 0 to 3, shown large. Absent -> no band, no rule, no trace. */
+  figures?: readonly ImpactFigure[];
+  /** 0 to 2. Absent -> nothing (the owner has not supplied hours or people yet). */
+  time?: readonly ImpactTime[];
+  /** The label over the steps: "How it runs", "The bill's path". */
+  how: string;
+  /** 3 to 5. */
+  steps: readonly ImpactStep[];
+  /** 0 to 4 smaller before -> now pairs. */
+  pairs?: readonly ImpactPair[];
+}
+
+export interface ImpactBeat extends BeatBase {
+  kind: "impact";
+  shape: ImpactShape;
+  /** "What we automated". */
+  kicker: string;
+  /** 1 or 2 (HG has two). */
+  chapters: readonly ImpactChapter[];
+  /** One short sentence. */
+  closing: ImpactCopy;
+  /** Screen-reader summary, 80+ characters, no numbers (the privacy probe reads it). */
+  narration: string;
+}
+
+export type Beat = WebsiteBeat | FunnelBeat | AiAskBeat | AiAtWorkBeat | SceneBeat | ImpactBeat;
 export type BeatKind = Beat["kind"];
 
 export interface ShowcaseClient {

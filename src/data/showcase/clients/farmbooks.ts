@@ -1,27 +1,60 @@
-// FarmBooks' showcase: their website, then a picture of the AI reading a bill.
+// FarmBooks' showcase (ADR-0022): their website, then Impact, the story of
+// what the bookkeeping engine does, told as text.
 //
 // Website capture: https://farm-books.com as it stands, 2026-11-01, Playwright
 // Chromium, desk 1440 css at 1x, phone 390 at 2x (iPhone 13 UA). Two sections,
 // stitched: the hero, and "What it catches" whole, with the site's own three
 // scenarios 01, 02 and 03 (round 11, critique r10 MF4). Scenario 01's printed
-// lines add to $10,649.75 against an $11,059.75 total, off by $410.00, the same
-// catch the AI tab tells (re-summed from the live HTML). The section was shot in
-// pieces while each was on screen, because its rows reveal on scroll. Sample
-// data for the scene: src/data/demos/scenes/farmbooks.ts.
+// lines add to $10,649.75 against an $11,059.75 total, off by $410.00 (re-summed
+// from the live HTML). The section was shot in pieces while each was on screen,
+// because its rows reveal on scroll.
+//
+// Impact (ADR-0022 §3): every number is a fact<oracle>() or figure<oracle>();
+// the oracle note is a type argument, checked at build and never shipped. The
+// precise citation for each is kept outside this public repo.
+// Left out on purpose: any hours saved (the bookkeeper has given no figure),
+// "one crop year" (the span is unconfirmed), any dollar amount, and the errors
+// found in her old books (the owner asked for that block to come off the site).
 import type { ShowcaseClient } from "../types";
-import type { SceneBeatData } from "@/components/showcase/scenes";
-import { fbSummary } from "@/data/demos/scenes/farmbooks";
+import { fact, figure, impactBeat } from "../impact";
 
-/** The product beat, for a `kind: "scene"` beat once the framework has one. */
-export const sceneBeats: readonly SceneBeatData[] = [
-  {
-    kind: "scene",
-    tab: "AI",
-    caption: "FarmBooks reads every bill and holds the ones that don't add up.",
-    scene: "farmbooks-bill",
-    narration: fbSummary,
-  },
-];
+export const impact = impactBeat("farmbooks", {
+  tab: "Impact",
+  caption: "What FarmBooks does with every bill, and what the bookkeeper used to do by hand.",
+  shape: "path",
+  kicker: "What we automated",
+  chapters: [
+    {
+      name: "Every bill that comes in",
+      hero: {
+        before: fact<"Client's words, Aug 3 2026">("The bookkeeper printed each bill and keyed it into one big workbook."),
+        now: "She drops in the PDF or photo and reviews only what is flagged.",
+      },
+      figures: [
+        figure<"Published on this site">("101", "bills read and booked without retyping a line"),
+        figure<"Published on this site">("893", "bill lines sorted into tax categories, none left over"),
+      ],
+      how: "The path every bill takes",
+      steps: [
+        { verb: "Reads", text: "any bill: an emailed PDF, mailed paper or a phone photo." },
+        { verb: "Checks", text: "it against its printed total, to the cent, and holds it if it does not tie." },
+        { verb: "Sorts", text: "every line into its Schedule F tax category." },
+        { verb: "Splits", text: "a shared bill across fields by acreage." },
+        { verb: "Drafts", text: "each landowner's fertilizer bill for a person to send." },
+      ],
+      pairs: [
+        {
+          label: "Landowners",
+          before: fact<"Client's words, Oct 12 2026">("Not billed for fertilizer in about a year, as far as she knew."),
+          now: "Each share worked out from the lease and drafted for review.",
+        },
+      ],
+    },
+  ],
+  closing: "Line items in. Never a typed total.",
+  narration:
+    "What we automated for FarmBooks. The bookkeeper used to print each bill and key it into a workbook by hand. Now every bill, emailed, mailed or photographed, is read, checked against its printed total to the cent, sorted into its Schedule F category and split across fields by acreage, and each landowner's fertilizer bill is drafted for a person to send.",
+});
 
 /** Text lines, price rows and buttons in the 390-wide phone capture (y from, y to, css px), found in its own pixels (round 11: rows with text-like edges on a flat background, 1 px margin): the two hero buttons measured whole. */
 const FB_PHONE_BANDS = [
@@ -73,6 +106,7 @@ const client: ShowcaseClient = {
   beats: [
     {
       kind: "website",
+      live: { src: "https://farm-books.com/", origins: ["https://farm-books.com", "https://www.farm-books.com"], frame: "handshake" },
       tab: "Website",
       caption: "farm-books.com walks a farmer through the mistakes that hide on a bill.",
       captured: "Captured Nov 1, 2026",
@@ -106,7 +140,7 @@ const client: ShowcaseClient = {
         ],
       },
     },
-    ...sceneBeats,
+    impact,
   ],
 };
 

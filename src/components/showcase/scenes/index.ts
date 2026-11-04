@@ -2,20 +2,30 @@
 // Each takes SceneProps (layout "desk" 1280 x 800 or "phone") and
 // renders its final frame first (no JS, reduced motion, the privacy probe).
 // Layout "phone" is 300 wide since round 7; each scene sets its height in PHONE_H.
+// HG Oil's COI story (ADR-0022 §4) is the one FLUID scene: it lays itself out
+// for the window, carries its own controls and is never scaled as a picture.
 import type { ComponentType } from "react";
 import type { SceneProps } from "./kit";
-import { HgCoiScene } from "./HgCoiScene";
+import { HgCoiScene, type FluidSceneProps } from "./HgCoiScene";
 import { HgSwdScene } from "./HgSwdScene";
 import { FarmbooksBillScene } from "./FarmbooksBillScene";
 import { NwksBedsScene } from "./NwksBedsScene";
-import { coiCam, coiCues, swdCam, swdCues, swdDeskCam } from "@/data/demos/scenes/hg-oil";
+import { swdCam, swdCues, swdDeskCam } from "@/data/demos/scenes/hg-oil";
+import { COI_TOTAL_MS } from "@/data/showcase/scenes/hg-coi";
 import { fbCam, fbCues, fbHoldMs } from "@/data/demos/scenes/farmbooks";
 import { bedsCam, bedsCues } from "@/data/demos/scenes/nwks-encounter";
 
 export type SceneId = "hg-coi" | "hg-swd" | "farmbooks-bill" | "nwks-beds";
 
-export const SCENES: Record<SceneId, ComponentType<SceneProps>> = {
+/** Scenes that lay themselves out for the window (no camera, no native size). */
+export type FluidSceneId = "hg-coi";
+export const FLUID_SCENES: Record<FluidSceneId, ComponentType<FluidSceneProps>> = {
   "hg-coi": HgCoiScene,
+};
+export const isFluid = (id: SceneId): id is FluidSceneId => id in FLUID_SCENES;
+
+/** Scenes drawn as one native-size picture under a camera. */
+export const SCENES: Record<Exclude<SceneId, FluidSceneId>, ComponentType<SceneProps>> = {
   "hg-swd": HgSwdScene,
   "farmbooks-bill": FarmbooksBillScene,
   "nwks-beds": NwksBedsScene,
@@ -23,7 +33,8 @@ export const SCENES: Record<SceneId, ComponentType<SceneProps>> = {
 
 /** How long each scene plays once: its last beat plus the hold on the final frame. */
 export const SCENE_MS: Record<SceneId, number> = {
-  "hg-coi": coiCues[coiCues.length - 1] + 4400,
+  // The story's nine beats; the window moves on only after the last one (and never once the visitor takes the controls).
+  "hg-coi": COI_TOTAL_MS + 2500,
   "hg-swd": swdCues[swdCues.length - 1] + 3400,
   // The catch is the last beat: its rows land over ~2.9 s, then the held bill holds 4.5 s.
   "farmbooks-bill": fbCues[fbCues.length - 1] + fbHoldMs,
@@ -87,7 +98,7 @@ export const CLEAN_TOPS: Partial<Record<SceneId, readonly number[]>> = {
  * the tie-out reads at 14 css px or more (critique r6 C2).
  */
 export const SCENE_CAM: Record<SceneId, { desk?: readonly Shot[]; phone?: readonly Shot[] }> = {
-  "hg-coi": { phone: coiCam },
+  "hg-coi": {},
   "hg-swd": { desk: swdDeskCam, phone: swdCam },
   "farmbooks-bill": { phone: fbCam },
   "nwks-beds": { phone: bedsCam },
@@ -110,3 +121,4 @@ export interface SceneBeatData {
   narration: string;
 }
 export { HgCoiScene, HgSwdScene, FarmbooksBillScene, NwksBedsScene };
+export type { FluidSceneProps };

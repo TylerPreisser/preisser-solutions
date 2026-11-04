@@ -1,6 +1,6 @@
-// HG Oil Holdings' showcase: their website, then two pictures of the work we
-// built them. Vendor insurance is AI at work; the saltwater close is
-// automation (there is no model in it) and is never captioned as AI.
+// HG Oil Holdings' showcase (ADR-0022): their website, the COI story, and
+// Impact. Vendor insurance is AI at work; the saltwater close is automation
+// (there is no model in it) and is never called AI, here or anywhere.
 //
 // Website: the DEV site https://hgoil-website-dev.tylerpreisser.workers.dev/
 // (the live site's carbon copy plus mobile and nav fixes), its FRONT PAGE only
@@ -12,29 +12,100 @@
 // Phone: cropped to x 440-1780 of 1920 so the whole pumpjack and the dusk
 // show; desk: the whole frame. Above it, the site's own header bar, cut whole
 // from the round 9 capture (Playwright Chromium, phone 390 at 2x, desk 1440 at
-// 1x). "Visit" goes to the live site. Sample data for the scenes:
-// src/data/demos/scenes/hg-oil.ts.
+// 1x). "Visit" goes to the live site. Sample data for the COI scene:
+// src/data/showcase/scenes/hg-coi.ts.
+//
+// Impact (ADR-0022 §3): every number is a fact<oracle>() or figure<oracle>();
+// the oracle note is a type argument, checked at build and never shipped. The
+// precise citation for each is kept outside this public repo.
+// Rules: no HG dollar amounts, no HG people, vendor or well names, no vendor
+// counts, and no description of HG's own past bookkeeping errors. The hours and
+// people the old way took have no source yet, so there is no `time` row.
 import type { ShowcaseClient } from "../types";
 import type { SceneBeatData } from "@/components/showcase/scenes";
-import { coiSummary, swdSummary } from "@/data/demos/scenes/hg-oil";
+import { coiNarration } from "@/data/showcase/scenes/hg-coi";
+import { fact, figure, impactBeat } from "../impact";
 
-/** The product beats, for a `kind: "scene"` beat once the framework has one. */
-export const sceneBeats: readonly SceneBeatData[] = [
-  {
-    kind: "scene",
-    tab: "COI",
-    caption: "AI keeps every vendor's insurance current and hands a person only the exceptions.",
-    scene: "hg-coi",
-    narration: coiSummary,
-  },
-  {
-    kind: "scene",
-    tab: "Close",
-    caption: "Their month-end close now runs in about a minute.",
-    scene: "hg-swd",
-    narration: swdSummary,
-  },
-];
+const coi: SceneBeatData = {
+  kind: "scene",
+  tab: "COI",
+  caption: "One vendor's certificate, chased from the lapse to the insurer's package, in the engine's own words.",
+  scene: "hg-coi",
+  narration: coiNarration,
+};
+
+export const impact = impactBeat("hg-oil", {
+  tab: "Impact",
+  caption: "What the month-end close and vendor insurance engines do now, and what they replaced.",
+  shape: "chapters",
+  kicker: "What we automated",
+  chapters: [
+    {
+      name: "The month-end close",
+      cadence: "Every month",
+      hero: {
+        before: fact<"Client's words, Sep 10 2026">("An accountant built each month by hand, typing every total."),
+        now: fact<"How it is built">("A field person edits five cells. The owner presses Run."),
+      },
+      figures: [
+        figure<"How it is built">("74", "disposal agreements, worked out in one calculation"),
+        figure<"Measured live, Sep 17 2026">("70 s", "at most, of engine work for the whole close, over five measured runs"),
+        figure<"How it is built">("17", "owner statements produced from every close"),
+      ],
+      how: "How the close runs",
+      steps: [
+        { verb: "Reads", text: fact<"How it is built">("the live sheet of disposal agreements, where the field edits only five columns.") },
+        { verb: "Calculates", text: fact<"How it is built">("every well's barrels and dollars from one rule, with shared charges split to the cent.") },
+        { verb: "Produces", text: "the A/P import, the GL journal and every owner statement from that same calculation." },
+        { verb: "Checks", text: "that every vendor is told exactly what it is paid, and holds the month if not." },
+        { verb: "Hands off", text: "the finished month to a person, who reviews it and releases it." },
+      ],
+      pairs: [
+        {
+          label: "Every total",
+          before: "Typed by hand into the workbook.",
+          now: fact<"How it is built">("Worked out from one rule and tied out before anything is released."),
+        },
+        {
+          label: "The controller",
+          before: "Built the payables entries by hand.",
+          now: "Imports the finished file.",
+        },
+      ],
+    },
+    {
+      name: "Vendor insurance",
+      cadence: "Every business day",
+      hero: {
+        before: fact<"Client's words">("A spreadsheet of X marks, and emails written one vendor at a time."),
+        now: "AI reads every certificate and chases only the vendors who need it.",
+      },
+      how: "How it keeps after it",
+      steps: [
+        { verb: "Reads", text: "every certificate that arrives, with AI, field by field." },
+        { verb: "Judges", text: "each vendor's coverage and dates: covered, expiring or not covered." },
+        { verb: "Chases", text: "only the vendors who need it, insurance agent first, and answers their replies." },
+        { verb: "Searches", text: fact<"How it is built">("HG's own mailboxes when a vendor says it already sent one.") },
+        { verb: "Hands off", text: "only the real decisions to the owner." },
+      ],
+      pairs: [
+        {
+          label: "The record",
+          before: fact<"Owner, Oct 23 2026">("The marks said a certificate was on file. Checked against the files, most were not."),
+          now: "Each vendor's status comes from the certificate itself, and its dates are watched.",
+        },
+        {
+          label: "The people",
+          before: fact<"Client's words">("Staff kept the files and wrote every request by hand."),
+          now: "A person handles only a certificate that comes on paper.",
+        },
+      ],
+    },
+  ],
+  closing: "Same numbers every month. Nobody retypes them.",
+  narration:
+    "What we automated for HG Oil Holdings. The month-end close used to be built by hand with every total typed; now a field person edits a few cells, the owner presses Run, and the engine produces the payables import, the journal and the owner statements from a single calculation. Vendor insurance used to be a spreadsheet of marks and emails written by hand; now AI reads every certificate, judges coverage and chases only the vendors who need it.",
+});
 
 const client: ShowcaseClient = {
   slug: "hg-oil",
@@ -58,6 +129,7 @@ const client: ShowcaseClient = {
   beats: [
     {
       kind: "website",
+      live: { src: "https://www.hgoilholdings.com/", origins: ["https://www.hgoilholdings.com", "https://hgoilholdings.com"], frame: "handshake" },
       tab: "Website",
       caption: "HG Oil's site opens on a pumpjack working at dusk.",
       captured: "Captured Nov 1, 2026",
@@ -95,7 +167,8 @@ const client: ShowcaseClient = {
         },
       },
     },
-    ...sceneBeats,
+    coi,
+    impact,
   ],
 };
 

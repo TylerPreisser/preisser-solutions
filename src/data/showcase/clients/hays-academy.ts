@@ -88,6 +88,7 @@ const client: ShowcaseClient = {
   beats: [
     {
       kind: "website",
+      live: { src: "https://haysacademy.edu/", origins: ["https://haysacademy.edu"], frame: "handshake" },
       tab: "Website",
       caption: "Hays's next class date sits right up top, and every program shows its price.",
       captured: "Captured Nov 1, 2026",
@@ -117,7 +118,7 @@ const client: ShowcaseClient = {
     },
     {
       kind: "funnel",
-      tab: "Funnel",
+      tab: "MarCommand",
       caption: "Each ad dollar is followed through to the lead it brought in, or didn't.",
       narration:
         "The MarCommand dashboard on demonstration data: seven channels, the people each one sent to the website, and how many became leads. None of these numbers are real.",
