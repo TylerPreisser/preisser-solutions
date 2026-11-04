@@ -55,7 +55,7 @@ These rules override everything else. If you cannot satisfy them, output `BLOCKE
 | Entity | Publishable as | Constraints |
 |---|---|---|
 | Cassidy HVAC | "Cassidy HVAC" | Named with consent. Both case studies. |
-| HG Oil Holdings | "HG Oil Holdings" | Tyler was VP of Operations. Internal builds. |
+| HG Oil Holdings | "HG Oil Holdings" | A client (ADR-0024). Tyler was previously VP of Operations there; call the work client builds. |
 | Iron and Oak Podcast | "Iron and Oak Podcast" | Tyler's own build. Co-host: Lincoln Myers (publishable). |
 | Wife Supply Co | "Wife Supply Co" | Tyler's own build. Do NOT claim paying customers without confirming. |
 | NWKS Encounter | "NWKS Encounter" / "Northwest Kansas Encounter" | Approved by Tyler 2026-09-18 for the case study. The ministry and its two Encounters are publicly named; the SYSTEM is not. Never publish an attendee, leader, or admin name, never a registration count drawn from the live database, and never link the admin panel. |

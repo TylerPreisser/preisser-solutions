@@ -76,7 +76,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions build software for a Great Bend oilfield services operator?",
       answer:
-        "Yes. Western and central Kansas oilfield services is a core vertical. Inventory, dispatch, and back-office automation are recurring engagements, informed by internal builds at HG Oil Holdings.",
+        "Yes. Western and central Kansas oilfield services is a core vertical. Inventory, dispatch, and back-office automation are recurring engagements, informed by client builds for HG Oil Holdings.",
     },
     {
       question: "Do you offer AI invoice processing in Great Bend?",

@@ -90,7 +90,7 @@ export const locationData: LocationPageData = {
     {
       question: "Does Preisser Solutions serve oil and gas operations in western Kansas?",
       answer:
-        "Yes. Western Kansas oil and gas is a core vertical. Internal builds at HG Oil Holdings (inventory management and AI invoice processing): directly informed the playbook for operator-side software.",
+        "Yes. Western Kansas oil and gas is a core vertical. Client builds for HG Oil Holdings (inventory management and AI invoice processing) directly informed the playbook for operator-side software.",
     },
     {
       question: "How fast can a Hays project start?",
