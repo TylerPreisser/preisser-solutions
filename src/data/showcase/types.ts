@@ -12,6 +12,9 @@
 //               phases light up, and the answer lands in its real layout.
 //   ai-at-work  the AI working a queue on its own: items come in, it reads
 //               each one, does the steps and files the result.
+//   engine      (round 2) the MarCommand engine room: channels, the dials the
+//               engine turns, what it learned (ADR-0025 §5).
+//   scene       a coded or captured product walkthrough (scenes/).
 //   impact      what we automated, as text: the before -> now contrast, the
 //               figures and the steps, only numbers with a source (ADR-0022 §3).
 //
@@ -204,11 +207,25 @@ export interface AiAnswer {
   sources: readonly { label: string; detail?: string }[];
 }
 
+/** One source the robot fetches from at the top of an AI tab (ADR-0025 §4.1). */
+export interface AiSource {
+  icon: "scan" | "visit" | "lead" | "order" | "ads" | "social-ads" | "search" | "enroll";
+  label: string;
+  /** Phone label; defaults to `label`. */
+  short?: string;
+  /** The row-count chip: "5 rows". */
+  chip: string;
+  /** Index into `steps`: the chip comes from the same rows the answer used. */
+  step: number;
+}
+
 export interface AiAskBeat extends BeatBase {
   kind: "ai-ask";
   narration: string;
   question: string;
   steps: readonly AiStep[];
+  /** 3 to 4 sources the robot visits before the answer lands (§4.1). Absent: the old working card. */
+  sources?: readonly AiSource[];
   /** The left column once answered: the real tab's "Pulled / Compared / Concluded" record. */
   worked: readonly { kind: "Pulled" | "Calculated" | "Compared" | "Recalled" | "Concluded"; lines: readonly { text: string; chip?: string }[] }[];
   answer: AiAnswer;
@@ -343,7 +360,148 @@ export interface ImpactBeat extends BeatBase {
   narration: string;
 }
 
-export type Beat = WebsiteBeat | FunnelBeat | AiAskBeat | AiAtWorkBeat | SceneBeat | ImpactBeat;
+/** A channel card in the engine room; `displays` is Duffer's course displays. */
+export interface EngineChannel {
+  icon: RailIcon | "displays";
+  label: string;
+  /** A short chip under the card, one line: "+38% cost/lead". */
+  delta?: { text: string; tone: "up" | "down" };
+}
+
+/** A knob the engine turns. r0 and r1 are 0..1 of the 270 degree sweep. */
+export interface EngineDial {
+  label: string;
+  from: string;
+  to?: string;
+  r0: number;
+  r1?: number;
+}
+
+/** The MarCommand tab (Duffer, Hays): the engine adjusting its knobs and learning (ADR-0025 §5.1). */
+export interface EngineBeat extends BeatBase {
+  kind: "engine";
+  /** 3 to 4. */
+  channels: readonly EngineChannel[];
+  /** Exactly 3. */
+  dials: readonly EngineDial[];
+  /** The channel (index) the engine favours: its wire lights. */
+  pick: number;
+  /** Which dials (indices) it turns, in order; 1 to 2. */
+  turns: readonly number[];
+  /** 1 to 3; exactly one isNew. */
+  learned: readonly { text: string; when: string; isNew?: boolean }[];
+  result: { label: string; from: string; to: string };
+  /** Screen-reader narration for the stage (80+ characters, no numbers). */
+  narration: string;
+}
+
+/*
+ * Scene data (ADR-0025 §2, §3.5, §6). A `scene` beat names a SceneId; the
+ * scene's own data module (src/data/showcase/scenes/<id>.ts) exports a value of
+ * one of these shapes. Names, towns and numbers in all of them are invented.
+ */
+
+/** HG "Vendor Insurance": one certificate arrives, four checks tick, it is filed (§2). */
+export interface VendorSceneData {
+  vendor: string;
+  /** The raster of the ACORD 25 and its thumbnail (public/images/showcase/hg/). */
+  cert: { src: string; thumb: string; alt: string; width: number; height: number };
+  /** The four checks, in the order the scan reads them. `short` is the phone value. */
+  checks: readonly { id: "coverage" | "dates" | "limits" | "holder"; label: string; value: string; short: string; region: Rect }[];
+  verdict: string;
+  /** Vendor files in the filing view; `open` is the one that receives the certificate. */
+  files: readonly { name: string; open?: boolean }[];
+  filed: { title: string; detail: string };
+}
+
+/** FarmBooks "Bills": a bill is snapped, read, sorted, split by field, booked, summed up (§6.1). */
+export interface BillsSceneData {
+  supplier: string;
+  invoice: string;
+  date: string;
+  /** Printed lines. `category` is a Schedule F name copied VERBATIM from FarmBooks data/categories.json. */
+  lines: readonly { text: string; plain: string; amount: number; category: string; split?: readonly { field: string; acres: number; amount: number }[] }[];
+  total: number;
+  /** The year-end summary: invented fields. */
+  summary: { kpis: readonly { label: string; value: string }[]; categories: readonly { label: string; value: number }[]; perAcre: readonly { field: string; acres: number; perAcre: number }[] };
+}
+
+/** One captured screen in a StillsWalkthrough (Duffer Command Center, NWKS Admin). */
+export interface Still {
+  id: string;
+  /** Desk still (WebP, drawn at its display box) and the phone crop. */
+  desk: { src: string; width: number; height: number };
+  phone: { src: string; width: number; height: number };
+  alt: string;
+}
+
+/** A drawn cursor target in a still, in the still's css px. */
+export interface CursorTarget {
+  x: number;
+  y: number;
+  /** Draw the click ring on arrival. */
+  click?: boolean;
+}
+
+/** The clicked-through screen recording: stills, cues, a drawn cursor, optional coded overlays (§6.2, §6.3). */
+export interface StillsWalkthroughData {
+  stills: readonly Still[];
+  /** ms from beat start. `still` indexes `stills`; `step` is the dot that lights; `fadeMs` defaults to 280. */
+  cues: readonly { at: number; still: number; step: number; cursor?: CursorTarget; fadeMs?: number; overlay?: "feed-row" | "pin-drag" }[];
+  /** Step names for the dots. */
+  steps: readonly string[];
+  totalMs: number;
+  /** The still shown with no JS and under reduced motion. */
+  ssrStill: number;
+  /** Text manifest for the privacy guard (§7.2 #18): every name and number visible in the stills. */
+  manifest: readonly string[];
+}
+
+/** Duffer's QR story at the head of its Impact tab (§3.5). */
+export interface DufferQrData {
+  course: string;
+  display: string;
+  town: string;
+  device: string;
+  /** The feed row, the order and the commission, invented. */
+  feedRow: string;
+  order: { id: string; item: string; code: string };
+  commission: { amount: string; to: string };
+  scansBefore: number;
+  scansAfter: number;
+}
+
+/** The new Impact: big numbers first (ADR-0025 §3, spec §3.1). */
+export interface ImpactStat {
+  /** The number now: figure<"Measured live, Oct 27 2026">("155", "vendor certificates on file, checked and current"). */
+  now: ImpactFigure;
+  /** The number before, struck. ONLY when sourced; omit otherwise. */
+  before?: ImpactFigure;
+  /** Unit shown after the value: "s", "h", "%", "/mo". Not part of the sourced value string. */
+  unit?: string;
+}
+
+/**
+ * The round 2 Impact beat. NOT yet the `impact` kind: that still means the
+ * chapters model above until B2 rewrites impact.ts; B2 then renames this to
+ * ImpactBeat / kind "impact" and deletes the chapters model (one commit).
+ */
+export interface ImpactStatsBeat extends BeatBase {
+  kind: "impact-stats";
+  kicker: string;
+  /** Duffer only: the QR story leads. */
+  lead?: "qr-story";
+  /** 0..3. */
+  big: readonly ImpactStat[];
+  /** 0..4. */
+  rows: readonly ImpactStat[];
+  /** One sentence, 140 chars at most. */
+  text?: ImpactCopy;
+  /** 80+ characters, no numbers (privacy probe). */
+  narration: string;
+}
+
+export type Beat = WebsiteBeat | FunnelBeat | AiAskBeat | AiAtWorkBeat | SceneBeat | ImpactBeat | EngineBeat | ImpactStatsBeat;
 export type BeatKind = Beat["kind"];
 
 export interface ShowcaseClient {
