@@ -1,0 +1,836 @@
+/* ============================================================
+   hg-vendor.css — HG Oil "Vendor Insurance" (HgVendorScene.tsx,
+   ADR-0025 §2, design-spec-r2 §2). Only --hgv-* is declared here.
+
+   A fluid scene: it lays itself out for the window's stage (inline
+   px from HgVendorScene's layout), never scaled as a picture. The
+   certificate is one <img> at its display size: no transform, filter,
+   zoom or will-change on it at rest (iOS layer budget, spec §2.6).
+
+   Entrances fill BACKWARDS only, so a finished one gives its layer back.
+   Motion (all from the scene's clock; nothing bounces):
+     arrive      520ms  --sc-ease-grow    certificate opacity 0 -> 1 (opacity only)
+     side in     240ms  linear            vendor column, 40ms stagger
+     scan        1400ms --sc-ease-move    2px line, translateY over the page
+     region      160ms in / 400ms out     outline colour (never opacity: no layer)
+     spin        700ms/turn               row icon while its check runs
+     tick        220ms  --ease-out-expo   tick stroke draws
+     value       200ms                    opacity + 4px rise
+     verdict     380ms  --sc-ease-grow    scale .92 -> 1 + opacity
+     files in    240ms  linear            the filing view fades in
+     flight      700ms  --sc-ease-move    thumbnail to the folder (<= 120 x 155)
+     open        280ms  --sc-ease-grow    filed card grid rows 0fr -> 1fr as the flight starts;
+                                          its thumb and words fade in (200ms) as the thumb lands
+     pulse       600ms                    the "Covered" dot, once
+   Reduced motion (.is-still): none of it; each view is a cut.
+   ============================================================ */
+
+.hgv {
+  --hgv-card: #ffffff;
+  --hgv-ink: #0a1628;
+  --hgv-ink-2: #4a5a70;
+  --hgv-ink-3: #5f6e84;
+  --hgv-line: #dfe5ec;
+  --hgv-accent: #1590ff;
+  --hgv-accent-text: #0c6fc9;
+  --hgv-ok: #0e7a3a;
+  --hgv-ok-bg: #e7f6ec;
+  --hgv-ok-ink: #0d6b33;
+  --hgv-tint: #e8f2ff;
+  --hgv-folder: #c9d2dd;
+  --hgv-doc-shadow: 0 1px 2px rgba(10, 22, 40, 0.1), 0 12px 32px rgba(10, 22, 40, 0.14);
+  --hgv-ease-move: var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1));
+  --hgv-ease-grow: var(--sc-ease-grow, cubic-bezier(0.2, 0.9, 0.25, 1));
+  --hgv-ease-expo: var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  background: var(--hgv-card);
+  color: var(--hgv-ink);
+  font-family: var(--pt-body, Inter, system-ui, -apple-system, "Segoe UI", sans-serif);
+  font-size: 15px;
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+[data-theme="dark"] .hgv {
+  --hgv-card: #13233a;
+  --hgv-ink: #f2f6fb;
+  --hgv-ink-2: #a9b6c8;
+  --hgv-ink-3: #8e9db3;
+  --hgv-line: #22344d;
+  --hgv-accent-text: #4aa8ff;
+  --hgv-ok: #1f9d55;
+  --hgv-ok-bg: #0f2f22;
+  --hgv-ok-ink: #6ee59d;
+  --hgv-tint: #10305a;
+  --hgv-folder: #2d4260;
+  --hgv-doc-shadow: 0 0 0 1px #22344d, 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+.hgv *,
+.hgv *::before,
+.hgv *::after {
+  box-sizing: border-box;
+}
+:where(.hgv) :where(p, ul, ol) {
+  margin: 0;
+  padding: 0;
+}
+:where(.hgv) :where(ul, ol) {
+  list-style: none;
+}
+
+.hgv-stage {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+.hgv-view {
+  position: absolute;
+  inset: 0;
+}
+.hgv-view[hidden] {
+  display: none;
+}
+
+/* ── The certificate ──────────────────────────────────────── */
+.hgv-file {
+  position: absolute;
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--hgv-accent-text);
+  white-space: nowrap;
+}
+.hgv-doc {
+  position: absolute;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: var(--hgv-doc-shadow);
+  transition: box-shadow 300ms ease-out;
+}
+.hgv-doc img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.hgv-doc.is-good {
+  box-shadow:
+    0 0 0 3px var(--hgv-ok),
+    var(--hgv-doc-shadow);
+}
+.hgv-doc.is-failed {
+  display: grid;
+  place-items: center;
+  background: var(--hgv-card);
+  border: 1px solid var(--hgv-line);
+}
+.hgv-doc.is-failed img {
+  display: none;
+}
+.hgv-doc__fail {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--hgv-ink-3);
+}
+.hgv[data-arriving] .hgv-doc {
+  animation: hgv-in 520ms var(--hgv-ease-grow) backwards;
+}
+
+.hgv-scanbox {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 4px;
+  pointer-events: none;
+}
+.hgv-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: var(--hgv-accent);
+  box-shadow: 0 0 12px 2px rgba(21, 144, 255, 0.6);
+  animation: hgv-scan 1400ms var(--hgv-ease-move) both;
+  pointer-events: none;
+}
+/* The outlines fade by COLOUR, never opacity: an opacity change is composited, and Chromium then
+   promoted everything painted above it into one sheet-sized layer (CDP LayerTree, 2026-11-04). */
+.hgv-region {
+  position: absolute;
+  border: 2px solid rgba(21, 144, 255, 0);
+  background: rgba(21, 144, 255, 0);
+  border-radius: 4px;
+  transition:
+    border-color 400ms ease-out,
+    background-color 400ms ease-out;
+  pointer-events: none;
+}
+.hgv-region.is-on {
+  border-color: rgba(21, 144, 255, 1);
+  background: rgba(21, 144, 255, 0.1);
+  transition-duration: 160ms;
+}
+.hgv-region.is-ok {
+  border-color: rgba(19, 138, 67, 1);
+  background: rgba(19, 138, 67, 0.1);
+  transition-duration: 200ms;
+}
+
+/* ── The vendor column and its checks ─────────────────────── */
+.hgv-side {
+  position: absolute;
+  min-width: 0;
+}
+.hgv[data-arriving] .hgv-side > :not(.hgv-checks),
+.hgv[data-arriving] .hgv-row {
+  animation: hgv-fade 240ms linear backwards;
+  animation-delay: 200ms;
+}
+.hgv[data-arriving] .hgv-row:nth-child(2) {
+  animation-delay: 240ms;
+}
+.hgv[data-arriving] .hgv-row:nth-child(3) {
+  animation-delay: 280ms;
+}
+.hgv[data-arriving] .hgv-row:nth-child(4) {
+  animation-delay: 320ms;
+}
+.hgv-kicker {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--hgv-ink-3);
+}
+.hgv-vendor {
+  margin: 6px 0 4px;
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.hgv-sub {
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--hgv-ink-2);
+}
+.hgv-checks {
+  margin-top: 28px;
+  border-top: 1px solid var(--hgv-line);
+}
+.hgv-row {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  column-gap: 14px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hgv-line);
+}
+.hgv-row .hgv-ic {
+  grid-row: 1 / span 2;
+}
+.hgv-row__k {
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 600;
+}
+.hgv-row__v {
+  grid-column: 2;
+  min-height: 20px;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--hgv-ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hgv-row.is-wait .hgv-row__k {
+  color: var(--hgv-ink-3);
+}
+.hgv.is-live .hgv-row.is-ok .hgv-row__v {
+  animation: hgv-rise 200ms ease-out backwards;
+}
+
+/* The row icon: a grey ring waiting, a spinning ring while its check runs, green with a tick once it passes. */
+.hgv-ic {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--hgv-line);
+  transition:
+    background-color 200ms ease-out,
+    border-color 200ms ease-out;
+}
+.hgv-ic svg {
+  width: 70%;
+  height: 70%;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  transition: stroke-dashoffset 220ms var(--hgv-ease-expo);
+}
+.is-on > .hgv-ic {
+  border-color: var(--hgv-accent);
+  border-top-color: transparent;
+}
+.hgv.is-live .is-on > .hgv-ic {
+  animation: hgv-spin 700ms linear infinite;
+}
+.is-ok > .hgv-ic,
+.hgv-ic--big {
+  background: var(--hgv-ok);
+  border-color: var(--hgv-ok);
+}
+.is-ok > .hgv-ic svg,
+.hgv-ic--big svg {
+  stroke-dashoffset: 0;
+}
+
+.hgv-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 26px;
+  padding: 14px 22px 14px 16px;
+  border-radius: 14px;
+  background: var(--hgv-ok-bg);
+  color: var(--hgv-ok-ink);
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transform-origin: 30% 50%;
+}
+.hgv-ic--big {
+  width: 34px;
+  height: 34px;
+  flex: none;
+}
+.hgv.is-live .hgv-verdict {
+  animation: hgv-pop 380ms var(--hgv-ease-grow) backwards;
+}
+
+/* ── The filing view ──────────────────────────────────────── */
+.hgv-files {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 14px;
+}
+.hgv-files.is-centred {
+  align-items: flex-start;
+  padding: 40px 24px 16px;
+}
+.hgv-files__in {
+  width: 100%;
+  max-width: 640px;
+}
+.hgv-files__h {
+  margin: 6px 0 18px;
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.hgv-folder + .hgv-folder {
+  margin-top: 4px;
+}
+.hgv-folder__row {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  transition: background-color 280ms ease-out;
+}
+.hgv-folder__ic {
+  position: relative;
+  width: 36px;
+  height: 28px;
+  border-radius: 5px;
+  background: var(--hgv-folder);
+  transition: background-color 280ms ease-out;
+}
+.hgv-folder__ic::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -4px;
+  width: 16px;
+  height: 6px;
+  border-radius: 3px 3px 0 0;
+  background: inherit;
+}
+.hgv-folder__name {
+  display: grid;
+  min-width: 0;
+}
+.hgv-folder__name b {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hgv-folder__name span {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--hgv-ink-3);
+}
+.hgv-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  color: var(--hgv-ok-ink);
+  white-space: nowrap;
+}
+.hgv-status::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--hgv-ok);
+}
+.hgv-folder.is-target .hgv-folder__row {
+  background: var(--hgv-tint);
+}
+.hgv-folder.is-open .hgv-folder__ic {
+  background: var(--hgv-accent);
+}
+.hgv.is-live .hgv-folder.is-open .hgv-status::before {
+  animation: hgv-pulse 600ms ease-out 1;
+}
+.hgv-filed {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 280ms var(--hgv-ease-grow);
+}
+/* The card opens empty as the thumbnail takes off, so it lands in real space (never over the next row's text);
+   its own thumbnail and words show as it lands. */
+.hgv-folder.is-expanded .hgv-filed {
+  grid-template-rows: 1fr;
+}
+.hgv-filed__card > * {
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+.hgv-folder.is-open .hgv-filed__card > * {
+  opacity: 1;
+}
+.hgv.is-still .hgv-filed {
+  transition: none;
+}
+.hgv-filed__in {
+  min-height: 0;
+  overflow: hidden;
+}
+.hgv-filed__card {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  margin: 8px 0 10px 54px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--hgv-card);
+  border: 1px solid var(--hgv-line);
+  /* Small enough to fit in the card's margin: its wrapper clips (the open/close rows). */
+  box-shadow: 0 3px 8px rgba(10, 22, 40, 0.07);
+}
+.hgv-filed__thumb {
+  display: block;
+  width: 54px;
+}
+.hgv-filed__thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px var(--hgv-line);
+}
+.hgv-filed__txt {
+  display: grid;
+  min-width: 0;
+}
+.hgv-filed__txt b {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.hgv-filed__txt span {
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--hgv-ink-2);
+}
+/* View changes fade the pieces, never the whole view as one large layer (spec §2.6, check #6). */
+.hgv.is-live .hgv-files:not([hidden]) :is(.hgv-kicker, .hgv-files__h, .hgv-folder) {
+  animation: hgv-fade 240ms linear backwards;
+}
+
+
+/* The thumbnail's flight: one small element, transform only, from the certificate's centre to the card's slot. */
+.hgv-fly {
+  position: absolute;
+  z-index: 5;
+  display: block;
+  border-radius: 2px;
+  box-shadow: 0 8px 24px rgba(10, 22, 40, 0.25);
+  transform-origin: 0 0;
+  animation: hgv-fly 700ms var(--hgv-ease-move) both;
+  pointer-events: none;
+}
+
+/* ── Controls ─────────────────────────────────────────────── */
+.hgv-ctl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 56px 10px;
+}
+.hgv-play {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-left: -5px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+}
+.hgv-play::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: #0c6fc9;
+  transition:
+    background-color 150ms ease-out,
+    transform 120ms ease-out;
+}
+.hgv-play:hover::before {
+  background: #0a63b4;
+}
+.hgv-play:active::before {
+  transform: scale(0.96);
+}
+.hgv-play svg {
+  position: relative;
+  width: 15px;
+  height: 15px;
+}
+.hgv-steps {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  min-width: 0;
+}
+.hgv-steps > li {
+  flex: 1;
+  min-width: 0;
+}
+.hgv-step {
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--hgv-ink-3);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.hgv-step:hover {
+  color: var(--hgv-ink);
+}
+.hgv-step__bar {
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--hgv-line);
+  overflow: hidden;
+}
+.hgv-step:active .hgv-step__bar {
+  filter: brightness(0.92);
+}
+.hgv-step__fill {
+  display: block;
+  height: 100%;
+  background: var(--hgv-accent-text);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+.hgv-step__fill[data-run] {
+  animation-name: hgv-fill;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+.hgv-step__label {
+  font-size: 13px;
+  line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hgv-step.is-now {
+  color: var(--hgv-ink);
+}
+.hgv-step.is-now .hgv-step__label {
+  font-weight: 600;
+}
+.hgv-play:focus-visible,
+.hgv-step:focus-visible {
+  outline: 2px solid var(--hgv-accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.hgv-play:focus-visible {
+  border-radius: 50%;
+}
+
+/* A visitor's pause stops the timeline's own motion where it is. */
+.hgv.is-paused .hgv-scan,
+.hgv.is-paused .hgv-ic,
+.hgv.is-paused .hgv-step__fill,
+.hgv.is-paused .hgv-fly {
+  animation-play-state: paused;
+}
+
+/* ── Phone and short phone ────────────────────────────────── */
+.hgv--phone .hgv-vendor,
+.hgv--overlay .hgv-vendor {
+  margin: 0 0 4px;
+  font-size: 17px;
+  line-height: 22px;
+}
+.hgv--phone .hgv-checks,
+.hgv--overlay .hgv-checks {
+  margin-top: 4px;
+}
+.hgv--phone .hgv-row,
+.hgv--overlay .hgv-row {
+  grid-template-columns: 26px minmax(0, 1fr);
+  column-gap: 10px;
+  padding: 7px 0;
+}
+.hgv--phone .hgv-ic,
+.hgv--overlay .hgv-ic {
+  width: 22px;
+  height: 22px;
+}
+.hgv--phone .hgv-row__k,
+.hgv--overlay .hgv-row__k {
+  font-size: 14px;
+  line-height: 18px;
+}
+.hgv--phone .hgv-row__v,
+.hgv--overlay .hgv-row__v {
+  min-height: 16px;
+  font-size: 12.5px;
+  line-height: 16px;
+}
+.hgv--phone .hgv-verdict,
+.hgv--overlay .hgv-verdict {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: 0;
+  gap: 10px;
+  padding: 10px 16px 10px 12px;
+  font-size: 20px;
+  line-height: 26px;
+  box-shadow: 0 10px 30px rgba(10, 22, 40, 0.22);
+  transform: translate(-50%, -50%);
+}
+.hgv--phone .hgv-ic--big,
+.hgv--overlay .hgv-ic--big {
+  width: 26px;
+  height: 26px;
+}
+.hgv.is-live.hgv--phone .hgv-verdict,
+.hgv.is-live.hgv--overlay .hgv-verdict {
+  animation-name: hgv-pop-c;
+}
+.hgv--overlay .hgv-side {
+  padding: 10px 14px 4px;
+  border-radius: 16px;
+  background: var(--hgv-card);
+  box-shadow: 0 -8px 24px rgba(10, 22, 40, 0.16);
+}
+.hgv--overlay .hgv-verdict {
+  top: 34%;
+}
+.hgv--phone .hgv-files__h,
+.hgv--overlay .hgv-files__h {
+  margin: 0 0 8px;
+  font-size: 17px;
+  line-height: 22px;
+}
+.hgv--phone .hgv-folder__row,
+.hgv--overlay .hgv-folder__row {
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 8px 8px;
+}
+.hgv--phone .hgv-folder__ic,
+.hgv--overlay .hgv-folder__ic {
+  width: 26px;
+  height: 20px;
+}
+.hgv--phone .hgv-folder__ic::before,
+.hgv--overlay .hgv-folder__ic::before {
+  width: 12px;
+  height: 5px;
+  top: -3px;
+}
+.hgv--phone .hgv-folder__name b,
+.hgv--overlay .hgv-folder__name b {
+  font-size: 14px;
+  line-height: 18px;
+}
+.hgv--phone .hgv-filed__card,
+.hgv--overlay .hgv-filed__card {
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  margin: 4px 0 4px 38px;
+  padding: 7px 9px;
+}
+.hgv--phone .hgv-filed__thumb,
+.hgv--overlay .hgv-filed__thumb {
+  width: 34px;
+}
+.hgv--phone .hgv-filed__txt b,
+.hgv--overlay .hgv-filed__txt b {
+  font-size: 13px;
+  line-height: 18px;
+}
+.hgv--phone .hgv-filed__txt span,
+.hgv--overlay .hgv-filed__txt span {
+  font-size: 11.5px;
+  line-height: 16px;
+}
+.hgv--phone .hgv-ctl,
+.hgv--overlay .hgv-ctl {
+  padding: 0 10px 4px;
+  gap: 4px;
+}
+.hgv--phone .hgv-step__label,
+.hgv--overlay .hgv-step__label {
+  display: none;
+}
+.hgv--phone .hgv-steps,
+.hgv--overlay .hgv-steps {
+  gap: 6px;
+}
+
+/* ── Reduced motion: end states, cut (no animation runs: .is-live is never set) ──
+   A 150 ms opacity crossfade was tried: the reduced-motion rule below shortens it to 1 ms, and
+   Playwright WebKit then intermittently left the folder rows and step labels at opacity 0 for
+   ~1 s (measured 2026-11-04). A cut has no such failure. */
+.hgv.is-still *,
+.hgv.is-still *::before {
+  transition: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hgv *,
+  .hgv *::before {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@keyframes hgv-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes hgv-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes hgv-rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+@keyframes hgv-scan {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(var(--hgv-scan-to, 0));
+  }
+}
+@keyframes hgv-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@keyframes hgv-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+@keyframes hgv-pop-c {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+  to {
+    transform: translate(-50%, -50%);
+  }
+}
+@keyframes hgv-pulse {
+  50% {
+    transform: scale(1.6);
+  }
+}
+@keyframes hgv-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes hgv-fly {
+  50% {
+    transform: translate(calc(var(--hgv-fx) * 0.5), calc(var(--hgv-fy) * 0.5 - 40px)) scale(calc((1 + var(--hgv-fs)) / 2));
+  }
+  to {
+    transform: translate(var(--hgv-fx), var(--hgv-fy)) scale(var(--hgv-fs));
+  }
+}

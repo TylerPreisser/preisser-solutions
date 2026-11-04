@@ -82,6 +82,9 @@ export const invented: InventedSet = {
     "Previous", "Quoted", "Re", "Readable", "Reads", "Remarks", "Reminder", "Still", "Thanks",
     "Umbrella", "Verdict", "Written", "AM", "PM", "DW", "MT", "TP", "KS", "PO", "County", "Road",
     "Main", "St", "W", "Box", "Files", "Follows",
+    // The Vendor Insurance scene (ADR-0025 §2): its step names, controls and
+    // checklist words, and the "M" of "$1M".
+    "Arrives", "Good", "Play", "Effective", "Expires", "M",
     // The printed ACORD 25 (2016/03) form's own labels and fine print, and the
     // invented policy and certificate numbers typed on it.
     "ABOVE", "ACCIDENT", "ACCORDANCE", "ADDL", "ADDRESS", "ADV", "AFFIRMATIVELY", "AFFORDED",
@@ -109,5 +112,11 @@ export const invented: InventedSet = {
     // The COI emails are signed as the engine signs them (coiRules.js:78-79).
     { name: "Tyler Preisser", source: "docs/CANONICAL-PROJECTS.md:27: Tyler Preisser, founder" },
   ],
-  assets: [],
+  // The Vendor Insurance scene's certificate (scripts/render-acord.mjs): the
+  // Acord25 component drawn with the invented data in
+  // src/data/showcase/scenes/hg-vendor.ts (every name on it is registered above).
+  assets: [
+    { path: "/images/demos/hg-oil/acord25-prairie-dog.png", provenance: "scripts/render-acord.mjs: Acord25.tsx + hg-vendor.ts VENDOR_CERT, invented data only" },
+    { path: "/images/demos/hg-oil/acord25-prairie-dog-thumb.webp", provenance: "scripts/render-acord.mjs: the same render, 408 x 528" },
+  ],
 };

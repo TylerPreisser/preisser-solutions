@@ -9,10 +9,12 @@ import type { SceneProps } from "./kit";
 import { HgCoiScene, type FluidSceneProps } from "./HgCoiScene";
 import { HgSwdScene } from "./HgSwdScene";
 import { ComingScene } from "./ComingScene";
+import { HgVendorScene } from "./HgVendorScene";
 import { FarmbooksBillScene } from "./FarmbooksBillScene";
 import { NwksBedsScene } from "./NwksBedsScene";
 import { swdCam, swdCues, swdDeskCam } from "@/data/demos/scenes/hg-oil";
 import { COI_TOTAL_MS } from "@/data/showcase/scenes/hg-coi";
+import { VENDOR_TOTAL_MS } from "@/data/showcase/scenes/hg-vendor";
 import { fbCam, fbCues, fbHoldMs } from "@/data/demos/scenes/farmbooks";
 import { bedsCam, bedsCues } from "@/data/demos/scenes/nwks-encounter";
 
@@ -33,7 +35,7 @@ export type SceneId =
 export type FluidSceneId = "hg-coi" | "hg-vendor" | "farmbooks-bills" | "duffer-cc" | "nwks-admin";
 export const FLUID_SCENES: Record<FluidSceneId, ComponentType<FluidSceneProps>> = {
   "hg-coi": HgCoiScene,
-  "hg-vendor": ComingScene,
+  "hg-vendor": HgVendorScene,
   "farmbooks-bills": ComingScene,
   "duffer-cc": ComingScene,
   "nwks-admin": ComingScene,
@@ -56,7 +58,8 @@ export const SCENE_MS: Record<SceneId, number> = {
   "farmbooks-bill": fbCues[fbCues.length - 1] + fbHoldMs,
   "nwks-beds": bedsCues[bedsCues.length - 1] + 4200,
   // Spec lengths (design-spec-r2 §2, §6.1-6.3); the builder owns the final value.
-  "hg-vendor": 13000,
+  // Four steps (Arrives, Checks, Good to go, Filed), 13 s, then the window moves to Impact.
+  "hg-vendor": VENDOR_TOTAL_MS,
   "farmbooks-bills": 32000,
   "duffer-cc": 34000,
   "nwks-admin": 34000,
