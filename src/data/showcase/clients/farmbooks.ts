@@ -17,6 +17,7 @@
 // found in her old books (the owner asked for that block to come off the site).
 import type { ShowcaseClient } from "../types";
 import { fact, figure, impactBeat } from "../impact";
+import { BILLS_NARRATION } from "../scenes/farmbooks-bills";
 
 export const impact = impactBeat("farmbooks", {
   tab: "Impact",
@@ -145,8 +146,7 @@ const client: ShowcaseClient = {
       tab: "Bills",
       caption: "A farm bill is snapped, read, sorted by category, split by field and booked, then summed up.",
       scene: "farmbooks-bills",
-      narration:
-        "FarmBooks on demonstration data: a farm supply bill is photographed, read line by line, sorted into tax categories, split across the farm's fields by acres, checked against the printed total, and summed up at year end.",
+      narration: BILLS_NARRATION,
     },
     impact,
   ],
