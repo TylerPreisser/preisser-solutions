@@ -120,13 +120,17 @@ interface Layout {
   doc: Rect;
   /** The checklist column (desk) or block (phone). */
   side: CSSProperties;
+  /** The checklist's width: under 480 the values use their short forms (no ellipsis). */
+  sideW: number;
 }
 
 const RATIO = ACORD_IMAGE.nativeH / ACORD_IMAGE.nativeW;
 
 /** Where the certificate and the checklist sit for a stage of W x H (design-spec-r2 §2.2). */
 function layoutFor(variant: "desk" | "phone", W: number, H: number, sideH: number): Layout {
-  if (variant === "desk" && W >= 720) {
+  // A tall, narrowish window (a tablet held upright) stacks like a phone: side by side, the page would be small and the column cramped.
+  const tall = W < 1000 && H > W * 0.85;
+  if (variant === "desk" && W >= 720 && !tall) {
     const pad = Math.round(Math.min(56, Math.max(24, W * 0.046)));
     const gap = Math.round(Math.min(88, Math.max(36, W * 0.07)));
     const top = H >= 560 ? 40 : 28;
@@ -138,7 +142,7 @@ function layoutFor(variant: "desk" | "phone", W: number, H: number, sideH: numbe
       h = w * RATIO;
     }
     const doc = { x: pad, y: top, w: Math.round(w), h: Math.round(h) };
-    return { mode: "desk", doc, side: { left: doc.x + doc.w + gap, right: pad, top } };
+    return { mode: "desk", doc, side: { left: doc.x + doc.w + gap, right: pad, top }, sideW: W - (doc.x + doc.w + gap) - pad };
   }
   // Phone: the certificate centred above the checklist; a short stage lays the checklist over the page.
   // The room under the page is the checklist's MEASURED height (each engine's own line boxes), else the spec's estimate.
@@ -147,11 +151,13 @@ function layoutFor(variant: "desk" | "phone", W: number, H: number, sideH: numbe
     const below = (sideH > 0 ? sideH : 236) + 12 + 8;
     const w = Math.round(Math.max(180, Math.min(W - 80, (H - top - below) / RATIO)));
     const doc = { x: Math.round((W - w) / 2), y: top, w, h: Math.round(w * RATIO) };
-    return { mode: "phone", doc, side: { left: 14, right: 14, top: doc.y + doc.h + 12 } };
+    const sideW = Math.min(W - 28, 560);
+    return { mode: "phone", doc, side: { left: Math.round((W - sideW) / 2), width: sideW, top: doc.y + doc.h + 12 }, sideW };
   }
+  // A short phone (toolbar showing, or a 320 x 568): the page fills the width and a compact checklist card sits over its lower part.
   const w = W - 24;
   const doc = { x: 12, y: 10, w, h: Math.round(w * RATIO) };
-  return { mode: "overlay", doc, side: { left: 8, right: 8, bottom: 8 } };
+  return { mode: "overlay", doc, side: { left: 8, right: 8, bottom: 8 }, sideW: W - 16 };
 }
 
 type RowState = "wait" | "on" | "ok";
@@ -205,6 +211,9 @@ export function HgVendorScene({ variant, active, reduced, onCaption, onHold }: V
   const L = layoutFor(variant, W, H, sideBox.h);
   const s = L.doc.w / ACORD_IMAGE.nativeW;
   const phoneLike = L.mode !== "desk";
+  const shortValues = phoneLike || L.sideW < 480;
+  // Overlay: the verdict sits in the middle of the part of the page the card leaves showing.
+  const visMid = L.mode === "overlay" && sideBox.h > 0 ? Math.max(40, (H - 8 - sideBox.h - L.doc.y) / 2) : null;
   /** Region outline width: thinner on a phone, where the page is drawn at a third of its size. */
   const bw = phoneLike ? 1.5 : 2;
 
@@ -247,7 +256,7 @@ export function HgVendorScene({ variant, active, reduced, onCaption, onHold }: V
   return (
     <div
       ref={rootRef}
-      className={`hgv hgv--${L.mode}${reduced ? " is-still" : ""}${live ? " is-live" : ""}${playing ? "" : " is-paused"}`}
+      className={`hgv hgv--${L.mode}${L.mode === "desk" && H < 600 ? " is-short" : ""}${reduced ? " is-still" : ""}${live ? " is-live" : ""}${playing ? "" : " is-paused"}`}
       data-scene="hg-vendor"
       data-step={step + 1}
       data-t={Math.round(t)}
@@ -262,7 +271,7 @@ export function HgVendorScene({ variant, active, reduced, onCaption, onHold }: V
           )}
           <div
             className={`hgv-doc${good ? " is-good" : ""}${img === "failed" ? " is-failed" : ""}`}
-            style={{ left: L.doc.x, top: L.doc.y, width: L.doc.w, height: L.doc.h }}
+            style={{ left: L.doc.x, top: L.doc.y, width: L.doc.w, height: L.doc.h, ...(visMid !== null ? ({ "--hgv-vis-mid": `${visMid}px` } as CSSProperties) : null) }}
           >
             {/* A plain <img> at display size on purpose (static export; next/image would add a wrapper and srcset). */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -311,7 +320,7 @@ export function HgVendorScene({ variant, active, reduced, onCaption, onHold }: V
             {phoneLike ? null : <p className="hgv-sub">Certificate of liability insurance · ACORD 25</p>}
             <ul className="hgv-checks">
               {CHECKS.map((c, i) => (
-                <Row key={c.key} k={c.key} label={c.label} value={phoneLike ? c.short : c.value} state={rowState(i, t)} />
+                <Row key={c.key} k={c.key} label={c.label} value={shortValues ? c.short : c.value} state={rowState(i, t)} />
               ))}
             </ul>
             {good && !phoneLike ? <Verdict key={`v-${seq}`} /> : null}

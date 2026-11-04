@@ -54,6 +54,7 @@
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
+  container: hgv / inline-size;
 }
 [data-theme="dark"] .hgv {
   --hgv-card: #13233a;
@@ -681,14 +682,38 @@
 .hgv.is-live.hgv--overlay .hgv-verdict {
   animation-name: hgv-pop-c;
 }
+/* Short phones: a compact card (ticks and labels in two columns; the page shows the values) over the
+   page's lower part, and the verdict in the middle of what the card leaves showing. */
 .hgv--overlay .hgv-side {
-  padding: 10px 14px 4px;
+  padding: 10px 14px 8px;
   border-radius: 16px;
   background: var(--hgv-card);
   box-shadow: 0 -8px 24px rgba(10, 22, 40, 0.16);
 }
+.hgv--overlay .hgv-checks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 10px;
+  border-top: 1px solid var(--hgv-line);
+}
+.hgv--overlay .hgv-row {
+  grid-template-columns: 22px minmax(0, 1fr);
+  column-gap: 8px;
+  padding: 7px 0 3px;
+  border-bottom: 0;
+}
+.hgv--overlay .hgv-row .hgv-ic {
+  grid-row: auto;
+}
+.hgv--overlay .hgv-row__k {
+  font-size: 13px;
+  line-height: 17px;
+}
+.hgv--overlay .hgv-row__v {
+  display: none;
+}
 .hgv--overlay .hgv-verdict {
-  top: 34%;
+  top: var(--hgv-vis-mid, 34%);
 }
 .hgv--phone .hgv-files__h,
 .hgv--overlay .hgv-files__h {
@@ -717,6 +742,9 @@
 .hgv--overlay .hgv-folder__name b {
   font-size: 14px;
   line-height: 18px;
+  /* A long vendor name wraps to a second line on a narrow phone; it is never cut. */
+  white-space: normal;
+  overflow: visible;
 }
 .hgv--phone .hgv-filed__card,
 .hgv--overlay .hgv-filed__card {
@@ -747,6 +775,39 @@
 .hgv--phone .hgv-step__label,
 .hgv--overlay .hgv-step__label {
   display: none;
+}
+/* A stacked layout with room (a tablet held upright) keeps the step names. */
+@container hgv (min-width: 600px) {
+  .hgv--phone .hgv-step__label {
+    display: block;
+  }
+  .hgv--phone .hgv-ctl {
+    padding: 4px 24px 10px;
+  }
+}
+/* A short phone: the filing view starts at the top and keeps the open folder with one neighbour on each
+   side (the first and last folders give way), so nothing is cut by the controls or the stage top. */
+.hgv--overlay .hgv-files {
+  align-items: flex-start;
+  padding-top: 12px;
+}
+.hgv--overlay .hgv-folder:first-child,
+.hgv--overlay .hgv-folder:last-child {
+  display: none;
+}
+/* A short desk window: the filing view tightens so all five folders and the open card fit. */
+.hgv.is-short .hgv-files.is-centred {
+  padding-top: 14px;
+}
+.hgv.is-short .hgv-files .hgv-kicker {
+  display: none;
+}
+.hgv.is-short .hgv-files__h {
+  margin: 0 0 8px;
+}
+.hgv.is-short .hgv-folder__row {
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
 .hgv--phone .hgv-steps,
 .hgv--overlay .hgv-steps {
