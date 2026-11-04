@@ -619,6 +619,37 @@ html.sc-sheet-open .ps-header {
     font-size: 13px;
   }
 }
+/* Tabs that do not fit side by side: a horizontal scroll strip (design spec r2 §1.1). Each label keeps its
+   whole width and a 44px target; a 20px fade sits on whichever edge has tabs past it. */
+.sc-tabs[data-scroll] {
+  --sc-fade-l: 0px;
+  --sc-fade-r: 0px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 28px;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--sc-fade-l), #000 calc(100% - var(--sc-fade-r)), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--sc-fade-l), #000 calc(100% - var(--sc-fade-r)), transparent 100%);
+}
+.sc-tabs[data-scroll]::-webkit-scrollbar {
+  display: none;
+}
+.sc-tabs[data-scroll][data-fade-l] {
+  --sc-fade-l: 20px;
+}
+.sc-tabs[data-scroll][data-fade-r] {
+  --sc-fade-r: 20px;
+}
+.sc-tabs[data-scroll] .sc-tabs__tab,
+.sc-sheet .sc-tabs[data-scroll] .sc-tabs__tab {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  min-height: 44px;
+  padding: 0 14px;
+  font-size: 14px;
+}
 .sc-sheet .sc-panel {
   flex: 1 1 auto;
 }

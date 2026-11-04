@@ -278,6 +278,64 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
     e.preventDefault();
   };
 
+  // Labels that do not fit side by side (Duffer's five tabs on a phone sheet, design spec r2 §1.1) turn
+  // the bar into a horizontal scroll strip; labels are never squeezed, overprinted or cut. Measured from
+  // the labels' own text, so the answer is the same in either layout (no flip-flop between them).
+  const [scrollTabs, setScrollTabs] = useState(false);
+  // In the strip, a fade marks whichever edge has tabs hidden past it.
+  const edges = useCallback(() => {
+    const track = tabsRef.current;
+    if (!track) return;
+    const on = track.hasAttribute("data-scroll");
+    track.toggleAttribute("data-fade-l", on && track.scrollLeft > 1);
+    track.toggleAttribute("data-fade-r", on && track.scrollLeft + track.clientWidth < track.scrollWidth - 1);
+  }, []);
+  useEffect(() => {
+    const track = tabsRef.current;
+    if (!track) return;
+    let live = true;
+    const fit = () => {
+      if (!live) return;
+      let need = 8; // the track's own padding
+      track.querySelectorAll<HTMLElement>(".sc-tabs__tab").forEach((t) => {
+        const r = document.createRange();
+        r.selectNodeContents(t);
+        // 10px a side: below that the labels read as one run ("Command Center MarCommand", WebKit at 430).
+        need += r.getBoundingClientRect().width + 20;
+      });
+      setScrollTabs(need > track.clientWidth + 1);
+      requestAnimationFrame(edges);
+    };
+    fit();
+    document.fonts?.ready.then(fit).catch(() => {});
+    const ro = new ResizeObserver(fit);
+    ro.observe(track);
+    return () => {
+      live = false;
+      ro.disconnect();
+    };
+  }, [edges]);
+  // The selected tab stays in view: at once on open (and under reduced motion), smoothly after.
+  const scrolledOnce = useRef(false);
+  useEffect(() => {
+    const track = tabsRef.current;
+    if (!track) return;
+    if (!scrollTabs) {
+      edges();
+      return;
+    }
+    const t = track.querySelector<HTMLElement>(`[aria-selected="true"]`);
+    if (t) {
+      const pad = 28;
+      const l = t.offsetLeft - pad;
+      const r = t.offsetLeft + t.offsetWidth + pad - track.clientWidth;
+      const left = track.scrollLeft > l ? l : track.scrollLeft < r ? r : track.scrollLeft;
+      track.scrollTo({ left: Math.max(0, left), behavior: scrolledOnce.current && !reduced ? "smooth" : "auto" });
+    }
+    scrolledOnce.current = true;
+    edges();
+  }, [at, scrollTabs, reduced, edges]);
+
   // The pill sits under the selected tab by measurement (tab widths are unequal), after the
   // web font has loaded and again whenever the track resizes.
   const [pill, setPill] = useState<{ x: number; w: number; ready: boolean } | null>(null);
@@ -299,7 +357,7 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
       live = false;
       ro.disconnect();
     };
-  }, [at]);
+  }, [at, scrollTabs]);
 
   // ── Sheet: swipe down to dismiss, from the grip and the name/close row only.
   const drag = useRef<{ y0: number; y: number; t: number; v: number; id: number; moved: boolean } | null>(null);
@@ -364,7 +422,15 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
       <p className="sc-head__name" id={titleId}>
         {show.short}
       </p>
-      <div className="sc-tabs" role="tablist" aria-label={show.name} ref={tabsRef} onKeyDown={onTabKey}>
+      <div
+        className="sc-tabs"
+        role="tablist"
+        aria-label={show.name}
+        ref={tabsRef}
+        onKeyDown={onTabKey}
+        data-scroll={scrollTabs ? "" : undefined}
+        onScroll={scrollTabs ? edges : undefined}
+      >
         <span
           className="sc-tabs__pill"
           data-ready={pill?.ready ? "" : undefined}
