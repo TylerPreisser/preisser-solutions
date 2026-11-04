@@ -10,12 +10,12 @@
 //    Published on this site, How it is built, Our audit of the old site) and
 //    may not name a path, file, meeting or memory. impactBeat() then refuses,
 //    at the type level, any PLAIN string anywhere in the beat (kicker, closing,
-//    names, labels, steps, pairs, narration...) that holds a digit or a number
-//    word: such copy must be a fact().
+//    unit, text, narration...) that holds a digit or a number word: such copy
+//    must be a fact(). Every number in a big or row slot is a figure().
 // 2. RUNTIME (defence in depth, fires when the window loads the client file,
 //    so the privacy probe goes red): the same number rule, placeholders ("#",
 //    "[", "TBD", "XX"), em/en dashes and curly quotes, and the layout's counts.
-import type { ImpactBeat, ImpactChapter, ImpactCopy, ImpactFact, ImpactFigure } from "./types";
+import type { ImpactBeat, ImpactCopy, ImpactFact, ImpactFigure, ImpactStat } from "./types";
 
 /** Words that state a quantity. Copy that uses one must be a fact(). */
 export const NUMBER_WORDS = [
@@ -82,16 +82,23 @@ type Checked<T> = T extends ImpactFact | ImpactFigure
 
 // ── Builders ────────────────────────────────────────────────────────────────
 
+/** What fact() and figure() made. A value that is not in here was written by hand, so it is unsourced. */
+const MINTED = new WeakSet<object>();
+
 /** Copy that carries a number or a claim. The source is the type argument; it is not shipped. */
 export function fact<S extends string = never>(text: string, ...source: SourceArgs<S>): ImpactFact {
   void source;
-  return { kind: "fact", text };
+  const f = { kind: "fact", text } as ImpactFact;
+  MINTED.add(f);
+  return f;
 }
 
 /** A number shown large. The source is the type argument; it is not shipped. */
 export function figure<S extends string = never>(value: string, label: string, ...source: SourceArgs<S>): ImpactFigure {
   void source;
-  return { kind: "figure", value, label };
+  const f = { kind: "figure", value, label } as ImpactFigure;
+  MINTED.add(f);
+  return f;
 }
 
 // ── Runtime checks ──────────────────────────────────────────────────────────
@@ -104,40 +111,26 @@ export const hasNumber = (s: string) => /\d/.test(s) || NUMBER_WORD.test(s);
 export class ImpactDataError extends Error {}
 
 const textOf = (c: ImpactCopy) => (typeof c === "string" ? c : c.text);
+const isMinted = (c: object) => MINTED.has(c);
 
 /** Every string a visitor can see or hear, with where it sits and whether it is sourced. */
 function shown(b: ImpactBeat): { where: string; text: string; sourced: boolean }[] {
   const out: { where: string; text: string; sourced: boolean }[] = [];
-  const add = (where: string, c: ImpactCopy) => out.push({ where, text: textOf(c), sourced: typeof c !== "string" });
-  const fig = (where: string, f: ImpactFigure) => out.push({ where, text: `${f.value} ${f.label}`, sourced: f.kind === "figure" });
+  const add = (where: string, c: ImpactCopy) => out.push({ where, text: textOf(c), sourced: typeof c !== "string" && isMinted(c) });
+  const fig = (where: string, f: ImpactFigure) =>
+    out.push({ where, text: `${f.value} ${f.label}`, sourced: isMinted(f) });
   add("tab", b.tab);
   add("caption", b.caption);
   add("kicker", b.kicker);
-  add("closing", b.closing);
   add("narration", b.narration);
-  b.chapters.forEach((c: ImpactChapter, i) => {
-    const at = `chapter ${i + 1}`;
-    add(`${at} name`, c.name);
-    if (c.cadence) add(`${at} cadence`, c.cadence);
-    add(`${at} how`, c.how);
-    add(`${at} hero before`, c.hero.before);
-    add(`${at} hero now`, c.hero.now);
-    for (const f of c.figures ?? []) fig(`${at} figure`, f);
-    for (const t of c.time ?? []) {
-      add(`${at} time label`, t.label);
-      fig(`${at} time before`, t.before);
-      fig(`${at} time now`, t.now);
-    }
-    for (const s of c.steps) {
-      add(`${at} step verb`, s.verb);
-      add(`${at} step`, s.text);
-    }
-    for (const p of c.pairs ?? []) {
-      add(`${at} pair label`, p.label);
-      add(`${at} pair before`, p.before);
-      add(`${at} pair now`, p.now);
-    }
-  });
+  if (b.text) add("text", b.text);
+  const stat = (where: string, s: ImpactStat) => {
+    fig(`${where} now`, s.now);
+    if (s.before) fig(`${where} before`, s.before);
+    if (s.unit !== undefined) out.push({ where: `${where} unit`, text: s.unit, sourced: false });
+  };
+  b.big.forEach((s, i) => stat(`big ${i + 1}`, s));
+  b.rows.forEach((s, i) => stat(`row ${i + 1}`, s));
   return out;
 }
 
@@ -152,14 +145,11 @@ function validate(slug: string, beat: ImpactBeat): ImpactBeat {
     if (!s.sourced && hasNumber(s.text)) fail(slug, `${s.where} holds a number with no source: "${s.text}"`);
     if (!s.text.trim()) fail(slug, `${s.where} is empty`);
   }
-  if (beat.chapters.length < 1 || beat.chapters.length > 2) fail(slug, `${beat.chapters.length} chapters; 1 or 2`);
-  beat.chapters.forEach((c, i) => {
-    const at = `chapter ${i + 1} (${c.name})`;
-    if (c.steps.length < 3 || c.steps.length > 5) fail(slug, `${at} has ${c.steps.length} steps; 3 to 5`);
-    if ((c.figures?.length ?? 0) > 3) fail(slug, `${at} has more than 3 figures`);
-    if ((c.pairs?.length ?? 0) > 4) fail(slug, `${at} has more than 4 pairs`);
-    if ((c.time?.length ?? 0) > 2) fail(slug, `${at} has more than 2 time rows`);
-  });
+  if (beat.big.length > 3) fail(slug, `${beat.big.length} big numbers; 3 at most`);
+  if (beat.rows.length > 4) fail(slug, `${beat.rows.length} rows; 4 at most`);
+  if (beat.text && textOf(beat.text).length > 140) fail(slug, "text is over 140 characters");
+  // Nothing to show: the client file must drop the beat, so the tab disappears.
+  if (beat.big.length === 0 && beat.rows.length === 0 && !beat.lead) fail(slug, "no big numbers, rows or lead: drop the Impact beat");
   if (beat.narration.length < 80) fail(slug, "narration is under 80 characters");
   return beat;
 }

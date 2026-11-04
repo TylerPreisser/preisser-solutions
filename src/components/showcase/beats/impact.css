@@ -1,28 +1,27 @@
 /* ============================================================
-   impact.css — the Impact tab (ADR-0022 §3; design spec §5, reworked after
-   critic round 1 §3). The payoff leads: before (receded) -> now (bright) at
-   display size, figures at 64-80 px, then the steps as the supporting "how".
+   impact.css — the Impact tab, round 2 (ADR-0025 §3; spec §3; concept
+   impact.html). Big numbers first: the old number struck, the new one at
+   display size; then rows; then one sentence. Absent slots are not rendered.
    Layout follows the PANEL's own width (container queries):
-     narrow  <= 560   phone sheets: one column, same order
-     mid     561-859  tablet sheets
-     wide    >= 860   desktop windows: the full panel width, two-column contrast
-   Colours (WCAG on these flat values, tint composited):
-     light  ground #F6F9FC  ink #0A1628 (17.2)  ink-2 #475569 (7.2)
-            before #5B6B82 (5.4)  accent #0C6FC9 (4.8)
-     dark   ground #0F1D30  ink #FFFFFF (17.0)  ink-2 #94A3B8 (6.6)
-            before #8495AD (5.6)  accent #5AB0FF (7.3)
-   Only --im-* is declared here.
+     narrow  <= 560   phone sheet: cards stack
+     mid     561-899  tablet sheets: now 72
+     wide    >= 900   desktop window: now 88
+   Colours (WCAG on these flat values):
+     light  card #fff  ink #0A1628  ink-2 #4A5A70 (7.03)  strike #8593A6 (3.12, large text only)
+            accent-text #0C6FC9
+     dark   card #13233A  ink #F2F6FB  ink-2 #A9B6C8 (7.68)  strike #74839A (4.10, large only)
+   Only --im-* is declared here. Motion is opacity and transform on small
+   elements only; every animation sits under [data-play] and rests visible.
    ============================================================ */
 
 .im {
-  --im-ground: #f6f9fc;
+  --im-ground: #ffffff;
   --im-ink: #0a1628;
-  --im-ink-2: #475569;
-  --im-was: #5b6b82;
+  --im-ink-2: #4a5a70;
+  --im-strike: #8593a6;
   --im-accent: #0c6fc9;
-  --im-rule: rgba(10, 22, 40, 0.1);
-  --im-card: #ffffff;
-  --im-now: rgba(12, 111, 201, 0.05);
+  --im-rule: #dfe5ec;
+  --im-pad: 64px 72px 40px;
   position: relative;
   container: im / inline-size;
   height: 100%;
@@ -33,14 +32,12 @@
   text-align: left;
 }
 [data-theme="dark"] .im {
-  --im-ground: #0f1d30;
-  --im-ink: #ffffff;
-  --im-ink-2: #94a3b8;
-  --im-was: #8495ad;
-  --im-accent: #5ab0ff;
-  --im-rule: rgba(255, 255, 255, 0.12);
-  --im-card: rgba(255, 255, 255, 0.035);
-  --im-now: rgba(90, 176, 255, 0.08);
+  --im-ground: #13233a;
+  --im-ink: #f2f6fb;
+  --im-ink-2: #a9b6c8;
+  --im-strike: #74839a;
+  --im-accent: #4aa8ff;
+  --im-rule: #22344d;
 }
 
 .im__scroll {
@@ -50,611 +47,399 @@
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 }
-/* An edge with more text past it fades instead of slicing a line mid-glyph. */
+.im__scroll:focus-visible {
+  outline: 2px solid var(--im-accent);
+  outline-offset: -3px;
+}
+/* An edge with more content past it fades instead of slicing a line mid-glyph. */
 .im__scroll[data-edge="top"] {
   -webkit-mask-image: linear-gradient(transparent 0, #000 16px);
   mask-image: linear-gradient(transparent 0, #000 16px);
 }
 .im__scroll[data-edge="bottom"] {
-  -webkit-mask-image: linear-gradient(#000 calc(100% - 28px), transparent);
-  mask-image: linear-gradient(#000 calc(100% - 28px), transparent);
+  -webkit-mask-image: linear-gradient(#000 calc(100% - 24px), transparent);
+  mask-image: linear-gradient(#000 calc(100% - 24px), transparent);
 }
 .im__scroll[data-edge="both"] {
-  -webkit-mask-image: linear-gradient(transparent 0, #000 16px, #000 calc(100% - 28px), transparent);
-  mask-image: linear-gradient(transparent 0, #000 16px, #000 calc(100% - 28px), transparent);
-}
-/* The focus ring is drawn by the panel, which the edge fade does not mask. */
-.im__scroll:focus-visible {
-  outline: none;
-}
-.im:has(> .im__scroll:focus-visible) {
-  box-shadow: inset 0 0 0 2px var(--im-accent);
+  -webkit-mask-image: linear-gradient(transparent 0, #000 16px, #000 calc(100% - 24px), transparent);
+  mask-image: linear-gradient(transparent 0, #000 16px, #000 calc(100% - 24px), transparent);
 }
 
-:where(.im) :where(p, h3, ol, ul, li) {
-  margin: 0;
-  padding: 0;
-}
-:where(.im) :where(ol, ul) {
-  list-style: none;
-}
-
-/* ── Narrow (phones) first ─────────────────────────────────── */
 .im__col {
-  padding: 26px 20px 44px;
-}
-.im__kicker {
-  font-size: 12px;
-  line-height: 1.3;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--im-accent);
-}
-
-.im__ch {
-  margin-top: 22px;
-}
-.im__ch + .im__ch {
-  margin-top: 48px;
-  padding-top: 32px;
-  border-top: 1px solid var(--im-rule);
-}
-.im__ch-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: 12px;
-  row-gap: 4px;
-  margin-bottom: 18px;
-}
-.im__ch-n {
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  font-variant-numeric: tabular-nums;
-  color: var(--im-accent);
-}
-.im__ch-name {
-  font-size: 19px;
-  line-height: 1.25;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--im-ink);
-}
-.im__ch-when {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--im-ink-2);
-}
-
-/* The payoff: what it was (receded) -> what it is now (bright). */
-.im__hero {
-  display: grid;
-  gap: 10px;
-}
-.im__tag {
-  font-size: 11px;
-  line-height: 1.3;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--im-was);
-  margin-bottom: 6px;
-}
-.im__tag--now {
-  color: var(--im-accent);
-}
-.im__was-t {
-  font-size: 20px;
-  line-height: 1.3;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--im-was);
-  text-wrap: balance;
-}
-.im__is-t {
-  font-size: 29px;
-  line-height: 1.1;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: var(--im-ink);
-  text-wrap: balance;
-}
-.im__arrow {
-  width: 40px;
-  height: 20px;
-  color: var(--im-accent);
-  transform: rotate(90deg);
-  transform-origin: 20px 10px;
-  margin: 4px 0 2px -6px;
-}
-
-/* Figures, large. */
-.im__figs {
-  margin-top: 30px;
-  padding-top: 22px;
-  border-top: 1px solid var(--im-rule);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
-  gap: 20px 20px;
-}
-.im__fig {
+  min-height: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-}
-.im__fig-v {
-  font-size: 46px;
-  line-height: 1;
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  font-variant-numeric: tabular-nums;
-  color: var(--im-ink);
-  white-space: nowrap;
-}
-.im__fig-l {
-  font-size: 14px;
-  line-height: 1.4;
-  color: var(--im-ink-2);
+  padding: var(--im-pad);
 }
 
-/* The "how": a label, then the steps. */
-.im__how {
-  margin-top: 36px;
-  margin-bottom: 6px;
-  font-size: 12px;
-  line-height: 1.3;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--im-ink-2);
-}
-.im__step {
-  display: grid;
-  grid-template-columns: 28px 1fr;
-  gap: 10px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--im-rule);
-}
-.im__step-n {
-  padding-top: 3px;
-  font-size: 12px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--im-was);
-}
-.im__step-body {
-  font-size: 15.5px;
-  line-height: 1.5;
-  color: var(--im-ink-2);
-}
-.im__verb {
-  font-weight: 700;
-  color: var(--im-accent);
-}
-.im__text {
-  color: var(--im-ink);
-}
-
-/* Path and loop on a phone: a vertical track with a dot per station. */
-.im__steps--track .im__step {
-  position: relative;
-  border-bottom: 0;
-  padding: 10px 0 10px 0;
-}
-.im__steps--track .im__step-n {
-  position: relative;
-  z-index: 1;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--im-ground);
-  border: 2px solid var(--im-accent);
-  color: var(--im-accent);
-  font-size: 11px;
-}
-.im__steps--track .im__step:not(:last-child)::before {
-  content: "";
-  position: absolute;
-  left: 13px;
-  top: 38px;
-  bottom: -10px;
-  border-left: 2px solid var(--im-rule);
-}
-.im__loop {
-  position: relative;
-}
-/* On a phone the loop's return line is not drawn; a closing marker says it starts again. */
-.im__loop-back {
+/* Duffer's QR story (spec §3.5, builder B5) takes this slot. Empty until it lands: no height, no gap. */
+.im__lead:empty {
   display: none;
 }
-.im__loop::after {
-  content: "\21BA  back to the first step";
-  display: block;
-  margin: 2px 0 0 38px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--im-accent);
-}
 
-/* Smaller before -> now pairs. */
-.im__pairs {
-  margin-top: 30px;
-  display: grid;
-  gap: 0;
-  border-top: 1px solid var(--im-rule);
-}
-.im__pair,
-.im__time-row {
-  display: grid;
-  gap: 4px;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--im-rule);
-}
-/* The closing's own rule ends the list; no second rule right above it. */
-.im__pairs > .im__pair:last-child {
-  border-bottom: 0;
-}
-.im__pair-l {
-  font-size: 12px;
-  line-height: 1.3;
+.im__k {
+  margin: 0 0 28px;
+  font-size: 13px;
+  line-height: 16px;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--im-ink-2);
-  margin-bottom: 4px;
+  color: var(--im-accent);
 }
-.im__pair-was,
-.im__time-was {
-  font-size: 16px;
-  line-height: 1.45;
-  color: var(--im-was);
+
+/* ── big cards ─────────────────────────────────────────────── */
+.im__big {
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
 }
-.im__pair-is,
-.im__time-is {
-  font-size: 18px;
-  line-height: 1.35;
+.im__big[data-n="1"] {
+  grid-template-columns: minmax(0, 560px);
+}
+/* Three rows [before][now][label] so every "now" shares a baseline whether or not its card has a before. */
+.im__card {
+  display: grid;
+  grid-template-rows: 40px auto auto;
+  align-content: start;
+  padding: 0 32px;
+  border-left: 1px solid var(--im-rule);
+  min-width: 0;
+}
+.im__card:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+/* No card has a before: the before row closes up, no gap. */
+.im[data-before="none"] .im__card {
+  grid-template-rows: auto auto;
+}
+.im__was {
+  grid-row: 1;
+  align-self: end;
+  justify-self: start;
+  font-size: 34px;
+  line-height: 40px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--im-strike);
+  font-variant-numeric: tabular-nums;
+}
+.im__was-v {
+  position: relative;
+  display: inline-block;
+}
+/* The strike hugs the number: 3 px bar at 52% height. */
+.im__was-v::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  top: 52%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--im-strike);
+  transform-origin: left center;
+}
+.im__was small,
+.im__now small {
+  font-size: 0.42em;
+  line-height: 1;
   font-weight: 600;
+  letter-spacing: 0;
+  margin-left: 0.18em;
+}
+.im__now {
+  grid-row: 2;
+  display: block;
+  margin-top: 6px;
+  font-size: 88px;
+  line-height: 88px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
   color: var(--im-ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
-.im__arrow--sm {
-  width: 28px;
-  height: 14px;
-  transform: rotate(90deg);
-  transform-origin: 14px 7px;
-  margin: 2px 0;
+.im[data-before="none"] .im__now {
+  grid-row: 1;
+  margin-top: 0;
 }
-.im__time {
-  margin-top: 26px;
+.im__now small {
+  color: var(--im-ink-2);
+}
+.im__lab {
+  grid-row: 3;
+  margin: 4px 0 0;
+  max-width: 30ch;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--im-ink-2);
+}
+.im[data-before="none"] .im__lab {
+  grid-row: 2;
+}
+
+/* ── rows ──────────────────────────────────────────────────── */
+.im__rows {
+  list-style: none;
+  margin: 44px 0 0;
+  padding: 0;
   border-top: 1px solid var(--im-rule);
 }
-.im__time-v {
-  display: block;
-  font-size: 30px;
-  line-height: 1.1;
+.im__big:empty + .im__rows,
+.im__k + .im__rows {
+  margin-top: 0;
+}
+.im__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--im-rule);
+}
+.im__row-l {
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--im-ink-2);
+}
+.im__row-r {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+}
+.im__row-v {
+  font-size: 26px;
+  line-height: 30px;
   font-weight: 700;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
+.im__row-v small {
+  margin-left: 0.18em;
+  font-size: 0.55em;
+  font-weight: 600;
+  color: var(--im-ink-2);
+}
+.im__row-w {
+  position: relative;
+  margin-right: 14px;
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 500;
+  color: var(--im-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.im__row-w::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 54%;
+  height: 2px;
+  background: var(--im-ink-2);
+  transform-origin: left center;
+}
 
-/* Pieces (NWKS): one card per piece of the weekend. */
-.im__pieces {
-  margin-top: 30px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+.im__text {
+  margin: 24px 0 0;
+  max-width: 62ch;
+  font-size: 17px;
+  line-height: 26px;
+  color: var(--im-ink-2);
 }
-.im__piece {
-  display: grid;
-  align-content: start;
-  gap: 6px;
-  padding: 18px 18px 20px;
-  border-radius: 16px;
-  border: 1px solid var(--im-rule);
-  background: var(--im-card);
+.im__text[hidden] {
+  display: none;
 }
-.im__piece-l {
-  font-size: 12px;
-  line-height: 1.3;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--im-accent);
-  margin-bottom: 4px;
+
+/* ── one number alone: centred both ways ───────────────────── */
+.im[data-solo] .im__col {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 96px;
 }
-.im__piece-was {
-  font-size: 15px;
-  line-height: 1.45;
-  color: var(--im-was);
+.im[data-solo] .im__big {
+  grid-template-columns: auto;
 }
-.im__piece-is {
+.im[data-solo] .im__card {
+  padding: 0;
+  border: 0;
+  justify-items: center;
+  grid-template-rows: 52px auto auto;
+}
+.im[data-solo][data-before="none"] .im__card {
+  grid-template-rows: auto auto;
+}
+.im[data-solo] .im__was {
+  justify-self: center;
+  font-size: 44px;
+  line-height: 52px;
+}
+.im[data-solo] .im__now {
+  font-size: 128px;
+  line-height: 128px;
+}
+.im[data-solo] .im__lab {
+  max-width: 34ch;
+  margin-top: 10px;
   font-size: 19px;
-  line-height: 1.3;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-  color: var(--im-ink);
+  line-height: 26px;
 }
-.im--pieces .im__how {
-  margin-top: 40px;
-}
-/* No figures (Duffer): a rule still separates the payoff from the "how". */
-.im__hero + .im__how {
-  padding-top: 26px;
-  border-top: 1px solid var(--im-rule);
+.im[data-solo] .im__text {
+  text-align: center;
 }
 
-.im__close {
-  margin-top: 44px;
-  padding-top: 26px;
-  border-top: 1px solid var(--im-rule);
-  font-size: 24px;
-  line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
-  color: var(--im-ink);
+/* ── mid (tablet sheets) ───────────────────────────────────── */
+@container im (max-width: 899px) {
+  .im__now {
+    font-size: 72px;
+    line-height: 72px;
+  }
 }
 
-/* ── Mid (tablet sheets, 561-859) ──────────────────────────── */
-@container im (min-width: 561px) {
+/* ── narrow (phone sheet): cards stack, nothing is cut ─────── */
+@container im (max-width: 560px) {
   .im__col {
-    padding: 40px 40px 56px;
+    padding: 28px 20px 24px;
   }
-  .im__was-t {
-    font-size: 24px;
-  }
-  .im__is-t {
-    font-size: 38px;
-  }
-  .im__fig-v {
-    font-size: 60px;
-  }
-  .im__steps--grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 32px;
-  }
-  .im__pieces {
-    grid-template-columns: 1fr 1fr;
-  }
-  .im__pair,
-  .im__time-row {
-    grid-template-columns: 150px 1fr 28px 1fr;
-    align-items: baseline;
-    column-gap: 18px;
-  }
-  .im__pair .im__arrow--sm,
-  .im__time-row .im__arrow--sm {
-    transform: none;
-    align-self: center;
-    margin: 0;
-  }
-  .im__close {
-    font-size: 30px;
-  }
-}
-
-/* ── Wide (desktop windows, >= 860): the full panel width ────── */
-@container im (min-width: 860px) {
-  .im__col {
-    box-sizing: border-box;
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 52px 64px 72px;
-  }
-  .im__ch {
-    margin-top: 26px;
-  }
-  .im__ch + .im__ch {
-    margin-top: 72px;
-    padding-top: 48px;
-  }
-  .im__ch-head {
-    margin-bottom: 30px;
-  }
-  .im__ch-n {
-    font-size: 15px;
-  }
-  .im__ch-name {
-    font-size: 24px;
-  }
-  .im__ch-when {
-    font-size: 16px;
-  }
-  /* The contrast side by side: before receded on the left, now bright on the right. */
-  .im__hero {
-    grid-template-columns: minmax(0, 5fr) 64px minmax(0, 7fr);
-    align-items: end;
-    gap: 0 28px;
-  }
-  .im__was-t {
-    font-size: clamp(24px, 3cqi, 38px);
-    line-height: 1.2;
-  }
-  .im__is-t {
-    font-size: clamp(36px, 4.6cqi, 56px);
-    line-height: 1.04;
-  }
-  .im__tag {
+  .im__k {
+    margin-bottom: 16px;
     font-size: 12px;
-    margin-bottom: 10px;
   }
-  .im__arrow {
-    width: 56px;
-    height: 28px;
-    transform: none;
-    margin: 0 0 clamp(8px, 1.2cqi, 16px);
+  .im__big,
+  .im__big[data-n] {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 22px;
   }
-  .im__figs {
-    margin-top: 48px;
-    padding-top: 32px;
-    display: grid;
-    grid-template-columns: repeat(var(--im-figs, 3), minmax(0, 1fr));
-    gap: 0;
-  }
-  .im__figs[data-n="1"] {
-    --im-figs: 1;
-  }
-  .im__figs[data-n="2"] {
-    --im-figs: 2;
-  }
-  .im__fig {
-    gap: 10px;
-    padding: 0 32px;
-    border-left: 1px solid var(--im-rule);
-  }
-  .im__fig:first-child {
-    padding-left: 0;
-    border-left: 0;
-  }
-  .im__fig-v {
-    font-size: clamp(64px, 6.2cqi, 80px);
-  }
-  .im__fig-l {
-    font-size: 15px;
-    max-width: 30ch;
-  }
-  .im__how {
-    margin-top: 56px;
-    margin-bottom: 10px;
-  }
-  .im__steps--grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: 36px;
-  }
-  .im__steps--grid[data-n="4"] {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .im__step {
-    grid-template-columns: 30px 1fr;
-    padding: 16px 0;
-  }
-  .im__step-body {
-    font-size: 16px;
-  }
-  /* Path and loop: stations across the width, joined by a line. */
-  .im__steps--track {
-    display: grid;
-    grid-template-columns: repeat(var(--im-n, 5), minmax(0, 1fr));
-    column-gap: 22px;
-    padding-top: 6px;
-  }
-  .im__steps--track[data-n="3"] {
-    --im-n: 3;
-  }
-  .im__steps--track[data-n="4"] {
-    --im-n: 4;
-  }
-  .im__steps--track .im__step {
-    grid-template-columns: 1fr;
-    align-content: start;
-    justify-items: center;
-    text-align: center;
-    gap: 14px;
+  .im__card {
     padding: 0;
+    border: 0;
+    grid-template-rows: 28px auto auto;
   }
-  .im__steps--track .im__step-n {
-    width: 34px;
-    height: 34px;
-    font-size: 12px;
+  /* Stacked cards do not share a baseline, so a card without a before closes its row. */
+  .im__card:not([data-has-before]) {
+    grid-template-rows: auto auto;
   }
-  .im__steps--track .im__step:not(:last-child)::before {
-    left: calc(50% + 17px);
-    right: calc(-50% - 22px + 17px);
-    top: 16px;
-    bottom: auto;
-    border-left: 0;
-    border-top: 2px solid var(--im-accent);
-    opacity: 0.45;
+  .im__card:not([data-has-before]) .im__now {
+    grid-row: 1;
+    margin-top: 0;
   }
-  .im__steps--track .im__step-body {
-    font-size: 15px;
+  .im__card:not([data-has-before]) .im__lab {
+    grid-row: 2;
   }
-  .im__steps--track .im__verb {
-    display: block;
-    font-size: 19px;
-    margin-bottom: 4px;
+  .im__was {
+    font-size: 24px;
+    line-height: 28px;
   }
-  .im__loop-back {
-    display: block;
-    width: 100%;
-    height: 54px;
+  .im__was-v::after {
+    height: 2px;
+    left: -3px;
+    right: -3px;
+  }
+  .im__now {
+    margin-top: 2px;
+    font-size: 64px;
+    line-height: 66px;
+  }
+  .im__lab {
     margin-top: 6px;
-    color: var(--im-accent);
-    opacity: 0.6;
+    font-size: 14px;
+    line-height: 19px;
   }
-  .im__loop::after {
-    display: none;
+  .im__rows {
+    margin-top: 24px;
   }
-  .im__pairs {
-    margin-top: 48px;
+  .im__row {
+    padding: 11px 0;
   }
-  .im__pair,
-  .im__time-row {
-    grid-template-columns: clamp(120px, 15cqi, 180px) minmax(0, 1fr) 40px minmax(0, 1.15fr);
-    column-gap: 24px;
-    padding: 22px 0;
+  .im__row-l {
+    font-size: 14px;
+    line-height: 19px;
   }
-  .im__pair-was,
-  .im__time-was {
-    font-size: 18px;
+  .im__row-v {
+    font-size: 20px;
+    line-height: 24px;
   }
-  .im__pair-is,
-  .im__time-is {
-    font-size: 21px;
-    letter-spacing: -0.01em;
+  .im__row-w {
+    margin-right: 8px;
+    font-size: 14px;
   }
-  .im__arrow--sm {
-    width: 36px;
-    height: 18px;
+  .im__text {
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 21px;
   }
-  .im__pieces {
-    margin-top: 48px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
+  .im[data-solo] .im__col {
+    padding-bottom: 48px;
   }
-  .im__piece {
-    padding: 24px 26px 26px;
-    gap: 8px;
+  .im[data-solo] .im__now {
+    font-size: 88px;
+    line-height: 88px;
   }
-  .im__piece-was {
+  .im[data-solo] .im__was {
+    font-size: 30px;
+    line-height: 36px;
+  }
+  .im[data-solo] .im__card {
+    grid-template-rows: 36px auto auto;
+  }
+  .im[data-solo][data-before="none"] .im__card {
+    grid-template-rows: auto auto;
+  }
+  .im[data-solo] .im__lab {
     font-size: 16px;
-  }
-  .im__piece-is {
-    font-size: 22px;
-  }
-  .im--pieces .im__how {
-    margin-top: 56px;
-  }
-  .im__hero + .im__how {
-    margin-top: 48px;
-    padding-top: 36px;
-  }
-  .im__close {
-    margin-top: 64px;
-    padding-top: 36px;
-    font-size: clamp(30px, 3.4cqi, 42px);
+    line-height: 22px;
   }
 }
 
-/* ── Motion: only under data-play, which JS sets when motion is allowed. */
-@keyframes im-step-in {
+/* ── motion: once per tab entry (spec §3.3), ~1.4 s ────────── */
+@keyframes im-fade {
   from {
     opacity: 0;
-    transform: translateY(8px);
   }
 }
-.im__col[data-play] .im__step {
-  animation: im-step-in 320ms ease-out backwards;
-  animation-delay: calc(120ms + var(--im-i, 0) * 70ms);
+@keyframes im-strike {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes im-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+.im[data-play] {
+  --im-now-at: 200ms;
+}
+.im[data-play][data-before="some"] {
+  --im-now-at: 600ms;
+}
+.im[data-play] .im__was {
+  animation: im-fade 200ms linear backwards;
+  animation-delay: calc(120ms + var(--i) * 140ms);
+}
+.im[data-play] .im__was-v::after {
+  animation: im-strike 420ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)) backwards;
+  animation-delay: calc(320ms + var(--i) * 140ms);
+}
+.im[data-play] .im__now,
+.im[data-play] .im__lab {
+  animation: im-rise 380ms var(--sc-ease-grow, cubic-bezier(0.2, 0.9, 0.25, 1)) backwards;
+  animation-delay: calc(var(--im-now-at) + var(--i) * 140ms);
+}
+.im[data-play] .im__row,
+.im[data-play] .im__text {
+  animation: im-fade 240ms linear backwards;
+  animation-delay: calc(var(--im-rows-at) + var(--i) * 60ms);
+}
+.im[data-play] .im__row-w::after {
+  animation: im-strike 300ms var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)) backwards;
+  animation-delay: calc(var(--im-rows-at) + 120ms + var(--i) * 60ms);
 }
 @media (prefers-reduced-motion: reduce) {
-  .im__col[data-play] .im__step {
-    animation: none;
+  .im * {
+    animation: none !important;
   }
 }

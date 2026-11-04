@@ -1,74 +1,98 @@
 "use client";
 
 import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
-import type { ImpactBeat as ImpactBeatData, ImpactChapter, ImpactCopy, ImpactPair, ImpactShape, ImpactStep } from "@/data/showcase/types";
+import type { ImpactBeat as ImpactBeatData, ImpactCopy, ImpactStat } from "@/data/showcase/types";
 import type { BeatProps } from "./shared";
 import "./impact.css";
 
 /**
- * The Impact tab (ADR-0022 §3; design spec §5, reworked after critic round 1
- * §3). The payoff comes first: what the work was, receded, and what it is now,
- * bright, at display size. Then the figures, large. Then how the engine does
- * it, smaller, in a shape that comes from the client's own material:
+ * The Impact tab (ADR-0025 §3, round 2 spec §3). Big numbers first: the old
+ * number struck through, the new one at display size, a label under it; then
+ * up to four smaller rows and one optional sentence. A slot with no sourced
+ * number is simply absent from its array, so nothing is drawn for it: no empty
+ * box, no reserved space (a client with only "now" numbers closes the before
+ * row up entirely).
  *
- *   chapters  each engine its own numbered section (HG Oil)
- *   pieces    the weekend's pieces as before -> now cards (NWKS Encounter)
- *   path      the stations a bill passes through (FarmBooks)
- *   loop      the partner loop, which comes back to its start (Duffer Golf)
+ * Layout follows the PANEL's width (container queries in impact.css), so it is
+ * right in the desktop window and the phone sheet alike. On a phone at most two
+ * big cards stack; a third demotes to the first row, its before kept.
  *
- * Our voice and tokens, never the client's portal theme. It uses the panel's
- * full width on desktop (container queries on the panel, not the viewport) and
- * stacks in the same order on phones. Absent data leaves no trace.
- *
- * Motion: the steps build in once, the first time the tab is shown, only under
- * data-play (set by JS when motion is allowed). Without it everything rests
- * visible. The contrast, figures and closing never move.
+ * Motion (spec §3.3), once per tab entry, only under data-play (set by JS when
+ * motion is allowed): before fades in, the strike draws, the new number rises,
+ * cards stagger, rows follow. At rest, and under reduced motion, everything is
+ * simply there. No count-up: a counting number cannot be read until it stops.
  *
  * Real facts, not demonstration data: a `data-fact-stage`, scanned by the
  * privacy probe like a demo stage but carrying no "Demonstration data" label.
  */
-export function ImpactBeat({ client, beat, active, reduced, quiet }: BeatProps<ImpactBeatData>) {
+export function ImpactBeat({ client, beat, variant, active, reduced, quiet }: BeatProps<ImpactBeatData>) {
   const scroller = useRef<HTMLDivElement>(null);
+  const inner = useRef<HTMLDivElement>(null);
+  const textEl = useRef<HTMLParagraphElement>(null);
+  const textH = useRef(0);
   const [play, setPlay] = useState(false);
   const [overflow, setOverflow] = useState(false);
   const [edge, setEdge] = useState({ top: false, more: false });
+  const [textFits, setTextFits] = useState(true);
   const uid = useId();
   const kickerId = `${uid}-k`;
   const narrId = `${uid}-n`;
+  const phone = variant === "phone";
 
+  // Phone: at most two big cards; a third demotes to the head of the rows (rows cap 3 + the demoted one).
+  const big = phone ? beat.big.slice(0, 2) : beat.big;
+  const rows = phone ? [...beat.big.slice(2), ...beat.rows.slice(0, 3)] : beat.rows;
+  const hasBefore = big.some((s) => s.before);
+  const solo = big.length === 1 && rows.length === 0 && !beat.lead;
+  const lastCardAt = (hasBefore ? 600 : 200) + Math.max(0, big.length - 1) * 140 + 380;
+
+  // Runs once each time the tab is entered; leaving it re-arms the next entry.
   useEffect(() => {
-    if (active && !reduced) setPlay(true);
+    setPlay(active && !reduced);
   }, [active, reduced]);
 
-  // Which edges have more text past them: those fade instead of slicing a line mid-glyph.
   function readEdge(el: HTMLElement) {
     const top = el.scrollTop > 0;
     const more = el.scrollTop + el.clientHeight < el.scrollHeight - 1;
     setEdge((e) => (e.top === top && e.more === more ? e : { top, more }));
   }
 
-  // The scroller joins the Tab order only when there is something to scroll.
+  // The scroller joins the Tab order only when there is something to scroll; the
+  // sentence shows on a phone only if the whole of it fits (spec §3.2).
   useLayoutEffect(() => {
     const el = scroller.current;
-    if (!el) return;
+    const col = inner.current;
+    if (!el || !col) return;
     const read = () => {
+      const t = textEl.current;
+      if (t && t.offsetHeight > 0) textH.current = t.offsetHeight + 14;
+      if (phone && beat.text) {
+        const withText = col.scrollHeight + (t && t.offsetHeight > 0 ? 0 : textH.current);
+        setTextFits(withText <= el.clientHeight + 1);
+      } else {
+        setTextFits(true);
+      }
       setOverflow(el.scrollHeight > el.clientHeight + 1);
       readEdge(el);
     };
     read();
     const ro = new ResizeObserver(read);
     ro.observe(el);
-    if (el.firstElementChild) ro.observe(el.firstElementChild);
+    ro.observe(col);
     return () => ro.disconnect();
-  }, []);
+  }, [phone, beat.text]);
 
   return (
     <section
-      className={`im im--${beat.shape}`}
+      className="im"
       data-fact-stage={`${client.slug}-impact`}
+      data-solo={solo ? "" : undefined}
+      data-before={hasBefore ? "some" : "none"}
+      data-play={play ? "" : undefined}
       aria-hidden={quiet || undefined}
       aria-labelledby={kickerId}
       aria-describedby={narrId}
+      style={{ "--im-rows-at": `${lastCardAt}ms` } as CSSProperties}
     >
       <p id={narrId} data-demo-narration hidden>
         {beat.narration}
@@ -80,14 +104,38 @@ export function ImpactBeat({ client, beat, active, reduced, quiet }: BeatProps<I
         tabIndex={overflow ? 0 : undefined}
         onScroll={(e) => readEdge(e.currentTarget)}
       >
-        <div className="im__col" data-play={play ? "" : undefined}>
-          <p className="im__kicker" id={kickerId}>
+        <div ref={inner} className="im__col">
+          {beat.lead === "qr-story" ? (
+            // B5 SLOT (spec §3.5): render <DufferQrScene /> here. Nothing is drawn until it lands.
+            <div className="im__lead" data-lead="qr-story" />
+          ) : null}
+          <p className="im__k" id={kickerId}>
             {beat.kicker}
           </p>
-          {beat.chapters.map((c, i) => (
-            <Chapter key={c.name} c={c} n={i + 1} shape={beat.shape} numbered={beat.chapters.length > 1} />
-          ))}
-          <p className="im__close">{copy(beat.closing)}</p>
+          {big.length > 0 ? (
+            <div className="im__big" data-n={big.length} style={{ "--n": big.length } as CSSProperties}>
+              {big.map((s, i) => (
+                <Card key={s.now.label} s={s} i={i} />
+              ))}
+            </div>
+          ) : null}
+          {rows.length > 0 ? (
+            <ul className="im__rows">
+              {rows.map((s, i) => (
+                <Row key={s.now.label} s={s} i={i} />
+              ))}
+            </ul>
+          ) : null}
+          {beat.text ? (
+            <p
+              ref={textEl}
+              className="im__text"
+              hidden={!textFits}
+              style={{ "--i": rows.length } as CSSProperties}
+            >
+              {copy(beat.text)}
+            </p>
+          ) : null}
         </div>
       </div>
     </section>
@@ -96,165 +144,56 @@ export function ImpactBeat({ client, beat, active, reduced, quiet }: BeatProps<I
 
 const copy = (c: ImpactCopy) => (typeof c === "string" ? c : c.text);
 
-function Arrow({ className }: { className: string }) {
+function Value({ v, unit }: { v: string; unit?: string }) {
   return (
-    <svg className={className} viewBox="0 0 48 24" fill="none" aria-hidden="true">
-      <path d="M2 12h40M33 4l9 8-9 8" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
+    <>
+      {v}
+      {unit ? <small>{unit}</small> : null}
+    </>
   );
 }
 
-function Chapter({ c, n, shape, numbered }: { c: ImpactChapter; n: number; shape: ImpactShape; numbered: boolean }) {
-  const pieces = shape === "pieces";
+function Card({ s, i }: { s: ImpactStat; i: number }) {
   return (
-    <div className="im__ch">
-      <div className="im__ch-head">
-        {numbered ? (
-          <span className="im__ch-n" aria-hidden="true">
-            {String(n).padStart(2, "0")}
+    <div className="im__card" data-has-before={s.before ? "" : undefined} style={{ "--i": i } as CSSProperties}>
+      {s.before ? (
+        <span className="im__was">
+          <span className="ps-visually-hidden">Before: </span>
+          <span className="im__was-v">
+            <Value v={s.before.value} unit={s.unit} />
+          </span>
+        </span>
+      ) : null}
+      <span className="im__now">
+        <span className="ps-visually-hidden">Now: </span>
+        <Value v={s.now.value} unit={s.unit} />
+      </span>
+      <p className="im__lab">{s.now.label}</p>
+    </div>
+  );
+}
+
+function Row({ s, i }: { s: ImpactStat; i: number }) {
+  return (
+    <li className="im__row" style={{ "--i": i } as CSSProperties}>
+      <span className="im__row-l">{s.now.label}</span>
+      <span className="im__row-r">
+        {s.before ? (
+          <span className="im__row-w">
+            <span className="ps-visually-hidden">Before: </span>
+            {s.before.value}
           </span>
         ) : null}
-        <h3 className="im__ch-name">{c.name}</h3>
-        {c.cadence ? <span className="im__ch-when">{copy(c.cadence)}</span> : null}
-      </div>
-
-      <div className="im__hero">
-        <div className="im__was">
-          <p className="im__tag">Before</p>
-          <p className="im__was-t">{copy(c.hero.before)}</p>
-        </div>
-        <Arrow className="im__arrow" />
-        <div className="im__is">
-          <p className="im__tag im__tag--now">Now</p>
-          <p className="im__is-t">{copy(c.hero.now)}</p>
-        </div>
-      </div>
-
-      {c.figures && c.figures.length > 0 ? (
-        <ul className="im__figs" data-n={c.figures.length}>
-          {c.figures.map((f) => (
-            <li key={f.value} className="im__fig">
-              <span className="im__fig-v">{f.value}</span>
-              <span className="im__fig-l">{f.label}</span>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-
-      {c.time && c.time.length > 0 ? (
-        <ul className="im__time">
-          {c.time.map((t) => (
-            <li key={t.label} className="im__time-row">
-              <p className="im__pair-l">{t.label}</p>
-              <p className="im__time-was">
-                <span className="ps-visually-hidden">Before: </span>
-                <span className="im__time-v">{t.before.value}</span> {t.before.label}
-              </p>
-              <Arrow className="im__arrow im__arrow--sm" />
-              <p className="im__time-is">
-                <span className="ps-visually-hidden">Now: </span>
-                <span className="im__time-v">{t.now.value}</span> {t.now.label}
-              </p>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-
-      {pieces && c.pairs?.length ? <Pieces pairs={c.pairs} /> : null}
-
-      <p className="im__how">{c.how}</p>
-      <Steps steps={c.steps} shape={shape} />
-
-      {!pieces && c.pairs?.length ? <Pairs pairs={c.pairs} /> : null}
-    </div>
+        <span className="im__row-v">
+          <span className="ps-visually-hidden">Now: </span>
+          <Value v={s.now.value} unit={s.unit} />
+        </span>
+      </span>
+    </li>
   );
 }
 
-function Steps({ steps, shape }: { steps: readonly ImpactStep[]; shape: ImpactShape }) {
-  const kind = shape === "path" || shape === "loop" ? "track" : "grid";
-  const list = (
-    <ol className={`im__steps im__steps--${kind}`} data-n={steps.length}>
-      {steps.map((s, i) => (
-        <li key={s.verb + i} className="im__step" style={{ "--im-i": i } as CSSProperties}>
-          <span className="im__step-n" aria-hidden="true">
-            {String(i + 1).padStart(2, "0")}
-          </span>
-          <span className="im__step-body">
-            <span className="im__verb">{s.verb}</span> <span className="im__text">{copy(s.text)}</span>
-          </span>
-        </li>
-      ))}
-    </ol>
-  );
-  if (shape !== "loop") return list;
-  // The loop comes back to its start: a dashed return line under the stations,
-  // from the last one back up into the first (wide); beside them on a phone.
-  const a = 1000 / (2 * steps.length);
-  const b = 1000 - a;
-  return (
-    <div className="im__loop">
-      {list}
-      <svg className="im__loop-back" viewBox="0 0 1000 60" preserveAspectRatio="none" fill="none" aria-hidden="true">
-        <path
-          d={`M${b} 2 C${b} 50, ${b - 20} 50, ${b - 60} 50 L${a + 60} 50 C${a + 20} 50, ${a} 50, ${a} 6`}
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeDasharray="6 7"
-          vectorEffect="non-scaling-stroke"
-        />
-        <path d={`M${a - 9} 16 L${a} 4 L${a + 9} 16`} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
-      </svg>
-    </div>
-  );
-}
-
-function Pairs({ pairs }: { pairs: readonly ImpactPair[] }) {
-  return (
-    <ul className="im__pairs">
-      {pairs.map((p) => (
-        <li key={p.label} className="im__pair">
-          <p className="im__pair-l">{p.label}</p>
-          <p className="im__pair-was">
-            <span className="ps-visually-hidden">Before: </span>
-            {copy(p.before)}
-          </p>
-          <Arrow className="im__arrow im__arrow--sm" />
-          <p className="im__pair-is">
-            <span className="ps-visually-hidden">Now: </span>
-            {copy(p.now)}
-          </p>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function Pieces({ pairs }: { pairs: readonly ImpactPair[] }) {
-  return (
-    <ul className="im__pieces" data-n={pairs.length}>
-      {pairs.map((p) => (
-        <li key={p.label} className="im__piece">
-          <p className="im__piece-l">{p.label}</p>
-          <p className="im__piece-was">
-            <span className="ps-visually-hidden">Before: </span>
-            {copy(p.before)}
-          </p>
-          <Arrow className="im__arrow im__arrow--sm im__arrow--down" />
-          <p className="im__piece-is">
-            <span className="ps-visually-hidden">Now: </span>
-            {copy(p.now)}
-          </p>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-/** How long the Impact tab holds before the window moves on (only while a window still auto-advances). */
+/** How long the tab plays before the window moves on: 3200 + 1200 per big + 600 per row, capped at 9000 (spec §3.3). */
 export function impactMs(b: ImpactBeatData): number {
-  const words = b.chapters
-    .flatMap((c) => [copy(c.hero.before), copy(c.hero.now), ...c.steps.map((s) => `${s.verb} ${copy(s.text)}`)])
-    .join(" ")
-    .split(/\s+/).length;
-  return Math.min(30000, Math.max(12000, words * 260));
+  return Math.min(9000, 3200 + 1200 * b.big.length + 600 * b.rows.length);
 }

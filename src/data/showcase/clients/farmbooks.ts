@@ -12,49 +12,26 @@
 // Impact (ADR-0022 §3): every number is a fact<oracle>() or figure<oracle>();
 // the oracle note is a type argument, checked at build and never shipped. The
 // precise citation for each is kept outside this public repo.
+// Now-only numbers: the bookkeeper's old way has no counted before.
 // Left out on purpose: any hours saved (the bookkeeper has given no figure),
 // "one crop year" (the span is unconfirmed), any dollar amount, and the errors
 // found in her old books (the owner asked for that block to come off the site).
 import type { ShowcaseClient } from "../types";
-import { fact, figure, impactBeat } from "../impact";
+import { figure, impactBeat } from "../impact";
 import { BILLS_NARRATION } from "../scenes/farmbooks-bills";
 
 export const impact = impactBeat("farmbooks", {
   tab: "Impact",
   caption: "What FarmBooks does with every bill, and what the bookkeeper used to do by hand.",
-  shape: "path",
-  kicker: "What we automated",
-  chapters: [
-    {
-      name: "Every bill that comes in",
-      hero: {
-        before: fact<"Client's words, Aug 3 2026">("The bookkeeper printed each bill and keyed it into one big workbook."),
-        now: "She drops in the PDF or photo and reviews only what is flagged.",
-      },
-      figures: [
-        figure<"Published on this site">("101", "bills read and booked without retyping a line"),
-        figure<"Published on this site">("893", "bill lines sorted into tax categories, none left over"),
-      ],
-      how: "The path every bill takes",
-      steps: [
-        { verb: "Reads", text: "any bill: an emailed PDF, mailed paper or a phone photo." },
-        { verb: "Checks", text: "it against its printed total, to the cent, and holds it if it does not tie." },
-        { verb: "Sorts", text: "every line into its Schedule F tax category." },
-        { verb: "Splits", text: "a shared bill across fields by acreage." },
-        { verb: "Drafts", text: "each landowner's fertilizer bill for a person to send." },
-      ],
-      pairs: [
-        {
-          label: "Landowners",
-          before: fact<"Client's words, Oct 12 2026">("Not billed for fertilizer in about a year, as far as she knew."),
-          now: "Each share worked out from the lease and drafted for review.",
-        },
-      ],
-    },
+  kicker: "What changed",
+  big: [
+    { now: figure<"Published on this site">("101", "bills read and booked without retyping a line") },
+    { now: figure<"Published on this site">("893", "bill lines sorted into tax categories") },
   ],
-  closing: "Line items in. Never a typed total.",
+  rows: [{ now: figure<"Published on this site">("0", "Bill lines left uncategorized") }],
+  text: "Line items in. Never a typed total.",
   narration:
-    "What we automated for FarmBooks. The bookkeeper used to print each bill and key it into a workbook by hand. Now every bill, emailed, mailed or photographed, is read, checked against its printed total to the cent, sorted into its Schedule F category and split across fields by acreage, and each landowner's fertilizer bill is drafted for a person to send.",
+    "What changed for FarmBooks. The bookkeeper used to print each bill and key it into a workbook by hand. Now every bill is read, checked against its printed total to the cent and sorted into its Schedule F tax category, and no line is left uncategorized.",
 });
 
 /** Text lines, price rows and buttons in the 390-wide phone capture (y from, y to, css px), found in its own pixels (round 11: rows with text-like edges on a flat background, 1 px margin): the two hero buttons measured whole. */

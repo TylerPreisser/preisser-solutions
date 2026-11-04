@@ -1,15 +1,15 @@
 "use client";
 
-import type { EngineBeat, ImpactStatsBeat } from "@/data/showcase/types";
+import type { EngineBeat } from "@/data/showcase/types";
 import { Chrome, themeStyle, type BeatProps } from "./shared";
 
 /**
  * Round 2 stand-in for a beat its builder has not landed (ADR-0025): a neutral
  * box that keeps the tab and the build alive. beats/index.tsx imports this for
- * "engine" (B4: EngineBeat.tsx) and "impact-stats" (B2: ImpactBeat.tsx); the
+ * "engine" (B4: EngineBeat.tsx); the
  * builder replaces that one import and deletes nothing else.
  */
-export function ComingBeat({ client, beat, variant, fill, quiet }: BeatProps<EngineBeat | ImpactStatsBeat>) {
+export function ComingBeat({ client, beat, variant, fill, quiet }: BeatProps<EngineBeat>) {
   return (
     <figure
       className={`sc-frame sc-frame--portal sc-frame--${variant}${fill ? " sc-frame--fill" : ""}`}
