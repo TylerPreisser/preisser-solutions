@@ -146,38 +146,37 @@ const client: ShowcaseClient = {
       },
     },
     {
-      kind: "funnel",
-      tab: "MarCommand",
-      caption: "A scan at a golf course counter and an order online land in the same funnel.",
+      kind: "scene",
+      tab: "Command Center",
+      caption: "Duffer's own command center, clicked through: scans, courses, orders and commissions.",
+      scene: "duffer-cc",
       narration:
-        "The MarCommand dashboard on demonstration data: partner golf courses, the scans at each course's display, and how many became visits, leads and orders. None of these courses are real.",
-      funnel: {
-        window: "30 days",
-        lead: {
-          kicker: "Partner courses · last 30 days",
-          value: `${COURSES} courses`,
-          sub: [
-            { label: "Displays", value: count(COURSES) },
-            { label: "Orders", value: count(orders) },
-          ],
-        },
-        stages: [
-          { label: "Scanned", value: scans },
-          { label: "Visited", value: visits },
-          { label: "Leads", value: leads },
-          { label: "Orders", value: orders },
-        ],
-        railFigures: ["Scans", "Orders"],
-        rail: courses.map((c) => ({
-          label: c.label,
-          sub: c.sub,
-          icon: c === others ? ("flags" as const) : ("flag" as const),
-          hue: c.orders >= 2 ? 1 : 2,
-          figures: [c.scans, c.orders] as const,
-          weight: c.scans,
-          reach: c.orders > 0 ? 3 : c.leads > 0 ? 2 : 1,
-        })),
-      },
+        "The partner program's command center on demonstration data: today's scans and the live feed, the QR codes on each display, a partner course's record, the orders, and the commissions owed and paid.",
+    },
+    {
+      kind: "engine",
+      tab: "MarCommand",
+      caption: "MarCommand watches every channel, turns its own knobs and keeps what it learns.",
+      narration:
+        "The MarCommand engine on demonstration data: it weighs the ad channels and the course displays, favours the one that sells, turns the budget and schedule dials, and keeps what it learned.",
+      channels: [
+        { icon: "ads", label: "Google Ads" },
+        { icon: "social-ads", label: "Meta ads" },
+        { icon: "displays", label: "Course displays", delta: { text: "best", tone: "up" } },
+        { icon: "search", label: "Search" },
+      ],
+      dials: [
+        { label: "Daily budget", from: "$60", to: "$75", r0: 0.3, r1: 0.42 },
+        { label: "Radius", from: "40 mi", r0: 0.5 },
+        { label: "Ad schedule", from: "All day", to: "Evenings", r0: 0.15, r1: 0.7 },
+      ],
+      pick: 2,
+      turns: [0, 2],
+      learned: [
+        { text: "Orders cluster after the weekend rounds.", when: "2 weeks ago" },
+        { text: "Displays at the pro-shop counter outsell the cart barn 3 to 1.", when: "just now", isNew: true },
+      ],
+      result: { label: "Leads this week", from: String(leads - 6), to: String(leads) },
     },
     {
       kind: "ai-ask",
@@ -189,10 +188,18 @@ const client: ShowcaseClient = {
       steps: [
         { label: "Reading your question", phase: 0, ms: 700 },
         { label: "Reading scans by course, last 30 days", phase: 1, ms: 900, chip: `${COURSES} rows` },
+        { label: "Reading site visits, last 30 days", phase: 1, ms: 700, chip: `${visits} rows` },
+        { label: "Reading leads, last 30 days", phase: 1, ms: 700, chip: `${leads} rows` },
         { label: "Reading orders, last 30 days", phase: 1, ms: 700, chip: `${orders} rows` },
         { label: "Matching each order to the display it started at", phase: 2, ms: 1200 },
         { label: "Writing the answer", phase: 3, ms: 900 },
         { label: "Checking every figure", phase: 4, ms: 800, chip: "8 figures matched" },
+      ],
+      sources: [
+        { icon: "scan", label: "Course scans", short: "Scans", chip: `${COURSES} rows`, step: 1 },
+        { icon: "visit", label: "Site visits", short: "Visits", chip: `${visits} rows`, step: 2 },
+        { icon: "lead", label: "Leads", chip: `${leads} rows`, step: 3 },
+        { icon: "order", label: "Orders", chip: `${orders} rows`, step: 4 },
       ],
       worked: [
         {

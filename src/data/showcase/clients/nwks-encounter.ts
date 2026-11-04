@@ -127,6 +127,14 @@ const client: ShowcaseClient = {
         ],
       },
     },
+    {
+      kind: "scene",
+      tab: "Admin",
+      caption: "The administration panel, clicked through: the dashboard, the cabins, the attendees and the badges.",
+      scene: "nwks-admin",
+      narration:
+        "The Encounter weekend's administration panel on demonstration data: the dashboard, cabins filling with attendees, the attendee list filtered to those who have not paid, and the badges and luggage tags ready to print.",
+    },
     impact,
   ],
 };

@@ -1,5 +1,5 @@
 // HG Oil Holdings' showcase (ADR-0022): their website, the COI story, and
-// Impact. Vendor insurance is AI at work; the saltwater close is automation
+// Impact (ADR-0025 tab set: Website, Vendor Insurance, Impact). Vendor insurance is AI at work; the saltwater close is automation
 // (there is no model in it) and is never called AI, here or anywhere.
 //
 // Website: the DEV site https://hgoil-website-dev.tylerpreisser.workers.dev/
@@ -12,8 +12,8 @@
 // Phone: cropped to x 440-1780 of 1920 so the whole pumpjack and the dusk
 // show; desk: the whole frame. Above it, the site's own header bar, cut whole
 // from the round 9 capture (Playwright Chromium, phone 390 at 2x, desk 1440 at
-// 1x). "Visit" goes to the live site. Sample data for the COI scene:
-// src/data/showcase/scenes/hg-coi.ts.
+// 1x). "Visit" goes to the live site. Sample data for the vendor scene:
+// src/data/showcase/scenes/hg-vendor.ts (builder B1).
 //
 // Impact (ADR-0022 §3): every number is a fact<oracle>() or figure<oracle>();
 // the oracle note is a type argument, checked at build and never shipped. The
@@ -21,17 +21,18 @@
 // Rules: no HG dollar amounts, no HG people, vendor or well names, no vendor
 // counts, and no description of HG's own past bookkeeping errors. The hours and
 // people the old way took have no source yet, so there is no `time` row.
-import type { ShowcaseClient } from "../types";
-import type { SceneBeatData } from "@/components/showcase/scenes";
-import { coiNarration } from "@/data/showcase/scenes/hg-coi";
+import type { SceneBeat, ShowcaseClient } from "../types";
 import { fact, figure, impactBeat } from "../impact";
 
-const coi: SceneBeatData = {
+// ADR-0025 §2: a certificate arrives, four checks tick green, it is filed to the vendor's folder.
+// The scene (scenes/HgVendorScene, builder B1) is a ComingScene until it lands.
+const vendor: SceneBeat = {
   kind: "scene",
-  tab: "COI",
-  caption: "One vendor's certificate, chased from the lapse to the insurer's package, in the engine's own words.",
-  scene: "hg-coi",
-  narration: coiNarration,
+  tab: "Vendor Insurance",
+  caption: "A vendor's certificate arrives, every check ticks green, and it files itself to the vendor.",
+  scene: "hg-vendor",
+  narration:
+    "Vendor insurance on demonstration data: a certificate of insurance arrives, the engine reads the coverage type, the effective dates, the limits and the certificate holder, marks it good to go, and files it to the vendor's folder.",
 };
 
 export const impact = impactBeat("hg-oil", {
@@ -167,7 +168,7 @@ const client: ShowcaseClient = {
         },
       },
     },
-    coi,
+    vendor,
     impact,
   ],
 };

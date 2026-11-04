@@ -36,15 +36,6 @@ const all = [google, social, ...unpaid];
 
 const visited = sum(all.map((c) => c.visited));
 const leads = sum(all.map((c) => c.leads));
-const spend = google.spend + social.spend;
-const adClicks = google.visited + social.visited;
-const paidLeads = google.leads + social.leads;
-const forms = 14;
-const calls = leads - forms;
-/** Ads were shown about 19.5 times for every ad click. Invented. */
-const reached = Math.round((adClicks * 19.5) / 100) * 100;
-const interested = Math.round(visited * 0.325);
-const validated = Math.round(leads * 0.8);
 
 const cplGoogle = google.spend / google.leads;
 const cplSocial = social.spend / social.leads;
@@ -117,32 +108,29 @@ const client: ShowcaseClient = {
       },
     },
     {
-      kind: "funnel",
+      kind: "engine",
       tab: "MarCommand",
-      caption: "Each ad dollar is followed through to the lead it brought in, or didn't.",
+      caption: "MarCommand weighs every channel, turns its own knobs and keeps what it learns.",
       narration:
-        "The MarCommand dashboard on demonstration data: seven channels, the people each one sent to the website, and how many became leads. None of these numbers are real.",
-      funnel: {
-        window: "30 days",
-        lead: { kicker: "Ad spend · last 30 days", value: money(spend), sub: [{ label: "Leads from ads", value: count(paidLeads) }] },
-        stages: [
-          { label: "Reached", value: reached, note: `${count(adClicks)} ad clicks` },
-          { label: "Visited", value: visited },
-          { label: "Interested", value: interested },
-          { label: "Leads", value: leads, note: `${forms} forms\u00a0· ${calls} calls` },
-          { label: "Validated", value: validated },
-        ],
-        railFigures: ["Visited", "Leads"],
-        rail: all.map((c) => ({
-          label: c.label,
-          sub: c.spend ? `${money(c.spend)} spent` : "No ad spend",
-          icon: c.icon,
-          hue: c.spend ? 1 : 2,
-          figures: [c.visited, c.leads] as const,
-          weight: c.visited,
-          reach: c.leads > 0 ? 4 : 2,
-        })),
-      },
+        "The MarCommand engine on demonstration data: it weighs the school's ad channels, favours the one that brings enrollment leads at the best cost, turns the budget and schedule dials, and keeps what it learned.",
+      channels: [
+        { icon: "ads", label: "Google Ads", delta: { text: "best", tone: "up" } },
+        { icon: "social-ads", label: "Meta ads" },
+        { icon: "social", label: "TikTok", delta: { text: "+38% cost/lead", tone: "down" } },
+        { icon: "search", label: "Search" },
+      ],
+      dials: [
+        { label: "Daily budget", from: "$85", to: "$110", r0: 0.35, r1: 0.5 },
+        { label: "Radius", from: "25 mi", r0: 0.4 },
+        { label: "Ad schedule", from: "All day", to: "4-10pm", r0: 0.15, r1: 0.7 },
+      ],
+      pick: 0,
+      turns: [0, 2],
+      learned: [
+        { text: "Open house weekends bring the most calls.", when: "3 weeks ago" },
+        { text: "Tuesday to Thursday evenings bring 2x the enrollment leads for the same spend.", when: "just now", isNew: true },
+      ],
+      result: { label: "Enrollment leads this week", from: "31", to: "38" },
     },
     {
       kind: "ai-ask",
@@ -153,11 +141,19 @@ const client: ShowcaseClient = {
       question: "Are we wasting money on any of our ads?",
       steps: [
         { label: "Reading your question", phase: 0, ms: 700 },
-        { label: "Reading ad spend by channel, last 30 days", phase: 1, ms: 900, chip: "2 rows" },
-        { label: "Reading leads by channel, last 30 days", phase: 1, ms: 800, chip: `${all.length} rows` },
+        { label: "Reading Google Ads spend, last 30 days", phase: 1, ms: 800, chip: "30 rows" },
+        { label: "Reading Social ads spend, last 30 days", phase: 1, ms: 700, chip: "30 rows" },
+        { label: "Reading site visits, last 30 days", phase: 1, ms: 700, chip: `${visited} rows` },
+        { label: "Reading enrollment leads, last 30 days", phase: 1, ms: 700, chip: `${leads} rows` },
         { label: "Working out what each lead cost", phase: 2, ms: 1100 },
         { label: "Writing the answer", phase: 3, ms: 900 },
         { label: "Checking every figure", phase: 4, ms: 800, chip: "9 figures matched" },
+      ],
+      sources: [
+        { icon: "ads", label: "Google Ads", chip: "30 rows", step: 1 },
+        { icon: "social-ads", label: "Social ads", chip: "30 rows", step: 2 },
+        { icon: "visit", label: "Site visits", short: "Visits", chip: `${visited} rows`, step: 3 },
+        { icon: "enroll", label: "Enrollment leads", short: "Leads", chip: `${leads} rows`, step: 4 },
       ],
       worked: [
         {

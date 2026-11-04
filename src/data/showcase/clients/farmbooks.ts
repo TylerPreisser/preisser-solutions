@@ -140,6 +140,14 @@ const client: ShowcaseClient = {
         ],
       },
     },
+    {
+      kind: "scene",
+      tab: "Bills",
+      caption: "A farm bill is snapped, read, sorted by category, split by field and booked, then summed up.",
+      scene: "farmbooks-bills",
+      narration:
+        "FarmBooks on demonstration data: a farm supply bill is photographed, read line by line, sorted into tax categories, split across the farm's fields by acres, checked against the printed total, and summed up at year end.",
+    },
     impact,
   ],
 };
