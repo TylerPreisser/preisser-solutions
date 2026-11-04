@@ -16,9 +16,13 @@ import "./showcase.css";
  *            over a scrim, min(100% - 96, 1248) x min(100% - 64, 940), grown
  *            out of the card. The client's live site renders inside it at its
  *            desktop width. Nothing auto-advances: the visitor picks the tab.
- *            Hover-opened ("hover"): stays open while the pointer is anywhere
- *            inside it, including inside the client's site, and closes 400 ms
- *            after the pointer leaves. Any pointerdown on our own chrome pins it.
+ *            Hover-opened ("hover"): until the pointer has been inside the window's
+ *            resting box once, it stays open wherever the pointer is (a card at the
+ *            row's end sits outside the centred window, so the visitor crosses the
+ *            scrim to reach it). After that it stays open while the pointer is
+ *            inside it, including inside the client's site, and closes 400 ms after
+ *            the pointer leaves. Any pointerdown on our own chrome pins it; x,
+ *            Escape and a scrim click close it.
  *            Click- or key-opened ("pinned"): a modal dialog that closes only by
  *            the close button, Escape or the scrim.
  *   sheet    touch, or narrower than 900px: an opaque sheet from the bottom,
@@ -171,12 +175,26 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
     if (!hover) disarmLeave();
   }, [hover]);
 
-  const onWinEnter = () => {
+  // The pointer has been inside the window's RESTING box at least once. Until then nothing closes a
+  // hover window but x, Escape or a scrim click: the window grows out of the card, so on a wide screen
+  // its edge sweeps past a pointer resting on an end card (FarmBooks at 1920, NWKS at 2560), and the
+  // old rule closed it 400 ms later while the visitor was still on the way in, then the card under the
+  // pointer opened again (debug report 2026-11-04, all three engines).
+  const entered = useRef(false);
+  const inFinal = (e: ReactPointerEvent) => {
+    const fin = finalBox.current;
+    return fin ? e.clientX >= fin.left && e.clientX <= fin.right && e.clientY >= fin.top && e.clientY <= fin.bottom : false;
+  };
+  const onWinEnter = (e: ReactPointerEvent) => {
     inside.current = true;
+    if (inFinal(e)) entered.current = true;
     disarmLeave();
   };
+  const onWinMove = (e: ReactPointerEvent) => {
+    if (!entered.current && inFinal(e)) entered.current = true;
+  };
   const onWinLeave = (e: ReactPointerEvent) => {
-    if (!hover) return;
+    if (!hover || !entered.current) return;
     const edge = e.clientX <= 0 || e.clientY <= 0 || e.clientX >= window.innerWidth - 1 || e.clientY >= window.innerHeight - 1;
     if (edge) return;
     inside.current = false;
@@ -184,10 +202,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
   };
   // Over the scrim: the pointer is outside the window's final box (it may still be growing under the pointer).
   const onScrimMove = (e: ReactPointerEvent) => {
-    if (!hover) return;
-    const fin = finalBox.current;
-    const inBox = fin ? e.clientX >= fin.left && e.clientX <= fin.right && e.clientY >= fin.top && e.clientY <= fin.bottom : false;
-    if (inBox) return;
+    if (!hover || !entered.current || inFinal(e)) return;
     inside.current = false;
     armLeave();
   };
@@ -446,6 +461,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
         data-mode={pinned ? "pinned" : "hover"}
         style={style}
         onPointerEnter={onWinEnter}
+        onPointerMove={hover ? onWinMove : undefined}
         onPointerLeave={onWinLeave}
         onPointerDownCapture={() => {
           // Using our own chrome (a tab, home, the strip) pins a hover window. Clicks inside the
