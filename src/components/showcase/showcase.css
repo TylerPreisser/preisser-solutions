@@ -266,9 +266,12 @@
 [data-theme="dark"] .sc-sheen::before {
   background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.13) 50%, transparent);
 }
+/* backwards, not both: a finished animation that FILLS keeps its element a composited layer for as long
+   as the window is open (Chromium LayerTree: the 499x1168 sheen, plus the glass rim promoted for
+   overlapping it). The end state is the base style anyway (opacity 0), so nothing changes on screen. */
 @media (prefers-reduced-motion: no-preference) {
   [data-phase="open"] > .sc-sheen::before {
-    animation: sc-sheen 1100ms ease-out 160ms both;
+    animation: sc-sheen 1100ms ease-out 160ms backwards;
   }
 }
 @keyframes sc-sheen {
@@ -286,8 +289,28 @@
 html.sc-lock {
   overflow: hidden;
 }
+/* ...and its endless decorative bobs stop. Each one is a composited layer, and everything painted over it
+   (the card track, the page, the scrim, the open window's frame) is promoted for overlapping it: on a
+   390x844 phone at DPR 3 that held ~240 MB of layers for as long as the sheet was open (Chromium
+   LayerTree, 2026-11-04), the likeliest reason iOS Safari dropped the page. They sit under the scrim. */
+html.sc-lock .ps-work-card__bob-label,
+html.sc-lock .ps-work-swipe-hint,
+html.sc-lock .ps-hero-cue__icon {
+  animation: none;
+}
 html.sc-lock--gutter {
   scrollbar-gutter: stable;
+}
+/* A settled sheet: nothing under it is drawn (see ShowcaseLayer `covered`). The strip above the sheet keeps
+   the scrim's opaque top colour, so the screen does not change. */
+html.sc-sheet-covered,
+html.sc-sheet-covered body {
+  /* !important: globals.css paints html and body with !important (the theme ground). */
+  background-color: #0a1628 !important;
+}
+html.sc-sheet-covered body > :not(.sc-root),
+html.sc-sheet-covered .sc-scrim--sheet {
+  visibility: hidden;
 }
 html.sc-sheet-open .ps-header {
   opacity: 0;

@@ -369,6 +369,18 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
     const t = window.setTimeout(() => setSettled(true), 480);
     return () => window.clearTimeout(t);
   }, [sheet, phase]);
+  // A settled sheet covers the whole page but its top strip. Then the page under it, and the scrim, stop
+  // being drawn: drawn, they made Chromium composite the page in big layers and the sheet's scene frame in
+  // a layer of its own for as long as the sheet was open (LayerTree, 390x844 at DPR 3: ~10 MB for the
+  // frame alone, iOS Safari dropped the page ~1 s into a tab). They come back for any movement: a drag,
+  // the close, the next open.
+  const covered = sheet && phase === "open" && settled && dragY === null;
+  useEffect(() => {
+    if (!covered) return;
+    const html = document.documentElement;
+    html.classList.add("sc-sheet-covered");
+    return () => html.classList.remove("sc-sheet-covered");
+  }, [covered]);
   const onSheetDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     const box = boxRef.current;
     if (!box || phase !== "open") return;
