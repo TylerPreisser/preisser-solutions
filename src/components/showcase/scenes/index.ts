@@ -11,9 +11,11 @@ import { HgSwdScene } from "./HgSwdScene";
 import { ComingScene } from "./ComingScene";
 import { FarmbooksBillScene } from "./FarmbooksBillScene";
 import { NwksBedsScene } from "./NwksBedsScene";
+import { FarmbooksBillsScene } from "./FarmbooksBillsScene";
 import { swdCam, swdCues, swdDeskCam } from "@/data/demos/scenes/hg-oil";
 import { COI_TOTAL_MS } from "@/data/showcase/scenes/hg-coi";
 import { fbCam, fbCues, fbHoldMs } from "@/data/demos/scenes/farmbooks";
+import { BILLS_TOTAL_MS } from "@/data/showcase/scenes/farmbooks-bills";
 import { bedsCam, bedsCues } from "@/data/demos/scenes/nwks-encounter";
 
 // Round 2 (ADR-0025): "hg-vendor", "farmbooks-bills", "duffer-cc" and "nwks-admin" are fluid scenes. Each is a
@@ -34,7 +36,7 @@ export type FluidSceneId = "hg-coi" | "hg-vendor" | "farmbooks-bills" | "duffer-
 export const FLUID_SCENES: Record<FluidSceneId, ComponentType<FluidSceneProps>> = {
   "hg-coi": HgCoiScene,
   "hg-vendor": ComingScene,
-  "farmbooks-bills": ComingScene,
+  "farmbooks-bills": FarmbooksBillsScene,
   "duffer-cc": ComingScene,
   "nwks-admin": ComingScene,
 };
@@ -57,7 +59,7 @@ export const SCENE_MS: Record<SceneId, number> = {
   "nwks-beds": bedsCues[bedsCues.length - 1] + 4200,
   // Spec lengths (design-spec-r2 §2, §6.1-6.3); the builder owns the final value.
   "hg-vendor": 13000,
-  "farmbooks-bills": 32000,
+  "farmbooks-bills": BILLS_TOTAL_MS,
   "duffer-cc": 34000,
   "nwks-admin": 34000,
 };
