@@ -1,0 +1,502 @@
+/* ============================================================
+   engine.css — the MarCommand tab's engine room (ADR-0025 §5).
+   The home MarCommand section's language (src/styles/marcommand-live.css):
+   flat cards with a hairline, the lit card in the primary blue on its glow,
+   a #1590FF wire, knob faces that invert with the theme (navy in light, near
+   white in dark, as --theme-bg-surface does), a 5 px blue arc and the needle
+   in the card colour. Only --en-* is declared here.
+
+   Contrast (WCAG, on --en-bg):
+     light  ink #0A1628 17.4  ink-2 #4A5A70 7.0  accent-text #0C6FC9 5.08
+     dark   ink #F2F6FB 14.6  ink-2 #A9B6C8 8.0  accent-text #5AB0FF 6.6
+     chips  white on #0E7A3A 5.44, white on #B42318 6.54 (both themes)
+   Motion: every state change is a transition on an element that exists from
+   the first frame (no keyframe entry from opacity 0; see FetchBand.tsx).
+     wires    stroke-dashoffset, linear, 300-500 ms
+     knob     arc + needle 900 / 600 ms, the window's move curve
+     chips    200 ms scale .8 -> 1 on the grow curve
+     learned  grid rows 0fr -> 1fr 280 ms, accent glow 600 ms
+     result   380 ms, old number struck, new rises
+   ============================================================ */
+
+.en {
+  --en-font: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
+  --en-bg: #ffffff;
+  --en-card: #ffffff;
+  --en-line: #dfe5ec;
+  --en-wire: #c9d1dc;
+  --en-ink: #0a1628;
+  --en-ink2: #4a5a70;
+  --en-accent: #1590ff;
+  --en-accent-t: #0c6fc9;
+  --en-tint: #e8f2ff;
+  --en-knob: #0a1628;
+  --en-ring: #e2e8f0;
+  --en-needle: #ffffff;
+  --en-ok: #0e7a3a;
+  --en-bad: #b42318;
+  --en-move: var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1));
+  --en-grow: var(--sc-ease-grow, cubic-bezier(0.2, 0.9, 0.25, 1));
+  position: absolute;
+  inset: 0;
+  background: var(--en-bg);
+  color: var(--en-ink);
+  font-family: var(--en-font);
+  text-rendering: geometricPrecision;
+}
+[data-theme="dark"] .en {
+  --en-bg: #13233a;
+  --en-card: #172a44;
+  --en-line: #2a3f5c;
+  --en-wire: #3a4f6c;
+  --en-ink: #f2f6fb;
+  --en-ink2: #a9b6c8;
+  --en-accent-t: #5ab0ff;
+  --en-tint: #10305a;
+  --en-knob: #f6f9fc;
+  --en-ring: #8a97ac;
+  --en-needle: #13233a;
+}
+/* A restart (the tab entered again) jumps to the first frame instead of rewinding on screen. */
+.en[data-cut] * {
+  transition: none !important;
+}
+.en p {
+  margin: 0;
+}
+.en-room {
+  position: relative;
+}
+.en-wires {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.en-w {
+  stroke: var(--en-wire);
+  stroke-width: 2;
+}
+.en-w--lit {
+  stroke: var(--en-accent);
+  transition-property: stroke-dashoffset;
+  transition-timing-function: linear;
+}
+
+/* Channel cards. */
+.en-ch {
+  position: absolute;
+}
+.en-ch__card {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  border: 1px solid var(--en-line);
+  background: var(--en-card);
+  transition:
+    border-color 240ms ease-out,
+    background-color 240ms ease-out,
+    box-shadow 240ms ease-out;
+}
+.en-ch[data-pick] .en-ch__card {
+  border-color: var(--en-accent);
+  background: var(--en-tint);
+  box-shadow: 0 0 0 1px var(--en-accent);
+}
+.en-logo {
+  width: 36px;
+  height: 36px;
+}
+.en-logo--ink {
+  fill: var(--en-ink);
+}
+.en-logo--line {
+  fill: none;
+  stroke: var(--en-ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.en-glyph {
+  display: grid;
+  place-items: center;
+  color: var(--en-ink2);
+}
+.en-glyph svg {
+  width: 34px;
+  height: 34px;
+}
+.en-ch__label {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  transform: translateX(-50%);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--en-ink2);
+}
+.en-ch[data-pick] .en-ch__label {
+  color: var(--en-ink);
+}
+.en-chip {
+  position: absolute;
+  right: -10px;
+  top: -11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--en-ok);
+  color: #fff;
+  font-size: 11.5px;
+  line-height: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.8);
+  transform-origin: 100% 50%;
+  transition:
+    opacity 200ms ease-out,
+    transform 200ms var(--en-grow);
+}
+.en-chip[data-tone="down"] {
+  background: var(--en-bad);
+}
+.en-chip[data-on] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Knobs. */
+.en-dial {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.en-knob {
+  position: relative;
+  flex: none;
+}
+.en-knob svg {
+  display: block;
+}
+.en-knob__body {
+  fill: var(--en-knob);
+  stroke: var(--en-ring);
+  stroke-width: 1.5;
+}
+.en-knob__arc {
+  fill: none;
+  stroke: var(--en-accent);
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition-property: stroke-dashoffset;
+  transition-timing-function: var(--en-move);
+}
+.en-needle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 2px;
+  background: var(--en-needle);
+  transform-origin: 0 50%;
+  transition-property: transform;
+  transition-timing-function: var(--en-move);
+}
+.en-dial__label {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--en-ink2);
+  white-space: nowrap;
+}
+.en-dial__value {
+  display: flex;
+  align-items: baseline;
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 700;
+  color: var(--en-accent-t);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.en-dial__old {
+  display: inline-block;
+  max-width: 0;
+  margin-right: 0;
+  overflow: hidden;
+  opacity: 0;
+  color: var(--en-ink2);
+  font-weight: 500;
+  text-decoration-thickness: 2px;
+  transition:
+    max-width 300ms var(--en-move),
+    margin-right 300ms var(--en-move),
+    opacity 200ms ease-out;
+}
+.en-dial__value[data-turned] .en-dial__old {
+  max-width: 90px;
+  margin-right: 6px;
+  opacity: 1;
+}
+
+.en-bot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: 3;
+  transition-property: transform;
+  transition-timing-function: linear;
+}
+
+/* What it learned. */
+.en-learn {
+  position: absolute;
+  left: 790px;
+  top: 44px;
+  width: 330px;
+}
+.en-k {
+  margin-bottom: 12px !important;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--en-ink2);
+}
+.en-new {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 280ms var(--en-grow),
+    opacity 200ms ease-out;
+}
+.en-new[data-on] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.en-new__in {
+  min-height: 0;
+  clip-path: inset(-14px -14px -30px -14px);
+}
+.en-lc {
+  box-sizing: border-box;
+  margin: 0 0 8px !important;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--en-line);
+  background: var(--en-card);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--en-ink2);
+}
+.en-lc--new {
+  padding: 11px 13px;
+  border: 2px solid var(--en-accent);
+  color: var(--en-ink);
+  box-shadow: 0 8px 22px rgba(21, 144, 255, 0.18);
+  transition: box-shadow 600ms ease-out;
+}
+.en-new[data-flash] .en-lc--new {
+  box-shadow:
+    0 0 0 6px rgba(21, 144, 255, 0.22),
+    0 8px 22px rgba(21, 144, 255, 0.18);
+}
+.en-lc__when {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--en-ink2);
+}
+
+/* The result. */
+.en-res {
+  position: absolute;
+  left: 790px;
+  bottom: 32px;
+  width: 330px;
+  box-sizing: border-box;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: var(--en-tint);
+}
+.en-res__k {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--en-ink2);
+}
+.en-res__n {
+  margin-top: 6px !important;
+  display: flex;
+  align-items: baseline;
+  font-size: 52px;
+  line-height: 56px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--en-ink);
+}
+.en-res__old {
+  display: inline-block;
+  max-width: 0;
+  margin-right: 0;
+  overflow: hidden;
+  opacity: 0;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--en-ink2);
+  text-decoration-thickness: 3px;
+  transition:
+    max-width 380ms var(--en-grow),
+    margin-right 380ms var(--en-grow),
+    opacity 240ms ease-out;
+}
+.en-res[data-on] .en-res__old {
+  max-width: 80px;
+  margin-right: 10px;
+  opacity: 1;
+}
+.en-res__slot {
+  display: inline-grid;
+}
+.en-res__from,
+.en-res__to {
+  grid-area: 1 / 1;
+  transition:
+    opacity 240ms ease-out,
+    transform 380ms var(--en-grow);
+}
+.en-res__to {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.en-res[data-on] .en-res__from {
+  opacity: 0;
+  transform: translateY(-14px);
+}
+.en-res[data-on] .en-res__to {
+  opacity: 1;
+  transform: none;
+}
+
+.en-cap {
+  position: absolute;
+  left: 50px;
+  top: 590px;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--en-ink2);
+  white-space: nowrap;
+}
+.en-cap b {
+  font-weight: 600;
+  color: var(--en-ink);
+}
+
+/* Phone: 320 wide; cards 64, knobs 70, only the new learning, the result full width. */
+.en[data-variant="phone"] .en-ch__card {
+  border-radius: 16px;
+}
+.en[data-variant="phone"] .en-logo {
+  width: 28px;
+  height: 28px;
+}
+.en[data-variant="phone"] .en-glyph svg {
+  width: 26px;
+  height: 26px;
+}
+.en[data-variant="phone"] .en-ch__label {
+  top: calc(100% + 5px);
+  font-size: 11.5px;
+  line-height: 14px;
+}
+.en[data-variant="phone"] .en-chip {
+  right: auto;
+  left: 50%;
+  top: -10px;
+  padding: 2px 7px;
+  font-size: 11px;
+  line-height: 14px;
+  transform: translateX(-50%) scale(0.8);
+  transform-origin: 50% 50%;
+}
+.en[data-variant="phone"] .en-chip[data-on] {
+  transform: translateX(-50%);
+}
+.en[data-variant="phone"] .en-knob__arc {
+  stroke-width: 4;
+}
+.en[data-variant="phone"] .en-needle {
+  height: 2.5px;
+  margin-top: -1.25px;
+}
+.en[data-variant="phone"] .en-dial__label {
+  margin-top: 6px;
+  font-size: 12.5px;
+  line-height: 16px;
+}
+.en[data-variant="phone"] .en-dial__value {
+  font-size: 14px;
+  line-height: 18px;
+}
+/* Three knobs share 320 px: the old value gets its own line under the new one (reserved on every
+   dial, so the values share a baseline), never a second word beside it running into the next dial. */
+.en[data-variant="phone"] .en-dial__value {
+  flex-direction: column-reverse;
+  align-items: center;
+}
+.en[data-variant="phone"] .en-dial__old {
+  max-width: none;
+  height: 16px;
+  font-size: 12px;
+  line-height: 16px;
+  text-decoration-thickness: 1.5px;
+}
+.en[data-variant="phone"] .en-dial__value[data-turned] .en-dial__old {
+  max-width: none;
+  margin-right: 0;
+}
+.en[data-variant="phone"] .en-learn {
+  left: 12px;
+  right: 12px;
+  top: 292px;
+  width: auto;
+}
+.en[data-variant="phone"] .en-k {
+  margin-bottom: 8px !important;
+  font-size: 11.5px;
+}
+.en[data-variant="phone"] .en-lc {
+  font-size: 13.5px;
+  line-height: 19px;
+}
+.en[data-variant="phone"] .en-res {
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  width: auto;
+  padding: 12px 16px;
+}
+.en[data-variant="phone"] .en-res__k {
+  font-size: 12.5px;
+}
+.en[data-variant="phone"] .en-res__n {
+  margin-top: 2px !important;
+  font-size: 40px;
+  line-height: 44px;
+}
+.en[data-variant="phone"] .en-res__old {
+  font-size: 20px;
+}

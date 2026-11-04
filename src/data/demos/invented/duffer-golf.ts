@@ -37,10 +37,14 @@ export const invented: InventedSet = {
     // labels and AI tab words (portal-ui overview, ai/copy.ts, chat/copy.ts).
     "Overview", "Activity", "AI", "Partner", "Display", "Scanned", "Visited", "Orders", "Ask", "Answer",
     "Pulled", "Compared", "Concluded", "Sources",
+    // Round 2 (ADR-0025 §4, §5): the AI tab's source cards and the MarCommand tab's channel and dial labels.
+    "Course", "Site", "Visits", "Ads", "Ad", "Search", "Daily", "Radius", "Weekends", "Just",
   ],
   approved: [
     { name: "Duffer Golf", source: "src/components/home/case-studies.tsx Duffer Golf card (owner, 2026-10-13); DECISIONS/0002" },
     { name: "MarCommand", source: "Preisser Solutions' own product (src/app/products/marcommand-engine)" },
+    { name: "Google", source: "an ad channel card on the MarCommand tab, as on the home MarCommand section (src/components/home/marcommand-live-stage.tsx)" },
+    { name: "Meta", source: "an ad channel card on the MarCommand tab, as on the home MarCommand section (src/components/home/marcommand-live-stage.tsx)" },
   ],
   assets: [
     {

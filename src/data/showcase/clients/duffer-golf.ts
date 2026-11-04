@@ -158,25 +158,29 @@ const client: ShowcaseClient = {
       tab: "MarCommand",
       caption: "MarCommand watches every channel, turns its own knobs and keeps what it learns.",
       narration:
-        "The MarCommand engine on demonstration data: it weighs the ad channels and the course displays, favours the one that sells, turns the budget and schedule dials, and keeps what it learned.",
+        "The MarCommand engine on demonstration data: it weighs the ad channels and the course displays, favours the ad channel that brings leads for the least, turns the budget and schedule dials, and keeps what it learned.",
+      // Invented, and sized for a garage golf simulator sold online: a modest daily ad budget,
+      // a radius around the partner courses, and the month's leads equal to the AI tab's total.
+      // The weekend schedule follows the older learning; the new one is the AI tab's display finding.
       channels: [
-        { icon: "ads", label: "Google Ads" },
-        { icon: "social-ads", label: "Meta ads" },
-        { icon: "displays", label: "Course displays", delta: { text: "best", tone: "up" } },
+        { icon: "ads", label: "Google Ads", delta: { text: "best", tone: "up" } },
+        { icon: "social-ads", label: "Meta ads", delta: { text: "+41% cost/lead", tone: "down" } },
+        { icon: "displays", label: "Course displays" },
         { icon: "search", label: "Search" },
       ],
       dials: [
         { label: "Daily budget", from: "$60", to: "$75", r0: 0.3, r1: 0.42 },
         { label: "Radius", from: "40 mi", r0: 0.5 },
-        { label: "Ad schedule", from: "All day", to: "Evenings", r0: 0.15, r1: 0.7 },
+        { label: "Ad schedule", from: "All day", to: "Weekends", r0: 0.15, r1: 0.62 },
       ],
-      pick: 2,
+      pick: 0,
       turns: [0, 2],
       learned: [
-        { text: "Orders cluster after the weekend rounds.", when: "2 weeks ago" },
-        { text: "Displays at the pro-shop counter outsell the cart barn 3 to 1.", when: "just now", isNew: true },
+        { text: "Displays at the pro-shop counter outsell the cart barn 3 to 1.", when: "Just now", isNew: true },
+        { text: "Meta ad leads cost 41% more this month: budget moved to Google Ads.", when: "2 days ago" },
+        { text: "Orders come in after the weekend rounds.", when: "2 weeks ago" },
       ],
-      result: { label: "Leads this week", from: String(leads - 6), to: String(leads) },
+      result: { label: "Leads a month", from: String(leads), to: String(leads + 5) },
     },
     {
       kind: "ai-ask",
