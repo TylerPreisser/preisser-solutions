@@ -84,9 +84,9 @@ const client: ShowcaseClient = {
       caption: "Hays's next class date sits right up top, and every program shows its price.",
       captured: "Captured Nov 1, 2026",
       desk: {
-        src: "/images/showcase/hays-academy-site-desk-7e175ee0.webp",
-        width: 1280,
-        height: 2099,
+        src: "/images/showcase/hays-academy-site-desk-first-ece0f3e6.webp",
+        width: 1220,
+        height: 819,
         stops: [
           { y: 0, holdMs: 2200, avoid: HAYS_DESK_BANDS },
           { y: 860, holdMs: 1500, avoid: HAYS_DESK_BANDS },
@@ -94,9 +94,9 @@ const client: ShowcaseClient = {
         ],
       },
       phone: {
-        src: "/images/showcase/hays-academy-site-phone-55d5fb2a.webp",
+        src: "/images/showcase/hays-academy-site-phone-first-c2cccf96.webp",
         width: 390,
-        height: 2180,
+        height: 844,
         stops: [
           { y: 0, holdMs: 2200, avoid: HAYS_PHONE_BANDS },
           // "Next class starts November 10" rests at the top with the four stats under it (critique r8 N2),
