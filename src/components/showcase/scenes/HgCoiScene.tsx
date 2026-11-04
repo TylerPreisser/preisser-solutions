@@ -292,7 +292,7 @@ function useBox(ref: React.RefObject<HTMLElement | null>) {
  * A visitor who scrolls or touches the pane takes it over. Re-rests once the
  * web fonts settle (line heights change).
  */
-function useFollow(key: number | string, t: number, rest: "end" | "top" = "end") {
+function useFollow(key: number | string, t: number, rest: "end" | "top" = "end", keep?: string) {
   const ref = useRef<HTMLDivElement>(null);
   const own = useRef(false);
   const first = useRef(true);
@@ -301,18 +301,15 @@ function useFollow(key: number | string, t: number, rest: "end" | "top" = "end")
     if (t === 0) own.current = false;
   }, [t]);
   useLayoutEffect(() => {
+    /** Toggles the fade, and tells it the pane's bottom padding so it sits flush on the pane's true edge (critic r2 R2-2). */
     const more = () => {
       const el = ref.current;
-      if (el) el.classList.toggle("is-more", el.scrollTop + el.clientHeight < el.scrollHeight - 2);
-    };
-    const snap = (smooth: boolean) => {
-      const el = ref.current;
       if (!el) return;
-      if (rest === "top" || own.current) return more();
-      if (base.current === null) base.current = parseFloat(getComputedStyle(el).paddingBottom) || 0;
-      el.style.paddingBottom = `${base.current}px`;
-      const need = el.scrollHeight - el.clientHeight;
-      if (need <= 0) return more();
+      el.style.setProperty("--hgc-pad-b", getComputedStyle(el).paddingBottom);
+      el.classList.toggle("is-more", el.scrollTop + el.clientHeight < el.scrollHeight - 2);
+    };
+    /** Every text line in the pane, in its scroll space. */
+    const linesOf = (el: HTMLElement) => {
       const er = el.getBoundingClientRect();
       const lines: [number, number][] = [];
       const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
@@ -325,18 +322,46 @@ function useFollow(key: number | string, t: number, rest: "end" | "top" = "end")
           lines.push([q.top - er.top + el.scrollTop, q.bottom - er.top + el.scrollTop]);
         }
       }
+      return lines;
+    };
+    /** The first line top at or past `need` that no line crosses (with a little air over it when that is clear too). */
+    const restAt = (lines: [number, number][], need: number, cap = Infinity) => {
       const clear = (c: number) => !lines.some(([t0, t1]) => t0 < c - 1 && t1 > c + 1);
-      // The first line top at or past the furthest needed: whole lines above it, room below. A little air over it if that is clear too.
       const tops = [...new Set(lines.map(([t0]) => Math.floor(t0)))].sort((x, y) => x - y);
-      let top = need;
       for (const c of tops) {
-        if (c < need - 0.5) continue;
+        if (c < need - 0.5 || c > cap) continue;
         if (!clear(c)) continue;
-        top = c - 6 >= need && clear(c - 6) ? c - 6 : c;
-        break;
+        return c - 6 >= need && clear(c - 6) ? c - 6 : c;
       }
+      return null;
+    };
+    const FADE = 34;
+    const snap = (smooth: boolean) => {
+      const el = ref.current;
+      if (!el) return;
+      if (own.current) return more();
+      const go = (top: number) => el.scrollTo({ top, behavior: smooth ? "smooth" : "auto" });
+      if (rest === "top") {
+        // Rest at the top, unless a `keep` element would sit under the fade: then move down just enough,
+        // to a line boundary, that it shows whole and clear of the fade.
+        const k = keep ? el.querySelector<HTMLElement>(keep) : null;
+        if (k) {
+          const er = el.getBoundingClientRect();
+          const kr = k.getBoundingClientRect();
+          const kTop = kr.top - er.top + el.scrollTop;
+          const kBottom = kr.bottom - er.top + el.scrollTop;
+          const need = kBottom - (el.clientHeight - FADE - 2);
+          go(need > 0 ? restAt(linesOf(el), need, kTop) ?? Math.min(need, kTop) : 0);
+        }
+        return more();
+      }
+      if (base.current === null) base.current = parseFloat(getComputedStyle(el).paddingBottom) || 0;
+      el.style.paddingBottom = `${base.current}px`;
+      const need = el.scrollHeight - el.clientHeight;
+      if (need <= 0) return more();
+      const top = restAt(linesOf(el), need) ?? need;
       if (top > need) el.style.paddingBottom = `${base.current + Math.ceil(top - need)}px`;
-      el.scrollTo({ top, behavior: smooth ? "smooth" : "auto" });
+      go(top);
       more();
     };
     const smooth = !first.current && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -939,9 +964,9 @@ function DetectBeat({ t }: { t: number }) {
 function PackageBeat({ t }: { t: number }) {
   const pressed = t >= 1500;
   const open = t >= 2300;
-  const files = clamp(Math.floor((t - 2700) / 280) + 1, 0, PACKAGE.files.length);
+  const files = clamp(Math.floor((t - 2500) / 110) + 1, 0, PACKAGE.files.length);
   // The list rests at its top (the rundown, then the certificates; the renewed one is the fourth) and fades when more is below.
-  const f = useFollow(`${open}-${files}`, t, "top");
+  const f = useFollow(`${open}-${files}`, t, "top", ".is-new");
   const desk = useFollow(`${open}`, t, "top");
   return (
     <div className={`hgc-pkgwrap${open ? " is-open" : ""}`}>
@@ -998,8 +1023,8 @@ function PackageBeat({ t }: { t: number }) {
             })}
           </div>
           </div>
-          {t >= 5200 ? <p className="hgc-pkg__note">{PACKAGE.note}</p> : null}
-          {t >= 6000 ? (
+          {t >= 3600 ? <p className="hgc-pkg__note">{PACKAGE.note}</p> : null}
+          {t >= 4300 ? (
             <p className="hgc-loop">
               <svg viewBox="0 0 16 16" aria-hidden="true">
                 <path d="M13 8a5 5 0 1 1-1.5-3.6M13.5 2v3.2h-3.2" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

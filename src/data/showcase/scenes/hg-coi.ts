@@ -346,9 +346,9 @@ export const LADDER = {
   band: "Ended less than 30 days ago: a reminder every 5 to 10 days. The AI picks each gap.",
   rungs: [
     { when: "Nov 3", what: "The ask", state: "sent" },
-    { when: "About Nov 10", what: "Reminder", state: "next" },
-    { when: "About Nov 17", what: "Reminder", state: "later" },
-    { when: "About Nov 24", what: "Last note", state: "later" },
+    { when: "About\u00a0Nov\u00a010", what: "Reminder", state: "next" },
+    { when: "About\u00a0Nov\u00a017", what: "Reminder", state: "later" },
+    { when: "About\u00a0Nov\u00a024", what: "Last note", state: "later" },
   ],
   after: "Still silent after the last note: it goes to a person, in Needs me.",
   never: "Never chased after a reply that asks it to wait. Never chased once covered.",

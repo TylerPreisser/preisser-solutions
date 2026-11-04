@@ -1562,8 +1562,10 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: start;
-  /* A tall window centres the pair instead of leaving a void under it (critic r1 #6). */
-  align-content: safe center;
+  /* Pinned at a fixed top in a tall window, so the cards grow downward only and never drift
+     while being read (critic r2 R2-3); a short stage starts at the top. */
+  align-content: start;
+  padding-top: clamp(0px, calc(18cqh - 40px), 120px);
   gap: 10px;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -1693,7 +1695,8 @@
 .hgc-ladder li {
   position: relative;
   display: grid;
-  grid-template-columns: 86px minmax(0, 1fr);
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: 14px;
   gap: 2px 8px;
   padding: 5px 0;
   font-size: 12px;
@@ -1722,6 +1725,7 @@
   box-shadow: inset 0 0 0 2px var(--hgc-blue-2);
 }
 .hgc-ladder__when {
+  white-space: nowrap;
   color: var(--hgc-ink-3);
 }
 .hgc-ladder__what {
@@ -1761,7 +1765,10 @@
     grid-template-columns: minmax(0, 1fr);
   }
   .hgc-ladder li {
-    grid-template-columns: 76px minmax(0, 1fr);
+    grid-template-columns: max-content minmax(0, 1fr);
+  }
+  .hgc-chase {
+    padding-top: 0;
   }
 }
 
@@ -1884,7 +1891,9 @@
   /* A small sticky gradient, not a mask: a mask on a scroller is a layer the size of its content. */
   content: "";
   position: sticky;
-  bottom: 0;
+  /* A sticky box stops short of the scroller's padding; this puts the fade on the TRUE bottom edge,
+     so a row cut by the edge is always under the fade (critic r2 R2-2). The pane hook sets the var. */
+  bottom: calc(-1 * var(--hgc-pad-b, 0px));
   display: block;
   height: 34px;
   margin-top: -34px;
