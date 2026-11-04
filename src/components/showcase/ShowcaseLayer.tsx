@@ -27,6 +27,9 @@ import "./showcase.css";
  *            the close button, Escape or the scrim.
  *   sheet    touch, or narrower than 900px: an opaque sheet from the bottom,
  *            swiped down from its grip and title row to dismiss.
+ *   armed    hover intent has begun but not yet held: the window is mounted at its resting place,
+ *            transparent and untouchable, so the Website tab's frame starts loading early. Nothing
+ *            else happens (no scrim, no scroll lock, no keys) until the card clears `armed`.
  */
 export type LayerMode = "hover" | "pinned";
 
@@ -69,12 +72,14 @@ interface LayerProps {
   /** The card the window grows out of. */
   anchor: HTMLElement;
   mode: LayerMode;
+  /** Mounted ahead of hover intent completing: invisible, inert, only the Website frame loads. */
+  armed?: boolean;
   onClose: () => void;
 }
 
 type Phase = "measure" | "from" | "open" | "leave";
 
-function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseClient }) {
+function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { show: ShowcaseClient }) {
   const [sheet] = useState(isSheetLayout);
   const [reduced] = useState(prefersReduced);
   const [phase, setPhase] = useState<Phase>(sheet ? "from" : "measure");
@@ -98,7 +103,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
 
   // ── Open: the window's place is CSS (centred, spec §2.1); JS only measures where it grows from.
   useLayoutEffect(() => {
-    if (sheet) return;
+    if (sheet || armed) return;
     const box = boxRef.current;
     if (!box) return;
     const w = box.getBoundingClientRect();
@@ -109,7 +114,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
     const dy = c.top + c.height / 2 - (w.top + w.height / 2);
     setFrom(`translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(${sx.toFixed(3)})`);
     setPhase("from");
-  }, [anchor, sheet]);
+  }, [anchor, sheet, armed]);
 
   useEffect(() => {
     if (phase !== "from") return;
@@ -136,6 +141,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
 
   // The page behind stops scrolling (a wheel at the end of a client page would chain into ours), without shifting sideways.
   useEffect(() => {
+    if (armed) return;
     const html = document.documentElement;
     // Keep the gutter only where a classic scrollbar takes room; an overlay scrollbar has none to keep.
     const gutter = window.innerWidth - html.clientWidth > 0;
@@ -143,7 +149,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
     if (gutter) html.classList.add("sc-lock--gutter");
     if (sheet) html.classList.add("sc-sheet-open");
     return () => html.classList.remove("sc-lock", "sc-lock--gutter", "sc-sheet-open");
-  }, [sheet]);
+  }, [sheet, armed]);
 
   const closing = useRef(false);
   const close = useCallback(() => {
@@ -209,6 +215,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
 
   // ── Keyboard: Escape closes either kind (while focus is in our document; Escape inside the client's site is theirs).
   useEffect(() => {
+    if (armed) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
@@ -217,7 +224,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [close]);
+  }, [close, armed]);
 
   // A click-, key- or touch-opened window takes focus to its close button, and gives it back on close.
   // (Not while measuring: the window is visibility:hidden then, and focus() on it is a no-op.)
@@ -400,7 +407,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
             client={show}
             beat={b}
             variant={variant}
-            active={opened && i === at}
+            active={(opened || (armed && b.kind === "website")) && i === at}
             fill
             reduced={reduced}
             onCaption={i === at ? (l) => setLine((p) => (p === l ? p : l)) : undefined}
@@ -452,7 +459,7 @@ function Layer({ show, anchor, mode, onClose }: LayerProps & { show: ShowcaseCli
 
   const style = { transform: phase === "from" ? from : undefined } as CSSProperties;
   return createPortal(
-    <div className="sc-root">
+    <div className="sc-root" data-armed={armed ? "" : undefined} aria-hidden={armed || undefined} inert={armed || undefined}>
       <div {...scrimProps} />
       <div
         ref={boxRef}

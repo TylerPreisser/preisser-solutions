@@ -326,6 +326,21 @@ html.sc-sheet-open .ps-header {
   background: linear-gradient(#0a1628 0, #0a1628 40px, rgba(10, 22, 40, 0.58) 120px);
 }
 
+/* Armed (hover intent begun, not yet held): the window waits at its resting place, transparent and
+   untouchable, while its Website frame loads. Visible to layout and to the frame's own engine (so the
+   frame is not throttled as hidden), invisible and inert to the visitor. */
+.sc-root[data-armed] .sc-scrim {
+  display: none;
+}
+.sc-root[data-armed] .sc-pop[data-phase="measure"] {
+  visibility: visible;
+  opacity: 0;
+}
+.sc-root[data-armed],
+.sc-root[data-armed] * {
+  pointer-events: none !important;
+}
+
 /* ── The window (fine pointer, 900px and up): centred, spec §2.1 ── */
 .sc-pop {
   position: fixed;
@@ -786,17 +801,80 @@ html.sc-sheet-open .ps-header {
   display: block;
   background: #fff;
   transform-origin: 0 0;
-  visibility: hidden;
+  /* Loading: transparent and untouchable, NOT visibility:hidden. A visibility:hidden cross-origin frame is
+     throttled as hidden content (Firefox held its ready message back up to ~1 s), and the still under it
+     must take the visitor's wheel to show the loading hint. A hidden tab still hides it: visibility is
+     inherited from the panel. */
+  opacity: 0;
+  pointer-events: none;
 }
-/* inherit, not visible: a hidden tab (visibility:hidden on its panel) must hide the frame too.
-   The still -> live swap is a cut, not a fade: the still and the live page never line up exactly
+/* The still -> live swap is a cut, not a fade: the still and the live page never line up exactly
    (a video hero, a different crop), and a 200 ms cross-fade showed both at once (critique R2-6).
    The ready message is sent after the framed page has painted, so the cut lands on a drawn page. */
 .sc-web[data-state="live"] .sc-web__frame {
-  visibility: inherit;
+  opacity: 1;
+  pointer-events: auto;
 }
 .sc-web[data-state="live"] .sc-web__still {
   visibility: hidden;
+}
+/* "Loading the live site…": the words shimmer once a second and a half, so Loading never reads as a dead still. */
+@media (prefers-reduced-motion: no-preference) {
+  .sc-web__chip[data-state="loading"] {
+    color: transparent;
+    background: linear-gradient(90deg, #475569 0 35%, #b6c2d1 50%, #475569 65% 100%) 0 0 / 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: sc-web-shimmer 1.6s linear infinite;
+  }
+  [data-theme="dark"] .sc-web__chip[data-state="loading"] {
+    background-image: linear-gradient(90deg, #cbd5e1 0 35%, #ffffff 50%, #cbd5e1 65% 100%);
+  }
+  .sc-web__chip[data-state="loading"] i {
+    animation: sc-web-pulse 1.6s ease-in-out infinite;
+  }
+}
+@keyframes sc-web-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+@keyframes sc-web-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+/* A wheel or touch on the still while the live site loads: say so, where the eye is. */
+.sc-web__hint {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: calc(100% - 24px);
+  box-sizing: border-box;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(10, 22, 40, 0.88);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sc-web__hint {
+    animation: sc-web-hint-in 160ms ease-out both;
+  }
+}
+@keyframes sc-web-hint-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 6px));
+  }
 }
 .sc-web__fallback {
   position: absolute;
@@ -842,6 +920,15 @@ html.sc-sheet-open .ps-header {
     padding: 12px;
     border-radius: 20px;
     text-align: center;
+  }
+  /* "Loading" alone in a phone's strip, so the domain stays whole; the rest stays in the accessible name. */
+  .sc-web__chip-more {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
 /* A phone: the domain must stay whole at 320 (296px panel). Not live, the empty home column gives its room

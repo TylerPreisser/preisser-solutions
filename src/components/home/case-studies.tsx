@@ -681,7 +681,11 @@ export function CaseStudies() {
   // ── Showcase window state (ADR-0020, ADR-0023) ─────────────────────
   // The window owns its own closing (hover: 400 ms after the pointer leaves it;
   // pinned: close button, Escape, scrim). The card only decides when to open.
-  const [showcase, setShowcase] = useState<{ slug: ShowcaseSlug; anchor: HTMLElement; mode: LayerMode } | null>(null);
+  // `armed`: hover intent has BEGUN on this card (the pointer came to rest on it) but not yet held for 280 ms.
+  // The window is mounted then, invisible and untouchable, so the client's site starts loading in its frame
+  // 280 ms+ before the window is up and is usually Live by the time it is (owner bug 2026-11-04: "it's still,
+  // it's not scrollable" was a wheel during Loading, under the dated still). Intent dropped: it unmounts.
+  const [showcase, setShowcase] = useState<{ slug: ShowcaseSlug; anchor: HTMLElement; mode: LayerMode; armed?: boolean } | null>(null);
   const intentTimer = useRef<number | undefined>(undefined);
   // Hover intent (design spec §2.2): 280 ms after a REAL pointermove over the card, and no wheel or
   // scroll in the last 400 ms. Without the last two, a visitor wheel-scrolling the page gets a
@@ -693,6 +697,7 @@ export function CaseStudies() {
       lastScroll.current = performance.now();
       window.clearTimeout(intentTimer.current);
       intentTimer.current = undefined;
+      setShowcase((cur) => (cur?.armed ? null : cur));
     };
     window.addEventListener("wheel", mark, { passive: true });
     window.addEventListener("scroll", mark, { passive: true, capture: true });
@@ -721,21 +726,26 @@ export function CaseStudies() {
   }, []);
 
   function showcaseMove(slug: ShowcaseSlug, el: HTMLElement) {
-    if (window.innerWidth < 900 || showcase) return;
+    if (window.innerWidth < 900 || (showcase && !showcase.armed)) return;
     // A move this soon after a wheel or scroll is the browser's synthetic one, not the visitor's hand.
     if (performance.now() - lastScroll.current < 400) return;
     if (intentTimer.current !== undefined) return;
     warm(slug, true);
+    setShowcase((cur) => cur ?? { slug, anchor: el, mode: "hover", armed: true });
     intentTimer.current = window.setTimeout(() => {
       intentTimer.current = undefined;
-      if (performance.now() - lastScroll.current < 400) return;
-      setShowcase((cur) => cur ?? { slug, anchor: el, mode: "hover" });
+      if (performance.now() - lastScroll.current < 400) {
+        setShowcase((cur) => (cur?.armed ? null : cur));
+        return;
+      }
+      setShowcase((cur) => (cur?.armed && cur.slug === slug ? { ...cur, armed: false } : cur ?? { slug, anchor: el, mode: "hover" }));
     }, 280);
   }
 
   function showcaseLeave() {
     window.clearTimeout(intentTimer.current);
     intentTimer.current = undefined;
+    setShowcase((cur) => (cur?.armed ? null : cur));
   }
 
   function showcaseActivate(slug: ShowcaseSlug, el: HTMLElement) {
@@ -940,7 +950,7 @@ export function CaseStudies() {
                   type="button"
                   className="ps-work-card__toggle"
                   aria-haspopup="dialog"
-                  aria-expanded={showcase?.slug === study.showcase}
+                  aria-expanded={showcase?.slug === study.showcase && !showcase.armed}
                   aria-label={`${study.title}: see their website and what we built them`}
                   onPointerEnter={(e) => {
                     if (e.pointerType !== "mouse") warm(study.showcase!, window.innerWidth >= 600);
@@ -1042,12 +1052,13 @@ export function CaseStudies() {
       </p>
 
       {showcase ? (
-        <ShowcaseBoundary key={showcase.slug} onFail={() => setShowcase(null)}>
+        <ShowcaseBoundary key={`${showcase.slug}:${showcase.mode}`} onFail={() => setShowcase(null)}>
         <ShowcaseLayer
-          key={showcase.slug}
+          key={`${showcase.slug}:${showcase.mode}`}
           slug={showcase.slug}
           anchor={showcase.anchor}
           mode={showcase.mode}
+          armed={!!showcase.armed}
           onClose={() => setShowcase(null)}
         />
         </ShowcaseBoundary>

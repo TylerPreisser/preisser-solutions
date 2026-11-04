@@ -11,7 +11,16 @@ import { useBox, type BeatProps } from "./shared";
  * `ps-portal-ready` message, §3.5): a frame the browser refused still fires
  * `load`, and would otherwise show a blank white box as "Live". No message
  * within 8 s and the frame is removed; the still stays, with "Open <domain>".
+ *
+ * While loading, the chip says so in words ("Loading the live site…") and a wheel or touch on the still
+ * answers with a short hint: a visitor who scrolls the still and sees nothing move reads it as a dead
+ * window (owner, 2026-11-04, Duffer: "it's still, it's not scrollable"). The frame waits transparent and
+ * untouchable above the still, not visibility:hidden, so engines do not throttle it as hidden content
+ * (Firefox held the ready message back up to ~1 s that way) and the still takes the visitor's input.
  */
+
+/** How long the "the live site is loading" hint stays up after the last wheel or touch on the still. */
+const HINT_MS = 2200;
 
 /** How long a frame may take to say it rendered before the window falls back to the still. */
 export const READY_MS = 8000;
@@ -58,9 +67,21 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
   const [shown, setShown] = useState(false);
   const [state, setState] = useState<FrameState>(live.frame === "off" ? "preview" : "loading");
   const [reload, setReload] = useState(0);
+  const [hint, setHint] = useState(false);
+  const hintTimer = useRef<number | undefined>(undefined);
   useEffect(() => {
     if (active) setShown(true);
   }, [active]);
+  useEffect(() => {
+    if (state !== "loading") setHint(false);
+  }, [state]);
+  useEffect(() => () => window.clearTimeout(hintTimer.current), []);
+  const nudge = () => {
+    if (state !== "loading") return;
+    setHint(true);
+    window.clearTimeout(hintTimer.current);
+    hintTimer.current = window.setTimeout(() => setHint(false), HINT_MS);
+  };
 
   const framed = shown && state !== "preview";
 
@@ -127,6 +148,7 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
           <span className="sc-web__chip" data-state={state} title={state === "preview" ? beat.captured : undefined} aria-live="polite">
             <i aria-hidden="true" />
             {chip}
+            {state === "loading" ? <span className="sc-web__chip-more"> the live site…</span> : null}
           </span>
         </span>
         <a className="sc-web__open" href={live.src} target="_blank" rel="noopener noreferrer">
@@ -134,7 +156,7 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
           <span className="ps-visually-hidden"> (opens in a new tab)</span>
         </a>
       </div>
-      <div className="sc-web__view" ref={viewRef}>
+      <div className="sc-web__view" ref={viewRef} onWheel={nudge} onTouchStart={nudge}>
         <Still cap={cap} alt={`${domain} home page, a still from ${when}`} />
         {framed ? (
           <iframe
@@ -150,6 +172,11 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
             style={frameStyle}
             onLoad={live.frame === "load" ? () => setState((st) => (st === "loading" ? "live" : st)) : undefined}
           />
+        ) : null}
+        {hint && state === "loading" ? (
+          <div className="sc-web__hint" aria-hidden="true">
+            One second, the live site is loading
+          </div>
         ) : null}
         {state === "preview" ? (
           <div className="sc-web__fallback">
