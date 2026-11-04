@@ -12,13 +12,14 @@ result on preissersolutions.com must trace back to a current Preisser Solutions
 project record. Do not import stale project identities, old deployment names, or
 separate-company language into this site.
 
-Last updated: 2026-05-22.
+Last updated: 2026-11-04.
 
 ## Publishable Identifiers
 
 - **Cassidy HVAC** - full name publishable. Client gave consent.
-- **HG Oil Holdings** - full name publishable. Tyler was VP of Operations there;
-  these are internal builds, not external client engagements.
+- **HG Oil Holdings** - full name publishable. A client (owner, 2026-11-04: "hg is a
+  client"; ADR-0024). Tyler previously served as VP of Operations there; describe the
+  work as client builds, never as internal builds.
 - **Iron and Oak Podcast** - full name publishable. Tyler's own build with
   co-host Lincoln Myers.
 - **Wife Supply Co** - name publishable. Tyler's own build. Do not claim

@@ -73,12 +73,12 @@ export const locationData: LocationPageData = {
     {
       question: "What does Preisser Solutions build for western Kansas businesses?",
       answer:
-        "Custom web applications, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Internal builds at HG Oil Holdings inform the playbook for operator-side software.",
+        "Custom web applications, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Client builds for HG Oil Holdings inform the playbook for operator-side software.",
     },
     {
       question: "Do you serve oilfield services operators across western Kansas?",
       answer:
-        "Yes. Western Kansas oil and gas is a core vertical, with documented internal builds at HG Oil Holdings (inventory management and AI invoice processing): that directly inform engagements for other operators in the region.",
+        "Yes. Western Kansas oil and gas is a core vertical, with documented client builds for HG Oil Holdings (inventory management and AI invoice processing) that directly inform engagements for other operators in the region.",
     },
     {
       question: "Can Preisser Solutions help a small ag operation in western Kansas?",
