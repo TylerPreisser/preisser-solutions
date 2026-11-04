@@ -1097,3 +1097,530 @@
 .pt-ai--phone .ch-axis .ch-tick:not(:first-child):not(:last-child) {
   visibility: hidden;
 }
+
+/* ── AI tab, round 2 (ADR-0025 §4): the robot fetches its sources, then the answer lands ──
+   The tab wears the site's own palette in both themes (concepts ai-*.png), so the answer's
+   --pt-* tokens are re-pointed at it here. Entry motion is CSS TRANSITIONS on elements that
+   exist from the first frame, never a keyframe animation from opacity 0: Playwright WebKit at
+   390x844 left such rows on their invisible first frame (the live tab's blank card).
+   Chips: white on #0C6FC9 (5.08:1) and white on #0E7A3A (5.44:1). */
+.ai2 {
+  --ai-font: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
+  --ai-bg: #ffffff;
+  --ai-card: #ffffff;
+  --ai-band: #f9fafb;
+  --ai-line: #dfe5ec;
+  --ai-wire: #c9d1dc;
+  --ai-ink: #0a1628;
+  --ai-ink2: #4a5a70;
+  --ai-accent: #1590ff;
+  --ai-accent-t: #0c6fc9;
+  --ai-tint: #e8f2ff;
+  --ai-chip: #0c6fc9;
+  --ai-ok: #0e7a3a;
+  --ai-ease-move: var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1));
+  --ai-ease-grow: var(--sc-ease-grow, cubic-bezier(0.2, 0.9, 0.25, 1));
+  --ai-ease-expo: var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+  --pt-ground: var(--ai-bg);
+  --pt-ground-deep: var(--ai-line);
+  --pt-card: var(--ai-card);
+  --pt-ink: var(--ai-ink);
+  --pt-ink-soft: var(--ai-ink2);
+  --pt-accent: var(--ai-accent);
+  --pt-accent-text: var(--ai-accent-t);
+  --pt-chart-1: var(--ai-accent-t);
+  --pt-display: var(--ai-font);
+  --pt-body: var(--ai-font);
+  position: absolute;
+  inset: 0;
+  background: var(--ai-bg);
+  color: var(--ai-ink);
+  font-family: var(--ai-font);
+}
+[data-theme="dark"] .ai2 {
+  --ai-bg: #13233a;
+  --ai-card: #172a44;
+  --ai-band: #172a42;
+  --ai-line: #2a3f5c;
+  --ai-wire: #3a4f6c;
+  --ai-ink: #f2f6fb;
+  --ai-ink2: #a9b6c8;
+  --ai-accent-t: #5ab0ff;
+  --ai-tint: #10305a;
+}
+/* A restart (the tab entered again) jumps back to the first frame instead of rewinding on screen. */
+.ai2[data-cut] * {
+  transition: none !important;
+}
+.ai2 p {
+  margin: 0;
+}
+.ai2__screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  text-rendering: geometricPrecision;
+}
+
+/* The band. */
+.fb {
+  position: relative;
+  flex: none;
+  height: var(--fb-h);
+  overflow: hidden;
+  background: var(--ai-band);
+  border-bottom: 1px solid var(--ai-line);
+  transition: height 420ms var(--ai-ease-move);
+}
+.fb[data-folded] {
+  height: calc(var(--fb-h) - var(--fb-fold));
+}
+.fb__in {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--fb-h);
+  transition: transform 420ms var(--ai-ease-move);
+}
+.fb[data-folded] .fb__in {
+  transform: translateY(calc(-1 * var(--fb-fold)));
+}
+.fb-wires {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+}
+.fb-w {
+  stroke: var(--ai-wire);
+  stroke-width: 2;
+  stroke-linecap: butt;
+}
+.fb-w--lit {
+  stroke: var(--ai-accent);
+  transition-property: stroke-dashoffset;
+  transition-timing-function: linear;
+}
+.fb-w--stem {
+  transition-duration: 240ms;
+  transition-timing-function: var(--ai-ease-expo);
+}
+.fb-src {
+  position: absolute;
+  transition: opacity 240ms ease-out;
+}
+/* Folded, only the strip's own furniture shows: the cards and their labels step out instead of peeking in at the edge. */
+.fb[data-folded] .fb-src {
+  opacity: 0;
+}
+.fb-src__card {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  border: 1px solid var(--ai-line);
+  background: var(--ai-card);
+  box-shadow: 0 1px 2px rgba(10, 22, 40, 0.06);
+  transition:
+    border-color 180ms ease-out,
+    background-color 180ms ease-out,
+    box-shadow 180ms ease-out;
+}
+.fb-src[data-state="on"] .fb-src__card {
+  border-color: var(--ai-accent);
+  background: var(--ai-tint);
+  box-shadow:
+    0 0 0 1px var(--ai-accent),
+    0 0 0 7px color-mix(in srgb, var(--ai-accent) 14%, transparent);
+}
+.fb-ico {
+  width: 34px;
+  height: 34px;
+  fill: none;
+  stroke: var(--ai-ink2);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 180ms ease-out;
+}
+.fb-src[data-state="on"] .fb-ico {
+  stroke: var(--ai-accent-t);
+}
+.fb-src[data-state="done"] .fb-ico {
+  stroke: var(--ai-ink);
+}
+.fb-src__label {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  transform: translateX(-50%);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--ai-ink2);
+  transition: color 180ms ease-out;
+}
+.fb-src:not([data-state="idle"]) .fb-src__label {
+  color: var(--ai-ink);
+}
+.fb-chip {
+  position: absolute;
+  left: 50%;
+  top: -14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--ai-chip);
+  color: #fff;
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-50%) scale(0.8);
+  box-shadow: 0 4px 12px rgba(21, 144, 255, 0.35);
+  transition:
+    opacity 200ms ease-out,
+    transform 200ms var(--ai-ease-grow),
+    background-color 160ms ease-out,
+    box-shadow 160ms ease-out;
+}
+.fb-chip[data-on] {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+.fb-src[data-state="done"] .fb-chip {
+  background: var(--ai-ok);
+  box-shadow: none;
+}
+.fb-chip__tick {
+  width: 0;
+  height: 10px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: width 160ms ease-out;
+}
+.fb-src[data-state="done"] .fb-chip__tick {
+  width: 10px;
+}
+.fb-bot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transition-property: transform;
+  transition-timing-function: linear;
+}
+.fb-status {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 18px;
+  white-space: nowrap;
+  color: var(--ai-ink2);
+}
+.fb-status b {
+  font-weight: 600;
+  color: var(--ai-ink);
+}
+.fb-status__tick {
+  flex: none;
+  width: 15px;
+  height: 15px;
+}
+.fb-status__tick circle {
+  fill: var(--ai-ok);
+}
+.fb-status__tick path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The question, then the answer. */
+.ai2__body {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  column-gap: 40px;
+  padding: 28px 40px 24px;
+}
+.ai2__q {
+  position: relative;
+  z-index: 2;
+  align-self: start;
+  transform-origin: 0 0;
+}
+.ai2 [data-ready] .ai2__q {
+  transition: transform 420ms var(--ai-ease-move);
+}
+.ai2__k {
+  margin-bottom: 8px !important;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ai-ink2);
+}
+.ai2__qt {
+  font-size: 24px;
+  line-height: 31px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ai-ink);
+}
+.ai2__ghost {
+  visibility: hidden;
+}
+.ai2__caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  margin: 0 1px 0 1px;
+  vertical-align: -0.12em;
+  background: var(--ai-accent);
+}
+.ai2__area {
+  position: relative;
+  min-height: 0;
+}
+.ai2__card {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition:
+    opacity 300ms var(--ai-ease-grow),
+    transform 300ms var(--ai-ease-grow),
+    visibility 0s linear 300ms;
+}
+.ai2__card[data-in] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 300ms var(--ai-ease-grow),
+    transform 300ms var(--ai-ease-grow),
+    visibility 0s;
+}
+.ai2 .ai-answer {
+  flex: 0 1 auto;
+  min-height: 0;
+  max-height: none;
+  padding: 26px 30px 22px;
+  border-color: var(--ai-line);
+  background: var(--ai-card);
+}
+.ai2 .aa-in {
+  animation: none;
+}
+.ai2 .aa-head {
+  font: 700 25px/33px var(--ai-font);
+  letter-spacing: -0.015em;
+}
+.ai2 .aa-figs {
+  margin-top: 18px;
+}
+.ai2 .aa-fig {
+  padding: 12px 8px 12px 16px;
+}
+.ai2 .aa-fig:first-child {
+  padding-left: 0;
+}
+.ai2 .aa-fig dt {
+  font-size: 13px;
+  line-height: 17px;
+}
+.ai2 .aa-fig dd {
+  font: 800 32px/38px var(--ai-font);
+  letter-spacing: -0.03em;
+}
+.ai2 .ch-row {
+  font-size: 13px;
+}
+.ai2 .ch-title {
+  font-size: 13px;
+}
+.ai2 .ch-bar {
+  animation: none;
+}
+/* The answer's own entry: each block waits its --d (set from the timeline), then moves once. */
+.ai2 .aa-w {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 260ms var(--ai-ease-expo) var(--d, 0ms),
+    transform 260ms var(--ai-ease-expo) var(--d, 0ms);
+}
+.ai2 .aa-fig,
+.ai2 .aa-means li {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 300ms var(--ai-ease-expo) var(--d, 0ms),
+    transform 300ms var(--ai-ease-expo) var(--d, 0ms);
+}
+.ai2 .aa-chart,
+.ai2 .aa-means-sec,
+.ai2 .aa-plan,
+.ai2 .ai-sources,
+.ai2 .ch-val {
+  opacity: 0;
+  transition: opacity 240ms ease-out var(--d, 0ms);
+}
+.ai2 .ch-bar {
+  transform: scaleX(0);
+  transition: transform 560ms var(--ai-ease-grow) var(--d, 0ms);
+}
+.ai2__card[data-in] .aa-w,
+.ai2__card[data-in] .aa-fig,
+.ai2__card[data-in] .aa-means li,
+.ai2__card[data-in] .aa-chart,
+.ai2__card[data-in] .aa-means-sec,
+.ai2__card[data-in] .aa-plan,
+.ai2__card[data-in] .ai-sources,
+.ai2__card[data-in] .ch-bar {
+  opacity: 1;
+  transform: none;
+}
+/* The value label keeps its own vertical centring transform; only its opacity moves. */
+.ai2__card[data-in] .ch-val {
+  opacity: 1;
+}
+
+/* Phone: the band 170 tall (cards 58, labels 11 px), folding to its 78 px strip when the answer lands. */
+.ai2[data-variant="phone"] .fb-src__card {
+  border-radius: 15px;
+}
+.ai2[data-variant="phone"] .fb-ico {
+  width: 26px;
+  height: 26px;
+}
+.ai2[data-variant="phone"] .fb-src__label {
+  top: calc(100% + 5px);
+  font-size: 11.5px;
+  line-height: 14px;
+}
+.ai2[data-variant="phone"] .fb-chip {
+  top: -11px;
+  padding: 3px 7px;
+  font-size: 11px;
+  line-height: 13px;
+}
+.ai2[data-variant="phone"] .fb-src[data-state="on"] .fb-src__card {
+  box-shadow:
+    0 0 0 1px var(--ai-accent),
+    0 0 0 5px color-mix(in srgb, var(--ai-accent) 14%, transparent);
+}
+.ai2[data-variant="phone"] .fb-status {
+  font-size: 12.5px;
+  line-height: 15px;
+  gap: 5px;
+}
+.ai2[data-variant="phone"] .fb-status__tick {
+  width: 13px;
+  height: 13px;
+}
+.ai2[data-variant="phone"] .ai2__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 12px 12px;
+}
+.ai2[data-variant="phone"] .ai2__k {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  margin-bottom: 8px !important;
+  transition: opacity 200ms ease-out;
+}
+.ai2[data-variant="phone"] .ai2__q[data-moved] .ai2__k {
+  opacity: 0;
+}
+.ai2[data-variant="phone"] .ai2__qt {
+  font-size: 19px;
+  line-height: 25px;
+}
+/* Once the answer comes, the question steps back to one quiet line (spec §4.2 says 15 px; 14 keeps both
+   clients' questions on ONE line at 320 native, measured), so the card keeps the room. */
+.ai2[data-variant="phone"] .ai2__q[data-moved] .ai2__qt {
+  font-size: 14px;
+  line-height: 19px;
+  font-weight: 600;
+  color: var(--ai-ink2);
+}
+.ai2[data-variant="phone"] [data-ready] .ai2__qt {
+  transition:
+    font-size 420ms var(--ai-ease-move),
+    line-height 420ms var(--ai-ease-move),
+    color 420ms ease-out;
+}
+.ai2[data-variant="phone"] .ai2__area {
+  flex: 1 1 auto;
+}
+.ai2[data-variant="phone"] .ai-answer {
+  padding: 16px 16px 14px;
+}
+.ai2[data-variant="phone"] .aa-head {
+  font-size: 18px;
+  line-height: 24px;
+}
+.ai2[data-variant="phone"] .aa-figs {
+  margin-top: 12px;
+  --aa-cols: 2;
+}
+.ai2[data-variant="phone"] .aa-fig {
+  padding: 6px 8px 6px 12px;
+}
+.ai2[data-variant="phone"] .aa-fig:nth-child(odd) {
+  padding-left: 0;
+}
+.ai2[data-variant="phone"] .aa-fig dd {
+  font-size: 24px;
+  line-height: 28px;
+}
+.ai2[data-variant="phone"] .aa-fig dt,
+.ai2[data-variant="phone"] .ch-title,
+.ai2[data-variant="phone"] .ch-row,
+.ai2[data-variant="phone"] .ch-val,
+.ai2[data-variant="phone"] .ch-tick,
+.ai2[data-variant="phone"] .aa-k,
+.ai2[data-variant="phone"] .ai-sources {
+  font-size: 12.5px;
+}
+.ai2[data-variant="phone"] .aa-means li,
+.ai2[data-variant="phone"] .aa-next li {
+  font-size: 14px;
+}
+.ai2[data-variant="phone"] .ch-axis .ch-tick:not(:first-child):not(:last-child) {
+  visibility: hidden;
+}

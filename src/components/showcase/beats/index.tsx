@@ -5,8 +5,7 @@ import { AiAskBeat, aiMs } from "./AiAskBeat";
 import { AiWorkBeat, aiWorkMs } from "./AiWorkBeat";
 import { FunnelBeat, funnelMs } from "./FunnelBeat";
 import { ImpactBeat, impactMs } from "./ImpactBeat";
-// Round 2: B4 swaps "engine" to ./EngineBeat (see ComingBeat).
-import { ComingBeat } from "./ComingBeat";
+import { EngineBeat, engineMs } from "./EngineBeat";
 import { SceneBeat } from "./SceneBeat";
 import { SCENE_MS } from "@/components/showcase/scenes";
 import { WebsiteBeat, websiteMs } from "./WebsiteBeat";
@@ -32,7 +31,7 @@ export function BeatView(p: BeatProps<Beat>) {
     case "impact":
       return <ImpactBeat {...p} beat={b} />;
     case "engine":
-      return <ComingBeat {...p} beat={b} />;
+      return <EngineBeat {...p} beat={b} />;
   }
 }
 
@@ -52,6 +51,6 @@ export function beatMs(b: Beat, phone: boolean): number {
     case "impact":
       return impactMs(b);
     case "engine":
-      return 12400;
+      return engineMs();
   }
 }

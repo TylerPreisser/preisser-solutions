@@ -39,6 +39,8 @@ const leads = sum(all.map((c) => c.leads));
 
 const cplGoogle = google.spend / google.leads;
 const cplSocial = social.spend / social.leads;
+/** What the AI's plan moves from Social ads to Google Ads each month; the MarCommand tab turns that dial. */
+const MOVED = 300;
 
 /** Text lines, price rows and buttons in the 390-wide phone capture (y from, y to, css px), found in its own pixels (round 11: rows with text-like edges on a flat background, 1 px margin). */
 const HAYS_PHONE_BANDS = [
@@ -113,24 +115,28 @@ const client: ShowcaseClient = {
       caption: "MarCommand weighs every channel, turns its own knobs and keeps what it learns.",
       narration:
         "The MarCommand engine on demonstration data: it weighs the school's ad channels, favours the one that brings enrollment leads at the best cost, turns the budget and schedule dials, and keeps what it learned.",
+      // The same invented rows as the AI tab below, so the two tabs agree: Google Ads at
+      // $640 a month (about $21 a day) gets the $300 the AI moves off Social ads (Meta),
+      // whose leads cost the most; the month's leads are the AI's total.
       channels: [
         { icon: "ads", label: "Google Ads", delta: { text: "best", tone: "up" } },
-        { icon: "social-ads", label: "Meta ads" },
-        { icon: "social", label: "TikTok", delta: { text: "+38% cost/lead", tone: "down" } },
+        { icon: "social-ads", label: "Meta ads", delta: { text: `${money(cplSocial)}/lead`, tone: "down" } },
         { icon: "search", label: "Search" },
+        { icon: "maps", label: "Maps" },
       ],
       dials: [
-        { label: "Daily budget", from: "$85", to: "$110", r0: 0.35, r1: 0.5 },
+        { label: "Daily budget", from: money(google.spend / 30), to: money((google.spend + MOVED) / 30), r0: 0.3, r1: 0.46 },
         { label: "Radius", from: "25 mi", r0: 0.4 },
         { label: "Ad schedule", from: "All day", to: "4-10pm", r0: 0.15, r1: 0.7 },
       ],
       pick: 0,
       turns: [0, 2],
       learned: [
+        { text: "Tuesday to Thursday evenings bring 2x the enrollment leads for the same spend.", when: "Just now", isNew: true },
+        { text: `Meta ad leads cost ${Math.round(cplSocial / cplGoogle)}x what Google's do: ${money(MOVED)} a month moved to Google Ads.`, when: "2 days ago" },
         { text: "Open house weekends bring the most calls.", when: "3 weeks ago" },
-        { text: "Tuesday to Thursday evenings bring 2x the enrollment leads for the same spend.", when: "just now", isNew: true },
       ],
-      result: { label: "Enrollment leads this week", from: "31", to: "38" },
+      result: { label: "Enrollment leads a month", from: String(leads), to: String(leads + 7) },
     },
     {
       kind: "ai-ask",
@@ -143,7 +149,7 @@ const client: ShowcaseClient = {
         { label: "Reading your question", phase: 0, ms: 700 },
         { label: "Reading Google Ads spend, last 30 days", phase: 1, ms: 800, chip: "30 rows" },
         { label: "Reading Social ads spend, last 30 days", phase: 1, ms: 700, chip: "30 rows" },
-        { label: "Reading site visits, last 30 days", phase: 1, ms: 700, chip: `${visited} rows` },
+        { label: "Reading site visits, last 30 days", phase: 1, ms: 700, chip: `${count(visited)} rows` },
         { label: "Reading enrollment leads, last 30 days", phase: 1, ms: 700, chip: `${leads} rows` },
         { label: "Working out what each lead cost", phase: 2, ms: 1100 },
         { label: "Writing the answer", phase: 3, ms: 900 },
@@ -152,7 +158,7 @@ const client: ShowcaseClient = {
       sources: [
         { icon: "ads", label: "Google Ads", chip: "30 rows", step: 1 },
         { icon: "social-ads", label: "Social ads", chip: "30 rows", step: 2 },
-        { icon: "visit", label: "Site visits", short: "Visits", chip: `${visited} rows`, step: 3 },
+        { icon: "visit", label: "Site visits", short: "Visits", chip: `${count(visited)} rows`, step: 3 },
         { icon: "enroll", label: "Enrollment leads", short: "Leads", chip: `${leads} rows`, step: 4 },
       ],
       worked: [
@@ -188,7 +194,7 @@ const client: ShowcaseClient = {
           `${oneIn(social.visited, social.leads)} social ad visitors reached out. On Google Ads it was about ${oneIn(google.visited, google.leads)}.`,
         ],
         next: [
-          "We move $300 a month from Social ads to Google Ads, starting this week.",
+          `We move ${money(MOVED)} a month from Social ads to Google Ads, starting this week.`,
           "We point the social ad at the start dates page and look at its leads again in two weeks.",
         ],
         sources: [
