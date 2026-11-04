@@ -17,12 +17,12 @@
 // Impact (ADR-0022 §3): every number is a fact<oracle>() or figure<oracle>();
 // the oracle note is a type argument, checked at build and never shipped. The
 // precise citation for each is kept outside this public repo.
-// Duffer's partner network has no live results to show yet, so Impact leads
-// with what the Command Center does and claims no sales, scans, partner
-// counts or dollars: no figures and no `time` row.
+// Duffer's partner network has no live results to show yet, so Impact claims no
+// sales, scans, partner counts or dollars: only the tracked visitors (0 on the
+// old site, counted since tracking went live). The QR story (spec §3.5) leads.
 import type { ShowcaseClient } from "../types";
 import { count, sum } from "../format";
-import { fact, impactBeat } from "../impact";
+import { figure, impactBeat } from "../impact";
 
 type Course = { label: string; sub: string; scans: number; visits: number; leads: number; orders: number };
 
@@ -58,40 +58,19 @@ const DUFFER_DESK_BANDS = [
 export const impact = impactBeat("duffer-golf", {
   tab: "Impact",
   caption: "What the Command Center runs for Duffer's partners, dealers and course displays.",
-  shape: "loop",
-  kicker: "What we built",
-  chapters: [
+  kicker: "What changed",
+  // The QR story (spec §3.5, DufferQrScene, built in its own branch) leads this tab; the numbers rise below it.
+  lead: "qr-story",
+  big: [
     {
-      name: "The Command Center",
-      hero: {
-        before: fact<"Our audit of the old site, Sep 13 2026">("The old site tracked nothing, and no order said who sent it."),
-        now: "Every scan and visit is credited to the partner who sent it.",
-      },
-      how: "The partner loop",
-      steps: [
-        { verb: "Signs up", text: "a new partner and links their course display on its own." },
-        { verb: "Prints", text: "a QR display for the course, tied to that partner." },
-        { verb: "Credits", text: fact<"How it is built">("every scan to that partner, and a returning golfer to the last display within 90 days.") },
-        { verb: "Follows", text: "the golfer to the buy button and checkout, with every visit in MarCommand." },
-        { verb: "Keeps", text: "each partner's commission ledger, and each dealer's stock." },
-      ],
-      pairs: [
-        {
-          label: "Tracking",
-          before: fact<"Our audit of the old site, Sep 13 2026">("No pixel and no analytics across 34 page loads."),
-          now: "Every visit, scan and buy-button tap recorded.",
-        },
-        {
-          label: "Referrals",
-          before: fact<"Our audit of the old site, Sep 13 2026">("A code field at checkout, and no record of who sent an order."),
-          now: "Partner codes, course displays and a commission ledger.",
-        },
-      ],
+      before: figure<"Our audit of the old site, Sep 13 2026">("0", "visitors tracked"),
+      now: figure<"Measured live, Nov 3 2026">("366", "visitors tracked since tracking went live"),
     },
   ],
-  closing: "A dealer network that keeps its own books.",
+  rows: [],
+  text: "Every scan and visit is credited to the partner who sent it.",
   narration:
-    "What we built for Duffer Golf. The Command Center signs up partners and links their course displays, prints a QR display for each course, credits every scan and returning golfer to the partner who sent them, follows each golfer to checkout in MarCommand, and keeps the commission and dealer stock ledgers. The old site tracked nothing.",
+    "What changed for Duffer Golf. The old site tracked nothing, so no visit and no order said who sent it. Now every scan and every visit is recorded and credited to the partner who sent it, and the Command Center keeps each partner's commission ledger.",
 });
 
 const client: ShowcaseClient = {

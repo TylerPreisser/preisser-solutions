@@ -15,8 +15,8 @@
 //   engine      (round 2) the MarCommand engine room: channels, the dials the
 //               engine turns, what it learned (ADR-0025 §5).
 //   scene       a coded or captured product walkthrough (scenes/).
-//   impact      what we automated, as text: the before -> now contrast, the
-//               figures and the steps, only numbers with a source (ADR-0022 §3).
+//   impact      big numbers first: the old number struck, the new one large,
+//               then rows; only numbers with a source (ADR-0022 §3, ADR-0025).
 //
 // One file per client in ./clients/<slug>.ts, default export a ShowcaseClient.
 // The window loads it with import(`./clients/${slug}`), so a new client is a
@@ -267,10 +267,10 @@ export interface SceneBeat extends BeatBase {
 }
 
 /*
- * The Impact tab (ADR-0022 §3, design spec §5, critic round 1 §3). Text tells
- * the story: the before -> now contrast first at display size, then the
- * figures, then how the engine does it, in a shape that comes from the
- * client's own material.
+ * The Impact tab (ADR-0022 §3, ADR-0025, round 2 spec §3). Big numbers first:
+ * the old number struck, the new one at display size, then up to four smaller
+ * rows and one optional sentence. A slot with no sourced number is simply
+ * absent from its array: nothing is rendered for it.
  *
  * Every number a visitor can read is SOURCED, and the source never ships: it
  * is a TYPE argument (fact<"Owner, Oct 23 2026">("..."), figure<...>(...)),
@@ -279,8 +279,12 @@ export interface SceneBeat extends BeatBase {
  * precise citations are kept outside this public repo.
  */
 
+/** Type-only brand: only fact() and figure() in ./impact.ts can mint a sourced value; a hand-written literal does not type-check. */
+declare const sourced: unique symbol;
+
 /** Copy that carries a number or a claim, made by fact<source>() in ./impact.ts. */
 export interface ImpactFact {
+  readonly [sourced]: true;
   readonly kind: "fact";
   readonly text: string;
 }
@@ -290,74 +294,12 @@ export type ImpactCopy = string | ImpactFact;
 
 /** A number shown large, made by figure<source>() in ./impact.ts. */
 export interface ImpactFigure {
+  readonly [sourced]: true;
   readonly kind: "figure";
   /** As shown: "74", "24 h", "42-70 s". */
   readonly value: string;
   /** What it counts, sentence case, no trailing period. */
   readonly label: string;
-}
-
-/** One step of how the engine works: "Reads" + "every certificate that arrives...". */
-export interface ImpactStep {
-  /** One capitalised verb or two-word verb phrase. */
-  verb: string;
-  /** Continues the verb, lower-case start, ends with a period. */
-  text: ImpactCopy;
-}
-
-/** A smaller before -> now pair: one piece of the work. */
-export interface ImpactPair {
-  label: string;
-  before: ImpactCopy;
-  now: ImpactCopy;
-}
-
-/** The hours (or people) story. BOTH sides or the row does not exist: half a comparison is a claim. */
-export interface ImpactTime {
-  label: string;
-  before: ImpactFigure;
-  now: ImpactFigure;
-}
-
-/**
- * How the steps are drawn, from the client's own material:
- *   chapters  each chapter its own section (HG: the month-end close, vendor insurance)
- *   pieces    the pairs are the story, one card per piece of the work (NWKS's weekend)
- *   path      the steps are stations a bill passes through (FarmBooks)
- *   loop      the steps are a loop that comes back to the start (Duffer's partner loop)
- */
-export type ImpactShape = "chapters" | "pieces" | "path" | "loop";
-
-export interface ImpactChapter {
-  /** "The month-end close". */
-  name: string;
-  /** "Every month"; omitted -> nothing after the name. */
-  cadence?: ImpactCopy;
-  /** The payoff, at display size: what it was, and what it is now. */
-  hero: { before: ImpactCopy; now: ImpactCopy };
-  /** 0 to 3, shown large. Absent -> no band, no rule, no trace. */
-  figures?: readonly ImpactFigure[];
-  /** 0 to 2. Absent -> nothing (the owner has not supplied hours or people yet). */
-  time?: readonly ImpactTime[];
-  /** The label over the steps: "How it runs", "The bill's path". */
-  how: string;
-  /** 3 to 5. */
-  steps: readonly ImpactStep[];
-  /** 0 to 4 smaller before -> now pairs. */
-  pairs?: readonly ImpactPair[];
-}
-
-export interface ImpactBeat extends BeatBase {
-  kind: "impact";
-  shape: ImpactShape;
-  /** "What we automated". */
-  kicker: string;
-  /** 1 or 2 (HG has two). */
-  chapters: readonly ImpactChapter[];
-  /** One short sentence. */
-  closing: ImpactCopy;
-  /** Screen-reader summary, 80+ characters, no numbers (the privacy probe reads it). */
-  narration: string;
 }
 
 /** A channel card in the engine room; `displays` is Duffer's course displays. */
@@ -481,27 +423,24 @@ export interface ImpactStat {
   unit?: string;
 }
 
-/**
- * The round 2 Impact beat. NOT yet the `impact` kind: that still means the
- * chapters model above until B2 rewrites impact.ts; B2 then renames this to
- * ImpactBeat / kind "impact" and deletes the chapters model (one commit).
- */
-export interface ImpactStatsBeat extends BeatBase {
-  kind: "impact-stats";
+/** The Impact tab (ADR-0025 §3, spec §3.1): big numbers first, then rows, then one sentence. */
+export interface ImpactBeat extends BeatBase {
+  kind: "impact";
+  /** "What changed". */
   kicker: string;
-  /** Duffer only: the QR story leads. */
+  /** Duffer only: the QR story leads (built by DufferQrScene, spec §3.5). */
   lead?: "qr-story";
-  /** 0..3. */
+  /** 0..3, shown large. */
   big: readonly ImpactStat[];
-  /** 0..4. */
+  /** 0..4, smaller. */
   rows: readonly ImpactStat[];
-  /** One sentence, 140 chars at most. */
+  /** One sentence, 140 characters at most. */
   text?: ImpactCopy;
-  /** 80+ characters, no numbers (privacy probe). */
+  /** 80+ characters, no numbers (the privacy probe reads it). */
   narration: string;
 }
 
-export type Beat = WebsiteBeat | FunnelBeat | AiAskBeat | AiAtWorkBeat | SceneBeat | ImpactBeat | EngineBeat | ImpactStatsBeat;
+export type Beat = WebsiteBeat | FunnelBeat | AiAskBeat | AiAtWorkBeat | SceneBeat | ImpactBeat | EngineBeat;
 export type BeatKind = Beat["kind"];
 
 export interface ShowcaseClient {

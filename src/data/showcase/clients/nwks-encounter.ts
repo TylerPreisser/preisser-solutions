@@ -11,62 +11,37 @@
 // precise citation for each is kept outside this public repo.
 // Left out on purpose: piece totals and people counts that were never counted,
 // the "90 percent" (no measurement behind it), and any live-database count.
-// Hours per weekend have no source yet, so there is no `time` row.
+// Hours per weekend have no source yet: the before side is words, not hours.
 import type { ShowcaseClient } from "../types";
-import { fact, figure, impactBeat } from "../impact";
+import { figure, impactBeat } from "../impact";
 
 export const impact = impactBeat("nwks-encounter", {
   tab: "Impact",
   caption: "What the system does every weekend, and what the volunteers used to do by hand.",
-  shape: "pieces",
-  kicker: "What we automated",
-  chapters: [
+  kicker: "What changed",
+  big: [
     {
-      name: "Every Encounter weekend",
-      hero: {
-        before: fact<"Client's words, Aug 19 2026">("A cabin plan the ministry called 100 percent manual."),
-        now: fact<"Measured live, Oct 8 2026">("Drafted in milliseconds. Volunteers only adjust it."),
-      },
-      figures: [
-        figure<"How it is built">("4", "launch letters per person, sent on their own dates"),
-        figure<"Owner, Aug 20 2026">("5", "printed pieces per person, made from registration"),
-        figure<"How it is built">("24 h", "for each waitlist offer before it passes on"),
-      ],
-      pairs: [
-        {
-          label: "Name tags",
-          before: fact<"Client's words, Aug 19 2026">("Typed one name at a time onto label sheets."),
-          now: "Printed from registration on the ministry's own label stock.",
-        },
-        {
-          label: "Luggage tags",
-          before: fact<"Client's words, Aug 19 2026">("Typed by hand with name and cabin, at the last minute."),
-          now: "Printed as stickers, each cabin read from the plan.",
-        },
-        {
-          label: "Launch letters",
-          before: fact<"Client's words, Aug 19 2026">("One person per program emailed every registrant, every day or two."),
-          now: "Sent on their own, on fixed dates.",
-        },
-        {
-          label: "The waitlist",
-          before: "Details retyped by hand, and offers made by phone.",
-          now: "The next person gets an email offer, then it passes on.",
-        },
-      ],
-      how: "How the weekend runs",
-      steps: [
-        { verb: "Opens", text: fact<"Client's words, Aug 19 2026">("registration at the announced minute, and turns the same form into a waitlist when it fills.") },
-        { verb: "Offers", text: "each freed seat to the next person on the waitlist, then passes it on." },
-        { verb: "Drafts", text: "the cabin plan: each man with the server who invited him, each town together." },
-        { verb: "Prints", text: "the name tags and luggage stickers on the ministry's own label stock." },
-        { verb: "Sends", text: "each server their own schedule, with a calendar file." },
-      ],
+      before: figure<"Client's words, Aug 19 2026">("By hand", "launch letters per person"),
+      now: figure<"How it is built">("4", "launch letters per person, sent on their own dates"),
+    },
+    {
+      before: figure<"Client's words, Aug 19 2026">("By hand", "printed pieces per person"),
+      now: figure<"Owner, Aug 20 2026">("5", "name tags and luggage stickers per person, made from registration"),
     },
   ],
-  closing: "Volunteers adjust the plan. They no longer type it.",
+  rows: [
+    {
+      before: figure<"Client's words, Aug 19 2026">("Manual", "Cabin plan, drafted for volunteers to adjust"),
+      now: figure<"Measured live, Oct 8 2026">("Milliseconds", "Cabin plan, drafted for volunteers to adjust"),
+    },
+    {
+      now: figure<"How it is built">("24", "Time to answer a waitlist offer before it passes on"),
+      unit: "h",
+    },
+  ],
+  text: "Volunteers adjust the plan. They no longer type it.",
   narration:
-    "What we automated for NWKS Encounter. The cabin plan, which the ministry built entirely by hand, is now drafted in moments for volunteers to adjust. Name tags and luggage stickers print from registration, launch letters go out on their own dates, and a freed seat is offered to the next person on the waitlist by email.",
+    "What changed for NWKS Encounter. The cabin plan, which the ministry built entirely by hand, is now drafted in moments for volunteers to adjust. Launch letters go out on their own dates, name tags and luggage stickers print from registration, and a freed seat is offered to the next person on the waitlist by email.",
 });
 
 /** Men's title, logo, date, Enter button; women's title, logo, date, Enter button (y in the 390-wide capture). */

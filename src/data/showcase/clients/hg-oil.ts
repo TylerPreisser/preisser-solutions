@@ -18,10 +18,11 @@
 // Impact (ADR-0022 §3): every number is a fact<oracle>() or figure<oracle>();
 // the oracle note is a type argument, checked at build and never shipped. The
 // precise citation for each is kept outside this public repo.
-// Rules: no HG dollar amounts, no HG people, vendor or well names, no vendor
-// counts, and no description of HG's own past bookkeeping errors. The hours and
-// people the old way took have no source yet, so there is no `time` row.
-import type { SceneBeat, ShowcaseClient } from "../types";
+// Rules: no HG dollar amounts, no HG people, vendor or well names, and no live
+// vendor counts until the owner says so (HG_PUBLISH_VENDOR_COUNTS below). The
+// hours the old way took have no source yet, so the month-end close is a
+// now-only number: no before is shown for it.
+import type { ImpactStat, SceneBeat, ShowcaseClient } from "../types";
 import { fact, figure, impactBeat } from "../impact";
 
 // ADR-0025 §2: a certificate arrives, four checks tick green, it is filed to the vendor's folder.
@@ -35,77 +36,42 @@ const vendor: SceneBeat = {
     "Vendor insurance on demonstration data: a certificate of insurance arrives, the engine reads the coverage type, the effective dates, the limits and the certificate holder, marks it good to go, and files it to the vendor's folder.",
 };
 
+/**
+ * HG's vendor certificate count (80 -> 155). Held back: the owner has not said
+ * live vendor counts may be published (spec §3.4). The lead flips this one
+ * line to true when the owner says yes; nothing else changes.
+ */
+const HG_PUBLISH_VENDOR_COUNTS = false;
+
+// A function, so that while the flag is false the numbers are dead code and the minifier drops them from the bundle.
+const vendorCertificates = () =>
+  ({
+    before: figure<"Owner, Oct 23 2026">("80", "vendor certificates on file, checked and current"),
+    now: figure<"Measured live, Oct 27 2026">("155", "vendor certificates on file, checked and current"),
+  }) as const satisfies ImpactStat;
+const closeSeconds = {
+  now: figure<"Measured live, Sep 17 2026">("70", "the longest the engine took to run a whole month-end close"),
+  unit: "s",
+} as const satisfies ImpactStat;
+const insuranceEmails = {
+  now: figure<"Measured live, Oct 23 2026">("258", "insurance emails in the first 8 days"),
+} as const satisfies ImpactStat;
+
 export const impact = impactBeat("hg-oil", {
   tab: "Impact",
   caption: "What the month-end close and vendor insurance engines do now, and what they replaced.",
-  shape: "chapters",
-  kicker: "What we automated",
-  chapters: [
+  kicker: "What changed",
+  big: HG_PUBLISH_VENDOR_COUNTS ? [vendorCertificates(), closeSeconds, insuranceEmails] : [closeSeconds, insuranceEmails],
+  rows: [
     {
-      name: "The month-end close",
-      cadence: "Every month",
-      hero: {
-        before: fact<"Client's words, Sep 10 2026">("An accountant built each month by hand, typing every total."),
-        now: fact<"How it is built">("A field person edits five cells. The owner presses Run."),
-      },
-      figures: [
-        figure<"How it is built">("74", "disposal agreements, worked out in one calculation"),
-        figure<"Measured live, Sep 17 2026">("70 s", "the longest the engine took to run a whole close, in five measured runs"),
-        figure<"How it is built">("17", "owner statements produced from every close"),
-      ],
-      how: "How the close runs",
-      steps: [
-        { verb: "Reads", text: fact<"How it is built">("the live sheet of disposal agreements, where the field edits only five columns.") },
-        { verb: "Calculates", text: fact<"How it is built">("every well's barrels and dollars from one rule, with shared charges split to the cent.") },
-        { verb: "Produces", text: "the A/P import, the GL journal and every owner statement from that same calculation." },
-        { verb: "Checks", text: "that every vendor is told exactly what it is paid, and holds the month if not." },
-        { verb: "Hands off", text: "the finished month to a person, who reviews it and releases it." },
-      ],
-      pairs: [
-        {
-          label: "Every total",
-          before: "Typed by hand into the workbook.",
-          now: fact<"How it is built">("Worked out from one rule and tied out before anything is released."),
-        },
-        {
-          label: "The controller",
-          before: "Built the payables entries by hand.",
-          now: "Imports the finished file.",
-        },
-      ],
+      before: figure<"How it is built">("74", "Hand-typed totals in the close workbook"),
+      now: figure<"How it is built">("0", "Hand-typed totals in the close workbook"),
     },
-    {
-      name: "Vendor insurance",
-      cadence: "Every business day",
-      hero: {
-        before: fact<"Client's words">("A spreadsheet of X marks, and emails written one vendor at a time."),
-        now: "AI reads every certificate and chases only the vendors who need it.",
-      },
-      how: "How it keeps after it",
-      steps: [
-        { verb: "Reads", text: "every certificate that arrives, with AI, field by field." },
-        { verb: "Judges", text: "each vendor's coverage and dates: covered, expiring or not covered." },
-        { verb: "Chases", text: "only the vendors who need it, insurance agent first, and answers their replies." },
-        { verb: "Searches", text: fact<"How it is built">("HG's own mailboxes when a vendor says it already sent one.") },
-        { verb: "Hands off", text: "only the real decisions to the owner." },
-      ],
-      pairs: [
-        {
-          label: "The record",
-          before: fact<"Owner, Oct 23 2026">("The marks said a certificate was on file. Checked against the files, most were not."),
-          now: "Each vendor's status comes from the certificate itself, and its dates are watched.",
-        },
-        {
-          label: "The people",
-          before: fact<"Client's words">("Staff kept the files and wrote every request by hand."),
-          now: "A person handles only a certificate that comes on paper.",
-        },
-      ],
-    },
+    { now: figure<"How it is built">("17", "Owner statements produced every close") },
   ],
-  closing: "Same numbers every month. Nobody retypes them.",
+  text: "Vendor insurance and the month-end close now run themselves. A person signs off; nobody types.",
   narration:
-    "What we automated for HG Oil Holdings. The month-end close used to be built by hand with every total typed; now a field person edits a few cells, the owner presses Run, and the engine produces the payables import, the journal and the owner statements from a single calculation. Vendor insurance used to be a spreadsheet of marks and emails written by hand; now AI reads every certificate, judges coverage and chases only the vendors who need it.",
+    "What changed for HG Oil Holdings. The engine runs a whole month-end close in moments, and the handwritten totals in the close workbook are gone. Vendor insurance emails go out and are handled by the engine, and a person signs off instead of typing.",
 });
 
 const client: ShowcaseClient = {
