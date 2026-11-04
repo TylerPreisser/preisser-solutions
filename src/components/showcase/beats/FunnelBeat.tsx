@@ -60,7 +60,8 @@ export function FunnelBeat({ client, beat, variant, active, fill, reduced, quiet
   // Opening: the ad spend and the cards. Between the lead and each card is a clean line for the bottom edge.
   const railEnd = L.y0 + f.rail.length * L.step - 4;
   const clean = [154, ...f.rail.map((_, i) => L.y0 + i * L.step + L.cardH + 4)];
-  const cards: FocusRect = { left: RAIL.x - 4, top: 52, w: RAIL.w + 8, h: railEnd - 52, clean };
+  // 16 px of ground each side of the cards, the gutter the other tabs keep (critique R2-4: 4 px at 320).
+  const cards: FocusRect = { left: RAIL.x - 16, top: 52, w: RAIL.w + 32, h: railEnd - 52, clean };
   // Then the first two stages and the streams leaving the cards.
   const streams: FocusRect = { left: L.colX[0] - 10, top: 52, w: L.colX[2] - L.colX[0] };
   // Last: from a stage column's left edge to the mark, as close as the phone's height allows.

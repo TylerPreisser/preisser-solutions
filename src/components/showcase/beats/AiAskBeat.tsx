@@ -141,7 +141,13 @@ function Column({
   const cardRef = useRef<HTMLDivElement>(null);
   const colRef = useRef<HTMLDivElement>(null);
   const [y, setY] = useState(0);
-  const [cut, setCut] = useState<number | null>(null);
+  // What of the answer is shown: `cut` = the first block left out (null: all of it), `n` = how many
+  // "What it likely means" lines are kept. null = a measuring pass: everything is laid out, measured
+  // before paint, then the leftovers are taken out of the layout (display: none), so the card is
+  // only as tall as what it shows (critique R2-1: no white void inside the card).
+  // `noChart`: a phone too short for the chart and a line of "What it likely means" drops the chart (the
+  // headline carries its numbers), never the insight (critique R2-1).
+  const [fit, setFit] = useState<{ cut: number | null; n: number; noChart?: boolean } | null>(null);
   const [settle, setSettle] = useState(0);
   // Measured again whenever the column's size changes (the faces arriving re-wrap the question).
   const col = useBox(colRef);
@@ -155,13 +161,17 @@ function Column({
       window.clearTimeout(id);
     };
   }, [answered]);
+  // Anything that can change what fits starts a new measuring pass.
   useLayoutEffect(() => {
+    setFit(null);
+  }, [answered, phone, h, col.w, settle]);
+  useLayoutEffect(() => {
+    if (fit !== null) return;
     const view = viewRef.current;
     const card = cardRef.current;
     const body = card?.querySelector<HTMLElement>(".ai-answer__body");
     if (!view || !card || !body || !answered) {
       setY(0);
-      setCut(null);
       return;
     }
     const blocks = [...body.children] as HTMLElement[];
@@ -174,18 +184,60 @@ function Column({
       const asked = column.querySelector<HTMLElement>(".ai-asked");
       const above = asked ? rel(asked, column).bottom : box.top - 20;
       at = Math.max(0, box.top - Math.max(0, Math.min(10, (box.top - above) / 2)));
-      // Room for the body below the card's top padding, inside the view.
-      room = at + view.clientHeight - (box.top + parseFloat(getComputedStyle(card).paddingTop)) - 14;
+      // Room for the body inside the view, below the card's top padding and above its bottom padding.
+      const cs = getComputedStyle(card);
+      room = at + view.clientHeight - (box.top + parseFloat(cs.paddingTop)) - parseFloat(cs.paddingBottom) - 6;
     } else {
       const cs = getComputedStyle(card);
       room = (view.clientHeight || card.clientHeight) - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 2;
     }
-    // Blocks are measured in the body's own layout, which a hidden block does not change. The body is
-    // not positioned, so its blocks and the body share an offsetParent: subtract the body's own top.
-    const first = blocks.findIndex((b) => b.offsetTop - body.offsetTop + b.offsetHeight > room + 0.5);
+    // The body is not positioned, so its blocks and the body share an offsetParent: subtract its top.
+    const bottom = (el: HTMLElement) => el.offsetTop - body.offsetTop + el.offsetHeight;
+    const first = blocks.findIndex((b) => bottom(b) > room + 0.5);
+    let next: { cut: number | null; n: number; noChart?: boolean } = { cut: first < 0 ? null : Math.max(1, first), n: Infinity };
+    // "What it likely means" is the insight: keep as many of its lines as fit whole, at least one.
+    const means = blocks.findIndex((b) => b.matches(".aa-means-sec"));
+    let n = 0;
+    if (first >= 0 && first === means) {
+      const pad = parseFloat(getComputedStyle(blocks[first]).paddingBottom) || 0;
+      n = [...blocks[first].querySelectorAll<HTMLElement>(".aa-means > li")].filter((li) => bottom(li) + pad <= room + 0.5).length;
+      if (n > 0) next = { cut: first + 1, n };
+    }
+    // Not one line fits under the chart on a phone: the chart goes and the lines are checked again below.
+    if (phone && first >= 0 && means > 0 && first <= means && n === 0) next = { cut: means + 1, n: Infinity, noChart: true };
     setY(at);
-    setCut(first < 0 ? null : Math.max(1, first));
-  }, [answered, phone, reduced, h, col.h, col.w, settle]);
+    setFit(next);
+  }, [fit, answered, phone]);
+  // Check the settled card against the view: the measuring pass saw every block laid out, and taking
+  // some out can re-wrap the rest. Still past the edge: give up one more line (or block) and check
+  // again. Bounded: it stops at the headline plus one block.
+  useLayoutEffect(() => {
+    if (fit === null || !answered) return;
+    const view = viewRef.current;
+    const card = cardRef.current;
+    const body = card?.querySelector<HTMLElement>(".ai-answer__body");
+    if (!view || !card || !body) return;
+    let over: number;
+    if (phone) {
+      const column = colRef.current;
+      if (!column) return;
+      over = rel(card, column).bottom - y - (view.clientHeight - 6);
+    } else {
+      over = card.scrollHeight - card.clientHeight;
+    }
+    if (over <= 0.5) return;
+    const blocks = [...body.children] as HTMLElement[];
+    const last = (fit.cut ?? blocks.length) - 1;
+    const lines = blocks[last]?.matches(".aa-means-sec") ? blocks[last].querySelectorAll(".aa-means > li").length : 0;
+    const shown = Math.min(fit.n, lines);
+    if (shown > 1) setFit({ ...fit, cut: last + 1, n: shown - 1 });
+    else if (fit.noChart) return;
+    else if (phone && lines > 0 && last > 1) setFit({ cut: last + 1, n: Infinity, noChart: true });
+    else if (last > 1) setFit({ cut: last, n: Infinity });
+  }, [fit, answered, phone, y]);
+  const cut = fit?.cut ?? null;
+  const keep = fit?.n ?? Infinity;
+  const noChart = fit?.noChart ?? false;
 
   const ask = (
     <div className="pt-ai__left">
@@ -213,14 +265,14 @@ function Column({
   );
 
   const card = answered ? (
-    <Answer beat={beat} cardRef={cardRef} cut={cut} phone={phone} />
+    <Answer beat={beat} cardRef={cardRef} cut={cut} keep={keep} noChart={noChart} phone={phone} />
   ) : (
     <LiveCard steps={beat.steps} t={t} T={T} waiting={!live} />
   );
 
   if (phone) {
     return (
-      <div className={cut !== null ? "pt-ai__view is-clipped" : "pt-ai__view"} ref={viewRef} style={{ height: h }}>
+      <div className={answered ? "pt-ai__view is-clipped" : "pt-ai__view"} ref={viewRef} style={{ height: h }}>
         <div className="pt-ai__col" ref={colRef} style={{ transform: `translateY(${-y}px)` }}>
           {ask}
           <div className="pt-ai__right">{card}</div>
@@ -327,22 +379,31 @@ function Answer({
   beat,
   cardRef,
   cut,
+  keep,
+  noChart,
   phone,
 }: {
   beat: AiAskBeatData;
   cardRef: React.RefObject<HTMLDivElement | null>;
   /** Index of the first block that does not fit whole: it and every block after it are hidden. */
   cut: number | null;
+  /** How many "What it likely means" lines are shown. */
+  keep: number;
+  /** A phone too short for both leaves the chart out and keeps "What it likely means". */
+  noChart: boolean;
   phone: boolean;
 }) {
   const a = beat.answer;
   const max = a.chart.ticks[a.chart.ticks.length - 1];
   const fmt = (v: number) => (a.chart.money ? `$${v.toLocaleString("en-US")}` : v.toLocaleString("en-US"));
   const long = a.figures.some((f) => f.value.length > 5);
-  // Hidden whole (visibility, so the layout and the measurement do not move) from the first block that does not fit.
+  // Taken out of the layout (display: none) from the first block that does not fit.
   const off = (i: number) => (cut !== null && i >= cut ? "" : undefined);
-  const figsAt = phone ? 2 : 1;
+  // A phone shows the chart and leaves the figure grid out: its numbers repeat the chart's bars, and
+  // the room goes to "What it likely means" (critique R2-1). Order: headline, chart, means, plan, sources.
+  const figsAt = 1;
   const chartAt = phone ? 1 : 2;
+  const at = (desk: number) => (phone ? desk - 1 : desk);
   const figs = (
     <dl className="aa-figs aa-in" data-off={off(figsAt)} data-n={a.figures.length} data-long={long ? "" : undefined} style={{ "--i": phone ? 2 : 1 } as CSSProperties}>
       {a.figures.map((f) => (
@@ -354,7 +415,7 @@ function Answer({
     </dl>
   );
   const chart = (
-    <div className="aa-chart aa-in" data-off={off(chartAt)} style={{ "--i": phone ? 1 : 2 } as CSSProperties}>
+    <div className="aa-chart aa-in" data-off={noChart ? "" : off(chartAt)} style={{ "--i": phone ? 1 : 2 } as CSSProperties}>
       <p className="ch-title">{a.chart.title}</p>
       <div className="ch-bars" style={{ "--n": a.chart.bars.length } as CSSProperties}>
         {a.chart.bars.map((b, i) => (
@@ -391,17 +452,19 @@ function Answer({
           {a.headline}
         </p>
         {/* A phone has room for the answer and one more block: the chart comes first there, so the resting frame carries the sentence with its figures drawn (critique r8 S1, S2). */}
-        {phone ? chart : figs}
-        {phone ? figs : chart}
-        <section className="aa-sec aa-in" data-off={off(3)} style={{ "--i": 3 } as CSSProperties}>
+        {phone ? null : figs}
+        {chart}
+        <section className="aa-sec aa-means-sec aa-in" data-off={off(at(3))} style={{ "--i": 3 } as CSSProperties}>
           <p className="aa-k">What it likely means</p>
           <ul className="aa-means">
-            {a.means.map((m) => (
-              <li key={m}>{m}</li>
+            {a.means.map((m, i) => (
+              <li key={m} data-off={i >= keep ? "" : undefined}>
+                {m}
+              </li>
             ))}
           </ul>
         </section>
-        <section className="aa-sec aa-plan aa-in" data-off={off(4)} style={{ "--i": 4 } as CSSProperties}>
+        <section className="aa-sec aa-plan aa-in" data-off={off(at(4))} style={{ "--i": 4 } as CSSProperties}>
           <p className="aa-k">What we&apos;re doing next</p>
           <ol className="aa-next">
             {a.next.map((n) => (
@@ -411,7 +474,7 @@ function Answer({
             ))}
           </ol>
         </section>
-        <p className="ai-sources aa-in" data-off={off(5)} style={{ "--i": 5 } as CSSProperties}>
+        <p className="ai-sources aa-in" data-off={off(at(5))} style={{ "--i": 5 } as CSSProperties}>
           <span>Sources: </span>
           {a.sources.map((s, i) => (
             <span key={s.label}>

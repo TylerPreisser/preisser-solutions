@@ -378,7 +378,6 @@ html.sc-sheet-open .ps-header {
   .sc-beat,
   .sc-beat[data-on],
   .sc-tabs__pill,
-  .sc-web__frame,
   .sc-sheet {
     transition: none !important;
   }
@@ -438,7 +437,11 @@ html.sc-sheet-open .ps-header {
 }
 .sc-close:focus-visible,
 .sc-tabs__tab:focus-visible,
-.sc-web__open:focus-visible,
+/* "Open site" fills most of the 40px strip's height: its ring sits on its own edge so the strip never crops it. */
+.sc-web__open:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
 .sc-web__fallback-btn:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 3px;
@@ -784,13 +787,16 @@ html.sc-sheet-open .ps-header {
   background: #fff;
   transform-origin: 0 0;
   visibility: hidden;
-  opacity: 0;
-  transition: opacity 200ms linear;
 }
-/* inherit, not visible: a hidden tab (visibility:hidden on its panel) must hide the frame too. */
+/* inherit, not visible: a hidden tab (visibility:hidden on its panel) must hide the frame too.
+   The still -> live swap is a cut, not a fade: the still and the live page never line up exactly
+   (a video hero, a different crop), and a 200 ms cross-fade showed both at once (critique R2-6).
+   The ready message is sent after the framed page has painted, so the cut lands on a drawn page. */
 .sc-web[data-state="live"] .sc-web__frame {
   visibility: inherit;
-  opacity: 1;
+}
+.sc-web[data-state="live"] .sc-web__still {
+  visibility: hidden;
 }
 .sc-web__fallback {
   position: absolute;
