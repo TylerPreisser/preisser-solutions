@@ -49,7 +49,7 @@ export const impact = impactBeat("hg-oil", {
       },
       figures: [
         figure<"How it is built">("74", "disposal agreements, worked out in one calculation"),
-        figure<"Measured live, Sep 17 2026">("70 s", "at most, of engine work for the whole close, over five measured runs"),
+        figure<"Measured live, Sep 17 2026">("70 s", "the longest the engine took to run a whole close, in five measured runs"),
         figure<"How it is built">("17", "owner statements produced from every close"),
       ],
       how: "How the close runs",
