@@ -25,8 +25,8 @@ export function warmShowcase(slug: ShowcaseSlug, wide: boolean) {
       const web = c.beats.find((b) => b.kind === "website");
       if (!web || web.kind !== "website") return;
       const cap = wide ? web.desk : web.phone;
-      // A video hero opens on its poster, so that is warmed too.
-      for (const src of cap.video ? [cap.src, cap.video.poster] : [cap.src]) {
+      // The entrance still shows first and the finished one is the fallback, so both are warmed; a video hero's poster too.
+      for (const src of [...(cap.first ? [cap.first.src] : []), cap.src, ...(cap.video ? [cap.video.poster] : [])]) {
         const img = new Image();
         img.decoding = "async";
         img.src = src;
