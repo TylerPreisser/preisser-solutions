@@ -14,6 +14,7 @@ import type {
   ImpactStat,
 } from "@/data/showcase/types";
 import type { BeatProps } from "./shared";
+import { DufferQrScene } from "../scenes/DufferQrScene";
 import "./impact.css";
 
 /**
@@ -136,8 +137,10 @@ export function ImpactBeat({
       >
         <div ref={inner} className="im__col">
           {beat.lead === "qr-story" ? (
-            // B5 SLOT (spec §3.5): render <DufferQrScene /> here. Nothing is drawn until it lands.
-            <div className="im__lead" data-lead="qr-story" />
+            // Spec §3.5: Duffer's Impact leads with the QR story.
+            <div className="im__lead" data-lead="qr-story">
+              <DufferQrScene variant={variant} active={active} reduced={reduced} />
+            </div>
           ) : null}
           <div className="im__body">
             <p className="im__k" id={kickerId}>
