@@ -39,6 +39,6 @@ export const QR_T = {
   later: 6200,
   order: 6800,
   check: 8800,
-  strip: 10600,
-  numbers: 11600,
+  /** The story has come to rest: everything it showed stays on screen together. */
+  rest: 9800,
 } as const;

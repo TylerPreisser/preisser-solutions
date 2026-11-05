@@ -7,22 +7,26 @@
  * live feed, a later sale carrying the course's referral code is credited to it, and the course's
  * commission is paid by check. Nothing is shown as instant or automatic money.
  *
- * DROP-IN for the Impact beat (builder B2), one line where `beat.lead === "qr-story"`:
- *   <DufferQrScene variant={variant} active={active} reduced={reduced} />
- * It sits at the top of the panel and fills the height it is given; at QR_STORY_MS - 1000 it
- * compacts to a strip (desk 200 px, phone 120 px), and from QR_STORY_MS the Impact numbers rise
- * in below it. It carries its own "Demonstration data" label and narration (its own demo stage
- * nested in the Impact fact stage; tests/demo-privacy.probe.mjs scans the two apart).
- * No script / reduced motion: the strip's end frame, at once.
+ * ONE composed frame: the display and the golfer's phone, the live feed, the order and its check
+ * all have a place from the start and arrive in story order; the end frame is all of them resting
+ * together (never a collapsed strip). It lays out once at a design size (desk 1000 x 250, phone
+ * 320 x 170) and is scaled, statically, to the slot. In the Impact tab its height comes from the
+ * stage (`.im` is a size container), leaving the Impact numbers their room below it.
+ *
+ * Its own "Demonstration data" label and narration: it is a demo stage nested in the Impact fact
+ * stage (tests/demo-privacy.probe.mjs scans the two apart). Its label is the tab's only one.
+ * No script / reduced motion: the end frame, at once.
+ *
+ * In ImpactBeat (`beat.lead === "qr-story"`): <DufferQrScene variant={variant} active={active} reduced={reduced} />
  */
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { DUFFER_QR as D, QR_FEED_EARLIER, QR_SITE, QR_T } from "@/data/showcase/scenes/duffer-qr";
 import "./duffer-qr.css";
 
-/** When the Impact numbers may rise in below the strip (ms from the tab showing). */
-export const QR_STORY_MS = QR_T.numbers;
+/** When the story has come to rest (ms from the tab showing). */
+export const QR_STORY_MS = QR_T.rest;
 
-const MARKS = ["up", "locked", "site", "wire", "feed", "later", "order", "check", "strip"] as const;
+const MARKS = ["up", "locked", "site", "wire", "feed", "later", "order", "check"] as const;
 type Mark = (typeof MARKS)[number];
 const AT: Record<Mark, number> = {
   up: QR_T.phoneUp + 60,
@@ -33,7 +37,6 @@ const AT: Record<Mark, number> = {
   later: QR_T.later,
   order: QR_T.order,
   check: QR_T.check,
-  strip: QR_T.strip,
 };
 
 function useStory(active: boolean, reduced: boolean) {
@@ -50,43 +53,46 @@ function useStory(active: boolean, reduced: boolean) {
   return reached;
 }
 
+/** The design size each variant lays out at, and the room kept for the label above it. */
+const DESIGN = { desk: { w: 1000, h: 250, top: 34, side: 20, bottom: 12 }, phone: { w: 320, h: 170, top: 30, side: 10, bottom: 6 } } as const;
+
+/** Scale the composition to the box it is given (static: the scale never animates). */
+function useFit(variant: "desk" | "phone") {
+  const ref = useRef<HTMLDivElement>(null);
+  const [k, setK] = useState<number | null>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const d = DESIGN[variant];
+    const ro = new ResizeObserver(([e]) => {
+      const { width, height } = e.contentRect;
+      if (width > 0 && height > 0) setK(Math.max(0.5, Math.min(1.2, (width - 2 * d.side) / d.w, (height - d.top - d.bottom) / d.h)));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [variant]);
+  return { ref, k };
+}
+
 export interface DufferQrSceneProps {
   variant: "desk" | "phone";
   active: boolean;
   reduced: boolean;
 }
 
-/** Desk: the story is laid out once at 960 x 480 and scaled to fill the slot it is given. */
-const DESK_W = 960;
-const DESK_H = 480;
-function useFit(on: boolean) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [k, setK] = useState(1);
-  useEffect(() => {
-    const el = ref.current;
-    if (!on || !el || typeof ResizeObserver === "undefined") return;
-    const ro = new ResizeObserver(([e]) => {
-      const { width, height } = e.contentRect;
-      if (width > 0 && height > 0) setK(Math.max(0.55, Math.min(1.45, (width - 56) / DESK_W, (height - 64) / DESK_H)));
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [on]);
-  return { ref, k };
-}
-
 export function DufferQrScene({ variant, active, reduced }: DufferQrSceneProps) {
   const reached = useStory(active, reduced);
-  const fit = useFit(variant === "desk");
+  const fit = useFit(variant);
   const on = (m: Mark) => reached > MARKS.indexOf(m);
   const flags = Object.fromEntries(MARKS.map((m) => [`data-${m}`, on(m) ? "" : undefined]));
   return (
     <div
       ref={fit.ref}
-      style={{ "--dqr-k": fit.k } as CSSProperties}
       className={`dqr dqr--${variant}${active && !reduced ? "" : " is-still"}`}
       data-demo-stage="duffer-golf-qr"
       data-scene="duffer-qr"
+      data-fit={fit.k === null ? undefined : ""}
+      style={fit.k === null ? undefined : ({ "--dqr-k": fit.k.toFixed(4) } as CSSProperties)}
       {...flags}
     >
       <span className="dqr-label" data-demo-label>
@@ -131,7 +137,7 @@ export function DufferQrScene({ variant, active, reduced }: DufferQrSceneProps) 
           <span className="dqr-dot" />
         </div>
 
-        {/* ── The Command Center: live feed, then the order and its commission ── */}
+        {/* ── The Command Center's live feed ── */}
         <div className="dqr-panel">
           <div className="dqr-head">
             <span className="dqr-title">Live feed</span>
@@ -149,66 +155,46 @@ export function DufferQrScene({ variant, active, reduced }: DufferQrSceneProps) 
               <span className="dqr-where">
                 {D.display} · {D.course}
               </span>
+              <span className="dqr-when">just now</span>
               <span className="dqr-detail">
                 {D.town} · {D.device}
               </span>
-              <span className="dqr-when">just now</span>
             </li>
             {QR_FEED_EARLIER.map((r) => (
               <li className="dqr-row" key={r.where}>
                 <span className="dqr-what">{r.what}</span>
                 <span className="dqr-where">{r.where}</span>
-                <span className="dqr-detail">{r.detail}</span>
                 <span className="dqr-when">{r.when}</span>
+                <span className="dqr-detail">{r.detail}</span>
               </li>
             ))}
           </ol>
+        </div>
+
+        {/* ── Later: the order it earned, and the check that paid it ── */}
+        <div className="dqr-money">
           <span className="dqr-later">3 days later</span>
           <div className="dqr-order">
             <span className="dqr-otitle">Orders</span>
             <span className="dqr-oline">
-              <b>{D.order.id}</b> · {D.order.item} · sold with referral code <b>{D.order.code}</b>
+              <b>{D.order.id}</b>
+              <span className="dqr-long"> · {D.order.item} · sold with referral code</span>
+              <span className="dqr-short"> · code</span> <b>{D.order.code}</b>
             </span>
             <span className="dqr-owed">
-              Commission owed · <b>{D.commission.amount}</b> · {D.commission.to}
+              Commission owed · <b>{D.commission.amount}</b>
+              <span className="dqr-long"> · {D.commission.to}</span>
+            </span>
+          </div>
+          <div className="dqr-check">
+            <span className="dqr-cmark">✓</span>
+            <span>
+              Paid by check
+              <small>{D.commission.to}</small>
             </span>
           </div>
         </div>
-
-        {/* ── The check goes back to the course ── */}
-        <div className="dqr-check">
-          <span className="dqr-cmark">✓</span>
-          <span>
-            Paid by check
-            <small>{D.commission.to}</small>
-          </span>
-        </div>
       </div>
-
-      {/* ── The end frame: what the story did, in three words ── */}
-      <ol className="dqr-strip">
-        <li>
-          <Icon k="scan" />
-          <span>
-            <b>Scanned</b>
-            <small>{D.display}</small>
-          </span>
-        </li>
-        <li>
-          <Icon k="credit" />
-          <span>
-            <b>Credited</b>
-            <small>{D.course}</small>
-          </span>
-        </li>
-        <li>
-          <Icon k="paid" />
-          <span>
-            <b>Paid</b>
-            <small>by check</small>
-          </span>
-        </li>
-      </ol>
     </div>
   );
 }
@@ -224,21 +210,5 @@ function QrMark() {
         fillRule="evenodd"
       />
     </svg>
-  );
-}
-
-function Icon({ k }: { k: "scan" | "credit" | "paid" }) {
-  const d =
-    k === "scan"
-      ? "M3 7V4h3M14 4h3v3M17 13v3h-3M6 16H3v-3M5 10h10"
-      : k === "credit"
-        ? "M4 10.5l3.5 3.5L16 5.5"
-        : "M3 6h14v9H3zM3 9h14M6 12.5h3";
-  return (
-    <span className="dqr-ico" data-k={k}>
-      <svg viewBox="0 0 20 20" aria-hidden="true">
-        <path d={d} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </span>
   );
 }
