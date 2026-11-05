@@ -1,0 +1,712 @@
+/* ============================================================
+   Duffer's QR story (design-spec-r2 §3.5). Every moving thing is small: the phone (112 x 200),
+   brackets, a scan line, a 10 px dot, one feed row, one order card, one check, the strip.
+     phone rises        600 ms  --sc-ease-grow     0 ms
+     brackets close     300 ms  --sc-ease-move     +400 ms, green at 1100
+     scan line          400 ms  linear             +700 ms
+     site shows         300 ms  linear             1800
+     dot on the wire    800 ms  --sc-ease-move     3200
+     feed row in        400 ms  --sc-ease-grow     4000 (accent bar fades 1200 ms)
+     "3 days later"     240 ms  linear             6200
+     order lands        380 ms  --sc-ease-grow     6800
+     check travels     1400 ms  --sc-ease-move     8800 (+300)
+     strip              500 ms  --sc-ease-sheet    10600 (story out, strip in)
+   No script / reduced motion: the strip, at once.
+   ============================================================ */
+
+.dqr {
+  --dqr-ground: #f4f6f9;
+  --dqr-ink: #111211;
+  --dqr-ink-2: #4a4b48;
+  --dqr-on-ground: #0f172a;
+  --dqr-on-ground-2: #475569;
+  --dqr-accent: var(--pt-accent, #27753a);
+  --dqr-beam: #1590ff;
+  --dqr-card: #ffffff;
+  --dqr-shadow: 0 1px 2px rgba(10, 22, 40, 0.08), 0 14px 34px -18px rgba(10, 22, 40, 0.45);
+  position: relative;
+  height: 100%;
+  min-height: 200px;
+  overflow: hidden;
+  background: var(--dqr-ground);
+  color: var(--dqr-on-ground);
+  font-family: var(--pt-body, Inter, system-ui, -apple-system, "Segoe UI", sans-serif);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  transition: height 500ms var(--sc-ease-sheet, cubic-bezier(0.32, 0.72, 0, 1));
+}
+[data-theme="dark"] .dqr {
+  --dqr-ground: #0f1f38;
+  --dqr-on-ground: #f2f6fb;
+  --dqr-on-ground-2: #a9b6c8;
+  --dqr-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 18px 40px -18px rgba(0, 0, 0, 0.8);
+}
+.dqr *,
+.dqr *::before,
+.dqr *::after {
+  box-sizing: border-box;
+}
+.dqr[data-strip] {
+  height: 200px;
+}
+.dqr--phone[data-strip] {
+  height: 120px;
+}
+
+.dqr-label {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 3;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  color: var(--dqr-on-ground-2);
+  background: rgba(15, 23, 42, 0.06);
+}
+[data-theme="dark"] .dqr-label {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ── The story (desk: counter | wire | Command Center) ───── */
+.dqr-story {
+  position: absolute;
+  inset: 40px 28px 24px;
+  display: grid;
+  grid-template-columns: 30% 12% minmax(0, 1fr);
+  align-items: center;
+  transition: opacity 400ms linear;
+}
+/* Desk: one fixed layout, scaled (statically, by JS) to the slot, so the type grows with the window. */
+.dqr--desk .dqr-story {
+  inset: auto;
+  left: 50%;
+  top: calc(50% + 12px);
+  width: 960px;
+  height: 480px;
+  transform: translate(-50%, -50%) scale(var(--dqr-k, 1));
+}
+/* The panel rides high so the check, travelling back to the course, passes beneath it. */
+.dqr--desk .dqr-panel {
+  align-self: start;
+  margin-top: 12px;
+}
+.dqr[data-strip] .dqr-story {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 400ms linear,
+    visibility 0s 400ms;
+}
+
+.dqr-counter {
+  position: relative;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+.dqr-board {
+  position: relative;
+  width: min(100%, 236px);
+  aspect-ratio: 8 / 10;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 14px 14px;
+  border-radius: 10px;
+  background: linear-gradient(160deg, #24452f, #183323);
+  box-shadow: var(--dqr-shadow);
+}
+.dqr-logo {
+  width: 72%;
+  height: auto;
+}
+.dqr-qr {
+  width: 60%;
+  aspect-ratio: 1;
+  padding: 6px;
+  border-radius: 6px;
+  background: #fff;
+}
+.dqr-qr svg,
+.dqr-view svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.dqr-num {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #f3f6f2;
+}
+.dqr-stand {
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  width: 46%;
+  height: 12px;
+  transform: translateX(-50%);
+  clip-path: polygon(12% 0, 88% 0, 100% 100%, 0 100%);
+  background: #2c3a31;
+}
+
+/* The golfer's phone, rising in front of the display. */
+.dqr-phone {
+  position: absolute;
+  right: -6%;
+  bottom: 2%;
+  width: 112px;
+  height: 200px;
+  padding: 5px;
+  border-radius: 20px;
+  background: #0b0d10;
+  box-shadow: 0 18px 30px -16px rgba(10, 22, 40, 0.6);
+  opacity: 0;
+  transform: translateY(70%);
+  transition:
+    transform 600ms var(--sc-ease-grow, cubic-bezier(0.2, 0.9, 0.25, 1)),
+    opacity 240ms linear;
+}
+.dqr[data-up] .dqr-phone {
+  opacity: 1;
+  transform: none;
+}
+.dqr-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 15px;
+  background: #2b3138;
+}
+.dqr-view {
+  position: absolute;
+  left: 22%;
+  top: 30%;
+  width: 56%;
+  aspect-ratio: 1;
+  padding: 4px;
+  background: #fff;
+  border-radius: 3px;
+  opacity: 0.92;
+}
+.dqr-brk {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 0 solid #fff;
+  transition:
+    transform 300ms var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1)) 400ms,
+    border-color 200ms linear;
+}
+.dqr-brk--tl {
+  left: 16%;
+  top: 25%;
+  border-top-width: 2.5px;
+  border-left-width: 2.5px;
+  transform: translate(-8px, -8px);
+}
+.dqr-brk--tr {
+  right: 16%;
+  top: 25%;
+  border-top-width: 2.5px;
+  border-right-width: 2.5px;
+  transform: translate(8px, -8px);
+}
+.dqr-brk--bl {
+  left: 16%;
+  top: calc(25% + 56% * 112 / 200 * 1.07 + 2px);
+  border-bottom-width: 2.5px;
+  border-left-width: 2.5px;
+  transform: translate(-8px, 8px);
+}
+.dqr-brk--br {
+  right: 16%;
+  top: calc(25% + 56% * 112 / 200 * 1.07 + 2px);
+  border-bottom-width: 2.5px;
+  border-right-width: 2.5px;
+  transform: translate(8px, 8px);
+}
+.dqr[data-up] .dqr-brk {
+  transform: none;
+}
+.dqr[data-locked] .dqr-brk {
+  border-color: #34c759;
+}
+.dqr-scanline {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 30%;
+  height: 2px;
+  border-radius: 2px;
+  background: #6ee7b7;
+  box-shadow: 0 0 8px #6ee7b7;
+  opacity: 0;
+}
+.dqr[data-up]:not([data-locked]) .dqr-scanline {
+  animation: dqr-scan 400ms linear 700ms both;
+}
+@keyframes dqr-scan {
+  0% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(58px);
+  }
+}
+.dqr-site {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  opacity: 0;
+  transition: opacity 300ms linear;
+}
+.dqr[data-site] .dqr-site {
+  opacity: 1;
+}
+.dqr-chip {
+  position: absolute;
+  left: 50%;
+  bottom: 9px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  line-height: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--dqr-accent);
+  box-shadow: 0 4px 10px -4px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 240ms linear 300ms;
+}
+.dqr[data-site] .dqr-chip {
+  opacity: 1;
+}
+
+/* The wire to the Command Center, in the home MarCommand section's blue. */
+.dqr-wire {
+  position: relative;
+  align-self: center;
+  height: 10px;
+  margin: 0 10px;
+}
+.dqr-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 4px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--dqr-beam);
+  opacity: 0.25;
+  transition: opacity 300ms linear;
+}
+.dqr[data-wire] .dqr-line {
+  opacity: 0.85;
+}
+.dqr-dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--dqr-beam);
+  box-shadow: 0 0 0 3px rgba(21, 144, 255, 0.25), 0 0 12px rgba(21, 144, 255, 0.8);
+  opacity: 0;
+  transition:
+    left 800ms var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1)),
+    opacity 200ms linear;
+}
+.dqr[data-wire] .dqr-dot {
+  left: calc(100% - 10px);
+  opacity: 1;
+}
+.dqr[data-feed] .dqr-dot {
+  opacity: 0;
+}
+
+/* The Command Center card. */
+.dqr-panel {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  padding: 16px 18px 18px;
+  border-radius: 12px;
+  background: var(--dqr-card);
+  color: var(--dqr-ink);
+  box-shadow: var(--dqr-shadow);
+  font-size: 14px;
+  line-height: 20px;
+}
+.dqr-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.dqr-title {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+}
+.dqr-stat {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--dqr-ink-2);
+}
+.dqr-count {
+  display: inline-grid;
+  margin-left: 4px;
+  font-size: 18px;
+  line-height: 22px;
+  color: var(--dqr-ink);
+  overflow: hidden;
+  vertical-align: -3px;
+}
+.dqr-was,
+.dqr-now {
+  grid-area: 1 / 1;
+  transition:
+    transform 380ms var(--sc-ease-grow, cubic-bezier(0.2, 0.9, 0.25, 1)),
+    opacity 200ms linear;
+}
+.dqr-now {
+  transform: translateY(100%);
+  opacity: 0;
+}
+.dqr[data-feed] .dqr-was {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+.dqr[data-feed] .dqr-now {
+  transform: none;
+  opacity: 1;
+}
+.dqr-feed {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #e7e5df;
+}
+.dqr-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  column-gap: 8px;
+  padding: 8px 0 8px 10px;
+  border-bottom: 1px solid #e7e5df;
+}
+.dqr-what {
+  font-weight: 700;
+}
+.dqr-where {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dqr-when {
+  font-size: 12.5px;
+  color: var(--dqr-ink-2);
+}
+.dqr-detail {
+  grid-column: 2 / 4;
+  font-size: 12.5px;
+  line-height: 17px;
+  color: var(--dqr-ink-2);
+}
+.dqr-row--new {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-bottom-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition:
+    max-height 400ms var(--sc-ease-grow, cubic-bezier(0.2, 0.9, 0.25, 1)),
+    padding 400ms var(--sc-ease-grow, cubic-bezier(0.2, 0.9, 0.25, 1)),
+    opacity 240ms linear 120ms;
+}
+.dqr[data-feed] .dqr-row--new {
+  max-height: 64px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-bottom-width: 1px;
+  opacity: 1;
+  animation: dqr-bar 1200ms linear 400ms both;
+}
+@keyframes dqr-bar {
+  from {
+    box-shadow: inset 3px 0 0 var(--dqr-accent);
+    background: color-mix(in srgb, var(--dqr-accent) 10%, transparent);
+  }
+  to {
+    box-shadow: inset 3px 0 0 transparent;
+    background: transparent;
+  }
+}
+.dqr-later {
+  justify-self: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 600;
+  color: var(--dqr-ink-2);
+  background: #f1efe9;
+  opacity: 0;
+  transition: opacity 240ms linear;
+}
+.dqr[data-later] .dqr-later {
+  opacity: 1;
+}
+.dqr-order {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f7f6f2;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 300ms linear,
+    transform 380ms var(--sc-ease-grow, cubic-bezier(0.2, 0.9, 0.25, 1));
+}
+.dqr[data-order] .dqr-order {
+  opacity: 1;
+  transform: none;
+}
+.dqr-otitle {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dqr-ink-2);
+}
+.dqr-oline {
+  font-size: 13.5px;
+  line-height: 19px;
+}
+.dqr-owed {
+  justify-self: start;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 19px;
+  font-weight: 600;
+  color: #6b4a12;
+  background: #f4e6c8;
+}
+
+/* The check, from the Command Center back to the course's counter. */
+.dqr-check {
+  position: absolute;
+  left: 64%;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px dashed #b9b1a0;
+  background: #fffdf6;
+  color: var(--dqr-ink);
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 700;
+  box-shadow: 0 12px 24px -14px rgba(10, 22, 40, 0.55);
+  opacity: 0;
+  transition:
+    left 1400ms var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1)) 300ms,
+    opacity 240ms linear;
+}
+.dqr-check small {
+  display: block;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--dqr-ink-2);
+}
+.dqr-cmark {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 13px;
+  color: #fff;
+  background: var(--dqr-accent);
+}
+.dqr[data-check] .dqr-check {
+  left: 3%;
+  opacity: 1;
+}
+
+/* ── The end frame ─────────────────────────────────────────── */
+.dqr-strip {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 36px 20px 20px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 400ms linear 200ms,
+    visibility 0s 600ms;
+}
+.dqr[data-strip] .dqr-strip {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 400ms linear 200ms;
+}
+.dqr-strip li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px 16px 10px 10px;
+  border-radius: 12px;
+  background: var(--dqr-card);
+  color: var(--dqr-ink);
+  box-shadow: var(--dqr-shadow);
+}
+.dqr-strip b {
+  display: block;
+  font-size: 16px;
+  line-height: 20px;
+}
+.dqr-strip small {
+  display: block;
+  font-size: 12.5px;
+  line-height: 16px;
+  color: var(--dqr-ink-2);
+  white-space: nowrap;
+}
+.dqr-ico {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--dqr-accent);
+}
+.dqr-ico svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── Phone: one panel at a time ────────────────────────────── */
+.dqr--phone .dqr-story {
+  inset: 38px 14px 14px;
+  grid-template-columns: minmax(0, 1fr);
+}
+.dqr--phone .dqr-counter,
+.dqr--phone .dqr-panel {
+  grid-area: 1 / 1;
+  transition: opacity 300ms linear;
+}
+.dqr--phone .dqr-counter {
+  height: auto;
+}
+.dqr--phone .dqr-board {
+  width: min(62%, 200px);
+  margin-right: 22%;
+}
+.dqr--phone .dqr-phone {
+  right: 6%;
+}
+.dqr--phone .dqr-wire {
+  display: none;
+}
+.dqr--phone .dqr-panel {
+  align-self: start;
+  opacity: 0;
+  font-size: 13.5px;
+}
+.dqr--phone[data-feed] .dqr-counter {
+  opacity: 0;
+}
+.dqr--phone[data-feed] .dqr-panel {
+  opacity: 1;
+}
+.dqr--phone .dqr-check {
+  left: 50%;
+  bottom: -70px;
+  transform: translateX(-50%);
+  transition:
+    bottom 900ms var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1)) 200ms,
+    opacity 240ms linear;
+}
+.dqr--phone[data-check] .dqr-check {
+  left: 50%;
+  bottom: 12px;
+}
+.dqr--phone .dqr-strip {
+  padding: 30px 8px 8px;
+  gap: 6px;
+}
+.dqr--phone .dqr-strip li {
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  text-align: center;
+}
+.dqr--phone .dqr-ico {
+  width: 24px;
+  height: 24px;
+}
+.dqr--phone .dqr-ico svg {
+  width: 14px;
+  height: 14px;
+}
+.dqr--phone .dqr-strip b {
+  font-size: 13px;
+  line-height: 16px;
+}
+.dqr--phone .dqr-strip small {
+  font-size: 11px;
+  line-height: 14px;
+}
+.dqr--phone .dqr-label {
+  top: 8px;
+  right: 10px;
+}
+
+.dqr.is-still *,
+.dqr.is-still *::before,
+.dqr.is-still *::after,
+.dqr.is-still {
+  transition: none !important;
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dqr,
+  .dqr *,
+  .dqr *::before,
+  .dqr *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

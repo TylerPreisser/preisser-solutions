@@ -24,6 +24,12 @@
  *   deny           a PRIVATE deny-list term in a stage or in stage source files
  *   deny-site      a "site:" deny-list term anywhere in out/
  *   css-namespace  a stage stylesheet declaring a site or Tailwind variable, or @theme
+ *   still-manifest a captured still (an image under a STILL_DIRS folder of out/) with no
+ *                  `<still>.words.json` beside it, or one whose manifest is empty or names
+ *                  another scope (design-spec-r2 §7.2 #18)
+ *   still-*        every line of a still's words manifest gets the stage rules above
+ *                  (still-token, still-deny, still-domain, still-routing): the probe cannot
+ *                  read pixels, so the capture script writes down the text it drew
  *
  * A FACT stage ([data-fact-stage], the showcase's Impact tab, ADR-0022 §3) is
  * real copy, not demonstration data: it gets every rule above except that it
@@ -58,6 +64,13 @@ const SOURCE_ROOTS = process.env.PS_SOURCE_ROOTS
     [path.join(ROOT, "src", "data", "demos"), path.join(ROOT, "src", "data", "showcase"), path.join(ROOT, "src", "components", "case-study", "DemoStage")];
 const LABELS = ["Demonstration data", "Recreation · demonstration data"];
 const FILE_TLDS = ["pdf", "xlsx", "xls", "csv", "png", "jpg", "jpeg", "webp", "svg", "txt", "docx", "json", "zip"];
+/**
+ * Folders of captured product stills (out/-relative) and the invented scope their words answer to.
+ * Every image in one needs `<name>.words.json` beside it: { still, scope, lines: [...] }, written
+ * by the capture script from the text drawn inside the shot (scripts/capture-*.mjs).
+ */
+const STILL_DIRS = { "images/showcase/duffer": "duffer-golf", "images/showcase/nwks": "nwks-encounter" };
+const STILL_EXT = /\.(webp|png|jpe?g|avif)$/i;
 const RESERVED_VAR = /^--(color|theme|font|shadow|radius|tw|container|nav|ease|section|spacing|text|breakpoint)-/;
 
 class ConfigError extends Error {}
@@ -107,9 +120,10 @@ function loadCommon() {
 }
 
 /** What one page may show: _shared plus the page's own scope. */
-function cfgFor(slug, sets, common, deny) {
+function cfgFor(slug, sets, common, deny, stills = []) {
   const use = sets.filter((s) => s.scope === "_shared" || s.scope === slug);
-  const cfg = { phrases: [], domains: [], assets: [], words: [...common], labels: LABELS, fileTlds: FILE_TLDS };
+  // `stills`: captured stills that carry a words manifest; a stage may draw them (§7.2 #18).
+  const cfg = { phrases: [], domains: [], assets: [], stills, words: [...common], labels: LABELS, fileTlds: FILE_TLDS };
   for (const s of use) {
     for (const p of s.people) cfg.phrases.push(`${p.first} ${p.last}`, p.first, p.last, ...(p.aliases ?? []));
     for (const b of s.businesses) cfg.phrases.push(b.name, ...(b.aliases ?? []));
@@ -168,11 +182,14 @@ function checkDocument(cfg) {
   for (const st of stages) {
     const id = stageId(st) || "(unnamed)";
     const fact = !st.hasAttribute("data-demo-stage");
-    const labels = [...st.querySelectorAll("[data-demo-label]")].map((e) => norm(e.textContent || ""));
+    // A stage's own label and narration: a demo stage nested inside another (Duffer's QR story in
+    // its Impact fact stage) answers for its own, and is checked as a stage of its own.
+    const ownOf = (sel) => [...st.querySelectorAll(sel)].filter((e) => e.closest("[data-demo-stage], [data-fact-stage]") === st);
+    const labels = ownOf("[data-demo-label]").map((e) => norm(e.textContent || ""));
     if (fact ? labels.length !== 0 : labels.length !== 1 || !cfg.labels.includes(labels[0])) {
       V.push({ rule: "label", stage: id, detail: `labels found: ${JSON.stringify(labels)}` });
     }
-    const narration = st.querySelector("[data-demo-narration]");
+    const narration = ownOf("[data-demo-narration]")[0];
     if (!narration || norm(narration.textContent || "").length < 80) {
       V.push({ rule: "narration", stage: id, detail: "missing, or under 80 characters" });
     }
@@ -182,7 +199,7 @@ function checkDocument(cfg) {
     for (const img of st.querySelectorAll("img, source, image")) {
       const src = img.getAttribute("src") || img.getAttribute("srcset") || img.getAttribute("href") || "";
       const p = src.trim().split(/[\s?#]/)[0];
-      if (p && !cfg.assets.includes(p)) V.push({ rule: "asset", stage: id, detail: `${p} is not a registered demo asset` });
+      if (p && !cfg.assets.includes(p) && !cfg.stills.includes(p)) V.push({ rule: "asset", stage: id, detail: `${p} is not a registered demo asset or a still with a words manifest` });
     }
     for (const u of units(st)) {
       for (const m of u.text.matchAll(/(?<!\d)(?:\d[ -]?){8,}\d(?!\d)/g)) {
@@ -304,6 +321,62 @@ function siteChecks(deny) {
   return V;
 }
 
+/** The captured stills under out/: each needs a words manifest, and its words pass the stage rules. */
+function stillFiles() {
+  const out = [];
+  for (const [dir, scope] of Object.entries(STILL_DIRS)) {
+    const abs = path.join(OUT, dir);
+    if (!fs.existsSync(abs)) continue;
+    for (const f of fs.readdirSync(abs).filter((n) => STILL_EXT.test(n)).sort()) {
+      out.push({ url: `/${dir}/${f}`, file: path.join(abs, f), words: path.join(abs, f.replace(STILL_EXT, ".words.json")), scope });
+    }
+  }
+  return out;
+}
+
+/** Still URLs whose manifest exists and parses: the only stills a stage may draw. */
+function manifestedStills() {
+  return stillFiles()
+    .filter((s) => {
+      try {
+        return Array.isArray(JSON.parse(fs.readFileSync(s.words, "utf8")).lines);
+      } catch {
+        return false;
+      }
+    })
+    .map((s) => s.url);
+}
+
+const escHtml = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+async function stillChecks(page, sets, common, deny) {
+  const V = [];
+  const files = stillFiles();
+  for (const s of files) {
+    const at = s.url;
+    let m;
+    try {
+      m = JSON.parse(fs.readFileSync(s.words, "utf8"));
+    } catch {
+      V.push({ rule: "still-manifest", stage: null, detail: `${at} has no readable ${path.basename(s.words)} beside it` });
+      continue;
+    }
+    if (!Array.isArray(m.lines) || m.lines.length === 0 || m.scope !== s.scope) {
+      V.push({ rule: "still-manifest", stage: null, detail: `${at}: manifest has no lines, or scope ${JSON.stringify(m.scope)} is not ${s.scope}` });
+      continue;
+    }
+    // The words go through the same in-page rules a stage's own text does, as one synthetic stage.
+    const html =
+      `<!doctype html><html><body><figure data-demo-stage="still"><span data-demo-label>${LABELS[0]}</span>` +
+      `<p data-demo-narration>The words a captured still draws, written down by its capture script so this probe can read them.</p>` +
+      m.lines.map((l) => `<p>${escHtml(l)}</p>`).join("") +
+      `</figure></body></html>`;
+    const res = await checkHtml(page, html, cfgFor(s.scope, sets, common, deny));
+    for (const v of res.violations) V.push({ page: at, rule: `still-${v.rule}`, stage: null, detail: v.detail });
+  }
+  return { V, count: files.length };
+}
+
 async function checkHtml(page, html, cfg) {
   await page.setContent(html, { waitUntil: "domcontentloaded" });
   return page.evaluate(checkDocument, cfg);
@@ -389,11 +462,16 @@ async function main() {
   const V = [];
   let stageCount = 0;
   let showcaseSummary = "";
+  const stills = manifestedStills();
+  let stillCount = 0;
   try {
     const { context, page } = await newPage(browser);
+    const sc = await stillChecks(page, sets, common, deny);
+    V.push(...sc.V);
+    stillCount = sc.count;
     for (const f of files) {
       const slug = path.basename(f, ".html");
-      const res = await checkHtml(page, fs.readFileSync(f, "utf8"), cfgFor(slug, sets, common, deny));
+      const res = await checkHtml(page, fs.readFileSync(f, "utf8"), cfgFor(slug, sets, common, deny, stills));
       stageCount += res.stages.length;
       const route = `/${path.relative(OUT, f).replace(/\.html$/, "")}`;
       for (const v of res.violations) V.push({ page: route, ...v });
@@ -406,7 +484,7 @@ async function main() {
       const shown = await showcaseStages(browser);
       if (shown.cards === 0) throw new ConfigError("the built home page has no showcase card to open");
       for (const s of shown.docs) {
-        const res = await checkHtml(page, s.html, cfgFor(s.slug, sets, common, deny));
+        const res = await checkHtml(page, s.html, cfgFor(s.slug, sets, common, deny, stills));
         stageCount += res.stages.length;
         if (res.stages.length === 0) V.push({ page: `/ (${s.slug}, ${s.width}px)`, rule: "label", stage: null, detail: "the showcase window drew no stage" });
         for (const v of res.violations) V.push({ page: `/ (${s.slug}, ${s.width}px)`, ...v });
@@ -418,7 +496,7 @@ async function main() {
     await browser.close();
   }
   V.push(...sourceChecks(deny), ...siteChecks(deny));
-  report(V, `${files.length} pages${showcaseSummary}, ${stageCount} stages, ${deny.length} deny entries, ${sets.length} registry sets`);
+  report(V, `${files.length} pages${showcaseSummary}, ${stageCount} stages, ${stillCount} captured stills, ${deny.length} deny entries, ${sets.length} registry sets`);
   return V.length ? 1 : 0;
 }
 
@@ -508,6 +586,20 @@ const CASES = [
   { name: "fact stage without narration", html: FACT("Harlan Feed Co. reads every bill.", "", ""), expect: ["narration"] },
   { name: "fact stage with a dollar amount", html: FACT("Harlan Feed Co. saved $4,200 a month."), expect: ["dollar-outside"] },
   { name: "unregistered image asset", html: PAGE('<img src="/images/demos/unregistered.jpg" alt="a screen">'), expect: ["asset"] },
+  // Duffer's QR story: a demo stage (its own label, narration, amounts) nested in the Impact fact stage.
+  {
+    name: "demo stage nested in a fact stage",
+    html: FACT(`Harlan Feed Co. reads every bill.</p><div data-demo-stage="kit-qr"><span data-demo-label>Demonstration data</span><p data-demo-narration>This stage shows a deposit tied to an invoice, one step at a time, on invented data. Nothing on it is real. The data is a demonstration.</p><p>Paid $400 to Harlan Feed Co.</p></div><p>`),
+    expect: [],
+  },
+  {
+    name: "nested demo stage without its own label",
+    html: FACT(`Harlan Feed Co. reads every bill.</p><div data-demo-stage="kit-qr"><p data-demo-narration>This stage shows a deposit tied to an invoice, one step at a time, on invented data. Nothing on it is real. The data is a demonstration.</p><p>Paid.</p></div><p>`),
+    expect: ["label"],
+  },
+  // §7.2 #18: a captured still may sit in a stage only when it carries a words manifest.
+  { name: "still with a words manifest", html: PAGE('<img src="/images/showcase/duffer/ok.webp" alt="">'), stills: ["/images/showcase/duffer/ok.webp"], expect: [] },
+  { name: "still without a words manifest", html: PAGE('<img src="/images/showcase/duffer/bare.webp" alt="">'), expect: ["asset"] },
 ];
 
 async function runSelfTest() {
@@ -522,7 +614,7 @@ async function runSelfTest() {
     const { context, page } = await newPage(browser);
     for (const c of CASES) {
       const deny = (c.deny ?? []).map((term, i) => ({ line: i + 1, term, site: false }));
-      const cfg = cfgFor("_self", [SELF_SET], common, deny);
+      const cfg = cfgFor("_self", [SELF_SET], common, deny, c.stills ?? []);
       const { violations } = await checkHtml(page, c.html, cfg);
       const got = [...new Set(violations.map((v) => v.rule))].sort();
       say(JSON.stringify(got) === JSON.stringify([...c.expect].sort()), c.name, got);
@@ -570,8 +662,16 @@ async function runSelfTest() {
     path.join(clientDir, "planted.ts"),
     'const client = {\n  name: "SelfTestClientName",\n  closing: "Ask SelfTestStaffName for the files.",\n};\n',
   );
+  // §7.2 #18: three planted stills. ok = clean words; named = a deny-listed surname in its words
+  // (line 5 below); bare = no words file at all. Only named and bare may go red.
+  const stillDir = path.join(fsTmp, "images", "showcase", "duffer");
+  fs.mkdirSync(stillDir, { recursive: true });
+  for (const n of ["ok", "named", "bare"]) fs.writeFileSync(path.join(stillDir, `${n}.webp`), "RIFF0000WEBP");
+  const words = (lines) => JSON.stringify({ still: "x.webp", scope: "duffer-golf", lines });
+  fs.writeFileSync(path.join(stillDir, "ok.words.json"), words(["Sumac Hollow Golf Club", "Scans today", "14"]));
+  fs.writeFileSync(path.join(stillDir, "named.words.json"), words(["Sumac Hollow Golf Club", "Contact: Hal Selfteststillsurname"]));
   const fsDeny = path.join(fsTmp, "deny.txt");
-  fs.writeFileSync(fsDeny, "SelfTestSourceTerm\nsite:SelfTestSiteTerm\nSelfTestClientName\nSelfTestStaffName\n");
+  fs.writeFileSync(fsDeny, "SelfTestSourceTerm\nsite:SelfTestSiteTerm\nSelfTestClientName\nSelfTestStaffName\nSelfTestStillSurname\n");
   const fsRun = spawnSync(process.execPath, [SELF], {
     env: { ...process.env, PS_OUT_DIR: fsTmp, PS_DEMO_DENYLIST: fsDeny, PS_SOURCE_ROOTS: srcTmp },
     encoding: "utf8",
@@ -584,6 +684,9 @@ async function runSelfTest() {
   say(fired("deny"), "  source-file deny rule fired (sourceChecks)");
   say(/deny-list line 4 \(\S+\) in \S*planted\.ts/.test(fsOut), "  a deny-listed name in a client file's copy is red");
   say(!/deny-list line 3 \(\S+\) in \S*planted\.ts/.test(fsOut), "  the client file's own name is not");
+  say(/\[still-deny\] \/images\/showcase\/duffer\/named\.webp/.test(fsOut), "  a deny-listed surname in a still's words manifest is red");
+  say(/\[still-manifest\] .*\/images\/showcase\/duffer\/bare\.webp/.test(fsOut), "  a still with no words manifest is red");
+  say(!/\/images\/showcase\/duffer\/ok\.webp/.test(fsOut), "  a still with clean words is not");
   fs.rmSync(fsTmp, { recursive: true, force: true });
 
   console.log(bad ? `\nFAIL  self-test: ${bad} case(s) did not behave` : "PASS  self-test: every planted string went red, the clean control stayed green");

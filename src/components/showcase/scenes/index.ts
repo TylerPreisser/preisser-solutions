@@ -11,6 +11,9 @@ import { HgSwdScene } from "./HgSwdScene";
 import { ComingScene } from "./ComingScene";
 import { FarmbooksBillScene } from "./FarmbooksBillScene";
 import { NwksBedsScene } from "./NwksBedsScene";
+import { stillsScene } from "./StillsWalkthrough";
+import { DUFFER_CC } from "@/data/showcase/scenes/duffer-cc";
+import { NWKS_ADMIN } from "@/data/showcase/scenes/nwks-admin";
 import { swdCam, swdCues, swdDeskCam } from "@/data/demos/scenes/hg-oil";
 import { COI_TOTAL_MS } from "@/data/showcase/scenes/hg-coi";
 import { fbCam, fbCues, fbHoldMs } from "@/data/demos/scenes/farmbooks";
@@ -35,8 +38,8 @@ export const FLUID_SCENES: Record<FluidSceneId, ComponentType<FluidSceneProps>> 
   "hg-coi": HgCoiScene,
   "hg-vendor": ComingScene,
   "farmbooks-bills": ComingScene,
-  "duffer-cc": ComingScene,
-  "nwks-admin": ComingScene,
+  "duffer-cc": stillsScene(DUFFER_CC, "duffer-cc"),
+  "nwks-admin": stillsScene(NWKS_ADMIN, "nwks-admin"),
 };
 export const isFluid = (id: SceneId): id is FluidSceneId => id in FLUID_SCENES;
 
@@ -58,8 +61,8 @@ export const SCENE_MS: Record<SceneId, number> = {
   // Spec lengths (design-spec-r2 §2, §6.1-6.3); the builder owns the final value.
   "hg-vendor": 13000,
   "farmbooks-bills": 32000,
-  "duffer-cc": 34000,
-  "nwks-admin": 34000,
+  "duffer-cc": DUFFER_CC.totalMs,
+  "nwks-admin": NWKS_ADMIN.totalMs,
 };
 
 /** The phone picture is 300 wide; its height is per scene (the COI cards need more room). */

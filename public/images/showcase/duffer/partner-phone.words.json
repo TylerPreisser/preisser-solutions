@@ -1,0 +1,34 @@
+{
+  "still": "partner-phone.webp",
+  "scope": "duffer-golf",
+  "source": "Duffer Golf Command Center, panel bundle index-B9QL8lCQ.js, rendered on its test fixtures with invented names (scripts/capture-duffer-cc.mjs)",
+  "captured": "2026-11-05",
+  "rect": {
+    "x": 0,
+    "y": 0,
+    "w": 390,
+    "h": 467
+  },
+  "lines": [
+    "Sign out",
+    "Partners",
+    "Sumac Hollow Golf Club",
+    "Active",
+    "Golf course",
+    "·",
+    "Tull Prairie, KS",
+    "· joined",
+    "Sep 5, 2026",
+    "signed up on the form",
+    "Contact",
+    "Hal Wendorf",
+    "Head pro",
+    "hal.wendorf@sumachollow.example",
+    "(785) 555-0110",
+    "1200 Clubhouse Road",
+    "Tull Prairie, KS 67999",
+    "https://sumachollow.example",
+    "Notes:",
+    "Prefers calls after 3pm."
+  ]
+}
