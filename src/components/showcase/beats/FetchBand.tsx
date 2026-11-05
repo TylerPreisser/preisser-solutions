@@ -38,7 +38,7 @@ export interface FetchPlan {
 /** Native geometry, in the picture's own px (desk: 960-1220 wide; phone: 320). */
 const GEO = {
   desk: { band: 270, card: 84, gap: 168, top: 34, stemTop: 146, bus: 236, bot: 72 as const, reach: 40, busL: 40, start: 58, fold: 145, nudge: 70 },
-  phone: { band: 176, card: 58, gap: 76, top: 20, stemTop: 98, bus: 150, bot: 48 as const, reach: 27, busL: 10, start: 26, fold: 92, nudge: 4 },
+  phone: { band: 182, card: 58, gap: 76, top: 20, stemTop: 100, bus: 156, bot: 48 as const, reach: 27, busL: 10, start: 26, fold: 86, nudge: 4 },
 };
 
 export const bandHeight = (phone: boolean, folded: boolean) => {
@@ -99,7 +99,8 @@ export function FetchBand({
 }) {
   const g = phone ? GEO.phone : GEO.desk;
   const n = sources.length;
-  const x0 = (width - (n - 1) * g.gap - g.card) / 2 + g.nudge;
+  // The desk group sits a little right of centre (the status line is on the left); a stage under 900 wide centres it.
+  const x0 = (width - (n - 1) * g.gap - g.card) / 2 + (width < 900 ? 0 : g.nudge);
   const stems = sources.map((_, i) => x0 + i * g.gap + g.card / 2);
   const stance = stems.map((x) => x - g.reach);
   const busR = stems[n - 1];
@@ -141,14 +142,15 @@ export function FetchBand({
     status = (
       <>
         <b>Read {n} sources</b>
-        {` · ${total.toLocaleString("en-US")} rows · ${phone ? "all checked" : "every figure checked"}`}
+        {` · ${total.toLocaleString("en-US")} rows${phone ? "" : " · every figure checked"}`}
       </>
     );
   } else if (t >= plan.done[n - 1]) {
     status = <Lead text={steps.find((s) => s.phase === 4)?.label ?? "Checking every figure"} />;
-  } else if (t >= plan.go) {
-    const next = sources.findIndex((_, i) => t < plan.done[i]);
-    status = <Lead text={steps[sources[next].step]?.label ?? sources[next].label} />;
+  } else if (t >= plan.arrive[0]) {
+    // The line names the source the robot is AT (it changes on arrival, never ahead of him).
+    const at = sources.reduce((k, _, i) => (t >= plan.arrive[i] ? i : k), 0);
+    status = <Lead text={steps[sources[at].step]?.label ?? sources[at].label} />;
   } else {
     status = <Lead text={steps[0]?.label ?? "Reading your question"} />;
   }
