@@ -153,6 +153,10 @@ interface Geo {
   pw: number;
   ph: number;
   tight: boolean;
+  /** Phone stage under 360 wide (a 320 or 360 phone): KPIs stack, the read card tightens. */
+  narrow: boolean;
+  /** Phone stage under 460 tall (320x568 to 393x659): the summary goes compact. */
+  short: boolean;
 }
 
 function layout(phone: boolean, W: number, H: number): Geo {
@@ -185,6 +189,8 @@ function layout(phone: boolean, W: number, H: number): Geo {
       pw,
       ph,
       tight: h < 640,
+      narrow: false,
+      short: false,
     };
   }
   // Phone: the bill on top, centred, leaving the panel under it ~370 px for the read card and four lines.
@@ -206,6 +212,8 @@ function layout(phone: boolean, W: number, H: number): Geo {
     pw: 0,
     ph: 0,
     tight: h < 520,
+    narrow: w < 360,
+    short: h < 460,
   };
 }
 
@@ -263,6 +271,26 @@ export function FarmbooksBillsScene({ variant, active, reduced, onCaption, onHol
   ];
   const region = candidates.filter((c) => c.on).pop() ?? null;
 
+  // What just changed, so a short stage can bring it into view (critic r2 B1: on a 320x568 phone the Split
+  // panel fell below the step bar). Only the panel scrolls, never the page.
+  const linesOn = LINES.filter((_, k) => at("reads", RD.line0 + k * RD.lineEvery)).length;
+  const sortedOn = LINES.filter((_, k) => at("sorts", CUES.sorts.first + k * CUES.sorts.every)).length;
+  const fieldsOn = matched.filter((_, j) => at("splits", CUES.splits.field0 + j * CUES.splits.fieldEvery)).length;
+  let sideFocus: string | null = null;
+  if (i === IDX.reads) sideFocus = linesOn ? `line${linesOn - 1}` : "read";
+  else if (i === IDX.sorts) sideFocus = `line${Math.max(0, sortedOn - 1)}`;
+  else if (i === IDX.splits) sideFocus = at("splits", CUES.splits.flag) ? "split" : `line${matched[Math.max(0, fieldsOn - 1)].k}`;
+  else if (i === IDX.books && !filed) sideFocus = "verdict";
+  const C2 = CUES.sums;
+  // A short phone cannot show the whole summary: it walks the cards as they fill, then rests on the top
+  // (Total spent), which is also the frame a step jump or reduced motion shows.
+  const glanceFocus = !sums ? null : t >= C2.rest ? "top" : t >= C2.acres ? "acres" : t >= C2.cats ? "cats" : "kpis";
+  const smooth = playing && !reduced;
+  const sideRef = useRef<HTMLElement>(null);
+  const glanceRef = useRef<HTMLElement>(null);
+  useFollow(sideRef, i === 0 ? "top" : sideFocus, smooth, box.h, box.w);
+  useFollow(glanceRef, glanceFocus, smooth, box.h, box.w);
+
   const vars = {
     "--fbb-bx": `${g.bx}px`,
     "--fbb-by": `${g.by}px`,
@@ -277,7 +305,7 @@ export function FarmbooksBillsScene({ variant, active, reduced, onCaption, onHol
     "--fbb-ph": `${g.ph}px`,
   } as CSSProperties;
 
-  const cls = ["fbb", `fbb--${variant}`, reduced ? "is-still" : "", g.tight ? "is-tight" : "", playing ? "is-playing" : ""].filter(Boolean).join(" ");
+  const cls = ["fbb", `fbb--${variant}`, reduced ? "is-still" : "", g.tight ? "is-tight" : "", g.narrow ? "is-narrow" : "", g.short ? "is-short" : "", playing ? "is-playing" : ""].filter(Boolean).join(" ");
 
   return (
     <div className={cls} data-scene="farmbooks-bills" data-step={step.id} style={vars}>
@@ -327,14 +355,18 @@ export function FarmbooksBillsScene({ variant, active, reduced, onCaption, onHol
             <span>
               <b>{BILL.vendor}</b>
               <span>
-                Invoice {BILL.invoice} · {BILL.date} · {money(BILL.totalCents)}
+                #{BILL.invoice} · {BILL.date} · {money(BILL.totalCents)}
               </span>
             </span>
           </div>
         ) : null}
 
         {/* Reads, Sorts, Splits, Books: the app's panel for this bill. */}
-        <section className={`fbb-side${at("reads") && docOn ? " is-on" : ""}${i === IDX.reads ? " is-reading" : ""}`} aria-hidden={!(at("reads") && docOn) || undefined}>
+        <section
+          ref={sideRef}
+          className={`fbb-side${at("reads") && docOn ? " is-on" : ""}${i === IDX.reads ? " is-reading" : ""}`}
+          aria-hidden={!(at("reads") && docOn) || undefined}
+        >
           <p className="fbb-kicker">{i >= IDX.splits ? "Needs review" : "The bill"}</p>
           {phone ? null : (
             <>
@@ -344,7 +376,7 @@ export function FarmbooksBillsScene({ variant, active, reduced, onCaption, onHol
               </p>
             </>
           )}
-          <div className={`fbb-read${i === IDX.reads ? " is-open" : ""}`}>
+          <div className={`fbb-read${i === IDX.reads ? " is-open" : ""}`} data-fbb-focus="read">
             <dl className="fbb-read__grid">
               {READ_FIELDS.map((f, k) => (
                 <div key={f.k}>
@@ -360,7 +392,7 @@ export function FarmbooksBillsScene({ variant, active, reduced, onCaption, onHol
               const fieldAt = CUES.splits.field0 + j * CUES.splits.fieldEvery;
               const S = CUES.splits;
               return (
-                <li key={l.region} className={`fbb-line fbb-pop${at("reads", RD.line0 + k * RD.lineEvery) ? " is-on" : ""}`}>
+                <li key={l.region} data-fbb-focus={l.split && at("splits", S.flag) ? "split" : `line${k}`} className={`fbb-line fbb-pop${at("reads", RD.line0 + k * RD.lineEvery) ? " is-on" : ""}`}>
                   <span className="fbb-line__printed">{l.printed}</span>
                   <span className="fbb-line__plain">{l.plain}</span>
                   <span className="fbb-line__amt">{l.amount}</span>
@@ -403,7 +435,7 @@ export function FarmbooksBillsScene({ variant, active, reduced, onCaption, onHol
               );
             })}
           </ol>
-          <p className={`fbb-verdict fbb-pop${at("books", CUES.books.check) ? " is-on" : ""}`}>
+          <p data-fbb-focus="verdict" className={`fbb-verdict fbb-pop${at("books", CUES.books.check) ? " is-on" : ""}`}>
             <Tick />
             <span>
               Lines add up to the printed total, <b>{money(BILL.totalCents)}</b>
@@ -422,7 +454,7 @@ export function FarmbooksBillsScene({ variant, active, reduced, onCaption, onHol
           <ul className="fbb-bills">
             <BillRow
               first
-              thumbOn={at("books", CUES.books.booked) || reduced}
+              thumbOn={at("books", CUES.books.booked) || reduced || phone}
               vendor={BILL.vendor}
               sub={`Invoice ${BILL.invoice} · ${BILL.date.replace(/, \d{4}$/, "")} · ${LINES.length} lines`}
               amount={money(BILL.totalCents)}
@@ -435,9 +467,11 @@ export function FarmbooksBillsScene({ variant, active, reduced, onCaption, onHol
         </section>
 
         {/* Sums up: the Exports "At a Glance". */}
-        <Glance on={sums} counting={i === IDX.sums && playing && !reduced} t={i === IDX.sums ? t : endOf(IDX.sums)} phone={phone} />
+        <Glance ref={glanceRef} on={sums} counting={i === IDX.sums && playing && !reduced} t={i === IDX.sums ? t : endOf(IDX.sums)} phone={phone} />
 
-        <Flight stage={stageRef} go={i === IDX.books && t >= CUES.books.file && t < CUES.books.booked + 200 && !reduced} />
+        {/* Desk only: on a phone the bill has already folded away, so the thumbnail would fly from nowhere
+            across the list's heading (critic r2 B3); there the row's own thumbnail fades in with the list. */}
+        {phone ? null : <Flight stage={stageRef} go={i === IDX.books && t >= CUES.books.fly && t < CUES.books.booked + 200 && !reduced} />}
       </div>
 
       <div className="fbb-ctl" role="group" aria-label="Bills walkthrough controls">
@@ -486,6 +520,65 @@ export function FarmbooksBillsScene({ variant, active, reduced, onCaption, onHol
       </div>
     </div>
   );
+}
+
+/**
+ * Keeps `key`'s element (`[data-fbb-focus=key]`) in view inside a panel that is shorter than its content
+ * (short phones, short windows): scrolls the PANEL only, by the least amount, never the page. "top" resets it.
+ * Re-measures once after the Split panel's 280 ms opening.
+ */
+function useFollow(ref: RefObject<HTMLElement | null>, key: string | null, smooth: boolean, h: number, w: number) {
+  useLayoutEffect(() => {
+    const box = ref.current;
+    if (!box || !key) return;
+    const run = (soft: boolean) => {
+      let next = 0;
+      if (key !== "top") {
+        const el = box.querySelector(`[data-fbb-focus="${key}"]`);
+        if (!el) return;
+        const b = box.getBoundingClientRect();
+        const r = el.getBoundingClientRect();
+        const top = r.top - b.top + box.scrollTop;
+        const bottom = r.bottom - b.top + box.scrollTop;
+        next = box.scrollTop;
+        if (bottom > next + box.clientHeight - 6) next = bottom - box.clientHeight + 6;
+        if (top < next + 4) next = Math.max(0, top - 4);
+        // Rest on a row boundary so no line is sliced by the panel's top edge: the first row top at or
+        // past the needed offset that still shows the whole target.
+        // Only boundaries the panel can actually reach count, or the clamp below would undo the snap.
+        const max = box.scrollHeight - box.clientHeight;
+        // A boundary sits a little above a row, but never above the end of whatever comes before it, so the
+        // previous element (the kicker over the read card) is never left as a sliver at the top edge.
+        const edgeOf = (e: Element) => {
+          const at = e.getBoundingClientRect().top - b.top + box.scrollTop;
+          const prev = e.previousElementSibling;
+          const floor = prev ? prev.getBoundingClientRect().bottom - b.top + box.scrollTop : -Infinity;
+          return Math.max(at - 4, floor);
+        };
+        const edges = [0, ...[...box.querySelectorAll("[data-fbb-focus]")].map(edgeOf)].filter(
+          (e) => e >= 0 && e <= max + 0.5,
+        );
+        const need = next;
+        const after = edges.filter((e) => e >= need - 0.5 && e <= top - 3.5).sort((x, y) => x - y)[0];
+        const before = edges.filter((e) => e <= need + 0.5 && e >= need - 48).sort((x, y) => y - x)[0];
+        next = after ?? before ?? need;
+        next = Math.max(0, Math.min(next, max));
+      }
+      if (Math.abs(next - box.scrollTop) > 1) box.scrollTo({ top: next, behavior: soft ? "smooth" : "auto" });
+    };
+    const more = () => box.classList.toggle("is-more", box.scrollTop + box.clientHeight < box.scrollHeight - 2);
+    run(smooth);
+    more();
+    const t = window.setTimeout(() => {
+      run(smooth);
+      more();
+    }, 340);
+    box.addEventListener("scroll", more, { passive: true });
+    return () => {
+      window.clearTimeout(t);
+      box.removeEventListener("scroll", more);
+    };
+  }, [ref, key, smooth, h, w]);
 }
 
 /* ── Pieces ────────────────────────────────────────────────────────────── */
@@ -600,14 +693,15 @@ function Flight({ stage, go }: { stage: RefObject<HTMLDivElement | null>; go: bo
 }
 
 /** The Exports screen's "At a Glance" (FarmBooks workbook_template.py, the Excel tab and the PDF). */
-function Glance({ on, counting, t, phone }: { on: boolean; counting: boolean; t: number; phone: boolean }) {
+function Glance({ ref, on, counting, t, phone }: { ref: RefObject<HTMLElement | null>; on: boolean; counting: boolean; t: number; phone: boolean }) {
   const C = CUES.sums;
   const reached = (ms: number) => on && t >= ms;
   const maxCat = GLANCE.categories[0].cents;
   const maxVen = GLANCE.vendors[0].cents;
   const maxAcre = GLANCE.fields[0].perAcreCents;
   return (
-    <section className={`fbb-glance${on ? " is-on" : ""}`} aria-hidden={!on || undefined}>
+    <section ref={ref} className={`fbb-glance${on ? " is-on" : ""}`} aria-hidden={!on || undefined}>
+      <div className="fbb-glance__in">
       <header className="fbb-glance__head">
         <span>
           <p className="fbb-kicker">Exports</p>
@@ -627,7 +721,7 @@ function Glance({ on, counting, t, phone }: { on: boolean; counting: boolean; t:
           </span>
         </span>
       </header>
-      <div className="fbb-kpis">
+      <div className="fbb-kpis" data-fbb-focus="kpis">
         <div className={`fbb-kpi fbb-pop${reached(C.kpi) ? " is-on" : ""}`}>
           <span className="fbb-kpi__k">Total spent</span>
           <span className="fbb-kpi__v">
@@ -644,7 +738,7 @@ function Glance({ on, counting, t, phone }: { on: boolean; counting: boolean; t:
         </div>
       </div>
       <div className="fbb-cards">
-        <Card title="Where the money went">
+        <Card focus="cats" title="Where the money went">
           {GLANCE.categories.map((c, k) => (
             <Bar key={c.name} label={c.name} value={money(c.cents)} frac={c.cents / maxCat} on={reached(C.cats + k * C.catEvery)} delay={0} />
           ))}
@@ -656,7 +750,7 @@ function Glance({ on, counting, t, phone }: { on: boolean; counting: boolean; t:
             ))}
           </Card>
         )}
-        <Card title="Cost per acre, highest first">
+        <Card focus="acres" title="Cost per acre, highest first">
           {GLANCE.fields.map((f, k) => (
             <Bar
               key={f.name}
@@ -671,13 +765,14 @@ function Glance({ on, counting, t, phone }: { on: boolean; counting: boolean; t:
           ))}
         </Card>
       </div>
+      </div>
     </section>
   );
 }
 
-function Card({ title, children }: { title: string; children: ReactNode }) {
+function Card({ title, focus, children }: { title: string; focus?: string; children: ReactNode }) {
   return (
-    <div className="fbb-card">
+    <div className="fbb-card" data-fbb-focus={focus}>
       <p className="fbb-card__t">{title}</p>
       <div className="fbb-card__rows">{children}</div>
     </div>

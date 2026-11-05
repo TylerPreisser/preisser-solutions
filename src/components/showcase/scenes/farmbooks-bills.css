@@ -119,6 +119,28 @@
     opacity 240ms ease,
     visibility 0s;
 }
+/* Panels hand over in turn, never both half-visible (critic r2 B3): the old one fades out in 200 ms,
+   then the new one fades in. The bill (.fbb-doc) is not a panel and changes at once. */
+.fbb-phone,
+.fbb-add,
+.fbb-side,
+.fbb-strip,
+.fbb-booked,
+.fbb-glance {
+  transition:
+    opacity 200ms ease,
+    visibility 0s linear 200ms;
+}
+.fbb-phone.is-on,
+.fbb-add.is-on,
+.fbb-side.is-on,
+.fbb-strip.is-on,
+.fbb-booked.is-on,
+.fbb-glance.is-on {
+  transition:
+    opacity 240ms ease 200ms,
+    visibility 0s linear 200ms;
+}
 
 /* A value, chip or row landing. */
 .fbb-pop {
@@ -203,10 +225,9 @@
   }
 }
 .fbb-box {
+  /* Exactly the region's rect, border inside it, so it never runs into the next row (critic r2 B2). */
   position: absolute;
-  margin: -3px;
-  padding: 3px;
-  box-sizing: content-box;
+  box-sizing: border-box;
   border: 2px solid var(--fbb-gold);
   background: rgba(201, 151, 31, 0.12);
   border-radius: 4px;
@@ -576,6 +597,13 @@
   top: var(--fbb-sy);
   width: var(--fbb-sw);
   bottom: 0;
+  padding-bottom: 8px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.fbb-side::-webkit-scrollbar,
+.fbb-glance::-webkit-scrollbar {
+  display: none;
 }
 .fbb-side .fbb-sub {
   min-height: 20px;
@@ -825,6 +853,9 @@
   border-radius: 2px;
   box-shadow: 0 0 0 1px var(--fbb-line);
 }
+.fbb-strip > span {
+  min-width: 0;
+}
 .fbb-strip b {
   display: block;
   font-size: 14px;
@@ -835,6 +866,12 @@
   font-size: 12.5px;
   line-height: 16px;
   color: var(--fbb-ink-2);
+}
+.fbb-strip b,
+.fbb-strip span span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ── Books: the bills list ─────────────────────────────────── */
@@ -963,7 +1000,14 @@
   inset: 16px 48px 8px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+/* Auto margins centre it when it fits and never clip its top when it does not. */
+.fbb-glance__in {
+  margin-block: auto;
+  display: flex;
+  flex-direction: column;
   gap: 18px;
 }
 .fbb-glance__head {
@@ -1197,26 +1241,28 @@
 }
 
 /* ── Desk, a short window ──────────────────────────────────── */
-.fbb.is-tight .fbb-title {
+.fbb--desk.is-tight .fbb-title {
   font-size: 22px;
   line-height: 28px;
 }
-.fbb.is-tight .fbb-line {
+.fbb--desk.is-tight .fbb-line {
   padding: 6px 0 7px;
 }
-.fbb.is-tight .fbb-line__chips {
+.fbb--desk.is-tight .fbb-line__chips {
   margin-top: 4px;
 }
-.fbb.is-tight .fbb-lines {
+.fbb--desk.is-tight .fbb-lines {
   margin-top: 10px;
 }
-.fbb.is-tight .fbb-kpi__v {
+.fbb--desk.is-tight .fbb-kpi__v {
   font-size: 30px;
   line-height: 36px;
 }
-.fbb.is-tight .fbb-glance {
-  gap: 12px;
+.fbb--desk.is-tight .fbb-glance {
   inset: 16px 40px 6px;
+}
+.fbb--desk.is-tight .fbb-glance__in {
+  gap: 12px;
 }
 
 /* ── Phone ─────────────────────────────────────────────────── */
@@ -1299,7 +1345,7 @@
   font-size: 14.5px;
   line-height: 18px;
 }
-.fbb--phone .fbb-side.is-reading .fbb-line__chips {
+.fbb-side.is-reading .fbb-line__chips {
   display: none;
 }
 .fbb--phone .fbb-line__chips {
@@ -1395,6 +1441,8 @@
 }
 .fbb--phone .fbb-glance {
   inset: 10px 12px 4px;
+}
+.fbb--phone .fbb-glance__in {
   gap: 8px;
 }
 .fbb--phone .fbb-glance__head {
@@ -1434,7 +1482,7 @@
   line-height: 14px;
 }
 .fbb--phone .fbb-cards {
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 8px;
 }
 .fbb--phone .fbb-card {
@@ -1506,6 +1554,107 @@
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* ── A narrow phone (stage under 360 wide) ─────────────────── */
+.fbb.is-narrow .fbb-kpis {
+  grid-template-columns: 1fr;
+}
+.fbb.is-narrow .fbb-kpi {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 10px;
+}
+.fbb.is-narrow .fbb-kpi__note {
+  grid-column: 1 / -1;
+}
+.fbb.is-narrow .fbb-read__grid > div {
+  padding: 5px 8px 6px;
+}
+.fbb.is-narrow .fbb-read__grid dd {
+  font-size: 12.5px;
+}
+
+/* ── A short phone stage (under 460 tall) ──────────────────── */
+/* More below: the panel's last 22 px fade, so a row at the edge reads as "more", never as a slice. */
+.fbb-side.is-more,
+.fbb-glance.is-more {
+  -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 22px), transparent);
+  mask-image: linear-gradient(180deg, #000 calc(100% - 22px), transparent);
+}
+.fbb.is-short .fbb-add .fbb-kicker,
+.fbb.is-short .fbb-drop span span {
+  display: none;
+}
+.fbb.is-short .fbb-drop {
+  margin-top: 0;
+  padding: 9px 12px;
+}
+.fbb.is-short .fbb-glance__head .fbb-kicker,
+.fbb.is-short .fbb-glance__files,
+.fbb.is-short .fbb-kpi__note {
+  display: none;
+}
+.fbb.is-short .fbb-glance__head .fbb-title {
+  margin-top: 0;
+  font-size: 18px;
+  line-height: 22px;
+}
+.fbb.is-short .fbb-glance__in {
+  gap: 6px;
+}
+.fbb.is-short .fbb-kpis,
+.fbb.is-short.is-narrow .fbb-kpis {
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: 6px;
+}
+.fbb.is-short .fbb-kpi,
+.fbb.is-short.is-narrow .fbb-kpi {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 6px 9px;
+}
+.fbb.is-short .fbb-kpi__k {
+  font-size: 10.5px;
+  line-height: 13px;
+}
+.fbb.is-short .fbb-kpi__v {
+  font-size: 18px;
+  line-height: 22px;
+}
+.fbb.is-short .fbb-card {
+  padding: 6px 10px 8px;
+}
+.fbb.is-short .fbb-card__t {
+  margin-bottom: 3px;
+  font-size: 12.5px;
+  line-height: 16px;
+}
+/* One line per bar: label, bar, value; the bars share one column so they line up. */
+.fbb.is-short .fbb-card__rows {
+  grid-template-columns: max-content minmax(24px, 1fr) max-content;
+  grid-auto-flow: row dense;
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 3px;
+}
+.fbb.is-short .fbb-bar {
+  display: contents;
+}
+.fbb.is-short .fbb-bar__k {
+  grid-column: 1;
+}
+.fbb.is-short .fbb-bar__track {
+  grid-column: 2;
+}
+.fbb.is-short .fbb-bar__v {
+  grid-column: 3;
+  text-align: right;
+}
+.fbb.is-short .fbb-bar__k,
+.fbb.is-short .fbb-bar__v {
+  font-size: 12px;
+  line-height: 16px;
 }
 
 /* ── Reduced motion: end states, short fades only ─────────── */
