@@ -1,0 +1,303 @@
+/* ============================================================
+   StillsWalkthrough (design-spec-r2 §6.2, §6.3): captured stills of a real product, clicked
+   through by a drawn cursor. Motion budget (lead's iOS rule): the only animated things are small,
+   the cursor (22 px), its click ring, one highlight bar and one initials pin; the stills only
+   crossfade (opacity, 280 ms; 400 ms for the cabins filling). Nothing large ever transforms.
+     cursor travel   520 ms  --sc-ease-move   to the next target
+     click ring      360 ms  ease-out         scale .6 -> 1.4, opacity 1 -> 0, after the travel
+     feed highlight 1600 ms  --sc-ease-grow   3 px accent bar + tint slides in, holds, fades
+     pin drag        900 ms  --sc-ease-move   lifts 1.08 with a shadow, travels, drops
+   Framing: each cue may frame part of a still (zoomed so it shows whole). A new framing is a new
+   view and crossfades like a new still; the framing itself never animates.
+   Reduced motion: no travel, no ring, no overlay, stills swap without a fade.
+   ============================================================ */
+
+.stw {
+  --stw-ground: #eef1f5;
+  --stw-ground-2: #f7f8fb;
+  --stw-ink: #0f172a;
+  --stw-ink-2: #475569;
+  --stw-dot: #94a3b8;
+  --stw-shadow: 0 1px 2px rgba(10, 22, 40, 0.08), 0 14px 34px -18px rgba(10, 22, 40, 0.45);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  background: linear-gradient(180deg, var(--stw-ground-2), var(--stw-ground));
+  color: var(--stw-ink);
+  font-family: var(--pt-body, Inter, system-ui, -apple-system, "Segoe UI", sans-serif);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+[data-theme="dark"] .stw {
+  --stw-ground: #0a1628;
+  --stw-ground-2: #0f1f38;
+  --stw-ink: #f2f6fb;
+  --stw-ink-2: #a9b6c8;
+  --stw-dot: #5b6b82;
+  --stw-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 18px 40px -18px rgba(0, 0, 0, 0.8);
+}
+.stw *,
+.stw *::before,
+.stw *::after {
+  box-sizing: border-box;
+}
+
+/* ── The stage: the screen, fitted ───────────────────────── */
+.stw-stage {
+  position: relative;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  padding: 14px 18px 4px;
+  container-type: size;
+}
+.stw-screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: var(--stw-shadow);
+}
+/* The screen fills the stage; each view is framed inside it (JS sets size + transform once laid out). */
+.stw-screen--framed {
+  width: 100%;
+  height: 100%;
+}
+.stw--desk .stw-stage {
+  place-items: stretch;
+}
+/* Phone: the product's narrow crop at the sheet's width; a taller one is clipped with a fade. */
+.stw--phone .stw-stage {
+  place-items: start stretch;
+  padding: 10px 12px 0;
+}
+.stw--phone .stw-screen:not(.stw-screen--framed) {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  box-shadow: none;
+  -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 24px), transparent);
+  mask-image: linear-gradient(180deg, #000 calc(100% - 24px), transparent);
+}
+
+.stw--phone .stw-stage:has(.stw-screen--framed) {
+  padding-bottom: 6px;
+}
+.stw-shot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  transform-origin: 0 0;
+  opacity: 0;
+  transition: opacity var(--stw-fade, 280ms) linear;
+}
+.stw-shot[data-on] {
+  opacity: 1;
+}
+.stw-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.stw--phone .stw-screen:not(.stw-screen--framed) .stw-shot img {
+  border-radius: 10px;
+}
+
+/* ── The drawn layer: cursor and overlays, the size of the shown still ── */
+.stw-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  pointer-events: none;
+  container-type: inline-size;
+  transform-origin: 0 0;
+}
+.stw-cursor {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  /* The arrow's tip (3, 2) sits on the target point. */
+  margin: -2px 0 0 -3px;
+  transition:
+    left 520ms var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1)),
+    top 520ms var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1));
+  filter: drop-shadow(0 1px 1.5px rgba(10, 22, 40, 0.35));
+}
+.stw-cursor svg {
+  display: block;
+}
+.stw-ring {
+  position: absolute;
+  left: -12px;
+  top: -13px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--pt-accent, #0c6fc9);
+  opacity: 0;
+  animation: stw-ring 360ms ease-out 540ms both;
+}
+@keyframes stw-ring {
+  from {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* A new row in the live feed: a 3 px accent bar and a tint slide in, hold, and fade. */
+.stw-hl {
+  position: absolute;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--pt-accent, #27753a) 13%, transparent);
+  box-shadow: inset 3px 0 0 var(--pt-accent, #27753a);
+  animation: stw-hl 1600ms var(--sc-ease-grow, cubic-bezier(0.2, 0.9, 0.25, 1)) both;
+}
+@keyframes stw-hl {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  18% {
+    opacity: 1;
+    transform: none;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* One man dragged to another cabin: his pin, lifted, with the cursor holding it. */
+.stw-bed {
+  position: absolute;
+  border-radius: 3px;
+}
+.stw-pin {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid;
+  /* The pin's own type size on a 1440 px wide screen, scaled with the still. */
+  font-size: 0.6cqw;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition:
+    left 900ms var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1)),
+    top 900ms var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1));
+}
+.stw-pin[data-go] {
+  animation: stw-lift 900ms linear both;
+}
+@keyframes stw-lift {
+  0%,
+  100% {
+    transform: none;
+    box-shadow: none;
+  }
+  15%,
+  85% {
+    transform: scale(1.08);
+    box-shadow: 0 6px 10px -4px rgba(10, 22, 40, 0.45);
+  }
+}
+.stw-cursor--drag {
+  transition:
+    left 900ms var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1)),
+    top 900ms var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1));
+}
+
+/* ── Steps: dots, the step's name, pause ─────────────────── */
+.stw-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 2px 12px 6px;
+}
+.stw-dots {
+  display: flex;
+  align-items: center;
+}
+.stw-dot,
+.stw-pause {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--stw-ink-2);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.stw-dot span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--stw-dot);
+  transition:
+    width 240ms var(--sc-ease-move, ease),
+    background-color 240ms linear;
+}
+.stw-dot[aria-current] span {
+  width: 22px;
+  background: var(--pt-accent, #0c6fc9);
+}
+.stw-step {
+  min-width: 7.5em;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  color: var(--stw-ink);
+}
+.stw-pause svg {
+  width: 16px;
+  height: 16px;
+}
+.stw-dot:focus-visible,
+.stw-pause:focus-visible {
+  outline: 2px solid var(--pt-accent, #0c6fc9);
+  outline-offset: 3px;
+}
+/* 44 px targets on the phone sheet. */
+.stw--phone .stw-dot,
+.stw--phone .stw-pause {
+  width: 44px;
+  height: 44px;
+}
+/* Six 44 px dots and a pause fit the 366 px sheet only without the name; the caption slot carries it. */
+.stw--phone .stw-step {
+  display: none;
+}
+
+.stw.is-still *,
+.stw.is-still *::before,
+.stw.is-still *::after {
+  transition: none !important;
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stw *,
+  .stw *::before,
+  .stw *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

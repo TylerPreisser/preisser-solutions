@@ -8,11 +8,13 @@ import type { ComponentType } from "react";
 import type { SceneProps } from "./kit";
 import { HgCoiScene, type FluidSceneProps } from "./HgCoiScene";
 import { HgSwdScene } from "./HgSwdScene";
-import { ComingScene } from "./ComingScene";
 import { HgVendorScene } from "./HgVendorScene";
 import { FarmbooksBillScene } from "./FarmbooksBillScene";
 import { NwksBedsScene } from "./NwksBedsScene";
 import { FarmbooksBillsScene } from "./FarmbooksBillsScene";
+import { stillsScene } from "./StillsWalkthrough";
+import { DUFFER_CC } from "@/data/showcase/scenes/duffer-cc";
+import { NWKS_ADMIN } from "@/data/showcase/scenes/nwks-admin";
 import { swdCam, swdCues, swdDeskCam } from "@/data/demos/scenes/hg-oil";
 import { COI_TOTAL_MS } from "@/data/showcase/scenes/hg-coi";
 import { VENDOR_TOTAL_MS } from "@/data/showcase/scenes/hg-vendor";
@@ -21,7 +23,7 @@ import { BILLS_TOTAL_MS } from "@/data/showcase/scenes/farmbooks-bills";
 import { bedsCam, bedsCues } from "@/data/demos/scenes/nwks-encounter";
 
 // Round 2 (ADR-0025): "hg-vendor", "farmbooks-bills", "duffer-cc" and "nwks-admin" are fluid scenes. Each is a
-// ComingScene until its builder swaps the real component into FLUID_SCENES and sets its SCENE_MS.
+// All four are real components now (round 2 builders B1, B5, B6, B7).
 // "hg-coi", "farmbooks-bill" and "nwks-beds" are retired from the client files and deleted once the replacements land.
 export type SceneId =
   | "hg-coi"
@@ -39,8 +41,8 @@ export const FLUID_SCENES: Record<FluidSceneId, ComponentType<FluidSceneProps>> 
   "hg-coi": HgCoiScene,
   "hg-vendor": HgVendorScene,
   "farmbooks-bills": FarmbooksBillsScene,
-  "duffer-cc": ComingScene,
-  "nwks-admin": ComingScene,
+  "duffer-cc": stillsScene(DUFFER_CC, "duffer-cc"),
+  "nwks-admin": stillsScene(NWKS_ADMIN, "nwks-admin"),
 };
 export const isFluid = (id: SceneId): id is FluidSceneId => id in FLUID_SCENES;
 
@@ -63,8 +65,8 @@ export const SCENE_MS: Record<SceneId, number> = {
   // Four steps (Arrives, Checks, Good to go, Filed), 13 s, then the window moves to Impact.
   "hg-vendor": VENDOR_TOTAL_MS,
   "farmbooks-bills": BILLS_TOTAL_MS,
-  "duffer-cc": 34000,
-  "nwks-admin": 34000,
+  "duffer-cc": DUFFER_CC.totalMs,
+  "nwks-admin": NWKS_ADMIN.totalMs,
 };
 
 /** The phone picture is 300 wide; its height is per scene (the COI cards need more room). */

@@ -1,0 +1,35 @@
+{
+  "still": "qr-phone.webp",
+  "scope": "duffer-golf",
+  "source": "Duffer Golf Command Center, panel bundle index-B9QL8lCQ.js, rendered on its test fixtures with invented names (scripts/capture-duffer-cc.mjs)",
+  "captured": "2026-11-05",
+  "rect": {
+    "x": 0,
+    "y": 1820,
+    "w": 390,
+    "h": 572
+  },
+  "lines": [
+    "5 codes",
+    "#9",
+    "Lone Cottonwood Golf Course",
+    "20",
+    "scans in 7 days ·",
+    "97",
+    "in 30 days ·",
+    "last Nov 4, 19:19",
+    "Manage",
+    "Download QR",
+    "#11",
+    "Wheatgrass Pines Golf Club",
+    "0",
+    "never scanned",
+    "#4",
+    "Sumac Hollow Golf Club",
+    "40",
+    "188",
+    "last Nov 4, 19:21",
+    "#41",
+    "In the box"
+  ]
+}
