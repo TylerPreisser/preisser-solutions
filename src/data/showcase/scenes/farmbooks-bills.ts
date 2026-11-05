@@ -64,8 +64,10 @@ export const CUES = {
   reads: { scan: 150, vendor: 1650, invoice: 1900, date: 2150, total: 2400, line0: 2900, lineEvery: 420 },
   sorts: { first: 350, every: 650 },
   splits: { field0: 250, fieldEvery: 380, flag: 1500, open: 2300, row0: 2800, row1: 3300, shares: 3900, tie: 4500 },
-  books: { check: 200, file: 1300, booked: 2050 },
-  sums: { kpi: 250, cats: 800, catEvery: 70, acres: 1500, acreEvery: 90, vendors: 2000 },
+  // file: the panel fades out (200 ms) before the bills list fades in; fly: the thumbnail leaves once the list is up.
+  books: { check: 200, file: 1300, fly: 1500, booked: 2250 },
+  // rest: a short phone scrolls back to the top (Total spent) once every card has filled.
+  sums: { kpi: 250, cats: 800, catEvery: 70, acres: 1500, acreEvery: 90, vendors: 2000, rest: 4300 },
 } as const;
 
 /* ── The bill, as FarmBooks reads it ───────────────────────────────────── */
