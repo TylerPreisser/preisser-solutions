@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
 import { loadShowcase, warmShowcase, type ShowcaseSlug } from "@/data/showcase";
 import type { LayerMode } from "../showcase/ShowcaseLayer";
 import { ShowcaseBoundary } from "../showcase/ShowcaseBoundary";
@@ -9,8 +8,16 @@ import { ShowcaseBoundary } from "../showcase/ShowcaseBoundary";
 // The showcase window (ADR-0020) is its own chunk, fetched on the first sign of
 // intent (a pointer resting on a showcase card, a tap, a key press), so the
 // home page pays nothing for it up front and nothing on it shifts.
-const loadShowcaseLayer = () => import("../showcase/ShowcaseLayer");
-const ShowcaseLayer = dynamic(loadShowcaseLayer, { ssr: false });
+// Held by hand, not through next/dynamic: a lazy component suspends on its first render even when its chunk
+// is already here, and React holds a revealed Suspense boundary back ~300 ms, which was most of the delay
+// between a phone tap and the sheet (critic r2 W2: 413 ms click -> sheet in Chromium; 21 ms once warm).
+type ShowcaseLayerModule = typeof import("../showcase/ShowcaseLayer");
+let showcaseLayerModule: ShowcaseLayerModule | null = null;
+const loadShowcaseLayer = () =>
+  import("../showcase/ShowcaseLayer").then((m) => {
+    showcaseLayerModule = m;
+    return m;
+  });
 
 interface CaseStudyCard {
   title: string;
@@ -685,7 +692,20 @@ export function CaseStudies() {
   // The window is mounted then, invisible and untouchable, so the client's site starts loading in its frame
   // 280 ms+ before the window is up and is usually Live by the time it is (owner bug 2026-11-04: "it's still,
   // it's not scrollable" was a wheel during Loading, under the dated still). Intent dropped: it unmounts.
+  const [ShowcaseLayer, setShowcaseLayer] = useState<ShowcaseLayerModule["default"] | null>(() => showcaseLayerModule?.default ?? null);
   const [showcase, setShowcase] = useState<{ slug: ShowcaseSlug; anchor: HTMLElement; mode: LayerMode; armed?: boolean } | null>(null);
+  // A window is wanted and its code is not held yet: fetch it, and if that fails the window does not open.
+  useEffect(() => {
+    if (!showcase || ShowcaseLayer) return;
+    let on = true;
+    loadShowcaseLayer().then(
+      (m) => on && setShowcaseLayer(() => m.default),
+      () => on && setShowcase(null),
+    );
+    return () => {
+      on = false;
+    };
+  }, [showcase, ShowcaseLayer]);
   const intentTimer = useRef<number | undefined>(undefined);
   // Hover intent (design spec §2.2): 280 ms after a REAL pointermove over the card, and no wheel or
   // scroll in the last 400 ms. Without the last two, a visitor wheel-scrolling the page gets a
@@ -707,8 +727,36 @@ export function CaseStudies() {
     };
   }, []);
 
+  // The window's code and every client's data are fetched while the visitor is still scrolling toward the
+  // cards (idle, once), not on the tap: fetched on the tap they put ~0.45 s (Chromium, Firefox) to ~0.9 s
+  // (WebKit) between a phone tap and the first frame of the sheet (critic r2 W2). ~75 kB gzipped in all.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || typeof IntersectionObserver === "undefined") return;
+    const slugs = caseStudyCards.map((c) => c.showcase).filter((x): x is ShowcaseSlug => !!x);
+    let idle = 0;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        const fetchAll = () => {
+          loadShowcaseLayer().then((m) => setShowcaseLayer(() => m.default), () => {});
+          slugs.forEach((slug) => loadShowcase(slug).catch(() => {}));
+        };
+        idle = window.requestIdleCallback ? window.requestIdleCallback(fetchAll, { timeout: 1500 }) : window.setTimeout(fetchAll, 200);
+      },
+      { rootMargin: "800px 0px" },
+    );
+    io.observe(track);
+    return () => {
+      io.disconnect();
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
+    };
+  }, []);
+
   const warm = useCallback((slug: ShowcaseSlug, wide: boolean) => {
-    loadShowcaseLayer().catch(() => {});
+    loadShowcaseLayer().then((m) => setShowcaseLayer(() => m.default), () => {});
     warmShowcase(slug, wide);
     // Warm the connection to the client's live site (spec §3.3 idle): a preconnect only, no frame yet.
     loadShowcase(slug)
@@ -1051,7 +1099,7 @@ export function CaseStudies() {
         Swipe to explore
       </p>
 
-      {showcase ? (
+      {showcase && ShowcaseLayer ? (
         <ShowcaseBoundary key={`${showcase.slug}:${showcase.mode}`} onFail={() => setShowcase(null)}>
         <ShowcaseLayer
           key={`${showcase.slug}:${showcase.mode}`}

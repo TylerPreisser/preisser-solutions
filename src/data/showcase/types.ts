@@ -115,6 +115,13 @@ export interface SiteCapture {
     keep?: readonly [number, number];
   }[];
   video?: SiteVideo;
+  /**
+   * The page as it first paints, before its own entrance animation (Hays: the hero before the kit
+   * falls; NWKS: the logos before the dates and buttons). Shown ONLY while the frame is loading and
+   * fresh, so the cut to live does not take content away. Every other moment (a slow load, a refused
+   * frame, the "Open <domain>" fallback) shows `src`, the finished page.
+   */
+  first?: { src: string; width: number; height: number };
 }
 
 /**

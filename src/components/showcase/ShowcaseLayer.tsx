@@ -82,8 +82,16 @@ type Phase = "measure" | "from" | "open" | "leave";
 function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { show: ShowcaseClient }) {
   const [sheet] = useState(isSheetLayout);
   const [reduced] = useState(prefersReduced);
-  const [phase, setPhase] = useState<Phase>(sheet ? "from" : "measure");
+  // A sheet mounts already "open" and rises by a CSS animation that starts on its first frame: the old
+  // "from" state needed two more frames first, and on a slow phone each frame of this page is the cost
+  // (critic r2 W2, WebKit: ~0.6 s between the sheet entering the DOM and its first visible frame).
+  const [phase, setPhase] = useState<Phase>(sheet ? "open" : "measure");
   const [at, setAt] = useState(0);
+  // Tabs are built when first shown, not all at once on open: the open is one tab's work, not five.
+  const [built, setBuilt] = useState<ReadonlySet<number>>(() => new Set([0]));
+  useEffect(() => {
+    setBuilt((b) => (b.has(at) ? b : new Set(b).add(at)));
+  }, [at]);
   const [pinned, setPinned] = useState(mode === "pinned");
   const [from, setFrom] = useState<string | undefined>(undefined);
   // A scene's current step line, for screen readers only (the caption row is gone, spec §9).
@@ -282,6 +290,45 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
   // the bar into a horizontal scroll strip; labels are never squeezed, overprinted or cut. Measured from
   // the labels' own text, so the answer is the same in either layout (no flip-flop between them).
   const [scrollTabs, setScrollTabs] = useState(false);
+  // The strip's end is padded just enough that its last resting place also starts on a tab, so the left edge
+  // never shows the tail of a word ("nter", "mmand Center": critic r2 W3) even fully scrolled.
+  const padEnd = useCallback(() => {
+    const track = tabsRef.current;
+    if (!track) return;
+    const tabs = [...track.querySelectorAll<HTMLElement>(".sc-tabs__tab")];
+    let pad = "";
+    if (track.hasAttribute("data-scroll") && tabs.length) {
+      const last = tabs[tabs.length - 1];
+      const end = last.offsetLeft + last.offsetWidth + 4; // content end with the track's own 4 px
+      const cw = track.clientWidth;
+      const start = tabs.map((t) => t.offsetLeft - 4).find((x) => x + cw >= end);
+      const extra = start === undefined ? 0 : Math.max(0, Math.ceil(start + cw - end));
+      if (extra > 0) pad = `${4 + extra}px`;
+    }
+    if (track.style.paddingRight !== pad) track.style.paddingRight = pad;
+  }, []);
+  const keepInView = useCallback((smooth: boolean) => {
+    const track = tabsRef.current;
+    if (!track || !track.hasAttribute("data-scroll")) return;
+    const t = track.querySelector<HTMLElement>(`[aria-selected="true"]`);
+    if (!t) return;
+    const cw = track.clientWidth;
+    const max = Math.max(0, track.scrollWidth - cw);
+    const L = t.offsetLeft;
+    const R = L + t.offsetWidth;
+    const CLEAR = 28; // the fade (20) and a little air
+    const fits = (c: number) => (c <= 0 ? L >= 0 : L - c >= CLEAR) && (c >= max ? R <= c + cw : c + cw - R >= CLEAR);
+    const starts = [0, max, ...[...track.querySelectorAll<HTMLElement>(".sc-tabs__tab")].map((x) => Math.min(max, Math.max(0, x.offsetLeft - 4)))];
+    // No tab-aligned rest fits (a long label on a 320 phone): the selected tab sits just clear of the left
+    // fade, so at most the fade's width of the previous label shows, under the fade.
+    let ok = starts.filter(fits);
+    if (!ok.length) ok = [L - CLEAR, R + CLEAR - cw].map((c) => Math.min(max, Math.max(0, c))).filter(fits).slice(0, 1);
+    const now = track.scrollLeft;
+    const left = ok.length
+      ? ok.reduce((best, c) => (Math.abs(c - now) < Math.abs(best - now) ? c : best), ok[0])
+      : Math.min(max, Math.max(0, L - (cw - t.offsetWidth) / 2));
+    if (Math.abs(left - now) > 0.5) track.scrollTo({ left, behavior: smooth && !reduced ? "smooth" : "auto" });
+  }, [reduced]);
   // In the strip, a fade marks whichever edge has tabs hidden past it.
   const edges = useCallback(() => {
     const track = tabsRef.current;
@@ -304,7 +351,11 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
         need += r.getBoundingClientRect().width + 20;
       });
       setScrollTabs(need > track.clientWidth + 1);
-      requestAnimationFrame(edges);
+      requestAnimationFrame(() => {
+        padEnd();
+        keepInView(false);
+        edges();
+      });
     };
     fit();
     document.fonts?.ready.then(fit).catch(() => {});
@@ -314,27 +365,21 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
       live = false;
       ro.disconnect();
     };
-  }, [edges]);
-  // The selected tab stays in view: at once on open (and under reduced motion), smoothly after.
+  }, [edges, keepInView, padEnd]);
+  // The selected tab stays in view, whole and clear of the 20 px edge fades, and the strip comes to rest
+  // with a tab's start at its left edge so no cut-off word sits there (critic r2 W3: "MarCommand" ran into
+  // the right fade; "ommand Center" was cut at the left). Computed by hand: the engines disagree on
+  // scroll-padding for programmatic scrolls, and scroll snapping moved the strip after we placed it.
+  // At once on open and under reduced motion, smoothly after.
   const scrolledOnce = useRef(false);
   useEffect(() => {
-    const track = tabsRef.current;
-    if (!track) return;
-    if (!scrollTabs) {
-      edges();
-      return;
+    if (scrollTabs) {
+      padEnd();
+      keepInView(scrolledOnce.current);
+      scrolledOnce.current = true;
     }
-    const t = track.querySelector<HTMLElement>(`[aria-selected="true"]`);
-    if (t) {
-      const pad = 28;
-      const l = t.offsetLeft - pad;
-      const r = t.offsetLeft + t.offsetWidth + pad - track.clientWidth;
-      const left = track.scrollLeft > l ? l : track.scrollLeft < r ? r : track.scrollLeft;
-      track.scrollTo({ left: Math.max(0, left), behavior: scrolledOnce.current && !reduced ? "smooth" : "auto" });
-    }
-    scrolledOnce.current = true;
     edges();
-  }, [at, scrollTabs, reduced, edges]);
+  }, [at, scrollTabs, keepInView, edges, padEnd]);
 
   // The pill sits under the selected tab by measurement (tab widths are unequal), after the
   // web font has loaded and again whenever the track resizes.
@@ -481,7 +526,7 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
           aria-hidden={i !== at || undefined}
           inert={i !== at || undefined}
         >
-          <BeatView
+          {built.has(i) || i === at ? <BeatView
             client={show}
             beat={b}
             variant={variant}
@@ -489,7 +534,7 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
             fill
             reduced={reduced}
             onCaption={i === at ? (l) => setLine((p) => (p === l ? p : l)) : undefined}
-          />
+          /> : null}
         </div>
       ))}
       <p className="ps-visually-hidden" aria-live="polite">
@@ -517,6 +562,7 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
           data-phase={phase}
           data-drag={dragY !== null && phase !== "leave" ? "" : undefined}
           data-settled={settled && phase === "open" ? "" : undefined}
+          data-rise={!settled && phase === "open" ? "" : undefined}
           style={style}
           onPointerDown={onSheetDown}
           onPointerMove={onSheetMove}

@@ -419,6 +419,10 @@ html.sc-sheet-open .ps-header {
   .sc-sheet {
     transition: none !important;
   }
+  .sc-sheet[data-rise],
+  .sc-scrim--sheet[data-phase="open"] {
+    animation: none !important;
+  }
 }
 
 /* Header: name | tabs | close (the close button is first in the DOM, so focus lands
@@ -576,6 +580,24 @@ html.sc-sheet-open .ps-header {
 .sc-sheet[data-phase="from"] {
   transition: none;
 }
+/* The rise: an animation, so it starts on the sheet's first frame (it mounts "open"). backwards, not both:
+   a filling animation would keep the sheet a compositor layer after it ends. */
+.sc-sheet[data-rise] {
+  animation: sc-sheet-rise 460ms var(--sc-ease-sheet) backwards;
+}
+@keyframes sc-sheet-rise {
+  from {
+    transform: translateY(105%);
+  }
+}
+.sc-scrim--sheet[data-phase="open"] {
+  animation: sc-scrim-in 280ms ease-out backwards;
+}
+@keyframes sc-scrim-in {
+  from {
+    opacity: 0;
+  }
+}
 .sc-sheet[data-drag] {
   transition: none;
 }
@@ -650,8 +672,7 @@ html.sc-sheet-open .ps-header {
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
-  scroll-padding-inline: 28px;
+  /* No scroll snapping: it moved the strip after the selected tab had been placed, into the fade. */
   scrollbar-width: none;
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--sc-fade-l), #000 calc(100% - var(--sc-fade-r)), transparent 100%);
   mask-image: linear-gradient(90deg, transparent 0, #000 var(--sc-fade-l), #000 calc(100% - var(--sc-fade-r)), transparent 100%);
@@ -668,7 +689,6 @@ html.sc-sheet-open .ps-header {
 .sc-tabs[data-scroll] .sc-tabs__tab,
 .sc-sheet .sc-tabs[data-scroll] .sc-tabs__tab {
   flex: 0 0 auto;
-  scroll-snap-align: start;
   min-height: 44px;
   padding: 0 14px;
   font-size: 14px;

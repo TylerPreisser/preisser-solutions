@@ -83,15 +83,17 @@ const client: ShowcaseClient = {
       caption: "The men's and women's weekends share one front door.",
       captured: "Captured Nov 1, 2026",
       desk: {
-        src: "/images/showcase/nwks-encounter-site-desk-first-202944dc.webp",
-        width: 1280,
-        height: 1000,
+        src: "/images/showcase/nwks-encounter-site-desk-ff921ff6.webp",
+        width: 1440,
+        height: 900,
+        first: { src: "/images/showcase/nwks-encounter-site-desk-first-56e35488.webp", width: 1220, height: 800 },
         stops: [{ y: 0, holdMs: 3400 }],
       },
       phone: {
-        src: "/images/showcase/nwks-encounter-site-phone-first-a13c7b2d.webp",
+        src: "/images/showcase/nwks-encounter-site-phone-8722795d.webp",
         width: 390,
         height: 844,
+        first: { src: "/images/showcase/nwks-encounter-site-phone-first-a1124e50.webp", width: 390, height: 844 },
         // Two rests, and neither edge of either one cuts a logo, a title, a date or a
         // button in half (critique r8 S6: the Women's Encounter logo was cut on every
         // phone): the men's half, then the women's half to the capture's end. Bands

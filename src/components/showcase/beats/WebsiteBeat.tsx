@@ -19,6 +19,13 @@ import { useBox, type BeatProps } from "./shared";
  * (Firefox held the ready message back up to ~1 s that way) and the still takes the visitor's input.
  */
 
+/**
+ * A frame that has fired `load` but not said it is ready this long after is taken as refused (a frame the
+ * browser blocked fires `load` within ~5-64 ms with no ready message; a real page sends ready at first
+ * paint, before or around its own load). Only the still changes: the entrance picture gives way to the
+ * finished page. Live and the 8 s fallback keep their own rules.
+ */
+const REFUSED_MS = 1000;
 /** How long the "the live site is loading" hint stays up after the last wheel or touch on the still. */
 const HINT_MS = 2200;
 
@@ -67,6 +74,10 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
   const [shown, setShown] = useState(false);
   const [state, setState] = useState<FrameState>(live.frame === "off" ? "preview" : "loading");
   const [reload, setReload] = useState(0);
+  // The frame loaded but never said ready: the browser refused it (or the page is broken).
+  const [refused, setRefused] = useState(false);
+  const refusedTimer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(refusedTimer.current), []);
   const [hint, setHint] = useState(false);
   const hintTimer = useRef<number | undefined>(undefined);
   useEffect(() => {
@@ -94,6 +105,7 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
       if (!live.origins.includes(e.origin)) return;
       const data = e.data as { type?: unknown } | null;
       if (!data || typeof data !== "object" || data.type !== "ps-portal-ready") return;
+      window.clearTimeout(refusedTimer.current);
       setState((s) => (s === "loading" ? "live" : s));
     };
     window.addEventListener("message", onMessage);
@@ -131,6 +143,7 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
               // inside the frame (QA 2026-11-04, HG Oil at 1440), so the frame is remounted instead,
               // and it is live again only when the site says so, like the first time.
               setState("loading");
+              setRefused(false);
               setReload((n) => n + 1);
             }}
           >
@@ -157,7 +170,12 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
         </a>
       </div>
       <div className="sc-web__view" ref={viewRef} onWheel={nudge} onTouchStart={nudge}>
-        <Still cap={cap} alt={`${domain} home page, a still from ${when}`} />
+        {/* The entrance picture only while the frame is on its way; any other time (refused, the fallback) the
+            finished page, so a frame that never goes live still shows a real-looking site (critic r2 N1). */}
+        <Still
+          cap={cap.first && state === "loading" && !refused ? { ...cap, ...cap.first, video: undefined } : cap}
+          alt={`${domain} home page, a still from ${when}`}
+        />
         {framed ? (
           <iframe
             key={reload}
@@ -170,7 +188,14 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
             allow=""
             loading="eager"
             style={frameStyle}
-            onLoad={live.frame === "load" ? () => setState((st) => (st === "loading" ? "live" : st)) : undefined}
+            onLoad={
+              live.frame === "load"
+                ? () => setState((st) => (st === "loading" ? "live" : st))
+                : () => {
+                    window.clearTimeout(refusedTimer.current);
+                    refusedTimer.current = window.setTimeout(() => setRefused(true), REFUSED_MS);
+                  }
+            }
           />
         ) : null}
         {hint && state === "loading" ? (
