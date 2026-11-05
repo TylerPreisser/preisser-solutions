@@ -431,7 +431,15 @@ async function showcaseStages(browser) {
       await t.evaluate((el) => el.click());
       const dlg = page.locator("[role=dialog] .sc-beat").first();
       await dlg.waitFor({ state: "attached", timeout: 15000 });
-      // Every beat is drawn (only one is on screen); wait for the stages' end state.
+      // A window builds each tab the first time it is shown (ShowcaseLayer's `built` set), so visit every
+      // tab the way a visitor would; once built a tab stays drawn, and the scan below sees all of them.
+      const tabs = page.locator("[role=dialog] [role=tab]");
+      const tabCount = await tabs.count();
+      for (let k = 0; k < tabCount; k++) {
+        await tabs.nth(k).evaluate((el) => el.click());
+        await page.waitForTimeout(150);
+      }
+      // Wait for the stages' end state.
       await page.waitForFunction(() => document.querySelectorAll("[role=dialog] [data-demo-stage], [role=dialog] [data-fact-stage]").length > 0, null, { timeout: 15000 });
       await page.waitForTimeout(400);
       const html = await page.evaluate(() => `<!doctype html><html><body>${document.querySelector("[role=dialog]").outerHTML}</body></html>`);

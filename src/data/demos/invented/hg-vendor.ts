@@ -15,7 +15,7 @@ export const invented: InventedSet = {
   domains: [],
   vocabulary: [
     // Step names, controls and checklist words, and the "M" of "$1M".
-    "Arrives", "Good", "Play", "Effective", "Expires", "M",
+    "Arrives", "Good", "Play", "Pause", "Effective", "Expires", "M",
   ],
   approved: [],
   assets: [
