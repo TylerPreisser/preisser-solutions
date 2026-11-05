@@ -1,7 +1,18 @@
 "use client";
 
-import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
-import type { ImpactBeat as ImpactBeatData, ImpactCopy, ImpactStat } from "@/data/showcase/types";
+import {
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
+import type {
+  ImpactBeat as ImpactBeatData,
+  ImpactCopy,
+  ImpactStat,
+} from "@/data/showcase/types";
 import type { BeatProps } from "./shared";
 import "./impact.css";
 
@@ -25,7 +36,14 @@ import "./impact.css";
  * Real facts, not demonstration data: a `data-fact-stage`, scanned by the
  * privacy probe like a demo stage but carrying no "Demonstration data" label.
  */
-export function ImpactBeat({ client, beat, variant, active, reduced, quiet }: BeatProps<ImpactBeatData>) {
+export function ImpactBeat({
+  client,
+  beat,
+  variant,
+  active,
+  reduced,
+  quiet,
+}: BeatProps<ImpactBeatData>) {
   const scroller = useRef<HTMLDivElement>(null);
   const inner = useRef<HTMLDivElement>(null);
   const textEl = useRef<HTMLParagraphElement>(null);
@@ -41,10 +59,13 @@ export function ImpactBeat({ client, beat, variant, active, reduced, quiet }: Be
 
   // Phone: at most two big cards; a third demotes to the head of the rows (rows cap 3 + the demoted one).
   const big = phone ? beat.big.slice(0, 2) : beat.big;
-  const rows = phone ? [...beat.big.slice(2), ...beat.rows.slice(0, 3)] : beat.rows;
-  const hasBefore = big.some((s) => s.before);
-  const solo = big.length === 1 && rows.length === 0 && !beat.lead;
-  const lastCardAt = (hasBefore ? 600 : 200) + Math.max(0, big.length - 1) * 140 + 380;
+  const rows = phone
+    ? [...beat.big.slice(2), ...beat.rows.slice(0, 3)]
+    : beat.rows;
+  const hasBefore = big.some((s) => s.before || s.oldWay);
+  const solo = big.length === 1 && rows.length === 0;
+  const lastCardAt =
+    (hasBefore ? 600 : 200) + Math.max(0, big.length - 1) * 140 + 380;
 
   // Runs once each time the tab is entered; leaving it re-arms the next entry.
   useEffect(() => {
@@ -67,7 +88,8 @@ export function ImpactBeat({ client, beat, variant, active, reduced, quiet }: Be
       const t = textEl.current;
       if (t && t.offsetHeight > 0) textH.current = t.offsetHeight + 14;
       if (phone && beat.text) {
-        const withText = col.scrollHeight + (t && t.offsetHeight > 0 ? 0 : textH.current);
+        const withText =
+          col.scrollHeight + (t && t.offsetHeight > 0 ? 0 : textH.current);
         setTextFits(withText <= el.clientHeight + 1);
       } else {
         setTextFits(true);
@@ -100,7 +122,15 @@ export function ImpactBeat({ client, beat, variant, active, reduced, quiet }: Be
       <div
         ref={scroller}
         className="im__scroll"
-        data-edge={edge.top && edge.more ? "both" : edge.top ? "top" : edge.more ? "bottom" : undefined}
+        data-edge={
+          edge.top && edge.more
+            ? "both"
+            : edge.top
+              ? "top"
+              : edge.more
+                ? "bottom"
+                : undefined
+        }
         tabIndex={overflow ? 0 : undefined}
         onScroll={(e) => readEdge(e.currentTarget)}
       >
@@ -109,33 +139,39 @@ export function ImpactBeat({ client, beat, variant, active, reduced, quiet }: Be
             // B5 SLOT (spec §3.5): render <DufferQrScene /> here. Nothing is drawn until it lands.
             <div className="im__lead" data-lead="qr-story" />
           ) : null}
-          <p className="im__k" id={kickerId}>
-            {beat.kicker}
-          </p>
-          {big.length > 0 ? (
-            <div className="im__big" data-n={big.length} style={{ "--n": big.length } as CSSProperties}>
-              {big.map((s, i) => (
-                <Card key={s.now.label} s={s} i={i} />
-              ))}
-            </div>
-          ) : null}
-          {rows.length > 0 ? (
-            <ul className="im__rows">
-              {rows.map((s, i) => (
-                <Row key={s.now.label} s={s} i={i} />
-              ))}
-            </ul>
-          ) : null}
-          {beat.text ? (
-            <p
-              ref={textEl}
-              className="im__text"
-              hidden={!textFits}
-              style={{ "--i": rows.length } as CSSProperties}
-            >
-              {copy(beat.text)}
+          <div className="im__body">
+            <p className="im__k" id={kickerId}>
+              {beat.kicker}
             </p>
-          ) : null}
+            {big.length > 0 ? (
+              <div
+                className="im__big"
+                data-n={big.length}
+                style={{ "--n": big.length } as CSSProperties}
+              >
+                {big.map((s, i) => (
+                  <Card key={s.now.label} s={s} i={i} />
+                ))}
+              </div>
+            ) : null}
+            {rows.length > 0 ? (
+              <ul className="im__rows">
+                {rows.map((s, i) => (
+                  <Row key={s.now.label} s={s} i={i} />
+                ))}
+              </ul>
+            ) : null}
+            {beat.text ? (
+              <p
+                ref={textEl}
+                className="im__text"
+                hidden={!textFits}
+                style={{ "--i": rows.length } as CSSProperties}
+              >
+                {copy(beat.text)}
+              </p>
+            ) : null}
+          </div>
         </div>
       </div>
     </section>
@@ -155,7 +191,14 @@ function Value({ v, unit }: { v: string; unit?: string }) {
 
 function Card({ s, i }: { s: ImpactStat; i: number }) {
   return (
-    <div className="im__card" data-has-before={s.before ? "" : undefined} style={{ "--i": i } as CSSProperties}>
+    <div
+      className="im__card"
+      data-has-before={s.before || s.oldWay ? "" : undefined}
+      style={{ "--i": i } as CSSProperties}
+    >
+      {s.oldWay && !s.before ? (
+        <span className="im__old">{copy(s.oldWay)}</span>
+      ) : null}
       {s.before ? (
         <span className="im__was">
           <span className="ps-visually-hidden">Before: </span>

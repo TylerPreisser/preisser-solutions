@@ -13,7 +13,7 @@
 // the "90 percent" (no measurement behind it), and any live-database count.
 // Hours per weekend have no source yet: the before side is words, not hours.
 import type { ShowcaseClient } from "../types";
-import { figure, impactBeat } from "../impact";
+import { fact, figure, impactBeat } from "../impact";
 
 export const impact = impactBeat("nwks-encounter", {
   tab: "Impact",
@@ -21,22 +21,17 @@ export const impact = impactBeat("nwks-encounter", {
   kicker: "What changed",
   big: [
     {
-      before: figure<"Client's words, Aug 19 2026">("By hand", "launch letters per person"),
+      oldWay: fact<"Client's words, Aug 19 2026">("Emailed by hand, every day or two"),
       now: figure<"How it is built">("4", "launch letters per person, sent on their own dates"),
     },
     {
-      before: figure<"Client's words, Aug 19 2026">("By hand", "printed pieces per person"),
+      oldWay: fact<"Client's words, Aug 19 2026">("Typed one at a time"),
       now: figure<"Owner, Aug 20 2026">("5", "name tags and luggage stickers per person, made from registration"),
     },
   ],
   rows: [
     {
-      before: figure<"Client's words, Aug 19 2026">("Manual", "Cabin plan, drafted for volunteers to adjust"),
       now: figure<"Measured live, Oct 8 2026">("Milliseconds", "Cabin plan, drafted for volunteers to adjust"),
-    },
-    {
-      now: figure<"How it is built">("24", "Time to answer a waitlist offer before it passes on"),
-      unit: "h",
     },
   ],
   text: "Volunteers adjust the plan. They no longer type it.",

@@ -22,7 +22,7 @@
 // old site, counted since tracking went live). The QR story (spec §3.5) leads.
 import type { ShowcaseClient } from "../types";
 import { count, sum } from "../format";
-import { figure, impactBeat } from "../impact";
+import { fact, figure, impactBeat } from "../impact";
 
 type Course = { label: string; sub: string; scans: number; visits: number; leads: number; orders: number };
 
@@ -63,7 +63,7 @@ export const impact = impactBeat("duffer-golf", {
   lead: "qr-story",
   big: [
     {
-      before: figure<"Our audit of the old site, Sep 13 2026">("0", "visitors tracked"),
+      oldWay: fact<"Our audit of the old site, Sep 13 2026">("The old site tracked no one"),
       now: figure<"Measured live, Nov 3 2026">("366", "visitors tracked since tracking went live"),
     },
   ],

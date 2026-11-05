@@ -127,6 +127,7 @@ function shown(b: ImpactBeat): { where: string; text: string; sourced: boolean }
   const stat = (where: string, s: ImpactStat) => {
     fig(`${where} now`, s.now);
     if (s.before) fig(`${where} before`, s.before);
+    if (s.oldWay) add(`${where} old way`, s.oldWay);
     if (s.unit !== undefined) out.push({ where: `${where} unit`, text: s.unit, sourced: false });
   };
   b.big.forEach((s, i) => stat(`big ${i + 1}`, s));

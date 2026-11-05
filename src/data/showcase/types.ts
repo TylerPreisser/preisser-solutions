@@ -426,6 +426,8 @@ export interface ImpactStat {
   now: ImpactFigure;
   /** The number before, struck. ONLY when sourced; omit otherwise. */
   before?: ImpactFigure;
+  /** The old way as one short plain line above the number, NOT struck (use when the before is not a number): fact<"Client's words, ...">("Typed one at a time"). */
+  oldWay?: ImpactCopy;
   /** Unit shown after the value: "s", "h", "%", "/mo". Not part of the sourced value string. */
   unit?: string;
 }

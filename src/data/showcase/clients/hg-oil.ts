@@ -53,25 +53,23 @@ const closeSeconds = {
   now: figure<"Measured live, Sep 17 2026">("70", "the longest the engine took to run a whole month-end close"),
   unit: "s",
 } as const satisfies ImpactStat;
-const insuranceEmails = {
-  now: figure<"Measured live, Oct 23 2026">("258", "insurance emails in the first 8 days"),
+const handTyped = {
+  before: figure<"How it is built">("74", "hand-typed totals in the close workbook"),
+  now: figure<"How it is built">("0", "hand-typed totals in the close workbook"),
 } as const satisfies ImpactStat;
 
 export const impact = impactBeat("hg-oil", {
   tab: "Impact",
   caption: "What the month-end close and vendor insurance engines do now, and what they replaced.",
   kicker: "What changed",
-  big: HG_PUBLISH_VENDOR_COUNTS ? [vendorCertificates(), closeSeconds, insuranceEmails] : [closeSeconds, insuranceEmails],
+  big: HG_PUBLISH_VENDOR_COUNTS ? [vendorCertificates(), handTyped, closeSeconds] : [handTyped, closeSeconds],
   rows: [
-    {
-      before: figure<"How it is built">("74", "Hand-typed totals in the close workbook"),
-      now: figure<"How it is built">("0", "Hand-typed totals in the close workbook"),
-    },
+    { now: figure<"Measured live, Oct 23 2026">("258", "Insurance emails handled for you in the first 8 days") },
     { now: figure<"How it is built">("17", "Owner statements produced every close") },
   ],
   text: "Vendor insurance and the month-end close now run themselves. A person signs off; nobody types.",
   narration:
-    "What changed for HG Oil Holdings. The engine runs a whole month-end close in moments, and the handwritten totals in the close workbook are gone. Vendor insurance emails go out and are handled by the engine, and a person signs off instead of typing.",
+    "What changed for HG Oil Holdings. The handwritten totals in the close workbook are gone, and the engine runs a whole month-end close in moments. Vendor insurance emails go out and are handled by the engine, and a person signs off instead of typing.",
 });
 
 const client: ShowcaseClient = {
