@@ -17,7 +17,7 @@
 // "one crop year" (the span is unconfirmed), any dollar amount, and the errors
 // found in her old books (the owner asked for that block to come off the site).
 import type { ShowcaseClient } from "../types";
-import { figure, impactBeat } from "../impact";
+import { fact, figure, impactBeat } from "../impact";
 import { BILLS_NARRATION } from "../scenes/farmbooks-bills";
 
 export const impact = impactBeat("farmbooks", {
@@ -25,7 +25,10 @@ export const impact = impactBeat("farmbooks", {
   caption: "What FarmBooks does with every bill, and what the bookkeeper used to do by hand.",
   kicker: "What changed",
   big: [
-    { now: figure<"Published on this site">("101", "bills read and booked without retyping a line") },
+    {
+      oldWay: fact<"Client's words, Aug 3 2026">("Each bill printed and keyed in by hand"),
+      now: figure<"Published on this site">("101", "bills read and booked without retyping a line"),
+    },
     { now: figure<"Published on this site">("893", "bill lines sorted into tax categories") },
   ],
   rows: [{ now: figure<"Published on this site">("0", "Bill lines left uncategorized") }],
