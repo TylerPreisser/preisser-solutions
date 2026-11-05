@@ -156,8 +156,8 @@ const client: ShowcaseClient = {
         { label: "Checking every figure", phase: 4, ms: 800, chip: "9 figures matched" },
       ],
       sources: [
-        { icon: "ads", label: "Google Ads", chip: "30 rows", step: 1 },
-        { icon: "social-ads", label: "Social ads", chip: "30 rows", step: 2 },
+        { icon: "ads", label: "Google Ads", short: "Google", chip: "30 rows", step: 1 },
+        { icon: "social-ads", label: "Social ads", short: "Social", chip: "30 rows", step: 2 },
         { icon: "visit", label: "Site visits", short: "Visits", chip: `${count(visited)} rows`, step: 3 },
         { icon: "enroll", label: "Enrollment leads", short: "Leads", chip: `${leads} rows`, step: 4 },
       ],

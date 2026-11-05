@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import type { EngineBeat as EngineBeatData, EngineChannel } from "@/data/showcase/types";
 import { Elara, type ElaraFrame } from "./Elara";
-import { Fit, FitWidth, PortalFrame, RailGlyph, type BeatProps } from "./shared";
+import { Fit, FitWidth, PortalFrame, RailGlyph, useBox, type BeatProps } from "./shared";
 import "./engine.css";
 
 /**
@@ -46,11 +46,6 @@ const E = {
 };
 export const engineMs = () => E.total;
 
-/** Native geometry. Desk: a 1160 x 640 picture scaled as one. Phone: 320 wide, as tall as the sheet. */
-const DESK = { w: 1160, h: 640, card: 92, cardTop: 44, cx0: 110, cgap: 150, stemTop: 172, bus: 452, dy: 430, r: 46, dx: [260, 450, 640], bot: 96 as const, reach: 93, busL: 50, busR: 780 };
-const PHONE = { w: 320, card: 64, cardTop: 24, cx0: 44, cgap: 78, stemTop: 112, bus: 200, dy: 189, r: 31, dx: [76, 160, 244], bot: 48 as const, reach: 54, busL: 6, busR: 314 };
-type Geo = typeof DESK | typeof PHONE;
-
 function useClock(active: boolean, reduced: boolean) {
   const [t, setT] = useState(reduced ? Infinity : 0);
   useEffect(() => {
@@ -73,39 +68,114 @@ const num = (s: string) => {
   return m ? { pre: m[1], n: parseInt(m[2].replace(/,/g, ""), 10), post: m[3] } : null;
 };
 
+/**
+ * Three compositions, chosen from the stage's MEASURED width, each laid out at a size where no text renders
+ * under ~12 css px (critic r2 M1, M2): a desk picture (1000 x 560, scaled as one, stage >= 900 css wide), a
+ * tablet picture (720 wide, as tall as the stage, 600-900) and a phone column (320 wide, as tall as the sheet).
+ * The phone shows the dials it turns and one tile that carries the new learning above the result, so a
+ * learning is on screen at every size.
+ */
+type Mode = "desk" | "tablet" | "phone";
+interface Geo {
+  mode: Mode;
+  w: number;
+  h: number;
+  card: number;
+  cardTop: number;
+  cx: (i: number) => number;
+  stemTop: number;
+  bus: number;
+  dy: number;
+  r: number;
+  /** The dials shown, in order, and where each sits. */
+  shown: readonly number[];
+  dx: readonly number[];
+  bot: 96 | 48;
+  /** Feet to the knob centre when he stands beside it, his hand on its rim. */
+  reach: number;
+  busL: number;
+  busR: number;
+  learn?: { x: number; y: number; w: number; max: number };
+  res?: { x: number; y: number; w: number };
+  /** Phone: the learning + result tile, anchored to the bottom; `earlier` adds the previous learning. */
+  tile?: { h: number; earlier: boolean };
+  cap?: { x: number; y: number };
+}
+
+const DESK_W = 1000;
+const DESK_H = 560;
+const TILE_H = 135;
+
+function geo(mode: Mode, h: number, beat: EngineBeatData): Geo {
+  const turns = beat.turns.slice(0, 2);
+  if (mode === "desk") {
+    return {
+      mode, w: DESK_W, h: DESK_H, card: 92, cardTop: 36, cx: (i) => 100 + i * 140, stemTop: 164,
+      bus: 360, dy: 338, r: 46, shown: beat.dials.map((_, i) => i), dx: [200, 380, 560], bot: 96, reach: 101,
+      busL: 40, busR: 620, learn: { x: 640, y: 36, w: 320, max: 2 }, res: { x: 640, y: 292, w: 320 }, cap: { x: 40, y: 506 },
+    };
+  }
+  if (mode === "tablet") {
+    // Cards at the top, the learning and result along the bottom, the knob row centred between them.
+    const bottom = h - 36 - 196;
+    const bus = Math.round(Math.max(330, Math.min(bottom - 96, (176 + 116 + bottom - 96) / 2)));
+    return {
+      mode, w: 720, h, card: 92, cardTop: 40, cx: (i) => 150 + i * 140, stemTop: 168,
+      bus, dy: bus - 22, r: 46, shown: beat.dials.map((_, i) => i), dx: [190, 360, 530], bot: 96, reach: 101,
+      busL: 60, busR: 620, learn: { x: 40, y: bottom, w: 380, max: 2 }, res: { x: 440, y: bottom, w: 240 },
+    };
+  }
+  // Phone: cards (labels may take two lines), the two dials it turns, the tile at the bottom. A tall phone's
+  // tile also carries the earlier learning, so its room shows what the engine already knew.
+  const tall = h >= 540;
+  const tileTop = h - 12 - TILE_H - (tall ? 62 : 0);
+  const bus = Math.round(Math.max(164, Math.min(tileTop - 66, (106 + 58 + tileTop - 66) / 2)));
+  return {
+    mode, w: 320, h, card: 52, cardTop: 16, cx: (i) => 44 + i * 77, stemTop: 108,
+    bus, dy: bus - 12, r: 30, shown: turns, dx: [100, 236], bot: 48, reach: 57,
+    busL: 6, busR: 314, tile: { h: TILE_H + (tall ? 62 : 0), earlier: tall },
+  };
+}
+
 export function EngineBeat({ client, beat, variant, active, fill, reduced, quiet }: BeatProps<EngineBeatData>) {
   const t = useClock(active, reduced);
-  const phone = variant === "phone";
+  const boxRef = useRef<HTMLDivElement>(null);
+  const box = useBox(boxRef);
+  const mode: Mode = variant === "phone" || (box.w > 0 && box.w < 600) ? "phone" : box.w > 0 && box.w < 900 ? "tablet" : "desk";
   return (
     // The MarCommand tab's stage keeps the name of the funnel stage it replaces: the privacy probe
     // derives the window's name registry from it (tests/demo-privacy.probe.mjs:367 strips -funnel).
     <PortalFrame client={client} stage="funnel" narration={beat.narration} variant={variant} fill={fill} quiet={quiet}>
-      <div className="en" data-variant={variant} data-cut={t < 100 ? "" : undefined}>
-        {phone ? (
-          <FitWidth w={PHONE.w}>{(h) => <Room beat={beat} t={t} g={PHONE} h={h} phone />}</FitWidth>
-        ) : (
-          <Fit w={DESK.w} h={DESK.h} moveMs={0}>
-            <Room beat={beat} t={t} g={DESK} h={DESK.h} phone={false} />
+      <div
+        ref={boxRef}
+        className="en"
+        data-mode={mode}
+        data-cut={t < 100 ? "" : undefined}
+        style={{ "--en-brand": client.theme.accent, "--en-brand-t": client.theme.accentText } as CSSProperties}
+      >
+        {mode === "desk" ? (
+          <Fit w={DESK_W} h={DESK_H} moveMs={0}>
+            <Room beat={beat} t={t} g={geo("desk", DESK_H, beat)} />
           </Fit>
+        ) : (
+          <FitWidth w={mode === "phone" ? 320 : 720}>{(h) => <Room beat={beat} t={t} g={geo(mode, h, beat)} />}</FitWidth>
         )}
       </div>
     </PortalFrame>
   );
 }
 
-function Room({ beat, t, g, h, phone }: { beat: EngineBeatData; t: number; g: Geo; h: number; phone: boolean }) {
-  const cx = (i: number) => g.cx0 + i * g.cgap;
-  const pickX = cx(beat.pick);
+function Room({ beat, t, g }: { beat: EngineBeatData; t: number; g: Geo }) {
+  const phone = g.mode === "phone";
+  const pickX = g.cx(beat.pick);
   const turns = beat.turns.slice(0, 2);
-  const last = beat.dials.length - 1;
-  // He stands left of the knob he turns, or right of it when it is the last knob he turns and the last in the row.
-  const side = (d: number, k: number) => (d === last && k === turns.length - 1 ? -1 : 1);
-  const stance = (d: number, k: number) => g.dx[d] - side(d, k) * g.reach;
-  const start = g.dx[last] + g.reach;
+  const at = (d: number) => g.dx[g.shown.indexOf(d)];
+  // He always stands LEFT of the knob he turns, facing it; he walks BEHIND the knobs (critic r2 M4).
+  const stance = (d: number) => at(d) - g.reach;
+  const start = stance(turns[turns.length - 1]);
 
-  // The robot: legs, cell, facing.
-  const legs = [{ from: start, to: stance(turns[0], 0), at: E.walk1, ms: E.walk1Ms }];
-  if (turns.length > 1) legs.push({ from: stance(turns[0], 0), to: stance(turns[1], 1), at: E.walk2, ms: E.walk2Ms });
+  const legs = [{ from: start, to: stance(turns[0]), at: E.walk1, ms: E.walk1Ms }];
+  if (turns.length > 1) legs.push({ from: stance(turns[0]), to: stance(turns[1]), at: E.walk2, ms: E.walk2Ms });
   const turnAt = [
     { reach: E.reach1, sweep: E.sweep1, ms: E.sweep1Ms, release: E.release1 },
     { reach: E.reach2, sweep: E.sweep2, ms: E.sweep2Ms, release: E.release2 },
@@ -118,8 +188,7 @@ function Room({ beat, t, g, h, phone }: { beat: EngineBeatData; t: number; g: Ge
   if (leg) {
     x = leg.to;
     ms = leg.ms;
-    const k = legs.indexOf(leg);
-    flip = side(turns[k], k);
+    flip = 1;
     if (t < leg.at + leg.ms) {
       frame = (4 + (Math.floor((t - leg.at) / 110) % 4)) as ElaraFrame;
       flip = leg.to >= leg.from ? 1 : -1;
@@ -130,7 +199,6 @@ function Room({ beat, t, g, h, phone }: { beat: EngineBeatData; t: number; g: Ge
     if (t >= a.reach && t < a.release + 90) frame = t < a.reach + 90 ? 1 : t < a.release ? 2 : 3;
   });
 
-  // Dials: where each one's arc and value are.
   const dialState = beat.dials.map((d, i) => {
     const k = turns.indexOf(i);
     const a = k >= 0 ? turnAt[k] : null;
@@ -141,7 +209,7 @@ function Room({ beat, t, g, h, phone }: { beat: EngineBeatData; t: number; g: Ge
     const to = d.to !== undefined ? num(d.to) : null;
     let value = d.from;
     if (turned && d.to !== undefined) value = f && to && f.pre === to.pre && f.post === to.post && p < 1 ? `${to.pre}${Math.round(f.n + (to.n - f.n) * (1 - Math.pow(1 - p, 3))).toLocaleString("en-US")}${to.post}` : d.to;
-    return { r, turned, value, ms: a?.ms ?? 0, lit: k >= 0 && t >= (k === 0 ? E.bus + E.busMs : E.walk2 + 500) };
+    return { r, turned, value, ms: a?.ms ?? 0 };
   });
 
   const chose = t >= E.choose;
@@ -149,14 +217,14 @@ function Room({ beat, t, g, h, phone }: { beat: EngineBeatData; t: number; g: Ge
   const result = t >= E.result;
   const rFrom = num(beat.result.from)?.n ?? 0;
   const rTo = num(beat.result.to)?.n ?? 0;
-  const gain = `+${rTo - rFrom} leads`;
+  // The phone chip is the number alone: the tile under it says what it counts.
+  const gain = phone ? `+${rTo - rFrom}` : `+${rTo - rFrom} leads`;
 
-  // The lit wires: the chosen card's stem, the bus to the first knob turned, then on to the second.
-  const busA = { x1: pickX, x2: g.dx[turns[0]], at: E.bus, ms: E.busMs };
-  const busB = turns.length > 1 ? { x1: g.dx[turns[0]], x2: g.dx[turns[1]], at: E.walk2, ms: 500 } : null;
+  const busA = { x1: pickX, x2: at(turns[0]), at: E.bus, ms: E.busMs };
+  const busB = turns.length > 1 ? { x1: at(turns[0]), x2: at(turns[1]), at: E.walk2, ms: 500 } : null;
   const stemLen = g.bus - g.stemTop;
-  const lit = (x1: number, x2: number, y: number, on: boolean, msx: number, key: string, y2 = y) => {
-    const len = Math.max(1, Math.abs(x2 - x1) + Math.abs(y2 - y));
+  const lit = (x1: number, x2: number, y: number, on: boolean, msx: number, key: string) => {
+    const len = Math.max(1, Math.abs(x2 - x1));
     return (
       <line
         key={key}
@@ -164,7 +232,7 @@ function Room({ beat, t, g, h, phone }: { beat: EngineBeatData; t: number; g: Ge
         x1={x1}
         y1={y}
         x2={x2}
-        y2={y2}
+        y2={y}
         strokeDasharray={`${len} ${len + 2}`}
         style={{ strokeDashoffset: on ? 0 : len, transitionDuration: `${msx}ms` } as CSSProperties}
       />
@@ -172,9 +240,7 @@ function Room({ beat, t, g, h, phone }: { beat: EngineBeatData; t: number; g: Ge
   };
 
   const newL = beat.learned.find((l) => l.isNew);
-  const oldL = beat.learned.filter((l) => !l.isNew);
-  const roomH = phone ? h : DESK.h;
-  const showLearned = !phone || h >= 492;
+  const oldL = beat.learned.filter((l) => !l.isNew).slice(0, Math.max(0, (g.learn?.max ?? 1) - 1));
 
   let caption: ReactNode;
   if (t < E.choose) caption = (<><b>Reading</b> every channel&apos;s results</>);
@@ -184,9 +250,19 @@ function Room({ beat, t, g, h, phone }: { beat: EngineBeatData; t: number; g: Ge
   else if (t < E.result) caption = (<><b>Learned</b> it, and kept it for next time</>);
   else caption = (<><b>{rTo - rFrom > 0 ? `+${rTo - rFrom}` : ""}</b> {beat.result.label.toLowerCase()}</>);
 
+  const resultNumbers = (
+    <p className="en-res__n">
+      <s className="en-res__old">{beat.result.from}</s>
+      <span className="en-res__slot">
+        <span className="en-res__from">{beat.result.from}</span>
+        <span className="en-res__to">{beat.result.to}</span>
+      </span>
+    </p>
+  );
+
   return (
-    <div className="en-room" style={{ width: g.w, height: roomH }}>
-      <svg className="en-wires" width={g.w} height={roomH} viewBox={`0 0 ${g.w} ${roomH}`} aria-hidden="true">
+    <div className="en-room" style={{ width: g.w, height: g.h }}>
+      <svg className="en-wires" width={g.w} height={g.h} viewBox={`0 0 ${g.w} ${g.h}`} aria-hidden="true">
         <line className="en-w" x1={g.busL} y1={g.bus} x2={g.busR} y2={g.bus} />
         <line className="en-w" x1={pickX} y1={g.stemTop} x2={pickX} y2={g.bus} />
         <line
@@ -204,13 +280,20 @@ function Room({ beat, t, g, h, phone }: { beat: EngineBeatData; t: number; g: Ge
 
       {beat.channels.map((c, i) => {
         const pick = i === beat.pick;
-        const shown = t >= E.chip0 + i * E.chipStep;
+        const shownAt = E.chip0 + i * E.chipStep;
         return (
-          <div key={c.label} className="en-ch" data-pick={pick && chose ? "" : undefined} style={{ left: cx(i) - g.card / 2, top: g.cardTop, width: g.card }}>
+          <div
+            key={c.label}
+            className="en-ch"
+            data-pick={pick && chose ? "" : undefined}
+            // While it reads, each channel lights in turn: it watches every one before it picks.
+            data-scan={t >= shownAt && t < shownAt + 450 ? "" : undefined}
+            style={{ left: g.cx(i) - g.card / 2, top: g.cardTop, width: g.card }}
+          >
             <div className="en-ch__card">
               <ChannelMark icon={c.icon} label={c.label} />
               {c.delta ? (
-                <span className="en-chip" data-tone={c.delta.tone} data-on={shown && !(pick && result) ? "" : undefined}>
+                <span className="en-chip" data-tone={c.delta.tone} data-on={t >= shownAt && !(pick && result) ? "" : undefined}>
                   {phone ? c.delta.text.split(" ")[0] : c.delta.text}
                 </span>
               ) : null}
@@ -225,22 +308,20 @@ function Room({ beat, t, g, h, phone }: { beat: EngineBeatData; t: number; g: Ge
         );
       })}
 
-      {beat.dials.map((d, i) => (
-        <Dial key={d.label} g={g} x={g.dx[i]} from={d.from} label={d.label} s={dialState[i]} />
-      ))}
-
       <div className="en-bot" style={{ transform: `translate3d(${x}px, ${g.bus}px, 0)`, transitionDuration: `${ms}ms` } as CSSProperties}>
         <Elara width={g.bot} frame={frame} flip={flip} halo="var(--en-bg)" />
       </div>
 
-      {showLearned ? (
-        <div className="en-learn">
-          {/* The phone shows only the new learning, so its heading arrives with it instead of over an empty space. */}
-          {phone ? null : <p className="en-k">What it learned</p>}
+      {g.shown.map((d, k) => (
+        <Dial key={beat.dials[d].label} g={g} x={g.dx[k]} from={beat.dials[d].from} label={beat.dials[d].label} s={dialState[d]} />
+      ))}
+
+      {g.learn ? (
+        <div className="en-learn" style={{ left: g.learn.x, top: g.learn.y, width: g.learn.w }}>
+          <p className="en-k">What it learned</p>
           {newL ? (
             <div className="en-new" data-on={learnt ? "" : undefined} data-flash={learnt && t < E.learn + E.flashMs ? "" : undefined}>
               <div className="en-new__in">
-                {phone ? <p className="en-k">What it learned</p> : null}
                 <p className="en-lc en-lc--new">
                   {newL.text}
                   <span className="en-lc__when">{newL.when}</span>
@@ -248,33 +329,51 @@ function Room({ beat, t, g, h, phone }: { beat: EngineBeatData; t: number; g: Ge
               </div>
             </div>
           ) : null}
-          {phone
-            ? null
-            : oldL.map((l) => (
-                <p key={l.text} className="en-lc">
-                  {l.text}
-                  <span className="en-lc__when">{l.when}</span>
-                </p>
-              ))}
+          {oldL.map((l) => (
+            <p key={l.text} className="en-lc">
+              {l.text}
+              <span className="en-lc__when">{l.when}</span>
+            </p>
+          ))}
         </div>
       ) : null}
 
-      <div className="en-res" data-on={result ? "" : undefined}>
-        <p className="en-res__k">{beat.result.label}</p>
-        <p className="en-res__n">
-          <s className="en-res__old">{beat.result.from}</s>
-          <span className="en-res__slot">
-            <span className="en-res__from">{beat.result.from}</span>
-            <span className="en-res__to">{beat.result.to}</span>
-          </span>
-        </p>
-      </div>
+      {g.res ? (
+        <div className="en-res" data-on={result ? "" : undefined} style={{ left: g.res.x, top: g.res.y, width: g.res.w }}>
+          <p className="en-res__k">{beat.result.label}</p>
+          {resultNumbers}
+        </div>
+      ) : null}
 
-      {phone ? null : (
-        <p className="en-cap" aria-hidden="true">
+      {g.tile ? (
+        <div className="en-tile" data-on={result ? "" : undefined} style={{ minHeight: g.tile.h }}>
+          {g.tile.earlier && beat.learned.find((l) => !l.isNew) ? (
+            <p className="en-tile__was">
+              <b>{beat.learned.find((l) => !l.isNew)?.when}:</b> {beat.learned.find((l) => !l.isNew)?.text}
+            </p>
+          ) : null}
+          {/* The phone has no caption line: until it learns, this line says what the engine is doing. */}
+          <p className="en-tile__l" data-on="" data-learned={learnt ? "" : undefined}>
+            {learnt ? (
+              <>
+                <b>{newL?.when}, it learned:</b> {newL?.text}
+              </>
+            ) : (
+              caption
+            )}
+          </p>
+          <div className="en-tile__res en-res" data-on={result ? "" : undefined}>
+            <p className="en-res__k">{beat.result.label}</p>
+            {resultNumbers}
+          </div>
+        </div>
+      ) : null}
+
+      {g.cap ? (
+        <p className="en-cap" aria-hidden="true" style={{ left: g.cap.x, top: g.cap.y }}>
           {caption}
         </p>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -287,14 +386,14 @@ function Turning({ d }: { d: EngineBeatData["dials"][number] }) {
   );
 }
 
-function Dial({ g, x, from, label, s }: { g: Geo; x: number; from: string; label: string; s: { r: number; turned: boolean; value: string; ms: number; lit: boolean } }) {
+function Dial({ g, x, from, label, s }: { g: Geo; x: number; from: string; label: string; s: { r: number; turned: boolean; value: string; ms: number } }) {
   const R = g.r;
   const arcR = Math.round(R * 0.78);
   const C = 2 * Math.PI * arcR;
   const sweep = 0.75 * C;
   const size = R * 2;
   return (
-    <div className="en-dial" data-lit={s.lit ? "" : undefined} style={{ left: x - R - 30, top: g.dy - R, width: size + 60 } as CSSProperties}>
+    <div className="en-dial" style={{ left: x - R - 30, top: g.dy - R, width: size + 60 } as CSSProperties}>
       <div className="en-knob" style={{ width: size, height: size }}>
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
           <circle className="en-knob__body" cx={R} cy={R} r={R - 1} />

@@ -387,6 +387,7 @@ function Answer({
   cut,
   keep,
   noChart,
+  figs: shownFigs,
   phone,
   motion,
 }: {
@@ -404,6 +405,8 @@ function Answer({
   keep: number;
   /** A phone too short for both leaves the chart out and keeps "What it likely means". */
   noChart: boolean;
+  /** How many figures are shown (whole rows); all of them when absent. */
+  figs?: number;
   phone: boolean;
 }) {
   const a = beat.answer;
@@ -423,7 +426,7 @@ function Answer({
   const figs = (
     <dl className="aa-figs aa-in" data-off={off(figsAt)} data-n={a.figures.length} data-long={long ? "" : undefined} style={{ "--i": lean ? 2 : 1 } as CSSProperties}>
       {a.figures.map((f, i) => (
-        <div key={f.label} className="aa-fig" style={d((motion?.figs ?? 0) + i * 80) ?? undefined}>
+        <div key={f.label} className="aa-fig" data-off={shownFigs !== undefined && i >= shownFigs ? "" : undefined} style={d((motion?.figs ?? 0) + i * 80) ?? undefined}>
           <dt>{f.label}</dt>
           <dd>{motion ? motion.fig(f.value, i) : f.value}</dd>
         </div>
@@ -531,7 +534,7 @@ const BACK = 600;
 
 /**
  * Every moment of the round-2 ask, in ms from the beat's start (§4.3): the question types into
- * its centred place, the robot reads each source (~1.15 s each), walks back, the figures are
+ * its resting place, the robot reads each source (~1.15 s each), walks back, the figures are
  * checked, the band folds, the question moves to its answer position, and the answer lands
  * block by block. `total` holds the answer 3 s after its last line.
  */
@@ -577,7 +580,8 @@ function countUp(value: string, k: number) {
   const m = /^(\D*)(\d[\d,]*)(\D*)$/.exec(value);
   if (!m) return value;
   const n = parseInt(m[2].replace(/,/g, ""), 10);
-  if (!(n <= 9999) || k >= 1) return value;
+  // Small integers land as they are: a "2" mid-count beside a headline that says 3 reads as a mistake (critic r2).
+  if (!(n <= 9999) || n < 10 || k >= 1) return value;
   const e = 1 - Math.pow(1 - Math.max(0, k), 4);
   return `${m[1]}${Math.round(n * e).toLocaleString("en-US")}${m[3]}`;
 }
@@ -588,14 +592,41 @@ function AiFetchBeat({ client, beat, variant, active, fill, reduced, quiet }: Be
   const phone = variant === "phone";
   return (
     <PortalFrame client={client} stage="ai" narration={beat.narration} variant={variant} fill={fill} quiet={quiet}>
-      <div className="ai2" data-variant={variant} data-cut={t < 100 ? "" : undefined}>
+      <div
+        className="ai2"
+        data-variant={variant}
+        data-cut={t < 100 ? "" : undefined}
+        style={{ "--ai-brand": client.theme.accent, "--ai-brand-t": client.theme.accentText } as CSSProperties}
+      >
         {phone ? (
           <FitWidth w={320}>{(h) => <FetchView beat={beat} T={T} t={t} phone h={h} w={320} />}</FitWidth>
         ) : (
-          <FitWidth w={[960, 1220]}>{(h, w) => <FetchView beat={beat} T={T} t={t} phone={false} h={h} w={w} />}</FitWidth>
+          // Laid out at the stage's own width from 720 (a tablet sheet is never a shrunken desk picture; critic r2).
+          <FitWidth w={[720, 1220]}>{(h, w) => <FetchView beat={beat} T={T} t={t} phone={false} h={h} w={w} />}</FitWidth>
         )}
       </div>
     </PortalFrame>
+  );
+}
+
+/** Where the answer will land: a quiet card of bars, one figure slot filling per source read. */
+function Skeleton({ on, figs, done }: { on: boolean; figs: number; done: number }) {
+  return (
+    <div className="ai2__skel" data-on={on ? "" : undefined} aria-hidden="true">
+      <i className="ai2__bar" style={{ width: "78%" }} />
+      <i className="ai2__bar" style={{ width: "52%" }} />
+      <span className="ai2__slots">
+        {Array.from({ length: figs }, (_, i) => (
+          <span key={i} className="ai2__slot" data-got={i < done ? "" : undefined}>
+            <i />
+            <i />
+          </span>
+        ))}
+      </span>
+      <i className="ai2__bar ai2__bar--thin" style={{ width: "88%" }} />
+      <i className="ai2__bar ai2__bar--thin" style={{ width: "64%" }} />
+      <i className="ai2__bar ai2__bar--thin" style={{ width: "72%" }} />
+    </div>
   );
 }
 
@@ -610,32 +641,15 @@ function FetchView({ beat, T, t, phone, h, w }: { beat: AiAskBeatData; T: Return
   const typed = t < TYPE_AT ? 0 : Math.min(beat.question.length, Math.floor((t - TYPE_AT) / charMs(beat.question)) + 1);
   const typing = typed > 0 && typed < beat.question.length;
 
-  // FLIP: the question is laid out where it rests after the answer; while the robot works, a
-  // transform puts it centred in the room below the band and larger (the text block only).
-  const bodyRef = useRef<HTMLDivElement>(null);
-  const qRef = useRef<HTMLDivElement>(null);
-  const [centre, setCentre] = useState<string | null>(null);
-  const [ready, setReady] = useState(false);
-  const body = useBox(bodyRef);
-  useLayoutEffect(() => {
-    const b = bodyRef.current;
-    const q = qRef.current;
-    if (!b || !q) return;
-    const k = phone ? 1 : 34 / 24;
-    const tx = (b.clientWidth - q.offsetWidth * k) / 2 - q.offsetLeft;
-    const ty = (b.clientHeight - q.offsetHeight * k) / 2 - q.offsetTop - (phone ? 0 : 12);
-    setCentre(`translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px) scale(${k.toFixed(4)})`);
-  }, [body.w, body.h, phone, folded]);
-  useEffect(() => {
-    if (centre === null || ready) return;
-    const id = requestAnimationFrame(() => setReady(true));
-    return () => cancelAnimationFrame(id);
-  }, [centre, ready]);
+  // The question types into the place it rests (no centring: the stage under it was 55% empty for
+  // ~7 s, critic r2 A2); the answer's place holds a skeleton from the first source read.
+  const stack = phone || w < 900;
+  const sketched = t >= (T.plan.arrive[0] ?? 0) + 200;
 
   // The answer's blocks that would not fit whole are hidden (the round-1 fit rule): measured when it lands.
   const viewRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const [fit, setFit] = useState<{ cut: number | null; n: number; noChart?: boolean } | null>(null);
+  const [fit, setFit] = useState<{ cut: number | null; n: number; noChart?: boolean; figs?: number } | null>(null);
   const [settle, setSettle] = useState(0);
   useEffect(() => {
     if (!answered) return;
@@ -661,7 +675,17 @@ function FetchView({ beat, T, t, phone, h, w }: { beat: AiAskBeatData; T: Return
     const room = view.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 2;
     const bottom = (el: HTMLElement) => el.offsetTop - ab.offsetTop + el.offsetHeight;
     const first = blocks.findIndex((b) => bottom(b) > room + 0.5);
-    let next: { cut: number | null; n: number; noChart?: boolean } = { cut: first < 0 ? null : Math.max(1, first), n: Infinity };
+    let next: { cut: number | null; n: number; noChart?: boolean; figs?: number } = { cut: first < 0 ? null : Math.max(1, first), n: Infinity };
+    // A short phone with no room for the whole 2x2 grid keeps the figures' first row rather than none of
+    // them (a headline over an empty card read as broken). Rows are measured on screen, unscaled.
+    if (first === 1 && blocks[1]?.matches(".aa-figs")) {
+      const scale = ab.getBoundingClientRect().height / (ab.offsetHeight || 1) || 1;
+      const top = ab.getBoundingClientRect().top;
+      const figs = [...blocks[1].querySelectorAll<HTMLElement>(".aa-fig")];
+      const fits = figs.filter((f) => (f.getBoundingClientRect().bottom - top) / scale <= room + 0.5).length;
+      const row = figs.length > 2 ? 2 : figs.length;
+      if (fits >= row && row > 0 && fits < figs.length) next = { cut: 2, n: Infinity, figs: fits - (fits % row) };
+    }
     const means = blocks.findIndex((b) => b.matches(".aa-means-sec"));
     let n = 0;
     if (first >= 0 && first === means) {
@@ -699,10 +723,10 @@ function FetchView({ beat, T, t, phone, h, w }: { beat: AiAskBeatData; T: Return
   };
 
   return (
-    <div className="ai2__screen" data-ready={ready ? "" : undefined}>
+    <div className="ai2__screen" data-stack={stack ? "" : undefined}>
       <FetchBand sources={beat.sources ?? []} steps={beat.steps} plan={T.plan} t={t} phone={phone} width={w} folded={folded} />
-      <div className="ai2__body" ref={bodyRef}>
-        <div className="ai2__q" ref={qRef} data-moved={moved ? "" : undefined} style={{ transform: moved || !centre ? "none" : centre }}>
+      <div className="ai2__body">
+        <div className="ai2__q" data-moved={moved ? "" : undefined}>
           <p className="ai2__k">You asked</p>
           <p className="ai2__qt">
             <span>{beat.question.slice(0, typed)}</span>
@@ -711,8 +735,9 @@ function FetchView({ beat, T, t, phone, h, w }: { beat: AiAskBeatData; T: Return
           </p>
         </div>
         <div className="ai2__area" ref={viewRef}>
+          <Skeleton on={sketched && !answered} figs={phone ? 4 : beat.answer.figures.length} done={(T.plan.done ?? []).filter((d) => t >= d).length} />
           <div className="ai2__card" data-in={answered ? "" : undefined}>
-            <Answer beat={beat} cardRef={cardRef} cut={fit?.cut ?? null} keep={fit?.n ?? Infinity} noChart={fit?.noChart ?? false} phone={phone} motion={motion} />
+            <Answer beat={beat} cardRef={cardRef} cut={fit?.cut ?? null} keep={fit?.n ?? Infinity} noChart={fit?.noChart ?? false} figs={fit?.figs} phone={phone} motion={motion} />
           </div>
         </div>
       </div>

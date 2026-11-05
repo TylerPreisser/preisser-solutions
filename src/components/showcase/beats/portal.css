@@ -722,6 +722,7 @@
 /* A block (or a "What it likely means" line) that would not fit whole is not shown at all: never
    sliced, never panned to, and taken out of the layout so the card ends where its content ends. */
 .ai-answer__body > [data-off],
+.aa-figs > .aa-fig[data-off],
 .aa-means > li[data-off] {
   display: none;
 }
@@ -1113,10 +1114,13 @@
   --ai-wire: #c9d1dc;
   --ai-ink: #0a1628;
   --ai-ink2: #4a5a70;
-  --ai-accent: #1590ff;
-  --ai-accent-t: #0c6fc9;
-  --ai-tint: #e8f2ff;
-  --ai-chip: #0c6fc9;
+  /* The client's own accent (critic r2: wear the client, as FarmBooks does): --ai-brand / --ai-brand-t are set
+     inline from its portal theme; the site blue is only the fallback. Chips: white on the theme's accent-text
+     (Duffer #27753A 5.6:1, Hays #A82659 6.7:1). */
+  --ai-accent: var(--ai-brand, #1590ff);
+  --ai-accent-t: var(--ai-brand-t, #0c6fc9);
+  --ai-tint: color-mix(in srgb, var(--ai-accent) 10%, #ffffff);
+  --ai-chip: var(--ai-brand-t, #0c6fc9);
   --ai-ok: #0e7a3a;
   --ai-ease-move: var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1));
   --ai-ease-grow: var(--sc-ease-grow, cubic-bezier(0.2, 0.9, 0.25, 1));
@@ -1145,8 +1149,8 @@
   --ai-wire: #3a4f6c;
   --ai-ink: #f2f6fb;
   --ai-ink2: #a9b6c8;
-  --ai-accent-t: #5ab0ff;
-  --ai-tint: #10305a;
+  --ai-accent-t: color-mix(in srgb, var(--ai-accent) 55%, #ffffff);
+  --ai-tint: color-mix(in srgb, var(--ai-accent) 22%, #13233a);
 }
 /* A restart (the tab entered again) jumps back to the first frame instead of rewinding on screen. */
 .ai2[data-cut] * {
@@ -1370,10 +1374,6 @@
   position: relative;
   z-index: 2;
   align-self: start;
-  transform-origin: 0 0;
-}
-.ai2 [data-ready] .ai2__q {
-  transition: transform 420ms var(--ai-ease-move);
 }
 .ai2__k {
   margin-bottom: 8px !important;
@@ -1517,6 +1517,75 @@
   opacity: 1;
 }
 
+/* Where the answer will land, from the first source read (critic r2 A2): bars, and one figure slot
+   filling in the client's accent per source read. Fades out as the card lands. */
+.ai2__skel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  box-sizing: border-box;
+  padding: 26px 30px 24px;
+  border: 1px solid var(--ai-line);
+  border-radius: 16px;
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+.ai2__skel[data-on] {
+  opacity: 1;
+}
+.ai2__bar {
+  display: block;
+  height: 18px;
+  margin-bottom: 10px;
+  border-radius: 9px;
+  background: var(--ai-line);
+}
+.ai2__bar--thin {
+  height: 10px;
+  margin: 14px 0 0;
+  border-radius: 5px;
+}
+.ai2__slots {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 22px 0 8px;
+}
+.ai2__slot i {
+  display: block;
+  height: 26px;
+  width: 46%;
+  border-radius: 8px;
+  background: var(--ai-line);
+  transition: background-color 240ms ease-out;
+}
+.ai2__slot i + i {
+  height: 10px;
+  width: 82%;
+  margin-top: 8px;
+  border-radius: 5px;
+}
+.ai2__slot[data-got] i:first-child {
+  background: color-mix(in srgb, var(--ai-accent) 45%, transparent);
+}
+/* Every label at 12 px or more on the desk picture (critic r2: nothing under ~12 px rendered). */
+.ai2 .aa-k,
+.ai2 .ch-val,
+.ai2 .ch-tick,
+.ai2 .ai-sources {
+  font-size: 12px;
+}
+/* A stage under 900 px wide (a tablet sheet): the question over the answer, both full width. */
+.ai2__screen[data-stack] .ai2__body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ai2__screen[data-stack] .ai2__area {
+  flex: 1 1 auto;
+}
+
 /* Phone: the band 170 tall (cards 58, labels 11 px), folding to its 78 px strip when the answer lands. */
 .ai2[data-variant="phone"] .fb-src__card {
   border-radius: 15px;
@@ -1527,14 +1596,18 @@
 }
 .ai2[data-variant="phone"] .fb-src__label {
   top: calc(100% + 5px);
-  font-size: 11.5px;
-  line-height: 14px;
+  font-size: 13px;
+  line-height: 15px;
 }
 .ai2[data-variant="phone"] .fb-chip {
-  top: -11px;
-  padding: 3px 7px;
-  font-size: 11px;
-  line-height: 13px;
+  top: -12px;
+  gap: 2px;
+  padding: 3px 5px;
+  font-size: 13px;
+  line-height: 15px;
+}
+.ai2[data-variant="phone"] .fb-src[data-state="done"] .fb-chip__tick {
+  width: 8px;
 }
 .ai2[data-variant="phone"] .fb-src[data-state="on"] .fb-src__card {
   box-shadow:
@@ -1542,8 +1615,8 @@
     0 0 0 5px color-mix(in srgb, var(--ai-accent) 14%, transparent);
 }
 .ai2[data-variant="phone"] .fb-status {
-  font-size: 12.5px;
-  line-height: 15px;
+  font-size: 13.5px;
+  line-height: 16px;
   gap: 5px;
 }
 .ai2[data-variant="phone"] .fb-status__tick {
@@ -1557,14 +1630,14 @@
   padding: 14px 12px 12px;
 }
 .ai2[data-variant="phone"] .ai2__k {
-  position: absolute;
-  left: 0;
-  bottom: 100%;
-  margin-bottom: 8px !important;
-  transition: opacity 200ms ease-out;
+  display: none;
 }
-.ai2[data-variant="phone"] .ai2__q[data-moved] .ai2__k {
-  opacity: 0;
+.ai2[data-variant="phone"] .ai2__skel {
+  padding: 16px;
+}
+.ai2[data-variant="phone"] .ai2__slots {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 14px 0 4px;
 }
 .ai2[data-variant="phone"] .ai2__qt {
   font-size: 19px;
@@ -1578,7 +1651,7 @@
   font-weight: 600;
   color: var(--ai-ink2);
 }
-.ai2[data-variant="phone"] [data-ready] .ai2__qt {
+.ai2[data-variant="phone"] .ai2__qt {
   transition:
     font-size 420ms var(--ai-ease-move),
     line-height 420ms var(--ai-ease-move),
@@ -1615,7 +1688,7 @@
 .ai2[data-variant="phone"] .ch-tick,
 .ai2[data-variant="phone"] .aa-k,
 .ai2[data-variant="phone"] .ai-sources {
-  font-size: 12.5px;
+  font-size: 13px;
 }
 .ai2[data-variant="phone"] .aa-means li,
 .ai2[data-variant="phone"] .aa-next li {
