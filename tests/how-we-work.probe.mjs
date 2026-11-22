@@ -18,6 +18,11 @@
  * showing text fit on one screen. With no JavaScript, and on a screen too short
  * to pin a block on, everything is simply laid out to read.
  *
+ * The motion's arithmetic is proved at every scroll position, frame rate and kind
+ * of scrolling by tests/how-we-work-motion.probe.mjs, with no browser. This file
+ * proves the other half: that a real browser lays it out and paints what that
+ * arithmetic says.
+ *
  *   PS_TEST_BASE_URL=http://127.0.0.1:4321 node tests/how-we-work.probe.mjs
  */
 import { createRequire } from "node:module";
@@ -92,8 +97,10 @@ async function track(page) {
 
 async function scrollTo(page, y) {
   await page.evaluate((top) => window.scrollTo({ top, behavior: "instant" }), y);
-  // 140ms until the reader counts as stopped, then the picture eases to rest.
-  await page.waitForTimeout(1100);
+  // 140ms until the reader counts as stopped, then the picture eases to rest. The section says when
+  // it is still moving (data-moving), so this waits for the fact instead of guessing a time.
+  await page.waitForTimeout(260);
+  await page.waitForFunction(() => !document.querySelector("#how-we-work").hasAttribute("data-moving"), null, { timeout: 8000 });
 }
 
 async function read(page) {

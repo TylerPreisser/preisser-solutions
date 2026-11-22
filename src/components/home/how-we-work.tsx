@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { IDLE_MS, beatOf, clamp, follow, followerAt, frame, positionOf, rest } from "./how-we-work-motion";
 
 /**
  * How We Work: the section directly below the hero (ADR-0026).
@@ -18,16 +19,21 @@ import { useEffect, useRef, type ReactNode } from "react";
  *
  * HOW IT MOVES. Nothing is switched on and off at a threshold. The scroll
  * position is turned into one number, the beat position `u` (0 to 1 is the
- * first line's beat, and so on), and `frame(u)` says exactly what the section
- * looks like there: where the light is, how lit each line is, how visible
+ * first line's beat, and so on), and `frame(u)` (how-we-work-motion.ts, which
+ * holds all the arithmetic and is tested at every position) says exactly what
+ * the section looks like there: where the light is, how lit each line is, how visible
  * each text is. So everything is scrubbed by the reader's own scrolling,
  * forwards and backwards.
- *   - The number that is painted FOLLOWS the scroll position with a short
- *     ease (FOLLOW_MS), which is what hides the steps of a mouse wheel.
+ *   - The number that is painted FOLLOWS the scroll position on a damped
+ *     spring with a speed limit. That hides the steps of a mouse wheel, starts
+ *     and stops gently, never overshoots, and means that however hard the
+ *     page is flung no fade finishes in under about a tenth of a second.
+ *     While the picture is catching up with a fling the texts stay out of the
+ *     way, so a paragraph never flashes past on the way to another.
  *   - When scrolling stops part way between two beats, the painted number
- *     eases on to the middle of the nearest beat. The page does not move;
- *     only the picture settles. At rest the reader therefore never sees two
- *     half-faded texts or a light parked between two lines.
+ *     eases on to the nearest point at which a beat is at rest. The page does
+ *     not move; only the picture settles. At rest the reader therefore never
+ *     sees two half-faded texts or a light parked between two lines.
  *   - Each frame changes only `opacity` and `transform` (and one custom
  *     property that feeds an opacity). No layout and no repaint of the type.
  *   - No React state: a frame is written straight to the elements, so
@@ -86,61 +92,6 @@ const STEPS: ReadonlyArray<{ line: string; body: ReactNode }> = [
   },
 ];
 
-// The beat after the last line: the relationship sentence.
-const CLOSING = STEPS.length;
-const BEATS = STEPS.length + 1;
-
-// The first line starts to light a little before the block finishes arriving,
-// so the reader is never looking at a pinned screen on which nothing has
-// happened. A share of the window's height.
-const LEAD = 0.18;
-// How far the two lines that are not current step back (0.5 keeps them at
-// least 3:1 against the background in both themes).
-const QUIET = 0.5;
-// How quickly the picture follows the scroll position, as a time constant.
-const FOLLOW_MS = 85;
-// How long after the last scroll event the reader counts as having stopped.
-const IDLE_MS = 140;
-
-const clamp = (x: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, x));
-
-/** 0 before `from`, 1 after `to`, an ease-in-out in between. */
-function ease(from: number, to: number, x: number) {
-  const t = clamp((x - from) / (to - from), 0, 1);
-  return t * t * (3 - 2 * t);
-}
-
-/**
- * What the section looks like at beat position `u`. Pure, so the picture is
- * the same going down as coming back up.
- */
-function frame(u: number) {
-  // The sequence switching on as the block arrives, and the last beat.
-  const on = ease(-0.3, 0.15, u);
-  const closing = ease(2.85, 3.2, u);
-  // Which line the light is on, as a fraction: it rests on a line for most of
-  // that line's beat and glides to the next across the boundary.
-  const lamp = ease(0.8, 1.2, u) + ease(1.8, 2.2, u);
-  const lit = STEPS.map((_, k) => on * Math.max(0, 1 - Math.abs(lamp - k)));
-  const ink = 1 - QUIET * on * (1 - closing);
-  // Each text comes up as the light lands on its line and leaves as the light
-  // moves off, so no two texts are ever on screen together.
-  const texts = STEPS.map((_, k) => {
-    const arriving = k === 0 ? ease(-0.12, 0.15, u) : ease(k + 0.04, k + 0.2, u);
-    const leaving = ease(k + 0.8, k + 0.95, u);
-    return { opacity: arriving * (1 - leaving), y: (1 - arriving) * 14 - leaving * 10 };
-  });
-  const last = ease(CLOSING + 0.05, CLOSING + 0.22, u);
-  texts.push({ opacity: last, y: (1 - last) * 14 });
-  return { lamp, lit, ink, texts, light: on * (1 - 0.45 * closing) };
-}
-
-/** Where the picture comes to rest for a reader who has stopped at `u`. */
-function rest(u: number) {
-  if (u < -0.1) return Math.min(u, -0.35);
-  return clamp(Math.floor(u), 0, CLOSING) + 0.5;
-}
-
 export function HowWeWork() {
   const trackRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
@@ -159,18 +110,17 @@ export function HowWeWork() {
     let pinned = false;
     let travel = 0;
     let boxes: Array<{ x: number; y: number; w: number; h: number }> = [];
-    let shown = Number.NaN; // the beat position that is painted
+    let shown = followerAt(0); // the beat position that is painted, and how it is moving
     let target = 0; // the one it is heading for
     let scrolling = false;
     let raf = 0;
     let lastTime = 0;
     let idle = 0;
 
-    const position = () =>
-      clamp((-track.getBoundingClientRect().top + window.innerHeight * LEAD) / (travel / BEATS), -1, BEATS);
+    const position = () => positionOf(-track.getBoundingClientRect().top, window.innerHeight, travel);
 
-    const paint = (u: number) => {
-      const f = frame(u);
+    const paint = (u: number, calm: number) => {
+      const f = frame(u, calm);
       lines.forEach((line, k) => line.style.setProperty("--lit", f.lit[k].toFixed(3)));
       inks.forEach((ink) => {
         ink.style.opacity = f.ink.toFixed(3);
@@ -197,26 +147,27 @@ export function HowWeWork() {
       }
       light.style.opacity = f.light.toFixed(3);
       // For anything that needs the beat as a fact: tests, and the next person.
-      const beat = u < -0.1 ? null : clamp(Math.floor(u), 0, CLOSING);
+      const beat = beatOf(u);
       if (beat === null) track.removeAttribute("data-step");
       else if (track.getAttribute("data-step") !== String(beat)) track.setAttribute("data-step", String(beat));
     };
 
     const tick = (now: number) => {
       raf = 0;
-      const dt = Math.min(64, now - lastTime);
+      const dt = now - lastTime;
       lastTime = now;
-      if (reduce.matches || Number.isNaN(shown)) shown = target;
-      else {
-        shown += (target - shown) * (1 - Math.exp(-dt / FOLLOW_MS));
-        if (Math.abs(target - shown) < 0.0005) shown = target;
-      }
-      paint(shown);
-      if (shown !== target || scrolling) raf = window.requestAnimationFrame(tick);
+      if (reduce.matches) shown = followerAt(target);
+      else follow(shown, target, dt);
+      paint(shown.x, shown.calm);
+      if (shown.moving || scrolling) raf = window.requestAnimationFrame(tick);
+      // Lets a test (or anything else) wait for the picture to come to rest
+      // instead of guessing how long that takes.
+      else track.removeAttribute("data-moving");
     };
     const run = () => {
       if (raf === 0) {
         lastTime = performance.now();
+        track.setAttribute("data-moving", "true");
         raf = window.requestAnimationFrame(tick);
       }
     };
@@ -254,13 +205,13 @@ export function HowWeWork() {
         });
         light.style.removeProperty("opacity");
         track.removeAttribute("data-step");
-        shown = Number.NaN;
+        track.removeAttribute("data-moving");
         return;
       }
       boxes = lines.map((line) => ({ x: line.offsetLeft, y: line.offsetTop, w: line.offsetWidth, h: line.offsetHeight }));
       target = rest(position());
-      shown = target;
-      paint(shown);
+      shown = followerAt(target);
+      paint(shown.x, shown.calm);
     };
 
     measure();
