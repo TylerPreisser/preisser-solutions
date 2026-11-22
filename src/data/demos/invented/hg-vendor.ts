@@ -1,5 +1,5 @@
 // src/data/demos/invented/hg-vendor.ts
-// HG Oil's "Vendor Insurance" walkthrough on the home showcase (ADR-0025 §2), scope hg-oil.
+// HG Oil's "Vendor Insurance" walkthrough on the home showcase (ADR-0028 §2), scope hg-oil.
 // Pure data: tests/demo-privacy.probe.mjs imports this file directly. No runtime imports.
 //
 // No new names: the vendor, its agency and insurers, the agent, the towns and the filing list all

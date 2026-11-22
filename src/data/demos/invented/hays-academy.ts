@@ -26,7 +26,7 @@ export const invented: InventedSet = {
     // The funnel and AI beats (round 5): the portal's AI tab and answer labels
     // (portal-ui ai/copy.ts, chat/copy.ts KIND_WORDS) and the sample question.
     "Ad", "Maps", "Ask", "Are", "Answer", "Pulled", "Compared", "Concluded", "Sources", "Cost", "Per",
-    // Round 2 (ADR-0025 §4, §5): the AI tab's source cards and the MarCommand tab's dial labels.
+    // Round 2 (ADR-0028 §4, §5): the AI tab's source cards and the MarCommand tab's dial labels.
     "Site", "Visits", "Enrollment", "Daily", "Radius", "Just",
   ],
   approved: [

@@ -1,5 +1,5 @@
 // HG Oil Holdings' showcase (ADR-0022): their website, the COI story, and
-// Impact (ADR-0025 tab set: Website, Vendor Insurance, Impact). Vendor insurance is AI at work; the saltwater close is automation
+// Impact (ADR-0028 tab set: Website, Vendor Insurance, Impact). Vendor insurance is AI at work; the saltwater close is automation
 // (there is no model in it) and is never called AI, here or anywhere.
 //
 // Website: the DEV site https://hgoil-website-dev.tylerpreisser.workers.dev/
@@ -25,7 +25,7 @@
 import type { ImpactStat, SceneBeat, ShowcaseClient } from "../types";
 import { fact, figure, impactBeat } from "../impact";
 
-// ADR-0025 §2: a certificate arrives, four checks tick green, it is filed to the vendor's folder.
+// ADR-0028 §2: a certificate arrives, four checks tick green, it is filed to the vendor's folder.
 // The scene (scenes/HgVendorScene, builder B1) is a ComingScene until it lands.
 const vendor: SceneBeat = {
   kind: "scene",

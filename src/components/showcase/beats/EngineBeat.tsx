@@ -7,7 +7,7 @@ import { Fit, FitWidth, PortalFrame, RailGlyph, useBox, type BeatProps } from ".
 import "./engine.css";
 
 /**
- * The MarCommand tab (ADR-0025 §5): the engine room, in the home page's
+ * The MarCommand tab (ADR-0028 §5): the engine room, in the home page's
  * MarCommand-section language (src/components/home/marcommand-live-stage.tsx):
  * flat channel cards, a blue wire from the channel it favours, navy knobs with
  * a blue arc, and the same robot walking the wire to turn them. It reads the

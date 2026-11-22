@@ -1,5 +1,5 @@
 /* ============================================================
-   impact.css — the Impact tab, round 2 (ADR-0025 §3; spec §3; concept
+   impact.css — the Impact tab, round 2 (ADR-0028 §3; spec §3; concept
    impact.html). Big numbers first: the old number struck, the new one at
    display size; then rows; then one sentence. Absent slots are not rendered.
    Layout follows the PANEL's own width (container queries):

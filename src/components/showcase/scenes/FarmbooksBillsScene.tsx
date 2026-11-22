@@ -21,7 +21,7 @@ import {
 import "./farmbooks-bills.css";
 
 /**
- * FarmBooks "Bills" (design-spec-r2 §6.1, ADR-0025): a coded recreation of one supplier bill going
+ * FarmBooks "Bills" (design-spec-r2 §6.1, ADR-0028): a coded recreation of one supplier bill going
  * through the real app, in six steps: Snaps, Reads, Sorts, Splits, Books, Sums up. Same shape as HG's
  * vendor scene: the document is a raster (rendered once by scripts/farmbooks-bill/render.mjs with
  * shipped fonts, so every engine draws it the same), the meaning is real text beside it, and a step

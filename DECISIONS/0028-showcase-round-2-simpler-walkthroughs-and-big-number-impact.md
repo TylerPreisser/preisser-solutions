@@ -1,4 +1,4 @@
-# ADR-0025: Showcase round 2 — simpler product walkthroughs per client, and Impact as big before/after numbers
+# ADR-0028: Showcase round 2 — simpler product walkthroughs per client, and Impact as big before/after numbers
 Status: Accepted — 2026-11-04 (owner's first impressions of the live showcase, dictated in the session that shipped ADR-0022) — Owner: Tyler Preisser
 Supersedes / Superseded by: supersedes ADR-0022 §1 (tab sets), §3 (Impact told as text) and §4 (the COI tab includes the email chase); ADR-0022 §2 (live portal) and §5, and ADR-0023, stand
 

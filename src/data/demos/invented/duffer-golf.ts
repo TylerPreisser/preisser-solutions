@@ -37,7 +37,7 @@ export const invented: InventedSet = {
     // labels and AI tab words (portal-ui overview, ai/copy.ts, chat/copy.ts).
     "Overview", "Activity", "AI", "Partner", "Display", "Scanned", "Visited", "Orders", "Ask", "Answer",
     "Pulled", "Compared", "Concluded", "Sources",
-    // Round 2 (ADR-0025 §4, §5): the AI tab's source cards and the MarCommand tab's channel and dial labels.
+    // Round 2 (ADR-0028 §4, §5): the AI tab's source cards and the MarCommand tab's channel and dial labels.
     "Course", "Site", "Visits", "Ads", "Ad", "Search", "Daily", "Radius", "Weekends", "Just",
   ],
   approved: [

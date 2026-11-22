@@ -5,7 +5,7 @@ import type { AiSource, AiStep } from "@/data/showcase/types";
 import { Elara, type ElaraFrame } from "./Elara";
 
 /**
- * The top of the AI tab (ADR-0025 §4): the home page's robot walks a wire to
+ * The top of the AI tab (ADR-0028 §4): the home page's robot walks a wire to
  * each source the answer reads, reaches it, and its row count lands as a chip.
  *
  * Everything here is mounted from the first frame and changes state with CSS

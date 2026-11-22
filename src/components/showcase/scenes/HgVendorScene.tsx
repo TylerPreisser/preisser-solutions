@@ -6,7 +6,7 @@ import { ACORD_IMAGE, ACORD_REGIONS } from "@/data/showcase/scenes/hg-vendor-reg
 import "./hg-vendor.css";
 
 /**
- * HG Oil, "Vendor Insurance" (ADR-0025 §2, design-spec-r2 §2): a certificate
+ * HG Oil, "Vendor Insurance" (ADR-0028 §2, design-spec-r2 §2): a certificate
  * arrives, four checks tick green, "Good to go", and it files itself into the
  * vendor's folder. Four steps, 13 s.
  *

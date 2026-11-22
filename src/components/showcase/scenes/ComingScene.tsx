@@ -1,6 +1,6 @@
 /**
  * Round 2 stand-in for a walkthrough scene its builder has not landed yet
- * (ADR-0025). Neutral box, no data. Each builder swaps its entry in
+ * (ADR-0028). Neutral box, no data. Each builder swaps its entry in
  * FLUID_SCENES (scenes/index.ts) for the real component.
  */
 export function ComingScene() {

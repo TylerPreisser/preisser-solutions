@@ -22,7 +22,7 @@ import { fbCam, fbCues, fbHoldMs } from "@/data/demos/scenes/farmbooks";
 import { BILLS_TOTAL_MS } from "@/data/showcase/scenes/farmbooks-bills";
 import { bedsCam, bedsCues } from "@/data/demos/scenes/nwks-encounter";
 
-// Round 2 (ADR-0025): "hg-vendor", "farmbooks-bills", "duffer-cc" and "nwks-admin" are fluid scenes. Each is a
+// Round 2 (ADR-0028): "hg-vendor", "farmbooks-bills", "duffer-cc" and "nwks-admin" are fluid scenes. Each is a
 // All four are real components now (round 2 builders B1, B5, B6, B7).
 // "hg-coi", "farmbooks-bill" and "nwks-beds" are retired from the client files and deleted once the replacements land.
 export type SceneId =

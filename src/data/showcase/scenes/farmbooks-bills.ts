@@ -1,5 +1,5 @@
 // src/data/showcase/scenes/farmbooks-bills.ts: data for the FarmBooks "Bills" walkthrough
-// (design-spec-r2 §6.1, ADR-0025). Pure data; no React.
+// (design-spec-r2 §6.1, ADR-0028). Pure data; no React.
 //
 // A coded recreation of what the real app does with one supplier bill (traced in the FarmBooks code,
 // every rule cited there to the FarmBooks repo):

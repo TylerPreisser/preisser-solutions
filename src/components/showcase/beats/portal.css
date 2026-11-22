@@ -1099,7 +1099,7 @@
   visibility: hidden;
 }
 
-/* ── AI tab, round 2 (ADR-0025 §4): the robot fetches its sources, then the answer lands ──
+/* ── AI tab, round 2 (ADR-0028 §4): the robot fetches its sources, then the answer lands ──
    The tab wears the site's own palette in both themes (concepts ai-*.png), so the answer's
    --pt-* tokens are re-pointed at it here. Entry motion is CSS TRANSITIONS on elements that
    exist from the first frame, never a keyframe animation from opacity 0: Playwright WebKit at

@@ -18,7 +18,7 @@ import { DufferQrScene } from "../scenes/DufferQrScene";
 import "./impact.css";
 
 /**
- * The Impact tab (ADR-0025 §3, round 2 spec §3). Big numbers first: the old
+ * The Impact tab (ADR-0028 §3, round 2 spec §3). Big numbers first: the old
  * number struck through, the new one at display size, a label under it; then
  * up to four smaller rows and one optional sentence. A slot with no sourced
  * number is simply absent from its array, so nothing is drawn for it: no empty

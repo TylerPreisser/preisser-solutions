@@ -1,8 +1,8 @@
-// src/data/showcase/scenes/hg-vendor.ts — HG Oil "Vendor Insurance" (ADR-0025 §2, design-spec-r2 §2).
+// src/data/showcase/scenes/hg-vendor.ts — HG Oil "Vendor Insurance" (ADR-0028 §2, design-spec-r2 §2).
 // Pure data: no React. The scene is src/components/showcase/scenes/HgVendorScene.tsx.
 //
 // A certificate arrives, four checks tick green, "Good to go", and it files
-// itself to the vendor's folder. No email chase and no gap step (ADR-0025 §2).
+// itself to the vendor's folder. No email chase and no gap step (ADR-0028 §2).
 //
 // The certificate is drawn ONCE by scripts/render-acord.mjs from the real
 // Acord25 component and this module's VENDOR_CERT, into a raster under

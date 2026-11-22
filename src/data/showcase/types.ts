@@ -13,10 +13,10 @@
 //   ai-at-work  the AI working a queue on its own: items come in, it reads
 //               each one, does the steps and files the result.
 //   engine      (round 2) the MarCommand engine room: channels, the dials the
-//               engine turns, what it learned (ADR-0025 §5).
+//               engine turns, what it learned (ADR-0028 §5).
 //   scene       a coded or captured product walkthrough (scenes/).
 //   impact      big numbers first: the old number struck, the new one large,
-//               then rows; only numbers with a source (ADR-0022 §3, ADR-0025).
+//               then rows; only numbers with a source (ADR-0022 §3, ADR-0028).
 //
 // One file per client in ./clients/<slug>.ts, default export a ShowcaseClient.
 // The window loads it with import(`./clients/${slug}`), so a new client is a
@@ -214,7 +214,7 @@ export interface AiAnswer {
   sources: readonly { label: string; detail?: string }[];
 }
 
-/** One source the robot fetches from at the top of an AI tab (ADR-0025 §4.1). */
+/** One source the robot fetches from at the top of an AI tab (ADR-0028 §4.1). */
 export interface AiSource {
   icon: "scan" | "visit" | "lead" | "order" | "ads" | "social-ads" | "search" | "enroll";
   label: string;
@@ -274,7 +274,7 @@ export interface SceneBeat extends BeatBase {
 }
 
 /*
- * The Impact tab (ADR-0022 §3, ADR-0025, round 2 spec §3). Big numbers first:
+ * The Impact tab (ADR-0022 §3, ADR-0028, round 2 spec §3). Big numbers first:
  * the old number struck, the new one at display size, then up to four smaller
  * rows and one optional sentence. A slot with no sourced number is simply
  * absent from its array: nothing is rendered for it.
@@ -326,7 +326,7 @@ export interface EngineDial {
   r1?: number;
 }
 
-/** The MarCommand tab (Duffer, Hays): the engine adjusting its knobs and learning (ADR-0025 §5.1). */
+/** The MarCommand tab (Duffer, Hays): the engine adjusting its knobs and learning (ADR-0028 §5.1). */
 export interface EngineBeat extends BeatBase {
   kind: "engine";
   /** 3 to 4. */
@@ -345,7 +345,7 @@ export interface EngineBeat extends BeatBase {
 }
 
 /*
- * Scene data (ADR-0025 §2, §3.5, §6). A `scene` beat names a SceneId; the
+ * Scene data (ADR-0028 §2, §3.5, §6). A `scene` beat names a SceneId; the
  * scene's own data module (src/data/showcase/scenes/<id>.ts) exports a value of
  * one of these shapes. Names, towns and numbers in all of them are invented.
  */
@@ -420,7 +420,7 @@ export interface DufferQrData {
   scansAfter: number;
 }
 
-/** The new Impact: big numbers first (ADR-0025 §3, spec §3.1). */
+/** The new Impact: big numbers first (ADR-0028 §3, spec §3.1). */
 export interface ImpactStat {
   /** The number now: figure<"Measured live, Oct 27 2026">("155", "vendor certificates on file, checked and current"). */
   now: ImpactFigure;
@@ -432,7 +432,7 @@ export interface ImpactStat {
   unit?: string;
 }
 
-/** The Impact tab (ADR-0025 §3, spec §3.1): big numbers first, then rows, then one sentence. */
+/** The Impact tab (ADR-0028 §3, spec §3.1): big numbers first, then rows, then one sentence. */
 export interface ImpactBeat extends BeatBase {
   kind: "impact";
   /** "What changed". */

@@ -1,6 +1,6 @@
 /* ============================================================
    hg-vendor.css — HG Oil "Vendor Insurance" (HgVendorScene.tsx,
-   ADR-0025 §2, design-spec-r2 §2). Only --hgv-* is declared here.
+   ADR-0028 §2, design-spec-r2 §2). Only --hgv-* is declared here.
 
    A fluid scene: it lays itself out for the window's stage (inline
    px from HgVendorScene's layout), never scaled as a picture. The

@@ -4,7 +4,7 @@ import type { EngineBeat } from "@/data/showcase/types";
 import { Chrome, themeStyle, type BeatProps } from "./shared";
 
 /**
- * Round 2 stand-in for a beat its builder has not landed (ADR-0025): a neutral
+ * Round 2 stand-in for a beat its builder has not landed (ADR-0028): a neutral
  * box that keeps the tab and the build alive. beats/index.tsx imports this for
  * "engine" (B4: EngineBeat.tsx); the
  * builder replaces that one import and deletes nothing else.

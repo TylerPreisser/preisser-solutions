@@ -70,7 +70,7 @@ function useClock(active: boolean, reduced: boolean, until: number) {
 }
 
 export function AiAskBeat(p: BeatProps<AiAskBeatData>) {
-  // Round 2 (ADR-0025 §4): a beat with sources shows the robot fetching them, then the answer.
+  // Round 2 (ADR-0028 §4): a beat with sources shows the robot fetching them, then the answer.
   return p.beat.sources?.length ? <AiFetchBeat {...p} /> : <AiWorkingBeat {...p} />;
 }
 
@@ -525,7 +525,7 @@ function rel(el: HTMLElement, ref: HTMLElement) {
   return { top: (r.top - r0.top) / k, bottom: (r.bottom - r0.top) / k };
 }
 
-/* ── Round 2: the robot fetches the sources, then the answer lands (ADR-0025 §4) ── */
+/* ── Round 2: the robot fetches the sources, then the answer lands (ADR-0028 §4) ── */
 
 const FIRST_WALK = 600;
 const DWELL = 650;
