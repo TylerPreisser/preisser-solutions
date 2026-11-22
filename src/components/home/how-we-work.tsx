@@ -123,6 +123,9 @@ export function HowWeWork() {
     let pinned = false;
     let travel = 0;
     let boxes: Array<{ x: number; y: number; w: number; h: number }> = [];
+    // How far each band window has to travel to be wholly off its line: its
+    // exact height (a fraction of a pixel matters on a phone) and a little over.
+    let fillHeights: number[] = [];
     let shown = followerAt(0); // the beat position that is painted, and how it is moving
     let target = 0; // the one it is heading for
     let scrolling = false;
@@ -139,7 +142,7 @@ export function HowWeWork() {
       // blue copy of the words, while the copy itself is moved back by the
       // same amount so the words stay exactly where they are.
       fills.forEach((fill, k) => {
-        const by = f.fill[k] * (fill.offsetHeight || 0);
+        const by = f.fill[k] * (fillHeights[k] || 0);
         fill.style.transform = `translate3d(0, ${by.toFixed(2)}px, 0)`;
         fillIns[k].style.transform = `translate3d(0, ${(-by).toFixed(2)}px, 0)`;
       });
@@ -250,6 +253,7 @@ export function HowWeWork() {
         return;
       }
       boxes = lines.map((line) => ({ x: line.offsetLeft, y: line.offsetTop, w: line.offsetWidth, h: line.offsetHeight }));
+      fillHeights = fills.map((fill) => fill.getBoundingClientRect().height + 0.5);
       target = rest(position());
       shown = followerAt(target);
       paint(shown.x, shown.calm);

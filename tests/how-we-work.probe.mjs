@@ -322,6 +322,8 @@ await check("keyboard: Space and PageDown show every explanation in turn, then l
     assert.equal((await read(page)).step, "0", "keys: not on line 1 to begin with");
     const rested = async () => {
       // The key scrolls smoothly; wait for the page, then the picture, to come to rest.
+      await page.evaluate(() => { window.__psY = undefined; window.__psStill = 0; });
+      await page.waitForTimeout(250);
       await page.waitForFunction(() => {
         const y = window.scrollY;
         if (window.__psY === y) window.__psStill = (window.__psStill || 0) + 1;
