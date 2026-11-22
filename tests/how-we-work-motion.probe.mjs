@@ -401,6 +401,10 @@ function replay({ scrollAt, duration, hz, windowHeight, travel, stallAt = -1, st
   // on, already fading, is not counted as one that "showed").
   const peaks = [0, 0, 0, 0];
   const first = [null, null, null, null];
+  // The longest any text sat at one part-way strength while the picture itself was moving.
+  let frozen = { ms: 0 };
+  const since = [null, null, null, null];
+  let lastTexts = null;
   for (let t = 0; t <= duration + 3000; t += dt) {
     // A stalled main thread: no frame runs for a while, then one frame sees all of that time at once.
     if (t >= stallAt && t < stallAt + stallMs) continue;
@@ -435,6 +439,16 @@ function replay({ scrollAt, duration, hz, windowHeight, travel, stallAt = -1, st
       // "Showed" means came UP: a text that was never above where it started is only leaving.
       if (text.opacity > first[k] + 1e-9 || first[k] === 0) peaks[k] = Math.max(peaks[k], text.opacity);
     });
+    const shown = frame(state.x, state.caps).texts.map((text) => text.opacity);
+    shown.forEach((v, k) => {
+      const still = lastTexts !== null && before !== null && state.x !== before && Math.abs(v - lastTexts[k]) < 1e-6 && v > 0.03 && v < 0.97;
+      if (!still) since[k] = null;
+      else {
+        if (since[k] === null) since[k] = previousT;
+        if (t - since[k] > frozen.ms) frozen = { ms: t - since[k], text: k + 1, at: v, t: Math.round(t) };
+      }
+    });
+    lastTexts = shown;
     const now = values(state.x, state.caps);
     if (previous) {
       for (const name of Object.keys(now)) {
@@ -446,7 +460,7 @@ function replay({ scrollAt, duration, hz, windowHeight, travel, stallAt = -1, st
     previous = now;
     previousT = t;
   }
-  return { worst, overlap, backwards, retreat, comeback, end: state, peaks };
+  return { worst, overlap, backwards, retreat, comeback, end: state, peaks, frozen };
 }
 
 // Real kinds of scrolling, as offsets over time. One screen is 844px (a phone) or 900px (a laptop);
@@ -643,6 +657,33 @@ check("a quick flick that lands just past a line never shows the passed-over exp
     }
   }
   console.log(`        most a passed-over explanation ever showed: ${(worst.peak * 100).toFixed(1)}%`);
+});
+
+check("a brisk steady scroll never leaves an explanation hanging part way: it follows the scroll or it goes", () => {
+  // The fourth design review's case: at 2.25 to 3 beats a second the picture runs a little behind,
+  // an explanation starts to come up, the reader passes its line, and it was left frozen at whatever
+  // strength it had reached (5% to 88%) for a third of a second before leaving.
+  let worst = { ms: 0 };
+  for (const hz of [30, 60, 120, 240]) {
+    for (const windowHeight of [568, 844, 900, 1180]) {
+      const travel = windowHeight * 2;
+      const beat = travel / BEATS;
+      for (const way of [1, -1]) {
+        for (let speed = 1; speed <= 4.001; speed += 0.125) {
+          const from = way === 1 ? -windowHeight * 0.7 : travel + windowHeight * 0.4;
+          const duration = ((travel + windowHeight * 1.1) / (speed * beat)) * 1000;
+          const scrollAt = (t) => from + way * speed * beat * (t / 1000);
+          const result = replay({ scrollAt, duration, hz, windowHeight, travel, way });
+          const where = `${speed} beats a second ${way === 1 ? "down" : "up"}, at ${hz}Hz on a ${windowHeight}px screen`;
+          assert.ok(result.frozen.ms <= 60, `explanation ${result.frozen.text} sat at ${(result.frozen.at * 100).toFixed(0)}% for ${Math.round(result.frozen.ms)}ms (${where})`);
+          assert.equal(result.overlap, 0, `two texts at once (${where})`);
+          assert.ok(result.worst.rate <= FASTEST, `${result.worst.name} moved at a full swing per ${(1 / result.worst.rate).toFixed(0)}ms (${where})`);
+          if (result.frozen.ms > worst.ms) worst = { ...result.frozen, where };
+        }
+      }
+    }
+  }
+  console.log(`        longest any explanation sat part way: ${Math.round(worst.ms)}ms`);
 });
 
 check("a stalled main thread mid-scroll (a 400ms hitch) is never mistaken for a stopped reader", () => {

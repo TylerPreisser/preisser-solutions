@@ -341,8 +341,8 @@ export function positionOf(scrolled: number, windowHeight: number, travel: numbe
  * in between come up and go again on the picture's way through. So a text may
  * only come up while the place the picture is heading for has not already gone
  * past that text's line (in the direction of travel). Once it has, the text can
- * only go down: it follows the scroll out as usual if it was showing, and it is
- * taken away over CALM_OUT_MS if it was still on its way up. When the reader
+ * only go down: it follows the scroll out as usual if it was showing in full,
+ * and it is taken away over CALM_OUT_MS if it was caught part way up. When the reader
  * comes back to it, it is let up again over CALM_MS.
  */
 export type Follower = { x: number; v: number; dir: -1 | 0 | 1; caps: number[]; capV: number[]; moving: boolean };
@@ -399,10 +399,12 @@ export function follow(state: Follower, target: number, dt: number): Follower {
           c = base;
           state.capV[k] = 0;
         }
-        // Still on its way up (the picture has not reached its line's resting
-        // stretch): take it away. Otherwise it leaves with the scroll.
-        const comingUp = state.dir > 0 ? state.x < from : state.x > to;
-        if (c > 0 && comingUp) {
+        // Held below what the scroll alone would show: it was caught part way
+        // up when the reader went past. Take it away, wherever the picture is
+        // on its line by now; left at that strength it would hang there, faint,
+        // until the picture got to the end of the line. A text showing all the
+        // scroll gives it (cap and scroll agree) just leaves with the scroll.
+        if (c > 0 && c < base) {
           const wc = 1 / CALM_OUT_MS;
           state.capV[k] += (wc * wc * (0 - c) - 2 * wc * state.capV[k]) * h;
           c += state.capV[k] * h;

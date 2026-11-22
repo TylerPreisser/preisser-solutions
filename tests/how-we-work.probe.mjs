@@ -487,6 +487,54 @@ await check("a quick flick past a line (five fast wheel notches): the explanatio
     }
   });
 
+await check("a brisk steady scroll: no explanation is ever left hanging part way up",
+  { viewport: { width: 1440, height: 900 } },
+  async (page) => {
+    const t = await track(page);
+    for (const [w, h] of [[1440, 900], [390, 844]]) {
+      await page.setViewportSize({ width: w, height: h });
+      await page.waitForTimeout(400);
+      const g = await track(page);
+      for (const speed of [2.25, 2.5, 2.75, 3]) {
+        for (const way of [1, -1]) {
+          const from = way === 1 ? g.top - g.vh * 0.7 : g.top + g.travel + g.vh * 0.4;
+          const to = way === 1 ? g.top + g.travel + g.vh * 0.4 : g.top - g.vh * 0.7;
+          await scrollTo(page, from);
+          // The page's own clock drives the scroll, so the speed is real whatever the frame rate.
+          const worst = await page.evaluate(({ from, to, pxPerMs }) => new Promise((done) => {
+            const texts = [...document.querySelectorAll("#how-we-work .ps-how__step")];
+            const start = performance.now();
+            const length = Math.abs(to - from);
+            let last = null;
+            const since = texts.map(() => null);
+            let worst = { ms: 0 };
+            const tick = (now) => {
+              const gone = Math.min(length, (now - start) * pxPerMs);
+              window.scrollTo({ top: from + Math.sign(to - from) * gone, behavior: "instant" });
+              const shown = texts.map((e) => parseFloat(getComputedStyle(e).opacity));
+              shown.forEach((v, k) => {
+                // Frozen: the same part-way strength as last frame, while the page is scrolling steadily
+                // (it always is here). In a steady scroll a text is coming, full, going or gone; never parked.
+                const still = last !== null && gone < length && Math.abs(v - last[k]) < 1e-4 && v > 0.03 && v < 0.97;
+                if (!still) since[k] = null;
+                else {
+                  if (since[k] === null) since[k] = now;
+                  if (now - since[k] > worst.ms) worst = { ms: now - since[k], text: k + 1, at: v };
+                }
+              });
+              last = shown;
+              if (gone < length) requestAnimationFrame(tick);
+              else done(worst);
+            };
+            requestAnimationFrame(tick);
+          }), { from, to, pxPerMs: (speed * g.beat) / 1000 });
+          assert.ok(worst.ms < 100, `brisk ${w}x${h}: at ${speed} beats a second ${way === 1 ? "down" : "up"}, explanation ${worst.text} sat at ${Math.round((worst.at || 0) * 100)}% for ${Math.round(worst.ms)}ms`);
+        }
+      }
+    }
+    assert.ok(t.travel > 0);
+  });
+
 await check("keyboard with focus on a header link: the page keys still move one beat at a time",
   { viewport: { width: 1440, height: 900 } },
   async (page) => {
