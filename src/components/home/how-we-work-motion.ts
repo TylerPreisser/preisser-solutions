@@ -50,13 +50,11 @@ export const MAX_SPEED = 1 / 500;
  *  a click on the scrollbar) sets the picture moving gently. Slowing down is
  *  not limited: it always brakes in time. */
 export const RAMP_MS = 110;
-/** Texts stay out of the way while the picture is this many beats behind the
- *  reader (a fling), fading back as it closes to the smaller number, so a
- *  paragraph never flashes past on the way to another. */
-export const CALM_NEAR = 0.45;
-export const CALM_FAR = 0.9;
-/** The time constant of that fading. */
+/** How quickly an explanation that may show again comes back up to full
+ *  (CALM_MS), and how quickly one that was on its way up is taken away when the
+ *  reader has already gone past its line (CALM_OUT_MS). Time constants, in ms. */
 export const CALM_MS = 70;
+export const CALM_OUT_MS = 40;
 /** The follower works in steps of at most this long, so it behaves the same at
  *  every frame rate. */
 export const SUBSTEP_MS = 4;
@@ -114,14 +112,22 @@ export type Frame = {
   light: number;
 };
 
+/** How much of text k shows at `u` when nothing holds it back. */
+function textBase(k: number, u: number) {
+  if (k === CLOSING) return ease(CLOSING + TEXT_IN_FROM, CLOSING + TEXT_IN_TO, u);
+  const arriving = k === 0 ? ease(OFF_TO, plateau(0)[0], u) : ease(k + TEXT_IN_FROM, k + TEXT_IN_TO, u);
+  return arriving * (1 - ease(k + TEXT_OUT_FROM, k + TEXT_OUT_TO, u));
+}
+
 /**
  * What the section looks like at beat position `u`. Pure, so the picture is
- * the same going down as coming back up. `calm` (0 to 1) only scales the
- * texts: it is 1 except while the picture is catching up with a fling.
+ * the same going down as coming back up. `caps`, when given, is the most each
+ * text may show right now (see `follow`): at rest and in slow scrolling every
+ * cap is out of the way and the picture is this function of `u` alone.
  */
-export function frame(u: number, calm = 1): Frame {
+export function frame(u: number, caps: readonly number[] | null = null): Frame {
   // The sequence switching on as the block arrives, and the last beat.
-  const on = ease(-0.3, 0.2, u);
+  const on = ease(OFF_TO, plateau(0)[0], u);
   const closing = ease(CLOSING - 1 + LAMP_FROM, CLOSING + 0.25, u);
   // The light comes down into the first line as the block arrives, rests on a
   // line for the middle of that line's beat, and glides to the next across the
@@ -140,17 +146,21 @@ export function frame(u: number, calm = 1): Frame {
   // moves off, so no two texts are ever on screen together.
   const texts: Frame["texts"] = [];
   for (let k = 0; k < LINES; k += 1) {
-    const arriving = k === 0 ? ease(-0.1, 0.2, u) : ease(k + TEXT_IN_FROM, k + TEXT_IN_TO, u);
+    const arriving = k === 0 ? ease(OFF_TO, plateau(0)[0], u) : ease(k + TEXT_IN_FROM, k + TEXT_IN_TO, u);
     const leaving = ease(k + TEXT_OUT_FROM, k + TEXT_OUT_TO, u);
-    texts.push({ opacity: arriving * (1 - leaving) * calm, y: (1 - arriving) * 14 - leaving * 10 });
+    texts.push({ opacity: Math.min(arriving * (1 - leaving), caps ? caps[k] : 1), y: (1 - arriving) * 14 - leaving * 10 });
   }
   const last = ease(CLOSING + TEXT_IN_FROM, CLOSING + TEXT_IN_TO, u);
-  texts.push({ opacity: last * calm, y: (1 - last) * 14 });
+  texts.push({ opacity: Math.min(last, caps ? caps[CLOSING] : 1), y: (1 - last) * 14 });
   return { lamp, lit, fill, ink, texts, light: on * (1 - 0.45 * closing) };
 }
 
-/** Below this the section is still arriving and nothing is lit. */
-const OFF_TO = -0.3;
+/** Below this the section is still arriving and nothing is lit. At this point
+ *  the top of the block is a fifth of a screen from where it will be held, so
+ *  the first explanation is on screen by the time it shows: a reader who
+ *  pauses on the way in must never be shown a line as "the one you are on"
+ *  with its explanation cut off by the bottom of the window. */
+export const OFF_TO = -0.05;
 /**
  * Where the picture comes to rest for a reader who has stopped at `u`.
  *
@@ -202,7 +212,10 @@ export function beatOf(u: number, direction: -1 | 0 | 1 = 0): number | null {
  *
  * `u` here is NOT clamped to the track: it may be above the section (negative)
  * or below it (more than `end`, the position at which the block lets go).
- * `page` is how many beats one page key would scroll. A reader above the
+ * `page` is how many beats one page key would scroll in the browser that
+ * scrolls least (eight tenths of the window; Chromium scrolls a little more,
+ * and its own page from just outside the section still lands inside the first
+ * or last beat). A reader above the
  * section whose page would carry them PAST the middle of the first beat is
  * stopped there, and one below it whose page up would pass the middle of the
  * last beat is stopped there, so neither end is skipped. We only ever shorten
@@ -217,11 +230,15 @@ export function beatOf(u: number, direction: -1 | 0 | 1 = 0): number | null {
  */
 export function keyTarget(u: number, direction: 1 | -1, page: number, end: number, showing: number | null = beatOf(u)): number | null {
   if (u > end) return direction === -1 && u - page < CLOSING + 0.5 ? CLOSING + 0.5 : null;
-  const beat = showing;
-  if (beat === null) return direction === 1 && u + page > 0.5 ? 0.5 : null;
-  const next = beat + direction;
+  if (showing === null) return direction === 1 && u + page > 0.5 ? 0.5 : null;
+  const next = showing + direction;
   if (next < 0 || next > CLOSING) return null;
-  return next + 0.5;
+  // The middle of the next beat, but never further than a page from where the
+  // reader is: the picture may be settled up to six tenths of a beat ahead of
+  // them, and the middle of the beat after that can be more than a page away.
+  // A page from here is always inside that beat's resting stretch or just
+  // short of it, and stopping there settles on it.
+  return direction === 1 ? Math.min(next + 0.5, u + page) : Math.max(next + 0.5, u - page);
 }
 
 /** How far back a reader must come before they count as having turned round.
@@ -261,6 +278,15 @@ export function readerAt(u: number): Reader {
  * for reduced motion: the picture is only ever on a clean beat.
  */
 export function watch(reader: Reader, u: number, now: number, snap = false): Reader {
+  // Where a stop here would settle, unless the picture is already settled
+  // further on in the direction of travel: then it stays there. Otherwise a
+  // reader who stopped just past a line's end (the picture goes on to the
+  // next) and wobbled a few pixels back, into the first line's own resting
+  // stretch, would be sent back a whole line for moving a few pixels.
+  const settle = () => {
+    const r = rest(u, reader.direction);
+    return reader.held !== null && (reader.held - r) * reader.direction > 0 ? reader.held : r;
+  };
   if (u !== reader.position) {
     if (reader.direction === 0) reader.direction = u > reader.position ? 1 : -1;
     if ((u - reader.turn) * reader.direction >= 0) reader.turn = u;
@@ -274,8 +300,10 @@ export function watch(reader: Reader, u: number, now: number, snap = false): Rea
     reader.movedAt = now;
     reader.still = 0;
     reader.scrolling = true;
-    if (snap) reader.target = rest(u, reader.direction);
-    else if (reader.held !== null && (reader.held - u) * reader.direction > 0) reader.target = reader.held;
+    if (snap) {
+      reader.held = settle();
+      reader.target = reader.held;
+    } else if (reader.held !== null && (reader.held - u) * reader.direction > 0) reader.target = reader.held;
     else {
       reader.held = null;
       reader.target = u;
@@ -286,7 +314,7 @@ export function watch(reader: Reader, u: number, now: number, snap = false): Rea
       // They have stopped: let the picture settle, onward if they had started
       // to leave a line, and remember where.
       reader.scrolling = false;
-      reader.held = rest(u, reader.direction);
+      reader.held = settle();
       reader.target = reader.held;
     }
   }
@@ -305,27 +333,32 @@ export function positionOf(scrolled: number, windowHeight: number, travel: numbe
   return clamp((scrolled + windowHeight * LEAD) / (travel / BEATS), -1, BEATS);
 }
 
-/** The follower's state: the painted position, its speed, and how calm the
- *  texts are. */
-export type Follower = { x: number; v: number; calm: number; calmV: number; moving: boolean };
+/**
+ * The painted position and how it is moving.
+ *
+ * `caps[k]` is the most text k may show. It exists for one thing: a reader who
+ * flicks from one line to somewhere past the next must not see the explanation
+ * in between come up and go again on the picture's way through. So a text may
+ * only come up while the place the picture is heading for has not already gone
+ * past that text's line (in the direction of travel). Once it has, the text can
+ * only go down: it follows the scroll out as usual if it was showing, and it is
+ * taken away over CALM_OUT_MS if it was still on its way up. When the reader
+ * comes back to it, it is let up again over CALM_MS.
+ */
+export type Follower = { x: number; v: number; dir: -1 | 0 | 1; caps: number[]; capV: number[]; moving: boolean };
 
 export function followerAt(u: number): Follower {
-  return { x: u, v: 0, calm: 1, calmV: 0, moving: false };
+  return { x: u, v: 0, dir: 0, caps: [1, 1, 1, 1], capV: [0, 0, 0, 0], moving: false };
 }
-
-/**
- * Advances the follower by `dt` ms towards `target`, in place. `moving` is
- * false once it has arrived and the texts are calm, which is when the caller
- * may stop asking for frames.
- */
 export function follow(state: Follower, target: number, dt: number): Follower {
   const total = Math.min(MAX_FRAME_MS, Math.max(0, dt));
   const steps = Math.max(1, Math.ceil(total / SUBSTEP_MS));
   const h = total / steps;
   const w = 1 / SPRING_MS;
-  const wc = 1 / CALM_MS;
+  let settled = true;
   for (let i = 0; i < steps; i += 1) {
     const before = target - state.x;
+    if (before !== 0) state.dir = before > 0 ? 1 : -1;
     let a = w * w * before - 2 * w * state.v;
     // Speeding up (or setting off): limited. Braking: never limited.
     if (a * state.v >= 0) a = clamp(a, -MAX_SPEED / RAMP_MS, MAX_SPEED / RAMP_MS);
@@ -337,24 +370,51 @@ export function follow(state: Follower, target: number, dt: number): Follower {
       state.x = target;
       state.v = 0;
     }
-    const wanted = 1 - ease(CALM_NEAR, CALM_FAR, Math.abs(target - state.x));
-    const gap = wanted - state.calm;
-    state.calmV += (wc * wc * gap - 2 * wc * state.calmV) * h;
-    state.calm += state.calmV * h;
-    if (gap * (wanted - state.calm) <= 0) {
-      state.calm = wanted;
-      state.calmV = 0;
+    if (i === steps - 1 && Math.abs(target - state.x) < 0.0005 && Math.abs(state.v) < 0.00001) {
+      state.x = target;
+      state.v = 0;
     }
-    state.calm = clamp(state.calm, 0, 1);
+    settled = true;
+    for (let k = 0; k <= CLOSING; k += 1) {
+      const [from, to] = plateau(k);
+      // May this text come up? Only while the picture is not heading for
+      // somewhere beyond its line.
+      const wanted = state.dir === 0 || (state.dir > 0 ? target <= to : target >= from);
+      let c = state.caps[k];
+      if (wanted) {
+        if (c < 1) {
+          const wc = 1 / CALM_MS;
+          state.capV[k] += (wc * wc * (1 - c) - 2 * wc * state.capV[k]) * h;
+          c += state.capV[k] * h;
+          if (c >= 0.998) {
+            c = 1;
+            state.capV[k] = 0;
+          } else settled = false;
+        }
+      } else {
+        if (state.capV[k] > 0) state.capV[k] = 0;
+        // It can only go down from what it shows now.
+        const base = textBase(k, state.x);
+        if (base < c) {
+          c = base;
+          state.capV[k] = 0;
+        }
+        // Still on its way up (the picture has not reached its line's resting
+        // stretch): take it away. Otherwise it leaves with the scroll.
+        const comingUp = state.dir > 0 ? state.x < from : state.x > to;
+        if (c > 0 && comingUp) {
+          const wc = 1 / CALM_OUT_MS;
+          state.capV[k] += (wc * wc * (0 - c) - 2 * wc * state.capV[k]) * h;
+          c += state.capV[k] * h;
+          if (c <= 0.002) {
+            c = 0;
+            state.capV[k] = 0;
+          } else settled = false;
+        } else state.capV[k] = 0;
+      }
+      state.caps[k] = clamp(c, 0, 1);
+    }
   }
-  if (Math.abs(target - state.x) < 0.0005 && Math.abs(state.v) < 0.00001) {
-    state.x = target;
-    state.v = 0;
-  }
-  if (state.x === target && Math.abs(1 - state.calm) < 0.002) {
-    state.calm = 1;
-    state.calmV = 0;
-  }
-  state.moving = state.x !== target || state.calm !== 1;
+  state.moving = state.x !== target || !settled;
   return state;
 }

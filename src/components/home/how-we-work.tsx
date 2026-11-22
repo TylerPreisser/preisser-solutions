@@ -140,8 +140,8 @@ export function HowWeWork() {
 
     const position = () => positionOf(-track.getBoundingClientRect().top, window.innerHeight, travel);
 
-    const paint = (u: number, calm: number) => {
-      const f = frame(u, calm);
+    const paint = (u: number, caps: readonly number[]) => {
+      const f = frame(u, caps);
       lines.forEach((line, k) => line.style.setProperty("--lit", f.lit[k].toFixed(3)));
       // The band: a window the height of the line that slides down over the
       // blue copy of the words, while the copy itself is moved back by the
@@ -198,7 +198,7 @@ export function HowWeWork() {
       watch(reader, position(), now, reduce.matches);
       if (reduce.matches) shown = followerAt(reader.target);
       else follow(shown, reader.target, dt);
-      paint(shown.x, shown.calm);
+      paint(shown.x, shown.caps);
       if (shown.moving || reader.scrolling) raf = window.requestAnimationFrame(tick);
       // Lets a test (or anything else) wait for the picture to come to rest
       // instead of guessing how long that takes.
@@ -265,13 +265,13 @@ export function HowWeWork() {
         // may be moving. Keep it where it is, redraw it at the new sizes, and
         // let the frame loop find the reader again. Starting it afresh here
         // would make it jump.
-        paint(shown.x, shown.calm);
+        paint(shown.x, shown.caps);
         run();
         return;
       }
       reader = readerAt(position());
       shown = followerAt(reader.target);
-      paint(shown.x, shown.calm);
+      paint(shown.x, shown.caps);
     };
     // The size observer does not fire for a window that only grows taller
     // while the section is laid out flat (nothing it watches changes size
@@ -297,9 +297,17 @@ export function HowWeWork() {
       const top = track.getBoundingClientRect().top;
       const beat = travel / BEATS;
       const lead = window.innerHeight * LEAD;
+      // The beat the reader is being shown. One exception: on the way in, the
+      // first line can be lit while the bottom of its explanation is still
+      // below the window. They have not been shown it yet, so the key must
+      // bring it up, not move past it.
+      let showing = beatOf(reader.target);
+      if (showing === 0 && direction === 1 && texts[0].getBoundingClientRect().bottom > window.innerHeight + 0.5) showing = null;
       // Not clamped to the track: a reader above or below the section whose
       // page would carry them into it must not skip its first or last beat.
-      const next = keyTarget((-top + lead) / beat, direction, (window.innerHeight * 0.875) / beat, (travel + lead) / beat, beatOf(reader.target));
+      // A page is taken as eight tenths of the window, the least any browser
+      // scrolls for one, so a key we handle never goes further than its own.
+      const next = keyTarget((-top + lead) / beat, direction, (window.innerHeight * 0.8) / beat, (travel + lead) / beat, showing);
       if (next === null) return;
       e.preventDefault();
       window.scrollTo({

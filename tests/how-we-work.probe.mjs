@@ -365,38 +365,126 @@ await check("keyboard: Space and PageDown show every explanation in turn, then l
 await check("keyboard from the hero: Space or PageDown from anywhere above the section never skips the first explanation",
   { viewport: { width: 1440, height: 900 } },
   async (page) => {
-    const t = await track(page);
-    // The lower half of the hero is where a page used to carry the reader straight past line 1.
-    for (const [y, key] of [[0, "PageDown"], [300, "Space"], [450, "PageDown"], [520, "Space"], [600, "PageDown"], [700, "Space"], [760, "PageDown"]]) {
-      await scrollTo(page, y);
-      assert.equal((await read(page)).step, null, `hero keys: a beat is showing at ${y}px before any key`);
+    for (const [w, h] of [[1440, 900], [1366, 625]]) {
+      await page.setViewportSize({ width: w, height: h });
+      await page.waitForTimeout(400);
+      const t = await track(page);
+      // Starts all the way down the hero, as fractions of its height. 0.5 to 0.8 is where a page used to
+      // carry the reader past line 1; 0.67 to 0.77 is where line 1 used to light with its explanation
+      // still cut off by the bottom of the window, so the key counted it as read.
+      const starts = [0, 0.33, 0.5, 0.6, 0.67, 0.69, 0.71, 0.74, 0.77, 0.8, 0.85];
+      for (let i = 0; i < starts.length; i += 1) {
+        const y = Math.round(t.top * starts[i]);
+        const key = i % 2 ? "Space" : "PageDown";
+        // Arrive the way a reader does: from the top, coming DOWN, and pause there.
+        await scrollTo(page, 0);
+        await scrollTo(page, y);
+        const first = await read(page);
+        const seen = [];
+        if (first.step !== null) {
+          // A line is lit already. Then its explanation must be there to read, all of it.
+          assert.equal(first.step, "0", `hero keys ${w}x${h}: beat ${Number(first.step) + 1} is showing at ${y}px before any key`);
+          assert.ok(first.steps[0].opacity > 0.99 && first.steps[0].bottom <= first.vh, `hero keys ${w}x${h}: at ${y}px line 1 is lit but its explanation ends ${Math.round(first.steps[0].bottom - first.vh)}px below the window`);
+          seen.push("0");
+        }
+        for (let presses = 0; presses < 8; presses += 1) {
+          const before = await page.evaluate(() => window.scrollY);
+          await page.keyboard.press(key);
+          await restedAfterKey(page);
+          const after = await page.evaluate(() => window.scrollY);
+          assert.ok(after - before <= t.vh * 0.875 + 2, `hero keys ${w}x${h}: ${key} from ${Math.round(before)}px scrolled ${Math.round(after - before)}px, more than a page`);
+          if (after > t.top + t.travel) break;
+          const s = await read(page);
+          if (s.step !== null && seen[seen.length - 1] !== s.step) {
+            seen.push(s.step);
+            const text = s.steps[Number(s.step)];
+            assert.ok(text.opacity > 0.99 && text.bottom <= s.vh, `hero keys ${w}x${h}: beat ${Number(s.step) + 1} is not showing in full after ${key} from ${y}px`);
+          }
+        }
+        assert.deepEqual(seen, ["0", "1", "2", "3"], `hero keys ${w}x${h}: ${key} from ${y}px down the page showed beats ${seen.map((k) => Number(k) + 1).join(", ")}`);
+      }
+      // And back up from below the section: Shift+Space lands on the last beat, then walks up.
+      await scrollTo(page, t.top + t.travel + t.vh * 0.6);
       const seen = [];
       for (let presses = 0; presses < 8; presses += 1) {
         const before = await page.evaluate(() => window.scrollY);
-        await page.keyboard.press(key);
+        await page.keyboard.press("Shift+Space");
         await restedAfterKey(page);
         const after = await page.evaluate(() => window.scrollY);
-        assert.ok(after - before <= t.vh * 0.875 + 2, `hero keys: ${key} from ${Math.round(before)}px scrolled ${Math.round(after - before)}px, more than a page`);
-        if (after > t.top + t.travel) break;
+        assert.ok(before - after <= t.vh * 0.875 + 2, `hero keys ${w}x${h}: Shift+Space from ${Math.round(before)}px scrolled ${Math.round(before - after)}px, more than a page`);
         const s = await read(page);
-        if (s.step !== null) {
-          seen.push(s.step);
-          assert.ok(s.steps[Number(s.step)].opacity > 0.99, `hero keys: beat ${Number(s.step) + 1} is not showing after ${key} from ${y}px`);
-        }
+        if (s.step === null) break;
+        if (seen[seen.length - 1] !== s.step) seen.push(s.step);
       }
-      assert.deepEqual(seen, ["0", "1", "2", "3"], `hero keys: ${key} from ${y}px down the page showed beats ${seen.map((k) => Number(k) + 1).join(", ")}`);
+      assert.deepEqual(seen, ["3", "2", "1", "0"], `hero keys ${w}x${h}: Shift+Space from below the section showed beats ${seen.map((k) => Number(k) + 1).join(", ")}`);
     }
-    // And back up from below the section: Shift+Space lands on the last beat, then walks up.
-    await scrollTo(page, t.top + t.travel + t.vh * 0.6);
-    const seen = [];
-    for (let presses = 0; presses < 8; presses += 1) {
-      await page.keyboard.press("Shift+Space");
-      await restedAfterKey(page);
+  });
+
+await check("a wobble back after stopping just past a line: the picture stays on the next line until the reader really turns",
+  { viewport: { width: 1440, height: 900 } },
+  async (page) => {
+    const t = await track(page);
+    await page.mouse.move(700, 450);
+    for (const k of [0, 1]) {
+      await scrollTo(page, t.top - t.lead + t.beat * (k + 0.5));
+      // Wheel down in small ticks to a few pixels past where line k+1 starts to leave, and stop.
+      const lineEnd = t.top - t.lead + t.beat * (k + 0.7);
+      const stop = lineEnd + 4;
+      const y = () => page.evaluate(() => new Promise((r) => requestAnimationFrame(() => r(window.scrollY))));
+      for (let i = 0; i < 200 && (await y()) < stop; i += 1) await page.mouse.wheel(0, (await y()) < stop - 12 ? 8 : 2);
+      await scrollTo(page, await y());
+      const at = await y();
+      assert.ok(at >= stop && at <= stop + 4, `wobble: the wheel stopped at ${at}px, not just past ${Math.round(stop)}px`);
+      assert.equal((await read(page)).step, String(k + 1), `wobble: stopping just past line ${k + 1} did not settle on line ${k + 2}`);
+      // The wobble: a few pixels back, which puts the page inside the first line's own stretch again.
+      const back = Math.ceil(at - lineEnd) + 3;
+      await page.mouse.wheel(0, -back);
+      await page.waitForTimeout(60);
+      await scrollTo(page, await y());
+      assert.ok((await y()) < lineEnd, `wobble: ${back}px back did not cross into line ${k + 1}'s own stretch`);
+      const wobbled = await read(page);
+      assert.equal(wobbled.step, String(k + 1), `wobble: ${back}px back sent the picture from line ${k + 2} to line ${Number(wobbled.step) + 1}`);
+      assert.ok(wobbled.steps[k + 1].opacity > 0.99, `wobble: explanation ${k + 2} is not showing after the wobble`);
+      // A real turn back up does go back.
+      await page.mouse.wheel(0, -100);
+      await page.waitForTimeout(60);
+      await scrollTo(page, await page.evaluate(() => window.scrollY));
+      assert.equal((await read(page)).step, String(k), `wobble: really scrolling back up did not return to line ${k + 1}`);
+    }
+  });
+
+await check("a quick flick past a line (five fast wheel notches): the explanation in between never shows on the way",
+  { viewport: { width: 1440, height: 900 } },
+  async (page) => {
+    const t = await track(page);
+    await page.mouse.move(700, 450);
+    for (const [from, delta, passed, lands, what] of [[0.5, 120, 1, "2", "down"], [2.5, -120, 1, "0", "up"]]) {
+      await scrollTo(page, t.top - t.lead + t.beat * from);
+      await page.evaluate(() => {
+        const texts = [...document.querySelectorAll("#how-we-work .ps-how__step")];
+        window.__psPeaks = texts.map(() => 0);
+        window.__psFrames = 0;
+        window.__psSampling = true;
+        const tick = () => {
+          if (!window.__psSampling) return;
+          window.__psFrames += 1;
+          texts.forEach((e, k) => { window.__psPeaks[k] = Math.max(window.__psPeaks[k], parseFloat(getComputedStyle(e).opacity)); });
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+      // Let the starting text be seen at full by the sampler, then flick.
+      await page.waitForTimeout(120);
+      for (let n = 0; n < 5; n += 1) await page.mouse.wheel(0, delta);
+      await page.waitForTimeout(200);
+      await page.waitForFunction(() => !document.querySelector("#how-we-work").hasAttribute("data-moving"), null, { timeout: 12000 });
+      await page.waitForTimeout(200);
+      const { peaks, frames } = await page.evaluate(() => { window.__psSampling = false; return { peaks: window.__psPeaks, frames: window.__psFrames }; });
       const s = await read(page);
-      if (s.step === null) break;
-      seen.push(s.step);
+      assert.ok(frames > 20, `flick ${what}: only ${frames} frames were sampled`);
+      assert.equal(s.step, lands, `flick ${what}: it landed on beat ${Number(s.step) + 1}, so this flick does not pass over a line (scrollY ${await page.evaluate(() => window.scrollY)})`);
+      assert.ok(peaks[passed] < 0.05, `flick ${what}: the passed-over explanation ${passed + 1} showed at ${(peaks[passed] * 100).toFixed(0)}% on the way`);
     }
-    assert.deepEqual(seen, ["3", "2", "1", "0"], `hero keys: Shift+Space from below the section showed beats ${seen.map((k) => Number(k) + 1).join(", ")}`);
   });
 
 await check("keyboard with focus on a header link: the page keys still move one beat at a time",
