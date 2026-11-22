@@ -15,8 +15,9 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
  * A hovered explanation stays up until the pointer leaves the SECTION, not the
  * line, so a reader can move down onto the text and read or select it without
  * it vanishing (WCAG 1.4.13: content shown on hover must be hoverable,
- * persistent and dismissible). Escape dismisses it; so does a press anywhere
- * outside the section.
+ * persistent and dismissible). Escape dismisses it. An explanation opened by a
+ * tap or from the keyboard stays until its line is activated again or another
+ * line is: a mouse leaving the section closes only what a mouse opened.
  *
  * A line opens only when the mouse comes to REST on it. Passing over a line
  * on the way somewhere else does nothing, and neither does the page scrolling
@@ -81,7 +82,6 @@ const REST_MS = 110;
 
 export function HowWeWork() {
   const [active, setActive] = useState<number | null>(null);
-  const sectionRef = useRef<HTMLElement>(null);
   const switchTimer = useRef<number | null>(null);
   // Whether the latest pointermove was the pointer actually moving. When the
   // page scrolls under a still mouse the browser sends hover events with the
@@ -96,6 +96,11 @@ export function HowWeWork() {
   // `click` as a plain MouseEvent with no pointerType, which is why the type
   // is recorded on pointerdown instead of read off the click.
   const lastPointer = useRef<string | null>(null);
+  // Whether the open explanation was opened by the mouse. Only then does the
+  // mouse leaving the section close it. Some touch browsers follow a tap with
+  // mouse-type hover events at the tap point, and a hybrid laptop has both: a
+  // "leave" from that mouse must not close what a finger or a key opened.
+  const openedByMouse = useRef(false);
 
   const cancelSwitch = () => {
     if (switchTimer.current !== null) {
@@ -121,51 +126,27 @@ export function HowWeWork() {
     return () => document.removeEventListener("pointermove", onMove, { capture: true });
   }, []);
 
-  // While an explanation is open: Escape closes it, and so does a press
-  // outside the section. A press is a pointer going down and coming up in
-  // about the same place. A finger going down to SCROLL never comes up as a
-  // press (the browser cancels the pointer), so scrolling to read the text
-  // does not close it. Not `click`: iOS Safari has a long history of not
-  // delivering clicks made on plain text to a listener on the document.
-  // Presses inside the section (on the explanation itself, say) leave it
-  // open. Bound only while one is open, so the page carries no listener at
-  // rest.
+  // While an explanation is open, Escape closes it. Bound only while one is
+  // open, so the page carries no listener at rest.
+  //
+  // There is deliberately NO "press outside closes it". On a touch screen the
+  // section is taller while an explanation is open, so closing it from a tap
+  // further down the page pulls everything up under the finger: the page
+  // jumps about 100px and the tap lands on whatever slid into place (measured:
+  // a tap on the Services heading opened a Services card). A tap on the open
+  // line, or on another line, is how a touch reader closes or changes it, and
+  // both of those collapse the page BELOW the finger.
   useEffect(() => {
     if (active === null) return;
-    let down: { id: number; x: number; y: number } | null = null;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setActive(null);
     };
-    const onDown = (e: PointerEvent) => {
-      down = { id: e.pointerId, x: e.clientX, y: e.clientY };
-    };
-    const onCancel = () => {
-      down = null;
-    };
-    const onUp = (e: PointerEvent) => {
-      const start = down;
-      down = null;
-      if (!start || start.id !== e.pointerId) return;
-      if (Math.hypot(e.clientX - start.x, e.clientY - start.y) > 10) return;
-      const section = sectionRef.current;
-      if (section && e.target instanceof Node && section.contains(e.target)) return;
-      setActive(null);
-    };
     document.addEventListener("keydown", onKey);
-    document.addEventListener("pointerdown", onDown);
-    document.addEventListener("pointercancel", onCancel);
-    document.addEventListener("pointerup", onUp);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("pointerdown", onDown);
-      document.removeEventListener("pointercancel", onCancel);
-      document.removeEventListener("pointerup", onUp);
-    };
+    return () => document.removeEventListener("keydown", onKey);
   }, [active]);
 
   return (
     <section
-      ref={sectionRef}
       className="ps-how"
       id="how-we-work"
       aria-labelledby="how-heading"
@@ -173,7 +154,7 @@ export function HowWeWork() {
       onPointerLeave={(e) => {
         if (e.pointerType !== "mouse") return;
         cancelSwitch();
-        setActive(null);
+        if (openedByMouse.current) setActive(null);
       }}
     >
       <div className="ps-container">
@@ -200,6 +181,7 @@ export function HowWeWork() {
                 if (active === i) return;
                 switchTimer.current = window.setTimeout(() => {
                   switchTimer.current = null;
+                  openedByMouse.current = true;
                   setActive(i);
                 }, REST_MS);
               }}
@@ -211,6 +193,7 @@ export function HowWeWork() {
                 const byMouse = e.detail !== 0 && lastPointer.current === "mouse";
                 lastPointer.current = null;
                 cancelSwitch();
+                openedByMouse.current = byMouse;
                 if (byMouse) setActive(i);
                 else setActive((current) => (current === i ? null : i));
               }}

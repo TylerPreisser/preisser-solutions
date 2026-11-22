@@ -154,9 +154,9 @@
   text-wrap: balance;
 }
 
-/* Above 480px `pretty` gives the better break in Chromium ("because we
+/* From 476px `pretty` gives the better break in Chromium ("because we
    want your / success to be our success."); `balance` split "we / want". */
-@media (min-width: 481px) {
+@media (min-width: 476px) {
   .ps-how .ps-how__belief {
     text-wrap: pretty;
   }
