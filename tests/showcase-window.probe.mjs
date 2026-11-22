@@ -437,7 +437,7 @@ async function bringIn(S) {
 }
 async function center(S) {
   const b = await S.page.locator(S.sel).boundingBox();
-  return { x: b.x + b.width / 2, y: b.y + b.height / 2 };
+  return { x: b.x + b.width / 2, y: b.y + b.height / 2, top: b.y };
 }
 async function actOpen(S, kind) {
   const { x, y } = await center(S);
@@ -448,7 +448,13 @@ async function actOpen(S, kind) {
     await S.page.mouse.down();
     return S.page.mouse.up();
   }
-  return S.page.mouse.move(x, y);
+  // Hover: a hand moving onto the card, from just above it, in steps (a person's mouse sends a stream of
+  // moves). One lone move straight onto the card is what a pointer RESTING there sends, and must not open
+  // the window (check h). t0 is the first move inside the card.
+  const { top } = await center(S);
+  await S.page.mouse.move(x, top - 40);
+  await S.page.waitForTimeout(60);
+  return S.page.mouse.move(x, y, { steps: 5 });
 }
 async function record(S, kind, sampleMs, { pictureRun = false } = {}) {
   await S.page.evaluate(recorderStart, S.sel);
@@ -769,6 +775,35 @@ for (const kind of ["phone", "click"]) {
     return `${c}; ${e}`;
   });
 }
+
+// h. A pointer merely resting on a card when the page loads must not open the window: the page's first
+// mouse event lands on the card, and the browser repeats it at the same spot (after layout or a scroll).
+// Then the same pointer moving onto the card does open it (the control: the check can pass and fail).
+await check(`[desktop hover · Hays Academy · cold · 1x CPU] h. a pointer resting on the card as the page loads does not open the window; moving onto it does`, DEVICES.desk, async () => {
+  const runs = [];
+  for (let i = 0; i < REPS; i++) {
+    const S = await newSession("hover", "hays");
+    try {
+      const { x, y, top } = await center(S);
+      const shown = () => S.page.evaluate(() => !!document.querySelector(".sc-root:not([data-armed]) .sc-pop"));
+      await S.page.mouse.move(x, y); // the resting pointer's first event, on the card
+      await S.page.waitForTimeout(300);
+      await S.page.mouse.move(x, y); // the browser's repeat at the same spot
+      await S.page.waitForTimeout(1200);
+      const rested = await shown();
+      await S.page.mouse.move(x, top - 40);
+      await S.page.waitForTimeout(60);
+      await S.page.mouse.move(x, y, { steps: 5 });
+      await S.page.waitForTimeout(1200);
+      runs.push({ rested, moved: await shown() });
+    } finally {
+      await endSession(S);
+    }
+  }
+  const t = `window open after resting: ${runs.map((r) => r.rested).join(", ")}; after moving onto the card: ${runs.map((r) => r.moved).join(", ")}`;
+  assert.ok(runs.every((r) => !r.rested && r.moved), t);
+  return t;
+});
 
 // c2 + d: the picture. Cold and warm, phone and desktop click, Hays and FarmBooks. Chromium only (screencast).
 const PICS = CDP ? [["phone", "hays"], ["phone", "farm"], ["click", "hays"], ["click", "farm"]] : [];
