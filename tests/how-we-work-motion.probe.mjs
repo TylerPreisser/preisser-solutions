@@ -25,7 +25,7 @@
  */
 import assert from "node:assert/strict";
 import {
-  BEATS, CLOSING, IDLE_MS, LINES, MAX_SPEED, beatOf, follow, followerAt, frame, keyTarget, offsetOf, plateau, positionOf, rest,
+  BEATS, CLOSING, IDLE_FRAMES, IDLE_MS, LINES, MAX_SPEED, beatOf, follow, followerAt, frame, keyTarget, offsetOf, plateau, positionOf, rest,
 } from "../src/components/home/how-we-work-motion.ts";
 
 let pass = 0;
@@ -298,39 +298,53 @@ check("the speed limit holds: the picture never moves faster than two beats a se
  * component runs, and returns the fastest any painted value moved (per ms), whether two texts were
  * ever on screen together, and whether the picture ever passed the reader.
  */
-function replay({ scrollAt, duration, hz, windowHeight, travel, eventEvery = 0 }) {
+function replay({ scrollAt, duration, hz, windowHeight, travel, stallAt = -1, stallMs = 0 }) {
   const dt = 1000 / hz;
   let state = null;
   let target = 0;
-  let lastEvent = -Infinity;
-  let lastScroll = scrollAt(0);
+  let lastPosition = Number.NaN;
+  let lastMoved = 0;
+  let stillFrames = 0;
+  let scrolling = false;
   let previous = null;
+  let previousT = 0;
   let worst = { rate: 0 };
   let overlap = 0;
+  let backwards = 0;
   for (let t = 0; t <= duration + 3000; t += dt) {
-    const scroll = scrollAt(Math.min(t, duration));
-    // The browser tells the page about scrolling at most once a frame, sometimes less often.
-    const due = eventEvery === 0 || Math.floor(t / eventEvery) !== Math.floor((t - dt) / eventEvery);
-    if (scroll !== lastScroll && due) {
-      lastScroll = scroll;
-      lastEvent = t;
-      target = positionOf(scroll, windowHeight, travel);
-    } else if (t - lastEvent >= IDLE_MS) {
-      target = rest(positionOf(lastScroll, windowHeight, travel));
+    // A stalled main thread: no frame runs for a while, then one frame sees all of that time at once.
+    if (t >= stallAt && t < stallAt + stallMs) continue;
+    const u = positionOf(scrollAt(Math.min(t, duration)), windowHeight, travel);
+    if (u !== lastPosition) {
+      lastPosition = u;
+      lastMoved = t;
+      stillFrames = 0;
+      scrolling = true;
+      target = u;
+    } else if (scrolling) {
+      stillFrames += 1;
+      if (stillFrames >= IDLE_FRAMES && t - lastMoved >= IDLE_MS) {
+        scrolling = false;
+        target = rest(u);
+      }
     }
-    if (state === null) state = followerAt(target);
-    else follow(state, target, dt);
+    const before = state ? state.x : null;
+    if (state === null) state = followerAt(rest(u));
+    else follow(state, target, t - previousT);
+    // While the reader is still scrolling down, the picture must never step back up.
+    if (before !== null && scrolling && t < duration && state.x < before - 1e-9) backwards += 1;
     const now = values(state.x, state.calm);
     if (previous) {
       for (const name of Object.keys(now)) {
-        const rate = Math.abs(now[name] - previous[name]) / dt;
+        const rate = Math.abs(now[name] - previous[name]) / (t - previousT);
         if (rate > worst.rate) worst = { rate, name, t: Math.round(t) };
       }
     }
     if (frame(state.x, state.calm).texts.filter((x) => x.opacity > 0.02).length > 1) overlap += 1;
     previous = now;
+    previousT = t;
   }
-  return { worst, overlap, end: state };
+  return { worst, overlap, backwards, end: state };
 }
 
 // Real kinds of scrolling, as offsets over time. One screen is 844px (a phone) or 900px (a laptop);
@@ -365,6 +379,7 @@ for (const [kind, curve] of Object.entries(KINDS)) {
         const result = replay({ scrollAt: (t) => start + curve(t), duration: 6000, hz, windowHeight, travel });
         const where = `at ${hz}Hz on a ${windowHeight}px screen`;
         assert.equal(result.overlap, 0, `${result.overlap} frames with two texts ${where}`);
+        assert.equal(result.backwards, 0, `the picture stepped backwards ${result.backwards} times while the reader was scrolling down ${where}`);
         assert.ok(result.worst.rate <= FASTEST, `${result.worst.name} moved at a full swing per ${(1 / result.worst.rate).toFixed(0)}ms ${where} (t=${result.worst.t}ms)`);
         if (result.worst.rate > worst.rate) worst = { ...result.worst, where };
         assert.ok(!result.end.moving, `still moving 3 seconds after the scroll ended ${where}`);
@@ -376,11 +391,26 @@ for (const [kind, curve] of Object.entries(KINDS)) {
   });
 }
 
-check("scroll events arriving late (every 50ms, a busy main thread) change nothing about that", () => {
+check("a stalled main thread mid-scroll (a 400ms hitch) is never mistaken for a stopped reader", () => {
   for (const hz of RATES) {
-    const result = replay({ scrollAt: (t) => -600 + 1500 * (1 - Math.exp(-t / 350)), duration: 6000, hz, windowHeight: 844, travel: 1688, eventEvery: 50 });
-    assert.equal(result.overlap, 0, `${result.overlap} frames with two texts at ${hz}Hz`);
-    assert.ok(result.worst.rate <= FASTEST, `${result.worst.name} moved at a full swing per ${(1 / result.worst.rate).toFixed(0)}ms at ${hz}Hz`);
+    for (const stallAt of [300, 700, 1100, 1900]) {
+      // A slow steady scroll down, with nothing running for 400ms in the middle of it.
+      const result = replay({ scrollAt: (t) => -600 + 0.35 * t, duration: 6000, hz, windowHeight: 844, travel: 1688, stallAt, stallMs: 400 });
+      assert.equal(result.backwards, 0, `the picture stepped backwards after a hitch at ${stallAt}ms at ${hz}Hz`);
+      assert.equal(result.overlap, 0, `${result.overlap} frames with two texts after a hitch at ${stallAt}ms at ${hz}Hz`);
+    }
+  }
+});
+
+check("a badly overloaded device (5 and 10 frames a second) still never steps backwards or overlaps texts", () => {
+  for (const hz of [5, 10, 15]) {
+    for (const curve of Object.values(KINDS)) {
+      const result = replay({ scrollAt: (t) => -600 + curve(t), duration: 6000, hz, windowHeight: 844, travel: 1688 });
+      assert.equal(result.backwards, 0, `the picture stepped backwards ${result.backwards} times at ${hz} frames a second`);
+      assert.equal(result.overlap, 0, `${result.overlap} frames with two texts at ${hz} frames a second`);
+      assert.ok(result.worst.rate <= FASTEST, `${result.worst.name} moved at a full swing per ${(1 / result.worst.rate).toFixed(0)}ms at ${hz} frames a second`);
+      assert.ok(!result.end.moving, `still moving 3 seconds after the scroll ended at ${hz} frames a second`);
+    }
   }
 });
 

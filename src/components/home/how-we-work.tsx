@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import { IDLE_MS, beatOf, clamp, follow, followerAt, frame, keyTarget, offsetOf, positionOf, rest } from "./how-we-work-motion";
+import { IDLE_FRAMES, IDLE_MS, beatOf, clamp, follow, followerAt, frame, keyTarget, offsetOf, positionOf, rest } from "./how-we-work-motion";
 
 /**
  * How We Work: the section directly below the hero (ADR-0026).
@@ -31,6 +31,9 @@ import { IDLE_MS, beatOf, clamp, follow, followerAt, frame, keyTarget, offsetOf,
  *     page is flung no fade finishes in under about a tenth of a second.
  *     While the picture is catching up with a fling the texts stay out of the
  *     way, so a paragraph never flashes past on the way to another.
+ *   - "Stopped" is judged inside the frame loop: the page has not moved for
+ *     140ms and for five frames running. A timer alone would mistake one
+ *     slow frame on a busy phone for a stopped reader.
  *   - When scrolling stops part way between two beats, the painted number
  *     eases on to the nearest point at which a beat is at rest. The page does
  *     not move; only the picture settles. At rest the reader therefore never
@@ -131,7 +134,9 @@ export function HowWeWork() {
     let scrolling = false;
     let raf = 0;
     let lastTime = 0;
-    let idle = 0;
+    let lastPosition = Number.NaN; // where the reader was on the last frame
+    let lastMoved = 0; // when that last changed
+    let stillFrames = 0; // and for how many frames it has not
 
     const position = () => positionOf(-track.getBoundingClientRect().top, window.innerHeight, travel);
 
@@ -188,6 +193,23 @@ export function HowWeWork() {
       raf = 0;
       const dt = now - lastTime;
       lastTime = now;
+      // Where the reader is now, read every frame (scroll events can arrive
+      // late or bunched; the position itself is always current).
+      const u = position();
+      if (u !== lastPosition) {
+        lastPosition = u;
+        lastMoved = now;
+        stillFrames = 0;
+        scrolling = true;
+        target = reduce.matches ? rest(u) : u;
+      } else if (scrolling) {
+        stillFrames += 1;
+        if (stillFrames >= IDLE_FRAMES && now - lastMoved >= IDLE_MS) {
+          // They have stopped: let the picture settle on the nearest beat.
+          scrolling = false;
+          target = rest(u);
+        }
+      }
       if (reduce.matches) shown = followerAt(target);
       else follow(shown, target, dt);
       paint(shown.x, shown.calm);
@@ -204,17 +226,10 @@ export function HowWeWork() {
       }
     };
 
+    // A scroll only wakes the frame loop; the loop reads the position itself.
     const onScroll = () => {
       if (!pinned) return;
       scrolling = true;
-      const u = position();
-      target = reduce.matches ? rest(u) : u;
-      window.clearTimeout(idle);
-      idle = window.setTimeout(() => {
-        scrolling = false;
-        target = rest(position());
-        run();
-      }, IDLE_MS);
       run();
     };
 
@@ -254,7 +269,9 @@ export function HowWeWork() {
       }
       boxes = lines.map((line) => ({ x: line.offsetLeft, y: line.offsetTop, w: line.offsetWidth, h: line.offsetHeight }));
       fillHeights = fills.map((fill) => fill.getBoundingClientRect().height + 0.5);
-      target = rest(position());
+      lastPosition = position();
+      scrolling = false;
+      target = rest(lastPosition);
       shown = followerAt(target);
       paint(shown.x, shown.calm);
     };
@@ -289,7 +306,6 @@ export function HowWeWork() {
       sizes.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("keydown", onKey);
-      window.clearTimeout(idle);
       window.cancelAnimationFrame(raf);
     };
   }, []);

@@ -27,8 +27,13 @@ export const LEAD = 0.18;
 /** How far the two lines that are not current step back. 0.5 keeps them at
  *  least 3:1 against the background in both themes. */
 export const QUIET = 0.5;
-/** How long after the last scroll event the reader counts as having stopped. */
+/** The reader counts as having stopped when the page has not moved for this
+ *  long AND for this many frames in a row. Both, because time alone is not
+ *  enough: on a busy phone a single frame can take longer than this, and a
+ *  timer would then mistake a stalled frame for a stopped reader and tug the
+ *  picture backwards in the middle of a scroll. */
 export const IDLE_MS = 140;
+export const IDLE_FRAMES = 5;
 
 /* The follower: how the painted position chases the scroll position. A
    critically damped spring, so it starts and stops gently and never overshoots,
