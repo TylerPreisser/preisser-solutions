@@ -15,8 +15,13 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
  * A hovered explanation stays up until the pointer leaves the SECTION, not the
  * line, so a reader can move down onto the text and read or select it without
  * it vanishing (WCAG 1.4.13: content shown on hover must be hoverable,
- * persistent and dismissible). Escape dismisses it; so does a tap anywhere
- * outside the headline on a touch screen.
+ * persistent and dismissible). Escape dismisses it; so does a click or tap
+ * anywhere outside the section.
+ *
+ * A line opens only when the mouse comes to REST on it. Passing over a line
+ * on the way somewhere else does nothing, and neither does the page scrolling
+ * a line underneath a mouse that is not moving. Both used to hijack the slot:
+ * going from the first line down to its own text crosses the other two.
  *
  * THE COPY IS THE OWNER'S, APPROVED 2026-11-21 ("thats perfect implement it").
  * The three lines, the three explanations and the relationship sentence ship
@@ -52,8 +57,8 @@ const STEPS: ReadonlyArray<{ line: string; body: ReactNode }> = [
         World-class custom software at <Nb>Fortune 500</Nb> grade, engineered
         for your business alone. It runs on a global edge network spanning 300+
         cities, with <Nb>AES-256</Nb> encryption, <Nb>post-quantum</Nb> secured
-        connections and <Nb>multi-factor</Nb> sign-in, and the most advanced AI
-        models wired directly into your data.
+        connections and <Nb>multi-factor</Nb> <Nb>sign-in</Nb>, and the most
+        advanced AI models wired directly into your data.
       </>
     ),
   },
@@ -62,23 +67,26 @@ const STEPS: ReadonlyArray<{ line: string; body: ReactNode }> = [
     body: (
       <>
         We support and stand by every solution we build. If a bug turns up, we
-        fix it. When you want it to do more, we expand it. As your business
-        grows, your software grows with it.
+        fix it. When you want it to do more, we <Nb>expand it.</Nb> As your
+        business grows, your software grows with it.
       </>
     ),
   },
 ];
 
-// How long the pointer must rest on a line before it takes over from an
-// explanation that is already showing. Without it, moving the mouse from the
-// first line down to its explanation crosses the other two and flashes
-// through all three on the way.
-const SWITCH_DELAY_MS = 120;
+// How long the mouse must sit still on a line before that line opens. Every
+// real movement over the line restarts the clock, so a pointer that is only
+// passing through never opens it.
+const REST_MS = 110;
 
 export function HowWeWork() {
   const [active, setActive] = useState<number | null>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const switchTimer = useRef<number | null>(null);
+  // Whether the latest pointermove was the pointer actually moving. When the
+  // page scrolls under a still mouse the browser sends hover events with the
+  // same screen position as before; those must not count as pointing.
+  const pointerMoved = useRef(false);
   // What the press that is about to become a click was made with. A mouse
   // press must not toggle (hover already shows the explanation, and a toggle
   // would hide it under the pointer); every other activation toggles: touch,
@@ -98,30 +106,48 @@ export function HowWeWork() {
 
   useEffect(() => cancelSwitch, []);
 
-  // While an explanation is open: Escape closes it, and so does a touch or pen
-  // press anywhere outside the headline. Bound only while one is open, so the
-  // page carries no listener at rest.
+  // Tracks whether the mouse itself moved. Capture phase on the document, so
+  // it has run before any line's own handler reads the answer.
+  useEffect(() => {
+    let x = Number.NaN;
+    let y = Number.NaN;
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      pointerMoved.current = e.clientX !== x || e.clientY !== y;
+      x = e.clientX;
+      y = e.clientY;
+    };
+    document.addEventListener("pointermove", onMove, { capture: true, passive: true });
+    return () => document.removeEventListener("pointermove", onMove, { capture: true });
+  }, []);
+
+  // While an explanation is open: Escape closes it, and so does a click or tap
+  // outside the section. `click`, not `pointerdown`: a finger going down to
+  // scroll is a pointerdown but never a click, and it must not close the text
+  // someone is scrolling to read. Taps inside the section (on the explanation
+  // itself, say) leave it open. Bound only while one is open, so the page
+  // carries no listener at rest.
   useEffect(() => {
     if (active === null) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setActive(null);
     };
-    const onPress = (e: PointerEvent) => {
-      if (e.pointerType === "mouse") return;
-      const headline = headlineRef.current;
-      if (headline && e.target instanceof Node && headline.contains(e.target)) return;
+    const onClick = (e: MouseEvent) => {
+      const section = sectionRef.current;
+      if (section && e.target instanceof Node && section.contains(e.target)) return;
       setActive(null);
     };
     document.addEventListener("keydown", onKey);
-    document.addEventListener("pointerdown", onPress);
+    document.addEventListener("click", onClick);
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.removeEventListener("pointerdown", onPress);
+      document.removeEventListener("click", onClick);
     };
   }, [active]);
 
   return (
     <section
+      ref={sectionRef}
       className="ps-how"
       id="how-we-work"
       aria-labelledby="how-heading"
@@ -135,7 +161,7 @@ export function HowWeWork() {
       <div className="ps-container">
         <p className="ps-eyebrow ps-how__eyebrow">How We Work</p>
 
-        <h2 id="how-heading" className="ps-how__headline" ref={headlineRef}>
+        <h2 id="how-heading" className="ps-how__headline">
           {STEPS.map((step, i) => (
             <button
               key={step.line}
@@ -150,17 +176,14 @@ export function HowWeWork() {
               onPointerDown={(e) => {
                 lastPointer.current = e.pointerType || null;
               }}
-              onPointerEnter={(e) => {
-                if (e.pointerType !== "mouse") return;
+              onPointerMove={(e) => {
+                if (e.pointerType !== "mouse" || !pointerMoved.current) return;
                 cancelSwitch();
-                if (active === null) {
+                if (active === i) return;
+                switchTimer.current = window.setTimeout(() => {
+                  switchTimer.current = null;
                   setActive(i);
-                } else if (active !== i) {
-                  switchTimer.current = window.setTimeout(() => {
-                    switchTimer.current = null;
-                    setActive(i);
-                  }, SWITCH_DELAY_MS);
-                }
+                }, REST_MS);
               }}
               onPointerLeave={(e) => {
                 if (e.pointerType === "mouse") cancelSwitch();

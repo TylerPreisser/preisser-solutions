@@ -154,9 +154,9 @@
   text-wrap: balance;
 }
 
-/* Above phone widths `pretty` gives the better break in Chromium ("because we
+/* Above 480px `pretty` gives the better break in Chromium ("because we
    want your / success to be our success."); `balance` split "we / want". */
-@media (min-width: 641px) {
+@media (min-width: 481px) {
   .ps-how .ps-how__belief {
     text-wrap: pretty;
   }
@@ -206,10 +206,11 @@
 }
 
 /* A wider measure on wide screens: the second explanation takes five lines
-   instead of six, which is what sets the height of the whole slot. */
+   instead of six, which is what sets the height of the whole slot. 32em, not
+   30: at 30 Chromium still needed six. */
 @media (min-width: 1024px) {
   .ps-how .ps-how__body {
-    max-width: 30em;
+    max-width: 32em;
   }
 }
 
@@ -223,23 +224,26 @@
   }
 }
 
-/* Phones.
-   1. The lines are tap targets. At the hero's 1.07 line-height a line is under
-      24px tall at 320px wide, below WCAG 2.5.8. Padding grows each button to
-      26px or more and the equal negative margin gives the space back, so the
-      leading on screen is still the hero's 1.07.
-   2. The slot stops reserving room for the longest explanation. Stacked in
-      one cell it left a blank band of about 250px under the hint on a 320px
-      phone. Here only the text that is showing takes space; the section grows
-      when a line is tapped, and the tap is what starts that move.
-      @starting-style keeps the fade, which `display: none` would otherwise
-      skip. */
+/* Phones: the lines are tap targets. At the hero's 1.07 line-height a line is
+   under 24px tall at 320px wide, below WCAG 2.5.8. Padding grows each button
+   to 26px or more and the equal negative margin gives the space back, so the
+   leading on screen is still the hero's 1.07. */
 @media (max-width: 640px) {
   .ps-how .ps-how__line {
     padding-block: 2px;
     margin-block: -2px;
   }
+}
 
+/* Touch screens of any size, and narrow windows: the slot stops reserving
+   room for the longest explanation. Stacked in one cell it left a blank band
+   under the hint (about 250px on a 320px phone, more on an iPad in real
+   Safari). Here only the text that is showing takes space; the section grows
+   when a line is tapped, and the tap is what starts that move.
+   Wide hover screens keep the reserved cell above, because there a hover must
+   never move the page. @starting-style keeps the fade, which `display: none`
+   would otherwise skip. */
+@media (max-width: 640px), (hover: none) {
   .ps-how .ps-how__slot {
     display: block;
   }

@@ -8,7 +8,9 @@
  * change when hovered ("make ti just hover and not change the color and stuff").
  * It also holds the three behaviours the accessibility audit asked for: a hovered
  * explanation stays while the pointer is on it, Escape closes it, and a tap
- * outside the lines closes it.
+ * outside the section closes it. And the two the design review asked for: a line
+ * opens only when the mouse rests on it, never in passing, and never because the
+ * page scrolled it under a mouse that did not move.
  *
  *   PS_TEST_BASE_URL=http://127.0.0.1:4321 node tests/how-we-work.probe.mjs
  */
@@ -167,6 +169,26 @@ await check("desktop mouse: under the hero, hero-sized, hover shows the explanat
     await page.locator("#how-step-2 .ps-how__body").hover();
     await page.waitForTimeout(600);
     await waitShown(page, "#how-step-2", true);
+    // Going from line 1 down to its own text crosses lines 2 and 3 at an ordinary speed. A line opens only
+    // when the mouse RESTS on it, so the explanation the reader is heading for must still be line 1's.
+    const from = await page.locator(".ps-how__line").nth(0).boundingBox();
+    await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
+    await waitShown(page, "#how-step-0", true);
+    const to = await page.locator("#how-step-0 .ps-how__body").boundingBox();
+    for (let k = 1; k <= 24; k += 1) {
+      await page.mouse.move(
+        from.x + from.width / 2 + ((to.x + to.width / 2 - (from.x + from.width / 2)) * k) / 24,
+        from.y + from.height / 2 + ((to.y + to.height / 2 - (from.y + from.height / 2)) * k) / 24
+      );
+      await page.waitForTimeout(25);
+    }
+    await page.waitForTimeout(500);
+    await waitShown(page, "#how-step-0", true);
+    await page.keyboard.press("Escape");
+    await waitShown(page, "#how-step-0", false);
+    await waitShown(page, ".ps-how__rest", true);
+    await page.locator(".ps-how__line").nth(2).hover();
+    await waitShown(page, "#how-step-2", true);
     await page.keyboard.press("Escape");
     await waitShown(page, "#how-step-2", false);
     await waitShown(page, ".ps-how__rest", true);
@@ -176,6 +198,18 @@ await check("desktop mouse: under the hero, hero-sized, hover shows the explanat
     await page.locator(".ps-hero-headline").hover();
     await waitShown(page, "#how-step-0", false);
     await waitShown(page, ".ps-how__rest", true);
+    // The page scrolling a line under a mouse that is not moving must open nothing.
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+    await page.mouse.move(900, 450);
+    await page.waitForTimeout(300);
+    await page.evaluate(() => {
+      const line = document.querySelectorAll(".ps-how__line")[1].getBoundingClientRect();
+      window.scrollBy({ top: line.top + line.height / 2 - 450, behavior: "instant" });
+    });
+    const under = await page.evaluate(() => document.elementFromPoint(900, 450)?.className || "");
+    assert.ok(String(under).includes("ps-how__line"), `the scroll did not put a line under the still mouse (found "${under}")`);
+    await page.waitForTimeout(700);
+    assert.equal(await page.locator("#how-we-work").getAttribute("data-active"), null, "a line opened although the mouse never moved");
   });
 
 await check("phone touch: one line each, no sideways scroll, tap opens and closes",
@@ -191,10 +225,14 @@ await check("phone touch: one line each, no sideways scroll, tap opens and close
     await page.locator(".ps-how__line").nth(2).tap();
     await waitShown(page, "#how-step-2", false);
     await waitShown(page, ".ps-how__rest", true);
-    // A tap anywhere outside the three lines closes an open explanation.
+    // A tap on the open explanation leaves it open (a thumb resting on the text must not lose it);
+    // a tap outside the section closes it.
     await page.locator(".ps-how__line").nth(0).tap();
     await waitShown(page, "#how-step-0", true);
-    await page.locator(".ps-how__eyebrow").tap();
+    await page.locator("#how-step-0 .ps-how__body").tap();
+    await page.waitForTimeout(500);
+    await waitShown(page, "#how-step-0", true);
+    await page.locator(".ps-services-header h2").tap();
     await waitShown(page, "#how-step-0", false);
     await waitShown(page, ".ps-how__rest", true);
   });
