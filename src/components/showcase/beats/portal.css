@@ -1169,8 +1169,8 @@
   text-rendering: geometricPrecision;
 }
 
-/* The band. */
-.fb {
+/* The band. Under .ai2, so no other stylesheet's `.fb` can win by loading later (critic M3). */
+.ai2 .fb {
   position: relative;
   flex: none;
   height: var(--fb-h);

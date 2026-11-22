@@ -651,6 +651,9 @@ function FetchView({ beat, T, t, phone, h, w }: { beat: AiAskBeatData; T: Return
   const cardRef = useRef<HTMLDivElement>(null);
   const [fit, setFit] = useState<{ cut: number | null; n: number; noChart?: boolean; figs?: number } | null>(null);
   const [settle, setSettle] = useState(0);
+  // The answer's room, observed: the band's fold and the question's shrink both resize it after the answer lands,
+  // so the fit is measured again whenever it changes rather than once at a moment that a slow frame can miss.
+  const area = useBox(viewRef);
   useEffect(() => {
     if (!answered) return;
     let on = true;
@@ -663,7 +666,7 @@ function FetchView({ beat, T, t, phone, h, w }: { beat: AiAskBeatData; T: Return
   }, [answered]);
   useLayoutEffect(() => {
     setFit(null);
-  }, [answered, phone, h, w, settle]);
+  }, [answered, phone, h, w, settle, area.h, area.w]);
   useLayoutEffect(() => {
     if (fit !== null || !answered) return;
     const view = viewRef.current;
