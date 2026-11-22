@@ -520,8 +520,6 @@ tl.from(".hero-eyebrow", { opacity: 0, y: 20, duration: 0.5 })
 - `public/images/og-image-square-v2.jpg` - Square social image.
 - `public/images/tyler-preisser-headshot.jpg` - Founder profile image.
 - `public/images/cases/tyler-headshot.webp` - Press/profile asset referenced by the press page.
-- `public/images/why-us/ai-harnessed.webp` - Homepage why-us visual.
-- `public/images/why-us/we-stay-with-it-new.webp` - Homepage why-us visual.
 
 ### Image Style Rules
 - Icons: prefer SVG or lucide icons unless a bitmap asset is already required.
