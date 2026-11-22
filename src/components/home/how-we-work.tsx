@@ -15,8 +15,8 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
  * A hovered explanation stays up until the pointer leaves the SECTION, not the
  * line, so a reader can move down onto the text and read or select it without
  * it vanishing (WCAG 1.4.13: content shown on hover must be hoverable,
- * persistent and dismissible). Escape dismisses it; so does a click or tap
- * anywhere outside the section.
+ * persistent and dismissible). Escape dismisses it; so does a press anywhere
+ * outside the section.
  *
  * A line opens only when the mouse comes to REST on it. Passing over a line
  * on the way somewhere else does nothing, and neither does the page scrolling
@@ -121,27 +121,45 @@ export function HowWeWork() {
     return () => document.removeEventListener("pointermove", onMove, { capture: true });
   }, []);
 
-  // While an explanation is open: Escape closes it, and so does a click or tap
-  // outside the section. `click`, not `pointerdown`: a finger going down to
-  // scroll is a pointerdown but never a click, and it must not close the text
-  // someone is scrolling to read. Taps inside the section (on the explanation
-  // itself, say) leave it open. Bound only while one is open, so the page
-  // carries no listener at rest.
+  // While an explanation is open: Escape closes it, and so does a press
+  // outside the section. A press is a pointer going down and coming up in
+  // about the same place. A finger going down to SCROLL never comes up as a
+  // press (the browser cancels the pointer), so scrolling to read the text
+  // does not close it. Not `click`: iOS Safari has a long history of not
+  // delivering clicks made on plain text to a listener on the document.
+  // Presses inside the section (on the explanation itself, say) leave it
+  // open. Bound only while one is open, so the page carries no listener at
+  // rest.
   useEffect(() => {
     if (active === null) return;
+    let down: { id: number; x: number; y: number } | null = null;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setActive(null);
     };
-    const onClick = (e: MouseEvent) => {
+    const onDown = (e: PointerEvent) => {
+      down = { id: e.pointerId, x: e.clientX, y: e.clientY };
+    };
+    const onCancel = () => {
+      down = null;
+    };
+    const onUp = (e: PointerEvent) => {
+      const start = down;
+      down = null;
+      if (!start || start.id !== e.pointerId) return;
+      if (Math.hypot(e.clientX - start.x, e.clientY - start.y) > 10) return;
       const section = sectionRef.current;
       if (section && e.target instanceof Node && section.contains(e.target)) return;
       setActive(null);
     };
     document.addEventListener("keydown", onKey);
-    document.addEventListener("click", onClick);
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("pointercancel", onCancel);
+    document.addEventListener("pointerup", onUp);
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.removeEventListener("click", onClick);
+      document.removeEventListener("pointerdown", onDown);
+      document.removeEventListener("pointercancel", onCancel);
+      document.removeEventListener("pointerup", onUp);
     };
   }, [active]);
 
