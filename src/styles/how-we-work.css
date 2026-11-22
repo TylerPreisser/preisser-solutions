@@ -1,8 +1,10 @@
 /* ============================================================
    how-we-work.css
-   The section directly below the hero (ADR-0025): the hero's
-   three-line wordmark set on the opposite side, each line
-   explaining itself on hover or tap.
+   The section directly below the hero (ADR-0026): the hero's
+   three-line wordmark set on the opposite side, told by scrolling.
+   The three lines arrive alone; then, while the block is held on
+   screen, a soft light travels down them, lighting each line in
+   turn and bringing up its explanation.
 
    Tokens only: every colour is a var() from the :root block in
    globals.css. No new hex values.
@@ -10,12 +12,49 @@
    SPECIFICITY. This file is @imported at the top of globals.css,
    so it loses any same-specificity tie to the rules that follow.
    Every selector is therefore written at 0,2,0 (two classes).
+
+   TWO LAYOUTS.
+   1. The track (default). The section is taller than the screen
+      and .ps-how__pin is held in view while the page scrolls
+      through it. how-we-work.tsx turns the scroll position into a
+      picture and writes it to the elements each frame: an opacity
+      and a transform, nothing that needs layout or a repaint. This
+      file draws the two states it fades between and has NO
+      transitions of its own: a transition would fight the scrub.
+   2. Stacked (no JavaScript, or a screen too short to pin a block
+      on). No track, no beats: the lines, then the explanations one
+      under another. See the last block of this file.
    ============================================================ */
 
 .ps-how.ps-how {
+  /* How much scrolling each of the four beats takes (three lines and the
+     closing sentence). Half a screen: about one flick of a thumb or four
+     notches of a wheel per line. */
+  --how-beat: 50svh;
+  position: relative;
+  height: calc(100svh + 4 * var(--how-beat));
   background-color: var(--theme-bg-primary);
-  padding-block: var(--section-py-desktop);
   transition: background-color 300ms ease;
+}
+
+/* The block that is held on screen. One small-viewport screen high, so it
+   never changes height when a phone's toolbar slides away mid-scroll. Its
+   content is centred in the space under the fixed header. */
+.ps-how .ps-how__pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: calc(var(--nav-height) + 16px) 32px;
+  box-sizing: border-box;
+  /* The light is wider than the line it is on; it must not widen the page. */
+  overflow: hidden;
+}
+
+.ps-how .ps-how__pin > .ps-container {
+  width: 100%;
 }
 
 /* Right-aligned, opposite the hero's left-aligned wordmark. */
@@ -48,50 +87,84 @@
   color: var(--theme-text-primary);
 }
 
-/* Each line is a real button with every button default stripped, so it reads
-   as type. It is only as wide as its words, so the hover target is the line
-   itself and not the empty space to its left. */
+/* The lines sit in front of the light that travels behind them. */
+.ps-how .ps-how__stage {
+  position: relative;
+  isolation: isolate;
+}
+
+/* The light: one soft blue glow behind the line that is current. It is a
+   100px square that the script moves and stretches to the shape of that line
+   (transform only), so it glides from one line to the next and changes shape
+   on the way. */
+.ps-how .ps-how__light {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100px;
+  height: 100px;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-primary) 26%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary) 9%, transparent) 55%,
+    transparent 100%
+  );
+  will-change: transform, opacity;
+}
+
+/* On white the same light is a wash, not a glow: much fainter. */
+[data-theme="light"] .ps-how .ps-how__light {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-primary) 13%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary) 5%, transparent) 55%,
+    transparent 100%
+  );
+}
+
 .ps-how .ps-how__line {
+  position: relative;
   display: block;
   width: max-content;
   max-width: 100%;
-  margin: 0 0 0 auto;
-  padding: 0;
-  border: 0;
-  border-radius: 6px;
-  background: none;
-  font: inherit;
-  letter-spacing: inherit;
-  line-height: inherit;
-  color: inherit;
-  text-align: right;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
+  margin-left: auto;
 }
 
-.ps-how .ps-how__line:focus-visible {
-  /* An underline, not a ring: the lines are stacked at 1.07, so any outline
-     drawn around one line cuts through the descenders of the line above. The
-     underline sits between this line's baseline and the next line's caps and
-     touches nothing. Keyboard focus only; never on hover. */
-  outline: none;
-  text-decoration: underline var(--color-primary);
-  text-decoration-thickness: max(0.06em, 2px);
-  text-underline-offset: 0.14em;
+/* The words themselves. While a line is current the other two step back;
+   the script sets this opacity. */
+.ps-how .ps-how__ink {
+  display: block;
+  will-change: opacity;
 }
 
-/* The brand device, as in the hero: the last line carries the primary blue.
-   It stays there. Nothing about a line changes on hover. */
-.ps-how .ps-how__line--accent {
+/* The lit copy of the line: the primary blue, glowing, as the hero's accent
+   line is. It lies exactly over the words and is faded in by the script
+   through --lit, so lighting a line is an opacity change and nothing is
+   repainted. The second `content` gives it empty alternative text, so a
+   screen reader does not read the line twice. */
+.ps-how .ps-how__line::after {
+  content: attr(data-text);
+  content: attr(data-text) / "";
+  position: absolute;
+  inset: 0;
   color: var(--color-primary);
-  text-shadow: 0 0 28px var(--color-primary-glow);
+  text-shadow:
+    0 0 22px var(--color-primary-glow),
+    0 0 60px var(--color-primary-glow);
+  opacity: var(--lit, 0);
+  pointer-events: none;
+  will-change: opacity;
 }
 
-/* The hero drops its glow on the light theme (globals.css,
-   [data-theme="light"] .ps-hero-line--accent); so does this. On white the
-   glow reads as a smudge around the letters. */
-[data-theme="light"] .ps-how .ps-how__line--accent {
-  text-shadow: none;
+/* On white a strong glow reads as a smudge around the letters (the hero
+   drops its own there, globals.css [data-theme="light"] .ps-hero-line--accent).
+   The owner asked for each line to glow as you go, so the light theme keeps
+   one, much softer. */
+[data-theme="light"] .ps-how .ps-how__line::after {
+  text-shadow: 0 0 26px color-mix(in srgb, var(--color-primary) 34%, transparent);
 }
 
 /* Keeps a compound ("long-term", "AES-256", "Fortune 500") on one line. A
@@ -101,94 +174,36 @@
   white-space: nowrap;
 }
 
-/* One grid cell holds the relationship sentence and all three explanations,
+/* One grid cell holds the three explanations and the closing sentence,
    stacked. The cell is as tall as the tallest of them at every width, so
-   swapping between them never moves the page and needs no min-height guess. */
+   swapping between them never moves the lines above. */
 .ps-how .ps-how__slot {
   display: grid;
-  margin-top: 72px;
+  margin-top: clamp(28px, 6svh, 72px);
 }
 
-.ps-how .ps-how__rest,
+/* Transparent, not hidden: the explanation that is not showing still sits in
+   the accessibility tree, so a screen reader reads all three in order. The
+   script sets opacity and a small vertical offset each frame. */
 .ps-how .ps-how__step {
   grid-area: 1 / 1;
   align-self: start;
-  transition:
-    opacity 400ms ease,
-    transform 400ms ease,
-    visibility 0s linear 0s;
-}
-
-/* Hidden explanations are visibility: hidden, not just transparent: that
-   takes them out of the accessibility tree and out of text selection, and
-   the delayed visibility flip lets the fade finish first. */
-.ps-how .ps-how__step {
   opacity: 0;
-  visibility: hidden;
-  transform: translateY(12px);
-  transition-delay: 0s, 0s, 400ms;
+  pointer-events: none;
+  user-select: none;
+  will-change: opacity, transform;
 }
 
 .ps-how .ps-how__step[data-on="true"] {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-  transition-delay: 0s;
+  pointer-events: auto;
+  user-select: auto;
 }
 
-.ps-how[data-active] .ps-how__rest {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-8px);
-  transition-delay: 0s, 0s, 400ms;
-}
-
-.ps-how .ps-how__belief {
-  margin: 0;
-  max-width: 22em;
-  font-size: clamp(1.25rem, 2.4vw, 1.875rem);
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -0.015em;
-  color: var(--theme-text-primary);
-  text-wrap: balance;
-}
-
-/* From 476px `pretty` gives the better break in Chromium ("because we
-   want your / success to be our success."); `balance` split "we / want". */
-@media (min-width: 476px) {
-  .ps-how .ps-how__belief {
-    text-wrap: pretty;
-  }
-}
-
-.ps-how .ps-how__hint {
-  margin: 22px 0 0;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--theme-text-secondary);
-}
-
-/* The right verb for the device, with no JS and no hydration branch. */
-.ps-how .ps-how__hint-touch {
-  display: none;
-}
-
-@media (hover: none) {
-  .ps-how .ps-how__hint-hover {
-    display: none;
-  }
-
-  .ps-how .ps-how__hint-touch {
-    display: inline;
-  }
-}
-
+/* The "01 · Get to know your business" label belongs to the stacked layout,
+   where it says which line an explanation goes with. On the track the lit
+   line says that already. */
 .ps-how .ps-how__num {
-  display: block;
+  display: none;
   margin: 0 0 14px;
 }
 
@@ -214,64 +229,79 @@
   }
 }
 
-@media (max-width: 768px) {
+/* Small or short phones: the longest explanation has to fit under the lines
+   inside one screen with the header's room taken off the top. */
+@media (max-width: 380px), (max-width: 640px) and (max-height: 700px) {
+  .ps-how .ps-how__body {
+    font-size: 1rem;
+  }
+}
+
+.ps-how .ps-how__belief {
+  margin: 0;
+  max-width: 22em;
+  font-size: clamp(1.25rem, 2.4vw, 1.875rem);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--theme-text-primary);
+  text-wrap: balance;
+}
+
+/* From 476px `pretty` gives the better break in Chromium ("because we
+   want your / success to be our success."); `balance` split "we / want". */
+@media (min-width: 476px) {
+  .ps-how .ps-how__belief {
+    text-wrap: pretty;
+  }
+}
+
+/* ------------------------------------------------------------
+   Stacked layout: no JavaScript, or a screen too short to hold
+   the lines and the longest explanation at once (a phone on its
+   side). No track and no beats. The lines look like the hero's
+   (last line blue) and the explanations sit one under another,
+   each under its own label, followed by the closing sentence.
+   ------------------------------------------------------------ */
+@media (scripting: none), (max-height: 520px) {
   .ps-how.ps-how {
+    height: auto;
     padding-block: var(--section-py-mobile);
   }
 
+  .ps-how .ps-how__pin {
+    position: static;
+    height: auto;
+    display: block;
+    padding-block: 0;
+  }
+
+  .ps-how .ps-how__light,
+  .ps-how .ps-how__line::after {
+    display: none;
+  }
+
+  .ps-how .ps-how__line:last-child .ps-how__ink {
+    color: var(--color-primary);
+  }
+
   .ps-how .ps-how__slot {
+    display: block;
     margin-top: 44px;
   }
-}
-
-/* Phones: the lines are tap targets. At the hero's 1.07 line-height a line is
-   under 24px tall at 320px wide, below WCAG 2.5.8. Padding grows each button
-   to 26px or more and the equal negative margin gives the space back, so the
-   leading on screen is still the hero's 1.07. */
-@media (max-width: 640px) {
-  .ps-how .ps-how__line {
-    padding-block: 2px;
-    margin-block: -2px;
-  }
-}
-
-/* Touch screens of any size, and narrow windows: the slot stops reserving
-   room for the longest explanation. Stacked in one cell it left a blank band
-   under the hint (about 250px on a 320px phone, more on an iPad in real
-   Safari). Here only the text that is showing takes space; the section grows
-   when a line is tapped, and the tap is what starts that move.
-   Wide hover screens keep the reserved cell above, because there a hover must
-   never move the page. @starting-style keeps the fade, which `display: none`
-   would otherwise skip. */
-@media (max-width: 640px), (hover: none) {
-  .ps-how .ps-how__slot {
-    display: block;
-  }
 
   .ps-how .ps-how__step {
-    display: none;
+    opacity: 1;
+    pointer-events: auto;
+    user-select: auto;
+    margin-top: 36px;
   }
 
-  .ps-how .ps-how__step[data-on="true"] {
+  .ps-how .ps-how__step:first-child {
+    margin-top: 0;
+  }
+
+  .ps-how .ps-how__num {
     display: block;
-  }
-
-  .ps-how[data-active] .ps-how__rest {
-    display: none;
-  }
-
-  @starting-style {
-    .ps-how .ps-how__step[data-on="true"] {
-      opacity: 0;
-      transform: translateY(12px);
-    }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ps-how .ps-how__rest,
-  .ps-how .ps-how__step {
-    transition: none;
-    transform: none;
   }
 }

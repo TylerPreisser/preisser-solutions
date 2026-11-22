@@ -1,5 +1,5 @@
 # ADR-0025: A "How We Work" section sits directly below the hero, in the hero's type on the opposite side, with the owner's copy verbatim
-Status: Accepted — 2026-11-21 (conversation, owner quoted directly) — Owner: Tyler Preisser
+Status: Superseded by ADR-0026
 Supersedes / Superseded by: —
 
 ## Context
