@@ -18,14 +18,6 @@ const ServicePillars = dynamic(
   () => import("@/components/home/service-pillars").then((m) => m.ServicePillars),
   { ssr: true }
 );
-// The MarCommand live surface. Sits directly below the services section, which
-// is where the owner asked for it. Its own stage owns the animation, the
-// reduced-motion end state and the pause control.
-const MarCommandLive = dynamic(
-  () =>
-    import("@/components/home/marcommand-live").then((m) => m.MarCommandLive),
-  { ssr: true }
-);
 const WhyUs = dynamic(
   () => import("@/components/home/why-us").then((m) => m.WhyUs),
   { ssr: true }
@@ -143,7 +135,6 @@ export default function HomePage() {
           Do not reinstate a capabilities section without reading that list —
           re-adding one would duplicate all three. */}
       <ServicePillars />
-      <MarCommandLive />
       <WhyUs />
       <CaseStudies />
       {/* The websites + marketing band stood here until 2026-09-04. It is gone

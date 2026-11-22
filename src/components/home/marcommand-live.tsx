@@ -120,7 +120,15 @@ const NARROW_ROOM_RIDE_FRACTION = 0.6;
 
 const money = (v: number) => `$${Math.round(v).toLocaleString("en-US")}`;
 
-export function MarCommandLive() {
+/**
+ * MarCommand as a block inside the fifth Services card's sheet (ADR-0029). It
+ * was the homepage section `#marcommand-live` until 2026-11-22. The words, the
+ * stage, the timeline, the end state and the pause control are unchanged; what
+ * moved is the PLACE, so the play/pause gate now watches the sheet's own scroll
+ * (an IntersectionObserver rooted on `.ps-dialog-panel`) and closing the sheet
+ * kills only what this block made.
+ */
+export function MarCommandCard() {
   const rootRef = useRef<HTMLElement>(null);
 
   /**
@@ -162,7 +170,7 @@ export function MarCommandLive() {
     let cleanup: (() => void) | null = null;
 
     import("@/lib/gsap")
-      .then(({ gsap, ScrollTrigger }) => {
+      .then(({ gsap }) => {
         if (cancelled || !rootRef.current) return;
         const el = rootRef.current;
 
@@ -1401,37 +1409,8 @@ export function MarCommandLive() {
           active = tl;
           setMotion(true);
 
-          // Never burn CPU on an off-screen loop.
-          const st = ScrollTrigger.create({
-            trigger: el,
-            start: "top 90%",
-            end: "bottom 10%",
-            onEnter: () => {
-              inView = true;
-              sync();
-            },
-            onLeave: () => {
-              inView = false;
-              sync();
-            },
-            onEnterBack: () => {
-              inView = true;
-              sync();
-            },
-            onLeaveBack: () => {
-              inView = false;
-              sync();
-            },
-          });
-
-          ScrollTrigger.refresh();
-
-          // Seed the gate from the trigger's ACTUAL state instead of waiting for
-          // an onEnter edge. If the section is already within start/end when the
-          // chunk resolves — which is exactly what happens on a short viewport,
-          // on a deep link, or on a restored scroll position — no edge is ever
-          // crossed and the loop would sit paused forever.
-          inView = st.isActive;
+          // The gate (inView) is owned by the observer below, which outlives a
+          // composition switch; a fresh timeline starts paused until it says so.
           sync();
 
           return () => {
@@ -1442,6 +1421,30 @@ export function MarCommandLive() {
 
         mm.add("(min-width: 769px)", () => register("wide"));
         mm.add("(max-width: 768px)", () => register("narrow"));
+
+        /**
+         * Never burn CPU on an off-screen loop. The sheet is the scroll
+         * container (the page behind is locked), so the gate is the sheet's own
+         * viewport, not the window: play while at least half the stage shows
+         * inside `.ps-dialog-panel`. The observer reports once on observe(), so
+         * a stage already in view when the chunk resolves starts without waiting
+         * for an edge.
+         */
+        const stageEl = q<HTMLElement>(".mc-stage");
+        const scroller = el.closest<HTMLElement>(".ps-dialog-panel");
+        const io =
+          stageEl && "IntersectionObserver" in window
+            ? new IntersectionObserver(
+                (entries) => {
+                  const last = entries[entries.length - 1];
+                  inView = last.isIntersecting && last.intersectionRatio >= 0.5;
+                  sync();
+                },
+                { root: scroller, threshold: [0, 0.5, 1] }
+              )
+            : null;
+        if (io && stageEl) io.observe(stageEl);
+        else inView = true;
 
         const onVisibility = () => {
           hidden = document.visibilityState === "hidden";
@@ -1461,7 +1464,11 @@ export function MarCommandLive() {
           active?.kill();
           active = null;
           mm.revert();
-          ScrollTrigger.getAll().forEach((tr) => tr.kill());
+          // Only this block's own observer. The old global ScrollTrigger sweep
+          // here would, on every close of the sheet, tear down the hero, bento
+          // and call-to-action animations (service-pillars.tsx records the same
+          // hazard).
+          io?.disconnect();
         };
       })
       .catch((err) => {
@@ -1484,11 +1491,10 @@ export function MarCommandLive() {
   return (
     <section
       ref={rootRef}
-      className="mc-live ps-section"
-      id="marcommand-live"
-      aria-labelledby="marcommand-live-heading"
+      className="mc-live mc-card ps-dialog-reveal"
+      aria-labelledby="mc-card-heading"
     >
-      <div className="ps-container">
+      <div className="mc-card__inner">
         <div className="mc-live__head">
           {/*
             TITLE, THEN THE PROPRIETARY LINE UNDER IT. EXACTLY TWO THINGS.
@@ -1499,7 +1505,7 @@ export function MarCommandLive() {
             This reverses an over-application, not a decision. His earlier
             instruction — a one-line headline naming the platform, and "get rid
             of the thing below it" — was read as "merge everything into one
-            line", so the descriptor's sentence was folded INTO the <h2> and
+            line", so the descriptor's sentence was folded INTO the <h4> and
             nothing was left beneath. The element he actually wanted gone was a
             different one: the long `.mc-live__body` prose paragraph that sat
             further down (measured 184px, three-and-a-bit lines between the claim
@@ -1507,13 +1513,13 @@ export function MarCommandLive() {
             `.mc-live__descriptor` deck. Those two stay deleted. The sentence
             itself was never the thing to remove — it was in the wrong element.
 
-            So: <h2> is the product name, <p> beneath it is the proprietary line,
+            So: <h4> is the product name, <p> beneath it is the proprietary line,
             verbatim as he gave it. Nothing else goes in this block.
 
-            THE ID STAYS ON THE <h2>. `marcommand-live-heading` is referenced by
+            THE ID STAYS ON THE <h4>. `mc-card-heading` is referenced by
             this section's own `aria-labelledby` and nowhere else — checked
             across src/, scripts/ and public/ before moving anything, and the
-            only two hits are both in this file. The <h2> remains the labelling
+            only two hits are both in this file. The <h4> remains the labelling
             element, so the reference keeps pointing at a real heading.
 
             THE WORDMARK IS ONE WORD AND MUST STAY ONE WORD.
@@ -1528,15 +1534,15 @@ export function MarCommandLive() {
             `overflow-wrap: break-word` on the site is scoped to
             `.ps-hero-headline`, so the word cannot be split across lines.
           */}
-          <h2 id="marcommand-live-heading" className="ps-section-heading mc-live__heading">
+          <h4 id="mc-card-heading" className="mc-live__heading mc-card__heading">
             <span className="mc-live__wm mc-live__wm--a">Mar</span><span className="mc-live__wm mc-live__wm--b">Command</span>
-          </h2>
-          <p className="mc-live__lede">
+          </h4>
+          <p className="mc-live__lede mc-card__lede">
             Our proprietary AI-powered marketing optimization platform
           </p>
         </div>
 
-        <div className="mc-live__stage-card">
+        <div className="mc-live__stage-card mc-card__stage">
           {/*
             >> THE FUNNEL IS REMOVED, ON THE OWNER'S INSTRUCTION: "remove this
             flow chart from the marcommand thing", marked on a render of this

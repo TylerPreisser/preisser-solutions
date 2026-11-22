@@ -1007,3 +1007,103 @@
     display: none;
   }
 }
+
+/* ------------------------------------------------------------
+   MarCommand inside the fifth Services card's sheet (ADR-0029).
+   The block is `.mc-live.mc-card` in `.ps-dialog-content`, after
+   "What we deliver" and before "Reach out". Everything above this
+   line is the stage and is unchanged; these rules only re-place it:
+   no card frame, edge to edge on the wide composition, the robot
+   keyed to the stage (48x58 at every width), the pause control in
+   the stage's corner (wide) or a gutter under it (narrow).
+   ------------------------------------------------------------ */
+.mc-card {
+  margin: 0 0 40px;
+  /* The sheet's ground, not the page's: `.mc-live` paints the page colour. */
+  background: transparent;
+}
+
+.mc-card__heading {
+  margin: 0 0 6px;
+  font-size: clamp(1.25rem, 2.25vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.mc-card__lede {
+  max-width: none;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.mc-card .mc-live__stage-card {
+  margin: 20px -40px 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+/* The loading shape: the wide stage's box, so nothing jumps when the chunk lands. */
+.mc-card--loading {
+  min-height: 0;
+}
+.mc-card__placeholder {
+  aspect-ratio: 1200 / 680;
+  margin: 62px -40px 0;
+  background: var(--theme-card-bg);
+  opacity: 0.6;
+}
+
+/* 48x58 at every width: the stage here never exceeds 900px, and 96x116 is only
+   clean on a stage of 1102px or more (the measurement above). Beats the
+   viewport-keyed rules by specificity. */
+.mc-card .mc-elara {
+  width: 48px;
+  height: 58px;
+  --mc-cell: 48px;
+}
+
+.mc-card .mc-live__pause {
+  right: 16px;
+  bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .mc-card {
+    margin-bottom: 32px;
+  }
+
+  .mc-card__heading {
+    font-size: 1.125rem;
+    line-height: 1.15;
+  }
+
+  .mc-card__lede {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    text-wrap: balance;
+  }
+
+  .mc-card .mc-live__stage-card {
+    margin: 16px 0 0;
+    padding: 0 0 60px;
+  }
+
+  /* No button (reduced motion, Data Saver, chunk failure) means no gutter. */
+  .mc-card .mc-live__stage-card:not(:has(.mc-live__pause)) {
+    padding-bottom: 0;
+  }
+
+  .mc-card .mc-live__pause {
+    right: 0;
+    bottom: 4px;
+  }
+
+  .mc-card__placeholder {
+    aspect-ratio: 390 / 620;
+    max-width: 430px;
+    margin: 56px auto 0;
+  }
+}

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
+import dynamic from "next/dynamic";
 import {
   AutomationVisual,
   SystemFixesVisual,
@@ -1830,6 +1831,10 @@ interface BentoCardProps {
   onClick: () => void;
 }
 
+const warmMarCommand = () => {
+  void loadMarCommandCard();
+};
+
 function BentoCard({ service, onClick }: BentoCardProps) {
   const cardRef = useRef<HTMLButtonElement>(null);
 
@@ -1883,6 +1888,9 @@ function BentoCard({ service, onClick }: BentoCardProps) {
       aria-label={`${service.cardTitle ?? service.title} Open details`}
       onClick={onClick}
       onMouseMove={handleMouseMove}
+      onPointerEnter={service.type === "search-ads" ? warmMarCommand : undefined}
+      onFocus={service.type === "search-ads" ? warmMarCommand : undefined}
+      onTouchStart={service.type === "search-ads" ? warmMarCommand : undefined}
       style={{
         "--card-mouse-x": "0px",
         "--card-mouse-y": "0px",
@@ -1983,6 +1991,25 @@ interface BottomSheetDialogProps {
   service: ServicePillar;
   onClose: () => void;
 }
+
+/* MarCommand's block in card 5's sheet (ADR-0029). Its stage and timeline are a
+   separate chunk: nothing of it is in the homepage's first JavaScript. The chunk
+   is asked for when the visitor approaches the card (hover, focus, first touch)
+   and at the latest when the sheet mounts, so on a normal visit it has arrived
+   before the block is scrolled to. Until then the block holds its own shape
+   (the stage's aspect ratio), so nothing jumps when it lands. */
+const loadMarCommandCard = () =>
+  import("@/components/home/marcommand-live").then((m) => m.MarCommandCard);
+const MarCommandCard = dynamic(loadMarCommandCard, {
+  ssr: false,
+  loading: () => (
+    <div className="mc-card mc-card--loading ps-dialog-reveal" aria-busy="true">
+      <div className="mc-card__inner">
+        <div className="mc-card__placeholder" />
+      </div>
+    </div>
+  ),
+});
 
 function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -2389,6 +2416,9 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
           <div className="ps-dialog-section ps-dialog-reveal">
             <ServiceCarousel tiles={service.serviceTiles} />
           </div>
+
+          {/* Child 3 (card 5 only) — MarCommand, live. ADR-0029. */}
+          {service.type === "search-ads" && <MarCommandCard />}
 
           {/* The "Read more" service-link list that stood here was removed
               2026-09-05 on the owner's instruction: "On each one of these Bento
