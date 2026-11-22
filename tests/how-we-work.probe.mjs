@@ -99,8 +99,14 @@ async function scrollTo(page, y) {
   await page.evaluate((top) => window.scrollTo({ top, behavior: "instant" }), y);
   // 140ms until the reader counts as stopped, then the picture eases to rest. The section says when
   // it is still moving (data-moving), so this waits for the fact instead of guessing a time.
-  await page.waitForTimeout(260);
-  await page.waitForFunction(() => !document.querySelector("#how-we-work").hasAttribute("data-moving"), null, { timeout: 8000 });
+  // Frames, not a fixed time: on a busy machine the scroll may not have been delivered to the page
+  // 260ms later, and a read before the section has even started moving proves nothing.
+  await page.evaluate(() => new Promise((done) => {
+    let left = 4;
+    const next = () => (left-- > 0 ? requestAnimationFrame(next) : done());
+    next();
+  }));
+  await page.waitForFunction(() => !document.querySelector("#how-we-work").hasAttribute("data-moving"), null, { timeout: 12000 });
 }
 
 async function read(page) {
