@@ -173,6 +173,19 @@ async function read(page) {
   });
 }
 
+/** After a key press (which scrolls smoothly): wait for the page, then the picture, to come to rest. */
+async function restedAfterKey(page) {
+  await page.evaluate(() => { window.__psY = undefined; window.__psStill = 0; });
+  await page.waitForTimeout(250);
+  await page.waitForFunction(() => {
+    const y = window.scrollY;
+    if (window.__psY === y) window.__psStill = (window.__psStill || 0) + 1;
+    else { window.__psStill = 0; window.__psY = y; }
+    return window.__psStill >= 4;
+  }, null, { polling: 100, timeout: 10000 });
+  await page.waitForFunction(() => !document.querySelector("#how-we-work").hasAttribute("data-moving"), null, { timeout: 8000 });
+}
+
 function assertLayout(s, label) {
   assert.equal(s.nextSectionId, "how-we-work", `${label}: the section right after the hero is not #how-we-work`);
   assert.deepEqual(s.lines.map((l) => l.text), LINES, `${label}: the three lines are not the owner's words`);
@@ -328,18 +341,7 @@ await check("keyboard: Space and PageDown show every explanation in turn, then l
     const t = await track(page);
     await scrollTo(page, t.top - t.lead + t.beat * 0.4);
     assert.equal((await read(page)).step, "0", "keys: not on line 1 to begin with");
-    const rested = async () => {
-      // The key scrolls smoothly; wait for the page, then the picture, to come to rest.
-      await page.evaluate(() => { window.__psY = undefined; window.__psStill = 0; });
-      await page.waitForTimeout(250);
-      await page.waitForFunction(() => {
-        const y = window.scrollY;
-        if (window.__psY === y) window.__psStill = (window.__psStill || 0) + 1;
-        else { window.__psStill = 0; window.__psY = y; }
-        return window.__psStill >= 4;
-      }, null, { polling: 100, timeout: 10000 });
-      await page.waitForFunction(() => !document.querySelector("#how-we-work").hasAttribute("data-moving"), null, { timeout: 8000 });
-    };
+    const rested = () => restedAfterKey(page);
     for (const [key, want] of [["PageDown", "1"], ["Space", "2"], ["PageDown", "3"]]) {
       await page.keyboard.press(key);
       await rested();
@@ -358,6 +360,128 @@ await check("keyboard: Space and PageDown show every explanation in turn, then l
     await rested();
     const moved = (await page.evaluate(() => window.scrollY)) - before;
     assert.ok(moved > t.beat * 1.2, `keys: PageDown on the last beat moved ${Math.round(moved)}px, so the reader cannot page out of the section`);
+  });
+
+await check("keyboard from the hero: Space or PageDown from anywhere above the section never skips the first explanation",
+  { viewport: { width: 1440, height: 900 } },
+  async (page) => {
+    const t = await track(page);
+    // The lower half of the hero is where a page used to carry the reader straight past line 1.
+    for (const [y, key] of [[0, "PageDown"], [300, "Space"], [450, "PageDown"], [520, "Space"], [600, "PageDown"], [700, "Space"], [760, "PageDown"]]) {
+      await scrollTo(page, y);
+      assert.equal((await read(page)).step, null, `hero keys: a beat is showing at ${y}px before any key`);
+      const seen = [];
+      for (let presses = 0; presses < 8; presses += 1) {
+        const before = await page.evaluate(() => window.scrollY);
+        await page.keyboard.press(key);
+        await restedAfterKey(page);
+        const after = await page.evaluate(() => window.scrollY);
+        assert.ok(after - before <= t.vh * 0.875 + 2, `hero keys: ${key} from ${Math.round(before)}px scrolled ${Math.round(after - before)}px, more than a page`);
+        if (after > t.top + t.travel) break;
+        const s = await read(page);
+        if (s.step !== null) {
+          seen.push(s.step);
+          assert.ok(s.steps[Number(s.step)].opacity > 0.99, `hero keys: beat ${Number(s.step) + 1} is not showing after ${key} from ${y}px`);
+        }
+      }
+      assert.deepEqual(seen, ["0", "1", "2", "3"], `hero keys: ${key} from ${y}px down the page showed beats ${seen.map((k) => Number(k) + 1).join(", ")}`);
+    }
+    // And back up from below the section: Shift+Space lands on the last beat, then walks up.
+    await scrollTo(page, t.top + t.travel + t.vh * 0.6);
+    const seen = [];
+    for (let presses = 0; presses < 8; presses += 1) {
+      await page.keyboard.press("Shift+Space");
+      await restedAfterKey(page);
+      const s = await read(page);
+      if (s.step === null) break;
+      seen.push(s.step);
+    }
+    assert.deepEqual(seen, ["3", "2", "1", "0"], `hero keys: Shift+Space from below the section showed beats ${seen.map((k) => Number(k) + 1).join(", ")}`);
+  });
+
+await check("keyboard with focus on a header link: the page keys still move one beat at a time",
+  { viewport: { width: 1440, height: 900 } },
+  async (page) => {
+    const t = await track(page);
+    // Real Tab presses (a script's focus() is not what a keyboard reader has) until a header link has focus.
+    let onLink = false;
+    for (let i = 0; i < 8 && !onLink; i += 1) {
+      await page.keyboard.press("Tab");
+      onLink = await page.evaluate(() => {
+        const el = document.activeElement;
+        return !!el && el.tagName === "A" && !!el.closest("header");
+      });
+    }
+    assert.ok(onLink, "focus keys: Tab never reached a link in the header");
+    await scrollTo(page, t.top - t.lead + t.beat * 0.4);
+    assert.equal((await read(page)).step, "0", "focus keys: not on line 1 to begin with");
+    for (const [key, want] of [["PageDown", "1"], ["Space", "2"], ["PageUp", "1"], ["Shift+Space", "0"]]) {
+      await page.keyboard.press(key);
+      await restedAfterKey(page);
+      const s = await read(page);
+      assert.equal(s.step, want, `focus keys: with a header link focused, ${key} went to beat ${s.step === null ? "none" : Number(s.step) + 1}, not beat ${Number(want) + 1}`);
+    }
+    assert.ok(await page.evaluate(() => document.activeElement.tagName === "A"), "focus keys: the link lost focus");
+  });
+
+await check("a slow mouse wheel (one notch, a pause, the next): nothing that was fading ever comes back",
+  { viewport: { width: 1440, height: 900 } },
+  async (page) => {
+    const t = await track(page);
+    for (const pause of [240, 320, 420]) {
+      await scrollTo(page, t.top - t.vh * 0.5);
+      await page.mouse.move(700, 450);
+      await page.evaluate(() => {
+        const section = document.querySelector("#how-we-work");
+        const lines = [...section.querySelectorAll(".ps-how__line")];
+        const texts = [...section.querySelectorAll(".ps-how__step")];
+        window.__psSamples = [];
+        window.__psSampling = true;
+        const tick = () => {
+          if (!window.__psSampling) return;
+          window.__psSamples.push({
+            y: window.scrollY,
+            lit: lines.map((l) => parseFloat(getComputedStyle(l, "::after").opacity)),
+            text: texts.map((e) => parseFloat(getComputedStyle(e).opacity)),
+          });
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+      const notches = Math.ceil((t.travel + t.vh * 0.9) / 100);
+      for (let n = 0; n < notches; n += 1) {
+        await page.mouse.wheel(0, 100);
+        await page.waitForTimeout(pause);
+      }
+      const samples = await page.evaluate(() => { window.__psSampling = false; return window.__psSamples; });
+      const moved = samples[samples.length - 1].y - samples[0].y;
+      assert.ok(moved > t.travel, `slow wheel: the wheel only moved the page ${Math.round(moved)}px (${pause}ms)`);
+      assert.ok(samples.length > notches * 4, `slow wheel: only ${samples.length} frames were sampled (${pause}ms)`);
+      // Each explanation and each of the first two lines comes up, then goes: once it has started
+      // to go it must only ever keep going. And on the way up it must only ever keep coming.
+      const series = [
+        ...[0, 1, 2].map((k) => [`explanation ${k + 1}`, samples.map((x) => x.text[k])]),
+        ...[0, 1].map((k) => [`line ${k + 1}'s light`, samples.map((x) => x.lit[k])]),
+      ];
+      for (const [name, values] of series) {
+        const peak = values.findIndex((v) => v > 0.99);
+        assert.ok(peak >= 0, `slow wheel: ${name} never came fully up (${pause}ms)`);
+        let high = 0;
+        for (let i = 0; i <= peak; i += 1) {
+          assert.ok(values[i] >= high - 0.03, `slow wheel: ${name} dipped from ${high.toFixed(2)} to ${values[i].toFixed(2)} on its way up (${pause}ms between notches)`);
+          high = Math.max(high, values[i]);
+        }
+        let low = 1;
+        for (let i = peak; i < values.length; i += 1) {
+          assert.ok(values[i] <= low + 0.03, `slow wheel: ${name} came back from ${low.toFixed(2)} to ${values[i].toFixed(2)} after it had started to go (${pause}ms between notches)`);
+          low = Math.min(low, values[i]);
+        }
+        assert.ok(low < 0.01, `slow wheel: ${name} never went (${pause}ms)`);
+      }
+      samples.forEach((x, i) => {
+        assert.ok(x.text.filter((v) => v > 0.05).length <= 1, `slow wheel: two texts are on screen together at frame ${i} (${pause}ms)`);
+      });
+    }
   });
 
 await check("a reader's own text spacing (WCAG 1.4.12): nothing is cut off, at desktop and phone size",
@@ -386,6 +510,28 @@ await check("a reader's own text spacing (WCAG 1.4.12): nothing is cut off, at d
         assert.ok(s.pageOverflow <= 0, `${w}: with text spacing the page scrolls sideways by ${s.pageOverflow}px`);
       }
     }
+  });
+
+await check("a window that grows taller again: a section the script had to lay out flat goes back to the scroll story",
+  { viewport: { width: 1440, height: 1400 } },
+  async (page) => {
+    await page.addStyleTag({ content: "#how-we-work * { line-height: 1.5 !important; letter-spacing: 0.12em !important; word-spacing: 0.16em !important; }" });
+    await page.waitForTimeout(500);
+    const state = () => page.evaluate(() => {
+      const section = document.querySelector("#how-we-work");
+      return { stacked: section.getAttribute("data-stacked"), position: getComputedStyle(section.querySelector(".ps-how__pin")).position };
+    });
+    assert.deepEqual(await state(), { stacked: null, position: "sticky" }, "taller: with text spacing a 1440 by 1400 window does not hold the block to begin with");
+    // Only the height changes. The wide-spaced lines no longer fit, so the script lays the section out flat.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.waitForTimeout(500);
+    assert.deepEqual(await state(), { stacked: "true", position: "static" }, "taller: at 1440 by 900 with text spacing the section was not laid out flat, so this proves nothing");
+    await page.setViewportSize({ width: 1440, height: 1400 });
+    await page.waitForTimeout(500);
+    assert.deepEqual(await state(), { stacked: null, position: "sticky" }, "taller: the window grew back to 1400 tall and the section stayed laid out flat");
+    const t = await track(page);
+    await scrollTo(page, t.top - t.lead + t.beat * 1.5);
+    assert.equal((await read(page)).step, "1", "taller: back on the track, the second beat does not show");
   });
 
 await check("phone: the same story, and everything fits on one screen",

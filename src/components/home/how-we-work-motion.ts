@@ -149,46 +149,148 @@ export function frame(u: number, calm = 1): Frame {
   return { lamp, lit, fill, ink, texts, light: on * (1 - 0.45 * closing) };
 }
 
-/** The beat a position belongs to: the one whose resting stretch is nearest.
- *  null while the section is still arriving. */
-export function beatOf(u: number): number | null {
-  if (u < -0.1) return null;
-  let best = 0;
-  let bestDistance = Infinity;
+/** Below this the section is still arriving and nothing is lit. */
+const OFF_TO = -0.3;
+/**
+ * Where the picture comes to rest for a reader who has stopped at `u`.
+ *
+ * `direction` is the way they were scrolling (1 down, -1 up, 0 unknown, as on a
+ * fresh load). Inside a resting stretch nothing moves. Between two, with no
+ * direction, it goes to the nearer. With a direction it always goes ON in that
+ * direction, never back: a reader working a mouse wheel one slow notch at a
+ * time pauses between notches, and settling back to the nearer stretch at
+ * every pause ran the picture backwards and brought a half-faded text back
+ * only for it to leave again on the next notch. The picture starts to change
+ * exactly where a resting stretch ends, so "they have begun to leave this
+ * line" and "stopping now finishes the change" are the same place.
+ */
+export function rest(u: number, direction: -1 | 0 | 1 = 0) {
+  // The stretches in order: "nothing lit" below OFF_TO, then each beat's.
+  let lo = OFF_TO;
+  if (u <= lo) return u;
   for (let k = 0; k <= CLOSING; k += 1) {
     const [from, to] = plateau(k);
-    const distance = u < from ? from - u : u > to ? u - to : 0;
-    if (distance < bestDistance) {
-      best = k;
-      bestDistance = distance;
+    if (u < from) {
+      // In the gap between the stretch that ends at `lo` and this one.
+      if (direction === 1) return from;
+      if (direction === -1) return lo;
+      return u - lo <= from - u ? lo : from;
     }
+    if (u <= to) return u;
+    lo = to;
   }
-  return best;
+  return lo;
 }
 
-/** Where the picture comes to rest for a reader who has stopped at `u`: the
- *  nearest point at which a beat is at rest (so it moves as little as it can),
- *  or nothing at all while the section is arriving. */
-export function rest(u: number) {
-  const beat = beatOf(u);
-  if (beat === null) return Math.min(u, -0.35);
-  const [from, to] = plateau(beat);
-  return clamp(u, from, to);
+/** The beat a position comes to rest in, or null while the section is still
+ *  arriving (nothing lit). */
+export function beatOf(u: number, direction: -1 | 0 | 1 = 0): number | null {
+  const r = rest(u, direction);
+  if (r <= OFF_TO) return null;
+  for (let k = 0; k <= CLOSING; k += 1) {
+    if (r <= plateau(k)[1]) return k;
+  }
+  return CLOSING;
 }
 
 /**
  * Where Space, PageDown (direction 1) or Shift+Space, PageUp (direction -1)
  * should take a reader who is at `u`: the middle of the next or the previous
  * beat. A page key scrolls most of a screen, which is nearly two beats, so
- * left alone it skips an explanation. null means "not ours": the reader is
- * leaving the section, and the browser pages as usual.
+ * left alone it skips an explanation. null means "not ours": the browser pages
+ * as usual.
+ *
+ * `u` here is NOT clamped to the track: it may be above the section (negative)
+ * or below it (more than `end`, the position at which the block lets go).
+ * `page` is how many beats one page key would scroll. A reader above the
+ * section whose page would carry them PAST the middle of the first beat is
+ * stopped there, and one below it whose page up would pass the middle of the
+ * last beat is stopped there, so neither end is skipped. We only ever shorten
+ * a page, never lengthen one: nothing above or below the section is skipped
+ * either.
+ *
+ * `showing` is the beat the picture is on (or heading for), null for none. It
+ * is not always the beat nearest to `u`: the picture settles onward in the
+ * direction of travel, so a reader who came back UP to the top of the section
+ * has nothing lit where one who came down to the same place has the first
+ * line. "Next" is counted from what they can see.
  */
-export function keyTarget(u: number, direction: 1 | -1): number | null {
-  const beat = beatOf(u);
-  if (beat === null) return null;
+export function keyTarget(u: number, direction: 1 | -1, page: number, end: number, showing: number | null = beatOf(u)): number | null {
+  if (u > end) return direction === -1 && u - page < CLOSING + 0.5 ? CLOSING + 0.5 : null;
+  const beat = showing;
+  if (beat === null) return direction === 1 && u + page > 0.5 ? 0.5 : null;
   const next = beat + direction;
   if (next < 0 || next > CLOSING) return null;
   return next + 0.5;
+}
+
+/** How far back a reader must come before they count as having turned round.
+ *  A finger lifting off glass, a trackpad coming to rest and a wheel's last
+ *  click all wobble a few pixels the other way; that must not send a picture
+ *  that has settled onward back a whole line. About 18px on a 900px screen. */
+export const TURN = 0.04;
+
+/**
+ * What the frame loop knows about the reader: where they are, whether they
+ * are still scrolling, which way they were going, and where the picture
+ * should be heading because of it.
+ */
+export type Reader = {
+  position: number; // where they were on the last frame
+  movedAt: number; // when that last changed
+  still: number; // and for how many frames it has not
+  scrolling: boolean;
+  direction: -1 | 0 | 1; // which way they are going
+  turn: number; // the furthest they have got that way
+  // Where the picture settled when they last stopped. If that is AHEAD of
+  // them and they carry on the same way, it waits there for them to catch up
+  // rather than coming back to meet them.
+  held: number | null;
+  target: number; // where the picture is heading
+};
+
+export function readerAt(u: number): Reader {
+  return { position: u, movedAt: 0, still: 0, scrolling: false, direction: 0, turn: u, held: null, target: rest(u) };
+}
+
+/**
+ * One frame of watching the reader: `u` is where they are now, `now` the
+ * frame's time in ms. Sets `reader.target`. While they scroll the picture
+ * heads for where they are; once they have stopped (IDLE_FRAMES and IDLE_MS
+ * without moving) it heads for a clean beat. `snap` is for a reader who asked
+ * for reduced motion: the picture is only ever on a clean beat.
+ */
+export function watch(reader: Reader, u: number, now: number, snap = false): Reader {
+  if (u !== reader.position) {
+    if (reader.direction === 0) reader.direction = u > reader.position ? 1 : -1;
+    if ((u - reader.turn) * reader.direction >= 0) reader.turn = u;
+    else if (Math.abs(u - reader.turn) > TURN) {
+      // They have really turned round, not just wobbled.
+      reader.direction = reader.direction === 1 ? -1 : 1;
+      reader.turn = u;
+      reader.held = null;
+    }
+    reader.position = u;
+    reader.movedAt = now;
+    reader.still = 0;
+    reader.scrolling = true;
+    if (snap) reader.target = rest(u, reader.direction);
+    else if (reader.held !== null && (reader.held - u) * reader.direction > 0) reader.target = reader.held;
+    else {
+      reader.held = null;
+      reader.target = u;
+    }
+  } else if (reader.scrolling) {
+    reader.still += 1;
+    if (reader.still >= IDLE_FRAMES && now - reader.movedAt >= IDLE_MS) {
+      // They have stopped: let the picture settle, onward if they had started
+      // to leave a line, and remember where.
+      reader.scrolling = false;
+      reader.held = rest(u, reader.direction);
+      reader.target = reader.held;
+    }
+  }
+  return reader;
 }
 
 /** The scroll offset (how far the top of the track is above the top of the

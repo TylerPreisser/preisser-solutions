@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import { IDLE_FRAMES, IDLE_MS, beatOf, clamp, follow, followerAt, frame, keyTarget, offsetOf, positionOf, rest } from "./how-we-work-motion";
+import { BEATS, LEAD, beatOf, clamp, follow, followerAt, frame, keyTarget, offsetOf, positionOf, readerAt, watch } from "./how-we-work-motion";
 
 /**
  * How We Work: the section directly below the hero (ADR-0026).
@@ -134,13 +134,9 @@ export function HowWeWork() {
     // pixel matters on a phone.
     let fillHeights: number[] = [];
     let shown = followerAt(0); // the beat position that is painted, and how it is moving
-    let target = 0; // the one it is heading for
-    let scrolling = false;
+    let reader = readerAt(0); // where the reader is, and where that sends the picture
     let raf = 0;
     let lastTime = 0;
-    let lastPosition = Number.NaN; // where the reader was on the last frame
-    let lastMoved = 0; // when that last changed
-    let stillFrames = 0; // and for how many frames it has not
 
     const position = () => positionOf(-track.getBoundingClientRect().top, window.innerHeight, travel);
 
@@ -199,25 +195,11 @@ export function HowWeWork() {
       lastTime = now;
       // Where the reader is now, read every frame (scroll events can arrive
       // late or bunched; the position itself is always current).
-      const u = position();
-      if (u !== lastPosition) {
-        lastPosition = u;
-        lastMoved = now;
-        stillFrames = 0;
-        scrolling = true;
-        target = reduce.matches ? rest(u) : u;
-      } else if (scrolling) {
-        stillFrames += 1;
-        if (stillFrames >= IDLE_FRAMES && now - lastMoved >= IDLE_MS) {
-          // They have stopped: let the picture settle on the nearest beat.
-          scrolling = false;
-          target = rest(u);
-        }
-      }
-      if (reduce.matches) shown = followerAt(target);
-      else follow(shown, target, dt);
+      watch(reader, position(), now, reduce.matches);
+      if (reduce.matches) shown = followerAt(reader.target);
+      else follow(shown, reader.target, dt);
       paint(shown.x, shown.calm);
-      if (shown.moving || scrolling) raf = window.requestAnimationFrame(tick);
+      if (shown.moving || reader.scrolling) raf = window.requestAnimationFrame(tick);
       // Lets a test (or anything else) wait for the picture to come to rest
       // instead of guessing how long that takes.
       else track.removeAttribute("data-moving");
@@ -233,7 +215,7 @@ export function HowWeWork() {
     // A scroll only wakes the frame loop; the loop reads the position itself.
     const onScroll = () => {
       if (!pinned) return;
-      scrolling = true;
+      reader.scrolling = true;
       run();
     };
 
@@ -277,10 +259,8 @@ export function HowWeWork() {
         const margin = (fill.getBoundingClientRect().height - line) / 2;
         return line + margin + parseFloat(getComputedStyle(lines[k]).fontSize) * 0.14;
       });
-      lastPosition = position();
-      scrolling = false;
-      target = rest(lastPosition);
-      shown = followerAt(target);
+      reader = readerAt(position());
+      shown = followerAt(reader.target);
       paint(shown.x, shown.calm);
     };
 
@@ -292,10 +272,16 @@ export function HowWeWork() {
         e.key === "PageDown" || (e.key === " " && !e.shiftKey) ? 1 : e.key === "PageUp" || (e.key === " " && e.shiftKey) ? -1 : 0;
       if (direction === 0) return;
       const from = e.target instanceof Element ? e.target : null;
-      if (from && from.closest("input, textarea, select, button, a, summary, [contenteditable], [role='button']")) return;
+      // Typing is never ours. Space on something Space operates is not ours
+      // either. A link is fine: Space and the page keys scroll from a link.
+      if (from && from.closest("input, textarea, select, [contenteditable]:not([contenteditable='false'])")) return;
+      if (e.key === " " && from && from.closest("button, summary, [role='button'], [role='switch'], [role='checkbox'], [role='tab'], [role='menuitem']")) return;
       const top = track.getBoundingClientRect().top;
-      if (-top > travel) return; // already past the track
-      const next = keyTarget(position(), direction);
+      const beat = travel / BEATS;
+      const lead = window.innerHeight * LEAD;
+      // Not clamped to the track: a reader above or below the section whose
+      // page would carry them into it must not skip its first or last beat.
+      const next = keyTarget((-top + lead) / beat, direction, (window.innerHeight * 0.875) / beat, (travel + lead) / beat, beatOf(reader.target));
       if (next === null) return;
       e.preventDefault();
       window.scrollTo({
@@ -310,7 +296,11 @@ export function HowWeWork() {
     lines.forEach((line) => sizes.observe(line));
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("keydown", onKey);
+    // The size observer does not fire for a window that only changes height
+    // while the section is stacked (nothing it watches changes size then).
+    window.addEventListener("resize", measure);
     return () => {
+      window.removeEventListener("resize", measure);
       sizes.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("keydown", onKey);

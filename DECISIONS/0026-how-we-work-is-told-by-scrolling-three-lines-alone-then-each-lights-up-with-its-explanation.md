@@ -1,6 +1,6 @@
 # ADR-0026: "How We Work" is told by scrolling: the three lines alone, then each lights up in turn with its explanation
 Status: Accepted — 2026-11-21 (conversation, owner quoted directly) — Owner: Tyler Preisser
-Supersedes / Superseded by: Supersedes ADR-0025
+Supersedes / Superseded by: Supersedes ADR-0025. The last clause of point 5 (settling on the nearest line) is replaced by ADR-0027.
 
 ## Context
 - ADR-0025 put a "How We Work" section directly below the hero: the hero's three-line wordmark on the opposite side, the owner's copy verbatim, each line explaining itself on hover or tap, the relationship sentence showing at rest, and no visual change to the lines ("make ti just hover and not change the color and stuff"). That shipped to production on 2026-11-21 (commit c08b69f).

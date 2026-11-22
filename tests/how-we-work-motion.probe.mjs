@@ -12,8 +12,9 @@
  * What it proves, for all positions and not a sample:
  *   - nothing ever jumps: every value changes by a bounded amount per pixel scrolled
  *   - no two texts are ever on screen together, and no more than two lines share the light
- *   - wherever the reader stops, the picture settles on one clean beat, the nearest
- *     one, and settling is stable
+ *   - wherever the reader stops, the picture settles on one clean beat, and settling
+ *     is stable; it settles ONWARD in the direction they were scrolling, so a slow
+ *     mouse wheel (a notch, a pause, a notch) never runs the picture backwards
  *   - the picture going up is the picture going down
  *   - the follower never overshoots and looks the same at 30, 60, 90, 120 and 240 frames a second
  *   - under a mouse wheel, a trackpad, a finger fling and a hard fling, at every
@@ -25,7 +26,7 @@
  */
 import assert from "node:assert/strict";
 import {
-  BEATS, CLOSING, IDLE_FRAMES, IDLE_MS, LINES, MAX_SPEED, beatOf, follow, followerAt, frame, keyTarget, offsetOf, plateau, positionOf, rest,
+  BEATS, CLOSING, LEAD, LINES, MAX_SPEED, TURN, beatOf, follow, followerAt, frame, keyTarget, offsetOf, plateau, positionOf, readerAt, rest, watch,
 } from "../src/components/home/how-we-work-motion.ts";
 
 let pass = 0;
@@ -177,6 +178,29 @@ check("wherever the reader stops, the picture settles on the nearest clean beat,
   }
 });
 
+check("a reader who stops while scrolling one way settles onward that way, and never back", () => {
+  let onward = 0;
+  for (const u of positions) {
+    for (const way of [1, -1]) {
+      const r = rest(u, way);
+      assert.equal(rest(r, way), r, `settling is not stable going ${way} at u=${u}: ${r} then ${rest(r, way)}`);
+      const f = frame(r);
+      assert.ok([...f.lit, ...f.texts.map((t) => t.opacity)].every((v) => v === 0 || v === 1), `a half state at rest going ${way} for u=${u}`);
+      assert.ok((r - u) * way >= 0, `stopping at u=${u} going ${way} takes the picture back ${Math.abs(r - u).toFixed(3)} beats`);
+      // Onward: never further than the widest gap between two resting stretches.
+      assert.ok(Math.abs(r - u) <= 0.6 + 1e-9, `stopping at u=${u} going ${way} moves the picture ${Math.abs(r - u).toFixed(2)} beats`);
+      if ((r - u) * way > 0) {
+        onward += 1;
+        // And only from where the picture had already begun to change: nothing is at rest there.
+        const here = frame(u);
+        const moving = [...here.lit, ...here.texts.map((t) => t.opacity), here.light].some((v) => v > 0 && v < 1) || here.texts.every((t) => t.opacity === 0);
+        assert.ok(moving, `stopping at u=${u} going ${way} moves a picture that was at rest`);
+      }
+    }
+  }
+  assert.ok(onward > 1000, `the picture settled onward at only ${onward} positions`);
+});
+
 check("a reader already inside a beat's resting stretch sees nothing move when they stop", () => {
   for (let k = 0; k <= CLOSING; k += 1) {
     const [from, to] = plateau(k);
@@ -199,22 +223,65 @@ check("the band of light is one line tall: what it leaves on one line it gains o
   }
 });
 
-check("Space and PageDown move exactly one beat, and hand back to the browser at either end", () => {
-  // From anywhere in a beat, forward goes to the middle of the next one and never skips.
-  for (const u of positions.filter((x) => x >= -0.1)) {
-    const beat = beatOf(u);
-    const forward = keyTarget(u, 1);
-    const back = keyTarget(u, -1);
-    assert.equal(forward, beat < CLOSING ? beat + 1.5 : null, `forward from u=${u} (beat ${beat + 1}) goes to ${forward}`);
-    assert.equal(back, beat > 0 ? beat - 0.5 : null, `back from u=${u} (beat ${beat + 1}) goes to ${back}`);
-    if (forward !== null) assert.equal(beatOf(forward), beat + 1, `forward from u=${u} does not land in the next beat`);
+check("Space and PageDown move exactly one beat, never skip the first or the last, and never scroll further than a page", () => {
+  for (const windowHeight of [568, 625, 844, 900, 1180]) {
+    const travel = windowHeight * 2;
+    const beat = travel / BEATS;
+    const page = (windowHeight * 0.875) / beat; // what the browser's own page key scrolls, in beats
+    const end = (travel + windowHeight * LEAD) / beat; // where the block lets go
+    // On the track: forward goes to the middle of the next beat and never skips one.
+    for (const u of positions.filter((x) => beatOf(x) !== null)) {
+      const beatNow = beatOf(u);
+      const forward = keyTarget(u, 1, page, end);
+      const back = keyTarget(u, -1, page, end);
+      assert.equal(forward, beatNow < CLOSING ? beatNow + 1.5 : null, `forward from u=${u} (beat ${beatNow + 1}) goes to ${forward}`);
+      assert.equal(back, beatNow > 0 ? beatNow - 0.5 : null, `back from u=${u} (beat ${beatNow + 1}) goes to ${back}`);
+      if (forward !== null) assert.equal(beatOf(forward), beatNow + 1, `forward from u=${u} does not land in the next beat`);
+    }
+    // Above the section (in the hero): the browser's own page is used unless it would carry the
+    // reader past the middle of the first beat; then they are stopped there. Either way they end up
+    // no further than the first beat, and never further than a page from where they were.
+    for (let u = -4; u < -0.05; u += 0.01) {
+      const forward = keyTarget(u, 1, page, end);
+      const lands = forward === null ? u + page : forward;
+      assert.ok(lands <= 0.5 + 1e-9, `a page down from u=${u.toFixed(2)} above the section lands at ${lands.toFixed(2)}, past the first explanation (${windowHeight}px)`);
+      assert.ok(lands - u <= page + 1e-9, `a page down from u=${u.toFixed(2)} scrolls ${(lands - u).toFixed(2)} beats, more than a page (${windowHeight}px)`);
+      assert.equal(keyTarget(u, -1, page, end), null, `a page up above the section is not the browser's at u=${u.toFixed(2)}`);
+    }
+    // Below the section: the same, coming back up into the last beat.
+    for (let u = end + 0.01; u < end + 4; u += 0.01) {
+      const back = keyTarget(u, -1, page, end);
+      const lands = back === null ? u - page : back;
+      assert.ok(lands >= CLOSING + 0.5 - 1e-9, `a page up from u=${u.toFixed(2)} below the section lands at ${lands.toFixed(2)}, past the last beat (${windowHeight}px)`);
+      assert.ok(u - lands <= page + 1e-9, `a page up from u=${u.toFixed(2)} scrolls more than a page (${windowHeight}px)`);
+      assert.equal(keyTarget(u, 1, page, end), null, `a page down below the section is not the browser's at u=${u.toFixed(2)}`);
+    }
+    // Pressing it over and over from the top of the hero visits every beat in order.
+    const visited = [];
+    let u = -(windowHeight - windowHeight * LEAD) / beat; // the top of the page: the section starts a screen down
+    for (let presses = 0; presses < 12; presses += 1) {
+      const next = keyTarget(u, 1, page, end);
+      u = next === null ? u + page : next;
+      if (u > end) break;
+      if (beatOf(u) !== null) visited.push(beatOf(u));
+    }
+    assert.deepEqual(visited, [0, 1, 2, 3], `paging down from the top of the page visits beats ${visited.map((k) => k + 1).join(", ")} (${windowHeight}px)`);
   }
-  // While the section is still arriving, the keys are the browser's.
-  assert.equal(keyTarget(-0.5, 1), null);
-  // Pressing it over and over visits every beat in order.
-  const visited = [];
-  for (let u = 0.3; u !== null; u = keyTarget(u, 1)) visited.push(beatOf(u));
-  assert.deepEqual(visited, [0, 1, 2, 3]);
+  // The case that was missed: a 1440 by 900 window, the reader anywhere in the lower half of the hero.
+  for (let y = 450; y <= 700; y += 10) {
+    const u = (y - 900 + 900 * LEAD) / 450;
+    assert.equal(keyTarget(u, 1, 1.75, 4.36), 0.5, `PageDown from ${y}px down the hero goes to ${keyTarget(u, 1, 1.75, 4.36)}, not the first explanation`);
+  }
+  // "Next" is counted from the beat that is SHOWING, which is not always the nearest: a reader who
+  // came back up to the top of the section has nothing lit there, and must get line 1, not line 2.
+  for (let u = -0.29; u < 0.2; u += 0.01) {
+    assert.equal(rest(u, -1), -0.3, `coming up to u=${u.toFixed(2)} something is still lit`);
+    assert.equal(keyTarget(u, 1, 1.75, 4.36, beatOf(rest(u, -1))), 0.5, `with nothing lit at u=${u.toFixed(2)}, PageDown skips the first explanation`);
+    assert.equal(keyTarget(u, 1, 1.75, 4.36, beatOf(rest(u, 1))), 1.5, `with line 1 lit at u=${u.toFixed(2)}, PageDown does not go to line 2`);
+  }
+  // And one who stopped while leaving line 1 downward is shown line 2: the next is line 3.
+  assert.equal(keyTarget(0.8, 1, 1.75, 4.36, beatOf(rest(0.8, 1))), 2.5);
+  assert.equal(keyTarget(1.2, -1, 1.75, 4.36, beatOf(rest(1.2, -1))), null);
   // And the offset it scrolls to is the inverse of reading the position.
   for (const u of [0.5, 1.5, 2.5, 3.5]) {
     assert.ok(Math.abs(positionOf(offsetOf(u, 844, 1688), 844, 1688) - u) < 1e-9, `offsetOf and positionOf disagree at u=${u}`);
@@ -294,45 +361,57 @@ check("the speed limit holds: the picture never moves faster than two beats a se
 });
 
 /**
- * Replays a scroll (a function from time in ms to scroll offset in px) through the same loop the
- * component runs, and returns the fastest any painted value moved (per ms), whether two texts were
- * ever on screen together, and whether the picture ever passed the reader.
+ * Replays a scroll (a function from time in ms to scroll offset in px) through the SAME functions the
+ * component's frame loop calls (watch, then follow), and returns the fastest any painted value moved
+ * (per ms), whether two texts were ever on screen together, whether the picture ever stepped against
+ * the reader while they were scrolling, and the furthest it ever came back from where it had got to.
+ *
+ * `way` is the direction of the scroll (1 down, -1 up). `forget` throws away what watch() remembers
+ * about direction after every frame, which is how the section behaved before it settled onward: it
+ * exists so the slow-wheel check below can be shown to FAIL on that behaviour.
  */
-function replay({ scrollAt, duration, hz, windowHeight, travel, stallAt = -1, stallMs = 0 }) {
+function replay({ scrollAt, duration, hz, windowHeight, travel, stallAt = -1, stallMs = 0, way = 1, forget = false }) {
   const dt = 1000 / hz;
   let state = null;
-  let target = 0;
-  let lastPosition = Number.NaN;
-  let lastMoved = 0;
-  let stillFrames = 0;
-  let scrolling = false;
+  let reader = null;
   let previous = null;
   let previousT = 0;
   let worst = { rate: 0 };
   let overlap = 0;
   let backwards = 0;
+  let furthest = -Infinity;
+  let retreat = 0;
+  let comeback = 0;
+  const lows = [1, 1, 1];
   for (let t = 0; t <= duration + 3000; t += dt) {
     // A stalled main thread: no frame runs for a while, then one frame sees all of that time at once.
     if (t >= stallAt && t < stallAt + stallMs) continue;
     const u = positionOf(scrollAt(Math.min(t, duration)), windowHeight, travel);
-    if (u !== lastPosition) {
-      lastPosition = u;
-      lastMoved = t;
-      stillFrames = 0;
-      scrolling = true;
-      target = u;
-    } else if (scrolling) {
-      stillFrames += 1;
-      if (stillFrames >= IDLE_FRAMES && t - lastMoved >= IDLE_MS) {
-        scrolling = false;
-        target = rest(u);
-      }
-    }
     const before = state ? state.x : null;
-    if (state === null) state = followerAt(rest(u));
-    else follow(state, target, t - previousT);
-    // While the reader is still scrolling down, the picture must never step back up.
-    if (before !== null && scrolling && t < duration && state.x < before - 1e-9) backwards += 1;
+    if (state === null) {
+      reader = readerAt(u);
+      state = followerAt(reader.target);
+    } else {
+      watch(reader, u, t);
+      if (forget) {
+        reader.direction = 0;
+        reader.held = null;
+      }
+      follow(state, reader.target, t - previousT);
+    }
+    // While the reader is still scrolling, the picture must never step the other way.
+    if (before !== null && reader.scrolling && t < duration && (state.x - before) * way < -1e-9) backwards += 1;
+    furthest = Math.max(furthest, state.x * way);
+    retreat = Math.max(retreat, furthest - state.x * way);
+    // What a retreat looks like: an explanation that had started to fade coming back.
+    if (way === 1) {
+      frame(state.x, state.calm).texts.slice(0, LINES).forEach((text, k) => {
+        if (state.x > k + 0.5) {
+          lows[k] = Math.min(lows[k], text.opacity);
+          comeback = Math.max(comeback, text.opacity - lows[k]);
+        }
+      });
+    }
     const now = values(state.x, state.calm);
     if (previous) {
       for (const name of Object.keys(now)) {
@@ -344,7 +423,7 @@ function replay({ scrollAt, duration, hz, windowHeight, travel, stallAt = -1, st
     previous = now;
     previousT = t;
   }
-  return { worst, overlap, backwards, end: state };
+  return { worst, overlap, backwards, retreat, comeback, end: state };
 }
 
 // Real kinds of scrolling, as offsets over time. One screen is 844px (a phone) or 900px (a laptop);
@@ -390,6 +469,90 @@ for (const [kind, curve] of Object.entries(KINDS)) {
     console.log(`        fastest: ${worst.name}, a full swing per ${(1 / worst.rate).toFixed(0)}ms ${worst.where}`);
   });
 }
+
+// A mouse wheel turned slowly: one notch, a pause long enough for the reader to count as stopped, then
+// the next. This is the scroll the second design review caught running the picture backwards: at every
+// pause the picture settled back to the line the reader was leaving, a half-faded explanation came
+// back, and the next notch took it away again.
+function slowWheel({ px, every, glide, windowHeight, way }) {
+  const travel = windowHeight * 2;
+  const from = way === 1 ? -windowHeight * 0.7 : travel + windowHeight * 0.4;
+  const notches = Math.ceil((travel + windowHeight * 1.1) / px);
+  const scrollAt = (t) => {
+    let y = 0;
+    for (let n = 0; n < notches && n * every <= t; n += 1) y += px * (glide === 0 ? 1 : Math.min(1, (t - n * every) / glide));
+    return from + way * y;
+  };
+  return { scrollAt, duration: notches * every + 400, travel };
+}
+const SLOW = [];
+for (const every of [220, 260, 300, 350, 400, 650]) {
+  for (const px of [100, 120]) {
+    for (const glide of [0, 120]) SLOW.push({ every, px, glide });
+  }
+}
+
+check("a slow mouse wheel (a notch every 220 to 650ms), down and up: the picture never comes back at a pause", () => {
+  let worst = { retreat: 0, comeback: 0 };
+  for (const hz of [30, 60, 120, 240]) {
+    for (const windowHeight of [568, 659, 844, 900, 1180]) {
+      for (const wheel of SLOW) {
+        for (const way of [1, -1]) {
+          const { scrollAt, duration, travel } = slowWheel({ ...wheel, windowHeight, way });
+          const result = replay({ scrollAt, duration, hz, windowHeight, travel, way });
+          const where = `${way === 1 ? "down" : "up"}, ${wheel.px}px every ${wheel.every}ms, at ${hz}Hz on a ${windowHeight}px screen`;
+          assert.ok(result.retreat <= 1e-9, `the picture came back ${result.retreat.toFixed(3)} beats (${where})`);
+          // Two parts in a hundred of one text's strength: under what an eye can see, and it is the texts'
+          // own easing as the picture catches up, not the picture going back (that is `retreat`, above).
+          assert.ok(result.comeback <= 0.02, `an explanation that was fading came back by ${(result.comeback * 100).toFixed(1)}% (${where})`);
+          assert.equal(result.backwards, 0, `the picture stepped against the reader ${result.backwards} times mid-scroll (${where})`);
+          assert.equal(result.overlap, 0, `${result.overlap} frames with two texts (${where})`);
+          assert.ok(result.worst.rate <= FASTEST, `${result.worst.name} moved at a full swing per ${(1 / result.worst.rate).toFixed(0)}ms (${where})`);
+          assert.ok(!result.end.moving, `still moving 3 seconds after the scroll ended (${where})`);
+          if (result.retreat > worst.retreat) worst = { retreat: result.retreat, comeback: Math.max(worst.comeback, result.comeback), where };
+          worst.comeback = Math.max(worst.comeback, result.comeback);
+        }
+      }
+    }
+  }
+  console.log(`        furthest the picture ever came back: ${worst.retreat.toFixed(3)} beats; most an explanation came back: ${(worst.comeback * 100).toFixed(2)}%`);
+});
+
+check("that check can fail: without settling onward, the same slow wheels do run the picture backwards", () => {
+  const windowHeight = 900;
+  let old = { retreat: 0, comeback: 0 };
+  let caught = 0;
+  for (const wheel of SLOW) {
+    const { scrollAt, duration, travel } = slowWheel({ ...wheel, windowHeight, way: 1 });
+    const result = replay({ scrollAt, duration, hz: 60, windowHeight, travel, forget: true });
+    if (result.retreat > 1e-9) caught += 1;
+    old = { retreat: Math.max(old.retreat, result.retreat), comeback: Math.max(old.comeback, result.comeback) };
+  }
+  assert.ok(old.retreat > 0.15 && old.comeback > 0.3, `the old behaviour came back only ${old.retreat.toFixed(3)} beats and ${(old.comeback * 100).toFixed(0)}%: this replay cannot see the fault it is for`);
+  // Not all: a notch every 220ms that glides for 120ms leaves a 100ms pause, too short to count as a stop.
+  assert.ok(caught >= SLOW.length * 0.75, `the old behaviour is caught on only ${caught} of the ${SLOW.length} slow wheels`);
+  console.log(`        the old behaviour: caught on ${caught} of ${SLOW.length} slow wheels, came back up to ${old.retreat.toFixed(2)} beats, an explanation came back by up to ${(old.comeback * 100).toFixed(0)}%`);
+});
+
+check("a wobble as the reader lets go (a few pixels the other way) does not send a settled picture back a line", () => {
+  const windowHeight = 900;
+  const travel = 1800;
+  const at = (u) => u * (travel / BEATS) - windowHeight * LEAD; // the offset for a beat position
+  for (const hz of [30, 60, 120]) {
+    // Down to just past line 1, stop: the picture settles on line 2. Then a wobble back.
+    for (const [back, want, what] of [[6, 1.3, "a 6px wobble"], [Math.floor(TURN * 450) - 1, 1.3, "a wobble just under a real turn"], [60, 0.7, "a real 60px scroll back up"]]) {
+      const scrollAt = (t) => (t < 500 ? at(0.4) + (at(0.9) - at(0.4)) * (t / 500) : t < 1300 ? at(0.9) : at(0.9) - back);
+      const result = replay({ scrollAt, duration: 1400, hz, windowHeight, travel });
+      assert.ok(Math.abs(result.end.x - want) < 1e-9, `after ${what} the picture rests at ${result.end.x.toFixed(3)}, not ${want} (${hz}Hz)`);
+    }
+    // The same going up: up to just above line 2's stretch, stop (settles on line 1), wobble down.
+    for (const [forward, want, what] of [[6, 0.7, "a 6px wobble"], [60, 1.3, "a real 60px scroll back down"]]) {
+      const scrollAt = (t) => (t < 500 ? at(1.6) + (at(1.1) - at(1.6)) * (t / 500) : t < 1300 ? at(1.1) : at(1.1) + forward);
+      const result = replay({ scrollAt, duration: 1400, hz, windowHeight, travel, way: -1 });
+      assert.ok(Math.abs(result.end.x - want) < 1e-9, `going up, after ${what} the picture rests at ${result.end.x.toFixed(3)}, not ${want} (${hz}Hz)`);
+    }
+  }
+});
 
 check("a stalled main thread mid-scroll (a 400ms hitch) is never mistaken for a stopped reader", () => {
   for (const hz of RATES) {
