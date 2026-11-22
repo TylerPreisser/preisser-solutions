@@ -1,0 +1,200 @@
+/* ============================================================
+   how-we-work.css
+   The section directly below the hero (ADR-0025): the hero's
+   three-line wordmark set on the opposite side, each line
+   explaining itself on hover or tap.
+
+   Tokens only: every colour is a var() from the :root block in
+   globals.css. No new hex values.
+
+   SPECIFICITY. This file is @imported at the top of globals.css,
+   so it loses any same-specificity tie to the rules that follow.
+   Every selector is therefore written at 0,2,0 (two classes).
+   ============================================================ */
+
+.ps-how.ps-how {
+  background-color: var(--theme-bg-primary);
+  padding-block: var(--section-py-desktop);
+  transition: background-color 300ms ease;
+}
+
+/* Right-aligned, opposite the hero's left-aligned wordmark. */
+.ps-how .ps-how__eyebrow {
+  display: block;
+  text-align: right;
+}
+
+/* The hero's own type: same family, weight, tracking and line-height as
+   .ps-hero-headline, and the same 5.15rem ceiling, so from about 1230px up
+   the two headlines are the same size.
+
+   The vw term is 6.7 where the hero's is 7.5. "Get to know your business."
+   is 26 characters against the hero's longest line at 20, and measures about
+   12.6em wide; at 7.5vw it would overrun the content box on every phone
+   (390px: 368px of type in a 342px box). 6.7vw keeps it on one line down to
+   320px. Lines are nowrap: a wrap here would break the wordmark, so the size
+   gives way, never the line. */
+.ps-how .ps-how__headline {
+  margin: 0;
+  text-align: right;
+  font-size: clamp(1.25rem, 6.7vw, 5.15rem);
+  font-weight: 800;
+  line-height: 1.07;
+  letter-spacing: -0.03em;
+  color: var(--theme-text-primary);
+}
+
+/* Each line is a real button with every button default stripped, so it reads
+   as type. It is only as wide as its words, so the hover target is the line
+   itself and not the empty space to its left. */
+.ps-how .ps-how__line {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  color: inherit;
+  text-align: right;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ps-how .ps-how__line:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 6px;
+}
+
+/* The brand device, as in the hero: the last line carries the primary blue.
+   It stays there. Nothing about a line changes on hover. */
+.ps-how .ps-how__line--accent {
+  color: var(--color-primary);
+  text-shadow: 0 0 28px var(--color-primary-glow);
+}
+
+/* One grid cell holds the relationship sentence and all three explanations,
+   stacked. The cell is as tall as the tallest of them at every width, so
+   swapping between them never moves the page and needs no min-height guess. */
+.ps-how .ps-how__slot {
+  display: grid;
+  margin-top: 72px;
+}
+
+.ps-how .ps-how__rest,
+.ps-how .ps-how__step {
+  grid-area: 1 / 1;
+  align-self: start;
+  transition:
+    opacity 400ms ease,
+    transform 400ms ease,
+    visibility 0s linear 0s;
+}
+
+/* Hidden explanations are visibility: hidden, not just transparent: that
+   takes them out of the accessibility tree and out of text selection, and
+   the delayed visibility flip lets the fade finish first. */
+.ps-how .ps-how__step {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition-delay: 0s, 0s, 400ms;
+}
+
+.ps-how .ps-how__step[data-on="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+
+.ps-how[data-active] .ps-how__rest {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition-delay: 0s, 0s, 400ms;
+}
+
+.ps-how .ps-how__belief {
+  margin: 0;
+  max-width: 22em;
+  font-size: clamp(1.25rem, 2.4vw, 1.875rem);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--theme-text-primary);
+  text-wrap: balance;
+}
+
+.ps-how .ps-how__hint {
+  margin: 22px 0 0;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--theme-text-secondary);
+}
+
+/* The right verb for the device, with no JS and no hydration branch. */
+.ps-how .ps-how__hint-touch {
+  display: none;
+}
+
+@media (hover: none) {
+  .ps-how .ps-how__hint-hover {
+    display: none;
+  }
+
+  .ps-how .ps-how__hint-touch {
+    display: inline;
+  }
+}
+
+.ps-how .ps-how__num {
+  display: block;
+  margin: 0 0 14px;
+}
+
+.ps-how .ps-how__body {
+  margin: 0;
+  max-width: 27em;
+  font-size: clamp(1.125rem, 2vw, 1.5625rem);
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.012em;
+  color: var(--theme-text-primary);
+  text-wrap: pretty;
+}
+
+@media (max-width: 768px) {
+  .ps-how.ps-how {
+    padding-block: var(--section-py-mobile);
+  }
+
+  .ps-how .ps-how__slot {
+    margin-top: 44px;
+  }
+}
+
+/* On phones the lines are tap targets. At the hero's 1.07 line-height a line
+   is under 24px tall at 320px wide, below WCAG 2.5.8; 1.22 keeps every line
+   at 26px or more. Desktop keeps the hero's exact 1.07. */
+@media (max-width: 640px) {
+  .ps-how .ps-how__headline {
+    line-height: 1.22;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ps-how .ps-how__rest,
+  .ps-how .ps-how__step {
+    transition: none;
+    transform: none;
+  }
+}

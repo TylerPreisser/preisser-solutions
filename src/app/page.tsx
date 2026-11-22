@@ -8,6 +8,12 @@ import { siteConfig } from "@/data/site-config";
 // after the critical above-fold content is interactive. `ssr: true` keeps
 // the HTML in the SSG output (preserves SEO + avoids layout shift on paint),
 // but the JS bundle for each component is fetched lazily by the browser.
+// The section directly below the hero (ADR-0025): the hero's wordmark set on
+// the opposite side, each line explaining itself on hover or tap.
+const HowWeWork = dynamic(
+  () => import("@/components/home/how-we-work").then((m) => m.HowWeWork),
+  { ssr: true }
+);
 const ServicePillars = dynamic(
   () => import("@/components/home/service-pillars").then((m) => m.ServicePillars),
   { ssr: true }
@@ -120,6 +126,7 @@ export default function HomePage() {
       <p className="ps-visually-hidden">
         Preisser Solutions is a Hays, Kansas-based custom software company: business software, business automation, and AI integration. We build the internal systems a business runs on (admin dashboards, customer and member databases, client portals, document pipelines, and the automations that connect them), purpose-built for how each business actually works, for small and mid-sized businesses in Kansas and beyond.
       </p>
+      <HowWeWork />
       {/* <Capabilities> stood here from 2026-09-03 to 2026-09-04. It was
           itself the replacement for <ProofBar> and <ValueStrip>, two infinite
           marquees the owner called tacky. Deleted on the owner's call; its
