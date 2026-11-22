@@ -425,19 +425,50 @@ await check("A13 frame budget: at most 10% of frames over 33.4ms while the loop 
 });
 
 // ---------------------------------------------------------------------------------------- A14
-for (const s of pick("1440x900", "402x874")) for (const theme of THEMES) {
-  await check(`A14 Services runs straight into Why us ${s.name} ${theme}: last card to the Why Us eyebrow`, ctxFor(s), async (page) => {
+// Services now runs straight into the client work. The gap from the last services card to the client
+// section's heading must sit inside the range the page's other section joins make: How We Work to
+// Services (section edge to heading) and client work to the call to action (last content to heading).
+for (const s of pick("1440x900", "820x1180", "402x874")) for (const theme of THEMES) {
+  await check(`A14 Services runs straight into the client work ${s.name} ${theme}: the gap matches the page's other joins`, ctxFor(s), async (page) => {
     const r = await page.evaluate(() => {
-      const cards = [...document.querySelectorAll("#services .ps-bento-card")];
-      const last = Math.max(...cards.map((c) => c.getBoundingClientRect().bottom + window.scrollY));
-      const eb = [...document.querySelectorAll(".ps-eyebrow, [class*=eyebrow]")].find((e) => /why us/i.test(e.textContent));
-      return { last, eb: eb ? eb.getBoundingClientRect().top + window.scrollY : null };
+      const Y = (e) => e.getBoundingClientRect().top + window.scrollY;
+      const B = (e) => e.getBoundingClientRect().bottom + window.scrollY;
+      const head = (sec) => sec.querySelector("h2,h1,.ps-eyebrow");
+      const services = document.querySelector("#services");
+      const how = document.querySelector("#how-we-work");
+      const work = document.querySelector("#case-studies");
+      const cta = document.querySelector("#cta");
+      const cards = [...services.querySelectorAll(".ps-bento-card")];
+      const lastCard = Math.max(...cards.map(B));
+      const pb = (e) => parseFloat(getComputedStyle(e).paddingBottom);
+      return {
+        next: services.nextElementSibling?.id || services.nextElementSibling?.tagName,
+        whyUs: document.querySelectorAll("#why-us").length,
+        join: Y(head(work)) - lastCard,
+        refHow: Y(head(services)) - B(how),
+        refWork: Y(head(cta)) - (B(work) - pb(work)),
+        bgServices: getComputedStyle(services).backgroundColor,
+        bgWork: getComputedStyle(work).backgroundColor,
+        bgBody: getComputedStyle(document.body).backgroundColor,
+      };
     });
-    assert.ok(r.eb !== null, "no Why Us eyebrow found");
-    const want = s.w >= 769 ? 172 : 92;
-    near(r.eb - r.last, want, 2, "gap from last card to Why Us eyebrow");
+    assert.equal(r.whyUs, 0, "a Why Us section is still on the page");
+    assert.ok(/case-studies/.test(r.next || "") || r.next === "SECTION", `Services is followed by ${r.next}`);
+    const lo = Math.min(r.refHow, r.refWork) - 2, hi = Math.max(r.refHow, r.refWork) + 2;
+    assert.ok(r.join >= lo && r.join <= hi, `gap last card to client heading ${r.join.toFixed(0)}px, other joins ${r.refHow.toFixed(0)} (How We Work to Services) and ${r.refWork.toFixed(0)} (client work to call to action)`);
   }, { theme, noOpen: true });
 }
+
+await check("homepage: no Why Us section (no #why-us, no #why-heading, no 'Your success is')", ctxFor(SIZES[1]), async (page) => {
+  const r = await page.evaluate(() => ({
+    sec: document.querySelectorAll("#why-us").length,
+    head: document.querySelectorAll("#why-heading").length,
+    text: document.body.innerText.includes("Your success is"),
+  }));
+  assert.equal(r.sec, 0, `${r.sec} #why-us`);
+  assert.equal(r.head, 0, `${r.head} #why-heading`);
+  assert.equal(r.text, false, "the words 'Your success is' are on the home page");
+}, { noOpen: true });
 
 // ---------------------------------------------------------------------------------------- lazy
 await check("loading: the stage's code is not requested until the card is approached or opened", ctxFor(SIZES[1]), async (page, requests) => {

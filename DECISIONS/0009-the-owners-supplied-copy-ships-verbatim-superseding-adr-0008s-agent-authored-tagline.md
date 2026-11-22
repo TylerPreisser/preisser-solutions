@@ -1,5 +1,5 @@
 # ADR-0009: The owner's supplied copy ships verbatim, superseding ADR-0008's agent-authored tagline
-Status: Accepted — 2026-09-04 (conversation, owner quoted directly) — Owner: Tyler Preisser
+Status: Superseded by ADR-0030 (the section's placement only; the verbatim-copy rule stands everywhere else) — was Accepted 2026-09-04
 Supersedes / Superseded by: **Supersedes ADR-0008 in full.** ADR-0008's Decision 3 (the tagline) and Decision 1 (the one-word deletion) are both reversed. ADR-0004's Decision 2, that the tagline is the owner's own phrasing and not an improvement on it, is **reinstated and is the governing rule.**
 
 ## Context

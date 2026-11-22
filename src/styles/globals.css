@@ -3,7 +3,6 @@
 /* 2026-09-03 homepage overhaul — one stylesheet per new surface. Split out so the
    work could be parallelized; every rule inside uses the :root tokens below. */
 @import "./hero-scroll-cue.css";
-@import "./why-us-relationship.css";
 @import "./how-we-work.css";
 @import "./work-card-reveal.css";
 @import "./marcommand-live.css";
@@ -3326,21 +3325,6 @@ ul, ol {
   }
 }
 
-/* ── Why Us Section ────────────────────────────────────────── */
-/* Always uses theme-switchable background — transitions smoothly */
-.ps-why {
-  background: var(--theme-bg-primary);
-  padding: var(--section-py-desktop) 0 72px;
-  overflow: hidden;
-  transition: background 300ms ease;
-}
-
-@media (max-width: 768px) {
-  .ps-why {
-    padding: var(--section-py-mobile) 0;
-  }
-}
-
 /* ── Service Visual Refresh Overrides ─────────────────────── */
 
 /* Automation */
@@ -3774,8 +3758,9 @@ ul, ol {
      Firefox drops it entirely (computes `wrap`/`auto` — no support). Line
      breaks were byte-identical before and after in all three engines: line 4
      stayed "after launch." alone at 106px of a 632px measure (16.8%, inside
-     the 15-17% band this repo records as a failure). This matches
-     why-us.tsx's own note that `pretty` "does not fix either".
+     the 15-17% band this repo records as a failure). The removed Why Us
+     section (ADR-0030) recorded the same result: `pretty` "does not fix
+     either".
 
      What actually fixed it is a non-breaking space binding "stays" to
      "after" in cta-section.tsx, which drops three words to the last line
@@ -5172,7 +5157,6 @@ ul, ol {
 @media (max-width: 768px) {
   .ps-problem-inner,
   .ps-services,
-  .ps-why,
   .ps-work,
   .ps-cta-section,
   .ps-footer {

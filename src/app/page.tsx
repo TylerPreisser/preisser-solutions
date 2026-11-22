@@ -18,10 +18,6 @@ const ServicePillars = dynamic(
   () => import("@/components/home/service-pillars").then((m) => m.ServicePillars),
   { ssr: true }
 );
-const WhyUs = dynamic(
-  () => import("@/components/home/why-us").then((m) => m.WhyUs),
-  { ssr: true }
-);
 const CaseStudies = dynamic(
   () => import("@/components/home/case-studies").then((m) => m.CaseStudies),
   { ssr: true }
@@ -135,7 +131,6 @@ export default function HomePage() {
           Do not reinstate a capabilities section without reading that list —
           re-adding one would duplicate all three. */}
       <ServicePillars />
-      <WhyUs />
       <CaseStudies />
       {/* The websites + marketing band stood here until 2026-09-04. It is gone
           per ADR-0006: its six destinations now live as bento cards in the

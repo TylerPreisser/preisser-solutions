@@ -783,7 +783,7 @@ export function CaseStudies() {
             Chromium, Firefox and WebKit, both themes). Do NOT split this into two headings
             and do NOT add ARIA here; the accessible name is already correct.
             Same accent device as the hero's final pillar line
-            (globals.css:1480) and the why-us tagline: first half keeps the
+            (globals.css:1480) and the removed Why Us tagline (ADR-0030): first half keeps the
             heading's own colour, second half takes --theme-accent-text.
           */}
           <h2 id="work-heading" className="ps-section-heading ps-section-heading--light">

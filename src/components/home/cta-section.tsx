@@ -76,8 +76,9 @@ export function CtaSection() {
             WHERE THE PARAGRAPH WENT. Its opening claim, "We start by
             listening, finding out how we can help you achieve your
             business's biggest goals, or even solve your business's biggest
-            problems.", was moved VERBATIM into Why Us, which is where he
-            asked for it. See why-us.tsx.
+            problems.", was moved VERBATIM into the Why Us section, where
+            he asked for it. That section was removed on 2026-11-22 (ADR-0030);
+            the sentence is in the git history of why-us.tsx.
 
             WHAT WAS NOT CARRIED OVER, so it is findable if he wants it back:
               - "We have a very effective, unique approach: experience in

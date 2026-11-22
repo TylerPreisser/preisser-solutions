@@ -21,7 +21,7 @@ Supersedes / Superseded by: — (no earlier ADR placed the section; see Context)
 1. MarCommand is a block inside card 5's sheet: the "MarCommand" heading, the line "Our proprietary
    AI-powered marketing optimization platform", and the same live robot stage (wide from 769px, narrow at
    768px and below). No new words.
-2. The homepage has no `#marcommand-live` section. Services runs straight into "Why us".
+2. The homepage has no `#marcommand-live` section. Services runs straight into the client work (ADR-0030 later removed the Why us section that followed).
 3. The card face and the MarCommand tile are unchanged. Not allowed: the robot or the name on the card face.
 4. The stage's code loads as its own chunk when the card is approached or the sheet opens. The loop plays
    only while half the stage shows inside the sheet, and closing the sheet kills only what the block made.
