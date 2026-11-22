@@ -79,7 +79,7 @@ async function warmUp(b, label) {
     console.log(`  (warm-up ${label} ${name}: first page hydrated in ${((Date.now() - t0) / 1000).toFixed(1)}s)`);
   }
 }
-await warmUp(browser, "chromium");
+if (!process.env.PS_TEST_NO_WARMUP) await warmUp(browser, "chromium");
 let pass = 0;
 let fail = 0;
 const ONLY = (process.env.PS_TEST_ONLY || "").toLowerCase();
@@ -99,13 +99,30 @@ async function check(name, contextOptions, fn, { theme, noOpen, before, engine }
   if (engine === "webkit") {
     if (!webkitBrowser) {
       webkitBrowser = await req("playwright").webkit.launch();
-      await warmUp(webkitBrowser, "webkit");
+      if (!process.env.PS_TEST_NO_WARMUP) await warmUp(webkitBrowser, "webkit");
     }
     b = webkitBrowser;
   }
   const context = await b.newContext(contextOptions);
   if (before) await before(context);
   const page = await context.newPage();
+  // PS_TEST_TRACE=1 prints, per check, the time to the hydration marker, the longest main-thread task
+  // and the slowest page.evaluate round trip while waiting (used to look into first-load stalls).
+  const trace = process.env.PS_TEST_TRACE ? { t0: Date.now(), maxRt: 0, stop: false } : null;
+  if (trace) {
+    await page.addInitScript(() => {
+      window.__lt = 0;
+      try { new PerformanceObserver((l) => { for (const e of l.getEntries()) window.__lt = Math.max(window.__lt, e.duration); }).observe({ type: "longtask", buffered: true }); } catch {}
+    });
+    (async () => {
+      while (!trace.stop) {
+        const a = Date.now();
+        await page.evaluate(() => 1).catch(() => {});
+        trace.maxRt = Math.max(trace.maxRt, Date.now() - a);
+        await new Promise((r) => setTimeout(r, 1000));
+      }
+    })();
+  }
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e.message || e)));
   page.errors = errors;
@@ -117,6 +134,11 @@ async function check(name, contextOptions, fn, { theme, noOpen, before, engine }
       const b = document.querySelector("#services button.ps-bento-card");
       return !!b && Object.keys(b).some((k) => k.startsWith("__react"));
     }, null, { timeout: 120000 });
+    if (trace) {
+      trace.stop = true;
+      const lt = await page.evaluate(() => window.__lt).catch(() => -1);
+      console.log(`  TRACE hydrated_s=${((Date.now() - trace.t0) / 1000).toFixed(1)} longtask_ms=${Math.round(lt)} max_evaluate_ms=${trace.maxRt}`);
+    }
     await page.addStyleTag({ content: "html { scroll-behavior: auto !important; }" });
     if (theme) {
       const before = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
