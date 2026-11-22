@@ -192,6 +192,7 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
         {/* The entrance picture only while the frame is on its way; any other time (refused, the fallback) the
             finished page, so a frame that never goes live still shows a real-looking site (critic r2 N1). */}
         <Still
+          settled={active}
           cap={cap.first && state !== "preview" && !refused ? { ...cap, ...cap.first, video: undefined } : cap}
           alt={`${domain} home page, a still from ${(cap.first && state !== "preview" && !refused && cap.first.captured?.replace(/^Captured\s+/i, "")) || when}`}
         />
@@ -242,14 +243,25 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
 }
 
 /** The dated still: the capture's top, or the site's header bar over its hero video's poster. Never pans.
- *  It fades in once decoded, so a picture that is not ready at the window's first frame does not pop in. */
-function Still({ cap, alt }: { cap: SiteCapture; alt: string }) {
+ *  It fades in once decoded, so a picture that is not ready at the window's first frame does not pop in.
+ *  One that arrives while the window is still coming in waits for it to settle (`settled`): drawn for the
+ *  first time mid-grow, a 1220 px picture cost the grow a frame (desktop, FarmBooks cold, window-fix bench). */
+function Still({ cap, alt, settled }: { cap: SiteCapture; alt: string; settled: boolean }) {
   const [ready, setReady] = useState<string | null>(null);
+  const [early, setEarly] = useState<string | null>(null);
   const key = cap.video ? cap.video.poster : cap.src;
+  // Whether this picture was already decoded the first time it was attached (only then is it "early").
+  const seen = useRef<string | null>(null);
   const onImg = (img: HTMLImageElement | null) => {
-    if (img && img.complete && img.naturalWidth > 0 && ready !== key) setReady(key);
+    if (!img) return;
+    const first = seen.current !== key;
+    seen.current = key;
+    if (img.complete && img.naturalWidth > 0 && ready !== key) {
+      setReady(key);
+      if (first && !settled) setEarly(key);
+    }
   };
-  const shown = ready === key ? "" : undefined;
+  const shown = ready === key && (settled || early === key) ? "" : undefined;
   const onLoad = () => setReady(key);
   if (cap.video) {
     return (
