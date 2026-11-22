@@ -60,9 +60,11 @@ export const CALM_MS = 70;
 /** The follower works in steps of at most this long, so it behaves the same at
  *  every frame rate. */
 export const SUBSTEP_MS = 4;
-/** The longest time one frame may stand for, so a tab that was in the
- *  background does not arrive in one jump. */
-export const MAX_FRAME_MS = 64;
+/** The longest time one frame may stand for. A slow device's frames (even five
+ *  a second) are followed in real time; only a gap longer than this, which
+ *  means the tab was in the background, is cut short so the picture does not
+ *  arrive in one jump. */
+export const MAX_FRAME_MS = 250;
 
 /* Where each beat is at rest: the stretch of the track over which its picture
    does not change at all (its text fully in, the light still). Between two of
