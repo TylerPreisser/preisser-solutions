@@ -141,9 +141,11 @@ async function read(page) {
         const glow = getComputedStyle(el, "::after");
         const fill = el.querySelector(".ps-how__fill");
         const fillIn = el.querySelector(".ps-how__fill-in");
-        // The blue words are drawn inside a window (the band). How far that window is from sitting
-        // exactly on the line, as a share of its height: 0 is on the line, 1 is a whole line away.
-        const off = fill ? Math.abs(fill.getBoundingClientRect().top - (r.top - (fill.getBoundingClientRect().height - r.height) / 2)) / fill.getBoundingClientRect().height : 1;
+        // The blue words are drawn inside a window (the band). How much of the line that window is
+        // NOT over: 0 when it covers the whole line, 1 when it is clear of it.
+        const win = fill ? fill.getBoundingClientRect() : null;
+        const over = win ? Math.max(0, Math.min(win.bottom, r.bottom) - Math.max(win.top, r.top)) / r.height : 0;
+        const off = 1 - over;
         return {
           text: text(el.querySelector(".ps-how__ink")), left: r.left, right: r.right, top: r.top, bottom: r.bottom, height: r.height, fontSize: parseFloat(cs.fontSize),
           // How much of the line the light covers, the colour of the lit words, and the words underneath.

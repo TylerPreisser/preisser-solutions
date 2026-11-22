@@ -126,8 +126,12 @@ export function HowWeWork() {
     let pinned = false;
     let travel = 0;
     let boxes: Array<{ x: number; y: number; w: number; h: number }> = [];
-    // How far each band window has to travel to be wholly off its line: its
-    // exact height (a fraction of a pixel matters on a phone) and a little over.
+    // How far each band window travels for one line's worth of the light: the
+    // line's height plus one of the window's two soft margins, so the band is
+    // one piece as it passes from a line to the next, plus the little by which
+    // the tails of g and y hang below a line, so that at a whole line away the
+    // window is clear of every letter. Exact, not rounded: a fraction of a
+    // pixel matters on a phone.
     let fillHeights: number[] = [];
     let shown = followerAt(0); // the beat position that is painted, and how it is moving
     let target = 0; // the one it is heading for
@@ -268,7 +272,11 @@ export function HowWeWork() {
         return;
       }
       boxes = lines.map((line) => ({ x: line.offsetLeft, y: line.offsetTop, w: line.offsetWidth, h: line.offsetHeight }));
-      fillHeights = fills.map((fill) => fill.getBoundingClientRect().height + 0.5);
+      fillHeights = fills.map((fill, k) => {
+        const line = lines[k].getBoundingClientRect().height;
+        const margin = (fill.getBoundingClientRect().height - line) / 2;
+        return line + margin + parseFloat(getComputedStyle(lines[k]).fontSize) * 0.14;
+      });
       lastPosition = position();
       scrolling = false;
       target = rest(lastPosition);

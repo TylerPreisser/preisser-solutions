@@ -153,27 +153,35 @@
   will-change: opacity;
 }
 
-/* The blue words. ps-how__fill is a window exactly over the line (a little
-   taller, so the tails of g and y are inside it) and ps-how__fill-in draws
-   the line again in the primary blue from data-text. The script slides the
-   window down and the words back up by the same amount, so the words never
-   move and the blue is only where the window is: the band of light passing
-   down through the line. Both are transforms, so nothing is repainted. The
-   second `content` gives the drawn words empty alternative text, so a screen
-   reader does not read the line twice. */
+/* The blue words. ps-how__fill is a window over the line and ps-how__fill-in
+   draws the line again in the primary blue from data-text. The script slides
+   the window down and the words back up by the same amount, so the words
+   never move and the blue is only where the window is: the band of light
+   passing down through the line. Both are transforms.
+
+   The window is taller than the line by 0.34em above and below, and fades to
+   nothing across exactly that margin. Sitting on its line the fade is wholly
+   outside the letters, so the line is solid blue; crossing from one line to
+   the next, the blue arrives and leaves through a soft edge instead of a hard
+   cut through the middle of the letters. The second `content` gives the drawn
+   words empty alternative text, so a screen reader does not read the line
+   twice. */
 .ps-how .ps-how__fill {
+  --how-feather: 0.34em;
   position: absolute;
-  inset: -0.14em 0;
+  inset: calc(-1 * var(--how-feather)) 0;
   overflow: hidden;
   pointer-events: none;
-  /* Parked one whole line above until the script takes over. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black var(--how-feather), black calc(100% - var(--how-feather)), transparent);
+  mask-image: linear-gradient(to bottom, transparent, black var(--how-feather), black calc(100% - var(--how-feather)), transparent);
+  /* Parked a whole window above until the script takes over. */
   transform: translate3d(0, -100%, 0);
   will-change: transform;
 }
 
 .ps-how .ps-how__fill-in {
   display: block;
-  padding-block: 0.14em;
+  padding-block: 0.34em;
   color: var(--color-primary);
   transform: translate3d(0, 100%, 0);
   will-change: transform;
