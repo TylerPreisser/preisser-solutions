@@ -12,6 +12,9 @@ import type { InventedSet } from "../_invented";
 const REUSED =
   "reused from src/data/demos/invented/nwks-encounter.ts (the 48-man roster, web-checked by the team lead " +
   '2026-09-28: "<full name> Kansas", CLEAR); an invented person, here a partner course\'s contact';
+const OWN_INVENTED =
+  "invented for this set (2026-11-22) to replace a name that also sits in the NWKS roster, so no person shows in two clients' demos: " +
+  "a given name and a surname composed here; not web-checked";
 const COMPOSED =
   "composed of a town already checked in duffer-golf.ts (2026-10-31 Bing exact-phrase, no Kansas place or course) " +
   "and a generic word; not separately web-checked";
@@ -19,7 +22,7 @@ const COMPOSED =
 export const invented: InventedSet = {
   scope: "duffer-golf",
   people: [
-    { id: "dcc-hal-wendorf", first: "Hal", last: "Wendorf", checked: REUSED },
+    { id: "dcc-dell-orrick", first: "Dell", last: "Orrick", checked: OWN_INVENTED },
     { id: "dcc-marty-ostrand", first: "Marty", last: "Ostrand", checked: REUSED },
     { id: "dcc-len-kessinger", first: "Len", last: "Kessinger", checked: REUSED },
     { id: "dcc-owen-stricklin", first: "Owen", last: "Stricklin", checked: REUSED },

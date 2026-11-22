@@ -9,7 +9,7 @@ export const DUFFER_CC_SHOTS = {
       "src": "/images/showcase/duffer/dashboard.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 128620,
+      "bytes": 128806,
       "css": {
         "w": 1440,
         "h": 900
@@ -22,24 +22,6 @@ export const DUFFER_CC_SHOTS = {
         "w": 146,
         "h": 36
       }
-    },
-    "phone": {
-      "src": "/images/showcase/duffer/dashboard-phone.webp",
-      "width": 780,
-      "height": 1142,
-      "bytes": 26696,
-      "css": {
-        "w": 390,
-        "h": 571
-      }
-    },
-    "phoneTargets": {
-      "scans": {
-        "x": 20,
-        "y": 236,
-        "w": 350,
-        "h": 40
-      }
     }
   },
   "feed-before": {
@@ -47,7 +29,7 @@ export const DUFFER_CC_SHOTS = {
       "src": "/images/showcase/duffer/feed-before.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 151184,
+      "bytes": 151734,
       "css": {
         "w": 1440,
         "h": 900
@@ -59,24 +41,6 @@ export const DUFFER_CC_SHOTS = {
         "y": 74,
         "w": 445,
         "h": 56
-      }
-    },
-    "phone": {
-      "src": "/images/showcase/duffer/feed-before-phone.webp",
-      "width": 780,
-      "height": 968,
-      "bytes": 42666,
-      "css": {
-        "w": 390,
-        "h": 484
-      }
-    },
-    "phoneTargets": {
-      "row": {
-        "x": 17,
-        "y": 35,
-        "w": 356,
-        "h": 80
       }
     }
   },
@@ -85,7 +49,7 @@ export const DUFFER_CC_SHOTS = {
       "src": "/images/showcase/duffer/feed.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 151184,
+      "bytes": 151734,
       "css": {
         "w": 1440,
         "h": 900
@@ -98,24 +62,6 @@ export const DUFFER_CC_SHOTS = {
         "w": 445,
         "h": 56
       }
-    },
-    "phone": {
-      "src": "/images/showcase/duffer/feed-phone.webp",
-      "width": 780,
-      "height": 968,
-      "bytes": 42666,
-      "css": {
-        "w": 390,
-        "h": 484
-      }
-    },
-    "phoneTargets": {
-      "row": {
-        "x": 17,
-        "y": 35,
-        "w": 356,
-        "h": 80
-      }
     }
   },
   "qr": {
@@ -123,7 +69,7 @@ export const DUFFER_CC_SHOTS = {
       "src": "/images/showcase/duffer/qr.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 111108,
+      "bytes": 111284,
       "css": {
         "w": 1440,
         "h": 900
@@ -136,24 +82,6 @@ export const DUFFER_CC_SHOTS = {
         "w": 156,
         "h": 17
       }
-    },
-    "phone": {
-      "src": "/images/showcase/duffer/qr-phone.webp",
-      "width": 780,
-      "height": 1180,
-      "bytes": 42428,
-      "css": {
-        "w": 390,
-        "h": 590
-      }
-    },
-    "phoneTargets": {
-      "row": {
-        "x": 33,
-        "y": 369,
-        "w": 173,
-        "h": 19
-      }
     }
   },
   "partners": {
@@ -161,7 +89,7 @@ export const DUFFER_CC_SHOTS = {
       "src": "/images/showcase/duffer/partners.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 132250,
+      "bytes": 132186,
       "css": {
         "w": 1440,
         "h": 900
@@ -174,24 +102,6 @@ export const DUFFER_CC_SHOTS = {
         "w": 167,
         "h": 17
       }
-    },
-    "phone": {
-      "src": "/images/showcase/duffer/partners-phone.webp",
-      "width": 780,
-      "height": 1136,
-      "bytes": 51948,
-      "css": {
-        "w": 390,
-        "h": 568
-      }
-    },
-    "phoneTargets": {
-      "course": {
-        "x": 33,
-        "y": 358,
-        "w": 292,
-        "h": 22
-      }
     }
   },
   "partner": {
@@ -199,7 +109,7 @@ export const DUFFER_CC_SHOTS = {
       "src": "/images/showcase/duffer/partner.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 128316,
+      "bytes": 128248,
       "css": {
         "w": 1440,
         "h": 900
@@ -212,25 +122,14 @@ export const DUFFER_CC_SHOTS = {
         "w": 102,
         "h": 20
       }
-    },
-    "phone": {
-      "src": "/images/showcase/duffer/partner-phone.webp",
-      "width": 780,
-      "height": 934,
-      "bytes": 37376,
-      "css": {
-        "w": 390,
-        "h": 467
-      }
-    },
-    "phoneTargets": {}
+    }
   },
   "orders": {
     "desk": {
       "src": "/images/showcase/duffer/orders.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 178268,
+      "bytes": 178924,
       "css": {
         "w": 1440,
         "h": 900
@@ -243,25 +142,14 @@ export const DUFFER_CC_SHOTS = {
         "w": 181,
         "h": 20
       }
-    },
-    "phone": {
-      "src": "/images/showcase/duffer/orders-phone.webp",
-      "width": 780,
-      "height": 1096,
-      "bytes": 46534,
-      "css": {
-        "w": 390,
-        "h": 548
-      }
-    },
-    "phoneTargets": {}
+    }
   },
   "commissions": {
     "desk": {
       "src": "/images/showcase/duffer/commissions.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 181022,
+      "bytes": 180822,
       "css": {
         "w": 1440,
         "h": 900
@@ -280,17 +168,6 @@ export const DUFFER_CC_SHOTS = {
         "w": 413,
         "h": 40
       }
-    },
-    "phone": {
-      "src": "/images/showcase/duffer/commissions-phone.webp",
-      "width": 780,
-      "height": 1030,
-      "bytes": 44984,
-      "css": {
-        "w": 390,
-        "h": 515
-      }
-    },
-    "phoneTargets": {}
+    }
   }
 } as const;

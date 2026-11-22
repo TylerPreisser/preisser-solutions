@@ -54,7 +54,7 @@ const LINE_BOX = 1.2; // a text range's height / font size.
 const SETTLE_MS = 900; // a view is "resting" once it has been unchanged this long (fade 280-400 ms, pointer travel 520 ms).
 const SAMPLE_MS = 100;
 const CLICK_WINDOW_MS = 4500; // the click must be the last thing before the page changes.
-const END_WAIT_MS = 42000; // the films run 34 s.
+const END_WAIT_MS = 60000; // the films run 36-38 s.
 const ALL_VIEWPORTS = ["320x568", "393x659", "393x852", "414x896", "768x1024", "820x1180", "1024x768", "1440x900"];
 const PHONE_MAX_W = 430;
 
@@ -381,7 +381,9 @@ async function play(browser, tab, vp) {
       }
       await page.waitForTimeout(SAMPLE_MS);
     }
-    const rec = { samples, vp, phone, end: null };
+    // The tab opens on its no-script picture for a frame or two before the film's first view; the film starts at step 1.
+    const from = samples.findIndex((x) => x.step === "1");
+    const rec = { samples: from > 0 ? samples.slice(from) : samples, vp, phone, end: null };
     if (SHOTS) {
       fs.mkdirSync(SHOTS, { recursive: true });
       await page.screenshot({ path: path.join(SHOTS, `${tab.dir}__${ENGINE}__${vp}__${THEME}__rest.png`) });

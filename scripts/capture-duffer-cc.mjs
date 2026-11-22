@@ -77,7 +77,7 @@ const DEALERS = [
   { slug: "brannicksupply", name: "Brannick Golf Supply", town: "Brannick" },
 ];
 const PEOPLE = [
-  { first: "Hal", last: "Wendorf", role: "Head pro" },
+  { first: "Dell", last: "Orrick", role: "Head pro" },
   { first: "Marty", last: "Ostrand", role: "General manager" },
   { first: "Len", last: "Kessinger", role: "Head pro" },
   { first: "Owen", last: "Stricklin", role: "Owner" },
@@ -471,6 +471,9 @@ function wordBoxesIn(rect) {
 // [from, to] pairs, each a {text|sel, edge} the band starts or ends at; several bands stack.
 const DESK = { width: 1440, height: 900 };
 const PHONE_W = 390;
+// The showcase's phone sheet frames the desk stills (the walkthrough pans over them), so the panel's own
+// phone layout is only shot with --phone-crops, for comparison.
+const PHONE_CROPS = process.argv.includes("--phone-crops");
 const VIEWS = [
   {
     id: "dashboard",
@@ -658,6 +661,8 @@ async function captureAll(browser, S) {
         if (!r) throw new Error(`${v.id}: target ${k} not found`);
         targets[k] = r;
       }
+      await page.evaluate(() => Promise.all(document.getAnimations().filter((a) => Number.isFinite(a.effect?.getComputedTiming().endTime)).map((a) => a.finished.catch(() => {}))));
+      await page.waitForTimeout(400);
       const rect = { x: 0, y: 0, w: DESK.width, h: DESK.height };
       const words = await page.evaluate(wordsIn, rect);
       const boxes = await page.evaluate(wordBoxesIn, rect);
@@ -669,7 +674,7 @@ async function captureAll(browser, S) {
   }
 
   // Phone: the panel's phone layout, 390 wide at 2x; a tall window keeps the fixed tab bar out of every band.
-  {
+  if (PHONE_CROPS) {
     const { ctx, page, misses } = await newSession(browser, S, { viewport: { width: PHONE_W, height: 5000 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
     for (const v of VIEWS) {
       S.EVENTS = v.feed === "before" ? before : fullFeed;
@@ -768,8 +773,8 @@ async function main() {
     writeData(result);
     let total = 0;
     for (const [id, r] of Object.entries(result)) {
-      total += r.desk.bytes + r.phone.bytes;
-      console.log(`[duffer-cc] ${id}: desk ${r.desk.width}x${r.desk.height} ${(r.desk.bytes / 1024).toFixed(0)} KB, phone ${r.phone.width}x${r.phone.height} ${(r.phone.bytes / 1024).toFixed(0)} KB, targets ${Object.keys(r.targets).join(",")} / ${Object.keys(r.phoneTargets).join(",")}`);
+      total += r.desk.bytes + (r.phone ? r.phone.bytes : 0);
+      console.log(`[duffer-cc] ${id}: desk ${r.desk.width}x${r.desk.height} ${(r.desk.bytes / 1024).toFixed(0)} KB, ${r.phone ? `phone ${r.phone.width}x${r.phone.height} ${(r.phone.bytes / 1024).toFixed(0)} KB, ` : ""}targets ${Object.keys(r.targets).join(",")}${r.phoneTargets ? ` / ${Object.keys(r.phoneTargets).join(",")}` : ""}`);
     }
     console.log(`[duffer-cc] ${Object.keys(result).length} views, ${(total / 1024).toFixed(0)} KB total -> ${path.relative(ROOT, OUT)}, ${path.relative(ROOT, DATA)}`);
   } finally {

@@ -792,6 +792,10 @@ async function captureAll(browser, jar, revive) {
           }
           targets[k] = r;
         }
+        // Words are read from the DOM, so let every running fade finish first: text still at opacity 0 is not "drawn" yet
+        // (a cabins board shot mid-fade once listed 25 of its ~110 words).
+        await page.evaluate(() => Promise.all(document.getAnimations().filter((a) => Number.isFinite(a.effect?.getComputedTiming().endTime)).map((a) => a.finished.catch(() => {}))));
+        await page.waitForTimeout(400);
         const rect = { x: 0, y: 0, w: DESK.width, h: DESK.height };
         const words = await page.evaluate(wordsIn, rect);
         const boxes = await page.evaluate(wordBoxesIn, rect);
