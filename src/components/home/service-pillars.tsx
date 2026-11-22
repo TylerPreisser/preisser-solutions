@@ -1999,7 +1999,16 @@ interface BottomSheetDialogProps {
    before the block is scrolled to. Until then the block holds its own shape
    (the stage's aspect ratio), so nothing jumps when it lands. */
 const loadMarCommandCard = () =>
-  import("@/components/home/marcommand-live").then((m) => m.MarCommandCard);
+  import("@/components/home/marcommand-live")
+    .then((m) => m.MarCommandCard)
+    // A chunk that cannot load (offline, or a stale tab after a deploy replaced
+    // it) leaves the block out. Without this React.lazy rethrows at render with
+    // no error boundary above, which blanks the whole page, and the warm-up
+    // call on hover becomes an unhandled rejection.
+    .catch((err) => {
+      console.error("[marcommand] block failed to load; leaving it out", err);
+      return () => null;
+    });
 const MarCommandCard = dynamic(loadMarCommandCard, {
   ssr: false,
   loading: () => (

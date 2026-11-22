@@ -65,10 +65,14 @@ const ctxFor = (s, extra = {}) => ({
   ...extra,
 });
 
-async function check(name, contextOptions, fn, { theme, noOpen } = {}) {
+async function check(name, contextOptions, fn, { theme, noOpen, before } = {}) {
   if (ONLY && !name.toLowerCase().includes(ONLY)) return;
   const context = await browser.newContext(contextOptions);
+  if (before) await before(context);
   const page = await context.newPage();
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(String(e.message || e)));
+  page.errors = errors;
   const requests = [];
   page.on("response", (r) => requests.push(r));
   try {
@@ -451,6 +455,72 @@ await check("loading: the stage's code is not requested until the card is approa
   await page.waitForSelector(".ps-dialog-panel .mc-card .mc-stage", { timeout: 8000 });
   assert.ok(await hasStage(requests), "the stage's code never loaded after opening");
 }, { noOpen: true });
+
+// ---------------------------------------------------------------------------------------- failure and reuse
+await check("chunk failure: if MarCommand's code cannot load, the sheet still opens with its tiles and Reach out, nothing throws",
+  ctxFor(SIZES[1]),
+  async (page) => {
+    // hover first, as a visitor does: the warm-up request must fail quietly too
+    await page.evaluate(() => {
+      const b = [...document.querySelectorAll("#services button.ps-bento-card")].find((x) => /Search Engine Visibility/.test(x.getAttribute("aria-label") || ""));
+      b.scrollIntoView({ block: "center", behavior: "instant" });
+      b.dispatchEvent(new PointerEvent("pointerenter", { bubbles: true }));
+    });
+    await page.waitForTimeout(600);
+    await openSheet(page);
+    await page.waitForTimeout(2500);
+    const r = await page.evaluate(() => {
+      const panel = document.querySelector(".ps-dialog-panel");
+      const vis = (el) => !!el && el.getBoundingClientRect().width > 0 && getComputedStyle(el).visibility !== "hidden";
+      return {
+        panel: !!panel,
+        tiles: panel ? [...panel.querySelectorAll(".ps-carousel-card")].filter(vis).length : 0,
+        cta: panel ? vis([...panel.querySelectorAll("a")].find((a) => a.textContent.trim() === "Reach out")) : false,
+        busy: panel ? panel.querySelectorAll('[aria-busy="true"]').length : -1,
+        services: !!document.querySelector("#services"),
+      };
+    });
+    assert.ok(r.panel, "the sheet did not open");
+    assert.ok(r.tiles >= 1, `${r.tiles} tiles visible`);
+    assert.ok(r.cta, "Reach out is not visible");
+    assert.equal(r.busy, 0, `${r.busy} element(s) still aria-busy`);
+    assert.ok(r.services, "the page behind has gone");
+    assert.deepEqual(page.errors, [], `page errors: ${page.errors.join(" | ")}`);
+  },
+  {
+    noOpen: true,
+    before: async (context) => {
+      // Abort whichever script carries the stage (found by its content, so a new hash cannot dodge it).
+      await context.route("**/_next/static/chunks/**/*.js", async (route) => {
+        const res = await route.fetch();
+        const body = await res.text();
+        if (body.includes("mc-elara-anchor")) return route.abort("failed");
+        return route.fulfill({ response: res, body });
+      });
+    },
+  });
+
+await check("reuse: open and close card 5 three times (the third mid-loop), no errors, and a fourth open runs the loop again",
+  ctxFor(SIZES[1]),
+  async (page) => {
+    for (let i = 0; i < 3; i++) {
+      await openSheet(page);
+      await page.waitForSelector(".ps-dialog-panel .mc-card .mc-stage", { timeout: 8000 });
+      if (i === 2) {
+        await scrollStageIntoView(page);
+        await page.waitForTimeout(1500); // mid-loop
+      }
+      await page.keyboard.press("Escape");
+      await page.waitForSelector(".ps-dialog-panel", { state: "detached", timeout: 5000 });
+      await page.waitForTimeout(300);
+    }
+    await openSheet(page);
+    await page.waitForSelector(".ps-dialog-panel .mc-card .mc-stage", { timeout: 8000 });
+    await scrollStageIntoView(page);
+    assert.ok(await moved(page), "the loop is not running on the fourth open");
+    assert.deepEqual(page.errors, [], `page errors: ${page.errors.join(" | ")}`);
+  },
+  { noOpen: true });
 
 await browser.close();
 console.log(`\n${pass} passed, ${fail} failed`);

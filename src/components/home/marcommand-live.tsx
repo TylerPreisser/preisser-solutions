@@ -1616,7 +1616,6 @@ export function MarCommandCard() {
               type="button"
               className="mc-live__pause"
               onClick={onToggle}
-              aria-pressed={paused}
               aria-label={paused ? "Play animation" : "Pause animation"}
             >
               {paused ? (
