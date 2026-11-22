@@ -20,11 +20,16 @@ Supersedes / Superseded by: — (no earlier ADR placed the section; see Context)
 ## Decision
 1. MarCommand is a block inside card 5's sheet: the "MarCommand" heading, the line "Our proprietary
    AI-powered marketing optimization platform", and the same live robot stage (wide from 769px, narrow at
-   768px and below). No new words.
+   768px and below). No new words. Order in the sheet, changed 2026-11-22 from the design spec's
+   "after What we deliver" by the lead after the critic's measurements: sheet title, then the MarCommand
+   heading, line and stage, then the "What We Deliver" tiles, then Reach out. Reason: placed after the
+   tiles the heading sat 1.0 to 2.6 sheet-heights down, so a visitor who tapped the card saw only tiles.
 2. The homepage has no `#marcommand-live` section. Services runs straight into the client work (ADR-0030 later removed the Why us section that followed).
 3. The card face and the MarCommand tile are unchanged. Not allowed: the robot or the name on the card face.
-4. The stage's code loads as its own chunk when the card is approached or the sheet opens. The loop plays
-   only while half the stage shows inside the sheet, and closing the sheet kills only what the block made.
+4. The heading and line are plain markup in the sheet. The stage's code loads as its own chunk, asked for
+   when the Services grid is within a screen of the viewport and again on hover, focus and first touch of
+   the card; until it lands the stage's exact box shimmers in its place. The loop plays once the top of the
+   stage is in view inside the sheet, and closing the sheet kills only what the block made.
 
 ## Consequences
 - Review agents must NOT flag the missing homepage section, or the robot being 48x58 at every width in the

@@ -96,7 +96,9 @@ const NARROW: StageGeom = {
   logoPx: 38,
   capFont: 15,
   dial: { cy: 300, r: 38, arcR: 29, needleLen: 24, labelFont: 16, valueFont: 19 },
-  tile: { x: 40, y: 400, w: 300, h: 145 },
+  /* h was 145: the third keyword sat on the panel's bottom border. 157 leaves
+     about 13 units of padding under it, the same as above the title. */
+  tile: { x: 40, y: 400, w: 300, h: 157 },
   pill: { x: 58, w: 264, h: 30, font: 17 },
 };
 
@@ -444,13 +446,14 @@ function ChannelLogo({ id }: { id: string }) {
     case "tiktok":
       return (
         <path
+          className="mc-logo--tiktok"
           d="M13 2h3.4a5.8 5.8 0 0 0 5.8 5.8v3.3a9 9 0 0 1-5.2-1.7v6.6a6.3 6.3 0 1 1-6.3-6.3c.35 0 .7.03 1.03.09v3.4a2.9 2.9 0 1 0 2.07 2.78z"
           fill="#000"
         />
       );
     case "direct_mail":
       return (
-        <g fill="none" stroke="#28303A" strokeWidth="2" strokeLinejoin="round">
+        <g className="mc-logo--mail" fill="none" stroke="#28303A" strokeWidth="2" strokeLinejoin="round">
           <rect x="2.5" y="6.5" width="19" height="11" rx="1.5" />
           <path d="M3.2 7.4 12 13.4l8.8-6" />
         </g>

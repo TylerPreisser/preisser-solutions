@@ -128,8 +128,8 @@ const money = (v: number) => `$${Math.round(v).toLocaleString("en-US")}`;
  * (an IntersectionObserver rooted on `.ps-dialog-panel`) and closing the sheet
  * kills only what this block made.
  */
-export function MarCommandCard() {
-  const rootRef = useRef<HTMLElement>(null);
+export function MarCommandStage() {
+  const rootRef = useRef<HTMLDivElement>(null);
 
   /**
    * `motion` gates the pause control. WCAG 2.2 SC 2.2.2 applies because there
@@ -1437,10 +1437,22 @@ export function MarCommandCard() {
             ? new IntersectionObserver(
                 (entries) => {
                   const last = entries[entries.length - 1];
-                  inView = last.isIntersecting && last.intersectionRatio >= 0.5;
+                  /* Play once the top of the stage is in view: half of it, or
+                     48px when the stage is taller than the sheet shows (a phone
+                     on its side, a short screen). The block is the first thing
+                     under the sheet's title, so on most screens only its top
+                     is on the first screen; a stricter gate left the loop
+                     frozen there. Still off whenever the stage is out of the
+                     sheet's view. */
+                  const stageH = last.boundingClientRect.height;
+                  const need = Math.min(stageH * 0.5, 48);
+                  inView = last.isIntersecting && last.intersectionRect.height >= need - 1;
                   sync();
                 },
-                { root: scroller, threshold: [0, 0.5, 1] }
+                {
+                  root: scroller,
+                  threshold: Array.from({ length: 21 }, (_, i) => i / 20),
+                }
               )
             : null;
         if (io && stageEl) io.observe(stageEl);
@@ -1489,60 +1501,8 @@ export function MarCommandCard() {
   }, []);
 
   return (
-    <section
-      ref={rootRef}
-      className="mc-live mc-card ps-dialog-reveal"
-      aria-labelledby="mc-card-heading"
-    >
-      <div className="mc-card__inner">
-        <div className="mc-live__head">
-          {/*
-            TITLE, THEN THE PROPRIETARY LINE UNDER IT. EXACTLY TWO THINGS.
-
-            Owner: "the marcommand was supposed to have MarCommand as the title
-            and then the our proprietary section under it as the text."
-
-            This reverses an over-application, not a decision. His earlier
-            instruction — a one-line headline naming the platform, and "get rid
-            of the thing below it" — was read as "merge everything into one
-            line", so the descriptor's sentence was folded INTO the <h4> and
-            nothing was left beneath. The element he actually wanted gone was a
-            different one: the long `.mc-live__body` prose paragraph that sat
-            further down (measured 184px, three-and-a-bit lines between the claim
-            and the animation that demonstrates the claim), plus the duplicate
-            `.mc-live__descriptor` deck. Those two stay deleted. The sentence
-            itself was never the thing to remove — it was in the wrong element.
-
-            So: <h4> is the product name, <p> beneath it is the proprietary line,
-            verbatim as he gave it. Nothing else goes in this block.
-
-            THE ID STAYS ON THE <h4>. `mc-card-heading` is referenced by
-            this section's own `aria-labelledby` and nowhere else — checked
-            across src/, scripts/ and public/ before moving anything, and the
-            only two hits are both in this file. The <h4> remains the labelling
-            element, so the reference keeps pointing at a real heading.
-
-            THE WORDMARK IS ONE WORD AND MUST STAY ONE WORD.
-
-            The two spans are written adjacent on a single line with no
-            whitespace, no newline and no separator between them, so the DOM
-            holds "Mar" + "Command" as touching inline text and `textContent` is
-            the single token "MarCommand". Put them on separate lines and a
-            formatter is one reflow away from turning this into "Mar Command" in
-            the accessible name. Nothing here may introduce a break opportunity
-            mid-word either: there is no space and no hyphen, and the only
-            `overflow-wrap: break-word` on the site is scoped to
-            `.ps-hero-headline`, so the word cannot be split across lines.
-          */}
-          <h4 id="mc-card-heading" className="mc-live__heading mc-card__heading">
-            <span className="mc-live__wm mc-live__wm--a">Mar</span><span className="mc-live__wm mc-live__wm--b">Command</span>
-          </h4>
-          <p className="mc-live__lede mc-card__lede">
-            Our proprietary AI-powered marketing optimization platform
-          </p>
-        </div>
-
-        <div className="mc-live__stage-card mc-card__stage">
+    <div ref={rootRef} className="mc-sheet__stagewrap">
+        <div className="mc-live__stage-card mc-sheet__stage">
           {/*
             >> THE FUNNEL IS REMOVED, ON THE OWNER'S INSTRUCTION: "remove this
             flow chart from the marcommand thing", marked on a render of this
@@ -1674,7 +1634,6 @@ export function MarCommandCard() {
           whole sequence on a second channel, TikTok, where it widens the targeting radius from
           25 to 40 miles. The panel also shows an audience demographic dial reading age 45 and
           over. The figures shown are a demonstration.
-        </p>      </div>
-    </section>
+        </p>    </div>
   );
 }

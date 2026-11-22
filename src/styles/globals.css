@@ -7230,3 +7230,13 @@ body:has(.ps-contact2-hero) .ps-header-blur {
 [data-theme="dark"] #footer-signup-error {
   --color-danger: #FF6B81;
 }
+
+/* A phone on its side (about 400px tall): the sheet's picture shrinks so what is
+   under it, MarCommand in card 5, is on the first screen instead of two screens
+   down. Every card's sheet shares this, so the five stay one family. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .ps-dialog-panel .ps-dialog-visual {
+    height: 96px !important;
+    min-height: 96px !important;
+  }
+}

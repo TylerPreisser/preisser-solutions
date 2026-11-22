@@ -39,6 +39,7 @@ const SIZES = [
   { name: "360x640", w: 360, h: 640, phone: true },
   { name: "320x568", w: 320, h: 568, phone: true },
   { name: "874x402", w: 874, h: 402, phone: true },
+  { name: "852x393", w: 852, h: 393, phone: true },
 ];
 const pick = (...names) => SIZES.filter((s) => names.includes(s.name));
 const MAIN = pick("1440x900", "1024x768", "820x1180", "768x1024", "430x932", "402x874", "390x844", "360x640", "320x568", "874x402");
@@ -65,9 +66,15 @@ const ctxFor = (s, extra = {}) => ({
   ...extra,
 });
 
-async function check(name, contextOptions, fn, { theme, noOpen, before } = {}) {
+let webkitBrowser = null;
+async function check(name, contextOptions, fn, { theme, noOpen, before, engine } = {}) {
   if (ONLY && !name.toLowerCase().includes(ONLY)) return;
-  const context = await browser.newContext(contextOptions);
+  let b = browser;
+  if (engine === "webkit") {
+    webkitBrowser ??= await req("playwright").webkit.launch();
+    b = webkitBrowser;
+  }
+  const context = await b.newContext(contextOptions);
   if (before) await before(context);
   const page = await context.newPage();
   const errors = [];
@@ -118,7 +125,7 @@ async function openSheet(page) {
 async function boxes(page) {
   const r = await page.evaluate(() => {
     const panel = document.querySelector(".ps-dialog-panel");
-    const stage = panel.querySelector(".mc-card .mc-stage");
+    const stage = panel.querySelector(".mc-sheet .mc-stage");
     if (!stage) return null;
     const p = panel.getBoundingClientRect();
     const s = stage.getBoundingClientRect();
@@ -128,14 +135,14 @@ async function boxes(page) {
       docOverflow: document.documentElement.scrollWidth - window.innerWidth,
     };
   });
-  assert.ok(r, "no .mc-card .mc-stage inside the open sheet (the block is not in the sheet)");
+  assert.ok(r, "no .mc-sheet .mc-stage inside the open sheet (the block is not in the sheet)");
   return r;
 }
 
 async function scrollStageIntoView(page, frac = 0.5) {
   await page.evaluate((f) => {
     const panel = document.querySelector(".ps-dialog-panel");
-    const stage = panel.querySelector(".mc-card .mc-stage");
+    const stage = panel.querySelector(".mc-sheet .mc-stage");
     const s = stage.getBoundingClientRect();
     const p = panel.getBoundingClientRect();
     // put the stage middle at the panel's middle
@@ -149,11 +156,18 @@ const robotBox = (page) => page.evaluate(() => {
   const r = document.querySelector(".ps-dialog-panel .mc-elara").getBoundingClientRect();
   return { x: r.left, y: r.top, w: r.width, h: r.height };
 });
-const moved = async (page, ms = 1200) => {
+// The robot stands still for a beat or two inside the loop, so one pair of samples can read "not
+// moving" while it plays. Sample across 2.4s and call it moving if it travelled at any point.
+const moved = async (page, ms = 2400) => {
   const a = await robotBox(page);
-  await page.waitForTimeout(ms);
-  const b = await robotBox(page);
-  return Math.abs(a.x - b.x) + Math.abs(a.y - b.y) > 0.5;
+  let best = 0;
+  for (let t = 0; t < ms; t += 300) {
+    await page.waitForTimeout(300);
+    const b = await robotBox(page);
+    best = Math.max(best, Math.abs(a.x - b.x) + Math.abs(a.y - b.y));
+    if (best > 0.5) return true;
+  }
+  return false;
 };
 
 // ---------------------------------------------------------------------------------------- R1 to R4
@@ -166,7 +180,7 @@ await check("homepage: no MarCommand section of its own is left and no h2 reads 
   assert.equal(r.h2, 0, `${r.h2} h2 reading MarCommand`);
 }, { noOpen: true });
 
-await check("sheet words: one h4 'MarCommand' then the proprietary line, between the tiles and 'Reach out'", ctxFor(SIZES[1]), async (page) => {
+await check("sheet words: one h4 'MarCommand' then the proprietary line, first under the title, before the tiles and 'Reach out'", ctxFor(SIZES[1]), async (page) => {
   const r = await page.evaluate((lede) => {
     const panel = document.querySelector(".ps-dialog-panel");
     const h4s = [...panel.querySelectorAll("h4")].filter((h) => h.textContent === "MarCommand");
@@ -180,15 +194,15 @@ await check("sheet words: one h4 'MarCommand' then the proprietary line, between
     return {
       count: h4s.length,
       lede: p ? p.textContent.trim() === lede : false,
-      order: after(title, car) && after(car, h4) && after(h4, cta),
+      order: after(title, h4) && after(h4, car) && after(car, cta),
       face: document.querySelector(".ps-bento-card--search-ads")?.textContent.includes("MarCommand"),
       firstTile: first ? first.textContent : "",
-      emdash: /—/.test(panel.querySelector(".mc-card")?.textContent || ""),
+      emdash: /—/.test(panel.querySelector(".mc-sheet")?.textContent || ""),
     };
   }, LEDE);
   assert.equal(r.count, 1, `${r.count} h4 reading exactly MarCommand in the sheet`);
   assert.ok(r.lede, "the line under the heading is not the proprietary sentence");
-  assert.ok(r.order, "order is not title, tiles, MarCommand, Reach out");
+  assert.ok(r.order, "order is not title, MarCommand, tiles, Reach out");
   assert.ok(r.firstTile.includes("MarCommand"), "the MarCommand tile is no longer first");
   assert.ok(!r.emdash, "an em dash in the block");
 });
@@ -231,18 +245,34 @@ for (const s of SIZES) for (const theme of THEMES) {
 }
 
 // ---------------------------------------------------------------------------------------- A3
+// MarCommand comes first under the title: on open its heading is inside the first screen of the sheet
+// and the loop has begun (owner-approved order change, ADR-0029).
 for (const s of SIZES) {
-  await check(`A3 below the fold on open ${s.name}`, ctxFor(s), async (page) => {
-    const b = await boxes(page);
-    const visibleBottom = b.panel.t + b.panel.ch;
-    const shown = Math.max(0, visibleBottom - b.stage.t);
-    if (s.name === "820x1180" || s.name === "768x1024") assert.ok(shown <= 80, `${shown.toFixed(0)}px of the stage shows on open`);
-    else assert.ok(shown <= 0.5, `${shown.toFixed(0)}px of the stage shows on open`);
+  await check(`A3 first screen ${s.name}: MarCommand heading is on the first screen of the sheet and the stage has begun`, ctxFor(s), async (page) => {
+    const r = await page.evaluate(() => {
+      const panel = document.querySelector(".ps-dialog-panel");
+      const h4 = [...panel.querySelectorAll("h4")].find((h) => h.textContent === "MarCommand");
+      const tiles = panel.querySelector(".ps-carousel-card");
+      const p = panel.getBoundingClientRect();
+      const after = (a, b) => !!a && !!b && !!(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING);
+      return {
+        h4: !!h4,
+        top: h4 ? h4.getBoundingClientRect().top - p.top : null,
+        ch: panel.clientHeight,
+        before: h4 && tiles ? after(h4, tiles) : false,
+      };
+    });
+    assert.ok(r.h4, "no MarCommand h4 in the sheet");
+    assert.ok(r.before, "the MarCommand block is not before the tiles");
+    assert.ok(r.top >= 0 && r.top <= r.ch - 60, `heading is ${r.top.toFixed(0)}px down a ${r.ch}px first screen`);
+    await page.waitForSelector(".ps-dialog-panel .mc-live__pause", { timeout: 15000 });
+    await page.waitForTimeout(800);
+    assert.ok(await moved(page, 1400), "the stage is not running on open (nothing scrolled)");
   });
 }
 
 // ---------------------------------------------------------------------------------------- A4
-for (const s of SIZES.filter((x) => x.name !== "874x402")) {
+for (const s of SIZES.filter((x) => x.name !== "874x402" && x.name !== "852x393")) {
   await check(`A4 the whole stage fits the visible sheet ${s.name}`, ctxFor(s), async (page) => {
     const b = await boxes(page);
     assert.ok(b.stage.h <= b.panel.ch, `stage ${b.stage.h.toFixed(0)} taller than the sheet ${b.panel.ch}`);
@@ -281,16 +311,54 @@ for (const s of pick("1440x900", "820x1180", "402x874", "320x568")) for (const t
 }
 
 // ---------------------------------------------------------------------------------------- A7
-for (const s of pick("1440x900", "1024x768", "820x1180", "402x874", "320x568")) {
-  await check(`A7 label text is at least 10px ${s.name}`, ctxFor(s), async (page) => {
+// Every label of the stage: at least 12 CSS px at 1200px wide and up, at least 11 everywhere else.
+for (const s of pick("1920x1080", "1440x900", "1280x800", "1024x768", "820x1180", "768x1024", "402x874", "320x568")) {
+  await check(`A7 every stage label is at least ${s.w >= 1200 ? 12 : 11}px ${s.name}`, ctxFor(s), async (page) => {
     await boxes(page);
-    const px = await page.evaluate(() => {
-      const root = document.querySelector(".ps-dialog-panel .mc-card .mc-stage");
-      const texts = [...root.querySelectorAll("text")].filter((t) => /budget/i.test(t.textContent) && t.getBoundingClientRect().width > 0);
-      return texts.map((t) => parseFloat(getComputedStyle(t).fontSize) * t.getScreenCTM().a);
+    const r = await page.evaluate(() => {
+      const root = document.querySelector(".ps-dialog-panel .mc-sheet .mc-stage");
+      const groups = [...root.querySelectorAll(".mc-stage__wide, .mc-stage__narrow")].filter((g) => getComputedStyle(g).display !== "none");
+      const scale = groups[0].getScreenCTM().a; // the visible composition's own scale
+      const out = [];
+      for (const g of groups) for (const t of g.querySelectorAll("text")) {
+        if (t.closest(".mc-pill--new")) continue; // enters scaled from near zero; same class and size as the other pills at rest
+        out.push({ t: t.textContent.trim(), px: parseFloat(getComputedStyle(t).fontSize) * scale });
+      }
+      return out;
     });
-    assert.ok(px.length > 0, "no visible Budget label in the stage");
-    assert.ok(Math.max(...px) >= 10, `Budget label ${Math.max(...px).toFixed(2)}px`);
+    assert.ok(r.length >= 10, `only ${r.length} labels found`);
+    const floor = s.w >= 1200 ? 12 : 11;
+    const bad = r.filter((x) => x.px < floor - 0.05);
+    assert.equal(bad.length, 0, `under ${floor}px: ${bad.slice(0, 4).map((x) => `${x.t} ${x.px.toFixed(2)}`).join(", ")}`);
+  });
+}
+
+// No label overlaps another or a dial, sampled across a whole loop.
+for (const s of pick("1440x900", "820x1180", "402x874", "320x568")) {
+  await check(`A7b no stage label overlaps another label or a dial ${s.name}`, ctxFor(s), async (page) => {
+    await boxes(page);
+    await scrollStageIntoView(page);
+    const hits = [];
+    for (let i = 0; i < 12; i++) {
+      const r = await page.evaluate(() => {
+        const root = document.querySelector(".ps-dialog-panel .mc-sheet .mc-stage");
+        const vis = (el) => { let o = 1; for (let n = el; n && n !== root; n = n.parentElement) o *= parseFloat(getComputedStyle(n).opacity); return o; };
+        const g = [...root.querySelectorAll(".mc-stage__wide, .mc-stage__narrow")].find((x) => getComputedStyle(x).display !== "none");
+        const texts = [...g.querySelectorAll("text")].filter((t) => vis(t) > 0.3 && t.getBoundingClientRect().width > 0);
+        const dials = [...g.querySelectorAll("circle")].filter((c) => /dial/.test(c.getAttribute("class") || "") && vis(c) > 0.3);
+        const R = (e) => e.getBoundingClientRect();
+        const ov = (a, b, tol) => Math.min(a.right, b.right) - Math.max(a.left, b.left) > tol && Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > tol;
+        const bad = [];
+        for (let i = 0; i < texts.length; i++) {
+          for (let j = i + 1; j < texts.length; j++) if (ov(R(texts[i]), R(texts[j]), 2.5)) bad.push(`${texts[i].textContent.trim()} x ${texts[j].textContent.trim()}`);
+          for (const d of dials) if (ov(R(texts[i]), R(d), 2.5)) bad.push(`${texts[i].textContent.trim()} x dial`);
+        }
+        return bad;
+      });
+      hits.push(...r);
+      await page.waitForTimeout(1500);
+    }
+    assert.equal(hits.length, 0, `overlaps: ${[...new Set(hits)].slice(0, 5).join(" | ")}`);
   });
 }
 
@@ -301,8 +369,14 @@ for (const s of pick("1440x900", "402x874")) {
     await scrollStageIntoView(page);
     assert.ok(await moved(page), "not playing with the stage in view");
     // scrolled out of the sheet (the sheet's own scroll, not the window's)
-    await page.evaluate(() => { document.querySelector(".ps-dialog-panel").scrollTop = 0; });
-    await page.waitForTimeout(600);
+    // The block is the first thing in the sheet, so on a tall screen the stage never leaves it by
+    // scrolling the real content. Push the rest of the sheet far down to prove the gate.
+    await page.evaluate(() => {
+      const panel = document.querySelector(".ps-dialog-panel");
+      panel.querySelector(".ps-dialog-cta").style.marginTop = "4000px";
+      panel.scrollTop = panel.scrollHeight;
+    });
+    await page.waitForTimeout(700);
     assert.ok(!(await moved(page)), "still playing with the stage out of view of the sheet");
     await scrollStageIntoView(page);
     assert.ok(await moved(page), "did not resume when scrolled back");
@@ -359,7 +433,7 @@ for (const s of pick("1440x900", "402x874")) {
     await scrollStageIntoView(page);
     const r = await page.evaluate(() => {
       const panel = document.querySelector(".ps-dialog-panel");
-      const card = panel.querySelector(".mc-card");
+      const card = panel.querySelector(".mc-sheet");
       const stage = card.querySelector(".mc-stage");
       const sr = [...card.querySelectorAll(".mc-live__sr")].filter((e) => getComputedStyle(e).display !== "none").length;
       return {
@@ -379,20 +453,21 @@ for (const s of pick("1440x900", "402x874")) {
 }
 
 // ---------------------------------------------------------------------------------------- A11
-await check("A11 keyboard: Tab from the last tile reaches Pause animation, then Reach out; Escape closes and focus returns to card 5", ctxFor(SIZES[1]), async (page) => {
+await check("A11 keyboard: Tab from Close reaches Pause animation first, then the tiles, then Reach out; the stage takes no focus; Escape closes and focus returns to card 5", ctxFor(SIZES[1]), async (page) => {
   await boxes(page);
-  await scrollStageIntoView(page);
+  await page.waitForSelector(".ps-dialog-panel .mc-live__pause", { timeout: 15000 });
+  await page.evaluate(() => document.querySelector(".ps-dialog-panel button[aria-label^='Close']").focus());
+  await page.keyboard.press("Tab");
+  let label = await page.evaluate(() => document.activeElement?.getAttribute("aria-label") || document.activeElement?.textContent?.trim());
+  assert.equal(label, "Pause animation", `first Tab after Close landed on ${label}`);
+  assert.equal(await page.evaluate(() => !!document.querySelector(".ps-dialog-panel .mc-sheet .mc-stage")?.matches(":focus-within")), false, "the stage took focus");
   await page.evaluate(() => {
     const tiles = document.querySelectorAll(".ps-dialog-panel .ps-carousel-card");
     tiles[tiles.length - 1].focus();
   });
   await page.keyboard.press("Tab");
-  let label = await page.evaluate(() => document.activeElement?.getAttribute("aria-label") || document.activeElement?.textContent?.trim());
-  assert.equal(label, "Pause animation", `first Tab after the last tile landed on ${label}`);
-  await page.keyboard.press("Tab");
   label = await page.evaluate(() => document.activeElement?.textContent?.trim());
   assert.equal(label, "Reach out");
-  assert.equal(await page.evaluate(() => !!document.querySelector(".ps-dialog-panel .mc-card .mc-stage")?.matches(":focus-within")), false, "the stage took focus");
   await page.keyboard.press("Escape");
   await page.waitForSelector(".ps-dialog-panel", { state: "detached", timeout: 5000 });
   const back = await page.evaluate(() => document.activeElement?.getAttribute("aria-label") || "");
@@ -483,7 +558,7 @@ await check("loading: the stage's code is not requested until the card is approa
   const early = await hasStage(requests);
   assert.equal(early, null, `homepage loaded the stage's code up front: ${early}`);
   await openSheet(page);
-  await page.waitForSelector(".ps-dialog-panel .mc-card .mc-stage", { timeout: 8000 });
+  await page.waitForSelector(".ps-dialog-panel .mc-sheet .mc-stage", { timeout: 8000 });
   assert.ok(await hasStage(requests), "the stage's code never loaded after opening");
 }, { noOpen: true });
 
@@ -536,7 +611,7 @@ await check("reuse: open and close card 5 three times (the third mid-loop), no e
   async (page) => {
     for (let i = 0; i < 3; i++) {
       await openSheet(page);
-      await page.waitForSelector(".ps-dialog-panel .mc-card .mc-stage", { timeout: 8000 });
+      await page.waitForSelector(".ps-dialog-panel .mc-sheet .mc-stage", { timeout: 8000 });
       if (i === 2) {
         await scrollStageIntoView(page);
         await page.waitForTimeout(1500); // mid-loop
@@ -546,13 +621,116 @@ await check("reuse: open and close card 5 three times (the third mid-loop), no e
       await page.waitForTimeout(300);
     }
     await openSheet(page);
-    await page.waitForSelector(".ps-dialog-panel .mc-card .mc-stage", { timeout: 8000 });
+    await page.waitForSelector(".ps-dialog-panel .mc-sheet .mc-stage", { timeout: 8000 });
     await scrollStageIntoView(page);
     assert.ok(await moved(page), "the loop is not running on the fourth open");
     assert.deepEqual(page.errors, [], `page errors: ${page.errors.join(" | ")}`);
   },
   { noOpen: true });
 
+// ---------------------------------------------------------------------------------------- cold open
+// The stage's code arrives late (held 2.5s): the heading and line are in the sheet at once, the stage's
+// box is already there, and when the code lands nothing below it moves.
+const delayStage = (ms) => async (context) => {
+  await context.route("**/_next/static/chunks/**/*.js", async (route) => {
+    const res = await route.fetch();
+    const body = await res.text();
+    if (body.includes("mc-elara-anchor")) await new Promise((r) => setTimeout(r, ms));
+    return route.fulfill({ response: res, body });
+  });
+};
+for (const [s, engine] of [[SIZES[7], "chromium"], [SIZES[4], "chromium"], [SIZES[1], "chromium"], [SIZES[7], "webkit"]]) {
+  await check(`cold open ${s.name} ${engine}: heading at once, stage box held, nothing moves when the code lands`, ctxFor(s), async (page) => {
+    const read = () => page.evaluate(() => {
+      const panel = document.querySelector(".ps-dialog-panel");
+      const h4 = [...panel.querySelectorAll("h4")].find((h) => h.textContent === "MarCommand");
+      const cta = panel.querySelector(".ps-dialog-cta").getBoundingClientRect();
+      const hb = h4 && h4.getBoundingClientRect();
+      const p = panel.getBoundingClientRect();
+      return {
+        h4: !!h4,
+        h4Visible: !!hb && hb.width > 0 && getComputedStyle(h4).visibility !== "hidden" && parseFloat(getComputedStyle(h4.closest("section")).opacity) > 0.95,
+        h4Top: hb ? hb.top - p.top + panel.scrollTop : null,
+        ctaTop: cta.top - p.top + panel.scrollTop,
+        sh: panel.scrollHeight,
+        busy: panel.querySelectorAll('[aria-busy="true"]').length,
+        stageSvg: !!panel.querySelector(".mc-sheet .mc-stage svg"),
+      };
+    });
+    await openSheet(page);
+    // the sheet's own fade-in (staggered, under 1s) is part of "at once"
+    await page.waitForFunction(() => {
+      const h = [...document.querySelectorAll(".ps-dialog-panel h4")].find((x) => x.textContent === "MarCommand");
+      return !!h && parseFloat(getComputedStyle(h.closest("section")).opacity) > 0.95;
+    }, null, { timeout: 1200 }).catch(() => {});
+    const cold = await read();
+    assert.ok(cold.h4, "no MarCommand heading while the stage code is still loading");
+    assert.ok(cold.h4Visible, "heading is in the DOM but not visible while the stage code loads");
+    assert.equal(cold.stageSvg, false, "sampled too late: the stage had already landed");
+    assert.equal(cold.busy, 1, "no loading stage box while the code loads");
+    await page.waitForSelector(".ps-dialog-panel .mc-sheet .mc-stage svg", { timeout: 15000 });
+    await page.waitForTimeout(500);
+    const warm = await read();
+    assert.ok(Math.abs(warm.ctaTop - cold.ctaTop) <= 1, `Reach out moved ${(warm.ctaTop - cold.ctaTop).toFixed(1)}px when the code landed`);
+    assert.ok(Math.abs(warm.sh - cold.sh) <= 1, `sheet height changed ${warm.sh - cold.sh}px when the code landed`);
+    assert.ok(Math.abs(warm.h4Top - cold.h4Top) <= 1, `heading moved ${(warm.h4Top - cold.h4Top).toFixed(1)}px`);
+  }, { noOpen: true, engine, before: delayStage(2500) });
+}
+
+// ---------------------------------------------------------------------------------------- stage flaws
+for (const s of pick("402x874", "320x568")) {
+  await check(`keywords: the third keyword clears the panel's bottom border by at least 8px at rest, and never crosses it ${s.name}`, ctxFor(s), async (page) => {
+    await boxes(page);
+    await scrollStageIntoView(page);
+    const r = await page.evaluate(async () => {
+      const root = document.querySelector(".ps-dialog-panel .mc-sheet .mc-stage");
+      const g = [...root.querySelectorAll(".mc-stage__wide, .mc-stage__narrow")].find((x) => getComputedStyle(x).display !== "none");
+      const scale = root.querySelector("svg").getScreenCTM().a;
+      const tile = g.querySelector(".mc-tile__box");
+      const tb = parseFloat(tile.getAttribute("y")) + parseFloat(tile.getAttribute("height"));
+      const rest = Math.min(...[...g.querySelectorAll(".mc-pill__box")].map((p) => tb - (parseFloat(p.getAttribute("y")) + parseFloat(p.getAttribute("height"))))) * scale;
+      const box = tile.getBoundingClientRect();
+      let min = Infinity;
+      for (let i = 0; i < 16; i++) {
+        for (const pill of g.querySelectorAll(".mc-pill__box")) {
+          const q = pill.getBoundingClientRect();
+          if (q.width > 0) min = Math.min(min, box.bottom - q.bottom);
+        }
+        await new Promise((res) => setTimeout(res, 1200));
+      }
+      return { rest, min };
+    });
+    assert.ok(r.rest >= 8, `at rest the third keyword is ${r.rest.toFixed(1)}px above the panel's bottom border`);
+    assert.ok(r.min >= 0, `a keyword crosses the panel's bottom border by ${(-r.min).toFixed(1)}px mid-loop`);
+  });
+}
+
+for (const s of pick("1440x900", "402x874")) {
+  await check(`dark theme: the TikTok note and the mail envelope read on their tiles (3:1) ${s.name}`, ctxFor(s), async (page) => {
+    await boxes(page);
+    const r = await page.evaluate(() => {
+      const root = document.querySelector(".ps-dialog-panel .mc-sheet .mc-stage");
+      const g = [...root.querySelectorAll(".mc-stage__wide, .mc-stage__narrow")].find((x) => getComputedStyle(x).display !== "none");
+      const lum = (c) => {
+        const [r0, g0, b0] = c.match(/[\d.]+/g).slice(0, 3).map((v) => { v = Number(v) / 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; });
+        return 0.2126 * r0 + 0.7152 * g0 + 0.0722 * b0;
+      };
+      const cr = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+      const ground = getComputedStyle(document.querySelector(".ps-dialog-panel")).backgroundColor;
+      const tk = g.querySelector(".mc-logo--tiktok");
+      const ml = g.querySelector(".mc-logo--mail");
+      return {
+        tk: tk ? cr(getComputedStyle(tk).fill, ground) : null,
+        ml: ml ? cr(getComputedStyle(ml).stroke, ground) : null,
+      };
+    });
+    assert.ok(r.tk !== null && r.ml !== null, "the TikTok or mail mark is not tagged in the stage");
+    assert.ok(r.tk >= 3, `TikTok note contrast ${r.tk.toFixed(2)}:1`);
+    assert.ok(r.ml >= 3, `mail envelope contrast ${r.ml.toFixed(2)}:1`);
+  }, { theme: "dark" });
+}
+
 await browser.close();
+if (webkitBrowser) await webkitBrowser.close();
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

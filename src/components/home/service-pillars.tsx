@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
-import dynamic from "next/dynamic";
+import { MarCommandSheetHead } from "@/components/home/marcommand-sheet-head";
 import {
   AutomationVisual,
   SystemFixesVisual,
@@ -1832,7 +1832,7 @@ interface BentoCardProps {
 }
 
 const warmMarCommand = () => {
-  void loadMarCommandCard();
+  loadMarCommandStage().catch(() => {});
 };
 
 function BentoCard({ service, onClick }: BentoCardProps) {
@@ -1992,33 +1992,64 @@ interface BottomSheetDialogProps {
   onClose: () => void;
 }
 
-/* MarCommand's block in card 5's sheet (ADR-0029). Its stage and timeline are a
-   separate chunk: nothing of it is in the homepage's first JavaScript. The chunk
-   is asked for when the visitor approaches the card (hover, focus, first touch)
-   and at the latest when the sheet mounts, so on a normal visit it has arrived
-   before the block is scrolled to. Until then the block holds its own shape
-   (the stage's aspect ratio), so nothing jumps when it lands. */
-const loadMarCommandCard = () =>
-  import("@/components/home/marcommand-live")
-    .then((m) => m.MarCommandCard)
-    // A chunk that cannot load (offline, or a stale tab after a deploy replaced
-    // it) leaves the block out. Without this React.lazy rethrows at render with
-    // no error boundary above, which blanks the whole page, and the warm-up
-    // call on hover becomes an unhandled rejection.
-    .catch((err) => {
-      console.error("[marcommand] block failed to load; leaving it out", err);
-      return () => null;
+/* MarCommand's block in card 5's sheet (ADR-0029). Its heading and line are plain
+   markup (marcommand-sheet-head.tsx), in the sheet at once. The stage and its
+   timeline are a separate chunk, so none of it is in the homepage's first
+   JavaScript. The chunk is asked for early: when the Services grid comes within a
+   screen of the viewport (warmMarCommandWhenNear), and again on hover, focus and
+   first touch of the card; at the latest when the sheet mounts. Until it lands the
+   stage's exact box (same aspect, same pause gutter) shimmers in its place, so
+   nothing below it moves when it arrives. */
+let marCommandStage: Promise<React.ComponentType> | null = null;
+const loadMarCommandStage = () => {
+  if (!marCommandStage) {
+    marCommandStage = import("@/components/home/marcommand-live").then((m) => m.MarCommandStage);
+    // Let a failed load be tried again on the next open.
+    marCommandStage.catch(() => {
+      marCommandStage = null;
     });
-const MarCommandCard = dynamic(loadMarCommandCard, {
-  ssr: false,
-  loading: () => (
-    <div className="mc-card mc-card--loading ps-dialog-reveal" aria-busy="true">
-      <div className="mc-card__inner">
-        <div className="mc-card__placeholder" />
+  }
+  return marCommandStage;
+};
+
+function MarCommandBlock() {
+  const [Stage, setStage] = useState<React.ComponentType | null | false>(null);
+  useEffect(() => {
+    let live = true;
+    loadMarCommandStage()
+      .then((C) => {
+        if (live) setStage(() => C);
+      })
+      .catch((err) => {
+        // A chunk that cannot load (offline, or a stale tab after a deploy
+        // replaced it) leaves the block out: the sheet still opens with its
+        // tiles and Reach out. Nothing throws, so no blank page.
+        console.error("[marcommand] block failed to load; leaving it out", err);
+        if (live) setStage(false);
+      });
+    return () => {
+      live = false;
+    };
+  }, []);
+
+  if (Stage === false) return null;
+  return (
+    <section className="mc-live mc-sheet ps-dialog-reveal" aria-labelledby="mc-sheet-heading">
+      <div className="mc-sheet__inner">
+        <MarCommandSheetHead />
+        {Stage ? (
+          <Stage />
+        ) : (
+          <div className="mc-sheet__stagewrap" aria-busy="true">
+            <div className="mc-live__stage-card mc-sheet__stage">
+              <div className="mc-stage mc-stage--loading" />
+            </div>
+          </div>
+        )}
       </div>
-    </div>
-  ),
-});
+    </section>
+  );
+}
 
 function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -2421,13 +2452,15 @@ function BottomSheetDialog({ service, onClose }: BottomSheetDialogProps) {
           {/* Child 1 — Title */}
           <h3 className="ps-dialog-title ps-dialog-reveal">{service.title}</h3>
 
-          {/* Child 2 — Service Tiles Carousel */}
+          {/* Child 2 (card 5 only) — MarCommand, live: the first thing under the
+              title, so a visitor who opens the card sees it without scrolling
+              (ADR-0029). */}
+          {service.type === "search-ads" && <MarCommandBlock />}
+
+          {/* Service Tiles Carousel */}
           <div className="ps-dialog-section ps-dialog-reveal">
             <ServiceCarousel tiles={service.serviceTiles} />
           </div>
-
-          {/* Child 3 (card 5 only) — MarCommand, live. ADR-0029. */}
-          {service.type === "search-ads" && <MarCommandCard />}
 
           {/* The "Read more" service-link list that stood here was removed
               2026-09-05 on the owner's instruction: "On each one of these Bento
@@ -2654,6 +2687,32 @@ export function ServicePillars() {
   // array — five cards, orders 1..5. A new card with no order rule gets
   // order:0 and jumps to the top of the mobile stack.
   const displayedServices = services;
+
+  // Fetch MarCommand's stage chunk early: when the grid comes within about one
+  // screen of the viewport, then when the browser is idle. A phone then normally
+  // has it before the tap on card 5. Nothing renders from this; it only warms.
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid || !("IntersectionObserver" in window)) return;
+    let idle: number | undefined;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        const warm = () => warmMarCommand();
+        idle = window.setTimeout(() => {
+          if (typeof window.requestIdleCallback === "function") window.requestIdleCallback(warm, { timeout: 2000 });
+          else warm();
+        }, 200);
+      },
+      { rootMargin: "100% 0px 100% 0px" }
+    );
+    io.observe(grid);
+    return () => {
+      io.disconnect();
+      if (idle !== undefined) window.clearTimeout(idle);
+    };
+  }, []);
 
   // Which card opened the sheet. Held in a ref as well as state because
   // handleClose needs it AFTER setExpandedIndex(null) has been queued, and a

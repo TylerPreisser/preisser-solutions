@@ -1010,20 +1010,20 @@
 
 /* ------------------------------------------------------------
    MarCommand inside the fifth Services card's sheet (ADR-0029).
-   The block is `.mc-live.mc-card` in `.ps-dialog-content`, after
+   The block is `.mc-live.mc-sheet` in `.ps-dialog-content`, after
    "What we deliver" and before "Reach out". Everything above this
    line is the stage and is unchanged; these rules only re-place it:
    no card frame, edge to edge on the wide composition, the robot
    keyed to the stage (48x58 at every width), the pause control in
    the stage's corner (wide) or a gutter under it (narrow).
    ------------------------------------------------------------ */
-.mc-card {
+.mc-sheet {
   margin: 0 0 40px;
   /* The sheet's ground, not the page's: `.mc-live` paints the page colour. */
   background: transparent;
 }
 
-.mc-card__heading {
+.mc-sheet__heading {
   margin: 0 0 6px;
   font-size: clamp(1.25rem, 2.25vw, 1.5rem);
   font-weight: 700;
@@ -1031,13 +1031,13 @@
   line-height: 1.15;
 }
 
-.mc-card__lede {
+.mc-sheet__lede {
   max-width: none;
   font-size: 1rem;
   line-height: 1.5;
 }
 
-.mc-card .mc-live__stage-card {
+.mc-sheet .mc-live__stage-card {
   margin: 20px -40px 0;
   padding: 0;
   background: transparent;
@@ -1045,65 +1045,120 @@
   border-radius: 0;
 }
 
-/* The loading shape: the wide stage's box, so nothing jumps when the chunk lands. */
-.mc-card--loading {
-  min-height: 0;
-}
-.mc-card__placeholder {
-  aspect-ratio: 1200 / 680;
-  margin: 62px -40px 0;
-  background: var(--theme-card-bg);
-  opacity: 0.6;
-}
 
 /* 48x58 at every width: the stage here never exceeds 900px, and 96x116 is only
    clean on a stage of 1102px or more (the measurement above). Beats the
    viewport-keyed rules by specificity. */
-.mc-card .mc-elara {
+.mc-sheet .mc-elara {
   width: 48px;
   height: 58px;
   --mc-cell: 48px;
 }
 
-.mc-card .mc-live__pause {
+.mc-sheet .mc-live__pause {
   right: 16px;
   bottom: 16px;
 }
 
 @media (max-width: 768px) {
-  .mc-card {
+  .mc-sheet {
     margin-bottom: 32px;
   }
 
-  .mc-card__heading {
+  .mc-sheet__heading {
     font-size: 1.125rem;
     line-height: 1.15;
   }
 
-  .mc-card__lede {
+  .mc-sheet__lede {
     font-size: 0.9375rem;
     line-height: 1.5;
     text-wrap: balance;
   }
 
-  .mc-card .mc-live__stage-card {
+  .mc-sheet .mc-live__stage-card {
     margin: 16px 0 0;
     padding: 0 0 60px;
   }
 
-  /* No button (reduced motion, Data Saver, chunk failure) means no gutter. */
-  .mc-card .mc-live__stage-card:not(:has(.mc-live__pause)) {
-    padding-bottom: 0;
+  /* Reduced motion never gets a pause button, so it gets no gutter. Decided by
+     the media query, not by whether the button has mounted, so the stage's box
+     is the same before and after its code lands and nothing below it moves. */
+  @media (prefers-reduced-motion: reduce) {
+    .mc-sheet .mc-live__stage-card {
+      padding-bottom: 0;
+    }
   }
 
-  .mc-card .mc-live__pause {
+  .mc-sheet .mc-live__pause {
     right: 0;
     bottom: 4px;
   }
 
-  .mc-card__placeholder {
-    aspect-ratio: 390 / 620;
-    max-width: 430px;
-    margin: 56px auto 0;
+}
+
+/* The loading stage: the stage's own box (same classes, same aspect, same gutter)
+   with a quiet shimmer. No words, no spinner. Visible on the sheet's ground in
+   both themes: a tint of the text colour, swept by a tint of the brand blue. */
+.mc-stage--loading {
+  background-color: color-mix(in srgb, var(--theme-text-primary) 5%, transparent);
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in srgb, var(--color-primary) 14%, transparent) 50%,
+    transparent 70%
+  );
+  background-size: 250% 100%;
+  background-repeat: no-repeat;
+  animation: mc-stage-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes mc-stage-shimmer {
+  from {
+    background-position: 130% 0;
   }
+  to {
+    background-position: -30% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mc-stage--loading {
+    animation: none;
+  }
+}
+
+/* ---- Stage text floors inside the sheet (ADR-0029): every label at least 12px
+   at a 900px stage (viewports from 900px up, so 1200px and wider included) and at
+   least 11px at every width below. The stage is 900px wide whenever the sheet
+   is, so the size is keyed to the viewport band the stage's width falls in. The
+   figures are SVG user units (one unit = stageWidth / 1200 CSS px). ---- */
+@media (min-width: 900px) {
+  .mc-sheet .mc-card__cap,
+  .mc-sheet .mc-tile__title,
+  .mc-sheet .mc-dial__label,
+  .mc-sheet .mc-pill__text {
+    font-size: 16px;
+  }
+}
+@media (min-width: 769px) and (max-width: 899px) {
+  .mc-sheet .mc-card__cap,
+  .mc-sheet .mc-tile__title,
+  .mc-sheet .mc-dial__label,
+  .mc-sheet .mc-pill__text {
+    font-size: 17.5px;
+  }
+  .mc-sheet .mc-dial__value {
+    font-size: 18px;
+  }
+}
+
+/* Dark theme: the TikTok note is black and the mail envelope a dark slate, so on
+   the dark tiles they all but vanish. Lift both to light strokes and fills. The
+   shapes (the brand marks) are untouched; only the colour is. */
+[data-theme="dark"] .mc-sheet .mc-logo--tiktok {
+  fill: #ffffff;
+}
+[data-theme="dark"] .mc-sheet .mc-logo--mail {
+  stroke: #c9d3df;
 }
