@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { startTransition, useCallback, useEffect, useRef, useState } from "react";
 import { loadShowcase, peekShowcase, warmShowcase, type ShowcaseSlug } from "@/data/showcase";
 import type { LayerMode } from "../showcase/ShowcaseLayer";
 import { ShowcaseBoundary } from "../showcase/ShowcaseBoundary";
-import { ENTRANCE_MS, ShowcaseShell, isSheetLayout, prefersReduced } from "../showcase/ShowcaseShell";
+import { ShowcaseShell } from "../showcase/ShowcaseShell";
 
 // What the shell needs before the client's data is here: the window's title and the Website tab's domain
 // (the same words the window then shows, from src/data/showcase/clients/<slug>.ts `short` and `live.src`).
@@ -705,9 +705,8 @@ export function CaseStudies() {
   // Intent dropped: it unmounts.
   const [ShowcaseLayer, setShowcaseLayer] = useState<ShowcaseLayerModule["default"] | null>(() => showcaseLayerModule?.default ?? null);
   // `shell`: tapped before the window's code or the client's data was here, so the home page's own shell
-  // came up first (at `at`, performance.now()); the window takes over once both are here and the shell
-  // has finished coming in.
-  const [showcase, setShowcase] = useState<{ slug: ShowcaseSlug; anchor: HTMLElement; mode: LayerMode; armed?: boolean; shell?: boolean; at?: number } | null>(null);
+  // came up first; the window takes over once both are here and the shell has finished coming in.
+  const [showcase, setShowcase] = useState<{ slug: ShowcaseSlug; anchor: HTMLElement; mode: LayerMode; armed?: boolean; shell?: boolean } | null>(null);
   const [, setArrived] = useState(0);
   const [shellIn, setShellIn] = useState(false);
   useEffect(() => {
@@ -718,11 +717,8 @@ export function CaseStudies() {
       () => on && setShowcase(null),
     );
     setShellIn(false);
-    const left = prefersReduced() ? 0 : (isSheetLayout() ? ENTRANCE_MS.sheet : ENTRANCE_MS.pop) + 40 - (performance.now() - (showcase.at ?? 0));
-    const t = window.setTimeout(() => on && setShellIn(true), Math.max(0, left));
     return () => {
       on = false;
-      window.clearTimeout(t);
     };
   }, [showcase]);
   // A window is wanted and its code is not held yet: fetch it, and if that fails the window does not open.
@@ -754,6 +750,22 @@ export function CaseStudies() {
     };
     window.addEventListener("mousemove", onMove, { passive: true, capture: true });
     return () => window.removeEventListener("mousemove", onMove, { capture: true });
+  }, []);
+  // What pressed last (pointerdown): "touch" (or pen) opens the window in a transition, anything else at once.
+  const lastPress = useRef<"touch" | "other">("other");
+  useEffect(() => {
+    const onDown = (e: PointerEvent) => {
+      lastPress.current = e.pointerType === "mouse" ? "other" : "touch";
+    };
+    const onKey = () => {
+      lastPress.current = "other";
+    };
+    window.addEventListener("pointerdown", onDown, { passive: true, capture: true });
+    window.addEventListener("keydown", onKey, { passive: true, capture: true });
+    return () => {
+      window.removeEventListener("pointerdown", onDown, { capture: true });
+      window.removeEventListener("keydown", onKey, { capture: true });
+    };
   }, []);
   const handMoved = () => {
     const { prev, cur } = pointer.current;
@@ -850,7 +862,13 @@ export function CaseStudies() {
     warm(slug, window.innerWidth >= 600);
     // Code and data here (the usual case): the window itself opens. Not yet: the shell answers now.
     const ready = !!showcaseLayerModule && !!peekShowcase(slug) && !!SHELL[slug];
-    setShowcase({ slug, anchor: el, mode: "pinned", ...(ready || !SHELL[slug] ? {} : { shell: true, at: performance.now() }) });
+    const next = { slug, anchor: el, mode: "pinned" as const, ...(ready || !SHELL[slug] ? {} : { shell: true }) };
+    // After a touch, a transition rather than the click's own synchronous render: the card's pressed state (set at
+    // pointerdown) gets its frame before the window's commit (WebKit: that render held the first frame 120-250 ms).
+    // A mouse or a key opens at once (a transition yields, and there is no pressed state to show meanwhile:
+    // desktop 4x CPU went 133 -> 195 ms to the first change).
+    if (lastPress.current === "touch") startTransition(() => setShowcase(next));
+    else setShowcase(next);
   }
 
   function scrollTrack(direction: "left" | "right") {
@@ -1165,6 +1183,7 @@ export function CaseStudies() {
           domain={SHELL[showcase.slug].domain}
           anchor={showcase.anchor}
           onClose={() => setShowcase(null)}
+          onEntered={() => setShellIn(true)}
         />
       ) : null}
       {showcase && ShowcaseLayer && (!showcase.shell || (peekShowcase(showcase.slug) && shellIn)) ? (

@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { loadShowcase, peekShowcase, type ShowcaseSlug } from "@/data/showcase";
 import type { ShowcaseClient } from "@/data/showcase/types";
 import { BeatView } from "./beats";
-import { ENTRANCE_MS, isSheetLayout, prefersReduced } from "./ShowcaseShell";
+import { isSheetLayout, onEntranceEnd, prefersReduced } from "./ShowcaseShell";
 import "./showcase.css";
 
 /**
@@ -101,8 +101,13 @@ function Layer({ show, anchor, mode, armed = false, handoff = false, onClose }: 
   useEffect(() => {
     if (cameIn || phase !== "open") return;
     // After a shell there is no entrance, but the swap itself gets its frames first (HANDOFF_MS).
-    const t = window.setTimeout(() => setCameIn(true), handoff ? HANDOFF_MS : (sheet ? ENTRANCE_MS.sheet : ENTRANCE_MS.pop) + 20);
-    return () => window.clearTimeout(t);
+    if (handoff) {
+      const t = window.setTimeout(() => setCameIn(true), HANDOFF_MS);
+      return () => window.clearTimeout(t);
+    }
+    const box = boxRef.current;
+    if (!box) return;
+    return onEntranceEnd(box, sheet, () => setCameIn(true));
   }, [cameIn, phase, sheet, handoff]);
   const [at, setAt] = useState(0);
   // Tabs are built when first shown, not all at once on open: the open is one tab's work, not five.
@@ -166,17 +171,28 @@ function Layer({ show, anchor, mode, armed = false, handoff = false, onClose }: 
     return () => window.removeEventListener("resize", onResize);
   }, [sheet, phase]);
 
-  // The page behind stops scrolling (a wheel at the end of a client page would chain into ours), without shifting sideways.
+  // The page behind stops scrolling (a wheel at the end of a client page would chain into ours), without shifting
+  // sideways. Locked once the window has come in, not on its first frame: overflow:hidden on <html> re-lays-out the
+  // whole page, and in WebKit that alone held the rise back ~350 ms (mount to rise end 790 ms locked at mount,
+  // 420-470 ms without; window-fix lab 2026-11-22). Nothing scrolls the page from under a window still coming in.
   useEffect(() => {
     if (armed) return;
+    const html = document.documentElement;
+    html.classList.add("sc-open");
+    if (sheet) html.classList.add("sc-sheet-open");
+    return () => html.classList.remove("sc-open", "sc-sheet-open");
+  }, [sheet, armed]);
+  useEffect(() => {
+    // After a shell, the shell already held the lock: keep it from the first frame (dropping it for the 250 ms
+    // of HANDOFF_MS re-laid-out the page twice in the swap).
+    if (armed || !(cameIn || handoff)) return;
     const html = document.documentElement;
     // Keep the gutter only where a classic scrollbar takes room; an overlay scrollbar has none to keep.
     const gutter = window.innerWidth - html.clientWidth > 0;
     html.classList.add("sc-lock");
     if (gutter) html.classList.add("sc-lock--gutter");
-    if (sheet) html.classList.add("sc-sheet-open");
-    return () => html.classList.remove("sc-lock", "sc-lock--gutter", "sc-sheet-open");
-  }, [sheet, armed]);
+    return () => html.classList.remove("sc-lock", "sc-lock--gutter");
+  }, [armed, cameIn, handoff]);
 
   const closing = useRef(false);
   const close = useCallback(() => {
@@ -435,10 +451,17 @@ function Layer({ show, anchor, mode, armed = false, handoff = false, onClose }: 
   // Once the sheet is up, a short drag springs back in 240 ms instead of the 460 ms rise.
   const [settled, setSettled] = useState(handoff);
   useEffect(() => {
-    if (!sheet || phase !== "open") return;
-    const t = window.setTimeout(() => setSettled(true), 480);
-    return () => window.clearTimeout(t);
-  }, [sheet, phase]);
+    if (!sheet || phase !== "open" || settled) return;
+    const box = boxRef.current;
+    if (!box) return;
+    if (reduced) {
+      setSettled(true);
+      return;
+    }
+    // On the rise's own end, not a clock from mount: on a slow engine the clock ran out mid-rise and the
+    // page behind was taken away (covered) under a sheet still on its way up.
+    return onEntranceEnd(box, true, () => setSettled(true));
+  }, [sheet, phase, settled, reduced]);
   // A settled sheet covers the whole page but its top strip. Then the page under it, and the scrim, stop
   // being drawn: drawn, they made Chromium composite the page in big layers and the sheet's scene frame in
   // a layer of its own for as long as the sheet was open (LayerTree, 390x844 at DPR 3: ~10 MB for the

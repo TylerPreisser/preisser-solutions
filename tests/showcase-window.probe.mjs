@@ -68,7 +68,7 @@ const SETTLE_MS = { phone: 1500, desk: 900 }; // wait after scrolling the card i
 const SAMPLE_MS = 5500; // how long each open is watched (cold FarmBooks goes Live ~2.7 s unthrottled).
 const SAMPLE_MS_4X = 8000;
 const HOLD_MS = 1500; // a0: how long after the tap the window's code and the client's data are held back
-const HANDOVER_MS = 250; // a0: the swap from shell to window is these frames
+const HANDOVER_MS = 200; // a0: the swap from shell to window is these frames (the live frame starts 250 ms after it, ShowcaseLayer HANDOFF_MS; the client's start-up that follows is not the swap)
 
 const REPS = Number(process.env.PS_TEST_REPS || 3);
 const BASE = (process.env.PS_TEST_BASE_URL || "").replace(/\/+$/, "");
@@ -852,7 +852,7 @@ for (const [kind, slug] of PICS) {
 
 // f. closing.
 for (const kind of ["phone", "click"]) {
-  const methods = kind === "phone" ? ["esc", "x", "scrim", "drag"] : ["esc", "x", "scrim"];
+  const methods = kind === "phone" ? ["esc", "x", "scrim", ...(CDP ? ["drag"] : [])] : ["esc", "x", "scrim"];
   const words = { esc: "Escape", x: "the X", scrim: "a tap on the dimmed page", drag: "a downward drag of the sheet" };
   for (const m of methods) {
     await check(`[${NAMES[kind]} · Hays · warm] f. closing with ${words[m]} starts at once and is smooth`, kind === "phone" ? DEVICES.phone : DEVICES.desk, async () => {

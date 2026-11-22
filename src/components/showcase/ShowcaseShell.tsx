@@ -26,9 +26,63 @@ export function isSheetLayout() {
 /** How long the window takes to come in (showcase.css: the sheet rises 460 ms, the window grows 420 ms). */
 export const ENTRANCE_MS = { sheet: 460, pop: 420 } as const;
 
+/**
+ * Calls `done` once the box's own entrance has ended: the sheet's rise animation or the window's grow
+ * transition, read from the element's end event, not a clock from mount. On a slow engine the first frame
+ * of the rise comes late (Playwright WebKit: ~400 ms after mount), and a timer from mount fired mid-rise.
+ * A fallback timer covers an end event that never comes (an engine that skips it, a cancelled animation).
+ */
+export function onEntranceEnd(box: HTMLElement, sheet: boolean, done: () => void) {
+  let fired = false;
+  let r1 = 0;
+  let r2 = 0;
+  const finish = () => {
+    if (fired) return;
+    fired = true;
+    box.removeEventListener("animationend", onAnim);
+    box.removeEventListener("transitionend", onTrans);
+    window.clearTimeout(t);
+    // The entrance's last frame paints first; what follows (the scroll lock's re-layout, the live frame) starts
+    // in a frame of its own, not on the entrance's last one.
+    r1 = requestAnimationFrame(() => {
+      r2 = requestAnimationFrame(done);
+    });
+  };
+  const onAnim = (e: AnimationEvent) => {
+    if (e.target === box && e.animationName === "sc-sheet-rise") finish();
+  };
+  const onTrans = (e: TransitionEvent) => {
+    if (e.target === box && e.propertyName === "transform") finish();
+  };
+  box.addEventListener("animationend", onAnim);
+  box.addEventListener("transitionend", onTrans);
+  const t = window.setTimeout(finish, (sheet ? ENTRANCE_MS.sheet : ENTRANCE_MS.pop) + 900);
+  return () => {
+    fired = true;
+    box.removeEventListener("animationend", onAnim);
+    box.removeEventListener("transitionend", onTrans);
+    window.clearTimeout(t);
+    cancelAnimationFrame(r1);
+    cancelAnimationFrame(r2);
+  };
+}
+
 type Phase = "measure" | "from" | "open" | "leave";
 
-export function ShowcaseShell({ name, domain, anchor, onClose }: { name: string; domain: string; anchor: HTMLElement; onClose: () => void }) {
+export function ShowcaseShell({
+  name,
+  domain,
+  anchor,
+  onClose,
+  onEntered,
+}: {
+  name: string;
+  domain: string;
+  anchor: HTMLElement;
+  onClose: () => void;
+  /** The shell has finished coming in: the window may take its place. */
+  onEntered: () => void;
+}) {
   const [sheet] = useState(isSheetLayout);
   const [reduced] = useState(prefersReduced);
   const [phase, setPhase] = useState<Phase>(sheet ? "open" : "measure");
@@ -60,14 +114,39 @@ export function ShowcaseShell({ name, domain, anchor, onClose }: { name: string;
     };
   }, [phase]);
 
+  const enteredRef = useRef(onEntered);
+  enteredRef.current = onEntered;
+  const [cameIn, setCameIn] = useState(false);
   useEffect(() => {
+    if (phase !== "open") return;
+    const box = boxRef.current;
+    if (!box) return;
+    const done = () => {
+      setCameIn(true);
+      enteredRef.current();
+    };
+    if (reduced) {
+      done();
+      return;
+    }
+    return onEntranceEnd(box, sheet, done);
+  }, [phase, reduced, sheet]);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    html.classList.add("sc-open");
+    if (sheet) html.classList.add("sc-sheet-open");
+    return () => html.classList.remove("sc-open", "sc-sheet-open");
+  }, [sheet]);
+  // The scroll lock waits for the entrance to end, as in ShowcaseLayer (it re-lays-out the whole page).
+  useEffect(() => {
+    if (!cameIn) return;
     const html = document.documentElement;
     const gutter = window.innerWidth - html.clientWidth > 0;
     html.classList.add("sc-lock");
     if (gutter) html.classList.add("sc-lock--gutter");
-    if (sheet) html.classList.add("sc-sheet-open");
-    return () => html.classList.remove("sc-lock", "sc-lock--gutter", "sc-sheet-open");
-  }, [sheet]);
+    return () => html.classList.remove("sc-lock", "sc-lock--gutter");
+  }, [cameIn]);
 
   const closing = useRef(false);
   const close = () => {

@@ -295,9 +295,10 @@ html.sc-lock {
    (the card track, the page, the scrim, the open window's frame) is promoted for overlapping it: on a
    390x844 phone at DPR 3 that held ~240 MB of layers for as long as the sheet was open (Chromium
    LayerTree, 2026-11-04), the likeliest reason iOS Safari dropped the page. They sit under the scrim. */
-html.sc-lock .ps-work-card__bob-label,
-html.sc-lock .ps-work-swipe-hint,
-html.sc-lock .ps-hero-cue__icon {
+/* (sc-open is set from the window's first frame; the overflow lock above waits for the entrance to end.) */
+html.sc-open .ps-work-card__bob-label,
+html.sc-open .ps-work-swipe-hint,
+html.sc-open .ps-hero-cue__icon {
   animation: none;
 }
 html.sc-lock--gutter {
