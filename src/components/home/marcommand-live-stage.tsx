@@ -98,8 +98,8 @@ const NARROW: StageGeom = {
   dial: { cy: 300, r: 38, arcR: 29, needleLen: 24, labelFont: 16, valueFont: 19 },
   /* h was 145: the third keyword sat on the panel's bottom border. 157 leaves
      about 13 units of padding under it, the same as above the title. */
-  tile: { x: 40, y: 400, w: 300, h: 157 },
-  pill: { x: 58, w: 264, h: 30, font: 17 },
+  tile: { x: 40, y: 400, w: 268, h: 157 },
+  pill: { x: 58, w: 232, h: 30, font: 17 },
 };
 
 /**
@@ -267,10 +267,17 @@ const RISERS_WIDE = [
   columns (faces 68..144, 164..240, 260..336) and still enter each dial on its
   side at cy+12 = 312. Only the y they start from changed.
 */
-const BUS_NARROW = "M195,112 H110 V240 H375 V470 H340";
+/* The right-hand run was at x=375 (15u from the stage's edge). The sprite is a
+   fixed 48x58 CSS px, which is 65u wide on a 320px phone, so walking that run he
+   stuck out past the stage by about 17px and was cut. It is now x=346 and the
+   keyword panel's right edge x=308 (was 340), which keeps his keyword stop
+   (x=342, box about 310..375 at 320px) clear of the panel. Narrow only. */
+const BUS_NARROW = "M195,112 H110 V240 H346 V470 H308";
 /* Riser 2 moved from x=250 to x=262, and the Radius dial with it — see the
    DIALS_NARROW note. Everything else is unchanged. */
-const RISERS_NARROW = ["M110,240 H28 V312 H70", "M154,240 V312 H166", "M262,240 V312 H274"];
+/* Riser 0 was at x=28: on a 320px phone his box (48px wide, 65u) ran 7.8px past
+   the stage's LEFT edge there. It is x=42 now, with his dial stop at x=58. */
+const RISERS_NARROW = ["M110,240 H42 V312 H70", "M154,240 V312 H166", "M262,240 V312 H274"];
 
 /**
  * The hub link. It is HUB furniture, not room wiring: it joins the pad's top rim
@@ -964,10 +971,10 @@ export const ELARA_MARKS = {
     pad: { x: "50%", y: "50%" },
     /* (160, 310) — on the Google Ads spoke, 23u clear of the card's edge. */
     tap: { x: "41.0256%", y: "50%" },
-    /* (49, 312) — at the foot of riser 0, reaching into the Daily budget dial. */
-    dial: { x: "12.5641%", y: "50.3226%" },
-    /* (357, 470) — on the bus's tile run, facing left into the keyword tile. */
-    keys: { x: "91.5385%", y: "75.8065%" },
+    /* (58, 312) — at the foot of riser 0, reaching into the Daily budget dial. */
+    dial: { x: "14.8718%", y: "50.3226%" },
+    /* (342, 470) — on the bus's tile run, facing left into the keyword tile. */
+    keys: { x: "87.6923%", y: "75.8065%" },
     /* Portrait closes from beside the LIFTED card at (195,70), not from the
        hub slot the card has left. */
     closeTap: { x: "35.8974%", y: "18.0645%" },
@@ -1026,12 +1033,12 @@ const W_KEYS: Waypoint = { x: "28.125%", y: "69.1176%" };   /* (337.5,470) at th
 const N_PAD: Waypoint = { x: "50%", y: "50%" };             /* (195,310) pad centre   */
 const N_TAP: Waypoint = { x: "41.0256%", y: "50%" };        /* (160,310) on the spoke */
 const N_LINKTOP: Waypoint = { x: "50%", y: "38.7097%" };    /* (195,240) trunk        */
-const N_TRUNKL: Waypoint = { x: "7.1795%", y: "38.7097%" }; /* (28,240)  riser-0 elbow*/
-const N_DROP: Waypoint = { x: "7.1795%", y: "50.3226%" };   /* (28,312)  riser-0 elbow*/
-const N_DIAL: Waypoint = { x: "12.5641%", y: "50.3226%" };  /* (49,312)  at the dial  */
-const N_TRUNKR: Waypoint = { x: "96.1538%", y: "38.7097%" };/* (375,240) bus elbow    */
-const N_TILER: Waypoint = { x: "96.1538%", y: "75.8065%" }; /* (375,470) bus elbow    */
-const N_KEYS: Waypoint = { x: "91.5385%", y: "75.8065%" };  /* (357,470) at the tile  */
+const N_TRUNKL: Waypoint = { x: "10.7692%", y: "38.7097%" };/* (42,240)  riser-0 elbow*/
+const N_DROP: Waypoint = { x: "10.7692%", y: "50.3226%" };  /* (42,312)  riser-0 elbow*/
+const N_DIAL: Waypoint = { x: "14.8718%", y: "50.3226%" };  /* (58,312)  at the dial  */
+const N_TRUNKR: Waypoint = { x: "88.7179%", y: "38.7097%" };/* (346,240) bus elbow    */
+const N_TILER: Waypoint = { x: "88.7179%", y: "75.8065%" }; /* (346,470) bus elbow    */
+const N_KEYS: Waypoint = { x: "87.6923%", y: "75.8065%" };  /* (342,470) at the tile  */
 const N_BUSL: Waypoint = { x: "28.2051%", y: "38.7097%" };  /* (110,240) bus elbow    */
 const N_CARDL: Waypoint = { x: "28.2051%", y: "18.0645%" }; /* (110,112) bus elbow    */
 const N_CLOSE: Waypoint = { x: "35.8974%", y: "18.0645%" }; /* (140,112) beside card  */
@@ -1089,8 +1096,8 @@ export const ROUTES = {
       it is the beat that did not exist before.
 
       Every leg is on a drawn object: (110,112)->(110,240) and the y=240 run are
-      BUS_NARROW ("M195,112 H110 V240 H375..."), and (28,240)->(28,312)->(49...)
-      is RISERS_NARROW[0] ("M110,240 H28 V312 H70"). The pad and the hub link
+      BUS_NARROW ("M195,112 H110 V240 H346..."), and (42,240)->(42,312)->(58...)
+      is RISERS_NARROW[0] ("M110,240 H42 V312 H70"). The pad and the hub link
       are no longer on the route at all, which is why their fade could move off
       walk2 and onto the tap.
     */

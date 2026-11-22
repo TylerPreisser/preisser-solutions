@@ -54,6 +54,32 @@ try {
 }
 
 const browser = await chromium.launch();
+
+// The first page a fresh browser opens in a given configuration can take a minute or more to hydrate
+// (measured here with the page's main thread blocked: 32s, 90s and 101s on the first load of a new
+// browser process, then 0.3s on every later load), and that stall used to land on whichever check ran
+// first. It is first-use cost in the browser (the same page is instant on its second load), not the
+// page. So before any check starts, open one throwaway page in each configuration the checks use, a
+// desktop one and a phone one, and wait for each to hydrate.
+async function warmUp(b, label) {
+  const configs = [
+    ["desktop", { viewport: { width: 1440, height: 900 } }],
+    ["phone", { viewport: { width: 402, height: 874 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true }],
+  ];
+  for (const [name, options] of configs) {
+    const t0 = Date.now();
+    const context = await b.newContext(options);
+    const page = await context.newPage();
+    await page.goto(HOME, { waitUntil: "load" });
+    await page.waitForFunction(() => {
+      const el = document.querySelector("#services button.ps-bento-card");
+      return !!el && Object.keys(el).some((k) => k.startsWith("__react"));
+    }, null, { timeout: 300000 });
+    await context.close();
+    console.log(`  (warm-up ${label} ${name}: first page hydrated in ${((Date.now() - t0) / 1000).toFixed(1)}s)`);
+  }
+}
+await warmUp(browser, "chromium");
 let pass = 0;
 let fail = 0;
 const ONLY = (process.env.PS_TEST_ONLY || "").toLowerCase();
@@ -71,7 +97,10 @@ async function check(name, contextOptions, fn, { theme, noOpen, before, engine }
   if (ONLY && !name.toLowerCase().includes(ONLY)) return;
   let b = browser;
   if (engine === "webkit") {
-    webkitBrowser ??= await req("playwright").webkit.launch();
+    if (!webkitBrowser) {
+      webkitBrowser = await req("playwright").webkit.launch();
+      await warmUp(webkitBrowser, "webkit");
+    }
     b = webkitBrowser;
   }
   const context = await b.newContext(contextOptions);
@@ -87,7 +116,7 @@ async function check(name, contextOptions, fn, { theme, noOpen, before, engine }
     await page.waitForFunction(() => {
       const b = document.querySelector("#services button.ps-bento-card");
       return !!b && Object.keys(b).some((k) => k.startsWith("__react"));
-    }, null, { timeout: 60000 });
+    }, null, { timeout: 120000 });
     await page.addStyleTag({ content: "html { scroll-behavior: auto !important; }" });
     if (theme) {
       const before = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
@@ -334,32 +363,90 @@ for (const s of pick("1920x1080", "1440x900", "1280x800", "1024x768", "820x1180"
 }
 
 // No label overlaps another or a dial, sampled across a whole loop.
+async function overlapScan(page, samples, gap = 1500) {
+  const hits = [];
+  for (let i = 0; i < samples; i++) {
+    const r = await page.evaluate(() => {
+      const root = document.querySelector(".ps-dialog-panel .mc-sheet .mc-stage");
+      const vis = (el) => { let o = 1; for (let n = el; n && n !== root; n = n.parentElement) o *= parseFloat(getComputedStyle(n).opacity); return o; };
+      const g = [...root.querySelectorAll(".mc-stage__wide, .mc-stage__narrow")].find((x) => getComputedStyle(x).display !== "none");
+      const texts = [...g.querySelectorAll("text")].filter((t) => vis(t) > 0.3 && t.getBoundingClientRect().width > 0);
+      const dials = [...g.querySelectorAll("circle")].filter((c) => /dial/.test(c.getAttribute("class") || "") && vis(c) > 0.3);
+      const R = (e) => e.getBoundingClientRect();
+      const ov = (a, b, tol) => Math.min(a.right, b.right) - Math.max(a.left, b.left) > tol && Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > tol;
+      const bad = [];
+      for (let i = 0; i < texts.length; i++) {
+        for (let j = i + 1; j < texts.length; j++) if (ov(R(texts[i]), R(texts[j]), 2.5)) bad.push(`${texts[i].textContent.trim()} x ${texts[j].textContent.trim()}`);
+        for (const d of dials) if (ov(R(texts[i]), R(d), 2.5)) bad.push(`${texts[i].textContent.trim()} x dial`);
+      }
+      return bad;
+    });
+    hits.push(...r);
+    await page.waitForTimeout(gap);
+  }
+  return hits;
+}
+
 for (const s of pick("1440x900", "820x1180", "402x874", "320x568")) {
   await check(`A7b no stage label overlaps another label or a dial ${s.name}`, ctxFor(s), async (page) => {
     await boxes(page);
     await scrollStageIntoView(page);
-    const hits = [];
-    for (let i = 0; i < 12; i++) {
-      const r = await page.evaluate(() => {
-        const root = document.querySelector(".ps-dialog-panel .mc-sheet .mc-stage");
-        const vis = (el) => { let o = 1; for (let n = el; n && n !== root; n = n.parentElement) o *= parseFloat(getComputedStyle(n).opacity); return o; };
-        const g = [...root.querySelectorAll(".mc-stage__wide, .mc-stage__narrow")].find((x) => getComputedStyle(x).display !== "none");
-        const texts = [...g.querySelectorAll("text")].filter((t) => vis(t) > 0.3 && t.getBoundingClientRect().width > 0);
-        const dials = [...g.querySelectorAll("circle")].filter((c) => /dial/.test(c.getAttribute("class") || "") && vis(c) > 0.3);
-        const R = (e) => e.getBoundingClientRect();
-        const ov = (a, b, tol) => Math.min(a.right, b.right) - Math.max(a.left, b.left) > tol && Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > tol;
-        const bad = [];
-        for (let i = 0; i < texts.length; i++) {
-          for (let j = i + 1; j < texts.length; j++) if (ov(R(texts[i]), R(texts[j]), 2.5)) bad.push(`${texts[i].textContent.trim()} x ${texts[j].textContent.trim()}`);
-          for (const d of dials) if (ov(R(texts[i]), R(d), 2.5)) bad.push(`${texts[i].textContent.trim()} x dial`);
-        }
-        return bad;
-      });
-      hits.push(...r);
-      await page.waitForTimeout(1500);
-    }
+    const hits = await overlapScan(page, 12);
     assert.equal(hits.length, 0, `overlaps: ${[...new Set(hits)].slice(0, 5).join(" | ")}`);
   });
+}
+
+// Guard: the detector above must be able to fail. Push each dial's name down 14 units onto its value
+// (styles added to the built page here, nothing in source) and it has to report overlaps.
+for (const s of pick("1440x900", "402x874")) {
+  await check(`A7b guard: the overlap detector fires when two labels are forced together ${s.name}`, ctxFor(s), async (page) => {
+    await boxes(page);
+    await scrollStageIntoView(page);
+    await page.addStyleTag({ content: ".mc-sheet .mc-dial__label { transform: translateY(14px) !important; }" });
+    const hits = await overlapScan(page, 12);
+    assert.ok(hits.length > 0, "the detector reported nothing with two labels forced onto each other");
+  });
+}
+
+// The phone layouts: the robot is never cut by the stage's right edge or the sheet's content box, and
+// at his keyword stop he is not standing on the keyword panel.
+const PHONES_EDGE = [
+  { name: "402x874", w: 402, h: 874, phone: true },
+  { name: "390x844", w: 390, h: 844, phone: true },
+  { name: "360x800", w: 360, h: 800, phone: true },
+  { name: "320x568", w: 320, h: 568, phone: true },
+];
+for (const s of PHONES_EDGE) for (const theme of THEMES) {
+  await check(`robot edge ${s.name} ${theme}: across a whole loop he never passes the stage's right edge or the sheet's content box, and is clear of the keyword panel`, ctxFor(s), async (page) => {
+    await boxes(page);
+    await scrollStageIntoView(page);
+    const r = await page.evaluate(async () => {
+      const panel = document.querySelector(".ps-dialog-panel");
+      const stage = panel.querySelector(".mc-sheet .mc-stage");
+      const robot = panel.querySelector(".mc-elara");
+      const tile = stage.querySelector(".mc-stage__narrow .mc-tile__box");
+      const pcs = getComputedStyle(panel);
+      const content = panel.getBoundingClientRect().left + panel.clientWidth - parseFloat(pcs.paddingRight || "0");
+      const contentLeft = panel.getBoundingClientRect().left + parseFloat(pcs.paddingLeft || "0");
+      let worstRight = -Infinity, worstLeft = -Infinity, worstContent = -Infinity, tileOverlap = 0;
+      const t0 = performance.now();
+      while (performance.now() - t0 < 19000) {
+        const b = robot.getBoundingClientRect();
+        const sb = stage.getBoundingClientRect();
+        worstRight = Math.max(worstRight, b.right - sb.right);
+        worstLeft = Math.max(worstLeft, sb.left - b.left);
+        worstContent = Math.max(worstContent, b.right - content, contentLeft - b.left);
+        const tb = tile.getBoundingClientRect();
+        if (tb.width > 0 && b.bottom > tb.top + 6) tileOverlap = Math.max(tileOverlap, Math.min(b.right, tb.right) - Math.max(b.left, tb.left));
+        await new Promise((res) => setTimeout(res, 120));
+      }
+      return { worstRight, worstLeft, worstContent, tileOverlap };
+    });
+    assert.ok(r.worstRight <= -2, `the robot is within 2px of (or past) the stage's right edge: ${(-r.worstRight).toFixed(1)}px to spare at his worst`);
+    assert.ok(r.worstLeft <= -2, `the robot is within 2px of (or past) the stage's left edge: ${(-r.worstLeft).toFixed(1)}px to spare`);
+    assert.ok(r.worstContent <= -2, `the robot is within 2px of (or past) the sheet's content box: ${(-r.worstContent).toFixed(1)}px to spare`);
+    assert.ok(r.tileOverlap <= 4, `the robot stands ${r.tileOverlap.toFixed(1)}px over the keyword panel`);
+  }, { theme });
 }
 
 // ---------------------------------------------------------------------------------------- A8
