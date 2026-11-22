@@ -28,16 +28,20 @@
    .ps-hero-headline, and the same 5.15rem ceiling, so from about 1230px up
    the two headlines are the same size.
 
-   The vw term is 6.7 where the hero's is 7.5. "Get to know your business."
-   is 26 characters against the hero's longest line at 20, and measures about
+   The middle term is not the hero's 7.5vw. "Get to know your business." is
+   26 characters against the hero's longest line at 20, and measures about
    12.6em wide; at 7.5vw it would overrun the content box on every phone
-   (390px: 368px of type in a 342px box). 6.7vw keeps it on one line down to
-   320px. Lines are nowrap: a wrap here would break the wordmark, so the size
-   gives way, never the line. */
+   (390px: 368px of type in a 342px box). So the size is taken from the box
+   itself: the viewport less the container's two 24px gutters, divided by
+   12.9, which leaves about 2% of slack in every engine down to
+   320px, so at normal text settings no line ever wraps (the browser probe
+   asserts one line each). Wrapping is still ALLOWED, on purpose: a reader who
+   applies their own text spacing (WCAG 1.4.12) widens every line, and a line
+   that may not wrap is clipped off the left edge instead. */
 .ps-how .ps-how__headline {
   margin: 0;
   text-align: right;
-  font-size: clamp(1.25rem, 6.7vw, 5.15rem);
+  font-size: clamp(1.25rem, calc((100vw - 48px) / 12.9), 5.15rem);
   font-weight: 800;
   line-height: 1.07;
   letter-spacing: -0.03em;
@@ -61,14 +65,19 @@
   line-height: inherit;
   color: inherit;
   text-align: right;
-  white-space: nowrap;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 
 .ps-how .ps-how__line:focus-visible {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 6px;
+  /* An underline, not a ring: the lines are stacked at 1.07, so any outline
+     drawn around one line cuts through the descenders of the line above. The
+     underline sits between this line's baseline and the next line's caps and
+     touches nothing. Keyboard focus only; never on hover. */
+  outline: none;
+  text-decoration: underline var(--color-primary);
+  text-decoration-thickness: max(0.06em, 2px);
+  text-underline-offset: 0.14em;
 }
 
 /* The brand device, as in the hero: the last line carries the primary blue.
@@ -76,6 +85,20 @@
 .ps-how .ps-how__line--accent {
   color: var(--color-primary);
   text-shadow: 0 0 28px var(--color-primary-glow);
+}
+
+/* The hero drops its glow on the light theme (globals.css,
+   [data-theme="light"] .ps-hero-line--accent); so does this. On white the
+   glow reads as a smudge around the letters. */
+[data-theme="light"] .ps-how .ps-how__line--accent {
+  text-shadow: none;
+}
+
+/* Keeps a compound ("long-term", "AES-256", "Fortune 500") on one line. A
+   hyphen is always a break opportunity and no CSS property on the paragraph
+   removes it, so the compounds are wrapped instead. The text is unchanged. */
+.ps-how .ps-how__nobr {
+  white-space: nowrap;
 }
 
 /* One grid cell holds the relationship sentence and all three explanations,
@@ -131,6 +154,14 @@
   text-wrap: balance;
 }
 
+/* Above phone widths `pretty` gives the better break in Chromium ("because we
+   want your / success to be our success."); `balance` split "we / want". */
+@media (min-width: 641px) {
+  .ps-how .ps-how__belief {
+    text-wrap: pretty;
+  }
+}
+
 .ps-how .ps-how__hint {
   margin: 22px 0 0;
   font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
@@ -169,7 +200,17 @@
   line-height: 1.45;
   letter-spacing: -0.012em;
   color: var(--theme-text-primary);
-  text-wrap: pretty;
+  /* balance, not pretty: Firefox ignores pretty and left "it." alone on the
+     last line of the third explanation. */
+  text-wrap: balance;
+}
+
+/* A wider measure on wide screens: the second explanation takes five lines
+   instead of six, which is what sets the height of the whole slot. */
+@media (min-width: 1024px) {
+  .ps-how .ps-how__body {
+    max-width: 30em;
+  }
 }
 
 @media (max-width: 768px) {
@@ -182,12 +223,44 @@
   }
 }
 
-/* On phones the lines are tap targets. At the hero's 1.07 line-height a line
-   is under 24px tall at 320px wide, below WCAG 2.5.8; 1.22 keeps every line
-   at 26px or more. Desktop keeps the hero's exact 1.07. */
+/* Phones.
+   1. The lines are tap targets. At the hero's 1.07 line-height a line is under
+      24px tall at 320px wide, below WCAG 2.5.8. Padding grows each button to
+      26px or more and the equal negative margin gives the space back, so the
+      leading on screen is still the hero's 1.07.
+   2. The slot stops reserving room for the longest explanation. Stacked in
+      one cell it left a blank band of about 250px under the hint on a 320px
+      phone. Here only the text that is showing takes space; the section grows
+      when a line is tapped, and the tap is what starts that move.
+      @starting-style keeps the fade, which `display: none` would otherwise
+      skip. */
 @media (max-width: 640px) {
-  .ps-how .ps-how__headline {
-    line-height: 1.22;
+  .ps-how .ps-how__line {
+    padding-block: 2px;
+    margin-block: -2px;
+  }
+
+  .ps-how .ps-how__slot {
+    display: block;
+  }
+
+  .ps-how .ps-how__step {
+    display: none;
+  }
+
+  .ps-how .ps-how__step[data-on="true"] {
+    display: block;
+  }
+
+  .ps-how[data-active] .ps-how__rest {
+    display: none;
+  }
+
+  @starting-style {
+    .ps-how .ps-how__step[data-on="true"] {
+      opacity: 0;
+      transform: translateY(12px);
+    }
   }
 }
 

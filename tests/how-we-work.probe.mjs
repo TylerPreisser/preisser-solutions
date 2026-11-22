@@ -6,6 +6,9 @@
  * for on 2026-11-21: the three lines sit right under the hero in the hero's type,
  * each line shows its explanation on hover or tap, and the lines themselves do not
  * change when hovered ("make ti just hover and not change the color and stuff").
+ * It also holds the three behaviours the accessibility audit asked for: a hovered
+ * explanation stays while the pointer is on it, Escape closes it, and a tap
+ * outside the lines closes it.
  *
  *   PS_TEST_BASE_URL=http://127.0.0.1:4321 node tests/how-we-work.probe.mjs
  */
@@ -45,13 +48,25 @@ async function check(name, contextOptions, fn) {
   const context = await browser.newContext(contextOptions);
   const page = await context.newPage();
   try {
-    await page.goto(HOME, { waitUntil: "networkidle" });
+    await page.goto(HOME, { waitUntil: "load" });
     // Paint is not hydration: wait until React owns the first line's handlers.
     await page.waitForFunction(() => {
       const el = document.querySelector(".ps-how__line");
       return !!el && Object.keys(el).some((k) => k.startsWith("__react"));
     }, null, { timeout: 20000 });
-    await page.locator("#how-we-work").scrollIntoViewIfNeeded();
+    // The site sets `scroll-behavior: smooth` on <html>. A smooth scroll is still moving when the next
+    // step starts, and it slides the other lines under a pointer that has not moved, which hovers them.
+    // So scroll instantly, then wait until the page has stopped.
+    await page.addStyleTag({ content: "html { scroll-behavior: auto !important; }" });
+    await page.evaluate(() => {
+      const top = document.querySelector("#how-we-work").getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: Math.max(0, top - 120), behavior: "instant" });
+    });
+    await page.waitForFunction(() => {
+      const y = window.scrollY;
+      if (window.__psLastY === y) { window.__psStill = (window.__psStill || 0) + 1; } else { window.__psStill = 0; window.__psLastY = y; }
+      return window.__psStill >= 5;
+    }, null, { polling: 100, timeout: 10000 });
     await fn(page);
     pass += 1;
     console.log(`  PASS  ${name}`);
@@ -65,6 +80,21 @@ async function check(name, contextOptions, fn) {
 
 /** Visible to a person: laid out, opaque and not visibility:hidden. Polls through the fade. */
 async function waitShown(page, selector, shown) {
+  try {
+    await waitShownRaw(page, selector, shown);
+  } catch {
+    const now = await page.evaluate((sel) => {
+      const el = document.querySelector(sel);
+      if (!el) return "missing";
+      const cs = getComputedStyle(el);
+      return `display ${cs.display}, visibility ${cs.visibility}, opacity ${cs.opacity}`;
+    }, selector);
+    const active = await page.evaluate(() => document.querySelector("#how-we-work").getAttribute("data-active"));
+    throw new Error(`${selector} should be ${shown ? "shown" : "hidden"} but is: ${now} (data-active=${active})`);
+  }
+}
+
+async function waitShownRaw(page, selector, shown) {
   await page.waitForFunction(
     ([sel, want]) => {
       const el = document.querySelector(sel);
@@ -133,9 +163,19 @@ await check("desktop mouse: under the hero, hero-sized, hover shows the explanat
         assert.equal(line.opacity, rest.lines[k].opacity, `hovering line ${i + 1} changed the opacity of line ${k + 1}`);
       });
     }
-    await page.mouse.move(5, 5);
-    await waitShown(page, ".ps-how__rest", true);
+    // The explanation must survive the pointer moving onto it (WCAG 1.4.13), and Escape must dismiss it.
+    await page.locator("#how-step-2 .ps-how__body").hover();
+    await page.waitForTimeout(600);
+    await waitShown(page, "#how-step-2", true);
+    await page.keyboard.press("Escape");
     await waitShown(page, "#how-step-2", false);
+    await waitShown(page, ".ps-how__rest", true);
+    // Leaving the SECTION is what returns it to rest.
+    await page.locator(".ps-how__line").nth(0).hover();
+    await waitShown(page, "#how-step-0", true);
+    await page.locator(".ps-hero-headline").hover();
+    await waitShown(page, "#how-step-0", false);
+    await waitShown(page, ".ps-how__rest", true);
   });
 
 await check("phone touch: one line each, no sideways scroll, tap opens and closes",
@@ -150,6 +190,12 @@ await check("phone touch: one line each, no sideways scroll, tap opens and close
     await waitShown(page, "#how-step-1", false);
     await page.locator(".ps-how__line").nth(2).tap();
     await waitShown(page, "#how-step-2", false);
+    await waitShown(page, ".ps-how__rest", true);
+    // A tap anywhere outside the three lines closes an open explanation.
+    await page.locator(".ps-how__line").nth(0).tap();
+    await waitShown(page, "#how-step-0", true);
+    await page.locator(".ps-how__eyebrow").tap();
+    await waitShown(page, "#how-step-0", false);
     await waitShown(page, ".ps-how__rest", true);
   });
 
