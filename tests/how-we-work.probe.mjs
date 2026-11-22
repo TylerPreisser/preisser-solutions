@@ -132,11 +132,17 @@ async function read(page) {
       lines: [...section.querySelectorAll(".ps-how__line")].map((el) => {
         const r = el.getBoundingClientRect();
         const cs = getComputedStyle(el);
-        const lit = getComputedStyle(el, "::after");
+        const glow = getComputedStyle(el, "::after");
+        const fill = el.querySelector(".ps-how__fill");
+        const fillIn = el.querySelector(".ps-how__fill-in");
+        // The blue words are drawn inside a window (the band). How far that window is from sitting
+        // exactly on the line, as a share of its height: 0 is on the line, 1 is a whole line away.
+        const off = fill ? Math.abs(fill.getBoundingClientRect().top - (r.top - (fill.getBoundingClientRect().height - r.height) / 2)) / fill.getBoundingClientRect().height : 1;
         return {
-          text: text(el), left: r.left, right: r.right, top: r.top, bottom: r.bottom, height: r.height, fontSize: parseFloat(cs.fontSize),
-          // The lit copy of the line that is faded in over it, and the words underneath.
-          lit: parseFloat(lit.opacity), litColor: lit.color, glow: lit.textShadow !== "none",
+          text: text(el.querySelector(".ps-how__ink")), left: r.left, right: r.right, top: r.top, bottom: r.bottom, height: r.height, fontSize: parseFloat(cs.fontSize),
+          // How much of the line the light covers, the colour of the lit words, and the words underneath.
+          lit: parseFloat(glow.opacity), band: off, litColor: fillIn ? getComputedStyle(fillIn).color : "", glow: glow.textShadow !== "none",
+          litText: fillIn ? getComputedStyle(fillIn, "::after").content.replace(/^"|"$/g, "").replace(/" \/ ""$/, "") : "",
           ink: parseFloat(getComputedStyle(el.querySelector(".ps-how__ink")).opacity),
         };
       }),
@@ -194,10 +200,13 @@ async function story(page, label) {
     s.lines.forEach((line, k) => {
       if (k === i) {
         assert.ok(line.lit > 0.99, `${label}: line ${k + 1} is not lit on its beat (${line.lit})`);
+        assert.ok(line.band < 0.01, `${label}: the band of light is ${(line.band * 100).toFixed(0)}% of a line off line ${k + 1} on its beat`);
         assert.equal(line.litColor, s.primary, `${label}: line ${k + 1} is not lit in the primary blue`);
+        assert.ok(line.litText.startsWith(LINES[k]), `${label}: the lit copy of line ${k + 1} reads "${line.litText}"`);
         assert.ok(line.glow, `${label}: line ${k + 1} does not glow on its beat`);
       } else {
         assert.ok(line.lit < 0.01, `${label}: line ${k + 1} is lit on line ${i + 1}'s beat (${line.lit})`);
+        assert.ok(line.band > 0.99, `${label}: part of line ${k + 1} is still blue on line ${i + 1}'s beat`);
         assert.ok(line.ink <= 0.6, `${label}: line ${k + 1} did not step back on line ${i + 1}'s beat`);
       }
     });
@@ -294,6 +303,79 @@ await check("desktop: three lines alone, then each lights up with its explanatio
     const s = await story(page, "1440");
     // The hero's own type, at the hero's own size on a desktop.
     assert.ok(Math.abs(s.lines[0].fontSize - s.heroFontSize) <= 0.5, `1440: headline is ${s.lines[0].fontSize}px, the hero's is ${s.heroFontSize}px`);
+  });
+
+await check("laptop windows (1366 by 625, 1280 by 580): the type sizes to the height and nothing is cut",
+  { viewport: { width: 1366, height: 625 } },
+  async (page) => {
+    await story(page, "1366x625");
+    await page.setViewportSize({ width: 1280, height: 580 });
+    await page.waitForTimeout(400);
+    await story(page, "1280x580");
+  });
+
+await check("keyboard: Space and PageDown show every explanation in turn, then leave the section",
+  { viewport: { width: 1440, height: 900 } },
+  async (page) => {
+    const t = await track(page);
+    await scrollTo(page, t.top - t.lead + t.beat * 0.4);
+    assert.equal((await read(page)).step, "0", "keys: not on line 1 to begin with");
+    const rested = async () => {
+      // The key scrolls smoothly; wait for the page, then the picture, to come to rest.
+      await page.waitForFunction(() => {
+        const y = window.scrollY;
+        if (window.__psY === y) window.__psStill = (window.__psStill || 0) + 1;
+        else { window.__psStill = 0; window.__psY = y; }
+        return window.__psStill >= 4;
+      }, null, { polling: 100, timeout: 10000 });
+      await page.waitForFunction(() => !document.querySelector("#how-we-work").hasAttribute("data-moving"), null, { timeout: 8000 });
+    };
+    for (const [key, want] of [["PageDown", "1"], ["Space", "2"], ["PageDown", "3"]]) {
+      await page.keyboard.press(key);
+      await rested();
+      const s = await read(page);
+      assert.equal(s.step, want, `keys: ${key} went to beat ${Number(s.step) + 1}, not beat ${Number(want) + 1}`);
+      assert.ok(s.steps[Number(want)].opacity > 0.99, `keys: after ${key} explanation ${Number(want) + 1} is not showing`);
+    }
+    await page.keyboard.press("Shift+Space");
+    await rested();
+    assert.equal((await read(page)).step, "2", "keys: Shift+Space did not go back one beat");
+    await page.keyboard.press("PageDown");
+    await rested();
+    // From the last beat the key is the browser's again: it pages on to Services.
+    const before = await page.evaluate(() => window.scrollY);
+    await page.keyboard.press("PageDown");
+    await rested();
+    const moved = (await page.evaluate(() => window.scrollY)) - before;
+    assert.ok(moved > t.beat * 1.2, `keys: PageDown on the last beat moved ${Math.round(moved)}px, so the reader cannot page out of the section`);
+  });
+
+await check("a reader's own text spacing (WCAG 1.4.12): nothing is cut off, at desktop and phone size",
+  { viewport: { width: 1440, height: 900 } },
+  async (page) => {
+    for (const [w, h] of [[1440, 900], [390, 844]]) {
+      await page.setViewportSize({ width: w, height: h });
+      await page.addStyleTag({ content: "#how-we-work * { line-height: 1.5 !important; letter-spacing: 0.12em !important; word-spacing: 0.16em !important; }" });
+      await page.waitForTimeout(500);
+      const t = await track(page);
+      if (t.position === "sticky") {
+        // Still on the track: then every beat must still fit.
+        for (let i = 0; i < 4; i += 1) {
+          await scrollTo(page, t.top - t.lead + t.beat * (i + 0.5));
+          const s = await read(page);
+          assert.ok(s.headlineTop >= s.navBottom, `${w}: with text spacing the lines sit under the header`);
+          assert.ok(s.steps[i].bottom <= s.vh, `${w}: with text spacing text ${i + 1} runs ${Math.round(s.steps[i].bottom - s.vh)}px off the screen`);
+        }
+      } else {
+        // Stacked: everything is laid out to read, nothing hidden or overlapping.
+        const s = await read(page);
+        assert.ok(s.steps.every((st) => st.opacity > 0.99), `${w}: with text spacing some text is hidden in the stacked layout`);
+        for (let i = 1; i < s.steps.length; i += 1) {
+          assert.ok(s.steps[i].top >= s.steps[i - 1].bottom, `${w}: with text spacing text ${i + 1} overlaps text ${i}`);
+        }
+        assert.ok(s.pageOverflow <= 0, `${w}: with text spacing the page scrolls sideways by ${s.pageOverflow}px`);
+      }
+    }
   });
 
 await check("phone: the same story, and everything fits on one screen",

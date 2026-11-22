@@ -25,7 +25,7 @@
  */
 import assert from "node:assert/strict";
 import {
-  BEATS, CLOSING, IDLE_MS, LINES, MAX_SPEED, beatOf, follow, followerAt, frame, plateau, positionOf, rest,
+  BEATS, CLOSING, IDLE_MS, LINES, MAX_SPEED, beatOf, follow, followerAt, frame, keyTarget, offsetOf, plateau, positionOf, rest,
 } from "../src/components/home/how-we-work-motion.ts";
 
 let pass = 0;
@@ -44,8 +44,11 @@ function check(name, fn) {
 /** Every number the section paints at `u`, flattened, with names for messages. */
 function values(u, calm = 1) {
   const f = frame(u, calm);
-  const out = { light: f.light, ink: f.ink, lamp: f.lamp / (LINES - 1) };
+  // The light starts one line above the first, so its whole run is LINES lines long.
+  const out = { light: f.light, ink: f.ink, lamp: (f.lamp + 1) / LINES };
   f.lit.forEach((v, k) => { out[`line ${k + 1} lit`] = v; });
+  // The band's offset against each line runs from -1 (a line above) to 1 (a line below).
+  f.fill.forEach((v, k) => { out[`line ${k + 1} band`] = (v + 1) / 2; });
   f.texts.forEach((t, k) => { out[`text ${k + 1} opacity`] = t.opacity; });
   return out;
 }
@@ -145,7 +148,7 @@ check("the middle of each beat is exactly its own clean picture", () => {
     const f = frame(k + 0.5);
     assert.deepEqual(f.lit, [0, 1, 2].map((i) => (i === k ? 1 : 0)), `beat ${k + 1} lit`);
     assert.deepEqual(f.texts.map((t) => t.opacity), [0, 1, 2, 3].map((i) => (i === k ? 1 : 0)), `beat ${k + 1} texts`);
-    assert.ok(f.texts[k].y === 0 && f.light === 1 && f.lamp === k, `beat ${k + 1} is not at rest`);
+    assert.ok(f.texts[k].y === 0 && f.light === 1 && f.lamp === k && f.fill[k] === 0, `beat ${k + 1} is not at rest`);
   }
   const end = frame(CLOSING + 0.5);
   assert.deepEqual(end.lit, [0, 0, 1], "closing lit");
@@ -182,6 +185,39 @@ check("a reader already inside a beat's resting stretch sees nothing move when t
       assert.equal(rest(u), u, `stopping at u=${u.toFixed(4)} moves the picture`);
       assert.equal(JSON.stringify(values(u)), still, `the picture changes inside beat ${k + 1}'s resting stretch at u=${u.toFixed(4)}`);
     }
+  }
+});
+
+check("the band of light is one line tall: what it leaves on one line it gains on the next", () => {
+  for (const u of positions) {
+    const { fill, lit, lamp } = frame(u);
+    for (let k = 0; k < LINES; k += 1) {
+      assert.ok(Math.abs(fill[k] - Math.min(1, Math.max(-1, lamp - k))) < 1e-12, `line ${k + 1}'s band is not where the light is at u=${u}`);
+      assert.ok(Math.abs(lit[k] - (1 - Math.abs(fill[k]))) < 1e-12, `line ${k + 1}'s glow does not match its band at u=${u}`);
+    }
+    if (lamp >= 0) assert.ok(Math.abs(lit.reduce((a, b) => a + b, 0) - 1) < 1e-9, `the band covers ${lit.reduce((a, b) => a + b, 0).toFixed(3)} lines at u=${u}`);
+  }
+});
+
+check("Space and PageDown move exactly one beat, and hand back to the browser at either end", () => {
+  // From anywhere in a beat, forward goes to the middle of the next one and never skips.
+  for (const u of positions.filter((x) => x >= -0.1)) {
+    const beat = beatOf(u);
+    const forward = keyTarget(u, 1);
+    const back = keyTarget(u, -1);
+    assert.equal(forward, beat < CLOSING ? beat + 1.5 : null, `forward from u=${u} (beat ${beat + 1}) goes to ${forward}`);
+    assert.equal(back, beat > 0 ? beat - 0.5 : null, `back from u=${u} (beat ${beat + 1}) goes to ${back}`);
+    if (forward !== null) assert.equal(beatOf(forward), beat + 1, `forward from u=${u} does not land in the next beat`);
+  }
+  // While the section is still arriving, the keys are the browser's.
+  assert.equal(keyTarget(-0.5, 1), null);
+  // Pressing it over and over visits every beat in order.
+  const visited = [];
+  for (let u = 0.3; u !== null; u = keyTarget(u, 1)) visited.push(beatOf(u));
+  assert.deepEqual(visited, [0, 1, 2, 3]);
+  // And the offset it scrolls to is the inverse of reading the position.
+  for (const u of [0.5, 1.5, 2.5, 3.5]) {
+    assert.ok(Math.abs(positionOf(offsetOf(u, 844, 1688), 844, 1688) - u) < 1e-9, `offsetOf and positionOf disagree at u=${u}`);
   }
 });
 

@@ -1,16 +1,17 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import { IDLE_MS, beatOf, clamp, follow, followerAt, frame, positionOf, rest } from "./how-we-work-motion";
+import { IDLE_MS, beatOf, clamp, follow, followerAt, frame, keyTarget, offsetOf, positionOf, rest } from "./how-we-work-motion";
 
 /**
  * How We Work: the section directly below the hero (ADR-0026).
  *
  * The hero's three-line wordmark, set on the opposite side, told by scrolling.
  * The section arrives as the three lines and nothing else. It then holds still
- * on screen while the reader scrolls, and one soft light travels down the
- * lines: the line under it turns the primary blue and glows, and that line's
- * explanation is the text showing. The owner, in terms: "Make it jusy the
+ * on screen while the reader scrolls, and one band of light travels down
+ * through the lines: the words inside it are the primary blue and glow, so the
+ * blue passes from one line into the next, and the explanation of the line it
+ * is on is the text showing. The owner, in terms: "Make it jusy the
  * three with no description then scroll reactive that shows description for
  * the 1st then the 2nd then the 3rd. Each should glow as u go." And: "it has
  * to stay flawless but it also needs to bet the smoothest possible scroll
@@ -38,8 +39,17 @@ import { IDLE_MS, beatOf, clamp, follow, followerAt, frame, positionOf, rest } f
  *     property that feeds an opacity). No layout and no repaint of the type.
  *   - No React state: a frame is written straight to the elements, so
  *     scrolling never re-renders anything.
- * Nothing takes over the scroll. With "reduce motion" on, there is no ease
- * and no scrubbing: each beat simply shows.
+ * Nothing takes over the scroll, with one small exception for the keyboard:
+ * Space and PageDown scroll most of a screen, which is nearly two beats, so
+ * while the block is held they are made to move exactly one beat (otherwise a
+ * keyboard reader never sees the second explanation). With "reduce motion"
+ * on, there is no ease and no scrubbing: each beat simply shows.
+ *
+ * IF IT DOES NOT FIT. The held block is one screen high. When the lines and
+ * the longest explanation do not fit in it (a very short window, a reader's
+ * own text spacing or zoom), the component marks the section data-stacked and
+ * the stylesheet lays everything out to read instead, exactly as it does with
+ * no JavaScript. Nothing is ever clipped to keep the effect.
  *
  * THE COPY IS THE OWNER'S, APPROVED 2026-11-21 ("thats perfect implement it").
  * The three lines, the three explanations and the relationship sentence ship
@@ -102,8 +112,11 @@ export function HowWeWork() {
     const pin = pinRef.current;
     const light = lightRef.current;
     if (!track || !pin || !light) return;
+    const content = pin.firstElementChild as HTMLElement;
     const lines = Array.from(track.querySelectorAll<HTMLElement>(".ps-how__line"));
     const inks = Array.from(track.querySelectorAll<HTMLElement>(".ps-how__ink"));
+    const fills = Array.from(track.querySelectorAll<HTMLElement>(".ps-how__fill"));
+    const fillIns = Array.from(track.querySelectorAll<HTMLElement>(".ps-how__fill-in"));
     const texts = Array.from(track.querySelectorAll<HTMLElement>(".ps-how__step"));
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -122,6 +135,14 @@ export function HowWeWork() {
     const paint = (u: number, calm: number) => {
       const f = frame(u, calm);
       lines.forEach((line, k) => line.style.setProperty("--lit", f.lit[k].toFixed(3)));
+      // The band: a window the height of the line that slides down over the
+      // blue copy of the words, while the copy itself is moved back by the
+      // same amount so the words stay exactly where they are.
+      fills.forEach((fill, k) => {
+        const by = f.fill[k] * (fill.offsetHeight || 0);
+        fill.style.transform = `translate3d(0, ${by.toFixed(2)}px, 0)`;
+        fillIns[k].style.transform = `translate3d(0, ${(-by).toFixed(2)}px, 0)`;
+      });
       inks.forEach((ink) => {
         ink.style.opacity = f.ink.toFixed(3);
       });
@@ -133,16 +154,24 @@ export function HowWeWork() {
         if (t.opacity > 0.5) text.setAttribute("data-on", "true");
         else text.removeAttribute("data-on");
       });
-      // The light takes the shape of the line it is on and glides between the
-      // shapes of two lines while it is between them.
-      const a = boxes[clamp(Math.floor(f.lamp), 0, boxes.length - 1)];
-      const b = boxes[clamp(Math.ceil(f.lamp), 0, boxes.length - 1)];
-      if (a && b) {
-        const m = f.lamp - Math.floor(f.lamp);
-        const w = a.w + (b.w - a.w) * m;
-        const h = a.h + (b.h - a.h) * m;
-        const cx = a.x + a.w / 2 + (b.x + b.w / 2 - a.x - a.w / 2) * m;
-        const cy = a.y + a.h / 2 + (b.y + b.h / 2 - a.y - a.h / 2) * m;
+      // The glow behind the band takes the shape of the line it is on and
+      // glides between the shapes of two lines while it is between them. On
+      // its way in it comes down from one line above the first.
+      const first = boxes[0];
+      if (first) {
+        let w = first.w;
+        let h = first.h;
+        let cx = first.x + first.w / 2;
+        let cy = first.y + first.h / 2 + Math.min(0, f.lamp) * first.h;
+        if (f.lamp > 0) {
+          const a = boxes[clamp(Math.floor(f.lamp), 0, boxes.length - 1)];
+          const b = boxes[clamp(Math.ceil(f.lamp), 0, boxes.length - 1)];
+          const m = f.lamp - Math.floor(f.lamp);
+          w = a.w + (b.w - a.w) * m;
+          h = a.h + (b.h - a.h) * m;
+          cx = a.x + a.w / 2 + (b.x + b.w / 2 - a.x - a.w / 2) * m;
+          cy = a.y + a.h / 2 + (b.y + b.h / 2 - a.y - a.h / 2) * m;
+        }
         light.style.transform = `translate3d(${(cx - 50).toFixed(1)}px, ${(cy - 50).toFixed(1)}px, 0) scale(${((w * 1.3) / 100).toFixed(3)}, ${((h * 3) / 100).toFixed(3)})`;
       }
       light.style.opacity = f.light.toFixed(3);
@@ -189,7 +218,17 @@ export function HowWeWork() {
     // Everything that depends on the size of things. Runs at the start and
     // whenever the window or the type changes size (a web font arriving).
     const measure = () => {
+      // Ask for the track layout, then check the block really fits in it.
+      track.removeAttribute("data-stacked");
       pinned = getComputedStyle(pin).position === "sticky";
+      if (pinned) {
+        const box = getComputedStyle(pin);
+        const room = pin.clientHeight - parseFloat(box.paddingTop) - parseFloat(box.paddingBottom);
+        if (content.offsetHeight > room + 0.5) {
+          track.setAttribute("data-stacked", "true");
+          pinned = false;
+        }
+      }
       travel = track.offsetHeight - pin.offsetHeight;
       if (!pinned || travel <= 0) {
         // The stacked layout: hand every look back to the stylesheet.
@@ -198,6 +237,8 @@ export function HowWeWork() {
         raf = 0;
         lines.forEach((line) => line.style.removeProperty("--lit"));
         inks.forEach((ink) => ink.style.removeProperty("opacity"));
+        fills.forEach((fill) => fill.style.removeProperty("transform"));
+        fillIns.forEach((fill) => fill.style.removeProperty("transform"));
         texts.forEach((text) => {
           text.style.removeProperty("opacity");
           text.style.removeProperty("transform");
@@ -214,14 +255,36 @@ export function HowWeWork() {
       paint(shown.x, shown.calm);
     };
 
+    // Space and PageDown, Shift+Space and PageUp: one beat at a time while the
+    // block is held. Anything typed into a control is left alone.
+    const onKey = (e: KeyboardEvent) => {
+      if (!pinned || e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+      const direction =
+        e.key === "PageDown" || (e.key === " " && !e.shiftKey) ? 1 : e.key === "PageUp" || (e.key === " " && e.shiftKey) ? -1 : 0;
+      if (direction === 0) return;
+      const from = e.target instanceof Element ? e.target : null;
+      if (from && from.closest("input, textarea, select, button, a, summary, [contenteditable], [role='button']")) return;
+      const top = track.getBoundingClientRect().top;
+      if (-top > travel) return; // already past the track
+      const next = keyTarget(position(), direction);
+      if (next === null) return;
+      e.preventDefault();
+      window.scrollTo({
+        top: window.scrollY + top + offsetOf(next, window.innerHeight, travel),
+        behavior: reduce.matches ? "auto" : "smooth",
+      });
+    };
+
     measure();
     const sizes = new ResizeObserver(measure);
     sizes.observe(track);
     lines.forEach((line) => sizes.observe(line));
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("keydown", onKey);
     return () => {
       sizes.disconnect();
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("keydown", onKey);
       window.clearTimeout(idle);
       window.cancelAnimationFrame(raf);
     };
@@ -237,13 +300,18 @@ export function HowWeWork() {
             <span ref={lightRef} className="ps-how__light" aria-hidden="true" />
             <h2 id="how-heading" className="ps-how__headline">
               {STEPS.map((item, i) => (
-                // data-text feeds the lit copy of the line, which is drawn by
-                // the stylesheet over the line and faded in. It is not in the
-                // page's text, so the heading reads once.
+                // data-text feeds the two lit copies of the line, both drawn by
+                // the stylesheet from that attribute: the glow (the line's
+                // ::after) and the blue words (inside ps-how__fill, the window
+                // that the band slides over them). Neither is in the page's
+                // text, so the heading reads once.
                 <span key={item.line} className="ps-how__line" data-text={item.line}>
                   <span className="ps-how__ink">
                     {item.line}
                     {i < STEPS.length - 1 ? " " : ""}
+                  </span>
+                  <span className="ps-how__fill" aria-hidden="true">
+                    <span className="ps-how__fill-in" data-text={item.line} />
                   </span>
                 </span>
               ))}

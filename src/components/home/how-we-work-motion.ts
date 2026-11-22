@@ -89,10 +89,16 @@ export function ease(from: number, to: number, x: number) {
 }
 
 export type Frame = {
-  /** Which line the light is on, as a fraction (1.5 is half way from line 2 to line 3). */
+  /** Which line the light is on, as a fraction (1.5 is half way from line 2 to
+   *  line 3). It starts one line above the first (-1) and comes down into it. */
   lamp: number;
-  /** How lit each line is, 0 to 1. */
+  /** How much of each line the light covers, 0 to 1. */
   lit: number[];
+  /** Where the light's band is against each line: 0 covers the line, -1 is a
+   *  whole line above it, 1 a whole line below. The blue is drawn only where
+   *  the band is, so it passes down THROUGH the words from one line into the
+   *  next instead of one line fading out while the next fades in. */
+  fill: number[];
   /** The opacity of the lines' own words (the lines that are not current step back). */
   ink: number;
   /** The three explanations and then the closing sentence. */
@@ -110,12 +116,18 @@ export function frame(u: number, calm = 1): Frame {
   // The sequence switching on as the block arrives, and the last beat.
   const on = ease(-0.3, 0.2, u);
   const closing = ease(CLOSING - 1 + LAMP_FROM, CLOSING + 0.25, u);
-  // The light rests on a line for the middle of that line's beat and glides to
-  // the next across the boundary.
-  let lamp = 0;
+  // The light comes down into the first line as the block arrives, rests on a
+  // line for the middle of that line's beat, and glides to the next across the
+  // boundary.
+  let lamp = on - 1;
   for (let k = 0; k < LINES - 1; k += 1) lamp += ease(k + LAMP_FROM, k + LAMP_TO, u);
+  const fill: number[] = [];
   const lit: number[] = [];
-  for (let k = 0; k < LINES; k += 1) lit.push(on * Math.max(0, 1 - Math.abs(lamp - k)));
+  for (let k = 0; k < LINES; k += 1) {
+    const offset = clamp(lamp - k, -1, 1);
+    fill.push(offset);
+    lit.push(1 - Math.abs(offset));
+  }
   const ink = 1 - QUIET * on * (1 - closing);
   // Each text comes up as the light lands on its line and leaves as the light
   // moves off, so no two texts are ever on screen together.
@@ -127,7 +139,7 @@ export function frame(u: number, calm = 1): Frame {
   }
   const last = ease(CLOSING + TEXT_IN_FROM, CLOSING + TEXT_IN_TO, u);
   texts.push({ opacity: last * calm, y: (1 - last) * 14 });
-  return { lamp, lit, ink, texts, light: on * (1 - 0.45 * closing) };
+  return { lamp, lit, fill, ink, texts, light: on * (1 - 0.45 * closing) };
 }
 
 /** The beat a position belongs to: the one whose resting stretch is nearest.
@@ -155,6 +167,27 @@ export function rest(u: number) {
   if (beat === null) return Math.min(u, -0.35);
   const [from, to] = plateau(beat);
   return clamp(u, from, to);
+}
+
+/**
+ * Where Space, PageDown (direction 1) or Shift+Space, PageUp (direction -1)
+ * should take a reader who is at `u`: the middle of the next or the previous
+ * beat. A page key scrolls most of a screen, which is nearly two beats, so
+ * left alone it skips an explanation. null means "not ours": the reader is
+ * leaving the section, and the browser pages as usual.
+ */
+export function keyTarget(u: number, direction: 1 | -1): number | null {
+  const beat = beatOf(u);
+  if (beat === null) return null;
+  const next = beat + direction;
+  if (next < 0 || next > CLOSING) return null;
+  return next + 0.5;
+}
+
+/** The scroll offset (how far the top of the track is above the top of the
+ *  window, in px) for a beat position. The inverse of positionOf. */
+export function offsetOf(u: number, windowHeight: number, travel: number) {
+  return u * (travel / BEATS) - windowHeight * LEAD;
 }
 
 /** The beat position for a scroll offset. `scrolled` is how far the top of
