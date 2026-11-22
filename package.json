@@ -12,7 +12,7 @@
     "lint": "eslint . --max-warnings=0",
     "test": "npm run test:unit",
     "test:unit": "node tests/subscribe.probe.mjs && node tests/middleware.probe.mjs && node tests/contact.probe.mjs && node tests/headers.probe.mjs && node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tests/how-we-work-motion.probe.mjs",
-    "test:e2e": "node tests/footer.probe.mjs && node tests/how-we-work.probe.mjs",
+    "test:e2e": "node tests/footer.probe.mjs && node tests/how-we-work.probe.mjs && node tests/marcommand-card.probe.mjs",
     "preview": "npx serve out",
     "indexnow": "node scripts/indexnow-ping.mjs",
     "strip-404-noindex": "node scripts/strip-404-noindex.mjs",
