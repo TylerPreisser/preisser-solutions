@@ -105,6 +105,12 @@ const STEPS: ReadonlyArray<{ line: string; body: ReactNode }> = [
   },
 ];
 
+/** How far the soft light behind the lit line reaches, as a multiple of the line's own width and
+ *  height. Close to the words: the owner asked for the glow "a bit tighter around the words"
+ *  (2026-11-22); it was 1.3 wide and 3 high. */
+const LIGHT_WIDE = 1.14;
+const LIGHT_HIGH = 2;
+
 export function HowWeWork() {
   const trackRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
@@ -180,7 +186,7 @@ export function HowWeWork() {
           cx = a.x + a.w / 2 + (b.x + b.w / 2 - a.x - a.w / 2) * m;
           cy = a.y + a.h / 2 + (b.y + b.h / 2 - a.y - a.h / 2) * m;
         }
-        light.style.transform = `translate3d(${(cx - 50).toFixed(1)}px, ${(cy - 50).toFixed(1)}px, 0) scale(${((w * 1.3) / 100).toFixed(3)}, ${((h * 3) / 100).toFixed(3)})`;
+        light.style.transform = `translate3d(${(cx - 50).toFixed(1)}px, ${(cy - 50).toFixed(1)}px, 0) scale(${((w * LIGHT_WIDE) / 100).toFixed(3)}, ${((h * LIGHT_HIGH) / 100).toFixed(3)})`;
       }
       light.style.opacity = f.light.toFixed(3);
       // For anything that needs the beat as a fact: tests, and the next person.

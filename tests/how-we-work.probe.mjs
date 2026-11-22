@@ -58,7 +58,12 @@ const browser = await chromium.launch();
 let pass = 0;
 let fail = 0;
 
+// PS_TEST_ONLY=<words from a check's name> runs just the checks whose name has those words, for
+// working on one of them. The gate runs them all.
+const ONLY = (process.env.PS_TEST_ONLY || "").toLowerCase();
+
 async function check(name, contextOptions, fn) {
+  if (ONLY && !name.toLowerCase().includes(ONLY)) return;
   const context = await browser.newContext(contextOptions);
   const page = await context.newPage();
   try {
@@ -324,6 +329,27 @@ await check("desktop: three lines alone, then each lights up with its explanatio
     const s = await story(page, "1440");
     // The hero's own type, at the hero's own size on a desktop.
     assert.ok(Math.abs(s.lines[0].fontSize - s.heroFontSize) <= 0.5, `1440: headline is ${s.lines[0].fontSize}px, the hero's is ${s.heroFontSize}px`);
+  });
+
+await check("the glow stays close to the lit words (owner: \"a bit tighter around the words\")",
+  { viewport: { width: 1440, height: 900 } },
+  async (page) => {
+    // Owner, 2026-11-22, looking at the live page: "The glow needs to be a bit tighter around the
+    // words but that's all iI would chnage". It reached 1.3 times the line's width and 3 times its
+    // height then. Each line in turn: the light behind it is no more than a fifth wider than the line
+    // and no more than 2.2 times its height.
+    const t = await track(page);
+    for (let k = 0; k < 3; k += 1) {
+      await scrollTo(page, t.top + (k + 0.45) * t.beat - t.lead);
+      const g = await page.evaluate((k) => {
+        const line = document.querySelectorAll(".ps-how__line")[k].getBoundingClientRect();
+        const light = document.querySelector(".ps-how__light").getBoundingClientRect();
+        return { wide: light.width / line.width, high: light.height / line.height, off: Math.abs(light.top + light.height / 2 - line.top - line.height / 2) / line.height };
+      }, k);
+      assert.ok(g.wide <= 1.2, `line ${k + 1}: the glow is ${g.wide.toFixed(2)} times as wide as the words`);
+      assert.ok(g.high <= 2.2, `line ${k + 1}: the glow is ${g.high.toFixed(2)} times as tall as the words`);
+      assert.ok(g.off < 0.05, `line ${k + 1}: the glow is not centred on the words`);
+    }
   });
 
 await check("laptop windows (1366 by 625, 1280 by 580): the type sizes to the height and nothing is cut",
@@ -711,6 +737,38 @@ await check("small phone: 320 by 568 still fits the lines and the longest explan
   { viewport: { width: 320, height: 568 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true },
   async (page) => {
     await story(page, "320");
+  });
+
+await check("every phone width from 320 to 520: each of the three lines stays on one line",
+  { viewport: { width: 402, height: 900 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true },
+  async (page) => {
+    // The type is sized from the width so the longest line just fits. How wide a line of text comes
+    // out is not the same in every browser or at every size (this browser rounds each letter to whole
+    // pixels at small sizes, and measured the first line anywhere from 12.4 to 13.1 times the type
+    // size), so two widths prove nothing: at 396 to 402 wide the first line broke in two while 390 and
+    // 320 were fine. Every width is looked at.
+    const wrapped = [];
+    let tightest = 0;
+    for (let width = 320; width <= 520; width += 2) {
+      await page.setViewportSize({ width, height: 900 });
+      const lines = await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => {
+        const size = parseFloat(getComputedStyle(document.querySelector(".ps-how__headline")).fontSize);
+        const box = document.querySelector(".ps-how__headline").getBoundingClientRect().width;
+        done([...document.querySelectorAll(".ps-how__line")].map((line) => {
+          const height = line.getBoundingClientRect().height;
+          line.style.maxWidth = "none";
+          const natural = line.getBoundingClientRect().width;
+          line.style.maxWidth = "";
+          return { broke: height > size * 1.6, fill: natural / box };
+        }));
+      })));
+      lines.forEach((line, i) => {
+        if (line.broke) wrapped.push(`${width}px line ${i + 1}`);
+        tightest = Math.max(tightest, line.fill);
+      });
+    }
+    assert.deepEqual(wrapped, [], `a line broke onto a second line at: ${wrapped.join(", ")}`);
+    assert.ok(tightest <= 0.995, `the longest line fills ${(tightest * 100).toFixed(1)}% of the space it has; there is no margin left`);
   });
 
 await check("phone on its side: too short to pin, so everything is laid out to read",
