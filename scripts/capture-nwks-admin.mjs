@@ -346,6 +346,49 @@ function wordsIn(rect) {
   return [...new Set(out)];
 }
 
+/**
+ * In-page: one [x, y, w, h, word] per drawn WORD inside `rect`, in page css px, for the walkthrough's framing and
+ * for tests/showcase-walkthroughs.probe.mjs (a word is a run of non-space characters; its box is the
+ * text range's own client rect, so its height is the line box of the font, about 1.2 x the font size).
+ */
+function wordBoxesIn(rect) {
+  const hit = (r) => r.width > 0 && r.height > 0 && r.right > rect.x && r.left < rect.x + rect.w && r.bottom > rect.y && r.top < rect.y + rect.h;
+  const shown = (el) => {
+    for (let e = el; e; e = e.parentElement) {
+      const cs = getComputedStyle(e);
+      if (cs.display === "none" || cs.visibility === "hidden" || parseFloat(cs.opacity) === 0) return false;
+    }
+    return true;
+  };
+  const out = [];
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const range = document.createRange();
+  for (let n = w.nextNode(); n; n = w.nextNode()) {
+    const v = n.nodeValue || "";
+    if (!v.trim() || !n.parentElement || !shown(n.parentElement)) continue;
+    if (n.parentElement.closest("script, style, noscript, template, select, datalist")) continue;
+    const det = n.parentElement.closest("details:not([open])");
+    if (det && !n.parentElement.closest("summary")) continue;
+    if (n.parentElement.checkVisibility && !n.parentElement.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true, contentVisibilityAuto: true })) continue;
+    const clippedAway = (r) => {
+      for (let e = n.parentElement; e && e !== document.body; e = e.parentElement) {
+        const cs = getComputedStyle(e);
+        if (cs.overflowX === "visible" && cs.overflowY === "visible") continue;
+        const b = e.getBoundingClientRect();
+        if (r.right <= b.left || r.left >= b.right || r.bottom <= b.top || r.top >= b.bottom) return true;
+      }
+      return false;
+    };
+    const re = /\S+/g;
+    for (let m = re.exec(v); m; m = re.exec(v)) {
+      range.setStart(n, m.index);
+      range.setEnd(n, m.index + m[0].length);
+      for (const r of range.getClientRects()) if (hit(r) && !clippedAway(r)) out.push([Math.round(r.left * 10) / 10, Math.round(r.top * 10) / 10, Math.round(r.width * 10) / 10, Math.round(r.height * 10) / 10, m[0]]);
+    }
+  }
+  return out;
+}
+
 /** In-page: the element a spec names (a selector, or the smallest element holding a text). */
 function locate(spec) {
   const vis = (e) => {
@@ -407,7 +450,13 @@ async function click(page, spec) {
   await page.waitForTimeout(900);
 }
 
-async function writeStill(png, file, cssW, outW, words, rect) {
+/** One box per line in a words manifest, so a recapture diffs by word, not by digit. */
+function compactBoxes(file) {
+  const s = fs.readFileSync(file, "utf8").replace(/\[\s+(-?[\d.]+),\s+(-?[\d.]+),\s+([\d.]+),\s+([\d.]+),\s+("(?:[^"\\]|\\.)*")\s+\]/g, "[$1, $2, $3, $4, $5]");
+  fs.writeFileSync(file, s);
+}
+
+async function writeStill(png, file, cssW, outW, words, rect, boxes) {
   const img = sharp(png);
   const buf = await (outW ? img.resize({ width: outW }) : img).webp({ quality: 80, effort: 6 }).toBuffer();
   fs.writeFileSync(path.join(OUT, file), buf);
@@ -421,12 +470,15 @@ async function writeStill(png, file, cssW, outW, words, rect) {
         source: `NWKS Encounter admin, bundle ${BUNDLE}, run locally on its demo seed with every name swapped for invented ones (scripts/capture-nwks-admin.mjs)`,
         captured: new Date().toISOString().slice(0, 10),
         rect,
+        // One [x, y, w, h, word] per drawn word, in the still's css px (read by the walkthrough framing and its probe).
+        boxes,
         lines: words,
       },
       null,
       2,
     )}\n`,
   );
+  compactBoxes(path.join(OUT, file.replace(/\.webp$/, ".words.json")));
   if (REVIEW) fs.writeFileSync(path.join(REVIEW, file.replace(/\.webp$/, ".png")), png);
   return { src: `/images/showcase/nwks/${file}`, width: meta.width, height: meta.height, bytes: buf.length, css: { w: cssW, h: Math.round((meta.height * cssW) / meta.width) } };
 }
@@ -484,6 +536,10 @@ async function loadInter() {
 async function settle(page) {
   await page.waitForLoadState("networkidle", { timeout: 6000 }).catch(() => {});
   await page.addStyleTag({ content: FONT_CSS });
+  // The print page's footnote about where a label stock's geometry came from and whether anyone has held
+  // a printed sheet to a box is a maintainer's note, not part of the product a visitor should see: hidden at
+  // capture time (--show-dev-note leaves it, for comparison only).
+  if (!process.argv.includes("--show-dev-note")) await page.addStyleTag({ content: '[data-testid="geometry-note"]{display:none!important}' });
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(1200);
 }
@@ -738,8 +794,9 @@ async function captureAll(browser, jar, revive) {
         }
         const rect = { x: 0, y: 0, w: DESK.width, h: DESK.height };
         const words = await page.evaluate(wordsIn, rect);
+        const boxes = await page.evaluate(wordBoxesIn, rect);
         const png = await page.screenshot({ type: "png" });
-        result[st.id] = { desk: await writeStill(png, `${st.id}.webp`, DESK.width, 2880, words, rect), targets };
+        result[st.id] = { desk: await writeStill(png, `${st.id}.webp`, DESK.width, 2880, words, rect, boxes), targets };
       } else {
         const bandSpecs = st.bands.length ? st.bands : STEPS.find((x) => x.id === st.id.replace("-unpaid", "")).bands;
         const bands = [];

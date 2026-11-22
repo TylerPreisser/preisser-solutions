@@ -9,7 +9,7 @@ export const NWKS_ADMIN_SHOTS = {
       "src": "/images/showcase/nwks/dashboard.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 148260,
+      "bytes": 148576,
       "css": {
         "w": 1440,
         "h": 900
@@ -29,7 +29,7 @@ export const NWKS_ADMIN_SHOTS = {
       "src": "/images/showcase/nwks/cabins-before.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 174570,
+      "bytes": 174664,
       "css": {
         "w": 1440,
         "h": 900
@@ -49,7 +49,7 @@ export const NWKS_ADMIN_SHOTS = {
       "src": "/images/showcase/nwks/cabins.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 161172,
+      "bytes": 162306,
       "css": {
         "w": 1440,
         "h": 900
