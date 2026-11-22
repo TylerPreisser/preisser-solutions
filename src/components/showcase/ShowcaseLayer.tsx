@@ -29,8 +29,11 @@ import "./showcase.css";
  *   sheet    touch, or narrower than 900px: an opaque sheet from the bottom,
  *            swiped down from its grip and title row to dismiss.
  *   armed    hover intent has begun but not yet held: the window is mounted at its resting place,
- *            transparent and untouchable, so the Website tab's frame starts loading early. Nothing
- *            else happens (no scrim, no scroll lock, no keys) until the card clears `armed`.
+ *            transparent and untouchable, so it is built before it is shown. Nothing else happens (no
+ *            scrim, no scroll lock, no keys) until the card clears `armed`. The Website frame no longer
+ *            starts here: a client site starting up runs on this page's thread in WebKit and in
+ *            Playwright's Chromium, and FarmBooks's start-up landed on the grow (frames 50-83 ms apart,
+ *            window-fix bench 2026-11-22). The loading bar covers the wait instead.
  *   handoff  the home page's own shell (ShowcaseShell) was up first, because this code or the client's
  *            data had not arrived at the tap. The window then mounts already at rest in the shell's place
  *            (no rise, no grow) and the shell goes in the same frame.
@@ -552,7 +555,7 @@ function Layer({ show, anchor, mode, armed = false, handoff = false, onClose }: 
             client={show}
             beat={b}
             variant={variant}
-            active={((opened && cameIn) || (armed && b.kind === "website")) && i === at}
+            active={opened && cameIn && i === at}
             fill
             reduced={reduced}
             onCaption={i === at ? (l) => setLine((p) => (p === l ? p : l)) : undefined}

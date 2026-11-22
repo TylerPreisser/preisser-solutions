@@ -699,10 +699,10 @@ export function CaseStudies() {
   // ── Showcase window state (ADR-0020, ADR-0023) ─────────────────────
   // The window owns its own closing (hover: 400 ms after the pointer leaves it;
   // pinned: close button, Escape, scrim). The card only decides when to open.
-  // `armed`: hover intent has BEGUN on this card (the pointer came to rest on it) but not yet held for 280 ms.
-  // The window is mounted then, invisible and untouchable, so the client's site starts loading in its frame
-  // 280 ms+ before the window is up and is usually Live by the time it is (owner bug 2026-11-04: "it's still,
-  // it's not scrollable" was a wheel during Loading, under the dated still). Intent dropped: it unmounts.
+  // `armed`: hover intent has BEGUN on this card (the pointer moved onto it) but not yet held for 280 ms.
+  // The window is mounted then, invisible and untouchable, so it is built before it shows. (It used to start
+  // the client's site loading too; that start-up now waits for the window to come in, see ShowcaseLayer.)
+  // Intent dropped: it unmounts.
   const [ShowcaseLayer, setShowcaseLayer] = useState<ShowcaseLayerModule["default"] | null>(() => showcaseLayerModule?.default ?? null);
   // `shell`: tapped before the window's code or the client's data was here, so the home page's own shell
   // came up first (at `at`, performance.now()); the window takes over once both are here and the shell
