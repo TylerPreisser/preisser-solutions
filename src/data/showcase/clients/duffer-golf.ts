@@ -106,6 +106,8 @@ const client: ShowcaseClient = {
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only duffer-golf
         first: { src: "/images/showcase/duffer-golf-site-desk-live-eae07fe0.webp", width: 1220, height: 715, captured: "Captured Nov 22, 2026" },
+        // ... and at an 820 tablet sheet's frame width, where the site reflows (same script, --sizes tablet).
+        firstAt: [{ src: "/images/showcase/duffer-golf-site-tablet-live-614bb131.webp", width: 794, height: 981, captured: "Captured Nov 22, 2026" }],
         stops: [
           { y: 0, holdMs: 2400, avoid: DUFFER_DESK_BANDS },
           // "Choose your model." and all four models with their prices and buttons.
@@ -119,6 +121,8 @@ const client: ShowcaseClient = {
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only duffer-golf
         first: { src: "/images/showcase/duffer-golf-site-phone-live-85927f95.webp", width: 376, height: 675, captured: "Captured Nov 22, 2026" },
+        // ... and at a 320 phone's frame width, where the site reflows (same script, --sizes phone320).
+        firstAt: [{ src: "/images/showcase/duffer-golf-site-phone320-live-730dfd64.webp", width: 294, height: 369, captured: "Captured Nov 22, 2026" }],
         // The caption promises the prices: every stop rests with its band whole, at every phone height.
         stops: [
           // "A full golf bay. Then it's a garage again." and its button, whole.

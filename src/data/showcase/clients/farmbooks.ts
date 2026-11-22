@@ -98,6 +98,8 @@ const client: ShowcaseClient = {
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only farmbooks
         first: { src: "/images/showcase/farmbooks-site-desk-live-319d3561.webp", width: 1220, height: 715, captured: "Captured Nov 22, 2026" },
+        // ... and at an 820 tablet sheet's frame width, where the site reflows (same script, --sizes tablet).
+        firstAt: [{ src: "/images/showcase/farmbooks-site-tablet-live-ffff55cb.webp", width: 794, height: 981, captured: "Captured Nov 22, 2026" }],
         stops: [
           { y: 0, holdMs: 2000, avoid: FB_DESK_BANDS },
           // "Three ways", then 01 whole: the bill, the sum and "Off by $410.00".
@@ -113,6 +115,8 @@ const client: ShowcaseClient = {
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only farmbooks
         first: { src: "/images/showcase/farmbooks-site-phone-live-e92c206b.webp", width: 376, height: 675, captured: "Captured Nov 22, 2026" },
+        // ... and at a 320 phone's frame width, where the site reflows (same script, --sizes phone320).
+        firstAt: [{ src: "/images/showcase/farmbooks-site-phone320-live-a157738d.webp", width: 294, height: 369, captured: "Captured Nov 22, 2026" }],
         // Each stop shows its band whole, and no edge cuts a line, a price or a button.
         stops: [
           { y: 0, holdMs: 1400, keep: [200, 590], avoid: FB_PHONE_BANDS },

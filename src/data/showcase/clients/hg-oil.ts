@@ -105,6 +105,8 @@ const client: ShowcaseClient = {
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only hg-oil
         first: { src: "/images/showcase/hg-oil-site-desk-live-325b9f88.webp", width: 1220, height: 715, captured: "Captured Nov 22, 2026" },
+        // ... and at an 820 tablet sheet's frame width, where the site reflows (same script, --sizes tablet).
+        firstAt: [{ src: "/images/showcase/hg-oil-site-tablet-live-df1a38a9.webp", width: 794, height: 981, captured: "Captured Nov 22, 2026" }],
         stops: [{ y: 0, holdMs: 4000 }],
         video: {
           webm: "/images/showcase/hg-oil-hero-desk-97e5697b.webm",
@@ -124,6 +126,8 @@ const client: ShowcaseClient = {
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only hg-oil
         first: { src: "/images/showcase/hg-oil-site-phone-live-20c51093.webp", width: 376, height: 675, captured: "Captured Nov 22, 2026" },
+        // ... and at a 320 phone's frame width, where the site reflows (same script, --sizes phone320).
+        firstAt: [{ src: "/images/showcase/hg-oil-site-phone320-live-685f6cf5.webp", width: 294, height: 369, captured: "Captured Nov 22, 2026" }],
         stops: [{ y: 0, holdMs: 4000 }],
         // The whole frame shows: a taller phone gets more of the clip's own sky and ground around it.
         video: {

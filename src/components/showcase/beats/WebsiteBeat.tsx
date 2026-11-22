@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { SiteCapture, WebsiteBeat as WebsiteBeatData } from "@/data/showcase/types";
+import { estimateViewWidth, frameScale, loadingStill } from "@/data/showcase";
 import { useBox, type BeatProps } from "./shared";
 
 /**
@@ -36,10 +37,6 @@ const HINT_MS = 2200;
 
 /** How long a frame may take to say it rendered before the window falls back to the still. */
 export const READY_MS = 8000;
-/** The narrowest width a desktop frame renders at; a narrower view scales it down to fit (§3.4). */
-const DESK_RENDER_W = 1024;
-/** Below this scale the client's own narrower layout reads better than a shrunken desktop. */
-const MIN_SCALE = 0.8;
 
 /**
  * Kept for the beats index (beatMs). Nothing auto-advances any more (ADR-0022 §2),
@@ -61,13 +58,7 @@ const domainOf = (src: string) => {
   }
 };
 
-/** Render width and scale for a view of this size (§3.4). */
-export function frameScale(vw: number) {
-  if (vw >= DESK_RENDER_W) return { w: vw, s: 1 };
-  const s = vw / DESK_RENDER_W;
-  if (s >= MIN_SCALE) return { w: DESK_RENDER_W, s };
-  return { w: vw, s: 1 };
-}
+export { frameScale };
 
 export function WebsiteBeat({ client, beat, variant, active }: BeatProps<WebsiteBeatData>) {
   const live = beat.live;
@@ -138,6 +129,13 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
 
   const cap = variant === "phone" ? beat.phone : beat.desk;
   const { w: renderW, s } = variant === "phone" ? { w: box.w, s: 1 } : frameScale(box.w);
+  // The loading still for this frame's width (a 320 phone and a tablet sheet reflow the site): chosen once, from
+  // the window's CSS before the view is measured, so the picture never swaps under the visitor.
+  const [first] = useState(() => {
+    const sheet = typeof window !== "undefined" && (!window.matchMedia("(hover: hover) and (pointer: fine)").matches || window.innerWidth < 900);
+    const view = typeof window !== "undefined" ? estimateViewWidth(window.innerWidth, sheet) : 0;
+    return loadingStill(cap, variant === "phone" ? view : frameScale(view).w);
+  });
   const frameStyle: CSSProperties | undefined =
     box.w > 0
       ? { width: renderW, height: s === 1 ? box.h : box.h / s, transform: s === 1 ? undefined : `scale(${s})` }
@@ -193,8 +191,8 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
             finished page, so a frame that never goes live still shows a real-looking site (critic r2 N1). */}
         <Still
           settled={active}
-          cap={cap.first && state !== "preview" && !refused ? { ...cap, ...cap.first, video: undefined } : cap}
-          alt={`${domain} home page, a still from ${(cap.first && state !== "preview" && !refused && cap.first.captured?.replace(/^Captured\s+/i, "")) || when}`}
+          cap={first && state !== "preview" && !refused ? { ...cap, ...first, video: undefined } : cap}
+          alt={`${domain} home page, a still from ${(first && state !== "preview" && !refused && first.captured?.replace(/^Captured\s+/i, "")) || when}`}
         />
         {/* The loading sign over the picture, under the URL strip (a browser's own loading bar): it slides by
             transform only, and fades out as the live site fades in. */}

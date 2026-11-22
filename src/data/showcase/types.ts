@@ -122,8 +122,19 @@ export interface SiteCapture {
    * it, so the two must match. Every other moment (a refused frame, the "Open <domain>" fallback) shows
    * `src`, the dated full page. `captured` is the alt text's date for this picture.
    */
-  first?: { src: string; width: number; height: number; captured?: string };
+  first?: LoadingStill;
+  /** The same loading still at other frame widths (a 320 phone, a tablet sheet), where the site reflows. */
+  firstAt?: readonly LoadingStill[];
 }
+
+export interface LoadingStill {
+  src: string;
+  /** css px: the frame's render width when it was captured, and its height. */
+  width: number;
+  height: number;
+  captured?: string;
+}
+
 
 /**
  * The client's live site, framed in the window (ADR-0022 §2, ADR-0023, design
