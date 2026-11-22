@@ -16,7 +16,7 @@ const shot = (id: Id) => S[id] as unknown as Shot;
 const still = (id: Id, alt: string): Still => {
   const s = shot(id);
   const desk = { src: s.desk.src, width: s.desk.css.w, height: s.desk.css.h };
-  // No narrow layout: the phone sheet frames the desk still (phoneUsesDesk, phoneCam).
+  // No narrow layout: close views frame the desk still (phoneUsesDesk, `close`).
   return { id, desk, phone: desk, alt };
 };
 const at = (r: Rect | undefined, click = false): CursorTarget | undefined =>
@@ -27,79 +27,91 @@ const ORDER: readonly Id[] = ["dashboard", "cabins-before", "cabins", "cabins-mo
 const I = Object.fromEntries(ORDER.map((id, i) => [id, i])) as Record<Id, number>;
 const drag = S.drag;
 
-// Framings (css px of the 1440 x 900 desk still). Each is the part of the screen a step is about; the scene
-// (walkFrame.ts) zooms so the whole box shows, moves the window so its edge cuts no word, and fills the stage.
-// Desk: the board or list, not the sidebar. Phone: the admin has no narrow layout, so the sheet shows a close
-// window (a ~400 px column, about 0.85x) onto the desk still, and a step that is wider than one window pans
-// from window to window (a new framing crossfades).
+// Framings (css px of the 1440 x 900 desk still). Desk (`cam`): the part of the screen a step is about; the scene
+// (walkFrame.ts frameView) zooms so the whole box shows, moves the window so its edge cuts no word, and fills the stage.
+// Close views (`close`: phones, portrait tablets, small landscape stages; walkFrame.ts frameClose): the admin has no
+// narrow layout, so each step names the WHOLE unit(s) a stranger must see (a card, a list with its names, a nav group),
+// biggest first; the stage takes the first it can show whole, readable and filling the stage. A new framing on the
+// same still is a camera move; a new still is a crossfade.
 const DESK = {
   dashboard: { x: 240, y: 20, w: 1180, h: 620 },
   board: { x: 245, y: 20, w: 980, h: 540 },
   list: { x: 240, y: 20, w: 1190, h: 600 },
   badges: { x: 240, y: 140, w: 1170, h: 600 },
-  labels: { x: 240, y: 150, w: 900, h: 520 },
+  // (Wide enough for the whole label-stock select: a window edge through it would cut its text.)
+  labels: { x: 240, y: 150, w: 1150, h: 520 },
 };
-const PHONE = {
-  // Dashboard: the header and first two figures, then the middle two, then the last two.
-  dashA: { x: 255, y: 60, w: 340, h: 290 },
-  dashB: { x: 650, y: 200, w: 350, h: 110 },
-  dashC: { x: 1040, y: 200, w: 350, h: 110 },
-  // Cabins: the buttons row (the click), then one cabin's bunks close up (the pins' initials are 8 px type on the
-  // desk still, so this view is zoomed ~1.3x) and the window Cabin 1 and Cabin 3 share for the drag.
-  rerun: { x: 275, y: 0, w: 350, h: 130 },
-  board: { x: 252, y: 214, w: 230, h: 226 },
-  names: { x: 255, y: 20, w: 380, h: 300 },
-  unpaid: { x: 262, y: 110, w: 250, h: 300 },
-  filters: { x: 915, y: 130, w: 340, h: 90 },
-  // Badges & Tags: the page's own words and its three job cards; below them is print-size artwork that no phone can read.
-  badges: { x: 230, y: 90, w: 280, h: 230, grow: 20 },
-  jobs: { x: 840, y: 150, w: 340, h: 100, grow: 20 },
-  label: { x: 245, y: 250, w: 250, h: 100, grow: 20 },
+type Units = readonly (readonly Rect[])[];
+const R = (x: number, y: number, w: number, h: number): Rect => ({ x, y, w, h });
+const CLOSE: Record<string, Units> = {
+  // Dashboard: the first four figures (attendees, servers, first-timers, dropped) on a tablet; on a phone the first
+  // two with the payment card under them, then the next two.
+  dashA: [[R(249, 210, 772, 117)], [R(249, 210, 378, 117), R(249, 345, 378, 388)], [R(249, 210, 378, 117)], [R(249, 210, 180, 117)]],
+  dashB: [[R(644, 210, 772, 117)], [R(644, 210, 377, 117), R(664, 677, 250, 35)], [R(644, 210, 377, 117)], [R(644, 210, 180, 117)]],
+  // The sidebar's groups: THE PEOPLE (Attendees) and THE WEEKEND (Cabins ... Badges & Tags).
+  people: [[R(8, 298, 208, 132)]],
+  weekend: [[R(8, 636, 208, 166)]],
+  // Cabins before the plan: the men waiting in the pool, then the Rerun button with the empty cabins under it.
+  pool: [[R(249, 165, 727, 600)], [R(686, 180, 290, 575)], [R(686, 180, 290, 300)]],
+  rerun: [[R(248, 20, 560, 100), R(249, 165, 423, 390)], [R(248, 85, 233, 35), R(249, 165, 423, 190)], [R(248, 85, 233, 35), R(249, 165, 222, 190)], [R(248, 85, 233, 35)]],
+  // After the plan: the rooms the men landed in (Cabin 1 and Cabin 3, where the drag goes), names and counts.
+  board: [[R(249, 165, 727, 590)], [R(258, 170, 206, 180), R(258, 372, 206, 180)], [R(258, 170, 206, 180)]],
+  // Attendees: the list with its names; the filter that narrows it; the narrowed list with its count.
+  // (The filter row is a band of selects no narrow window can cross, so a phone's list view starts under it.)
+  // A phone shows each row's name, chips, email and phone: the only line clear of every row's words is just past the
+  // phone numbers (x ~621-628, the first row's runs past it), so the list starts at the second row, names at the edge.
+  names: [[R(248, 20, 560, 540)], [R(313, 275, 200, 380)], [R(313, 275, 200, 220)]],
+  filter: [[R(915, 143, 110, 37)]],
+  unpaid: [[R(248, 20, 560, 540)], [R(248, 198, 406, 20), R(313, 237, 200, 300)], [R(313, 237, 200, 300)], [R(313, 237, 200, 220)]],
+  // Badges & Tags: one badge, both faces (the payoff, large type), else its front face; the Luggage labels job card.
+  badge: [[R(849, 314, 490, 216)], [R(849, 314, 212, 216)]],
+  // (The click on Luggage labels is a pass: the camera pulls back to the job cards over the badge, the pointer clicks.)
+  jobs: [[R(849, 157, 550, 373)]],
+  // Luggage labels: the label itself.
+  // (Above the label: the selected job card, and over it the page's intro line, of which a window this narrow
+  // catches only a fragment; the window stops under that line where the stage lets it fill (a short phone).)
+  label: [[{ ...R(849, 314, 241, 134), above: 182 }], [R(849, 314, 241, 134)]],
 };
 // The sidebar is the same on every still, so a click on a page's name is a click on the real nav item: the word
 // boxes in each still's .words.json put "Dashboard", "Attendees", "Cabins" and "Badges & Tags" at x 48 and these y.
 const NAV = { attendees: 328.5, cabins: 664.5, badges: 778.5 };
 const nav = (y: number, click = false): CursorTarget => ({ x: 64, y: Math.round(y + 8), click });
-// A click on a page's name: the whole screen on a desk (the sidebar and the page it leaves, so nothing is cut; it
-// ends above the sidebar's last line, which the capture's own edge would cut); on a phone a close view of the
-// sidebar alone (x 0-236: the gap before the page's own words begins at x 248).
-const NAV_DESK: Rect = { x: 0, y: 10, w: 1440, h: 850 };
-const navPhone = (y: number): Rect => ({ x: 0, y: Math.min(Math.max(0, Math.round(y) - 110), 900 - 220), w: 236, h: 220 });
+// A click on a page's name on a desk: the sidebar and the left of the page it leaves, close enough to read.
+const navDesk = (y: number): Rect => ({ x: 0, y: Math.min(Math.max(10, Math.round(y) - 420), 900 - 610), w: 1100, h: 600 });
 const dot = (x: number, y: number, click = false): CursorTarget => ({ x, y, click });
 const ft = T("dashboard", "firstTimers");
 
 const cues: WalkCue[] = [
-  // Dashboard: the figures, window by window on a phone.
-  { at: 0, still: I.dashboard, step: 0, cam: DESK.dashboard, phoneCam: PHONE.dashA },
+  // Dashboard: the figures; a close view moves from the first two to the next two.
+  { at: 0, still: I.dashboard, step: 0, cam: DESK.dashboard, close: CLOSE.dashA },
   { at: 900, still: I.dashboard, step: 0, cursor: dot(300, 262) },
-  { at: 2600, still: I.dashboard, step: 0, cursor: dot(ft ? ft.x + 30 : 694, 262), phoneCam: PHONE.dashB },
-  { at: 4300, still: I.dashboard, step: 0, cursor: dot(1100, 262), phoneCam: PHONE.dashC },
+  { at: 2600, still: I.dashboard, step: 0, cursor: dot(ft ? ft.x + 30 : 694, 262), close: CLOSE.dashB },
+  { at: 4300, still: I.dashboard, step: 0, cursor: dot(1100, 262), closeCursor: dot(880, 280) },
   // Click "Cabins" in the sidebar.
-  { at: 6000, still: I.dashboard, step: 0, cursor: nav(NAV.cabins), cam: NAV_DESK, phoneCam: navPhone(NAV.cabins) },
+  { at: 6000, still: I.dashboard, step: 0, cursor: nav(NAV.cabins), cam: navDesk(NAV.cabins), close: CLOSE.weekend },
   { at: 7000, still: I.dashboard, step: 0, cursor: nav(NAV.cabins, true) },
-  { at: 7900, still: I["cabins-before"], step: 1, cursor: at(T("cabins-before", "rerun")), cam: DESK.board, phoneCam: PHONE.rerun },
-  { at: 9300, still: I["cabins-before"], step: 1, cursor: at(T("cabins-before", "rerun"), true) },
+  // Before the plan: the waiting men, then the Rerun button is clicked.
+  { at: 7900, still: I["cabins-before"], step: 1, cursor: dot(760, 268), cam: DESK.board, close: CLOSE.pool },
+  { at: 9600, still: I["cabins-before"], step: 1, cursor: at(T("cabins-before", "rerun"), true), close: CLOSE.rerun },
   // The one longer fade: the beds filling is the point.
-  { at: 10300, still: I.cabins, step: 2, fadeMs: 400, cursor: dot(330, 262), cam: DESK.board, phoneCam: PHONE.board },
+  { at: 10700, still: I.cabins, step: 2, fadeMs: 400, cursor: dot(330, 262), cam: DESK.board, close: CLOSE.board },
   // One man is dragged from Cabin 1 to Cabin 3 (coded over the still), then the real board after the move.
-  { at: 12800, still: I.cabins, step: 2, overlay: "pin-drag" },
-  { at: 14000, still: I["cabins-moved"], step: 2, fadeMs: 200, cam: DESK.board, phoneCam: PHONE.board },
+  { at: 13200, still: I.cabins, step: 2, overlay: "pin-drag" },
+  { at: 14400, still: I["cabins-moved"], step: 2, fadeMs: 200, cam: DESK.board, close: CLOSE.board },
   // Click "Attendees".
-  { at: 16500, still: I["cabins-moved"], step: 2, cursor: nav(NAV.attendees), cam: NAV_DESK, phoneCam: navPhone(NAV.attendees) },
-  { at: 17400, still: I["cabins-moved"], step: 2, cursor: nav(NAV.attendees, true) },
-  { at: 18300, still: I.attendees, step: 3, cursor: dot(340, 226), cam: DESK.list, phoneCam: PHONE.names },
-  { at: 20300, still: I.attendees, step: 3, cursor: at(T("attendees", "notPaid")), phoneCam: PHONE.filters },
-  { at: 21400, still: I.attendees, step: 3, cursor: at(T("attendees", "notPaid"), true) },
-  // Narrowed: on the phone the frame moves from the filter to the men it left.
-  { at: 22300, still: I["attendees-unpaid"], step: 3, cursor: dot(340, 226), cam: DESK.list, phoneCam: PHONE.unpaid },
-  // Click "Badges & Tags".
-  { at: 25000, still: I["attendees-unpaid"], step: 3, cursor: nav(NAV.badges), cam: NAV_DESK, phoneCam: navPhone(NAV.badges) },
-  { at: 26000, still: I["attendees-unpaid"], step: 3, cursor: nav(NAV.badges, true) },
-  { at: 26900, still: I.badges, step: 4, cursor: dot(330, 188), cam: DESK.badges, phoneCam: PHONE.badges },
+  { at: 16900, still: I["cabins-moved"], step: 2, cursor: nav(NAV.attendees), cam: navDesk(NAV.attendees), close: CLOSE.people },
+  { at: 17800, still: I["cabins-moved"], step: 2, cursor: nav(NAV.attendees, true) },
+  { at: 18700, still: I.attendees, step: 3, cursor: dot(340, 226), closeCursor: dot(360, 300), cam: DESK.list, close: CLOSE.names },
+  // The filter: a close view travels to it with the pointer, and the click narrows the list.
+  { at: 20900, still: I.attendees, step: 3, cursor: at(T("attendees", "notPaid"), true), close: CLOSE.filter },
+  // Narrowed: the frame comes back to the men it left.
+  { at: 22000, still: I["attendees-unpaid"], step: 3, cursor: dot(340, 266), closeCursor: dot(360, 266), cam: DESK.list, close: CLOSE.unpaid },
+  // Click "Badges & Tags": a pass (no window on a portrait tablet holds the sidebar and this list's ragged rows cleanly).
+  { at: 24700, still: I["attendees-unpaid"], step: 3, cursor: nav(NAV.badges, true), cam: navDesk(NAV.badges), close: CLOSE.weekend },
+  { at: 25700, still: I.badges, step: 4, cursor: dot(330, 188), closeCursor: dot(1010, 470), cam: DESK.badges, close: CLOSE.badge },
   // The job cards sit in the same place on both stills; click "Luggage labels".
-  { at: 29200, still: I.badges, step: 4, cursor: at(T("labels", "labels")), phoneCam: PHONE.jobs },
-  { at: 30500, still: I.badges, step: 4, cursor: at(T("labels", "labels"), true) },
-  { at: 31300, still: I.labels, step: 5, cursor: dot(340, 278), cam: DESK.labels, phoneCam: PHONE.label },
+  { at: 28500, still: I.badges, step: 4, cursor: at(T("labels", "labels"), true), close: CLOSE.jobs },
+  { at: 29600, still: I.labels, step: 5, cursor: dot(340, 278), closeCursor: dot(1000, 420), cam: DESK.labels, close: CLOSE.label },
 ];
 
 export const NWKS_ADMIN: WalkData = {
@@ -124,12 +136,27 @@ export const NWKS_ADMIN: WalkData = {
   ],
   cues,
   // The last cue rests for ~4 s, then the film is over and the control offers a replay.
-  totalMs: 36000,
+  totalMs: 34600,
   // Spec §6.3: no script and reduced motion show the cabins after the plan.
   ssrStill: I.cabins,
   manifest: ORDER.map((id) => shot(id).desk.src.replace(/\.webp$/, ".words.json")),
   deskAspect: { w: 1440, h: 900 },
   phoneUsesDesk: true,
+  // The sidebar's encounter picker on every still, and the pages' search boxes and selects (see WalkData.solids).
+  solids: Object.fromEntries(
+    ORDER.map((id) => {
+      const own: Partial<Record<Id, Rect[]>> = {
+        "cabins-before": [R(700, 212, 30, 26), R(736, 212, 144, 26)],
+        cabins: [R(700, 198, 30, 26), R(736, 198, 144, 26)],
+        "cabins-moved": [R(700, 198, 30, 26), R(736, 198, 144, 26)],
+        attendees: [R(249, 143, 254, 37), R(516, 143, 192, 37), R(721, 143, 180, 37)],
+        "attendees-unpaid": [R(249, 143, 254, 37), R(516, 143, 192, 37), R(721, 143, 180, 37)],
+        badges: [R(849, 598, 534, 37)],
+        labels: [R(849, 487, 534, 37)],
+      };
+      return [id, [R(12, 155, 200, 38), ...(own[id] ?? [])]];
+    }),
+  ),
   pinDrag: {
     still: I.cabins,
     from: drag.from,

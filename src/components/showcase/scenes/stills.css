@@ -7,9 +7,11 @@
      click ring      360 ms  ease-out         scale .6 -> 1.4, opacity 1 -> 0, after the travel
      feed highlight 1600 ms  --sc-ease-grow   3 px accent bar + tint slides in, holds, fades
      pin drag        900 ms  --sc-ease-move   lifts 1.08 with a shadow, travels, drops
-   Framing: each cue may frame part of a still (zoomed so it shows whole). A new framing is a new
-   view and crossfades like a new still; the framing itself never animates.
-   Reduced motion: no travel, no ring, no overlay, stills swap without a fade.
+   Framing: each cue may frame part of a still (zoomed so it shows whole). A new framing of the shown
+   still is a camera move: the picture, its drawn layer and the card travel and zoom together,
+     camera move     700 ms  --sc-ease-move   transform (and the card's size), the shown still only
+   a new still crossfades into its own framing (it waited, invisible, already framed).
+   Reduced motion: no travel, no ring, no overlay, no camera move, stills swap without a fade.
    ============================================================ */
 
 .stw {
@@ -126,6 +128,18 @@
 }
 .stw-shot[data-on] {
   opacity: 1;
+}
+/* The camera: only within one still, only once the first framed view has painted. */
+.stw[data-armed][data-cam="move"] .stw-shot[data-on],
+.stw[data-armed][data-cam="move"] .stw-layer {
+  transition:
+    opacity var(--stw-fade, 280ms) linear,
+    transform 700ms var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1));
+}
+.stw[data-armed][data-cam="move"] .stw-screen--framed {
+  transition:
+    width 700ms var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1)),
+    height 700ms var(--sc-ease-move, cubic-bezier(0.65, 0, 0.35, 1));
 }
 .stw-shot img {
   display: block;
@@ -301,6 +315,29 @@
 .stw-pause svg {
   width: 16px;
   height: 16px;
+}
+/* The film is over: the same control, in the same place, now the one thing to do next. */
+.stw-pause[data-ended] {
+  color: var(--pt-accent, #0c6fc9);
+}
+.stw-pause[data-ended]::before {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--pt-accent, #0c6fc9) 12%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pt-accent, #0c6fc9) 35%, transparent);
+}
+.stw-pause {
+  position: relative;
+}
+.stw-pause svg {
+  position: relative;
+}
+.stw-pause[data-ended] svg {
+  width: 17px;
+  height: 17px;
 }
 .stw-dot:focus-visible,
 .stw-pause:focus-visible {
