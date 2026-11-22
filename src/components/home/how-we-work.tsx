@@ -222,6 +222,7 @@ export function HowWeWork() {
     // Everything that depends on the size of things. Runs at the start and
     // whenever the window or the type changes size (a web font arriving).
     const measure = () => {
+      const wasPinned = pinned;
       // Ask for the track layout, then check the block really fits in it.
       track.removeAttribute("data-stacked");
       pinned = getComputedStyle(pin).position === "sticky";
@@ -259,9 +260,26 @@ export function HowWeWork() {
         const margin = (fill.getBoundingClientRect().height - line) / 2;
         return line + margin + parseFloat(getComputedStyle(lines[k]).fontSize) * 0.14;
       });
+      if (wasPinned) {
+        // Already telling the story: the sizes changed under a picture that
+        // may be moving. Keep it where it is, redraw it at the new sizes, and
+        // let the frame loop find the reader again. Starting it afresh here
+        // would make it jump.
+        paint(shown.x, shown.calm);
+        run();
+        return;
+      }
       reader = readerAt(position());
       shown = followerAt(reader.target);
       paint(shown.x, shown.calm);
+    };
+    // The size observer does not fire for a window that only grows taller
+    // while the section is laid out flat (nothing it watches changes size
+    // then), so a resize re-checks, but ONLY then. While the block is held, a
+    // resize is not news: a phone sends one every time its toolbar slides away
+    // mid-scroll, and the size observer already covers every real change.
+    const onResize = () => {
+      if (!pinned) measure();
     };
 
     // Space and PageDown, Shift+Space and PageUp: one beat at a time while the
@@ -296,11 +314,9 @@ export function HowWeWork() {
     lines.forEach((line) => sizes.observe(line));
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("keydown", onKey);
-    // The size observer does not fire for a window that only changes height
-    // while the section is stacked (nothing it watches changes size then).
-    window.addEventListener("resize", measure);
+    window.addEventListener("resize", onResize);
     return () => {
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", onResize);
       sizes.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("keydown", onKey);

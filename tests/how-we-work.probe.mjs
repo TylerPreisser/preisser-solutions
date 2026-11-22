@@ -534,6 +534,37 @@ await check("a window that grows taller again: a section the script had to lay o
     assert.equal((await read(page)).step, "1", "taller: back on the track, the second beat does not show");
   });
 
+await check("a phone's toolbar sliding away mid-scroll (resize events while scrolling) never makes the picture jump",
+  { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true },
+  async (page) => {
+    const t = await track(page);
+    const from = t.top - t.lead + t.beat * 0.5;
+    const to = t.top - t.lead + t.beat * 3.5;
+    await scrollTo(page, from);
+    const lit = await page.evaluate(async ({ from, to }) => {
+      const lines = [...document.querySelectorAll("#how-we-work .ps-how__line")];
+      const frame = () => new Promise((r) => requestAnimationFrame(() => r()));
+      const out = [];
+      for (let i = 1; i <= 240; i += 1) {
+        window.scrollTo({ top: from + ((to - from) * i) / 240, behavior: "instant" });
+        if (i % 12 === 0) window.dispatchEvent(new Event("resize"));
+        await frame();
+        out.push(lines.map((l) => parseFloat(getComputedStyle(l, "::after").opacity)));
+      }
+      return out;
+    }, { from, to });
+    let jump = 0;
+    const between = new Set();
+    for (let i = 1; i < lit.length; i += 1) {
+      for (let k = 0; k < 3; k += 1) {
+        jump = Math.max(jump, Math.abs(lit[i][k] - lit[i - 1][k]));
+        if (lit[i][k] > 0.03 && lit[i][k] < 0.97) between.add(`${k}:${lit[i][k].toFixed(2)}`);
+      }
+    }
+    assert.ok(jump < 0.34, `toolbar: a line's light changed by ${jump.toFixed(2)} in one frame when a resize arrived mid-scroll`);
+    assert.ok(between.size >= 60, `toolbar: the light passed through only ${between.size} in-between values; it is jumping, not following the scroll`);
+  });
+
 await check("phone: the same story, and everything fits on one screen",
   { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true },
   async (page) => {
