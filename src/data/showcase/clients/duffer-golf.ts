@@ -95,7 +95,7 @@ const client: ShowcaseClient = {
   beats: [
     {
       kind: "website",
-      live: { src: "https://duffergolf.net/", origins: ["https://duffergolf.net"], frame: "handshake" },
+      live: { src: "https://duffergolf.net/", origins: ["https://duffergolf.net"], frame: "handshake", revealMs: 150 },
       tab: "Website",
       caption: "The bay folds away so the car still fits, and every model shows its price.",
       captured: "Captured Nov 1, 2026",
@@ -103,6 +103,9 @@ const client: ShowcaseClient = {
         src: "/images/showcase/duffer-golf-site-desk-e28191de.webp",
         width: 1280,
         height: 1788,
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only duffer-golf
+        first: { src: "/images/showcase/duffer-golf-site-desk-live-eae07fe0.webp", width: 1220, height: 715, captured: "Captured Nov 22, 2026" },
         stops: [
           { y: 0, holdMs: 2400, avoid: DUFFER_DESK_BANDS },
           // "Choose your model." and all four models with their prices and buttons.
@@ -113,6 +116,9 @@ const client: ShowcaseClient = {
         src: "/images/showcase/duffer-golf-site-phone-7ed25c02.webp",
         width: 390,
         height: 1700,
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only duffer-golf
+        first: { src: "/images/showcase/duffer-golf-site-phone-live-85927f95.webp", width: 376, height: 675, captured: "Captured Nov 22, 2026" },
         // The caption promises the prices: every stop rests with its band whole, at every phone height.
         stops: [
           // "A full golf bay. Then it's a garage again." and its button, whole.

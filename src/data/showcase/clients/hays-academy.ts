@@ -81,7 +81,7 @@ const client: ShowcaseClient = {
   beats: [
     {
       kind: "website",
-      live: { src: "https://haysacademy.edu/", origins: ["https://haysacademy.edu"], frame: "handshake" },
+      live: { src: "https://haysacademy.edu/", origins: ["https://haysacademy.edu"], frame: "handshake", revealMs: 700 },
       tab: "Website",
       caption: "Hays's next class date sits right up top, and every program shows its price.",
       captured: "Captured Nov 1, 2026",
@@ -89,7 +89,9 @@ const client: ShowcaseClient = {
         src: "/images/showcase/hays-academy-site-desk-7e175ee0.webp",
         width: 1280,
         height: 2099,
-        first: { src: "/images/showcase/hays-academy-site-desk-first-ece0f3e6.webp", width: 1220, height: 819 },
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only hays-academy
+        first: { src: "/images/showcase/hays-academy-site-desk-live-63781546.webp", width: 1220, height: 715, captured: "Captured Nov 22, 2026" },
         stops: [
           { y: 0, holdMs: 2200, avoid: HAYS_DESK_BANDS },
           { y: 860, holdMs: 1500, avoid: HAYS_DESK_BANDS },
@@ -100,7 +102,9 @@ const client: ShowcaseClient = {
         src: "/images/showcase/hays-academy-site-phone-55d5fb2a.webp",
         width: 390,
         height: 2180,
-        first: { src: "/images/showcase/hays-academy-site-phone-first-c2cccf96.webp", width: 390, height: 844 },
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only hays-academy
+        first: { src: "/images/showcase/hays-academy-site-phone-live-79fcbcf6.webp", width: 376, height: 675, captured: "Captured Nov 22, 2026" },
         stops: [
           { y: 0, holdMs: 2200, avoid: HAYS_PHONE_BANDS },
           // "Next class starts November 10" rests at the top with the four stats under it (critique r8 N2),

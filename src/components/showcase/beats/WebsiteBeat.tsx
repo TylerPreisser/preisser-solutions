@@ -6,9 +6,14 @@ import { useBox, type BeatProps } from "./shared";
 
 /**
  * Their live site, in a frame the visitor scrolls and clicks (ADR-0022 §2,
- * ADR-0023, design spec §3). The frame loads behind a dated still of the site
- * and is shown only once the framed page says it rendered (the
- * `ps-portal-ready` message, §3.5): a frame the browser refused still fires
+ * ADR-0023, design spec §3). The frame loads behind a still of the site under a
+ * loading bar, and is shown only once the framed page says it rendered (the
+ * `ps-portal-ready` message, §3.5) AND its own preloader or entrance has had its
+ * time (`live.revealMs`): every client sends ready before its content is on
+ * screen, and Hays's flat pink preloader showed as "Live" (owner, 2026-11-22: "if
+ * it needs to load it can show a bit of a loading animation instead of it being
+ * so clunky"). Then the frame cross-fades in over the still (350 ms), which is the
+ * same picture (`first`, captured framed). A frame the browser refused still fires
  * `load`, and would otherwise show a blank white box as "Live". No message
  * within 8 s and the frame is removed; the still stays, with "Open <domain>".
  *
@@ -66,6 +71,7 @@ export function frameScale(vw: number) {
 
 export function WebsiteBeat({ client, beat, variant, active }: BeatProps<WebsiteBeatData>) {
   const live = beat.live;
+  const revealMs = live.revealMs ?? 0;
   const domain = domainOf(live.src);
   const viewRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLIFrameElement>(null);
@@ -78,6 +84,9 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
   const [refused, setRefused] = useState(false);
   const refusedTimer = useRef<number | undefined>(undefined);
   useEffect(() => () => window.clearTimeout(refusedTimer.current), []);
+  // Ready arrived; the site's own preloader / entrance is still playing for `revealMs`.
+  const revealTimer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(revealTimer.current), []);
   const [hint, setHint] = useState(false);
   const hintTimer = useRef<number | undefined>(undefined);
   useEffect(() => {
@@ -106,11 +115,19 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
       const data = e.data as { type?: unknown } | null;
       if (!data || typeof data !== "object" || data.type !== "ps-portal-ready") return;
       window.clearTimeout(refusedTimer.current);
-      setState((s) => (s === "loading" ? "live" : s));
+      if (revealTimer.current !== undefined) return;
+      revealTimer.current = window.setTimeout(() => {
+        revealTimer.current = undefined;
+        setState((s) => (s === "loading" ? "live" : s));
+      }, revealMs);
     };
     window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
-  }, [framed, live.frame, live.origins]);
+    return () => {
+      window.removeEventListener("message", onMessage);
+      window.clearTimeout(revealTimer.current);
+      revealTimer.current = undefined;
+    };
+  }, [framed, live.frame, live.origins, revealMs]);
 
   // No word from the site in time: drop the frame (a refused frame's blank page never shows, a stuck one stops costing CPU).
   useEffect(() => {
@@ -142,6 +159,8 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
               // page. Re-setting the same src is a no-op in Firefox once the visitor has navigated
               // inside the frame (QA 2026-11-04, HG Oil at 1440), so the frame is remounted instead,
               // and it is live again only when the site says so, like the first time.
+              window.clearTimeout(revealTimer.current);
+              revealTimer.current = undefined;
               setState("loading");
               setRefused(false);
               setReload((n) => n + 1);
@@ -173,9 +192,14 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
         {/* The entrance picture only while the frame is on its way; any other time (refused, the fallback) the
             finished page, so a frame that never goes live still shows a real-looking site (critic r2 N1). */}
         <Still
-          cap={cap.first && state === "loading" && !refused ? { ...cap, ...cap.first, video: undefined } : cap}
-          alt={`${domain} home page, a still from ${when}`}
+          cap={cap.first && state !== "preview" && !refused ? { ...cap, ...cap.first, video: undefined } : cap}
+          alt={`${domain} home page, a still from ${(cap.first && state !== "preview" && !refused && cap.first.captured?.replace(/^Captured\s+/i, "")) || when}`}
         />
+        {/* The loading sign over the picture, under the URL strip (a browser's own loading bar): it slides by
+            transform only, and fades out as the live site fades in. */}
+        <div className="sc-web__bar" aria-hidden="true">
+          <i />
+        </div>
         {framed ? (
           <iframe
             key={reload}
@@ -217,22 +241,30 @@ export function WebsiteBeat({ client, beat, variant, active }: BeatProps<Website
   );
 }
 
-/** The dated still: the capture's top, or the site's header bar over its hero video's poster. Never pans. */
+/** The dated still: the capture's top, or the site's header bar over its hero video's poster. Never pans.
+ *  It fades in once decoded, so a picture that is not ready at the window's first frame does not pop in. */
 function Still({ cap, alt }: { cap: SiteCapture; alt: string }) {
+  const [ready, setReady] = useState<string | null>(null);
+  const key = cap.video ? cap.video.poster : cap.src;
+  const onImg = (img: HTMLImageElement | null) => {
+    if (img && img.complete && img.naturalWidth > 0 && ready !== key) setReady(key);
+  };
+  const shown = ready === key ? "" : undefined;
+  const onLoad = () => setReady(key);
   if (cap.video) {
     return (
-      <div className="sc-web__still sc-web__still--video" role="img" aria-label={alt}>
+      <div className="sc-web__still sc-web__still--video" role="img" aria-label={alt} data-ready={shown}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="sc-web__still-head" src={cap.src} width={cap.width} height={cap.height} alt="" loading="eager" decoding="async" draggable={false} />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="sc-web__still-hero" src={cap.video.poster} width={cap.video.width} height={cap.video.height} alt="" loading="eager" decoding="async" draggable={false} />
+        <img ref={onImg} onLoad={onLoad} className="sc-web__still-hero" src={cap.video.poster} width={cap.video.width} height={cap.video.height} alt="" loading="eager" decoding="async" draggable={false} />
       </div>
     );
   }
   return (
-    <div className="sc-web__still">
+    <div className="sc-web__still" data-ready={shown}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={cap.src} width={cap.width} height={cap.height} alt={alt} loading="eager" decoding="async" draggable={false} />
+      <img ref={onImg} onLoad={onLoad} src={cap.src} width={cap.width} height={cap.height} alt={alt} loading="eager" decoding="async" draggable={false} />
     </div>
   );
 }

@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { createPortal } from "react-dom";
-import { loadShowcase, type ShowcaseSlug } from "@/data/showcase";
+import { loadShowcase, peekShowcase, type ShowcaseSlug } from "@/data/showcase";
 import type { ShowcaseClient } from "@/data/showcase/types";
 import { BeatView } from "./beats";
+import { ENTRANCE_MS, isSheetLayout, prefersReduced } from "./ShowcaseShell";
 import "./showcase.css";
 
 /**
@@ -30,6 +31,13 @@ import "./showcase.css";
  *   armed    hover intent has begun but not yet held: the window is mounted at its resting place,
  *            transparent and untouchable, so the Website tab's frame starts loading early. Nothing
  *            else happens (no scrim, no scroll lock, no keys) until the card clears `armed`.
+ *   handoff  the home page's own shell (ShowcaseShell) was up first, because this code or the client's
+ *            data had not arrived at the tap. The window then mounts already at rest in the shell's place
+ *            (no rise, no grow) and the shell goes in the same frame.
+ *
+ * The tab's live content (the Website frame, a scene's timeline) starts only once the window has come
+ * in: built during the 420/460 ms entrance, its work landed on the rise's frames (WebKit runs a
+ * cross-origin frame on the page's own thread: one 813 ms hole mid-rise, window-fix lab 2026-11-22).
  */
 export type LayerMode = "hover" | "pinned";
 
@@ -40,24 +48,21 @@ const DISMISS_PX = 96;
 const DISMISS_V = 0.6;
 /** Sheet: the drag zone is the grip and the name/close row. */
 const DRAG_ZONE = 72;
+/** After taking over from the shell: how long the swap has before the tab's live content starts. */
+const HANDOFF_MS = 250;
 
-function prefersReduced() {
-  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
-export function isSheetLayout() {
-  return typeof window !== "undefined" && (!window.matchMedia("(hover: hover) and (pointer: fine)").matches || window.innerWidth < 900);
-}
+export { isSheetLayout };
 
 export default function ShowcaseLayer(props: LayerProps) {
-  const [show, setShow] = useState<ShowcaseClient | null>(null);
+  // Already here (the usual case: fetched as the cards came near): drawn in the first frame, no empty one.
+  const [show, setShow] = useState<ShowcaseClient | null>(() => peekShowcase(props.slug));
   const { slug } = props;
   const closeRef = useRef(props.onClose);
   closeRef.current = props.onClose;
   useEffect(() => {
     let on = true;
     loadShowcase(slug).then(
-      (c) => on && setShow(c),
+      (c) => on && setShow((cur) => cur ?? c),
       () => on && closeRef.current(),
     );
     return () => {
@@ -74,18 +79,28 @@ interface LayerProps {
   mode: LayerMode;
   /** Mounted ahead of hover intent completing: invisible, inert, only the Website frame loads. */
   armed?: boolean;
+  /** Takes over from the shell already on screen: mounts at rest, no entrance. */
+  handoff?: boolean;
   onClose: () => void;
 }
 
 type Phase = "measure" | "from" | "open" | "leave";
 
-function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { show: ShowcaseClient }) {
+function Layer({ show, anchor, mode, armed = false, handoff = false, onClose }: LayerProps & { show: ShowcaseClient }) {
   const [sheet] = useState(isSheetLayout);
   const [reduced] = useState(prefersReduced);
   // A sheet mounts already "open" and rises by a CSS animation that starts on its first frame: the old
   // "from" state needed two more frames first, and on a slow phone each frame of this page is the cost
   // (critic r2 W2, WebKit: ~0.6 s between the sheet entering the DOM and its first visible frame).
-  const [phase, setPhase] = useState<Phase>(sheet ? "open" : "measure");
+  const [phase, setPhase] = useState<Phase>(sheet || handoff ? "open" : "measure");
+  // The entrance is over (or there was none): the shown tab's live content may start.
+  const [cameIn, setCameIn] = useState(reduced);
+  useEffect(() => {
+    if (cameIn || phase !== "open") return;
+    // After a shell there is no entrance, but the swap itself gets its frames first (HANDOFF_MS).
+    const t = window.setTimeout(() => setCameIn(true), handoff ? HANDOFF_MS : (sheet ? ENTRANCE_MS.sheet : ENTRANCE_MS.pop) + 20);
+    return () => window.clearTimeout(t);
+  }, [cameIn, phase, sheet, handoff]);
   const [at, setAt] = useState(0);
   // Tabs are built when first shown, not all at once on open: the open is one tab's work, not five.
   const [built, setBuilt] = useState<ReadonlySet<number>>(() => new Set([0]));
@@ -116,13 +131,14 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
     if (!box) return;
     const w = box.getBoundingClientRect();
     finalBox.current = w;
+    if (handoff) return;
     const c = anchor.getBoundingClientRect();
     const sx = c.width / w.width;
     const dx = c.left + c.width / 2 - (w.left + w.width / 2);
     const dy = c.top + c.height / 2 - (w.top + w.height / 2);
     setFrom(`translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(${sx.toFixed(3)})`);
     setPhase("from");
-  }, [anchor, sheet, armed]);
+  }, [anchor, sheet, armed, handoff]);
 
   useEffect(() => {
     if (phase !== "from") return;
@@ -164,7 +180,8 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
     if (closing.current) return;
     closing.current = true;
     setPhase("leave");
-    window.setTimeout(onClose, reduced ? 120 : sheet ? 230 : 180);
+    // A frame past the leave transition (showcase.css: sheet 220 ms, window 180 ms), so its last frame paints.
+    window.setTimeout(onClose, reduced ? 120 : sheet ? 230 : 200);
   }, [onClose, reduced, sheet]);
 
   // ── Hover window: open while the pointer is inside (including inside the client's frame, where the
@@ -246,13 +263,18 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
     closeBtn.current?.focus({ preventScroll: true });
   }, [phase]);
   useEffect(() => {
-    const returnTo = openedModal.current ? (document.activeElement as HTMLElement | null) : null;
+    // After a shell, focus sits on the shell's close button, which is gone: go back to the card instead.
+    const returnTo = handoff
+      ? anchor.querySelector<HTMLElement>('[aria-haspopup="dialog"]')
+      : openedModal.current
+        ? (document.activeElement as HTMLElement | null)
+        : null;
     return () => {
       // A hover window pinned by a click returns focus to its card's button (it never took focus at open).
       const back = returnTo ?? (pinnedRef.current ? anchor.querySelector<HTMLElement>('[aria-haspopup="dialog"]') : null);
       back?.focus?.({ preventScroll: true });
     };
-  }, [anchor]);
+  }, [anchor, handoff]);
 
   // The focus trap's two ends: Tab inside the client's frame cannot be seen, so the trap is two
   // focusable sentinels, first and last, that send focus round to the other end.
@@ -408,7 +430,7 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
   const drag = useRef<{ y0: number; y: number; t: number; v: number; id: number; moved: boolean } | null>(null);
   const [dragY, setDragY] = useState<number | null>(null);
   // Once the sheet is up, a short drag springs back in 240 ms instead of the 460 ms rise.
-  const [settled, setSettled] = useState(false);
+  const [settled, setSettled] = useState(handoff);
   useEffect(() => {
     if (!sheet || phase !== "open") return;
     const t = window.setTimeout(() => setSettled(true), 480);
@@ -530,7 +552,7 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
             client={show}
             beat={b}
             variant={variant}
-            active={(opened || (armed && b.kind === "website")) && i === at}
+            active={((opened && cameIn) || (armed && b.kind === "website")) && i === at}
             fill
             reduced={reduced}
             onCaption={i === at ? (l) => setLine((p) => (p === l ? p : l)) : undefined}
@@ -554,7 +576,7 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
   if (sheet) {
     const style = dragY !== null ? ({ transform: phase === "leave" ? undefined : `translateY(${dragY}px)` } as CSSProperties) : undefined;
     return createPortal(
-      <div className="sc-root">
+      <div className="sc-root" data-handoff={handoff ? "" : undefined}>
         <div {...scrimProps} />
         <div
           ref={boxRef}
@@ -583,7 +605,13 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
 
   const style = { transform: phase === "from" ? from : undefined } as CSSProperties;
   return createPortal(
-    <div className="sc-root" data-armed={armed ? "" : undefined} aria-hidden={armed || undefined} inert={armed || undefined}>
+    <div
+      className="sc-root"
+      data-armed={armed ? "" : undefined}
+      data-handoff={handoff ? "" : undefined}
+      aria-hidden={armed || undefined}
+      inert={armed || undefined}
+    >
       <div {...scrimProps} />
       <div
         ref={boxRef}

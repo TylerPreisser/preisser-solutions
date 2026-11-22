@@ -7,15 +7,24 @@ import type { ShowcaseClient } from "./types";
 export type ShowcaseSlug = string;
 
 const cache = new Map<string, Promise<ShowcaseClient>>();
+const loaded = new Map<string, ShowcaseClient>();
 
 export function loadShowcase(slug: ShowcaseSlug): Promise<ShowcaseClient> {
   let p = cache.get(slug);
   if (!p) {
-    p = import(`./clients/${slug}`).then((m: { default: ShowcaseClient }) => m.default);
+    p = import(`./clients/${slug}`).then((m: { default: ShowcaseClient }) => {
+      loaded.set(slug, m.default);
+      return m.default;
+    });
     p.catch(() => cache.delete(slug));
     cache.set(slug, p);
   }
   return p;
+}
+
+/** The client's data if it has already arrived, else null: lets the window draw it in its first frame. */
+export function peekShowcase(slug: ShowcaseSlug): ShowcaseClient | null {
+  return loaded.get(slug) ?? null;
 }
 
 /** Fetch the client's data and its first website capture, so the window opens on a painted site. */

@@ -1,9 +1,20 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { loadShowcase, warmShowcase, type ShowcaseSlug } from "@/data/showcase";
+import { loadShowcase, peekShowcase, warmShowcase, type ShowcaseSlug } from "@/data/showcase";
 import type { LayerMode } from "../showcase/ShowcaseLayer";
 import { ShowcaseBoundary } from "../showcase/ShowcaseBoundary";
+import { ENTRANCE_MS, ShowcaseShell, isSheetLayout, prefersReduced } from "../showcase/ShowcaseShell";
+
+// What the shell needs before the client's data is here: the window's title and the Website tab's domain
+// (the same words the window then shows, from src/data/showcase/clients/<slug>.ts `short` and `live.src`).
+const SHELL: Record<string, { name: string; domain: string }> = {
+  farmbooks: { name: "FarmBooks", domain: "farm-books.com" },
+  "nwks-encounter": { name: "NWKS Encounter", domain: "nwksencounter.com" },
+  "hays-academy": { name: "Hays Academy", domain: "haysacademy.edu" },
+  "duffer-golf": { name: "Duffer Golf", domain: "duffergolf.net" },
+  "hg-oil": { name: "HG Oil", domain: "hgoilholdings.com" },
+};
 
 // The showcase window (ADR-0020) is its own chunk, fetched on the first sign of
 // intent (a pointer resting on a showcase card, a tap, a key press), so the
@@ -693,7 +704,27 @@ export function CaseStudies() {
   // 280 ms+ before the window is up and is usually Live by the time it is (owner bug 2026-11-04: "it's still,
   // it's not scrollable" was a wheel during Loading, under the dated still). Intent dropped: it unmounts.
   const [ShowcaseLayer, setShowcaseLayer] = useState<ShowcaseLayerModule["default"] | null>(() => showcaseLayerModule?.default ?? null);
-  const [showcase, setShowcase] = useState<{ slug: ShowcaseSlug; anchor: HTMLElement; mode: LayerMode; armed?: boolean } | null>(null);
+  // `shell`: tapped before the window's code or the client's data was here, so the home page's own shell
+  // came up first (at `at`, performance.now()); the window takes over once both are here and the shell
+  // has finished coming in.
+  const [showcase, setShowcase] = useState<{ slug: ShowcaseSlug; anchor: HTMLElement; mode: LayerMode; armed?: boolean; shell?: boolean; at?: number } | null>(null);
+  const [, setArrived] = useState(0);
+  const [shellIn, setShellIn] = useState(false);
+  useEffect(() => {
+    if (!showcase?.shell) return;
+    let on = true;
+    loadShowcase(showcase.slug).then(
+      () => on && setArrived((n) => n + 1),
+      () => on && setShowcase(null),
+    );
+    setShellIn(false);
+    const left = prefersReduced() ? 0 : (isSheetLayout() ? ENTRANCE_MS.sheet : ENTRANCE_MS.pop) + 40 - (performance.now() - (showcase.at ?? 0));
+    const t = window.setTimeout(() => on && setShellIn(true), Math.max(0, left));
+    return () => {
+      on = false;
+      window.clearTimeout(t);
+    };
+  }, [showcase]);
   // A window is wanted and its code is not held yet: fetch it, and if that fails the window does not open.
   useEffect(() => {
     if (!showcase || ShowcaseLayer) return;
@@ -712,6 +743,22 @@ export function CaseStudies() {
   // page-sized window popped under a pointer that never moved (browsers send a synthetic move
   // after a scroll), and the window then swallows the wheel.
   const lastScroll = useRef(0);
+  // Hover intent needs the hand to move: a pointer merely resting on a card when the page loads, or when
+  // the page moves under it, gets mousemoves from the browser at the same spot (critic r2: a parked
+  // pointer opened the window as the page loaded). A move counts only if it is not where the last one was.
+  const pointer = useRef<{ prev: { x: number; y: number } | null; cur: { x: number; y: number } | null }>({ prev: null, cur: null });
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      pointer.current.prev = pointer.current.cur;
+      pointer.current.cur = { x: e.clientX, y: e.clientY };
+    };
+    window.addEventListener("mousemove", onMove, { passive: true, capture: true });
+    return () => window.removeEventListener("mousemove", onMove, { capture: true });
+  }, []);
+  const handMoved = () => {
+    const { prev, cur } = pointer.current;
+    return !!(prev && cur && (prev.x !== cur.x || prev.y !== cur.y));
+  };
   useEffect(() => {
     const mark = () => {
       lastScroll.current = performance.now();
@@ -777,6 +824,7 @@ export function CaseStudies() {
     if (window.innerWidth < 900 || (showcase && !showcase.armed)) return;
     // A move this soon after a wheel or scroll is the browser's synthetic one, not the visitor's hand.
     if (performance.now() - lastScroll.current < 400) return;
+    if (!handMoved()) return;
     if (intentTimer.current !== undefined) return;
     warm(slug, true);
     setShowcase((cur) => cur ?? { slug, anchor: el, mode: "hover", armed: true });
@@ -800,7 +848,9 @@ export function CaseStudies() {
     window.clearTimeout(intentTimer.current);
     intentTimer.current = undefined;
     warm(slug, window.innerWidth >= 600);
-    setShowcase({ slug, anchor: el, mode: "pinned" });
+    // Code and data here (the usual case): the window itself opens. Not yet: the shell answers now.
+    const ready = !!showcaseLayerModule && !!peekShowcase(slug) && !!SHELL[slug];
+    setShowcase({ slug, anchor: el, mode: "pinned", ...(ready || !SHELL[slug] ? {} : { shell: true, at: performance.now() }) });
   }
 
   function scrollTrack(direction: "left" | "right") {
@@ -1003,6 +1053,15 @@ export function CaseStudies() {
                   onPointerEnter={(e) => {
                     if (e.pointerType !== "mouse") warm(study.showcase!, window.innerWidth >= 600);
                   }}
+                  // The card gives under the finger at once (a frame, before anything else has to happen).
+                  onPointerDown={(e) => {
+                    if (e.pointerType === "mouse") return;
+                    const card = e.currentTarget.closest("article");
+                    if (!card) return;
+                    card.setAttribute("data-pressed", "");
+                    window.setTimeout(() => card.removeAttribute("data-pressed"), 450);
+                  }}
+                  onPointerCancel={(e) => e.currentTarget.closest("article")?.removeAttribute("data-pressed")}
                   onClick={(e) => showcaseActivate(study.showcase!, e.currentTarget.closest("article") as HTMLElement)}
                 />
               ) : (
@@ -1099,7 +1158,16 @@ export function CaseStudies() {
         Swipe to explore
       </p>
 
-      {showcase && ShowcaseLayer ? (
+      {showcase && showcase.shell && !(ShowcaseLayer && peekShowcase(showcase.slug) && shellIn) ? (
+        <ShowcaseShell
+          key={`shell:${showcase.slug}`}
+          name={SHELL[showcase.slug].name}
+          domain={SHELL[showcase.slug].domain}
+          anchor={showcase.anchor}
+          onClose={() => setShowcase(null)}
+        />
+      ) : null}
+      {showcase && ShowcaseLayer && (!showcase.shell || (peekShowcase(showcase.slug) && shellIn)) ? (
         <ShowcaseBoundary key={`${showcase.slug}:${showcase.mode}`} onFail={() => setShowcase(null)}>
         <ShowcaseLayer
           key={`${showcase.slug}:${showcase.mode}`}
@@ -1107,6 +1175,7 @@ export function CaseStudies() {
           anchor={showcase.anchor}
           mode={showcase.mode}
           armed={!!showcase.armed}
+          handoff={!!showcase.shell}
           onClose={() => setShowcase(null)}
         />
         </ShowcaseBoundary>

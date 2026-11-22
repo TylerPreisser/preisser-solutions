@@ -87,7 +87,7 @@ const client: ShowcaseClient = {
   beats: [
     {
       kind: "website",
-      live: { src: "https://farm-books.com/", origins: ["https://farm-books.com", "https://www.farm-books.com"], frame: "handshake" },
+      live: { src: "https://farm-books.com/", origins: ["https://farm-books.com", "https://www.farm-books.com"], frame: "handshake", revealMs: 800 },
       tab: "Website",
       caption: "farm-books.com walks a farmer through the mistakes that hide on a bill.",
       captured: "Captured Nov 1, 2026",
@@ -95,6 +95,9 @@ const client: ShowcaseClient = {
         src: "/images/showcase/farmbooks-site-desk-d447a5af.webp",
         width: 1440,
         height: 2992,
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only farmbooks
+        first: { src: "/images/showcase/farmbooks-site-desk-live-319d3561.webp", width: 1220, height: 715, captured: "Captured Nov 22, 2026" },
         stops: [
           { y: 0, holdMs: 2000, avoid: FB_DESK_BANDS },
           // "Three ways", then 01 whole: the bill, the sum and "Off by $410.00".
@@ -107,6 +110,9 @@ const client: ShowcaseClient = {
         src: "/images/showcase/farmbooks-site-phone-ba88fca9.webp",
         width: 390,
         height: 4024,
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only farmbooks
+        first: { src: "/images/showcase/farmbooks-site-phone-live-e92c206b.webp", width: 376, height: 675, captured: "Captured Nov 22, 2026" },
         // Each stop shows its band whole, and no edge cuts a line, a price or a button.
         stops: [
           { y: 0, holdMs: 1400, keep: [200, 590], avoid: FB_PHONE_BANDS },

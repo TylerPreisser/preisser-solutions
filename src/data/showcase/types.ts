@@ -116,12 +116,13 @@ export interface SiteCapture {
   }[];
   video?: SiteVideo;
   /**
-   * The page as it first paints, before its own entrance animation (Hays: the hero before the kit
-   * falls; NWKS: the logos before the dates and buttons). Shown ONLY while the frame is loading and
-   * fresh, so the cut to live does not take content away. Every other moment (a slow load, a refused
-   * frame, the "Open <domain>" fallback) shows `src`, the finished page.
+   * The loading still: the top of the live page exactly as the window's frame shows it once the site has
+   * settled (its own preloader and entrance done), captured framed at the frame's own size. Shown ONLY
+   * while the frame is loading, under the loading animation, and the live frame then cross-fades in over
+   * it, so the two must match. Every other moment (a refused frame, the "Open <domain>" fallback) shows
+   * `src`, the dated full page. `captured` is the alt text's date for this picture.
    */
-  first?: { src: string; width: number; height: number };
+  first?: { src: string; width: number; height: number; captured?: string };
 }
 
 /**
@@ -141,6 +142,14 @@ export interface WebsiteLive {
    * "off": never framed; the still picture with "Open <domain>".
    */
   frame: "handshake" | "load" | "off";
+  /**
+   * How long after the ready message the site is still showing its own preloader or entrance, in ms.
+   * Every client sends ready one frame after its HTML is parsed (FarmBooks: when React mounts), BEFORE
+   * its content is on screen (Hays: a flat pink preloader; FarmBooks: a blank cream page until its
+   * entrance plays). The window keeps its loading cover up this long after ready, so "Live" never
+   * lands on a blank. Measured framed, 2026-11-22 (window-fix settle lab, Chromium, phone and desk).
+   */
+  revealMs?: number;
 }
 
 export interface WebsiteBeat extends BeatBase {

@@ -73,7 +73,7 @@ const client: ShowcaseClient = {
   beats: [
     {
       kind: "website",
-      live: { src: "https://nwksencounter.com/", origins: ["https://nwksencounter.com", "https://www.nwksencounter.com"], frame: "handshake" },
+      live: { src: "https://nwksencounter.com/", origins: ["https://nwksencounter.com", "https://www.nwksencounter.com"], frame: "handshake", revealMs: 400 },
       tab: "Website",
       caption: "The men's and women's weekends share one front door.",
       captured: "Captured Nov 1, 2026",
@@ -81,14 +81,18 @@ const client: ShowcaseClient = {
         src: "/images/showcase/nwks-encounter-site-desk-ff921ff6.webp",
         width: 1440,
         height: 900,
-        first: { src: "/images/showcase/nwks-encounter-site-desk-first-56e35488.webp", width: 1220, height: 800 },
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only nwks-encounter
+        first: { src: "/images/showcase/nwks-encounter-site-desk-live-003dc735.webp", width: 1220, height: 715, captured: "Captured Nov 22, 2026" },
         stops: [{ y: 0, holdMs: 3400 }],
       },
       phone: {
         src: "/images/showcase/nwks-encounter-site-phone-8722795d.webp",
         width: 390,
         height: 844,
-        first: { src: "/images/showcase/nwks-encounter-site-phone-first-a1124e50.webp", width: 390, height: 844 },
+        // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
+        // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only nwks-encounter
+        first: { src: "/images/showcase/nwks-encounter-site-phone-live-a316a5ca.webp", width: 376, height: 675, captured: "Captured Nov 22, 2026" },
         // Two rests, and neither edge of either one cuts a logo, a title, a date or a
         // button in half (critique r8 S6: the Women's Encounter logo was cut on every
         // phone): the men's half, then the women's half to the capture's end. Bands
