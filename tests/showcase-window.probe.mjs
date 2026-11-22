@@ -19,7 +19,13 @@
  *   PS_TEST_BASE_URL=https://preissersolutions.com   a real URL, no interception (production).
  *   PS_TEST_ORIGIN_DELAY_MS=60     adds a wait to every answer served from out/, standing in for a CDN trip.
  * Other knobs: PS_TEST_ONLY=<words from a check name>, PS_TEST_REPS=3, PS_TEST_JSON=<file> (all numbers),
- * PS_TEST_FILM=<dir> (writes the cold phone Hays filmstrip there).
+ * PS_TEST_FILM=<dir> (writes the cold Hays filmstrips, phone tap and desktop click, there).
+ *   PS_TEST_ENGINE=chromium|webkit|firefox   which engine (default chromium). WebKit and Firefox have no CDP:
+ *                                  their runs make the frame-sampler checks (a, b, e, c1, a0, f, g) at 1x only;
+ *                                  the picture checks (c2, d, screencast), the 4x CPU rows and the drag close
+ *                                  are Chromium only, and the output says so.
+ *   PS_TEST_PHONE=402x874          the touch size (sheet). 820x1180 is the tablet; under 600 wide runs at DPR 3.
+ *   PS_TEST_DESK=1440x900          the desktop size (window).
  *
  *   node tests/showcase-window.probe.mjs
  *   PS_TEST_BASE_URL=https://preissersolutions.com node tests/showcase-window.probe.mjs
@@ -31,7 +37,10 @@ import path from "node:path";
 import { serveAsProdOrigin, PROD_ORIGIN } from "./support/serve-prod-origin.mjs";
 
 const req = createRequire(import.meta.url);
-const { chromium } = req("playwright");
+const ENGINE = (process.env.PS_TEST_ENGINE || "chromium").toLowerCase();
+const engine = req("playwright")[ENGINE];
+if (!engine || !["chromium", "webkit", "firefox"].includes(ENGINE)) throw new Error(`PS_TEST_ENGINE must be chromium, webkit or firefox, not ${ENGINE}`);
+const CDP = ENGINE === "chromium"; // screencast, CPU throttle and raw touch events need the Chrome DevTools Protocol
 
 // ---------------------------------------------------------------------------------------------------
 // Thresholds. Each one says why that number.
@@ -58,6 +67,8 @@ const ALLOWED_ANIMATED = new Set(["transform", "opacity", "translate", "scale", 
 const SETTLE_MS = { phone: 1500, desk: 900 }; // wait after scrolling the card in, as the earlier measurement did.
 const SAMPLE_MS = 5500; // how long each open is watched (cold FarmBooks goes Live ~2.7 s unthrottled).
 const SAMPLE_MS_4X = 8000;
+const HOLD_MS = 1500; // a0: how long after the tap the window's code and the client's data are held back
+const HANDOVER_MS = 250; // a0: the swap from shell to window is these frames
 
 const REPS = Number(process.env.PS_TEST_REPS || 3);
 const BASE = (process.env.PS_TEST_BASE_URL || "").replace(/\/+$/, "");
@@ -69,15 +80,26 @@ const DELAY = Number(process.env.PS_TEST_ORIGIN_DELAY_MS || 0);
 const ONLY = (process.env.PS_TEST_ONLY || "").toLowerCase();
 const LABEL = { hays: "Hays Academy", farm: "FarmBooks" };
 
+const size = (v, d) => {
+  const m = String(v || d).match(/^(\d+)x(\d+)$/);
+  if (!m) throw new Error(`bad size ${v}`);
+  return { width: Number(m[1]), height: Number(m[2]) };
+};
+const PHONE_VP = size(process.env.PS_TEST_PHONE, "402x874");
+const DESK_VP = size(process.env.PS_TEST_DESK, "1440x900");
 const DEVICES = {
   phone: {
-    viewport: { width: 402, height: 874 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true,
-    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
+    viewport: PHONE_VP, deviceScaleFactor: PHONE_VP.width < 600 ? 3 : 2, hasTouch: true,
+    // Firefox has no isMobile emulation.
+    ...(ENGINE === "firefox" ? {} : { isMobile: true }),
+    userAgent: PHONE_VP.width < 600
+      ? "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1"
+      : "Mozilla/5.0 (iPad; CPU OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
   },
-  desk: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 },
+  desk: { viewport: DESK_VP, deviceScaleFactor: 1 },
 };
 
-const browser = await chromium.launch();
+const browser = await engine.launch();
 const results = [];
 let pass = 0;
 let fail = 0;
@@ -179,6 +201,7 @@ function recorderStart(sel) {
         }
       }
       o.ind = ind;
+      o.ho = !!document.querySelector(".sc-root[data-handoff]");
     }
     S.samples.push(o);
     requestAnimationFrame(tick);
@@ -209,7 +232,7 @@ function t0Of(rec, kind) {
 function analyseOpen(rec, kind, { reduced = false } = {}) {
   const t0 = t0Of(rec, kind);
   const S = rec.samples;
-  const out = { t0, answer: Infinity, first: Infinity, done: Infinity, live: Infinity, maxGap: Infinity, missing: Infinity, props: rec.props, cardNoisy: false };
+  const out = { t0, answer: Infinity, first: Infinity, done: Infinity, live: Infinity, maxGap: Infinity, maxGapHandover: Infinity, missing: Infinity, props: rec.props, cardNoisy: false };
   if (t0 == null) return out;
   const pre = S.filter((s) => s.t <= t0);
   const base = pre.length ? pre[pre.length - 1].card : null;
@@ -243,6 +266,16 @@ function analyseOpen(rec, kind, { reduced = false } = {}) {
       out.live = lv.t - t0;
       out.liveEpoch = lv.e;
     }
+    // a shell -> window handover: every frame from the window's first until HANDOVER_MS after the window
+    // took the shell's place (the client site's own start-up, which follows on every path, is not the swap)
+    const ho = after.find((s) => s.ho);
+    out.handover = ho ? ho.t - t0 : null;
+    let gapHo = 0;
+    for (let i = 1; i < after.length; i++) {
+      if (after[i].t < fw.t || (ho ? after[i].t > ho.t + HANDOVER_MS : out.done !== Infinity && after[i].t > t0 + out.done)) continue;
+      gapHo = Math.max(gapHo, after[i].t - after[i - 1].t);
+    }
+    out.maxGapHandover = gapHo;
     // the loading sign, from the window's first frame until the chip says Live
     const hasSign = (s) => !!(s.ind || (reduced && s.chip && /loading/i.test(s.chip.tx)));
     let missing = 0;
@@ -344,26 +377,58 @@ function findCuts(frames) {
 // ---------------------------------------------------------------------------------------------------
 // Sessions: one fresh context per run; origin served from out/ unless PS_TEST_BASE_URL is set.
 // ---------------------------------------------------------------------------------------------------
-async function newSession(kind, slug, { cpu = 1, reduced = false, picture = false } = {}) {
+// A page that never hydrates within 90 s on this loaded machine is a set-up failure, not a measurement: one retry.
+async function newSession(kind, slug, opts = {}) {
+  try {
+    return await newSessionOnce(kind, slug, opts);
+  } catch (error) {
+    console.log(`        (set-up retry: ${String((error && error.message) || error).split("\n")[0]})`);
+    return newSessionOnce(kind, slug, opts);
+  }
+}
+async function newSessionOnce(kind, slug, { cpu = 1, reduced = false, picture = false, hold = false } = {}) {
   const dev = kind === "phone" ? "phone" : "desk";
   const ctx = await browser.newContext({ ...DEVICES[dev], reducedMotion: reduced ? "reduce" : "no-preference" });
   if (BUILD) await serveAsProdOrigin(ctx, OUT, { delayMs: DELAY });
+  // hold: every script chunk the home page did not load up front (the window's code, the client's data) is
+  // held back until S.release() — a tap that lands before they arrive (a fast thumb, a slow connection).
+  let release = () => {};
+  const released = new Promise((r) => (release = r));
+  if (hold) {
+    let upfront = null;
+    await ctx.route(/\/_next\/static\/chunks\/.+\.js(\?.*)?$/, async (route) => {
+      if (!upfront) {
+        const html = BUILD ? fs.readFileSync(path.join(OUT, "index.html"), "utf8") : await (await fetch(HOME)).text();
+        upfront = new Set(html.match(/\/_next\/static\/chunks\/[^"']+\.js/g) || []);
+      }
+      const p = new URL(route.request().url()).pathname;
+      if (!upfront.has(p)) await released;
+      return route.fallback();
+    });
+  }
   const page = await ctx.newPage();
-  const cdp = await ctx.newCDPSession(page); // before goto: Page.startScreencast sends no frames otherwise
-  await page.goto(HOME, { waitUntil: "load" });
+  const cdp = CDP ? await ctx.newCDPSession(page) : null; // before goto: Page.startScreencast sends no frames otherwise
   const sel = `button.ps-work-card__toggle[aria-label^="${LABEL[slug]}"]`;
-  await page.addStyleTag({ content: "html { scroll-behavior: auto !important; }" });
-  await page.waitForFunction((s) => {
-    const el = document.querySelector(s);
-    return !!el && Object.keys(el).some((k) => k.startsWith("__react"));
-  }, sel, { timeout: 30000 });
-  const S = { ctx, page, cdp, sel, kind, dev, cpu, picture, frames: [] };
+  try {
+    await page.goto(HOME, { waitUntil: "load" });
+    await page.addStyleTag({ content: "html { scroll-behavior: auto !important; }" });
+    await page.waitForFunction((s) => {
+      const el = document.querySelector(s);
+      return !!el && Object.keys(el).some((k) => k.startsWith("__react"));
+    }, sel, { timeout: 90000 }); // the first desktop page in a fresh browser held its main thread ~38 s here (measured 2026-11-22)
+  } catch (error) {
+    await ctx.close().catch(() => {});
+    throw error;
+  }
+  const S = { ctx, page, cdp, sel, kind, dev, cpu, picture, frames: [], hold, release };
   await bringIn(S);
   if (cpu !== 1) await cdp.send("Emulation.setCPUThrottlingRate", { rate: cpu });
-  cdp.on("Page.screencastFrame", (f) => {
-    S.frames.push({ e: f.metadata.timestamp * 1000, data: f.data });
-    cdp.send("Page.screencastFrameAck", { sessionId: f.sessionId }).catch(() => {});
-  });
+  if (cdp) {
+    cdp.on("Page.screencastFrame", (f) => {
+      S.frames.push({ e: f.metadata.timestamp * 1000, data: f.data });
+      cdp.send("Page.screencastFrameAck", { sessionId: f.sessionId }).catch(() => {});
+    });
+  }
   return S;
 }
 async function bringIn(S) {
@@ -395,6 +460,7 @@ async function record(S, kind, sampleMs, { pictureRun = false } = {}) {
   await S.page.waitForTimeout(400); // pre-roll: the card's resting state
   const sentAt = Date.now();
   await actOpen(S, kind);
+  if (S.hold) setTimeout(() => S.release(), HOLD_MS);
   await S.page.waitForTimeout(sampleMs);
   if (pictureRun) await S.cdp.send("Page.stopScreencast");
   const rec = await S.page.evaluate(recorderStop);
@@ -420,15 +486,16 @@ const once = (key, fn) => {
 };
 
 /** Opens a card cold, then (same page) again warm. REPS times. -> {cold:[analysis], warm:[analysis]} */
-function timing(kind, slug, cpu, reduced = false) {
-  return once(`t|${kind}|${slug}|${cpu}|${reduced}`, async () => {
+function timing(kind, slug, cpu, reduced = false, hold = false) {
+  return once(`t|${kind}|${slug}|${cpu}|${reduced}|${hold}`, async () => {
     const cold = [];
     const warm = [];
     const ms = cpu > 1 ? SAMPLE_MS_4X : SAMPLE_MS;
     for (let i = 0; i < REPS; i++) {
-      const S = await newSession(kind, slug, { cpu, reduced });
+      const S = await newSession(kind, slug, { cpu, reduced, hold });
       try {
         cold.push(analyseOpen(await record(S, kind, ms), kind, { reduced }));
+        if (hold) continue; // the held run is about the first tap only
         await closeAndReset(S, kind);
         warm.push(analyseOpen(await record(S, kind, ms), kind, { reduced }));
       } finally {
@@ -465,7 +532,7 @@ function pictures(kind, slug) {
 /** Closing methods on a warm window. -> {method: [analysis]} */
 function closings(kind) {
   return once(`c|${kind}`, async () => {
-    const methods = kind === "phone" ? ["esc", "x", "scrim", "drag"] : ["esc", "x", "scrim"];
+    const methods = kind === "phone" ? ["esc", "x", "scrim", ...(CDP ? ["drag"] : [])] : ["esc", "x", "scrim"];
     const out = Object.fromEntries(methods.map((m) => [m, []]));
     for (let i = 0; i < REPS; i++) {
       const S = await newSession(kind, "hays");
@@ -522,7 +589,9 @@ function closings(kind) {
 // Start-up: prove what is being measured.
 // ---------------------------------------------------------------------------------------------------
 const chunkOf = (html) => (html.match(/_next\/static\/chunks\/app\/page-[a-z0-9]+\.js/) || [null])[0];
-console.log(`lab, loaded machine. target: ${BUILD ? `${OUT} served as ${PROD_ORIGIN} (origin delay ${DELAY} ms)` : BASE}; reps ${REPS}\n`);
+console.log(`lab, loaded machine. target: ${BUILD ? `${OUT} served as ${PROD_ORIGIN} (origin delay ${DELAY} ms)` : BASE}; reps ${REPS}; engine ${ENGINE}; touch ${PHONE_VP.width}x${PHONE_VP.height}, desktop ${DESK_VP.width}x${DESK_VP.height}`);
+if (!CDP) console.log(`NOT RUN in ${ENGINE} (no CDP): picture checks c2/d and their guard, the filmstrips, the 4x CPU rows, the drag close. Chromium runs them.`);
+console.log("");
 
 await check("fingerprint: the page measured is the build we think it is", {}, async () => {
   const ctx = await browser.newContext();
@@ -578,7 +647,7 @@ await check("guard: the answer, gap and loading detectors can fail and can pass"
   return `good: answer ${fmt(good.answer)}ms gap ${fmt(good.maxGap)}ms missing ${fmt(good.missing)}ms; late window ${fmt(slow.answer)}ms; hole ${fmt(janky.maxGap)}ms; no sign ${fmt(noSign.missing)}ms`;
 });
 
-await check("guard: the cut and near-flat detectors on a synthetic cross-fade, a hard cut and a flat page", {}, async () => {
+if (CDP) await check("guard: the cut and near-flat detectors on a synthetic cross-fade, a hard cut and a flat page", {}, async () => {
   // Frames only flow from a real page (a bare data: page gave none), so the synthetic pictures are laid over the home page.
   const ctx = await browser.newContext({ viewport: { width: 402, height: 600 }, deviceScaleFactor: 1 });
   if (BUILD) await serveAsProdOrigin(ctx, OUT, { delayMs: 0 });
@@ -641,6 +710,7 @@ const COMBOS = [
 const tag = (kind, slug, load, cpu) => `[${NAMES[kind]} · ${LABEL[slug]} · ${load} · ${cpu}x CPU]`;
 
 for (const [kind, slug, cpu] of COMBOS) {
+  if (cpu > 1 && !CDP) continue;
   for (const load of ["cold", "warm"]) {
     const dev = kind === "phone" ? { ...DEVICES.phone } : { ...DEVICES.desk };
     const intent = kind === "hover" ? HOVER_INTENT_MS : 0;
@@ -678,8 +748,30 @@ for (const [kind, slug, cpu] of COMBOS) {
   }
 }
 
-// c2 + d: the picture. Cold and warm, phone and desktop click, Hays and FarmBooks.
-const PICS = [["phone", "hays"], ["phone", "farm"], ["click", "hays"], ["click", "farm"]];
+// a0. A tap before the window's code and the client's data have arrived (held back for HOLD_MS): the card
+// answers and the window (its shell) is on its way at once, it says it is loading, and the window taking
+// over from the shell makes no hole in the frames.
+for (const kind of ["phone", "click"]) {
+  const dev = kind === "phone" ? { ...DEVICES.phone } : { ...DEVICES.desk };
+  const t = `[${NAMES[kind]} · Hays Academy · code still on its way · 1x CPU]`;
+  await check(`${t} a0. a tap before the window's code arrives is answered at once and the window is on its way`, dev, async () => {
+    const r = (await timing(kind, "hays", 1, false, true)).cold;
+    const a = atMost("first visible change after the tap", r.map((x) => x.answer), ANSWER_MS);
+    const b = atMost("first frame of the window", r.map((x) => x.first), FIRST_FRAME_MS);
+    return `${a}; ${b}`;
+  });
+  await check(`${t} a0. while the code loads, the window says it is loading and the handover makes no frame hole`, dev, async () => {
+    const r = (await timing(kind, "hays", 1, false, true)).cold;
+    const live = r.map((x) => x.live);
+    const c = atMost(`time with no loading animation before Live (Live at ${live.map(fmt).join("/")} ms)`, r.map((x) => x.missing), LOAD_MISSING_MS);
+    assert.ok(r.every((x) => x.handover != null), `the window never took over from the shell (handover at ${r.map((x) => fmt(x.handover)).join("/")})`);
+    const e = atMost(`longest gap between frames from the window's first frame to ${HANDOVER_MS} ms after it took over from the shell (at ${r.map((x) => fmt(x.handover)).join("/")} ms)`, r.map((x) => x.maxGapHandover), GAP_MS);
+    return `${c}; ${e}`;
+  });
+}
+
+// c2 + d: the picture. Cold and warm, phone and desktop click, Hays and FarmBooks. Chromium only (screencast).
+const PICS = CDP ? [["phone", "hays"], ["phone", "farm"], ["click", "hays"], ["click", "farm"]] : [];
 for (const [kind, slug] of PICS) {
   for (const load of ["cold", "warm"]) {
     const dev = kind === "phone" ? { ...DEVICES.phone } : { ...DEVICES.desk };
@@ -755,49 +847,56 @@ for (const [kind, slug] of [["phone", "hays"], ["click", "hays"]]) {
 }
 
 // ---------------------------------------------------------------------------------------------------
-// Filmstrip of the cold phone Hays open (contact sheet < 2400 px wide), when PS_TEST_FILM is set.
+// Filmstrips of the cold Hays open, phone tap and desktop click (contact sheets < 2400 px wide), when
+// PS_TEST_FILM is set. Each is written when its picture runs were made (with PS_TEST_ONLY too).
 // ---------------------------------------------------------------------------------------------------
-if (process.env.PS_TEST_FILM && !ONLY) {
+if (process.env.PS_TEST_FILM && CDP) {
   const dir = path.resolve(process.env.PS_TEST_FILM);
   fs.mkdirSync(dir, { recursive: true });
-  const run = (await pictures("phone", "hays")).cold[0];
-  const tapEpoch = run.rec.sentAt; // wall clock of the tap's dispatch (pre-roll is 400 ms before it)
-  const t0 = run.rec.samples.length ? run.rec.samples[0].e - run.rec.samples[0].t + (run.an.t0 ?? 0) : tapEpoch;
-  const offs = [-200, 0, 100, 200, 300, 450, 600, 800, 1000, 1400, 2000, 3000];
-  const pick = offs.map((o) => {
-    const f = [...run.frames].reverse().find((fr) => fr.e <= t0 + o) || run.frames[0];
-    return { o, data: f.data };
-  });
-  analyzer ||= await (await browser.newContext()).newPage();
-  const png = await analyzer.evaluate(async (pick) => {
-    const W = 190;
-    const H = Math.round((W * 874) / 402);
-    const cv = new OffscreenCanvas(W * pick.length, H + 26);
-    const cx = cv.getContext("2d");
-    cx.fillStyle = "#111";
-    cx.fillRect(0, 0, cv.width, cv.height);
-    for (let i = 0; i < pick.length; i++) {
-      const bin = atob(pick[i].data);
-      const u = new Uint8Array(bin.length);
-      for (let k = 0; k < bin.length; k++) u[k] = bin.charCodeAt(k);
-      const bmp = await createImageBitmap(new Blob([u], { type: "image/jpeg" }));
-      cx.drawImage(bmp, i * W, 26, W - 2, H);
-      cx.fillStyle = "#fff";
-      cx.font = "16px sans-serif";
-      cx.fillText(`${pick[i].o >= 0 ? "+" : ""}${pick[i].o} ms`, i * W + 6, 18);
-    }
-    const blob = await cv.convertToBlob({ type: "image/png" });
-    const buf = new Uint8Array(await blob.arrayBuffer());
-    let s = "";
-    for (const b of buf) s += String.fromCharCode(b);
-    return btoa(s);
-  }, pick);
-  const label = BUILD ? "round2" : "prod";
-  fs.writeFileSync(path.join(dir, `phone-hays-cold-${label}.png`), Buffer.from(png, "base64"));
-  console.log(`filmstrip written: ${path.join(dir, `phone-hays-cold-${label}.png`)}`);
+  for (const kind of ["phone", "click"]) {
+    if (!cache.has(`p|${kind}|hays`)) continue;
+    const run = (await pictures(kind, "hays")).cold[0];
+    const vp = DEVICES[kind === "phone" ? "phone" : "desk"].viewport;
+    const tapEpoch = run.rec.sentAt; // wall clock of the tap's dispatch (pre-roll is 400 ms before it)
+    const t0 = run.rec.samples.length ? run.rec.samples[0].e - run.rec.samples[0].t + (run.an.t0 ?? 0) : tapEpoch;
+    const offs = kind === "phone" ? [-200, 0, 100, 200, 300, 450, 600, 800, 1000, 1400, 2000, 3000] : [-200, 0, 100, 200, 300, 450, 600, 1000, 1400, 2000, 3000];
+    const pick = offs.map((o) => {
+      const f = [...run.frames].reverse().find((fr) => fr.e <= t0 + o) || run.frames[0];
+      return { o, real: Math.round(f.e - t0), data: f.data };
+    });
+    analyzer ||= await (await browser.newContext()).newPage();
+    const png = await analyzer.evaluate(async ({ pick, vw, vh }) => {
+      const W = vw > 1000 ? 218 : 190;
+      const H = Math.round((W * vh) / vw);
+      const cv = new OffscreenCanvas(W * pick.length, H + 26);
+      const cx = cv.getContext("2d");
+      cx.fillStyle = "#111";
+      cx.fillRect(0, 0, cv.width, cv.height);
+      for (let i = 0; i < pick.length; i++) {
+        const bin = atob(pick[i].data);
+        const u = new Uint8Array(bin.length);
+        for (let k = 0; k < bin.length; k++) u[k] = bin.charCodeAt(k);
+        const bmp = await createImageBitmap(new Blob([u], { type: "image/jpeg" }));
+        cx.drawImage(bmp, i * W, 26, W - 2, H);
+        cx.fillStyle = "#fff";
+        cx.font = "14px sans-serif";
+        // the slot, and the real time of the frame shown in it (the screencast skips frames when the page is busy)
+        cx.fillText(`${pick[i].o >= 0 ? "+" : ""}${pick[i].o} (${pick[i].real})`, i * W + 4, 18);
+      }
+      const blob = await cv.convertToBlob({ type: "image/png" });
+      const buf = new Uint8Array(await blob.arrayBuffer());
+      let s = "";
+      for (const b of buf) s += String.fromCharCode(b);
+      return btoa(s);
+    }, { pick, vw: vp.width, vh: vp.height });
+    const label = `${BUILD ? "build" : "prod"}-${vp.width}x${vp.height}`;
+    const file = path.join(dir, `${kind === "phone" ? "phone" : "desk"}-hays-cold-${label}.png`);
+    fs.writeFileSync(file, Buffer.from(png, "base64"));
+    console.log(`filmstrip written: ${file}`);
+  }
 }
 
-if (process.env.PS_TEST_JSON) fs.writeFileSync(process.env.PS_TEST_JSON, JSON.stringify({ target: BUILD ? `out:${OUT}` : BASE, delay: DELAY, reps: REPS, results }, null, 1));
+if (process.env.PS_TEST_JSON) fs.writeFileSync(process.env.PS_TEST_JSON, JSON.stringify({ target: BUILD ? `out:${OUT}` : BASE, engine: ENGINE, phone: PHONE_VP, desk: DESK_VP, delay: DELAY, reps: REPS, results }, null, 1));
 await browser.close();
 console.log(`\n${pass} passed, ${fail} failed (lab, loaded machine; medians of ${REPS})`);
 process.exit(fail ? 1 : 0);
