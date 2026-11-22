@@ -501,18 +501,33 @@ for (const m of MANIFESTS) {
           await page.waitForTimeout(300); // a smooth key scroll has started
           let lastY = Number.NaN;
           let reached = y0;
+          // Wait for the distance first, then for rest. One unchanged pair of
+          // samples is NOT rest: on a loaded gate machine a smooth scroll stalls
+          // for a frame or two mid-flight, and the old single-pair check stopped
+          // measuring at 238px of an ~800px PageDown (gate 7ccdd7b, 2026-11-04;
+          // reproduced 3 of 6 under a 50% CPU cap at 148/160/50px).
+          await expect
+            .poll(
+              async () => {
+                reached = Math.max(reached, await page.evaluate(() => window.scrollY));
+                return reached - y0;
+              },
+              { timeout: 10_000, intervals: [100], message: "the visitor's scroll did not move the page more than 300px" },
+            )
+            .toBeGreaterThan(300);
+          let stillReads = 0;
           await expect
             .poll(
               async () => {
                 const y = await page.evaluate(() => window.scrollY);
                 reached = Math.max(reached, y);
-                const still = y === lastY;
+                stillReads = y === lastY ? stillReads + 1 : 0;
                 lastY = y;
-                return still;
+                return stillReads;
               },
-              { timeout: 5_000, intervals: [150], message: "the visitor's scroll never came to rest" },
+              { timeout: 10_000, intervals: [150], message: "the visitor's scroll never came to rest" },
             )
-            .toBe(true);
+            .toBeGreaterThanOrEqual(3);
           expect(reached - y0, "the visitor's scroll did not move the page more than 300px").toBeGreaterThan(300);
           const y1 = reached;
           // Three step holds: without the guard, every followed step of the

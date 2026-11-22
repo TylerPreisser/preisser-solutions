@@ -1,0 +1,444 @@
+/* ============================================================
+   how-we-work.css
+   The section directly below the hero (ADR-0026): the hero's
+   three-line wordmark set on the opposite side, told by scrolling.
+   The three lines arrive alone; then, while the block is held on
+   screen, a band of light travels down through them, turning the
+   words inside it blue, and brings up each line's explanation.
+
+   Tokens only: every colour is a var() from the :root block in
+   globals.css. No new hex values.
+
+   SPECIFICITY. This file is @imported at the top of globals.css,
+   so it loses any same-specificity tie to the rules that follow.
+   Every selector is therefore written at 0,2,0 (two classes).
+
+   TWO LAYOUTS.
+   1. The track (default). The section is taller than the screen
+      and .ps-how__pin is held in view while the page scrolls
+      through it. how-we-work.tsx turns the scroll position into a
+      picture and writes it to the elements each frame: an opacity
+      and a transform, nothing that needs layout or a repaint. This
+      file draws the states it moves between and has NO
+      transitions of its own: a transition would fight the scrub.
+   2. Stacked. No track, no beats: the lines, then the explanations
+      one under another. Used with no JavaScript, on a screen too
+      short to hold the block, and whenever the script finds the
+      block does not fit its screen (it sets data-stacked). See the
+      last part of this file.
+   ============================================================ */
+
+.ps-how.ps-how {
+  /* How much scrolling each of the four beats takes (three lines and the
+     closing sentence). Half a screen: about one flick of a thumb or four
+     notches of a wheel per line. */
+  --how-beat: 50svh;
+  position: relative;
+  height: calc(100svh + 4 * var(--how-beat));
+  background-color: var(--theme-bg-primary);
+  transition: background-color 300ms ease;
+}
+
+/* The block that is held on screen. One small-viewport screen high, so it
+   never changes height when a phone's toolbar slides away mid-scroll. Its
+   content is centred in the space under the fixed header. */
+.ps-how .ps-how__pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: calc(var(--nav-height) + 16px) 32px;
+  box-sizing: border-box;
+  /* The glow is wider than the line it is on; it must not widen the page.
+     Nothing else is ever cut by this: if the content is taller than the block
+     the script switches to the stacked layout instead. */
+  overflow: hidden;
+}
+
+.ps-how .ps-how__pin > .ps-container {
+  width: 100%;
+}
+
+/* Right-aligned, opposite the hero's left-aligned wordmark. */
+.ps-how .ps-how__eyebrow {
+  display: block;
+  text-align: right;
+}
+
+/* The hero's own type: same family, weight, tracking and line-height as
+   .ps-hero-headline, and the same 5.15rem ceiling, so from about 1230px up
+   the two headlines are the same size.
+
+   WIDTH. The middle term is not the hero's 7.5vw. "Get to know your
+   business." is 26 characters against the hero's longest line at 20, and
+   measures about 12.6em wide; at 7.5vw it would overrun the content box on
+   every phone. So the size is taken from the box itself: the viewport less
+   the container's two 24px gutters, divided by 13.4. The divisor is not the
+   12.6 a ruler gives: a browser that rounds each letter to whole pixels
+   (Chromium without sub-pixel text) draws the same line anywhere from 12.4
+   to 13.1 times the type size depending on the size, and at 12.9 the first
+   line broke in two at 396 to 402px wide. 13.4 leaves 2% over the widest
+   measured, so at normal text settings no line ever wraps (the browser probe
+   looks at every width from 320 to 520). Wrapping is still ALLOWED, on
+   purpose: a reader who applies their own text spacing (WCAG 1.4.12) widens
+   every line.
+
+   HEIGHT. The block has to hold the label, the three lines and the longest
+   explanation in one screen under the header. On a laptop window (1366 by
+   about 620, 1280 by about 580) the full size does not leave room, so the
+   size is also capped by the height: what is left of 94% of the screen after
+   372px for everything that is not the lines, shared between three lines at
+   1.07. Never below the 1.25rem floor; below that the script stacks. */
+.ps-how .ps-how__headline {
+  margin: 0;
+  text-align: right;
+  font-size: min(
+    clamp(1.25rem, calc((100vw - 48px) / 13.4), 5.15rem),
+    max(1.25rem, calc((94svh - 372px) / 3.21))
+  );
+  font-weight: 800;
+  line-height: 1.07;
+  letter-spacing: -0.03em;
+  color: var(--theme-text-primary);
+}
+
+/* The lines sit in front of the glow that travels behind them. */
+.ps-how .ps-how__stage {
+  position: relative;
+  isolation: isolate;
+}
+
+/* The glow behind the band: one soft blue light. It is a 100px square that
+   the script moves and stretches to the shape of the line it is on
+   (transform only), so it glides from one line to the next and changes shape
+   on the way. It is kept close to the words (owner, 2026-11-22: "The glow
+   needs to be a bit tighter around the words"): a little wider than the line
+   and twice its height, not the wash it was at 1.3 wide and 3 high. */
+.ps-how .ps-how__light {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100px;
+  height: 100px;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-primary) 26%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary) 9%, transparent) 55%,
+    transparent 100%
+  );
+  will-change: transform, opacity;
+}
+
+/* On white the same light is a wash, not a glow: much fainter. */
+[data-theme="light"] .ps-how .ps-how__light {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-primary) 13%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary) 5%, transparent) 55%,
+    transparent 100%
+  );
+}
+
+.ps-how .ps-how__line {
+  position: relative;
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin-left: auto;
+}
+
+/* The words themselves. While a line is current the other two step back;
+   the script sets this opacity. */
+.ps-how .ps-how__ink {
+  display: block;
+  will-change: opacity;
+}
+
+/* The blue words. ps-how__fill is a window over the line and ps-how__fill-in
+   draws the line again in the primary blue from data-text. The script slides
+   the window down and the words back up by the same amount, so the words
+   never move and the blue is only where the window is: the band of light
+   passing down through the line. Both are transforms.
+
+   The window is taller than the line by 0.34em above and below, and fades to
+   nothing across exactly that margin. Sitting on its line the fade is wholly
+   outside the letters, so the line is solid blue; crossing from one line to
+   the next, the blue arrives and leaves through a soft edge instead of a hard
+   cut through the middle of the letters. The second `content` gives the drawn
+   words empty alternative text, so a screen reader does not read the line
+   twice. */
+.ps-how .ps-how__fill {
+  --how-feather: 0.34em;
+  position: absolute;
+  inset: calc(-1 * var(--how-feather)) 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black var(--how-feather), black calc(100% - var(--how-feather)), transparent);
+  mask-image: linear-gradient(to bottom, transparent, black var(--how-feather), black calc(100% - var(--how-feather)), transparent);
+  /* Parked a whole window above until the script takes over. */
+  transform: translate3d(0, -100%, 0);
+  will-change: transform;
+}
+
+.ps-how .ps-how__fill-in {
+  display: block;
+  padding-block: 0.34em;
+  color: var(--color-primary);
+  transform: translate3d(0, 100%, 0);
+  will-change: transform;
+}
+
+.ps-how .ps-how__fill-in::after {
+  content: attr(data-text);
+  content: attr(data-text) / "";
+}
+
+/* The glow of the lit words, as the hero's accent line has. It is the line
+   drawn once more with no colour of its own, only its shadow, faded in by
+   the script through --lit as the band covers the line. A glow is soft, so
+   fading it reads as light arriving; the hard edge is left to the band. */
+.ps-how .ps-how__line::after {
+  content: attr(data-text);
+  content: attr(data-text) / "";
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  text-shadow:
+    0 0 14px var(--color-primary-glow),
+    0 0 36px var(--color-primary-glow);
+  opacity: var(--lit, 0);
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* On white a strong glow reads as a smudge around the letters (the hero
+   drops its own there, globals.css [data-theme="light"] .ps-hero-line--accent).
+   The owner asked for each line to glow as you go, so the light theme keeps
+   one, much softer. */
+[data-theme="light"] .ps-how .ps-how__line::after {
+  text-shadow: 0 0 18px color-mix(in srgb, var(--color-primary) 34%, transparent);
+}
+
+/* Keeps a compound ("long-term", "AES-256", "Fortune 500") on one line. A
+   hyphen is always a break opportunity and no CSS property on the paragraph
+   removes it, so the compounds are wrapped instead. The text is unchanged. */
+.ps-how .ps-how__nobr {
+  white-space: nowrap;
+}
+
+/* One grid cell holds the three explanations and the closing sentence,
+   stacked. The cell is as tall as the tallest of them at every width, so
+   swapping between them never moves the lines above. */
+.ps-how .ps-how__slot {
+  display: grid;
+  margin-top: clamp(28px, 6svh, 72px);
+}
+
+/* Transparent, not hidden: the explanation that is not showing still sits in
+   the accessibility tree, so a screen reader reads all three in order. The
+   script sets opacity and a small vertical offset each frame. */
+.ps-how .ps-how__step {
+  grid-area: 1 / 1;
+  align-self: start;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  will-change: opacity, transform;
+}
+
+.ps-how .ps-how__step[data-on="true"] {
+  pointer-events: auto;
+  user-select: auto;
+}
+
+/* The "01 · Get to know your business" label belongs to the stacked layout,
+   where it says which line an explanation goes with. On the track the lit
+   line says that already. */
+.ps-how .ps-how__num {
+  display: none;
+  margin: 0 0 14px;
+}
+
+.ps-how .ps-how__body {
+  margin: 0;
+  max-width: 27em;
+  font-size: clamp(1.125rem, 2vw, 1.5625rem);
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.012em;
+  color: var(--theme-text-primary);
+  /* balance, not pretty: Firefox ignores pretty and left "it." alone on the
+     last line of the third explanation. */
+  text-wrap: balance;
+}
+
+/* A wider measure on wide screens: the second explanation takes five lines
+   instead of six, which is what sets the height of the whole slot. 32em, not
+   30: at 30 Chromium still needed six. */
+@media (min-width: 1024px) {
+  .ps-how .ps-how__body {
+    max-width: 32em;
+  }
+}
+
+/* A laptop window: a little smaller, so five lines of it leave the lines
+   above room to stay large. */
+@media (min-width: 1024px) and (max-height: 720px) {
+  .ps-how .ps-how__body {
+    font-size: 1.25rem;
+  }
+}
+
+/* Small or short phones: the longest explanation has to fit under the lines
+   inside one screen with the header's room taken off the top. */
+@media (max-width: 380px), (max-width: 640px) and (max-height: 700px) {
+  .ps-how .ps-how__body {
+    font-size: 1rem;
+  }
+}
+
+.ps-how .ps-how__belief {
+  margin: 0;
+  max-width: 22em;
+  font-size: clamp(1.25rem, 2.4vw, 1.875rem);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--theme-text-primary);
+  text-wrap: balance;
+}
+
+/* From 476px `pretty` gives the better break in Chromium ("because we
+   want your / success to be our success."); `balance` split "we / want". */
+@media (min-width: 476px) {
+  .ps-how .ps-how__belief {
+    text-wrap: pretty;
+  }
+}
+
+/* On a phone the three lines are only a little over 20px themselves; at
+   20px the closing sentence stood nearly as large as they do. */
+@media (max-width: 640px) {
+  .ps-how .ps-how__belief {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 380px), (max-width: 640px) and (max-height: 700px) {
+  .ps-how .ps-how__belief {
+    font-size: 1.0625rem;
+  }
+}
+
+/* ------------------------------------------------------------
+   Stacked layout. No track and no beats. The lines look like the
+   hero's (last line blue) and the explanations sit one under
+   another, each under its own label, followed by the closing
+   sentence.
+
+   The same rules appear twice, once for each way in: the media
+   query (no JavaScript, or a screen at most 520px high) and the
+   attribute the script sets when the block does not fit its
+   screen. A selector cannot be both, so they are written out
+   twice; change them together.
+   ------------------------------------------------------------ */
+@media (scripting: none), (max-height: 520px) {
+  .ps-how.ps-how {
+    height: auto;
+    padding-block: var(--section-py-mobile);
+  }
+
+  .ps-how .ps-how__pin {
+    position: static;
+    height: auto;
+    display: block;
+    padding-block: 0;
+    overflow: visible;
+  }
+
+  .ps-how .ps-how__headline {
+    font-size: clamp(1.25rem, calc((100vw - 48px) / 12.9), 5.15rem);
+  }
+
+  .ps-how .ps-how__light,
+  .ps-how .ps-how__fill,
+  .ps-how .ps-how__line::after {
+    display: none;
+  }
+
+  .ps-how .ps-how__line:last-child .ps-how__ink {
+    color: var(--color-primary);
+  }
+
+  .ps-how .ps-how__slot {
+    display: block;
+    margin-top: 44px;
+  }
+
+  .ps-how .ps-how__step {
+    opacity: 1;
+    pointer-events: auto;
+    user-select: auto;
+    margin-top: 36px;
+  }
+
+  .ps-how .ps-how__step:first-child {
+    margin-top: 0;
+  }
+
+  .ps-how .ps-how__num {
+    display: block;
+  }
+}
+
+.ps-how.ps-how[data-stacked="true"] {
+  height: auto;
+  padding-block: var(--section-py-mobile);
+}
+
+.ps-how[data-stacked="true"] .ps-how__pin {
+  position: static;
+  height: auto;
+  display: block;
+  padding-block: 0;
+  overflow: visible;
+}
+
+.ps-how[data-stacked="true"] .ps-how__headline {
+  font-size: clamp(1.25rem, calc((100vw - 48px) / 12.9), 5.15rem);
+}
+
+.ps-how[data-stacked="true"] .ps-how__light,
+.ps-how[data-stacked="true"] .ps-how__fill,
+.ps-how[data-stacked="true"] .ps-how__line::after {
+  display: none;
+}
+
+.ps-how[data-stacked="true"] .ps-how__line:last-child .ps-how__ink {
+  color: var(--color-primary);
+}
+
+.ps-how[data-stacked="true"] .ps-how__slot {
+  display: block;
+  margin-top: 44px;
+}
+
+.ps-how[data-stacked="true"] .ps-how__step {
+  opacity: 1;
+  pointer-events: auto;
+  user-select: auto;
+  margin-top: 36px;
+}
+
+.ps-how[data-stacked="true"] .ps-how__step:first-child {
+  margin-top: 0;
+}
+
+.ps-how[data-stacked="true"] .ps-how__num {
+  display: block;
+}
