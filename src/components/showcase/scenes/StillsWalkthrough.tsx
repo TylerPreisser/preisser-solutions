@@ -6,13 +6,12 @@
  * travels to what matters and clicks, stills crossfade, and two small coded overlays carry the
  * moments a still cannot (a new feed row lighting up, one man dragged to another cabin).
  *
- * Fluid: it fills the window's portal box. Each cue frames the part that matters (`cam`, in the still's
- * css px) and walkFrame.ts turns that into a scale and offset: the whole `cam` shows, the stage edge passes
- * through no word, and the picture covers the stage (a card the size of what the still can fill when the
- * stage is taller or wider than that). A new framing crossfades like a new still; nothing pans or zooms in
- * motion. Phone: a product with no narrow layout (`phoneUsesDesk`) shows a close window onto the desk still
- * (`phoneCam`), and a step that spans more of the screen than one window holds pans window to window.
- * The film ends on a replay control.
+ * Fluid: it fills the window's portal box. On a wide stage each cue frames the part that matters (`cam`, in the
+ * still's css px; walkFrame.ts frameView): the whole `cam` shows, the stage edge passes through no word, the
+ * picture covers the stage. On a phone, a portrait stage, or one too small for the desk framing to read
+ * (walkFrame.ts wantsClose), each cue names the WHOLE unit(s) a stranger must see (`close`) and frameClose
+ * finds the window that shows them whole, readable, filling the stage. A new framing on the same still is a
+ * camera move (the picture travels and zooms, 700 ms); a new still crossfades. The film ends on a replay control.
  *
  * No script / reduced motion: `ssrStill` and its step, no cursor, no overlay; stills still change
  * on their cues under reduced motion, without fades or travel. Only the shown still is in the first
@@ -24,7 +23,7 @@ import { useEffect, useMemo, useRef, useState, type ComponentType, type CSSPrope
 import type { CursorTarget, Still } from "@/data/showcase/types";
 import type { Rect, WalkCue, WalkData } from "@/data/showcase/scenes/duffer-cc";
 import type { FluidSceneProps } from "./HgCoiScene";
-import { frameView, type Box, type Frame } from "./walkFrame";
+import { closeOpts, frameClose, frameView, viewPlan, wantsClose, type Box, type Frame, type PlanView } from "./walkFrame";
 import "./stills.css";
 
 const pct = (v: number, of: number) => `${(v / of) * 100}%`;
@@ -101,19 +100,6 @@ function useWalkClock(active: boolean, reduced: boolean, data: WalkData) {
   return { cue: active ? cue : ssrCue, started, paused, ended, firstPlay: seq <= 1, jump, toggle, reduced };
 }
 
-/** The framing in force at cue i: its own, else the last one set on the same still. */
-function camAt(cues: readonly WalkCue[], i: number, phone: boolean): Rect | null {
-  for (let k = i; k >= 0 && cues[k].still === cues[i].still; k--) {
-    const c = phone ? cues[k].phoneCam : cues[k].cam;
-    if (c) return c;
-  }
-  return null;
-}
-
-/** One view = one still under one framing. */
-const camKey = (cam: Rect | null) => (cam ? `${cam.x},${cam.y},${cam.w},${cam.h}${cam.grow === undefined ? "" : `+${cam.grow}`}` : "-");
-const viewKey = (still: number, cam: Rect | null) => `${still}:${camKey(cam)}`;
-
 /** The stage's content box in px, once it is laid out (null before: the plain fitted layout). */
 function useBox() {
   const ref = useRef<HTMLDivElement>(null);
@@ -153,15 +139,21 @@ function useWordBoxes(stills: readonly Still[], srcs: readonly string[], enabled
   return boxes;
 }
 
-/** The cursor position in force at cue i: the last cue that set one (cursor stays where it was). */
-function cursorAt(cues: readonly WalkCue[], i: number, phone: boolean): { c: CursorTarget; from: number } | null {
+/** The pointer in force at cue i and the cue that set it (the click ring replays per setting cue). */
+function cursorAt(cues: readonly WalkCue[], i: number, close: boolean, set: number): { c: CursorTarget; from: number } | null {
   for (let k = i; k >= 0; k--) {
-    const c = phone ? cues[k].phoneCursor : cues[k].cursor;
+    const cc = close ? cues[k].closeCursor : undefined;
+    const c = cc ? (Array.isArray(cc) ? (cc as readonly CursorTarget[])[Math.min(set, cc.length - 1)] : (cc as CursorTarget)) : cues[k].cursor;
     if (c) return { c, from: k };
-    if (phone && cues[k].cursor) return null;
   }
   return null;
 }
+
+const unionOf = (rs: readonly Rect[]) => {
+  const x = Math.min(...rs.map((r) => r.x));
+  const y = Math.min(...rs.map((r) => r.y));
+  return { x, y, w: Math.max(...rs.map((r) => r.x + r.w)) - x, h: Math.max(...rs.map((r) => r.y + r.h)) - y };
+};
 
 export function StillsWalkthrough({ data, variant, active, reduced, onCaption, onHold, scene }: FluidSceneProps & { data: WalkData; scene: string }) {
   const phone = variant === "phone";
@@ -182,46 +174,61 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
     if (listening) report.current?.(data.captions[step]);
   }, [step, listening, data.captions]);
 
-  // Views (a still under a framing) mount once the tab first plays; before that only the shown one is in the page.
-  const camOf = (i: number) => (framed ? camAt(data.cues, i, phone) : null);
-  const views = useMemo(() => {
-    const seen = new Map<string, { still: number; cam: Rect | null }>();
-    data.cues.forEach((c, i) => {
-      const cam = framed ? camAt(data.cues, i, phone) : null;
-      const k = viewKey(c.still, cam);
-      if (!seen.has(k)) seen.set(k, { still: c.still, cam });
-    });
-    return seen;
-  }, [data.cues, framed, phone]);
-  const curCam = camOf(clock.cue);
-  const curKey = viewKey(cur, curCam);
-  const mounted = clock.started ? [...views.keys()] : [curKey];
+  // Close views (whole units) on a phone, a portrait stage, or one too small for the desk framing to read.
+  const close = framed && (box ? wantsClose(phone, box.w, box.h) : phone);
+  const plan = useMemo(() => viewPlan(data.cues, close), [data.cues, close]);
+  const curKey = plan.keys[clock.cue];
+  // Stills mount once the tab first plays; before that only the shown one is in the page.
+  const mounted = clock.started ? [...new Set(data.cues.map((c) => c.still))] : [cur];
   // Framing needs the stage's size and the words' boxes; until both are in, the plain fitted layout (and, once
   // the stage is measured, the screen waits invisibly for the boxes so the first view does not jump).
   const srcs = useMemo(() => data.stills.map((st) => pic(st).src), [data.stills, phone]); // eslint-disable-line react-hooks/exhaustive-deps
   const boxes = useWordBoxes(data.stills, srcs, active && framed);
   const framing = framed && box && boxes ? boxes : null;
-  const cache = useMemo(() => new Map<string, Frame>(), [box?.w, box?.h, boxes]); // eslint-disable-line react-hooks/exhaustive-deps
-  const frameOf = (still: number, cam: Rect | null): Frame | null => {
-    if (!framing || !box) return null;
-    const p = pic(data.stills[still]);
-    const k = `${p.src}|${camKey(cam)}`;
-    let f = cache.get(k);
+  const cache = useMemo(() => new Map<string, Frame & { set?: number }>(), [box?.w, box?.h, boxes, close]); // eslint-disable-line react-hooks/exhaustive-deps
+  const frameOf = (key: string): (Frame & { set?: number }) | null => {
+    const v: PlanView | undefined = plan.views.get(key);
+    if (!framing || !box || !v) return null;
+    let f = cache.get(key);
     if (!f) {
-      f = frameView(p.width, p.height, cam, box.w, box.h, framing.get(p.src) ?? []);
-      cache.set(k, f);
+      const st = data.stills[v.still];
+      const p = pic(st);
+      // The still's word boxes, and its form controls whose text the capture did not record (each one word).
+      const all: Box[] = [...(framing.get(p.src) ?? []), ...(data.solids?.[st.id] ?? []).map((r) => [r.x, r.y, r.w, r.h, ""] as const)];
+      f = close && v.framed ? frameClose(p.width, p.height, v.framed, box.w, box.h, all, closeOpts(phone, box.w, box.h)) : frameView(p.width, p.height, v.cam, box.w, box.h, all);
+      cache.set(key, f);
     }
     return f;
   };
-  const frame = (still: number, cam: Rect | null): CSSProperties | undefined => {
-    const f = frameOf(still, cam);
+  const style = (still: number, f: Frame | null): CSSProperties | undefined => {
     if (!f) return undefined;
     const p = pic(data.stills[still]);
     return { width: `${p.width}px`, height: `${p.height}px`, transform: `translate(${(-f.x0 * f.s).toFixed(2)}px, ${(-f.y0 * f.s).toFixed(2)}px) scale(${f.s.toFixed(4)})` };
   };
-  const curFrame = frameOf(cur, curCam);
-  const focus = curCam ?? { x: 0, y: 0, w: pic(data.stills[cur]).width, h: pic(data.stills[cur]).height };
-  const cursor = motion ? cursorAt(data.cues, clock.cue, phone && !data.phoneUsesDesk) : null;
+  // Each still sits at its own view while it is shown, and waits (invisible) at the view it will open on next, so a
+  // new still fades in already framed and only a new framing of the shown still moves.
+  const prev = clock.cue > 0 ? data.cues[clock.cue - 1].still : -1;
+  const keyFor = (still: number) => {
+    if (still === cur) return curKey;
+    // The still that just faded out keeps its framing while it fades.
+    if (still === prev) for (let k = clock.cue; k >= 0; k--) if (data.cues[k].still === still) return plan.keys[k];
+    for (let k = clock.cue + 1; k < data.cues.length; k++) if (data.cues[k].still === still) return plan.keys[k];
+    for (let k = clock.cue; k >= 0; k--) if (data.cues[k].still === still) return plan.keys[k];
+    return plan.keys[data.cues.findIndex((c) => c.still === still)];
+  };
+  const curView = plan.views.get(curKey);
+  const curFrame = frameOf(curKey);
+  const set = curFrame?.set ?? 0;
+  const units = close && curView?.sets ? curView.sets[Math.min(set, curView.sets.length - 1)] : null;
+  const focus = units ? unionOf(units) : curView?.cam ?? { x: 0, y: 0, w: pic(data.stills[cur]).width, h: pic(data.stills[cur]).height };
+  const cursor = motion ? cursorAt(data.cues, clock.cue, close, set) : null;
+  // The camera moves only once the first framed view has painted (not from the plain layout into it).
+  const [armed, setArmed] = useState(false);
+  useEffect(() => {
+    if (!curFrame) return setArmed(false);
+    const id = requestAnimationFrame(() => requestAnimationFrame(() => setArmed(true)));
+    return () => cancelAnimationFrame(id);
+  }, [Boolean(curFrame), box?.w, box?.h]); // eslint-disable-line react-hooks/exhaustive-deps
   // The tab opens on its no-script picture and goes straight to the film's first view: no crossfade from the one to the other.
   const fade = reduced || (clock.firstPlay && clock.cue === 0) ? 0 : cue.fadeMs ?? 280;
   const hold = () => onHold?.();
@@ -236,26 +243,30 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
       data-step={step + 1}
       data-still={data.stills[cur].id}
       data-focus={framed ? `${focus.x},${focus.y},${focus.w},${focus.h}` : undefined}
+      data-close={close ? "" : undefined}
+      data-units={units ? JSON.stringify(units.map((r) => [r.x, r.y, r.w, r.h])) : undefined}
+      data-solids={framed && data.solids?.[data.stills[cur].id] ? JSON.stringify(data.solids[data.stills[cur].id].map((r) => [r.x, r.y, r.w, r.h])) : undefined}
       data-framing={framed && box && !boxes ? "waiting" : undefined}
+      data-armed={armed && motion ? "" : undefined}
+      data-cam={prev === cur ? "move" : undefined}
       style={{ "--stw-fade": `${fade}ms` } as CSSProperties}>
       <div className="stw-stage" ref={stageRef}>
         {/* A window shorter than the stage is a card; the rest of the stage is a soft blur of the same picture, not a bar. */}
         {curFrame ? (
           <div className="stw-amb" aria-hidden="true">
-            {[...new Set(mounted.map((k) => (views.get(k) ?? { still: cur }).still))].map((st) => (
+            {mounted.map((st) => (
               // eslint-disable-next-line @next/next/no-img-element -- the still itself, blurred behind the card
               <img key={st} src={pic(data.stills[st]).src} alt="" decoding="async" data-on={st === cur || undefined} draggable={false} />
             ))}
           </div>
         ) : null}
         <div className={`stw-screen${framed ? " stw-screen--framed" : ""}`} style={curFrame ? { width: `${curFrame.cardW}px`, height: `${curFrame.cardH}px` } : undefined}>
-          {mounted.map((k) => {
-            const v = views.get(k) ?? { still: cur, cam: curCam };
-            return <Shot key={k} still={data.stills[v.still]} pic={pic(data.stills[v.still])} on={k === curKey} frame={frame(v.still, v.cam)} />;
-          })}
+          {mounted.map((st) => (
+            <Shot key={st} still={data.stills[st]} pic={pic(data.stills[st])} on={st === cur} frame={style(st, frameOf(keyFor(st)))} />
+          ))}
           {/* One layer framed like the shown view: the cursor lives here so it TRAVELS between targets and stills. */}
           {motion ? (
-            <div className="stw-layer" style={{ aspectRatio: `${pic(data.stills[cur]).width} / ${pic(data.stills[cur]).height}`, ...frame(cur, curCam) }}>
+            <div className="stw-layer" style={{ aspectRatio: `${pic(data.stills[cur]).width} / ${pic(data.stills[cur]).height}`, ...style(cur, curFrame) }}>
               <Overlays data={data} cueIndex={clock.cue} still={cur} phone={phone && !data.phoneUsesDesk} />
               {cursor && data.cues[clock.cue].overlay !== "pin-drag" ? <Cursor c={cursor.c} size={pic(data.stills[cur])} ring={cursor.from} /> : null}
             </div>
@@ -287,6 +298,7 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
           <button
             type="button"
             className="stw-pause"
+            data-ended={clock.ended || undefined}
             aria-label={clock.ended ? "Replay" : clock.paused ? "Play" : "Pause"}
             onClick={() => {
               clock.toggle();
@@ -295,7 +307,7 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
           >
             <svg viewBox="0 0 16 16" aria-hidden="true">
               {clock.ended ? (
-                <path d="M8 2.2a5.8 5.8 0 1 0 5.4 3.7l-1.7.7A4 4 0 1 1 8 4v2.2l3.4-3.1L8 0z" fill="currentColor" />
+                <path d="M3.2 8a4.8 4.8 0 1 0 1.4-3.4M4.6 1.9v2.7h2.7" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
               ) : clock.paused ? (
                 <path d="M5 3.5v9l7-4.5z" fill="currentColor" />
               ) : (

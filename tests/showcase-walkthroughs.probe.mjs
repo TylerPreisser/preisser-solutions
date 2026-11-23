@@ -28,6 +28,19 @@
  *   f. ending      the film comes to rest on a replay control (aria-label "Replay"), and pressing it
  *                  starts the film again from its first step.
  *   g. no bars     the still covers the whole stage (no letterbox or dead band under the picture).
+ *   h. fill        phones (width <= 430) and portrait tablets: the resting view's picture (the card, which g
+ *                  proves is all picture) spans the stage's whole width and at least 85% (phones) / 80%
+ *                  (portrait tablets) of its height. The stage is .stw-stage's content box.
+ *   i. units       wherever the scene shows close views (data-close), every resting view declares the whole
+ *                  unit(s) of meaning it is about (data-units, still css px: a card, a list with its names, a
+ *                  label with its value) and every one is whole inside the stage. Row rule, from the word boxes:
+ *                  for every text row (words on one baseline, whole inside the stage), the row's first word at
+ *                  or right of its unit's left edge (the unit whose height holds the row, else the leftmost
+ *                  unit) is visible, so a row never shows without its leading label or name.
+ *   b. (also)      portrait tablets get the phone rule; on landscape stages (1024x768, 1440x900) the median word
+ *                  over all resting views must be 10 px or more; the number, and any view under it, is printed.
+ *   a. (also)      form controls whose text the capture did not record (data-solids: a select's value, an
+ *                  input's text) count as one word each.
  *
  * Served as the production origin through tests/support/serve-prod-origin.mjs (the build in out/).
  * Knobs: PS_OUT_DIR, PS_TEST_ONLY=<words from a rule name>, PS_TEST_TABS=nwks,duffer,
@@ -55,8 +68,13 @@ const SETTLE_MS = 900; // a view is "resting" once it has been unchanged this lo
 const SAMPLE_MS = 100;
 const CLICK_WINDOW_MS = 4500; // the click must be the last thing before the page changes.
 const END_WAIT_MS = 60000; // the films run 36-38 s.
-const ALL_VIEWPORTS = ["320x568", "393x659", "393x852", "414x896", "768x1024", "820x1180", "1024x768", "1440x900"];
+const ALL_VIEWPORTS = ["320x568", "393x659", "393x852", "402x874", "414x896", "768x1024", "820x1180", "1024x768", "1440x900"];
 const PHONE_MAX_W = 430;
+const FILL_PHONE = 0.85;
+const FILL_TABLET = 0.8;
+const DESK_TEXT_PX = 10;
+const ROW_TOL = 3; // css px: words whose bottoms are this close share a baseline.
+const CONTENT_LEFT = 240; // css px: both products' pages start right of a 236 px sidebar (words from x 248).
 
 const OUT = path.resolve(process.env.PS_OUT_DIR || "out");
 const ONLY = (process.env.PS_TEST_ONLY || "").toLowerCase();
@@ -100,20 +118,25 @@ const inside = (b, s) => b.x0 >= s.x - SLACK && b.x1 <= s.x + s.w + SLACK && b.y
 const outside = (b, s) => b.x1 <= s.x + SLACK || b.x0 >= s.x + s.w - SLACK || b.y1 <= s.y + SLACK || b.y0 >= s.y + s.h - SLACK;
 
 /** Boxes of a still mapped to screen px through the shot's painted rect. */
-function screenBoxes(sample) {
+function screenBoxes(sample, withSolids = false) {
   const m = manifestFor(sample.src);
   const s = sample.shot.w / m.W;
-  return { s, words: m.boxes.map(([x, y, w, h, t]) => ({ t, h, x0: sample.shot.x + x * s, y0: sample.shot.y + y * s, x1: sample.shot.x + (x + w) * s, y1: sample.shot.y + (y + h) * s })) };
+  const map = ([x, y, w, h, t]) => ({ t, h, sx: x, sy: y, sw: w, sh: h, x0: sample.shot.x + x * s, y0: sample.shot.y + y * s, x1: sample.shot.x + (x + w) * s, y1: sample.shot.y + (y + h) * s });
+  const words = m.boxes.map(map);
+  if (withSolids && sample.solids) for (const r of sample.solids) words.push(map([...r, "[form control]"]));
+  return { s, words };
 }
 
-/** The views that rested: the last sample of every run of >= SETTLE_MS on the same still and framing. */
+const sameRect = (a, b) => Math.abs(a.x - b.x) < 0.75 && Math.abs(a.y - b.y) < 0.75 && Math.abs(a.w - b.w) < 0.75 && Math.abs(a.h - b.h) < 0.75;
+/** The views that rested: the last sample of every run of >= SETTLE_MS on the same still and framing (a camera move changes
+ *  the rects; a new cue's units and focus are declared a frame before its move starts, so they start a new run too). */
 function resting(samples) {
   const out = [];
   let a = 0;
   for (let i = 1; i <= samples.length; i++) {
     const cur = samples[i];
     const first = samples[a];
-    if (!cur || cur.still !== first.still || cur.view !== first.view) {
+    if (!cur || cur.still !== first.still || cur.view !== first.view || !sameRect(cur.shot, first.shot) || !sameRect(cur.screen, first.screen) || String(cur.units) !== String(first.units) || String(cur.focus) !== String(first.focus)) {
       const last = samples[i - 1];
       if (last.t - first.t >= SETTLE_MS) out.push(last);
       a = i;
@@ -125,7 +148,7 @@ function resting(samples) {
 export function ruleCut(rec) {
   const bad = [];
   for (const r of resting(rec.samples)) {
-    const { words } = screenBoxes(r);
+    const { words } = screenBoxes(r, true);
     const cut = words.filter((w) => !inside(w, r.screen) && !outside(w, r.screen));
     if (cut.length) bad.push(`step ${r.step} ${r.still}: ${cut.length} word(s) cut by the stage edge, e.g. "${cut[0].t}"`);
     const tip = r.cursor ? { x: r.cursor.lr.x + (r.cursor.l / 100) * r.cursor.lr.w, y: r.cursor.lr.y + (r.cursor.t / 100) * r.cursor.lr.h } : null;
@@ -168,6 +191,102 @@ export function ruleNoBars(rec) {
   }
   assert.ok(bad.length === 0, bad.slice(0, 3).join(" | "));
   return "the picture fills the stage at every resting frame";
+}
+
+export function ruleFill(rec) {
+  const min = rec.phone ? FILL_PHONE : FILL_TABLET;
+  const bad = [];
+  let worst = Infinity;
+  for (const r of resting(rec.samples)) {
+    const st = r.stage;
+    const fill = r.screen.h / st.h;
+    worst = Math.min(worst, fill);
+    if (r.screen.w < st.w - 1.5 || fill < min - 0.001) bad.push(`step ${r.step} ${r.still}: the picture is ${r.screen.w.toFixed(0)}x${r.screen.h.toFixed(0)} in a ${st.w.toFixed(0)}x${st.h.toFixed(0)} stage (${(fill * 100).toFixed(0)}% of its height)`);
+  }
+  assert.ok(bad.length === 0, bad.slice(0, 3).join(" | ") + (bad.length > 3 ? ` (+${bad.length - 3} more)` : ""));
+  return `every resting view fills the stage's width and >= ${(min * 100).toFixed(0)}% of its height (lowest ${(worst * 100).toFixed(0)}%)`;
+}
+
+/** Still-px rect of what the stage shows. */
+function windowOf(r) {
+  const m = manifestFor(r.src);
+  const s = r.shot.w / m.W;
+  return { x: (r.screen.x - r.shot.x) / s, y: (r.screen.y - r.shot.y) / s, w: r.screen.w / s, h: r.screen.h / s, s };
+}
+
+export function ruleUnits(rec) {
+  const bad = [];
+  let n = 0;
+  for (const r of resting(rec.samples)) {
+    if (!r.units || !r.units.length) {
+      bad.push(`step ${r.step} ${r.still}: no whole unit is declared for this view`);
+      continue;
+    }
+    const win = windowOf(r);
+    for (const [x, y, w, h] of r.units) {
+      n++;
+      if (x < win.x - SLACK || y < win.y - SLACK || x + w > win.x + win.w + SLACK || y + h > win.y + win.h + SLACK) bad.push(`step ${r.step} ${r.still}: unit ${[x, y, w, h].join(",")} is not whole inside the stage (it shows ${[win.x, win.y, win.w, win.h].map((v) => v.toFixed(0)).join(",")})`);
+    }
+  }
+  assert.ok(bad.length === 0, bad.slice(0, 3).join(" | ") + (bad.length > 3 ? ` (+${bad.length - 3} more)` : ""));
+  return `${n} declared units, each whole at rest`;
+}
+
+export function ruleRows(rec) {
+  const bad = [];
+  let rows = 0;
+  for (const r of resting(rec.samples)) {
+    const { words } = screenBoxes(r);
+    const seen = words.filter((w) => inside(w, r.screen));
+    // A view that declares no unit is judged against the page column it shows: the product's content (right of its
+    // 236 px sidebar, CONTENT_LEFT) or the sidebar itself.
+    const m = manifestFor(r.src);
+    const win = windowOf(r);
+    const units = r.units && r.units.length ? r.units : win.x >= CONTENT_LEFT - 12 ? [[CONTENT_LEFT, 0, m.W - CONTENT_LEFT, 1e5]] : [[0, 0, CONTENT_LEFT, 1e5]];
+    const left = Math.min(...units.map((u) => u[0]));
+    const right = Math.max(...units.map((u) => u[0] + u[2]));
+    // Rows: visible words grouped by baseline (still px).
+    const groups = [];
+    for (const w of seen) {
+      const base = w.sy + w.sh;
+      let g = groups.find((x) => Math.abs(x.base - base) <= ROW_TOL);
+      if (!g) groups.push((g = { base, words: [] }));
+      g.words.push(w);
+    }
+    for (const g of groups) {
+      const unit = units.find(([, y, , h]) => g.base > y && g.base <= y + h + ROW_TOL);
+      const L = unit ? unit[0] : left;
+      const R = unit ? unit[0] + unit[2] : right;
+      // Every word on this baseline in still space, at or right of the unit's left edge.
+      const all = words.filter((w) => Math.abs(w.sy + w.sh - g.base) <= ROW_TOL && w.sx >= L - 2 && w.sx < R);
+      if (!all.length || !g.words.some((w) => w.sx >= L - 2 && w.sx < R)) continue;
+      rows++;
+      const lead = all.reduce((a, b) => (b.sx < a.sx ? b : a));
+      if (!inside(lead, r.screen)) bad.push(`step ${r.step} ${r.still}: a row shows without its first word "${lead.t}"`);
+    }
+  }
+  assert.ok(bad.length === 0, bad.slice(0, 3).join(" | ") + (bad.length > 3 ? ` (+${bad.length - 3} more)` : ""));
+  return `${rows} visible rows, each with its leading word`;
+}
+
+/** Landscape stages keep the desk framing only while it reads: the median word over every resting view at this size is
+ *  >= DESK_TEXT_PX (the brief's per-viewport bar). Views whose own median is under it are named in the detail. */
+export function ruleDeskText(rec) {
+  const all = [];
+  const low = [];
+  for (const r of resting(rec.samples)) {
+    const { s, words } = screenBoxes(r);
+    const px = words.filter((w) => inside(w, r.screen)).map((w) => (w.h / LINE_BOX) * s).sort((a, b) => a - b);
+    if (!px.length) continue;
+    all.push(...px);
+    const med = px[Math.floor(px.length / 2)];
+    if (med < DESK_TEXT_PX) low.push(`step ${r.step} ${r.still} ${med.toFixed(1)}px`);
+  }
+  all.sort((a, b) => a - b);
+  const med = all[Math.floor(all.length / 2)];
+  const summary = `median ${med?.toFixed(1)}px over ${all.length} words in every resting view${low.length ? `; views under ${DESK_TEXT_PX}px: ${low.join(", ")}` : ""}`;
+  assert.ok(med >= DESK_TEXT_PX, summary);
+  return summary;
 }
 
 export function rulePointerPresent(rec) {
@@ -229,7 +348,7 @@ export function ruleDevNote(root = OUT) {
 function fakeGuards() {
   const m = { W: 1000, boxes: [[100, 100, 100, 20, "Cabins"], [900, 100, 100, 20, "Edge"]], lines: [] };
   manifests.set("/fake.webp", m);
-  const base = { src: "/fake.webp", still: "dashboard", step: "1", view: 0, screen: { x: 0, y: 0, w: 500, h: 400 }, shot: { x: 0, y: 0, w: 1000, h: 800 }, cursor: null, cursorOn: false, focus: null };
+  const base = { src: "/fake.webp", still: "dashboard", step: "1", view: 0, screen: { x: 0, y: 0, w: 500, h: 400 }, stage: { x: 0, y: 0, w: 500, h: 400 }, shot: { x: 0, y: 0, w: 1000, h: 800 }, cursor: null, cursorOn: false, focus: null, units: null, solids: null };
   const run = (extra, fn, ...a) => {
     const samples = [];
     for (let t = 0; t <= 1200; t += 100) samples.push({ ...base, ...extra, t });
@@ -250,6 +369,30 @@ function fakeGuards() {
   run({ screen: { x: 0, y: 0, w: 1000, h: 800 } }, ruleReadable); // scale 1: 16.7px passes
   // g. bars
   fails("bars", () => run({ shot: { x: 0, y: 0, w: 1000, h: 300 } }, ruleNoBars));
+  // a. a form control cut by the stage edge where no word is: x 150 passes through a planted control at 100..300
+  run({ screen: { x: 150, y: 400, w: 400, h: 300 }, shot: { x: 0, y: 0, w: 1000, h: 800 } }, ruleCut); // nothing there: passes
+  fails("cut form control", () => run({ screen: { x: 150, y: 400, w: 400, h: 300 }, shot: { x: 0, y: 0, w: 1000, h: 800 }, solids: [[100, 500, 200, 30]] }, ruleCut));
+  // h. a picture that fills 60% of the stage's height, one a little narrower than the stage, a 75% tablet view
+  const stage = { x: 0, y: 0, w: 500, h: 400 };
+  run({ stage, screen: { x: 0, y: 0, w: 500, h: 360 } }, (rec) => ruleFill({ ...rec, phone: true })); // 90%: passes
+  fails("short strip", () => run({ stage, screen: { x: 0, y: 80, w: 500, h: 240 } }, (rec) => ruleFill({ ...rec, phone: true })));
+  fails("narrow card", () => run({ stage, screen: { x: 20, y: 0, w: 460, h: 400 } }, (rec) => ruleFill({ ...rec, phone: true })));
+  fails("tablet strip", () => run({ stage, screen: { x: 0, y: 0, w: 500, h: 300 } }, (rec) => ruleFill({ ...rec, phone: false })));
+  // i. a unit the stage shows only part of; no unit declared; a row whose first word is off the stage
+  run({ screen: { x: 0, y: 0, w: 500, h: 400 }, units: [[100, 100, 200, 30]] }, ruleUnits); // whole: passes
+  fails("unit not whole", () => run({ screen: { x: 0, y: 0, w: 500, h: 400 }, units: [[100, 100, 600, 30]] }, ruleUnits));
+  fails("no unit", () => run({ screen: { x: 0, y: 0, w: 500, h: 400 }, units: null }, ruleUnits));
+  m.boxes.push([60, 300, 60, 20, "Name"], [200, 300, 60, 20, "Value"]);
+  run({ screen: { x: 0, y: 0, w: 500, h: 400 }, units: [[50, 290, 300, 40]] }, ruleRows); // "Name" visible: passes
+  fails("row without its name", () => run({ screen: { x: 150, y: 0, w: 350, h: 400 }, units: [[50, 290, 300, 40]] }, ruleRows));
+  // ... and with no unit declared, judged against the page column (words from CONTENT_LEFT): a window that starts right of a row's name
+  m.boxes.push([260, 300, 60, 20, "Owen"], [600, 300, 60, 20, "97"]);
+  run({ screen: { x: 0, y: 0, w: 1000, h: 800 }, units: null }, ruleRows); // whole row: passes
+  fails("undeclared row without its name", () => run({ screen: { x: 500, y: 0, w: 500, h: 800 }, units: null }, ruleRows));
+  m.boxes.splice(-4, 4);
+  // b. landscape text: scale 0.5 of a 20px box is 8.3px
+  fails("small desk text", () => run({ screen: { x: 0, y: 0, w: 1000, h: 800 }, shot: { x: 0, y: 0, w: 500, h: 400 } }, ruleDeskText));
+  run({ screen: { x: 0, y: 0, w: 1000, h: 800 } }, ruleDeskText); // 16.7px: passes
   // c is file based: planted in a temp manifest
   const tmp = fs.mkdtempSync(path.join(fs.realpathSync(process.env.TMPDIR || "/tmp"), "wtprobe-"));
   try {
@@ -283,7 +426,7 @@ function fakeGuards() {
   // f. ending
   fails("ends on Pause", () => ruleEnding({ end: { label: "Pause" } }));
   fails("replay does not restart", () => ruleEnding({ end: { label: "Replay", restartStep: "4", restartStill: "x", firstStill: "y", restartLabel: "Pause" } }));
-  return "all 8 rule guards fail on planted defects";
+  return "all 18 rule guards fail on planted defects, and their positive controls pass";
 }
 
 // ------------------------------------------------------------------------------------------ the browser run
@@ -311,7 +454,20 @@ function snapshot() {
     cursorOn = tx >= sr.x && tx <= sr.x + sr.w && ty >= sr.y && ty <= sr.y + sr.h;
   }
   const f = root.getAttribute("data-focus");
+  const stageEl = root.querySelector(".stw-stage");
+  const cs = getComputedStyle(stageEl);
+  const st = rect(stageEl);
+  const pad = (k) => parseFloat(cs[k]) || 0;
+  const stage = { x: st.x + pad("paddingLeft"), y: st.y + pad("paddingTop"), w: st.w - pad("paddingLeft") - pad("paddingRight"), h: st.h - pad("paddingTop") - pad("paddingBottom") };
+  const json = (k) => {
+    const v = root.getAttribute(k);
+    return v ? JSON.parse(v) : null;
+  };
   return {
+    stage,
+    close: root.hasAttribute("data-close"),
+    units: json("data-units"),
+    solids: json("data-solids"),
     step: root.dataset.step,
     still: root.dataset.still,
     view: shots.indexOf(on),
@@ -346,6 +502,15 @@ async function openTab(page, tab) {
   await page.locator('[role="tablist"]').first().waitFor({ state: "visible", timeout: 15000 });
   const tb = page.getByRole("tab", { name: tab.tab, exact: true }).first();
   if ((await tb.getAttribute("aria-selected")) !== "true") await tb.click({ timeout: 10000 });
+  if (THEME === "dark") {
+    // The app's own layout could put the theme back: prove the walkthrough's ground really is the dark one.
+    await page.waitForTimeout(300);
+    const ground = await page.evaluate(() => {
+      const r = document.querySelector('[role="tabpanel"][data-on] .stw');
+      return r ? getComputedStyle(r).getPropertyValue("--stw-ground").trim() : null;
+    });
+    if (ground !== "#0a1628") throw new Error(`dark theme did not hold: the walkthrough ground is ${ground}`);
+  }
 }
 
 async function play(browser, tab, vp) {
@@ -383,7 +548,7 @@ async function play(browser, tab, vp) {
     }
     // The tab opens on its no-script picture for a frame or two before the film's first view; the film starts at step 1.
     const from = samples.findIndex((x) => x.step === "1");
-    const rec = { samples: from > 0 ? samples.slice(from) : samples, vp, phone, end: null };
+    const rec = { samples: from > 0 ? samples.slice(from) : samples, vp, phone, portrait: !phone && H > W, close: samples.some((x) => x.close), end: null };
     if (SHOTS) {
       fs.mkdirSync(SHOTS, { recursive: true });
       await page.screenshot({ path: path.join(SHOTS, `${tab.dir}__${ENGINE}__${vp}__${THEME}__rest.png`) });
@@ -424,14 +589,30 @@ function report(name, fn) {
   }
 }
 
+// Which build is measured: the walkthrough's chunk in out/ (a stale or foreign build is named here, not discovered later).
+{
+  const dir = path.join(OUT, "_next", "static", "chunks");
+  const hit = fs.readdirSync(dir).filter((f) => f.endsWith(".js") && fs.readFileSync(path.join(dir, f), "utf8").includes("stw-amb"));
+  console.log(`  [build: ${OUT}, walkthrough chunk ${hit.join(", ") || "NOT FOUND"}; ${ENGINE}, ${THEME}]`);
+}
 report("guards: every rule can fail", fakeGuards);
 report("c. the maintainer's label-stock note is in no shipped still manifest", ruleDevNote);
 
 const tabKeys = (process.env.PS_TEST_TABS || Object.keys(TABS).join(",")).split(",");
 const recs = {};
-if (!ONLY || /^[abdefg]\./.test(ONLY) || ONLY.includes("cut") || ONLY.includes("read") || ONLY.includes("click") || ONLY.includes("pointer") || ONLY.includes("end") || ONLY.includes("bars") || ONLY.includes("walk")) {
+if (!ONLY || /^[abdefghi]\./.test(ONLY) || ONLY.includes("cut") || ONLY.includes("read") || ONLY.includes("click") || ONLY.includes("pointer") || ONLY.includes("end") || ONLY.includes("bars") || ONLY.includes("fill") || ONLY.includes("unit") || ONLY.includes("row") || ONLY.includes("walk")) {
   const browser = await pw[ENGINE].launch();
   try {
+    // One throwaway page first: a cold browser's first film runs slow enough to blur the timing of its first views.
+    {
+      const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+      await serveAsProdOrigin(ctx, OUT);
+      await ctx.route((u) => u.origin !== PROD_ORIGIN, (r) => r.abort());
+      const page = await ctx.newPage();
+      await openTab(page, TABS[tabKeys[0]]).catch(() => {});
+      await page.waitForTimeout(3000);
+      await ctx.close();
+    }
     for (const key of tabKeys) {
       recs[key] = {};
       for (const vp of VIEWPORTS) {
@@ -463,16 +644,20 @@ function across(key, rule, only) {
     }
   }
   assert.ok(bad.length === 0, bad.slice(0, 4).join(" || ") + (bad.length > 4 ? ` (+${bad.length - 4} more sizes)` : ""));
-  return `${ok.length} sizes ok`;
+  return `${ok.length} sizes ok\n          ${ok.join("\n          ")}`;
 }
 for (const key of Object.keys(recs)) {
   const label = `${TABS[key].title} > ${TABS[key].tab}`;
   report(`a. no word is cut by the stage edge, pointer and focus whole (${label})`, () => across(key, ruleCut));
-  report(`b. phone text is at least ${MIN_TEXT_PX}px effective (${label})`, () => across(key, ruleReadable, (r) => r.phone));
+  report(`b. phone and portrait-tablet text is at least ${MIN_TEXT_PX}px effective (${label})`, () => across(key, ruleReadable, (r) => r.phone || r.portrait));
+  report(`b. landscape text: the median word is at least ${DESK_TEXT_PX}px (${label})`, () => across(key, ruleDeskText, (r) => !r.phone && !r.portrait));
   report(`d. every page change is clicked first (${label})`, () => across(key, (r) => ruleClicked(r, TABS[key])));
   report(`e. the pointer is present in every step (${label})`, () => across(key, rulePointerPresent));
   report(`f. the film ends on Replay and replays (${label})`, () => across(key, ruleEnding));
   report(`g. the picture fills the stage, no bars (${label})`, () => across(key, ruleNoBars));
+  report(`h. phone and portrait-tablet views fill the stage (${label})`, () => across(key, ruleFill, (r) => r.phone || r.portrait));
+  report(`i. close views show whole declared units (${label})`, () => across(key, ruleUnits, (r) => r.phone || r.portrait || r.close));
+  report(`i. every visible row keeps its leading word (${label})`, () => across(key, ruleRows, (r) => r.phone || r.portrait || r.close));
 }
 
 if (process.env.PS_TEST_JSON) fs.writeFileSync(process.env.PS_TEST_JSON, JSON.stringify({ engine: ENGINE, theme: THEME, json }, null, 1));
