@@ -667,6 +667,8 @@ html.sc-sheet-open .ps-header {
 /* Tabs that do not fit side by side: a horizontal scroll strip (design spec r2 §1.1). Each label keeps its
    whole width and a 44px target; a 20px fade sits on whichever edge has tabs past it. */
 .sc-tabs[data-scroll] {
+  --sc-cue-l: 0px;
+  --sc-cue-r: 0px;
   --sc-fade-l: 0px;
   --sc-fade-r: 0px;
   overflow-x: auto;
@@ -674,17 +676,75 @@ html.sc-sheet-open .ps-header {
   overscroll-behavior-x: contain;
   /* No scroll snapping: it moved the strip after the selected tab had been placed, into the fade. */
   scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--sc-fade-l), #000 calc(100% - var(--sc-fade-r)), transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0, #000 var(--sc-fade-l), #000 calc(100% - var(--sc-fade-r)), transparent 100%);
+  /* The tabs fade out just before an edge cue and are gone under it; the ground is drawn by .sc-tabs__ground. */
+  background: transparent;
+  -webkit-mask-image: linear-gradient(90deg, transparent var(--sc-cue-l), #000 calc(var(--sc-cue-l) + var(--sc-fade-l)), #000 calc(100% - var(--sc-cue-r) - var(--sc-fade-r)), transparent calc(100% - var(--sc-cue-r)));
+  mask-image: linear-gradient(90deg, transparent var(--sc-cue-l), #000 calc(var(--sc-cue-l) + var(--sc-fade-l)), #000 calc(100% - var(--sc-cue-r) - var(--sc-fade-r)), transparent calc(100% - var(--sc-cue-r)));
 }
 .sc-tabs[data-scroll]::-webkit-scrollbar {
   display: none;
 }
 .sc-tabs[data-scroll][data-fade-l] {
-  --sc-fade-l: 20px;
+  --sc-cue-l: 28px;
+  --sc-fade-l: 18px;
 }
 .sc-tabs[data-scroll][data-fade-r] {
-  --sc-fade-r: 20px;
+  --sc-cue-r: 28px;
+  --sc-fade-r: 18px;
+}
+.sc-tabs__ground {
+  display: none;
+  grid-area: tabs;
+  align-self: stretch;
+  border-radius: 999px;
+  background: rgba(10, 22, 40, 0.07);
+}
+[data-theme="dark"] .sc-tabs__ground {
+  background: rgba(255, 255, 255, 0.08);
+}
+.sc-tabs[data-scroll] ~ .sc-tabs__ground {
+  display: block;
+}
+.sc-tabs[data-scroll],
+[data-theme="dark"] .sc-tabs[data-scroll] {
+  z-index: 1;
+  background: transparent;
+}
+/* A sliver of a label at the strip's edge is hidden (its tab stays a target); a label mostly in view peeks under the fade. */
+.sc-tabs[data-scroll] .sc-tabs__tab[data-peek] {
+  color: transparent;
+}
+.sc-tabs[data-scroll] .sc-tabs__tab {
+  transition: color 140ms ease-out;
+}
+/* The edge cues: a chevron over each faded end that has tabs past it, so the strip reads as one that scrolls. They sit
+   in the tabs' own grid area, over the track's ends, and let every tap through to the tab beneath. */
+.sc-tabs__more {
+  grid-area: tabs;
+  align-self: stretch;
+  z-index: 2;
+  display: none;
+  place-items: center;
+  width: 32px;
+  pointer-events: none;
+  color: var(--sc-tab-ink);
+}
+.sc-tabs__more[data-side="l"] {
+  justify-self: start;
+}
+.sc-tabs__more[data-side="r"] {
+  justify-self: end;
+}
+.sc-tabs__more svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sc-tabs[data-scroll][data-fade-l] ~ .sc-tabs__more[data-side="l"],
+.sc-tabs[data-scroll][data-fade-r] ~ .sc-tabs__more[data-side="r"] {
+  display: grid;
 }
 .sc-tabs[data-scroll] .sc-tabs__tab,
 .sc-sheet .sc-tabs[data-scroll] .sc-tabs__tab {

@@ -45,6 +45,11 @@ function prefersReduced() {
   return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+/** The tab strip's edge cue width. */
+const CUE = 32;
+/** The strip's resting places: each tab (its pill, not just its label) just clear of the left cue; the first: the start. */
+const restStarts = (tabs: HTMLElement[]) => tabs.map((t, i) => (i === 0 ? 0 : t.offsetLeft - CUE - 4));
+
 export function isSheetLayout() {
   return typeof window !== "undefined" && (!window.matchMedia("(hover: hover) and (pointer: fine)").matches || window.innerWidth < 900);
 }
@@ -290,8 +295,9 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
   // the bar into a horizontal scroll strip; labels are never squeezed, overprinted or cut. Measured from
   // the labels' own text, so the answer is the same in either layout (no flip-flop between them).
   const [scrollTabs, setScrollTabs] = useState(false);
-  // The strip's end is padded just enough that its last resting place also starts on a tab, so the left edge
-  // never shows the tail of a word ("nter", "mmand Center": critic r2 W3) even fully scrolled.
+  // Where the strip comes to rest: a tab's LABEL starts just clear of the left edge cue, so the previous label is wholly
+  // under the cue (and hidden by edges()) rather than half shown ("MarC...": critic r2 SHOULD 7). The strip's end is
+  // padded just enough that its last resting place is one of these too.
   const padEnd = useCallback(() => {
     const track = tabsRef.current;
     if (!track) return;
@@ -301,7 +307,7 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
       const last = tabs[tabs.length - 1];
       const end = last.offsetLeft + last.offsetWidth + 4; // content end with the track's own 4 px
       const cw = track.clientWidth;
-      const start = tabs.map((t) => t.offsetLeft - 4).find((x) => x + cw >= end);
+      const start = restStarts(tabs).find((x) => x + cw >= end);
       const extra = start === undefined ? 0 : Math.max(0, Math.ceil(start + cw - end));
       if (extra > 0) pad = `${4 + extra}px`;
     }
@@ -314,28 +320,45 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
     if (!t) return;
     const cw = track.clientWidth;
     const max = Math.max(0, track.scrollWidth - cw);
+    // The selected tab's pill stays clear of whichever edge cue shows (none at either end of the strip).
     const L = t.offsetLeft;
     const R = L + t.offsetWidth;
-    const CLEAR = 28; // the fade (20) and a little air
-    const fits = (c: number) => (c <= 0 ? L >= 0 : L - c >= CLEAR) && (c >= max ? R <= c + cw : c + cw - R >= CLEAR);
-    const starts = [0, max, ...[...track.querySelectorAll<HTMLElement>(".sc-tabs__tab")].map((x) => Math.min(max, Math.max(0, x.offsetLeft - 4)))];
-    // No tab-aligned rest fits (a long label on a 320 phone): the selected tab sits just clear of the left
-    // fade, so at most the fade's width of the previous label shows, under the fade.
+    const CLEAR = CUE + 4;
+    const fits = (c: number) => (c <= 0.5 || L - c >= CLEAR) && (c >= max - 0.5 || c + cw - R >= CLEAR);
+    const tabs = [...track.querySelectorAll<HTMLElement>(".sc-tabs__tab")];
+    const starts = [0, max, ...restStarts(tabs).map((x) => Math.min(max, Math.max(0, x)))];
     let ok = starts.filter(fits);
     if (!ok.length) ok = [L - CLEAR, R + CLEAR - cw].map((c) => Math.min(max, Math.max(0, c))).filter(fits).slice(0, 1);
     const now = track.scrollLeft;
     const left = ok.length
       ? ok.reduce((best, c) => (Math.abs(c - now) < Math.abs(best - now) ? c : best), ok[0])
-      : Math.min(max, Math.max(0, L - (cw - t.offsetWidth) / 2));
+      : Math.min(max, Math.max(0, L - (cw - (R - L)) / 2));
     if (Math.abs(left - now) > 0.5) track.scrollTo({ left, behavior: smooth && !reduced ? "smooth" : "auto" });
   }, [reduced]);
-  // In the strip, a fade marks whichever edge has tabs hidden past it.
+  // In the strip, a fade and a chevron cue mark whichever edge has tabs past it (critic r2 SHOULD 7: nothing showed
+  // that the strip scrolls, and "MarC..." showed cut at 320). The selected tab is never at an edge: keepInView keeps it
+  // clear of the cues.
   const edges = useCallback(() => {
     const track = tabsRef.current;
     if (!track) return;
     const on = track.hasAttribute("data-scroll");
-    track.toggleAttribute("data-fade-l", on && track.scrollLeft > 1);
-    track.toggleAttribute("data-fade-r", on && track.scrollLeft + track.clientWidth < track.scrollWidth - 1);
+    const left = on && track.scrollLeft > 1;
+    const right = on && track.scrollLeft + track.clientWidth < track.scrollWidth - 1;
+    track.toggleAttribute("data-fade-l", left);
+    track.toggleAttribute("data-fade-r", right);
+    const box = track.getBoundingClientRect();
+    const lo = box.left + (left ? CUE : 0);
+    const hi = box.right - (right ? CUE : 0);
+    track.querySelectorAll<HTMLElement>(".sc-tabs__tab").forEach((t) => {
+      const r = document.createRange();
+      r.selectNodeContents(t);
+      const b = r.getBoundingClientRect();
+      // A long label mostly in view peeks through the fade under its edge's chevron (the cue that the strip scrolls); a
+      // sliver ("MarC", "r MarCommand") or a part of a short label ("A" of "AI") says nothing and is hidden.
+      const shown = b.width > 0 ? (Math.min(b.right, hi) - Math.max(b.left, lo)) / b.width : 1;
+      const peeks = shown >= 0.4 && (b.width >= 40 || shown >= 0.999);
+      t.toggleAttribute("data-peek", on && !peeks && t.getAttribute("aria-selected") !== "true");
+    });
   }, []);
   useEffect(() => {
     const track = tabsRef.current;
@@ -510,6 +533,19 @@ function Layer({ show, anchor, mode, armed = false, onClose }: LayerProps & { sh
           </button>
         ))}
       </div>
+      {/* As a strip, the track's ground is drawn here, unfaded, so its ends stay whole under the cues while the tabs fade
+          out before them. The edge cues are decorative: the strip scrolls by swipe, and the arrow keys move between tabs. */}
+      <span className="sc-tabs__ground" aria-hidden="true" />
+      <span className="sc-tabs__more" data-side="l" aria-hidden="true">
+        <svg viewBox="0 0 16 16" width="14" height="14">
+          <path d="M10 3.5 5.5 8l4.5 4.5" />
+        </svg>
+      </span>
+      <span className="sc-tabs__more" data-side="r" aria-hidden="true">
+        <svg viewBox="0 0 16 16" width="14" height="14">
+          <path d="M6 3.5 10.5 8 6 12.5" />
+        </svg>
+      </span>
     </div>
   );
 

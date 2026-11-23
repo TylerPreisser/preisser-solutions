@@ -33,8 +33,9 @@
  *     3d. still    under reduced motion the first frame is already the final one.
  *  4. Impact sentences: none of the retired slogan lines is shown; each is one plain sentence, no dash.
  *  5. Tab strip (Duffer's five tabs on phones; the 3- and 4-tab clients are recorded and must not scroll at
- *     393 and up): the selected label is whole and clear of any edge cue; every other label is whole or hidden
- *     (never a sliced word); an edge with tabs past it shows a cue (`.sc-tabs__more`).
+ *     393 and up): the selected label is whole and clear of any edge cue; an edge with tabs past it shows a cue
+ *     (`.sc-tabs__more`); every other label is whole, hidden, or (40 px or wider) peeks under its edge's cue with at
+ *     least 40% of it in the clear (never a sliver such as "MarC", nor a stray "A" of "AI").
  *  z. static: no class is styled by two stylesheets that can load on the same page with different values for a
  *     layout property (position, display, inset, size, margin, padding, flex, grid, overflow, transform).
  *
@@ -280,8 +281,13 @@ export function ruleStrip(s) {
   for (const t of s.tabs) {
     const shows = t.x1 > tl + SLACK && t.x0 < tr - SLACK;
     const whole = t.x0 >= s.clearL - SLACK && t.x1 <= s.clearR + SLACK;
+    // A label crossing an edge may peek under that edge's cue when at least 40% of it is in the clear; a sliver is hidden.
+    const shown = (Math.min(t.x1, s.clearR) - Math.max(t.x0, s.clearL)) / Math.max(1, t.x1 - t.x0);
+    const cued = (t.x0 < s.clearL - SLACK ? s.cueL : true) && (t.x1 > s.clearR + SLACK ? s.cueR : true);
+    // A short label (under 40 px) never peeks: part of "AI" is a stray letter.
+    const peek = cued && shown >= 0.4 && t.x1 - t.x0 >= 40;
     if (t.sel && !whole) bad.push(`the selected tab "${t.label}" is not whole and clear of the edges`);
-    else if (!t.sel && shows && !whole && !t.hidden) bad.push(`"${t.label}" is sliced at the strip's edge`);
+    else if (!t.sel && shows && !whole && !t.hidden && !peek) bad.push(`"${t.label}" is sliced at the strip's edge (${Math.round(shown * 100)}% shows)`);
     if (t.x0 < s.clearL - SLACK) pastL = true;
     if (t.x1 > s.clearR + SLACK) pastR = true;
   }
@@ -382,14 +388,17 @@ function fakeGuards() {
   fails("3c cut", () => ruleQrWhole({ cut: ["Sumac Hol…"] }));
   fails("4 retired", () => ruleSentences([RETIRED_LINES[0]]));
   fails("4 two sentences", () => ruleSentences(["A thing. Another thing."]));
-  const strip = { scroll: true, track: { x: 12, w: 296 }, clearL: 40, clearR: 280, cueL: true, cueR: false, tabs: [{ label: "MarCommand", sel: false, x0: 20, x1: 110, hidden: false }, { label: "Impact", sel: true, x0: 200, x1: 250, hidden: false }] };
+  const strip = { scroll: true, track: { x: 12, w: 296 }, clearL: 90, clearR: 280, cueL: true, cueR: false, tabs: [{ label: "MarCommand", sel: false, x0: 20, x1: 110, hidden: false }, { label: "Impact", sel: true, x0: 200, x1: 250, hidden: false }] };
   fails("5 sliced", () => ruleStrip(strip));
+  ruleStrip({ ...strip, clearL: 40 }); // 78% shows under the left cue: a peek, allowed
+  fails("5 peek without a cue", () => ruleStrip({ ...strip, clearL: 40, cueL: false }));
+  fails("5 short label peeks", () => ruleStrip({ ...strip, clearL: 40, tabs: [{ label: "AI", sel: false, x0: 30, x1: 43, hidden: false }, strip.tabs[1]] }));
   ruleStrip({ ...strip, tabs: [{ ...strip.tabs[0], hidden: true }, strip.tabs[1]] });
   fails("5 no cue", () => ruleStrip({ ...strip, cueL: false, tabs: [{ ...strip.tabs[0], hidden: true }, strip.tabs[1]] }));
   fails("5 selected cut", () => ruleStrip({ ...strip, tabs: [{ ...strip.tabs[1], x0: 270, x1: 320 }] }));
   fails("z collision", () => assert.ok(cssCollisions([["a.css", ".fb{position:relative}"], ["b.css", ".fb{position:absolute;inset:0}"]]).length === 0));
   assert.ok(cssCollisions([["a.css", ".x{background:red}"], ["b.css", ".x{background:blue}"]]).length === 0, "z flags a non-layout difference");
-  return "all 30 rule guards fail on planted defects";
+  return "all 28 planted defects fail their rule; every clean input passes; z ignores a colour-only difference";
 }
 
 // ------------------------------------------------------------------------------------------ in-page readers
@@ -529,16 +538,11 @@ function readImpact() {
     return { text: o.textContent.trim(), strike: cs ? { image: cs.backgroundImage, size: cs.backgroundSize } : null };
   });
   const cards = [...im.querySelectorAll(".im__card")].filter((c) => c.querySelector(".im__old")).map((c) => {
-    const o = c.querySelector(".im__old");
-    const r = document.createRange();
-    r.selectNodeContents(o);
-    const ob = r.getBoundingClientRect();
+    // Element boxes (line boxes), not glyph boxes: a 84 px figure's glyph box starts ~8 px above its line box.
+    const ob = R(c.querySelector(".im__old"));
     const lab = c.querySelector(".im__lab");
-    const now = c.querySelector(".im__now");
-    const nr = document.createRange();
-    nr.selectNodeContents(now);
-    const nb = nr.getBoundingClientRect();
-    return { old: { y: ob.y, h: ob.height }, now: { y: nb.y, h: nb.height }, lab: lab ? R(lab) : null };
+    const nb = R(c.querySelector(".im__now"));
+    return { old: { y: ob.y, h: ob.h }, now: { y: nb.y, h: nb.h }, lab: lab ? R(lab) : null };
   });
   const blockEls = [...im.querySelectorAll(".im__k, .im__old, .im__lab, .im__row-l, .im__text:not([hidden])")].filter((e) => opacity(e, panel) > 0.5);
   const blocks = blockEls.map((e) => ({ text: e.textContent.trim(), ...lines(e) }));
