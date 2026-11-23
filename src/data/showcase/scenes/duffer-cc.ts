@@ -79,10 +79,11 @@ const R = (x: number, y: number, w: number, h: number): Rect => ({ x, y, w, h })
 const CL: Record<string, Units> = {
   // Dashboard. Only the left of the page has tiles in both rows (right of x 627 the second row is empty page), so a close
   // view opens there: a tablet on the first three tiles and the two under them, a phone on the 2 x 2 block of whole
-  // tiles under the review banner, a 320 phone on the first column of two tiles.
-  kpiA: [[R(257, 179, 562, 307)], [R(257, 179, 370, 307)], [R(257, 179, 178, 307)]],
+  // tiles under the review banner, a 320 phone on the Partners active tile.
+  // (Every dashboard window starts right of the dark sidebar, which ends at x 224.)
+  kpiA: [[{ ...R(257, 179, 562, 307), left: 30 }], [{ ...R(257, 179, 370, 307), left: 30 }], [{ ...R(257, 179, 178, 307), left: 30 }], [{ ...R(257, 179, 178, 147), left: 30, above: 14 }]],
   // Then the camera moves down to the daily scans and leads chart (a tablet already shows it, and stays).
-  kpiB: [[R(257, 179, 562, 307)], [R(257, 338, 370, 400)], [R(257, 506, 290, 220)]],
+  kpiB: [[{ ...R(257, 179, 562, 307), left: 30 }], [{ ...R(257, 338, 370, 400), left: 30 }], [{ ...R(257, 506, 290, 220), left: 30 }]],
   // The Live feed card: time and what happened, row by row.
   // (A 320 phone cannot read time and event together: it shows the events, each whole.)
   // (A tablet's window stops in the gap before the feed card: left of it are the dashboard's charts, cut.)
