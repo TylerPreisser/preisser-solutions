@@ -76,11 +76,7 @@ const client: ShowcaseClient = {
       live: { src: "https://nwksencounter.com/", origins: ["https://nwksencounter.com", "https://www.nwksencounter.com"], frame: "handshake", revealMs: 400 },
       tab: "Website",
       caption: "The men's and women's weekends share one front door.",
-      captured: "Captured Nov 1, 2026",
       desk: {
-        src: "/images/showcase/nwks-encounter-site-desk-ff921ff6.webp",
-        width: 1440,
-        height: 900,
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only nwks-encounter
         first: { src: "/images/showcase/nwks-encounter-site-desk-live-003dc735.webp", width: 1220, height: 715, edge: "#f3f3ec", captured: "Captured Nov 22, 2026" },
@@ -89,9 +85,6 @@ const client: ShowcaseClient = {
         stops: [{ y: 0, holdMs: 3400 }],
       },
       phone: {
-        src: "/images/showcase/nwks-encounter-site-phone-8722795d.webp",
-        width: 390,
-        height: 844,
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only nwks-encounter
         first: { src: "/images/showcase/nwks-encounter-site-phone-live-a316a5ca.webp", width: 376, height: 675, edge: "#fbf8f2", captured: "Captured Nov 22, 2026" },

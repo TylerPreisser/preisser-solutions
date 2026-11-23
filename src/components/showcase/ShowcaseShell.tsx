@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import "./showcase.css";
 
@@ -72,12 +72,15 @@ type Phase = "measure" | "from" | "open" | "leave";
 export function ShowcaseShell({
   name,
   domain,
+  ground,
   anchor,
   onClose,
   onEntered,
 }: {
   name: string;
   domain: string;
+  /** The site's ground colour under the picture area, per variant (the website still's `edge`). */
+  ground?: { desk: string; phone: string };
   anchor: HTMLElement;
   onClose: () => void;
   /** The shell has finished coming in: the window may take its place. */
@@ -188,7 +191,11 @@ export function ShowcaseShell({
   const panel = (
     <div className="sc-panel">
       <div className="sc-beat" data-on="">
-        <div className="sc-web" data-state="loading">
+        <div
+          className="sc-web"
+          data-state="loading"
+          style={ground ? ({ "--sc-ground": sheet && window.innerWidth < 600 ? ground.phone : ground.desk } as CSSProperties) : undefined}
+        >
           <div className="sc-web__strip">
             <span className="sc-web__url">
               <svg className="sc-web__lock" width="10" height="12" viewBox="0 0 10 12" aria-hidden="true">

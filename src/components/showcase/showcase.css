@@ -842,22 +842,24 @@ html.sc-sheet-open .ps-header {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+/* --sc-ground (WebsiteBeat, ShowcaseShell): the site's own ground colour, the picture area's colour until the still
+   is decoded, so the window never grows as an empty white panel (critic 2026-11-22 MUST 3). */
 .sc-web__view {
   position: relative;
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
-  background: #fff;
+  background: var(--sc-ground, #fff);
   overscroll-behavior: contain;
 }
 [data-theme="dark"] .sc-web__view {
-  background: #16253d;
+  background: var(--sc-ground, #16253d);
 }
 .sc-web__still {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: #fff;
+  background: var(--sc-ground, #fff);
 }
 .sc-web__still > img {
   display: block;
@@ -879,21 +881,6 @@ html.sc-sheet-open .ps-header {
   height: 100%;
   margin-top: -24px;
   background: linear-gradient(to bottom, transparent, var(--sc-still-edge) 24px);
-}
-.sc-web__still--video {
-  display: flex;
-  flex-direction: column;
-  background: #000;
-}
-.sc-web__still--video .sc-web__still-head {
-  flex: none;
-}
-.sc-web__still--video .sc-web__still-hero {
-  flex: 1 1 auto;
-  min-height: 0;
-  height: auto;
-  object-fit: cover;
-  object-position: 50% 50%;
 }
 .sc-web__frame {
   position: absolute;
@@ -930,10 +917,12 @@ html.sc-sheet-open .ps-header {
   .sc-web[data-state="live"] .sc-web__still {
     transition: visibility 0s linear 350ms;
   }
-  /* The still fades in once decoded, instead of popping in mid-rise. */
+  /* The still fades in the moment it is decoded (at once when it was decoded ahead), on its own compositor layer,
+     so a fade during the window's grow repaints nothing (it used to wait for the grow to end: critic MUST 3). */
   .sc-web__still {
     opacity: 0;
     transition: opacity 180ms ease-out;
+    will-change: opacity;
   }
   .sc-web__still[data-ready] {
     opacity: 1;

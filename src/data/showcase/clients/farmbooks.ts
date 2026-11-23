@@ -90,11 +90,7 @@ const client: ShowcaseClient = {
       live: { src: "https://farm-books.com/", origins: ["https://farm-books.com", "https://www.farm-books.com"], frame: "handshake", revealMs: 800 },
       tab: "Website",
       caption: "farm-books.com walks a farmer through the mistakes that hide on a bill.",
-      captured: "Captured Nov 1, 2026",
       desk: {
-        src: "/images/showcase/farmbooks-site-desk-d447a5af.webp",
-        width: 1440,
-        height: 2992,
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only farmbooks
         first: { src: "/images/showcase/farmbooks-site-desk-live-319d3561.webp", width: 1220, height: 715, edge: "#ede0bc", captured: "Captured Nov 22, 2026" },
@@ -109,9 +105,6 @@ const client: ShowcaseClient = {
         ],
       },
       phone: {
-        src: "/images/showcase/farmbooks-site-phone-ba88fca9.webp",
-        width: 390,
-        height: 4024,
         // The loading still, the live page framed at the frame's size just after it goes Live (2026-11-22).
         // Recapture: npm run build && node scripts/capture-showcase-site-stills.mjs --only farmbooks
         first: { src: "/images/showcase/farmbooks-site-phone-live-e92c206b.webp", width: 376, height: 675, edge: "#ece1c0", captured: "Captured Nov 22, 2026" },

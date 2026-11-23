@@ -40,6 +40,7 @@ const req = createRequire(import.meta.url);
 const ENGINE = (process.env.PS_TEST_ENGINE || "chromium").toLowerCase();
 const engine = req("playwright")[ENGINE];
 const sharp = req("sharp");
+const WHITE_LUMA = 245; // check j: a cell this bright counts as white (the view's empty ground is #fff)
 const STILL_SEAM_DIFF = 12; // check i: mean level difference (0-255) between the frame under the picture and the picture's bottom colour
 if (!engine || !["chromium", "webkit", "firefox"].includes(ENGINE)) throw new Error(`PS_TEST_ENGINE must be chromium, webkit or firefox, not ${ENGINE}`);
 const CDP = ENGINE === "chromium"; // screencast, CPU throttle and raw touch events need the Chrome DevTools Protocol
@@ -204,6 +205,13 @@ function recorderStart(sel) {
       }
       o.ind = ind;
       o.ho = !!document.querySelector(".sc-root[data-handoff]");
+      // the Website view's on-screen rect this frame (transform-aware): check j samples the picture in it mid-grow
+      let best = null;
+      for (const v of document.querySelectorAll(".sc-root .sc-web__view")) {
+        const r = v.getBoundingClientRect();
+        if (r.width * r.height > 0 && vis(v) && (!best || r.width * r.height > best.w * best.h)) best = { x: r.x, y: r.y, w: r.width, h: r.height };
+      }
+      o.vr = best;
     }
     S.samples.push(o);
     requestAnimationFrame(tick);
@@ -241,7 +249,7 @@ function analyseOpen(rec, kind, { reduced = false } = {}) {
   out.cardNoisy = pre.slice(-6).some((s) => s.card !== base);
   const after = S.filter((s) => s.t >= t0);
   const pressed = (s) => !out.cardNoisy && base != null && s.card !== base;
-  const answered = (s) => (kind === "click" ? false : pressed(s)) || winVisible(s, rec.H) || (s.scrim ?? 0) > 0.05;
+  const answered = (s) => (kind === "click" || kind === "jump" ? false : pressed(s)) || winVisible(s, rec.H) || (s.scrim ?? 0) > 0.05;
   const a = after.find(answered);
   if (a) out.answer = a.t - t0;
   const fw = after.find((s) => winVisible(s, rec.H));
@@ -326,11 +334,14 @@ async function decodeGrids(frames, rect, vw, vh) {
   return analyzer.evaluate(
     async ({ frames, rect, vw, vh }) => {
       const outW = 40;
-      const outH = Math.max(8, Math.round((rect.h * outW) / rect.w));
+      const R0 = Array.isArray(rect) ? rect[0] : rect;
+      const outH = Math.max(8, Math.round((R0.h * outW) / R0.w));
       const cv = new OffscreenCanvas(outW, outH);
       const cx = cv.getContext("2d", { willReadFrequently: true });
       const grids = [];
-      for (const f of frames) {
+      for (let k = 0; k < frames.length; k++) {
+        const f = frames[k];
+        const R = Array.isArray(rect) ? rect[k] : rect;
         const bin = atob(f.data);
         const u = new Uint8Array(bin.length);
         for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
@@ -338,7 +349,7 @@ async function decodeGrids(frames, rect, vw, vh) {
         const sx = bmp.width / vw;
         const sy = bmp.height / vh;
         cx.clearRect(0, 0, outW, outH);
-        cx.drawImage(bmp, rect.x * sx, rect.y * sy, rect.w * sx, rect.h * sy, 0, 0, outW, outH);
+        cx.drawImage(bmp, R.x * sx, R.y * sy, R.w * sx, R.h * sy, 0, 0, outW, outH);
         const d = cx.getImageData(0, 0, outW, outH).data;
         const g = new Array(outW * outH);
         for (let i = 0; i < g.length; i++) g[i] = Math.round(0.299 * d[i * 4] + 0.587 * d[i * 4 + 1] + 0.114 * d[i * 4 + 2]);
@@ -388,10 +399,41 @@ async function newSession(kind, slug, opts = {}) {
     return newSessionOnce(kind, slug, opts);
   }
 }
-async function newSessionOnce(kind, slug, { cpu = 1, reduced = false, picture = false, hold = false } = {}) {
+async function newSessionOnce(kind, slug, { cpu = 1, reduced = false, picture = false, hold = false, holdReadyMs = 0, refuse = false } = {}) {
   const dev = kind === "phone" ? "phone" : "desk";
   const ctx = await browser.newContext({ ...DEVICES[dev], reducedMotion: reduced ? "reduce" : "no-preference" });
   if (BUILD) await serveAsProdOrigin(ctx, OUT, { delayMs: DELAY });
+  // holdReadyMs: the client site's ready message reaches the window this much later (a slow phone, a heavy site).
+  // Held in the TOP page only; the client sites are not touched.
+  if (holdReadyMs) {
+    await ctx.addInitScript((ms) => {
+      if (window.top !== window) return;
+      const ours = new WeakSet();
+      window.addEventListener(
+        "message",
+        (e) => {
+          if (ours.has(e) || !e.data || e.data.type !== "ps-portal-ready") return;
+          e.stopImmediatePropagation();
+          setTimeout(() => {
+            const ev = new MessageEvent("message", { data: e.data, origin: e.origin, source: e.source });
+            ours.add(ev);
+            window.dispatchEvent(ev);
+          }, ms);
+        },
+        true,
+      );
+    }, holdReadyMs);
+  }
+  // refuse: the client site's page answers with frame-ancestors 'none', as a site that forbids framing does.
+  if (refuse) {
+    await ctx.route(
+      (u) => u.origin !== ORIGIN,
+      (route) =>
+        route.request().resourceType() === "document" && route.request().frame().parentFrame()
+          ? route.fulfill({ status: 200, contentType: "text/html", headers: { "content-security-policy": "frame-ancestors 'none'", "x-frame-options": "DENY" }, body: "<!doctype html><title>refused</title><p>refused</p>" })
+          : route.fallback(),
+    );
+  }
   // hold: every script chunk the home page did not load up front (the window's code, the client's data) is
   // held back until S.release() — a tap that lands before they arrive (a fast thumb, a slow connection).
   let release = () => {};
@@ -444,6 +486,9 @@ async function center(S) {
 async function actOpen(S, kind) {
   const { x, y } = await center(S);
   if (kind === "phone") return S.page.touchscreen.tap(x, y);
+  // jump: the pointer arrives and presses at once (Playwright's click), so nothing was warmed by a hover first: a
+  // pointer already resting on the card, a quick flick (critic 2026-11-22 opened the window this way).
+  if (kind === "jump") return S.page.mouse.click(x, y);
   if (kind === "click") {
     await S.page.mouse.move(x, y);
     await S.page.waitForTimeout(120); // a person's pointer lands before the press; shorter than the 280 ms hover intent
@@ -709,10 +754,11 @@ if (CDP) await check("guard: the cut and near-flat detectors on a synthetic cros
 // ---------------------------------------------------------------------------------------------------
 // The checks. a, b, e, c(loading) come from the rAF runs; c(Live), d from the screencast runs.
 // ---------------------------------------------------------------------------------------------------
-const NAMES = { phone: "phone tap", click: "desktop click", hover: "desktop hover" };
+const NAMES = { phone: "phone tap", click: "desktop click", jump: "desktop click, no hover first", hover: "desktop hover" };
 const COMBOS = [
   ["phone", "hays", 1], ["phone", "farm", 1], ["phone", "hays", 4],
   ["click", "hays", 1], ["click", "farm", 1], ["click", "hays", 4],
+  ["jump", "hays", 1], ["jump", "farm", 1], ["jump", "hays", 4],
   ["hover", "hays", 1], ["hover", "farm", 1],
 ];
 const tag = (kind, slug, load, cpu) => `[${NAMES[kind]} · ${LABEL[slug]} · ${load} · ${cpu}x CPU]`;
@@ -852,6 +898,51 @@ for (const [kind, slug] of PICS) {
   }
 }
 
+// j over every open: phone tap, desktop click after a hover, desktop click with no hover first. Chromium (screencast).
+for (const [kind, slug] of CDP ? [["phone", "hays"], ["phone", "farm"], ["click", "hays"], ["click", "farm"], ["jump", "hays"], ["jump", "farm"]] : []) {
+  for (const load of ["cold", "warm"]) {
+    const dev = kind === "phone" ? { ...DEVICES.phone } : { ...DEVICES.desk };
+    // j. the window comes in holding the picture: every screencast frame from the window's first until 200 ms after
+    // its entrance ends, once the window is more than half opaque, read inside the Website view's rect OF THAT
+    // FRAME (it grows), must not be a flat white field (critic 2026-11-22 MUST 3: the desktop window grew as an
+    // empty white panel for ~0.4 s and the picture faded in after the grow).
+    await check(`${tag(kind, slug, load, 1)} j. the window comes in holding the picture (never a flat white field once it is half opaque)`, dev, async () => {
+      const runs = (await pictures(kind, slug))[load];
+      const per = [];
+      for (const r of runs) {
+        const S = r.rec.samples;
+        const t0e = r.an.firstSample ? r.an.firstSample.e : null;
+        const end = (r.an.doneEpoch ?? (S.length ? S[S.length - 1].e : 0)) + 200;
+        const picks = [];
+        const rects = [];
+        if (t0e != null) {
+          for (const f of r.frames) {
+            if (f.e < t0e || f.e > end) continue;
+            const sm = [...S].reverse().find((x) => x.e <= f.e);
+            if (!sm || !sm.vr) continue;
+            const op = sm.pop ? (sm.pop.vis === "hidden" ? 0 : sm.pop.op) : sm.sheet ? 1 : 0;
+            if (op <= 0.5) continue;
+            const x = Math.max(0, sm.vr.x);
+            const y = Math.max(0, sm.vr.y);
+            const w = Math.min(r.rec.W, sm.vr.x + sm.vr.w) - x;
+            const h = Math.min(r.rec.H, sm.vr.y + sm.vr.h) - y;
+            if (w < 40 || h < 40) continue;
+            picks.push({ f, t: Math.round(f.e - t0e) });
+            rects.push({ x: x + 4, y: y + 4, w: w - 8, h: h - 8 });
+          }
+        }
+        const grids = picks.length ? await decodeGrids(picks.map((p) => p.f), rects, r.rec.W, r.rec.H) : [];
+        const white = picks.filter((p, k) => grids[k].filter((v) => v >= WHITE_LUMA).length / grids[k].length >= FLAT_FRAC).map((p) => p.t);
+        per.push({ n: picks.length, white });
+      }
+      const t = `frames sampled during the entrance: ${per.map((p) => p.n).join("/")}; flat white ones: ${per.map((p) => (p.white.length ? `${p.white.length} (at +${p.white.slice(0, 6).join(", +")} ms after the window's first frame)` : "0")).join("; ")}`;
+      assert.ok(per.every((p) => p.n > 0), `no frames were sampled during the entrance: ${t}`);
+      assert.ok(per.every((p) => p.white.length === 0), t);
+      return t;
+    });
+  }
+}
+
 // i. the loading still fills its frame. The client site is held back (its document never answers), so the window
 // stays on "Loading" over the still. The picture the still actually DRAWS (its box run through its own object-fit /
 // object-position, not the box) must reach the view's top, left and right. Under it, a frame taller than the picture
@@ -936,6 +1027,102 @@ for (const [kind, slug] of [["phone", "hays"], ["phone", "farm"], ["click", "hay
   });
 }
 
+// k + l. While the chip says Loading, the picture under it never changes and never blanks (critic 2026-11-22 MUST 2:
+// a ready message more than 1 s after the frame's load was taken as a refused frame, and the still swapped to a
+// dated fallback that faded in from nothing). k: the ready message held back 2.5 s; l: the frame refused outright,
+// where the window must settle in its fallback state on the same loading still. Any engine (a DOM watch every frame,
+// and screenshots of the view every ~250 ms).
+function stillWatchStart() {
+  const W = (window.__psstill = { s: [], run: true });
+  const tick = (t) => {
+    if (!W.run) return;
+    const root = document.querySelector(".sc-root:not([data-shell])");
+    const st = root && root.querySelector(".sc-web__still");
+    const img = st && st.querySelector("img");
+    const chip = root && root.querySelector(".sc-web__chip");
+    W.s.push({
+      t: Math.round(t),
+      src: img ? img.currentSrc.split("/").pop() || img.getAttribute("src").split("/").pop() : null,
+      shown: !!(st && st.hasAttribute("data-ready")),
+      op: st ? +getComputedStyle(st).opacity : null,
+      chip: chip ? chip.dataset.state : null,
+      fallback: !!(root && root.querySelector(".sc-web__fallback")),
+    });
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+async function watchStill(S, kind, untilMs) {
+  await S.page.evaluate(stillWatchStart);
+  await actOpen(S, kind);
+  const flats = [];
+  const t0 = Date.now();
+  let shots = 0;
+  while (Date.now() - t0 < untilMs) {
+    const now = await S.page.evaluate(() => {
+      const s = window.__psstill.s;
+      const last = s[s.length - 1];
+      const v = document.querySelector(".sc-root:not([data-shell]) .sc-web__view");
+      const r = v && v.getBoundingClientRect();
+      return { last, r: r ? { x: r.x, y: r.y, w: r.width, h: r.height } : null };
+    });
+    const L = now.last;
+    if (L && L.chip && L.chip !== "loading") break;
+    if (L && L.shown && L.op >= 0.99 && now.r && now.r.w > 40) {
+      const png = await S.page.screenshot({ clip: { x: now.r.x + 4, y: now.r.y + 4, width: now.r.w - 8, height: now.r.h - 8 } });
+      const { data, info } = await sharp(png).resize(40, null).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+      const g = [];
+      for (let i = 0; i < info.width * info.height; i++) g.push(Math.round(0.299 * data[i * 3] + 0.587 * data[i * 3 + 1] + 0.114 * data[i * 3 + 2]));
+      shots++;
+      if (flatFrac(g) >= FLAT_FRAC) flats.push(Date.now() - t0);
+    }
+    await S.page.waitForTimeout(250);
+  }
+  const rec = await S.page.evaluate(() => {
+    window.__psstill.run = false;
+    return window.__psstill.s;
+  });
+  // from the first frame the picture is fully shown, while the chip says Loading
+  const i0 = rec.findIndex((x) => x.shown && x.op >= 0.99);
+  const during = i0 < 0 ? [] : rec.slice(i0).filter((x) => x.chip === "loading" || x.chip == null);
+  const srcs = [...new Set(rec.filter((x) => x.src).map((x) => x.src))];
+  const dips = during.filter((x) => !x.shown || (x.op != null && x.op < 0.99)).length;
+  const end = rec[rec.length - 1] || {};
+  return { srcs, dips, flats, shots, shownAt: i0 < 0 ? null : rec[i0].t - rec[0].t, endChip: end.chip, fallback: !!end.fallback };
+}
+for (const kind of ["phone", "click"]) {
+  const dev = kind === "phone" ? DEVICES.phone : DEVICES.desk;
+  for (const slug of ["farm", "hays"]) {
+    await check(`[${NAMES[kind]} · ${LABEL[slug]} · ready 2.5 s late] k. while it says Loading the picture never changes and never blanks`, dev, async () => {
+      const runs = [];
+      for (let i = 0; i < Math.min(REPS, 2); i++) {
+        const S = await newSession(kind, slug, { holdReadyMs: 2500 });
+        try {
+          runs.push(await watchStill(S, kind, 18000));
+        } finally {
+          await endSession(S);
+        }
+      }
+      const t = runs.map((r) => `pictures shown: ${r.srcs.join(" -> ") || "none"}; frames the picture was not fully shown while Loading: ${r.dips}; flat screenshots: ${r.flats.length} of ${r.shots}; ended ${r.endChip}`).join(" | ");
+      assert.ok(runs.every((r) => r.srcs.length === 1 && /-live-/.test(r.srcs[0]) && r.dips === 0 && r.flats.length === 0 && r.shots > 0 && r.endChip === "live"), t);
+      return t;
+    });
+  }
+  await check(`[${NAMES[kind]} · Hays Academy · frame refused] l. a refused frame keeps the loading still and settles in its fallback state`, dev, async () => {
+    const S = await newSession(kind, "hays", { refuse: true });
+    let r;
+    try {
+      r = await watchStill(S, kind, 16000);
+      await S.page.waitForTimeout(400);
+    } finally {
+      await endSession(S);
+    }
+    const t = `pictures shown: ${r.srcs.join(" -> ") || "none"}; frames the picture was not fully shown while Loading: ${r.dips}; flat screenshots: ${r.flats.length} of ${r.shots}; ended with the chip ${r.endChip}, fallback ${r.fallback ? "shown" : "not shown"}`;
+    assert.ok(r.srcs.length === 1 && /-live-/.test(r.srcs[0]) && r.dips === 0 && r.flats.length === 0 && r.endChip === "preview" && r.fallback, t);
+    return t;
+  });
+}
+
 // f. closing.
 for (const kind of ["phone", "click"]) {
   const methods = kind === "phone" ? ["esc", "x", "scrim", ...(CDP ? ["drag"] : [])] : ["esc", "x", "scrim"];
@@ -974,7 +1161,7 @@ for (const [kind, slug] of [["phone", "hays"], ["click", "hays"]]) {
 if (process.env.PS_TEST_FILM && CDP) {
   const dir = path.resolve(process.env.PS_TEST_FILM);
   fs.mkdirSync(dir, { recursive: true });
-  for (const kind of ["phone", "click"]) {
+  for (const kind of ["phone", "click", "jump"]) {
     if (!cache.has(`p|${kind}|hays`)) continue;
     const run = (await pictures(kind, "hays")).cold[0];
     const vp = DEVICES[kind === "phone" ? "phone" : "desk"].viewport;
@@ -1011,7 +1198,7 @@ if (process.env.PS_TEST_FILM && CDP) {
       return btoa(s);
     }, { pick, vw: vp.width, vh: vp.height });
     const label = `${BUILD ? "build" : "prod"}-${vp.width}x${vp.height}`;
-    const file = path.join(dir, `${kind === "phone" ? "phone" : "desk"}-hays-cold-${label}.png`);
+    const file = path.join(dir, `${{ phone: "phone", click: "desk", jump: "desk-nohover" }[kind]}-hays-cold-${label}.png`);
     fs.writeFileSync(file, Buffer.from(png, "base64"));
     console.log(`filmstrip written: ${file}`);
   }
