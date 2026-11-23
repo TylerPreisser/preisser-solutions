@@ -95,7 +95,8 @@ const CL: Record<string, Units> = {
   partners: [[R(257, 360, 660, 320)], [R(262, 360, 225, 310)]],
   // One partner: the At a glance card (referral code, payout preference, scans and leads, each label with its value);
   // a smaller stage, the form's payout preference with the contact under it.
-  partner: [[R(947, 417, 446, 270), R(947, 133, 446, 262)], [R(960, 417, 420, 270)], [R(590, 195, 325, 230)]],
+  // (The 320 view starts under the form card's header strip, whose title sits off to the left.)
+  partner: [[R(947, 417, 446, 270), R(947, 133, 446, 262)], [R(960, 417, 420, 270)], [{ ...R(590, 195, 325, 230), above: 12 }]],
   // Orders: each sale with the course it is credited to (product, amount, partner); a tablet adds its commission.
   // (A 320 phone: each sale's amount and the course it is credited to.)
   orders: [[R(380, 100, 850, 590)], [R(478, 100, 370, 590)], [R(478, 100, 370, 300)], [R(620, 100, 225, 300)]],
