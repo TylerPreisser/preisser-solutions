@@ -59,7 +59,6 @@ type FieldName = keyof typeof LIMITS;
  * address. Local part is a dot-atom and the domain a hostname: that character
  * set has no whitespace, comma, semicolon, angle bracket, quote, backslash or
  * control character, so it cannot carry a second recipient or a display name.
- * (Same grammar as functions/api/subscribe.ts.)
  */
 const ATOM = "[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+";
 const EMAIL_PATTERN = new RegExp(

@@ -6,7 +6,7 @@ CI_NODE=22
 ci_steps() {
   run npm-ci . npm ci --no-audit --no-fund
   run node-version . node --version
-  # Hermetic probes (subscribe endpoint + host middleware): before the build, so it fails in seconds.
+  # Hermetic probes (contact endpoint + host middleware): before the build, so it fails in seconds.
   run test . npm test
   run build . npm run build
   run lint . npm run lint
@@ -19,7 +19,7 @@ ci_steps() {
   # 200 with a foreign build (CLAUDE.md, browser matrix traps); the first gate run hit exactly that and the
   # probe refused ("NOT the current build"). The probe's copy check is the fingerprint that the served page
   # is this worktree's export.
-  run e2e-footer-signup . bash -c '
+  run e2e . bash -c '
     PORT=$("$CI_PYTHON3" -c "import socket; s=socket.socket(); s.bind((\"127.0.0.1\", 0)); print(s.getsockname()[1])")
     npx --yes serve out -l "$PORT" --no-clipboard > "$WT/.ci-local-serve.log" 2>&1 &
     SERVE=$!
