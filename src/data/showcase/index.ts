@@ -3,6 +3,7 @@
 // template import below into a lazy chunk per file in ./clients, so adding a
 // client is adding a file there (and `showcase: "<slug>"` on its home card).
 import type { ShowcaseClient } from "./types";
+import { decodeStill } from "./still-decode";
 
 export type ShowcaseSlug = string;
 
@@ -18,10 +19,24 @@ export function loadShowcase(slug: ShowcaseSlug): Promise<ShowcaseClient> {
   return p;
 }
 
-/** Fetch the client's data and its first website capture, so the window opens on a painted site. */
+/** Fetch the client's data and its first website capture, so the window opens on a painted site; and each
+ *  walkthrough tab's first still, decoded, so that tab opens on its picture rather than waiting for the download. */
 export function warmShowcase(slug: ShowcaseSlug, wide: boolean) {
   loadShowcase(slug)
     .then((c) => {
+      const scenes = c.beats.flatMap((b) => (b.kind === "scene" ? [b.scene] : []));
+      if (scenes.length)
+        import("./scenes/walk-first")
+          .then(({ WALK_FIRST }) => {
+            for (const id of scenes) {
+              const f = WALK_FIRST[id];
+              if (!f) continue;
+              void decodeStill(wide ? f.desk : f.phone);
+              // Its inline preview too, so the tab's first frame already has it.
+              if (f.poster) void decodeStill(f.poster);
+            }
+          })
+          .catch(() => {});
       const web = c.beats.find((b) => b.kind === "website");
       if (!web || web.kind !== "website") return;
       const cap = wide ? web.desk : web.phone;
