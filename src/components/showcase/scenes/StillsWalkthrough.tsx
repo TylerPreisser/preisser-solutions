@@ -22,6 +22,8 @@
  */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore, type ComponentType, type CSSProperties } from "react";
 import type { CursorTarget, Still } from "@/data/showcase/types";
+import { decodeStill } from "@/data/showcase/still-decode";
+import { WALK_POSTERS } from "@/data/showcase/scenes/walk-posters";
 import type { Rect, WalkCue, WalkData } from "@/data/showcase/scenes/duffer-cc";
 import type { FluidSceneProps } from "./HgCoiScene";
 import { closeOpts, frameClose, frameView, viewPlan, wantsClose, withLines, CARD, ART, type Box, type Frame, type PlanView } from "./walkFrame";
@@ -160,19 +162,6 @@ function useWordBoxes(stills: readonly Still[], srcs: readonly string[], enabled
   return boxes;
 }
 
-/** Each still's bytes, decoded once per page (a failed decode resolves too, so a broken still cannot stop the film). */
-const decodes = new Map<string, Promise<void>>();
-function decodeStill(src: string): Promise<void> {
-  let p = decodes.get(src);
-  if (!p) {
-    const im = new Image();
-    im.decoding = "async";
-    im.src = src;
-    p = im.decode().catch(() => undefined);
-    decodes.set(src, p);
-  }
-  return p;
-}
 
 /**
  * The cue the film shows: the clock's cue once its still is decoded, else the cue it showed before. On a slow
@@ -261,21 +250,58 @@ export function StillsWalkthrough({ data: film, variant, active, reduced, onCapt
   // is that picture and not an empty card.
   const [canFrame, setCanFrame] = useState(false);
   const firstSrc = srcs[data.cues[0].still];
+  // The film's first picture is never shown before it has arrived and decoded. Until then the card shows the still's
+  // tiny inline preview (walk-posters.ts: soft, never a blank card), and the still fades in over it once its own
+  // element has decoded. The window warms the still when it opens (index.ts warmShowcase), so it is normally there
+  // already: then it shows at once.
+  const [firstReady, setFirstReady] = useState(false);
+  const fadesIn = useRef(true);
+  // (Neither picture ready, not even the preview: the card stays unseen on the stage's ground for those frames.)
+  const [bare, setBare] = useState(false);
+  useLayoutEffect(() => {
+    const im = stageRef.current?.querySelector<HTMLImageElement>(".stw-shot[data-first] img.stw-real");
+    if (im && im.complete && im.naturalWidth > 0) {
+      fadesIn.current = false;
+      setFirstReady(true);
+      return;
+    }
+    const po = stageRef.current?.querySelector<HTMLImageElement>(".stw-shot[data-first] img.stw-poster");
+    if (po && po.complete && po.naturalWidth > 0) return;
+    setBare(true);
+    const done = () => setBare(false);
+    po?.addEventListener("load", done, { once: true });
+    po?.addEventListener("error", done, { once: true });
+    return () => {
+      po?.removeEventListener("load", done);
+      po?.removeEventListener("error", done);
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (!box || !active || canFrame) return;
+    if (firstReady) return;
     let live = true;
-    let id = 0;
-    decodeStill(firstSrc).then(() => {
-      if (!live) return;
-      id = requestAnimationFrame(() => {
-        id = requestAnimationFrame(() => live && setCanFrame(true));
-      });
-    });
+    const im = stageRef.current?.querySelector<HTMLImageElement>(".stw-shot[data-first] img.stw-real");
+    (im ? im.decode() : decodeStill(firstSrc)).catch(() => undefined).then(() => live && setFirstReady(true));
     return () => {
       live = false;
+    };
+  }, [firstSrc, firstReady]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!box || !active || !firstReady || canFrame) return;
+    // (After the fade-in, if there was one: the search blocks the page and would freeze the fade half way.)
+    let id = 0;
+    const t = window.setTimeout(
+      () => {
+        id = requestAnimationFrame(() => {
+          id = requestAnimationFrame(() => setCanFrame(true));
+        });
+      },
+      fadesIn.current ? 320 : 0,
+    );
+    return () => {
+      window.clearTimeout(t);
       cancelAnimationFrame(id);
     };
-  }, [Boolean(box), active, canFrame, firstSrc]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [Boolean(box), active, firstReady, canFrame]); // eslint-disable-line react-hooks/exhaustive-deps
   const framing = framed && box && boxes && canFrame ? boxes : null;
   const inBrowser = useInBrowser();
   const cache = useMemo(() => new Map<string, Frame & { set?: number }>(), [box?.w, box?.h, boxes, close]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -370,6 +396,8 @@ export function StillsWalkthrough({ data: film, variant, active, reduced, onCapt
       data-units={units ? JSON.stringify(units.map((r) => [r.x, r.y, r.w, r.h])) : undefined}
       data-solids={framed && data.solids?.[data.stills[cur].id] ? JSON.stringify(data.solids[data.stills[cur].id].map((r) => [r.x, r.y, r.w, r.h])) : undefined}
       data-framing={waiting ? "waiting" : undefined}
+      data-loading={inBrowser && !firstReady ? "" : undefined}
+      data-bare={bare && !firstReady ? "" : undefined}
       data-armed={(armed || pushIn) && motion ? "" : undefined}
       data-cam={prev === cur || pushIn ? "move" : undefined}
       style={{ "--stw-fade": `${fade}ms` } as CSSProperties}>
@@ -385,7 +413,14 @@ export function StillsWalkthrough({ data: film, variant, active, reduced, onCapt
         ) : null}
         <div className={`stw-screen${framed ? " stw-screen--framed" : ""}`} style={curFrame ? { width: `${curFrame.cardW}px`, height: `${curFrame.cardH}px` } : undefined}>
           {mounted.map((st) => (
-            <Shot key={st} still={data.stills[st]} pic={pic(data.stills[st])} on={st === cur} frame={style(st, st === cur ? curFrame : st === prev ? frameOf(keyFor(st)) : cache.get(keyFor(st)) ?? null)} />
+            <Shot
+              key={st}
+              still={data.stills[st]}
+              pic={pic(data.stills[st])}
+              on={st === cur}
+              first={st === data.cues[0].still}
+              held={st === data.cues[0].still && inBrowser && !firstReady}
+              frame={style(st, st === cur ? curFrame : st === prev ? frameOf(keyFor(st)) : cache.get(keyFor(st)) ?? null)} />
           ))}
           {/* One layer framed like the shown view: the cursor lives here so it TRAVELS between targets and stills. */}
           {motion ? (
@@ -444,11 +479,15 @@ export function StillsWalkthrough({ data: film, variant, active, reduced, onCapt
   );
 }
 
-function Shot({ still, pic: s, on, frame }: { still: Still; pic: Still["desk"]; on: boolean; frame?: CSSProperties }) {
+function Shot({ still, pic: s, on, frame, first, held }: { still: Still; pic: Still["desk"]; on: boolean; frame?: CSSProperties; first?: boolean; held?: boolean }) {
+  const poster = first ? WALK_POSTERS[s.src] : undefined;
   return (
-    <div className="stw-shot" data-on={on || undefined} aria-hidden={on ? undefined : true} style={{ aspectRatio: `${s.width} / ${s.height}`, ...frame }}>
+    <div className="stw-shot" data-on={on || undefined} data-first={first || undefined} aria-hidden={on ? undefined : true} style={{ aspectRatio: `${s.width} / ${s.height}`, ...frame }}>
+      {/* The first still's inline preview, under it until it has arrived (see firstReady). */}
+      {/* eslint-disable-next-line @next/next/no-img-element -- an inline data URI preview */}
+      {poster ? <img className="stw-poster" src={poster} alt="" aria-hidden="true" draggable={false} /> : null}
       {/* eslint-disable-next-line @next/next/no-img-element -- a fixed, pre-sized still; next/image is off in this static export */}
-      <img src={s.src} width={s.width} height={s.height} alt={on ? still.alt : ""} decoding="async" draggable={false} />
+      <img className="stw-real" src={s.src} width={s.width} height={s.height} alt={on ? still.alt : ""} decoding="async" draggable={false} data-held={held || undefined} />
     </div>
   );
 }
