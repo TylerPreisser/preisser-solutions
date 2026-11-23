@@ -644,7 +644,7 @@ function across(key, rule, only) {
     }
   }
   assert.ok(bad.length === 0, bad.slice(0, 4).join(" || ") + (bad.length > 4 ? ` (+${bad.length - 4} more sizes)` : ""));
-  return `${ok.length} sizes ok`;
+  return `${ok.length} sizes ok\n          ${ok.join("\n          ")}`;
 }
 for (const key of Object.keys(recs)) {
   const label = `${TABS[key].title} > ${TABS[key].tab}`;
