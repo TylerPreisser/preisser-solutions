@@ -4,7 +4,7 @@ import type { AeoPageData } from "./types";
  * ENGAGEMENT PROCESS — /process
  *
  * Walks through the Preisser Solutions engagement process step-by-step.
- * Discovery call → scoping → fixed-price proposal → build → launch → support.
+ * Discovery call → scoping → written proposal with monthly price → build → launch → ongoing support.
  * Distinguishes from agency processes (handoffs, account managers).
  */
 export const pageData: AeoPageData = {
@@ -12,13 +12,13 @@ export const pageData: AeoPageData = {
   tier: "trust_faq",
   metaTitle: "Engagement Process: How Projects Run",
   metaDescription:
-    "Step-by-step: how a Preisser Solutions engagement actually runs. Discovery, scoping, fixed-price proposal, build with weekly previews, launch, and 30-day support.",
+    "Step-by-step: how a Preisser Solutions engagement actually runs. Discovery, scoping, a proposal with your monthly price, build with weekly previews, launch, ongoing support.",
   eyebrow: "How We Work",
   h1: "The Preisser Solutions Engagement Process",
   subheadline:
     "From first call to launch: how every project actually runs. Founder-led, no handoffs, no account managers, weekly working previews you can click through.",
   answerParagraph:
-    "Every Preisser Solutions engagement follows the same six-phase process: a free discovery call, a scoping conversation that defines what's actually being built, a fixed-price written proposal, a build phase with weekly working previews that clients can click through, a structured launch with full search engine and AI engine verification, and 30 days of included post-launch support. There are no project managers in between, no design-to-development handoffs, and no offshore subcontractors. Preisser Solutions scopes, designs, codes, and ships every engagement: clients work directly with the founder for the entire project.",
+    "Every Preisser Solutions engagement follows the same six-phase process: a free discovery call, a scoping conversation that defines what's actually being built, a written proposal that states the scope and the monthly price, a build phase with weekly working previews that clients can click through, a structured launch with full search engine and AI engine verification, and ongoing maintenance and support as part of the monthly service. There are no project managers in between, no design-to-development handoffs, and no offshore subcontractors. Preisser Solutions scopes, designs, codes, and ships every engagement: clients work directly with the founder for the entire project.",
   sections: [
     {
       eyebrow: "Phase 1",
@@ -37,23 +37,23 @@ export const pageData: AeoPageData = {
       eyebrow: "Phase 2",
       heading: "Scoping conversation (defines what's actually being built)",
       body: [
-        "If the discovery call indicates a fit, we do deeper scoping work: sometimes in a second call, sometimes asynchronously by email and shared documents. The goal is to define the project precisely enough to write a fixed-price proposal you can sign with confidence.",
+        "If the discovery call indicates a fit, we do deeper scoping work: sometimes in a second call, sometimes asynchronously by email and shared documents. The goal is to define the project precisely enough to write a proposal and monthly price you can sign with confidence.",
         "Scoping covers: page count and structure, custom features, integrations with existing systems, design system requirements, content responsibility (who writes what), launch criteria, and timeline constraints. By the end of scoping, both sides know exactly what's being built.",
       ],
     },
     {
       eyebrow: "Phase 3",
-      heading: "Fixed-price written proposal",
+      heading: "Written proposal and monthly price",
       body: [
-        "After scoping, we write a proposal: clear scope, clear deliverables, clear timeline, clear total price. The proposal is in plain language with no jargon and no hidden line items.",
-        "You see the number before you commit. Once approved, that's the price; there are no scope-creep upcharges unless you actively change the scope. Payment structure is laid out explicitly: typically a deposit at kickoff and a final payment at launch, with milestone payments for larger engagements.",
+        "After scoping, we write a proposal: clear scope, clear deliverables, clear timeline, clear monthly price. The proposal is in plain language with no jargon and no hidden line items.",
+        "You see the number before you commit. Once approved, that's the price; there are no scope-creep upcharges unless you actively change the scope. Everything we build runs as an ongoing monthly service, so you never front the cost of an entire build: the monthly price covers the build and the maintenance and support that follow.",
       ],
     },
     {
       eyebrow: "Phase 4",
       heading: "Build phase (weekly working previews)",
       body: [
-        "Once the proposal is signed and the deposit is in, we start building. The build phase typically runs 3-12 weeks depending on scope.",
+        "Once the proposal is signed, we start building. The build phase typically runs 3-12 weeks depending on scope.",
         "You don't get a long silent period followed by a big reveal. Every week, we ship a working preview to a private URL; you click through actual working code, not Photoshop mockups. Feedback loops are tight, course corrections happen early, and there are no surprises at the end.",
       ],
       bullets: [
@@ -83,10 +83,10 @@ export const pageData: AeoPageData = {
     },
     {
       eyebrow: "Phase 6",
-      heading: "30-day post-launch support (included)",
+      heading: "Ongoing maintenance and support (part of the service)",
       body: [
-        "Every engagement includes 30 days of post-launch support at no additional cost. Bug fixes, content adjustments, monitoring, and any issues that surface after going live: Preisser Solutions handles them directly.",
-        "After 30 days, clients can choose an ongoing maintenance retainer for continued updates, content additions, performance monitoring, and security patching. Or, since you own the source code, you can hand the codebase to another developer or your in-house team. There's no lock-in.",
+        "Support continues after launch as part of the monthly service. Bug fixes, content adjustments, monitoring, and any issues that surface after going live: Preisser Solutions handles them directly.",
+        "Every solution needs ongoing maintenance, so updates, performance monitoring, security patching and improvements to what we built are covered by the monthly price. Or, since you own the source code, you can hand the codebase to another developer or your in-house team. There's no lock-in.",
       ],
     },
     {
@@ -129,7 +129,7 @@ export const pageData: AeoPageData = {
       question:
         "Do you provide a written timeline with milestones?",
       answer:
-        "Yes. The fixed-price proposal includes a written timeline with phase milestones: scoping completion, design milestones, build milestones, content integration, pre-launch testing, and launch date. For larger engagements, the timeline is broken into weekly or biweekly checkpoints with payment milestones tied to deliverables.",
+        "Yes. The proposal includes a written timeline with phase milestones: scoping completion, design milestones, build milestones, content integration, pre-launch testing, and launch date. For larger engagements, the timeline is broken into weekly or biweekly checkpoints tied to deliverables.",
     },
     {
       question:

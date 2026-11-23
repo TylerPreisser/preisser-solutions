@@ -77,7 +77,7 @@ export const pageData: AeoPageData = {
     rows: [
       { dimension: "Type", preisser: "Custom CRM built from scratch in Next.js, React, TypeScript", competitor: "Hosted CRM SaaS with standard contact-deal-pipeline schema" },
       { dimension: "Best for", preisser: "Industry-specific workflows, operational data integration, large teams", competitor: "Standard sales workflows, marketing automation, small-to-mid-market businesses" },
-      { dimension: "Pricing model", preisser: "One-time build cost + minimal ongoing hosting", competitor: "Per-seat monthly fees scaling with tier" },
+      { dimension: "Pricing model", preisser: "An ongoing monthly service that covers the build and its maintenance", competitor: "Per-seat monthly fees scaling with tier" },
       { dimension: "Long-term cost (5 years, 25 seats)", preisser: "Build cost + minimal hosting", competitor: "Substantial recurring subscription fees scaling with tier and seat count" },
       { dimension: "Customization", preisser: "Any feature, any data model, any workflow", competitor: "Custom objects, properties, workflows within HubSpot's framework" },
       { dimension: "Operational data integration", preisser: "Native: customer, operational, and pricing data in one system", competitor: "Limited; requires external integration for non-standard data" },

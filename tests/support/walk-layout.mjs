@@ -201,12 +201,13 @@ export const BLANK_MAX = 0.18;
  * Judge one view of a still. win: the still-px rect the stage shows. boxes: [x, y, w, h, text] (words and solids).
  * Returns the problems the three rules find:
  *   edges  (rule j) a text line with part of it inside the view and part outside; a card cut by the left or right edge
- *          that shows as a blank stub or has words off the stage.
+ *          that shows as a blank stub or has words off the stage; a horizontal bar (a row's measure) that runs off a
+ *          side edge, its value off the stage.
  *   blank  (rule k) the tallest band of the view with no word and no drawn content, when over BLANK_MAX of the stage's
  *          height (stageH, in still px; the view is the whole stage unless its picture is a shorter card).
  *   pairs  (rule l) a block (a wrapped sentence, a heading with its value or control) split by the view's edge.
  */
-export function judgeView({ px, cards, boxes, win, stageH = win.h, slack = 1 }) {
+export function judgeView({ px, cards, art = [], boxes, win, stageH = win.h, slack = 1 }) {
   const isIn = (b) => b.x0 >= win.x - slack && b.x1 <= win.x + win.w + slack && b.y0 >= win.y - slack && b.y1 <= win.y + win.h + slack;
   const isOut = (b) => b.x1 <= win.x + slack || b.x0 >= win.x + win.w - slack || b.y1 <= win.y + slack || b.y0 >= win.y + win.h - slack;
   const lines = linesOf(boxes);
@@ -235,6 +236,15 @@ export function judgeView({ px, cards, boxes, win, stageH = win.h, slack = 1 }) 
     const above = words.some((w) => w.x0 >= c.x0 - 1 && w.x1 <= c.x1 + 1 && w.y0 >= c.y0 - 1 && w.y1 <= c.y1 + 1 && w.x0 < win.x + win.w && w.x1 > win.x);
     if (!shown.length && !above) edges.push(`${at} shows as a blank stub at the edge`);
     else if (shown.length < own.length && c.x1 - c.x0 <= win.w) edges.push(`${at} is cut by the edge ("${own.find((w) => !isIn(w)).t}" is off the stage)`);
+  }
+  // A horizontal bar (a row's measure: at least 40 px long, at most 20 px tall, 4 x longer than tall) cut by a side edge runs off the
+  // stage with the value at its end: the row's label shows without its value.
+  for (const [x, y, w, h] of art) {
+    if (w < 40 || w < 4 * h || h > 20) continue;
+    const b = { x0: x, y0: y, x1: x + w, y1: y + h };
+    if (b.y1 <= win.y + slack || b.y0 >= win.y + win.h - slack) continue;
+    const shown = Math.min(b.x1, win.x + win.w) - Math.max(b.x0, win.x);
+    if (shown > CARD_TOL && (b.x0 < win.x - CARD_TOL || b.x1 > win.x + win.w + CARD_TOL)) edges.push(`a ${w}px bar at ${x},${y} runs off the edge (the value at its end is off the stage)`);
   }
   const pairs = [];
   for (const b of blocksOf(lines)) {

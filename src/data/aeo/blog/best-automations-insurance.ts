@@ -106,7 +106,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's the typical cost?",
       answer:
-        "Standalone automations are fixed-price, quoted after scoping. Full custom CRM engagements (Alliant MGU scope) are priced based on complexity. Fixed-price proposal after a free discovery call.",
+        "Standalone automations are quoted after scoping. Full custom CRM engagements (Alliant MGU scope) are priced based on complexity. A written proposal with your monthly price follows a free discovery call.",
     },
     {
       question: "Can I get a reference from the insurance engagement?",
@@ -137,5 +137,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want a build scoped for your agency?",
   ctaSubcopy:
-    "Free 30-minute call. We'll map your book, your carriers, and your pain points, and quote a fixed price.",
+    "Free 30-minute call. We'll map your book, your carriers, and your pain points, and send a written proposal with your monthly price.",
 };

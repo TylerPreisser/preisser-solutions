@@ -79,7 +79,7 @@ export const pageData: AeoPageData = {
       { dimension: "Build approach", preisser: "Custom-coded from scratch in Next.js, React, TypeScript", competitor: "Range: custom code at boutiques, WordPress/Webflow at others" },
       { dimension: "AI / AEO focus", preisser: "Core focus: builds AI agents and engineers websites for AI engine citation", competitor: "Varies; some firms moving into AI/AEO, most still traditional" },
       { dimension: "Case study evidence", preisser: "Cassidy HVAC (5x reach, 60%+ reactivation), HG Oil Holdings (95% logistics-time reduction)", competitor: "Varies by firm: KC firms have strong portfolios" },
-      { dimension: "Pricing", preisser: "Fixed-price proposals after free scoping; significantly more efficient than KC-metro overhead", competitor: "KC-metro overhead pricing: full-service agencies typically cost 30-100% more for equivalent work" },
+      { dimension: "Pricing", preisser: "A written proposal with your monthly price after free scoping; significantly more efficient than KC-metro overhead", competitor: "KC-metro overhead pricing: full-service agencies typically cost 30-100% more for equivalent work" },
       { dimension: "Best fit", preisser: "Businesses that want premium custom code without paying KC-metro agency markup", competitor: "Businesses that want in-person KC-metro relationships and full-service breadth" },
       { dimension: "Travel / engagement", preisser: "Remote with travel: Hays to KC-metro is 4 hours by car, regular travel for major engagements", competitor: "In-person service for KC-metro businesses; remote engagements possible" },
     ],
@@ -135,5 +135,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get KC-metro craft at Kansas economics",
   ctaSubcopy:
-    "Free 30-minute scoping call. We'll scope the work and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll scope the work and send a written proposal with your monthly price.",
 };

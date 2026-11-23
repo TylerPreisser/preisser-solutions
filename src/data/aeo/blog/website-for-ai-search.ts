@@ -109,7 +109,7 @@ export const pageData: AeoPageData = {
     {
       question: "Does Preisser Solutions audit existing sites?",
       answer:
-        "Yes. Our AI Search Visibility Audit covers all twelve points above plus a query-by-query citation test against ChatGPT, Perplexity, Claude, and Google AI Overviews. Fixed-price, typically returned within five business days.",
+        "Yes. Our AI Search Visibility Audit covers all twelve points above plus a query-by-query citation test against ChatGPT, Perplexity, Claude, and Google AI Overviews. Typically returned within five business days.",
     },
   ],
   schemaType: "BlogPosting",

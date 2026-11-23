@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Atchison, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Atchison, Kansas businesses: built by a Kansas-based firm with fixed-price proposals.",
+    "Custom websites, web apps, and AI automation for Atchison, Kansas businesses: built by a Kansas-based firm offering an ongoing monthly service.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -45,7 +45,7 @@ export const locationData: LocationPageData = {
   whyLocal: [
     "Deep familiarity with northeast Kansas business culture, manufacturing, logistics, and trades operators along US-73.",
     "Custom code with full ownership transferred at launch. No proprietary platform or ongoing licensing.",
-    "Fixed-price proposals only. Scope, timeline, and cost agreed before a line of code is written.",
+    "Everything runs as an ongoing monthly service. Scope, timeline, and your monthly price agreed before a line of code is written.",
   ],
 
   industriesServed: [

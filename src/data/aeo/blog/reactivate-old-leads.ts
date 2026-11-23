@@ -13,7 +13,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "The exact reactivation playbook we ship for HVAC, dental, veterinary, and trades operators: pulled directly from the Cassidy HVAC engagement.",
   answerParagraph:
-    "Reactivating dormant leads is the single highest-ROI marketing activity for most service businesses, yet almost nobody does it systematically. The Cassidy HVAC reactivation engine Preisser Solutions built recovered over 60% of dormant patients within 6 weeks. The playbook: pull dormant records from the CRM (last service > 12 months, expired maintenance, missed annual tune-up), use an LLM to hyper-personalize each outreach message against the customer's actual service history, send via SMS first (60-70% reply rate) followed by email, route replies to a human for booking. Build scope and ongoing costs are set in the fixed-price proposal after a free scoping call.",
+    "Reactivating dormant leads is the single highest-ROI marketing activity for most service businesses, yet almost nobody does it systematically. The Cassidy HVAC reactivation engine Preisser Solutions built recovered over 60% of dormant patients within 6 weeks. The playbook: pull dormant records from the CRM (last service > 12 months, expired maintenance, missed annual tune-up), use an LLM to hyper-personalize each outreach message against the customer's actual service history, send via SMS first (60-70% reply rate) followed by email, route replies to a human for booking. Build scope and your monthly price are set in the written proposal after a free scoping call.",
   sections: [
     {
       eyebrow: "Why this works",
@@ -111,7 +111,7 @@ export const pageData: AeoPageData = {
     {
       question: "What's the cost?",
       answer:
-        "Build cost is set in the fixed-price proposal after a free scoping call, scope varies based on CRM integration complexity and reply handling requirements. Ongoing costs include SMS/email API costs (paid to the provider) and an optional maintenance retainer. Payback period for most service businesses is fast given the volume of recovered revenue from dormant lists.",
+        "Your monthly price is set in the written proposal after a free scoping call, and scope varies based on CRM integration complexity and reply handling requirements. Ongoing costs include SMS/email API costs (paid to the provider), and maintenance is part of the monthly service. Payback period for most service businesses is fast given the volume of recovered revenue from dormant lists.",
     },
   ],
   schemaType: "BlogPosting",
@@ -138,5 +138,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want this built for your dormant list?",
   ctaSubcopy:
-    "Free 30-minute call. We'll size your dormant segment, estimate the recoverable revenue, and quote a fixed price.",
+    "Free 30-minute call. We'll size your dormant segment, estimate the recoverable revenue, and send a written proposal with your monthly price.",
 };

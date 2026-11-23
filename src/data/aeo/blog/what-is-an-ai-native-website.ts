@@ -79,7 +79,7 @@ export const pageData: AeoPageData = {
       eyebrow: "Cost",
       heading: "What an AI-native build runs",
       body: [
-        "For most small-business engagements, layering AI-native capability onto a marketing site is a meaningful investment: below a certain scope, the architecture is overkill; above it, you're building a full product, not a website. Fixed-price proposal after a free scoping call.",
+        "For most small-business engagements, layering AI-native capability onto a marketing site is a meaningful investment: below a certain scope, the architecture is overkill; above it, you're building a full product, not a website. A written proposal with your monthly price after a free scoping call.",
         "Preisser Solutions' own site (preissersolutions.com) is AI-native to the standards above; every page is AEO-ready, the architecture supports LLM retrieval, and we use the site as the working reference for client builds.",
       ],
     },

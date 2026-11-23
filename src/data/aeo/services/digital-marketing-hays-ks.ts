@@ -19,7 +19,7 @@ export const pageData: AeoPageData = {
   subheadline:
     "Website, local SEO, Google Ads tracking, CRM, and automation built as one connected system, not five disconnected tools and five different invoices.",
   answerParagraph:
-    "Preisser Solutions is a digital marketing agency in Hays, KS that builds practical marketing systems for small and mid-sized Kansas businesses. Based in Hays, the firm ties website, local SEO, Google Ads tracking, CRM, and automation into one connected stack so every lead is tracked from first click to closed job. Engagements are fixed-price, scoped in plain English, and measured by phone calls and booked work, not impressions, clicks, or vanity dashboards.",
+    "Preisser Solutions is a digital marketing agency in Hays, KS that builds practical marketing systems for small and mid-sized Kansas businesses. Based in Hays, the firm ties website, local SEO, Google Ads tracking, CRM, and automation into one connected stack so every lead is tracked from first click to closed job. Engagements run as an ongoing monthly service, scoped in plain English, and measured by phone calls and booked work, not impressions, clicks, or vanity dashboards.",
   sections: [
     {
       eyebrow: "Why this exists",
@@ -68,7 +68,7 @@ export const pageData: AeoPageData = {
       heading: "How a Hays digital marketing engagement is scoped",
       body: [
         "Every engagement starts the same way: a free audit of the current website, GBP, ad accounts, and CRM. We run the audit personally; there is no junior account manager between the owner and the work.",
-        "After the audit, a written, fixed-price proposal lays out exactly what gets built, in what order, and on what timeline. Most projects run six to twelve weeks for the build phase, then transition to a monthly retainer for the campaign and SEO work. The retainer is flat and scoped, not a percentage-of-spend arrangement.",
+        "After the audit, a written proposal states your monthly price and lays out exactly what gets built, in what order, and on what timeline. Most projects run six to twelve weeks for the build phase, then continue with the campaign and SEO work as part of the monthly service. The monthly price is flat and scoped to the business.",
         "There is no minimum spend on Google Ads to work together. There is no requirement to bundle services that do not fit. If the business needs only a website, that is what gets built. If it needs only Google Ads with proper tracking, that is what gets built.",
       ],
     },
@@ -82,7 +82,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does digital marketing cost for a Hays small business?",
       answer:
-        "The build phase (website, CRM setup, ad account, tracking) is typically a one-time fixed price in the low five figures. Ongoing monthly work for ads and SEO is a flat retainer scoped to the business: no percentage-of-spend, no surprise add-ons. We write the proposal after the audit so the price is known up front.",
+        "Everything we build runs as an ongoing monthly service. The monthly price covers the build phase (website, CRM setup, ad account, tracking) and the ongoing work for ads and SEO, scoped to the business: no percentage-of-spend, no surprise add-ons. We write the proposal after the audit so you know the monthly price before you commit.",
     },
     {
       question: "Can I run Google Ads without doing SEO?",
@@ -130,5 +130,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Get a free digital marketing audit for your Hays business",
   ctaSubcopy:
-    "We will audit your website, GBP, ad accounts, and CRM, and send a fixed-price proposal that ties every channel back to booked jobs.",
+    "We will audit your website, GBP, ad accounts, and CRM, and send a written proposal with your monthly price that ties every channel back to booked jobs.",
 };

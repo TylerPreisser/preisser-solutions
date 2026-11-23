@@ -133,7 +133,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much did the Cassidy HVAC build cost?",
       answer:
-        "Pricing is custom per engagement. Comparable HVAC marketing automation and reactivation builds typically run in the low-to-mid five figures. We provide a fixed-price proposal after a free scoping call.",
+        "Pricing is custom per engagement. After a free scoping call, the proposal states your monthly price.",
     },
     {
       question: "Did Cassidy HVAC have to learn new software?",
@@ -153,7 +153,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a similar build for my shop?",
       answer:
- "Email tyler@preissersolutions.com. Free 30-minute scoping call. We'll map your current stack, identify the highest-ROI automation, and send a fixed-price proposal.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call. We'll map your current stack, identify the highest-ROI automation, and send a written proposal with your monthly price.",
     },
   ],
   schemaType: "Article",
@@ -191,5 +191,5 @@ export const pageData: AeoPageData = {
   },
   ctaHeadline: "Get a similar build for your HVAC shop",
   ctaSubcopy:
-    "Free 30-minute scoping call. We'll map your stack, identify the highest-ROI automation, and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll map your stack, identify the highest-ROI automation, and send a written proposal with your monthly price.",
 };

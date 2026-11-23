@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for Topeka's professional services, healthcare, and operations economy.",
     answerParagraph:
-      "Preisser Solutions serves Topeka, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays, roughly three hours west on I-70, we deliver remotely and travel for projects of sufficient scope. Fixed-price proposals, custom code, full ownership.",
+      "Preisser Solutions serves Topeka, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays, roughly three hours west on I-70, we deliver remotely and travel for projects of sufficient scope. A written proposal with your monthly price, custom code, full ownership.",
   },
 
   nearbyAreas: [

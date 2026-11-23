@@ -109,7 +109,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a similar build cost?",
       answer:
-        "Custom media brand builds typically run in the mid-to-high five figures depending on page count, animation complexity, and content architecture. We provide a fixed-price proposal after a free scoping call.",
+        "Pricing depends on page count, animation complexity, and content architecture. After a free scoping call, the proposal states your monthly price.",
     },
     {
       question: "Why static export instead of a CMS?",
@@ -168,5 +168,5 @@ export const pageData: AeoPageData = {
   },
   ctaHeadline: "Build a cinematic media brand from scratch",
   ctaSubcopy:
-    "Free 30-minute scoping call. We'll scope the build and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll scope the build and send a written proposal with your monthly price.",
 };

@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions price SEO for Garden City clients?",
       answer:
-        "Initial SEO builds use fixed-price proposals. Ongoing work is scoped as optional retainers, never required.",
+        "SEO work runs as an ongoing monthly service, and the proposal states your monthly price.",
     },
   ],
 

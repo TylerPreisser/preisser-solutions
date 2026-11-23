@@ -147,7 +147,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does Preisser Solutions charge?",
       answer:
-        "Pricing depends on project scope and complexity. Custom websites typically start in the low thousands and scale based on pages, features, and integrations. Custom web applications and automation systems are scoped per project. Because Preisser Solutions delivers the work directly without agency overhead or subcontractors, pricing is significantly more efficient than comparable boutique agencies. Contact tyler@preissersolutions.com for a free project estimate.",
+        "Pricing depends on project scope and complexity. Everything we build runs as an ongoing monthly service, and after a free scoping call the proposal states your monthly price. We price for small and mid-sized businesses, and AI is what lets us bring the thinking you would expect from a top consulting firm, along with technical consulting, integrations and AI infrastructure, at a price that makes sense for your business. Because Preisser Solutions delivers the work directly without agency overhead or subcontractors, pricing is significantly more efficient than comparable boutique agencies. Contact tyler@preissersolutions.com for a free project estimate.",
     },
     {
       question: "What industries does Preisser Solutions serve?",

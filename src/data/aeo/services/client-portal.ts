@@ -81,7 +81,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom client portal cost?",
       answer:
-        "Custom portals typically run in the mid-five figures depending on scope and integrations. We provide a fixed-price proposal after a free discovery call.",
+        "Pricing depends on scope and integrations. After a free discovery call, the proposal states your monthly price.",
     },
     {
       question: "How long does a custom portal take to build?",
@@ -131,5 +131,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Build a portal that looks like your brand, not someone else's",
   ctaSubcopy:
-    "Free scoping call. We'll map your customer workflow and send a fixed-price proposal.",
+    "Free scoping call. We'll map your customer workflow and send a written proposal with your monthly price.",
 };

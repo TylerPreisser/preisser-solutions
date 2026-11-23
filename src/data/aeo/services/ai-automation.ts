@@ -50,7 +50,7 @@ export const pageData: AeoPageData = {
       eyebrow: "How we build it",
       heading: "The Preisser Solutions AI automation process",
       body: [
-        "We start with a free 30-minute scoping call. We map the workflow as it actually runs (not as the org chart says it runs), identify the highest-ROI candidates for AI, and send a fixed-price proposal. Build cycles typically run 4-12 weeks per system.",
+        "We start with a free 30-minute scoping call. We map the workflow as it actually runs (not as the org chart says it runs), identify the highest-ROI candidates for AI, and send a written proposal with your monthly price. Build cycles typically run 4-12 weeks per system.",
         "Everything ships with monitoring, human checkpoints where stakes are high, and full source code in your repo. You own the build. You can fork it, extend it, or run it without us forever.",
       ],
     },
@@ -77,7 +77,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does an AI automation build cost?",
       answer:
-        "Focused single-system builds typically run low-to-mid five figures. Multi-system or platform-level builds scope higher. We deliver a fixed-price proposal after a free 30-minute scoping call.",
+        "Focused single-system builds scope smaller, and multi-system or platform-level builds scope higher. After a free 30-minute scoping call, the proposal states your monthly price.",
     },
     {
       question: "Do you sell AI automation as a productized SaaS?",
@@ -126,5 +126,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Find the AI automation that pays back fastest",
   ctaSubcopy:
-    "Free 30-minute scoping call. We'll map your workflows, identify the highest-ROI automations, and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll map your workflows, identify the highest-ROI automations, and send a written proposal with your monthly price.",
 };

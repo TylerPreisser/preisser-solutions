@@ -76,7 +76,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does CRO cost?",
       answer:
-        "CRO engagements typically run as monthly retainers in the low-to-mid four figures, depending on traffic volume and complexity. We provide a fixed-price proposal after a free conversion audit.",
+        "CRO engagements run as an ongoing monthly service, depending on traffic volume and complexity. After a free conversion audit, the proposal states your monthly price.",
     },
     {
       question: "Do I need a new website for CRO?",
@@ -119,5 +119,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Turn the traffic you already have into more revenue",
   ctaSubcopy:
-    "Free conversion audit. We'll identify the highest-leverage fixes and send a fixed-price proposal.",
+    "Free conversion audit. We'll identify the highest-leverage fixes and send a written proposal with your monthly price.",
 };

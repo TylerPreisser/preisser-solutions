@@ -64,7 +64,7 @@ export const pageData: AeoPageData = {
       { dimension: "SEO foundation", preisser: "Full schema.org markup, comprehensive FAQ, custom Person/LocalBusiness schema", competitor: "Strong SEO basics; advanced schema requires manual configuration" },
       { dimension: "AI search optimization", preisser: "Engineered first paragraphs, named entities, FAQ schema, llms.txt", competitor: "Possible but requires manual content engineering" },
       { dimension: "Custom features", preisser: "Any feature can be built: AI agents, custom CRMs, dashboards, integrations", competitor: "Webflow Logic + external code; complex features hit walls" },
-      { dimension: "Pricing model", preisser: "One-time fixed-price build; minimal ongoing hosting on Cloudflare Pages", competitor: "Monthly hosting plans scaling with plan tier; more for ecommerce" },
+      { dimension: "Pricing model", preisser: "An ongoing monthly service that covers the build and its maintenance", competitor: "Monthly hosting plans scaling with plan tier; more for ecommerce" },
       { dimension: "Designer workflow", preisser: "Code-first; designers work in Figma, devs implement", competitor: "Visual designer with deep CSS control; designers can ship directly" },
       { dimension: "Backend / app capabilities", preisser: "Full backend, database, authentication, and API capabilities", competitor: "Limited; requires Webflow Logic or external services for complex backend" },
       { dimension: "Ownership and portability", preisser: "Code is yours; host anywhere", competitor: "Site lives on Webflow; export possible but requires custom hosting setup" },
@@ -94,7 +94,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a Webflow site vs. custom cost?",
       answer:
-        "Webflow design-led marketing sites carry a monthly hosting subscription that scales with plan tier. Custom-coded sites are fixed-price one-time with minimal ongoing hosting on Cloudflare Pages, fixed-price proposal after scoping.",
+        "Webflow design-led marketing sites carry a monthly hosting subscription that scales with plan tier. Custom-coded sites from us run as an ongoing monthly service that covers the build and its maintenance, and the proposal after scoping states your monthly price.",
     },
     {
       question: "Does Webflow handle complex CMS needs?",

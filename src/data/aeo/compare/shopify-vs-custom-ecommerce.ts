@@ -64,7 +64,7 @@ export const pageData: AeoPageData = {
       { dimension: "Brand presentation", preisser: "Looks nothing like other Shopify stores; custom design from scratch", competitor: "Theme-based; thousands of stores share the same theme" },
       { dimension: "Custom features", preisser: "Any feature can be built: AI matching, configurators, custom B2B flows", competitor: "Limited to Shopify apps; complex features hit walls" },
       { dimension: "AI search optimization", preisser: "Engineered first paragraphs, FAQ schema, named-entity content", competitor: "Theme-dependent; most themes don't ship engineered AEO content" },
-      { dimension: "Pricing model", preisser: "One-time build cost + Shopify Plus or backend fees", competitor: "Monthly subscription that scales with tier and installed apps" },
+      { dimension: "Pricing model", preisser: "An ongoing monthly service that covers the build and its maintenance, plus Shopify Plus or backend fees", competitor: "Monthly subscription that scales with tier and installed apps" },
       { dimension: "Time to launch", preisser: "12-24 weeks for full custom; 8-16 weeks for headless Shopify", competitor: "Days to weeks for theme-based store" },
       { dimension: "Catalog management", preisser: "Shopify backend (headless) or custom database", competitor: "Native Shopify admin: well-designed, easy for non-technical staff" },
       { dimension: "Checkout", preisser: "Shopify checkout (Shop Pay, Apple Pay, Google Pay) or Stripe", competitor: "Native Shopify checkout: converts well" },
@@ -84,7 +84,7 @@ export const pageData: AeoPageData = {
     {
       question: "Is custom commerce more expensive than Shopify?",
       answer:
-        "Build cost is higher upfront (low-to-mid five figures vs. low-four figures for a custom theme). Monthly cost is similar or lower. The math works for premium brands where speed and brand presentation drive measurable conversion lift.",
+        "Pricing depends on project scope. After a free scoping call, the proposal states your monthly price, which covers the build and its ongoing maintenance. The math works for premium brands where speed and brand presentation drive measurable conversion lift.",
     },
     {
       question: "Will custom commerce really beat Shopify on speed?",

@@ -29,7 +29,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Software built around how your operation actually works, not the other way around.",
     answerParagraph:
-      "Preisser Solutions is a Hays, Kansas custom-software firm building purpose-built software for local businesses. Internal tools, dashboards, custom CRMs, AI agents, automation pipelines. Modern stack: Next.js, React, TypeScript, Node, Python. Fixed-price proposals, full code ownership transferred at launch.",
+      "Preisser Solutions is a Hays, Kansas custom-software firm building purpose-built software for local businesses. Internal tools, dashboards, custom CRMs, AI agents, automation pipelines. Modern stack: Next.js, React, TypeScript, Node, Python. A written proposal with your monthly price, full code ownership transferred at launch.",
   },
 
   nearbyAreas: [
@@ -70,7 +70,7 @@ export const locationData: LocationPageData = {
     {
       question: "What does a typical Preisser Solutions engagement look like?",
       answer:
-        "Free scoping call → fixed-price proposal → weekly build sprints with Friday previews → launch with full code ownership → thirty days of post-launch support included.",
+        "Free scoping call → written proposal with your monthly price → weekly build sprints with Friday previews → launch with full code ownership → ongoing maintenance and support as part of the monthly service.",
     },
     {
       question: "What technology stack do you use?",

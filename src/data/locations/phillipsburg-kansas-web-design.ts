@@ -88,7 +88,7 @@ export const locationData: LocationPageData = {
     {
       question: "What makes Preisser Solutions different from other web design vendors in Kansas?",
       answer:
-        "Custom code from scratch, full ownership at launch, and a fixed-price engagement model. No themes, no proprietary builders, and no ongoing license fees on the work we deliver.",
+        "Custom code from scratch, full ownership at launch, and an ongoing monthly service. No themes, no proprietary builders, and no ongoing license fees on the work we deliver.",
     },
   ],
 

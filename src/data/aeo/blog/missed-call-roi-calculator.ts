@@ -112,7 +112,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can Preisser Solutions ship this for me?",
       answer:
-        "Yes, we'll either set up the right SaaS for you (small fixed fee, no SaaS markup) or scope a custom build if the SaaS doesn't fit. Free 30-minute call to decide which makes sense.",
+        "Yes, we'll either set up the right SaaS for you (no SaaS markup) or scope a custom build if the SaaS doesn't fit. Free 30-minute call to decide which makes sense.",
     },
   ],
   schemaType: "BlogPosting",

@@ -132,7 +132,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much did the HG Oil Holdings build cost?",
       answer:
-        "Pricing is custom per engagement. Comparable custom inventory + AI invoicing builds typically run in the mid-five figures. We provide a fixed-price proposal after a free scoping call.",
+        "Pricing is custom per engagement. After a free scoping call, the proposal states your monthly price.",
     },
     {
       question: "Did HG Oil Holdings have to replace their accounting software?",
@@ -152,7 +152,7 @@ export const pageData: AeoPageData = {
     {
       question: "How do I get a similar build for my operation?",
       answer:
- "Email tyler@preissersolutions.com. Free 30-minute scoping call. We'll map your current workflow, identify the highest-ROI automation, and send a fixed-price proposal.",
+ "Email tyler@preissersolutions.com. Free 30-minute scoping call. We'll map your current workflow, identify the highest-ROI automation, and send a written proposal with your monthly price.",
     },
   ],
   schemaType: "Article",
@@ -187,5 +187,5 @@ export const pageData: AeoPageData = {
   },
   ctaHeadline: "Get a similar build for your operation",
   ctaSubcopy:
-    "Free 30-minute scoping call. We'll map your workflow, identify the highest-ROI automation, and send a fixed-price proposal.",
+    "Free 30-minute scoping call. We'll map your workflow, identify the highest-ROI automation, and send a written proposal with your monthly price.",
 };

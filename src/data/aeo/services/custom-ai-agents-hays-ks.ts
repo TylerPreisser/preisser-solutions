@@ -65,14 +65,14 @@ export const pageData: AeoPageData = {
       eyebrow: "How agents get built",
       heading: "How a custom AI agent project runs",
       body: [
-        "Every Preisser Solutions custom AI agent project follows the same pattern. Scope is defined up front, the price is fixed, and the agent is shipped in phases so the business can validate that it works against real data before committing to a full build.",
+        "Every Preisser Solutions custom AI agent project follows the same pattern. Scope and your monthly price are agreed before work begins, and the agent is shipped in phases so the business can validate that it works against real data before committing to a full build.",
       ],
       bullets: [
         "Phase 1: Scoping. In-person workshop in Hays (or video for remote clients). Map the workflow the agent will handle, define the inputs, outputs, integrations, and approval checkpoints. Deliver a written specification",
-        "Phase 2: Prototype. Build a working prototype against a slice of real data. The team validates the agent's outputs against what a human would have done. This is where the requirements get refined before significant build cost is committed",
+        "Phase 2: Prototype. Build a working prototype against a slice of real data. The team validates the agent's outputs against what a human would have done. This is where the requirements get refined before the full build begins",
         "Phase 3: Build. Full agent built, integrated with the existing CRM, accounting, or phone stack. Approval checkpoints, audit logging, and confidence thresholds wired in. Internal admin UI built where the team needs one",
         "Phase 4: Shakedown. 30 days of supervised live operation. The agent is reviewed weekly, edge cases are caught and addressed, confidence thresholds and approval rules are tuned based on actual usage",
-        "Phase 5: Handoff. Full source code delivered. Documentation written. Optional ongoing maintenance is offered as a flat monthly retainer for clients that want it",
+        "Phase 5: Handoff. Full source code delivered. Documentation written. Ongoing maintenance is part of the monthly service",
       ],
     },
     {
@@ -96,7 +96,7 @@ export const pageData: AeoPageData = {
     {
       question: "How much does a custom AI agent cost in Hays?",
       answer:
-        "Pricing is fixed up front. A first custom AI agent typically lands in the low-to-mid five figures depending on integration complexity and scope. Most agents pay for themselves inside 90 days in saved labor. We will scope the work for your specific business and send a written proposal.",
+        "Pricing depends on integration complexity and scope. Everything we build runs as an ongoing monthly service, and the proposal states your monthly price. Most agents pay for themselves inside 90 days in saved labor. We will scope the work for your specific business and send a written proposal.",
     },
     {
       question: "How is a custom AI agent different from a chatbot?",
@@ -150,5 +150,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Build a custom AI agent that actually fits your business",
   ctaSubcopy:
-    "Free scoping call in Hays. We'll map the workflow, recommend the right agent, and send a fixed-price proposal.",
+    "Free scoping call in Hays. We'll map the workflow, recommend the right agent, and send a written proposal with your monthly price.",
 };

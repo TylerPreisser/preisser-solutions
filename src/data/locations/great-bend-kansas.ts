@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for Barton County operators across ag, oil and gas, and trades.",
     answerParagraph:
-      "Preisser Solutions serves Great Bend, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly an hour east on US-281): we deliver locally and remotely. Custom code, fixed-price proposals, full ownership at launch.",
+      "Preisser Solutions serves Great Bend, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Based in Hays (roughly an hour east on US-281): we deliver locally and remotely. Custom code, a written proposal with your monthly price, full ownership at launch.",
   },
 
   nearbyAreas: [

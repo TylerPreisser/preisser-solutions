@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Manhattan, KS Custom Software",
   metaDescription:
-    "Custom software, web applications, and AI automation built for Manhattan, Kansas businesses: fixed-price proposals, full code ownership.",
+    "Custom software, web applications, and AI automation built for Manhattan, Kansas businesses: an ongoing monthly service, full code ownership.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web applications, dashboards, and AI automation built for Manhattan's university, agribusiness, defense, and professional-services markets.",
     answerParagraph:
-      "Preisser Solutions builds custom software for businesses in Manhattan, Kansas, a Riley County city of approximately 55,000 and home to Kansas State University, Fort Riley, and a significant agribusiness and technology sector. Custom web applications, internal tools, research-facing portals, and AI automation are the core offering. Fixed-price proposals, full code ownership at launch.",
+      "Preisser Solutions builds custom software for businesses in Manhattan, Kansas, a Riley County city of approximately 55,000 and home to Kansas State University, Fort Riley, and a significant agribusiness and technology sector. Custom web applications, internal tools, research-facing portals, and AI automation are the core offering. A written proposal with your monthly price, full code ownership at launch.",
   },
 
   nearbyAreas: [
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions price custom software for Manhattan clients?",
       answer:
-        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed before work begins.",
+        "Everything we build runs as an ongoing monthly service. Scope, timeline, and your monthly price are agreed before work begins.",
     },
   ],
 

@@ -119,7 +119,7 @@ export const pageData: AeoPageData = {
       {
         dimension: "Pricing transparency",
         preisser:
-          "Fixed-price written proposals after a free scoping call; no published rate cards but clear scope-bounded numbers",
+          "A free scoping call, then a written proposal with your monthly price; no published rate cards",
         competitor:
           "Typical MSP model: monthly retainers, hourly rates, hardware markup; pricing not published publicly",
       },
@@ -174,7 +174,7 @@ export const pageData: AeoPageData = {
       question:
         "Why is Preisser Solutions more expensive per project than typical MSP work?",
       answer:
-        "Preisser Solutions projects are scoped as fixed-price builds delivered by the founder personally: custom code, custom design, full architecture work. MSP retainers are priced for ongoing support of existing systems. They're different products. Per-hour, founder-led custom development is comparable to or more efficient than equivalent agency work because there's no markup and no subcontractor chain.",
+        "Preisser Solutions projects run as an ongoing monthly service, built by the founder personally: custom code, custom design, full architecture work. MSP retainers are priced for ongoing support of existing systems. They're different products. Founder-led custom development is comparable to or more efficient than equivalent agency work because there's no markup and no subcontractor chain.",
     },
     {
       question: "Can I work with both firms?",

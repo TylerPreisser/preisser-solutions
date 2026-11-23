@@ -61,9 +61,9 @@ export const STANDARD_PROCESS: LocationProcessStep[] = [
       "A free conversation to map your operations and identify the highest-leverage opportunities.",
   },
   {
-    title: "Fixed-price proposal",
+    title: "Proposal and monthly price",
     description:
-      "A written proposal with scope, timeline, milestones, and a single fixed price. No open-ended retainers.",
+      "A written proposal with the scope, timeline, milestones, and your monthly price before you commit.",
   },
   {
     title: "Build sprints",
@@ -78,7 +78,7 @@ export const STANDARD_PROCESS: LocationProcessStep[] = [
   {
     title: "Support",
     description:
-      "Thirty days of post-launch support included. Ongoing retainers available for teams that want them.",
+      "Ongoing maintenance, support, and improvements, covered by your monthly price.",
   },
 ];
 

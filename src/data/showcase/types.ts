@@ -380,8 +380,6 @@ export interface StillsWalkthroughData {
   /** Step names for the dots. */
   steps: readonly string[];
   totalMs: number;
-  /** The still shown with no JS and under reduced motion. */
-  ssrStill: number;
   /** Text manifest for the privacy guard (§7.2 #18): every name and number visible in the stills. */
   manifest: readonly string[];
 }

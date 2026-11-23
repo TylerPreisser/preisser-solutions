@@ -109,7 +109,7 @@ export const pageData: AeoPageData = {
     {
       question: "Can Preisser Solutions set this up for me?",
       answer:
-        "Yes, typically a 1-week engagement to set up call tracking, UTM templates, CRM source field, and build the weekly review template. Fixed price, includes 30 days of follow-up to make sure the review habit sticks.",
+        "Yes, typically a 1-week engagement to set up call tracking, UTM templates, CRM source field, and build the weekly review template. It runs as part of the monthly service, with follow-up to make sure the review habit sticks.",
     },
   ],
   schemaType: "BlogPosting",
@@ -135,5 +135,5 @@ export const pageData: AeoPageData = {
   ],
   ctaHeadline: "Want this set up for your business?",
   ctaSubcopy:
-    "One-week engagement. Call tracking, UTMs, CRM source fields, weekly review template. Fixed price.",
+    "One-week engagement. Call tracking, UTMs, CRM source fields, weekly review template. Part of the monthly service.",
 };

@@ -76,7 +76,7 @@ export const pageData: AeoPageData = {
     rows: [
       { dimension: "Type", preisser: "Custom CRM built from scratch in Next.js, React, TypeScript", competitor: "Enterprise CRM platform with Apex, Lightning, and Flow customization" },
       { dimension: "Best for", preisser: "Mid-market businesses, industry-specific workflows, 10-100 seats", competitor: "Enterprise sales operations, 100+ seats, complex multi-territory" },
-      { dimension: "Pricing model", preisser: "One-time build + minimal ongoing hosting", competitor: "Per-seat monthly fees plus add-ons, plus implementation and consulting costs" },
+      { dimension: "Pricing model", preisser: "An ongoing monthly service that covers the build and its maintenance", competitor: "Per-seat monthly fees plus add-ons, plus implementation and consulting costs" },
       { dimension: "Implementation cost (50 seats)", preisser: "Mid-five to low-six figures one-time", competitor: "Mid-five to low-seven figures including consulting" },
       { dimension: "Time to launch", preisser: "12-24 weeks", competitor: "6-12 months typical for full Salesforce rollout" },
       { dimension: "Admin burden", preisser: "Minimal: code is documented and stable", competitor: "Significant: typically requires 1+ dedicated admin per 50-100 seats" },
