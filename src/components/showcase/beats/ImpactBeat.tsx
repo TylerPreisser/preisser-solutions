@@ -110,6 +110,7 @@ export function ImpactBeat({
       className="im"
       data-fact-stage={`${client.slug}-impact`}
       data-solo={solo ? "" : undefined}
+      data-lead={beat.lead ?? undefined}
       data-before={hasBefore ? "some" : "none"}
       data-play={play ? "" : undefined}
       aria-hidden={quiet || undefined}
@@ -139,7 +140,7 @@ export function ImpactBeat({
           {beat.lead === "qr-story" ? (
             // Spec §3.5: Duffer's Impact leads with the QR story.
             <div className="im__lead" data-lead="qr-story">
-              <DufferQrScene variant={variant} active={active} reduced={reduced} />
+              <DufferQrScene variant={variant} active={active} reduced={reduced} count={beat.big[0]?.now.value} />
             </div>
           ) : null}
           <div className="im__body">
@@ -177,6 +178,12 @@ export function ImpactBeat({
           </div>
         </div>
       </div>
+      {/* More below the cut edge: a quiet chevron over the fade says the panel scrolls (critic r2 SHOULD 6). */}
+      <span className="im__more" data-on={edge.more ? "" : undefined} aria-hidden="true">
+        <svg viewBox="0 0 16 16" width="14" height="14">
+          <path d="M3.5 6l4.5 4.5L12.5 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
     </section>
   );
 }
@@ -199,8 +206,15 @@ function Card({ s, i }: { s: ImpactStat; i: number }) {
       data-has-before={s.before || s.oldWay ? "" : undefined}
       style={{ "--i": i } as CSSProperties}
     >
+      {/* The old way, when it is a sentence: struck through like a number (a strike that draws across every line), set
+          apart above the new figure so it never reads as the figure's label. */}
       {s.oldWay && !s.before ? (
-        <span className="im__old">{copy(s.oldWay)}</span>
+        <span className="im__old">
+          <span className="ps-visually-hidden">Before: </span>
+          <span className="im__old-t" data-strike>
+            {copy(s.oldWay)}
+          </span>
+        </span>
       ) : null}
       {s.before ? (
         <span className="im__was">
@@ -230,7 +244,8 @@ function Row({ s, i }: { s: ImpactStat; i: number }) {
             {s.before.value}
           </span>
         ) : null}
-        <span className="im__row-v">
+        {/* A value with no figure in it ("Milliseconds") is set at the label's size, not as a figure. */}
+        <span className={/\d/.test(s.now.value) ? "im__row-v" : "im__row-v im__row-v--word"}>
           <span className="ps-visually-hidden">Now: </span>
           <Value v={s.now.value} unit={s.unit} />
         </span>
