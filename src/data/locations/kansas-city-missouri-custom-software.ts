@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Kansas City, MO Custom Software",
   metaDescription:
-    "Custom software and AI automation for Kansas City, Missouri businesses: Kansas-based firm serving the KC metro with fixed-price proposals.",
+    "Custom software and AI automation for Kansas City, Missouri businesses: Kansas-based firm serving the KC metro as an ongoing monthly service.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web applications, dashboards, and AI automation for Kansas City's logistics, healthcare, financial services, and technology markets: delivered remotely by a Kansas-based firm.",
     answerParagraph:
-      "Preisser Solutions is a Kansas-based custom software firm serving Kansas City, Missouri businesses remotely. Kansas City is a Jackson County metro of approximately 500,000 in the city proper, anchored by logistics, healthcare, financial services, manufacturing, and technology. All work is delivered remotely, with on-site travel to KC for material engagements. Fixed-price proposals, full code ownership at launch.",
+      "Preisser Solutions is a Kansas-based custom software firm serving Kansas City, Missouri businesses remotely. Kansas City is a Jackson County metro of approximately 500,000 in the city proper, anchored by logistics, healthcare, financial services, manufacturing, and technology. All work is delivered remotely, with on-site travel to KC for material engagements. A written proposal with your monthly price, full code ownership at launch.",
   },
 
   nearbyAreas: [
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "What is the pricing model for Kansas City projects?",
       answer:
-        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed before work begins: no open-ended retainers.",
+        "Everything we build runs as an ongoing monthly service. Scope, timeline, and your monthly price are agreed before work begins.",
     },
   ],
 

@@ -39,7 +39,7 @@ export const locationData: LocationPageData = {
   process: STANDARD_PROCESS,
 
   whyLocal: [
-    "Newton's manufacturing and healthcare economy needs custom internal tools and operational automation, not marketing agency retainers.",
+    "Newton's manufacturing and healthcare economy needs custom internal tools and operational automation.",
     "Kansas-based at Kansas economics. Wichita-metro proximity does not mean Wichita-metro pricing.",
     "Custom code with full ownership at launch. Healthcare-adjacent builds follow proper architecture for data handling from the ground up.",
   ],

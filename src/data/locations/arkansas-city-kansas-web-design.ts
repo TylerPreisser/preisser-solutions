@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Arkansas City, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Arkansas City, Kansas: Kansas-based development firm with fixed-price proposals.",
+    "Custom websites, web apps, and AI automation for Arkansas City, Kansas: Kansas-based development firm as an ongoing monthly service.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "How does Preisser Solutions price projects?",
       answer:
-        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed before work begins: no open-ended retainers.",
+        "Everything we build runs as an ongoing monthly service. Scope, timeline, and your monthly price are agreed before work begins.",
     },
   ],
 

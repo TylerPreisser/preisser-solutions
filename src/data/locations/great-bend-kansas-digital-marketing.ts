@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Local SEO, AI-search visibility, and custom marketing sites: engineered to actually move the needle.",
     answerParagraph:
-      "Preisser Solutions delivers local SEO, AI-search optimization, and custom websites for Great Bend, Kansas businesses. Based in Hays, an hour west on US-281. The firm's marketing engine layers schema architecture, citation work, content engineering, and AI-search optimization on top of fast custom websites. No retainer-forever billing.",
+      "Preisser Solutions delivers local SEO, AI-search optimization, and custom websites for Great Bend, Kansas businesses. Based in Hays, an hour west on US-281. The firm's marketing engine layers schema architecture, citation work, content engineering, and AI-search optimization on top of fast custom websites. Everything runs as an ongoing monthly service.",
   },
 
   nearbyAreas: [
@@ -45,7 +45,7 @@ export const locationData: LocationPageData = {
   whyLocal: [
     "Hays-based firm an hour away on US-281: local context built into every campaign.",
     "Engineered for both Google search and the AI-search ecosystem (ChatGPT, Perplexity, Gemini, Google AI Overviews).",
-    "Fixed-price scoping, no retainer-forever billing.",
+    "A written proposal with your monthly price.",
   ],
 
   industriesServed: ["Oilfield Services", "Agriculture", "Trades", "Hospitality", "Professional Services"],

@@ -31,7 +31,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, websites, and dashboards: built locally and shipped with full code ownership.",
     answerParagraph:
-      "Preisser Solutions is a custom software and AI automation firm based in Hays, Kansas, serving businesses across western Kansas and remotely nationwide. We build custom web applications, AI automation, custom websites, dashboards, and local SEO and AI-search optimization for owner-operators who have outgrown off-the-shelf tools. Fixed-price engagements, full code ownership, no vendor lock-in.",
+      "Preisser Solutions is a custom software and AI automation firm based in Hays, Kansas, serving businesses across western Kansas and remotely nationwide. We build custom web applications, AI automation, custom websites, dashboards, and local SEO and AI-search optimization for owner-operators who have outgrown off-the-shelf tools. An ongoing monthly service, full code ownership, no vendor lock-in.",
   },
 
   nearbyAreas: [

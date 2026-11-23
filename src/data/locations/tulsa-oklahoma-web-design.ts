@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "What is the pricing model for Tulsa projects?",
       answer:
-        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed before work begins.",
+        "Everything we build runs as an ongoing monthly service. Scope, timeline, and your monthly price are agreed before work begins.",
     },
   ],
 

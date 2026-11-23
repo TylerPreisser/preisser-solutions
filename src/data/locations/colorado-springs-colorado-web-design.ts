@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web design, web applications, and AI automation for Colorado Springs' military, technology, healthcare, and professional-services markets.",
     answerParagraph:
-      "Preisser Solutions is a Kansas-based custom software and web development firm serving Colorado Springs, Colorado businesses remotely, with on-site travel for material engagements. Colorado Springs is an El Paso County city of approximately 478,000, anchored by military installations (Peterson SFB, Fort Carson, NORAD/NORTHCOM, Schriever SFB), technology, healthcare, and outdoor industries. Fixed-price proposals, full code ownership.",
+      "Preisser Solutions is a Kansas-based custom software and web development firm serving Colorado Springs, Colorado businesses remotely, with on-site travel for material engagements. Colorado Springs is an El Paso County city of approximately 478,000, anchored by military installations (Peterson SFB, Fort Carson, NORAD/NORTHCOM, Schriever SFB), technology, healthcare, and outdoor industries. A written proposal with your monthly price, full code ownership.",
   },
 
   nearbyAreas: [
@@ -86,7 +86,7 @@ export const locationData: LocationPageData = {
     {
       question: "What is the pricing model for Colorado Springs projects?",
       answer:
-        "All projects use fixed-price proposals. Scope, timeline, and total cost are agreed before work begins.",
+        "Everything we build runs as an ongoing monthly service. Scope, timeline, and your monthly price are agreed before work begins.",
     },
   ],
 

@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "What makes Preisser Solutions a better choice than a Topeka or Manhattan agency for Junction City?",
       answer:
-        "Custom-software and AI automation depth. Most regional agencies sell marketing retainers. Preisser Solutions builds operational tools, custom websites, and AI automation: the full stack of what Junction City businesses need.",
+        "Custom-software and AI automation depth. Most regional agencies focus on marketing. Preisser Solutions builds operational tools, custom websites, and AI automation: the full stack of what Junction City businesses need.",
     },
   ],
 

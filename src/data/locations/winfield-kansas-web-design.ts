@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Winfield, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Winfield, Kansas businesses: Kansas-based firm with fixed-price proposals and full code ownership.",
+    "Custom websites, web apps, and AI automation for Winfield, Kansas businesses: Kansas-based firm offering an ongoing monthly service and full code ownership.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",

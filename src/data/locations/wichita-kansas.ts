@@ -25,7 +25,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Custom web apps, AI automation, and websites for the largest economy in Kansas: built by a Kansas-based firm.",
     answerParagraph:
-      "Preisser Solutions serves Wichita, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Headquartered in Hays (roughly three hours west by car): we deliver remotely and travel for projects of sufficient scope. Custom code, full ownership, fixed-price proposals.",
+      "Preisser Solutions serves Wichita, Kansas businesses with custom software, AI automation, custom websites, dashboards, and local SEO and AI-search optimization. Headquartered in Hays (roughly three hours west by car): we deliver remotely and travel for projects of sufficient scope. Custom code, full ownership, a written proposal with your monthly price.",
   },
 
   nearbyAreas: [

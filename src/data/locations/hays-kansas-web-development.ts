@@ -29,7 +29,7 @@ export const locationData: LocationPageData = {
     subheadline:
       "Full-stack web development: modern frameworks, fast infrastructure, full code ownership.",
     answerParagraph:
-      "Preisser Solutions is a Hays, Kansas custom-software firm delivering full-stack web development to local businesses. Next.js, React, and TypeScript on modern edge infrastructure. Custom code, no templates, fixed-price proposals, full code ownership transferred at launch.",
+      "Preisser Solutions is a Hays, Kansas custom-software firm delivering full-stack web development to local businesses. Next.js, React, and TypeScript on modern edge infrastructure. Custom code, no templates, a written proposal with your monthly price, full code ownership transferred at launch.",
   },
 
   nearbyAreas: [

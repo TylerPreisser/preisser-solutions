@@ -14,7 +14,7 @@ export const locationData: LocationPageData = {
 
   metaTitle: "Emporia, KS Web Design & Software",
   metaDescription:
-    "Custom websites, web apps, and AI automation for Emporia, Kansas businesses: built by a Kansas development firm with fixed-price proposals.",
+    "Custom websites, web apps, and AI automation for Emporia, Kansas businesses: built by a Kansas development firm as an ongoing monthly service.",
 
   datePublished: "2026-05-21",
   dateModified: "2026-05-21",
@@ -45,7 +45,7 @@ export const locationData: LocationPageData = {
   whyLocal: [
     "Flint Hills regional context: university community, healthcare, manufacturing, and ag operators along I-35.",
     "Custom code with full ownership at launch. No SaaS dependency or ongoing licensing.",
-    "Fixed-price proposals ensure no scope creep. Cost agreed before work begins.",
+    "A written proposal keeps the scope clear. Your monthly price is agreed before work begins.",
   ],
 
   industriesServed: [

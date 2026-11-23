@@ -83,7 +83,7 @@ export const locationData: LocationPageData = {
     {
       question: "Can Preisser Solutions help a small ag operation in western Kansas?",
       answer:
-        "Yes. Custom websites, AI automation, and workflow tools are scoped to the size and budget of the operation. Fixed-price proposals mean there are no surprises.",
+        "Yes. Custom websites, AI automation, and workflow tools are scoped to the size and budget of the operation. A written proposal with your monthly price means there are no surprises.",
     },
     {
       question: "Do you offer AI search and SEO for western Kansas businesses?",

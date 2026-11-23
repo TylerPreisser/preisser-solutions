@@ -81,7 +81,7 @@ export const locationData: LocationPageData = {
     {
       question: "What is the difference between Preisser Solutions and a regional Kansas marketing agency?",
       answer:
-        "Preisser Solutions is a custom-software and AI automation firm. Every engagement is scoped around custom code with full ownership, not templates, monthly retainers, or agency media buys.",
+        "Preisser Solutions is a custom-software and AI automation firm. Every engagement is scoped around custom code with full ownership. No templates and no agency media buys.",
     },
   ],
 
