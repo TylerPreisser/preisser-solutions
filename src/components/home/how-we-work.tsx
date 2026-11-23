@@ -38,6 +38,14 @@ import { BEATS, LEAD, beatOf, clamp, follow, followerAt, frame, keyTarget, offse
  *     eases on to the nearest point at which a beat is at rest. The page does
  *     not move; only the picture settles. At rest the reader therefore never
  *     sees two half-faded texts or a light parked between two lines.
+ *   - As the section arrives from the hero, the three lines come in with the
+ *     scroll, one after another, before anything lights (ADR-0031). That is
+ *     part of `frame(u)` too, so it is scrubbed, runs backwards going up, and
+ *     never rests part way.
+ *   - The scroll position is measured against the held block's own height
+ *     (one small-viewport screen), never window.innerHeight: on a phone the
+ *     inner height changes by about 190px whenever the browser's toolbar slides,
+ *     and that alone used to move the picture by a tenth of a beat.
  *   - Each frame changes only `opacity` and `transform` (and one custom
  *     property that feeds an opacity). No layout and no repaint of the type.
  *   - No React state: a frame is written straight to the elements, so
@@ -131,6 +139,14 @@ export function HowWeWork() {
 
     let pinned = false;
     let travel = 0;
+    // The height of the held block: one small-viewport screen (100svh), which a
+    // phone's toolbar sliding away does not change. Every scroll position is
+    // turned into a beat position against this, never against
+    // window.innerHeight, which the toolbar does change.
+    let vh = 0;
+    // How far below its place a line starts its entrance, in px: about eight
+    // tenths of its own type size, between 18 and 34px (the hero's lines rise 24px).
+    let riseBy = 0;
     let boxes: Array<{ x: number; y: number; w: number; h: number }> = [];
     // How far each band window travels for one line's worth of the light: the
     // line's height plus one of the window's two soft margins, so the band is
@@ -144,11 +160,21 @@ export function HowWeWork() {
     let raf = 0;
     let lastTime = 0;
 
-    const position = () => positionOf(-track.getBoundingClientRect().top, window.innerHeight, travel);
+    const position = () => positionOf(-track.getBoundingClientRect().top, vh, travel);
 
     const paint = (u: number, caps: readonly number[]) => {
       const f = frame(u, caps);
-      lines.forEach((line, k) => line.style.setProperty("--lit", f.lit[k].toFixed(3)));
+      lines.forEach((line, k) => {
+        line.style.setProperty("--lit", f.lit[k].toFixed(3));
+        // The entrance. With reduced motion the lines are simply there.
+        if (reduce.matches) {
+          line.style.removeProperty("opacity");
+          line.style.removeProperty("transform");
+        } else {
+          line.style.opacity = f.rise[k].opacity.toFixed(3);
+          line.style.transform = `translate3d(0, ${(f.rise[k].y * riseBy).toFixed(2)}px, 0)`;
+        }
+      });
       // The band: a window the height of the line that slides down over the
       // blue copy of the words, while the copy itself is moved back by the
       // same amount so the words stay exactly where they are.
@@ -246,7 +272,11 @@ export function HowWeWork() {
         pinned = false;
         window.cancelAnimationFrame(raf);
         raf = 0;
-        lines.forEach((line) => line.style.removeProperty("--lit"));
+        lines.forEach((line) => {
+          line.style.removeProperty("--lit");
+          line.style.removeProperty("opacity");
+          line.style.removeProperty("transform");
+        });
         inks.forEach((ink) => ink.style.removeProperty("opacity"));
         fills.forEach((fill) => fill.style.removeProperty("transform"));
         fillIns.forEach((fill) => fill.style.removeProperty("transform"));
@@ -260,6 +290,8 @@ export function HowWeWork() {
         track.removeAttribute("data-moving");
         return;
       }
+      vh = pin.getBoundingClientRect().height;
+      riseBy = clamp(parseFloat(getComputedStyle(lines[0]).fontSize) * 0.8, 18, 34);
       boxes = lines.map((line) => ({ x: line.offsetLeft, y: line.offsetTop, w: line.offsetWidth, h: line.offsetHeight }));
       fillHeights = fills.map((fill, k) => {
         const line = lines[k].getBoundingClientRect().height;
@@ -302,7 +334,7 @@ export function HowWeWork() {
       if (e.key === " " && from && from.closest("button, summary, [role='button'], [role='switch'], [role='checkbox'], [role='tab'], [role='menuitem']")) return;
       const top = track.getBoundingClientRect().top;
       const beat = travel / BEATS;
-      const lead = window.innerHeight * LEAD;
+      const lead = vh * LEAD;
       // The beat the reader is being shown. One exception: on the way in, the
       // first line can be lit while the bottom of its explanation is still
       // below the window. They have not been shown it yet, so the key must
@@ -317,7 +349,7 @@ export function HowWeWork() {
       if (next === null) return;
       e.preventDefault();
       window.scrollTo({
-        top: window.scrollY + top + offsetOf(next, window.innerHeight, travel),
+        top: window.scrollY + top + offsetOf(next, vh, travel),
         behavior: reduce.matches ? "auto" : "smooth",
       });
     };
