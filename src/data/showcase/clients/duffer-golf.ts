@@ -127,14 +127,8 @@ const client: ShowcaseClient = {
         ],
       },
     },
-    {
-      kind: "scene",
-      tab: "Command Center",
-      caption: "Duffer's own command center, clicked through: scans, courses, orders and commissions.",
-      scene: "duffer-cc",
-      narration:
-        "The partner program's command center on demonstration data: today's scans and the live feed, the QR codes on each display, a partner course's record, the orders, and the commissions owed and paid.",
-    },
+    // The "Command Center" walkthrough film (scene "duffer-cc") is held back from this release: two of its views are
+    // still being reframed. Its scene, stills and probe stay in the tree; the tab returns when they pass.
     {
       kind: "engine",
       tab: "MarCommand",
