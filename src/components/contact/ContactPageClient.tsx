@@ -19,7 +19,7 @@ const contactFaqs = [
   {
     question: "How does pricing work?",
     answer:
-      "Every engagement is scoped individually. We share a fixed-price proposal after a short scoping conversation: scope, deliverables, timeline, and total cost all stated up front.",
+      "We are not a $10 million Salesforce contract. Everything we build runs as an ongoing monthly service that covers the build and the maintenance every solution needs, so a smaller business never has to front an entire build. In the age of AI, we pride ourselves on bringing the grade of intelligence, technical consulting, integrations and AI infrastructure you would expect from a top consulting firm, at a price that makes sense for your business.",
   },
   {
     question: "Does Preisser Solutions work outside Hays?",
