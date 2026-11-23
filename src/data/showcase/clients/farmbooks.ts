@@ -32,7 +32,7 @@ export const impact = impactBeat("farmbooks", {
     { now: figure<"Published on this site">("893", "bill lines sorted into tax categories") },
   ],
   rows: [{ now: figure<"Published on this site">("0", "Bill lines left uncategorized") }],
-  text: "Line items in. Never a typed total.",
+  text: "FarmBooks reads every bill, checks it against its printed total and sorts each line into its tax category.",
   narration:
     "What changed for FarmBooks. The bookkeeper used to print each bill and key it into a workbook by hand. Now every bill is read, checked against its printed total to the cent and sorted into its Schedule F tax category, and no line is left uncategorized.",
 });

@@ -34,7 +34,7 @@ export const impact = impactBeat("nwks-encounter", {
       now: figure<"Measured live, Oct 8 2026">("Milliseconds", "Cabin plan, drafted for volunteers to adjust"),
     },
   ],
-  text: "Volunteers adjust the plan. They no longer type it.",
+  text: "The system drafts the cabin plan for volunteers to adjust and makes name tags and luggage stickers from registration.",
   narration:
     "What changed for NWKS Encounter. The cabin plan, which the ministry built entirely by hand, is now drafted in moments for volunteers to adjust. Launch letters go out on their own dates, name tags and luggage stickers print from registration, and a freed seat is offered to the next person on the waitlist by email.",
 });
