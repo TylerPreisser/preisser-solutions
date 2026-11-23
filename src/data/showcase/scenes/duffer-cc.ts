@@ -79,9 +79,9 @@ const R = (x: number, y: number, w: number, h: number): Rect => ({ x, y, w, h })
 const CL: Record<string, Units> = {
   // Dashboard: today's figures. Scans and visitors, then leads and buy clicks (a tablet holds all four).
   // (A phone's first view ends its right edge between Unique visitors' words and the Live feed's times.)
-  kpiA: [[R(640, 179, 753, 147)], [R(640, 179, 325, 147)]],
+  kpiA: [[R(640, 179, 753, 147)], [R(640, 179, 325, 147)], [R(640, 179, 179, 147)]],
   // Then leads and buy clicks with the Live feed's rows under them, time and event (a 320 phone: the two figures).
-  kpiB: [[R(640, 179, 753, 147)], [R(1023, 179, 369, 147), R(962, 560, 423, 120)], [R(1023, 179, 369, 147)]],
+  kpiB: [[R(640, 179, 753, 147)], [R(1023, 179, 369, 147), R(962, 560, 423, 120)], [R(1023, 179, 369, 147)], [R(1023, 179, 178, 147)]],
   // The Live feed card: time and what happened, row by row.
   // (A 320 phone cannot read time and event together: it shows the events, each whole.)
   feed: [[R(947, 25, 446, 680)], [R(947, 25, 446, 330)], [R(955, 75, 430, 260)], [R(1085, 75, 300, 250)]],
@@ -95,7 +95,8 @@ const CL: Record<string, Units> = {
   // a smaller stage, the form's payout preference with the contact under it.
   partner: [[R(947, 417, 446, 270), R(947, 133, 446, 262)], [R(960, 417, 420, 270)], [R(590, 195, 325, 230)]],
   // Orders: each sale with the course it is credited to (product, amount, partner); a tablet adds its commission.
-  orders: [[R(380, 100, 850, 590)], [R(478, 100, 370, 590)], [R(478, 100, 370, 300)]],
+  // (A 320 phone: each sale's amount and the course it is credited to.)
+  orders: [[R(380, 100, 850, 590)], [R(478, 100, 370, 590)], [R(478, 100, 370, 300)], [R(620, 100, 225, 300)]],
   // Commissions: what is owed to each course, and the payout recorded by check.
   pay: [[R(947, 100, 446, 487)], [R(947, 100, 446, 333)], [R(955, 155, 300, 280)]],
   // The last view: the whole column, owed and paid, in the middle of the stage (the page under it is empty).
