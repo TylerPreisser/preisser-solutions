@@ -717,7 +717,6 @@ export function CaseStudies() {
       () => on && setArrived((n) => n + 1),
       () => on && setShowcase(null),
     );
-    setShellIn(false);
     return () => {
       on = false;
     };
@@ -866,6 +865,10 @@ export function CaseStudies() {
     // Code and data here (the usual case): the window itself opens. Not yet: the shell answers now.
     const ready = !!showcaseLayerModule && !!peekShowcase(slug) && !!SHELL[slug];
     const next = { slug, anchor: el, mode: "pinned" as const, ...(ready || !SHELL[slug] ? {} : { shell: true }) };
+    // The shell's "come in" flag is cleared HERE, before the shell mounts. Cleared in an effect after it, it wiped
+    // the shell's own signal: under reduced motion the shell says it has come in during its mount effect, which runs
+    // before this component's effects, and the phone stayed on the shell for good (lead 2026-11-22, bench g2).
+    setShellIn(false);
     // After a touch, a transition rather than the click's own synchronous render: the card's pressed state (set at
     // pointerdown) gets its frame before the window's commit (WebKit: that render held the first frame 120-250 ms).
     // A mouse or a key opens at once (a transition yields, and there is no pressed state to show meanwhile:

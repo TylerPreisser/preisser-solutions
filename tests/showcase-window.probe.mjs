@@ -1154,6 +1154,42 @@ for (const [kind, slug] of [["phone", "hays"], ["click", "hays"]]) {
   });
 }
 
+// g2. Reduced motion, the handover: the real window takes over and the chip reaches Live, with the window's code
+// held back (the home page's shell answers the tap first) and with it already there. g alone passed while a phone
+// with Reduce Motion stayed on the shell forever (lead 2026-11-22: the shell said it had come in during its own
+// mount, and the page's reset of that flag ran after it).
+for (const kind of ["phone", "click"]) {
+  for (const hold of [true, false]) {
+    await check(`[${NAMES[kind]} · Hays Academy · reduced motion · ${hold ? "code still on its way" : "code already here"}] g2. the real window takes over and goes Live`, kind === "phone" ? DEVICES.phone : DEVICES.desk, async () => {
+      const runs = [];
+      for (let i = 0; i < Math.min(REPS, 2); i++) {
+        const S = await newSession(kind, "hays", { reduced: true, hold });
+        try {
+          await S.page.evaluate(() => {
+            const W = (window.__psho = { t0: performance.now(), shell: null, win: null, live: null });
+            new MutationObserver(() => {
+              const now = Math.round(performance.now() - W.t0);
+              if (W.shell == null && document.querySelector(".sc-root[data-shell]")) W.shell = now;
+              if (W.win == null && document.querySelector(".sc-root:not([data-shell]) [role=tab]")) W.win = now;
+              if (W.live == null && document.querySelector('.sc-root:not([data-shell]) .sc-web__chip[data-state="live"]')) W.live = now;
+            }).observe(document.body, { subtree: true, childList: true, attributes: true });
+          });
+          await actOpen(S, kind);
+          if (hold) setTimeout(() => S.release(), HOLD_MS);
+          await S.page.waitForFunction(() => window.__psho.live != null, null, { timeout: 15000 }).catch(() => {});
+          runs.push(await S.page.evaluate(() => window.__psho));
+        } finally {
+          await endSession(S);
+        }
+      }
+      const t = runs.map((r) => `shell ${r.shell == null ? "not shown" : `at +${r.shell}`}, real window ${r.win == null ? "never" : `at +${r.win}`}, Live ${r.live == null ? "never (15 s)" : `at +${r.live}`} ms`).join(" | ");
+      assert.ok(runs.every((r) => r.win != null && r.live != null), t);
+      if (hold) assert.ok(runs.every((r) => r.shell != null), `the code was held but no shell came up: ${t}`);
+      return t;
+    });
+  }
+}
+
 // ---------------------------------------------------------------------------------------------------
 // Filmstrips of the cold Hays open, phone tap and desktop click (contact sheets < 2400 px wide), when
 // PS_TEST_FILM is set. Each is written when its picture runs were made (with PS_TEST_ONLY too).

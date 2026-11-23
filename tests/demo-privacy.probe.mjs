@@ -423,6 +423,13 @@ async function showcaseStages(browser) {
     const page = await context.newPage();
     await page.goto("http://probe.local/", { waitUntil: "load" });
     const toggles = page.locator("article [aria-haspopup='dialog']");
+    // The first page in a fresh browser can hold its main thread for 15-38 s on a loaded machine (one long task
+    // after load; the showcase bench measured the same), and every evaluate below waits for it: wait for the cards
+    // to be hydrated first, with room, as tests/showcase-window.probe.mjs does.
+    await page.waitForFunction(() => {
+      const el = document.querySelector("article [aria-haspopup='dialog']");
+      return !!el && Object.keys(el).some((k) => k.startsWith("__react"));
+    }, null, { timeout: 90000 });
     const n = await toggles.count();
     cards = Math.max(cards, n);
     for (let i = 0; i < n; i++) {
@@ -431,6 +438,9 @@ async function showcaseStages(browser) {
       await t.evaluate((el) => el.click());
       const dlg = page.locator("[role=dialog] .sc-beat").first();
       await dlg.waitFor({ state: "attached", timeout: 15000 });
+      // A tap before the window's code and data arrive opens the home page's loading shell first (one beat, no
+      // tabs); the real window takes its place once they are here. Visit the REAL window's tabs, so wait for them.
+      await page.waitForFunction(() => document.querySelectorAll(".sc-root:not([data-shell]) [role=dialog] [role=tab]").length > 0 && !document.querySelector(".sc-root[data-shell]"), null, { timeout: 15000 });
       // A window builds each tab the first time it is shown (ShowcaseLayer's `built` set), so visit every
       // tab the way a visitor would; once built a tab stays drawn, and the scan below sees all of them.
       const tabs = page.locator("[role=dialog] [role=tab]");
