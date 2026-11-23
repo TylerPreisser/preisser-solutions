@@ -55,6 +55,21 @@ try {
 }
 
 const browser = await chromium.launch();
+
+// The first page a fresh headless Chromium opens can stall for a minute or more before it paints (its
+// main thread waits on the GPU process starting, measured on this machine on production and on the
+// build alike), which used to time out whichever check ran first. Open one throwaway page and wait
+// for it before any check starts.
+{
+  const warm = await browser.newContext();
+  const wp = await warm.newPage();
+  await wp.goto(HOME, { waitUntil: "load" });
+  await wp.waitForFunction(() => {
+    const el = document.querySelector("#how-we-work");
+    return !!el && Object.keys(el).some((k) => k.startsWith("__react"));
+  }, null, { timeout: 300000 });
+  await warm.close();
+}
 let pass = 0;
 let fail = 0;
 
@@ -73,7 +88,7 @@ async function check(name, contextOptions, fn) {
       await page.waitForFunction(() => {
         const el = document.querySelector("#how-we-work");
         return !!el && Object.keys(el).some((k) => k.startsWith("__react"));
-      }, null, { timeout: 20000 });
+      }, null, { timeout: 120000 });
       // The site sets `scroll-behavior: smooth` on <html>; a smooth scroll is still moving when the
       // next step measures. Scroll instantly instead.
       await page.addStyleTag({ content: "html { scroll-behavior: auto !important; }" });
