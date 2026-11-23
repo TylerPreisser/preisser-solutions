@@ -28,6 +28,7 @@ import assert from "node:assert/strict";
 import {
   BEATS, CLOSING, LEAD, LINES, MAX_SPEED, OFF_TO, TURN, beatOf, follow, followerAt, frame, keyTarget, offsetOf, plateau, positionOf, readerAt, rest, watch,
 } from "../src/components/home/how-we-work-motion.ts";
+import * as motion from "../src/components/home/how-we-work-motion.ts";
 
 let pass = 0;
 let fail = 0;
@@ -51,6 +52,8 @@ function values(u, caps = null) {
   // The band's offset against each line runs from -1 (a line above) to 1 (a line below).
   f.fill.forEach((v, k) => { out[`line ${k + 1} band`] = (v + 1) / 2; });
   f.texts.forEach((t, k) => { out[`text ${k + 1} opacity`] = t.opacity; });
+  // The lines' entrance (ADR-0031): how visible each line is and how far it still has to rise (0 to 1).
+  (f.rise ?? []).forEach((r, k) => { out[`line ${k + 1} entrance`] = r.opacity; out[`line ${k + 1} rise`] = r.y; });
   return out;
 }
 
@@ -144,6 +147,47 @@ check("arriving, nothing is lit and nothing is written under the lines", () => {
   }
 });
 
+// ADR-0031, the owner on 2026-11-22: "When I initially scroll down from hero the text there kinda jerks in at
+// least initially let it animate in and etc scroll animation all that stuff". Measured on the build before it
+// (agent-reports/ps-site-1122/hww-entrance): every line was at full strength the first frame it was on screen.
+check("the lines come in with the scroll as the section arrives: each once, staggered, and all in before anything lights", () => {
+  const { ENTER_FROM, ENTER_TO } = motion;
+  assert.ok(typeof ENTER_FROM === "number" && typeof ENTER_TO === "number", "the motion has no entrance for the lines (no ENTER_FROM / ENTER_TO)");
+  assert.ok(Array.isArray(frame(0).rise) && frame(0).rise.length === LINES, "frame(u) does not say where each line is in its entrance (frame(u).rise)");
+  // It finishes before the light starts, with room to spare, and starts below where the block is held.
+  assert.ok(ENTER_TO <= OFF_TO - 0.1 + 1e-9, `the entrance ends at u=${ENTER_TO}, too close to where the light starts (${OFF_TO})`);
+  assert.ok(ENTER_FROM > -1, `the entrance starts at u=${ENTER_FROM}, outside the track's clamp`);
+  // It starts only once all three lines are on screen. The top of the track is 0.18 - u/2 screens down the
+  // window; the third line sits at most 0.501 of a screen down the held block (1366 by 625, the deepest of
+  // the sixteen layouts from 320 by 568 to 1920 by 1080, measured 2026-11-22). If it started earlier, a
+  // reader resting there would have the entrance finished for them (the settle) while a line was still
+  // below the window, and that line would then scroll in at full strength: the first version did exactly that.
+  const third = 0.18 - ENTER_FROM / 2 + 0.501;
+  assert.ok(third <= 0.97, `when the entrance starts the third line can still be ${(third * 100).toFixed(0)}% of the way down the window, at the bottom edge or below it`);
+  const last = [0, 0, 0];
+  let partWay = 0;
+  for (const u of positions) {
+    const f = frame(u);
+    f.rise.forEach((r, k) => {
+      assert.ok(r.opacity >= last[k] - 1e-12, `line ${k + 1} goes back out at u=${u} while the reader scrolls down`);
+      last[k] = r.opacity;
+      if (u <= ENTER_FROM) assert.ok(r.opacity === 0 && r.y === 1, `line ${k + 1} shows above the entrance at u=${u}`);
+      if (u >= ENTER_TO) assert.ok(r.opacity === 1 && r.y === 0, `line ${k + 1} is not fully in at u=${u}`);
+      if (r.opacity > 0 && r.opacity < 1) partWay += 1;
+    });
+    // Staggered: the first line leads, the third follows.
+    assert.ok(f.rise[0].opacity >= f.rise[1].opacity && f.rise[1].opacity >= f.rise[2].opacity, `the lines are not in order at u=${u}: ${f.rise.map((r) => r.opacity.toFixed(3)).join(", ")}`);
+    // Nothing else moves until the three are in.
+    if (f.light > 0 || f.lit.some((v) => v > 0) || f.texts.some((t) => t.opacity > 0) || f.ink < 1) {
+      assert.ok(f.rise.every((r) => r.opacity === 1 && r.y === 0), `something lights at u=${u} before the lines are in`);
+    }
+  }
+  assert.ok(partWay > 1000, `the lines were part way in at only ${partWay} positions: they are switched, not scrubbed`);
+  // Each line rises and fades over at least a third of a beat (a sixth of a screen), so it follows the finger.
+  const mid = frame((ENTER_FROM + ENTER_TO) / 2).rise;
+  assert.ok(mid[0].opacity > mid[2].opacity + 0.2, `the stagger is too slight to see (${mid.map((r) => r.opacity.toFixed(2)).join(", ")})`);
+});
+
 check("the middle of each beat is exactly its own clean picture", () => {
   for (let k = 0; k < LINES; k += 1) {
     const f = frame(k + 0.5);
@@ -164,6 +208,7 @@ check("wherever the reader stops, the picture settles on the nearest clean beat,
     const f = frame(r);
     const all = [...f.lit, ...f.texts.map((t) => t.opacity)];
     assert.ok(all.every((v) => v === 0 || v === 1), `a half state at rest for u=${u}: ${all.join(", ")}`);
+    if (f.rise) assert.ok(f.rise.every((x) => (x.opacity === 0 && x.y === 1) || (x.opacity === 1 && x.y === 0)), `a line rests part way in for u=${u}: ${f.rise.map((x) => x.opacity).join(", ")}`);
     assert.ok(f.texts.every((t) => t.y === 0 || t.opacity === 0), `a text rests off its line for u=${u}`);
     const beat = beatOf(u);
     if (beat === null) {
@@ -186,6 +231,7 @@ check("a reader who stops while scrolling one way settles onward that way, and n
       assert.equal(rest(r, way), r, `settling is not stable going ${way} at u=${u}: ${r} then ${rest(r, way)}`);
       const f = frame(r);
       assert.ok([...f.lit, ...f.texts.map((t) => t.opacity)].every((v) => v === 0 || v === 1), `a half state at rest going ${way} for u=${u}`);
+      if (f.rise) assert.ok(f.rise.every((x) => (x.opacity === 0 && x.y === 1) || (x.opacity === 1 && x.y === 0)), `a line rests part way in going ${way} for u=${u}`);
       assert.ok((r - u) * way >= 0, `stopping at u=${u} going ${way} takes the picture back ${Math.abs(r - u).toFixed(3)} beats`);
       // Onward: never further than the widest gap between two resting stretches.
       assert.ok(Math.abs(r - u) <= 0.6 + 1e-9, `stopping at u=${u} going ${way} moves the picture ${Math.abs(r - u).toFixed(2)} beats`);
@@ -501,11 +547,75 @@ for (const [kind, curve] of Object.entries(KINDS)) {
         assert.ok(!result.end.moving, `still moving 3 seconds after the scroll ended ${where}`);
         const landed = frame(result.end.x, result.end.caps);
         assert.ok([...landed.lit, ...landed.texts.map((x) => x.opacity)].every((v) => v === 0 || v === 1), `did not come to a clean rest ${where}`);
+        assert.ok(!landed.rise || landed.rise.every((x) => x.opacity === 0 || x.opacity === 1), `a line came to rest part way in ${where}`);
       }
     }
     console.log(`        fastest: ${worst.name}, a full swing per ${(1 / worst.rate).toFixed(0)}ms ${worst.where}`);
   });
 }
+
+// The owner's report, 2026-11-22, from his iPhone: "When I initially scroll down from hero the text there kinda
+// jerks in". The first scroll of the page from the very top (the hero filling the window, the section one
+// screen below it), in the three shapes a thumb makes: a slow drag that stops part way and lifts, a drag
+// on into the first line, and a flick. The lines must come in with the finger, finish coming in, never go
+// back while the finger goes on down, never come to rest part way, and go back out if he drags back up.
+function firstScroll({ windowHeight, hz, moves }) {
+  const travel = windowHeight * 2;
+  const dt = 1000 / hz;
+  // The hero is one screen high, so at the top of the page the track starts one window below.
+  let y = -windowHeight;
+  let t = 0;
+  let reader = readerAt(positionOf(y, windowHeight, travel));
+  const state = followerAt(reader.target);
+  const frames = [];
+  for (const { by, ms, hold = 0 } of moves) {
+    const from = y;
+    for (let e = 0; e < ms + hold + 1200; e += dt) {
+      // A finger: an ease-out over `ms`, then still for `hold`, then 1.2s of nothing.
+      const p = Math.min(1, e / ms);
+      y = from + by * (1 - (1 - p) * (1 - p));
+      t += dt;
+      watch(reader, positionOf(y, windowHeight, travel), t);
+      follow(state, reader.target, dt);
+      frames.push({ t, y, way: Math.sign(by), moving: e < ms, f: frame(state.x, state.caps) });
+    }
+  }
+  return { frames, end: frame(state.x, state.caps), x: state.x };
+}
+
+check("the first scroll from the top of the page: the lines come in with the finger and never come to rest part way", () => {
+  assert.ok(frame(0).rise, "frame(u) has no entrance for the lines (frame(u).rise)");
+  for (const windowHeight of [568, 659, 852, 874, 900, 1180]) {
+    for (const hz of [30, 60, 120]) {
+      const where = `${windowHeight}px at ${hz}Hz`;
+      // Into the entrance and stop: every line ends fully in, the light still off.
+      for (const stopAt of [0.25, 0.35, 0.45, 0.55]) {
+        const run = firstScroll({ windowHeight, hz, moves: [{ by: windowHeight * stopAt + windowHeight * 0.0, ms: 420, hold: 160 }] });
+        let worst = 0;
+        for (let i = 1; i < run.frames.length; i += 1) {
+          run.frames[i].f.rise.forEach((r, k) => {
+            const before = run.frames[i - 1].f.rise[k];
+            assert.ok(r.opacity >= before.opacity - 1e-9, `${where}, stopped at ${stopAt}: line ${k + 1} went back out (${before.opacity.toFixed(3)} to ${r.opacity.toFixed(3)}) while the finger went down`);
+            worst = Math.max(worst, (r.opacity - before.opacity) / (run.frames[i].t - run.frames[i - 1].t));
+          });
+        }
+        assert.ok(worst <= FASTEST, `${where}, stopped at ${stopAt}: a line came in at a full swing per ${(1 / worst).toFixed(0)}ms`);
+        assert.ok(run.end.rise.every((r) => (r.opacity === 0 && r.y === 1) || (r.opacity === 1 && r.y === 0)), `${where}, stopped at ${stopAt}: a line rests part way in (${run.end.rise.map((r) => r.opacity.toFixed(3)).join(", ")})`);
+        assert.ok(run.end.light === 0 && run.end.texts.every((x) => x.opacity === 0), `${where}, stopped at ${stopAt}: something lit on a stop before the section arrived`);
+      }
+      // A flick from the top that carries on into the first line: all in, then the first line lit.
+      const flick = firstScroll({ windowHeight, hz, moves: [{ by: windowHeight * 1.05, ms: 380 }] });
+      assert.ok(flick.end.rise.every((r) => r.opacity === 1 && r.y === 0), `${where}: after a flick into the first line the lines are not all in`);
+      assert.equal(flick.end.lit[0], 1, `${where}: a flick into the first line did not light it`);
+      for (const fr of flick.frames) {
+        if (fr.f.light > 0) assert.ok(fr.f.rise.every((r) => r.opacity === 1 && r.y === 0), `${where}: the light came on at t=${fr.t.toFixed(0)}ms before the lines were in`);
+      }
+      // Part way in, then back up into the hero: every line goes back out, and rests out.
+      const back = firstScroll({ windowHeight, hz, moves: [{ by: windowHeight * 0.5, ms: 420, hold: 160 }, { by: -windowHeight * 0.3, ms: 420, hold: 160 }] });
+      assert.ok(back.end.rise.every((r) => r.opacity === 0 && r.y === 1), `${where}: dragged back up into the hero, the lines did not go back out (${back.end.rise.map((r) => r.opacity.toFixed(3)).join(", ")})`);
+    }
+  }
+});
 
 // A mouse wheel turned slowly: one notch, a pause long enough for the reader to count as stopped, then
 // the next. This is the scroll the second design review caught running the picture backwards: at every

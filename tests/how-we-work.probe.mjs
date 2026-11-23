@@ -703,6 +703,9 @@ await check("a window that grows taller again: a section the script had to lay o
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.waitForTimeout(500);
     assert.deepEqual(await state(), { stacked: "true", position: "static" }, "taller: at 1440 by 900 with text spacing the section was not laid out flat, so this proves nothing");
+    // Laid out flat by the script after it had been drawing the entrance: every line is back to fully there.
+    const flat = await page.evaluate(() => [...document.querySelectorAll("#how-we-work .ps-how__line")].map((l) => ({ opacity: getComputedStyle(l).opacity, transform: getComputedStyle(l).transform })));
+    assert.ok(flat.every((l) => l.opacity === "1" && l.transform === "none"), `taller: laid out flat, a line is still faded or moved by the entrance (${JSON.stringify(flat)})`);
     await page.setViewportSize({ width: 1440, height: 1400 });
     await page.waitForTimeout(500);
     assert.deepEqual(await state(), { stacked: null, position: "sticky" }, "taller: the window grew back to 1400 tall and the section stayed laid out flat");
@@ -741,6 +744,180 @@ await check("a phone's toolbar sliding away mid-scroll (resize events while scro
     assert.ok(jump < 0.34, `toolbar: a line's light changed by ${jump.toFixed(2)} in one frame when a resize arrived mid-scroll`);
     assert.ok(between.size >= 60, `toolbar: the light passed through only ${between.size} in-between values; it is jumping, not following the scroll`);
   });
+
+// ADR-0031. The owner, 2026-11-22, from his iPhone: "When I initially scroll down from hero the text there kinda
+// jerks in at least initially let it animate in and etc scroll animation all that stuff". Recorded frame by frame
+// on the build before (agent-reports/ps-site-1122/hww-entrance): each line was at full strength the very first
+// frame it was on screen, at every size and in every engine.
+/** Scroll from `from` to `to` a few px a frame (a finger that keeps moving) and read every frame. */
+async function scrub(page, from, to, px) {
+  return page.evaluate(async ({ from, to, px }) => {
+    const section = document.querySelector("#how-we-work");
+    const pin = section.querySelector(".ps-how__pin");
+    const lines = [...section.querySelectorAll(".ps-how__line")];
+    const frame = () => new Promise((r) => requestAnimationFrame(() => r()));
+    const ty = (tf) => (tf && tf !== "none" ? parseFloat(tf.split(",")[5]) : 0);
+    const out = [];
+    const n = Math.max(1, Math.ceil(Math.abs(to - from) / px));
+    for (let i = 0; i <= n; i += 1) {
+      window.scrollTo({ top: from + ((to - from) * i) / n, behavior: "instant" });
+      await frame();
+      out.push({
+        y: window.scrollY,
+        pinTop: pin.getBoundingClientRect().top,
+        step: section.getAttribute("data-step"),
+        light: parseFloat(getComputedStyle(section.querySelector(".ps-how__light")).opacity),
+        lines: lines.map((l) => {
+          const cs = getComputedStyle(l);
+          return { top: l.getBoundingClientRect().top, offsetTop: l.offsetTop, opacity: parseFloat(cs.opacity), ty: ty(cs.transform), lit: parseFloat(getComputedStyle(l, "::after").opacity) };
+        }),
+      });
+    }
+    return out;
+  }, { from, to, px });
+}
+
+for (const [label, ctx] of [
+  ["393 by 659", { viewport: { width: 393, height: 659 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true }],
+  ["1440 by 900", { viewport: { width: 1440, height: 900 } }],
+]) {
+  await check(`${label}: from the hero, the three lines come in with the scroll (never cut in), staggered, all in before the light, and back out going up`, ctx, async (page) => {
+    const t = await track(page);
+    await scrollTo(page, 0);
+    const down = await scrub(page, 0, t.top - t.lead, 4);
+    for (let k = 0; k < 3; k += 1) {
+      const i = down.findIndex((f) => f.lines[k].top < t.vh - 1);
+      assert.ok(i >= 0, `${label}: line ${k + 1} never came on screen`);
+      const first = down[i].lines[k];
+      assert.ok(first.opacity < 0.05, `${label}: line ${k + 1} was at full strength (${first.opacity}) the first frame it was on screen: it cuts in with no entrance`);
+      const between = new Set(down.map((f) => f.lines[k].opacity).filter((v) => v > 0.03 && v < 0.97).map((v) => v.toFixed(2)));
+      assert.ok(between.size >= 12, `${label}: line ${k + 1} came in through only ${between.size} in-between strengths; it is switched, not scrubbed`);
+      const tys = down.map((f) => f.lines[k].ty);
+      assert.ok(Math.max(...tys) >= 12 && Math.max(...tys) <= 40, `${label}: line ${k + 1} rises ${Math.max(...tys).toFixed(1)}px; a quiet entrance is a few tens of px`);
+      for (let j = 1; j < down.length; j += 1) {
+        assert.ok(down[j].lines[k].opacity >= down[j - 1].lines[k].opacity - 0.001, `${label}: line ${k + 1} went back out on the way down (${down[j - 1].lines[k].opacity} then ${down[j].lines[k].opacity})`);
+        assert.equal(down[j].lines[k].offsetTop, down[0].lines[k].offsetTop, `${label}: line ${k + 1} moved in the layout during the entrance (it must be transform and opacity only)`);
+      }
+    }
+    // Staggered: when the first line is half in, the third is behind it.
+    const half = down.find((f) => f.lines[0].opacity >= 0.5);
+    assert.ok(half.lines[2].opacity < half.lines[0].opacity - 0.15, `${label}: the lines come in together, not one after another (${half.lines.map((l) => l.opacity).join(", ")})`);
+    // All in, at rest in place, before the light or a beat and before the block is held.
+    for (const f of down) {
+      if (f.light > 0.001 || f.step !== null || f.pinTop <= 0.5 || f.lines.some((l) => l.lit > 0.001)) {
+        assert.ok(f.lines.every((l) => l.opacity > 0.999 && Math.abs(l.ty) < 0.05), `${label}: at y=${f.y} the light or the hold started before the lines were in (${f.lines.map((l) => `${l.opacity}/${l.ty}`).join(", ")})`);
+      }
+    }
+    assert.ok(down.at(-1).lines.every((l) => l.opacity > 0.999), `${label}: the lines are not all in where the first line starts to light`);
+    // And back up into the hero: they go back out.
+    await scrub(page, t.top - t.lead, 0, 12);
+    await scrollTo(page, 0);
+    const top = await scrub(page, 0, 0, 1);
+    assert.ok(top[0].lines.every((l) => l.opacity < 0.001), `${label}: back at the top, the lines did not go back out (${top[0].lines.map((l) => l.opacity).join(", ")})`);
+  });
+}
+
+// Found on the first version of the entrance (agent-reports/ps-site-1122/hww-entrance, rec-new/batch4): the thumb
+// rested while the third line was still below the window, the picture settled on (ADR-0027) and finished the whole
+// entrance, and the third line then scrolled into view already at full strength, at 393 by 659 and 820 by 1180.
+for (const [label, ctx] of [
+  ["393 by 659", { viewport: { width: 393, height: 659 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true }],
+  ["820 by 1180", { viewport: { width: 820, height: 1180 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true }],
+  ["1280 by 800", { viewport: { width: 1280, height: 800 } }],
+]) {
+  await check(`${label}: short strokes from the hero with a rest after each: no line ever comes on screen already at full strength`, ctx, async (page) => {
+    const t = await track(page);
+    await scrollTo(page, 0);
+    const seen = [false, false, false];
+    const step = t.beat * 0.07;
+    for (let y = 0; y < t.top - t.lead; y += step) {
+      const frames = await scrub(page, y, Math.min(y + step, t.top - t.lead), 4);
+      for (const f of frames) {
+        f.lines.forEach((l, k) => {
+          if (!seen[k] && l.top < t.vh - 1) {
+            seen[k] = true;
+            assert.ok(l.opacity < 0.05, `${label}: line ${k + 1} came on screen at y=${f.y.toFixed(0)} already at ${l.opacity} after a rest further up: it was brought in while it was below the window`);
+          }
+        });
+      }
+      await page.waitForFunction(() => !document.querySelector("#how-we-work").hasAttribute("data-moving"), null, { timeout: 12000 });
+    }
+    assert.ok(seen.every(Boolean), `${label}: not every line came on screen`);
+  });
+}
+
+await check("a reader who stops part way through the lines' entrance: they finish coming in (going down) or go back out (going up), never left part way",
+  { viewport: { width: 393, height: 659 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true },
+  async (page) => {
+    const t = await track(page);
+    // Half way through the entrance (u = -0.35: the first line nearly in, the third about a third of the way).
+    const mid = t.top - t.lead - t.beat * 0.35;
+    await scrollTo(page, 0);
+    await scrub(page, 0, mid, 6);
+    await page.waitForFunction(() => !document.querySelector("#how-we-work").hasAttribute("data-moving"), null, { timeout: 12000 });
+    const down = (await scrub(page, mid, mid, 1))[0];
+    assert.ok(down.lines.every((l) => l.opacity > 0.999 && Math.abs(l.ty) < 0.05), `stopped part way in on the way down: lines at ${down.lines.map((l) => `${l.opacity}/${l.ty.toFixed(1)}px`).join(", ")}`);
+    assert.equal(down.step, null, "stopped part way into the entrance: a beat lit");
+    assert.ok(Math.abs(down.y - mid) <= 1, "settling moved the page");
+    // Now a little way back up (more than a wobble) and stop.
+    const up = mid - t.beat * 0.25;
+    await scrub(page, mid, up, 6);
+    await page.waitForFunction(() => !document.querySelector("#how-we-work").hasAttribute("data-moving"), null, { timeout: 12000 });
+    const back = (await scrub(page, up, up, 1))[0];
+    assert.ok(back.lines.every((l) => l.opacity < 0.001), `stopped part way on the way back up: lines at ${back.lines.map((l) => `${l.opacity}/${l.ty.toFixed(1)}px`).join(", ")}`);
+  });
+
+await check("reduced motion: the lines are simply there, at full strength and in place, all the way in from the hero",
+  { viewport: { width: 393, height: 659 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true, reducedMotion: "reduce" },
+  async (page) => {
+    const t = await track(page);
+    await scrollTo(page, 0);
+    const down = await scrub(page, 0, t.top - t.lead, 10);
+    for (const f of down) {
+      assert.ok(f.lines.every((l) => l.opacity > 0.999 && l.ty === 0), `reduced motion: at y=${f.y} a line is at ${f.lines.map((l) => `${l.opacity}/${l.ty}px`).join(", ")}`);
+    }
+  });
+
+// Safari's toolbar slides away (or back) and the window's inner height changes by about 190px while the page
+// itself scrolls by one pixel. Before this fix the beat position was worked out from window.innerHeight, so that
+// alone moved it about a tenth of a beat: a reader resting near the end of the first line was carried on to
+// the second line, and one resting near its start was sent back above the section, with no scroll at all.
+for (const [label, ctx, at, to] of [
+  ["toolbar sliding away (659 to 852 inner height)", { viewport: { width: 393, height: 659 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true }, 0.64, 852],
+  ["toolbar coming back (852 to 659 inner height)", { viewport: { width: 393, height: 852 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true }, 0.25, 659],
+]) {
+  await check(`a phone's ${label} with a 1px scroll: the picture stays exactly where it is`, ctx, async (page) => {
+    const t = await track(page);
+    // Placed from the block's own height (100svh), which the toolbar does not change.
+    const svh = await page.evaluate(() => document.querySelector("#how-we-work .ps-how__pin").getBoundingClientRect().height);
+    const y = t.top - svh * 0.18 + t.beat * at;
+    await scrollTo(page, y - t.beat * 0.3);
+    await scrollTo(page, y);
+    const before = await read(page);
+    assert.equal(before.step, "0", `${label}: not resting on the first line to begin with`);
+    await page.evaluate(async (h) => {
+      const real = Object.getOwnPropertyDescriptor(Window.prototype, "innerHeight") || Object.getOwnPropertyDescriptor(window, "innerHeight");
+      const from = window.innerHeight;
+      for (let i = 1; i <= 4; i += 1) {
+        const v = Math.round(from + ((h - from) * i) / 4);
+        Object.defineProperty(window, "innerHeight", { configurable: true, get: () => v });
+        window.dispatchEvent(new Event("resize"));
+        await new Promise((r) => requestAnimationFrame(() => r()));
+      }
+      void real;
+      // A real toolbar slides because the page is being scrolled: away on the way down, back on the way up.
+      // One pixel of that scroll, so the section reads the reader's position again as it would on a phone.
+      window.scrollBy({ top: h > from ? 1 : -1, behavior: "instant" });
+    }, to);
+    await page.evaluate(() => new Promise((done) => { let n = 8; const f = () => (n-- > 0 ? requestAnimationFrame(f) : done()); f(); }));
+    await page.waitForTimeout(400);
+    await page.waitForFunction(() => !document.querySelector("#how-we-work").hasAttribute("data-moving"), null, { timeout: 12000 });
+    const after = await read(page);
+    assert.equal(after.step, before.step, `${label}: the beat changed from ${before.step} to ${after.step} on a 1px scroll`);
+    after.lines.forEach((l, k) => assert.ok(Math.abs(l.lit - before.lines[k].lit) < 0.01, `${label}: line ${k + 1}'s light moved from ${before.lines[k].lit} to ${l.lit} on a 1px scroll`));
+    after.steps.forEach((st, k) => assert.ok(Math.abs(st.opacity - before.steps[k].opacity) < 0.01, `${label}: text ${k + 1} went from ${before.steps[k].opacity} to ${st.opacity} on a 1px scroll`));
+  });
+}
 
 await check("phone: the same story, and everything fits on one screen",
   { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true },
@@ -796,6 +973,8 @@ await check("phone on its side: too short to pin, so everything is laid out to r
     assertLayout(s, "844x390");
     assert.equal(s.step, null, "844x390: a beat was set in the stacked layout");
     assert.ok(s.steps.every((st) => st.opacity > 0.99), "844x390: some of the text is hidden in the stacked layout");
+    const lines = await page.evaluate(() => [...document.querySelectorAll("#how-we-work .ps-how__line")].map((l) => ({ opacity: getComputedStyle(l).opacity, transform: getComputedStyle(l).transform })));
+    assert.ok(lines.every((l) => l.opacity === "1" && l.transform === "none"), `844x390: a line is faded or moved in the stacked layout (${JSON.stringify(lines)})`);
     assert.deepEqual(s.steps.map((st) => st.text), [...BODIES, BELIEF], "844x390: the stacked text is not the owner's copy in order");
     for (let i = 1; i < s.steps.length; i += 1) {
       assert.ok(s.steps[i].top >= s.steps[i - 1].bottom, `844x390: text ${i + 1} overlaps text ${i}`);
@@ -808,6 +987,8 @@ await check("no JavaScript: all the words are there to read, with no empty scrol
     const s = await read(page);
     assert.deepEqual(s.lines.map((l) => l.text), LINES, "no JS: the three lines are missing");
     assert.ok(s.steps.every((st) => st.opacity > 0.99), "no JS: some of the text is hidden");
+    const lines = await page.evaluate(() => [...document.querySelectorAll("#how-we-work .ps-how__line")].map((l) => ({ opacity: getComputedStyle(l).opacity, transform: getComputedStyle(l).transform })));
+    assert.ok(lines.every((l) => l.opacity === "1" && l.transform === "none"), `no JS: a line is faded or moved (${JSON.stringify(lines)})`);
     assert.deepEqual(s.steps.map((st) => st.text), [...BODIES, BELIEF], "no JS: the text is not the owner's copy in order");
     assert.ok(s.sectionHeight < s.vh * 1.8, `no JS: the section is ${s.sectionHeight}px tall with nothing to drive it`);
   });

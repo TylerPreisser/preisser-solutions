@@ -10,7 +10,8 @@
  *
  * `u` runs along the scroll track: 0 to 1 is the first line's beat, 1 to 2 the
  * second, 2 to 3 the third, 3 to 4 the closing sentence. Below 0 the section
- * is still arriving.
+ * is still arriving, and from ENTER_FROM to ENTER_TO the three lines come in
+ * (ADR-0031).
  */
 
 /** The three lines. */
@@ -78,6 +79,47 @@ const TEXT_OUT_TO = 0.95;
 const LAMP_FROM = 0.72;
 const LAMP_TO = 1.28;
 
+/* The entrance (ADR-0031). The owner, 2026-11-22: "When I initially scroll
+   down from hero the text there kinda jerks in at least initially let it
+   animate in". The three lines used to be simply there, at full strength the
+   first frame they came on screen. Now, as the section arrives, each line
+   rises into place and comes up from nothing, one after another as the hero's
+   own lines do (hero-entrance.css), scrubbed by the scroll like everything
+   else here and finished before the light comes down into the first line.
+
+   WHERE. A beat is half a screen (50svh), so the top of the track is at
+   0.18 - u / 2 screens from the top of the window. The entrance starts only
+   once all three lines are on screen: the third line sits at most 0.50 of a
+   screen down the held block (1366 by 625, the deepest of every layout from
+   320 by 568 to 1920 by 1080, measured 2026-11-22), so at ENTER_FROM it is at
+   most 0.96 of the way down the window. It must be: a reader who stops part
+   way through the entrance has it finished for them (ADR-0027's settle), and
+   a line finished while still below the window would then scroll in already
+   at full strength, which is the very cut-in this replaces (it happened on the
+   first version, which started at -0.83). Between ENTER_TO and OFF_TO the
+   three lines rest alone, lit by nothing: ADR-0026's "it arrives as the three
+   lines and nothing else".
+
+   HOW STEEP. Each line takes 0.27 of a beat (about an eighth of a screen of
+   scrolling) and starts 0.07 of a beat after the one above it. Its fade and
+   its rise are both an ease-in-out over that stretch, which keeps them under
+   the steepest change allowed anywhere on the track (6 per beat). */
+/** Where the first line starts to come in. */
+export const ENTER_FROM = -0.56;
+/** How much later each line starts than the one above it. */
+export const ENTER_STAGGER = 0.07;
+/** How much of a beat one line takes to come in. */
+export const ENTER_LEN = 0.27;
+/** Where the last line is in. Every line is fully in, and still, from here. */
+export const ENTER_TO = ENTER_FROM + (LINES - 1) * ENTER_STAGGER + ENTER_LEN;
+
+/** Line `k`'s entrance at `u`: how visible it is (0 to 1) and how much of its
+ *  rise is still to go (1 is the whole distance below its place, 0 in place). */
+export function rise(k: number, u: number) {
+  const t = ease(0, 1, (u - ENTER_FROM - k * ENTER_STAGGER) / ENTER_LEN);
+  return { opacity: t, y: 1 - t };
+}
+
 /** The stretch of beat `k` that is at rest, as [from, to]. */
 export function plateau(k: number): [number, number] {
   if (k === 0) return [0.2, TEXT_OUT_FROM];
@@ -110,6 +152,8 @@ export type Frame = {
   texts: Array<{ opacity: number; y: number }>;
   /** The strength of the light behind the lines. */
   light: number;
+  /** Each line's entrance (see rise). */
+  rise: Array<{ opacity: number; y: number }>;
 };
 
 /** How much of text k shows at `u` when nothing holds it back. */
@@ -152,7 +196,9 @@ export function frame(u: number, caps: readonly number[] | null = null): Frame {
   }
   const last = ease(CLOSING + TEXT_IN_FROM, CLOSING + TEXT_IN_TO, u);
   texts.push({ opacity: Math.min(last, caps ? caps[CLOSING] : 1), y: (1 - last) * 14 });
-  return { lamp, lit, fill, ink, texts, light: on * (1 - 0.45 * closing) };
+  const entrance: Frame["rise"] = [];
+  for (let k = 0; k < LINES; k += 1) entrance.push(rise(k, u));
+  return { lamp, lit, fill, ink, texts, light: on * (1 - 0.45 * closing), rise: entrance };
 }
 
 /** Below this the section is still arriving and nothing is lit. At this point
@@ -175,7 +221,17 @@ export const OFF_TO = -0.05;
  * line" and "stopping now finishes the change" are the same place.
  */
 export function rest(u: number, direction: -1 | 0 | 1 = 0) {
-  // The stretches in order: "nothing lit" below OFF_TO, then each beat's.
+  // The stretches in order: "the lines not yet in" up to ENTER_FROM, "the three
+  // lines in, nothing lit" from ENTER_TO to OFF_TO, then each beat's. A stop
+  // part way through the entrance is a stop between the first two, so no line
+  // is ever left part way in (ADR-0031); it goes on the way the reader was
+  // going, exactly as between two lines (ADR-0027).
+  if (u <= ENTER_FROM) return u;
+  if (u < ENTER_TO) {
+    if (direction === 1) return ENTER_TO;
+    if (direction === -1) return ENTER_FROM;
+    return u - ENTER_FROM <= ENTER_TO - u ? ENTER_FROM : ENTER_TO;
+  }
   let lo = OFF_TO;
   if (u <= lo) return u;
   for (let k = 0; k <= CLOSING; k += 1) {
