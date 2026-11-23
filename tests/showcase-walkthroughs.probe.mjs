@@ -54,6 +54,9 @@
  *   l. pairs       close views: no block (lines stacked closer than 0.6 x their height on one left edge: a wrapped
  *                  sentence, a heading with the value or control under it) is split by the stage edge, so a view
  *                  never ends on a heading whose value is off the stage, nor starts mid-sentence.
+ *   n. never blank every 400 ms the stage is photographed; no photograph may be a flat field (pixel spread under 4):
+ *                  a step must not switch to a still that cannot paint yet. PS_TEST_STILL_DELAY=<ms> holds back
+ *                  every still's bytes to make that case happen.
  *                  (j, k, l: definitions in tests/support/walk-layout.mjs. Desk views at 1440x900 frame a part of
  *                  a desktop page and are judged by a-g.)
  *
@@ -69,7 +72,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { serveAsProdOrigin, PROD_ORIGIN } from "./support/serve-prod-origin.mjs";
-import { judgeView, stillPixels, cardsOf, BLANK_MAX } from "./support/walk-layout.mjs";
+import { judgeView, stillPixels, cardsOf, artOf, BLANK_MAX } from "./support/walk-layout.mjs";
 
 const req = createRequire(import.meta.url);
 const pw = req("playwright");
@@ -97,6 +100,10 @@ const ONLY = (process.env.PS_TEST_ONLY || "").toLowerCase();
 const ENGINE = process.env.PS_TEST_ENGINE || "chromium";
 const THEME = process.env.PS_TEST_THEME || "light";
 const SHOTS = process.env.PS_TEST_SHOTS || "";
+// Holds back every still's bytes by this many ms (the slow-network case: a step must never switch to an undecoded still).
+const STILL_DELAY = Number(process.env.PS_TEST_STILL_DELAY || 0);
+const FLAT_MS = 400; // the stage is photographed this often to catch a blank (flat) frame
+const FLAT_SD = 4; // a photographed stage whose pixels vary less than this (std dev, 0-255) is a flat field
 const VIEWPORTS = (process.env.PS_TEST_VIEWPORTS || ALL_VIEWPORTS.join(",")).split(",");
 
 // Which page of the product each still is, and the words a click must land on to go to a page.
@@ -312,7 +319,7 @@ async function loadLayout(src) {
   const j = JSON.parse(fs.readFileSync(path.join(OUT, src.replace(/\.webp$/, ".words.json")), "utf8"));
   const rect = Array.isArray(j.rect) ? j.rect[0] : j.rect;
   const px = await stillPixels(path.join(OUT, src), rect.w, rect.h);
-  layouts.set(src, { px, cards: cardsOf(px) });
+  layouts.set(src, { px, cards: cardsOf(px), art: artOf(px, j.boxes ?? []) });
 }
 const judged = new WeakMap();
 function judge(r) {
@@ -320,8 +327,8 @@ function judge(r) {
   const m = manifestFor(r.src);
   const win = windowOf(r);
   const boxes = [...m.boxes, ...(r.solids ?? []).map((b) => [...b, "[form control]"])];
-  const { px, cards } = layouts.get(r.src);
-  const out = judgeView({ px, cards, boxes, win, stageH: (r.stage ? r.stage.h : r.screen.h) / win.s, slack: SLACK / win.s });
+  const { px, cards, art } = layouts.get(r.src);
+  const out = judgeView({ px, cards, art, boxes, win, stageH: (r.stage ? r.stage.h : r.screen.h) / win.s, slack: SLACK / win.s });
   judged.set(r, out);
   return out;
 }
@@ -341,6 +348,15 @@ export const ruleEmpty = (rec) => {
   return layoutRule(rec, (j) => (j.blank ? [j.blank] : []), `no empty band over ${BLANK_MAX * 100}% (tallest ${(worst * 100).toFixed(0)}%)`);
 };
 export const rulePairs = (rec) => layoutRule(rec, (j) => j.pairs, "no heading or sentence split from the rest of its block");
+
+/** n. The stage is never a flat field: no photographed frame of it is blank (a still switched to before it could paint). */
+export function ruleNoBlank(rec) {
+  const flats = rec.flats ?? [];
+  assert.ok(flats.length >= 10, `only ${flats.length} photographs of the stage were taken`);
+  const bad = flats.filter((f) => f.sd < FLAT_SD);
+  assert.ok(bad.length === 0, bad.slice(0, 3).map((f) => `at ${(f.t / 1000).toFixed(1)} s (step ${f.step} ${f.still}) the stage is a flat field (spread ${f.sd.toFixed(1)})`).join(" | ") + (bad.length > 3 ? ` (+${bad.length - 3} more)` : ""));
+  return `${flats.length} photographs of the stage, none flat (lowest spread ${Math.min(...flats.map((f) => f.sd)).toFixed(1)})`;
+}
 
 export function rulePointerPresent(rec) {
   const steps = [...new Set(rec.samples.map((s) => s.step))].sort();
@@ -502,7 +518,17 @@ function fakeGuards() {
   fails("empty band", () => run(at(0, 380, 1000, 200), ruleEmpty));
   run(at(0, 590, 1000, 80), rulePairs); // heading and its control: passes
   fails("heading without its value", () => run(at(0, 560, 1000, 58), rulePairs));
-  return "all 23 rule guards fail on planted defects, and their positive controls pass";
+  // j. a horizontal bar (a row's measure) running off the side edge: planted art 300..900 x 700..710
+  layouts.set("/fake3.webp", { px: px2, cards: [], art: [[300, 700, 600, 10]] });
+  manifests.set("/fake3.webp", { W: W2, boxes: [[100, 698, 120, 16, "First-timers"]], lines: [] });
+  const at3 = (x, y, w, h) => ({ src: "/fake3.webp", shot: { x: 0, y: 0, w: 1000, h: 800 }, solids: null, screen: { x, y, w, h } });
+  run(at3(0, 690, 1000, 30), ruleEdges); // the whole bar: passes
+  fails("bar off the edge", () => run(at3(0, 690, 500, 30), ruleEdges));
+  // n. a blank frame among the photographs
+  const flatsOk = Array.from({ length: 12 }, (_, i) => ({ t: i * 400, step: "1", still: "a", sd: 40 }));
+  ruleNoBlank({ flats: flatsOk }); // passes
+  fails("blank stage", () => ruleNoBlank({ flats: [...flatsOk, { t: 5000, step: "2", still: "b", sd: 0.4 }] }));
+  return "all 25 rule guards fail on planted defects, and their positive controls pass";
 }
 
 // ------------------------------------------------------------------------------------------ the browser run
@@ -613,16 +639,41 @@ async function play(browser, tab, vp) {
     await serveAsProdOrigin(ctx, OUT);
     // Everything that is not the local build (client sites, analytics) is refused: only the walkthrough is measured.
     await ctx.route((u) => u.origin !== PROD_ORIGIN, (r) => r.abort());
+    // The film's first still and its no-script picture load with the window (there is nothing earlier to keep on
+    // screen); every other still is held back, so the film reaches a step whose still has not arrived.
+    if (STILL_DELAY) await ctx.route(/\/images\/showcase\/(nwks|duffer)\/[^/?]+\.webp/, async (r) => {
+      const name = r.request().url().split("/").pop().replace(/\.webp.*$/, "");
+      if (!["dashboard", tab.dir === "nwks" ? "cabins" : "feed"].includes(name)) await new Promise((ok) => setTimeout(ok, STILL_DELAY));
+      await r.fallback();
+    });
     const page = await ctx.newPage();
     await openTab(page, tab);
     const samples = [];
+    const flats = [];
+    const sharp = req("sharp");
     const t0 = Date.now();
     let ended = false;
+    // n. The stage is photographed every FLAT_MS by its own loop, beside the sampler (which must keep its 100 ms pace
+    // to see every click ring): each photograph's pixel spread (a blank or undecoded still is one flat colour).
+    let photographing = true;
+    const photos = (async () => {
+      while (photographing) {
+        const t = Date.now() - t0;
+        const buf = await page.locator('[role="tabpanel"][data-on] .stw-screen').first().screenshot({ timeout: 3000, scale: "css" }).catch(() => null);
+        const last = samples[samples.length - 1];
+        if (buf && last) {
+          const st = await sharp(buf).stats();
+          flats.push({ t, step: last.step, still: last.still, sd: (st.channels[0].stdev + st.channels[1].stdev + st.channels[2].stdev) / 3 });
+        }
+        await new Promise((ok) => setTimeout(ok, Math.max(0, FLAT_MS - (Date.now() - t0 - t))));
+      }
+    })();
     while (Date.now() - t0 < END_WAIT_MS) {
       const s = await page.evaluate(snapshot);
       if (s) {
         s.t = Date.now() - t0;
         samples.push(s);
+
         if (s.label === "Replay") {
           ended = true;
           await page.waitForTimeout(1200);
@@ -633,9 +684,11 @@ async function play(browser, tab, vp) {
       }
       await page.waitForTimeout(SAMPLE_MS);
     }
+    photographing = false;
+    await photos;
     // The tab opens on its no-script picture for a frame or two before the film's first view; the film starts at step 1.
     const from = samples.findIndex((x) => x.step === "1");
-    const rec = { samples: from > 0 ? samples.slice(from) : samples, vp, phone, portrait: !phone && H > W, close: samples.some((x) => x.close), end: null };
+    const rec = { samples: from > 0 ? samples.slice(from) : samples, flats, vp, phone, portrait: !phone && H > W, close: samples.some((x) => x.close), end: null };
     if (SHOTS) {
       fs.mkdirSync(SHOTS, { recursive: true });
       await page.screenshot({ path: path.join(SHOTS, `${tab.dir}__${ENGINE}__${vp}__${THEME}__rest.png`) });
@@ -687,7 +740,7 @@ report("c. the maintainer's label-stock note is in no shipped still manifest", r
 
 const tabKeys = (process.env.PS_TEST_TABS || Object.keys(TABS).join(",")).split(",");
 const recs = {};
-if (!ONLY || /^[abdefghijkl]\./.test(ONLY) || ONLY.includes("cut") || ONLY.includes("read") || ONLY.includes("click") || ONLY.includes("pointer") || ONLY.includes("end") || ONLY.includes("bars") || ONLY.includes("fill") || ONLY.includes("unit") || ONLY.includes("row") || ONLY.includes("walk") || /^[jkl]\./.test(ONLY) || ONLY.includes("edge") || ONLY.includes("empty") || ONLY.includes("heading")) {
+if (!ONLY || /^[abdefghijkln]\./.test(ONLY) || ONLY.includes("cut") || ONLY.includes("read") || ONLY.includes("click") || ONLY.includes("pointer") || ONLY.includes("end") || ONLY.includes("bars") || ONLY.includes("fill") || ONLY.includes("unit") || ONLY.includes("row") || ONLY.includes("walk") || /^[jkl]\./.test(ONLY) || ONLY.includes("edge") || ONLY.includes("empty") || ONLY.includes("heading") || ONLY.includes("blank")) {
   const browser = await pw[ENGINE].launch();
   try {
     // One throwaway page first: a cold browser's first film runs slow enough to blur the timing of its first views.
@@ -749,6 +802,7 @@ for (const key of Object.keys(recs)) {
   report(`j. no text line or card is cut by the stage edge (${label})`, () => across(key, ruleEdges, (r) => r.phone || r.portrait || r.close));
   report(`k. no empty band across the stage (${label})`, () => across(key, ruleEmpty, (r) => r.phone || r.portrait || r.close));
   report(`l. no heading shows without its value, no sentence starts mid-way (${label})`, () => across(key, rulePairs, (r) => r.phone || r.portrait || r.close));
+  report(`n. the stage is never blank${STILL_DELAY ? `, stills held back ${STILL_DELAY} ms` : ""} (${label})`, () => across(key, ruleNoBlank));
 }
 
 if (process.env.PS_TEST_JSON) fs.writeFileSync(process.env.PS_TEST_JSON, JSON.stringify({ engine: ENGINE, theme: THEME, json }, null, 1));

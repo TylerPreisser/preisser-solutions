@@ -47,9 +47,10 @@ const R = (x: number, y: number, w: number, h: number): Rect => ({ x, y, w, h })
 const P = (x: number, y: number, w: number, h: number): Rect => ({ x, y, w, h, pass: true });
 const CLOSE: Record<string, Units> = {
   // Dashboard: the first four figures (attendees, servers, first-timers, dropped) on a tablet; on a phone the first
-  // two with the payment card under them, then the next two.
+  // two with the payment card under them. A close view holds this one view for the whole step: right of it, the
+  // Attendee depth rows run their bars out to counts at x 1380-1395, which no phone or tablet window can hold with
+  // their labels.
   dashA: [[R(249, 210, 772, 117)], [R(249, 210, 378, 117), R(249, 345, 378, 388)], [R(249, 210, 378, 117)], [R(249, 210, 180, 117)]],
-  dashB: [[R(644, 210, 772, 117)], [R(644, 210, 377, 117), R(664, 677, 250, 35)], [R(644, 210, 377, 117)], [R(644, 210, 180, 117)]],
   // The sidebar's groups: THE PEOPLE (Attendees) and THE WEEKEND (Cabins ... Badges & Tags).
   people: [[R(8, 298, 208, 132)]],
   weekend: [[R(8, 636, 208, 166)]],
@@ -92,8 +93,9 @@ const cues: WalkCue[] = [
   // Dashboard: the figures; a close view moves from the first two to the next two.
   { at: 0, still: I.dashboard, step: 0, cam: DESK.dashboard, close: CLOSE.dashA },
   { at: 900, still: I.dashboard, step: 0, cursor: dot(300, 262) },
-  { at: 2600, still: I.dashboard, step: 0, cursor: dot(ft ? ft.x + 30 : 694, 262), close: CLOSE.dashB },
-  { at: 4300, still: I.dashboard, step: 0, cursor: dot(1100, 262), closeCursor: dot(880, 280) },
+  // (Close views stay on the first view, the pointer on the figure it points at: a new pointer would re-frame the view.)
+  { at: 2600, still: I.dashboard, step: 0, cursor: dot(ft ? ft.x + 30 : 694, 262), closeCursor: [dot(694, 262), dot(520, 262), dot(520, 262), dot(330, 262)] },
+  { at: 4300, still: I.dashboard, step: 0, cursor: dot(1100, 262), closeCursor: [dot(694, 262), dot(520, 262), dot(520, 262), dot(330, 262)] },
   // Click "Cabins" in the sidebar.
   { at: 6000, still: I.dashboard, step: 0, cursor: nav(NAV.cabins), cam: navDesk(NAV.cabins), close: CLOSE.weekend },
   { at: 7000, still: I.dashboard, step: 0, cursor: nav(NAV.cabins, true) },

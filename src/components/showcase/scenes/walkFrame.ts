@@ -317,6 +317,8 @@ export function frameClose(W: number, H: number, sets: readonly (readonly Rect[]
   const boxes = all.filter((b) => b[4] !== CARD && b[4] !== ART);
   const cards = all.filter((b) => b[4] === CARD);
   const art = all.filter((b) => b[4] === ART);
+  // Thin horizontal bars (at least 40 px long, at most 20 px tall, 4 x longer than tall), less CARD_TOL at each end.
+  const bars = art.filter((b) => b[2] >= 40 && b[3] <= 20 && b[2] >= 4 * b[3]).map((b) => [b[0] + CARD_TOL, b[1], b[2] - 2 * CARD_TOL, b[3]] as Box);
   const words = boxes.filter((b) => b[4] !== SPAN);
   // When no window passes the clean check, the fullest one that only keeps every word and line whole.
   let dirty: { x0: number; y0: number; vh: number; s: number; vw: number } | null = null;
@@ -358,7 +360,8 @@ export function frameClose(W: number, H: number, sets: readonly (readonly Rect[]
       const idealX = Math.min(xHi, Math.max(xLo, (ux0 + ux1) / 2 - vw / 2));
       // A card that fits across the window may not be cut by its side edges (beyond CARD_TOL of padding): for the
       // column search it is one more box the edges must clear.
-      const sides = [...boxes, ...cards.filter((c) => c[2] <= vw && c[2] > 2 * CARD_TOL).map((c) => [c[0] + CARD_TOL, c[1], c[2] - 2 * CARD_TOL, c[3]] as Box)];
+      // A thin horizontal bar (a row's measure, its value at the end) may not run off a side edge either.
+      const sides = [...boxes, ...bars, ...cards.filter((c) => c[2] <= vw && c[2] > 2 * CARD_TOL).map((c) => [c[0] + CARD_TOL, c[1], c[2] - 2 * CARD_TOL, c[3]] as Box)];
       let pick: { x0: number; y0: number; vh: number; score: number } | null = null;
       // Where the window's left edge may go: a 3 px grid, plus every position that puts either edge just clear of a
       // word (the gaps between words in a long line are narrower than any grid).
