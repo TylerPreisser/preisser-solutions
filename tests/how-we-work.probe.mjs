@@ -716,6 +716,9 @@ await check("a window that grows taller again: a section the script had to lay o
     // Laid out flat by the script after it had been drawing the entrance: every line is back to fully there.
     const flat = await page.evaluate(() => [...document.querySelectorAll("#how-we-work .ps-how__line")].map((l) => ({ opacity: getComputedStyle(l).opacity, transform: getComputedStyle(l).transform })));
     assert.ok(flat.every((l) => l.opacity === "1" && l.transform === "none"), `taller: laid out flat, a line is still faded or moved by the entrance (${JSON.stringify(flat)})`);
+    // And the closing sentence is back where the flat layout puts it: on the left, unmoved (ADR-0032 is the track's alone).
+    const sentence = await page.evaluate(() => { const b = document.querySelector("#how-we-work .ps-how__belief"); return { align: getComputedStyle(b).textAlign, step: getComputedStyle(b.closest(".ps-how__step")).transform }; });
+    assert.ok((sentence.align === "left" || sentence.align === "start") && sentence.step === "none", `taller: laid out flat, the closing sentence is still set as on the track (${JSON.stringify(sentence)})`);
     await page.setViewportSize({ width: 1440, height: 1400 });
     await page.waitForTimeout(500);
     assert.deepEqual(await state(), { stacked: null, position: "sticky" }, "taller: the window grew back to 1400 tall and the section stayed laid out flat");
