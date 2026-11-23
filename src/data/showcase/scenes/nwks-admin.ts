@@ -6,10 +6,9 @@
 // Left out on purpose: Email (a local "not set up" banner), Lookout AI (no key locally), Org Sheet
 // and Master schedule (the seed has no teams).
 import type { CursorTarget, Still } from "../types";
-import type { WalkCue, WalkData } from "./duffer-cc";
+import type { Rect, WalkCue, WalkData } from "./duffer-cc";
 import { NWKS_ADMIN_SHOTS as S } from "./nwks-admin-stills";
 
-type Rect = { x: number; y: number; w: number; h: number };
 type Id = "dashboard" | "cabins-before" | "cabins" | "cabins-moved" | "attendees" | "attendees-unpaid" | "badges" | "labels";
 type Shot = { desk: { src: string; css: { w: number; h: number } }; targets: Record<string, Rect> };
 const shot = (id: Id) => S[id] as unknown as Shot;
@@ -28,8 +27,11 @@ const ORDER: readonly Id[] = ["dashboard", "cabins-before", "cabins", "cabins-mo
 const I = Object.fromEntries(ORDER.map((id, i) => [id, i])) as Record<Id, number>;
 const drag = S.drag;
 
-// Framings (css px of the 1440 x 900 desk still). Desk: the board or list, not the sidebar.
-// Phone: the admin has no narrow layout, so the sheet frames a ~420 px column of the desk still.
+// Framings (css px of the 1440 x 900 desk still). Each is the part of the screen a step is about; the scene
+// (walkFrame.ts) zooms so the whole box shows, moves the window so its edge cuts no word, and fills the stage.
+// Desk: the board or list, not the sidebar. Phone: the admin has no narrow layout, so the sheet shows a close
+// window (a ~400 px column, about 0.85x) onto the desk still, and a step that is wider than one window pans
+// from window to window (a new framing crossfades).
 const DESK = {
   dashboard: { x: 240, y: 20, w: 1180, h: 620 },
   board: { x: 245, y: 20, w: 980, h: 540 },
@@ -38,38 +40,66 @@ const DESK = {
   labels: { x: 240, y: 150, w: 900, h: 520 },
 };
 const PHONE = {
-  dashboard: { x: 245, y: 20, w: 420, h: 690 },
-  board: { x: 250, y: 20, w: 420, h: 680 },
-  filters: { x: 905, y: 130, w: 420, h: 690 },
-  names: { x: 245, y: 130, w: 420, h: 690 },
-  sheet: { x: 245, y: 150, w: 420, h: 700 },
-  jobs: { x: 1010, y: 60, w: 410, h: 600 },
-  // The sheet itself: a page of name labels, each with its cabin.
-  label: { x: 238, y: 255, w: 360, h: 560 },
+  // Dashboard: the header and first two figures, then the middle two, then the last two.
+  dashA: { x: 255, y: 60, w: 340, h: 290 },
+  dashB: { x: 650, y: 200, w: 350, h: 110 },
+  dashC: { x: 1040, y: 200, w: 350, h: 110 },
+  // Cabins: the buttons row (the click), then one cabin's bunks close up (the pins' initials are 8 px type on the
+  // desk still, so this view is zoomed ~1.3x) and the window Cabin 1 and Cabin 3 share for the drag.
+  rerun: { x: 275, y: 0, w: 350, h: 130 },
+  board: { x: 252, y: 214, w: 230, h: 226 },
+  names: { x: 255, y: 20, w: 380, h: 300 },
+  unpaid: { x: 262, y: 110, w: 250, h: 300 },
+  filters: { x: 915, y: 130, w: 340, h: 90 },
+  // Badges & Tags: the page's own words and its three job cards; below them is print-size artwork that no phone can read.
+  badges: { x: 230, y: 90, w: 280, h: 230, grow: 20 },
+  jobs: { x: 840, y: 150, w: 340, h: 100, grow: 20 },
+  label: { x: 245, y: 250, w: 250, h: 100, grow: 20 },
 };
-// The Attendees card's label: two cards left of First-timers' (the six cards sit on a 197 px pitch).
+// The sidebar is the same on every still, so a click on a page's name is a click on the real nav item: the word
+// boxes in each still's .words.json put "Dashboard", "Attendees", "Cabins" and "Badges & Tags" at x 48 and these y.
+const NAV = { attendees: 328.5, cabins: 664.5, badges: 778.5 };
+const nav = (y: number, click = false): CursorTarget => ({ x: 64, y: Math.round(y + 8), click });
+// A click on a page's name: the whole screen on a desk (the sidebar and the page it leaves, so nothing is cut; it
+// ends above the sidebar's last line, which the capture's own edge would cut); on a phone a close view of the
+// sidebar alone (x 0-236: the gap before the page's own words begins at x 248).
+const NAV_DESK: Rect = { x: 0, y: 10, w: 1440, h: 850 };
+const navPhone = (y: number): Rect => ({ x: 0, y: Math.min(Math.max(0, Math.round(y) - 110), 900 - 220), w: 236, h: 220 });
+const dot = (x: number, y: number, click = false): CursorTarget => ({ x, y, click });
 const ft = T("dashboard", "firstTimers");
-const attendeesCard = ft ? { ...ft, x: ft.x - 2 * 197 } : undefined;
 
 const cues: WalkCue[] = [
-  { at: 0, still: I.dashboard, step: 0, cam: DESK.dashboard, phoneCam: PHONE.dashboard },
-  { at: 1200, still: I.dashboard, step: 0, cursor: at(attendeesCard, true) },
-  { at: 5000, still: I["cabins-before"], step: 1, cursor: at(T("cabins-before", "rerun")), cam: DESK.board, phoneCam: PHONE.board },
-  { at: 6400, still: I["cabins-before"], step: 1, cursor: at(T("cabins-before", "rerun"), true) },
+  // Dashboard: the figures, window by window on a phone.
+  { at: 0, still: I.dashboard, step: 0, cam: DESK.dashboard, phoneCam: PHONE.dashA },
+  { at: 900, still: I.dashboard, step: 0, cursor: dot(300, 262) },
+  { at: 2600, still: I.dashboard, step: 0, cursor: dot(ft ? ft.x + 30 : 694, 262), phoneCam: PHONE.dashB },
+  { at: 4300, still: I.dashboard, step: 0, cursor: dot(1100, 262), phoneCam: PHONE.dashC },
+  // Click "Cabins" in the sidebar.
+  { at: 6000, still: I.dashboard, step: 0, cursor: nav(NAV.cabins), cam: NAV_DESK, phoneCam: navPhone(NAV.cabins) },
+  { at: 7000, still: I.dashboard, step: 0, cursor: nav(NAV.cabins, true) },
+  { at: 7900, still: I["cabins-before"], step: 1, cursor: at(T("cabins-before", "rerun")), cam: DESK.board, phoneCam: PHONE.rerun },
+  { at: 9300, still: I["cabins-before"], step: 1, cursor: at(T("cabins-before", "rerun"), true) },
   // The one longer fade: the beds filling is the point.
-  { at: 8000, still: I.cabins, step: 2, fadeMs: 400, cam: DESK.board, phoneCam: PHONE.board },
+  { at: 10300, still: I.cabins, step: 2, fadeMs: 400, cursor: dot(330, 262), cam: DESK.board, phoneCam: PHONE.board },
   // One man is dragged from Cabin 1 to Cabin 3 (coded over the still), then the real board after the move.
-  { at: 11000, still: I.cabins, step: 2, overlay: "pin-drag" },
-  { at: 12000, still: I["cabins-moved"], step: 2, fadeMs: 200, cam: DESK.board, phoneCam: PHONE.board },
-  { at: 14000, still: I.attendees, step: 3, cursor: at(T("attendees", "notPaid")), cam: DESK.list, phoneCam: PHONE.filters },
-  { at: 15200, still: I.attendees, step: 3, cursor: at(T("attendees", "notPaid"), true) },
+  { at: 12800, still: I.cabins, step: 2, overlay: "pin-drag" },
+  { at: 14000, still: I["cabins-moved"], step: 2, fadeMs: 200, cam: DESK.board, phoneCam: PHONE.board },
+  // Click "Attendees".
+  { at: 16500, still: I["cabins-moved"], step: 2, cursor: nav(NAV.attendees), cam: NAV_DESK, phoneCam: navPhone(NAV.attendees) },
+  { at: 17400, still: I["cabins-moved"], step: 2, cursor: nav(NAV.attendees, true) },
+  { at: 18300, still: I.attendees, step: 3, cursor: dot(340, 226), cam: DESK.list, phoneCam: PHONE.names },
+  { at: 20300, still: I.attendees, step: 3, cursor: at(T("attendees", "notPaid")), phoneCam: PHONE.filters },
+  { at: 21400, still: I.attendees, step: 3, cursor: at(T("attendees", "notPaid"), true) },
   // Narrowed: on the phone the frame moves from the filter to the men it left.
-  { at: 15600, still: I["attendees-unpaid"], step: 3, cam: DESK.list, phoneCam: PHONE.names },
-  { at: 19000, still: I.badges, step: 4, cursor: at(T("badges", "sheet")), cam: DESK.badges, phoneCam: PHONE.sheet },
-  // The job cards sit in the same place on both stills.
-  { at: 24600, still: I.badges, step: 4, cursor: at(T("labels", "labels")), phoneCam: PHONE.jobs },
-  { at: 25800, still: I.badges, step: 4, cursor: at(T("labels", "labels"), true) },
-  { at: 26100, still: I.labels, step: 5, cam: DESK.labels, phoneCam: PHONE.label },
+  { at: 22300, still: I["attendees-unpaid"], step: 3, cursor: dot(340, 226), cam: DESK.list, phoneCam: PHONE.unpaid },
+  // Click "Badges & Tags".
+  { at: 25000, still: I["attendees-unpaid"], step: 3, cursor: nav(NAV.badges), cam: NAV_DESK, phoneCam: navPhone(NAV.badges) },
+  { at: 26000, still: I["attendees-unpaid"], step: 3, cursor: nav(NAV.badges, true) },
+  { at: 26900, still: I.badges, step: 4, cursor: dot(330, 188), cam: DESK.badges, phoneCam: PHONE.badges },
+  // The job cards sit in the same place on both stills; click "Luggage labels".
+  { at: 29200, still: I.badges, step: 4, cursor: at(T("labels", "labels")), phoneCam: PHONE.jobs },
+  { at: 30500, still: I.badges, step: 4, cursor: at(T("labels", "labels"), true) },
+  { at: 31300, still: I.labels, step: 5, cursor: dot(340, 278), cam: DESK.labels, phoneCam: PHONE.label },
 ];
 
 export const NWKS_ADMIN: WalkData = {
@@ -93,7 +123,8 @@ export const NWKS_ADMIN: WalkData = {
     "Luggage labels come from the same roster and the same cabins.",
   ],
   cues,
-  totalMs: 34000,
+  // The last cue rests for ~4 s, then the film is over and the control offers a replay.
+  totalMs: 36000,
   // Spec §6.3: no script and reduced motion show the cabins after the plan.
   ssrStill: I.cabins,
   manifest: ORDER.map((id) => shot(id).desk.src.replace(/\.webp$/, ".words.json")),

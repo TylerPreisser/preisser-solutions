@@ -68,7 +68,7 @@ export const impact = impactBeat("duffer-golf", {
     },
   ],
   rows: [],
-  text: "Every scan and visit is credited to the partner who sent it.",
+  text: "The Command Center records every scan and visit, credits it to the partner who sent it and keeps each partner's commission ledger.",
   narration:
     "What changed for Duffer Golf. The old site tracked nothing, so no visit and no order said who sent it. Now every scan and every visit is recorded and credited to the partner who sent it, and the Command Center keeps each partner's commission ledger.",
 });

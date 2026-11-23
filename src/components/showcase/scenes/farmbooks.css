@@ -55,7 +55,9 @@
 .fb-mark {
   color: var(--scn-gold);
 }
-.fb {
+/* Scoped to this scene: the AI tab's fetch band is also `.fb` (portal.css), and the two stylesheets load lazily in
+   either order, so a bare `.fb` here took the band out of the layout whenever this sheet landed last (critic M3). */
+.scn--fb .fb {
   position: absolute;
   inset: 0;
 }

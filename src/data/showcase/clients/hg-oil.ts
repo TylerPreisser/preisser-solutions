@@ -67,7 +67,7 @@ export const impact = impactBeat("hg-oil", {
     { now: figure<"Measured live, Oct 23 2026">("258", "Insurance emails handled for you in the first 8 days") },
     { now: figure<"How it is built">("17", "Owner statements produced every close") },
   ],
-  text: "Vendor insurance and the month-end close now run themselves. A person signs off; nobody types.",
+  text: "The engine runs the month-end close and handles vendor insurance emails, and a person signs off on the result.",
   narration:
     "What changed for HG Oil Holdings. The handwritten totals in the close workbook are gone, and the engine runs a whole month-end close in moments. Vendor insurance emails go out and are handled by the engine, and a person signs off instead of typing.",
 });

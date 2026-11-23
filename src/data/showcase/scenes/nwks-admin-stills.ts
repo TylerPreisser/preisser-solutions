@@ -9,7 +9,7 @@ export const NWKS_ADMIN_SHOTS = {
       "src": "/images/showcase/nwks/dashboard.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 148260,
+      "bytes": 148576,
       "css": {
         "w": 1440,
         "h": 900
@@ -29,7 +29,7 @@ export const NWKS_ADMIN_SHOTS = {
       "src": "/images/showcase/nwks/cabins-before.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 174570,
+      "bytes": 174662,
       "css": {
         "w": 1440,
         "h": 900
@@ -135,7 +135,7 @@ export const NWKS_ADMIN_SHOTS = {
       "src": "/images/showcase/nwks/badges.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 182312,
+      "bytes": 175774,
       "css": {
         "w": 1440,
         "h": 900
@@ -155,7 +155,7 @@ export const NWKS_ADMIN_SHOTS = {
       "src": "/images/showcase/nwks/labels.webp",
       "width": 2880,
       "height": 1800,
-      "bytes": 155906,
+      "bytes": 145756,
       "css": {
         "w": 1440,
         "h": 900

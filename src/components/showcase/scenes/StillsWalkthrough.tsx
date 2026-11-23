@@ -6,11 +6,13 @@
  * travels to what matters and clicks, stills crossfade, and two small coded overlays carry the
  * moments a still cannot (a new feed row lighting up, one man dragged to another cabin).
  *
- * Fluid: it fills the window's portal box. The screen fills the stage and each cue frames the part
- * that matters (`cam`, in the still's css px): zoomed so that box shows whole, never below cover.
- * A new framing crossfades like a new still; nothing pans or zooms in motion. Phone shows the
- * product's own narrow crop at the sheet's width, or, for a product with no narrow layout
- * (`phoneUsesDesk`), a portrait window onto the desk still (`phoneCam`).
+ * Fluid: it fills the window's portal box. Each cue frames the part that matters (`cam`, in the still's
+ * css px) and walkFrame.ts turns that into a scale and offset: the whole `cam` shows, the stage edge passes
+ * through no word, and the picture covers the stage (a card the size of what the still can fill when the
+ * stage is taller or wider than that). A new framing crossfades like a new still; nothing pans or zooms in
+ * motion. Phone: a product with no narrow layout (`phoneUsesDesk`) shows a close window onto the desk still
+ * (`phoneCam`), and a step that spans more of the screen than one window holds pans window to window.
+ * The film ends on a replay control.
  *
  * No script / reduced motion: `ssrStill` and its step, no cursor, no overlay; stills still change
  * on their cues under reduced motion, without fades or travel. Only the shown still is in the first
@@ -22,6 +24,7 @@ import { useEffect, useMemo, useRef, useState, type ComponentType, type CSSPrope
 import type { CursorTarget, Still } from "@/data/showcase/types";
 import type { Rect, WalkCue, WalkData } from "@/data/showcase/scenes/duffer-cc";
 import type { FluidSceneProps } from "./HgCoiScene";
+import { frameView, type Box, type Frame } from "./walkFrame";
 import "./stills.css";
 
 const pct = (v: number, of: number) => `${(v / of) * 100}%`;
@@ -39,6 +42,7 @@ function useWalkClock(active: boolean, reduced: boolean, data: WalkData) {
   const [cue, setCue] = useState(ssrCue);
   const [paused, setPaused] = useState(false);
   const [started, setStarted] = useState(false);
+  const [ended, setEnded] = useState(false);
   const t0 = useRef(0);
   const offset = useRef(0);
   const [seq, setSeq] = useState(0);
@@ -47,8 +51,10 @@ function useWalkClock(active: boolean, reduced: boolean, data: WalkData) {
     if (!active) {
       setCue(ssrCue);
       setPaused(false);
+      setEnded(false);
       return;
     }
+    setEnded(false);
     setStarted(true);
     offset.current = 0;
     t0.current = performance.now();
@@ -57,29 +63,42 @@ function useWalkClock(active: boolean, reduced: boolean, data: WalkData) {
   }, [active, ssrCue]);
 
   useEffect(() => {
-    if (!active || paused) return;
+    if (!active || paused || ended) return;
     const now = offset.current + (performance.now() - t0.current);
     const next = data.cues.find((c) => c.at > now);
-    if (!next) return;
-    const id = window.setTimeout(() => setCue(cueAt(data.cues, offset.current + (performance.now() - t0.current))), next.at - now + 4);
+    // No cue left: the film rests on its last one until totalMs, then it is over.
+    const id = window.setTimeout(
+      () => (next ? setCue(cueAt(data.cues, offset.current + (performance.now() - t0.current))) : setEnded(true)),
+      next ? next.at - now + 4 : Math.max(0, data.totalMs - now),
+    );
     return () => window.clearTimeout(id);
-  }, [active, paused, cue, seq, data.cues]);
+  }, [active, paused, ended, cue, seq, data.cues, data.totalMs]);
 
   const jump = (i: number) => {
     offset.current = data.cues[i].at;
     t0.current = performance.now();
     setCue(i);
     setPaused(true);
+    setEnded(false);
+  };
+  const replay = () => {
+    offset.current = 0;
+    t0.current = performance.now();
+    setCue(0);
+    setSeq((n) => n + 1);
+    setPaused(false);
+    setEnded(false);
   };
   const toggle = () => {
-    if (paused) {
+    if (ended) replay();
+    else if (paused) {
       offset.current = data.cues[cue].at;
       t0.current = performance.now();
       setPaused(false);
     } else setPaused(true);
   };
   // Reduced motion still steps through the stills on their cues; it just never animates.
-  return { cue: active ? cue : ssrCue, started, paused, jump, toggle, reduced };
+  return { cue: active ? cue : ssrCue, started, paused, ended, firstPlay: seq <= 1, jump, toggle, reduced };
 }
 
 /** The framing in force at cue i: its own, else the last one set on the same still. */
@@ -92,19 +111,10 @@ function camAt(cues: readonly WalkCue[], i: number, phone: boolean): Rect | null
 }
 
 /** One view = one still under one framing. */
-const viewKey = (still: number, cam: Rect | null) => `${still}:${cam ? `${cam.x},${cam.y},${cam.w},${cam.h}` : "-"}`;
+const camKey = (cam: Rect | null) => (cam ? `${cam.x},${cam.y},${cam.w},${cam.h}${cam.grow === undefined ? "" : `+${cam.grow}`}` : "-");
+const viewKey = (still: number, cam: Rect | null) => `${still}:${camKey(cam)}`;
 
-/** Screen px per still css px, and the offset, that show `cam` whole within an sw x sh screen. */
-function frameFor(W: number, H: number, cam: Rect | null, sw: number, sh: number) {
-  const cover = Math.max(sw / W, sh / H);
-  const s = cam ? Math.max(cover, Math.min(sw / cam.w, sh / cam.h)) : cover;
-  const clamp = (v: number, lo: number) => Math.min(0, Math.max(lo, v));
-  const ox = cam ? clamp(sw / 2 - s * (cam.x + cam.w / 2), sw - s * W) : 0;
-  const oy = cam ? clamp(sh / 2 - s * (cam.y + cam.h / 2), sh - s * H) : 0;
-  return { width: `${W}px`, height: `${H}px`, transform: `translate(${ox.toFixed(1)}px, ${oy.toFixed(1)}px) scale(${s.toFixed(4)})` };
-}
-
-/** The screen's size in px, once it is laid out (null before: the plain fitted layout). */
+/** The stage's content box in px, once it is laid out (null before: the plain fitted layout). */
 function useBox() {
   const ref = useRef<HTMLDivElement>(null);
   const [box, setBox] = useState<{ w: number; h: number } | null>(null);
@@ -119,6 +129,28 @@ function useBox() {
     return () => ro.disconnect();
   }, []);
   return { ref, box };
+}
+
+/** The word boxes of each still (its `.words.json`), fetched once the tab plays: the framing keeps the stage edge out of words. */
+function useWordBoxes(stills: readonly Still[], srcs: readonly string[], enabled: boolean) {
+  const [boxes, setBoxes] = useState<ReadonlyMap<string, readonly Box[]> | null>(null);
+  useEffect(() => {
+    if (!enabled) return;
+    let live = true;
+    const want = [...new Set(srcs)];
+    Promise.all(
+      want.map((src) =>
+        fetch(src.replace(/\.webp$/, ".words.json"))
+          .then((r) => (r.ok ? r.json() : null))
+          .then((j) => [src, (j?.boxes ?? []) as Box[]] as const)
+          .catch(() => [src, [] as Box[]] as const),
+      ),
+    ).then((all) => live && setBoxes(new Map(all)));
+    return () => {
+      live = false;
+    };
+  }, [enabled, srcs, stills]);
+  return boxes;
 }
 
 /** The cursor position in force at cue i: the last cue that set one (cursor stays where it was). */
@@ -136,7 +168,7 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
   // Which picture the sheet shows: the phone crop, or (no narrow layout) the desk still framed.
   const pic = (st: Still) => (phone && !data.phoneUsesDesk ? st.phone : st.desk);
   const framed = !phone || Boolean(data.phoneUsesDesk);
-  const { ref: screenRef, box } = useBox();
+  const { ref: stageRef, box } = useBox();
   const clock = useWalkClock(active, reduced, data);
   const cue = data.cues[clock.cue];
   const cur = cue.still;
@@ -164,22 +196,59 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
   const curCam = camOf(clock.cue);
   const curKey = viewKey(cur, curCam);
   const mounted = clock.started ? [...views.keys()] : [curKey];
-  const frame = (still: number, cam: Rect | null): CSSProperties | undefined => {
-    if (!framed || !box) return undefined;
+  // Framing needs the stage's size and the words' boxes; until both are in, the plain fitted layout (and, once
+  // the stage is measured, the screen waits invisibly for the boxes so the first view does not jump).
+  const srcs = useMemo(() => data.stills.map((st) => pic(st).src), [data.stills, phone]); // eslint-disable-line react-hooks/exhaustive-deps
+  const boxes = useWordBoxes(data.stills, srcs, active && framed);
+  const framing = framed && box && boxes ? boxes : null;
+  const cache = useMemo(() => new Map<string, Frame>(), [box?.w, box?.h, boxes]); // eslint-disable-line react-hooks/exhaustive-deps
+  const frameOf = (still: number, cam: Rect | null): Frame | null => {
+    if (!framing || !box) return null;
     const p = pic(data.stills[still]);
-    return frameFor(p.width, p.height, cam, box.w, box.h);
+    const k = `${p.src}|${camKey(cam)}`;
+    let f = cache.get(k);
+    if (!f) {
+      f = frameView(p.width, p.height, cam, box.w, box.h, framing.get(p.src) ?? []);
+      cache.set(k, f);
+    }
+    return f;
   };
+  const frame = (still: number, cam: Rect | null): CSSProperties | undefined => {
+    const f = frameOf(still, cam);
+    if (!f) return undefined;
+    const p = pic(data.stills[still]);
+    return { width: `${p.width}px`, height: `${p.height}px`, transform: `translate(${(-f.x0 * f.s).toFixed(2)}px, ${(-f.y0 * f.s).toFixed(2)}px) scale(${f.s.toFixed(4)})` };
+  };
+  const curFrame = frameOf(cur, curCam);
+  const focus = curCam ?? { x: 0, y: 0, w: pic(data.stills[cur]).width, h: pic(data.stills[cur]).height };
   const cursor = motion ? cursorAt(data.cues, clock.cue, phone && !data.phoneUsesDesk) : null;
-  const fade = reduced ? 0 : cue.fadeMs ?? 280;
+  // The tab opens on its no-script picture and goes straight to the film's first view: no crossfade from the one to the other.
+  const fade = reduced || (clock.firstPlay && clock.cue === 0) ? 0 : cue.fadeMs ?? 280;
   const hold = () => onHold?.();
 
   // The firstStep of each step: where a dot jumps to.
   const firstOfStep = data.steps.map((_, s) => data.cues.findIndex((c) => c.step === s));
 
   return (
-    <div className={`stw stw--${variant}${motion ? "" : " is-still"}`} data-scene={scene} data-step={step + 1} data-still={data.stills[cur].id} style={{ "--stw-fade": `${fade}ms` } as CSSProperties}>
-      <div className="stw-stage">
-        <div ref={screenRef} className={`stw-screen${framed ? " stw-screen--framed" : ""}`}>
+    <div
+      className={`stw stw--${variant}${motion ? "" : " is-still"}`}
+      data-scene={scene}
+      data-step={step + 1}
+      data-still={data.stills[cur].id}
+      data-focus={framed ? `${focus.x},${focus.y},${focus.w},${focus.h}` : undefined}
+      data-framing={framed && box && !boxes ? "waiting" : undefined}
+      style={{ "--stw-fade": `${fade}ms` } as CSSProperties}>
+      <div className="stw-stage" ref={stageRef}>
+        {/* A window shorter than the stage is a card; the rest of the stage is a soft blur of the same picture, not a bar. */}
+        {curFrame ? (
+          <div className="stw-amb" aria-hidden="true">
+            {[...new Set(mounted.map((k) => (views.get(k) ?? { still: cur }).still))].map((st) => (
+              // eslint-disable-next-line @next/next/no-img-element -- the still itself, blurred behind the card
+              <img key={st} src={pic(data.stills[st]).src} alt="" decoding="async" data-on={st === cur || undefined} draggable={false} />
+            ))}
+          </div>
+        ) : null}
+        <div className={`stw-screen${framed ? " stw-screen--framed" : ""}`} style={curFrame ? { width: `${curFrame.cardW}px`, height: `${curFrame.cardH}px` } : undefined}>
           {mounted.map((k) => {
             const v = views.get(k) ?? { still: cur, cam: curCam };
             return <Shot key={k} still={data.stills[v.still]} pic={pic(data.stills[v.still])} on={k === curKey} frame={frame(v.still, v.cam)} />;
@@ -218,14 +287,20 @@ export function StillsWalkthrough({ data, variant, active, reduced, onCaption, o
           <button
             type="button"
             className="stw-pause"
-            aria-label={clock.paused ? "Play" : "Pause"}
+            aria-label={clock.ended ? "Replay" : clock.paused ? "Play" : "Pause"}
             onClick={() => {
               clock.toggle();
               hold();
             }}
           >
             <svg viewBox="0 0 16 16" aria-hidden="true">
-              {clock.paused ? <path d="M5 3.5v9l7-4.5z" fill="currentColor" /> : <path d="M5 3.5h2v9H5zM9 3.5h2v9H9z" fill="currentColor" />}
+              {clock.ended ? (
+                <path d="M8 2.2a5.8 5.8 0 1 0 5.4 3.7l-1.7.7A4 4 0 1 1 8 4v2.2l3.4-3.1L8 0z" fill="currentColor" />
+              ) : clock.paused ? (
+                <path d="M5 3.5v9l7-4.5z" fill="currentColor" />
+              ) : (
+                <path d="M5 3.5h2v9H5zM9 3.5h2v9H9z" fill="currentColor" />
+              )}
             </svg>
           </button>
         ) : null}

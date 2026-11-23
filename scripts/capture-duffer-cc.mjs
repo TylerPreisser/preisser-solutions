@@ -77,7 +77,7 @@ const DEALERS = [
   { slug: "brannicksupply", name: "Brannick Golf Supply", town: "Brannick" },
 ];
 const PEOPLE = [
-  { first: "Hal", last: "Wendorf", role: "Head pro" },
+  { first: "Dell", last: "Orrick", role: "Head pro" },
   { first: "Marty", last: "Ostrand", role: "General manager" },
   { first: "Len", last: "Kessinger", role: "Head pro" },
   { first: "Owen", last: "Stricklin", role: "Owner" },
@@ -421,6 +421,49 @@ function wordsIn(rect) {
   return [...new Set(out)];
 }
 
+/**
+ * In-page: one [x, y, w, h, word] per drawn WORD inside `rect`, in page css px, for the walkthrough's framing and
+ * for tests/showcase-walkthroughs.probe.mjs (a word is a run of non-space characters; its box is the
+ * text range's own client rect, so its height is the line box of the font, about 1.2 x the font size).
+ */
+function wordBoxesIn(rect) {
+  const hit = (r) => r.width > 0 && r.height > 0 && r.right > rect.x && r.left < rect.x + rect.w && r.bottom > rect.y && r.top < rect.y + rect.h;
+  const shown = (el) => {
+    for (let e = el; e; e = e.parentElement) {
+      const cs = getComputedStyle(e);
+      if (cs.display === "none" || cs.visibility === "hidden" || parseFloat(cs.opacity) === 0) return false;
+    }
+    return true;
+  };
+  const out = [];
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const range = document.createRange();
+  for (let n = w.nextNode(); n; n = w.nextNode()) {
+    const v = n.nodeValue || "";
+    if (!v.trim() || !n.parentElement || !shown(n.parentElement)) continue;
+    if (n.parentElement.closest("script, style, noscript, template, select, datalist")) continue;
+    const det = n.parentElement.closest("details:not([open])");
+    if (det && !n.parentElement.closest("summary")) continue;
+    if (n.parentElement.checkVisibility && !n.parentElement.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true, contentVisibilityAuto: true })) continue;
+    const clippedAway = (r) => {
+      for (let e = n.parentElement; e && e !== document.body; e = e.parentElement) {
+        const cs = getComputedStyle(e);
+        if (cs.overflowX === "visible" && cs.overflowY === "visible") continue;
+        const b = e.getBoundingClientRect();
+        if (r.right <= b.left || r.left >= b.right || r.bottom <= b.top || r.top >= b.bottom) return true;
+      }
+      return false;
+    };
+    const re = /\S+/g;
+    for (let m = re.exec(v); m; m = re.exec(v)) {
+      range.setStart(n, m.index);
+      range.setEnd(n, m.index + m[0].length);
+      for (const r of range.getClientRects()) if (hit(r) && !clippedAway(r)) out.push([Math.round(r.left * 10) / 10, Math.round(r.top * 10) / 10, Math.round(r.width * 10) / 10, Math.round(r.height * 10) / 10, m[0]]);
+    }
+  }
+  return out;
+}
+
 /* ------------------------------------------------------------- views */
 // Desk: the 1440 x 900 window as the owner sees it; `top` scrolls a section to the top of the
 // scrolling <main>. `targets` are found by their text and measured (still css px) for the drawn
@@ -428,6 +471,9 @@ function wordsIn(rect) {
 // [from, to] pairs, each a {text|sel, edge} the band starts or ends at; several bands stack.
 const DESK = { width: 1440, height: 900 };
 const PHONE_W = 390;
+// The showcase's phone sheet frames the desk stills (the walkthrough pans over them), so the panel's own
+// phone layout is only shot with --phone-crops, for comparison.
+const PHONE_CROPS = process.argv.includes("--phone-crops");
 const VIEWS = [
   {
     id: "dashboard",
@@ -556,7 +602,25 @@ async function scrollTop(page, sel) {
 
 const round = (r) => (r ? { x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.w), h: Math.round(r.h) } : null);
 
-async function writeStill(png, file, cssW, outW, words, rect) {
+/** A screenshot, retried: a loaded machine makes headless Chromium refuse one now and then. */
+async function snap(page, opts) {
+  for (let n = 1; ; n++) {
+    try {
+      return await page.screenshot({ timeout: 120000, ...opts });
+    } catch (e) {
+      if (n >= 4) throw e;
+      await page.waitForTimeout(3000);
+    }
+  }
+}
+
+/** One box per line in a words manifest, so a recapture diffs by word, not by digit. */
+function compactBoxes(file) {
+  const s = fs.readFileSync(file, "utf8").replace(/\[\s+(-?[\d.]+),\s+(-?[\d.]+),\s+([\d.]+),\s+([\d.]+),\s+("(?:[^"\\]|\\.)*")\s+\]/g, "[$1, $2, $3, $4, $5]");
+  fs.writeFileSync(file, s);
+}
+
+async function writeStill(png, file, cssW, outW, words, rect, boxes) {
   const img = sharp(png);
   const buf = await (outW ? img.resize({ width: outW }) : img).webp({ quality: 80, effort: 6 }).toBuffer();
   fs.writeFileSync(path.join(OUT, file), buf);
@@ -567,9 +631,12 @@ async function writeStill(png, file, cssW, outW, words, rect) {
     source: `Duffer Golf Command Center, panel bundle ${BUNDLE}, rendered on its test fixtures with invented names (scripts/capture-duffer-cc.mjs)`,
     captured: new Date().toISOString().slice(0, 10),
     rect: rect,
+    // One [x, y, w, h, word] per drawn word, in the still's css px (read by the walkthrough framing and its probe).
+    boxes,
     lines: words,
   };
   fs.writeFileSync(path.join(OUT, file.replace(/\.webp$/, ".words.json")), `${JSON.stringify(manifest, null, 2)}\n`);
+  compactBoxes(path.join(OUT, file.replace(/\.webp$/, ".words.json")));
   if (REVIEW) fs.writeFileSync(path.join(REVIEW, file.replace(/\.webp$/, ".png")), png);
   return { src: `/images/showcase/duffer/${file}`, width: meta.width, height: meta.height, bytes: buf.length, css: { w: cssW, h: Math.round((meta.height * cssW) / meta.width) } };
 }
@@ -594,17 +661,20 @@ async function captureAll(browser, S) {
         if (!r) throw new Error(`${v.id}: target ${k} not found`);
         targets[k] = r;
       }
+      await page.evaluate(() => Promise.all(document.getAnimations().filter((a) => Number.isFinite(a.effect?.getComputedTiming().endTime)).map((a) => a.finished.catch(() => {}))));
+      await page.waitForTimeout(400);
       const rect = { x: 0, y: 0, w: DESK.width, h: DESK.height };
       const words = await page.evaluate(wordsIn, rect);
-      const png = await page.screenshot({ type: "png" });
-      result[v.id] = { desk: await writeStill(png, `${v.id}.webp`, DESK.width, 2880, words, rect), targets };
+      const boxes = await page.evaluate(wordBoxesIn, rect);
+      const png = await snap(page, { type: "png" });
+      result[v.id] = { desk: await writeStill(png, `${v.id}.webp`, DESK.width, 2880, words, rect, boxes), targets };
     }
     if (misses.length) console.log(`[duffer-cc] desk unstubbed: ${[...new Set(misses)].join(", ")}`);
     await ctx.close();
   }
 
   // Phone: the panel's phone layout, 390 wide at 2x; a tall window keeps the fixed tab bar out of every band.
-  {
+  if (PHONE_CROPS) {
     const { ctx, page, misses } = await newSession(browser, S, { viewport: { width: PHONE_W, height: 5000 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
     for (const v of VIEWS) {
       S.EVENTS = v.feed === "before" ? before : fullFeed;
@@ -624,9 +694,13 @@ async function captureAll(browser, S) {
       }
       const pngs = [];
       const words = [];
+      const boxes = [];
+      let stackTop = 0;
       for (const r of bands) {
-        pngs.push(await page.screenshot({ type: "png", clip: { x: r.x, y: r.y, width: r.w, height: r.h } }));
+        pngs.push(await snap(page, { type: "png", clip: { x: r.x, y: r.y, width: r.w, height: r.h } }));
         words.push(...(await page.evaluate(wordsIn, r)));
+        for (const [bx, by, bw, bh, bt] of await page.evaluate(wordBoxesIn, r)) boxes.push([Math.round((bx - r.x) * 10) / 10, Math.round((by - r.y + stackTop) * 10) / 10, bw, bh, bt]);
+        stackTop += r.h + 12; // bands stack with a 12 css px gap
       }
       let png = pngs[0];
       if (pngs.length > 1) {
@@ -651,7 +725,7 @@ async function captureAll(browser, S) {
           if (t && t.y >= bands[0].y && t.y + t.h <= bands[0].y + bands[0].h) targets[k] = { ...t, y: t.y - bands[0].y };
         }
       }
-      result[v.id].phone = await writeStill(png, `${v.id}-phone.webp`, PHONE_W, null, [...new Set(words)], bands.length === 1 ? bands[0] : bands);
+      result[v.id].phone = await writeStill(png, `${v.id}-phone.webp`, PHONE_W, null, [...new Set(words)], bands.length === 1 ? bands[0] : bands, boxes);
       result[v.id].phoneTargets = targets;
     }
     if (misses.length) console.log(`[duffer-cc] phone unstubbed: ${[...new Set(misses)].join(", ")}`);
@@ -699,8 +773,8 @@ async function main() {
     writeData(result);
     let total = 0;
     for (const [id, r] of Object.entries(result)) {
-      total += r.desk.bytes + r.phone.bytes;
-      console.log(`[duffer-cc] ${id}: desk ${r.desk.width}x${r.desk.height} ${(r.desk.bytes / 1024).toFixed(0)} KB, phone ${r.phone.width}x${r.phone.height} ${(r.phone.bytes / 1024).toFixed(0)} KB, targets ${Object.keys(r.targets).join(",")} / ${Object.keys(r.phoneTargets).join(",")}`);
+      total += r.desk.bytes + (r.phone ? r.phone.bytes : 0);
+      console.log(`[duffer-cc] ${id}: desk ${r.desk.width}x${r.desk.height} ${(r.desk.bytes / 1024).toFixed(0)} KB, ${r.phone ? `phone ${r.phone.width}x${r.phone.height} ${(r.phone.bytes / 1024).toFixed(0)} KB, ` : ""}targets ${Object.keys(r.targets).join(",")}${r.phoneTargets ? ` / ${Object.keys(r.phoneTargets).join(",")}` : ""}`);
     }
     console.log(`[duffer-cc] ${Object.keys(result).length} views, ${(total / 1024).toFixed(0)} KB total -> ${path.relative(ROOT, OUT)}, ${path.relative(ROOT, DATA)}`);
   } finally {

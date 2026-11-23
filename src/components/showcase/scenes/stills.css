@@ -84,6 +84,37 @@
 .stw--phone .stw-stage:has(.stw-screen--framed) {
   padding-bottom: 6px;
 }
+/* A framed screen is sized in px by the framing (a card the size of what the still can fill), centred in the stage. */
+.stw .stw-stage:has(.stw-screen--framed) {
+  place-items: center;
+}
+.stw-amb {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.stw-amb img {
+  position: absolute;
+  inset: -12%;
+  width: 124%;
+  height: 124%;
+  max-width: none;
+  object-fit: cover;
+  filter: blur(26px) saturate(1.12);
+  opacity: 0;
+  transition: opacity var(--stw-fade, 280ms) linear;
+}
+.stw-amb img[data-on] {
+  opacity: 0.5;
+}
+.stw-screen {
+  z-index: 1;
+}
+/* The stage is measured but the word boxes are not in yet: the first view waits, so it never jumps. */
+.stw[data-framing="waiting"] .stw-screen {
+  opacity: 0;
+}
 .stw-shot {
   position: absolute;
   left: 0;
