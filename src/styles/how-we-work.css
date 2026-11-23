@@ -302,8 +302,13 @@
   }
 }
 
+/* On the track the closing sentence takes the place of the three lines once
+   they have gone (ADR-0032), so it is set as they are: flush right. The
+   script moves it up to where they were (transform only); the stacked
+   layouts below put it back on the left, under the explanations. */
 .ps-how .ps-how__belief {
-  margin: 0;
+  margin: 0 0 0 auto;
+  text-align: right;
   max-width: 22em;
   font-size: clamp(1.25rem, 2.4vw, 1.875rem);
   font-weight: 600;
@@ -394,6 +399,11 @@
   .ps-how .ps-how__num {
     display: block;
   }
+
+  .ps-how .ps-how__belief {
+    margin-left: 0;
+    text-align: left;
+  }
 }
 
 .ps-how.ps-how[data-stacked="true"] {
@@ -441,4 +451,9 @@
 
 .ps-how[data-stacked="true"] .ps-how__num {
   display: block;
+}
+
+.ps-how[data-stacked="true"] .ps-how__belief {
+  margin-left: 0;
+  text-align: left;
 }

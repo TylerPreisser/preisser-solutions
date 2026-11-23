@@ -154,6 +154,13 @@ async function read(page) {
       headlineTop: headline.top,
       headlineBottom: headline.bottom,
       navBottom: document.querySelector("header").getBoundingClientRect().bottom,
+      eyebrowBottom: section.querySelector(".ps-how__eyebrow").getBoundingClientRect().bottom,
+      belief: (() => {
+        const el = section.querySelector(".ps-how__belief");
+        const step = el.closest(".ps-how__step");
+        const r = el.getBoundingClientRect();
+        return { align: getComputedStyle(el).textAlign, left: r.left, right: r.right, stepTransform: getComputedStyle(step).transform };
+      })(),
       vh: window.innerHeight,
       lines: [...section.querySelectorAll(".ps-how__line")].map((el) => {
         const r = el.getBoundingClientRect();
@@ -172,6 +179,7 @@ async function read(page) {
           lit: parseFloat(glow.opacity), band: off, litColor: fillIn ? getComputedStyle(fillIn).color : "", glow: glow.textShadow !== "none",
           litText: fillIn ? getComputedStyle(fillIn, "::after").content.replace(/^"|"$/g, "").replace(/" \/ ""$/, "") : "",
           ink: parseFloat(getComputedStyle(el.querySelector(".ps-how__ink")).opacity),
+          opacity: parseFloat(cs.opacity), transform: cs.transform,
         };
       }),
       light: (() => {
@@ -266,17 +274,19 @@ async function story(page, label) {
     assertLayout(s, `${label} beat ${i + 1}`);
   }
 
-  // The last beat: the relationship sentence, beside the hero's own look.
+  // The last beat (ADR-0032): the relationship sentence alone, where the lines were. No light, the lines gone.
   await scrollTo(page, t.top - t.lead + t.beat * 3.5);
   const closing = await read(page);
   assert.equal(closing.step, String(CLOSING), `${label}: the last beat was not reached`);
   assert.ok(closing.steps[CLOSING].opacity > 0.99, `${label}: the relationship sentence is not showing on the last beat`);
   assert.equal(closing.steps[CLOSING].text, BELIEF, `${label}: the relationship sentence is not the owner's copy`);
   assert.ok(closing.steps.slice(0, 3).every((s) => s.opacity < 0.01), `${label}: an explanation is still showing on the last beat`);
-  assert.ok(closing.lines[2].lit > 0.99, `${label}: the third line is not lit on the last beat`);
-  assert.ok(closing.lines.slice(0, 2).every((l) => l.lit < 0.01 && l.ink > 0.99), `${label}: the first two lines did not come back to full strength`);
-  assert.ok(Math.abs(closing.headlineTop - pinnedTop) <= 1, `${label}: the lines moved on the last beat`);
+  assert.ok(closing.lines.every((l) => l.lit < 0.001 && l.band > 0.999), `${label}: a line is still lit on the last beat (${closing.lines.map((l) => l.lit).join(", ")})`);
+  assert.ok(closing.light.opacity < 0.001, `${label}: the light is still on (${closing.light.opacity}) on the last beat`);
+  assert.ok(closing.lines.every((l) => l.opacity < 0.001), `${label}: a line still shows on the last beat (${closing.lines.map((l) => l.opacity).join(", ")})`);
+  assert.ok(Math.abs(closing.headlineTop - pinnedTop) <= 1, `${label}: the block moved on the last beat`);
   assert.ok(closing.steps[CLOSING].bottom <= closing.vh, `${label}: the relationship sentence runs off the bottom of the screen`);
+  assert.ok(closing.steps[CLOSING].top >= closing.eyebrowBottom, `${label}: the relationship sentence runs up into the label`);
 
   // Smooth: going from line 1 to line 2 a little at a time, the picture passes through many in-between
   // values (it is scrubbed, not switched), line 2 only ever gets brighter on the way, and no two texts
@@ -919,6 +929,162 @@ for (const [label, ctx, at, to] of [
   });
 }
 
+
+// ADR-0032. The owner, 2026-11-23, from his iPhone: "By the time it animates to the 4th thing that comes in the glow
+// should have animated out and the 3 right aligned phrases maybe have animated out as the last sentence or whatever
+// calling it comes in". On the build before, the light only dimmed to 55% on the last beat and the three lines came
+// back to full strength and stayed above the sentence.
+/** Scroll from `from` to `to` a few px a frame and read the hand-over on every painted frame. */
+async function handScrub(page, from, to, px) {
+  return page.evaluate(async ({ from, to, px }) => {
+    const section = document.querySelector("#how-we-work");
+    const lines = [...section.querySelectorAll(".ps-how__line")];
+    const steps = [...section.querySelectorAll(".ps-how__step")];
+    const light = section.querySelector(".ps-how__light");
+    const eyebrow = section.querySelector(".ps-how__eyebrow");
+    const frame = () => new Promise((r) => requestAnimationFrame(() => r()));
+    const ty = (tf) => (tf && tf !== "none" ? parseFloat(tf.split(",")[5]) : 0);
+    const box = (r) => ({ top: r.top, bottom: r.bottom, left: r.left, right: r.right });
+    const out = [];
+    const n = Math.max(1, Math.ceil(Math.abs(to - from) / px));
+    for (let i = 0; i <= n; i += 1) {
+      window.scrollTo({ top: from + ((to - from) * i) / n, behavior: "instant" });
+      await frame();
+      out.push({
+        y: window.scrollY,
+        light: parseFloat(getComputedStyle(light).opacity),
+        eyebrow: box(eyebrow.getBoundingClientRect()),
+        lines: lines.map((l) => {
+          const r = l.getBoundingClientRect();
+          const win = l.querySelector(".ps-how__fill").getBoundingClientRect();
+          const over = Math.max(0, Math.min(win.bottom, r.bottom) - Math.max(win.top, r.top)) / r.height;
+          return { ...box(r), opacity: parseFloat(getComputedStyle(l).opacity), ty: ty(getComputedStyle(l).transform), lit: parseFloat(getComputedStyle(l, "::after").opacity), band: 1 - over };
+        }),
+        texts: steps.map((e) => parseFloat(getComputedStyle(e).opacity)),
+        // The words of the sentence, not its grid cell: that is what must not overlap a line.
+        sentence: box(section.querySelector(".ps-how__belief").getBoundingClientRect()),
+      });
+    }
+    return out;
+  }, { from, to, px });
+}
+
+const rested = (page) => page.waitForFunction(() => !document.querySelector("#how-we-work").hasAttribute("data-moving"), null, { timeout: 12000 });
+const overlapPx = (a, b) => Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top)) * (Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left)) > 0 ? 1 : 0);
+/** What a frame of the hand-over paints, as numbers, for comparing the way down with the way up. */
+const handTuple = (f, riseBy) => [f.light, ...f.lines.map((l) => l.opacity), ...f.lines.map((l) => l.lit), ...f.lines.map((l) => l.ty / riseBy), f.texts[CLOSING], f.texts[2]];
+function nearestOnCurve(point, curve) {
+  let best = Infinity;
+  for (let i = 1; i < curve.length; i += 1) {
+    const a = curve[i - 1];
+    const b = curve[i];
+    // Distance (largest component) from the point to the segment a-b, by the closest parameter along it.
+    let num = 0;
+    let den = 0;
+    for (let j = 0; j < a.length; j += 1) { num += (point[j] - a[j]) * (b[j] - a[j]); den += (b[j] - a[j]) ** 2; }
+    const m = den === 0 ? 0 : Math.min(1, Math.max(0, num / den));
+    best = Math.min(best, Math.max(...point.map((v, j) => Math.abs(v - (a[j] + (b[j] - a[j]) * m)))));
+  }
+  return best;
+}
+
+for (const [label, ctx] of [
+  ["393 by 659", { viewport: { width: 393, height: 659 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true }],
+  ["402 by 874", { viewport: { width: 402, height: 874 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true }],
+  ["820 by 1180", { viewport: { width: 820, height: 1180 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true }],
+  ["1440 by 900", { viewport: { width: 1440, height: 900 } }],
+]) {
+  await check(`${label}: the closing beat: the glow is out before the sentence shows, the lines leave as it comes in, it never overlaps a line, and going back up is the same in reverse`, ctx, async (page) => {
+    const t = await track(page);
+    const at = (u) => t.top - t.lead + t.beat * u;
+    const riseBy = await page.evaluate(() => Math.min(34, Math.max(18, parseFloat(getComputedStyle(document.querySelector(".ps-how__line")).fontSize) * 0.8)));
+    await scrollTo(page, at(2.5));
+    const down = await handScrub(page, at(2.5), at(3.9), 3);
+    await rested(page);
+    const end = (await handScrub(page, at(3.9), at(3.9), 1))[0];
+    // (a) From the first frame the sentence shows at all: no light, no lit line, no blue band.
+    const first = down.findIndex((f) => f.texts[CLOSING] > 0.001);
+    assert.ok(first >= 0, `${label}: the closing sentence never showed`);
+    for (const f of down.slice(first)) {
+      assert.ok(f.light <= 0.001 && f.lines.every((l) => l.lit <= 0.001 && l.band >= 0.999), `${label}: at y=${f.y} the sentence is at ${f.texts[CLOSING]} and the glow is still there (light ${f.light}, lit ${f.lines.map((l) => l.lit).join("/")}, band off ${f.lines.map((l) => l.band.toFixed(3)).join("/")})`);
+    }
+    // ... and it went out with the scroll, through many strengths, not in a cut.
+    const dimming = new Set(down.slice(0, first).map((f) => f.light).filter((v) => v > 0.03 && v < 0.97).map((v) => v.toFixed(2)));
+    assert.ok(dimming.size >= 6, `${label}: the light went out through only ${dimming.size} in-between strengths`);
+    // (b) Once the sentence is fully in, no line shows; and while any of it shows, no visible line's box meets its words.
+    for (const f of down) {
+      if (f.texts[CLOSING] >= 0.999) assert.ok(f.lines.every((l) => l.opacity <= 0.001), `${label}: at y=${f.y} the sentence is in and the lines still show (${f.lines.map((l) => l.opacity).join(", ")})`);
+      if (f.texts[CLOSING] > 0.001) {
+        f.lines.forEach((l, k) => {
+          if (l.opacity > 0.001) assert.ok(overlapPx(l, f.sentence) < 0.5, `${label}: at y=${f.y} the sentence (${f.texts[CLOSING]}) overlaps line ${k + 1} (${l.opacity}) by ${overlapPx(l, f.sentence).toFixed(1)}px`);
+        });
+        assert.ok(f.sentence.top >= f.eyebrow.bottom, `${label}: at y=${f.y} the sentence runs into the label`);
+      }
+    }
+    // The lines leave with the scroll, top line first, moving up (transform), not in a cut.
+    for (let k = 0; k < 3; k += 1) {
+      const leaving = new Set(down.map((f) => f.lines[k].opacity).filter((v) => v > 0.03 && v < 0.97).map((v) => v.toFixed(2)));
+      assert.ok(leaving.size >= 6, `${label}: line ${k + 1} left through only ${leaving.size} in-between strengths`);
+      assert.ok(Math.min(...down.map((f) => f.lines[k].ty)) <= -12, `${label}: line ${k + 1} does not lift away as it leaves`);
+    }
+    const halfOut = down.find((f) => f.lines[0].opacity <= 0.5);
+    assert.ok(halfOut && halfOut.lines[2].opacity > halfOut.lines[0].opacity + 0.15, `${label}: the lines do not leave top line first`);
+    // At rest on the last beat: the sentence alone, flush right like the lines it replaced, in the held block.
+    assert.ok(end.light <= 0.001 && end.lines.every((l) => l.opacity <= 0.001) && end.texts[CLOSING] >= 0.999, `${label}: at rest on the last beat the picture is not the sentence alone`);
+    const s = await read(page);
+    assert.ok(Math.abs(s.belief.right - s.contentRight) <= 1, `${label}: the sentence is not flush right (${s.belief.right} against ${s.contentRight})`);
+    assert.ok(end.sentence.top >= end.eyebrow.bottom && end.sentence.bottom <= s.vh, `${label}: the sentence does not sit between the label and the bottom of the screen`);
+    // (c) Back up: at every painted frame the picture is one the way down painted; the lines come back last line
+    // first; and it ends on beat 3 exactly as it was.
+    const up = await handScrub(page, at(3.9), at(2.5), 3);
+    await rested(page);
+    const back = await read(page);
+    assert.ok(up[0].lines.every((l) => l.opacity <= 0.001) && up[0].light <= 0.001, `${label}: going up from the last beat the lines and the light were not gone to begin with (lines ${up[0].lines.map((l) => l.opacity).join(", ")}, light ${up[0].light}): there is no exit to reverse`);
+    const curve = down.map((f) => handTuple(f, riseBy));
+    let worst = { d: 0 };
+    for (const f of up) {
+      const d = nearestOnCurve(handTuple(f, riseBy), curve);
+      if (d > worst.d) worst = { d, y: f.y, tuple: handTuple(f, riseBy).map((v) => v.toFixed(2)).join(" ") };
+    }
+    assert.ok(worst.d <= 0.05, `${label}: going up at y=${worst.y} the picture (${worst.tuple}) is ${worst.d.toFixed(3)} away from anything painted on the way down`);
+    const returns = [0, 1, 2].map((k) => up.findIndex((f) => f.lines[k].opacity > 0.001));
+    assert.ok(returns[2] >= 0 && returns[2] <= returns[1] && returns[1] <= returns[0], `${label}: going up the lines do not come back last line first (frames ${returns.join(", ")})`);
+    assert.equal(back.step, "2", `${label}: back up, the third beat does not show`);
+    assert.ok(back.lines.every((l) => l.opacity > 0.999) && back.lines[2].lit > 0.999 && back.light.opacity > 0.999 && back.steps[2].opacity > 0.999 && back.steps[CLOSING].opacity < 0.001, `${label}: back up, beat 3 is not as it was`);
+  });
+
+  await check(`${label}: a stop part way through the closing hand-over, down or up, never leaves a line, the glow or the sentence part way`, ctx, async (page) => {
+    const t = await track(page);
+    const at = (u) => t.top - t.lead + t.beat * u;
+    const clean = (v) => v <= 0.001 || v >= 0.999;
+    for (const stop of [2.76, 2.88, 3.0, 3.12, 3.24]) {
+      for (const [from, want] of [[2.5, "3"], [3.9, "2"]]) {
+        await scrollTo(page, at(from));
+        await handScrub(page, at(from), at(stop), 4);
+        await rested(page);
+        const f = (await handScrub(page, at(stop), at(stop), 1))[0];
+        const what = `${label}: stopped at ${stop} going ${from < stop ? "down" : "up"}`;
+        assert.ok(clean(f.light) && f.lines.every((l) => clean(l.opacity) && clean(l.lit)) && f.texts.every(clean), `${what}: rests part way (light ${f.light}, lines ${f.lines.map((l) => `${l.opacity}/${l.lit}`).join(", ")}, texts ${f.texts.join(", ")})`);
+        assert.equal((await read(page)).step, want, `${what}: settled on beat ${Number((await read(page)).step) + 1}, not onward`);
+        assert.ok(Math.abs((await page.evaluate(() => window.scrollY)) - at(stop)) <= 1, `${what}: settling moved the page`);
+      }
+    }
+  });
+}
+
+await check("reduced motion: on the last beat the three lines stay, unlit, and the sentence stays in its own place under them",
+  { viewport: { width: 393, height: 659 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true, reducedMotion: "reduce" },
+  async (page) => {
+    const t = await track(page);
+    await scrollTo(page, t.top - t.lead + t.beat * 3.5);
+    const s = await read(page);
+    assert.equal(s.step, String(CLOSING), "reduced motion: the last beat was not reached");
+    assert.ok(s.lines.every((l) => l.opacity > 0.999 && l.transform === "none"), `reduced motion: a line left or moved on the last beat (${s.lines.map((l) => `${l.opacity}/${l.transform}`).join(", ")})`);
+    assert.ok(s.light.opacity < 0.001 && s.lines.every((l) => l.lit < 0.001), `reduced motion: the light is on (${s.light.opacity}) on the last beat`);
+    assert.ok(s.steps[CLOSING].opacity > 0.999 && s.steps[CLOSING].top >= s.lines[2].bottom, "reduced motion: the sentence is not showing in its place under the lines");
+    assert.ok(s.lines.every((l) => l.ink > 0.999), "reduced motion: the lines are not at full strength on the last beat");
+  });
+
 await check("phone: the same story, and everything fits on one screen",
   { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true },
   async (page) => {
@@ -976,6 +1142,9 @@ await check("phone on its side: too short to pin, so everything is laid out to r
     const lines = await page.evaluate(() => [...document.querySelectorAll("#how-we-work .ps-how__line")].map((l) => ({ opacity: getComputedStyle(l).opacity, transform: getComputedStyle(l).transform })));
     assert.ok(lines.every((l) => l.opacity === "1" && l.transform === "none"), `844x390: a line is faded or moved in the stacked layout (${JSON.stringify(lines)})`);
     assert.deepEqual(s.steps.map((st) => st.text), [...BODIES, BELIEF], "844x390: the stacked text is not the owner's copy in order");
+    // The closing beat's move (ADR-0032) is the track's alone: laid out flat the sentence is where it always was.
+    assert.ok((s.belief.align === "left" || s.belief.align === "start") && Math.abs(s.belief.left - s.contentLeft) <= 1, `844x390: the closing sentence is not set on the left under the explanations (${s.belief.align}, left ${s.belief.left})`);
+    assert.equal(s.belief.stepTransform, "none", "844x390: the closing sentence is moved in the stacked layout");
     for (let i = 1; i < s.steps.length; i += 1) {
       assert.ok(s.steps[i].top >= s.steps[i - 1].bottom, `844x390: text ${i + 1} overlaps text ${i}`);
     }
@@ -990,6 +1159,8 @@ await check("no JavaScript: all the words are there to read, with no empty scrol
     const lines = await page.evaluate(() => [...document.querySelectorAll("#how-we-work .ps-how__line")].map((l) => ({ opacity: getComputedStyle(l).opacity, transform: getComputedStyle(l).transform })));
     assert.ok(lines.every((l) => l.opacity === "1" && l.transform === "none"), `no JS: a line is faded or moved (${JSON.stringify(lines)})`);
     assert.deepEqual(s.steps.map((st) => st.text), [...BODIES, BELIEF], "no JS: the text is not the owner's copy in order");
+    assert.ok((s.belief.align === "left" || s.belief.align === "start") && Math.abs(s.belief.left - s.contentLeft) <= 1, `no JS: the closing sentence is not set on the left under the explanations (${s.belief.align}, left ${s.belief.left})`);
+    assert.equal(s.belief.stepTransform, "none", "no JS: the closing sentence is moved");
     assert.ok(s.sectionHeight < s.vh * 1.8, `no JS: the section is ${s.sectionHeight}px tall with nothing to drive it`);
   });
 

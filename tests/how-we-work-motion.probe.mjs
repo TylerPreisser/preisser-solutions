@@ -46,14 +46,17 @@ function check(name, fn) {
 /** Every number the section paints at `u`, flattened, with names for messages. */
 function values(u, caps = null) {
   const f = frame(u, caps);
-  // The light starts one line above the first, so its whole run is LINES lines long.
-  const out = { light: f.light, ink: f.ink, lamp: (f.lamp + 1) / LINES };
+  // The light starts one line above the first and (ADR-0032) carries on one line below the last, so its
+  // whole run is LINES + 1 lines long.
+  const out = { light: f.light, ink: f.ink, lamp: (f.lamp + 1) / (LINES + 1) };
   f.lit.forEach((v, k) => { out[`line ${k + 1} lit`] = v; });
   // The band's offset against each line runs from -1 (a line above) to 1 (a line below).
   f.fill.forEach((v, k) => { out[`line ${k + 1} band`] = (v + 1) / 2; });
   f.texts.forEach((t, k) => { out[`text ${k + 1} opacity`] = t.opacity; });
   // The lines' entrance (ADR-0031): how visible each line is and how far it still has to rise (0 to 1).
   (f.rise ?? []).forEach((r, k) => { out[`line ${k + 1} entrance`] = r.opacity; out[`line ${k + 1} rise`] = r.y; });
+  // And their exit as the closing sentence comes in (ADR-0032): how visible each still is and how far it has lifted away.
+  (f.leave ?? []).forEach((r, k) => { out[`line ${k + 1} exit`] = r.opacity; out[`line ${k + 1} lift`] = r.y; });
   return out;
 }
 
@@ -195,10 +198,15 @@ check("the middle of each beat is exactly its own clean picture", () => {
     assert.deepEqual(f.texts.map((t) => t.opacity), [0, 1, 2, 3].map((i) => (i === k ? 1 : 0)), `beat ${k + 1} texts`);
     assert.ok(f.texts[k].y === 0 && f.light === 1 && f.lamp === k && f.fill[k] === 0, `beat ${k + 1} is not at rest`);
   }
+  // The closing beat (ADR-0032, which replaces ADR-0026's last beat): no light anywhere, the three lines gone,
+  // the sentence alone. The words' own ink is back at full, which only a reader with reduced motion sees (for
+  // them the lines stay, ADR-0032 point 5).
   const end = frame(CLOSING + 0.5);
-  assert.deepEqual(end.lit, [0, 0, 1], "closing lit");
+  assert.deepEqual(end.lit, [0, 0, 0], "closing lit");
+  assert.equal(end.light, 0, "closing light");
   assert.deepEqual(end.texts.map((t) => t.opacity), [0, 0, 0, 1], "closing texts");
-  assert.equal(end.ink, 1, "the first two lines are not back at full strength on the closing beat");
+  assert.deepEqual((end.leave ?? []).map((l) => l.opacity), [0, 0, 0], "closing: the three lines are not gone");
+  assert.equal(end.ink, 1, "the lines' ink is not back at full on the closing beat (what reduced motion shows)");
 });
 
 check("wherever the reader stops, the picture settles on the nearest clean beat, and stays there", () => {
@@ -216,7 +224,10 @@ check("wherever the reader stops, the picture settles on the nearest clean beat,
     } else {
       assert.equal(f.texts.filter((t) => t.opacity === 1).length, 1, `not exactly one text at rest for u=${u}`);
       assert.equal(f.texts[beat].opacity, 1, `the text at rest is not beat ${beat + 1}'s for u=${u}`);
-      assert.equal(f.lit[Math.min(beat, LINES - 1)], 1, `the lit line at rest is wrong for u=${u}`);
+      if (beat < LINES) assert.equal(f.lit[beat], 1, `the lit line at rest is wrong for u=${u}`);
+      else assert.ok(f.lit.every((v) => v === 0) && f.light === 0, `a line is lit or the light is on at rest on the closing beat for u=${u}`);
+      assert.ok(f.light === 0 || f.light === 1, `the light rests part way (${f.light}) for u=${u}`);
+      if (f.leave) assert.ok(f.leave.every((x) => (x.opacity === 0 && x.y === 1) || (x.opacity === 1 && x.y === 0)), `a line rests part way out for u=${u}: ${f.leave.map((x) => x.opacity).join(", ")}`);
       // The nearest: never further than half the widest gap between two resting stretches.
       assert.ok(Math.abs(r - u) <= 0.31, `settling travels ${Math.abs(r - u).toFixed(2)} beats from u=${u}`);
     }
@@ -232,6 +243,8 @@ check("a reader who stops while scrolling one way settles onward that way, and n
       const f = frame(r);
       assert.ok([...f.lit, ...f.texts.map((t) => t.opacity)].every((v) => v === 0 || v === 1), `a half state at rest going ${way} for u=${u}`);
       if (f.rise) assert.ok(f.rise.every((x) => (x.opacity === 0 && x.y === 1) || (x.opacity === 1 && x.y === 0)), `a line rests part way in going ${way} for u=${u}`);
+      if (f.leave) assert.ok(f.leave.every((x) => (x.opacity === 0 && x.y === 1) || (x.opacity === 1 && x.y === 0)), `a line rests part way out going ${way} for u=${u}`);
+      assert.ok(f.light === 0 || f.light === 1, `the light rests part way (${f.light}) going ${way} for u=${u}`);
       assert.ok((r - u) * way >= 0, `stopping at u=${u} going ${way} takes the picture back ${Math.abs(r - u).toFixed(3)} beats`);
       // Onward: never further than the widest gap between two resting stretches.
       assert.ok(Math.abs(r - u) <= 0.6 + 1e-9, `stopping at u=${u} going ${way} moves the picture ${Math.abs(r - u).toFixed(2)} beats`);
@@ -265,7 +278,9 @@ check("the band of light is one line tall: what it leaves on one line it gains o
       assert.ok(Math.abs(fill[k] - Math.min(1, Math.max(-1, lamp - k))) < 1e-12, `line ${k + 1}'s band is not where the light is at u=${u}`);
       assert.ok(Math.abs(lit[k] - (1 - Math.abs(fill[k]))) < 1e-12, `line ${k + 1}'s glow does not match its band at u=${u}`);
     }
-    if (lamp >= 0) assert.ok(Math.abs(lit.reduce((a, b) => a + b, 0) - 1) < 1e-9, `the band covers ${lit.reduce((a, b) => a + b, 0).toFixed(3)} lines at u=${u}`);
+    // Between the first line and the last it is one line's worth. Above the first it is still coming down
+    // into it, and below the last (ADR-0032) it is passing down off it and out.
+    if (lamp >= 0 && lamp <= LINES - 1) assert.ok(Math.abs(lit.reduce((a, b) => a + b, 0) - 1) < 1e-9, `the band covers ${lit.reduce((a, b) => a + b, 0).toFixed(3)} lines at u=${u}`);
   }
 });
 
@@ -548,6 +563,8 @@ for (const [kind, curve] of Object.entries(KINDS)) {
         const landed = frame(result.end.x, result.end.caps);
         assert.ok([...landed.lit, ...landed.texts.map((x) => x.opacity)].every((v) => v === 0 || v === 1), `did not come to a clean rest ${where}`);
         assert.ok(!landed.rise || landed.rise.every((x) => x.opacity === 0 || x.opacity === 1), `a line came to rest part way in ${where}`);
+        assert.ok(!landed.leave || landed.leave.every((x) => x.opacity === 0 || x.opacity === 1), `a line came to rest part way out ${where}`);
+        assert.ok(landed.light === 0 || landed.light === 1, `the light came to rest part way (${landed.light}) ${where}`);
       }
     }
     console.log(`        fastest: ${worst.name}, a full swing per ${(1 / worst.rate).toFixed(0)}ms ${worst.where}`);
@@ -832,6 +849,229 @@ check("a fling straight past the whole section never flashes a paragraph on the 
     }
     assert.ok(seen < 0.05, `an explanation reached ${(seen * 100).toFixed(0)}% on the way past at ${hz}Hz`);
   }
+});
+
+// ---------------------------------------------------------------------------------------------------------
+// The closing beat (ADR-0032). The owner, 2026-11-23, from his iPhone: "By the time it animates to the 4th
+// thing that comes in the glow should have animated out and the 3 right aligned phrases maybe have animated
+// out as the last sentence or whatever calling it comes in". Before this, the light only dimmed by 45% on the
+// last beat and the three lines came back to full strength and stayed, under the sentence.
+//
+// Each rule is a function of a picture function F(u, caps), so the same rule is run against frame() and,
+// below, against a planted defect of each kind: a rule that cannot fail is not a rule.
+// ---------------------------------------------------------------------------------------------------------
+const IN_PLACE = { opacity: 1, y: 0 };
+/** How visible line k is: its entrance times its exit (no exit at all counts as never leaving). */
+const shows = (f, k) => f.rise[k].opacity * (f.leave ? f.leave[k] : IN_PLACE).opacity;
+/** Where the closing sentence first shows at all, going down. */
+function sentenceFrom(F) {
+  for (const u of positions) if (F(u).texts[CLOSING].opacity > 0) return u;
+  return null;
+}
+
+/** (a) No glow, no lit blue and no band anywhere from the sentence's first visible position on; and the light
+ *  eases out, scrubbed, between the end of beat 3's rest and there. */
+function glowRule(F) {
+  const from = sentenceFrom(F);
+  const bad = [];
+  if (from === null) return ["the closing sentence never shows"];
+  for (const u of positions) {
+    if (u < from) continue;
+    const f = F(u);
+    if (f.light !== 0) bad.push(`the light is at ${f.light.toFixed(3)} at u=${u}, where the sentence is already showing (from u=${from})`);
+    else if (f.lit.some((v) => v !== 0)) bad.push(`a line is lit (${f.lit.map((v) => v.toFixed(3)).join(", ")}) at u=${u}`);
+    else if (f.fill.some((v) => Math.abs(v) !== 1)) bad.push(`the blue band is still over a line (${f.fill.map((v) => v.toFixed(3)).join(", ")}) at u=${u}`);
+    if (bad.length > 3) break;
+  }
+  let between = 0;
+  let previous = 1;
+  for (const u of positions) {
+    if (u < plateau(LINES - 1)[1] || u > from) continue;
+    const f = F(u);
+    if (f.light > 0 && f.light < 1) between += 1;
+    if (f.light > previous + 1e-12) bad.push(`the light comes back up on its way out at u=${u}`);
+    previous = f.light;
+  }
+  if (between < 200) bad.push(`the light goes out through only ${between} in-between positions: it is cut, not eased out with the scroll`);
+  return bad;
+}
+
+/** (b) Once the sentence is fully in, none of the three lines shows; and since it rests where they were, no
+ *  line shows at all while any of it does. The lines leave as one staggered move, top line first, scrubbed,
+ *  rising away (transform and opacity only), and they finish leaving right where the sentence starts. */
+function linesRule(F) {
+  const bad = [];
+  let partWay = 0;
+  let exitEnd = null;
+  const last = [1, 1, 1];
+  for (const u of positions) {
+    const f = F(u);
+    const s = f.texts[CLOSING].opacity;
+    const on = [0, 1, 2].map((k) => shows(f, k));
+    if (s >= 1 && on.some((v) => v > 0)) bad.push(`the sentence is fully in at u=${u} and the lines still show at ${on.map((v) => v.toFixed(3)).join(", ")}`);
+    else if (s > 0 && on.some((v) => v > 0)) bad.push(`the sentence (${s.toFixed(3)}) and a line (${on.map((v) => v.toFixed(3)).join(", ")}) are on screen together at u=${u}`);
+    if (!f.leave) continue;
+    f.leave.forEach((l, k) => {
+      if (u > OFF_TO && l.opacity > last[k] + 1e-12) bad.push(`line ${k + 1} comes back while the reader scrolls down at u=${u}`);
+      if (u > OFF_TO) last[k] = l.opacity;
+      if (Math.abs(l.opacity + l.y - 1) > 1e-9) bad.push(`line ${k + 1}'s lift and fade are not one move at u=${u}`);
+      if (l.opacity > 0 && l.opacity < 1) partWay += 1;
+    });
+    if (f.leave[0].opacity > f.leave[1].opacity + 1e-12 || f.leave[1].opacity > f.leave[2].opacity + 1e-12) bad.push(`the lines do not leave top line first at u=${u}`);
+    if (exitEnd === null && f.leave.every((l) => l.opacity === 0)) exitEnd = u;
+    if (bad.length > 3) break;
+  }
+  const end = F(BEATS);
+  if (!end.leave) return [...bad, "frame(u) has no exit for the lines (frame(u).leave): they never leave"];
+  if (partWay < 1000) bad.push(`the lines were part way out at only ${partWay} positions: they are switched, not scrubbed`);
+  const from = sentenceFrom(F);
+  if (exitEnd === null || from === null || from - exitEnd > 0.1) bad.push(`the lines finish leaving at u=${exitEnd}, not as the sentence comes in (u=${from})`);
+  return bad;
+}
+
+/** A finger on the page from beat position `from`: each move eases out over `ms`, is held still for `hold`,
+ *  then 1.2s of nothing. Through the same watch and follow the page runs; `F` paints. */
+function handOver({ F = frame, hz, windowHeight, from, moves }) {
+  const travel = windowHeight * 2;
+  const beat = travel / BEATS;
+  const at = (u) => u * beat - windowHeight * LEAD;
+  const dt = 1000 / hz;
+  let y = at(from);
+  let t = 0;
+  const reader = readerAt(positionOf(y, windowHeight, travel));
+  const state = followerAt(reader.target);
+  const frames = [];
+  for (const { to, ms, hold = 0 } of moves) {
+    const start = y;
+    for (let e = 0; e < ms + hold + 1200; e += dt) {
+      const p = Math.min(1, e / ms);
+      y = start + (at(to) - start) * (1 - (1 - p) * (1 - p));
+      t += dt;
+      watch(reader, positionOf(y, windowHeight, travel), t);
+      follow(state, reader.target, dt);
+      const before = frames.length ? frames[frames.length - 1].x : state.x;
+      // Between two painted positions, the picture at eight points on the way (in the order the reader
+      // passed them), so the way down can be compared with the way up at any position, not only at
+      // the ones a frame happened to land on.
+      const between = [];
+      // (Uncapped: the caps belong to the frame's own position, and on a slow drag they are out of the way.)
+      for (let i = 1; i < 8; i += 1) between.push({ x: before + ((state.x - before) * i) / 8, f: F(before + ((state.x - before) * i) / 8, null) });
+      frames.push({ t, way: Math.sign(at(to) - start), x: state.x, f: F(state.x, state.caps), between });
+    }
+  }
+  return { frames, end: frames[frames.length - 1] };
+}
+
+/** What the hand-over paints, as numbers: each line's visibility and lift, the light, the lit lines, the
+ *  band, the sentence. */
+const handValues = (f) => [
+  ...[0, 1, 2].map((k) => shows(f, k)), ...[0, 1, 2].map((k) => (f.leave ? f.leave[k].y : 0)),
+  f.light, ...f.lit, ...f.fill.map((v) => (v + 1) / 2), f.texts[CLOSING].opacity, f.texts[LINES - 1].opacity,
+];
+
+/** (c) Going back up from the closing beat is the way down run backwards: at every painted position on the
+ *  way up the picture is the one painted at that position on the way down; the lines come back last line
+ *  first; and it ends on beat 3 exactly as it was. */
+function reverseRule(makeF) {
+  const bad = [];
+  for (const hz of [30, 60, 120]) {
+    for (const windowHeight of [659, 852, 900]) {
+      const run = handOver({ F: makeF(), hz, windowHeight, from: 2.5, moves: [{ to: 3.7, ms: 1400, hold: 200 }, { to: 2.5, ms: 1400, hold: 200 }] });
+      const where = `${windowHeight}px at ${hz}Hz`;
+      const turn = run.frames.findIndex((fr) => fr.way === -1);
+      const down = run.frames.slice(0, turn).flatMap((fr) => [...fr.between, fr]).filter((fr, i, a) => i === 0 || fr.x > a[i - 1].x);
+      const up = run.frames.slice(turn);
+      const top = down[down.length - 1].f;
+      if ([0, 1, 2].some((k) => shows(top, k) !== 0)) bad.push(`${where}: the lines never left on the way down`);
+      for (const fr of up) {
+        const i = down.findIndex((d) => d.x >= fr.x);
+        if (i <= 0) continue;
+        const a = down[i - 1];
+        const b = down[i];
+        const m = b.x === a.x ? 0 : (fr.x - a.x) / (b.x - a.x);
+        const want = handValues(a.f).map((v, j) => v + (handValues(b.f)[j] - v) * m);
+        const got = handValues(fr.f);
+        const worst = Math.max(...got.map((v, j) => Math.abs(v - want[j])));
+        if (worst > 0.01) {
+          bad.push(`${where}: going up at u=${fr.x.toFixed(4)} the picture is not the one painted there going down (off by ${worst.toFixed(3)}: ${got.map((v) => v.toFixed(2)).join(" ")} against ${want.map((v) => v.toFixed(2)).join(" ")})`);
+          break;
+        }
+      }
+      const back = [0, 1, 2].map((k) => up.findIndex((fr) => shows(fr.f, k) > 0));
+      if (!(back[2] >= 0 && back[2] <= back[1] && back[1] <= back[0])) bad.push(`${where}: going up the lines do not come back last line first (first frames ${back.join(", ")})`);
+      const end = run.end.f;
+      const clean = [0, 1, 2].every((k) => shows(end, k) === 1) && end.light === 1 && end.lit[2] === 1 && end.texts[LINES - 1].opacity === 1 && end.texts[CLOSING].opacity === 0;
+      if (!clean) bad.push(`${where}: back up, beat 3 is not as it was (${handValues(end).map((v) => v.toFixed(2)).join(" ")})`);
+      if (bad.length > 3) return bad;
+    }
+  }
+  return bad;
+}
+
+/** (d) Wherever a reader stops in the hand-over, going down or up, by a slow drag or a flick, every line is all
+ *  in or all out, the light all on or all off, and one text is showing: nothing rests part way. */
+function restRule(makeF) {
+  const bad = [];
+  const isClean = (f) => [0, 1, 2].every((k) => shows(f, k) === 0 || shows(f, k) === 1) && (!f.leave || f.leave.every((l) => l.y === 0 || l.y === 1))
+    && (f.light === 0 || f.light === 1) && f.lit.every((v) => v === 0 || v === 1) && f.texts.every((x) => x.opacity === 0 || x.opacity === 1);
+  for (const hz of [30, 60, 120]) {
+    for (const windowHeight of [568, 659, 852, 900, 1180]) {
+      for (let stop = 2.66; stop <= 3.34 + 1e-9; stop += 0.04) {
+        for (const [from, ms, what] of [[2.5, 900, "a slow drag down"], [2.5, 180, "a flick down"], [3.7, 900, "a slow drag up"], [3.7, 180, "a flick up"]]) {
+          const run = handOver({ F: makeF(), hz, windowHeight, from, moves: [{ to: stop, ms, hold: 160 }] });
+          if (!isClean(run.end.f)) {
+            bad.push(`${what} that stops at u=${stop.toFixed(2)} rests part way (${windowHeight}px at ${hz}Hz): ${handValues(run.end.f).map((v) => v.toFixed(3)).join(" ")}`);
+            if (bad.length > 3) return bad;
+          }
+        }
+      }
+    }
+  }
+  return bad;
+}
+
+check("the closing beat: the glow has fully eased out, with the scroll, by the time the closing sentence starts to show (ADR-0032)", () => {
+  const bad = glowRule(frame);
+  assert.deepEqual(bad, [], bad.join(" | "));
+});
+
+check("the closing beat: the three lines leave as the sentence comes in, top line first, and none shows once it is in (ADR-0032)", () => {
+  const bad = linesRule(frame);
+  assert.deepEqual(bad, [], bad.join(" | "));
+});
+
+check("the closing beat: going back up is the way down exactly reversed, and it lands on beat 3 as it was (ADR-0032)", () => {
+  const bad = reverseRule(() => frame);
+  assert.deepEqual(bad, [], bad.join(" | "));
+});
+
+check("the closing beat: a stop anywhere in the hand-over, down or up, slow or a flick, never leaves a line, the glow or the sentence part way (ADR-0032)", () => {
+  const bad = restRule(() => frame);
+  assert.deepEqual(bad, [], bad.join(" | "));
+});
+
+check("those four rules can fail: each catches its own planted defect", () => {
+  const { ease } = motion;
+  const full = (f) => f.leave ?? [IN_PLACE, IN_PLACE, IN_PLACE].map((x) => ({ ...x }));
+  // The glow still there, faintly, as the sentence starts (it reaches 0 at 3.12 instead of before 3.05).
+  const glowLate = (u, caps) => { const f = frame(u, caps); f.light = Math.max(f.light, u < BEATS ? 1 - ease(2.7, 3.12, u) : 0); return f; };
+  // Line 3 left behind at 30% under the sentence.
+  const lineStays = (u, caps) => { const f = frame(u, caps); f.leave = full(f).map((l, k) => (k === 2 && u > 3 ? { opacity: Math.max(l.opacity, 0.3), y: Math.min(l.y, 0.7) } : l)); return f; };
+  // The sentence starting while line 3 is still on screen.
+  const overlap = (u, caps) => { const f = frame(u, caps); f.texts[CLOSING] = { ...f.texts[CLOSING], opacity: Math.max(f.texts[CLOSING].opacity, ease(2.95, 3.3, u)) }; return f; };
+  // Once the lines have gone they stay gone: going back up they never return.
+  const oneWay = () => { let far = -Infinity; return (u, caps) => { far = Math.max(far, u); const f = frame(u, caps); if (far >= 3.3) f.leave = [0, 1, 2].map(() => ({ opacity: 0, y: 1 })); return f; }; };
+  // The exit stretched past the start of the closing beat's rest (3.45 instead of before 3.3).
+  const longExit = () => (u, caps) => { const f = frame(u, caps); f.leave = [0, 1, 2].map((k) => { const t = ease(2.7 + 0.05 * k, 3.45, u); return { opacity: 1 - t, y: t }; }); return f; };
+  const caught = {
+    "glow late": glowRule(glowLate).length,
+    "line 3 stays": linesRule(lineStays).length,
+    "sentence over a line": linesRule(overlap).length,
+    "no way back": reverseRule(oneWay).length,
+    "exit past the rest": restRule(longExit).length,
+  };
+  for (const [what, n] of Object.entries(caught)) assert.ok(n > 0, `the planted defect "${what}" was not caught`);
+  console.log(`        caught: ${Object.entries(caught).map(([w, n]) => `${w} (${n})`).join(", ")}`);
 });
 
 console.log(`\n${pass} passed, ${fail} failed`);

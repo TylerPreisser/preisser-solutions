@@ -11,7 +11,8 @@
  * `u` runs along the scroll track: 0 to 1 is the first line's beat, 1 to 2 the
  * second, 2 to 3 the third, 3 to 4 the closing sentence. Below 0 the section
  * is still arriving, and from ENTER_FROM to ENTER_TO the three lines come in
- * (ADR-0031).
+ * (ADR-0031). From EXIT_FROM to EXIT_TO the light goes out and the three lines
+ * leave, and then the closing sentence comes in alone (ADR-0032).
  */
 
 /** The three lines. */
@@ -120,6 +121,46 @@ export function rise(k: number, u: number) {
   return { opacity: t, y: 1 - t };
 }
 
+/* The close (ADR-0032). The owner, 2026-11-23, from his iPhone: "By the time
+   it animates to the 4th thing that comes in the glow should have animated
+   out and the 3 right aligned phrases maybe have animated out as the last
+   sentence or whatever calling it comes in". Before this, the last beat only
+   dimmed the light by 45% and brought the three lines back to full strength
+   under the sentence.
+
+   Now, between the end of the third line's rest and the start of the
+   sentence's, one move: as the third explanation leaves, the band of light
+   carries on down through the third line and off it, as it has left the first
+   two, while the light behind it fades to nothing (GLOW_LEN); and the three
+   lines lift away and fade, the first line leading, the entrance's sibling
+   (the same travel, upward, staggered). Both are over by EXIT_TO, which is
+   exactly where the sentence starts to show, so the sentence never shares the
+   screen with a line or with any glow: it rests where the lines were.
+
+   All of it is inside the gap between two resting stretches, so a reader who
+   stops part way has it finished onward (ADR-0027) and never sees a line, the
+   light or the sentence left part way. Each line takes 0.27 of a beat, as it
+   does coming in, which keeps it under the steepest change allowed (6 per
+   beat). */
+/** Where the light starts to leave the third line, the lines start to leave,
+ *  and the third explanation starts to go: the end of beat 3's rest. */
+export const EXIT_FROM = LINES - 1 + TEXT_OUT_FROM;
+/** How much later each line starts to leave than the one above it. */
+export const EXIT_STAGGER = 0.04;
+/** How much of a beat one line takes to leave. */
+export const EXIT_LEN = 0.27;
+/** Where the last line is gone, and the closing sentence starts to come in. */
+export const EXIT_TO = EXIT_FROM + (LINES - 1) * EXIT_STAGGER + EXIT_LEN;
+/** How much of a beat the light takes to go out. */
+const GLOW_LEN = 0.27;
+
+/** Line `k`'s exit at `u`: how visible it still is (1 to 0) and how far it has
+ *  lifted away (0 in place, 1 the whole distance above it). */
+export function leave(k: number, u: number) {
+  const t = ease(0, 1, (u - EXIT_FROM - k * EXIT_STAGGER) / EXIT_LEN);
+  return { opacity: 1 - t, y: t };
+}
+
 /** The stretch of beat `k` that is at rest, as [from, to]. */
 export function plateau(k: number): [number, number] {
   if (k === 0) return [0.2, TEXT_OUT_FROM];
@@ -154,11 +195,13 @@ export type Frame = {
   light: number;
   /** Each line's entrance (see rise). */
   rise: Array<{ opacity: number; y: number }>;
+  /** Each line's exit before the closing sentence (see leave). */
+  leave: Array<{ opacity: number; y: number }>;
 };
 
 /** How much of text k shows at `u` when nothing holds it back. */
 function textBase(k: number, u: number) {
-  if (k === CLOSING) return ease(CLOSING + TEXT_IN_FROM, CLOSING + TEXT_IN_TO, u);
+  if (k === CLOSING) return ease(EXIT_TO, CLOSING + TEXT_IN_TO, u);
   const arriving = k === 0 ? ease(OFF_TO, plateau(0)[0], u) : ease(k + TEXT_IN_FROM, k + TEXT_IN_TO, u);
   return arriving * (1 - ease(k + TEXT_OUT_FROM, k + TEXT_OUT_TO, u));
 }
@@ -170,13 +213,15 @@ function textBase(k: number, u: number) {
  * cap is out of the way and the picture is this function of `u` alone.
  */
 export function frame(u: number, caps: readonly number[] | null = null): Frame {
-  // The sequence switching on as the block arrives, and the last beat.
+  // The sequence switching on as the block arrives, the light going out at the
+  // end (ADR-0032), and the closing sentence coming in once it has.
   const on = ease(OFF_TO, plateau(0)[0], u);
-  const closing = ease(CLOSING - 1 + LAMP_FROM, CLOSING + 0.25, u);
+  const out = ease(EXIT_FROM, EXIT_FROM + GLOW_LEN, u);
+  const last = ease(EXIT_TO, CLOSING + TEXT_IN_TO, u);
   // The light comes down into the first line as the block arrives, rests on a
-  // line for the middle of that line's beat, and glides to the next across the
-  // boundary.
-  let lamp = on - 1;
+  // line for the middle of that line's beat, glides to the next across the
+  // boundary, and after the last line carries on down off it.
+  let lamp = on - 1 + out;
   for (let k = 0; k < LINES - 1; k += 1) lamp += ease(k + LAMP_FROM, k + LAMP_TO, u);
   const fill: number[] = [];
   const lit: number[] = [];
@@ -185,7 +230,10 @@ export function frame(u: number, caps: readonly number[] | null = null): Frame {
     fill.push(offset);
     lit.push(1 - Math.abs(offset));
   }
-  const ink = 1 - QUIET * on * (1 - closing);
+  // The words step back while a line is lit. They come back to full only once
+  // the lines have gone, which only a reader with reduced motion sees: for
+  // them the lines stay on the closing beat (ADR-0032).
+  const ink = 1 - QUIET * on * (1 - last);
   // Each text comes up as the light lands on its line and leaves as the light
   // moves off, so no two texts are ever on screen together.
   const texts: Frame["texts"] = [];
@@ -194,11 +242,14 @@ export function frame(u: number, caps: readonly number[] | null = null): Frame {
     const leaving = ease(k + TEXT_OUT_FROM, k + TEXT_OUT_TO, u);
     texts.push({ opacity: Math.min(arriving * (1 - leaving), caps ? caps[k] : 1), y: (1 - arriving) * 14 - leaving * 10 });
   }
-  const last = ease(CLOSING + TEXT_IN_FROM, CLOSING + TEXT_IN_TO, u);
   texts.push({ opacity: Math.min(last, caps ? caps[CLOSING] : 1), y: (1 - last) * 14 });
   const entrance: Frame["rise"] = [];
-  for (let k = 0; k < LINES; k += 1) entrance.push(rise(k, u));
-  return { lamp, lit, fill, ink, texts, light: on * (1 - 0.45 * closing), rise: entrance };
+  const exit: Frame["leave"] = [];
+  for (let k = 0; k < LINES; k += 1) {
+    entrance.push(rise(k, u));
+    exit.push(leave(k, u));
+  }
+  return { lamp, lit, fill, ink, texts, light: on * (1 - out), rise: entrance, leave: exit };
 }
 
 /** Below this the section is still arriving and nothing is lit. At this point

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import { BEATS, LEAD, beatOf, clamp, follow, followerAt, frame, keyTarget, offsetOf, positionOf, readerAt, watch } from "./how-we-work-motion";
+import { BEATS, LEAD, LINES, beatOf, clamp, follow, followerAt, frame, keyTarget, offsetOf, positionOf, readerAt, watch } from "./how-we-work-motion";
 
 /**
  * How We Work: the section directly below the hero (ADR-0026).
@@ -15,8 +15,8 @@ import { BEATS, LEAD, beatOf, clamp, follow, followerAt, frame, keyTarget, offse
  * three with no description then scroll reactive that shows description for
  * the 1st then the 2nd then the 3rd. Each should glow as u go." And: "it has
  * to stay flawless but it also needs to bet the smoothest possible scroll
- * reactive." A last beat brings the first two lines back to full strength
- * beside the lit third (the hero's own look) with the relationship sentence.
+ * reactive." A last beat gives the relationship sentence the stage to itself:
+ * the light goes out and the three lines lift away as it comes in (ADR-0032).
  *
  * HOW IT MOVES. Nothing is switched on and off at a threshold. The scroll
  * position is turned into one number, the beat position `u` (0 to 1 is the
@@ -118,6 +118,9 @@ const STEPS: ReadonlyArray<{ line: string; body: ReactNode }> = [
  *  (2026-11-22); it was 1.3 wide and 3 high. */
 const LIGHT_WIDE = 1.14;
 const LIGHT_HIGH = 2;
+/** How far above the middle of the held block the closing sentence rests, as a share of the block's
+ *  height: the optical centre, a little above the measured one (ADR-0032). */
+const OPTICAL_LIFT = 0.04;
 
 export function HowWeWork() {
   const trackRef = useRef<HTMLElement>(null);
@@ -155,6 +158,10 @@ export function HowWeWork() {
     // window is clear of every letter. Exact, not rounded: a fraction of a
     // pixel matters on a phone.
     let fillHeights: number[] = [];
+    // How far the closing sentence is moved up from its place in the explanation slot to rest where the
+    // lines were, once they have gone (ADR-0032). Measured, not set in the stylesheet: it depends on how
+    // tall the lines and the longest explanation are at this size.
+    let closingLift = 0;
     let shown = followerAt(0); // the beat position that is painted, and how it is moving
     let reader = readerAt(0); // where the reader is, and where that sends the picture
     let raf = 0;
@@ -166,13 +173,14 @@ export function HowWeWork() {
       const f = frame(u, caps);
       lines.forEach((line, k) => {
         line.style.setProperty("--lit", f.lit[k].toFixed(3));
-        // The entrance. With reduced motion the lines are simply there.
+        // The entrance (ADR-0031) and the exit before the closing sentence (ADR-0032): the same rise,
+        // in from below and away upward. With reduced motion the lines are simply there, throughout.
         if (reduce.matches) {
           line.style.removeProperty("opacity");
           line.style.removeProperty("transform");
         } else {
-          line.style.opacity = f.rise[k].opacity.toFixed(3);
-          line.style.transform = `translate3d(0, ${(f.rise[k].y * riseBy).toFixed(2)}px, 0)`;
+          line.style.opacity = (f.rise[k].opacity * f.leave[k].opacity).toFixed(3);
+          line.style.transform = `translate3d(0, ${((f.rise[k].y - f.leave[k].y) * riseBy).toFixed(2)}px, 0)`;
         }
       });
       // The band: a window the height of the line that slides down over the
@@ -188,8 +196,11 @@ export function HowWeWork() {
       });
       texts.forEach((text, k) => {
         const t = f.texts[k];
+        // The closing sentence rests where the lines were (they have gone by the time it shows). With
+        // reduced motion the lines stay, so it stays in its own place under them.
+        const lift = k === texts.length - 1 && !reduce.matches ? closingLift : 0;
         text.style.opacity = t.opacity.toFixed(3);
-        text.style.transform = `translate3d(0, ${t.y.toFixed(2)}px, 0)`;
+        text.style.transform = `translate3d(0, ${(t.y + lift).toFixed(2)}px, 0)`;
         // Only the text that is showing can be selected or clicked.
         if (t.opacity > 0.5) text.setAttribute("data-on", "true");
         else text.removeAttribute("data-on");
@@ -211,6 +222,9 @@ export function HowWeWork() {
           h = a.h + (b.h - a.h) * m;
           cx = a.x + a.w / 2 + (b.x + b.w / 2 - a.x - a.w / 2) * m;
           cy = a.y + a.h / 2 + (b.y + b.h / 2 - a.y - a.h / 2) * m;
+          // Past the last line (ADR-0032) it carries on down off it as it goes out, the way it came
+          // down into the first.
+          cy += Math.max(0, f.lamp - (LINES - 1)) * h;
         }
         light.style.transform = `translate3d(${(cx - 50).toFixed(1)}px, ${(cy - 50).toFixed(1)}px, 0) scale(${((w * LIGHT_WIDE) / 100).toFixed(3)}, ${((h * LIGHT_HIGH) / 100).toFixed(3)})`;
       }
@@ -298,6 +312,14 @@ export function HowWeWork() {
         const margin = (fill.getBoundingClientRect().height - line) / 2;
         return line + margin + parseFloat(getComputedStyle(lines[k]).fontSize) * 0.14;
       });
+      // The closing sentence's resting place: centred a little above the middle of the held block, but
+      // never higher than where the first line starts (the label keeps the gap it had above the lines)
+      // and never lower than its own place. Layout positions (offsetTop), so no transform is counted.
+      const closing = texts[texts.length - 1];
+      const stage = content.querySelector<HTMLElement>(".ps-how__stage");
+      const middle = content.offsetTop + content.offsetHeight / 2 - vh * OPTICAL_LIFT;
+      const highest = stage ? stage.offsetTop : closing.offsetTop;
+      closingLift = clamp(middle - closing.offsetHeight / 2, highest, closing.offsetTop) - closing.offsetTop;
       if (wasPinned) {
         // Already telling the story: the sizes changed under a picture that
         // may be moving. Keep it where it is, redraw it at the new sizes, and
