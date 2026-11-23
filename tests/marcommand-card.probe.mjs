@@ -143,9 +143,11 @@ async function check(name, contextOptions, fn, { theme, noOpen, before, engine }
     if (theme) {
       const before = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
       await page.evaluate((t) => document.documentElement.setAttribute("data-theme", t), theme);
-      await page.waitForTimeout(1200); // the page eases its background over 300ms; a busy machine is slower
-      const after = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
       const want = theme === "dark" ? "rgb(10, 22, 40)" : "rgb(255, 255, 255)";
+      // The page eases its background over 300ms. Wait for the colour itself, not for a fixed time: on a
+      // busy machine (load 98 on 32 cores, 2026-11-22) a 1.2s wait read the old colour and failed the gate.
+      await page.waitForFunction((w) => getComputedStyle(document.body).backgroundColor === w, want, { timeout: 20000 }).catch(() => {});
+      const after = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
       assert.equal(after, want, `theme ${theme}: body background is ${after} (was ${before})`);
     }
     if (!noOpen) await openSheet(page);
@@ -776,7 +778,7 @@ for (const [s, engine] of [[SIZES[7], "chromium"], [SIZES[4], "chromium"], [SIZE
     await page.waitForFunction(() => {
       const h = [...document.querySelectorAll(".ps-dialog-panel h4")].find((x) => x.textContent === "MarCommand");
       return !!h && parseFloat(getComputedStyle(h.closest("section")).opacity) > 0.95;
-    }, null, { timeout: 1200 }).catch(() => {});
+    }, null, { timeout: 2200 }).catch(() => {}); // still inside the 2.5s the stage code is held back
     const cold = await read();
     assert.ok(cold.h4, "no MarCommand heading while the stage code is still loading");
     assert.ok(cold.h4Visible, "heading is in the DOM but not visible while the stage code loads");

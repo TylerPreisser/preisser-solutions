@@ -3697,17 +3697,26 @@ ul, ol {
   transition: background 300ms ease;
 }
 
+/* The glow belongs to the page, not to a slab (owner, 2026-11-22: "seamless or transparent or blend
+   with the rest of the background instead of be its own section"). It used to be a fixed 600px
+   circle; on a phone the block is about 300px tall, so `overflow: hidden` cut the circle mid-fade
+   and drew a hard edge along the block's top and bottom. Now the glow's box is sized from the
+   block: at most 140% of each side, so each radius is at most 70% of that side, and the colour is
+   gone by 70% of the radius. It therefore reaches nothing at 49% of the way out, just inside every
+   edge, at any size. A block 430px or more each way gets the same 300px glow as before.
+   The size is on the BOX, not inside the gradient: Chromium drops a radial-gradient whose radii
+   are written with min() (computed background-image: none), which removed the glow altogether. */
 .ps-cta-glow {
+  --ps-cta-glow-alpha: 0.15;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
+  width: min(600px, 140%);
+  height: min(600px, 140%);
   background: radial-gradient(
-    circle,
-    rgba(var(--color-primary-rgb), 0.15) 0%,
+    ellipse closest-side,
+    rgba(var(--color-primary-rgb), var(--ps-cta-glow-alpha)) 0%,
     transparent 70%
   );
   pointer-events: none;
@@ -4053,12 +4062,9 @@ ul, ol {
   background: var(--theme-bg-primary);
 }
 
+/* Only the strength changes in light: the shape stays the one above, sized from the block. */
 [data-theme="light"] .ps-cta-glow {
-  background: radial-gradient(
-    circle,
-    rgba(var(--color-primary-rgb), 0.08) 0%,
-    transparent 70%
-  );
+  --ps-cta-glow-alpha: 0.08;
 }
 
 /* ── Footer: light mode overrides ──────────────────────────── */
